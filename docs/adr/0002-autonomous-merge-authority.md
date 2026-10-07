@@ -1,10 +1,8 @@
 # 0002 — Autonomous merge authority on verified gates
 
-
-
 ## Context
 
-The flow is Issue → branch → PR → independent review → CI job `check` → squash merge, with no
+The flow is Issue → branch → PR → independent review → CI job `check` → branch-appropriate merge, with no
 direct pushes to `develop` or `main`. Without explicit merge authority a fully autonomous loop stalls at
 "PR open" after every Issue, and a merge-ready PR left idle was the primary failure mode
 observed on the source projects. Session tooling (permission classifiers) has also refused a
@@ -18,7 +16,7 @@ Codex development to dot, with no project budget cap. Regular PRs target develop
 promotions target main and receive release tags.
 
 The owner grants both the per-Issue driver and the orchestrator permanent, pre-authorised
-authority to squash-merge a PR whose gates are verified:
+authority to merge a PR whose gates are verified:
 
 - CI `check` green on the head commit;
 - `github-driven-workflow` §8: qualifying independent review evidence covering the final
@@ -27,12 +25,17 @@ authority to squash-merge a PR whose gates are verified:
 - no `do-not-merge`, `blocked` or `needs-decision` label; no unresolved review thread; no
   unchecked task box in the PR body.
 
-The driver merges its own PR; the orchestrator merges only when the driver cannot (dead
-driver, or the merge command refused by session tooling). The merge command is the single
-`gh pr merge <n> --squash --match-head-commit <evaluated head>` — no chaining, because
-compound forms are what permission classifiers reject; the head binding makes a push after
-the gate evaluation fail the merge instead of merging unreviewed content. Owners who want the classifier out of the way add
-`"permissions": {"allow": ["Bash(gh pr merge:*)"]}` to `.claude/settings.local.json`.
+The driver merges its own PR; the orchestrator may merge when the driver cannot. Ordinary
+PRs to develop use `gh pr merge <n> --squash --match-head-commit <evaluated head>`.
+Stable promotions to main use `gh pr merge <n> --merge --match-head-commit <evaluated head>`.
+The main merge preserves the released develop head as a parent; verify that its tree matches
+the reviewed release tree before tagging. Squashing a stable promotion would lose that
+ancestry and cause later promotion comparisons to repeat already released changes.
+
+Repository settings allow squash and merge commits; the develop ruleset allows squash only,
+and the main ruleset allows merge commits only. Rebase merges are disabled. Runtime-specific
+permission configuration is external; authorization does not bypass branch protection,
+review or integrity checks.
 
 ## Consequences
 

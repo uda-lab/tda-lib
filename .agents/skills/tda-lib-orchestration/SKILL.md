@@ -11,7 +11,7 @@ this project specialization taking precedence over their template defaults.
 
 ## Continuing library contract
 
-Initialization is complete. Do not repeat scaffold Phases 0–3, create a replacement charter,
+Initialization is complete. Do not restart initialization, create a replacement charter,
 require one final target, prescribe roadmap Issue granularity or change Issue templates.
 The roadmap arrives through Issues and evolves continuously under dot. No TDA result is
 currently claimed; the permanent smoke theorem is infrastructure only.
@@ -28,12 +28,10 @@ action; do not invent mathematical approval checkpoints.
 
 Use `develop` as the base and target of ordinary Issue PRs, even when main is the GitHub
 default. Interpret inherited loop references to inputs on main as inputs on develop.
-Stable promotion PRs target main; use squash merges with evaluated-head binding and all
-review gates. Initial infrastructure initialization is the single bootstrap exception landing
-on main before develop is established. Do not directly push either protected branch.
+Stable promotion PRs target main and use merge commits; ordinary develop PRs use squash.
+Apply evaluated-head binding and all review gates to both methods. Do not directly push either protected branch.
 
-Scaffold Phase 6 applies separately to release-scoped results, after a stable promotion,
-not to completion of the entire library. Require source fidelity for claimed results, exclude
+Source-fidelity completion applies to release-scoped results after a stable promotion. Require source fidelity for claimed results, exclude
 staging holes from stable releases, audit the exact main revision, then tag and describe its
 results and limitations. Do not manufacture a TDA release for the smoke theorem. Release
 completion returns to the continuing queue, rather than terminating the program.
@@ -51,3 +49,6 @@ an actual dependency only through a justified infrastructure Issue and reviewed 
 Theory APIs may be noncomputable; executable verified algorithms have their own contracts.
 The repository stays private until roadmap preparation is complete, then dot may publish it
 under the owner's standing authorization. English is used for tracked artifacts.
+
+Canonical skills live in `.agents/skills/`; Claude compatibility links point here. Use shared
+guarded commands regardless of harness hook activation, as documented in `docs/orchestration.md`.

@@ -3,7 +3,7 @@
 The exposition counterpart of `references/dispatch-prompt.md`. Its specification-intake,
 turn-discipline, report, notification, review-observation, merge and cleanup clauses apply
 unchanged; this file adds what a writer and its reviewers need. Save the filled prompt to
-`.claude/scratch/dispatch-note-{{n}}.md`; name the model (tier from the container contract —
+`.agents/scratch/dispatch-note-{{n}}.md`; name the model (resolved by dot’s runtime —
 exposition quality is a reasoning-tier reason, recorded on the Issue). Allocation follows the
 existing capability and resource policy: no fixed vendor, and no agent per skill.
 

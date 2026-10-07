@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Replicate the untracked, machine-local harness settings into another checkout (typically a
+# Optional Claude-only adapter: replicate untracked, machine-local settings into a checkout.
+# Shared wrappers and native Codex hooks do not require this installer.
+# Typically a
 # driver worktree), so a session opened there inherits the same guard tunables. The tracked
 # parts (.claude/settings.json, .claude/hooks/*.sh, .claude/skills/) come with the checkout.
 set -euo pipefail

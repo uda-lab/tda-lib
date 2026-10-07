@@ -1,8 +1,8 @@
 # Orchestration guide
 
-Load `.agents/skills/tda-lib-orchestration/SKILL.md` first in every continuing Codex session.
-It specializes the inherited scaffold procedure for a continuing TDA library; initialization
-is complete, and no session should repeat Init or assume one final target ends development.
+Load `.agents/skills/tda-lib-orchestration/SKILL.md` first in every continuing agent session.
+It defines continuing TDA library development for dot/Codex and compatible Claude Code
+sessions. Initialization is complete; no single final target ends development.
 
 ## Authority and roles
 
@@ -25,12 +25,14 @@ A stable promotion identifies its exact develop revision and included results on
 and PR, excludes staging holes, runs the full gate and obtains independent mathematical
 review as appropriate. Promote that revision through a PR to main; audit the merged main
 revision and tag it with release notes describing results, compatibility and limitations.
-The initial infrastructure PR establishes this policy; it is not a mathematical release.
+Infrastructure-only releases make no mathematical-result claims.
 
-Do not delete `develop` after a promotion; the setup disables automatic branch deletion.
-For squash promotions, reconcile develop with the resulting main commit through a reviewed
-synchronization PR before later promotions, so release history and subsequent diffs remain
-understandable. dot determines release cadence and version numbers from maturity and API changes.
+Ordinary develop PRs use squash merges. Stable main promotions use merge commits, preserving
+the exact released develop head as a parent. The merged main tree must equal the reviewed
+release tree before tagging. This ancestry keeps later promotion diffs limited to new work;
+no synchronization PR is needed when release trees match. Resolve and review any actual
+main/develop content divergence before promotion. Keep develop after each release.
+dot determines release cadence and version numbers from maturity and API changes.
 
 ## Evidence and foundations
 
@@ -47,3 +49,42 @@ gate. `scripts/github-setup.sh` installs labels, squash settings and develop/mai
 Review acquisition and merge evidence follow `github-driven-workflow`; review disposition
 follows `lean-review-routing`. All review findings are observed and resolved or disposed of.
 No unsolicited notifications; authorized reports and the Issue/PR record are unaffected.
+
+## Shared execution safeguards
+
+Canonical skills are real directories in `.agents/skills/`; `.claude/skills/` links to them.
+Use these entry points in every harness:
+
+```sh
+scripts/lean.sh lake build
+scripts/lean.sh lean <file.lean>
+LOOP_JOB_ID=tda-lib/issue-<n>/worker scripts/codex.sh exec <arguments>
+scripts/agent/session-brief.sh
+```
+
+The shared runtime serializes Lean builds, checks memory headroom and honors
+`/tmp/codex-stop`. Defaults are `LEAN_NUM_THREADS=1` and
+`LEAN_GUARD_MIN_AVAIL_MIB=1536`; runtime configuration may adapt them to available hardware.
+`scripts/bootstrap.sh`, `scripts/check.sh` and axiom audits invoke shared protection directly.
+The stop file blocks guarded Lean work and new child Codex launches; remove it only when
+the stopping condition has been resolved. It does not terminate existing jobs automatically.
+
+Optional native adapters live in `.claude/settings.json` and `.codex/hooks.json`. They
+protect supported Bash command events when the harness supports them and the project hooks
+are enabled and trusted. Codex hook activation and trust follow the
+[official hook documentation](https://learn.chatgpt.com/docs/hooks). Shared command wrappers
+remain mandatory independently of hook activation; arbitrary commands and unsupported
+execution routes are not guaranteed to be intercepted. Do not bypass wrappers with
+raw build commands. Use the same entry points in linked worktrees; no per-worktree Claude
+hook installation is required for these shared commands.
+
+Each child Codex job has a distinct `LOOP_JOB_ID=tda-lib/issue-<n>/<role>`. After its workers
+and reviewers finish, source `scripts/agent/codex-chains.sh` and invoke
+`reap_codex_chains '<finished job id>'` without that job id in the cleanup caller's environment.
+Reclaim only proven finished owned chains. Never terminate live or untagged processes, or
+use a worktree path as proof of ownership. Remove unused worktrees and merged Issue branches
+after owned jobs finish. Shared disposable paths are `.agents/scratch/` and
+`.agents/worktrees/`; legacy Claude paths remain ignored for compatibility.
+
+There is no repository-local dot configuration or scheduler, and no financial budget cap.
+Runtime scheduling, available models and autonomous operation remain dot's responsibility.

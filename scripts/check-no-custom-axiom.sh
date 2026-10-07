@@ -29,7 +29,7 @@ cd "$ROOT"
 
 list="$(mktemp)"
 trap 'rm -f "$list"' EXIT
-find . \( -name '.git' -o -name '.lake' -o -path './.claude/worktrees' -o -path './.claude/scratch' \) -prune \
+find . \( -name '.git' -o -name '.lake' -o -path './.agents/worktrees' -o -path './.agents/scratch' -o -path './.claude/worktrees' -o -path './.claude/scratch' \) -prune \
      -o -type f -name '*.lean' -print0 > "$list"
 
 if [ ! -s "$list" ]; then

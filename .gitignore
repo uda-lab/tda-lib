@@ -13,7 +13,11 @@
 # Source papers/preprints stay local (copyright, size); cite them in docs/math/references.md
 /sources/
 
-# Agent scratch: plans, review evidence, work notes, dispatch prompts — disposable by policy
+# Agent scratch and worktrees are disposable and never tracked
+/.agents/scratch/
+/.agents/worktrees/
+
+# Legacy Claude local state remains excluded for compatibility
 /.claude/scratch/
 /.claude/settings.local.json
 /.claude/worktrees/

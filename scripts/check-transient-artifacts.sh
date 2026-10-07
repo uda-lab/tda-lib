@@ -57,7 +57,7 @@ violations="$(tr '\0' '\n' < "$list" | awk '
     if (lower ~ /(^|\/)\.agent_orchestra\//) { print path ": .agent_orchestra/ is prohibited"; next }
     if (lower ~ /(^|\/)docs\/scratch\//)     { print path ": docs/scratch/ is prohibited"; next }
     if (lower ~ /(^|\/)scratch\//)           { print path ": scratch/ directories are prohibited"; next }
-    if (lower ~ /(^|\/)\.claude\/worktrees\//) { print path ": agent worktree content"; next }
+    if (lower ~ /(^|\/)\.(agents|claude)\/worktrees\//) { print path ": agent worktree content"; next }
 
     # 5. editor / OS noise
     if (base == ".ds_store" || ext == "swp") { print path ": editor/OS noise"; next }
