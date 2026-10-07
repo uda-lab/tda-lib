@@ -13,8 +13,15 @@ this project specialization taking precedence over their template defaults.
 
 Initialization is complete. Do not restart initialization, create a replacement charter,
 require one final target, prescribe roadmap Issue granularity or change Issue templates.
-The roadmap arrives through Issues and evolves continuously under dot. No TDA result is
-currently claimed; the permanent smoke theorem is infrastructure only.
+The private [tda-lib Project](https://github.com/orgs/uda-lab/projects/5) holds the overall
+roadmap, milestones, priorities and progress. Issues carry full mathematical specifications
+and execution contracts. Both evolve under dot. No TDA result is currently claimed; the
+permanent smoke theorem is infrastructure only.
+
+Project Ready does not authorize execution. dot or an authorized maintainer verifies the
+specification, required independent audits, dependencies and validation before applying
+`agent:ready` to the Issue. No routine human reapproval is required. Existing `blocked`,
+`needs-decision` and `do-not-merge` gates remain.
 
 dot has full authority over roadmap and mathematical scope, statement changes, dependency
 choices, queue authorization, review routing, merging, releases and autonomous Codex operation.
@@ -41,8 +48,19 @@ completion returns to the continuing queue, rather than terminating the program.
 Codex operation and scheduling are managed by dot. No project budget cap is imposed.
 Preserve inherited VPS resource guards, serialized Lean builds, one driver per lane,
 independent reviews, process ownership cleanup and notification rules. Resolve actual
-available models at dispatch time; do not blindly launch old template example models or
-encode the initialization host's hardware facts in repository policy.
+available models at dispatch time. Base workers use Luna xhigh; difficult mathematics/Lean
+work may use Sol low/high. Sol high may prepare Issues when dot is unavailable. Do not encode
+the initialization host's hardware facts in repository policy.
+
+dot considers intake after roughly three hours without observed activity in other
+repositories, checking competition and dependencies. Two to three disjoint tasks are
+conditional on resources, independence and review capacity; keep Lean builds serialized.
+If other-repository work starts, hold new intake rather than interrupt ongoing tasks.
+Ongoing work proceeds through quality-gated PR merge unless legitimately blocked.
+
+Public API documentation requires doc-gen4; Blueprint is optional. ellalpha is an independent
+consumer, not a completion condition. The first stable release need not finish all Project
+milestones. Do not invent dates or impose a serial milestone order.
 
 Research existing mathlib and TauCeti APIs before duplicating foundations; TauCeti becomes
 an actual dependency only through a justified infrastructure Issue and reviewed pin.

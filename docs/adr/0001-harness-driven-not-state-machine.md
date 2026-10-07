@@ -2,7 +2,12 @@
 
 ## Decision
 
-GitHub Issues and PRs are the authoritative roadmap, queue, decisions and delivery evidence.
+The private [tda-lib Project](https://github.com/orgs/uda-lab/projects/5) holds the overall
+roadmap, milestones, priorities and progress. GitHub Issues hold full mathematical
+specifications and execution contracts; Issues and PRs record decisions and delivery
+evidence. Project Ready alone does not authorize execution: dot or an authorized maintainer
+checks specification, required independent audits, dependencies and validation before
+applying `agent:ready` to the Issue.
 dot manages the continuing Codex runtime externally. Claude Code can use the same project
 policy. No repository-local scheduler, state machine or duplicate status ledger is introduced.
 
