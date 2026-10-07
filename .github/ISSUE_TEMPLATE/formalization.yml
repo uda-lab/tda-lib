@@ -1,0 +1,62 @@
+name: Formalization task
+description: A source-anchored mathematical target to formalise in Lean
+title: "[formalization] "
+labels: [formalization]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not apply `agent:ready` yourself. Before it is applied to source-sensitive work, an agent
+        distinct from the eventual implementer audits the primary source against the literal claim below
+        and records the audit in this Issue. The digest under `docs/math/` is the working mathematical
+        source of truth; the primary papers (`docs/math/references.md`) win on any conflict.
+  - type: input
+    id: source
+    attributes:
+      label: Source / primary reference
+      description: Paper and theorem/equation/section (and page), or `docs/math/<digest>.md §…` together with the paper it digests.
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: Exact claim / equation / theorem
+      description: The literal statement under consideration, with the source's hypotheses and conventions.
+    validations:
+      required: true
+  - type: textarea
+    id: lean_target
+    attributes:
+      label: Proposed Lean statement or precise semantic target
+      description: A signature, or a precise semantic target including domains and quantifier order.
+      render: lean
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What is in and what is out for this Issue. One Issue ≈ one codex/subagent-sized block (≲ 400 Lean lines) or a clearly bounded lemma group.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Machine-checkable where possible — declarations, sorry-free, pinned in `scripts/print_axioms.lean`, `scripts/check.sh` green, review evidence.
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Issues/PRs, prior declarations, mathlib API. Write "none" if none.
+    validations:
+      required: true
+  - type: textarea
+    id: ambiguities
+    attributes:
+      label: Known ambiguities / conventions / edge cases
+      description: Sign and normalisation conventions, boundary cases, quantifier order, anything the source leaves implicit.
+    validations:
+      required: true

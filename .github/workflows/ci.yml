@@ -1,0 +1,116 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]      # post-merge run; the main ruleset does not require PR branches to be up to date
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Job name `check` is the required status-check context in the `main` ruleset. It always
+  # reports; the expensive toolchain/build/audit steps run only when build-relevant files
+  # changed (same conditional pattern as scripts/hooks/pre-push).
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect build-relevant changes
+        id: changes
+        shell: bash
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          # -z: NUL-delimited raw paths (no C-style quoting of non-ASCII names); --no-renames: a
+          # *.lean file renamed away must show as a deletion. The list is written to a file so the
+          # regex test reads a file, not a pipe (grep -q on a pipe under pipefail can fail spuriously).
+          list="$(mktemp)"; decided=false
+          if [ "$EVENT" = pull_request ]; then
+            git diff --no-renames --name-only -z "origin/${BASE_REF}...HEAD" | tr '\0' '\n' > "$list"; decided=true
+          elif [ "$EVENT" = push ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \
+               && git cat-file -e "$BEFORE" 2>/dev/null; then
+            git diff --no-renames --name-only -z "$BEFORE" HEAD | tr '\0' '\n' > "$list"; decided=true
+          fi
+          build=true
+          if [ "$decided" = true ] \
+             && ! grep -qE '\.lean$|^lakefile|^lean-toolchain$|^lake-manifest\.json$|^scripts/|^\.github/workflows/' "$list"; then
+            build=false
+          fi
+          echo "build=$build" >> "$GITHUB_OUTPUT"
+          echo "build-relevant changes: $build"; sed 's/^/  /' "$list"
+
+      # Textual guards first: they fail in seconds, before any toolchain download.
+      - name: Transient-artefact guard
+        run: bash scripts/check-transient-artifacts.sh
+      - name: No unmarked sorry/admit
+        run: bash scripts/check-no-sorry.sh
+      - name: No custom axiom/opaque/unsafe
+        run: bash scripts/check-no-custom-axiom.sh
+      - name: Root aggregator imports-only
+        run: bash scripts/check-root-aggregator.sh
+      - name: Guard self-tests (lexer, Lean-build hook, codex-chain cleanup)
+        run: bash scripts/test-guards.sh && bash .claude/hooks/test-lean-guard.sh && bash .claude/hooks/test-codex-chains.sh
+
+      # Exposition note (opt-in lane): inactive until docs/note/note.conf exists. When it does,
+      # install the TeX packages it names, build and check it, and keep the PDF as the run's
+      # artifact. Unconfigured, check-note.sh prints NOT CONFIGURED and validates nothing.
+      - name: Exposition note — configuration
+        id: note
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f docs/note/note.conf ]; then
+            pkgs="$(sed -n 's/^[[:space:]]*TEXLIVE_PACKAGES[[:space:]]*=[[:space:]]*//p' docs/note/note.conf | tail -n 1 | sed 's/[[:space:]]*#.*$//; s/^"\(.*\)"$/\1/')"
+            if [[ ! "$pkgs" =~ ^[a-z0-9.+\ -]*$ ]]; then echo "TEXLIVE_PACKAGES must be Debian package names"; exit 1; fi
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+            echo "packages=latexmk texlive-latex-recommended ${pkgs}" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Exposition note — install TeX
+        if: steps.note.outputs.configured == 'true'
+        env:
+          PKGS: ${{ steps.note.outputs.packages }}
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends $PKGS
+      - name: Exposition note — build and check (scripts/check-note.sh)
+        run: bash scripts/check-note.sh
+      - name: Exposition note — artifact
+        if: steps.note.outputs.configured == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: note
+          path: docs/note/build/*.pdf
+          if-no-files-found: error
+
+      # Installs elan from lean-toolchain, fetches mathlib oleans, runs `lake build`.
+      - name: Build with mathlib cache
+        if: steps.changes.outputs.build == 'true'
+        uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: true
+          use-github-cache: false   # .lake of a mathlib project is multi-GB; the mathlib cache is the fast path
+
+      # Same gate as local: guards, no-op rebuild, live #print axioms audit.
+      - name: Full gate (scripts/check.sh)
+        if: steps.changes.outputs.build == 'true'
+        run: bash scripts/check.sh
+
+      - name: Build skipped (no build-relevant changes)
+        if: steps.changes.outputs.build != 'true'
+        run: echo "No Lean sources, build config, scripts or workflows changed; textual guards passed."

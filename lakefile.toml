@@ -1,0 +1,16 @@
+name = "LeanScaffold"
+version = "0.1.0"
+defaultTargets = ["LeanScaffold"]
+
+[leanOptions]
+autoImplicit = false   # an unbound variable must be an error, never a silent ∀
+
+# The tag selects the mathlib release; the resolved commit is pinned in lake-manifest.json.
+# Bumping either is an infrastructure Issue, never a side effect of other work.
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.33.1"
+
+[[lean_lib]]
+name = "LeanScaffold"

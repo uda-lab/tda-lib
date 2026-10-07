@@ -1,0 +1,44 @@
+# Lake build output and fetched dependencies
+/.lake/
+/build/
+
+# Lean compiled artefacts
+*.olean
+*.ilean
+*.trace
+
+# Logs and proof-experiment output are never tracked (scripts/check-transient-artifacts.sh)
+*.log
+
+# Source papers/preprints stay local (copyright, size); cite them in docs/math/references.md
+/sources/
+
+# Agent scratch: plans, review evidence, work notes, dispatch prompts — disposable by policy
+/.claude/scratch/
+/.claude/settings.local.json
+/.claude/worktrees/
+/.claude/ENVIRONMENT.md
+
+# Core dumps (an aborting side process may write one into its cwd)
+core
+core.*
+
+# Exposition note build output (scripts/check-note.sh)
+/docs/note/build/
+
+# LaTeX by-products
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.out
+*.dvi
+
+# Editor / OS noise
+.DS_Store
+*.swp
+
+# lake-manifest.json and lean-toolchain are intentionally tracked for reproducibility.

@@ -1,0 +1,33 @@
+name: Infrastructure task
+description: Bounded tooling, CI, hook, skill or repository-maintenance change
+title: "[infra] "
+labels: [infrastructure]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What changes and why.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What is in and what is out for this Issue.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How a reviewer verifies the change is complete.
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Issues/PRs or external prerequisites, if any.
+    validations:
+      required: false
