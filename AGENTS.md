@@ -5,7 +5,7 @@
 
 ## Project Overview
 - `tda-lib` is a continuing TDA formalization library, covering theory and verified algorithms; no TDA results are provided yet.
-- dot owns the roadmap, Issue queue, mathematical decisions and autonomous Codex operation. Read the governing Issue and decision comments; do not rerun scaffold Init.
+- dot owns the private [tda-lib Project](https://github.com/orgs/uda-lab/projects/5) roadmap, milestones, priorities and progress, plus Issue authorization, mathematical decisions and autonomous Codex operation. Issues carry full specifications and execution contracts; read the governing Issue and decisions.
 
 ## Commands
 ```sh
@@ -30,8 +30,13 @@ optional supported Bash adapters; their activation depends on harness support an
 ## Architecture
 - `TDA/` is the library; mathlib is pinned. Research mathlib and TauCeti before introducing duplicate foundations or dependency changes.
 - Normal work: Issue → issue branch from develop → PR to develop → independent review → check → squash merge. Stable release promotions use reviewed PRs to main and tags; no direct pushes to either branch.
-- dot may authorize Issues with `agent:ready`; `blocked`, `needs-decision`, `do-not-merge` remain hard stops until resolved.
-- Mathematical sources and conventions belong in `docs/math/`; roadmap and queue stay in GitHub Issues. Scratch, logs and review evidence stay out of tracked files.
+- Project Ready is not execution authorization. dot or an authorized maintainer applies `agent:ready` only after specification, required independent audits, dependencies and validation are verified; no routine human reapproval. `blocked`, `needs-decision`, `do-not-merge` remain hard stops.
+- Mathematical sources and conventions belong in `docs/math/`; overall roadmap stays in the Project, execution contracts in Issues. Scratch, logs and review evidence stay out of tracked files.
+
+## Execution defaults
+- Base workers use Luna xhigh; difficult mathematics/Lean work may use Sol low/high. Sol high may prepare Issues when dot is unavailable.
+- dot considers intake after roughly three hours without observed activity in other repositories, checking competition and dependencies. Two to three disjoint tasks are conditional; Lean builds remain serialized. Other-repository activity holds new intake, rather than interrupting ongoing tasks; ongoing work proceeds through quality-gated PR merge unless legitimately blocked.
+- Public API documentation requires doc-gen4; Blueprint is optional, and ellalpha is an independent consumer. The first stable release need not complete every milestone; do not invent dates or a serial milestone order.
 
 ## Maintenance Notes
 - Keep guidance compact and current; durable decisions belong in `docs/adr/`.

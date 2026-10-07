@@ -11,8 +11,9 @@ implementation routing, review, integration, release selection and continuing Co
 The scaffold's orchestrator, driver, worker, independent reviewer and judge roles remain in
 use. Issue/PR evidence and independent review remain mandatory; authority does not bypass
 integrity gates. The owner has imposed no budget cap. Preserve scaffold VPS resource defaults,
-including serialized Lean builds and one driver per lane. Runtime scheduling and concrete
-model selection are managed by dot, not fixed by this repository.
+including serialized Lean builds and one driver per lane. Runtime scheduling remains
+external to this repository. Base workers use Luna xhigh; difficult mathematics/Lean work
+may use Sol low/high. Sol high may prepare Issues when dot is unavailable.
 
 ## Branches and releases
 
@@ -37,10 +38,35 @@ dot determines release cadence and version numbers from maturity and API changes
 ## Evidence and foundations
 
 Read each Issue body and authorized decision comments before implementation and review.
-Roadmap intake is via Issues; preserve inherited Issue templates and let dot choose granularity.
+The private [tda-lib Project](https://github.com/orgs/uda-lab/projects/5) holds the overall
+roadmap, milestones, priorities and progress. Issues hold full mathematical specifications
+and execution contracts: theorem statements, assumptions, sources, natural-language proofs,
+Lean APIs, dependencies and validation conditions. Preserve inherited templates and let dot
+choose granularity. Implementers may open follow-up Issues and bug reports.
+Project Ready is a planning status, not execution authorization. dot or an authorized
+maintainer verifies specification, required independent audits, dependencies and validation
+before applying `agent:ready` to the Issue. No routine human reapproval is required;
+`blocked`, `needs-decision` and `do-not-merge` remain hard stops.
 `docs/math/` holds durable source-grounded mathematics, not a second work queue.
 Research mathlib and TauCeti coverage before choosing foundations; TauCeti is not currently
 a dependency. Keep independent source fidelity review for statement changes.
+
+## Intake and concurrency
+
+dot considers new intake after approximately three hours without observed activity in
+other repositories, then checks competing work and dependencies. Two to three disjoint
+tasks may run concurrently only when directory or other boundaries clearly separate work,
+shared API changes and merge conflicts are unlikely, and resources and review capacity permit;
+Lean builds remain serialized. When other-repository work starts, hold new intake rather
+than interrupt existing tasks. Ongoing tasks continue through quality-gated PR merge unless
+legitimately blocked. This is an intake guideline, not a repository-local scheduler.
+
+## Documentation and milestone interpretation
+
+Public API documentation requires doc-gen4. Blueprint is optional; ellalpha is an
+independent consumer, not a completion condition. The first stable release need not finish
+all Project milestones. Do not invent dates or infer serial execution from milestone order;
+dot establishes dependencies and release scope from actual mathematical decisions.
 
 ## Commands and gates
 

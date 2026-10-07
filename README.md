@@ -35,7 +35,11 @@ not a prerequisite for local completion.
 
 ## Development and releases
 
-GitHub Issues hold the roadmap and work queue, managed by the continuing agent dot.
+The private [tda-lib Project](https://github.com/orgs/uda-lab/projects/5) holds the overall
+roadmap, milestones, priorities and progress, managed by the continuing agent dot. GitHub
+Issues hold complete mathematical specifications and execution contracts. Project Ready
+does not authorize execution; eligible Issues receive `agent:ready` after dot or an authorized
+maintainer verifies their gates.
 Regular reviewed PRs integrate into `develop`; sufficiently mature stable versions are
 promoted through reviewed PRs to `main` and tagged. `main` is the stable branch, not the
 routine integration target. See [the orchestration guide](docs/orchestration.md).
@@ -44,6 +48,11 @@ Public theorem axiom closures are audited against
 `{propext, Classical.choice, Quot.sound}`. The coverage guard checks that public theorems
 are pinned and every library module is imported. Stable releases exclude staging holes
 and report precisely the results and limitations reviewed for that release.
+
+Public API documentation requires doc-gen4; Blueprint is optional. ellalpha is an
+independent consumer, not a library completion condition. The first stable release need
+not complete all Project milestones; dates and execution order are established only from
+actual decisions and dependencies.
 
 The repository remains private until roadmap preparation is complete, then continues
 public development under dot's authority.
