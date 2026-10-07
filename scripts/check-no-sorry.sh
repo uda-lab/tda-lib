@@ -19,6 +19,13 @@
 # `set -euo pipefail`, so a scanner or portability failure aborts non-zero.
 set -euo pipefail
 
+if [ "$#" -gt 1 ] || { [ "$#" -eq 1 ] && [ "$1" != "--stable" ]; }; then
+  echo "usage: scripts/check-no-sorry.sh [--stable]" >&2
+  exit 64
+fi
+mode=sorry
+if [ "${1:-}" = "--stable" ]; then mode=stable; fi
+
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
@@ -40,12 +47,16 @@ fi
 
 # NUL-safe xargs batching keeps the scan under ARG_MAX regardless of tree size; a
 # failing awk in any batch makes the substitution non-zero under `pipefail`.
-violations="$(xargs -0 awk -v mode=sorry -f scripts/lean-code-scan.awk < "$list")"
+violations="$(xargs -0 awk -v mode="$mode" -f scripts/lean-code-scan.awk < "$list")"
 
 if [ -n "$violations" ]; then
   printf '%s\n' "$violations" >&2
-  echo "ERROR: unmarked 'sorry'/'admit' found above." >&2
+  echo "ERROR ($mode): disallowed 'sorry'/'admit' found above." >&2
+  if [ "$mode" = stable ]; then
+    echo "Stable releases require every staging hole to be discharged." >&2
+    exit 1
+  fi
   echo "Add '-- ALLOW_SORRY: #<issue> <reason>' on the same line (only for work an Issue explicitly authorises to land incomplete), or finish the proof." >&2
   exit 1
 fi
-echo "OK: no unmarked 'sorry'/'admit' in Lean sources."
+echo "OK ($mode): no disallowed 'sorry'/'admit' in Lean sources."

@@ -3,7 +3,7 @@ name: ci
 on:
   pull_request:
   push:
-    branches: [main]      # post-merge run; the main ruleset does not require PR branches to be up to date
+    branches: [develop, main]      # post-merge run; the develop/main rulesets does not require PR branches to be up to date
   workflow_dispatch:
 
 # Cancel superseded runs on the same ref.
@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Job name `check` is the required status-check context in the `main` ruleset. It always
+  # Job name `check` is the required status-check context in the develop/main rulesets. It always
   # reports; the expensive toolchain/build/audit steps run only when build-relevant files
   # changed (same conditional pattern as scripts/hooks/pre-push).
   check:
@@ -48,6 +48,7 @@ jobs:
              && ! grep -qE '\.lean$|^lakefile|^lean-toolchain$|^lake-manifest\.json$|^scripts/|^\.github/workflows/' "$list"; then
             build=false
           fi
+          if [ "$BASE_REF" = main ] || [ "${GITHUB_REF_NAME:-}" = main ]; then build=true; fi
           echo "build=$build" >> "$GITHUB_OUTPUT"
           echo "build-relevant changes: $build"; sed 's/^/  /' "$list"
 
@@ -55,9 +56,25 @@ jobs:
       - name: Transient-artefact guard
         run: bash scripts/check-transient-artifacts.sh
       - name: No unmarked sorry/admit
-        run: bash scripts/check-no-sorry.sh
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ "$BASE_REF" = main ] || [ "$REF_NAME" = main ]; then
+            bash scripts/check-no-sorry.sh --stable
+          else
+            bash scripts/check-no-sorry.sh
+          fi
       - name: No custom axiom/opaque/unsafe
-        run: bash scripts/check-no-custom-axiom.sh
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ "$BASE_REF" = main ] || [ "$REF_NAME" = main ]; then
+            bash scripts/check-no-custom-axiom.sh --stable
+          else
+            bash scripts/check-no-custom-axiom.sh
+          fi
       - name: Root aggregator imports-only
         run: bash scripts/check-root-aggregator.sh
       - name: Guard self-tests (lexer, Lean-build hook, codex-chain cleanup)
@@ -109,7 +126,11 @@ jobs:
       # Same gate as local: guards, no-op rebuild, live #print axioms audit.
       - name: Full gate (scripts/check.sh)
         if: steps.changes.outputs.build == 'true'
-        run: bash scripts/check.sh
+        env:
+          TDA_STABLE_RELEASE: ${{ github.base_ref == 'main' || github.ref_name == 'main' }}
+        run: |
+          if [ "$TDA_STABLE_RELEASE" = true ]; then export TDA_STABLE_RELEASE=1; fi
+          bash scripts/check.sh
 
       - name: Build skipped (no build-relevant changes)
         if: steps.changes.outputs.build != 'true'

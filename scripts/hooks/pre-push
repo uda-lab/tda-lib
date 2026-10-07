@@ -15,7 +15,10 @@ export PATH="$HOME/.elan/bin:$PATH"
 
 # Collect the pushed commits and the set of changed files from the refs git supplies
 # on stdin (format: <local-ref> <local-oid> <remote-ref> <remote-oid>).
-# Fallback to HEAD-vs-origin/main when stdin is empty (manual invocation).
+# Fallback to HEAD-vs-origin/develop when stdin is empty (manual invocation).
+integration=origin/develop
+# Bootstrap before develop exists still compares against the template main revision.
+if ! git rev-parse --verify "$integration" >/dev/null 2>&1; then integration=origin/main; fi
 z40="0000000000000000000000000000000000000000"
 changed=""
 oids=""
@@ -26,7 +29,7 @@ while read -r local_ref local_oid remote_ref remote_oid; do
   [ "$local_oid" = "$z40" ] && continue                     # deleting a ref — nothing to check
   oids+="$local_oid"$'\n'
   if [ "$remote_oid" = "$z40" ]; then                       # new remote branch
-    rbase="$(git merge-base "$local_oid" origin/main 2>/dev/null || true)"
+    rbase="$(git merge-base "$local_oid" "$integration" 2>/dev/null || true)"
   else
     rbase="$remote_oid"
   fi
@@ -38,7 +41,7 @@ while read -r local_ref local_oid remote_ref remote_oid; do
 done
 if [ "$had_input" = "0" ]; then
   oids="$(git rev-parse HEAD)"$'\n'
-  base="$(git merge-base HEAD origin/main 2>/dev/null || true)"
+  base="$(git merge-base HEAD "$integration" 2>/dev/null || true)"
   changed="$(git diff --name-only "${base:-HEAD}" HEAD 2>/dev/null || true)"
 fi
 

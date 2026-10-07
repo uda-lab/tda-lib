@@ -18,6 +18,12 @@
 # `set -euo pipefail`; a scanner failure aborts non-zero.
 set -euo pipefail
 
+if [ "$#" -gt 1 ] || { [ "$#" -eq 1 ] && [ "$1" != "--stable" ]; }; then
+  echo "usage: scripts/check-no-custom-axiom.sh [--stable]" >&2; exit 64
+fi
+mode=axiom
+if [ "${1:-}" = --stable ]; then mode=stable_axiom; fi
+
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
@@ -31,7 +37,7 @@ if [ ! -s "$list" ]; then
   exit 0
 fi
 
-violations="$(xargs -0 awk -v mode=axiom -f scripts/lean-code-scan.awk < "$list")"
+violations="$(xargs -0 awk -v mode="$mode" -f scripts/lean-code-scan.awk < "$list")"
 
 if [ -n "$violations" ]; then
   printf '%s\n' "$violations"

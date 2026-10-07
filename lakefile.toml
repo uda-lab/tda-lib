@@ -1,6 +1,6 @@
-name = "LeanScaffold"
+name = "TDA"
 version = "0.1.0"
-defaultTargets = ["LeanScaffold"]
+defaultTargets = ["TDA"]
 
 [leanOptions]
 autoImplicit = false   # an unbound variable must be an error, never a silent ∀
@@ -13,4 +13,4 @@ git = "https://github.com/leanprover-community/mathlib4.git"
 rev = "v4.33.1"
 
 [[lean_lib]]
-name = "LeanScaffold"
+name = "TDA"

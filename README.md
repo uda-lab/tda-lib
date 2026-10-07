@@ -1,69 +1,51 @@
-# lean-formalization-scaffold
+# tda-lib
 
-A **template repository** for Lean 4 + mathlib formalisation programmes that existing agent
-harnesses (Claude Code, Codex) can drive from one initial prompt to a finished, audited
-development. It ships the integrity gates, CI, hooks, Issue/PR contracts and orchestration
-skills that carried [`uda-lab/mobius-cpt`](https://github.com/uda-lab/mobius-cpt) from an
-empty repository to a published formalisation — and nothing that would need a bespoke
-orchestration runtime.
+A Lean 4 library foundation for topological data analysis, including persistent homology,
+mathematical theory and verified computational algorithms. Development is continuous;
+executability is required only where an individual algorithm contract calls for it.
 
-The orchestration guide is **`docs/orchestration.md`** (one page: roles, the two
-configurations, lifecycle, entry commands). The procedure is
-`.claude/skills/loop-orchestration-scaffold/SKILL.md`.
-
-## Quick start
-
-1. Create a repository from this template (`gh repo create <owner>/<name> --template
-   uda-lab/lean-formalization-scaffold --private`) and clone it.
-2. Open your harness in the clone (`claude` or `codex`). `AGENTS.md` / `CLAUDE.md` route the
-   session into preflight; it will not start mathematics.
-3. Paste the initial prompt — papers, target theorem, configuration, authority — following
-   `.claude/skills/loop-orchestration-scaffold/references/initial-prompt.md`.
-
-The session measures the machine, sets up GitHub, writes the charter Issue, renames the
-library, digests the sources, rewrites `AGENTS.md` and generates the repo-specific
-orchestration skill, then decomposes the target into Issues and runs the Issue → PR → review →
-merge loop until the charter's definition of done is met.
-
-## Layout
-
-| Path | Role |
-|---|---|
-| `LeanScaffold/`, `LeanScaffold.lean` | placeholder library and root aggregator (renamed by `scripts/rename-project.sh`) |
-| `scripts/` | preflight, bootstrap, the canonical gate `check.sh`, integrity guards, GitHub setup, git hooks |
-| `scripts/print_axioms.lean` | append-only list of pinned public theorems for the live axiom audit |
-| `.claude/skills/` | `loop-orchestration-scaffold` (init → submission, with templates), `lean-issue-decomposition`, `lean-review-routing` |
-| `.claude/hooks/`, `.claude/settings.json` | SessionStart brief; PreToolUse guard that serialises Lean builds and enforces the codex kill switch |
-| `.github/` | CI job `check`, Issue templates (formalization / infrastructure), PR template |
-| `docs/orchestration.md` | the minimal orchestration guide |
-| `docs/adr/` | founding decisions: harness-driven, no state machine (0001); autonomous merge authority (0002, owner ratifies) |
-| `docs/math/` | the mathematical source of truth, written during Init |
-| `docs/note/` | optional exposition note (opt-in lane; `scripts/check-note.sh` builds it once `note.conf` exists) |
+This repository currently supplies the development scaffold, integrity gates and release
+workflow. It contains **no TDA proofs or algorithms yet**. `TDA.placeholder_add_zero` is
+only an infrastructure smoke theorem exercising the axiom audit.
 
 ## Build
 
 ```sh
-scripts/bootstrap.sh   # once per clone: mathlib oleans via `lake exe cache get`, git hooks path
-scripts/check.sh       # guards → lake build → live #print axioms audit → coverage guard
+scripts/bootstrap.sh
+scripts/check.sh
 ```
 
-The toolchain is `lean-toolchain`; mathlib is pinned by tag in `lakefile.toml` and by commit
-in `lake-manifest.json`. CI runs the textual guards on every pull request and the full gate
-whenever Lean sources, build configuration, scripts or workflows change.
+Lean is pinned in `lean-toolchain`; mathlib is pinned in `lakefile.toml` and
+`lake-manifest.json`. TauCeti is a candidate foundation to research, not an installed
+dependency. Existing foundations are reused where appropriate; upstream acceptance is
+not a prerequisite for local completion.
 
-## Trust footprint
+## Layout
 
-Accepted theorems are `sorry`-free and their axiom closure is contained in
-`{propext, Classical.choice, Quot.sound}`; `scripts/check-axioms.sh` verifies this live for
-every declaration listed in `scripts/print_axioms.lean`, and
-`scripts/check_axiom_coverage.lean` fails the gate if a public theorem is not listed.
+| Path | Purpose |
+|---|---|
+| `TDA/`, `TDA.lean` | Library modules and imports-only aggregator |
+| `scripts/` | Bootstrap, full gate, integrity audits and GitHub setup |
+| `docs/math/` | Source references, mathematical definitions and conventions |
+| `docs/adr/` | Durable development decisions |
+| `.agents/skills/tda-lib-orchestration/` | Project entry policy for Codex |
+| `.github/` | CI and inherited Issue/PR templates |
 
-## Workflow
+## Development and releases
 
-GitHub Issues and pull requests are the only work queue and evidence record:
-Issue → branch → PR → independent review → CI → squash merge. No status, roadmap or progress
-files are tracked; agent scratch lives in `.claude/scratch/` (gitignored).
+GitHub Issues hold the roadmap and work queue, managed by the continuing agent dot.
+Regular reviewed PRs integrate into `develop`; sufficiently mature stable versions are
+promoted through reviewed PRs to `main` and tagged. `main` is the stable branch, not the
+routine integration target. See [the orchestration guide](docs/orchestration.md).
+
+Public theorem axiom closures are audited against
+`{propext, Classical.choice, Quot.sound}`. The coverage guard checks that public theorems
+are pinned and every library module is imported. Stable releases exclude staging holes
+and report precisely the results and limitations reviewed for that release.
+
+The repository remains private until roadmap preparation is complete, then continues
+public development under dot's authority.
 
 ## License
 
-Apache-2.0, see `LICENSE`. Replace the copyright line when instantiating the template.
+Apache-2.0; see [LICENSE](LICENSE).

@@ -1,7 +1,7 @@
 /-
 Live coverage guard for the axiom-pinning contract in `scripts/print_axioms.lean`.
 Walks the fully elaborated environment produced by `lake build` and fails unless every
-public `theorem` declared inside a `LeanScaffold…` module has a `#print axioms` line in
+public `theorem` declared inside a `TDA…` module has a `#print axioms` line in
 `scripts/print_axioms.lean` (the input consumed at run time by `scripts/check-axioms.sh`,
 the live trust-footprint audit).
 
@@ -10,7 +10,7 @@ Run via `lake env lean scripts/check_axiom_coverage.lean` from the repository ro
 after the live axiom audit, under the same `/tmp/lean-build.lock` as the rest of the
 gate — this walk costs roughly the same memory as that audit run).
 
-No Lean statement in `LeanScaffold/` is read or altered here; only `ConstantInfo`
+No Lean statement in `TDA/` is read or altered here; only `ConstantInfo`
 metadata already produced by `lake build` is inspected.
 
 "Public theorem" excludes exactly the following kinds — each a legitimate, non-claimed
@@ -36,27 +36,27 @@ and must be pinned; typeclass resolution at call sites never creates a new named
 declaration in this project's own modules, so there is no auto-derived category to skip.
 Iterate this list, not the caller, if a false positive or negative shows up.
 
-A prerequisite the whole walk depends on: `import LeanScaffold` must load every
-`LeanScaffold/**/*.lean` file, directly or transitively, or that file's declarations never
+A prerequisite the whole walk depends on: `import TDA` must load every
+`TDA/**/*.lean` file, directly or transitively, or that file's declarations never
 reach `(← getEnv).constants` and every check passes vacuously for its content. So this file
-also discovers every `.lean` file on disk under `LeanScaffold/` and fails if any of them is
-not among `env.header.moduleNames` — the set this run's `import LeanScaffold` actually
+also discovers every `.lean` file on disk under `TDA/` and fails if any of them is
+not among `env.header.moduleNames` — the set this run's `import TDA` actually
 loaded, not a static read of the root aggregator's import list (so a file reachable only
 from a forgotten nested aggregator is caught too).
 
-`scripts/rename-project.sh` rewrites every `LeanScaffold` occurrence in this file.
+`scripts/rename-project.sh` rewrites every `TDA` occurrence in this file.
 -/
-import LeanScaffold
+import TDA
 
 open Lean System
 
-/-- `n` was declared in a module named `LeanScaffold`, or a submodule of it
-(`LeanScaffold.Foo.Bar`, the root aggregator `LeanScaffold`, etc). -/
+/-- `n` was declared in a module named `TDA`, or a submodule of it
+(`TDA.Foo.Bar`, the root aggregator `TDA`, etc). -/
 private def isProjectModule (env : Environment) (n : Name) : Bool :=
   match env.getModuleIdxFor? n with
   | some idx =>
     match env.header.moduleNames[idx.toNat]? with
-    | some modName => (`LeanScaffold).isPrefixOf modName
+    | some modName => (`TDA).isPrefixOf modName
     | none => false
   | none => false
 
@@ -83,19 +83,19 @@ private partial def collectLeanFiles (dir : System.FilePath) : IO (Array System.
       result := result.push p
   return result
 
-/-- `LeanScaffold/Foo/Bar.lean` -> `"LeanScaffold.Foo.Bar"`, the same string
+/-- `TDA/Foo/Bar.lean` -> `"TDA.Foo.Bar"`, the same string
 `Name.toString` produces for the module Lean loads from that file. -/
 private def moduleStringOfPath (path : System.FilePath) : String :=
   match path.components.reverse with
   | [] => ""
   | last :: rest => String.intercalate "." (rest.reverse ++ [(last.dropSuffix ".lean").toString])
 
-/-- Every `.lean` file under `LeanScaffold/` whose module is not among `loadedModules` — i.e. a
-file `import LeanScaffold` never reached, directly or transitively, so its declarations are
+/-- Every `.lean` file under `TDA/` whose module is not among `loadedModules` — i.e. a
+file `import TDA` never reached, directly or transitively, so its declarations are
 invisible to every check above. -/
 private def findUnloadedFiles (loadedModules : Std.HashSet String) :
     IO (Array System.FilePath) := do
-  let files ← collectLeanFiles "LeanScaffold"
+  let files ← collectLeanFiles "TDA"
   return files.filter fun f => !loadedModules.contains (moduleStringOfPath f)
 
 /-- The declaration names pinned by `#print axioms <name>` lines in `path`, under the exact
@@ -131,7 +131,7 @@ private def readPinnedNames (path : System.FilePath) : IO (Std.HashSet String) :
       unless pinned.contains name do
         missing := missing.push name
   for f in unloaded do
-    IO.println s!"UNLOADED: {f} (module {moduleStringOfPath f} is not reachable from 'import LeanScaffold' — its declarations were never checked)"
+    IO.println s!"UNLOADED: {f} (module {moduleStringOfPath f} is not reachable from 'import TDA' — its declarations were never checked)"
   for name in missing.qsort (· < ·) do
     IO.println s!"MISSING: {name}"
   if unloaded.isEmpty && missing.isEmpty then
@@ -141,4 +141,4 @@ private def readPinnedNames (path : System.FilePath) : IO (Std.HashSet String) :
     -- discards the `MISSING:`/`UNLOADED:` lines printed above when stdout is not a terminal.
     -- `throwError` reports through Lean's own elaboration-error channel, which both prints
     -- reliably and gives the wrapper a nonzero exit code.
-    throwError s!"{unloaded.size} LeanScaffold file(s) not reachable from 'import LeanScaffold' and {missing.size} public theorem(s) not pinned in scripts/print_axioms.lean (see lines above)"
+    throwError s!"{unloaded.size} TDA file(s) not reachable from 'import TDA' and {missing.size} public theorem(s) not pinned in scripts/print_axioms.lean (see lines above)"
