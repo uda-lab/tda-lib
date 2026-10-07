@@ -35,7 +35,7 @@ echo "==> lake env lean $SCRIPT"
 # Capture with errexit disabled so a failing lean run is diagnosed loudly instead of
 # aborting before its output is shown.
 set +e
-OUTPUT="$(lake env lean "$SCRIPT" 2>&1)"
+OUTPUT="$("$ROOT/scripts/lean.sh" lake env lean "$SCRIPT" 2>&1)"
 STATUS=$?
 set -e
 printf '%s\n' "$OUTPUT"

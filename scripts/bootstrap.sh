@@ -19,6 +19,6 @@ git config core.hooksPath scripts/hooks
 echo "==> git hooks path: scripts/hooks"
 
 echo "==> lake exe cache get"
-lake exe cache get
+"$ROOT/scripts/lean.sh" lake exe cache get
 
 echo "BOOTSTRAP OK — next: scripts/check.sh"

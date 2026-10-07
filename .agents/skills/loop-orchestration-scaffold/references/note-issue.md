@@ -18,7 +18,7 @@ Open questions: <consequential choices still unresolved, or "none">
 
 ## Reported revision
 Formalisation revision the note reports: <main SHA or tag>. Source fidelity: <inherited from the
-charter; provisional if the judgement it reports is>.
+governing Issue; provisional if the judgement it reports is>.
 
 ## Scope
 Edits: `docs/note/` (sources, `note.conf`, figures, bibliography)<, plus named peripheral edits

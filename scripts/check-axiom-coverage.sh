@@ -23,4 +23,4 @@ if ! command -v lake >/dev/null 2>&1; then
 fi
 
 echo "==> lake env lean $SCRIPT"
-lake env lean "$SCRIPT"
+"$ROOT/scripts/lean.sh" lake env lean "$SCRIPT"

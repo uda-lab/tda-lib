@@ -13,13 +13,19 @@
 #     `flock` on that same open file description is a no-op when an ancestor holds it, and
 #     acquires or waits otherwise. A descriptor that merely *points* at the lock file without
 #     holding the lock buys nothing.
-#   - on systems without /proc (macOS) the descriptor's target cannot be verified, so an
-#     unrelated inherited fd 9 would be locked instead; Linux containers are the target.
+#   - portable hosts verify descriptor identity using Perl stat.
 LEAN_BUILD_LOCK=/tmp/lean-build.lock
 
-if [ -e /dev/fd/9 ] && { [ ! -d /proc/self/fd ] || [ "$(readlink /proc/self/fd/9 2>/dev/null)" = "$LEAN_BUILD_LOCK" ]; }; then
-  :   # inherited descriptor on the lock file: lock below is idempotent for the holder
-else
+# Verify inherited descriptor identity on Linux and portable Perl hosts.
+lock_inherited=0
+if [ -e /dev/fd/9 ]; then
+  if [ -d /proc/self/fd ]; then
+    [ "$(readlink /proc/self/fd/9 2>/dev/null)" = "$LEAN_BUILD_LOCK" ] && lock_inherited=1
+  elif command -v perl >/dev/null 2>&1; then
+    if perl -e 'open(my $fh, ">>&=", 9) or exit 1; my @a=stat($fh); my @b=stat($ARGV[0]); exit(!(@a && @b && $a[0]==$b[0] && $a[1]==$b[1]));' "$LEAN_BUILD_LOCK"; then lock_inherited=1; fi
+  fi
+fi
+if [ "$lock_inherited" = 0 ]; then
   exec 9>>"$LEAN_BUILD_LOCK" || { echo "ERROR: cannot open $LEAN_BUILD_LOCK" >&2; exit 1; }
 fi
 

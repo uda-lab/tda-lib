@@ -28,22 +28,26 @@ Frame it as **numbered, falsifiable risks**, never "review this" (a generic prom
 Give every reviewer and judge the same governing specification as the implementer: the Issue
 body and its authorised decision comments (quoted or linked), not a summary.
 
-Put `git diff main...HEAD` inside the prompt file (statements only, and say so, if the diff
+Put `git diff develop...HEAD` inside the prompt file (statements only, and say so, if the diff
 exceeds the argument limit) and state what the gate already verified so the pass is not spent
 re-running it. Read the result in the same turn.
 
-Routes: codex plugin `adversarial-review --base main --scope branch "<risks>"` (Claude
-configuration A); a fresh read-only `codex exec` with the risk prompt on stdin (Codex only):
-`codex exec -C <worktree> --sandbox read-only -m <reasoning model> -c model_reasoning_effort='"high"' - < <worktree>/.claude/scratch/local-review-issue-<n>.md`
-(`codex review` has no `-m` flag and rejects a prompt together with `--base`, and its default
-sandbox is `workspace-write`); a read-only subagent of a different model than the
-implementer (reasoning tier preferred) otherwise. Record which route ran in the PR body.
+Use a fresh read-only reviewer session or subagent distinct from the implementer. A child
+Codex route uses the shared launcher, with a distinct owned job identity:
+
+```sh
+LOOP_JOB_ID=tda-lib/issue-<n>/review scripts/codex.sh exec -C <worktree> --sandbox read-only -m <available-model> - < .agents/scratch/local-review-issue-<n>.md
+```
+
+Resolve model and effort using dot's runtime. Claude Code may use its available read-only
+reviewer facility under the same identity and evidence contract. No plugin is required.
+Record the route, reviewer identity and reviewed head in the PR evidence.
 
 ## PR review (evidence for `github-driven-workflow` §8)
 
 - **Broker route** (when `REVIEW_ACQUIRE_SCRIPT` is set): `python3 "$REVIEW_ACQUIRE_SCRIPT"
   <owner>/<repo> <PR> <kind>` verbatim — never copy, relocate, unset or self-point it. Kind
-  order from the container contract (`codex` is the default; `copilot` while its allowance
+  order from dot’s available review configuration (`codex` is the default; `copilot` while its allowance
   lasts). A cooldown between requests on one PR is not an error. A
   `chatgpt-codex-connector[bot]` reply telling you to create a Codex account is a canned
   response to an unauthorised mention, not a failure: keep waiting for the real review.
@@ -64,7 +68,7 @@ run the read-only `codex exec` (or subagent) review on the PR head and post it a
 
 ## Observation, disposition and merge
 
-One policy for the driver and the orchestrator; Phase 5, the orchestrator tick and the dispatch
+One policy for the driver and the orchestrator; The continuing loop, the orchestrator tick and the dispatch
 prompt refer here.
 
 ```markdown
@@ -80,7 +84,7 @@ checkpoint. Pause only actions dependent on an actual blocking condition.
 - Owner comments and correction pushes are ordinary input: integrate, validate and review them
   like any other change. An addressed ordinary change request proceeds under the existing
   merge authority without a new owner verdict.
-- A reservation — stated in the governing Issue, charter or initial prompt, or a clear owner
+- A reservation — stated in the governing Issue or explicit instruction, or a clear owner
   statement on the Issue or PR such as "review still underway" or "wait for my decision on X",
   no keyword required — holds until an authorised amendment removes or satisfies it. Owner
   activity alone is not a reservation. A correction push, a report, or a request for re-review does not satisfy it.
@@ -117,7 +121,7 @@ follow-up Issue.
 ## Judge records
 
 A judge's verdict is an ordinary review record under the reviewer-identity contract above (a
-`Reviewed-by:` comment on the PR, or a comment on the Issue or charter it judges) — no second
+`Reviewed-by:` comment on the PR, or a comment on the Issue it judges) — no second
 `Judged-by` format, no duplicate judge and review posts, no separate status ledger, and no
 per-theorem table required for formatting. It states the reviewed
 revision (commit SHA) and the comparison mode actually used: `source-based` (the primary source
@@ -125,9 +129,9 @@ was read) or `digest-based` (compared against something other than the primary s
 `docs/math/` digest, a secondary source or the owner's brief — named in the record). These are
 the only two modes; partial coverage is a qualifier stated with either. Its
 body or links identify the target, the source or digest compared, and the verdict. The mode
-describes the evidence; it does not waive a source comparison the Issue or charter requires.
+describes the evidence; it does not waive a source comparison the Issue requires.
 A `digest-based` verdict never closes a required primary-source comparison: that stays
-tracked as outstanding work (Phase 6 of `loop-orchestration-scaffold`).
+tracked as outstanding work (the source-fidelity policy of `loop-orchestration-scaffold`).
 
 ## Statement-changing PRs
 
@@ -161,7 +165,7 @@ Two separate questions, answered in the review record:
   not evidence that it follows from the others. Claim strictness only where it is established.
   A changed assumed interface or structure field is checked for its actual consequences, not
   treated as a proved strengthening.
-- **Contract.** What does the charter or Issue require: a proof of the source result, the
+- **Contract.** What does the governing Issue require: a proof of the source result, the
   source-form statement, or a frozen public name and type? A stronger supporting theorem may
   coexist with the required public result. If the contract requires the source statement,
   supply its checked specialisation; if it also freezes the name and type, keep that entry

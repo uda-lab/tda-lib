@@ -1,7 +1,5 @@
 # 0002 — Autonomous merge authority on verified gates
 
-
-
 ## Context
 
 The flow is Issue → branch → PR → independent review → CI job `check` → squash merge, with no
@@ -31,8 +29,8 @@ The driver merges its own PR; the orchestrator merges only when the driver canno
 driver, or the merge command refused by session tooling). The merge command is the single
 `gh pr merge <n> --squash --match-head-commit <evaluated head>` — no chaining, because
 compound forms are what permission classifiers reject; the head binding makes a push after
-the gate evaluation fail the merge instead of merging unreviewed content. Owners who want the classifier out of the way add
-`"permissions": {"allow": ["Bash(gh pr merge:*)"]}` to `.claude/settings.local.json`.
+the gate evaluation fail the merge instead of merging unreviewed content. Runtime-specific permission configuration is external to this repository; authorization
+does not bypass branch protection, review or integrity checks.
 
 ## Consequences
 
