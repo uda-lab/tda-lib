@@ -78,7 +78,7 @@ jobs:
       - name: Root aggregator imports-only
         run: bash scripts/check-root-aggregator.sh
       - name: Guard self-tests (lexer, Lean-build hook, codex-chain cleanup)
-        run: bash scripts/test-guards.sh && bash .claude/hooks/test-lean-guard.sh && bash .claude/hooks/test-codex-chains.sh
+        run: bash scripts/test-guards.sh && bash scripts/agent/test-lean-guard.sh && bash scripts/agent/test-codex-chains.sh && bash scripts/agent/test-wrappers.sh && bash scripts/agent/test-layout.sh
 
       # Exposition note (opt-in lane): inactive until docs/note/note.conf exists. When it does,
       # install the TeX packages it names, build and check it, and keep the PDF as the run's
@@ -117,11 +117,15 @@ jobs:
         uses: leanprover/lean-action@v1
         with:
           auto-config: false
-          build: true
+          build: false
           test: false
           lint: false
-          use-mathlib-cache: true
+          use-mathlib-cache: false
           use-github-cache: false   # .lake of a mathlib project is multi-GB; the mathlib cache is the fast path
+
+      - name: Bootstrap with resource guard
+        if: steps.changes.outputs.build == 'true'
+        run: bash scripts/bootstrap.sh
 
       # Same gate as local: guards, no-op rebuild, live #print axioms audit.
       - name: Full gate (scripts/check.sh)

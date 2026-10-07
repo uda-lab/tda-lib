@@ -10,9 +10,17 @@
 ## Commands
 ```sh
 scripts/bootstrap.sh   # cached mathlib + git hooks; never cold-build mathlib
-scripts/check.sh       # guards, build, live axiom audit and coverage
+scripts/check.sh       # guarded build, live axiom audit and coverage
+scripts/lean.sh lake <args> # mandatory for direct Lean/Lake commands
+scripts/lean.sh lean <args> # mandatory for direct Lean invocation
+LOOP_JOB_ID=tda-lib/issue-N/role scripts/codex.sh <args> # child Codex
 scripts/github-setup.sh # labels, squash settings, develop/main rulesets
 ```
+
+Shared runtime safeguards live in `scripts/agent/`. Honor `/tmp/codex-stop`; keep
+`LEAN_NUM_THREADS=1` unless the runtime explicitly configures another safe value. Codex
+commands must use these entry points regardless of hook activation. Codex and Claude have
+optional supported Bash adapters; their activation depends on harness support and trust. See `docs/orchestration.md`.
 
 ## Code Conventions
 - No unmarked `sorry`/`admit` or custom axioms; Issue-authorized private staging holes on develop obey inherited guards and cannot enter pinned theorem closures or stable releases.

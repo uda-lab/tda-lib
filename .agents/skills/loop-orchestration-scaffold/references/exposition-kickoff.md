@@ -1,7 +1,6 @@
 # Exposition kickoff
 
-Runs once per exposition request, before any drafting: from the initial prompt's `Exposition`
-field, or from a later explicit writing request. Its output is the agreed brief in the note
+Runs once per exposition request, before any drafting: from an explicit writing request. Its output is the agreed brief in the note
 Issue (`references/note-issue.md`); nothing else is recorded.
 
 ```markdown
@@ -18,7 +17,7 @@ and proof depth, the notation source, authorship, source availability, and the d
 and authority. Authorship and bibliographic facts come from the sources (`bib-integrity`,
 `sot-integrity` when present) — a handle does not establish authorship, and a directly
 verifiable fact is not an owner question. Source availability and provisional status follow
-Phase 0 of the skill (unavailable-source fallback) and Phase 6's outcome definitions.
+the loop skill’s source-fidelity and release policy.
 
 Separate the readers' mathematical background, their familiarity with the method (for
 example, no Lean), and what they asked to learn (for example, what formalisation found). An

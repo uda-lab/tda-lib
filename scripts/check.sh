@@ -40,7 +40,7 @@ step "root aggregator imports-only";   bash scripts/check-root-aggregator.sh
 # shellcheck disable=SC2046
 unset $(git rev-parse --local-env-vars)
 
-step "lake build";                     lake build
+step "lake build";                     "$ROOT/scripts/lean.sh" lake build
 step "live axiom audit";               bash scripts/check-axioms.sh
 step "axiom coverage";                 bash scripts/check-axiom-coverage.sh
 echo "CHECK OK"

@@ -32,12 +32,12 @@ cd "$ROOT"
 # Enumerate Lean sources fail-closed: `find` writes to a temp file and its exit
 # status is checked BEFORE the list is consumed (a bare process substitution would
 # swallow traversal errors and let a partial scan report OK). `.git`/`.lake` are
-# pruned by basename at any depth; agent worktrees under .claude/worktrees/ are
-# scanned by their own CI; .claude/scratch/ is the designated (gitignored) home of
+# pruned by basename at any depth; agent worktrees under .agents/worktrees/ (or legacy .claude/worktrees/) are
+# scanned by their own CI; .agents/scratch/ is the designated (gitignored) home of
 # proof experiments and is never a source.
 list="$(mktemp)"
 trap 'rm -f "$list"' EXIT
-find . \( -name '.git' -o -name '.lake' -o -path './.claude/worktrees' -o -path './.claude/scratch' \) -prune \
+find . \( -name '.git' -o -name '.lake' -o -path './.agents/worktrees' -o -path './.agents/scratch' -o -path './.claude/worktrees' -o -path './.claude/scratch' \) -prune \
      -o -type f -name '*.lean' -print0 > "$list"
 
 if [ ! -s "$list" ]; then
