@@ -92,7 +92,8 @@ checkpoint. Pause only actions dependent on an actual blocking condition.
 - Record dispositions where the feedback lives: a thread reply, a linked fix or one grouped PR
   comment. No separate ledger. Explain a non-action only when it affects acceptance.
 - Do not require `reviewDecision == APPROVED` and do not treat an absent optional signal as a
-  blocker. Merge with `gh pr merge <N> --squash --match-head-commit <evaluated head>` (ADR 0002)
+  blocker. Merge with `gh pr merge <N> --squash --match-head-commit <evaluated head>` for develop,
+  or `--merge` instead of `--squash` for stable main promotions (ADR 0002)
   after refreshing the head and the latest interventions.
 
 ## Classification after every round

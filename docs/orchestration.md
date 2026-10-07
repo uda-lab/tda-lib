@@ -25,12 +25,14 @@ A stable promotion identifies its exact develop revision and included results on
 and PR, excludes staging holes, runs the full gate and obtains independent mathematical
 review as appropriate. Promote that revision through a PR to main; audit the merged main
 revision and tag it with release notes describing results, compatibility and limitations.
-The initial infrastructure PR establishes this policy; it is not a mathematical release.
+Infrastructure-only releases make no mathematical-result claims.
 
-Do not delete `develop` after a promotion; the setup disables automatic branch deletion.
-For squash promotions, reconcile develop with the resulting main commit through a reviewed
-synchronization PR before later promotions, so release history and subsequent diffs remain
-understandable. dot determines release cadence and version numbers from maturity and API changes.
+Ordinary develop PRs use squash merges. Stable main promotions use merge commits, preserving
+the exact released develop head as a parent. The merged main tree must equal the reviewed
+release tree before tagging. This ancestry keeps later promotion diffs limited to new work;
+no synchronization PR is needed when release trees match. Resolve and review any actual
+main/develop content divergence before promotion. Keep develop after each release.
+dot determines release cadence and version numbers from maturity and API changes.
 
 ## Evidence and foundations
 
