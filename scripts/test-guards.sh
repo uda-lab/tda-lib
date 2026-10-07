@@ -145,6 +145,20 @@ def «say "hi"» : Nat := 0
 axiom «c--» : False
 EOF
 
+# Stable releases reject Issue-authorized holes too; comments remain harmless.
+for fixture in marked_sorry plain_sorry; do
+  hits="$(awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
+  if [ "$hits" -ne 1 ]; then echo "FAIL [stable:$fixture]: expected one hole"; fail=1; fi
+done
+for fixture in sorry_in_comments sorry_in_string; do
+  hits="$(awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
+  if [ "$hits" -ne 0 ]; then echo "FAIL [stable:$fixture]: comment/string counted"; fail=1; fi
+done
+
+printf 'private axiom staging : True -- ALLOW_AXIOM: #1 staging\n' > "$tmp/stable-axiom.lean"
+hits="$(awk -v mode=stable_axiom -f scripts/lean-code-scan.awk "$tmp/stable-axiom.lean" | wc -l)"
+if [ "$hits" -ne 1 ]; then echo "FAIL [stable:marked_axiom]: expected one declaration"; fail=1; fi
+
 if [ "$fail" -eq 0 ]; then echo "guard lexer self-test OK ($n cases)"; else exit 1; fi
 
 # --- root-aggregator guard (scripts/check-root-aggregator.sh) ------------------------------
@@ -170,12 +184,12 @@ root_case valid_aggregator 0 <<'EOF'
 Module docs may mention `theorem foo : True := trivial` and
 /- a nested -/ block comment. -/
 import Mathlib.Data.Real.Basic
-import LeanScaffold.Basic  -- trailing comment
+import TDA.Basic  -- trailing comment
 
 EOF
 root_case module_header_public_import 0 <<'EOF'
 module
-public import LeanScaffold.Basic
+public import TDA.Basic
 EOF
 root_case unicode_and_escaped_module_names 0 <<'EOF'
 import Foo.Δ
@@ -183,7 +197,7 @@ import Foo.«match».Bar
 import h'.x?
 EOF
 root_case command_after_import_same_line 1 <<'EOF'
-import LeanScaffold.Basic open Nat
+import TDA.Basic open Nat
 EOF
 root_case unlisted_command_after_import 1 <<'EOF'
 import Lean declare_syntax_cat sneaky
@@ -205,25 +219,25 @@ root_case two_modules_one_import 1 <<'EOF'
 import A.B C.D
 EOF
 root_case introduced_proof 1 <<'EOF'
-import LeanScaffold.Basic
+import TDA.Basic
 theorem extra : True := trivial
 EOF
 root_case introduced_definition 1 <<'EOF'
-import LeanScaffold.Basic
+import TDA.Basic
 /-- a docstring does not excuse the definition -/
 def helper : Nat := 0
 EOF
 root_case introduced_namespace_or_option 1 <<'EOF'
-import LeanScaffold.Basic
+import TDA.Basic
 set_option autoImplicit true
 EOF
 root_case code_after_block_comment_close 1 <<'EOF'
-import LeanScaffold.Basic
+import TDA.Basic
 /- looks like a comment
 -/ lemma hidden : True := trivial
 EOF
 root_case continuation_line_proof 1 <<'EOF'
-import LeanScaffold.Basic
+import TDA.Basic
 example : True :=
   trivial
 EOF
@@ -253,7 +267,12 @@ for key in 'roots' '"roots"' "'roots'" '"roots"'; do
     echo "FAIL [root:roots $key]: declared root Other/Top.lean not scanned"; rfail=1; fi
 done
 d="$tmp/root-srcdir"; rn=$((rn + 1)); fixture "$d"; printf 'import %s.Basic\n' "$root_lib" > "$d/$root_lib.lean"
-sed -i '1i srcDir = "src"' "$d/lakefile.toml"; mkdir -p "$d/src"; printf 'import A\ndef x := 0\n' > "$d/src/$root_lib.lean"
+python3 - "$d/lakefile.toml" <<'PY_FIXTURE'
+import pathlib, sys
+p = pathlib.Path(sys.argv[1])
+p.write_text('srcDir = "src"\n' + p.read_text())
+PY_FIXTURE
+mkdir -p "$d/src"; printf 'import A\ndef x := 0\n' > "$d/src/$root_lib.lean"
 out="$(bash "$d/scripts/check-root-aggregator.sh" 2>&1 || true)"
 if [[ "$out" != *"src/$root_lib.lean is the root aggregator"* ]]; then
   echo "FAIL [root:srcDir]: src/$root_lib.lean not scanned"; rfail=1; fi
@@ -263,7 +282,11 @@ if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then echo "FAIL [
 # TOML-permitted header spellings still locate the library (and so still scan its root).
 for hdr in '[[lean_lib]] # primary library' '[[ lean_lib ]]' '[["lean_lib"]]'; do
   d="$tmp/root-header-$rn"; rn=$((rn + 1)); fixture "$d"; printf 'import %s.Basic\ndef x := 0\n' "$root_lib" > "$d/$root_lib.lean"
-  sed -i "s/^\[\[lean_lib\]\]\$/$hdr/" "$d/lakefile.toml"
+  python3 - "$d/lakefile.toml" "$hdr" <<'PY_FIXTURE'
+import pathlib, sys
+p = pathlib.Path(sys.argv[1])
+p.write_text(p.read_text().replace('[[lean_lib]]', sys.argv[2]))
+PY_FIXTURE
   out="$(bash "$d/scripts/check-root-aggregator.sh" 2>&1 || true)"
   if ! grep -qF "$hdr" "$d/lakefile.toml" || [[ "$out" != *'is the root aggregator'* ]]; then
     echo "FAIL [root:header '$hdr']: library not found or root content not rejected"; rfail=1

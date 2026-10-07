@@ -108,7 +108,7 @@ check 2 'bash scripts/hooks/pre-push'
 check 2 'flock /tmp/lean-build.lock lake build'
 check 0 'git status'
 export LEAN_GUARD_MIN_AVAIL_MIB=0
-check 2 'lean LeanScaffold/Basic.lean'
+check 2 'lean TDA/Basic.lean'
 check 2 'lake env lean scripts/print_axioms.lean'
 check 2 'LEAN_NUM_THREADS=2 timeout 600 nice lake build'
 check 2 'flock /tmp/lean-build.lock lake build -j 4'

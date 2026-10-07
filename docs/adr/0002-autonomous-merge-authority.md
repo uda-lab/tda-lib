@@ -1,19 +1,21 @@
 # 0002 — Autonomous merge authority on verified gates
 
-<!-- TEMPLATE. The Init phase keeps this ADR only if the initial prompt or a charter-Issue
-comment from the owner grants the mandate below; otherwise it files a `needs-decision` Issue
-quoting this text and leaves the loop stopped at "PR open, review complete". -->
+
 
 ## Context
 
 The flow is Issue → branch → PR → independent review → CI job `check` → squash merge, with no
-direct pushes to `main`. Without explicit merge authority a fully autonomous loop stalls at
+direct pushes to `develop` or `main`. Without explicit merge authority a fully autonomous loop stalls at
 "PR open" after every Issue, and a merge-ready PR left idle was the primary failure mode
 observed on the source projects. Session tooling (permission classifiers) has also refused a
 driver's `gh pr merge` while allowing the identical command earlier, so the authority must be
 held by more than one tier.
 
 ## Decision
+
+The owner delegates roadmap, mathematical decisions, queue authorization and continuing
+Codex development to dot, with no project budget cap. Regular PRs target develop; stable
+promotions target main and receive release tags.
 
 The owner grants both the per-Issue driver and the orchestrator permanent, pre-authorised
 authority to squash-merge a PR whose gates are verified:

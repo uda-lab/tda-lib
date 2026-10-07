@@ -91,11 +91,11 @@ FNR == 1 { depth = 0; inStr = 0; rawHashes = -1; interp = 0; hole = 0; holeStr =
     }
     code = code c; i++
   }
-  if (mode == "sorry") {
-    if (code ~ /(^|[^A-Za-z0-9_])(sorry|admit)([^A-Za-z0-9_]|$)/ && trailing !~ /ALLOW_SORRY: .*#[0-9]+/)
+  if ((mode == "sorry" || mode == "stable")) {
+    if (code ~ /(^|[^A-Za-z0-9_])(sorry|admit)([^A-Za-z0-9_]|$)/ && (mode == "stable" || trailing !~ /ALLOW_SORRY: .*#[0-9]+/))
       printf "%s:%d:%s\n", FILENAME, FNR, line
-  } else if (mode == "axiom") {
-    if (code ~ /^[[:space:]]*(@\[[^]]*\][[:space:]]*)*((private|protected|noncomputable|scoped|local)[[:space:]]+)*(axiom|constant|opaque|unsafe)([[:space:]]|$)/ && trailing !~ /ALLOW_AXIOM: .*#[0-9]+/)
+  } else if ((mode == "axiom" || mode == "stable_axiom")) {
+    if (code ~ /^[[:space:]]*(@\[[^]]*\][[:space:]]*)*((private|protected|noncomputable|scoped|local)[[:space:]]+)*(axiom|constant|opaque|unsafe)([[:space:]]|$)/ && (mode == "stable_axiom" || trailing !~ /ALLOW_AXIOM: .*#[0-9]+/))
       printf "%s:%d:%s\n", FILENAME, FNR, line
   } else if (mode == "root") {
     if (!rootLineOk(code)) printf "%s:%d:%s\n", FILENAME, FNR, line

@@ -18,8 +18,19 @@ export PATH="$HOME/.elan/bin:$PATH"
 
 step() { echo "==> $*"; }
 
-step "no unmarked sorry/admit";        bash scripts/check-no-sorry.sh
-step "no custom axiom/opaque/unsafe";  bash scripts/check-no-custom-axiom.sh
+if [ "$#" -gt 1 ] || { [ "$#" -eq 1 ] && [ "$1" != "--stable" ]; }; then
+  echo "usage: scripts/check.sh [--stable]" >&2; exit 64
+fi
+stable=0
+if [ "${1:-}" = --stable ] || [ "${TDA_STABLE_RELEASE:-0}" = 1 ] || [ "$(git branch --show-current)" = main ]; then stable=1; fi
+step "sorry/admit and custom axiom policy"
+if [ "$stable" = 1 ]; then
+  bash scripts/check-no-sorry.sh --stable
+  bash scripts/check-no-custom-axiom.sh --stable
+else
+  bash scripts/check-no-sorry.sh
+  bash scripts/check-no-custom-axiom.sh
+fi
 step "no transient artefacts tracked"; bash scripts/check-transient-artifacts.sh
 step "root aggregator imports-only";   bash scripts/check-root-aggregator.sh
 

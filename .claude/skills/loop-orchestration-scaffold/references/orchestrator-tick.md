@@ -1,4 +1,4 @@
-Orchestrator tick for this repository. Load `.claude/skills/<project>-orchestration/SKILL.md`,
+Orchestrator tick for this repository. Load `.claude/skills/tda-lib-orchestration/SKILL.md`,
 `loop-orchestration-scaffold`, `github-loop-engineering`. Do exactly one Observe → Select →
 Act cycle from current GitHub state; do not implement anything yourself.
 
@@ -17,7 +17,7 @@ Act cycle from current GitHub state; do not implement anything yourself.
 4. If nothing is executable: report why in the no-fake-blocker structure and stop. Do not
    manufacture work; do not poll. The report is the tick's output, not a notification: send
    nothing to the owner unless the notification rule allows it.
-5. Update the container contract if a measured fact changed (through a PR, not scratch).
+5. Update durable project policy when needed (through a PR); runtime measurements belong to dot.
 6. Codex chains of this repository's finished jobs are reaped by the SessionStart hook; for a
    driver known to be gone, `. .claude/hooks/codex-chains.sh; reap_codex_chains '<its LOOP_JOB_ID>'`
    (run without `LOOP_JOB_ID` set; never by path).

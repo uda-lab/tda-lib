@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Thin wrapper around scripts/check_axiom_coverage.lean, the axiom-pinning coverage guard:
-# every public theorem declared inside a LeanScaffold module must have a `#print axioms` line
+# every public theorem declared inside a TDA module must have a `#print axioms` line
 # in scripts/print_axioms.lean (the append-only input to the live axiom audit run by
 # scripts/check-axioms.sh). scripts/check.sh runs this immediately after that audit, under
 # the same /tmp/lean-build.lock as the rest of the gate.

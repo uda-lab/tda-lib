@@ -18,6 +18,11 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+if [ "$#" -ne 1 ]; then
+  echo "usage: scripts/rename-project.sh <NewName>" >&2
+  exit 64
+fi
+
 NEW="${1:?usage: scripts/rename-project.sh <NewName>  (a Lean module identifier, e.g. MobiusCPT)}"
 OLD="$(sed -n 's/^name = "\(.*\)"$/\1/p' lakefile.toml | head -1)"
 
@@ -45,12 +50,36 @@ git mv "$OLD" "$NEW" 2>/dev/null || mv "$OLD" "$NEW"
 # 2. Rewrite the whole-word occurrences in every tracked text file that carries the name.
 #    Whole-word: `LeanScaffold` but not `LeanScaffoldX`. The build directory is untracked.
 #    The three sentinel files (see the header) keep the template literal.
-files="$(grep -rlI --exclude-dir=.lake --exclude-dir=.git --exclude-dir=sources \
-  --exclude=preflight.sh --exclude=session-brief.sh --exclude=rename-project.sh -w "$OLD" . || true)"
-for f in $files; do
-  sed -i "s/\b$OLD\b/$NEW/g" "$f"
-done
+python3 - "$OLD" "$NEW" <<'PY_RENAME'
+import pathlib
+import re
+import subprocess
+import sys
+
+old, new = sys.argv[1:]
+excluded = {"scripts/preflight.sh", ".claude/hooks/session-brief.sh", "scripts/rename-project.sh"}
+pattern = re.compile(r"(?<![A-Za-z0-9_])" + re.escape(old) + r"(?![A-Za-z0-9_])")
+try:
+    paths = subprocess.check_output(["git", "ls-files", "-z"], stderr=subprocess.DEVNULL).split(b"\0")
+except subprocess.CalledProcessError:
+    # The self-test fixtures have no Git repository; never walk build/cache trees.
+    paths = [str(p).encode() for p in pathlib.Path(".").rglob("*")
+             if not {".git", ".lake", "sources"}.intersection(p.parts)]
+for raw in paths:
+    if not raw:
+        continue
+    path = pathlib.Path(raw.decode())
+    if str(path) in excluded or path.is_symlink() or not path.is_file():
+        continue
+    try:
+        original = path.read_text()
+    except UnicodeDecodeError:
+        continue
+    updated = pattern.sub(new, original)
+    if updated != original:
+        path.write_text(updated)
+PY_RENAME
 
 rm -rf .lake/build
-echo "renamed $OLD -> $NEW in: $NEW.lean $NEW/ $(printf '%s ' $files)"
+echo "renamed $OLD -> $NEW in: $NEW.lean $NEW/"
 echo "next: review AGENTS.md and README.md prose, then bash scripts/check.sh"
