@@ -28,8 +28,8 @@ action; do not invent mathematical approval checkpoints.
 
 Use `develop` as the base and target of ordinary Issue PRs, even when main is the GitHub
 default. Interpret inherited loop references to inputs on main as inputs on develop.
-Stable promotion PRs target main; use squash merges with evaluated-head binding and all
-review gates. Do not directly push either protected branch.
+Stable promotion PRs target main and use merge commits; ordinary develop PRs use squash.
+Apply evaluated-head binding and all review gates to both methods. Do not directly push either protected branch.
 
 Source-fidelity completion applies to release-scoped results after a stable promotion. Require source fidelity for claimed results, exclude
 staging holes from stable releases, audit the exact main revision, then tag and describe its
