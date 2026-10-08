@@ -3,7 +3,29 @@ set -euo pipefail
 
 SOURCE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 tmp="$(mktemp -d /tmp/tda-build-docs-lock.XXXXXX)"
-trap 'rm -rf -- "$tmp"' EXIT
+first=""
+second=""
+holder=""
+stopped=""
+stop_file="$tmp/codex-stop"
+release="$tmp/release-lock"
+cancel_file="$tmp/cancel-builds"
+cleanup() {
+  local result=$?
+  trap - EXIT
+  set +e
+  touch "$release" "$stop_file" "$cancel_file"
+  for pid in "$holder" "$first" "$second" "$stopped"; do
+    [ -n "$pid" ] && wait "$pid" 2>/dev/null
+  done
+  if ! flock -w 5 -n /tmp/lean-build.lock true 2>/dev/null; then
+    echo 'test cleanup could not confirm the shared build lock was released' >&2
+    result=1
+  fi
+  rm -rf -- "$tmp"
+  exit "$result"
+}
+trap cleanup EXIT
 fixture="$tmp/repo"
 mkdir -p "$fixture/scripts/lib" "$fixture/docbuild/.lake/build/doc-data" \
   "$fixture/docbuild/.lake/build/doc/TDA" "$fixture/docbuild/.lake/build/doc/declarations" \
@@ -94,7 +116,7 @@ if [ -n "$(git -C "$fixture" status --porcelain --untracked-files=all)" ]; then
   git -C "$fixture" status --short --untracked-files=all >&2
   exit 1
 fi
-"$fixture/scripts/build-docs.sh" > "$tmp/first.log" 2>&1 & first=$!
+CODEX_STOP_FILE="$cancel_file" "$fixture/scripts/build-docs.sh" > "$tmp/first.log" 2>&1 & first=$!
 for _ in $(seq 1 500); do
   if grep -q '^lean-start ' "$TEST_EVENTS" 2>/dev/null; then break; fi
   kill -0 "$first" 2>/dev/null || { cat "$tmp/first.log" >&2; exit 1; }
@@ -102,7 +124,7 @@ for _ in $(seq 1 500); do
 done
 grep -q '^lean-start ' "$TEST_EVENTS" || { echo 'first documentation build did not start' >&2; exit 1; }
 printf 'second-launched\n' >> "$TEST_EVENTS"
-"$fixture/scripts/build-docs.sh" > "$tmp/second.log" 2>&1 & second=$!
+CODEX_STOP_FILE="$cancel_file" "$fixture/scripts/build-docs.sh" > "$tmp/second.log" 2>&1 & second=$!
 wait "$first" || { cat "$tmp/first.log" >&2; exit 1; }
 wait "$second" || { cat "$tmp/second.log" >&2; exit 1; }
 python3 - "$TEST_EVENTS" <<'PY'
@@ -138,7 +160,6 @@ fi
 printf 'stop-before-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"
 mkdir -p "$fixture/docbuild/.lake/build/doc/TDA"
 printf 'keep-me\n' > "$fixture/docbuild/.lake/build/doc/TDA/keep"
-stop_file="$tmp/codex-stop"
 touch "$stop_file"
 if CODEX_STOP_FILE="$stop_file" "$fixture/scripts/build-docs.sh" > "$tmp/stop-before.log" 2>&1; then
   echo 'pre-existing stop request was ignored' >&2
@@ -155,12 +176,14 @@ rm "$stop_file"
 printf 'stop-wait-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"
 printf 'keep-while-waiting\n' > "$fixture/docbuild/.lake/build/doc/TDA/keep"
 ready="$tmp/lock-held"
-release="$tmp/release-lock"
 (
   exec 9>>/tmp/lean-build.lock
   flock 9
   touch "$ready"
-  while [ ! -e "$release" ]; do sleep 0.01; done
+  for _ in $(seq 1 1000); do
+    [ -e "$release" ] && break
+    sleep 0.01
+  done
 ) & holder=$!
 for _ in $(seq 1 500); do
   [ -e "$ready" ] && break
@@ -176,6 +199,9 @@ for _ in $(seq 1 500); do
   sleep 0.01
 done
 [ -e "$tmp/lock-attempt" ] || { echo 'documentation build did not reach shared-lock wait' >&2; exit 1; }
+if [ "${TEST_CLEANUP_FAIL_AFTER_HOLDER:-0}" = 1 ]; then
+  exit 97
+fi
 touch "$stop_file"
 touch "$release"
 wait "$holder"
@@ -189,4 +215,24 @@ fi
 [[ "$(cat "$fixture/docbuild/.lake/docs-source-rev")" == stop-wait-revision ]]
 [[ "$(cat "$fixture/docbuild/.lake/build/doc/TDA/keep")" == keep-while-waiting ]]
 
-echo 'build-docs transaction lock self-test OK (parallel, failure marker, stop before/after wait)'
+# Exercise the EXIT trap after the test owns a lock holder and has a builder waiting on it.
+if [ "${TEST_CLEANUP_CHILD:-0}" != 1 ]; then
+  set +e
+  TEST_CLEANUP_CHILD=1 TEST_CLEANUP_FAIL_AFTER_HOLDER=1 \
+    timeout 20s bash "$SOURCE_ROOT/scripts/agent/test-build-docs-lock.sh" \
+    > "$tmp/cleanup-failure.log" 2>&1
+  injected_status=$?
+  set -e
+  if [ "$injected_status" -ne 97 ]; then
+    cat "$tmp/cleanup-failure.log" >&2
+    echo "cleanup failure injection returned $injected_status, expected 97" >&2
+    exit 1
+  fi
+  flock -w 5 -n /tmp/lean-build.lock true || {
+    echo 'cleanup failure injection leaked the shared build lock' >&2
+    exit 1
+  }
+  echo 'failure cleanup injection OK (exit 97; shared lock released)'
+fi
+
+echo 'build-docs transaction lock self-test OK (parallel, failure markers, stop, failure cleanup)'
