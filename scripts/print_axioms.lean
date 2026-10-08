@@ -44,3 +44,14 @@ import TDA
 #print axioms TDA.Persistence.zmodTwoZeroTransition_map
 #print axioms TDA.Persistence.zmodTwoZeroTransition_nonidentity
 #print axioms TDA.Persistence.integerIdentityTransition_map
+
+-- Support-aware simplicial bridge prototype (Issue #13).
+#print axioms TDA.Simplicial.chainIncl_id
+#print axioms TDA.Simplicial.chainIncl_comp
+#print axioms TDA.Simplicial.emptyChain_eq_zero
+#print axioms TDA.Simplicial.emptyH0_eq_zero
+#print axioms TDA.Simplicial.singletonHigherChain_eq_zero
+#print axioms TDA.Simplicial.faceFiniteOfTotalFinite
+#print axioms TDA.Simplicial.emptyFaceIsEmpty
+#print axioms TDA.Simplicial.singletonFaceZeroSubsingleton
+#print axioms TDA.Simplicial.singletonFaceHigherIsEmpty

@@ -1,4 +1,14 @@
 # References
 
-No mathematical sources have been selected by this infrastructure initialization.
-Source selection and reference verification are part of the Issue-driven mathematical work.
+The library is pinned to Lean 4.33.1 and mathlib commit
+`0df444a360eaa60ab8c11dca51a86af692955474`.
+
+- [Mathlib preabstract simplicial complexes](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/AlgebraicTopology/SimplicialComplex/Basic.lean): support-aware face predicate, lower-set property, empty bottom and the ambient-singleton distinction.
+- [Mathlib free Finsupp basis](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/LinearAlgebra/Finsupp/VectorSpace.lean#L119-L126): `Finsupp.basisSingleOne`.
+- [Mathlib chain constructors](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Algebra/Homology/HomologicalComplex.lean#L640-L681): `ChainComplex.of` and `ofHom`.
+- [Mathlib ModuleCat short-complex homology](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Algebra/Homology/ShortComplex/ModuleCat.lean): `moduleCatMk`, `moduleCatToCycles`, `moduleCatHomologyIso`.
+- [Mathlib matrix coordinates](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/LinearAlgebra/Matrix/ToLin.lean#L575-L631): `LinearMap.toMatrix` and its coordinate formula; [composition](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/LinearAlgebra/Matrix/ToLin.lean#L757-L767).
+- [Mathlib SSet chain complex](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/AlgebraicTopology/SimplicialSet/Homology/Basic.lean): `chainComplexFunctor`, `chainComplex`, homology maps and functor.
+- [Mathlib ModuleCat colimits](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Algebra/Category/ModuleCat/Colimits.lean): coproduct support needed for the SSet route.
+- [Mathlib normalized Moore complex](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/AlgebraicTopology/MooreComplex.lean), [alternating-face complex and natural inclusion](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/AlgebraicTopology/AlternatingFaceMapComplex.lean), and [Dold–Kan homotopy equivalence](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/AlgebraicTopology/DoldKan/HomotopyEquivalence.lean): abstract normalization, not a finite face-basis identification.
+- [TauCeti simplicial maps at inspected revision](https://github.com/TauCetiProject/TauCeti/blob/5283b03c90ba08f975b65098ee412a890b567a6e/TauCeti/AlgebraicTopology/SimplicialComplex/Maps.lean) and [toolchain](https://github.com/TauCetiProject/TauCeti/blob/5283b03c90ba08f975b65098ee412a890b567a6e/lean-toolchain): source reference only; the recorded TauCeti toolchain is Lean 4.35.0-rc3.
