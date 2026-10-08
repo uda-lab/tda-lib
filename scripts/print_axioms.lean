@@ -25,3 +25,22 @@ import TDA
 #print axioms TDA.Filtration.reindex_apply
 #print axioms TDA.Filtration.reindex_id
 #print axioms TDA.Filtration.reindex_comp
+
+-- Preorder-indexed persistence-module API (Issue #11).
+#print axioms TDA.Persistence.structureMap_self
+#print axioms TDA.Persistence.structureMap_comp
+#print axioms TDA.Persistence.structureMapLinear_self
+#print axioms TDA.Persistence.structureMapLinear_comp
+#print axioms TDA.Persistence.reindex_obj
+#print axioms TDA.Persistence.structureMap_reindex
+#print axioms TDA.Persistence.structureMapLinear_reindex
+#print axioms TDA.Persistence.reindex_id
+#print axioms TDA.Persistence.reindex_comp
+#print axioms TDA.Persistence.reindexNatTrans_app
+#print axioms TDA.Persistence.reindexNatTrans_id
+#print axioms TDA.Persistence.reindexNatTrans_comp
+#print axioms TDA.Persistence.integerZeroTransition_map
+#print axioms TDA.Persistence.integerZeroTransition_nonidentity
+#print axioms TDA.Persistence.zmodTwoZeroTransition_map
+#print axioms TDA.Persistence.zmodTwoZeroTransition_nonidentity
+#print axioms TDA.Persistence.integerIdentityTransition_map
