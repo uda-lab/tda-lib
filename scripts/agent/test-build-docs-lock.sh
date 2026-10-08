@@ -116,7 +116,9 @@ if [ -n "$(git -C "$fixture" status --porcelain --untracked-files=all)" ]; then
   git -C "$fixture" status --short --untracked-files=all >&2
   exit 1
 fi
-CODEX_STOP_FILE="$cancel_file" "$fixture/scripts/build-docs.sh" > "$tmp/first.log" 2>&1 & first=$!
+# Bound each test-owned builder so cleanup can finish if another process owns the shared lock.
+CODEX_STOP_FILE="$cancel_file" timeout --kill-after=2s 10s \
+  "$fixture/scripts/build-docs.sh" > "$tmp/first.log" 2>&1 & first=$!
 for _ in $(seq 1 500); do
   if grep -q '^lean-start ' "$TEST_EVENTS" 2>/dev/null; then break; fi
   kill -0 "$first" 2>/dev/null || { cat "$tmp/first.log" >&2; exit 1; }
@@ -124,7 +126,8 @@ for _ in $(seq 1 500); do
 done
 grep -q '^lean-start ' "$TEST_EVENTS" || { echo 'first documentation build did not start' >&2; exit 1; }
 printf 'second-launched\n' >> "$TEST_EVENTS"
-CODEX_STOP_FILE="$cancel_file" "$fixture/scripts/build-docs.sh" > "$tmp/second.log" 2>&1 & second=$!
+CODEX_STOP_FILE="$cancel_file" timeout --kill-after=2s 10s \
+  "$fixture/scripts/build-docs.sh" > "$tmp/second.log" 2>&1 & second=$!
 wait "$first" || { cat "$tmp/first.log" >&2; exit 1; }
 wait "$second" || { cat "$tmp/second.log" >&2; exit 1; }
 python3 - "$TEST_EVENTS" <<'PY'
@@ -195,7 +198,8 @@ if [ "${TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT:-0}" = 1 ]; then
   touch "$stop_file"
 fi
 PATH="$tmp/bin:$PATH" WATCH_LOCK_ATTEMPTS="$tmp/lock-attempt" \
-  CODEX_STOP_FILE="$stop_file" "$fixture/scripts/build-docs.sh" > "$tmp/stop-wait.log" 2>&1 & stopped=$!
+  CODEX_STOP_FILE="$stop_file" timeout --kill-after=2s 10s \
+  "$fixture/scripts/build-docs.sh" > "$tmp/stop-wait.log" 2>&1 & stopped=$!
 if [ "${TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT:-0}" = 1 ]; then
   exit 97
 fi
