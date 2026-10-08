@@ -178,7 +178,7 @@ printf 'keep-while-waiting\n' > "$fixture/docbuild/.lake/build/doc/TDA/keep"
 ready="$tmp/lock-held"
 (
   exec 9>>/tmp/lean-build.lock
-  flock 9
+  flock -w 5 9 || exit 1
   touch "$ready"
   for _ in $(seq 1 1000); do
     [ -e "$release" ] && break
@@ -191,15 +191,21 @@ for _ in $(seq 1 500); do
   sleep 0.01
 done
 [ -e "$ready" ] || { echo 'test lock holder did not acquire shared lock' >&2; exit 1; }
+if [ "${TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT:-0}" = 1 ]; then
+  touch "$stop_file"
+fi
 PATH="$tmp/bin:$PATH" WATCH_LOCK_ATTEMPTS="$tmp/lock-attempt" \
   CODEX_STOP_FILE="$stop_file" "$fixture/scripts/build-docs.sh" > "$tmp/stop-wait.log" 2>&1 & stopped=$!
+if [ "${TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT:-0}" = 1 ]; then
+  exit 97
+fi
 for _ in $(seq 1 500); do
   [ -e "$tmp/lock-attempt" ] && break
   kill -0 "$stopped" 2>/dev/null || { cat "$tmp/stop-wait.log" >&2; exit 1; }
   sleep 0.01
 done
 [ -e "$tmp/lock-attempt" ] || { echo 'documentation build did not reach shared-lock wait' >&2; exit 1; }
-if [ "${TEST_CLEANUP_FAIL_AFTER_HOLDER:-0}" = 1 ]; then
+if [ "${TEST_CLEANUP_FAIL_AFTER_LOCK_ATTEMPT:-0}" = 1 ]; then
   exit 97
 fi
 touch "$stop_file"
@@ -215,24 +221,25 @@ fi
 [[ "$(cat "$fixture/docbuild/.lake/docs-source-rev")" == stop-wait-revision ]]
 [[ "$(cat "$fixture/docbuild/.lake/build/doc/TDA/keep")" == keep-while-waiting ]]
 
-# Exercise the EXIT trap after the test owns a lock holder and has a builder waiting on it.
+# Exercise the EXIT trap when the holder is owned and the builder exits before lock attempt.
 if [ "${TEST_CLEANUP_CHILD:-0}" != 1 ]; then
-  set +e
-  TEST_CLEANUP_CHILD=1 TEST_CLEANUP_FAIL_AFTER_HOLDER=1 \
-    timeout 20s bash "$SOURCE_ROOT/scripts/agent/test-build-docs-lock.sh" \
-    > "$tmp/cleanup-failure.log" 2>&1
-  injected_status=$?
-  set -e
-  if [ "$injected_status" -ne 97 ]; then
-    cat "$tmp/cleanup-failure.log" >&2
-    echo "cleanup failure injection returned $injected_status, expected 97" >&2
-    exit 1
-  fi
-  flock -w 5 -n /tmp/lean-build.lock true || {
-    echo 'cleanup failure injection leaked the shared build lock' >&2
-    exit 1
-  }
-  echo 'failure cleanup injection OK (exit 97; shared lock released)'
+  for mode in TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT TEST_CLEANUP_FAIL_AFTER_LOCK_ATTEMPT; do
+    set +e
+    env TEST_CLEANUP_CHILD=1 "$mode=1" timeout 20s bash "$SOURCE_ROOT/scripts/agent/test-build-docs-lock.sh" \
+      > "$tmp/$mode.log" 2>&1
+    injected_status=$?
+    set -e
+    if [ "$injected_status" -ne 97 ]; then
+      cat "$tmp/$mode.log" >&2
+      echo "$mode returned $injected_status, expected 97" >&2
+      exit 1
+    fi
+    flock -w 5 -n /tmp/lean-build.lock true || {
+      echo "$mode leaked the shared build lock" >&2
+      exit 1
+    }
+    echo "$mode cleanup OK (exit 97; shared lock released)"
+  done
 fi
 
 echo 'build-docs transaction lock self-test OK (parallel, failure markers, stop, failure cleanup)'
