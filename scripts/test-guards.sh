@@ -379,3 +379,5 @@ if ! timeout 5 bash -c 'exec 9>>/tmp/lean-build.lock; flock 9; LEAN_SCAFFOLD_LOC
 # 4. release: after the holder exits the lock is free again
 if ! flock -w 5 -n "$LOCK" true; then echo "FAIL [lock-release]: lock still held after holder exited"; lfail=1; fi
 if [ "$lfail" -eq 0 ]; then echo "build-lock self-test OK (4 cases)"; else exit 1; fi
+
+bash scripts/agent/test-build-docs-lock.sh
