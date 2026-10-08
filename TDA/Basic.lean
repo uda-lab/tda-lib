@@ -11,7 +11,7 @@ goes into sibling modules imported from the root aggregator `TDA.lean`.
 
 namespace TDA
 
-/-- Placeholder pinned in `scripts/print_axioms.lean`. Stating it over `ℝ` makes its
+/-- Placeholder pinned in the axiom audit. Stating it over `ℝ` makes its
 axiom closure the kernel trio (`propext`, `Classical.choice`, `Quot.sound`), so the
 audit's allowlist path is tested rather than only the "no axioms" path. -/
 theorem placeholder_add_zero (x : ℝ) : x + 0 = x := add_zero x
