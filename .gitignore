@@ -1,5 +1,6 @@
 # Lake build output and fetched dependencies
 /.lake/
+/docbuild/.lake/
 /build/
 
 # Lean compiled artefacts
