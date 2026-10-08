@@ -8,3 +8,20 @@ import TDA
 
 -- Permanent smoke test of the audit path (TDA/Basic.lean). Never remove.
 #print axioms TDA.placeholder_add_zero
+
+-- Support-aware filtration API (Issue #10).
+#print axioms TDA.Filtration.mem_support_iff
+#print axioms TDA.Filtration.mem_bot_iff
+#print axioms TDA.Filtration.face_mono
+#print axioms TDA.Filtration.support_mono
+#print axioms TDA.Filtration.support_eq_empty_of_eq_bot
+#print axioms TDA.Filtration.mem_singletonFace_iff
+#print axioms TDA.Filtration.vertexBirth_zero
+#print axioms TDA.Filtration.vertexBirth_one
+#print axioms TDA.Filtration.mem_vertexBirth_iff
+#print axioms TDA.Filtration.vertexBirth_support_zero
+#print axioms TDA.Filtration.vertexBirth_support_one
+#print axioms TDA.Filtration.addSingletons_introduces_singleton
+#print axioms TDA.Filtration.reindex_apply
+#print axioms TDA.Filtration.reindex_id
+#print axioms TDA.Filtration.reindex_comp
