@@ -3,12 +3,10 @@ import Mathlib.Data.Real.Basic
 /-!
 # TDA.Basic
 
-Scaffold module. `placeholder_add_zero` exists only so that the live axiom audit
-(`scripts/print_axioms.lean` → `scripts/check-axioms.sh`) and the coverage guard
-(`scripts/check_axiom_coverage.lean`) are exercised end to end from the first commit.
-It stays permanently as the audit's smoke test; its line in `scripts/print_axioms.lean`
-is not removed. Real development goes into sibling modules imported from the root
-aggregator `TDA.lean`.
+Scaffold module. `placeholder_add_zero` exists only so that the live axiom audit and
+coverage guard are exercised end to end from the first commit. It stays permanently
+as the audit's smoke test; its entry in the audit is not removed. Real development
+goes into sibling modules imported from the root aggregator `TDA.lean`.
 -/
 
 namespace TDA
