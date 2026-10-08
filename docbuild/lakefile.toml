@@ -1,0 +1,13 @@
+name = "docbuild"
+reservoir = false
+version = "0.1.0"
+packagesDir = "../.lake/packages"
+
+[[require]]
+scope = "leanprover"
+name = "doc-gen4"
+rev = "e2af49a7b7e5e1a9224008c1f15e7aa4f58a4015"
+
+[[require]]
+name = "TDA"
+path = "../"
