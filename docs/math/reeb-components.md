@@ -33,8 +33,8 @@ the same `Type u`. The raw map `componentMap : C(X, Z) → ZerothHomotopy X → 
 allows independent carrier universes. Induced maps on components need not be injective.
 
 Pinned mathlib provides the path-component quotient `ZerothHomotopy` but no map induced by a
-continuous map on it; `componentMap` is a thin wrapper around `ZerothHomotopy.lift` and
-`Joined.map`. The preimage inclusion agrees definitionally with `ContinuousMap.inclusion`.
+continuous map on it; `componentMap` is a thin wrapper around `ZerothHomotopy.lift`,
+`ZerothHomotopy.sound` and `Path.map`. The preimage inclusion agrees definitionally with `ContinuousMap.inclusion`.
 
 ## Source correspondence
 
