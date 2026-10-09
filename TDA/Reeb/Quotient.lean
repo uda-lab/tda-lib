@@ -196,8 +196,8 @@ def homeomorphOfInjective {f : C(X, Y)} (hf : Function.Injective f) : ReebQuotie
 @[simp] theorem homeomorphOfInjective_mk {f : C(X, Y)} (hf : Function.Injective f) (x : X) :
     homeomorphOfInjective hf (mk f x) = x := rfl
 
-/-- Constant `f`: the quotient is the existing path-component quotient `ZerothHomotopy X`
-with its quotient topology. -/
+/-- Constant `f`: the quotient is homeomorphic to the existing path-component quotient
+`ZerothHomotopy X` with its quotient topology. -/
 def homeomorphZerothHomotopy (c : Y) :
     ReebQuotient (ContinuousMap.const X c) ≃ₜ ZerothHomotopy X :=
   Homeomorph.Quotient.congrRight (r := reebSetoid (ContinuousMap.const X c))
