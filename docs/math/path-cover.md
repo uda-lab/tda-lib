@@ -6,7 +6,7 @@ Let `X` be a topological space, `γ : Path x y` a path in `X`, and `U i` a famil
 of `X`, indexed by an arbitrary `Sort`, whose union contains the range of `γ`. Then there are
 `n : ℕ`, a monotone `t : Fin (n + 1) → [0, 1]` with `t 0 = 0` and `t n = 1`, and an index
 `i : Fin n → ι` such that `γ` maps each segment `[t k, t (k + 1)]` into `U (i k)`
-(`TDA.Topology.exists_subdivision`). Equivalent forms:
+(`TDA.Topology.exists_subdivision`). Derived forms:
 
 - `exists_subpath_chain`: the restricted path `γ.subpath (t k) (t (k + 1))` has range in
   `U (i k)`;
@@ -48,9 +48,10 @@ the open-set path-component functor is described in `reeb-components.md`.
 
 de Silva, Munch and Patel prove the gluing property of the path-component pre-cosheaf by local
 constancy over `[0, 1]` and connectedness (*Categorified Reeb Graphs*, Proposition 3.15). The
-library takes the equivalent finite-subdivision route, which yields the same invariance along
-paths. Arbitrary topological spaces, arbitrary open members and an arbitrary index sort are
-library generalizations of the source's open-interval covers.
+library proves the path step of that argument by finite subdivision instead: consecutive chain
+points are joined inside single members. The gluing property itself is not proved here.
+Arbitrary topological spaces, arbitrary open members and an arbitrary index sort are library
+generalizations of the source's open-interval covers.
 
 Sources: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/abs/1501.04147);
 [pinned mathlib unit-interval subdivision](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Topology/UnitInterval.lean);

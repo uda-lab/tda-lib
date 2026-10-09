@@ -4,8 +4,8 @@ import TDA.Reeb.Components
 /-!
 # Component language of the path-local cover lemma
 
-Two consequences of `TDA.Topology.reflTransGen_preimage` for the open-set path-component functor
-`componentFunctor f`, in point form:
+Two point-form facts about the open-set path-component functor `componentFunctor f`; the second
+is the component-language consequence of `TDA.Topology.reflTransGen_preimage`:
 
 * `componentFunctor_mk_eq_iff_joined`: two points of `f ⁻¹ W` have the same class in
   `(componentFunctor f).obj W` exactly when they are joined inside `f ⁻¹ W`. Pinned mathlib has

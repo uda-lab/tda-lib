@@ -6,8 +6,7 @@ import TDA.Reeb.ComponentsCover
 Regression fixture for `TDA.Reeb.componentFunctor_reflTransGen_of_mk_eq` on the identity of `ℝ`
 with `W = ⊤` and the two overlapping opens `(-∞, 2/3)` and `(1/3, ∞)`. The points `0` and `1`
 have the same class over `ℝ`, so they are linked by a chain whose links have equal classes over
-a single member. No single member contains both points, so the chain has at least two links and
-passes through the overlap.
+a single member. No single member contains both points, so no single link relates them.
 -/
 
 open Set
