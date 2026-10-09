@@ -49,8 +49,8 @@ chain of points of `f ⁻¹ W` in which each link has equal classes over a singl
 path-local cover lemma (`path-cover.md`) to the preimage subspace. The members need not lie in
 `W`, and the cover index is an arbitrary `Sort`. This is the point form a gluing argument uses
 to show that a value defined locally on classes over the members is constant on classes over
-`W`. The overlap relation on local classes and the coequalizer form of gluing are not part of
-this API.
+`W`. The overlap relation on local classes and the gluing theorem are described in
+`reeb-components-gluing.md`.
 
 ## Source correspondence
 
@@ -60,7 +60,7 @@ commuting with the height functions induces a natural transformation (§3.4, bef
 Proposition 3.15). The Lean API indexes by all open sets of an arbitrary base space. This is an
 elementary generalization chosen by the library, not a statement printed in the paper;
 restriction to open intervals recovers the source construction. The cosheaf (gluing) property of
-Proposition 3.15 is not part of this API, so the functor is not called a cosheaf.
+Proposition 3.15 is proved in `TDA.Reeb.ComponentsGluing`; see `reeb-components-gluing.md`.
 
 Sources: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/abs/1501.04147);
 [pinned mathlib path components](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Topology/Connected/PathConnected.lean).
