@@ -13,11 +13,11 @@ they have equal value and lie in the same path component of that fibre. The Reeb
 Every continuous map constant on Reeb classes descends uniquely (`ReebQuotient.existsUnique_lift`).
 
 The acceptance cases are an empty domain, an injective map (the quotient is homeomorphic to `X`)
-and a constant map (the quotient is `ZerothHomotopy X`). Nothing here claims that the projection
-is open or that the quotient is Hausdorff.
+and a constant map (the quotient is homeomorphic to `ZerothHomotopy X`). Nothing here claims
+that the projection is open or that the quotient is Hausdorff.
 
-Source: de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.4 and Proposition 2.10; see
-`docs/math/reeb-quotient.md`.
+Source: de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.4: the object-level
+construction of Proposition 2.10, not its functor; see `docs/math/reeb-quotient.md`.
 -/
 
 open Topology
