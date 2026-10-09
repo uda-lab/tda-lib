@@ -74,6 +74,38 @@ import TDA
 #print axioms TDA.Persistence.Reduction.col_mul_transvection_of_ne
 #print axioms TDA.Persistence.Reduction.pivotHeight_mul_transvection_lt
 
+-- Open-set path-component functors (Issue #24).
+#print axioms TDA.Reeb.componentMap_mk
+#print axioms TDA.Reeb.componentMap_id
+#print axioms TDA.Reeb.componentMap_comp
+#print axioms TDA.Reeb.preimageInclusion_eq_inclusion
+#print axioms TDA.Reeb.componentFunctor_obj
+#print axioms TDA.Reeb.componentFunctor_map_mk
+#print axioms TDA.Reeb.componentFunctor_map_apply
+#print axioms TDA.Reeb.componentFunctor_obj_bot_isEmpty
+#print axioms TDA.Reeb.componentFunctor_obj_isEmpty_of_isEmpty
+#print axioms TDA.Reeb.componentFunctor_obj_isEmpty_of_base_isEmpty
+#print axioms TDA.Reeb.componentNatTrans_app_mk
+#print axioms TDA.Reeb.componentNatTrans_app_apply
+#print axioms TDA.Reeb.componentNatTrans_naturality
+#print axioms TDA.Reeb.componentNatTrans_naturality_mk
+#print axioms TDA.Reeb.componentNatTrans_id
+#print axioms TDA.Reeb.componentNatTrans_comp
+#print axioms TDA.Reeb.componentNatTrans_comp_app_mk
+#print axioms TDA.Reeb.componentNatTrans_proof_irrel
+#print axioms TDA.Reeb.Examples.eq_of_joined_of_discrete
+#print axioms TDA.Reeb.Examples.boolComponentsEquiv_boolClass
+#print axioms TDA.Reeb.Examples.boolClass_false_ne_true
+#print axioms TDA.Reeb.Examples.boolClass_exhaustive
+#print axioms TDA.Reeb.Examples.collapseNatTrans_identifies
+#print axioms TDA.Reeb.Examples.collapseNatTrans_not_injective
+#print axioms TDA.Reeb.Examples.swapNatTrans_boolClass
+#print axioms TDA.Reeb.Examples.collapse_comp_swap
+#print axioms TDA.Reeb.Examples.falseOpen_le_top
+#print axioms TDA.Reeb.Examples.falseOpen_ne_top
+#print axioms TDA.Reeb.Examples.true_absent_falseOpen
+#print axioms TDA.Reeb.Examples.falseOpen_inclusion_mk
+
 -- Path-component Reeb quotient and its universal property (Issue #27).
 #print axioms TDA.Reeb.reebRel_iff_joinedIn
 #print axioms TDA.Reeb.ReebRel.apply_eq
