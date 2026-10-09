@@ -11,8 +11,8 @@ target `Y`, induces `Q_h = ReebQuotient.map h comm : C(Q_f, Q_g)`. It is the uni
 map with `Q_h ∘ q_f = q_g ∘ h`, it satisfies `ḡ ∘ Q_h = f̄`, and it preserves identities and
 composition. The carrier universes of `X`, `Y` and `Z` are independent.
 
-The comparison `η_f = ReebQuotient.componentComparison f : C_f ⟶ C_{f̄}` is #24's
-`componentNatTrans` applied to `q_f`. It is natural in the open set and in `h`, and it is
+The comparison `η_f = ReebQuotient.componentComparison f : C_f ⟶ C_{f̄}` is
+`componentNatTrans` (`TDA.Reeb.Components`) applied to `q_f`. It is natural in the open set and in `h`, and it is
 surjective on every open. It need not be injective: de Silva, Munch and Patel, Example 3.21,
 give a non-constructible space where it is not (source-established, not machine-checked here).
 No injectivity or isomorphism is claimed.

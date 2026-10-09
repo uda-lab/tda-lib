@@ -28,12 +28,14 @@ ReebQuotient.componentComparison f : componentFunctor f ⟶ componentFunctor (he
 written `η_f : C_f ⟶ C_{f̄}`. It sends the path component of `x` in `f ⁻¹ U` to the path component
 of `q_f x` in `f̄ ⁻¹ U`. It is natural in the open set `U` and in height-preserving maps:
 `C_h ≫ η_g = η_f ≫ C_{Q_h}` (`componentComparison_natural`). It is surjective at every open,
-because every point of `f̄ ⁻¹ U` is `q_f x` for some `x` with `f x ∈ U`. This direction and the
-categorical API inherit the shared carrier universe of `componentNatTrans`.
+because every point of `f̄ ⁻¹ U` is `q_f x` for some `x` with `f x ∈ U`. `η_f` itself allows
+independent universes for `X` and `Y`; naturality in `h` requires `X` and `Z` to share a carrier
+universe, as `componentNatTrans` does.
 
 `η_f` need not be injective. For the topologist's sine curve with the first-coordinate projection,
-de Silva, Munch and Patel show that `C(f)` and `C(f̄)` are not isomorphic (Example 3.21). This
-limitation is source-established and is not machine-checked here. No injectivity, bijectivity or
+de Silva, Munch and Patel show that `C(f)` and `C(f̄)` are not isomorphic (Example 3.21): over the
+interval `ℝ`, the curve has more than one path component while its Reeb quotient has one, so the
+surjective `η_f` is not injective there. This limitation is source-established and is not machine-checked here. No injectivity, bijectivity or
 natural isomorphism is claimed for `η`. Promoting `η` to an isomorphism needs a concrete
 constructible-space model and its local comparison lemmas.
 
@@ -66,8 +68,9 @@ de Silva, Munch and Patel, §2.4, define the Reeb functor on ℝ-spaces by `ℛ(
 identity, so `ℛ` is a pointed endofunctor (Observation 2.11). `ReebQuotient.map` is `ᾱ`, and
 `(quotientFunctor ℝ, projNatTrans ℝ)` is `(ℛ, ρ)`. In the proof of Theorem 3.17 they define
 `η = 𝒞ρ` by applying the path-component functor `𝒞` of §3.4 to `ρ`; `componentComparisonOver` is
-this transformation. Theorem 3.17 states that `η` is an isomorphism on constructible ℝ-spaces;
-that theorem is not formalized here.
+this transformation. Theorem 3.17 states that `𝒞` and `𝒞ℛ` are naturally isomorphic on
+constructible ℝ-spaces, and its proof shows that `η` is that isomorphism. That theorem is not
+formalized here.
 
 The arbitrary target `Y` and the indexing by all open sets of `Y` are library generalizations,
 not source claims. The source case is the specialization `Y = ℝ` restricted to open intervals.
