@@ -17,6 +17,8 @@ import TDA.Reeb.IntervalExamples
 import TDA.Reeb.Quotient
 import TDA.Reeb.QuotientComparison
 import TDA.Reeb.QuotientComparisonExamples
+import TDA.Reeb.Smoothing
+import TDA.Reeb.SmoothingExamples
 import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
 import TDA.Topology.Cosheaf
