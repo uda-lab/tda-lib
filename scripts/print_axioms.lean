@@ -73,3 +73,35 @@ import TDA
 #print axioms TDA.Persistence.Reduction.col_mul_transvection
 #print axioms TDA.Persistence.Reduction.col_mul_transvection_of_ne
 #print axioms TDA.Persistence.Reduction.pivotHeight_mul_transvection_lt
+
+-- Path-component Reeb quotient and its universal property (Issue #27).
+#print axioms TDA.Reeb.reebRel_iff_joinedIn
+#print axioms TDA.Reeb.ReebRel.apply_eq
+#print axioms TDA.Reeb.reebRel_iff_joined_fiber
+#print axioms TDA.Reeb.ReebRel.refl
+#print axioms TDA.Reeb.ReebRel.symm
+#print axioms TDA.Reeb.ReebRel.trans
+#print axioms TDA.Reeb.reebSetoid_r
+#print axioms TDA.Reeb.reebRel_iff_eq_of_injective
+#print axioms TDA.Reeb.reebRel_const_iff
+#print axioms TDA.Reeb.ReebQuotient.mk_surjective
+#print axioms TDA.Reeb.ReebQuotient.isQuotientMap_mk
+#print axioms TDA.Reeb.ReebQuotient.continuous_mk
+#print axioms TDA.Reeb.ReebQuotient.proj_apply
+#print axioms TDA.Reeb.ReebQuotient.mk_eq_mk_iff
+#print axioms TDA.Reeb.ReebQuotient.mk_eq_mk_of_path
+#print axioms TDA.Reeb.ReebQuotient.ind
+#print axioms TDA.Reeb.ReebQuotient.lift_mk
+#print axioms TDA.Reeb.ReebQuotient.lift_comp_proj
+#print axioms TDA.Reeb.ReebQuotient.lift_unique
+#print axioms TDA.Reeb.ReebQuotient.hom_ext
+#print axioms TDA.Reeb.ReebQuotient.existsUnique_lift
+#print axioms TDA.Reeb.ReebQuotient.apply_eq_of_reebRel
+#print axioms TDA.Reeb.ReebQuotient.height_mk
+#print axioms TDA.Reeb.ReebQuotient.height_comp_proj
+#print axioms TDA.Reeb.ReebQuotient.instIsEmpty
+#print axioms TDA.Reeb.ReebQuotient.homeomorphOfInjective_mk
+#print axioms TDA.Reeb.ReebQuotient.homeomorphZerothHomotopy_mk
+#print axioms TDA.Reeb.ReebQuotient.subsingleton_of_const
+#print axioms TDA.Reeb.Examples.boolConst_mk_false_ne_true
+#print axioms TDA.Reeb.Examples.boolConst_eq_mk_false_or_mk_true
