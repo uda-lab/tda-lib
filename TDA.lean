@@ -4,4 +4,6 @@
 import TDA.Basic
 import TDA.Filtration.Basic
 import TDA.Persistence.Basic
+import TDA.Persistence.Reduction.Pivot
+import TDA.Persistence.Reduction.PivotExamples
 import TDA.Simplicial.Bridge

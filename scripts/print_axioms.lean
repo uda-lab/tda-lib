@@ -55,3 +55,17 @@ import TDA
 #print axioms TDA.Simplicial.emptyFaceIsEmpty
 #print axioms TDA.Simplicial.singletonFaceZeroSubsingleton
 #print axioms TDA.Simplicial.singletonFaceHigherIsEmpty
+
+-- Finite column pivots and cancellation (Issue #35).
+#print axioms TDA.Persistence.Reduction.columnPivot_none_iff
+#print axioms TDA.Persistence.Reduction.columnPivot_zero
+#print axioms TDA.Persistence.Reduction.columnPivot_some_iff
+#print axioms TDA.Persistence.Reduction.pivotHeight_none
+#print axioms TDA.Persistence.Reduction.pivotHeight_some
+#print axioms TDA.Persistence.Reduction.pivotHeight_eq_zero_iff
+#print axioms TDA.Persistence.Reduction.cancelColumn_apply_pivot
+#print axioms TDA.Persistence.Reduction.cancelColumn_apply_above
+#print axioms TDA.Persistence.Reduction.pivotHeight_cancelColumn_lt
+#print axioms TDA.Persistence.Reduction.col_mul_transvection
+#print axioms TDA.Persistence.Reduction.col_mul_transvection_of_ne
+#print axioms TDA.Persistence.Reduction.pivotHeight_mul_transvection_lt
