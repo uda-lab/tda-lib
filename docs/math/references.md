@@ -3,6 +3,8 @@
 The library is pinned to Lean 4.33.1 and mathlib commit
 `0df444a360eaa60ab8c11dca51a86af692955474`.
 
+- [Chazal–Crawley-Boevey–de Silva, *The observable structure of persistence modules*, §1.1, p.1](https://arxiv.org/pdf/1405.5644): closed discrete intervals, their interval modules, and the four-rank multiplicity formula. The finite half-open translation and scope used here are summarized in [finite-interval-rank.md](finite-interval-rank.md).
+
 - [Mathlib preabstract simplicial complexes](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/AlgebraicTopology/SimplicialComplex/Basic.lean): support-aware face predicate, lower-set property, empty bottom and the ambient-singleton distinction.
 - [Mathlib free Finsupp basis](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/LinearAlgebra/Finsupp/VectorSpace.lean#L119-L126): `Finsupp.basisSingleOne`.
 - [Mathlib chain constructors](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Algebra/Homology/HomologicalComplex.lean#L640-L681): `ChainComplex.of` and `ofHom`.

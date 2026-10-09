@@ -4,4 +4,6 @@
 import TDA.Basic
 import TDA.Filtration.Basic
 import TDA.Persistence.Basic
+import TDA.Persistence.Interval
+import TDA.Persistence.FiniteBarcode
 import TDA.Simplicial.Bridge
