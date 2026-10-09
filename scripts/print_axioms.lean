@@ -56,6 +56,10 @@ import TDA
 #print axioms TDA.Simplicial.singletonFaceZeroSubsingleton
 #print axioms TDA.Simplicial.singletonFaceHigherIsEmpty
 
+-- Ordered actual-face boundary (Issue #23).
+#print axioms TDA.Simplicial.enumerationAfterDeletion
+#print axioms TDA.Simplicial.boundary_single
+
 -- Finite column pivots and cancellation (Issue #35).
 #print axioms TDA.Persistence.Reduction.columnPivot_none_iff
 #print axioms TDA.Persistence.Reduction.columnPivot_zero
