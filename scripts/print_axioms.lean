@@ -198,3 +198,28 @@ import TDA
 #print axioms TDA.Reeb.OpenInterval.thickenZeroIso
 #print axioms TDA.Reeb.OpenInterval.thickenCompIso
 #print axioms TDA.Reeb.OpenInterval.thickenUnit_comp
+
+-- Path-local open-cover subdivision (Issue #25).
+#print axioms TDA.Topology.exists_subdivision
+#print axioms TDA.Topology.exists_subpath_chain
+#print axioms TDA.Topology.exists_overlap_chain
+#print axioms TDA.Topology.reflTransGen_of_path
+#print axioms TDA.Topology.reflTransGen_of_joined
+#print axioms TDA.Topology.exists_subdivision_opens
+#print axioms TDA.Topology.reflTransGen_preimage
+#print axioms TDA.Topology.Examples.twoOpens_isOpen
+#print axioms TDA.Topology.Examples.twoOpens_cover
+#print axioms TDA.Topology.Examples.segment_chain_exists
+#print axioms TDA.Topology.Examples.segment_chain_uses_both
+#print axioms TDA.Topology.Examples.refl_subdivision_mem
+#print axioms TDA.Topology.Examples.emptyDupCover_isOpen
+#print axioms TDA.Topology.Examples.emptyDupCover_never_empty
+#print axioms TDA.Topology.Examples.emptyDupCover_duplicates_admissible
+#print axioms TDA.Topology.Examples.singletons_no_subdivision
+
+-- Component-language consequence of the path-local cover lemma (Issue #25).
+#print axioms TDA.Reeb.componentFunctor_mk_eq_iff_joined
+#print axioms TDA.Reeb.componentFunctor_reflTransGen_of_mk_eq
+#print axioms TDA.Reeb.Examples.twoOpens_cover
+#print axioms TDA.Reeb.Examples.twoOpens_zero_one_chain
+#print axioms TDA.Reeb.Examples.twoOpens_zero_one_not_single_link
