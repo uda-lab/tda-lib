@@ -8,6 +8,8 @@ import TDA.Persistence.Reduction.Pivot
 import TDA.Persistence.Reduction.PivotExamples
 import TDA.Reeb.Components
 import TDA.Reeb.ComponentsExamples
+import TDA.Reeb.Interval
+import TDA.Reeb.IntervalExamples
 import TDA.Reeb.Quotient
 import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
