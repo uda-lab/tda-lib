@@ -198,3 +198,35 @@ import TDA
 #print axioms TDA.Reeb.OpenInterval.thickenZeroIso
 #print axioms TDA.Reeb.OpenInterval.thickenCompIso
 #print axioms TDA.Reeb.OpenInterval.thickenUnit_comp
+
+-- Reeb quotient functor and its comparison with path components (Issue #28).
+#print axioms TDA.Reeb.ReebRel.map
+#print axioms TDA.Reeb.overBaseMap
+#print axioms TDA.Reeb.overBaseMap_comm
+#print axioms TDA.Reeb.ReebQuotient.map
+#print axioms TDA.Reeb.ReebQuotient.map_mk
+#print axioms TDA.Reeb.ReebQuotient.map_comp_proj
+#print axioms TDA.Reeb.ReebQuotient.map_unique
+#print axioms TDA.Reeb.ReebQuotient.height_map_apply
+#print axioms TDA.Reeb.ReebQuotient.height_comp_map
+#print axioms TDA.Reeb.ReebQuotient.map_id
+#print axioms TDA.Reeb.ReebQuotient.map_comp
+#print axioms TDA.Reeb.ReebQuotient.map_surjective
+#print axioms TDA.Reeb.ReebQuotient.componentComparison
+#print axioms TDA.Reeb.ReebQuotient.componentComparison_app_mk
+#print axioms TDA.Reeb.ReebQuotient.componentComparison_naturality
+#print axioms TDA.Reeb.ReebQuotient.componentComparison_natural
+#print axioms TDA.Reeb.ReebQuotient.componentComparison_app_surjective
+#print axioms TDA.Reeb.ReebQuotient.toOver
+#print axioms TDA.Reeb.ReebQuotient.projOver
+#print axioms TDA.Reeb.ReebQuotient.quotientFunctor
+#print axioms TDA.Reeb.ReebQuotient.projNatTrans
+#print axioms TDA.Reeb.ReebQuotient.componentFunctorOver
+#print axioms TDA.Reeb.ReebQuotient.componentComparisonOver
+#print axioms TDA.Reeb.Examples.fold
+#print axioms TDA.Reeb.Examples.fold_comm
+#print axioms TDA.Reeb.Examples.fold_surjective
+#print axioms TDA.Reeb.Examples.fold_not_injective
+#print axioms TDA.Reeb.Examples.fold_mk_ne
+#print axioms TDA.Reeb.Examples.map_fold_not_injective
+#print axioms TDA.Reeb.Examples.componentNatTrans_fold_not_injective
