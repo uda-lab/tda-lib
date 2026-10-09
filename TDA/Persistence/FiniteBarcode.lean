@@ -533,6 +533,14 @@ theorem barcodeRankInteger_injective {N : ℕ} {k : Type u} [Field k]
     omega
   · rfl
 
+/-- Every actual structure map of the empty finite barcode module has rank zero. -/
+theorem rank_emptyBarcode {N : ℕ} {k : Type u} [Field k]
+    (i j : Fin N) (hij : i ≤ j) :
+    structureMapRank (barcodeModule (k := k) (0 : Multiset (FiniteInterval N)))
+      i j hij = 0 := by
+  rw [rank_barcodeMap]
+  simp
+
 /-- The bar `[0,1)` has rank one on the only observed structure map. -/
 theorem rank_single_fullInterval_N1 {k : Type u} [Field k] :
     let I : FiniteInterval 1 := ⟨0, 1, by omega, by omega⟩

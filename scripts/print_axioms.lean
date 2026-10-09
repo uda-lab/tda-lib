@@ -76,3 +76,4 @@ import TDA
 #print axioms TDA.Persistence.intervalModule_finiteDimensional
 #print axioms TDA.Persistence.barcodeModuleOfList_finiteDimensional
 #print axioms TDA.Persistence.barcodeModule_finiteDimensional
+#print axioms TDA.Persistence.rank_emptyBarcode
