@@ -1,5 +1,4 @@
 import TDA.Topology.Cosheaf
-import TDA.Reeb.Components
 import TDA.Reeb.ComponentsCover
 
 /-!
