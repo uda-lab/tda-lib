@@ -31,6 +31,14 @@ the coefficient `-(M p j / M p i)` realizes `cancelColumn` in the target column 
 decreases its pivot height. This is the elementary column operation used in matrix reduction;
 the result here does not construct a reduction loop, filtered chain complex, homology, or barcode.
 
+The executable acceptance fixtures are private, so they are not part of public theorem-pin
+coverage. `PivotExamples.lean` therefore runs `#print axioms` separately for all 24 private fixture
+theorems and the private `F₂` prime-field instance witness. The standalone Lean run on 2026-10-09
+reported only `{propext, Classical.choice, Quot.sound}` for each of those 25 declarations. Finite
+pivot checks use kernel-checked `decide`; the rational and `F₂` vector cancellation equalities use
+coordinate extensionality and `norm_num`. None uses `native_decide`, `Lean.ofReduceBool`, or
+`sorryAx`.
+
 Zomorodian and Carlsson's §4 describes field-based column operations for persistence, including
 elimination of entries at pivot rows. Its broader graded-basis construction is not part of this
 vector API. The matrix identities are supported by mathlib's pinned `Matrix.transvection` lemmas

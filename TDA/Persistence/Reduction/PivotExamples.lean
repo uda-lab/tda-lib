@@ -8,7 +8,8 @@ import Mathlib.Data.ZMod.Basic
 
 These are small executable regression examples for the generic results in `Pivot.lean`.
 Each evaluation is paired with a separately elaborated proposition proving the corresponding
-result; the printed output is not used as proof evidence.
+result; the printed output is not used as proof evidence. Finite fixtures use kernel-checked
+`decide`, and every private fixture theorem has a separate `#print axioms` record below.
 -/
 
 namespace TDA.Persistence.Reduction.Examples
@@ -33,7 +34,7 @@ private theorem emptyVector_height :
 private def rowZeroVector : Fin 1 → ℚ := ![7]
 
 private theorem rowZeroVector_pivot : columnPivot rowZeroVector = some 0 := by
-  native_decide
+  decide
 
 private theorem rowZeroVector_height :
     pivotHeight (columnPivot rowZeroVector) = 1 := by
@@ -49,13 +50,14 @@ private def qSourceZero : Fin 2 → ℚ := ![2, 0]
 private def qTargetZero : Fin 2 → ℚ := ![3, 0]
 
 private theorem qSourceZero_pivot : columnPivot qSourceZero = some 0 := by
-  native_decide
+  decide
 
 private theorem qTargetZero_pivot : columnPivot qTargetZero = some 0 := by
-  native_decide
+  decide
 
 private theorem qZero_cancel : cancelColumn qSourceZero qTargetZero 0 = 0 := by
-  native_decide
+  ext r
+  fin_cases r <;> norm_num [cancelColumn, qSourceZero, qTargetZero]
 
 private theorem qZero_height_decrease :
     pivotHeight (columnPivot (cancelColumn qSourceZero qTargetZero 0)) <
@@ -82,21 +84,22 @@ private def qSourceLower : Fin 2 → ℚ := ![1, 2]
 private def qTargetLower : Fin 2 → ℚ := ![4, 6]
 
 private theorem qSourceLower_pivot : columnPivot qSourceLower = some 1 := by
-  native_decide
+  decide
 
 private theorem qTargetLower_pivot : columnPivot qTargetLower = some 1 := by
-  native_decide
+  decide
 
 private theorem qLower_result :
     cancelColumn qSourceLower qTargetLower 1 = ![1, 0] := by
-  native_decide
+  ext r
+  fin_cases r <;> norm_num [cancelColumn, qSourceLower, qTargetLower]
 
 private theorem qLower_height_decrease :
     pivotHeight (columnPivot (cancelColumn qSourceLower qTargetLower 1)) = 1 ∧
       pivotHeight (columnPivot qTargetLower) = 2 := by
   constructor
   · rw [qLower_result]
-    native_decide
+    decide
   · rw [qTargetLower_pivot]
     rfl
 
@@ -113,13 +116,14 @@ private def f2Source : Fin 2 → ZMod 2 := ![1, 0]
 private def f2Target : Fin 2 → ZMod 2 := ![1, 0]
 
 private theorem f2Source_pivot : columnPivot f2Source = some 0 := by
-  native_decide
+  decide
 
 private theorem f2Target_pivot : columnPivot f2Target = some 0 := by
-  native_decide
+  decide
 
 private theorem f2_cancel : cancelColumn f2Source f2Target 0 = 0 := by
-  native_decide
+  ext r
+  fin_cases r <;> norm_num [cancelColumn, f2Source, f2Target]
 
 private def f2Matrix : Matrix (Fin 3) (Fin 3) (ZMod 2) := fun r c =>
   if r = 0 ∧ (c = 0 ∨ c = 1) then 1 else if r = 1 ∧ c = 2 then 1 else 0
@@ -131,10 +135,10 @@ private def f2TransvectionMatrix : Matrix (Fin 3) (Fin 3) (ZMod 2) :=
   f2Matrix * Matrix.transvection 0 1 f2TransvectionCoefficient
 
 private theorem f2Matrix_source_pivot : columnPivot (f2Matrix.col 0) = some 0 := by
-  native_decide
+  decide
 
 private theorem f2Matrix_target_pivot : columnPivot (f2Matrix.col 1) = some 0 := by
-  native_decide
+  decide
 
 private theorem f2TransvectionCoefficient_eq_one :
     f2TransvectionCoefficient = 1 := by
@@ -178,5 +182,36 @@ private theorem f2_transvection_height_decrease :
 #eval List.ofFn (f2TransvectionMatrix.col 0)
 #eval List.ofFn (f2TransvectionMatrix.col 1)
 #eval List.ofFn (f2TransvectionMatrix.col 2)
+
+/-! ### Private fixture trust audit
+
+These records keep the fixture proof footprint visible even though the examples are private and
+therefore intentionally absent from the public theorem-pin coverage list.
+-/
+#print axioms emptyVector_pivot
+#print axioms emptyVector_height
+#print axioms rowZeroVector_pivot
+#print axioms rowZeroVector_height
+#print axioms qSourceZero_pivot
+#print axioms qTargetZero_pivot
+#print axioms qZero_cancel
+#print axioms qZero_height_decrease
+#print axioms qZero_coefficient
+#print axioms qZero_transvection_coefficient
+#print axioms qSourceLower_pivot
+#print axioms qTargetLower_pivot
+#print axioms qLower_result
+#print axioms qLower_height_decrease
+#print axioms f2PrimeFact
+#print axioms f2Source_pivot
+#print axioms f2Target_pivot
+#print axioms f2_cancel
+#print axioms f2Matrix_source_pivot
+#print axioms f2Matrix_target_pivot
+#print axioms f2TransvectionCoefficient_eq_one
+#print axioms f2_transvection_source_unchanged
+#print axioms f2_transvection_unrelated_column_unchanged
+#print axioms f2_transvection_target_zero
+#print axioms f2_transvection_height_decrease
 
 end TDA.Persistence.Reduction.Examples
