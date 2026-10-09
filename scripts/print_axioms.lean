@@ -255,3 +255,32 @@ import TDA
 #print axioms TDA.Reeb.Examples.fold_mk_ne
 #print axioms TDA.Reeb.Examples.map_fold_not_injective
 #print axioms TDA.Reeb.Examples.componentNatTrans_fold_not_injective
+
+-- Pairwise-intersection cosheaf condition and component gluing (Issue #26).
+#print axioms TDA.Topology.coverCocone
+#print axioms TDA.Topology.overlapRel
+#print axioms TDA.Topology.eqvGen_overlapRel_apply_eq
+#print axioms TDA.Topology.nonempty_isColimit_mapCocone_iff
+#print axioms TDA.Topology.existsUnique_glue_of_surjective_of_eqvGen
+#print axioms TDA.Topology.IsPairwiseCosheaf
+#print axioms TDA.Reeb.overlapRel_mk
+#print axioms TDA.Reeb.componentFunctor_exists_map_eq
+#print axioms TDA.Reeb.componentFunctor_map_eq_iff_eqvGen
+#print axioms TDA.Reeb.componentFunctor_existsUnique_glue
+#print axioms TDA.Reeb.componentFunctor_isColimit
+#print axioms TDA.Reeb.componentFunctor_isColimit_coverCocone
+#print axioms TDA.Reeb.componentFunctor_isPairwiseCosheaf
+#print axioms TDA.Reeb.componentFunctor_glue_natTrans
+#print axioms TDA.Reeb.Examples.twoOpens_classes_related
+#print axioms TDA.Reeb.Examples.twoOpens_isColimit
+#print axioms TDA.Reeb.Examples.negPos
+#print axioms TDA.Reeb.Examples.negPos_overlapRel_fst
+#print axioms TDA.Reeb.Examples.negPos_classes_ne
+#print axioms TDA.Reeb.Examples.emptyCover_isEmpty
+#print axioms TDA.Reeb.Examples.emptyCover_existsUnique_glue
+#print axioms TDA.Reeb.Examples.bot_isColimit
+#print axioms TDA.Reeb.Examples.dupCover_related
+#print axioms TDA.Reeb.Examples.dupCover_isColimit
+#print axioms TDA.Reeb.Examples.existsUnique_glue_sort
+#print axioms TDA.Reeb.Examples.unitCover_cover
+#print axioms TDA.Reeb.Examples.collapse_glue_identifies
