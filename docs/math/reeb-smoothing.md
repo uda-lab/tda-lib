@@ -6,7 +6,9 @@ A precosheaf on the interval category is a functor `F : OpenInterval ⥤ C`. The
 arbitrary category, with universe parameters `C : Type u` and `[Category.{v} C]`. The
 `Set`-valued pre-cosheaves of de Silva, Munch and Patel are the case `C := Type u`. Every
 statement below specialises to that case without added hypotheses, and no proof uses a property
-of `Type`. Allowing a general target is a choice of the library.
+of `Type`. The source mentions pre-cosheaves in an arbitrary category in the remark opening its
+§3.1 but states smoothing and interleavings for `Set`; stating them for an arbitrary target is a
+choice of the library.
 
 ## Smoothing
 
@@ -87,8 +89,9 @@ The point precosheaves at `0` and `1` are `1`-interleaved and not `0`-interleave
 
 ## Source correspondence
 
-de Silva, Munch and Patel work with pre-cosheaves `Int → Set` on nonempty bounded open
-intervals (*Categorified Reeb Graphs*, §4.1–4.2).
+de Silva, Munch and Patel state §4.1–4.2 of *Categorified Reeb Graphs* for pre-cosheaves
+`Int → Set` on the category **Int** of open intervals (§3), with the expansion `I^ε` given for
+`I = (a, b)`.
 
 - Definition 4.1 gives an `ε`-interleaving as natural families `φ_I : F(I) → G(I^ε)` and
   `ψ_I : G(I) → F(I^ε)` with `ψ_(I^ε) ∘ φ_I = F[I ⊆ I^(2ε)]` and the mirror equation, and notes
@@ -109,12 +112,12 @@ intervals (*Categorified Reeb Graphs*, §4.1–4.2).
   witness-level content of symmetry, `d(F, F) = 0` and the triangle inequality.
 - Proposition 4.17 states that smoothing does not increase interleaving distance. Its proof
   takes `φΩ_ε, ψΩ_ε` as the new witnesses. Their codomain is `GΩ_δΩ_ε`, while
-  `S_δ(S_ε G) = GΩ_εΩ_δ`; the source identifies the two because both equal `Ω_(ε+δ)`. In the
-  library `thicken ε (thicken δ I)` and `thicken δ (thicken ε I)` are equal but not
-  definitionally, so `smooth` composes with `smoothingCommIso`.
+  `S_δ(S_ε G) = GΩ_εΩ_δ`; the source identifies the two implicitly (both equal `Ω_(ε+δ)` by
+  Proposition 4.16). In the library `thicken ε (thicken δ I)` and `thicken δ (thicken ε I)` are
+  equal but not definitionally, so `smooth` composes with `smoothingCommIso`.
 
-Admitting `∅`, rays and `ℝ` as intervals, taking `ε : ℝ≥0`, and allowing an arbitrary target
-category are choices of the library. Self-smoothing, the composition and commutation
+Admitting `∅`, rays and `ℝ` as intervals, taking `ε : ℝ≥0`, and stating smoothing and
+interleavings for an arbitrary target category are choices of the library. Self-smoothing, the composition and commutation
 isomorphisms, and the coherence laws are stated in the source only implicitly or not at all.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/abs/1501.04147).
