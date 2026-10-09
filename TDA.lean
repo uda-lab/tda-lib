@@ -6,5 +6,7 @@ import TDA.Filtration.Basic
 import TDA.Persistence.Basic
 import TDA.Persistence.Reduction.Pivot
 import TDA.Persistence.Reduction.PivotExamples
+import TDA.Reeb.Components
+import TDA.Reeb.ComponentsExamples
 import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
