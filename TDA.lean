@@ -24,6 +24,7 @@ import TDA.Reeb.Smoothing
 import TDA.Reeb.SmoothingExamples
 import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
+import TDA.Simplicial.ChainComplex
 import TDA.Topology.Cosheaf
 import TDA.Topology.PathCover
 import TDA.Topology.PathCoverExamples
