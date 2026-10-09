@@ -5,3 +5,4 @@ import TDA.Basic
 import TDA.Filtration.Basic
 import TDA.Persistence.Basic
 import TDA.Simplicial.Bridge
+import TDA.Simplicial.Boundary

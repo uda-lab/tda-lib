@@ -10,9 +10,10 @@ zero is zero. No empty face, degree `-1` term, or unused ambient singleton is
 added. This choice makes the face basis itself the finite matrix basis. It
 requires no chain-model comparison before finite PH can use its coordinates.
 
-The choice is an interface decision, not a claim that the general boundary,
-`d²=0`, functorial homology, or a PH algorithm has been constructed. The
-compiling prototype is [TDA/Simplicial/Bridge.lean](../../TDA/Simplicial/Bridge.lean).
+The choice is an interface decision, not a claim that `d²=0`, functorial
+homology, or a PH algorithm has been constructed. The compiling APIs are in
+[TDA/Simplicial/Bridge.lean](../../TDA/Simplicial/Bridge.lean) and
+[TDA/Simplicial/Boundary.lean](../../TDA/Simplicial/Boundary.lean).
 `packagedComplex` accepts a proof of `d²=0`, and `packagedInclusion` accepts
 commutation; neither supplies those proofs for general simplicial chains.
 
@@ -53,6 +54,15 @@ repository's pin.
 for all degrees and rings. The `packagedComplex` and `packagedInclusion`
 signatures compile at `ChainComplex (ModuleCat R) ℕ`.
 
+`Boundary.lean` defines `deletedFace` by erasing the selected vertex from the
+actual face and obtains its face membership from the precomplex lower-set law.
+`enumerationAfterDeletion` identifies the resulting increasing enumeration with
+the original enumeration composed with `Fin.succAbove`. The noncomputable
+`boundary K R n` is the signed `Finsupp.linearCombination` of these deletions;
+its public entry points use only `[Ring R]`, independent vertex and coefficient
+universes, and no finiteness assumption on the ambient vertex type. In
+particular `boundary K R 0` is the edge-to-vertex map.
+
 For the merged #10 bottom and `singletonFace` complexes, the prototype proves
 all bottom chain groups are zero, the singleton's positive-degree groups are
 zero, bottom ordinary `H₀=0`, and singleton ordinary `H₀≅R`. The H₀ checks use
@@ -64,14 +74,18 @@ definition of the homology of an arbitrary complex. The singleton categorical
 isomorphism uses `R : Type u` with `V : Type u`, so both ModuleCat objects
 share a universe. No nonzero birth is asserted when `R` is the zero ring.
 
-For the full triangle on `Fin 3`, the checked ℤ fixture has
-`∂₂[0,1,2]=[1,2]−[0,2]+[0,1]`. Its edge boundary maps are
-`∂₁[i,j]=[j]−[i]`; `edge_cover` verifies those three edges exhaust the actual
-degree-one face basis. Lean proves `∂₁∂₂[0,1,2]=0`, a nonzero degree-one
-same-ambient inclusion square from the edge `{0,1}` into the triangle, and matrix
-entries `M([1],[0,1])=1` and `M([0],[0,1])=-1`. The finite matrix example
-uses classical `Fintype.ofFinite`, so it checks coordinate types and signs,
-not an executable enumeration. These fixtures do not prove general `d²=0`.
+Using the general `boundary`, the full-triangle fixture on `Fin 3` checks
+`∂₁[i,j]=[j]−[i]` for each increasing edge and
+`∂₂[0,1,2]=[1,2]−[0,2]+[0,1]`. It also checks that the edge `{0,1}` has
+coefficients `1` at vertex `1` and `-1` at vertex `0`, so `boundary K ℤ 0` is
+not zero, and that the triangle's twice-applied boundary cancels. These are
+fixture results only, not a general `d²=0` theorem. The general boundary is
+also zero as a linear map in every degree on the actual bottom and singleton
+complexes, whose positive-degree chains have no faces.
+
+The earlier private matrix and inclusion fixtures in `Bridge.lean` use their own
+finite prototype maps; they are not claimed as coordinates of the new general
+boundary.
 
 ## Required implementation theorems
 

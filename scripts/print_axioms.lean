@@ -55,3 +55,7 @@ import TDA
 #print axioms TDA.Simplicial.emptyFaceIsEmpty
 #print axioms TDA.Simplicial.singletonFaceZeroSubsingleton
 #print axioms TDA.Simplicial.singletonFaceHigherIsEmpty
+
+-- Ordered actual-face boundary (Issue #23).
+#print axioms TDA.Simplicial.enumerationAfterDeletion
+#print axioms TDA.Simplicial.boundary_single
