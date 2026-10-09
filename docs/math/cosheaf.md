@@ -79,8 +79,8 @@ every pair, as mathlib's sheaf condition does.
 The Lean packaging is stated for an arbitrary meet-semilattice and an arbitrary functor to `Type`,
 and the cosheaf predicate for all opens of an arbitrary space. These are library choices, not
 statements printed in the paper. They let the same packaging serve other cosheaves, such as the
-smoothings that de Silva, Munch and Patel show to be cosheaves again (Proposition 4.20; Remark
-4.21 notes that the argument is not specific to sets). The module `TDA.Topology.Cosheaf` depends
+smoothings that de Silva, Munch and Patel show to be cosheaves again (Proposition 4.20). The Lean
+packaging covers functors to `Type` only. The module `TDA.Topology.Cosheaf` depends
 on mathlib only. Its application to path components is described in
 `reeb-components-gluing.md`.
 

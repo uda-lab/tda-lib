@@ -27,8 +27,8 @@ diagram with covered apex), `componentFunctor_isColimit_coverCocone` and
 glue under a continuous map commuting with the base maps.
 
 Universes: carrier `X : Type u`, base `Y : Type v`, cover index `ι : Type w`, and test objects
-in any `Sort` for the raw form. A `Sort`-indexed cover is reindexed through `PLift`. See
-`docs/math/reeb-components-gluing.md`.
+in any `Sort` for the raw form. A `Sort`-indexed cover is reindexed through `PLift`
+(`Examples.existsUnique_glue_sort`). See `docs/math/reeb-components-gluing.md`.
 -/
 
 open CategoryTheory Limits

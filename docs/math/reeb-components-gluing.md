@@ -7,7 +7,7 @@ a family of opens with `U i ≤ W` for every `i` and `W ≤ ⨆ i, U i`. Write `
 path-component functor `componentFunctor f` (`reeb-components.md`). If maps
 `a i : C_f(U i) → A` agree after both inclusions from every overlap,
 
-```lean
+```text
 a i (C_f.map (U i ⊓ U j ≤ U i) c) = a j (C_f.map (U i ⊓ U j ≤ U j) c)
 ```
 
@@ -39,7 +39,7 @@ cover-index universe `w`.
 
 ## Naturality
 
-For `g : C(Z, Y)` and `h : C(X, Z)` with `g ∘ h = f`, gluing commutes with the induced
+For `Z : Type u`, `g : C(Z, Y)` and `h : C(X, Z)` with `g ∘ h = f`, gluing commutes with the induced
 transformation `componentNatTrans h`: if `G` glues a family `a` for `C_g`, and `G'` glues the
 family `a i ∘ (componentNatTrans h).app (U i)` for `C_f`, then
 `G' = G ∘ (componentNatTrans h).app W` (`componentFunctor_glue_natTrans`). The fixture
@@ -82,7 +82,8 @@ Uniqueness holds because every class comes from a member.
 
 Library generalizations, chosen by the library and not printed in the paper: an arbitrary base
 space instead of `ℝ`, arbitrary opens and open covers instead of open intervals and interval covers,
-covers indexed by any type or, through `PLift`, any sort, and the empty cover. Restricting to open
+and covers indexed by any type or, through `PLift`, any sort. The empty cover is explicit in Lean
+and implicit in the source's convention that the value at the empty set is empty. Restricting to open
 intervals of `ℝ` recovers the source statement. The result concerns path components of inverse
 images. The source notes that it fails for connected components (Example 3.20); no constructibility
 or finiteness is assumed or concluded.
