@@ -36,6 +36,22 @@ Pinned mathlib provides the path-component quotient `ZerothHomotopy` but no map 
 continuous map on it; `componentMap` is a thin wrapper around `ZerothHomotopy.lift`,
 `ZerothHomotopy.sound` and `Path.map`. The preimage inclusion agrees definitionally with `ContinuousMap.inclusion`.
 
+## Classes along a cover
+
+Two points of `f ⁻¹ W` have the same class in `(componentFunctor f).obj W` exactly when they are
+joined inside `f ⁻¹ W` (`componentFunctor_mk_eq_iff_joined`). Pinned mathlib has no
+`ZerothHomotopy.exact`; the equivalence is `Quotient.exact` in one direction and
+`ZerothHomotopy.sound` with `Joined.somePath` in the other.
+
+If the opens `U i` cover `W`, two points with the same class over `W` are linked by a finite
+chain of points of `f ⁻¹ W` in which each link has equal classes over a single `U i`
+(`componentFunctor_reflTransGen_of_mk_eq`, in `TDA.Reeb.ComponentsCover`). The proof applies the
+path-local cover lemma (`path-cover.md`) to the preimage subspace. The members need not lie in
+`W`, and the cover index is an arbitrary `Sort`. This is the point form a gluing argument uses
+to show that a value defined locally on classes over the members is constant on classes over
+`W`. The overlap relation on local classes and the coequalizer form of gluing are not part of
+this API.
+
 ## Source correspondence
 
 de Silva, Munch and Patel assign path components of inverse images to open intervals of `ℝ`
