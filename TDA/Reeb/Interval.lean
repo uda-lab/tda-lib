@@ -18,8 +18,9 @@ intervals are `ioo a b`, which is `⊥` when `b ≤ a`. Morphisms are inclusions
 `SetLike` inclusion and the category is mathlib's thin category of a preorder. Intersection is
 the meet (`SemilatticeInf`); there is no join, since a union of order-convex sets need not be
 order-convex. Every object is recovered from its `EReal` endpoints (`ofEReal_lower_upper`).
-`toOpens` includes the interval category fully faithfully into `TopologicalSpace.Opens ℝ`,
-preserving binary intersections and the union equation of a cover.
+`toOpens` includes the interval category into `TopologicalSpace.Opens ℝ`; the inclusion is fully
+faithful because both categories are thin and `toOpens_le_iff` holds (no `FullyFaithful` instance
+is packaged). It preserves binary intersections and the union equation of a cover.
 
 For `ε : ℝ≥0`, `thicken ε I = I + [-ε, ε]`. It is again open and order-convex, `thicken 0` is
 the identity, it fixes `⊥` and `⊤`, is monotone in `I` and `ε`, contains `I`, and satisfies

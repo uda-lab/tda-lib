@@ -21,8 +21,8 @@ is not a bijection: every pair with `b ≤ a` encodes `⊥`.
 ## Inclusion into the open sets of the line
 
 `toOpens` sends an interval to its carrier in `TopologicalSpace.Opens ℝ`. It is monotone,
-reflects the order (`toOpens_le_iff`), and so gives a fully faithful functor `toOpensFunctor`
-between thin categories. It preserves binary intersections (`toOpens_inf`). If a family of
+reflects the order (`toOpens_le_iff`), and so `toOpensFunctor` is fully faithful, since both
+categories are thin; no `FullyFaithful` instance is packaged. It preserves binary intersections (`toOpens_inf`). If a family of
 intervals has union `U`, the supremum of their images in `Opens ℝ` is the image of `U`
 (`iSup_toOpens_eq`). These are the order-theoretic inputs for comparing gluing over interval
 covers with gluing over all open covers; the comparison theorem itself is not part of this
@@ -82,7 +82,8 @@ between these maps hold automatically.
 de Silva, Munch and Patel define **Int** as the category of open intervals of `ℝ` with
 inclusions (*Categorified Reeb Graphs*, §3). For `I = (a, b)` and `ε ≥ 0` they set
 `I^ε = (a - ε, b + ε)` (§4.1, before Definition 4.1). The expansion `Ω_ε : Int → Int` is a functor
-with the unit `I ⊆ I^ε` (§4.2, Observation 4.11). `thicken_ioo` is the source formula on
+with the unit `I ⊆ I^ε` (§4.2, Observation 4.11). `thickenFunctor` is this expansion `Ω_ε`, not
+the thickening functor of §4.3, which acts on ℝ-spaces. `thicken_ioo` is the source formula on
 nonempty bounded intervals. Admitting `∅`, rays and `ℝ` as objects, defining thickening as a
 pointwise sum on every object, and taking `ε : ℝ≥0` are choices of the library; on nonempty
 bounded intervals they agree with the source definition.
