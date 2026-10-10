@@ -366,10 +366,11 @@ if [ "$nfail" -eq 0 ]; then echo "note-check self-test OK ($nn cases)"; else exi
 # --- live axiom audit record parsing (scripts/check-axioms.sh) ----------------------------
 # Each case runs the real audit in a fixture repository whose scripts/lean.sh is a stub that
 # prints canned `#print axioms` output. Input: the pins, a `---` line, then the Lean output.
-# Each check is +'text the output must contain' or -'text it must not contain'.
+# Each check is ='a whole output line that must occur exactly once', +'text the output must
+# contain' or -'text it must not contain'.
 afail=0; an=0
 mkdir -p "$tmp/auditbin"; printf '#!/bin/sh\nexit 0\n' > "$tmp/auditbin/lake"; chmod +x "$tmp/auditbin/lake"
-audit_case() {  # audit_case <name> <want-exit> [+text|-text]... <<'EOF' pins --- output EOF
+audit_case() {  # audit_case <name> <want-exit> [=line|+text|-text]... <<'EOF' pins --- output EOF
   local name="$1" want="$2" d="$tmp/audit-$1" got=0 out check input; shift 2
   an=$((an + 1)); mkdir -p "$d/scripts"
   cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
@@ -381,6 +382,8 @@ audit_case() {  # audit_case <name> <want-exit> [+text|-text]... <<'EOF' pins --
   if [ "$got" -ne "$want" ]; then echo "FAIL [audit:$name]: want exit $want got $got: $out"; afail=1; fi
   for check in "$@"; do
     case "$check" in
+      =*) [ "$(grep -cxF -- "${check#=}" <<<"$out" || true)" -eq 1 ] \
+            || { echo "FAIL [audit:$name]: want exactly one line '${check#=}': $out"; afail=1; } ;;
       +*) [[ "$out" == *"${check#+}"* ]] || { echo "FAIL [audit:$name]: missing '${check#+}': $out"; afail=1; } ;;
       -*) [[ "$out" != *"${check#-}"* ]] || { echo "FAIL [audit:$name]: unexpected '${check#-}': $out"; afail=1; } ;;
     esac
@@ -388,7 +391,7 @@ audit_case() {  # audit_case <name> <want-exit> [+text|-text]... <<'EOF' pins --
 }
 ALLOWED='axioms ⊆ {propext Classical.choice Quot.sound}'
 # A bad X must not be excused by an axiom-free X'.
-audit_case bad_x_free_xprime 1 '+ERROR: TDA.X is incomplete (depends on sorryAx).' '+OK: TDA.X'"'"' — no axioms.' \
+audit_case bad_x_free_xprime 1 '=ERROR: TDA.X is incomplete (depends on sorryAx).' '=OK: TDA.X'"'"' — no axioms.' \
   '-OK: TDA.X — no axioms.' "-ERROR: TDA.X'" <<'EOF'
 TDA.X
 TDA.X'
@@ -397,8 +400,8 @@ TDA.X'
 'TDA.X'' does not depend on any axioms
 EOF
 # A bad X' is reported against X' only.
-audit_case free_x_bad_xprime 1 "+ERROR: TDA.X' depends on unexpected trust Lean.ofReduceBool." \
-  '+OK: TDA.X — no axioms.' '-ERROR: TDA.X ' <<'EOF'
+audit_case free_x_bad_xprime 1 "=ERROR: TDA.X' depends on unexpected trust Lean.ofReduceBool." \
+  '=OK: TDA.X — no axioms.' '-ERROR: TDA.X ' <<'EOF'
 TDA.X
 TDA.X'
 ---
@@ -406,8 +409,8 @@ TDA.X'
 'TDA.X'' depends on axioms: [propext, Lean.ofReduceBool]
 EOF
 # X depends only on allowed axioms, so the bad axiom of X' must not be blamed on X.
-audit_case allowed_x_bad_xprime 1 "+ERROR: TDA.X' depends on unexpected trust Lean.ofReduceBool." \
-  "+OK: TDA.X — $ALLOWED: [propext]" '-ERROR: TDA.X ' <<'EOF'
+audit_case allowed_x_bad_xprime 1 "=ERROR: TDA.X' depends on unexpected trust Lean.ofReduceBool." \
+  "=OK: TDA.X — $ALLOWED: [propext]" '-ERROR: TDA.X ' <<'EOF'
 TDA.X
 TDA.X'
 ---
@@ -415,8 +418,8 @@ TDA.X'
 'TDA.X'' depends on axioms: [Lean.ofReduceBool]
 EOF
 # Each primed pin reports its own list exactly once, unmixed with its siblings.
-audit_case primed_family_allowed 0 "+OK: TDA.X — $ALLOWED: [propext Quot.sound]" \
-  "+OK: TDA.X' — $ALLOWED: [Classical.choice]" "+OK: TDA.X'' — no axioms." '+AXIOM AUDIT OK — 3 declaration(s)' <<'EOF'
+audit_case primed_family_allowed 0 "=OK: TDA.X — $ALLOWED: [propext Quot.sound]" \
+  "=OK: TDA.X' — $ALLOWED: [Classical.choice]" "=OK: TDA.X'' — no axioms." "=AXIOM AUDIT OK — 3 declaration(s) within the allowlist {propext Classical.choice Quot.sound}." <<'EOF'
 TDA.X
 TDA.X'
 TDA.X''
@@ -425,14 +428,14 @@ TDA.X''
 'TDA.X'' depends on axioms: [Classical.choice]
 'TDA.X''' does not depend on any axioms
 EOF
-audit_case exact_x_absent 1 "+ERROR: no '#print axioms' output for TDA.X (" '-OK: TDA.X ' <<'EOF'
+audit_case exact_x_absent 1 "=ERROR: no '#print axioms' output for TDA.X (declaration missing or renamed?)." '-OK: TDA.X ' <<'EOF'
 TDA.X
 TDA.X'
 ---
 'TDA.X'' does not depend on any axioms
 EOF
 # The name token must start the record: a quoted name later in a line selects nothing.
-audit_case match_anchored_at_line_start 1 "+ERROR: no '#print axioms' output for TDA.X (" '-OK: TDA.X ' <<'EOF'
+audit_case match_anchored_at_line_start 1 "=ERROR: no '#print axioms' output for TDA.X (declaration missing or renamed?)." '-OK: TDA.X ' <<'EOF'
 TDA.X
 TDA.Y
 ---
@@ -446,15 +449,15 @@ TDA.X
 'TDA.X' does not depend on any axioms
 'TDA.X' does not depend on any axioms
 EOF
-audit_case duplicate_exact_x 1 "+ERROR: 2 '#print axioms' records for TDA.X; expected exactly one." '-OK: TDA.X ' <<'EOF'
+audit_case duplicate_exact_x 1 "=ERROR: 2 '#print axioms' records for TDA.X; expected exactly one." '-OK: TDA.X ' <<'EOF'
 TDA.X
 ---
 'TDA.X' does not depend on any axioms
 'TDA.X' depends on axioms: [sorryAx]
 EOF
 # Lean wraps long lists over several lines; the no-axioms body stands alone.
-audit_case wrapped_and_no_axioms 0 "+OK: TDA.W — $ALLOWED: [propext Classical.choice Quot.sound]" \
-  '+OK: TDA.N — no axioms.' '-ERROR' <<'EOF'
+audit_case wrapped_and_no_axioms 0 "=OK: TDA.W — $ALLOWED: [propext Classical.choice Quot.sound]" \
+  '=OK: TDA.N — no axioms.' '-ERROR' <<'EOF'
 TDA.W
 TDA.N
 ---
@@ -466,9 +469,9 @@ EOF
 # Names are compared literally: `.`, `+`, `[...]`, `*` and `\` are neither pattern syntax nor
 # escapes, and the decoys that a regex, an unanchored search or escape processing would select
 # carry a disallowed axiom.
-audit_case punctuation_literal 0 '+OK: TDA.a.b — no axioms.' "+OK: TDA.c+d' — $ALLOWED: [propext]" \
-  '+OK: TDA.«e[f]*» — no axioms.' '+OK: TDA.«g\h» — no axioms.' '+OK: TDA.«i\\j» — no axioms.' \
-  '+OK: TDA.«k\n» — no axioms.' '-ERROR' <<'EOF'
+audit_case punctuation_literal 0 '=OK: TDA.a.b — no axioms.' "=OK: TDA.c+d' — $ALLOWED: [propext]" \
+  '=OK: TDA.«e[f]*» — no axioms.' '=OK: TDA.«g\h» — no axioms.' '=OK: TDA.«i\\j» — no axioms.' \
+  '=OK: TDA.«k\n» — no axioms.' '-ERROR' <<'EOF'
 TDA.a.b
 TDA.c+d'
 TDA.«e[f]*»
