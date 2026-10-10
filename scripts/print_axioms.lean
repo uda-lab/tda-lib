@@ -1343,6 +1343,7 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructibleRepresentation.pinch_recon_ioi_vertex
 #print axioms TDA.Reeb.Examples.ConstructibleRepresentation.pinch_recon_ioi_strip
 #print axioms TDA.Reeb.Examples.ConstructibleRepresentation.pinch_top_glue
+#print axioms TDA.Reeb.Examples.ConstructibleRepresentation.pinch_reconstructed_top_glue
 #print axioms TDA.Reeb.Examples.ConstructibleRepresentation.pinch_recon_top_glue
 #print axioms TDA.Reeb.Examples.ConstructibleRepresentation.DPu
 #print axioms TDA.Reeb.Examples.ConstructibleRepresentation.FPu

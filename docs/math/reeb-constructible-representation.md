@@ -102,8 +102,10 @@ realizeExtractIso hF hFc : (S.extract F hF.finite).toCosheaf S ≅ F
 - It is the unique transformation with these values (`realizeExtractIso_hom_unique`), and its
   restriction to extracted data is `fromExtractHom` (`natTransEquivDiagramHom_realizeExtractIso`).
 - On an interval inside a gap containing a regular height `t`, or inside a star containing its
-  level, it is computed on the classes of strip and vertex points of the realization
-  (`map_realizeExtractIso_hom_app_strip`, `map_realizeExtractIso_hom_app_vertex`).
+  level, its value on the class of a strip or vertex point of the realization maps to the original
+  element in the gap or star (`map_realizeExtractIso_hom_app_strip`,
+  `map_realizeExtractIso_hom_app_vertex`). That inclusion is bijective by constructibility, so
+  this determines the value.
 
 This is an isomorphism in the functor category on the whole interval category, including `⊥`,
 bounded intervals, rays and `⊤`. On an interval meeting several levels its components are those of
@@ -128,14 +130,15 @@ data and arbitrary constructible interval cosheaves:
   sends the class of each realized vertex point to the class of the original vertex, and on any
   interval containing a regular height it does the same for strip points; these are stated on
   `⊤`, on `(-1, 2)` and on the rays `(-∞, 2)` and `(-1, ∞)`; on `ℝ` the class of vertex `0` at
-  level `0` equals the class of each vertex at level `1`, so the two stars glue along the gap, and
-  the reconstruction respects this;
+  level `0` equals the class of each vertex at level `1`, in the original and in the reconstructed
+  cosheaf, so the two stars glue along the gap, and the reconstruction sends the class coming from
+  one star to the class coming from the other;
 - pinch boundary cases: on `(1/4, 3/4)`, which contains no level, the reconstruction is computed
   on strip classes; `⊥` and both exterior tails have empty values for the reconstructed and the
   original cosheaf;
 - the pinch at value universe `1`;
-- empty data: the zero cosheaf maps uniquely to every constructible cosheaf at the same levels, and
-  the vertex and edge sets of its extracted data are empty;
+- empty data: the zero cosheaf maps uniquely to every `Type`-valued constructible interval cosheaf
+  at the same levels, and the vertex and edge sets of its extracted data are empty;
 - `n = 0` with one vertex: the value on `ℝ` has one element, and the reconstruction on `ℝ = J 0`
   is computed through `J 0 ≤ ⊤`;
 - two parallel edges with equal endpoints: the identity labelling lifts to the identity and the
@@ -172,8 +175,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §3.3–§3.4:
   colimit construction sketched in Remark 3.19.
 
 Not claimed here: an equivalence of categories between constructible cosheaves and finite data, a
-category structure on finite data, a comparison of the reconstructions at a refined list of levels
-with geometric subdivision of ℝ-graphs, an executable extraction algorithm, and uniqueness of
-unlabelled isomorphisms.
+comparison of the reconstructions at a refined list of levels with geometric subdivision of
+ℝ-graphs, an executable extraction algorithm, and uniqueness of unlabelled isomorphisms. The
+category structure on finite data of `reeb-rgraph.md` is not used here.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/html/1501.04147v1).

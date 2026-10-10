@@ -16,14 +16,15 @@ arbitrary constructible interval cosheaves.
   sends the class of each realized vertex point to the class of the original vertex, and on any
   interval containing a regular height it does the same for strip points. These are stated on
   `⊤`, on `(-1, 2)`, on the ray `iio 2` and on the ray `ioi (-1)`. On `ℝ` the class of the merging
-  vertex at level `0` coincides with the class of each vertex at level `1`, so the two stars glue
-  along the gap, and the reconstruction respects this.
+  vertex at level `0` coincides with the class of each vertex at level `1`, in the original and in
+  the reconstructed cosheaf, so the two stars glue along the gap; the reconstruction sends the
+  class coming from one star to the class coming from the other.
 * Pinch boundary cases: on `(1/4, 3/4)`, a nonempty interval containing no level, the
   reconstruction is computed on strip classes. The empty interval and both exterior tails have
   empty values for both the reconstructed and the original cosheaf.
 * The pinch at value universe `1`.
-* Empty data: the zero cosheaf maps uniquely to every constructible cosheaf at the same levels,
-  and the vertex and edge sets of its extracted data are empty.
+* Empty data: the zero cosheaf maps uniquely to every `Type`-valued constructible interval cosheaf
+  at the same levels, and the vertex and edge sets of its extracted data are empty.
 * `n = 0`: one vertex; the value on `ℝ` has one element, and the reconstruction is computed on
   `ℝ = J 0` through the inclusion `J 0 ≤ ⊤`.
 * Parallel edges: the identity labelling lifts to the identity, and the swap labelling lifts to a
@@ -351,6 +352,23 @@ theorem pinch_top_glue (y : Fin 2) :
     ← Functor.map_comp_apply]
   exact congrArg (fun f => FP.map f (DP.edgeLabel S01 0 y)) (Subsingleton.elim _ _)
 
+/-- The same gluing in the reconstructed cosheaf: on `ℝ` the class of the label of vertex `0` at
+level `0` coincides with the class of the label of each vertex `y` at level `1`. -/
+theorem pinch_reconstructed_top_glue (y : Fin 2) :
+    (DPx.toCosheaf S01).map (homOfLE (le_top : S01.J 0 ≤ ⊤))
+        (DPx.vertexLabel S01 0 (DP.vertexLabel S01 0 (0 : Fin 2))) =
+      (DPx.toCosheaf S01).map (homOfLE (le_top : S01.J 1 ≤ ⊤))
+        (DPx.vertexLabel S01 1 (DP.vertexLabel S01 1 y)) := by
+  rw [← pinch_reconstructed_left y]
+  have hr : (DPx.toCosheaf S01).map (homOfLE (S01.K_le_J_succ 0))
+      (DPx.edgeLabel S01 0 (DP.edgeLabel S01 0 y)) =
+        DPx.vertexLabel S01 1 (DP.vertexLabel S01 1 y) :=
+    (DPx.map_K_le_J_succ_edgeLabel S01 0 _).trans
+      (congrArg (DPx.vertexLabel S01 1) (pinch_right_label y))
+  rw [← hr, ← Functor.map_comp_apply, ← Functor.map_comp_apply]
+  exact congrArg (fun f => (DPx.toCosheaf S01).map f (DPx.edgeLabel S01 0 (DP.edgeLabel S01 0 y)))
+    (Subsingleton.elim _ _)
+
 /-- The reconstruction on `ℝ` sends the class coming from the star `J 0` of the label of vertex
 `0` to the class coming from the other star `J 1` of vertex `y`. -/
 theorem pinch_recon_top_glue (y : Fin 2) :
@@ -407,7 +425,8 @@ def emptyHom {n : ℕ} (S : CriticalValues n) {G : OpenInterval ⥤ Type}
   ⟨fun _ x => Empty.elim x, fun _ x => Empty.elim x, fun _ x => Empty.elim x,
     fun _ x => Empty.elim x⟩
 
-/-- The zero cosheaf maps uniquely to every constructible cosheaf at the same levels. -/
+/-- The zero cosheaf maps uniquely to every `Type`-valued constructible interval cosheaf at the
+same levels. -/
 theorem emptyData_natTrans_unique {n : ℕ} (S : CriticalValues n) {G : OpenInterval ⥤ Type}
     (hG : S.IsConstructibleAt G) (hGc : IsIntervalCosheaf.{0} G)
     (α β : (emptyData n).toCosheaf S ⟶ G) : α = β :=

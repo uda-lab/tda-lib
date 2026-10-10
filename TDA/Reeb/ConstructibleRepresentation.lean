@@ -58,9 +58,13 @@ For `F` with `hF : S.IsConstructibleAt F` and `hFc : IsIntervalCosheaf.{0} F`,
 identity of the extracted data. Its hom sends the canonical star and gap labels of `x` back to `x`,
 its inverse is the label map on stars and gaps, and it is the unique transformation with these
 star and gap values. These are natural transformations on the whole interval category, including
-`⊥`, bounded intervals, rays and `⊤`. On an interval inside a star or a gap, the reconstruction is
-computed on the classes of vertex and strip points (`map_realizeExtractIso_hom_app_vertex`,
-`map_realizeExtractIso_hom_app_strip`).
+`⊥`, bounded intervals, rays and `⊤`. On an interval inside a star containing its level, or
+inside a gap containing a regular height, the value of the reconstruction on the class of a vertex
+or strip point maps to the original element in the star or gap
+(`map_realizeExtractIso_hom_app_vertex`, `map_realizeExtractIso_hom_app_strip`). By
+constructibility that inclusion is bijective, so this determines the value.
+
+See `docs/math/reeb-constructible-representation.md`.
 -/
 
 open Set CategoryTheory
