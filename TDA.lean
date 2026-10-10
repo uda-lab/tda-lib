@@ -18,6 +18,10 @@ import TDA.Reeb.ComponentsCoverExamples
 import TDA.Reeb.ComponentsExamples
 import TDA.Reeb.ComponentsGluing
 import TDA.Reeb.ComponentsGluingExamples
+import TDA.Reeb.ConstructibleCosheaf
+import TDA.Reeb.ConstructibleCosheafExamples
+import TDA.Reeb.CriticalValues
+import TDA.Reeb.FiniteDiagram
 import TDA.Reeb.InterleavingDistance
 import TDA.Reeb.InterleavingDistanceExamples
 import TDA.Reeb.Interval
