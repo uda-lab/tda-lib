@@ -972,3 +972,15 @@ import TDA
 #print axioms TDA.Simplicial.simplicialChainIncl_f
 #print axioms TDA.Simplicial.simplicialChainIncl_id
 #print axioms TDA.Simplicial.simplicialChainIncl_comp
+
+-- Finite critical-value enumeration and exact sublevel recovery (Issue #92).
+#print axioms TDA.Filtration.FilterFunction.mem_criticalValues
+#print axioms TDA.Filtration.FilterFunction.criticalValues_eq_empty_iff
+#print axioms TDA.Filtration.FilterFunction.criticalValue_mem
+#print axioms TDA.Filtration.FilterFunction.exists_criticalValue_eq
+#print axioms TDA.Filtration.FilterFunction.gradeFiltration_apply
+#print axioms TDA.Filtration.FilterFunction.sublevel_eq_bot_of_lt_first
+#print axioms TDA.Filtration.FilterFunction.sublevel_eq_grade_of_gap
+#print axioms TDA.Filtration.FilterFunction.sublevel_eq_grade_of_adjacent
+#print axioms TDA.Filtration.FilterFunction.sublevel_eq_self_of_last_le
+#print axioms TDA.Filtration.FilterFunction.sublevel_eq_bot_or_grade
