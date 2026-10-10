@@ -36,11 +36,11 @@ is installed on `OpenInterval ⥤ C`.
   `G ≅ G'` give `interleavingDistance F G = interleavingDistance F' G'`. Each isomorphism is a
   `0`-interleaving, and composing with it does not increase the parameter.
 - **Zero distance.** `interleavingDistance_eq_zero_iff`: the distance is `0` exactly when an
-  `ε`-interleaving exists for every `ε > 0`. This does not give a `0`-interleaving, so zero
-  distance does not imply isomorphism.
-- **Smoothing.** Smoothing is nonexpansive: the distance of `S_ε F, S_ε G` is at most that of
-  `F, G` (`interleavingDistance_smoothing_le`), since an interleaving of `F, G` smooths to one of
-  the same parameter. A precosheaf is within `ε` of its smoothing
+  `ε`-interleaving exists for every `ε > 0`. In general this does not give a `0`-interleaving,
+  so zero distance does not imply isomorphism (`point_closure_distance`).
+- **Smoothing.** Smoothing is nonexpansive: the distance of `(smoothing ε).obj F` and
+  `(smoothing ε).obj G` is at most that of `F, G` (`interleavingDistance_smoothing_le`), since an
+  interleaving of `F, G` smooths to one of the same parameter. A precosheaf is within `ε` of its smoothing
   (`interleavingDistance_smoothing_self_le`).
 
 ## Uniform perturbation
@@ -70,7 +70,7 @@ All fixtures are at `C := Type`.
 - **Exact finite distance.** The point precosheaves `I ↦ {0 ∈ I}` and `I ↦ {1 ∈ I}` are at
   distance exactly `1` (`point_distance_eq_one`). The upper bound is the explicit
   `1`-interleaving. For `ε < 1` and `r = (1 - ε) / 2`, a witness would send `0 ∈ (-r, r)` into
-  `T_ε (-r, r) = (-r - ε, r + ε)`, which does not contain `1` because `r + ε = (1 + ε) / 2 < 1`.
+  `thicken ε (-r, r) = (-r - ε, r + ε)`, which does not contain `1` because `r + ε = (1 + ε) / 2 < 1`.
 
 ## Source correspondence
 
@@ -90,7 +90,8 @@ Theorem 4.6(i) bounds the distance of the component cosheaves of `(X, f)` and `(
   stated separately.
 - `interleavingDistance_intervalComponents_le` is Theorem 4.6(i) with the pointwise hypothesis,
   which is equivalent to `‖f − g‖_∞ ≤ ε`. Theorem 4.6(ii) is not addressed.
-- The source proves that zero Reeb distance implies isomorphism only for constructible
-  cosheaves. No such inference is made here for arbitrary precosheaves.
+- Proposition 4.8 of the source states that zero Reeb distance implies isomorphism for
+  ℝ-graphs, through their constructible cosheaves. No such inference is made here for arbitrary
+  precosheaves.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/abs/1501.04147).

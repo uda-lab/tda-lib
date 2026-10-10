@@ -69,5 +69,4 @@ example (F G H : OpenInterval ⥤ Type) (h : interleavingDistance F G = ⊤) :
     interleavingDistance F H ≤ interleavingDistance F G + interleavingDistance G H := by
   rw [h, top_add]; exact le_top
 
-
 end TDA.Reeb.Examples

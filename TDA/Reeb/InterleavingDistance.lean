@@ -8,12 +8,12 @@ For precosheaves `F G : OpenInterval ⥤ C` valued in an arbitrary category `C`,
 `ε`-interleaving (de Silva–Munch–Patel, Definition 4.4). It is `⊤` exactly when no
 interleaving exists (`interleavingDistance_eq_top_iff`). The infimum is not assumed to be
 attained: zero distance means an `ε`-interleaving for every `ε > 0`
-(`interleavingDistance_eq_zero_iff`), not a `0`-interleaving, so zero distance does not imply
-isomorphism.
+(`interleavingDistance_eq_zero_iff`), which in general does not give a `0`-interleaving, so
+zero distance does not imply isomorphism.
 
-The laws are those of an extended pseudometric (DMP, Proposition 4.5): distance zero to itself
-and between isomorphic precosheaves, symmetry, the triangle inequality and invariance under
-natural isomorphism in both arguments. An explicit `ε`-interleaving bounds the distance by `ε`,
+The extended pseudometric laws of DMP Proposition 4.5 hold: distance zero to itself, symmetry
+and the triangle inequality. Isomorphic precosheaves are at distance zero, and the distance is
+invariant under natural isomorphism in both arguments. An explicit `ε`-interleaving bounds the distance by `ε`,
 and smoothing is nonexpansive. The distance is a plain function: no `EDist`,
 `PseudoEMetricSpace` or `MetricSpace` instance is installed on `OpenInterval ⥤ C`.
 See `docs/math/reeb-interleaving-distance.md`.
