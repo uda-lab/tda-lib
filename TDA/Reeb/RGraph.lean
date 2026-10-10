@@ -56,12 +56,14 @@ height lies in one fiber and is therefore constant, so the Reeb relation is equa
 inverse of the projection, and `ReebQuotient.proj` is a height-preserving homeomorphism
 (`projHomeomorph`). The height is not assumed injective. On graph objects the point
 `projNatTrans : 𝟭 ⟶ Q` of the Reeb quotient endofunctor is a natural isomorphism (`projNatIso`);
-the explicit square for an arbitrary height-preserving map is `projInv_natural`.
+the explicit square for an arbitrary height-preserving map between realizations over a common `S`
+is `projInv_natural`.
 
 ## Fibers of arbitrary presentations
 
-For an arbitrary presentation `P`, fibers outside `[a 0, a n]` are empty (`isEmpty_fiber`), and a
-point whose height is not a level is an open-strip point (`exists_strip_rep`).
+For an arbitrary presentation `P`, fibers outside `[a 0, a n]` are empty (`isEmpty_fiber`, the
+`IsEmpty` form of `CylinderPresentation.height_preimage_eq_empty`), and a point whose height is not
+a level is an open-strip point (`exists_strip_rep`).
 
 See `docs/math/reeb-rgraph.md`.
 -/
@@ -410,7 +412,8 @@ theorem finite_fiber (S : CriticalValues n) (D : FiniteReebData.{u} n) (t : ℝ)
     rw [projIcc_of_mem _ (Ioo_subset_Icc_self p.2.2)]
     rfl
 
-/-- Fibers outside `[a 0, a n]` are empty, for an arbitrary presentation. -/
+/-- Fibers outside `[a 0, a n]` are empty, for an arbitrary presentation. This is the `IsEmpty`
+form of `CylinderPresentation.height_preimage_eq_empty`. -/
 theorem isEmpty_fiber (S : CriticalValues n) (P : CylinderPresentation.{u} n) {t : ℝ}
     (ht : t ∉ Icc (S.value 0) (S.value (Fin.last n))) :
     IsEmpty (P.height S ⁻¹' {t}) :=

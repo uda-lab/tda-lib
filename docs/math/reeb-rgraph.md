@@ -125,17 +125,19 @@ projection, and `ReebQuotient.proj` is a height-preserving homeomorphism (`projH
 `height_projHomeomorph`). Neither compactness nor injectivity of the height is used; the height
 of a graph is usually not injective.
 
-Naturality: for every height-preserving `g`, `projInv ∘ ReebQuotient.map g = g ∘ projInv`
-(`projInv_natural`). The point `projNatTrans : 𝟭 ⟶ Q` of the Reeb quotient endofunctor has an
-invertible component at every realization (`isIso_projNatTrans_app_toOver`), hence at every graph
-object by transport along a presenting isomorphism. Its restriction to graph objects is a natural
-isomorphism (`isIso_projNatTrans_rgraph`, `projNatIso`).
+Naturality: for every height-preserving `g` between realizations over a common `S`,
+`projInv ∘ ReebQuotient.map g = g ∘ projInv` (`projInv_natural`). The point
+`projNatTrans : 𝟭 ⟶ Q` of the Reeb quotient endofunctor has an invertible component at every
+realization (`isIso_projNatTrans_app_toOver`), hence at every graph object by transport along a
+presenting isomorphism. Its restriction to graph objects is a natural isomorphism
+(`isIso_projNatTrans_rgraph`, `projNatIso`).
 
 ## Fibers of arbitrary presentations
 
-For an arbitrary presentation `P`, fibers outside `[a 0, a n]` are empty (`isEmpty_fiber`), and a
-point whose height is not a level is an open-strip point (`exists_strip_rep`). Neither statement
-uses finiteness or discreteness of the pieces.
+For an arbitrary presentation `P`, fibers outside `[a 0, a n]` are empty (`isEmpty_fiber`, the
+`IsEmpty` form of `CylinderPresentation.height_preimage_eq_empty`), and a point whose height is not
+a level is an open-strip point (`exists_strip_rep`). Neither statement uses finiteness or
+discreteness of the pieces.
 
 ## Fixtures
 
@@ -147,8 +149,8 @@ uses finiteness or discreteness of the pieces.
 - with two vertices per level and one edge attached to the vertices `false`, every
   height-preserving self-map fixes the attached bottom vertex, and the realized collapse sends the
   isolated vertex onto it;
-- the 0–1–2 path and the 0–1–2–1 cycle over `0 < 1 < 2` are not isomorphic; the cycle has a
-  noninjective `left` at gap `0` and is its own Reeb quotient;
+- the 0–1–2 path and the 0–1–2–1 cycle over `0 < 1 < 2` are not isomorphic; by construction the
+  cycle has a noninjective `left` at gap `0`, and it is its own Reeb quotient;
 - inserting the level `1/2` into a single edge gives a one-point vertex set with bijective
   incoming and outgoing endpoint maps, and the refined graph object is isomorphic to the original;
 - refining `0 < 1` to `0 < 1 < 2` adds an empty vertex set at `2` and an empty edge set over
@@ -163,8 +165,10 @@ uses finiteness or discreteness of the pieces.
 de Silva, Munch and Patel, *Categorified Reeb Graphs*:
 
 - §2.2, Remark 2.3: the critical set is not uniquely specified, since extra critical points can
-  be added by splitting the cylinders. Here this is `refineData` with `refineHomeomorph` and the
-  identifications of all vertex sets, edge sets and incidences.
+  be added by splitting the cylinders. For ℝ-graphs, the last sentence of Notation 2.7 retains the
+  finite description by splitting the edges at new vertices over the new critical points. Here,
+  for finite data, this is `refineData` with `refineHomeomorph` and the identifications of all
+  vertex sets, edge sets and incidences.
 - §2.3, Notation 2.7: an ℝ-graph is specified by finite vertex sets `Vᵢ`, finite edge sets `Eᵢ`
   over `[aᵢ, aᵢ₊₁]` and attaching maps `ℓᵢ : Eᵢ → Vᵢ`, `rᵢ : Eᵢ → Vᵢ₊₁`. These are
   `FiniteReebData` with `left` and `right`. The category **Reeb** consists of the constructible
@@ -181,9 +185,10 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
   `projHomeomorph` and the natural isomorphism `projNatIso` on `RGraphCat`.
 
 Not claimed here: a minimal or canonical critical set; a literal insertion constructor for
-refinements; a description of maps between realizations over different level lists without
-passing to a common refinement; simple-graph, tree, Hasse-diagram or ordering descriptions of
-graph objects; the comparison of graph objects with constructible cosheaves; horizontal edges of
-piecewise-linear inputs; the packaging in universes other than `0`.
+refinements; refinement of presentations with non-discrete pieces; a description of maps between
+realizations over different level lists without passing to a common refinement; simple-graph,
+tree, Hasse-diagram or ordering descriptions of graph objects; the comparison of graph objects
+with constructible cosheaves; horizontal edges of piecewise-linear inputs; the packaging in
+universes other than `0`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/html/1501.04147v1).

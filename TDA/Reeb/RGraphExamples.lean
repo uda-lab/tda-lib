@@ -18,8 +18,8 @@ All fixtures use actual realizations of finite data and actual slice morphisms. 
   every height-preserving self-map fixes the attached bottom vertex, while the realized collapse
   sends the isolated vertex onto it.
 * The 0–1–2 path and the 0–1–2–1 cycle are not isomorphic graph objects: their vertex sets at
-  level `1` have different sizes (`cycle_not_iso_path`). The cycle has a noninjective `left` at
-  gap `0`, and it is its own Reeb quotient (`cycle_projHomeomorph`).
+  level `1` have different sizes (`cycle_not_iso_path`). By construction the cycle has a
+  noninjective `left` at gap `0`, and it is its own Reeb quotient (`cycle_projHomeomorph`).
 * Degree-two refinement: inserting the level `1/2` into a single edge gives a one-point vertex
   set with bijective incoming and outgoing endpoint maps, and the refined graph object is
   isomorphic to the original one (`singleEdge_refineIso`).
@@ -249,7 +249,8 @@ instance instUniqueEmptyOverHom (n : ℕ) (S : CriticalValues n) (D : FiniteReeb
     Unique (toOver S (emptyData n) ⟶ toOver S D) :=
   ((realizationFullyFaithful S).homEquiv (X := emptyData n) (Y := D)).symm.unique
 
-/-- The realization of the empty data is empty. -/
+/-- The realization of the empty data is empty; this restates `Examples.Cylinder.emptyData_isEmpty`
+under the name used by the empty-graph fixtures. -/
 theorem emptyData_realization_isEmpty (n : ℕ) (S : CriticalValues n) :
     IsEmpty ((ofFiniteData (emptyData n)).Realization S) :=
   emptyData_isEmpty n S
