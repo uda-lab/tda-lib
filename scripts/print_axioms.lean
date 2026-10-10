@@ -396,6 +396,28 @@ import TDA
 #print axioms TDA.Reeb.Examples.sheets_two_components
 #print axioms TDA.Reeb.Examples.sheets_not_zero_interleaved
 
+-- Finite interval modules and rank recovery (Issue #14).
+#print axioms TDA.Persistence.intervalMap_finrank_range
+#print axioms TDA.Persistence.interval_alive_endpoints_iff
+#print axioms TDA.Persistence.rank_barcodeMap
+#print axioms TDA.Persistence.barcodeRankInteger_nat
+#print axioms TDA.Persistence.barcodeRankInteger_neg_one
+#print axioms TDA.Persistence.barcodeRankInteger_at_size
+#print axioms TDA.Persistence.multiplicity_eq_rank_difference
+#print axioms TDA.Persistence.barcodeRankInteger_injective
+#print axioms TDA.Persistence.barcodeEnumerationNatIso
+#print axioms TDA.Persistence.emptyBarcode_rank_N0
+#print axioms TDA.Persistence.rank_single_fullInterval_N1
+#print axioms TDA.Persistence.rank_fullObservedInterval
+#print axioms TDA.Persistence.rank_duplicate_fullInterval_N1
+#print axioms TDA.Persistence.fullInterval_boundary_difference
+#print axioms TDA.Persistence.fullInterval_boundary_rank_sum_one
+#print axioms TDA.Persistence.equal_dimensions_different_structureMapRanks
+#print axioms TDA.Persistence.intervalModule_finiteDimensional
+#print axioms TDA.Persistence.barcodeModuleOfList_finiteDimensional
+#print axioms TDA.Persistence.barcodeModule_finiteDimensional
+#print axioms TDA.Persistence.rank_emptyBarcode
+
 -- Ordered actual-face square-zero and ordinary chain complex (Issue #39).
 #print axioms TDA.Simplicial.boundary_comp_boundary
 #print axioms TDA.Simplicial.simplicialChainComplex_X
