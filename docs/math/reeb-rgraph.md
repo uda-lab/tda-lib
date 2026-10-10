@@ -187,8 +187,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
 Not claimed here: a minimal or canonical critical set; a literal insertion constructor for
 refinements; refinement of presentations with non-discrete pieces; a description of maps between
 realizations over different level lists without passing to a common refinement; simple-graph,
-tree, Hasse-diagram or ordering descriptions of graph objects; the comparison of graph objects
-with constructible cosheaves; horizontal edges of piecewise-linear inputs; the packaging in
-universes other than `0`.
+tree, Hasse-diagram or ordering descriptions of graph objects; horizontal edges of
+piecewise-linear inputs; the packaging in universes other than `0`. The equivalence of graph
+objects with constructible cosheaves is in `reeb-rgraph-cosheaf-equivalence.md`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/html/1501.04147v1).

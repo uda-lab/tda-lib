@@ -46,6 +46,8 @@ import TDA.Reeb.Quotient
 import TDA.Reeb.QuotientComparison
 import TDA.Reeb.QuotientComparisonExamples
 import TDA.Reeb.RGraph
+import TDA.Reeb.RGraphCosheafEquivalence
+import TDA.Reeb.RGraphCosheafEquivalenceExamples
 import TDA.Reeb.RGraphExamples
 import TDA.Reeb.RGraphRefinement
 import TDA.Reeb.Smoothing
