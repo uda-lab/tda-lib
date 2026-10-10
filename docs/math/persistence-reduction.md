@@ -47,3 +47,29 @@ vector API. The matrix identities are supported by mathlib's pinned `Matrix.tran
 Sources: [Bauer, *Ripser*, §3.1](https://doi.org/10.1007/s41468-021-00071-5); [Zomorodian and
 Carlsson, *Computing Persistent Homology*, §4](https://geometry.stanford.edu/paper/zc-cph-04/zc-cph-04.pdf);
 [pinned mathlib transvection source](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/LinearAlgebra/Matrix/Transvection.lean).
+
+## Prefix spans under an earlier-column operation
+
+For a square matrix `M : Matrix (Fin m) (Fin m) k`, `prefixSpan M t` is the submodule spanned by
+the columns `M.col q` for which `q.val < t`. The parameter `t` is a prefix length: it may be zero,
+equal to `m`, or larger than `m`. Thus every column occurs once `m ≤ t`, while the empty prefix
+spans only zero. The ambient submodule is the span of the columns of `M`, not necessarily the
+whole vector space.
+
+`col_mem_prefixSpan`, `prefixSpan_zero`, `prefixSpan_mono`, and `prefixSpan_eq_full` establish the
+basic prefix properties. For `i < j`, `prefixSpan_mul_transvection` proves that right
+multiplication by `Matrix.transvection i j c` preserves every prefix for any scalar `c`. If the
+target column lies in a prefix, its earlier source lies there too, and the generator function is
+an update at the target index. The proof specializes mathlib's pinned
+`Submodule.span_range_update_add_smul` to those prefix indices. If the target is outside the
+prefix, all included generators are unchanged. No `[DecidableEq k]` or nonzero coefficient
+hypothesis is required. `prefixSpan_cancel` specializes this preservation result to the existing
+`-(M p j / M p i)` cancellation coefficient; it does not claim that an arbitrary row is a pivot.
+Actual pivot decrease remains the separate `pivotHeight_mul_transvection_lt` theorem with its
+common-pivot hypotheses.
+
+`PrefixSpanExamples.lean` checks the empty `Fin 0` matrix and zero matrices, a rational
+three-column operation with coefficient `-3/2` at prefix lengths 0 through 4, a lower-pivot
+rational example, and an `F₂` example. It also checks that reversing the column order can change
+the first prefix span. These are finite illustrations of the universal theorem; they do not
+package an elimination algorithm or a persistence computation.

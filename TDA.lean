@@ -6,6 +6,8 @@ import TDA.Filtration.Basic
 import TDA.Persistence.Basic
 import TDA.Persistence.Reduction.Pivot
 import TDA.Persistence.Reduction.PivotExamples
+import TDA.Persistence.Reduction.PrefixSpan
+import TDA.Persistence.Reduction.PrefixSpanExamples
 import TDA.Reeb.Components
 import TDA.Reeb.ComponentsCover
 import TDA.Reeb.ComponentsCoverExamples
