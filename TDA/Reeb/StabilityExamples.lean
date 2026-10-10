@@ -10,8 +10,8 @@ Regression fixtures for `TDA.Reeb.interleavingDistance_intervalComponents_le_edi
 * the unbounded difference of `id` and `2 · id` on `ℝ`, where the supremum distance is `⊤`, the
   theorem is the trivial bound, and no finite pointwise bound exists;
 * a constant height translation by `c`, bounded by `|c|` on every domain, at supremum distance
-  exactly `|c|` on a nonempty domain, with equality of both sides on a one-point domain; no
-  optimality on other domains is claimed;
+  exactly `|c|` on a nonempty domain, with equality of both sides for the constant functions
+  `0` and `c` on a one-point domain; no optimality on other domains is claimed;
 * equal heights, where both sides are `0`.
 
 The translation `heightShift` and the sharpness fixture `isEmpty_interleaving_const` are reused

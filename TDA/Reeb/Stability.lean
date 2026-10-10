@@ -5,9 +5,9 @@ import Mathlib.Topology.MetricSpace.UniformConvergence
 # Stability of the component precosheaves in the supremum distance
 
 The supremum distance `‖f − g‖∞ ∈ [0, ∞]` of arbitrary functions `f g : X → ℝ` is mathlib's
-extended distance on uniformly converging functions, used literally as
-`edist (UniformFun.ofFun f) (UniformFun.ofFun g)`. No new distance, structure, wrapper or
-instance is introduced. Its real-valued presentation is `⨆ x, ENNReal.ofReal |f x - g x|`
+extended distance on `X →ᵤ ℝ`, functions with the uniform-convergence structure, used
+literally as `edist (UniformFun.ofFun f) (UniformFun.ofFun g)`. No new distance, structure,
+wrapper or instance is introduced. Its real-valued presentation is `⨆ x, ENNReal.ofReal |f x - g x|`
 (`edist_uniformFun_ofFun_eq_iSup`), and it is at most `ε : ℝ≥0` exactly when the pointwise
 bound `|f x - g x| ≤ ε` holds everywhere (`edist_uniformFun_ofFun_le_coe_iff`).
 

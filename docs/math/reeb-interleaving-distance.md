@@ -68,10 +68,11 @@ edist (UniformFun.ofFun f) (UniformFun.ofFun g) = ⨆ x, ENNReal.ofReal |f x - g
 ```
 
 (`edist_uniformFun_ofFun_eq_iSup`), with values in `[0, ∞]`. An unbounded difference has
-distance `⊤`; no boundedness is assumed and no finite real supremum is formed. The zero,
-symmetry and triangle laws are those of mathlib's `PseudoEMetricSpace (X →ᵤ ℝ)` instance; the
-library adds no wrapper, structure or instance. For `ε : ℝ≥0` the distance is at most `ε`
-exactly when `∀ x, |f x - g x| ≤ ε` (`edist_uniformFun_ofFun_le_coe_iff`).
+distance `⊤` (for example `edist_id_twiceId_eq_top`); no boundedness is assumed and no finite
+real supremum is formed. The zero, symmetry and triangle laws are those of mathlib's
+`PseudoEMetricSpace (X →ᵤ ℝ)` instance; the library adds no wrapper, structure or instance.
+For `ε : ℝ≥0` the distance is at most `ε` exactly when `∀ x, |f x - g x| ≤ ε`
+(`edist_uniformFun_ofFun_le_coe_iff`).
 
 For continuous `f g : C(X, ℝ)` on any topological space `X`,
 
@@ -97,9 +98,9 @@ The fixtures cover four cases.
   the pointwise hypothesis.
 - **Constant translation.** For `x ↦ f x + c` the theorem gives distance at most `|c|` on every
   domain (`interleavingDistance_heightShift_le`). The supremum distance is exactly `|c|` on a
-  nonempty domain (`edist_heightShift`). On a one-point domain both sides equal `|c|`, by the
-  sharpness of the constant translation (`stability_const_eq`). No optimality of the bound on
-  other domains is claimed.
+  nonempty domain (`edist_heightShift`). For the constant functions `0` and `c` on a one-point
+  domain both sides equal `|c|`, by the sharpness of the constant translation
+  (`stability_const_eq`). No optimality of the bound on other domains is claimed.
 - **Equal heights.** Both sides are `0` (`stability_self`).
 
 ## Fixtures
