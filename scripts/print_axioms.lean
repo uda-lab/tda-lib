@@ -963,3 +963,12 @@ import TDA
 #print axioms TDA.Reeb.Examples.Cylinder.pinch_segBot_glued
 #print axioms TDA.Reeb.Examples.Cylinder.pinch_segTop_separate
 #print axioms TDA.Reeb.Examples.Cylinder.twoSeg_not_preconnected
+
+-- Actual simplicial chain inclusion naturality and chain maps (Issue #86).
+#print axioms TDA.Simplicial.simplicialChainIncl
+#print axioms TDA.Simplicial.faceIncl_deletedFace
+#print axioms TDA.Simplicial.chainIncl_single
+#print axioms TDA.Simplicial.boundary_chainIncl
+#print axioms TDA.Simplicial.simplicialChainIncl_f
+#print axioms TDA.Simplicial.simplicialChainIncl_id
+#print axioms TDA.Simplicial.simplicialChainIncl_comp
