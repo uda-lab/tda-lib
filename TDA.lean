@@ -51,3 +51,5 @@ import TDA.Topology.PathCover
 import TDA.Topology.PathCoverExamples
 import TDA.Filtration.FilterFunction
 import TDA.Filtration.FilterFunctionExamples
+import TDA.Filtration.CriticalValues
+import TDA.Filtration.CriticalValuesExamples
