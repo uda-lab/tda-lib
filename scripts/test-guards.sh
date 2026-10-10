@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Self-test for the textual guards' shared lexer (scripts/lean-code-scan.awk), the
-# root-aggregator guard, the exposition note check and the build lock.
+# root-aggregator guard, the exposition note check, the live axiom audit's record parsing and
+# the build lock.
 # Each case is a Lean snippet plus the expected number of violating lines per mode.
 # Run after every edit of the lexer:  bash scripts/test-guards.sh
 set -euo pipefail
@@ -404,6 +405,15 @@ TDA.X'
 'TDA.X' does not depend on any axioms
 'TDA.X'' depends on axioms: [propext, Lean.ofReduceBool]
 EOF
+# X depends only on allowed axioms, so the bad axiom of X' must not be blamed on X.
+audit_case allowed_x_bad_xprime 1 "+ERROR: TDA.X' depends on unexpected trust Lean.ofReduceBool." \
+  "+OK: TDA.X — $ALLOWED: [propext]" '-ERROR: TDA.X ' <<'EOF'
+TDA.X
+TDA.X'
+---
+'TDA.X' depends on axioms: [propext]
+'TDA.X'' depends on axioms: [Lean.ofReduceBool]
+EOF
 # Each primed pin reports its own list exactly once, unmixed with its siblings.
 audit_case primed_family_allowed 0 "+OK: TDA.X — $ALLOWED: [propext Quot.sound]" \
   "+OK: TDA.X' — $ALLOWED: [Classical.choice]" "+OK: TDA.X'' — no axioms." '+AXIOM AUDIT OK — 3 declaration(s)' <<'EOF'
@@ -420,6 +430,21 @@ TDA.X
 TDA.X'
 ---
 'TDA.X'' does not depend on any axioms
+EOF
+# The name token must start the record: a quoted name later in a line selects nothing.
+audit_case match_anchored_at_line_start 1 "+ERROR: no '#print axioms' output for TDA.X (" '-OK: TDA.X ' <<'EOF'
+TDA.X
+TDA.Y
+---
+'TDA.Y' does not depend on any axioms
+note: 'TDA.X' does not depend on any axioms
+EOF
+audit_case duplicate_pin 1 "+ERROR: TDA.X is pinned 2 times in scripts/print_axioms.lean; pin it once." <<'EOF'
+TDA.X
+TDA.X
+---
+'TDA.X' does not depend on any axioms
+'TDA.X' does not depend on any axioms
 EOF
 audit_case duplicate_exact_x 1 "+ERROR: 2 '#print axioms' records for TDA.X; expected exactly one." '-OK: TDA.X ' <<'EOF'
 TDA.X
@@ -438,14 +463,18 @@ TDA.N
  Quot.sound]
 'TDA.N' does not depend on any axioms
 EOF
-# Names are compared literally: `.`, `+`, `[...]`, `*` and `\` are not pattern syntax, and the
-# decoys that a regex or an unanchored search would select carry a disallowed axiom.
+# Names are compared literally: `.`, `+`, `[...]`, `*` and `\` are neither pattern syntax nor
+# escapes, and the decoys that a regex, an unanchored search or escape processing would select
+# carry a disallowed axiom.
 audit_case punctuation_literal 0 '+OK: TDA.a.b — no axioms.' "+OK: TDA.c+d' — $ALLOWED: [propext]" \
-  '+OK: TDA.«e[f]*» — no axioms.' '+OK: TDA.«g\h» — no axioms.' '-ERROR' <<'EOF'
+  '+OK: TDA.«e[f]*» — no axioms.' '+OK: TDA.«g\h» — no axioms.' '+OK: TDA.«i\\j» — no axioms.' \
+  '+OK: TDA.«k\n» — no axioms.' '-ERROR' <<'EOF'
 TDA.a.b
 TDA.c+d'
 TDA.«e[f]*»
 TDA.«g\h»
+TDA.«i\\j»
+TDA.«k\n»
 ---
 'TDA.aXb' depends on axioms: [sorryAx]
 'TDA.a.b'' depends on axioms: [sorryAx]
@@ -457,6 +486,9 @@ TDA.«g\h»
 'TDA.«e[f]*»' does not depend on any axioms
 'TDA.«g\h»' does not depend on any axioms
 'TDA.«gh»' depends on axioms: [sorryAx]
+'TDA.«i\j»' depends on axioms: [sorryAx]
+'TDA.«i\\j»' does not depend on any axioms
+'TDA.«k\n»' does not depend on any axioms
 EOF
 # A matched record whose body is neither form is rejected, never half-parsed.
 for body in 'depends on axioms: propext' 'depends on axioms: []' 'depends on axioms: [propext,]' \

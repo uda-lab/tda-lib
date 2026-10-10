@@ -70,7 +70,12 @@ for decl in $expected; do
     continue
   fi
   if [ "$count" -ne 1 ]; then
-    echo "ERROR: $count '#print axioms' records for $decl; expected exactly one." >&2
+    pins="$(printf '%s\n' "$expected" | grep -cxF -- "$decl" || true)"
+    if [ "$pins" -gt 1 ]; then
+      echo "ERROR: $decl is pinned $pins times in $SCRIPT; pin it once." >&2
+    else
+      echo "ERROR: $count '#print axioms' records for $decl; expected exactly one." >&2
+    fi
     FAIL=1
     continue
   fi
