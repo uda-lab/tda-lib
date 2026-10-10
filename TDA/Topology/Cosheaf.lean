@@ -23,6 +23,8 @@ is the dual of mathlib's `TopCat.Presheaf.IsSheafPairwiseIntersections`.
   an arbitrary `Sort`.
 * `IsPairwiseCosheaf.{w} F`: `F : Opens Y ⥤ Type wF` sends `Pairwise.cocone U` to a colimit for
   every cover indexed by `κ : Type w`.
+* `map_apply_eq_of_thin`, `map_map_apply_of_thin`: a `Type`-valued functor out of a preorder
+  identifies parallel morphisms, and composites with the same ends, pointwise.
 
 Universes: cover index `ι : Type w`, values `F : α ⥤ Type w₀`, and test objects in any `Sort`
 for the raw form. No `Small`, `UnivLE` or `HasColimit` assumption is used. The module depends on
@@ -183,5 +185,24 @@ def IsPairwiseCosheaf.{wκ, vY, wF} {Y : Type vY} [TopologicalSpace Y]
     Nonempty (IsColimit (F.mapCocone (Pairwise.cocone U)))
 
 end generic
+
+section thin
+
+universe u
+
+variable {α : Type*} [Preorder α] (F : α ⥤ Type u)
+
+/-- A `Type`-valued functor out of a preorder identifies parallel morphisms pointwise. -/
+theorem map_apply_eq_of_thin {a b : α} (f g : a ⟶ b) (x : F.obj a) : F.map f x = F.map g x := by
+  rw [Subsingleton.elim f g]
+
+/-- A composite of images of preorder morphisms, applied to an element, is the image of any
+morphism with the same ends. -/
+theorem map_map_apply_of_thin {a b c : α} (f : a ⟶ b) (g : b ⟶ c) (h : a ⟶ c) (x : F.obj a) :
+    F.map g (F.map f x) = F.map h x := by
+  change (F.map f ≫ F.map g) x = _
+  rw [← F.map_comp, Subsingleton.elim (f ≫ g) h]
+
+end thin
 
 end TDA.Topology

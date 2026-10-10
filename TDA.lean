@@ -14,6 +14,8 @@ import TDA.Reeb.ComponentsGluing
 import TDA.Reeb.ComponentsGluingExamples
 import TDA.Reeb.Interval
 import TDA.Reeb.IntervalComponents
+import TDA.Reeb.IntervalCosheaf
+import TDA.Reeb.IntervalCosheafExamples
 import TDA.Reeb.IntervalExamples
 import TDA.Reeb.Perturbation
 import TDA.Reeb.PerturbationExamples

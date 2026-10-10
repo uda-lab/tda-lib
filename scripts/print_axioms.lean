@@ -386,3 +386,28 @@ import TDA
 #print axioms TDA.Reeb.Examples.sheets_φ_injective
 #print axioms TDA.Reeb.Examples.sheets_two_components
 #print axioms TDA.Reeb.Examples.sheets_not_zero_interleaved
+
+-- Smoothing preserves the interval cosheaf condition (Issue #31).
+#print axioms TDA.Topology.map_apply_eq_of_thin
+#print axioms TDA.Topology.map_map_apply_of_thin
+#print axioms TDA.Reeb.OpenInterval.le_of_iUnion_eq
+#print axioms TDA.Reeb.OpenInterval.iUnion_thicken_eq
+#print axioms TDA.Reeb.OpenInterval.thicken_inf
+#print axioms TDA.Reeb.OpenInterval.reflTransGen_thicken_inf
+#print axioms TDA.Reeb.OpenInterval.reflTransGen_thicken_inf_of_nonempty
+#print axioms TDA.Reeb.IsIntervalCosheaf
+#print axioms TDA.Reeb.IsIntervalCosheaf.isEmpty_obj_bot
+#print axioms TDA.Reeb.IsIntervalCosheaf.existsUnique_glue
+#print axioms TDA.Reeb.IsIntervalCosheaf.of_iso
+#print axioms TDA.Reeb.isIntervalCosheaf_of_isPairwiseCosheaf
+#print axioms TDA.Reeb.intervalComponents_isIntervalCosheaf
+#print axioms TDA.Reeb.eqvGen_overlapRel_smoothing
+#print axioms TDA.Reeb.smoothing_isColimit_coverCocone
+#print axioms TDA.Reeb.isIntervalCosheaf_smoothing
+#print axioms TDA.Reeb.isIntervalCosheaf_smoothing_zero_iff
+#print axioms TDA.Reeb.Examples.cover_bot_member
+#print axioms TDA.Reeb.Examples.cover_top
+#print axioms TDA.Reeb.Examples.disjoint_thicken_overlap
+#print axioms TDA.Reeb.Examples.overlap_without_containment
+#print axioms TDA.Reeb.Examples.threeCover
+#print axioms TDA.Reeb.Examples.threeCover_union
