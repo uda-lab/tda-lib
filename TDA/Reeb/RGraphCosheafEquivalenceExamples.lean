@@ -22,10 +22,11 @@ transformations:
 * the empty graph is sent to the zero cosheaf `Examples.Constructible.zeroCosheaf`, which is an
   object through its cosheaf condition and its constructibility at one level, and is initial; the
   inverse direction sends the zero cosheaf to an initial graph object with empty carrier;
-* negative boundary: `[0, 1]` at constant height `0`, the realization of a one-piece
-  presentation, and the point have isomorphic constructible component cosheaves, but they are not
-  isomorphic over `ℝ`, and `[0, 1]` is not a graph object. The pinned mathlib has no
-  `PathConnectedSpace unitInterval` instance, so a private local instance supplies it here.
+* negative boundary: `[0, 1]` at constant height `0`, isomorphic over `ℝ` to the realization of a
+  one-piece presentation, and the point, the graph object of the one-vertex data
+  `Examples.ConstructibleRepresentation.pt0`, have isomorphic constructible component cosheaves,
+  but they are not isomorphic over `ℝ`, and `[0, 1]` is not a graph object. The pinned mathlib has
+  no `PathConnectedSpace unitInterval` instance, so a private local instance supplies it here.
 -/
 
 open Set Topology CategoryTheory
@@ -216,7 +217,7 @@ theorem ofCosheafFunctor_zeroObj_isEmpty : IsEmpty (ofCosheafFunctor.obj zeroObj
 def ofCosheafFunctor_zeroObj_isInitial : Limits.IsInitial (ofCosheafFunctor.obj zeroObj) :=
   isInitialOfIsEmpty _ ofCosheafFunctor_zeroObj_isEmpty
 
-/-! ### Negative boundary: same cosheaf, not homeomorphic -/
+/-! ### Negative boundary: same cosheaf, not isomorphic over `ℝ` -/
 
 /-- `[0, 1]` is path-connected, by convexity; used only as a local instance in this file. -/
 private theorem pathConnectedSpace_unitInterval : PathConnectedSpace unitInterval :=
@@ -237,7 +238,8 @@ def intervalPres : CylinderPresentation.{0} 0 where
   left e := e.elim0
   right e := e.elim0
 
-/-- `constInterval` is the realization of the one-piece presentation over `{0}`. -/
+/-- `constInterval` is isomorphic over `ℝ` to the realization of the one-piece presentation over
+`{0}`. -/
 def constInterval_iso_realization :
     constInterval ≅ Over.mk (TopCat.ofHom (intervalPres.height S0)) :=
   Over.isoMk (TopCat.isoOfHomeo (homeomorphZero S0 intervalPres))
@@ -246,18 +248,14 @@ def constInterval_iso_realization :
       change intervalPres.height S0 (homeomorphZero S0 intervalPres x) = 0
       exact height_zero S0 intervalPres _)
 
-/-- One vertex at level `0`. -/
-def ptData : FiniteReebData.{0} 0 :=
-  ⟨fun _ => Unit, fun e => e.elim0, fun _ => inferInstance, fun e => e.elim0,
-    fun e => e.elim0, fun e => e.elim0⟩
-
-/-- The point as a graph object. -/
-abbrev pointGraph : RGraphCat := (toRGraph S0).obj ptData
+/-- The point as a graph object: the one-vertex data `Examples.ConstructibleRepresentation.pt0`
+at level `0`. -/
+abbrev pointGraph : RGraphCat := (toRGraph S0).obj Examples.ConstructibleRepresentation.pt0
 
 /-- The collapse of `[0, 1]` onto the point, over `ℝ`. -/
 def collapseToPoint : constInterval ⟶ pointGraph.obj :=
   Over.homMk (TopCat.ofHom (ContinuousMap.const unitInterval
-    ((ofFiniteData ptData).ofVertex S0 0 ()))) (by ext x; rfl)
+    ((ofFiniteData Examples.ConstructibleRepresentation.pt0).ofVertex S0 0 ()))) (by ext x; rfl)
 
 /-- Every component map of the collapse is bijective. -/
 theorem collapseToPoint_bijective (I : OpenInterval) :
@@ -274,7 +272,8 @@ theorem collapseToPoint_bijective (I : OpenInterval) :
         exact ZerothHomotopy.sound (γ.map hf)
   · induction d using ZerothHomotopy.rec with
     | mk q =>
-      obtain ⟨v, hv⟩ := ofVertex_surjective_zero S0 (ofFiniteData ptData) q.1
+      obtain ⟨v, hv⟩ :=
+        ofVertex_surjective_zero S0 (ofFiniteData Examples.ConstructibleRepresentation.pt0) q.1
       have h0 : overBaseMap constInterval (0 : unitInterval) ∈ toOpens I := by
         have := q.2
         rw [← hv] at this
@@ -307,8 +306,9 @@ theorem constInterval_not_isRGraph : ¬ IsRGraph constInterval := by
   exact absurd (congrArg Subtype.val h01') (by norm_num)
 
 /-- **Negative boundary**: `[0, 1]` at constant height and the point have isomorphic component
-cosheaves, both constructible, but are not isomorphic over `ℝ`; `[0, 1]` is a one-piece
-constructible realization outside `RGraphCat`. -/
+cosheaves, both constructible, but are not isomorphic over `ℝ`; `[0, 1]`, isomorphic to the
+realization of a one-piece presentation (`constInterval_iso_realization`), lies outside
+`RGraphCat`. -/
 theorem negative_boundary :
     Nonempty (intervalComponentsOver.obj constInterval ≅
         intervalComponentsOver.obj pointGraph.obj) ∧
@@ -317,7 +317,7 @@ theorem negative_boundary :
   ⟨⟨asIso (intervalComponentsOver.map collapseToPoint)⟩,
     IsConstructibleCosheaf.of_iso (asIso (intervalComponentsOver.map collapseToPoint)).symm
       (cosheafFunctor.obj pointGraph).property,
-    ⟨fun e => constInterval_not_isRGraph ⟨0, S0, ptData, ⟨e⟩⟩⟩,
+    ⟨fun e => constInterval_not_isRGraph ⟨0, S0, Examples.ConstructibleRepresentation.pt0, ⟨e⟩⟩⟩,
     constInterval_not_isRGraph⟩
 
 end Examples.RGraphCosheafEquivalence

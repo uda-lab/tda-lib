@@ -171,9 +171,11 @@ witness (`cosheafFunctor_essSurj`), so `cosheafFunctor` is an equivalence
 ## Universes and hypotheses
 
 `IsConstructibleCosheaf.{u}` and `ConstructibleCosheafCat.{u}` are defined at every value universe
-`u`, and the finite-level results hold for data in every universe. The functor, its inverse and the
-equivalence are at value universe `0`, matching `RGraphCat`; the equivalence is not stated at other
-value universes. Covers are indexed in universe `0`, as the classification
+`u`, and `realizeNatTrans`, its label formulas and `realizeNatTransEquiv` hold for data in every
+universe. The realization statements `realizationFunctor_comp_intervalComponentsOver_map` and
+`realizationCosheafFullyFaithful`, the functor, its inverse and the equivalence are at universe
+`0`, matching the real slice and `RGraphCat`; the equivalence is not stated at other value
+universes. Covers are indexed in universe `0`, as the classification
 `natTransEquivDiagramHom` requires. No compactness, Hausdorff or local path-connectedness
 hypothesis appears, since graph realizations have discrete pieces.
 
@@ -201,13 +203,15 @@ transformations:
   it (`isoZeroOfIsEmpty`, `emptyGraph_cosheafIso`). It is initial (`zeroObj_isInitial`). The
   inverse functor sends it to a graph object with empty carrier, which is initial
   (`ofCosheafFunctor_zeroObj_isEmpty`, `ofCosheafFunctor_zeroObj_isInitial`).
-- **Negative boundary.** `[0, 1]` at constant height `0` is the realization of a one-piece
-  presentation. Its collapse onto the point is bijective on every interval, so the two component
-  cosheaves are isomorphic and constructible. The two objects are not isomorphic over `ℝ`, and
-  `[0, 1]` is not a graph object, because its fiber over `0` is connected while every fiber of a
-  graph object is discrete (`negative_boundary`). The source category of the equivalence is
-  therefore restricted to graph objects. The pinned mathlib has no `PathConnectedSpace` instance
-  for `unitInterval`; the fixture module proves it from convexity as a private local instance.
+- **Negative boundary.** `[0, 1]` at constant height `0` is isomorphic over `ℝ` to the realization
+  of a one-piece presentation. The point is the graph object of the one-vertex data `pt0` of the
+  constructible-representation fixtures. The collapse of `[0, 1]` onto the point is bijective on
+  every interval, so the two component cosheaves are isomorphic and constructible. The two objects
+  are not isomorphic over `ℝ`, and `[0, 1]` is not a graph object, because its fiber over `0` is
+  connected while every fiber of a graph object is discrete (`negative_boundary`). The source
+  category of the equivalence is therefore restricted to graph objects. The pinned mathlib has no
+  `PathConnectedSpace` instance for `unitInterval`; the fixture module proves it from convexity as
+  a private local instance.
 
 ## Source correspondence
 
@@ -217,7 +221,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
   ℝ-**Top**. Here it is `RGraphCat` (see `reeb-rgraph.md`).
 - §3.3, Definition 3.9: **Csh**ᶜ is the full subcategory of cosheaves that are constructible:
   finite values and a finite critical set `S` such that inclusions with the same intersection
-  with `S` induce bijections and values outside `[min S, max S]` are empty. Here it is
+  with `S` induce bijections and values on intervals contained in `(-∞, min S)` or `(max S, ∞)`
+  are empty. Here it is
   `ConstructibleCosheafCat` with `IsConstructibleCosheaf`, with the bijection condition for
   nonempty intervals only, a nonempty list of levels and covers indexed in universe `0` (see
   `reeb-constructible-cosheaf.md`).

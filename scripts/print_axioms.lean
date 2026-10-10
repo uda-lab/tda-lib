@@ -1624,7 +1624,6 @@ import TDA
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.constInterval
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.intervalPres
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.constInterval_iso_realization
-#print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.ptData
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.pointGraph
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.collapseToPoint
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.collapseToPoint_bijective
