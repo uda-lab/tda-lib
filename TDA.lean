@@ -20,6 +20,8 @@ import TDA.Reeb.ComponentsGluing
 import TDA.Reeb.ComponentsGluingExamples
 import TDA.Reeb.ConstructibleCosheaf
 import TDA.Reeb.ConstructibleCosheafExamples
+import TDA.Reeb.ConstructibleSpace
+import TDA.Reeb.ConstructibleSpaceExamples
 import TDA.Reeb.CriticalValues
 import TDA.Reeb.FiniteDiagram
 import TDA.Reeb.InterleavingDistance

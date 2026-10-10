@@ -164,15 +164,15 @@ abbrev pinch := ofFiniteData pinchData
 theorem pinch_left_not_injective : ¬ Function.Injective (pinch.left 0) := fun h =>
   Bool.false_ne_true (h (a₁ := (false : pinchData.E 0)) (a₂ := true) rfl)
 
-theorem pinch_bot_glued :
+theorem pinch_segBot_glued :
     pinch.ofCylinder S01 0 (false, segBot S01 0) = pinch.ofCylinder S01 0 (true, segBot S01 0) :=
   (pinch.ofCylinder_segBot S01 0 false).trans (pinch.ofCylinder_segBot S01 0 true).symm
 
 /-- The closed cylinder does not embed: its two bottom ends are identified. -/
 theorem pinch_ofCylinder_not_injective : ¬ Function.Injective (pinch.ofCylinder S01 0) :=
-  fun h => Bool.false_ne_true (congrArg Prod.fst (h pinch_bot_glued))
+  fun h => Bool.false_ne_true (congrArg Prod.fst (h pinch_segBot_glued))
 
-theorem pinch_top_separate :
+theorem pinch_segTop_separate :
     pinch.ofCylinder S01 0 (false, segTop S01 0) ≠ pinch.ofCylinder S01 0 (true, segTop S01 0) :=
   fun h => Bool.false_ne_true (pinch.ofVertex_injective S01 _
     (((pinch.ofCylinder_segTop S01 0 false).symm.trans h).trans
