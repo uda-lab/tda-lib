@@ -73,3 +73,23 @@ three-column operation with coefficient `-3/2` at prefix lengths 0 through 4, a 
 rational example, and an `F₂` example. It also checks that reversing the column order can change
 the first prefix span. These are finite illustrations of the universal theorem; they do not
 package an elimination algorithm or a persistence computation.
+
+## Finite earlier-column traces
+
+`EarlierColumnOp m k` is the existing matrix transvection together with the proof that its source
+index is strictly earlier than its target. A client supplies a finite list of these operations;
+`replay` folds that list by right multiplication in chronological order, and `traceChange` is the
+corresponding left-to-right product. The bridge theorem states `replay M ops = M * traceChange
+ops`. Its append laws keep the same order, so a trace `[a, b]` acts as `M * T(a) * T(b)`.
+
+`prefixSpan_replay` proves that every natural-number prefix span is preserved by every supplied
+trace. The statement includes zero, in-range, and oversized prefix lengths and requires no
+decidable equality on the coefficient field. `prefixSpan_mul_traceChange` gives the equivalent
+product-form result. Applying the replay theorem to `ops.take n` preserves every prefix after any
+finite initial segment. The API accepts arbitrary operation lists; it neither chooses operations
+nor claims that every trace is a reduction run or that pivots decrease along it.
+
+`TraceExamples.lean` checks the executable chronological product over `ℚ` and `ZMod 2`, including
+an order-sensitive two-step example, repeated targets, a zero coefficient, empty dimensions, and
+zero input. These fixtures illustrate the finite algebra only; they do not construct a reducer,
+inverse certificate, grading, or barcode.
