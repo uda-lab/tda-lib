@@ -39,3 +39,5 @@ import TDA.Simplicial.ChainComplex
 import TDA.Topology.Cosheaf
 import TDA.Topology.PathCover
 import TDA.Topology.PathCoverExamples
+import TDA.Filtration.FilterFunction
+import TDA.Filtration.FilterFunctionExamples
