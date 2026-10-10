@@ -9,16 +9,15 @@ along the inclusion `toOpensFunctor : OpenInterval ⥤ Opens ℝ` of the interva
 restriction `intervalComponents f = toOpensFunctor ⋙ componentFunctor f` sends an open interval
 `I` to the path components of the inverse-image subspace `{x // f x ∈ I}` and an inclusion of
 intervals to the map induced on representatives: the path-component pre-cosheaf over open
-intervals of de Silva–Munch–Patel (Example 3.3 and §3.4). The empty interval has no components. This is a precosheaf on the
-interval category; no cosheaf condition is stated here. See `docs/math/reeb-perturbation.md`.
+intervals of de Silva–Munch–Patel (Example 3.3 and §3.4). The empty interval has no components.
+This is a precosheaf on the interval category; no cosheaf condition is stated here. See
+`docs/math/reeb-perturbation.md`.
 -/
 
 open Set CategoryTheory
 open scoped NNReal
 
 universe u
-
-/-! ## Module `TDA/Reeb/IntervalComponents.lean` -/
 
 namespace TDA.Reeb
 

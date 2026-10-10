@@ -89,8 +89,7 @@ cosheaves is at most `‖f − g‖_∞`. The proof assumes `‖f − g‖_∞ �
 path components, and observes that naturality and the interleaving conditions hold because
 diagrams of inclusions commute. `perturbationInterleaving` is this witness construction.
 
-- The hypothesis is the pointwise bound. For a finite `ε` it is equivalent to
-  `‖f − g‖_∞ ≤ ε`. The distance inequality itself is not stated here.
+- The hypothesis is the pointwise bound, which is equivalent to `‖f − g‖_∞ ≤ ε`. The distance inequality itself is not stated here.
 - The source calls the component functors cosheaves; the construction uses only the
   precosheaves, and the source notes that the cosheaf condition is not needed for the stability
   theorem.

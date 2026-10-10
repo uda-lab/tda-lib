@@ -32,8 +32,8 @@ example {X : Type*} [TopologicalSpace X] (f : C(X, ℝ)) :
     Interleaving 0 (intervalComponents f) (intervalComponents f) :=
   perturbationInterleaving (fun x => by simp)
 
-/-- The witness inhabits the perturbation hypothesis over
-`toOpensFunctor ⋙ componentFunctor f`, with the same argument order. -/
+/-- The witness inhabits the perturbation hypothesis stated directly over
+`toOpensFunctor ⋙ componentFunctor f`, taking `f`, `g`, `ε` and the bound in that order. -/
 example : ∀ {X : Type} [TopologicalSpace X] (f g : C(X, ℝ)) (ε : ℝ≥0),
     (∀ x, |f x - g x| ≤ ε) →
       Interleaving ε (toOpensFunctor ⋙ componentFunctor f) (toOpensFunctor ⋙ componentFunctor g) :=

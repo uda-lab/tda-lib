@@ -105,7 +105,7 @@ theorem perturbationInterleaving_φ {f g : C(X, ℝ)} {ε : ℝ≥0} (hfg : ∀ 
 theorem perturbationInterleaving_ψ {f g : C(X, ℝ)} {ε : ℝ≥0} (hfg : ∀ x, |f x - g x| ≤ ε) :
     (perturbationInterleaving hfg).ψ = perturbationNatTrans (perturbationBound_symm hfg) := rfl
 
-/-- Existence form, for the interleaving distance. -/
+/-- Existence form of `perturbationInterleaving`. -/
 theorem nonempty_interleaving_of_abs_sub_le {f g : C(X, ℝ)} {ε : ℝ≥0}
     (hfg : ∀ x, |f x - g x| ≤ ε) :
     Nonempty (Interleaving ε (intervalComponents f) (intervalComponents g)) :=
