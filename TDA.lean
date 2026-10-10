@@ -41,6 +41,9 @@ import TDA.Reeb.PerturbationExamples
 import TDA.Reeb.Quotient
 import TDA.Reeb.QuotientComparison
 import TDA.Reeb.QuotientComparisonExamples
+import TDA.Reeb.RGraph
+import TDA.Reeb.RGraphExamples
+import TDA.Reeb.RGraphRefinement
 import TDA.Reeb.Smoothing
 import TDA.Reeb.SmoothingExamples
 import TDA.Reeb.Stability
