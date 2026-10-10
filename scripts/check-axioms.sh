@@ -97,7 +97,7 @@ for decl in $expected; do
       esac
       ;;
   esac
-  if [ -z "$axioms" ] || printf '%s\n' "$axioms" | grep -q -e '^$' -e '[][[:space:]]'; then
+  if [ -z "$axioms" ] || grep -q -e '^$' -e '[][[:space:]]' <<<"$axioms"; then
     echo "ERROR: malformed '#print axioms' record for $decl: $rec" >&2
     FAIL=1
     continue
