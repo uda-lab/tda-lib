@@ -48,4 +48,5 @@ are executable.
   [Issue #110](https://github.com/uda-lab/tda-lib/issues/110).
 - The examples live in
   [`CompatibleOrderTransferExamples.lean`](../../TDA/Filtration/CompatibleOrderTransferExamples.lean).
-  This unit adds no dependency, vertex order, grade default, or additional instance.
+  The public API adds no dependency, vertex order, grade default, or global instance; fixture
+  instances remain private.
