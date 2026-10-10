@@ -1129,3 +1129,13 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructibleCylinder.pinch_swap_regularFiberMap
 #print axioms TDA.Reeb.Examples.ConstructibleCylinder.pinch_swap_regularFiberMap_indep
 #print axioms TDA.Reeb.Examples.ConstructibleCylinder.pinch_edgeComponentsEquiv_indep
+
+-- Canonical grade-compatible actual-face enumeration (Issue #99).
+#print axioms TDA.Filtration.CompatibleOrder.mk
+#print axioms TDA.Filtration.CompatibleOrder.enum
+#print axioms TDA.Filtration.CompatibleOrder.face_lt
+#print axioms TDA.Filtration.CompatibleOrder.monotone
+#print axioms TDA.Filtration.CompatibleOrder.lexKey
+#print axioms TDA.Filtration.CompatibleOrder.lexKey_injective
+#print axioms TDA.Filtration.CompatibleOrder.ofLex
+#print axioms TDA.Filtration.CompatibleOrder.ofLex_key_strictMono
