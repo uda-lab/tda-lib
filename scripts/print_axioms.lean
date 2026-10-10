@@ -386,3 +386,25 @@ import TDA
 #print axioms TDA.Reeb.Examples.sheets_φ_injective
 #print axioms TDA.Reeb.Examples.sheets_two_components
 #print axioms TDA.Reeb.Examples.sheets_not_zero_interleaved
+
+-- Extended interleaving distance and perturbation distance bounds (Issue #33).
+#print axioms TDA.Reeb.interleavingDistance
+#print axioms TDA.Reeb.interleavingDistance_le_of_nonempty
+#print axioms TDA.Reeb.Interleaving.interleavingDistance_le
+#print axioms TDA.Reeb.le_interleavingDistance_iff
+#print axioms TDA.Reeb.interleavingDistance_lt_iff
+#print axioms TDA.Reeb.interleavingDistance_eq_top_iff
+#print axioms TDA.Reeb.Interleaving.interleavingDistance_eq_zero
+#print axioms TDA.Reeb.interleavingDistance_self
+#print axioms TDA.Reeb.interleavingDistance_eq_zero_of_iso
+#print axioms TDA.Reeb.interleavingDistance_comm
+#print axioms TDA.Reeb.interleavingDistance_triangle
+#print axioms TDA.Reeb.interleavingDistance_congr
+#print axioms TDA.Reeb.interleavingDistance_eq_zero_iff
+#print axioms TDA.Reeb.interleavingDistance_smoothing_le
+#print axioms TDA.Reeb.interleavingDistance_smoothing_self_le
+#print axioms TDA.Reeb.interleavingDistance_intervalComponents_le
+#print axioms TDA.Reeb.interleavingDistance_smoothing_intervalComponents_le
+#print axioms TDA.Reeb.Examples.point_closure_distance
+#print axioms TDA.Reeb.Examples.const_empty_const_unit_distance
+#print axioms TDA.Reeb.Examples.point_distance_eq_one
