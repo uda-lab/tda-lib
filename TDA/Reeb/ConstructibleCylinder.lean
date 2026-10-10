@@ -16,7 +16,8 @@ arbitrary topological pieces, and write `X = P.Realization S` and `h = P.height 
 interval `W`, `P.heightPreimage S W` is the subspace `{x : X // h x ∈ W}`; its path components are
 `(intervalComponents h).obj W` by definition (`intervalComponents_obj_eq`). This file proves the
 homotopy equivalences of the cylinder principle of de Silva–Munch–Patel (Lemma 2.4), with its
-incidence diagrams on path components and its naturality for the actual fiber inclusions, and
+incidence diagrams (2.5) on path components and its naturality (2.6) for the actual fiber
+inclusions, and
 the constructibility of the path-component cosheaf of a realization (Proposition 3.16).
 
 ## Hypotheses
@@ -498,13 +499,14 @@ theorem regularClamp_one_mem (e : Fin n) (t : (S.K e : Set ℝ)) (u : P.heightPr
     (P.clampFamily_one_mem_Icc (regularClamp S e t) u).1
 
 /-- The retraction of the star onto its vertex piece (the clamp end, read in the critical
-fiber). -/
+fiber). It is a chosen homotopy inverse of `vertexFiberInclusion`, not part of the interface. -/
 def vertexRetraction (i : Fin (n + 1)) : C(P.heightPreimage S (S.J i), P.V i) :=
   (⟨(P.criticalFiberHomeomorph S i).symm, (P.criticalFiberHomeomorph S i).symm.continuous⟩ : C(_, P.V i)).comp
     ⟨fun u => ⟨P.clampFamily (vertexClamp S i) u 1, P.vertexClamp_one_mem S i u⟩,
       (P.continuous_clampFamily_one _).subtype_mk _⟩
 
-/-- The retraction of the gap onto the regular fiber at `t`. -/
+/-- The retraction of the gap onto the regular fiber at `t`. It is a chosen homotopy inverse of
+`regularFiberInclusion`, not part of the interface. -/
 def regularRetraction (e : Fin n) (t : (S.K e : Set ℝ)) : C(P.heightPreimage S (S.K e), P.E e) :=
   (⟨(P.regularFiberHomeomorph S e t).symm, (P.regularFiberHomeomorph S e t).symm.continuous⟩ : C(_, P.E e)).comp
     ⟨fun u => ⟨P.clampFamily (regularClamp S e t) u 1, P.regularClamp_one_mem S e t u⟩,

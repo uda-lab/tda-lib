@@ -178,12 +178,13 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
 
 - §2.2, Lemma 2.4 (cylinder principle): the fiber inclusions `𝕍ᵢ → f⁻¹(aᵢ₋₁, aᵢ₊₁)` and
   `𝔼ᵢ → f⁻¹(aᵢ, aᵢ₊₁)` at some `a ∈ (aᵢ, aᵢ₊₁)` are homotopy equivalences fitting into the
-  incidence diagrams. Here they are `vertexHomotopyEquiv` and `regularHomotopyEquiv`, for
-  arbitrary pieces. Its incidence diagrams are proved on path components
-  (`map_K_le_J_castSucc_edgeComponentsEquiv`, `map_K_le_J_succ_edgeComponentsEquiv`), and its
-  naturality as exact squares of the actual fiber inclusions (`vertexFiberInclusion_naturality`,
-  `regularFiberInclusion_naturality`). The parenthesis of the lemma
-  indexes the absent edge sets so that the first genuine edge set would be empty. Here the
+  incidence diagrams (2.5), which commute up to homotopy, and natural in the sense of (2.6). Here
+  the homotopy equivalences are `vertexHomotopyEquiv` and `regularHomotopyEquiv`, for arbitrary
+  pieces. The incidence diagrams are proved on path components
+  (`map_K_le_J_castSucc_edgeComponentsEquiv`, `map_K_le_J_succ_edgeComponentsEquiv`), and the
+  naturality as exact squares of the actual fiber inclusions
+  (`vertexFiberInclusion_naturality`, `regularFiberInclusion_naturality`). The parenthesis of the
+  lemma indexes the absent edge sets so that the first genuine edge set would be empty. Here the
   incident edges of level `i` are the `e` with `e.castSucc = i` or `e.succ = i`, and `n = 0` has
   no edge.
 - §3.4, Proposition 3.16: the path-component cosheaf of a constructible ℝ-space is constructible
