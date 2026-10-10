@@ -408,3 +408,9 @@ import TDA
 #print axioms TDA.Persistence.barcodeModuleOfList_finiteDimensional
 #print axioms TDA.Persistence.barcodeModule_finiteDimensional
 #print axioms TDA.Persistence.rank_emptyBarcode
+
+-- Ordered actual-face square-zero and ordinary chain complex (Issue #39).
+#print axioms TDA.Simplicial.boundary_comp_boundary
+#print axioms TDA.Simplicial.simplicialChainComplex_X
+#print axioms TDA.Simplicial.simplicialChainComplex_d
+#print axioms TDA.Simplicial.simplicialChainComplex_d_zero
