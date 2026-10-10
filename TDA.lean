@@ -14,10 +14,15 @@ import TDA.Reeb.ComponentsCoverExamples
 import TDA.Reeb.ComponentsExamples
 import TDA.Reeb.ComponentsGluing
 import TDA.Reeb.ComponentsGluingExamples
+import TDA.Reeb.InterleavingDistance
+import TDA.Reeb.InterleavingDistanceExamples
 import TDA.Reeb.Interval
 import TDA.Reeb.IntervalComponents
+import TDA.Reeb.IntervalCosheaf
+import TDA.Reeb.IntervalCosheafExamples
 import TDA.Reeb.IntervalExamples
 import TDA.Reeb.Perturbation
+import TDA.Reeb.PerturbationDistance
 import TDA.Reeb.PerturbationExamples
 import TDA.Reeb.Quotient
 import TDA.Reeb.QuotientComparison
