@@ -70,3 +70,5 @@ import TDA.Filtration.CompatibleOrderExamples
 import TDA.Simplicial.FiniteComplexExamples
 import TDA.Filtration.CriticalValues
 import TDA.Filtration.CriticalValuesExamples
+import TDA.Filtration.CompatibleOrderPrefix
+import TDA.Filtration.CompatibleOrderPrefixExamples

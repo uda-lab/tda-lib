@@ -1630,3 +1630,16 @@ import TDA
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.isIso_collapseToPoint
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.constInterval_not_isRGraph
 #print axioms TDA.Reeb.Examples.RGraphCosheafEquivalence.negative_boundary
+#print axioms TDA.Filtration.CompatibleOrder.prefixComplex
+#print axioms TDA.Filtration.CompatibleOrder.mem_prefixComplex
+#print axioms TDA.Filtration.CompatibleOrder.prefixComplex_zero
+#print axioms TDA.Filtration.CompatibleOrder.prefixComplex_eq_self_of_card_le
+#print axioms TDA.Filtration.CompatibleOrder.prefixComplex_mono
+#print axioms TDA.Filtration.CompatibleOrder.prefixFiltration
+#print axioms TDA.Filtration.CompatibleOrder.sublevelCount
+#print axioms TDA.Filtration.CompatibleOrder.sublevelCount_le_card
+#print axioms TDA.Filtration.CompatibleOrder.sublevelCount_mono
+#print axioms TDA.Filtration.CompatibleOrder.value_le_iff_index_lt_sublevelCount
+#print axioms TDA.Filtration.CompatibleOrder.sublevel_eq_prefixComplex
+#print axioms TDA.Filtration.CompatibleOrder.thresholdMap
+#print axioms TDA.Filtration.CompatibleOrder.reindex_prefixFiltration
