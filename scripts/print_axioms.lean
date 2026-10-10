@@ -387,6 +387,12 @@ import TDA
 #print axioms TDA.Reeb.Examples.sheets_two_components
 #print axioms TDA.Reeb.Examples.sheets_not_zero_interleaved
 
+-- Ordered actual-face square-zero and ordinary chain complex (Issue #39).
+#print axioms TDA.Simplicial.boundary_comp_boundary
+#print axioms TDA.Simplicial.simplicialChainComplex_X
+#print axioms TDA.Simplicial.simplicialChainComplex_d
+#print axioms TDA.Simplicial.simplicialChainComplex_d_zero
+
 -- Smoothing preserves the interval cosheaf condition (Issue #31).
 #print axioms TDA.Topology.map_apply_eq_of_thin
 #print axioms TDA.Topology.map_map_apply_of_thin
