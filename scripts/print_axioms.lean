@@ -18,6 +18,17 @@ import TDA
 #print axioms TDA.Persistence.Reduction.prefixSpan_mul_transvection
 #print axioms TDA.Persistence.Reduction.prefixSpan_cancel
 
+-- Finite earlier-column trace replay and prefix preservation (Issue #75).
+#print axioms TDA.Persistence.Reduction.replay_nil
+#print axioms TDA.Persistence.Reduction.replay_cons
+#print axioms TDA.Persistence.Reduction.traceChange_nil
+#print axioms TDA.Persistence.Reduction.traceChange_cons
+#print axioms TDA.Persistence.Reduction.replay_eq_mul_traceChange
+#print axioms TDA.Persistence.Reduction.replay_append
+#print axioms TDA.Persistence.Reduction.traceChange_append
+#print axioms TDA.Persistence.Reduction.prefixSpan_replay
+#print axioms TDA.Persistence.Reduction.prefixSpan_mul_traceChange
+
 -- Support-aware filtration API (Issue #10).
 #print axioms TDA.Filtration.mem_support_iff
 #print axioms TDA.Filtration.mem_bot_iff
