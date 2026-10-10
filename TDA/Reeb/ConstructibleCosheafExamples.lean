@@ -28,6 +28,8 @@ cosheaf below is an actual interval component functor with the merged cosheaf la
 * Refinement `{0, 2} → {0, 1, 2}`: the strip stays constructible and the envelope shrinks.
 * Levels `{0, 2, 3}`: the two gaps meet no level, yet the strip has a nonempty value on one and an
   empty value on the other, so equal (empty) critical hits do not identify gap values.
+* The line `PUnit × ℝ → ℝ` is constructible at no list of levels; a strip with values in
+  `Type 1` exercises the equivalence above value universe `0`.
 * Finite data: zero data, isolated vertices, parallel edges with a noninjective endpoint, a
   noninjective collapse map, and an automorphism inverted through `FiniteReebData.Hom.inv`.
 -/
@@ -737,6 +739,29 @@ example : (S2.natTransEquivShortMaps (strip_isConstructibleAt PUnit.{1})
     (intervalComponents_isIntervalCosheaf _) (strip_isConstructibleAt PUnit.{1})
     (intervalComponents_isIntervalCosheaf _)).symm (CriticalValues.ShortMaps.id _) = 𝟙 _ :=
   (Equiv.symm_apply_eq _).2 (S2.restrict_id _).symm
+
+/-- Value universe above `0`: the strip of `PUnit.{2}` has values in `Type 1`, and the
+equivalence and the isomorphism criterion apply there with covers in universe `0`. -/
+example (α : intervalComponents (strip PUnit.{2}) ⟶ intervalComponents (strip PUnit.{2})) :
+    (S2.natTransEquivShortMaps (strip_isConstructibleAt PUnit.{2})
+      (intervalComponents_isIntervalCosheaf _) (strip_isConstructibleAt PUnit.{2})
+      (intervalComponents_isIntervalCosheaf _)).symm (S2.restrict α) = α :=
+  (S2.natTransEquivShortMaps _ _ _ _).symm_apply_apply α
+
+example {F G : OpenInterval ⥤ Type 3} {n : ℕ} (S : CriticalValues n)
+    (hF : S.IsConstructibleAt F) (hFc : IsIntervalCosheaf.{0} F) (hG : S.IsConstructibleAt G)
+    (hGc : IsIntervalCosheaf.{0} G) (α : F ⟶ G) :
+    IsIso α ↔ (∀ i, Function.Bijective (α.app (S.J i))) ∧
+      ∀ e, Function.Bijective (α.app (S.K e)) :=
+  S.isIso_iff_shortIntervals hF hFc hG hGc α
+
+/-- The unbounded projection `PUnit × ℝ → ℝ` has a nonempty exterior tail, so it is not
+constructible at any critical values. -/
+theorem line_not_constructible {n : ℕ} (S : CriticalValues n) :
+    ¬ S.IsConstructibleAt
+      (intervalComponents (⟨Prod.snd, continuous_snd⟩ : C(PUnit.{1} × ℝ, ℝ))) :=
+  fun h => h.isEmpty_lowerTail.false
+    (ZerothHomotopy.mk ⟨(PUnit.unit, S.value 0 - 1), show S.value 0 - 1 < S.value 0 by linarith⟩)
 
 /-! ### Refinement `{0, 2} → {0, 1, 2}` and distinct gap values -/
 

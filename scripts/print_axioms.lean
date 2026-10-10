@@ -801,3 +801,4 @@ import TDA
 #print axioms TDA.Reeb.Examples.Constructible.zeroCosheaf_isConstructibleAt
 #print axioms TDA.Reeb.Examples.Constructible.zeroCosheaf_isEmpty
 #print axioms TDA.Reeb.Examples.Constructible.zeroCosheaf_isIntervalCosheaf
+#print axioms TDA.Reeb.Examples.Constructible.line_not_constructible
