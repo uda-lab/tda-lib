@@ -15,11 +15,15 @@ import TDA.Persistence.Reduction.TraceExamples
 import TDA.Reeb.Components
 import TDA.Reeb.ComponentsCover
 import TDA.Reeb.ComponentsCoverExamples
+import TDA.Reeb.ComponentsDiscrete
 import TDA.Reeb.ComponentsExamples
 import TDA.Reeb.ComponentsGluing
 import TDA.Reeb.ComponentsGluingExamples
+import TDA.Reeb.ComponentsHomotopy
 import TDA.Reeb.ConstructibleCosheaf
 import TDA.Reeb.ConstructibleCosheafExamples
+import TDA.Reeb.ConstructibleCylinder
+import TDA.Reeb.ConstructibleCylinderExamples
 import TDA.Reeb.ConstructibleSpace
 import TDA.Reeb.ConstructibleSpaceExamples
 import TDA.Reeb.CriticalValues
