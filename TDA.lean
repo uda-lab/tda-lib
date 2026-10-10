@@ -44,6 +44,8 @@ import TDA.Reeb.StabilityExamples
 import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
 import TDA.Simplicial.ChainComplex
+import TDA.Simplicial.Inclusion
+import TDA.Simplicial.InclusionExamples
 import TDA.Topology.Cosheaf
 import TDA.Topology.PathCover
 import TDA.Topology.PathCoverExamples
