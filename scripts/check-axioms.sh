@@ -58,19 +58,47 @@ FAIL=0
 n=0
 for decl in $expected; do
   n=$((n + 1))
-  rec="$(printf '%s\n' "$records" | grep -F "'$decl'" || true)"
-  if [ -z "$rec" ]; then
+  # Select the records whose leading token is exactly '<decl>' followed by a space. The
+  # comparison is a literal prefix test (no regex), so the pin X never selects X', X'', ...
+  prefix="'$decl' "
+  rec="$(printf '%s\n' "$records" | PREFIX="$prefix" awk 'index($0, ENVIRON["PREFIX"]) == 1')"
+  count=0
+  [ -z "$rec" ] || count="$(printf '%s\n' "$rec" | wc -l | tr -d ' ')"
+  if [ "$count" -eq 0 ]; then
     echo "ERROR: no '#print axioms' output for $decl (declaration missing or renamed?)." >&2
     FAIL=1
     continue
   fi
-  if printf '%s\n' "$rec" | grep -q "does not depend on any axioms"; then
-    echo "OK: $decl — no axioms."
+  if [ "$count" -ne 1 ]; then
+    pins="$(printf '%s\n' "$expected" | grep -cxF -- "$decl" || true)"
+    if [ "$pins" -gt 1 ]; then
+      echo "ERROR: $decl is pinned $pins times in $SCRIPT; pin it once." >&2
+    else
+      echo "ERROR: $count '#print axioms' records for $decl; expected exactly one." >&2
+    fi
+    FAIL=1
     continue
   fi
-  axioms="$(printf '%s\n' "$rec" | sed -n 's/.*\[\(.*\)\].*/\1/p' | tr ',' '\n' | tr -d ' ' | sed '/^$/d')"
-  if [ -z "$axioms" ]; then
-    echo "ERROR: could not parse axiom list for $decl: $rec" >&2
+  # Parse only the sole record: exactly the no-axioms body, or one non-empty bracketed list of
+  # comma-separated names (a wrapped list arrives joined with spaces). Anything else is malformed.
+  body="$(printf '%s\n' "${rec#"$prefix"}" | sed 's/[[:space:]]*$//')"
+  axioms=""
+  case "$body" in
+    "does not depend on any axioms")
+      echo "OK: $decl — no axioms."
+      continue
+      ;;
+    "depends on axioms: ["*"]")
+      list="${body#"depends on axioms: ["}"; list="${list%"]"}"
+      list="$(printf '%s\n' "$list" | sed 's/[[:space:]]*$//')"
+      case "$list" in
+        *,) ;;  # a trailing empty entry, which the command substitution below would drop
+        *) axioms="$(printf '%s\n' "$list" | tr ',' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')" ;;
+      esac
+      ;;
+  esac
+  if [ -z "$axioms" ] || grep -q -e '^$' -e '[][[:space:]]' <<<"$axioms"; then
+    echo "ERROR: malformed '#print axioms' record for $decl: $rec" >&2
     FAIL=1
     continue
   fi
