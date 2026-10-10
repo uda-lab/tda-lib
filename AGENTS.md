@@ -29,7 +29,7 @@ optional supported Bash adapters; their activation depends on harness support an
 
 ## Architecture
 - `TDA/` is the library; mathlib is pinned. Research mathlib and TauCeti before introducing duplicate foundations or dependency changes.
-- Normal work: Issue → issue branch from develop → PR to develop → independent review → check → squash merge. Stable release promotions use reviewed PRs to main and tags; no direct pushes to either branch.
+- Normal work: Issue → issue branch from develop → PR to develop → independent review → check → squash merge, except that ordinary `develop` PRs use the October local-CI substitute described in `.agents/skills/tda-lib-orchestration/SKILL.md` and ADR 0002 through 2026-10-31 23:59:59 JST. Stable release promotions use reviewed PRs to main and tags; no direct pushes to either branch.
 - Project Ready is not execution authorization. dot or an authorized maintainer applies `agent:ready` only after specification, required independent audits, dependencies and validation are verified; no routine human reapproval. `blocked`, `needs-decision`, `do-not-merge` remain hard stops.
 - Mathematical sources and conventions belong in `docs/math/`; overall roadmap stays in the Project, execution contracts in Issues. Scratch, logs and review evidence stay out of tracked files.
 
