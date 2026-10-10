@@ -387,6 +387,12 @@ import TDA
 #print axioms TDA.Reeb.Examples.sheets_two_components
 #print axioms TDA.Reeb.Examples.sheets_not_zero_interleaved
 
+-- Ordered actual-face square-zero and ordinary chain complex (Issue #39).
+#print axioms TDA.Simplicial.boundary_comp_boundary
+#print axioms TDA.Simplicial.simplicialChainComplex_X
+#print axioms TDA.Simplicial.simplicialChainComplex_d
+#print axioms TDA.Simplicial.simplicialChainComplex_d_zero
+
 -- Extended interleaving distance and perturbation distance bounds (Issue #33).
 #print axioms TDA.Reeb.interleavingDistance
 #print axioms TDA.Reeb.interleavingDistance_le_of_nonempty
