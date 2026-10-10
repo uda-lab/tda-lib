@@ -58,24 +58,65 @@ FAIL=0
 n=0
 for decl in $expected; do
   n=$((n + 1))
-  rec="$(printf '%s\n' "$records" | grep -F "'$decl'" || true)"
-  if [ -z "$rec" ]; then
+  # The quoted declaration name is followed by a space in each Lean record.
+  # Match that complete literal prefix so X cannot select X', and count before
+  # parsing so missing or duplicate records fail closed.
+  prefix="'$decl' "
+  rec=""
+  matches=0
+  while IFS= read -r candidate; do
+    if [[ "$candidate" == "$prefix"* ]]; then
+      rec="$candidate"
+      matches=$((matches + 1))
+    fi
+  done <<< "$records"
+
+  if [ "$matches" -eq 0 ]; then
     echo "ERROR: no '#print axioms' output for $decl (declaration missing or renamed?)." >&2
     FAIL=1
     continue
   fi
-  if printf '%s\n' "$rec" | grep -q "does not depend on any axioms"; then
+  if [ "$matches" -ne 1 ]; then
+    echo "ERROR: expected exactly one '#print axioms' output for $decl; found $matches records." >&2
+    FAIL=1
+    continue
+  fi
+
+  body="${rec#"$prefix"}"
+  if [ "$body" = "does not depend on any axioms" ]; then
     echo "OK: $decl — no axioms."
     continue
   fi
-  axioms="$(printf '%s\n' "$rec" | sed -n 's/.*\[\(.*\)\].*/\1/p' | tr ',' '\n' | tr -d ' ' | sed '/^$/d')"
-  if [ -z "$axioms" ]; then
+  if [[ "$body" != "depends on axioms: ["*"]" ]]; then
+    echo "ERROR: unrecognized '#print axioms' record for $decl: $rec" >&2
+    FAIL=1
+    continue
+  fi
+  axiom_list="$(printf '%s\n' "$body" | sed -n 's/^depends on axioms: \[\(.*\)\]$/\1/p')"
+  if [ -z "$axiom_list" ] || [[ "$axiom_list" == ,* || "$axiom_list" == *, || "$axiom_list" == *,,* ]]; then
+    echo "ERROR: could not parse axiom list for $decl: $rec" >&2
+    FAIL=1
+    continue
+  fi
+  IFS=',' read -r -a axiom_names <<< "$axiom_list"
+  parse_bad=0
+  for i in "${!axiom_names[@]}"; do
+    ax="${axiom_names[$i]}"
+    ax="${ax#"${ax%%[![:blank:]]*}"}"
+    ax="${ax%"${ax##*[![:blank:]]}"}"
+    if [ -z "$ax" ] || [[ "$ax" == *[[:blank:]]* ]]; then
+      parse_bad=1
+      break
+    fi
+    axiom_names[$i]="$ax"
+  done
+  if [ "$parse_bad" -ne 0 ]; then
     echo "ERROR: could not parse axiom list for $decl: $rec" >&2
     FAIL=1
     continue
   fi
   bad=0
-  for ax in $axioms; do
+  for ax in "${axiom_names[@]}"; do
     case " $ALLOW " in
       *" $ax "*) ;;
       *)
@@ -93,7 +134,8 @@ for decl in $expected; do
   if [ "$bad" -ne 0 ]; then
     FAIL=1
   else
-    echo "OK: $decl — axioms ⊆ {$ALLOW}: [$(printf '%s' "$axioms" | tr '\n' ' ' | sed 's/ $//')]"
+    axiom_summary="${axiom_names[*]}"
+    echo "OK: $decl — axioms ⊆ {$ALLOW}: [$axiom_summary]"
   fi
 done
 

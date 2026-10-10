@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Self-test for the textual guards' shared lexer (scripts/lean-code-scan.awk), the
-# root-aggregator guard, the exposition note check and the build lock.
+# live axiom audit record parser, the root-aggregator guard, the exposition note check
+# and the build lock.
 # Each case is a Lean snippet plus the expected number of violating lines per mode.
-# Run after every edit of the lexer:  bash scripts/test-guards.sh
+# Run after edits to the lexer or axiom audit parser:  bash scripts/test-guards.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
@@ -160,6 +161,169 @@ hits="$(awk -v mode=stable_axiom -f scripts/lean-code-scan.awk "$tmp/stable-axio
 if [ "$hits" -ne 1 ]; then echo "FAIL [stable:marked_axiom]: expected one declaration"; fail=1; fi
 
 if [ "$fail" -eq 0 ]; then echo "guard lexer self-test OK ($n cases)"; else exit 1; fi
+
+# --- live axiom audit parser ---------------------------------------------------------------
+# Each fixture copies the real audit script into a temporary repository and stubs only its
+# Lean wrapper output. Deliberately bad axiom records never enter the tracked library.
+audit_fail=0; audit_n=0
+audit_case() {  # audit_case <name> <expected-exit> <<'EOF' PINS / OUTPUT / EXPECT sections
+  local name="$1" want="$2" d="$tmp/axiom-$1" section="" line got=0 checkline count
+  audit_n=$((audit_n + 1))
+  mkdir -p "$d/scripts" "$d/bin"
+  cp scripts/check-axioms.sh "$d/scripts/"
+  printf 'name = "TDA"\n' > "$d/lakefile.toml"
+  printf '#!/bin/sh\nexit 0\n' > "$d/bin/lake"
+  chmod +x "$d/bin/lake"
+  cat > "$d/scripts/lean.sh" <<'EOF_AUDIT_WRAPPER'
+#!/usr/bin/env bash
+cat "$TDA_AUDIT_OUTPUT_FILE"
+EOF_AUDIT_WRAPPER
+  chmod +x "$d/scripts/lean.sh"
+  : > "$d/scripts/print_axioms.lean"
+  : > "$d/output"
+  : > "$d/expected"
+  while IFS= read -r line; do
+    case "$line" in
+      PINS|OUTPUT|EXPECT) section="$line"; continue ;;
+    esac
+    case "$section" in
+      PINS) printf '#print axioms %s\n' "$line" >> "$d/scripts/print_axioms.lean" ;;
+      OUTPUT) printf '%s\n' "$line" >> "$d/output" ;;
+      EXPECT) printf '%s\n' "$line" >> "$d/expected" ;;
+      *) echo "FAIL [axiom:$name]: fixture data before a section"; audit_fail=1 ;;
+    esac
+  done
+  if env PATH="$d/bin:$PATH" TDA_AUDIT_OUTPUT_FILE="$d/output" \
+      bash "$d/scripts/check-axioms.sh" > "$d/result" 2>&1; then
+    got=0
+  else
+    got=$?
+  fi
+  if [ "$got" -ne "$want" ]; then
+    echo "FAIL [axiom:$name]: want exit $want got $got"; audit_fail=1
+  fi
+  while IFS= read -r checkline; do
+    count="$(grep -F -x -c -- "$checkline" "$d/result" || true)"
+    if [ "$count" -ne 1 ]; then
+      echo "FAIL [axiom:$name]: expected exactly one output line '$checkline', got $count"; audit_fail=1
+    fi
+  done < "$d/expected"
+}
+
+audit_case bad_short_free_prime 1 <<'EOF'
+PINS
+TDA.X
+TDA.X'
+OUTPUT
+'TDA.X' depends on axioms: [sorryAx]
+'TDA.X'' does not depend on any axioms
+EXPECT
+ERROR: TDA.X is incomplete (depends on sorryAx).
+OK: TDA.X' — no axioms.
+EOF
+
+audit_case free_short_bad_prime 1 <<'EOF'
+PINS
+TDA.X
+TDA.X'
+OUTPUT
+'TDA.X' does not depend on any axioms
+'TDA.X'' depends on axioms: [Lean.ofReduceBool]
+EXPECT
+OK: TDA.X — no axioms.
+ERROR: TDA.X' depends on unexpected trust Lean.ofReduceBool.
+EOF
+
+audit_case both_allowed 0 <<'EOF'
+PINS
+TDA.X
+TDA.X'
+OUTPUT
+'TDA.X' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TDA.X'' depends on axioms: [propext, Classical.choice, Quot.sound]
+EXPECT
+OK: TDA.X — axioms ⊆ {propext Classical.choice Quot.sound}: [propext Classical.choice Quot.sound]
+OK: TDA.X' — axioms ⊆ {propext Classical.choice Quot.sound}: [propext Classical.choice Quot.sound]
+EOF
+
+audit_case missing_exact 1 <<'EOF'
+PINS
+TDA.X
+OUTPUT
+'TDA.X'' does not depend on any axioms
+EXPECT
+ERROR: no '#print axioms' output for TDA.X (declaration missing or renamed?).
+EOF
+
+audit_case duplicate_exact 1 <<'EOF'
+PINS
+TDA.X
+OUTPUT
+'TDA.X' does not depend on any axioms
+'TDA.X' depends on axioms: [sorryAx]
+EXPECT
+ERROR: expected exactly one '#print axioms' output for TDA.X; found 2 records.
+EOF
+
+audit_case wrapped_list_and_no_axioms 0 <<'EOF'
+PINS
+TDA.X
+TDA.Y
+OUTPUT
+'TDA.X' depends on axioms: [propext,
+ Classical.choice, Quot.sound]
+'TDA.Y' does not depend on any axioms
+EXPECT
+OK: TDA.X — axioms ⊆ {propext Classical.choice Quot.sound}: [propext Classical.choice Quot.sound]
+OK: TDA.Y — no axioms.
+EOF
+
+audit_case literal_names 1 <<'EOF'
+PINS
+TDA.a.b
+TDA.a+b
+TDA.a
+TDA.a'
+OUTPUT
+'TDA.axb' does not depend on any axioms
+'TDA.ab' does not depend on any axioms
+'TDA.a' does not depend on any axioms
+'TDA.a'' does not depend on any axioms
+EXPECT
+ERROR: no '#print axioms' output for TDA.a.b (declaration missing or renamed?).
+ERROR: no '#print axioms' output for TDA.a+b (declaration missing or renamed?).
+OK: TDA.a — no axioms.
+OK: TDA.a' — no axioms.
+EOF
+
+audit_case malformed_record 1 <<'EOF'
+PINS
+TDA.X
+OUTPUT
+'TDA.X' depends on axioms [sorryAx]
+EXPECT
+ERROR: unrecognized '#print axioms' record for TDA.X: 'TDA.X' depends on axioms [sorryAx]
+EOF
+
+audit_case empty_axiom_entry 1 <<'EOF'
+PINS
+TDA.X
+OUTPUT
+'TDA.X' depends on axioms: [propext,, Quot.sound]
+EXPECT
+ERROR: could not parse axiom list for TDA.X: 'TDA.X' depends on axioms: [propext,, Quot.sound]
+EOF
+
+audit_case internal_space_in_axiom 1 <<'EOF'
+PINS
+TDA.X
+OUTPUT
+'TDA.X' depends on axioms: [prope xt, Quot.sound]
+EXPECT
+ERROR: could not parse axiom list for TDA.X: 'TDA.X' depends on axioms: [prope xt, Quot.sound]
+EOF
+
+if [ "$audit_fail" -eq 0 ]; then echo "axiom audit parser self-test OK ($audit_n cases)"; else exit 1; fi
 
 # --- root-aggregator guard (scripts/check-root-aggregator.sh) ------------------------------
 # Each case runs the real guard inside a fixture repository: a copy of lakefile.toml, the guard,
