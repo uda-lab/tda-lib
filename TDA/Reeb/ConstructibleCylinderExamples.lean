@@ -18,6 +18,9 @@ All fixtures compute the actual `intervalComponents` of realized finite data
 * The regular interval `(1/4, 3/4)` avoids every level, has a nonempty inverse image with two
   components, and its inclusion into the gap is bijective.
 * Empty values: on the lower tail for `n = 0` and on `(2, 3)` above all levels of the pinch.
+* Height independence: the realized map of the pinch reversing the edges has the same regular
+  fiber map, the reversal, at the heights `1/2` and `3/4`; it is not the identity.
+  The edge component bijections at the two heights agree.
 * `n = 2`: in the bounded middle star `J 1 = (0, 2)` one edge comes from below (right incidence)
   and one from above (left incidence); they land in different components.
 -/
@@ -161,6 +164,49 @@ theorem pinch_right_incidence (y : Fin 2) :
         (.mk (show (ofFiniteData DP).V 1 from y)) :=
   (ofFiniteData DP).map_K_le_J_succ_edgeComponentsEquiv S01 0 half _
 
+/-! #### Height independence for a realized map of the pinch -/
+
+/-- The map of the pinch data fixing level `0` and reversing level `1` and the edges. -/
+def swapDP : DP.Hom DP where
+  v := Fin.cases id fun _ => Fin.rev
+  e _ := Fin.rev
+  left_comm i _ := by rw [Subsingleton.elim i 0]; rfl
+  right_comm i _ := by rw [Subsingleton.elim i 0]; rfl
+
+/-- The regular height `3/4` of the pinch gap. -/
+def threeQuarters : (S01.K 0 : Set ℝ) := ⟨3 / 4, by
+  show S01.value (Fin.castSucc 0) < 3 / 4 ∧ 3 / 4 < S01.value (Fin.succ 0)
+  simp only [Fin.castSucc_zero, Fin.succ_zero_eq_one, S01_value_zero, S01_value_one]
+  norm_num⟩
+
+/-- At every regular height the realized swap reverses the two edges. -/
+theorem pinch_swap_regularFiberMap (t : (S01.K 0 : Set ℝ)) (y : (ofFiniteData DP).E 0) :
+    regularFiberMap S01 (realizeHom S01 swapDP) (height_realizeHom S01 swapDP) 0 t y =
+      Fin.rev (show Fin 2 from y) := by
+  rw [regularFiberMap_realizeHom]
+  rfl
+
+/-- Height independence on the pinch: the regular fiber maps of the realized swap at `1/2` and
+`3/4` agree, and are not the identity. -/
+theorem pinch_swap_regularFiberMap_indep :
+    regularFiberMap S01 (realizeHom S01 swapDP) (height_realizeHom S01 swapDP) 0 half =
+        regularFiberMap S01 (realizeHom S01 swapDP) (height_realizeHom S01 swapDP) 0
+          threeQuarters ∧
+      regularFiberMap S01 (realizeHom S01 swapDP) (height_realizeHom S01 swapDP) 0 half ≠
+        ContinuousMap.id _ := by
+  refine ⟨regularFiberMap_indep_of_discrete S01 _ _ 0 half threeQuarters, fun h => ?_⟩
+  have h0 := pinch_swap_regularFiberMap half (show Fin 2 from 0)
+  rw [h] at h0
+  change (0 : Fin 2) = Fin.rev 0 at h0
+  exact absurd h0 (by decide)
+
+/-- The edge component bijection of the pinch is the same at the heights `1/2` and `3/4`. -/
+theorem pinch_edgeComponentsEquiv_indep (y : Fin 2) :
+    (ofFiniteData DP).edgeComponentsEquiv S01 0 half (.mk (show (ofFiniteData DP).E 0 from y)) =
+      (ofFiniteData DP).edgeComponentsEquiv S01 0 threeQuarters
+        (.mk (show (ofFiniteData DP).E 0 from y)) := by
+  rw [(ofFiniteData DP).edgeComponentsEquiv_indep S01 0 half threeQuarters]
+
 /-! #### `n = 2`: a bounded star with one edge below and one above -/
 
 /-- Levels `0 < 1 < 2`. -/
@@ -174,6 +220,7 @@ def D2 : FiniteReebData.{0} 2 :=
   ⟨fun _ => Fin 2, fun _ => Fin 1, fun _ => inferInstance, fun _ => inferInstance,
     fun _ _ => 1, fun _ _ => 0⟩
 
+/-- Shorthand for the height of the bounded-star realization. -/
 abbrev h2 : C((ofFiniteData D2).Realization S012, ℝ) := (ofFiniteData D2).height S012
 
 /-- The regular height `1/2` of the lower gap. -/

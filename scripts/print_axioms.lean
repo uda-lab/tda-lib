@@ -1115,3 +1115,10 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructibleCylinder.bounded_lower
 #print axioms TDA.Reeb.Examples.ConstructibleCylinder.bounded_upper
 #print axioms TDA.Reeb.Examples.ConstructibleCylinder.bounded_separates
+#print axioms TDA.Reeb.CylinderPresentation.regularFiberMap_indep_of_discrete
+#print axioms TDA.Reeb.CylinderPresentation.regularFiberMap_realizeHom
+#print axioms TDA.Reeb.Examples.ConstructibleCylinder.swapDP
+#print axioms TDA.Reeb.Examples.ConstructibleCylinder.threeQuarters
+#print axioms TDA.Reeb.Examples.ConstructibleCylinder.pinch_swap_regularFiberMap
+#print axioms TDA.Reeb.Examples.ConstructibleCylinder.pinch_swap_regularFiberMap_indep
+#print axioms TDA.Reeb.Examples.ConstructibleCylinder.pinch_edgeComponentsEquiv_indep

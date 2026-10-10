@@ -31,8 +31,9 @@ lying in `J` lies in `[lo, hi]`. Put `κ t = max lo (min hi t)` and `κ_s t = t 
 3. The quotient map restricted to the open saturated set `h⁻¹ J` is a quotient map. So the family
    descends to a continuous `clampFamily c : C(heightPreimage J, C([0,1], X))`. It uncurries to a
    jointly continuous map because `[0,1]` is locally compact.
-4. Inside `J`, `κ t` stays in the segment of the edge (`clampHeight_mem_seg`): if `a (e+1) ∉ J`,
-   then `J` lies below `a (e+1)` and so does `lo`; the case of `a e` is symmetric. Hence the
+4. Inside `J`, `κ t` stays in the segment of the edge (`clampHeight_mem_seg`): if `a (e+1) ∈ J`,
+   it lies in `[lo, hi]`, so `lo ≤ a (e+1)`; if `a (e+1) ∉ J`, then `J` lies below `a (e+1)` and
+   so does `lo`. The case of `a e` is symmetric. Hence the
    height of `clampFamily c u s` is `κ_s (h u)` (`height_clampFamily`), which lies between `h u`
    and `κ (h u) ∈ [lo, hi]`.
 5. For every open interval `W` with `[lo, hi] ⊆ W ≤ J`, the family maps `heightPreimage W` into
@@ -60,9 +61,9 @@ homotopy, not a homotopy over `ℝ`, because heights move.
 
 These need no hypothesis on the pieces. The forward map of each `HomotopyEquiv` is the actual
 inclusion; that is the interface. The homotopy inverses are chosen clamp retractions and are not
-part of it. The inclusion `heightPreimage I → heightPreimage J` is a homotopy equivalence, not a
-deformation retraction of `heightPreimage J` onto the open subspace: the clamp moves points of
-`heightPreimage I` too.
+part of it. The construction shows that the inclusion `heightPreimage I → heightPreimage J` is a
+homotopy equivalence; it does not exhibit `heightPreimage I` as a deformation retract, since the
+clamp also moves points of `heightPreimage I`.
 
 ## Component bijections and incidence
 
@@ -119,9 +120,10 @@ Combined with naturality, `componentMap (regularFiberMap φ e t)` does not depen
 
 Pointwise independence is false in general. Take `E e = V = S¹` with identity endpoint maps, and
 let `φ` rotate the strip point at height `t` by an angle `θ(t)` vanishing at both levels. Then `φ`
-is continuous and height-preserving, and `regularFiberMap φ e t` is rotation by `θ(t)`. For
-discrete pieces the path-component statement recovers pointwise independence through
-`zerothHomotopyEquivOfDiscrete`.
+is continuous and height-preserving, and `regularFiberMap φ e t` is rotation by `θ(t)`. When the
+edge piece of the target is discrete, the path-component statement does give pointwise
+independence (`regularFiberMap_indep_of_discrete`). For a realized map of finite data the regular
+fiber map is the edge component of the data map at every height (`regularFiberMap_realizeHom`).
 
 ## Constructibility
 
@@ -146,9 +148,7 @@ suffice (`isConstructibleAt_of_compact_lpc`); realized finite data have discrete
 their own path components (`finiteData_isConstructibleAt`).
 
 The cosheaf condition is not reproved here: `intervalComponents_isIntervalCosheaf` gives it for
-every continuous height. The clamp homotopy replaces a proof of the bijectivity clause by finite
-star and gap covers, truncation and gluing. It is sound because it proves the clause for every
-admissible nested pair directly and yields the stronger homotopy-equivalence statement.
+every continuous height.
 
 ## Fixtures
 
@@ -165,6 +165,9 @@ finite data:
 - the regular interval `(1/4, 3/4)` avoids every level, has a nonempty inverse image with two
   components, and its inclusion into the gap is bijective;
 - empty values on the lower tail for `n = 0` and on `(2, 3)` above the pinch;
+- height independence on the pinch: the realized data map reversing the edges has the same
+  regular fiber map, the reversal, at `1/2` and `3/4`, and it is not the identity; the edge
+  component bijections at the two heights agree;
 - `n = 2` with levels `0 < 1 < 2`: in the bounded star `J 1 = (0, 2)` the lower edge arrives by
   right incidence at vertex `0` and the upper edge by left incidence at vertex `1`, in different
   components.
@@ -176,17 +179,23 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
 - §2.2, Lemma 2.4 (cylinder principle): the fiber inclusions `𝕍ᵢ → f⁻¹(aᵢ₋₁, aᵢ₊₁)` and
   `𝔼ᵢ → f⁻¹(aᵢ, aᵢ₊₁)` at some `a ∈ (aᵢ, aᵢ₊₁)` are homotopy equivalences fitting into the
   incidence diagrams. Here they are `vertexHomotopyEquiv` and `regularHomotopyEquiv`, for
-  arbitrary pieces, with the incidence diagrams on path components. The parenthesis of the lemma
+  arbitrary pieces. Its incidence diagrams are proved on path components
+  (`map_K_le_J_castSucc_edgeComponentsEquiv`, `map_K_le_J_succ_edgeComponentsEquiv`), and its
+  naturality as exact squares of the actual fiber inclusions (`vertexFiberInclusion_naturality`,
+  `regularFiberInclusion_naturality`). The parenthesis of the lemma
   indexes the absent edge sets so that the first genuine edge set would be empty. Here the
   incident edges of level `i` are the `e` with `e.castSucc = i` or `e.succ = i`, and `n = 0` has
   no edge.
 - §3.4, Proposition 3.16: the path-component cosheaf of a constructible ℝ-space is constructible
   with the same critical set. Here this is `intervalComponents_isConstructibleAt`, with finite
-  piece component sets in place of compact locally path-connected pieces.
+  piece component sets in place of compact locally path-connected pieces. As in the source proof,
+  the nested inclusion with the same critical points is a homotopy equivalence
+  (`nestedHomotopyEquiv`).
 
 Not claimed here: naturality for height-preserving maps between realizations over different
 critical lists, which needs a re-presentation over a common refinement; naturality of the chosen
-retractions; pointwise height independence of `regularFiberMap`; a deformation retraction onto an
-open inverse image.
+retractions; pointwise height independence of `regularFiberMap` for general pieces; a deformation
+retraction onto an open inverse image; the incidence diagrams up to homotopy at the level of
+spaces.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/html/1501.04147v1).

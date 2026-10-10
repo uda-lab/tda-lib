@@ -15,8 +15,9 @@ Let `S : CriticalValues n` have levels `a 0 < ⋯ < a n`, let `P : CylinderPrese
 arbitrary topological pieces, and write `X = P.Realization S` and `h = P.height S`. For an open
 interval `W`, `P.heightPreimage S W` is the subspace `{x : X // h x ∈ W}`; its path components are
 `(intervalComponents h).obj W` by definition (`intervalComponents_obj_eq`). This file proves the
-cylinder principle of de Silva–Munch–Patel (Lemma 2.4) and the constructibility of the
-path-component cosheaf of a realization (Proposition 3.16).
+homotopy equivalences of the cylinder principle of de Silva–Munch–Patel (Lemma 2.4), with its
+incidence diagrams on path components and its naturality for the actual fiber inclusions, and
+the constructibility of the path-component cosheaf of a realization (Proposition 3.16).
 
 ## Hypotheses
 
@@ -46,7 +47,8 @@ because `[0,1]` is locally compact. Inside `J`, `κ t` stays in the segment of t
 height of the image is `κ_s (h x)`, between `h x` and `κ (h x) ∈ [lo, hi]`. Hence for every open
 interval `W` with `[lo, hi] ⊆ W ≤ J` the family is a homotopy of `heightPreimage W` from the
 identity to the end map (`clampHomotopy`). It is an ordinary homotopy, not a homotopy over `ℝ`,
-since heights move, and the end map is not a deformation retraction onto an open subspace.
+since heights move, and the construction does not exhibit any open inverse image as a
+deformation retract.
 
 * Vertex `i`: `J = J i` and `lo = hi = a i`. The end map lands in the critical fiber
   `h⁻¹{a i} ≅ V i` (`criticalFiberHomeomorph`), so the fiber inclusion
@@ -84,6 +86,8 @@ and `n = 0` has no edge.
 * `edgeComponentsEquiv` does not depend on the chosen regular height, and on path components
   neither does `regularFiberMap` (`componentMap_regularFiberMap_indep`). Pointwise the regular
   fiber map does depend on the height in general: a height-dependent rotation of a circle strip.
+  For a discrete edge piece of the target it does not (`regularFiberMap_indep_of_discrete`), and
+  for a realized map of finite data it is the edge component (`regularFiberMap_realizeHom`).
 * Every point over a nonempty `I` is joined inside `heightPreimage I` to a vertex point at a
   level of `I`, or, when `I` contains no endpoint level of its edge and hence `I ≤ K e`, to the
   strip point at one fixed height of `I`. This gives a surjection from a finite sum of piece
@@ -583,7 +587,8 @@ def nestedInclusion {I J : OpenInterval} (hIJ : I ≤ J) :
   ⟨fun u => ⟨u.1, hIJ u.2⟩, continuous_subtype_val.subtype_mk _⟩
 
 /-- For nonempty `I ≤ J` meeting the same levels, `h⁻¹ I → h⁻¹ J` is a homotopy equivalence
-(not a deformation retraction onto the open subspace). -/
+(an ordinary homotopy equivalence; no deformation retraction onto the open subspace is
+claimed). -/
 def nestedHomotopyEquiv {I J : OpenInterval} (hIJ : I ≤ J) (hI : (I : Set ℝ).Nonempty)
     (hhit : ∀ i, S.value i ∈ I ↔ S.value i ∈ J) :
     ContinuousMap.HomotopyEquiv (P.heightPreimage S I) (P.heightPreimage S J) :=
@@ -642,7 +647,7 @@ theorem finite_intervalComponents [∀ i, Finite (ZerothHomotopy (P.V i))]
     infer_instance
   let vI : ∀ k : {k : Fin (n + 1) // S.value k ∈ I}, C(P.V k.1, P.heightPreimage S I) :=
     fun k =>
-    ⟨fun v => ⟨P.ofVertex S k.1 v, k.2⟩, (P.continuous_ofVertex S k.1).subtype_mk _⟩
+      ⟨fun v => ⟨P.ofVertex S k.1 v, k.2⟩, (P.continuous_ofVertex S k.1).subtype_mk _⟩
   let eI : ∀ e : {e : Fin n // I ≤ S.K e}, C(P.E e.1, P.heightPreimage S I) := fun e =>
     ⟨fun y => ⟨P.ofStrip S e.1 (y, ⟨hne.some, e.2 hne.some_mem⟩), hne.some_mem⟩,
       ((P.continuous_ofStrip S e.1).comp (continuous_id.prodMk continuous_const)).subtype_mk _⟩
@@ -861,6 +866,27 @@ theorem componentMap_regularFiberMap_indep {P P' : CylinderPresentation.{u} n}
   apply (P'.edgeComponentsEquiv S e t).injective
   rw [← componentNatTrans_edgeComponentsEquiv, P'.edgeComponentsEquiv_indep S e t t',
     ← componentNatTrans_edgeComponentsEquiv, P.edgeComponentsEquiv_indep S e t t']
+
+/-- For a discrete edge piece of the target, the regular fiber map itself does not depend on the
+height: the path-component statement becomes pointwise. -/
+theorem regularFiberMap_indep_of_discrete {P P' : CylinderPresentation.{u} n}
+    (φ : C(P.Realization S, P'.Realization S)) (hφ : ∀ x, P'.height S (φ x) = P.height S x)
+    (e : Fin n) [DiscreteTopology (P'.E e)] (t t' : (S.K e : Set ℝ)) :
+    regularFiberMap S φ hφ e t = regularFiberMap S φ hφ e t' := by
+  ext y
+  have h := congrFun (componentMap_regularFiberMap_indep S φ hφ e t t') (.mk y)
+  simp only [componentMap_mk] at h
+  exact joined_eq_of_discrete (Quotient.exact h)
+
+/-- The regular fiber map of a realized map of finite data is its edge component. -/
+theorem regularFiberMap_realizeHom {D D' : FiniteReebData.{u} n} (ψ : D.Hom D') (e : Fin n)
+    (t : (S.K e : Set ℝ)) (y : (ofFiniteData D).E e) :
+    regularFiberMap S (realizeHom S ψ) (height_realizeHom S ψ) e t y = ψ.e e y := by
+  have h := map_ofStrip_eq S (realizeHom S ψ) (height_realizeHom S ψ) e t y
+  have h' : ((ofFiniteData D').ofStrip S e
+      (regularFiberMap S (realizeHom S ψ) (height_realizeHom S ψ) e t y, t)) =
+      (ofFiniteData D').ofStrip S e (ψ.e e y, t) := h.symm.trans rfl
+  exact congrArg Prod.fst ((ofFiniteData D').ofStrip_injective S e h')
 
 end indep
 
