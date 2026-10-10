@@ -85,6 +85,8 @@ private def rationalAfterB : Matrix (Fin 3) (Fin 3) ℚ :=
   rationalInput * Matrix.transvection 1 2 (3 : ℚ)
 private def rationalReverseReplay : Matrix (Fin 3) (Fin 3) ℚ :=
   replay rationalInput [rationalB, rationalA]
+private def rationalReverseTraceChange : Matrix (Fin 3) (Fin 3) ℚ :=
+  traceChange [rationalB, rationalA]
 
 private theorem rationalInput_col0 : rationalInput.col 0 = ![1, 0, 0] := by
   ext r
@@ -158,13 +160,52 @@ private theorem rationalAfterB_col2 : rationalAfterB.col 2 = ![0, 3, 1] := by
   ext r
   fin_cases r <;> norm_num [smul_eq_mul]
 
+private theorem rationalAfterB_col0 : rationalAfterB.col 0 = ![1, 0, 0] := by
+  rw [rationalAfterB, col_mul_transvection_of_ne rationalInput 1 2 0 3 (by decide)]
+  exact rationalInput_col0
+
+private theorem rationalAfterB_col1 : rationalAfterB.col 1 = ![0, 1, 0] := by
+  rw [rationalAfterB, col_mul_transvection_of_ne rationalInput 1 2 1 3 (by decide)]
+  exact rationalInput_col1
+
 private theorem rationalReverse_as_products :
     rationalReverseReplay = rationalAfterB * Matrix.transvection 0 1 (2 : ℚ) := rfl
+
+private theorem rationalReverseReplay_eq_traceChange :
+    rationalReverseReplay = rationalReverseTraceChange := by
+  simpa [rationalReverseReplay, rationalReverseTraceChange, rationalInput] using
+    (replay_eq_mul_traceChange rationalInput [rationalB, rationalA])
+
+private theorem rationalReverseReplay_col0 : rationalReverseReplay.col 0 = ![1, 0, 0] := by
+  rw [rationalReverse_as_products,
+    col_mul_transvection_of_ne rationalAfterB 0 1 0 2 (by decide)]
+  exact rationalAfterB_col0
+
+private theorem rationalReverseReplay_col1 : rationalReverseReplay.col 1 = ![2, 1, 0] := by
+  rw [rationalReverse_as_products, col_mul_transvection]
+  rw [rationalAfterB_col1, rationalAfterB_col0]
+  ext r
+  fin_cases r <;> norm_num [smul_eq_mul]
 
 private theorem rationalReverse_col2 : rationalReverseReplay.col 2 = ![0, 3, 1] := by
   rw [rationalReverse_as_products,
     col_mul_transvection_of_ne rationalAfterB 0 1 2 2 (by decide)]
   exact rationalAfterB_col2
+
+private theorem rationalReverseTraceChange_col0 :
+    rationalReverseTraceChange.col 0 = ![1, 0, 0] := by
+  rw [← rationalReverseReplay_eq_traceChange]
+  exact rationalReverseReplay_col0
+
+private theorem rationalReverseTraceChange_col1 :
+    rationalReverseTraceChange.col 1 = ![2, 1, 0] := by
+  rw [← rationalReverseReplay_eq_traceChange]
+  exact rationalReverseReplay_col1
+
+private theorem rationalReverseTraceChange_col2 :
+    rationalReverseTraceChange.col 2 = ![0, 3, 1] := by
+  rw [← rationalReverseReplay_eq_traceChange]
+  exact rationalReverse_col2
 
 private theorem rational_replay_entry : rationalReplay 0 2 = 6 := by
   have h := congrFun rationalReplay_col2 (0 : Fin 3)
@@ -178,6 +219,19 @@ private theorem rational_order_matters : rationalReplay ≠ rationalReverseRepla
   intro h
   have he := congrFun (congrFun h (0 : Fin 3)) (2 : Fin 3)
   rw [rational_replay_entry, rational_reverse_entry] at he
+  norm_num at he
+
+private theorem rational_traceChange_order_matters :
+    rationalTraceChange ≠ rationalReverseTraceChange := by
+  intro h
+  have he := congrFun (congrFun h (0 : Fin 3)) (2 : Fin 3)
+  have hForward : rationalTraceChange 0 2 = 6 := by
+    have hc := congrFun rationalTraceChange_col2 (0 : Fin 3)
+    simpa using hc
+  have hReverse : rationalReverseTraceChange 0 2 = 0 := by
+    have hc := congrFun rationalReverseTraceChange_col2 (0 : Fin 3)
+    simpa using hc
+  rw [hForward, hReverse] at he
   norm_num at he
 
 private theorem rational_append_singletons :
@@ -206,6 +260,12 @@ private theorem rational_prefix_four :
 #eval List.ofFn (rationalTraceChange.col 0)
 #eval List.ofFn (rationalTraceChange.col 1)
 #eval List.ofFn (rationalTraceChange.col 2)
+#eval List.ofFn (rationalReverseReplay.col 0)
+#eval List.ofFn (rationalReverseReplay.col 1)
+#eval List.ofFn (rationalReverseReplay.col 2)
+#eval List.ofFn (rationalReverseTraceChange.col 0)
+#eval List.ofFn (rationalReverseTraceChange.col 1)
+#eval List.ofFn (rationalReverseTraceChange.col 2)
 #eval rationalReverseReplay 0 2
 
 /-! ### Repeated target, including a target raised after becoming zero -/
@@ -463,6 +523,7 @@ private theorem zero_operation_target :
 #print axioms rationalOps
 #print axioms rationalInput
 #print axioms rationalAfterA
+#print axioms rationalReverseTraceChange
 #print axioms rationalReplay
 #print axioms rationalTraceChange
 #print axioms rationalAfterB
@@ -483,11 +544,20 @@ private theorem zero_operation_target :
 #print axioms rationalTraceChange_col1
 #print axioms rationalTraceChange_col2
 #print axioms rationalAfterB_col2
+#print axioms rationalAfterB_col0
+#print axioms rationalAfterB_col1
 #print axioms rationalReverse_as_products
+#print axioms rationalReverseReplay_eq_traceChange
+#print axioms rationalReverseReplay_col0
+#print axioms rationalReverseReplay_col1
 #print axioms rationalReverse_col2
+#print axioms rationalReverseTraceChange_col0
+#print axioms rationalReverseTraceChange_col1
+#print axioms rationalReverseTraceChange_col2
 #print axioms rational_replay_entry
 #print axioms rational_reverse_entry
 #print axioms rational_order_matters
+#print axioms rational_traceChange_order_matters
 #print axioms rational_append_singletons
 #print axioms rational_prefix_all
 #print axioms rational_prefix_zero
