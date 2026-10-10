@@ -74,3 +74,5 @@ import TDA.Filtration.CompatibleOrderPrefix
 import TDA.Filtration.CompatibleOrderPrefixExamples
 import TDA.Filtration.OrderingEquivalent
 import TDA.Filtration.OrderingEquivalentExamples
+import TDA.Filtration.CompatibleOrderTransfer
+import TDA.Filtration.CompatibleOrderTransferExamples
