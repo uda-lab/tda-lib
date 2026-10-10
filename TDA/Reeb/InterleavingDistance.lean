@@ -13,8 +13,8 @@ zero distance does not imply isomorphism.
 
 The extended pseudometric laws of DMP Proposition 4.5 hold: distance zero to itself, symmetry
 and the triangle inequality. Isomorphic precosheaves are at distance zero, and the distance is
-invariant under natural isomorphism in both arguments. An explicit `ε`-interleaving bounds the distance by `ε`,
-and smoothing is nonexpansive. The distance is a plain function: no `EDist`,
+invariant under natural isomorphism in both arguments. An explicit `ε`-interleaving bounds the
+distance by `ε`, and smoothing is nonexpansive. The distance is a plain function: no `EDist`,
 `PseudoEMetricSpace` or `MetricSpace` instance is installed on `OpenInterval ⥤ C`.
 See `docs/math/reeb-interleaving-distance.md`.
 -/

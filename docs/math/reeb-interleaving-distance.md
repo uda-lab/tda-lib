@@ -40,8 +40,8 @@ is installed on `OpenInterval ⥤ C`.
   so zero distance does not imply isomorphism (`point_closure_distance`).
 - **Smoothing.** Smoothing is nonexpansive: the distance of `(smoothing ε).obj F` and
   `(smoothing ε).obj G` is at most that of `F, G` (`interleavingDistance_smoothing_le`), since an
-  interleaving of `F, G` smooths to one of the same parameter. A precosheaf is within `ε` of its smoothing
-  (`interleavingDistance_smoothing_self_le`).
+  interleaving of `F, G` smooths to one of the same parameter. A precosheaf is within `ε` of its
+  smoothing (`interleavingDistance_smoothing_self_le`).
 
 ## Uniform perturbation
 
@@ -70,7 +70,8 @@ All fixtures are at `C := Type`.
 - **Exact finite distance.** The point precosheaves `I ↦ {0 ∈ I}` and `I ↦ {1 ∈ I}` are at
   distance exactly `1` (`point_distance_eq_one`). The upper bound is the explicit
   `1`-interleaving. For `ε < 1` and `r = (1 - ε) / 2`, a witness would send `0 ∈ (-r, r)` into
-  `thicken ε (-r, r) = (-r - ε, r + ε)`, which does not contain `1` because `r + ε = (1 + ε) / 2 < 1`.
+  `thicken ε (-r, r) = (-r - ε, r + ε)`, which does not contain `1` because
+  `r + ε = (1 + ε) / 2 < 1`.
 
 ## Source correspondence
 
