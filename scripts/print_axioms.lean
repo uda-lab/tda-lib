@@ -481,3 +481,14 @@ import TDA
 #print axioms TDA.Reeb.Examples.overlap_without_containment
 #print axioms TDA.Reeb.Examples.threeCover
 #print axioms TDA.Reeb.Examples.threeCover_union
+
+-- Face-value sublevel filtrations (Issue #71).
+#print axioms TDA.Filtration.FilterFunction.mem_sublevel_iff
+#print axioms TDA.Filtration.FilterFunction.mem_sublevel_iff_of_mem
+#print axioms TDA.Filtration.FilterFunction.sublevel_le
+#print axioms TDA.Filtration.FilterFunction.sublevel_mono
+#print axioms TDA.Filtration.FilterFunction.sublevelFiltration_apply
+#print axioms TDA.Filtration.FilterFunction.mem_support_sublevelFiltration_iff
+#print axioms TDA.Filtration.FilterFunction.sublevel_eq_self_of_forall_le
+#print axioms TDA.Filtration.FilterFunction.sublevel_eq_bot_of_forall_lt
+#print axioms TDA.Filtration.FilterFunction.sublevel_bot
