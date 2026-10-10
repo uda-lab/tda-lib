@@ -33,6 +33,8 @@ import TDA.Reeb.QuotientComparison
 import TDA.Reeb.QuotientComparisonExamples
 import TDA.Reeb.Smoothing
 import TDA.Reeb.SmoothingExamples
+import TDA.Reeb.Stability
+import TDA.Reeb.StabilityExamples
 import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
 import TDA.Simplicial.ChainComplex
