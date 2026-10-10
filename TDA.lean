@@ -48,6 +48,7 @@ import TDA.Reeb.StabilityExamples
 import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
 import TDA.Simplicial.ChainComplex
+import TDA.Simplicial.FiniteComplex
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.InclusionExamples
 import TDA.Topology.Cosheaf
@@ -55,5 +56,6 @@ import TDA.Topology.PathCover
 import TDA.Topology.PathCoverExamples
 import TDA.Filtration.FilterFunction
 import TDA.Filtration.FilterFunctionExamples
+import TDA.Simplicial.FiniteComplexExamples
 import TDA.Filtration.CriticalValues
 import TDA.Filtration.CriticalValuesExamples

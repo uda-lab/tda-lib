@@ -985,6 +985,13 @@ import TDA
 #print axioms TDA.Filtration.FilterFunction.sublevel_eq_self_of_last_le
 #print axioms TDA.Filtration.FilterFunction.sublevel_eq_bot_or_grade
 
+-- Finite support-aware complex presentations and their exact actual-face conversion (Issue #97).
+#print axioms TDA.Simplicial.FiniteComplex.mem_toPre
+#print axioms TDA.Simplicial.FiniteComplex.empty_not_mem_faces
+#print axioms TDA.Simplicial.FiniteComplex.image_univ_totalFace_val
+#print axioms TDA.Simplicial.FiniteComplex.card_totalFace
+#print axioms TDA.Simplicial.FiniteComplex.toPre_injective
+
 -- Local cylinder comparisons and constructibility of path components (Issue #79).
 -- TDA.Reeb.ComponentsHomotopy: homotopic maps and homotopy equivalences on path components.
 #print axioms TDA.Reeb.componentMap_eq_of_homotopic
