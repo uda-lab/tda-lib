@@ -134,9 +134,10 @@ hypothesis. The source proof compares the two colimit diagrams for the cover and
 thickened cover; the second has extra terms where `I_p^ε ∩ I_q^ε` is nonempty but `I_p ∩ I_q` is
 empty. For such a pair it takes the compact gap `K` between the two intervals, a finite chain of
 cover intervals meeting `K` with consecutive members intersecting, and notes that each thickened
-chain interval contains `J = I_p^ε ∩ I_q^ε`. The interval-chain lemma states this chain with the
-containment `W ≤ T_ε (I kᵣ ⊓ I kᵣ₊₁)`, which is equivalent for nonempty `W` by `thicken_inf`. The
-library proves it by the connectedness of the convex hull rather than by compactness of the gap.
+chain interval contains the overlap `I_p^ε ∩ I_q^ε`, which is `W` here. The interval-chain
+lemma states this chain with the containment `W ≤ T_ε (I kᵣ ⊓ I kᵣ₊₁)`, which is equivalent for
+nonempty `W` by `thicken_inf`. The library proves it by the connectedness of the convex hull rather
+than by compactness of the gap.
 
 - The predicate quantifies over covers of `⊥`, rays and `ℝ`, and admits `⊥` members. These are
   library choices following the convention of the interval category, not statements printed in
