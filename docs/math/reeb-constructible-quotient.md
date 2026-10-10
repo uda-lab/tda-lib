@@ -86,7 +86,8 @@ Writing `Θ` for the homeomorphism and `ρ` for the quotient projection:
 
 - generators: `Θ [ofVertex i v] = (i, [v])`, `Θ [ofCylinder e (y, t)] = (e, [y], t)` and
   `Θ [ofStrip e (y, t)] = (e, [y], t)`, with the corresponding formulas for `Θ⁻¹`;
-- height: `height_G ∘ Θ = h̄` and `h̄ ∘ Θ⁻¹ = height_G`, pointwise and as continuous maps;
+- height: `height_G ∘ Θ = h̄` and `h̄ ∘ Θ⁻¹ = height_G` pointwise, and the first also as continuous
+  maps;
 - projection: `Θ ∘ ρ = Φ`;
 - fibers: a point over a level `a i` goes to the class in `V i` of its preimage under the
   critical-fiber homeomorphism, and a point over a regular height `t ∈ K e` goes to the class in
@@ -105,7 +106,8 @@ cylinder.
   Its incidence squares are the incidence theorems for the component bijections of the
   realizations, transported by their naturality (see `reeb-constructible-cylinder.md`). It
   preserves identities and composition (`componentDataHom_id`, `componentDataHom_comp`).
-- **Square** (layer 2). `Θ' ∘ Q φ = realize (componentDataHom φ) ∘ Θ` holds pointwise on `Q`
+- **Square** (layer 2). For the descended comparison `θ = quotientComponentGraphMap`, the map
+  underlying `Θ`, the square `θ' ∘ Q φ = realize (componentDataHom φ) ∘ θ` holds pointwise on `Q`
   (`quotientComponentGraphMap_natural`), and the corresponding square for `Φ` holds on `X`
   (`componentGraphMap_natural`).
 - **Slice** (layer 3). `quotientOverIso S P` is the homeomorphism as an isomorphism of the real
@@ -154,7 +156,8 @@ objects are constructible, with discrete pieces (`isConstructibleSpace_of_isRGra
 ## The graph case
 
 For finite data `D`, the canonical map `D.toComponentData : D ⟶ (ofFiniteData D).componentData`,
-`x ↦ [x]`, has bijective components because the pieces are discrete, and `toComponentDataIso` is
+`x ↦ [x]`, has bijective components because the pieces are discrete
+(`toComponentData_v_bijective`, `toComponentData_e_bijective`), and `toComponentDataIso` is
 the resulting isomorphism. The projection homeomorphism of `reeb-rgraph.md` followed by `Θ` is the
 realization of `D.toComponentData` (`quotientComponentGraphMap_projHomeomorph`). In the slice,
 `ρ ≫ Θ` is the image of `D.toComponentData` under the realization functor

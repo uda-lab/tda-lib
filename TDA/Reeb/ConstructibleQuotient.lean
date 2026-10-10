@@ -7,8 +7,9 @@ import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 # Constructible Reeb quotients are finite ℝ-graphs
 
 The Reeb quotient of a constructible ℝ-space is homeomorphic over `ℝ` to the finite realization
-of the path components of its pieces, by a map sending the class of each raw point to the class of
-its piece (de Silva, Munch and Patel, *Categorified Reeb Graphs*, Proposition 2.12).
+of the path components of its pieces, by a map sending the Reeb class of each raw point to the path
+component of that point in its piece, at the same height (de Silva, Munch and Patel, *Categorified
+Reeb Graphs*, Proposition 2.12).
 
 ## Setting
 
@@ -68,9 +69,9 @@ in universe `0`, the universe of the real slice.
    `ReebQuotient` is declared.
 5. Formulas. On generators `Θ [ofVertex i v] = (i, [v])`, `Θ [ofCylinder e (y, t)] = (e, [y], t)`
    and `Θ [ofStrip e (y, t)] = (e, [y], t)`, with the three inverse formulas. `Θ` and its inverse
-   preserve height, also as continuous maps, and `Θ ∘ ρ = Φ` for the projection `ρ`. A point over a
-   level `a i` goes to the class of its critical-fiber preimage in `V i`, and a point over a regular
-   height `t ∈ K e` to the class of its regular-fiber preimage in `E e`.
+   preserve height, for `Θ` also as continuous maps, and `Θ ∘ ρ = Φ` for the projection `ρ`. A
+   point over a level `a i` goes to the class of its critical-fiber preimage in `V i`, and a point
+   over a regular height `t ∈ K e` to the class of its regular-fiber preimage in `E e`.
 
 ## Naturality
 
@@ -78,9 +79,10 @@ For presentations over a common `S` and an arbitrary continuous `φ : X → X'` 
 `componentDataHom S φ hφ` has vertex maps `π₀ (vertexFiberMap φ i)` and edge maps
 `π₀ (regularFiberMap φ e t)`, read at `RGraph.basePt S e` and independent of the regular height
 `t`. Its incidence squares come from the incidence theorems for the component bijections of the
-realizations and their naturality. It preserves identities and composition. The comparison is
-natural: `Θ' ∘ Q φ = realize (componentDataHom φ) ∘ Θ` (`quotientComponentGraphMap_natural`); the
-same square holds in the real slice for every slice morphism between realizations
+realizations and their naturality. It preserves identities and composition. Write `θ` for the
+descended comparison `quotientComponentGraphMap`, the map underlying `Θ`. It is natural:
+`θ' ∘ Q φ = realize (componentDataHom φ) ∘ θ` (`quotientComponentGraphMap_natural`); the same
+square holds for `Θ` in the real slice for every slice morphism between realizations
 (`quotientOverIso_natural`), and the data map is the classification of the conjugated graph map by
 `RGraph.realizationFullyFaithful` (`componentDataHom_eq_preimage`).
 
@@ -106,7 +108,8 @@ between objects presented over different critical lists. Graph objects are const
 ## Graph case
 
 For finite data `D`, the map `D.toComponentData : D ⟶ (ofFiniteData D).componentData`, `x ↦ [x]`,
-has bijective components (`toComponentDataIso`), and the projection homeomorphism
+has bijective components (`toComponentData_v_bijective`, `toComponentData_e_bijective`), hence
+gives the isomorphism `toComponentDataIso`, and the projection homeomorphism
 `RGraph.projHomeomorph` followed by `Θ` is its realization
 (`quotientComponentGraphMap_projHomeomorph`, `projNatTrans_comp_quotientOverIso`).
 
@@ -252,7 +255,8 @@ def componentCompatibleMaps :
   segBot_eq e y := (ofFiniteData P.componentData).ofCylinder_segBot S e (P.edgeClass e y)
   segTop_eq e y := (ofFiniteData P.componentData).ofCylinder_segTop S e (P.edgeClass e y)
 
-/-- `Φ : X → G`, sending each raw point to the class of its piece. -/
+/-- `Φ : X → G`, sending each raw point to the path component of that point in its piece, at the
+same height. -/
 def componentGraphMap : C(P.Realization S, (ofFiniteData P.componentData).Realization S) :=
   lift (P.componentCompatibleMaps S)
 
@@ -368,8 +372,9 @@ variable {n : ℕ} (S : CriticalValues n) (P : CylinderPresentation.{u} n)
   [∀ e, CompactSpace (P.E e)] [∀ e, LocallyPathConnectedSpace (P.E e)]
 
 /-- **DMP Proposition 2.12.** For compact locally path-connected pieces, the Reeb quotient is
-homeomorphic over `ℝ` to the finite realization of the component data, sending the class of each
-raw point to the class of its piece. Continuity of the inverse comes from compactness of `Q` and
+homeomorphic over `ℝ` to the finite realization of the component data, sending the Reeb class of
+each raw point to the path component of that point in its piece, at the same height. Continuity of
+the inverse comes from compactness of `Q` and
 Hausdorffness of `G`. -/
 def quotientComponentGraphHomeomorph :
     ReebQuotient (P.height S) ≃ₜ (ofFiniteData P.componentData).Realization S :=
@@ -769,7 +774,7 @@ theorem isRGraph_quotient_of_isConstructibleSpace {A : Over (TopCat.of ℝ)}
   obtain ⟨n, S, P, h1, h2, h3, h4, ⟨i⟩⟩ := hA
   exact RGraph.isRGraph_quotient S P i
 
-/-- **The Reeb functor restricts to `ℝ-Top_c ⥤ Reeb`** (DMP Proposition 2.12 with the remark
+/-- **The Reeb functor restricts to `ℝ-Topᶜ ⥤ Reeb`** (DMP Proposition 2.12 with the remark
 after Proposition 2.13): the quotient functor on constructible ℝ-spaces lands in graph objects,
 on all continuous height-preserving maps. -/
 def quotientRGraphFunctor : ConstructibleSpaceCat ⥤ RGraph.RGraphCat :=
