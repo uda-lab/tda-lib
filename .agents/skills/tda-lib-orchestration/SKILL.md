@@ -38,6 +38,14 @@ default. Interpret inherited loop references to inputs on main as inputs on deve
 Stable promotion PRs target main and use merge commits; ordinary develop PRs use squash.
 Apply evaluated-head binding and all review gates to both methods. Do not directly push either protected branch.
 
+### Temporary October local-CI exception
+
+Through 2026-10-31 23:59:59 JST, ordinary PRs to `develop` use the Owner-authorized local-CI substitute for the inherited hosted `check` gate. This project-specific exception supersedes inherited hosted-CI merge requirements for `develop` only; it does not change `main` or authorize a stable promotion. For implementation changes, run the full guarded `scripts/check.sh` on the exact final head, retaining the serialized build, live axiom audit, coverage and all applicable Issue acceptance checks. Keep qualifying independent final-head review, resolved findings and threads, no hard-stop labels, and no unchecked PR tasks. Record the evaluated head and base SHAs, exact commands and exit outcomes, audit/coverage summary and review evidence. Focused probes are not a full-check pass. Rebase, conflict resolution or source changes invalidate affected evidence; revalidate and review the actual final head before merge. Use the ordinary develop squash command with `gh pr merge <n> --squash --match-head-commit <evaluated head>`.
+
+Local evidence is never hosted-CI success. Do not dispatch or rerun Actions, trigger an automatic hosted run, add workflows, deploy runners or expand CI. Before publication, require actual disabled-automation evidence or the Owner's explicit setting confirmation; if an unexpected Actions run appears, stop publication and report it. The no-project-budget-cap policy does not authorize hosted CI, CI expansion or disregard of the Owner's resource restriction. The period end is a reevaluation point, not an automatic November restart; do not extend it or change execution mode without an explicit Owner-approved plan.
+
+This exception leaves the #85 docs-job condition and the existing `scripts/build-docs.sh` revision invalidation and exact source-link binding unchanged; optional API docs are not an extra routine `develop` merge gate. The prose-only scope of #89 uses its specified local patch, link, consistency and whitespace checks plus independent exact-head prose review; that narrow validation does not relax the full implementation gate above.
+
 Source-fidelity completion applies to release-scoped results after a stable promotion. Require source fidelity for claimed results, exclude
 staging holes from stable releases, audit the exact main revision, then tag and describe its
 results and limitations. Do not manufacture a TDA release for the smoke theorem. Release
