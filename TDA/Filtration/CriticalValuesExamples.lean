@@ -45,11 +45,14 @@ private theorem empty_case (V : Type u) (α : Type w) [LinearOrder α] (r : α) 
 
 private theorem empty_ordered_grade :
     (emptyFilter Empty Empty).criticalValues.card = 0 ∧
-    IsEmpty (Fin (emptyFilter Empty Empty).criticalValues.card) := by
+    IsEmpty (Fin (emptyFilter Empty Empty).criticalValues.card) ∧
+    ∃ G : TDA.Filtration.SimplicialFiltration
+        (Fin (emptyFilter Empty Empty).criticalValues.card) Empty,
+      G = (emptyFilter Empty Empty).gradeFiltration := by
   have h : (emptyFilter Empty Empty).criticalValues = ∅ :=
     ((emptyFilter Empty Empty).criticalValues_eq_empty_iff).2 rfl
   have hc : (emptyFilter Empty Empty).criticalValues.card = 0 := by simp [h]
-  refine ⟨hc, ?_⟩
+  refine ⟨hc, ?_, ⟨(emptyFilter Empty Empty).gradeFiltration, rfl⟩⟩
   rw [hc]
   infer_instance
 
