@@ -9,6 +9,15 @@ import TDA
 -- Permanent smoke test of the audit path (TDA/Basic.lean). Never remove.
 #print axioms TDA.placeholder_add_zero
 
+-- Public one-step prefix-span API.
+#print axioms TDA.Persistence.Reduction.prefixSpan
+#print axioms TDA.Persistence.Reduction.col_mem_prefixSpan
+#print axioms TDA.Persistence.Reduction.prefixSpan_zero
+#print axioms TDA.Persistence.Reduction.prefixSpan_mono
+#print axioms TDA.Persistence.Reduction.prefixSpan_eq_full
+#print axioms TDA.Persistence.Reduction.prefixSpan_mul_transvection
+#print axioms TDA.Persistence.Reduction.prefixSpan_cancel
+
 -- Support-aware filtration API (Issue #10).
 #print axioms TDA.Filtration.mem_support_iff
 #print axioms TDA.Filtration.mem_bot_iff
