@@ -1643,3 +1643,11 @@ import TDA
 #print axioms TDA.Filtration.CompatibleOrder.sublevel_eq_prefixComplex
 #print axioms TDA.Filtration.CompatibleOrder.thresholdMap
 #print axioms TDA.Filtration.CompatibleOrder.reindex_prefixFiltration
+
+-- Ordering equivalence on actual faces and its attained-range characterization (Issue #107).
+#print axioms TDA.Filtration.OrderingEquivalent.refl
+#print axioms TDA.Filtration.OrderingEquivalent.symm
+#print axioms TDA.Filtration.OrderingEquivalent.trans
+#print axioms TDA.Filtration.OrderingEquivalent.value_eq_iff
+#print axioms TDA.Filtration.OrderingEquivalent.sublevel_eq
+#print axioms TDA.Filtration.orderingEquivalent_iff_exists_rangeOrderIso
