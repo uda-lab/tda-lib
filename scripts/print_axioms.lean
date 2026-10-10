@@ -481,3 +481,16 @@ import TDA
 #print axioms TDA.Filtration.FilterFunction.sublevel_eq_self_of_forall_le
 #print axioms TDA.Filtration.FilterFunction.sublevel_eq_bot_of_forall_lt
 #print axioms TDA.Filtration.FilterFunction.sublevel_bot
+
+-- Supremum-distance form of Reeb component stability (Issue #53).
+#print axioms TDA.Reeb.edist_uniformFun_ofFun_eq_iSup
+#print axioms TDA.Reeb.edist_uniformFun_ofFun_le_coe_iff
+#print axioms TDA.Reeb.interleavingDistance_intervalComponents_le_edist
+#print axioms TDA.Reeb.interleavingDistance_smoothing_intervalComponents_le_edist
+#print axioms TDA.Reeb.Examples.stability_of_isEmpty
+#print axioms TDA.Reeb.Examples.twiceId
+#print axioms TDA.Reeb.Examples.edist_id_twiceId_eq_top
+#print axioms TDA.Reeb.Examples.interleavingDistance_heightShift_le
+#print axioms TDA.Reeb.Examples.edist_heightShift
+#print axioms TDA.Reeb.Examples.stability_const_eq
+#print axioms TDA.Reeb.Examples.stability_self

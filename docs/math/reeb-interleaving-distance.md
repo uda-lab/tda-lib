@@ -53,9 +53,55 @@ interleavingDistance (intervalComponents f) (intervalComponents g) ≤ ε
 ```
 
 (`interleavingDistance_intervalComponents_le`). By nonexpansiveness the same bound holds after
-smoothing both sides by any `δ` (`interleavingDistance_smoothing_intervalComponents_le`). The
-bound is pointwise; no supremum of `|f - g|` is formed. These corollaries live in a separate
+smoothing both sides by any `δ` (`interleavingDistance_smoothing_intervalComponents_le`). These
+two theorems take the pointwise hypothesis and form no supremum of `|f - g|`; the bound by the
+supremum distance itself is stated in the next section. These corollaries live in a separate
 module, so the distance core depends only on the interleaving and smoothing API.
+
+## Supremum distance
+
+For arbitrary `f g : X → ℝ`, the supremum distance `‖f − g‖_∞` is mathlib's extended distance
+on the type `X →ᵤ ℝ` of functions with the uniform structure. Its real-valued presentation is
+
+```lean
+edist (UniformFun.ofFun f) (UniformFun.ofFun g) = ⨆ x, ENNReal.ofReal |f x - g x|
+```
+
+(`edist_uniformFun_ofFun_eq_iSup`), with values in `[0, ∞]`. An unbounded difference has
+distance `⊤` (for example `edist_id_twiceId_eq_top`); no boundedness is assumed and no finite
+real supremum is formed. The zero, symmetry and triangle laws are those of mathlib's
+`PseudoEMetricSpace (X →ᵤ ℝ)` instance; the library adds no wrapper, structure or instance.
+For `ε : ℝ≥0` the distance is at most `ε` exactly when `∀ x, |f x - g x| ≤ ε`
+(`edist_uniformFun_ofFun_le_coe_iff`).
+
+For continuous `f g : C(X, ℝ)` on any topological space `X`,
+
+```lean
+interleavingDistance (intervalComponents f) (intervalComponents g) ≤
+  edist (UniformFun.ofFun ⇑f) (UniformFun.ofFun ⇑g)
+```
+
+(`interleavingDistance_intervalComponents_le_edist`). No compactness, boundedness, finiteness or
+nonemptiness of `X` is assumed. If the right side is `⊤` the bound is trivial. Otherwise the
+right side is the coercion of its `toNNReal`, and the finite-bound characterization turns it
+into the pointwise hypothesis of `interleavingDistance_intervalComponents_le`. The same bound
+holds after smoothing both sides by any `δ`
+(`interleavingDistance_smoothing_intervalComponents_le_edist`). These theorems live in their own
+module, which adds the import of mathlib's uniform-convergence distance.
+
+The fixtures cover four cases.
+
+- **Empty domain.** Both sides are `0`: the supremum over an empty domain is `0`, and the left
+  side follows from the theorem (`stability_of_isEmpty`).
+- **Unbounded difference.** For `id` and `x ↦ 2x` on `ℝ` the supremum distance is `⊤`
+  (`edist_id_twiceId_eq_top`), so the theorem is the trivial bound, and no `ε : ℝ≥0` satisfies
+  the pointwise hypothesis.
+- **Constant translation.** For `x ↦ f x + c` the theorem gives distance at most `|c|` on every
+  domain (`interleavingDistance_heightShift_le`). The supremum distance is exactly `|c|` on a
+  nonempty domain (`edist_heightShift`). For the constant functions `0` and `c` on a one-point
+  domain both sides equal `|c|`, by the sharpness of the constant translation
+  (`stability_const_eq`). No optimality of the bound on other domains is claimed.
+- **Equal heights.** Both sides are `0` (`stability_self`).
 
 ## Fixtures
 
@@ -89,8 +135,11 @@ Theorem 4.6(i) bounds the distance of the component cosheaves of `(X, f)` and `(
 - The pseudometric laws of Proposition 4.5 are `interleavingDistance_self`,
   `interleavingDistance_comm` and `interleavingDistance_triangle`. Isomorphism invariance is
   stated separately.
-- `interleavingDistance_intervalComponents_le` is Theorem 4.6(i) with the pointwise hypothesis,
-  which is equivalent to `‖f − g‖_∞ ≤ ε`. Theorem 4.6(ii) is not addressed.
+- `interleavingDistance_intervalComponents_le_edist` is Theorem 4.6(i) in its literal form, with
+  `‖f − g‖_∞` mathlib's extended supremum distance, which may be `∞`.
+  `interleavingDistance_intervalComponents_le` is the same theorem with the pointwise
+  hypothesis, which is equivalent to `‖f − g‖_∞ ≤ ε` (`edist_uniformFun_ofFun_le_coe_iff`).
+  Theorem 4.6(ii) is not addressed.
 - Proposition 4.8 of the source states that zero Reeb distance implies isomorphism for
   ℝ-graphs, through their constructible cosheaves. No such inference is made here for arbitrary
   precosheaves.

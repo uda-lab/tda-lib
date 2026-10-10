@@ -26,8 +26,11 @@ Let `f g : C(X, ℝ)` be continuous functions on the same space and `ε : ℝ≥
 hfg : ∀ x, |f x - g x| ≤ ε
 ```
 
-The bound is pointwise. No supremum of `|f - g|` is formed, so an unbounded difference never
-becomes a finite real number: the hypothesis simply fails for every `ε`.
+The hypothesis of this construction is pointwise. It forms no supremum of `|f - g|`, so an
+unbounded difference never becomes a finite real number: the hypothesis simply fails for every
+`ε`. The bound by the supremum distance `‖f − g‖_∞`, which may be infinite, is
+`interleavingDistance_intervalComponents_le_edist`
+([reeb-interleaving-distance.md](reeb-interleaving-distance.md)).
 
 If `f x ∈ I` then `g x ∈ T_ε I`, with witness `f x` (`mem_thicken_of_abs_sub_le`). Hence
 `f ⁻¹' I ⊆ g ⁻¹' T_ε I` (`preimage_subset_preimage_thicken`), and the bound is symmetric
@@ -67,7 +70,10 @@ For `c : ℝ`, the translation `x ↦ f x + c` satisfies the pointwise bound `|c
 construction and sharp on a point: for the constant functions `0` and `c` on a one-point space
 there is no `ε`-interleaving with `ε < |c|`. A witness at the interval `(-η, η)`, with
 `η = (|c| - ε) / 2`, would place `c` within `ε` of a point of absolute value less than `η`,
-giving `|c| < ε + η < |c|`.
+giving `|c| < ε + η < |c|`. In the supremum distance, the translation is at distance exactly
+`|c|` on a nonempty domain, and on a one-point domain the stability bound
+`interleavingDistance_intervalComponents_le_edist` is an equality at `|c|`
+([reeb-interleaving-distance.md](reeb-interleaving-distance.md)).
 
 The bound is not optimal in general. For `X = ℝ` and `f = id`, every inverse image of a
 nonempty interval under `f` or under `f + c` is a nonempty interval, so every value of
@@ -89,7 +95,11 @@ cosheaves is at most `‖f − g‖_∞`. The proof assumes `‖f − g‖_∞ �
 path components, and observes that naturality and the interleaving conditions hold because
 diagrams of inclusions commute. `perturbationInterleaving` is this witness construction.
 
-- The hypothesis is the pointwise bound, which is equivalent to `‖f − g‖_∞ ≤ ε`. The distance inequality itself is not stated here.
+- The hypothesis is the pointwise bound, which is equivalent to `‖f − g‖_∞ ≤ ε`. This
+  construction gives the interleaving; the distance inequality is stated with the interleaving
+  distance, in pointwise form as `interleavingDistance_intervalComponents_le` and in the literal
+  `‖f − g‖_∞` form as `interleavingDistance_intervalComponents_le_edist`
+  ([reeb-interleaving-distance.md](reeb-interleaving-distance.md)).
 - The source calls the component functors cosheaves; the construction uses only the
   precosheaves, and the source notes that the cosheaf condition is not needed for the stability
   theorem.
