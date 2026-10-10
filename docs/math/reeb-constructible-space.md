@@ -15,7 +15,7 @@ edges are allowed. There are no edge pieces below `a 0` or above `a n`.
 
 ## Realization and normal form
 
-`Realization S P` is the quotient of the finite sum
+`P.Realization S` is the quotient of the finite sum
 
 ```text
 (Σ i, V i) ⊕ (Σ e, E e × [a e, a (e+1)])
@@ -39,9 +39,9 @@ transitivity.
 
 ## Constructors, height and universal property
 
-`ofVertex i : V i → Realization S P` and `ofCylinder e : E e × [a e, a (e+1)] → Realization S P`
+`ofVertex i : V i → P.Realization S` and `ofCylinder e : E e × [a e, a (e+1)] → P.Realization S`
 are continuous, and `ofCylinder_segBot`, `ofCylinder_segTop` are the two endpoint identities. The
-continuous height `height S P` is `a i` on `V i` and the real coordinate on a cylinder, by
+continuous height `P.height S` is `a i` on `V i` and the real coordinate on a cylinder, by
 definition.
 
 A family of continuous maps on all vertex pieces and closed cylinders satisfying the two endpoint
@@ -51,7 +51,7 @@ both inverse laws; the inverse restricts a map to the pieces.
 
 ## Strip and fiber normal forms
 
-All three are homeomorphisms onto subspaces of the realization, not only bijections.
+The first three are homeomorphisms onto subspaces of the realization, not only bijections.
 
 - **Open strip.** `ofStrip e` is an open embedding of `E e × K e`, and `stripHomeomorph`
   identifies `E e × K e` with `height ⁻¹' K e`, compatibly with the height.
@@ -111,7 +111,7 @@ composition (`realizeHom_comp`).
 - missing edges: a point at each of two levels and no edge gives a realization that is not
   preconnected;
 - an empty vertex piece forces the adjacent edge pieces empty; nothing lies over `[a e, a (e+1))`
-  when `V e` is empty, and for concrete data the critical fiber at an empty `V 0` is empty;
+  when `V e.castSucc` is empty, and for concrete data the critical fiber at an empty `V 0` is empty;
 - noninjective attachment: a two-point edge piece with constant left endpoint map; the bottom ends
   are identified, while the top ends and regular points stay apart;
 - parallel edges: two edges between the same vertices give a regular fiber with two points;

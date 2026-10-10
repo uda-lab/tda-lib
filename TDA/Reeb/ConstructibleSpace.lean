@@ -13,15 +13,16 @@ A cylinder presentation `P : CylinderPresentation n` over `n + 1` levels consist
 topological vertex pieces `V i` for `i : Fin (n + 1)`, edge pieces `E e` for `e : Fin n`, and
 continuous endpoint maps `left e : E e → V e.castSucc` and `right e : E e → V e.succ`. The
 critical levels `S : CriticalValues n` are not part of the presentation; every construction
-takes them explicitly. This is the construction of de Silva–Munch–Patel, §2, with compactness
+takes them explicitly. This is the construction of de Silva–Munch–Patel, §2.2, with compactness
 and local path-connectedness of the pieces moved from the data to theorem hypotheses.
 
-* Realization. `Realization S P` is the quotient of the finite sum of the vertex pieces and the
+* Realization. `P.Realization S` is the quotient of the finite sum of the vertex pieces and the
   cylinders `E e × [a e, a (e+1)]` by the equivalence closure of exactly the two endpoint
   identifications per edge (`EndpointRel`), with the quotient topology. The closure is
   characterized by a normal form that sends cylinder endpoints to their vertex images
   (`eqvGen_iff`). Vertex points are never merged with each other (`ofVertex_eq_ofVertex_iff`),
-  and every point is a vertex point or an open-strip point (`exists_rep`), uniquely.
+  and every point is a vertex point or an open-strip point (`exists_rep`); strip points are
+  identified with nothing else (`ofStrip_injective`, `ofVertex_ne_ofStrip`).
 * Constructors and height. `ofVertex` and `ofCylinder` are continuous, the cylinder ends satisfy
   `ofCylinder_segBot` and `ofCylinder_segTop`, and the continuous `height` is the level on a
   vertex piece and the real coordinate on a cylinder, by definition.
