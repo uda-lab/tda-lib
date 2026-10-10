@@ -24,6 +24,8 @@ import TDA.Reeb.ConstructibleCosheaf
 import TDA.Reeb.ConstructibleCosheafExamples
 import TDA.Reeb.ConstructibleCylinder
 import TDA.Reeb.ConstructibleCylinderExamples
+import TDA.Reeb.ConstructibleQuotient
+import TDA.Reeb.ConstructibleQuotientExamples
 import TDA.Reeb.ConstructibleRepresentation
 import TDA.Reeb.ConstructibleRepresentationExamples
 import TDA.Reeb.ConstructibleSpace
