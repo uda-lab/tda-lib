@@ -44,10 +44,11 @@ natural for the path-component map `TDA.Reeb.componentMap` and mathlib's
 when its realization is path connected (`connected_iff_pathConnectedSpace`); both notions include
 nonemptiness.
 
-The short names `quotMk`, `quotMk_surjective`, `isQuotientMap_quotMk`, `continuous_quotMk`, `lift`,
-`lift_unique`, `hom_ext` and `Realization` also occur in `TDA.Reeb.CylinderPresentation`, and
-`lift`, `lift_unique`, `hom_ext` and `ind` in `TDA.Reeb.ReebQuotient`; qualify them when opening
-more than one of these namespaces.
+The short names `Realization`, `instTopologicalSpaceRealization`, `quotMk`, `quotMk_surjective`,
+`isQuotientMap_quotMk`, `continuous_quotMk`, `lift`, `lift_unique` and `hom_ext` also occur in
+`TDA.Reeb.CylinderPresentation`, `lift`, `lift_unique`, `hom_ext` and `ind` in
+`TDA.Reeb.ReebQuotient`, and `edgePoint` and `continuous_edgePoint` in `TDA.Reeb.RGraph`; qualify
+them when opening more than one of these namespaces.
 
 ## Source
 
@@ -63,11 +64,11 @@ with source names and lines, are `Cells` and `instTopologicalSpaceCells` (26–3
 (167–171), `realizationMap`, `realizationMap_vertex` and `realizationMap_edgePoint` (`map`,
 `map_vertex` and `map_edgePoint`, 173–195), and `componentLabel` and `componentLabel_eq_of_joined`
 (the component label and its continuity into the discrete component type in
-`connected_of_pathConnectedSpace`, 202–219). Changes: names, public visibility of the endpoint,
-induction and lift lemmas, `vertex` and `edgePoint` defined through `quotMk`, `realizationMap` built
-from `continuousLift` with independent vertex universes, and constancy of the label along paths
-through `TDA.Reeb.joined_eq_of_discrete`. Every other declaration is new. The source is not
-imported.
+`connected_of_pathConnectedSpace`, 202–219). Changes: names, public visibility of every adapted
+private lemma and of the component label, `vertex` and `edgePoint` defined through `quotMk`, `ind`
+through surjectivity of `quotMk`, `realizationMap` built from `continuousLift` with independent
+vertex universes, and constancy of the label along paths through `TDA.Reeb.joined_eq_of_discrete`.
+Every other declaration is new. The source is not imported.
 -/
 
 open SimpleGraph unitInterval Topology

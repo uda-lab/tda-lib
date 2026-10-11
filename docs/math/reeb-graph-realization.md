@@ -137,11 +137,11 @@ The production module uses the library declarations `TDA.Reeb.componentMap`,
 `TDA.Reeb.componentMap_id` and `TDA.Reeb.componentMap_comp` (`TDA.Reeb.Components`) and
 `TDA.Reeb.joined_eq_of_discrete` (`TDA.Reeb.ComponentsDiscrete`); the fixtures additionally use
 only `TDA.Reeb.componentMap`. None is restated. Its main pinned mathlib ingredients are
-`SimpleGraph.ConnectedComponent` with `connectedComponentMk`, `lift`, `ind`, `exact`, `sound`,
-`map` and `connectedComponentMk_eq_of_adj`, `SimpleGraph.Hom.mapDart`, `SimpleGraph.connected_iff`,
+`SimpleGraph.ConnectedComponent` with `connectedComponentMk`, `lift`, `ind`, `exact`, `map` and
+`connectedComponentMk_eq_of_adj`, `SimpleGraph.Hom.mapDart`, `SimpleGraph.connected_iff`,
 `ZerothHomotopy` with `mk`, `lift`, `rec` and `sound`, `pathConnectedSpace_iff_zerothHomotopy`,
 `isQuotientMap_quot_mk`, `continuous_sum_dom` and `continuous_sigma`; the fixtures also use
-`SimpleGraph.pathGraph` and `SimpleGraph.reachable_bot`.
+`SimpleGraph.ConnectedComponent.sound`, `SimpleGraph.pathGraph` and `SimpleGraph.reachable_bot`.
 
 ## Names and universes
 
@@ -156,11 +156,14 @@ square `componentsEquiv_componentMap`; `realizationMap φ` infers it from `φ`. 
 declaration is the straight path in the unit interval behind `joined_edgePoint_vertex`.
 
 Fully qualified names are distinct from all other library names, but some short names are not.
-`quotMk`, `quotMk_surjective`, `isQuotientMap_quotMk`, `continuous_quotMk`, `lift`,
-`lift_unique`, `hom_ext` and `Realization` also occur in `TDA.Reeb.CylinderPresentation`
-(`reeb-constructible-space.md`), and `lift`, `lift_unique`, `hom_ext` and `ind` in
-`TDA.Reeb.ReebQuotient` (`reeb-quotient.md`). A file opening more than one of these namespaces
-qualifies the overlapping names.
+`Realization`, `instTopologicalSpaceRealization`, `quotMk`, `quotMk_surjective`,
+`isQuotientMap_quotMk`, `continuous_quotMk`, `lift`, `lift_unique` and `hom_ext` also occur in
+`TDA.Reeb.CylinderPresentation` (`reeb-constructible-space.md`), `lift`, `lift_unique`, `hom_ext`
+and `ind` in `TDA.Reeb.ReebQuotient` (`reeb-quotient.md`), and `edgePoint` and
+`continuous_edgePoint` in `TDA.Reeb.RGraph` (`reeb-rgraph.md`). A file opening more than one of
+these namespaces qualifies the overlapping names. Among the fixtures, `fold`, `half`,
+`pointGraph`, `swapHom`, `swap_naturality` and `swap_ne_id` also occur in other fixture
+namespaces.
 
 ## Fixtures
 
@@ -244,10 +247,10 @@ Adapted declarations, with source names and lines:
 | `realizationMap_vertex`, `realizationMap_edgePoint` | `map_vertex`, `map_edgePoint`, private | 190–195 |
 | `componentLabel`, `componentLabel_eq_of_joined` | the label `f` and its continuity into the discrete component type in `connected_of_pathConnectedSpace`, private | 202–219 |
 
-Changes: the names; public visibility of the endpoint, induction and lift lemmas; `vertex` and
-`edgePoint` defined through `quotMk`; `ind` through surjectivity of `quotMk`; `realizationMap`
-built from `continuousLift`, with independent vertex universes, where the source's `map` requires
-both vertex types in one universe; and constancy of the label along paths through
+Changes: the names; public visibility of every adapted private lemma and of the component label;
+`vertex` and `edgePoint` defined through `quotMk`; `ind` through surjectivity of `quotMk`;
+`realizationMap` built from `continuousLift`, with independent vertex universes, where the source's
+`map` requires both vertex types in one universe; and constancy of the label along paths through
 `TDA.Reeb.joined_eq_of_discrete`, where the source uses constancy on a preconnected space.
 
 New declarations: `isOpen_vertexCell`, `quotMk_surjective`, `continuous_quotMk`,
@@ -274,15 +277,17 @@ naturality are library constructions, not results of the paper. The library's re
 height-indexed presentations, `TDA.Reeb.CylinderPresentation.Realization`, is a different
 construction (`reeb-constructible-space.md`).
 
-**Mathlib and TauCeti.** Pinned mathlib has no realization of simple graphs and no topological
-API under `Topology` or `AlgebraicTopology` for `SimpleGraph`. Its realization `SSet.toTop` is
-that of simplicial sets. `TopCat.zerothHomotopyEquiv` is not a realization construction: it
-compares `ZerothHomotopy X` with the path components `π₀` of the singular simplicial set of `X`.
+**Mathlib and TauCeti.** Pinned mathlib has no realization of simple graphs and no topological API
+under `Topology` or `AlgebraicTopology` for `SimpleGraph`. Its realization `SSet.toTop` is that of
+simplicial sets. `TopCat.zerothHomotopyEquiv` is not a realization construction: it compares
+`ZerothHomotopy X` with the connected components `π₀` of the singular simplicial set of `X`.
 TauCeti, at revision `3b4a078d372e27f93b0c181e6b67df93797d1a02`, has a realization of abstract
-simplicial complexes under `TauCeti/AlgebraicTopology/SimplicialComplex/Realization/`, and its file
-tree has no path naming `SimpleGraph`. This is a partial check, not a content-level inspection of
-every file, so it does not establish that TauCeti has no simple-graph realization. Nothing from
-TauCeti is used, and TauCeti is not a dependency.
+simplicial complexes under `TauCeti/AlgebraicTopology/SimplicialComplex/Realization/`. Its
+`SimpleGraph` files lie under `TauCeti/Combinatorics/SimpleGraph/` and in
+`TauCeti/LinearAlgebra/RootSystem/FiniteType/SimpleGraph.lean`, and no path under
+`TauCeti/Topology/` or `TauCeti/AlgebraicTopology/` names `SimpleGraph`. This is a partial check,
+not a content-level inspection of every file, so it does not establish that TauCeti has no
+simple-graph realization. Nothing from TauCeti is used, and TauCeti is not a dependency.
 
 Not claimed here: edge contraction; the fundamental group of a triangle or any other higher
 homotopy; trees as simply connected realizations; realization of Hasse orders; piecewise-linear
