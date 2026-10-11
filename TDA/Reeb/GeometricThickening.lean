@@ -34,8 +34,9 @@ is the projection by `rfl`. The homotopy inverse `x ↦ (x, clamp ε c (f x))` u
 `max (-ε) (min ε (c - s))` at a point `c ∈ I` (`add_clamp_mem`) and a straight-line homotopy in the
 band coordinate. The point `c` is a choice (`intervalCenter`), and the inverse is not part of the
 interface. The projection commutes on points with interval inclusions and with height-preserving
-maps (`preimageProjection_comp_inclusion`, `preimageProjection_comp_restrict`). It is not a map
-over `ℝ`.
+maps (`preimageProjection_comp_inclusion`, `preimageProjection_comp_restrict`). For `ε > 0` it
+does not preserve height in general; only at `ε = 0` is the first projection height-preserving
+(`zeroHomeomorph`).
 
 ## The comparison
 

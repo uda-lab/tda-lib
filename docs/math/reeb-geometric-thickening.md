@@ -48,8 +48,9 @@ thickened height and `B(I) = {x | f x ∈ thicken ε I}`. The first projection
 preimageProjection f ε I : C(A(I), B(I)),   (x, t) ↦ x
 ```
 
-is well defined: `y = f x + t ∈ I` satisfies `|f x - y| = |t| ≤ ε` (`fst_mem_thicken`). It is not a
-map over `ℝ`: it lowers the height `f x + t` to `f x`.
+is well defined: `y = f x + t ∈ I` satisfies `|f x - y| = |t| ≤ ε` (`fst_mem_thicken`). For
+`ε > 0` the first projection does not preserve height in general: it sends a point of height
+`f x + t` to one of height `f x`. Only at `ε = 0`, where `t = 0`, is it height-preserving (`zeroHomeomorph` below).
 
 **The clamp.** For `c, s : ℝ`, `clamp ε c s = max (-ε) (min ε (c - s))` lies in the band; it is
 `Set.projIcc (-ε) ε _ (c - s)` and is continuous in `s`. If `c ∈ I` and `s ∈ thicken ε I`, pick
@@ -72,7 +73,8 @@ nonempty (`nonempty_of_mem_thicken`). Then `p ∘ q = id` exactly
 H(r, (x, t)) = (x, (1 - r) · clamp ε c (f x) + r · t),   r ∈ [0, 1]
 ```
 
-is a homotopy from `q ∘ p` to the identity of `A(I)` (`preimageHomotopyAt`). The band is convex, and
+is a homotopy from `q ∘ p` to the identity of `A(I)` (`preimageHomotopyAt`). With
+`λ = clamp ε c (f x)`, the band is convex, and
 `f x + ((1 - r) λ + r t) = (1 - r)(f x + λ) + r (f x + t)` is a convex combination of two points of
 `I` (`interp_mem_band`, `interp_mem`). This gives `preimageHomotopyEquivAt`.
 
@@ -159,7 +161,8 @@ comparison. On the slice:
 - at `ε = 0`, `π₀` of `zeroIso` is the comparison followed by `smoothingZeroIso`
   (`map_zeroIso_hom_app`).
 
-The first projection is never packaged as a slice morphism.
+For `ε > 0` the first projection does not preserve height in general and is never packaged as a
+slice morphism; at `ε = 0` it is the height-preserving `zeroHomeomorph` underlying `zeroIso`.
 
 ## Names and universes
 
@@ -210,8 +213,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3 and §4.4:
 - **Observation 4.23**, the natural zero section `τ^ε`, is `zeroSection`, `map_comp_zeroSection`
   and `zeroSectionNatTrans`.
 - **Lemma 4.25** states that the first projection restricts to a homotopy equivalence
-  `f_ε⁻¹(I) → f⁻¹(I^ε)` for each interval `I`. It is stated for `I = (a, b)`, with `λ` given by an
-  example inside an open parallelogram, which is empty at `ε = 0`. The proof only needs
+  `f_ε⁻¹(I) → f⁻¹(I^ε)` for each interval `I`. Its proof writes `I = (a, b)` and gives `λ` as an
+  example inside an open parallelogram, whose interior is empty at `ε = 0`. The proof only needs
   `λ(s) ∈ [-ε, ε]` and `s + λ(s) ∈ I`; the clamp meets both conditions for every open interval,
   including `∅`, rays and `ℝ`, and for every `ε ≥ 0`. The homotopy is the source's straight line in
   `t`; convexity of the band and of `I` replaces "meets each fiber in an interval". The source does
@@ -233,9 +236,9 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3 and §4.4:
   above, the part of the square of Proposition 4.35 that involves `T_ε` and Theorem 4.24; it holds
   for every space over `ℝ`.
 
-Not claimed here: that the first projection is a map over `ℝ` or a slice morphism; naturality of
-the homotopy inverse, of the chosen point or of the homotopy in `I` or in maps; Reeb graphs of
-thickenings, constructibility of thickenings, or Proposition 4.35 for ℝ-graphs.
+Not claimed here: that the first projection is a map over `ℝ` or a slice morphism for `ε > 0`;
+naturality of the homotopy inverse, of the chosen point or of the homotopy in `I` or in maps; Reeb
+graphs of thickenings, constructibility of thickenings, or Proposition 4.35 for ℝ-graphs.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3, Definition 4.22, Observation
 4.23, Theorem 4.24, Lemma 4.25 and the proof of Theorem 4.27, and §4.4, Proposition
