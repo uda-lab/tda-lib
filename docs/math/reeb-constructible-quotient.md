@@ -151,7 +151,9 @@ quotientRGraphFunctor : ConstructibleSpaceCat ⥤ RGraphCat
 ```
 
 on all morphisms, including those between objects presented over different lists of levels. Graph
-objects are constructible, with discrete pieces (`isConstructibleSpace_of_isRGraph`).
+objects are constructible, with discrete pieces (`isConstructibleSpace_of_isRGraph`). Their
+geometric thickenings are constructible too, with compact locally path-connected windows as pieces
+(see `reeb-rgraph-thickening.md`).
 
 ## The graph case
 
