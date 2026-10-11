@@ -82,3 +82,7 @@ import TDA.Filtration.CompatibleOrderExistence
 import TDA.Filtration.CompatibleOrderExistenceExamples
 import TDA.Filtration.CompatibleOrderClosed
 import TDA.Filtration.CompatibleOrderClosedExamples
+import TDA.Simplicial.Homology
+import TDA.Simplicial.HomologyExamples
+import TDA.Persistence.Simplicial
+import TDA.Persistence.SimplicialExamples
