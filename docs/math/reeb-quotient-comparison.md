@@ -36,8 +36,8 @@ universe, as `componentNatTrans` does.
 de Silva, Munch and Patel show that `C(f)` and `C(f̄)` are not isomorphic (Example 3.21): over the
 interval `ℝ`, the curve has more than one path component while its Reeb quotient has one, so the
 surjective `η_f` is not injective there. This limitation is source-established and is not machine-checked here. No injectivity, bijectivity or
-natural isomorphism is claimed for `η`. Promoting `η` to an isomorphism needs a concrete
-constructible-space model and its local comparison lemmas.
+natural isomorphism is claimed for `η` in general. On constructible inputs, `η` restricted to open
+intervals is a natural isomorphism (see `reeb-constructible-comparison.md`).
 
 A separate, weaker fact is machine-checked. A continuous height-preserving surjection need not
 induce injections on path components of inverse images. The fold `Bool × ℝ → ℝ` over `(ℝ, id)`
@@ -69,8 +69,8 @@ identity, so `ℛ` is a pointed endofunctor (Observation 2.11). `ReebQuotient.ma
 `(quotientFunctor ℝ, projNatTrans ℝ)` is `(ℛ, ρ)`. In the proof of Theorem 3.17 they define
 `η = 𝒞ρ` by applying the path-component functor `𝒞` of §3.4 to `ρ`; `componentComparisonOver` is
 this transformation. Theorem 3.17 states that `𝒞` and `𝒞ℛ` are naturally isomorphic on
-constructible ℝ-spaces, and its proof shows that `η` is that isomorphism. That theorem is not
-formalized here.
+constructible ℝ-spaces, and its proof shows that `η` is that isomorphism. That theorem, for `η`
+restricted to open intervals, is formalized in `reeb-constructible-comparison.md`.
 
 The arbitrary target `Y` and the indexing by all open sets of `Y` are library generalizations,
 not source claims. The source case is the specialization `Y = ℝ` restricted to open intervals.
