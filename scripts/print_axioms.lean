@@ -2349,6 +2349,7 @@ import TDA
 -- Finite off-diagonal diagrams and the full ordered-barcode map (Issue #149).
 #print axioms TDA.Persistence.Diagram
 #print axioms TDA.Persistence.Diagram.ext
+#print axioms TDA.Persistence.Diagram.ext_iff
 #print axioms TDA.Persistence.Diagram.IsPositive
 #print axioms TDA.Persistence.orderedQ
 #print axioms TDA.Persistence.orderedQ_perm
