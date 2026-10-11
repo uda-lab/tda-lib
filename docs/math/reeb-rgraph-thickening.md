@@ -217,7 +217,8 @@ it acts on every height-preserving continuous map between graph objects
 graph inclusion, it is literally the Reeb quotient of the actual product thickening:
 `thickeningToConstructible ε ⋙ quotientRGraphFunctor ⋙ IsRGraph.ι =
 IsRGraph.ι ⋙ GeometricThickening.functor ε ⋙ ReebQuotient.quotientFunctor ℝ`, by `rfl`
-(`thickeningToConstructible_comp_quotientRGraphFunctor`).
+(`thickeningToConstructible_comp_quotientRGraphFunctor`). This composite is the geometric smoothing
+`U_ε` of `reeb-rgraph-smoothing.md`.
 
 ## Names and universes
 

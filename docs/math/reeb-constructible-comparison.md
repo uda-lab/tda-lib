@@ -137,7 +137,9 @@ projection homeomorphism `RGraph.projHomeomorph` of `reeb-rgraph.md`, by `rfl`
 projection `RGraph.projInv` (`inv_intervalComponentComparison_ofFiniteData`, with
 `height_projInv`). At a graph object, the component of `constructibleComponentComparisonIso` is the
 image of `RGraph.projNatIso` under `intervalComponentsOver`
-(`constructibleComponentComparisonIso_app_of_isRGraph`).
+(`constructibleComponentComparisonIso_app_of_isRGraph`). At the thickening of a graph object, the
+inverse of the comparison is the first factor of the comparison of geometric smoothing with cosheaf
+smoothing (see `reeb-rgraph-smoothing.md`).
 
 ## Hypotheses and their limits
 

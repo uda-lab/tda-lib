@@ -131,7 +131,9 @@ Two structure maps are lifted, with their underlying maps the actual ones, by `r
 Their naturality is that of the actual transformations, and the lifted zero unit is the inverse of
 the lifted zero comparison (`constructibleSmoothingUnit_zero`, from `smoothingUnit_zero`). The
 enlargement maps, the composition isomorphisms and the commutation isomorphism of
-`reeb-smoothing.md` are not lifted.
+`reeb-smoothing.md` are not lifted. On the cosheaves of graph objects, `constructibleSmoothing ε`
+and its unit correspond to the geometric smoothing `U_ε` and its unit (see
+`reeb-rgraph-smoothing.md`).
 
 ## Universes
 
