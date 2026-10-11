@@ -2055,3 +2055,14 @@ import TDA
 #print axioms TDA.Simplicial.simplicialHomologyCoordinates_naturality
 #print axioms TDA.Simplicial.coordinateHomologyIncl_id
 #print axioms TDA.Simplicial.coordinateHomologyIncl_comp
+
+-- TDA.Persistence.RankInvariant: arbitrary finite persistence modules, with integer sentinels.
+#print axioms TDA.Persistence.moduleRankInteger
+#print axioms TDA.Persistence.moduleMultiplicityInteger
+#print axioms TDA.Persistence.moduleRankInteger_fin
+#print axioms TDA.Persistence.moduleRankInteger_neg_one
+#print axioms TDA.Persistence.moduleRankInteger_at_size
+#print axioms TDA.Persistence.structureMapRank_mono_source
+#print axioms TDA.Persistence.structureMapRank_drop
+#print axioms TDA.Persistence.structureMapRank_four_le
+#print axioms TDA.Persistence.moduleMultiplicityInteger_nonneg
