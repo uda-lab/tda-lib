@@ -70,7 +70,8 @@ identity, so `ℛ` is a pointed endofunctor (Observation 2.11). `ReebQuotient.ma
 `η = 𝒞ρ` by applying the path-component functor `𝒞` of §3.4 to `ρ`; `componentComparisonOver` is
 this transformation. Theorem 3.17 states that `𝒞` and `𝒞ℛ` are naturally isomorphic on
 constructible ℝ-spaces, and its proof shows that `η` is that isomorphism. That theorem, for `η`
-restricted to open intervals, is formalized in `reeb-constructible-comparison.md`.
+restricted to open intervals, is formalized in `TDA.Reeb.ConstructibleComparison` (see
+`reeb-constructible-comparison.md`).
 
 The arbitrary target `Y` and the indexing by all open sets of `Y` are library generalizations,
 not source claims. The source case is the specialization `Y = ℝ` restricted to open intervals.

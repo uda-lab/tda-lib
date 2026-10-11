@@ -141,7 +141,8 @@ image of `RGraph.projNatIso` under `intervalComponentsOver`
 
 ## Hypotheses and their limits
 
-Every isomorphism statement carries either the presentation hypotheses or `IsConstructibleSpace`.
+Every isomorphism statement carries the presentation hypotheses, `IsConstructibleSpace`, or a
+graph-object or finite-data hypothesis, under which the presentation hypotheses hold.
 The instances are keyed on the height of a presentation and on the functor-level transformation; no
 instance gives `IsIso` of the comparison for an arbitrary map. For arbitrary maps only the defining
 identities, surjectivity and naturality are stated.
@@ -213,7 +214,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
   `ConstructibleSpaceCat`. `constructibleComponentComparisonIso` is the same isomorphism between
   functors to precosheaves on open intervals.
 - Proof of Theorem 3.17: the source defines `η = 𝒞ρ` on all of ℝ-**Top**
-  (`componentComparisonOver_app_eq_map`), notes that `𝒞(f)` and `𝒞ℛ(f)` are constructible with the
+  (`componentComparisonOver_app_eq_map` on open sets; on open intervals it follows by precomposition
+  with `toOpensFunctor`), notes that `𝒞(f)` and `𝒞ℛ(f)` are constructible with the
   same critical set, and checks short intervals by Corollary 3.14. At stars and gaps it applies
   `π₀` to the homotopy equivalences of the cylinder principle (Lemma 2.4) in the diagrams (2.6)
   for `ρ`.
@@ -223,8 +225,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
     constructible.
   - Injectivity of `η` follows from the factorization through `π₀(θ)`, and surjectivity from
     `componentComparison_app_surjective`.
-  - Both of the source's conclusions are proved: the isomorphism, and constructibility of both
-    cosheaves at a common list (`isConstructibleAt_intervalComponents_reebQuotient`,
+  - The isomorphism is proved, and so is the proof's intermediate claim that both cosheaves are
+    constructible at a common list (`isConstructibleAt_intervalComponents_reebQuotient`,
     `exists_isConstructibleAt_of_isConstructibleSpace`). The star and gap formulas
     `intervalComponentComparison_star` and `intervalComponentComparison_gap` are the source's two
     diagrams composed with `π₀(θ)`.

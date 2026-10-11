@@ -17,8 +17,9 @@ path component of `q_f x` in `f̄ ⁻¹ I`. The identity with `componentComparis
 height-preserving maps is `componentComparison_natural`, precomposed. On the real slice it is
 `componentComparisonOver ℝ` followed by precomposition with `toOpensFunctor`, a transformation
 `intervalComponentsOver ⟶ quotientFunctor ℝ ⋙ intervalComponentsOver`
-(`intervalComponentComparisonOver`). Its component at `A` is the path-component map of the
-projection `ρ_A` (`componentComparisonOver_app_eq_map`, the source's `η = 𝒞ρ`).
+(`intervalComponentComparisonOver`). The comparison `componentComparisonOver ℝ` at `A` is the
+path-component map of the projection `ρ_A` (`componentComparisonOver_app_eq_map`, the source's
+`η = 𝒞ρ`); on open intervals this follows by precomposition.
 
 ## The theorem
 
