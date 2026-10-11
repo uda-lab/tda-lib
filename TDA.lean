@@ -69,6 +69,8 @@ import TDA.Simplicial.ChainComplex
 import TDA.Simplicial.FiniteComplex
 import TDA.Simplicial.FiniteCoordinates
 import TDA.Simplicial.FiniteCoordinatesExamples
+import TDA.Simplicial.FiniteCycles
+import TDA.Simplicial.FiniteCyclesExamples
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.InclusionExamples
 import TDA.Topology.Cosheaf

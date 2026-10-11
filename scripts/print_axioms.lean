@@ -1923,3 +1923,15 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothing.smoothedPinchU_isConstructibleCosheaf
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothing.smoothedPinchUObj
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothing.smoothedPinchUObj_obj
+
+-- Coordinate cycles and incoming boundaries in actual finite simplicial chains.
+#print axioms TDA.Simplicial.coordinateCycles_zero
+#print axioms TDA.Simplicial.coordinateCycles_succ
+#print axioms TDA.Simplicial.cycleCoordinates_coe
+#print axioms TDA.Simplicial.coordinateBoundaryToCycles_coe
+#print axioms TDA.Simplicial.mem_coordinateBoundaries_iff
+#print axioms TDA.Simplicial.simplicialBoundaries_map_cycleCoordinates
+#print axioms TDA.Simplicial.coordinateCycleIncl_coe
+#print axioms TDA.Simplicial.cycleCoordinates_naturality
+#print axioms TDA.Simplicial.coordinateCycleIncl_boundaryToCycles
+#print axioms TDA.Simplicial.coordinateBoundaries_le_comap
