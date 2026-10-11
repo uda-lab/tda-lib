@@ -1720,3 +1720,12 @@ import TDA
 #print axioms TDA.Persistence.simplicialHomologyPModule
 #print axioms TDA.Persistence.simplicialHomologyPModule_obj
 #print axioms TDA.Persistence.simplicialHomologyPModule_structureMap
+
+-- Deterministic single-column cancellation (Issue #123).
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_target
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_col_of_ne
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_step_spec
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_length_le
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_terminal
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_eq_nil_iff
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_respectsDegree
