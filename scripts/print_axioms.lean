@@ -1689,3 +1689,6 @@ import TDA
 #print axioms TDA.Persistence.Reduction.TraceChangeCertificate.inv_diag
 #print axioms TDA.Persistence.Reduction.TraceChangeCertificate.degree_support
 #print axioms TDA.Persistence.Reduction.TraceChangeCertificate.inv_degree_support
+
+-- Closed fixed-enumeration compatibility locus (Issue #120).
+#print axioms TDA.Filtration.CompatibleOrder.isClosed_compatible_locus
