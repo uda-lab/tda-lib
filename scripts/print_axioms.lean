@@ -2357,6 +2357,12 @@ import TDA
 #print axioms TDA.Persistence.orderedQ_count_essential
 #print axioms TDA.Persistence.orderedQ_isPositive_iff
 
+-- TDA.Persistence.DiagramLaws: ordered barcode representation laws.
+#print axioms TDA.Persistence.orderedQ_append
+#print axioms TDA.Persistence.orderedQ_eq_iff
+#print axioms TDA.Persistence.orderedQ_surjective
+#print axioms TDA.Persistence.orderedQ_zeroLength
+
 -- Realizations of simple graphs and natural identification of their path components (Issue #145).
 -- TDA.Reeb.GraphRealization: the dart-cell quotient with its topology, generating relation, quotient map and identification criterion, vertices, edge points with their reversal and endpoint equations, induction and extensionality, the raw and bundled lifts with evaluation, continuity and uniqueness, vertex injectivity, emptiness and nonemptiness, edge and walk paths, maps induced by graph homomorphisms with their formulas, identity and composition laws, the component label, the path-component equivalence with its formulas and naturality, the identity and composition corollaries, and connectedness.
 #print axioms TDA.Reeb.GraphRealization.Cells
