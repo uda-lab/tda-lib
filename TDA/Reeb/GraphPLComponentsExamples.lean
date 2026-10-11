@@ -28,8 +28,8 @@ Acceptance fixtures for `TDA.Reeb.GraphPLComponents`:
 * **4-cycle.** On `cycleGraph 4` with heights `0, 1, 2, 1` and `I = (1/2, 3/2)`, the surviving
   vertices are exactly `1` and `3`. Their incidence classes are distinct, by a side function that
   every adjacency preserves, and every class is one of them; the actual preimage classes `x1` and
-  `x3` of the two vertices are therefore distinct and exhaustive, and interior points of the edges
-  `0 — 1` and `2 — 3` lie in the classes of `1` and `3`.
+  `x3` of the two vertices are therefore distinct and exhaustive, and the edge points at parameter
+  `3/4` of the darts `0 → 1` and `2 → 3` lie in the classes of `1` and `3`.
 * **Proper inclusion.** For `I < J = (-1/2, 5/2)`, the two classes merge on both sides of the
   naturality square: through `TDA.Reeb.componentMap (preimageInclusion …)`, through
   `ConnectedComponent.map (cellInclusion …)`, and through the packaged functors.

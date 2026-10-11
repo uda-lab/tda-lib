@@ -10,9 +10,9 @@ dartHeight h d t = (1 - (t : ℝ)) * h d.fst + (t : ℝ) * h d.snd
 ```
 
 It satisfies the reversal equation `dartHeight h d.symm (σ t) = dartHeight h d t` at every `t`
-(`dartHeight_symm`) and the endpoint equations `dartHeight h d 0 = h d.fst` and
-`dartHeight h d 1 = h d.snd`. These are the two compatibilities of the universal lift of the
-realization (`reeb-graph-realization.md`), so
+(`dartHeight_symm`) and the start equation `dartHeight h d 0 = h d.fst`, the two compatibilities of
+the universal lift of the realization (`reeb-graph-realization.md`); the end equation
+`dartHeight h d 1 = h d.snd` also holds. Hence
 
 ```lean
 plHeight G h : C(Realization G, ℝ)
@@ -220,7 +220,7 @@ module imports the fixtures. The vertex type has an arbitrary universe `u`, and 
 Every comparison law holds for an arbitrary vertex type; finite graphs are a direct instance.
 `[Finite V]` occurs only in `instFiniteCell` and `finite_zerothHomotopy`. No decidable adjacency,
 nonempty vertex type, injectivity of heights or orientation choice is assumed, and no topology on
-`V` is used. `cellInclusion` takes `G` and `h` explicitly, since `hIJ` does not determine them. The
+`V` is assumed. `cellInclusion` takes `G` and `h` explicitly, since `hIJ` does not determine them. The
 private helpers are the vertex and edge parts of the label and their four equations. The reversal
 `unitInterval.symm` is written with a local notation `σ`, because `open unitInterval` would make `I`
 a token and clash with the interval variable.
@@ -297,8 +297,8 @@ The single edge is `⊤ : SimpleGraph Bool` with the dart `d₀ : false → true
   function that every adjacency preserves (`c4Side_adj`, `c4_cell_ne`), and every class is one of
   them (`c4_cell_classification`, `c4_card_cell`). The preimage classes `x1` and `x3` of the two
   vertices are distinct and exhaustive (`c4_x1_ne_x3`, `c4_preimage_classification`,
-  `c4_card_preimage`), and interior points of the edges `0 — 1` and `2 — 3` lie in the classes of
-  `1` and `3` (`c4_d01_class`, `c4_d23_class`).
+  `c4_card_preimage`), and the edge points at parameter `3/4` of the darts `0 → 1` and `2 → 3` lie in
+  the classes of `1` and `3` (`c4_d01_class`, `c4_d23_class`).
 - **Proper inclusion.** For `I < J = (-1/2, 5/2)` (`I4_lt_J4`) the two classes merge through
   `ConnectedComponent.map (cellInclusion …)` (`c4_J_cell_merge`), through
   `TDA.Reeb.componentMap (preimageInclusion …)` (`c4_J_preimage_merge`), on both sides of the square

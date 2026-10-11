@@ -2639,7 +2639,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Reeb.Examples.GraphPL.horizontal_active_iff
 #print axioms TDA.Reeb.Examples.GraphPL.horizontal_inside_active
 #print axioms TDA.Reeb.Examples.GraphPL.horizontal_outside_inactive
--- TDA.Reeb.GraphPLComponentsExamples: the empty interval, the empty vertex type, one edge of heights 0 and 2 over intervals containing only its interior height 1 with the failure of endpoint coverage, opposite darts, a horizontal edge, a ray, the 4-cycle with heights 0, 1, 2, 1 and its two classes, their merge under a proper inclusion on both sides of the naturality square, and the vertex-only corollary with its counterexample.
+-- TDA.Reeb.GraphPLComponentsExamples: the empty interval, the empty vertex type, one edge of heights 0 and 2 over intervals containing its interior height 1 but neither endpoint height, with the failure of endpoint coverage, opposite darts, a horizontal edge, a ray, the 4-cycle with heights 0, 1, 2, 1 and its two classes, their merge under a proper inclusion on both sides of the naturality square, and the vertex-only corollary with its counterexample.
 #print axioms TDA.Reeb.Examples.GraphPL.cell_bot_isEmpty
 #print axioms TDA.Reeb.Examples.GraphPL.cellComponents_bot_isEmpty
 #print axioms TDA.Reeb.Examples.GraphPL.preimage_bot_isEmpty
