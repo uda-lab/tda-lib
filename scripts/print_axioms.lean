@@ -1659,6 +1659,37 @@ import TDA
 #print axioms TDA.Filtration.CompatibleOrder.transferOfOrderingEquivalent
 #print axioms TDA.Filtration.CompatibleOrder.transferOfOrderingEquivalent_enum
 
+-- Generic finite actual-face compatible-order laws (Issue #112).
+#print axioms TDA.Filtration.exists_compatibleOrder
+#print axioms TDA.Filtration.CompatibleOrder.monotone_enum_iff_reflects_lt
+
+-- #118: explicit graded trace inverse and certificate (append-only).
+#print axioms TDA.Persistence.Reduction.traceChangeInv_nil
+#print axioms TDA.Persistence.Reduction.traceChangeInv_cons
+#print axioms TDA.Persistence.Reduction.traceChangeInv_append
+#print axioms TDA.Persistence.Reduction.traceChange_mul_traceChangeInv
+#print axioms TDA.Persistence.Reduction.traceChangeInv_mul_traceChange
+#print axioms TDA.Persistence.Reduction.traceChange_isUpperTriangular
+#print axioms TDA.Persistence.Reduction.traceChange_apply_diag
+#print axioms TDA.Persistence.Reduction.traceRespectsDegree_inverseTrace
+#print axioms TDA.Persistence.Reduction.traceChange_apply_of_degree_ne
+#print axioms TDA.Persistence.Reduction.traceChange_certificate
+#print axioms TDA.Persistence.Reduction.replay_inverseTrace
+#print axioms TDA.Persistence.Reduction.replay_lowersDegree
+#print axioms TDA.Persistence.Reduction.degree_eq_of_common_pivot
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.mk
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.rec
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.recOn
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.casesOn
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.mul_inv
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.inv_mul
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.upper
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.diag
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.inv_upper
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.inv_diag
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.degree_support
+#print axioms TDA.Persistence.Reduction.TraceChangeCertificate.inv_degree_support
+
 -- Canonical comparison on constructible inputs (Issue #84).
 -- TDA.Reeb.ConstructibleComparison: path-component maps on open intervals, the comparison on open intervals and on the real slice, presentations and their star and gap formulas, the graph case, constructible ℝ-spaces, the functor-level natural isomorphism and its constructible-cosheaf form.
 #print axioms TDA.Reeb.intervalComponentNatTrans
