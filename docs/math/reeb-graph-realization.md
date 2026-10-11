@@ -279,13 +279,14 @@ construction (`reeb-constructible-space.md`).
 
 **Mathlib and TauCeti.** Pinned mathlib has the affine simplicial complex of a simple graph,
 `Geometry.SimplicialComplex.ofSimpleGraph` in `V →₀ 𝕜`
-(`Mathlib/Analysis/Convex/SimplicialComplex/AffineIndependentUnion.lean`, for `[DecidableEq V]`),
-with the vertices as 0-simplices at basis vectors and the edges as 1-simplices; it has no quotient
-description, lift, induced maps or path-component API. No file under `Topology` or
-`AlgebraicTopology` uses `SimpleGraph`. The realization `SSet.toTop` is that of simplicial sets.
-`TopCat.zerothHomotopyEquiv` is not a realization construction: it compares `ZerothHomotopy X` with
-the connected components `π₀` of the singular simplicial set of `X`. TauCeti, at revision
-`3b4a078d372e27f93b0c181e6b67df93797d1a02`, has a realization of abstract simplicial complexes under
+(`Mathlib/Analysis/Convex/SimplicialComplex/AffineIndependentUnion.lean`, for `[DecidableEq V]`,
+`[DecidableEq 𝕜]` and a linearly ordered field `𝕜`), with the vertices as 0-simplices at basis
+vectors and the edges as 1-simplices; it has no quotient description, lift, induced maps or
+path-component API. No file under `Topology` or `AlgebraicTopology` uses `SimpleGraph`. The
+realization `SSet.toTop` is that of simplicial sets. `TopCat.zerothHomotopyEquiv` is not a
+realization construction: it compares `ZerothHomotopy X` with the connected components `π₀` of the
+singular simplicial set of `X`. TauCeti, at revision `3b4a078d372e27f93b0c181e6b67df93797d1a02`, has
+a realization of abstract simplicial complexes under
 `TauCeti/AlgebraicTopology/SimplicialComplex/Realization/`. Its `SimpleGraph` files lie under
 `TauCeti/Combinatorics/SimpleGraph/` and in
 `TauCeti/LinearAlgebra/RootSystem/FiniteType/SimpleGraph.lean`, and no path under
