@@ -4,6 +4,8 @@
 import TDA.Basic
 import TDA.Filtration.Basic
 import TDA.Persistence.Basic
+import TDA.Persistence.Diagram
+import TDA.Persistence.DiagramExamples
 import TDA.Persistence.FiniteBarcode
 import TDA.Persistence.Interval
 import TDA.Persistence.RankInvariant
