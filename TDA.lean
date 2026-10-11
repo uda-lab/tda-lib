@@ -6,6 +6,8 @@ import TDA.Filtration.Basic
 import TDA.Persistence.Basic
 import TDA.Persistence.FiniteBarcode
 import TDA.Persistence.Interval
+import TDA.Persistence.RankInvariant
+import TDA.Persistence.RankInvariantExamples
 import TDA.Persistence.Reduction.Pivot
 import TDA.Persistence.Reduction.PivotExamples
 import TDA.Persistence.Reduction.PrefixSpan
