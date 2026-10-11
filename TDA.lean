@@ -80,3 +80,5 @@ import TDA.Filtration.CompatibleOrderTransfer
 import TDA.Filtration.CompatibleOrderTransferExamples
 import TDA.Filtration.CompatibleOrderExistence
 import TDA.Filtration.CompatibleOrderExistenceExamples
+import TDA.Filtration.CompatibleOrderClosed
+import TDA.Filtration.CompatibleOrderClosedExamples
