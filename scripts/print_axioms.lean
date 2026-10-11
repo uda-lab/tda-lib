@@ -1658,3 +1658,7 @@ import TDA
 #print axioms TDA.Filtration.OrderingEquivalent.monotone_comp
 #print axioms TDA.Filtration.CompatibleOrder.transferOfOrderingEquivalent
 #print axioms TDA.Filtration.CompatibleOrder.transferOfOrderingEquivalent_enum
+
+-- Generic finite actual-face compatible-order laws (Issue #112).
+#print axioms TDA.Filtration.exists_compatibleOrder
+#print axioms TDA.Filtration.CompatibleOrder.monotone_enum_iff_reflects_lt
