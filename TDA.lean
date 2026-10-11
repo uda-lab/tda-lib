@@ -24,6 +24,8 @@ import TDA.Reeb.ComponentsExamples
 import TDA.Reeb.ComponentsGluing
 import TDA.Reeb.ComponentsGluingExamples
 import TDA.Reeb.ComponentsHomotopy
+import TDA.Reeb.ConstructibleComparison
+import TDA.Reeb.ConstructibleComparisonExamples
 import TDA.Reeb.ConstructibleCosheaf
 import TDA.Reeb.ConstructibleCosheafExamples
 import TDA.Reeb.ConstructibleCylinder
