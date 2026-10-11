@@ -2042,3 +2042,16 @@ import TDA
 #print axioms TDA.Reeb.Examples.GeometricThickening.swap_target_distinct
 #print axioms TDA.Reeb.Examples.GeometricThickening.swap_square
 #print axioms TDA.Reeb.Examples.GeometricThickening.bandHomeomorph_point
+
+-- TDA.Simplicial.FiniteHomology: canonical coordinate quotient and ordinary homology naturality.
+#print axioms TDA.Simplicial.coordinateHomology
+#print axioms TDA.Simplicial.quotientCoordinates
+#print axioms TDA.Simplicial.simplicialHomologyCoordinates
+#print axioms TDA.Simplicial.coordinateHomologyIncl
+#print axioms TDA.Simplicial.quotientCoordinates_mkQ
+#print axioms TDA.Simplicial.simplicialHomologyCoordinates_mkQ
+#print axioms TDA.Simplicial.coordinateHomologyIncl_mkQ
+#print axioms TDA.Simplicial.quotientCoordinates_naturality
+#print axioms TDA.Simplicial.simplicialHomologyCoordinates_naturality
+#print axioms TDA.Simplicial.coordinateHomologyIncl_id
+#print axioms TDA.Simplicial.coordinateHomologyIncl_comp

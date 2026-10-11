@@ -73,6 +73,8 @@ import TDA.Simplicial.FiniteCoordinates
 import TDA.Simplicial.FiniteCoordinatesExamples
 import TDA.Simplicial.FiniteCycles
 import TDA.Simplicial.FiniteCyclesExamples
+import TDA.Simplicial.FiniteHomology
+import TDA.Simplicial.FiniteHomologyExamples
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.InclusionExamples
 import TDA.Topology.Cosheaf
