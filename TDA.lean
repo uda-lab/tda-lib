@@ -17,6 +17,8 @@ import TDA.Persistence.RankReconstructionExamples
 import TDA.Persistence.RankBarcode
 import TDA.Persistence.GradeHomologyBarcode
 import TDA.Persistence.GradeHomologyBarcodeExamples
+import TDA.Persistence.IndexDiagram
+import TDA.Persistence.IndexDiagramExamples
 import TDA.Persistence.RankBarcodeExamples
 import TDA.Persistence.RankBarcodeIso
 import TDA.Persistence.RankBarcodeIsoExamples
