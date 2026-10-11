@@ -63,6 +63,9 @@ import TDA.Reeb.RGraphCosheafEquivalence
 import TDA.Reeb.RGraphCosheafEquivalenceExamples
 import TDA.Reeb.RGraphExamples
 import TDA.Reeb.RGraphRefinement
+import TDA.Reeb.RGraphThickening
+import TDA.Reeb.RGraphThickeningExamples
+import TDA.Reeb.RGraphWindow
 import TDA.Reeb.Smoothing
 import TDA.Reeb.SmoothingExamples
 import TDA.Reeb.Stability
