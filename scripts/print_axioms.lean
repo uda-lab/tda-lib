@@ -1651,3 +1651,10 @@ import TDA
 #print axioms TDA.Filtration.OrderingEquivalent.value_eq_iff
 #print axioms TDA.Filtration.OrderingEquivalent.sublevel_eq
 #print axioms TDA.Filtration.orderingEquivalent_iff_exists_rangeOrderIso
+
+-- Compatible enumeration transfer across grade functions (Issue #110).
+#print axioms TDA.Filtration.CompatibleOrder.transfer
+#print axioms TDA.Filtration.CompatibleOrder.transfer_enum
+#print axioms TDA.Filtration.OrderingEquivalent.monotone_comp
+#print axioms TDA.Filtration.CompatibleOrder.transferOfOrderingEquivalent
+#print axioms TDA.Filtration.CompatibleOrder.transferOfOrderingEquivalent_enum
