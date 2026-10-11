@@ -2303,7 +2303,7 @@ import TDA
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.thicken_subsingleton_of_half_le
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.smoothed_isEmpty_rays
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.smoothed_nonempty
-#print axioms TDA.Reeb.Examples.RGraphSmoothing.subsingleton_of_unique
+#print axioms TDA.Reeb.Examples.RGraphSmoothing.subsingleton_of_one_edge
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.smoothed_fiber_nonempty_iff
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.smoothed_nonempty_of_edge
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.parallel_mid_not_subsingleton

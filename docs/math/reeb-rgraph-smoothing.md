@@ -225,8 +225,8 @@ fixtures of `reeb-constructible-space.md`, `reeb-rgraph.md` and
   and unit formulas hold on `ioo a b`, `iio b`, `ioi a` and `⊤` (`rep_unit_ioo`, `rep_unit_iio`,
   `rep_unit_ioi`, `rep_unit_top`), and the value at `⊥` is empty (`smoothed_bot_isEmpty`).
 - **`ε = 0`.** `parallelZeroIso` and `parallel_zero_comparison` are the zero isomorphism and the
-  zero comparison on the loop. `U_0` keeps the loop: on `(1/4, 3/4)` its value has two elements
-  (`parallel_zero_not_subsingleton`).
+  zero comparison on the loop. `U_0` keeps the loop: on `(1/4, 3/4)` its value has two distinct
+  elements (`parallel_zero_not_subsingleton`).
 - **The empty graph.** Every smoothed value is empty, for every `ε` (`smoothedEmpty_isEmpty`).
 - **A singleton at height `a`.** The one-vertex graph object `singletonGraph a` has at most one
   point (`singleton_subsingleton`). For every `ε` every value has at most one element
@@ -242,21 +242,21 @@ fixtures of `reeb-constructible-space.md`, `reeb-rgraph.md` and
   most one component (`subsingleton_of_long`), hence so does every thickened interval for
   `ε ≥ 1/2` (`thicken_subsingleton_of_half_le`). With one edge as well, every value has at most one
   element, a nonempty interval inside the gap `(0, 1)` being labelled by the edge
-  (`subsingleton_of_unique`). On `(1/4, 3/4)` the loop has two components
+  (`subsingleton_of_one_edge`). On `(1/4, 3/4)` the loop has two distinct components
   (`parallel_mid_not_subsingleton`).
-- **Height fibers of graph objects.** In a finite realization, the fiber over a level `a i` consists
-  of the vertex points of level `i` and the fiber over any other height of the strip points of one
-  gap. Through the vertex and edge labels, if every value of the component cosheaf has at most one
-  element then every height fiber has at most one point (`realization_fiber_subsingleton`), and the
-  same holds for every graph object, through an isomorphism with a finite realization
-  (`fiber_subsingleton_of_cosheaf`). For a graph object over `0 < 1` with an edge and every `ε`,
-  the fiber of `U_ε` over `t` is nonempty exactly when `t ∈ [-ε, 1 + ε]`
-  (`smoothed_fiber_nonempty_iff`): a point `q (x, s)` has height `f x + s` with `f x ∈ [0, 1]` and
-  `|s| ≤ ε`, and conversely `q (v₀, t)`, `q (v₁, t - 1)` or, for `ε < t < 1 - ε`, the class of the
-  edge point at height `t` lies over `t`. Hence every value on an interval meeting `[-ε, 1 + ε]` is
-  nonempty (`smoothed_nonempty_of_edge`), and for `ε ≥ 1/2` the vertices alone suffice
-  (`smoothed_nonempty`). The values on the rays below `-ε` and above `1 + ε` are empty for every `ε`
-  (`smoothed_isEmpty_rays`).
+- **Height fibers of graph objects.** In a finite realization, the fiber over a level `a i`
+  consists of the vertex points of level `i`, and every point at any other height is a strip point
+  of the one gap containing that height. Through the vertex and edge labels, if every value of the
+  component cosheaf has at most one element then every height fiber has at most one point
+  (`realization_fiber_subsingleton`), and the same holds for every graph object, through an
+  isomorphism with a finite realization (`fiber_subsingleton_of_cosheaf`). For a graph object over
+  `0 < 1` with an edge and every `ε`, the fiber of `U_ε` over `t` is nonempty exactly when
+  `t ∈ [-ε, 1 + ε]` (`smoothed_fiber_nonempty_iff`): a point `q (x, s)` has height `f x + s` with
+  `f x ∈ [0, 1]` and `|s| ≤ ε`, and conversely `q (v₀, t)`, `q (v₁, t - 1)` or, for `ε < t < 1 - ε`,
+  the class of the edge point at height `t` lies over `t`. Hence every value on an interval meeting
+  `[-ε, 1 + ε]` is nonempty (`smoothed_nonempty_of_edge`), and for `ε ≥ 1/2` the vertices alone
+  suffice (`smoothed_nonempty`). The values on the rays below `-ε` and above `1 + ε` are empty for
+  every `ε` (`smoothed_isEmpty_rays`).
 - **The parallel-edge loop, height span `1 ≤ 2ε`.** For every `ε ≥ 1/2` every smoothed value has at
   most one element (`parallel_smoothed_subsingleton`; the equality case `ε = 1/2` is
   `parallel_half_subsingleton`), values are nonempty on every interval meeting `[-ε, 1 + ε]`
@@ -270,24 +270,23 @@ fixtures of `reeb-constructible-space.md`, `reeb-rgraph.md` and
   are single points and the fibers just outside are empty (`parallel_half_fiber_ends`). At
   `ε = 1/4` the loop survives: the value on `(1/4, 3/4)`, whose thickening is the gap `(0, 1)`, has
   the two edges as distinct elements (`parallel_quarter_not_subsingleton`), and the fiber over `1/2`
-  has two points, the classes of the two edge points, which the comparison sends to the two edge
-  labels (`parallel_quarter_fiber_not_subsingleton`).
+  has two distinct points, the classes of the two edge points, which the comparison sends to the two
+  edge labels (`parallel_quarter_fiber_not_subsingleton`).
 - **The single edge, every `ε`.** The line is stretched to `[-ε, 1 + ε]`. Every smoothed value has
   at most one element (`single_stretched_subsingleton`); for `ε < 1/2` this includes the intervals
   whose thickening lies in the gap `(0, 1)`. Values are nonempty on every interval meeting
   `[-ε, 1 + ε]` (`single_stretched_nonempty`); for `ε < 1/2` an interior height is reached by an
-  edge point. On `(1/4, 3/4)` at `ε = 1/4`, where the loop has two elements, the single edge has
-  exactly one (`single_quarter_gap`). Values on both outer rays are empty
+  edge point. On `(1/4, 3/4)` at `ε = 1/4`, where the loop has two distinct elements, the single
+  edge has exactly one (`single_quarter_gap`). Values on both outer rays are empty
   (`single_smoothed_isEmpty_rays`). The actual fibers have at most one point
   (`single_smoothed_fiber_subsingleton`) and are nonempty exactly over `[-ε, 1 + ε]`
   (`single_smoothed_fiber_nonempty_iff`). For `ε ≥ 1/2`, `single_smoothed_subsingleton` and
   `single_smoothed_nonempty` are the long-interval forms.
 - **Disjoint segments stay distinct.** For the two disjoint segments `twoSegGraph` and every `ε`,
   the classes on `ℝ` of `q (v_b, 0)` for the lower vertices of the two segments are distinct
-  (`twoSegClass`, `twoSeg_smoothed_distinct`): the
-  comparison sends them to the classes of the two lower vertices, which the continuous segment label
-  separates. Disjoint components cannot merge under product thickening and its Reeb quotient; the
-  merging fixture is the loop with common endpoints.
+  (`twoSegClass`, `twoSeg_smoothed_distinct`): the comparison sends them to the classes of the two
+  lower vertices, which the continuous segment label separates. This is the disjoint-edge
+  counterfixture; the merging fixture is the loop with common endpoints.
 - **Graph maps.** Naturality at the edge swap of the loop (`swap_naturality`); at `ε = 1/4` the
   smoothed swap is not the identity (`swap_smoothed_quarter_ne_id`,
   `swap_geometric_quarter_ne_id`). Naturality across the critical lists `0 < 1/2 < 1` and `0 < 1`

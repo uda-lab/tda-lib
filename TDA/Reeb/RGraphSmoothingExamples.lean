@@ -10,7 +10,7 @@ Acceptance fixtures for `TDA.Reeb.RGraphSmoothing`, on actual graph objects:
 * **Every kind of open interval.** For an arbitrary graph object, the representative comparison
   and unit formulas hold on bounded intervals, both rays and `ℝ`; the value at `⊥` is empty.
 * **`ε = 0`.** The zero isomorphism and the zero comparison on the parallel-edge loop; `U_0` keeps
-  the two components of the loop over `(1/4, 3/4)`.
+  two distinct components of the loop over `(1/4, 3/4)`.
 * **The empty graph.** Every smoothed value is empty, for every `ε`.
 * **A singleton at an arbitrary height `a`.** Every smoothed value has at most one element. Values
   are empty on the rays below `a - ε` and above `a + ε`, and nonempty just inside both ends of the
@@ -20,8 +20,8 @@ Acceptance fixtures for `TDA.Reeb.RGraphSmoothing`, on actual graph objects:
   `[-ε, 1 + ε]` and empty on the rays below `-ε` and above `1 + ε`. Every actual height fiber of
   `U_ε` has at most one point, and the fiber over `t` is nonempty exactly when `t ∈ [-ε, 1 + ε]`.
   So every nonempty fiber is a single point, also in the equality case `ε = 1/2` and at both ends
-  of the support. At `ε = 1/4` the loop survives: the value on `(1/4, 3/4)` has two elements, and
-  the fiber over `1/2` has two points.
+  of the support. At `ε = 1/4` the loop survives: the value on `(1/4, 3/4)` has two distinct
+  elements, and the fiber over `1/2` has two distinct points.
 * **The single edge over `0 < 1`, for every `ε`.** The line is stretched to `[-ε, 1 + ε]`. Every
   smoothed value has at most one element, including, for `ε < 1/2`, on intervals whose thickening
   lies in the gap. Values are nonempty on every interval meeting `[-ε, 1 + ε]`, through interior
@@ -241,6 +241,7 @@ theorem singleton_smoothed_nonempty_iio (a : ℝ) (ε : ℝ≥0) {δ : ℝ} (hδ
         linarith⟩ :
     {q : ReebQuotient (GeometricThickening.height (overBaseMap (singletonGraph a).obj) ε) //
       ReebQuotient.height _ q ∈ iio (a - ε + δ)})⟩
+
 /-- **Singleton.** The support is sharp at its upper end too: just below it the smoothed value
 contains the class of `q (*, ε)`. -/
 theorem singleton_smoothed_nonempty_ioi (a : ℝ) (ε : ℝ≥0) {δ : ℝ} (hδ : 0 < δ) :
@@ -443,11 +444,12 @@ theorem smoothed_nonempty (v₀ : D.V 0) (v₁ : D.V 1) {ε : ℝ≥0} (hε : 1 
     change S01.value 1 + (t - 1) ∈ I
     rw [S01_value_one, add_sub_cancel]
     exact ht
+
 /-- **Every interval, one edge.** With one vertex per level and one edge, every value has at most
 one element: an interval meeting a level is handled by `subsingleton_of_mem`; a nonempty interval
 inside the gap `(0, 1)` maps bijectively to the gap value, which is labelled by the edge set; any
 other interval has an empty value. -/
-theorem subsingleton_of_unique (h0 : Subsingleton (D.V 0)) (h1 : Subsingleton (D.V 1))
+theorem subsingleton_of_one_edge (h0 : Subsingleton (D.V 0)) (h1 : Subsingleton (D.V 1))
     (hE : Subsingleton (D.E 0)) (y : D.E 0) (L : OpenInterval) :
     Subsingleton ((D.toCosheaf S01).obj L) := by
   by_cases hz : (0 : ℝ) ∈ L
@@ -529,8 +531,8 @@ theorem smoothed_nonempty_of_edge (y : D.E 0) (ε : ℝ≥0) {I : OpenInterval} 
     {q : ((geometricSmoothing ε).obj ((toRGraph S01).obj D)).obj.left //
       overBaseMap ((geometricSmoothing ε).obj ((toRGraph S01).obj D)).obj q ∈ I})⟩
 
-/-- On `(1/4, 3/4)`, inside the gap `(0, 1)`, the parallel-edge loop has two components: the value
-maps bijectively to the gap value, labelled by the two edges. -/
+/-- On `(1/4, 3/4)`, inside the gap `(0, 1)`, the parallel-edge loop has two distinct components:
+the value maps bijectively to the gap value, labelled by the two edges. -/
 theorem parallel_mid_not_subsingleton :
     ¬ Subsingleton ((parallelData.toCosheaf S01).obj (ioo (1 / 4) (3 / 4))) := by
   intro h
@@ -552,9 +554,9 @@ end TwoLevels
 section Fibers
 
 /-- **Fibers of a finite realization.** The fiber over a level `a i` consists of vertex points of
-level `i`, and the fiber over any other height consists of strip points of one gap. So if every
-value of the component cosheaf has at most one element, then, through the vertex and edge labels,
-every height fiber has at most one point. -/
+level `i`, and every point at any other height is a strip point of the one gap containing it. So
+if every value of the component cosheaf has at most one element, then, through the vertex and edge
+labels, every height fiber has at most one point. -/
 theorem realization_fiber_subsingleton {m : ℕ} (T : CriticalValues m)
     (D : FiniteReebData.{0} m) (h : ∀ L, Subsingleton ((D.toCosheaf T).obj L)) (t : ℝ) :
     Subsingleton ((ofFiniteData D).height T ⁻¹' {t}) := by
@@ -654,6 +656,7 @@ theorem parallel_quarter_not_subsingleton :
     (geometricSmoothingValueEquiv quarter parallelGraph _).subsingleton_congr.1 h
   rw [quarter_thicken] at h1
   exact Bool.false_ne_true ((parallelData.edgeLabel S01 0).injective (h1.elim _ _))
+
 /-- **Loop at `ε = 0`.** `U_0` keeps the loop: on `(1/4, 3/4)` the smoothed value still has two
 distinct elements, since `(1/4, 3/4)` thickens by `0` to itself. -/
 theorem parallel_zero_not_subsingleton :
@@ -790,13 +793,14 @@ theorem single_smoothed_isEmpty_rays (ε : ℝ≥0) :
       IsEmpty ((cosheafFunctor.obj ((geometricSmoothing ε).obj singleGraph)).obj.obj
         (ioi (1 + ε))) :=
   smoothed_isEmpty_rays singleEdge ε
+
 /-- **Single edge, every `ε`.** Every smoothed value of the single edge has at most one element.
 For `ε < 1/2` this includes the intervals whose thickening lies in the gap `(0, 1)`, where the
 value is labelled by the single edge. -/
 theorem single_stretched_subsingleton (ε : ℝ≥0) (I : OpenInterval) :
     Subsingleton ((cosheafFunctor.obj ((geometricSmoothing ε).obj singleGraph)).obj.obj I) :=
   (geometricSmoothingValueEquiv ε singleGraph I).subsingleton_congr.2
-    (subsingleton_of_unique singleEdge (inferInstanceAs (Subsingleton Unit))
+    (subsingleton_of_one_edge singleEdge (inferInstanceAs (Subsingleton Unit))
       (inferInstanceAs (Subsingleton Unit)) (inferInstanceAs (Subsingleton Unit)) () _)
 
 /-- **Single edge, every `ε`** (DMP Example 4.31 (1)): the line is stretched by `ε` at both ends.
