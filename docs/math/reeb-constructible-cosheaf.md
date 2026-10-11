@@ -186,7 +186,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §3.3:
 
 Not claimed here: a minimal critical set, a realization of finite data as a space or a cylinder
 presentation, constructible ℝ-spaces and their morphisms, the equivalence of categories between
-constructible cosheaves and finite data, constructibility of smoothing or of Reeb quotients, and
-any statement for cover universes other than `0` or for non-`Type`-valued cosheaves.
+constructible cosheaves and finite data, constructibility of Reeb quotients, and any statement for
+cover universes other than `0` or for non-`Type`-valued cosheaves. Constructibility of the
+smoothing, at the shifted levels `(S - ε) ∪ (S + ε)`, is in `reeb-constructible-smoothing.md`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/abs/1501.04147).
