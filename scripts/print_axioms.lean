@@ -1924,6 +1924,18 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothing.smoothedPinchUObj
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothing.smoothedPinchUObj_obj
 
+-- Coordinate cycles and incoming boundaries in actual finite simplicial chains.
+#print axioms TDA.Simplicial.coordinateCycles_zero
+#print axioms TDA.Simplicial.coordinateCycles_succ
+#print axioms TDA.Simplicial.cycleCoordinates_coe
+#print axioms TDA.Simplicial.coordinateBoundaryToCycles_coe
+#print axioms TDA.Simplicial.mem_coordinateBoundaries_iff
+#print axioms TDA.Simplicial.simplicialBoundaries_map_cycleCoordinates
+#print axioms TDA.Simplicial.coordinateCycleIncl_coe
+#print axioms TDA.Simplicial.cycleCoordinates_naturality
+#print axioms TDA.Simplicial.coordinateCycleIncl_boundaryToCycles
+#print axioms TDA.Simplicial.coordinateBoundaries_le_comap
+
 -- Geometric thickening and its canonical component comparison (Issue #113).
 -- TDA.Reeb.GeometricThickening: the band and its convexity, the clamp and its membership lemma, the thickened height, maps, the zero section, band enlargement and the band reparametrization, the first projection on inverse images and its homotopy equivalence, the component comparison with its bijectivity, isomorphism, naturality, unit and enlargement equations, and the real-slice functor, zero section, zero isomorphism with its forward and height formulas, natural isomorphism and unit equations.
 #print axioms TDA.Reeb.GeometricThickening.Band
