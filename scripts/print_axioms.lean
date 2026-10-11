@@ -2356,3 +2356,9 @@ import TDA
 #print axioms TDA.Persistence.orderedQ_count_finite
 #print axioms TDA.Persistence.orderedQ_count_essential
 #print axioms TDA.Persistence.orderedQ_isPositive_iff
+
+-- TDA.Persistence.DiagramLaws: ordered barcode representation laws.
+#print axioms TDA.Persistence.orderedQ_append
+#print axioms TDA.Persistence.orderedQ_eq_iff
+#print axioms TDA.Persistence.orderedQ_surjective
+#print axioms TDA.Persistence.orderedQ_zeroLength
