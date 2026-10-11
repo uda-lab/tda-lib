@@ -2229,3 +2229,6 @@ import TDA
 #print axioms TDA.Reeb.Examples.RGraphThickening.half_mem_fragCollision
 #print axioms TDA.Reeb.Examples.RGraphThickening.collisionTop
 #print axioms TDA.Reeb.Examples.RGraphThickening.collision_right_apply
+-- TDA.Persistence.RankReconstruction: finite rectangular telescoping and actual-map ranks.
+#print axioms TDA.Persistence.moduleMultiplicityInteger_sum_rectangle
+#print axioms TDA.Persistence.structureMapRank_eq_sum_moduleMultiplicityInteger
