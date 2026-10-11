@@ -31,6 +31,8 @@ The commuting equation is a proposition, so the transformation does not depend o
 The categorical API requires `X` and `Z` to share a carrier universe so that both functors land in
 the same `Type u`. The raw map `componentMap : C(X, Z) → ZerothHomotopy X → ZerothHomotopy Z`
 allows independent carrier universes. Induced maps on components need not be injective.
+For the realization of a simple graph, `componentMap` of the map induced by a graph homomorphism
+corresponds to mathlib's map of graph components (`reeb-graph-realization.md`).
 
 Pinned mathlib provides the path-component quotient `ZerothHomotopy` but no map induced by a
 continuous map on it; `componentMap` is a thin wrapper around `ZerothHomotopy.lift`,
