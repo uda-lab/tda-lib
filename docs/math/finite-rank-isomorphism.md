@@ -1,0 +1,9 @@
+# Finite ranks under natural isomorphism
+
+Let `M` and `L` be persistence modules on `Fin N` with finite-dimensional fibers over a field. For a supplied natural isomorphism `e : M ≅ L`, its component at each stage is a linear equivalence. Naturality identifies the actual structure map of `L` from `i` to `j` with the component equivalence at `j`, composed with the structure map of `M`, composed with the inverse component at `i`. The inverse component is surjective, so it does not change the range of the middle map; the target equivalence preserves the dimension of that range. Hence `structureMapRank` agrees at every `i ≤ j`, including when the structure map has a nontrivial kernel.
+
+The existing equality criterion for `rankBarcode` then makes the canonical finite barcodes equal as multisets. If the supplied isomorphism has target `barcodeModule B`, the existing barcode round trip identifies the common canonical barcode with `B`. Multiplicities, intervals born at zero and intervals ending at `N` are preserved by this equality. Death `N` means persistence through the last observed stage; it does not assert an infinite lifetime.
+
+The checked fixtures include an empty index with canonical barcode zero, a nontrivial swap on a one-stage two-dimensional module, a stage-dependent swap relating distinct noninjective rank-one transitions over both `ℚ` and `ZMod 2`, and reordered enumerations of repeated intervals. Identity and zero transitions can have equal dimensions at every stage but unequal ranks and therefore cannot be naturally isomorphic.
+
+These results require a supplied natural isomorphism. Equality of rank tables alone is not used to construct one, and no interval decomposition of an arbitrary module is asserted. See [canonical finite barcodes](finite-rank-barcode.md) for the rank and barcode conventions.
