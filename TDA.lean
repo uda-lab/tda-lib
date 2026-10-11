@@ -11,6 +11,8 @@ import TDA.Persistence.RankInvariantExamples
 import TDA.Persistence.RankReconstruction
 import TDA.Persistence.RankReconstructionExamples
 import TDA.Persistence.RankBarcode
+import TDA.Persistence.GradeHomologyBarcode
+import TDA.Persistence.GradeHomologyBarcodeExamples
 import TDA.Persistence.RankBarcodeExamples
 import TDA.Persistence.RankBarcodeIso
 import TDA.Persistence.RankBarcodeIsoExamples
@@ -87,6 +89,7 @@ import TDA.Simplicial.FiniteCoordinatesExamples
 import TDA.Simplicial.FiniteCycles
 import TDA.Simplicial.FiniteCyclesExamples
 import TDA.Simplicial.FiniteHomology
+import TDA.Simplicial.FiniteDimensionalHomology
 import TDA.Simplicial.FiniteHomologyExamples
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.InclusionExamples

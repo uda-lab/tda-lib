@@ -2339,3 +2339,9 @@ import TDA
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.subdivision_naturality
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.subdivisionSmoothedIso
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.parallel_single_contraction
+
+-- Actual critical-grade simplicial homology and its canonical finite-index barcode (Issue #146).
+#print axioms TDA.Simplicial.simplicialHomology_finiteDimensional
+#print axioms TDA.Persistence.gradeHomology_finiteDimensional
+#print axioms TDA.Persistence.gradeHomologyBarcode
+#print axioms TDA.Persistence.rank_gradeHomologyMap
