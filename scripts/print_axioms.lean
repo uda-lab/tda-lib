@@ -2345,3 +2345,13 @@ import TDA
 #print axioms TDA.Persistence.gradeHomology_finiteDimensional
 #print axioms TDA.Persistence.gradeHomologyBarcode
 #print axioms TDA.Persistence.rank_gradeHomologyMap
+
+-- Finite off-diagonal diagrams and the full ordered-barcode map (Issue #149).
+#print axioms TDA.Persistence.Diagram
+#print axioms TDA.Persistence.Diagram.ext
+#print axioms TDA.Persistence.Diagram.IsPositive
+#print axioms TDA.Persistence.orderedQ
+#print axioms TDA.Persistence.orderedQ_perm
+#print axioms TDA.Persistence.orderedQ_count_finite
+#print axioms TDA.Persistence.orderedQ_count_essential
+#print axioms TDA.Persistence.orderedQ_isPositive_iff
