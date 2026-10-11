@@ -11,6 +11,8 @@ import TDA.Persistence.Reduction.PivotExamples
 import TDA.Persistence.Reduction.PrefixSpan
 import TDA.Persistence.Reduction.PrefixSpanExamples
 import TDA.Persistence.Reduction.Trace
+import TDA.Persistence.Reduction.TraceCertificate
+import TDA.Persistence.Reduction.TraceCertificateExamples
 import TDA.Persistence.Reduction.TraceExamples
 import TDA.Reeb.Components
 import TDA.Reeb.ComponentsCover

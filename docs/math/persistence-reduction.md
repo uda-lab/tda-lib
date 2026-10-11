@@ -93,3 +93,44 @@ nor claims that every trace is a reduction run or that pivots decrease along it.
 an order-sensitive two-step example, repeated targets, a zero coefficient, empty dimensions, and
 zero input. These fixtures illustrate the finite algebra only; they do not construct a reducer,
 inverse certificate, grading, or barcode.
+
+## A graded trace certificate and explicit inverse
+
+`inverseTrace` reverses the supplied chronological operation list and negates each transvection
+coefficient. Its matrix `traceChangeInv` is an explicit right-product, with both
+`traceChange ops * traceChangeInv ops = 1` and the opposite product equal to one. Reversal matters:
+for operations `(0,1,2)` followed by `(1,2,3)` over `ℚ`, the change matrix has rows
+`[[1,2,6],[0,1,3],[0,0,1]]`, while the inverse has
+`[[1,-2,0],[0,1,-3],[0,0,1]]`. Negating without reversing leaves a nonzero `(0,2)` entry.
+The same distinction occurs over `ZMod 2`, where negation itself changes no coefficient.
+
+`TraceChangeCertificate degree V W` records the two inverse laws, upper triangularity and
+diagonal one for both matrices, and zero entries whenever their row and column homological
+degrees differ. `traceChange_certificate` constructs it for a supplied trace whose every
+operation joins columns of equal homological degree. This degree is simplex dimension, not
+filtration time, pivot height, or the polynomial grading in Zomorodian–Carlsson. No ordering of
+columns by degree is required. The equal-degree premise is sufficient even for zero-scalar
+operations; it is not claimed necessary for every individual trace.
+
+`LowersDegree degree M` says that each nonzero entry at row `r`, column `c` satisfies
+`degree c = degree r + 1`. This entry-support property is preserved by replaying a
+degree-respecting trace. If two columns of such a matrix share a nonzero `columnPivot` row,
+`degree_eq_of_common_pivot` derives equality of their column degrees. It therefore supplies
+the grading premise for a future pivot-chosen operation when its separate earlier-index
+condition is met. The mixed-degree fixture uses degrees `[0,1,1]`, a pivot at row zero,
+coefficients `2` and `3`, and cancellation coefficient `-3/2`. A valid earlier operation
+across degrees `[0,1]` shows why the grading premise cannot be omitted.
+
+Together with the existing `replay_eq_mul_traceChange` and `prefixSpan_replay`, the certificate
+gives `R = D * V`, an explicit undo trace, and preservation of every natural-number prefix,
+including zero and oversized prefixes. These are facts about a supplied trace and arbitrary
+input matrix. They assert neither that the input is a chain differential nor that the output is
+reduced, square-zero, or a barcode. In particular, `R = D * V` does not imply `R² = 0`.
+
+The certificate follows elementary transvection identities from pinned mathlib and the
+right-column convention already used here. Bauer's *Ripser* §3.1 motivates the `R = D * V`
+change-of-basis goal; Zomorodian–Carlsson §4 describes field-based elimination. Neither source
+is used to claim a completed persistence reduction or to identify filtration grading with
+homological dimension. `TraceCertificateExamples.lean` checks empty dimensions, noncommuting
+`ℚ` and `ZMod 2` traces, mixed degrees and a row-zero pivot, the omitted-degree counterexample,
+zero scalars, repeated targets, and inverse-prefix integration.
