@@ -50,7 +50,7 @@ description is:
 The witness is not claimed minimal, and its length is not a function of `n`: for `{0, 2}` the
 shifted levels at `ε = 1` are `-1, 1, 3`, three rather than four, and at `ε = 0` they are `0, 2`.
 Shifts of different levels may also cross: for `{0, 2}` at `ε = 3/2` the sorted levels are
-`-3/2, 1/2, 3/2, 7/2`, with `a 1 - ε` below `a 0 + ε`.
+`-3/2, 1/2, 3/2, 7/2`, with `a 1 - ε` below `a 0 + ε`; this example is not a fixture.
 
 At `ε = 0`, the shifted set is the set of levels (`shiftedSet_zero`), `S.shiftedCount 0 = n`
 (`shiftedCount_zero`) and the ranges agree (`range_shifted_zero`). These equalities are
@@ -186,9 +186,9 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.2:
   `p ∈ (0, 1)` outside `s` and an open interval `W` around `p` missing `s`; then `∅ ⊆ W` both miss
   `s`, but the smoothed value at `W` is the point value at `W^1 ∋ 0`, which is nonempty, while the
   smoothed value at `∅` is empty. The failing step of the proof is the implication above at
-  `I = ∅`. The library machine-checks it at the shifted set `{-1, 1}` (`emptySource_hits`,
-  `emptySource_not_bijective`); the failure at every finite set is the argument just given and is
-  not machine-checked here.
+  `I = ∅`. Both halves of this counterexample are hand arguments, not machine-checked here; the
+  library checks the failing step at the shifted set `{-1, 1}` (`emptySource_hits`,
+  `emptySource_not_bijective`).
 - With the corrected Definition 3.9 of `reeb-constructible-cosheaf.md`, which requires a nonempty
   source, the implication holds for nonempty `I` (`value_mem_thicken_iff_of_shifted`), and
   Proposition 4.19 and the **Csh**ᶜ half of Theorem 4.18 hold as stated above.
