@@ -147,6 +147,7 @@ than by compactness of the gap.
 - The theorem is specific to covers of open intervals of `ℝ` by open intervals. Nothing here is
   claimed for covers by arbitrary open subsets or for arbitrary metric spaces; such
   generalisations would need another proof.
-- Constructibility of the smoothing is not addressed.
+- Constructibility of the smoothing, which with Proposition 4.20 gives their Theorem 4.18, is in
+  `reeb-constructible-smoothing.md`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*](https://arxiv.org/abs/1501.04147).

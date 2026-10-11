@@ -34,9 +34,12 @@ import TDA.Reeb.ConstructibleQuotient
 import TDA.Reeb.ConstructibleQuotientExamples
 import TDA.Reeb.ConstructibleRepresentation
 import TDA.Reeb.ConstructibleRepresentationExamples
+import TDA.Reeb.ConstructibleSmoothing
+import TDA.Reeb.ConstructibleSmoothingExamples
 import TDA.Reeb.ConstructibleSpace
 import TDA.Reeb.ConstructibleSpaceExamples
 import TDA.Reeb.CriticalValues
+import TDA.Reeb.CriticalValuesShift
 import TDA.Reeb.FiniteDiagram
 import TDA.Reeb.InterleavingDistance
 import TDA.Reeb.InterleavingDistanceExamples
