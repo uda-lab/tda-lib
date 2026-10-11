@@ -109,15 +109,17 @@ private theorem empty_carrier_representation :
       orderedQ m n z = independentEmpty := by
   exact orderedQ_surjective independentEmpty
 
-private def changedReversed : (Fin 4 → ℚ × ℚ) × (Fin 2 → ℚ) :=
-  (![(0, 2), (5, 5), (1, 1), (0, 2)], ![0, 0])
+private def twoReversed : (Fin 3 → ℚ × ℚ) × (Fin 1 → ℚ) :=
+  (![(2, 1), (2, 1), (0, 2)], ![0])
+private def changedReversed : (Fin 3 → ℚ × ℚ) × (Fin 1 → ℚ) :=
+  (![(2, 1), (5, 5), (0, 2)], ![0])
 private def droppedEssential : (Fin 4 → ℚ × ℚ) × (Fin 1 → ℚ) :=
   (crossLeft.1, ![0])
 
-private theorem changed_reversed_ne : orderedQ 4 2 crossLeft ≠ orderedQ 4 2 changedReversed := by
+private theorem changed_reversed_ne : orderedQ 3 1 twoReversed ≠ orderedQ 3 1 changedReversed := by
   intro h
-  have hf := (orderedQ_eq_iff 4 2 4 2 crossLeft changedReversed).mp h |>.1
-  have hne : (Multiset.ofList (List.ofFn crossLeft.1)).filter (fun p => p.1 ≠ p.2) ≠
+  have hf := (orderedQ_eq_iff 3 1 3 1 twoReversed changedReversed).mp h |>.1
+  have hne : (Multiset.ofList (List.ofFn twoReversed.1)).filter (fun p => p.1 ≠ p.2) ≠
       (Multiset.ofList (List.ofFn changedReversed.1)).filter (fun p => p.1 ≠ p.2) := by decide
   exact hne hf
 
