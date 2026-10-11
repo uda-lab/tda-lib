@@ -1692,3 +1692,31 @@ import TDA
 
 -- Closed fixed-enumeration compatibility locus (Issue #120).
 #print axioms TDA.Filtration.CompatibleOrder.isClosed_compatible_locus
+
+-- Actual simplicial homology and inclusion (Issue #117).
+#print axioms TDA.Simplicial.simplicialHomology
+#print axioms TDA.Simplicial.simplicialCycles
+#print axioms TDA.Simplicial.simplicialBoundaries
+#print axioms TDA.Simplicial.simplicialCycles_zero
+#print axioms TDA.Simplicial.simplicialCycles_succ
+#print axioms TDA.Simplicial.mem_simplicialBoundaries_iff
+#print axioms TDA.Simplicial.simplicialCycleIncl
+#print axioms TDA.Simplicial.simplicialCycleIncl_coe
+#print axioms TDA.Simplicial.simplicialCycleIncl_id
+#print axioms TDA.Simplicial.simplicialCycleIncl_comp
+#print axioms TDA.Simplicial.simplicialCycleIncl_toCycles
+#print axioms TDA.Simplicial.simplicialBoundaries_le_comap
+#print axioms TDA.Simplicial.simplicialQuotientIncl
+#print axioms TDA.Simplicial.simplicialQuotientIncl_mkQ
+#print axioms TDA.Simplicial.simplicialQuotientIncl_id
+#print axioms TDA.Simplicial.simplicialQuotientIncl_comp
+#print axioms TDA.Simplicial.simplicialHomologyIncl
+#print axioms TDA.Simplicial.simplicialHomologyIncl_id
+#print axioms TDA.Simplicial.simplicialHomologyIncl_comp
+#print axioms TDA.Simplicial.simplicialHomologyIncl_quotient_naturality
+#print axioms TDA.Simplicial.simplicialHomology_bot_zero
+#print axioms TDA.Simplicial.simplicialSingletonH0Equiv
+#print axioms TDA.Simplicial.simplicialSingletonH0Equiv_symm_one_ne_zero
+#print axioms TDA.Persistence.simplicialHomologyPModule
+#print axioms TDA.Persistence.simplicialHomologyPModule_obj
+#print axioms TDA.Persistence.simplicialHomologyPModule_structureMap
