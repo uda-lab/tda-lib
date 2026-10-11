@@ -747,7 +747,7 @@ theorem thickeningToConstructible_map_hom (ε : ℝ≥0) {A B : RGraphCat} (φ :
     ((thickeningToConstructible ε).map φ).hom = (GeometricThickening.functor ε).map φ.hom :=
   rfl
 
-/-- The interface #116 consumes: followed by the merged `quotientRGraphFunctor` and the graph
+/-- The Reeb-quotient form of the lift: followed by the merged `quotientRGraphFunctor` and the graph
 inclusion, the lift is literally the Reeb quotient of the actual product thickening. -/
 theorem thickeningToConstructible_comp_quotientRGraphFunctor (ε : ℝ≥0) :
     thickeningToConstructible ε ⋙ quotientRGraphFunctor ⋙ IsRGraph.ι =

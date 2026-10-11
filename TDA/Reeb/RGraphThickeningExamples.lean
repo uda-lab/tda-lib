@@ -24,7 +24,8 @@ realizations, windows, thickening presentations and slice thickenings:
 * **The empty graph.** Its thickening and the realization of its thickening presentation are empty,
   for every `ε`, and the thickening is constructible.
 * **A singleton at an arbitrary height `a`.** The thickening is the closed segment `[-ε, ε]` with
-  height `a + t`.
+  height `a + t`; for `ε > 0`, every strip point of its thickening presentation at height `t` has
+  band coordinate `t - a`.
 * **`ε = 0`.** The lift at `ε = 0`, followed by the inclusion of constructible spaces, is
   isomorphic to the inclusion of graph objects, by the merged zero isomorphism.
 * **A single edge.** At `ε = 1`, on the first gap, a strip point at height `t` over an edge point
@@ -443,6 +444,21 @@ def singletonHomeomorph (a : ℝ) (ε : ℝ≥0) :
 theorem height_singletonHomeomorph_symm (a : ℝ) (ε : ℝ≥0) (t : GeometricThickening.Band ε) :
     GeometricThickening.height ((ofFiniteData pt0).height (single a)) ε
       ((singletonHomeomorph a ε).symm t) = a + t :=
+  rfl
+
+/-- In the thickening presentation of the singleton, for `ε > 0`, a strip point at height `t` has
+band coordinate `t - a`. -/
+theorem singleton_snd_ofStrip (a : ℝ) {ε : ℝ≥0} (hε : 0 < ε)
+    (k : Fin ((single a).shiftedCount ε)) (x : (thickPresentation (single a) pt0 ε).E k)
+    (t : (((single a).shifted ε).K k : Set ℝ)) :
+    ((thickProdHomeomorph (single a) pt0 ε hε
+      ((thickPresentation (single a) pt0 ε).ofStrip _ k (x, t))).2 : ℝ) = t - a := by
+  rw [snd_thickProdHomeomorph_ofStrip]
+  have h := (ofFiniteData pt0).height_mem_Icc (single a)
+    (windowTransfer (single a) pt0 ε
+      (transferOK_of_mem (single a) ε (mid_mem_K (single a) ε k) (Ioo_subset_Icc_self t.2)) x :
+        (ofFiniteData pt0).Realization (single a))
+  rw [le_antisymm h.2 h.1]
   rfl
 
 /-! ### `ε = 0` -/

@@ -57,8 +57,8 @@ At `ε = 0`, the shifted set is the set of levels (`shiftedSet_zero`), `S.shifte
 propositional; `S.shifted 0` is not identified with `S`. When the original list is wanted, the
 zero comparison `smoothingZeroIso` or its lift `constructibleSmoothingZeroIso` is used.
 
-The same witness carries the cylinder presentation of the geometric thickening of a finite
-ℝ-graph (see `reeb-rgraph-thickening.md`).
+For `ε > 0`, the same witness carries the cylinder presentation of the geometric thickening of a
+finite ℝ-graph (see `reeb-rgraph-thickening.md`).
 
 ## The key interval lemma
 

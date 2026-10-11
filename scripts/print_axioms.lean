@@ -2204,6 +2204,7 @@ import TDA
 #print axioms TDA.Reeb.Examples.RGraphThickening.single
 #print axioms TDA.Reeb.Examples.RGraphThickening.singletonHomeomorph
 #print axioms TDA.Reeb.Examples.RGraphThickening.height_singletonHomeomorph_symm
+#print axioms TDA.Reeb.Examples.RGraphThickening.singleton_snd_ofStrip
 #print axioms TDA.Reeb.Examples.RGraphThickening.thickeningZeroIso
 #print axioms TDA.Reeb.Examples.RGraphThickening.thickeningZeroIso_hom_app
 #print axioms TDA.Reeb.Examples.RGraphThickening.singleEdge_strip_height

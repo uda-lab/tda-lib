@@ -48,9 +48,9 @@ From the pinned mathlib it relies on `Convex.locallyPathConnectedSpace` (through
 The fixtures additionally use `shiftedSet`, `mem_shiftedSet`, `sub_mem_shiftedSet`,
 `add_mem_shiftedSet`, `card_shiftedSet` and `range_shifted`, `isEmpty_realization`,
 `ofCylinder_segBot`, `ofCylinder_segTop`, `ofVertex_injective`, `ofStrip_injective`, `toRGraph`,
-`GeometricThickening.zero_mem_band`, and the fixture data `S01`, `parallelData`, `twoSegData`,
-`twoSegLabel`, `emptyData`, `emptyData_isEmpty`, `ofVertex_surjective_zero`, `singleEdge` and
-`pt0`.
+`GeometricThickening.zero_mem_band`, and the fixture data `S01`, `S01_value_zero`, `S01_value_one`,
+`parallelData`, `twoSegData`, `twoSegLabel`, `emptyData`, `emptyData_isEmpty`,
+`ofVertex_surjective_zero`, `singleEdge` and `pt0`.
 
 ## The affine fragment map
 
@@ -70,8 +70,9 @@ Its denominator depends on `c` only, so it is jointly continuous in `(s, u)`
 If `ε > 0` and `c` avoids the events `a ± ε` and `d ± ε`, a nonempty fragment at `c` is
 nondegenerate (`fragLo_lt_fragHi`).
 
-On an edge contained in the window it is the identity, on an edge crossing one window end it is a
-linear stretch, and on an edge covering the whole window it is a translation.
+Within one slab, under the transfer hypotheses `TransferOK` below, it is the identity on an edge
+contained in the window, a linear stretch on an edge crossing one window end, and a translation on
+an edge covering the whole window.
 
 ## Closed windows
 
@@ -256,7 +257,8 @@ two-parallel-edge loop `parallelData` over `0 < 1` and the levels `S01` are the 
 - **A singleton at height `a`.** For the single vertex at an arbitrary height `a`, the actual
   thickening is homeomorphic to the closed segment `Band ε = [-ε, ε]` (`singletonHomeomorph`), and
   the thickened height of the point `t` of the segment is `a + t`
-  (`height_singletonHomeomorph_symm`).
+  (`height_singletonHomeomorph_symm`). For `ε > 0`, every strip point of its thickening
+  presentation has band coordinate `t - a` at height `t` (`singleton_snd_ofStrip`).
 - **`ε = 0`.** `thickeningToConstructible 0` followed by the inclusion of constructible spaces is
   isomorphic to the inclusion of graph objects, with components the merged zero isomorphism
   (`thickeningZeroIso`, `thickeningZeroIso_hom_app`).
