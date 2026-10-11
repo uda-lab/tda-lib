@@ -2239,3 +2239,8 @@ import TDA
 #print axioms TDA.Persistence.structureMapRank_rankBarcode
 #print axioms TDA.Persistence.rankBarcode_barcodeModule
 #print axioms TDA.Persistence.rankBarcode_eq_iff
+
+-- TDA.Persistence.RankBarcodeIso: actual-map rank and canonical barcode invariance.
+#print axioms TDA.Persistence.structureMapRank_eq_of_iso
+#print axioms TDA.Persistence.rankBarcode_eq_of_iso
+#print axioms TDA.Persistence.rankBarcode_eq_of_iso_barcodeModule
