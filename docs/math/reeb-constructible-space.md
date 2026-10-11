@@ -23,7 +23,9 @@ edges are allowed. There are no edge pieces below `a 0` or above `a n`.
 
 by the equivalence closure of exactly two identifications per edge (`EndpointRel`):
 `(y, a e) ~ left e y` and `(y, a (e+1)) ~ right e y`. It carries the quotient topology, with
-quotient map `CylinderPresentation.quotMk`.
+quotient map `CylinderPresentation.quotMk`. The realization of a simple graph by dart cells is a
+different construction, in namespace `TDA.Reeb.GraphRealization`, whose short names `Realization`,
+`quotMk`, `lift` and others coincide with names here (`reeb-graph-realization.md`).
 
 The closure has a normal form (`nf`): a cylinder end goes to its vertex image, and every other
 point is fixed. Two raw points are identified exactly when their normal forms agree (`eqvGen_iff`).
