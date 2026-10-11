@@ -67,6 +67,8 @@ import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
 import TDA.Simplicial.ChainComplex
 import TDA.Simplicial.FiniteComplex
+import TDA.Simplicial.FiniteCoordinates
+import TDA.Simplicial.FiniteCoordinatesExamples
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.InclusionExamples
 import TDA.Topology.Cosheaf

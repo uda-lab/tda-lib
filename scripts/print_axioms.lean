@@ -1826,6 +1826,18 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructibleComparison.twistHom
 #print axioms TDA.Reeb.Examples.ConstructibleComparison.twist_constructible_natural
 
+#print axioms TDA.Simplicial.chainCoordinates_apply
+#print axioms TDA.Simplicial.boundaryMatrix_apply
+#print axioms TDA.Simplicial.boundaryMatrix_deletedFace
+#print axioms TDA.Simplicial.boundaryMatrix_eq_zero_of_not_deletedFace
+#print axioms TDA.Simplicial.boundaryMatrix_mulVec
+#print axioms TDA.Simplicial.boundaryMatrix_toLin
+#print axioms TDA.Simplicial.boundaryMatrix_mul_boundaryMatrix
+#print axioms TDA.Simplicial.simplicialChainComplex_d_zero_toMatrix
+#print axioms TDA.Simplicial.chainInclusionMatrix_apply
+#print axioms TDA.Simplicial.chainInclusionMatrix_mulVec
+#print axioms TDA.Simplicial.boundaryMatrix_chainInclusionMatrix
+
 -- Constructibility under cosheaf smoothing (Issue #114).
 -- TDA.Reeb.CriticalValuesShift: the key thickened-membership step, the shifted set, the sorted shifted witness with its range, first and last levels, cardinality and length bound, and the ε = 0 boundary.
 #print axioms TDA.Reeb.OpenInterval.mem_thicken_iff_of_sub_add
