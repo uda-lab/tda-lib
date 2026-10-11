@@ -1,0 +1,11 @@
+# Canonical finite barcode from ranks
+
+For a persistence module `M : PModule k (Fin N)` with finite-dimensional fibers, `rankBarcode M` is a multiset of `FiniteInterval N`. It includes one copy of `[b,d)` for each unit of `moduleMultiplicityInteger M b d`, for every `b < d ≤ N`. The definition sums over `b : Fin N` and `d : Fin (N+1)`, so each legal pair appears once. Nonnegativity of the four-rank difference on these pairs justifies converting its integer value to a natural replication count. Repetition is retained by `Multiset.replicate`.
+
+The integer rank extension uses `-1` to the left of birth zero and `N` to the right of the last observed stage. Thus death `N` means survival through stage `N-1`, not an infinite lifetime. When `N=0`, the outer sum is empty and the canonical barcode is empty.
+
+The four laws identify endpoint multiplicity with the integer four-rank difference, recover every **actual structure-map rank** after realizing the canonical barcode, recover any supplied finite barcode after realization, and characterize equality of canonical barcodes by equality of all actual ranks. Rank recovery applies the finite rectangular telescoping law to `M` and to the realized barcode; the latter's integer zero extension agrees with the existing barcode rank extension. Round-trip equality uses the existing supplied-barcode four-rank formula and multiset extensionality by endpoint counts. The equality criterion compares ranks, without inferring that the modules are isomorphic.
+
+The fixtures use actual one-stage modules; identity and zero transitions on `Fin 2`; a constant `k × k` module with two copies of `[0,2)`; and a mixed supplied `Fin 3` barcode with an interior interval, birth zero, death `N`, and repetition. The discriminating `Fin 2` and duplicate fixtures are instantiated over `ℚ` and `ZMod 2`; the two copies remain an integer count in characteristic two.
+
+This is an elementary finite-index construction using [finite-rank nonnegativity](finite-rank-nonnegativity.md), [finite rank reconstruction](finite-rank-reconstruction.md), and the [supplied-barcode rank formula](finite-interval-rank.md). It does not provide interval decomposition of arbitrary modules, a module isomorphism, a value-labelled diagram, or an infinite-lifetime interpretation.

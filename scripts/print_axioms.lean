@@ -2232,3 +2232,10 @@ import TDA
 -- TDA.Persistence.RankReconstruction: finite rectangular telescoping and actual-map ranks.
 #print axioms TDA.Persistence.moduleMultiplicityInteger_sum_rectangle
 #print axioms TDA.Persistence.structureMapRank_eq_sum_moduleMultiplicityInteger
+
+-- TDA.Persistence.RankBarcode: canonical finite-index barcode and its four laws (Issue #140).
+#print axioms TDA.Persistence.rankBarcode
+#print axioms TDA.Persistence.barcodeMultiplicity_rankBarcode
+#print axioms TDA.Persistence.structureMapRank_rankBarcode
+#print axioms TDA.Persistence.rankBarcode_barcodeModule
+#print axioms TDA.Persistence.rankBarcode_eq_iff
