@@ -1690,6 +1690,46 @@ import TDA
 #print axioms TDA.Persistence.Reduction.TraceChangeCertificate.degree_support
 #print axioms TDA.Persistence.Reduction.TraceChangeCertificate.inv_degree_support
 
+-- Closed fixed-enumeration compatibility locus (Issue #120).
+#print axioms TDA.Filtration.CompatibleOrder.isClosed_compatible_locus
+
+-- Actual simplicial homology and inclusion (Issue #117).
+#print axioms TDA.Simplicial.simplicialHomology
+#print axioms TDA.Simplicial.simplicialCycles
+#print axioms TDA.Simplicial.simplicialBoundaries
+#print axioms TDA.Simplicial.simplicialCycles_zero
+#print axioms TDA.Simplicial.simplicialCycles_succ
+#print axioms TDA.Simplicial.mem_simplicialBoundaries_iff
+#print axioms TDA.Simplicial.simplicialCycleIncl
+#print axioms TDA.Simplicial.simplicialCycleIncl_coe
+#print axioms TDA.Simplicial.simplicialCycleIncl_id
+#print axioms TDA.Simplicial.simplicialCycleIncl_comp
+#print axioms TDA.Simplicial.simplicialCycleIncl_toCycles
+#print axioms TDA.Simplicial.simplicialBoundaries_le_comap
+#print axioms TDA.Simplicial.simplicialQuotientIncl
+#print axioms TDA.Simplicial.simplicialQuotientIncl_mkQ
+#print axioms TDA.Simplicial.simplicialQuotientIncl_id
+#print axioms TDA.Simplicial.simplicialQuotientIncl_comp
+#print axioms TDA.Simplicial.simplicialHomologyIncl
+#print axioms TDA.Simplicial.simplicialHomologyIncl_id
+#print axioms TDA.Simplicial.simplicialHomologyIncl_comp
+#print axioms TDA.Simplicial.simplicialHomologyIncl_quotient_naturality
+#print axioms TDA.Simplicial.simplicialHomology_bot_zero
+#print axioms TDA.Simplicial.simplicialSingletonH0Equiv
+#print axioms TDA.Simplicial.simplicialSingletonH0Equiv_symm_one_ne_zero
+#print axioms TDA.Persistence.simplicialHomologyPModule
+#print axioms TDA.Persistence.simplicialHomologyPModule_obj
+#print axioms TDA.Persistence.simplicialHomologyPModule_structureMap
+
+-- Deterministic single-column cancellation (Issue #123).
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_target
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_col_of_ne
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_step_spec
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_length_le
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_terminal
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_eq_nil_iff
+#print axioms TDA.Persistence.Reduction.columnReductionTrace_respectsDegree
+
 -- Canonical comparison on constructible inputs (Issue #84).
 -- TDA.Reeb.ConstructibleComparison: path-component maps on open intervals, the comparison on open intervals and on the real slice, presentations and their star and gap formulas, the graph case, constructible ℝ-spaces, the functor-level natural isomorphism and its constructible-cosheaf form.
 #print axioms TDA.Reeb.intervalComponentNatTrans

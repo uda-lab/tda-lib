@@ -14,6 +14,8 @@ import TDA.Persistence.Reduction.Trace
 import TDA.Persistence.Reduction.TraceCertificate
 import TDA.Persistence.Reduction.TraceCertificateExamples
 import TDA.Persistence.Reduction.TraceExamples
+import TDA.Persistence.Reduction.ColumnReduction
+import TDA.Persistence.Reduction.ColumnReductionExamples
 import TDA.Reeb.Components
 import TDA.Reeb.ComponentsCover
 import TDA.Reeb.ComponentsCoverExamples
@@ -82,3 +84,9 @@ import TDA.Filtration.CompatibleOrderTransfer
 import TDA.Filtration.CompatibleOrderTransferExamples
 import TDA.Filtration.CompatibleOrderExistence
 import TDA.Filtration.CompatibleOrderExistenceExamples
+import TDA.Filtration.CompatibleOrderClosed
+import TDA.Filtration.CompatibleOrderClosedExamples
+import TDA.Simplicial.Homology
+import TDA.Simplicial.HomologyExamples
+import TDA.Persistence.Simplicial
+import TDA.Persistence.SimplicialExamples
