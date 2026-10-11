@@ -83,7 +83,8 @@ de Silva, Munch and Patel define **Int** as the category of open intervals of `�
 inclusions (*Categorified Reeb Graphs*, §3). For `I = (a, b)` and `ε ≥ 0` they set
 `I^ε = (a - ε, b + ε)` (§4.1, before Definition 4.1). The expansion `Ω_ε : Int → Int` is a
 functor with the unit `I ⊆ I^ε` (§4.2, Observation 4.11). `thickenFunctor` is this expansion
-`Ω_ε`, not the thickening functor of §4.3, which acts on ℝ-spaces. `thicken_ioo` is the source
+`Ω_ε`, not the thickening functor of §4.3, which acts on ℝ-spaces
+([reeb-geometric-thickening.md](reeb-geometric-thickening.md)). `thicken_ioo` is the source
 formula on nonempty bounded intervals. Admitting `∅`, rays and `ℝ` as objects, defining
 thickening as a pointwise sum on every object, and taking `ε : ℝ≥0` are choices of the library;
 on nonempty bounded intervals they agree with the source definition.

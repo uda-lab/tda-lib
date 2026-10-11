@@ -41,6 +41,8 @@ import TDA.Reeb.ConstructibleSpaceExamples
 import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
 import TDA.Reeb.FiniteDiagram
+import TDA.Reeb.GeometricThickening
+import TDA.Reeb.GeometricThickeningExamples
 import TDA.Reeb.InterleavingDistance
 import TDA.Reeb.InterleavingDistanceExamples
 import TDA.Reeb.Interval
