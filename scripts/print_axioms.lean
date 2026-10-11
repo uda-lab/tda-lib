@@ -2362,3 +2362,17 @@ import TDA
 #print axioms TDA.Persistence.orderedQ_eq_iff
 #print axioms TDA.Persistence.orderedQ_surjective
 #print axioms TDA.Persistence.orderedQ_zeroLength
+
+-- Lossless index-bar relabeling under the selected constant-tail convention (Issue #154).
+set_option linter.auxLemma false
+#print axioms TDA.Persistence.ofIndexBars
+#print axioms TDA.Persistence.ofIndexBars_isPositive
+#print axioms TDA.Persistence.ofIndexBars_count_finite
+#print axioms TDA.Persistence.ofIndexBars_count_essential
+#print axioms TDA.Persistence.ofIndexBars_injective
+#print axioms TDA.Persistence.ofIndexBars_countP_grades
+#print axioms TDA.Persistence.ofIndexBars_count_finite._simp_1_1
+#print axioms TDA.Persistence.ofIndexBars_count_essential._simp_1_1
+#print axioms TDA.Persistence.ofIndexBars._proof_1
+#print axioms TDA.Persistence.ofIndexBars.eq_1
+#print axioms TDA.Persistence.ofIndexBars.congr_simp
