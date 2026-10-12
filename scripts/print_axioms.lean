@@ -3070,3 +3070,23 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Examples.moving_tied_edge_has_finite_slot
 #print axioms TDA.Persistence.Examples.moving_tied_edge_lift
 #print axioms TDA.Simplicial.AttachmentExamples.filled_triangle_H1_birth_and_death
+
+-- Actual finite-filter bottleneck stability and its finite closed-segment subdivision (#193).
+#print axioms TDA.Persistence.filterInterpolate_zero
+#print axioms TDA.Persistence.filterInterpolate_one
+#print axioms TDA.Persistence.intervalFilter_value
+#print axioms TDA.Persistence.faceSupDifference_nonneg
+#print axioms TDA.Persistence.abs_face_difference_le
+#print axioms TDA.Persistence.faceSupDifference_self
+#print axioms TDA.Persistence.faceSupDifference_of_isEmpty
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_strict
+#print axioms TDA.Persistence.mem_finiteFilterCrossingSubdivision_iff
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_endpoints
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_consecutive_gap
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_segment
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_consecutive_order
+#print axioms TDA.Persistence.bottleneck_dgm_le_faceSupDifference
+#print axioms TDA.Persistence.dgm_empty_faces
+#print axioms TDA.Persistence.bottleneck_dgm_self
+#print axioms TDA.Persistence.StabilityExamples.vertex_bottleneck_sharp
+#print axioms TDA.Persistence.StabilityExamples.vertex_stability_bound_sharp

@@ -150,6 +150,9 @@ import TDA.Persistence.Simplicial
 import TDA.Persistence.SimplicialExamples
 import TDA.Persistence.SublevelDiagram
 import TDA.Persistence.FaceOrderTemplate
+import TDA.Persistence.FiniteFilterStability
+import TDA.Persistence.FiniteFilterStabilityExamples
+import TDA.Persistence.FiniteFilterStabilitySingletonExamples
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.SublevelDiagramExamples
