@@ -2788,3 +2788,10 @@ set_option linter.auxLemma false
 
 #print axioms TDA.Persistence.dgm_common_face_endpoints_of_orderingEquivalent
 #print axioms TDA.Persistence.dgm_points_map_of_strictMonoOn
+
+-- Finite continuous coordinate families and compatible-order chambers (Issue #160).
+#print axioms TDA.Filtration.isOpen_orderChamber
+#print axioms TDA.Filtration.dense_orderChamber
+#print axioms TDA.Filtration.exists_open_le_iff_of_mem_orderChamber
+#print axioms TDA.Filtration.FilterFunction.exists_open_orderingEquivalent_of_mem_orderChamber
+#print axioms TDA.Filtration.CompatibleOrder.exists_open_sameEnum_of_mem_orderChamber

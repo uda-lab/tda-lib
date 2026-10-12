@@ -3,6 +3,8 @@
 The library is pinned to Lean 4.33.1 and mathlib commit
 `0df444a360eaa60ab8c11dca51a86af692955474`.
 
+- [Leygonie–Oudot–Tillmann, *A Framework for Differential Calculus on Persistence Barcodes*, Lemma 4.10 and preceding definition (9)](https://doi.org/10.1007/s10208-021-09522-y): finite equality-frontier argument for a dense local-order-stability locus. [Order chambers](order-chambers.md) extract this topological argument for continuous finite-coordinate families; barcode differentiability is outside this result.
+
 - [Cohen-Steiner, Edelsbrunner and Harer, *Stability of persistence diagrams*, §2, pp.106–108](https://link.springer.com/content/pdf/10.1007/s00454-006-1276-5.pdf): persistent-rank multiplicities and triangle counts at distinct noncritical thresholds. The actual finite simplicial sublevel construction, including critical and self thresholds under closed-birth/strict-death conventions, is described in [finite-sublevel-diagram.md](finite-sublevel-diagram.md).
 - [Chazal–Crawley-Boevey–de Silva, *The observable structure of persistence modules*, v1 §1.1, p.1](https://arxiv.org/pdf/1405.5644v1): the inclusive finite interval `[p,q]` corresponds to the library's half-open index bar `[p,q+1)`. Relabelling terminal deaths by `⊤` and proving the actual tail inclusion identity are finite-sublevel library results, described in [finite-sublevel-diagram.md](finite-sublevel-diagram.md).
 

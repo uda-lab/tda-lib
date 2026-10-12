@@ -1,0 +1,19 @@
+# Open dense order chambers
+
+Let `F : X → ι → β` be a finite family of coordinates on a topological space `X`. The equality locus `eqLocus F i j` consists of points where coordinates `i` and `j` agree. The library defines `orderChamber F` as the complement of the union of the frontiers of all these equality loci. It is the whole regular locus, which may have several connected components; no global constancy on a component is asserted.
+
+Every frontier is closed. There are finitely many ordered pairs of coordinates, so `orderChamber F` is open even when the coordinates are discontinuous and `β` has no topology. If each coordinate is continuous and `β` is a linear order with an `OrderClosedTopology`, the equality loci are closed: the closed order supplies a Hausdorff instance, and equality of two continuous maps is closed. A closed set's frontier has empty interior. Thus each frontier complement is open dense, and their finite intersection is dense in any `X`. In particular, the theorem assumes no Baire, Hausdorff, nonempty, metric or completeness property of `X`.
+
+At a point `x₀` in the chamber, consider each ordered pair `(i,j)`. A strict comparison at `x₀` persists on an open strict-inequality neighborhood by continuity. If the values agree, `x₀` is in the equality locus but outside its frontier, hence in its interior; the tie persists on that open neighborhood. Intersect these finitely many neighborhoods with the chamber. On the resulting open neighborhood, the equivalence
+
+`F x₀ i ≤ F x₀ j ↔ F x i ≤ F x j`
+
+holds simultaneously for every `i` and `j`. Both ordered directions are included, so the full weak order, including ties, is locally constant. Empty and singleton coordinate types are covered without choosing a coordinate or assuming a point exists.
+
+For an actual family `F : X → FilterFunction K β`, apply the coordinate theorem to the values on `TotalFace K`. The first wrapper yields the library's existing `OrderingEquivalent` relation. The second takes any supplied `CompatibleOrder (F x₀)` and transfers it to each nearby filter with exactly the same enumeration. This includes the supplied choice among tied faces; it does not independently sort the nearby values or select an enumeration.
+
+The parameter space determines the topology of equality frontiers. For a subdomain `D : Set E`, apply the theorem directly to `F : D → ι → β` with the subtype topology. Neither openness nor closedness of `D` in `E` is required. The relative chamber need not be the preimage of the ambient chamber: for coordinates `(x, |x|)` on `ℝ`, the ambient chamber excludes zero, while on `D = [0,∞)` the coordinates agree everywhere and the relative chamber includes zero. The private polymorphic subtype fixture exercises the general interface; the concrete real subtype fixture checks this boundary behavior.
+
+The crossing and edge-filter fixtures also distinguish local weak-order stability from compatibility of one fixed enumeration. At a crossing, the central enumeration can remain compatible even though the full weak order changes nearby. Another fixture retains a persistent tie with varying grades; a separate constant-grade tied edge checks preservation of the opposite supplied vertex order.
+
+The equality-frontier argument follows Leygonie–Oudot–Tillmann, *A Framework for Differential Calculus on Persistence Barcodes*, [Lemma 4.10 and definition (9)](https://doi.org/10.1007/s10208-021-09522-y). Their setting uses real filter functions on a finite complex with a manifold parameter. This library proves the topological argument for an arbitrary `X` and finite coordinates with the displayed order hypotheses, then specializes it to existing filters. It establishes no barcode differentiability, template, pairing, measure-zero, finite-component or order-selection result.
