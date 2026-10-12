@@ -148,10 +148,15 @@ import TDA.Filtration.CompatibleOrderClosed
 import TDA.Filtration.CompatibleOrderClosedExamples
 import TDA.Simplicial.Homology
 import TDA.Simplicial.HomologyExamples
+import TDA.Simplicial.H0Augmentation
 import TDA.Persistence.Simplicial
 import TDA.Persistence.SimplicialExamples
 import TDA.Persistence.SublevelDiagram
 import TDA.Persistence.FaceOrderTemplate
+import TDA.Persistence.FiniteFilterStability
+import TDA.Persistence.FiniteFilterStabilityExamples
+import TDA.Persistence.FiniteFilterStabilitySingletonExamples
+import TDA.Persistence.FiniteFilterStabilityCrossingFixtures
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.SublevelDiagramExamples

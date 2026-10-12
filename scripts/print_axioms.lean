@@ -3071,6 +3071,54 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Examples.moving_tied_edge_lift
 #print axioms TDA.Simplicial.AttachmentExamples.filled_triangle_H1_birth_and_death
 
+-- Actual finite-filter bottleneck stability and its finite closed-segment subdivision (#193).
+#print axioms TDA.Persistence.filterInterpolate_zero
+#print axioms TDA.Persistence.filterInterpolate_one
+#print axioms TDA.Persistence.intervalFilter_value
+#print axioms TDA.Persistence.faceSupDifference_nonneg
+#print axioms TDA.Persistence.abs_face_difference_le
+#print axioms TDA.Persistence.faceSupDifference_self
+#print axioms TDA.Persistence.faceSupDifference_of_isEmpty
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_strict
+#print axioms TDA.Persistence.mem_finiteFilterCrossingSubdivision_iff
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_endpoints
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_consecutive_gap
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_segment
+#print axioms TDA.Persistence.finiteFilterCrossingSubdivision_consecutive_order
+#print axioms TDA.Persistence.bottleneck_dgm_le_faceSupDifference
+#print axioms TDA.Persistence.dgm_empty_faces
+#print axioms TDA.Persistence.bottleneck_dgm_self
+#print axioms TDA.Persistence.StabilityExamples.vertex_bottleneck_sharp
+#print axioms TDA.Persistence.StabilityExamples.vertex_stability_bound_sharp
+#print axioms TDA.Persistence.StabilityCrossingFixtures.endpoint_crossing_closed_order
+#print axioms TDA.Persistence.StabilityCrossingFixtures.simultaneous_crossing_closed_orders
+#print axioms TDA.Persistence.StabilityCrossingFixtures.persistent_tie_and_simultaneous_crossing
+#print axioms TDA.Persistence.StabilityCrossingFixtures.crossing_at_left_endpoint
+#print axioms TDA.Simplicial.zeroChainSum_single
+#print axioms TDA.Simplicial.zeroChainSum_boundary
+#print axioms TDA.Simplicial.zeroChainSum_chainIncl
+#print axioms TDA.Simplicial.selectedZeroChainSum_single
+#print axioms TDA.Simplicial.selectedZeroChainSum_boundary
+#print axioms TDA.Simplicial.zeroVertexCycle_not_boundary
+#print axioms TDA.Simplicial.vertexCombination_not_boundary_of_selected
+#print axioms TDA.Simplicial.zeroShortF_of_no_edges
+#print axioms TDA.Simplicial.zeroShortG
+#print axioms TDA.Simplicial.finrank_zeroHomology_of_no_edges
+#print axioms TDA.Simplicial.finrank_homologyIncl_range_eq_quotientIncl_range
+#print axioms TDA.Simplicial.zeroVertexCycle_incl
+#print axioms TDA.Simplicial.zeroVertexCycle_incl_not_boundary
+#print axioms TDA.Simplicial.finrank_homologyIncl_range_pos_of_vertex
+#print axioms TDA.Simplicial.quotientIncl_injective_of_two_vertices_separated
+#print axioms TDA.Simplicial.SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_vertices
+#print axioms TDA.Persistence.Examples.triangle_family_interpolation
+#print axioms TDA.Persistence.faceTemplatePairs_mem_of_barcodeMultiplicity_pos
+#print axioms TDA.Persistence.Examples.triangle_actual_pairing_change
+#print axioms TDA.Persistence.Examples.triangle_explicit_midpoint_diagrams
+#print axioms TDA.Persistence.Examples.triangle_actual_face_pairings
+#print axioms TDA.Persistence.Examples.triangle_actual_midpoint_diagram_points
+#print axioms TDA.Persistence.dgm_finite_death_from_faceTemplate
+#print axioms TDA.Persistence.Examples.triangle_diagram_path_nonconstant
+
 -- Support-aware ordinary nerves of indexed families.
 #print axioms TDA.Topology.nerve
 #print axioms TDA.Topology.mem_nerve_iff
