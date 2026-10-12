@@ -139,8 +139,8 @@ follow-up Issue.
 
 ## Judge records
 
-A judge review runs only when the governing Issue or the orchestrator requires one for a PR;
-it is not a routine round. Its verdict is an ordinary review record under the
+A judge review runs only when the governing Issue requires one for a PR; it is not a
+routine round and is never added after the broker review as a parent approval step. Its verdict is an ordinary review record under the
 reviewer-identity contract above (a `Reviewed-by:` comment on the PR) — no second
 `Judged-by` format, no duplicate judge and review posts, no separate status ledger, and no
 per-theorem table required for formatting. It states the reviewed
@@ -158,9 +158,9 @@ tracked as outstanding work (the source-fidelity policy of `loop-orchestration-s
 Any PR that adds or changes a public statement carries a short source ↔ Lean correspondence
 section in its body, and its reviewer checks literal Lean vs source, hidden assumptions,
 boundary cases and quantifier/domain mistakes. The broker review covers this by default;
-the governing Issue or the orchestrator may additionally require a judge (reasoning tier,
-read-only, `lean-formalization-discipline`, `math-semantic-preservation`) for results whose
-source comparison is contested or release-scoped. Every such review applies the next section.
+the governing Issue may additionally require a judge (reasoning tier, read-only,
+`lean-formalization-discipline`, `math-semantic-preservation`) for results whose source
+comparison is contested or release-scoped, stated in the contract before dispatch. Every such review applies the next section.
 
 ## Contract-aware comparison
 
