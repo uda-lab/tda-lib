@@ -237,4 +237,24 @@ example (k : Type*) [Field k] :
     (fillingTriangle.attachingClass_ne_zero_of_no_old_coface k)
   exact ⟨h.2.1, h.2.2.1⟩
 
+/-- The actual last edge of a three-vertex cycle creates one H₁ class, and
+attaching its filling triangle kills one H₁ class. These are events in actual
+simplicial homology, rather than events in a raw reduction matrix. -/
+theorem filled_triangle_H1_birth_and_death (k : Type*) [Field k] :
+    ∃ (P C T : PreAbstractSimplicialComplex (Fin 3))
+      (A : SimplexAttachment P C 1) (B : SimplexAttachment C T 2),
+      A.simplex = {1, 2} ∧ B.simplex = {0, 1, 2} ∧
+      Function.Injective (simplicialHomologyIncl k A.inclusion 1).hom ∧
+      Module.finrank k (simplicialHomology C k 1 ⧸
+        LinearMap.range (simplicialHomologyIncl k A.inclusion 1).hom) = 1 ∧
+      LinearMap.ker (simplicialHomologyIncl k B.inclusion 1).hom =
+        k ∙ B.attachingHomologyClass k ∧
+      Module.finrank k (LinearMap.ker
+        (simplicialHomologyIncl k B.inclusion 1).hom) = 1 := by
+  have hb := closingEdge.positive_birth k (closingEdge_attachingClass_zero k)
+  have hd := fillingTriangle.positive_death k
+    (fillingTriangle.attachingClass_ne_zero_of_no_old_coface k)
+  exact ⟨path, cycle, triangle, closingEdge, fillingTriangle,
+    rfl, rfl, hb.1, hb.2.1, hd.2.1, hd.2.2.1⟩
+
 end TDA.Simplicial.AttachmentExamples

@@ -13,6 +13,8 @@ import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramBottleneckLawsExamples
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.DiagramCalculusExamples
+import TDA.Persistence.ActualLossDerivative
+import TDA.Persistence.ActualLossDerivativeExamples
 import TDA.Persistence.DiagramLawsExamples
 import TDA.Persistence.FiniteBarcode
 import TDA.Persistence.Interval

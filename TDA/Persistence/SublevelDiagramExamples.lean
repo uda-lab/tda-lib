@@ -180,7 +180,7 @@ private instance singletonMem (s : Finset (Fin 2)) :
 private instance singletonFaces : Fintype (TotalFace (singletonFace (0 : Fin 2))) :=
   inferInstance
 
-private def singletonFilter (a : ℝ) : FilterFunction (singletonFace (0 : Fin 2)) ℝ where
+def singletonFilter (a : ℝ) : FilterFunction (singletonFace (0 : Fin 2)) ℝ where
   value := fun _ => a
   mono := by intros; exact le_rfl
 
@@ -271,7 +271,7 @@ private theorem singleton_barcode (a : ℝ) :
       simp [singleton_bar, singleton_i]
     _ = _ := rankBarcode_barcodeModule _
 
-private theorem singleton_points (a : ℝ) :
+theorem singleton_points (a : ℝ) :
     (dgm (ZMod 2) (singletonFilter a) 0).points =
       ({(a, (⊤ : WithTop ℝ))} : Multiset (ℝ × WithTop ℝ)) := by
   rw [dgm, singleton_barcode]
@@ -1991,7 +1991,7 @@ private theorem singleton_template_example (a : ℝ) :
   refine ⟨e, faceTemplatePairs_one_face (ZMod 2) e 0 hm, ?_⟩
   rw [evaluateFaceTemplate_eq_dgm, singleton_points]
 
-private theorem singleton_template_essential_index (a : ℝ) :
+theorem singleton_template_essential_index (a : ℝ) :
     ∃ e : CompatibleOrder (singletonFilter a),
       faceTemplatePairs (ZMod 2) e 0 = 0 ∧
       faceTemplateEssential (ZMod 2) e 0 =
@@ -2116,11 +2116,37 @@ private theorem moving_edge_points (x : ℝ) :
 
 /-- Persistent equality of all three face values leaves finite template pairs
 as diagonal coordinates, which `orderedQ` discards. -/
-private def movingTiedEdgeFilter (x : ℝ) : FilterFunction edgeK ℝ where
+def movingTiedEdgeFilter (x : ℝ) : FilterFunction edgeK ℝ where
   value := fun _ => x
   mono := by intros; exact le_rfl
 
-private theorem moving_tied_edge_lift :
+/-- The actual tied edge retains a finite endpoint pair: choose an enumeration
+whose same prefix barcode displays the strict finite bar at grades `5,9`. -/
+theorem moving_tied_edge_has_finite_slot :
+    ∃ e : CompatibleOrder (movingTiedEdgeFilter (0 : ℝ)),
+      0 < (faceLiftCounts (ZMod 2) movingTiedEdgeFilter e 0).1 := by
+  obtain ⟨e₀, hpoints⟩ := edge_template_example
+  have hmem : ((5 : ℝ), (9 : WithTop ℝ)) ∈
+      (evaluateFaceTemplate (ZMod 2) e₀ edgeFilter e₀.monotone 0).points := by
+    rw [hpoints]
+    simp
+  have hpair : faceTemplatePairs (ZMod 2) e₀ 0 ≠ 0 := by
+    intro hz
+    simp [evaluateFaceTemplate, hz] at hmem
+  let e : CompatibleOrder (movingTiedEdgeFilter (0 : ℝ)) :=
+    e₀.transfer (g := movingTiedEdgeFilter 0) (by
+      intro i j _
+      exact le_rfl)
+  refine ⟨e, ?_⟩
+  have hc := Multiset.card_pos.mpr hpair
+  have heq : faceTemplatePairs (ZMod 2) e 0 =
+      faceTemplatePairs (ZMod 2) e₀ 0 :=
+    faceTemplatePairs_transfer (ZMod 2) e₀ (movingTiedEdgeFilter 0)
+      (by intro i j _; exact le_rfl) 0
+  change 0 < (faceTemplatePairs (ZMod 2) e 0).toList.length
+  simpa [heq] using hc
+
+theorem moving_tied_edge_lift :
     ∃ (m l : ℕ) (L : ℝ → (Fin m → ℝ × ℝ) × (Fin l → ℝ)),
       (∀ x : ℝ, dgm (ZMod 2) (movingTiedEdgeFilter x) 0 =
         orderedQ m l (L x) ∧
