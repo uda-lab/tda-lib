@@ -2795,3 +2795,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Filtration.exists_open_le_iff_of_mem_orderChamber
 #print axioms TDA.Filtration.FilterFunction.exists_open_orderingEquivalent_of_mem_orderChamber
 #print axioms TDA.Filtration.CompatibleOrder.exists_open_sameEnum_of_mem_orderChamber
+
+-- Chronological all-column reduction (Issue #128).
+#print axioms TDA.Persistence.Reduction.matrixReductionTrace
+#print axioms TDA.Persistence.Reduction.matrixReductionTrace_step_spec
+#print axioms TDA.Persistence.Reduction.matrixReductionTrace_pivots_distinct
+#print axioms TDA.Persistence.Reduction.matrixReductionTrace_length_le
+#print axioms TDA.Persistence.Reduction.matrixReductionTrace_respectsDegree
+#print axioms TDA.Persistence.Reduction.matrixReductionTrace_certificate
+#print axioms TDA.Persistence.Reduction.matrixReductionTrace_graded_certificate
