@@ -9,6 +9,8 @@ import TDA.Persistence.DiagramExamples
 import TDA.Persistence.DiagramLaws
 import TDA.Persistence.DiagramBottleneck
 import TDA.Persistence.DiagramBottleneckExamples
+import TDA.Persistence.DiagramBottleneckLaws
+import TDA.Persistence.DiagramBottleneckLawsExamples
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.DiagramCalculusExamples
 import TDA.Persistence.DiagramLawsExamples

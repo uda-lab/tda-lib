@@ -3010,3 +3010,28 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.faceTemplate_endpoint_degrees_disjoint
 #print axioms TDA.Persistence.faceTemplatePairs_count_le_one
 #print axioms TDA.Persistence.faceTemplateEssential_count_le_one
+
+-- Extended bottleneck laws on full real diagrams (Issue #190).
+#print axioms TDA.Persistence.finitePairCost_self
+#print axioms TDA.Persistence.finitePairCost_comm
+#print axioms TDA.Persistence.finitePairCost_triangle
+#print axioms TDA.Persistence.essentialPairCost_self
+#print axioms TDA.Persistence.essentialPairCost_comm
+#print axioms TDA.Persistence.essentialPairCost_triangle
+#print axioms TDA.Persistence.diagonalCost_le_pair_add
+#print axioms TDA.Persistence.diagonalCost_le_pair_add_rev
+#print axioms TDA.Persistence.OccurrenceMatching.source_le_cost
+#print axioms TDA.Persistence.OccurrenceMatching.target_le_cost
+#print axioms TDA.Persistence.OccurrenceMatching.essential_le_cost
+#print axioms TDA.Persistence.OccurrenceMatching.cost_le_of
+#print axioms TDA.Persistence.OccurrenceMatching.reverse_finite_some_iff
+#print axioms TDA.Persistence.OccurrenceMatching.cost_reverse
+#print axioms TDA.Persistence.OccurrenceMatching.reverse_reverse
+#print axioms TDA.Persistence.OccurrenceMatching.cost_compose_le
+#print axioms TDA.Persistence.bottleneck_self
+#print axioms TDA.Persistence.presentationBottleneck_comm
+#print axioms TDA.Persistence.bottleneck_comm
+#print axioms TDA.Persistence.bottleneck_triangle
+#print axioms TDA.Persistence.bottleneck_eq_zero_iff
+#print axioms TDA.Persistence.bottleneck_permuted_presentations
+#print axioms TDA.Persistence.bottleneck_repeated_pair_ne_zero
