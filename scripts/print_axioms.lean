@@ -2833,6 +2833,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.facePrefixBarcode_transfer
 #print axioms TDA.Persistence.faceTemplatePairs_transfer
 #print axioms TDA.Persistence.faceTemplateEssential_transfer
+#print axioms TDA.Persistence.facePrefixBarcode_sameEnumeration
+#print axioms TDA.Persistence.faceTemplatePairs_sameEnumeration
+#print axioms TDA.Persistence.faceTemplateEssential_sameEnumeration
 #print axioms TDA.Persistence.faceTemplatePairs_strict_orderingEquivalent
 #print axioms TDA.Persistence.faceTemplatePairs_tied_orderingEquivalent
 #print axioms TDA.Persistence.evaluateFaceTemplate_order_independent

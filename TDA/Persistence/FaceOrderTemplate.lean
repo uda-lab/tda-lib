@@ -545,6 +545,61 @@ theorem faceTemplateEssential_transfer {β : Type*} [LinearOrder β]
     faceTemplateEssential k (e.transfer hg) n = faceTemplateEssential k e n := by
   rfl
 
+/-- Any two compatible witnesses with the same enumeration give the same
+actual prefix barcode, regardless of their reference filters. -/
+theorem facePrefixBarcode_sameEnumeration {β : Type*} [LinearOrder β]
+    (e : CompatibleOrder f) {g : FilterFunction K β}
+    (e' : CompatibleOrder g) (henum : e.enum = e'.enum) (n : ℕ) :
+    facePrefixBarcode k e n = facePrefixBarcode k e' n := by
+  have hg : Monotone (g.value ∘ e.enum) := by
+    simpa only [henum] using e'.monotone
+  have he : e.transfer hg = e' := by
+    cases e with
+    | mk enum face_lt monotone =>
+      cases e' with
+      | mk enum' face_lt' monotone' =>
+        dsimp at henum
+        cases henum
+        rfl
+  rw [← he]
+  exact (facePrefixBarcode_transfer k e g hg n).symm
+
+/-- Finite template pairs depend only on the face enumeration. -/
+theorem faceTemplatePairs_sameEnumeration {β : Type*} [LinearOrder β]
+    (e : CompatibleOrder f) {g : FilterFunction K β}
+    (e' : CompatibleOrder g) (henum : e.enum = e'.enum) (n : ℕ) :
+    faceTemplatePairs k e n = faceTemplatePairs k e' n := by
+  have hg : Monotone (g.value ∘ e.enum) := by
+    simpa only [henum] using e'.monotone
+  have he : e.transfer hg = e' := by
+    cases e with
+    | mk enum face_lt monotone =>
+      cases e' with
+      | mk enum' face_lt' monotone' =>
+        dsimp at henum
+        cases henum
+        rfl
+  rw [← he]
+  exact (faceTemplatePairs_transfer k e g hg n).symm
+
+/-- Essential template indices depend only on the face enumeration. -/
+theorem faceTemplateEssential_sameEnumeration {β : Type*} [LinearOrder β]
+    (e : CompatibleOrder f) {g : FilterFunction K β}
+    (e' : CompatibleOrder g) (henum : e.enum = e'.enum) (n : ℕ) :
+    faceTemplateEssential k e n = faceTemplateEssential k e' n := by
+  have hg : Monotone (g.value ∘ e.enum) := by
+    simpa only [henum] using e'.monotone
+  have he : e.transfer hg = e' := by
+    cases e with
+    | mk enum face_lt monotone =>
+      cases e' with
+      | mk enum' face_lt' monotone' =>
+        dsimp at henum
+        cases henum
+        rfl
+  rw [← he]
+  exact (faceTemplateEssential_transfer k e g hg n).symm
+
 /-- Ordering-equivalent filters select the same finite index pairs with strict
 endpoints. The selected multiset retains repeated pairs. -/
 theorem faceTemplatePairs_strict_orderingEquivalent {β : Type*} [LinearOrder β]
