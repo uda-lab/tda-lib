@@ -2958,6 +2958,59 @@ set_option linter.auxLemma false
 #print axioms TDA.Simplicial.SimplexAttachment.positive_death
 #print axioms TDA.Simplicial.SimplexAttachment.chain_decomposition_unique
 
+-- Occurrence-based bottleneck geometry (Issue #186).
+#print axioms TDA.Persistence.finitePart_orderedQ
+#print axioms TDA.Persistence.essentialPart_orderedQ
+#print axioms TDA.Persistence.diagonalCost_le_max
+#print axioms TDA.Persistence.diagonalCost_midpoint
+#print axioms TDA.Persistence.OccurrenceMatching.ext
+#print axioms TDA.Persistence.OccurrenceMatching.ext_iff
+#print axioms TDA.Persistence.OccurrenceMatching.cost_relabel
+#print axioms TDA.Persistence.fintypeOccurrenceEquiv_value
+#print axioms TDA.Persistence.occurrenceMatching_nonempty_iff
+#print axioms TDA.Persistence.presentationBottleneck_relabel
+#print axioms TDA.Persistence.presentationBottleneck_eq_of_multiset_eq
+#print axioms TDA.Persistence.bottleneck_eq_presentation
+#print axioms TDA.Persistence.bottleneck_le_matching
+#print axioms TDA.Persistence.presentationBottleneck_le_cost
+#print axioms TDA.Persistence.occurrenceMatching_cost_lt_top
+#print axioms TDA.Persistence.presentationBottleneck_optimal_iff
+#print axioms TDA.Persistence.presentationBottleneck_lt_top_iff
+#print axioms TDA.Persistence.bottleneck_lt_top_iff
+#print axioms TDA.Persistence.bottleneck_optimal_iff
+#print axioms TDA.Persistence.bottleneck_eq_top_iff
+#print axioms TDA.Persistence.orderedQ_finite_occurrences
+#print axioms TDA.Persistence.orderedQ_essential_occurrences
+#print axioms TDA.Persistence.orderedOccurrenceMatching_cost_le
+#print axioms TDA.Persistence.bottleneck_orderedQ_le_norm
+#print axioms TDA.Persistence.bottleneck_orderedQ_eq_of_eq
+#print axioms TDA.Persistence.presentationBottleneck_singleton_empty
+#print axioms TDA.Persistence.presentationBottleneck_constant_empty
+#print axioms TDA.Persistence.presentationBottleneck_finite_empty
+#print axioms TDA.Persistence.presentationBottleneck_essential_singletons
+#print axioms TDA.Persistence.presentationBottleneck_two_equal_vs_one
+#print axioms TDA.Persistence.bottleneck_finite_only_empty
+#print axioms TDA.Persistence.bottleneck_empty_empty
+#print axioms TDA.Persistence.bottleneck_reversed_singleton_empty
+#print axioms TDA.Persistence.bottleneck_one_sided_diagonal
+#print axioms TDA.Persistence.bottleneck_essential_singletons
+#print axioms TDA.Persistence.bottleneck_unequal_essential_counts
+#print axioms TDA.Persistence.bottleneck_repeated_pair_detected
+
+-- Fixed face-order endpoint uniqueness (Issue #184).
+#print axioms TDA.Persistence.faceBirthCount_add_rank
+#print axioms TDA.Persistence.faceDeathCount_add_rank
+#print axioms TDA.Persistence.faceBirthCount_eq_cokernel
+#print axioms TDA.Persistence.faceDeathCount_eq_kernel
+#print axioms TDA.Persistence.faceStep_unique_event
+#print axioms TDA.Persistence.faceTemplate_death_count
+#print axioms TDA.Persistence.faceTemplate_birth_count
+#print axioms TDA.Persistence.faceTemplate_unique_endpoint
+#print axioms TDA.Persistence.faceTemplate_endpoint_count_le_one
+#print axioms TDA.Persistence.faceTemplate_endpoint_degrees_disjoint
+#print axioms TDA.Persistence.faceTemplatePairs_count_le_one
+#print axioms TDA.Persistence.faceTemplateEssential_count_le_one
+
 -- Support-aware ordinary nerves of indexed families.
 #print axioms TDA.Topology.nerve
 #print axioms TDA.Topology.mem_nerve_iff

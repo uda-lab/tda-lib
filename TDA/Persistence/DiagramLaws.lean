@@ -3,13 +3,13 @@ import TDA.Persistence.Diagram
 universe u
 namespace TDA.Persistence
 
-private def finitePart {α : Type u} [LinearOrder α]
+def finitePart {α : Type u} [LinearOrder α]
     (s : Multiset (α × WithTop α)) : Multiset (α × α) :=
   s.filterMap fun p => match p.2 with
     | none => none
     | some d => some (p.1, d)
 
-private def essentialPart {α : Type u} [LinearOrder α]
+def essentialPart {α : Type u} [LinearOrder α]
     (s : Multiset (α × WithTop α)) : Multiset α :=
   s.filterMap fun p => match p.2 with
     | none => some p.1
@@ -72,7 +72,7 @@ private theorem split_reconstruct {α : Type u} [LinearOrder α]
       simpa [finitePart, essentialPart, finiteEmbed, essentialEmbed,
         Multiset.map_cons, add_assoc, add_comm, add_left_comm] using ih
 
-private theorem finitePart_orderedQ {α : Type u} [LinearOrder α] (m n : ℕ)
+theorem finitePart_orderedQ {α : Type u} [LinearOrder α] (m n : ℕ)
     (z : (Fin m → α × α) × (Fin n → α)) :
     finitePart (orderedQ m n z).points =
       (Multiset.ofList (List.ofFn z.1)).filter (fun p => p.1 ≠ p.2) := by
@@ -81,7 +81,7 @@ private theorem finitePart_orderedQ {α : Type u} [LinearOrder α] (m n : ℕ)
     (Multiset.ofList (List.ofFn z.2)).map essentialEmbed) = _
   rw [finitePart_add, finitePart_finiteEmbed, finitePart_essentialEmbed, add_zero]
 
-private theorem essentialPart_orderedQ {α : Type u} [LinearOrder α] (m n : ℕ)
+theorem essentialPart_orderedQ {α : Type u} [LinearOrder α] (m n : ℕ)
     (z : (Fin m → α × α) × (Fin n → α)) :
     essentialPart (orderedQ m n z).points =
       Multiset.ofList (List.ofFn z.2) := by

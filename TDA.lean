@@ -7,6 +7,8 @@ import TDA.Persistence.Basic
 import TDA.Persistence.Diagram
 import TDA.Persistence.DiagramExamples
 import TDA.Persistence.DiagramLaws
+import TDA.Persistence.DiagramBottleneck
+import TDA.Persistence.DiagramBottleneckExamples
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.DiagramCalculusExamples
 import TDA.Persistence.DiagramLawsExamples
@@ -146,6 +148,7 @@ import TDA.Persistence.Simplicial
 import TDA.Persistence.SimplicialExamples
 import TDA.Persistence.SublevelDiagram
 import TDA.Persistence.FaceOrderTemplate
+import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.SublevelDiagramExamples
 import TDA.Persistence.SublevelDiagramTransport
