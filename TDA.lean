@@ -112,6 +112,8 @@ import TDA.Simplicial.FiniteHomologyExamples
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.InclusionExamples
 import TDA.Topology.Cosheaf
+import TDA.Topology.IndexedCover
+import TDA.Topology.IndexedCoverExamples
 import TDA.Topology.PathCover
 import TDA.Topology.PathCoverExamples
 import TDA.Filtration.FilterFunction
