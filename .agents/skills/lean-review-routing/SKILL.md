@@ -15,9 +15,11 @@ Evidence lives where GitHub already records it. The PR body carries one validati
 (evaluated head and base SHAs, exact commands, exit outcomes, axiom and coverage summary),
 updated in place for each new head rather than appended as comments. Findings and their
 dispositions live in the PR's review threads or one grouped PR comment. The governing Issue
-receives one short pickup line and one closing pointer to the squash commit; nothing else
-(no scratch source, hashes, probe narratives, progress or chronology). The commit SHA and
-the PR's Review events identify the evidence; do not restate them in prose.
+receives one short pickup line, one closing pointer to the squash commit, and only the
+reports this loop requires of the driver: a genuine specification change for dot's ruling,
+or a missing-source record under the source-fidelity policy. Nothing else goes there (no
+scratch source, hashes, probe narratives, progress or chronology). The commit SHA and the
+PR's Review events identify the evidence; do not restate them in prose.
 
 ## Local review (conditional, before the PR)
 
@@ -67,7 +69,8 @@ reviewer facility under the same identity. No plugin is required.
   `chatgpt-codex-connector[bot]` reply telling you to create a Codex account is a canned
   response to an unauthorised mention, not a failure: keep waiting for the real review.
 - **Bundled route**: `github-driven-workflow`'s `scripts/acquire-review.py` when no broker.
-- **Reviewed-by route** (no bot reviewer available, or affirmative broker failure): a read-only
+- **Reviewed-by route** (no bot reviewer available, affirmative broker failure, a judge the
+  governing Issue mandates, or a blocking fix after the five-request ceiling): a read-only
   reviewer distinct from the implementer (different model or session) posts a PR comment
   beginning `Reviewed-by: <reviewer-id>` that states its findings and the head SHA it covered.
   It is comment-based evidence under §7 and carries the same weight as a formal Review event.
@@ -76,8 +79,8 @@ reviewer facility under the same identity. No plugin is required.
   `Reviewed-by:` artifact.
 
 Wait for the review; minutes are normal. Poll without filtering by review state or author
-login — codex delivers formal reviews as `COMMENTED`, top-level comments count when the
-driver records them as a `Reviewed-by:` artifact, and the owner may review in any form. Change route only on affirmative evidence
+login — codex delivers formal reviews as `COMMENTED`, a top-level `Codex Review:` comment
+counts as it stands, and the owner may review in any form. Change route only on affirmative evidence
 that this one will not deliver (explicit error, quota-exhausted body), never on elapsed time.
 A connector reply that the Codex usage limit for code reviews is reached is such evidence:
 run the read-only `codex exec` (or subagent) review on the PR head and post it as the
@@ -123,10 +126,13 @@ of a written hypothesis. Wording, naming, comment style,
 preference and restatement of something already correct are not, however confidently argued.
 
 - Substantive → fix, push, record the disposition, and re-request the broker review of the
-  new head. Evidence on a stale head does not cover later changes; no additional reviewer is
-  dispatched for this beyond the broker unless the broker has failed.
+  new head. No additional reviewer is dispatched for this beyond the broker unless the broker
+  has failed.
 - Non-substantive → no further round for it. The orchestrator files a hygiene Issue for anything
   worth keeping.
+- Any push after review, substantive or not (including a wording fix, rebase or conflict
+  resolution), invalidates the evidence for the changed head: re-request the broker review of
+  the final head before merge. Evidence on a stale head never covers later changes.
 
 **Five rounds is the ceiling for new automatic review requests on one PR.** Same defect shape
 three rounds running → change the structure, not the instance. The ceiling limits rounds; it
