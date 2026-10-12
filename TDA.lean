@@ -7,6 +7,8 @@ import TDA.Persistence.Basic
 import TDA.Persistence.Diagram
 import TDA.Persistence.DiagramExamples
 import TDA.Persistence.DiagramLaws
+import TDA.Persistence.DiagramCalculus
+import TDA.Persistence.DiagramCalculusExamples
 import TDA.Persistence.DiagramLawsExamples
 import TDA.Persistence.FiniteBarcode
 import TDA.Persistence.Interval

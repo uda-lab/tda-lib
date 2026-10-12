@@ -2839,3 +2839,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.faceTemplatePairs_strict_orderingEquivalent
 #print axioms TDA.Persistence.faceTemplatePairs_tied_orderingEquivalent
 #print axioms TDA.Persistence.evaluateFaceTemplate_order_independent
+
+-- Scalar calculus through ordered diagram lifts (Issue #179).
+#print axioms TDA.Persistence.localLift_scalar_c1
+#print axioms TDA.Persistence.localLift_scalar_hasFDerivAt
+#print axioms TDA.Persistence.localLift_scalar_fderiv
+#print axioms TDA.Persistence.localLift_scalar_derivative_independent
+#print axioms TDA.Persistence.signedFiniteEndpointDifference_orderedQ
+#print axioms TDA.Persistence.absoluteFiniteEndpointDifference_orderedQ
+#print axioms TDA.Persistence.signedFiniteEndpointDifference_c1_all
+#print axioms TDA.Persistence.signedFiniteEndpointDifference_onePair_fderiv
+#print axioms TDA.Persistence.constantDiagram_hasLift
+#print axioms TDA.Persistence.essentialOnly_coordinates_vary
+#print axioms TDA.Persistence.finiteOnly_coordinates_vary
+#print axioms TDA.Persistence.absoluteFiniteEndpointDifference_not_c1_empty
