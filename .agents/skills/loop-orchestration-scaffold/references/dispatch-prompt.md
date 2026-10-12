@@ -19,11 +19,11 @@ No vendor-specific plugin is required. Never kill unowned or live process chains
 Continue authorized work to completion; report technical blockers with evidence and keep
 unaffected work moving. dot decides mathematical changes on the governing Issue.
 Run the full gate before opening a PR to develop; run a local adversarial review only under
-lean-review-routing's conditions. Obtain the broker review, dispose of all findings on the
-PR, and re-acquire review of the final head through the applicable route after any push. Keep validation
-evidence in one PR-body block; write to the Issue only at pickup and close, plus any required
-specification-change or missing-source report. Merge your own PR
-only with all gates satisfied and evaluated-head binding; do not directly push develop or
-main. Once no owned worker/reviewer is running, reclaim only proven finished job chains,
+lean-review-routing's conditions. Obtain PR review through the applicable route of
+lean-review-routing, dispose of all findings on the PR, and re-acquire review of the final
+head through that route after any push. Keep validation evidence in one PR-body block; write
+to the Issue only at pickup and close, plus any required specification-change or
+missing-source report. Merge your own PR only with all gates satisfied and evaluated-head
+binding; do not directly push develop or main. Once no owned worker/reviewer is running, reclaim only proven finished job chains,
 remove the unused worktree and merged Issue branch, and report the final result.
 ```
