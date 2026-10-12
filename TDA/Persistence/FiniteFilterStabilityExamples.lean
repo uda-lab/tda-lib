@@ -1323,6 +1323,34 @@ theorem triangle_actual_midpoint_diagram_points :
       norm_num [triangleCompatible0, triangleOrder0, triangleOrder0Fun,
         triangleIndex, triangleFilter, triangleValue, triangleTimeHalf,
         triangleVertex2, triangleEdge12]; simp
+
+set_option linter.unusedSimpArgs false in
+private theorem triangle_time0_no_half_grade (σ : TotalFace triangleBoundary) :
+    (triangleFilter triangleTime0).value σ ≠ (7 / 2 : ℝ) := by
+  obtain ⟨i, rfl⟩ := triangleCompatible0.enum.surjective σ
+  fin_cases i <;>
+    norm_num [triangleCompatible0, triangleOrder0, triangleOrder0Fun,
+      triangleFilter, triangleValue, triangleTime0,
+      triangleVertex0, triangleVertex1, triangleVertex2,
+      triangleEdge01, triangleEdge12, triangleEdge02] <;>
+    simp [show (0 : Fin 3) ≠ 2 by decide,
+      show (1 : Fin 3) ≠ 2 by decide,
+      show ({1, 2} : Finset (Fin 3)).card ≠ 1 by decide,
+      show ({0, 2} : Finset (Fin 3)).card ≠ 1 by decide] <;>
+    norm_num
+
+/-- The actual triangle-boundary H₀ diagram moves along the interpolated
+filter family: the crossing creates a finite death grade absent at time zero. -/
+theorem triangle_diagram_path_nonconstant :
+    dgm (ZMod 2) (triangleFilter triangleTime0) 0 ≠
+      dgm (ZMod 2) (triangleFilter triangleTimeHalf) 0 := by
+  intro heq
+  have hpoint := triangle_actual_midpoint_diagram_points.1
+  rw [← heq] at hpoint
+  obtain ⟨p, _, hdeath⟩ := dgm_finite_death_from_faceTemplate
+    (ZMod 2) triangleCompatible0 (triangleFilter triangleTime0)
+    triangleCompatible0.monotone 0 2 (7 / 2 : ℝ) hpoint
+  exact triangle_time0_no_half_grade (triangleCompatible0.enum p.2) hdeath
 #print axioms triangleValue_mono
 #print axioms triangleBoundary_faceCount
 #print axioms triangleOrder0Fun_bijective

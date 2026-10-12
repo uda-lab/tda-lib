@@ -3116,3 +3116,5 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Examples.triangle_explicit_midpoint_diagrams
 #print axioms TDA.Persistence.Examples.triangle_actual_face_pairings
 #print axioms TDA.Persistence.Examples.triangle_actual_midpoint_diagram_points
+#print axioms TDA.Persistence.dgm_finite_death_from_faceTemplate
+#print axioms TDA.Persistence.Examples.triangle_diagram_path_nonconstant

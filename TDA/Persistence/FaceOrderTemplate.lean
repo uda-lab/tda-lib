@@ -551,6 +551,30 @@ theorem evaluateFaceTemplate_eq_dgm {β : Type*} [LinearOrder β]
   intro I hI
   exact facePoint_restrictAlong eg I (facePrefixBarcode_birth_pos k eg n I hI)
 
+/-- A finite death coordinate of an actual diagram comes from the value of
+an actual face in any compatible full face template. -/
+theorem dgm_finite_death_from_faceTemplate {β : Type*} [LinearOrder β]
+    (e : CompatibleOrder f) (g : FilterFunction K β)
+    (hg : Monotone (g.value ∘ e.enum)) (n : ℕ) (b d : β)
+    (hp : (b, (d : WithTop β)) ∈ (dgm k g n).points) :
+    ∃ p ∈ faceTemplatePairs k e n, g.value (e.enum p.2) = d := by
+  rw [← evaluateFaceTemplate_eq_dgm k e g hg n] at hp
+  change (b, (d : WithTop β)) ∈
+    (((faceTemplatePairs k e n).map (pairValues g e)).filter
+      (fun p => p.1 ≠ p.2)).map (fun p => (p.1, (p.2 : WithTop β))) +
+    ((faceTemplateEssential k e n).map (birthValue g e)).map
+      (fun x => (x, (⊤ : WithTop β))) at hp
+  rcases Multiset.mem_add.mp hp with hfinite | hessential
+  · obtain ⟨q, hq, hqeq⟩ := Multiset.mem_map.mp hfinite
+    obtain ⟨p, hp', hpq⟩ := Multiset.mem_map.mp (Multiset.mem_filter.mp hq).1
+    refine ⟨p, hp', ?_⟩
+    subst q
+    have hdeath := congrArg Prod.snd hqeq
+    exact WithTop.coe_inj.mp hdeath
+  · obtain ⟨x, _, hx⟩ := Multiset.mem_map.mp hessential
+    have hdeath := congrArg Prod.snd hx
+    simp at hdeath
+
 /-- Changing the compatible reference filter while retaining the enumeration does
 not change the actual prefix barcode. -/
 theorem facePrefixBarcode_transfer {β : Type*} [LinearOrder β]
