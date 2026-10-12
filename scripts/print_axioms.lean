@@ -2785,3 +2785,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.sampledEndpoint
 #print axioms TDA.Persistence.sampledEndpoint.eq_1
 #print axioms TDA.Persistence.structureMapRank_reindex
+
+#print axioms TDA.Persistence.dgm_common_face_endpoints_of_orderingEquivalent
+#print axioms TDA.Persistence.dgm_points_map_of_strictMonoOn

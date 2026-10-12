@@ -133,3 +133,5 @@ import TDA.Persistence.Simplicial
 import TDA.Persistence.SimplicialExamples
 import TDA.Persistence.SublevelDiagram
 import TDA.Persistence.SublevelDiagramExamples
+import TDA.Persistence.SublevelDiagramTransport
+import TDA.Persistence.SublevelDiagramTransportExamples
