@@ -123,7 +123,7 @@ theorem nerve_pullback_le {Y : Type w} (f : X → Y) (U : CoverFamily Y I) :
   obtain ⟨hsn, y, hy, hface⟩ := (mem_nerve_pullback_iff f U s).1 hs
   exact (mem_nerve_iff U s).2 ⟨hsn, y, fun i hi => hface i hi⟩
 
-/-- Pullback preserves the target-family nerve exactly when the map is surjective. -/
+/-- Pullback preserves the target-family nerve whenever the map is surjective. -/
 theorem nerve_pullback_eq_of_surjective {Y : Type w} (f : X → Y)
     (U : CoverFamily Y I) (hf : Function.Surjective f) :
     nerve (pullback f U) = nerve U := by
