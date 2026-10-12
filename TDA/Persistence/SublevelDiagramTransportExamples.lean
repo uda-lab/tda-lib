@@ -1,4 +1,5 @@
 import TDA.Persistence.SublevelDiagramTransport
+import TDA.Persistence.SmoothFaceLift
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Order.ULift
 
@@ -573,6 +574,50 @@ private theorem f4_counts :
       (dgm (ZMod 2) f4_target 0).points.count ((3 : ℚ), (⊤ : WithTop ℚ)) = 2 := by
   rw [f4_source_points, f4_target_points]
   simp
+
+/-- Two isolated vertices keep two equal essential births as a multiset. -/
+private def f4_moving (x : ℝ) : FilterFunction f4_K ℝ where
+  value := fun _ => 2 + x
+  mono := by intros; exact le_rfl
+
+private theorem f4_moving_points (x : ℝ) :
+    (dgm (ZMod 2) (f4_moving x) 0).points =
+      ({(2 + x, (⊤ : WithTop ℝ)), (2 + x, (⊤ : WithTop ℝ))} :
+        Multiset (ℝ × WithTop ℝ)) := by
+  have hmap := dgm_points_map_of_strictMonoOn (ZMod 2)
+    f4_source (f4_moving x) (fun q : ℚ => (q : ℝ) + x)
+    (by intro a _ b _ hab; simpa [add_comm] using (add_lt_add_right (show (a : ℝ) < (b : ℝ) by exact_mod_cast hab) x))
+    (by intro s; simp [f4_source, f1_constant, f4_moving]) 0
+  rw [hmap, f4_source_points]
+  simp
+
+private theorem f4_moving_smooth_lift :
+    ∃ (m l : ℕ) (L : ℝ → (Fin m → ℝ × ℝ) × (Fin l → ℝ)),
+      (∀ x : ℝ, dgm (ZMod 2) (f4_moving x) 0 = orderedQ m l (L x) ∧
+        (dgm (ZMod 2) (f4_moving x) 0).points.count
+          (2 + x, (⊤ : WithTop ℝ)) = 2) ∧
+      ContDiffOn ℝ 1 L Set.univ := by
+  have hF : ∀ s : TotalFace f4_K,
+      ContDiffOn ℝ 1 (fun x : ℝ => (f4_moving x).value s) Set.univ := by
+    intro s
+    change ContDiffOn ℝ 1 (fun x : ℝ => 2 + x) Set.univ
+    exact contDiffOn_const.add contDiffOn_id
+  have horder : ∀ x ∈ (Set.univ : Set ℝ),
+      OrderingEquivalent (f4_moving 0) (f4_moving x) := by
+    intro x _ s t
+    simp [f4_moving]
+  obtain ⟨m, l, L, hfactor, hsmooth⟩ :=
+    exists_smooth_face_lift (ZMod 2) f4_moving
+      (x₀ := 0) isOpen_univ (Set.mem_univ 0) hF horder 0
+  refine ⟨m, l, L, ?_, hsmooth⟩
+  intro x
+  constructor
+  · exact hfactor x (Set.mem_univ x)
+  · rw [f4_moving_points]
+    simp
+
+#print axioms f4_moving_points
+#print axioms f4_moving_smooth_lift
 
 private theorem f4_no_finite (x y : ℚ) :
     (x, (y : WithTop ℚ)) ∉ (dgm (ZMod 2) f4_source 0).points ∧

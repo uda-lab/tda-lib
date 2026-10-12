@@ -1,4 +1,6 @@
 import TDA.Persistence.FaceOrderTemplate
+import TDA.Persistence.SmoothFaceLift
+import TDA.Persistence.SublevelDiagramTransport
 import TDA.Filtration.CompatibleOrderExistence
 import Mathlib.Data.ZMod.Basic
 
@@ -2034,6 +2036,118 @@ private theorem edge_tied_template_example (e : CompatibleOrder edgeFilter) :
         (fun _ => ((5 : ℝ), (⊤ : WithTop ℝ))) := by
   exact evaluateFaceTemplate_constant_points (ZMod 2) e edgeTiedFilter
     (by intro i j _; exact le_rfl) 0 5 (by intro s; rfl)
+
+/-- Empty actual complexes have no coordinate labels in any degree. -/
+private theorem empty_smooth_lift (n : ℕ) :
+    ∃ (L : ℝ → (Fin 0 → ℝ × ℝ) × (Fin 0 → ℝ)),
+      (∀ x : ℝ, dgm (ZMod 2) (emptyFilter (Fin 2) ℝ) n =
+        orderedQ 0 0 (L x)) ∧ ContDiffOn ℝ 1 L Set.univ := by
+  let L : ℝ → (Fin 0 → ℝ × ℝ) × (Fin 0 → ℝ) :=
+    fun _ => (Fin.elim0, Fin.elim0)
+  refine ⟨L, ?_, ?_⟩
+  · intro x
+    apply Diagram.ext
+    simp [orderedQ, empty_points]
+  · exact contDiffOn_const
+
+/-- A translating singleton has a moving essential coordinate in its actual H₀ diagram. -/
+private theorem singleton_smooth_lift :
+    ∃ (m l : ℕ) (L : ℝ → (Fin m → ℝ × ℝ) × (Fin l → ℝ)),
+      m = 0 ∧ l = 1 ∧
+      (∀ x : ℝ, (dgm (ZMod 2) (singletonFilter x) 0).points =
+        ({(x, (⊤ : WithTop ℝ))} : Multiset (ℝ × WithTop ℝ)) ∧
+        dgm (ZMod 2) (singletonFilter x) 0 = orderedQ m l (L x)) ∧
+      ContDiffOn ℝ 1 L Set.univ := by
+  let F : ℝ → FilterFunction (singletonFace (0 : Fin 2)) ℝ := singletonFilter
+  obtain ⟨e, hp, he⟩ := singleton_template_essential_index 0
+  have hc : (faceLiftCounts (ZMod 2) F (x₀ := 0) e 0).1 = 0 ∧
+      (faceLiftCounts (ZMod 2) F (x₀ := 0) e 0).2 = 1 := by
+    simp [faceLiftCounts, hp, he]
+  refine ⟨(faceLiftCounts (ZMod 2) F (x₀ := 0) e 0).1,
+    (faceLiftCounts (ZMod 2) F (x₀ := 0) e 0).2,
+    fixedFaceLift (ZMod 2) F (x₀ := 0) e 0, hc.1, hc.2, ?_, ?_⟩
+  · intro x
+    refine ⟨singleton_points x, ?_⟩
+    exact fixedFaceLift_factorization (ZMod 2) F (x₀ := 0) e 0
+      (U := Set.univ) (fun _ _ s t => by simp [F, singletonFilter]) x (Set.mem_univ x)
+  · exact fixedFaceLift_contDiffOn (ZMod 2) F (x₀ := 0) e 0 (U := Set.univ)
+      (fun s => by
+        change ContDiffOn ℝ 1 (fun x : ℝ => x) Set.univ
+        exact contDiffOn_id)
+
+/-- Translating all three edge face values keeps the weak order fixed while the
+actual finite death coordinate and essential birth both vary. -/
+private def movingEdgeFilter (x : ℝ) : FilterFunction edgeK ℝ where
+  value := fun s => edgeFilter.value s + x
+  mono := by
+    intro s t h
+    simpa [add_comm] using (add_le_add_right (edgeFilter.mono h) x)
+
+private theorem moving_edge_smooth_lift :
+    ∃ (m l : ℕ) (L : ℝ → (Fin m → ℝ × ℝ) × (Fin l → ℝ)),
+      (∀ x : ℝ, dgm (ZMod 2) (movingEdgeFilter x) 0 =
+        orderedQ m l (L x)) ∧ ContDiffOn ℝ 1 L Set.univ := by
+  have hF : ∀ s : TotalFace edgeK,
+      ContDiffOn ℝ 1 (fun x : ℝ => (movingEdgeFilter x).value s) Set.univ := by
+    intro s
+    change ContDiffOn ℝ 1 (fun x : ℝ => edgeFilter.value s + x) Set.univ
+    exact contDiffOn_const.add contDiffOn_id
+  have horder : ∀ x ∈ (Set.univ : Set ℝ),
+      OrderingEquivalent (movingEdgeFilter 0) (movingEdgeFilter x) := by
+    intro x _ s t
+    simp [movingEdgeFilter]
+  obtain ⟨m, l, L, hfactor, hsmooth⟩ :=
+    exists_smooth_face_lift (ZMod 2) movingEdgeFilter
+      (x₀ := 0) isOpen_univ (Set.mem_univ 0) hF horder 0
+  exact ⟨m, l, L, fun x => hfactor x (Set.mem_univ x), hsmooth⟩
+
+/-- The actual edge diagram has a finite death at `9 + x` and an essential
+birth at `2 + x`, so both kinds of coordinates genuinely move. -/
+private theorem moving_edge_points (x : ℝ) :
+    (dgm (ZMod 2) (movingEdgeFilter x) 0).points =
+      ({(2 + x, (⊤ : WithTop ℝ)), (5 + x, ((9 + x : ℝ) : WithTop ℝ))} :
+        Multiset (ℝ × WithTop ℝ)) := by
+  have h := dgm_points_map_of_strictMonoOn (ZMod 2)
+    edgeFilter (movingEdgeFilter x) (fun a : ℝ => a + x)
+    (by intro a _ b _ hab; simpa [add_comm] using (add_lt_add_right hab x))
+    (by intro s; rfl) 0
+  rw [h, edge_points]
+  simp
+
+/-- Persistent equality of all three face values leaves finite template pairs
+as diagonal coordinates, which `orderedQ` discards. -/
+private def movingTiedEdgeFilter (x : ℝ) : FilterFunction edgeK ℝ where
+  value := fun _ => x
+  mono := by intros; exact le_rfl
+
+private theorem moving_tied_edge_lift :
+    ∃ (m l : ℕ) (L : ℝ → (Fin m → ℝ × ℝ) × (Fin l → ℝ)),
+      (∀ x : ℝ, dgm (ZMod 2) (movingTiedEdgeFilter x) 0 =
+        orderedQ m l (L x) ∧
+        ∀ i : Fin m, (L x).1 i = (x, x)) ∧
+      ContDiffOn ℝ 1 L Set.univ := by
+  let F := movingTiedEdgeFilter
+  obtain ⟨e⟩ := exists_compatibleOrder (F 0)
+  let L := fixedFaceLift (ZMod 2) F (x₀ := 0) e 0
+  refine ⟨(faceLiftCounts (ZMod 2) F (x₀ := 0) e 0).1,
+    (faceLiftCounts (ZMod 2) F (x₀ := 0) e 0).2, L, ?_, ?_⟩
+  · intro x
+    constructor
+    · exact fixedFaceLift_factorization (ZMod 2) F (x₀ := 0) e 0
+        (U := Set.univ) (fun _ _ s t => by simp [F, movingTiedEdgeFilter])
+        x (Set.mem_univ x)
+    · intro i
+      rfl
+  · exact fixedFaceLift_contDiffOn (ZMod 2) F (x₀ := 0) e 0
+      (U := Set.univ) (fun s => by
+        change ContDiffOn ℝ 1 (fun x : ℝ => x) Set.univ
+        exact contDiffOn_id)
+
+#print axioms empty_smooth_lift
+#print axioms singleton_smooth_lift
+#print axioms moving_edge_smooth_lift
+#print axioms moving_edge_points
+#print axioms moving_tied_edge_lift
 
 #print axioms empty_template_example
 #print axioms singleton_template_example
