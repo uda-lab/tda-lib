@@ -129,3 +129,5 @@ import TDA.Simplicial.Homology
 import TDA.Simplicial.HomologyExamples
 import TDA.Persistence.Simplicial
 import TDA.Persistence.SimplicialExamples
+import TDA.Persistence.SublevelDiagram
+import TDA.Persistence.SublevelDiagramExamples

@@ -2743,3 +2743,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Reeb.Examples.GraphPL.c4_vertexOnly_x1
 #print axioms TDA.Reeb.Examples.GraphPL.c4_vertexOnly_x3
 #print axioms TDA.Reeb.Examples.GraphPL.c4_vertexOnly_ne
+
+#print axioms TDA.Persistence.dgm
+#print axioms TDA.Persistence.dgm_isPositive
+#print axioms TDA.Persistence.rank_sublevelHomologyMap
+#print axioms TDA.Persistence.dgm_eq_ofIndexBars_of_iso
+#print axioms TDA.Persistence.dgm._proof_1
+#print axioms TDA.Persistence.dgm.eq_1
+#print axioms TDA.Persistence.gradeHomologyBarcode.eq_1
+#print axioms TDA.Persistence.rankBarcode.eq_1
+#print axioms TDA.Filtration.FilterFunction.mk.congr_simp
+#print axioms Finsupp.mapDomain.linearEquiv.eq_1
