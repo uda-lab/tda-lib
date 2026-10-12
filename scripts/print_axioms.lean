@@ -2754,3 +2754,34 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.rankBarcode.eq_1
 #print axioms TDA.Filtration.FilterFunction.mk.congr_simp
 #print axioms Finsupp.mapDomain.linearEquiv.eq_1
+
+-- Finite monotone rank/barcode sampling: public and generated declarations.
+#print axioms TDA.Persistence.FiniteInterval.alive.eq_1
+#print axioms TDA.Persistence.FiniteInterval.alive_restrictAlong
+#print axioms TDA.Persistence.FiniteInterval.restrictAlong
+#print axioms TDA.Persistence.FiniteInterval.restrictAlong._proof_1
+#print axioms TDA.Persistence.FiniteInterval.restrictAlong.eq_1
+#print axioms TDA.Persistence.FiniteInterval.restrictAlong_eq_none_iff
+#print axioms TDA.Persistence.FiniteInterval.restrictAlong_eq_none_iff._proof_1_2
+#print axioms TDA.Persistence.FiniteInterval.restrictAlong_eq_none_iff._proof_1_3
+#print axioms TDA.Persistence.barcodeMultiplicity_rankBarcode_reindex
+#print axioms TDA.Persistence.barcodeMultiplicity_rankBarcode_reindex._proof_1_1
+#print axioms TDA.Persistence.barcodeMultiplicity_rankBarcode_reindex._proof_1_2
+#print axioms TDA.Persistence.lt_sampledEndpoint_iff
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_1
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_10
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_2
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_3
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_4
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_5
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_6
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_7
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_8
+#print axioms TDA.Persistence.moduleMultiplicityInteger_reindex._proof_1_9
+#print axioms TDA.Persistence.rankBarcode_reindex
+#print axioms TDA.Persistence.reindexBarcode
+#print axioms TDA.Persistence.reindexBarcode.eq_1
+#print axioms TDA.Persistence.sampledEndpoint
+#print axioms TDA.Persistence.sampledEndpoint.eq_1
+#print axioms TDA.Persistence.structureMapRank_reindex
