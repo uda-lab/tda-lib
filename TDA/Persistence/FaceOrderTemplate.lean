@@ -175,6 +175,32 @@ noncomputable def faceTemplatePairs (e : CompatibleOrder f) (n : ℕ) :
       else none
     else none
 
+/-- A positive actual prefix-barcode multiplicity supplies the corresponding
+face-index occurrence in the fixed full template. -/
+theorem faceTemplatePairs_mem_of_barcodeMultiplicity_pos
+    (e : CompatibleOrder f) (n b d : ℕ)
+    (hb : 0 < b) (hd : d ≤ faceCount K)
+    (hpos : 0 < barcodeMultiplicity (facePrefixBarcode k e n) b d) :
+    ∃ p ∈ faceTemplatePairs k e n,
+      p.1.val = b - 1 ∧ p.2.val = d - 1 := by
+  classical
+  obtain ⟨I, hI, hbirth, hdeath⟩ := Multiset.countP_pos.mp hpos
+  have hbI : 0 < I.birth := by omega
+  have hdI : I.death ≤ faceCount K := by omega
+  refine ⟨(birthFaceIndex I hbI, deathFaceIndex I hdI), ?_, ?_, ?_⟩
+  · change (birthFaceIndex I hbI, deathFaceIndex I hdI) ∈
+      (facePrefixBarcode k e n).filterMap (fun J =>
+        if hJb : 0 < J.birth then
+          if hJd : J.death ≤ faceCount K then
+            some (birthFaceIndex J hJb, deathFaceIndex J hJd)
+          else none
+        else none)
+    apply (Multiset.mem_filterMap _ _).mpr
+    refine ⟨I, hI, ?_⟩
+    simp only [dif_pos hbI, dif_pos hdI]
+  · simpa only [birthFaceIndex] using congrArg (fun x : ℕ => x - 1) hbirth
+  · simpa only [deathFaceIndex] using congrArg (fun x : ℕ => x - 1) hdeath
+
 /-- The fixed essential birth-index multiset. -/
 noncomputable def faceTemplateEssential (e : CompatibleOrder f) (n : ℕ) :
     Multiset (Fin (faceCount K)) :=
