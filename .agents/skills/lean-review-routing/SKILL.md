@@ -1,15 +1,31 @@
 ---
 name: lean-review-routing
-description: Review order, reviewer routes per vendor, observation and disposition of review feedback, contract-aware source ↔ Lean comparison and round ceiling for PRs in a Lean formalisation loop — local adversarial review before the PR, broker or Reviewed-by evidence on the PR, substantive-versus-not classification, the merge decision delegated to github-driven-workflow's evidence/disposition/authority checks, judge records, five-round ceiling. Use by drivers before opening a PR and after every review round, and by orchestrators when observing PRs, merging or changing routes.
+description: Review order, reviewer routes per vendor, observation and disposition of review feedback, contract-aware source ↔ Lean comparison and round ceiling for PRs in a Lean formalisation loop — conditional local adversarial review before the PR, broker review evidence on the PR, evidence placement, substantive-versus-not classification, the merge decision delegated to github-driven-workflow's evidence/disposition/authority checks, judge records, five-round ceiling. Use by drivers before opening a PR and after every review round, and by orchestrators when observing PRs, merging or changing routes.
 ---
 
 # lean-review-routing
 
-Order, always: **local adversarial review → fix → open the PR → external review rounds →
-merge.** Never run a local and an external review concurrently: the external one gets spent
-on defects the local pass would have caught.
+Order: **gate → (conditional local review) → open the PR → broker review rounds → merge.**
+Never run a local and an external review concurrently: the external one gets spent on defects
+the local pass would have caught.
 
-## Local review (one pass per Issue, before the PR)
+## Evidence placement
+
+Evidence lives where GitHub already records it. The PR body carries one validation block
+(evaluated head and base SHAs, exact commands, exit outcomes, axiom and coverage summary),
+updated in place for each new head rather than appended as comments. Findings and their
+dispositions live in the PR's review threads or one grouped PR comment. The governing Issue
+receives one short pickup line and one closing pointer to the squash commit; nothing else
+(no scratch source, hashes, probe narratives, progress or chronology). The commit SHA and
+the PR's Review events identify the evidence; do not restate them in prose.
+
+## Local review (conditional, before the PR)
+
+Run one local read-only adversarial pass only when the governing Issue requires it, when the
+PR adds or changes public statements against a frozen source interface, or when the diff is
+large enough that the external round would be spent on mechanical defects. Otherwise skip
+it: the broker review is the review. When run, its findings are fixed before the PR and its
+report is not posted anywhere.
 
 Frame it as **numbered, falsifiable risks**, never "review this" (a generic prompt returns
 "no major issues" on diffs with real defects). Always include:
@@ -40,8 +56,7 @@ LOOP_JOB_ID=tda-lib/issue-<n>/review scripts/codex.sh exec -C <worktree> --sandb
 ```
 
 Resolve model and effort using dot's runtime. Claude Code may use its available read-only
-reviewer facility under the same identity and evidence contract. No plugin is required.
-Record the route, reviewer identity and reviewed head in the PR evidence.
+reviewer facility under the same identity. No plugin is required.
 
 ## PR review (evidence for `github-driven-workflow` §8)
 
@@ -52,11 +67,13 @@ Record the route, reviewer identity and reviewed head in the PR evidence.
   `chatgpt-codex-connector[bot]` reply telling you to create a Codex account is a canned
   response to an unauthorised mention, not a failure: keep waiting for the real review.
 - **Bundled route**: `github-driven-workflow`'s `scripts/acquire-review.py` when no broker.
-- **Reviewed-by route** (single subscription, or no bot reviewer): a read-only reviewer distinct
-  from the implementer (different model or session) posts a PR comment beginning
-  `Reviewed-by: <reviewer-id>` that quotes its findings and the head SHA it covered. It is
-  comment-based evidence under §7 and carries the same weight as a formal Review event.
-  Independence is by recorded identity.
+- **Reviewed-by route** (no bot reviewer available, or affirmative broker failure): a read-only
+  reviewer distinct from the implementer (different model or session) posts a PR comment
+  beginning `Reviewed-by: <reviewer-id>` that states its findings and the head SHA it covered.
+  It is comment-based evidence under §7 and carries the same weight as a formal Review event.
+  Independence is by recorded identity. A bot review (formal Review event in any state, or a
+  `Codex Review:` top-level comment) is evidence as it stands; do not re-post it as a
+  `Reviewed-by:` artifact.
 
 Wait for the review; minutes are normal. Poll without filtering by review state or author
 login — codex delivers formal reviews as `COMMENTED`, top-level comments count when the
@@ -105,8 +122,9 @@ mathematical defect or contract violation (§ Contract-aware comparison), not th
 of a written hypothesis. Wording, naming, comment style,
 preference and restatement of something already correct are not, however confidently argued.
 
-- Substantive → fix, push, record the disposition, and obtain review of the changed content on
-  the new head. Evidence on a stale head does not cover later changes.
+- Substantive → fix, push, record the disposition, and re-request the broker review of the
+  new head. Evidence on a stale head does not cover later changes; no additional reviewer is
+  dispatched for this beyond the broker unless the broker has failed.
 - Non-substantive → no further round for it. The orchestrator files a hygiene Issue for anything
   worth keeping.
 
@@ -121,8 +139,9 @@ follow-up Issue.
 
 ## Judge records
 
-A judge's verdict is an ordinary review record under the reviewer-identity contract above (a
-`Reviewed-by:` comment on the PR, or a comment on the Issue it judges) — no second
+A judge review runs only when the governing Issue or the orchestrator requires one for a PR;
+it is not a routine round. Its verdict is an ordinary review record under the
+reviewer-identity contract above (a `Reviewed-by:` comment on the PR) — no second
 `Judged-by` format, no duplicate judge and review posts, no separate status ledger, and no
 per-theorem table required for formatting. It states the reviewed
 revision (commit SHA) and the comparison mode actually used: `source-based` (the primary source
@@ -136,11 +155,12 @@ tracked as outstanding work (the source-fidelity policy of `loop-orchestration-s
 
 ## Statement-changing PRs
 
-Any PR that adds or changes a public statement carries a source ↔ Lean correspondence section
-and needs a reviewer that checks literal Lean vs source, hidden assumptions, boundary cases
-and quantifier/domain mistakes. A judge (reasoning tier, read-only,
-`lean-formalization-discipline`, `math-semantic-preservation`) is the right reviewer for this
-even when a bot review also ran. Every such review and judgement applies the next section.
+Any PR that adds or changes a public statement carries a short source ↔ Lean correspondence
+section in its body, and its reviewer checks literal Lean vs source, hidden assumptions,
+boundary cases and quantifier/domain mistakes. The broker review covers this by default;
+the governing Issue or the orchestrator may additionally require a judge (reasoning tier,
+read-only, `lean-formalization-discipline`, `math-semantic-preservation`) for results whose
+source comparison is contested or release-scoped. Every such review applies the next section.
 
 ## Contract-aware comparison
 

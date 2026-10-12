@@ -41,11 +41,14 @@ the implementer and read-only. No Claude-only fallback or plugin is required.
 
 ## Review and integrate
 
-Run `scripts/check.sh`, local adversarial review, fixes, then PR review as specified by
-`lean-review-routing`. Give reviewers the actual source/specification and evaluated head.
-Observe all relevant comments and threads; fix or explicitly dispose of findings where they
-occur. Changed content needs review covering its new head. No review ceiling waives a blocker.
-Merge only a gate-green reviewed PR, bound to the evaluated head; regular PRs target develop.
+Run `scripts/check.sh`, fix, open the PR, then obtain PR review as specified by
+`lean-review-routing` (a local adversarial review only under that skill's conditions). Give
+reviewers the actual source/specification and evaluated head. Observe all relevant comments
+and threads; fix or explicitly dispose of findings where they occur. Substantive changes
+need the broker review re-requested on the new head. No review ceiling waives a blocker.
+The driver merges its own gate-green reviewed PR, bound to the evaluated head; the
+orchestrator merges only when the driver cannot (ADR 0002). Regular PRs target develop.
+Keep validation evidence in the PR body and write to the Issue only at pickup and close.
 Remove merged Issue branches and unused worktrees after all owned jobs stop. Keep develop.
 No unsolicited messages or notifications to external recipients.
 
