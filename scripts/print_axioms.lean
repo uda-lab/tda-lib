@@ -2853,3 +2853,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.essentialOnly_coordinates_vary
 #print axioms TDA.Persistence.finiteOnly_coordinates_vary
 #print axioms TDA.Persistence.absoluteFiniteEndpointDifference_not_c1_empty
+-- Fixed C¹ coordinates of actual sublevel diagrams (Issue #181).
+#print axioms TDA.Persistence.faceLiftCounts
+#print axioms TDA.Persistence.fixedFaceLift
+#print axioms TDA.Persistence.fixedFaceLift_factorization
+#print axioms TDA.Persistence.fixedFaceLift_contDiffOn
+#print axioms TDA.Persistence.exists_smooth_face_lift
+#print axioms TDA.Persistence.exists_smooth_face_lift_of_mem_relative_orderChamber
