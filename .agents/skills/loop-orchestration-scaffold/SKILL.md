@@ -45,7 +45,8 @@ Run `scripts/check.sh`, fix, open the PR, then obtain PR review as specified by
 `lean-review-routing` (a local adversarial review only under that skill's conditions). Give
 reviewers the actual source/specification and evaluated head. Observe all relevant comments
 and threads; fix or explicitly dispose of findings where they occur. Every push after review
-needs the broker review re-requested on the final head. No review ceiling waives a blocker.
+needs review of the final head re-acquired through the applicable route. No review ceiling
+waives a blocker.
 The driver merges its own gate-green reviewed PR, bound to the evaluated head; the
 orchestrator merges only when the driver cannot (ADR 0002). Regular PRs target develop.
 Keep validation evidence in the PR body; write to the Issue only at pickup and close, plus

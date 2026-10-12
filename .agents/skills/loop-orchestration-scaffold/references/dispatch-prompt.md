@@ -20,7 +20,7 @@ Continue authorized work to completion; report technical blockers with evidence 
 unaffected work moving. dot decides mathematical changes on the governing Issue.
 Run the full gate before opening a PR to develop; run a local adversarial review only under
 lean-review-routing's conditions. Obtain the broker review, dispose of all findings on the
-PR, and re-request the broker review of the final head after any push. Keep validation
+PR, and re-acquire review of the final head through the applicable route after any push. Keep validation
 evidence in one PR-body block; write to the Issue only at pickup and close, plus any required
 specification-change or missing-source report. Merge your own PR
 only with all gates satisfied and evaluated-head binding; do not directly push develop or

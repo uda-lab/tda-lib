@@ -70,7 +70,8 @@ reviewer facility under the same identity. No plugin is required.
   response to an unauthorised mention, not a failure: keep waiting for the real review.
 - **Bundled route**: `github-driven-workflow`'s `scripts/acquire-review.py` when no broker.
 - **Reviewed-by route** (no bot reviewer available, affirmative broker failure, a judge the
-  governing Issue mandates, or a blocking fix after the five-request ceiling): a read-only
+  governing Issue mandates, or any push that invalidates final-head evidence once the
+  five-request ceiling is reached): a read-only
   reviewer distinct from the implementer (different model or session) posts a PR comment
   beginning `Reviewed-by: <reviewer-id>` that states its findings and the head SHA it covered.
   It is comment-based evidence under §7 and carries the same weight as a formal Review event.
@@ -79,8 +80,10 @@ reviewer facility under the same identity. No plugin is required.
   `Reviewed-by:` artifact.
 
 Wait for the review; minutes are normal. Poll without filtering by review state or author
-login — codex delivers formal reviews as `COMMENTED`, a top-level `Codex Review:` comment
-counts as it stands, and the owner may review in any form. Change route only on affirmative evidence
+login — codex delivers formal reviews as `COMMENTED`; a top-level `Codex Review:` comment
+counts as it stands when it or the bot's review-summary comment names the reviewed commit and
+that commit is the current head, otherwise obtain review of the current head; the owner may
+review in any form. Change route only on affirmative evidence
 that this one will not deliver (explicit error, quota-exhausted body), never on elapsed time.
 A connector reply that the Codex usage limit for code reviews is reached is such evidence:
 run the read-only `codex exec` (or subagent) review on the PR head and post it as the
@@ -125,14 +128,15 @@ mathematical defect or contract violation (§ Contract-aware comparison), not th
 of a written hypothesis. Wording, naming, comment style,
 preference and restatement of something already correct are not, however confidently argued.
 
-- Substantive → fix, push, record the disposition, and re-request the broker review of the
-  new head. No additional reviewer is dispatched for this beyond the broker unless the broker
-  has failed.
+- Substantive → fix, push, record the disposition, and re-request review of the new head
+  through the applicable PR review route above. No additional reviewer is dispatched for this
+  beyond that route.
 - Non-substantive → no further round for it. The orchestrator files a hygiene Issue for anything
   worth keeping.
 - Any push after review, substantive or not (including a wording fix, rebase or conflict
-  resolution), invalidates the evidence for the changed head: re-request the broker review of
-  the final head before merge. Evidence on a stale head never covers later changes.
+  resolution), invalidates the evidence for the changed head: re-request review of the final
+  head through the applicable route before merge. Evidence on a stale head never covers later
+  changes.
 
 **Five rounds is the ceiling for new automatic review requests on one PR.** Same defect shape
 three rounds running → change the structure, not the instance. The ceiling limits rounds; it
