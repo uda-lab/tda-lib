@@ -3118,3 +3118,35 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Examples.triangle_actual_midpoint_diagram_points
 #print axioms TDA.Persistence.dgm_finite_death_from_faceTemplate
 #print axioms TDA.Persistence.Examples.triangle_diagram_path_nonconstant
+
+-- Support-aware ordinary nerves of indexed families.
+#print axioms TDA.Topology.nerve
+#print axioms TDA.Topology.mem_nerve_iff
+#print axioms TDA.Topology.mem_nerve_singleton_iff
+#print axioms TDA.Topology.mem_nerve_of_nonempty_subset
+#print axioms TDA.Topology.nerve_mono
+#print axioms TDA.Topology.nerve_eq_bot_of_isEmpty
+#print axioms TDA.Topology.mem_nerve_relabel_iff
+#print axioms TDA.Topology.mem_nerve_pullback_iff
+#print axioms TDA.Topology.nerve_pullback_le
+#print axioms TDA.Topology.nerve_pullback_eq_of_surjective
+
+-- Concrete support-aware ordinary-nerve fixtures.
+#print axioms TDA.Topology.NerveExamples.emptyMemberFamily
+#print axioms TDA.Topology.NerveExamples.emptyMember_has_no_vertex
+#print axioms TDA.Topology.NerveExamples.duplicateFamily
+#print axioms TDA.Topology.NerveExamples.duplicateFamily_has_two_vertices
+#print axioms TDA.Topology.NerveExamples.duplicateFamily_has_edge
+#print axioms TDA.Topology.NerveExamples.pairwiseFamily
+#print axioms TDA.Topology.NerveExamples.pairwiseFamily_has_all_edges
+#print axioms TDA.Topology.NerveExamples.pairwiseFamily_has_no_triangle
+#print axioms TDA.Topology.NerveExamples.disjointFamily
+#print axioms TDA.Topology.NerveExamples.constantMap
+#print axioms TDA.Topology.NerveExamples.disjointFamily_has_target_vertices
+#print axioms TDA.Topology.NerveExamples.constantPullback_has_first_vertex
+#print axioms TDA.Topology.NerveExamples.constantPullback_has_no_second_vertex
+#print axioms TDA.Topology.NerveExamples.constantPullback_is_proper_subcomplex
+#print axioms TDA.Topology.NerveExamples.emptyAmbientFamily
+#print axioms TDA.Topology.NerveExamples.emptyAmbient_nerve_is_bot
+#print axioms TDA.Topology.NerveExamples.emptyIndexFamily
+#print axioms TDA.Topology.NerveExamples.emptyIndex_nerve_is_bot

@@ -31,6 +31,28 @@ of a map range need not cover its whole codomain but becomes a full pullback cov
 member disjoint from the range becomes empty without losing its index; and two valid
 selectors can remain distinct as index functions.
 
+## Support-aware ordinary nerves
+
+For an indexed family `U : I → Set X`, the ordinary nerve `nerve U` is the
+`PreAbstractSimplicialComplex I` whose faces are the nonempty finite index sets
+with a common point in all corresponding members. The nonempty-face condition
+is part of the definition: the empty simplex is absent, and an index is a
+vertex exactly when its member is nonempty. Equal nonempty members at distinct
+indices therefore give distinct vertices and their common edge.
+
+The construction is defined for arbitrary sets and index types. It is
+monotone under pointwise member inclusion, every nonempty subface of a face is
+a face, and an empty ambient type gives the bottom complex. A bijective index
+relabeling transports faces through `Finset.image`.
+
+Pulling a family back along `f : X → Y` gives a face exactly when its indices
+are nonempty and there is a witness in `Set.range f` belonging to every target
+member. Thus the pullback nerve is a subcomplex of the target nerve, with
+equality when `f` is surjective. A constant map into one of two disjoint target
+members can make this inclusion proper. Pairwise intersections do not imply a
+triple face, as shown by the three two-point members `{0, 1}`, `{1, 2}`, and
+`{0, 2}`.
+
 These set-theoretic conventions organize the cover maps used in Dey–Mémoli–Wang,
 *Multiscale Mapper*, §2–3. They deliberately provide an arbitrary-set library
 interface beyond the open-cover setting used for Mapper constructions.
