@@ -116,6 +116,16 @@ theorem chain_decomposition (c : Chain L k q) :
   change chainIncl k A.inclusion q a = _ at ha
   exact ⟨a, by rw [ha]; abel⟩
 
+/-- The old component is unique once the actual new-face coefficient is fixed. -/
+theorem chain_decomposition_unique (c : Chain L k q) :
+    ∃! a : Chain K k q,
+      c = chainIncl k A.inclusion q a + Finsupp.single A.newFace (c A.newFace) := by
+  obtain ⟨a, ha⟩ := A.chain_decomposition k c
+  refine ⟨a, ha, ?_⟩
+  intro b hb
+  apply A.chainIncl_injective k q
+  exact (add_right_cancel (ha.symm.trans hb)).symm
+
 theorem chainIncl_range_iff_coeff_zero (c : Chain L k q) :
     c ∈ LinearMap.range (chainIncl k A.inclusion q) ↔ c A.newFace = 0 := by
   constructor

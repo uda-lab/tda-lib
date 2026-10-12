@@ -184,14 +184,20 @@ private theorem closingEdge_attachingClass_zero (k : Type v) [Field k] :
     (hq.trans e.map_zero.symm)
 
 example (k : Type*) [Field k] :
-    Function.Injective
-      (simplicialHomologyIncl k emptyVertex.inclusion 0).hom :=
-  (emptyVertex.isolatedVertex_birth k).1
+    Function.Injective (simplicialHomologyIncl k emptyVertex.inclusion 0).hom ∧
+    Module.finrank k (simplicialHomology vertex0 k 0 ⧸
+      LinearMap.range (simplicialHomologyIncl k emptyVertex.inclusion 0).hom) = 1 ∧
+    ∀ r : ℕ, 0 < r →
+      Function.Bijective (simplicialHomologyIncl k emptyVertex.inclusion r).hom :=
+  emptyVertex.isolatedVertex_birth k
 
 example (k : Type*) [Field k] :
+    Function.Injective (simplicialHomologyIncl k isolatedVertex.inclusion 0).hom ∧
     Module.finrank k (simplicialHomology twoVertices k 0 ⧸
-      LinearMap.range (simplicialHomologyIncl k isolatedVertex.inclusion 0).hom) = 1 :=
-  (isolatedVertex.isolatedVertex_birth k).2.1
+      LinearMap.range (simplicialHomologyIncl k isolatedVertex.inclusion 0).hom) = 1 ∧
+    ∀ r : ℕ, 0 < r →
+      Function.Bijective (simplicialHomologyIncl k isolatedVertex.inclusion r).hom :=
+  isolatedVertex.isolatedVertex_birth k
 
 /-- Joining the two components kills the span of the actual attaching class in H₀. -/
 example (k : Type*) [Field k] :

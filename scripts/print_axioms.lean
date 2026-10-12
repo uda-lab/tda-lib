@@ -2956,3 +2956,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Simplicial.SimplexAttachment.positive_birth
 #print axioms TDA.Simplicial.SimplexAttachment.positive_birth_generator
 #print axioms TDA.Simplicial.SimplexAttachment.positive_death
+#print axioms TDA.Simplicial.SimplexAttachment.chain_decomposition_unique
