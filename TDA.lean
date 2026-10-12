@@ -146,6 +146,7 @@ import TDA.Persistence.Simplicial
 import TDA.Persistence.SimplicialExamples
 import TDA.Persistence.SublevelDiagram
 import TDA.Persistence.FaceOrderTemplate
+import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.SublevelDiagramExamples
 import TDA.Persistence.SublevelDiagramTransport
