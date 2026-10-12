@@ -1,4 +1,5 @@
-import TDA.Persistence.SublevelDiagram
+import TDA.Persistence.FaceOrderTemplate
+import TDA.Filtration.CompatibleOrderExistence
 import Mathlib.Data.ZMod.Basic
 
 set_option autoImplicit false
@@ -1957,5 +1958,87 @@ private theorem edge_first_full_coordinates (a : ZMod 2) :
     ((simplicialHomologyIncl (ZMod 2) edge_singleton_le 0).hom x) = a
   rw [hc, hy, edge_two_full_pair_coordinates]
   simp
+
+/-! Actual template evaluations reuse the independently established homology
+computations above. The empty and singleton cases also check the face-index
+offset and the absence of finite pairs with fewer than two faces. -/
+
+private theorem empty_template_example :
+    ∃ e : CompatibleOrder (emptyFilter (Fin 2) ℝ),
+      faceTemplatePairs (ZMod 2) e 0 = 0 ∧
+      faceTemplateEssential (ZMod 2) e 0 = 0 ∧
+      (evaluateFaceTemplate (ZMod 2) e (emptyFilter (Fin 2) ℝ)
+        e.monotone 0).points = 0 := by
+  obtain ⟨e⟩ := exists_compatibleOrder (emptyFilter (Fin 2) ℝ)
+  have hm : Fintype.card (TotalFace (⊥ : PreAbstractSimplicialComplex (Fin 2))) = 0 := by
+    letI : IsEmpty (TotalFace (⊥ : PreAbstractSimplicialComplex (Fin 2))) :=
+      ⟨fun s => ((mem_bot_iff s.val).mp s.property).elim⟩
+    exact Fintype.card_eq_zero
+  refine ⟨e, faceTemplatePairs_empty (ZMod 2) e 0 hm,
+    faceTemplateEssential_empty (ZMod 2) e 0 hm, ?_⟩
+  rw [evaluateFaceTemplate_eq_dgm, empty_points]
+
+private theorem singleton_template_example (a : ℝ) :
+    ∃ e : CompatibleOrder (singletonFilter a),
+      faceTemplatePairs (ZMod 2) e 0 = 0 ∧
+      (evaluateFaceTemplate (ZMod 2) e (singletonFilter a)
+        e.monotone 0).points =
+        ({(a, (⊤ : WithTop ℝ))} : Multiset (ℝ × WithTop ℝ)) := by
+  obtain ⟨e⟩ := exists_compatibleOrder (singletonFilter a)
+  have hm : Fintype.card (TotalFace (singletonFace (0 : Fin 2))) = 1 := by decide
+  refine ⟨e, faceTemplatePairs_one_face (ZMod 2) e 0 hm, ?_⟩
+  rw [evaluateFaceTemplate_eq_dgm, singleton_points]
+
+private theorem singleton_template_essential_index (a : ℝ) :
+    ∃ e : CompatibleOrder (singletonFilter a),
+      faceTemplatePairs (ZMod 2) e 0 = 0 ∧
+      faceTemplateEssential (ZMod 2) e 0 =
+        ({⟨0, by
+            have hm : Fintype.card (TotalFace (singletonFace (0 : Fin 2))) = 1 := by decide
+            omega⟩} : Multiset (Fin (Fintype.card
+              (TotalFace (singletonFace (0 : Fin 2)))))) := by
+  obtain ⟨e, hP, hpoints⟩ := singleton_template_example a
+  have hm : Fintype.card (TotalFace (singletonFace (0 : Fin 2))) = 1 := by decide
+  have hcard : (faceTemplateEssential (ZMod 2) e 0).card = 1 := by
+    have hc := congrArg Multiset.card hpoints
+    simpa [evaluateFaceTemplate, hP] using hc
+  obtain ⟨i, hi⟩ := Multiset.card_eq_one.mp hcard
+  have hidx : i = (⟨0, by omega⟩ : Fin (Fintype.card
+      (TotalFace (singletonFace (0 : Fin 2))))) := by
+    apply Fin.ext
+    have hlt := i.isLt
+    change i.val < Fintype.card (TotalFace (singletonFace (0 : Fin 2))) at hlt
+    rw [hm] at hlt
+    change i.val = 0
+    omega
+  refine ⟨e, hP, ?_⟩
+  rw [hi, hidx]
+
+private theorem edge_template_example :
+    ∃ e : CompatibleOrder edgeFilter,
+      (evaluateFaceTemplate (ZMod 2) e edgeFilter e.monotone 0).points =
+        ({((2 : ℝ), (⊤ : WithTop ℝ)), ((5 : ℝ), (9 : WithTop ℝ))} :
+          Multiset (ℝ × WithTop ℝ)) := by
+  obtain ⟨e⟩ := exists_compatibleOrder edgeFilter
+  refine ⟨e, ?_⟩
+  rw [evaluateFaceTemplate_eq_dgm, edge_points]
+
+private def edgeTiedFilter : FilterFunction edgeK ℝ where
+  value := fun _ => 5
+  mono := by intros; exact le_rfl
+
+private theorem edge_tied_template_example (e : CompatibleOrder edgeFilter) :
+    (evaluateFaceTemplate (ZMod 2) e edgeTiedFilter
+      (by intro i j _; exact le_rfl) 0).points =
+      (faceTemplateEssential (ZMod 2) e 0).map
+        (fun _ => ((5 : ℝ), (⊤ : WithTop ℝ))) := by
+  exact evaluateFaceTemplate_constant_points (ZMod 2) e edgeTiedFilter
+    (by intro i j _; exact le_rfl) 0 5 (by intro s; rfl)
+
+#print axioms empty_template_example
+#print axioms singleton_template_example
+#print axioms singleton_template_essential_index
+#print axioms edge_template_example
+#print axioms edge_tied_template_example
 
 end TDA.Persistence.Examples
