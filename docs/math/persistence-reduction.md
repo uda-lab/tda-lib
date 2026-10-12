@@ -134,3 +134,40 @@ is used to claim a completed persistence reduction or to identify filtration gra
 homological dimension. `TraceCertificateExamples.lean` checks empty dimensions, noncommuting
 `ℚ` and `ZMod 2` traces, mixed degrees and a row-zero pivot, the omitted-degree counterexample,
 zero scalars, repeated targets, and inverse-prefix integration.
+
+## Chronological all-column reduction
+
+`matrixReductionTrace M` visits `List.finRange m` in order. At each index it runs the existing
+`columnReductionTrace` on the matrix obtained by replaying all previous blocks, then appends
+that block. Thus `matrixReductionTrace_step_spec` describes an occurrence using precisely the
+preceding trace: the two current columns share a present pivot, the source is the least earlier
+matching column, the coefficient is the negative ratio at that row, and the operation strictly
+lowers the target pivot height. The source is earlier by the `EarlierColumnOp` type. An empty
+block still advances the traversal; `m = 0` yields an empty trace.
+
+The prefix induction keeps four facts after `t` targets: emitted targets lie below `t`, future
+columns equal the input columns, completed present pivots are pairwise unique, and the trace
+length is bounded by the sum of the input pivot heights of the first `t` columns. Consequently
+`matrixReductionTrace_pivots_distinct` proves global pivot uniqueness and
+`matrixReductionTrace_length_le` bounds emitted operations by the sum of **original** column
+heights. A missing pivot has height zero and a present row `p` has height `p.val + 1`. No
+initially reduced prefix, square-zero, grading, or triangularity is assumed. The algorithm is
+executable over any field with decidable equality and chooses no extra data.
+
+When `LowersDegree degree M` holds, `matrixReductionTrace_respectsDegree` proves equal degrees
+at every emitted source and target. `matrixReductionTrace_graded_certificate` also proves
+lowering after replay and provides the established graded change certificate. The ungraded
+`matrixReductionTrace_certificate` instantiates `R = M * V`, both explicit inverse laws,
+upper-unitriangularity of `V` and `W`, undo replay, and preservation of every column prefix
+span. These are applications of the existing trace algebra, not a second certificate type.
+
+This formalization matches the chronological field-column elimination in Bauer, *Ripser*,
+§3.1/Algorithm 1, and the field cancellation step of Zomorodian–Carlsson, §§4.1–4.2. The
+paper's pivot index `0` also denotes a zero column; Lean uses `Option (Fin m)` so row zero
+remains a real pivot. The Lean result is restricted to a finite square matrix and says only
+that equal present pivots
+cannot remain in two columns. It does not claim a canonical form, persistence pairing,
+barcode, simplicial origin, or square-zero output. `MatrixReductionExamples.lean` checks
+empty, zero and identity matrices; row-zero ratios; evolving sources and product order;
+unreduced initial prefixes; repeated cancellation; characteristic two; nonconstant grading;
+a square-zero input whose reduced output is not square-zero; and a raw triangle matrix.
