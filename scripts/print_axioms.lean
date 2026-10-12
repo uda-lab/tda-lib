@@ -2996,3 +2996,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.bottleneck_essential_singletons
 #print axioms TDA.Persistence.bottleneck_unequal_essential_counts
 #print axioms TDA.Persistence.bottleneck_repeated_pair_detected
+
+-- Fixed face-order endpoint uniqueness (Issue #184).
+#print axioms TDA.Persistence.faceBirthCount_add_rank
+#print axioms TDA.Persistence.faceDeathCount_add_rank
+#print axioms TDA.Persistence.faceBirthCount_eq_cokernel
+#print axioms TDA.Persistence.faceDeathCount_eq_kernel
+#print axioms TDA.Persistence.faceStep_unique_event
+#print axioms TDA.Persistence.faceTemplate_death_count
+#print axioms TDA.Persistence.faceTemplate_birth_count
+#print axioms TDA.Persistence.faceTemplate_unique_endpoint
+#print axioms TDA.Persistence.faceTemplate_endpoint_count_le_one
+#print axioms TDA.Persistence.faceTemplate_endpoint_degrees_disjoint
+#print axioms TDA.Persistence.faceTemplatePairs_count_le_one
+#print axioms TDA.Persistence.faceTemplateEssential_count_le_one
