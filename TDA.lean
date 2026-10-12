@@ -59,6 +59,10 @@ import TDA.Reeb.CriticalValuesShift
 import TDA.Reeb.FiniteDiagram
 import TDA.Reeb.GeometricThickening
 import TDA.Reeb.GeometricThickeningExamples
+import TDA.Reeb.GraphPLComponents
+import TDA.Reeb.GraphPLComponentsExamples
+import TDA.Reeb.GraphPLHeight
+import TDA.Reeb.GraphPLHeightExamples
 import TDA.Reeb.GraphRealization
 import TDA.Reeb.GraphRealizationExamples
 import TDA.Reeb.InterleavingDistance

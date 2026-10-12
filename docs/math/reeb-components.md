@@ -32,7 +32,9 @@ The categorical API requires `X` and `Z` to share a carrier universe so that bot
 the same `Type u`. The raw map `componentMap : C(X, Z) → ZerothHomotopy X → ZerothHomotopy Z`
 allows independent carrier universes. Induced maps on components need not be injective.
 For the realization of a simple graph, `componentMap` of the map induced by a graph homomorphism
-corresponds to mathlib's map of graph components (`reeb-graph-realization.md`).
+corresponds to mathlib's map of graph components (`reeb-graph-realization.md`). For its
+piecewise-linear height, the path components over open intervals are the components of incidence
+graphs, naturally in the interval (`reeb-graph-pl.md`).
 
 Pinned mathlib provides the path-component quotient `ZerothHomotopy` but no map induced by a
 continuous map on it; `componentMap` is a thin wrapper around `ZerothHomotopy.lift`,

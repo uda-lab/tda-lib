@@ -296,9 +296,9 @@ simple-graph realization. Nothing from TauCeti is used, and TauCeti is not a dep
 
 Not claimed here: edge contraction; the fundamental group of a triangle or any other higher
 homotopy; trees as simply connected realizations; realization of Hasse orders; piecewise-linear
-heights and cell graphs of interval preimages; comparisons with multigraphs, cylinder
-presentations or simplicial sets; a product-of-quotient-maps lemma; a continuous retraction of the
-realization to its vertices.
+heights and cell graphs of interval preimages, which are in `reeb-graph-pl.md`; comparisons with
+multigraphs, cylinder presentations or simplicial sets; a product-of-quotient-maps lemma; a
+continuous retraction of the realization to its vertices.
 
 Sources: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.3, Notation 2.7](https://arxiv.org/abs/1501.04147);
 [pinned mathlib graph components](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean#L390-L493),
