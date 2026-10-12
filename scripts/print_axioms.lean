@@ -2860,3 +2860,47 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.fixedFaceLift_contDiffOn
 #print axioms TDA.Persistence.exists_smooth_face_lift
 #print axioms TDA.Persistence.exists_smooth_face_lift_of_mem_relative_orderChamber
+
+-- Indexed set covers, selected refinements and pullbacks.
+#print axioms TDA.Topology.CoverFamily
+#print axioms TDA.Topology.Covers
+#print axioms TDA.Topology.Refinement
+#print axioms TDA.Topology.Refinement.id
+#print axioms TDA.Topology.Refinement.comp
+#print axioms TDA.Topology.Refinement.id_selector
+#print axioms TDA.Topology.Refinement.comp_selector
+#print axioms TDA.Topology.Refinement.ext
+#print axioms TDA.Topology.Refinement.ext_iff
+#print axioms TDA.Topology.Refinement.comp_id
+#print axioms TDA.Topology.Refinement.id_comp
+#print axioms TDA.Topology.Refinement.comp_assoc
+#print axioms TDA.Topology.pullback
+#print axioms TDA.Topology.pullbackRefinement
+#print axioms TDA.Topology.covers_pullback
+#print axioms TDA.Topology.covers_range_pullback
+#print axioms TDA.Topology.pullback_id
+#print axioms TDA.Topology.pullback_comp
+#print axioms TDA.Topology.pullbackRefinement_id
+#print axioms TDA.Topology.pullbackRefinement_comp
+#print axioms TDA.Topology.pullbackRefinement_refinement_id
+#print axioms TDA.Topology.pullbackRefinement_refinement_comp
+
+-- Indexed set-cover fixtures.
+#print axioms TDA.Topology.ProbeFixtures.emptyFamily
+#print axioms TDA.Topology.ProbeFixtures.emptyFamily_covers_iff
+#print axioms TDA.Topology.ProbeFixtures.emptyFamily_not_full
+#print axioms TDA.Topology.ProbeFixtures.duplicatedFamily
+#print axioms TDA.Topology.ProbeFixtures.singletonFamily
+#print axioms TDA.Topology.ProbeFixtures.mergeDuplicated
+#print axioms TDA.Topology.ProbeFixtures.duplicated_singleton_fixture
+#print axioms TDA.Topology.ProbeFixtures.boolCode
+#print axioms TDA.Topology.ProbeFixtures.rangeFamily
+#print axioms TDA.Topology.ProbeFixtures.rangeFamily_covers_range
+#print axioms TDA.Topology.ProbeFixtures.rangeFamily_not_full
+#print axioms TDA.Topology.ProbeFixtures.range_pullback_full
+#print axioms TDA.Topology.ProbeFixtures.missingRangeFamily
+#print axioms TDA.Topology.ProbeFixtures.missingRange_pullback_empty
+#print axioms TDA.Topology.ProbeFixtures.allFamily
+#print axioms TDA.Topology.ProbeFixtures.identitySelector
+#print axioms TDA.Topology.ProbeFixtures.swappedSelector
+#print axioms TDA.Topology.ProbeFixtures.selectors_are_distinct
