@@ -108,6 +108,8 @@ import TDA.Simplicial.FiniteCycles
 import TDA.Simplicial.FiniteCyclesExamples
 import TDA.Simplicial.FiniteHomology
 import TDA.Simplicial.FiniteDimensionalHomology
+import TDA.Simplicial.Attachment
+import TDA.Simplicial.AttachmentExamples
 import TDA.Simplicial.FiniteHomologyExamples
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.InclusionExamples
