@@ -961,3 +961,20 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteDecompositionExamples.identityTransitionBarcodeIso
 #print axioms TDA.Persistence.FiniteDecompositionExamples.scalarTransitionBarcodeIso
 #print axioms TDA.Persistence.FiniteDecompositionExamples.zeroTransitionBarcodeIso
+
+-- Exact bottleneck translation with essential occurrences (Issue #211; append-only).
+#print axioms TDA.Persistence.translateDiagramPoint
+#print axioms TDA.Persistence.translateDiagram
+#print axioms TDA.Persistence.bottleneck_translate_le
+#print axioms TDA.Persistence.bottleneck_translate_ge_of_essential
+#print axioms TDA.Persistence.bottleneck_translate_eq_of_essential
+#print axioms TDA.Persistence.translateFilterFunction
+#print axioms TDA.Persistence.dgm_translateFilterFunction
+#print axioms TDA.Persistence.bottleneck_dgm_translateFilterFunction_le
+#print axioms TDA.Persistence.bottleneck_dgm_translateFilterFunction_eq_of_essential
+#print axioms TDA.Persistence.TranslationExamples.essential_singleton_translation
+#print axioms TDA.Persistence.TranslationExamples.repeated_reversed_translation
+#print axioms TDA.Persistence.TranslationExamples.empty_translation_distance_zero
+#print axioms TDA.Persistence.TranslationExamples.finite_only_translation_counterexample
+#print axioms TDA.Persistence.TranslationExamples.finite_only_shift_three_distance
+#print axioms TDA.Persistence.TranslationExamples.isolated_vertex_translation_exact
