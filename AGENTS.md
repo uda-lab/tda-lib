@@ -25,7 +25,7 @@ optional supported Bash adapters; their activation depends on harness support an
 ## Code Conventions
 - No unmarked `sorry`/`admit` or custom axioms; Issue-authorized private staging holes on develop obey inherited guards and cannot enter pinned theorem closures or stable releases.
 - Never weaken or trivialize statements to close proofs; statement changes need independent source ↔ Lean review.
-- Pin every public theorem in append-only `scripts/print_axioms.lean`; import every module through the imports-only `TDA.lean` aggregator.
+- Pin every public theorem in its area's append-only `scripts/print_axioms/<Area>.lean`; keep `TDA.lean` and each `TDA/<Area>.lean` aggregator imports-only. Add modules to their owning area aggregator.
 
 ## Architecture
 - `TDA/` is the library; mathlib is pinned. Research mathlib and TauCeti before introducing duplicate foundations or dependency changes.

@@ -1,8 +1,8 @@
 /-
-Live coverage guard for the axiom-pinning contract in `scripts/print_axioms.lean`.
+Live coverage guard for the axiom-pinning contract in `scripts/print_axioms/*.lean`.
 Walks the fully elaborated environment produced by `lake build` and fails unless every
 public `theorem` declared inside a `TDA…` module has a `#print axioms` line in
-`scripts/print_axioms.lean` (the input consumed at run time by `scripts/check-axioms.sh`,
+`scripts/print_axioms/*.lean` (the inputs consumed at run time by `scripts/check-axioms.sh`,
 the live trust-footprint audit).
 
 Run via `lake env lean scripts/check_axiom_coverage.lean` from the repository root
@@ -61,7 +61,7 @@ private def isProjectModule (env : Environment) (n : Name) : Bool :=
   | none => false
 
 /-- `n`/`info` is a public theorem this repository must pin in
-`scripts/print_axioms.lean`. -/
+`scripts/print_axioms/*.lean`. -/
 private def isPublicProjectTheorem (env : Environment) (n : Name) (info : ConstantInfo) :
     CoreM Bool := do
   match info with
@@ -117,11 +117,24 @@ private def readPinnedNames (path : System.FilePath) : IO (Std.HashSet String) :
       none
   return Std.HashSet.ofList names
 
+/-- Union the pin names in every area file, including future areas. -/
+private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String) := do
+  let mut names : Std.HashSet String := {}
+  let mut count := 0
+  for entry in (← dir.readDir) do
+    if entry.path.extension == some "lean" && !(← entry.path.isDir) then
+      count := count + 1
+      for name in (← readPinnedNames entry.path).toList do
+        names := names.insert name
+  if count == 0 then
+    throw <| IO.userError s!"no Lean pin files in {dir}"
+  return names
+
 #eval show CoreM Unit from do
   let env ← getEnv
   let loadedModules : Std.HashSet String := Std.HashSet.ofList (env.header.moduleNames.toList.map (·.toString))
   let unloaded ← findUnloadedFiles loadedModules
-  let pinned ← readPinnedNames "scripts/print_axioms.lean"
+  let pinned ← readAllPinnedNames "scripts/print_axioms"
   let mut total : Nat := 0
   let mut missing : Array String := #[]
   for (n, info) in env.constants.toList do
@@ -141,4 +154,4 @@ private def readPinnedNames (path : System.FilePath) : IO (Std.HashSet String) :
     -- discards the `MISSING:`/`UNLOADED:` lines printed above when stdout is not a terminal.
     -- `throwError` reports through Lean's own elaboration-error channel, which both prints
     -- reliably and gives the wrapper a nonzero exit code.
-    throwError s!"{unloaded.size} TDA file(s) not reachable from 'import TDA' and {missing.size} public theorem(s) not pinned in scripts/print_axioms.lean (see lines above)"
+    throwError s!"{unloaded.size} TDA file(s) not reachable from 'import TDA' and {missing.size} public theorem(s) not pinned in scripts/print_axioms/ (see lines above)"

@@ -26,7 +26,7 @@ check() {  # check <expected-exit> <command-text>
 # allow
 check 0 'bash scripts/check.sh'
 check 0 '( flock 9; lake build ) 9>/tmp/lean-build.lock'
-check 0 'flock /tmp/lean-build.lock lake env lean scripts/print_axioms.lean'
+check 0 'flock /tmp/lean-build.lock lake env lean scripts/print_axioms/Basic.lean'
 check 0 'LEAN_NUM_THREADS=2 flock /tmp/lean-build.lock lake build'
 check 0 'git status && ls'
 check 0 'cat <<EOF
@@ -42,7 +42,7 @@ check 2 "sh -c 'lean X.lean'"
 check 0 'flock /tmp/lean-build.lock sh -c "lake build"'
 check 2 'flock -w 10 /tmp/lean-build.lock bash scripts/hooks/pre-push'
 check 0 'flock -w 60 /tmp/lean-build.lock lake build'
-check 0 '( flock 9; lake build; lake env lean scripts/print_axioms.lean ) 9>/tmp/lean-build.lock'
+check 0 '( flock 9; lake build; lake env lean scripts/print_axioms/Basic.lean ) 9>/tmp/lean-build.lock'
 check 0 'flock /tmp/lean-build.lock bash -c "lake build && lake env lean x.lean"'
 # block: wrong lock, unrelated flock, fd form without the redirect
 check 2 'flock /tmp/wrong.lock lake build'
@@ -113,7 +113,7 @@ check "$expected_memory" 'flock /tmp/lean-build.lock lake build'
 check 0 'git status'
 export LEAN_GUARD_MIN_AVAIL_MIB=0
 check 2 'lean TDA/Basic.lean'
-check 2 'lake env lean scripts/print_axioms.lean'
+check 2 'lake env lean scripts/print_axioms/Basic.lean'
 check 2 'LEAN_NUM_THREADS=2 timeout 600 nice lake build'
 check 2 'flock /tmp/lean-build.lock lake build -j 4'
 check 2 'flock /tmp/lean-build.lock lake build -M 4000'

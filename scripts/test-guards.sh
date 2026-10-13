@@ -242,6 +242,21 @@ import TDA.Basic
 example : True :=
   trivial
 EOF
+# An area sibling must exist and obey the same imports-only rule.
+d="$tmp/root-area"; rn=$((rn + 1)); fixture "$d"
+printf 'import %s.Basic\nimport %s.Zone\n' "$root_lib" "$root_lib" > "$d/$root_lib.lean"
+mkdir -p "$d/$root_lib/Zone"
+printf 'import %s.Basic\n' "$root_lib" > "$d/$root_lib/Zone.lean"
+if ! bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+  echo 'FAIL [root:valid-area]: rejected imports-only area'; rfail=1; fi
+rn=$((rn + 1))
+printf 'theorem hidden : True := trivial\n' >> "$d/$root_lib/Zone.lean"
+if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+  echo 'FAIL [root:area-content]: proof in area aggregator not rejected'; rfail=1; fi
+rn=$((rn + 1))
+rm "$d/$root_lib/Zone.lean"
+if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+  echo 'FAIL [root:missing-area]: missing area aggregator not rejected'; rfail=1; fi
 # Renamed project: rename the fixture with the real script; the guard must check the renamed
 # root and catch content in it, with no trace of the template name left to check.
 d="$tmp/root-renamed"; rn=$((rn + 1)); fixture "$d"
@@ -372,10 +387,10 @@ afail=0; an=0
 mkdir -p "$tmp/auditbin"; printf '#!/bin/sh\nexit 0\n' > "$tmp/auditbin/lake"; chmod +x "$tmp/auditbin/lake"
 audit_case() {  # audit_case <name> <want-exit> [=line|+text|-text]... <<'EOF' pins --- output EOF
   local name="$1" want="$2" d="$tmp/audit-$1" got=0 out check input; shift 2
-  an=$((an + 1)); mkdir -p "$d/scripts"
+  an=$((an + 1)); mkdir -p "$d/scripts/print_axioms"
   cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
   input="$(cat)"
-  { printf 'import TDA\n'; printf '%s\n' "$input" | sed '/^---$/,$d' | sed 's/^/#print axioms /'; } > "$d/scripts/print_axioms.lean"
+  { printf 'import TDA\n'; printf '%s\n' "$input" | sed '/^---$/,$d' | sed 's/^/#print axioms /'; } > "$d/scripts/print_axioms/Basic.lean"
   printf '%s\n' "$input" | sed '1,/^---$/d' > "$d/lean-output.txt"
   printf '#!/bin/sh\ncat "%s/lean-output.txt"\n' "$d" > "$d/scripts/lean.sh"; chmod +x "$d/scripts/lean.sh"
   out="$(PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" || got=$?
@@ -442,7 +457,7 @@ TDA.Y
 'TDA.Y' does not depend on any axioms
 note: 'TDA.X' does not depend on any axioms
 EOF
-audit_case duplicate_pin 1 "+ERROR: TDA.X is pinned 2 times in scripts/print_axioms.lean; pin it once." <<'EOF'
+audit_case duplicate_pin 1 "+ERROR: TDA.X is pinned 2 times in scripts/print_axioms; pin it once." <<'EOF'
 TDA.X
 TDA.X
 ---
@@ -505,6 +520,19 @@ TDA.X
 'TDA.X' $body
 EOF
 done
+# Duplicate pins in different areas must fail the same live audit.
+d="$tmp/audit-cross-area"; an=$((an + 1)); mkdir -p "$d/scripts/print_axioms"
+cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
+printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Persistence.lean"
+printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Reeb.lean"
+printf '%s\n' "'TDA.X' does not depend on any axioms" > "$d/lean-output.txt"
+printf '#!/bin/sh\ncat "%s/lean-output.txt"\n' "$d" > "$d/scripts/lean.sh"
+chmod +x "$d/scripts/lean.sh"
+out="$(PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" && {
+  echo 'FAIL [audit:cross-area-duplicate]: duplicate pin accepted'; afail=1;
+}
+if [[ "$out" != *'TDA.X is pinned 2 times in scripts/print_axioms'* ]]; then
+  echo 'FAIL [audit:cross-area-duplicate]: missing duplicate diagnostic'; afail=1; fi
 if [ "$afail" -eq 0 ]; then echo "axiom-audit parser self-test OK ($an cases)"; else exit 1; fi
 
 # --- build-lock semantics (scripts/lib/build-lock.sh) ---------------------------------

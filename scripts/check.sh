@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Canonical local/CI integrity gate, in this order:
-#   textual guards (sorry/admit, custom axioms, transient artefacts, imports-only root
+#   textual guards (sorry/admit, custom axioms, transient artefacts, imports-only root/area
 #   aggregator) → lake build →
 #   live axiom audit → axiom-coverage guard (every public theorem is pinned in
-#   scripts/print_axioms.lean).
+#   scripts/print_axioms/*.lean).
 # The whole run is serialised container-wide on /tmp/lean-build.lock (scripts/lib/build-lock.sh
 # holds it on fd 9 for the lifetime of this process and every child): concurrent mathlib
 # builds in a shared container OOM each other. A killed run releases the lock with its
@@ -32,7 +32,7 @@ else
   bash scripts/check-no-custom-axiom.sh
 fi
 step "no transient artefacts tracked"; bash scripts/check-transient-artifacts.sh
-step "root aggregator imports-only";   bash scripts/check-root-aggregator.sh
+step "root/area aggregators imports-only"; bash scripts/check-root-aggregator.sh
 
 # From here only lake runs. Inside a linked git worktree the caller's GIT_DIR & co. would make
 # lake's git subprocesses inside .lake/packages/* resolve THIS repository instead of their own;
