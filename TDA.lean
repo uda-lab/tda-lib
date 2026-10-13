@@ -15,6 +15,12 @@ import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.DiagramCalculusExamples
 import TDA.Persistence.ActualLossDerivative
 import TDA.Persistence.ActualLossDerivativeExamples
+import TDA.Persistence.DiagramSecondOrderCalculus
+import TDA.Persistence.DiagramSecondOrderCalculusExamples
+import TDA.Persistence.ActualLossHessian
+import TDA.Persistence.ActualLossHessianExamples
+import TDA.Persistence.ActualLossHessianSingletonExample
+import TDA.Persistence.ActualLossHessianEdgeExample
 import TDA.Persistence.DiagramLawsExamples
 import TDA.Persistence.FiniteBarcode
 import TDA.Persistence.Interval

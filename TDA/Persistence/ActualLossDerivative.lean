@@ -204,7 +204,7 @@ noncomputable def faceLossUnit (j : FaceLossSlot k F e p) :
     DiagramCoordinates (faceLiftCounts k F e p).1 (faceLiftCounts k F e p).2 :=
   faceLossSlotPack k F e p (Pi.single (M := fun _ : FaceLossSlot k F e p => ℝ) j 1)
 
-private theorem faceValueSelection_single_eq_unit (j : FaceLossSlot k F e p) :
+theorem faceValueSelection_single_eq_unit (j : FaceLossSlot k F e p) :
     faceValueSelection k F e p
       (Pi.single (M := fun _ : TotalFace K => ℝ) (faceLossSlotFace k F e p j) 1) =
       faceLossUnit k F e p j := by
@@ -219,7 +219,7 @@ private theorem faceValueSelection_single_eq_unit (j : FaceLossSlot k F e p) :
   funext j'
   simp only [Pi.single_apply, hinj.eq_iff]
 
-private theorem faceValueSelection_single_eq_zero (s : TotalFace K)
+theorem faceValueSelection_single_eq_zero (s : TotalFace K)
     (h : s ∉ Set.range (faceLossSlotFace k F e p)) :
     faceValueSelection k F e p (Pi.single (M := fun _ : TotalFace K => ℝ) s 1) = 0 := by
   change faceLossSlotPack k F e p
@@ -304,7 +304,7 @@ theorem faceLossCoefficient_unused (W : Diagram ℝ → ℝ) (s : TotalFace K)
     faceLossCoefficient k F e p W s = 0 := by
   simp [faceLossCoefficient, h]
 
-private theorem faceLossCoefficient_eq_basis (W : Diagram ℝ → ℝ)
+theorem faceLossCoefficient_eq_basis (W : Diagram ℝ → ℝ)
     (s : TotalFace K) :
     faceLossCoefficient k F e p W s =
       fderiv ℝ (W ∘ orderedQ (faceLiftCounts k F e p).1
@@ -320,7 +320,7 @@ private theorem faceLossCoefficient_eq_basis (W : Diagram ℝ → ℝ)
       faceValueSelection_single_eq_zero k F e p s hs]
     simp
 
-private theorem linearFunctional_face_sum {I : Type*} [Fintype I] [DecidableEq I]
+theorem linearFunctional_face_sum {I : Type*} [Fintype I] [DecidableEq I]
     (T : (I → ℝ) →L[ℝ] ℝ) (v : I → ℝ) :
     T v = ∑ i : I, T (Pi.single (M := fun _ : I => ℝ) i 1) * v i := by
   classical

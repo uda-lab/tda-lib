@@ -360,15 +360,15 @@ private theorem singleton_diagonal_absent (a : ℝ) :
   rw [singleton_points]
   simp
 
-private abbrev edgeK : PreAbstractSimplicialComplex (Fin 2) := ⊤
+abbrev edgeK : PreAbstractSimplicialComplex (Fin 2) := ⊤
 
-private instance edgeMem (s : Finset (Fin 2)) : Decidable (s ∈ edgeK) := by
+instance edgeMem (s : Finset (Fin 2)) : Decidable (s ∈ edgeK) := by
   change Decidable s.Nonempty
   infer_instance
 
-private instance edgeFaces : Fintype (TotalFace edgeK) := inferInstance
+instance edgeFaces : Fintype (TotalFace edgeK) := inferInstance
 
-private theorem edge_face_cases (s : TotalFace edgeK) :
+theorem edge_face_cases (s : TotalFace edgeK) :
     s.val = ({0} : Finset (Fin 2)) ∨
     s.val = ({1} : Finset (Fin 2)) ∨
     s.val = ({0, 1} : Finset (Fin 2)) := by
@@ -377,7 +377,7 @@ private theorem edge_face_cases (s : TotalFace edgeK) :
       t = ({0, 1} : Finset (Fin 2)) := by decide
   exact h s.val s.property
 
-private def edgeFilter : FilterFunction edgeK ℝ where
+def edgeFilter : FilterFunction edgeK ℝ where
   value := fun s =>
     if s.val = ({0} : Finset (Fin 2)) then 2
     else if s.val = ({1} : Finset (Fin 2)) then 5
@@ -389,9 +389,9 @@ private def edgeFilter : FilterFunction edgeK ℝ where
       simp [hτ, hσ, Finset.subset_iff] at hsub ⊢
     all_goals norm_num [Finset.ext_iff] at *
 
-private def edge_v0 : TotalFace edgeK := ⟨{0}, by decide⟩
-private def edge_v1 : TotalFace edgeK := ⟨{1}, by decide⟩
-private def edge_e01 : TotalFace edgeK := ⟨{0, 1}, by decide⟩
+def edge_v0 : TotalFace edgeK := ⟨{0}, by decide⟩
+def edge_v1 : TotalFace edgeK := ⟨{1}, by decide⟩
+def edge_e01 : TotalFace edgeK := ⟨{0, 1}, by decide⟩
 
 private theorem edge_values :
     edgeFilter.value edge_v0 = 2 ∧
@@ -1437,7 +1437,7 @@ private theorem edge_barcode :
       all_goals rfl
     _ = _ := rankBarcode_barcodeModule _
 
-private theorem edge_points :
+theorem edge_points :
     (dgm (ZMod 2) edgeFilter 0).points =
       ({((2 : ℝ), (⊤ : WithTop ℝ)), ((5 : ℝ), (9 : WithTop ℝ))} :
         Multiset (ℝ × WithTop ℝ)) := by

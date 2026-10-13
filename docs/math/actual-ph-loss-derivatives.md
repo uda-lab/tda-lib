@@ -1,5 +1,8 @@
 # Actual scalar PH loss derivatives
 
+For the second-order extension, including nonlinear face curvature, see
+[actual PH loss Hessians](actual-ph-loss-hessians.md).
+
 Fix a finite set of actual nonempty faces and a weak-order chamber for a family
 of real filter functions. In degree `p`, the fixed face-order template has a
 finite-birth and finite-death slot for each finite interval and a birth slot for
