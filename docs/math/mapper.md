@@ -107,3 +107,49 @@ Identity and composition agree extensionally with refinement identity and
 composition. A bijective index relabelling gives inverse vertex maps whose two
 composites are identities, while ambient indices with empty family members
 remain absent as nerve vertices.
+
+## Ordinary Mapper and cover multiplicity
+
+For a continuous map `f : C(X, Y)` and an indexed target family `U`, ordinary
+Mapper is the support-aware nerve of the path-component pullback cover:
+
+`mapper f U := nerve (componentCover f U)`.
+
+Its ambient vertices are pairs consisting of a target-family index and a path
+component of that member's inverse image. Every such component index is a
+supported vertex because component-cover members are nonempty. A finite set of
+vertices is a face exactly when one domain point lies in every represented
+component member. Two vertices in one face with the same target-family index
+are equal: their common witness represents both path-component classes in the
+same inverse image. Consequently, projection to target-family indices is
+injective on each face.
+
+Cover multiplicity is imposed only on attained values. It is at most `m` when,
+for every `y ∈ Set.range f`, every finite set of target indices whose members
+all contain `y` has cardinality at most `m`. For a Mapper face, project its
+vertices to target indices. Facewise injectivity preserves cardinality, and
+the common domain witness maps to an attained value contained in every
+projected member. Thus every Mapper face has at most `m` vertices.
+
+At multiplicity at most two, the supported vertices carry a simple graph:
+distinct vertices are adjacent exactly when their underlying pair is a Mapper
+face. Every Mapper face is then either a supported singleton or an adjacent
+pair. This conclusion depends on the explicit multiplicity hypothesis, not on
+calling the target members intervals. The construction also covers the empty
+Mapper and isolated supported vertices. Without a multiplicity bound, three
+duplicate target labels containing the value of a constant map from a
+one-point domain form a genuine triangle.
+
+A selected target-family refinement acts first on path components and then by
+the refinement-induced nerve map. The resulting Mapper vertex map preserves
+identity and composition, evaluates on a represented component by keeping its
+representative in the selected larger inverse image, and gives mutually
+inverse maps under a bijective relabelling. It need not be injective: enlarging
+a pullback member can merge distinct source components.
+
+This is ordinary Mapper in the sense of Dey–Mémoli–Wang, *Multiscale Mapper*,
+§2. It records the existence of common intersections. The MultiNerve Mapper of
+Carrière–Oudot, *Structure and Stability of the 1-Dimensional Mapper*, retains
+additional connected-component data for intersections and is not constructed
+here. No Reeb equivalence, convergence, stability, persistence-diagram result,
+or Nerve Lemma follows from this definition.
