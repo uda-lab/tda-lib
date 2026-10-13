@@ -206,6 +206,20 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
     throw <| IO.userError s!"no Lean pin files in {dir}"
   return names
 
+/-- Resolve exact printed pin names without rendering every imported declaration name.
+Unresolvable or non-canonical entries confer no private coverage; the live axiom audit
+separately rejects invalid commands. This preserves the former `n.toString` membership
+rule, including the fact that an alias is not a pin of a differently named declaration. -/
+private def resolvePinnedRoots (env : Environment) (pinned : Std.HashSet String) : Array Name :=
+  Id.run do
+    let mut roots := #[]
+    for text in pinned.toList do
+      if let .ok stx := Parser.runParserCategory env `command s!"#print axioms {text}" then
+        let n := stx[2].getId
+        if n.toString == text && (env.checked.get.find? n).isSome then
+          roots := roots.push n
+    return roots
+
 #eval show CoreM Unit from do
   let env := (← getEnv).setExporting false
   let loadedModules : Std.HashSet String := Std.HashSet.ofList (env.header.moduleNames.toList.map (·.toString))
@@ -213,19 +227,22 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
   let pinned ← readAllPinnedNames "scripts/print_axioms"
   let mut total : Nat := 0
   let mut missing : Array String := #[]
-  let mut roots : Array Name := #[]
+  let roots := resolvePinnedRoots env pinned
   let mut privateClaims : Array Name := #[]
   for (n, info) in env.constants.toList do
-    if pinned.contains n.toString then
-      roots := roots.push n
-    if (← isPrivateProjectTheorem env n info) then
-      privateClaims := privateClaims.push n
-    if (← isPublicProjectTheorem env n info) then
-      total := total + 1
-      let name := n.toString
-      unless pinned.contains name do
-        missing := missing.push name
+    if let .thmInfo _ := info then
+      -- Imported mathlib declarations dominate this environment. Classify project
+      -- provenance once before invoking either project theorem predicate.
+      if isProjectModule env n then
+        if (← isPrivateProjectTheorem env n info) then
+          privateClaims := privateClaims.push n
+        if (← isPublicProjectTheorem env n info) then
+          total := total + 1
+          let name := n.toString
+          unless pinned.contains name do
+            missing := missing.push name
   let covered := pinnedDependencyClosure env roots
+  IO.println s!"PINNED CLOSURE — {roots.size} roots, {covered.size} declarations"
   let (additional, privateFailures) ← auditPrivateTheorems privateClaims covered
   IO.println s!"PRIVATE AUDIT — {privateClaims.size} roots, {privateClaims.size - additional} already in pinned closures, {additional} additionally checked"
   for f in unloaded do

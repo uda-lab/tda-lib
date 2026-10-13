@@ -61,7 +61,13 @@ run_case() {
   echo 'FAIL [baseline]: current library coverage/audit failed' >&2
   exit 1
 }
-rg '^PRIVATE AUDIT|^COVERAGE OK' "$tmp/baseline.log"
+rg '^PINNED CLOSURE|^PRIVATE AUDIT|^COVERAGE OK' "$tmp/baseline.log"
+expected_pins="$(awk '/^#print axioms / { print $3 }' scripts/print_axioms/*.lean | sort -u | wc -l)"
+if ! rg -F "PINNED CLOSURE — $expected_pins roots," "$tmp/baseline.log" >/dev/null; then
+  cat "$tmp/baseline.log" >&2
+  echo 'FAIL [baseline]: not every current pin resolved to its exact declaration' >&2
+  exit 1
+fi
 read -r baseline_roots baseline_covered baseline_added < <(
   awk '/^PRIVATE AUDIT / { print $4, $6, $11 }' "$tmp/baseline.log"
 )
