@@ -133,15 +133,11 @@ import TDA.Simplicial.AttachmentExamples
 import TDA.Simplicial.FiniteHomologyExamples
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.InclusionExamples
-import TDA.Simplicial.VertexMap
-import TDA.Simplicial.VertexMapExamples
 import TDA.Topology.Cosheaf
 import TDA.Topology.IndexedCover
 import TDA.Topology.IndexedCoverExamples
 import TDA.Topology.Nerve
 import TDA.Topology.NerveExamples
-import TDA.Topology.NerveMap
-import TDA.Topology.NerveMapExamples
 import TDA.Topology.PathCover
 import TDA.Topology.PathCoverExamples
 import TDA.Filtration.FilterFunction
@@ -180,3 +176,7 @@ import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.SublevelDiagramExamples
 import TDA.Persistence.SublevelDiagramTransport
 import TDA.Persistence.SublevelDiagramTransportExamples
+import TDA.Simplicial.VertexMap
+import TDA.Simplicial.VertexMapExamples
+import TDA.Topology.NerveMap
+import TDA.Topology.NerveMapExamples
