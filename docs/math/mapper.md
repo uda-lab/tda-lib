@@ -31,6 +31,39 @@ of a map range need not cover its whole codomain but becomes a full pullback cov
 member disjoint from the range becomes empty without losing its index; and two valid
 selectors can remain distinct as index functions.
 
+## Path-component pullback covers
+
+For a continuous map `f : C(X, Y)` and an indexed family `U : I → Set Y`, the
+path-component pullback cover has index type
+
+` Σ i, ZerothHomotopy {x : X // f x ∈ U i}`.
+
+The member labelled by `(i, c)` consists of the points `x` whose class in the
+inverse-image subspace over `U i` is `c`. This definition uses no chosen representative,
+and the class is independent of the proof that `f x ∈ U i`. Every labelled member is
+nonempty. For each fixed `i`, distinct classes give disjoint members whose union is
+`f ⁻¹' U i`; the union over all labels is `f ⁻¹' (⋃ i, U i)`. Consequently,
+coverage of `Set.range f` by `U` gives a full cover of `X`. An empty inverse image has no
+component label, while equal target members at distinct original indices still give
+distinct labelled copies.
+
+A selected refinement `U → V` restricts to a continuous inclusion between the
+corresponding inverse-image subspaces. Applying the path-component map to these
+inclusions gives a selected refinement between component covers. Its selector sends the
+class of a point to the class of the same point in the selected larger inverse image,
+and it preserves identity and composition. The containing target component is unique
+after a target member has been selected; without the original refinement selector there
+is no canonical target label.
+
+No openness is asserted for arbitrary families. If `X` is locally path connected and
+every `U i` is open, each inverse image is open and every component-cover member is its
+relative path component in that inverse image. The pinned
+`IsOpen.pathComponentIn` theorem then makes every member open in `X`.
+
+This is the path-component pullback cover underlying the Mapper construction of
+Dey–Mémoli–Wang, *Multiscale Mapper*, §2. The library keeps arbitrary index types and
+set families and separates the openness hypothesis from the general construction.
+
 ## Support-aware ordinary nerves
 
 For an indexed family `U : I → Set X`, the ordinary nerve `nerve U` is the
