@@ -18,7 +18,7 @@ universe u w
 
 namespace TDA.Persistence.Reduction
 
-open TDA.Simplicial TDA.Filtration
+open TDA.Simplicial TDA.Filtration Module
 
 variable {V : Type u} [LinearOrder V]
 variable {α : Type w} [LinearOrder α]
@@ -735,6 +735,25 @@ noncomputable def actualCycleEquiv (e : CompatibleOrder f) (t p : ℕ) :
       a • ((prefixChainEquiv k e t p) x.1).1
     exact congrArg Subtype.val (map_smul (prefixChainEquiv k e t p) a x.1)
 
+/-- The actual cycle inclusion keeps its original all-face coordinate vector. -/
+theorem actualCycleEquiv_inclusion (e : CompatibleOrder f)
+    (s t p : ℕ) (hst : s ≤ t)
+    (z : simplicialCycles (e.prefixComplex s) k p) :
+    (actualCycleEquiv k e t p
+      (simplicialCycleIncl k (e.prefixComplex_mono hst) p z)).1 =
+      (actualCycleEquiv k e s p z).1 := by
+  have hc := congrArg
+    (fun F : Chain (e.prefixComplex s) k p →ₗ[k] prefixDegreeSpace k e t p =>
+      (F z.1).1)
+    (prefixChainEquiv_inclusion k e s t p hst)
+  change ((prefixChainEquiv k e t p)
+    (chainIncl k (e.prefixComplex_mono hst) p z.1)).1 =
+    ((prefixChainEquiv k e s p) z.1).1 at hc
+  change ((prefixChainEquiv k e t p)
+    (chainIncl k (e.prefixComplex_mono hst) p z.1)).1 =
+    ((prefixChainEquiv k e s p) z.1).1
+  exact hc
+
 /-- The actual square matrix is fed to the existing reducer. -/
 noncomputable def actualReducedBoundary (e : CompatibleOrder f) :
     Matrix (Fin (faceCount K)) (Fin (faceCount K)) k :=
@@ -876,5 +895,45 @@ theorem actualLiveMap_surjective (e : CompatibleOrder f)
     (actualCycleEquiv k e t p z) = y
   rw [hz]
   exact hx
+
+noncomputable local instance actualCyclesHasQuotient (e : CompatibleOrder f)
+    (t p : ℕ) :
+    HasQuotient (simplicialCycles (e.prefixComplex t) k p)
+      (Submodule k (simplicialCycles (e.prefixComplex t) k p)) :=
+  Submodule.hasQuotient (R := k) (M := simplicialCycles (e.prefixComplex t) k p)
+
+private noncomputable def actualQuotientAux (e : CompatibleOrder f) (t p : ℕ) :=
+  Submodule.Quotient.equiv (R := k) (R₂ := k)
+    (M := simplicialCycles (e.prefixComplex t) k p)
+    (N := originalCycleSpace (faceDegree e) (actualBoundaryMatrix k e) p t)
+    (σ₁₂ := RingHom.id k) (σ₂₁ := RingHom.id k)
+    (simplicialBoundaries (e.prefixComplex t) k p)
+    (actualMatrixBoundarySubmodule k e p t)
+    (actualCycleEquiv k e t p) (actualCycleEquiv_boundaries k e t p)
+
+/-- The actual cycle/boundary quotient is #196's original-boundary quotient. -/
+noncomputable def actualQuotientOriginal (e : CompatibleOrder f) (t p : ℕ) :
+    ((simplicialCycles (e.prefixComplex t) k p) ⧸
+      simplicialBoundaries (e.prefixComplex t) k p) ≃ₗ[k]
+    actualOriginalHomology k e p t := actualQuotientAux k e t p
+
+theorem actualQuotientOriginal_mkQ (e : CompatibleOrder f) (t p : ℕ)
+    (z : simplicialCycles (e.prefixComplex t) k p) :
+    actualQuotientOriginal k e t p
+        (Submodule.mkQ (R := k)
+          (M := simplicialCycles (e.prefixComplex t) k p)
+          (simplicialBoundaries (e.prefixComplex t) k p) z) =
+      Submodule.mkQ (R := k)
+        (M := originalCycleSpace (faceDegree e) (actualBoundaryMatrix k e) p t)
+        (actualMatrixBoundarySubmodule k e p t) (actualCycleEquiv k e t p z) := by
+  rfl
+
+/-- Actual simplicial prefix homology equals the reducer's original quotient. -/
+noncomputable def actualHomologyEquivOriginal (e : CompatibleOrder f) (t p : ℕ) :
+    simplicialHomology (e.prefixComplex t) k p ≃ₗ[k]
+      actualOriginalHomology k e p t :=
+  (homologyKernelQuotient.{u,u,u} k
+    (simplicialChainComplex (e.prefixComplex t) k) p).toLinearEquiv.trans
+      (actualQuotientOriginal k e t p)
 
 end TDA.Persistence.Reduction
