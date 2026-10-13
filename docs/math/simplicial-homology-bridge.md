@@ -117,7 +117,7 @@ support, the singleton's degree-zero image and positive-degree vanishing, the
 actual ordinary `d₀ = 0`, and a specialization to `Matrix (Fin 2) (Fin 2) ℤ`
 are also kernel checked. Every private fixture declaration prints its axiom
 footprint in the example module; the public theorems and constructor are pinned
-in `scripts/print_axioms.lean`.
+in the corresponding `scripts/print_axioms/<Area>.lean` files.
 
 ## Remaining homology and coordinate scope
 

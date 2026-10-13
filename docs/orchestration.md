@@ -35,6 +35,13 @@ no synchronization PR is needed when release trees match. Resolve and review any
 main/develop content divergence before promotion. Keep develop after each release.
 dot determines release cadence and version numbers from maturity and API changes.
 
+Each area owns `scripts/print_axioms/<Area>.lean` and the imports-only
+`TDA/<Area>.lean` module list. `TDA.lean` imports those lists and `TDA.Basic`.
+Append pins and imports in the area that owns a new module; do not edit another area's
+list for an independent result. A textually mergeable PR can use its reviewed, locally
+validated head without a gratuitous develop refresh. Actual source overlap or a failed
+integrated build needs resolution and renewed validation of the changed head.
+
 ## Evidence and foundations
 
 Read each Issue body and authorized decision comments before implementation and review.

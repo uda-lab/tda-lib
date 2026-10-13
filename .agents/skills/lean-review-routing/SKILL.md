@@ -38,7 +38,7 @@ Frame it as **numbered, falsifiable risks**, never "review this" (a generic prom
    § Contract-aware comparison, not assumed harmless or fatal;
 2. no proxy hypothesis replaced a source hypothesis (bounded for compact, separable for
    Polish, …);
-3. every claimed public theorem is appended to `scripts/print_axioms.lean`;
+3. every claimed public theorem is appended to its area's `scripts/print_axioms/<Area>.lean`;
 4. no `sorry`/`axiom` outside an Issue-authorised `ALLOW_` marker;
 5. no transient artefact, bookkeeping or chronology added to the tree;
 6. the Issue's own traps.
