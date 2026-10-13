@@ -9,3 +9,7 @@ The four laws identify endpoint multiplicity with the integer four-rank differen
 The fixtures use actual one-stage modules; identity and zero transitions on `Fin 2`; a constant `k × k` module with two copies of `[0,2)`; and a mixed supplied `Fin 3` barcode with an interior interval, birth zero, death `N`, and repetition. The discriminating `Fin 2` and duplicate fixtures are instantiated over `ℚ` and `ZMod 2`; the two copies remain an integer count in characteristic two.
 
 This is an elementary finite-index construction using [finite-rank nonnegativity](finite-rank-nonnegativity.md), [finite rank reconstruction](finite-rank-reconstruction.md), and the [supplied-barcode rank formula](finite-interval-rank.md). It does not provide interval decomposition of arbitrary modules, a module isomorphism, a value-labelled diagram, or an infinite-lifetime interpretation.
+
+[Finite interval decomposition](finite-interval-decomposition.md) separately constructs the
+natural isomorphism to this barcode realization by splitting intervals and inducting on total
+dimension. It then identifies the constructed multiset using the rank-barcode laws above.
