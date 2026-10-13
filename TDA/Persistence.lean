@@ -47,7 +47,6 @@ import TDA.Persistence.Reduction.SimplicialAdapter
 import TDA.Persistence.Reduction.SimplicialAdapterNaturality
 import TDA.Persistence.Reduction.SimplicialAdapterBarcode
 import TDA.Persistence.Reduction.SimplicialAdapterTemplate
-import TDA.Persistence.Reduction.ActualFixtureHelpers
 import TDA.Persistence.Reduction.ActualEmpty
 import TDA.Persistence.Reduction.ActualIsolatedVertex
 import TDA.Persistence.Reduction.ActualFilledTriangle

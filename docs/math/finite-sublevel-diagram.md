@@ -22,8 +22,12 @@ inclusive and death is strict, including critical endpoints and self maps.
 The count is a multiset count, so repeated points retain their multiplicities.
 `dgm_eq_ofIndexBars_of_iso` identifies the diagram with a specified barcode
 when the caller supplies a natural isomorphism from the actual critical-grade
-homology module to that barcode module. The isomorphism remains an input;
-the rank construction supplies no decomposition existence theorem.
+homology module to that barcode module. That theorem retains the supplied-isomorphism interface. Independently,
+`nonempty_rankBarcodeIso` in `FiniteDecomposition` constructs a natural interval
+decomposition for every pointwise finite-dimensional module on a finite
+chain, including this actual critical-grade homology module. The proof uses
+classical choices; neither the isomorphism nor `dgm` is an executable
+arbitrary-field barcode algorithm.
 
 The proof uses attained faces to reflect each threshold cut. Every sublevel is
 bottom or an actual critical stage, and a stage equality identifies precisely
@@ -87,3 +91,35 @@ translation are described in [references.md](references.md). The separate
 ordering/reparameterization and geometric obligations of [Issue #44](https://github.com/uda-lab/tda-lib/issues/44)
 and the acceptance assessment of [Issue #43](https://github.com/uda-lab/tda-lib/issues/43)
 remain outside this unit.
+
+## Finite-filter stability and its source scope
+
+`bottleneck_dgm_le_faceSupDifference` in `FiniteFilterStability` bounds the
+bottleneck distance by the maximum absolute change over actual faces, with
+empty maximum zero. Its field is arbitrary; its complex has finitely many
+actual faces. The proof linearly interpolates filters, divides at finitely
+many isolated face-value crossings, and chooses a compatible order inside
+each gap. Continuity preserves its weak inequalities at both closed
+endpoints. A fixed template therefore bounds the distance across each
+closed piece, even when the orders and pairings on adjacent pieces differ.
+The triangle inequality sums these bounds to the full face-value change.
+The crossing fixtures exercise changed pairings rather than merely changed
+coordinates within one fixed order.
+
+The matching acts on occurrences, so equal points remain separate. Unmatched
+finite points cost `|d-b|/2`; essential points require a total bijection and
+cost the absolute birth difference. Equal essential counts permit a finite
+optimal matching, while unequal counts give infinite distance. The distance
+API also admits reversed finite pairs. Actual `dgm` points are positive, so
+this larger domain does not change the finite-filter stability statement.
+Exact constant-shift cost `|c|` uses a nonempty essential part; a finite-only
+diagram can instead delete all its points to the diagonal.
+
+The [Cohen–Steiner–Edelsbrunner–Harer source, Main Theorem and §3.3](https://math.uchicago.edu/~shmuel/AAT-readings/Data%20Analysis%20/Stability.pdf)
+states stability for continuous tame functions on a triangulable space and
+uses linear interpolation for its piecewise linear step. The library proves
+the finite face-filter counterpart with actual simplicial homology and the
+same maximum-norm cost. It does not supply a singular-homology comparison
+for arbitrary continuous tame functions, so it does not formalize that full
+Main Theorem. Its subdivision by face crossings is a finite proof route,
+not the source's general topological argument.

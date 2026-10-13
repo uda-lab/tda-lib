@@ -205,4 +205,58 @@ theorem pivotBarcode_rank (degree : Fin m → ℕ)
     pivotPairIntervals_count, pivotEssentialIntervals_count degree R p s t hst ht,
     pair_survivor_card_eq_death_card degree R hpiv p s t]
 
+/-- Distinct pivot-row indices give distinct finite pair occurrences, even without reducedness. -/
+theorem pivotIndexPairs_nodup (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (p : ℕ) :
+    (pivotIndexPairs degree R p).Nodup := by
+  classical
+  unfold pivotIndexPairs
+  apply Multiset.Nodup.map _ (Finset.univ.nodup)
+  intro x y h
+  exact Subtype.ext (congrArg Prod.fst h)
+
+/-- For distinct pivots, membership records the exact degree and row/death-column pairing. -/
+theorem mem_pivotIndexPairs_iff (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (hpiv : DistinctPivots R)
+    (p : ℕ) (i j : Fin m) :
+    (i,j) ∈ pivotIndexPairs degree R p ↔
+      degree i = p ∧ columnPivot (R.col j) = some i := by
+  classical
+  unfold pivotIndexPairs
+  simp only [Multiset.mem_map, Finset.mem_val, Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨x, h⟩
+    have hi : x.val = i := congrArg Prod.fst h
+    have hj : deathOfPivot R x.val x.property.1 = j := congrArg Prod.snd h
+    exact ⟨hi ▸ x.property.2, by rw [← hi, ← hj]; exact deathOfPivot_spec R _ _⟩
+  · rintro ⟨hd,hj⟩
+    let x : {i : Fin m // IsPivot R i ∧ degree i = p} := ⟨i, ⟨j,hj⟩,hd⟩
+    exact ⟨x, Prod.ext rfl (deathOfPivot_unique R hpiv i j x.property.1 hj)⟩
+
+/-- Unpaired zero columns contribute distinct essential index occurrences. -/
+theorem pivotEssentialIndices_nodup (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (p : ℕ) :
+    (pivotEssentialIndices degree R p).Nodup := by
+  classical
+  unfold pivotEssentialIndices
+  exact Multiset.Nodup.map Subtype.val_injective (Finset.univ.nodup)
+
+/-- Essential-index membership records an unpaired zero column of the requested degree. -/
+theorem mem_pivotEssentialIndices_iff (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (p : ℕ) (i : Fin m) :
+    i ∈ pivotEssentialIndices degree R p ↔ IsEssential R i ∧ degree i = p := by
+  classical
+  simp [pivotEssentialIndices]
+
+/-- Convert stage endpoints to zero-based face occurrences. Death `m + 1` is the
+finite observation sentinel, not an infinite grade. -/
+theorem pivotBarcode_endpoints (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (hs : StrictBoundary R) (p : ℕ) :
+    (pivotBarcode degree R hs p).map (fun I => (I.birth, I.death)) =
+      (pivotIndexPairs degree R p).map (fun q => (q.1.val+1,q.2.val+1)) +
+      (pivotEssentialIndices degree R p).map (fun i => (i.val+1,m+1)) := by
+  simp only [pivotBarcode, Multiset.map_add, pivotPairIntervals, pivotEssentialIntervals,
+    pivotIndexPairs, pivotEssentialIndices, Multiset.map_map]
+  rfl
+
 end TDA.Persistence.Reduction

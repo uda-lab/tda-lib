@@ -1,5 +1,4 @@
 import TDA.Persistence.Reduction.SimplicialAdapterTemplate
-import TDA.Persistence.Reduction.ActualFixtureHelpers
 import Mathlib.Algebra.Field.ZMod
 import Mathlib.Data.List.NodupEquivFin
 
@@ -393,10 +392,10 @@ theorem pivotPairs_eq_pivotIndexPairs (xs : Input) (p : ℕ) :
     exact matrixReductionTrace_pivots_distinct (boundary xs) i j q hi hj
   apply (Multiset.Nodup.ext
     (Multiset.coe_nodup.mpr ((pivotPairs_nodup xs).filter _))
-    (fixture_pairs_nodup (degree xs) (reduced xs) p)).2
+    (pivotIndexPairs_nodup (degree xs) (reduced xs) p)).2
   rintro ⟨i, j⟩
   simp only [List.mem_filter, Multiset.mem_coe, decide_eq_true_eq,
-    pivotPairs_mem, fixture_pairs_mem (degree xs) (reduced xs) hpiv]
+    pivotPairs_mem, mem_pivotIndexPairs_iff (degree xs) (reduced xs) hpiv]
   tauto
 
 theorem essentialIndices_eq_pivotEssentialIndices (xs : Input) (p : ℕ) :
@@ -406,10 +405,10 @@ theorem essentialIndices_eq_pivotEssentialIndices (xs : Input) (p : ℕ) :
   have hn : (essentialIndices xs).Nodup :=
     (List.nodup_finRange xs.length).filter _
   apply (Multiset.Nodup.ext (Multiset.coe_nodup.mpr (hn.filter _))
-    (fixture_essential_nodup (degree xs) (reduced xs) p)).2
+    (pivotEssentialIndices_nodup (degree xs) (reduced xs) p)).2
   intro i
   simp only [List.mem_filter, Multiset.mem_coe, decide_eq_true_eq, essentialIndices_mem,
-    fixture_essential_mem]
+    mem_pivotEssentialIndices_iff]
 
 private theorem pairs_reindex_cast {m n : ℕ} (hn : m = n)
     (d : Fin m → ℕ) (R : Matrix (Fin m) (Fin m) (ZMod 2)) (p : ℕ) :
