@@ -19,8 +19,8 @@ a PR is claiming:
 
   * anything Lean's own kernel/elaborator considers automatically generated or private —
     `Lean.isAutoDeclOrPrivate_Internal`, the canonical Lean-core provenance check. It
-    consults the `Environment`'s reserved-name registry rather than matching name
-    suffixes, so it covers `.injEq`, `.mk.inj`, `.mk.sizeOf_spec`, `.noConfusion`,
+    consults the `Environment`'s reserved-name registry and Lean's internal/auxiliary-name
+    conventions, so it covers `.injEq`, `.mk.inj`, `.mk.sizeOf_spec`, `.noConfusion`,
     `recOn`/`casesOn`/`brecOn` auxiliaries, `.congr_simp`, `match_`/`proof_`/`eq_`
     equation-compiler auxiliaries and `private` declarations without ever catching a
     hand-written theorem that happens to be named `.ext` or nested under a namespace
@@ -30,7 +30,17 @@ a PR is claiming:
     `theorem`-kind projection function; these are mechanical accessors, not claimed
     results, and Lean does not classify them as auto-generated — `Environment.isProjectionFn`.
 
-That is the whole list. `instance` declarations are deliberately NOT excluded: a
+The additional private audit selects non-reserved private theorem roots, excluding field
+projections. It conservatively includes non-reserved generated proof helpers, because Lean's
+public classifier also uses lexical heuristics that can match hand-written private names. These roots need no explicit pins:
+their transitive axioms are checked here against `propext`, `Classical.choice`, and `Quot.sound`
+only when they are outside the union of pinned dependency closures. Already reached private
+helpers remain covered by the live audit. Computational `#eval` results are not theorem
+claims and do not become additional audit roots. Generated declarations can still be traversed
+as dependencies; they do not need blanket pins. This checks elaborated theorem trust, not
+computational test correctness or every arbitrary definition/axiom outside theorem closures.
+
+That is the whole list for public pinning. `instance` declarations are deliberately NOT excluded: a
 hand-proved `instance : SomePropClass … := proof` in a project module is a claimed result
 and must be pinned; typeclass resolution at call sites never creates a new named
 declaration in this project's own modules, so there is no auto-derived category to skip.
@@ -47,6 +57,7 @@ from a forgotten nested aggregator is caught too).
 `scripts/rename-project.sh` rewrites every `TDA` occurrence in this file.
 -/
 import TDA
+import Lean.Util.CollectAxioms
 
 open Lean System
 
@@ -66,11 +77,76 @@ private def isPublicProjectTheorem (env : Environment) (n : Name) (info : Consta
     CoreM Bool := do
   match info with
   | .thmInfo _ =>
+    if !isProjectModule env n then return false
     if (← isAutoDeclOrPrivate_Internal n) then return false
     if env.isProjectionFn n then return false
-    if !isProjectModule env n then return false
     return true
   | _ => return false
+
+/-- A non-reserved private theorem root, including private Prop instances.
+Do not apply `isAutoDeclOrPrivate_Internal` to the unmangled name: its lexical
+`proof_`/`match_` heuristics can also match hand-written claims. We conservatively
+retain non-reserved generated helpers; they need no pins, but cannot hide forbidden
+axioms. Reserved theorem names and field projections are mechanical declarations. -/
+private def isPrivateProjectTheorem (env : Environment) (n : Name) (info : ConstantInfo) :
+    CoreM Bool := do
+  match info with
+  | .thmInfo _ =>
+    if !isProjectModule env n then return false
+    let some _ := privateToUserName? n | return false
+    if isReservedName env n then return false
+    if env.isProjectionFn n then return false
+    return true
+  | _ => return false
+
+/-- The exact expression/constructor edges of Lean 4.33.1's axiom collector.
+A generic declaration-usage helper also adds recursor-family edges; those extra edges
+must not cause a private proof to be treated as already axiom-audited. Quotient primitives
+have no outgoing collector edges. Theorems and opaque declarations include their bodies. -/
+private def axiomCollectorDependencies (info : ConstantInfo) : Array Name := Id.run do
+  if let .quotInfo _ := info then return #[]
+  let mut deps := info.type.getUsedConstants
+  if let some value := info.value? (allowOpaque := true) then
+    deps := deps ++ value.getUsedConstants
+  if let .inductInfo value := info then
+    deps := deps ++ value.ctors.toArray
+  return deps
+
+/-- Every declaration in the transitive dependency closure of the explicit pins.
+Walk imported dependencies too: no namespace shortcut or assumption about dependency
+ownership is needed. Each declaration's expression is inspected at most once. -/
+private partial def pinnedDependencyClosure (env : Environment) (roots : Array Name) :
+    Std.HashSet Name := Id.run do
+  let mut seen : Std.HashSet Name := {}
+  let mut pending := roots
+  while !pending.isEmpty do
+    let n := pending.back!
+    pending := pending.pop
+    unless seen.contains n do
+      seen := seen.insert n
+      if let some info := env.checked.get.find? n then
+        pending := pending ++ axiomCollectorDependencies info
+  return seen
+
+/-- Keep the existing live audit's exact trust policy. `#eval` computations are not
+claims: only theorem declarations selected above are additional audit roots. -/
+private def allowedAxiom (n : Name) : Bool :=
+  n == ``propext || n == ``Classical.choice || n == ``Quot.sound
+
+/-- Audit private claims outside the pinned closure with Lean's own axiom collector.
+Private claims inside it are already checked transitively by `check-axioms.sh`. -/
+private def auditPrivateTheorems (claims : Array Name) (covered : Std.HashSet Name) :
+    CoreM (Nat × Nat) := do
+  let mut additional := 0
+  let mut failures := 0
+  for n in claims.qsort (fun a b => a.toString < b.toString) do
+    unless covered.contains n do
+      additional := additional + 1
+      let forbidden := (← collectAxioms n).filter (!allowedAxiom ·)
+      unless forbidden.isEmpty do
+        failures := failures + 1
+        IO.println s!"PRIVATE AXIOM FAILURE: {privateToUserName n} ({n}) depends on {forbidden}"
+  return (additional, failures)
 
 /-- Every `.lean` file under `dir`, recursively. -/
 private partial def collectLeanFiles (dir : System.FilePath) : IO (Array System.FilePath) := do
@@ -130,28 +206,54 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
     throw <| IO.userError s!"no Lean pin files in {dir}"
   return names
 
+/-- Resolve exact printed pin names without rendering every imported declaration name.
+Unresolvable or non-canonical entries confer no private coverage; the live axiom audit
+separately rejects invalid commands. This preserves the former `n.toString` membership
+rule, including the fact that an alias is not a pin of a differently named declaration. -/
+private def resolvePinnedRoots (env : Environment) (pinned : Std.HashSet String) : Array Name :=
+  Id.run do
+    let mut roots := #[]
+    for text in pinned.toList do
+      if let .ok stx := Parser.runParserCategory env `command s!"#print axioms {text}" then
+        let n := stx[2].getId
+        if n.toString == text && (env.checked.get.find? n).isSome then
+          roots := roots.push n
+    return roots
+
 #eval show CoreM Unit from do
-  let env ← getEnv
+  let env := (← getEnv).setExporting false
   let loadedModules : Std.HashSet String := Std.HashSet.ofList (env.header.moduleNames.toList.map (·.toString))
   let unloaded ← findUnloadedFiles loadedModules
   let pinned ← readAllPinnedNames "scripts/print_axioms"
   let mut total : Nat := 0
   let mut missing : Array String := #[]
+  let roots := resolvePinnedRoots env pinned
+  let mut privateClaims : Array Name := #[]
   for (n, info) in env.constants.toList do
-    if (← isPublicProjectTheorem env n info) then
-      total := total + 1
-      let name := n.toString
-      unless pinned.contains name do
-        missing := missing.push name
+    if let .thmInfo _ := info then
+      -- Imported mathlib declarations dominate this environment. Classify project
+      -- provenance once before invoking either project theorem predicate.
+      if isProjectModule env n then
+        if (← isPrivateProjectTheorem env n info) then
+          privateClaims := privateClaims.push n
+        if (← isPublicProjectTheorem env n info) then
+          total := total + 1
+          let name := n.toString
+          unless pinned.contains name do
+            missing := missing.push name
+  let covered := pinnedDependencyClosure env roots
+  IO.println s!"PINNED CLOSURE — {roots.size} roots, {covered.size} declarations"
+  let (additional, privateFailures) ← auditPrivateTheorems privateClaims covered
+  IO.println s!"PRIVATE AUDIT — {privateClaims.size} roots, {privateClaims.size - additional} already in pinned closures, {additional} additionally checked"
   for f in unloaded do
     IO.println s!"UNLOADED: {f} (module {moduleStringOfPath f} is not reachable from 'import TDA' — its declarations were never checked)"
   for name in missing.qsort (· < ·) do
     IO.println s!"MISSING: {name}"
-  if unloaded.isEmpty && missing.isEmpty then
+  if unloaded.isEmpty && missing.isEmpty && privateFailures == 0 then
     IO.println s!"COVERAGE OK — {total} public theorems, all pinned"
   else
     -- `throwError`, not `IO.Process.exit`: the latter terminates the process immediately and
     -- discards the `MISSING:`/`UNLOADED:` lines printed above when stdout is not a terminal.
     -- `throwError` reports through Lean's own elaboration-error channel, which both prints
     -- reliably and gives the wrapper a nonzero exit code.
-    throwError s!"{unloaded.size} TDA file(s) not reachable from 'import TDA' and {missing.size} public theorem(s) not pinned in scripts/print_axioms/ (see lines above)"
+    throwError s!"{unloaded.size} TDA file(s) not reachable from 'import TDA' and {missing.size} public theorem(s) not pinned in scripts/print_axioms/, {privateFailures} private theorem(s) with forbidden axioms (see lines above)"
