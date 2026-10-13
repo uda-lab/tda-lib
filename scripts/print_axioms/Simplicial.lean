@@ -193,10 +193,9 @@ import TDA
 #print axioms TDA.Simplicial.VertexMapExamples.permutation_inverse_fixture
 #print axioms TDA.Simplicial.VertexMapExamples.ghost_vertices_are_not_forced
 
--- Contiguity of simplicial vertex maps and refinement-induced nerve maps.
+-- Contiguity of simplicial vertex maps.
 #print axioms TDA.Simplicial.Contiguous
 #print axioms TDA.Simplicial.contiguous_refl
 #print axioms TDA.Simplicial.Contiguous.symm
 #print axioms TDA.Simplicial.Contiguous.precomp
 #print axioms TDA.Simplicial.Contiguous.postcomp
-#print axioms TDA.Simplicial.nerveMap_contiguous

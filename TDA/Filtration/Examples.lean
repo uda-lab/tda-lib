@@ -1,0 +1,10 @@
+-- Filtration examples and acceptance fixtures, included by the comprehensive TDA root.
+import TDA.Filtration.FilterFunctionExamples
+import TDA.Filtration.CompatibleOrderExamples
+import TDA.Filtration.CriticalValuesExamples
+import TDA.Filtration.CompatibleOrderPrefixExamples
+import TDA.Filtration.OrderingEquivalentExamples
+import TDA.Filtration.CompatibleOrderTransferExamples
+import TDA.Filtration.OrderChamberExamples
+import TDA.Filtration.CompatibleOrderExistenceExamples
+import TDA.Filtration.CompatibleOrderClosedExamples

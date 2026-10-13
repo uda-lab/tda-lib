@@ -1,5 +1,5 @@
 import TDA.Mapper.Refinement
-import TDA.Simplicial.Contiguity
+import TDA.Topology.NerveContiguity
 
 /-!
 # Coherent towers of ordinary Mapper complexes

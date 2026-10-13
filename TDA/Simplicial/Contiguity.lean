@@ -1,4 +1,4 @@
-import TDA.Topology.NerveMap
+import TDA.Simplicial.VertexMap
 
 /-!
 # Contiguity of simplicial vertex maps
@@ -6,10 +6,6 @@ import TDA.Topology.NerveMap
 Two vertex maps are contiguous when the union of their images of every source
 face is a target face.  Contiguity is reflexive and symmetric, and it is
 preserved by pre- and postcomposition.  It is not asserted to be transitive.
-
-For ordinary nerves, any two selected refinements between the same indexed
-families induce contiguous vertex maps: a common point of the source face lies
-in every target member selected by either refinement.
 -/
 
 namespace TDA.Simplicial
@@ -67,26 +63,6 @@ theorem Contiguous.postcomp {K : PreAbstractSimplicialComplex I}
   change s.image (e.toFun ∘ a.toFun) ∪ s.image (e.toFun ∘ b.toFun) ∈ M
   have himage := e.map_face (s.image a ∪ s.image b) (h s hs)
   simpa only [Finset.image_union, Finset.image_image, Function.comp_apply] using himage
-
-/-- Any two selected refinements between the same indexed families induce
-contiguous maps of ordinary nerves. -/
-theorem nerveMap_contiguous {X : Type z}
-    {U : TDA.Topology.CoverFamily X I}
-    {V : TDA.Topology.CoverFamily X J}
-    (R S : TDA.Topology.Refinement U V) :
-    Contiguous (TDA.Topology.nerveMap R) (TDA.Topology.nerveMap S) := by
-  intro s hs
-  obtain ⟨hsn, x, hx⟩ := (TDA.Topology.mem_nerve_iff U s).1 hs
-  refine (TDA.Topology.mem_nerve_iff V _).2 ⟨?_, x, ?_⟩
-  · obtain ⟨i, hi⟩ := hsn
-    exact ⟨R.selector i, Finset.mem_union_left _
-      (Finset.mem_image.mpr ⟨i, hi, rfl⟩)⟩
-  · intro j hj
-    rcases Finset.mem_union.mp hj with hj | hj
-    · obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hj
-      exact R.subset i (hx i hi)
-    · obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hj
-      exact S.subset i (hx i hi)
 
 end
 

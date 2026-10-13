@@ -1,15 +1,24 @@
 # tda-lib
 
-A Lean 4 library foundation for topological data analysis, including persistent homology,
+A Lean 4 library for topological data analysis, including persistent homology,
 mathematical theory and verified computational algorithms. Development is continuous;
 executability is required only where an individual algorithm contract calls for it.
 
-The library currently includes support-aware filtrations, preorder-indexed persistence-module
-data and a finite-face simplicial chain bridge prototype. The bridge packages a chain complex
-when its differential and square-zero proof are supplied; it does not prove a general
-simplicial boundary theorem. No completed persistent homology results or verified TDA
-algorithms are claimed. `TDA.placeholder_add_zero` is only an infrastructure smoke theorem
-exercising the axiom audit.
+The library includes signed simplicial chains and homology on actual faces, finite
+interval decomposition and complete-rank classification, actual sublevel persistence
+diagrams, finite-filter bottleneck stability, and local regularity, derivative and Hessian
+results with explicit lift hypotheses. A certified finite F₂ simplex-list computation
+connects its output to those actual diagrams. Reeb/cosheaf and ordinary Mapper constructions
+also implement their bounded lane contracts; their pre-publication source review remains
+tracked in [#215](https://github.com/uda-lab/tda-lib/issues/215).
+
+See [the public API guide](docs/api.md) for entry points, coefficient and finiteness
+requirements, computational scope and deferred extensions. `TDA.placeholder_add_zero`
+remains an infrastructure smoke theorem exercising the axiom audit.
+
+For ordinary use, import an area such as `TDA.Persistence`, or `TDA.Library` for all
+library areas. `TDA` additionally imports standalone examples and acceptance fixtures,
+and remains the comprehensive audit and documentation root.
 
 ## Build
 
@@ -42,12 +51,15 @@ python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
 Then open `http://127.0.0.1:8000/`. Stop the server with Ctrl-C. The site documents the
-current imports-only `TDA.lean` root; adding a module to its area aggregator brings it into
-the documentation target. It describes the smoke theorem as infrastructure only and the
-simplicial bridge as a prototype with conditional chain-complex packaging. doc-gen4 also
+current imports-only `TDA.lean` root, intentionally including examples and acceptance
+fixtures as well as library declarations. Add library modules to their area aggregator
+and standalone examples to `TDA/<Area>/Examples.lean`; both enter that documentation
+target. doc-gen4 also
 generates pages for Lean, Init, Lake, Std and the imported libraries. Generated files and
 package caches remain untracked and private. CI retains only the generated documentation
-tree as a private artifact for seven days; it does not publish the site or upload caches.
+tree as a private artifact for seven days when the optional job is enabled; it does not
+publish the site or upload caches. Hosted Actions remain disabled under the October
+local-CI policy; this documentation command is a separate local workflow.
 The build requires a clean committed tree so its source links point to that exact revision.
 When the commit changes, the build refreshes TDA's cached declaration pages and search data
 because doc-gen4 reads the source revision from Git rather than tracking it as a Lake input.
@@ -56,7 +68,9 @@ because doc-gen4 reads the source revision from Git rather than tracking it as a
 
 | Path | Purpose |
 |---|---|
-| `TDA/`, `TDA.lean` | Library modules and imports-only root/area aggregators |
+| `TDA/`, `TDA.Library` | Library modules and ordinary imports-only area entry points |
+| `TDA.Examples`, `TDA/<Area>/Examples.lean` | Standalone examples and acceptance fixtures |
+| `TDA.lean` | Comprehensive library/example root for audit and generated documentation |
 | `scripts/` | Bootstrap, full gate, integrity audits and GitHub setup |
 | `docs/math/` | Source references, mathematical definitions and conventions |
 | `docs/adr/` | Durable development decisions |
@@ -78,7 +92,9 @@ routine integration target. See [the orchestration guide](docs/orchestration.md)
 
 Public theorem axiom closures are audited against
 `{propext, Classical.choice, Quot.sound}`. The coverage guard checks that public theorems
-are pinned and every library module is imported. Stable releases exclude staging holes
+are pinned and every library/example module is imported by `TDA`; it also audits private
+theorem roots outside pinned dependency closures against the same allowlist. Computational
+`#eval` results are separate from theorem trust. Stable releases exclude staging holes
 and report precisely the results and limitations reviewed for that release.
 
 Public API documentation requires doc-gen4; Blueprint is optional. ellalpha is an
