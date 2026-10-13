@@ -45,6 +45,7 @@ theorem filled_pairs_raw : pivotPairs filled =
 theorem filled_essential_raw : essentialIndices filled = [⟨0, by decide⟩] := by
   simp only [essentialIndices, reduced, trace]
   rw [filled_boundary]
+  rw [filled_pairs_raw]
   decide +kernel
 
 theorem filled_pairs : (pivotPairs filled).map (fun q => (q.1.val, q.2.val)) =
@@ -85,6 +86,7 @@ theorem hollow_essential_raw : essentialIndices hollow =
     [⟨0, by decide⟩, ⟨5, by decide⟩] := by
   simp only [essentialIndices, reduced, trace]
   rw [hollow_boundary]
+  rw [hollow_pairs_raw]
   decide +kernel
 
 theorem hollow_run : run hollow = some
@@ -114,6 +116,7 @@ theorem tied_run : run tied = some
   have he : essentialIndices tied = [⟨0, by decide⟩] := by
     simp only [essentialIndices, reduced, trace]
     rw [tied_boundary]
+    rw [hp]
     decide +kernel
   simp [run, (validBool_iff tied).mpr tied_valid,
     occurrences, finiteOccurrences, essentialOccurrences,
@@ -135,6 +138,7 @@ theorem delayed_run : run delayed = some [⟨0, 7, .essential⟩] := by
   have he : essentialIndices delayed = [⟨0, by decide⟩] := by
     simp only [essentialIndices, reduced, trace]
     rw [delayed_boundary]
+    rw [hp]
     decide +kernel
   simp [run, (validBool_iff delayed).mpr delayed_valid,
     occurrences, finiteOccurrences, essentialOccurrences, hp, he, degree]
@@ -159,6 +163,7 @@ theorem negative_run : run negative = some
   have he : essentialIndices negative = [⟨0, by decide⟩] := by
     simp only [essentialIndices, reduced, trace]
     rw [negative_boundary]
+    rw [hp]
     decide +kernel
   simp [run, (validBool_iff negative).mpr negative_valid,
     occurrences, finiteOccurrences, essentialOccurrences, hp, he,
@@ -191,6 +196,7 @@ theorem twoEdges_run : run twoEdges = some
       [⟨0, by decide⟩, ⟨2, by decide⟩] := by
     simp only [essentialIndices, reduced, trace]
     rw [twoEdges_boundary]
+    rw [hp]
     decide +kernel
   simp [run, (validBool_iff twoEdges).mpr twoEdges_valid,
     occurrences, finiteOccurrences, essentialOccurrences, hp, he,
@@ -230,6 +236,7 @@ theorem reordered_run : run reordered = some
   have he : essentialIndices reordered = [⟨0, by decide⟩] := by
     simp only [essentialIndices, reduced, trace]
     rw [reordered_boundary]
+    rw [hp]
     decide +kernel
   simp [run, (validBool_iff reordered).mpr reordered_valid,
     occurrences, finiteOccurrences, essentialOccurrences, hp, he,
@@ -270,6 +277,7 @@ theorem sparse_run : run sparse = some
   have he : essentialIndices sparse = [⟨0, by decide⟩] := by
     simp only [essentialIndices, reduced, trace]
     rw [sparse_boundary]
+    rw [hp]
     decide +kernel
   simp [run, (validBool_iff sparse).mpr sparse_valid,
     occurrences, finiteOccurrences, essentialOccurrences, hp, he,

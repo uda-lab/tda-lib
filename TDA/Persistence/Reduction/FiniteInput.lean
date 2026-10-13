@@ -321,10 +321,10 @@ def pivotPairs (xs : Input) : List (Fin xs.length × Fin xs.length) :=
 /-- Exactly the zero columns outside the image of all reduced pivots. -/
 def essentialIndices (xs : Input) : List (Fin xs.length) :=
   let R := reduced xs
+  let pairs := pivotPairs xs
   (List.finRange xs.length).filter fun i =>
     (columnPivot (R.col i)).isNone &&
-      !(List.finRange xs.length).any
-        (fun j => columnPivot (R.col j) == some i)
+      !pairs.any (fun q => q.1 == i)
 
 theorem pivotPairs_nodup (xs : Input) : (pivotPairs xs).Nodup := by
   unfold pivotPairs
@@ -366,21 +366,21 @@ theorem essentialIndices_mem (xs : Input) (i : Fin xs.length) :
       cases hp : columnPivot ((reduced xs).col i) <;> simp [hp] at hi ⊢
     refine ⟨hz, ?_⟩
     intro ⟨j, hj⟩
-    have ha : (List.finRange xs.length).any
-        (fun j => columnPivot ((reduced xs).col j) == some i) = true := by
+    have ha : (pivotPairs xs).any (fun q => q.1 == i) = true := by
       simp only [List.any_eq_true, List.mem_finRange, true_and]
-      exact ⟨j, by simpa [hj]⟩
+      exact ⟨(i, j), (pivotPairs_mem xs i j).mpr hj, by simp⟩
     simp [ha] at hi
   · rintro ⟨hz, hn⟩
-    have hno : (List.finRange xs.length).any
-        (fun j => columnPivot ((reduced xs).col j) == some i) = false := by
-      cases ha : (List.finRange xs.length).any
-          (fun j => columnPivot ((reduced xs).col j) == some i) with
+    have hno : (pivotPairs xs).any (fun q => q.1 == i) = false := by
+      cases ha : (pivotPairs xs).any (fun q => q.1 == i) with
       | false => rfl
       | true =>
           have hex : ∃ j : Fin xs.length,
               columnPivot ((reduced xs).col j) = some i := by
-            simpa [List.any_eq_true] using ha
+            obtain ⟨⟨r, j⟩, hp, hr⟩ := List.any_eq_true.mp ha
+            have hri : r = i := by simpa using hr
+            subst r
+            exact ⟨j, (pivotPairs_mem xs i j).mp hp⟩
           exact (hn hex).elim
     simp [hz, hno]
 
