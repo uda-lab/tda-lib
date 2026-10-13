@@ -67,6 +67,8 @@ import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.SublevelDiagramExamples
 import TDA.Persistence.SublevelDiagramTransport
 import TDA.Persistence.SublevelDiagramTransportExamples
+import TDA.Persistence.DiagramBottleneckTranslation
+import TDA.Persistence.DiagramBottleneckTranslationExamples
 import TDA.Persistence.DiagramSecondOrderCalculus
 import TDA.Persistence.DiagramSecondOrderCalculusExamples
 import TDA.Persistence.ActualLossHessian
