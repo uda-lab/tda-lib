@@ -64,12 +64,16 @@ import TDA.Persistence.FiniteFilterStabilitySingletonExamples
 import TDA.Persistence.FiniteFilterStabilityCrossingFixtures
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
+import TDA.Persistence.ActualDiagramRegularity
+import TDA.Persistence.ActualDiagramRegularityExamples
 import TDA.Persistence.SublevelDiagramExamples
 import TDA.Persistence.SublevelDiagramTransport
 import TDA.Persistence.SublevelDiagramTransportExamples
 import TDA.Persistence.DiagramBottleneckTranslation
 import TDA.Persistence.DiagramBottleneckTranslationExamples
 import TDA.Persistence.DiagramSecondOrderCalculus
+import TDA.Persistence.DiagramRegularity
+import TDA.Persistence.DiagramRegularityExamples
 import TDA.Persistence.DiagramSecondOrderCalculusExamples
 import TDA.Persistence.ActualLossHessian
 import TDA.Persistence.ActualLossHessianExamples
