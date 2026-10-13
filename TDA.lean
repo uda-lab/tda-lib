@@ -43,6 +43,8 @@ import TDA.Persistence.Reduction.TraceExamples
 import TDA.Persistence.Reduction.ColumnReduction
 import TDA.Persistence.Reduction.ColumnReductionExamples
 import TDA.Persistence.Reduction.MatrixReduction
+import TDA.Persistence.Reduction.FilteredNormalForm
+import TDA.Persistence.Reduction.FilteredNormalFormExamples
 import TDA.Persistence.Reduction.MatrixReductionExamples
 import TDA.Reeb.Components
 import TDA.Reeb.ComponentsCover
