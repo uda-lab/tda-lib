@@ -115,9 +115,11 @@ this larger domain does not change the finite-filter stability statement.
 Exact constant-shift cost `|c|` uses a nonempty essential part; a finite-only
 diagram can instead delete all its points to the diagonal.
 
-The [Cohen–Steiner–Edelsbrunner–Harer source, Main Theorem and §3.3](https://math.uchicago.edu/~shmuel/AAT-readings/Data%20Analysis%20/Stability.pdf)
-states stability for continuous tame functions on a triangulable space and
-uses linear interpolation for its piecewise linear step. The library proves
+The [Cohen–Steiner–Edelsbrunner–Harer source, Main Theorem and §3.3](https://link.springer.com/content/pdf/10.1007/s00454-006-1276-5.pdf)
+states stability for continuous tame functions on a triangulable space,
+using F₂ singular homology and linear interpolation for its piecewise linear
+step. The library's arbitrary-field coefficient scope is an extension proved
+by its finite algebraic argument. The library proves
 the finite face-filter counterpart with actual simplicial homology and the
 same maximum-norm cost. It does not supply a singular-homology comparison
 for arbitrary continuous tame functions, so it does not formalize that full
