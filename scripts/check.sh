@@ -3,7 +3,7 @@
 #   textual guards (sorry/admit, custom axioms, transient artefacts, imports-only root/area
 #   aggregator) → lake build →
 #   live axiom audit → axiom-coverage guard (every public theorem is pinned in
-#   scripts/print_axioms/*.lean).
+#   scripts/print_axioms/*.lean; uncovered private theorem roots obey the same allowlist).
 # The whole run is serialised container-wide on /tmp/lean-build.lock (scripts/lib/build-lock.sh
 # holds it on fd 9 for the lifetime of this process and every child): concurrent mathlib
 # builds in a shared container OOM each other. A killed run releases the lock with its
