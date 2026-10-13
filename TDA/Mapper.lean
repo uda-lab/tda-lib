@@ -1,10 +1,6 @@
--- Mapper modules. Add new Mapper imports here.
+-- Ordinary Mapper library modules; standalone fixtures are in TDA.Mapper.Examples.
 import TDA.Mapper.PullbackCover
-import TDA.Mapper.PullbackCoverExamples
 import TDA.Mapper.Basic
 import TDA.Mapper.Refinement
-import TDA.Mapper.BasicExamples
 import TDA.Mapper.GraphPL
-import TDA.Mapper.GraphPLExamples
 import TDA.Mapper.Tower
-import TDA.Mapper.TowerExamples

@@ -1,21 +1,12 @@
--- Filtration modules. Add new Filtration imports here.
+-- Ordinary Filtration library modules; standalone fixtures are in TDA.Filtration.Examples.
 import TDA.Filtration.Basic
 import TDA.Filtration.FilterFunction
-import TDA.Filtration.FilterFunctionExamples
 import TDA.Filtration.CompatibleOrder
-import TDA.Filtration.CompatibleOrderExamples
 import TDA.Filtration.CriticalValues
-import TDA.Filtration.CriticalValuesExamples
 import TDA.Filtration.CompatibleOrderPrefix
-import TDA.Filtration.CompatibleOrderPrefixExamples
 import TDA.Filtration.OrderingEquivalent
-import TDA.Filtration.OrderingEquivalentExamples
 import TDA.Filtration.CompatibleOrderTransfer
-import TDA.Filtration.CompatibleOrderTransferExamples
 import TDA.Filtration.OrderChamber
 import TDA.Filtration.OrderChamberFilterFunction
-import TDA.Filtration.OrderChamberExamples
 import TDA.Filtration.CompatibleOrderExistence
-import TDA.Filtration.CompatibleOrderExistenceExamples
 import TDA.Filtration.CompatibleOrderClosed
-import TDA.Filtration.CompatibleOrderClosedExamples

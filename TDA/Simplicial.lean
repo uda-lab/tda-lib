@@ -1,23 +1,15 @@
--- Simplicial modules. Add new Simplicial imports here.
+-- Ordinary Simplicial library modules; standalone fixtures are in TDA.Simplicial.Examples.
 import TDA.Simplicial.Bridge
 import TDA.Simplicial.Boundary
 import TDA.Simplicial.ChainComplex
 import TDA.Simplicial.FiniteComplex
 import TDA.Simplicial.FiniteCoordinates
-import TDA.Simplicial.FiniteCoordinatesExamples
 import TDA.Simplicial.FiniteCycles
-import TDA.Simplicial.FiniteCyclesExamples
 import TDA.Simplicial.FiniteHomology
 import TDA.Simplicial.FiniteDimensionalHomology
 import TDA.Simplicial.Attachment
-import TDA.Simplicial.AttachmentExamples
-import TDA.Simplicial.FiniteHomologyExamples
 import TDA.Simplicial.Inclusion
-import TDA.Simplicial.InclusionExamples
-import TDA.Simplicial.FiniteComplexExamples
 import TDA.Simplicial.Homology
-import TDA.Simplicial.HomologyExamples
 import TDA.Simplicial.H0Augmentation
 import TDA.Simplicial.VertexMap
-import TDA.Simplicial.VertexMapExamples
 import TDA.Simplicial.Contiguity

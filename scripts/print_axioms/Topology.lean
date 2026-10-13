@@ -122,3 +122,6 @@ import TDA
 #print axioms TDA.Topology.NerveMapExamples.duplicate_edge_maps_to_singleton
 #print axioms TDA.Topology.NerveMapExamples.permutation_reindex_inverse_fixture
 #print axioms TDA.Topology.NerveMapExamples.composable_refinements_have_direct_composite
+
+-- Contiguity of refinement-induced nerve maps.
+#print axioms TDA.Topology.nerveMap_contiguous
