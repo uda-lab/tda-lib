@@ -180,3 +180,9 @@ import TDA.Simplicial.VertexMap
 import TDA.Simplicial.VertexMapExamples
 import TDA.Topology.NerveMap
 import TDA.Topology.NerveMapExamples
+import TDA.Persistence.DiagramSecondOrderCalculus
+import TDA.Persistence.DiagramSecondOrderCalculusExamples
+import TDA.Persistence.ActualLossHessian
+import TDA.Persistence.ActualLossHessianExamples
+import TDA.Persistence.ActualLossHessianSingletonExample
+import TDA.Persistence.ActualLossHessianEdgeExample

@@ -1,5 +1,9 @@
 # Scalar calculus through ordered diagram presentations
 
+The [second-order extension](actual-ph-loss-hessians.md) establishes C² scalar
+regularity and genuine second derivatives, retaining both terms of the
+ordinary second-order chain rule.
+
 `DiagramCoordinates m n` is `(Fin m → ℝ × ℝ) × (Fin n → ℝ)`, the full domain of
 `orderedQ`. A finite pair may be reversed or diagonal; `orderedQ` retains a
 reversed pair and deletes a diagonal pair. Essential points have only a birth

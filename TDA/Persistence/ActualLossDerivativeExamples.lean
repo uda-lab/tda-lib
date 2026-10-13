@@ -99,7 +99,7 @@ theorem singleton_essential_face_coefficient :
 
 /-- The linear expression underlying signed finite persistence, on the full
 ordered coordinate space (including diagonal pairs). -/
-private noncomputable def signedCoordinateFunctional (m n : ℕ) :
+noncomputable def signedCoordinateFunctional (m n : ℕ) :
     DiagramCoordinates m n →L[ℝ] ℝ :=
   let finiteBlock : DiagramCoordinates m n →L[ℝ] (Fin m → ℝ × ℝ) :=
     ContinuousLinearMap.fst ℝ _ _
@@ -109,13 +109,13 @@ private noncomputable def signedCoordinateFunctional (m n : ℕ) :
     ((ContinuousLinearMap.fst ℝ ℝ ℝ).comp
       ((ContinuousLinearMap.proj i).comp finiteBlock)))
 
-private theorem signedCoordinateFunctional_apply (m n : ℕ)
+theorem signedCoordinateFunctional_apply (m n : ℕ)
     (z : DiagramCoordinates m n) :
     signedCoordinateFunctional m n z =
       ∑ i : Fin m, ((z.1 i).2 - (z.1 i).1) := by
   simp [signedCoordinateFunctional, Finset.sum_apply]
 
-private theorem signedFiniteEndpointDifference_fderiv_full (m n : ℕ)
+theorem signedFiniteEndpointDifference_fderiv_full (m n : ℕ)
     (z : DiagramCoordinates m n) :
     fderiv ℝ (signedFiniteEndpointDifference ∘ orderedQ m n) z =
       signedCoordinateFunctional m n := by
