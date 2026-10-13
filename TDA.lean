@@ -5,3 +5,4 @@ import TDA.Persistence
 import TDA.Reeb
 import TDA.Simplicial
 import TDA.Topology
+import TDA.Mapper
