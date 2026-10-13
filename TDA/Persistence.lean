@@ -77,3 +77,8 @@ import TDA.Persistence.ActualLossHessianEdgeExample
 -- Finite simplex-list computation (Issue #203).
 import TDA.Persistence.Reduction.FiniteInput
 import TDA.Persistence.Reduction.FiniteInputExamples
+import TDA.Persistence.FiniteDecompositionSupport
+import TDA.Persistence.IntervalExtraction
+import TDA.Persistence.FiniteDecomposition
+import TDA.Persistence.FiniteDecompositionExamples
+import TDA.Persistence.FiniteDecompositionThreeStage
