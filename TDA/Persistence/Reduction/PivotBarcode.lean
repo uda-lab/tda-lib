@@ -10,6 +10,16 @@ open TDA.Persistence
 
 variable {m : ℕ} {k : Type*} [Field k] [DecidableEq k]
 
+private theorem filterMap_some_map {A B : Type*} (f : A → B) (s : Multiset A) :
+    s.filterMap (fun x => some (f x)) = s.map f := by
+  simpa only [Function.comp_def] using congrFun (Multiset.filterMap_eq_map f) s
+
+private theorem filterMap_none_zero {A B : Type*} (s : Multiset A) :
+    s.filterMap (fun _ => (none : Option B)) = 0 := by
+  induction s using Multiset.induction_on with
+  | empty => rfl
+  | @cons a s ih => simp [Multiset.filterMap_cons, ih]
+
 /-- One finite interval for every pivot row in the requested degree. -/
 noncomputable def pivotPairIntervals (degree : Fin m → ℕ)
     (R : Matrix (Fin m) (Fin m) k) (hstrict : StrictBoundary R) (p : ℕ) :
@@ -32,6 +42,90 @@ noncomputable def pivotBarcode (degree : Fin m → ℕ)
     (R : Matrix (Fin m) (Fin m) k) (hstrict : StrictBoundary R) (p : ℕ) :
     Multiset (FiniteInterval (m + 1)) :=
   pivotPairIntervals degree R hstrict p + pivotEssentialIntervals degree R p
+
+/-- Finite pivot pairs, recorded at zero-based face indices. -/
+noncomputable def pivotIndexPairs (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (p : ℕ) :
+    Multiset (Fin m × Fin m) := by
+  classical
+  exact (Finset.univ : Finset {i : Fin m // IsPivot R i ∧ degree i = p}).val.map
+    (fun x => (x.1, deathOfPivot R x.1 x.2.1))
+
+/-- Essential births, recorded at zero-based face indices. -/
+noncomputable def pivotEssentialIndices (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (p : ℕ) :
+    Multiset (Fin m) := by
+  classical
+  exact (Finset.univ : Finset {i : Fin m // IsEssential R i ∧ degree i = p}).val.map
+    (fun x => x.1)
+
+/-- Shift a finite stage interval back to its face-index pair. -/
+def finiteIndexPair (I : FiniteInterval (m + 1)) : Option (Fin m × Fin m) :=
+  if hb : 0 < I.birth then
+    if hd : I.death ≤ m then
+      some (⟨I.birth - 1, by have := I.birth_lt_death; have := I.death_le_size; omega⟩,
+        ⟨I.death - 1, by have := I.birth_lt_death; omega⟩)
+    else none
+  else none
+
+/-- Shift a terminal-sentinel interval back to its essential birth index. -/
+def essentialIndex (I : FiniteInterval (m + 1)) : Option (Fin m) :=
+  if hb : 0 < I.birth then
+    if I.death ≤ m then none
+    else some ⟨I.birth - 1,
+      by have := I.birth_lt_death; have := I.death_le_size; omega⟩
+  else none
+
+theorem finiteIndexPair_paired (R : Matrix (Fin m) (Fin m) k)
+    (hstrict : StrictBoundary R) (j i : Fin m)
+    (hji : columnPivot (R.col j) = some i) :
+    finiteIndexPair (pairedInterval R hstrict j i hji) = some (i, j) := by
+  have hb : 0 < i.val + 1 := by omega
+  have hd : j.val + 1 ≤ m := by omega
+  simp [finiteIndexPair, pairedInterval, hb, hd]
+
+theorem finiteIndexPair_essential (i : Fin m) :
+    finiteIndexPair (essentialInterval i) = none := by
+  have hb : 0 < i.val + 1 := by omega
+  have hd : ¬m + 1 ≤ m := by omega
+  simp [finiteIndexPair, essentialInterval, hb, hd]
+
+theorem essentialIndex_paired (R : Matrix (Fin m) (Fin m) k)
+    (hstrict : StrictBoundary R) (j i : Fin m)
+    (hji : columnPivot (R.col j) = some i) :
+    essentialIndex (pairedInterval R hstrict j i hji) = none := by
+  have hb : 0 < i.val + 1 := by omega
+  have hd : j.val + 1 ≤ m := by omega
+  simp [essentialIndex, pairedInterval, hb, hd]
+
+theorem essentialIndex_essential (i : Fin m) :
+    essentialIndex (essentialInterval i) = some i := by
+  have hb : 0 < i.val + 1 := by omega
+  have hd : ¬m + 1 ≤ m := by omega
+  simp [essentialIndex, essentialInterval, hb, hd]
+
+/-- Stage-to-face conversion of reducer occurrences recovers exactly its
+zero-based finite pivot pairs, including a pivot in row zero. -/
+theorem pivotBarcode_pairs (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (hstrict : StrictBoundary R) (p : ℕ) :
+    (pivotBarcode degree R hstrict p).filterMap finiteIndexPair =
+      pivotIndexPairs degree R p := by
+  classical
+  unfold pivotBarcode pivotPairIntervals pivotEssentialIntervals pivotIndexPairs
+  rw [Multiset.filterMap_add, Multiset.filterMap_map, Multiset.filterMap_map]
+  simp only [Function.comp_def, finiteIndexPair_paired, finiteIndexPair_essential,
+    filterMap_some_map, filterMap_none_zero, add_zero]
+
+/-- Stage-to-face conversion recovers exactly the unpaired zero indices. -/
+theorem pivotBarcode_essential (degree : Fin m → ℕ)
+    (R : Matrix (Fin m) (Fin m) k) (hstrict : StrictBoundary R) (p : ℕ) :
+    (pivotBarcode degree R hstrict p).filterMap essentialIndex =
+      pivotEssentialIndices degree R p := by
+  classical
+  unfold pivotBarcode pivotPairIntervals pivotEssentialIntervals pivotEssentialIndices
+  rw [Multiset.filterMap_add, Multiset.filterMap_map, Multiset.filterMap_map]
+  simp only [Function.comp_def, essentialIndex_paired, essentialIndex_essential,
+    filterMap_some_map, filterMap_none_zero, zero_add]
 
 /-- A pivot occurrence survives a structure map precisely when its row was
 born before the source stage and its death column enters after the target. -/
@@ -69,7 +163,7 @@ theorem pivotPairIntervals_count (degree : Fin m → ℕ)
 
 /-- An essential occurrence survives exactly when born before the source. -/
 theorem pivotEssentialIntervals_count (degree : Fin m → ℕ)
-    (R : Matrix (Fin m) (Fin m) k) (p s t : ℕ) (hst : s ≤ t)
+    (R : Matrix (Fin m) (Fin m) k) (p s t : ℕ) (_hst : s ≤ t)
     (ht : t ≤ m) :
     (pivotEssentialIntervals degree R p).countP
       (fun I => I.birth ≤ s ∧ t < I.death) =
