@@ -618,10 +618,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.faceTemplateEssential_eq_pivotEssentialIndices
 #print axioms TDA.Persistence.Reduction.evaluatePivotTemplate_eq_dgm
 #print axioms TDA.Persistence.Reduction.evaluatePivotTemplate_order_independent
-#print axioms TDA.Persistence.Reduction.fixture_pairs_nodup
-#print axioms TDA.Persistence.Reduction.fixture_pairs_mem
-#print axioms TDA.Persistence.Reduction.fixture_essential_nodup
-#print axioms TDA.Persistence.Reduction.fixture_essential_mem
+#print axioms TDA.Persistence.Reduction.pivotIndexPairs_nodup
+#print axioms TDA.Persistence.Reduction.mem_pivotIndexPairs_iff
+#print axioms TDA.Persistence.Reduction.pivotEssentialIndices_nodup
+#print axioms TDA.Persistence.Reduction.mem_pivotEssentialIndices_iff
 #print axioms TDA.Persistence.Reduction.Examples.Empty.empty_actual_matrix
 #print axioms TDA.Persistence.Reduction.Examples.Empty.empty_reduced_matrix
 #print axioms TDA.Persistence.Reduction.Examples.Empty.empty_pivots
@@ -664,7 +664,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.actual_diagram_one
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.tied_diagram_zero
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.tied_diagram_one
-#print axioms TDA.Persistence.Reduction.fixture_barcode_endpoints
+#print axioms TDA.Persistence.Reduction.pivotBarcode_endpoints
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.stage_intervals_zero
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.stage_intervals_one
 #print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.actual_diagram_zero
@@ -1016,3 +1016,5 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.moving_tied_edge_full_strict_cr
 #print axioms TDA.Persistence.moving_tied_edge_full_pair
 #print axioms TDA.Persistence.moving_tied_edge_strict_essential_birth
+
+#print axioms TDA.Persistence.Reduction.nonempty_actualPrefixHomologyIsoPivotBarcode

@@ -1,5 +1,5 @@
+import TDA.Persistence.Reduction.PivotBarcode
 import TDA.Persistence.Reduction.SimplicialAdapterTemplate
-import TDA.Persistence.Reduction.ActualFixtureHelpers
 import Mathlib.Algebra.Field.ZMod
 import Mathlib.Data.ZMod.Basic
 open TDA.Persistence TDA.Simplicial TDA.Filtration TDA.Persistence.Reduction
@@ -46,20 +46,20 @@ namespace TDA.Persistence.Reduction.Examples.IsolatedVertex
 
 theorem exact_pairs_zero :
     pivotIndexPairs (faceDegree e) (actualReducedBoundary (ZMod 2) e) 0 = 0 := by
-  apply (fixture_pairs_nodup _ _ _ |>.ext (by decide +kernel)).mpr
+  apply (pivotIndexPairs_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   rintro ⟨i,j⟩
   have hpiv : DistinctPivots (actualReducedBoundary (ZMod 2) e) :=
     matrixReductionTrace_pivots_distinct _
-  rw [fixture_pairs_mem _ _ hpiv, reduced_zero]
+  rw [mem_pivotIndexPairs_iff _ _ hpiv, reduced_zero]
   fin_cases i
   fin_cases j
   decide +kernel
 
 theorem exact_essential_zero :
     pivotEssentialIndices (faceDegree e) (actualReducedBoundary (ZMod 2) e) 0 = {⟨0, by decide⟩} := by
-  apply (fixture_essential_nodup _ _ _ |>.ext (by decide +kernel)).mpr
+  apply (pivotEssentialIndices_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   intro i
-  rw [fixture_essential_mem]
+  rw [mem_pivotEssentialIndices_iff]
   simp only [essential, true_and]
   fin_cases i
   decide +kernel

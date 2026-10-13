@@ -7,7 +7,11 @@ import Mathlib.Analysis.Normed.Operator.NormedSpace
 
 The full fixed template, including diagonal finite pairs, is selected linearly
 from all actual face values. Its scalar Hessian scatters to a face-gradient
-double sum and a face-curvature single sum. No ambient inner product is used.
+double sum and a face-curvature single sum. These are the two terms of the ordinary
+second-order chain rule: the Hessian of the loss acts on first derivatives of face
+values, and the gradient of the loss acts on their second derivatives. Persistent ties
+can cancel after restriction even when ambient coordinate entries are nonzero.
+No ambient inner product is used.
 -/
 
 set_option autoImplicit false

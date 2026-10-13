@@ -84,7 +84,9 @@ the computed grade multisets with the existing pivot template's grade maps.
 contributions. The final `outputDiagram_eq_dgm` invokes merged
 `evaluatePivotTemplate_eq_dgm` from `SimplicialAdapterTemplate.lean`, which
 already connects the actual boundary reducer and filtered normal form to
-actual simplicial homology. Thus, for every valid input and every degree,
+actual simplicial homology. The proof-only
+`nonempty_actualPrefixHomologyIsoPivotBarcode` additionally exposes the
+genuine natural interval isomorphism of that prefix module. Thus, for every valid input and every degree,
 the interpreted records equal `dgm (ZMod 2) (gradeFilter xs h) p` as a
 `Diagram ℤ`. This is a statement about the actual integer sublevel filtration,
 not a declared pairing or a separately assumed barcode decomposition.

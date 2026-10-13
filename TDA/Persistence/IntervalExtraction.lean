@@ -158,6 +158,7 @@ theorem exists_interval_retract (M : PModule.{u,0,u} k (Fin N))
     ∃ (I : FiniteInterval N) (ι : intervalModule (k := k) I ⟶ M)
       (π : M ⟶ intervalModule (k := k) I), ι ≫ π = 𝟙 _ := by
   classical
+  -- Minimal birth makes every earlier fiber zero, which is needed for retraction naturality.
   let births : Finset (Fin N) := Finset.univ.filter (fun i => ∃ v : M.obj i, v ≠ 0)
   have hbirths : births.Nonempty := by
     obtain ⟨i, v, hv⟩ := hne
@@ -175,6 +176,7 @@ theorem exists_interval_retract (M : PModule.{u,0,u} k (Fin N))
     dsimp [w]
     rw [dif_pos hbi, dif_pos (hbi.trans hij), structureMapLinear_comp M hbi hij]
     rfl
+  -- The last nonzero image fixes the death endpoint; functoriality prevents resurrection.
   let surviving : Finset (Fin N) := Finset.univ.filter (fun i => w i ≠ 0)
   have hsurv : surviving.Nonempty := by
     refine ⟨b, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩⟩
@@ -187,6 +189,7 @@ theorem exists_interval_retract (M : PModule.{u,0,u} k (Fin N))
   have hzero (i : Fin N) (hi : t < i) : w i = 0 := by
     by_contra hwi
     exact (not_le_of_gt hi) (htmax i (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hwi⟩))
+  -- Pull this functional back from the last active fiber to retract the whole interval.
   obtain ⟨ell, hell⟩ := Module.Projective.exists_dual_eq_one k hwt
   exact ⟨extractionInterval b t hbt, extractionInclusion M b t hbt w hw hzero,
     extractionRetraction M b t hbt hbefore ell,

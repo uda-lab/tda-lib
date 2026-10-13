@@ -40,3 +40,42 @@ but the diagonal one-pair presentation `(0,t)` pulls the loss back to `|t|`.
 The formal examples also show that an essential-only presentation and a
 finite-only presentation can vary, while the zero-coordinate presentation and
 any fixed ordered representative give constant lifts.
+
+## Correspondence with ordered-barcode calculus
+
+[Leygonie–Oudot–Tillmann, accepted version, Definitions 2.8 and 3.1](https://arxiv.org/pdf/1910.00960v4)
+uses the full ordered coordinate space, including reversed finite pairs and
+redundant diagonal coordinates. `Diagram` stores only its off-diagonal
+multiset; deleting diagonal coordinates in `orderedQ` represents the
+source's implicitly repeated diagonal. The library's finite-product
+maximum norm and the source's Euclidean norm give the same smooth structure
+on each fixed finite coordinate space.
+
+`DiagramContDiffAt` and `CrThroughAllRepresentatives` retain the local
+factorization and universal representative quantifiers of source
+Definitions 3.3 and 3.10. `localLift_scalar_cr` and the derivative theorems
+recover Proposition 3.14 for scalar losses and real normed parameter spaces.
+Finite-dimensional real parameter spaces give the source specialization;
+the library also permits general normed parameter spaces with the stated
+lifts and regularity assumptions. General smooth manifolds and their
+charts are not formalized here. The index `ω` applies mathlib's regularity
+predicate to the coordinate map; no separate barcode analyticity
+equivalence is asserted.
+
+`ActualDiagramRegularity` supplies both the full-template lift and the
+occurrence-preserving strict lift on the original open ordering-equivalent
+neighborhood. The strict lift deletes the persistently diagonal pairs,
+recovering Theorem 4.7 and Proposition 4.14. The present local-lift API
+requires ordering equivalence, even though the underlying template
+evaluation theorem only needs a common compatible enumeration. Scalar
+regularity may shrink the neighborhood, while both lifts' factorizations
+remain on their stated carriers.
+
+The face derivative coefficients and Hessian entries depend on the chosen
+ordered presentation. The composed scalar derivatives agree by uniqueness.
+The second-order face formula is a library consequence of the ordinary
+second-order chain rule: it keeps both the loss-Hessian pullback and the
+loss-gradient applied to face-value curvature. It is not an additional
+Hessian theorem claimed from Theorem 4.7. Diagonal restriction explains
+cancellation of persistent ties without forcing their ambient coefficient
+entries to vanish.

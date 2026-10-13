@@ -1,7 +1,16 @@
 import TDA.Persistence.Reduction.SimplicialAdapterNaturality
 import TDA.Persistence.Reduction.PivotBarcode
+import TDA.Persistence.FiniteDecomposition
 
-/-! The reducer's occurrence multiset, instantiated with the actual signed boundary. -/
+/-!
+# Actual homology semantics of reducer occurrences
+
+The actual-to-original homology equivalences commute with every prefix inclusion.
+Transporting the ranges through that square proves the actual rank formula. The same
+formula holds for the pivot interval realization, so all-map rank reconstruction identifies
+its occurrence multiset. Finite decomposition then supplies a genuine natural isomorphism;
+the argument never substitutes equality of fiber dimensions for naturality.
+-/
 
 set_option maxHeartbeats 800000
 
@@ -108,5 +117,15 @@ theorem actualPivotBarcode_eq_facePrefixBarcode
     rw [actualPivotBarcode_rank k e p s t hst,
       actualPrefixHomology_rank k e p s t hst]
   simpa only [rankBarcode_barcodeModule, facePrefixBarcode] using hcomparison
+
+/-- Actual prefix homology is naturally isomorphic to the reducer's interval realization.
+This uses the constructed finite decomposition and all structure-map ranks; the chosen
+isomorphism is generally noncanonical and does not belong to the executable F₂ pipeline. -/
+theorem nonempty_actualPrefixHomologyIsoPivotBarcode
+    (e : CompatibleOrder f) (p : ℕ) :
+    Nonempty (facePrefixModule k e p ≅ barcodeModule (k := k) (actualPivotBarcode k e p)) := by
+  -- Identify the occurrence multiset only after constructing a genuine natural decomposition.
+  rw [actualPivotBarcode_eq_facePrefixBarcode k e p]
+  exact nonempty_rankBarcodeIso (facePrefixModule k e p)
 
 end TDA.Persistence.Reduction

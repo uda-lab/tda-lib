@@ -10,7 +10,10 @@ set_option autoImplicit false
 
 The interpolation is divided at the finitely many times when two actual face
 values meet. Each resulting closed segment has one face-compatible order;
-the orders on adjacent segments need not agree.
+the orders on adjacent segments need not agree. A midpoint order stays compatible at
+both endpoints by continuity of the weak face-value inequalities. The template bound
+therefore applies across each closed segment, and the triangle inequality combines the
+segments without assuming one pairing works for the whole interpolation.
 -/
 
 universe u
