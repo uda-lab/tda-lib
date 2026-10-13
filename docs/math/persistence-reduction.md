@@ -171,3 +171,50 @@ barcode, simplicial origin, or square-zero output. `MatrixReductionExamples.lean
 empty, zero and identity matrices; row-zero ratios; evolving sources and product order;
 unreduced initial prefixes; repeated cancellation; characteristic two; nonconstant grading;
 a square-zero input whose reduced output is not square-zero; and a raw triangle matrix.
+
+## Filtered normal form of a square-zero boundary
+
+`FilteredNormalForm.lean` starts with a finite boundary matrix `D` over a field, with `D² = 0`,
+strictly upper-triangular support and entries lowering homological degree by exactly one. In
+particular, a degree-zero column has zero boundary; the differential is unaugmented. The
+reducer supplies `R = D * V`, the inverse graded upper-unitriangular change `W`, and distinct
+pivots of nonzero `R` columns. The proof does **not** use `R` as the differential or assume
+`R² = 0`. These are the right-column and filtration conventions of the reduction above,
+with the graded basis interpretation of Zomorodian–Carlsson, §4.
+
+The pivot set `I`, nonzero-column or death set `J`, and remaining zero-column or essential
+set `E` partition the indices. Distinct greatest rows make the nonzero `R` columns linearly
+independent. For a death column `j` with pivot `i` and coefficient `c = R i j`, put
+`a = W * R.col j`. Square-zero gives `R * a = 0`, so independence forces `a` to vanish at
+every death index. Upper unitriangularity of `W` preserves the highest coordinate of
+`R.col j`: `a i = c ≠ 0`. Thus `i` cannot be a death index and `R.col i = 0`. This is the
+step that turns a reduced-column certificate into a valid cycle/death pairing.
+
+The fixed basis has `b_i = R.col j / c` at each pivot `i` and `b_i = V.col i` otherwise.
+Its matrix `B` and inverse are graded, upper unitriangular and preserve every prefix;
+`D b_j = c b_i` for a death index, while pivot and essential columns are cycles. The
+normal differential is conjugate to the **original** `D`. For every prefix length
+`t = 0,…,m`, the resulting original-boundary homology quotient is identified with the
+coordinates still alive at that stage, and those identifications commute with inclusion
+maps. A paired index `(i,j)` contributes degree `deg i` on stages `i+1,…,j`; an essential
+index `i` contributes on stages `i+1,…,m`. On `Fin (m+1)` these are the half-open intervals
+`[i+1,j+1)` and `[i+1,m+1)`. The endpoint `m+1` is a finite observation sentinel, not
+infinity or a constant-tail extension.
+
+For `0 ≤ s ≤ t ≤ m`, the rank of the original-homology map from prefix `s` to prefix `t`
+is the number of death columns `j` with `deg i(j) = p`, `i(j) < s`, and `t ≤ j`, plus the
+number of essential indices `i` with `deg i = p` and `i < s`. Indices count occurrences,
+including repeated interval endpoints. `matrixReductionTrace_normalForm_input` and
+`matrixReductionTrace_originalHomologyMap_rank_formula` discharge the generic premises for
+the existing all-column reducer. `FilteredNormalFormExamples.lean` checks empty and
+mixed-degree zero boundaries, arbitrary nonzero pair coefficients, interleaved pairs and
+an essential cycle, actual map death, a nontrivial change of basis, and an input with
+`D² = 0` but `R² ≠ 0`. A later simplicial adapter must still construct such a square
+boundary from faces and identify its prefixes with actual simplicial chains; this result
+does not assume that adapter.
+
+Sources and conventions: [Zomorodian–Carlsson, *Computing Persistent Homology*, §4](https://geometry.stanford.edu/paper/zc-cph-04/zc-cph-04.pdf)
+for graded filtered basis reduction; [Bauer, *Ripser*, §3.1](https://doi.org/10.1007/s41468-021-00071-5)
+for greatest-row pivot column reduction; and the [finite interval convention](finite-interval-rank.md)
+for the library's half-open finite-stage modules. The Lean statements above derive their
+normal form and homology comparison directly from the matrix certificate.
