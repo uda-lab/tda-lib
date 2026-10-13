@@ -153,3 +153,30 @@ Carrière–Oudot, *Structure and Stability of the 1-Dimensional Mapper*, retain
 additional connected-component data for intersections and is not constructed
 here. No Reeb equivalence, convergence, stability, persistence-diagram result,
 or Nerve Lemma follows from this definition.
+
+## Contiguity and coherent Mapper towers
+
+Two simplicial vertex maps are contiguous when, for every source face, the
+union of its two finite vertex images is a target face. Contiguity is reflexive
+and symmetric and is preserved by precomposition and postcomposition with
+simplicial vertex maps. It is not treated as a transitive relation.
+
+Any two selected refinements between the same indexed families induce
+contiguous maps of their ordinary nerves. A common point witnessing a source
+face lies in every target member selected by either refinement, so it witnesses
+the union face. Applying this result to the component-cover refinements shows
+that any two selected target-cover refinements induce contiguous ordinary
+Mapper maps. The maps can differ on vertices; contiguity, rather than equality,
+is the choice-independence statement at this level. No homology-map equality or
+chain homotopy is inferred.
+
+A coherent cover tower over a preorder consists of a possibly varying index
+type and indexed family at every parameter, together with a selected
+refinement for every comparison. The index types may depend on the parameter
+but live in one common universe. Strict identity and composition equations for
+the selector functions are supplied as part of the tower data; coherence is
+not inferred from unrelated selector choices. Ordinary Mapper assigns a
+complex to every parameter and a simplicial vertex map to every comparison,
+and the existing strict refinement laws prove identity and composition for
+these maps. This direct interface makes no fixed-ambient inclusion claim and
+adds no categorical, diagram, stability, or persistence conclusion.

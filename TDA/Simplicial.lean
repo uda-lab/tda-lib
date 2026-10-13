@@ -20,3 +20,4 @@ import TDA.Simplicial.HomologyExamples
 import TDA.Simplicial.H0Augmentation
 import TDA.Simplicial.VertexMap
 import TDA.Simplicial.VertexMapExamples
+import TDA.Simplicial.Contiguity
