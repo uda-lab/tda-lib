@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Live trust-footprint audit: run `#print axioms` for every declaration listed in
-# scripts/print_axioms.lean and fail unless each axiom set is a subset of the
+# scripts/print_axioms/*.lean and fail unless each axiom set is a subset of the
 # allowlist (the Lean/mathlib kernel trio). Catches `sorryAx`, project axioms and
 # other trust escapes (e.g. `Lean.ofReduceBool` from `native_decide`) — including
 # transitive ones that the textual guards cannot see.
@@ -17,33 +17,46 @@ ALLOW="propext Classical.choice Quot.sound"
 # Library (namespace) name, read from lakefile.toml so scripts/rename-project.sh has one
 # less site to patch.
 NS="$(sed -n 's/^name = "\(.*\)"$/\1/p' lakefile.toml | head -1)"
-SCRIPT="scripts/print_axioms.lean"
+PIN_DIR="scripts/print_axioms"
 
 if ! command -v lake >/dev/null 2>&1; then
   echo "ERROR: 'lake' not found (install elan; see scripts/bootstrap.sh)." >&2
   exit 1
 fi
 
-# Declarations the audit must cover, taken from the script itself.
-expected="$(awk '/^#print axioms /{print $3}' "$SCRIPT")"
+# Declarations the audit must cover, taken from every area file.
+if [ ! -d "$PIN_DIR" ]; then
+  echo "ERROR: missing axiom pin directory $PIN_DIR." >&2
+  exit 1
+fi
+mapfile -d '' SCRIPTS < <(find "$PIN_DIR" -maxdepth 1 -type f -name '*.lean' -print0 | sort -z)
+if [ "${#SCRIPTS[@]}" -eq 0 ]; then
+  echo "ERROR: $PIN_DIR has no Lean audit files." >&2
+  exit 1
+fi
+expected="$(awk '/^#print axioms /{print $3}' "${SCRIPTS[@]}")"
 if [ -z "$expected" ]; then
-  echo "ERROR: $SCRIPT lists no '#print axioms' declarations; the audit must never pass vacuously." >&2
+  echo "ERROR: $PIN_DIR lists no '#print axioms' declarations; the audit must never pass vacuously." >&2
   exit 1
 fi
 
-echo "==> lake env lean $SCRIPT"
 # Capture with errexit disabled so a failing lean run is diagnosed loudly instead of
 # aborting before its output is shown.
-set +e
-OUTPUT="$("$ROOT/scripts/lean.sh" lake env lean "$SCRIPT" 2>&1)"
-STATUS=$?
-set -e
-printf '%s\n' "$OUTPUT"
-if [ "$STATUS" -ne 0 ]; then
-  echo "ERROR: 'lake env lean $SCRIPT' failed with exit $STATUS." >&2
-  echo "  Run 'lake build' first; a pinned declaration that no longer exists also fails here." >&2
-  exit 1
-fi
+OUTPUT=""
+for SCRIPT in "${SCRIPTS[@]}"; do
+  echo "==> lake env lean $SCRIPT"
+  set +e
+  result="$("$ROOT/scripts/lean.sh" lake env lean "$SCRIPT" 2>&1)"
+  STATUS=$?
+  set -e
+  printf '%s\n' "$result"
+  if [ "$STATUS" -ne 0 ]; then
+    echo "ERROR: 'lake env lean $SCRIPT' failed with exit $STATUS." >&2
+    echo "  Run 'lake build' first; a pinned declaration that no longer exists also fails here." >&2
+    exit 1
+  fi
+  OUTPUT+="$result"$'\n'
+done
 
 # `#print axioms` output is one record per declaration, possibly wrapped over
 # several lines:  'X' depends on axioms: [a, b, c]   or   'X' does not depend on any axioms
@@ -72,7 +85,7 @@ for decl in $expected; do
   if [ "$count" -ne 1 ]; then
     pins="$(printf '%s\n' "$expected" | grep -cxF -- "$decl" || true)"
     if [ "$pins" -gt 1 ]; then
-      echo "ERROR: $decl is pinned $pins times in $SCRIPT; pin it once." >&2
+      echo "ERROR: $decl is pinned $pins times in $PIN_DIR; pin it once." >&2
     else
       echo "ERROR: $count '#print axioms' records for $decl; expected exactly one." >&2
     fi

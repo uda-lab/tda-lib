@@ -42,7 +42,7 @@ python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
 Then open `http://127.0.0.1:8000/`. Stop the server with Ctrl-C. The site documents the
-current imports-only `TDA.lean` root; adding a module to that aggregator brings it into
+current imports-only `TDA.lean` root; adding a module to its area aggregator brings it into
 the documentation target. It describes the smoke theorem as infrastructure only and the
 simplicial bridge as a prototype with conditional chain-complex packaging. doc-gen4 also
 generates pages for Lean, Init, Lake, Std and the imported libraries. Generated files and
@@ -56,7 +56,7 @@ because doc-gen4 reads the source revision from Git rather than tracking it as a
 
 | Path | Purpose |
 |---|---|
-| `TDA/`, `TDA.lean` | Library modules and imports-only aggregator |
+| `TDA/`, `TDA.lean` | Library modules and imports-only root/area aggregators |
 | `scripts/` | Bootstrap, full gate, integrity audits and GitHub setup |
 | `docs/math/` | Source references, mathematical definitions and conventions |
 | `docs/adr/` | Durable development decisions |
