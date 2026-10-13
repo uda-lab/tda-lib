@@ -176,3 +176,7 @@ import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.SublevelDiagramExamples
 import TDA.Persistence.SublevelDiagramTransport
 import TDA.Persistence.SublevelDiagramTransportExamples
+import TDA.Simplicial.VertexMap
+import TDA.Simplicial.VertexMapExamples
+import TDA.Topology.NerveMap
+import TDA.Topology.NerveMapExamples

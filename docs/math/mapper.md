@@ -56,3 +56,21 @@ triple face, as shown by the three two-point members `{0, 1}`, `{1, 2}`, and
 These set-theoretic conventions organize the cover maps used in Dey–Mémoli–Wang,
 *Multiscale Mapper*, §2–3. They deliberately provide an arbitrary-set library
 interface beyond the open-cover setting used for Mapper constructions.
+
+## Vertex maps and refinement-induced nerve maps
+
+For preabstract simplicial complexes `K` on `I` and `L` on `J`, a vertex map is
+a total function `r : I → J` such that every finite face `s ∈ K` has image
+`s.image r ∈ L`. The map may identify vertices, so an `n`-face can have an
+image with fewer vertices; no order, injectivity or same-dimension assumption
+is part of the interface. In the pinned mathlib API, this pointwise condition
+is equivalent to `PreAbstractSimplicialComplex.map K r ≤ L`.
+
+A selected refinement of indexed families induces a vertex map between their
+ordinary nerves using its selector as the ambient function. The common point
+of a source face remains a common point after applying the refinement
+containments, so the simplicial property is proved by the refinement itself.
+Identity and composition agree extensionally with refinement identity and
+composition. A bijective index relabelling gives inverse vertex maps whose two
+composites are identities, while ambient indices with empty family members
+remain absent as nerve vertices.
