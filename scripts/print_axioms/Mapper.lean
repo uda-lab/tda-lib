@@ -64,3 +64,44 @@ import TDA
 #print axioms TDA.Mapper.Examples.interval_refinement_left_representative
 #print axioms TDA.Mapper.Examples.interval_identity_left_representative
 #print axioms TDA.Mapper.Examples.interval_composition_left_representative
+
+-- Ordinary Mapper, multiplicity bounds, and the supported one-skeleton.
+#print axioms TDA.Mapper.mapper
+#print axioms TDA.Mapper.mem_mapper_iff
+#print axioms TDA.Mapper.componentIndex_supported
+#print axioms TDA.Mapper.eq_of_mem_mapper_face_of_fst_eq
+#print axioms TDA.Mapper.componentLabel_injOn_face
+#print axioms TDA.Mapper.CoverMultiplicityAtMost
+#print axioms TDA.Mapper.mapper_face_card_le_of_multiplicity
+#print axioms TDA.Mapper.MapperVertex
+#print axioms TDA.Mapper.toMapperVertex
+#print axioms TDA.Mapper.mapperOneSkeleton
+#print axioms TDA.Mapper.mapperOneSkeleton_adj_iff
+#print axioms TDA.Mapper.mem_mapper_iff_supported_singleton_or_adjacent_pair
+
+-- Refinement-induced Mapper maps and bijective relabelling laws.
+#print axioms TDA.Mapper.mapperMap
+#print axioms TDA.Mapper.mapperMap_apply
+#print axioms TDA.Mapper.mapperMap_mk
+#print axioms TDA.Mapper.mapperMap_id
+#print axioms TDA.Mapper.mapperMap_comp
+#print axioms TDA.Mapper.mapperMap_reindex_comp
+#print axioms TDA.Mapper.mapperMap_reindex_symm_comp
+
+-- Ordinary Mapper fixtures.
+#print axioms TDA.Mapper.Examples.boolMapperVertex
+#print axioms TDA.Mapper.Examples.bool_mapper_two_isolated_vertices
+#print axioms TDA.Mapper.Examples.duplicateMapperVertex
+#print axioms TDA.Mapper.Examples.duplicate_labels_give_distinct_adjacent_vertices
+#print axioms TDA.Mapper.Examples.triangleMap
+#print axioms TDA.Mapper.Examples.tripleUnitCover
+#print axioms TDA.Mapper.Examples.triangleComponentIndex
+#print axioms TDA.Mapper.Examples.triple_duplicate_cover_has_triangle
+#print axioms TDA.Mapper.Examples.leftIntervalMapperVertex
+#print axioms TDA.Mapper.Examples.rightIntervalMapperVertex
+#print axioms TDA.Mapper.Examples.interval_mapper_refinement_is_noninjective
+#print axioms TDA.Mapper.Examples.emptyDomain_multiplicity_two
+#print axioms TDA.Mapper.Examples.emptyDomain_mapper_eq_bot
+#print axioms TDA.Mapper.Examples.emptyDomain_mapper_graph_characterization
+#print axioms TDA.Mapper.Examples.bool_multiplicity_two
+#print axioms TDA.Mapper.Examples.bool_mapper_graph_characterization
