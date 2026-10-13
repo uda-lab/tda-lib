@@ -314,15 +314,17 @@ theorem reduced_reindex (xs : Input) (h : Valid xs) :
 
 /-- One pair per nonzero reduced column, including pivot row zero. -/
 def pivotPairs (xs : Input) : List (Fin xs.length × Fin xs.length) :=
+  let R := reduced xs
   (List.finRange xs.length).filterMap fun j =>
-    (columnPivot ((reduced xs).col j)).map fun i => (i, j)
+    (columnPivot (R.col j)).map fun i => (i, j)
 
 /-- Exactly the zero columns outside the image of all reduced pivots. -/
 def essentialIndices (xs : Input) : List (Fin xs.length) :=
+  let R := reduced xs
   (List.finRange xs.length).filter fun i =>
-    (columnPivot ((reduced xs).col i)).isNone &&
+    (columnPivot (R.col i)).isNone &&
       !(List.finRange xs.length).any
-        (fun j => columnPivot ((reduced xs).col j) == some i)
+        (fun j => columnPivot (R.col j) == some i)
 
 theorem pivotPairs_nodup (xs : Input) : (pivotPairs xs).Nodup := by
   unfold pivotPairs
