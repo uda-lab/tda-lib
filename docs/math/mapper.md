@@ -153,3 +153,38 @@ Carrière–Oudot, *Structure and Stability of the 1-Dimensional Mapper*, retain
 additional connected-component data for intersections and is not constructed
 here. No Reeb equivalence, convergence, stability, persistence-diagram result,
 or Nerve Lemma follows from this definition.
+
+## Graph-PL incidence labels and finite consumers
+
+For a simple graph `G`, a vertex height `h : V → ℝ`, and a labelled family of
+open real intervals, the path-component label over each interval is equivalent
+to a connected component of the incidence graph `cellGraph G h I`. Combining
+these equivalences over the interval labels gives a vertex equivalence from the
+actual ordinary Mapper of `plHeight G h` to an incidence-labelled nerve. The
+members of that nerve are the actual path-component cover members transported
+along the equivalence, so a finite vertex set is a face on one side exactly when
+its image is a face on the other. Coverage is inherited when the interval family
+covers `Set.range (plHeight G h)`, rather than only the heights of the original
+vertices.
+
+A selected refinement of interval families acts on the incidence labels by
+`ConnectedComponent.map` along `cellInclusion`. The resulting vertex map is
+conjugate to the ordinary Mapper refinement map through
+`preimageComponentsEquiv_componentMap`. This distinguishes merging two interval
+labels from merging graph components: widening the intervals can identify two
+labels on one connected graph piece without connecting distinct pieces of the
+domain.
+
+If both the graph vertex type and the interval-label type are finite, the Mapper
+component-index type, its supported-vertex subtype, and the subtype of actual
+finite faces are finite. This is a noncomputable finiteness result. Finitely many
+interval labels alone are insufficient: for the constant map from discrete
+`ℕ` to a point and the one-member full cover, the supported Mapper vertex type
+is explicitly equivalent to `ℕ`.
+
+The concrete graph fixtures use the actual PL-height inverse images. An open
+arc over the interval `(0, 2)` has one Mapper vertex even though neither endpoint
+survives. The overlapping intervals `(-1, 3/2)` and `(1/2, 3)` give one Mapper
+edge on a single graph edge and two disconnected copies on a disjoint union of
+two graph edges. Refinement to `(-1, 3)` merges the two source labels within each
+copy while the two domain components remain distinct.
