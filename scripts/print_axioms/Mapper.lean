@@ -106,6 +106,45 @@ import TDA
 #print axioms TDA.Mapper.Examples.bool_multiplicity_two
 #print axioms TDA.Mapper.Examples.bool_mapper_graph_characterization
 
+-- Graph-PL incidence relabelling, refinement transport, and conditional finiteness.
+#print axioms TDA.Mapper.GraphPL.IncidenceComponentIndex
+#print axioms TDA.Mapper.GraphPL.componentIndexEquiv
+#print axioms TDA.Mapper.GraphPL.incidenceComponentCover
+#print axioms TDA.Mapper.GraphPL.incidenceMapper
+#print axioms TDA.Mapper.GraphPL.incidenceComponentCover_covers
+#print axioms TDA.Mapper.GraphPL.mem_mapper_iff_incidenceMapper_image
+#print axioms TDA.Mapper.GraphPL.mem_incidenceMapper_iff_mapper_image_symm
+#print axioms TDA.Mapper.GraphPL.incidenceRefinementMap
+#print axioms TDA.Mapper.GraphPL.componentIndexEquiv_mapperMap
+#print axioms TDA.Mapper.GraphPL.incidenceMapperMap
+#print axioms TDA.Mapper.GraphPL.incidenceMapperMap_apply
+#print axioms TDA.Mapper.GraphPL.finite_componentIndex
+#print axioms TDA.Mapper.GraphPL.finite_mapperVertex
+#print axioms TDA.Mapper.GraphPL.finite_mapperFaces
+
+-- Exact graph-PL Mapper fixtures.
+#print axioms TDA.Mapper.GraphPL.Examples.natToUnit
+#print axioms TDA.Mapper.GraphPL.Examples.natMapperVertexEquiv
+#print axioms TDA.Mapper.GraphPL.Examples.overlappingIntervals
+#print axioms TDA.Mapper.GraphPL.Examples.overlappingIntervals_cover_edge_range
+#print axioms TDA.Mapper.GraphPL.Examples.singleArcIntervals
+#print axioms TDA.Mapper.GraphPL.Examples.singleArc_mapper_exact
+#print axioms TDA.Mapper.GraphPL.Examples.edgeOverlapIndex
+#print axioms TDA.Mapper.GraphPL.Examples.singleEdge_overlap_exact
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdgeGraph
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdgeHeight
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdgeDart
+#print axioms TDA.Mapper.GraphPL.Examples.overlappingIntervals_cover_twoEdge_range
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdgeOverlapIndex
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdgeIndexEquiv
+#print axioms TDA.Mapper.GraphPL.Examples.wideIntervals
+#print axioms TDA.Mapper.GraphPL.Examples.overlapToWide
+#print axioms TDA.Mapper.GraphPL.Examples.wideIntervals_cover_twoEdge_range
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdge_wide_refinement_incidence
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdge_cross_componentCover_disjoint
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdge_mapper_two_disjoint_edges
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdge_wide_refinement_behavior
+
 -- Coherent cover towers and their ordinary Mapper towers.
 #print axioms TDA.Mapper.CoherentCoverTower
 #print axioms TDA.Mapper.CoherentCoverTower.mapperComplex
