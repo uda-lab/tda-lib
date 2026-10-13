@@ -3,9 +3,10 @@ import TDA.Persistence.ActualLossHessianExamples
 /-!
 # Second-order presentation changes and insufficient regularity
 
-Two unequal nonlinear essential paths admit both a nontrivial relabeling and a
-presentation with an additional moving diagonal pair. The examples identify the
-final scalar second derivative; they do not identify ambient coefficient arrays.
+An actual nonlinear singleton filtration admits different-dimensional presentations
+with two unequal moving diagonal pairs and a nontrivial permutation of their labels.
+Additional two-essential-path examples exercise essential relabeling. The examples
+identify final scalar second derivatives without identifying ambient coefficient arrays.
 -/
 
 namespace TDA.Persistence
@@ -170,6 +171,194 @@ theorem quadraticEssentialLift_second_derivative_values (x h k : ℝ) :
     rw [← hv]
     exact quadraticEssentialDiagram_scalar_secondFDeriv_apply x h k
   exact ⟨hvalue, by rw [← quadraticEssentialLift_second_derivative_padding x]; exact hvalue⟩
+
+/-- An actual singleton filtration with nonlinear face value `1 + 2*t²`. -/
+def quadraticSingletonPresentationFilter (t : ℝ) :=
+  Examples.singletonFilter (1 + 2 * t ^ 2)
+
+/-- The actual degree-zero persistence diagram of this singleton family. -/
+noncomputable def actualQuadraticSingletonDiagram (t : ℝ) : Diagram ℝ :=
+  dgm (ZMod 2) (quadraticSingletonPresentationFilter t) 0
+
+/-- The minimal presentation retains the unique essential birth. -/
+def actualQuadraticSingletonCoordinates (t : ℝ) : DiagramCoordinates 0 1 :=
+  (Fin.elim0, fun _ => 1 + 2 * t ^ 2)
+
+/-- Two unequal redundant diagonal pairs move cubically in a larger presentation. -/
+def paddedActualQuadraticSingletonCoordinates (t : ℝ) : DiagramCoordinates 2 1 :=
+  (![(t ^ 3, t ^ 3), (1 + t ^ 3, 1 + t ^ 3)],
+    (actualQuadraticSingletonCoordinates t).2)
+
+/-- Swap the two unequal diagonal-pair labels in the actual family's padded lift. -/
+def swappedActualQuadraticSingletonCoordinates (t : ℝ) : DiagramCoordinates 2 1 :=
+  ((paddedActualQuadraticSingletonCoordinates t).1 ∘ Equiv.swap 0 1,
+    (paddedActualQuadraticSingletonCoordinates t).2)
+
+/-- The minimal coordinates factor the actual diagram, using actual singleton homology. -/
+theorem actualQuadraticSingletonCoordinates_factorization (t : ℝ) :
+    orderedQ 0 1 (actualQuadraticSingletonCoordinates t) =
+      actualQuadraticSingletonDiagram t := by
+  apply Diagram.ext
+  rw [actualQuadraticSingletonDiagram, quadraticSingletonPresentationFilter,
+    Examples.singleton_points]
+  simp [orderedQ, actualQuadraticSingletonCoordinates]
+
+/-- The full two-pair padded coordinates still factor the actual diagram. -/
+theorem paddedActualQuadraticSingletonCoordinates_factorization (t : ℝ) :
+    orderedQ 2 1 (paddedActualQuadraticSingletonCoordinates t) =
+      actualQuadraticSingletonDiagram t := by
+  rw [← actualQuadraticSingletonCoordinates_factorization t]
+  apply Diagram.ext
+  simp [orderedQ, paddedActualQuadraticSingletonCoordinates, actualQuadraticSingletonCoordinates]
+
+/-- Relabeling the padded finite coordinates preserves the actual diagram. -/
+theorem swappedActualQuadraticSingletonCoordinates_factorization (t : ℝ) :
+    orderedQ 2 1 (swappedActualQuadraticSingletonCoordinates t) =
+      actualQuadraticSingletonDiagram t := by
+  rw [← paddedActualQuadraticSingletonCoordinates_factorization t]
+  simpa [swappedActualQuadraticSingletonCoordinates] using
+    orderedQ_perm 2 1 (Equiv.swap 0 1) (Equiv.refl _)
+      (paddedActualQuadraticSingletonCoordinates t).1
+      (paddedActualQuadraticSingletonCoordinates t).2
+
+/-- This finite-pair relabeling is nontrivial at every parameter. -/
+theorem actualQuadraticSingletonCoordinates_swap_nontrivial (t : ℝ) :
+    paddedActualQuadraticSingletonCoordinates t ≠
+      swappedActualQuadraticSingletonCoordinates t := by
+  intro h
+  have hzero := congrArg (fun z : DiagramCoordinates 2 1 => (z.1 0).1) h
+  simp [paddedActualQuadraticSingletonCoordinates,
+    swappedActualQuadraticSingletonCoordinates] at hzero
+
+private theorem actualQuadraticSingletonCoordinates_contDiff :
+    ContDiff ℝ 2 actualQuadraticSingletonCoordinates := by
+  apply ContDiff.prodMk
+  · exact contDiff_const
+  · apply contDiff_pi.mpr
+    intro i
+    fun_prop
+
+private theorem paddedActualQuadraticSingletonCoordinates_contDiff :
+    ContDiff ℝ 2 paddedActualQuadraticSingletonCoordinates := by
+  apply ContDiff.prodMk
+  · apply contDiff_pi.mpr
+    intro i
+    fin_cases i <;> simp <;> fun_prop
+  · exact contDiff_snd.comp actualQuadraticSingletonCoordinates_contDiff
+
+private theorem swappedActualQuadraticSingletonCoordinates_contDiff :
+    ContDiff ℝ 2 swappedActualQuadraticSingletonCoordinates := by
+  apply ContDiff.prodMk
+  · apply contDiff_pi.mpr
+    intro i
+    fin_cases i <;> simp [paddedActualQuadraticSingletonCoordinates] <;> fun_prop
+  · exact contDiff_snd.comp paddedActualQuadraticSingletonCoordinates_contDiff
+
+/-- A globally C² minimal lift of the actual singleton family. -/
+def actualQuadraticSingletonLift : LocalC2DiagramLift actualQuadraticSingletonDiagram 0 1 where
+  carrier := Set.univ
+  isOpen_carrier := isOpen_univ
+  coordinates := actualQuadraticSingletonCoordinates
+  factorization := by intro t _; exact (actualQuadraticSingletonCoordinates_factorization t).symm
+  smooth := (actualQuadraticSingletonCoordinates_contDiff.of_le (by norm_num)).contDiffOn
+  smooth_two := actualQuadraticSingletonCoordinates_contDiff.contDiffOn
+
+/-- A globally C² lift of the same actual family with two redundant diagonal pairs. -/
+def paddedActualQuadraticSingletonLift :
+    LocalC2DiagramLift actualQuadraticSingletonDiagram 2 1 where
+  carrier := Set.univ
+  isOpen_carrier := isOpen_univ
+  coordinates := paddedActualQuadraticSingletonCoordinates
+  factorization := by
+    intro t _
+    exact (paddedActualQuadraticSingletonCoordinates_factorization t).symm
+  smooth := (paddedActualQuadraticSingletonCoordinates_contDiff.of_le (by norm_num)).contDiffOn
+  smooth_two := paddedActualQuadraticSingletonCoordinates_contDiff.contDiffOn
+
+/-- A globally C² lift with a nontrivial permutation of the padded finite labels. -/
+def swappedActualQuadraticSingletonLift :
+    LocalC2DiagramLift actualQuadraticSingletonDiagram 2 1 where
+  carrier := Set.univ
+  isOpen_carrier := isOpen_univ
+  coordinates := swappedActualQuadraticSingletonCoordinates
+  factorization := by
+    intro t _
+    exact (swappedActualQuadraticSingletonCoordinates_factorization t).symm
+  smooth := (swappedActualQuadraticSingletonCoordinates_contDiff.of_le (by norm_num)).contDiffOn
+  smooth_two := swappedActualQuadraticSingletonCoordinates_contDiff.contDiffOn
+
+/-- The loss of the actual singleton family is the same nonconstant quadratic polynomial. -/
+theorem actualQuadraticSingletonDiagram_scalar_loss (t : ℝ) :
+    essentialBirthSum (actualQuadraticSingletonDiagram t) = 1 + 2 * t ^ 2 :=
+  singleton_essential_loss _
+
+private theorem actualQuadraticSingletonDiagram_scalar_eq :
+    essentialBirthSum ∘ actualQuadraticSingletonDiagram =
+      essentialBirthSum ∘ quadraticEssentialDiagram := by
+  funext t
+  rw [Function.comp_apply, Function.comp_apply,
+    actualQuadraticSingletonDiagram_scalar_loss, quadraticEssentialDiagram_scalar_loss]
+
+/-- The derivative map of the actual scalar loss has the genuine derivative `4*h*k`. -/
+theorem actualQuadraticSingletonDiagram_scalar_hasFDerivAt_fderiv (x : ℝ) :
+    HasFDerivAt (fderiv ℝ (essentialBirthSum ∘ actualQuadraticSingletonDiagram))
+      (((4 : ℝ) • ContinuousLinearMap.id ℝ ℝ).smulRight
+        (ContinuousLinearMap.id ℝ ℝ)) x := by
+  rw [actualQuadraticSingletonDiagram_scalar_eq]
+  exact quadraticEssentialDiagram_scalar_hasFDerivAt_fderiv x
+
+/-- The actual singleton scalar second derivative is `4*h*k`. -/
+theorem actualQuadraticSingletonDiagram_scalar_secondFDeriv_apply (x h k : ℝ) :
+    fderiv ℝ (fderiv ℝ (essentialBirthSum ∘ actualQuadraticSingletonDiagram)) x h k =
+      4 * h * k := by
+  rw [actualQuadraticSingletonDiagram_scalar_eq]
+  exact quadraticEssentialDiagram_scalar_secondFDeriv_apply x h k
+
+/-- Nontrivial finite-pair relabeling preserves the final actual scalar bilinear form. -/
+theorem actualQuadraticSingletonLift_second_derivative_relabel (x : ℝ) :
+    secondDerivativeChain (essentialBirthSum ∘ orderedQ 2 1)
+        paddedActualQuadraticSingletonLift.coordinates x =
+      secondDerivativeChain (essentialBirthSum ∘ orderedQ 2 1)
+        swappedActualQuadraticSingletonLift.coordinates x := by
+  exact localLift_scalar_second_derivative_independent actualQuadraticSingletonDiagram
+    essentialBirthSum 2 1 2 1 paddedActualQuadraticSingletonLift
+    swappedActualQuadraticSingletonLift x (Set.mem_univ x) (Set.mem_univ x)
+    (essentialBirthSum_c2_all _)
+
+/-- Redundant diagonal coordinates change the dimension from `(0,1)` to `(2,1)`
+while preserving the final actual scalar bilinear form. -/
+theorem actualQuadraticSingletonLift_second_derivative_padding (x : ℝ) :
+    secondDerivativeChain (essentialBirthSum ∘ orderedQ 0 1)
+        actualQuadraticSingletonLift.coordinates x =
+      secondDerivativeChain (essentialBirthSum ∘ orderedQ 2 1)
+        paddedActualQuadraticSingletonLift.coordinates x := by
+  exact localLift_scalar_second_derivative_independent actualQuadraticSingletonDiagram
+    essentialBirthSum 0 1 2 1 actualQuadraticSingletonLift
+    paddedActualQuadraticSingletonLift x (Set.mem_univ x) (Set.mem_univ x)
+    (essentialBirthSum_c2_all _)
+
+/-- All three presentations of the actual family compute the concrete Hessian `4*h*k`.
+Only the final bilinear forms are identified, without ambient coefficient uniqueness. -/
+theorem actualQuadraticSingletonLift_second_derivative_values (x h k : ℝ) :
+    secondDerivativeChain (essentialBirthSum ∘ orderedQ 0 1)
+        actualQuadraticSingletonLift.coordinates x h k = 4 * h * k ∧
+      secondDerivativeChain (essentialBirthSum ∘ orderedQ 2 1)
+        paddedActualQuadraticSingletonLift.coordinates x h k = 4 * h * k ∧
+      secondDerivativeChain (essentialBirthSum ∘ orderedQ 2 1)
+        swappedActualQuadraticSingletonLift.coordinates x h k = 4 * h * k := by
+  have hv := localLift_scalar_second_fderiv actualQuadraticSingletonDiagram essentialBirthSum
+    0 1 actualQuadraticSingletonLift x (Set.mem_univ x) (essentialBirthSum_c2_all _)
+  have hvalue : secondDerivativeChain (essentialBirthSum ∘ orderedQ 0 1)
+      actualQuadraticSingletonLift.coordinates x h k = 4 * h * k := by
+    rw [← hv]
+    exact actualQuadraticSingletonDiagram_scalar_secondFDeriv_apply x h k
+  have hpadded : secondDerivativeChain (essentialBirthSum ∘ orderedQ 2 1)
+      paddedActualQuadraticSingletonLift.coordinates x h k = 4 * h * k := by
+    rw [← actualQuadraticSingletonLift_second_derivative_padding x]
+    exact hvalue
+  exact ⟨hvalue, hpadded, by
+    rw [← actualQuadraticSingletonLift_second_derivative_relabel x]
+    exact hpadded⟩
 
 /-- The actual empty complex has its unique real filtration. -/
 def emptyActualFilter :

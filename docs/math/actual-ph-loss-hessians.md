@@ -96,8 +96,10 @@ diagonal pair even though its restriction to the diagonal is zero.
   The signed loss's nonzero birth and death weights cancel against equal face
   second derivatives. For its square, a nonzero ambient Hessian pulls back
   to zero. Both actual scalar losses have zero second derivative.
-* Presentation examples swap unequal essential paths and append a moving
-  diagonal pair. The final second derivatives agree. The absolute
+* An actual singleton with face value `1+2*t²` has minimal, padded, and
+  nontrivially relabeled C² lifts. The larger lifts retain two unequal moving
+  diagonal pairs; all three yield the genuine scalar Hessian `4*h*k`.
+  Additional presentation examples swap unequal essential paths. The absolute
   endpoint-difference loss at the empty diagram fails the C² condition,
   because that condition implies the already-disproved C¹ condition there.
 
