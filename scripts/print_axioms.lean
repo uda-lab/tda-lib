@@ -3150,6 +3150,40 @@ set_option linter.auxLemma false
 #print axioms TDA.Topology.NerveExamples.emptyAmbient_nerve_is_bot
 #print axioms TDA.Topology.NerveExamples.emptyIndexFamily
 #print axioms TDA.Topology.NerveExamples.emptyIndex_nerve_is_bot
+
+-- Noninjective simplicial vertex maps.
+#print axioms TDA.Simplicial.VertexMap
+#print axioms TDA.Simplicial.VertexMap.id
+#print axioms TDA.Simplicial.VertexMap.comp
+#print axioms TDA.Simplicial.VertexMap.ext
+#print axioms TDA.Simplicial.VertexMap.ext_iff
+#print axioms TDA.Simplicial.VertexMap.comp_apply
+#print axioms TDA.Simplicial.VertexMap.id_apply
+#print axioms TDA.Simplicial.VertexMap.id_comp
+#print axioms TDA.Simplicial.VertexMap.comp_id
+#print axioms TDA.Simplicial.VertexMap.comp_assoc
+#print axioms TDA.Simplicial.map_le_iff
+#print axioms TDA.Simplicial.VertexMap.map_le_iff
+
+-- Refinement-induced maps of ordinary nerves.
+#print axioms TDA.Topology.nerveMap
+#print axioms TDA.Topology.nerveMap_apply
+#print axioms TDA.Topology.nerveMap_id
+#print axioms TDA.Topology.nerveMap_comp
+#print axioms TDA.Topology.reindexRefinement
+#print axioms TDA.Topology.reindexRefinement_symm
+#print axioms TDA.Topology.nerveMap_reindex_comp
+#print axioms TDA.Topology.nerveMap_reindex_symm_comp
+
+-- Noninjective vertex-map fixtures.
+#print axioms TDA.Simplicial.VertexMapExamples.edge_collapse_fixture
+#print axioms TDA.Simplicial.VertexMapExamples.permutation_inverse_fixture
+#print axioms TDA.Simplicial.VertexMapExamples.ghost_vertices_are_not_forced
+
+-- Refinement-induced nerve-map fixtures.
+#print axioms TDA.Topology.NerveMapExamples.duplicate_edge_maps_to_singleton
+#print axioms TDA.Topology.NerveMapExamples.permutation_reindex_inverse_fixture
+#print axioms TDA.Topology.NerveMapExamples.composable_refinements_have_direct_composite
 #print axioms TDA.Persistence.Reduction.DistinctPivots
 #print axioms TDA.Persistence.Reduction.IsDeath
 #print axioms TDA.Persistence.Reduction.reduced_mulVec_kernel
