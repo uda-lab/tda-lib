@@ -144,3 +144,36 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.Examples.twoEdge_cross_componentCover_disjoint
 #print axioms TDA.Mapper.GraphPL.Examples.twoEdge_mapper_two_disjoint_edges
 #print axioms TDA.Mapper.GraphPL.Examples.twoEdge_wide_refinement_behavior
+
+-- Coherent cover towers and their ordinary Mapper towers.
+#print axioms TDA.Mapper.CoherentCoverTower
+#print axioms TDA.Mapper.CoherentCoverTower.mapperComplex
+#print axioms TDA.Mapper.CoherentCoverTower.mapperMap
+#print axioms TDA.Mapper.CoherentCoverTower.mapperMap_refl
+#print axioms TDA.Mapper.CoherentCoverTower.mapperMap_trans
+#print axioms TDA.Mapper.mapperMap_contiguous
+
+-- Contiguity and coherent-tower fixtures.
+#print axioms TDA.Mapper.TowerExamples.selectorSource
+#print axioms TDA.Mapper.TowerExamples.selectorTarget
+#print axioms TDA.Mapper.TowerExamples.selectFalse
+#print axioms TDA.Mapper.TowerExamples.selectTrue
+#print axioms TDA.Mapper.TowerExamples.distinct_selector_maps_are_contiguous
+#print axioms TDA.Mapper.TowerExamples.oneSource
+#print axioms TDA.Mapper.TowerExamples.isolatedTarget
+#print axioms TDA.Mapper.TowerExamples.mapToIsolated
+#print axioms TDA.Mapper.TowerExamples.isolated_vertex_maps_are_not_contiguous
+#print axioms TDA.Mapper.TowerExamples.empty_source_maps_are_contiguous
+#print axioms TDA.Mapper.TowerExamples.ThreeStage
+#print axioms TDA.Mapper.TowerExamples.ThreeStage.ofNat_ctorIdx
+#print axioms TDA.Mapper.TowerExamples.ThreeStageLE
+#print axioms TDA.Mapper.TowerExamples.instLEThreeStage
+#print axioms TDA.Mapper.TowerExamples.instPreorderThreeStage
+#print axioms TDA.Mapper.TowerExamples.threeStageIndex
+#print axioms TDA.Mapper.TowerExamples.threeStageCover
+#print axioms TDA.Mapper.TowerExamples.threeStageSelector
+#print axioms TDA.Mapper.TowerExamples.threeStageRefinement
+#print axioms TDA.Mapper.TowerExamples.threeStageTower
+#print axioms TDA.Mapper.TowerExamples.threeStageMap
+#print axioms TDA.Mapper.TowerExamples.threeStageComponentIndex
+#print axioms TDA.Mapper.TowerExamples.three_stage_tower_composite_and_collapsing_edge

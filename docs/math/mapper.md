@@ -188,3 +188,30 @@ survives. The overlapping intervals `(-1, 3/2)` and `(1/2, 3)` give one Mapper
 edge on a single graph edge and two disconnected copies on a disjoint union of
 two graph edges. Refinement to `(-1, 3)` merges the two source labels within each
 copy while the two domain components remain distinct.
+
+## Contiguity and coherent Mapper towers
+
+Two simplicial vertex maps are contiguous when, for every source face, the
+union of its two finite vertex images is a target face. Contiguity is reflexive
+and symmetric and is preserved by precomposition and postcomposition with
+simplicial vertex maps. It is not treated as a transitive relation.
+
+Any two selected refinements between the same indexed families induce
+contiguous maps of their ordinary nerves. A common point witnessing a source
+face lies in every target member selected by either refinement, so it witnesses
+the union face. Applying this result to the component-cover refinements shows
+that any two selected target-cover refinements induce contiguous ordinary
+Mapper maps. The maps can differ on vertices; contiguity, rather than equality,
+is the choice-independence statement at this level. No homology-map equality or
+chain homotopy is inferred.
+
+A coherent cover tower over a preorder consists of a possibly varying index
+type and indexed family at every parameter, together with a selected
+refinement for every comparison. The index types may depend on the parameter
+but live in one common universe. Strict identity and composition equations for
+the selector functions are supplied as part of the tower data; coherence is
+not inferred from unrelated selector choices. Ordinary Mapper assigns a
+complex to every parameter and a simplicial vertex map to every comparison,
+and the existing strict refinement laws prove identity and composition for
+these maps. This direct interface makes no fixed-ambient inclusion claim and
+adds no categorical, diagram, stability, or persistence conclusion.

@@ -6,3 +6,5 @@ import TDA.Mapper.Refinement
 import TDA.Mapper.BasicExamples
 import TDA.Mapper.GraphPL
 import TDA.Mapper.GraphPLExamples
+import TDA.Mapper.Tower
+import TDA.Mapper.TowerExamples
