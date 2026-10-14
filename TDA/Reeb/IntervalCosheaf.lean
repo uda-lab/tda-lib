@@ -88,68 +88,73 @@ theorem thicken_inf {I I' : OpenInterval} (h : ((I ⊓ I' : OpenInterval) : Set 
   obtain ⟨y, hy, hy', hxy⟩ := key
   exact mem_thicken.2 ⟨y, (show y ∈ (I : Set ℝ) ∩ I' from ⟨hy, hy'⟩), hxy⟩
 
-/-- Interval-chain lemma. For members `I i`, `I j` of a cover of
-an interval `J`, with `W = T_ε (I i) ⊓ T_ε (I j)`, there is a finite chain `i = k₀, …, kₙ = j`
-with `W ≤ T_ε (I kᵣ ⊓ I kᵣ₊₁)` for every step. (`ReflTransGen` is a finite chain.) For empty
-`W` one step suffices. Otherwise the convex hull of `I i ∪ I j` lies in `J` and each of its points
-outside `I i ∪ I j` is within `ε` of all of `W`, so the members through it contain `W` after
-thickening; overlapping such members are related by `thicken_inf`, and connectedness of the hull
-closes the chain. -/
-theorem reflTransGen_thicken_inf {κ : Type*} {I : κ → OpenInterval} {J : OpenInterval}
-    (hJ : ⋃ k, (I k : Set ℝ) = J) (ε : ℝ≥0) (i j : κ) :
-    Relation.ReflTransGen
-      (fun k l => thicken ε (I i) ⊓ thicken ε (I j) ≤ thicken ε (I k ⊓ I l)) i j := by
-  set W := thicken ε (I i) ⊓ thicken ε (I j) with hW
-  by_cases hne : (W : Set ℝ).Nonempty
-  swap
-  · refine Relation.ReflTransGen.single (le_iff_subset.2 ?_)
-    rw [not_nonempty_iff_eq_empty.1 hne]
-    exact empty_subset _
+/-- **Hull-cover step in DMP Proposition 4.20.** If
+`W = T_ε (I i) ⊓ T_ε (I j)` is nonempty, every point of the order-convex hull of
+`I i ∪ I j` belongs to a cover member whose `ε`-thickening contains `W`. -/
+theorem exists_cover_member_thicken_of_mem_hull {κ : Type*} {I : κ → OpenInterval}
+    {J : OpenInterval} (hJ : ⋃ k, (I k : Set ℝ) = J) (ε : ℝ≥0) (i j : κ)
+    (_hW : ((thicken ε (I i) ⊓ thicken ε (I j) : OpenInterval) : Set ℝ).Nonempty) {y : ℝ}
+    (hy : ∃ u ∈ (I i : Set ℝ) ∪ I j, ∃ v ∈ (I i : Set ℝ) ∪ I j, u ≤ y ∧ y ≤ v) :
+    ∃ k, y ∈ (I k : Set ℝ) ∧
+      thicken ε (I i) ⊓ thicken ε (I j) ≤ thicken ε (I k) := by
+  obtain ⟨u, hu, v, hv, huy, hyv⟩ := hy
+  by_cases hyi : y ∈ (I i : Set ℝ)
+  · exact ⟨i, hyi, inf_le_left⟩
+  by_cases hyj : y ∈ (I j : Set ℝ)
+  · exact ⟨j, hyj, inf_le_right⟩
+  have hsub : (I i : Set ℝ) ∪ I j ⊆ J :=
+    union_subset (le_iff_subset.1 (le_of_iUnion_eq hJ i)) (le_iff_subset.1 (le_of_iUnion_eq hJ j))
+  have hyJ : y ∈ (J : Set ℝ) := J.ordConnected.out (hsub hu) (hsub hv) ⟨huy, hyv⟩
+  rw [← hJ] at hyJ
+  obtain ⟨k, hk⟩ := mem_iUnion.1 hyJ
+  refine ⟨k, hk, le_iff_subset.2 fun x hx => mem_thicken.2 ⟨y, hk, ?_⟩⟩
+  have hx' : x ∈ (thicken ε (I i) : Set ℝ) ∩ thicken ε (I j) := hx
+  obtain ⟨y₁, hy₁, h₁⟩ := mem_thicken.1 hx'.1
+  obtain ⟨y₂, hy₂, h₂⟩ := mem_thicken.1 hx'.2
+  have hy₁' : y₁ ∈ (I i : Set ℝ) := hy₁
+  have hy₂' : y₂ ∈ (I j : Set ℝ) := hy₂
+  rw [abs_le] at h₁ h₂ ⊢
+  rcases le_total y y₁ with hy1 | h1y <;> rcases le_total y y₂ with hy2 | h2y
+  · exfalso
+    rcases hu with hu | hu
+    · exact hyi ((I i).ordConnected.out hu hy₁' ⟨huy, hy1⟩)
+    · exact hyj ((I j).ordConnected.out hu hy₂' ⟨huy, hy2⟩)
+  · constructor <;> linarith
+  · constructor <;> linarith
+  · exfalso
+    rcases hv with hv | hv
+    · exact hyi ((I i).ordConnected.out hy₁' hv ⟨h1y, hyv⟩)
+    · exact hyj ((I j).ordConnected.out hy₂' hv ⟨h2y, hyv⟩)
+
+/-- **Reachable-partition step in DMP Proposition 4.20.** Among the cover members whose
+`ε`-thickenings contain `W = T_ε (I i) ⊓ T_ε (I j)`, the members chain-reachable from `i` and
+the members not chain-reachable from `i` form disjoint open unions. Preconnectedness of the
+order-convex hull of `I i ∪ I j` therefore makes every such member meeting the hull reachable. -/
+theorem reflTransGen_thicken_inf_of_mem_hull {κ : Type*} {I : κ → OpenInterval}
+    {J : OpenInterval} (hJ : ⋃ k, (I k : Set ℝ) = J) (ε : ℝ≥0) (i j : κ)
+    (hW : ((thicken ε (I i) ⊓ thicken ε (I j) : OpenInterval) : Set ℝ).Nonempty) :
+    ∀ k, thicken ε (I i) ⊓ thicken ε (I j) ≤ thicken ε (I k) →
+      ((I k : Set ℝ) ∩
+        {y | ∃ u ∈ (I i : Set ℝ) ∪ I j, ∃ v ∈ (I i : Set ℝ) ∪ I j, u ≤ y ∧ y ≤ v}).Nonempty →
+      Relation.ReflTransGen
+        (fun k l => thicken ε (I i) ⊓ thicken ε (I j) ≤ thicken ε (I k ⊓ I l)) i k := by
+  let W := thicken ε (I i) ⊓ thicken ε (I j)
+  let S : Set ℝ :=
+    {y | ∃ u ∈ (I i : Set ℝ) ∪ I j, ∃ v ∈ (I i : Set ℝ) ∪ I j, u ≤ y ∧ y ≤ v}
+  change ∀ k, W ≤ thicken ε (I k) → ((I k : Set ℝ) ∩ S).Nonempty →
+    Relation.ReflTransGen (fun k l => W ≤ thicken ε (I k ⊓ I l)) i k
+  have hne : (W : Set ℝ).Nonempty := by simpa [W] using hW
   have hstep : ∀ k l, W ≤ thicken ε (I k) → W ≤ thicken ε (I l) →
       ((I k : Set ℝ) ∩ I l).Nonempty → W ≤ thicken ε (I k ⊓ I l) := fun k l hk hl hkl => by
     rw [thicken_inf (by rw [coe_inf]; exact hkl) ε]
     exact le_inf hk hl
-  obtain ⟨x₀, hx₀⟩ := hne
-  have hx₀' : x₀ ∈ (thicken ε (I i) : Set ℝ) ∩ thicken ε (I j) := hx₀
-  obtain ⟨p, hp, -⟩ := mem_thicken.1 hx₀'.1
-  obtain ⟨q, hq, -⟩ := mem_thicken.1 hx₀'.2
-  have hsub : (I i : Set ℝ) ∪ I j ⊆ J :=
-    union_subset (le_iff_subset.1 (le_of_iUnion_eq hJ i)) (le_iff_subset.1 (le_of_iUnion_eq hJ j))
-  -- the convex hull of `I i ∪ I j`
-  let S : Set ℝ := {y | ∃ u ∈ (I i : Set ℝ) ∪ I j, ∃ v ∈ (I i : Set ℝ) ∪ I j, u ≤ y ∧ y ≤ v}
   have hS : S.OrdConnected := ⟨fun a ha b hb y hy => by
     obtain ⟨u, hu, -, -, hua, -⟩ := ha
     obtain ⟨-, -, v, hv, -, hbv⟩ := hb
     exact ⟨u, hu, v, hv, hua.trans hy.1, hy.2.trans hbv⟩⟩
-  -- every point of the hull lies in a member whose thickening contains `W`
   have hcov : ∀ y ∈ S, ∃ k, y ∈ (I k : Set ℝ) ∧ W ≤ thicken ε (I k) := by
-    rintro y ⟨u, hu, v, hv, huy, hyv⟩
-    by_cases hyi : y ∈ (I i : Set ℝ)
-    · exact ⟨i, hyi, inf_le_left⟩
-    by_cases hyj : y ∈ (I j : Set ℝ)
-    · exact ⟨j, hyj, inf_le_right⟩
-    have hyJ : y ∈ (J : Set ℝ) := J.ordConnected.out (hsub hu) (hsub hv) ⟨huy, hyv⟩
-    rw [← hJ] at hyJ
-    obtain ⟨k, hk⟩ := mem_iUnion.1 hyJ
-    refine ⟨k, hk, le_iff_subset.2 fun x hx => mem_thicken.2 ⟨y, hk, ?_⟩⟩
-    have hx' : x ∈ (thicken ε (I i) : Set ℝ) ∩ thicken ε (I j) := hx
-    obtain ⟨y₁, hy₁, h₁⟩ := mem_thicken.1 hx'.1
-    obtain ⟨y₂, hy₂, h₂⟩ := mem_thicken.1 hx'.2
-    have hy₁' : y₁ ∈ (I i : Set ℝ) := hy₁
-    have hy₂' : y₂ ∈ (I j : Set ℝ) := hy₂
-    rw [abs_le] at h₁ h₂ ⊢
-    rcases le_total y y₁ with hy1 | h1y <;> rcases le_total y y₂ with hy2 | h2y
-    · exfalso
-      rcases hu with hu | hu
-      · exact hyi ((I i).ordConnected.out hu hy₁' ⟨huy, hy1⟩)
-      · exact hyj ((I j).ordConnected.out hu hy₂' ⟨huy, hy2⟩)
-    · constructor <;> linarith
-    · constructor <;> linarith
-    · exfalso
-      rcases hv with hv | hv
-      · exact hyi ((I i).ordConnected.out hy₁' hv ⟨h1y, hyv⟩)
-      · exact hyj ((I j).ordConnected.out hy₂' hv ⟨h2y, hyv⟩)
-  -- split the members containing `W` by reachability from `i`
+    intro y hy
+    simpa [W, S] using exists_cover_member_thicken_of_mem_hull hJ ε i j hW hy
   let P : κ → κ → Prop := fun k l => W ≤ thicken ε (I k ⊓ I l)
   let O₁ : Set ℝ := ⋃ (k) (_ : W ≤ thicken ε (I k) ∧ Relation.ReflTransGen P i k), (I k : Set ℝ)
   let O₂ : Set ℝ := ⋃ (k) (_ : W ≤ thicken ε (I k) ∧ ¬ Relation.ReflTransGen P i k),
@@ -168,14 +173,43 @@ theorem reflTransGen_thicken_inf {κ : Type*} {I : κ → OpenInterval} {J : Ope
     by_cases hk : Relation.ReflTransGen P i k
     · exact Or.inl (mem_iUnion₂.2 ⟨k, ⟨hkW, hk⟩, hyk⟩)
     · exact Or.inr (mem_iUnion₂.2 ⟨k, ⟨hkW, hk⟩, hyk⟩)
+  obtain ⟨x₀, hx₀⟩ := hne
+  have hx₀' : x₀ ∈ (thicken ε (I i) : Set ℝ) ∩ thicken ε (I j) := hx₀
+  obtain ⟨p, hp, -⟩ := mem_thicken.1 hx₀'.1
   have hp' : p ∈ (I i : Set ℝ) := hp
-  have hq' : q ∈ (I j : Set ℝ) := hq
   have hpS : p ∈ S := ⟨p, Or.inl hp', p, Or.inl hp', le_rfl, le_rfl⟩
-  have hqS : q ∈ S := ⟨q, Or.inr hq', q, Or.inr hq', le_rfl, le_rfl⟩
   have hSO₁ : S ⊆ O₁ := hS.isPreconnected.subset_left_of_subset_union hO₁ hO₂ hdisj hSO
     ⟨p, hpS, mem_iUnion₂.2 ⟨i, ⟨inf_le_left, .refl⟩, hp'⟩⟩
-  obtain ⟨k, ⟨hkW, hk⟩, hqk⟩ := mem_iUnion₂.1 (hSO₁ hqS)
-  exact hk.tail (hstep k j hkW inf_le_right ⟨q, hqk, hq'⟩)
+  intro k hkW
+  rintro ⟨q, hqk, hqS⟩
+  obtain ⟨l, ⟨hlW, hl⟩, hql⟩ := mem_iUnion₂.1 (hSO₁ hqS)
+  exact hl.tail (hstep l k hlW hkW ⟨q, hql, hqk⟩)
+
+/-- Interval-chain lemma. For members `I i`, `I j` of a cover of
+an interval `J`, with `W = T_ε (I i) ⊓ T_ε (I j)`, there is a finite chain `i = k₀, …, kₙ = j`
+with `W ≤ T_ε (I kᵣ ⊓ I kᵣ₊₁)` for every step. (`ReflTransGen` is a finite chain.) For empty
+`W` one step suffices. Otherwise the convex hull of `I i ∪ I j` lies in `J` and each of its points
+outside `I i ∪ I j` is within `ε` of all of `W`, so the members through it contain `W` after
+thickening; overlapping such members are related by `thicken_inf`, and connectedness of the hull
+closes the chain. -/
+theorem reflTransGen_thicken_inf {κ : Type*} {I : κ → OpenInterval} {J : OpenInterval}
+    (hJ : ⋃ k, (I k : Set ℝ) = J) (ε : ℝ≥0) (i j : κ) :
+    Relation.ReflTransGen
+      (fun k l => thicken ε (I i) ⊓ thicken ε (I j) ≤ thicken ε (I k ⊓ I l)) i j := by
+  set W := thicken ε (I i) ⊓ thicken ε (I j) with hW
+  by_cases hne : (W : Set ℝ).Nonempty
+  swap
+  · refine Relation.ReflTransGen.single (le_iff_subset.2 ?_)
+    rw [not_nonempty_iff_eq_empty.1 hne]
+    exact empty_subset _
+  have hne' : ((thicken ε (I i) ⊓ thicken ε (I j) : OpenInterval) : Set ℝ).Nonempty := by
+    simpa [W] using hne
+  obtain ⟨x₀, hx₀⟩ := hne
+  have hx₀' : x₀ ∈ (thicken ε (I i) : Set ℝ) ∩ thicken ε (I j) := hx₀
+  obtain ⟨q, hq, -⟩ := mem_thicken.1 hx₀'.2
+  have hq' : q ∈ (I j : Set ℝ) := hq
+  apply reflTransGen_thicken_inf_of_mem_hull hJ ε i j hne' j inf_le_right
+  exact ⟨q, hq', q, Or.inr hq', q, Or.inr hq', le_rfl, le_rfl⟩
 
 /-- The interval-chain lemma in the body's literal form: for nonempty
 `W = T_ε (I i) ⊓ T_ε (I j)` there is a finite chain `i = k₀, …, kₙ = j` whose consecutive original
