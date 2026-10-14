@@ -95,12 +95,16 @@ theorem actualPrefixHomology_rank (e : CompatibleOrder f) (p : ℕ)
   have hrank := hrange.finrank_eq
   change Module.finrank k (LinearMap.range F) = _
   rw [hrank]
-  let h := actualReduction_normalForm k e
+  -- Use the original differential's square-zero law separately from reduction.
+  -- hChange supplies both inverse laws and filtered degree support for V and W.
+  have hSquareZero := actualBoundaryMatrix_sq_zero k e
+  rcases actualReduction_normalForm k e with
+    ⟨hReducedEq, hChange, hLowersDegree, _, hDistinctPivots, _⟩
   exact originalHomologyMap_rank_formula (faceDegree e)
     (actualBoundaryMatrix k e) (actualReducedBoundary k e)
     (actualTraceChange k e) (actualTraceChangeInv k e)
-    (actualBoundaryMatrix_sq_zero k e) h.1 h.2.1 h.2.2.1
-    h.2.2.2.2.1 p s.val t.val hst (by omega)
+    hSquareZero hReducedEq hChange hLowersDegree
+    hDistinctPivots p s.val t.val hst (by omega)
 
 /-- The reducer's occurrence multiset is the canonical barcode of actual
 prefix simplicial homology. The comparison uses every structure-map rank. -/

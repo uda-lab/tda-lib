@@ -6,6 +6,12 @@ import TDA.Persistence.DiagramSecondOrderCalculus
 All `ContDiff` assertions concern Euclidean coordinate maps or scalar pullbacks.
 The diagram type has no topology or derivative here. In particular, order zero
 means continuity. The index is governed solely by mathlib's `ContDiff` predicate.
+
+`LocalCrDiagramLift` and `CrThroughAllRepresentatives` are the general regularity
+API. The C¹/C² structures in the preceding calculus modules remain convenient
+fixed-order inputs for derivatives and Hessians. The conversions below preserve
+their carrier, coordinates and factorization; the all-representative predicates
+at orders one and two are definitionally equivalent.
 -/
 
 namespace TDA.Persistence
@@ -82,7 +88,7 @@ theorem CrThroughAllRepresentatives.one_iff {V : Diagram ℝ → ℝ} {D : Diagr
 theorem CrThroughAllRepresentatives.two_iff {V : Diagram ℝ → ℝ} {D : Diagram ℝ} :
     CrThroughAllRepresentatives 2 V D ↔ C2ThroughAllRepresentatives V D := Iff.rfl
 
-/-- The old `C¹` lift embeds without changing its carrier or coordinates. -/
+/-- The `C¹` convenience lift embeds without changing its carrier or coordinates. -/
 def LocalDiagramLift.toCr {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {B : E → Diagram ℝ} {m n : ℕ} (L : LocalDiagramLift B m n) :
     LocalCrDiagramLift 1 B m n where
@@ -92,7 +98,7 @@ def LocalDiagramLift.toCr {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   factorization := L.factorization
   regular := L.smooth
 
-/-- The old `C²` lift embeds without changing its carrier or coordinates. -/
+/-- The `C²` convenience lift embeds without changing its carrier or coordinates. -/
 def LocalC2DiagramLift.toCr {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {B : E → Diagram ℝ} {m n : ℕ} (L : LocalC2DiagramLift B m n) :
     LocalCrDiagramLift 2 B m n where
@@ -102,7 +108,7 @@ def LocalC2DiagramLift.toCr {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
   factorization := L.factorization
   regular := L.smooth_two
 
-/-- Recover the unchanged old `C¹` lift at index one. -/
+/-- Recover the `C¹` convenience lift at index one. -/
 def LocalCrDiagramLift.toC1 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {B : E → Diagram ℝ} {m n : ℕ} (L : LocalCrDiagramLift 1 B m n) :
     LocalDiagramLift B m n where
@@ -112,7 +118,7 @@ def LocalCrDiagramLift.toC1 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
   factorization := L.factorization
   smooth := L.regular
 
-/-- Recover both old fields of a `C²` lift at index two. -/
+/-- Recover both regularity fields of the `C²` convenience lift at index two. -/
 def LocalCrDiagramLift.toC2 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {B : E → Diagram ℝ} {m n : ℕ} (L : LocalCrDiagramLift 2 B m n) :
     LocalC2DiagramLift B m n where
