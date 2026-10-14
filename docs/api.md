@@ -48,7 +48,10 @@ single shared universe on the whole library.
 
 ## Persistent homology results and computational boundary
 
-For a pointwise finite-dimensional module over a field on `Fin N`,
+The finite decomposition API takes `M : PModule.{u,0,u} k (Fin N)` with
+`k : Type u`, `[Field k]`, and `[∀ i : Fin N, FiniteDimensional k (M.obj i)]`. The index
+universe is `0`, and the field and module-carrier universes are both `u`; this
+does not extend the decomposition theorem to independent carrier universes.
 `exists_barcode_decomposition` and `nonempty_rankBarcodeIso` construct genuine natural
 interval semantics. `nonempty_iso_iff_structureMapRank_eq` classifies these modules by
 the ranks of all actual structure maps, including composites. The canonical object is
@@ -75,6 +78,15 @@ Hessian includes both chain-rule terms. These are local results on the declared
 neighborhoods, not a claim of global smoothness at arbitrary pairing changes. See
 [local regularity](math/diagram-calculus.md) and
 [actual loss Hessians](math/actual-ph-loss-hessians.md).
+
+For general regularity, use `LocalCrDiagramLift r`, `DiagramContDiffAt r`,
+`CrThroughAllRepresentatives r` and the face-template APIs `fixedFaceLift_contDiffOn_cr`
+and `fixedFaceCrLift`. The C¹/C² lift structures and `actualFaceLossLift` /
+`actualFaceLossC2Lift` remain convenient inputs to derivative and Hessian theorems.
+Their conversions to/from the general layer preserve the carrier, coordinates and
+factorization; at orders one and two the all-representative predicates are
+definitionally equivalent. These wrappers do not supply stronger regularity or new
+diagram-level derivatives. See [the calculus-layer guide](math/diagram-calculus.md#regularity-layers).
 
 `TDA.Persistence.Reduction.FiniteInput.run` is an executable certified F₂/integer path
 from a finite simplex list to occurrence records. It rejects invalid input instead of

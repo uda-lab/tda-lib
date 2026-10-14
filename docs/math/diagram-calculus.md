@@ -41,6 +41,25 @@ The formal examples also show that an essential-only presentation and a
 finite-only presentation can vary, while the zero-coordinate presentation and
 any fixed ordered representative give constant lifts.
 
+## Regularity layers
+
+`LocalCrDiagramLift r`, `DiagramContDiffAt r` and `CrThroughAllRepresentatives r`
+are the canonical general regularity layer, with `r : ℕ∞ω` governed by mathlib's
+`ContDiff`. `localLift_scalar_cr` gives the scalar conclusion at that order.
+`fixedFaceLift_contDiffOn_cr` and `fixedFaceCrLift` supply the corresponding
+full-template face-coordinate results for actual PH under their stated hypotheses.
+
+The first-order `LocalDiagramLift` and second-order `LocalC2DiagramLift` are
+deliberate convenience structures for derivative and Hessian APIs. `toCr`, `toC1`
+and `toC2` preserve their carrier, coordinate map and factorization. The C²
+structure also stores a C¹ proof; `toC2` obtains it by lowering the regularity
+order. The `one_iff` / `two_iff` lemmas for `CrThroughAllRepresentatives` are
+`Iff.rfl`, so `C1ThroughAllRepresentatives` and `C2ThroughAllRepresentatives`
+express the same loss hypotheses at those orders. The specialized
+`fixedFaceLift_contDiffOn` / `_two` results and `actualFaceLossLift` /
+`actualFaceLossC2Lift` retain the convenient fixed-order interfaces. They use
+the same full face-coordinate template and add no independent smoothness claim.
+
 ## Correspondence with ordered-barcode calculus
 
 [Leygonie–Oudot–Tillmann, accepted version, Definitions 2.8 and 3.1](https://arxiv.org/pdf/1910.00960v4)
