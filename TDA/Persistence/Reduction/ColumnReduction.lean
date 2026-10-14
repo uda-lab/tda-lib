@@ -5,7 +5,7 @@ import TDA.Persistence.Reduction.TraceCertificate
 
 This construction follows the inner earlier-column elimination in Zomorodian--Carlsson,
 *Computing Persistent Homology* (https://geometry.stanford.edu/paper/zc-cph-04/zc-cph-04.pdf),
-§§4.1--4.2, and Bauer, *Ripser* (https://arxiv.org/pdf/1908.02518), §3.1/Algorithm 1.
+§§4.1--4.2, and Bauer, *Ripser* (https://arxiv.org/pdf/1908.02518v2), §3.1/Algorithm 1.
 Indices are zero-based `Fin m`; an absent pivot is `none`, so row zero remains a real pivot.
 The finite selector takes the least earlier matching source index. Its scalar is the negative
 ratio of current target/source pivot entries over any field. The natural fuel is the initial
