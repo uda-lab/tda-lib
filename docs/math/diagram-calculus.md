@@ -1,5 +1,7 @@
 # Scalar calculus through ordered diagram presentations
 
+Consulted manifestations, attribution and rights: [LOT21-v4](references.md#LOT21-v4).
+
 The [second-order extension](actual-ph-loss-hessians.md) establishes C² scalar
 regularity and genuine second derivatives, retaining both terms of the
 ordinary second-order chain rule.

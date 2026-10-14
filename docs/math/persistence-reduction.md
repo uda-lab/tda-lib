@@ -1,5 +1,7 @@
 # Persistence matrix reduction primitives
 
+Consulted manifestations, attribution and rights: [Bauer21-v2](references.md#Bauer21-v2), [ZC04](references.md#ZC04), [mathlib-0df444a](references.md#mathlib-0df444a).
+
 ## Finite column pivots and a cancellation step
 
 For a coefficient vector `c : Fin m → k`, `columnPivot c` is the greatest index with nonzero

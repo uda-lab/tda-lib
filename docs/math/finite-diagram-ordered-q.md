@@ -1,5 +1,7 @@
 # Finite diagrams and the ordered-barcode map
 
+Consulted manifestations, attribution and rights: [LOT21-v4](references.md#LOT21-v4).
+
 `TDA.Persistence.Diagram α` stores a finite multiset of pairs in
 `α × WithTop α`, with the proof that no stored pair lies on the finite diagonal.
 Here `α` has a linear order. Finite deaths may lie on either side of their

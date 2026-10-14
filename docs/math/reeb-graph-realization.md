@@ -1,5 +1,7 @@
 # Realizations of simple graphs
 
+Consulted manifestations, attribution and rights: [ReebOrdering-aa7d10f](references.md#ReebOrdering-aa7d10f), [mathlib-0df444a](references.md#mathlib-0df444a).
+
 ## The realization
 
 For `V : Type u` and `G : SimpleGraph V` the cells are

@@ -1,5 +1,7 @@
 # Mapper foundations
 
+Consulted manifestations, attribution and rights: [DMW16-v2](references.md#DMW16-v2), [CO16-v3](references.md#CO16-v3).
+
 ## Indexed set covers
 
 An indexed cover family is a function `U : I → Set X`. Its index type is part of the

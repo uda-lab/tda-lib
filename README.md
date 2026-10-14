@@ -9,8 +9,10 @@ interval decomposition and complete-rank classification, actual sublevel persist
 diagrams, finite-filter bottleneck stability, and local regularity, derivative and Hessian
 results with explicit lift hypotheses. A certified finite F₂ simplex-list computation
 connects its output to those actual diagrams. Reeb/cosheaf and ordinary Mapper constructions
-also implement their bounded lane contracts; their pre-publication source review remains
-tracked in [#215](https://github.com/uda-lab/tda-lib/issues/215).
+also implement their bounded lane contracts. The selected pre-publication reviews in
+[#215](https://github.com/uda-lab/tda-lib/issues/215) are complete;
+[the source register](docs/math/references.md) records their direct-source and digest-based
+review boundaries, exact manifestations, attribution and unresolved rights questions.
 
 See [the public API guide](docs/api.md) for entry points, coefficient and finiteness
 requirements, computational scope and deferred extensions. `TDA.placeholder_add_zero`
@@ -19,6 +21,26 @@ remains an infrastructure smoke theorem exercising the axiom audit.
 For ordinary use, import an area such as `TDA.Persistence`, or `TDA.Library` for all
 library areas. `TDA` additionally imports standalone examples and acceptance fixtures,
 and remains the comprehensive audit and documentation root.
+
+## Next directions
+
+The five directions in [#227](https://github.com/uda-lab/tda-lib/issues/227) describe future
+scope, not implemented results, execution authorization, a serial schedule or requirements
+that every lane finish before the first stable release. Precise contracts stay in Issues.
+
+| Direction | Bounded starting point and sources |
+|---|---|
+| PH distances and stability | Finite positive diagrams with finite deaths and no essential bars, with the ground metric fixed explicitly: partial-matching p-cost and boundary/PD-transport equality for 1 ≤ p < ∞; then finite-constructible real-index interleavings/isometry with explicit endpoints and tails. [Figalli–Gigli](docs/math/references.md#FG10), corrected [Divol–Lacombe v4](docs/math/references.md#DL20-v4), [Bauer–Lesnick](docs/math/references.md#BL15-v4). The existing bottleneck uses L∞ ground cost; keep this distinct from Figalli–Gigli’s bounded quadratic Euclidean setting and its later PD generalization. |
+| Persistence images | Independently start fixed positive Gaussian bandwidth, bounded Lipschitz nonnegative diagonal-vanishing birth–persistence weights and fixed measurable pixels; stability for every finite partial matching, then first-order transport. [Adams et al.](docs/math/references.md#AE17), [Kusano–Fukumizu–Hiraoka](docs/math/references.md#KFH18); pixel and RKHS norms remain distinct. [Obayashi–Hiraoka](docs/math/references.md#OH17-v2) linear-learning/inverse analysis is separate scope. [Landscapes](docs/math/references.md#B15) and [scale-space kernels](docs/math/references.md#RHBK15-v1) are distinct predecessors. |
+| Metric and computational geometry | Independently start finite Rips/Čech input and same-label diameter-filter bottleneck bounds from maximum pairwise metric discrepancy; explicit radius/diameter and ambient-space conventions precede general Gromov–Hausdorff comparison. [Chazal–de Silva–Oudot](docs/math/references.md#CDSO13-v3). |
+| Reeb geometry | [#56](https://github.com/uda-lab/tda-lib/issues/56): extend completed smoothing comparisons toward coherent geometric interleavings and cosheaf distance, keeping coherence and geometric comparison obligations explicit. [de Silva–Munch–Patel](docs/math/references.md#DMP15-v1). |
+| Mapper approximation | [#168](https://github.com/uda-lab/tda-lib/issues/168): graph/PL, resolution-controlled Reeb approximation, with exact attained-range cover/resolution hypotheses and ordinary-Mapper reconstruction before categorical bounds for enhanced Mapper/MultiNerve; that object comparison or additional construction is an explicit obligation. [Carrière–Oudot](docs/math/references.md#CO16-v3), [Munch–Wang](docs/math/references.md#MW16-v2). |
+
+Persistence images and same-label metric input do not wait for real-index isometry or a
+measure-transport extension. Hodge theory remains a later candidate, not a sixth active
+direction. Cardinality/total-persistence dependence and essential-bar limits belong in each
+contract. These links identify source manifestations and their rights limits; they do not
+certify all future mathematics or blanket AI-use permission.
 
 ## Build
 
