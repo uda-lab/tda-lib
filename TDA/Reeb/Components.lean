@@ -1,4 +1,4 @@
-import Mathlib.Topology.Connected.PathConnected
+import TDA.Topology.PathComponents
 import Mathlib.Topology.Sets.Opens
 import Mathlib.CategoryTheory.Category.Preorder
 import Mathlib.CategoryTheory.Types.Basic
@@ -31,32 +31,7 @@ namespace TDA.Reeb
 
 universe u v w
 
-section componentMap
-
-variable {X : Type u} {Z : Type w} {W : Type*}
-  [TopologicalSpace X] [TopologicalSpace Z] [TopologicalSpace W]
-
-/-- Path components are mapped by a continuous map (raw map; carrier universes independent). -/
-def componentMap (h : C(X, Z)) : ZerothHomotopy X → ZerothHomotopy Z :=
-  ZerothHomotopy.lift (fun x => ZerothHomotopy.mk (h x))
-    (fun _ _ p => ZerothHomotopy.sound (p.map h.continuous))
-
-@[simp]
-theorem componentMap_mk (h : C(X, Z)) (x : X) :
-    componentMap h (ZerothHomotopy.mk x) = ZerothHomotopy.mk (h x) := rfl
-
-theorem componentMap_id : componentMap (ContinuousMap.id X) = id := by
-  funext c
-  induction c using ZerothHomotopy.rec with
-  | mk x => rfl
-
-theorem componentMap_comp (k : C(Z, W)) (h : C(X, Z)) :
-    componentMap (k.comp h) = componentMap k ∘ componentMap h := by
-  funext c
-  induction c using ZerothHomotopy.rec with
-  | mk x => rfl
-
-end componentMap
+export TDA.Topology (componentMap componentMap_mk componentMap_id componentMap_comp)
 
 section functor
 
@@ -64,9 +39,13 @@ variable {X : Type u} {Y : Type v} [TopologicalSpace X] [TopologicalSpace Y]
 
 /-- The continuous inclusion `f ⁻¹ U → f ⁻¹ V` for `U ≤ V`. -/
 def preimageInclusion (f : C(X, Y)) {U V : TopologicalSpace.Opens Y} (hUV : U ≤ V) :
-    C({x : X // f x ∈ U}, {x : X // f x ∈ V}) where
-  toFun x := ⟨x.1, hUV x.2⟩
-  continuous_toFun := by fun_prop
+    C({x : X // f x ∈ U}, {x : X // f x ∈ V}) :=
+  TDA.Topology.preimageSetInclusion f hUV
+
+/-- On open target sets, the raw-set inclusion is the Reeb preimage inclusion. -/
+theorem preimageSetInclusion_eq_preimageInclusion (f : C(X, Y))
+    {U V : TopologicalSpace.Opens Y} (hUV : U ≤ V) :
+    TDA.Topology.preimageSetInclusion f hUV = preimageInclusion f hUV := rfl
 
 /-- The inclusion coincides definitionally with mathlib's `ContinuousMap.inclusion` on the
 inverse-image sets. -/

@@ -5,7 +5,7 @@ The library is pinned to Lean 4.33.1 and mathlib commit
 
 - [Dey–Mémoli–Wang, *Multiscale Mapper*, §2–3](https://arxiv.org/html/1504.03763v2): indexed cover maps, pullbacks and refinement towers underlying the set-theoretic cover interface; the library interface permits arbitrary sets and support-aware range coverage.
 
-- [Carrière–Oudot, *Structure and Stability of the 1-Dimensional Mapper*, §2.5 and §3](https://arxiv.org/html/1511.05823v3): ordinary Mapper as the nerve of the connected pullback cover and the distinct MultiNerve construction that retains connected components of intersections.
+- [Carrière–Oudot, *Structure and Stability of the 1-Dimensional Mapper*, §2.5 and §3](https://arxiv.org/html/1511.05823v3): ordinary Mapper as the nerve of the path-component pullback cover and the distinct MultiNerve construction that retains path-component data for intersections (the paper writes "connected" under its stated path-connected convention).
 
 - [Leygonie–Oudot–Tillmann, *A Framework for Differential Calculus on Persistence Barcodes*, Lemma 4.10 and preceding definition (9)](https://doi.org/10.1007/s10208-021-09522-y): finite equality-frontier argument for a dense local-order-stability locus. [Order chambers](order-chambers.md) extract this topological argument for continuous finite-coordinate families; barcode differentiability is outside this result.
 

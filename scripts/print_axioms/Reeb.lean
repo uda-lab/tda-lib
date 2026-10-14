@@ -3,9 +3,7 @@ import TDA
 
 
 -- Open-set path-component functors (Issue #24).
-#print axioms TDA.Reeb.componentMap_mk
-#print axioms TDA.Reeb.componentMap_id
-#print axioms TDA.Reeb.componentMap_comp
+#print axioms TDA.Reeb.preimageSetInclusion_eq_preimageInclusion
 #print axioms TDA.Reeb.preimageInclusion_eq_inclusion
 #print axioms TDA.Reeb.componentFunctor_obj
 #print axioms TDA.Reeb.componentFunctor_map_mk

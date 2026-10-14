@@ -329,7 +329,7 @@ theorem mk_eq_of_joinedIn {x y : Realization G} (hxy : JoinedIn (plHeight G h �
     (hx : plHeight G h x ∈ I) (hy : plHeight G h y ∈ I) :
     (ZerothHomotopy.mk ⟨x, hx⟩ : ZerothHomotopy {p : Realization G // plHeight G h p ∈ I}) =
       ZerothHomotopy.mk ⟨y, hy⟩ :=
-  ZerothHomotopy.sound hxy.joined_subtype.somePath
+  TDA.Topology.mk_eq_of_joinedIn (plHeight G h) (I : Set ℝ) hxy hx hy
 
 /-- **Witness and orientation independence.** Parameters on darts representing one edge, both in
 the height preimage, give one path component. -/

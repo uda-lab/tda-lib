@@ -16,29 +16,6 @@ noncomputable section
 
 local instance (α : Type*) : DecidableEq α := Classical.decEq α
 
-private def collapse :
-    VertexMap (⊤ : PreAbstractSimplicialComplex (Fin 2))
-      (TDA.Filtration.singletonFace (0 : Fin 2)) :=
-  { toFun := fun _ => 0
-    map_face := by
-      intro s hs
-      change s.Nonempty at hs
-      apply (TDA.Filtration.mem_singletonFace_iff 0 _).2
-      ext i
-      constructor
-      · intro hi
-        have hi' := hi
-        simp only [Finset.mem_image] at hi'
-        obtain ⟨j, _, hj⟩ := hi'
-        simp at hj ⊢
-        exact hj.symm
-      · intro hi
-        have hi0 : i = (0 : Fin 2) := by simpa using hi
-        subst i
-        obtain ⟨j, hj⟩ := hs
-        exact (@Finset.mem_image (Fin 2) (Fin 2) (Classical.decEq (Fin 2))
-          (fun _ : Fin 2 => (0 : Fin 2)) s 0).2 ⟨j, hj, rfl⟩ }
-
 private def swapVertex (i : Fin 3) : Fin 3 :=
   if i = 0 then 1 else if i = 1 then 0 else 2
 

@@ -1,5 +1,5 @@
 import TDA.Topology.IndexedCover
-import TDA.Reeb.Components
+import TDA.Topology.PathComponents
 import Mathlib.Topology.Connected.LocallyPathConnected
 
 /-!
@@ -144,48 +144,18 @@ theorem componentIndex_ne_of_index_ne (f : C(X, Y)) (U : I → Set Y) {i j : I}
 
 /-! ## Refinements -/
 
-/-- The continuous inclusion between inverse-image subspaces of arbitrary nested sets. -/
-def preimageSetInclusion (f : C(X, Y)) {A B : Set Y} (hAB : A ⊆ B) :
-    C({x : X // f x ∈ A}, {x : X // f x ∈ B}) where
-  toFun x := ⟨x.1, hAB x.2⟩
-  continuous_toFun := by fun_prop
-
-@[simp]
-theorem preimageSetInclusion_apply (f : C(X, Y)) {A B : Set Y} (hAB : A ⊆ B)
-    (x : {x : X // f x ∈ A}) : (preimageSetInclusion f hAB x).1 = x.1 := rfl
-
-/-- On open target sets, the raw-set inclusion is the existing Reeb preimage inclusion. -/
-theorem preimageSetInclusion_eq_preimageInclusion (f : C(X, Y))
-    {A B : TopologicalSpace.Opens Y} (hAB : A ≤ B) :
-    preimageSetInclusion f hAB = TDA.Reeb.preimageInclusion f hAB := rfl
-
-/-- The raw-set inclusion associated to reflexive containment is the identity map. -/
-theorem preimageSetInclusion_id (f : C(X, Y)) (A : Set Y) :
-    preimageSetInclusion f (show A ⊆ A from subset_rfl) =
-      ContinuousMap.id {x : X // f x ∈ A} := by
-  ext x
-  rfl
-
-/-- Raw-set inclusions compose strictly as continuous maps. -/
-theorem preimageSetInclusion_comp (f : C(X, Y)) {A B C : Set Y}
-    (hAB : A ⊆ B) (hBC : B ⊆ C) :
-    preimageSetInclusion f (hAB.trans hBC) =
-      (preimageSetInclusion f hBC).comp (preimageSetInclusion f hAB) := by
-  ext x
-  rfl
-
 /-- The inverse-image inclusion selected by a target-family refinement. -/
 def refinementInclusion (f : C(X, Y)) {U : I → Set Y} {V : J → Set Y}
     (R : TDA.Topology.Refinement U V) (i : I) :
     C(PullbackSpace f U i, PullbackSpace f V (R.selector i)) :=
-  preimageSetInclusion f (R.subset i)
+  TDA.Topology.preimageSetInclusion f (R.subset i)
 
 /-- The map on path components induced by a selected refinement inclusion. -/
 def componentRefinementMap (f : C(X, Y)) {U : I → Set Y} {V : J → Set Y}
     (R : TDA.Topology.Refinement U V) (i : I) :
     ZerothHomotopy (PullbackSpace f U i) →
       ZerothHomotopy (PullbackSpace f V (R.selector i)) :=
-  TDA.Reeb.componentMap (refinementInclusion f R i)
+  TDA.Topology.componentMap (refinementInclusion f R i)
 
 /-- A selected target-family refinement induces a selected refinement of component covers.
 The destination component is determined by the supplied selector and is unique inside that
@@ -199,7 +169,7 @@ def componentRefinement (f : C(X, Y)) {U : I → Set Y} {V : J → Set Y}
     rcases hx with ⟨hxi, hclass⟩
     change ZerothHomotopy.mk (⟨x, hxi⟩ : PullbackSpace f U i) = c at hclass
     refine ⟨R.subset i hxi, ?_⟩
-    change TDA.Reeb.componentMap (refinementInclusion f R i)
+    change TDA.Topology.componentMap (refinementInclusion f R i)
         (ZerothHomotopy.mk (⟨x, hxi⟩ : PullbackSpace f U i)) =
       componentRefinementMap f R i c
     exact congrArg (componentRefinementMap f R i) hclass
@@ -218,12 +188,12 @@ theorem componentRefinement_id (f : C(X, Y)) (U : I → Set Y) :
   apply TDA.Topology.Refinement.ext
   rintro ⟨i, c⟩
   refine Sigma.ext rfl (heq_of_eq ?_)
-  change TDA.Reeb.componentMap (refinementInclusion f (TDA.Topology.Refinement.id U) i) c = c
+  change TDA.Topology.componentMap (refinementInclusion f (TDA.Topology.Refinement.id U) i) c = c
   rw [show refinementInclusion f (TDA.Topology.Refinement.id U) i =
       ContinuousMap.id (PullbackSpace f U i) by
     ext x
     rfl]
-  exact congrFun TDA.Reeb.componentMap_id c
+  exact congrFun TDA.Topology.componentMap_id c
 
 /-- Component refinement preserves composition of selected refinements. -/
 theorem componentRefinement_comp {K : Type*} (f : C(X, Y))
@@ -234,14 +204,14 @@ theorem componentRefinement_comp {K : Type*} (f : C(X, Y))
   apply TDA.Topology.Refinement.ext
   rintro ⟨i, c⟩
   refine Sigma.ext rfl (heq_of_eq ?_)
-  change TDA.Reeb.componentMap
+  change TDA.Topology.componentMap
       (refinementInclusion f (TDA.Topology.Refinement.comp R S) i) c =
     componentRefinementMap f S (R.selector i) (componentRefinementMap f R i c)
   rw [show refinementInclusion f (TDA.Topology.Refinement.comp R S) i =
       (refinementInclusion f S (R.selector i)).comp (refinementInclusion f R i) by
     ext x
     rfl]
-  exact congrFun (TDA.Reeb.componentMap_comp
+  exact congrFun (TDA.Topology.componentMap_comp
     (refinementInclusion f S (R.selector i)) (refinementInclusion f R i)) c
 
 /-! ## Openness -/
