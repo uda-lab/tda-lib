@@ -16,11 +16,6 @@ import TDA
 #print axioms TDA.Mapper.componentType_isEmpty
 #print axioms TDA.Mapper.no_componentIndex_of_isEmpty
 #print axioms TDA.Mapper.componentIndex_ne_of_index_ne
-#print axioms TDA.Mapper.preimageSetInclusion
-#print axioms TDA.Mapper.preimageSetInclusion_apply
-#print axioms TDA.Mapper.preimageSetInclusion_eq_preimageInclusion
-#print axioms TDA.Mapper.preimageSetInclusion_id
-#print axioms TDA.Mapper.preimageSetInclusion_comp
 #print axioms TDA.Mapper.refinementInclusion
 #print axioms TDA.Mapper.componentRefinementMap
 #print axioms TDA.Mapper.componentRefinement

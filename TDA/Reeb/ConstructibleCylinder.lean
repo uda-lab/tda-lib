@@ -248,7 +248,7 @@ variable {S P} in
 theorem mk_eq_of_joinedIn {W : OpenInterval} {a b : P.heightPreimage S W}
     (h : JoinedIn (P.height S ⁻¹' (W : Set ℝ)) a.1 b.1) :
     (ZerothHomotopy.mk a : ZerothHomotopy (P.heightPreimage S W)) = ZerothHomotopy.mk b :=
-  ZerothHomotopy.sound (joined_pre h).somePath
+  TDA.Topology.mk_eq_of_joinedIn (P.height S) (W : Set ℝ) h a.2 b.2
 
 theorem exists_quotMk {W : OpenInterval} (u : P.heightPreimage S W) :
     ∃ (x : P.Raw S) (hx : P.rawHeight S x ∈ W), u = ⟨P.quotMk S x, hx⟩ := by

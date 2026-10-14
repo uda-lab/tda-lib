@@ -61,8 +61,11 @@ relative path component in that inverse image. The pinned
 `IsOpen.pathComponentIn` theorem then makes every member open in `X`.
 
 This is the path-component pullback cover underlying the Mapper construction of
-Dey–Mémoli–Wang, *Multiscale Mapper*, §2. The library keeps arbitrary index types and
-set families and separates the openness hypothesis from the general construction.
+Dey–Mémoli–Wang, *Multiscale Mapper*, §2. They state openness of the pullback cover
+without a hypothesis on the domain, but path components of an open inverse image need
+not be open in an arbitrary space. The library recovers the construction unconditionally
+and the openness sentence under local path connectedness. It also keeps arbitrary index
+types and set families.
 
 ## Support-aware ordinary nerves
 
@@ -150,8 +153,9 @@ a pullback member can merge distinct source components.
 This is ordinary Mapper in the sense of Dey–Mémoli–Wang, *Multiscale Mapper*,
 §2. It records the existence of common intersections. The MultiNerve Mapper of
 Carrière–Oudot, *Structure and Stability of the 1-Dimensional Mapper*, retains
-additional connected-component data for intersections and is not constructed
-here. No Reeb equivalence, convergence, stability, persistence-diagram result,
+additional path-component data for intersections (the paper writes "connected" under
+its stated path-connected convention) and is not constructed here. No Reeb equivalence,
+convergence, stability, persistence-diagram result,
 or Nerve Lemma follows from this definition.
 
 ## Graph-PL incidence labels and finite consumers

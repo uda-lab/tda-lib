@@ -2,6 +2,17 @@
 import TDA
 
 
+-- Generic path-component maps and inverse-image inclusions.
+#print axioms TDA.Topology.componentMap_mk
+#print axioms TDA.Topology.componentMap_id
+#print axioms TDA.Topology.componentMap_comp
+#print axioms TDA.Topology.preimageSetInclusion
+#print axioms TDA.Topology.preimageSetInclusion_apply
+#print axioms TDA.Topology.preimageSetInclusion_id
+#print axioms TDA.Topology.preimageSetInclusion_comp
+#print axioms TDA.Topology.mk_eq_of_joinedIn
+
+
 -- Path-local open-cover subdivision (Issue #25).
 #print axioms TDA.Topology.exists_subdivision
 #print axioms TDA.Topology.exists_subpath_chain

@@ -1,5 +1,6 @@
 import TDA.Mapper.Refinement
 import TDA.Reeb.GraphPLComponents
+import TDA.Topology.PathComponents
 import Mathlib.Data.Finite.Sigma
 
 /-!
@@ -132,7 +133,7 @@ incidence-component refinement map. -/
       (preimageComponentsEquiv G h (U i) c).map (cellInclusion G h hUW)⟩
   refine Sigma.ext rfl (heq_of_eq ?_)
   change preimageComponentsEquiv G h (W (R.selector i))
-      (TDA.Reeb.componentMap (refinementInclusion (plHeight G h) R i) c) =
+      (TDA.Topology.componentMap (refinementInclusion (plHeight G h) R i) c) =
     (preimageComponentsEquiv G h (U i) c).map (cellInclusion G h hUW)
   rw [show refinementInclusion (plHeight G h) R i =
       TDA.Reeb.preimageInclusion (plHeight G h) (toOpens_le_iff.2 hUW) by
