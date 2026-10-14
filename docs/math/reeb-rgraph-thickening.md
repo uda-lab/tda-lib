@@ -133,6 +133,38 @@ inverse (`windowTransfer_windowTransfer`), which gives `windowTransferHomeomorph
 is itself an event, so `TransferOK S ε (b k) c` fails there and no homeomorphism is asserted at slab
 ends. The raw maps and the product cover used for the descents are private.
 
+## Dependency structure of the proof
+
+- `transferRaw` continuously fixes raw window vertices and moves raw edge parameters from the
+  center `c` to a target height `u` before any window quotient is taken.
+- `rawTransfer` records the same transfer between the source and target raw-window types under
+  `TransferOK`, while `transferNf` extends it to the full raw sum so that equality after the merged
+  normal form can be checked.
+- `transferCover` packages `transferRaw` as a continuous map into the target window and, using the
+  normal-form comparison, proves that it is constant on fibers of the source window quotient.
+- `windowTransfer` descends `transferCover` along `windowCover`; `TransferOK` is exactly what keeps
+  every transferred vertex and edge fragment inside the target window and respects endpoint
+  gluing.
+- `windowTransferHomeomorph` uses transfers satisfying `TransferOK` in both directions, and the
+  additional hypothesis `0 < ε` makes their edge fragments nondegenerate so that the transfers
+  are mutual inverses.
+- `slabCover` takes the product of the midpoint window quotient with a closed shifted gap, and
+  `slabRaw` applies `transferRaw` jointly in the gap height to land in the band.
+- `slabCylinder` descends `slabRaw` along `slabCover`, giving the continuous cylinder map from the
+  midpoint window across the whole slab.
+- `thickCompat` identifies the two endpoint restrictions of each `slabCylinder` with the left and
+  right `windowTransfer` attaching maps of `thickPresentation`.
+- `thickMap` descends the compatible vertex and slab maps along the cylinder-presentation quotient
+  to a continuous map from its realization to the band.
+- `thickHomeomorph` uses `0 < ε`: inverse window transfers prove `thickMap` injective and
+  surjective, after which compactness of the realization and Hausdorffness of the band upgrade it
+  to a homeomorphism.
+- `thickProdHomeomorph` composes `thickHomeomorph` with the inverse band reparametrization, thereby
+  identifying the presentation realization with the actual product thickening.
+- `thickOverIso` reverses `thickProdHomeomorph` and bundles its height equation as an isomorphism
+  over `ℝ`; it inherits the hypothesis `0 < ε`, while the separate zero-thickening argument handles
+  `ε = 0`.
+
 ## The presentation
 
 `mid S ε k` is the midpoint of gap `k` of `S.shifted ε` (`mid_mem_K`). The presentation

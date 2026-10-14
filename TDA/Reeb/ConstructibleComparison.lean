@@ -406,6 +406,15 @@ theorem isIso_intervalComponentComparison_of_constructible {A : Over (TopCat.of 
     P.isIso_intervalComponentComparison S
   exact (NatTrans.isIso_app_iff_of_iso ReebQuotient.intervalComponentComparisonOver i).2 hB
 
+/-- **DMP Theorem 3.17, objectwise and intervalwise.** For every constructible `ℝ`-space and
+every open interval, the comparison from path components of the space to path components of its
+Reeb quotient is a bijection. -/
+theorem bijective_intervalComponentComparison_app_of_constructible {A : Over (TopCat.of ℝ)}
+    (hA : IsConstructibleSpace A) (I : OpenInterval) :
+    Function.Bijective ((ReebQuotient.intervalComponentComparison (overBaseMap A)).app I) := by
+  let _ := isIso_intervalComponentComparison_of_constructible hA
+  exact (isIso_iff_bijective _).1 inferInstance
+
 /-- DMP, proof of Theorem 3.17: for a constructible ℝ-space, the path-component cosheaves of the
 space and of its Reeb quotient are constructible at a common list of levels. -/
 theorem exists_isConstructibleAt_of_isConstructibleSpace {A : Over (TopCat.of ℝ)}

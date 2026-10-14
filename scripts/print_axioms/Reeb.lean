@@ -311,6 +311,8 @@ import TDA
 #print axioms TDA.Reeb.OpenInterval.le_of_iUnion_eq
 #print axioms TDA.Reeb.OpenInterval.iUnion_thicken_eq
 #print axioms TDA.Reeb.OpenInterval.thicken_inf
+#print axioms TDA.Reeb.OpenInterval.exists_cover_member_thicken_of_mem_hull
+#print axioms TDA.Reeb.OpenInterval.reflTransGen_thicken_inf_of_mem_hull
 #print axioms TDA.Reeb.OpenInterval.reflTransGen_thicken_inf
 #print axioms TDA.Reeb.OpenInterval.reflTransGen_thicken_inf_of_nonempty
 #print axioms TDA.Reeb.IsIntervalCosheaf
@@ -1462,6 +1464,7 @@ import TDA
 #print axioms TDA.Reeb.CylinderPresentation.intervalComponentComparison_ofFiniteData
 #print axioms TDA.Reeb.CylinderPresentation.inv_intervalComponentComparison_ofFiniteData
 #print axioms TDA.Reeb.isIso_intervalComponentComparison_of_constructible
+#print axioms TDA.Reeb.bijective_intervalComponentComparison_app_of_constructible
 #print axioms TDA.Reeb.exists_isConstructibleAt_of_isConstructibleSpace
 #print axioms TDA.Reeb.isIso_intervalComponentComparison_of_isRGraph
 #print axioms TDA.Reeb.constructibleComponentComparison
