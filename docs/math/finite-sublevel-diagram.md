@@ -1,5 +1,7 @@
 # Diagrams of actual finite sublevel homology
 
+Consulted manifestations, attribution and rights: [CCDS14-v1](references.md#CCDS14-v1), [CSEH07](references.md#CSEH07).
+
 For a filter function `f : FilterFunction K α` on a finite collection of actual
 faces, `dgm k f n` labels the bars of `gradeHomologyBarcode k f n` by the distinct
 attained values `f.criticalValue`. It is exactly

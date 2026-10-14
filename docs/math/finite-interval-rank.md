@@ -1,5 +1,7 @@
 # Finite interval modules and rank recovery
 
+Consulted manifestations, attribution and rights: [CCDS14-v1](references.md#CCDS14-v1).
+
 The discrete interval module in Chazal, Crawley-Boevey, and de Silva, §1.1, assigns `k` to
 indices in a closed interval `[p,q]` and zero elsewhere, with identity maps between active
 stages. Their four-rank formula recovers the multiplicity of each interval from the ranks of

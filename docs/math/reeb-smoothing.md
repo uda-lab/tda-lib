@@ -1,5 +1,7 @@
 # Smoothing of interval precosheaves and interleavings
 
+Consulted manifestations, attribution and rights: [DMP15-v1](references.md#DMP15-v1).
+
 ## Precosheaves and the target category
 
 A precosheaf on the interval category is a functor `F : OpenInterval ⥤ C`. The target `C` is an
