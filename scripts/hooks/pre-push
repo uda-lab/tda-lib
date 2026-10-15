@@ -3,7 +3,7 @@
 # `git config core.hooksPath scripts/hooks`). Fails fast:
 #   1. every pushed commit's tree is free of transient/prohibited artefacts;
 #   2. no unmarked sorry/admit, no custom axiom/opaque/unsafe in the working tree, and the
-#      root aggregator is imports-only;
+#      root and area aggregators are imports-only;
 #   3. if Lean sources or build config changed, the full gate (scripts/check.sh:
 #      serialised lake build + live axiom audit) must pass.
 # The build log stays in a temp file; only its tail is printed on failure, so full

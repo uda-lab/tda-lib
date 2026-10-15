@@ -43,7 +43,7 @@ body:
     id: acceptance
     attributes:
       label: Acceptance criteria
-      description: Machine-checkable where possible — declarations, sorry-free, pinned in `scripts/print_axioms.lean`, `scripts/check.sh` green, review evidence.
+      description: Machine-checkable where possible — declarations, sorry-free, pinned in the owning `scripts/print_axioms/<Area>.lean`, `scripts/check.sh` green, review evidence.
     validations:
       required: true
   - type: textarea

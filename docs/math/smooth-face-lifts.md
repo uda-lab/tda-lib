@@ -1,0 +1,9 @@
+# Smooth coordinates for actual sublevel diagrams
+
+For a fixed finite set of actual faces and a compatible face enumeration, the prefix homology barcode produces a multiset of finite face-index pairs and a multiset of essential birth indices. `TDA.Persistence.fixedFaceLift` converts each multiset to a list **once** and uses list positions as coordinate labels. At a parameter, it evaluates the two selected face values for a finite pair and one face value for an essential birth. Repeated occurrences remain repeated coordinates. The construction works when there are no faces, since both lists are empty.
+
+`fixedFaceLift_factorization` identifies `orderedQ` of these coordinates with the degree-specific diagram of actual sublevel homology at every parameter whose complete weak face-value order agrees with the reference filter. Equal endpoints are valid finite coordinates; `orderedQ` removes them from the diagram. Tied essential births retain their multiplicity. `fixedFaceLift_contDiffOn` proves C¹ regularity from C¹ regularity of each face value on the same set. `exists_smooth_face_lift` packages the fixed construction on an open weak-order neighborhood without requiring the caller to supply an enumeration.
+
+For an open domain `D`, `exists_smooth_face_lift_of_mem_relative_orderChamber` forms the order chamber on the subtype `D`. It uses continuity supplied by C¹ face values on `D`, obtains a relatively open chamber neighborhood, and maps it to an ambient open subset of `D`. The resulting lift is C¹ there; the theorem requires no smoothness or continuity outside `D`.
+
+The actual-PH fixtures include an empty complex, a singleton with a moving essential birth, a two-vertex edge with a moving finite death, persistent ties whose finite coordinates stay diagonal, and two isolated vertices with equal essential births of multiplicity two. No scalar-loss claim is made here.

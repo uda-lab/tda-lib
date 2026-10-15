@@ -1,0 +1,15 @@
+-- Ordinary Simplicial library modules; standalone fixtures are in TDA.Simplicial.Examples.
+import TDA.Simplicial.Bridge
+import TDA.Simplicial.Boundary
+import TDA.Simplicial.ChainComplex
+import TDA.Simplicial.FiniteComplex
+import TDA.Simplicial.FiniteCoordinates
+import TDA.Simplicial.FiniteCycles
+import TDA.Simplicial.FiniteHomology
+import TDA.Simplicial.FiniteDimensionalHomology
+import TDA.Simplicial.Attachment
+import TDA.Simplicial.Inclusion
+import TDA.Simplicial.Homology
+import TDA.Simplicial.H0Augmentation
+import TDA.Simplicial.VertexMap
+import TDA.Simplicial.Contiguity

@@ -1,0 +1,26 @@
+-- Reeb examples and acceptance fixtures, included by the comprehensive TDA root.
+import TDA.Reeb.ComponentsCoverExamples
+import TDA.Reeb.ComponentsExamples
+import TDA.Reeb.ComponentsGluingExamples
+import TDA.Reeb.ConstructibleComparisonExamples
+import TDA.Reeb.ConstructibleCosheafExamples
+import TDA.Reeb.ConstructibleCylinderExamples
+import TDA.Reeb.ConstructibleQuotientExamples
+import TDA.Reeb.ConstructibleRepresentationExamples
+import TDA.Reeb.ConstructibleSmoothingExamples
+import TDA.Reeb.ConstructibleSpaceExamples
+import TDA.Reeb.GeometricThickeningExamples
+import TDA.Reeb.GraphPLComponentsExamples
+import TDA.Reeb.GraphPLHeightExamples
+import TDA.Reeb.GraphRealizationExamples
+import TDA.Reeb.InterleavingDistanceExamples
+import TDA.Reeb.IntervalCosheafExamples
+import TDA.Reeb.IntervalExamples
+import TDA.Reeb.PerturbationExamples
+import TDA.Reeb.QuotientComparisonExamples
+import TDA.Reeb.RGraphCosheafEquivalenceExamples
+import TDA.Reeb.RGraphExamples
+import TDA.Reeb.RGraphSmoothingExamples
+import TDA.Reeb.RGraphThickeningExamples
+import TDA.Reeb.SmoothingExamples
+import TDA.Reeb.StabilityExamples

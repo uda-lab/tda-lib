@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Self-test for the textual guards' shared lexer (scripts/lean-code-scan.awk), the
-# root-aggregator guard, the exposition note check and the build lock.
+# root-aggregator guard, the exposition note check, the live axiom audit's record parsing and
+# the build lock.
 # Each case is a Lean snippet plus the expected number of violating lines per mode.
 # Run after every edit of the lexer:  bash scripts/test-guards.sh
 set -euo pipefail
@@ -241,6 +242,21 @@ import TDA.Basic
 example : True :=
   trivial
 EOF
+# An area sibling must exist and obey the same imports-only rule.
+d="$tmp/root-area"; rn=$((rn + 1)); fixture "$d"
+printf 'import %s.Basic\nimport %s.Zone\n' "$root_lib" "$root_lib" > "$d/$root_lib.lean"
+mkdir -p "$d/$root_lib/Zone"
+printf 'import %s.Basic\n' "$root_lib" > "$d/$root_lib/Zone.lean"
+if ! bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+  echo 'FAIL [root:valid-area]: rejected imports-only area'; rfail=1; fi
+rn=$((rn + 1))
+printf 'theorem hidden : True := trivial\n' >> "$d/$root_lib/Zone.lean"
+if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+  echo 'FAIL [root:area-content]: proof in area aggregator not rejected'; rfail=1; fi
+rn=$((rn + 1))
+rm "$d/$root_lib/Zone.lean"
+if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+  echo 'FAIL [root:missing-area]: missing area aggregator not rejected'; rfail=1; fi
 # Renamed project: rename the fixture with the real script; the guard must check the renamed
 # root and catch content in it, with no trace of the template name left to check.
 d="$tmp/root-renamed"; rn=$((rn + 1)); fixture "$d"
@@ -362,6 +378,163 @@ if command -v latexmk >/dev/null 2>&1 && command -v pdflatex >/dev/null 2>&1; th
 fi
 if [ "$nfail" -eq 0 ]; then echo "note-check self-test OK ($nn cases)"; else exit 1; fi
 
+# --- live axiom audit record parsing (scripts/check-axioms.sh) ----------------------------
+# Each case runs the real audit in a fixture repository whose scripts/lean.sh is a stub that
+# prints canned `#print axioms` output. Input: the pins, a `---` line, then the Lean output.
+# Each check is ='a whole output line that must occur exactly once', +'text the output must
+# contain' or -'text it must not contain'.
+afail=0; an=0
+mkdir -p "$tmp/auditbin"; printf '#!/bin/sh\nexit 0\n' > "$tmp/auditbin/lake"; chmod +x "$tmp/auditbin/lake"
+audit_case() {  # audit_case <name> <want-exit> [=line|+text|-text]... <<'EOF' pins --- output EOF
+  local name="$1" want="$2" d="$tmp/audit-$1" got=0 out check input; shift 2
+  an=$((an + 1)); mkdir -p "$d/scripts/print_axioms"
+  cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
+  input="$(cat)"
+  { printf 'import TDA\n'; printf '%s\n' "$input" | sed '/^---$/,$d' | sed 's/^/#print axioms /'; } > "$d/scripts/print_axioms/Basic.lean"
+  printf '%s\n' "$input" | sed '1,/^---$/d' > "$d/lean-output.txt"
+  printf '#!/bin/sh\ncat "%s/lean-output.txt"\n' "$d" > "$d/scripts/lean.sh"; chmod +x "$d/scripts/lean.sh"
+  out="$(PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" || got=$?
+  if [ "$got" -ne "$want" ]; then echo "FAIL [audit:$name]: want exit $want got $got: $out"; afail=1; fi
+  for check in "$@"; do
+    case "$check" in
+      =*) [ "$(grep -cxF -- "${check#=}" <<<"$out" || true)" -eq 1 ] \
+            || { echo "FAIL [audit:$name]: want exactly one line '${check#=}': $out"; afail=1; } ;;
+      +*) [[ "$out" == *"${check#+}"* ]] || { echo "FAIL [audit:$name]: missing '${check#+}': $out"; afail=1; } ;;
+      -*) [[ "$out" != *"${check#-}"* ]] || { echo "FAIL [audit:$name]: unexpected '${check#-}': $out"; afail=1; } ;;
+    esac
+  done
+}
+ALLOWED='axioms ⊆ {propext Classical.choice Quot.sound}'
+# A bad X must not be excused by an axiom-free X'.
+audit_case bad_x_free_xprime 1 '=ERROR: TDA.X is incomplete (depends on sorryAx).' '=OK: TDA.X'"'"' — no axioms.' \
+  '-OK: TDA.X — no axioms.' "-ERROR: TDA.X'" <<'EOF'
+TDA.X
+TDA.X'
+---
+'TDA.X' depends on axioms: [sorryAx]
+'TDA.X'' does not depend on any axioms
+EOF
+# A bad X' is reported against X' only.
+audit_case free_x_bad_xprime 1 "=ERROR: TDA.X' depends on unexpected trust Lean.ofReduceBool." \
+  '=OK: TDA.X — no axioms.' '-ERROR: TDA.X ' <<'EOF'
+TDA.X
+TDA.X'
+---
+'TDA.X' does not depend on any axioms
+'TDA.X'' depends on axioms: [propext, Lean.ofReduceBool]
+EOF
+# X depends only on allowed axioms, so the bad axiom of X' must not be blamed on X.
+audit_case allowed_x_bad_xprime 1 "=ERROR: TDA.X' depends on unexpected trust Lean.ofReduceBool." \
+  "=OK: TDA.X — $ALLOWED: [propext]" '-ERROR: TDA.X ' <<'EOF'
+TDA.X
+TDA.X'
+---
+'TDA.X' depends on axioms: [propext]
+'TDA.X'' depends on axioms: [Lean.ofReduceBool]
+EOF
+# Each primed pin reports its own list exactly once, unmixed with its siblings.
+audit_case primed_family_allowed 0 "=OK: TDA.X — $ALLOWED: [propext Quot.sound]" \
+  "=OK: TDA.X' — $ALLOWED: [Classical.choice]" "=OK: TDA.X'' — no axioms." "=AXIOM AUDIT OK — 3 declaration(s) within the allowlist {propext Classical.choice Quot.sound}." <<'EOF'
+TDA.X
+TDA.X'
+TDA.X''
+---
+'TDA.X' depends on axioms: [propext, Quot.sound]
+'TDA.X'' depends on axioms: [Classical.choice]
+'TDA.X''' does not depend on any axioms
+EOF
+audit_case exact_x_absent 1 "=ERROR: no '#print axioms' output for TDA.X (declaration missing or renamed?)." '-OK: TDA.X ' <<'EOF'
+TDA.X
+TDA.X'
+---
+'TDA.X'' does not depend on any axioms
+EOF
+# The name token must start the record: a quoted name later in a line selects nothing.
+audit_case match_anchored_at_line_start 1 "=ERROR: no '#print axioms' output for TDA.X (declaration missing or renamed?)." '-OK: TDA.X ' <<'EOF'
+TDA.X
+TDA.Y
+---
+'TDA.Y' does not depend on any axioms
+note: 'TDA.X' does not depend on any axioms
+EOF
+audit_case duplicate_pin 1 "+ERROR: TDA.X is pinned 2 times in scripts/print_axioms; pin it once." <<'EOF'
+TDA.X
+TDA.X
+---
+'TDA.X' does not depend on any axioms
+'TDA.X' does not depend on any axioms
+EOF
+audit_case duplicate_exact_x 1 "=ERROR: 2 '#print axioms' records for TDA.X; expected exactly one." '-OK: TDA.X ' <<'EOF'
+TDA.X
+---
+'TDA.X' does not depend on any axioms
+'TDA.X' depends on axioms: [sorryAx]
+EOF
+# Lean wraps long lists over several lines; the no-axioms body stands alone.
+audit_case wrapped_and_no_axioms 0 "=OK: TDA.W — $ALLOWED: [propext Classical.choice Quot.sound]" \
+  '=OK: TDA.N — no axioms.' '-ERROR' <<'EOF'
+TDA.W
+TDA.N
+---
+'TDA.W' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'TDA.N' does not depend on any axioms
+EOF
+# Names are compared literally: `.`, `+`, `[...]`, `*` and `\` are neither pattern syntax nor
+# escapes, and the decoys that a regex, an unanchored search or escape processing would select
+# carry a disallowed axiom.
+audit_case punctuation_literal 0 '=OK: TDA.a.b — no axioms.' "=OK: TDA.c+d' — $ALLOWED: [propext]" \
+  '=OK: TDA.«e[f]*» — no axioms.' '=OK: TDA.«g\h» — no axioms.' '=OK: TDA.«i\\j» — no axioms.' \
+  '=OK: TDA.«k\n» — no axioms.' '-ERROR' <<'EOF'
+TDA.a.b
+TDA.c+d'
+TDA.«e[f]*»
+TDA.«g\h»
+TDA.«i\\j»
+TDA.«k\n»
+---
+'TDA.aXb' depends on axioms: [sorryAx]
+'TDA.a.b'' depends on axioms: [sorryAx]
+'Foo.TDA.a.b' depends on axioms: [sorryAx]
+'TDA.a.b' does not depend on any axioms
+'TDA.c+d'' depends on axioms: [propext]
+'TDA.ccd'' depends on axioms: [sorryAx]
+'TDA.«ef»' depends on axioms: [sorryAx]
+'TDA.«e[f]*»' does not depend on any axioms
+'TDA.«g\h»' does not depend on any axioms
+'TDA.«gh»' depends on axioms: [sorryAx]
+'TDA.«i\j»' depends on axioms: [sorryAx]
+'TDA.«i\\j»' does not depend on any axioms
+'TDA.«k\n»' does not depend on any axioms
+EOF
+# A matched record whose body is neither form is rejected, never half-parsed.
+for body in 'depends on axioms: propext' 'depends on axioms: []' 'depends on axioms: [propext,]' \
+  'depends on axioms: [, propext]' 'depends on axioms: [propext,, Quot.sound]' \
+  'depends on axioms: [propext] trailing' 'depends on axioms: [propext] [sorryAx]' \
+  'depends on axioms: [propext Quot.sound]' 'depends on axioms: [propext' \
+  'does not depend on any axioms, except sorryAx' 'depends on no axioms' ''; do
+  audit_case "malformed_$an" 1 "+ERROR: malformed '#print axioms' record for TDA.X:" '-OK: TDA.X ' <<EOF
+TDA.X
+---
+'TDA.X' $body
+EOF
+done
+# Duplicate pins in different areas must fail the same live audit.
+d="$tmp/audit-cross-area"; an=$((an + 1)); mkdir -p "$d/scripts/print_axioms"
+cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
+printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Persistence.lean"
+printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Reeb.lean"
+printf '%s\n' "'TDA.X' does not depend on any axioms" > "$d/lean-output.txt"
+printf '#!/bin/sh\ncat "%s/lean-output.txt"\n' "$d" > "$d/scripts/lean.sh"
+chmod +x "$d/scripts/lean.sh"
+out="$(PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" && {
+  echo 'FAIL [audit:cross-area-duplicate]: duplicate pin accepted'; afail=1;
+}
+if [[ "$out" != *'TDA.X is pinned 2 times in scripts/print_axioms'* ]]; then
+  echo 'FAIL [audit:cross-area-duplicate]: missing duplicate diagnostic'; afail=1; fi
+if [ "$afail" -eq 0 ]; then echo "axiom-audit parser self-test OK ($an cases)"; else exit 1; fi
+
 # --- build-lock semantics (scripts/lib/build-lock.sh) ---------------------------------
 # Uses the real lock file; skipped when another process holds it for more than 5 s.
 LOCK=/tmp/lean-build.lock
@@ -379,3 +552,5 @@ if ! timeout 5 bash -c 'exec 9>>/tmp/lean-build.lock; flock 9; LEAN_SCAFFOLD_LOC
 # 4. release: after the holder exits the lock is free again
 if ! flock -w 5 -n "$LOCK" true; then echo "FAIL [lock-release]: lock still held after holder exited"; lfail=1; fi
 if [ "$lfail" -eq 0 ]; then echo "build-lock self-test OK (4 cases)"; else exit 1; fi
+
+bash scripts/agent/test-build-docs-lock.sh

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fail unless each library's root module is a pure aggregator: `import` lines, one module each (and
+# Fail unless each library's root and area modules are pure aggregators: `import` lines, one module each (and
 # the optional `module` header), comments and blank lines only. Theorems, definitions, namespaces,
 # options and any other command belong in the individual modules the root imports; content in
 # the root cannot be imported by a sibling module without an import cycle.
@@ -45,18 +45,30 @@ PY
 )"
 
 status=0
-while IFS=$'\t' read -r lib f; do
+check_aggregator() {
+  local lib="$1" f="$2" kind="$3"
   if [ ! -f "$f" ]; then
-    echo "ERROR: root module $f of lean_lib '$lib' not found." >&2
-    exit 1
+    echo "ERROR: $kind module $f of lean_lib '$lib' not found." >&2
+    status=1
+    return
   fi
   violations="$(awk -v mode=root -f scripts/lean-code-scan.awk "$f")"
   if [ -n "$violations" ]; then
     printf '%s\n' "$violations" >&2
-    echo "ERROR: $f is the root aggregator: one 'import <Module>' per line, comments and blank lines only. Move the lines above into a module of lean_lib '$lib' and import it here." >&2
+    echo "ERROR: $f is the $kind aggregator: one 'import <Module>' per line, comments and blank lines only. Move the lines above into a module of lean_lib '$lib' and import it here." >&2
     status=1
   else
     echo "OK: $f is imports-only."
+  fi
+}
+while IFS=$'\t' read -r lib f; do
+  check_aggregator "$lib" "$f" root
+  # Each immediate source area owns an imports-only sibling to its directory.
+  area_root="${f%.lean}"
+  if [ -d "$area_root" ]; then
+    while IFS= read -r -d '' area; do
+      check_aggregator "$lib" "$area_root/$(basename "$area").lean" area
+    done < <(find "$area_root" -mindepth 1 -maxdepth 1 -type d -print0 | sort -z)
   fi
 done <<< "$roots"
 exit "$status"

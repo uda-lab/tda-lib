@@ -5,6 +5,11 @@ on:
   push:
     branches: [develop, main]      # post-merge run; the develop/main rulesets does not require PR branches to be up to date
   workflow_dispatch:
+    inputs:
+      release_check:
+        description: Run the stable-release check without generating docs
+        type: boolean
+        default: false
 
 # Cancel superseded runs on the same ref.
 concurrency:
@@ -12,6 +17,41 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  docs:
+    name: docs
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    if: ${{ (github.event_name == 'workflow_dispatch' && !inputs.release_check) || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Install Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+      - name: Bootstrap parent mathlib cache with resource guard
+        run: bash scripts/bootstrap.sh
+
+      - name: Generate API documentation
+        run: scripts/build-docs.sh
+
+      - name: Retain private API documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: tda-api-docs
+          path: docbuild/.lake/build/doc/
+          if-no-files-found: error
+          retention-days: 7
+
   # Job name `check` is the required status-check context in the develop/main rulesets. It always
   # reports; the expensive toolchain/build/audit steps run only when build-relevant files
   # changed (same conditional pattern as scripts/hooks/pre-push).
@@ -31,6 +71,7 @@ jobs:
           EVENT: ${{ github.event_name }}
           BASE_REF: ${{ github.base_ref }}
           BEFORE: ${{ github.event.before }}
+          RELEASE_CHECK: ${{ github.event_name == 'workflow_dispatch' && inputs.release_check }}
         run: |
           set -euo pipefail
           # -z: NUL-delimited raw paths (no C-style quoting of non-ASCII names); --no-renames: a
@@ -48,7 +89,7 @@ jobs:
              && ! grep -qE '\.lean$|^lakefile|^lean-toolchain$|^lake-manifest\.json$|^scripts/|^\.github/workflows/' "$list"; then
             build=false
           fi
-          if [ "$BASE_REF" = main ] || [ "${GITHUB_REF_NAME:-}" = main ]; then build=true; fi
+          if [ "$BASE_REF" = main ] || [ "${GITHUB_REF_NAME:-}" = main ] || [ "$RELEASE_CHECK" = true ]; then build=true; fi
           echo "build=$build" >> "$GITHUB_OUTPUT"
           echo "build-relevant changes: $build"; sed 's/^/  /' "$list"
 
@@ -59,8 +100,9 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
           REF_NAME: ${{ github.ref_name }}
+          RELEASE_CHECK: ${{ github.event_name == 'workflow_dispatch' && inputs.release_check }}
         run: |
-          if [ "$BASE_REF" = main ] || [ "$REF_NAME" = main ]; then
+          if [ "$BASE_REF" = main ] || [ "$REF_NAME" = main ] || [ "$RELEASE_CHECK" = true ]; then
             bash scripts/check-no-sorry.sh --stable
           else
             bash scripts/check-no-sorry.sh
@@ -69,8 +111,9 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
           REF_NAME: ${{ github.ref_name }}
+          RELEASE_CHECK: ${{ github.event_name == 'workflow_dispatch' && inputs.release_check }}
         run: |
-          if [ "$BASE_REF" = main ] || [ "$REF_NAME" = main ]; then
+          if [ "$BASE_REF" = main ] || [ "$REF_NAME" = main ] || [ "$RELEASE_CHECK" = true ]; then
             bash scripts/check-no-custom-axiom.sh --stable
           else
             bash scripts/check-no-custom-axiom.sh
@@ -131,7 +174,7 @@ jobs:
       - name: Full gate (scripts/check.sh)
         if: steps.changes.outputs.build == 'true'
         env:
-          TDA_STABLE_RELEASE: ${{ github.base_ref == 'main' || github.ref_name == 'main' }}
+          TDA_STABLE_RELEASE: ${{ github.base_ref == 'main' || github.ref_name == 'main' || (github.event_name == 'workflow_dispatch' && inputs.release_check) }}
         run: |
           if [ "$TDA_STABLE_RELEASE" = true ]; then export TDA_STABLE_RELEASE=1; fi
           bash scripts/check.sh
