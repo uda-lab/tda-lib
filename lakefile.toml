@@ -1,5 +1,8 @@
 name = "TDA"
 version = "0.1.0"
+description = "Lean 4 formalizations of topological data analysis, with verified finite persistent homology computation."
+keywords = ["math", "topology", "topological-data-analysis", "persistent-homology", "software-verification"]
+license = "Apache-2.0"
 defaultTargets = ["TDA"]
 
 [leanOptions]

@@ -4,7 +4,7 @@
 - Load `.agents/skills/tda-lib-orchestration/SKILL.md` first; its project policy takes precedence over inherited scaffold defaults.
 
 ## Project Overview
-- `tda-lib` is a continuing TDA formalization library, covering theory and verified algorithms; no TDA results are provided yet.
+- `tda-lib` is a continuing TDA formalization library with finite persistent homology results and certified F₂ computation, plus bounded Reeb and Mapper theory. See `docs/api.md` and `docs/math/references.md` for exact contracts and review limits. The existing `v0.0.1` and `v0.0.2` releases were infrastructure-only.
 - dot owns the private [tda-lib Project](https://github.com/orgs/uda-lab/projects/5) roadmap, milestones, priorities and progress, plus Issue authorization, mathematical decisions and autonomous Codex operation. Issues carry full specifications and execution contracts; read the governing Issue and decisions.
 
 ## Commands
