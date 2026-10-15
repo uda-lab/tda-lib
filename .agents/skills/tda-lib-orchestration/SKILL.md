@@ -15,8 +15,9 @@ Initialization is complete. Do not restart initialization, create a replacement 
 require one final target, prescribe roadmap Issue granularity or change Issue templates.
 The private [tda-lib Project](https://github.com/orgs/uda-lab/projects/5) holds the overall
 roadmap, milestones, priorities and progress. Issues carry full mathematical specifications
-and execution contracts. Both evolve under dot. No TDA result is currently claimed; the
-permanent smoke theorem is infrastructure only.
+and execution contracts. Both evolve under dot. The current library has bounded TDA results;
+`docs/api.md` and `docs/math/references.md` state their contracts and review limits. The
+existing `v0.0.1` and `v0.0.2` releases and the permanent smoke theorem are infrastructure only.
 
 Project Ready does not authorize execution. dot or an authorized maintainer verifies the
 specification, required independent audits, dependencies and validation before applying
