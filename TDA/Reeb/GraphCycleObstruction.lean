@@ -90,19 +90,25 @@ def edgeWindingCell (d₀ d : G.Dart) : C(unitInterval, AddCircle (1 : ℝ)) :=
   else if d = d₀.symm then
     ⟨fun t => ((1 - (t : ℝ) : ℝ) : AddCircle (1 : ℝ)),
       (AddCircle.continuous_mk' (1 : ℝ)).comp (continuous_const.sub continuous_subtype_val)⟩
-  else 0
+  else ContinuousMap.const _ 0
 
 theorem edgeWindingCell_self (d₀ : G.Dart) (t : unitInterval) :
     edgeWindingCell G d₀ d₀ t = ((t : ℝ) : AddCircle (1 : ℝ)) := by
-  simp [edgeWindingCell]
+  unfold edgeWindingCell
+  rw [if_pos rfl]
+  rfl
 
 theorem edgeWindingCell_symm_self (d₀ : G.Dart) (t : unitInterval) :
     edgeWindingCell G d₀ d₀.symm t = ((1 - (t : ℝ) : ℝ) : AddCircle (1 : ℝ)) := by
-  simp [edgeWindingCell, d₀.symm_ne]
+  unfold edgeWindingCell
+  rw [if_neg d₀.symm_ne, if_pos rfl]
+  rfl
 
 theorem edgeWindingCell_of_ne (d₀ d : G.Dart) (hd : d ≠ d₀) (hd' : d ≠ d₀.symm)
     (t : unitInterval) : edgeWindingCell G d₀ d t = 0 := by
-  simp [edgeWindingCell, hd, hd']
+  unfold edgeWindingCell
+  rw [if_neg hd, if_neg hd']
+  rfl
 
 /-- Reversal: the two selected cases agree, since `1 - (1 - t) = t`. -/
 theorem edgeWindingCell_symm (d₀ d : G.Dart) (t : unitInterval) :
@@ -198,7 +204,7 @@ theorem edgeWinding_walkPath_deleteEdges (d₀ : G.Dart) {a b : V}
     split_ifs
     · have hne : s(a, c) ≠ d₀.edge := by
         simpa only [Set.mem_singleton_iff] using (deleteEdges_adj.mp hac).2
-      exact edgeWinding_edgePoint_of_edge_ne G d₀ _ hne _
+      exact edgeWinding_edgePoint_of_edge_ne G d₀ ⟨(a, c), G.deleteEdges_le _ hac⟩ hne _
     · exact ih _
 
 /-- The loop at `vertex G d₀.fst` running along `d₀` and back along a deleted-edge walk. -/
@@ -238,7 +244,7 @@ theorem edgeWinding_returnLoop (d₀ : G.Dart) (q : (G.deleteEdges {d₀.edge}).
   split_ifs with hs
   · rw [returnLift_of_le hs]
     exact edgeWinding_edgePoint_self G d₀ _
-  · rw [returnLift_of_ge (by push_neg at hs; linarith), edgeWinding_walkPath_deleteEdges]
+  · rw [returnLift_of_ge (not_le.mp hs).le, edgeWinding_walkPath_deleteEdges]
     exact (AddCircle.coe_period (1 : ℝ)).symm
 
 theorem edgeWinding_returnLoop_zero (d₀ : G.Dart)
@@ -266,7 +272,7 @@ theorem not_homotopic_returnLoop (d₀ : G.Dart)
   let pγ := (returnLoop G d₀ q).map (edgeWinding G d₀).continuous
   let pγ₀ := (Path.refl (vertex G d₀.fst)).map (edgeWinding G d₀).continuous
   have h0 : pγ 0 = ((0 : ℝ) : AddCircle (1 : ℝ)) := edgeWinding_returnLoop_zero G d₀ q
-  have h0' : pγ₀ 0 = ((0 : ℝ) : AddCircle (1 : ℝ)) := edgeWinding_vertex G d₀ _
+  have h0' : pγ₀ 0 = ((0 : ℝ) : AddCircle (1 : ℝ)) := edgeWinding_vertex G d₀ d₀.fst
   have hhom : pγ.toContinuousMap.HomotopicRel pγ₀.toContinuousMap {0, 1} :=
     hh.map (edgeWinding G d₀)
   have hend : cov.liftPath pγ.toContinuousMap 0 h0 1 = cov.liftPath pγ₀.toContinuousMap 0 h0' 1 :=
@@ -275,8 +281,10 @@ theorem not_homotopic_returnLoop (d₀ : G.Dart)
     rw [← returnLift_eq_liftPath G d₀ q]
     exact returnLift_one
   have hright : cov.liftPath pγ₀.toContinuousMap 0 h0' 1 = 0 := by
-    rw [← (cov.eq_liftPath_iff' _).2
-      ⟨_root_.funext fun _ => (edgeWinding_vertex G d₀ d₀.fst).symm, rfl⟩]
+    have hc : ContinuousMap.const unitInterval (0 : ℝ) = cov.liftPath pγ₀.toContinuousMap 0 h0' :=
+      (cov.eq_liftPath_iff' _).2
+        ⟨_root_.funext fun _ => (edgeWinding_vertex G d₀ d₀.fst).symm, rfl⟩
+    rw [← hc]
     rfl
   exact one_ne_zero (hleft.symm.trans (hend.trans hright))
 
