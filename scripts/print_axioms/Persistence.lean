@@ -1466,3 +1466,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Cech.Examples.bottleneck_self_eq_zero
 #print axioms TDA.Persistence.Cech.Examples.empty_displacement
 #print axioms TDA.Persistence.Cech.Examples.empty_bottleneck
+#print axioms TDA.Persistence.Cech.Examples.self_displacement

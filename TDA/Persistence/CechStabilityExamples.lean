@@ -107,6 +107,9 @@ end ThreePoints
 
 /-! ### Zero displacement and the empty carrier -/
 
+theorem self_displacement (p : Fin 2 → ℝ) : Cech.displacement p p = 0 :=
+  Cech.displacement_self p
+
 theorem bottleneck_self_eq_zero (p : Fin 2 → ℝ) (n : ℕ) :
     bottleneck (dgm ℚ (Cech.filter p) n) (dgm ℚ (Cech.filter p) n) = 0 := by
   apply le_antisymm _ zero_le
