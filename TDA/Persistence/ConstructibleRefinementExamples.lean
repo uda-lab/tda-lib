@@ -1,4 +1,5 @@
 import TDA.Persistence.ConstructibleRefinementBarcode
+import TDA.Persistence.ConstructibleIsometry
 
 /-!
 # Constructible refinement and shift boundary examples
@@ -12,7 +13,7 @@ set_option autoImplicit false
 namespace TDA.Persistence.ConstructibleRefinementExamples
 
 open CategoryTheory CategoryTheory.Limits FiniteConstructible RealShift
-open scoped ZeroObject NNReal
+open scoped ZeroObject NNReal ENNReal
 
 private def coarse : Fin 2 ↪o ℝ :=
   OrderEmbedding.ofStrictMono (fun i : Fin 2 => if i = 0 then (1 : ℝ) else 3)
@@ -166,5 +167,34 @@ theorem empty_refinement (ε : ℝ≥0) :
   · have h : Refines empty fine := by rintro x ⟨i, _⟩; exact Fin.elim0 i
     rw [moduleDiagram_refinement zeroInput h zero_constructible (fun i => Fin.elim0 i)]
     exact moduleDiagram_empty_grid empty zeroInput
+
+/-- An actual self-interleaving gives a cost-bounded original-diagram matching
+across unequal grids. The refined fibers are derived from the coarse ones. -/
+theorem unequal_grid_isometry_control (ε : ℝ≥0) :
+    let A := interleavingMatching input_constructible (input_constructible.refine coarse_fine)
+      critical_finite fine_finite (RealInterleaving.refl ε input)
+    A.cost (fun p => p.1) (fun p => p.1) (fun b => b.1) (fun b => b.1) ≤ (ε : ℝ≥0∞) ∧
+      Function.Bijective A.essential ∧
+      bottleneck (moduleDiagram coarse input critical_finite) (moduleDiagram fine input fine_finite) = 0 := by
+  refine ⟨interleavingMatching_cost_le input_constructible (input_constructible.refine coarse_fine)
+    critical_finite fine_finite (RealInterleaving.refl ε input), ?_, ?_⟩
+  · exact Equiv.bijective _
+  · rw [bottleneck_eq_distance input_constructible (input_constructible.refine coarse_fine)
+      critical_finite fine_finite, realInterleavingDistance_self]
+
+/-- Empty diagrams and actual zero modules have equal zero distances without
+choosing a critical stage or an optimal matching. -/
+theorem empty_isometry_control :
+    let A := interleavingMatching zero_constructible zero_constructible
+      (fun i => Fin.elim0 i) (fun i => Fin.elim0 i) (RealInterleaving.refl 0 zeroInput)
+    A.cost (fun p => p.1) (fun p => p.1) (fun b => b.1) (fun b => b.1) = 0 ∧
+      bottleneck (moduleDiagram empty zeroInput (fun i => Fin.elim0 i))
+      (moduleDiagram empty zeroInput (fun i => Fin.elim0 i)) = 0 ∧
+      Nonempty (RealInterleaving 0 zeroInput zeroInput) := by
+  refine ⟨nonpos_iff_eq_zero.mp (interleavingMatching_cost_le zero_constructible zero_constructible
+    (fun i => Fin.elim0 i) (fun i => Fin.elim0 i) (RealInterleaving.refl 0 zeroInput)),
+    ?_, ⟨RealInterleaving.refl 0 _⟩⟩
+  rw [bottleneck_eq_distance zero_constructible zero_constructible
+    (fun i => Fin.elim0 i) (fun i => Fin.elim0 i), realInterleavingDistance_self]
 
 end TDA.Persistence.ConstructibleRefinementExamples

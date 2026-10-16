@@ -1,5 +1,6 @@
 import TDA.Persistence.ConstructibleSampling
 import TDA.Persistence.ConstructibleInducedMatching
+import TDA.Persistence.ConstructibleIsometry
 import TDA.Persistence.RealIntervalInterleaving
 
 /-!
@@ -14,8 +15,8 @@ set_option autoImplicit false
 
 namespace TDA.Persistence.ConstructibleDefectExamples
 
-open CategoryTheory CategoryTheory.Limits FiniteConstructible RealShift
-open scoped NNReal ZeroObject
+open CategoryTheory CategoryTheory.Limits FiniteConstructible RealShift FiniteBarcode
+open scoped NNReal ZeroObject ENNReal Classical
 
 private def coarse : Fin 2 ↪o ℝ :=
   OrderEmbedding.ofStrictMono (fun i => if i = 0 then (0 : ℝ) else 2)
@@ -363,5 +364,110 @@ theorem actual_shifted_induced_matching :
     matching_critical_finite matching_critical_finite witness
   norm_num at h
   exact h
+
+private theorem single_barcode {s : ℕ} (I : FiniteInterval s) :
+    rankBarcode (intervalModule (k := ℚ) I) = {I} := by
+  calc
+    _ = rankBarcode (barcodeModule (k := ℚ) {I}) := by
+      apply (rankBarcode_eq_iff _ _).mpr
+      intro i j hij
+      rw [rank_barcodeMap]
+      change Module.finrank ℚ (LinearMap.range (intervalMap (k := ℚ) I hij)) = _
+      rw [intervalMap_finrank_range]
+      simp [interval_alive_endpoints_iff I hij, ← Multiset.cons_zero, Multiset.countP_cons]
+    _ = {I} := rankBarcode_barcodeModule _
+
+private theorem pullback_points {s : ℕ} (c : Fin s ↪o ℝ) (I : FiniteInterval (s + 1))
+    (hI : 0 < I.birth)
+    (hfd : ∀ j, FiniteDimensional ℚ
+      ((reindex (cellIndex c) (intervalModule (k := ℚ) I)).obj (c j))) :
+    (moduleDiagram c (reindex (cellIndex c) (intervalModule (k := ℚ) I)) hfd).points =
+      {RealBarcode.endpoints c (RealBarcode.dropZero I hI)} := by
+  let t : Fin s →o Fin (s + 1) := (cellIndex c).comp c.toOrderHom
+  have ht : t = (Fin.succOrderEmb s).toOrderHom := by
+    apply DFunLike.ext
+    intro j
+    exact cellIndex_critical c j
+  unfold moduleDiagram
+  change (ofIndexBars c c.strictMono
+    (rankBarcode (reindex t (intervalModule (k := ℚ) I)))).points = _
+  rw [rankBarcode_reindex, single_barcode, ht, RealBarcode.ofIndexBars_points]
+  rw [← Multiset.cons_zero]
+  simp only [reindexBarcode, Multiset.filterMap_cons_some _ _ _ (RealBarcode.restrictAlong_succ I hI),
+    Multiset.filterMap_zero, Multiset.map_cons, Multiset.map_zero]
+  exact Multiset.cons_zero _
+
+private theorem input_points : (moduleDiagram coarse input matching_critical_finite).points =
+    {((0 : ℝ), (2 : WithTop ℝ))} :=
+  pullback_points coarse bar (by decide) matching_critical_finite
+
+private noncomputable def zero_target_witness : RealInterleaving 1 input zeroInput :=
+  ((RealInterleaving.nonempty_zero_iff 1 input).mpr (by
+    rw [← witness.φ_ψ, witness_φ_zero, zero_comp])).some
+
+private noncomputable def threshold_matching := interleavingMatching input_constructible
+  empty_constructible matching_critical_finite (fun j => Fin.elim0 j) zero_target_witness
+
+/-- The actual length-two module interleaves with zero at one. Its constructed
+matching leaves the real bar unmatched and attains diagonal cost one exactly. -/
+theorem threshold_cost_attained :
+    ∃ p, threshold_matching.finite p = none ∧ p.1 = (0, 2) ∧ diagonalCost p.1 = 1 ∧
+      threshold_matching.cost (fun p => p.1) (fun p => p.1)
+        (fun b => b.1) (fun b => b.1) = 1 := by
+  have hc : (finitePart (moduleDiagram coarse input matching_critical_finite).points).count (0, 2) = 1 := by
+    rw [input_points]
+    change ({((0 : ℝ), (2 : ℝ))} : Multiset (ℝ × ℝ)).count (0, 2) = 1
+    simp
+  let p : (moduleDiagram coarse input matching_critical_finite).finiteOccurrences :=
+    ⟨(0, 2), ⟨0, by rw [hc]; decide⟩⟩
+  have hn : threshold_matching.finite p = none := by
+    cases h : threshold_matching.finite p with
+    | none => rfl
+    | some q =>
+      have hq : q.1 ∈ finitePart (moduleDiagram empty zeroInput (fun j => Fin.elim0 j)).points :=
+        Multiset.coe_mem
+      have he := moduleDiagram_empty_grid empty zeroInput
+      have hm := Eq.mp (congrArg (fun s : Multiset (ℝ × WithTop ℝ) => q.1 ∈ finitePart s) he) hq
+      simp [finitePart] at hm
+  have hd : diagonalCost p.1 = 1 := by norm_num [p, diagonalCost]
+  refine ⟨p, hn, rfl, hd, le_antisymm ?_ ?_⟩
+  · exact interleavingMatching_cost_le input_constructible empty_constructible
+      matching_critical_finite (fun j => Fin.elim0 j) zero_target_witness
+  · have h := threshold_matching.source_le_cost (fun p => p.1) (fun p => p.1)
+      (fun b => b.1) (fun b => b.1) p
+    simpa only [hn, hd] using h
+
+private theorem essential_critical_finite (j : Fin 1) :
+    FiniteDimensional ℚ (essentialInput.obj (oneGrid j)) := by
+  change FiniteDimensional ℚ ((intervalModule (k := ℚ) essentialBar).obj (cellIndex oneGrid (oneGrid j)))
+  infer_instance
+
+/-- Unequal essential multiplicities give empty finite-parameter witness sets
+and infinite values on both sides of the finite-constructible isometry. -/
+theorem essential_zero_infinite :
+    realInterleavingDistance essentialInput zeroInput = ⊤ ∧
+      bottleneck (moduleDiagram oneGrid essentialInput essential_critical_finite)
+        (moduleDiagram empty zeroInput (fun j => Fin.elim0 j)) = ⊤ ∧
+      (∀ ε : ℝ≥0, IsEmpty (RealInterleaving ε essentialInput zeroInput)) ∧
+      IsEmpty (OccurrenceMatching (moduleDiagram oneGrid essentialInput essential_critical_finite).finiteOccurrences
+        (moduleDiagram empty zeroInput (fun j => Fin.elim0 j)).finiteOccurrences
+        (moduleDiagram oneGrid essentialInput essential_critical_finite).essentialOccurrences
+        (moduleDiagram empty zeroInput (fun j => Fin.elim0 j)).essentialOccurrences) := by
+  have hp : (moduleDiagram oneGrid essentialInput essential_critical_finite).points =
+      {((0 : ℝ), (⊤ : WithTop ℝ))} :=
+    pullback_points oneGrid essentialBar (by decide) essential_critical_finite
+  have hcard : (essentialPart (moduleDiagram oneGrid essentialInput essential_critical_finite).points).card ≠
+      (essentialPart (moduleDiagram empty zeroInput (fun j => Fin.elim0 j)).points).card := by
+    rw [hp, moduleDiagram_empty_grid]
+    change ({(0 : ℝ)} : Multiset ℝ).card ≠ (0 : Multiset ℝ).card
+    simp
+  have hi := (distance_eq_top_iff_essential_card_ne essential_constructible empty_constructible
+    essential_critical_finite (fun j => Fin.elim0 j)).mpr hcard
+  refine ⟨hi, ?_, realInterleavingDistance_eq_top_iff.mp hi, ?_⟩
+  · rw [bottleneck_eq_distance essential_constructible empty_constructible
+      essential_critical_finite (fun j => Fin.elim0 j), hi]
+  · apply not_nonempty_iff.mp
+    rw [occurrenceMatching_nonempty_iff]
+    simpa only [Multiset.card_coe] using hcard
 
 end TDA.Persistence.ConstructibleDefectExamples

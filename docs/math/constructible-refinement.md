@@ -114,7 +114,7 @@ kernel/cokernel constructibility for morphisms between modules on a shared grid
 and transfers real annihilation to finite sampled defects. It uses actual
 naturality and within-cell isomorphisms, without arbitrary-submodule closure.
 The [actual shift-diagram formula](constructible-shift-diagrams.md) moves
-endpoints by −ε and returns occurrence labels by +ε. The general
-interleaving-to-matching distance inequality remains separate. The
+endpoints by −ε and returns occurrence labels by +ε. The [finite-constructible isometry](constructible-isometry.md) constructs
+the original-diagram ε-cost matching and proves equality of the extended distances. The
 [finite quantitative induced matching](finite-quantitative-induced-matching.md)
 retains its finite-dimensionality and endpoint hypotheses.

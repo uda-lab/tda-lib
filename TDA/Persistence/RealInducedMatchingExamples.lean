@@ -1,4 +1,5 @@
 import TDA.Persistence.ConstructibleInducedMatching
+import TDA.Persistence.ConstructibleIsometry
 import TDA.Persistence.FiniteInducedSpecialization
 
 /-!
@@ -160,5 +161,25 @@ theorem empty_matching (δK δC : ℝ≥0) :
     fun i => Fin.elim0 i
   exact ⟨RealInduced.matching emptyGrid (𝟙 emptyModule) δK δC hk hc,
     RealInduced.matching_bounds emptyGrid (𝟙 emptyModule) δK δC hk hc⟩
+
+/-- The actual identity-induced bounds return a zero-cost matching with both
+copies of each finite and essential value retained. -/
+theorem duplicate_zero_cost :
+    ∃ A : OccurrenceMatching D.finiteOccurrences D.finiteOccurrences
+        D.essentialOccurrences D.essentialOccurrences,
+      A.cost (fun p => p.1) (fun p => p.1) (fun b => b.1) (fun b => b.1) = 0 ∧
+        Function.Bijective A.essential ∧
+        D.points.count (0, (3 : WithTop ℝ)) = 2 ∧ D.points.count (1, ⊤) = 2 := by
+  have hD : D.IsPositive := ofIndexBars_isPositive _ _ _
+  have H : ∃ A : OccurrenceMatching D.finiteOccurrences
+        (translateDiagram D (-(0 : ℝ))).finiteOccurrences D.essentialOccurrences
+        (translateDiagram D (-(0 : ℝ))).essentialOccurrences,
+      RealMatchingBounds (0 + 0) (0 + 0) A := by
+    rw [neg_zero, translateDiagram_zero]
+    exact ⟨identityMatching 0, by simpa only [zero_add] using zero_parameter.1⟩
+  obtain ⟨A, hA⟩ := H
+  exact ⟨A.untranslateTarget (-(0 : ℝ)),
+    nonpos_iff_eq_zero.mp (RealMatchingBounds.untranslateTarget_cost_le hD hD 0 A hA),
+    (A.untranslateTarget (-(0 : ℝ))).essential.bijective, multiplicities⟩
 
 end TDA.Persistence.RealInducedMatchingExamples
