@@ -1442,3 +1442,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteBarcode.birthSuffixCount_le_birthOrdinal
 #print axioms TDA.Persistence.FiniteBarcode.birthSuffixCount_le_card
 #print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_mem_range_iff
+#print axioms TDA.Persistence.RealInterleaving.kernel_transition_eq_zero
+#print axioms TDA.Persistence.RealInterleaving.cokernel_transition_eq_zero
+#print axioms TDA.Persistence.RealInterleavingShortnessExamples.actual_defects_threshold
+#print axioms TDA.Persistence.RealInterleavingShortnessExamples.integer_zero_parameter

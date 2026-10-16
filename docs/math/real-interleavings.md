@@ -109,6 +109,11 @@ The essential interval `[0,∞)` fails the criterion at every finite `ε`, becau
 the map from `0` to `2ε` preserves `1`. A field has `1≠0`; this nontriviality
 is needed for the negative examples. The basic ring-valued API does not impose it.
 
+The [kernel and cokernel shortness results](real-interleaving-shortness.md)
+prove that either interleaving morphism has actual defects with zero
+double-shift transitions. They use the witness equations and naturality of
+the actual kernel inclusion and cokernel projection, over the same rings.
+
 ## Distance, infinity and approximation
 
 `realInterleavingDistance M N : ℝ≥0∞` is
