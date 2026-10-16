@@ -110,6 +110,20 @@ in every degree by that discrepancy. For V : Type u it requires `LinearOrder V`,
 essential-bar semantics. This noncomputable consumer of finite-face stability covers
 the fixed labelled carrier. See [the construction, proof and source scope](math/rips-metric-stability.md).
 
+## Finite first-order PD matching cost
+
+`TDA.Persistence.FiniteMatchingCost` defines `finiteFirstOrderMatchingCost` from the
+existing real `OccurrenceMatching.totalFiniteCost`: paired points use the birth–death
+L∞ norm, and every unmatched occurrence costs |death−birth|/2. Finite occurrence types
+retain repeated values; the PD interpretation requires birth < death and no essential
+part. The supporting real-cost algebra needs no positivity hypothesis.
+
+The feasible matching family is finite and nonempty. The API proves attainment,
+nonnegativity, candidate upper bounds, universal lower bounds, exact empty-input
+formulas and invariance under finite occurrence equivalences. It proves no triangle
+inequality, identity of indiscernibles or equality with measure boundary transport.
+See [the matching minimum and its scope](math/finite-first-order-matching.md).
+
 ## Gaussian persistence images
 
 `TDA.Persistence.GaussianKernel` proves normalization and L¹ translation estimates for
@@ -122,8 +136,10 @@ uses birth–persistence coordinates `(b,d−b)`.
 `norm_image_sub_le_matching` bounds the difference of image sums by
 `(2A + 3B sqrt(2/π)/σ)` times every finite partial matching's total birth–death L∞ cost,
 including diagonal charges for unmatched occurrences. Real pairs satisfy birth < death;
-multiplicities and empty inputs are retained, and essential bars are excluded. This is
-an every-matching estimate, with no exported transport-distance or RKHS identification.
+multiplicities and empty inputs are retained, and essential bars are excluded.
+`norm_image_sub_le_finiteFirstOrderMatchingCost` applies it to an attained minimizer,
+giving the same coefficient times the finite first-order matching cost. No measure
+boundary-transport or RKHS identification is asserted.
 The Gaussian and pixel-integral definitions are noncomputable analytic APIs.
 See [the construction, analytic proof and source correspondence](math/persistence-images.md).
 

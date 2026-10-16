@@ -4,8 +4,10 @@ import TDA.Persistence.Diagram
 import TDA.Persistence.DiagramLaws
 import TDA.Persistence.DiagramBottleneck
 import TDA.Persistence.AdditiveFeatures
+import TDA.Persistence.FiniteMatchingCost
 import TDA.Persistence.GaussianKernel
 import TDA.Persistence.PersistenceImage
+import TDA.Persistence.PersistenceImageMatching
 import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.ActualLossDerivative

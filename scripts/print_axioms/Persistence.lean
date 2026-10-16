@@ -1059,3 +1059,16 @@ set_option linter.auxLemma false
 -- Same-label metric diameter filtrations (Issue #243).
 #print axioms TDA.Persistence.Rips.faceSupDifference_filter_le
 #print axioms TDA.Persistence.Rips.bottleneck_dgm_le_pairwiseDiscrepancy
+
+-- Attained finite first-order matching cost and Gaussian PI corollary (Issue #245).
+#print axioms TDA.Persistence.OccurrenceMatching.totalFiniteCost_relabel
+#print axioms TDA.Persistence.exists_minimizing_occurrenceMatching
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_le_totalFiniteCost
+#print axioms TDA.Persistence.le_finiteFirstOrderMatchingCost_iff
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_nonneg
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_le_diagonalSum
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_of_isEmpty_right
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_of_isEmpty_left
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_empty
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_reindex
+#print axioms TDA.Persistence.PersistenceImage.norm_image_sub_le_finiteFirstOrderMatchingCost

@@ -42,7 +42,10 @@ Then
 The statement quantifies over every partial matching and allows empty collections,
 repeated values and an empty pixel family. It requires the same bandwidth, weight and
 pixel family on both sides. It does not assume an optimal matching or define a transport
-distance. The constant is explicit and need not be sharp.
+distance. The constant is explicit and need not be sharp. The
+[finite first-order matching cost](finite-first-order-matching.md) supplies an attained
+minimum over these matchings; `norm_image_sub_le_finiteFirstOrderMatchingCost` bounds
+the same image error by C times that minimum.
 
 ## Analytic proof
 
@@ -79,8 +82,8 @@ analytic definitions; numerical integration requires a separate implementation.
 The construction follows [Adams et al., §4 Definitions 1–2](references.md#AE17).
 Their §5 Gaussian surface and pixel bounds motivate the analytic route. The library
 uses a maximum-norm Lipschitz hypothesis on the weight and derives the stated nonsharp
-constant; it does not identify C with the paper's gradient/Euclidean constant or claim
-its transport-distance theorem as an exported interface.
+constant. The attained matching-minimum corollary uses this same library bound; C is
+not identified with the paper's exact gradient/Euclidean coefficient.
 
 [Kusano–Fukumizu–Hiraoka §4.1.3](references.md#KFH18) distinguishes pixel-vector and
 RKHS norms and uses birth–death coordinates for its comparison. The present construction
