@@ -17,6 +17,7 @@ import TDA.Persistence.RankReindexExamples
 import TDA.Persistence.GradeHomologyBarcodeExamples
 import TDA.Persistence.IndexDiagramExamples
 import TDA.Persistence.RankBarcodeExamples
+import TDA.Persistence.FiniteMonoMatchingExamples
 import TDA.Persistence.RankBarcodeIsoExamples
 import TDA.Persistence.Reduction.PivotExamples
 import TDA.Persistence.Reduction.PrefixSpanExamples
