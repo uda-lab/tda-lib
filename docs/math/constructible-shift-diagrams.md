@@ -110,14 +110,10 @@ half-open convention. The actual grid/rank proof, occurrence representation
 and target-relabel operation are library constructions. Source and rights
 metadata are in [BL15-v4](references.md#BL15-v4).
 
-Theorem 6.4's proof also needs the induced matching's endpoint bounds and
-long-bar coverage. The [actual sampled defects](constructible-defects-sampling.md)
-and [finite quantitative induced matching](finite-quantitative-induced-matching.md)
-supply algebraic inputs for that step. Converting their rounded finite bounds
-and partial injection into real finite/essential labels, proving the real
-endpoint and coverage estimates, and then applying the +ε target inverse
-remain the route to a matching of cost at most ε for two arbitrary
-ε-interleaved modules. Taking the interleaving-distance infimum would give
-`d_B≤d_I`. That general matching and distance inequality are not established
-by the shift-specific construction above; no inspection of general infinite
-decomposition or the source's omitted duality proof is claimed.
+The [real induced matching](real-induced-matchings.md) constructs a matching
+into the actual shifted target, with exact `2ε` endpoint and unmatched-length
+bounds and a total essential equivalence. Applying the +ε target inverse,
+proving the ε pair/diagonal cost bounds and taking the interleaving-distance
+infimum remain the steps toward `d_B≤d_I`. The shift-specific construction
+above establishes its own complete matching and cost bound. General infinite
+decomposition and the source's omitted duality proof are outside its scope.

@@ -29,7 +29,8 @@ def occurrencePoint (D : Diagram ℝ) : Occurrences D → ℝ × WithTop ℝ
   | .inl p => (p.1.1, (p.1.2 : WithTop ℝ))
   | .inr b => (b.1, ⊤)
 
-private theorem occurrencePoint_multiset (D : Diagram ℝ) :
+/-- The finite/essential occurrence presentation has exactly the diagram point multiset. -/
+theorem occurrencePoint_multiset (D : Diagram ℝ) :
     (Finset.univ : Finset (Occurrences D)).val.map (occurrencePoint D) = D.points := by
   rw [← Finset.univ_disjSum_univ, Finset.val_disjSum, Multiset.disjSum, Multiset.map_add,
     Multiset.map_map, Multiset.map_map]

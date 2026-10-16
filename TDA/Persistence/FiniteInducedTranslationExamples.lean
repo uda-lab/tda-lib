@@ -1,5 +1,6 @@
 import TDA.Persistence.FiniteInducedTranslationMatching
 import TDA.Persistence.FiniteInducedSpecialization
+import TDA.Persistence.RealInducedMatching
 import Mathlib.Data.Rat.Defs
 
 /-! # Actual epimorphisms and canonical barcode embedding consumers -/
@@ -442,5 +443,138 @@ theorem overlap_unique_source (j : BarcodeOccurrence 4 (rankBarcode (intervalMod
   apply inducedMap_covers_long_target_of_cokernelTrivial theta theta_forward
     overlap overlap_cokernel_short j
   rw [single_occurrence]; decide
+
+private def realGrid : Fin 4 ↪o ℝ :=
+  OrderEmbedding.ofStrictMono (fun i : Fin 4 =>
+      if i.val = 0 then (0 : ℝ) else if i.val = 1 then 1 else if i.val = 2 then 3 else 4)
+    (by intro i j hij; fin_cases i <;> fin_cases j <;> norm_num at *)
+
+private theorem realGrid_apply (i : Fin 4) : realGrid i =
+    if i.val = 0 then (0 : ℝ) else if i.val = 1 then 1 else if i.val = 2 then 3 else 4 := rfl
+
+private theorem realGrid_theta : FiniteConstructible.sampleTranslation realGrid 1 = theta := by
+  apply DFunLike.ext
+  intro i
+  apply Fin.succ_injective 4
+  rw [FiniteConstructible.sampleTranslation_succ]
+  apply (FiniteConstructible.cellIndex_eq_succ_iff realGrid (theta i) _).mpr
+  constructor
+  · fin_cases i <;> norm_num [realGrid_apply, theta]
+  · intro j hj
+    fin_cases i <;> fin_cases j <;> norm_num [theta, realGrid_apply, Fin.lt_def] at *
+
+private theorem overlap_real_kernel :
+    TranslationTrivial (FiniteConstructible.sampleTranslation realGrid 1)
+      (FiniteConstructible.le_sampleTranslation realGrid 1) (finiteKernel overlap) := by
+  simpa only [realGrid_theta] using overlap_kernel_short
+
+private theorem overlap_real_cokernel :
+    TranslationTrivial (FiniteConstructible.sampleTranslation realGrid 1)
+      (FiniteConstructible.le_sampleTranslation realGrid 1) (finiteCokernel overlap) := by
+  simpa only [realGrid_theta] using overlap_cokernel_short
+
+private noncomputable def realOverlapMatching :=
+  RealInduced.matching realGrid overlap 1 1 overlap_real_kernel overlap_real_cokernel
+
+private theorem erase_real_kernel :
+    TranslationTrivial (FiniteConstructible.sampleTranslation realGrid 1)
+      (FiniteConstructible.le_sampleTranslation realGrid 1) (finiteKernel eraseShort) := by
+  simpa only [realGrid_theta] using eraseShort_kernel_short
+
+private theorem erase_real_cokernel :
+    TranslationTrivial (FiniteConstructible.sampleTranslation realGrid 1)
+      (FiniteConstructible.le_sampleTranslation realGrid 1) (finiteCokernel eraseShort) := by
+  apply (cokernel_translationTrivial_iff _ _ _).mpr
+  intro i
+  rw [LinearMap.range_eq_top.mpr (eraseShort_surjective
+    (FiniteConstructible.sampleTranslation realGrid 1 i))]
+  exact le_top
+
+/-- An actual erased real bar can be unmatched at threshold equality. -/
+theorem real_threshold_unmatched :
+    ∃ p, (RealInduced.matching realGrid eraseShort 1 1
+      erase_real_kernel erase_real_cokernel).finite p = none ∧ p.1 = (0, 1) ∧
+      p.1.2 - p.1.1 = 1 := by
+  have hlen : (rankBarcode shortSource).toList.length = 1 := by
+    rw [single_barcode]; simp
+  let i : BarcodeOccurrence 4 (rankBarcode shortSource) := ⟨0, by omega⟩
+  obtain ⟨p, _hp, hpv⟩ := RealBarcode.indexOccurrenceEquiv_finite realGrid _ i (by
+    rw [single_occurrence]; decide)
+  rw [single_occurrence] at hpv
+  have hv : (p.1.1, (p.1.2 : WithTop ℝ)) = (0, (1 : WithTop ℝ)) :=
+    hpv.trans (by rfl)
+  have hv' : p.1 = (0, 1) := by
+    apply Prod.ext
+    · exact congrArg (fun z : ℝ × WithTop ℝ => z.1) hv
+    · exact WithTop.coe_injective (congrArg (fun z : ℝ × WithTop ℝ => z.2) hv)
+  have hempty : (RealInduced.diagram realGrid zeroModule).points = 0 := by
+    change (ofIndexBars realGrid realGrid.strictMono
+      (rankBarcode (barcodeModule (k := ℚ) (0 : Multiset (FiniteInterval 4))))).points = 0
+    rw [rankBarcode_barcodeModule, RealBarcode.ofIndexBars_points, Multiset.map_zero]
+  refine ⟨p, ?_, hv', by rw [hv']; norm_num⟩
+  cases h : (RealInduced.matching realGrid eraseShort 1 1
+      erase_real_kernel erase_real_cokernel).finite p with
+  | none => rfl
+  | some q =>
+    have hq : q.1 ∈ finitePart (RealInduced.diagram realGrid zeroModule).points := Multiset.coe_mem
+    have hm := Eq.mp (congrArg (fun s : Multiset (ℝ × WithTop ℝ) =>
+      q.1 ∈ finitePart s) hempty) hq
+    simp [finitePart] at hm
+
+/-- The overlap control has nonzero actual categorical defects, not just changed endpoints. -/
+theorem real_overlap_defects_nonzero :
+    ¬ CategoryTheory.Limits.IsZero (finiteKernel overlap) ∧
+      ¬ CategoryTheory.Limits.IsZero (finiteCokernel overlap) := by
+  constructor
+  · intro hz
+    apply proper_overlap_shortness.1
+    intro i
+    rw [← LinearMap.ker_eq_bot]
+    apply le_antisymm _ bot_le
+    intro x hx
+    have he := (finiteKernel_map_eq_zero_iff overlap (le_refl i)).mp
+      ((hz.obj i).eq_zero_of_src (structureMap (finiteKernel overlap) (le_refl i))) hx
+    simpa only [structureMapLinear_self, LinearMap.ker_id, Submodule.mem_bot] using he
+  · intro hz
+    apply proper_overlap_shortness.2.1
+    intro i
+    apply LinearMap.range_eq_top.mp
+    apply top_unique
+    have he := (finiteCokernel_map_eq_zero_iff overlap (le_refl i)).mp
+      ((hz.obj i).eq_zero_of_src (structureMap (finiteCokernel overlap) (le_refl i)))
+    simpa only [structureMapLinear_self, LinearMap.range_id] using he
+
+/-- On the irregular grid `[0,1,3,4]`, the actual induced real matching attains
+both displacement-one bounds. The larger interior gap adds no mesh error. -/
+theorem real_overlap_bounds_attained :
+    ∃ p q, realOverlapMatching.finite p = some q ∧ p.1 = (1, 4) ∧ q.1 = (0, 3) ∧
+      RealEndpointBounds 1 1 (p.1.1, (p.1.2 : WithTop ℝ))
+        (q.1.1, (q.1.2 : WithTop ℝ)) := by
+  obtain ⟨i, j, hij, _⟩ := overlap_two_sided_bounds
+  obtain ⟨p, hp, hpv⟩ := RealBarcode.indexOccurrenceEquiv_finite realGrid _ i (by
+    rw [single_occurrence]; decide)
+  obtain ⟨q, hq, hqv⟩ := RealBarcode.indexOccurrenceEquiv_finite realGrid _ j (by
+    rw [single_occurrence]; decide)
+  rw [single_occurrence] at hpv hqv
+  have hpv' : (p.1.1, (p.1.2 : WithTop ℝ)) = (1, (4 : WithTop ℝ)) :=
+    hpv.trans (by rfl)
+  have hqv' : (q.1.1, (q.1.2 : WithTop ℝ)) = (0, (3 : WithTop ℝ)) :=
+    hqv.trans (by rfl)
+  have hpPair : p.1 = (1, 4) := by
+    apply Prod.ext
+    · exact congrArg (fun z : ℝ × WithTop ℝ => z.1) hpv'
+    · exact WithTop.coe_injective (congrArg (fun z : ℝ × WithTop ℝ => z.2) hpv')
+  have hqPair : q.1 = (0, 3) := by
+    apply Prod.ext
+    · exact congrArg (fun z : ℝ × WithTop ℝ => z.1) hqv'
+    · exact WithTop.coe_injective (congrArg (fun z : ℝ × WithTop ℝ => z.2) hqv')
+  have hm : RealInduced.sumMap realGrid overlap (.inl p) = some (.inl q) := by
+    rw [← hp, ← hq]
+    apply (RealInduced.sumMap_eq_some_iff realGrid overlap _ _).mpr
+    simpa only [Equiv.symm_apply_apply] using hij
+  have hm' := (RealInduced.matching_finite_eq_some_iff realGrid overlap 1 1
+    overlap_real_kernel overlap_real_cokernel p q).mpr hm
+  exact ⟨p, q, hm', hpPair, hqPair,
+    (RealInduced.matching_bounds realGrid overlap 1 1 overlap_real_kernel overlap_real_cokernel).finite_bounds p q hm'⟩
 
 end TDA.Persistence.FiniteInducedTranslationExamples

@@ -134,6 +134,16 @@ untranslation operation is available for existing occurrence matchings. See
 [real shift diagrams and occurrence untranslation](math/constructible-shift-diagrams.md)
 for multiplicities, boundary conventions and the remaining general matching step.
 
+`FiniteConstructible.inducedOccurrenceMatching` transports the actual sampled
+finite induced partial injection to real finite and essential occurrence labels.
+Actual real kernel/cokernel annihilation gives exact endpoint and unmatched-length
+bounds, unique coverage of strictly long finite bars and a total essential
+equivalence. `interleaving_shifted_induced_matching` derives these bounds at `2ε`
+from an actual interleaving on possibly different grids, into the translated target
+`D_N−ε`. No mesh error or supplied matching is used. See
+[real induced occurrence matchings](math/real-induced-matchings.md). The ε-cost
+estimate after +ε target untranslation and `d_B≤d_I` remain unproved.
+
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
 decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
 the same universe, with finite-dimensionality only at the critical fibers. The sampled
@@ -154,7 +164,7 @@ for the finite nonnegative parameters and witness equations.
 prove that either comparison morphism has actual categorical kernel and cokernel
 with zero `2ε`-transition, over any ring without dimension assumptions. See
 [real interleaving defect shortness](math/real-interleaving-shortness.md)
-for the naturality proof, the sharp threshold example and the remaining finite-grid bridge.
+for the naturality proof, the sharp threshold example and its constructible matching consumer.
 
 `RealInterleaving.mono`, `trans` and `congr` enlarge parameters, add parameters
 under composition, and transport both modules along natural isomorphisms.
@@ -179,8 +189,8 @@ empty when essential cardinalities differ, giving infinite bottleneck.
 independently sized critical grids using `barcodeRealizationIso`; its
 `matchingInterleaving` also transports individual witnesses. These module results
 retain the existing zero-left-tail, half-open strata, critical-fiber finiteness and
-shared field/carrier-universe assumptions. The reverse inequality, reverse matching
-construction and full isometry theorem remain separate results.
+shared field/carrier-universe assumptions. The reverse inequality, the ε-cost estimate for the induced matching
+and full isometry theorem remain separate results.
 
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.

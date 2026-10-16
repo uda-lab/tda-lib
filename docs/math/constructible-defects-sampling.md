@@ -131,9 +131,10 @@ and the sampling bridge above are library constructions using mathlib's actual
 limit comparisons, rather than numbered source sampling theorems.
 Source and rights metadata are in [BL15-v4](references.md#BL15-v4).
 
-No inspection of general infinite decomposition or the omitted Lemma 6.2 proof
-is claimed. The [shift-diagram correspondence](constructible-shift-diagrams.md)
-provides the actual shifted diagram and inverse occurrence labels. General
-real induced matching and `d_B≤d_I` remain separate results. The
-[finite quantitative matching API](finite-quantitative-induced-matching.md)
-retains its finite-dimensionality and endpoint hypotheses.
+The [real induced matching](real-induced-matchings.md) consumes these actual
+sampled defects and converts the finite partial injection into real labels,
+with exact endpoint, essential and long-bar coverage bounds. Its interleaving
+consumer constructs a matching into the shifted target. Returning that target
+by +ε and proving ε-cost and distance-infimum estimates remain the steps toward
+`d_B≤d_I`. General infinite decomposition and the omitted Lemma 6.2 proof are
+outside these sampling results.

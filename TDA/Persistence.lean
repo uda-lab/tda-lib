@@ -84,3 +84,5 @@ import TDA.Persistence.FiniteKernel
 import TDA.Persistence.FiniteEpiTranslationCounts
 import TDA.Persistence.FiniteEpiTranslationMatching
 import TDA.Persistence.FiniteInducedTranslationMatching
+import TDA.Persistence.RealInducedMatching
+import TDA.Persistence.ConstructibleInducedMatching

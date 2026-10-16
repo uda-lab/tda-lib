@@ -1,4 +1,5 @@
 import TDA.Persistence.ConstructibleSampling
+import TDA.Persistence.ConstructibleInducedMatching
 import TDA.Persistence.RealIntervalInterleaving
 
 /-!
@@ -344,5 +345,23 @@ theorem empty_grid (δ : ℝ≥0) : sampleTranslation empty δ = OrderHom.id ∧
   apply DFunLike.ext
   intro i
   exact Fin.elim0 i
+
+private theorem matching_critical_finite (j : Fin 2) :
+    FiniteDimensional ℚ (input.obj (coarse j)) := by
+  change FiniteDimensional ℚ ((intervalModule (k := ℚ) bar).obj (cellIndex coarse (coarse j)))
+  infer_instance
+
+/-- Actual zero comparison maps with nonzero defects give the derived real
+induced matching into the shifted target, without a shortness or matching input. -/
+theorem actual_shifted_induced_matching :
+    ∃ A : OccurrenceMatching (moduleDiagram coarse input matching_critical_finite).finiteOccurrences
+        (translateDiagram (moduleDiagram coarse input matching_critical_finite) (-1)).finiteOccurrences
+        (moduleDiagram coarse input matching_critical_finite).essentialOccurrences
+        (translateDiagram (moduleDiagram coarse input matching_critical_finite) (-1)).essentialOccurrences,
+      RealMatchingBounds 2 2 A := by
+  have h := interleaving_shifted_induced_matching input_constructible input_constructible
+    matching_critical_finite matching_critical_finite witness
+  norm_num at h
+  exact h
 
 end TDA.Persistence.ConstructibleDefectExamples
