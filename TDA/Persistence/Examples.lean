@@ -1,6 +1,7 @@
 -- Persistence examples and acceptance fixtures, included by the comprehensive TDA root.
 import TDA.Persistence.ConstructibleExamples
 import TDA.Persistence.ConstructibleBarcodeExamples
+import TDA.Persistence.ConstructibleRefinementExamples
 import TDA.Persistence.RealInterleavingExamples
 import TDA.Persistence.RealInterleavingShortnessExamples
 import TDA.Persistence.RealInterleavingDistanceExamples

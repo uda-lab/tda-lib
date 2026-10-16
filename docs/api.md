@@ -111,6 +111,13 @@ module-carrier universe and no finite-dimensionality assumption. It supplies bot
 transformations and their inverse identities. See
 [finite-stratum reconstruction](math/constructible-modules.md).
 
+`FiniteConstructible.commonGrid` constructs a refinement from a sorted union of
+critical values. Actual constructibility survives refinement and positive-evaluation
+shift on the grid `c_i-ε`. `moduleDiagram_refinement` proves equality of real endpoint
+diagrams, deriving finiteness at added critical values from the original ones and
+retaining duplicate bars and essential tails. See
+[common grids and diagram invariance](math/constructible-refinement.md).
+
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
 decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
 the same universe, with finite-dimensionality only at the critical fibers. The sampled

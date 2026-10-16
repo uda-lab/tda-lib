@@ -8,8 +8,10 @@ import TDA.Persistence.RealIntervalInterleaving
 import TDA.Persistence.MatchingInterleaving
 import TDA.Persistence.MatchingInterleavingDistance
 import TDA.Persistence.Constructible
+import TDA.Persistence.ConstructibleRefinement
 import TDA.Persistence.RealBarcode
 import TDA.Persistence.ConstructibleBarcode
+import TDA.Persistence.ConstructibleRefinementBarcode
 import TDA.Persistence.Diagram
 import TDA.Persistence.DiagramLaws
 import TDA.Persistence.DiagramBottleneck
