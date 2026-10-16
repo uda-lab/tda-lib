@@ -227,6 +227,18 @@ form for a label metric agreeing with the ambient distances. The radius filter o
 complex satisfies rips/2 ≤ čech ≤ rips. Its sublevels contain the Čech complexes, with
 equality when X is proper. See [the conventions, proofs and fixtures](math/cech-rips-sandwich.md).
 
+`TDA.Filtration.CechDisplacement` compares two labelled families p, q : V → X in one
+ambient space label by label. Moving the points of a face by at most ε changes its Čech
+value by at most ε; the closed-ball radius estimate also needs ε ≥ 0 for the empty set.
+For a finite V, `displacement` is the largest label-wise distance with empty maximum
+zero, and the Rips pairwise discrepancy of distance-compatible label metrics is at most
+twice it. `TDA.Persistence.Cech.bottleneck_dgm_le_displacement` bounds the actual Čech
+diagrams in every degree by the displacement, and
+`bottleneck_rips_dgm_le_two_mul_displacement` bounds the actual Rips diagrams by twice
+it. Both keep the `LinearOrder V`, `Fintype V` and field assumptions of finite-face
+stability. These are same-label bounds, not Hausdorff bounds. See [the proofs, attained
+constants and source scope](math/cech-displacement-stability.md).
+
 ## Finite first-order PD matching cost
 
 `TDA.Persistence.FiniteMatchingCost` defines `finiteFirstOrderMatchingCost` from the
