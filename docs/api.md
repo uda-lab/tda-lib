@@ -198,6 +198,15 @@ in every degree by that discrepancy. For V : Type u it requires `LinearOrder V`,
 essential-bar semantics. This noncomputable consumer of finite-face stability covers
 the fixed labelled carrier. See [the construction, proof and source scope](math/rips-metric-stability.md).
 
+## Ambient Čech complexes
+
+`TDA.Filtration.Cech` defines the closed Čech complex of labelled points p : V → X in a
+pseudometric space as the nerve of closed balls, with ball radius as time. It proves
+Rips_r ⊆ Čech_r ⊆ Rips_{2r} in pairwise form for arbitrary labels, and in Rips-sublevel
+form for a label metric agreeing with the ambient distances. The radius filter on the full
+complex satisfies rips/2 ≤ čech ≤ rips. Its sublevels contain the Čech complexes, with
+equality when X is proper. See [the conventions, proofs and fixtures](math/cech-rips-sandwich.md).
+
 ## Finite first-order PD matching cost
 
 `TDA.Persistence.FiniteMatchingCost` defines `finiteFirstOrderMatchingCost` from the
