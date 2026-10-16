@@ -58,6 +58,16 @@ the ranks of all actual structure maps, including composites. The canonical obje
 the interval multiset; the chosen summands and isomorphism are not canonical. See
 [finite interval decomposition](math/finite-interval-decomposition.md).
 
+`FiniteBarcode.monoEmbedding` takes a natural transformation of these finite modules
+whose components are injective and constructs an embedding of their canonical barcode
+occurrences. It preserves each observed death and bounds the target birth by the source
+birth. At each death it pairs equal ordinals in birth/index order, retaining duplicates;
+the embedding respects identities and mono composition. Its count comparison uses actual
+image/kernel injections, with a separate terminal-image case. See
+[finite-chain mono embeddings](math/finite-mono-matching.md) for the endpoint conventions,
+proof and rank-domination boundary. It supplies the mono component of induced matching;
+epi and quantitative induced matching remain separate.
+
 `FiniteConstructible.reconstructionIso` reconstructs a real-indexed module from a finite
 chain of critical samples preceded by a zero stage. It uses left-closed/right-open strata,
 an actual zero left tail and actual structure-map isomorphisms within each stratum; the

@@ -24,6 +24,8 @@ import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.ActualLossDerivative
 import TDA.Persistence.FiniteBarcode
+import TDA.Persistence.FiniteMonoCounts
+import TDA.Persistence.FiniteMonoMatching
 import TDA.Persistence.Interval
 import TDA.Persistence.RankInvariant
 import TDA.Persistence.RankReconstruction

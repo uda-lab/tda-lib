@@ -1281,3 +1281,29 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.different_grid_bound
 #print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.empty_grid_bound
 #print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.empty_grid_witness
+
+-- Canonical death-preserving embeddings from finite-chain monomorphisms.
+#print axioms TDA.Persistence.FiniteBarcode.deathPrefixCount
+#print axioms TDA.Persistence.FiniteBarcode.deathSubspace
+#print axioms TDA.Persistence.FiniteBarcode.deathPrefixCount_eq_finrank
+#print axioms TDA.Persistence.FiniteBarcode.deathPrefixCount_terminal
+#print axioms TDA.Persistence.FiniteBarcode.deathPrefixCount_le_of_injective
+#print axioms TDA.Persistence.FiniteBarcode.occurrence
+#print axioms TDA.Persistence.FiniteBarcode.deathEnumeration
+#print axioms TDA.Persistence.FiniteBarcode.deathOrdinal
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_death
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_ordinal
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_birth_le
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_eq_iff
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_id
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_comp
+#print axioms TDA.Persistence.FiniteMonoMatchingExamples.unequal_birth_embedding
+#print axioms TDA.Persistence.FiniteMonoMatchingExamples.three_birth_composition
+#print axioms TDA.Persistence.FiniteMonoMatchingExamples.finite_death_count
+#print axioms TDA.Persistence.FiniteMonoMatchingExamples.duplicate_occurrences_distinct
+#print axioms TDA.Persistence.FiniteMonoMatchingExamples.duplicate_terminal_count
+#print axioms TDA.Persistence.FiniteMonoMatchingExamples.empty_chain
+#print axioms TDA.Persistence.FiniteMonoMatchingExamples.rank_domination_insufficient
+#print axioms TDA.Persistence.FiniteBarcode.DeathOccurrence.ext
+#print axioms TDA.Persistence.FiniteBarcode.DeathOccurrence.ext_iff
