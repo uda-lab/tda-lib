@@ -74,8 +74,17 @@ source bar's death, and pairs equal ordinals in descending-death/original-index 
 each birth. Identities and epi composition give identity and contravariant composition
 laws. Its count comparison uses actual image-quotient surjections, with a separate
 initial-stage image case. See [finite-chain epi embeddings](math/finite-epi-matching.md).
-The mono and epi correspondences are separate components of induced matching;
-quantitative induced matching remains a separate result.
+
+For an arbitrary transformation `f : M ⟶ N`, `finiteImage f` constructs its actual
+range-valued module and natural epi–mono factorization. `FiniteBarcode.inducedMatching`
+embeds precisely the source occurrence labels selected by the epi embedding into the
+target labels via their unique intermediate image occurrences. Its Option-valued
+`inducedMap` exposes the partial injection on all labels, with exact domain/range,
+qualitative endpoint order and an equivalence between image occurrences and matched pairs.
+It specializes to the existing mono/epi correspondences and the identity matching;
+composition laws apply to monos and epis. See
+[finite induced matchings](math/finite-induced-matching.md). Quantitative induced matching
+remains separate.
 
 `FiniteConstructible.reconstructionIso` reconstructs a real-indexed module from a finite
 chain of critical samples preceded by a zero stage. It uses left-closed/right-open strata,

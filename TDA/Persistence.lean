@@ -66,3 +66,6 @@ import TDA.Persistence.IntervalExtraction
 import TDA.Persistence.FiniteDecomposition
 import TDA.Persistence.FiniteEpiCounts
 import TDA.Persistence.FiniteEpiMatching
+import TDA.Persistence.FiniteImage
+import TDA.Persistence.FiniteInducedMatching
+import TDA.Persistence.FiniteInducedSpecialization
