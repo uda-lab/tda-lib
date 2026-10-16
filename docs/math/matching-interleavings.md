@@ -145,7 +145,9 @@ endpoint decorations require their own boundary conditions.
 
 The [finite-chain mono embedding](finite-mono-matching.md) and
 [epi embedding](finite-epi-matching.md) supply the canonical same-death and
-same-birth injections used in the induced-matching route. The reverse construction
+same-birth injections. Their [image construction](finite-induced-matching.md)
+supplies the qualitative matching for a general finite-chain morphism. The reverse
+construction
 from interleavings to matchings and `d_B≤d_I` remain
 separate results; the full isometry theorem is not established here. The present
 results use no generic flow, infinite barcode or q-tame theory, and do not assert

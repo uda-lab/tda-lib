@@ -97,9 +97,12 @@ The predecessor and initial-stage cases and the list-index tie break are explici
 library implementation choices; no order-reversal or linear-dual adapter is claimed.
 
 The [mono embedding](finite-mono-matching.md) and this epi embedding provide the
-two canonical correspondences separately. A general epi need not match every
+two canonical correspondences. Their
+[image-factorization construction](finite-induced-matching.md) supplies a partial
+injection for a general morphism. A general epi need not match every
 source occurrence, including terminal ones. The distance-specific
 `OccurrenceMatching`, with its total essential equivalence, is therefore a
-different interface. General-morphism composition, quantitative induced matching,
+different interface. Composition laws apply to the mono and epi subcategories.
+Quantitative induced matching,
 real-grid refinement and shifts, constructible kernel/image/cokernel closure and
 the reverse inequality `d_B ≤ d_I` remain separate results.
