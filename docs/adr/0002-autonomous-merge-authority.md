@@ -1,5 +1,10 @@
 # 0002 — Autonomous merge authority on verified gates
 
+The original decision and its dated addenda are retained below. The 2026-10-16 lifecycle
+addendum and [CONTRIBUTING.md](../../CONTRIBUTING.md) define the current branch roles and
+merge-method exceptions. Existing authority and integrity gates remain, including the
+October local-CI exception within its stated scope and end date.
+
 ## Context
 
 The flow is Issue → branch → PR → independent review → CI job `check` → branch-appropriate merge, with no
@@ -57,3 +62,30 @@ For implementation changes, the substitute requires the full guarded `scripts/ch
 Local results must never be described as hosted-CI success, and no GitHub check or status may be invented. Do not dispatch or rerun Actions, trigger an automatic hosted run, add workflows, deploy runners or expand CI. Before publication, require actual disabled-automation evidence or the Owner's explicit setting confirmation; if an unexpected Actions run appears, stop publication and report it. No project budget cap does not authorize hosted CI, CI expansion or disregard of the Owner's resource restriction. This exception makes no credential or settings changes.
 
 The exception is limited to ordinary `develop` PRs and ends at 2026-10-31 23:59:59 JST. That time is a reevaluation point, not an automatic November restart; do not extend the exception or change execution mode without an explicit Owner-approved plan. This addendum does not authorize a `main` release that cannot satisfy its actual rules. It leaves the #85 docs-job condition and the existing `scripts/build-docs.sh` revision invalidation and exact source-link binding unchanged; optional API docs are not an extra routine `develop` merge gate. For prose-only #89, the Issue's three-file patch, link, consistency and whitespace checks plus independent exact-head prose review suffice; this does not represent Lean, doc-gen4, proof, axiom or coverage checks as run, or relax the implementation gate.
+
+## Addendum — 2026-10-16: persistent integration and propagation
+
+The Owner adopts the branch lifecycle in CONTRIBUTING.md: persistent develop and stable
+main; ordinary code/documentation topic squashes into develop; release/<version> branches
+from a selected develop base; and merge-commit release/hotfix propagation to all required
+destinations. Main-first README fixes require verified develop propagation as well. An
+active release may carry a hotfix, with its final develop destination kept outstanding
+until completed. The next target scope/milestone is explicit; a version may remain
+undecided until release cut, when its version and scope are fixed.
+
+The reviewed release head, including any post-cut fixes, is the required source parent
+of its main merge. Equal trees establish content equality, not integration ancestry;
+ancestry also needs a content-preservation check after conflict resolution. The original
+develop base need not be an immediate main parent. Both long-lived branches survive
+release/PR cleanup. A matching tree alone does not waive propagation.
+
+The Owner authorizes develop's allowed merge methods to be squash and merge, retaining
+the PR requirement and all other rule parameters, conditions and bypass/deletion/force-push
+protections. Repository merge commits are already enabled; main's methods and other live
+settings are unchanged by this decision. Verify any authorized targeted update against
+the latest readback; the policy text is not proof of its deployment. Do not run the broad
+bootstrap to apply a single-field correction.
+
+This changes neither the existing exact-head review/validation requirements nor the
+October Actions restriction. It introduces no universal develop refresh, new gate or
+parent-approval wait, and does not itself initiate a main merge, release or tag.

@@ -15,7 +15,7 @@ Evidence lives where GitHub already records it. The PR body carries one validati
 (evaluated head and base SHAs, exact commands, exit outcomes, axiom and coverage summary),
 updated in place for each new head rather than appended as comments. Findings and their
 dispositions live in the PR's review threads or one grouped PR comment. The governing Issue
-receives one short pickup line, one closing pointer to the squash commit, and only the
+receives one short pickup line, one closing pointer to the integration commit, and only the
 reports this loop requires of the driver: a genuine specification change for dot's ruling,
 or a missing-source record under the source-fidelity policy. Nothing else goes there (no
 scratch source, hashes, probe narratives, progress or chronology). The commit SHA and the
@@ -115,9 +115,10 @@ checkpoint. Pause only actions dependent on an actual blocking condition.
 - Record dispositions where the feedback lives: a thread reply, a linked fix or one grouped PR
   comment. No separate ledger. Explain a non-action only when it affects acceptance.
 - Do not require `reviewDecision == APPROVED` and do not treat an absent optional signal as a
-  blocker. Merge with `gh pr merge <N> --squash --match-head-commit <evaluated head>` for develop,
-  or `--merge` instead of `--squash` for stable main promotions (ADR 0002)
-  after refreshing the head and the latest interventions.
+  blocker. Use `gh pr merge <N> --squash --match-head-commit <evaluated head>` for ordinary
+  develop topic PRs. Use `--merge` for release/hotfix propagation into develop and for
+  stable main integrations, following CONTRIBUTING.md and ADR 0002. Refresh the observed
+  head and latest interventions before merging.
 
 ## Classification after every round
 

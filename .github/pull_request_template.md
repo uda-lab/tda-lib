@@ -2,6 +2,16 @@ Closes #
 
 ## Summary
 
+## Branch lifecycle
+<!-- State the target scope/milestone and release version ("undecided" is valid before release cut).
+Identify the branch role, source/base, destination and method: ordinary code/docs topics are
+develop → develop squash PRs; release/hotfix propagation uses merge-commit PRs. Keep develop/main.
+For release/hotfix or main-first documentation fixes, link every required propagation destination
+and its remaining work, including eventual develop integration through an active release. Record
+the actual reviewed fixing/release head and separate ancestry from content-preservation checks;
+retain later correct develop additions. Ordinary topic PRs may write "Propagation: N/A".
+See CONTRIBUTING.md. Do not add empty task boxes or a routine develop-refresh/approval gate. -->
+
 ## Public declarations added / changed
 
 ## Source ↔ Lean correspondence
