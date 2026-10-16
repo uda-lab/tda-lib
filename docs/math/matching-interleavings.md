@@ -83,13 +83,59 @@ Examples include exact endpoint displacement, one zero comparison in a matched
 pair, deletion at length `2ε`, essential birth displacement, two identical bars
 against one, empty diagrams at every finite parameter, and ε=0.
 
+## Distance bound and constructible modules
+
+The [real interleaving distance](real-interleavings.md#distance-infinity-and-approximation)
+is the infimum of finite parameters admitting witnesses. Write `C(M)` for an
+occurrence matching's cost. Each `C(M)` is finite: there are finitely many real
+endpoint differences and diagonal costs. `RealBarcode.distance_le_matching_cost`
+uses this fact to convert `C(M)` to a finite nonnegative parameter, applies
+`matchingInterleaving` and obtains
+
+\[
+d_I(\operatorname{Realize}_k D,\operatorname{Realize}_k E)\le C(M).
+\]
+
+Taking the infimum over **all** occurrence matchings proves
+`RealBarcode.distance_le_bottleneck`:
+
+\[
+d_I(\operatorname{Realize}_k D,\operatorname{Realize}_k E)\le d_B(D,E).
+\]
+
+This proof chooses no optimal matching and assumes no infimum attainment.
+If essential cardinalities differ, the matching type is empty and its infimum
+is infinity; the same inequality still applies. An empty matching type differs
+from a matching that leaves finite bars unmatched. A bound by infinity alone
+does not give equality or a lower bound on the interleaving distance.
+
+For real modules `M,N`, take independently sized critical grids
+`c : Fin n ↪o ℝ`, `d : Fin m ↪o ℝ`, constructibility on the respective grids,
+and finite-dimensionality only at their critical fibers. The existing
+[barcode realization isomorphisms](real-barcode-realization.md) identify `M,N`
+with the realizations of `D=moduleDiagram c M hfdM` and
+`E=moduleDiagram d N hfdN`. Both diagrams are positive. Isomorphism invariance
+therefore gives `FiniteConstructible.distance_le_bottleneck`:
+
+\[
+d_I(M,N)\le d_B(D,E).
+\]
+
+`FiniteConstructible.matchingInterleaving` also transports each finite-ε matching
+witness to the original modules. The required module hypotheses are the existing
+zero left tail and finite left-closed/right-open strata, with an eventually
+constant final tail that may be nonzero. Empty grids and different grid sizes
+are allowed. The field and module carriers share universe `u`, as required by
+the finite decomposition; the ring-valued distance kernel has broader universes.
+
 ## Source correspondence and scope
 
 [Bauer–Lesnick, arXiv:1311.3681v4](https://arxiv.org/html/1311.3681v4#S8.SS1),
 §§3.1–3.2 and §8.1, supplies the matching-to-interleaving construction of
-Theorem 8.2. The library result is its finite, left-closed/right-open specialization;
-occurrence coordinates and the explicit natural-isomorphism transport are library
-glue. Source identity and rights are recorded in [BL15-v4](references.md#BL15-v4).
+Theorem 8.2, including its distance inequality. The library results are its finite,
+positive, left-closed/right-open specialization. Occurrence coordinates and
+finite-constructible natural-isomorphism transport are library glue.
+Source identity and rights are recorded in [BL15-v4](references.md#BL15-v4).
 
 Lemma 8.1 leaves its proof details to the reader. Its item (ii), in both v4 HTML
 and PDF page 26, writes `b+ε ≥ d` after fixing δ, without relating those symbols
@@ -97,7 +143,7 @@ there. The precise half-open criterion used here is proved from the double-shift
 equations and the actual structure maps: `d−b ≤ 2ε`. These numeric equality rules apply to the fixed half-open convention; other
 endpoint decorations require their own boundary conditions.
 
-The [real interleaving distance](real-interleavings.md#distance-infinity-and-approximation)
-is defined by an infimum without an attainment assumption. The reverse construction
-from interleavings to matchings and either distance isometry inequality are separate
-results. This construction uses no generic flow, infinite barcode or q-tame theory.
+The reverse construction from interleavings to matchings and `d_B≤d_I` remain
+separate results; the full isometry theorem is not established here. The present
+results use no generic flow, infinite barcode or q-tame theory, and do not assert
+independence of a constructible module's chosen critical grid.

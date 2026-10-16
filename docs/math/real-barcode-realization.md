@@ -102,4 +102,8 @@ The proof here combines the existing finite-chain decomposition with finite-stra
 reconstruction. It realizes the bounded finite-constructible class, rather than proving
 the paper's general p.f.d. decomposition theorem (Theorem 2.1). Grid independence,
 arbitrary endpoint decorations, nonzero left tails, infinite/q-tame decomposition,
-PH interleavings and either isometry inequality remain outside this API.
+and the general p.f.d. isometry theorem remain outside this realization API.
+The [matching-to-interleaving distance bound](matching-interleavings.md#distance-bound-and-constructible-modules)
+uses the constructed natural isomorphisms to prove `d_I(M,N)≤d_B(D,E)` for the
+two grid-based diagrams, and transports individual finite-parameter witnesses.
+It supplies no reverse distance inequality or grid-independence theorem.

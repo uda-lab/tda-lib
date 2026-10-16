@@ -163,9 +163,10 @@ also includes infinite summands, where the inequality is automatic.
 Source manifestation and rights
 metadata are recorded in [BL15-v4](references.md#BL15-v4).
 
-Generic flows, both isometry inequalities and the interleaving-to-matching
-direction are separate work.
+Generic flows and the interleaving-to-matching direction are separate work.
 The [matching-to-interleaving construction](matching-interleavings.md) supplies
-concrete witnesses for finite positive barcode realizations. The finite-constructible
+concrete witnesses and `d_I≤d_B` for finite positive barcode realizations, with
+transport to finite-constructible modules. The reverse distance inequality and
+full isometry theorem remain separate. The finite-constructible
 [barcode realization](real-barcode-realization.md)
 supplies a different natural isomorphism; no such decomposition is an input here.
