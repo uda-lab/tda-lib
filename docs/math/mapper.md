@@ -225,6 +225,60 @@ edge and the projection is not injective. On one edge with endpoint heights `0`
 and `2`, the same intervals satisfy the target-side condition and the two
 constructions agree. The empty domain has no cells.
 
+The component-level condition is strictly weaker than the target-side one. On two
+disjoint edges with endpoint heights `0` and `2` and the same intervals, the
+preimage of `(-1, 3/2)` has two path components, one on each edge, so the
+target-side condition fails. Component members on different edges are disjoint,
+so a nonempty intersection of component members lies on one edge. It is either one
+path-connected member or the intersection of the two members of one edge, whose
+points are all joined to the midpoint of that edge inside the preimage of
+`(1/2, 3/2)`. Hence every nonempty finite intersection of component members has at
+most one path component, and the MultiNerve Mapper is order-isomorphic to the
+ordinary Mapper of two disjoint edges.
+
+## Refinement maps of multinerves
+
+Let `R` be a selected refinement of indexed families `U` and `V` on one space. For
+a finite index set `σ`, the intersection `U_σ` lies in `V_τ` with
+`τ = R.selector '' σ`, so the inclusion induces a map on path components. The
+induced map of multinerves sends a cell `(σ, C)` to `(τ, C')`, where `C'` is the
+path component of `V_τ` containing `C`. It is monotone for the face order, sends the
+face of a cell over a subset to the face of the image cell over the image subset,
+and preserves the identity and composition of selected refinements. Projected to
+the ordinary nerve, it is the refinement-induced nerve map of the support. Like the
+nerve map, it may lower the support size, because selectors need not be injective.
+The selected refinement is supplied data in the convention of Dey–Mémoli–Wang
+§2–3; the laws are elementary library results, not attributed to a source.
+
+On the discrete space `Bool`, refining the singletons `{false}` and `{true}` to the
+one-member family `Bool` collapses both nerve vertices to one, while the
+multinerve map keeps two distinct cells over the one index, represented by `false`
+and `true`.
+
+A selected refinement of target families induces the selected refinement of
+path-component pullback covers, and hence a map of MultiNerve Mappers. It
+preserves identity and composition, sends the vertex cell of a component index to
+the vertex cell of its image under the ordinary Mapper map, and lies over that
+map under the projections onto ordinary Mapper. A coherent cover tower gives
+MultiNerve Mapper maps with strict reflexivity and transitivity. On the merged
+three-stage tower, the first transition sends the cell over two first-stage
+indices to the middle-stage vertex cell, and the direct map is the composite.
+
+For a finite set `s` of component indices, the intersection of the component
+members lies in the preimage of the intersection of the target members with the
+labels of `s`, and this inclusion is injective on path components. A path in the
+preimage between two points of the intersection stays in the path component of
+the preimage, which lies in every component member containing those points. The
+target-side criterion of the previous section follows. The same lemma detects
+merging: on the 4-cycle, refining the two intervals to two copies of `(-1, 3)` by
+the identity selector gives an injective Mapper vertex map, but the two edge cells
+represented by the vertices `1` and `3` are sent to one cell, because both
+vertices lie in one path component of the preimage of `(-1/2, 5/2)`.
+
+No geometric realization, homology, Nerve Lemma, contiguity or
+selector-independence of multinerve maps, interleaving, approximation or stability
+statement is proved.
+
 ## Graph-PL incidence labels and finite consumers
 
 For a simple graph `G`, a vertex height `h : V → ℝ`, and a labelled family of

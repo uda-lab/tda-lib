@@ -7,3 +7,4 @@ import TDA.Topology.PathCover
 import TDA.Topology.PathComponents
 import TDA.Topology.NerveMap
 import TDA.Topology.NerveContiguity
+import TDA.Topology.MultiNerveMap

@@ -5,3 +5,4 @@ import TDA.Mapper.MultiNerve
 import TDA.Mapper.Refinement
 import TDA.Mapper.GraphPL
 import TDA.Mapper.Tower
+import TDA.Mapper.MultiNerveRefinement

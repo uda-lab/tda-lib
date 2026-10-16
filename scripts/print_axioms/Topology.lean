@@ -193,3 +193,25 @@ import TDA
 #print axioms TDA.Topology.MultiNerveExamples.duplicateFamily
 #print axioms TDA.Topology.MultiNerveExamples.duplicateCell
 #print axioms TDA.Topology.MultiNerveExamples.duplicate_labels_distinct_vertex_cells
+
+
+-- Refinement-induced maps of multinerves (Issue #289).
+#print axioms TDA.Topology.interMember_image_subset
+#print axioms TDA.Topology.refinementFaceMap
+#print axioms TDA.Topology.refinementFaceMap_mk
+#print axioms TDA.Topology.refinementFaceMap_faceMap
+#print axioms TDA.Topology.multiNerveMap
+#print axioms TDA.Topology.support_multiNerveMap
+#print axioms TDA.Topology.multiNerveMap_mk
+#print axioms TDA.Topology.multiNerveMap_monotone
+#print axioms TDA.Topology.multiNerveMap_face
+#print axioms TDA.Topology.multiNerveMap_id
+#print axioms TDA.Topology.multiNerveMap_comp
+#print axioms TDA.Topology.projection_multiNerveMap
+#print axioms TDA.Topology.MultiNerveMapExamples.carrier_subsingleton_of_discrete
+#print axioms TDA.Topology.MultiNerveMapExamples.fullFamily
+#print axioms TDA.Topology.MultiNerveMapExamples.collapseRefinement
+#print axioms TDA.Topology.MultiNerveMapExamples.pointCell
+#print axioms TDA.Topology.MultiNerveMapExamples.collapse_nerveMap_not_injective
+#print axioms TDA.Topology.MultiNerveMapExamples.collapse_multiNerveMap_separates
+#print axioms TDA.Topology.MultiNerveMapExamples.multiNerveMap_id_pointCell
