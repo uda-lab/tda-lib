@@ -87,11 +87,11 @@ This mono embedding need not cover every target terminal bar. The distance-speci
 therefore not the input or output type here. The
 [epi embedding](finite-epi-matching.md) supplies the separate birth-preserving
 correspondence; the [image construction](finite-induced-matching.md) assembles the
-two into a partial injection for a general morphism. Quantitative induced matching,
-common real-grid refinement,
-shift compatibility and constructible
-kernel/image/cokernel closure are separate connections needed for the reverse
-interleaving-distance inequality.
+two into a partial injection for a general morphism.
+[Cokernel shortness under a monotone translation](finite-mono-translation.md)
+additionally bounds the source birth and covers every long target, including terminal
+targets. Quantitative epi and general-morphism matching, real-grid refinement and
+shift compatibility remain separate connections to the reverse distance inequality.
 
 ## Source correspondence
 

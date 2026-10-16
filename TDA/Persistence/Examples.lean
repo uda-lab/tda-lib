@@ -56,3 +56,4 @@ import TDA.Persistence.FiniteMatchingCostLawsExamples
 import TDA.Persistence.RipsPersistenceImageExamples
 import TDA.Persistence.FiniteEpiMatchingExamples
 import TDA.Persistence.FiniteInducedMatchingExamples
+import TDA.Persistence.FiniteMonoTranslationExamples

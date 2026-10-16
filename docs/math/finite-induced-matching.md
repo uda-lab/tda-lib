@@ -105,6 +105,7 @@ Composition laws concern the mono and epi subcategories, as in Proposition 5.7.
 The general induced matching need not preserve composition; see Example 5.6.
 The distance-specific `OccurrenceMatching` has a separate total essential equivalence,
 so it is not the interface for this construction on all finite-chain occurrences.
-Quantitative endpoint errors, short-lived kernel/cokernel estimates, constructible
-closure, real-grid/shift compatibility, distance-matching conversion and `d_B ≤ d_I`
-remain separate results.
+[Finite mono/cokernel translation estimates](finite-mono-translation.md) bound the
+source birth and cover long targets for component injections. Kernel/epi estimates,
+quantitative assembly for a general morphism, constructible closure, real-grid/shift
+compatibility, distance-matching conversion and `d_B ≤ d_I` remain separate results.

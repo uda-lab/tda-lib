@@ -1370,3 +1370,31 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteInducedMatchingExamples.zero_matching
 #print axioms TDA.Persistence.FiniteInducedMatchingExamples.nontrivial_endpoints
 #print axioms TDA.Persistence.FiniteInducedMatchingExamples.empty_chain
+
+-- Actual cokernel shortness and quantitative canonical mono matchings.
+#print axioms TDA.Persistence.finiteCokernel
+#print axioms TDA.Persistence.finiteCokernelFiberIso
+#print axioms TDA.Persistence.finiteCokernel_π_fiberIso
+#print axioms TDA.Persistence.finiteCokernel_finiteDimensional
+#print axioms TDA.Persistence.finiteCokernel_π_eq_zero_iff
+#print axioms TDA.Persistence.finiteCokernel_map_eq_zero_iff
+#print axioms TDA.Persistence.TranslationTrivial
+#print axioms TDA.Persistence.cokernel_translationTrivial_iff
+#print axioms TDA.Persistence.FiniteBarcode.deathPrefixCount_le_translated_of_cokernelTrivial
+#print axioms TDA.Persistence.FiniteInterval.birthStage
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_birth_bounds_of_cokernelTrivial
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_covers_long_of_cokernelTrivial
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_unmatched_short_of_cokernelTrivial
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.noninjective_translation
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.finite_birth_bound_attained
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.terminal_coverage
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.threshold_unmatched
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.duplicate_long_coverage
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.identity_translation
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.fixed_point_rejects_shortness
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.empty_chain
+#print axioms TDA.Persistence.FiniteBarcode.deathOrdinal_lt_deathPrefixCount
+#print axioms TDA.Persistence.FiniteBarcode.deathPrefixCount_le_deathOrdinal
+#print axioms TDA.Persistence.FiniteBarcode.deathPrefixCount_le_card
+#print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_mem_range_iff
+#print axioms TDA.Persistence.FiniteMonoTranslationExamples.short_matched_birth_bound
