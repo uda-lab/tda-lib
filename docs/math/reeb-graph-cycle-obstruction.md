@@ -101,7 +101,7 @@ fixture namespaces.
 
 ## Fixtures
 
-`TDA.Reeb.GraphCycleObstructionExamples` proves:
+The module `TDA/Reeb/GraphCycleObstructionExamples.lean` proves:
 
 - **Triangle.** For `⊤ : SimpleGraph (Fin 3)`, the dart `0 → 1` and the explicit return walk
   `1 → 2 → 0` in the graph with the edge `0 — 1` deleted: both `0 — 1` orientations are absent
