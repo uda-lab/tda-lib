@@ -42,3 +42,4 @@ import TDA.Persistence.Reduction.FiniteInputExamples
 import TDA.Persistence.FiniteDecompositionExamples
 import TDA.Persistence.FiniteDecompositionThreeStage
 import TDA.Persistence.AdditiveFeaturesExamples
+import TDA.Persistence.PersistenceImageExamples
