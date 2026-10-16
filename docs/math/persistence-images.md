@@ -93,3 +93,5 @@ not identified with the paper's exact gradient/Euclidean coefficient.
 RKHS norms and uses birth–death coordinates for its comparison. The present construction
 uses Adams's birth–persistence transform and the finite pixel ℓ¹ norm. It proves no RKHS
 norm estimate. The source register retains exact manifestations and attribution.
+The separate RKHS construction is described in
+[weighted kernel embedding](weighted-kernel-embedding.md).

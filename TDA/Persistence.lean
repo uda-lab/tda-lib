@@ -72,3 +72,5 @@ import TDA.Persistence.FiniteInducedSpecialization
 import TDA.Persistence.FiniteCokernel
 import TDA.Persistence.FiniteMonoTranslationCounts
 import TDA.Persistence.FiniteMonoTranslationMatching
+import TDA.Persistence.GaussianGram
+import TDA.Persistence.WeightedKernel

@@ -50,7 +50,8 @@ theorem posSemidef_kernelOp (σ : ℝ) : (kernelOp σ).PosSemidef := by
       ring
   exact (RKHS.posSemidef_tfae.out 2 0).mp h3
 
-instance (σ : ℝ) : Fact (kernelOp σ).PosSemidef := ⟨posSemidef_kernelOp σ⟩
+instance fact_posSemidef_kernelOp (σ : ℝ) : Fact (kernelOp σ).PosSemidef :=
+  ⟨posSemidef_kernelOp σ⟩
 
 /-! ## The reproducing kernel Hilbert space and its kernel functions -/
 
