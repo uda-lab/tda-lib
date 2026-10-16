@@ -106,6 +106,9 @@ The general induced matching need not preserve composition; see Example 5.6.
 The distance-specific `OccurrenceMatching` has a separate total essential equivalence,
 so it is not the interface for this construction on all finite-chain occurrences.
 [Finite mono/cokernel translation estimates](finite-mono-translation.md) bound the
-source birth and cover long targets for component injections. Kernel/epi estimates,
-quantitative assembly for a general morphism, constructible closure, real-grid/shift
-compatibility, distance-matching conversion and `d_B ≤ d_I` remain separate results.
+source birth and cover long targets for component injections.
+[Quantitative induced matching](finite-quantitative-induced-matching.md) transfers
+actual kernel and cokernel shortness through the image factors, bounds both
+endpoints and uniquely covers the corresponding long source and target occurrences.
+Constructible closure, real-grid/shift compatibility, distance-matching conversion
+and `d_B ≤ d_I` remain separate results.

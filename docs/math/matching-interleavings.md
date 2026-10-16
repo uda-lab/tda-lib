@@ -153,3 +153,9 @@ from interleavings to matchings and `d_B≤d_I` remain
 separate results; the full isometry theorem is not established here. The present
 results use no generic flow, infinite barcode or q-tame theory, and do not assert
 independence of a constructible module's chosen critical grid.
+
+[Quantitative finite induced matching](finite-quantitative-induced-matching.md)
+bounds deaths from actual kernel shortness and births from actual cokernel
+shortness, with unique coverage of the respective long source and target labels.
+Its finite monotone translations still require a separate real-grid/shift adapter
+before they yield the remaining real matching-distance comparison.

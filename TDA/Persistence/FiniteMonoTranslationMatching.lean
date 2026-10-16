@@ -14,10 +14,6 @@ universe u
 
 namespace TDA.Persistence
 
-/-- The birth of a nonempty finite interval is an actual observed stage. -/
-def FiniteInterval.birthStage {s : ℕ} (I : FiniteInterval s) : Fin s :=
-  ⟨I.birth, I.birth_lt_death.trans_le I.death_le_size⟩
-
 namespace FiniteBarcode
 
 open CategoryTheory
