@@ -143,11 +143,11 @@ The canonical epi order is in §4.1 and Theorem 4.2(ii).
 
 The arbitrary finite monotone translation theorem is a library extension.
 The direct quotient-surjection proof here replaces the source's duality route;
-no linear-dual or order-reversal adapter is supplied. The source's additive-real
-statement still needs real endpoint and coverage estimates from the rounded
-finite bounds. The [common-grid sampled defects](constructible-defects-sampling.md)
-provide actual shortness inputs, while the
-[shift-diagram occurrence inverse](constructible-shift-diagrams.md) returns
-shifted target labels. Conversion of the finite partial injection to a real
-distance matching and `d_B ≤ d_I` remain separate results. The matching retains the existing qualitative construction
-and its restriction of composition laws to monos and epis.
+no linear-dual or order-reversal adapter is supplied. The [real induced matching](real-induced-matchings.md) converts the rounded
+finite bounds and actual partial injection to exact real endpoint estimates,
+long-bar coverage and a total essential equivalence. The
+[common-grid sampled defects](constructible-defects-sampling.md) supply its
+actual shortness inputs. Its interleaving consumer reaches the shifted target;
+the ε-cost estimate after +ε untranslation and `d_B≤d_I` remain separate steps.
+The matching retains the qualitative construction and its restriction of
+composition laws to monos and epis.
