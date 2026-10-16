@@ -149,6 +149,21 @@ boundary-transport or RKHS identification is asserted.
 The Gaussian and pixel-integral definitions are noncomputable analytic APIs.
 See [the construction, analytic proof and source correspondence](math/persistence-images.md).
 
+## Distance matrices to finite Rips images
+
+`PersistenceImage.finiteDiagramImage` applies the Gaussian image to a diagram's finite
+occurrences, retaining multiplicity and omitting essential bars. For positive diagrams
+with finite full bottleneck β, its pixel ℓ¹ error is at most C (N_D+N_E) β, where N_D,N_E
+count finite occurrences and C is the existing PI coefficient. The finite bottleneck
+condition is explicit because `ENNReal.toReal ⊤ = 0`.
+
+`Rips.norm_finiteDiagramImage_sub_le_pairwiseDiscrepancy` specializes this to actual Rips
+diagrams in every degree: error ≤ C (N_D+N_E) δ for maximum pairwise metric discrepancy δ.
+It inherits the same finite ordered carrier and field assumptions as the Rips API, with
+no new cardinality/genericity hypothesis. These noncomputable APIs give a count-dependent
+certificate, with essential bars still present in the bottleneck comparison. See
+[the definitions, bridge and exact scope](math/rips-persistence-images.md).
+
 ## Review and extension boundaries
 
 The selected PH claims and their proof-critical bridges received the source-based review

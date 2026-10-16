@@ -46,6 +46,10 @@ the existing diagram interface after specializing to a finite carrier. It holds 
 every n. It retains occurrence multiplicity, finite interval conventions and essential
 deaths at `⊤`; no essential-cardinality or genericity hypothesis is added.
 
+The [finite persistence-image consumer](rips-persistence-images.md) composes this bound
+with Gaussian pixel stability and an explicit finite-bar-count factor. Essential bars
+remain in the bottleneck comparison and are omitted from the image.
+
 ## Interfaces and examples
 
 `TDA.Filtration.Rips` defines `fullComplex`, `diameter`, `filter` and

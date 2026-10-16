@@ -47,6 +47,10 @@ distance. The constant is explicit and need not be sharp. The
 minimum over these matchings; `norm_image_sub_le_finiteFirstOrderMatchingCost` bounds
 the same image error by C times that minimum.
 
+`finiteDiagramImage` applies the construction to a positive diagram's canonical finite
+occurrences, omitting essential bars. A finite full bottleneck gives a count-dependent
+bound, which controls [Rips images from distance-matrix perturbations](rips-persistence-images.md).
+
 ## Analytic proof
 
 The one-dimensional density has maximum 1/(σ sqrt(2π)). If its centers are ordered,

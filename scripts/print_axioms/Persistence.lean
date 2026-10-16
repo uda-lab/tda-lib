@@ -1080,3 +1080,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finiteFirstOrderMatchingCost_triangle
 #print axioms TDA.Persistence.finiteFirstOrderMatchingCost_eq_zero_of_equiv
 #print axioms TDA.Persistence.finiteFirstOrderMatchingCost_eq_zero_iff
+
+#print axioms TDA.Persistence.OccurrenceMatching.totalFiniteCost_finiteRestriction_le_card_mul_cost
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_le_card_mul_bottleneck
+#print axioms TDA.Persistence.Diagram.IsPositive.finiteOccurrence
+#print axioms TDA.Persistence.PersistenceImage.finiteDiagramImage_eq_zero_of_finitePart_eq_zero
+#print axioms TDA.Persistence.PersistenceImage.norm_finiteDiagramImage_sub_le_card_mul_bottleneck
+#print axioms TDA.Persistence.Rips.norm_finiteDiagramImage_sub_le_pairwiseDiscrepancy

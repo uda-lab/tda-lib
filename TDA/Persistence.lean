@@ -6,9 +6,11 @@ import TDA.Persistence.DiagramBottleneck
 import TDA.Persistence.AdditiveFeatures
 import TDA.Persistence.FiniteMatchingCost
 import TDA.Persistence.FiniteMatchingCostLaws
+import TDA.Persistence.FiniteMatchingCostBottleneck
 import TDA.Persistence.GaussianKernel
 import TDA.Persistence.PersistenceImage
 import TDA.Persistence.PersistenceImageMatching
+import TDA.Persistence.PersistenceImageDiagram
 import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.ActualLossDerivative
@@ -38,6 +40,7 @@ import TDA.Persistence.SublevelDiagram
 import TDA.Persistence.FaceOrderTemplate
 import TDA.Persistence.FiniteFilterStability
 import TDA.Persistence.RipsStability
+import TDA.Persistence.RipsPersistenceImage
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.ActualDiagramRegularity
