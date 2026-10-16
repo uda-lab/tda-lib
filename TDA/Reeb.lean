@@ -14,6 +14,7 @@ import TDA.Reeb.ConstructibleSpace
 import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
 import TDA.Reeb.FiniteDiagram
+import TDA.Reeb.GraphCycleObstruction
 import TDA.Reeb.GeometricThickening
 import TDA.Reeb.GraphPLComponents
 import TDA.Reeb.GraphPLHeight
