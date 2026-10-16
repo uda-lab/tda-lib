@@ -118,6 +118,13 @@ diagrams, deriving finiteness at added critical values from the original ones an
 retaining duplicate bars and essential tails. See
 [common grids and diagram invariance](math/constructible-refinement.md).
 
+`IsConstructible.kernel` and `IsConstructible.cokernel` prove constructibility of
+actual categorical defects on a shared grid. `interleaving_critical_defects`
+constructs that grid and derives finite sampled defect shortness from an actual
+real interleaving, using natural sampling comparisons and within-cell cancellation.
+See [constructible defects and critical sampling](math/constructible-defects-sampling.md)
+for the rounded translation, terminal observation and coefficient scope.
+
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
 decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
 the same universe, with finite-dimensionality only at the critical fibers. The sampled
