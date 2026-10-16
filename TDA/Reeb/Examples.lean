@@ -10,6 +10,7 @@ import TDA.Reeb.ConstructibleRepresentationExamples
 import TDA.Reeb.ConstructibleSmoothingExamples
 import TDA.Reeb.ConstructibleSpaceExamples
 import TDA.Reeb.GeometricThickeningExamples
+import TDA.Reeb.GraphCycleObstructionExamples
 import TDA.Reeb.GraphPLComponentsExamples
 import TDA.Reeb.GraphPLHeightExamples
 import TDA.Reeb.GraphRealizationExamples
