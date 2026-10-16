@@ -91,5 +91,7 @@ this argument does not use it. The
 derives actual defect constructibility on a common grid and transfers this
 annihilation to the actual finite sampled kernels and cokernels. The
 [finite quantitative induced matching](finite-quantitative-induced-matching.md)
-retains its finite-dimensionality and endpoint hypotheses. Real barcode shift
-correspondence, real matching existence and `d_B≤d_I` remain separate results.
+retains its finite-dimensionality and endpoint hypotheses. The
+[shift-diagram correspondence](constructible-shift-diagrams.md) returns shifted
+occurrence labels by +ε. General real induced matching and `d_B≤d_I` remain
+separate results.

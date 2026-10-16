@@ -125,6 +125,15 @@ real interleaving, using natural sampling comparisons and within-cell cancellati
 See [constructible defects and critical sampling](math/constructible-defects-sampling.md)
 for the rounded translation, terminal observation and coefficient scope.
 
+`moduleDiagram_shift` proves that actual positive evaluation translates the
+native shifted-grid diagram by −ε; its refinement version derives finiteness
+at added observations. Finite and essential occurrence equivalences return
+shifted target labels by +ε, and the complete matching of a diagram with its
+own shift is constructed with its endpoint and cost bounds proved. The target
+untranslation operation is available for existing occurrence matchings. See
+[real shift diagrams and occurrence untranslation](math/constructible-shift-diagrams.md)
+for multiplicities, boundary conventions and the remaining general matching step.
+
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
 decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
 the same universe, with finite-dimensionality only at the critical fibers. The sampled

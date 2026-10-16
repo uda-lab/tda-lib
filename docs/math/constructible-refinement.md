@@ -113,7 +113,8 @@ The [actual defect and sampling API](constructible-defects-sampling.md) proves
 kernel/cokernel constructibility for morphisms between modules on a shared grid
 and transfers real annihilation to finite sampled defects. It uses actual
 naturality and within-cell isomorphisms, without arbitrary-submodule closure.
-A diagram formula for real shifts and the interleaving-to-matching distance
-inequality remain separate results. The
+The [actual shift-diagram formula](constructible-shift-diagrams.md) moves
+endpoints by −ε and returns occurrence labels by +ε. The general
+interleaving-to-matching distance inequality remains separate. The
 [finite quantitative induced matching](finite-quantitative-induced-matching.md)
 retains its finite-dimensionality and endpoint hypotheses.
