@@ -63,7 +63,7 @@ chain of critical samples preceded by a zero stage. It uses left-closed/right-op
 an actual zero left tail and actual structure-map isomorphisms within each stratum; the
 final tail may be nonzero. The reconstruction works over any ring with independent
 module-carrier universe and no finite-dimensionality assumption. It supplies both natural
-transformations and their inverse identities; PH interleavings and barcode isometry remain
+transformations and their inverse identities; interleaving distance and barcode isometry remain
 separate work. See [finite-stratum reconstruction](math/constructible-modules.md).
 
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
@@ -73,6 +73,14 @@ zero stage produces no bars; actual `Fin.succ` restriction preserves all remaini
 occurrences before `ofIndexBars` assigns the real finite endpoints and essential tails.
 The result is an actual natural isomorphism to the fixed grid's endpoint barcode, with
 duplicate summands retained. See [real barcode realization](math/real-barcode-realization.md).
+
+`RealShift` constructs real shifts and transitions over any ring, with natural unit
+and composition identifications satisfying the coherence equations.
+`RealInterleaving` contains actual natural maps and both double-shift identities;
+zero-interleaving witnesses correspond to natural isomorphisms, and interleaving
+with zero is equivalent to a zero double-shift structure map. Its interval examples
+use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
+for the finite nonnegative parameters and the boundary with distance and matching theory.
 
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.

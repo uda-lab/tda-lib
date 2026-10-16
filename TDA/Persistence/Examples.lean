@@ -1,6 +1,7 @@
 -- Persistence examples and acceptance fixtures, included by the comprehensive TDA root.
 import TDA.Persistence.ConstructibleExamples
 import TDA.Persistence.ConstructibleBarcodeExamples
+import TDA.Persistence.RealInterleavingExamples
 import TDA.Persistence.DiagramExamples
 import TDA.Persistence.DiagramBottleneckExamples
 import TDA.Persistence.DiagramBottleneckLawsExamples
