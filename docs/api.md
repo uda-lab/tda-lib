@@ -66,6 +66,14 @@ module-carrier universe and no finite-dimensionality assumption. It supplies bot
 transformations and their inverse identities; PH interleavings and barcode isometry remain
 separate work. See [finite-stratum reconstruction](math/constructible-modules.md).
 
+`FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
+decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
+the same universe, with finite-dimensionality only at the critical fibers. The sampled
+zero stage produces no bars; actual `Fin.succ` restriction preserves all remaining
+occurrences before `ofIndexBars` assigns the real finite endpoints and essential tails.
+The result is an actual natural isomorphism to the fixed grid's endpoint barcode, with
+duplicate summands retained. See [real barcode realization](math/real-barcode-realization.md).
+
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.
 The graded reduction adapter reaches this diagram through actual homology and natural

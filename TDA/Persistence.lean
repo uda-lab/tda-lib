@@ -1,6 +1,8 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
 import TDA.Persistence.Constructible
+import TDA.Persistence.RealBarcode
+import TDA.Persistence.ConstructibleBarcode
 import TDA.Persistence.Diagram
 import TDA.Persistence.DiagramLaws
 import TDA.Persistence.DiagramBottleneck

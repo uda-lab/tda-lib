@@ -60,10 +60,11 @@ cell, as well as empty, left-ray and exact-critical-value cases.
 ## Barcode and source boundary
 
 Applying the existing finite decomposition to `A` additionally requires a field
-`k : Type u`, carrier universe `u`, and finite-dimensional sampled fibers. This
-condition belongs to the barcode consumer, separately from reconstruction. Turning
-that finite barcode into real half-open interval modules, and connecting its endpoints
-to the diagram representation, remains a further construction.
+`k : Type u`, carrier universe `u`, and finite-dimensional critical fibers; the zero
+initial fiber supplies the remaining sampled finiteness. These conditions belong to
+`barcodeRealizationIso`, separately from reconstruction. That consumer constructs a
+natural isomorphism to real half-open interval modules with the existing diagram
+endpoints. See [real barcode realization](real-barcode-realization.md).
 
 [Bauer--Lesnick, arXiv:1311.3681v4](https://arxiv.org/html/1311.3681v4), §2.1,
 provides the functor, natural-transformation and interval-module semantics. Section 2.3
