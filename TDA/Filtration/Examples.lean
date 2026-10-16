@@ -9,3 +9,4 @@ import TDA.Filtration.OrderChamberExamples
 import TDA.Filtration.CompatibleOrderExistenceExamples
 import TDA.Filtration.CompatibleOrderClosedExamples
 import TDA.Filtration.CechExamples
+import TDA.Filtration.CechDisplacementExamples

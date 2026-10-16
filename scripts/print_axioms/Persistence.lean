@@ -1446,3 +1446,24 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RealInterleaving.cokernel_transition_eq_zero
 #print axioms TDA.Persistence.RealInterleavingShortnessExamples.actual_defects_threshold
 #print axioms TDA.Persistence.RealInterleavingShortnessExamples.integer_zero_parameter
+
+-- Čech diagram stability.
+#print axioms TDA.Persistence.Cech.faceSupDifference_filter_le
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_displacement
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_dist_le
+#print axioms TDA.Persistence.Cech.bottleneck_rips_dgm_le_two_mul_displacement
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.q_injective
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.metricQ_dist
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.displacement_eq
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.cech_value_p
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.edge_mem_complex_q
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.rips_value_q
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.cech_value_q
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.abs_cech_value_sub_lt_displacement
+#print axioms TDA.Persistence.Cech.Examples.MovedPoint.bottleneck_le
+#print axioms TDA.Persistence.Cech.Examples.ThreePoints.cech_bottleneck_le
+#print axioms TDA.Persistence.Cech.Examples.ThreePoints.rips_bottleneck_le
+#print axioms TDA.Persistence.Cech.Examples.bottleneck_self_eq_zero
+#print axioms TDA.Persistence.Cech.Examples.empty_displacement
+#print axioms TDA.Persistence.Cech.Examples.empty_bottleneck
+#print axioms TDA.Persistence.Cech.Examples.self_displacement
