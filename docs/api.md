@@ -232,6 +232,17 @@ it. Both keep the `LinearOrder V`, `Fintype V` and field assumptions of finite-f
 stability. These are same-label bounds, not Hausdorff bounds. See [the proofs, attained
 constants and source scope](math/cech-displacement-stability.md).
 
+`TDA.Filtration.CechWitness` compares Čech complexes over a witness space W mapped into X
+by f. An isometry can only add faces and lower values; a 1-Lipschitz g : X → W fixing the
+labelled points reverses both, so with both maps the complexes and values agree. The
+subspace and intrinsic complexes are the cases of a subtype inclusion.
+`TDA.Filtration.CechSupNorm` works in the sup-metric product ι → ℝ for a finite ι, not
+in `EuclideanSpace`. There a nonempty label set is a Čech face at r exactly when its
+points are pairwise within 2r, so Čech_r = Rips_{2r}, every Čech value is half the Rips
+value, and the two filters are ordering-equivalent; no properness is assumed. The line
+ℝ follows through `Fin 1 → ℝ`. See [the proofs, fixtures and source
+scope](math/cech-supnorm-witness.md).
+
 ## Finite first-order PD matching cost
 
 `TDA.Persistence.FiniteMatchingCost` defines `finiteFirstOrderMatchingCost` from the
