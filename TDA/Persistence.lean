@@ -5,6 +5,7 @@ import TDA.Persistence.RealInterleavingLaws
 import TDA.Persistence.RealInterleavingDistance
 import TDA.Persistence.RealIntervalInterleaving
 import TDA.Persistence.MatchingInterleaving
+import TDA.Persistence.MatchingInterleavingDistance
 import TDA.Persistence.Constructible
 import TDA.Persistence.RealBarcode
 import TDA.Persistence.ConstructibleBarcode

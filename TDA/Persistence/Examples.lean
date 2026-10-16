@@ -4,6 +4,7 @@ import TDA.Persistence.ConstructibleBarcodeExamples
 import TDA.Persistence.RealInterleavingExamples
 import TDA.Persistence.RealInterleavingDistanceExamples
 import TDA.Persistence.MatchingInterleavingExamples
+import TDA.Persistence.MatchingInterleavingDistanceExamples
 import TDA.Persistence.DiagramExamples
 import TDA.Persistence.DiagramBottleneckExamples
 import TDA.Persistence.DiagramBottleneckLawsExamples

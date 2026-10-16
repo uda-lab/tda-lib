@@ -97,8 +97,16 @@ Matched finite bars use endpoint bounds; unmatched bars have length at most `2ε
 including equality; essential occurrences use the matching's total equivalence.
 Multiplicity, actual structure maps and ε=0 are retained. See
 [matching-induced interleavings](math/matching-interleavings.md) for the constructed
-maps and exact source specialization. The two distance isometry inequalities and
-the reverse interleaving-to-matching direction are separate results.
+maps and exact source specialization. `RealBarcode.distance_le_bottleneck` bounds
+the interleaving distance by the bottleneck, taking the infimum of the individual
+matching-cost bounds without an attainment assumption. The matching type may be
+empty when essential cardinalities differ, giving infinite bottleneck.
+`FiniteConstructible.distance_le_bottleneck` transports the bound to modules on
+independently sized critical grids using `barcodeRealizationIso`; its
+`matchingInterleaving` also transports individual witnesses. These module results
+retain the existing zero-left-tail, half-open strata, critical-fiber finiteness and
+shared field/carrier-universe assumptions. The reverse inequality, reverse matching
+construction and full isometry theorem remain separate results.
 
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.

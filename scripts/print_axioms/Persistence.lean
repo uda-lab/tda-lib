@@ -1268,3 +1268,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RealInterleavingDistanceExamples.infinite_triangle
 #print axioms TDA.Persistence.RealInterleavingDistanceExamples.unequal_composition
 #print axioms TDA.Persistence.RealInterleavingDistanceExamples.zero_enlargement
+
+#print axioms TDA.Persistence.RealBarcode.distance_le_matching_cost
+#print axioms TDA.Persistence.RealBarcode.distance_le_bottleneck
+#print axioms TDA.Persistence.FiniteConstructible.matchingInterleaving
+#print axioms TDA.Persistence.FiniteConstructible.distance_le_bottleneck
+#print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.empty_distance
+#print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.duplicate_deletion_bound
+#print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.essential_matching_empty
+#print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.essential_mismatch_bound
+#print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.different_grids_nonzero
+#print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.different_grid_bound
+#print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.empty_grid_bound
+#print axioms TDA.Persistence.MatchingInterleavingDistanceExamples.empty_grid_witness
