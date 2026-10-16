@@ -10,8 +10,8 @@ infimum is attained because that family is finite and contains the all-unmatched
 matching. Relabelling preserves both the candidate sums and the minimum.
 
 The algebra below also applies to arbitrary real pairs. For persistence diagrams,
-each pair satisfies birth < death. No metric-space laws or equality with an
-optimization over measure couplings are asserted here.
+each pair satisfies birth < death. `FiniteMatchingCostLaws` supplies the distance
+laws. Equality with an optimization over measure couplings is not asserted here.
 -/
 
 namespace TDA.Persistence

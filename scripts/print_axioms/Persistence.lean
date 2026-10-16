@@ -1072,3 +1072,11 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finiteFirstOrderMatchingCost_empty
 #print axioms TDA.Persistence.finiteFirstOrderMatchingCost_reindex
 #print axioms TDA.Persistence.PersistenceImage.norm_image_sub_le_finiteFirstOrderMatchingCost
+
+#print axioms TDA.Persistence.OccurrenceMatching.totalFiniteCost_reverse
+#print axioms TDA.Persistence.OccurrenceMatching.totalFiniteCost_compose_le
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_self
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_comm
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_triangle
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_eq_zero_of_equiv
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_eq_zero_iff

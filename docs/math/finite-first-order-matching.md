@@ -50,6 +50,52 @@ or deleting both:
 Two occurrences of (0,2) sent to the empty diagram cost 2. The examples also check
 coincident one-point inputs and empty inputs.
 
+## Distance laws and zero cost
+
+For finite presentations, the cost satisfies
+
+- m₁(x,x) = 0;
+- m₁(x,y) = m₁(y,x);
+- m₁(x,z) ≤ m₁(x,y) + m₁(y,z).
+
+These three laws also hold for arbitrary real pairs. For positive lifetimes on both
+inputs, the separation statement is
+
+m₁(x,y) = 0 if and only if there is an equivalence e : I ≃ J with x(i) = y(e(i)) for every i.
+
+Thus zero cost preserves coordinates and their multiplicities while allowing a change
+of occurrence labels. Two unequal functions related by a permutation can have zero
+cost. The positivity assumption prevents an unmatched point from disappearing at zero
+cost: a single diagonal point (0,0) has zero cost to the empty input, although their
+occurrence types admit no bijection. Two occurrences of (0,2) and one occurrence of
+(0,2) have nonzero cost.
+
+Reversing a partial injection preserves its paired sum and exchanges the two unmatched
+sums. Together with attainment, this proves symmetry. For the triangle inequality,
+compose partial matchings M from x to y and N from y to z. Write δ(p)=|death−birth|/2
+and d(p,q)=‖p−q‖∞. Each middle occurrence has one of four roles:
+
+| Middle occurrence | Endpoint estimate |
+|---|---|
+| Selected by M and paired by N | d(xᵢ,zₖ) ≤ d(xᵢ,yⱼ)+d(yⱼ,zₖ) |
+| Selected by M and deleted by N | δ(xᵢ) ≤ d(xᵢ,yⱼ)+δ(yⱼ) |
+| Not selected by M, paired by N | δ(zₖ) ≤ δ(yⱼ)+d(yⱼ,zₖ) |
+| Unmatched by both | No endpoint; its two nonnegative diagonal charges are unused |
+
+The first estimate is the L∞ triangle inequality; the next two use the Lipschitz
+property of distance to the diagonal. Summing source paths uses N's source charges
+at middle labels selected by M. Summing the remaining target paths uses the first
+matching's unmatched-middle charges and N's source charges at the complementary
+labels, together with N's unmatched-target charges. Partial injectivity counts each
+selected contribution once. This partitions N's source sum without spending a middle
+charge twice. The composed cost is at most S_M(x,y)+S_N(y,z). Apply this bound to
+attained minimizers to obtain the triangle inequality for m₁.
+
+For separation, a zero-cost minimizer has all nonnegative charges zero. Positive
+lifetimes prohibit unmatched occurrences on either side, so the partial injection
+is a bijection. Each zero L∞ pair cost forces equal birth–death values. Conversely,
+a value-preserving equivalence has zero cost by reindexing the self-cost theorem.
+
 ## Gaussian persistence-image bound
 
 Use the same bandwidth σ > 0, weight and pixel family on both inputs, as in the
@@ -70,18 +116,23 @@ existing PI construction.
 
 `TDA.Persistence.FiniteMatchingCost` supplies the minimum, attainment, candidate and
 universal lower bounds, empty-input formulas and reindexing theorem.
+`TDA.Persistence.FiniteMatchingCostLaws` supplies real total-cost reversal/composition,
+the three distance laws and the positive-lifetime zero-cost characterization.
 `TDA.Persistence.PersistenceImageMatching` supplies
 `norm_image_sub_le_finiteFirstOrderMatchingCost`. Ordinary `TDA.Persistence` includes
-both modules. These are noncomputable mathematical APIs, without a numerical optimizer.
+these modules. These are noncomputable mathematical APIs, without a numerical optimizer.
 
 [Figalli–Gigli](references.md#FG10) is the prior boundary-transport reference: its
-Problem 1.1 uses a bounded open Euclidean domain and quadratic Euclidean cost.
+Problem 1.1 uses a bounded open Euclidean domain and quadratic Euclidean cost;
+Lemma 2.1 and Theorem 2.2 prove measure gluing and distance laws in that setting.
 [Divol–Lacombe corrected v4](references.md#DL20-v4), formula (1), supplies the
 partial-matching convention with p=1 and ground q=∞ used for this finite occurrence
-model. The minimum and PI corollary are proved directly in the library. Their
+model. The minimum, finite matching laws and PI corollary are proved directly in the
+library. The paper's Appendix B uses measure gluing for its metric laws, whereas the
+finite proof above allocates individual occurrence charges. Their
 Proposition 3.2 identifies diagram matching with measure partial transport; that
 identification, including the real coupling optimization, is outside this unit.
 
-No full boundary-augmented-bijection equivalence, triangle inequality, identity of
-indiscernibles modulo permutation, or metric-space instance is proved here. General p,
-essential bars, noninteger measures and infinite diagrams require separate results.
+Full boundary-augmented-bijection equivalence and measure-coupling identification remain
+separate results. No quotient or metric-space instance on raw presentations is supplied.
+General p, essential bars, noninteger measures and infinite diagrams require separate results.
