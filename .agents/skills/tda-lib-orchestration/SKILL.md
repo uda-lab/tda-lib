@@ -34,10 +34,22 @@ action; do not invent mathematical approval checkpoints.
 
 ## Integration and release overrides
 
-Use `develop` as the base and target of ordinary Issue PRs, even when main is the GitHub
-default. Interpret inherited loop references to inputs on main as inputs on develop.
-Stable promotion PRs target main and use merge commits; ordinary develop PRs use squash.
-Apply evaluated-head binding and all review gates to both methods. Do not directly push either protected branch.
+Read [CONTRIBUTING.md](../../../CONTRIBUTING.md) for the canonical branch lifecycle.
+Keep develop and main persistent; never use source-branch deletion on either. Ordinary
+code/documentation Issue topics use develop as base and target, even when main is the
+GitHub default, and merge by squash. Interpret inherited ordinary-loop references to
+inputs on main as inputs on develop. Release/hotfix propagation uses merge commits,
+including into develop; main stable corrections/promotions use merge commits as well.
+Apply evaluated-head binding and existing review/validation gates to both methods.
+
+State the next target scope/milestone in the governing Issue/Project. A release version
+may be undecided before release cut, when the actual version and included scope are fixed.
+The actual reviewed release head may include fixes after its develop base; preserve that
+head as a main-merge parent and verify the reviewed tree before any authorized tag.
+Propagate release/hotfix/main-first README corrections and verify intended content on
+develop without losing later additions. An active release must track the eventual develop
+destination. Tree equality is not ancestry, and ancestry does not prove content retention.
+Do not impose ordinary-PR refreshes or a new parent-approval checkpoint. No direct pushes.
 
 ### Temporary October local-CI exception
 
