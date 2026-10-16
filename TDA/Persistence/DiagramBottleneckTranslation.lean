@@ -90,7 +90,8 @@ private theorem essentialTranslation_multiset (D : Diagram ℝ) (c : ℝ) :
       exact (essentialPart_translateDiagram D c).symm
     _ = _ := (Multiset.map_univ_coe _).symm
 
-private noncomputable def finiteTranslationEquiv (D : Diagram ℝ) (c : ℝ) :
+/-- Translate finite occurrence labels bijectively, retaining repeated endpoint pairs. -/
+noncomputable def finiteTranslationEquiv (D : Diagram ℝ) (c : ℝ) :
     D.finiteOccurrences ≃ (translateDiagram D c).finiteOccurrences := by
   classical
   exact (presentationEquiv
@@ -98,7 +99,8 @@ private noncomputable def finiteTranslationEquiv (D : Diagram ℝ) (c : ℝ) :
     (fun p : (translateDiagram D c).finiteOccurrences => p.1)
     (finiteTranslation_multiset D c)).1
 
-private theorem finiteTranslationEquiv_value (D : Diagram ℝ) (c : ℝ)
+/-- Both finite endpoints move by the declared translation. -/
+theorem finiteTranslationEquiv_value (D : Diagram ℝ) (c : ℝ)
     (p : D.finiteOccurrences) :
     (finiteTranslationEquiv D c p).1 = (p.1.1 + c, p.1.2 + c) := by
   classical
@@ -107,7 +109,8 @@ private theorem finiteTranslationEquiv_value (D : Diagram ℝ) (c : ℝ)
     (fun q : (translateDiagram D c).finiteOccurrences => q.1)
     (finiteTranslation_multiset D c)).2 p
 
-private noncomputable def essentialTranslationEquiv (D : Diagram ℝ) (c : ℝ) :
+/-- Translate essential occurrence labels bijectively; their deaths remain top. -/
+noncomputable def essentialTranslationEquiv (D : Diagram ℝ) (c : ℝ) :
     D.essentialOccurrences ≃ (translateDiagram D c).essentialOccurrences := by
   classical
   exact (presentationEquiv
@@ -115,7 +118,8 @@ private noncomputable def essentialTranslationEquiv (D : Diagram ℝ) (c : ℝ) 
     (fun b : (translateDiagram D c).essentialOccurrences => b.1)
     (essentialTranslation_multiset D c)).1
 
-private theorem essentialTranslationEquiv_value (D : Diagram ℝ) (c : ℝ)
+/-- Essential translation changes only the birth. -/
+theorem essentialTranslationEquiv_value (D : Diagram ℝ) (c : ℝ)
     (b : D.essentialOccurrences) :
     (essentialTranslationEquiv D c b).1 = b.1 + c := by
   classical
@@ -124,7 +128,8 @@ private theorem essentialTranslationEquiv_value (D : Diagram ℝ) (c : ℝ)
     (fun a : (translateDiagram D c).essentialOccurrences => a.1)
     (essentialTranslation_multiset D c)).2 b
 
-private noncomputable def translatedMatching (D : Diagram ℝ) (c : ℝ) :
+/-- The complete occurrence matching supplied by translation, without an existence input. -/
+noncomputable def translatedMatching (D : Diagram ℝ) (c : ℝ) :
     OccurrenceMatching D.finiteOccurrences (translateDiagram D c).finiteOccurrences
       D.essentialOccurrences (translateDiagram D c).essentialOccurrences := by
   let e := finiteTranslationEquiv D c
@@ -132,31 +137,34 @@ private noncomputable def translatedMatching (D : Diagram ℝ) (c : ℝ) :
   intro i i' j hi hi'
   exact e.injective ((Option.some.inj hi).trans (Option.some.inj hi').symm)
 
+/-- The complete translation matching costs at most the displacement; an empty
+matching has zero cost. -/
+theorem translatedMatching_cost_le (D : Diagram ℝ) (c : ℝ) :
+    (translatedMatching D c).cost (fun p => p.1) (fun p => p.1)
+      (fun b => b.1) (fun b => b.1) ≤ ENNReal.ofReal |c| := by
+  classical
+  let M := translatedMatching D c
+  apply M.cost_le_of
+  · intro p
+    change finitePairCost p.1 ((finiteTranslationEquiv D c p).1) ≤ _
+    rw [finiteTranslationEquiv_value]
+    exact le_of_eq (finitePairCost_translate p.1 c)
+  · intro q
+    have hmatched : ∃ p, M.finite p = some q := by
+      refine ⟨(finiteTranslationEquiv D c).symm q, ?_⟩
+      simp [M, translatedMatching]
+    simp [hmatched]
+  · intro b
+    change essentialPairCost b.1 ((essentialTranslationEquiv D c b).1) ≤ _
+    rw [essentialTranslationEquiv_value]
+    exact le_of_eq (essentialPairCost_translate b.1 c)
+
 /-- Translating all occurrences by `c` gives the usual matching upper bound. Equal
 points remain distinct occurrences, and finite pairs are not assumed to be ordered. -/
 theorem bottleneck_translate_le (D : Diagram ℝ) (c : ℝ) :
-    bottleneck D (translateDiagram D c) ≤ ENNReal.ofReal |c| := by
-  classical
-  let M := translatedMatching D c
-  calc
-    bottleneck D (translateDiagram D c) ≤
-        M.cost (fun p => p.1) (fun p => p.1) (fun b => b.1) (fun b => b.1) :=
-      bottleneck_le_matching D (translateDiagram D c) M
-    _ ≤ ENNReal.ofReal |c| := by
-      apply M.cost_le_of
-      · intro p
-        change finitePairCost p.1 ((finiteTranslationEquiv D c p).1) ≤ _
-        rw [finiteTranslationEquiv_value]
-        exact le_of_eq (finitePairCost_translate p.1 c)
-      · intro q
-        have hmatched : ∃ p, M.finite p = some q := by
-          refine ⟨(finiteTranslationEquiv D c).symm q, ?_⟩
-          simp [M, translatedMatching]
-        simp [hmatched]
-      · intro b
-        change essentialPairCost b.1 ((essentialTranslationEquiv D c b).1) ≤ _
-        rw [essentialTranslationEquiv_value]
-        exact le_of_eq (essentialPairCost_translate b.1 c)
+    bottleneck D (translateDiagram D c) ≤ ENNReal.ofReal |c| :=
+  (bottleneck_le_matching D (translateDiagram D c) (translatedMatching D c)).trans
+    (translatedMatching_cost_le D c)
 
 private theorem bottleneck_translate_lower_of_min (D : Diagram ℝ) (c : ℝ)
     (M : OccurrenceMatching D.finiteOccurrences (translateDiagram D c).finiteOccurrences
@@ -300,5 +308,108 @@ theorem bottleneck_dgm_translateFilterFunction_eq_of_essential (k : Type u) [Fie
       ENNReal.ofReal |c| := by
   rw [dgm_translateFilterFunction]
   exact bottleneck_translate_eq_of_essential (dgm k f n) c hne
+
+/-- Zero translation fixes the diagram, without selecting occurrence labels. -/
+@[simp] theorem translateDiagram_zero (D : Diagram ℝ) : translateDiagram D 0 = D := by
+  apply Diagram.ext
+  change D.points.map (translateDiagramPoint 0) = D.points
+  have h : translateDiagramPoint 0 = id := by
+    funext p
+    rcases p with ⟨b, d⟩
+    cases d <;> simp [translateDiagramPoint]
+  rw [h, Multiset.map_id]
+
+/-- Successive endpoint translations add, including essential deaths. -/
+theorem translateDiagram_add (D : Diagram ℝ) (a b : ℝ) :
+    translateDiagram (translateDiagram D a) b = translateDiagram D (a + b) := by
+  apply Diagram.ext
+  change (D.points.map (translateDiagramPoint a)).map (translateDiagramPoint b) = _
+  rw [Multiset.map_map]
+  congr 1
+  funext p
+  rcases p with ⟨x, d⟩
+  cases d with
+  | top => exact Prod.ext (add_assoc x a b) rfl
+  | coe d =>
+    change ((x + a) + b, (((d + a) + b : ℝ) : WithTop ℝ)) =
+      (x + (a + b), ((d + (a + b) : ℝ) : WithTop ℝ))
+    simp only [add_assoc]
+
+/-- The inverse finite translation adds back the displacement, without merging labels. -/
+theorem finiteTranslationEquiv_symm_value (D : Diagram ℝ) (a : ℝ)
+    (p : (translateDiagram D a).finiteOccurrences) :
+    ((finiteTranslationEquiv D a).symm p).1 = (p.1.1 - a, p.1.2 - a) := by
+  have h := finiteTranslationEquiv_value D a ((finiteTranslationEquiv D a).symm p)
+  simp only [Equiv.apply_symm_apply] at h
+  apply Prod.ext
+  · have := congrArg Prod.fst h
+    dsimp at this ⊢
+    linarith
+  · have := congrArg Prod.snd h
+    dsimp at this ⊢
+    linarith
+
+/-- The inverse essential translation adds back the birth displacement. -/
+theorem essentialTranslationEquiv_symm_value (D : Diagram ℝ) (a : ℝ)
+    (p : (translateDiagram D a).essentialOccurrences) :
+    ((essentialTranslationEquiv D a).symm p).1 = p.1 - a := by
+  have h := essentialTranslationEquiv_value D a ((essentialTranslationEquiv D a).symm p)
+  simp only [Equiv.apply_symm_apply] at h
+  linarith
+
+namespace OccurrenceMatching
+
+variable {D E : Diagram ℝ}
+
+/-- Return a translated target to its original occurrence labels. This operation
+uses a supplied actual matching and makes no existence or cost claim about it. -/
+noncomputable def untranslateTarget (a : ℝ)
+    (A : OccurrenceMatching D.finiteOccurrences (translateDiagram E a).finiteOccurrences
+      D.essentialOccurrences (translateDiagram E a).essentialOccurrences) :
+    OccurrenceMatching D.finiteOccurrences E.finiteOccurrences
+      D.essentialOccurrences E.essentialOccurrences :=
+  A.relabel (Equiv.refl _) (finiteTranslationEquiv E a)
+    (Equiv.refl _) (essentialTranslationEquiv E a)
+
+/-- A selected target is exactly its translated occurrence before relabelling. -/
+theorem untranslateTarget_finite_eq_some_iff (a : ℝ)
+    (A : OccurrenceMatching D.finiteOccurrences (translateDiagram E a).finiteOccurrences
+      D.essentialOccurrences (translateDiagram E a).essentialOccurrences)
+    (i : D.finiteOccurrences) (j : E.finiteOccurrences) :
+    (A.untranslateTarget a).finite i = some j ↔
+      A.finite i = some (finiteTranslationEquiv E a j) := by
+  change (A.finite i).map (finiteTranslationEquiv E a).symm = some j ↔ _
+  cases h : A.finite i with
+  | none => simp
+  | some q => simp only [Option.map_some, Option.some.injEq]; exact Equiv.symm_apply_eq _
+
+/-- Relabelling the target keeps exactly the same unmatched sources. -/
+theorem untranslateTarget_finite_eq_none_iff (a : ℝ)
+    (A : OccurrenceMatching D.finiteOccurrences (translateDiagram E a).finiteOccurrences
+      D.essentialOccurrences (translateDiagram E a).essentialOccurrences)
+    (i : D.finiteOccurrences) :
+    (A.untranslateTarget a).finite i = none ↔ A.finite i = none := by
+  change (A.finite i).map _ = none ↔ _
+  exact Option.map_eq_none_iff
+
+/-- Relabelling preserves the selected target range by the same occurrence bijection. -/
+theorem untranslateTarget_mem_range_iff (a : ℝ)
+    (A : OccurrenceMatching D.finiteOccurrences (translateDiagram E a).finiteOccurrences
+      D.essentialOccurrences (translateDiagram E a).essentialOccurrences)
+    (j : E.finiteOccurrences) :
+    (∃ i, (A.untranslateTarget a).finite i = some j) ↔
+      ∃ i, A.finite i = some (finiteTranslationEquiv E a j) := by
+  exact exists_congr fun i => untranslateTarget_finite_eq_some_iff a A i j
+
+/-- The essential target's birth is returned by subtracting the translation. -/
+theorem untranslateTarget_essential_value (a : ℝ)
+    (A : OccurrenceMatching D.finiteOccurrences (translateDiagram E a).finiteOccurrences
+      D.essentialOccurrences (translateDiagram E a).essentialOccurrences)
+    (i : D.essentialOccurrences) :
+    ((A.untranslateTarget a).essential i).1 = (A.essential i).1 - a :=
+  essentialTranslationEquiv_symm_value E a (A.essential i)
+
+end OccurrenceMatching
+
 
 end TDA.Persistence

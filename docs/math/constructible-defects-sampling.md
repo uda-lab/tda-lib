@@ -132,7 +132,8 @@ limit comparisons, rather than numbered source sampling theorems.
 Source and rights metadata are in [BL15-v4](references.md#BL15-v4).
 
 No inspection of general infinite decomposition or the omitted Lemma 6.2 proof
-is claimed. A real shift-diagram formula, real occurrence matching and
-`d_B≤d_I` remain separate results. The
+is claimed. The [shift-diagram correspondence](constructible-shift-diagrams.md)
+provides the actual shifted diagram and inverse occurrence labels. General
+real induced matching and `d_B≤d_I` remain separate results. The
 [finite quantitative matching API](finite-quantitative-induced-matching.md)
 retains its finite-dimensionality and endpoint hypotheses.

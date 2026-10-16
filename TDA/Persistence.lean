@@ -14,6 +14,7 @@ import TDA.Persistence.ConstructibleSampling
 import TDA.Persistence.RealBarcode
 import TDA.Persistence.ConstructibleBarcode
 import TDA.Persistence.ConstructibleRefinementBarcode
+import TDA.Persistence.ConstructibleShiftBarcode
 import TDA.Persistence.Diagram
 import TDA.Persistence.DiagramLaws
 import TDA.Persistence.DiagramBottleneck
