@@ -1018,3 +1018,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.moving_tied_edge_strict_essential_birth
 
 #print axioms TDA.Persistence.Reduction.nonempty_actualPrefixHomologyIsoPivotBarcode
+#print axioms TDA.Persistence.birthPersistence_snd_pos
+#print axioms TDA.Persistence.norm_birthPersistence_sub_le
+#print axioms TDA.Persistence.finitePairCost_toReal
+#print axioms TDA.Persistence.diagonalCost_toReal
+#print axioms TDA.Persistence.OccurrenceMatching.totalFiniteCost_nonneg
+#print axioms TDA.Persistence.OccurrenceMatching.sum_matched
+#print axioms TDA.Persistence.OccurrenceMatching.sum_sub_eq_residual_sub_unmatched
+#print axioms TDA.Persistence.OccurrenceMatching.norm_featureSum_sub_le
+#print axioms TDA.Persistence.finiteFeatureSum_reindex
+#print axioms TDA.Persistence.finiteFeatureSum_empty

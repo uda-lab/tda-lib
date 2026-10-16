@@ -3,6 +3,7 @@ import TDA.Persistence.Basic
 import TDA.Persistence.Diagram
 import TDA.Persistence.DiagramLaws
 import TDA.Persistence.DiagramBottleneck
+import TDA.Persistence.AdditiveFeatures
 import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.ActualLossDerivative
