@@ -1305,3 +1305,5 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteMonoMatchingExamples.duplicate_terminal_count
 #print axioms TDA.Persistence.FiniteMonoMatchingExamples.empty_chain
 #print axioms TDA.Persistence.FiniteMonoMatchingExamples.rank_domination_insufficient
+#print axioms TDA.Persistence.FiniteBarcode.DeathOccurrence.ext
+#print axioms TDA.Persistence.FiniteBarcode.DeathOccurrence.ext_iff
