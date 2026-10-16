@@ -34,6 +34,7 @@ import TDA.Persistence.Simplicial
 import TDA.Persistence.SublevelDiagram
 import TDA.Persistence.FaceOrderTemplate
 import TDA.Persistence.FiniteFilterStability
+import TDA.Persistence.RipsStability
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.ActualDiagramRegularity

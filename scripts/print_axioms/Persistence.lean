@@ -1055,3 +1055,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.PersistenceImage.norm_feature_diagonal_le
 #print axioms TDA.Persistence.PersistenceImage.image_apply
 #print axioms TDA.Persistence.PersistenceImage.norm_image_sub_le_matching
+
+-- Same-label metric diameter filtrations (Issue #243).
+#print axioms TDA.Persistence.Rips.faceSupDifference_filter_le
+#print axioms TDA.Persistence.Rips.bottleneck_dgm_le_pairwiseDiscrepancy

@@ -96,6 +96,20 @@ essential classes have explicit conventions. Proof-derived semantic objects and 
 arbitrary-field decomposition remain noncomputable. See
 [the input contract and correctness route](math/finite-ph-computation.md).
 
+## Metric input and Rips diagrams
+
+`TDA.Filtration.Rips` takes explicit metrics on a fixed finite labelled vertex type,
+using the full complex of nonempty faces and their diameters. Singletons have value
+zero, the empty face is excluded, and stages below zero are empty. Sublevels are closed
+Rips complexes with diameter time. `pairwiseDiscrepancy` is the maximum absolute
+distance-matrix difference, with empty maximum zero.
+
+`TDA.Persistence.Rips.bottleneck_dgm_le_pairwiseDiscrepancy` bounds the actual diagrams
+in every degree by that discrepancy. For V : Type u it requires `LinearOrder V`,
+`Fintype V`, and a coefficient field k : Type u, retaining existing multiplicity and
+essential-bar semantics. This noncomputable consumer of finite-face stability covers
+the fixed labelled carrier. See [the construction, proof and source scope](math/rips-metric-stability.md).
+
 ## Gaussian persistence images
 
 `TDA.Persistence.GaussianKernel` proves normalization and L¹ translation estimates for

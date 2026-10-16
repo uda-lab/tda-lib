@@ -1,6 +1,7 @@
 -- Ordinary Filtration library modules; standalone fixtures are in TDA.Filtration.Examples.
 import TDA.Filtration.Basic
 import TDA.Filtration.FilterFunction
+import TDA.Filtration.Rips
 import TDA.Filtration.CompatibleOrder
 import TDA.Filtration.CriticalValues
 import TDA.Filtration.CompatibleOrderPrefix
