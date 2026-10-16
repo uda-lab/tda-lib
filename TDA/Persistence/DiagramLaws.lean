@@ -57,9 +57,12 @@ private theorem essentialPart_essentialEmbed {α : Type u} [LinearOrder α]
   rw [essentialPart, Multiset.filterMap_map]
   simpa only [essentialEmbed, Function.comp_def] using (Multiset.filterMap_some s)
 
-private theorem split_reconstruct {α : Type u} [LinearOrder α]
+/-- Recombine the finite and essential parts without losing occurrences. -/
+theorem parts_reconstruct {α : Type u} [LinearOrder α]
     (s : Multiset (α × WithTop α)) :
-    (finitePart s).map finiteEmbed + (essentialPart s).map essentialEmbed = s := by
+    (finitePart s).map (fun p => (p.1, (p.2 : WithTop α))) +
+      (essentialPart s).map (fun b => (b, (⊤ : WithTop α))) = s := by
+  change (finitePart s).map finiteEmbed + (essentialPart s).map essentialEmbed = s
   induction s using Multiset.induction_on with
   | empty => simp [finitePart, essentialPart]
   | @cons p s ih =>
@@ -162,7 +165,7 @@ theorem orderedQ_surjective {α : Type u} [LinearOrder α] (D : Diagram α) :
   apply Diagram.ext
   change _ + _ = D.points
   rw [hx, hy]
-  exact split_reconstruct D.points
+  exact parts_reconstruct D.points
 
 private theorem ofFn_removeNth {β : Type*} {m : ℕ}
     (x : Fin (m + 1) → β) (k : Fin (m + 1)) :

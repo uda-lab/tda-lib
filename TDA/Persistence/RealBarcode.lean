@@ -102,6 +102,17 @@ private noncomputable def productIso {ι κ : Type} (e : ι ≃ κ)
   funext j
   exact congrArg (fun L => L.hom (x (e.symm j))) ((η j).hom.naturality f)
 
+/-- The coordinate product used by barcode realizations, indexed by occurrences. -/
+noncomputable def familyModule {ι : Type} (F : ι → PModule.{u,0,u} k ℝ) :
+    PModule.{u,0,u} k ℝ := productModule F
+
+/-- Reindex occurrence coordinates and apply the supplied natural isomorphism in
+each coordinate. -/
+noncomputable def familyIso {ι κ : Type} (e : ι ≃ κ)
+    (F : ι → PModule.{u,0,u} k ℝ) (G : κ → PModule.{u,0,u} k ℝ)
+    (η : ∀ j, F (e.symm j) ≅ G j) : familyModule F ≅ familyModule G :=
+  productIso e F G η
+
 /-- A list enumeration of a finite real barcode, with one coordinate per occurrence. -/
 noncomputable def ofList (xs : List (ℝ × WithTop ℝ)) : PModule.{u,0,u} k ℝ :=
   productModule (fun i : Fin xs.length => intervalModule (k := k) (xs.get i))

@@ -93,6 +93,8 @@ metadata are recorded in [BL15-v4](references.md#BL15-v4).
 
 This API provides concrete witnesses. Interleaving composition and enlargement,
 generic flows, interleaving distance and its infimum/infinity/attainment laws,
-matching-to-interleaving construction and both isometry inequalities are separate
-work. The finite-constructible [barcode realization](real-barcode-realization.md)
+both isometry inequalities and the interleaving-to-matching direction are separate
+work. The [matching-to-interleaving construction](matching-interleavings.md) supplies
+concrete witnesses for finite positive barcode realizations. The finite-constructible
+[barcode realization](real-barcode-realization.md)
 supplies a different natural isomorphism; no such decomposition is an input here.
