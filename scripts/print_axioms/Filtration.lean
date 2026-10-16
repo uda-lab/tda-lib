@@ -94,3 +94,21 @@ import TDA
 #print axioms TDA.Filtration.exists_open_le_iff_of_mem_orderChamber
 #print axioms TDA.Filtration.FilterFunction.exists_open_orderingEquivalent_of_mem_orderChamber
 #print axioms TDA.Filtration.CompatibleOrder.exists_open_sameEnum_of_mem_orderChamber
+
+-- Same-label metric diameter filtrations (Issue #243).
+#print axioms TDA.Filtration.Rips.mem_fullComplex_iff
+#print axioms TDA.Filtration.Rips.diameter_empty
+#print axioms TDA.Filtration.Rips.diameter_singleton
+#print axioms TDA.Filtration.Rips.diameter_nonneg
+#print axioms TDA.Filtration.Rips.diameter_le_iff
+#print axioms TDA.Filtration.Rips.dist_le_diameter
+#print axioms TDA.Filtration.Rips.diameter_mono
+#print axioms TDA.Filtration.Rips.diameter_pair
+#print axioms TDA.Filtration.Rips.filter_value
+#print axioms TDA.Filtration.Rips.mem_sublevel_iff
+#print axioms TDA.Filtration.Rips.sublevel_eq_bot_of_neg
+#print axioms TDA.Filtration.Rips.pairwiseDiscrepancy_nonneg
+#print axioms TDA.Filtration.Rips.abs_dist_sub_le_pairwiseDiscrepancy
+#print axioms TDA.Filtration.Rips.pairwiseDiscrepancy_self
+#print axioms TDA.Filtration.Rips.pairwiseDiscrepancy_of_isEmpty
+#print axioms TDA.Filtration.Rips.abs_diameter_sub_le_pairwiseDiscrepancy
