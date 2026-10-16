@@ -2,6 +2,7 @@
 import TDA.Topology.Cosheaf
 import TDA.Topology.IndexedCover
 import TDA.Topology.Nerve
+import TDA.Topology.MultiNerve
 import TDA.Topology.PathCover
 import TDA.Topology.PathComponents
 import TDA.Topology.NerveMap
