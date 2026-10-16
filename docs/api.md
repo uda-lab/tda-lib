@@ -67,6 +67,16 @@ image/kernel injections, with a separate terminal-image case. See
 [finite-chain mono embeddings](math/finite-mono-matching.md) for the endpoint conventions,
 proof and rank-domination boundary.
 
+For a monotone `theta : Fin s →o Fin s` with `i ≤ theta i`, `TranslationTrivial`
+means vanishing of the actual maps `i → theta i`. `finiteCokernel` is the categorical
+cokernel; its shortness is proved equivalent to a target-image inclusion.
+Under this shortness condition, the canonical mono embedding satisfies
+`birth(target) ≤ birth(source) ≤ theta(birth(target))` and uniquely covers every
+target bar with `theta(birth) < death`. Its shifted-prefix comparison uses actual
+vector lifts and a separate terminal-image case. See
+[quantitative mono matchings](math/finite-mono-translation.md) for the general finite
+translation extension and the still unformalized real-grid connection.
+
 `FiniteBarcode.epiEmbedding` takes an actual componentwise surjective transformation
 `p : M ⟶ N` of the same finite modules and embeds target barcode occurrences back into
 source occurrences. It preserves birth, bounds the target bar's death by the corresponding
@@ -83,8 +93,8 @@ target labels via their unique intermediate image occurrences. Its Option-valued
 qualitative endpoint order and an equivalence between image occurrences and matched pairs.
 It specializes to the existing mono/epi correspondences and the identity matching;
 composition laws apply to monos and epis. See
-[finite induced matchings](math/finite-induced-matching.md). Quantitative induced matching
-remains separate.
+[finite induced matchings](math/finite-induced-matching.md). Quantitative epi and
+general-morphism induced matching remain separate.
 
 `FiniteConstructible.reconstructionIso` reconstructs a real-indexed module from a finite
 chain of critical samples preceded by a zero stage. It uses left-closed/right-open strata,

@@ -155,6 +155,24 @@ private theorem prefix_le_ordinal (B : Multiset (FiniteInterval s)) (b d : ℕ)
   have h := Fintype.card_le_of_injective f hf
   rwa [Fintype.card_fin, prefix_card] at h
 
+/-- An occurrence's ordinal is below the prefix count at its own birth. -/
+theorem deathOrdinal_lt_deathPrefixCount (B : Multiset (FiniteInterval s))
+    (i : BarcodeOccurrence s B) :
+    deathOrdinal B i < deathPrefixCount B (occurrence B i).birth (occurrence B i).death :=
+  ordinal_lt_prefix B _ ⟨i, rfl⟩
+
+/-- A cutoff before an occurrence's birth counts at most its ordinal. -/
+theorem deathPrefixCount_le_deathOrdinal (B : Multiset (FiniteInterval s))
+    (i : BarcodeOccurrence s B) (b : ℕ) (hb : b < (occurrence B i).birth) :
+    deathPrefixCount B b (occurrence B i).death ≤ deathOrdinal B i :=
+  prefix_le_ordinal B b _ ⟨i, rfl⟩ hb
+
+/-- Every birth prefix is bounded by the cardinality of its death group. -/
+theorem deathPrefixCount_le_card (B : Multiset (FiniteInterval s)) (b d : ℕ) :
+    deathPrefixCount B b d ≤ Fintype.card (DeathOccurrence B d) := by
+  rw [← prefix_card]
+  exact Fintype.card_subtype_le _
+
 variable {k : Type u} [Field k]
 variable {M N : PModule.{u,0,u} k (Fin s)}
 variable [∀ i, FiniteDimensional k (M.obj i)] [∀ i, FiniteDimensional k (N.obj i)]
@@ -292,6 +310,25 @@ theorem monoEmbedding_eq_iff (j : M ⟶ N) (hj : ∀ i, Function.Injective (j.ap
     exact occurrence_eq_of_death_ordinal (rankBarcode N) _ _
       ((monoEmbedding_death j hj i).trans hd.symm)
       ((monoEmbedding_ordinal j hj i).trans ho.symm)
+
+/-- A target occurrence is selected precisely when its ordinal fits in the source death group. -/
+theorem monoEmbedding_mem_range_iff (j : M ⟶ N)
+    (hj : ∀ i, Function.Injective (j.app i).hom)
+    (a : BarcodeOccurrence s (rankBarcode N)) :
+    a ∈ Set.range (monoEmbedding j hj) ↔
+      deathOrdinal (rankBarcode N) a <
+        Fintype.card (DeathOccurrence (rankBarcode M) (occurrence (rankBarcode N) a).death) := by
+  constructor
+  · rintro ⟨i, rfl⟩
+    rw [monoEmbedding_death, monoEmbedding_ordinal]
+    exact ((deathEnumeration (rankBarcode M) _).symm ⟨i, rfl⟩).isLt
+  · intro ha
+    let q : Fin (Fintype.card (DeathOccurrence (rankBarcode M)
+      (occurrence (rankBarcode N) a).death)) := ⟨deathOrdinal (rankBarcode N) a, ha⟩
+    let x := deathEnumeration (rankBarcode M) (occurrence (rankBarcode N) a).death q
+    refine ⟨x.index, (monoEmbedding_eq_iff j hj _ a).mpr ⟨x.death_eq.symm, ?_⟩⟩
+    rw [ordinal_in_group (rankBarcode M) _ x]
+    simp [x, q]
 
 /-- Identity monomorphisms induce identity occurrence embeddings. -/
 theorem monoEmbedding_id (M : PModule.{u,0,u} k (Fin s))
