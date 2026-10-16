@@ -80,7 +80,16 @@ and composition identifications satisfying the coherence equations.
 zero-interleaving witnesses correspond to natural isomorphisms, and interleaving
 with zero is equivalent to a zero double-shift structure map. Its interval examples
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
-for the finite nonnegative parameters and the boundary with distance and matching theory.
+for the finite nonnegative parameters and witness equations.
+
+`RealBarcode.matchingInterleaving` constructs a witness between the actual realizations
+of two positive finite diagrams from an existing occurrence matching with cost at most ε.
+Matched finite bars use endpoint bounds; unmatched bars have length at most `2ε`,
+including equality; essential occurrences use the matching's total equivalence.
+Multiplicity, actual structure maps and ε=0 are retained. See
+[matching-induced interleavings](math/matching-interleavings.md) for the constructed
+maps and exact source specialization. Interleaving distance and the reverse
+interleaving-to-matching direction are separate results.
 
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.

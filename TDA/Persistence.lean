@@ -1,6 +1,8 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
 import TDA.Persistence.RealInterleaving
+import TDA.Persistence.RealIntervalInterleaving
+import TDA.Persistence.MatchingInterleaving
 import TDA.Persistence.Constructible
 import TDA.Persistence.RealBarcode
 import TDA.Persistence.ConstructibleBarcode
