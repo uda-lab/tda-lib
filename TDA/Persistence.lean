@@ -73,3 +73,8 @@ import TDA.Persistence.FiniteInducedSpecialization
 import TDA.Persistence.FiniteCokernel
 import TDA.Persistence.FiniteMonoTranslationCounts
 import TDA.Persistence.FiniteMonoTranslationMatching
+import TDA.Persistence.FiniteTranslation
+import TDA.Persistence.FiniteKernel
+import TDA.Persistence.FiniteEpiTranslationCounts
+import TDA.Persistence.FiniteEpiTranslationMatching
+import TDA.Persistence.FiniteInducedTranslationMatching

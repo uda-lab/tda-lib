@@ -151,6 +151,24 @@ private theorem suffix_le_ordinal (B : Multiset (FiniteInterval s)) (b c : ℕ)
   have h := Fintype.card_le_of_injective f hf
   rwa [Fintype.card_fin, suffix_card] at h
 
+/-- A surviving occurrence has ordinal below the same-birth survival count. -/
+theorem birthOrdinal_lt_birthSuffixCount (B : Multiset (FiniteInterval s))
+    (i : BarcodeOccurrence s B) (c : ℕ) (hc : c < (occurrence B i).death) :
+    birthOrdinal B i < birthSuffixCount B (occurrence B i).birth c :=
+  ordinal_lt_suffix B _ c ⟨i, rfl⟩ hc
+
+/-- An occurrence dead at the cutoff follows every surviving occurrence of that birth. -/
+theorem birthSuffixCount_le_birthOrdinal (B : Multiset (FiniteInterval s))
+    (i : BarcodeOccurrence s B) (c : ℕ) (hc : (occurrence B i).death ≤ c) :
+    birthSuffixCount B (occurrence B i).birth c ≤ birthOrdinal B i :=
+  suffix_le_ordinal B _ c ⟨i, rfl⟩ hc
+
+/-- A same-birth survival count never exceeds that birth group's cardinality. -/
+theorem birthSuffixCount_le_card (B : Multiset (FiniteInterval s)) (b c : ℕ) :
+    birthSuffixCount B b c ≤ Fintype.card (BirthOccurrence B b) := by
+  rw [← suffix_card]
+  exact Fintype.card_le_of_injective Subtype.val Subtype.val_injective
+
 variable {k : Type u} [Field k]
 variable {M N : PModule.{u,0,u} k (Fin s)}
 variable [∀ i, FiniteDimensional k (M.obj i)] [∀ i, FiniteDimensional k (N.obj i)]
@@ -299,6 +317,25 @@ theorem epiEmbedding_eq_iff (p : M ⟶ N) (hp : ∀ i, Function.Surjective (p.ap
     exact occurrence_eq_of_birth_ordinal (rankBarcode M) _ _
       ((epiEmbedding_birth p hp i).trans hb.symm)
       ((epiEmbedding_ordinal p hp i).trans ho.symm)
+
+/-- A source occurrence is selected exactly when its ordinal fits in the target birth group. -/
+theorem epiEmbedding_mem_range_iff (p : M ⟶ N)
+    (hp : ∀ i, Function.Surjective (p.app i).hom)
+    (a : BarcodeOccurrence s (rankBarcode M)) :
+    a ∈ Set.range (epiEmbedding p hp) ↔
+      birthOrdinal (rankBarcode M) a <
+        Fintype.card (BirthOccurrence (rankBarcode N) (occurrence (rankBarcode M) a).birth) := by
+  constructor
+  · rintro ⟨i, rfl⟩
+    rw [epiEmbedding_birth, epiEmbedding_ordinal]
+    exact ((birthEnumeration (rankBarcode N) _).symm ⟨i, rfl⟩).isLt
+  · intro ha
+    let q : Fin (Fintype.card (BirthOccurrence (rankBarcode N)
+      (occurrence (rankBarcode M) a).birth)) := ⟨birthOrdinal (rankBarcode M) a, ha⟩
+    let x := birthEnumeration (rankBarcode N) (occurrence (rankBarcode M) a).birth q
+    refine ⟨x.index, (epiEmbedding_eq_iff p hp _ a).mpr ⟨x.birth_eq.symm, ?_⟩⟩
+    rw [ordinal_in_group (rankBarcode N) _ x]
+    simp [x, q]
 
 /-- Identity epimorphisms induce identity occurrence embeddings. -/
 theorem epiEmbedding_id (M : PModule.{u,0,u} k (Fin s))

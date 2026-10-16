@@ -2,4 +2,5 @@
 import TDA.Mapper.PullbackCoverExamples
 import TDA.Mapper.BasicExamples
 import TDA.Mapper.GraphPLExamples
+import TDA.Mapper.MultiNerveExamples
 import TDA.Mapper.TowerExamples

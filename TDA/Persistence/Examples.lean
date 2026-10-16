@@ -57,4 +57,5 @@ import TDA.Persistence.RipsPersistenceImageExamples
 import TDA.Persistence.FiniteEpiMatchingExamples
 import TDA.Persistence.FiniteInducedMatchingExamples
 import TDA.Persistence.FiniteMonoTranslationExamples
+import TDA.Persistence.FiniteInducedTranslationExamples
 import TDA.Persistence.CechStabilityExamples
