@@ -58,6 +58,14 @@ the ranks of all actual structure maps, including composites. The canonical obje
 the interval multiset; the chosen summands and isomorphism are not canonical. See
 [finite interval decomposition](math/finite-interval-decomposition.md).
 
+`FiniteConstructible.reconstructionIso` reconstructs a real-indexed module from a finite
+chain of critical samples preceded by a zero stage. It uses left-closed/right-open strata,
+an actual zero left tail and actual structure-map isomorphisms within each stratum; the
+final tail may be nonzero. The reconstruction works over any ring with independent
+module-carrier universe and no finite-dimensionality assumption. It supplies both natural
+transformations and their inverse identities; PH interleavings and barcode isometry remain
+separate work. See [finite-stratum reconstruction](math/constructible-modules.md).
+
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.
 The graded reduction adapter reaches this diagram through actual homology and natural
