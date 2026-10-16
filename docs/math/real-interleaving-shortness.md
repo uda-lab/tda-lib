@@ -86,9 +86,10 @@ above establishes this extension using categorical kernels and cokernels.
 Source and rights metadata are recorded in [BL15-v4](references.md#BL15-v4).
 
 Lemma 6.2 is the separate duality statement, whose proof the source omits;
-this argument does not use it. The real defect objects still need compatible
-constructibility and finite-grid transport before the
+this argument does not use it. The
+[constructible defect and sampling bridge](constructible-defects-sampling.md)
+derives actual defect constructibility on a common grid and transfers this
+annihilation to the actual finite sampled kernels and cokernels. The
 [finite quantitative induced matching](finite-quantitative-induced-matching.md)
-can be applied. Common-grid refinement, shift compatibility of reconstruction,
-real barcode shift correspondence, matching existence and `d_B≤d_I` remain
-outside these annihilation statements.
+retains its finite-dimensionality and endpoint hypotheses. Real barcode shift
+correspondence, real matching existence and `d_B≤d_I` remain separate results.

@@ -109,10 +109,11 @@ results. They are not attributed to a numbered source refinement theorem or to
 an inspected proof of general infinite decomposition. Source and rights metadata
 are recorded in [BL15-v4](references.md#BL15-v4).
 
-Constructibility of actual kernels and cokernels, sampling of morphisms and
-shortness, a diagram formula for real shifts, and the interleaving-to-matching
-distance inequality remain separate results. No claim that arbitrary submodules
-of constructible modules are constructible is used. The
-[actual real defect annihilation](real-interleaving-shortness.md) and
+The [actual defect and sampling API](constructible-defects-sampling.md) proves
+kernel/cokernel constructibility for morphisms between modules on a shared grid
+and transfers real annihilation to finite sampled defects. It uses actual
+naturality and within-cell isomorphisms, without arbitrary-submodule closure.
+A diagram formula for real shifts and the interleaving-to-matching distance
+inequality remain separate results. The
 [finite quantitative induced matching](finite-quantitative-induced-matching.md)
-results retain their hypotheses until these further bridges are proved.
+retains its finite-dimensionality and endpoint hypotheses.

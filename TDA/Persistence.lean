@@ -9,6 +9,8 @@ import TDA.Persistence.MatchingInterleaving
 import TDA.Persistence.MatchingInterleavingDistance
 import TDA.Persistence.Constructible
 import TDA.Persistence.ConstructibleRefinement
+import TDA.Persistence.ConstructibleDefects
+import TDA.Persistence.ConstructibleSampling
 import TDA.Persistence.RealBarcode
 import TDA.Persistence.ConstructibleBarcode
 import TDA.Persistence.ConstructibleRefinementBarcode
