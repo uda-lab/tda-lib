@@ -96,6 +96,23 @@ essential classes have explicit conventions. Proof-derived semantic objects and 
 arbitrary-field decomposition remain noncomputable. See
 [the input contract and correctness route](math/finite-ph-computation.md).
 
+## Gaussian persistence images
+
+`TDA.Persistence.GaussianKernel` proves normalization and L¹ translation estimates for
+the actual product Gaussian at positive bandwidth σ. `TDA.Persistence.PersistenceImage`
+integrates its weighted surface over a fixed finite family of measurable pairwise
+disjoint pixels. The target `PiLp 1` carries the pixel vector ℓ¹ norm. A nonnegative
+weight bounded by B, maximum-norm Lipschitz with constant A, and zero at persistence zero
+uses birth–persistence coordinates `(b,d−b)`.
+
+`norm_image_sub_le_matching` bounds the difference of image sums by
+`(2A + 3B sqrt(2/π)/σ)` times every finite partial matching's total birth–death L∞ cost,
+including diagonal charges for unmatched occurrences. Real pairs satisfy birth < death;
+multiplicities and empty inputs are retained, and essential bars are excluded. This is
+an every-matching estimate, with no exported transport-distance or RKHS identification.
+The Gaussian and pixel-integral definitions are noncomputable analytic APIs.
+See [the construction, analytic proof and source correspondence](math/persistence-images.md).
+
 ## Review and extension boundaries
 
 The selected PH claims and their proof-critical bridges received the source-based review
