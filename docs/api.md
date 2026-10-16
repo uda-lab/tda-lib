@@ -93,8 +93,15 @@ target labels via their unique intermediate image occurrences. Its Option-valued
 qualitative endpoint order and an equivalence between image occurrences and matched pairs.
 It specializes to the existing mono/epi correspondences and the identity matching;
 composition laws apply to monos and epis. See
-[finite induced matchings](math/finite-induced-matching.md). Quantitative epi and
-general-morphism induced matching remain separate.
+[finite induced matchings](math/finite-induced-matching.md).
+`finiteKernel` is the actual categorical kernel, with evaluated component-kernel
+fibers and finite dimensionality derived from the source. Its theta-shortness
+gives shifted same-birth survival counts, canonical epi death bounds and unique
+long-source coverage. These estimates and the mono/cokernel bounds transfer through
+the actual image to the existing induced matching, with independent kernel and
+cokernel translations. See
+[quantitative finite induced matchings](math/finite-quantitative-induced-matching.md)
+for terminal endpoint extension, hypotheses and the general finite-translation scope.
 
 `FiniteConstructible.reconstructionIso` reconstructs a real-indexed module from a finite
 chain of critical samples preceded by a zero stage. It uses left-closed/right-open strata,
