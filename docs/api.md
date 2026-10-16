@@ -65,8 +65,17 @@ birth. At each death it pairs equal ordinals in birth/index order, retaining dup
 the embedding respects identities and mono composition. Its count comparison uses actual
 image/kernel injections, with a separate terminal-image case. See
 [finite-chain mono embeddings](math/finite-mono-matching.md) for the endpoint conventions,
-proof and rank-domination boundary. It supplies the mono component of induced matching;
-epi and quantitative induced matching remain separate.
+proof and rank-domination boundary.
+
+`FiniteBarcode.epiEmbedding` takes an actual componentwise surjective transformation
+`p : M ⟶ N` of the same finite modules and embeds target barcode occurrences back into
+source occurrences. It preserves birth, bounds the target bar's death by the corresponding
+source bar's death, and pairs equal ordinals in descending-death/original-index order at
+each birth. Identities and epi composition give identity and contravariant composition
+laws. Its count comparison uses actual image-quotient surjections, with a separate
+initial-stage image case. See [finite-chain epi embeddings](math/finite-epi-matching.md).
+The mono and epi correspondences are separate components of induced matching;
+quantitative induced matching remains a separate result.
 
 `FiniteConstructible.reconstructionIso` reconstructs a real-indexed module from a finite
 chain of critical samples preceded by a zero stage. It uses left-closed/right-open strata,

@@ -143,8 +143,9 @@ there. The precise half-open criterion used here is proved from the double-shift
 equations and the actual structure maps: `d−b ≤ 2ε`. These numeric equality rules apply to the fixed half-open convention; other
 endpoint decorations require their own boundary conditions.
 
-The [finite-chain mono embedding](finite-mono-matching.md) supplies the canonical
-same-death injection used in the induced-matching route. The reverse construction
+The [finite-chain mono embedding](finite-mono-matching.md) and
+[epi embedding](finite-epi-matching.md) supply the canonical same-death and
+same-birth injections used in the induced-matching route. The reverse construction
 from interleavings to matchings and `d_B≤d_I` remain
 separate results; the full isometry theorem is not established here. The present
 results use no generic flow, infinite barcode or q-tame theory, and do not assert

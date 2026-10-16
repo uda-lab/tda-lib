@@ -64,3 +64,5 @@ import TDA.Persistence.Reduction.FiniteInput
 import TDA.Persistence.FiniteDecompositionSupport
 import TDA.Persistence.IntervalExtraction
 import TDA.Persistence.FiniteDecomposition
+import TDA.Persistence.FiniteEpiCounts
+import TDA.Persistence.FiniteEpiMatching
