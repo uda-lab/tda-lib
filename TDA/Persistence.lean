@@ -5,6 +5,7 @@ import TDA.Persistence.DiagramLaws
 import TDA.Persistence.DiagramBottleneck
 import TDA.Persistence.AdditiveFeatures
 import TDA.Persistence.FiniteMatchingCost
+import TDA.Persistence.FiniteMatchingCostLaws
 import TDA.Persistence.GaussianKernel
 import TDA.Persistence.PersistenceImage
 import TDA.Persistence.PersistenceImageMatching

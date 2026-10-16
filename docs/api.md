@@ -120,8 +120,14 @@ part. The supporting real-cost algebra needs no positivity hypothesis.
 
 The feasible matching family is finite and nonempty. The API proves attainment,
 nonnegativity, candidate upper bounds, universal lower bounds, exact empty-input
-formulas and invariance under finite occurrence equivalences. It proves no triangle
-inequality, identity of indiscernibles or equality with measure boundary transport.
+formulas and invariance under finite occurrence equivalences.
+`TDA.Persistence.FiniteMatchingCostLaws` proves self cost zero, symmetry and the triangle
+inequality using the existing partial-matching reversal and composition. For positive
+lifetimes, `finiteFirstOrderMatchingCost_eq_zero_iff` identifies zero cost exactly with
+an occurrence bijection preserving birth–death values, including multiplicities.
+Raw presentations can differ by a permutation at zero cost; diagonal occurrences are
+excluded from this separation result. No quotient metric instance or equality with
+measure boundary transport is supplied.
 See [the matching minimum and its scope](math/finite-first-order-matching.md).
 
 ## Gaussian persistence images
