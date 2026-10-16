@@ -1307,3 +1307,29 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteMonoMatchingExamples.rank_domination_insufficient
 #print axioms TDA.Persistence.FiniteBarcode.DeathOccurrence.ext
 #print axioms TDA.Persistence.FiniteBarcode.DeathOccurrence.ext_iff
+
+-- Canonical finite-chain epi embeddings and consumers.
+#print axioms TDA.Persistence.FiniteBarcode.birthSuffixCount
+#print axioms TDA.Persistence.FiniteBarcode.birthPreviousImage
+#print axioms TDA.Persistence.FiniteBarcode.birthSuffixCount_eq_finrank
+#print axioms TDA.Persistence.FiniteBarcode.birthSuffixCount_zero
+#print axioms TDA.Persistence.FiniteBarcode.birthSuffixCount_le_of_surjective
+#print axioms TDA.Persistence.FiniteBarcode.birthEnumeration
+#print axioms TDA.Persistence.FiniteBarcode.birthOrdinal
+#print axioms TDA.Persistence.FiniteBarcode.epiEmbedding
+#print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_birth
+#print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_ordinal
+#print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_death_le
+#print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_terminal
+#print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_eq_iff
+#print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_id
+#print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_comp
+#print axioms TDA.Persistence.FiniteEpiMatchingExamples.unequal_death_embedding
+#print axioms TDA.Persistence.FiniteEpiMatchingExamples.three_death_composition
+#print axioms TDA.Persistence.FiniteEpiMatchingExamples.positive_birth_quotient
+#print axioms TDA.Persistence.FiniteEpiMatchingExamples.duplicate_occurrences_distinct
+#print axioms TDA.Persistence.FiniteEpiMatchingExamples.duplicate_terminal_count
+#print axioms TDA.Persistence.FiniteEpiMatchingExamples.empty_chain
+#print axioms TDA.Persistence.FiniteEpiMatchingExamples.rank_domination_insufficient
+#print axioms TDA.Persistence.FiniteBarcode.BirthOccurrence.ext
+#print axioms TDA.Persistence.FiniteBarcode.BirthOccurrence.ext_iff

@@ -84,8 +84,10 @@ different deaths exclude a death-preserving occurrence embedding.
 
 This mono embedding need not cover every target terminal bar. The distance-specific
 `OccurrenceMatching` requires a total equivalence of essential occurrences and is
-therefore not the input or output type here. Epi matching, quantitative induced
-matching, common real-grid refinement, shift compatibility and constructible
+therefore not the input or output type here. The
+[epi embedding](finite-epi-matching.md) supplies the separate birth-preserving
+correspondence. Quantitative induced matching, common real-grid refinement,
+shift compatibility and constructible
 kernel/image/cokernel closure are separate connections needed for the reverse
 interleaving-distance inequality.
 
