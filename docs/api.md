@@ -63,8 +63,8 @@ chain of critical samples preceded by a zero stage. It uses left-closed/right-op
 an actual zero left tail and actual structure-map isomorphisms within each stratum; the
 final tail may be nonzero. The reconstruction works over any ring with independent
 module-carrier universe and no finite-dimensionality assumption. It supplies both natural
-transformations and their inverse identities; interleaving distance and barcode isometry remain
-separate work. See [finite-stratum reconstruction](math/constructible-modules.md).
+transformations and their inverse identities. See
+[finite-stratum reconstruction](math/constructible-modules.md).
 
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
 decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
@@ -82,14 +82,23 @@ with zero is equivalent to a zero double-shift structure map. Its interval examp
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
 for the finite nonnegative parameters and witness equations.
 
+`RealInterleaving.mono`, `trans` and `congr` enlarge parameters, add parameters
+under composition, and transport both modules along natural isomorphisms.
+`realInterleavingDistance` takes the ENNReal infimum of finite witness parameters.
+It satisfies the extended pseudometric laws, including triangle with infinite
+summands. Empty witness sets give `⊤`; zero distance means witnesses at every
+positive parameter and need not give a zero-interleaving or an isomorphism.
+The explicit ephemeral example exhibits this nonattainment. See
+[distance and approximation](math/real-interleavings.md#distance-infinity-and-approximation).
+
 `RealBarcode.matchingInterleaving` constructs a witness between the actual realizations
 of two positive finite diagrams from an existing occurrence matching with cost at most ε.
 Matched finite bars use endpoint bounds; unmatched bars have length at most `2ε`,
 including equality; essential occurrences use the matching's total equivalence.
 Multiplicity, actual structure maps and ε=0 are retained. See
 [matching-induced interleavings](math/matching-interleavings.md) for the constructed
-maps and exact source specialization. Interleaving distance and the reverse
-interleaving-to-matching direction are separate results.
+maps and exact source specialization. The two distance isometry inequalities and
+the reverse interleaving-to-matching direction are separate results.
 
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.

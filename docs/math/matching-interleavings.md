@@ -97,6 +97,7 @@ there. The precise half-open criterion used here is proved from the double-shift
 equations and the actual structure maps: `d−b ≤ 2ε`. These numeric equality rules apply to the fixed half-open convention; other
 endpoint decorations require their own boundary conditions.
 
-Interleaving distance, infimum and attainment laws, the reverse construction from
-interleavings to matchings, and either distance isometry inequality are separate
+The [real interleaving distance](real-interleavings.md#distance-infinity-and-approximation)
+is defined by an infimum without an attainment assumption. The reverse construction
+from interleavings to matchings and either distance isometry inequality are separate
 results. This construction uses no generic flow, infinite barcode or q-tame theory.

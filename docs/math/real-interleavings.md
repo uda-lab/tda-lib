@@ -1,9 +1,11 @@
-# Real shifts and interleaving witnesses
+# Real interleavings and their extended distance
 
 An epsilon-interleaving compares two real-indexed modules by natural maps into
 each other's shifts. Their two composites must equal the original modules'
 structure maps across twice the shift. The API constructs the shifts and these
-comparison maps from actual real parameters and structure maps.
+comparison maps from actual real parameters and structure maps. Taking the infimum
+of all admissible finite parameters gives an extended pseudometric, with no
+assumption that the infimum is attained.
 
 ## Modules, parameters and shifts
 
@@ -57,6 +59,30 @@ same condition for `N`. `equations_iff` proves equivalence of the natural-
 transformation equations and these component equations. `ofApp` accepts actual
 natural maps and proofs of the component equations.
 
+## Enlargement, composition and isomorphism transport
+
+For `ε ≤ δ`, `RealShift.shiftLE` has components `M[t+ε≤t+δ]`.
+`RealInterleaving.mono` postcomposes both comparison maps with these
+structure maps, producing a δ-interleaving.
+
+Given an ε-interleaving between `M,N` and a δ-interleaving between `N,P`,
+`RealInterleaving.trans` gives an `(ε+δ)`-interleaving between `M,P`.
+Its forward map is
+
+\[
+M\longrightarrow S_\varepsilon N
+ \longrightarrow S_\varepsilon S_\delta P
+ \longrightarrow S_{\varepsilon+\delta}P.
+\]
+
+The reverse map uses the comparisons in reverse order and the canonical
+identification of `δ+ε` with `ε+δ`. Naturality moves the intermediate
+structure maps past the comparisons; the original two witness equations then
+give both double-shift equations for the sum.
+
+`RealInterleaving.congr` transports both modules along natural isomorphisms,
+conjugating the comparison maps without changing the parameter.
+
 ## Zero interleavings and the zero module
 
 `RealInterleaving.symm` exchanges the maps; `refl` uses the actual transitions.
@@ -83,18 +109,63 @@ The essential interval `[0,∞)` fails the criterion at every finite `ε`, becau
 the map from `0` to `2ε` preserves `1`. A field has `1≠0`; this nontriviality
 is needed for the negative examples. The basic ring-valued API does not impose it.
 
+## Distance, infinity and approximation
+
+`realInterleavingDistance M N : ℝ≥0∞` is
+
+\[
+d_I(M,N)=\inf\{\varepsilon\in\mathbb R_{\ge0}\mid
+  \operatorname{Nonempty}(\operatorname{RealInterleaving}_\varepsilon(M,N))\}.
+\]
+
+The empty infimum is infinity. Thus `d_I=⊤` holds exactly when there is no
+finite-parameter interleaving; an essential interval and zero give such a pair.
+Every ε-witness gives `d_I≤ε`. For any extended bound `r : ℝ≥0∞`,
+
+\[
+d_I(M,N)<r\quad\Longleftrightarrow\quad
+\exists\varepsilon\in\mathbb R_{\ge0},\quad
+\varepsilon<r\ \text{and an ε-interleaving exists}.
+\]
+
+At `r=0` both sides are false; at `r=⊤` this is existence of a finite witness.
+The weak bound `d_I≤ε` alone does not supply an ε-witness.
+
+The distance is symmetric, is zero on the diagonal, is invariant under natural
+isomorphism in each argument, and satisfies
+
+\[
+d_I(M,P)\le d_I(M,N)+d_I(N,P).
+\]
+
+This includes infinite summands. The proof bounds the distance by `ε+δ` for
+every pair of witnesses and distributes ENNReal addition over their infima;
+it requires neither an optimal parameter nor a nonempty witness set.
+
+Zero distance is equivalent to interleavings at **every** positive finite
+parameter. It need not give a zero-interleaving or a natural isomorphism.
+The explicit ephemeral example over ℚ has fiber ℚ at time zero and zero
+elsewhere. Its maps are identity when both indices are zero and zero otherwise;
+ordered intermediate indices ensure the functor composition law. Every positive
+double-shift map is zero, while the time-zero fiber is nonzero. It therefore has
+distance zero from the zero module with no zero-interleaving: this infimum is
+not attained. The distance API is a plain function with extended pseudometric
+laws, without a separation or attainment assertion.
+
 ## Source and scope
 
 [Bauer--Lesnick, arXiv:1311.3681v4](https://arxiv.org/html/1311.3681v4), §3.1,
-defines the field-valued shift, transition and interleaving with these conventions.
+defines the field-valued shift, transition, interleaving and distance with these
+conventions; Remark 3.1 supplies enlargement and additive composition.
 The ring-valued constructions, explicit coherence and zero-module criterion are
-proved library extensions and consequences. Source manifestation and rights
+proved library extensions and consequences. The unconditional ENNReal triangle
+also includes infinite summands, where the inequality is automatic.
+Source manifestation and rights
 metadata are recorded in [BL15-v4](references.md#BL15-v4).
 
-This API provides concrete witnesses. Interleaving composition and enlargement,
-generic flows, interleaving distance and its infimum/infinity/attainment laws,
-both isometry inequalities and the interleaving-to-matching direction are separate
-work. The [matching-to-interleaving construction](matching-interleavings.md) supplies
+Generic flows, both isometry inequalities and the interleaving-to-matching
+direction are separate work.
+The [matching-to-interleaving construction](matching-interleavings.md) supplies
 concrete witnesses for finite positive barcode realizations. The finite-constructible
 [barcode realization](real-barcode-realization.md)
 supplies a different natural isomorphism; no such decomposition is an input here.

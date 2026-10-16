@@ -1,4 +1,5 @@
 import TDA.Persistence.RealIntervalInterleaving
+import TDA.Persistence.RealInterleavingLaws
 import TDA.Persistence.DiagramBottleneckLaws
 
 /-!
@@ -224,27 +225,6 @@ private theorem finite_positive {D : Diagram ℝ} (hD : D.IsPositive)
     have hi : i.1 = (b, d) := heq.symm
     simpa only [hi, WithTop.coe_lt_coe] using h
 
-private noncomputable def transportInterleaving (ε : ℝ≥0)
-    {M N M' N' : PModule.{u,0,u} k ℝ} (i : RealInterleaving ε M N)
-    (e : M ≅ M') (d : N ≅ N') : RealInterleaving ε M' N' := by
-  have comp {A B A' B' : PModule.{u,0,u} k ℝ}
-      (f : A ⟶ (shift ε).obj B) (g : B ⟶ (shift ε).obj A)
-      (h : f ≫ (shift ε).map g ≫ (compIso ε ε A).hom = transition (ε + ε) A)
-      (a : A ≅ A') (b : B ≅ B') :
-      (a.inv ≫ f ≫ (shift ε).map b.hom) ≫
-        (shift ε).map (b.inv ≫ g ≫ (shift ε).map a.hom) ≫
-          (compIso ε ε A').hom = transition (ε + ε) A' := by
-    simp only [Functor.map_comp, Category.assoc]
-    rw [← Functor.map_comp_assoc, b.hom_inv_id, (shift ε).map_id, Category.id_comp]
-    rw [compIso_naturality]
-    have hh := congrArg (fun m => a.inv ≫ m ≫ (shift (ε + ε)).map a.hom) h
-    simp only [Category.assoc] at hh
-    rw [hh]
-    rw [← transition_naturality, Iso.inv_hom_id_assoc]
-  exact ⟨e.inv ≫ i.φ ≫ (shift ε).map d.hom,
-    d.inv ≫ i.ψ ≫ (shift ε).map e.hom,
-    comp i.φ i.ψ i.φ_ψ e d, comp i.ψ i.φ i.ψ_φ d e⟩
-
 /-- A finite occurrence matching with cost at most `ε` constructs the actual
 interleaving of its two positive diagram realizations. -/
 noncomputable def matchingInterleaving (D E : Diagram ℝ) (hD : D.IsPositive)
@@ -315,6 +295,6 @@ noncomputable def matchingInterleaving (D E : Diagram ℝ) (hD : D.IsPositive)
     (selection_reverse M) pair (unmatched D E hD M hc)
     (unmatched E D hE M.reverse (by
       simpa only [OccurrenceMatching.cost_reverse] using hc))
-  exact transportInterleaving ε w (occurrenceIso D) (occurrenceIso E)
+  exact w.congr (occurrenceIso D) (occurrenceIso E)
 
 end TDA.Persistence.RealBarcode
