@@ -110,7 +110,7 @@ theorem triangle_not_isAcyclic : ¬ triangle.IsAcyclic := fun h =>
 
 /-- The triangle is not a tree, independently of the realization. -/
 theorem triangle_not_isTree : ¬ triangle.IsTree := fun h =>
-  triangle_not_isAcyclic h.IsAcyclic
+  triangle_not_isAcyclic h.isAcyclic
 
 /-! ### Orientation control -/
 
@@ -175,7 +175,7 @@ theorem twoPoints_not_simplyConnectedSpace : ¬ SimplyConnectedSpace (Realizatio
   fun _ => twoPoints_not_pathConnectedSpace inferInstance
 
 theorem twoPoints_not_isTree : ¬ twoPoints.IsTree := fun h =>
-  twoPoints_not_connected h.isConnected
+  twoPoints_not_connected h.connected
 
 /-! ### Empty vertex type -/
 
@@ -187,7 +187,7 @@ theorem empty_isAcyclic : G.IsAcyclic := IsAcyclic.of_subsingleton
 
 /-- Not a tree: connectedness includes nonemptiness. -/
 theorem empty_not_isTree : ¬ G.IsTree := fun h =>
-  isEmptyElim (Classical.choice h.isConnected.nonempty)
+  isEmptyElim (Classical.choice h.connected.nonempty)
 
 /-- The empty realization is not simply connected: simple connectivity includes nonemptiness. -/
 theorem empty_not_simplyConnectedSpace : ¬ SimplyConnectedSpace (Realization G) := fun _ =>
