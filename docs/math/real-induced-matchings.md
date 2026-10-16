@@ -93,10 +93,12 @@ is an actual matching into that shifted diagram with `RealMatchingBounds
 (ε+ε) (ε+ε)`, including its essential equivalence and strict long-bar coverage.
 No common-grid, new-fiber-finiteness, shortness or matching witness is an input.
 
-The comparison with the original unshifted target still requires applying
-its +ε occurrence inverse and proving all pair and diagonal cost estimates.
-The resulting ε-cost matching and the infimum step for `d_B≤d_I` remain
-unproved. The shifted-target theorem alone asserts neither conclusion.
+The [finite-constructible isometry construction](constructible-isometry.md)
+applies the +ε target inverse and proves every finite, essential and diagonal
+cost contribution is at most ε. It then takes the interleaving-parameter
+infimum and combines the reverse bound into equality. The shifted-target
+bounds here are its derived input, with no extra matching or cost hypothesis
+on the original interleaving.
 
 ## Concrete boundary cases
 
@@ -134,7 +136,8 @@ does not alter the library's hypotheses or endpoint inequalities.
 Lemma 6.3 supplies double-shift defect annihilation. The occurrence
 correspondence immediately before Theorem 6.4 adds ε back to shifted
 endpoints, and its proof converts the induced bounds to an ε-matching.
-Only the shifted-target part of that construction is established here.
+The shifted-target part is established here; the linked isometry theorem
+completes its return and cost argument on the finite-constructible domain.
 Finite-grid sampling, real occurrence relabelling and the derived essential
 equivalence are library constructions implementing the specialization.
 General decorated intervals, infinite or q-tame decompositions and full

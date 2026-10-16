@@ -214,7 +214,8 @@ private theorem selection_reverse {D E : Diagram ℝ}
       simp only [Option.some.injEq, Sum.inr.injEq]
       exact M.essential.eq_symm_apply.symm.trans eq_comm
 
-private theorem finite_positive {D : Diagram ℝ} (hD : D.IsPositive)
+/-- Each finite occurrence of a positive diagram has strictly ordered endpoints. -/
+theorem finite_positive {D : Diagram ℝ} (hD : D.IsPositive)
     (i : D.finiteOccurrences) : i.1.1 < i.1.2 := by
   obtain ⟨⟨b, d⟩, hmem, heq⟩ :=
     (Multiset.mem_filterMap _ _).mp (Multiset.coe_mem (x := i))

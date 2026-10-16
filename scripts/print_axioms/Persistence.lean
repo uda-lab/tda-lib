@@ -1598,3 +1598,19 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteInducedTranslationExamples.real_overlap_defects_nonzero
 #print axioms TDA.Persistence.FiniteInducedTranslationExamples.real_overlap_bounds_attained
 #print axioms TDA.Persistence.ConstructibleDefectExamples.actual_shifted_induced_matching
+
+-- Finite-constructible isometry and actual target-return cost controls.
+#print axioms TDA.Persistence.RealMatchingBounds.untranslateTarget_cost_le
+#print axioms TDA.Persistence.FiniteConstructible.interleavingMatching
+#print axioms TDA.Persistence.FiniteConstructible.interleavingMatching_cost_le
+#print axioms TDA.Persistence.FiniteConstructible.bottleneck_le_of_interleaving
+#print axioms TDA.Persistence.FiniteConstructible.bottleneck_le_distance
+#print axioms TDA.Persistence.FiniteConstructible.bottleneck_eq_distance
+#print axioms TDA.Persistence.FiniteConstructible.interleaving_iff_matching
+#print axioms TDA.Persistence.FiniteConstructible.distance_eq_top_iff_essential_card_ne
+#print axioms TDA.Persistence.RealBarcode.finite_positive
+#print axioms TDA.Persistence.ConstructibleRefinementExamples.unequal_grid_isometry_control
+#print axioms TDA.Persistence.ConstructibleRefinementExamples.empty_isometry_control
+#print axioms TDA.Persistence.RealInducedMatchingExamples.duplicate_zero_cost
+#print axioms TDA.Persistence.ConstructibleDefectExamples.threshold_cost_attained
+#print axioms TDA.Persistence.ConstructibleDefectExamples.essential_zero_infinite

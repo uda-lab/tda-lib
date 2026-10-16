@@ -134,7 +134,8 @@ Source and rights metadata are in [BL15-v4](references.md#BL15-v4).
 The [real induced matching](real-induced-matchings.md) consumes these actual
 sampled defects and converts the finite partial injection into real labels,
 with exact endpoint, essential and long-bar coverage bounds. Its interleaving
-consumer constructs a matching into the shifted target. Returning that target
-by +ε and proving ε-cost and distance-infimum estimates remain the steps toward
-`d_B≤d_I`. General infinite decomposition and the omitted Lemma 6.2 proof are
-outside these sampling results.
+consumer constructs a matching into the shifted target. The
+[finite-constructible isometry](constructible-isometry.md) returns that target
+by +ε, proves ε-cost and takes the distance infimum to establish equality.
+General infinite decomposition and the omitted Lemma 6.2 proof are outside
+these sampling results.

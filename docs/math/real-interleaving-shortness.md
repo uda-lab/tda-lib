@@ -93,7 +93,9 @@ annihilation to the actual finite sampled kernels and cokernels. The
 [finite quantitative induced matching](finite-quantitative-induced-matching.md)
 retains its finite-dimensionality and endpoint hypotheses. The
 [shift-diagram correspondence](constructible-shift-diagrams.md) returns shifted
-occurrence labels by +ε. The [real induced matching](real-induced-matchings.md) now consumes these
+occurrence labels by +ε. The [real induced matching](real-induced-matchings.md)
+consumes these
 derived hypotheses and proves exact endpoint and long-bar bounds into the
-shifted target. The ε-cost estimate after returning that target by +ε and
-the distance-infimum step for `d_B≤d_I` remain unproved.
+shifted target. The
+[finite-constructible isometry](constructible-isometry.md) returns that
+target by +ε, proves ε-cost and takes the distance infimum to obtain equality.

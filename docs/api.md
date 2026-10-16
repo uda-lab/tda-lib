@@ -132,7 +132,7 @@ shifted target labels by +ε, and the complete matching of a diagram with its
 own shift is constructed with its endpoint and cost bounds proved. The target
 untranslation operation is available for existing occurrence matchings. See
 [real shift diagrams and occurrence untranslation](math/constructible-shift-diagrams.md)
-for multiplicities, boundary conventions and the remaining general matching step.
+for multiplicities, boundary conventions and the target-return operation.
 
 `FiniteConstructible.inducedOccurrenceMatching` transports the actual sampled
 finite induced partial injection to real finite and essential occurrence labels.
@@ -141,8 +141,8 @@ bounds, unique coverage of strictly long finite bars and a total essential
 equivalence. `interleaving_shifted_induced_matching` derives these bounds at `2ε`
 from an actual interleaving on possibly different grids, into the translated target
 `D_N−ε`. No mesh error or supplied matching is used. See
-[real induced occurrence matchings](math/real-induced-matchings.md). The ε-cost
-estimate after +ε target untranslation and `d_B≤d_I` remain unproved.
+[real induced occurrence matchings](math/real-induced-matchings.md). `interleavingMatching` returns the actual target labels by +ε and
+`interleavingMatching_cost_le` proves cost at most ε.
 
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
 decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
@@ -189,8 +189,18 @@ empty when essential cardinalities differ, giving infinite bottleneck.
 independently sized critical grids using `barcodeRealizationIso`; its
 `matchingInterleaving` also transports individual witnesses. These module results
 retain the existing zero-left-tail, half-open strata, critical-fiber finiteness and
-shared field/carrier-universe assumptions. The reverse inequality, the ε-cost estimate for the induced matching
-and full isometry theorem remain separate results.
+shared field/carrier-universe assumptions.
+`FiniteConstructible.bottleneck_le_distance` proves the opposite inequality
+by bounding every finite interleaving parameter before taking its infimum.
+`bottleneck_eq_distance` gives extended-distance equality; `interleaving_iff_matching`
+gives the witness equivalence at every finite ε, including zero.
+`distance_eq_top_iff_essential_card_ne` characterizes infinity by unequal
+essential multiplicities. These results allow different finite grids, zero left
+tails, half-open strata and nonzero constant final tails. They require a field,
+original critical-fiber finite dimensionality and the existing shared field/carrier
+universe. No optimal matching or interleaving at the distance is assumed. See
+[finite-constructible isometry](math/constructible-isometry.md); general infinite
+or q-tame modules and arbitrary-ring isometry remain outside this scope.
 
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.

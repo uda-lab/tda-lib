@@ -112,8 +112,9 @@ metadata are in [BL15-v4](references.md#BL15-v4).
 
 The [real induced matching](real-induced-matchings.md) constructs a matching
 into the actual shifted target, with exact `2ε` endpoint and unmatched-length
-bounds and a total essential equivalence. Applying the +ε target inverse,
-proving the ε pair/diagonal cost bounds and taking the interleaving-distance
-infimum remain the steps toward `d_B≤d_I`. The shift-specific construction
-above establishes its own complete matching and cost bound. General infinite
+bounds and a total essential equivalence. The
+[isometry construction](constructible-isometry.md) applies the +ε target
+inverse, proves the ε pair/diagonal cost bounds and takes the distance infimum
+to obtain `d_B=d_I` for finite-constructible modules. The shift-specific
+construction above establishes its own complete matching and cost bound. General infinite
 decomposition and the source's omitted duality proof are outside its scope.
