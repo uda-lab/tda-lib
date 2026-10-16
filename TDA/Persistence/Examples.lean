@@ -2,6 +2,7 @@
 import TDA.Persistence.ConstructibleExamples
 import TDA.Persistence.ConstructibleBarcodeExamples
 import TDA.Persistence.RealInterleavingExamples
+import TDA.Persistence.RealInterleavingShortnessExamples
 import TDA.Persistence.RealInterleavingDistanceExamples
 import TDA.Persistence.MatchingInterleavingExamples
 import TDA.Persistence.MatchingInterleavingDistanceExamples

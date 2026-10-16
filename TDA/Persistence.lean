@@ -2,6 +2,7 @@
 import TDA.Persistence.Basic
 import TDA.Persistence.RealInterleaving
 import TDA.Persistence.RealInterleavingLaws
+import TDA.Persistence.RealInterleavingShortness
 import TDA.Persistence.RealInterleavingDistance
 import TDA.Persistence.RealIntervalInterleaving
 import TDA.Persistence.MatchingInterleaving

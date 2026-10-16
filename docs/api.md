@@ -127,6 +127,12 @@ with zero is equivalent to a zero double-shift structure map. Its interval examp
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
 for the finite nonnegative parameters and witness equations.
 
+`RealInterleaving.kernel_transition_eq_zero` and `cokernel_transition_eq_zero`
+prove that either comparison morphism has actual categorical kernel and cokernel
+with zero `2ε`-transition, over any ring without dimension assumptions. See
+[real interleaving defect shortness](math/real-interleaving-shortness.md)
+for the naturality proof, the sharp threshold example and the remaining finite-grid bridge.
+
 `RealInterleaving.mono`, `trans` and `congr` enlarge parameters, add parameters
 under composition, and transport both modules along natural isomorphisms.
 `realInterleavingDistance` takes the ENNReal infimum of finite witness parameters.
