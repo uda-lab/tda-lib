@@ -329,7 +329,10 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3–4.4:
   here `η` cancels exactly and the pointwise equation `p ∘ L = R` of the first projection closes
   the square, with no homotopy.
 
-Not claimed here: the geometric interleavings of Definition 4.36 and their distance; composition
+The geometric interleavings of Definition 4.36 and their distance are in
+[reeb-geometric-interleaving.md](reeb-geometric-interleaving.md).
+
+Not claimed here: composition
 coherences of geometric smoothing and the semigroup isomorphisms `U_{ε₁+ε₂} ≃ U_{ε₁}U_{ε₂}` of
 Observation 4.33, which are proved independently in
 [reeb-quotient-thickening-absorption.md](reeb-quotient-thickening-absorption.md) (the corresponding statement `T_ε T_δ ≅ T_{ε+δ}` for product thickening is false
@@ -337,7 +340,7 @@ in general: a point thickens to a rectangle on one side and to an interval on th
 addition map `T_ε T_δ → T_(ε+δ)`, its lax coherence and a machine-checked one-point
 non-isomorphism are in `reeb-geometric-thickening-addition.md`, and the natural isomorphism
 `ℛ T_ε T_δ ≅ U_(ε+δ)` induced by the addition map on graph objects is in
-`reeb-quotient-thickening-addition.md`); any new
+`reeb-quotient-thickening-addition.md`); any other new
 distance on ℝ-graphs or on constructible cosheaves; ordered-space or Reeb-ordering results; the
 general identification of the fibers of `U_ε f` and of its vertex set after Definition 4.30.
 
