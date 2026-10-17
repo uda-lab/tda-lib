@@ -93,7 +93,8 @@ theorem geometricInterleavingDistance_mid_smoothing (ε : ℝ≥0) :
 
 /-! ### G3: singleton graphs -/
 
-/-- A singleton-to-singleton thickening map sends height `a` to height `b` with offset `a - b`. -/
+/-- The geometric `ε`-interleaving of the singleton graphs at heights `a` and `b`, for
+`|a - b| ≤ ε`: each vertex goes to the point of the other smoothed singleton at the matching height. -/
 def pointInterleaving {a b : ℝ} {ε : ℝ≥0} (h : |a - b| ≤ ε) :
     GeometricInterleaving ε (singletonGraph a) (singletonGraph b) := by
   have h' : |b - a| ≤ ε := by simpa [abs_sub_comm] using h

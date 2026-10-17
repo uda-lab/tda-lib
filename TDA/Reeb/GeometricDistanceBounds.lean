@@ -293,7 +293,8 @@ def componentsTopEquiv (i : GeometricInterleaving ε A B) :
 
 end GeometricInterleaving
 
-/-- Isomorphic top components obstruct every geometric interleaving and force infinite distance. -/
+/-- If the top component types of two graph objects admit no bijection, there is no geometric
+interleaving between them, so their geometric interleaving distance is infinite. -/
 theorem geometricInterleavingDistance_eq_top_of_isEmpty_equiv {A B : RGraphCat}
     (h : IsEmpty ((cosheafFunctor.obj A).obj.obj ⊤ ≃ (cosheafFunctor.obj B).obj.obj ⊤)) :
     geometricInterleavingDistance A B = ⊤ := by
