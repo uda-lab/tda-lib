@@ -562,10 +562,9 @@ These are elementary library results, not attributed to a source.
 
 Constructibility of the precosheaf at a covering list, the cosheaf isomorphism
 with the realized data, and the Reeb quotient of the realization are not
-proved. No geometric realization of either
-Mapper construction, no compatibility with refinement of critical lists, no
-refinement tower of height-separating covers and no approximation statement is
-proved.
+proved. No geometric realization of either Mapper construction, no refinement
+tower of height-separating covers and no approximation statement is proved;
+refinement of covering critical lists is treated in the last subsection.
 
 ### Closed level sets of graph-PL height
 
@@ -647,5 +646,50 @@ an isomorphism whenever the finite graph-PL height is bounded in `[m, M]` and
 These results compare the MultiNerve Mapper with finite Reeb data at
 member-adapted levels. The MultiNerve terminology is used in the sense of
 CO16-v3 Definitions 3.2 and 3.3 as context; the comparison itself is a
-library result. No realization, 1-skeleton or graph packaging, refinement to
-the canonical list, or ordinary Mapper statement is made here.
+library result. The comparison with the canonical list is in the next
+subsection; no 1-skeleton or graph packaging or ordinary Mapper statement is
+made here.
+
+### Refinement of graph-PL finite Reeb data
+
+Let `S : CriticalValues n` and `T : CriticalValues m`, and suppose that
+`CoversVertexHeights S h` and
+`hST : Set.range S.value ⊆ Set.range T.value`. The graph-PL finite Reeb data
+over `T` are isomorphic to the fibre-based refinement of the data over `S`:
+`graphPLRefineIso : graphPLReebData G h T ≅
+RGraph.refineData hST (graphPLReebData G h S)`. At an old level, its vertex
+component transports the level graph along the equality of heights and then
+uses the inverse of `refineVEquivOld`; at an inserted level in `S.K e`, the
+level graph is empty and its crossing-edge summand is exactly the set of edges
+spanning the surrounding `S`-gap, followed by the inverse of `refineVEquiv`.
+On a refined gap, the component is the identity on spanning edges followed by
+the inverse of `refineEEquiv`. Exterior levels and gaps are empty on both
+sides. These formulas are recorded by `graphPLRefineHom_v_old`,
+`graphPLRefineHom_v_inserted`, and `graphPLRefineHom_e`.
+
+For `S ⊆ T ⊆ U`, the pointwise transitivity statements
+`graphPLRefineHom_trans_v` and `graphPLRefineHom_trans_e` say that the direct
+comparison from `U` to the data over `S` agrees with first applying
+`realizeHom` to the comparison from `U` to `T` and then `refineMap` from `T`
+to `S`. The categorical form of this transitivity is not stated here.
+
+The isomorphism `uniformMapperRefineIso` identifies member-adapted Mapper data
+with the refinement of graph-PL data over any coarser covering list. In
+particular, `uniformMapperCanonicalIso` identifies them with a refinement of
+the graph-PL data over the canonical list `vertexHeightLevels h`, and
+`exists_uniformMapperCanonicalIso` supplies such parameters and a covering
+list under the bounded-height and positive-radius hypotheses of the Mapper
+comparison.
+
+At the realization level,
+`graphPLRefineToOverIso` and `uniformMapperCanonicalToOverIso` give the
+corresponding isomorphisms in the real slice (universe `0`), respectively
+between the realizations over `T` and `S`, and between the adapted Mapper
+realization over `T` and the canonical graph-PL realization.
+
+The covering hypothesis is necessary. For `path3` with heights `0, 1, 2`,
+`S02` does not cover the vertex heights, its gap carries no spanning edge, and
+`path_no_refineIso` shows that there is no isomorphism over `S012`. Exterior
+behaviour is controlled as well: for the single edge with heights `0, 2` over
+`S0123`, the level `3` and the gap `[2, 3]` are empty on both sides. These are
+elementary library results, not results attributed to a source.

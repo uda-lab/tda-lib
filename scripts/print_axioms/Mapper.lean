@@ -238,6 +238,7 @@ import TDA
 #print axioms TDA.Mapper.MultiNerveRefinementExamples.doubleWideIntervals
 #print axioms TDA.Mapper.MultiNerveRefinementExamples.overlapToDoubleWide
 #print axioms TDA.Mapper.MultiNerveRefinementExamples.cycle_doubleWide_mapperMap_injective
+
 #print axioms TDA.Mapper.MultiNerveRefinementExamples.cycle_doubleWide_edgeCells_merge
 #print axioms TDA.Mapper.MultiNerveRefinementExamples.cycle_doubleWide_multiNerve_merge
 #print axioms TDA.Mapper.MultiNerveRefinementExamples.twoEdge_not_preimageIntersectionsPathConnected
@@ -654,3 +655,29 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.exists_uniformMapperCanonicalIso
 #print axioms TDA.Mapper.GraphPL.graphPLRefineToOverIso
 #print axioms TDA.Mapper.GraphPL.uniformMapperCanonicalToOverIso
+
+-- Graph-PL finite Reeb refinement fixtures (Issue #363).
+#print axioms TDA.Mapper.GraphPLRefinementExamples.S0h12
+#print axioms TDA.Mapper.GraphPLRefinementExamples.S01h23
+#print axioms TDA.Mapper.GraphPLRefinementExamples.S02_sub_S012
+#print axioms TDA.Mapper.GraphPLRefinementExamples.edge_refineIso
+#print axioms TDA.Mapper.GraphPLRefinementExamples.edge_refine_middle
+#print axioms TDA.Mapper.GraphPLRefinementExamples.edge_refine_counts
+#print axioms TDA.Mapper.GraphPLRefinementExamples.S012_sub_S0h12
+#print axioms TDA.Mapper.GraphPLRefinementExamples.c4_refineIso
+#print axioms TDA.Mapper.GraphPLRefinementExamples.c4_refine_counts
+#print axioms TDA.Mapper.GraphPLRefinementExamples.S0123_sub_S01h23
+#print axioms TDA.Mapper.GraphPLRefinementExamples.Y_refineIso
+#print axioms TDA.Mapper.GraphPLRefinementExamples.Y_refine_counts
+#print axioms TDA.Mapper.GraphPLRefinementExamples.c4_refineSelfIso
+#print axioms TDA.Mapper.GraphPLRefinementExamples.c4_refineSelf_v
+#print axioms TDA.Mapper.GraphPLRefinementExamples.S02_sub_S0123
+#print axioms TDA.Mapper.GraphPLRefinementExamples.edge_refineIso_ext
+#print axioms TDA.Mapper.GraphPLRefinementExamples.edge_ext_empty
+#print axioms TDA.Mapper.GraphPLRefinementExamples.h012
+#print axioms TDA.Mapper.GraphPLRefinementExamples.path_not_covers_S02
+#print axioms TDA.Mapper.GraphPLRefinementExamples.path_S02_E0_empty
+#print axioms TDA.Mapper.GraphPLRefinementExamples.path_no_refineIso
+#print axioms TDA.Mapper.GraphPLRefinementExamples.edge_refine_trans
+#print axioms TDA.Mapper.GraphPLRefinementExamples.edge_mapperRefineIso
+#print axioms TDA.Mapper.GraphPLRefinementExamples.edge_mapper_toOver

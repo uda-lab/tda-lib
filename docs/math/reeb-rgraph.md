@@ -84,6 +84,8 @@ them, inserting a regular level into `K e` replaces the edge set `E e` by a new 
 copies of `E e` with identity incidences, and exterior levels add empty pieces. The refined data
 are built from fibers; no separate insertion constructor is used.
 
+The graph-PL instance `graphPLRefineIso` in `TDA.Mapper.GraphPLRefinement` shows that graph-PL finite Reeb data over a refinement of a covering list are isomorphic to `refineData` of the coarser data; see [docs/math/mapper.md](mapper.md).
+
 ## Common refinement, coherence and presentation independence
 
 The sorted union of two level lists refines both (`exists_common_refinement`), so any two graph
