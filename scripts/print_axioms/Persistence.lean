@@ -1633,6 +1633,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.WeightedKernel.kernelOp_apply
 #print axioms TDA.Persistence.WeightedKernel.posSemidef_kernelOp
 #print axioms TDA.Persistence.WeightedKernel.fact_posSemidef_kernelOp
+#print axioms TDA.Persistence.WeightedKernel.Space
 #print axioms TDA.Persistence.WeightedKernel.featureAt
 #print axioms TDA.Persistence.WeightedKernel.featureAt_apply
 #print axioms TDA.Persistence.WeightedKernel.inner_featureAt
