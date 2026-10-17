@@ -106,3 +106,5 @@ import TDA.Persistence.FinitePMatchingCostLaws
 import TDA.Persistence.FinitePBoundaryTransportLaws
 import TDA.Persistence.ArctanWeight
 import TDA.Persistence.RipsWeightedKernel
+import TDA.Persistence.FinitePMatchingCostBottleneck
+import TDA.Persistence.FinitePFilterStability
