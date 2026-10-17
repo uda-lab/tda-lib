@@ -552,3 +552,10 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.spanEdge_overlap_iff
 #print axioms TDA.Mapper.GraphPL.uniformMapperEdgeEquiv
 #print axioms TDA.Mapper.GraphPL.uniformMapperEdgeEquiv_symm_apply
+#print axioms TDA.Mapper.GraphPL.uniformMapperVertexEquiv_left
+#print axioms TDA.Mapper.GraphPL.uniformMapperVertexEquiv_right
+#print axioms TDA.Mapper.GraphPL.uniformMapperHom
+#print axioms TDA.Mapper.GraphPL.uniformMapperHom_v
+#print axioms TDA.Mapper.GraphPL.uniformMapperHom_e
+#print axioms TDA.Mapper.GraphPL.uniformMapperIso
+#print axioms TDA.Mapper.GraphPL.exists_uniformMapperIso

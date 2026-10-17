@@ -772,3 +772,394 @@ theorem uniformMapperEdgeEquiv_symm_apply [Finite V] (T : CriticalValues n)
 end
 
 end TDA.Mapper.GraphPL
+
+namespace TDA.Mapper.GraphPL
+
+open Set SimpleGraph CategoryTheory
+open TDA.Reeb TDA.Reeb.OpenInterval TDA.Reeb.GraphPL TDA.Reeb.GraphRealization
+
+noncomputable section
+
+variable {V : Type u} (G : SimpleGraph V) (h : V → ℝ) {a r g : ℝ} {n : ℕ}
+
+/-! ## Faces and endpoint maps -/
+
+private theorem uniformMapperEdgeEquiv_active [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) (e : Fin n)
+    (y : SpanEdge G h (T.value e.castSucc) (T.value e.succ)) :
+    EdgeActive G h
+      (uniformCover a r g (n + 1) e.castSucc ⊓
+        uniformCover a r g (n + 1) e.succ) y.1 := by
+  have hkl : (e.castSucc : ℕ) + 1 = e.succ := by simp
+  let p : ℝ := a + (e.succ : ℕ) * (r - g)
+  let q : ℝ := p + g
+  have hK : ∀ v, h v ∉ ioo p q := by
+    intro v hv
+    apply (hT.heightSeparating hcov).2 e.castSucc e.succ hkl v
+    rw [uniformCover_inf_of_succ hgr hkl]
+    exact hv
+  have hpq : p < q := by linarith
+  have hyspan : EdgeSpans G h p q y.1 :=
+    ((spanEdge_overlap_iff G h T hT hcov hgr e y.1).2 y.2)
+  have hyactive : EdgeActive G h (ioo p q) y.1 :=
+    ((activeEdgeEquivSpans (G := G) (h := h) hpq hK).symm
+      ⟨y.1, hyspan⟩).2
+  rw [uniformCover_inf_of_succ hgr hkl]
+  exact hyactive
+
+private theorem uniformMapperVertexEquiv_cell_inr [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (k : Fin (n + 1))
+    (x : {e : G.edgeSet //
+      EdgeActive G h (uniformCover a r g (n + 1) k) e})
+    (hx : (∀ v ∈ (x.1 : Sym2 V), h v ≠ T.value k) →
+      EdgeCrosses G h (T.value k) x.1) :
+    uniformMapperVertexEquiv G h T hT hcov k
+        ((vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) k).symm
+          ((cellGraph G h (uniformCover a r g (n + 1) k)).connectedComponentMk
+            (Sum.inr x))) =
+      levelEnd G h (T.value k) x.1 hx := by
+  refine (uniformMapperVertexEquiv_apply G h T hT hcov k _).trans ?_
+  rw [Equiv.apply_symm_apply]
+  by_cases hw : ∃ w ∈ (x.1 : Sym2 V), h w = T.value k
+  · obtain ⟨w, hw, hwc⟩ := hw
+    have hwK : h w ∈ uniformCover a r g (n + 1) k := by
+      rw [hwc]
+      exact (hT k k).2 rfl
+    rw [cellComponentsEquivSum_inr_of_mem G h
+      (uniformCover a r g (n + 1) k) x (w := ⟨w, hwK⟩) hw,
+      levelEnd_of_mem G h hx hw hwc]
+    rfl
+  · replace hw : ∀ w ∈ (x.1 : Sym2 V), h w ≠ T.value k :=
+      fun w hw' hwc => hw ⟨w, hw', hwc⟩
+    have hunc : ∀ v ∈ (x.1 : Sym2 V),
+        h v ∉ uniformCover a r g (n + 1) k := fun v hv hvK =>
+      hw v hv (show v ∈ {v | h v = T.value k} from (hT.preimage_eq hcov k) ▸ hvK)
+    rw [cellComponentsEquivSum_inr_uncovered G h
+      (uniformCover a r g (n + 1) k) ⟨x.1, x.2, hunc⟩,
+      levelEnd_of_forall_ne G h hx hw]
+    rfl
+
+private theorem uniformMapperVertexEquiv_face_component_left [Finite V]
+    (T : CriticalValues n) (hT : LevelsAdapted T a r g)
+    (hcov : CoversVertexHeights T h) (hg : 0 < g) (hgr : g ≤ r) (e : Fin n)
+    (y : SpanEdge G h (T.value e.castSucc) (T.value e.succ))
+    (hy : EdgeActive G h
+      (uniformCover a r g (n + 1) e.castSucc ⊓
+        uniformCover a r g (n + 1) e.succ) y.1) :
+    vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) e.castSucc
+        (labelFace (plHeight G h)
+          (fun i => (uniformCover a r g (n + 1) i : Set ℝ))
+          ((uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm y)
+          e.castSucc (Finset.mem_insert_self _ _)) =
+      (cellGraph G h (uniformCover a r g (n + 1) e.castSucc)).connectedComponentMk
+        (Sum.inr ⟨y.1, hy.mono inf_le_left⟩) := by
+  let c : (uniformMapperData G h a r g n).E e :=
+    (uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm y
+  have hraw (z : ZerothHomotopy
+      (plHeight G h ⁻¹'
+        ((uniformCover a r g (n + 1) e.castSucc : Set ℝ) ∩
+          (uniformCover a r g (n + 1) e.succ : Set ℝ)))) :
+      TDA.Topology.componentMap
+          (TDA.Topology.preimageSetInclusion (ContinuousMap.id (Realization G))
+            (Set.preimage_mono (f := plHeight G h) (Set.inter_subset_left :
+              (uniformCover a r g (n + 1) e.castSucc : Set ℝ) ∩
+                (uniformCover a r g (n + 1) e.succ : Set ℝ) ⊆
+              (uniformCover a r g (n + 1) e.castSucc : Set ℝ)))) z =
+        TDA.Reeb.componentMap
+          (preimageInclusion (plHeight G h)
+            (toOpens_le_iff.2 (inf_le_left :
+              uniformCover a r g (n + 1) e.castSucc ⊓
+                uniformCover a r g (n + 1) e.succ ≤
+              uniformCover a r g (n + 1) e.castSucc)))
+          (zerothHomotopySetCongr
+            (plHeight_preimage_inter G h
+              (uniformCover a r g (n + 1) e.castSucc)
+              (uniformCover a r g (n + 1) e.succ)) z) := by
+    induction z using ZerothHomotopy.rec with
+    | mk x => rfl
+  have hcomponent (z : ZerothHomotopy
+      (plHeight G h ⁻¹'
+        ((uniformCover a r g (n + 1) e.castSucc : Set ℝ) ∩
+          (uniformCover a r g (n + 1) e.succ : Set ℝ)))) :
+      preimageComponentsEquiv G h
+          (uniformCover a r g (n + 1) e.castSucc)
+          (TDA.Topology.componentMap
+            (TDA.Topology.preimageSetInclusion (ContinuousMap.id (Realization G))
+              (Set.preimage_mono (f := plHeight G h) (Set.inter_subset_left :
+                (uniformCover a r g (n + 1) e.castSucc : Set ℝ) ∩
+                  (uniformCover a r g (n + 1) e.succ : Set ℝ) ⊆
+                (uniformCover a r g (n + 1) e.castSucc : Set ℝ)))) z) =
+        (preimageComponentsEquiv G h
+          (uniformCover a r g (n + 1) e.castSucc ⊓
+            uniformCover a r g (n + 1) e.succ)
+          (zerothHomotopySetCongr
+            (plHeight_preimage_inter G h
+              (uniformCover a r g (n + 1) e.castSucc)
+              (uniformCover a r g (n + 1) e.succ)) z)).map
+          (cellInclusion G h (inf_le_left :
+            uniformCover a r g (n + 1) e.castSucc ⊓
+              uniformCover a r g (n + 1) e.succ ≤
+            uniformCover a r g (n + 1) e.castSucc)) := by
+    erw [hraw z]
+    exact preimageComponentsEquiv_componentMap G h
+      (inf_le_left :
+        uniformCover a r g (n + 1) e.castSucc ⊓
+          uniformCover a r g (n + 1) e.succ ≤
+        uniformCover a r g (n + 1) e.castSucc) _
+  have hedge :
+      (preimageComponentsEquiv G h
+        (uniformCover a r g (n + 1) e.castSucc ⊓
+          uniformCover a r g (n + 1) e.succ)
+        (zerothHomotopySetCongr
+          (plHeight_preimage_inter G h
+            (uniformCover a r g (n + 1) e.castSucc)
+            (uniformCover a r g (n + 1) e.succ))
+          (edgeCellsEquiv (plHeight G h)
+            (fun i => (uniformCover a r g (n + 1) i : Set ℝ))
+            e.castSucc e.succ c))) =
+      edgeCellsCellGraphEquiv G h (uniformCover a r g (n + 1))
+        e.castSucc e.succ c := rfl
+  have hvertex :
+      vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) e.castSucc
+          (labelFace (plHeight G h)
+            (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) c
+            e.castSucc (Finset.mem_insert_self _ _)) =
+        (cellGraph G h (uniformCover a r g (n + 1) e.castSucc)).connectedComponentMk
+          (Sum.inr ⟨y.1, hy.mono inf_le_left⟩) := by
+    rw [vertexCellsCellGraphEquiv, Equiv.trans_apply,
+      vertexCellsEquiv_labelFace_pair_left (plHeight G h)
+        (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) c]
+    refine (hcomponent _).trans ?_
+    rw [hedge, uniformMapperEdgeEquiv_symm_apply G h T hT hcov hg hgr e y hy]
+    rfl
+  exact hvertex
+
+private theorem uniformMapperVertexEquiv_face_component_right [Finite V]
+    (T : CriticalValues n) (hT : LevelsAdapted T a r g)
+    (hcov : CoversVertexHeights T h) (hg : 0 < g) (hgr : g ≤ r) (e : Fin n)
+    (y : SpanEdge G h (T.value e.castSucc) (T.value e.succ))
+    (hy : EdgeActive G h
+      (uniformCover a r g (n + 1) e.castSucc ⊓
+        uniformCover a r g (n + 1) e.succ) y.1) :
+    vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) e.succ
+        (labelFace (plHeight G h)
+          (fun i => (uniformCover a r g (n + 1) i : Set ℝ))
+          ((uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm y)
+          e.succ (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))) =
+      (cellGraph G h (uniformCover a r g (n + 1) e.succ)).connectedComponentMk
+        (Sum.inr ⟨y.1, hy.mono inf_le_right⟩) := by
+  let c : (uniformMapperData G h a r g n).E e :=
+    (uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm y
+  have hraw (z : ZerothHomotopy
+      (plHeight G h ⁻¹'
+        ((uniformCover a r g (n + 1) e.castSucc : Set ℝ) ∩
+          (uniformCover a r g (n + 1) e.succ : Set ℝ)))) :
+      TDA.Topology.componentMap
+          (TDA.Topology.preimageSetInclusion (ContinuousMap.id (Realization G))
+            (Set.preimage_mono (f := plHeight G h) (Set.inter_subset_right :
+              (uniformCover a r g (n + 1) e.castSucc : Set ℝ) ∩
+                (uniformCover a r g (n + 1) e.succ : Set ℝ) ⊆
+              (uniformCover a r g (n + 1) e.succ : Set ℝ)))) z =
+        TDA.Reeb.componentMap
+          (preimageInclusion (plHeight G h)
+            (toOpens_le_iff.2 (inf_le_right :
+              uniformCover a r g (n + 1) e.castSucc ⊓
+                uniformCover a r g (n + 1) e.succ ≤
+              uniformCover a r g (n + 1) e.succ)))
+          (zerothHomotopySetCongr
+            (plHeight_preimage_inter G h
+              (uniformCover a r g (n + 1) e.castSucc)
+              (uniformCover a r g (n + 1) e.succ)) z) := by
+    induction z using ZerothHomotopy.rec with
+    | mk x => rfl
+  have hcomponent (z : ZerothHomotopy
+      (plHeight G h ⁻¹'
+        ((uniformCover a r g (n + 1) e.castSucc : Set ℝ) ∩
+          (uniformCover a r g (n + 1) e.succ : Set ℝ)))) :
+      preimageComponentsEquiv G h
+          (uniformCover a r g (n + 1) e.succ)
+          (TDA.Topology.componentMap
+            (TDA.Topology.preimageSetInclusion (ContinuousMap.id (Realization G))
+              (Set.preimage_mono (f := plHeight G h) (Set.inter_subset_right :
+                (uniformCover a r g (n + 1) e.castSucc : Set ℝ) ∩
+                  (uniformCover a r g (n + 1) e.succ : Set ℝ) ⊆
+                (uniformCover a r g (n + 1) e.succ : Set ℝ)))) z) =
+        (preimageComponentsEquiv G h
+          (uniformCover a r g (n + 1) e.castSucc ⊓
+            uniformCover a r g (n + 1) e.succ)
+          (zerothHomotopySetCongr
+            (plHeight_preimage_inter G h
+              (uniformCover a r g (n + 1) e.castSucc)
+              (uniformCover a r g (n + 1) e.succ)) z)).map
+          (cellInclusion G h (inf_le_right :
+            uniformCover a r g (n + 1) e.castSucc ⊓
+              uniformCover a r g (n + 1) e.succ ≤
+            uniformCover a r g (n + 1) e.succ)) := by
+    erw [hraw z]
+    exact preimageComponentsEquiv_componentMap G h
+      (inf_le_right :
+        uniformCover a r g (n + 1) e.castSucc ⊓
+          uniformCover a r g (n + 1) e.succ ≤
+        uniformCover a r g (n + 1) e.succ) _
+  have hedge :
+      (preimageComponentsEquiv G h
+        (uniformCover a r g (n + 1) e.castSucc ⊓
+          uniformCover a r g (n + 1) e.succ)
+        (zerothHomotopySetCongr
+          (plHeight_preimage_inter G h
+            (uniformCover a r g (n + 1) e.castSucc)
+            (uniformCover a r g (n + 1) e.succ))
+          (edgeCellsEquiv (plHeight G h)
+            (fun i => (uniformCover a r g (n + 1) i : Set ℝ))
+            e.castSucc e.succ c))) =
+      edgeCellsCellGraphEquiv G h (uniformCover a r g (n + 1))
+        e.castSucc e.succ c := rfl
+  have hvertex :
+      vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) e.succ
+          (labelFace (plHeight G h)
+            (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) c e.succ
+            (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))) =
+        (cellGraph G h (uniformCover a r g (n + 1) e.succ)).connectedComponentMk
+          (Sum.inr ⟨y.1, hy.mono inf_le_right⟩) := by
+    rw [vertexCellsCellGraphEquiv, Equiv.trans_apply,
+      vertexCellsEquiv_labelFace_pair_right (plHeight G h)
+        (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) c]
+    refine (hcomponent _).trans ?_
+    rw [hedge, uniformMapperEdgeEquiv_symm_apply G h T hT hcov hg hgr e y hy]
+    rfl
+  exact hvertex
+
+/-- The left MultiNerve face is the left endpoint of the adapted graph-PL edge. -/
+theorem uniformMapperVertexEquiv_left [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) (e : Fin n)
+    (c : (uniformMapperData G h a r g n).E e) :
+    uniformMapperVertexEquiv G h T hT hcov e.castSucc
+        ((uniformMapperData G h a r g n).left e c) =
+      (graphPLReebData G h T).left e
+        (uniformMapperEdgeEquiv G h T hT hcov hg hgr e c) := by
+  obtain ⟨y, rfl⟩ :=
+    (uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm.surjective c
+  rw [Equiv.apply_symm_apply]
+  have hy := uniformMapperEdgeEquiv_active G h T hT hcov hg hgr e y
+  have hface :
+      labelFace (plHeight G h)
+          (fun i => (uniformCover a r g (n + 1) i : Set ℝ))
+          ((uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm y)
+          e.castSucc (Finset.mem_insert_self _ _) =
+        (vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) e.castSucc).symm
+          ((cellGraph G h (uniformCover a r g (n + 1) e.castSucc)).connectedComponentMk
+            (Sum.inr ⟨y.1, hy.mono inf_le_left⟩)) := by
+    apply (vertexCellsCellGraphEquiv G h
+      (uniformCover a r g (n + 1)) e.castSucc).injective
+    rw [Equiv.apply_symm_apply]
+    exact uniformMapperVertexEquiv_face_component_left G h T hT hcov hg hgr e y hy
+  rw [uniformMapperData_left, hface,
+    uniformMapperVertexEquiv_cell_inr G h T hT hcov e.castSucc
+      ⟨y.1, hy.mono inf_le_left⟩
+      (y.2.crosses_left (T.value_castSucc_lt_succ e))]
+  rfl
+
+/-- The right MultiNerve face is the right endpoint of the adapted graph-PL edge. -/
+theorem uniformMapperVertexEquiv_right [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) (e : Fin n)
+    (c : (uniformMapperData G h a r g n).E e) :
+    uniformMapperVertexEquiv G h T hT hcov e.succ
+        ((uniformMapperData G h a r g n).right e c) =
+      (graphPLReebData G h T).right e
+        (uniformMapperEdgeEquiv G h T hT hcov hg hgr e c) := by
+  obtain ⟨y, rfl⟩ :=
+    (uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm.surjective c
+  rw [Equiv.apply_symm_apply]
+  have hy := uniformMapperEdgeEquiv_active G h T hT hcov hg hgr e y
+  have hface :
+      labelFace (plHeight G h)
+          (fun i => (uniformCover a r g (n + 1) i : Set ℝ))
+          ((uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm y)
+          e.succ (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)) =
+        (vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) e.succ).symm
+          ((cellGraph G h (uniformCover a r g (n + 1) e.succ)).connectedComponentMk
+            (Sum.inr ⟨y.1, hy.mono inf_le_right⟩)) := by
+    apply (vertexCellsCellGraphEquiv G h
+      (uniformCover a r g (n + 1)) e.succ).injective
+    rw [Equiv.apply_symm_apply]
+    exact uniformMapperVertexEquiv_face_component_right G h T hT hcov hg hgr e y hy
+  rw [uniformMapperData_right, hface,
+    uniformMapperVertexEquiv_cell_inr G h T hT hcov e.succ
+      ⟨y.1, hy.mono inf_le_right⟩
+      (y.2.crosses_right (T.value_castSucc_lt_succ e))]
+  rfl
+
+/-! ## The finite-data homomorphism and isomorphism -/
+
+/-- The adapted Mapper data map to the graph-PL finite Reeb data. -/
+def uniformMapperHom [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) :
+    (uniformMapperData G h a r g n).Hom (graphPLReebData G h T) where
+  v i := uniformMapperVertexEquiv G h T hT hcov i
+  e i := uniformMapperEdgeEquiv G h T hT hcov hg hgr i
+  left_comm i x :=
+    (uniformMapperVertexEquiv_left G h T hT hcov hg hgr i x).symm
+  right_comm i x :=
+    (uniformMapperVertexEquiv_right G h T hT hcov hg hgr i x).symm
+
+/-- The vertex component of the finite-data homomorphism is the adapted vertex equivalence. -/
+@[simp] theorem uniformMapperHom_v [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) (i : Fin (n + 1)) :
+    (uniformMapperHom G h T hT hcov hg hgr).v i =
+      uniformMapperVertexEquiv G h T hT hcov i := rfl
+
+/-- The edge component of the finite-data homomorphism is the adapted edge equivalence. -/
+@[simp] theorem uniformMapperHom_e [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) (e : Fin n) :
+    (uniformMapperHom G h T hT hcov hg hgr).e e =
+      uniformMapperEdgeEquiv G h T hT hcov hg hgr e := rfl
+
+/-- The adapted Mapper finite data are isomorphic to the graph-PL finite Reeb data. -/
+def uniformMapperIso [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) :
+    uniformMapperData G h a r g n ≅ graphPLReebData G h T where
+  hom := uniformMapperHom G h T hT hcov hg hgr
+  inv := (uniformMapperHom G h T hT hcov hg hgr).inv
+    (fun i => (uniformMapperVertexEquiv G h T hT hcov i).bijective)
+    (fun e => (uniformMapperEdgeEquiv G h T hT hcov hg hgr e).bijective)
+  hom_inv_id := (uniformMapperHom G h T hT hcov hg hgr).comp_inv _ _
+  inv_hom_id := (uniformMapperHom G h T hT hcov hg hgr).inv_comp _ _
+
+/-- Every bounded finite graph-PL height admits a member-adapted Mapper/Reeb isomorphism below
+any positive resolution, with the uniform-cover separation bound. -/
+theorem exists_uniformMapperIso [Finite V] {m M ρ : ℝ}
+    (hh : ∀ v, h v ∈ Set.Icc m M) (hρ : 0 < ρ) :
+    ∃ (a r g : ℝ) (n : ℕ) (T : CriticalValues n),
+      0 < g ∧ 2 * g ≤ r ∧ r < ρ ∧ LevelsAdapted T a r g ∧
+        CoversVertexHeights T h ∧
+          Nonempty (uniformMapperData G h a r g n ≅ graphPLReebData G h T) := by
+  obtain ⟨a, r, g, n', hg, hgr, hrρ, hn', ha₁, ha₂, hM, hsep, hcovers⟩ :=
+    heightSeparating_covers_range h hh hρ
+  obtain ⟨n, hn_eq⟩ := Nat.exists_eq_succ_of_ne_zero hn'.ne'
+  subst hn_eq
+  have hsep' : HeightSeparating h (uniformCover a r g (n + 1)) := by
+    simpa [Nat.succ_eq_add_one] using hsep
+  have hcov : ∀ v, ∃ k : Fin (n + 1),
+      h v ∈ uniformCover a r g (n + 1) k := by
+    intro v
+    obtain ⟨k, hk⟩ := hcovers G (plHeight G h (vertex G v))
+      ⟨vertex G v, rfl⟩
+    refine ⟨k, ?_⟩
+    exact hk
+  obtain ⟨T, hT, hcovT⟩ := exists_levelsAdapted (a := a) (r := r) (g := g)
+    h hg hgr hsep' hcov
+  have hgr' : g ≤ r := by linarith
+  refine ⟨a, r, g, n, T, hg, hgr, hrρ, hT, hcovT, ?_⟩
+  exact ⟨uniformMapperIso G h T hT hcovT hg hgr'⟩
+
+end
+
+end TDA.Mapper.GraphPL
