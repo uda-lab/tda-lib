@@ -9,3 +9,4 @@ import TDA.Mapper.MultiNerveRefinement
 import TDA.Mapper.UniformCover
 import TDA.Mapper.MultiNerveGraphPL
 import TDA.Mapper.UniformCoverCells
+import TDA.Mapper.GraphPLReebData
