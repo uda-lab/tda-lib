@@ -99,6 +99,10 @@ the matching type empty and rules out every finite interleaving. Equal finite
 essential cardinalities admit a finite-cost matching. Empty diagrams have
 an actual empty matching; their zero modules have zero distance.
 
+The scaling consequence `bottleneck_moduleDiagram_scale` is summarized in the
+[positive-scaling section](real-interleavings.md#positive-scaling) of the real
+interleaving note.
+
 ## Concrete controls and limits
 
 Actual self-interleavings are consumed across a two-point critical grid and a
