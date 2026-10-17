@@ -138,6 +138,50 @@ exactly when every raw charge is zero. The existing first-order zero-cost
 characterization then supplies the value-preserving equivalence. Conversely,
 reindexing a self-matching proves zero cost for such an equivalence.
 
+## Finite-part perturbation bounds
+
+Let D and E be library diagrams and let N be the sum of their finite occurrence
+counts. Write B for their full bottleneck distance, mₚᶠⁱⁿ for the powered matching
+minimum on their finite occurrence coordinate functions, and dₚᶠⁱⁿ for its root.
+This root is also the actual rooted finite-real-plan optimum by the equality above. Essential occurrences
+are excluded from this transport cost and from N, even if D and E contain them.
+Assume B is finite. For real p≥1,
+
+mₚᶠⁱⁿ ≤ N B^p,    dₚᶠⁱⁿ ≤ N^(1/p) B.
+
+Choose an actual full matching attaining B and retain its finite partial injection.
+Each finite source contributes a pair or deletion charge at most B. Each target
+contributes zero when selected and a boundary charge at most B otherwise. Summing
+their p-th powers gives at most N B^p; the finite powered minimum is no larger than
+this candidate. This uses a bottleneck optimizer as an upper-bound witness, without
+asserting that it also minimizes the p-cost. Nonnegativity, p≠0 and real-power
+factorization give the rooted estimate, including N=0 and B=0. Equality with the
+real-plan optimum transfers this to the actual infimum over all feasible matrices.
+
+More generally, if N≤m for a natural cardinality budget m and 0≤r with B≤r, then
+
+dₚᶠⁱⁿ ≤ m^(1/p) r.
+
+A uniform family estimate requires this budget explicitly. Cardinality need not
+remain constant under perturbations: bars can reach the diagonal and disappear.
+Finiteness of B is also material. In the Lean API an extended infinite value converts
+to real zero; essential-cardinality mismatch can make B infinite while the finite-part
+transport cost is positive.
+
+For two face filters f,g on the same finite complex, let Δ be the maximum absolute
+change of their face values, with Δ=0 for an empty face set. Over the coefficient
+field and ordered-vertex assumptions of the actual degree-n sublevel diagrams,
+put D=dgm(f,n) and E=dgm(g,n), and let N(f,g,n) count their finite occurrences on both sides.
+The proved full-diagram bottleneck stability gives B≤Δ and hence
+
+dₚᶠⁱⁿ(dgm(f,n),dgm(g,n)) ≤ N(f,g,n)^(1/p) Δ.
+
+The cardinality-budget version replaces N(f,g,n) by any explicit upper bound m.
+The existing bottleneck argument allows the barcode pairing and compatible face
+order to change; no fixed pairing or order is required here. Essential bars in
+these actual diagrams still belong to the full bottleneck comparison and remain
+outside the finite-part transport quantity.
+
 ## Examples
 
 | Example | Powered/rooted calculation |
@@ -147,6 +191,8 @@ reindexing a self-matching proves zero cost for such an equivalence.
 | Two copies of (0,2) versus one copy, p=2 | Powered and rooted optimum 1, attained by half from each source and by an incidence plan |
 | (0,2) versus (3/2,7/2) | p=1 pairs, cost 3/2; p=2 deletes both, powered cost 2, strictly below the paired cost 9/4 |
 | (0,8) versus empty, p=3/2 | Powered optimum 8; rooted optimum 4 |
+| Two copies of (0,2) versus empty, any p≥1 | Powered optimum 2; rooted optimum 2^(1/p); bottleneck 1, attaining the occurrence-count factor |
+| Actual filled triangle versus its tied filter, H₁ | The finite parts have one bar and zero bars; their transport is bounded by the face perturbation, including p=2 and p=3/2 |
 | Four middle roles with unmatched endpoints, p=2 | Candidate powers 11 and 16; composite power 19; √19 ≤ √11+4 |
 | Singletons (0,10), (1,11), (2,12), every p≥1 | Consecutive rooted optima 1 and 1; direct rooted optimum 2; sharp triangle at p=2 and p=3/2 |
 
@@ -165,6 +211,9 @@ corresponding bounds and formulas. The example module uses these actual definiti
 `FinitePMatchingCostLaws` supplies powered-cost reversal, rooted candidate composition,
 the rooted distance laws and positive-lifetime separation.
 `FinitePBoundaryTransportLaws` transfers those laws to the actual real-plan optimum.
+`FinitePMatchingCostBottleneck` supplies the powered and rooted occurrence-count
+bounds, finite radius and cardinality-budget forms. `FinitePFilterStability` applies
+them to the finite parts of actual sublevel diagrams.
 
 [Figalli–Gigli](references.md#FG10) retains priority for boundary-reservoir transport;
 its original bounded-domain quadratic Euclidean setting is distinct from this model.
@@ -181,6 +230,15 @@ Minkowski; FG Lemma 2.1 and Theorem 2.2 give the original quadratic antecedent.
 The finite occurrence allocation above is checked library reasoning corresponding
 to that mechanism. It uses pinned mathlib's `Real.Lp_add_le`, not a measure-gluing
 assumption or a triangle law for the raw augmented blocks.
+
+The perturbation estimates are checked finite sum-to-maximum reasoning from
+DL formulas (1)/(2) and the existing bottleneck attainment and stability theorems.
+DL Remarks 1.1/1.2 distinguish unstable point counts and the separate essential term.
+The formula conventions are compared on finite diagrams. Allowing essential points
+on the right of the bound is a one-sided library statement about the finite projection,
+not an identification of full essential p-transport conventions.
+The arbitrary-real-pair supporting algebra is a library extension; no all-measure
+stability theorem is inferred from this count estimate.
 
 The proved equality concerns finite real reservoir matrices, not all Borel/Radon
 couplings. Essential or infinite bars, arbitrary weighted inputs, completeness and

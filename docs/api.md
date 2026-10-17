@@ -369,7 +369,12 @@ matching/transport optima agree and are attained; empty formulas, occurrence rei
 and p=1 compatibility are included. `FinitePMatchingCostLaws` proves sharp rooted
 composition, self cost, symmetry, triangle inequality and positive-lifetime separation
 by value-preserving occurrence equivalences. `FinitePBoundaryTransportLaws` transfers
-these laws to the real-plan optimum. All-Radon-coupling equality and quotient/metric
+these laws to the real-plan optimum. `FinitePMatchingCostBottleneck` bounds finite-part
+real-p matching and actual boundary transport by N^(1/p) times a finite full bottleneck,
+where N counts both finite occurrence sets. Explicit radius and cardinality-budget forms
+are included. `FinitePFilterStability` applies these bounds to actual sublevel diagrams
+using face-value perturbations, without a fixed pairing; essential bars remain outside
+the finite-part transport cost. All-Radon-coupling equality and quotient/metric
 instances remain outside this API. See [real-exponent finite transport](math/finite-p-boundary-transport.md).
 
 ## Gaussian persistence images
