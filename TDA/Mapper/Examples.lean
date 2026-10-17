@@ -10,3 +10,4 @@ import TDA.Mapper.UniformCoverCellsExamples
 import TDA.Mapper.GraphPLReebDataExamples
 import TDA.Mapper.UniformMapperReebDataExamples
 import TDA.Mapper.GraphPLLevelSetsExamples
+import TDA.Mapper.GraphPLRefinementExamples

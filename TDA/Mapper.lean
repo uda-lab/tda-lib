@@ -12,3 +12,4 @@ import TDA.Mapper.UniformCoverCells
 import TDA.Mapper.GraphPLReebData
 import TDA.Mapper.GraphPLLevelSets
 import TDA.Mapper.UniformMapperReebData
+import TDA.Mapper.GraphPLRefinement
