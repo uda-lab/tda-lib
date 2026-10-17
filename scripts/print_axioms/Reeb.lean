@@ -2802,3 +2802,18 @@ import TDA
 #print axioms TDA.Reeb.RGraph.geometricSmoothingComparisonIso_compIso
 #print axioms TDA.Reeb.RGraph.constructibleShiftMap_comp
 #print axioms TDA.Reeb.RGraph.cosheafShiftMap_comp_of_constructible
+-- TDA.Reeb.ConstructibleSmoothingLiftExamples
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.compIso_parallel_component
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.compIso_parallel_inv_hom
+#print axioms
+  TDA.Reeb.Examples.ConstructibleSmoothingLift.parallelSingleInterleaving_constructible_phi_psi
+#print axioms
+  TDA.Reeb.Examples.ConstructibleSmoothingLift.parallelSingleInterleaving_constructible_psi_phi
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.one_le_two_nn
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.constructibleSmoothingMap_pinch_not_isIso
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.constructibleSmoothingMap_pinch_refl
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.compIso_zero_left_singleGraph
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.compIso_zero_left_singleGraph_component
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.universe_one_compIso_component
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.universe_one_map_component
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.commIso_parallel_component

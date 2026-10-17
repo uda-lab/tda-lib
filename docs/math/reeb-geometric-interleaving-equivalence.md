@@ -33,6 +33,29 @@ its forward map, by definition. Its inverse sends `f` to the preimage under `C` 
 Consequently `cosheafShiftMap` is injective, and every natural transformation
 `(C A).obj ⟶ S_ε (C B).obj` is a shifted map.
 
+The shifted map also has a direct formulation in `ConstructibleCosheafCat`:
+
+```lean
+constructibleShiftMap φ : C A ⟶ (constructibleSmoothing ε).obj (C B)      (φ : A ⟶ U_ε B)
+```
+
+Its underlying map is `cosheafShiftMap φ` (`constructibleShiftMap_hom`), and the geometric unit
+maps to the constructible smoothing unit (`constructibleShiftMap_unit`). The `μ` square is
+available componentwise as `cosheafFunctor_map_geometricSmoothingCompIso_hom_app_comp` and as
+the natural-transformation equation `geometricSmoothingComparisonIso_compIso`. In particular, the
+three-object composite law is an equation in `ConstructibleCosheafCat`, with no inclusion functor
+or underlying-map projection:
+
+```lean
+constructibleShiftMap (φ ≫ (geometricSmoothing ε).map ψ ≫
+    (geometricSmoothingCompIso ε δ).hom.app D) =
+  constructibleShiftMap φ ≫ (constructibleSmoothing ε).map (constructibleShiftMap ψ) ≫
+    (constructibleSmoothingCompIso ε δ).hom.app (cosheafFunctor.obj D)
+```
+
+Taking underlying maps recovers `cosheafShiftMap_comp'` through
+`cosheafShiftMap_comp_of_constructible`.
+
 The composite law of `reeb-geometric-interleaving.md` returns to the source object. Its proof never
 uses that, and it holds in the three-object form
 
@@ -118,6 +141,9 @@ function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installe
   invariance under the subdivision isomorphism.
 * **Zero distance.** The two presentations of the edge have witnesses at every positive parameter;
   the edge and its midpoint do not.
+* **Lifted triangle (F2).** The `1/4` parallel-single interleaving satisfies both triangles after
+  applying `constructibleShiftMap`, `constructibleSmoothing` and the lifted composition
+  isomorphism, once at the parallel graph and once at the single graph.
 
 ## Enlargement, monotonicity and self-smoothing
 
@@ -165,9 +191,8 @@ composition, the triangle inequality, isomorphism invariance and the zero-distan
 and the unit and composite laws of the shifted map. None is attributed to a numbered source result.
 Essential surjectivity of `C` is not used, so no critical-value scope is inherited.
 
-Not claimed here: a lift of `smoothingCompIso` to constructible cosheaves; absorption beyond (H2);
-a comparison with Mapper; interleavings of precosheaves that do not come from graph objects; exact
-values of `d_geo(A, U_ε A)`.
+Not claimed here: absorption beyond (H2); a comparison with Mapper; interleavings of precosheaves
+that do not come from graph objects; exact values of `d_geo(A, U_ε A)`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition
 4.36](https://arxiv.org/html/1501.04147v1).
