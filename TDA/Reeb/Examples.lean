@@ -9,6 +9,7 @@ import TDA.Reeb.ConstructibleQuotientExamples
 import TDA.Reeb.ConstructibleRepresentationExamples
 import TDA.Reeb.ConstructibleSmoothingExamples
 import TDA.Reeb.ConstructibleSpaceExamples
+import TDA.Reeb.GeometricThickeningAdditionExamples
 import TDA.Reeb.GeometricThickeningExamples
 import TDA.Reeb.GraphCycleObstructionExamples
 import TDA.Reeb.GraphPLComponentsExamples
