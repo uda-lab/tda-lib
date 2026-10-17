@@ -529,3 +529,15 @@ import TDA
 #print axioms TDA.Mapper.GraphPLReebDataExamples.missing_count
 #print axioms TDA.Mapper.GraphPLReebDataExamples.missing_no_equiv
 #print axioms TDA.Mapper.GraphPLReebDataExamples.empty_data
+#print axioms TDA.Mapper.labelFace
+#print axioms TDA.Mapper.labelFace_le
+#print axioms TDA.Mapper.eq_labelFace_of_le
+#print axioms TDA.Mapper.vertexCellsEquiv_labelFace
+#print axioms TDA.Mapper.vertexCellsEquiv_labelFace_pair_left
+#print axioms TDA.Mapper.vertexCellsEquiv_labelFace_pair_right
+#print axioms TDA.Mapper.GraphPL.LevelsAdapted
+#print axioms TDA.Mapper.GraphPL.LevelsAdapted.overlap_left_ge
+#print axioms TDA.Mapper.GraphPL.LevelsAdapted.overlap_right_le
+#print axioms TDA.Mapper.GraphPL.LevelsAdapted.heightSeparating
+#print axioms TDA.Mapper.GraphPL.LevelsAdapted.preimage_eq
+#print axioms TDA.Mapper.GraphPL.exists_levelsAdapted
