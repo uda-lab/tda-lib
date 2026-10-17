@@ -70,7 +70,7 @@ private theorem card_levelVertex {V : Type*} [Finite V] (G : SimpleGraph V) (h :
     (hk : Nat.card {e : G.edgeSet // EdgeCrosses G h c e} = k) :
     Nat.card (LevelVertex G h c) = m + k := by
   classical
-  letI := Fintype.ofFinite V
+  let _ := Fintype.ofFinite V
   rw [Nat.card_sum, hm, hk]
 
 private theorem c4_level_not_adj (c : ℝ) :

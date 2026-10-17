@@ -540,10 +540,8 @@ are the Reeb edges over gap `e`. Under these bijections, the inclusions
 gap value, so the extracted data and `graphPLReebData G h S` are isomorphic
 finite data. Neither bijection needs finiteness.
 
-The comparison is at stars, not at closed level sets. Finite data take their
-vertex values on stars, and the incidence-graph comparison is stated for open
-intervals. The closed level `{h = a i}` would need a separate labelling of
-horizontal edges inside the level and of isolated crossing points.
+The comparison above is at stars. Closed levels are treated in the subsection
+`Closed level sets of graph-PL height` below.
 
 The covering hypothesis cannot be dropped. For two isolated vertices of heights
 `0` and `2` and the single level `0`, the star is `ℝ` and has two path
@@ -563,11 +561,48 @@ data is not the path with one vertex per level. On the tree with edges
 These are elementary library results, not attributed to a source.
 
 Constructibility of the precosheaf at a covering list, the cosheaf isomorphism
-with the realized data, path components of closed level sets, and the Reeb
-quotient of the realization are not proved. No geometric realization of either
+with the realized data, and the Reeb quotient of the realization are not
+proved. No geometric realization of either
 Mapper construction, no compatibility with refinement of critical lists, no
 refinement tower of height-separating covers and no approximation statement is
 proved.
+
+### Closed level sets of graph-PL height
+
+For the piecewise-linear height on a graph realization, the closed level
+`plHeight G h ⁻¹' {c}` consists of the vertices of height `c`, the whole
+segments of horizontal edges whose two endpoints have height `c`, and one
+interior point on each edge whose endpoint heights strictly cross `c`. The
+crossing is strict, and its crossing parameter is unique; an edge with exactly
+one endpoint at `c` contributes only that endpoint.
+
+For finite `V`, there is an equivalence
+`ZerothHomotopy (ClosedLevel G h c) ≃ LevelVertex G h c`: the components of the
+graph induced on vertices of height `c`, together with the crossing edges. The equivalence
+`closedLevelComponentsEquiv` has the explicit inverse `closedLevelPoint`, which
+represents an induced component by any of its vertices and a crossing edge by
+its `crossingPoint`. A horizontal edge lies in the component of its endpoints.
+
+A level window is an open interval containing `c` and no other vertex height
+(`IsLevelWindow`), and `exists_isLevelWindow` supplies one when `V` is finite.
+For every level window, inclusion of the closed level into the window is
+bijective on path components, and its triangle with the window classification
+`levelWindowEquiv` commutes, by
+`componentMap_levelInclusion_bijective` and
+`levelWindowEquiv_comp_componentMap_levelInclusion`. Consequently, the
+vertices of `graphPLReebData G h S` at level `i` are the path components of
+`plHeight G h ⁻¹' {S.value i}` without a covering hypothesis, via
+`graphPLReebDataVEquivClosedLevel`. Under `CoversVertexHeights`, the star
+bijection factors through the level inclusion by
+`graphPLStarEquiv_comp_componentMap_levelInclusion`.
+
+The 4-cycle with heights `0, 1, 2, 1` illustrates the window condition. Its
+level `1` has two path components, represented by vertices `1` and `3`, and
+the window `(1/2, 3/2)` gives a bijective inclusion. The larger interval
+`(-1/2, 5/2)` contains the heights `0` and `2`, so it is not a level window and
+the corresponding inclusion map on components is not injective. Thus the
+window hypothesis cannot be dropped. At level `1/2` the same cycle has two
+crossing-point components and no level vertex, while level `3` is empty.
 
 ### MultiNerve Mapper as finite Reeb data
 
