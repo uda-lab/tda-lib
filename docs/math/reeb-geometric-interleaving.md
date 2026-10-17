@@ -138,8 +138,7 @@ triangle inequality for `d_geo` are in
 That document also records enlargement, monotonicity, self-smoothing and nonexpansiveness as
 library statements.
 
-Not claimed here: a comparison with Mapper; absorption beyond (H2); a lift of `smoothingCompIso`
-to constructible cosheaves.
+Not claimed here: a comparison with Mapper and absorption beyond (H2).
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition
 4.36](https://arxiv.org/html/1501.04147v1).
