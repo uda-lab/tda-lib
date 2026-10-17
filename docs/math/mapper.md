@@ -483,8 +483,8 @@ at height `0`, two at height `1` and one at height `2`, the shape of a cycle.
 This matches the Reeb graph of the 4-cycle, which is a cycle rather than one
 edge with parallel edges because the level set at `1` has two components. The
 identification of these cells with the Reeb graph is not proved here; the next
-section constructs the Reeb graph of graph-PL input and identifies it with the
-cycle.
+section constructs the finite Reeb data of graph-PL input and identifies it
+with the cycle.
 
 Crossing is strict and spanning is not. An edge with endpoint heights `0` and
 `2` spans `[0, 2]` and is the one active edge over `(0, 2)`, but it crosses
