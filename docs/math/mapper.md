@@ -404,5 +404,105 @@ the 4-cycle and on two disjoint edges. For the family `(-1/2, 1/2)`,
 `(-1/4, 3/4)`, `(0, 1)`, where `2g > r`, the attained value `1/4` of the single
 edge lies in all three members and ordinary Mapper has a face of size three.
 
-No geometric realization of either construction, comparison with Reeb graphs,
-or approximation statement is proved.
+## Height-separating uniform covers and cell classification
+
+For a connected graph with vertices `lo` and `hi` of lowest and highest height,
+the piecewise-linear height attains exactly `[h(lo), h(hi)]`: the realization is
+path-connected, so the attained range is an interval, and it contains the two
+extreme vertex heights. A finite connected graph has such vertices. Connectedness
+cannot be dropped: on two isolated vertices of heights `0` and `2` every point
+of the realization is a vertex, and the height `1` is not attained.
+
+A family `U : Fin n → OpenInterval` is height-separating for the vertex heights
+`h` when every member contains at most one vertex height and every overlap of
+consecutive members contains none. Vertex heights are used as a witness set of
+critical values, as in the `CriticalValues` interface, not as a minimal
+critical set: a vertex of degree two whose neighbours lie on both sides of it
+still counts as a height to be separated. For a finite vertex set with heights
+in `[m, M]` and every `ρ > 0` there is a height-separating uniform family with
+`0 < g`, `2g ≤ r < ρ`, `n > 0`, `m − (r − g) < a < m` and
+`M < a + n(r − g) + g`; it covers the attained range of every graph on these
+vertices. The step `s = r − g` is half of `min(ρ, δ)`, where `δ` is the smallest
+positive difference of two vertex heights, so two heights in one member, which
+differ by less than `r < δ`, are equal. The base point `a ∈ (m − s, m)` avoids
+the finitely many values `h(v) − l s`, so every left overlap end `a + l s` has
+positive distance from every vertex height; `g` is half the minimum of `s`
+and the smallest such distance, and `r = s + g`. No minimality of `n` and no canonicity of the
+parameters is claimed; later members may miss the attained range and then carry
+no cells.
+
+For every open interval `K`, the components of the incidence graph over `K`
+split as the components of the graph induced on the vertices with height in
+`K`, together with the uncovered edges: the active edges with no endpoint
+height in `K`. A vertex node and an edge node with a surviving endpoint go to
+the induced class of that endpoint, whichever surviving endpoint is used, and
+an uncovered edge node is alone in its component. No coverage, finiteness or
+decidability is assumed. Under endpoint coverage there is no uncovered edge
+and the splitting is the earlier vertex-only comparison; without surviving
+vertices it is the earlier description of components by active edges.
+
+The MultiNerve Mapper cells with label set `{i}` are the path components of
+`f⁻¹(U_i)`, for a piecewise-linear height the incidence components over `U_i`.
+Over a height-separating uniform family three cases remain, under the
+positivity conditions stated with each.
+
+* A member containing the vertex height `c` contains no other vertex height, so
+  its surviving vertices are those of height `c`. An active edge without a
+  surviving endpoint then has endpoint heights strictly on both sides of `c`:
+  it crosses the level. The vertex cells over the member are the components of
+  the graph induced on the level `{h = c}` together with the edges crossing `c`.
+* For `0 < r`, a member `(p, q)` containing no vertex height carries one vertex
+  cell for each edge whose height interval contains `[p, q]`.
+* For `0 < g ≤ r`, the overlap `(p, q) = (a + l(r − g), a + l(r − g) + g)` of
+  consecutive labels `k` and `l = k + 1` contains no vertex height, so the edge
+  cells over `{k, l}` are the edges whose height interval contains `[p, q]`.
+
+For `2g ≤ r`, labels at distance at least two carry no edge cell. Height
+separation alone does not give this: for the single edge of heights `0` and
+`2`, the members `(-1/4, 5/4)`, `(1/4, 7/4)`, `(3/4, 9/4)` with `g = 1` are
+height-separating, while the first and the third meet in `(3/4, 5/4)` and
+carry an edge cell.
+
+These are the vertex and edge data of a Reeb graph in the combinatorial form
+used for finite graph-PL input: components of vertex-height levels together
+with crossing edges, and edges spanning the gaps between consecutive heights.
+DMP15-v1 (Notation 2.7 and 3.11) describes a Reeb graph by vertices over
+critical values and edges over the gaps between them; this is context, and no
+statement here is attributed to it. The crossing summand is genuine: on
+the tree with edges `0 — 2`, `1 — 2`, `2 — 3` and heights `0, 1, 2, 3`, under the
+family with members `(k − 1/2, k + 3/4)` the member around height `1` carries
+two vertex cells, the vertex `1` and the edge `0 — 2` passing through that
+level. The consecutive pairs carry `1, 2, 1` edge cells.
+
+On the 4-cycle with heights `0, 1, 2, 1` and members `(-1/8, 7/8)`,
+`(1/2, 3/2)`, `(9/8, 17/8)`, the vertex cells over the three labels number
+`1, 2, 1`: the vertices `1` and `3` of the level `1` are not adjacent, and no
+edge crosses height `1`. Each consecutive pair carries two edge cells, spanned
+by `0 — 1`, `0 — 3` and by `1 — 2`, `2 — 3`. Read informally, there is one cell
+at height `0`, two at height `1` and one at height `2`, the shape of a cycle.
+This matches the Reeb graph of the 4-cycle, which is a cycle rather than one
+edge with parallel edges because the level set at `1` has two components. The
+identification is not proved: neither the incidence of these cells nor a Reeb
+graph of graph-PL input is constructed.
+
+Crossing is strict and spanning is not. An edge with endpoint heights `0` and
+`2` spans `[0, 2]` and is the one active edge over `(0, 2)`, but it crosses
+neither `0` nor `2`; at a level, an endpoint at the level height survives
+instead.
+
+Each hypothesis has a failure mode. The single member `(-1/2, 5/2)` contains
+both heights `0` and `2` of one edge, so the family is not height-separating;
+the splitting still gives one vertex cell, one induced component and no
+uncovered edge. For the members `(-1/4, 5/4)`, `(3/4, 9/4)`, `(7/4, 13/4)` on
+the 4-cycle, the overlap `(3/4, 5/4)` contains the height `1`; there are two
+edge cells over the first pair, the induced components `{1}` and `{3}`, while no
+edge spans `[3/4, 5/4]`, so the spanning description fails without its
+hypothesis. Connectedness of the graph is needed for the attained range, as
+shown above.
+
+The face maps from edge cells to vertex cells, the finite Reeb graph of
+graph-PL input as `FiniteReebData` and its isomorphism with the MultiNerve
+Mapper of a height-separating uniform family are not proved. No geometric
+realization of either Mapper construction, no level set of the realization as
+a closed subspace, no refinement tower of height-separating covers and no
+approximation statement is proved.
