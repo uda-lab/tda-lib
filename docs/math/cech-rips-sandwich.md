@@ -101,4 +101,6 @@ radii; empty negative stages are the library convention.
 The source states no Rips/Čech inclusion. The sandwich, the value bounds and the
 proper-space attainment are library extensions. Persistence-level interleavings, homology
 of Čech complexes, the Nerve Lemma, open-ball variants and the sharp Euclidean constant
-are outside this construction.
+are outside this construction. The
+[log-scale Čech–Rips interleaving](cech-rips-interleaving.md) lifts the value sandwich to
+homology modules.

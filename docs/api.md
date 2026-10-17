@@ -274,6 +274,20 @@ form for a label metric agreeing with the ambient distances. The radius filter o
 complex satisfies rips/2 ≤ čech ≤ rips. Its sublevels contain the Čech complexes, with
 equality when X is proper. See [the conventions, proofs and fixtures](math/cech-rips-sandwich.md).
 
+`TDA.Persistence.SublevelInterleaving` turns pointwise inclusions of simplicial filtrations
+into morphisms of homology persistence modules, `inclusionHom`, whose components are the
+actual homology inclusions. Real filtrations with F t ⊆ G (t + ε) and G t ⊆ F (t + ε)
+give an actual `RealInterleaving ε`, `inclusionInterleaving`, with both double-shift
+equations proved. For filters within ε face by face, `sublevelInterleaving` interleaves the
+sublevel modules, and `realInterleavingDistance_sublevel_le_faceSupDifference` bounds their
+distance by the largest face difference. `TDA.Persistence.CechRipsInterleaving` reindexes
+along exp: a sandwich g ≤ f ≤ c · g with 1 ≤ c gives a `logParam c`-interleaving of the
+log-scale modules, and `Cech.ripsCechLogInterleaving` is the log 2 case for Rips and Čech,
+over every ring and in every pseudometric ambient. At radius level, `Cech.ripsToCech` and
+`Cech.cechToRips` factor the doublings Rips_r ⊆ Rips_{2r} and Čech_r ⊆ Čech_{2r} for every
+real r; these are structure maps only for r ≥ 0. No diagram or bottleneck statement is
+made. See [the proofs, fixtures and scope](math/cech-rips-interleaving.md).
+
 `TDA.Filtration.CechDisplacement` compares two labelled families p, q : V → X in one
 ambient space label by label. Moving the points of a face by at most ε changes its Čech
 value by at most ε; the closed-ball radius estimate also needs ε ≥ 0 for the empty set.

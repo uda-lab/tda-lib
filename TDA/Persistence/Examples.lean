@@ -69,3 +69,5 @@ import TDA.Persistence.RealInducedMatchingExamples
 import TDA.Persistence.WeightedKernelExamples
 import TDA.Persistence.FiniteBoundaryTransportExamples
 import TDA.Persistence.FinitePBoundaryTransportExamples
+import TDA.Persistence.SublevelInterleavingExamples
+import TDA.Persistence.CechRipsInterleavingExamples
