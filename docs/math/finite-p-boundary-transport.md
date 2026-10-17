@@ -106,20 +106,21 @@ separation statement. No metric-space instance on raw presentations is supplied.
 The self, symmetry and triangle algebra also holds for arbitrary real pairs.
 
 Reversal exchanges the two unmatched parts and preserves the powered paired sum.
-For the triangle inequality, compose M from x to y with N from y to z. Let s_M(i)
+For the triangle inequality, follow M from x to y by N from y to z. Let s_M(i)
 be M's pair-or-deletion charge at source i, and let t_M(j) be zero at a selected
 target j and δ(y(j)) at an unmatched target. Define s_N and t_N analogously.
-Place three nonnegative charge families A, B and C on I ⊕ J ⊕ K:
+Use the disjoint union of source, middle and target labels, written I ⊕ J ⊕ K,
+as a common index for three nonnegative charge families A, B and C:
 
 | Index | A | B | C |
 | --- | --- | --- | --- |
-| Source i | s_M(i) | s_N(j) if M(i)=j, otherwise 0 | s_(M∘N)(i) |
-| Middle j | t_M(j) | s_N(j) if M does not select j, otherwise 0 | t_(M∘N)(k) if N(j)=k, otherwise 0 |
+| Source i | s_M(i) | s_N(j) if M(i)=j, otherwise 0 | s_(N∘M)(i) |
+| Middle j | t_M(j) | s_N(j) if M does not select j, otherwise 0 | t_(N∘M)(k) if N(j)=k, otherwise 0 |
 | Target k | 0 | t_N(k) | t_N(k) |
 
 Partial injectivity and the selected/complementary partition of J give exact sums
 
-Σ A^p = Sₚ(M),    Σ B^p = Sₚ(N),    Σ C^p = Sₚ(M∘N).
+Σ A^p = Sₚ(M),    Σ B^p = Sₚ(N),    Σ C^p = Sₚ(N∘M).
 
 Each input charge occurs once in its own sum. Pointwise C ≤ A+B follows from the
 ground triangle inequality and δ(a) ≤ ‖a−b‖∞+δ(b). These cover a middle occurrence
@@ -129,7 +130,7 @@ remain unused. N's unmatched targets are also unmatched by the composite.
 
 Monotonicity of positive real powers and finite-sum Minkowski now give
 
-Sₚ(M∘N)^(1/p) ≤ (Σ (A+B)^p)^(1/p) ≤ Sₚ(M)^(1/p) + Sₚ(N)^(1/p).
+Sₚ(N∘M)^(1/p) ≤ (Σ (A+B)^p)^(1/p) ≤ Sₚ(M)^(1/p) + Sₚ(N)^(1/p).
 
 Choose actual minimizing matchings for the two input costs to obtain the optimum
 triangle law. For separation, a sum of nonnegative powered charges is zero
