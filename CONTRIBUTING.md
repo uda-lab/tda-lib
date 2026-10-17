@@ -95,9 +95,12 @@ claim that a historical content-only port established source ancestry.
 ## Validation, configuration and further guidance
 
 The [project orchestration policy](.agents/skills/tda-lib-orchestration/SKILL.md) defines
-the applicable checks, including the temporary October local-CI substitute; the
+the applicable local checks and normal hosted CI; the
 [orchestration guide](docs/orchestration.md) describes execution safeguards and ownership.
-No hosted run, settings update or release action follows automatically from this document.
+Let the existing workflow handle PR and integration pushes. Require its `check` to succeed
+for the evaluated PR head, respecting conditional build and documentation steps. Do not add
+CI-skip markers to suppress routine validation. Settings updates and release actions require
+their own authorization.
 
 The required merge-method configuration is `squash` and `merge` on develop, and `merge`
 on main. The former supports ordinary topic squashes and history-preserving propagation.

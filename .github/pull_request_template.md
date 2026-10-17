@@ -23,7 +23,11 @@ whether a required exact public name and type is preserved. Otherwise write
 "N/A — no statement change". -->
 
 ## Validation
-<!-- Commands and results, e.g. `scripts/check.sh` → CHECK OK; link the CI run. -->
+<!-- Record evaluated head/base SHAs, exact local commands and outcomes, applicable audit/coverage
+results, and the hosted CI run for this head. Require the existing workflow's `check` to succeed;
+local success does not replace it. For prose-only changes, report focused checks and the workflow's
+conditional build skip honestly. Keep existing docs/note conditions; do not add CI-skip markers
+to suppress routine validation or run full doc generation merely for this section. -->
 
 ## Remaining sorry / custom-axiom footprint
 <!-- "none", or each ALLOW_SORRY / ALLOW_AXIOM marker with its authorising Issue. -->

@@ -37,13 +37,14 @@ development. An active-release destination remains tracked until develop receive
 No extra synchronization PR is needed only when the relevant release head is already
 integrated and no release/main fixes remain unpropagated, not merely when trees match.
 dot determines release cadence and versions from actual maturity, scope and API changes.
-PR protection and applicable validation, including the existing October local-CI exception,
-remain in force. No direct/force pushes, long-lived branch deletion or new approval wait.
+PR protection, applicable local validation and normal hosted CI remain in force. Require
+the existing workflow's `check` to succeed for the evaluated PR head. No direct/force pushes,
+long-lived branch deletion or new approval wait.
 
 Each area owns `scripts/print_axioms/<Area>.lean` and the imports-only
 `TDA/<Area>.lean` module list. `TDA.lean` imports those lists and `TDA.Basic`.
 Append pins and imports in the area that owns a new module; do not edit another area's
-list for an independent result. A textually mergeable PR can use its reviewed, locally
+list for an independent result. A textually mergeable PR can use its reviewed, validated
 validated head without a gratuitous develop refresh. Actual source overlap or a failed
 integrated build needs resolution and renewed validation of the changed head.
 
@@ -86,7 +87,11 @@ dot establishes dependencies and release scope from actual mathematical decision
 gate. `scripts/github-setup.sh` is the broad labels/settings/protection bootstrap; do not run
 it wholesale for a targeted live setting correction. Read current settings and update only
 the approved fields. Develop needs squash and merge methods for its two integration roles;
-main uses merge commits. Other protections and current CI restrictions remain unchanged.
+main uses merge commits. Preserve protections and the existing workflow triggers and
+conditional steps. Ordinary PR and integration pushes run CI; do not suppress them with
+CI-skip markers. Prose-only changes use focused local checks and the workflow's lightweight
+path. Implementation changes retain the full guarded local check and applicable hosted
+build/audit. Optional documentation generation and the note lane retain their own conditions.
 Review acquisition and merge evidence follow `github-driven-workflow`; review disposition
 follows `lean-review-routing`. All review findings are observed and resolved or disposed of.
 No unsolicited notifications; authorized reports and the Issue/PR record are unaffected.

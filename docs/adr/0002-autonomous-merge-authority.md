@@ -1,9 +1,9 @@
 # 0002 — Autonomous merge authority on verified gates
 
 The original decision and its dated addenda are retained below. The 2026-10-16 lifecycle
-addendum and [CONTRIBUTING.md](../../CONTRIBUTING.md) define the current branch roles and
-merge-method exceptions. Existing authority and integrity gates remain, including the
-October local-CI exception within its stated scope and end date.
+addendum and [CONTRIBUTING.md](../../CONTRIBUTING.md) define branch roles and merge methods.
+The 2026-10-17 CI addendum restores normal hosted CI and supersedes the October local-CI
+exception. Existing merge authority and integrity gates remain.
 
 ## Context
 
@@ -37,8 +37,9 @@ The main merge preserves the released develop head as a parent; verify that its 
 the reviewed release tree before tagging. Squashing a stable promotion would lose that
 ancestry and cause later promotion comparisons to repeat already released changes.
 
-Repository settings allow squash and merge commits; the develop ruleset allows squash only,
-and the main ruleset allows merge commits only. Rebase merges are disabled. Runtime-specific
+Repository policy allows squash and merge commits on develop for its respective branch
+roles, and merge commits on main. Verify the actual settings and rules; policy is not proof
+of their deployment. Rebase merges are disabled. Runtime-specific
 permission configuration is external; authorization does not bypass branch protection,
 review or integrity checks.
 
@@ -52,6 +53,9 @@ review or integrity checks.
 - A merge-ready PR is merged promptly; leaving it idle is the failure.
 
 ## Addendum — 2026-10-10: temporary local-CI merges to develop
+
+**Historical record, superseded on 2026-10-17 by the CI addendum below.** The dated
+permissions, prohibitions and October end date in this section no longer govern execution.
 
 The Owner authorized ordinary `develop` merges using local CI through 2026-10-31 23:59:59 JST. This dated exception substitutes for the hosted `check` gate only on ordinary PRs to `develop`; it does not amend this ADR's stable-promotion policy or `main`'s required `check`. At the 2026-10-10 readback, the active `develop` ruleset retained PR/squash, deletion and non-fast-forward protections with no required status check; the active `main` ruleset remained unchanged and required `check`. The Owner reported that repository Actions were disabled; the available GitHub API integration could not read back that setting.
 
@@ -86,6 +90,35 @@ settings are unchanged by this decision. Verify any authorized targeted update a
 the latest readback; the policy text is not proof of its deployment. Do not run the broad
 bootstrap to apply a single-field correction.
 
-This changes neither the existing exact-head review/validation requirements nor the
-October Actions restriction. It introduces no universal develop refresh, new gate or
-parent-approval wait, and does not itself initiate a main merge, release or tag.
+At adoption, this retained the existing exact-head review/validation requirements and the
+then-current October Actions restriction; the 2026-10-17 addendum supersedes that restriction.
+It introduces no universal develop refresh, new gate or parent-approval wait, and does not
+itself initiate a main merge, release or tag.
+
+## Addendum — 2026-10-17: normal hosted CI restored
+
+The Owner lifted the CI restriction for `uda-lab/tda-lib` in [#315](https://github.com/uda-lab/tda-lib/issues/315).
+Use normal hosted CI immediately. The 2026-10-10 exception, its October deadline, prohibition
+on ordinary Actions and disabled-automation evidence requirement are superseded. Local-only
+clauses in existing execution contracts are replaced by applicable local validation and
+successful hosted `check` on the evaluated PR head. No mandatory CI-skip marker remains.
+
+Keep the existing workflow's PR, integration-push and manual triggers, build-change detection,
+docs-job condition and opt-in note lane. Prose-only changes may pass its lightweight check
+without a Lean build. Implementation changes retain the guarded local build, live axiom
+audit and coverage, plus applicable hosted build steps. Do not add redundant full builds or
+full doc generation. Independent exact-head review, feedback disposition, branch protections
+and expected-head merge authority remain. This decision changes no credentials, permissions,
+protections or repository settings, and authorizes no main merge, release or publication.
+
+The ordinary-PR measurement [38991899532](https://github.com/uda-lab/tda-lib/actions/runs/38991899532)
+succeeded on source head `6bd0ab353d8c943545d71e9aac5c7da5c6835cd7`: `check` took 27m53s,
+including a 25m41s full gate, on Ubuntu 24.04.5 LTS. Cached mathlib was restored; docs were
+skipped and no exposition note was configured. It validates that measured head, not the
+later final head of #309 or subsequent changes; detailed steps remain in the PR evidence.
+
+The legacy run-usage API returned zero billable milliseconds, which does not establish
+zero invoice cost. Organization billing usage and repository Actions-setting reads returned
+`403 Resource not accessible by integration`; net charges, credits and included minutes
+could not be verified. The restoration follows the Owner's instruction, without assuming
+free future runs or changing access to obtain billing data.
