@@ -559,3 +559,30 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.uniformMapperHom_e
 #print axioms TDA.Mapper.GraphPL.uniformMapperIso
 #print axioms TDA.Mapper.GraphPL.exists_uniformMapperIso
+
+-- Member-adapted Mapper finite-data fixtures.
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.c4_adapted
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.c4_mapperIso
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.c4_mapper_cycleData
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.c4_mapper_right_zero_injective
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.c4_mapper_E0_card
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.c4_mapper_left_zero_not_injective
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.edge_mapperIso
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.edge_mapper_middle
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.edge_mapper_counts
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.Y_adapted
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.Y_mapperIso
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.Y_mapper_vertexCounts
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.Y_mapper_edgeCounts
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.Y_mapper_crossing
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.flat_adapted
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.flat_mapperIso
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.flat_mapper_count
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.overlap_no_adapted
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.T1
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.T1_adapted
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.T1_not_covers
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.T1_E0_card
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.T1_no_iso
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.triple_cell
+#print axioms TDA.Mapper.UniformMapperReebDataExamples.triple_cell_not_mem_summands
