@@ -599,3 +599,12 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.crossingPoint
 #print axioms TDA.Mapper.GraphPL.eq_crossingPoint
 #print axioms TDA.Mapper.GraphPL.joinedIn_level_of_eq
+#print axioms TDA.Mapper.GraphPL.closedLevelPoint
+#print axioms TDA.Mapper.GraphPL.closedLevelComponentsEquiv
+#print axioms TDA.Mapper.GraphPL.closedLevelComponentsEquiv_eq
+#print axioms TDA.Mapper.GraphPL.closedLevelComponentsEquiv_mk_vertex
+#print axioms TDA.Mapper.GraphPL.closedLevelComponentsEquiv_crossingPoint
+#print axioms TDA.Mapper.GraphPL.levelWindowEquiv_comp_componentMap_levelInclusion
+#print axioms TDA.Mapper.GraphPL.componentMap_levelInclusion_bijective
+#print axioms TDA.Mapper.GraphPL.graphPLReebDataVEquivClosedLevel
+#print axioms TDA.Mapper.GraphPL.graphPLStarEquiv_comp_componentMap_levelInclusion
