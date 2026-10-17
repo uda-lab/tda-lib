@@ -68,21 +68,41 @@ hosted by this repository. The [mathematical notes](docs/math/README.md) explain
 individual constructions, and the [source register](docs/math/references.md)
 records consulted papers and the limits of source comparison.
 
-## Future directions
+<a id="future-directions"></a>
 
-The following are proposed work, not results of v0.1.0.
-[Issue #227](https://github.com/uda-lab/tda-lib/issues/227) sets out their
-hypotheses, source links and boundaries.
+## Development beyond v0.1.0
 
-- Extend finite diagram distances to partial-matching p-costs and boundary
-  transport, and develop finite-constructible real-index interleavings.
-- Prove stability of persistence images with fixed bandwidth, weights and pixels.
-- Build finite Rips and Čech inputs, starting with a bottleneck bound for two
-  metrics on the same labelled set.
-- Extend Reeb smoothing comparisons toward coherent geometric interleavings
-  and a comparison with cosheaf distance.
-- Study resolution-controlled Reeb approximation for graph-based Mapper,
-  with the ordinary Mapper and enhanced constructions distinguished.
+The `develop` branch includes these additional bounded results. The
+[API guide](docs/api.md) and its mathematical notes give their exact hypotheses.
+
+- **PH distances and stability.** For finite positive diagrams with unit occurrence
+  masses and finite deaths, partial-matching minima equal optima over finite real
+  boundary plans, with real exponents p ≥ 1 and maximum ground norm. Rooted costs
+  satisfy distance laws and explicit cardinality-dependent perturbation bounds.
+  Finite-constructible real-indexed modules over a field satisfy barcode isometry
+  with finite-dimensional critical fibers, a zero left tail, half-open strata and
+  a possibly nonzero final tail.
+  This also applies to actual finite-complex sublevel homology modules.
+- **Persistence representations.** Gaussian persistence images at fixed positive
+  bandwidth and fixed disjoint measurable pixels, and weighted Gaussian kernels,
+  have stability bounds on finite diagram parts against first-order matching cost under
+  explicit weight assumptions.
+- **Metric inputs.** Finite Rips and ambient Čech filtrations are constructed.
+  Rips diagrams satisfy a same-label pairwise-discrepancy bound. Log-scale
+  Čech–Rips diagrams have bottleneck distance at most log 2 in degrees at least
+  one under the stated positivity and embedding assumptions.
+- **Reeb.** In the library's finite real-graph category, geometric smoothing has
+  coherent composition, and geometric and cosheaf interleavings agree, with equal
+  extended distances.
+- **Mapper.** Graph-PL inputs have ordinary and MultiNerve Mapper constructions,
+  a cover-dependent cell classification and finite Reeb incidence data, under
+  explicit cover and height assumptions.
+
+Further directions include all-Radon boundary transport, general infinite or
+q-tame persistence, metric stability across different point sets, and
+resolution-controlled Mapper–Reeb approximation.
+[Issue #227](https://github.com/uda-lab/tda-lib/issues/227) records their scope and
+source links.
 
 ## License
 
