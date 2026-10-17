@@ -64,3 +64,4 @@ import TDA.Persistence.FiniteInducedTranslationExamples
 import TDA.Persistence.CechStabilityExamples
 import TDA.Persistence.ConstructibleShiftBarcodeExamples
 import TDA.Persistence.RealInducedMatchingExamples
+import TDA.Persistence.WeightedKernelExamples

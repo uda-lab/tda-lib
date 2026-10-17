@@ -325,6 +325,25 @@ boundary-transport or RKHS identification is asserted.
 The Gaussian and pixel-integral definitions are noncomputable analytic APIs.
 See [the construction, analytic proof and source correspondence](math/persistence-images.md).
 
+## Weighted Gaussian kernel embedding
+
+`TDA.Persistence.GaussianGram` proves mathlib `Matrix.PosSemidef` over arbitrary index
+types for Hadamard powers, the entrywise exponential, real inner-product kernels,
+diagonal rescaling and the Gaussian Gram matrix `exp(-‖v i - v j‖² / (2σ²))` at every
+real σ. The birth–death kernel `kernel σ` uses the Euclidean squared distance through
+`WithLp 2 (ℝ × ℝ)`, not the library's maximum norm on `ℝ × ℝ`.
+
+`TDA.Persistence.WeightedKernel` builds mathlib's RKHS `RKHS.OfKernel` of that kernel as
+`Space σ`. It embeds an occurrence family as `Σ i, w (T (x i)) • featureAt σ (x i)` with
+the persistence-image `Weight` in birth–persistence coordinates. `diagramEmbedding` is the
+same embedding of a diagram's finite occurrences, keeping multiplicity and omitting
+essential bars. The evaluation formula, `inner_embedding` (the linear kernel) and
+`norm_embedding_sub_sq` are statements about the actual RKHS inner product and norm.
+Linear and Gaussian diagram Gram matrices are positive semidefinite for any family of
+diagrams. The RKHS norm is not the pixel ℓ¹ norm above; no identification, stability
+estimate or computable kernel evaluation is supplied. See
+[the conventions, proof route and source mapping](math/weighted-kernel-embedding.md).
+
 ## Distance matrices to finite Rips images
 
 `PersistenceImage.finiteDiagramImage` applies the Gaussian image to a diagram's finite

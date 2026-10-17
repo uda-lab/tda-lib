@@ -87,3 +87,5 @@ import TDA.Persistence.FiniteEpiTranslationMatching
 import TDA.Persistence.FiniteInducedTranslationMatching
 import TDA.Persistence.RealInducedMatching
 import TDA.Persistence.ConstructibleInducedMatching
+import TDA.Persistence.GaussianGram
+import TDA.Persistence.WeightedKernel
