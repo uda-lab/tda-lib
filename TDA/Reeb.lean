@@ -16,6 +16,7 @@ import TDA.Reeb.ConstructibleSpace
 import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
 import TDA.Reeb.FiniteDiagram
+import TDA.Reeb.GeometricDistanceBounds
 import TDA.Reeb.GeometricEnlargement
 import TDA.Reeb.GeometricInterleaving
 import TDA.Reeb.GeometricInterleavingEquivalence
