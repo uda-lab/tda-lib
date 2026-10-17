@@ -451,6 +451,13 @@ the finite first-order matching cost and count-times-bottleneck, and the same tw
 for `(k,w)`-Gaussian kernel values. See
 [the weight, constant and boundaries](math/arctan-weight-rips-kernel.md).
 
+`TDA.Persistence.ArctanPersistenceImage` evaluates the persistence-image constant at the
+arctan weight as `PersistenceImage.stabilityConstant_arctan`, `2C + 3·√(π/2)/σ`. It gives the
+arctan image bounds against the finite first-order matching cost and count-times-bottleneck,
+`PersistenceImage.finiteDiagramImage_eq_sum` and the arctan Rips image consumer
+`Rips.norm_finiteDiagramImage_sub_le_pairwiseDiscrepancy_arctan`. The image items keep
+`0 < σ`. See [the constant and boundaries](math/cech-weighted-kernel-images.md).
+
 ## Distance matrices to finite Rips images
 
 `PersistenceImage.finiteDiagramImage` applies the Gaussian image to a diagram's finite
@@ -473,6 +480,16 @@ the second-level Gaussian feature difference and kernel-value change against an 
 fixed diagram by the same quantity over `|τ|`. Arctan specializations carry the explicit
 constant. No bandwidth sign hypothesis is assumed. See
 [the composition](math/arctan-weight-rips-kernel.md).
+
+`TDA.Persistence.CechWeightedKernel` and `TDA.Persistence.CechPersistenceImage` give the
+same consumers for actual Čech diagrams of labelled configurations `p q : V → X` in one
+pseudometric space. `Cech.bottleneck_dgm_lt_top` and
+`Cech.toReal_bottleneck_dgm_le_displacement` bound the full bottleneck by the same-label
+displacement δ. The embedding, second-level Gaussian feature, kernel-value and finite-part
+image differences are bounded by the corresponding constant times `(N_p+N_q) δ`, with
+arctan specializations for the embedding, kernel-value and image bounds. No label metric or
+distance compatibility is assumed; only the image items carry `0 < σ`. See
+[the Čech compositions](math/cech-weighted-kernel-images.md).
 
 ## Review and extension boundaries
 

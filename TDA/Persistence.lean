@@ -109,3 +109,6 @@ import TDA.Persistence.ArctanWeight
 import TDA.Persistence.RipsWeightedKernel
 import TDA.Persistence.FinitePMatchingCostBottleneck
 import TDA.Persistence.FinitePFilterStability
+import TDA.Persistence.ArctanPersistenceImage
+import TDA.Persistence.CechWeightedKernel
+import TDA.Persistence.CechPersistenceImage

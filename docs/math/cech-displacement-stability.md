@@ -40,6 +40,10 @@ diagrams keep their occurrence multiplicities and essential bars at infinity. No
 injectivity, properness or cardinality hypothesis is added. An explicit bound ε ≥ 0 on
 every label-wise distance gives the same diagram bound with ε.
 
+The finite diagram bound composes with the weighted Gaussian kernel embedding and with
+finite-part persistence images, without a label metric; see
+[arctan persistence images and Čech consumers](cech-weighted-kernel-images.md).
+
 ## Comparison with Rips
 
 Let d and e be label metrics agreeing with the ambient distances of p and q. For labels

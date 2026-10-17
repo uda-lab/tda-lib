@@ -2149,3 +2149,36 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.LogScaleDiagramExamples.twoPoints_rips_not_isConstructible_logGrid_zero
 #print axioms TDA.Persistence.LogScaleDiagramExamples.twoPoints_cech_not_isConstructible_logGrid_zero
 #print axioms TDA.Persistence.LogScaleDiagramExamples.repeated_not_positive
+
+-- Arctan persistence images and Čech weighted-kernel and image consumers.
+#print axioms TDA.Persistence.PersistenceImage.stabilityConstant_arctan
+#print axioms TDA.Persistence.PersistenceImage.norm_image_sub_le_arctan
+#print axioms TDA.Persistence.PersistenceImage.norm_finiteDiagramImage_sub_le_arctan
+#print axioms TDA.Persistence.PersistenceImage.finiteDiagramImage_eq_sum
+#print axioms TDA.Persistence.Rips.norm_finiteDiagramImage_sub_le_pairwiseDiscrepancy_arctan
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_lt_top
+#print axioms TDA.Persistence.Cech.toReal_bottleneck_dgm_le_displacement
+#print axioms TDA.Persistence.Cech.norm_diagramEmbedding_sub_le_displacement
+#print axioms TDA.Persistence.Cech.norm_diagramGaussianFeature_sub_le_displacement
+#print axioms TDA.Persistence.Cech.abs_gaussianDiagramKernel_sub_le_displacement
+#print axioms TDA.Persistence.Cech.norm_diagramEmbedding_sub_le_displacement_arctan
+#print axioms TDA.Persistence.Cech.abs_gaussianDiagramKernel_sub_le_displacement_arctan
+#print axioms TDA.Persistence.Cech.norm_finiteDiagramImage_sub_le_displacement
+#print axioms TDA.Persistence.Cech.norm_finiteDiagramImage_sub_le_displacement_arctan
+#print axioms TDA.Persistence.ArctanPersistenceImageExamples.stabilityConstant_values
+#print axioms TDA.Persistence.ArctanPersistenceImageExamples.zero_weight_image
+#print axioms TDA.Persistence.ArctanPersistenceImageExamples.zero_weight_embedding
+#print axioms TDA.Persistence.ArctanPersistenceImageExamples.zero_weight_not_sharp
+#print axioms TDA.Persistence.ArctanPersistenceImageExamples.infinite_bottleneck_boundary
+#print axioms TDA.Persistence.ArctanPersistenceImageExamples.rips_perturbed_arctan
+#print axioms TDA.Persistence.CechWeightedKernelExamples.MovedPoint.bottleneck_bounds
+#print axioms TDA.Persistence.CechWeightedKernelExamples.MovedPoint.kernel_bounds
+#print axioms TDA.Persistence.CechWeightedKernelExamples.MovedPoint.kernel_arctan
+#print axioms TDA.Persistence.CechWeightedKernelExamples.ThreePoints.arctan_bounds
+#print axioms TDA.Persistence.CechWeightedKernelExamples.self_bounds
+#print axioms TDA.Persistence.CechWeightedKernelExamples.empty_coincide
+#print axioms TDA.Persistence.CechWeightedKernelExamples.Repeated.pts
+#print axioms TDA.Persistence.CechWeightedKernelExamples.Repeated.twoPoints
+#print axioms TDA.Persistence.CechWeightedKernelExamples.Repeated.no_label_metric
+#print axioms TDA.Persistence.CechWeightedKernelExamples.Repeated.displacement_eq
+#print axioms TDA.Persistence.CechWeightedKernelExamples.Repeated.cech_bounds
