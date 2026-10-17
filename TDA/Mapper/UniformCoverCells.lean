@@ -3,10 +3,11 @@ import TDA.Mapper.MultiNerveGraphPL
 /-!
 # Height-separating uniform covers and the cells of the MultiNerve Mapper
 
-For `V : Type u`, `G : SimpleGraph V` and vertex heights `h : V → ℝ`, this module proves the
-cover-side half of the comparison between the MultiNerve Mapper of a uniform cover and the
-Reeb graph of graph-PL input. Everything is stated combinatorially: vertex-height level
-components, edges crossing a level, and edges spanning a regular interval.
+For `V : Type u`, `G : SimpleGraph V` and vertex heights `h : V → ℝ`, this module classifies the
+cells of the MultiNerve Mapper of a height-separating uniform cover combinatorially: by
+vertex-height level components, edges crossing a level, and edges spanning a regular interval.
+These are the terms in which a later finite Reeb graph of graph-PL input is to be described; no
+Reeb graph is constructed or compared here.
 
 ## Attained range
 

@@ -11,10 +11,10 @@ is a `Nat.card` equality derived through the new equivalences.
   `uniformCover (-1/8) 1 (3/8) 3` is height-separating. The vertex cells over `{0}`, `{1}`, `{2}`
   number `1, 2, 1` through the level branch, in agreement with the merged preimage counts; over
   `{1}` the vertices `1` and `3` are not adjacent and no edge crosses height `1`. The edge cells over
-  `{0, 1}` and `{1, 2}` number `2` each, spanned by `0 — 1, 0 — 3` and by `1 — 2, 2 — 3`. The
-  resulting multigraph has one cell at height `0`, two at height `1` and one at height `2`: the
-  Reeb graph of the 4-cycle is a cycle, because the level set at `1` has two components. Its
-  incidence is not stated here.
+  `{0, 1}` and `{1, 2}` number `2` each, spanned by `0 — 1, 0 — 3` and by `1 — 2, 2 — 3`. Read
+  informally, there is one cell at height `0`, two at height `1` and one at height `2`, the shape
+  of a cycle, matching the Reeb graph of the 4-cycle because the level set at `1` has two
+  components. No incidence, multigraph or Reeb graph is stated here.
 * **Single edge, same cover.** Member `1 = (1/2, 3/2)` contains no vertex height; its one vertex
   cell comes from the spanning edge. Members `0` and `2` give one cell each through the level
   branch.
@@ -30,6 +30,9 @@ is a `Nat.card` equality derived through the new equivalences.
   `[3/4, 5/4]`: the spanning classification fails without its hypothesis.
 * **Disconnected graph.** For two isolated vertices of heights `0` and `2` the height `1` is not
   attained: connectedness cannot be dropped from `range_plHeight_eq_Icc`.
+* **Boundary of the strict and non-strict predicates.** For the single edge of heights `0` and `2`,
+  the edge spans `[0, 2]` and is the one active edge over `(0, 2)`, while it crosses neither
+  endpoint height `0` nor `2`.
 * **Existence.** `heightSeparating_covers_range` gives a height-separating cover of the attained
   range of the 4-cycle with `r < 1/2`; no counts are stated.
 -/
@@ -739,6 +742,28 @@ theorem disconnected_range :
   exact ⟨hlo, hhi, hnot, hne, fun hc => hne (range_plHeight_eq_Icc hc hlo hhi)⟩
 
 end Disconnected
+
+/-! ## Boundary cases of crossing and spanning -/
+
+/-- **Boundary.** An edge whose endpoint heights are exactly `p = 0` and `q = 2` spans `[0, 2]` and
+is the one active edge over `(0, 2)`, through `activeEdgeEquivSpans`, while crossing is strict: the
+edge crosses neither `0` nor `2`, and it crosses `1`. -/
+theorem edge_boundary :
+    EdgeSpans edgeGraph h02 0 2 (dartEdge d₀) ∧
+      Nat.card {e // EdgeActive edgeGraph h02 (ioo 0 2) e} = 1 ∧
+      ¬ EdgeCrosses edgeGraph h02 0 (dartEdge d₀) ∧ ¬ EdgeCrosses edgeGraph h02 2 (dartEdge d₀) ∧
+      EdgeCrosses edgeGraph h02 1 (dartEdge d₀) := by
+  have hspans : EdgeSpans edgeGraph h02 0 2 (dartEdge d₀) := by
+    rw [edgeSpans_dartEdge_iff]
+    norm_num [d₀, h02]
+  refine ⟨hspans, ?_, not_edgeCrosses_dartEdge_of_eq (.inl rfl),
+    not_edgeCrosses_dartEdge_of_eq (.inr rfl), ?_⟩
+  · rw [Nat.card_congr (activeEdgeEquivSpans (G := edgeGraph) (h := h02) (by norm_num)
+      fun v hv => by rw [mem_ioo] at hv; rcases h02_cases v with h | h <;> rw [h] at hv <;>
+        norm_num at hv)]
+    exact card_one_of hspans fun e _ => edgeGraph_edge e
+  · rw [edgeCrosses_dartEdge_iff]
+    norm_num [d₀, h02]
 
 /-! ## F7. Existence -/
 

@@ -472,11 +472,17 @@ On the 4-cycle with heights `0, 1, 2, 1` and members `(-1/8, 7/8)`,
 `(1/2, 3/2)`, `(9/8, 17/8)`, the vertex cells over the three labels number
 `1, 2, 1`: the vertices `1` and `3` of the level `1` are not adjacent, and no
 edge crosses height `1`. Each consecutive pair carries two edge cells, spanned
-by `0 — 1`, `0 — 3` and by `1 — 2`, `2 — 3`. The resulting multigraph has one cell
-at height `0`, two at height `1` and one at height `2`, as the Reeb graph of the
-4-cycle, which is a cycle rather than one edge with parallel edges because the
-level set at `1` has two components. The incidence of these cells is not
-stated.
+by `0 — 1`, `0 — 3` and by `1 — 2`, `2 — 3`. Read informally, there is one cell
+at height `0`, two at height `1` and one at height `2`, the shape of a cycle.
+This matches the Reeb graph of the 4-cycle, which is a cycle rather than one
+edge with parallel edges because the level set at `1` has two components. The
+identification is not proved: neither the incidence of these cells nor a Reeb
+graph of graph-PL input is constructed.
+
+Crossing is strict and spanning is not. An edge with endpoint heights `0` and
+`2` spans `[0, 2]` and is the one active edge over `(0, 2)`, but it crosses
+neither `0` nor `2`; at a level, an endpoint at the level height survives
+instead.
 
 Each hypothesis has a failure mode. The single member `(-1/2, 5/2)` contains
 both heights `0` and `2` of one edge, so the family is not height-separating;

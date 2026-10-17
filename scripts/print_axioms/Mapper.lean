@@ -426,3 +426,4 @@ import TDA
 #print axioms TDA.Mapper.UniformCoverCellsExamples.hb
 #print axioms TDA.Mapper.UniformCoverCellsExamples.disconnected_range
 #print axioms TDA.Mapper.UniformCoverCellsExamples.c4_exists_heightSeparating
+#print axioms TDA.Mapper.UniformCoverCellsExamples.edge_boundary
