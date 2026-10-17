@@ -17,8 +17,9 @@ the occurrence count times the bottleneck distance (the KFH18 Proposition 10 sha
 The `(k, w)`-Gaussian diagram kernel of KFH18 eq. (13) is the Gaussian kernel of the RKHS
 `Space σ`; its feature map is the Gaussian RKHS of `Space σ`. Its kernel functions and
 kernel values are Lipschitz in the embedding with constant `1/|τ|`, and composition gives
-count-times-bottleneck bounds. No bandwidth sign hypothesis is assumed. Norms are the actual
-`RKHS.OfKernel` norms; the pixel norm of `PersistenceImage` is not involved.
+matching-cost and count-times-bottleneck bounds. No bandwidth sign hypothesis is assumed.
+Norms are the actual `RKHS.OfKernel` norms; the pixel norm of `PersistenceImage` is not
+involved.
 -/
 
 namespace TDA.Persistence.WeightedKernel
@@ -242,6 +243,72 @@ theorem abs_gaussianDiagramKernel_sub_le (σ τ : ℝ) (w : PersistenceImage.Wei
     _ = ‖diagramGaussianFeature σ τ w E - diagramGaussianFeature σ τ w E'‖ := by
       rw [hn, one_mul]
     _ ≤ _ := norm_diagramGaussianFeature_sub_le σ τ w E E'
+
+/-- Matching-cost stability of the second-level feature map, for every finite partial
+matching of the finite occurrences. -/
+theorem norm_diagramGaussianFeature_sub_le_matching (σ τ : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ B)
+    (w : PersistenceImage.Weight A B) (D E : Diagram ℝ) (hD : D.IsPositive)
+    (hE : E.IsPositive)
+    (M : OccurrenceMatching D.finiteOccurrences E.finiteOccurrences PEmpty.{1} PEmpty.{1}) :
+    ‖diagramGaussianFeature σ τ w D - diagramGaussianFeature σ τ w E‖ ≤
+      stabilityConstant σ A B / |τ| *
+        M.totalFiniteCost (fun p : D.finiteOccurrences => p.1)
+          (fun p : E.finiteOccurrences => p.1) := by
+  calc
+    _ ≤ ‖diagramEmbedding σ w D - diagramEmbedding σ w E‖ / |τ| :=
+      norm_diagramGaussianFeature_sub_le σ τ w D E
+    _ ≤ (stabilityConstant σ A B * M.totalFiniteCost (fun p : D.finiteOccurrences => p.1)
+          (fun p : E.finiteOccurrences => p.1)) / |τ| :=
+      div_le_div_of_nonneg_right
+        (norm_embedding_sub_le_matching σ hA hB w M _ _ hD.finiteOccurrence
+          hE.finiteOccurrence)
+        (abs_nonneg τ)
+    _ = _ := by ring
+
+/-- Second-level feature stability against the finite first-order matching cost. -/
+theorem norm_diagramGaussianFeature_sub_le_finiteFirstOrderMatchingCost (σ τ : ℝ)
+    (hA : 0 ≤ A) (hB : 0 ≤ B) (w : PersistenceImage.Weight A B) (D E : Diagram ℝ)
+    (hD : D.IsPositive) (hE : E.IsPositive) :
+    ‖diagramGaussianFeature σ τ w D - diagramGaussianFeature σ τ w E‖ ≤
+      stabilityConstant σ A B / |τ| *
+        finiteFirstOrderMatchingCost (fun p : D.finiteOccurrences => p.1)
+          (fun p : E.finiteOccurrences => p.1) := by
+  obtain ⟨M, hM⟩ := exists_minimizing_occurrenceMatching
+    (fun p : D.finiteOccurrences => p.1) (fun p : E.finiteOccurrences => p.1)
+  simpa only [hM] using norm_diagramGaussianFeature_sub_le_matching σ τ hA hB w D E hD hE M
+
+/-- Matching-cost stability of `(k, w)`-Gaussian kernel values, for every finite partial
+matching of the finite occurrences of the varying argument. -/
+theorem abs_gaussianDiagramKernel_sub_le_matching (σ τ : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ B)
+    (w : PersistenceImage.Weight A B) (D E E' : Diagram ℝ) (hE : E.IsPositive)
+    (hE' : E'.IsPositive)
+    (M : OccurrenceMatching E.finiteOccurrences E'.finiteOccurrences PEmpty.{1} PEmpty.{1}) :
+    |gaussianDiagramKernel σ τ w D E - gaussianDiagramKernel σ τ w D E'| ≤
+      stabilityConstant σ A B / |τ| *
+        M.totalFiniteCost (fun p : E.finiteOccurrences => p.1)
+          (fun p : E'.finiteOccurrences => p.1) := by
+  calc
+    _ ≤ ‖diagramEmbedding σ w E - diagramEmbedding σ w E'‖ / |τ| :=
+      abs_gaussianDiagramKernel_sub_le σ τ w D E E'
+    _ ≤ (stabilityConstant σ A B * M.totalFiniteCost (fun p : E.finiteOccurrences => p.1)
+          (fun p : E'.finiteOccurrences => p.1)) / |τ| :=
+      div_le_div_of_nonneg_right
+        (norm_embedding_sub_le_matching σ hA hB w M _ _ hE.finiteOccurrence
+          hE'.finiteOccurrence)
+        (abs_nonneg τ)
+    _ = _ := by ring
+
+/-- `(k, w)`-Gaussian kernel-value stability against the finite first-order matching cost. -/
+theorem abs_gaussianDiagramKernel_sub_le_finiteFirstOrderMatchingCost (σ τ : ℝ)
+    (hA : 0 ≤ A) (hB : 0 ≤ B) (w : PersistenceImage.Weight A B) (D E E' : Diagram ℝ)
+    (hE : E.IsPositive) (hE' : E'.IsPositive) :
+    |gaussianDiagramKernel σ τ w D E - gaussianDiagramKernel σ τ w D E'| ≤
+      stabilityConstant σ A B / |τ| *
+        finiteFirstOrderMatchingCost (fun p : E.finiteOccurrences => p.1)
+          (fun p : E'.finiteOccurrences => p.1) := by
+  obtain ⟨M, hM⟩ := exists_minimizing_occurrenceMatching
+    (fun p : E.finiteOccurrences => p.1) (fun p : E'.finiteOccurrences => p.1)
+  simpa only [hM] using abs_gaussianDiagramKernel_sub_le_matching σ τ hA hB w D E E' hE hE' M
 
 /-- Count-times-bottleneck stability of the second-level feature map. -/
 theorem norm_diagramGaussianFeature_sub_le_card_mul_bottleneck (σ τ : ℝ) (hA : 0 ≤ A)

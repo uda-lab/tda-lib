@@ -74,8 +74,11 @@ semidefinite. The first is the linear Gram matrix ⟨Φ(D_a), Φ(D_b)⟩. The se
 ## Stability
 
 Bandwidths enter only through |σ| and |τ|; no sign hypothesis is assumed. With Lean's
-division, at σ = 0 the kernel is identically one, all kernel functions coincide and each
-bound below reads 0 ≤ 0. For σ > 0 the constants are those of KFH18.
+division, at σ = 0 the kernel is identically one and all kernel functions coincide, so the
+feature bounds of steps 1–2 read 0 ≤ 0. Weighted features w(Tp) k_σ(·,p) still differ at
+σ = 0. There the term √2·B/|σ| vanishes, and the weighted bounds of steps 3–4 keep the
+constant 2A from the weight. The same holds at τ = 0 for the second level. For σ, τ > 0
+the constants are those of KFH18.
 
 1. **Unit-vector lemma.** In a real inner product space, unit vectors u, v with
    ⟨u,v⟩ = exp(−r²/(2s²)) satisfy ‖u − v‖² = 2 − 2exp(−r²/(2s²)) ≤ r²/s², hence
@@ -104,8 +107,8 @@ bound below reads 0 ≤ 0. For σ > 0 the constants are those of KFH18.
    gives ‖ψ_τ(Φ D) − ψ_τ(Φ E)‖ ≤ ‖Φ D − Φ E‖/|τ|. Writing K_G(D,E) − K_G(D,E') as
    ⟨ψ_τ(Φ D), ψ_τ(Φ E) − ψ_τ(Φ E')⟩ and applying Cauchy–Schwarz gives
    |K_G(D,E) − K_G(D,E')| ≤ ‖Φ E − Φ E'‖/|τ|. Composition with step 4 gives
-   count-times-bottleneck bounds with constant C/|τ|. KFH18 does not state this
-   second-level bound; it is the argument of Lemma 16 applied to the RKHS H_σ.
+   matching-cost and count-times-bottleneck bounds with constant C/|τ|. KFH18 does not
+   state this second-level bound; it is the argument of Lemma 16 applied to the RKHS H_σ.
 
 `TDA.Persistence.GaussianFeature` holds steps 1 and the generic Gaussian RKHS of step 5.
 `TDA.Persistence.WeightedKernelStability` holds the remaining statements. The examples

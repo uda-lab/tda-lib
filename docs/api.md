@@ -395,15 +395,17 @@ kernel evaluation is supplied.
 
 `TDA.Persistence.GaussianFeature` proves that unit vectors with inner product
 `exp(-r² / (2s²))` are at distance at most `|r| / |s|`. It also builds the Gaussian RKHS
-`GaussianSpace τ E` of any real inner product space with kernel functions `gaussianFeature`.
-`TDA.Persistence.WeightedKernelStability` bounds `‖featureAt σ p - featureAt σ q‖` by the
-Euclidean distance over `|σ|` and by `√2 / |σ|` times the maximum norm. The embedding
-difference is bounded by `stabilityConstant σ A B = 2A + √2·B/|σ|` times the total finite
-cost of every partial matching and times `finiteFirstOrderMatchingCost`. For positive
-diagrams with finite bottleneck, it is bounded by the occurrence count times the
-bottleneck distance. `gaussianDiagramKernel` is the `(k,w)`-Gaussian kernel. Its feature
-map `diagramGaussianFeature` and its kernel values are `1/|τ|`-Lipschitz in the embedding,
-with count-times-bottleneck corollaries. No bandwidth hypothesis is assumed. See
+`GaussianSpace τ E` of any real inner product space with kernel functions
+`gaussianFeature`. `TDA.Persistence.WeightedKernelStability` bounds
+`‖featureAt σ p - featureAt σ q‖` by the Euclidean distance over `|σ|` and by `√2 / |σ|` times the maximum
+norm. The embedding difference is bounded by `stabilityConstant σ A B = 2A + √2·B/|σ|`
+times the total finite cost of every partial matching and times
+`finiteFirstOrderMatchingCost`. For positive diagrams with finite bottleneck, it is
+bounded by `stabilityConstant σ A B` times the occurrence count times the bottleneck
+distance. `gaussianDiagramKernel` is the `(k,w)`-Gaussian kernel. Its feature map
+`diagramGaussianFeature` and its kernel values are `1/|τ|`-Lipschitz in the embedding,
+with matching-cost and count-times-bottleneck corollaries. No bandwidth hypothesis is
+assumed. See
 [the conventions, proof route and source mapping](math/weighted-kernel-embedding.md).
 
 ## Distance matrices to finite Rips images
