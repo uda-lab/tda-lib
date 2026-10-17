@@ -226,6 +226,15 @@ including the value ⊤ for unequal essential counts. The merged translations ar
 along x ↦ x + c. Monotone non-injective and order-reversing maps are not covered. See
 [the conventions, proofs and fixtures](math/filter-reparametrization.md).
 
+`TDA.Persistence.SublevelDiagramMonotone` adds the monotone, possibly non-injective
+reparametrisation law `dgm_points_map_of_monotoneOn`. It maps births and deaths through
+`φ : α → β` and filters out points that become diagonal, while essential deaths remain at
+`⊤`; its hypotheses are monotonicity on `Set.range f.value` and
+`g.value s = φ (f.value s)`. The same module proves
+`finrank_sublevelHomology_eq_countP`, `not_isZero_sublevelHomology_of_mem_dgm` and
+`dgm_points_eq_zero_of_isZero`. These are library extensions of the actual face-template and
+rank-diagram APIs.
+
 The `ActualDiagramRegularity`, `ActualLossDerivative` and `ActualLossHessian` APIs use
 ordered local representatives with explicit hypotheses on face values and loss lifts.
 The full lift retains tied finite pairs, including their diagonal coordinates; the
@@ -312,8 +321,22 @@ complex, `bottleneck_logDgm_eq_realInterleavingDistance` is the isometry at log 
 `bottleneck_logDgm_le_log` bounds the bottleneck by log c for a sandwich g ≤ f ≤ c · g, and
 `Cech.bottleneck_logDgm_rips_cech_le` bounds the log-scale Rips and Čech diagrams by log 2 in
 every pseudometric ambient. `not_isConstructible_logModule_zero` shows that in degree 0 the
-module is constructible on no finite grid once a vertex has nonpositive value. No relation to
-`dgm` is stated. See [the proofs, fixtures and scope](math/log-scale-diagrams.md).
+module is constructible on no finite grid once a vertex has nonpositive value. In degrees
+`n ≥ 1` under `PositiveOnEdges f`, the comparison API gives
+`(logDgm k f n).map expEmb = dgm k f n`; the map is along the strictly increasing exponential,
+not along `log`, which is not an order embedding of `ℝ`. No degree-0 log-scale identity,
+diagram or bottleneck value is stated. See [the proofs, fixtures and scope](math/log-scale-diagrams.md).
+
+`TDA.Persistence.LogScaleDiagramComparison` contains the supporting
+`moduleDiagram_reindex_map`, which identifies module diagrams after reindexing along an order
+embedding when the transported fibers are finite-dimensional; the exponential embedding `expEmb`
+(with `expEmb_apply` and `expEmb_toOrderHom`); and the positive grid `positiveGrid` (with
+`positiveGrid_apply`, `mem_range_positiveGrid_iff` and `refines_positiveGrid`). It proves
+`sublevelModule_isConstructible_positiveGrid`,
+`logDgm_map_exp`, `logDgm_points_eq_map_log`, `dgm_birth_pos` and `dgm_death_pos`; the latter
+four results require `1 ≤ n` and `PositiveOnEdges f`, while constructibility on the positive
+grid has the same hypotheses and works over a ring. The comparison and fixture results are
+library extensions with no cited source theorem.
 
 `TDA.Filtration.CechDisplacement` compares two labelled families p, q : V → X in one
 ambient space label by label. Moving the points of a face by at most ε changes its Čech

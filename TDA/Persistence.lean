@@ -112,3 +112,5 @@ import TDA.Persistence.FinitePFilterStability
 import TDA.Persistence.ArctanPersistenceImage
 import TDA.Persistence.CechWeightedKernel
 import TDA.Persistence.CechPersistenceImage
+import TDA.Persistence.SublevelDiagramMonotone
+import TDA.Persistence.LogScaleDiagramComparison

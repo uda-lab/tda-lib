@@ -2182,3 +2182,42 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CechWeightedKernelExamples.Repeated.no_label_metric
 #print axioms TDA.Persistence.CechWeightedKernelExamples.Repeated.displacement_eq
 #print axioms TDA.Persistence.CechWeightedKernelExamples.Repeated.cech_bounds
+
+-- Issue #350: log identity logDgm ↔ dgm in degrees n ≥ 1 and the monotone reparametrisation law
+#print axioms TDA.Persistence.dgm_points_map_of_monotoneOn
+#print axioms TDA.Persistence.finrank_sublevelHomology_eq_countP
+#print axioms TDA.Persistence.not_isZero_sublevelHomology_of_mem_dgm
+#print axioms TDA.Persistence.dgm_points_eq_zero_of_isZero
+#print axioms TDA.Persistence.moduleDiagram_reindex_map
+#print axioms TDA.Persistence.expEmb
+#print axioms TDA.Persistence.expEmb_apply
+#print axioms TDA.Persistence.expEmb_toOrderHom
+#print axioms TDA.Persistence.positiveGrid
+#print axioms TDA.Persistence.positiveGrid_apply
+#print axioms TDA.Persistence.mem_range_positiveGrid_iff
+#print axioms TDA.Persistence.refines_positiveGrid
+#print axioms TDA.Persistence.sublevelModule_isConstructible_positiveGrid
+#print axioms TDA.Persistence.logDgm_map_exp
+#print axioms TDA.Persistence.logDgm_points_eq_map_log
+#print axioms TDA.Persistence.dgm_birth_pos
+#print axioms TDA.Persistence.dgm_death_pos
+
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.constEdge
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_rips_dgm_zero
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.constEdge_dgm_zero
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_rips_dgm_pos
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_cech_dgm_pos
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_cech_dgm_zero
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_rips_logDgm_pos
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_cech_logDgm_pos
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_bottleneck_zero
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_bottleneck_pos
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_logBottleneck_pos
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.filledReal_logDgm_one
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.hollowReal_logDgm_one
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.filledReal_dgm_one_pos
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.shiftedReal
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.shiftedReal_dgm_one
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.shiftedReal_not_positive
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.shiftedReal_birth_neg
+#print axioms TDA.Persistence.LogScaleDiagramComparisonExamples.twoPoints_rips_dgm_zero_birth
