@@ -1,4 +1,4 @@
-import TDA.Persistence.AdditiveFeatures
+import TDA.Persistence.BoundaryCost
 
 /-!
 # An attained finite first-order matching cost
@@ -25,44 +25,10 @@ theorem totalFiniteCost_relabel (u : I' ≃ I) (v : J' ≃ J)
     (M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1})
     (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
     (M.relabel u v (Equiv.refl _) (Equiv.refl _)).totalFiniteCost (x ∘ u) (y ∘ v) =
-      M.totalFiniteCost x y := by
-  classical
-  unfold totalFiniteCost
-  congr 1
-  · have hf (i : I') :
-        (match (M.relabel u v (Equiv.refl _) (Equiv.refl _)).finite i with
-          | some j => (finitePairCost (x (u i)) (y (v j))).toReal
-          | none => (diagonalCost (x (u i))).toReal) =
-        (match M.finite (u i) with
-          | some j => (finitePairCost (x (u i)) (y j)).toReal
-          | none => (diagonalCost (x (u i))).toReal) := by
-      cases h : M.finite (u i) <;> simp [relabel, h]
-    calc
-      _ = ∑ i : I', match M.finite (u i) with
-          | some j => (finitePairCost (x (u i)) (y j)).toReal
-          | none => (diagonalCost (x (u i))).toReal := by
-            apply Finset.sum_congr rfl
-            intro i _
-            exact hf i
-      _ = _ := u.sum_comp (fun i => match M.finite i with
-          | some j => (finitePairCost (x i) (y j)).toReal
-          | none => (diagonalCost (x i)).toReal)
-  · have hh (j : J') :
-        (∃ i : I', (M.relabel u v (Equiv.refl _) (Equiv.refl _)).finite i = some j) ↔
-          ∃ i : I, M.finite i = some (v j) := by
-      constructor
-      · rintro ⟨i, hi⟩
-        refine ⟨u i, ?_⟩
-        cases h : M.finite (u i) with
-        | none => simp [relabel, h] at hi
-        | some k =>
-          simp [relabel, h] at hi
-          have hk : k = v j := v.symm_apply_eq.mp hi
-          exact congrArg some hk
-      · rintro ⟨i, hi⟩
-        exact ⟨u.symm i, by simp [relabel, hi]⟩
-    simpa only [Function.comp_apply, hh] using v.sum_comp
-      (fun j => if ∃ i, M.finite i = some j then 0 else (diagonalCost (y j)).toReal)
+      M.totalFiniteCost x y :=
+  totalBoundaryCost_relabel u v M
+    (fun i j => (finitePairCost (x i) (y j)).toReal)
+    (fun i => (diagonalCost (x i)).toReal) (fun j => (diagonalCost (y j)).toReal)
 
 end OccurrenceMatching
 
