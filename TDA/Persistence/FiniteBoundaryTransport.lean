@@ -62,6 +62,24 @@ theorem source_balance (a : FiniteBoundaryPlan I J) (i : I) :
 theorem target_balance (a : FiniteBoundaryPlan I J) (j : J) :
     (∑ i, a.mass i j) + a.insertionMass j = 1 := by simp [insertionMass]
 
+/-- Linear cost of a feasible plan for independent pair and boundary coefficients. -/
+def linearCost (a : FiniteBoundaryPlan I J)
+    (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) : ℝ :=
+  (∑ i, ∑ j, a.mass i j * c i j) +
+    (∑ i, a.deletionMass i * u i) + ∑ j, a.insertionMass j * v j
+
+/-- Nonnegative coefficients give a nonnegative real-plan cost. -/
+theorem linearCost_nonneg (a : FiniteBoundaryPlan I J)
+    (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ)
+    (hc : ∀ i j, 0 ≤ c i j) (hu : ∀ i, 0 ≤ u i) (hv : ∀ j, 0 ≤ v j) :
+    0 ≤ a.linearCost c u v := by
+  apply add_nonneg
+  · apply add_nonneg
+    · exact Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ =>
+        mul_nonneg (a.nonneg i j) (hc i j)
+    · exact Finset.sum_nonneg fun i _ => mul_nonneg (a.deletionMass_nonneg i) (hu i)
+  · exact Finset.sum_nonneg fun j _ => mul_nonneg (a.insertionMass_nonneg j) (hv j)
+
 /-- Unnormalized first-order cost: transported mass plus both boundary residuals. -/
 def cost (a : FiniteBoundaryPlan I J) (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) : ℝ :=
   (∑ i, ∑ j, a.mass i j * (finitePairCost (x i) (y j)).toReal) +
@@ -102,11 +120,11 @@ def ofMatching (M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1}) :
   row_le_one i := by cases M.finite i <;> simp
   col_le_one j := by rw [incidence_col_sum]; split_ifs <;> norm_num
 
-/-- Incidence plans charge exactly the original matching, without merging repeated values. -/
-theorem cost_ofMatching (M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1})
-    (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
-    (ofMatching M).cost x y = M.totalFiniteCost x y := by
-  unfold cost OccurrenceMatching.totalFiniteCost
+/-- Incidence plans preserve all three coefficient families exactly. -/
+theorem linearCost_ofMatching (M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1})
+    (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) :
+    (ofMatching M).linearCost c u v = M.totalBoundaryCost c u v := by
+  unfold linearCost OccurrenceMatching.totalBoundaryCost
   rw [← Finset.sum_add_distrib]
   congr 1
   · apply Finset.sum_congr rfl
@@ -116,6 +134,12 @@ theorem cost_ofMatching (M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1})
     intro j _
     simp only [insertionMass, ofMatching, incidence_col_sum]
     split_ifs <;> simp
+
+/-- Incidence plans charge exactly the original matching, without merging repeated values. -/
+theorem cost_ofMatching (M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1})
+    (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
+    (ofMatching M).cost x y = M.totalFiniteCost x y :=
+  linearCost_ofMatching M _ _ _
 
 /-- Rectangular boundary augmentation: residuals on the two diagonal blocks. -/
 def augmentedMass (a : FiniteBoundaryPlan I J) : I ⊕ J → J ⊕ I → ℝ
@@ -150,48 +174,66 @@ theorem paddedMatrix_doublyStochastic (a : FiniteBoundaryPlan I J) :
     cases w <;> simp [paddedMatrix, augmentedMass, Fintype.sum_sum_type,
       deletionMass, insertionMass]
 
-private def assignmentLinearCost (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
+private def assignmentLinearCost (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) :
     Matrix (I ⊕ J) (I ⊕ J) ℝ →ₗ[ℝ] ℝ where
-  toFun Q := ∑ z, ∑ w, Q z w * boundaryAssignmentEntry x y z (Equiv.sumComm I J w)
+  toFun Q := ∑ z, ∑ w, Q z w * boundaryAssignmentEntryWith c u v z (Equiv.sumComm I J w)
   map_add' Q R := by simp [add_mul, Finset.sum_add_distrib]
   map_smul' r Q := by
     change (∑ z, ∑ w, (r * Q z w) * _) = r * (∑ z, ∑ w, Q z w * _)
     simp only [mul_assoc, Finset.mul_sum]
 
 private theorem assignmentLinearCost_padded (a : FiniteBoundaryPlan I J)
-    (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
-    assignmentLinearCost x y a.paddedMatrix = a.cost x y := by
-  simp [assignmentLinearCost, paddedMatrix, augmentedMass, boundaryAssignmentEntry,
-    Fintype.sum_sum_type, Finset.sum_add_distrib, cost]
+    (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) :
+    assignmentLinearCost c u v a.paddedMatrix = a.linearCost c u v := by
+  simp [assignmentLinearCost, paddedMatrix, augmentedMass, boundaryAssignmentEntryWith,
+    Fintype.sum_sum_type, Finset.sum_add_distrib, linearCost]
   ring
 
-private theorem assignmentLinearCost_perm (x : I → ℝ × ℝ) (y : J → ℝ × ℝ)
+private theorem assignmentLinearCost_perm (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ)
     (σ : Equiv.Perm (I ⊕ J)) :
-    assignmentLinearCost x y (σ.permMatrix ℝ) =
-      boundaryAssignmentCost x y (σ.trans (Equiv.sumComm I J)) := by
+    assignmentLinearCost c u v (σ.permMatrix ℝ) =
+      boundaryAssignmentCostWith c u v (σ.trans (Equiv.sumComm I J)) := by
   simp only [assignmentLinearCost, LinearMap.coe_mk, AddHom.coe_mk,
     PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq,
     ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true,
-    boundaryAssignmentCost, Equiv.trans_apply]
+    boundaryAssignmentCostWith, Equiv.trans_apply]
 
-/-- Birkhoff decomposition prevents any fractional plan from beating the matching minimum. -/
-theorem matchingCost_le_cost (a : FiniteBoundaryPlan I J)
-    (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
-    finiteFirstOrderMatchingCost x y ≤ a.cost x y := by
+/-- Birkhoff decomposition gives an actual partial matching no more expensive than
+any real plan, for arbitrary fixed pair and boundary coefficients. -/
+theorem exists_matching_linearCost_le (a : FiniteBoundaryPlan I J)
+    (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) :
+    ∃ M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1},
+      M.totalBoundaryCost c u v ≤ a.linearCost c u v := by
+  let : Nonempty (OccurrenceMatching I J PEmpty.{1} PEmpty.{1}) :=
+    occurrenceMatching_nonempty_iff.mpr (by simp)
+  obtain ⟨M, hM⟩ := exists_eq_ciInf_of_finite
+    (f := fun M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1} => M.totalBoundaryCost c u v)
+  have hmin (N : OccurrenceMatching I J PEmpty.{1} PEmpty.{1}) :
+      M.totalBoundaryCost c u v ≤ N.totalBoundaryCost c u v :=
+    hM.le.trans (ciInf_le (Set.finite_range _).bddBelow N)
   obtain ⟨w, hw, hsum, hdecomp⟩ :=
     exists_eq_sum_perm_of_mem_doublyStochastic a.paddedMatrix_doublyStochastic
   have hl (σ : Equiv.Perm (I ⊕ J)) :
-      finiteFirstOrderMatchingCost x y ≤ assignmentLinearCost x y (σ.permMatrix ℝ) := by
-    rw [assignmentLinearCost_perm, ← OccurrenceMatching.totalFiniteCost_ofBoundaryAssignment]
-    exact finiteFirstOrderMatchingCost_le_totalFiniteCost _ _ _
+      M.totalBoundaryCost c u v ≤ assignmentLinearCost c u v (σ.permMatrix ℝ) := by
+    rw [assignmentLinearCost_perm, ← OccurrenceMatching.totalBoundaryCost_ofBoundaryAssignment]
+    exact hmin _
+  refine ⟨M, ?_⟩
   calc
-    _ = ∑ σ, w σ * finiteFirstOrderMatchingCost x y := by rw [← Finset.sum_mul, hsum, one_mul]
-    _ ≤ ∑ σ, w σ * assignmentLinearCost x y (σ.permMatrix ℝ) :=
+    _ = ∑ σ, w σ * M.totalBoundaryCost c u v := by rw [← Finset.sum_mul, hsum, one_mul]
+    _ ≤ ∑ σ, w σ * assignmentLinearCost c u v (σ.permMatrix ℝ) :=
       Finset.sum_le_sum fun σ _ => mul_le_mul_of_nonneg_left (hl σ) (hw σ)
-    _ = assignmentLinearCost x y a.paddedMatrix := by
-      rw [← hdecomp]
-      simp
-    _ = _ := assignmentLinearCost_padded a x y
+    _ = assignmentLinearCost c u v a.paddedMatrix := by rw [← hdecomp]; simp
+    _ = _ := assignmentLinearCost_padded a c u v
+
+/-- First-order matching remains bounded by every feasible fractional plan. -/
+theorem matchingCost_le_cost (a : FiniteBoundaryPlan I J)
+    (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
+    finiteFirstOrderMatchingCost x y ≤ a.cost x y := by
+  obtain ⟨M, hM⟩ := a.exists_matching_linearCost_le
+    (fun i j => (finitePairCost (x i) (y j)).toReal)
+    (fun i => (diagonalCost (x i)).toReal) (fun j => (diagonalCost (y j)).toReal)
+  change M.totalFiniteCost x y ≤ a.cost x y at hM
+  exact (finiteFirstOrderMatchingCost_le_totalFiniteCost x y M).trans hM
 
 end FiniteBoundaryPlan
 

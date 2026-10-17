@@ -1,4 +1,4 @@
-import TDA.Persistence.FiniteMatchingCost
+import TDA.Persistence.BoundaryCost
 import TDA.Persistence.DiagramBottleneckLaws
 
 /-!
@@ -19,6 +19,19 @@ namespace TDA.Persistence
 open scoped Classical
 
 variable {I J : Type*} [Fintype I] [Fintype J]
+
+/-- Full boundary blocks with arbitrary pair, deletion and insertion coefficients. -/
+def boundaryAssignmentEntryWith (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) :
+    I ⊕ J → J ⊕ I → ℝ
+  | .inl i, .inl j => c i j
+  | .inl i, .inr _ => u i
+  | .inr _, .inl j => v j
+  | .inr _, .inr _ => 0
+
+/-- Linear assignment cost for those full boundary blocks. -/
+def boundaryAssignmentCostWith (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ)
+    (e : (I ⊕ J) ≃ (J ⊕ I)) : ℝ :=
+  ∑ z, boundaryAssignmentEntryWith c u v z (e z)
 
 /-- The raw boundary assignment cost. This cost matrix is not a metric. -/
 def boundaryAssignmentEntry (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
@@ -95,63 +108,89 @@ theorem ofBoundaryAssignment_toBoundaryAssignment
     cases h : M.finite i <;> simp [ofBoundaryAssignment, toBoundaryAssignment, completionMap, h]
   · exact Subsingleton.elim _ _
 
-private def dummyTargetCharge (e : (I ⊕ J) ≃ (J ⊕ I)) (y : J → ℝ × ℝ) :
+private def dummyTargetChargeWith (e : (I ⊕ J) ≃ (J ⊕ I)) (v : J → ℝ) :
     J ⊕ I → ℝ
   | .inl j => match e.symm (.inl j) with
       | .inl _ => 0
-      | .inr _ => (diagonalCost (y j)).toReal
+      | .inr _ => v j
   | .inr _ => 0
 
 /-- Restriction preserves paired costs and both unmatched sums exactly. -/
-theorem totalFiniteCost_ofBoundaryAssignment (e : (I ⊕ J) ≃ (J ⊕ I))
-    (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
-    (ofBoundaryAssignment e).totalFiniteCost x y = boundaryAssignmentCost x y e := by
+theorem totalBoundaryCost_ofBoundaryAssignment (e : (I ⊕ J) ≃ (J ⊕ I))
+    (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) :
+    (ofBoundaryAssignment e).totalBoundaryCost c u v = boundaryAssignmentCostWith c u v e := by
   have hs (i : I) :
       (match (ofBoundaryAssignment e).finite i with
-        | some j => (finitePairCost (x i) (y j)).toReal
-        | none => (diagonalCost (x i)).toReal) =
-      boundaryAssignmentEntry x y (.inl i) (e (.inl i)) := by
-    cases h : e (.inl i) <;> simp [ofBoundaryAssignment, boundaryAssignmentEntry, h]
-  have hc (z : I ⊕ J) : dummyTargetCharge e y (e z) =
+        | some j => c i j
+        | none => u i) =
+      boundaryAssignmentEntryWith c u v (.inl i) (e (.inl i)) := by
+    cases h : e (.inl i) <;> simp [ofBoundaryAssignment, boundaryAssignmentEntryWith, h]
+  have hc (z : I ⊕ J) : dummyTargetChargeWith e v (e z) =
       match z with
       | .inl _ => 0
-      | .inr _ => boundaryAssignmentEntry x y z (e z) := by
+      | .inr _ => boundaryAssignmentEntryWith c u v z (e z) := by
     cases z with
     | inl i =>
       cases h : e (.inl i) with
-      | inl j => simp only [dummyTargetCharge, ← h, e.symm_apply_apply]
+      | inl j => simp only [dummyTargetChargeWith, ← h, e.symm_apply_apply]
       | inr k => rfl
     | inr j =>
       cases h : e (.inr j) with
-      | inl k => simp only [dummyTargetCharge, ← h, e.symm_apply_apply, boundaryAssignmentEntry]
+      | inl k => simp only [dummyTargetChargeWith, ← h, e.symm_apply_apply, boundaryAssignmentEntryWith]
       | inr i => rfl
   have ht (j : J) :
       (if ∃ i, (ofBoundaryAssignment e).finite i = some j then 0
-        else (diagonalCost (y j)).toReal) = dummyTargetCharge e y (.inl j) := by
+        else v j) = dummyTargetChargeWith e v (.inl j) := by
     simp_rw [ofBoundaryAssignment_some_iff]
     cases h : e.symm (.inl j) with
     | inl i =>
       have he : e (.inl i) = .inl j := by rw [← h, e.apply_symm_apply]
-      simp [dummyTargetCharge, h, show ∃ i, e (.inl i) = .inl j from ⟨i, he⟩]
+      simp [dummyTargetChargeWith, h, show ∃ i, e (.inl i) = .inl j from ⟨i, he⟩]
     | inr k =>
       have hn : ¬ ∃ i, e (.inl i) = .inl j := by
         rintro ⟨i, hi⟩
         have := congrArg e.symm hi
         rw [e.symm_apply_apply, h] at this
         cases this
-      simp [dummyTargetCharge, h, hn]
-  have hr := e.sum_comp (dummyTargetCharge e y)
+      simp [dummyTargetChargeWith, h, hn]
+  have hr := e.sum_comp (dummyTargetChargeWith e v)
   simp_rw [hc] at hr
   simp only [Fintype.sum_sum_type, Finset.sum_const_zero, zero_add] at hr
   calc
-    _ = (∑ i, boundaryAssignmentEntry x y (.inl i) (e (.inl i))) +
-        ∑ j, dummyTargetCharge e y (.inl j) :=
+    _ = (∑ i, boundaryAssignmentEntryWith c u v (.inl i) (e (.inl i))) +
+        ∑ j, dummyTargetChargeWith e v (.inl j) :=
       congrArg₂ (· + ·) (Finset.sum_congr rfl (fun i _ => hs i))
         (Finset.sum_congr rfl (fun j _ => ht j))
     _ = _ := by
-      unfold boundaryAssignmentCost
+      unfold boundaryAssignmentCostWith
       rw [Fintype.sum_sum_type, hr]
-      simp [dummyTargetCharge]
+      simp [dummyTargetChargeWith]
+
+/-- The first-order restriction theorem, with its original cost convention. -/
+theorem totalFiniteCost_ofBoundaryAssignment (e : (I ⊕ J) ≃ (J ⊕ I))
+    (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
+    (ofBoundaryAssignment e).totalFiniteCost x y = boundaryAssignmentCost x y e := by
+  calc
+    _ = (ofBoundaryAssignment e).totalBoundaryCost
+        (fun i j => (finitePairCost (x i) (y j)).toReal)
+        (fun i => (diagonalCost (x i)).toReal) (fun j => (diagonalCost (y j)).toReal) := rfl
+    _ = boundaryAssignmentCostWith
+        (fun i j => (finitePairCost (x i) (y j)).toReal)
+        (fun i => (diagonalCost (x i)).toReal) (fun j => (diagonalCost (y j)).toReal) e :=
+      totalBoundaryCost_ofBoundaryAssignment e _ _ _
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro z _
+      cases z with
+      | inl i => cases e (.inl i) <;> rfl
+      | inr j => cases e (.inr j) <;> rfl
+
+/-- Completion preserves arbitrary coefficient-dependent boundary cost. -/
+theorem boundaryAssignmentCostWith_toBoundaryAssignment
+    (M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1})
+    (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) :
+    boundaryAssignmentCostWith c u v M.toBoundaryAssignment = M.totalBoundaryCost c u v := by
+  rw [← totalBoundaryCost_ofBoundaryAssignment, ofBoundaryAssignment_toBoundaryAssignment]
 
 /-- The chosen completion has exactly the original partial-matching cost. -/
 theorem boundaryAssignmentCost_toBoundaryAssignment

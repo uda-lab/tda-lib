@@ -94,3 +94,6 @@ import TDA.Persistence.GaussianGram
 import TDA.Persistence.WeightedKernel
 import TDA.Persistence.BoundaryAugmentedMatching
 import TDA.Persistence.FiniteBoundaryTransport
+import TDA.Persistence.BoundaryCost
+import TDA.Persistence.FinitePMatchingCost
+import TDA.Persistence.FinitePBoundaryTransport

@@ -146,6 +146,8 @@ closed upper half-plane is not proved. That bridge must aggregate and split
 repeated occurrences and compare arbitrary boundary destinations with the diagonal
 cost. Divol–Lacombe's formula (20) and Proposition 3.7 use a shortened quotient
 metric; the raw cost blocks above do not supply an ordinary metric Wasserstein
-interpretation. General p, essential bars, noninteger input masses, infinite
-diagrams, completeness and barycenters remain outside this result. Fractional
+interpretation. [Real-exponent powered costs](finite-p-boundary-transport.md) separately
+reuse this assignment argument for finite p≥1 and take roots after optimization.
+General-p metric laws, essential bars, noninteger input masses, infinite diagrams,
+completeness and barycenters remain outside these finite-plan results. Fractional
 transported mass does not change the unit input mass per occurrence.

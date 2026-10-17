@@ -333,6 +333,15 @@ the minimum; fractional optima can coexist with it. Empty formulas and reindexin
 included. Equality with all Borel/Radon couplings remains outside the API.
 See [finite boundary transport](math/finite-boundary-transport.md).
 
+## Finite real-exponent matching and transport costs
+
+`FinitePMatchingCost` and `FinitePBoundaryTransport` extend the finite optimization to
+real matching exponents p≥1 with fixed maximum ground norm. Distances are powered
+before summing; real transported and residual masses stay linear. Powered and rooted
+matching/transport optima agree and are attained; empty formulas, occurrence reindexing
+and p=1 compatibility are included. General-p metric laws and all-Radon-coupling equality
+are outside this API. See [real-exponent finite transport](math/finite-p-boundary-transport.md).
+
 ## Gaussian persistence images
 
 `TDA.Persistence.GaussianKernel` proves normalization and L¹ translation estimates for
