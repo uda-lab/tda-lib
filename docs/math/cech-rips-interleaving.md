@@ -93,12 +93,14 @@ complexes.
 ## Scope
 
 The distance bounds are statements about real interleaving distances of homology
-modules, not about persistence diagrams. Two bridges are absent. First, the sublevel
-module of a finite filter is not shown here to be finite-constructible with the actual
-diagram as its module diagram, so the
-[finite-constructible isometry](constructible-isometry.md) is not applied. Second, at log
-scale every vertex is alive at every time, as the no-zero-left-tail fixture shows, so in
-degree 0 the log-scale module lies outside the zero-left domain of that isometry.
+modules, not about persistence diagrams. At radius level, the
+[constructibility bridge](sublevel-constructibility.md) shows that the sublevel module of a
+finite filter is finite-constructible with the actual diagram as its module diagram, so the
+[finite-constructible isometry](constructible-isometry.md) turns the radius-level
+face-difference bound into a bottleneck bound. No log-scale diagram statement is made in any
+degree. At log scale every vertex is alive at every time, as the no-zero-left-tail fixture
+shows, so in degree 0 the log-scale module lies outside the zero-left domain of that
+isometry.
 Hausdorff and Gromov–Hausdorff statements, the Nerve Lemma, open-ball variants and
 Euclidean sharpening of the factor 2 are not treated.
 

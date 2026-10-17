@@ -127,3 +127,7 @@ same maximum-norm cost. It does not supply a singular-homology comparison
 for arbitrary continuous tame functions, so it does not formalize that full
 Main Theorem. Its subdivision by face crossings is a finite proof route,
 not the source's general topological argument.
+
+The [constructibility bridge](sublevel-constructibility.md) identifies this diagram with the
+module diagram of the real sublevel module on the critical grid. Through the
+finite-constructible isometry it gives a second, algebraic proof of the stability bound.

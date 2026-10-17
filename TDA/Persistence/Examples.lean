@@ -71,5 +71,6 @@ import TDA.Persistence.FiniteBoundaryTransportExamples
 import TDA.Persistence.FinitePBoundaryTransportExamples
 import TDA.Persistence.SublevelInterleavingExamples
 import TDA.Persistence.CechRipsInterleavingExamples
+import TDA.Persistence.SublevelConstructibleExamples
 import TDA.Persistence.WeightedKernelStabilityExamples
 import TDA.Persistence.FinitePMatchingCostLawsExamples
