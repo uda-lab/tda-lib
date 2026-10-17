@@ -130,7 +130,7 @@ memberships above.
 
 ## Explicit two-point diagrams
 
-The certified two-point radius-level diagrams over `ZMod 2` are
+The two-point radius-level diagrams over `ZMod 2` are
 
 ```text
 (dgm (ZMod 2) (Rips.filter TwoPoints.metric) 0).points = {(0, ⊤), (0, 2)},
@@ -139,12 +139,12 @@ The certified two-point radius-level diagrams over `ZMod 2` are
 
 These are `twoPoints_rips_dgm_zero` and `twoPoints_cech_dgm_zero`. The positive-degree
 radius-level emptiness is stated by `twoPoints_rips_dgm_pos` and `twoPoints_cech_dgm_pos`;
-the corresponding certified log-scale statements are `twoPoints_rips_logDgm_pos` and
+the corresponding `ZMod 2` log-scale statements are `twoPoints_rips_logDgm_pos` and
 `twoPoints_cech_logDgm_pos`.
 
 In every degree `n ≥ 1`, the two radius-level point multisets are empty over every field. The
-log-scale point multisets are also empty in every such degree for the certified `ZMod 2`
-Rips and Čech fixtures. For these `ZMod 2` diagrams, `twoPoints_bottleneck_zero` gives the
+log-scale point multisets are also empty in every such degree for the `ZMod 2` Rips and Čech
+fixtures. For these `ZMod 2` diagrams, `twoPoints_bottleneck_zero` gives the
 exact radius-level bottleneck `1` in degree 0, while `twoPoints_bottleneck_pos` gives `0` in
 every degree `n ≥ 1`. The exact log-scale value is `0` in every degree `n ≥ 1`, by
 `twoPoints_logBottleneck_pos`. No degree-0 log-scale bottleneck is stated.

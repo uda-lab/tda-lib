@@ -63,6 +63,7 @@ noncomputable def positiveGrid (f : FilterFunction K ℝ) :
     Fin (logCriticalValues f).card ↪o ℝ :=
   (logGrid f).trans expEmb
 
+omit [LinearOrder V] in
 @[simp] theorem positiveGrid_apply (f : FilterFunction K ℝ)
     (i : Fin (logCriticalValues f).card) :
     positiveGrid f i = Real.exp (logGrid f i) := by
@@ -190,7 +191,7 @@ theorem logDgm_points_eq_map_log {f : FilterFunction K ℝ} {n : ℕ}
   apply Multiset.map_congr rfl
   intro p hp
   obtain ⟨b, d⟩ := p
-  cases d <;> simp [Function.comp_def, expEmb_apply]
+  cases d <;> simp [Function.comp_def]
 
 /-- Every birth of a positive-degree radius-level diagram is positive. -/
 theorem dgm_birth_pos {f : FilterFunction K ℝ} {n : ℕ} (hn : 1 ≤ n)

@@ -52,9 +52,6 @@ private theorem ripsEdge_values :
 
 private theorem ripsEdge_dgm (n : ℕ) :
     dgm (ZMod 2) ripsEdge n = dgm (ZMod 2) (Rips.filter TwoPoints.metric) n := by
-  change @dgm (Fin 2) _ (ZMod 2) _ ℝ _ edgeK edgeFaces ripsEdge n =
-    @dgm (Fin 2) _ (ZMod 2) _ ℝ _ (Rips.fullComplex (Fin 2))
-      Rips.fullComplexFintype (Rips.filter TwoPoints.metric) n
   have hI : (edgeFaces : Fintype (TotalFace edgeK)) =
       (Rips.fullComplexFintype : Fintype (TotalFace edgeK)) :=
     Subsingleton.elim _ _
@@ -93,9 +90,9 @@ theorem twoPoints_rips_dgm_zero :
     change (Rips.filter TwoPoints.metric).value s = φ (edgeFilter.value s)
     rw [ripsEdge_map_value]
     rcases edge_face_cases s with h0 | h1 | he
-    · simp [edgeFilter, φ, h0] <;> norm_num
-    · simp [edgeFilter, φ, h1] <;> norm_num
-    · simp [edgeFilter, φ, he, Finset.ext_iff] <;> norm_num
+    · simp [edgeFilter, φ, h0] ; norm_num
+    · simp [edgeFilter, φ, h1]
+    · simp [edgeFilter, φ, he, Finset.ext_iff] ; norm_num
   rw [dgm_points_map_of_monotoneOn (ZMod 2) edgeFilter ripsEdge φ hφ hvalue 0]
   rw [edge_points]
   norm_num [φ, Multiset.filter_singleton]
@@ -281,23 +278,23 @@ theorem twoPoints_bottleneck_zero :
   let c : Fin 1 → ℝ := fun _ => 0
   have hx : (Finset.univ : Finset (Fin 1)).val.map x =
       finitePart (dgm (ZMod 2) (Rips.filter TwoPoints.metric) 0).points := by
-    simp [finitePart, x, twoPoints_rips_dgm_zero, Multiset.filterMap_cons] <;> rfl
+    simp [finitePart, x, twoPoints_rips_dgm_zero] ; rfl
   have hy : (Finset.univ : Finset (Fin 1)).val.map y =
       finitePart (dgm (ZMod 2) (Cech.filter TwoPoints.pts) 0).points := by
-    simp [finitePart, y, twoPoints_cech_dgm_zero, Multiset.filterMap_cons] <;> rfl
+    simp [finitePart, y, twoPoints_cech_dgm_zero] ; rfl
   have hb : (Finset.univ : Finset (Fin 1)).val.map b =
       essentialPart (dgm (ZMod 2) (Rips.filter TwoPoints.metric) 0).points := by
-    simp [essentialPart, b, twoPoints_rips_dgm_zero, Multiset.filterMap_cons] <;> rfl
+    simp [essentialPart, b, twoPoints_rips_dgm_zero] ; rfl
   have hc : (Finset.univ : Finset (Fin 1)).val.map c =
       essentialPart (dgm (ZMod 2) (Cech.filter TwoPoints.pts) 0).points := by
-    simp [essentialPart, c, twoPoints_cech_dgm_zero, Multiset.filterMap_cons] <;> rfl
+    simp [essentialPart, c, twoPoints_cech_dgm_zero] ; rfl
   rw [bottleneck_eq_presentation _ _ x y b c hx hy hb hc]
   apply le_antisymm
   · let M : OccurrenceMatching (Fin 1) (Fin 1) (Fin 1) (Fin 1) :=
       ⟨fun _ => none, by simp, Equiv.refl _⟩
     have hcost : M.cost x y b c = 1 := by
       simp [OccurrenceMatching.cost, M, x, y, b, c, diagonalCost,
-        finitePairCost, essentialPairCost] <;> norm_num
+        essentialPairCost]
     exact (presentationBottleneck_le_cost x y b c M).trans_eq hcost
   · unfold presentationBottleneck
     apply le_iInf
@@ -374,7 +371,7 @@ theorem filledReal_dgm_one_pos {p : ℝ × WithTop ℝ}
 noncomputable def shiftedReal : FilterFunction FilledTriangle.C.toPre ℝ :=
   filledReal.map (OrderIso.addRight (-2 : ℝ)).toOrderEmbedding
 
-/-- The shifted filled-triangle degree-one diagram has a nonpositive death. -/
+/-- The shifted filled-triangle degree-one diagram has its bar at `(-1, 0)`, with negative birth. -/
 theorem shiftedReal_dgm_one :
     (dgm (ZMod 2) shiftedReal 1).points =
       {((-1 : ℝ), ((0 : ℝ) : WithTop ℝ))} := by
