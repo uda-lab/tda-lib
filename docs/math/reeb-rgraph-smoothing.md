@@ -334,7 +334,9 @@ coherences of geometric smoothing and the semigroup isomorphisms `U_{ε₁+ε₂
 Observation 4.33 (the corresponding statement `T_ε T_δ ≅ T_{ε+δ}` for product thickening is false
 in general: a point thickens to a rectangle on one side and to an interval on the other; the
 addition map `T_ε T_δ → T_(ε+δ)`, its lax coherence and a machine-checked one-point
-non-isomorphism are in `reeb-geometric-thickening-addition.md`); any new
+non-isomorphism are in `reeb-geometric-thickening-addition.md`, and the natural isomorphism
+`ℛ T_ε T_δ ≅ U_(ε+δ)` induced by the addition map on graph objects is in
+`reeb-quotient-thickening-addition.md`); any new
 distance on ℝ-graphs or on constructible cosheaves; ordered-space or Reeb-ordering results; the
 general identification of the fibers of `U_ε f` and of its vertex set after Definition 4.30.
 
