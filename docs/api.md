@@ -286,7 +286,7 @@ log-scale modules, and `Cech.ripsCechLogInterleaving` is the log 2 case for Rips
 over every ring and in every pseudometric ambient. At radius level, `Cech.ripsToCech` and
 `Cech.cechToRips` factor the doublings Rips_r ⊆ Rips_{2r} and Čech_r ⊆ Čech_{2r} for every
 real r; these are structure maps only for r ≥ 0. The log-scale results make no diagram or
-bottleneck statement. See [the proofs, fixtures and scope](math/cech-rips-interleaving.md).
+bottleneck statement in degree 0. See [the proofs, fixtures and scope](math/cech-rips-interleaving.md).
 
 `TDA.Persistence.SublevelConstructible` proves that the sublevel module of a real filter on a
 finite complex is finite-constructible on the critical values of the filter, over every ring,
@@ -300,6 +300,20 @@ witness equivalence at every finite parameter. `bottleneck_dgm_le_faceSupDiffere
 rederives finite-filter stability from the inclusion interleaving, independently of the
 face-order proof, and essential multiplicities agree. Log-scale and cross-complex comparisons
 are not made. See [the proofs, fixtures and scope](math/sublevel-constructibility.md).
+
+`TDA.Persistence.LogScaleDiagram` gives log-scale modules a diagram in degrees n ≥ 1. A filter
+is `PositiveOnEdges` when every face with at least two vertices has positive value; Rips
+filters of a metric and Čech filters with a compatible label metric are, by
+`positiveOnEdges_rips` and `Cech.positiveOnEdges_cech`. `logGrid f` enumerates the logarithms
+of the positive critical values, and for 1 ≤ n and positive filters
+`logModule_isConstructible` proves the log-scale module finite-constructible on it, over every
+ring. `logDgm k f n` is its module diagram over a field. For two positive filters on the same
+complex, `bottleneck_logDgm_eq_realInterleavingDistance` is the isometry at log scale;
+`bottleneck_logDgm_le_log` bounds the bottleneck by log c for a sandwich g ≤ f ≤ c · g, and
+`Cech.bottleneck_logDgm_rips_cech_le` bounds the log-scale Rips and Čech diagrams by log 2 in
+every pseudometric ambient. `not_isConstructible_logModule_zero` shows that in degree 0 the
+module is constructible on no finite grid once a vertex has nonpositive value. No relation to
+`dgm` is stated. See [the proofs, fixtures and scope](math/log-scale-diagrams.md).
 
 `TDA.Filtration.CechDisplacement` compares two labelled families p, q : V → X in one
 ambient space label by label. Moving the points of a face by at most ε changes its Čech

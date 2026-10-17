@@ -99,8 +99,10 @@ is finite, and the two diagrams have the same number of essential classes.
 
 ## Scope
 
-Log-scale modules and log-mapped diagrams are not treated; in degree 0 the log-scale modules
-have no zero left tail. Extended-real indexing, positive scaling of real modules, filters on
+Log-scale modules are treated in degrees n ≥ 1 by the
+[log-scale diagrams](log-scale-diagrams.md), on the logarithms of the positive critical
+values; in degree 0 the log-scale modules have no zero left tail, and log-mapped diagrams are
+not treated. Extended-real indexing, positive scaling of real modules, filters on
 two different complexes, filters valued outside ℝ and infinite complexes are outside this
 note. The definitions of `dgm`, the module diagram, constructibility and the isometry are
 used unchanged.
