@@ -12,8 +12,8 @@ an actual powered-cost minimizing matching; first-order optimizers are not reuse
 
 These are finite unit-occurrence reservoir matrices. The maximum ground norm is
 independent of the real matching exponent. The finite cost-matrix adaptation of
-Divol–Lacombe and Lacombe–Cuturi–Oudot does not identify all Radon couplings or
-supply general-exponent metric laws.
+Divol–Lacombe and Lacombe–Cuturi–Oudot does not identify all Radon couplings.
+`FinitePBoundaryTransportLaws` supplies the rooted distance laws for `1 ≤ p`.
 -/
 
 noncomputable section

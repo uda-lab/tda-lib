@@ -138,5 +138,5 @@ is a section of restriction; the dummy assignments are not unique. Equality with
 Borel/Radon couplings remains unproved. No quotient or metric-space instance on raw
 presentations is supplied.
 [Finite real-exponent boundary transport](finite-p-boundary-transport.md) supplies powered
-and rooted optima and their finite-plan identification for real p≥1. General-p metric
-laws, essential bars, noninteger input measures and infinite diagrams remain separate.
+and rooted optima, their finite-plan identification and rooted distance laws for real p≥1.
+Essential bars, noninteger input measures and infinite diagrams remain separate.

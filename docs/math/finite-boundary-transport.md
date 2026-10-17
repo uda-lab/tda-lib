@@ -148,6 +148,7 @@ cost. Divol–Lacombe's formula (20) and Proposition 3.7 use a shortened quotien
 metric; the raw cost blocks above do not supply an ordinary metric Wasserstein
 interpretation. [Real-exponent powered costs](finite-p-boundary-transport.md) separately
 reuse this assignment argument for finite p≥1 and take roots after optimization.
-General-p metric laws, essential bars, noninteger input masses, infinite diagrams,
+Their rooted distance laws follow from finite matching composition and Minkowski.
+Essential bars, noninteger input masses, infinite diagrams,
 completeness and barycenters remain outside these finite-plan results. Fractional
 transported mass does not change the unit input mass per occurrence.

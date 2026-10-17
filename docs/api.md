@@ -353,8 +353,11 @@ See [finite boundary transport](math/finite-boundary-transport.md).
 real matching exponents p≥1 with fixed maximum ground norm. Distances are powered
 before summing; real transported and residual masses stay linear. Powered and rooted
 matching/transport optima agree and are attained; empty formulas, occurrence reindexing
-and p=1 compatibility are included. General-p metric laws and all-Radon-coupling equality
-are outside this API. See [real-exponent finite transport](math/finite-p-boundary-transport.md).
+and p=1 compatibility are included. `FinitePMatchingCostLaws` proves sharp rooted
+composition, self cost, symmetry, triangle inequality and positive-lifetime separation
+by value-preserving occurrence equivalences. `FinitePBoundaryTransportLaws` transfers
+these laws to the real-plan optimum. All-Radon-coupling equality and quotient/metric
+instances remain outside this API. See [real-exponent finite transport](math/finite-p-boundary-transport.md).
 
 ## Gaussian persistence images
 
