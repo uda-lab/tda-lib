@@ -563,10 +563,54 @@ data is not the path with one vertex per level. On the tree with edges
 These are elementary library results, not attributed to a source.
 
 Constructibility of the precosheaf at a covering list, the cosheaf isomorphism
-with the realized data, path components of closed level sets, the Reeb
-quotient of the realization, the face maps from edge cells to vertex cells and
-the isomorphism of the finite Reeb data with the MultiNerve Mapper of a
-height-separating uniform family are not proved. No geometric realization of
-either Mapper construction, no compatibility with refinement of critical lists,
-no refinement tower of height-separating covers and no approximation statement
-is proved.
+with the realized data, path components of closed level sets, and the Reeb
+quotient of the realization are not proved. No geometric realization of either
+Mapper construction, no compatibility with refinement of critical lists, no
+refinement tower of height-separating covers and no approximation statement is
+proved.
+
+### MultiNerve Mapper as finite Reeb data
+
+The comparison uses a level for each member of the uniform cover, rather than
+the canonical vertex-height list `vertexHeightLevels`. A critical list `T` is
+`LevelsAdapted` when its level for member `k` belongs to that member and to no
+other member. If `0 < g`, `2g ≤ r`, the cover is height-separating, and every
+vertex height lies in some member, `exists_levelsAdapted` produces such a list
+with `CoversVertexHeights T h`. Conversely, `LevelsAdapted.heightSeparating`
+shows that adaptedness together with this vertex-height coverage implies height
+separation.
+
+The member-adapted choice is necessary because a regular member can contain no
+vertex height and still carry a vertex cell coming from an edge crossing that
+level. Thus the Mapper data can subdivide the canonical data. In
+F2, `edge_mapperIso` compares the single-edge Mapper at `S012`, whose regular
+middle member contributes the crossing vertex and whose two gaps each carry an
+edge cell, with the graph-PL finite data; `edge_S02_counts` records the one-gap
+canonical comparison at `S02`.
+
+For a two-label cell, `labelFace` is its face over either label, and
+`eq_labelFace_of_le` characterizes it as the unique single-label face below the
+cell. These faces are the `left` and `right` fields of `uniformMapperData`.
+The equations `uniformMapperVertexEquiv_left` and
+`uniformMapperVertexEquiv_right` identify them with the endpoint maps of the
+corresponding graph-PL finite Reeb data, yielding `uniformMapperIso` with
+`graphPLReebData G h T`.
+
+When `2g ≤ r`, `uniformMapperCellsEquiv` exhausts all MultiNerve cells: every
+cell is either over one label or over a consecutive pair. The bound is needed:
+for the boundary cover with `2g > r`, `triple_cell` supplies a cell with three
+labels, so it belongs to neither summand of that equivalence.
+
+The hypotheses also have independent negative controls. The cover governed by
+`overlap_control` admits no adapted list covering the vertex heights, as shown
+by `overlap_no_adapted`. The list `T1` is adapted but does not cover the vertex
+heights, and `T1_no_iso` shows that it gives no isomorphism with the Mapper data.
+At the positive end, `exists_uniformMapperIso` gives member-adapted levels and
+an isomorphism whenever the finite graph-PL height is bounded in `[m, M]` and
+`0 < ρ`, with `0 < g`, `2g ≤ r`, and `r < ρ`.
+
+These results compare the MultiNerve Mapper with finite Reeb data at
+member-adapted levels. The MultiNerve terminology is used in the sense of
+CO16-v3 Definitions 3.2 and 3.3 as context; the comparison itself is a
+library result. No realization, 1-skeleton or graph packaging, refinement to
+the canonical list, or ordinary Mapper statement is made here.
