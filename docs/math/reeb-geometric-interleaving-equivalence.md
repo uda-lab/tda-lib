@@ -144,6 +144,9 @@ function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installe
 * **Lifted triangle.** The `1/4` parallel-single interleaving satisfies both triangles after
   applying `constructibleShiftMap`, `constructibleSmoothing` and the lifted composition
   isomorphism, once at the parallel graph and once at the single graph.
+* **Range and component controls.** The two-point graph and the singleton at `0` have equal height
+  ranges but distance `⊤` by the component obstruction. The parallel edges and the single edge have
+  range bound `0`, no `0`-interleaving, and distance at most `1/4`.
 
 ## Enlargement, monotonicity and self-smoothing
 
@@ -181,6 +184,29 @@ distance consequences are `geometricInterleavingDistance_geometricSmoothing_self
 for the point graph, smoothing produces a segment, so only the upper bound is claimed, not
 smoothing invariance.
 
+## Lower bounds and exact values
+
+`heightRange A` is the set of heights attained by `A`. The smoothed range is given by
+`heightRange_geometricSmoothing`: `heightRange (U_ε A) = heightRange A + Icc (-ε) ε`.
+
+The range obstruction is `hausdorffEDist_heightRange_le_geometricInterleavingDistance`. It bounds
+the Hausdorff edistance of the two height ranges by `d_geo`, using only the existence of both maps
+in a geometric interleaving. If one graph is empty and the other is nonempty, the distance is `⊤`.
+
+The supremum lemma `ofReal_abs_sSup_sub_le_hausdorffEDist` bounds the difference of the suprema of
+two nonempty bounded real sets by their Hausdorff edistance. Together with the smoothed-range
+formula, it gives `d_geo(A, U_ε A) = ε` for nonempty `A`.
+
+The component obstruction uses `Interleaving.topEquiv` at `⊤`. Here
+`thicken ε ⊤ = ⊤`, so every geometric interleaving induces an equivalence of the top component
+types. The singleton graphs satisfy `d_geo(P_a, P_b) = |a − b|`, and the edge and its midpoint
+have distance `1/2`.
+
+The two-point graph and the singleton at `0` have equal height ranges, so the range bound gives only
+`0`, while their distance is `⊤` by the component obstruction. The parallel edges and the single
+edge have range bound `0`, but no `0`-interleaving; an existing witness gives distance at most
+`1/4`. Positivity or the exact value of the parallel–single distance is not decided here.
+
 ## Source correspondence
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4. As in `reeb-geometric-interleaving.md`,
@@ -192,8 +218,9 @@ and the unit and composite laws of the shifted map. None is attributed to a numb
 Essential surjectivity of `C` is not used, so no critical-value scope is inherited.
 
 Not claimed here: absorption beyond (H2); a comparison with Mapper; interleavings of precosheaves
-that do not come from graph objects; exact values of `d_geo(A, U_ε A)`; interleavings internal to
-`ConstructibleCosheafCat` and a lift of `GeometricInterleaving.toCosheaf` to them.
+that do not come from graph objects; interleavings internal to `ConstructibleCosheafCat` and a
+lift of `GeometricInterleaving.toCosheaf` to them; positivity or the exact value of the
+parallel–single distance.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition
 4.36](https://arxiv.org/html/1501.04147v1).
