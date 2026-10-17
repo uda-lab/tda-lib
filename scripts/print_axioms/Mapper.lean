@@ -587,3 +587,42 @@ import TDA
 #print axioms TDA.Mapper.UniformMapperReebDataExamples.triple_cell
 #print axioms TDA.Mapper.UniformMapperReebDataExamples.triple_cell_not_mem_summands
 #print axioms TDA.Mapper.GraphPL.uniformMapperVertexEquiv_cell_inr
+
+-- Closed level sets of graph-PL height.
+#print axioms TDA.Mapper.GraphPL.exists_isLevelWindow
+#print axioms TDA.Mapper.GraphPL.levelWindowEquiv
+#print axioms TDA.Mapper.GraphPL.graphPLStarEquiv_eq_levelWindowEquiv
+#print axioms TDA.Mapper.GraphPL.levelWindowEquiv_mk_vertex
+#print axioms TDA.Mapper.GraphPL.levelWindowEquiv_mk_edgePoint
+#print axioms TDA.Mapper.GraphPL.crossingParam
+#print axioms TDA.Mapper.GraphPL.dartHeight_crossingParam
+#print axioms TDA.Mapper.GraphPL.crossingPoint
+#print axioms TDA.Mapper.GraphPL.eq_crossingPoint
+#print axioms TDA.Mapper.GraphPL.joinedIn_level_of_eq
+#print axioms TDA.Mapper.GraphPL.closedLevelPoint
+#print axioms TDA.Mapper.GraphPL.closedLevelComponentsEquiv
+#print axioms TDA.Mapper.GraphPL.closedLevelComponentsEquiv_eq
+#print axioms TDA.Mapper.GraphPL.closedLevelComponentsEquiv_mk_vertex
+#print axioms TDA.Mapper.GraphPL.closedLevelComponentsEquiv_crossingPoint
+#print axioms TDA.Mapper.GraphPL.levelWindowEquiv_comp_componentMap_levelInclusion
+#print axioms TDA.Mapper.GraphPL.componentMap_levelInclusion_bijective
+#print axioms TDA.Mapper.GraphPL.graphPLReebDataVEquivClosedLevel
+#print axioms TDA.Mapper.GraphPL.graphPLStarEquiv_comp_componentMap_levelInclusion
+
+-- Closed level set fixtures.
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_level_one_card
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_level_one_ne
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.flat_level_card
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.flat_midpoint_class
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.crossing_level_card
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.crossing_midpoint_eq
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.crossing_midpoint
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_half_card
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_half_crossing_ne
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_three_empty
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.I4_isLevelWindow
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.I4_bijective
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.J4_not_isLevelWindow
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.J4_not_injective
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_reeb_V1_card
+#print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_star_triangle
