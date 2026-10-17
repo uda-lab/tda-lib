@@ -322,3 +322,4 @@ import TDA
 #print axioms TDA.Filtration.FilterFunctionMapExamples.vertex_value
 #print axioms TDA.Filtration.FilterFunctionMapExamples.no_negated_filter
 #print axioms TDA.Filtration.FilterFunctionMapExamples.scale_round_trip
+#print axioms TDA.Filtration.Rips.diameter_pos

@@ -68,6 +68,13 @@ theorem dist_le_diameter (d : MetricSpace V) {s : Finset V} {v w : V}
   exact (Finset.le_fold_max _).mpr
     (Or.inr ⟨(v, w), Finset.mem_product.mpr ⟨hv, hw⟩, le_rfl⟩)
 
+/-- A face with at least two vertices has positive diameter. -/
+theorem diameter_pos (d : MetricSpace V) {s : Finset V} (hs : 1 < s.card) :
+    0 < diameter d s := by
+  obtain ⟨v, hv, w, hw, hvw⟩ := Finset.one_lt_card.1 hs
+  let : MetricSpace V := d
+  exact (dist_pos.2 hvw).trans_le (dist_le_diameter d hv hw)
+
 theorem diameter_mono (d : MetricSpace V) {s t : Finset V} (hst : s ⊆ t) :
     diameter d s ≤ diameter d t := by
   apply (diameter_le_iff d s _).mpr

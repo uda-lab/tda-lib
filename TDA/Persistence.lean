@@ -100,6 +100,7 @@ import TDA.Persistence.FinitePBoundaryTransport
 import TDA.Persistence.SublevelInterleaving
 import TDA.Persistence.CechRipsInterleaving
 import TDA.Persistence.SublevelConstructible
+import TDA.Persistence.LogScaleDiagram
 import TDA.Persistence.GaussianFeature
 import TDA.Persistence.WeightedKernelStability
 import TDA.Persistence.FinitePMatchingCostLaws
