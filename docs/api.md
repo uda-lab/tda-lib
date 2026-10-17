@@ -369,6 +369,15 @@ field, and the Čech bottleneck distance is half the Rips one. With Rips metric 
 distance-compatibility conditions, with any finite ι and no properness; the line ℝ has the
 same identities. See [the scaling law and fixtures](math/filter-reparametrization.md).
 
+`TDA.Persistence.CechRipsAdditive` proves `bottleneck_self_scale_le`, the critical-value
+coordinate lemmas `mem_criticalValues_of_mem_finitePart_dgm` and
+`mem_criticalValues_of_mem_essentialPart_dgm`, and
+`TDA.Filtration.Rips.filter_value_le_diameter_univ`. It then proves
+`Cech.bottleneck_rips_cech_dgm_le_half_diameter` in the sup-norm product and
+`Cech.bottleneck_rips_cech_dgm_le_half_diameter_real` on the line, together with the
+embedding, kernel-value and finite-part image consequences in the product. See [Rips versus
+Čech of one configuration](math/cech-weighted-kernel-images.md#rips-versus-čech-of-one-configuration).
+
 ## Finite first-order PD matching cost
 
 `TDA.Persistence.FiniteMatchingCost` defines `finiteFirstOrderMatchingCost` from the
@@ -513,6 +522,16 @@ image differences are bounded by the corresponding constant times `(N_p+N_q) δ`
 arctan specializations for the embedding, kernel-value and image bounds. No label metric or
 distance compatibility is assumed; only the image items carry `0 < σ`. See
 [the Čech compositions](math/cech-weighted-kernel-images.md).
+
+`TDA.Persistence.CechSupNormWeightedKernel` and
+`TDA.Persistence.CechSupNormPersistenceImage` give the sup-norm consumers for any finite
+ι and distance-compatible label metrics d, e. With the nonnegative weight bounds
+`0 ≤ A`, `0 ≤ B` and a `PersistenceImage.Weight A B`, the embedding, feature, kernel-value
+and image bounds use the corresponding constant times `(N_p+N_q)` times half the pairwise
+discrepancy; the image items alone additionally require `0 < σ`, measurable pixels and
+pairwise disjoint pixels. The line has the bottleneck form
+`Cech.bottleneck_dgm_le_half_pairwiseDiscrepancy_real` only. See
+[Sup-norm consumers](math/cech-weighted-kernel-images.md#sup-norm-consumers).
 
 ## Review and extension boundaries
 

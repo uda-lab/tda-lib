@@ -63,6 +63,73 @@ point. For the configuration with both labels at 0 there is no such metric, so t
 consumers do not apply; against the points 0, 2, with displacement 2, the Čech consumers
 do.
 
+## Sup-norm consumers
+
+In the sup-metric product ι → ℝ with a possibly empty finite ι, let d and e be
+distance-compatible metrics for p, q : V → ι → ℝ, so d.dist v w = dist (p v) (p w) and
+likewise for e and q. With a finite ordered label type V, a field k and degree n, write N_p
+and N_q for the finite-occurrence counts of the two Čech diagrams and put
+
+Δ = Rips.pairwiseDiscrepancy d e / 2.
+
+`Cech.bottleneck_dgm_le_half_pairwiseDiscrepancy` gives the full bottleneck bound, and
+`Cech.bottleneck_dgm_lt_top_supNorm` and
+`Cech.toReal_bottleneck_dgm_le_half_pairwiseDiscrepancy` give its finiteness and real
+conversion. The embedding, second-level Gaussian feature and fixed-diagram kernel-value
+consumers are `Cech.norm_diagramEmbedding_sub_le_half_pairwiseDiscrepancy`,
+`Cech.norm_diagramGaussianFeature_sub_le_half_pairwiseDiscrepancy` and
+`Cech.abs_gaussianDiagramKernel_sub_le_half_pairwiseDiscrepancy`. Each has the matching
+Rips constant times (N_p + N_q) times Δ; the feature and kernel-value constants also carry
+the factor 1/|τ|. All consumer items assume hA : 0 ≤ A, hB : 0 ≤ B and a weight
+`PersistenceImage.Weight A B`. The image consumer
+`Cech.norm_finiteDiagramImage_sub_le_half_pairwiseDiscrepancy` has the matching image
+constant and requires 0 < σ, measurable pixels and pairwise disjoint pixels. The kernel,
+embedding and feature items require only nonnegative weight bounds, with no sign hypothesis
+on σ or τ. The arctan instances
+`Cech.norm_diagramEmbedding_sub_le_half_pairwiseDiscrepancy_arctan`,
+`Cech.abs_gaussianDiagramKernel_sub_le_half_pairwiseDiscrepancy_arctan` and
+`Cech.norm_finiteDiagramImage_sub_le_half_pairwiseDiscrepancy_arctan` have constants
+2C + √2·π/(2|σ|), (2C + √2·π/(2|σ|))/|τ| and
+2C + 3·√(π/2)/σ; the image instance also keeps 0 < σ. There is no arctan feature instance.
+
+The displacement route above needs no label metric. This sup-norm route needs d and e, but
+`Cech.pairwiseDiscrepancy_le_two_mul_displacement` gives Δ ≤ δ, where δ is the same-label
+displacement. The moved diagonal pair has Δ = 1/2 and δ = 1, so the halved constants are
+strictly smaller there. On the line, only the bottleneck statement
+`Cech.bottleneck_dgm_le_half_pairwiseDiscrepancy_real` is provided; no line consumer
+theorems are stated.
+
+## Rips versus Čech of one configuration
+
+For a real diagram D and c > 0, `bottleneck_self_scale_le` bounds the bottleneck distance
+from D to D scaled by c by ENNReal.ofReal (|1 − c| · M), when M bounds the absolute values
+of both coordinates of every finite point and of every essential birth coordinate. The
+proof matches each occurrence to its own scaled image. The bound is sharp for the single
+finite bar (0, 2) at c = 1/2: the scaled point is (0, 1), and the bottleneck distance is
+exactly 1.
+
+The coordinates of actual diagrams are critical values by
+`mem_criticalValues_of_mem_finitePart_dgm` and
+`mem_criticalValues_of_mem_essentialPart_dgm`. For a Rips filter, every such value lies in
+[0, diameter of the whole carrier] by `Rips.filter_value_le_diameter_univ`. Combining this
+with the sup-norm scaling identity gives
+`Cech.bottleneck_rips_cech_dgm_le_half_diameter` in ι → ℝ and
+`Cech.bottleneck_rips_cech_dgm_le_half_diameter_real` on the line: the Rips and Čech
+diagrams of one configuration are at bottleneck distance at most half the carrier
+diameter.
+
+In the sup-norm product, let N_d and N_p count finite occurrences of the Rips and Čech
+diagrams. The consequences
+`Cech.norm_diagramEmbedding_rips_sub_cech_le`,
+`Cech.abs_gaussianDiagramKernel_rips_sub_cech_le` and
+`Cech.norm_finiteDiagramImage_rips_sub_cech_le` bound the embedding, fixed-diagram
+kernel-value and finite-part image differences by the corresponding constant times
+(N_d + N_p) times `Rips.diameter d Finset.univ / 2`. The embedding and kernel-value items
+require nonnegative weight bounds; the image item also requires 0 < σ, measurable pixels
+and pairwise disjoint pixels. The Euclidean triangle fixture gives Čech_{6/5} ≠ Rips_{12/5},
+so the halving identity and these additive bounds are not stated for EuclideanSpace or a
+general ambient.
+
 ## Boundaries
 
 The diagram-level image bound needs finite bottleneck. A diagram with the finite point
@@ -71,11 +138,9 @@ pixel covering the plane, σ = 1 and C = 1, its arctan image difference has norm
 but the real value of ⊤ in Lean is 0, so the count-times-bottleneck bound would read 0. The
 Čech and Rips consumers discharge the hypothesis by their bottleneck bounds.
 
-No Rips-versus-Čech kernel or image bound for one configuration is claimed. The available
-comparisons of Rips and Čech diagrams are multiplicative: a log-scale interleaving under
-distance-compatible label metrics, and a scaling by 1/2 for the maximum norm on ι → ℝ.
-Neither bounds the bottleneck distance additively, which the count-times-bottleneck route
-would need.
+The additive Rips-versus-Čech kernel and image bounds are given in [Rips versus Čech of one
+configuration](#rips-versus-čech-of-one-configuration), but only in the sup-norm product
+and on the line. The log-scale interleaving remains a multiplicative comparison.
 
 ## Lean interfaces and sources
 
@@ -85,10 +150,25 @@ Rips image consumer. `TDA.Persistence.CechWeightedKernel` proves
 `Cech.bottleneck_dgm_lt_top`, `Cech.toReal_bottleneck_dgm_le_displacement`, the three kernel
 consumers and the arctan embedding and kernel-value instances.
 `TDA.Persistence.CechPersistenceImage` proves the image consumer and its arctan instance.
-The example modules cover the constant at C = 1 and C = 0, the zero weight, the
-infinite-bottleneck boundary, the arctan Rips image instance at discrepancy 1, a point
-moved by 1, the three-point family with displacement 1, zero displacement, the empty
-carrier and the repeated-label configuration.
+`TDA.Persistence.CechSupNormWeightedKernel` proves
+`Cech.bottleneck_dgm_lt_top_supNorm`,
+`Cech.toReal_bottleneck_dgm_le_half_pairwiseDiscrepancy`, the embedding, feature and
+kernel-value consumers, their arctan embedding and kernel-value instances, and
+`Cech.bottleneck_dgm_le_half_pairwiseDiscrepancy_real` for compatible label metrics in
+ι → ℝ and on the line. `TDA.Persistence.CechSupNormPersistenceImage` proves
+`Cech.norm_finiteDiagramImage_sub_le_half_pairwiseDiscrepancy` and
+`Cech.norm_finiteDiagramImage_sub_le_half_pairwiseDiscrepancy_arctan`.
+`TDA.Persistence.CechRipsAdditive` proves the additive
+scaling bound, the critical-value coordinate lemmas, the carrier-diameter bound for Rips
+values, and the half-diameter Rips-versus-Čech bottleneck bounds in the sup-norm product
+and on the line, with the consumer consequences in the product. Its consumers use the
+corresponding nonnegative weight bounds, and its image consumers additionally require
+0 < σ and measurable pairwise disjoint pixels.
+`TDA.Persistence.CechSupNormConsumersExamples` covers the moved diagonal pair, strict
+Δ ≤ δ, zero weight, zero discrepancy, the line half-discrepancy bound, the sharp single
+bar, two points, the sup-norm triangle and the Euclidean counterexample. The additive
+scaling bound, critical-value description and Rips-versus-Čech comparison are elementary
+library results and are not attributed to a paper.
 
 [Kusano–Fukumizu–Hiraoka](references.md#KFH18) (CC-BY 4.0; see the source register for
 attribution and license) is used for statement shapes: §3.2 p. 14 (w_arc), §3.2 p. 16
@@ -107,6 +187,6 @@ distance. Proofs are independent.
 
 Not covered here: assumption (W1) and total-persistence bottleneck stability
 (Proposition 8, Theorem 9, Corollary 12), Propositions 6–7, the w_pers and w_one lines of
-Corollary 11, p ≠ 1, consumers of the half-discrepancy Čech bound for the maximum norm,
-explicit Čech or Rips diagram points, and Hausdorff, Gromov–Hausdorff or different-label
-stability.
+Corollary 11, p ≠ 1, line consumers of the half-discrepancy bound, a per-point sharp
+additive bound, Rips-versus-Čech bounds outside the sup-norm product and the line, explicit
+Čech or Rips diagram points, and Hausdorff, Gromov–Hausdorff or different-label stability.
