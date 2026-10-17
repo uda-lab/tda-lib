@@ -586,3 +586,4 @@ import TDA
 #print axioms TDA.Mapper.UniformMapperReebDataExamples.T1_no_iso
 #print axioms TDA.Mapper.UniformMapperReebDataExamples.triple_cell
 #print axioms TDA.Mapper.UniformMapperReebDataExamples.triple_cell_not_mem_summands
+#print axioms TDA.Mapper.GraphPL.uniformMapperVertexEquiv_cell_inr
