@@ -8,3 +8,4 @@ import TDA.Mapper.Tower
 import TDA.Mapper.MultiNerveRefinement
 import TDA.Mapper.UniformCover
 import TDA.Mapper.MultiNerveGraphPL
+import TDA.Mapper.UniformCoverCells
