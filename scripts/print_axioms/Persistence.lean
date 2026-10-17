@@ -1988,3 +1988,18 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.WeightedKernelStabilityExamples.diagramThree
 #print axioms TDA.Persistence.WeightedKernelStabilityExamples.diagram_stability
 #print axioms TDA.Persistence.WeightedKernelStabilityExamples.second_level
+
+-- Rooted finite real-p distance laws.
+#print axioms TDA.Persistence.OccurrenceMatching.totalFinitePowerCost_reverse
+#print axioms TDA.Persistence.OccurrenceMatching.totalFinitePowerCost_compose_root_le
+#print axioms TDA.Persistence.finitePMatchingCost_self
+#print axioms TDA.Persistence.finitePowerMatchingCost_comm
+#print axioms TDA.Persistence.finitePMatchingCost_comm
+#print axioms TDA.Persistence.finitePMatchingCost_triangle
+#print axioms TDA.Persistence.finitePMatchingCost_eq_zero_of_equiv
+#print axioms TDA.Persistence.finitePMatchingCost_eq_zero_iff
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_self
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_comm
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_triangle
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_eq_zero_of_equiv
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_eq_zero_iff

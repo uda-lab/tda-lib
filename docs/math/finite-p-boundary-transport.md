@@ -88,6 +88,58 @@ algebra also permits arbitrary real pairs and exponents; its PD interpretation i
 restricted to the domain at the start of this page. In particular, root-infimum
 monotonicity and rooted empty-input vanishing are stated with p ≥ 1.
 
+## Rooted distance laws
+
+For a third finite family z : K → ℝ² and every real p ≥ 1, the rooted matching optimum satisfies
+
+dₚ(x,x) = 0,    dₚ(x,y) = dₚ(y,x),    dₚ(x,z) ≤ dₚ(x,y) + dₚ(y,z).
+
+The same laws hold for the rooted finite-real-plan optimum, by its proved equality
+with dₚ. On positive-lifetime inputs, zero cost has the precise characterization
+
+dₚ(x,y) = 0 if and only if there is an equivalence e : I ≃ J with x(i) = y(e(i)) for all i.
+
+This preserves values and their multiplicities while allowing different labels.
+Unequal raw functions related by a permutation can have zero cost. A diagonal
+occurrence has zero deletion cost, so positive lifetimes are needed for this
+separation statement. No metric-space instance on raw presentations is supplied.
+The self, symmetry and triangle algebra also holds for arbitrary real pairs.
+
+Reversal exchanges the two unmatched parts and preserves the powered paired sum.
+For the triangle inequality, follow M from x to y by N from y to z. Let s_M(i)
+be M's pair-or-deletion charge at source i, and let t_M(j) be zero at a selected
+target j and δ(y(j)) at an unmatched target. Define s_N and t_N analogously.
+Use the disjoint union of source, middle and target labels, written I ⊕ J ⊕ K,
+as a common index for three nonnegative charge families A, B and C:
+
+| Index | A | B | C |
+| --- | --- | --- | --- |
+| Source i | s_M(i) | s_N(j) if M(i)=j, otherwise 0 | s_(N∘M)(i) |
+| Middle j | t_M(j) | s_N(j) if M does not select j, otherwise 0 | t_(N∘M)(k) if N(j)=k, otherwise 0 |
+| Target k | 0 | t_N(k) | t_N(k) |
+
+Partial injectivity and the selected/complementary partition of J give exact sums
+
+Σ A^p = Sₚ(M),    Σ B^p = Sₚ(N),    Σ C^p = Sₚ(N∘M).
+
+Each input charge occurs once in its own sum. Pointwise C ≤ A+B follows from the
+ground triangle inequality and δ(a) ≤ ‖a−b‖∞+δ(b). These cover a middle occurrence
+paired on both sides, selected then deleted, and unselected then paired. A middle
+occurrence unmatched by both has no endpoint; its two nonnegative input charges
+remain unused. N's unmatched targets are also unmatched by the composite.
+
+Monotonicity of positive real powers and finite-sum Minkowski now give
+
+Sₚ(N∘M)^(1/p) ≤ (Σ (A+B)^p)^(1/p) ≤ Sₚ(M)^(1/p) + Sₚ(N)^(1/p).
+
+Choose actual minimizing matchings for the two input costs to obtain the optimum
+triangle law. For separation, a sum of nonnegative powered charges is zero
+exactly when every raw charge is zero. The existing first-order zero-cost
+characterization then supplies the value-preserving equivalence. Conversely,
+reindexing a self-matching proves zero cost for such an equivalence.
+
+## Examples
+
 | Example | Powered/rooted calculation |
 | --- | --- |
 | Empty target, diagonal charges 1 and 2, p=2 | Powered optimum 5; rooted optimum √5 |
@@ -95,6 +147,8 @@ monotonicity and rooted empty-input vanishing are stated with p ≥ 1.
 | Two copies of (0,2) versus one copy, p=2 | Powered and rooted optimum 1, attained by half from each source and by an incidence plan |
 | (0,2) versus (3/2,7/2) | p=1 pairs, cost 3/2; p=2 deletes both, powered cost 2, strictly below the paired cost 9/4 |
 | (0,8) versus empty, p=3/2 | Powered optimum 8; rooted optimum 4 |
+| Four middle roles with unmatched endpoints, p=2 | Candidate powers 11 and 16; composite power 19; √19 ≤ √11+4 |
+| Singletons (0,10), (1,11), (2,12), every p≥1 | Consecutive rooted optima 1 and 1; direct rooted optimum 2; sharp triangle at p=2 and p=3/2 |
 
 The examples also calculate a triangle-inequality failure for the squared optimum:
 translating the singleton (0,10) by one twice gives successive squared costs 1 and 1,
@@ -108,6 +162,9 @@ candidate bounds, root-infimum equality, empty formulas, singleton alternatives,
 reindexing and first-order compatibility. `FinitePBoundaryTransport` supplies the
 real-plan costs, matching/transport equalities, attaining incidence plans and the
 corresponding bounds and formulas. The example module uses these actual definitions.
+`FinitePMatchingCostLaws` supplies powered-cost reversal, rooted candidate composition,
+the rooted distance laws and positive-lifetime separation.
+`FinitePBoundaryTransportLaws` transfers those laws to the actual real-plan optimum.
 
 [Figalli–Gigli](references.md#FG10) retains priority for boundary-reservoir transport;
 its original bounded-domain quadratic Euclidean setting is distinct from this model.
@@ -119,9 +176,15 @@ Their displayed convention ties the ground norm to p. Reusing the assignment pro
 with maximum-norm powered coefficients is a checked library adaptation, not a
 verbatim specialization of that displayed theorem.
 
+DL Proposition 3.1 and its Appendix B metric-law proof use boundary gluing and
+Minkowski; FG Lemma 2.1 and Theorem 2.2 give the original quadratic antecedent.
+The finite occurrence allocation above is checked library reasoning corresponding
+to that mechanism. It uses pinned mathlib's `Real.Lp_add_le`, not a measure-gluing
+assumption or a triangle law for the raw augmented blocks.
+
 The proved equality concerns finite real reservoir matrices, not all Borel/Radon
 couplings. Essential or infinite bars, arbitrary weighted inputs, completeness and
-barycenters remain outside it. General-p triangle/separation laws and quotient or
-metric instances are not supplied. Existing first-order distance laws remain in
+barycenters remain outside it. Quotient and metric-space instances are not supplied.
+Existing first-order distance laws remain in
 [the first-order matching module](finite-first-order-matching.md). The raw augmented
 cost is not an ordinary metric obtained by merely collapsing the diagonal.

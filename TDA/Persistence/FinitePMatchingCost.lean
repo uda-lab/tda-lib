@@ -11,7 +11,8 @@ after minimizing agrees with minimizing the rooted candidate costs.
 
 The supporting powered algebra is defined for real exponents; the persistence
 interpretation uses `1 ≤ p`, positive lifetimes, finite deaths and unit mass per
-occurrence. General-exponent metric laws and a quotient instance are not supplied.
+occurrence. `FinitePMatchingCostLaws` supplies rooted distance laws for `1 ≤ p`.
+No quotient or metric-space instance on raw occurrence presentations is supplied.
 -/
 
 noncomputable section
