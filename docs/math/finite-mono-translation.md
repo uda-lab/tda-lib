@@ -111,5 +111,6 @@ The formal source theorem and the target-image condition in its proof determine 
 object types; the inconsistent source symbol in the preceding delayed-image sentence
 does not change the target structure map used here.
 No full version comparison or general erratum claim is made.
-Kernel/epi estimates, quantitative image-factorization assembly, real-grid compatibility,
-conversion to a distance matching and `d_B ≤ d_I` remain separate results.
+[Kernel/epi estimates and quantitative image-factorization assembly](finite-quantitative-induced-matching.md)
+provide the complementary death bounds and long-source coverage. Real-grid
+compatibility, conversion to a distance matching and `d_B ≤ d_I` remain separate results.

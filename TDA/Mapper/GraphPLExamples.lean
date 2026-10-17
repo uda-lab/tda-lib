@@ -158,7 +158,9 @@ private theorem edgeCellComponents_subsingleton {K : OpenInterval} (b : Bool)
 private theorem overlap_endpoint_mem (i : Bool) : h02 i ∈ overlappingIntervals i := by
   cases i <;> norm_num [h02, overlappingIntervals, mem_ioo]
 
-private theorem overlap_components_subsingleton (i : Bool) :
+/-- Each preimage of an overlapping interval under the single-edge PL height has at most one path
+component. -/
+theorem overlap_components_subsingleton (i : Bool) :
     Subsingleton (ZerothHomotopy
       {p : Realization edgeGraph // plHeight edgeGraph h02 p ∈ overlappingIntervals i}) :=
   ⟨fun _c _d => (preimageComponentsEquiv edgeGraph h02 (overlappingIntervals i)).injective
@@ -208,7 +210,8 @@ private theorem edgeOverlap_pair_face :
   · exact ⟨(edgeOverlapPoint false).2, rfl⟩
   · exact ⟨(edgeOverlapPoint true).2, rfl⟩
 
-private theorem overlappingIntervals_multiplicity_two {V : Type*} (G : SimpleGraph V)
+/-- The two overlapping intervals have multiplicity at most two over every graph PL height. -/
+theorem overlappingIntervals_multiplicity_two {V : Type*} (G : SimpleGraph V)
     (h : V → ℝ) :
     CoverMultiplicityAtMost (plHeight G h) (fun i => (overlappingIntervals i : Set ℝ)) 2 := by
   intro _ _ t _

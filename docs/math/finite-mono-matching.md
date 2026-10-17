@@ -90,8 +90,9 @@ correspondence; the [image construction](finite-induced-matching.md) assembles t
 two into a partial injection for a general morphism.
 [Cokernel shortness under a monotone translation](finite-mono-translation.md)
 additionally bounds the source birth and covers every long target, including terminal
-targets. Quantitative epi and general-morphism matching, real-grid refinement and
-shift compatibility remain separate connections to the reverse distance inequality.
+targets. [Quantitative epi and general-morphism matching](finite-quantitative-induced-matching.md)
+add death bounds and long-source coverage. Real-grid refinement and shift
+compatibility remain separate connections to the reverse distance inequality.
 
 ## Source correspondence
 

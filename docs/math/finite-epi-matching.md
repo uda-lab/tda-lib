@@ -103,6 +103,7 @@ injection for a general morphism. A general epi need not match every
 source occurrence, including terminal ones. The distance-specific
 `OccurrenceMatching`, with its total essential equivalence, is therefore a
 different interface. Composition laws apply to the mono and epi subcategories.
-Quantitative induced matching,
-real-grid refinement and shifts, constructible kernel/image/cokernel closure and
+[Quantitative kernel/epi and induced matching](finite-quantitative-induced-matching.md)
+adds death bounds and long-source coverage under actual kernel shortness.
+Real-grid refinement and shifts, constructible kernel/image/cokernel closure and
 the reverse inequality `d_B ≤ d_I` remain separate results.

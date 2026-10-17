@@ -57,6 +57,15 @@ reconstruction does not force them to be identities. The examples include a nonz
 step module with a change of coordinates by a factor of two within its single final
 cell, as well as empty, left-ray and exact-critical-value cases.
 
+## Refinements and shifts
+
+The [common-grid and refinement API](constructible-refinement.md) constructs
+sorted unions of critical-value sets, proves constructibility on refinements,
+and places the actual positive-evaluation shift on the grid `c_i-ε`.
+For field-valued modules it derives finiteness at added critical values and
+proves that refinement preserves the real endpoint diagram, including repeated
+bars and essential tails.
+
 ## Barcode and source boundary
 
 Applying the existing finite decomposition to `A` additionally requires a field

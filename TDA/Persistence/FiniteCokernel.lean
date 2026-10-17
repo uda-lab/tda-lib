@@ -1,4 +1,5 @@
 import TDA.Persistence.FiniteDecomposition
+import TDA.Persistence.FiniteTranslation
 import Mathlib.Algebra.Category.ModuleCat.Abelian
 import Mathlib.CategoryTheory.Limits.FunctorCategory.EpiMono
 import Mathlib.CategoryTheory.Limits.Preserves.Shapes.Kernels
@@ -86,12 +87,6 @@ theorem finiteCokernel_map_eq_zero_iff (f : M ⟶ N) {a b : Fin s} (h : a ≤ b)
     apply LinearMap.ext
     intro x
     exact (finiteCokernel_π_eq_zero_iff f b _).mpr (hi ⟨x, rfl⟩)
-
-/-- Translation-triviality means vanishing of the actual maps `i → theta i`.
-The translation may identify stages; inflationarity supplies the required inequalities. -/
-def TranslationTrivial (theta : Fin s →o Fin s) (hTheta : ∀ i, i ≤ theta i)
-    (K : PModule.{u,0,u} k (Fin s)) : Prop :=
-  ∀ i, structureMap K (hTheta i) = 0
 
 /-- Shortness of the actual cokernel is equivalent to the target-image condition. -/
 theorem cokernel_translationTrivial_iff (theta : Fin s →o Fin s)
