@@ -168,6 +168,10 @@ also includes infinite summands, where the inequality is automatic.
 Source manifestation and rights
 metadata are recorded in [BL15-v4](references.md#BL15-v4).
 
+Concrete witnesses from inclusions of simplicial filtrations, including the
+log-scale Čech–Rips interleaving, are constructed in
+[inclusion interleavings](cech-rips-interleaving.md).
+
 Generic flows remain separate. The
 [matching-to-interleaving construction](matching-interleavings.md) supplies
 concrete witnesses and `d_I≤d_B` for finite positive barcode realizations,

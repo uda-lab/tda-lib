@@ -97,3 +97,5 @@ import TDA.Persistence.FiniteBoundaryTransport
 import TDA.Persistence.BoundaryCost
 import TDA.Persistence.FinitePMatchingCost
 import TDA.Persistence.FinitePBoundaryTransport
+import TDA.Persistence.SublevelInterleaving
+import TDA.Persistence.CechRipsInterleaving
