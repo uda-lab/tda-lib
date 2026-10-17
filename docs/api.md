@@ -215,6 +215,17 @@ field, including pairing changes and closed interpolation endpoints. This is the
 library's finite combinatorial counterpart of the geometric stability theorem; it does
 not supply a comparison with singular homology of general tame functions.
 
+`TDA.Filtration.FilterFunction.map` reparametrizes a filter along an order embedding
+φ : α ↪o β, and `TDA.Persistence.Diagram.map` maps births and finite deaths of a diagram
+along φ while fixing the essential top. Sublevels correspond at every source threshold, and
+at every target threshold for an order isomorphism; `dgm_map` identifies the actual diagram
+of `f.map φ` with `(dgm k f n).map φ` for every field, degree and finite complex.
+`FilterFunction.scale` and `Diagram.scale` are the cases x ↦ c x with c > 0, and
+`bottleneck_scale` multiplies the bottleneck distance of any two real diagrams by c,
+including the value ⊤ for unequal essential counts. The merged translations are the maps
+along x ↦ x + c. Monotone non-injective and order-reversing maps are not covered. See
+[the conventions, proofs and fixtures](math/filter-reparametrization.md).
+
 The `ActualDiagramRegularity`, `ActualLossDerivative` and `ActualLossHessian` APIs use
 ordered local representatives with explicit hypotheses on face values and loss lifts.
 The full lift retains tied finite pairs, including their diagonal coordinates; the
@@ -285,6 +296,14 @@ points are pairwise within 2r, so Čech_r = Rips_{2r}, every Čech value is half
 value, and the two filters are ordering-equivalent; no properness is assumed. The line
 ℝ follows through `Fin 1 → ℝ`. See [the proofs, fixtures and source
 scope](math/cech-supnorm-witness.md).
+
+`TDA.Persistence.CechSupNormDiagram` turns that value identity into diagram identities. The
+sup-norm Čech filter is the Rips filter scaled by 2⁻¹, so the actual Čech diagram is the
+actual Rips diagram with every finite coordinate halved, in every degree and over every
+field, and the Čech bottleneck distance is half the Rips one. With Rips metric stability the
+Čech diagrams are within half the pairwise discrepancy. The hypotheses are the merged
+distance-compatibility conditions, with any finite ι and no properness; the line ℝ has the
+same identities. See [the scaling law and fixtures](math/filter-reparametrization.md).
 
 ## Finite first-order PD matching cost
 

@@ -12,3 +12,4 @@ import TDA.Filtration.CechExamples
 import TDA.Filtration.CechDisplacementExamples
 import TDA.Filtration.CechWitnessExamples
 import TDA.Filtration.CechSupNormExamples
+import TDA.Filtration.FilterFunctionMapExamples

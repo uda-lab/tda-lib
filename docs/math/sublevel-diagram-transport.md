@@ -95,4 +95,6 @@ target sublevel at `φ(3)=0` is bottom. Thus arbitrary ambient-threshold
 naturality would be false. A finite greatest grade is still a finite endpoint
 below the separate essential outer top. No global `Diagram.map`, general
 ambient reparameterization, interval decomposition, triangle/H1 computation,
-or complete real-valued acceptance suite follows from these two laws.
+or complete real-valued acceptance suite follows from these two laws. For order
+embeddings, `Diagram.map` is defined separately in
+[filter and diagram reparametrization](filter-reparametrization.md).
