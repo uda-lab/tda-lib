@@ -38,10 +38,12 @@ theorem quarter_le_halfNN : quarter ≤ halfNN := by
 /-- The quarter-band parameter is nonnegative. -/
 theorem zero_le_quarter : (0 : ℝ≥0) ≤ quarter := zero_le
 
-/-- Strict enlargement from `1/4` to `1/2` identifies the two points of the parallel-edge fibre over `1/2`.
-This is the noninjectivity witness for the geometric enlargement on `parallelGraph`. -/
+/-- Strict enlargement from `1/4` to `1/2` identifies the two points of the parallel-edge
+fibre over `1/2`. This is the noninjectivity witness for the geometric enlargement on
+`parallelGraph`. -/
 theorem enlargement_parallel_not_injective :
-    ¬ Function.Injective ((geometricEnlargement quarter_le_halfNN).app parallelGraph).hom.left.hom := by
+    ¬ Function.Injective
+        ((geometricEnlargement quarter_le_halfNN).app parallelGraph).hom.left.hom := by
   intro hinj
   have : Nontrivial
       (overBaseMap ((geometricSmoothing quarter).obj parallelGraph).obj ⁻¹' {1 / 2}) :=
@@ -65,8 +67,10 @@ theorem enlargement_parallel_not_injective :
         ((geometricEnlargement quarter_le_halfNN).app parallelGraph).hom.left.hom q.1 := by
     exact congrArg Subtype.val
       ((parallel_half_fiber_subsingleton (1 / 2)).elim
-        (⟨_, hp'⟩ : overBaseMap ((geometricSmoothing halfNN).obj parallelGraph).obj ⁻¹' {1 / 2})
-        (⟨_, hq'⟩ : overBaseMap ((geometricSmoothing halfNN).obj parallelGraph).obj ⁻¹' {1 / 2}))
+        (⟨_, hp'⟩ : overBaseMap
+            ((geometricSmoothing halfNN).obj parallelGraph).obj ⁻¹' {1 / 2})
+        (⟨_, hq'⟩ : overBaseMap
+            ((geometricSmoothing halfNN).obj parallelGraph).obj ⁻¹' {1 / 2}))
   exact hpq (Subtype.ext (hinj hmap))
 
 /-- The two-step enlargement `0 ≤ 1/4 ≤ 1/2` agrees with the direct enlargement on the loop. -/
@@ -96,7 +100,8 @@ theorem single_enlargement_edgeTop :
 
 /-- The single edge is at geometric distance at most `1/2` from its half-smoothing. -/
 theorem geometricInterleavingDistance_single_smoothed_le :
-    geometricInterleavingDistance singleGraph ((geometricSmoothing halfNN).obj singleGraph) ≤ 1 / 2 := by
+    geometricInterleavingDistance singleGraph
+        ((geometricSmoothing halfNN).obj singleGraph) ≤ 1 / 2 := by
   rw [← coe_halfNN_ennreal]
   exact geometricInterleavingDistance_geometricSmoothing_self_le halfNN singleGraph
 
@@ -113,7 +118,8 @@ theorem single_selfSmoothing_ψ :
     (GeometricInterleaving.selfSmoothing halfNN singleGraph).ψ = 𝟙 _ :=
   GeometricInterleaving.selfSmoothing_ψ halfNN singleGraph
 
-/-- The point graph is at geometric distance at most `ε` from its `ε`-smoothing, for every `ε`. -/
+/-- The point graph is at geometric distance at most `ε` from its `ε`-smoothing, for every
+`ε`. -/
 theorem geometricInterleavingDistance_mid_smoothed_le (ε : ℝ≥0) :
     geometricInterleavingDistance midGraph ((geometricSmoothing ε).obj midGraph) ≤ ε :=
   geometricInterleavingDistance_geometricSmoothing_self_le ε midGraph
@@ -157,8 +163,8 @@ theorem edgeMid_nonempty_of_lt {ε : ℝ≥0} (hε : (1 / 2 : ℝ≥0∞) < ε) 
   rw [geometricInterleavingDistance_edge_mid]
   exact hε
 
-/-- The edge–midpoint distance upper bound follows from the witnesses above every `1/2`, without
-using the explicit `1/2` witness. -/
+/-- The edge–midpoint distance upper bound recovered from the threshold characterization,
+using only the witnesses above `1/2` supplied by `edgeMid_nonempty_of_lt`. -/
 theorem geometricInterleavingDistance_edge_mid_le_of_witnesses :
     geometricInterleavingDistance singleGraph midGraph ≤ 1 / 2 := by
   apply geometricInterleavingDistance_le_iff.2
