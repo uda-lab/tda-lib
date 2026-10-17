@@ -2054,3 +2054,34 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.SublevelConstructibleExamples.not_isConstructible_gridAbove
 #print axioms TDA.Persistence.SublevelConstructibleExamples.gridZero
 #print axioms TDA.Persistence.SublevelConstructibleExamples.not_isConstructible_gridZero
+
+-- The arctan weight, its kernel-stability constant and Rips weighted-kernel consumers.
+#print axioms TDA.Persistence.PersistenceImage.lipschitzWith_arctan
+#print axioms TDA.Persistence.PersistenceImage.abs_arctan_sub_arctan_le
+#print axioms TDA.Persistence.PersistenceImage.arctanWeight
+#print axioms TDA.Persistence.PersistenceImage.arctanWeight_apply
+#print axioms TDA.Persistence.PersistenceImage.arctanWeight_birthPersistence
+#print axioms TDA.Persistence.WeightedKernel.stabilityConstant_arctan
+#print axioms TDA.Persistence.WeightedKernel.norm_embedding_sub_le_arctan
+#print axioms TDA.Persistence.WeightedKernel.norm_diagramEmbedding_sub_le_arctan
+#print axioms TDA.Persistence.WeightedKernel.abs_gaussianDiagramKernel_sub_le_arctan
+#print axioms TDA.Persistence.WeightedKernel.abs_gaussianDiagramKernel_sub_le_arctan_card_mul_bottleneck
+#print axioms TDA.Persistence.Rips.bottleneck_dgm_lt_top
+#print axioms TDA.Persistence.Rips.toReal_bottleneck_dgm_le_pairwiseDiscrepancy
+#print axioms TDA.Persistence.Rips.norm_diagramEmbedding_sub_le_pairwiseDiscrepancy
+#print axioms TDA.Persistence.Rips.norm_diagramGaussianFeature_sub_le_pairwiseDiscrepancy
+#print axioms TDA.Persistence.Rips.abs_gaussianDiagramKernel_sub_le_pairwiseDiscrepancy
+#print axioms TDA.Persistence.Rips.norm_diagramEmbedding_sub_le_pairwiseDiscrepancy_arctan
+#print axioms TDA.Persistence.Rips.abs_gaussianDiagramKernel_sub_le_pairwiseDiscrepancy_arctan
+#print axioms TDA.Persistence.ArctanWeightExamples.w
+#print axioms TDA.Persistence.ArctanWeightExamples.weight_values
+#print axioms TDA.Persistence.ArctanWeightExamples.untruncated_not_weight
+#print axioms TDA.Persistence.ArctanWeightExamples.sup_bound_sharp
+#print axioms TDA.Persistence.ArctanWeightExamples.stabilityConstant_values
+#print axioms TDA.Persistence.ArctanWeightExamples.occurrence_bound
+#print axioms TDA.Persistence.ArctanWeightExamples.kernel_value
+#print axioms TDA.Persistence.RipsWeightedKernelExamples.empty_carrier
+#print axioms TDA.Persistence.RipsWeightedKernelExamples.singleton_carrier
+#print axioms TDA.Persistence.RipsWeightedKernelExamples.perturbed_bounds
+#print axioms TDA.Persistence.RipsWeightedKernelExamples.perturbed_arctan
+#print axioms TDA.Persistence.RipsWeightedKernelExamples.infinite_bottleneck_boundary

@@ -143,6 +143,9 @@ Schur product theorem come from the pinned [mathlib](references.md#mathlib-0df44
 Hadamard-power, exponential-series and factorization steps are the standard textbook
 route; no further source is claimed for them.
 
+The [arctan weight and Rips consumers](arctan-weight-rips-kernel.md) note instantiates
+these bounds at KFH18's w_arc weight and composes them with the Rips bound.
+
 Not covered here: bottleneck stability under total-persistence bounds (Proposition 8,
 Theorem 9), injectivity or universality of the embedding, the RKHS isomorphism f ↦ w f,
 random features and essential bars.

@@ -74,3 +74,5 @@ import TDA.Persistence.CechRipsInterleavingExamples
 import TDA.Persistence.SublevelConstructibleExamples
 import TDA.Persistence.WeightedKernelStabilityExamples
 import TDA.Persistence.FinitePMatchingCostLawsExamples
+import TDA.Persistence.ArctanWeightExamples
+import TDA.Persistence.RipsWeightedKernelExamples
