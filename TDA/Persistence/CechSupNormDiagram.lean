@@ -12,7 +12,8 @@ distance-compatible label metrics. Hence the Čech filter is the Rips filter sca
 the actual Čech diagram is the actual Rips diagram with every finite coordinate halved, in
 every degree and over every field, and the Čech bottleneck distance is half the Rips one.
 Rips metric stability then bounds the Čech diagrams by half the pairwise discrepancy.
-The line `ℝ` is covered through the merged line value identity.
+The line `ℝ` has the same filter and diagram identities, through the merged line value
+identity.
 
 The ambient metric is mathlib's sup metric on `ι → ℝ`, not `EuclideanSpace ℝ ι`, and the
 index type may be empty. These are library consequences of the merged identity
@@ -81,19 +82,6 @@ theorem bottleneck_dgm_eq_half_rips (d e : MetricSpace V) (p q : V → ι → �
   rw [filter_eq_scale_rips d p hd, filter_eq_scale_rips e q he]
   exact bottleneck_dgm_scale k (Rips.filter d) (Rips.filter e) n _
 
-/-- Halving the Rips bottleneck distance stays below half the pairwise discrepancy. -/
-private theorem half_rips_le (d e : MetricSpace V) (n : ℕ) :
-    ENNReal.ofReal 2⁻¹ *
-        bottleneck (dgm k (Rips.filter d) n) (dgm k (Rips.filter e) n) ≤
-      ENNReal.ofReal (Rips.pairwiseDiscrepancy d e / 2) := by
-  calc
-    ENNReal.ofReal 2⁻¹ *
-          bottleneck (dgm k (Rips.filter d) n) (dgm k (Rips.filter e) n) ≤
-        ENNReal.ofReal 2⁻¹ * ENNReal.ofReal (Rips.pairwiseDiscrepancy d e) :=
-      mul_le_mul_right (Rips.bottleneck_dgm_le_pairwiseDiscrepancy k d e n) _
-    _ = ENNReal.ofReal (Rips.pairwiseDiscrepancy d e / 2) := by
-      rw [← ENNReal.ofReal_mul (by norm_num), inv_mul_eq_div]
-
 /-- Rips metric stability bounds the sup-norm Čech diagrams by half the pairwise
 discrepancy of the label metrics. -/
 theorem bottleneck_dgm_le_half_pairwiseDiscrepancy (d e : MetricSpace V) (p q : V → ι → ℝ)
@@ -102,26 +90,14 @@ theorem bottleneck_dgm_le_half_pairwiseDiscrepancy (d e : MetricSpace V) (p q : 
     bottleneck (dgm k (Cech.filter p) n) (dgm k (Cech.filter q) n) ≤
       ENNReal.ofReal (Rips.pairwiseDiscrepancy d e / 2) := by
   rw [bottleneck_dgm_eq_half_rips k d e p q hd he n]
-  exact half_rips_le k d e n
+  calc
+    ENNReal.ofReal 2⁻¹ *
+          bottleneck (dgm k (Rips.filter d) n) (dgm k (Rips.filter e) n) ≤
+        ENNReal.ofReal 2⁻¹ * ENNReal.ofReal (Rips.pairwiseDiscrepancy d e) :=
+      mul_le_mul_right (Rips.bottleneck_dgm_le_pairwiseDiscrepancy k d e n) _
+    _ = ENNReal.ofReal (Rips.pairwiseDiscrepancy d e / 2) := by
+      rw [← ENNReal.ofReal_mul (by norm_num), inv_mul_eq_div]
 
-/-- On the line, the Čech bottleneck distance is half the Rips one. -/
-theorem bottleneck_dgm_eq_half_rips_real (d e : MetricSpace V) (p q : V → ℝ)
-    (hd : ∀ v w, d.dist v w = dist (p v) (p w))
-    (he : ∀ v w, e.dist v w = dist (q v) (q w)) (n : ℕ) :
-    bottleneck (dgm k (Cech.filter p) n) (dgm k (Cech.filter q) n) =
-      ENNReal.ofReal 2⁻¹ *
-        bottleneck (dgm k (Rips.filter d) n) (dgm k (Rips.filter e) n) := by
-  rw [filter_eq_scale_rips_real d p hd, filter_eq_scale_rips_real e q he]
-  exact bottleneck_dgm_scale k (Rips.filter d) (Rips.filter e) n _
-
-/-- On the line, the Čech diagrams are bounded by half the pairwise discrepancy. -/
-theorem bottleneck_dgm_le_half_pairwiseDiscrepancy_real (d e : MetricSpace V)
-    (p q : V → ℝ) (hd : ∀ v w, d.dist v w = dist (p v) (p w))
-    (he : ∀ v w, e.dist v w = dist (q v) (q w)) (n : ℕ) :
-    bottleneck (dgm k (Cech.filter p) n) (dgm k (Cech.filter q) n) ≤
-      ENNReal.ofReal (Rips.pairwiseDiscrepancy d e / 2) := by
-  rw [bottleneck_dgm_eq_half_rips_real k d e p q hd he n]
-  exact half_rips_le k d e n
 
 end Diagrams
 

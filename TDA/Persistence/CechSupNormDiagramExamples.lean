@@ -94,14 +94,17 @@ namespace MovedPoint
 
 open TDA.Persistence.Cech.Examples.MovedPoint
 
-/-- The halving identity for the moved configuration, in every degree. -/
+/-- The halving identity for the moved configuration, in every degree, from the line filter
+identity and the scaling law for actual diagrams. -/
 theorem bottleneck_eq_half (n : ℕ) :
     bottleneck (dgm ℚ (Cech.filter p) n) (dgm ℚ (Cech.filter q) n) =
       ENNReal.ofReal 2⁻¹ *
         bottleneck (dgm ℚ (Rips.filter TDA.Filtration.Cech.Examples.TwoPoints.metric) n)
-          (dgm ℚ (Rips.filter metricQ) n) :=
-  bottleneck_dgm_eq_half_rips_real ℚ _ _ p q
-    TDA.Filtration.Cech.Examples.TwoPoints.metric_dist metricQ_dist n
+          (dgm ℚ (Rips.filter metricQ) n) := by
+  rw [filter_eq_scale_rips_real TDA.Filtration.Cech.Examples.TwoPoints.metric p
+      TDA.Filtration.Cech.Examples.TwoPoints.metric_dist,
+    filter_eq_scale_rips_real metricQ q metricQ_dist]
+  exact bottleneck_dgm_scale ℚ _ _ n _
 
 /-- The two label metrics differ by at most `1` on each of the four label pairs. -/
 theorem pairwiseDiscrepancy_le :
@@ -115,12 +118,23 @@ theorem pairwiseDiscrepancy_le :
   fin_cases v <;> fin_cases w <;>
     norm_num [TDA.Filtration.Cech.Examples.TwoPoints.pts, q, Real.dist_eq]
 
-/-- The halving law gives the bound `1/2` in every degree. -/
+/-- The halving law and Rips stability give the bound `1/2` in every degree. -/
 theorem bottleneck_le_half (n : ℕ) :
-    bottleneck (dgm ℚ (Cech.filter p) n) (dgm ℚ (Cech.filter q) n) ≤ ENNReal.ofReal (1 / 2) :=
-  (bottleneck_dgm_le_half_pairwiseDiscrepancy_real ℚ _ _ p q
-    TDA.Filtration.Cech.Examples.TwoPoints.metric_dist metricQ_dist n).trans
-    (ENNReal.ofReal_le_ofReal (by linarith [pairwiseDiscrepancy_le]))
+    bottleneck (dgm ℚ (Cech.filter p) n) (dgm ℚ (Cech.filter q) n) ≤
+      ENNReal.ofReal (1 / 2) := by
+  rw [bottleneck_eq_half n]
+  calc
+    ENNReal.ofReal 2⁻¹ *
+          bottleneck (dgm ℚ (Rips.filter TDA.Filtration.Cech.Examples.TwoPoints.metric) n)
+            (dgm ℚ (Rips.filter metricQ) n) ≤
+        ENNReal.ofReal 2⁻¹ * ENNReal.ofReal
+          (Rips.pairwiseDiscrepancy TDA.Filtration.Cech.Examples.TwoPoints.metric metricQ) :=
+      mul_le_mul_right (Rips.bottleneck_dgm_le_pairwiseDiscrepancy ℚ _ _ n) _
+    _ ≤ ENNReal.ofReal 2⁻¹ * ENNReal.ofReal 1 :=
+      mul_le_mul_right (ENNReal.ofReal_le_ofReal pairwiseDiscrepancy_le) _
+    _ = ENNReal.ofReal (1 / 2) := by
+      rw [← ENNReal.ofReal_mul (by norm_num)]
+      norm_num
 
 /-- The bound `1/2` is strictly below the merged displacement bound `1`. -/
 theorem half_lt_one : ENNReal.ofReal (1 / 2) < 1 := by

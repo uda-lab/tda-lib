@@ -48,12 +48,12 @@ theorem Diagram.scale_scale (D : Diagram ℝ) (a b : ℝ) (ha : 0 < a) (hb : 0 <
 /-- Multiply both coordinates of a finite pair by `c`. -/
 def scaleFinitePair (c : ℝ) (p : ℝ × ℝ) : ℝ × ℝ := (c * p.1, c * p.2)
 
-theorem finitePart_scale_points (D : Diagram ℝ) {c : ℝ} (hc : 0 < c) :
+private theorem finitePart_scale_points (D : Diagram ℝ) {c : ℝ} (hc : 0 < c) :
     finitePart (D.scale c hc).points = (finitePart D.points).map (scaleFinitePair c) := by
   rw [Diagram.scale, finitePart_map_points]
   rfl
 
-theorem essentialPart_scale_points (D : Diagram ℝ) {c : ℝ} (hc : 0 < c) :
+private theorem essentialPart_scale_points (D : Diagram ℝ) {c : ℝ} (hc : 0 < c) :
     essentialPart (D.scale c hc).points = (essentialPart D.points).map (fun b => c * b) := by
   rw [Diagram.scale, essentialPart_map_points]
   rfl

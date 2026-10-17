@@ -1685,8 +1685,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Diagram.scale_one
 #print axioms TDA.Persistence.Diagram.scale_scale
 #print axioms TDA.Persistence.scaleFinitePair
-#print axioms TDA.Persistence.finitePart_scale_points
-#print axioms TDA.Persistence.essentialPart_scale_points
 #print axioms TDA.Persistence.finitePairCost_scale
 #print axioms TDA.Persistence.diagonalCost_scale
 #print axioms TDA.Persistence.essentialPairCost_scale
@@ -1720,8 +1718,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Cech.dgm_eq_scale_rips_real
 #print axioms TDA.Persistence.Cech.bottleneck_dgm_eq_half_rips
 #print axioms TDA.Persistence.Cech.bottleneck_dgm_le_half_pairwiseDiscrepancy
-#print axioms TDA.Persistence.Cech.bottleneck_dgm_eq_half_rips_real
-#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_half_pairwiseDiscrepancy_real
 #print axioms TDA.Persistence.Cech.SupNormDiagramExamples.TwoPoints.dgm_eq
 #print axioms TDA.Persistence.Cech.SupNormDiagramExamples.TwoPoints.scaled_edge_value
 #print axioms TDA.Persistence.Cech.SupNormDiagramExamples.Triangle.dgm_eq
