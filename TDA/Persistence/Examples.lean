@@ -78,3 +78,5 @@ import TDA.Persistence.FinitePMatchingCostLawsExamples
 import TDA.Persistence.ArctanWeightExamples
 import TDA.Persistence.RipsWeightedKernelExamples
 import TDA.Persistence.FinitePFilterStabilityExamples
+import TDA.Persistence.ArctanPersistenceImageExamples
+import TDA.Persistence.CechWeightedKernelExamples

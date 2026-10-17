@@ -90,5 +90,6 @@ independent. The Rips side uses the sources of the
 
 Not covered here: (W1) and total-persistence bottleneck stability (Proposition 8,
 Theorem 9, Corollary 12), p ≠ 1, injectivity and universality, the w_pers and w_one lines of
-Corollary 11, the arctan persistence-image constant, explicit Rips diagram points,
-different-point-set stability and Čech consumers.
+Corollary 11, explicit Rips diagram points and different-point-set stability. The arctan
+persistence-image constant and the Čech consumers are in
+[arctan persistence images and Čech consumers](cech-weighted-kernel-images.md).

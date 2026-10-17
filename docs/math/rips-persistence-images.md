@@ -91,4 +91,6 @@ Numerical integration, executable distance-matrix reduction, first-order essenti
 costs, measure-coupling equality, general p, different-point-set/Gromov–Hausdorff
 stability and Čech comparisons require separate results. The same composition for the
 RKHS norm of the weighted Gaussian kernel embedding is in
-[the arctan weight and Rips consumers](arctan-weight-rips-kernel.md).
+[the arctan weight and Rips consumers](arctan-weight-rips-kernel.md). The arctan image
+constant, the arctan Rips image instance and the Čech image consumer are in
+[arctan persistence images and Čech consumers](cech-weighted-kernel-images.md).
