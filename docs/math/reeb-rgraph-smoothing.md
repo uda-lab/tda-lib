@@ -331,7 +331,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3–4.4:
 
 Not claimed here: the geometric interleavings of Definition 4.36 and their distance; composition
 coherences of geometric smoothing and the semigroup isomorphisms `U_{ε₁+ε₂} ≃ U_{ε₁}U_{ε₂}` of
-Observation 4.33 (the corresponding statement `T_ε T_δ ≅ T_{ε+δ}` for product thickening is false
+Observation 4.33, which are proved independently in
+[reeb-quotient-thickening-absorption.md](reeb-quotient-thickening-absorption.md) (the corresponding statement `T_ε T_δ ≅ T_{ε+δ}` for product thickening is false
 in general: a point thickens to a rectangle on one side and to an interval on the other; the
 addition map `T_ε T_δ → T_(ε+δ)`, its lax coherence and a machine-checked one-point
 non-isomorphism are in `reeb-geometric-thickening-addition.md`, and the natural isomorphism
