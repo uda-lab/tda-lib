@@ -135,10 +135,11 @@ attributed to a numbered source result.
 The reverse inequality `d_geo ≤ d_cosheaf`, composition of geometric interleavings and the
 triangle inequality for `d_geo` are in
 [reeb-geometric-interleaving-equivalence.md](reeb-geometric-interleaving-equivalence.md).
+That document also records enlargement, monotonicity, self-smoothing and nonexpansiveness as
+library statements.
 
-Not claimed here: enlargement along `ε ≤ ε'`;
-nonexpansiveness of `U_ε` for `d_geo` and `d_geo(A, U_ε A) ≤ ε`; a comparison with Mapper;
-absorption beyond (H2); a lift of `smoothingCompIso` to constructible cosheaves.
+Not claimed here: a comparison with Mapper; absorption beyond (H2); a lift of `smoothingCompIso`
+to constructible cosheaves.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition
 4.36](https://arxiv.org/html/1501.04147v1).

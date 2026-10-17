@@ -94,9 +94,8 @@ with no triangle proof. Its first component is the geometric shifted composite
 
 A direct geometric definition would also have to produce the second component of the precosheaf
 composite, which ends with the band inclusion of `δ + ε = ε + δ`. Its geometric counterpart is the
-band-inclusion isomorphism `geometricSmoothingEqIso`, and the compatibility of `cosheafShiftMap`
-with it is not merged. The transport route avoids it, and no formula for the second component is
-claimed.
+band-inclusion isomorphism `geometricSmoothingEqIso`; the resulting formula is recorded by
+`GeometricInterleaving.trans_ψ` and `GeometricInterleaving.trans_ψ'`.
 
 The triangle inequality for `d_geo` and invariance under isomorphism of graph objects, in both
 arguments, follow from the equality and the precosheaf results. The distance stays a plain
@@ -120,6 +119,42 @@ function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installe
 * **Zero distance.** The two presentations of the edge have witnesses at every positive parameter;
   the edge and its midpoint do not.
 
+## Enlargement, monotonicity and self-smoothing
+
+The following are library statements proved from the merged thickening, quotient, comparison and
+precosheaf facts; no numbered source result is claimed.
+
+**(A) Enlargement.** For `h : ε ≤ δ`, `geometricEnlargement h : U_ε ⟶ U_δ` is the merged band
+inclusion followed by the Reeb quotient. Its representative formula is
+`geometricEnlargement_app_hom_left_mk`; its identity, composition, unit and parameter-equality
+laws are `geometricEnlargement_refl`, `geometricEnlargement_comp`,
+`geometricSmoothingUnit_comp_geometricEnlargement` and
+`geometricSmoothingEqIso_hom_eq`. The comparison square is
+`cosheafFunctor_map_geometricEnlargement_app`, and the shifted-map law is
+`cosheafShiftMap_comp_geometricEnlargement`. These are statements on `RGraphCat` after the Reeb
+quotient; no composite claim on `Over ℝ` is made.
+
+**(B) Monotonicity.** `GeometricInterleaving.mono` enlarges both components of a witness, with
+the component formulas `GeometricInterleaving.mono_φ` and `GeometricInterleaving.mono_ψ`.
+Witness nonemptiness is monotone by `nonempty_mono`, witnesses above the distance are supplied by
+`nonempty_of_geometricInterleavingDistance_lt`, and the threshold characterization is
+`geometricInterleavingDistance_le_iff`.
+
+**(C) Composition.** The second component of geometric composition is explicit in
+`GeometricInterleaving.trans_ψ` and `GeometricInterleaving.trans_ψ'`, using the equality
+isomorphism after the outer-parameter-first `geometricSmoothingCompIso`.
+
+**(D) Self-smoothing.** `GeometricInterleaving.selfSmoothing` gives every graph object a witness
+from the object to its `ε`-smoothing. The witness is obtained by transporting precosheaf
+self-smoothing along the comparison isomorphism with the generic `Interleaving.isoRight`. Its
+components are described by
+`GeometricInterleaving.selfSmoothing_φ` and `GeometricInterleaving.selfSmoothing_ψ`, and the
+distance consequences are `geometricInterleavingDistance_geometricSmoothing_self_le` and
+`geometricInterleavingDistance_geometricSmoothing_le`, expressing nonexpansiveness of `U_ε` for
+`d_geo`. The fixtures exhibit the collapse of the two parallel edges under enlargement `1/4 → 1/2`;
+for the point graph, smoothing produces a segment, so only the upper bound is claimed, not
+smoothing invariance.
+
 ## Source correspondence
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4. As in `reeb-geometric-interleaving.md`,
@@ -130,10 +165,9 @@ composition, the triangle inequality, isomorphism invariance and the zero-distan
 and the unit and composite laws of the shifted map. None is attributed to a numbered source result.
 Essential surjectivity of `C` is not used, so no critical-value scope is inherited.
 
-Not claimed here: enlargement `U_ε ⟶ U_ε'` for `ε ≤ ε'`, `GeometricInterleaving.mono` and
-`d_geo(A, U_ε A) ≤ ε`; a formula for the second component of `trans`; a lift of `smoothingCompIso`
-to constructible cosheaves; absorption beyond (H2); a comparison with Mapper; interleavings of
-precosheaves that do not come from graph objects.
+Not claimed here: a lift of `smoothingCompIso` to constructible cosheaves; absorption beyond (H2);
+a comparison with Mapper; interleavings of precosheaves that do not come from graph objects; exact
+values of `d_geo(A, U_ε A)`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition
 4.36](https://arxiv.org/html/1501.04147v1).
