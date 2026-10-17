@@ -147,14 +147,16 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.4 **Proposition 2.10*
 functor, merged as `quotientFunctor`. §4.3 **Definition 4.22** is the thickening, and §4.4
 **Definition 4.30** is the Reeb smoothing `U_ε = ℛ T_ε`, merged as `geometricSmoothing`. §4.4
 **Observation 4.33** asserts semigroup isomorphisms `U_(ε₁+ε₂) ≃ U_(ε₁) U_(ε₂)`; this digest
-prepares them but does not claim them.
+prepares them, and they are proved independently in
+[reeb-quotient-thickening-absorption.md](reeb-quotient-thickening-absorption.md).
 
 The section `σ`, the fibre paths, the homeomorphism `ℛ T_ε T_δ ≅ ℛ T_(ε+δ)`, its coherence and the
 graph-level isomorphism are library statements; none is attributed to the source.
 
-Not claimed here: the absorption `ℛ T_ε ℛ ≅ ℛ T_ε`; the semigroup isomorphisms
-`U_ε U_δ ≅ U_(ε+δ)` of Observation 4.33; any statement about `geometricSmoothing δ ⋙
-geometricSmoothing ε`; the geometric interleavings of Definition 4.36 and any distance inequality;
+Not claimed here: the absorption `ℛ T_ε ℛ ≅ ℛ T_ε`, the semigroup isomorphisms
+`U_ε U_δ ≅ U_(ε+δ)` of Observation 4.33 and any statement about `geometricSmoothing δ ⋙
+geometricSmoothing ε`, which are in
+[reeb-quotient-thickening-absorption.md](reeb-quotient-thickening-absorption.md); the geometric interleavings of Definition 4.36 and any distance inequality;
 constructibility of `T_ε T_δ A`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition 4.30 and

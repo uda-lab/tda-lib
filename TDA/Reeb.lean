@@ -28,6 +28,7 @@ import TDA.Reeb.Perturbation
 import TDA.Reeb.PerturbationDistance
 import TDA.Reeb.Quotient
 import TDA.Reeb.QuotientComparison
+import TDA.Reeb.QuotientThickeningAbsorption
 import TDA.Reeb.QuotientThickeningAddition
 import TDA.Reeb.RGraph
 import TDA.Reeb.RGraphCosheafEquivalence
