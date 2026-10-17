@@ -169,6 +169,7 @@ noncomputable def logModule_scale_shiftIso (f : FilterFunction K ℝ) {c : ℝ} 
         (by intros; apply Subsingleton.elim)) (sublevelModule R f n) ≪≫
       eqToIso (logModule_scale_target_functor_eq R n f)
 
+omit [Fintype (TDA.Simplicial.TotalFace K)] in
 /-- The logarithmic scaling isomorphism is transport of the sublevel module along
 `c⁻¹ * exp (t + log c) = exp t`. -/
 theorem logModule_scale_shiftIso_hom_app (f : FilterFunction K ℝ) {c : ℝ}
