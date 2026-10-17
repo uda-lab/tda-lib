@@ -587,3 +587,15 @@ import TDA
 #print axioms TDA.Mapper.UniformMapperReebDataExamples.triple_cell
 #print axioms TDA.Mapper.UniformMapperReebDataExamples.triple_cell_not_mem_summands
 #print axioms TDA.Mapper.GraphPL.uniformMapperVertexEquiv_cell_inr
+
+-- Closed level sets of graph-PL height.
+#print axioms TDA.Mapper.GraphPL.exists_isLevelWindow
+#print axioms TDA.Mapper.GraphPL.levelWindowEquiv
+#print axioms TDA.Mapper.GraphPL.graphPLStarEquiv_eq_levelWindowEquiv
+#print axioms TDA.Mapper.GraphPL.levelWindowEquiv_mk_vertex
+#print axioms TDA.Mapper.GraphPL.levelWindowEquiv_mk_edgePoint
+#print axioms TDA.Mapper.GraphPL.crossingParam
+#print axioms TDA.Mapper.GraphPL.dartHeight_crossingParam
+#print axioms TDA.Mapper.GraphPL.crossingPoint
+#print axioms TDA.Mapper.GraphPL.eq_crossingPoint
+#print axioms TDA.Mapper.GraphPL.joinedIn_level_of_eq
