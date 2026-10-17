@@ -157,11 +157,60 @@ distance zero from the zero module with no zero-interleaving: this infimum is
 not attained. The distance API is a plain function with extended pseudometric
 laws, without a separation or attainment assertion.
 
+## Positive scaling
+
+For `c : ℝ` with `hc : 0 < c`, `PModule.scale c hc M` reindexes `M` along
+`t ↦ c⁻¹ * t`, so its value at `t` is `M.obj (c⁻¹ * t)`. This direction agrees
+with `FilterFunction.scale` and `scale_sublevel`, and with `Diagram.scale`: a
+bar `[b, d)` becomes `[c b, c d)`.
+
+Scaling and shifting commute through `PModule.scaleShiftIso`. Its component is
+the transport induced by
+
+\[
+c^{-1}(t+c\varepsilon)=c^{-1}t+\varepsilon.
+\]
+
+Consequently, `RealInterleaving.scale` sends an ε-interleaving to a
+`Real.toNNReal c * ε`-interleaving of the scaled modules, and
+`nonempty_realInterleaving_scale_iff` gives the converse witness equivalence.
+The exact distance law is
+
+\[
+d_I(PModule.scale\ c\ hc\ M,PModule.scale\ c\ hc\ N)
+=\operatorname{ENNReal.ofReal}(c)\,d_I(M,N),
+\]
+
+as stated by `realInterleavingDistance_scale`. It holds over every ring, with
+no constructibility or finite-dimensionality hypothesis, and includes infinite
+distance: `realInterleavingDistance_scale_eq_top_iff` preserves the value `⊤`.
+The hypothesis `0 < c` is essential. A negative factor is not monotone, while
+the factor `0` gives a constant reindexing; for the essential infinite-distance
+case its left-hand distance is `⊤` but the proposed right-hand side is
+`0 * ⊤ = 0`.
+
+### Constructible and sublevel bridge
+
+For a finite critical grid, `FiniteConstructible.scaleGrid` and
+`FiniteConstructible.IsConstructible.scale` transport constructibility to the
+scaled module. `FiniteConstructible.moduleDiagram_scale` says that the diagram
+on the scaled grid is `Diagram.scale` of the original diagram, paralleling the
+[shift diagram formula](constructible-shift-diagrams.md); the bottleneck form
+`FiniteConstructible.bottleneck_moduleDiagram_scale` is the corresponding
+[finite-constructible isometry route](constructible-isometry.md).
+
+At the filtration level, `sublevelModule_scale` is an equality, and
+`realInterleavingDistance_sublevelModule_scale` gives the same exact distance
+law over any ring. Finally, `moduleDiagram_sublevelModule_scale` agrees with
+`dgm_scale`, so filter scaling and module scaling produce the same diagram.
+
 ## Source and scope
 
 [Bauer--Lesnick, arXiv:1311.3681v4](https://arxiv.org/html/1311.3681v4), §3.1,
 defines the field-valued shift, transition, interleaving and distance with these
 conventions; Remark 3.1 supplies enlargement and additive composition.
+Positive scaling and its exact interleaving-distance law are library extensions
+of BL15-v4 §3.1, not theorems of that source.
 The ring-valued constructions, explicit coherence and zero-module criterion are
 proved library extensions and consequences. The unconditional ENNReal triangle
 also includes infinite summands, where the inequality is automatic.

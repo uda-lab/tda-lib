@@ -171,9 +171,11 @@ order embedding `exp` to the log-scale diagram. The embedding is used in this di
 because `Real.exp` is strictly increasing on all of `ℝ`; `Real.log` is not an order embedding
 of `ℝ`, so the reverse comparison is expressed by the pointwise log form rather than by a
 diagram map along `log`. Explicit Čech and Rips diagrams beyond the two-point fixtures,
-Jung's constant, Hausdorff and Gromov–Hausdorff statements and positive scaling of real
-modules are outside this note. The log-scale module, constructibility, the module diagram and
-the isometry are used unchanged.
+Jung's constant, Hausdorff and Gromov–Hausdorff statements and general positive scaling of
+real modules remain outside this note. For `1 ≤ c`, positive scaling of the filter becomes the
+shift by `logParam c` of its log-scale modules via `logModule_scale_shiftIso`, an isomorphism
+of modules; the corresponding translation formula for `logDgm` is not stated. The log-scale
+module, constructibility, the module diagram and the isometry are used unchanged.
 
 ## Sources
 

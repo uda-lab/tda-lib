@@ -160,6 +160,13 @@ with zero is equivalent to a zero double-shift structure map. Its interval examp
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
 for the finite nonnegative parameters and witness equations.
 
+`TDA.Persistence.ModuleScaling` defines positive scaling of real persistence modules by
+reindexing along `t ↦ c⁻¹ * t`. `PModule.scaleShiftIso` compares scaling with shifts,
+`RealInterleaving.scale` transports witnesses with parameter `Real.toNNReal c * ε`, and
+`nonempty_realInterleaving_scale_iff` together with `realInterleavingDistance_scale` gives
+the exact `ENNReal.ofReal c` distance law over every ring, including `⊤`. See [positive
+scaling](math/real-interleavings.md#positive-scaling).
+
 `RealInterleaving.kernel_transition_eq_zero` and `cokernel_transition_eq_zero`
 prove that either comparison morphism has actual categorical kernel and cokernel
 with zero `2ε`-transition, over any ring without dimension assumptions. See
@@ -201,6 +208,15 @@ original critical-fiber finite dimensionality and the existing shared field/carr
 universe. No optimal matching or interleaving at the distance is assumed. See
 [finite-constructible isometry](math/constructible-isometry.md); general infinite
 or q-tame modules and arbitrary-ring isometry remain outside this scope.
+
+`TDA.Persistence.ConstructibleScaleBarcode` transports finite critical grids and module
+diagrams under positive scaling: `FiniteConstructible.scaleGrid`,
+`FiniteConstructible.IsConstructible.scale`, and `FiniteConstructible.moduleDiagram_scale`
+give the diagram formula, while `FiniteConstructible.bottleneck_moduleDiagram_scale` gives
+its bottleneck consequence. `TDA.Persistence.SublevelScaling` identifies scaled filter
+sublevel modules with `PModule.scale`, proves the ring-level distance law, and shows that
+`moduleDiagram_sublevelModule_scale` agrees with `dgm_scale`; it also provides
+`logModule_scale_shiftIso` for `1 ≤ c`. See [positive scaling](math/real-interleavings.md#positive-scaling).
 
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.
@@ -307,7 +323,9 @@ bottleneck distance of their diagrams with the interleaving distance of their su
 modules, for unrelated critical grids, and `nonempty_sublevelInterleaving_iff` is the
 witness equivalence at every finite parameter. `bottleneck_dgm_le_faceSupDifference_algebraic`
 rederives finite-filter stability from the inclusion interleaving, independently of the
-face-order proof, and essential multiplicities agree. Log-scale and cross-complex comparisons
+face-order proof, and essential multiplicities agree. The scaling bridge in
+`TDA.Persistence.SublevelScaling` adds the corresponding module and diagram identities.
+Log-scale and cross-complex comparisons
 are not made. See [the proofs, fixtures and scope](math/sublevel-constructibility.md).
 
 `TDA.Persistence.LogScaleDiagram` gives log-scale modules a diagram in degrees n ≥ 1. A filter
