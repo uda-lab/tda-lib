@@ -267,7 +267,7 @@ open TDA.Reeb TDA.Reeb.GraphPL TDA.Reeb.GraphRealization TDA.Reeb.OpenInterval
 
 noncomputable section
 
-variable {V : Type u} {I : Type w}
+variable {V : Type*} {I : Type*}
 
 variable (G : SimpleGraph V) (h : V → ℝ)
 
