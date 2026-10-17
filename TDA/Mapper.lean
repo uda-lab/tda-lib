@@ -6,3 +6,5 @@ import TDA.Mapper.Refinement
 import TDA.Mapper.GraphPL
 import TDA.Mapper.Tower
 import TDA.Mapper.MultiNerveRefinement
+import TDA.Mapper.UniformCover
+import TDA.Mapper.MultiNerveGraphPL
