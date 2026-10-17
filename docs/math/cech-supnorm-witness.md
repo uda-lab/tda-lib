@@ -63,6 +63,9 @@ For a label metric d with d(v, w) = dist (p v) (p w):
 
 Positive scaling of filters turns these identities into identities of actual diagrams and
 bottleneck distances; see [filter and diagram reparametrization](filter-reparametrization.md).
+The resulting half-discrepancy consumers and the additive one-configuration comparison are
+described in [Sup-norm consumers](cech-weighted-kernel-images.md#sup-norm-consumers) and
+[Rips versus Čech of one configuration](cech-weighted-kernel-images.md#rips-versus-čech-of-one-configuration).
 
 **The line.** For q : V → ℝ, let e x be the constant map Fin 1 → ℝ with value x and let
 g y = y 0. Then e is an isometry, g is 1-Lipschitz and g (e x) = x. Witness-space equality

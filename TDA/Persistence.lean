@@ -114,3 +114,6 @@ import TDA.Persistence.CechWeightedKernel
 import TDA.Persistence.CechPersistenceImage
 import TDA.Persistence.SublevelDiagramMonotone
 import TDA.Persistence.LogScaleDiagramComparison
+import TDA.Persistence.CechSupNormWeightedKernel
+import TDA.Persistence.CechSupNormPersistenceImage
+import TDA.Persistence.CechRipsAdditive

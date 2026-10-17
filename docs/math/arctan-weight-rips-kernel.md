@@ -60,6 +60,10 @@ count factor is the same as for Rips persistence images. Empty and singleton car
 δ = 0, so their embeddings and kernel values coincide. This composition is a library
 result and is not attributed to any paper.
 
+The sup-norm half-discrepancy consumers and the additive comparison of one Rips and Čech
+configuration are described in [Sup-norm consumers](cech-weighted-kernel-images.md#sup-norm-consumers)
+and [Rips versus Čech of one configuration](cech-weighted-kernel-images.md#rips-versus-čech-of-one-configuration).
+
 ## The infinite-bottleneck boundary
 
 The diagram-level bound needs finite bottleneck. A diagram with the finite point (0, 2)
