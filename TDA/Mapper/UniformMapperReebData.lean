@@ -426,3 +426,349 @@ end
 end GraphPL
 
 end TDA.Mapper
+
+namespace TDA.Mapper.GraphPL
+
+open Set SimpleGraph CategoryTheory
+open TDA.Reeb TDA.Reeb.OpenInterval TDA.Reeb.GraphPL TDA.Reeb.GraphRealization
+
+noncomputable section
+
+variable {V : Type u} (G : SimpleGraph V) (h : V → ℝ) {a r g : ℝ} {n : ℕ}
+
+/-! ## The finite Mapper data -/
+
+/-- The finite incidence data whose vertices are the one-label MultiNerve Mapper cells and whose
+edges are the consecutive two-label cells of the uniform cover.  The definition itself needs no
+cover hypotheses; those hypotheses enter the exhaustion and comparison theorems below. -/
+def uniformMapperData [Finite V] (a r g : ℝ) (n : ℕ) : FiniteReebData.{u} n where
+  V k := {c : multiNerveMapper (plHeight G h)
+      (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) //
+      c.support.image Sigma.fst = {k}}
+  E e := {c : multiNerveMapper (plHeight G h)
+      (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) //
+      c.support.image Sigma.fst = {e.castSucc, e.succ}}
+  finiteV k := by
+    have : Finite (ZerothHomotopy ↥(plHeight G h ⁻¹'
+        (uniformCover a r g (n + 1) k : Set ℝ))) :=
+      finite_zerothHomotopy G h (uniformCover a r g (n + 1) k)
+    exact Finite.of_equiv _
+      (vertexCellsEquiv (plHeight G h)
+        (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) k).symm
+  finiteE e := finite_edgeCells G h (uniformCover a r g (n + 1)) e.castSucc e.succ
+  left e c := labelFace (plHeight G h)
+    (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) c e.castSucc
+    (Finset.mem_insert_self _ _)
+  right e c := labelFace (plHeight G h)
+    (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) c e.succ
+    (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))
+
+/-- The vertex types of `uniformMapperData` are the one-label MultiNerve Mapper cells. -/
+@[simp] theorem uniformMapperData_V [Finite V] (k : Fin (n + 1)) :
+    (uniformMapperData G h a r g n).V k =
+      {c : multiNerveMapper (plHeight G h)
+          (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) //
+        c.support.image Sigma.fst = {k}} := rfl
+
+/-- The edge types of `uniformMapperData` are the consecutive two-label cells. -/
+@[simp] theorem uniformMapperData_E [Finite V] (e : Fin n) :
+    (uniformMapperData G h a r g n).E e =
+      {c : multiNerveMapper (plHeight G h)
+          (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) //
+        c.support.image Sigma.fst = {e.castSucc, e.succ}} := rfl
+
+/-- The left endpoint of a Mapper edge is its MultiNerve face over the lower label. -/
+@[simp] theorem uniformMapperData_left [Finite V] (e : Fin n)
+    (c : (uniformMapperData G h a r g n).E e) :
+    (uniformMapperData G h a r g n).left e c =
+      labelFace (plHeight G h)
+        (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) c e.castSucc
+        (Finset.mem_insert_self _ _) := rfl
+
+/-- The right endpoint of a Mapper edge is its MultiNerve face over the upper label. -/
+@[simp] theorem uniformMapperData_right [Finite V] (e : Fin n)
+    (c : (uniformMapperData G h a r g n).E e) :
+    (uniformMapperData G h a r g n).right e c =
+      labelFace (plHeight G h)
+        (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) c e.succ
+        (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)) := rfl
+
+private def uniformMapperCellsForget [Finite V] (a r g : ℝ) (n : ℕ) :
+    (Σ k, (uniformMapperData G h a r g n).V k) ⊕
+      (Σ e, (uniformMapperData G h a r g n).E e) →
+      multiNerveMapper (plHeight G h)
+        (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) :=
+  Sum.elim (fun p => p.2.1) (fun p => p.2.1)
+
+private theorem pair_castSucc_succ_injective {e e' : Fin n}
+    (he : ({e.castSucc, e.succ} : Finset (Fin (n + 1))) =
+      {e'.castSucc, e'.succ}) : e = e' := by
+  have h₁ : e.castSucc ∈ ({e'.castSucc, e'.succ} : Finset (Fin (n + 1))) := by
+    rw [← he]
+    simp
+  have h₂ : e'.castSucc ∈ ({e.castSucc, e.succ} : Finset (Fin (n + 1))) := by
+    rw [he]
+    simp
+  simp only [Finset.mem_insert, Finset.mem_singleton] at h₁ h₂
+  have hlt : e.castSucc < e.succ := Fin.castSucc_lt_succ
+  have hlt' : e'.castSucc < e'.succ := Fin.castSucc_lt_succ
+  rcases h₁ with h₁ | h₁ <;> rcases h₂ with h₂ | h₂
+  · exact Fin.ext (congrArg (fun z => z.val) h₁)
+  · omega
+  · omega
+  · omega
+
+private theorem uniformMapperCellsForget_injective [Finite V] :
+    Function.Injective (uniformMapperCellsForget G h a r g n) := by
+  rintro (⟨k, c⟩ | ⟨e, c⟩) (⟨k', c'⟩ | ⟨e', c'⟩) hc
+  · change c.1 = c'.1 at hc
+    have hcc : c.1 = c'.1 := hc
+    have hlabels : ({k} : Finset (Fin (n + 1))) = {k'} :=
+      c.2.symm.trans ((congrArg (fun z => z.support.image Sigma.fst) hcc).trans c'.2)
+    have hkk : k = k' := Finset.singleton_inj.1 hlabels
+    subst k'
+    have hc' : c = c' := Subtype.ext hcc
+    subst hc'
+    rfl
+  · change c.1 = c'.1 at hc
+    have hcc : c.1 = c'.1 := hc
+    have hlabels : ({k} : Finset (Fin (n + 1))) = {e'.castSucc, e'.succ} :=
+      c.2.symm.trans ((congrArg (fun z => z.support.image Sigma.fst) hcc).trans c'.2)
+    have hcard := congrArg Finset.card hlabels
+    rw [Finset.card_singleton,
+      Finset.card_pair (Fin.castSucc_lt_succ (i := e')).ne] at hcard
+    omega
+  · change c.1 = c'.1 at hc
+    have hcc : c.1 = c'.1 := hc
+    have hlabels : ({e.castSucc, e.succ} : Finset (Fin (n + 1))) = {k'} :=
+      c.2.symm.trans ((congrArg (fun z => z.support.image Sigma.fst) hcc).trans c'.2)
+    have hcard := congrArg Finset.card hlabels
+    rw [Finset.card_pair (Fin.castSucc_lt_succ (i := e)).ne, Finset.card_singleton] at hcard
+    omega
+  · change c.1 = c'.1 at hc
+    have hcc : c.1 = c'.1 := hc
+    have hlabels : ({e.castSucc, e.succ} : Finset (Fin (n + 1))) =
+        {e'.castSucc, e'.succ} :=
+      c.2.symm.trans ((congrArg (fun z => z.support.image Sigma.fst) hcc).trans c'.2)
+    have hee : e = e' := pair_castSucc_succ_injective hlabels
+    subst e'
+    have hc' : c = c' := Subtype.ext hcc
+    subst hc'
+    rfl
+
+private theorem uniformMapperCells_pair_preimage [Finite V]
+    (hgr : 2 * g ≤ r) (c : multiNerveMapper (plHeight G h)
+      (fun i => (uniformCover a r g (n + 1) i : Set ℝ)))
+    {k l : Fin (n + 1)} (hkl : k < l)
+    (hc : c.support.image Sigma.fst = {k, l}) :
+    ∃ p : (Σ e, (uniformMapperData G h a r g n).E e),
+      uniformMapperCellsForget G h a r g n (Sum.inr p) = c := by
+  by_cases hfar : (k : ℕ) + 2 ≤ l
+  · exact ((isEmpty_uniformEdgeCells_of_far G h hgr hfar).false ⟨c, hc⟩).elim
+  have hnext : (k : ℕ) + 1 = l := by omega
+  let e : Fin n := ⟨k, by omega⟩
+  have hecast : e.castSucc = k := Fin.ext rfl
+  have hesucc : e.succ = l := by
+    apply Fin.ext
+    simpa [e] using hnext
+  refine ⟨⟨e, ⟨c, hc.trans ?_⟩⟩, rfl⟩
+  rw [hecast, hesucc]
+
+private theorem uniformMapperCellsForget_surjective [Finite V]
+    (hgr : 2 * g ≤ r) :
+    Function.Surjective (uniformMapperCellsForget G h a r g n) := by
+  intro c
+  let L := c.support.image Sigma.fst
+  have hLne : L.Nonempty := by
+    obtain ⟨x, hx⟩ := c.support_nonempty
+    exact ⟨x.1, Finset.mem_image.2 ⟨x, hx, rfl⟩⟩
+  have hLcard : L.card ≤ 2 := by
+    have hcard := multiNerveMapper_card_le_of_multiplicity
+      (plHeight G h) (fun i => (uniformCover a r g (n + 1) i : Set ℝ))
+      (coverMultiplicityAtMost_uniformCover hgr (plHeight G h)) c
+    have himage : (c.support.image Sigma.fst).card ≤ c.support.card :=
+      Finset.card_image_le
+    exact himage.trans hcard
+  have hpos : 0 < L.card := Finset.card_pos.2 hLne
+  have hcases : L.card = 1 ∨ L.card = 2 := by omega
+  rcases hcases with hcard_one | hcard_two
+  · obtain ⟨k, hk⟩ := Finset.card_eq_one.1 hcard_one
+    refine ⟨Sum.inl ⟨k, ⟨c, show c.support.image Sigma.fst = {k} from hk⟩⟩, rfl⟩
+  · obtain ⟨k, l, hkl, hL⟩ := Finset.card_eq_two.1 hcard_two
+    rcases lt_or_gt_of_ne hkl with hkl' | hlk
+    · obtain ⟨p, hp⟩ := uniformMapperCells_pair_preimage G h hgr c hkl'
+        (show c.support.image Sigma.fst = {k, l} from hL)
+      exact ⟨Sum.inr p, hp⟩
+    · have hL' : L = {l, k} := hL.trans (Finset.pair_comm k l)
+      obtain ⟨p, hp⟩ := uniformMapperCells_pair_preimage G h hgr c hlk
+        (show c.support.image Sigma.fst = {l, k} from hL')
+      exact ⟨Sum.inr p, hp⟩
+
+/-- Under `2 * g ≤ r`, every MultiNerve Mapper cell is a one-label cell or a consecutive
+two-label cell, with the corresponding finite-data index retained. -/
+def uniformMapperCellsEquiv [Finite V] (hgr : 2 * g ≤ r) :
+    multiNerveMapper (plHeight G h)
+        (fun i => (uniformCover a r g (n + 1) i : Set ℝ)) ≃
+      (Σ k, (uniformMapperData G h a r g n).V k) ⊕
+        (Σ e, (uniformMapperData G h a r g n).E e) :=
+  (Equiv.ofBijective (uniformMapperCellsForget G h a r g n)
+    ⟨uniformMapperCellsForget_injective G h,
+      uniformMapperCellsForget_surjective G h hgr⟩).symm
+
+/-! ## Vertex and edge identifications -/
+
+/-- The one-label Mapper cells over an adapted member are the `LevelVertex` types at its level. -/
+def uniformMapperVertexEquiv [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h) (k : Fin (n + 1)) :
+    (uniformMapperData G h a r g n).V k ≃ LevelVertex G h (T.value k) :=
+  let hmem : T.value k ∈ uniformCover a r g (n + 1) k := (hT k k).2 rfl
+  let hlev : ∀ v, h v ∈ uniformCover a r g (n + 1) k → h v = T.value k :=
+    fun v hv => (show v ∈ {v | h v = T.value k} from
+      (hT.preimage_eq hcov k) ▸ hv)
+  (vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) k).trans
+    ((cellComponentsEquivSum G h (uniformCover a r g (n + 1) k)).trans
+      (Equiv.sumCongr
+        (induceComponentsEquivOfEq G (hT.preimage_eq hcov k))
+        (uncoveredEdgeEquivCrossesOfLevel G h hmem hlev)))
+
+private theorem uniformMapperVertexEquiv_apply [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h) (k : Fin (n + 1))
+    (c : (uniformMapperData G h a r g n).V k) :
+    uniformMapperVertexEquiv G h T hT hcov k c =
+      (Equiv.sumCongr
+        (induceComponentsEquivOfEq G (hT.preimage_eq hcov k))
+        (uncoveredEdgeEquivCrossesOfLevel G h
+          ((hT k k).2 rfl)
+          (fun v hv => (show v ∈ {v | h v = T.value k} from
+            (hT.preimage_eq hcov k) ▸ hv))))
+        (cellComponentsEquivSum G h (uniformCover a r g (n + 1) k)
+          ((vertexCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) k) c)) := rfl
+
+/-- Spanning an overlap with its geometric endpoints is equivalent to spanning the adapted levels.
+The endpoint inequalities come from member adaptation, so no positivity assumption on `g` is
+needed for this equivalence. -/
+theorem spanEdge_overlap_iff (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hgr : g ≤ r) (e : Fin n) (x : G.edgeSet) :
+    EdgeSpans G h (a + (e.succ : ℕ) * (r - g))
+        (a + (e.succ : ℕ) * (r - g) + g) x ↔
+      EdgeSpans G h (T.value e.castSucc) (T.value e.succ) x := by
+  obtain ⟨d, rfl⟩ := exists_dartEdge_eq x
+  rw [edgeSpans_dartEdge_iff, edgeSpans_dartEdge_iff]
+  have hleft : a + (e.succ : ℕ) * (r - g) < T.value e.succ := by
+    have hm := (hT e.succ e.succ).2 rfl
+    rw [uniformCover_apply, mem_uniformInterval] at hm
+    exact hm.1
+  have hright : T.value e.castSucc <
+      a + (e.succ : ℕ) * (r - g) + g := by
+    have hm := (hT e.castSucc e.castSucc).2 rfl
+    rw [uniformCover_apply, mem_uniformInterval] at hm
+    simp only [Fin.val_succ, Fin.val_castSucc] at hm ⊢
+    push_cast at hm ⊢
+    nlinarith [hm.2]
+  constructor
+  · rintro ⟨hmin, hmax⟩
+    constructor
+    · rcases min_choice (h d.fst) (h d.snd) with hm | hm
+      · obtain ⟨j, hj⟩ := hcov d.fst
+        have hjlt : j < e.succ := T.strictMono.lt_iff_lt.1 (by
+          rw [hj, ← hm]
+          exact hmin.trans_lt hleft)
+        have hjle : j ≤ e.castSucc := Fin.le_castSucc_iff.2 hjlt
+        rw [hm, ← hj]
+        exact T.strictMono.monotone hjle
+      · obtain ⟨j, hj⟩ := hcov d.snd
+        have hjlt : j < e.succ := T.strictMono.lt_iff_lt.1 (by
+          rw [hj, ← hm]
+          exact hmin.trans_lt hleft)
+        have hjle : j ≤ e.castSucc := Fin.le_castSucc_iff.2 hjlt
+        rw [hm, ← hj]
+        exact T.strictMono.monotone hjle
+    · rcases max_choice (h d.fst) (h d.snd) with hm | hm
+      · obtain ⟨j, hj⟩ := hcov d.fst
+        have hjlt : e.castSucc < j := T.strictMono.lt_iff_lt.1 (by
+          rw [hj, ← hm]
+          exact hright.trans_le hmax)
+        have hle : e.succ ≤ j := Fin.castSucc_lt_iff_succ_le.1 hjlt
+        rw [hm, ← hj]
+        exact T.strictMono.monotone hle
+      · obtain ⟨j, hj⟩ := hcov d.snd
+        have hjlt : e.castSucc < j := T.strictMono.lt_iff_lt.1 (by
+          rw [hj, ← hm]
+          exact hright.trans_le hmax)
+        have hle : e.succ ≤ j := Fin.castSucc_lt_iff_succ_le.1 hjlt
+        rw [hm, ← hj]
+        exact T.strictMono.monotone hle
+  · rintro ⟨hmin, hmax⟩
+    constructor
+    · exact hmin.trans (hT.overlap_left_ge hgr e)
+    · exact (hT.overlap_right_le hgr e).trans hmax
+
+/-- Consecutive two-label Mapper cells are the spanning-edge types of the adapted levels. -/
+def uniformMapperEdgeEquiv [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) (e : Fin n) :
+    (uniformMapperData G h a r g n).E e ≃ SpanEdge G h (T.value e.castSucc) (T.value e.succ) :=
+  (uniformEdgeCellsEquivSpans G h (hT.heightSeparating hcov) hgr hg
+      (by simp : (e.castSucc : ℕ) + 1 = e.succ)).trans
+    (Equiv.subtypeEquivRight (spanEdge_overlap_iff G h T hT hcov hgr e))
+
+private theorem uniformMapper_cast_symm_apply {K L : OpenInterval}
+    (hKL : K = L) (y : G.edgeSet) (hyK : EdgeActive G h K y)
+    (hyL : EdgeActive G h L y) :
+    (Equiv.cast (congrArg (fun K => (cellGraph G h K).ConnectedComponent) hKL)).symm
+        ((cellGraph G h L).connectedComponentMk (Sum.inr ⟨y, hyL⟩)) =
+      (cellGraph G h K).connectedComponentMk (Sum.inr ⟨y, hyK⟩) := by
+  subst L
+  rfl
+
+/-- The inverse edge equivalence is the incidence component represented by the corresponding edge
+node over the consecutive overlap. -/
+theorem uniformMapperEdgeEquiv_symm_apply [Finite V] (T : CriticalValues n)
+    (hT : LevelsAdapted T a r g) (hcov : CoversVertexHeights T h)
+    (hg : 0 < g) (hgr : g ≤ r) (e : Fin n)
+    (y : SpanEdge G h (T.value e.castSucc) (T.value e.succ))
+    (hy : EdgeActive G h
+      (uniformCover a r g (n + 1) e.castSucc ⊓
+        uniformCover a r g (n + 1) e.succ) y.1) :
+    edgeCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) e.castSucc e.succ
+        ((uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm y) =
+      (cellGraph G h
+        (uniformCover a r g (n + 1) e.castSucc ⊓
+          uniformCover a r g (n + 1) e.succ)).connectedComponentMk
+        (Sum.inr ⟨y.1, hy⟩) := by
+  have hkl : (e.castSucc : ℕ) + 1 = e.succ := by simp
+  let p : ℝ := a + (e.succ : ℕ) * (r - g)
+  let q : ℝ := p + g
+  have hK : ∀ v, h v ∉ ioo p q := by
+    intro v hv
+    apply (hT.heightSeparating hcov).2 e.castSucc e.succ hkl v
+    rw [uniformCover_inf_of_succ hgr hkl]
+    exact hv
+  have hpq : p < q := by linarith
+  have hyL : EdgeActive G h (ioo p q) y.1 := by
+    rw [← uniformCover_inf_of_succ hgr hkl]
+    exact hy
+  have hyspan : EdgeSpans G h p q y.1 := by
+    exact ((spanEdge_overlap_iff G h T hT hcov hgr e y.1).2 y.2)
+  have hyactive : EdgeActive G h (ioo p q) y.1 :=
+    ((activeEdgeEquivSpans (G := G) (h := h) hpq hK).symm
+      ⟨y.1, hyspan⟩).2
+  have hcancel :
+      edgeCellsCellGraphEquiv G h (uniformCover a r g (n + 1)) e.castSucc e.succ
+          ((uniformMapperEdgeEquiv G h T hT hcov hg hgr e).symm y) =
+        (Equiv.cast (congrArg (fun K => (cellGraph G h K).ConnectedComponent)
+          (uniformCover_inf_of_succ hgr hkl))).symm
+          ((cellGraph G h (ioo p q)).connectedComponentMk
+            (Sum.inr ⟨y.1, hyactive⟩)) := by
+    unfold uniformMapperEdgeEquiv uniformEdgeCellsEquivSpans uniformEdgeCellsEquiv
+    erw [Equiv.symm_trans_apply, Equiv.symm_trans_apply, Equiv.symm_trans_apply,
+      Equiv.apply_symm_apply]
+    rfl
+  rw [hcancel]
+  exact uniformMapper_cast_symm_apply G h
+    (uniformCover_inf_of_succ hgr hkl) y.1 hy hyL
+
+end
+
+end TDA.Mapper.GraphPL

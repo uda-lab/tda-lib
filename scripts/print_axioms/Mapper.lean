@@ -541,3 +541,14 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.LevelsAdapted.heightSeparating
 #print axioms TDA.Mapper.GraphPL.LevelsAdapted.preimage_eq
 #print axioms TDA.Mapper.GraphPL.exists_levelsAdapted
+
+#print axioms TDA.Mapper.GraphPL.uniformMapperData
+#print axioms TDA.Mapper.GraphPL.uniformMapperData_V
+#print axioms TDA.Mapper.GraphPL.uniformMapperData_E
+#print axioms TDA.Mapper.GraphPL.uniformMapperData_left
+#print axioms TDA.Mapper.GraphPL.uniformMapperData_right
+#print axioms TDA.Mapper.GraphPL.uniformMapperCellsEquiv
+#print axioms TDA.Mapper.GraphPL.uniformMapperVertexEquiv
+#print axioms TDA.Mapper.GraphPL.spanEdge_overlap_iff
+#print axioms TDA.Mapper.GraphPL.uniformMapperEdgeEquiv
+#print axioms TDA.Mapper.GraphPL.uniformMapperEdgeEquiv_symm_apply
