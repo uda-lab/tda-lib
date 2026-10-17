@@ -51,6 +51,7 @@ theorem sublevelModule_scale (f : FilterFunction K ℝ) (c : ℝ) (hc : 0 < c) :
   rw [sublevelFiltration_scale f c hc]
   rfl
 
+omit [Fintype (TDA.Simplicial.TotalFace K)] in
 /-- Scaling multiplies the interleaving distance of sublevel modules over any ring. -/
 theorem realInterleavingDistance_sublevelModule_scale
     (f g : FilterFunction K ℝ) (c : ℝ) (hc : 0 < c) :
@@ -120,6 +121,7 @@ private theorem logModule_scale_index {c : ℝ} (hc : 0 < c) (hc1 : 1 ≤ c) (t 
   rw [exp_add_logParam hc1 t]
   exact inv_mul_cancel_left₀ hc.ne' _
 
+omit [Fintype (TDA.Simplicial.TotalFace K)] in
 private theorem logModule_scale_source_eq (f : FilterFunction K ℝ) {c : ℝ}
     (hc : 0 < c) (t : ℝ) :
     ((shift (logParam c)).obj (logModule R (f.scale c hc) n)).obj t =
@@ -135,6 +137,7 @@ private theorem logModule_scale_target_eq (f : FilterFunction K ℝ) (t : ℝ) :
   rw [logModule_eq_reindex R n f]
   rfl
 
+omit [Fintype (TDA.Simplicial.TotalFace K)] in
 private theorem logModule_scale_source_functor_eq (f : FilterFunction K ℝ) {c : ℝ}
     (hc : 0 < c) :
     (shift (logParam c)).obj (logModule R (f.scale c hc) n) =
