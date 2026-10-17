@@ -2775,3 +2775,30 @@ import TDA
 #print axioms TDA.Reeb.Examples.GeometricEnlargement.edgeMid_mono_not_reverse
 #print axioms TDA.Reeb.Examples.GeometricEnlargement.parallel_enlargement_refl_app
 #print axioms TDA.Reeb.Examples.GeometricEnlargement.zero_le_quarter
+-- TDA.Reeb.ConstructibleSmoothingLift
+#print axioms TDA.Reeb.constructibleSmoothingMap
+#print axioms TDA.Reeb.constructibleSmoothingMap_app_hom
+#print axioms TDA.Reeb.constructibleSmoothingMap_app_hom_app
+#print axioms TDA.Reeb.constructibleSmoothingMap_refl
+#print axioms TDA.Reeb.constructibleSmoothingMap_comp
+#print axioms TDA.Reeb.constructibleSmoothingUnit_comp_constructibleSmoothingMap
+#print axioms TDA.Reeb.constructibleSmoothingCompIso
+#print axioms TDA.Reeb.constructibleSmoothingCompIso_hom_app_hom
+#print axioms TDA.Reeb.constructibleSmoothingCompIso_inv_app_hom
+#print axioms TDA.Reeb.constructibleSmoothingUnit_comp_constructibleSmoothingUnit
+#print axioms TDA.Reeb.constructibleSmoothingUnit_comp_map_constructibleSmoothingUnit
+#print axioms TDA.Reeb.constructibleSmoothingCompIso_assoc
+#print axioms TDA.Reeb.constructibleSmoothingCompIso_zero_left
+#print axioms TDA.Reeb.constructibleSmoothingCompIso_zero_right
+#print axioms TDA.Reeb.constructibleSmoothingCommIso
+#print axioms TDA.Reeb.constructibleSmoothingCommIso_hom_app_hom
+#print axioms TDA.Reeb.constructibleSmoothingCommIso_inv_app_hom
+-- TDA.Reeb.ConstructibleShiftMap
+#print axioms TDA.Reeb.RGraph.constructibleShiftMap
+#print axioms TDA.Reeb.RGraph.constructibleShiftMap_hom
+#print axioms TDA.Reeb.RGraph.constructibleShiftMap_unit
+#print axioms TDA.Reeb.RGraph.cosheafFunctor_map_geometricSmoothingCompIso_hom_app_comp
+#print axioms TDA.Reeb.RGraph.cosheafFunctor_map_geometricSmoothingCompIso_hom_app_comp_assoc
+#print axioms TDA.Reeb.RGraph.geometricSmoothingComparisonIso_compIso
+#print axioms TDA.Reeb.RGraph.constructibleShiftMap_comp
+#print axioms TDA.Reeb.RGraph.cosheafShiftMap_comp_of_constructible

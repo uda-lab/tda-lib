@@ -9,7 +9,9 @@ import TDA.Reeb.ConstructibleCosheaf
 import TDA.Reeb.ConstructibleCylinder
 import TDA.Reeb.ConstructibleQuotient
 import TDA.Reeb.ConstructibleRepresentation
+import TDA.Reeb.ConstructibleShiftMap
 import TDA.Reeb.ConstructibleSmoothing
+import TDA.Reeb.ConstructibleSmoothingLift
 import TDA.Reeb.ConstructibleSpace
 import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
