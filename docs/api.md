@@ -285,8 +285,21 @@ along exp: a sandwich g ≤ f ≤ c · g with 1 ≤ c gives a `logParam c`-inter
 log-scale modules, and `Cech.ripsCechLogInterleaving` is the log 2 case for Rips and Čech,
 over every ring and in every pseudometric ambient. At radius level, `Cech.ripsToCech` and
 `Cech.cechToRips` factor the doublings Rips_r ⊆ Rips_{2r} and Čech_r ⊆ Čech_{2r} for every
-real r; these are structure maps only for r ≥ 0. No diagram or bottleneck statement is
-made. See [the proofs, fixtures and scope](math/cech-rips-interleaving.md).
+real r; these are structure maps only for r ≥ 0. The log-scale results make no diagram or
+bottleneck statement. See [the proofs, fixtures and scope](math/cech-rips-interleaving.md).
+
+`TDA.Persistence.SublevelConstructible` proves that the sublevel module of a real filter on a
+finite complex is finite-constructible on the critical values of the filter, over every ring,
+`sublevelModule_isConstructible`. Over a field its critical fibers are finite-dimensional, and
+`moduleDiagram_sublevelModule` identifies its module diagram on that grid with `dgm k f n` by
+definition; `sublevelModuleRealizationIso` realizes the module from the diagram. For two
+filters on the same complex, `bottleneck_dgm_eq_realInterleavingDistance` equates the
+bottleneck distance of their diagrams with the interleaving distance of their sublevel
+modules, for unrelated critical grids, and `nonempty_sublevelInterleaving_iff` is the
+witness equivalence at every finite parameter. `bottleneck_dgm_le_faceSupDifference_algebraic`
+rederives finite-filter stability from the inclusion interleaving, independently of the
+face-order proof, and essential multiplicities agree. Log-scale and cross-complex comparisons
+are not made. See [the proofs, fixtures and scope](math/sublevel-constructibility.md).
 
 `TDA.Filtration.CechDisplacement` compares two labelled families p, q : V → X in one
 ambient space label by label. Moving the points of a face by at most ε changes its Čech

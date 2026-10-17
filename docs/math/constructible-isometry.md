@@ -130,3 +130,6 @@ General decorated intervals, infinite or q-tame decompositions and isometry
 over arbitrary rings or unrestricted carrier universes are outside this theorem.
 The general ephemeral nonattainment example is outside this constructible
 domain; the proof of equality uses no attainment assumption.
+
+The [constructibility bridge](sublevel-constructibility.md) applies this isometry to the
+sublevel modules of finite filters, whose module diagrams are their filter diagrams.
