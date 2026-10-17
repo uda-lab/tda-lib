@@ -321,9 +321,17 @@ inequality using the existing partial-matching reversal and composition. For pos
 lifetimes, `finiteFirstOrderMatchingCost_eq_zero_iff` identifies zero cost exactly with
 an occurrence bijection preserving birth–death values, including multiplicities.
 Raw presentations can differ by a permutation at zero cost; diagonal occurrences are
-excluded from this separation result. No quotient metric instance or equality with
-measure boundary transport is supplied.
+excluded from this separation result. No quotient metric instance is supplied.
 See [the matching minimum and its scope](math/finite-first-order-matching.md).
+
+`TDA.Persistence.FiniteBoundaryTransport` admits every nonnegative real matrix with
+row and column sums at most one. Residual unit mass goes to or comes from the boundary.
+`finiteFirstOrderBoundaryTransportCost_eq_matchingCost` identifies this finite real
+optimization with the existing matching minimum, using cost-preserving boundary
+augmentation and the pinned mathlib Birkhoff decomposition. An incidence plan attains
+the minimum; fractional optima can coexist with it. Empty formulas and reindexing are
+included. Equality with all Borel/Radon couplings remains outside the API.
+See [finite boundary transport](math/finite-boundary-transport.md).
 
 ## Gaussian persistence images
 

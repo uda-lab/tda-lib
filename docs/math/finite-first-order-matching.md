@@ -130,9 +130,11 @@ partial-matching convention with p=1 and ground q=∞ used for this finite occur
 model. The minimum, finite matching laws and PI corollary are proved directly in the
 library. The paper's Appendix B uses measure gluing for its metric laws, whereas the
 finite proof above allocates individual occurrence charges. Their
-Proposition 3.2 identifies diagram matching with measure partial transport; that
-identification, including the real coupling optimization, is outside this unit.
-
-Full boundary-augmented-bijection equivalence and measure-coupling identification remain
-separate results. No quotient or metric-space instance on raw presentations is supplied.
+Proposition 3.2 identifies diagram matching with measure partial transport.
+[Finite boundary transport](finite-boundary-transport.md) separately proves equality
+with an optimization over all feasible finite real reservoir matrices, using
+cost-preserving augmented assignments and mathlib's Birkhoff decomposition. Completion
+is a section of restriction; the dummy assignments are not unique. Equality with all
+Borel/Radon couplings remains unproved. No quotient or metric-space instance on raw
+presentations is supplied.
 General p, essential bars, noninteger measures and infinite diagrams require separate results.
