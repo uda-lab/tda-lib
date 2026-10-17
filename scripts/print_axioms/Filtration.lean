@@ -297,3 +297,28 @@ import TDA
 #print axioms TDA.Filtration.Cech.SupNormExamples.Line.cech_value₁
 #print axioms TDA.Filtration.Cech.SupNormExamples.Line.cech_value_eq_twoPoints
 #print axioms TDA.Filtration.Cech.SupNormExamples.EmptyIndex.mem_complex
+
+-- Filter reparametrization along order embeddings and positive scaling (Issue #307).
+#print axioms TDA.Filtration.FilterFunction.ext
+#print axioms TDA.Filtration.FilterFunction.ext_iff
+#print axioms TDA.Filtration.FilterFunction.map
+#print axioms TDA.Filtration.FilterFunction.map_value
+#print axioms TDA.Filtration.FilterFunction.map_sublevel_apply
+#print axioms TDA.Filtration.FilterFunction.map_sublevel_orderIso
+#print axioms TDA.Filtration.FilterFunction.orderingEquivalent_map
+#print axioms TDA.Filtration.FilterFunction.map_refl
+#print axioms TDA.Filtration.FilterFunction.map_map
+#print axioms TDA.Filtration.FilterFunction.scale
+#print axioms TDA.Filtration.FilterFunction.scale_value
+#print axioms TDA.Filtration.FilterFunction.scale_sublevel
+#print axioms TDA.Filtration.FilterFunction.scale_one
+#print axioms TDA.Filtration.FilterFunction.scale_scale
+#print axioms TDA.Filtration.FilterFunctionMapExamples.scale_sublevel_two
+#print axioms TDA.Filtration.FilterFunctionMapExamples.scale_sublevel_four
+#print axioms TDA.Filtration.FilterFunctionMapExamples.edge_not_mem_scale_two
+#print axioms TDA.Filtration.FilterFunctionMapExamples.edge_mem_scale_four
+#print axioms TDA.Filtration.FilterFunctionMapExamples.scale_edge_value
+#print axioms TDA.Filtration.FilterFunctionMapExamples.vertexFace
+#print axioms TDA.Filtration.FilterFunctionMapExamples.vertex_value
+#print axioms TDA.Filtration.FilterFunctionMapExamples.no_negated_filter
+#print axioms TDA.Filtration.FilterFunctionMapExamples.scale_round_trip

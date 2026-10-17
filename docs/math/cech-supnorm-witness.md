@@ -61,8 +61,8 @@ For a label metric d with d(v, w) = dist (p v) (p w):
   two filters are ordering-equivalent, since s ↦ rips(s)/2 preserves and reflects every
   weak comparison.
 
-No scaling operation on filter functions exists in the library, so these statements are
-the complete scaling content; diagram rescaling is separate scope.
+Positive scaling of filters turns these identities into identities of actual diagrams and
+bottleneck distances; see [filter and diagram reparametrization](filter-reparametrization.md).
 
 **The line.** For q : V → ℝ, let e x be the constant map Fin 1 → ℝ with value x and let
 g y = y 0. Then e is an isometry, g is 1-Lipschitz and g (e x) = x. Witness-space equality

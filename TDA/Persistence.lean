@@ -65,6 +65,9 @@ import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.ActualDiagramRegularity
 import TDA.Persistence.SublevelDiagramTransport
 import TDA.Persistence.DiagramBottleneckTranslation
+import TDA.Persistence.DiagramMap
+import TDA.Persistence.DiagramBottleneckScaling
+import TDA.Persistence.CechSupNormDiagram
 import TDA.Persistence.DiagramSecondOrderCalculus
 import TDA.Persistence.DiagramRegularity
 import TDA.Persistence.ActualLossHessian
