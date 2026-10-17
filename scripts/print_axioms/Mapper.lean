@@ -638,3 +638,11 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.spanEdgeEquivOfSubset_apply_coe
 #print axioms TDA.Mapper.GraphPL.isEmpty_levelVertex_of_notMem_Icc
 #print axioms TDA.Mapper.GraphPL.isEmpty_spanEdge_of_exterior
+#print axioms TDA.Mapper.GraphPL.graphPLRefineHom
+#print axioms TDA.Mapper.GraphPL.graphPLRefineHom_v_old
+#print axioms TDA.Mapper.GraphPL.graphPLRefineHom_v_inserted
+#print axioms TDA.Mapper.GraphPL.graphPLRefineHom_e
+#print axioms TDA.Mapper.GraphPL.graphPLRefineHom_bijective_v
+#print axioms TDA.Mapper.GraphPL.graphPLRefineHom_bijective_e
+#print axioms TDA.Mapper.GraphPL.graphPLRefineIso
+#print axioms TDA.Mapper.GraphPL.graphPLRefineIso_hom
