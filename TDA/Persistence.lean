@@ -104,3 +104,5 @@ import TDA.Persistence.GaussianFeature
 import TDA.Persistence.WeightedKernelStability
 import TDA.Persistence.FinitePMatchingCostLaws
 import TDA.Persistence.FinitePBoundaryTransportLaws
+import TDA.Persistence.ArctanWeight
+import TDA.Persistence.RipsWeightedKernel

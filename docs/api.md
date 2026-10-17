@@ -424,6 +424,14 @@ with matching-cost and count-times-bottleneck corollaries. No bandwidth hypothes
 assumed. See
 [the conventions, proof route and source mapping](math/weighted-kernel-embedding.md).
 
+`TDA.Persistence.ArctanWeight` defines `PersistenceImage.arctanWeight C hC`, the weight
+`arctan (C · max pers 0)` in `Weight C (π / 2)` for `0 ≤ C`. It equals KFH18's
+`arctan (C · pers)` when birth ≤ death. `WeightedKernel.stabilityConstant_arctan` evaluates
+the constant as `2C + √2·π/(2|σ|)`. The arctan corollaries give the embedding bounds against
+the finite first-order matching cost and count-times-bottleneck, and the same two bounds
+for `(k,w)`-Gaussian kernel values. See
+[the weight, constant and boundaries](math/arctan-weight-rips-kernel.md).
+
 ## Distance matrices to finite Rips images
 
 `PersistenceImage.finiteDiagramImage` applies the Gaussian image to a diagram's finite
@@ -438,6 +446,14 @@ It inherits the same finite ordered carrier and field assumptions as the Rips AP
 no new cardinality/genericity hypothesis. These noncomputable APIs give a count-dependent
 certificate, with essential bars still present in the bottleneck comparison. See
 [the definitions, bridge and exact scope](math/rips-persistence-images.md).
+
+`TDA.Persistence.RipsWeightedKernel` proves `Rips.bottleneck_dgm_lt_top` and
+`Rips.toReal_bottleneck_dgm_le_pairwiseDiscrepancy` for actual Rips diagrams. It bounds
+the weighted-kernel embedding difference by `stabilityConstant σ A B (N_d+N_e) δ`, and
+the second-level Gaussian feature difference and kernel-value change against an arbitrary
+fixed diagram by the same quantity over `|τ|`. Arctan specializations carry the explicit
+constant. No bandwidth sign hypothesis is assumed. See
+[the composition](math/arctan-weight-rips-kernel.md).
 
 ## Review and extension boundaries
 
