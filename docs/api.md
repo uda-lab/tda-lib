@@ -31,9 +31,9 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers | Values belong to actual nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
 | `TDA.Simplicial` / `TDA.Simplicial` | Actual-face `Chain`, signed `boundary`, square-zero chain complex, inclusion maps, `simplicialHomology`, finite coordinates and `VertexMap` / `Contiguous` | Signed chains use an ambient vertex order and a ring. Finite-dimensional homology additionally uses a field and finite faces. A vertex map may identify vertices; contiguity is reflexive and symmetric, with composition laws, and is not asserted transitive. |
 | `TDA.Persistence` / `TDA.Persistence` | `PModule`, structure maps and reindexing; finite intervals, rank barcodes and decomposition; `Diagram`, `dgm`, reduction, stability and calculus | The functor core needs a ring and a preorder, with independent coefficient/index/carrier universes. Finite decomposition has its narrower field, finite-chain, pointwise finite-dimensional and same carrier/coefficient universe assumptions. Actual face diagrams and calculus retain their stated vertex-order, finite-face and local-lift hypotheses. |
-| `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, path-cover and cosheaf interfaces | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has an actual common witness. Refinement selectors need not be injective. |
+| `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has an actual common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. |
 | `TDA.Reeb` / `TDA.Reeb` | Inverse-image path components, Reeb quotients and comparison maps; interval cosheaves, smoothing, interleavings and extended distance; finite data, graph realizations and `RGraph.cosheafEquivalence` | Components are path components of the inverse-image subspace. General quotient comparison is a natural transformation. The graph/constructible-cosheaf equivalence is scoped to the declared finite real-graph category and value universe `0`. Smoothing and geometric comparisons have separate contracts; geometric thickening composes laxly, by a height-preserving addition map that is not an isomorphism. |
-| `TDA.Mapper` / `TDA.Mapper` | `ComponentIndex`, pullback component covers, `mapper`, its one-skeleton, refinement maps, graph-PL comparison and `CoherentCoverTower` | Input is a continuous map and an indexed target family. Coverage and multiplicity are explicit hypotheses where used. Finiteness is conditional; tower identity/composition are supplied coherence data. These constructions are noncomputable theory, not an executable Mapper implementation. |
+| `TDA.Mapper` / `TDA.Mapper` | `ComponentIndex`, pullback component covers, `mapper`, its one-skeleton, `multiNerveMapper` and its projection onto `mapper`, refinement maps including `multiNerveMapperMap`, graph-PL comparison and `CoherentCoverTower` | Input is a continuous map and an indexed target family. Coverage and multiplicity are explicit hypotheses where used. The MultiNerve Mapper is the multinerve of the component cover; its projection onto `mapper` is surjective and is an order isomorphism under `IntersectionsPathSubsingleton (componentCover f U)`. Finiteness is conditional; tower identity/composition are supplied coherence data. These constructions are noncomputable theory, not an executable Mapper implementation. |
 
 For a small dependency footprint, import an individual implementation module rather than
 the whole area. Generic simplicial contiguity depends only on the simplicial vertex-map
@@ -93,8 +93,15 @@ target labels via their unique intermediate image occurrences. Its Option-valued
 qualitative endpoint order and an equivalence between image occurrences and matched pairs.
 It specializes to the existing mono/epi correspondences and the identity matching;
 composition laws apply to monos and epis. See
-[finite induced matchings](math/finite-induced-matching.md). Quantitative epi and
-general-morphism induced matching remain separate.
+[finite induced matchings](math/finite-induced-matching.md).
+`finiteKernel` is the actual categorical kernel, with evaluated component-kernel
+fibers and finite dimensionality derived from the source. Its theta-shortness
+gives shifted same-birth survival counts, canonical epi death bounds and unique
+long-source coverage. These estimates and the mono/cokernel bounds transfer through
+the actual image to the existing induced matching, with independent kernel and
+cokernel translations. See
+[quantitative finite induced matchings](math/finite-quantitative-induced-matching.md)
+for terminal endpoint extension, hypotheses and the general finite-translation scope.
 
 `FiniteConstructible.reconstructionIso` reconstructs a real-indexed module from a finite
 chain of critical samples preceded by a zero stage. It uses left-closed/right-open strata,
@@ -103,6 +110,39 @@ final tail may be nonzero. The reconstruction works over any ring with independe
 module-carrier universe and no finite-dimensionality assumption. It supplies both natural
 transformations and their inverse identities. See
 [finite-stratum reconstruction](math/constructible-modules.md).
+
+`FiniteConstructible.commonGrid` constructs a refinement from a sorted union of
+critical values. Actual constructibility survives refinement and positive-evaluation
+shift on the grid `c_i-ε`. `moduleDiagram_refinement` proves equality of real endpoint
+diagrams, deriving finiteness at added critical values from the original ones and
+retaining duplicate bars and essential tails. See
+[common grids and diagram invariance](math/constructible-refinement.md).
+
+`IsConstructible.kernel` and `IsConstructible.cokernel` prove constructibility of
+actual categorical defects on a shared grid. `interleaving_critical_defects`
+constructs that grid and derives finite sampled defect shortness from an actual
+real interleaving, using natural sampling comparisons and within-cell cancellation.
+See [constructible defects and critical sampling](math/constructible-defects-sampling.md)
+for the rounded translation, terminal observation and coefficient scope.
+
+`moduleDiagram_shift` proves that actual positive evaluation translates the
+native shifted-grid diagram by −ε; its refinement version derives finiteness
+at added observations. Finite and essential occurrence equivalences return
+shifted target labels by +ε, and the complete matching of a diagram with its
+own shift is constructed with its endpoint and cost bounds proved. The target
+untranslation operation is available for existing occurrence matchings. See
+[real shift diagrams and occurrence untranslation](math/constructible-shift-diagrams.md)
+for multiplicities, boundary conventions and the target-return operation.
+
+`FiniteConstructible.inducedOccurrenceMatching` transports the actual sampled
+finite induced partial injection to real finite and essential occurrence labels.
+Actual real kernel/cokernel annihilation gives exact endpoint and unmatched-length
+bounds, unique coverage of strictly long finite bars and a total essential
+equivalence. `interleaving_shifted_induced_matching` derives these bounds at `2ε`
+from an actual interleaving on possibly different grids, into the translated target
+`D_N−ε`. No mesh error or supplied matching is used. See
+[real induced occurrence matchings](math/real-induced-matchings.md). `interleavingMatching` returns the actual target labels by +ε and
+`interleavingMatching_cost_le` proves cost at most ε.
 
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
 decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
@@ -119,6 +159,12 @@ zero-interleaving witnesses correspond to natural isomorphisms, and interleaving
 with zero is equivalent to a zero double-shift structure map. Its interval examples
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
 for the finite nonnegative parameters and witness equations.
+
+`RealInterleaving.kernel_transition_eq_zero` and `cokernel_transition_eq_zero`
+prove that either comparison morphism has actual categorical kernel and cokernel
+with zero `2ε`-transition, over any ring without dimension assumptions. See
+[real interleaving defect shortness](math/real-interleaving-shortness.md)
+for the naturality proof, the sharp threshold example and its constructible matching consumer.
 
 `RealInterleaving.mono`, `trans` and `congr` enlarge parameters, add parameters
 under composition, and transport both modules along natural isomorphisms.
@@ -143,8 +189,18 @@ empty when essential cardinalities differ, giving infinite bottleneck.
 independently sized critical grids using `barcodeRealizationIso`; its
 `matchingInterleaving` also transports individual witnesses. These module results
 retain the existing zero-left-tail, half-open strata, critical-fiber finiteness and
-shared field/carrier-universe assumptions. The reverse inequality, reverse matching
-construction and full isometry theorem remain separate results.
+shared field/carrier-universe assumptions.
+`FiniteConstructible.bottleneck_le_distance` proves the opposite inequality
+by bounding every finite interleaving parameter before taking its infimum.
+`bottleneck_eq_distance` gives extended-distance equality; `interleaving_iff_matching`
+gives the witness equivalence at every finite ε, including zero.
+`distance_eq_top_iff_essential_card_ne` characterizes infinity by unequal
+essential multiplicities. These results allow different finite grids, zero left
+tails, half-open strata and nonzero constant final tails. They require a field,
+original critical-fiber finite dimensionality and the existing shared field/carrier
+universe. No optimal matching or interleaving at the distance is assumed. See
+[finite-constructible isometry](math/constructible-isometry.md); general infinite
+or q-tame modules and arbitrary-ring isometry remain outside this scope.
 
 `dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.
@@ -197,6 +253,38 @@ in every degree by that discrepancy. For V : Type u it requires `LinearOrder V`,
 `Fintype V`, and a coefficient field k : Type u, retaining existing multiplicity and
 essential-bar semantics. This noncomputable consumer of finite-face stability covers
 the fixed labelled carrier. See [the construction, proof and source scope](math/rips-metric-stability.md).
+
+## Ambient Čech complexes
+
+`TDA.Filtration.Cech` defines the closed Čech complex of labelled points p : V → X in a
+pseudometric space as the nerve of closed balls, with ball radius as time. It proves
+Rips_r ⊆ Čech_r ⊆ Rips_{2r} in pairwise form for arbitrary labels, and in Rips-sublevel
+form for a label metric agreeing with the ambient distances. The radius filter on the full
+complex satisfies rips/2 ≤ čech ≤ rips. Its sublevels contain the Čech complexes, with
+equality when X is proper. See [the conventions, proofs and fixtures](math/cech-rips-sandwich.md).
+
+`TDA.Filtration.CechDisplacement` compares two labelled families p, q : V → X in one
+ambient space label by label. Moving the points of a face by at most ε changes its Čech
+value by at most ε; the closed-ball radius estimate also needs ε ≥ 0 for the empty set.
+For a finite V, `displacement` is the largest label-wise distance with empty maximum
+zero, and the Rips pairwise discrepancy of distance-compatible label metrics is at most
+twice it. `TDA.Persistence.Cech.bottleneck_dgm_le_displacement` bounds the actual Čech
+diagrams in every degree by the displacement, and
+`bottleneck_rips_dgm_le_two_mul_displacement` bounds the actual Rips diagrams by twice
+it. Both keep the `LinearOrder V`, `Fintype V` and field assumptions of finite-face
+stability. These are same-label bounds, not Hausdorff bounds. See [the proofs, attained
+constants and source scope](math/cech-displacement-stability.md).
+
+`TDA.Filtration.CechWitness` compares Čech complexes over a witness space W mapped into X
+by f. An isometry can only add faces and lower values; a 1-Lipschitz g : X → W fixing the
+labelled points reverses both, so with both maps the complexes and values agree. The
+subspace and intrinsic complexes are the cases of a subtype inclusion.
+`TDA.Filtration.CechSupNorm` works in the sup-metric product ι → ℝ for a finite ι, not
+in `EuclideanSpace`. There a nonempty label set is a Čech face at r exactly when its
+points are pairwise within 2r, so Čech_r = Rips_{2r}, every Čech value is half the Rips
+value, and the two filters are ordering-equivalent; no properness is assumed. The line
+ℝ follows through `Fin 1 → ℝ`. See [the proofs, fixtures and source
+scope](math/cech-supnorm-witness.md).
 
 ## Finite first-order PD matching cost
 
@@ -266,8 +354,10 @@ recorded in [#34](https://github.com/uda-lab/tda-lib/issues/34) and
 is separately tracked in [#215](https://github.com/uda-lab/tda-lib/issues/215); this guide
 does not declare those reviews complete. The implemented graph/cosheaf equivalence and
 component stability bounds do not establish all deferred geometric smoothing or distance
-comparisons. Ordinary Mapper does not claim MultiNerve, the Nerve Lemma, homology
-selector-independence, stability or Mapper–Reeb convergence.
+comparisons. The MultiNerve Mapper is bounded to its cells, face order, projection onto
+ordinary Mapper, isomorphism criterion and refinement maps. Neither Mapper construction
+claims geometric realization, the Nerve Lemma, homology selector-independence, stability or
+Mapper–Reeb convergence.
 
 General geometric tame-function PH stability, infinite/q-tame theory, manifold charts
 and executable arbitrary-field decomposition are outside the reviewed PH scope. A first

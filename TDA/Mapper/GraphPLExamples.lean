@@ -158,7 +158,9 @@ private theorem edgeCellComponents_subsingleton {K : OpenInterval} (b : Bool)
 private theorem overlap_endpoint_mem (i : Bool) : h02 i ∈ overlappingIntervals i := by
   cases i <;> norm_num [h02, overlappingIntervals, mem_ioo]
 
-private theorem overlap_components_subsingleton (i : Bool) :
+/-- Each preimage of an overlapping interval under the single-edge PL height has at most one path
+component. -/
+theorem overlap_components_subsingleton (i : Bool) :
     Subsingleton (ZerothHomotopy
       {p : Realization edgeGraph // plHeight edgeGraph h02 p ∈ overlappingIntervals i}) :=
   ⟨fun _c _d => (preimageComponentsEquiv edgeGraph h02 (overlappingIntervals i)).injective
@@ -208,7 +210,8 @@ private theorem edgeOverlap_pair_face :
   · exact ⟨(edgeOverlapPoint false).2, rfl⟩
   · exact ⟨(edgeOverlapPoint true).2, rfl⟩
 
-private theorem overlappingIntervals_multiplicity_two {V : Type*} (G : SimpleGraph V)
+/-- The two overlapping intervals have multiplicity at most two over every graph PL height. -/
+theorem overlappingIntervals_multiplicity_two {V : Type*} (G : SimpleGraph V)
     (h : V → ℝ) :
     CoverMultiplicityAtMost (plHeight G h) (fun i => (overlappingIntervals i : Set ℝ)) 2 := by
   intro _ _ t _
@@ -265,7 +268,8 @@ private theorem edgeSetSumEquiv_right :
     SimpleGraph.edgeSetSumEquiv (dartEdge (twoEdgeDart true)) =
       Sum.inr (dartEdge d₀) := rfl
 
-private theorem twoEdge_edge_eq (e : twoEdgeGraph.edgeSet) :
+/-- Every edge of the two-edge graph is the edge of one of the two selected darts. -/
+theorem twoEdge_edge_eq (e : twoEdgeGraph.edgeSet) :
     e = dartEdge (twoEdgeDart false) ∨ e = dartEdge (twoEdgeDart true) := by
   let E := SimpleGraph.edgeSetSumEquiv (G := edgeGraph) (H := edgeGraph)
   rcases hE : E e with eL | eR
@@ -398,7 +402,8 @@ private theorem twoEdge_cell_anchors_ne (i : Bool) :
   have hs := eq_of_walk (fun _ _ => twoEdgeCellSide_adj) p
   simp [twoEdgeCellSide, twoEdgeVertex] at hs
 
-private theorem twoEdge_midpoint_height (side : Bool) :
+/-- The midpoint of either selected dart has height `1`. -/
+theorem twoEdge_midpoint_height (side : Bool) :
     dartHeight twoEdgeHeight (twoEdgeDart side) half = 1 := by
   cases side <;> norm_num [dartHeight, twoEdgeDart, twoEdgeHeight, h02, coe_half]
 
@@ -407,7 +412,8 @@ private theorem twoEdge_midpoint_mem (side i : Bool) :
   rw [twoEdge_midpoint_height]
   cases i <;> norm_num [overlappingIntervals, mem_ioo]
 
-private def twoEdgeOverlapPoint (side i : Bool) :
+/-- The midpoint of the selected dart of a graph copy, as a point of an interval preimage. -/
+def twoEdgeOverlapPoint (side i : Bool) :
     PullbackSpace (plHeight twoEdgeGraph twoEdgeHeight)
       (fun i => (overlappingIntervals i : Set ℝ)) i :=
   ⟨edgePoint twoEdgeGraph (twoEdgeDart side) half, twoEdge_midpoint_mem side i⟩

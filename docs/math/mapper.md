@@ -156,9 +156,128 @@ This is ordinary Mapper in the sense of Dey–Mémoli–Wang, *Multiscale Mapper
 §2. It records the existence of common intersections. The MultiNerve Mapper of
 Carrière–Oudot, *Structure and Stability of the 1-Dimensional Mapper*, retains
 additional path-component data for intersections (the paper writes "connected" under
-its stated path-connected convention) and is not constructed here. No Reeb equivalence,
-convergence, stability, persistence-diagram result,
+its stated path-connected convention); it is described in the next two sections. No Reeb
+equivalence, convergence, stability, persistence-diagram result,
 or Nerve Lemma follows from this definition.
+
+## Multinerves of indexed families
+
+For an indexed family `V` on a topological space and a nonempty finite index set
+`σ`, write `V_σ` for the intersection of the members indexed by `σ`. A multinerve
+cell is a pair of such a `σ` and a path component of the subspace `V_σ`. An empty
+intersection has no path component and carries no cell; empty members and
+repeated labels are retained as in the ordinary nerve. For `τ ⊆ σ`, the
+inclusion `V_σ ⊆ V_τ` induces a face map on path components, and face maps
+preserve identities and composition.
+
+A cell `(τ, D)` lies below `(σ, C)` when `τ ⊆ σ` and the face map sends `C` to
+`D`. This is a partial order. Below a fixed cell `(σ, C)` a cell is determined
+by its index set, and every nonempty `τ ⊆ σ` occurs, so the lower set of the cell
+is order-isomorphic to the nonempty subsets of `σ`. These are the simplicial-poset
+axiom of Carrière–Oudot, Definition 3.1, and the cells of their Definition 3.2.
+
+Forgetting the component gives a monotone projection onto the faces of the
+ordinary support-aware nerve. A representative of a component is a common point
+of the indexed members, and a common point of a nerve face represents a
+component, so the image of the projection is exactly the set of nerve faces
+(Carrière–Oudot, Lemma 3.4). The fibre over a face `σ` is in bijection with the
+path components of `V_σ`. The projection is therefore injective exactly when every
+nonempty finite intersection has at most one path component, and under this
+condition it is an order isomorphism onto the nerve faces ordered by inclusion.
+Path-connectedness of every nonempty such intersection is a sufficient condition.
+The criterion and the sufficient condition are elementary consequences recorded
+here, not results attributed to the paper. No openness, local path-connectedness,
+finiteness or nonemptiness is assumed, and no geometric realization, homology or
+Nerve Lemma is constructed.
+
+## MultiNerve Mapper
+
+The MultiNerve Mapper of a continuous map `f` and a target family `U` is the
+multinerve of the path-component pullback cover, following Carrière–Oudot,
+Definition 3.3; it is not the multinerve of the plain preimage family. Ordinary
+Mapper is the nerve of the same cover, so the projection maps the MultiNerve Mapper
+onto ordinary Mapper.
+
+Every component member is path-connected. Each component index therefore carries
+exactly one cell with one-element support, and these cells are in bijection with
+the component indices. A multiplicity bound `m` on attained values bounds the
+support size of every cell by `m`. At `m = 2` every cell is a vertex or an edge
+cell, and one Mapper edge may carry several edge cells. Without a multiplicity
+bound, three duplicate labels over a one-point domain give a cell with
+three-element support over the Mapper triangle.
+
+The projection is an order isomorphism onto ordinary Mapper when every nonempty
+finite intersection of component members has at most one path component. A
+target-side sufficient condition is that the preimage of every nonempty finite
+intersection of target members is empty or path-connected. Such a preimage is
+then contained in every component member that meets it, and so equals the
+intersection of the component members over the corresponding labels. The
+component-level condition is the hypothesis under which component-sensitive
+statements of Munch–Wang or Carrière–Oudot type would transfer to ordinary
+Mapper. No such transfer and no approximation or stability result is proved.
+
+On the 4-cycle with vertex heights `0, 1, 2, 1` and the intervals `(-1, 3/2)` and
+`(1/2, 3)`, each interval preimage is path-connected, so ordinary Mapper has two
+vertices and one edge. The intersection of the two component members is the
+preimage of `(1/2, 3/2)`. It has two path components, represented by the vertices
+`1` and `3`, so the MultiNerve Mapper has two edge cells over the single Mapper
+edge and the projection is not injective. On one edge with endpoint heights `0`
+and `2`, the same intervals satisfy the target-side condition and the two
+constructions agree. The empty domain has no cells.
+
+The component-level condition is strictly weaker than the target-side one. On two
+disjoint edges with endpoint heights `0` and `2` and the same intervals, the
+preimage of `(-1, 3/2)` has two path components, one on each edge, so the
+target-side condition fails. Component members on different edges are disjoint,
+so a nonempty intersection of component members lies on one edge. It is either one
+path-connected member or the intersection of the two members of one edge, whose
+points are all joined to the midpoint of that edge inside the preimage of
+`(1/2, 3/2)`. Hence every nonempty finite intersection of component members has at
+most one path component, and the MultiNerve Mapper is order-isomorphic to the
+ordinary Mapper of two disjoint edges.
+
+## Refinement maps of multinerves
+
+Let `R` be a selected refinement of indexed families `U` and `V` on one space. For
+a finite index set `σ`, the intersection `U_σ` lies in `V_τ` with
+`τ = R.selector '' σ`, so the inclusion induces a map on path components. The
+induced map of multinerves sends a cell `(σ, C)` to `(τ, C')`, where `C'` is the
+path component of `V_τ` containing `C`. It is monotone for the face order, sends the
+face of a cell over a subset to the face of the image cell over the image subset,
+and preserves the identity and composition of selected refinements. Projected to
+the ordinary nerve, it is the refinement-induced nerve map of the support. Like the
+nerve map, it may lower the support size, because selectors need not be injective.
+The selected refinement is supplied data in the convention of Dey–Mémoli–Wang
+§2–3; the laws are elementary library results, not attributed to a source.
+
+On the discrete space `Bool`, refining the singletons `{false}` and `{true}` to the
+one-member family `Bool` collapses both nerve vertices to one, while the
+multinerve map keeps two distinct cells over the one index, represented by `false`
+and `true`.
+
+A selected refinement of target families induces the selected refinement of
+path-component pullback covers, and hence a map of MultiNerve Mappers. It
+preserves identity and composition, sends the vertex cell of a component index to
+the vertex cell of its image under the ordinary Mapper map, and lies over that
+map under the projections onto ordinary Mapper. A coherent cover tower gives
+MultiNerve Mapper maps with strict reflexivity and transitivity. On the merged
+three-stage tower, the first transition sends the cell over two first-stage
+indices to the middle-stage vertex cell, and the direct map is the composite.
+
+For a finite set `s` of component indices, the intersection of the component
+members lies in the preimage of the intersection of the target members with the
+labels of `s`, and this inclusion is injective on path components. A path in the
+preimage between two points of the intersection stays in the path component of
+the preimage, which lies in every component member containing those points. The
+target-side criterion of the previous section follows. The same lemma detects
+merging: on the 4-cycle, refining the two intervals to two copies of `(-1, 3)` by
+the identity selector gives an injective Mapper vertex map, but the two edge cells
+represented by the vertices `1` and `3` are sent to one cell, because both
+vertices lie in one path component of the preimage of `(-1/2, 5/2)`.
+
+No geometric realization, homology, Nerve Lemma, contiguity or
+selector-independence of multinerve maps, interleaving, approximation or stability
+statement is proved.
 
 ## Graph-PL incidence labels and finite consumers
 

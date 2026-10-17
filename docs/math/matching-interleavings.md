@@ -148,8 +148,12 @@ The [finite-chain mono embedding](finite-mono-matching.md) and
 same-birth injections. Their [image construction](finite-induced-matching.md)
 supplies the qualitative matching for a general finite-chain morphism.
 [Finite mono/cokernel translation estimates](finite-mono-translation.md) add the
-birth bound and long-target coverage for component injections. The reverse construction
-from interleavings to matchings and `d_B≤d_I` remain
-separate results; the full isometry theorem is not established here. The present
-results use no generic flow, infinite barcode or q-tame theory, and do not assert
-independence of a constructible module's chosen critical grid.
+birth bound and long-target coverage for component injections. The
+[real induced matching](real-induced-matchings.md) constructs the reverse
+matching into the shifted target and proves its exact endpoint, essential and
+long-bar bounds. The
+[finite-constructible isometry](constructible-isometry.md) proves ε-cost
+after +ε target untranslation, takes the infimum and combines both inequalities
+into extended-distance equality on that finite-constructible domain.
+These results use finite half-open barcodes. Their constructible diagrams are
+independent of [critical-grid refinement](constructible-refinement.md).

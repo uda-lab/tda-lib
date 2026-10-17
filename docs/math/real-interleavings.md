@@ -109,6 +109,11 @@ The essential interval `[0,∞)` fails the criterion at every finite `ε`, becau
 the map from `0` to `2ε` preserves `1`. A field has `1≠0`; this nontriviality
 is needed for the negative examples. The basic ring-valued API does not impose it.
 
+The [kernel and cokernel shortness results](real-interleaving-shortness.md)
+prove that either interleaving morphism has actual defects with zero
+double-shift transitions. They use the witness equations and naturality of
+the actual kernel inclusion and cokernel projection, over the same rings.
+
 ## Distance, infinity and approximation
 
 `realInterleavingDistance M N : ℝ≥0∞` is
@@ -163,10 +168,13 @@ also includes infinite summands, where the inequality is automatic.
 Source manifestation and rights
 metadata are recorded in [BL15-v4](references.md#BL15-v4).
 
-Generic flows and the interleaving-to-matching direction are separate work.
-The [matching-to-interleaving construction](matching-interleavings.md) supplies
-concrete witnesses and `d_I≤d_B` for finite positive barcode realizations, with
-transport to finite-constructible modules. The reverse distance inequality and
-full isometry theorem remain separate. The finite-constructible
-[barcode realization](real-barcode-realization.md)
-supplies a different natural isomorphism; no such decomposition is an input here.
+Generic flows remain separate. The
+[matching-to-interleaving construction](matching-interleavings.md) supplies
+concrete witnesses and `d_I≤d_B` for finite positive barcode realizations,
+transported to finite-constructible modules by the actual
+[barcode realization](real-barcode-realization.md) isomorphism. The
+[finite-constructible isometry](constructible-isometry.md) constructs the
+opposite cost-bounded matching and proves extended-distance equality and
+finite-parameter witness equivalence. Its field, critical-fiber finiteness,
+zero-left and half-open assumptions restrict that theorem's domain; no such
+decomposition or isometry hypothesis is an input to the general distance API.
