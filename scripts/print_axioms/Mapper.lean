@@ -646,3 +646,11 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.graphPLRefineHom_bijective_e
 #print axioms TDA.Mapper.GraphPL.graphPLRefineIso
 #print axioms TDA.Mapper.GraphPL.graphPLRefineIso_hom
+#print axioms TDA.Mapper.GraphPL.graphPLRefineHom_trans_v
+#print axioms TDA.Mapper.GraphPL.graphPLRefineHom_trans_e
+#print axioms TDA.Mapper.GraphPL.uniformMapperRefineIso
+#print axioms TDA.Mapper.GraphPL.range_vertexHeightLevels_subset
+#print axioms TDA.Mapper.GraphPL.uniformMapperCanonicalIso
+#print axioms TDA.Mapper.GraphPL.exists_uniformMapperCanonicalIso
+#print axioms TDA.Mapper.GraphPL.graphPLRefineToOverIso
+#print axioms TDA.Mapper.GraphPL.uniformMapperCanonicalToOverIso
