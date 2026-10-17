@@ -2626,3 +2626,7 @@ import TDA
 #print axioms TDA.Reeb.Examples.QuotientThickeningAbsorption.par_eighth_comp_fiber_not_subsingleton
 #print axioms TDA.Reeb.Examples.QuotientThickeningAbsorption.swap_geometricSmoothingCompIso_square_apply
 #print axioms TDA.Reeb.Examples.QuotientThickeningAbsorption.pointCompIso
+#print axioms TDA.Reeb.Examples.QuotientThickeningAbsorption.par_quarter_classes_ne
+#print axioms TDA.Reeb.Examples.QuotientThickeningAbsorption.zeroE
+#print axioms TDA.Reeb.Examples.QuotientThickeningAbsorption.parCls₈
+#print axioms TDA.Reeb.Examples.QuotientThickeningAbsorption.swap_geometricSmoothingCompIso_eighth_square_apply

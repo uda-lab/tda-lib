@@ -13,8 +13,9 @@ geometric smoothing of graph objects. The **absorption morphism**
 
 is an isomorphism whenever `X` is a constructible ℝ-space and `ℛ T_ε X` is a graph object
 (`isIso_quotientFunctor_map_functor_map_projNatTrans_app`). The case used below is `X = T_δ A` for
-a graph object `A`, which is constructible but not a graph object: there `q_X` itself is not an
-isomorphism, so the merged `projNatIso` does not apply.
+a graph object `A`, which is constructible but need not be a graph object: there `q_X` itself need
+not be an isomorphism (it is not on `T_(1/4)` of a single edge), so the merged `projNatIso` does not
+apply.
 
 ## The route
 

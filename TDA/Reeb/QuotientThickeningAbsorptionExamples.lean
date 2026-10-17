@@ -37,11 +37,13 @@ namespace Examples.QuotientThickeningAbsorption
 
 open OpenInterval TDA.Reeb.GeometricThickening RGraph
 open CylinderPresentation (ofFiniteData height_ofStrip)
-open TDA.Reeb.Examples.Cylinder (S01)
+open TDA.Reeb.Examples.Cylinder (S01 parallelData)
+open TDA.Reeb.Examples.ConstructibleSmoothing (quarter_thicken)
 open TDA.Reeb.RGraph.Examples (singleEdge)
 open TDA.Reeb.Examples.GeometricThickeningAddition (quarter coe_quarter quarterPt negQuarterPt
   edgeObj edgePt parObj parPt parZ parW height_parZ parPt_false_ne_true swap_image_ne)
 open TDA.Reeb.Examples.QuotientThickeningAddition (halfPt zeroQ threeQuarterPt eighth
+  eighth_add_eighth
   par_eighth_fiber_not_subsingleton swap_geometricSmoothingAddIso_square_apply)
 open TDA.Reeb.Examples.RGraphCosheafEquivalence (parallelGraph swapGraph singleGraph pointGraph)
 open TDA.Reeb.Examples.RGraphSmoothing (parallel_smoothed_fiber_subsingleton
@@ -352,13 +354,15 @@ theorem par_comp_fiber_subsingleton :
 
 /-- **The second smoothing makes the identification.** In `U_(1/4) U_(1/4)` the classes over the
 two edges at height `1/2` agree, although the edge points differ, while the height-`1/2` fibre of
-the single smoothing `U_(1/4)` is not a subsingleton. -/
+the single smoothing `U_(1/4)` is not a subsingleton. The parameter `1/4` of the merged
+single-smoothing fixture is the same `1/4`, by `rfl`. -/
 theorem par_comp_classes_eq :
     parPt false ≠ parPt true ∧ parCls false = parCls true ∧
+      (Examples.ConstructibleSmoothing.quarter : ℝ≥0) = quarter ∧
       ¬ Subsingleton (overBaseMap ((geometricSmoothing Examples.ConstructibleSmoothing.quarter).obj
         parallelGraph).obj ⁻¹' {1 / 2}) :=
   ⟨parPt_false_ne_true, congrArg Subtype.val (par_comp_fiber_subsingleton.elim
-    ⟨parCls false, height_parCls false⟩ ⟨parCls true, height_parCls true⟩),
+    ⟨parCls false, height_parCls false⟩ ⟨parCls true, height_parCls true⟩), rfl,
     parallel_quarter_fiber_not_subsingleton⟩
 
 /-- **The loop survives at `1/8 + 1/8`.** The height-`1/2` fibre of `U_(1/8) U_(1/8)` of the
@@ -401,6 +405,91 @@ theorem swap_geometricSmoothingCompIso_square_apply :
     ((geometricSmoothingCompIso quarter quarter).hom.naturality swapGraph)).symm.trans h₁,
     geometricSmoothingCompIso_hom_app_hom_left_mk quarter quarter parallelGraph
       (parPt true, quarterPt) negQuarterPt, swap_image_ne⟩
+
+/-- **The loop at `1/4`.** In `U_(1/4)` of the parallel edges the classes of `(q_false, 0)` and
+`(q_true, 0)` at height `1/2` differ: over `(1/4, 3/4)` the merged comparison sends them to the
+classes of the two edge points, which carry distinct edge labels of the gap `(0, 1)`. -/
+theorem par_quarter_classes_ne :
+    ReebQuotient.mk (height (overBaseMap parObj) Examples.ConstructibleSmoothing.quarter)
+        (parPt false, ⟨0, zero_mem_band _⟩) ≠
+      ReebQuotient.mk (height (overBaseMap parObj) Examples.ConstructibleSmoothing.quarter)
+        (parPt true, ⟨0, zero_mem_band _⟩) := by
+  intro hq
+  let z : Bool → {z : parallelGraph.obj.left × Band Examples.ConstructibleSmoothing.quarter //
+      height (overBaseMap parallelGraph.obj) Examples.ConstructibleSmoothing.quarter z ∈
+        ioo (1 / 4) (3 / 4)} := fun b =>
+    ⟨(parPt b, ⟨0, zero_mem_band _⟩), by
+      show (1 / 2 : ℝ) + 0 ∈ ioo (1 / 4) (3 / 4)
+      rw [mem_ioo]
+      constructor <;> norm_num⟩
+  have hc := congrArg (((geometricSmoothingComparisonIso
+    Examples.ConstructibleSmoothing.quarter).hom.app parallelGraph).hom.app (ioo (1 / 4) (3 / 4)))
+    (congrArg ZerothHomotopy.mk (Subtype.ext hq :
+      (⟨ReebQuotient.mk _ (z false).1, (z false).2⟩ :
+        {q : ReebQuotient (height (overBaseMap parallelGraph.obj)
+          Examples.ConstructibleSmoothing.quarter) //
+            ReebQuotient.height _ q ∈ ioo (1 / 4) (3 / 4)}) =
+        ⟨ReebQuotient.mk _ (z true).1, (z true).2⟩))
+  rw [geometricSmoothingComparisonIso_hom_app_hom_app_mk,
+    geometricSmoothingComparisonIso_hom_app_hom_app_mk] at hc
+  have key : ∀ (L : OpenInterval), L = S01.K 0 →
+      ∀ (h0 : (ofFiniteData parallelData).height S01 (parPt false) ∈ L)
+        (h1 : (ofFiniteData parallelData).height S01 (parPt true) ∈ L),
+      (ZerothHomotopy.mk ⟨parPt false, h0⟩ : (parallelData.toCosheaf S01).obj L) ≠
+        ZerothHomotopy.mk ⟨parPt true, h1⟩ := by
+    rintro L rfl h0 h1 hne
+    exact Bool.false_ne_true ((parallelData.edgeLabel S01 0).injective
+      (((parallelData.edgeLabel_apply S01 0 Examples.Cylinder.half false).trans hne).trans
+        (parallelData.edgeLabel_apply S01 0 Examples.Cylinder.half true).symm))
+  exact key _ quarter_thicken _ _ hc
+
+/-- The band point `0 ∈ [-1/8, 1/8]`. -/
+def zeroE : Band eighth := ⟨0, zero_mem_band eighth⟩
+
+/-- The class `[([(q_b, 0)], 0)]` in `U_(1/8) U_(1/8)` of the parallel edges, at height `1/2`. -/
+def parCls₈ (b : Bool) : ((geometricSmoothing eighth).obj ((geometricSmoothing eighth).obj
+    parallelGraph)).obj.left :=
+  ReebQuotient.mk (height (overBaseMap ((geometricSmoothing eighth).obj parallelGraph).obj) eighth)
+    (ReebQuotient.mk (height (overBaseMap parObj) eighth) (parPt b, zeroE), zeroE)
+
+/-- **The swap square separates classes where the loop survives.** At `1/8 + 1/8` both composites
+of the swap square of the semigroup send `[([(q_true, 0)], 0)]` to the image of
+`[([(q_false, 0)], 0)]`, and this differs from the identity image, the image of
+`[([(q_true, 0)], 0)]`: `geometricSmoothingEqIso` for `1/8 + 1/8 = 1/4` carries the two images to
+the distinct classes of `par_quarter_classes_ne`. -/
+theorem swap_geometricSmoothingCompIso_eighth_square_apply :
+    ((geometricSmoothing eighth ⋙ geometricSmoothing eighth).map swapGraph ≫
+        (geometricSmoothingCompIso eighth eighth).hom.app parallelGraph).hom.left.hom
+        (parCls₈ true) =
+        ((geometricSmoothingCompIso eighth eighth).hom.app parallelGraph).hom.left.hom
+          (parCls₈ false) ∧
+      ((geometricSmoothingCompIso eighth eighth).hom.app parallelGraph ≫
+        (geometricSmoothing (eighth + eighth)).map swapGraph).hom.left.hom (parCls₈ true) =
+        ((geometricSmoothingCompIso eighth eighth).hom.app parallelGraph).hom.left.hom
+          (parCls₈ false) ∧
+      ((geometricSmoothingCompIso eighth eighth).hom.app parallelGraph).hom.left.hom
+          (parCls₈ false) ≠
+        ((geometricSmoothingCompIso eighth eighth).hom.app parallelGraph).hom.left.hom
+          (parCls₈ true) := by
+  have h₁ : ((geometricSmoothing eighth ⋙ geometricSmoothing eighth).map swapGraph ≫
+      (geometricSmoothingCompIso eighth eighth).hom.app parallelGraph).hom.left.hom
+        (parCls₈ true) =
+      ((geometricSmoothingCompIso eighth eighth).hom.app parallelGraph).hom.left.hom
+        (parCls₈ false) :=
+    rfl
+  refine ⟨h₁, (congrArg (fun φ => φ.hom.left.hom (parCls₈ true))
+    ((geometricSmoothingCompIso eighth eighth).hom.naturality swapGraph)).symm.trans h₁,
+    fun h => par_quarter_classes_ne ?_⟩
+  have e : ∀ b, ((geometricSmoothingEqIso eighth_add_eighth).hom.app parallelGraph).hom.left.hom
+      (((geometricSmoothingCompIso eighth eighth).hom.app parallelGraph).hom.left.hom
+        (parCls₈ b)) =
+      ReebQuotient.mk (height (overBaseMap parObj) Examples.ConstructibleSmoothing.quarter)
+        (parPt b, ⟨0, zero_mem_band _⟩) := fun b =>
+    (congrArg ((geometricSmoothingEqIso eighth_add_eighth).hom.app parallelGraph).hom.left.hom
+      (geometricSmoothingCompIso_hom_app_hom_left_mk eighth eighth parallelGraph
+        (parPt b, zeroE) zeroE)).trans
+      (congrArg (ReebQuotient.mk _) (Prod.ext rfl (Subtype.ext (add_zero (0 : ℝ)))))
+  exact (e false).symm.trans ((congrArg _ h).trans (e true))
 
 /-! ### One point -/
 

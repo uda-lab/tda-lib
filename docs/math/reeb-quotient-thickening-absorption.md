@@ -21,8 +21,8 @@ Composing two geometric smoothings needs the **absorption morphism**
 ```
 
 to be an isomorphism at `X = T_δ A` for a graph object `A`. That object is a constructible ℝ-space
-but not a graph object, and its Reeb projection `q_X` is not an isomorphism: on the single edge,
-`T_(1/4)` contains two distinct points at height `1/2` joined by a constant-height path (fixture
+but need not be a graph object (at `δ = 0`, `zeroIso` identifies it with `A`), and its Reeb
+projection `q_X` need not be an isomorphism: on the single edge, `T_(1/4)` contains two distinct points at height `1/2` joined by a constant-height path (fixture
 below). So the merged `projNatIso`, which inverts `q_A` on graph objects, does not apply there. On a
 graph object `A` itself absorption is immediate from `projNatIso`, and that case is only a control.
 
@@ -136,7 +136,10 @@ underlying precosheaves is the precosheaf semigroup `smoothingCompIso ε δ`:
 * **Naturality.** On the edge swap both composites of the square send `[([(q_true, 1/4)], -1/4)]`
   to `[(q_false, 0)]`, through the merged swap square of `geometricSmoothingAddIso`; the
   representative differs from that of the identity image. The classes themselves coincide, since
-  every fibre of `U_(1/4 + 1/4)` of the parallel edges is a subsingleton.
+  every fibre of `U_(1/4 + 1/4)` of the parallel edges is a subsingleton. At `1/8 + 1/8`, where the
+  loop survives, the square separates classes: both composites send `[([(q_true, 0)], 0)]` to the
+  image of `[([(q_false, 0)], 0)]`, which differs from the identity image, as `geometricSmoothingEqIso`
+  carries the two classes to the distinct height-`1/2` classes over the two edges in `U_(1/4)`.
 * **One point.** `(geometricSmoothingCompIso 1 1).app pointGraph` is an explicit isomorphism
   `U_1 U_1 P ≅ U_(1+1) P` in `RGraphCat`, whereas no slice isomorphism `T_1 T_1 P ≅ T_(1+1) P`
   exists (`not_iso_one_one`).
