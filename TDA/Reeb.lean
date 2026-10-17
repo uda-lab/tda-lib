@@ -20,6 +20,7 @@ import TDA.Reeb.GeometricDistanceBounds
 import TDA.Reeb.GeometricEnlargement
 import TDA.Reeb.GeometricInterleaving
 import TDA.Reeb.GeometricInterleavingEquivalence
+import TDA.Reeb.GeometricSmoothInterleaving
 import TDA.Reeb.GeometricThickening
 import TDA.Reeb.GeometricThickeningAddition
 import TDA.Reeb.GraphCycleObstruction

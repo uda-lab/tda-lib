@@ -14,6 +14,7 @@ import TDA.Reeb.GeometricDistanceBoundsExamples
 import TDA.Reeb.GeometricEnlargementExamples
 import TDA.Reeb.GeometricInterleavingEquivalenceExamples
 import TDA.Reeb.GeometricInterleavingExamples
+import TDA.Reeb.GeometricSmoothInterleavingExamples
 import TDA.Reeb.GeometricThickeningAdditionExamples
 import TDA.Reeb.GeometricThickeningExamples
 import TDA.Reeb.GraphCycleObstructionExamples

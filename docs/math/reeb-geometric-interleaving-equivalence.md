@@ -147,6 +147,9 @@ function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installe
 * **Range and component controls.** The two-point graph and the singleton at `0` have equal height
   ranges but distance `⊤` by the component obstruction. The parallel edges and the single edge have
   range bound `0`, no `0`-interleaving, and distance at most `1/4`.
+* **Smoothing controls.** Smoothing the edge--midpoint and parallel--single witnesses gives
+  computed components, coherence laws, an unchanged edge--midpoint threshold, an exact smoothed
+  distance, and two distance bounds.
 
 ## Enlargement, monotonicity and self-smoothing
 
@@ -206,6 +209,35 @@ The two-point graph and the singleton at `0` have equal height ranges, so the ra
 `0`, while their distance is `⊤` by the component obstruction. The parallel edges and the single
 edge have range bound `0`, but no `0`-interleaving; an existing witness gives distance at most
 `1/4`. Positivity or the exact value of the parallel–single distance is not decided here.
+
+## Smoothing of geometric interleavings
+
+The commutation isomorphism `geometricSmoothingCommIso` is the three-term composite
+`geometricSmoothingCompIso δ ε ≪≫ geometricSmoothingEqIso (add_comm δ ε) ≪≫
+(geometricSmoothingCompIso ε δ).symm`. Its zero law is
+`geometricSmoothingCommIso_zero_hom_app`, and its naturality along
+`geometricEnlargement` is `geometricSmoothing_map_geometricEnlargement_comp_commIso`.
+
+`Interleaving.isoLeft` transports a precosheaf interleaving on its first argument. The witness
+`GeometricInterleaving.smooth` keeps the parameter `ε`: it smooths the underlying precosheaf
+witness and transports its two arguments through the geometric precosheaf comparison
+isomorphisms. Its components are given by `smooth_φ` and `smooth_ψ`.
+
+The witness has the zero laws `smooth_zero_φ` and `smooth_zero_ψ`, the additivity laws
+`smooth_add_φ` and `smooth_add_ψ`, and the monotonicity law `smooth_mono`. The bound
+`geometricInterleavingDistance_geometricSmoothing_le` also follows witness-wise from
+`geometricInterleavingDistance_smooth_le` by `le_iInf₂`.
+
+The four shift bounds
+`geometricInterleavingDistance_geometricSmoothing_left_le`,
+`geometricInterleavingDistance_le_geometricSmoothing_left`,
+`geometricInterleavingDistance_geometricSmoothing_right_le` and
+`geometricInterleavingDistance_le_geometricSmoothing_right` are the two-sided form of
+`|d_geo(U_η A, C) − d_geo(A, C)| ≤ η` in `ℝ≥0∞`, with subtraction truncated.
+
+Smoothing the edge and its midpoint by `1/4` keeps their distance exactly `1/2`; the fixtures
+also show that no witness exists below `1/2`. Compatibility of smoothing with `trans` is not
+claimed here.
 
 ## Source correspondence
 
