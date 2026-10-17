@@ -206,6 +206,35 @@ private theorem card_edgeCells_eq {n : ℕ} {a r g : ℝ} (hgr : g ≤ r) {k l :
 
 end graphHelpers
 
+/-! ## The uniform families -/
+
+/-- The two-member uniform family `(-5/4, 3/4)`, `(1/4, 9/4)`. -/
+local notation "U₂" => uniformCover (-5 / 4 : ℝ) 2 (1 / 2) 2
+
+/-- The two-member family as real sets. -/
+local notation "F₂" => fun k : Fin 2 => ((U₂ k : OpenInterval) : Set ℝ)
+
+/-- The three-member uniform family `(-1/8, 7/8)`, `(1/2, 3/2)`, `(9/8, 17/8)`. -/
+local notation "U₃" => uniformCover (-1 / 8 : ℝ) 1 (3 / 8) 3
+
+/-- The three-member family as real sets. -/
+local notation "F₃" => fun k : Fin 3 => ((U₃ k : OpenInterval) : Set ℝ)
+
+theorem twoMember_zero : U₂ 0 = ioo (-5 / 4) (3 / 4) :=
+  uniformCover_eq_ioo 0 (by norm_num) (by norm_num)
+
+theorem twoMember_one : U₂ 1 = ioo (1 / 4) (9 / 4) :=
+  uniformCover_eq_ioo 1 (by norm_num) (by norm_num)
+
+theorem threeMember_zero : U₃ 0 = ioo (-1 / 8) (7 / 8) :=
+  uniformCover_eq_ioo 0 (by norm_num) (by norm_num)
+
+theorem threeMember_one : U₃ 1 = I4 :=
+  uniformCover_eq_ioo 1 (by norm_num) (by norm_num)
+
+theorem threeMember_two : U₃ 2 = ioo (9 / 8) (17 / 8) :=
+  uniformCover_eq_ioo 2 (by norm_num) (by norm_num)
+
 /-! ## The 4-cycle -/
 
 section Cycle
@@ -436,18 +465,6 @@ private theorem c4_card_upper {p q : ℝ} (hp0 : 0 ≤ p) (hp : p < 1) (hq : 2 <
 
 /-! ### Two members -/
 
-/-- The two-member uniform family on the 4-cycle. -/
-local notation "U₂" => uniformCover (-5 / 4 : ℝ) 2 (1 / 2) 2
-
-/-- The two-member family as real sets. -/
-local notation "F₂" => fun k : Fin 2 => ((U₂ k : OpenInterval) : Set ℝ)
-
-theorem twoMember_zero : U₂ 0 = ioo (-5 / 4) (3 / 4) :=
-  uniformCover_eq_ioo 0 (by norm_num) (by norm_num)
-
-theorem twoMember_one : U₂ 1 = ioo (1 / 4) (9 / 4) :=
-  uniformCover_eq_ioo 1 (by norm_num) (by norm_num)
-
 /-- The two-member family covers the attained range of the 4-cycle height (item 6). -/
 theorem twoMember_covers_cycle : Covers F₂ (Set.range (plHeight C4 h4)) :=
   uniformCover_covers_range h4_mem_Icc (by norm_num) (by norm_num) (by norm_num) (by norm_num)
@@ -553,21 +570,6 @@ theorem twoMember_cycle :
       fun hc => card_support_of_labels_pair _ _ (by decide) hc⟩)).trans twoMember_edgeCells_card
 
 /-! ### Three members -/
-
-/-- The three-member uniform family on the 4-cycle. -/
-local notation "U₃" => uniformCover (-1 / 8 : ℝ) 1 (3 / 8) 3
-
-/-- The three-member family as real sets. -/
-local notation "F₃" => fun k : Fin 3 => ((U₃ k : OpenInterval) : Set ℝ)
-
-theorem threeMember_zero : U₃ 0 = ioo (-1 / 8) (7 / 8) :=
-  uniformCover_eq_ioo 0 (by norm_num) (by norm_num)
-
-theorem threeMember_one : U₃ 1 = I4 :=
-  uniformCover_eq_ioo 1 (by norm_num) (by norm_num)
-
-theorem threeMember_two : U₃ 2 = ioo (9 / 8) (17 / 8) :=
-  uniformCover_eq_ioo 2 (by norm_num) (by norm_num)
 
 /-- The three-member family covers the attained range of the 4-cycle height (item 6). -/
 theorem threeMember_covers_cycle : Covers F₃ (Set.range (plHeight C4 h4)) :=
@@ -973,6 +975,314 @@ theorem threeMember_cycle :
   rw [← Nat.card_congr (Equiv.ofBijective _ hbij), hcells2]
 
 end Cycle
+
+/-! ## The single edge under the same covers -/
+
+section SingleEdge
+
+private theorem h02_mem_Icc (b : Bool) : h02 b ∈ Set.Icc (0 : ℝ) 2 := by
+  cases b <;> norm_num [h02]
+
+private theorem bool_mem_d₀ (b : Bool) : b ∈ (dartEdge d₀ : Sym2 Bool) := by
+  cases b
+  · exact fst_mem_dartEdge d₀
+  · exact snd_mem_dartEdge d₀
+
+private theorem edge_not_mem {p q : ℝ} (hp : 0 ≤ p) (hq : q ≤ 2) (v : Bool) :
+    h02 v ∉ ioo p q := fun hv => by
+  rw [mem_ioo] at hv
+  cases v <;> simp only [h02] at hv <;> linarith [hv.1, hv.2]
+
+/-- A member containing an endpoint height has one path component. -/
+private theorem edge_card_of_mem {K : OpenInterval} (b : Bool) (hb : h02 b ∈ K) :
+    Nat.card (ZerothHomotopy {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ K}) = 1 := by
+  refine card_preimage_eq_one (fun e _ => ⟨b, ?_, hb⟩) b hb fun v hv => ?_
+  · rw [edgeGraph_edge_eq e]
+    exact bool_mem_d₀ b
+  · by_cases hvb : v = b
+    · subst hvb
+      rfl
+    · exact ConnectedComponent.connectedComponentMk_eq_of_adj (show edgeGraph.Adj v b from hvb)
+
+/-- The single edge is the only active edge over every interval inside `[0, 2]`. -/
+private theorem edge_card_active {p q : ℝ} (hp : 0 ≤ p) (hpq : p < q) (hq : q ≤ 2) :
+    Nat.card {e : edgeGraph.edgeSet // EdgeActive edgeGraph h02 (ioo p q) e} = 1 := by
+  have hact : EdgeActive edgeGraph h02 (ioo p q) (dartEdge d₀) := by
+    refine (edgeActive_ioo_iff_of_endpoints hpq d₀ (edge_not_mem hp hq false)
+      (edge_not_mem hp hq true)).2 ?_
+    change min (h02 false) (h02 true) ≤ p ∧ q ≤ max (h02 false) (h02 true)
+    simp only [h02]
+    rw [min_eq_left (by norm_num), max_eq_right (by norm_num)]
+    exact ⟨hp, hq⟩
+  exact Nat.card_eq_one_iff_unique.2 ⟨⟨fun x y => Subtype.ext
+    ((edgeGraph_edge_eq x.1).trans (edgeGraph_edge_eq y.1).symm)⟩, ⟨⟨dartEdge d₀, hact⟩⟩⟩
+
+/-- The two-member family covers the attained range of the single edge (item 6). -/
+theorem twoMember_covers_edge : Covers F₂ (Set.range (plHeight edgeGraph h02)) :=
+  uniformCover_covers_range h02_mem_Icc (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+
+/-- The three-member family covers the attained range of the single edge (item 6). -/
+theorem threeMember_covers_edge : Covers F₃ (Set.range (plHeight edgeGraph h02)) :=
+  uniformCover_covers_range h02_mem_Icc (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+
+/-- The two-member family has multiplicity at most two on the single edge (item 8). -/
+theorem twoMember_multiplicity_edge : CoverMultiplicityAtMost (plHeight edgeGraph h02) F₂ 2 :=
+  coverMultiplicityAtMost_uniformCover (by norm_num) _
+
+/-- The three-member family has multiplicity at most two on the single edge (item 8). -/
+theorem threeMember_multiplicity_edge : CoverMultiplicityAtMost (plHeight edgeGraph h02) F₃ 2 :=
+  coverMultiplicityAtMost_uniformCover (by norm_num) _
+
+/-- **Fixture 3, two members.** On the single edge every member preimage has one path component,
+and the label pair `{0, 1}` carries exactly one edge cell and exactly one Mapper face. -/
+theorem singleEdge_twoMember :
+    (∀ k, Nat.card (ZerothHomotopy
+      {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₂ k}) = 1) ∧
+    Nat.card {c : multiNerveMapper (plHeight edgeGraph h02) F₂ //
+      c.support.image Sigma.fst = {0, 1}} = 1 ∧
+    Nat.card {s // s ∈ mapper (plHeight edgeGraph h02) F₂ ∧ s.image Sigma.fst = {0, 1}} = 1 := by
+  have hcells : Nat.card {c : multiNerveMapper (plHeight edgeGraph h02) F₂ //
+      c.support.image Sigma.fst = {0, 1}} = 1 :=
+    Eq.trans (card_edgeCells_eq (k := 0) (l := 1) (by norm_num) (by rfl) (p := 1 / 4)
+      (q := 3 / 4) (by norm_num) (by norm_num) (edge_not_mem (by norm_num) (by norm_num)))
+      (edge_card_active (by norm_num) (by norm_num) (by norm_num))
+  have := finite_edgeCells edgeGraph h02 U₂ 0 1
+  refine ⟨fun k => ?_, hcells, faces_card_one hcells⟩
+  fin_cases k
+  · show Nat.card (ZerothHomotopy
+      {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₂ 0}) = 1
+    rw [twoMember_zero]
+    exact edge_card_of_mem false (by norm_num [h02, mem_ioo])
+  · show Nat.card (ZerothHomotopy
+      {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₂ 1}) = 1
+    rw [twoMember_one]
+    exact edge_card_of_mem true (by norm_num [h02, mem_ioo])
+
+/-- **Fixture 3, three members.** On the single edge every member preimage has one path
+component; for the vertex-free middle member `(1/2, 3/2)` this is item 14. Each consecutive label
+pair carries exactly one edge cell and one Mapper face, and the far pair none. -/
+theorem singleEdge_threeMember :
+    (∀ k, Nat.card (ZerothHomotopy
+      {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₃ k}) = 1) ∧
+    Nat.card {c : multiNerveMapper (plHeight edgeGraph h02) F₃ //
+      c.support.image Sigma.fst = {0, 1}} = 1 ∧
+    Nat.card {s // s ∈ mapper (plHeight edgeGraph h02) F₃ ∧ s.image Sigma.fst = {0, 1}} = 1 ∧
+    Nat.card {c : multiNerveMapper (plHeight edgeGraph h02) F₃ //
+      c.support.image Sigma.fst = {1, 2}} = 1 ∧
+    Nat.card {s // s ∈ mapper (plHeight edgeGraph h02) F₃ ∧ s.image Sigma.fst = {1, 2}} = 1 ∧
+    IsEmpty {c : multiNerveMapper (plHeight edgeGraph h02) F₃ //
+      c.support.image Sigma.fst = {0, 2}} ∧
+    IsEmpty {s // s ∈ mapper (plHeight edgeGraph h02) F₃ ∧ s.image Sigma.fst = {0, 2}} := by
+  have h01 : Nat.card {c : multiNerveMapper (plHeight edgeGraph h02) F₃ //
+      c.support.image Sigma.fst = {0, 1}} = 1 :=
+    Eq.trans (card_edgeCells_eq (k := 0) (l := 1) (by norm_num) (by rfl) (p := 1 / 2)
+      (q := 7 / 8) (by norm_num) (by norm_num) (edge_not_mem (by norm_num) (by norm_num)))
+      (edge_card_active (by norm_num) (by norm_num) (by norm_num))
+  have h12 : Nat.card {c : multiNerveMapper (plHeight edgeGraph h02) F₃ //
+      c.support.image Sigma.fst = {1, 2}} = 1 :=
+    Eq.trans (card_edgeCells_eq (k := 1) (l := 2) (by norm_num) (by rfl) (p := 9 / 8)
+      (q := 3 / 2) (by norm_num) (by norm_num) (edge_not_mem (by norm_num) (by norm_num)))
+      (edge_card_active (by norm_num) (by norm_num) (by norm_num))
+  have h02e : IsEmpty {c : multiNerveMapper (plHeight edgeGraph h02) F₃ //
+      c.support.image Sigma.fst = {0, 2}} :=
+    isEmpty_uniformEdgeCells_of_far edgeGraph h02 (k := 0) (l := 2) (by norm_num) (by decide)
+  have := finite_edgeCells edgeGraph h02 U₃ 0 1
+  have := finite_edgeCells edgeGraph h02 U₃ 1 2
+  refine ⟨fin3_forall ?_ ?_ ?_, h01, faces_card_one h01, h12, faces_card_one h12, h02e,
+    faces_isEmpty h02e⟩
+  · show Nat.card (ZerothHomotopy
+      {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₃ 0}) = 1
+    rw [threeMember_zero]
+    exact edge_card_of_mem false (by norm_num [h02, mem_ioo])
+  · show Nat.card (ZerothHomotopy
+      {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₃ 1}) = 1
+    rw [threeMember_one, card_preimage_eq_card_active (edge_not_mem (by norm_num) (by norm_num))]
+    exact edge_card_active (by norm_num) (by norm_num) (by norm_num)
+  · show Nat.card (ZerothHomotopy
+      {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₃ 2}) = 1
+    rw [threeMember_two]
+    exact edge_card_of_mem true (by norm_num [h02, mem_ioo])
+
+end SingleEdge
+
+/-! ## One member -/
+
+section OneMember
+
+/-- With every attained height in the single member, the Mapper vertices are the connected
+components of the graph. -/
+private theorem card_componentIndex_one {V : Type*} [Finite V] {G : SimpleGraph V}
+    {h : V → ℝ} (U : Fin 1 → OpenInterval) (hall : ∀ x, plHeight G h x ∈ U 0) :
+    Nat.card (ComponentIndex (plHeight G h) (fun k => (U k : Set ℝ))) =
+      Nat.card G.ConnectedComponent := by
+  rw [card_componentIndex, Fin.sum_univ_one]
+  exact Nat.card_congr ((zerothHomotopyEquivOfForall hall).trans (componentsEquiv G))
+
+private theorem oneMember_multiplicity {X : Type*} [TopologicalSpace X] (f : C(X, ℝ))
+    (U : Fin 1 → Set ℝ) : CoverMultiplicityAtMost f U 1 :=
+  fun _ _ t _ => (Finset.card_le_univ t).trans_eq (Fintype.card_fin 1)
+
+private theorem oneMember_no_edge_cell {X : Type*} [TopologicalSpace X] (f : C(X, ℝ))
+    (U : Fin 1 → Set ℝ) : IsEmpty {c : multiNerveMapper f U // c.support.card = 2} :=
+  ⟨fun c => by
+    have := multiNerveMapper_card_le_of_multiplicity f U (oneMember_multiplicity f U) c.1
+    have h2 := c.2
+    omega⟩
+
+theorem oneMember_eq_J4 (g : ℝ) (k : Fin 1) : uniformCover (-1 / 2) 3 g 1 k = J4 := by
+  obtain rfl : k = 0 := Subsingleton.elim _ _
+  exact uniformCover_eq_ioo 0 (by norm_num) (by norm_num)
+
+theorem oneMember_wide (g : ℝ) (k : Fin 1) : uniformCover (-1) 4 g 1 k = ioo (-1) 3 := by
+  obtain rfl : k = 0 := Subsingleton.elim _ _
+  exact uniformCover_eq_ioo 0 (by norm_num) (by norm_num)
+
+theorem c4_card_connectedComponent : Nat.card C4.ConnectedComponent = 1 := by
+  have hconn : C4.Connected := cycleGraph_connected
+  exact Nat.card_eq_one_iff_unique.2
+    ⟨hconn.preconnected.subsingleton_connectedComponent, ⟨C4.connectedComponentMk 0⟩⟩
+
+theorem twoEdge_card_connectedComponent :
+    Nat.card (TDA.Mapper.GraphPL.Examples.twoEdgeGraph).ConnectedComponent = 2 := by
+  refine Nat.card_eq_two_iff.2 ⟨(TDA.Mapper.GraphPL.Examples.twoEdgeGraph).connectedComponentMk
+      (Sum.inl false), (TDA.Mapper.GraphPL.Examples.twoEdgeGraph).connectedComponentMk
+      (Sum.inr false), fun h => not_reachable_sum_inl_inr false false (ConnectedComponent.exact h),
+    Set.eq_univ_of_forall fun c => ?_⟩
+  induction c using ConnectedComponent.ind with
+  | h v =>
+    rcases v with b | b
+    · refine Or.inl ?_
+      cases b
+      · rfl
+      · exact ConnectedComponent.connectedComponentMk_eq_of_adj
+          (sum_adj_inl.2 (show edgeGraph.Adj true false by decide))
+    · refine Or.inr ?_
+      cases b
+      · rfl
+      · exact ConnectedComponent.connectedComponentMk_eq_of_adj
+          (sum_adj_inr.2 (show edgeGraph.Adj true false by decide))
+
+/-- **Fixture 4, the 4-cycle.** For every `g`, the single member of `uniformCover (-1/2) 3 g 1` is
+`J4 = (-1/2, 5/2)`. The Mapper of the 4-cycle has exactly one vertex, the number of connected
+components of the graph, no face of size two and no cell with two-element support. -/
+theorem oneMember_cycle (g : ℝ) :
+    (∀ k, uniformCover (-1 / 2) 3 g 1 k = J4) ∧
+    Covers (fun k => (uniformCover (-1 / 2) 3 g 1 k : Set ℝ)) (Set.range (plHeight C4 h4)) ∧
+    Nat.card (ComponentIndex (plHeight C4 h4)
+      (fun k => (uniformCover (-1 / 2) 3 g 1 k : Set ℝ))) = Nat.card C4.ConnectedComponent ∧
+    Nat.card (ComponentIndex (plHeight C4 h4)
+      (fun k => (uniformCover (-1 / 2) 3 g 1 k : Set ℝ))) = 1 ∧
+    (∀ s ∈ mapper (plHeight C4 h4) (fun k => (uniformCover (-1 / 2) 3 g 1 k : Set ℝ)),
+      s.card ≤ 1) ∧
+    IsEmpty {c : multiNerveMapper (plHeight C4 h4)
+      (fun k => (uniformCover (-1 / 2) 3 g 1 k : Set ℝ)) // c.support.card = 2} := by
+  have hall : ∀ x, plHeight C4 h4 x ∈ uniformCover (-1 / 2) 3 g 1 0 := fun x => by
+    rw [oneMember_eq_J4]
+    have := plHeight_mem_Icc_of_forall h4_mem_Icc x
+    exact ⟨by linarith [this.1], by linarith [this.2]⟩
+  have hcard := card_componentIndex_one (uniformCover (-1 / 2) 3 g 1) hall
+  refine ⟨oneMember_eq_J4 g, ?_, hcard, hcard.trans c4_card_connectedComponent, fun s hs =>
+    mapper_face_card_le_of_multiplicity _ _ (oneMember_multiplicity _ _) hs,
+    oneMember_no_edge_cell _ _⟩
+  rintro _ ⟨x, rfl⟩
+  exact ⟨0, hall x⟩
+
+/-- **Fixture 4, two disjoint edges.** For every `g`, the single member of
+`uniformCover (-1) 4 g 1` is `(-1, 3)`. The Mapper of two disjoint edges with heights `0, 2` has
+exactly two vertices, the number of connected components of the graph, and no cell with
+two-element support. -/
+theorem oneMember_twoEdge (g : ℝ) :
+    (∀ k, uniformCover (-1) 4 g 1 k = ioo (-1) 3) ∧
+    Nat.card (ComponentIndex (plHeight TDA.Mapper.GraphPL.Examples.twoEdgeGraph
+        TDA.Mapper.GraphPL.Examples.twoEdgeHeight)
+      (fun k => (uniformCover (-1) 4 g 1 k : Set ℝ))) =
+      Nat.card (TDA.Mapper.GraphPL.Examples.twoEdgeGraph).ConnectedComponent ∧
+    Nat.card (ComponentIndex (plHeight TDA.Mapper.GraphPL.Examples.twoEdgeGraph
+        TDA.Mapper.GraphPL.Examples.twoEdgeHeight)
+      (fun k => (uniformCover (-1) 4 g 1 k : Set ℝ))) = 2 ∧
+    IsEmpty {c : multiNerveMapper (plHeight TDA.Mapper.GraphPL.Examples.twoEdgeGraph
+        TDA.Mapper.GraphPL.Examples.twoEdgeHeight)
+      (fun k => (uniformCover (-1) 4 g 1 k : Set ℝ)) // c.support.card = 2} := by
+  have hh : ∀ v, TDA.Mapper.GraphPL.Examples.twoEdgeHeight v ∈ Set.Icc (0 : ℝ) 2 := by
+    rintro (b | b) <;> exact h02_mem_Icc b
+  have hall : ∀ x, plHeight TDA.Mapper.GraphPL.Examples.twoEdgeGraph
+      TDA.Mapper.GraphPL.Examples.twoEdgeHeight x ∈ uniformCover (-1) 4 g 1 0 := fun x => by
+    rw [oneMember_wide]
+    have := plHeight_mem_Icc_of_forall hh x
+    exact ⟨by linarith [this.1], by linarith [this.2]⟩
+  have hcard := card_componentIndex_one (uniformCover (-1) 4 g 1) hall
+  exact ⟨oneMember_wide g, hcard, hcard.trans twoEdge_card_connectedComponent,
+    oneMember_no_edge_cell _ _⟩
+
+end OneMember
+
+/-! ## The negative control `2g > r` -/
+
+section Negative
+
+/-- The uniform family `(-1/2, 1/2)`, `(-1/4, 3/4)`, `(0, 1)`. -/
+local notation "U₅" => uniformCover (-1 / 2 : ℝ) 1 (3 / 4) 3
+
+/-- The negative-control family as real sets. -/
+local notation "F₅" => fun k : Fin 3 => ((U₅ k : OpenInterval) : Set ℝ)
+
+theorem negative_zero : U₅ 0 = ioo (-1 / 2) (1 / 2) :=
+  uniformCover_eq_ioo 0 (by norm_num) (by norm_num)
+
+theorem negative_one : U₅ 1 = ioo (-1 / 4) (3 / 4) :=
+  uniformCover_eq_ioo 1 (by norm_num) (by norm_num)
+
+theorem negative_two : U₅ 2 = ioo 0 1 :=
+  uniformCover_eq_ioo 2 (by norm_num) (by norm_num)
+
+/-- The parameter `1/8`. -/
+def eighth : unitInterval := ⟨1 / 8, by norm_num, by norm_num⟩
+
+theorem negative_height : plHeight edgeGraph h02 (edgePoint edgeGraph d₀ eighth) = 1 / 4 := by
+  rw [plHeight_edgePoint, dartHeight_d₀]
+  show 2 * (1 / 8 : ℝ) = 1 / 4
+  norm_num
+
+theorem negative_mem : ∀ k, (1 / 4 : ℝ) ∈ U₅ k :=
+  fin3_forall
+    (show (1 / 4 : ℝ) ∈ U₅ 0 by rw [negative_zero, mem_ioo]; norm_num)
+    (show (1 / 4 : ℝ) ∈ U₅ 1 by rw [negative_one, mem_ioo]; norm_num)
+    (show (1 / 4 : ℝ) ∈ U₅ 2 by rw [negative_two, mem_ioo]; norm_num)
+
+/-- The component index at label `k` of the class of the point of height `1/4`. -/
+def negativeIndex (k : Fin 3) : ComponentIndex (plHeight edgeGraph h02) F₅ :=
+  ⟨k, ZerothHomotopy.mk ⟨edgePoint edgeGraph d₀ eighth, by
+    rw [negative_height]
+    exact negative_mem k⟩⟩
+
+/-- **Fixture 5.** For `2g > r`, the attained value `1/4` of the single edge lies in all three
+members of `uniformCover (-1/2) 1 (3/4) 3`. The multiplicity bound two fails, ordinary Mapper has a
+face of size three, and the target-side bound fails as the forward direction of
+`uniformCover_card_le_two_iff` predicts. -/
+theorem negative_control :
+    plHeight edgeGraph h02 (edgePoint edgeGraph d₀ eighth) = 1 / 4 ∧
+    (∀ k, (1 / 4 : ℝ) ∈ U₅ k) ∧
+    ¬ CoverMultiplicityAtMost (plHeight edgeGraph h02) F₅ 2 ∧
+    (Finset.univ.image negativeIndex) ∈ mapper (plHeight edgeGraph h02) F₅ ∧
+    (Finset.univ.image negativeIndex).card = 3 ∧
+    ¬ ∀ y (t : Finset (Fin 3)), (∀ k ∈ t, y ∈ U₅ k) → t.card ≤ 2 := by
+  refine ⟨negative_height, negative_mem, fun h => ?_, ?_, ?_, fun h =>
+    absurd ((uniformCover_card_le_two_iff (le_refl 3) (by norm_num)).1 h) (by norm_num)⟩
+  · have := h (1 / 4) ⟨edgePoint edgeGraph d₀ eighth, negative_height⟩ Finset.univ
+      fun k _ => negative_mem k
+    rw [Finset.card_univ, Fintype.card_fin] at this
+    omega
+  · refine (mem_mapper_iff _ _ _).2 ⟨Finset.univ_nonempty.image _, edgePoint edgeGraph d₀ eighth,
+      fun a ha => ?_⟩
+    obtain ⟨k, -, rfl⟩ := Finset.mem_image.1 ha
+    exact ⟨_, rfl⟩
+  · have hinj : Function.Injective negativeIndex := fun k l hkl => by
+      have := congrArg Sigma.fst hkl
+      exact this
+    exact (Finset.card_image_of_injective Finset.univ hinj).trans
+      (by rw [Finset.card_univ, Fintype.card_fin])
+
+end Negative
 
 /-! ## The boundary case `2g = r` -/
 

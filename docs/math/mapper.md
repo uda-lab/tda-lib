@@ -340,3 +340,69 @@ complex to every parameter and a simplicial vertex map to every comparison,
 and the existing strict refinement laws prove identity and composition for
 these maps. This direct interface makes no fixed-ambient inclusion claim and
 adds no categorical, diagram, stability, or persistence conclusion.
+
+## Uniform interval covers and edge cells
+
+For a base point `a`, an interval length `r` and an overlap length `g`, the
+uniform family has the open members `U_k = (a + k(r − g), a + k(r − g) + r)`;
+its first `n` members are indexed by `Fin n`, with `n` explicit and no floor or
+ceiling. For `g ≤ r` consecutive members meet in
+`(a + (k + 1)(r − g), a + (k + 1)(r − g) + g)`, an interval of length `g`. For
+`2g ≤ r` members whose indices differ by at least two are disjoint, so every
+real number lies in at most two members and the family has multiplicity at most
+two for every continuous map. For `n ≥ 3` and `g < r` this bound holds exactly
+when `2g ≤ r`: if `r < 2g`, the midpoint of `(a + 2(r − g), a + r)` lies in the
+first three members. Carrière–Oudot (CO16-v3 §2.4) measure an interval cover by
+its granularity, the largest member length, and show that no three members of
+a minimal cover meet (Lemma 2.10). The uniform family need not be minimal or
+generic: at `2g = r` the part of the middle member outside its neighbours is a
+single point. The multiplicity bound is proved directly and is not attributed
+to Lemma 2.10.
+
+For `0 < g` and `n > 0` the window `(a, a + n(r − g) + g)` lies in the union of
+the members, by induction on `n`. For `g ≤ r` the union is exactly the window;
+for `r < g` and `n ≥ 2` later members reach to the left of `a`. If the vertex
+heights of a graph lie in `[m, M]`, so does every value of its piecewise-linear
+height, without connectedness of the graph or nonemptiness of its vertex set.
+The uniform family therefore covers the attained range when `a < m` and `M` is
+below the right end of the window, and for `0 < g < r` such an `n` exists.
+
+For a continuous map `f`, a target family `U` and a nonempty finite label set
+`τ`, the MultiNerve Mapper cells whose support has label set `τ` correspond to
+the path components of `f⁻¹(⋂_{i∈τ} U_i)`; a cell goes to the class of any
+point of its carrier. Two points joined inside this preimage lie in the same
+component member over every label, so cells with the same image have the same
+support, and the inclusion of the intersection of component members into the
+preimage is injective on path components. For two labels `i` and `j` the cells
+are the edge cells over `U_i ∩ U_j`. The ordinary Mapper faces with label set
+`{i, j}` are their supports, so there are at most as many such faces as path
+components of `f⁻¹(U_i ∩ U_j)` when these are finite. This makes explicit the
+gluing of parallel edges that relates the two constructions after CO16-v3
+Corollary 3.5; the equivalence is an elementary library result.
+
+For a piecewise-linear height on a graph and interval labels, the edge cells
+with labels `{i, j}` are the connected components of the incidence graph over
+`U_i ∩ U_j`. If the overlap contains no vertex height, every incidence node is
+an edge node and no two edge nodes are adjacent, so the components are the
+active edges. Over a bounded overlap `(p, q)`, an edge whose endpoint heights
+avoid `(p, q)` is active exactly when its smaller endpoint height is at most `p`
+and its larger one at least `q`. For the uniform family with `g ≤ r`,
+consecutive labels carry the components over their overlap of length `g`; for
+`2g ≤ r` labels at distance at least two carry no edge cell.
+
+On the 4-cycle with vertex heights `0, 1, 2, 1`, the members `(-5/4, 3/4)` and
+`(1/4, 9/4)` have path-connected preimages. Their overlap `(1/4, 3/4)` contains
+no vertex height and meets the edges `0 — 1` and `0 — 3`, so the MultiNerve
+Mapper has two edge cells over the single Mapper edge and is a 2-cycle. With the
+members `(-1/8, 7/8)`, `(1/2, 3/2)` and `(9/8, 17/8)`, the middle preimage has
+the two components of the vertices `1` and `3`, each consecutive overlap
+carries two edge cells with different supports, and both constructions are
+4-cycles. On one edge with endpoint heights `0` and `2` the same families give
+one edge cell and one Mapper face per consecutive pair. The one-member families
+`(-1/2, 5/2)` and `(-1, 3)` give as many Mapper vertices as graph components on
+the 4-cycle and on two disjoint edges. For the family `(-1/2, 1/2)`,
+`(-1/4, 3/4)`, `(0, 1)`, where `2g > r`, the attained value `1/4` of the single
+edge lies in all three members and ordinary Mapper has a face of size three.
+
+No geometric realization of either construction, comparison with Reeb graphs,
+or approximation statement is proved.

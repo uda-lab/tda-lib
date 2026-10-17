@@ -5,3 +5,4 @@ import TDA.Mapper.GraphPLExamples
 import TDA.Mapper.MultiNerveExamples
 import TDA.Mapper.TowerExamples
 import TDA.Mapper.MultiNerveRefinementExamples
+import TDA.Mapper.UniformCoverExamples
