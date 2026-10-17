@@ -34,18 +34,49 @@ action; do not invent mathematical approval checkpoints.
 
 ## Integration and release overrides
 
-Use `develop` as the base and target of ordinary Issue PRs, even when main is the GitHub
-default. Interpret inherited loop references to inputs on main as inputs on develop.
-Stable promotion PRs target main and use merge commits; ordinary develop PRs use squash.
-Apply evaluated-head binding and all review gates to both methods. Do not directly push either protected branch.
+Read [CONTRIBUTING.md](../../../CONTRIBUTING.md) for the canonical branch lifecycle.
+Keep develop and main persistent; never use source-branch deletion on either. Ordinary
+code/documentation Issue topics use develop as base and target, even when main is the
+GitHub default, and merge by squash. Interpret inherited ordinary-loop references to
+inputs on main as inputs on develop. Release/hotfix propagation uses merge commits,
+including into develop; main stable corrections/promotions use merge commits as well.
+Apply evaluated-head binding and existing review/validation gates to both methods.
 
-### Temporary October local-CI exception
+State the next target scope/milestone in the governing Issue/Project. A release version
+may be undecided before release cut, when the actual version and included scope are fixed.
+The actual reviewed release head may include fixes after its develop base; preserve that
+head as a main-merge parent and verify the reviewed tree before any authorized tag.
+Propagate release/hotfix/main-first README corrections and verify intended content on
+develop without losing later additions. An active release must track the eventual develop
+destination. Tree equality is not ancestry, and ancestry does not prove content retention.
+Do not impose ordinary-PR refreshes or a new parent-approval checkpoint. No direct pushes.
 
-Through 2026-10-31 23:59:59 JST, ordinary PRs to `develop` use the Owner-authorized local-CI substitute for the inherited hosted `check` gate. This project-specific exception supersedes inherited hosted-CI merge requirements for `develop` only; it does not change `main` or authorize a stable promotion. For implementation changes, run the full guarded `scripts/check.sh` on the exact final head, retaining the serialized build, live axiom audit, coverage and all applicable Issue acceptance checks. Keep qualifying independent final-head review, resolved findings and threads, no hard-stop labels, and no unchecked PR tasks. Record the evaluated head and base SHAs, exact commands and exit outcomes, audit/coverage summary and review evidence. Focused probes are not a full-check pass. Rebase, conflict resolution or source changes invalidate affected evidence; revalidate and review the actual final head before merge. Use the ordinary develop squash command with `gh pr merge <n> --squash --match-head-commit <evaluated head>`.
+### CI and validation
 
-Local evidence is never hosted-CI success. Do not dispatch or rerun Actions, trigger an automatic hosted run, add workflows, deploy runners or expand CI. Before publication, require actual disabled-automation evidence or the Owner's explicit setting confirmation; if an unexpected Actions run appears, stop publication and report it. The no-project-budget-cap policy does not authorize hosted CI, CI expansion or disregard of the Owner's resource restriction. The period end is a reevaluation point, not an automatic November restart; do not extend it or change execution mode without an explicit Owner-approved plan.
+Use normal hosted CI for this repository. The Owner lifted the October restriction;
+ADR 0002 retains the superseded exception as history. Let the existing workflow run on
+PRs and pushes to `develop` and `main`, and require its `check` to succeed for the evaluated
+PR head before merge. Do not add CI-skip markers to suppress routine validation or use a
+local result as a replacement for hosted success. Observe actual checks and branch rules;
+never invent a status.
 
-This exception leaves the #85 docs-job condition and the existing `scripts/build-docs.sh` revision invalidation and exact source-link binding unchanged; optional API docs are not an extra routine `develop` merge gate. The prose-only scope of #89 uses its specified local patch, link, consistency and whitespace checks plus independent exact-head prose review; that narrow validation does not relax the full implementation gate above.
+Run applicable local checks and the mandatory pre-push gate. Implementation changes retain
+the full guarded `scripts/check.sh`, serialized build, live axiom audit, public coverage and
+Issue acceptance checks. For prose-only changes, use focused patch, link, consistency and
+whitespace checks plus the existing textual guards; let workflow change detection select
+the hosted build steps. Do not add redundant full builds or full doc generation.
+
+Keep independent final-head review, resolved findings and threads, no hard-stop labels and
+no unchecked PR tasks. Record evaluated head/base SHAs, exact commands and exit outcomes,
+applicable audit/coverage results, the hosted run and review evidence in the PR. Rebase,
+conflict resolution or source changes invalidate affected evidence; validate and review the
+actual final head. Merge ordinary develop topics with
+`gh pr merge <n> --squash --match-head-commit <evaluated head>`.
+
+Keep the existing docs-job condition and `scripts/build-docs.sh` revision invalidation and
+exact source-link binding. Optional API docs are not an extra routine develop merge gate;
+the exposition-note lane remains opt-in. Restoring CI authorizes no credential, permission,
+protection, repository-setting, workflow-trigger, release or publication change.
 
 Source-fidelity completion applies to release-scoped results after a stable promotion. Require source fidelity for claimed results, exclude
 staging holes from stable releases, audit the exact main revision, then tag and describe its

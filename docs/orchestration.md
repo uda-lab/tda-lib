@@ -17,28 +17,34 @@ may use Sol low/high. Sol high may prepare Issues when dot is unavailable.
 
 ## Branches and releases
 
-Regular Issue branches start from `develop` and PRs target `develop`. The default branch
-may remain `main`; explicitly specify the integration base rather than infer it from GitHub's
-default. `main` receives reviewed stable promotions only. Both branches require PRs and
-`check`; no direct pushes, force pushes or deletion.
+[CONTRIBUTING.md](../CONTRIBUTING.md) is the canonical lifecycle policy. `develop` and
+stable `main` are persistent. Ordinary code/documentation topics start from and target
+develop using squash PRs. Release branches start from a selected develop base; release
+and hotfix propagation uses merge-commit PRs, including into develop. Explicitly name the
+target scope/milestone; the next version may be `undecided` until release cut. The GitHub
+default branch does not choose an integration target. Keep both long-lived branches.
 
-A stable promotion identifies its exact develop revision and included results on the Issue
-and PR, excludes staging holes, runs the full gate and obtains independent mathematical
-review as appropriate. Promote that revision through a PR to main; audit the merged main
-revision and tag it with release notes describing results, compatibility and limitations.
-Infrastructure-only releases make no mathematical-result claims.
+A release identifies its develop base, actual reviewed release head and included results,
+excludes staging holes, and satisfies the existing release checks/review. The release head
+may contain corrections after its base. Its main merge must preserve that actual head as
+a parent and match the reviewed release tree before any authorized tag. Content equality
+and commit ancestry are separate checks; neither replaces the other. Infrastructure-only
+releases make no mathematical-result claims.
 
-Ordinary develop PRs use squash merges. Stable main promotions use merge commits, preserving
-the exact released develop head as a parent. The merged main tree must equal the reviewed
-release tree before tagging. This ancestry keeps later promotion diffs limited to new work;
-no synchronization PR is needed when release trees match. Resolve and review any actual
-main/develop content divergence before promotion. Keep develop after each release.
-dot determines release cadence and version numbers from maturity and API changes.
+Propagate every release/hotfix/main-first documentation correction to develop, directly
+or through an active release, and verify both the intended fix and retention of later
+development. An active-release destination remains tracked until develop receives it.
+No extra synchronization PR is needed only when the relevant release head is already
+integrated and no release/main fixes remain unpropagated, not merely when trees match.
+dot determines release cadence and versions from actual maturity, scope and API changes.
+PR protection, applicable local validation and normal hosted CI remain in force. Require
+the existing workflow's `check` to succeed for the evaluated PR head. No direct/force pushes,
+long-lived branch deletion or new approval wait.
 
 Each area owns `scripts/print_axioms/<Area>.lean` and the imports-only
 `TDA/<Area>.lean` module list. `TDA.lean` imports those lists and `TDA.Basic`.
 Append pins and imports in the area that owns a new module; do not edit another area's
-list for an independent result. A textually mergeable PR can use its reviewed, locally
+list for an independent result. A textually mergeable PR can use its reviewed, validated
 validated head without a gratuitous develop refresh. Actual source overlap or a failed
 integrated build needs resolution and renewed validation of the changed head.
 
@@ -78,7 +84,14 @@ dot establishes dependencies and release scope from actual mathematical decision
 ## Commands and gates
 
 `scripts/bootstrap.sh` prepares caches and hooks; `scripts/check.sh` is the full integrity
-gate. `scripts/github-setup.sh` installs labels, squash settings and develop/main protections.
+gate. `scripts/github-setup.sh` is the broad labels/settings/protection bootstrap; do not run
+it wholesale for a targeted live setting correction. Read current settings and update only
+the approved fields. Develop needs squash and merge methods for its two integration roles;
+main uses merge commits. Preserve protections and the existing workflow triggers and
+conditional steps. Ordinary PR and integration pushes run CI; do not suppress them with
+CI-skip markers. Prose-only changes use focused local checks and the workflow's lightweight
+path. Implementation changes retain the full guarded local check and applicable hosted
+build/audit. Optional documentation generation and the note lane retain their own conditions.
 Review acquisition and merge evidence follow `github-driven-workflow`; review disposition
 follows `lean-review-routing`. All review findings are observed and resolved or disposed of.
 No unsolicited notifications; authorized reports and the Issue/PR record are unaffected.
