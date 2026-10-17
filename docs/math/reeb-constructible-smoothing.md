@@ -150,9 +150,10 @@ geometric smoothing `U_ε` and its unit (see `reeb-rgraph-smoothing.md`).
 ## Universes
 
 `IsConstructibleAt.smoothing`, `IsConstructibleCosheaf.smoothing`, `constructibleSmoothing` and the
-lifted unit and zero comparison hold at every value universe `u`. The enlargement, composition
-and commutation lifts (A)--(B) also hold at every value universe; F5 checks this at value universe
-`1`. The cosheaf condition is at cover universe `0`, as in `IsConstructibleCosheaf`.
+lifted unit and zero comparison hold at every value universe `u`. The lifted enlargement maps,
+composition isomorphisms and commutation isomorphism also hold at every value universe; a fixture
+instantiates them at value universe `1`. The cosheaf condition is at cover universe `0`, as in
+`IsConstructibleCosheaf`.
 
 ## Fixtures
 
@@ -181,15 +182,15 @@ and commutation lifts (A)--(B) also hold at every value universe; F5 checks this
   `I ≤ thicken ε I` and to `thicken 0 I = I`. For the parallel-edge swap, the lifted map has
   underlying map the smoothing of the swap, and at `ε = 1/4` it is not the identity: the
   thickening of `(1/4, 3/4)` is the gap `(0, 1)`, where the swap exchanges the two edges.
-- **Lifted composition (F1).** At `ε = δ = 1/4`, the component of the lifted composition
+- **Lifted composition.** At `ε = δ = 1/4`, the component of the lifted composition
   isomorphism on the parallel graph is its cosheaf applied to `thickenCompIso`, and its inverse
   followed by its hom is the identity.
-- **Lifted enlargement (F3).** The map from `1` to `2` on the pinch graph is not an isomorphism,
+- **Lifted enlargement.** The map from `1` to `2` on the pinch graph is not an isomorphism,
   while the equal-parameter map at `1/4` is the identity.
-- **Zero and universe controls (F4--F5).** The left-zero composition law holds on the single
+- **Zero and universe controls.** The left-zero composition law holds on the single
   graph, with the stated interval component, and the composition and enlargement lifts elaborate
   at value universe `1`.
-- **Commutation (F6).** At `1/4` and `1`, the lifted commutation component on the parallel graph
+- **Commutation.** At `1/4` and `1`, the lifted commutation component on the parallel graph
   is the cosheaf map induced by the interval commutation inclusion.
 
 ## Source correspondence

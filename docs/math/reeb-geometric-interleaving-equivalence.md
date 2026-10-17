@@ -141,7 +141,7 @@ function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installe
   invariance under the subdivision isomorphism.
 * **Zero distance.** The two presentations of the edge have witnesses at every positive parameter;
   the edge and its midpoint do not.
-* **Lifted triangle (F2).** The `1/4` parallel-single interleaving satisfies both triangles after
+* **Lifted triangle.** The `1/4` parallel-single interleaving satisfies both triangles after
   applying `constructibleShiftMap`, `constructibleSmoothing` and the lifted composition
   isomorphism, once at the parallel graph and once at the single graph.
 
@@ -192,7 +192,8 @@ and the unit and composite laws of the shifted map. None is attributed to a numb
 Essential surjectivity of `C` is not used, so no critical-value scope is inherited.
 
 Not claimed here: absorption beyond (H2); a comparison with Mapper; interleavings of precosheaves
-that do not come from graph objects; exact values of `d_geo(A, U_ε A)`.
+that do not come from graph objects; exact values of `d_geo(A, U_ε A)`; interleavings internal to
+`ConstructibleCosheafCat` and a lift of `GeometricInterleaving.toCosheaf` to them.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition
 4.36](https://arxiv.org/html/1501.04147v1).

@@ -2805,10 +2805,8 @@ import TDA
 -- TDA.Reeb.ConstructibleSmoothingLiftExamples
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.compIso_parallel_component
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.compIso_parallel_inv_hom
-#print axioms
-  TDA.Reeb.Examples.ConstructibleSmoothingLift.parallelSingleInterleaving_constructible_phi_psi
-#print axioms
-  TDA.Reeb.Examples.ConstructibleSmoothingLift.parallelSingleInterleaving_constructible_psi_phi
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.parallelSingleInterleaving_constructible_phi_psi
+#print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.parallelSingleInterleaving_constructible_psi_phi
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.one_le_two_nn
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.constructibleSmoothingMap_pinch_not_isIso
 #print axioms TDA.Reeb.Examples.ConstructibleSmoothingLift.constructibleSmoothingMap_pinch_refl
