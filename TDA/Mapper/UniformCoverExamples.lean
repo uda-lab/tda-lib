@@ -465,11 +465,12 @@ private theorem c4_card_upper {p q : ℝ} (hp0 : 0 ≤ p) (hp : p < 1) (hq : 2 <
 
 /-! ### Two members -/
 
-/-- The two-member family covers the attained range of the 4-cycle height (item 6). -/
+/-- The two-member family covers the attained range of the 4-cycle height
+(`uniformCover_covers_range`). -/
 theorem twoMember_covers_cycle : Covers F₂ (Set.range (plHeight C4 h4)) :=
   uniformCover_covers_range h4_mem_Icc (by norm_num) (by norm_num) (by norm_num) (by norm_num)
 
-/-- The two-member family has multiplicity at most two (item 8). -/
+/-- The two-member family has multiplicity at most two (`coverMultiplicityAtMost_uniformCover`). -/
 theorem twoMember_multiplicity_cycle : CoverMultiplicityAtMost (plHeight C4 h4) F₂ 2 :=
   coverMultiplicityAtMost_uniformCover (by norm_num) _
 
@@ -536,9 +537,9 @@ theorem twoMember_mapper_edge_card :
   exact Finset.Subset.antisymm (twoMember_support_subset (hs.trans hs'.symm))
     (twoMember_support_subset (hs'.trans hs.symm))
 
-/-- **Fixture 1.** On the 4-cycle with two uniform members, every member preimage has one path
-component, ordinary Mapper has two vertices and one edge, and the MultiNerve Mapper has two vertex
-cells and two edge cells over that edge, a 2-cycle. The projection is surjective and not
+/-- **Two members on the 4-cycle.** On the 4-cycle with two uniform members, every member preimage
+has one path component, ordinary Mapper has two vertices and one edge, and the MultiNerve Mapper has
+two vertex cells and two edge cells over that edge, a 2-cycle. The projection is surjective and not
 injective, and `IntersectionsPathSubsingleton` fails. -/
 theorem twoMember_cycle :
     (∀ k, Nat.card (ZerothHomotopy {x : Realization C4 // plHeight C4 h4 x ∈ U₂ k}) = 1) ∧
@@ -571,11 +572,13 @@ theorem twoMember_cycle :
 
 /-! ### Three members -/
 
-/-- The three-member family covers the attained range of the 4-cycle height (item 6). -/
+/-- The three-member family covers the attained range of the 4-cycle height
+(`uniformCover_covers_range`). -/
 theorem threeMember_covers_cycle : Covers F₃ (Set.range (plHeight C4 h4)) :=
   uniformCover_covers_range h4_mem_Icc (by norm_num) (by norm_num) (by norm_num) (by norm_num)
 
-/-- The three-member family has multiplicity at most two (item 8). -/
+/-- The three-member family has multiplicity at most two
+(`coverMultiplicityAtMost_uniformCover`). -/
 theorem threeMember_multiplicity_cycle : CoverMultiplicityAtMost (plHeight C4 h4) F₃ 2 :=
   coverMultiplicityAtMost_uniformCover (by norm_num) _
 
@@ -887,12 +890,12 @@ private theorem three_labels {c : multiNerveMapper (plHeight C4 h4) F₃}
   · exact Or.inr h
   · exact (threeMember_edgeCells02_isEmpty.false ⟨c, h⟩).elim
 
-/-- **Fixture 2.** On the 4-cycle with three uniform members, the component counts per label are
-`1, 2, 1`. The consecutive label pairs carry two edge cells each and the far pair none; the two
-cells over each pair have the distinct supports `{low, x1}`, `{low, x3}`, respectively `{x1, high}`,
-`{x3, high}`. Ordinary Mapper has four vertices and exactly four faces of size two, and the
-projection from the cells with two-element support onto them is a bijection: both are
-4-cycles. -/
+/-- **Three members on the 4-cycle.** On the 4-cycle with three uniform members, the component
+counts per label are `1, 2, 1`. The consecutive label pairs carry two edge cells each and the far
+pair none; the two cells over each pair have the distinct supports `{low, x1}`, `{low, x3}`,
+respectively `{x1, high}`, `{x3, high}`. Ordinary Mapper has four vertices and exactly four faces of
+size two, and the projection from the cells with two-element support onto them is a bijection: both
+are 4-cycles. -/
 theorem threeMember_cycle :
     Nat.card (ZerothHomotopy {x : Realization C4 // plHeight C4 h4 x ∈ U₃ 0}) = 1 ∧
     Nat.card (ZerothHomotopy {x : Realization C4 // plHeight C4 h4 x ∈ U₃ 1}) = 2 ∧
@@ -1017,24 +1020,28 @@ private theorem edge_card_active {p q : ℝ} (hp : 0 ≤ p) (hpq : p < q) (hq : 
   exact Nat.card_eq_one_iff_unique.2 ⟨⟨fun x y => Subtype.ext
     ((edgeGraph_edge_eq x.1).trans (edgeGraph_edge_eq y.1).symm)⟩, ⟨⟨dartEdge d₀, hact⟩⟩⟩
 
-/-- The two-member family covers the attained range of the single edge (item 6). -/
+/-- The two-member family covers the attained range of the single edge
+(`uniformCover_covers_range`). -/
 theorem twoMember_covers_edge : Covers F₂ (Set.range (plHeight edgeGraph h02)) :=
   uniformCover_covers_range h02_mem_Icc (by norm_num) (by norm_num) (by norm_num) (by norm_num)
 
-/-- The three-member family covers the attained range of the single edge (item 6). -/
+/-- The three-member family covers the attained range of the single edge
+(`uniformCover_covers_range`). -/
 theorem threeMember_covers_edge : Covers F₃ (Set.range (plHeight edgeGraph h02)) :=
   uniformCover_covers_range h02_mem_Icc (by norm_num) (by norm_num) (by norm_num) (by norm_num)
 
-/-- The two-member family has multiplicity at most two on the single edge (item 8). -/
+/-- The two-member family has multiplicity at most two on the single edge
+(`coverMultiplicityAtMost_uniformCover`). -/
 theorem twoMember_multiplicity_edge : CoverMultiplicityAtMost (plHeight edgeGraph h02) F₂ 2 :=
   coverMultiplicityAtMost_uniformCover (by norm_num) _
 
-/-- The three-member family has multiplicity at most two on the single edge (item 8). -/
+/-- The three-member family has multiplicity at most two on the single edge
+(`coverMultiplicityAtMost_uniformCover`). -/
 theorem threeMember_multiplicity_edge : CoverMultiplicityAtMost (plHeight edgeGraph h02) F₃ 2 :=
   coverMultiplicityAtMost_uniformCover (by norm_num) _
 
-/-- **Fixture 3, two members.** On the single edge every member preimage has one path component,
-and the label pair `{0, 1}` carries exactly one edge cell and exactly one Mapper face. -/
+/-- **Two members on the single edge.** On the single edge every member preimage has one path
+component, and the label pair `{0, 1}` carries exactly one edge cell and exactly one Mapper face. -/
 theorem singleEdge_twoMember :
     (∀ k, Nat.card (ZerothHomotopy
       {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₂ k}) = 1) ∧
@@ -1058,9 +1065,10 @@ theorem singleEdge_twoMember :
     rw [twoMember_one]
     exact edge_card_of_mem true (by norm_num [h02, mem_ioo])
 
-/-- **Fixture 3, three members.** On the single edge every member preimage has one path
-component; for the vertex-free middle member `(1/2, 3/2)` this is item 14. Each consecutive label
-pair carries exactly one edge cell and one Mapper face, and the far pair none. -/
+/-- **Three members on the single edge.** On the single edge every member preimage has one path
+component; for the vertex-free middle member `(1/2, 3/2)` it corresponds to the single active
+edge (`cellGraphComponentsEquivActiveEdges`). Each consecutive label pair carries exactly one
+edge cell and one Mapper face, and the far pair none. -/
 theorem singleEdge_threeMember :
     (∀ k, Nat.card (ZerothHomotopy
       {x : Realization edgeGraph // plHeight edgeGraph h02 x ∈ U₃ k}) = 1) ∧
@@ -1162,8 +1170,8 @@ theorem twoEdge_card_connectedComponent :
       · exact ConnectedComponent.connectedComponentMk_eq_of_adj
           (sum_adj_inr.2 (show edgeGraph.Adj true false by decide))
 
-/-- **Fixture 4, the 4-cycle.** For every `g`, the single member of `uniformCover (-1/2) 3 g 1` is
-`J4 = (-1/2, 5/2)`. The Mapper of the 4-cycle has exactly one vertex, the number of connected
+/-- **One member on the 4-cycle.** For every `g`, the single member of `uniformCover (-1/2) 3 g 1`
+is `J4 = (-1/2, 5/2)`. The Mapper of the 4-cycle has exactly one vertex, the number of connected
 components of the graph, no face of size two and no cell with two-element support. -/
 theorem oneMember_cycle (g : ℝ) :
     (∀ k, uniformCover (-1 / 2) 3 g 1 k = J4) ∧
@@ -1187,7 +1195,7 @@ theorem oneMember_cycle (g : ℝ) :
   rintro _ ⟨x, rfl⟩
   exact ⟨0, hall x⟩
 
-/-- **Fixture 4, two disjoint edges.** For every `g`, the single member of
+/-- **One member on two disjoint edges.** For every `g`, the single member of
 `uniformCover (-1) 4 g 1` is `(-1, 3)`. The Mapper of two disjoint edges with heights `0, 2` has
 exactly two vertices, the number of connected components of the graph, and no cell with
 two-element support. -/
@@ -1255,9 +1263,9 @@ def negativeIndex (k : Fin 3) : ComponentIndex (plHeight edgeGraph h02) F₅ :=
     rw [negative_height]
     exact negative_mem k⟩⟩
 
-/-- **Fixture 5.** For `2g > r`, the attained value `1/4` of the single edge lies in all three
-members of `uniformCover (-1/2) 1 (3/4) 3`. The multiplicity bound two fails, ordinary Mapper has a
-face of size three, and the target-side bound fails as the forward direction of
+/-- **Negative control.** For `2g > r`, the attained value `1/4` of the single edge lies in all
+three members of `uniformCover (-1/2) 1 (3/4) 3`. The multiplicity bound two fails, ordinary Mapper
+has a face of size three, and the target-side bound fails as the forward direction of
 `uniformCover_card_le_two_iff` predicts. -/
 theorem negative_control :
     plHeight edgeGraph h02 (edgePoint edgeGraph d₀ eighth) = 1 / 4 ∧
@@ -1297,7 +1305,7 @@ theorem boundary_one : U₆ 1 = ioo 1 3 := uniformCover_eq_ioo 1 (by norm_num) (
 
 theorem boundary_two : U₆ 2 = ioo 2 4 := uniformCover_eq_ioo 2 (by norm_num) (by norm_num)
 
-/-- **Fixture 6.** At `2g = r` the outer members are disjoint and every real number lies in at
+/-- **Boundary case.** At `2g = r` the outer members are disjoint and every real number lies in at
 most two members, although the part of the middle member outside the others is the single point
 `2`; the family is not generic in the sense of CO16-v3 §2.4. -/
 theorem boundary_uniformCover :

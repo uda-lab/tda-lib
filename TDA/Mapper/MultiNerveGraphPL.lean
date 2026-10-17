@@ -406,12 +406,14 @@ variable (G h)
 
 /-- **Uniform overlaps.** For `g ≤ r` and consecutive labels `k`, `l = k + 1`, the edge cells of
 the uniform family with labels `{k, l}` are the connected components of the incidence graph over
-the overlap `(a + l(r - g), a + l(r - g) + g)`. -/
+the overlap `(a + l(r - g), a + l(r - g) + g)`. Only `g ≤ r` is used; the multiplicity condition
+`2g ≤ r` is not needed for this equivalence. -/
 def uniformEdgeCellsEquiv {a r g : ℝ} {n : ℕ} (hgr : g ≤ r) {k l : Fin n}
     (hkl : (k : ℕ) + 1 = l) :
     {c : multiNerveMapper (plHeight G h) (fun i => (uniformCover a r g n i : Set ℝ)) //
         c.support.image Sigma.fst = {k, l}} ≃
-      (cellGraph G h (ioo (a + (l : ℕ) * (r - g)) (a + (l : ℕ) * (r - g) + g))).ConnectedComponent :=
+      (cellGraph G h
+        (ioo (a + (l : ℕ) * (r - g)) (a + (l : ℕ) * (r - g) + g))).ConnectedComponent :=
   (edgeCellsCellGraphEquiv G h (uniformCover a r g n) k l).trans
     (Equiv.cast (congrArg (fun K => (cellGraph G h K).ConnectedComponent)
       (uniformCover_inf_of_succ hgr hkl)))

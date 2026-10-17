@@ -224,7 +224,7 @@ theorem coverMultiplicityAtMost_uniformCover {X : Type*} [TopologicalSpace X] {a
 
 /-- For `3 ≤ n` and `g < r`, every real number lies in at most two members exactly when
 `2g ≤ r`. If `r < 2g`, the midpoint of `(a + 2(r - g), a + r)` lies in the first three members.
-The case `0 < g < r` of the specification is included; `0 < g` follows from `g < r < 2g`. -/
+No sign condition on `g` is needed: `g < r < 2g` forces `0 < g`, and for `g ≤ 0` both sides hold. -/
 theorem uniformCover_card_le_two_iff {a r g : ℝ} {n : ℕ} (hn : 3 ≤ n) (hgr : g < r) :
     (∀ y (t : Finset (Fin n)), (∀ k ∈ t, y ∈ uniformCover a r g n k) → t.card ≤ 2) ↔
       2 * g ≤ r := by
