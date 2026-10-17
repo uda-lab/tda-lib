@@ -138,7 +138,8 @@ thickening `X_ε = X × [-ε, ε]`, `f_ε(x, t) = f(x) + t` and `T_ε[α]` used 
 The addition map, its coherence laws, the `π₀` compatibility and the one-point non-isomorphism are
 library statements; none is attributed to the source.
 
-Not claimed here: the Reeb quotient comparison `ℛ T_ε T_δ ≅ ℛ T_(ε+δ)`; the absorption
+Not claimed here: the Reeb quotient comparison `ℛ T_ε T_δ ≅ ℛ T_(ε+δ)`, which is proved in
+[reeb-quotient-thickening-addition.md](reeb-quotient-thickening-addition.md); the absorption
 `ℛ T_ε ℛ ≅ ℛ T_ε`; the semigroup isomorphisms of Observation 4.33 for geometric smoothing; the
 geometric interleavings of Definition 4.36 and any distance inequality; a first projection or any
 other non-height-preserving map packaged as a slice morphism. The one-point witness shows that the

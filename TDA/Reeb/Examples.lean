@@ -20,6 +20,7 @@ import TDA.Reeb.IntervalCosheafExamples
 import TDA.Reeb.IntervalExamples
 import TDA.Reeb.PerturbationExamples
 import TDA.Reeb.QuotientComparisonExamples
+import TDA.Reeb.QuotientThickeningAdditionExamples
 import TDA.Reeb.RGraphCosheafEquivalenceExamples
 import TDA.Reeb.RGraphExamples
 import TDA.Reeb.RGraphSmoothingExamples
