@@ -157,8 +157,10 @@ faithfulness `cosheafFullyFaithful`.
 The absorption theorem, its hypotheses (H1) and (H2), the reflection proof, the coherence laws and
 the cosheaf compatibility square are library statements; none is attributed to the source.
 
-Not claimed here: the geometric interleavings of Definition 4.36 and any distance inequality such as
-`d_cosheaf ≤ d_geo`; absorption on arbitrary objects of the real slice, or on constructible `X`
+The geometric interleavings of Definition 4.36, their distance and the inequality
+`d_cosheaf ≤ d_geo` are in [reeb-geometric-interleaving.md](reeb-geometric-interleaving.md).
+
+Not claimed here: the reverse inequality `d_geo ≤ d_cosheaf`; absorption on arbitrary objects of the real slice, or on constructible `X`
 without (H2); constructibility of `T_ε T_δ A`, or of `T_ε X` for a constructible `X` that is not a
 graph object; a lift of `smoothingCompIso` to constructible cosheaves, so the compatibility square
 is stated on underlying precosheaves.
