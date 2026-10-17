@@ -42,17 +42,20 @@ second recovers `cellGraphComponentsEquivActiveEdges`.
 
 The MultiNerve Mapper cells with label set `{i}` are the path components of `f ⁻¹' U i`
 (`vertexCellsEquiv`), for graph-PL input the incidence components over `U i`
-(`vertexCellsCellGraphEquiv`). Over a height-separating uniform cover:
+(`vertexCellsCellGraphEquiv`). Over a height-separating uniform cover `uniformCover a r g n`:
 
 * a member containing the vertex height `c` carries the vertex cells
   `(G.induce {v | h v = c}).ConnectedComponent ⊕ {e // EdgeCrosses G h c e}`
   (`uniformVertexCellsEquivLevel`);
-* a member `(p, q)` containing no vertex height carries one vertex cell per edge spanning `[p, q]`
-  (`uniformVertexCellsEquivSpans`);
-* consecutive labels carry one edge cell per edge spanning the overlap
+* for `0 < r`, a member `(p, q)` containing no vertex height carries one vertex cell per edge
+  spanning `[p, q]` (`uniformVertexCellsEquivSpans`);
+* for `0 < g ≤ r`, consecutive labels carry one edge cell per edge spanning the overlap
   (`uniformEdgeCellsEquivSpans`).
 
-Labels at distance at least two carry no edge cell (`isEmpty_uniformEdgeCells_of_far`). These are
+For `2g ≤ r`, labels at distance at least two carry no edge cell
+(`isEmpty_uniformEdgeCells_of_far`). Height separation alone does not give this: for the single
+edge of heights `0` and `2`, `uniformCover (-1/4) (3/2) 1 3` is height-separating, while its labels
+`0` and `2` meet in `(3/4, 5/4)` and carry an edge cell. These are
 elementary library results, not attributed to a source. The face maps between these cells and the
 comparison with a finite Reeb graph are not part of this module. See `docs/math/mapper.md`.
 -/
@@ -319,7 +322,8 @@ theorem cellComponentsEquivSum_inr_of_mem (e : {e : G.edgeSet // EdgeActive G h 
       Sum.inr e :=
   (cellComponentsEquivSum G h K).apply_symm_apply (Sum.inr e)
 
-@[simp] theorem cellComponentsEquivSum_symm_inl (c : (G.induce (h ⁻¹' (K : Set ℝ))).ConnectedComponent) :
+@[simp] theorem cellComponentsEquivSum_symm_inl
+    (c : (G.induce (h ⁻¹' (K : Set ℝ))).ConnectedComponent) :
     (cellComponentsEquivSum G h K).symm (Sum.inl c) = inducedToCell G h K c := rfl
 
 @[simp] theorem cellComponentsEquivSum_symm_inr (e : UncoveredEdge G h K) :

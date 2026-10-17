@@ -10,8 +10,8 @@ is a `Nat.card` equality derived through the new equivalences.
 * **4-cycle, three members.** For `C4` with heights `0, 1, 2, 1` the attained range is `[0, 2]` and
   `uniformCover (-1/8) 1 (3/8) 3` is height-separating. The vertex cells over `{0}`, `{1}`, `{2}`
   number `1, 2, 1` through the level branch, in agreement with the merged preimage counts; over
-  `{1}` the vertices `1` and `3` are not adjacent and no edge crosses height `1`. The edge cells over
-  `{0, 1}` and `{1, 2}` number `2` each, spanned by `0 — 1, 0 — 3` and by `1 — 2, 2 — 3`. Read
+  `{1}` the vertices `1` and `3` are not adjacent and no edge crosses height `1`. The edge cells
+  over `{0, 1}` and `{1, 2}` number `2` each, spanned by `0 — 1, 0 — 3` and by `1 — 2, 2 — 3`. Read
   informally, there is one cell at height `0`, two at height `1` and one at height `2`, the shape
   of a cycle, matching the Reeb graph of the 4-cycle because the level set at `1` has two
   components. No incidence, multigraph or Reeb graph is stated here.
@@ -25,14 +25,16 @@ is a `Nat.card` equality derived through the new equivalences.
   edge cells.
 * **One member.** The single member `(-1/2, 5/2)` contains both heights of the single edge, so the
   family is not height-separating; the splitting still gives one vertex cell.
-* **Vertex height in an overlap.** For `uniformCover (-1/4) (3/2) (1/2) 3` on the 4-cycle the overlap
-  `(3/4, 5/4)` contains the height `1`. There are two edge cells over `{0, 1}` but no edge spans
-  `[3/4, 5/4]`: the spanning classification fails without its hypothesis.
+* **Vertex height in an overlap.** For `uniformCover (-1/4) (3/2) (1/2) 3` on the 4-cycle the
+  overlap `(3/4, 5/4)` contains the height `1`. There are two edge cells over `{0, 1}` but no edge
+  spans `[3/4, 5/4]`: the spanning classification fails without its hypothesis.
 * **Disconnected graph.** For two isolated vertices of heights `0` and `2` the height `1` is not
   attained: connectedness cannot be dropped from `range_plHeight_eq_Icc`.
 * **Boundary of the strict and non-strict predicates.** For the single edge of heights `0` and `2`,
   the edge spans `[0, 2]` and is the one active edge over `(0, 2)`, while it crosses neither
   endpoint height `0` nor `2`.
+* **Far labels.** `uniformCover (-1/4) (3/2) 1 3` is height-separating for the single edge, but
+  with `2g > r` its labels `0` and `2` meet and carry an edge cell.
 * **Existence.** `heightSeparating_covers_range` gives a height-separating cover of the attained
   range of the 4-cycle with `r < 1/2`; no counts are stated.
 -/
@@ -274,8 +276,8 @@ private theorem c4_edges_ne_low : dartEdge d01 ≠ dartEdge d03 :=
 private theorem c4_edges_ne_high : dartEdge d12 ≠ dartEdge d23 :=
   dartEdge_ne (by decide) (by decide)
 
-/-- **Edge cells over `{0, 1}`**, through the spanning branch: the overlap `(1/2, 7/8)` is spanned by
-`0 — 1` and `0 — 3`. -/
+/-- **Edge cells over `{0, 1}`**, through the spanning branch: the overlap `(1/2, 7/8)` is spanned
+by `0 — 1` and `0 — 3`. -/
 theorem c4_edgeCells01 :
     Nat.card {c : multiNerveMapper (plHeight C4 h4) F₃ // c.support.image Sigma.fst = {0, 1}} =
       2 := by
@@ -538,7 +540,8 @@ theorem Y_edgeCrosses_one : EdgeCrosses Y hY 1 (dartEdge y02) := by
 theorem Y_vertexCells_other :
     Nat.card {c : multiNerveMapper (plHeight Y hY) F₄ // c.support.image Sigma.fst = {0}} = 1 ∧
       Nat.card {c : multiNerveMapper (plHeight Y hY) F₄ // c.support.image Sigma.fst = {2}} = 1 ∧
-      Nat.card {c : multiNerveMapper (plHeight Y hY) F₄ // c.support.image Sigma.fst = {3}} = 1 := by
+      Nat.card {c : multiNerveMapper (plHeight Y hY) F₄ //
+        c.support.image Sigma.fst = {3}} = 1 := by
   refine ⟨card_eq_add_of_equiv (uniformVertexCellsEquivLevel Y hY Y_heightSeparating 0 0 (Y_mem 0))
       (Y_level_card 0) (card_zero_of (not_edgeCrosses_of_le hY_nonneg)),
     card_eq_add_of_equiv (uniformVertexCellsEquivLevel Y hY Y_heightSeparating 2 2 (Y_mem 2))
@@ -676,7 +679,8 @@ theorem overlap_control :
         c.support.image Sigma.fst = {0, 1}} = 2 ∧
       Nat.card {e // EdgeSpans C4 h4 (3 / 4) (5 / 4) e} = 0 ∧
       Nat.card {c : multiNerveMapper (plHeight C4 h4) (fun k => (W₃ k : Set ℝ)) //
-        c.support.image Sigma.fst = {0, 1}} ≠ Nat.card {e // EdgeSpans C4 h4 (3 / 4) (5 / 4) e} := by
+        c.support.image Sigma.fst = {0, 1}} ≠
+        Nat.card {e // EdgeSpans C4 h4 (3 / 4) (5 / 4) e} := by
   have hmem : h4 1 ∈ W₃ 0 ⊓ W₃ 1 := by
     rw [overlap_inf, mem_ioo]
     norm_num
@@ -764,6 +768,54 @@ theorem edge_boundary :
     exact card_one_of hspans fun e _ => edgeGraph_edge e
   · rw [edgeCrosses_dartEdge_iff]
     norm_num [d₀, h02]
+
+/-! ## Far labels need `2g ≤ r` -/
+
+/-- **Far labels.** For the single edge, `uniformCover (-1/4) (3/2) 1 3` with members `(-1/4, 5/4)`,
+`(1/4, 7/4)`, `(3/4, 9/4)` is height-separating, but `2g > r` and the labels `0` and `2` meet in
+`(3/4, 5/4)`, which carries one edge cell: height separation alone does not give the emptiness of
+far edge cells. -/
+theorem edge_farLabels :
+    HeightSeparating h02 (uniformCover (-1 / 4) (3 / 2) 1 3) ∧
+      uniformCover (-1 / 4 : ℝ) (3 / 2) 1 3 0 ⊓ uniformCover (-1 / 4) (3 / 2) 1 3 2 =
+        ioo (3 / 4) (5 / 4) ∧
+      Nat.card {c : multiNerveMapper (plHeight edgeGraph h02)
+          (fun k => (uniformCover (-1 / 4) (3 / 2) 1 3 k : Set ℝ)) //
+        c.support.image Sigma.fst = {0, 2}} = 1 := by
+  have hsep : HeightSeparating h02 (uniformCover (-1 / 4) (3 / 2) 1 3) := by
+    refine ⟨sep₁_of (fun k => k) fun k hk v hv => ?_,
+      sep₂_of (by norm_num) fun l h1 h2 v hv => ?_⟩
+    · rw [mem_uniformInterval] at hv
+      obtain rfl | rfl | rfl : k = 0 ∨ k = 1 ∨ k = 2 := by omega
+      all_goals rcases h02_cases v with h | h <;> rw [h] at hv ⊢ <;>
+        first | (norm_num at hv; done) | norm_num
+    · rw [mem_ioo] at hv
+      obtain rfl | rfl : l = 1 ∨ l = 2 := by omega
+      all_goals rcases h02_cases v with h | h <;> rw [h] at hv <;> norm_num at hv
+  have hK : uniformCover (-1 / 4 : ℝ) (3 / 2) 1 3 0 ⊓ uniformCover (-1 / 4) (3 / 2) 1 3 2 =
+      ioo (3 / 4) (5 / 4) := by
+    apply SetLike.coe_injective
+    ext y
+    simp only [coe_inf, uniformCover_apply, coe_uniformInterval, coe_ioo, Set.mem_inter_iff,
+      Set.mem_Ioo]
+    constructor
+    · rintro ⟨⟨h₁, h₂⟩, h₃, h₄⟩
+      norm_num at h₁ h₂ h₃ h₄
+      exact ⟨by linarith, by linarith⟩
+    · rintro ⟨h₁, h₂⟩
+      norm_num
+      refine ⟨⟨?_, ?_⟩, ?_, ?_⟩ <;> linarith
+  have hnot : ∀ v, h02 v ∉ ioo (3 / 4) (5 / 4) := fun v hv => by
+    rw [mem_ioo] at hv
+    rcases h02_cases v with h | h <;> rw [h] at hv <;> norm_num at hv
+  refine ⟨hsep, hK, ?_⟩
+  rw [Nat.card_congr
+      (edgeCellsCellGraphEquiv edgeGraph h02 (uniformCover (-1 / 4) (3 / 2) 1 3) 0 2),
+    hK, Nat.card_congr ((cellGraphComponentsEquivActiveEdges hnot).trans
+      (activeEdgeEquivSpans (by norm_num) hnot))]
+  refine card_one_of (a := dartEdge d₀) ?_ fun e _ => edgeGraph_edge e
+  rw [edgeSpans_dartEdge_iff]
+  norm_num [d₀, h02]
 
 /-! ## F7. Existence -/
 

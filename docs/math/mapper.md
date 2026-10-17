@@ -443,19 +443,25 @@ vertices it is the earlier description of components by active edges.
 
 The MultiNerve Mapper cells with label set `{i}` are the path components of
 `f⁻¹(U_i)`, for a piecewise-linear height the incidence components over `U_i`.
-Over a height-separating uniform family three cases remain.
+Over a height-separating uniform family three cases remain, under the
+positivity conditions stated with each.
 
 * A member containing the vertex height `c` contains no other vertex height, so
   its surviving vertices are those of height `c`. An active edge without a
   surviving endpoint then has endpoint heights strictly on both sides of `c`:
   it crosses the level. The vertex cells over the member are the components of
   the graph induced on the level `{h = c}` together with the edges crossing `c`.
-* A member `(p, q)` containing no vertex height carries one vertex cell for each
-  edge whose height interval contains `[p, q]`.
-* The overlap `(p, q) = (a + l(r − g), a + l(r − g) + g)` of consecutive labels
-  `k` and `l = k + 1` contains no vertex height, so the edge cells over `{k, l}`
-  are the edges whose height interval contains `[p, q]`. Labels at distance at
-  least two carry no edge cell.
+* For `0 < r`, a member `(p, q)` containing no vertex height carries one vertex
+  cell for each edge whose height interval contains `[p, q]`.
+* For `0 < g ≤ r`, the overlap `(p, q) = (a + l(r − g), a + l(r − g) + g)` of
+  consecutive labels `k` and `l = k + 1` contains no vertex height, so the edge
+  cells over `{k, l}` are the edges whose height interval contains `[p, q]`.
+
+For `2g ≤ r`, labels at distance at least two carry no edge cell. Height
+separation alone does not give this: for the single edge of heights `0` and
+`2`, the members `(-1/4, 5/4)`, `(1/4, 7/4)`, `(3/4, 9/4)` with `g = 1` are
+height-separating, while the first and the third meet in `(3/4, 5/4)` and
+carry an edge cell.
 
 These are the vertex and edge data of a Reeb graph in the combinatorial form
 used for finite graph-PL input: components of vertex-height levels together
