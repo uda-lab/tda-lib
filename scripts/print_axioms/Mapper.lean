@@ -215,7 +215,6 @@ import TDA
 #print axioms TDA.Mapper.MultiNerveExamples.triangle_multiNerveMapper_cell
 #print axioms TDA.Mapper.MultiNerveExamples.emptyDomain_multiNerveMapper_isEmpty
 
-
 -- Refinement maps of MultiNerve Mappers (Issue #289).
 #print axioms TDA.Mapper.componentCover_interMember_subset_preimage
 #print axioms TDA.Mapper.interMemberPreimageMap
@@ -626,3 +625,16 @@ import TDA
 #print axioms TDA.Mapper.GraphPLLevelSetsExamples.J4_not_injective
 #print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_reeb_V1_card
 #print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_star_triangle
+
+-- Refinement of graph-PL finite Reeb data.
+#print axioms TDA.Mapper.GraphPL.exists_mem_K_of_mem_Icc
+#print axioms TDA.Mapper.GraphPL.exterior_segment
+#print axioms TDA.Mapper.GraphPL.CoversVertexHeights.mono
+#print axioms TDA.Mapper.GraphPL.levelVertexEquivOfEq
+#print axioms TDA.Mapper.GraphPL.levelVertexEquivOfEq_rfl
+#print axioms TDA.Mapper.GraphPL.levelVertexEquivSpanOfMemK
+#print axioms TDA.Mapper.GraphPL.levelVertexEquivSpanOfMemK_inr
+#print axioms TDA.Mapper.GraphPL.spanEdgeEquivOfSubset
+#print axioms TDA.Mapper.GraphPL.spanEdgeEquivOfSubset_apply_coe
+#print axioms TDA.Mapper.GraphPL.isEmpty_levelVertex_of_notMem_Icc
+#print axioms TDA.Mapper.GraphPL.isEmpty_spanEdge_of_exterior
