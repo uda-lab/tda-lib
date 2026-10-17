@@ -61,7 +61,8 @@ geometricInterleavingDistance A B = ⨅ (ε : ℝ≥0) (_ : Nonempty (GeometricI
 
 in `ℝ≥0∞`. A witness bounds it, it has the lower-envelope characterization, it is `⊤` exactly when
 no interleaving exists, it is `0` on `A, A` and on isomorphic objects, and it is symmetric. The
-triangle inequality is **not yet proved**. The distance is a plain function: no `EDist`,
+triangle inequality is proved in `reeb-geometric-interleaving-equivalence.md`, through the
+equality with the cosheaf interleaving distance. The distance is a plain function: no `EDist`,
 `PseudoEMetricSpace` or `MetricSpace` instance is installed.
 
 ## Transport to the cosheaf side
@@ -131,8 +132,11 @@ independently** on `RGraphCat`. The comparison `d_cosheaf ≤ d_geo`, the transp
 `cosheafShiftMap`, unit coherence and the thin-target lemma are library statements; none is
 attributed to a numbered source result.
 
-Not claimed here: the reverse inequality `d_geo ≤ d_cosheaf`; composition of geometric
-interleavings and the triangle inequality for `d_geo`; enlargement along `ε ≤ ε'`;
+The reverse inequality `d_geo ≤ d_cosheaf`, composition of geometric interleavings and the
+triangle inequality for `d_geo` are in
+[reeb-geometric-interleaving-equivalence.md](reeb-geometric-interleaving-equivalence.md).
+
+Not claimed here: enlargement along `ε ≤ ε'`;
 nonexpansiveness of `U_ε` for `d_geo` and `d_geo(A, U_ε A) ≤ ε`; a comparison with Mapper;
 absorption beyond (H2); a lift of `smoothingCompIso` to constructible cosheaves.
 

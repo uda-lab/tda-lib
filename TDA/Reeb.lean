@@ -15,6 +15,7 @@ import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
 import TDA.Reeb.FiniteDiagram
 import TDA.Reeb.GeometricInterleaving
+import TDA.Reeb.GeometricInterleavingEquivalence
 import TDA.Reeb.GeometricThickening
 import TDA.Reeb.GeometricThickeningAddition
 import TDA.Reeb.GraphCycleObstruction
