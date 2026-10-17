@@ -95,7 +95,8 @@ namespace MovedPoint
 open TDA.Persistence.Cech.Examples.MovedPoint
 
 /-- The halving identity for the moved configuration, in every degree, from the line filter
-identity and the scaling law for actual diagrams. -/
+identity and the scaling law for actual diagrams. The labels lie on the line `ℝ`, not in a
+sup-norm product `ι → ℝ`, so the product-form halving theorem does not apply directly. -/
 theorem bottleneck_eq_half (n : ℕ) :
     bottleneck (dgm ℚ (Cech.filter p) n) (dgm ℚ (Cech.filter q) n) =
       ENNReal.ofReal 2⁻¹ *
@@ -118,7 +119,8 @@ theorem pairwiseDiscrepancy_le :
   fin_cases v <;> fin_cases w <;>
     norm_num [TDA.Filtration.Cech.Examples.TwoPoints.pts, q, Real.dist_eq]
 
-/-- The halving law and Rips stability give the bound `1/2` in every degree. -/
+/-- The halving identity and Rips stability give the bound `1/2` in every degree. This is the
+chain of the product-form half-discrepancy bound, rerun on the line. -/
 theorem bottleneck_le_half (n : ℕ) :
     bottleneck (dgm ℚ (Cech.filter p) n) (dgm ℚ (Cech.filter q) n) ≤
       ENNReal.ofReal (1 / 2) := by

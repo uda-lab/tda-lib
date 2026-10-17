@@ -57,7 +57,8 @@ theorem vertex_bottleneck_scale_eq_sharp (a b : ℝ) {c : ℝ} (hc : 0 < c) :
 
 /-! ### Translation versus scaling -/
 
-theorem translate_vertexFilter_zero : translateFilterFunction (vertexFilter 0) 1 = vertexFilter 1 := by
+theorem translate_vertexFilter_zero :
+    translateFilterFunction (vertexFilter 0) 1 = vertexFilter 1 := by
   ext s
   change (0 : ℝ) + 1 = 1
   norm_num

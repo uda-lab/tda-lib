@@ -98,7 +98,6 @@ theorem bottleneck_dgm_le_half_pairwiseDiscrepancy (d e : MetricSpace V) (p q : 
     _ = ENNReal.ofReal (Rips.pairwiseDiscrepancy d e / 2) := by
       rw [← ENNReal.ofReal_mul (by norm_num), inv_mul_eq_div]
 
-
 end Diagrams
 
 end TDA.Persistence.Cech

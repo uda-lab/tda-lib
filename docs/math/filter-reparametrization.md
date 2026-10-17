@@ -135,8 +135,8 @@ holds for every face. Hence:
   d and e, so the Čech diagrams are within δ/2.
 
 No properness assumption is used. For labels on the line ℝ, the merged line value identity
-gives the same filter and diagram identities. The halving law and the δ/2 bound then follow
-in the same way, as the moved-point fixture shows.
+gives the same filter and diagram identities. No line form of the halving law or the δ/2
+bound is exported; the moved-point fixture derives both from the line diagram identity.
 
 ## Fixtures
 
