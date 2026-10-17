@@ -482,8 +482,9 @@ by `0 — 1`, `0 — 3` and by `1 — 2`, `2 — 3`. Read informally, there is o
 at height `0`, two at height `1` and one at height `2`, the shape of a cycle.
 This matches the Reeb graph of the 4-cycle, which is a cycle rather than one
 edge with parallel edges because the level set at `1` has two components. The
-identification is not proved: neither the incidence of these cells nor a Reeb
-graph of graph-PL input is constructed.
+identification of these cells with the Reeb graph is not proved here; the next
+section constructs the Reeb graph of graph-PL input and identifies it with the
+cycle.
 
 Crossing is strict and spanning is not. An edge with endpoint heights `0` and
 `2` spans `[0, 2]` and is the one active edge over `(0, 2)`, but it crosses
@@ -500,9 +501,72 @@ edge spans `[3/4, 5/4]`, so the spanning description fails without its
 hypothesis. Connectedness of the graph is needed for the attained range, as
 shown above.
 
-The face maps from edge cells to vertex cells, the finite Reeb graph of
-graph-PL input as `FiniteReebData` and its isomorphism with the MultiNerve
-Mapper of a height-separating uniform family are not proved. No geometric
-realization of either Mapper construction, no level set of the realization as
-a closed subspace, no refinement tower of height-separating covers and no
-approximation statement is proved.
+## Finite Reeb data of graph-PL input
+
+Fix a critical list `S` with levels `a 0 < ⋯ < a n`, the stars
+`J i = (a (i − 1), a (i + 1))` with infinite extremes and the gaps
+`K e = (a e, a (e + 1))`. For a finite graph with vertex heights `h`, the
+finite data `graphPLReebData G h S` have
+
+* at level `i`, the components of the graph induced on the vertices of height
+  `a i`, together with the edges crossing `a i`;
+* over gap `e`, the edges whose height interval contains `[a e, a (e + 1)]`;
+* as endpoint maps, the level component of an endpoint at the level when the
+  edge has one, and the edge itself as a crossing vertex otherwise.
+
+A spanning edge without an endpoint at a bounding level crosses it, so the
+endpoint maps are well defined. Two endpoints at the same level are adjacent in
+the level graph, so the choice of endpoint does not matter. A crossing edge is a
+Reeb vertex of degree two over the level: on the single edge of heights `0` and
+`2` at the levels `0, 1, 2`, the level `1` carries no graph vertex, and the
+edge is one Reeb vertex there, shared by the two incident gaps. A horizontal
+edge spans no gap; it merges its endpoints in the level graph. The construction
+needs no covering hypothesis, and a level may carry no vertex. For a nonempty
+finite vertex set, the sorted distinct vertex heights form a canonical list
+whose levels are exactly the vertex heights.
+
+The data are compared with the extraction of the path-component precosheaf of
+the piecewise-linear height, whose vertex values are the path components over
+the stars and whose edge values are those over the gaps. Suppose every vertex
+height is a level of `S`. Then the vertices with height in `J i` are those of
+height `a i`, and no vertex height lies in a gap. An active edge over `J i`
+without an endpoint in `J i` has endpoint heights on both sides of `a i`, so the
+uncovered edges over the star are the edges crossing `a i`, for every open
+interval containing a single vertex height, rays and `ℝ` included. Through the
+incidence-graph comparison and the splitting of incidence components, the path
+components over `J i` are the Reeb vertices at level `i`, and those over `K e`
+are the Reeb edges over gap `e`. Under these bijections, the inclusions
+`K e ⊆ J e` and `K e ⊆ J (e + 1)` are the endpoint maps on every element of the
+gap value, so the extracted data and `graphPLReebData G h S` are isomorphic
+finite data. Neither bijection needs finiteness.
+
+The comparison is at stars, not at closed level sets. Finite data take their
+vertex values on stars, and the incidence-graph comparison is stated for open
+intervals. The closed level `{h = a i}` would need a separate labelling of
+horizontal edges inside the level and of isolated crossing points.
+
+The covering hypothesis cannot be dropped. For two isolated vertices of heights
+`0` and `2` and the single level `0`, the star is `ℝ` and has two path
+components, while the level carries the single Reeb vertex of height `0`; no
+bijection exists. For two isolated vertices of equal height, the data have two
+Reeb vertices, against one for the edge joining them.
+
+On the 4-cycle with heights `0, 1, 2, 1` at the levels `0, 1, 2`, the data have
+`1, 2, 1` vertices and two edges over each gap. The left endpoint map of the
+lower gap is constant at the component of `0`, its right endpoint map is
+injective onto the components of `1` and `3`, and symmetrically for the upper
+gap. A map of finite data from the cycle data of the realization theory, with
+bijective components, identifies the two, so the realization of the graph-PL
+data is not the path with one vertex per level. On the tree with edges
+`0 — 2`, `1 — 2`, `2 — 3` and heights `0, 1, 2, 3`, the counts `1, 2, 1, 1` and
+`1, 2, 1` agree with the MultiNerve Mapper cell counts of the previous section.
+These are elementary library results, not attributed to a source.
+
+Constructibility of the precosheaf at a covering list, the cosheaf isomorphism
+with the realized data, path components of closed level sets, the Reeb
+quotient of the realization, the face maps from edge cells to vertex cells and
+the isomorphism of the finite Reeb data with the MultiNerve Mapper of a
+height-separating uniform family are not proved. No geometric realization of
+either Mapper construction, no compatibility with refinement of critical lists,
+no refinement tower of height-separating covers and no approximation statement
+is proved.
