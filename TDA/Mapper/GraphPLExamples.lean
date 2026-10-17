@@ -268,7 +268,8 @@ private theorem edgeSetSumEquiv_right :
     SimpleGraph.edgeSetSumEquiv (dartEdge (twoEdgeDart true)) =
       Sum.inr (dartEdge d₀) := rfl
 
-private theorem twoEdge_edge_eq (e : twoEdgeGraph.edgeSet) :
+/-- Every edge of the two-edge graph is the edge of one of the two selected darts. -/
+theorem twoEdge_edge_eq (e : twoEdgeGraph.edgeSet) :
     e = dartEdge (twoEdgeDart false) ∨ e = dartEdge (twoEdgeDart true) := by
   let E := SimpleGraph.edgeSetSumEquiv (G := edgeGraph) (H := edgeGraph)
   rcases hE : E e with eL | eR
@@ -401,7 +402,8 @@ private theorem twoEdge_cell_anchors_ne (i : Bool) :
   have hs := eq_of_walk (fun _ _ => twoEdgeCellSide_adj) p
   simp [twoEdgeCellSide, twoEdgeVertex] at hs
 
-private theorem twoEdge_midpoint_height (side : Bool) :
+/-- The midpoint of either selected dart has height `1`. -/
+theorem twoEdge_midpoint_height (side : Bool) :
     dartHeight twoEdgeHeight (twoEdgeDart side) half = 1 := by
   cases side <;> norm_num [dartHeight, twoEdgeDart, twoEdgeHeight, h02, coe_half]
 
@@ -410,7 +412,8 @@ private theorem twoEdge_midpoint_mem (side i : Bool) :
   rw [twoEdge_midpoint_height]
   cases i <;> norm_num [overlappingIntervals, mem_ioo]
 
-private def twoEdgeOverlapPoint (side i : Bool) :
+/-- The midpoint of the selected dart of a graph copy, as a point of an interval preimage. -/
+def twoEdgeOverlapPoint (side i : Bool) :
     PullbackSpace (plHeight twoEdgeGraph twoEdgeHeight)
       (fun i => (overlappingIntervals i : Set ℝ)) i :=
   ⟨edgePoint twoEdgeGraph (twoEdgeDart side) half, twoEdge_midpoint_mem side i⟩

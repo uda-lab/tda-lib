@@ -214,3 +214,34 @@ import TDA
 #print axioms TDA.Mapper.MultiNerveExamples.triangle_intersectionsPathSubsingleton
 #print axioms TDA.Mapper.MultiNerveExamples.triangle_multiNerveMapper_cell
 #print axioms TDA.Mapper.MultiNerveExamples.emptyDomain_multiNerveMapper_isEmpty
+
+
+-- Refinement maps of MultiNerve Mappers (Issue #289).
+#print axioms TDA.Mapper.componentCover_interMember_subset_preimage
+#print axioms TDA.Mapper.interMemberPreimageMap
+#print axioms TDA.Mapper.interMemberPreimageMap_injective
+#print axioms TDA.Mapper.multiNerveMapperMap
+#print axioms TDA.Mapper.support_multiNerveMapperMap
+#print axioms TDA.Mapper.multiNerveMapperMap_monotone
+#print axioms TDA.Mapper.multiNerveMapperMap_id
+#print axioms TDA.Mapper.multiNerveMapperMap_comp
+#print axioms TDA.Mapper.multiNerveMapper_projection_multiNerveMapperMap
+#print axioms TDA.Mapper.multiNerveMapperMap_vertexCell
+#print axioms TDA.Mapper.CoherentCoverTower.multiNerveMapperMap
+#print axioms TDA.Mapper.CoherentCoverTower.multiNerveMapperMap_refl
+#print axioms TDA.Mapper.CoherentCoverTower.multiNerveMapperMap_trans
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdge_edge_eq
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdge_midpoint_height
+#print axioms TDA.Mapper.GraphPL.Examples.twoEdgeOverlapPoint
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.threeStagePair
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.threeStagePairCell
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.three_stage_multiNerve_tower
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.doubleWideIntervals
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.overlapToDoubleWide
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.cycle_doubleWide_mapperMap_injective
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.cycle_doubleWide_edgeCells_merge
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.cycle_doubleWide_multiNerve_merge
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.twoEdge_not_preimageIntersectionsPathConnected
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.twoEdge_intersectionsPathSubsingleton
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.twoEdgeMultiNerveOrderIso
+#print axioms TDA.Mapper.MultiNerveRefinementExamples.twoEdge_multiNerveMapper_separation
