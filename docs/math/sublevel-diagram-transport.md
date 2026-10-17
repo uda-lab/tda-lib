@@ -31,6 +31,38 @@ the coefficient type is a field, and the actual face type is finite. Neither
 law assumes an inhabited grade type, a nonempty complex, positive critical
 cardinality, or global injectivity or monotonicity of `φ`.
 
+`dgm_points_map_of_monotoneOn` removes the strictness assumption and allows `φ` to identify
+attained values. If `φ` is monotone on `Set.range f.value` and
+`g.value s = φ (f.value s)` for every face, then
+
+```text
+(dgm k g n).points =
+  ((dgm k f n).points.map (fun p => (φ p.1, WithTop.map φ p.2))).filter
+    (fun p => (p.1 : WithTop β) ≠ p.2).
+```
+
+The filter deletes exactly the finite points that become diagonal under a non-injective
+reparametrisation; essential deaths remain at `⊤`. The strict law
+`dgm_points_map_of_strictMonoOn` is the companion for strict monotonicity on the attained
+values, where no off-diagonal point collapses and the map is unfiltered. Both laws are
+library extensions proved from the face-template definitions.
+
+## Homology ranks and vanishing
+
+`finrank_sublevelHomology_eq_countP` identifies the homology dimension at a threshold with the
+number of diagram points alive there:
+
+```text
+Module.finrank k (simplicialHomology (f.sublevel t) k n) =
+  (dgm k f n).points.countP (fun p => p.1 ≤ t ∧ (t : WithTop α) < p.2).
+```
+
+Consequently, `not_isZero_sublevelHomology_of_mem_dgm` says that the sublevel homology object
+at a diagram point's birth is not `IsZero`. The vanishing criterion
+`dgm_points_eq_zero_of_isZero` says that if
+`IsZero (simplicialHomology (f.sublevel t) k n)` holds for every threshold `t`, then the
+diagram point multiset is zero. These are library extensions and do not cite an external source.
+
 ## Proof from the existing library definitions
 
 Ordering equivalence supplies an order isomorphism between the attained value

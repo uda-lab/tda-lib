@@ -47,6 +47,31 @@ degree n ≥ 1, over every ring.
 
 Over a field, every fiber is finite-dimensional, since the sublevel has finitely many faces.
 
+## The log identity in degrees n ≥ 1
+
+For a real filter `f`, `positiveGrid f` is the exponential image of `logGrid f`. Its range is
+exactly the positive critical values of `f`, and it refines the full critical-value grid. Under
+`1 ≤ n` and `PositiveOnEdges f`, `sublevelModule_isConstructible_positiveGrid` proves that the
+radius-level sublevel module is constructible on this positive grid.
+
+The order embedding used to compare the two diagrams is
+`expEmb : ℝ ↪o ℝ`. The reindexing identity for module diagrams,
+`moduleDiagram_reindex_map`, and refinement to the full critical-value grid give
+
+```text
+(logDgm k f n).map expEmb = dgm k f n.
+```
+
+This is `logDgm_map_exp`; it holds for a field `k`, `1 ≤ n`, and
+`PositiveOnEdges f`. Thus the radius-level births and finite deaths are obtained by
+exponentiating the log-scale coordinates. Equivalently, `logDgm_points_eq_map_log` applies
+`Real.log` to both coordinates of every radius-level point and leaves an essential death at
+`⊤`. Under the same hypotheses, `dgm_birth_pos` and `dgm_death_pos` show that every birth and
+death is positive, with `⊤` included among the positive deaths.
+
+These comparison, constructibility, and positivity results are library extensions; no source
+theorem is cited for them.
+
 ## Bottleneck bounds
 
 For two filters f and g on the same finite complex, positive off vertices, the isometry gives,
@@ -92,21 +117,60 @@ and the log-scale module in degree 0 is not constructible on any finite grid. Fo
   Čech filter is not positive off vertices. No label metric is compatible with this
   configuration.
 
-The triangle (0,0), (2,0), (1,2) has Rips values 0 on vertices, 2 on {0,1}, √5 on the two
-other edges and √5 on the 2-face. Its Rips 1-skeleton closes at √5 together with the 2-face,
-so its Rips degree-1 diagram is empty. Its Čech values are 1 on {0,1}, √5/2 on the other
-edges and 5/4, the circumradius, on the 2-face. The hollow triangle lives on [√5/2, 5/4), so
-the Čech degree-1 diagram is {(√5/2, 5/4)} and its log-scale diagram is
-{(½ log (5/4), log (5/4))}. The log-scale bottleneck distance between the two is ¼ log (5/4),
-well below log 2. These values are recorded for orientation and are not proved; the fixtures
-establish only the bounds and memberships above.
+The triangle paragraph below is still only an unproved orientation calculation; its explicit
+diagrams and bottleneck value are not library fixtures. The triangle (0,0), (2,0), (1,2) has
+Rips values 0 on vertices, 2 on {0,1}, √5 on the two other edges and √5 on the 2-face. Its
+Rips 1-skeleton closes at √5 together with the 2-face, so its Rips degree-1 diagram is empty.
+Its Čech values are 1 on {0,1}, √5/2 on the other edges and 5/4, the circumradius, on the
+2-face. The hollow triangle lives on [√5/2, 5/4), so the Čech degree-1 diagram is
+{(√5/2, 5/4)} and its log-scale diagram is {(½ log (5/4), log (5/4))}. The log-scale
+bottleneck distance between the two is ¼ log (5/4), well below log 2. These values are
+recorded for orientation and are not proved; the fixtures establish only the bounds and
+memberships above.
+
+## Explicit two-point diagrams
+
+The certified two-point radius-level diagrams over `ZMod 2` are
+
+```text
+(dgm (ZMod 2) (Rips.filter TwoPoints.metric) 0).points = {(0, ⊤), (0, 2)},
+(dgm (ZMod 2) (Cech.filter TwoPoints.pts) 0).points = {(0, ⊤), (0, 1)}.
+```
+
+These are `twoPoints_rips_dgm_zero` and `twoPoints_cech_dgm_zero`. The positive-degree
+radius-level emptiness is stated by `twoPoints_rips_dgm_pos` and `twoPoints_cech_dgm_pos`;
+the corresponding certified log-scale statements are `twoPoints_rips_logDgm_pos` and
+`twoPoints_cech_logDgm_pos`.
+
+In every degree `n ≥ 1`, the two radius-level point multisets are empty over every field. The
+log-scale point multisets are also empty in every such degree for the certified `ZMod 2`
+Rips and Čech fixtures. For these `ZMod 2` diagrams, `twoPoints_bottleneck_zero` gives the
+exact radius-level bottleneck `1` in degree 0, while `twoPoints_bottleneck_pos` gives `0` in
+every degree `n ≥ 1`. The exact log-scale value is `0` in every degree `n ≥ 1`, by
+`twoPoints_logBottleneck_pos`. No degree-0 log-scale bottleneck is stated.
+
+The fixtures also record the hypotheses needed by the comparison. On the edge fixture,
+`constEdge_dgm_zero` shows that the monotone law must filter points that become diagonal:
+the finite bar `(5, 9)` maps to `(0, 0)`, leaving `{(0, ⊤)}`. The translated filled triangle
+has `shiftedReal_dgm_one` equal to `{(-1, 0)}`, `shiftedReal_not_positive`, and
+`shiftedReal_birth_neg`; positivity is therefore needed for the positive-coordinate conclusion.
+Finally,
+`twoPoints_rips_dgm_zero_birth` exhibits a birth at `0` even though the Rips filter is positive
+on edges; the hypothesis `1 ≤ n` therefore cannot be dropped.
+
+The two-point diagrams, bottleneck values, and necessity fixtures in this section are library
+extensions; no source theorem is cited for them.
 
 ## Scope
 
 Degree 0 at log scale is not treated beyond the obstruction; it needs extended-real indexing
-or a lower truncation. No relation between `logDgm k f n` and the radius-level diagram
-`dgm k f n` mapped by log is stated: log is not an order embedding of ℝ, so such a relation
-needs a partial map of diagrams with positive coordinates. Explicit Čech and Rips diagrams,
+or a lower truncation. No degree-0 log-scale identity, diagram or bottleneck value is stated.
+For `1 ≤ n` and `PositiveOnEdges f`, the identity
+`(logDgm k f n).map expEmb = dgm k f n` gives the radius-level diagram by applying the
+order embedding `exp` to the log-scale diagram. The embedding is used in this direction
+because `Real.exp` is strictly increasing on all of `ℝ`; `Real.log` is not an order embedding
+of `ℝ`, so the reverse comparison is expressed by the pointwise log form rather than by a
+diagram map along `log`. Explicit Čech and Rips diagrams beyond the two-point fixtures,
 Jung's constant, Hausdorff and Gromov–Hausdorff statements and positive scaling of real
 modules are outside this note. The log-scale module, constructibility, the module diagram and
 the isometry are used unchanged.
@@ -117,6 +181,6 @@ The isometry used is the merged finite-constructible form of the theorem of
 [Bauer–Lesnick](references.md#BL15-v4). The Rips and ambient Čech definitions match
 [Chazal–de Silva–Oudot §§4.2.1, 4.2.3](references.md#CDSO13-v3), which states no Rips/Čech
 inclusion. The log-scale comparison of Čech and Rips diagrams, positivity of these filters off
-vertices and the vanishing of higher homology of a complex of vertices are classical folklore
-with no registered source. Every result here is a library extension proved from merged
-definitions; no theorem of either paper is exported.
+vertices, the vanishing of higher homology of a complex of vertices, the exp-map identity and
+the two-point fixtures are library extensions proved from merged definitions; no source theorem
+is cited for these results and no theorem of either paper is exported.

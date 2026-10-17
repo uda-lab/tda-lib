@@ -119,7 +119,7 @@ theorem not_isZero_sublevelHomology_of_mem_dgm (f : FilterFunction K Î±) {n : â„
   have hfin : 0 < Module.finrank k (simplicialHomology (f.sublevel p.1) k n) := by
     rw [finrank_sublevelHomology_eq_countP k f n p.1]
     exact hcount
-  letI : Subsingleton (simplicialHomology (f.sublevel p.1) k n) :=
+  haveI : Subsingleton (simplicialHomology (f.sublevel p.1) k n) :=
     ModuleCat.subsingleton_of_isZero hz
   have hzero : Module.finrank k (simplicialHomology (f.sublevel p.1) k n) = 0 :=
     Module.finrank_zero_of_subsingleton (R := k)
