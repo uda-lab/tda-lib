@@ -43,16 +43,16 @@ variable {V : Type u} [Finite V] (G : SimpleGraph V) (h : V → ℝ) {n : ℕ} {
 /-- The graph realization is compact when its vertex type is finite. -/
 theorem compactSpace_realization : CompactSpace (Realization G) := by
   classical
-  letI : TopologicalSpace V := ⊥
-  letI : Fintype V := Fintype.ofFinite V
-  letI : DecidableRel G.Adj := Classical.decRel G.Adj
-  letI : Fintype G.Dart := SimpleGraph.Dart.fintype
-  letI : CompactSpace V := @Finite.compactSpace V ⊥ inferInstance
-  letI : CompactSpace (Σ _ : G.Dart, unitInterval) := by
+  let _ : TopologicalSpace V := ⊥
+  let _ : Fintype V := Fintype.ofFinite V
+  let _ : DecidableRel G.Adj := Classical.decRel G.Adj
+  let _ : Fintype G.Dart := SimpleGraph.Dart.fintype
+  let _ : CompactSpace V := @Finite.compactSpace V ⊥ inferInstance
+  let _ : CompactSpace (Σ _ : G.Dart, unitInterval) := by
     constructor
     rw [Sigma.univ]
     exact isCompact_iUnion fun d => isCompact_range continuous_sigmaMk
-  letI : CompactSpace (Cells G) := by
+  let _ : CompactSpace (Cells G) := by
     constructor
     change IsCompact (Set.univ : Set (V ⊕ Σ _ : G.Dart, unitInterval))
     rw [← range_inl_union_range_inr]
@@ -64,16 +64,17 @@ theorem exists_coversVertexHeights : ∃ (n : ℕ) (S : CriticalValues n), Cover
   classical
   rcases isEmpty_or_nonempty V with hV | hV
   · refine ⟨0, ⟨(fun _ : Fin 1 => (0 : ℝ)), ?_⟩, ?_⟩
-    · letI : Subsingleton (Fin (0 + 1)) := ⟨fun i j =>
+    · let _ : Subsingleton (Fin (0 + 1)) := ⟨fun i j =>
         (Fin.eq_zero i).trans (Fin.eq_zero j).symm⟩
       exact Subsingleton.strictMono _
     · intro v
       exact isEmptyElim v
-  · letI : Nonempty V := hV
-    letI : Fintype V := Fintype.ofFinite V
+  · let _ : Nonempty V := hV
+    let _ : Fintype V := Fintype.ofFinite V
     refine ⟨_, vertexHeightLevels h, ?_⟩
     exact coversVertexHeights_vertexHeightLevels h
 
+omit [Finite V] in
 private theorem reebQuot_dartHeight_mem_Icc (d : G.Dart) (t : unitInterval) :
     dartHeight h d t ∈ Icc (min (h d.fst) (h d.snd)) (max (h d.fst) (h d.snd)) := by
   rcases le_total (h d.fst) (h d.snd) with hab | hba
@@ -90,6 +91,7 @@ private theorem reebQuot_dartHeight_mem_Icc (d : G.Dart) (t : unitInterval) :
     · nlinarith [mul_nonneg (sub_nonneg.2 t.2.2) (sub_nonneg.2 hba)]
     · nlinarith [mul_nonneg t.2.1 (sub_nonneg.2 hba)]
 
+omit [Finite V] in
 private theorem reebQuot_dartHeight_injective {d : G.Dart}
     (hne : h d.fst ≠ h d.snd) : Function.Injective (dartHeight h d) := by
   intro s t hst
@@ -101,6 +103,7 @@ private theorem reebQuot_dartHeight_injective {d : G.Dart}
   · exact sub_eq_zero.mp hst'
   · exact False.elim (hne (sub_eq_zero.mp hab).symm)
 
+omit [Finite V] in
 private theorem reebQuot_plHeight_mem_Icc (hS : CoversVertexHeights S h)
     (x : Realization G) :
     plHeight G h x ∈ Icc (S.value 0) (S.value (Fin.last n)) := by
@@ -110,7 +113,8 @@ private theorem reebQuot_plHeight_mem_Icc (hS : CoversVertexHeights S h)
   rw [← hi]
   exact ⟨S.strictMono.monotone (Fin.zero_le i), S.strictMono.monotone (Fin.le_last i)⟩
 
-private theorem reebQuot_exists_mem_K (hS : CoversVertexHeights S h) {x : ℝ}
+omit [Finite V] in
+private theorem reebQuot_exists_mem_K {x : ℝ}
     (hx : x ∈ Icc (S.value 0) (S.value (Fin.last n)))
     (hne : ∀ i, S.value i ≠ x) : ∃ e : Fin n, x ∈ (S.K e : Set ℝ) := by
   obtain ⟨p, hp, hp'⟩ := S.exists_piece x
@@ -120,6 +124,7 @@ private theorem reebQuot_exists_mem_K (hS : CoversVertexHeights S h) {x : ℝ}
   | lowerTail => exact (not_lt_of_ge hx.1 hp).elim
   | upperTail => exact (not_lt_of_ge hx.2 hp).elim
 
+omit [Finite V] in
 private theorem reebQuot_edgeSpans_of_mem_K (hS : CoversVertexHeights S h)
     {e : Fin n} (d : G.Dart) {t : unitInterval}
     (ht : dartHeight h d t ∈ S.K e) :
@@ -128,6 +133,7 @@ private theorem reebQuot_edgeSpans_of_mem_K (hS : CoversVertexHeights S h)
     (fun v => hS.notMem_K e v))
     ⟨dartEdge d, edgeActive_dartEdge_of_mem ht⟩).2
 
+omit [Finite V] in
 private theorem reebQuot_edgeCrosses_of_level {i : Fin (n + 1)} (d : G.Dart)
     {t : unitInterval} (ht : dartHeight h d t = S.value i)
     (hne : ∀ v ∈ (dartEdge d : Sym2 V), h v ≠ S.value i) :
@@ -150,7 +156,7 @@ private theorem reebQuot_edgeCrosses_of_level {i : Fin (n + 1)} (d : G.Dart)
 private theorem reebQuot_dart_mem_gap (hS : CoversVertexHeights S h) (d : G.Dart)
     (t : unitInterval) (hi : ¬ ∃ i, dartHeight h d t = S.value i) :
     ∃ e : Fin n, dartHeight h d t ∈ (S.K e : Set ℝ) := by
-  apply reebQuot_exists_mem_K h hS
+  apply reebQuot_exists_mem_K
   · simpa [plHeight_edgePoint] using
       reebQuot_plHeight_mem_Icc G h hS (edgePoint G d t)
   · intro i hci
@@ -562,7 +568,307 @@ theorem graphPLReebMap_edgePoint_of_mem_K (hS : CoversVertexHeights S h) {e : Fi
   change reebQuot_dartValue G h hS d t = _
   exact reebQuot_dartValue_of_mem_K G h hS d t ht
 
+private theorem reebQuot_closedLevelComponentsEquiv_mk_edgePoint
+    {c : ℝ} (d : G.Dart) (t : unitInterval)
+    (hp : plHeight G h (edgePoint G d t) ∈ ({c} : Set ℝ))
+    (hx : (∀ v ∈ (dartEdge d : Sym2 V), h v ≠ c) →
+      EdgeCrosses G h c (dartEdge d)) :
+    closedLevelComponentsEquiv G h c
+        (ZerothHomotopy.mk ⟨edgePoint G d t, hp⟩) = levelEnd G h c (dartEdge d) hx := by
+  have ht : dartHeight h d t = c := by
+    simpa [plHeight_edgePoint] using hp
+  obtain ⟨η, _hη, hI⟩ := exists_isLevelWindow h c
+  have htI : dartHeight h d t ∈ (ioo (c - η) (c + η) : Set ℝ) := by
+    rw [ht]
+    exact hI.1
+  rw [closedLevelComponentsEquiv_eq G h hI]
+  exact levelWindowEquiv_mk_edgePoint G h hI d t htI hx
+
+/-- The map sends every point of a closed level to its finite-data vertex point. -/
+theorem graphPLReebMap_of_level (hS : CoversVertexHeights S h) (i : Fin (n + 1))
+    (p : ClosedLevel G h (S.value i)) :
+    graphPLReebMap G h hS p.1 =
+      (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofVertex S i
+        (closedLevelComponentsEquiv G h (S.value i) (ZerothHomotopy.mk p)) := by
+  rcases p with ⟨p, hp⟩
+  induction p using ind G with
+  | vertex v =>
+      have hv : h v = S.value i := by
+        simpa [plHeight_vertex] using hp
+      change graphPLReebMap G h hS (vertex G v) = _
+      rw [graphPLReebMap_vertex G h hS v hv,
+        closedLevelComponentsEquiv_mk_vertex G h v hv]
+  | edgePoint d t =>
+      have ht : dartHeight h d t = S.value i := by
+        simpa [plHeight_edgePoint] using hp
+      change reebQuot_dartValue G h hS d t = _
+      let hx : (∀ v ∈ (dartEdge d : Sym2 V), h v ≠ S.value i) →
+          EdgeCrosses G h (S.value i) (dartEdge d) := fun hne =>
+        reebQuot_edgeCrosses_of_level G h (i := i) d ht hne
+      rw [reebQuot_dartValue_of_level G h hS (i := i) d t ht,
+        reebQuot_closedLevelComponentsEquiv_mk_edgePoint G h d t hp hx]
+
+private theorem reebQuot_reebRel_of_level_map_eq (hS : CoversVertexHeights S h)
+    (i : Fin (n + 1)) {x x' : Realization G}
+    (hx : plHeight G h x = S.value i) (hx' : plHeight G h x' = S.value i)
+    (hmap : graphPLReebMap G h hS x = graphPLReebMap G h hS x') :
+    ReebRel (plHeight G h) x x' := by
+  let px : ClosedLevel G h (S.value i) := ⟨x, by simpa [hx]⟩
+  let px' : ClosedLevel G h (S.value i) := ⟨x', by simpa [hx']⟩
+  have hlabels :
+      closedLevelComponentsEquiv G h (S.value i) (ZerothHomotopy.mk px) =
+        closedLevelComponentsEquiv G h (S.value i) (ZerothHomotopy.mk px') := by
+    apply (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofVertex_injective S i
+    rw [← graphPLReebMap_of_level G h hS i px,
+      ← graphPLReebMap_of_level G h hS i px']
+    exact hmap
+  have hcomp : ZerothHomotopy.mk px = ZerothHomotopy.mk px' :=
+    (closedLevelComponentsEquiv G h (S.value i)).injective hlabels
+  obtain ⟨γ⟩ := Quotient.exact hcomp
+  refine ⟨γ.map continuous_subtype_val, ?_⟩
+  intro t
+  have hγ : plHeight G h (γ t).1 = S.value i := Set.mem_singleton_iff.mp (γ t).2
+  exact hγ.trans hx.symm
+
+private theorem reebQuot_edgePoint_eq_of_map_eq (hS : CoversVertexHeights S h)
+    {d d' : G.Dart} {e e' : Fin n} (t t' : unitInterval)
+    (ht : dartHeight h d t ∈ S.K e) (ht' : dartHeight h d' t' ∈ S.K e')
+    (hmap : graphPLReebMap G h hS (edgePoint G d t) =
+      graphPLReebMap G h hS (edgePoint G d' t')) :
+    edgePoint G d t = edgePoint G d' t' := by
+  have hheight : dartHeight h d t = dartHeight h d' t' := by
+    calc
+      dartHeight h d t = plHeight G h (edgePoint G d t) := by
+        rw [plHeight_edgePoint]
+      _ = (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).height S
+          (graphPLReebMap G h hS (edgePoint G d t)) :=
+        (height_graphPLReebMap G h hS (edgePoint G d t)).symm
+      _ = (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).height S
+          (graphPLReebMap G h hS (edgePoint G d' t')) := congrArg _ hmap
+      _ = plHeight G h (edgePoint G d' t') :=
+        height_graphPLReebMap G h hS (edgePoint G d' t')
+      _ = dartHeight h d' t' := by
+        rw [plHeight_edgePoint]
+  have hte' : dartHeight h d t ∈ (S.K e' : Set ℝ) := by
+    rw [hheight]
+    exact ht'
+  have heq : e = e' := S.eq_of_K_inf_K_nonempty ⟨dartHeight h d t, ht, hte'⟩
+  subst e'
+  have hsp : EdgeSpans G h (S.value e.castSucc) (S.value e.succ) (dartEdge d) :=
+    reebQuot_edgeSpans_of_mem_K G h hS d ht
+  have hsp' : EdgeSpans G h (S.value e.castSucc) (S.value e.succ) (dartEdge d') :=
+    reebQuot_edgeSpans_of_mem_K G h hS d' ht'
+  have hne : h d.fst ≠ h d.snd := by
+    intro heq
+    have hconst : dartHeight h d t = h d.fst := dartHeight_of_eq h heq t
+    exact (hS.notMem_K e d.fst) (hconst ▸ ht)
+  have hne' : h d'.fst ≠ h d'.snd := by
+    intro heq
+    have hconst : dartHeight h d' t' = h d'.fst := dartHeight_of_eq h heq t'
+    exact (hS.notMem_K e d'.fst) (hconst ▸ ht')
+  rw [graphPLReebMap_edgePoint_of_mem_K G h hS d t ht hsp,
+    graphPLReebMap_edgePoint_of_mem_K G h hS d' t' ht' hsp'] at hmap
+  have hp := (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofStrip_injective S e hmap
+  have hde : dartEdge d = dartEdge d' :=
+    congrArg Subtype.val (congrArg Prod.fst hp)
+  have hdt : dartHeight h d t = dartHeight h d' t' :=
+    congrArg Subtype.val (congrArg Prod.snd hp)
+  rcases (dartEdge_eq_iff).1 hde with hdd | hdd
+  · subst d'
+    have htt : t = t' := reebQuot_dartHeight_injective G h hne hdt
+    subst t'
+    rfl
+  · have hdt' : dartHeight h d' (unitInterval.symm t) = dartHeight h d' t' := by
+      have hsymm := dartHeight_symm h d' (unitInterval.symm t)
+      rw [unitInterval.symm_symm] at hsymm
+      exact hsymm.symm.trans (by simpa [hdd] using hdt)
+    have htt : unitInterval.symm t = t' :=
+      reebQuot_dartHeight_injective G h hne' hdt'
+    calc
+      edgePoint G d t = edgePoint G d'.symm t := by rw [hdd]
+      _ = edgePoint G d' (unitInterval.symm t) := by
+        have hsymm := edgePoint_symm G d' (unitInterval.symm t)
+        rw [unitInterval.symm_symm] at hsymm
+        exact hsymm
+      _ = edgePoint G d' t' := congrArg (edgePoint G d') htt
+
+private theorem reebQuot_graphPLReebMap_eq_iff (hS : CoversVertexHeights S h)
+    {x x' : Realization G} :
+    graphPLReebMap G h hS x = graphPLReebMap G h hS x' ↔
+      ReebRel (plHeight G h) x x' := by
+  constructor
+  · intro hmap
+    have hheight : plHeight G h x = plHeight G h x' := by
+      calc
+        plHeight G h x =
+            (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).height S
+              (graphPLReebMap G h hS x) :=
+          (height_graphPLReebMap G h hS x).symm
+        _ = (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).height S
+              (graphPLReebMap G h hS x') := congrArg _ hmap
+        _ = plHeight G h x' := height_graphPLReebMap G h hS x'
+    by_cases hlevel : ∃ i, plHeight G h x = S.value i
+    · obtain ⟨i, hi⟩ := hlevel
+      exact reebQuot_reebRel_of_level_map_eq G h hS i hi (hheight.symm.trans hi) hmap
+    · have hlevel' : ¬ ∃ i, plHeight G h x' = S.value i := by
+        intro hi'
+        apply hlevel
+        obtain ⟨i, hi'⟩ := hi'
+        exact ⟨i, hheight.trans hi'⟩
+      have hx : ∃ d t, x = edgePoint G d t := by
+        induction x using ind G with
+        | vertex v =>
+            obtain ⟨i, hi⟩ := hS v
+            exact (hlevel ⟨i, by simpa [plHeight_vertex] using hi.symm⟩).elim
+        | edgePoint d t => exact ⟨d, t, rfl⟩
+      have hx' : ∃ d t, x' = edgePoint G d t := by
+        induction x' using ind G with
+        | vertex v =>
+            obtain ⟨i, hi⟩ := hS v
+            exact (hlevel' ⟨i, by simpa [plHeight_vertex] using hi.symm⟩).elim
+        | edgePoint d t => exact ⟨d, t, rfl⟩
+      obtain ⟨d, t, rfl⟩ := hx
+      obtain ⟨d', t', rfl⟩ := hx'
+      have hgap : ∃ e, dartHeight h d t ∈ (S.K e : Set ℝ) := by
+        refine reebQuot_dart_mem_gap G h hS d t ?_
+        rintro ⟨i, hi⟩
+        apply hlevel
+        exact ⟨i, by simpa [plHeight_edgePoint] using hi⟩
+      have hgap' : ∃ e, dartHeight h d' t' ∈ (S.K e : Set ℝ) := by
+        refine reebQuot_dart_mem_gap G h hS d' t' ?_
+        rintro ⟨i, hi⟩
+        apply hlevel'
+        exact ⟨i, by simpa [plHeight_edgePoint] using hi⟩
+      obtain ⟨e, ht⟩ := hgap
+      obtain ⟨e', ht'⟩ := hgap'
+      have hpoint := reebQuot_edgePoint_eq_of_map_eq G h hS t t' ht ht' hmap
+      rw [hpoint]
+      exact ReebRel.refl _ _
+  · intro hreeb
+    exact RGraph.apply_eq_of_reebRel S (graphPLReebMap G h hS)
+      (height_graphPLReebMap G h hS) hreeb
+
+private theorem reebQuot_strip_crossing (e : Fin n)
+    (p : (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).E e ×
+      (S.K e : Set ℝ)) :
+    ∃ d : G.Dart, ∃ t : unitInterval,
+      dartEdge d = p.1.1 ∧ dartHeight h d t = (p.2 : ℝ) := by
+  rcases p.1.2 with ⟨d, hd, hmin, hmax⟩
+  have hcross : min (h d.fst) (h d.snd) < (p.2 : ℝ) ∧
+      (p.2 : ℝ) < max (h d.fst) (h d.snd) := by
+    exact ⟨hmin.trans_lt p.2.property.1, p.2.property.2.trans_le hmax⟩
+  rcases le_total (h d.fst) (h d.snd) with hab | hba
+  · have h₁ : h d.fst < (p.2 : ℝ) := by
+      simpa [min_eq_left hab] using hcross.1
+    have h₂ : (p.2 : ℝ) < h d.snd := by
+      simpa [max_eq_right hab] using hcross.2
+    exact ⟨d, crossingParam G h h₁ h₂, hd,
+      dartHeight_crossingParam G h h₁ h₂⟩
+  · have h₁ : h d.snd < (p.2 : ℝ) := by
+      simpa [min_eq_right hba] using hcross.1
+    have h₂ : (p.2 : ℝ) < h d.fst := by
+      simpa [max_eq_left hba] using hcross.2
+    refine ⟨d.symm, crossingParam G h (d := d.symm) (by simpa using h₁)
+      (by simpa using h₂), ?_, ?_⟩
+    · rw [dartEdge_symm]
+      exact hd
+    · exact dartHeight_crossingParam G h (d := d.symm) (by simpa using h₁)
+        (by simpa using h₂)
+
+/-- The descended continuous map from the Reeb quotient to the finite realization. -/
+noncomputable def graphPLReebQuotientMap (hS : CoversVertexHeights S h) :
+    C(ReebQuotient (plHeight G h),
+      (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).Realization S) :=
+  RGraph.quotientLift S (graphPLReebMap G h hS) (height_graphPLReebMap G h hS)
+
+/-- The quotient map agrees with `graphPLReebMap` on representatives. -/
+@[simp] theorem graphPLReebQuotientMap_mk (hS : CoversVertexHeights S h)
+    (x : Realization G) :
+    graphPLReebQuotientMap G h hS (ReebQuotient.mk _ x) = graphPLReebMap G h hS x := rfl
+
+/-- The descended graph-PL map is bijective. -/
+theorem graphPLReebQuotientMap_bijective (hS : CoversVertexHeights S h) :
+    Function.Bijective (graphPLReebQuotientMap G h hS) := by
+  constructor
+  · intro q q' hq
+    induction q using ReebQuotient.ind with
+    | h x =>
+        induction q' using ReebQuotient.ind with
+        | h x' =>
+            exact (ReebQuotient.mk_eq_mk_iff _).2
+              ((reebQuot_graphPLReebMap_eq_iff G h hS).1 hq)
+  · intro y
+    rcases (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).exists_rep S y with
+      ⟨i, z, rfl⟩ | ⟨e, p, rfl⟩
+    · obtain ⟨x, hx⟩ := (closedLevelComponentsEquiv G h (S.value i)).surjective z
+      obtain ⟨p, hp⟩ := ZerothHomotopy.mk_surjective x
+      exact ⟨ReebQuotient.mk _ p.1, by
+        rw [graphPLReebQuotientMap_mk, graphPLReebMap_of_level G h hS i p]
+        simpa [hp, hx]⟩
+    · obtain ⟨d, t, hd, htval⟩ := reebQuot_strip_crossing G h e p
+      have ht : dartHeight h d t ∈ (S.K e : Set ℝ) := by
+        rw [htval]
+        exact p.2.2
+      have hsp := reebQuot_edgeSpans_of_mem_K G h hS d ht
+      exact ⟨ReebQuotient.mk _ (edgePoint G d t), by
+        rw [graphPLReebQuotientMap_mk,
+          graphPLReebMap_edgePoint_of_mem_K G h hS d t ht hsp]
+        have hp : (⟨dartEdge d, hsp⟩, ⟨dartHeight h d t, ht⟩) = p := by
+          apply Prod.ext
+          · exact Subtype.ext hd
+          · exact Subtype.ext htval
+        exact congrArg (fun z =>
+          (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofStrip S e z) hp⟩
+
+/-- The Reeb quotient is homeomorphic to the finite graph-PL realization. -/
+noncomputable def graphPLReebQuotientHomeomorph (hS : CoversVertexHeights S h) :
+    ReebQuotient (plHeight G h) ≃ₜ
+      (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).Realization S :=
+  letI := compactSpace_realization G
+  letI := (ReebQuotient.mk_surjective (plHeight G h)).compactSpace
+    (ReebQuotient.continuous_mk (plHeight G h))
+  letI := CylinderPresentation.finiteData_t2Space S (graphPLReebData G h S)
+  (graphPLReebQuotientMap G h hS).continuous.homeoOfEquivCompactToT2
+    (f := Equiv.ofBijective _ (graphPLReebQuotientMap_bijective G h hS))
+
+/-- The homeomorphism agrees with `graphPLReebMap` on quotient representatives. -/
+@[simp] theorem graphPLReebQuotientHomeomorph_mk (hS : CoversVertexHeights S h)
+    (x : Realization G) :
+    graphPLReebQuotientHomeomorph G h hS (ReebQuotient.mk _ x) =
+      graphPLReebMap G h hS x := rfl
+
+/-- The quotient homeomorphism preserves the real-valued height. -/
+theorem height_graphPLReebQuotientHomeomorph (hS : CoversVertexHeights S h)
+    (q : ReebQuotient (plHeight G h)) :
+    (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).height S
+        (graphPLReebQuotientHomeomorph G h hS q) = ReebQuotient.height _ q := by
+  induction q using ReebQuotient.ind with
+  | h x =>
+      exact height_graphPLReebMap G h hS x
+
 end general
+
+section slice
+
+variable {V : Type} [Finite V] (G : SimpleGraph V) (h : V → ℝ) {n : ℕ} {S : CriticalValues n}
+
+/-- The graph realization over `ℝ`, with the graph-PL height as its structure map. -/
+abbrev graphPLOver : Over (TopCat.of ℝ) := Over.mk (TopCat.ofHom (plHeight G h))
+
+/-- The Reeb quotient of a graph-PL realization is isomorphic over `ℝ` to its finite realization. -/
+noncomputable def graphPLReebQuotientIso (hS : CoversVertexHeights S h) :
+    (ReebQuotient.quotientFunctor ℝ).obj (graphPLOver G h) ≅
+      RGraph.toOver S (graphPLReebData G h S) :=
+  Over.isoMk (TopCat.isoOfHomeo (graphPLReebQuotientHomeomorph G h hS))
+    (by ext q; exact height_graphPLReebQuotientHomeomorph G h hS q)
+
+/-- Transport the graph-PL Reeb quotient isomorphism to isomorphic finite Reeb data. -/
+noncomputable def graphPLReebQuotientIsoOfIso (hS : CoversVertexHeights S h)
+    {D : FiniteReebData.{0} n} (e : D ≅ graphPLReebData G h S) :
+    (ReebQuotient.quotientFunctor ℝ).obj (graphPLOver G h) ≅ RGraph.toOver S D :=
+  graphPLReebQuotientIso G h hS ≪≫ (RGraph.realizationFunctor S).mapIso e.symm
+
+end slice
 
 end
 
