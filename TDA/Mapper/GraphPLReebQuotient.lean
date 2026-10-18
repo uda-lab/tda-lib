@@ -153,6 +153,7 @@ private theorem reebQuot_edgeCrosses_of_level {i : Fin (n + 1)} (d : G.Dart)
     · rw [hm] at hrange ⊢
       exact lt_of_le_of_ne hrange.2 (Ne.symm (hne d.snd (snd_mem_dartEdge d)))
 
+omit [Finite V] in
 private theorem reebQuot_dart_mem_gap (hS : CoversVertexHeights S h) (d : G.Dart)
     (t : unitInterval) (hi : ¬ ∃ i, dartHeight h d t = S.value i) :
     ∃ e : Fin n, dartHeight h d t ∈ (S.K e : Set ℝ) := by
@@ -294,6 +295,7 @@ private theorem reebQuot_dartValue_zero (hS : CoversVertexHeights S h) (d : G.Da
     (Classical.choose_spec (hS d.fst)).symm]
   rfl
 
+omit [Finite V] in
 private theorem reebQuot_segments_cover (hS : CoversVertexHeights S h) (hn : 0 < n)
     (d : G.Dart) (t : unitInterval) :
     ∃ e : Fin n, dartHeight h d t ∈ (CylinderPresentation.Seg S e : Set ℝ) := by
@@ -613,8 +615,8 @@ private theorem reebQuot_reebRel_of_level_map_eq (hS : CoversVertexHeights S h)
     (hx : plHeight G h x = S.value i) (hx' : plHeight G h x' = S.value i)
     (hmap : graphPLReebMap G h hS x = graphPLReebMap G h hS x') :
     ReebRel (plHeight G h) x x' := by
-  let px : ClosedLevel G h (S.value i) := ⟨x, by simpa [hx]⟩
-  let px' : ClosedLevel G h (S.value i) := ⟨x', by simpa [hx']⟩
+  let px : ClosedLevel G h (S.value i) := ⟨x, by simp [hx]⟩
+  let px' : ClosedLevel G h (S.value i) := ⟨x', by simp [hx']⟩
   have hlabels :
       closedLevelComponentsEquiv G h (S.value i) (ZerothHomotopy.mk px) =
         closedLevelComponentsEquiv G h (S.value i) (ZerothHomotopy.mk px') := by
@@ -804,7 +806,7 @@ theorem graphPLReebQuotientMap_bijective (hS : CoversVertexHeights S h) :
       obtain ⟨p, hp⟩ := ZerothHomotopy.mk_surjective x
       exact ⟨ReebQuotient.mk _ p.1, by
         rw [graphPLReebQuotientMap_mk, graphPLReebMap_of_level G h hS i p]
-        simpa [hp, hx]⟩
+        simp [hp, hx]⟩
     · obtain ⟨d, t, hd, htval⟩ := reebQuot_strip_crossing G h e p
       have ht : dartHeight h d t ∈ (S.K e : Set ℝ) := by
         rw [htval]
@@ -867,6 +869,224 @@ noncomputable def graphPLReebQuotientIsoOfIso (hS : CoversVertexHeights S h)
     {D : FiniteReebData.{0} n} (e : D ≅ graphPLReebData G h S) :
     (ReebQuotient.quotientFunctor ℝ).obj (graphPLOver G h) ≅ RGraph.toOver S D :=
   graphPLReebQuotientIso G h hS ≪≫ (RGraph.realizationFunctor S).mapIso e.symm
+
+private theorem intervalComponentNatTrans_graphPLReebMap_on_vertexLabel
+    (hS : CoversVertexHeights S h) {i : Fin (n + 1)}
+    (x : (graphPLReebData G h S).V i) :
+    (intervalComponentNatTrans (graphPLReebMap G h hS)
+        (height_graphPLReebMap G h hS)).app (S.J i)
+        ((graphPLCosheafIso G h hS).hom.app (S.J i)
+          ((graphPLReebData G h S).vertexLabel S i x)) =
+      (graphPLReebData G h S).vertexLabel S i x := by
+  classical
+  rw [graphPLCosheafIso_hom_app_J G h hS i x]
+  let z : ZerothHomotopy (ClosedLevel G h (S.value i)) :=
+    (closedLevelComponentsEquiv G h (S.value i)).symm x
+  obtain ⟨p, hp⟩ := ZerothHomotopy.mk_surjective z
+  have hstar :
+      graphPLStarEquiv G h S hS i
+          (TDA.Topology.componentMap (levelInclusion G h (S.value_mem_J i))
+            (ZerothHomotopy.mk p)) = x := by
+    have hstar' := congrFun
+      (graphPLStarEquiv_comp_componentMap_levelInclusion G h S hS i)
+      (ZerothHomotopy.mk p)
+    have hstar'' :
+        graphPLStarEquiv G h S hS i
+            (TDA.Topology.componentMap (levelInclusion G h (S.value_mem_J i))
+              (ZerothHomotopy.mk p)) =
+          closedLevelComponentsEquiv G h (S.value i) (ZerothHomotopy.mk p) := by
+      exact hstar'
+    exact hstar''.trans (by
+      rw [hp]
+      exact (closedLevelComponentsEquiv G h (S.value i)).apply_symm_apply x)
+  have hcomponent :
+      TDA.Topology.componentMap (levelInclusion G h (S.value_mem_J i))
+          (ZerothHomotopy.mk p) =
+        (graphPLStarEquiv G h S hS i).symm x := by
+    apply (graphPLStarEquiv G h S hS i).injective
+    exact hstar.trans ((graphPLStarEquiv G h S hS i).apply_symm_apply x).symm
+  rw [← hcomponent]
+  change (intervalComponentNatTrans (graphPLReebMap G h hS)
+      (height_graphPLReebMap G h hS)).app (S.J i)
+      (ZerothHomotopy.mk (levelInclusion G h (S.value_mem_J i) p)) = _
+  rw [intervalComponentNatTrans_app_mk
+        (h := graphPLReebMap G h hS)
+        (comm := height_graphPLReebMap G h hS)
+        (I := S.J i)
+        (x := levelInclusion G h (S.value_mem_J i) p)]
+  have hx : closedLevelComponentsEquiv G h (S.value i) (ZerothHomotopy.mk p) = x := by
+    rw [hp]
+    exact (closedLevelComponentsEquiv G h (S.value i)).apply_symm_apply x
+  rw [(graphPLReebData G h S).vertexLabel_apply S i x]
+  refine congrArg ZerothHomotopy.mk (Subtype.ext ?_)
+  exact (graphPLReebMap_of_level G h hS i p).trans
+    (congrArg ((CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofVertex S i) hx)
+
+private theorem intervalComponentNatTrans_graphPLReebMap_on_edgeLabel
+    (hS : CoversVertexHeights S h) {e : Fin n}
+    (y : (graphPLReebData G h S).E e) :
+    (intervalComponentNatTrans (graphPLReebMap G h hS)
+        (height_graphPLReebMap G h hS)).app (S.K e)
+        ((graphPLCosheafIso G h hS).hom.app (S.K e)
+          ((graphPLReebData G h S).edgeLabel S e y)) =
+      (graphPLReebData G h S).edgeLabel S e y := by
+  classical
+  rw [graphPLCosheafIso_hom_app_K G h hS e y]
+  obtain ⟨d, t, hd, htval⟩ :=
+    reebQuot_strip_crossing G h e (y, S.gapMidpoint e)
+  have ht : dartHeight h d t ∈ (S.K e : Set ℝ) := by
+    rw [htval]
+    exact (S.gapMidpoint e).2
+  have hsp : EdgeSpans G h (S.value e.castSucc) (S.value e.succ) (dartEdge d) :=
+    reebQuot_edgeSpans_of_mem_K G h hS d ht
+  have hge :
+      graphPLGapEquiv G h S hS e
+          (ZerothHomotopy.mk (⟨edgePoint G d t, ht⟩ :
+            {p : Realization G // plHeight G h p ∈ S.K e})) = y := by
+    rw [graphPLGapEquiv_mk_edgePoint G h S hS d t ht hsp]
+    exact Subtype.ext hd
+  have hpoint :
+      (graphPLGapEquiv G h S hS e).symm y =
+        ZerothHomotopy.mk (⟨edgePoint G d t, ht⟩ :
+          {p : Realization G // plHeight G h p ∈ S.K e}) := by
+    have hpoint' := congrArg (graphPLGapEquiv G h S hS e).symm hge
+    exact hpoint'.symm.trans
+      ((graphPLGapEquiv G h S hS e).symm_apply_apply _)
+  rw [hpoint]
+  refine (intervalComponentNatTrans_app_mk (graphPLReebMap G h hS)
+    (height_graphPLReebMap G h hS) (S.K e)
+    (⟨edgePoint G d t, ht⟩ : {p : Realization G // plHeight G h p ∈ S.K e})).trans ?_
+  have hp :
+      (⟨dartEdge d, hsp⟩, ⟨dartHeight h d t, ht⟩) =
+        (y, S.gapMidpoint e) := by
+    apply Prod.ext
+    · exact Subtype.ext hd
+    · exact Subtype.ext htval
+  rw [(graphPLReebData G h S).edgeLabel_apply S e (S.gapMidpoint e) y]
+  refine congrArg ZerothHomotopy.mk (Subtype.ext ?_)
+  exact (graphPLReebMap_edgePoint_of_mem_K G h hS d t ht hsp).trans
+    (congrArg ((CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofStrip S e) hp)
+
+/-- The component map induced by graphPLReebMap is the inverse of the graph-PL cosheaf
+identification. -/
+theorem intervalComponentNatTrans_graphPLReebMap (hS : CoversVertexHeights S h) :
+    intervalComponentNatTrans (graphPLReebMap G h hS) (height_graphPLReebMap G h hS) =
+      (graphPLCosheafIso G h hS).inv := by
+  have hcomp :
+      (graphPLCosheafIso G h hS).hom ≫
+          intervalComponentNatTrans (graphPLReebMap G h hS)
+            (height_graphPLReebMap G h hS) =
+        𝟙 _ := by
+    refine S.natTrans_ext
+      (FiniteReebData.toCosheaf_isConstructibleAt (graphPLReebData G h S) S)
+      (FiniteReebData.toCosheaf_isIntervalCosheaf (graphPLReebData G h S) S)
+      (FiniteReebData.toCosheaf_isConstructibleAt (graphPLReebData G h S) S)
+      (FiniteReebData.toCosheaf_isIntervalCosheaf (graphPLReebData G h S) S)
+      ?_ ?_
+    · intro i x
+      obtain ⟨v, rfl⟩ := (graphPLReebData G h S).vertexLabel S i |>.surjective x
+      change (intervalComponentNatTrans (graphPLReebMap G h hS)
+          (height_graphPLReebMap G h hS)).app (S.J i)
+          ((graphPLCosheafIso G h hS).hom.app (S.J i)
+            ((graphPLReebData G h S).vertexLabel S i v)) =
+        (graphPLReebData G h S).vertexLabel S i v
+      exact intervalComponentNatTrans_graphPLReebMap_on_vertexLabel G h hS v
+    · intro e x
+      obtain ⟨y, rfl⟩ := (graphPLReebData G h S).edgeLabel S e |>.surjective x
+      change (intervalComponentNatTrans (graphPLReebMap G h hS)
+          (height_graphPLReebMap G h hS)).app (S.K e)
+          ((graphPLCosheafIso G h hS).hom.app (S.K e)
+            ((graphPLReebData G h S).edgeLabel S e y)) =
+        (graphPLReebData G h S).edgeLabel S e y
+      exact intervalComponentNatTrans_graphPLReebMap_on_edgeLabel G h hS y
+  exact (Iso.hom_comp_eq_id (graphPLCosheafIso G h hS)).mp hcomp
+
+/-- The descended quotient map has the height-preservation equation used by the interval
+component comparison. -/
+theorem height_graphPLReebQuotientMap (hS : CoversVertexHeights S h)
+    (q : ReebQuotient (plHeight G h)) :
+    (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).height S
+        (graphPLReebQuotientMap G h hS q) = ReebQuotient.height _ q := by
+  induction q using ReebQuotient.ind with
+  | h x =>
+      change (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).height S
+          (graphPLReebMap G h hS x) = plHeight G h x
+      exact height_graphPLReebMap G h hS x
+
+/-- The interval-component comparison followed by the descended map is the inverse graph-PL
+cosheaf identification. -/
+theorem intervalComponentComparison_comp_graphPLReebQuotientMap
+    (hS : CoversVertexHeights S h) :
+    ReebQuotient.intervalComponentComparison (plHeight G h) ≫
+        intervalComponentNatTrans (graphPLReebQuotientMap G h hS)
+          (height_graphPLReebQuotientMap G h hS) =
+      (graphPLCosheafIso G h hS).inv := by
+  have hcomp :
+      ReebQuotient.intervalComponentComparison (plHeight G h) ≫
+          intervalComponentNatTrans (graphPLReebQuotientMap G h hS)
+            (height_graphPLReebQuotientMap G h hS) =
+        intervalComponentNatTrans (graphPLReebMap G h hS)
+          (height_graphPLReebMap G h hS) := by
+    ext I c
+    induction c using ZerothHomotopy.rec with
+    | mk x => rfl
+  rw [hcomp, intervalComponentNatTrans_graphPLReebMap]
+
+/-- The Reeb quotient of a finite graph-PL realization is an R-graph. -/
+theorem isRGraph_graphPLReebQuotient :
+    RGraph.IsRGraph ((ReebQuotient.quotientFunctor ℝ).obj (graphPLOver G h)) := by
+  obtain ⟨n, S, hS⟩ := exists_coversVertexHeights h
+  exact ⟨n, S, graphPLReebData G h S, ⟨graphPLReebQuotientIso G h hS⟩⟩
+
+/-- The graph-PL Reeb quotient, regarded as an object of the R-graph category. -/
+noncomputable def graphPLReebGraph : RGraph.RGraphCat :=
+  ⟨(ReebQuotient.quotientFunctor ℝ).obj (graphPLOver G h),
+    isRGraph_graphPLReebQuotient G h⟩
+
+/-- The graph-PL Reeb quotient graph is isomorphic to every finite realization obtained from a
+covering critical-value list. -/
+noncomputable def graphPLReebGraphIso (hS : CoversVertexHeights S h) :
+    graphPLReebGraph G h ≅ (RGraph.toRGraph S).obj (graphPLReebData G h S) :=
+  ObjectProperty.isoMk _ (graphPLReebQuotientIso G h hS)
+
+/-- The interval-component comparison of a graph-PL height is an isomorphism. -/
+instance isIso_intervalComponentComparison_plHeight :
+    IsIso (ReebQuotient.intervalComponentComparison (plHeight G h)) := by
+  rw [NatTrans.isIso_iff_isIso_app]
+  intro I
+  rw [isIso_iff_bijective]
+  constructor
+  · intro x y hxy
+    obtain ⟨n, S, hS⟩ := exists_coversVertexHeights h
+    have hnat := congrArg (fun α => α.app I)
+      (intervalComponentComparison_comp_graphPLReebQuotientMap G h hS)
+    have hinv :
+        (graphPLCosheafIso G h hS).inv.app I x =
+          (graphPLCosheafIso G h hS).inv.app I y := by
+      rw [← hnat]
+      change (intervalComponentNatTrans (graphPLReebQuotientMap G h hS)
+          (height_graphPLReebQuotientMap G h hS)).app I
+          ((ReebQuotient.intervalComponentComparison (plHeight G h)).app I x) =
+        (intervalComponentNatTrans (graphPLReebQuotientMap G h hS)
+          (height_graphPLReebQuotientMap G h hS)).app I
+          ((ReebQuotient.intervalComponentComparison (plHeight G h)).app I y)
+      exact congrArg _ hxy
+    exact ((isIso_iff_bijective ((graphPLCosheafIso G h hS).inv.app I)).1
+      inferInstance).1 hinv
+  · exact ReebQuotient.intervalComponentComparison_app_surjective (plHeight G h) I
+
+/-- The geometric interleaving distance between graph-PL Reeb quotients is the interleaving
+distance between their interval-component precosheaves. -/
+theorem geometricInterleavingDistance_graphPLReebGraph {V' : Type} [Finite V']
+    (G' : SimpleGraph V') (h' : V' → ℝ) :
+    geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G' h') =
+      interleavingDistance (intervalComponents (plHeight G h))
+        (intervalComponents (plHeight G' h')) := by
+  obtain ⟨n, S, hS⟩ := exists_coversVertexHeights h
+  obtain ⟨m, T, hT⟩ := exists_coversVertexHeights h'
+  rw [geometricInterleavingDistance_congr
+    (graphPLReebGraphIso G h hS) (graphPLReebGraphIso G' h' hT)]
+  exact geometricInterleavingDistance_graphPL G h G' h' hS hT
 
 end slice
 
