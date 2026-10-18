@@ -2484,3 +2484,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.LogScaleScalingExamples.emptyDiagram
 #print axioms TDA.Persistence.LogScaleScalingExamples.bottleneck_essentialOne_zero
 #print axioms TDA.Persistence.LogScaleScalingExamples.bottleneck_translate_essentialOne
+#print axioms TDA.Persistence.finitePMatchingCost_le_firstOrder
+#print axioms TDA.Persistence.finiteFirstOrderMatchingCost_le_card_rpow_mul_p
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_le_firstOrder
+#print axioms TDA.Persistence.finiteFirstOrderBoundaryTransportCost_le_card_rpow_mul_p
