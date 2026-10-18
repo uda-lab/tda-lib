@@ -85,3 +85,4 @@ import TDA.Persistence.CechSupNormConsumersExamples
 import TDA.Persistence.ModuleScalingExamples
 import TDA.Persistence.TriangleCechRipsExamples
 import TDA.Persistence.CechRipsLogScaleConsumersExamples
+import TDA.Persistence.LogScaleScalingExamples

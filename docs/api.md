@@ -326,8 +326,10 @@ rederives finite-filter stability from the inclusion interleaving, independently
 face-order proof, and essential multiplicities agree. The scaling bridge in
 `TDA.Persistence.SublevelScaling` adds the corresponding module and diagram identities.
 The sublevel-constructibility results make no log-scale or cross-complex comparisons; the scaling
-bridge's only log-scale statement is `logModule_scale_shiftIso` for positive filter scaling with
-`1 ≤ c`, not a `logDgm` translation formula. See [the proofs, fixtures and scope](math/sublevel-constructibility.md).
+bridge's log-scale statement is `logModule_scale_shiftIso` for `1 ≤ c`, and
+`TDA.Persistence.LogScaleScaling` adds the `logDgm` translation formula
+`logDgm_scale` for every `0 < c`, the shift for `c ≤ 1`, and scale invariance of log-scale
+bottleneck and interleaving distances. See [the proofs, fixtures and scope](math/sublevel-constructibility.md).
 
 `TDA.Persistence.LogScaleDiagram` gives log-scale modules a diagram in degrees n ≥ 1. A filter
 is `PositiveOnEdges` when every face with at least two vertices has positive value; Rips
