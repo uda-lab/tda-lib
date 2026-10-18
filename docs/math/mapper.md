@@ -780,11 +780,14 @@ inverse of `graphPLCosheafIso`, as stated by
 `intervalComponentNatTrans_graphPLReebMap` and
 `intervalComponentComparison_comp_graphPLReebQuotientMap`.
 
-(C) Without choosing a list, the quotient is an `RGraph` by
-`isRGraph_graphPLReebQuotient`, and `graphPLReebGraph` packages it as an
-object of the real-graph category. The interval-component comparison is an
-isomorphism, and `geometricInterleavingDistance_graphPLReebGraph` identifies
-the geometric distance between two graph-PL Reeb graphs with the
+(C) Without choosing a list, the Reeb quotient, as an object of the real
+slice, is an ℝ-graph (`RGraph.IsRGraph`, by
+`isRGraph_graphPLReebQuotient`), and `graphPLReebGraph` packages it as an
+object of `RGraph.RGraphCat`, with `graphPLReebGraphIso` identifying it with
+`(RGraph.toRGraph S).obj (graphPLReebData G h S)` for every covering list. The
+interval-component comparison is an isomorphism, and
+`geometricInterleavingDistance_graphPLReebGraph` identifies the geometric
+distance between two graph-PL Reeb graphs with the
 interleaving distance of their interval-component precosheaves. The
 homeomorphism uses `V : Type u`; the real-slice statements, the coherence
 statements, and these list-free corollaries use `V : Type`, as required by the
@@ -803,8 +806,9 @@ The fixtures record the scope and boundary. R1 is given by
 `c4_reebQuotientIso` and `c4_reebQuotient_not_iso_path`: the 4-cycle quotient
 is the cycle realization, not the path realization. R2 is given by
 `edge_reebQuotientIso_S02` and `edge_reebQuotientIso_S012`, including a level
-with no vertex. R3 is `Y_reebQuotientIso` and `Y_isRGraph` for the subdivided
-Y-tree. R4 is `flatEdge_reebQuotient_subsingleton` together with
+with no vertex. R3 is `Y_reebQuotientIso` and `Y_isRGraph` for the tree `Y`
+with edges `0 — 2`, `1 — 2` and `2 — 3`. R4 is
+`flatEdge_reebQuotient_subsingleton` together with
 `flatEdge_vertex_ne`, showing that a horizontal edge collapses in the Reeb
 quotient although its realization endpoints differ. R5 is
 `c4_isIso_intervalComponentComparison`. R6 is the negative control

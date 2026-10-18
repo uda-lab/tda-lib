@@ -10,11 +10,12 @@ import Mathlib.Topology.Order.ProjIcc
 
 For a finite graph and a graph-PL height, this module constructs the direct continuous,
 height-preserving map from the graph realization to the realization of its finite graph-PL Reeb
-data.  It then prepares the identification of the Reeb quotient with that finite realization:
-the map descends through `RGraph.quotientLift`, and the quotient map is inverted by the
-compact-to-Hausdorff argument.  The resulting comparison is over `ℝ`, and gives the
-graph-PL Reeb graph, its interval-component comparison, and the geometric interleaving-distance
-corollary.
+data, proves its descent to a homeomorphism `ReebQuotient (plHeight G h) ≃ₜ` the finite
+realization, and proves the slice isomorphism with `RGraph.toOver S (graphPLReebData G h S)`
+for every covering list.  It also proves the coherence with `graphPLCosheafIso` and the
+list-free corollaries that the Reeb quotient is an ℝ-graph, that its interval-component
+comparison is an isomorphism, and that its geometric interleaving distance is the corresponding
+interleaving distance of interval-component precosheaves.
 
 The general statements use `[Finite V]` and a covering list
 `CoversVertexHeights S h`; the realization and homeomorphism are universe-polymorphic, while the
