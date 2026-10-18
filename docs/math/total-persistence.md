@@ -76,8 +76,53 @@ These bounds supply the card-times-maximum total-persistence factors in KFH18 [e
 In the `p = 1` use of eq. (9), the factor `Pers_0` is exactly the finite-bar count. The source's
 card-independent total-persistence estimate in
 Lemma 4 is not obtained here. In particular, this note does not formalize assumption (W1),
-Proposition 8, Theorem 9, or Corollary 12. It also does not cover real exponents or the
-vanishing of essential bars in degree `n ≥ 1` for Rips and Čech diagrams.
+Proposition 8, Theorem 9, or Corollary 12. It also does not cover real exponents. The vanishing of
+essential bars in degree `n ≥ 1` for Rips and Čech diagrams is proved in [Essential bars on the full
+complex](#essential-bars-on-the-full-complex).
+
+## Essential bars on the full complex
+
+For every filter `f` whose face values are bounded by a threshold `t`,
+`card_essentialPart_dgm_eq_finrank` proves the public identity
+
+`# essential bars in dgm k f n = finrank k H_n(K)`.
+
+Finite complexes always supply such a threshold. On the full complex, every
+filter has no essential bars in degree `n ≥ 1`, by
+`essentialPart_dgm_fullComplex_eq_zero`; this applies to Rips and Čech filters,
+including Čech filters in any pseudometric ambient and with no injectivity or
+label-metric hypothesis. For a nonempty vertex type there is exactly one
+essential bar in degree zero, by `card_essentialPart_dgm_fullComplex_zero`.
+Thus the general essential face-count bound `# Face K n` sharpens on the full
+complex to `0` in positive degree and `1` in degree zero. In positive degree,
+`dgm_points_fullComplex_eq_finite` identifies the whole diagram with the
+finite-part embedding.
+
+At large scale, a Rips sublevel with `r ≥ Rips.diameter d Finset.univ` is the
+full complex, and a Čech sublevel with
+`r ≥ Cech.radiusAt p x Finset.univ` is the full complex. Their positive-degree
+homology is therefore zero, by
+`Rips.isZero_sublevelHomology_of_diameter_le` and
+`Cech.isZero_sublevelHomology_of_radiusAt_le`.
+
+Total persistence and the kernel/image embeddings already exclude essential
+bars, so their merged bounds do not change value. For Rips and Čech in degree
+`n ≥ 1`, the new vanishing theorem proves that this exclusion loses nothing.
+The count `card_finiteOccurrences_dgm_fullComplex_le` yields the size-uniform
+Čech weighted-kernel and persistence-image bounds and the Rips persistence-image
+bound, each with the factor `2 C(N, n + 2)`; the consumer declarations are
+`Cech.norm_diagramEmbedding_sub_le_choose_mul_displacement`,
+`Cech.norm_finiteDiagramImage_sub_le_choose_mul_displacement`, and
+`Rips.norm_finiteDiagramImage_sub_le_choose_mul_pairwiseDiscrepancy`.
+No KFH18 statement beyond the existing consumed bounds is claimed.
+
+`TDA.Persistence.EssentialVanishingExamples` checks the triangle, the two-point
+degree-zero control with a nonempty essential part, repeated labels, and the
+hollow-triangle negative control:
+it has an essential degree-one bar and is not an apex cone at any vertex. The
+filled triangle recovers its degree-one rank zero by the essential-bar route and
+by transport to the full complex. The final fixtures instantiate the
+size-uniform Čech weighted-kernel and persistence-image consumers.
 
 ## Fixtures
 
@@ -101,5 +146,7 @@ The checked examples use coefficients in `ZMod 2`.
 `TDA.Persistence.TotalPersistence` defines total persistence and its diagram-level laws.
 `TDA.Persistence.TotalPersistenceRipsCech` proves coordinate, face-count, Rips, Čech and
 size-uniform weighted-kernel bounds. `TDA.Persistence.TotalPersistenceRipsCechExamples`
-contains the fixtures above. The endpoint-degree facts used by the face-count argument are
-recorded in `TDA.Persistence.FaceEndpointUniqueness`.
+contains the fixtures above. `TDA.Persistence.EssentialVanishing` proves the essential-count
+identity, full-complex vanishing and size-uniform consumers, with fixtures in
+`TDA.Persistence.EssentialVanishingExamples`. The endpoint-degree facts used by the face-count
+argument are recorded in `TDA.Persistence.FaceEndpointUniqueness`.

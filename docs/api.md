@@ -411,6 +411,10 @@ in a general pseudometric ambient.
 `TDA.Persistence.TotalPersistence` and `TDA.Persistence.TotalPersistenceRipsCech` define total
 persistence, finite-bar face-count bounds, and size-dependent Rips and Čech consequences; their
 worked fixtures are in `TDA.Persistence.TotalPersistenceRipsCechExamples`.
+`TDA.Simplicial.Cone` proves apex-cone acyclicity, and `TDA.Persistence.EssentialVanishing` proves
+the essential-count identity, vanishing in degree `n ≥ 1` on the full complex, and size-uniform
+consumers; their fixtures are in `TDA.Simplicial.ConeExamples` and
+`TDA.Persistence.EssentialVanishingExamples`.
 
 ## Finite first-order PD matching cost
 

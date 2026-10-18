@@ -40,3 +40,31 @@ same-ambient inclusion at every arrow. `simplicialHomologyPModule` uses the
 resulting homology map in the forward direction. This construction makes no
 barcode, rank, finite-dimensionality, reduced-homology, or arbitrary vertex-map
 claim.
+
+## Apex cones are acyclic
+
+`IsApexCone K v` means that `{v}` is a face, inserting `v` into any face keeps
+the result in `K`, and `v ≤ w` for every vertex `w` of every face. The last
+condition makes the apex minimal in the fixed vertex order. It puts the apex at
+enumeration position zero, so every cone face has the sign `(-1)^0` at the
+apex. Without minimality the acyclicity result remains true, but the signs
+depend on the apex position; that variant is not covered here.
+
+For an apex cone, `IsApexCone.coneOperator` sends a face basis `s` to
+`v ∗ s` when `v ∉ s`, and to zero when `v ∈ s`. The proved identities are
+`boundary_coneOperator_add`, which gives `∂h + h∂ = id` in positive degree,
+and `boundary_coneOperator_zero`, which gives
+`∂h = id − ε(·)[v]` in degree zero, where `ε` is the coefficient sum and
+`[v]` is the apex face. Consequently `isZero_simplicialHomology_succ` gives
+zero homology in every positive degree over every ring, while
+`finrank_simplicialHomology_zero` gives degree-zero rank one over a field.
+
+The full complex `⊤` on a finite linearly ordered vertex type is covered by
+`isZero_simplicialHomology_top_succ` without a nonemptiness hypothesis, and by
+`finrank_simplicialHomology_top_zero` with a nonempty vertex type. This is a
+library-proved result; no external source claim is made here.
+
+`TDA.Simplicial.ConeExamples` checks triangle vanishing in degrees one and two
+over `ℤ`, degree-zero rank one over `ZMod 2`, and the concrete signed boundary
+calculation on the top triangle face. It also records the two non-cone controls
+`not_isApexCone_top_one` and `not_isApexCone_bot_zero`.
