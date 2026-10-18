@@ -17,6 +17,7 @@ import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
 import TDA.Reeb.FiniteDataGraph
 import TDA.Reeb.FiniteDiagram
+import TDA.Reeb.GeometricComponentObstruction
 import TDA.Reeb.GeometricDistanceBounds
 import TDA.Reeb.GeometricEnlargement
 import TDA.Reeb.GeometricInterleaving

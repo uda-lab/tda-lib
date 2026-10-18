@@ -11,6 +11,7 @@ import TDA.Reeb.ConstructibleSmoothingExamples
 import TDA.Reeb.ConstructibleSmoothingLiftExamples
 import TDA.Reeb.ConstructibleSpaceExamples
 import TDA.Reeb.FiniteDataGraphExamples
+import TDA.Reeb.GeometricComponentObstructionExamples
 import TDA.Reeb.GeometricDistanceBoundsExamples
 import TDA.Reeb.GeometricEnlargementExamples
 import TDA.Reeb.GeometricInterleavingEquivalenceExamples

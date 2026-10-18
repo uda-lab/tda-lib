@@ -2937,3 +2937,33 @@ import TDA
 #print axioms TDA.Reeb.Examples.FiniteDataGraph.iso_isolated
 #print axioms TDA.Reeb.Examples.FiniteDataGraph.empty_isEmpty_vertex
 #print axioms TDA.Reeb.Examples.FiniteDataGraph.empty_edgeCard
+
+-- TDA.Reeb.GeometricComponentObstruction: interval-local interleaving obstructions and their geometric transport.
+#print axioms TDA.Reeb.Interleaving.φ_app_injective
+#print axioms TDA.Reeb.Interleaving.isEmpty_of_injective_of_subsingleton
+#print axioms TDA.Reeb.Interleaving.isEmpty_of_injective_of_card_lt
+#print axioms TDA.Reeb.RGraph.isEmpty_geometricInterleaving_of_injective_of_subsingleton
+#print axioms TDA.Reeb.RGraph.isEmpty_geometricInterleaving_of_injective_of_card_lt
+#print axioms TDA.Reeb.RGraph.le_geometricInterleavingDistance_of_isEmpty
+
+-- TDA.Reeb.GeometricComponentObstructionExamples: interval-local component and distance fixtures.
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.parallel_restrict_bijective
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.parallel_nontrivial_of_le_K
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.single_subsingleton
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.obstructionInterval
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.thicken_thicken_obstructionInterval
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.obstructionInterval_nonempty
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.parallelSingle_isEmpty
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.singleParallel_isEmpty
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.geometricInterleavingDistance_parallel_single
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.interleavingDistance_parallel_single
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.geometricInterleavingDistance_parallel_single_pos
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.hausdorffEDist_heightRange_parallel_single_lt
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.parallelSingle_eighth_isEmpty
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.e24
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.parallelSingle_e24_isEmpty
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.thicken_half_not_le_K
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.edgeMid_obstruction_unavailable
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.geometricInterleavingDistance_twoSeg_single
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.singleParallel_eighth_isEmpty
+#print axioms TDA.Reeb.Examples.GeometricComponentObstruction.parallel_single_range_bound_strict
