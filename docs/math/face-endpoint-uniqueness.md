@@ -27,3 +27,6 @@ is a degree-zero death. A cycle-closing edge is a degree-one birth, and a triang
 filling that cycle is a degree-one death. Equal filtration values can still give
 repeated evaluated diagram points; this is an index statement, and `Q` may remove
 zero-length evaluated pairs.
+
+The degree-specific lemmas for finite deaths and births feed the face-count argument in
+[total persistence and finite Rips–Čech bounds](total-persistence.md).

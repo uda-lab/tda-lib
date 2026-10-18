@@ -50,6 +50,8 @@ the same image error by C times that minimum.
 `finiteDiagramImage` applies the construction to a positive diagram's canonical finite
 occurrences, omitting essential bars. A finite full bottleneck gives a count-dependent
 bound, which controls [Rips images from distance-matrix perturbations](rips-persistence-images.md).
+The finite-bar counts and coordinate bounds used for analogous size estimates are collected in
+[total persistence and finite Rips–Čech bounds](total-persistence.md).
 
 ## Analytic proof
 
