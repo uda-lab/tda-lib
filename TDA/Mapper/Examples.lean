@@ -12,3 +12,4 @@ import TDA.Mapper.UniformMapperReebDataExamples
 import TDA.Mapper.GraphPLLevelSetsExamples
 import TDA.Mapper.GraphPLRefinementExamples
 import TDA.Mapper.OneSkeletonReebDataExamples
+import TDA.Mapper.GraphPLCosheafExamples

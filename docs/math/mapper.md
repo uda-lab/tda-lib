@@ -560,11 +560,12 @@ data is not the path with one vertex per level. On the tree with edges
 `1, 2, 1` agree with the MultiNerve Mapper cell counts of the previous section.
 These are elementary library results, not attributed to a source.
 
-Constructibility of the precosheaf at a covering list, the cosheaf isomorphism
-with the realized data, and the Reeb quotient of the realization are not
-proved. No geometric realization of either Mapper construction, no refinement
-tower of height-separating covers and no approximation statement is proved;
-refinement of covering critical lists is treated in the last subsection.
+Constructibility of the precosheaf and its cosheaf identification with the
+realized data are proved in the subsection `Constructibility and the cosheaf of
+graph-PL height` below; the Reeb quotient of the realization is not proved. No
+geometric realization of either Mapper construction, no refinement tower of
+height-separating covers and no approximation statement is proved; refinement
+of covering critical lists is treated in the last subsection.
 
 ### Closed level sets of graph-PL height
 
@@ -705,3 +706,47 @@ The covering hypothesis is necessary. For `path3` with heights `0, 1, 2`,
 behaviour is controlled as well: for the single edge with heights `0, 2` over
 `S0123`, the level `3` and the gap `[2, 3]` are empty on both sides. These are
 elementary library results, not results attributed to a source.
+
+### Constructibility and the cosheaf of graph-PL height
+
+Let `V : Type` be finite, let `G : SimpleGraph V`, let `h : V → ℝ`, and let
+`S : CriticalValues n` satisfy `CoversVertexHeights S h`. If `I ≤ J` are nested
+open intervals, `I` is nonempty, and they meet the same levels, then the
+surviving vertices and active edges in the two cell graphs are the same. Thus
+`cellGraphIsoOfSameLevels` is a graph isomorphism, and the induced map on
+components is bijective. Finiteness of `V`, together with the empty tails forced
+by the vertex heights lying between the extreme levels, gives
+`isConstructibleAt_intervalComponents_plHeight`. This is constructibility in the
+sense of DMP15-v1 Definition 3.9, with the nonempty-source correction recorded
+in `docs/math/references.md`.
+
+`graphPLCosheafIsoOfIso` gives the labelled identification for finite Reeb data
+isomorphic to `graphPLReebData G h S`. Its canonical case `graphPLCosheafIso`
+has type `(graphPLReebData G h S).toCosheaf S ≅ intervalComponents (plHeight G h)`.
+Both are obtained from the labelled lift `toCosheafLift`; the canonical lift uses
+the inverse of `graphPLExtractIso`, while the arbitrary case first composes it
+with the given finite-data isomorphism. This has the shape of DMP15-v1
+Proposition 3.18. Their star and gap formulas use `graphPLStarEquiv` and
+`graphPLGapEquiv`, and
+`graphPLCosheafIso_hom_unique` records labelled uniqueness. This is not a
+functorial image of `toCosheaf`, which has no action on morphisms.
+`realizeExtractIso` is the corresponding case for extracted data.
+
+The corollaries are `isConstructibleCosheaf_intervalComponents_plHeight`,
+`cosheafFunctorGraphPLIso`, and `geometricInterleavingDistance_graphPL`. The
+last states that the geometric interleaving distance of two graph-PL
+realizations equals the interleaving distance of their path-component
+precosheaves. The finite-data statements use universe `0`, forced by
+`IsIntervalCosheaf.{0}`.
+
+The fixtures include the 4-cycle comparison through `cycleIso`, with two
+components over the middle star; the single edge at `0 < 2`, together with its
+refinement `0 < 1 < 2` whose middle level is vertex-free; the Y-tree; and the
+horizontal edge, whose level has one component. The negative control uses two
+isolated vertices of heights `0` and `2` at the single level `0`: the
+precosheaf has one component over `(-1, 1)` and two over `ℝ`, so it is not
+constructible, as recorded by `missing_not_isConstructibleAt`. Thus the
+covering hypothesis cannot be dropped.
+
+These graph-PL statements are elementary library results, not attributed to a
+source. The Reeb quotient homeomorphism of the realization is not proved.
