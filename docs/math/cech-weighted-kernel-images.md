@@ -63,6 +63,9 @@ point. For the configuration with both labels at 0 there is no such metric, so t
 consumers do not apply; against the points 0, 2, with displacement 2, the Čech consumers
 do.
 
+The size-uniform Čech weighted-kernel and persistence-image corollaries are summarized in
+[Essential bars on the full complex](total-persistence.md#essential-bars-on-the-full-complex).
+
 ## Sup-norm consumers
 
 In the sup-metric product ι → ℝ with a possibly empty finite ι, let d and e be

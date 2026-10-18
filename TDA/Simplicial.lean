@@ -11,5 +11,6 @@ import TDA.Simplicial.Attachment
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.Homology
 import TDA.Simplicial.H0Augmentation
+import TDA.Simplicial.Cone
 import TDA.Simplicial.VertexMap
 import TDA.Simplicial.Contiguity

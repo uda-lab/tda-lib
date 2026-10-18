@@ -94,3 +94,6 @@ RKHS norm of the weighted Gaussian kernel embedding is in
 [the arctan weight and Rips consumers](arctan-weight-rips-kernel.md). The arctan image
 constant, the arctan Rips image instance and the Čech image consumer are in
 [arctan persistence images and Čech consumers](cech-weighted-kernel-images.md).
+
+The size-uniform Rips persistence-image corollary is summarized in
+[Essential bars on the full complex](total-persistence.md#essential-bars-on-the-full-complex).
