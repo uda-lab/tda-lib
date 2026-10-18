@@ -110,6 +110,11 @@ The last isomorphism applies `U_ε` to `thickeningQuotientAbsorptionIso δ`, the
 absorption instance `isIso_quotientFunctor_map_functor_map_projNatTrans_app_constructible` removes
 (H2) from the merged absorption theorem.
 
+Interleavings of constructible ℝ-spaces built on `thickeningQuotient` and
+`thickeningQuotientCompIso` are described in
+[reeb-geometric-interleaving-equivalence.md](reeb-geometric-interleaving-equivalence.md), section
+*Interleavings of constructible ℝ-spaces*.
+
 ## The semigroup
 
 On graph objects absorption assembles into the natural isomorphism
