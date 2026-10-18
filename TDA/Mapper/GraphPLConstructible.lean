@@ -17,7 +17,7 @@ are universe-polymorphic, while the slice statements use `V : Type`.
 
 namespace TDA.Mapper.GraphPL
 
-open Set SimpleGraph CategoryTheory Topology Filter
+open Set SimpleGraph CategoryTheory Filter
 open TDA.Reeb TDA.Reeb.GraphPL TDA.Reeb.GraphRealization
 
 noncomputable section
@@ -58,13 +58,13 @@ theorem barycentric_edgePoint (d : G.Dart) (t : unitInterval) :
   rfl
 
 private theorem barycentric_edge_coord_pos {d : G.Dart} {t : unitInterval} {i : V}
-    (ht₀ : 0 < (t : ℝ)) (ht₁ : (t : ℝ) < 1)
+    (_ht₀ : 0 < (t : ℝ)) (_ht₁ : (t : ℝ) < 1)
     (hi : 0 < barycentric G (edgePoint G d t) i) :
     i = d.fst ∨ i = d.snd := by
   by_contra hn
   have hfst : i ≠ d.fst := fun h => hn (Or.inl h)
   have hsnd : i ≠ d.snd := fun h => hn (Or.inr h)
-  simp [barycentric_edgePoint, Pi.single_apply, hfst, hsnd, eq_comm] at hi
+  simp [barycentric_edgePoint, hfst, hsnd] at hi
 
 private theorem barycentric_edge_eq_vertex {d : G.Dart} {t : unitInterval} {v : V}
     (h : barycentric G (edgePoint G d t) = barycentric G (vertex G v)) :
@@ -121,11 +121,11 @@ private theorem barycentric_edge_eq_edgePoint {d d' : G.Dart} {t t' : unitInterv
       have hpos : 0 < barycentric G (edgePoint G d t) i := by
         rcases mem_dartEdge.mp hi with rfl | rfl
         · have hc : barycentric G (edgePoint G d t) d.fst = 1 - (t : ℝ) := by
-            simp [barycentric_edgePoint, Pi.single_apply, eq_comm, d.fst_ne_snd]
+            simp [barycentric_edgePoint, d.fst_ne_snd]
           rw [hc]
           linarith
         · have hc : barycentric G (edgePoint G d t) d.snd = (t : ℝ) := by
-            simp [barycentric_edgePoint, Pi.single_apply, eq_comm, d.snd_ne_fst]
+            simp [barycentric_edgePoint, eq_comm]
           rw [hc]
           exact htpos
       have hpos' : 0 < barycentric G (edgePoint G d' t') i := by
@@ -136,11 +136,11 @@ private theorem barycentric_edge_eq_edgePoint {d d' : G.Dart} {t t' : unitInterv
       have hpos : 0 < barycentric G (edgePoint G d' t') i := by
         rcases mem_dartEdge.mp hi with rfl | rfl
         · have hc : barycentric G (edgePoint G d' t') d'.fst = 1 - (t' : ℝ) := by
-            simp [barycentric_edgePoint, Pi.single_apply, eq_comm, d'.fst_ne_snd]
+            simp [barycentric_edgePoint, d'.fst_ne_snd]
           rw [hc]
           linarith
         · have hc : barycentric G (edgePoint G d' t') d'.snd = (t' : ℝ) := by
-            simp [barycentric_edgePoint, Pi.single_apply, eq_comm, d'.snd_ne_fst]
+            simp [barycentric_edgePoint, eq_comm]
           rw [hc]
           exact htpos'
       have hpos' : 0 < barycentric G (edgePoint G d t) i := by
@@ -180,7 +180,7 @@ theorem barycentric_injective : Function.Injective (barycentric G) := by
     · intro w h
       by_contra hvw
       have hv := congr_fun h v
-      simp [barycentric_vertex, Pi.single_apply, hvw, eq_comm] at hv
+      simp [barycentric_vertex, Pi.single_apply, eq_comm] at hv
       exact hvw (congrArg (vertex G) hv)
     · intro d t h
       have h' := barycentric_edge_eq_vertex G h.symm
@@ -299,10 +299,10 @@ private theorem locallyPathConnectedSpace_unitInterval :
 /-- The graph realization is locally path-connected. -/
 theorem locallyPathConnectedSpace_realization :
     LocallyPathConnectedSpace (Realization G) := by
-  letI : TopologicalSpace V := ⊥
-  letI : DiscreteTopology V := ⟨rfl⟩
-  letI : LocallyPathConnectedSpace unitInterval := locallyPathConnectedSpace_unitInterval
-  letI : LocallyPathConnectedSpace (Cells G) := by
+  let _ : TopologicalSpace V := ⊥
+  let _ : DiscreteTopology V := ⟨rfl⟩
+  let _ : LocallyPathConnectedSpace unitInterval := locallyPathConnectedSpace_unitInterval
+  let _ : LocallyPathConnectedSpace (Cells G) := by
     change LocallyPathConnectedSpace (V ⊕ Σ _ : G.Dart, unitInterval)
     infer_instance
   change LocallyPathConnectedSpace (Quot (CellRel G))
@@ -703,11 +703,11 @@ variable [Finite V]
 
 /-- The level piece is compact. -/
 theorem compactSpace_levelPiece (c : ℝ) : CompactSpace (LevelPiece G h c) := by
-  letI : CompactSpace (Realization (G.induce {v | h v = c})) :=
+  let _ : CompactSpace (Realization (G.induce {v | h v = c})) :=
     compactSpace_realization (G.induce {v | h v = c})
-  letI : TopologicalSpace {e : G.edgeSet // EdgeCrosses G h c e} := ⊥
-  letI : Finite {e : G.edgeSet // EdgeCrosses G h c e} := Subtype.finite
-  letI : CompactSpace {e : G.edgeSet // EdgeCrosses G h c e} :=
+  let _ : TopologicalSpace {e : G.edgeSet // EdgeCrosses G h c e} := ⊥
+  let _ : Finite {e : G.edgeSet // EdgeCrosses G h c e} := Subtype.finite
+  let _ : CompactSpace {e : G.edgeSet // EdgeCrosses G h c e} :=
     @Finite.compactSpace _ ⊥ inferInstance
   unfold LevelPiece
   infer_instance
@@ -727,26 +727,395 @@ theorem levelPieceHomeomorph_apply (c : ℝ) (z : LevelPiece G h c) :
 
 /-- The closed level is compact. -/
 theorem compactSpace_closedLevel (c : ℝ) : CompactSpace (ClosedLevel G h c) := by
-  letI : CompactSpace (LevelPiece G h c) := compactSpace_levelPiece G h c
-  letI : T2Space (Realization G) := t2Space_realization G
+  let _ : CompactSpace (LevelPiece G h c) := compactSpace_levelPiece G h c
+  let _ : T2Space (Realization G) := t2Space_realization G
   exact (levelPieceHomeomorph G h c).compactSpace
 
 /-- The closed level is locally path-connected. -/
 theorem locallyPathConnectedSpace_closedLevel (c : ℝ) :
     LocallyPathConnectedSpace (ClosedLevel G h c) := by
-  letI : TopologicalSpace {e : G.edgeSet // EdgeCrosses G h c e} := ⊥
-  letI : DiscreteTopology {e : G.edgeSet // EdgeCrosses G h c e} := ⟨rfl⟩
-  letI : LocallyPathConnectedSpace (Realization (G.induce {v | h v = c})) :=
+  let _ : TopologicalSpace {e : G.edgeSet // EdgeCrosses G h c e} := ⊥
+  let _ : DiscreteTopology {e : G.edgeSet // EdgeCrosses G h c e} := ⟨rfl⟩
+  let _ : LocallyPathConnectedSpace (Realization (G.induce {v | h v = c})) :=
     locallyPathConnectedSpace_realization _
-  letI : LocallyPathConnectedSpace {e : G.edgeSet // EdgeCrosses G h c e} := by
+  let _ : LocallyPathConnectedSpace {e : G.edgeSet // EdgeCrosses G h c e} := by
     infer_instance
-  letI : LocallyPathConnectedSpace (LevelPiece G h c) := by
+  let _ : LocallyPathConnectedSpace (LevelPiece G h c) := by
     unfold LevelPiece
     infer_instance
-  letI : T2Space (Realization G) := t2Space_realization G
+  let _ : T2Space (Realization G) := t2Space_realization G
   exact (levelPieceHomeomorph G h c).symm.isOpenEmbedding.locallyPathConnectedSpace
 
 end level
+
+/-! (C) the presentation -/
+section presentation
+
+variable {V : Type u} (G : SimpleGraph V) (h : V → ℝ) {n : ℕ} (S : CriticalValues n)
+
+private theorem exists_spanDart {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) :
+    ∃ d : G.Dart, dartEdge d = y.1 ∧ h d.fst ≤ p ∧ q ≤ h d.snd := by
+  rcases y.2 with ⟨d, hd, hmin, hmax⟩
+  rcases le_total (h d.fst) (h d.snd) with hab | hab
+  · refine ⟨d, hd, ?_, ?_⟩
+    · rw [min_eq_left hab] at hmin
+      exact hmin
+    · rw [max_eq_right hab] at hmax
+      exact hmax
+  · refine ⟨d.symm, ?_, ?_, ?_⟩
+    · rw [dartEdge_symm]
+      exact hd
+    · rw [min_eq_right hab] at hmin
+      exact hmin
+    · rw [max_eq_left hab] at hmax
+      exact hmax
+
+/-- The upward dart of a spanning edge over a nonempty closed interval. -/
+noncomputable def spanDart {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) : G.Dart :=
+  Classical.choose (exists_spanDart G h hpq y)
+
+/-- The defining edge and endpoint inequalities of `spanDart`. -/
+theorem spanDart_spec {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) :
+    dartEdge (spanDart G h hpq y) = y.1 ∧
+      h (spanDart G h hpq y).fst ≤ p ∧ q ≤ h (spanDart G h hpq y).snd :=
+  Classical.choose_spec (exists_spanDart G h hpq y)
+
+private theorem spanDart_height_lt {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) :
+    h (spanDart G h hpq y).fst < h (spanDart G h hpq y).snd := by
+  have hd := spanDart_spec G h hpq y
+  exact lt_of_lt_of_le (hd.2.1.trans_lt hpq) hd.2.2
+
+private theorem spanDart_den_pos {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) :
+    0 < h (spanDart G h hpq y).snd - h (spanDart G h hpq y).fst :=
+  sub_pos.2 (spanDart_height_lt G h hpq y)
+
+private theorem spanParam_mem {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) (t : Icc p q) :
+    ((t : ℝ) - h (spanDart G h hpq y).fst) /
+        (h (spanDart G h hpq y).snd - h (spanDart G h hpq y).fst) ∈ unitInterval := by
+  have hden := spanDart_den_pos G h hpq y
+  have h₁ := (spanDart_spec G h hpq y).2.1
+  have h₂ := (spanDart_spec G h hpq y).2.2
+  have ht₁ : p ≤ (t : ℝ) := t.2.1
+  have ht₂ : (t : ℝ) ≤ q := t.2.2
+  refine ⟨div_nonneg ?_ hden.le, (div_le_one hden).2 ?_⟩
+  · linarith
+  · linarith
+
+private noncomputable def spanParam {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) :
+    C(Icc p q, unitInterval) :=
+  ⟨fun t => ⟨((t : ℝ) - h (spanDart G h hpq y).fst) /
+      (h (spanDart G h hpq y).snd - h (spanDart G h hpq y).fst), spanParam_mem G h hpq y t⟩,
+    Continuous.subtype_mk
+      ((continuous_subtype_val.sub continuous_const).div_const _)
+      (fun t => spanParam_mem G h hpq y t)⟩
+
+/-- The point of a spanning edge at every height in its closed span. -/
+noncomputable def spanPoint {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) :
+    C(Icc p q, Realization G) :=
+  ⟨fun t => edgePoint G (spanDart G h hpq y) (spanParam G h hpq y t),
+    (continuous_edgePoint G (spanDart G h hpq y)).comp
+      (spanParam G h hpq y).continuous⟩
+
+private theorem spanPoint_apply {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) (t : Icc p q) :
+    spanPoint G h hpq y t =
+      edgePoint G (spanDart G h hpq y) (spanParam G h hpq y t) := rfl
+
+private theorem coe_spanParam {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) (t : Icc p q) :
+    (spanParam G h hpq y t : ℝ) =
+      ((t : ℝ) - h (spanDart G h hpq y).fst) /
+        (h (spanDart G h hpq y).snd - h (spanDart G h hpq y).fst) := rfl
+
+/-- The graph-PL height of `spanPoint` is its interval parameter. -/
+theorem plHeight_spanPoint {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) (t : Icc p q) :
+    plHeight G h (spanPoint G h hpq y t) = t := by
+  rw [spanPoint_apply, plHeight_edgePoint]
+  unfold dartHeight
+  rw [coe_spanParam]
+  have hden := spanDart_den_pos G h hpq y
+  have hmul := div_mul_cancel₀
+    ((t : ℝ) - h (spanDart G h hpq y).fst)
+    hden.ne'
+  linear_combination hmul
+
+/-- The closed-level and spanning-edge cylinder presentation of a graph realization. -/
+noncomputable def graphPLPresentation : CylinderPresentation.{u} n where
+  V i := ClosedLevel G h (S.value i)
+  E e := SpanEdge G h (S.value e.castSucc) (S.value e.succ)
+  topV _ := inferInstance
+  topE _ := ⊥
+  left e := @ContinuousMap.mk _ _ ⊥ _
+    (fun y => ⟨spanPoint G h (S.value_castSucc_lt_succ e) y
+      (CylinderPresentation.segBot S e), by
+        rw [plHeight_spanPoint]
+        rfl⟩)
+    continuous_bot
+  right e := @ContinuousMap.mk _ _ ⊥ _
+    (fun y => ⟨spanPoint G h (S.value_castSucc_lt_succ e) y
+      (CylinderPresentation.segTop S e), by
+        rw [plHeight_spanPoint]
+        rfl⟩)
+    continuous_bot
+
+instance instDiscreteTopologyGraphPLPresentationE (e : Fin n) :
+    DiscreteTopology ((graphPLPresentation G h S).E e) := ⟨rfl⟩
+
+instance instFiniteGraphPLPresentationE [Finite V] (e : Fin n) :
+    Finite ((graphPLPresentation G h S).E e) := by
+  classical
+  change Finite {a : G.edgeSet //
+    EdgeSpans G h (S.value e.castSucc) (S.value e.succ) a}
+  infer_instance
+
+instance instCompactSpaceGraphPLPresentationV [Finite V] (i : Fin (n + 1)) :
+    CompactSpace ((graphPLPresentation G h S).V i) := by
+  change CompactSpace (ClosedLevel G h (S.value i))
+  exact compactSpace_closedLevel G h _
+
+instance instLocallyPathConnectedSpaceGraphPLPresentationV [Finite V] (i : Fin (n + 1)) :
+    LocallyPathConnectedSpace ((graphPLPresentation G h S).V i) := by
+  change LocallyPathConnectedSpace (ClosedLevel G h (S.value i))
+  exact locallyPathConnectedSpace_closedLevel G h _
+
+private noncomputable def graphPLCompatibleMaps :
+    (graphPLPresentation G h S).CompatibleMaps S (Realization G) :=
+  { vertex := fun i =>
+      (⟨Subtype.val, continuous_subtype_val⟩ :
+        C((graphPLPresentation G h S).V i, Realization G))
+    cylinder := fun e =>
+      (⟨fun p => spanPoint G h (S.value_castSucc_lt_succ e) p.1 p.2,
+        continuous_prod_of_discrete_left.2 fun y =>
+          (spanPoint G h (S.value_castSucc_lt_succ e) y).continuous⟩ :
+        C((graphPLPresentation G h S).Cylinder S e, Realization G))
+    segBot_eq := fun e y => rfl
+    segTop_eq := fun e y => rfl }
+
+/-- The map from the cylinder presentation to the graph realization. -/
+noncomputable def graphPLPresentationMap :
+    C((graphPLPresentation G h S).Realization S, Realization G) :=
+  CylinderPresentation.lift (graphPLCompatibleMaps G h S)
+
+private theorem graphPLPresentationMap_ofCylinder (e : Fin n)
+    (y : (graphPLPresentation G h S).E e) (t : CylinderPresentation.Seg S e) :
+    graphPLPresentationMap G h S
+        ((graphPLPresentation G h S).ofCylinder S e (y, t)) =
+      spanPoint G h (S.value_castSucc_lt_succ e) y t := rfl
+
+private theorem graphPLPresentationMap_ofStrip (e : Fin n)
+    (p : (graphPLPresentation G h S).E e × (S.K e : Set ℝ)) :
+    graphPLPresentationMap G h S ((graphPLPresentation G h S).ofStrip S e p) =
+      spanPoint G h (S.value_castSucc_lt_succ e) p.1
+        (CylinderPresentation.gapIncl S e p.2) := by
+  rw [CylinderPresentation.ofStrip_eq_ofCylinder, graphPLPresentationMap_ofCylinder]
+
+/-- The presentation map is the subtype inclusion on a vertex piece. -/
+theorem graphPLPresentationMap_ofVertex (i : Fin (n + 1))
+    (p : ClosedLevel G h (S.value i)) :
+    graphPLPresentationMap G h S ((graphPLPresentation G h S).ofVertex S i p) = p.1 := rfl
+
+/-- The presentation map preserves the graph-PL height. -/
+theorem plHeight_graphPLPresentationMap (x : (graphPLPresentation G h S).Realization S) :
+    plHeight G h (graphPLPresentationMap G h S x) =
+      (graphPLPresentation G h S).height S x := by
+  have hmap :
+      (plHeight G h).comp (graphPLPresentationMap G h S) =
+        (graphPLPresentation G h S).height S := by
+    refine (graphPLPresentation G h S).hom_ext ?_ ?_
+    · intro i p
+      exact (p.2 : plHeight G h p.1 = S.value i)
+    · intro e p
+      exact plHeight_spanPoint G h (S.value_castSucc_lt_succ e) p.1 p.2
+  exact congrArg (fun f => f x) hmap
+
+/-- The presentation map is injective, without a covering hypothesis. -/
+theorem graphPLPresentationMap_injective :
+    Function.Injective (graphPLPresentationMap G h S) := by
+  intro x y hxy
+  rcases (graphPLPresentation G h S).exists_rep S x with ⟨i, p, rfl⟩ | ⟨e, p, rfl⟩
+  · rcases (graphPLPresentation G h S).exists_rep S y with ⟨j, q, rfl⟩ | ⟨e', q, rfl⟩
+    · have hpq : p.1 = q.1 := by
+        rw [← graphPLPresentationMap_ofVertex G h S i p,
+          ← graphPLPresentationMap_ofVertex G h S j q]
+        exact hxy
+      have hij : i = j := S.strictMono.injective (by
+        calc
+          S.value i = plHeight G h p.1 := p.2.symm
+          _ = plHeight G h q.1 := congrArg (plHeight G h) hpq
+          _ = S.value j := q.2)
+      subst j
+      apply congrArg ((graphPLPresentation G h S).ofVertex S i)
+      exact Subtype.ext hpq
+    · exfalso
+      have hh : S.value i = (q.2 : ℝ) := by
+        have := congrArg (plHeight G h) hxy
+        rw [plHeight_graphPLPresentationMap, plHeight_graphPLPresentationMap] at this
+        simpa [CylinderPresentation.height_ofVertex, CylinderPresentation.height_ofStrip] using this
+      exact S.value_notMem_K e' i (hh.symm ▸ q.2.2)
+  · rcases (graphPLPresentation G h S).exists_rep S y with ⟨j, q, rfl⟩ | ⟨e', q, rfl⟩
+    · exfalso
+      have hh : (p.2 : ℝ) = S.value j := by
+        have := congrArg (plHeight G h) hxy
+        rw [plHeight_graphPLPresentationMap, plHeight_graphPLPresentationMap] at this
+        simpa [CylinderPresentation.height_ofStrip, CylinderPresentation.height_ofVertex] using this
+      exact S.value_notMem_K e j (hh ▸ p.2.2)
+    · have hh : (p.2 : ℝ) = (q.2 : ℝ) := by
+        have := congrArg (plHeight G h) hxy
+        rw [plHeight_graphPLPresentationMap, plHeight_graphPLPresentationMap] at this
+        simpa [CylinderPresentation.height_ofStrip] using this
+      have he : e = e' := S.eq_of_mem_K_of_mem_Icc
+        (by rw [← hh]; exact p.2.2) (Ioo_subset_Icc_self q.2.2)
+      subst e'
+      have hpoint :
+          spanPoint G h (S.value_castSucc_lt_succ e) p.1
+              (CylinderPresentation.gapIncl S e p.2) =
+            spanPoint G h (S.value_castSucc_lt_succ e) q.1
+              (CylinderPresentation.gapIncl S e q.2) := by
+        rw [graphPLPresentationMap_ofStrip G h S e p,
+          graphPLPresentationMap_ofStrip G h S e q] at hxy
+        exact hxy
+      let d := spanDart G h (S.value_castSucc_lt_succ e) p.1
+      let d' := spanDart G h (S.value_castSucc_lt_succ e) q.1
+      have hd := spanDart_spec G h (S.value_castSucc_lt_succ e) p.1
+      have hd' := spanDart_spec G h (S.value_castSucc_lt_succ e) q.1
+      have htp : h d.fst < (p.2 : ℝ) := by
+        dsimp [d]
+        exact lt_of_le_of_lt hd.2.1 p.2.2.1
+      have hsp : (p.2 : ℝ) < h d.snd := by
+        exact lt_of_lt_of_le p.2.2.2 hd.2.2
+      have htq : h d'.fst < (q.2 : ℝ) := by
+        dsimp [d']
+        exact lt_of_le_of_lt hd'.2.1 q.2.2.1
+      have hsq : (q.2 : ℝ) < h d'.snd := by
+        exact lt_of_lt_of_le q.2.2.2 hd'.2.2
+      have hden : 0 < h d.snd - h d.fst := by linarith
+      have hden' : 0 < h d'.snd - h d'.fst := by linarith
+      have ht₀ :
+          (⟨((p.2 : ℝ) - h d.fst) / (h d.snd - h d.fst), by
+            refine ⟨div_nonneg (by linarith) hden.le, (div_le_one hden).2 (by linarith)⟩⟩ :
+            unitInterval) ≠ 0 := by
+        apply unitInterval.coe_ne_zero.mp
+        exact div_ne_zero (sub_ne_zero.mpr htp.ne') hden.ne'
+      have ht₁ :
+          (⟨((p.2 : ℝ) - h d.fst) / (h d.snd - h d.fst), by
+            refine ⟨div_nonneg (by linarith) hden.le, (div_le_one hden).2 (by linarith)⟩⟩ :
+            unitInterval) ≠ 1 := by
+        apply unitInterval.coe_ne_one.mp
+        intro hone
+        have := (div_eq_one_iff_eq hden.ne').1 hone
+        linarith
+      have hpp : edgePoint G d
+            ⟨((p.2 : ℝ) - h d.fst) / (h d.snd - h d.fst), by
+              refine ⟨div_nonneg (by linarith) hden.le, (div_le_one hden).2 (by linarith)⟩⟩ =
+          edgePoint G d'
+            ⟨((q.2 : ℝ) - h d'.fst) / (h d'.snd - h d'.fst), by
+              refine ⟨div_nonneg (by linarith) hden'.le, (div_le_one hden').2 (by linarith)⟩⟩ := by
+        simpa [spanPoint, spanParam, d, d', CylinderPresentation.gapIncl] using hpoint
+      rcases (edgePoint_eq_edgePoint_iff G ht₀ ht₁).1 hpp with hdart | hdart
+      · have hy : p.1 = q.1 := by
+          apply Subtype.ext
+          exact hd.1.symm.trans ((congrArg dartEdge hdart.1.symm).trans hd'.1)
+        apply congrArg ((graphPLPresentation G h S).ofStrip S e)
+        apply Prod.ext hy
+        exact Subtype.ext hh
+      · have hy : p.1 = q.1 := by
+          apply Subtype.ext
+          exact hd.1.symm.trans ((dartEdge_symm d).symm.trans
+            ((congrArg dartEdge hdart.1.symm).trans hd'.1))
+        apply congrArg ((graphPLPresentation G h S).ofStrip S e)
+        apply Prod.ext hy
+        exact Subtype.ext hh
+
+/-- The presentation map is surjective when every vertex height is covered. -/
+theorem graphPLPresentationMap_surjective {S : CriticalValues n} (hS : CoversVertexHeights S h) :
+    Function.Surjective (graphPLPresentationMap G h S) := by
+  intro z
+  induction z using ind G with
+  | vertex v =>
+      obtain ⟨i, hi⟩ := hS v
+      refine ⟨(graphPLPresentation G h S).ofVertex S i
+        ⟨vertex G v, by simpa [plHeight_vertex] using hi.symm⟩, ?_⟩
+      rw [graphPLPresentationMap_ofVertex]
+  | edgePoint d t =>
+      let c : ℝ := dartHeight h d t
+      by_cases hlevel : ∃ i, S.value i = c
+      · obtain ⟨i, hi⟩ := hlevel
+        refine ⟨(graphPLPresentation G h S).ofVertex S i
+          ⟨edgePoint G d t, by
+            change plHeight G h (edgePoint G d t) = S.value i
+            rw [plHeight_edgePoint, hi]⟩, ?_⟩
+        rw [graphPLPresentationMap_ofVertex]
+      · have hnot_level : ∀ i, S.value i ≠ c := by
+          intro i hi
+          exact hlevel ⟨i, hi⟩
+        have hvbounds : ∀ v, h v ∈ Icc (S.value 0) (S.value (Fin.last n)) := by
+          intro v
+          obtain ⟨i, hi⟩ := hS v
+          rw [← hi]
+          exact ⟨S.strictMono.monotone (Fin.zero_le i),
+            S.strictMono.monotone (Fin.le_last i)⟩
+        have hrange := plHeight_mem_Icc_of_forall hvbounds (edgePoint G d t)
+        have hcrange : c ∈ Icc (S.value 0) (S.value (Fin.last n)) := by
+          simpa [c, plHeight_edgePoint] using hrange
+        obtain ⟨piece, hpiece, huniq⟩ := S.exists_piece c
+        have hcK : ∃ e : Fin n, c ∈ (S.K e : Set ℝ) := by
+          cases piece with
+          | star i => exact False.elim (hnot_level i (huniq i (S.value_mem_J i)))
+          | gap e => exact ⟨e, hpiece⟩
+          | lowerTail => exact (not_lt_of_ge hcrange.1 hpiece).elim
+          | upperTail => exact (not_lt_of_ge hcrange.2 hpiece).elim
+        obtain ⟨e, hce⟩ := hcK
+        have hact : EdgeActive G h (S.K e) (dartEdge d) := by
+          exact edgeActive_dartEdge_of_mem (I := S.K e) (by simpa [c] using hce)
+        have hspan : EdgeSpans G h (S.value e.castSucc) (S.value e.succ) (dartEdge d) := by
+          let a : {a : G.edgeSet // EdgeActive G h (S.K e) a} :=
+            ⟨dartEdge d, hact⟩
+          exact (activeEdgeEquivSpans (G := G) (h := h) (S.value_castSucc_lt_succ e)
+            (fun v => hS.notMem_K e v) a).2
+        let y : SpanEdge G h (S.value e.castSucc) (S.value e.succ) := ⟨dartEdge d, hspan⟩
+        refine ⟨(graphPLPresentation G h S).ofStrip S e (y, ⟨c, hce⟩), ?_⟩
+        rw [CylinderPresentation.ofStrip_eq_ofCylinder,
+          graphPLPresentationMap_ofCylinder]
+        have hne : h d.fst ≠ h d.snd := by
+          intro heq
+          obtain ⟨i, hi⟩ := hS d.fst
+          apply hnot_level i
+          calc
+            S.value i = h d.fst := hi
+            _ = dartHeight h d t := (dartHeight_of_eq h heq t).symm
+        have hsheight := plHeight_spanPoint G h (S.value_castSucc_lt_succ e) y
+          (CylinderPresentation.gapIncl S e ⟨c, hce⟩)
+        rw [spanPoint_apply, plHeight_edgePoint] at hsheight
+        rw [spanPoint_apply]
+        have hd' := spanDart_spec G h (S.value_castSucc_lt_succ e) y
+        generalize spanParam G h (S.value_castSucc_lt_succ e) y
+          (CylinderPresentation.gapIncl S e ⟨c, hce⟩) = s at hsheight ⊢
+        generalize spanDart G h (S.value_castSucc_lt_succ e) y = d' at hsheight hd' ⊢
+        have hsc : dartHeight h d' s = dartHeight h d t := hsheight
+        have hde : dartEdge d' = dartEdge d := hd'.1
+        rcases dartEdge_eq_iff.1 hde with rfl | rfl
+        · exact congrArg (edgePoint G d') (level_eq_of_dartHeight_eq G h hne hsc)
+        · have hst : s = unitInterval.symm t :=
+            level_eq_of_dartHeight_eq G h (d := d.symm) hne.symm
+              (hsc.trans (dartHeight_symm h d t).symm)
+          rw [hst, edgePoint_symm]
+
+/-- The compact Hausdorff homeomorphism induced by the presentation map. -/
+noncomputable def graphPLPresentationHomeomorph [Finite V] {S : CriticalValues n}
+    (hS : CoversVertexHeights S h) :
+    (graphPLPresentation G h S).Realization S ≃ₜ Realization G := by
+  letI : CompactSpace ((graphPLPresentation G h S).Realization S) :=
+    (graphPLPresentation G h S).compactSpace S
+  letI : T2Space (Realization G) := t2Space_realization G
+  exact (graphPLPresentationMap G h S).continuous.homeoOfEquivCompactToT2
+    (f := Equiv.ofBijective _ ⟨graphPLPresentationMap_injective G h S,
+      graphPLPresentationMap_surjective G h hS⟩)
+
+/-- Evaluation of `graphPLPresentationHomeomorph` is the presentation map. -/
+theorem graphPLPresentationHomeomorph_apply [Finite V] {S : CriticalValues n}
+    (hS : CoversVertexHeights S h) (x) :
+    graphPLPresentationHomeomorph G h hS x = graphPLPresentationMap G h S x := by
+  rfl
+
+end presentation
 
 end
 
