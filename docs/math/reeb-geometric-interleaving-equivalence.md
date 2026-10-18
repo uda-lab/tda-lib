@@ -150,10 +150,11 @@ function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installe
 * **Interval-local controls.** For every parameter below `1/4`, the parallel edges and the single
   edge have no geometric interleaving in either direction, with explicit instances at `1/8` and
   `6/25` (`0.24`). At `1/4`, the double thickening of every nonempty interval is not contained in
-  `(0,1)`. The edge--midpoint pair has no local component obstruction, while the two disjoint
-  edges and the single edge have distance `⊤` via the top-component obstruction at `⊤`.
-  Together, these are controls for the independence of the obstruction from the range and
-  top-component bounds.
+  `(0,1)`. In the edge--midpoint pair, the nontriviality form of the local obstruction never
+  applies with the single edge as source, while the two disjoint edges and the single edge have
+  distance `⊤` via the top-component obstruction at `⊤`. Together, these are controls for the
+  independence of the nontriviality form of the obstruction from the range and top-component
+  bounds.
 * **Smoothing controls.** Smoothing the edge--midpoint and parallel--single witnesses gives
   computed components, coherence laws, an unchanged edge--midpoint threshold, an exact smoothed
   distance, and two distance bounds.
@@ -237,10 +238,13 @@ nonempty interval has its double thickening contained in `(0,1)`, so the injecti
 unavailable. In particular the pair has positive distance, while its height-range bound is `0`, a
 strict gap `0 < 1/4`.
 
-The local obstruction is independent of the edge-versus-midpoint obstruction: every single-edge
-value is a subsingleton, so the local hypothesis never applies in that direction. The positive
-edge-midpoint result below `1/2` instead comes from the height-range bound. For two disjoint edges
-versus the single edge, the same local theorem at `⊤` gives geometric distance `⊤`.
+The nontriviality (subsingleton-target) form of the local obstruction is independent of the
+edge-versus-midpoint obstruction: every single-edge value is a subsingleton, so the local
+hypothesis never applies with the single edge as source. The cardinality form is not excluded by
+this argument: at `ε = 0`, an interval above height `1/2` meets the edge in one component while
+the midpoint value is empty. The positive edge-midpoint result below `1/2` instead comes from the
+height-range bound. For two disjoint edges versus the single edge, the same local theorem at `⊤`
+gives geometric distance `⊤`.
 
 ## Smoothing of geometric interleavings
 

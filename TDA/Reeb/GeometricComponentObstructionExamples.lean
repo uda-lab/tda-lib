@@ -194,10 +194,11 @@ theorem thicken_half_not_le_K :
     at hleft hright
   linarith [hleft.1, hright.2]
 
-/-- The local component obstruction is unavailable for the single edge versus its midpoint:
-`edgeMidInterleaving` exists at `1 / 2`, where component counts match, while the positive
-distance below `1 / 2` (`edgeMid_isEmpty`) comes from the range bound.  The two obstructions
-are therefore independent. -/
+/-- The subsingleton (nontriviality) form of the local component obstruction never applies with
+the single edge as source, because every single-edge value is a subsingleton.  The positive
+edge--midpoint distance below `1 / 2` (`edgeMid_isEmpty`) comes from the range bound.  This lemma
+does not exclude the cardinality form: an empty midpoint value can be smaller than a one-point
+edge value. -/
 theorem edgeMid_obstruction_unavailable :
     ∀ I : OpenInterval,
       ¬ Nontrivial ((cosheafFunctor.obj singleGraph).obj.obj I) := by
