@@ -159,7 +159,7 @@ private theorem bot_edge_false (e : (⊥ : SimpleGraph V).edgeSet) : False := by
 private theorem missing_ioo_card :
     Nat.card ((intervalComponents (plHeight (⊥ : SimpleGraph Bool) h02)).obj
       (ioo (-1) 1)) = 1 := by
-  haveI : IsEmpty (UncoveredEdge (⊥ : SimpleGraph Bool) h02 (ioo (-1) 1)) :=
+  have : IsEmpty (UncoveredEdge (⊥ : SimpleGraph Bool) h02 (ioo (-1) 1)) :=
     ⟨fun e => bot_edge_false e.1⟩
   have h_induced :
       Nat.card ((⊥ : SimpleGraph Bool).induce
@@ -202,7 +202,7 @@ theorem missing_not_isConstructibleAt :
       fun _ => by
         change (S0.value 0) ∈ ioo (-1) 1
         simp [S0, mem_ioo]⟩
-  haveI : Finite (((intervalComponents (plHeight (⊥ : SimpleGraph Bool) h02)).obj I)) :=
+  have : Finite (((intervalComponents (plHeight (⊥ : SimpleGraph Bool) h02)).obj I)) :=
     hF.finite I
   have hcard := Nat.card_le_card_of_surjective
     ((intervalComponents (plHeight (⊥ : SimpleGraph Bool) h02)).map (homOfLE hIJ))
