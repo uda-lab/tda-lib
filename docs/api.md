@@ -501,6 +501,18 @@ Linear and Gaussian diagram Gram matrices are positive semidefinite for any fami
 diagrams. The RKHS norm is not the pixel ℓ¹ norm above; no identification or computable
 kernel evaluation is supplied.
 
+`TDA.Persistence.WeightedKernelInjectivity` factors the Gaussian kernel through exponential
+characters and Dedekind's linear-independence lemma, proving strict positive definiteness
+for injective point families through `posDef_kernel` and `posDef_kernel_family`. It gives
+the finite-support `measureEmbedding` and its injectivity and distance-zero
+characterization, together with the diagram `weightedMeasure` and the equality theorem
+`diagramEmbedding_eq_measureEmbedding`. The diagram characterization
+`diagramEmbedding_eq_iff`, its positive-diagram corollary and whole-diagram recovery
+identify finite parts with multiplicity under σ ≠ 0 and pointwise positivity of the
+finite-point weights. `eq_of_diagramEmbedding_eq` recovers the whole diagram only when
+the essential parts are also assumed equal. The hypotheses are σ ≠ 0, not 0 < σ, and
+pointwise positivity of the weight at the finite points.
+
 `TDA.Persistence.GaussianFeature` proves that unit vectors with inner product
 `exp(-r² / (2s²))` are at distance at most `|r| / |s|`. It also builds the Gaussian RKHS
 `GaussianSpace τ E` of any real inner product space with kernel functions

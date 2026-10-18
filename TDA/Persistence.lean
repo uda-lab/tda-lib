@@ -92,6 +92,7 @@ import TDA.Persistence.RealInducedMatching
 import TDA.Persistence.ConstructibleInducedMatching
 import TDA.Persistence.GaussianGram
 import TDA.Persistence.WeightedKernel
+import TDA.Persistence.WeightedKernelInjectivity
 import TDA.Persistence.BoundaryAugmentedMatching
 import TDA.Persistence.FiniteBoundaryTransport
 import TDA.Persistence.BoundaryCost

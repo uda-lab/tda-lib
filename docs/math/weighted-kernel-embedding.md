@@ -125,6 +125,37 @@ not an L² persistence surface. KFH18 §4.1.3 and footnote 15 explain that compa
 the two needs a bandwidth rescaling and works only in the Gaussian case. The library
 claims no such identification.
 
+## Injectivity on finite diagrams
+
+For every real σ, the Gaussian kernel factors as
+
+`k_σ(z,p) = g_σ(z) χ_{σ,p}(z) g_σ(p)`,
+
+where `g_σ(z) = exp(−‖z‖²/(2σ²))` and `χ_{σ,p}(z) = exp(⟨z,p⟩/σ²)`. At σ = 0,
+Lean's division makes every factor 1. The functions `χ_{σ,p}` are exponential characters
+of the additive group of `ℝ × ℝ`, viewed as characters of its multiplicative wrapper.
+When σ ≠ 0, distinct points give distinct characters, and Dedekind's independence lemma
+(`linearIndependent_monoidHom`) makes them linearly independent. The positive factors in
+the factorization transfer this to the Gaussian kernel functions `k_σ(·,p)` and to the
+RKHS features.
+
+Consequently, the Gaussian Gram matrix on every injective finite family of points is
+strictly positive definite. This is the finite-support form of KFH18 Proposition 6:
+the map sending a finitely supported signed measure `μ` to
+`Σₚ μ(p) k_σ(·,p)` is injective, and the corresponding RKHS distance is zero exactly
+when the two signed measures agree. For a diagram, the weighted measure is
+`Σₚ count_D(p) w(Tp) δₚ`, so equality of embeddings identifies finite points with
+multiplicity when the weight is pointwise positive on both finite parts. If the diagrams
+are positive and the weight is positive on the open upper half-plane, that pointwise
+hypothesis follows automatically. If the essential parts are also assumed equal, the
+embedding then recovers the whole diagram.
+
+The hypotheses are substantive. Repeated labels make the Gram matrix only positive
+semidefinite (F2), σ = 0 makes every feature equal and destroys measure injectivity
+(F3), and a vanishing weight erases finite points (F5). In particular, positivity on
+all finite points is needed for the general diagram characterization, while `IsPositive`
+is needed when positivity is supplied only on the open upper half-plane.
+
 ## Lean interfaces and sources
 
 `TDA.Persistence.GaussianGram` holds the matrix results, `gaussianGram` and the
@@ -137,6 +168,12 @@ occurrences, an RKHS distance, the diagonal and essential-only boundary cases, a
 Gaussian diagram Gram entry. All definitions are noncomputable; no kernel evaluation
 algorithm is provided.
 
+`TDA.Persistence.WeightedKernelInjectivity` contains the character factorization,
+linear-independence, strict-positive-definiteness and finite-support injectivity results,
+as well as the weighted-measure and diagram-characterization theorems. The companion
+`TDA.Persistence.WeightedKernelInjectivityExamples` module contains the F1–F7 consumers
+and negative controls.
+
 The construction follows [Kusano–Fukumizu–Hiraoka](references.md#KFH18) §2.3, §3.1
 eq. (3), §3.3 eqs. (12)–(13) and the product principle in footnote 10. The RKHS and the
 Schur product theorem come from the pinned [mathlib](references.md#mathlib-0df444a). The
@@ -148,6 +185,5 @@ these bounds at KFH18's w_arc weight and composes them with the Rips bound.
 The size-dependent total-persistence and finite-bar bounds used by bounded-carrier consumers
 are stated in [total persistence and finite Rips–Čech bounds](total-persistence.md).
 
-Not covered here: bottleneck stability under total-persistence bounds (Proposition 8,
-Theorem 9), injectivity or universality of the embedding, the RKHS isomorphism f ↦ w f,
-random features and essential bars.
+Not covered here: C₀-universality on general measures, the Proposition 7 isomorphism,
+Proposition 8/Theorem 9, random features and essential bars.
