@@ -117,17 +117,6 @@ and the log-scale module in degree 0 is not constructible on any finite grid. Fo
   Čech filter is not positive off vertices. No label metric is compatible with this
   configuration.
 
-The triangle paragraph below is still only an unproved orientation calculation; its explicit
-diagrams and bottleneck value are not library fixtures. The triangle (0,0), (2,0), (1,2) has
-Rips values 0 on vertices, 2 on {0,1}, √5 on the two other edges and √5 on the 2-face. Its
-Rips 1-skeleton closes at √5 together with the 2-face, so its Rips degree-1 diagram is empty.
-Its Čech values are 1 on {0,1}, √5/2 on the other edges and 5/4, the circumradius, on the
-2-face. The hollow triangle lives on [√5/2, 5/4), so the Čech degree-1 diagram is
-{(√5/2, 5/4)} and its log-scale diagram is {(½ log (5/4), log (5/4))}. The log-scale
-bottleneck distance between the two is ¼ log (5/4), well below log 2. These values are
-recorded for orientation and are not proved; the fixtures establish only the bounds and
-memberships above.
-
 ## Explicit two-point diagrams
 
 The two-point radius-level diagrams over `ZMod 2` are
@@ -161,6 +150,55 @@ on edges; the hypothesis `1 ≤ n` therefore cannot be dropped.
 The two-point diagrams, bottleneck values, and necessity fixtures in this section are library
 extensions; no source theorem is cited for them.
 
+## Explicit triangle diagrams
+
+The acute library triangle `Triangle.pts` has vertices `(0,0)`, `(2,0)`, `(1,2)`,
+circumcentre `(1, 3/4)`, and circumradius `5/4`. Its exact face values are
+
+| face | Čech | Rips |
+| --- | ---: | ---: |
+| a vertex | `0` | `0` |
+| `{0,1}` | `1` | `2` |
+| `{0,2}` | `√5/2` | `√5` |
+| `{1,2}` | `√5/2` | `√5` |
+| `{0,1,2}` | `5/4` | `√5` |
+
+The entries are proved by `cech_value_singleton`, `triangle_cech_value_edge01`,
+`triangle_cech_value_edge02`, `triangle_cech_value_edge12`, `triangle_cech_value_tri`,
+`triangle_rips_value_edge01`, `triangle_rips_value_edge02`, `triangle_rips_value_edge12`,
+and `triangle_rips_value_tri`.
+
+Over `ZMod 2`, the certified filled-triangle pivot computation gives the radius-scale
+diagrams (the `cechT` and `ripsT` filters are defined in the examples module):
+
+```text
+(dgm (ZMod 2) cechT 0).points = {(0, ⊤), (0, 1), (0, √5/2)},
+(dgm (ZMod 2) cechT 1).points = {(√5/2, 5/4)},
+(dgm (ZMod 2) ripsT 0).points = {(0, ⊤), (0, 2), (0, √5)},
+(dgm (ZMod 2) ripsT 1).points = 0.
+```
+
+These are `triangle_cech_dgm_zero`, `triangle_cech_dgm_one`, `triangle_rips_dgm_zero`,
+and `triangle_rips_dgm_one`. The Rips degree-1 pivot pair is `(√5, √5)` and is removed
+by the diagonal filter, as recorded by `triangle_rips_pair_diagonal`. At log scale in
+degree 1, `triangle_cech_logDgm_one` gives `{(½ log (5/4), log (5/4))}`, while
+`triangle_rips_logDgm_one` gives the empty diagram. No degree-0 log-scale statement is made.
+
+With Rips first and Čech second, the exact bottleneck values are `√5/2` in degree 0 at
+radius scale (`triangle_bottleneck_zero`), `(5/4 − √5/2)/2` in degree 1 at radius scale
+(`triangle_bottleneck_one`), and `¼ log (5/4)` in degree 1 at log scale
+(`triangle_logBottleneck_one`). The latter is also the log-scale interleaving distance by
+`triangle_logInterleaving_one`, and is strictly below `log 2` by
+`triangle_logBottleneck_one_lt_log_two`.
+
+The right-triangle control `RightTriangle.pts` has vertices `(0,0)`, `(2,0)`, `(2,2)`;
+its Čech 2-face enters with the hypotenuse (`rightTriangle_cech_value_tri_eq_edge02`),
+both degree-1 diagrams are empty (`rightTriangle_cech_dgm_one` and
+`rightTriangle_rips_dgm_one`), and its degree-1 log-scale bottleneck is `0`
+(`rightTriangle_logBottleneck_one`). The value `¼ log (4/3)` belongs to the equilateral
+triangle, which is not a fixture. These face values, diagrams, and distances are library
+extensions with no cited source theorem.
+
 ## Scope
 
 Degree 0 at log scale is not treated beyond the obstruction; it needs extended-real indexing
@@ -170,12 +208,15 @@ For `1 ≤ n` and `PositiveOnEdges f`, the identity
 order embedding `exp` to the log-scale diagram. The embedding is used in this direction
 because `Real.exp` is strictly increasing on all of `ℝ`; `Real.log` is not an order embedding
 of `ℝ`, so the reverse comparison is expressed by the pointwise log form rather than by a
-diagram map along `log`. Explicit Čech and Rips diagrams beyond the two-point fixtures,
-Jung's constant, Hausdorff and Gromov–Hausdorff statements and general positive scaling of
-real modules remain outside this note. For `1 ≤ c`, positive scaling of the filter becomes the
-shift by `logParam c` of its log-scale modules via `logModule_scale_shiftIso`, an isomorphism
-of modules; the corresponding translation formula for `logDgm` is not stated. The log-scale
-module, constructibility, the module diagram and the isometry are used unchanged.
+diagram map along `log`. Explicit diagrams are stated only for the two-point fixtures, as in
+their section, and for the triangle fixtures: degrees 0 and 1 at radius scale and degree 1 at
+log scale over `ZMod 2`. For the triangle, other fields and degrees `n ≥ 2` are not treated;
+other configurations are outside this note. Jung's constant, Hausdorff and Gromov–Hausdorff
+statements and general positive scaling of real modules remain outside this note. For `1 ≤ c`,
+positive scaling of the filter becomes the shift by `logParam c` of its log-scale modules via
+`logModule_scale_shiftIso`, an isomorphism of modules; the corresponding translation formula
+for `logDgm` is not stated. The log-scale module, constructibility, the module diagram and the
+isometry are used unchanged.
 
 ## Sources
 

@@ -357,6 +357,11 @@ four results require `1 ≤ n` and `PositiveOnEdges f`, while constructibility o
 grid has the same hypotheses and works over a ring. The comparison and fixture results are
 library extensions with no cited source theorem.
 
+`TDA.Persistence.TriangleCechRipsExamples` computes the explicit triangle Čech and Rips
+diagrams in degrees 0 and 1 at radius scale and in degree 1 at log scale over `ZMod 2`, the
+exact bottleneck values including `triangle_logBottleneck_one` = `¼ log (5/4)`, and the
+right-triangle negative control; see [the triangle fixtures](math/log-scale-diagrams.md).
+
 `TDA.Filtration.CechDisplacement` compares two labelled families p, q : V → X in one
 ambient space label by label. Moving the points of a face by at most ε changes its Čech
 value by at most ε; the closed-ball radius estimate also needs ε ≥ 0 for the empty set.
