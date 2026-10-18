@@ -326,7 +326,7 @@ private theorem essentialPart_dgm_card_le_templateEssential (e : CompatibleOrder
   rw [essentialPart_add', essentialPart_finiteEmbed', essentialPart_essentialEmbed']
   simp
 
-/-- The finite bar count is bounded by the number of `(n+1)`-vertex faces. -/
+/-- The finite bar count is bounded by the number of `(n+2)`-vertex faces. -/
 theorem card_finitePart_dgm_le (f : FilterFunction K α) (n : ℕ) :
     (finitePart (dgm k f n).points).card ≤ Nat.card (Face K (n + 1)) := by
   obtain ⟨e⟩ := exists_compatibleOrder f
