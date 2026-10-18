@@ -194,13 +194,14 @@ theorem flat_oneSkeleton_not_adj :
 theorem point_boundary : 2 * (3 / 2 : ℝ) > (2 : ℝ) := by
   norm_num
 
+private theorem point_cover_mem (k : Fin 3) :
+    plHeight pointGraph (fun _ => (0 : ℝ)) (vertex pointGraph ()) ∈ U_point k := by
+  rw [plHeight_vertex]
+  fin_cases k <;> norm_num [uniformCover_apply, mem_uniformInterval]
+
 /-- The boundary Mapper one-skeleton has three vertices, one per cover member. -/
 theorem point_oneSkeleton_vertexCard :
     Nat.card (MapperVertex (plHeight pointGraph (fun _ => (0 : ℝ))) U_point) = 3 := by
-  have point_mem (k : Fin 3) :
-      plHeight pointGraph (fun _ => (0 : ℝ)) (vertex pointGraph ()) ∈ U_point k := by
-    rw [plHeight_vertex]
-    fin_cases k <;> norm_num [uniformCover_apply, mem_uniformInterval]
   have hsub (k : Fin 3) :
       Subsingleton (ZerothHomotopy
         (PullbackSpace (plHeight pointGraph (fun _ => (0 : ℝ))) U_point k)) := by
@@ -215,7 +216,7 @@ theorem point_oneSkeleton_vertexCard :
       Nonempty (ZerothHomotopy
         (PullbackSpace (plHeight pointGraph (fun _ => (0 : ℝ))) U_point k)) :=
     ⟨ZerothHomotopy.mk
-      (⟨vertex pointGraph (), point_mem k⟩ :
+      (⟨vertex pointGraph (), point_cover_mem k⟩ :
         PullbackSpace (plHeight pointGraph (fun _ => (0 : ℝ))) U_point k)⟩
   have hcard (k : Fin 3) :
       Nat.card (ZerothHomotopy
@@ -262,11 +263,6 @@ theorem point_oneSkeleton_complete
     obtain ⟨y, hy⟩ := componentCover_nonempty
       (plHeight pointGraph (fun _ => (0 : ℝ))) U_point b.1
     exact (Subsingleton.elim x y).symm ▸ hy
-
-private theorem point_cover_mem (k : Fin 3) :
-    plHeight pointGraph (fun _ => (0 : ℝ)) (vertex pointGraph ()) ∈ U_point k := by
-  rw [plHeight_vertex]
-  fin_cases k <;> norm_num [uniformCover_apply, mem_uniformInterval]
 
 private def point_vertex (k : Fin 3) : (D_point).V k :=
   (vertexCellsEquiv (plHeight pointGraph (fun _ => (0 : ℝ))) U_point k).symm
