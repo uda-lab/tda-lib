@@ -48,3 +48,4 @@ import TDA.Reeb.RGraphThickening
 import TDA.Reeb.RGraphWindow
 import TDA.Reeb.Smoothing
 import TDA.Reeb.Stability
+import TDA.Reeb.ConstructibleGeometricInterleaving
