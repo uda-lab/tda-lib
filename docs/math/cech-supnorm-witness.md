@@ -121,8 +121,8 @@ matches as recorded in the merged Čech note. The comparison theorems between wi
 are library extensions; no theorem of the paper is exported.
 
 The sup-norm Helly property of boxes and the equality Čech_r = Rips_{2r} in ℓ∞ are
-classical. No source for them is registered, and both are library extensions proved
-directly. Jung's theorem and Euclidean constants, persistence-level comparisons and
+proved directly in the library. Jung's theorem and Euclidean constants, persistence-level
+comparisons and
 diagram rescaling, Hausdorff and Gromov–Hausdorff stability, including Hausdorff-close
 witness sets, the Nerve Lemma, open-ball variants and other product factors are outside
 this construction.

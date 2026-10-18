@@ -171,6 +171,6 @@ The bottleneck distance is the one of [CSEH07](references.md#CSEH07) in the libr
 the existing diagram API, and the Čech and Rips definitions are the ones matched to
 [CDSO13-v3](references.md#CDSO13-v3) for the merged Čech modules. Invariance of persistence
 under strictly increasing reparametrization and homogeneity of the bottleneck distance under
-positive scaling are classical folklore; no source is registered for them. Every result here
+positive scaling are proved directly in the library. Every result here
 is a library extension proved from merged definitions, and no theorem of either paper is
 exported.

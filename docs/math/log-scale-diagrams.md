@@ -240,8 +240,8 @@ The fixtures in `LogScaleScalingExamples` record these cases:
 - F7: `bottleneck_essentialOne_zero` and `bottleneck_translate_essentialOne` show that a
   common translation preserves an infinite bottleneck.
 
-These are library extensions; the translation invariance of the bottleneck cost is immediate
-from the common-translation matching argument in [CSEH07](references.md#CSEH07).
+These are library extensions; translation invariance of the bottleneck cost follows directly
+from the library's common-translation matching construction.
 
 ## Scope
 
