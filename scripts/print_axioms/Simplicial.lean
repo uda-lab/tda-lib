@@ -199,3 +199,19 @@ import TDA
 #print axioms TDA.Simplicial.Contiguous.symm
 #print axioms TDA.Simplicial.Contiguous.precomp
 #print axioms TDA.Simplicial.Contiguous.postcomp
+
+-- Apex cones are acyclic (Issue #399).
+#print axioms TDA.Simplicial.IsApexCone
+#print axioms TDA.Simplicial.isApexCone_top
+#print axioms TDA.Simplicial.exists_isApexCone_top
+#print axioms TDA.Simplicial.IsApexCone.apexFace
+#print axioms TDA.Simplicial.IsApexCone.coneFace
+#print axioms TDA.Simplicial.IsApexCone.coneOperator
+#print axioms TDA.Simplicial.IsApexCone.coneOperator_single_of_notMem
+#print axioms TDA.Simplicial.IsApexCone.coneOperator_single_of_mem
+#print axioms TDA.Simplicial.IsApexCone.boundary_coneOperator_add
+#print axioms TDA.Simplicial.IsApexCone.boundary_coneOperator_zero
+#print axioms TDA.Simplicial.IsApexCone.isZero_simplicialHomology_succ
+#print axioms TDA.Simplicial.IsApexCone.finrank_simplicialHomology_zero
+#print axioms TDA.Simplicial.isZero_simplicialHomology_top_succ
+#print axioms TDA.Simplicial.finrank_simplicialHomology_top_zero
