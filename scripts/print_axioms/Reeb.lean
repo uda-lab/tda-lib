@@ -3016,6 +3016,7 @@ import TDA
 #print axioms TDA.Reeb.RGraph.homEquiv_symm_constructibleSmoothingUnit
 #print axioms TDA.Reeb.RGraph.ConstructibleInterleaving
 #print axioms TDA.Reeb.RGraph.ConstructibleInterleaving.ext
+#print axioms TDA.Reeb.RGraph.ConstructibleInterleaving.ext_iff
 #print axioms TDA.Reeb.RGraph.ConstructibleInterleaving.symm
 #print axioms TDA.Reeb.RGraph.ConstructibleInterleaving.coherence_iff
 #print axioms TDA.Reeb.RGraph.ConstructibleInterleaving.equivGeometric
