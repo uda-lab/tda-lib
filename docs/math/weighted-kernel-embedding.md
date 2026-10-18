@@ -145,6 +145,8 @@ route; no further source is claimed for them.
 
 The [arctan weight and Rips consumers](arctan-weight-rips-kernel.md) note instantiates
 these bounds at KFH18's w_arc weight and composes them with the Rips bound.
+The size-dependent total-persistence and finite-bar bounds used by bounded-carrier consumers
+are stated in [total persistence and finite Rips–Čech bounds](total-persistence.md).
 
 Not covered here: bottleneck stability under total-persistence bounds (Proposition 8,
 Theorem 9), injectivity or universality of the embedding, the RKHS isomorphism f ↦ w f,

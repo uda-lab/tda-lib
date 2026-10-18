@@ -2488,3 +2488,47 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finiteFirstOrderMatchingCost_le_card_rpow_mul_p
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_le_firstOrder
 #print axioms TDA.Persistence.finiteFirstOrderBoundaryTransportCost_le_card_rpow_mul_p
+
+-- Issue #374: total persistence and bar-count bounds for finite Rips and Čech diagrams
+#print axioms TDA.Persistence.Diagram.totalPersistence
+#print axioms TDA.Persistence.totalPersistence_nonneg
+#print axioms TDA.Persistence.totalPersistence_zero
+#print axioms TDA.Persistence.totalPersistence_empty
+#print axioms TDA.Persistence.totalPersistence_scale
+#print axioms TDA.Persistence.totalPersistence_translateDiagram
+#print axioms TDA.Persistence.totalPersistence_le_card_mul_pow
+#print axioms TDA.Persistence.totalPersistence_le_of_coordinates_mem_Icc
+#print axioms TDA.Persistence.faceDeathCount_eq_zero_of_card_ne
+#print axioms TDA.Persistence.faceBirthCount_eq_zero_of_card_ne
+#print axioms TDA.Persistence.dgm_finitePart_mem_Icc
+#print axioms TDA.Persistence.dgm_essentialPart_mem_Icc
+#print axioms TDA.Persistence.Rips.dgm_coordinates_le_diameter
+#print axioms TDA.Persistence.Cech.dgm_coordinates_le_radiusAt
+#print axioms TDA.Persistence.Cech.dgm_coordinates_le_diameter
+#print axioms TDA.Persistence.card_finitePart_dgm_le
+#print axioms TDA.Persistence.card_essentialPart_dgm_le
+#print axioms TDA.Persistence.card_face_fullComplex
+#print axioms TDA.Persistence.Rips.totalPersistence_dgm_le
+#print axioms TDA.Persistence.Cech.totalPersistence_dgm_le_radiusAt
+#print axioms TDA.Persistence.Cech.totalPersistence_dgm_le_diameter
+#print axioms TDA.Persistence.Rips.norm_diagramEmbedding_sub_le_choose_mul_pairwiseDiscrepancy
+
+-- Issue #374 fixtures
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_totalPersistence
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_bound_attained
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_cech_totalPersistence
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.triangle_cech_card_finitePart_one_le
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.triangle_rips_card_finitePart_one_le
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.triangle_cech_totalPersistence_one_le
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.triangle_card_finitePart_two_eq_zero
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.repeated_cech_finitePart_eq_zero
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.repeated_cech_totalPersistence
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.filledReal_dgm_one
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.filledReal_totalPersistence_one
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.filledReal_scale_totalPersistence_one
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.filledReal_scale_totalPersistence_two
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_card_essentialPart
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_card_essentialPart_le
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_totalPersistence_zero
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_totalPersistence_eq_bound
+#print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_totalPersistence_le_bound

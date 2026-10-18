@@ -63,6 +63,8 @@ result and is not attributed to any paper.
 The sup-norm half-discrepancy consumers and the additive comparison of one Rips and Čech
 configuration are described in [Sup-norm consumers](cech-weighted-kernel-images.md#sup-norm-consumers)
 and [Rips versus Čech of one configuration](cech-weighted-kernel-images.md#rips-versus-čech-of-one-configuration).
+The finite-bar count and coordinate estimates used for size-dependent Rips consumers are in
+[total persistence and finite Rips–Čech bounds](total-persistence.md).
 
 ## The infinite-bottleneck boundary
 

@@ -118,6 +118,8 @@ import TDA.Persistence.LogScaleDiagramComparison
 import TDA.Persistence.CechSupNormWeightedKernel
 import TDA.Persistence.CechSupNormPersistenceImage
 import TDA.Persistence.CechRipsAdditive
+import TDA.Persistence.TotalPersistence
+import TDA.Persistence.TotalPersistenceRipsCech
 import TDA.Persistence.ModuleScaling
 import TDA.Persistence.ConstructibleScaleBarcode
 import TDA.Persistence.SublevelScaling

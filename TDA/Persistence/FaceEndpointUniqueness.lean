@@ -475,4 +475,98 @@ theorem faceTemplateEssential_count_le_one (e : CompatibleOrder f) (n : ℕ)
   have hbound := faceTemplate_endpoint_count_le_one k e i n
   omega
 
+/-- A face can contribute a finite death in degree `n` only when it has `n+2` vertices. -/
+theorem faceDeathCount_eq_zero_of_card_ne (e : CompatibleOrder f) (n : ℕ)
+    (i : Fin (faceCount K)) (h : (e.enum i).val.card ≠ n + 2) :
+    faceDeathCount k e n i = 0 := by
+  let A := faceStepAttachment e i
+  letI : Finite (TotalFace (e.prefixComplex (i.val + 1))) :=
+    Finite.of_injective
+      (fun s => (⟨s.1, ((e.mem_prefixComplex (i.val + 1) s.1).mp s.2).1⟩ : TotalFace K))
+      (by
+        intro x y hxy
+        apply Subtype.ext
+        exact congrArg (fun t : TotalFace K => t.1) hxy)
+  let q := (e.enum i).val.card - 1
+  have hq_def : q = (e.enum i).val.card - 1 := rfl
+  have hpos : 0 < (e.enum i).val.card :=
+    Finset.card_pos.mpr (K.isRelLowerSet_faces (e.enum i).property).1
+  by_cases hq : q = 0
+  · let A0 : SimplexAttachment (e.prefixComplex i.val)
+        (e.prefixComplex (i.val + 1)) 0 := hq ▸ A
+    obtain ⟨hinj, _, hrest⟩ := A0.isolatedVertex_birth k
+    by_cases hn : n = 0
+    · subst n
+      exact faceDeathCount_of_injective k e i 0 hinj
+    · obtain ⟨hrinj, _⟩ := hrest n (Nat.pos_of_ne_zero hn)
+      exact faceDeathCount_of_injective k e i n hrinj
+  · obtain ⟨p, hp⟩ : ∃ p : ℕ, q = p + 1 := by
+      refine ⟨q - 1, ?_⟩
+      omega
+    let Ap : SimplexAttachment (e.prefixComplex i.val)
+        (e.prefixComplex (i.val + 1)) (p + 1) := hp ▸ A
+    by_cases hz : Ap.attachingHomologyClass k = 0
+    · obtain ⟨hinj, _, hrest, _⟩ := Ap.positive_birth k hz
+      by_cases hn : n = p + 1
+      · obtain rfl := hn
+        exact faceDeathCount_of_injective k e i (p + 1) hinj
+      · obtain ⟨hrinj, _⟩ := hrest n hn
+        exact faceDeathCount_of_injective k e i n hrinj
+    · obtain ⟨_, _, hker, hrest⟩ := Ap.positive_death k hz
+      by_cases hn : n = p
+      · exfalso
+        obtain rfl := hn
+        apply h
+        omega
+      · obtain ⟨hrinj, _⟩ := hrest n hn
+        exact faceDeathCount_of_injective k e i n hrinj
+
+/-- A face can contribute a birth in degree `n` only when it has `n+1` vertices. -/
+theorem faceBirthCount_eq_zero_of_card_ne (e : CompatibleOrder f) (n : ℕ)
+    (i : Fin (faceCount K)) (h : (e.enum i).val.card ≠ n + 1) :
+    faceBirthCount k e n i = 0 := by
+  let A := faceStepAttachment e i
+  letI : Finite (TotalFace (e.prefixComplex (i.val + 1))) :=
+    Finite.of_injective
+      (fun s => (⟨s.1, ((e.mem_prefixComplex (i.val + 1) s.1).mp s.2).1⟩ : TotalFace K))
+      (by
+        intro x y hxy
+        apply Subtype.ext
+        exact congrArg (fun t : TotalFace K => t.1) hxy)
+  let q := (e.enum i).val.card - 1
+  have hq_def : q = (e.enum i).val.card - 1 := rfl
+  have hpos : 0 < (e.enum i).val.card :=
+    Finset.card_pos.mpr (K.isRelLowerSet_faces (e.enum i).property).1
+  by_cases hq : q = 0
+  · let A0 : SimplexAttachment (e.prefixComplex i.val)
+        (e.prefixComplex (i.val + 1)) 0 := hq ▸ A
+    obtain ⟨_, hcoker, hrest⟩ := A0.isolatedVertex_birth k
+    by_cases hn : n = 0
+    · exfalso
+      obtain rfl := hn
+      apply h
+      omega
+    · obtain ⟨_, hrsurj⟩ := hrest n (Nat.pos_of_ne_zero hn)
+      exact faceBirthCount_of_surjective k e i n hrsurj
+  · obtain ⟨p, hp⟩ : ∃ p : ℕ, q = p + 1 := by
+      refine ⟨q - 1, ?_⟩
+      omega
+    let Ap : SimplexAttachment (e.prefixComplex i.val)
+        (e.prefixComplex (i.val + 1)) (p + 1) := hp ▸ A
+    by_cases hz : Ap.attachingHomologyClass k = 0
+    · obtain ⟨_, hcoker, hrest, _⟩ := Ap.positive_birth k hz
+      by_cases hn : n = p + 1
+      · exfalso
+        obtain rfl := hn
+        apply h
+        omega
+      · obtain ⟨_, hrsurj⟩ := hrest n hn
+        exact faceBirthCount_of_surjective k e i n hrsurj
+    · obtain ⟨hsurj, _, _, hrest⟩ := Ap.positive_death k hz
+      by_cases hn : n = p
+      · obtain rfl := hn
+        exact faceBirthCount_of_surjective k e i _ hsurj
+      · obtain ⟨_, hrsurj⟩ := hrest n hn
+        exact faceBirthCount_of_surjective k e i n hrsurj
+
 end TDA.Persistence

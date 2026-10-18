@@ -408,6 +408,10 @@ embedding, kernel-value and finite-part image consequences in the product. See [
 weighted-kernel and persistence-image consumers, including exact-bottleneck and `log 2` bounds
 in a general pseudometric ambient.
 
+`TDA.Persistence.TotalPersistence` and `TDA.Persistence.TotalPersistenceRipsCech` define total
+persistence, finite-bar face-count bounds, and size-dependent Rips and Čech consequences; their
+worked fixtures are in `TDA.Persistence.TotalPersistenceRipsCechExamples`.
+
 ## Finite first-order PD matching cost
 
 `TDA.Persistence.FiniteMatchingCost` defines `finiteFirstOrderMatchingCost` from the
