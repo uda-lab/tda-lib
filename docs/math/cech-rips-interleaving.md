@@ -111,7 +111,7 @@ The shift, transition, interleaving and distance conventions are those of
 [Bauer–Lesnick §3.1](references.md#BL15-v4), as fixed by the library API; this unit only
 constructs witnesses. The Rips and ambient Čech definitions match
 [Chazal–de Silva–Oudot §§4.2.1, 4.2.3](references.md#CDSO13-v3), which states no
-Rips/Čech inclusion. That inclusions of filtrations induce interleavings, and that a
-multiplicative sandwich gives an additive interleaving at log scale, are classical
-folklore with no registered source. Every result here is a library extension proved from
+Rips/Čech inclusion. Filtration inclusions induce the interleavings constructed here, and
+the multiplicative sandwich gives the additive interleaving at log scale; both results are
+proved directly in the library. Every result here is a library extension proved from
 merged definitions; no theorem of either paper is exported.

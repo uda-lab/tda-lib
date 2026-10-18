@@ -46,6 +46,8 @@ article text/figures, not citation of bibliographic facts or original mathematic
 
 ## Sources already used
 
+The following manifestations each have at least one Lean consumer named in their own use line.
+
 <a id="CCDS14-v1"></a>
 ### CCDS14-v1 — finite intervals and observable modules
 
@@ -107,23 +109,8 @@ article text/figures, not citation of bibliographic facts or original mathematic
 
 - **Identity/version:** Mathieu Carrière; Steve Oudot. *Structure and Stability of the 1-Dimensional Mapper*. Consulted [arXiv:1511.05823v3](https://arxiv.org/abs/1511.05823v3), 2016-03-29; initial submission 2015-11-18. Later [arXiv v4](https://arxiv.org/abs/1511.05823v4), 2017-11-09, is labeled “Minor corrections”; the consulted §2.5/§3 statements have not been compared against v4. Related [VoR](https://link.springer.com/article/10.1007/s10208-017-9370-z) title uses “One-Dimensional”; DOI 10.1007/s10208-017-9370-z, Foundations of Computational Mathematics 18(6), 1333–1396 (2018), online 2017-10-30, print 2018-12 ([Crossref metadata](https://api.crossref.org/works/10.1007/s10208-017-9370-z)). The arXiv journal-reference field names a different journal incorrectly; publisher metadata controls that field here.
 - **Affiliations:** no author-affiliation block located in v3; the later publisher record lists both at Inria Saclay, which is separate VoR evidence.
-- **Use:** §2.5 and §3 ordinary Mapper as the nerve of the path-component pullback cover, distinct MultiNerve retaining intersection-component data. Definition 2.12 (Mapper), Definition 3.1 (simplicial poset), Definition 3.2 (multinerve), Definition 3.3 (MultiNerve Mapper) and Lemma 3.4 (projection onto the nerve) are formalized for indexed families, in v3 numbering. The paper's “connected” follows its stated path-connected convention. Source-based selected Mapper comparison; no new stability/approximation theorem claimed by the present register.
+- **Use:** Cover granularity and Lemma 2.10 (“no three members of a minimal cover meet”) from §2.4 are cited as background for [mapper.md](mapper.md#uniform-interval-covers-and-edge-cells); the library's uniform-family multiplicity bound is proved directly and is not attributed to that lemma. §2.5 and §3 ordinary Mapper as the nerve of the path-component pullback cover, distinct MultiNerve retaining intersection-component data. Definition 2.12 (Mapper), Definition 3.1 (simplicial poset), Definition 3.2 (multinerve), Definition 3.3 (MultiNerve Mapper) and Lemma 3.4 (projection onto the nerve) are formalized for indexed families, in v3 numbering. The paper's “connected” follows its stated path-connected convention. Source-based selected Mapper comparison; no new stability/approximation theorem claimed by the present register.
 - **Rights:** v3 **AR**; holder notice not established separately. The related VoR’s Crossref entry links Springer TDM terms; its publisher preview has no CC grant; text quotation/copying/AI input/redistribution requires specific clarification or an aligned licensed alternative. No full v3/VoR revision or errata comparison is certified.
-
-## Sources for the next directions and historical comparisons
-
-The following manifestations were inspected for bibliography, attribution and selected
-scope only. They are preparation/background sources; this register does not certify a
-new Lean theorem or a complete mathematical review of these papers.
-
-<a id="FG10"></a>
-### FG10 — boundary transport
-
-- **Identity:** Alessio Figalli; Nicola Gigli. *A new transportation distance between non-negative measures, with applications to gradients flows with Dirichlet boundary conditions* (the consulted manuscript prints “gradients”). [CVGMT record and manuscript](https://cvgmt.sns.it/paper/488/); [institutional publication record](https://www.math.sissa.it/publication/new-transportation-distance-between-non-negative-measures-applications-gradients-flows/index.html), DOI [10.1016/j.matpur.2009.11.005](https://doi.org/10.1016/j.matpur.2009.11.005), J. Math. Pures Appl. 94, 107–130 (2010).
-- **Manifestation/dates:** CVGMT-hosted 28-page manuscript, unnumbered; its accepted/VoR status and upload date are not established. CVGMT record created 2009-11-10; this is evidence of a record date, not a verified earliest dissemination date. Publication year 2010 is independently recorded; precise first-public/publication dates remain unresolved.
-- **Printed affiliations:** Figalli: previous École Polytechnique, CMLS; manuscript-current University of Texas at Austin. Gigli: Université de Bordeaux (p. 1 footnotes). These are manuscript-era labels.
-- **Use/classification:** Prior boundary transport: Problem 1.1 uses a bounded open Euclidean domain with quadratic Euclidean cost; Lemma 2.1 and Theorem 2.2 give measure gluing and distance laws there. The library's [finite occurrence matching laws](finite-first-order-matching.md#distance-laws-and-zero-cost) are proved independently. This manuscript does not itself establish the later upper-half-plane, general-p or L∞ theory; no Lean measure-coupling result is attributed to it.
-- **Rights/evidence:** profile **U**. No explicit third-party reuse license or rights-holder notice was established in the inspected manuscript/record. Author hosting does not settle local copying, quotation, AI input or redistribution. Exact next step: clarify the manuscript's reuse terms with its rights holder, or identify an explicitly licensed equivalent manifestation; no equivalent licensed version is verified here.
 
 <a id="DL20-v4"></a>
 ### DL20-v4 — persistence measures and partial transport
@@ -172,15 +159,6 @@ new Lean theorem or a complete mathematical review of these papers.
 - **Additional formalized scope:** Natural-exponent total persistence and size-dependent finite-bar bounds for finite Rips and Čech diagrams are formalized. KFH18 Lemma 4's card-independent total-persistence estimate and assumption (W1) remain unformalized.
 - **Rights/evidence:** profile **CC4**; p. 1 explicitly prints ©2018 Genki Kusano, Kenji Fukumizu and Yasuaki Hiraoka, CC-BY 4.0, and JMLR attribution URL. Code, data and any third-party figures need their own evidence if later reused; none are reproduced here.
 
-<a id="OH17-v2"></a>
-### OH17-v2 — linear learning and inverse analysis
-
-- **Identity:** Ippei Obayashi; Yasuaki Hiraoka. *Persistence Diagrams with Linear Machine Learning Models*. [arXiv:1706.10082v2](https://arxiv.org/abs/1706.10082v2).
-- **Manifestation/dates:** v2, 2017-07-06; initial submission 2017-06-30. [Full text](https://arxiv.org/html/1706.10082v2) contains placeholder journal/acceptance fields; those are not publication evidence. The related [journal VoR](https://link.springer.com/article/10.1007/s41468-018-0013-5), *Persistence diagrams with linear machine learning models*, has **Ippei Obayashi; Yasuaki Hiraoka; Masao Kimura**, in that order: Journal of Applied and Computational Topology 1(3–4), 421–449 (2018), DOI 10.1007/s41468-018-0013-5, online 2018-05-05, print 2018-06 ([Crossref metadata](https://api.crossref.org/works/10.1007/s41468-018-0013-5)). This three-author VoR is a separate manifestation; the consulted v2 remains the two-author preprint. “Obayashi–Hiraoka” attribution is not transferred to the VoR, and v2/VoR statement alignment remains unverified.
-- **Printed affiliations:** both Advanced Institute for Materials Research (WPI-AIMR), Tohoku University; Hiraoka also Center for Materials research by Information Integration (CMI2), MaDIS, National Institute for Materials Science (NIMS) (v2 author block). No Japanese name spelling or current affiliation is inferred.
-- **Use/classification:** #227 direction 2, attribution/background for combining PI with linear models and inverse analysis (§2.4–2.6, §3); cycle reconstruction and linear-learning applications remain separate future scope. No current Lean consumer.
-- **Rights/evidence:** profile **AR**, v2 abstract license link and full-text banner. Separate copyright-holder notice not established. The related VoR’s Crossref `tdm`/`vor` entries link Springer terms, not a CC license; the publisher preview identifies no CC grant. Exact next step for text copying/AI input: establish an explicitly licensed aligned manifestation or clarify holder permission; the identified VoR is not a verified licensed alternative.
-
 <a id="CDSO13-v3"></a>
 ### CDSO13-v3 — metric-data persistence
 
@@ -189,6 +167,30 @@ new Lean theorem or a complete mathematical review of these papers.
 - **Attribution evidence:** first-page author footnotes give email addresses only, not institutional affiliations; abstract metadata assigns Chazal/Oudot to INRIA Saclay and de Silva to Pomona College. These metadata affiliations are kept distinct from printed manuscript affiliations. No current affiliations checked.
 - **Use/classification:** The [finite metric-input construction](rips-metric-stability.md) matches the Rips diameter threshold at nonnegative scales (§4.2.1). The maximum discrepancy has the identity-correspondence distortion formula from §4.2 for a nonempty finite labelled set. The same-label actual-diagram estimate is an independently proved consumer of finite-face stability, not an export of Lemma 4.3 or Theorem 5.2. Singleton value zero and empty negative-time stages follow the library's support-aware convention; the source's nonpositive-scale vertex remark is not used, and no full real-indexed convention equivalence is claimed. The [closed ambient Čech complex](cech-rips-sandwich.md) matches §4.2.3 with all of X as witnesses, and §4.2.2 for the intrinsic case; the Rips/Čech sandwich, value bounds and proper-space attainment are library extensions, since the source states no inclusion. The [same-label Čech displacement bounds](cech-displacement-stability.md) on values and actual diagrams are a library extension consistent with Theorem 5.6, since the Hausdorff distance of finite labelled images is at most the displacement; they are proved through finite-face stability and are not a Hausdorff export of Corollary 4.10 or Theorem 5.6. The [witness-space comparisons](cech-supnorm-witness.md) between §4.2.2 and §4.2.3 complexes for nested witness sets, and the ℓ∞ equality of Čech and doubled Rips complexes, are library extensions. The [log-scale Čech–Rips interleaving](cech-rips-interleaving.md) of homology modules with parameter log 2, and the radius-level factorizations Rips_r ⊆ Čech_r ⊆ Rips_{2r}, are library extensions built on the same Rips and §4.2.3 definitions; no source theorem is exported. General Gromov–Hausdorff stability remains separate scope.
 - **Rights/evidence:** profile **AR**, v3 abstract license link/full-text banner; separate holder notice not established. Exact next step for text copying/AI input/reproduction: establish a licensed aligned manifestation or holder permission. This record supplies no universal reuse clearance.
+
+## Sources for the next directions and historical comparisons
+
+The following manifestations were inspected for bibliography, attribution and selected
+scope only. They are preparation/background sources; this register does not certify a
+new Lean theorem or a complete mathematical review of these papers.
+
+<a id="FG10"></a>
+### FG10 — boundary transport
+
+- **Identity:** Alessio Figalli; Nicola Gigli. *A new transportation distance between non-negative measures, with applications to gradients flows with Dirichlet boundary conditions* (the consulted manuscript prints “gradients”). [CVGMT record and manuscript](https://cvgmt.sns.it/paper/488/); [institutional publication record](https://www.math.sissa.it/publication/new-transportation-distance-between-non-negative-measures-applications-gradients-flows/index.html), DOI [10.1016/j.matpur.2009.11.005](https://doi.org/10.1016/j.matpur.2009.11.005), J. Math. Pures Appl. 94, 107–130 (2010).
+- **Manifestation/dates:** CVGMT-hosted 28-page manuscript, unnumbered; its accepted/VoR status and upload date are not established. CVGMT record created 2009-11-10; this is evidence of a record date, not a verified earliest dissemination date. Publication year 2010 is independently recorded; precise first-public/publication dates remain unresolved.
+- **Printed affiliations:** Figalli: previous École Polytechnique, CMLS; manuscript-current University of Texas at Austin. Gigli: Université de Bordeaux (p. 1 footnotes). These are manuscript-era labels.
+- **Use/classification:** Prior boundary transport: Problem 1.1 uses a bounded open Euclidean domain with quadratic Euclidean cost; Lemma 2.1 and Theorem 2.2 give measure gluing and distance laws there. The library's [finite occurrence matching laws](finite-first-order-matching.md#distance-laws-and-zero-cost) are proved independently. This manuscript does not itself establish the later upper-half-plane, general-p or L∞ theory; no Lean measure-coupling result is attributed to it.
+- **Rights/evidence:** profile **U**. No explicit third-party reuse license or rights-holder notice was established in the inspected manuscript/record. Author hosting does not settle local copying, quotation, AI input or redistribution. Exact next step: clarify the manuscript's reuse terms with its rights holder, or identify an explicitly licensed equivalent manifestation; no equivalent licensed version is verified here.
+
+<a id="OH17-v2"></a>
+### OH17-v2 — linear learning and inverse analysis
+
+- **Identity:** Ippei Obayashi; Yasuaki Hiraoka. *Persistence Diagrams with Linear Machine Learning Models*. [arXiv:1706.10082v2](https://arxiv.org/abs/1706.10082v2).
+- **Manifestation/dates:** v2, 2017-07-06; initial submission 2017-06-30. [Full text](https://arxiv.org/html/1706.10082v2) contains placeholder journal/acceptance fields; those are not publication evidence. The related [journal VoR](https://link.springer.com/article/10.1007/s41468-018-0013-5), *Persistence diagrams with linear machine learning models*, has **Ippei Obayashi; Yasuaki Hiraoka; Masao Kimura**, in that order: Journal of Applied and Computational Topology 1(3–4), 421–449 (2018), DOI 10.1007/s41468-018-0013-5, online 2018-05-05, print 2018-06 ([Crossref metadata](https://api.crossref.org/works/10.1007/s41468-018-0013-5)). This three-author VoR is a separate manifestation; the consulted v2 remains the two-author preprint. “Obayashi–Hiraoka” attribution is not transferred to the VoR, and v2/VoR statement alignment remains unverified.
+- **Printed affiliations:** both Advanced Institute for Materials Research (WPI-AIMR), Tohoku University; Hiraoka also Center for Materials research by Information Integration (CMI2), MaDIS, National Institute for Materials Science (NIMS) (v2 author block). No Japanese name spelling or current affiliation is inferred.
+- **Use/classification:** #227 direction 2, attribution/background for combining PI with linear models and inverse analysis (§2.4–2.6, §3); cycle reconstruction and linear-learning applications remain separate future scope. No current Lean consumer.
+- **Rights/evidence:** profile **AR**, v2 abstract license link and full-text banner. Separate copyright-holder notice not established. The related VoR’s Crossref `tdm`/`vor` entries link Springer terms, not a CC license; the publisher preview identifies no CC grant. Exact next step for text copying/AI input: establish an explicitly licensed aligned manifestation or clarify holder permission; the identified VoR is not a verified licensed alternative.
 
 <a id="MW16-v2"></a>
 ### MW16-v2 — categorical Mapper approximation

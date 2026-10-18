@@ -114,5 +114,5 @@ The isometry used is the merged finite-constructible form of the theorem of
 finite-filter form of [Cohen-Steiner–Edelsbrunner–Harer](references.md#CSEH07); the second
 proof is a library proof, not a new source translation. That sublevel homology of a finite
 filter is constant between consecutive attained values and zero below the first one is
-folklore with no registered source. Every result here is a library extension proved from
+proved directly in the library. Every result here is a library extension proved from
 merged definitions.
