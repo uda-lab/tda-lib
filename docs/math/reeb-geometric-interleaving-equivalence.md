@@ -145,8 +145,15 @@ function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installe
   applying `constructibleShiftMap`, `constructibleSmoothing` and the lifted composition
   isomorphism, once at the parallel graph and once at the single graph.
 * **Range and component controls.** The two-point graph and the singleton at `0` have equal height
-  ranges but distance `⊤` by the component obstruction. The parallel edges and the single edge have
-  range bound `0`, no `0`-interleaving, and distance at most `1/4`.
+  ranges but distance `⊤` by the component obstruction. The parallel edges and the single
+  edge have range bound `0`, no `0`-interleaving, and distance exactly `1/4`.
+* **Interval-local controls.** For every parameter below `1/4`, the parallel edges and the single
+  edge have no geometric interleaving in either direction, with explicit instances at `1/8` and
+  `6/25` (`0.24`). At `1/4`, the double thickening of every nonempty interval is not contained in
+  `(0,1)`. The edge--midpoint pair has no local component obstruction, while the two disjoint
+  edges and the single edge have distance `⊤` via the top-component obstruction at `⊤`.
+  Together, these are controls for the independence of the obstruction from the range and
+  top-component bounds.
 * **Smoothing controls.** Smoothing the edge--midpoint and parallel--single witnesses gives
   computed components, coherence laws, an unchanged edge--midpoint threshold, an exact smoothed
   distance, and two distance bounds.
