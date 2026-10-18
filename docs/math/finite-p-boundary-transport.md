@@ -138,6 +138,36 @@ exactly when every raw charge is zero. The existing first-order zero-cost
 characterization then supplies the value-preserving equivalence. Conversely,
 reindexing a self-matching proves zero cost for such an equivalence.
 
+## Comparison with first-order distance
+
+Let N = card I + card J count both occurrence families. For every real p ≥ 1,
+the unnormalized matching distances satisfy
+
+dₚ(x,y) ≤ d₁(x,y) ≤ N^(1−1/p) dₚ(x,y).
+
+The same comparison holds for the actual rooted finite-real-plan optima, by
+their equality with the matching optima. Empty families are included: if N=0,
+all distances are zero. At p=1 the factor is one and both inequalities are equalities.
+
+For a matching M, form a nonnegative charge vector on I ⊕ J. At a source label,
+use its pair cost if selected and its deletion cost otherwise. At a target label,
+use zero if selected and its insertion cost otherwise. Its sum is S₁(M), and
+the sum of its p-th powers is Sₚ(M). Each paired cost occurs once; both unmatched
+parts remain. Finite-sum power inequalities give
+
+Sₚ(M)^(1/p) ≤ S₁(M) ≤ N^(1−1/p) Sₚ(M)^(1/p).
+
+For the first optimum inequality choose a first-order minimizing matching. For
+the second choose a p-minimizing matching. Both exist, including for empty inputs;
+one matching need not minimize both exponents. The algebra also applies to raw
+real pairs without positive lifetimes.
+
+Two copies of (0,2) versus empty have d₁=2 and dₚ=2^(1/p), attaining the upper
+factor. At p=3/2 these are 2 and 2^(2/3), with factor 2^(1/3).
+The comparison is about optimized plans. A fractional candidate sending mass
+3/4 between identical bars (0,2) has C₁=C₂=1/2, so its rooted second-order cost
+exceeds its first-order cost even though their common optimum is zero.
+
 ## Finite-part perturbation bounds
 
 Let D and E be library diagrams and let N be the sum of their finite occurrence
@@ -214,6 +244,8 @@ the rooted distance laws and positive-lifetime separation.
 `FinitePMatchingCostBottleneck` supplies the powered and rooted occurrence-count
 bounds, finite radius and cardinality-budget forms. `FinitePFilterStability` applies
 them to the finite parts of actual sublevel diagrams.
+`FinitePMatchingCostComparison` supplies the two first-order comparisons for
+matching and real-plan optima, including empty occurrence families.
 
 [Figalli–Gigli](references.md#FG10) retains priority for boundary-reservoir transport;
 its original bounded-domain quadratic Euclidean setting is distinct from this model.
@@ -230,6 +262,13 @@ Minkowski; FG Lemma 2.1 and Theorem 2.2 give the original quadratic antecedent.
 The finite occurrence allocation above is checked library reasoning corresponding
 to that mechanism. It uses pinned mathlib's `Real.Lp_add_le`, not a measure-gluing
 assumption or a triangle law for the raw augmented blocks.
+
+The first-order comparison is a finite library derivation from DL formula (1)
+and pinned mathlib's power inequalities, rather than a theorem quoted from DL.
+It uses `Real.add_rpow_le_rpow_add` and
+`Real.rpow_sum_le_const_mul_sum_rpow_of_nonneg` on the matching charge vector.
+Probability-normalized Wasserstein exponent comparisons concern a different
+normalization and do not supply this unnormalized occurrence bound.
 
 The perturbation estimates are checked finite sum-to-maximum reasoning from
 DL formulas (1)/(2) and the existing bottleneck attainment and stability theorems.
