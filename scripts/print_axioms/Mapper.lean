@@ -820,3 +820,17 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.quotientRGraphFunctor_obj_graphPLSpace
 #print axioms TDA.Mapper.GraphPL.overBaseMap_graphPLSpace
 #print axioms TDA.Mapper.GraphPL.isRGraph_quotient_thickening_graphPLOver
+
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.c4_isConstructibleSpace
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.c4_componentDataIso
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.c4_quotientIsoOfIso_eq
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.Y_presentationHomeomorph
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.Y_isRGraph_thickening
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.flatEdge_isConstructibleSpace
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.flatEdge_vertexPiece_not_discrete
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.flatEdge_not_iso_finiteData
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.path3_presentationMap_not_surjective
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.edge_mid_ne_vertex
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.c4_t2Space
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.c4_quotientRGraphFunctor_obj
+#print axioms TDA.Mapper.GraphPLConstructibleExamples.c4_Y_geometricInterleavingDistance

@@ -14,3 +14,4 @@ import TDA.Mapper.GraphPLRefinementExamples
 import TDA.Mapper.OneSkeletonReebDataExamples
 import TDA.Mapper.GraphPLCosheafExamples
 import TDA.Mapper.GraphPLReebQuotientExamples
+import TDA.Mapper.GraphPLConstructibleExamples
