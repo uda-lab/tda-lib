@@ -86,7 +86,9 @@ and a label metric d with d(v, w) = dist(p v, p w), the Rips filter of d is posi
 vertices, because distinct labels have positive distance and the diameter dominates every
 pairwise distance. The Čech filter is positive off vertices because rips ≤ 2 · čech. With
 čech ≤ rips ≤ 2 · čech, the log-scale Rips and Čech diagrams are within log 2 in every degree
-n ≥ 1, without properness of the ambient space.
+n ≥ 1, without properness of the ambient space. The resulting embedding, Gaussian-kernel, and
+persistence-image consumers are summarized in
+[Log-scale Rips versus Čech](cech-weighted-kernel-images.md#log-scale-rips-versus-čech).
 
 ## The degree-0 obstruction
 
