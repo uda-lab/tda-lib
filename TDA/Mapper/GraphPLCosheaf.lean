@@ -17,7 +17,7 @@ universe `0`.
 
 The shapes used here are DMP Definition 3.9, with the library's nonempty-source correction, and
 Proposition 3.18.  The graph-PL statements are library results and make no external source claim.
-The Reeb quotient homeomorphism of the realization is not proved here.
+The Reeb quotient homeomorphism of the realization is proved in `TDA.Mapper.GraphPLReebQuotient`.
 -/
 
 namespace TDA.Mapper.GraphPL

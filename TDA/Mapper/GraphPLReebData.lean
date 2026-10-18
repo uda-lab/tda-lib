@@ -46,8 +46,8 @@ Packaged, this is the isomorphism `graphPLExtractIso` of finite data. The compar
 the vertex values of finite data, not at closed level sets. The covering hypothesis cannot be
 dropped: without it a star may contain several vertex heights (see the fixtures). These are
 elementary library results, not attributed to a source. Constructibility of the precosheaf and
-the cosheaf identification are in `TDA.Mapper.GraphPLCosheaf`; the Reeb quotient is not part of
-this module. See `docs/math/mapper.md`.
+the cosheaf identification are in `TDA.Mapper.GraphPLCosheaf`; the Reeb quotient is treated in
+`TDA.Mapper.GraphPLReebQuotient`. See `docs/math/mapper.md`.
 -/
 
 namespace TDA.Mapper.GraphPL

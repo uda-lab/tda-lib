@@ -482,9 +482,12 @@ by `0 — 1`, `0 — 3` and by `1 — 2`, `2 — 3`. Read informally, there is o
 at height `0`, two at height `1` and one at height `2`, the shape of a cycle.
 This matches the Reeb graph of the 4-cycle, which is a cycle rather than one
 edge with parallel edges because the level set at `1` has two components. The
-identification of these cells with the Reeb graph is not proved here; the next
-section constructs the finite Reeb data of graph-PL input and identifies it
-with the cycle.
+identification of these cells with the Reeb graph is proved in the subsection
+`The Reeb quotient of graph-PL height`: `graphPLReebQuotientIso` states that,
+when the critical-value list covers the vertex heights, the realization of
+`graphPLReebData G h S` is isomorphic over `ℝ` to the Reeb quotient of
+`plHeight G h`. The next section constructs the finite Reeb data of graph-PL
+input and identifies it with the cycle.
 
 Crossing is strict and spanning is not. An edge with endpoint heights `0` and
 `2` spans `[0, 2]` and is the one active edge over `(0, 2)`, but it crosses
@@ -562,10 +565,11 @@ These are elementary library results, not attributed to a source.
 
 Constructibility of the precosheaf and its cosheaf identification with the
 realized data are proved in the subsection `Constructibility and the cosheaf of
-graph-PL height` below; the Reeb quotient of the realization is not proved. No
-geometric realization of either Mapper construction, no refinement tower of
-height-separating covers and no approximation statement is proved; refinement
-of covering critical lists is treated in the last subsection.
+graph-PL height` below; the Reeb quotient identification is proved in the
+subsection `The Reeb quotient of graph-PL height`, under a covering
+critical-value list. No geometric realization of either Mapper construction, no
+refinement tower of height-separating covers and no approximation statement is
+proved; refinement of covering critical lists is treated in the last subsection.
 
 ### Closed level sets of graph-PL height
 
@@ -749,4 +753,59 @@ constructible, as recorded by `missing_not_isConstructibleAt`. Thus the
 covering hypothesis cannot be dropped.
 
 These graph-PL statements are elementary library results, not attributed to a
-source. The Reeb quotient homeomorphism of the realization is not proved.
+source. The Reeb quotient homeomorphism of the realization is proved in
+`TDA.Mapper.GraphPLReebQuotient`, under a covering critical-value list; see
+`The Reeb quotient of graph-PL height` below.
+
+### The Reeb quotient of graph-PL height
+
+Let `V : Type u` be finite, let `G : SimpleGraph V`, let `h : V → ℝ`, and let
+`S : CriticalValues n` cover the vertex heights, in the sense of
+`CoversVertexHeights S h`. Horizontal edges are allowed. The module
+`TDA.Mapper.GraphPLReebQuotient` proves the following identification.
+
+(A) The continuous map `graphPLReebMap` sends the graph realization to the
+realization of `graphPLReebData G h S`, preserves height, and has explicit
+formulas on vertices, closed levels, and regular points in a gap, through
+`graphPLReebMap_vertex`, `graphPLReebMap_of_level`, and
+`graphPLReebMap_edgePoint_of_mem_K`.
+
+(B) The map descends through `RGraph.quotientLift` to a bijection and then to
+the homeomorphism `graphPLReebQuotientHomeomorph` from
+`ReebQuotient (plHeight G h)` to the finite realization. It preserves the
+real-valued height. In the real slice, this is packaged by
+`graphPLReebQuotientIso`; `graphPLReebQuotientIsoOfIso` transports the result to
+isomorphic finite Reeb data. The induced map on interval components is the
+inverse of `graphPLCosheafIso`, as stated by
+`intervalComponentNatTrans_graphPLReebMap` and
+`intervalComponentComparison_comp_graphPLReebQuotientMap`.
+
+(C) Without choosing a list, the quotient is an `RGraph` by
+`isRGraph_graphPLReebQuotient`, and `graphPLReebGraph` packages it as an
+object of the real-graph category. The interval-component comparison is an
+isomorphism, and `geometricInterleavingDistance_graphPLReebGraph` identifies
+the geometric distance between two graph-PL Reeb graphs with the
+interleaving distance of their interval-component precosheaves. The
+homeomorphism uses `V : Type u`; the real-slice statements, the coherence
+statements, and these list-free corollaries use `V : Type`, as required by the
+universe-`0` categorical APIs.
+
+The route is direct: construct a height-preserving map into the finite
+realization, descend it with `RGraph.quotientLift`, and use the proved
+compactness of the graph realization and the quotient together with
+Hausdorffness of the finite realization. No `IsConstructibleSpace` claim is
+needed. The graph-PL results are library statements. Their quotient argument
+has the shape of DMP15-v1 Proposition 2.12, and the comparison corollary has
+the shape of DMP15-v1 Theorem 3.17; the graph-PL statements themselves make no
+external source claim.
+
+The fixtures record the scope and boundary. R1 is given by
+`c4_reebQuotientIso` and `c4_reebQuotient_not_iso_path`: the 4-cycle quotient
+is the cycle realization, not the path realization. R2 is given by
+`edge_reebQuotientIso_S02` and `edge_reebQuotientIso_S012`, including a level
+with no vertex. R3 is `Y_reebQuotientIso` and `Y_isRGraph` for the subdivided
+Y-tree. R4 is `flatEdge_reebQuotient_subsingleton` together with
+`flatEdge_vertex_ne`, showing that a horizontal edge collapses in the Reeb
+quotient although its realization endpoints differ. R5 is
+`c4_isIso_intervalComponentComparison`. R6 is the negative control
+`path3_reebQuotient_not_iso_S02`: the covering hypothesis cannot be dropped.
