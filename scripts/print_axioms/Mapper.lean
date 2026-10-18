@@ -737,3 +737,40 @@ import TDA
 #print axioms TDA.Mapper.GraphPLCosheafExamples.flatEdge_cosheafIso
 #print axioms TDA.Mapper.GraphPLCosheafExamples.flatEdge_cosheaf_card
 #print axioms TDA.Mapper.GraphPLCosheafExamples.missing_not_isConstructibleAt
+
+-- Reeb quotient identification and graph-PL quotient fixtures.
+#print axioms TDA.Mapper.GraphPL.compactSpace_realization
+#print axioms TDA.Mapper.GraphPL.exists_coversVertexHeights
+#print axioms TDA.Mapper.GraphPL.graphPLReebMap
+#print axioms TDA.Mapper.GraphPL.height_graphPLReebMap
+#print axioms TDA.Mapper.GraphPL.graphPLReebMap_vertex
+#print axioms TDA.Mapper.GraphPL.graphPLReebMap_edgePoint_of_mem_K
+#print axioms TDA.Mapper.GraphPL.graphPLReebMap_of_level
+#print axioms TDA.Mapper.GraphPL.graphPLReebQuotientMap
+#print axioms TDA.Mapper.GraphPL.graphPLReebQuotientMap_mk
+#print axioms TDA.Mapper.GraphPL.graphPLReebQuotientMap_bijective
+#print axioms TDA.Mapper.GraphPL.graphPLReebQuotientHomeomorph
+#print axioms TDA.Mapper.GraphPL.graphPLReebQuotientHomeomorph_mk
+#print axioms TDA.Mapper.GraphPL.height_graphPLReebQuotientHomeomorph
+#print axioms TDA.Mapper.GraphPL.graphPLOver
+#print axioms TDA.Mapper.GraphPL.graphPLReebQuotientIso
+#print axioms TDA.Mapper.GraphPL.graphPLReebQuotientIsoOfIso
+#print axioms TDA.Mapper.GraphPL.intervalComponentNatTrans_graphPLReebMap
+#print axioms TDA.Mapper.GraphPL.height_graphPLReebQuotientMap
+#print axioms TDA.Mapper.GraphPL.intervalComponentComparison_comp_graphPLReebQuotientMap
+#print axioms TDA.Mapper.GraphPL.isRGraph_graphPLReebQuotient
+#print axioms TDA.Mapper.GraphPL.graphPLReebGraph
+#print axioms TDA.Mapper.GraphPL.graphPLReebGraphIso
+#print axioms TDA.Mapper.GraphPL.isIso_intervalComponentComparison_plHeight
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph
+
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.c4_reebQuotientIso
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.c4_reebQuotient_not_iso_path
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.edge_reebQuotientIso_S02
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.edge_reebQuotientIso_S012
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.Y_reebQuotientIso
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.Y_isRGraph
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.flatEdge_reebQuotient_subsingleton
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.flatEdge_vertex_ne
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.c4_isIso_intervalComponentComparison
+#print axioms TDA.Mapper.GraphPLReebQuotientExamples.path3_reebQuotient_not_iso_S02
