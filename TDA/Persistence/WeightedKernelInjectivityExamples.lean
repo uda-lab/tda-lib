@@ -51,7 +51,7 @@ theorem duplicate_quadratic_zero :
             (Matrix.of fun i j => kernel 1 (duplicate i) (duplicate j)) i j * b)) = 0 := by
   classical
   simp [Finsupp.sum_fintype, Fin.sum_univ_two, duplicate, Matrix.of_apply,
-    kernel_self, kernel_symm] <;> ring
+    kernel_self]
 
 /-- The repeated-label Gram matrix is not positive definite. -/
 theorem duplicate_not_posDef :
@@ -82,7 +82,7 @@ theorem featureAt_zero_eq (p q : ℝ × ℝ) : featureAt 0 p = featureAt 0 q := 
 theorem featureAt_zero_not_linearIndependent :
     ¬ LinearIndependent ℝ (featureAt 0) := by
   intro h
-  have hpq : (0, 0) = (0, 1) :=
+  have hpq : ((0 : ℝ), (0 : ℝ)) = ((0 : ℝ), (1 : ℝ)) :=
     h.injective (featureAt_zero_eq (0, 0) (0, 1))
   norm_num at hpq
 
@@ -135,13 +135,16 @@ def twice : Diagram ℝ where
 /-- The weighted measure of `twice` counts both occurrences. -/
 theorem weightedMeasure_twice_at_two :
     weightedMeasure clippedWeight twice (0, 2) = 2 := by
-  rw [weightedMeasure_apply]
+  have hf : finitePart twice.points = {(0, 2), (0, 2)} := rfl
+  rw [weightedMeasure_apply, hf, Multiset.insert_eq_cons, Multiset.count_cons_self,
+    Multiset.count_singleton_self]
   norm_num [twice, clippedWeight, birthPersistence]
 
 /-- The weighted measure of the singleton `{(0,2)}` is one. -/
 theorem weightedMeasure_singleton_two :
     weightedMeasure clippedWeight (singletonDiagram 0 2 (by norm_num)) (0, 2) = 1 := by
-  rw [weightedMeasure_apply]
+  have hf : finitePart (singletonDiagram 0 2 (by norm_num)).points = {(0, 2)} := rfl
+  rw [weightedMeasure_apply, hf, Multiset.count_singleton_self]
   norm_num [singletonDiagram, clippedWeight, birthPersistence]
 
 /-- The embedding detects the repeated occurrence. -/
@@ -174,8 +177,10 @@ theorem zero_arctan_finitePart_ne_essentialOnly :
     finitePart (singletonDiagram 0 2 (by norm_num)).points ≠
       finitePart essentialOnly.points := by
   intro h
-  have hc := congrArg (fun s : Multiset (ℝ × ℝ) => s.card) h
-  norm_num [singletonDiagram, essentialOnly, finitePart] at hc
+  have hs : finitePart (singletonDiagram 0 2 (by norm_num)).points = {(0, 2)} := rfl
+  have he : finitePart essentialOnly.points = 0 := rfl
+  rw [hs, he] at h
+  exact Multiset.singleton_ne_zero _ h
 
 /-- The positive arctan weight vanishes on the below-diagonal singleton. -/
 theorem arctan_below_diagonal_singleton_eq_essentialOnly :
@@ -194,8 +199,10 @@ theorem arctan_below_diagonal_finitePart_ne_essentialOnly :
     finitePart (singletonDiagram 1 0 (by norm_num)).points ≠
       finitePart essentialOnly.points := by
   intro h
-  have hc := congrArg (fun s : Multiset (ℝ × ℝ) => s.card) h
-  norm_num [singletonDiagram, essentialOnly, finitePart] at hc
+  have hs : finitePart (singletonDiagram 1 0 (by norm_num)).points = {(1, 0)} := rfl
+  have he : finitePart essentialOnly.points = 0 := rfl
+  rw [hs, he] at h
+  exact Multiset.singleton_ne_zero _ h
 
 /-! ## F6: positive consumers -/
 
@@ -218,7 +225,7 @@ private theorem singleton_below_clipped_positive :
       0 < clippedWeight (birthPersistence p) := by
   intro p hp
   have hp' : p = (1, 0) := by
-    simpa [singletonDiagram, finitePart] using hp
+    simpa [singletonDiagram, finitePart, eq_comm] using hp
   subst p
   norm_num [clippedWeight, birthPersistence]
 
@@ -263,14 +270,14 @@ def finiteEssentialDiagram : Diagram ℝ where
 theorem finiteEssentialDiagram_parts :
     finitePart finiteEssentialDiagram.points = {(0, 2)} ∧
       essentialPart finiteEssentialDiagram.points = {(0 : ℝ)} := by
-  rfl
+  exact ⟨rfl, rfl⟩
 
 private theorem finiteEssentialDiagram_clipped_positive :
     ∀ p ∈ finitePart finiteEssentialDiagram.points,
       0 < clippedWeight (birthPersistence p) := by
   intro p hp
   have hp' : p = (0, 2) := by
-    simpa [finiteEssentialDiagram, finitePart] using hp
+    simpa [finiteEssentialDiagram, finitePart, eq_comm] using hp
   subst p
   norm_num [clippedWeight, birthPersistence]
 
@@ -284,13 +291,13 @@ theorem diagramEmbedding_singleton_distance_ne_zero :
     (by
       intro p hp
       have hp' : p = (0, 2) := by
-        simpa [singletonDiagram, finitePart] using hp
+        simpa [singletonDiagram, finitePart, eq_comm] using hp
       subst p
       norm_num [clippedWeight, birthPersistence])
     (by
       intro p hp
       have hp' : p = (0, 3) := by
-        simpa [singletonDiagram, finitePart] using hp
+        simpa [singletonDiagram, finitePart, eq_comm] using hp
       subst p
       norm_num [clippedWeight, birthPersistence])).mp heq
   exact singleton_two_three_finitePart_ne hp
@@ -305,7 +312,9 @@ theorem whole_diagram_recovery {E : Diagram ℝ}
   have htarget : ∀ p ∈ finitePart finiteEssentialDiagram.points,
       0 < clippedWeight (birthPersistence p) := finiteEssentialDiagram_clipped_positive
   have hess' : essentialPart E.points = essentialPart finiteEssentialDiagram.points := by
-    simpa [finiteEssentialDiagram, essentialPart] using hess
+    have he : essentialPart finiteEssentialDiagram.points = {(0 : ℝ)} := rfl
+    rw [he]
+    exact hess
   exact eq_of_diagramEmbedding_eq (σ := 1) (by norm_num) clippedWeight hE htarget hess' h
 
 end TDA.Persistence.WeightedKernelInjectivityExamples
