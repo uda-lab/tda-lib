@@ -145,8 +145,16 @@ function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installe
   applying `constructibleShiftMap`, `constructibleSmoothing` and the lifted composition
   isomorphism, once at the parallel graph and once at the single graph.
 * **Range and component controls.** The two-point graph and the singleton at `0` have equal height
-  ranges but distance `⊤` by the component obstruction. The parallel edges and the single edge have
-  range bound `0`, no `0`-interleaving, and distance at most `1/4`.
+  ranges but distance `⊤` by the component obstruction. The parallel edges and the single
+  edge have range bound `0`, no `0`-interleaving, and distance exactly `1/4`.
+* **Interval-local controls.** For every parameter below `1/4`, the parallel edges and the single
+  edge have no geometric interleaving in either direction, with explicit instances at `1/8` and
+  `6/25` (`0.24`). At `1/4`, the double thickening of every nonempty interval is not contained in
+  `(0,1)`. In the edge--midpoint pair, the nontriviality form of the local obstruction never
+  applies with the single edge as source, while the two disjoint edges and the single edge have
+  distance `⊤` via the top-component obstruction at `⊤`. Together, these are controls for the
+  independence of the nontriviality form of the obstruction from the range and top-component
+  bounds.
 * **Smoothing controls.** Smoothing the edge--midpoint and parallel--single witnesses gives
   computed components, coherence laws, an unchanged edge--midpoint threshold, an exact smoothed
   distance, and two distance bounds.
@@ -208,7 +216,35 @@ have distance `1/2`.
 The two-point graph and the singleton at `0` have equal height ranges, so the range bound gives only
 `0`, while their distance is `⊤` by the component obstruction. The parallel edges and the single
 edge have range bound `0`, but no `0`-interleaving; an existing witness gives distance at most
-`1/4`. Positivity or the exact value of the parallel–single distance is not decided here.
+`1/4`.
+
+The interval-local obstruction starts with `Interleaving.φ_app_injective`: if the double-thickening
+restriction of `F` at `I` is injective, then the first map of any interleaving is injective. A
+nontrivial source value and a subsingleton shifted target value therefore exclude an interleaving.
+The cardinality version uses a finite target with smaller cardinality. The two forms transport to
+geometric interleavings through `GeometricInterleaving.toCosheaf`, and
+`le_geometricInterleavingDistance_of_isEmpty` turns exclusion below `r` into a distance lower bound.
+
+For `0 ≤ ε < 1/4`, take `I = ioo (2ε) (1 − 2ε)`. It is nonempty, and two applications of
+`thicken_ioo` give `I^ε = ioo ε (1 − ε)` and `I^(2ε) = ioo 0 1 = S01.K 0`. The parallel-edge
+restriction is bijective on this gap, so its value at `I` is nontrivial. The single-edge value at
+`I^ε` is a subsingleton. Thus `parallelSingle_isEmpty` excludes every geometric interleaving
+below `1/4`.
+
+Together with the merged witness, this proves
+`geometricInterleavingDistance parallelGraph singleGraph = 1/4`. The cosheaf distance has the same
+value by `geometricInterleavingDistance_eq_interleavingDistance`. At the boundary `ε = 1/4`, no
+nonempty interval has its double thickening contained in `(0,1)`, so the injectivity hypothesis is
+unavailable. In particular the pair has positive distance, while its height-range bound is `0`, a
+strict gap `0 < 1/4`.
+
+The nontriviality (subsingleton-target) form of the local obstruction is independent of the
+edge-versus-midpoint obstruction: every single-edge value is a subsingleton, so the local
+hypothesis never applies with the single edge as source. The cardinality form is not excluded by
+this argument: at `ε = 0`, an interval above height `1/2` meets the edge in one component while
+the midpoint value is empty. The positive edge-midpoint result below `1/2` instead comes from the
+height-range bound. For two disjoint edges versus the single edge, the same local theorem at `⊤`
+gives geometric distance `⊤`.
 
 ## Smoothing of geometric interleavings
 
@@ -244,15 +280,16 @@ claimed here.
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4. As in `reeb-geometric-interleaving.md`,
 only the statement shapes of **Definition 4.36** and **Definition 4.4** are attributed. The
 bijection, the equivalence of geometric and cosheaf interleavings, `d_geo = d_cosheaf`,
-composition, the triangle inequality, isomorphism invariance and the zero-distance law are
-**library statements proved from merged facts**: full faithfulness of `C`, invertibility of `β^ε`
-and the unit and composite laws of the shifted map. None is attributed to a numbered source result.
+composition, the triangle inequality, isomorphism invariance, the zero-distance law, the
+interval-local obstruction and its geometric transport, the exact value `1/4` and its cosheaf twin,
+positivity and the strict range gap are **library statements proved from merged facts**: full
+faithfulness of `C`, invertibility of `β^ε` and the unit and composite laws of the shifted map. None
+is attributed to a numbered source result.
 Essential surjectivity of `C` is not used, so no critical-value scope is inherited.
 
 Not claimed here: absorption beyond (H2); a comparison with Mapper; interleavings of precosheaves
-that do not come from graph objects; interleavings internal to `ConstructibleCosheafCat` and a
-lift of `GeometricInterleaving.toCosheaf` to them; positivity or the exact value of the
-parallel–single distance.
+that do not come from graph objects; and interleavings internal to `ConstructibleCosheafCat` and a
+lift of `GeometricInterleaving.toCosheaf` to them.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition
 4.36](https://arxiv.org/html/1501.04147v1).
