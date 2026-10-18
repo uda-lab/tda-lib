@@ -690,3 +690,18 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.mapperOneSkeletonGraphPLIso
 #print axioms TDA.Mapper.GraphPL.mapperOneSkeleton_connected_iff
 #print axioms TDA.Mapper.GraphPL.card_mapperOneSkeleton_edgeSet_le
+
+-- Incidence graph and Mapper one-skeleton fixtures.
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.c4_oneSkeletonIso
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.c4_oneSkeleton_edgeCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.edge_oneSkeleton_vertexCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.edge_oneSkeleton_edgeCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.Y_oneSkeleton_vertexCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.Y_oneSkeleton_edgeCard_le
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.flat_oneSkeleton_vertexCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.flat_oneSkeleton_not_adj
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_boundary
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_oneSkeleton_vertexCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_oneSkeleton_complete
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_incidence_not_adj
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_no_oneSkeletonIso
