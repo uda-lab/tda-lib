@@ -83,3 +83,4 @@ import TDA.Persistence.CechWeightedKernelExamples
 import TDA.Persistence.LogScaleDiagramComparisonExamples
 import TDA.Persistence.CechSupNormConsumersExamples
 import TDA.Persistence.ModuleScalingExamples
+import TDA.Persistence.TriangleCechRipsExamples
