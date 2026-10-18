@@ -79,8 +79,8 @@ The `develop` branch includes these additional bounded results. The
   masses and finite deaths, partial-matching minima equal optima over finite real
   boundary plans, with real exponents p ≥ 1 and maximum ground norm. Rooted costs
   satisfy distance laws and explicit cardinality-dependent perturbation bounds.
-  The powered matching minimum, real-plan infimum and their rooted p-th-root forms
-  coincide and are attained. If N is the total finite-occurrence count, their
+  The powered matching minimum and real-plan infimum coincide, as do their rooted
+  p-th-root forms, and both are attained. If N is the total finite-occurrence count, their
   first-order comparison is d_p ≤ d_1 ≤ N^(1−1/p) d_p. Common diagonal translation
   preserves these costs, while nonnegative coordinate scaling by c multiplies the
   powered costs by c^p and the rooted costs by c. For natural p, total persistence
@@ -109,9 +109,10 @@ The `develop` branch includes these additional bounded results. The
   degree zero and every positive degree, and for the acute triangle at radius scale
   in degrees zero and one and log scale in degree one. Positive scaling of
   real-indexed modules scales their interleaving distance by the same positive factor,
-  over every ring and including infinite distance. For a filter positive on edges,
-  positive scaling translates its log-scale diagrams by log c and preserves their
-  log-scale bottleneck and interleaving distances, in every degree n ≥ 1. For one
+  over every ring and including infinite distance. For two filters positive on edges,
+  scaling both by the same positive c translates their log-scale diagrams by log c
+  and preserves their mutual log-scale bottleneck and interleaving distances, in
+  every degree n ≥ 1. For one
   configuration in a finite sup-norm product, the Rips and Čech
   diagrams are at bottleneck distance at most half the carrier diameter. Log-scale
   Čech–Rips diagrams have bottleneck distance at most log 2 in degrees at least
