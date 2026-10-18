@@ -79,6 +79,15 @@ The `develop` branch includes these additional bounded results. The
   masses and finite deaths, partial-matching minima equal optima over finite real
   boundary plans, with real exponents p ≥ 1 and maximum ground norm. Rooted costs
   satisfy distance laws and explicit cardinality-dependent perturbation bounds.
+  The powered matching minimum, real-plan infimum and their rooted p-th-root forms
+  coincide and are attained. If N is the total finite-occurrence count, their
+  first-order comparison is d_p ≤ d_1 ≤ N^(1−1/p) d_p. Common diagonal translation
+  preserves these costs, while nonnegative coordinate scaling by c multiplies the
+  powered costs by c^p and the rooted costs by c. For natural p, total persistence
+  over finite bars is translation-invariant and homogeneous under positive scaling;
+  finite Rips and Čech diagrams satisfy face-count bar bounds and the resulting
+  size-dependent total-persistence bounds, using the carrier diameter or a stated
+  enclosing radius as the coordinate bound.
   Finite-constructible real-indexed modules over a field satisfy barcode isometry
   with finite-dimensional critical fibers, a zero left tail, half-open strata and
   a possibly nonzero final tail.
@@ -86,21 +95,56 @@ The `develop` branch includes these additional bounded results. The
 - **Persistence representations.** Gaussian persistence images at fixed positive
   bandwidth and fixed disjoint measurable pixels, and weighted Gaussian kernels,
   have stability bounds on finite diagram parts against first-order matching cost under
-  explicit weight assumptions.
+  explicit weight assumptions. For the arctan weight with C ≥ 0, the kernel constant
+  is 2C + √2·π/(2|σ|), with no bandwidth-sign hypothesis, and the image constant is
+  2C + 3·√(π/2)/σ for σ > 0. Actual Rips and Čech diagrams have radius-scale embedding,
+  fixed-diagram kernel-value and image consumers under their stated same-label
+  hypotheses; the sup-norm Čech consumers use half the pairwise discrepancy.
+  Log-scale Rips–Čech consumers use the exact bottleneck or log 2 bounds in degrees
+  n ≥ 1 under the compatible-label and positivity hypotheses. Second-level Gaussian
+  feature bounds are available for general weights, but have no arctan instance.
 - **Metric inputs.** Finite Rips and ambient Čech filtrations are constructed.
-  Rips diagrams satisfy a same-label pairwise-discrepancy bound. Log-scale
+  Rips diagrams satisfy a same-label pairwise-discrepancy bound. Exact diagrams and
+  bottleneck values over `ZMod 2` are computed for two points at radius scale in
+  degree zero and every positive degree, and for the acute triangle at radius scale
+  in degrees zero and one and log scale in degree one. Positive scaling of
+  real-indexed modules scales their interleaving distance by the same positive factor,
+  over every ring and including infinite distance. For a filter positive on edges,
+  positive scaling translates its log-scale diagrams by log c and preserves their
+  log-scale bottleneck and interleaving distances, in every degree n ≥ 1. For one
+  configuration in a finite sup-norm product, the Rips and Čech
+  diagrams are at bottleneck distance at most half the carrier diameter. Log-scale
   Čech–Rips diagrams have bottleneck distance at most log 2 in degrees at least
   one under the stated positivity and embedding assumptions.
 - **Reeb.** In the library's finite real-graph category, geometric smoothing has
   coherent composition, and geometric and cosheaf interleavings agree, with equal
-  extended distances.
+  extended distances. Geometric smoothing admits parameter enlargement, geometric
+  interleavings are monotone, constructible smoothing lifts to constructible cosheaves,
+  and smoothing a geometric interleaving preserves its parameter with two-sided
+  distance bounds. Height-range, top-component and interval-local obstructions give
+  lower bounds; exact fixture distances include 1/2 between the edge and its midpoint,
+  1/4 between the parallel-edge and single-edge graphs, and ⊤ under a component
+  obstruction. Finite Reeb data have an incidence quiver and a simple incidence graph;
+  the latter forgets parallel-edge multiplicity.
 - **Mapper.** Graph-PL inputs have ordinary and MultiNerve Mapper constructions,
   a cover-dependent cell classification and finite Reeb incidence data, under
-  explicit cover and height assumptions.
+  explicit cover and height assumptions. For finite graph-PL input, a member-adapted,
+  height-separating, vertex-height-covering uniform cover with 0 < g and 2g ≤ r
+  identifies its MultiNerve Mapper data with the graph-PL finite Reeb data; such
+  covers exist with r below any prescribed positive bound. Closed levels have the
+  stated vertex-component and crossing-edge components, and inclusion into a level
+  window is bijective on path components. Graph-PL finite Reeb data and member-adapted
+  Mapper data are compatible with covering refinements. Under 2g ≤ r, the ordinary
+  Mapper one-skeleton agrees with the incidence graph, which forgets parallel edge
+  cells. Under the vertex-height-covering hypothesis, the interval-components cosheaf
+  is constructible and is identified with the cosheaf of the graph-PL finite Reeb data.
+  The Reeb quotient of the graph-PL realization is not identified.
 
 Further directions include all-Radon boundary transport, general infinite or
 q-tame persistence, metric stability across different point sets, and
-resolution-controlled Mapper–Reeb approximation.
+resolution-controlled Mapper–Reeb approximation, constructibility of the product
+thickening of a general constructible real space beyond graph input as in DMP
+Theorem 4.27, and identification of the Reeb quotient of a graph-PL realization.
 [Issue #227](https://github.com/uda-lab/tda-lib/issues/227) records their scope and
 source links.
 
