@@ -1,0 +1,753 @@
+import TDA.Mapper.GraphPLReebQuotient
+import TDA.Reeb.ConstructibleThickeningQuotient
+import Mathlib.Analysis.Convex.PathConnected
+import Mathlib.Topology.Connected.LocallyPathConnected
+import Mathlib.Topology.Separation.Hausdorff
+import Mathlib.Topology.Homeomorph.Lemmas
+
+/-! # The graph-PL realization as a constructible ℝ-space
+
+This module develops the graph-PL realization and its constructible-space presentation: (A) the
+Hausdorff and locally path-connected topology of graph realizations, (B) closed-level pieces and
+their homeomorphisms, (C) the finite cylinder presentation and constructible-space structure,
+(D) the quotient and Reeb-graph identifications, and (E) the thickening comparisons.  These are
+library results and make no external source claim.  The realization and presentation statements
+are universe-polymorphic, while the slice statements use `V : Type`.
+-/
+
+namespace TDA.Mapper.GraphPL
+
+open Set SimpleGraph CategoryTheory Topology Filter
+open TDA.Reeb TDA.Reeb.GraphPL TDA.Reeb.GraphRealization
+
+noncomputable section
+
+universe u v
+
+section realization
+
+variable {V : Type u} (G : SimpleGraph V)
+
+local instance : DecidableEq V := Classical.decEq V
+
+/-- Barycentric coordinates send `vertex v` to `Pi.single v 1` and `edgePoint d t` to the affine
+combination of the two endpoint coordinates. -/
+noncomputable def barycentric : C(Realization G, V → ℝ) := by
+  exact continuousLift G (fun v => Pi.single v 1)
+    (fun d => ⟨fun t => (1 - (t : ℝ)) • Pi.single d.fst 1 +
+      (t : ℝ) • Pi.single d.snd 1, by
+        exact continuous_pi fun v =>
+          ((continuous_const.sub continuous_subtype_val).smul continuous_const).add
+            (continuous_subtype_val.smul continuous_const)⟩)
+    (fun d t => by
+      ext v
+      simp [unitInterval.coe_symm_eq, Pi.single_apply]
+      ring)
+    (fun d => by
+      ext v
+      simp [Pi.single_apply])
+
+/-- Barycentric coordinates on a vertex. -/
+theorem barycentric_vertex (v : V) : barycentric G (vertex G v) = Pi.single v 1 := by
+  rfl
+
+/-- Barycentric coordinates on an edge point. -/
+theorem barycentric_edgePoint (d : G.Dart) (t : unitInterval) :
+    barycentric G (edgePoint G d t) =
+      (1 - (t : ℝ)) • Pi.single d.fst 1 + (t : ℝ) • Pi.single d.snd 1 := by
+  rfl
+
+private theorem barycentric_edge_coord_pos {d : G.Dart} {t : unitInterval} {i : V}
+    (ht₀ : 0 < (t : ℝ)) (ht₁ : (t : ℝ) < 1)
+    (hi : 0 < barycentric G (edgePoint G d t) i) :
+    i = d.fst ∨ i = d.snd := by
+  by_contra hn
+  have hfst : i ≠ d.fst := fun h => hn (Or.inl h)
+  have hsnd : i ≠ d.snd := fun h => hn (Or.inr h)
+  simp [barycentric_edgePoint, Pi.single_apply, hfst, hsnd, eq_comm] at hi
+
+private theorem barycentric_edge_eq_vertex {d : G.Dart} {t : unitInterval} {v : V}
+    (h : barycentric G (edgePoint G d t) = barycentric G (vertex G v)) :
+    t = 0 ∧ d.fst = v ∨ t = 1 ∧ d.snd = v := by
+  by_cases hfv : d.fst = v
+  · left
+    refine ⟨?_, hfv⟩
+    have hs := congr_fun h d.snd
+    have hne : v ≠ d.snd := by
+      intro hv
+      exact d.fst_ne_snd (hfv.trans hv)
+    have : (t : ℝ) = 0 := by
+      simpa [barycentric_edgePoint, barycentric_vertex, Pi.single_apply, hne, eq_comm] using hs
+    exact Subtype.ext (by rw [Set.Icc.coe_zero]; exact this)
+  · by_cases hsv : d.snd = v
+    · right
+      refine ⟨?_, hsv⟩
+      have hs := congr_fun h d.fst
+      have hne : v ≠ d.fst := Ne.symm hfv
+      have : 1 - (t : ℝ) = 0 := by
+        simpa [barycentric_edgePoint, barycentric_vertex, Pi.single_apply, hfv, hne, eq_comm,
+          d.fst_ne_snd] using hs
+      exact Subtype.ext (by rw [Set.Icc.coe_one]; linarith only [this])
+    · have hs₀ := congr_fun h d.fst
+      have hs₁ := congr_fun h d.snd
+      have ht₀ : (t : ℝ) = 0 := by
+        simpa [barycentric_edgePoint, barycentric_vertex, Pi.single_apply, hfv, hsv, eq_comm,
+          d.fst_ne_snd] using hs₁
+      have ht₁ : (t : ℝ) = 1 := by
+        have hs₀' : (0 : ℝ) = 1 - (t : ℝ) := by
+          simpa [barycentric_edgePoint, barycentric_vertex, Pi.single_apply, hfv, hsv, eq_comm,
+            d.snd_ne_fst] using hs₀
+        linarith only [hs₀']
+      linarith
+
+private theorem barycentric_edge_eq_edgePoint {d d' : G.Dart} {t t' : unitInterval}
+    (ht₀ : t ≠ 0) (ht₁ : t ≠ 1) (ht₀' : t' ≠ 0) (ht₁' : t' ≠ 1)
+    (h : barycentric G (edgePoint G d t) = barycentric G (edgePoint G d' t')) :
+    (d' = d ∧ t' = t) ∨ (d' = d.symm ∧ t' = unitInterval.symm t) := by
+  have htpos : 0 < (t : ℝ) :=
+    lt_of_le_of_ne t.2.1 (Ne.symm (unitInterval.coe_ne_zero.mpr ht₀))
+  have htlt : (t : ℝ) < 1 :=
+    lt_of_le_of_ne t.2.2 (unitInterval.coe_ne_one.mpr ht₁)
+  have htpos' : 0 < (t' : ℝ) :=
+    lt_of_le_of_ne t'.2.1 (Ne.symm (unitInterval.coe_ne_zero.mpr ht₀'))
+  have htlt' : (t' : ℝ) < 1 :=
+    lt_of_le_of_ne t'.2.2 (unitInterval.coe_ne_one.mpr ht₁')
+  have hedge : dartEdge d = dartEdge d' := by
+    apply Subtype.ext
+    apply Sym2.ext
+    intro i
+    constructor
+    · intro hi
+      have hpos : 0 < barycentric G (edgePoint G d t) i := by
+        rcases mem_dartEdge.mp hi with rfl | rfl
+        · have hc : barycentric G (edgePoint G d t) d.fst = 1 - (t : ℝ) := by
+            simp [barycentric_edgePoint, Pi.single_apply, eq_comm, d.fst_ne_snd]
+          rw [hc]
+          linarith
+        · have hc : barycentric G (edgePoint G d t) d.snd = (t : ℝ) := by
+            simp [barycentric_edgePoint, Pi.single_apply, eq_comm, d.snd_ne_fst]
+          rw [hc]
+          exact htpos
+      have hpos' : 0 < barycentric G (edgePoint G d' t') i := by
+        rw [← congr_fun h i]
+        exact hpos
+      exact mem_dartEdge.mpr (barycentric_edge_coord_pos G htpos' htlt' hpos')
+    · intro hi
+      have hpos : 0 < barycentric G (edgePoint G d' t') i := by
+        rcases mem_dartEdge.mp hi with rfl | rfl
+        · have hc : barycentric G (edgePoint G d' t') d'.fst = 1 - (t' : ℝ) := by
+            simp [barycentric_edgePoint, Pi.single_apply, eq_comm, d'.fst_ne_snd]
+          rw [hc]
+          linarith
+        · have hc : barycentric G (edgePoint G d' t') d'.snd = (t' : ℝ) := by
+            simp [barycentric_edgePoint, Pi.single_apply, eq_comm, d'.snd_ne_fst]
+          rw [hc]
+          exact htpos'
+      have hpos' : 0 < barycentric G (edgePoint G d t) i := by
+        rw [congr_fun h i]
+        exact hpos
+      exact mem_dartEdge.mpr (barycentric_edge_coord_pos G htpos htlt hpos')
+  rcases (dartEdge_eq_iff.mp hedge) with hd | hd
+  · left
+    refine ⟨hd.symm, ?_⟩
+    have hs := congr_fun h d.snd
+    have heq : (t : ℝ) = (t' : ℝ) := by
+      subst d'
+      simpa [barycentric_edgePoint, Pi.single_apply, eq_comm, d.snd_ne_fst] using hs
+    exact Subtype.ext heq.symm
+  · right
+    have hd' : d' = d.symm := by
+      apply Dart.ext
+      exact congrArg Prod.swap (congrArg Dart.toProd hd.symm)
+    refine ⟨hd', ?_⟩
+    have hs := congr_fun h d.snd
+    have hs' : (t : ℝ) = 1 - (t' : ℝ) := by
+      simpa [barycentric_edgePoint, Pi.single_apply, eq_comm, d.snd_ne_fst,
+        d'.fst_ne_snd, hd] using hs
+    have heq : (t' : ℝ) = 1 - (t : ℝ) := by linarith
+    apply Subtype.ext
+    rw [unitInterval.coe_symm_eq]
+    exact heq
+
+/-- The barycentric map is injective. -/
+theorem barycentric_injective : Function.Injective (barycentric G) := by
+  classical
+  intro x
+  refine ind G (p := fun x => ∀ y, barycentric G x = barycentric G y → x = y) ?_ ?_ x
+  · intro v y
+    refine ind G (p := fun y => barycentric G (vertex G v) = barycentric G y →
+      vertex G v = y) ?_ ?_ y
+    · intro w h
+      by_contra hvw
+      have hv := congr_fun h v
+      simp [barycentric_vertex, Pi.single_apply, hvw, eq_comm] at hv
+      exact hvw (congrArg (vertex G) hv)
+    · intro d t h
+      have h' := barycentric_edge_eq_vertex G h.symm
+      rcases h' with ⟨ht, hd⟩ | ⟨ht, hd⟩
+      · rw [ht, edgePoint_zero]
+        exact congrArg (vertex G) hd.symm
+      · rw [ht, edgePoint_one]
+        exact congrArg (vertex G) hd.symm
+  · intro d t y
+    refine ind G (p := fun y => barycentric G (edgePoint G d t) = barycentric G y →
+      edgePoint G d t = y) ?_ ?_ y
+    · intro v h
+      rcases barycentric_edge_eq_vertex G h with ⟨ht, hd⟩ | ⟨ht, hd⟩
+      · rw [ht, edgePoint_zero]
+        exact congrArg (vertex G) hd
+      · rw [ht, edgePoint_one]
+        exact congrArg (vertex G) hd
+    · intro d' t' h
+      by_cases ht₀ : t = 0
+      · rw [ht₀, edgePoint_zero]
+        have h' := barycentric_edge_eq_vertex G (by
+          simpa [ht₀, edgePoint_zero] using h.symm)
+        rcases h' with ⟨ht', hd'⟩ | ⟨ht', hd'⟩
+        · rw [ht', edgePoint_zero]
+          exact congrArg (vertex G) hd'.symm
+        · rw [ht', edgePoint_one]
+          exact congrArg (vertex G) hd'.symm
+      · by_cases ht₁ : t = 1
+        · rw [ht₁, edgePoint_one]
+          have h' := barycentric_edge_eq_vertex G (by
+            simpa [ht₁, edgePoint_one] using h.symm)
+          rcases h' with ⟨ht', hd'⟩ | ⟨ht', hd'⟩
+          · rw [ht', edgePoint_zero]
+            exact congrArg (vertex G) hd'.symm
+          · rw [ht', edgePoint_one]
+            exact congrArg (vertex G) hd'.symm
+        · by_cases ht₀' : t' = 0
+          · rw [ht₀', edgePoint_zero]
+            have h' := barycentric_edge_eq_vertex G (by
+              simpa [ht₀', edgePoint_zero] using h)
+            rcases h' with ⟨ht', hd'⟩ | ⟨ht', hd'⟩
+            · rw [ht', edgePoint_zero]
+              exact congrArg (vertex G) hd'
+            · rw [ht', edgePoint_one]
+              exact congrArg (vertex G) hd'
+          · by_cases ht₁' : t' = 1
+            · rw [ht₁', edgePoint_one]
+              have h' := barycentric_edge_eq_vertex G (by
+                simpa [ht₁', edgePoint_one] using h)
+              rcases h' with ⟨ht', hd'⟩ | ⟨ht', hd'⟩
+              · rw [ht', edgePoint_zero]
+                exact congrArg (vertex G) hd'
+              · rw [ht', edgePoint_one]
+                exact congrArg (vertex G) hd'
+            · rcases barycentric_edge_eq_edgePoint G ht₀ ht₁ ht₀' ht₁' h with
+                ⟨hd, ht⟩ | ⟨hd, ht⟩
+              · rw [hd, ht]
+              · rw [hd, ht, edgePoint_symm]
+
+/-- The realization is Hausdorff. -/
+theorem t2Space_realization : T2Space (Realization G) :=
+  T2Space.of_injective_continuous (barycentric_injective G) (barycentric G).continuous
+
+/-- An edge point is a vertex exactly at one of its endpoints. -/
+theorem edgePoint_eq_vertex_iff {d : G.Dart} {t : unitInterval} {v : V} :
+    edgePoint G d t = vertex G v ↔ (t = 0 ∧ d.fst = v) ∨ (t = 1 ∧ d.snd = v) := by
+  constructor
+  · intro h
+    exact barycentric_edge_eq_vertex G (congrArg (barycentric G) h)
+  · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
+    · exact edgePoint_zero G d
+    · exact edgePoint_one G d
+
+/-- Interior points on graph edges are identified only by reversal. -/
+theorem edgePoint_eq_edgePoint_iff {d d' : G.Dart} {t t' : unitInterval}
+    (ht₀ : t ≠ 0) (ht₁ : t ≠ 1) :
+    edgePoint G d t = edgePoint G d' t' ↔
+      (d' = d ∧ t' = t) ∨ (d' = d.symm ∧ t' = unitInterval.symm t) := by
+  constructor
+  · intro h
+    have ht₀' : t' ≠ 0 := by
+      intro ht'
+      subst t'
+      have hv := (edgePoint_eq_vertex_iff G).mp (h.trans (edgePoint_zero G d'))
+      rcases hv with ⟨ht, _⟩ | ⟨ht, _⟩
+      · exact ht₀ ht
+      · exact ht₁ ht
+    have ht₁' : t' ≠ 1 := by
+      intro ht'
+      subst t'
+      have hv := (edgePoint_eq_vertex_iff G).mp (h.trans (edgePoint_one G d'))
+      rcases hv with ⟨ht, _⟩ | ⟨ht, _⟩
+      · exact ht₀ ht
+      · exact ht₁ ht
+    have h' := barycentric_edge_eq_edgePoint G ht₀ ht₁
+      ht₀' ht₁'
+      (congrArg (barycentric G) h)
+    exact h'
+  · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
+    · rfl
+    · exact (edgePoint_symm G d t).symm
+
+private theorem locallyPathConnectedSpace_unitInterval :
+    LocallyPathConnectedSpace unitInterval := by
+  refine LocallyPathConnectedSpace.of_bases (p := fun _ (ε : ℝ) => 0 < ε)
+    (s := fun x ε => ((↑) : unitInterval → ℝ) ⁻¹' Ioo ((x : ℝ) - ε) (x + ε)) (fun x => ?_)
+    fun x ε hε => ?_
+  · rw [nhds_subtype]
+    exact (nhds_basis_Ioo_pos (x : ℝ)).comap _
+  · have hW : IsPathConnected (Icc (0 : ℝ) 1 ∩ Ioo ((x : ℝ) - ε) (x + ε)) :=
+      ((convex_Icc (𝕜 := ℝ) _ _).inter (convex_Ioo _ _)).isPathConnected
+        ⟨(x : ℝ), x.2, by constructor <;> linarith⟩
+    have := hW.preimage_coe (U := Icc (0 : ℝ) 1) inter_subset_left
+    rwa [Subtype.preimage_coe_self_inter] at this
+
+/-- The graph realization is locally path-connected. -/
+theorem locallyPathConnectedSpace_realization :
+    LocallyPathConnectedSpace (Realization G) := by
+  letI : TopologicalSpace V := ⊥
+  letI : DiscreteTopology V := ⟨rfl⟩
+  letI : LocallyPathConnectedSpace unitInterval := locallyPathConnectedSpace_unitInterval
+  letI : LocallyPathConnectedSpace (Cells G) := by
+    change LocallyPathConnectedSpace (V ⊕ Σ _ : G.Dart, unitInterval)
+    infer_instance
+  change LocallyPathConnectedSpace (Quot (CellRel G))
+  infer_instance
+
+/-- A graph embedding induces an injective map on realizations. -/
+theorem realizationMap_injective {W : Type v} {H : SimpleGraph W} (φ : G ↪g H) :
+    Function.Injective (realizationMap φ.toHom) := by
+  classical
+  have hmapDart : Function.Injective (φ.toHom.mapDart) := by
+    intro d d' h
+    apply Dart.ext
+    have hp : (φ d.fst, φ d.snd) = (φ d'.fst, φ d'.snd) := by
+      have hp := congrArg Dart.toProd h
+      change (φ d.fst, φ d.snd) = (φ d'.fst, φ d'.snd) at hp
+      exact hp
+    exact Prod.ext (φ.injective (congrArg Prod.fst hp))
+      (φ.injective (congrArg Prod.snd hp))
+  have hsymm (d : G.Dart) :
+      (φ.toHom.mapDart d).symm = φ.toHom.mapDart d.symm := by
+    apply Dart.ext
+    rfl
+  have hVE {v : V} {d : G.Dart} {t : unitInterval}
+      (h : realizationMap φ.toHom (vertex G v) =
+        realizationMap φ.toHom (edgePoint G d t)) :
+      vertex G v = edgePoint G d t := by
+    have h' := (edgePoint_eq_vertex_iff H).mp h.symm
+    rcases h' with ⟨ht, hd⟩ | ⟨ht, hd⟩
+    · have ht' : t = 0 := ht
+      rw [ht', edgePoint_zero]
+      have hd' : φ d.fst = φ v := by
+        simpa [SimpleGraph.Hom.mapDart_apply] using hd
+      exact congrArg (vertex G) (φ.injective hd').symm
+    · have ht' : t = 1 := ht
+      rw [ht', edgePoint_one]
+      have hd' : φ d.snd = φ v := by
+        simpa [SimpleGraph.Hom.mapDart_apply] using hd
+      exact congrArg (vertex G) (φ.injective hd').symm
+  have hEV {v : V} {d : G.Dart} {t : unitInterval}
+      (h : realizationMap φ.toHom (edgePoint G d t) =
+        realizationMap φ.toHom (vertex G v)) :
+      edgePoint G d t = vertex G v := by
+    have h' := (edgePoint_eq_vertex_iff H).mp h
+    rcases h' with ⟨ht, hd⟩ | ⟨ht, hd⟩
+    · have ht' : t = 0 := ht
+      rw [ht', edgePoint_zero]
+      have hd' : φ d.fst = φ v := by
+        simpa [SimpleGraph.Hom.mapDart_apply] using hd
+      exact congrArg (vertex G) (φ.injective hd')
+    · have ht' : t = 1 := ht
+      rw [ht', edgePoint_one]
+      have hd' : φ d.snd = φ v := by
+        simpa [SimpleGraph.Hom.mapDart_apply] using hd
+      exact congrArg (vertex G) (φ.injective hd')
+  intro x
+  refine ind G (p := fun x => ∀ y, realizationMap φ.toHom x = realizationMap φ.toHom y →
+    x = y) ?_ ?_ x
+  · intro v y
+    refine ind G (p := fun y => realizationMap φ.toHom (vertex G v) =
+      realizationMap φ.toHom y → vertex G v = y) ?_ ?_ y
+    · intro w h
+      exact congrArg (vertex G) (φ.injective (vertex_injective H (by simpa using h)))
+    · intro d t h
+      exact hVE h
+  · intro d t y
+    refine ind G (p := fun y => realizationMap φ.toHom (edgePoint G d t) =
+      realizationMap φ.toHom y → edgePoint G d t = y) ?_ ?_ y
+    · intro v h
+      exact hEV h
+    · intro d' t' h
+      by_cases ht₀ : t = 0
+      · rw [ht₀, edgePoint_zero]
+        apply hVE
+        simpa [ht₀, realizationMap_edgePoint, realizationMap_vertex, edgePoint_zero] using h
+      · by_cases ht₁ : t = 1
+        · rw [ht₁, edgePoint_one]
+          apply hVE
+          simpa [ht₁, realizationMap_edgePoint, realizationMap_vertex, edgePoint_one] using h
+        · by_cases ht₀' : t' = 0
+          · rw [ht₀', edgePoint_zero]
+            apply hEV
+            simpa [ht₀', realizationMap_edgePoint, realizationMap_vertex, edgePoint_zero] using h
+          · by_cases ht₁' : t' = 1
+            · rw [ht₁', edgePoint_one]
+              apply hEV
+              simpa [ht₁', realizationMap_edgePoint, realizationMap_vertex, edgePoint_one] using h
+            · have h' := (edgePoint_eq_edgePoint_iff H ht₀ ht₁).mp h
+              rcases h' with ⟨hd, ht⟩ | ⟨hd, ht⟩
+              · have hd' : d' = d := hmapDart hd
+                have ht' : t' = t := ht
+                rw [hd', ht']
+              · have hdmap : φ.toHom.mapDart d' = φ.toHom.mapDart d.symm :=
+                  hd.trans (hsymm d)
+                have hd' : d' = d.symm := hmapDart hdmap
+                have ht' : t' = unitInterval.symm t := ht
+                rw [hd', ht']
+                exact (edgePoint_symm G d t).symm
+
+end realization
+
+section level
+
+variable {V : Type u} (G : SimpleGraph V) (h : V → ℝ)
+
+/-- The realization of the level graph together with the crossing edges. -/
+def LevelPiece (c : ℝ) : Type u :=
+  Realization (G.induce {v | h v = c}) ⊕ {e : G.edgeSet // EdgeCrosses G h c e}
+
+/-- The level-graph summand has its realization topology and the crossing summand is discrete. -/
+instance instTopologicalSpaceLevelPiece (c : ℝ) : TopologicalSpace (LevelPiece G h c) :=
+  @instTopologicalSpaceSum (Realization (G.induce {v | h v = c}))
+    {e : G.edgeSet // EdgeCrosses G h c e} inferInstance ⊥
+
+private theorem level_realization_height {c : ℝ}
+    (z : Realization (G.induce {v | h v = c})) :
+    plHeight G h (realizationMap (Embedding.induce _).toHom z) = c := by
+  induction z using ind (G.induce {v | h v = c}) with
+  | vertex v =>
+      simp only [realizationMap_vertex, plHeight_vertex]
+      exact v.property
+  | edgePoint d t =>
+      rw [realizationMap_edgePoint, plHeight_edgePoint]
+      have hd : h ((Embedding.induce (G := G) {v | h v = c}).toHom.mapDart d).fst =
+          h ((Embedding.induce (G := G) {v | h v = c}).toHom.mapDart d).snd := by
+        simpa [SimpleGraph.Hom.mapDart_apply] using
+          (d.fst.property.trans d.snd.property.symm)
+      rw [dartHeight_of_eq h hd]
+      change h (d.fst : V) = c
+      exact d.fst.property
+
+/-- The level-piece map sends level-graph points to the closed level and crossing edges to their
+crossing points. -/
+noncomputable def levelPieceMap (c : ℝ) : C(LevelPiece G h c, ClosedLevel G h c) := by
+  letI : TopologicalSpace {e : G.edgeSet // EdgeCrosses G h c e} := ⊥
+  letI : DiscreteTopology {e : G.edgeSet // EdgeCrosses G h c e} := ⟨rfl⟩
+  let f : C(Realization (G.induce {v | h v = c}), ClosedLevel G h c) :=
+    ⟨fun z => ⟨realizationMap (Embedding.induce _).toHom z, level_realization_height G h z⟩,
+      (realizationMap (Embedding.induce _).toHom).continuous.subtype_mk
+        (level_realization_height G h)⟩
+  exact
+    { toFun := Sum.elim f (crossingPoint G h)
+      continuous_toFun := f.continuous.sumElim continuous_of_discreteTopology }
+
+private theorem levelPieceMap_inl (c : ℝ)
+    (z : Realization (G.induce {v | h v = c})) :
+    (levelPieceMap G h c (Sum.inl z)).1 =
+      realizationMap (Embedding.induce (G := G) {v | h v = c}).toHom z := by
+  rfl
+
+private theorem levelPieceMap_inr (c : ℝ)
+    (e : {e : G.edgeSet // EdgeCrosses G h c e}) :
+    (levelPieceMap G h c (Sum.inr e)).1 = crossingPoint G h e := by
+  rfl
+
+private theorem exists_dart_crossing' {c : ℝ}
+    (e : {e : G.edgeSet // EdgeCrosses G h c e}) :
+    ∃ d : G.Dart, dartEdge d = e.1 ∧ h d.fst < c ∧ c < h d.snd := by
+  obtain ⟨d, hd⟩ := exists_dartEdge_eq e.1
+  have hcross : EdgeCrosses G h c (dartEdge d) := by
+    rw [hd]
+    exact e.2
+  obtain ⟨hmin, hmax⟩ := (edgeCrosses_dartEdge_iff d).1 hcross
+  rcases le_total (h d.fst) (h d.snd) with hab | hab
+  · refine ⟨d, hd, ?_, ?_⟩
+    · rw [min_eq_left hab] at hmin
+      exact hmin
+    · rw [max_eq_right hab] at hmax
+      exact hmax
+  · refine ⟨d.symm, ?_, ?_, ?_⟩
+    · rw [dartEdge_symm]
+      exact hd
+    · rw [min_eq_right hab] at hmin
+      exact hmin
+    · rw [max_eq_left hab] at hmax
+      exact hmax
+
+private theorem crossingPoint_spec' {c : ℝ}
+    (e : {e : G.edgeSet // EdgeCrosses G h c e}) :
+    ∃ d : G.Dart, ∃ h₁ : h d.fst < c, ∃ h₂ : c < h d.snd,
+      dartEdge d = e.1 ∧
+        (crossingPoint G h e).1 = edgePoint G d (crossingParam G h h₁ h₂) := by
+  obtain ⟨d, hd, h₁, h₂⟩ := exists_dart_crossing' G h e
+  refine ⟨d, h₁, h₂, hd, ?_⟩
+  exact (eq_crossingPoint G h e d hd (crossingParam G h h₁ h₂)
+    (dartHeight_crossingParam G h h₁ h₂)).symm
+
+private theorem crossingParam_interior {c : ℝ} {d : G.Dart}
+    (h₁ : h d.fst < c) (h₂ : c < h d.snd) :
+    0 < (crossingParam G h h₁ h₂ : ℝ) ∧ (crossingParam G h h₁ h₂ : ℝ) < 1 := by
+  constructor
+  · dsimp [crossingParam]
+    exact div_pos (by linarith) (by linarith)
+  · dsimp [crossingParam]
+    apply (div_lt_one (by linarith)).2
+    linarith
+
+private theorem level_eq_of_dartHeight_eq {d : G.Dart} {s t : unitInterval}
+    (hne : h d.fst ≠ h d.snd) (hst : dartHeight h d s = dartHeight h d t) : s = t := by
+  apply Subtype.ext
+  apply mul_right_cancel₀ (sub_ne_zero.mpr hne.symm)
+  unfold dartHeight at hst
+  linear_combination hst
+
+private theorem level_crossing_not_level_graph {c : ℝ}
+    (z : Realization (G.induce {v | h v = c}))
+    (e : {e : G.edgeSet // EdgeCrosses G h c e}) :
+    realizationMap (Embedding.induce _).toHom z ≠ (crossingPoint G h e).1 := by
+  classical
+  obtain ⟨d', h₁, h₂, hd', hpoint⟩ := crossingPoint_spec' G h e
+  have hi := crossingParam_interior G h h₁ h₂
+  intro hz
+  have hcross_eq : edgePoint G d' (crossingParam G h h₁ h₂) =
+      realizationMap (Embedding.induce (G := G) {v | h v = c}).toHom z :=
+    hpoint.symm.trans hz.symm
+  induction z using ind (G.induce {v | h v = c}) with
+  | vertex v =>
+      have hv := (edgePoint_eq_vertex_iff G).mp (by
+        simpa [realizationMap_vertex] using hcross_eq)
+      rcases hv with ⟨ht, _⟩ | ⟨ht, _⟩
+      · exact (ne_of_gt hi.1)
+          (congrArg (fun s : unitInterval => (s : ℝ)) ht)
+      · exact (ne_of_lt hi.2)
+          (congrArg (fun s : unitInterval => (s : ℝ)) ht)
+  | edgePoint d t =>
+      by_cases ht₀ : t = 0
+      · have hv := (edgePoint_eq_vertex_iff G).mp (by
+          simpa [realizationMap_edgePoint, realizationMap_vertex, ht₀, edgePoint_zero]
+            using hcross_eq)
+        rcases hv with ⟨ht, _⟩ | ⟨ht, _⟩
+        · exact (ne_of_gt hi.1)
+            (congrArg (fun s : unitInterval => (s : ℝ)) ht)
+        · exact (ne_of_lt hi.2)
+            (congrArg (fun s : unitInterval => (s : ℝ)) ht)
+      · by_cases ht₁ : t = 1
+        · have hv := (edgePoint_eq_vertex_iff G).mp (by
+            simpa [realizationMap_edgePoint, realizationMap_vertex, ht₁, edgePoint_one]
+              using hcross_eq)
+          rcases hv with ⟨ht, _⟩ | ⟨ht, _⟩
+          · exact (ne_of_gt hi.1)
+              (congrArg (fun s : unitInterval => (s : ℝ)) ht)
+          · exact (ne_of_lt hi.2)
+              (congrArg (fun s : unitInterval => (s : ℝ)) ht)
+        · have heq : edgePoint G
+              ((Embedding.induce (G := G) {v | h v = c}).toHom.mapDart d) t =
+              edgePoint G d' (crossingParam G h h₁ h₂) := by
+            calc
+              edgePoint G
+                  ((Embedding.induce (G := G) {v | h v = c}).toHom.mapDart d) t =
+                  (realizationMap (Embedding.induce (G := G) {v | h v = c}).toHom
+                    (edgePoint (G.induce {v | h v = c}) d t)) :=
+                (realizationMap_edgePoint _ _ _).symm
+              _ = (crossingPoint G h e).1 := hz
+              _ = edgePoint G d' (crossingParam G h h₁ h₂) := hpoint
+          have hcases := (edgePoint_eq_edgePoint_iff G ht₀ ht₁).mp heq
+          rcases hcases with ⟨hdart, _⟩ | ⟨hdart, _⟩
+          · have hsrc : h
+                ((Embedding.induce (G := G) {v | h v = c}).toHom.mapDart d).fst = c :=
+              by
+                change h (d.fst : V) = c
+                exact d.fst.property
+            exact (ne_of_lt h₁) (by simpa [hdart] using hsrc)
+          · have hsrc : h
+                ((Embedding.induce (G := G) {v | h v = c}).toHom.mapDart d).snd = c :=
+              by
+                change h (d.snd : V) = c
+                exact d.snd.property
+            exact (ne_of_lt h₁) (by simpa [hdart] using hsrc)
+
+theorem levelPieceMap_bijective (c : ℝ) : Function.Bijective (levelPieceMap G h c) := by
+  classical
+  constructor
+  · intro x y hxy
+    rcases x with x | e <;> rcases y with y | e'
+    · have hmap : realizationMap (Embedding.induce _).toHom x =
+          realizationMap (Embedding.induce _).toHom y := by
+        change (⟨realizationMap (Embedding.induce _).toHom x, _⟩ : ClosedLevel G h c) =
+          ⟨realizationMap (Embedding.induce _).toHom y, _⟩ at hxy
+        exact congrArg Subtype.val hxy
+      exact congrArg Sum.inl
+        (realizationMap_injective (G.induce {v | h v = c})
+          (Embedding.induce (G := G) {v | h v = c}) hmap)
+    · change (⟨realizationMap (Embedding.induce _).toHom x, _⟩ : ClosedLevel G h c) =
+        crossingPoint G h e' at hxy
+      exact (level_crossing_not_level_graph G h x e').elim (congrArg Subtype.val hxy)
+    · change crossingPoint G h e =
+        (⟨realizationMap (Embedding.induce _).toHom y, _⟩ : ClosedLevel G h c) at hxy
+      exact (level_crossing_not_level_graph G h y e).elim (congrArg Subtype.val hxy.symm)
+    · obtain ⟨d, h₁, h₂, hd, hpoint⟩ := crossingPoint_spec' G h e
+      obtain ⟨d', h₁', h₂', hd', hpoint'⟩ := crossingPoint_spec' G h e'
+      change crossingPoint G h e = crossingPoint G h e' at hxy
+      have heq : edgePoint G d (crossingParam G h h₁ h₂) =
+          edgePoint G d' (crossingParam G h h₁' h₂') := by
+        rw [← hpoint, ← hpoint']
+        exact congrArg Subtype.val hxy
+      have hi := crossingParam_interior G h h₁ h₂
+      have ht₀ : crossingParam G h h₁ h₂ ≠ 0 :=
+        unitInterval.coe_ne_zero.mp hi.1.ne'
+      have ht₁ : crossingParam G h h₁ h₂ ≠ 1 :=
+        unitInterval.coe_ne_one.mp hi.2.ne
+      have hc := (edgePoint_eq_edgePoint_iff G ht₀ ht₁).mp heq
+      rcases hc with ⟨hc, _⟩ | ⟨hc, _⟩
+      · apply congrArg Sum.inr
+        apply Subtype.ext
+        have heq : dartEdge d = dartEdge d' := by rw [hc]
+        exact hd.symm.trans (heq.trans hd')
+      · apply congrArg Sum.inr
+        apply Subtype.ext
+        have heq : dartEdge d = dartEdge d' := by
+          rw [hc, dartEdge_symm]
+        exact hd.symm.trans (heq.trans hd')
+  · intro z
+    rcases z with ⟨z, hz⟩
+    induction z using ind G with
+    | vertex v =>
+        have hv : h v = c := by simpa [plHeight_vertex] using hz
+        refine ⟨Sum.inl (vertex (G.induce {v | h v = c}) ⟨v, hv⟩), ?_⟩
+        apply Subtype.ext
+        rfl
+    | edgePoint d t =>
+        have ht : dartHeight h d t = c := by simpa [plHeight_edgePoint] using hz
+        by_cases hh : h d.fst = h d.snd
+        · have hfst : h d.fst = c := (dartHeight_of_eq h hh t).symm.trans ht
+          have hsnd : h d.snd = c := hh.symm.trans hfst
+          let d' : (G.induce {v | h v = c}).Dart :=
+            ⟨(⟨d.fst, hfst⟩, ⟨d.snd, hsnd⟩), d.adj⟩
+          have hd' : (Embedding.induce (G := G) {v | h v = c}).toHom.mapDart d' = d := by
+            apply Dart.ext
+            rfl
+          refine ⟨Sum.inl (edgePoint (G.induce {v | h v = c}) d' t), ?_⟩
+          apply Subtype.ext
+          rw [levelPieceMap_inl, realizationMap_edgePoint, hd']
+        · by_cases ht₀ : t = 0
+          · have hv : h d.fst = c := by
+              exact (dartHeight_zero h d).symm.trans (by simpa [ht₀] using ht)
+            refine ⟨Sum.inl (vertex (G.induce {v | h v = c}) ⟨d.fst, hv⟩), ?_⟩
+            apply Subtype.ext
+            rw [levelPieceMap_inl, realizationMap_vertex]
+            show _ = edgePoint G d t
+            rw [ht₀, edgePoint_zero]
+            rfl
+          · by_cases ht₁ : t = 1
+            · have hv : h d.snd = c := by
+                exact (dartHeight_one h d).symm.trans (by simpa [ht₁] using ht)
+              refine ⟨Sum.inl (vertex (G.induce {v | h v = c}) ⟨d.snd, hv⟩), ?_⟩
+              apply Subtype.ext
+              rw [levelPieceMap_inl, realizationMap_vertex]
+              show _ = edgePoint G d t
+              rw [ht₁, edgePoint_one]
+              rfl
+            · have hne : h d.fst ≠ h d.snd := hh
+              have hfst : h d.fst ≠ c := by
+                intro hfc
+                have hzero : dartHeight h d 0 = dartHeight h d t := by
+                  rw [dartHeight_zero, hfc, ht]
+                exact ht₀ (level_eq_of_dartHeight_eq G h hne hzero).symm
+              have hsnd : h d.snd ≠ c := by
+                intro hsc
+                have hone : dartHeight h d 1 = dartHeight h d t := by
+                  rw [dartHeight_one, hsc, ht]
+                exact ht₁ (level_eq_of_dartHeight_eq G h hne hone).symm
+              have hcross : EdgeCrosses G h c (dartEdge d) := by
+                rw [edgeCrosses_dartEdge_iff]
+                rcases le_total (h d.fst) (h d.snd) with hab | hab
+                · rw [min_eq_left hab, max_eq_right hab]
+                  constructor
+                  · have hle : h d.fst ≤ c := by
+                      rw [← ht]
+                      unfold dartHeight
+                      nlinarith [mul_nonneg t.2.1 (sub_nonneg.2 hab),
+                        mul_nonneg (sub_nonneg.2 t.2.2) (sub_nonneg.2 hab)]
+                    exact lt_of_le_of_ne hle hfst
+                  · have hle : c ≤ h d.snd := by
+                      rw [← ht]
+                      unfold dartHeight
+                      nlinarith [mul_nonneg t.2.1 (sub_nonneg.2 hab),
+                        mul_nonneg (sub_nonneg.2 t.2.2) (sub_nonneg.2 hab)]
+                    exact lt_of_le_of_ne hle (Ne.symm hsnd)
+                · rw [min_eq_right hab, max_eq_left hab]
+                  constructor
+                  · have hle : h d.snd ≤ c := by
+                      rw [← ht]
+                      unfold dartHeight
+                      nlinarith [mul_nonneg t.2.1 (sub_nonneg.2 hab),
+                        mul_nonneg (sub_nonneg.2 t.2.2) (sub_nonneg.2 hab)]
+                    exact lt_of_le_of_ne hle hsnd
+                  · have hle : c ≤ h d.fst := by
+                      rw [← ht]
+                      unfold dartHeight
+                      nlinarith [mul_nonneg t.2.1 (sub_nonneg.2 hab),
+                        mul_nonneg (sub_nonneg.2 t.2.2) (sub_nonneg.2 hab)]
+                    exact lt_of_le_of_ne hle (Ne.symm hfst)
+              let e : {e : G.edgeSet // EdgeCrosses G h c e} := ⟨dartEdge d, hcross⟩
+              refine ⟨Sum.inr e, ?_⟩
+              apply Subtype.ext
+              exact (eq_crossingPoint G h e d rfl t ht).symm
+
+variable [Finite V]
+
+/-- The level piece is compact. -/
+theorem compactSpace_levelPiece (c : ℝ) : CompactSpace (LevelPiece G h c) := by
+  letI : CompactSpace (Realization (G.induce {v | h v = c})) :=
+    compactSpace_realization (G.induce {v | h v = c})
+  letI : TopologicalSpace {e : G.edgeSet // EdgeCrosses G h c e} := ⊥
+  letI : Finite {e : G.edgeSet // EdgeCrosses G h c e} := Subtype.finite
+  letI : CompactSpace {e : G.edgeSet // EdgeCrosses G h c e} :=
+    @Finite.compactSpace _ ⊥ inferInstance
+  unfold LevelPiece
+  infer_instance
+
+/-- The level-piece map is a homeomorphism onto the closed level. -/
+noncomputable def levelPieceHomeomorph (c : ℝ) :
+    LevelPiece G h c ≃ₜ ClosedLevel G h c := by
+  letI : CompactSpace (LevelPiece G h c) := compactSpace_levelPiece G h c
+  letI : T2Space (Realization G) := t2Space_realization G
+  exact (levelPieceMap G h c).continuous.homeoOfEquivCompactToT2
+    (f := Equiv.ofBijective _ (levelPieceMap_bijective G h c))
+
+/-- The homeomorphism evaluates to the level-piece map. -/
+theorem levelPieceHomeomorph_apply (c : ℝ) (z : LevelPiece G h c) :
+    levelPieceHomeomorph G h c z = levelPieceMap G h c z := by
+  rfl
+
+/-- The closed level is compact. -/
+theorem compactSpace_closedLevel (c : ℝ) : CompactSpace (ClosedLevel G h c) := by
+  letI : CompactSpace (LevelPiece G h c) := compactSpace_levelPiece G h c
+  letI : T2Space (Realization G) := t2Space_realization G
+  exact (levelPieceHomeomorph G h c).compactSpace
+
+/-- The closed level is locally path-connected. -/
+theorem locallyPathConnectedSpace_closedLevel (c : ℝ) :
+    LocallyPathConnectedSpace (ClosedLevel G h c) := by
+  letI : TopologicalSpace {e : G.edgeSet // EdgeCrosses G h c e} := ⊥
+  letI : DiscreteTopology {e : G.edgeSet // EdgeCrosses G h c e} := ⟨rfl⟩
+  letI : LocallyPathConnectedSpace (Realization (G.induce {v | h v = c})) :=
+    locallyPathConnectedSpace_realization _
+  letI : LocallyPathConnectedSpace {e : G.edgeSet // EdgeCrosses G h c e} := by
+    infer_instance
+  letI : LocallyPathConnectedSpace (LevelPiece G h c) := by
+    unfold LevelPiece
+    infer_instance
+  letI : T2Space (Realization G) := t2Space_realization G
+  exact (levelPieceHomeomorph G h c).symm.isOpenEmbedding.locallyPathConnectedSpace
+
+end level
+
+end
+
+end TDA.Mapper.GraphPL

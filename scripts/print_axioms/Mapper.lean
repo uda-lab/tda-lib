@@ -774,3 +774,23 @@ import TDA
 #print axioms TDA.Mapper.GraphPLReebQuotientExamples.flatEdge_vertex_ne
 #print axioms TDA.Mapper.GraphPLReebQuotientExamples.c4_isIso_intervalComponentComparison
 #print axioms TDA.Mapper.GraphPLReebQuotientExamples.path3_reebQuotient_not_iso_S02
+
+-- The graph-PL realization as a constructible ℝ-space.
+#print axioms TDA.Mapper.GraphPL.barycentric
+#print axioms TDA.Mapper.GraphPL.barycentric_vertex
+#print axioms TDA.Mapper.GraphPL.barycentric_edgePoint
+#print axioms TDA.Mapper.GraphPL.barycentric_injective
+#print axioms TDA.Mapper.GraphPL.t2Space_realization
+#print axioms TDA.Mapper.GraphPL.edgePoint_eq_vertex_iff
+#print axioms TDA.Mapper.GraphPL.edgePoint_eq_edgePoint_iff
+#print axioms TDA.Mapper.GraphPL.locallyPathConnectedSpace_realization
+#print axioms TDA.Mapper.GraphPL.realizationMap_injective
+#print axioms TDA.Mapper.GraphPL.LevelPiece
+#print axioms TDA.Mapper.GraphPL.instTopologicalSpaceLevelPiece
+#print axioms TDA.Mapper.GraphPL.levelPieceMap
+#print axioms TDA.Mapper.GraphPL.levelPieceMap_bijective
+#print axioms TDA.Mapper.GraphPL.compactSpace_levelPiece
+#print axioms TDA.Mapper.GraphPL.levelPieceHomeomorph
+#print axioms TDA.Mapper.GraphPL.levelPieceHomeomorph_apply
+#print axioms TDA.Mapper.GraphPL.compactSpace_closedLevel
+#print axioms TDA.Mapper.GraphPL.locallyPathConnectedSpace_closedLevel
