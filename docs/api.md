@@ -455,7 +455,10 @@ where N counts both finite occurrence sets. Explicit radius and cardinality-budg
 are included. `FinitePFilterStability` applies these bounds to actual sublevel diagrams
 using face-value perturbations, without a fixed pairing; essential bars remain outside
 the finite-part transport cost. All-Radon-coupling equality and quotient/metric
-instances remain outside this API. See [real-exponent finite transport](math/finite-p-boundary-transport.md).
+instances remain outside this API. `FinitePCostSimilarity` proves invariance under
+common diagonal translation and homogeneity under nonnegative coordinate scaling,
+including zero scaling on raw coordinate families. See
+[real-exponent finite transport](math/finite-p-boundary-transport.md).
 
 ## Gaussian persistence images
 

@@ -79,6 +79,7 @@ import TDA.Persistence.ArctanWeightExamples
 import TDA.Persistence.RipsWeightedKernelExamples
 import TDA.Persistence.FinitePFilterStabilityExamples
 import TDA.Persistence.FinitePMatchingCostComparisonExamples
+import TDA.Persistence.FinitePCostSimilarityExamples
 import TDA.Persistence.ArctanPersistenceImageExamples
 import TDA.Persistence.CechWeightedKernelExamples
 import TDA.Persistence.LogScaleDiagramComparisonExamples

@@ -168,6 +168,37 @@ The comparison is about optimized plans. A fractional candidate sending mass
 3/4 between identical bars (0,2) has C₁=C₂=1/2, so its rooted second-order cost
 exceeds its first-order cost even though their common optimum is zero.
 
+## Diagonal translation and nonnegative scaling
+
+Fix p ≥ 1 and use mₚ and dₚ on raw real coordinate families, which permit diagonal
+outputs. This makes the zero-scale case meaningful as a cost identity.
+For a real t, let Tₜ(b,d) = (b+t,d+t). For a ≥ 0, let Sₐ(b,d) = (ab,ad).
+Apply the same map to both input families. Their powered minima and rooted
+distances satisfy
+
+mₚ(Tₜx,Tₜy) = mₚ(x,y),    dₚ(Tₜx,Tₜy) = dₚ(x,y),
+
+mₚ(Sₐx,Sₐy) = a^p mₚ(x,y),    dₚ(Sₐx,Sₐy) = a dₚ(x,y).
+
+The finite real-plan optima satisfy the same laws by their equality with the
+matching minima. A diagonal shift cancels in every pair and boundary distance.
+Scaling multiplies each powered coefficient by a^p, so it multiplies every
+matching's sum by that factor. Attained minimizers give both inequalities for
+the minimum, including when a=0; no division by a is needed. Taking the
+nonnegative reciprocal-power root gives the rooted scaling law.
+
+Every real diagonal shift preserves birth < death, including shifts to negative
+births. Applications imposing nonnegative births must separately preserve that
+extra condition. Positive scaling preserves positive lifetimes. At scale zero,
+the raw coordinate families consist of diagonal points and all costs vanish.
+This case belongs to the raw-cost API; `Diagram.scale` still requires a positive
+factor. Repeated coordinates retain their occurrence labels throughout.
+
+The shift must be along the diagonal. For example, the first-order distance from
+the singleton (0,2) to the empty family is 1; translating vertically to (0,4)
+changes it to 2, although both lifetimes are positive. These laws are direct
+library derivations from the cost definitions at fixed maximum ground norm.
+
 ## Finite-part perturbation bounds
 
 Let D and E be library diagrams and let N be the sum of their finite occurrence
@@ -246,6 +277,8 @@ bounds, finite radius and cardinality-budget forms. `FinitePFilterStability` app
 them to the finite parts of actual sublevel diagrams.
 `FinitePMatchingCostComparison` supplies the two first-order comparisons for
 matching and real-plan optima, including empty occurrence families.
+`FinitePCostSimilarity` supplies common diagonal-translation invariance and
+nonnegative scaling for powered and rooted matching and real-plan optima.
 
 [Figalli–Gigli](references.md#FG10) retains priority for boundary-reservoir transport;
 its original bounded-domain quadratic Euclidean setting is distinct from this model.
