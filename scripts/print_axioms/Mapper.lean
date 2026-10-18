@@ -681,3 +681,12 @@ import TDA
 #print axioms TDA.Mapper.GraphPLRefinementExamples.edge_refine_trans
 #print axioms TDA.Mapper.GraphPLRefinementExamples.edge_mapperRefineIso
 #print axioms TDA.Mapper.GraphPLRefinementExamples.edge_mapper_toOver
+
+-- Incidence graph of uniform Mapper finite Reeb data and the ordinary Mapper one-skeleton.
+#print axioms TDA.Mapper.GraphPL.support_eq_singleton_of_vertexCell
+#print axioms TDA.Mapper.GraphPL.uniformMapperIncidenceVertexEquiv
+#print axioms TDA.Mapper.GraphPL.incidenceGraphUniformMapperIso
+#print axioms TDA.Mapper.GraphPL.incidenceGraphUniformMapperIso_toEquiv
+#print axioms TDA.Mapper.GraphPL.mapperOneSkeletonGraphPLIso
+#print axioms TDA.Mapper.GraphPL.mapperOneSkeleton_connected_iff
+#print axioms TDA.Mapper.GraphPL.card_mapperOneSkeleton_edgeSet_le
