@@ -201,6 +201,48 @@ both degree-1 diagrams are empty (`rightTriangle_cech_dgm_one` and
 triangle, which is not a fixture. These face values, diagrams, and distances are library
 extensions with no cited source theorem.
 
+## Scaling and translation
+
+For `0 < c`, `1 ≤ n` and `PositiveOnEdges f`,
+`logDgm_scale` gives
+`logDgm k (f.scale c hc) n = translateDiagram (logDgm k f n) (Real.log c)`.
+The proof proceeds through the pointwise logarithm identity and `dgm_scale`; it has no
+`1 ≤ c` restriction. Positivity is scale invariant by `positiveOnEdges_scale_iff`, while
+`logCriticalValues_scale` and `logGrid_scale_apply` say that the positive-log grid translates
+by `log c`.
+
+The bottleneck is jointly invariant under `translateDiagram` by `bottleneck_translateDiagram`,
+including the value `⊤`. The module statement has two cases: for `1 ≤ c`, the merged
+`logModule_scale_shiftIso` applies; for `c ≤ 1`,
+`logModule_scale_shiftIso_of_le_one` supplies the inverse-factor shift. The restriction in the
+first statement is an artefact of the `ℝ≥0`-valued shift parameter: `logParam c = log c` only
+when `1 ≤ c`.
+
+Consequently, `bottleneck_logDgm_scale` and, over a field,
+`realInterleavingDistance_logModule_scale` give scale invariance. For a scaled configuration,
+`Rips.filter_eq_scale_of_dist` handles the label-metric relation `d' = c · d`,
+`Cech.filter_smul` handles a real normed ambient space, and
+`Cech.bottleneck_logDgm_rips_cech_scale` gives the corresponding Rips--Čech invariance.
+
+The fixtures in `LogScaleScalingExamples` record these cases:
+
+- F1: `filledReal_scale_two_logDgm_one` gives a nonvacuous translation by `log 2`.
+- F2: `logDgm_scale_one`, `filledReal_logDgm_scale_one` and
+  `hollowReal_logDgm_scale_one` give the identity control.
+- F3: `filledReal_scale_half_logDgm_one`,
+  `hollowReal_scale_half_logDgm_one` and `filledReal_scale_half_birth_neg` exhibit a negative
+  log shift.
+- F4: `scaledPts_eq`, `scaled_rips_eq`, `scaled_cech_eq`,
+  `scaled_rips_logDgm_pos`, `scaled_cech_logDgm_pos`, `scaled_bottleneck_eq` and
+  `scaled_bottleneck_le_log_two` cover the scaled two-point configuration.
+- F5: `filled_hollow_scale_three` is a cross-complex bottleneck invariance instance.
+- F6: `repeated_scale_not_positive` is the negative control for positivity.
+- F7: `bottleneck_essentialOne_zero` and `bottleneck_translate_essentialOne` show that a
+  common translation preserves an infinite bottleneck.
+
+These are library extensions; the translation invariance of the bottleneck cost is immediate
+from the common-translation matching argument in [CSEH07](references.md#CSEH07).
+
 ## Scope
 
 Degree 0 at log scale is not treated beyond the obstruction; it needs extended-real indexing
@@ -214,11 +256,9 @@ diagram map along `log`. Explicit diagrams are stated only for the two-point fix
 their section, and for the triangle fixtures: degrees 0 and 1 at radius scale and degree 1 at
 log scale over `ZMod 2`. For the triangle, other fields and degrees `n ≥ 2` are not treated;
 other configurations are outside this note. Jung's constant, Hausdorff and Gromov–Hausdorff
-statements and general positive scaling of real modules remain outside this note. For `1 ≤ c`,
-positive scaling of the filter becomes the shift by `logParam c` of its log-scale modules via
-`logModule_scale_shiftIso`, an isomorphism of modules; the corresponding translation formula
-for `logDgm` is not stated. The log-scale module, constructibility, the module diagram and the
-isometry are used unchanged.
+statements and general positive scaling of real modules remain outside this note; positive
+filter scaling is treated in the section above. The log-scale module, constructibility, the
+module diagram and the isometry are used unchanged.
 
 ## Sources
 

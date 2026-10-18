@@ -204,6 +204,8 @@ At the filtration level, `sublevelModule_scale` is an equality, and
 law over any ring. Finally, `moduleDiagram_sublevelModule_scale` agrees with
 `dgm_scale`, so filter scaling and module scaling produce the same diagram.
 
+At log scale, positive filter scaling translates `logDgm` by `log c` and the log-scale bottleneck and interleaving distances are scale invariant; see [log-scale diagrams](log-scale-diagrams.md#scaling-and-translation).
+
 ## Source and scope
 
 [Bauer--Lesnick, arXiv:1311.3681v4](https://arxiv.org/html/1311.3681v4), §3.1,
