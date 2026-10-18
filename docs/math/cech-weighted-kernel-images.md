@@ -140,7 +140,29 @@ but the real value of ⊤ in Lean is 0, so the count-times-bottleneck bound woul
 
 The additive Rips-versus-Čech kernel and image bounds are given in [Rips versus Čech of one
 configuration](#rips-versus-čech-of-one-configuration), but only in the sup-norm product
-and on the line. The log-scale interleaving remains a multiplicative comparison.
+and on the line. The log-scale consumers are described in
+[Log-scale Rips versus Čech](#log-scale-rips-versus-čech).
+
+## Log-scale Rips versus Čech
+
+`TDA.Persistence.CechRipsLogScaleConsumers` has a generic layer for two filters on one finite
+complex. If `g ≤ f ≤ c · g`, `1 ≤ c`, and `g` is `PositiveOnEdges`, then in every degree
+`n ≥ 1` the log-scale bottleneck is at most `log c`. The layer gives the corresponding
+count-times-`log c` bounds for the weighted Gaussian embedding, its second-level Gaussian
+feature, a fixed-diagram Gaussian kernel value, and the finite-part persistence image.
+
+For one finite configuration in a general pseudometric ambient, with a compatible label metric,
+the exact log-scale Rips-versus-Čech bottleneck gives the same four consumer bounds, and the
+`log 2` bottleneck bound gives versions stated with the radius-level occurrence counts through
+the identity
+`Fintype.card (logDgm k f n).finiteOccurrences = Fintype.card (dgm k f n).finiteOccurrences`
+for `n ≥ 1` and `PositiveOnEdges f`. The arctan embedding, fixed-diagram kernel-value, and
+image instances are included; there is no arctan feature instance. The restriction `n ≥ 1`
+is required because the degree-zero log-scale module is not constructible on a finite positive
+log grid, so no degree-zero `log 2` consumer is available.
+
+`TDA.Persistence.CechRipsLogScaleConsumersExamples` records the two-point, triangle, filled
+triangle, zero-weight, degree-zero, and repeated-label fixtures for these statements.
 
 ## Lean interfaces and sources
 
@@ -169,6 +191,10 @@ corresponding nonnegative weight bounds, and its image consumers additionally re
 bar, two points, the sup-norm triangle and the Euclidean counterexample. The additive
 scaling bound, critical-value description and Rips-versus-Čech comparison are elementary
 library results and are not attributed to a paper.
+`TDA.Persistence.CechRipsLogScaleConsumers` proves the generic log-scale layer, the exact
+log-scale bottleneck consumers, the `log 2` Rips-versus-Čech consumers, and their arctan
+instances in a general pseudometric ambient. `TDA.Persistence.CechRipsLogScaleConsumersExamples`
+provides the corresponding fixtures.
 
 [Kusano–Fukumizu–Hiraoka](references.md#KFH18) (CC-BY 4.0; see the source register for
 attribution and license) is used for statement shapes: §3.2 p. 14 (w_arc), §3.2 p. 16

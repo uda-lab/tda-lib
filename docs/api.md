@@ -402,6 +402,10 @@ coordinate lemmas `mem_criticalValues_of_mem_finitePart_dgm` and
 embedding, kernel-value and finite-part image consequences in the product. See [Rips versus
 Čech of one configuration](math/cech-weighted-kernel-images.md#rips-versus-čech-of-one-configuration).
 
+`TDA.Persistence.CechRipsLogScaleConsumers` composes the log-scale bottleneck bounds with the
+weighted-kernel and persistence-image consumers, including exact-bottleneck and `log 2` bounds
+in a general pseudometric ambient.
+
 ## Finite first-order PD matching cost
 
 `TDA.Persistence.FiniteMatchingCost` defines `finiteFirstOrderMatchingCost` from the

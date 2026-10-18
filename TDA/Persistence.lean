@@ -120,3 +120,4 @@ import TDA.Persistence.CechRipsAdditive
 import TDA.Persistence.ModuleScaling
 import TDA.Persistence.ConstructibleScaleBarcode
 import TDA.Persistence.SublevelScaling
+import TDA.Persistence.CechRipsLogScaleConsumers
