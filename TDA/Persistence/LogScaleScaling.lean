@@ -276,17 +276,30 @@ noncomputable def logModule_scale_shiftIso_of_le_one
       (shift (logParam c⁻¹)).obj (logModule R g n)) hff.symm) ≪≫
     logModule_scale_shiftIso R n (f.scale c hc) hinv hinv1
 
-/-- Component formula for the two-sided logarithmic shift isomorphism. -/
+/-- The two-sided logarithmic shift component is object-level transport followed by the
+merged component formula. -/
 theorem logModule_scale_shiftIso_of_le_one_hom_app
     (R : Type v) [Ring R] (n : ℕ) (f : FilterFunction K ℝ)
     {c : ℝ} (hc : 0 < c) (hc1 : c ≤ 1) (t : ℝ) :
     (logModule_scale_shiftIso_of_le_one R n f hc hc1).hom.app t =
-      (eqToIso (congrArg (fun g =>
-        (shift (logParam c⁻¹)).obj (logModule R g n))
-        (show (f.scale c hc).scale c⁻¹ (inv_pos.mpr hc) = f by
-          exact scale_inv_scale f hc).symm)).hom.app t ≫
-        (logModule_scale_shiftIso R n (f.scale c hc) (inv_pos.mpr hc)
-          ((one_le_inv₀ hc).2 hc1)).hom.app t := by
+      eqToHom (by
+        exact congrArg (fun g =>
+          ((shift (logParam c⁻¹)).obj (logModule R g n)).obj t)
+          (scale_inv_scale f hc).symm) ≫
+        eqToHom (by
+          rw [shift_obj, logModule_eq_reindex R n
+            ((f.scale c hc).scale c⁻¹ (inv_pos.mpr hc)), sublevelModule_scale]
+          rfl) ≫
+        (sublevelModule R (f.scale c hc) n).map (eqToHom (by
+          change (c⁻¹)⁻¹ * Real.exp (t + (logParam c⁻¹ : ℝ)) = Real.exp t
+          rw [exp_add_logParam ((one_le_inv₀ hc).2 hc1) t]
+          exact inv_mul_cancel_left₀ (inv_pos.mpr hc).ne' _)) ≫
+        eqToHom (by
+          rw [logModule_eq_reindex R n (f.scale c hc)]
+          rfl) := by
+  simp only [logModule_scale_shiftIso_of_le_one, Iso.trans_hom, NatTrans.comp_app,
+    eqToIso.hom, eqToHom_app]
+  rw [logModule_scale_shiftIso_hom_app]
   rfl
 
 /-- The log-scale bottleneck distance is invariant under common positive scaling. -/

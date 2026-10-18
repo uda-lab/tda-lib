@@ -2440,6 +2440,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CechRipsLogScaleConsumersExamples.zero_weight_logScale_consumers
 #print axioms TDA.Persistence.CechRipsLogScaleConsumersExamples.degree_zero_not_constructible
 #print axioms TDA.Persistence.CechRipsLogScaleConsumersExamples.repeated_no_compatible_metric
+
 -- Log-scale diagrams of scaled filters, translation and scale invariance (Issue #369).
 #print axioms TDA.Persistence.finitePart_translateDiagram_points
 #print axioms TDA.Persistence.essentialPart_translateDiagram_points

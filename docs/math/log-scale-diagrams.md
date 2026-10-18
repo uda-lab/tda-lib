@@ -253,12 +253,14 @@ order embedding `exp` to the log-scale diagram. The embedding is used in this di
 because `Real.exp` is strictly increasing on all of `ℝ`; `Real.log` is not an order embedding
 of `ℝ`, so the reverse comparison is expressed by the pointwise log form rather than by a
 diagram map along `log`. Explicit diagrams are stated only for the two-point fixtures, as in
-their section, and for the triangle fixtures: degrees 0 and 1 at radius scale and degree 1 at
+their section, for the scaled filled/hollow and scaled two-point fixtures in §Scaling and
+translation, and for the triangle fixtures: degrees 0 and 1 at radius scale and degree 1 at
 log scale over `ZMod 2`. For the triangle, other fields and degrees `n ≥ 2` are not treated;
-other configurations are outside this note. Jung's constant, Hausdorff and Gromov–Hausdorff
-statements and general positive scaling of real modules remain outside this note; positive
-filter scaling is treated in the section above. The log-scale module, constructibility, the
-module diagram and the isometry are used unchanged.
+other configurations are outside this note. Jung's constant, Hausdorff and
+Gromov–Hausdorff statements and general positive scaling of real modules remain
+outside this note; positive filter scaling is treated in the section above. The
+log-scale module, constructibility, the module diagram and the isometry are used
+unchanged.
 
 ## Sources
 
