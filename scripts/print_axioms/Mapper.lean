@@ -810,3 +810,13 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.graphPLPresentationMap_surjective
 #print axioms TDA.Mapper.GraphPL.graphPLPresentationHomeomorph
 #print axioms TDA.Mapper.GraphPL.graphPLPresentationHomeomorph_apply
+#print axioms TDA.Mapper.GraphPL.graphPLComponentDataIso
+#print axioms TDA.Mapper.GraphPL.graphPLComponentDataIso_hom_v
+#print axioms TDA.Mapper.GraphPL.graphPLReebMap_graphPLPresentationMap
+#print axioms TDA.Mapper.GraphPL.graphPLPresentationIso
+#print axioms TDA.Mapper.GraphPL.isConstructibleSpace_graphPLOver
+#print axioms TDA.Mapper.GraphPL.graphPLReebQuotientIsoOfIso_graphPLComponentDataIso
+#print axioms TDA.Mapper.GraphPL.graphPLSpace
+#print axioms TDA.Mapper.GraphPL.quotientRGraphFunctor_obj_graphPLSpace
+#print axioms TDA.Mapper.GraphPL.overBaseMap_graphPLSpace
+#print axioms TDA.Mapper.GraphPL.isRGraph_quotient_thickening_graphPLOver

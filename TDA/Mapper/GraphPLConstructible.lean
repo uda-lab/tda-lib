@@ -19,6 +19,7 @@ namespace TDA.Mapper.GraphPL
 
 open Set SimpleGraph CategoryTheory Filter
 open TDA.Reeb TDA.Reeb.GraphPL TDA.Reeb.GraphRealization
+open scoped NNReal
 
 noncomputable section
 
@@ -753,7 +754,7 @@ section presentation
 
 variable {V : Type u} (G : SimpleGraph V) (h : V → ℝ) {n : ℕ} (S : CriticalValues n)
 
-private theorem exists_spanDart {p q : ℝ} (hpq : p < q) (y : SpanEdge G h p q) :
+private theorem exists_spanDart {p q : ℝ} (_hpq : p < q) (y : SpanEdge G h p q) :
     ∃ d : G.Dart, dartEdge d = y.1 ∧ h d.fst ≤ p ∧ q ≤ h d.snd := by
   rcases y.2 with ⟨d, hd, hmin, hmax⟩
   rcases le_total (h d.fst) (h d.snd) with hab | hab
@@ -886,8 +887,8 @@ private noncomputable def graphPLCompatibleMaps :
         continuous_prod_of_discrete_left.2 fun y =>
           (spanPoint G h (S.value_castSucc_lt_succ e) y).continuous⟩ :
         C((graphPLPresentation G h S).Cylinder S e, Realization G))
-    segBot_eq := fun e y => rfl
-    segTop_eq := fun e y => rfl }
+    segBot_eq := fun _ _ => rfl
+    segTop_eq := fun _ _ => rfl }
 
 /-- The map from the cylinder presentation to the graph realization. -/
 noncomputable def graphPLPresentationMap :
@@ -1116,6 +1117,316 @@ theorem graphPLPresentationHomeomorph_apply [Finite V] {S : CriticalValues n}
   rfl
 
 end presentation
+
+/-! (D) component data and the identification -/
+section identification
+
+variable {V : Type u} [Finite V] (G : SimpleGraph V) (h : V → ℝ) {n : ℕ}
+  (S : CriticalValues n)
+
+private instance instFiniteGraphPLPresentationComponentV (i : Fin (n + 1)) :
+    Finite (ZerothHomotopy ((graphPLPresentation G h S).V i)) := by
+  change Finite (ZerothHomotopy (ClosedLevel G h (S.value i)))
+  exact Finite.of_equiv _ (closedLevelComponentsEquiv G h (S.value i)).symm
+
+private instance instFiniteGraphPLPresentationComponentE (e : Fin n) :
+    Finite (ZerothHomotopy ((graphPLPresentation G h S).E e)) := by
+  exact Finite.of_equiv _ (zerothHomotopyEquivOfDiscrete _).symm
+
+private theorem zerothHomotopyEquivOfDiscrete_mk {A : Type*} [TopologicalSpace A]
+    [DiscreteTopology A] (x : A) :
+    zerothHomotopyEquivOfDiscrete A (ZerothHomotopy.mk x) = x := by
+  have hb : Function.Bijective (ZerothHomotopy.mk : A → ZerothHomotopy A) :=
+    ⟨fun _ _ hx => joined_eq_of_discrete (Quotient.exact hx), ZerothHomotopy.mk_surjective⟩
+  change (Equiv.ofBijective ZerothHomotopy.mk hb).symm
+      (ZerothHomotopy.mk x) = x
+  exact Equiv.ofBijective_symm_apply_apply _ hb x
+
+private theorem graphPLReebData_left_eq (e : Fin n)
+    (y : SpanEdge G h (S.value e.castSucc) (S.value e.succ)) :
+    (graphPLReebData G h S).left e y =
+      closedLevelComponentsEquiv G h (S.value e.castSucc)
+        (ZerothHomotopy.mk ((graphPLPresentation G h S).left e y)) := by
+  have hd := spanDart_spec G h (S.value_castSucc_lt_succ e) y
+  have hval : ((graphPLPresentation G h S).left e y).1 =
+      edgePoint G (spanDart G h (S.value_castSucc_lt_succ e) y)
+        (spanParam G h (S.value_castSucc_lt_succ e) y (CylinderPresentation.segBot S e)) := rfl
+  have hheight := plHeight_spanPoint G h (S.value_castSucc_lt_succ e) y
+    (CylinderPresentation.segBot S e)
+  rw [spanPoint_apply, plHeight_edgePoint] at hheight
+  have hcoe := coe_spanParam G h (S.value_castSucc_lt_succ e) y
+    (CylinderPresentation.segBot S e)
+  generalize spanParam G h (S.value_castSucc_lt_succ e) y
+    (CylinderPresentation.segBot S e) = s at hval hheight hcoe
+  generalize spanDart G h (S.value_castSucc_lt_succ e) y = d at hd hval hheight hcoe
+  have hheight' : dartHeight h d s = S.value e.castSucc := hheight
+  by_cases hfst : h d.fst = S.value e.castSucc
+  · have hs : s = 0 := by
+      apply Subtype.ext
+      rw [hcoe, Set.Icc.coe_zero]
+      change (S.value e.castSucc - h d.fst) / (h d.snd - h d.fst) = 0
+      rw [hfst, sub_self, zero_div]
+    have hl : (graphPLPresentation G h S).left e y =
+        (⟨vertex G d.fst, by
+          rw [plHeight_vertex, hfst]
+          exact Set.mem_singleton _⟩ : ClosedLevel G h (S.value e.castSucc)) := by
+      apply Subtype.ext
+      rw [hval, hs, edgePoint_zero]
+    have hmem : d.fst ∈ (y.1 : Sym2 V) := by
+      rw [← hd.1]
+      exact fst_mem_dartEdge d
+    rw [hl, closedLevelComponentsEquiv_mk_vertex G h d.fst hfst]
+    exact graphPLReebData_left_of_mem G h S e y hmem hfst
+  · have hne : ∀ v ∈ (y.1 : Sym2 V), h v ≠ S.value e.castSucc := by
+      intro v hv hvp
+      have hv' : v ∈ (dartEdge d : Sym2 V) := by
+        rw [hd.1]
+        exact hv
+      rcases mem_dartEdge.mp hv' with rfl | rfl
+      · exact hfst hvp
+      · linarith [S.value_castSucc_lt_succ e, hd.2.2]
+    let a : {a : G.edgeSet // EdgeCrosses G h (S.value e.castSucc) a} :=
+      ⟨y.1, y.2.crosses_left (S.value_castSucc_lt_succ e) hne⟩
+    have hl : (graphPLPresentation G h S).left e y = crossingPoint G h a := by
+      apply Subtype.ext
+      rw [hval]
+      exact eq_crossingPoint G h a d hd.1 s hheight'
+    rw [hl, closedLevelComponentsEquiv_crossingPoint]
+    exact graphPLReebData_left_of_forall_ne G h S e y hne
+
+private theorem graphPLReebData_right_eq (e : Fin n)
+    (y : SpanEdge G h (S.value e.castSucc) (S.value e.succ)) :
+    (graphPLReebData G h S).right e y =
+      closedLevelComponentsEquiv G h (S.value e.succ)
+        (ZerothHomotopy.mk ((graphPLPresentation G h S).right e y)) := by
+  have hd := spanDart_spec G h (S.value_castSucc_lt_succ e) y
+  have hden := spanDart_den_pos G h (S.value_castSucc_lt_succ e) y
+  have hval : ((graphPLPresentation G h S).right e y).1 =
+      edgePoint G (spanDart G h (S.value_castSucc_lt_succ e) y)
+        (spanParam G h (S.value_castSucc_lt_succ e) y (CylinderPresentation.segTop S e)) := rfl
+  have hheight := plHeight_spanPoint G h (S.value_castSucc_lt_succ e) y
+    (CylinderPresentation.segTop S e)
+  rw [spanPoint_apply, plHeight_edgePoint] at hheight
+  have hcoe := coe_spanParam G h (S.value_castSucc_lt_succ e) y
+    (CylinderPresentation.segTop S e)
+  generalize spanParam G h (S.value_castSucc_lt_succ e) y
+    (CylinderPresentation.segTop S e) = s at hval hheight hcoe
+  generalize spanDart G h (S.value_castSucc_lt_succ e) y = d at hd hden hval hheight hcoe
+  have hheight' : dartHeight h d s = S.value e.succ := hheight
+  by_cases hsnd : h d.snd = S.value e.succ
+  · have hs : s = 1 := by
+      apply Subtype.ext
+      rw [hcoe, Set.Icc.coe_one]
+      change (S.value e.succ - h d.fst) / (h d.snd - h d.fst) = 1
+      rw [← hsnd]
+      exact div_self hden.ne'
+    have hr : (graphPLPresentation G h S).right e y =
+        (⟨vertex G d.snd, by
+          rw [plHeight_vertex, hsnd]
+          exact Set.mem_singleton _⟩ : ClosedLevel G h (S.value e.succ)) := by
+      apply Subtype.ext
+      rw [hval, hs, edgePoint_one]
+    have hmem : d.snd ∈ (y.1 : Sym2 V) := by
+      rw [← hd.1]
+      exact snd_mem_dartEdge d
+    rw [hr, closedLevelComponentsEquiv_mk_vertex G h d.snd hsnd]
+    exact graphPLReebData_right_of_mem G h S e y hmem hsnd
+  · have hne : ∀ v ∈ (y.1 : Sym2 V), h v ≠ S.value e.succ := by
+      intro v hv hvq
+      have hv' : v ∈ (dartEdge d : Sym2 V) := by
+        rw [hd.1]
+        exact hv
+      rcases mem_dartEdge.mp hv' with rfl | rfl
+      · linarith [hd.2.1, S.value_castSucc_lt_succ e]
+      · exact hsnd hvq
+    let a : {a : G.edgeSet // EdgeCrosses G h (S.value e.succ) a} :=
+      ⟨y.1, y.2.crosses_right (S.value_castSucc_lt_succ e) hne⟩
+    have hr : (graphPLPresentation G h S).right e y = crossingPoint G h a := by
+      apply Subtype.ext
+      rw [hval]
+      exact eq_crossingPoint G h a d hd.1 s hheight'
+    rw [hr, closedLevelComponentsEquiv_crossingPoint]
+    exact graphPLReebData_right_of_forall_ne G h S e y hne
+
+private noncomputable def graphPLComponentDataHom :
+    (graphPLPresentation G h S).componentData.Hom (graphPLReebData G h S) where
+  v i := closedLevelComponentsEquiv G h (S.value i)
+  e i := zerothHomotopyEquivOfDiscrete ((graphPLPresentation G h S).E i)
+  left_comm := by
+    intro e z
+    induction z using ZerothHomotopy.rec with
+    | mk y =>
+        change (graphPLReebData G h S).left e
+              (zerothHomotopyEquivOfDiscrete ((graphPLPresentation G h S).E e)
+                (ZerothHomotopy.mk y)) =
+          closedLevelComponentsEquiv G h (S.value e.castSucc)
+            (TDA.Topology.componentMap ((graphPLPresentation G h S).left e)
+              (ZerothHomotopy.mk y))
+        rw [zerothHomotopyEquivOfDiscrete_mk]
+        exact graphPLReebData_left_eq G h S e y
+  right_comm := by
+    intro e z
+    induction z using ZerothHomotopy.rec with
+    | mk y =>
+        change (graphPLReebData G h S).right e
+              (zerothHomotopyEquivOfDiscrete ((graphPLPresentation G h S).E e)
+                (ZerothHomotopy.mk y)) =
+          closedLevelComponentsEquiv G h (S.value e.succ)
+            (TDA.Topology.componentMap ((graphPLPresentation G h S).right e)
+              (ZerothHomotopy.mk y))
+        rw [zerothHomotopyEquivOfDiscrete_mk]
+        exact graphPLReebData_right_eq G h S e y
+
+/-- Vertex components of the graph-PL presentation and graph-PL Reeb data are identified by the
+closed-level component equivalences; edge components are identified with their discrete types. -/
+noncomputable def graphPLComponentDataIso :
+    (graphPLPresentation G h S).componentData ≅ graphPLReebData G h S where
+  hom := graphPLComponentDataHom G h S
+  inv := (graphPLComponentDataHom G h S).inv
+    (fun i => (closedLevelComponentsEquiv G h (S.value i)).bijective)
+    (fun e => (zerothHomotopyEquivOfDiscrete ((graphPLPresentation G h S).E e)).bijective)
+  hom_inv_id := (graphPLComponentDataHom G h S).comp_inv _ _
+  inv_hom_id := (graphPLComponentDataHom G h S).inv_comp _ _
+
+/-- The vertex component of `graphPLComponentDataIso` is the closed-level classification map. -/
+theorem graphPLComponentDataIso_hom_v (i : Fin (n + 1)) (z) :
+    (graphPLComponentDataIso G h S).hom.v i z =
+      closedLevelComponentsEquiv G h (S.value i) z := by
+  rfl
+
+/-- The graph-PL Reeb map agrees pointwise with the presentation map followed by the component
+data identification. -/
+theorem graphPLReebMap_graphPLPresentationMap {S : CriticalValues n}
+    (hS : CoversVertexHeights S h)
+    (x : (graphPLPresentation G h S).Realization S) :
+    graphPLReebMap G h hS (graphPLPresentationMap G h S x) =
+      CylinderPresentation.realizeHom S (graphPLComponentDataIso G h S).hom
+        ((graphPLPresentation G h S).componentGraphMap S x) := by
+  rcases (graphPLPresentation G h S).exists_rep S x with ⟨i, p, rfl⟩ | ⟨e, ⟨y, t⟩, rfl⟩
+  · exact graphPLReebMap_of_level G h hS i p
+  · let d := spanDart G h (S.value_castSucc_lt_succ e) y
+    have hd := spanDart_spec G h (S.value_castSucc_lt_succ e) y
+    have hsp : EdgeSpans G h (S.value e.castSucc) (S.value e.succ) (dartEdge d) := by
+      rw [hd.1]
+      exact y.2
+    have hheight :
+        dartHeight h d (spanParam G h (S.value_castSucc_lt_succ e) y
+          (CylinderPresentation.gapIncl S e t)) = (t : ℝ) := by
+      have ht := plHeight_spanPoint G h (S.value_castSucc_lt_succ e) y
+        (CylinderPresentation.gapIncl S e t)
+      erw [spanPoint_apply, plHeight_edgePoint] at ht
+      exact ht
+    have hmap :
+        graphPLReebMap G h hS
+            (spanPoint G h (S.value_castSucc_lt_succ e) y
+              (CylinderPresentation.gapIncl S e t)) =
+          (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofStrip S e
+            (⟨dartEdge d, hsp⟩, ⟨dartHeight h d (spanParam G h
+              (S.value_castSucc_lt_succ e) y (CylinderPresentation.gapIncl S e t)), by
+                rw [hheight]
+                exact t.2⟩) := by
+      erw [spanPoint_apply]
+      exact graphPLReebMap_edgePoint_of_mem_K G h hS d
+        (spanParam G h (S.value_castSucc_lt_succ e) y
+          (CylinderPresentation.gapIncl S e t))
+        (by rw [hheight]; exact t.2) hsp
+    rw [graphPLPresentationMap_ofStrip, hmap]
+    rw [CylinderPresentation.componentGraphMap_ofStrip]
+    change _ = (CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofStrip S e
+      ((graphPLComponentDataIso G h S).hom.e e (ZerothHomotopy.mk y), t)
+    apply congrArg ((CylinderPresentation.ofFiniteData (graphPLReebData G h S)).ofStrip S e)
+    apply Prod.ext
+    · apply Subtype.ext
+      change dartEdge d =
+        (zerothHomotopyEquivOfDiscrete ((graphPLPresentation G h S).E e)
+          (ZerothHomotopy.mk y)).1
+      rw [zerothHomotopyEquivOfDiscrete_mk]
+      exact hd.1
+    · exact Subtype.ext hheight
+
+end identification
+
+section slice
+
+variable {V : Type} [Finite V] (G : SimpleGraph V) (h : V → ℝ) {n : ℕ}
+  {S : CriticalValues n}
+
+noncomputable def graphPLPresentationIso (hS : CoversVertexHeights S h) :
+    graphPLOver G h ≅ Over.mk (TopCat.ofHom ((graphPLPresentation G h S).height S)) :=
+  (Over.isoMk (TopCat.isoOfHomeo (graphPLPresentationHomeomorph G h hS)) (by
+    ext x
+    change plHeight G h (graphPLPresentationHomeomorph G h hS x) =
+      (graphPLPresentation G h S).height S x
+    rw [graphPLPresentationHomeomorph_apply, plHeight_graphPLPresentationMap])).symm
+
+/-- The graph-PL slice object is constructible, using any critical list covering vertex heights. -/
+theorem isConstructibleSpace_graphPLOver : IsConstructibleSpace (graphPLOver G h) := by
+  obtain ⟨n, S, hS⟩ := exists_coversVertexHeights h
+  refine ⟨n, S, graphPLPresentation G h S, ?_, ?_, ?_, ?_, ?_⟩
+  · intro i
+    infer_instance
+  · intro i
+    infer_instance
+  · intro e
+    infer_instance
+  · intro e
+    infer_instance
+  · exact ⟨graphPLPresentationIso G h hS⟩
+
+/-- **(D) The identification of isomorphisms.** -/
+theorem graphPLReebQuotientIsoOfIso_graphPLComponentDataIso
+    (hS : CoversVertexHeights S h) :
+    graphPLReebQuotientIsoOfIso G h hS (graphPLComponentDataIso G h S) =
+      (graphPLPresentation G h S).quotientIsoOfIso S
+        (graphPLPresentationIso G h hS) := by
+  apply Iso.ext
+  apply Over.OverMorphism.ext
+  ext q
+  induction q using ReebQuotient.ind with
+  | h a =>
+      obtain ⟨x, rfl⟩ := graphPLPresentationMap_surjective G h hS a
+      change CylinderPresentation.realizeHom S (graphPLComponentDataIso G h S).inv
+          (graphPLReebQuotientHomeomorph G h hS
+            (ReebQuotient.mk _ (graphPLPresentationMap G h S x))) =
+        (graphPLPresentation G h S).quotientComponentGraphHomeomorph S
+          (ReebQuotient.mk _
+            ((graphPLPresentationHomeomorph G h hS).symm
+              (graphPLPresentationMap G h S x)))
+      rw [graphPLReebQuotientHomeomorph_mk,
+        graphPLReebMap_graphPLPresentationMap G h hS,
+        CylinderPresentation.quotientComponentGraphHomeomorph_mk]
+      rw [← graphPLPresentationHomeomorph_apply G h hS x,
+        Homeomorph.symm_apply_apply]
+      have hc : (graphPLComponentDataIso G h S).hom.comp (graphPLComponentDataIso G h S).inv =
+          FiniteReebData.Hom.id _ := (graphPLComponentDataIso G h S).hom_inv_id
+      rw [← ContinuousMap.comp_apply, ← CylinderPresentation.realizeHom_comp S
+        (graphPLComponentDataIso G h S).hom (graphPLComponentDataIso G h S).inv,
+        hc, CylinderPresentation.realizeHom_id]
+      rfl
+
+/-! (E) consequences -/
+
+/-- The graph realization with its graph-PL height, regarded as a constructible ℝ-space. -/
+noncomputable def graphPLSpace : ConstructibleSpaceCat :=
+  ⟨graphPLOver G h, isConstructibleSpace_graphPLOver G h⟩
+
+/-- The restricted quotient functor sends `graphPLSpace` to `graphPLReebGraph`. -/
+theorem quotientRGraphFunctor_obj_graphPLSpace :
+    quotientRGraphFunctor.obj (graphPLSpace G h) = graphPLReebGraph G h :=
+  rfl
+
+/-- The structure map of `graphPLSpace` is the graph-PL height. -/
+theorem overBaseMap_graphPLSpace : overBaseMap (graphPLSpace G h).obj = plHeight G h :=
+  rfl
+
+/-- The Reeb quotient of every geometric thickening of the graph-PL slice object is a graph. -/
+theorem isRGraph_quotient_thickening_graphPLOver (ε : ℝ≥0) :
+    RGraph.IsRGraph ((ReebQuotient.quotientFunctor ℝ).obj
+      ((GeometricThickening.functor ε).obj (graphPLOver G h))) :=
+  RGraph.isRGraph_quotient_thickening_of_isConstructibleSpace
+    (isConstructibleSpace_graphPLOver G h) ε
+
+end slice
 
 end
 
