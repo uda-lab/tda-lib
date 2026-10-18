@@ -2967,3 +2967,35 @@ import TDA
 #print axioms TDA.Reeb.Examples.GeometricComponentObstruction.geometricInterleavingDistance_twoSeg_single
 #print axioms TDA.Reeb.Examples.GeometricComponentObstruction.singleParallel_eighth_isEmpty
 #print axioms TDA.Reeb.Examples.GeometricComponentObstruction.parallel_single_range_bound_strict
+
+#print axioms TDA.Reeb.CriticalValues.exists_clampData_Icc
+#print axioms TDA.Reeb.CylinderPresentation.joinedIn_Icc_of_joinedIn
+#print axioms TDA.Reeb.GeometricThickening.reebRel_height_iff
+#print axioms TDA.Reeb.RGraph.joinedIn_Icc_of_isConstructibleSpace
+#print axioms TDA.Reeb.RGraph.bijective_quotientFunctor_map_functor_map_projNatTrans_app
+#print axioms TDA.Reeb.RGraph.compactSpace_quotient_thickening
+#print axioms TDA.Reeb.RGraph.t2Space_quotient_thickening_quotient
+#print axioms TDA.Reeb.RGraph.absorptionHomeomorph
+#print axioms TDA.Reeb.RGraph.absorptionHomeomorph_apply
+#print axioms TDA.Reeb.RGraph.absorptionOverIso
+#print axioms TDA.Reeb.RGraph.absorptionOverIso_hom
+#print axioms TDA.Reeb.RGraph.absorptionOverIso_hom_left_mk
+#print axioms TDA.Reeb.RGraph.isRGraph_quotient_thickening_of_isConstructibleSpace
+#print axioms TDA.Reeb.RGraph.isIso_quotientFunctor_map_functor_map_projNatTrans_app_constructible
+#print axioms TDA.Reeb.RGraph.thickeningQuotient
+#print axioms TDA.Reeb.RGraph.thickeningQuotient_comp_ι
+#print axioms TDA.Reeb.RGraph.thickeningQuotientAbsorptionIso
+#print axioms TDA.Reeb.RGraph.thickeningQuotientAbsorptionIso_hom_app_hom
+#print axioms TDA.Reeb.RGraph.thickeningQuotientCompIso
+
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.interval_isConstructibleSpace
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.interval_isRGraph_quotient_thickening_quarter
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.interval_isIso_absorption_quarter
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.pinch_isRGraph_quotient_thickening_quarter
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.pinchSpace
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.pinch_thickeningQuotientAbsorptionIso_hom
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.pointSpace
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.point_isRGraph_quotient_thickening_zero
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.point_isRGraph_quotient_thickening_one
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.point_thickeningQuotient_one_fiber_subsingleton
+#print axioms TDA.Reeb.Examples.ConstructibleThickeningQuotient.id_thickening_quotient_not_isRGraph

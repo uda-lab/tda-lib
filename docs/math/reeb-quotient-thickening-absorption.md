@@ -76,6 +76,40 @@ both are proved, not assumed
 inverse is `ℛ T_ε` of the inverse of `projNatIso`
 (`inv_quotientFunctor_map_functor_map_projNatTrans_app_of_isRGraph`).
 
+## Absorption on all constructible ℝ-spaces
+
+For every constructible `X` and every `ε ≥ 0`, (H2) follows from (H1).
+For a closed window `[a, b]`, `exists_clampData_Icc` supplies `δ > 0` and clamp data with
+`lo = a`, `hi = b` on the open window `(a − δ, b + δ)`. If two points of `X|[a, b]` have Reeb
+classes joined in `ℛ X|[a, b]`, then, because `κ` is injective on open intervals, they are joined
+in `X|(a − δ, b + δ)`, and the clamp retracts that path into `X|[a, b]`
+(`joinedIn_Icc_of_joinedIn`, `joinedIn_Icc_of_isConstructibleSpace`). By `reebRel_height_iff`,
+the level sets of `T_ε X` are precisely the closed windows `X|[t−ε, t+ε]`. Consequently,
+`bijective_quotientFunctor_map_functor_map_projNatTrans_app` makes `ℛ (T_ε q_X)` a continuous
+bijective map; its source is compact because the constructible pieces are compact, and its target
+is Hausdorff because it is a graph object, so it is a homeomorphism over `ℝ`
+(`absorptionOverIso`). No Hausdorffness of the pieces is used.
+Transport along this homeomorphism gives (H2) via
+`isRGraph_quotient_thickening_of_isConstructibleSpace`. This route bypasses DMP15-v1
+Theorem 4.27, whose constructibility conclusion for `T_ε X` is not proved here, and it needs no
+Hausdorffness assumption on `X`.
+
+The result is packaged on the full subcategory of constructible spaces as
+
+```lean
+thickeningQuotient ε : ConstructibleSpaceCat ⥤ RGraphCat
+thickeningQuotientAbsorptionIso ε : thickeningQuotient ε ≅
+  quotientRGraphFunctor ⋙ geometricSmoothing ε
+thickeningQuotientCompIso ε δ : thickeningQuotient δ ⋙ geometricSmoothing ε ≅
+  thickeningQuotient (ε + δ)
+```
+
+The last isomorphism applies `U_ε` to `thickeningQuotientAbsorptionIso δ`, then applies
+`geometricSmoothingCompIso ε δ` on `ℛ X`, and then applies the inverse of
+`thickeningQuotientAbsorptionIso (ε + δ)`, with only an associator between these composites. The
+absorption instance `isIso_quotientFunctor_map_functor_map_projNatTrans_app_constructible` removes
+(H2) from the merged absorption theorem.
+
 ## The semigroup
 
 On graph objects absorption assembles into the natural isomorphism
@@ -143,6 +177,21 @@ underlying precosheaves is the precosheaf semigroup `smoothingCompIso ε δ`:
 * **One point.** `(geometricSmoothingCompIso 1 1).app pointGraph` is an explicit isomorphism
   `U_1 U_1 P ≅ U_(1+1) P` in `RGraphCat`, whereas no slice isomorphism `T_1 T_1 P ≅ T_(1+1) P`
   exists (`not_iso_one_one`).
+* **Flat interval.** `interval_isConstructibleSpace`, `interval_isRGraph_quotient_thickening_quarter`,
+  and `interval_isIso_absorption_quarter` show that the constant-height interval is constructible
+  but not a graph-object input for the merged route; its quarter-thickening has a graph quotient
+  with an isomorphic absorption map.
+* **Thickened pinch.** `pinch_isRGraph_quotient_thickening_quarter` and
+  `pinch_thickeningQuotientAbsorptionIso_hom` show that the quarter-thickened pinch has a graph
+  quotient and an isomorphic absorption component despite the non-injective attaching map.
+* **Point at ε = 0 and ε = 1.** `point_isRGraph_quotient_thickening_zero`,
+  `point_isRGraph_quotient_thickening_one`, and
+  `point_thickeningQuotient_one_fiber_subsingleton` show that the one-point graph satisfies (H2)
+  at `ε = 0` and `ε = 1`, and every fibre of its unit thickening quotient is a subsingleton.
+* **Negative control.** `id_thickening_quotient_not_isRGraph` shows that the quotient of the unit
+  thickening of `id ℝ` is not a graph object: the height of the unbounded input is surjective onto
+  `ℝ`, while graph-object heights lie in `[T.value 0, T.value (Fin.last m)]`, so the
+  constructibility hypothesis cannot be dropped.
 
 ## Source correspondence
 
@@ -157,13 +206,16 @@ faithfulness `cosheafFullyFaithful`.
 The absorption theorem, its hypotheses (H1) and (H2), the reflection proof, the coherence laws and
 the cosheaf compatibility square are library statements; none is attributed to the source.
 
+The all-constructible absorption results and the `thickeningQuotient` packaging are library
+statements, not attributions to the source.
+
 The geometric interleavings of Definition 4.36, their distance and the inequality
 `d_cosheaf ≤ d_geo` are in [reeb-geometric-interleaving.md](reeb-geometric-interleaving.md).
 
-Not claimed here: the reverse inequality `d_geo ≤ d_cosheaf`; absorption on arbitrary objects of the real slice, or on constructible `X`
-without (H2); constructibility of `T_ε T_δ A`, or of `T_ε X` for a constructible `X` that is not a
-graph object; a lift of `smoothingCompIso` to constructible cosheaves, so the compatibility square
-is stated on underlying precosheaves.
+Not claimed here: the reverse inequality `d_geo ≤ d_cosheaf`; absorption on arbitrary objects
+of the real slice; constructibility of `T_ε T_δ A`, or of `T_ε X` for a constructible `X` that
+is not a graph object; a lift of `smoothingCompIso` to constructible cosheaves, so the
+compatibility square is stated on underlying precosheaves.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition 4.30 and
 Observation 4.33](https://arxiv.org/html/1501.04147v1).

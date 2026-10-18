@@ -13,6 +13,7 @@ import TDA.Reeb.ConstructibleShiftMap
 import TDA.Reeb.ConstructibleSmoothing
 import TDA.Reeb.ConstructibleSmoothingLift
 import TDA.Reeb.ConstructibleSpace
+import TDA.Reeb.ConstructibleThickeningQuotient
 import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
 import TDA.Reeb.FiniteDataGraph
