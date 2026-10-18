@@ -15,6 +15,7 @@ import TDA.Reeb.ConstructibleSmoothingLift
 import TDA.Reeb.ConstructibleSpace
 import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
+import TDA.Reeb.FiniteDataGraph
 import TDA.Reeb.FiniteDiagram
 import TDA.Reeb.GeometricDistanceBounds
 import TDA.Reeb.GeometricEnlargement

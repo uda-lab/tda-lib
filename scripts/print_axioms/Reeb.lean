@@ -2891,3 +2891,32 @@ import TDA
 #print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.geometricInterleavingDistance_smoothed_edge_mid
 #print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.geometricInterleavingDistance_smoothed_single_mid_le
 #print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.geometricInterleavingDistance_smoothed_parallel_single_le
+
+-- TDA.Reeb.FiniteDataGraph: the incidence quiver and incidence graph of finite Reeb data, functoriality, and the forgetful comparison with parallel edges.
+#print axioms TDA.Reeb.FiniteReebData.IncidenceVertex
+#print axioms TDA.Reeb.FiniteReebData.IncidenceEdge
+#print axioms TDA.Reeb.FiniteReebData.incidenceSource
+#print axioms TDA.Reeb.FiniteReebData.incidenceTarget
+#print axioms TDA.Reeb.FiniteReebData.incidenceQuiver
+#print axioms TDA.Reeb.FiniteReebData.instQuiverIncidenceVertex
+#print axioms TDA.Reeb.FiniteReebData.instFiniteIncidenceVertex
+#print axioms TDA.Reeb.FiniteReebData.instFiniteHom
+#print axioms TDA.Reeb.FiniteReebData.arrowTotalEquiv
+#print axioms TDA.Reeb.FiniteReebData.homCastSuccSuccEquiv
+#print axioms TDA.Reeb.FiniteReebData.isEmpty_hom_of_ne
+#print axioms TDA.Reeb.FiniteReebData.incidenceGraph
+#print axioms TDA.Reeb.FiniteReebData.incidenceGraph_adj_iff
+#print axioms TDA.Reeb.FiniteReebData.incidenceGraph_adj_castSucc_succ_iff
+#print axioms TDA.Reeb.FiniteReebData.incidenceGraph_adj_level
+#print axioms TDA.Reeb.FiniteReebData.incidenceVertexMap
+#print axioms TDA.Reeb.FiniteReebData.incidencePrefunctor
+#print axioms TDA.Reeb.FiniteReebData.incidenceGraphHom
+#print axioms TDA.Reeb.FiniteReebData.incidenceGraphHom_id
+#print axioms TDA.Reeb.FiniteReebData.incidenceGraphHom_comp
+#print axioms TDA.Reeb.FiniteReebData.incidenceGraphIso
+#print axioms TDA.Reeb.FiniteReebData.incidenceEdgeSet
+#print axioms TDA.Reeb.FiniteReebData.incidenceEdgeSet_surjective
+#print axioms TDA.Reeb.FiniteReebData.incidenceEdgeSet_injective_iff
+#print axioms TDA.Reeb.FiniteReebData.instFiniteEdgeSet
+#print axioms TDA.Reeb.FiniteReebData.card_incidenceGraph_edgeSet_le
+#print axioms TDA.Reeb.FiniteReebData.card_incidenceGraph_edgeSet_eq
