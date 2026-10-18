@@ -2851,3 +2851,43 @@ import TDA
 #print axioms TDA.Reeb.Examples.GeometricDistanceBounds.parallel_single_zero_isEmpty
 #print axioms TDA.Reeb.Examples.GeometricDistanceBounds.geometricInterleavingDistance_parallel_single_le
 #print axioms TDA.Reeb.Examples.GeometricDistanceBounds.parallel_single_range_bound_not_witnessed
+
+-- TDA.Reeb.GeometricSmoothInterleaving: the geometric commutation isomorphism, transport on the left, smoothing of geometric interleavings with explicit components and its zero, additivity and monotonicity laws, and the smoothing shift bounds.
+#print axioms TDA.Reeb.Interleaving.isoLeft
+#print axioms TDA.Reeb.Interleaving.isoLeft_φ
+#print axioms TDA.Reeb.Interleaving.isoLeft_ψ
+#print axioms TDA.Reeb.RGraph.geometricSmoothingEqIso_hom_comp_hom
+#print axioms TDA.Reeb.RGraph.geometricSmoothingCommIso
+#print axioms TDA.Reeb.RGraph.geometricSmoothingCommIso_hom_app
+#print axioms TDA.Reeb.RGraph.geometricSmoothingCommIso_zero_hom_app
+#print axioms TDA.Reeb.RGraph.cosheafShiftMap_geometricSmoothing_map_comp_commIso
+#print axioms TDA.Reeb.RGraph.geometricSmoothing_map_geometricEnlargement_comp_commIso
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth_toCosheaf
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth_φ
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth_ψ
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth_zero_φ
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth_zero_ψ
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth_add_φ
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth_add_ψ
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.smooth_mono
+#print axioms TDA.Reeb.RGraph.nonempty_smooth
+#print axioms TDA.Reeb.RGraph.GeometricInterleaving.geometricInterleavingDistance_smooth_le
+#print axioms TDA.Reeb.RGraph.geometricInterleavingDistance_geometricSmoothing_left_le
+#print axioms TDA.Reeb.RGraph.geometricInterleavingDistance_le_geometricSmoothing_left
+#print axioms TDA.Reeb.RGraph.geometricInterleavingDistance_geometricSmoothing_right_le
+#print axioms TDA.Reeb.RGraph.geometricInterleavingDistance_le_geometricSmoothing_right
+
+-- TDA.Reeb.GeometricSmoothInterleavingExamples: smoothed fibres, the smoothed edge–midpoint and parallel–single witnesses with computed components, the zero, additivity and monotonicity laws on the edge–midpoint witness, the unchanged-threshold control and the exact smoothed distance, and two distance bounds.
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.smoothed_smoothed_fiber_subsingleton
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.edgeMid_smooth_φ
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.edgeMid_smooth_ψ
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.smoothed_mid_target_subsingleton
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.parallelSingle_smooth_φ
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.edgeMid_smooth_zero_φ
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.edgeMid_smooth_add_φ
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.edgeMid_smooth_mono
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.smoothed_edgeMid_isEmpty
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.geometricInterleavingDistance_smoothed_edge_mid
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.geometricInterleavingDistance_smoothed_single_mid_le
+#print axioms TDA.Reeb.Examples.GeometricSmoothInterleaving.geometricInterleavingDistance_smoothed_parallel_single_le
