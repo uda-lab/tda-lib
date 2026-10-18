@@ -7,3 +7,4 @@ import TDA.Simplicial.InclusionExamples
 import TDA.Simplicial.FiniteComplexExamples
 import TDA.Simplicial.HomologyExamples
 import TDA.Simplicial.VertexMapExamples
+import TDA.Simplicial.ConeExamples

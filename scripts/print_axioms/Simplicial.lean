@@ -215,3 +215,12 @@ import TDA
 #print axioms TDA.Simplicial.IsApexCone.finrank_simplicialHomology_zero
 #print axioms TDA.Simplicial.isZero_simplicialHomology_top_succ
 #print axioms TDA.Simplicial.finrank_simplicialHomology_top_zero
+
+-- Apex-cone fixtures (Issue #399).
+#print axioms TDA.Simplicial.ConeExamples.isZero_simplicialHomology_triangle_one
+#print axioms TDA.Simplicial.ConeExamples.isZero_simplicialHomology_triangle_two
+#print axioms TDA.Simplicial.ConeExamples.finrank_simplicialHomology_triangle_zero
+#print axioms TDA.Simplicial.ConeExamples.coneOperator_triangle_face_eq_zero
+#print axioms TDA.Simplicial.ConeExamples.boundary_coneOperator_triangle_face
+#print axioms TDA.Simplicial.ConeExamples.not_isApexCone_top_one
+#print axioms TDA.Simplicial.ConeExamples.not_isApexCone_bot_zero

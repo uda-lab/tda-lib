@@ -89,3 +89,4 @@ import TDA.Persistence.TriangleCechRipsExamples
 import TDA.Persistence.CechRipsLogScaleConsumersExamples
 import TDA.Persistence.LogScaleScalingExamples
 import TDA.Persistence.TotalPersistenceRipsCechExamples
+import TDA.Persistence.EssentialVanishingExamples
