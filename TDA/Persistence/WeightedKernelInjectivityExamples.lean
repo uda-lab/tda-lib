@@ -152,10 +152,25 @@ theorem twice_embedding_ne_singleton :
     diagramEmbedding 1 clippedWeight twice ≠
       diagramEmbedding 1 clippedWeight (singletonDiagram 0 2 (by norm_num)) := by
   intro h
-  have hm := (diagramEmbedding_eq_iff_weightedMeasure_eq (σ := 1) (by norm_num)
-    clippedWeight twice (singletonDiagram 0 2 (by norm_num))).mp h
-  have hc := congrArg (fun μ : ℝ × ℝ →₀ ℝ => μ (0, 2)) hm
-  rw [weightedMeasure_twice_at_two, weightedMeasure_singleton_two] at hc
+  have hTwice : ∀ p ∈ finitePart twice.points,
+      0 < clippedWeight (birthPersistence p) := by
+    intro p hp
+    have hf : finitePart twice.points = {(0, 2), (0, 2)} := rfl
+    rw [hf, Multiset.insert_eq_cons, Multiset.mem_cons, Multiset.mem_singleton] at hp
+    rcases hp with rfl | rfl <;> norm_num [clippedWeight, birthPersistence]
+  have hSingle : ∀ p ∈ finitePart (singletonDiagram 0 2 (by norm_num)).points,
+      0 < clippedWeight (birthPersistence p) := by
+    intro p hp
+    have hf : finitePart (singletonDiagram 0 2 (by norm_num)).points = {(0, 2)} := rfl
+    rw [hf, Multiset.mem_singleton] at hp
+    subst p
+    norm_num [clippedWeight, birthPersistence]
+  have hfin := (diagramEmbedding_eq_iff (σ := 1) (by norm_num)
+    clippedWeight hTwice hSingle).mp h
+  have hfTwice : finitePart twice.points = {(0, 2), (0, 2)} := rfl
+  have hfSingle : finitePart (singletonDiagram 0 2 (by norm_num)).points = {(0, 2)} := rfl
+  rw [hfTwice, hfSingle] at hfin
+  have hc := congrArg (fun s : Multiset (ℝ × ℝ) => s.count (0, 2)) hfin
   norm_num at hc
 
 /-! ## F5: vanishing weights -/
@@ -286,20 +301,22 @@ theorem diagramEmbedding_singleton_distance_ne_zero :
     ‖diagramEmbedding 1 clippedWeight (singletonDiagram 0 2 (by norm_num)) -
         diagramEmbedding 1 clippedWeight (singletonDiagram 0 3 (by norm_num))‖ ≠ 0 := by
   intro hz
-  have heq := norm_sub_eq_zero_iff.mp hz
-  have hp := (diagramEmbedding_eq_iff (σ := 1) (by norm_num) clippedWeight
-    (by
-      intro p hp
-      have hp' : p = (0, 2) := by
-        simpa [singletonDiagram, finitePart, eq_comm] using hp
-      subst p
-      norm_num [clippedWeight, birthPersistence])
-    (by
-      intro p hp
-      have hp' : p = (0, 3) := by
-        simpa [singletonDiagram, finitePart, eq_comm] using hp
-      subst p
-      norm_num [clippedWeight, birthPersistence])).mp heq
+  have hD : ∀ p ∈ finitePart (singletonDiagram 0 2 (by norm_num)).points,
+      0 < clippedWeight (birthPersistence p) := by
+    intro p hp
+    have hp' : p = (0, 2) := by
+      simpa [singletonDiagram, finitePart, eq_comm] using hp
+    subst p
+    norm_num [clippedWeight, birthPersistence]
+  have hE : ∀ p ∈ finitePart (singletonDiagram 0 3 (by norm_num)).points,
+      0 < clippedWeight (birthPersistence p) := by
+    intro p hp
+    have hp' : p = (0, 3) := by
+      simpa [singletonDiagram, finitePart, eq_comm] using hp
+    subst p
+    norm_num [clippedWeight, birthPersistence]
+  have hp := (dist_diagramEmbedding_eq_zero_iff (σ := 1) (by norm_num)
+    clippedWeight hD hE).mp hz
   exact singleton_two_three_finitePart_ne hp
 
 /-- Equal embedding and equal essential part recover the whole finite-essential diagram. -/
