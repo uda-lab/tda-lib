@@ -154,6 +154,8 @@ on all morphisms, including those between objects presented over different lists
 objects are constructible, with discrete pieces (`isConstructibleSpace_of_isRGraph`). Their
 geometric thickenings are constructible too, with compact locally path-connected windows as pieces
 (see `reeb-rgraph-thickening.md`).
+Moreover, the Reeb quotient of `T_ε X` is a graph object for every constructible `X`; see
+[Absorption on all constructible ℝ-spaces](reeb-quotient-thickening-absorption.md#absorption-on-all-constructible-ℝ-spaces).
 
 ## The graph case
 
