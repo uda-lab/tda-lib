@@ -16,3 +16,4 @@ import TDA.Mapper.GraphPLRefinement
 import TDA.Mapper.OneSkeletonReebData
 import TDA.Mapper.GraphPLCosheaf
 import TDA.Mapper.GraphPLReebQuotient
+import TDA.Mapper.GraphPLConstructible

@@ -25,6 +25,9 @@ The route is direct: first construct the height-preserving map, descend it throu
 `RGraph.quotientLift`, and use compactness of the quotient together with Hausdorffness of the
 finite realization.  The graph-PL statements here are library results and make no external source
 claim; the shape of the quotient argument is the one suggested by DMP15 Proposition 2.12.
+Constructibility of `graphPLOver G h` and the identification of
+`graphPLReebQuotientIsoOfIso` with the general `quotientIsoOfIso` are proved in
+`TDA.Mapper.GraphPLConstructible`.
 -/
 
 namespace TDA.Mapper.GraphPL
