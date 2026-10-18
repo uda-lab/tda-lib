@@ -293,8 +293,7 @@ constructibleSmoothing (ε + δ)`. This smoothing is distinct from the cosheaf
 `constructibleSmoothing` used earlier. The absorption component is exactly constructible
 thickening of the reflection unit, by `thickeningQuotientAbsorptionIso_hom_app_eq`; and
 `homEquiv_symm_constructibleSmoothingUnit` says that the constructible smoothing unit transposes
-to the geometric unit `ζ^ε` after absorption. Under the same identification, the constructible
-smoothing and its composite coherence are the graph-side `U_ε` and `μ_(ε,δ)`.
+to the geometric unit `ζ^ε` after absorption.
 
 A `ConstructibleInterleaving ε X Y` has maps
 `φ : X ⟶ ℛ T_ε Y` and `ψ : Y ⟶ ℛ T_ε X`, with both composites equal to the smoothing unit at
@@ -361,9 +360,6 @@ positivity and the strict range gap are **library statements proved from merged 
 faithfulness of `C`, invertibility of `β^ε` and the unit and composite laws of the shifted map. None
 is attributed to a numbered source result.
 Essential surjectivity of `C` is not used, so no critical-value scope is inherited.
-
-The reflection, constructible smoothing, constructible interleavings, transpose equivalence and
-their distance laws in the preceding section are also library statements.
 
 Not claimed here: absorption beyond (H2); a comparison with Mapper; interleavings of precosheaves
 that do not come from graph objects; and interleavings internal to `ConstructibleCosheafCat` and a
