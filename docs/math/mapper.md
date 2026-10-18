@@ -832,11 +832,14 @@ graph with the finite discrete set of crossing edges. The homeomorphism
 `compactSpace_closedLevel` and `locallyPathConnectedSpace_closedLevel` show
 that every closed level is compact and locally path-connected.
 
-(C) Under `[Finite V]`, `graphPLPresentation` uses closed levels as its vertex
-pieces and spanning edges as discrete cylinder pieces, and
+(C) Without a hypothesis on `V`, `graphPLPresentation` uses closed levels as
+its vertex pieces and spanning edges as discrete cylinder pieces, and
 `graphPLPresentationMap` maps its realization to the graph realization over
-`ℝ`. The map is injective for every critical list. When the list covers the
-vertex heights, `graphPLPresentationHomeomorph` gives a homeomorphism.
+`ℝ`. The map preserves height by `plHeight_graphPLPresentationMap` and is
+injective by `graphPLPresentationMap_injective` for every critical list. When
+the list covers the vertex heights, `graphPLPresentationMap_surjective` gives
+surjectivity. Under `[Finite V]` and for a covering list,
+`graphPLPresentationHomeomorph` gives a homeomorphism.
 
 Closed levels are used as vertex pieces because horizontal edges are allowed:
 K3 shows that the vertex piece of a horizontal edge need not be discrete,
