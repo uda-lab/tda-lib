@@ -2532,3 +2532,15 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_totalPersistence_zero
 #print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_totalPersistence_eq_bound
 #print axioms TDA.Persistence.TotalPersistenceRipsCechExamples.twoPoints_rips_totalPersistence_le_bound
+
+-- Finite p-cost translation and scaling
+#print axioms TDA.Persistence.OccurrenceMatching.totalFinitePowerCost_translate
+#print axioms TDA.Persistence.OccurrenceMatching.totalFinitePowerCost_scale
+#print axioms TDA.Persistence.finitePowerMatchingCost_translate
+#print axioms TDA.Persistence.finitePMatchingCost_translate
+#print axioms TDA.Persistence.finitePowerMatchingCost_scale
+#print axioms TDA.Persistence.finitePMatchingCost_scale
+#print axioms TDA.Persistence.finitePowerBoundaryTransportCost_translate
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_translate
+#print axioms TDA.Persistence.finitePowerBoundaryTransportCost_scale
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_scale

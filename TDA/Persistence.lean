@@ -109,6 +109,7 @@ import TDA.Persistence.ArctanWeight
 import TDA.Persistence.RipsWeightedKernel
 import TDA.Persistence.FinitePMatchingCostBottleneck
 import TDA.Persistence.FinitePMatchingCostComparison
+import TDA.Persistence.FinitePCostSimilarity
 import TDA.Persistence.FinitePFilterStability
 import TDA.Persistence.ArctanPersistenceImage
 import TDA.Persistence.CechWeightedKernel
