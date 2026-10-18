@@ -2920,3 +2920,20 @@ import TDA
 #print axioms TDA.Reeb.FiniteReebData.instFiniteEdgeSet
 #print axioms TDA.Reeb.FiniteReebData.card_incidenceGraph_edgeSet_le
 #print axioms TDA.Reeb.FiniteReebData.card_incidenceGraph_edgeSet_eq
+
+-- TDA.Reeb.FiniteDataGraphExamples: fixtures G1–G6 for the incidence quiver and incidence graph.
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.single_adj
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.single_edgeCard
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.single_homCard
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.parallel_homCard
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.parallel_edgeCard
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.parallel_not_injective
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.parallel_card_lt
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.parallel_graphIso
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.parallel_not_iso_single
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.cycle_injective
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.cycle_edgeCard
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.cycle_not_adj_02
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.iso_isolated
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.empty_isEmpty_vertex
+#print axioms TDA.Reeb.Examples.FiniteDataGraph.empty_edgeCard
