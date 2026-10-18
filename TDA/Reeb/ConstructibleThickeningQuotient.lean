@@ -251,6 +251,218 @@ theorem joinedIn_Icc_of_isConstructibleSpace {X : Over (TopCat.of ℝ)}
   rw [hinv x, hinv x'] at hback'
   exact hback'
 
+/-! ### Point bijectivity and the homeomorphism -/
+
+/-- The Reeb quotient of a thickened projection is bijective on points for a constructible space. -/
+theorem bijective_quotientFunctor_map_functor_map_projNatTrans_app {X : Over (TopCat.of ℝ)}
+    (hX : IsConstructibleSpace X) (ε : ℝ≥0) :
+    Function.Bijective (((ℛ).map ((GeometricThickening.functor ε).map
+      ((ReebQuotient.projNatTrans ℝ).app X))).left.hom) := by
+  constructor
+  · intro q q' h
+    induction q using ReebQuotient.ind with
+    | h z =>
+      induction q' using ReebQuotient.ind with
+      | h z' =>
+        rcases z with ⟨x, t⟩
+        rcases z' with ⟨x', t'⟩
+        change ReebQuotient.mk _ (ReebQuotient.mk _ x, t) =
+          ReebQuotient.mk _ (ReebQuotient.mk _ x', t') at h
+        have hrelQ :
+            ReebRel (GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε)
+              (ReebQuotient.mk (overBaseMap X) x, t)
+              (ReebQuotient.mk (overBaseMap X) x', t') :=
+          (ReebQuotient.mk_eq_mk_iff _).1 h
+        have hheight := (GeometricThickening.reebRel_height_iff
+          (overBaseMap ((ℛ).obj X)) ε
+          (ReebQuotient.mk (overBaseMap X) x, t)
+          (ReebQuotient.mk (overBaseMap X) x', t')).1 hrelQ
+        have hx : overBaseMap X x ∈ Icc
+            (GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε
+              (ReebQuotient.mk (overBaseMap X) x, t) - ε)
+            (GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε
+              (ReebQuotient.mk (overBaseMap X) x, t) + ε) := by
+          change (overBaseMap X x + t) - ε ≤ overBaseMap X x ∧
+            overBaseMap X x ≤ (overBaseMap X x + t) + ε
+          exact GeometricThickening.band_bounds (overBaseMap X) x t
+        have hx' : overBaseMap X x' ∈ Icc
+            (GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε
+              (ReebQuotient.mk (overBaseMap X) x, t) - ε)
+            (GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε
+              (ReebQuotient.mk (overBaseMap X) x, t) + ε) := by
+          have heq : overBaseMap X x' + t' = overBaseMap X x + t := by
+            exact hheight.1
+          change (overBaseMap X x + t) - ε ≤ overBaseMap X x' ∧
+            overBaseMap X x' ≤ (overBaseMap X x + t) + ε
+          rw [← heq]
+          exact GeometricThickening.band_bounds (overBaseMap X) x' t'
+        have hab :
+            GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε
+                (ReebQuotient.mk (overBaseMap X) x, t) - ε ≤
+              GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε
+                (ReebQuotient.mk (overBaseMap X) x, t) + ε := by
+          linarith [ε.coe_nonneg]
+        have hjoinX := joinedIn_Icc_of_isConstructibleSpace hX hab hx hx' hheight.2
+        have hrelX : ReebRel (GeometricThickening.height (overBaseMap X) ε) (x, t) (x', t') := by
+          apply (GeometricThickening.reebRel_height_iff (overBaseMap X) ε (x, t) (x', t')).2
+          exact ⟨by
+            exact hheight.1,
+            by
+              exact hjoinX⟩
+        change ReebQuotient.mk (GeometricThickening.height (overBaseMap X) ε) (x, t) =
+          ReebQuotient.mk (GeometricThickening.height (overBaseMap X) ε) (x', t')
+        exact (ReebQuotient.mk_eq_mk_iff _).2 hrelX
+  · intro q
+    obtain ⟨⟨p, s⟩, rfl⟩ := ReebQuotient.mk_surjective _ q
+    obtain ⟨x, rfl⟩ := ReebQuotient.mk_surjective (overBaseMap X) p
+    exact ⟨ReebQuotient.mk _ (x, s), rfl⟩
+
+/-! ### Compactness and separation for the homeomorphism -/
+
+/-- The Reeb quotient of a thickening of a constructible space is compact. -/
+theorem compactSpace_quotient_thickening {X : Over (TopCat.of ℝ)}
+    (hX : IsConstructibleSpace X) (ε : ℝ≥0) :
+    CompactSpace (ReebQuotient (GeometricThickening.height (overBaseMap X) ε)) := by
+  obtain ⟨n, S, P, h1, h2, h3, h4, ⟨i⟩⟩ := hX
+  have := h1
+  have := h3
+  have : CompactSpace (P.Realization S) := P.compactSpace S
+  let e : X.left ≃ₜ P.Realization S := TopCat.homeoOfIso ((Over.forget _).mapIso i)
+  have : CompactSpace X.left := e.symm.compactSpace
+  have : CompactSpace (X.left × GeometricThickening.Band ε) := inferInstance
+  exact (ReebQuotient.mk_surjective _).compactSpace (ReebQuotient.continuous_mk _)
+
+/-- The Reeb quotient of the thickening of a constructible quotient is Hausdorff. -/
+theorem t2Space_quotient_thickening_quotient {X : Over (TopCat.of ℝ)}
+    (hX : IsConstructibleSpace X) (ε : ℝ≥0) :
+    T2Space (ReebQuotient
+      (GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε)) := by
+  obtain ⟨m, T, D, ⟨i⟩⟩ :=
+    isRGraph_quotient_of_isConstructibleSpace
+      (isConstructibleSpace_thickening (isRGraph_quotient_of_isConstructibleSpace hX) ε)
+  have : T2Space ((CylinderPresentation.ofFiniteData D).Realization T) :=
+    CylinderPresentation.finiteData_t2Space T D
+  let e : ReebQuotient
+      (GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε) ≃ₜ
+      (CylinderPresentation.ofFiniteData D).Realization T :=
+    TopCat.homeoOfIso ((Over.forget _).mapIso i)
+  exact e.isEmbedding.t2Space
+
+/-- The absorption map is a homeomorphism of the underlying spaces. -/
+noncomputable def absorptionHomeomorph {X : Over (TopCat.of ℝ)}
+    (hX : IsConstructibleSpace X) (ε : ℝ≥0) :
+    ReebQuotient (GeometricThickening.height (overBaseMap X) ε) ≃ₜ
+      ReebQuotient (GeometricThickening.height (overBaseMap ((ℛ).obj X)) ε) :=
+  haveI := compactSpace_quotient_thickening hX ε
+  haveI := t2Space_quotient_thickening_quotient hX ε
+  (((ℛ).map ((GeometricThickening.functor ε).map
+      ((ReebQuotient.projNatTrans ℝ).app X))).left.hom.continuous).homeoOfEquivCompactToT2
+    (f := Equiv.ofBijective _
+      (bijective_quotientFunctor_map_functor_map_projNatTrans_app hX ε))
+
+theorem absorptionHomeomorph_apply {X : Over (TopCat.of ℝ)}
+    (hX : IsConstructibleSpace X) (ε : ℝ≥0)
+    (q : ReebQuotient (GeometricThickening.height (overBaseMap X) ε)) :
+    absorptionHomeomorph hX ε q =
+      ((ℛ).map ((GeometricThickening.functor ε).map
+        ((ReebQuotient.projNatTrans ℝ).app X))).left.hom q := rfl
+
+/-- The absorption map is a homeomorphism of the underlying spaces, packaged over `ℝ`. -/
+noncomputable def absorptionOverIso {X : Over (TopCat.of ℝ)}
+    (hX : IsConstructibleSpace X) (ε : ℝ≥0) :
+    (ℛ).obj ((GeometricThickening.functor ε).obj X) ≅
+      (ℛ).obj ((GeometricThickening.functor ε).obj ((ℛ).obj X)) :=
+  haveI := compactSpace_quotient_thickening hX ε
+  haveI := t2Space_quotient_thickening_quotient hX ε
+  Over.isoMk (TopCat.isoOfHomeo (absorptionHomeomorph hX ε))
+    (by
+      ext q
+      exact overBaseMap_comm
+        ((ℛ).map ((GeometricThickening.functor ε).map
+          ((ReebQuotient.projNatTrans ℝ).app X))) q)
+
+/-- The forward map of `absorptionOverIso` is the Reeb-quotient of the thickened projection. -/
+theorem absorptionOverIso_hom {X : Over (TopCat.of ℝ)} (hX : IsConstructibleSpace X)
+    (ε : ℝ≥0) :
+    (absorptionOverIso hX ε).hom =
+      (ℛ).map ((GeometricThickening.functor ε).map
+        ((ReebQuotient.projNatTrans ℝ).app X)) := by
+  exact Over.OverMorphism.ext (by
+    ext q
+    rfl)
+
+/-- The absorption map sends `[(x, t)]` to `[([x], t)]`. -/
+theorem absorptionOverIso_hom_left_mk {X : Over (TopCat.of ℝ)}
+    (hX : IsConstructibleSpace X) (ε : ℝ≥0) (x : X.left)
+    (t : GeometricThickening.Band ε) :
+    (absorptionOverIso hX ε).hom.left.hom
+        (ReebQuotient.mk _ (x, t)) =
+      ReebQuotient.mk _ (ReebQuotient.mk (overBaseMap X) x, t) := by
+  rfl
+
+/-- The Reeb quotient of a thickening of a constructible space is a graph object. -/
+theorem isRGraph_quotient_thickening_of_isConstructibleSpace {X : Over (TopCat.of ℝ)}
+    (hX : IsConstructibleSpace X) (ε : ℝ≥0) :
+    IsRGraph ((ℛ).obj ((GeometricThickening.functor ε).obj X)) := by
+  obtain ⟨m, T, D, ⟨i⟩⟩ :=
+    isRGraph_quotient_of_isConstructibleSpace
+      (isConstructibleSpace_thickening (isRGraph_quotient_of_isConstructibleSpace hX) ε)
+  exact ⟨m, T, D, ⟨absorptionOverIso hX ε ≪≫ i⟩⟩
+
+/-! ### Absorption on constructible ℝ-spaces -/
+
+/-- The absorption map is an isomorphism for every constructible input. -/
+instance isIso_quotientFunctor_map_functor_map_projNatTrans_app_constructible
+    (X : ConstructibleSpaceCat) (ε : ℝ≥0) :
+    IsIso ((ℛ).map ((GeometricThickening.functor ε).map
+      ((ReebQuotient.projNatTrans ℝ).app X.obj))) := by
+  rw [← absorptionOverIso_hom X.property ε]
+  infer_instance
+
+/-- The thickening-then-quotient functor on constructible ℝ-spaces. -/
+def thickeningQuotient (ε : ℝ≥0) : ConstructibleSpaceCat ⥤ RGraphCat :=
+  IsRGraph.lift (IsConstructibleSpace.ι ⋙ GeometricThickening.functor ε ⋙ ℛ)
+    fun X => isRGraph_quotient_thickening_of_isConstructibleSpace X.property ε
+
+/-- The inclusion of `thickeningQuotient` is the actual thickening followed by the Reeb quotient. -/
+theorem thickeningQuotient_comp_ι (ε : ℝ≥0) :
+    thickeningQuotient ε ⋙ IsRGraph.ι =
+      IsConstructibleSpace.ι ⋙ GeometricThickening.functor ε ⋙ ℛ :=
+  rfl
+
+/-- `ℛ T_ε ≅ U_ε ℛ` on constructible ℝ-spaces; components `ℛ (T_ε q_X)`. -/
+def thickeningQuotientAbsorptionIso (ε : ℝ≥0) :
+    thickeningQuotient ε ≅ quotientRGraphFunctor ⋙ geometricSmoothing ε :=
+  NatIso.ofComponents
+    (fun X => ObjectProperty.isoMk _ (absorptionOverIso X.property ε))
+    (fun φ => by
+      ext1
+      change (ℛ).map ((GeometricThickening.functor ε).map φ.hom) ≫
+          (absorptionOverIso _ ε).hom =
+        (absorptionOverIso _ ε).hom ≫
+          (ℛ).map ((GeometricThickening.functor ε).map ((ℛ).map φ.hom))
+      rw [absorptionOverIso_hom, absorptionOverIso_hom]
+      exact (Functor.whiskerRight (Functor.whiskerRight (ReebQuotient.projNatTrans ℝ)
+        (GeometricThickening.functor ε)) ℛ).naturality φ.hom)
+
+/-- The component of the constructible absorption is the pointwise absorption map. -/
+theorem thickeningQuotientAbsorptionIso_hom_app_hom (ε : ℝ≥0) (X : ConstructibleSpaceCat) :
+    ((thickeningQuotientAbsorptionIso ε).hom.app X).hom =
+      (ℛ).map ((GeometricThickening.functor ε).map
+        ((ReebQuotient.projNatTrans ℝ).app X.obj)) :=
+  absorptionOverIso_hom X.property ε
+
+/-! ### The composite law -/
+
+/-- `U_ε (ℛ T_δ X) ≅ ℛ T_(ε+δ) X` on constructible ℝ-spaces. -/
+def thickeningQuotientCompIso (ε δ : ℝ≥0) :
+    thickeningQuotient δ ⋙ geometricSmoothing ε ≅ thickeningQuotient (ε + δ) :=
+  Functor.isoWhiskerRight (thickeningQuotientAbsorptionIso δ) (geometricSmoothing ε) ≪≫
+    Functor.associator quotientRGraphFunctor (geometricSmoothing δ)
+      (geometricSmoothing ε) ≪≫
+    Functor.isoWhiskerLeft quotientRGraphFunctor (geometricSmoothingCompIso ε δ) ≪≫
+    (thickeningQuotientAbsorptionIso (ε + δ)).symm
+
 end RGraph
 
 end
