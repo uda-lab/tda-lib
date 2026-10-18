@@ -796,8 +796,10 @@ universe-`0` categorical APIs.
 The route is direct: construct a height-preserving map into the finite
 realization, descend it with `RGraph.quotientLift`, and use the proved
 compactness of the graph realization and the quotient together with
-Hausdorffness of the finite realization. No `IsConstructibleSpace` claim is
-needed. The graph-PL results are library statements. Their quotient argument
+Hausdorffness of the finite realization. Constructibility of the graph
+realization and the identification of this comparison with the general
+`quotientIsoOfIso` are proved in the next subsection. The graph-PL results are
+library statements. Their quotient argument
 has the shape of DMP15-v1 Proposition 2.12, and the comparison corollary has
 the shape of DMP15-v1 Theorem 3.17; the graph-PL statements themselves make no
 external source claim.
@@ -813,3 +815,70 @@ with edges `0 — 2`, `1 — 2` and `2 — 3`. R4 is
 quotient although its realization endpoints differ. R5 is
 `c4_isIso_intervalComponentComparison`. R6 is the negative control
 `path3_reebQuotient_not_iso_S02`: the covering hypothesis cannot be dropped.
+
+### The graph-PL realization as a constructible ℝ-space
+
+Let `V : Type u`, let `G : SimpleGraph V`, and let `h : V → ℝ`. For (A),
+with no hypothesis on `V`, `barycentric` is a continuous injective map from
+the graph realization into `V → ℝ`; `t2Space_realization` gives Hausdorffness,
+`edgePoint_eq_vertex_iff` and `edgePoint_eq_edgePoint_iff` give the two
+point-identification results, `locallyPathConnectedSpace_realization` gives
+local path-connectedness, and `realizationMap_injective` gives injectivity of
+realized graph embeddings.
+
+(B) Under `[Finite V]`, `LevelPiece` combines the realization of the level
+graph with the finite discrete set of crossing edges. The homeomorphism
+`levelPieceHomeomorph` identifies this model with `ClosedLevel G h c`, and
+`compactSpace_closedLevel` and `locallyPathConnectedSpace_closedLevel` show
+that every closed level is compact and locally path-connected.
+
+(C) Under `[Finite V]`, `graphPLPresentation` uses closed levels as its vertex
+pieces and spanning edges as discrete cylinder pieces, and
+`graphPLPresentationMap` maps its realization to the graph realization over
+`ℝ`. The map is injective for every critical list. When the list covers the
+vertex heights, `graphPLPresentationHomeomorph` gives a homeomorphism.
+
+Closed levels are used as vertex pieces because horizontal edges are allowed:
+K3 shows that the vertex piece of a horizontal edge need not be discrete,
+while K4 shows that the discrete-piece finite data are not homeomorphic over
+`ℝ` to `|G|`. Thus the finite-data realization is not a substitute for the
+closed-level presentation.
+
+(D) Under `[Finite V]`, `graphPLComponentDataIso` identifies the component data
+of the presentation with `graphPLReebData G h S`, and
+`graphPLReebMap_graphPLPresentationMap` is the pointwise comparison. For a
+covering list, `graphPLPresentationIso` is the slice isomorphism and
+`graphPLReebQuotientIsoOfIso_graphPLComponentDataIso` identifies the two
+quotient-isomorphism constructions. The covering hypothesis is needed for the
+homeomorphism and surjectivity: K5 records that the presentation map remains
+injective for every list but is not surjective for an uncovered list.
+
+(E) Under `[Finite V]` and with `V : Type`, `graphPLSpace` regards the graph
+realization with its graph-PL height as a constructible `ℝ`-space.
+`quotientRGraphFunctor_obj_graphPLSpace` identifies its restricted quotient
+functor image with `graphPLReebGraph`, `overBaseMap_graphPLSpace` identifies
+the structure map with `plHeight`, and
+`isRGraph_quotient_thickening_graphPLOver` shows that the Reeb quotient of
+every geometric thickening is an ℝ-graph. The constructibility theorem
+`isConstructibleSpace_graphPLOver` needs only `[Finite V]`, with no covering
+list chosen in its statement.
+
+The realization, presentation, presentation map, presentation homeomorphism,
+and pointwise identification above are universe-polymorphic for `V : Type u`.
+The slice isomorphism, constructibility, identification of isomorphisms, and
+the consequences in (E) use `V : Type`, because the relevant categorical APIs
+live in universe `0`.
+
+These are library results and make no external source claim. The presentation
+follows the notion of a constructible ℝ-space in DMP15-v1 §2.2, and the
+comparison `quotientIsoOfIso` packages DMP15-v1 Proposition 2.12.
+
+The fixtures record the scope and boundary. K1 is given by
+`c4_isConstructibleSpace`, `c4_componentDataIso`, and
+`c4_quotientIsoOfIso_eq`. K2 is given by `Y_presentationHomeomorph` and
+`Y_isRGraph_thickening`. K3 is given by `flatEdge_isConstructibleSpace` and
+`flatEdge_vertexPiece_not_discrete`, while K4 is the negative control
+`flatEdge_not_iso_finiteData`. K5 is the negative control
+`path3_presentationMap_not_surjective`. K6 is given by `edge_mid_ne_vertex`
+and `c4_t2Space`. K7 is given by `c4_quotientRGraphFunctor_obj` and
+`c4_Y_geometricInterleavingDistance`.

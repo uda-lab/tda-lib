@@ -78,7 +78,7 @@ theorem flatEdge_vertexPiece_not_discrete :
       ((graphPLPresentation edgeGraph (fun _ => (0 : ℝ)) S0).V 0) := by
   change ¬ DiscreteTopology (ClosedLevel edgeGraph (fun _ => (0 : ℝ)) 0)
   intro hdiscrete
-  letI : DiscreteTopology (ClosedLevel edgeGraph (fun _ => (0 : ℝ)) 0) := hdiscrete
+  let : DiscreteTopology (ClosedLevel edgeGraph (fun _ => (0 : ℝ)) 0) := hdiscrete
   have hfalse :
       plHeight edgeGraph (fun _ => (0 : ℝ)) (vertex edgeGraph false) ∈ ({0} : Set ℝ) := by
     simp
@@ -118,7 +118,7 @@ theorem flatEdge_not_iso_finiteData :
   intro i
   have hq : Subsingleton (ReebQuotient (plHeight edgeGraph (fun _ => (0 : ℝ)))) :=
     TDA.Mapper.GraphPLReebQuotientExamples.flatEdge_reebQuotient_subsingleton
-  letI : Subsingleton (ReebQuotient (plHeight edgeGraph (fun _ => (0 : ℝ)))) := hq
+  let : Subsingleton (ReebQuotient (plHeight edgeGraph (fun _ => (0 : ℝ)))) := hq
   have hsub :
       Subsingleton (↑((RGraph.toOver S0
         (graphPLReebData edgeGraph (fun _ => (0 : ℝ)) S0)).left)) := by
@@ -126,7 +126,7 @@ theorem flatEdge_not_iso_finiteData :
       ((CylinderPresentation.ofFiniteData
         (graphPLReebData edgeGraph (fun _ => (0 : ℝ)) S0)).Realization S0)
     exact (graphPLReebQuotientHomeomorph edgeGraph (fun _ => (0 : ℝ)) const_covers).symm.toEquiv.subsingleton
-  letI : Subsingleton (↑((RGraph.toOver S0
+  let : Subsingleton (↑((RGraph.toOver S0
       (graphPLReebData edgeGraph (fun _ => (0 : ℝ)) S0)).left)) := hsub
   have hinj : Function.Injective i.hom.left.hom := fun x y hxy => by
     have hx : i.inv.left.hom (i.hom.left.hom x) = x :=
