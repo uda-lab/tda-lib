@@ -705,3 +705,35 @@ import TDA
 #print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_oneSkeleton_complete
 #print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_incidence_not_adj
 #print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_no_oneSkeletonIso
+
+-- Constructibility and cosheaf identification of graph-PL height.
+#print axioms TDA.Mapper.GraphPL.CoversVertexHeights.vertex_mem_iff
+#print axioms TDA.Mapper.GraphPL.CoversVertexHeights.edgeActive_iff
+#print axioms TDA.Mapper.GraphPL.cellGraphIsoOfSameLevels
+#print axioms TDA.Mapper.GraphPL.cellGraphIsoOfSameLevels_apply
+#print axioms TDA.Mapper.GraphPL.intervalComponents_plHeight_map_bijective
+#print axioms TDA.Mapper.GraphPL.isConstructibleAt_intervalComponents_plHeight
+#print axioms TDA.Reeb.FiniteReebData.Hom.bijective_v_of_iso
+#print axioms TDA.Reeb.FiniteReebData.Hom.bijective_e_of_iso
+#print axioms TDA.Mapper.GraphPL.graphPLCosheafIsoOfIso
+#print axioms TDA.Mapper.GraphPL.graphPLCosheafIso
+#print axioms TDA.Mapper.GraphPL.graphPLCosheafIso_hom_app_J
+#print axioms TDA.Mapper.GraphPL.graphPLCosheafIso_hom_app_K
+#print axioms TDA.Mapper.GraphPL.graphPLCosheafIso_hom_unique
+#print axioms TDA.Mapper.GraphPL.isConstructibleCosheaf_intervalComponents_plHeight
+#print axioms TDA.Mapper.GraphPL.cosheafFunctorGraphPLIso
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPL
+
+-- Graph-PL cosheaf fixtures.
+#print axioms TDA.Mapper.GraphPLCosheafExamples.c4_isConstructibleAt
+#print axioms TDA.Mapper.GraphPLCosheafExamples.c4_cosheafIso
+#print axioms TDA.Mapper.GraphPLCosheafExamples.c4_cosheaf_card_J1
+#print axioms TDA.Mapper.GraphPLCosheafExamples.edge_isConstructibleAt_S02
+#print axioms TDA.Mapper.GraphPLCosheafExamples.edge_isConstructibleAt_S012
+#print axioms TDA.Mapper.GraphPLCosheafExamples.edge_cosheafIso_S012
+#print axioms TDA.Mapper.GraphPLCosheafExamples.Y_isConstructibleAt
+#print axioms TDA.Mapper.GraphPLCosheafExamples.Y_cosheafIso
+#print axioms TDA.Mapper.GraphPLCosheafExamples.flatEdge_isConstructibleAt
+#print axioms TDA.Mapper.GraphPLCosheafExamples.flatEdge_cosheafIso
+#print axioms TDA.Mapper.GraphPLCosheafExamples.flatEdge_cosheaf_card
+#print axioms TDA.Mapper.GraphPLCosheafExamples.missing_not_isConstructibleAt

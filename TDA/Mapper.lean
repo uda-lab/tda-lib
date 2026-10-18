@@ -14,3 +14,4 @@ import TDA.Mapper.GraphPLLevelSets
 import TDA.Mapper.UniformMapperReebData
 import TDA.Mapper.GraphPLRefinement
 import TDA.Mapper.OneSkeletonReebData
+import TDA.Mapper.GraphPLCosheaf
