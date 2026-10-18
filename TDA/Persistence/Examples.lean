@@ -67,6 +67,7 @@ import TDA.Persistence.CechSupNormDiagramExamples
 import TDA.Persistence.ConstructibleShiftBarcodeExamples
 import TDA.Persistence.RealInducedMatchingExamples
 import TDA.Persistence.WeightedKernelExamples
+import TDA.Persistence.WeightedKernelInjectivityExamples
 import TDA.Persistence.FiniteBoundaryTransportExamples
 import TDA.Persistence.FinitePBoundaryTransportExamples
 import TDA.Persistence.SublevelInterleavingExamples
