@@ -37,3 +37,4 @@ import TDA.Reeb.RGraphSmoothingExamples
 import TDA.Reeb.RGraphThickeningExamples
 import TDA.Reeb.SmoothingExamples
 import TDA.Reeb.StabilityExamples
+import TDA.Reeb.ConstructibleGeometricInterleavingExamples

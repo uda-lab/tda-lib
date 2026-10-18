@@ -275,6 +275,80 @@ Smoothing the edge and its midpoint by `1/4` keeps their distance exactly `1/2`;
 also show that no witness exists below `1/2`. Compatibility of smoothing with `trans` is not
 claimed here.
 
+## Interleavings of constructible ℝ-spaces
+
+Let `q_X` denote the unit of
+`quotientRGraphAdjunction : quotientRGraphFunctor ⊣ rgraphToConstructible` at a constructible
+space `X`. The functor `rgraphToConstructible` includes graph objects as constructible spaces,
+and `quotientRGraphAdjunction_unit_app_hom` identifies `q_X` with the Reeb projection. At a graph
+object `A`, the counit is the inverse `q_A⁻¹` of the graph projection isomorphism, as recorded by
+`quotientRGraphAdjunction_counit_app_hom`.
+
+The constructible-space smoothing is the endofunctor
+`RGraph.constructibleSmoothing ε = thickeningQuotient ε ⋙ rgraphToConstructible`, namely
+`ℛ T_ε` on `ConstructibleSpaceCat`. Its unit is `constructibleSmoothingUnit ε`, given on points
+by `x ↦ [(x, 0)]`, and its additive coherence is
+`constructibleSmoothingCompIso ε δ : constructibleSmoothing δ ⋙ constructibleSmoothing ε ≅
+constructibleSmoothing (ε + δ)`. This smoothing is distinct from the cosheaf
+`constructibleSmoothing` used earlier. The absorption component is exactly constructible
+thickening of the reflection unit, by `thickeningQuotientAbsorptionIso_hom_app_eq`; and
+`homEquiv_symm_constructibleSmoothingUnit` says that the constructible smoothing unit transposes
+to the geometric unit `ζ^ε` after absorption.
+
+A `ConstructibleInterleaving ε X Y` has maps
+`φ : X ⟶ ℛ T_ε Y` and `ψ : Y ⟶ ℛ T_ε X`, with both composites equal to the smoothing unit at
+the literal parameter `ε + ε`. Its coherence is built from `thickeningQuotientCompIso`, so this
+is a priori different from a graph interleaving of `ℛ X` and `ℛ Y`: its maps start at `X` and `Y`
+themselves, and its composite law uses constructible thickening rather than only the graph-object
+semigroup. The core calculation is `ConstructibleInterleaving.coherence_iff`.
+
+After transposing along the reflection and applying absorption, the equivalence
+`ConstructibleInterleaving.equivGeometric` gives a bijection
+
+```lean
+ConstructibleInterleaving ε X Y ≃
+  GeometricInterleaving ε (quotientRGraphFunctor.obj X) (quotientRGraphFunctor.obj Y)
+```
+
+Thus
+`constructibleInterleavingDistance_eq_geometricInterleavingDistance` identifies the constructible
+distance with `d_geo (ℛ X, ℛ Y)`. The same distance is
+
+```lean
+interleavingDistance (intervalComponents (overBaseMap X.obj))
+  (intervalComponents (overBaseMap Y.obj))
+```
+
+by `constructibleInterleavingDistance_eq_interleavingDistance`, using
+`constructibleComponentComparisonIso` and the merged comparison corresponding to DMP15-v1
+Theorem 3.17. The distance has the self, symmetry, triangle and isomorphism-invariance laws
+`constructibleInterleavingDistance_self`, `constructibleInterleavingDistance_comm`,
+`constructibleInterleavingDistance_triangle` and `constructibleInterleavingDistance_congr`.
+`constructibleInterleavingDistance_eq_zero_iff` specifies zero distance as witnesses at every
+positive parameter, not necessarily a witness at `0`.
+
+`ConstructibleInterleaving.toQuotient` gives a zero-parameter witness from `X` to its Reeb graph,
+and `constructibleInterleavingDistance_quotient` gives distance zero. On graph inputs,
+`constructibleInterleavingDistance_rgraphToConstructible` recovers the geometric graph distance.
+The bounds `constructibleInterleavingDistance_constructibleSmoothing_self_le` and
+`constructibleInterleavingDistance_constructibleSmoothing_le` give the smoothing bound and
+nonexpansiveness, while `constructibleInterleavingDistance_le_edist` gives the sup-norm stability
+bound for two constructible heights on a common carrier.
+
+Fixture F1 is the boundary control: the constant-height interval and the point satisfy
+`constructibleInterleavingDistance_interval_point`, so their distance is `0`, while
+`not_nonempty_interval_iso_point` proves that they are not isomorphic as spaces over `ℝ`.
+Therefore the distance sees the Reeb graph and zero distance does not imply an isomorphism of
+spaces. The other fixtures give exact values `1` and `1/2` for the two singleton graphs and the
+edge--midpoint pair (`constructibleInterleavingDistance_singleton_zero_one` and
+`constructibleInterleavingDistance_single_mid`), emptiness below `1/2` for the latter
+(`single_mid_isEmpty`), the pinch smoothing bound
+(`constructibleInterleavingDistance_pinch_smoothing_le`), and distance at most `1` between the
+constant heights `0` and `1` (`constructibleInterleavingDistance_const_zero_one_le`).
+Only the statement shape of DMP15-v1 Definition 4.36 is attributed here; the reflection,
+constructible smoothing, interleaving equivalence and distance results are library statements.
+Constructibility of `T_ε X` itself is not claimed.
+
 ## Source correspondence
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4. As in `reeb-geometric-interleaving.md`,
