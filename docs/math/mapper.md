@@ -647,8 +647,20 @@ These results compare the MultiNerve Mapper with finite Reeb data at
 member-adapted levels. The MultiNerve terminology is used in the sense of
 CO16-v3 Definitions 3.2 and 3.3 as context; the comparison itself is a
 library result. The comparison with the canonical list is in the next
-subsection; no 1-skeleton or graph packaging or ordinary Mapper statement is
-made here.
+subsection; the ordinary Mapper one-skeleton is compared below.
+
+Under `2g ≤ r`, `incidenceGraphUniformMapperIso` identifies the incidence graph of
+`uniformMapperData G h a r g n` with the ordinary Mapper one-skeleton
+`mapperOneSkeleton`. The vertices match through `uniformMapperIncidenceVertexEquiv`, which
+needs no hypothesis; the bound `2g ≤ r` excludes edges between labels at distance two or
+more. Composing with `uniformMapperIso` gives `mapperOneSkeletonGraphPLIso`, with the
+consequences `mapperOneSkeleton_connected_iff` and
+`card_mapperOneSkeleton_edgeSet_le`. Parallel MultiNerve edge cells, that is, several
+cells over the same label pair, are forgotten by the ordinary one-skeleton. Fixtures M1–M4
+are in `TDA/Mapper/OneSkeletonReebDataExamples.lean`. M5 is the boundary control: for the
+point graph with `2g > r`, the one-skeleton is complete on three vertices while the
+incidence graph has non-adjacent vertices at levels 0 and 2, so no isomorphism exists
+(`point_no_oneSkeletonIso`) and `2g ≤ r` cannot be dropped.
 
 ### Refinement of graph-PL finite Reeb data
 

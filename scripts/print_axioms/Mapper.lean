@@ -681,3 +681,27 @@ import TDA
 #print axioms TDA.Mapper.GraphPLRefinementExamples.edge_refine_trans
 #print axioms TDA.Mapper.GraphPLRefinementExamples.edge_mapperRefineIso
 #print axioms TDA.Mapper.GraphPLRefinementExamples.edge_mapper_toOver
+
+-- Incidence graph of uniform Mapper finite Reeb data and the ordinary Mapper one-skeleton.
+#print axioms TDA.Mapper.GraphPL.support_eq_singleton_of_vertexCell
+#print axioms TDA.Mapper.GraphPL.uniformMapperIncidenceVertexEquiv
+#print axioms TDA.Mapper.GraphPL.incidenceGraphUniformMapperIso
+#print axioms TDA.Mapper.GraphPL.incidenceGraphUniformMapperIso_toEquiv
+#print axioms TDA.Mapper.GraphPL.mapperOneSkeletonGraphPLIso
+#print axioms TDA.Mapper.GraphPL.mapperOneSkeleton_connected_iff
+#print axioms TDA.Mapper.GraphPL.card_mapperOneSkeleton_edgeSet_le
+
+-- Incidence graph and Mapper one-skeleton fixtures.
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.c4_oneSkeletonIso
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.c4_oneSkeleton_edgeCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.edge_oneSkeleton_vertexCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.edge_oneSkeleton_edgeCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.Y_oneSkeleton_vertexCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.Y_oneSkeleton_edgeCard_le
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.flat_oneSkeleton_vertexCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.flat_oneSkeleton_not_adj
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_boundary
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_oneSkeleton_vertexCard
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_oneSkeleton_complete
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_incidence_not_adj
+#print axioms TDA.Mapper.OneSkeletonReebDataExamples.point_no_oneSkeletonIso
