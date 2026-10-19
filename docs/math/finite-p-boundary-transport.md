@@ -361,9 +361,10 @@ about 0^(1/p) is used. The exact matching/plan identity gives the same limit for
 the rooted real boundary-reservoir optimum. The API provides real limits and
 extended nonnegative real limits, with B's finiteness proved before conversion.
 
-Essential-free inputs are necessary for this comparison with the full B.
-Essential-only diagrams with births 0 and 1 have zero finite-part transport at
-every p≥1, but full bottleneck one. Merely assuming B<∞ would not fix this.
+The comparison can fail for unequal essential births. Essential-only diagrams
+with births 0 and 1 have zero finite-part transport at every p≥1, but full
+bottleneck one. Finiteness of B alone therefore does not suffice. The common
+essential-birth multiset condition below gives another sufficient case.
 
 ## Uniform recovery under count and radius bounds
 
