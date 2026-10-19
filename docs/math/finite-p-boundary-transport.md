@@ -243,16 +243,47 @@ order to change; no fixed pairing or order is required here. Essential bars in
 these actual diagrams still belong to the full bottleneck comparison and remain
 outside the finite-part transport quantity.
 
+## Limit as the matching exponent tends to infinity
+
+Fix two finite diagrams D,E with empty essential parts. Let B be their full
+bottleneck distance and let N count both finite occurrence families. Empty
+essential parts imply B<∞, so its real value is meaningful. For every real p≥1,
+
+B ≤ dₚ(D,E) ≤ N^(1/p) B.
+
+Here dₚ uses the canonical finite occurrence labels of D,E. Each charge of a
+matching is at most its rooted powered sum. Choose a minimizing finite matching
+and extend it by the unique matching of empty essential families. Its maximum
+bounds B from above, giving the lower comparison. The upper comparison is the
+occurrence-count bound above. Both comparisons concern optimized quantities;
+the minimizing matching may change with p.
+
+If N>0, then N^(1/p) tends to one as real p tends to infinity. Squeezing gives
+
+lim_(p→∞) dₚ(D,E) = B.
+
+If N=0, both finite families are empty and both sides are zero; no limit claim
+about 0^(1/p) is used. The exact matching/plan identity gives the same limit for
+the rooted real boundary-reservoir optimum. The API provides real limits and
+extended nonnegative real limits, with B's finiteness proved before conversion.
+
+Essential-free inputs are necessary for this comparison with the full B.
+Essential-only diagrams with births 0 and 1 have zero finite-part transport at
+every p≥1, but full bottleneck one. Merely assuming B<∞ would not fix this.
+
 ## Examples
 
 | Example | Powered/rooted calculation |
 | --- | --- |
+| Both diagrams empty, every p≥1 | Both optimized costs and bottleneck are zero; the limit includes N=0 |
+| One bar (0,2) versus empty, every p≥1 | Both rooted optima and bottleneck are one |
 | Empty target, diagonal charges 1 and 2, p=2 | Powered optimum 5; rooted optimum √5 |
 | Half mass from (0,2) to (0,4), p=2 | Plan cost 9/2; both boundary deficits are 1/2; optimum is 4 |
-| Two copies of (0,2) versus one copy, p=2 | Powered and rooted optimum 1, attained by half from each source and by an incidence plan |
+| Two copies of (0,2) versus one copy, every p≥1 | Rooted optimum and bottleneck are one, with an actual pair-one/delete-one matching |
 | (0,2) versus (3/2,7/2) | p=1 pairs, cost 3/2; p=2 deletes both, powered cost 2, strictly below the paired cost 9/4 |
 | (0,8) versus empty, p=3/2 | Powered optimum 8; rooted optimum 4 |
 | Two copies of (0,2) versus empty, any p≥1 | Powered optimum 2; rooted optimum 2^(1/p); bottleneck 1, attaining the occurrence-count factor |
+| Essential-only births 0 versus 1, every p≥1 | Finite-part cost zero, full bottleneck one; essential-free hypotheses are necessary |
 | Actual filled triangle versus its tied filter, H₁ | The finite parts have one bar and zero bars; their transport is bounded by the face perturbation, including p=2 and p=3/2 |
 | Four middle roles with unmatched endpoints, p=2 | Candidate powers 11 and 16; composite power 19; √19 ≤ √11+4 |
 | Singletons (0,10), (1,11), (2,12), every p≥1 | Consecutive rooted optima 1 and 1; direct rooted optimum 2; sharp triangle at p=2 and p=3/2 |
@@ -279,6 +310,8 @@ them to the finite parts of actual sublevel diagrams.
 matching and real-plan optima, including empty occurrence families.
 `FinitePCostSimilarity` supplies common diagonal-translation invariance and
 nonnegative scaling for powered and rooted matching and real-plan optima.
+`FinitePBottleneckLimit` supplies the lower bottleneck comparison and real-exponent
+limits for matching and real-plan optima on diagrams with empty essential parts.
 
 [Figalli–Gigli](references.md#FG10) retains priority for boundary-reservoir transport;
 its original bounded-domain quadratic Euclidean setting is distinct from this model.
@@ -311,6 +344,12 @@ on the right of the bound is a one-sided library statement about the finite proj
 not an identification of full essential p-transport conventions.
 The arbitrary-real-pair supporting algebra is a library extension; no all-measure
 stability theorem is inferred from this count estimate.
+
+The exponent limit is a checked finite-diagram specialization of DL §1.1
+formulas (1)/(2), at fixed q=∞. Its finite charge-vector squeeze is proved
+independently in the library. Supporting algebra also permits off-diagonal pairs
+below the diagonal; the source interpretation uses positive lifetimes. No limit
+theorem for infinite diagrams or general persistence measures is claimed.
 
 The proved equality concerns finite real reservoir matrices, not all Borel/Radon
 couplings. Essential or infinite bars, arbitrary weighted inputs, completeness and
