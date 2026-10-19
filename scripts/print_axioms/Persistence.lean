@@ -2767,3 +2767,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_eq
 #print axioms TDA.Persistence.shiftedSimplicialHomologyMap_id
+
+-- Native relation and actual shifted homology composition.
+#print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso
+#print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso_hom_app
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap_comp
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap_comp_app
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_comp
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_comp_app
+#print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso_nnreal
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_comp
