@@ -459,7 +459,11 @@ where N counts both finite occurrence sets. Explicit radius and cardinality-budg
 are included. `FinitePFilterStability` applies these bounds to actual sublevel diagrams
 using face-value perturbations, without a fixed pairing; essential bars remain outside
 the finite-part transport cost. All-Radon-coupling equality and quotient/metric
-instances remain outside this API. `FinitePCostSimilarity` proves invariance under
+instances remain outside this API. `FinitePBottleneckLimit` proves the reverse
+bottleneck comparison and convergence of both optimized costs as the real exponent
+tends to infinity, for fixed diagrams with empty essential parts. It includes the
+empty-input case and both real and extended nonnegative real limits.
+`FinitePCostSimilarity` proves invariance under
 common diagonal translation and homogeneity under nonnegative coordinate scaling,
 including zero scaling on raw coordinate families. See
 [real-exponent finite transport](math/finite-p-boundary-transport.md).
