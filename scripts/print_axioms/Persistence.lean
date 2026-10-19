@@ -2755,3 +2755,15 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_abs_sub_bottleneck_le_uniformBound
 #print axioms TDA.Persistence.finitePMatchingCost_tendstoUniformlyOn_bottleneck
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_tendstoUniformlyOn_bottleneck
+
+-- Actual shifted simplicial homology maps and canonical selectors.
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap_app
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_eq
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_app
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_graph
+#print axioms TDA.Persistence.simplicialHomology_reindex_nnreal
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_eq
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap_id

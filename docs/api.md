@@ -45,6 +45,12 @@ with independent source and target orders in a common vertex universe. Collapsed
 map to zero; injective images retain their permutation signs. Identity, composition and
 compatibility with the existing inclusions are strict. Contiguous maps have an actual
 signed prism homotopy and induce equal homology maps in every natural degree.
+For real-indexed filtrations, `shiftedSimplicialHomologyMap` gives the actual degree-ε
+natural map of a global function, and `multivaluedSimplicialHomologyMap` gives the canonical
+map of a total relation satisfying the nonempty finite-image face condition. It equals the
+map of every subordinate function, over any ring and for every real ε. Its target evaluates
+at t + ε and agrees with `RealShift.shift` for nonnegative ε. Relational images may be
+infinite; totality covers ambient ghosts while face tests preserve actual support.
 Different-point-set stability requires further results. See [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
 
 Structure projections and the existing coercions provide access to values and vertex-map

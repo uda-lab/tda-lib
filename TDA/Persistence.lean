@@ -131,5 +131,6 @@ import TDA.Persistence.EssentialVanishing
 import TDA.Persistence.WeightedKernelIsometry
 import TDA.Persistence.FinitePBottleneckLimit
 import TDA.Persistence.FinitePCostContinuity
+import TDA.Persistence.SimplicialMultivaluedMap
 import TDA.Persistence.FinitePCostJointContinuity
 import TDA.Persistence.FinitePBottleneckUniformLimit
