@@ -130,3 +130,4 @@ import TDA.Persistence.LogScaleScaling
 import TDA.Persistence.EssentialVanishing
 import TDA.Persistence.WeightedKernelIsometry
 import TDA.Persistence.FinitePBottleneckLimit
+import TDA.Persistence.FinitePCostContinuity

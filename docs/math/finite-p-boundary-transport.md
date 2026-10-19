@@ -197,6 +197,35 @@ and leaving half a unit at each boundary has powered costs 4 and 19 at exponents
 one and two. Its rooted second cost √19 exceeds 4, while the actual optimized
 distances are 2 and √2 and satisfy the comparison.
 
+## Continuity at finite exponents
+
+Fix the two occurrence families. The four functions p ↦ mₚ, p ↦ dₚ,
+p ↦ tₚ and p ↦ tₚ^(1/p) are continuous on [1,∞). Empty families,
+nonempty zero-distance inputs and repeated coordinates are included. The
+statement concerns the optimized values even when their minimizing matchings
+change with p.
+
+For a fixed matching, each branch of the source and target sums is fixed as p
+varies. Powers of its nonnegative geometric coefficients are continuous at
+positive exponents, including zero coefficients. A finite nonempty minimum of
+these continuous candidate functions is continuous. The proof identifies this
+finite minimum with the existing real infimum; it does not interchange a limit
+with an arbitrary infimum. The reciprocal exponent is positive, so rooting is
+continuous even when mₚ=0. The proved assignment equalities transfer the result
+to the infimum over all feasible real plans.
+
+Identical singleton bars have zero optimized cost throughout the domain, while
+two labelled copies of (0,2) versus empty have powered cost 2 and rooted cost
+2^(1/p), in either orientation. For (0,2) versus (3/2,7/2), the powered curve is
+min((3/2)^p,2). It remains continuous as the optimizer changes from pairing to
+deleting both.
+
+Exponent zero lies outside this domain. Under the existing real-power
+conventions, the empty rooted cost is 1 at zero and 0 at every positive exponent.
+For identical singleton bars (0,2), the powered optimum is also 1 at zero and 0
+at positive exponents. These positive-side limits differ from the values at zero.
+The continuity API keeps the definitions and the PH exponent domain unchanged.
+
 ## Diagonal translation and nonnegative scaling
 
 Fix p ≥ 1 and use mₚ and dₚ on raw real coordinate families, which permit diagonal
@@ -338,6 +367,8 @@ them to the finite parts of actual sublevel diagrams.
 `FinitePMatchingCostComparison` supplies first-order and two-real-exponent
 comparisons for matching and real-plan optima, including empty occurrence
 families, and their antitonicity on [1,∞).
+`FinitePCostContinuity` supplies continuity in the real exponent on [1,∞)
+for the powered and rooted matching and actual real-plan optima.
 `FinitePCostSimilarity` supplies common diagonal-translation invariance and
 nonnegative scaling for powered and rooted matching and real-plan optima.
 `FinitePBottleneckLimit` supplies the lower bottleneck comparison and real-exponent
@@ -365,6 +396,12 @@ They use `Real.add_rpow_le_rpow_add` and
 `Real.rpow_sum_le_const_mul_sum_rpow_of_nonneg` on the matching charge vector.
 Probability-normalized Wasserstein exponent comparisons concern a different
 normalization and do not supply these unnormalized occurrence bounds.
+
+Finite-exponent continuity is also a finite library derivation using the same
+DL convention. Pinned mathlib's finite-infimum identity and continuity theorem
+apply to the finite matching family; its real-power continuity includes zero
+bases at positive exponents. No continuity theorem for infinite diagrams or
+general persistence measures is inferred from this finite-minimum proof.
 
 The perturbation estimates are checked finite sum-to-maximum reasoning from
 DL formulas (1)/(2) and the existing bottleneck attainment and stability theorems.

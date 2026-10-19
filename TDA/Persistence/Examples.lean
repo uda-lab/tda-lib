@@ -93,3 +93,4 @@ import TDA.Persistence.TotalPersistenceRipsCechExamples
 import TDA.Persistence.EssentialVanishingExamples
 import TDA.Persistence.WeightedKernelIsometryExamples
 import TDA.Persistence.FinitePBottleneckLimitExamples
+import TDA.Persistence.FinitePCostContinuityExamples
