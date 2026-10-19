@@ -2749,3 +2749,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePMatchingCost_joint_continuousOn
 #print axioms TDA.Persistence.finitePowerBoundaryTransportCost_joint_continuousOn
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_joint_continuousOn
+
+-- Uniform bottleneck recovery under finite count and radius budgets
+#print axioms TDA.Persistence.finitePMatchingCost_abs_sub_bottleneck_le_uniformBound
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_abs_sub_bottleneck_le_uniformBound
+#print axioms TDA.Persistence.finitePMatchingCost_tendstoUniformlyOn_bottleneck
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_tendstoUniformlyOn_bottleneck
