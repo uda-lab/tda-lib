@@ -2783,3 +2783,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_comp_app
 #print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso_nnreal
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_comp
+
+-- Uniform recovery with common essential-birth multisets.
+#print axioms TDA.Persistence.finitePMatchingCost_abs_sub_bottleneck_le_uniformBound_of_essentialParts_eq
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_abs_sub_bottleneck_le_uniformBound_of_essentialParts_eq
+#print axioms TDA.Persistence.finitePMatchingCost_tendstoUniformlyOn_bottleneck_of_essentialParts_eq
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_tendstoUniformlyOn_bottleneck_of_essentialParts_eq

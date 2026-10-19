@@ -484,6 +484,11 @@ empty-input case and both real and extended nonnegative real limits.
 finite count is at most m and the full bottleneck B is at most R≥0.
 Both rooted optima converge uniformly in real p to B on that entire budget
 class, including empty inputs and R=0, with no topology on diagrams required.
+`FinitePCommonEssentialBottleneck` gives the same error and uniform limits when
+the entire essential-birth multisets agree, retaining values and multiplicities.
+The common multiset may vary across pairs without a count or birth-range budget.
+These remain the existing finite-part costs; no essential p-cost is introduced.
+Equal essential cardinalities alone do not suffice.
 `CechFinitePBottleneckUniformLimit` derives the corresponding bounds and uniform
 limits for actual `dgm k (Cech.filter a) n`, n≥1, on a fixed finite label type
 under a same-label displacement budget R≥0. The total finite count is bounded
