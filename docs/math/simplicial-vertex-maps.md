@@ -35,15 +35,53 @@ actual cycle, and its quotient comparison identifies its representative in the
 existing kernel/image quotient. The class naturality theorem relates the
 induced homology map to the actual chain image.
 
+## Contiguity and the signed prism
+
+Two vertex maps `f, g : VertexMap K L` are contiguous when
+`f(s) ∪ g(s)` is a target face for every source face `s`. For an increasing
+source face `[v₀, …, vₙ]`, the positive prism is
+
+```text
+Pₙ([v₀, …, vₙ]) = Σᵢ (-1)ⁱ [f(v₀), …, f(vᵢ), g(vᵢ), …, g(vₙ)].
+```
+
+Each bracket is the existing `orientedTuple`: it sorts the tuple with its sign
+and vanishes when vertices repeat. Every mixed tuple has a nonempty image
+contained in `f(s) ∪ g(s)`, so downward closure supplies its actual face
+membership before the tuple boundary identity is used. Coefficients act on the
+left, outside this signed sum; this also applies to noncommutative rings.
+
+`Contiguous.prismMap` extends this formula linearly. Its boundary equations are
+`∂P₀ = g₀ - f₀` and `∂Pₙ₊₁ + Pₙ∂ = gₙ₊₁ - fₙ₊₁`. In positive degrees,
+the faces obtained by deleting a source vertex cancel the corresponding prism
+faces. Adjacent mixed faces cancel in pairs, leaving the two endpoint maps.
+Degree zero uses the unaugmented boundary convention separately.
+
+`Contiguous.chainHomotopy` packages an actual mathlib homotopy from
+`simplicialChainMap R f` to `simplicialChainMap R g`. Its degree-raising
+component is `-Pₙ`, as required by mathlib's sign convention, and all other
+components are zero. `Contiguous.simplicialHomologyMap_eq` then proves equality
+of the induced maps on the existing homology in every natural degree. These
+results retain the arbitrary ring and vertex-map assumptions above.
+
+The examples distinguish the endpoint chain maps of an edge while proving
+their common nonzero image on actual H₀. They also check an integer reversal
+with a nonzero coefficient `-2`, its characteristic-two specialization, a
+nonzero mixed triangle prism, collapsed tuples, disconnected endpoints with
+distinct H₀ maps, absent ambient vertices, empty sources, and a noncentral
+matrix coefficient.
+
 ## Sources and scope
 
 This is a source-motivated library bridge, proved for the library's actual
 support-aware chains. Chazal–de Silva–Oudot,
 [*Persistence stability for geometric complexes*, arXiv:1207.3885v3, §3](https://arxiv.org/html/1207.3885v3#S3),
 uses simplicial maps and their induced homology maps in Definition 3.1 and
-Proposition 3.3. It also uses equality of maps induced by contiguous simplicial
-maps. That latter theorem and the Munkres proofs cited there are not established
-by this unit. No numbered metric stability theorem is claimed as its result.
+Proposition 3.3. The prism proves the unfiltered contiguity step used there,
+with arbitrary rings in place of the source's field coefficients. This is a
+supporting library extension; the filtered selector-independence proposition
+requires its own packaging. The Munkres proofs cited by that article were not
+directly audited.
 
 The algebraic ingredients are the pinned mathlib tuple-sorting, permutation-sign,
 Finsupp and homology APIs. TauCeti's
@@ -54,7 +92,13 @@ the latter's cell-image and increasing-enumeration results require local
 injectivity or order conditions. That source uses a different toolchain and is
 not an installed dependency or copied implementation.
 
-Contiguity homotopies, independence of refinement selectors on homology, varying
-vertex-type persistence modules, and correspondence or Hausdorff stability are
-separate results. The present construction supplies their arbitrary-map chain
-and homology prerequisite.
+The finite-partition cancellation proof adapts the pinned mathlib
+[`SimplicialObject/ChainHomotopy.lean`](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/AlgebraicTopology/SimplicialObject/ChainHomotopy.lean).
+The new module preserves Fabian Odermatt's copyright and Apache-2.0 notice and
+identifies the adaptation. Mixed-tuple identities and actual face membership
+connect that cancellation to this chain model; mathlib's homotopy theorem
+supplies equality of the actual homology maps.
+
+Independence of filtered refinement selectors, varying vertex-type persistence
+modules, and correspondence or Hausdorff stability remain separate results.
+The present construction supplies their unfiltered contiguity prerequisite.

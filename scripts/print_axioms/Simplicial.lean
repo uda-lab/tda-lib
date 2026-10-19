@@ -292,3 +292,11 @@ import TDA
 #print axioms TDA.Simplicial.VertexChainMapExamples.triangle_composed_collapse
 #print axioms TDA.Simplicial.VertexChainMapExamples.empty_ambient_to_singleton
 #print axioms TDA.Simplicial.VertexChainMapExamples.triangle_one_pair_boundary_image
+#print axioms TDA.Simplicial.Contiguous.prismMap
+#print axioms TDA.Simplicial.Contiguous.prismMap_single
+#print axioms TDA.Simplicial.Contiguous.boundary_prismMap_zero
+#print axioms TDA.Simplicial.Contiguous.boundary_prismMap_succ
+#print axioms TDA.Simplicial.Contiguous.chainHomotopy
+#print axioms TDA.Simplicial.Contiguous.chainHomotopy_hom_succ
+#print axioms TDA.Simplicial.Contiguous.chainHomotopy_hom_eq_zero
+#print axioms TDA.Simplicial.Contiguous.simplicialHomologyMap_eq
