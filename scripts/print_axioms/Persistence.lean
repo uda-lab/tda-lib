@@ -2767,3 +2767,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_eq
 #print axioms TDA.Persistence.shiftedSimplicialHomologyMap_id
+
+-- Čech sublevel uniform recovery under displacement budgets.
+#print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_abs_sub_bottleneck_le_uniformBound
+#print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_abs_sub_bottleneck_le_uniformBound
+#print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_tendstoUniformlyOn_bottleneck
+#print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_tendstoUniformlyOn_bottleneck
