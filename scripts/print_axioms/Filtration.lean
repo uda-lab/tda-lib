@@ -338,3 +338,6 @@ import TDA
 #print axioms TDA.Filtration.IsShiftedSimplicial.comp
 #print axioms TDA.Filtration.IsShiftedSimplicial.comp_vertexMap
 #print axioms TDA.Filtration.IsShiftedSimplicialRelation.comp
+
+-- Subrelations preserve shifted finite-face geometry.
+#print axioms TDA.Filtration.IsShiftedSimplicialRelation.of_subset

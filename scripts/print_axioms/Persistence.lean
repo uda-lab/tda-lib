@@ -2789,3 +2789,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_abs_sub_bottleneck_le_uniformBound_of_essentialParts_eq
 #print axioms TDA.Persistence.finitePMatchingCost_tendstoUniformlyOn_bottleneck_of_essentialParts_eq
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_tendstoUniformlyOn_bottleneck_of_essentialParts_eq
+
+-- Canonical homology interleavings from total simplicial relations.
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_of_subset
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving_φ
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving_ψ
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyConverseInterleaving

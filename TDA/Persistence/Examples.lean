@@ -100,3 +100,4 @@ import TDA.Persistence.FinitePBottleneckUniformLimitExamples
 import TDA.Persistence.CechFinitePBottleneckUniformLimitExamples
 import TDA.Persistence.SimplicialMultivaluedMapCompositionExamples
 import TDA.Persistence.FinitePCommonEssentialBottleneckExamples
+import TDA.Persistence.SimplicialMultivaluedInterleavingExamples

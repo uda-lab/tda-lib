@@ -54,7 +54,12 @@ infinite; totality covers ambient ghosts while face tests preserve actual suppor
 Native relation composition is first C then D. Their actual canonical homology maps
 compose with degree ε + δ, using the second component at t + ε and the canonical
 index transport `(t + ε) + δ = t + (ε + δ)`. The specialized comparison agrees with
-`RealShift.compIso` for nonnegative degrees. Different-point-set stability requires further results. See [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
+`RealShift.compIso` for nonnegative degrees. Total subrelations induce the same canonical
+transformation. Two total ε-simplicial relations whose native round trips contain the
+identities give an actual `RealInterleaving ε`, with the canonical maps as its fields;
+a relation and its converse specialize this construction. Subrelation invariance permits
+all real degrees, while interleavings use finite nonnegative ε. Different-point-set metric
+stability requires further results. See [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
 
 Structure projections and the existing coercions provide access to values and vertex-map
 functions; they do not erase support, monotonicity or face-preservation hypotheses. Use
