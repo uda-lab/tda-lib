@@ -138,3 +138,5 @@ import TDA.Persistence.CechFinitePBottleneckUniformLimit
 import TDA.Persistence.SimplicialMultivaluedMapComposition
 import TDA.Persistence.FinitePCommonEssentialBottleneck
 import TDA.Persistence.SimplicialMultivaluedInterleaving
+import TDA.Persistence.CechEssentialBirth
+import TDA.Persistence.CechFinitePBottleneckAllDegrees
