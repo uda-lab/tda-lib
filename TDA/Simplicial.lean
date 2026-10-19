@@ -14,3 +14,5 @@ import TDA.Simplicial.H0Augmentation
 import TDA.Simplicial.Cone
 import TDA.Simplicial.VertexMap
 import TDA.Simplicial.Contiguity
+import TDA.Simplicial.OrientedTuple
+import TDA.Simplicial.VertexChainMap
