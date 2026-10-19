@@ -1,5 +1,6 @@
 import TDA.Filtration.Basic
 import TDA.Simplicial.Contiguity
+import TDA.Simplicial.VertexChainMap
 import Mathlib.Data.Rel
 import Mathlib.Logic.Relator
 import Mathlib.Data.Real.Basic
@@ -97,6 +98,60 @@ theorem isShiftedSimplicial_id (F : SimplicialFiltration ℝ X) :
     IsShiftedSimplicial F F 0 id := by
   intro t σ hσ
   simpa using hσ
+
+
+section Composition
+
+variable {Z : Type*} {H : SimplicialFiltration ℝ Z} {δ : ℝ}
+
+/-- Shifted simplicial functions compose by adding their real degrees. -/
+theorem IsShiftedSimplicial.comp {f : X → Y} {g : Y → Z}
+    (hf : IsShiftedSimplicial F G ε f) (hg : IsShiftedSimplicial G H δ g) :
+    IsShiftedSimplicial F H (ε + δ) (g ∘ f) := by
+  intro t σ hσ
+  simpa only [Finset.image_image, add_assoc] using hg (t + ε) _ (hf t σ hσ)
+
+/-- The stage composite includes the index transport from `(t+ε)+δ` to `t+(ε+δ)`. -/
+theorem IsShiftedSimplicial.comp_vertexMap {f : X → Y} {g : Y → Z}
+    (hf : IsShiftedSimplicial F G ε f) (hg : IsShiftedSimplicial G H δ g) (t : ℝ) :
+    (hf.comp hg).vertexMap t = VertexMap.comp (VertexMap.comp (hf.vertexMap t)
+      (hg.vertexMap (t + ε)))
+      (inclusionVertexMap (H.monotone (le_of_eq (add_assoc t ε δ)))) :=
+  VertexMap.ext (fun _ => rfl)
+
+/-- Every finite part of a composite relational image has a finite intermediate witness.
+The image itself can be infinite. Choosing only on `τ.attach` avoids a default vertex. -/
+private theorem finite_intermediate {C : SetRel X Y} {D : SetRel Y Z}
+    {σ : Finset X} {τ : Finset Z} (hτ : τ.Nonempty)
+    (hsub : (↑τ : Set Z) ⊆ (C.comp D).image ↑σ) :
+    ∃ ρ : Finset Y, ρ.Nonempty ∧ (↑ρ : Set Y) ⊆ C.image ↑σ ∧
+      (↑τ : Set Z) ⊆ D.image ↑ρ := by
+  have hex (z : {z // z ∈ τ}) : ∃ y, y ∈ C.image ↑σ ∧ (y, z.1) ∈ D := by
+    obtain ⟨x, hx, y, hxy, hyz⟩ := hsub z.2
+    exact ⟨y, ⟨x, hx, hxy⟩, hyz⟩
+  let w (z : {z // z ∈ τ}) : Y := Classical.choose (hex z)
+  have hw (z : {z // z ∈ τ}) := Classical.choose_spec (hex z)
+  refine ⟨τ.attach.image w, ?_, ?_, ?_⟩
+  · obtain ⟨z, hz⟩ := hτ
+    exact ⟨w ⟨z, hz⟩, Finset.mem_image.mpr ⟨⟨z,hz⟩, Finset.mem_attach _ _, rfl⟩⟩
+  · intro y hy
+    obtain ⟨z, _, rfl⟩ := Finset.mem_image.mp hy
+    exact (hw z).1
+  · intro z hz
+    exact ⟨w ⟨z,hz⟩, Finset.mem_image.mpr ⟨⟨z,hz⟩, Finset.mem_attach _ _, rfl⟩,
+      (hw ⟨z,hz⟩).2⟩
+
+/-- Native relation composition is first `C`, then `D`; its shift is `ε+δ`.
+This geometric fact requires no ambient totality or finite relational image. -/
+theorem IsShiftedSimplicialRelation.comp {C : SetRel X Y} {D : SetRel Y Z}
+    (hC : IsShiftedSimplicialRelation F G ε C)
+    (hD : IsShiftedSimplicialRelation G H δ D) :
+    IsShiftedSimplicialRelation F H (ε + δ) (C.comp D) := by
+  intro t σ hσ τ hτ hsub
+  obtain ⟨ρ, hρ, hρC, hτD⟩ := finite_intermediate hτ hsub
+  simpa only [add_assoc] using hD (t + ε) ρ (hC t σ hσ ρ hρ hρC) τ hτ hτD
+
+end Composition
 
 end
 end TDA.Filtration

@@ -2774,6 +2774,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_tendstoUniformlyOn_bottleneck
 #print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_tendstoUniformlyOn_bottleneck
 
+-- Native relation and actual shifted homology composition.
+#print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso
+#print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso_hom_app
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap_comp
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap_comp_app
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_comp
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_comp_app
+#print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso_nnreal
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_comp
+
 -- Uniform recovery with common essential-birth multisets.
 #print axioms TDA.Persistence.finitePMatchingCost_abs_sub_bottleneck_le_uniformBound_of_essentialParts_eq
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_abs_sub_bottleneck_le_uniformBound_of_essentialParts_eq
