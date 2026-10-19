@@ -2803,3 +2803,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_abs_sub_bottleneck_le_uniformBound_allDegrees
 #print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_tendstoUniformlyOn_bottleneck_allDegrees
 #print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_tendstoUniformlyOn_bottleneck_allDegrees
+
+#print axioms TDA.Persistence.Rips.relationInterleaving
+#print axioms TDA.Persistence.Rips.relationInterleaving_φ
+#print axioms TDA.Persistence.Rips.relationInterleaving_ψ
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Rips.bottleneck_dgm_le_of_relation

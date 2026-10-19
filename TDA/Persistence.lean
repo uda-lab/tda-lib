@@ -140,3 +140,4 @@ import TDA.Persistence.FinitePCommonEssentialBottleneck
 import TDA.Persistence.SimplicialMultivaluedInterleaving
 import TDA.Persistence.CechEssentialBirth
 import TDA.Persistence.CechFinitePBottleneckAllDegrees
+import TDA.Persistence.RipsRelationInterleaving
