@@ -98,3 +98,4 @@ import TDA.Persistence.SimplicialMultivaluedMapExamples
 import TDA.Persistence.FinitePCostJointContinuityExamples
 import TDA.Persistence.FinitePBottleneckUniformLimitExamples
 import TDA.Persistence.CechFinitePBottleneckUniformLimitExamples
+import TDA.Persistence.FinitePCommonEssentialBottleneckExamples

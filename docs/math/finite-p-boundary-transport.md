@@ -404,6 +404,46 @@ using compactness of couplings. These unit-occurrence costs approach bottleneck
 from above. The count/radius uniformity here concerns finite essential-free
 diagrams; it gives no uniform all-Radon or powered-cost convergence theorem.
 
+## Common essential-birth multisets
+
+The same error bound and uniform limit hold when the entire essential-birth
+multisets agree. Equality includes values and multiplicities; the common
+multiset may vary across pairs, with no bound on its count or birth values.
+Keep the total finite count N≤m and full bottleneck B≤R≥0. For both existing
+rooted optima and every real p≥1,
+
+    |dₚ−B| ≤ ((max(1,m))^(1/p)−1)R.
+
+The uniform domain is the literal set of pairs satisfying those three
+conditions. One exponent tail works for every pair in it, including m=0 and
+R=0. There is no topology on diagrams or chosen common optimizer.
+
+The canonical essential occurrence equivalence preserves each birth value,
+including repeated births. Extend a minimizing finite matching by that
+equivalence. Its essential charges vanish, so its full maximum equals the
+cost of the same finite matching with empty essential types. The existing
+rooted-sum bound gives the lower comparison; the arbitrary-essential finite
+upper bound gives the same count factor. Equality of essential cardinalities
+first establishes full bottleneck finiteness before conversion to real.
+Actual optimized real plans use the proved matching equality after optimization.
+
+For example, reordered essential births [-3,-3,7] have full bottleneck and
+both finite costs zero. Any number of identical common births, at any real
+value, lies in the same zero-budget class. Adding two copies of (0,2R), R>0,
+on one side gives B=R and dₚ=2^(1/p)R, attaining the error envelope while
+retaining the essential block. Adding that block to (0,2) and (3/2,7/2)
+retains the change from pairing at p=1 to deletion at p=2. Essential births
+0 and 1 have equal counts but full B=1 and finite costs zero, so cardinality
+alone cannot replace multiset equality. Unequal counts give B=∞ and exclude
+every finite-radius class.
+
+This is an extension of the existing library model, with no essential p-cost.
+DL corrected v4 §1.1, Remark 1.2, describes a sum of independent finite and
+essential terms; this library's full bottleneck uses a maximum. Common
+essential values give zero essential displacement in either convention.
+No identification of general essential metrics or source uniform theorem is
+claimed. The essential-free class is a checked restriction of this domain.
+
 ## Čech sublevel diagrams under a displacement budget
 
 Fix a finite linearly ordered label type V, a coefficient field k in the same
@@ -456,7 +496,8 @@ essential vanishing, rather than a necessity theorem for geometric recovery.
 | (0,2) versus (3/2,7/2) | p=1 pairs, cost 3/2; p=2 deletes both, powered cost 2, strictly below the paired cost 9/4 |
 | (0,8) versus empty, p=3/2 | Powered optimum 8; rooted optimum 4 |
 | Two copies of (0,2) versus empty, any p≥1 | Powered optimum 2; rooted optimum 2^(1/p); bottleneck 1, attaining the occurrence-count factor |
-| Essential-only births 0 versus 1, every p≥1 | Finite-part cost zero, full bottleneck one; essential-free hypotheses are necessary |
+| Essential-only births 0 versus 1, every p≥1 | Finite-part cost zero, full bottleneck one; equal essential counts do not suffice for recovery |
+| Two bars (0,2R) versus none, with common essential births [-3,-3,7], R>0 | Full bottleneck R; both rooted optima 2^(1/p)R; the count-two error bound is attained |
 | Actual filled triangle versus its tied filter, H₁ | The finite parts have one bar and zero bars; their transport is bounded by the face perturbation, including p=2 and p=3/2 |
 | Four middle roles with unmatched endpoints, p=2 | Candidate powers 11 and 16; composite power 19; √19 ≤ √11+4 |
 | Singletons (0,10), (1,11), (2,12), every p≥1 | Consecutive rooted optima 1 and 1; direct rooted optimum 2; sharp triangle at p=2 and p=3/2 |
@@ -490,6 +531,8 @@ nonnegative scaling for powered and rooted matching and real-plan optima.
 limits for matching and real-plan optima on diagrams with empty essential parts.
 `FinitePBottleneckUniformLimit` supplies the common absolute-error bound and
 uniform convergence on essential-free count/radius budget classes for both optima.
+`FinitePCommonEssentialBottleneck` supplies the same error and uniform conclusions
+when the essential-birth multisets agree, without essential count or range bounds.
 `CechFinitePBottleneckUniformLimit` derives both bounds and uniform limits for
 actual positive-degree Čech sublevel diagrams from a same-label displacement budget.
 
