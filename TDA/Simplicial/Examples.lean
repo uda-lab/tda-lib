@@ -8,3 +8,4 @@ import TDA.Simplicial.FiniteComplexExamples
 import TDA.Simplicial.HomologyExamples
 import TDA.Simplicial.VertexMapExamples
 import TDA.Simplicial.ConeExamples
+import TDA.Simplicial.VertexChainMapExamples
