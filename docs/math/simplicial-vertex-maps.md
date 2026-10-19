@@ -142,6 +142,36 @@ control, and an infinite intermediate image followed by parity. Signed reversal
 and collapse, ambient ghosts, empty types, both unit sides, a noncentral matrix
 coefficient and the trivial ring test the actual maps and their stated domains.
 
+## Canonical relation interleavings
+
+A total subrelation C′ ⊆ C has the same actual canonical shifted homology
+transformation as C. The geometric finite-face condition restricts along the
+inclusion; one global selector for C′ is also subordinate to C, so selector
+independence proves equality of the whole transformations. This holds at every
+real degree, including negative degrees between appropriately related filtrations.
+
+For a nonnegative ε, let C go from F to G and D from G to F, both total and
+ε-simplicial. If the native composites C.comp D and D.comp C contain their
+respective identity relations, `multivaluedSimplicialHomologyInterleaving`
+constructs an actual `RealInterleaving ε`. Its two fields are exactly the existing
+canonical maps. Composition identifies each round trip with the map of its
+composite relation; subrelation invariance identifies that map with the identity
+relation at degree 2ε. That identity map is the actual inclusion-induced transition,
+which proves both double-shift triangles with `RealShift.compIso`.
+
+A relation and its native converse satisfy both diagonal containments when both
+are ambient-total. `multivaluedSimplicialHomologyConverseInterleaving` specializes
+the construction to this case. Ghost vertices still participate in totality, while
+face tests retain the actual support. No finiteness or nontriviality of coefficients
+is required. Interleaving parameters remain finite nonnegative reals.
+
+Fixtures evaluate both nonzero maps and triangles for a shifted point and edge,
+negative-degree subrelations, an infinite relational image and its actual zero-shift
+isomorphism, ghost-sensitive and empty inputs, and noncentral matrix coefficients.
+A collapse from two isolated vertices followed by an endpoint choice has a different
+actual H₀ round trip from the transition; individually simplicial total maps do not
+supply the missing diagonal containment.
+
 ## Sources and scope
 
 This is a source-motivated library bridge, proved for the library's actual
@@ -151,7 +181,10 @@ uses simplicial maps and their induced homology maps in Definition 3.1 and
 Proposition 3.3. The prism proves the contiguity step used there. The shifted construction realizes
 Proposition 3.3's global-selector and naturality mechanism on these actual chains.
 Composition implements Proposition 3.5's finite-face and composed-selector mechanism,
-with the addition transport displayed explicitly.
+with the addition transport displayed explicitly. Total-subrelation invariance follows
+Proposition 3.4's shared-selector proof. The native converse interleaving realizes
+§4.1 Proposition 4.2's diagonal-containment deduction; the general two-relation
+constructor is a supporting library extension.
 Its arbitrary-ring statement specializes to the source's fixed field; the coefficient
 generalization and explicit nonempty-face convention are supporting library extensions. The Munkres proofs cited by that article were not
 directly audited.
@@ -172,5 +205,5 @@ identifies the adaptation. Mixed-tuple identities and actual face membership
 connect that cancellation to this chain model; mathlib's homotopy theorem
 supplies equality of the actual homology maps.
 
-Mapper refinement consumers, varying vertex-type persistence modules, and correspondence
-or Hausdorff stability remain separate results.
+Mapper refinement consumers, varying vertex-type persistence modules, and metric
+correspondence distortion or Hausdorff stability remain separate results.

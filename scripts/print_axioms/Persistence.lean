@@ -2783,3 +2783,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_comp_app
 #print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso_nnreal
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_comp
+
+-- Canonical homology interleavings from total simplicial relations.
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_of_subset
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving_φ
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving_ψ
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyConverseInterleaving

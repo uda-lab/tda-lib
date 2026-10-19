@@ -153,5 +153,13 @@ theorem IsShiftedSimplicialRelation.comp {C : SetRel X Y} {D : SetRel Y Z}
 
 end Composition
 
+/-- Every subrelation preserves the same shifted finite-face condition.
+Ambient totality is independent of this geometric restriction. -/
+theorem IsShiftedSimplicialRelation.of_subset {C C' : SetRel X Y}
+    (hC : IsShiftedSimplicialRelation F G ε C) (hsub : C' ⊆ C) :
+    IsShiftedSimplicialRelation F G ε C' := by
+  intro t σ hσ τ hτ hτC
+  exact hC t σ hσ τ hτ (hτC.trans (SetRel.image_subset_image_left hsub))
+
 end
 end TDA.Filtration
