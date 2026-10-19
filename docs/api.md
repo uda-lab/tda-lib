@@ -58,8 +58,8 @@ index transport `(t + ε) + δ = t + (ε + δ)`. The specialized comparison agre
 transformation. Two total ε-simplicial relations whose native round trips contain the
 identities give an actual `RealInterleaving ε`, with the canonical maps as its fields;
 a relation and its converse specialize this construction. Subrelation invariance permits
-all real degrees, while interleavings use finite nonnegative ε. Different-point-set metric
-stability requires further results. See [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
+all real degrees, while interleavings use finite nonnegative ε. See
+[signed simplicial vertex maps](math/simplicial-vertex-maps.md).
 
 Structure projections and the existing coercions provide access to values and vertex-map
 functions; they do not erase support, monotonicity or face-preservation hypotheses. Use
@@ -310,6 +310,15 @@ in every degree by that discrepancy. For V : Type u it requires `LinearOrder V`,
 `Fintype V`, and a coefficient field k : Type u, retaining existing multiplicity and
 essential-bar semantics. This noncomputable consumer of finite-face stability covers
 the fixed labelled carrier. See [the construction, proof and source scope](math/rips-metric-stability.md).
+`RipsRelationInterleaving` compares different genuine metric label types using a native
+relation and transpose total on both ambient sets. An absolute pairwise distortion bound ε
+gives actual canonical homology maps forming `RealInterleaving ε` over any ring, with
+exact forward/backward field formulas and an interleaving-distance bound. The geometric
+finite-face theorem requires no totality or finite image; same-antecedent pairs remain
+in the distortion premise. For finite ordered label types and a field, each actual Rips
+filter supplies its own critical grid, giving a full actual-diagram bottleneck bound ε.
+These supplied-relation results neither select Gromov–Hausdorff correspondences nor put
+a genuine metric on labels of a noninjective point cloud.
 
 ## Ambient Čech complexes
 

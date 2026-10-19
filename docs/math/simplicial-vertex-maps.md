@@ -205,5 +205,6 @@ identifies the adaptation. Mixed-tuple identities and actual face membership
 connect that cancellation to this chain model; mathlib's homotopy theorem
 supplies equality of the actual homology maps.
 
-Mapper refinement consumers, varying vertex-type persistence modules, and metric
-correspondence distortion or Hausdorff stability remain separate results.
+The [Rips relation consumer](rips-metric-stability.md) derives the geometric hypotheses
+from an explicit pairwise distortion bound. Mapper refinement consumers, varying
+vertex-type persistence modules and Hausdorff or Gromov–Hausdorff selection remain separate.

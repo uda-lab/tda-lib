@@ -2796,3 +2796,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving_φ
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving_ψ
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyConverseInterleaving
+
+#print axioms TDA.Persistence.Rips.relationInterleaving
+#print axioms TDA.Persistence.Rips.relationInterleaving_φ
+#print axioms TDA.Persistence.Rips.relationInterleaving_ψ
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Rips.bottleneck_dgm_le_of_relation

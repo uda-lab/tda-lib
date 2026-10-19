@@ -78,4 +78,43 @@ library convention assigns singleton value zero and empty stages below zero. No 
 real-indexed convention equivalence is claimed. The same-label diagram estimate is
 independently derived through `bottleneck_dgm_le_faceSupDifference`; it does not
 formalize the source's Lemma 4.3 interleaving or Theorem 5.2 Gromov–Hausdorff theorem.
-Different vertex sets and Čech comparisons require separate constructions.
+The supplied-relation construction below compares different metric vertex types.
+Čech comparison and Gromov–Hausdorff selection use separate constructions.
+
+## Relations between different metric label types
+
+Let X and Y carry explicit genuine metrics dX and dY. Supply a native relation C and
+ε≥0 with |dX(x,x′)−dY(y,y′)|≤ε whenever (x,y),(x′,y′) belong to C. This includes
+pairs with x=x′: two images of the same vertex can have distance at most ε.
+For a source face at t, each pair in a nonempty finite subset of its relational
+image has antecedents in that face. Hence dY≤dX+ε≤t+ε, proving the actual shifted
+Rips face condition without totality or a finite-image premise. Reversing the relation
+and the absolute difference proves the converse geometry.
+
+When C and its native transpose are ambient-total, `Rips.relationInterleaving` uses
+the canonical relation maps to construct an actual homology interleaving. Both fields
+are exposed exactly; their double-shift composites are the actual inclusion-induced
+transitions. This works over every ring, every natural homology degree, empty types
+and infinite types, with independent orders in a common vertex universe. It bounds
+the existing extended interleaving distance. For finite types and a field in the
+diagram universe, `bottleneck_dgm_le_of_relation` derives constructibility and finite
+dimensionality separately for the two actual filters. The existing different-grid
+matching theorem then bounds their full diagrams, including essential occurrences.
+
+Fixtures compare distance-two and distance-three pairs on different types, and a
+singleton with a distance-two pair. Actual nonzero H₀ images and triangles are
+evaluated; a two-vertex difference survives before an edge enters and collapses after
+the required transition. Quantitative negative controls refute the actual geometric
+predicate when the bound is too small. Empty, infinite, repeated-point metric
+obstruction, noncentral matrix coefficient and trivial-ring cases retain the same
+actual maps.
+
+This implements the supplied-distortion mechanism in CDSO Lemma 4.3's proof,
+through Proposition 4.2, at nonnegative scales. The target-distance estimate is
+derived directly from the absolute bound; the printed proof's first displayed
+comparison is not used without its additive allowance. No erratum is asserted.
+The source first selects a relation from a strict Gromov–Hausdorff bound; that
+selection and the source's whole real H₀ convention are not identified here.
+Arbitrary-ring signed chains and the finite-diagram corollary are library extensions.
+An arbitrary noninjective cloud has no genuine label metric agreeing with all
+ambient pair distances; no pseudometric or quotient-cloud foundation is supplied.

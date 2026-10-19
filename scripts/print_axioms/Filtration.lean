@@ -341,3 +341,5 @@ import TDA
 
 -- Subrelations preserve shifted finite-face geometry.
 #print axioms TDA.Filtration.IsShiftedSimplicialRelation.of_subset
+
+#print axioms TDA.Filtration.Rips.isShiftedSimplicialRelation_of_distortion
