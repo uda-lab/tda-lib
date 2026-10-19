@@ -476,6 +476,11 @@ instances remain outside this API. `FinitePBottleneckLimit` proves the reverse
 bottleneck comparison and convergence of both optimized costs as the real exponent
 tends to infinity, for fixed diagrams with empty essential parts. It includes the
 empty-input case and both real and extended nonnegative real limits.
+`FinitePBottleneckUniformLimit` proves a common error bound
+|dₚ−B|≤((max(1,m))^(1/p)−1)R when both essential parts are empty, the total
+finite count is at most m and the full bottleneck B is at most R≥0.
+Both rooted optima converge uniformly in real p to B on that entire budget
+class, including empty inputs and R=0, with no topology on diagrams required.
 `FinitePMatchingCostComparison` proves, for real 1≤r≤s,
 dₛ≤dᵣ≤N^(1/r−1/s)dₛ for both optimized matching and real-plan costs, and
 their antitonicity on [1,∞). N counts both occurrence families, including empty

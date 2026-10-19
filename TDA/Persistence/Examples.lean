@@ -96,3 +96,4 @@ import TDA.Persistence.FinitePBottleneckLimitExamples
 import TDA.Persistence.FinitePCostContinuityExamples
 import TDA.Persistence.SimplicialMultivaluedMapExamples
 import TDA.Persistence.FinitePCostJointContinuityExamples
+import TDA.Persistence.FinitePBottleneckUniformLimitExamples
