@@ -495,7 +495,16 @@ under a same-label displacement budget R≥0. The total finite count is bounded
 automatically by twice choose(card V,n+2), and both essential parts vanish. The ambient
 pseudometric space may be arbitrary; these are infimal-radius sublevel diagrams,
 with the existing proper-space specialization identifying closed Čech nerves.
-Degree zero is unclaimed. Empty and repeated labels remain allowed.
+Empty and repeated labels remain allowed.
+`CechEssentialBirth` identifies the entire essential multiset of an actual
+nonempty Čech H₀ diagram as `{0}`, through the nonzero rank of a vertex
+inclusion. `CechFinitePBottleneckAllDegrees` then supplies both error bounds
+and both literal input-uniform limits for every natural degree, including H₀.
+It derives equality of the essential multisets, the finite-count bound and the
+full bottleneck bound from displacement alone, with empty labels and R=0
+included. The birth-zero argument uses the library's empty negative tail;
+the proper-space closed-nerve comparison is for nonnegative radii. These
+real-parameter results leave the H₀ logarithmic left-tail obstruction intact.
 `FinitePMatchingCostComparison` proves, for real 1≤r≤s,
 dₛ≤dᵣ≤N^(1/r−1/s)dₛ for both optimized matching and real-plan costs, and
 their antitonicity on [1,∞). N counts both occurrence families, including empty
