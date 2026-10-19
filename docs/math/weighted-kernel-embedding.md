@@ -156,6 +156,49 @@ semidefinite (F2), σ = 0 makes every feature equal and destroys measure injecti
 all finite points is needed for the general diagram characterization, while `IsPositive`
 is needed when positivity is supplied only on the open upper half-plane.
 
+## Weighted-kernel RKHS isometry
+
+A real function g weights a scalar kernel k by
+kᵍ(x,y) = g(x) k(x,y) g(y). If k is positive semidefinite and g is nonzero at every
+point of its domain X, multiplication `(Tf)(x) = g(x) f(x)` is a real linear
+isometry equivalence between their RKHSs. Its inverse divides by g(x).
+`KernelWeight.weightIsometry` constructs this equivalence on the completed spaces,
+without continuity, boundedness or a uniform positive lower bound on g.
+
+The construction compares the finite feature sums Σ c(x) g(x) k(·,x) and
+Σ c(x) kᵍ(·,x), whose Gram kernels agree. A coefficient vector gives zero in one
+sum exactly when it gives zero in the other, even for dependent features.
+Nonvanishing makes the weighted base sections span a dense
+subspace; the weighted-kernel sections are dense by the RKHS reproducing property.
+Mathlib's `LinearEquiv.extendOfIsometry` extends their correspondence to a surjective
+isometry of the completed spaces. The reproducing property gives the multiplication
+formula for all functions, not only the finite sums.
+
+`UpperPoint` is the open upper half-plane b < d. `UpperSpace σ` and
+`WeightedUpperSpace σ w` use the Gaussian restricted to this same domain, with
+`upperWeight w p = w (birthPersistence p)`. The vector `upperEmbedding` sums weighted
+base sections, while `weightedUpperEmbedding` sums sections of the weighted kernel.
+For pointwise positive weights, `upperWeightIsometry` sends the former vector to
+the latter. The arctan specialization
+works for C > 0 despite weights approaching zero near the diagonal. Every real σ is
+allowed: the isometry survives the degenerate all-ones kernel at σ = 0.
+
+The actual inner products and pair distances of `weightedUpperEmbedding` agree with
+the existing full-plane `embedding`. The corresponding `weightedUpperDiagramEmbedding`
+identities retain finite occurrences and multiplicity, omit essential bars, and need
+neither weight positivity nor a bandwidth restriction. This finite-sum comparison
+does not identify the entire full-plane RKHS with the upper-domain RKHS; such a claim
+would need a separate density proof.
+
+The multiplication map and positive-domain identification are KFH18 Proposition 7
+and eq. (4). Source positivity implies the generic nonvanishing assumption; the
+source's C₀-universality premise is unnecessary for this direct isometry proof, and
+no C₀-universality theorem is claimed here. Positive source bandwidth is a
+specialization of the all-real construction. The finite-diagram bridge to the
+existing full-plane embedding is a library derivation. The examples include a
+nonzero finite-domain vector erased by a vanishing weight, and the isometry for
+the all-ones kernel at zero bandwidth.
+
 ## Lean interfaces and sources
 
 `TDA.Persistence.GaussianGram` holds the matrix results, `gaussianGram` and the
@@ -185,5 +228,5 @@ these bounds at KFH18's w_arc weight and composes them with the Rips bound.
 The size-dependent total-persistence and finite-bar bounds used by bounded-carrier consumers
 are stated in [total persistence and finite Rips–Čech bounds](total-persistence.md).
 
-Not covered here: C₀-universality on general measures, the Proposition 7 isomorphism,
-Proposition 8/Theorem 9, random features and essential bars.
+Not covered here: C₀-universality on general measures, Proposition 8/Theorem 9,
+random features and essential-bar kernels.
