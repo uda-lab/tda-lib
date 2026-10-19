@@ -2755,3 +2755,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_abs_sub_bottleneck_le_uniformBound
 #print axioms TDA.Persistence.finitePMatchingCost_tendstoUniformlyOn_bottleneck
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_tendstoUniformlyOn_bottleneck
+
+-- Čech sublevel uniform recovery under displacement budgets.
+#print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_abs_sub_bottleneck_le_uniformBound
+#print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_abs_sub_bottleneck_le_uniformBound
+#print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_tendstoUniformlyOn_bottleneck
+#print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_tendstoUniformlyOn_bottleneck

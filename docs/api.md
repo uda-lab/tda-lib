@@ -475,6 +475,13 @@ empty-input case and both real and extended nonnegative real limits.
 finite count is at most m and the full bottleneck B is at most R≥0.
 Both rooted optima converge uniformly in real p to B on that entire budget
 class, including empty inputs and R=0, with no topology on diagrams required.
+`CechFinitePBottleneckUniformLimit` derives the corresponding bounds and uniform
+limits for actual `dgm k (Cech.filter a) n`, n≥1, on a fixed finite label type
+under a same-label displacement budget R≥0. The total finite count is bounded
+automatically by twice choose(card V,n+2), and both essential parts vanish. The ambient
+pseudometric space may be arbitrary; these are infimal-radius sublevel diagrams,
+with the existing proper-space specialization identifying closed Čech nerves.
+Degree zero is unclaimed. Empty and repeated labels remain allowed.
 `FinitePMatchingCostComparison` proves, for real 1≤r≤s,
 dₛ≤dᵣ≤N^(1/r−1/s)dₛ for both optimized matching and real-plan costs, and
 their antitonicity on [1,∞). N counts both occurrence families, including empty

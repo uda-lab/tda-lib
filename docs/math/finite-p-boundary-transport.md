@@ -404,6 +404,46 @@ using compactness of couplings. These unit-occurrence costs approach bottleneck
 from above. The count/radius uniformity here concerns finite essential-free
 diagrams; it gives no uniform all-Radon or powered-cost convergence theorem.
 
+## Čech sublevel diagrams under a displacement budget
+
+Fix a finite linearly ordered label type V, a coefficient field k in the same
+universe, and a pseudometric ambient space X in an independent universe. A cloud
+is an arbitrary function a : V → X; repeated points and empty labels are allowed.
+Write D(a) for the actual diagram `dgm k (Cech.filter a) n`. The filter uses the
+infimal enclosing radius over all ambient centers. Its sublevels contain the
+closed-ball Čech nerves, and equal them under the existing proper-space
+specialization. Attainment is not assumed for the results here.
+
+For n≥1, each D(a) has empty essential part and at most choose(card V,n+2)
+finite occurrences. Same-label displacement δ(a,b) bounds the full bottleneck
+B(a,b). Thus, if δ(a,b)≤R with R≥0, put M=max(1,2 choose(card V,n+2)). For each
+actual optimized rooted cost and every real p≥1,
+
+|dₚ(D(a),D(b)) − B(a,b)| ≤ (M^(1/p) − 1) R.
+
+Both rooted costs converge uniformly to B on the literal cloud-pair class
+δ(a,b)≤R as real p tends to infinity. The fixed data are V,k,X,n,R; the exponent
+tail precedes every cloud pair in that class. The proof derives the diagram
+budgets, precomposes the generic uniform result with (a,b)↦(D(a),D(b)), and
+restricts to the displacement class. No topology on clouds or diagrams, fixed
+barcode length or common optimizing matching is required.
+
+For labels (0,0),(2,0),(1,2) versus (0,0),(2,0),(2,2) in the Euclidean plane,
+the actual degree-one diagrams over ZMod 2 are the singleton (√5/2,5/4) and
+the empty diagram. Displacement is exactly one; B and both rooted optima are
+r=(5/4−√5/2)/2>0 for every p≥1. This tests nonzero quantities, including p=2
+and p=3/2; its error is zero and does not attain the coarse budget-two rate.
+The acute triangle paired with itself tests radius zero with a retained bar.
+Empty and repeated-label examples also instantiate the two models.
+
+This is a finite library composition using the DL matching convention. The
+[same-label Čech stability argument](cech-displacement-stability.md) supplies its
+geometric input; its [CDSO Hausdorff comparison](cech-displacement-stability.md#source-correspondence-and-scope)
+and the [radius-filter attainment distinction](cech-rips-sandwich.md#the-radius-filter)
+have separate scopes. No uniform p-limit is attributed to that source.
+Degree zero is unclaimed here; n≥1 supplies automatic
+essential vanishing, rather than a necessity theorem for geometric recovery.
+
 ## Examples
 
 | Example | Powered/rooted calculation |
@@ -450,6 +490,8 @@ nonnegative scaling for powered and rooted matching and real-plan optima.
 limits for matching and real-plan optima on diagrams with empty essential parts.
 `FinitePBottleneckUniformLimit` supplies the common absolute-error bound and
 uniform convergence on essential-free count/radius budget classes for both optima.
+`CechFinitePBottleneckUniformLimit` derives both bounds and uniform limits for
+actual positive-degree Čech sublevel diagrams from a same-label displacement budget.
 
 [Figalli–Gigli](references.md#FG10) retains priority for boundary-reservoir transport;
 its original bounded-domain quadratic Euclidean setting is distinct from this model.
