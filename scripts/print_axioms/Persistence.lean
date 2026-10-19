@@ -2755,3 +2755,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_eq
 #print axioms TDA.Persistence.shiftedSimplicialHomologyMap_id
+-- Joint continuity in the exponent and both coordinate families
+#print axioms TDA.Persistence.finitePowerMatchingCost_joint_continuousOn
+#print axioms TDA.Persistence.finitePMatchingCost_joint_continuousOn
+#print axioms TDA.Persistence.finitePowerBoundaryTransportCost_joint_continuousOn
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_joint_continuousOn
