@@ -333,3 +333,8 @@ import TDA
 #print axioms TDA.Filtration.IsShiftedSimplicialRelation.contiguous
 #print axioms TDA.Filtration.isShiftedSimplicialRelation_graph_iff
 #print axioms TDA.Filtration.isShiftedSimplicial_id
+
+-- Native relation and actual shifted homology composition.
+#print axioms TDA.Filtration.IsShiftedSimplicial.comp
+#print axioms TDA.Filtration.IsShiftedSimplicial.comp_vertexMap
+#print axioms TDA.Filtration.IsShiftedSimplicialRelation.comp

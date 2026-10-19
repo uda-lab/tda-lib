@@ -114,6 +114,34 @@ H₀ difference, infinite relational images, and disconnected-target selectors w
 H₀ maps. Ghost vertices, empty ambient types, a noncentral matrix coefficient and the
 trivial ring test the construction's support and coefficient boundaries.
 
+## Composition of shifted relations
+
+For C from F to G of degree ε and D from G to H of degree δ, native `C.comp D`
+means first C, then D. Its degree is ε + δ. To prove the face condition, take a
+nonempty finite subset τ of the composite image of σ. Choose one intermediate
+vertex for each member of τ and take their finite image ρ. Then ρ is a face at
+t + ε and τ is a face at (t + ε) + δ. This proof uses neither finiteness of C(σ)
+nor a default intermediate vertex; the choices range only over the members of τ.
+Ambient totality composes separately, including ghosts.
+
+`multivaluedSimplicialHomologyMap_comp` states that the actual whole canonical
+transformations satisfy
+
+`Φ_C ≫ reindexNatTrans(tr ε) Φ_D ≫ comparison.hom = Φ_(C.comp D)`,
+
+where tr ε sends t to t + ε. The specialized comparison is
+`shiftedSimplicialHomologyCompIso`; its component is exactly the actual
+homology module's map along `(t + ε) + δ = t + (ε + δ)`. Composing global
+subordinate functions and using selector independence proves this equation.
+The ordinary function maps obey the same equation. Both degrees may be negative;
+for nonnegative degrees the comparison is the existing `RealShift.compIso`.
+
+The composition fixtures use nonzero classes through successively born point,
+edge and triangle complexes, mixed-sign degrees with a failing degree-zero
+control, and an infinite intermediate image followed by parity. Signed reversal
+and collapse, ambient ghosts, empty types, both unit sides, a noncentral matrix
+coefficient and the trivial ring test the actual maps and their stated domains.
+
 ## Sources and scope
 
 This is a source-motivated library bridge, proved for the library's actual
@@ -122,6 +150,8 @@ support-aware chains. Chazal–de Silva–Oudot,
 uses simplicial maps and their induced homology maps in Definition 3.1 and
 Proposition 3.3. The prism proves the contiguity step used there. The shifted construction realizes
 Proposition 3.3's global-selector and naturality mechanism on these actual chains.
+Composition implements Proposition 3.5's finite-face and composed-selector mechanism,
+with the addition transport displayed explicitly.
 Its arbitrary-ring statement specializes to the source's fixed field; the coefficient
 generalization and explicit nonempty-face convention are supporting library extensions. The Munkres proofs cited by that article were not
 directly audited.
@@ -142,5 +172,5 @@ identifies the adaptation. Mixed-tuple identities and actual face membership
 connect that cancellation to this chain model; mathlib's homotopy theorem
 supplies equality of the actual homology maps.
 
-Mapper refinement consumers, varying vertex-type persistence modules, relation composition
-and correspondence or Hausdorff stability remain separate results.
+Mapper refinement consumers, varying vertex-type persistence modules, and correspondence
+or Hausdorff stability remain separate results.

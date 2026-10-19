@@ -51,7 +51,10 @@ map of a total relation satisfying the nonempty finite-image face condition. It 
 map of every subordinate function, over any ring and for every real ε. Its target evaluates
 at t + ε and agrees with `RealShift.shift` for nonnegative ε. Relational images may be
 infinite; totality covers ambient ghosts while face tests preserve actual support.
-Different-point-set stability requires further results. See [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
+Native relation composition is first C then D. Their actual canonical homology maps
+compose with degree ε + δ, using the second component at t + ε and the canonical
+index transport `(t + ε) + δ = t + (ε + δ)`. The specialized comparison agrees with
+`RealShift.compIso` for nonnegative degrees. Different-point-set stability requires further results. See [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
 
 Structure projections and the existing coercions provide access to values and vertex-map
 functions; they do not erase support, monotonicity or face-preservation hypotheses. Use
