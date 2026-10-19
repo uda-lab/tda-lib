@@ -2743,3 +2743,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePMatchingCost_continuousOn
 #print axioms TDA.Persistence.finitePowerBoundaryTransportCost_continuousOn
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_continuousOn
+
+-- Joint continuity in the exponent and both coordinate families
+#print axioms TDA.Persistence.finitePowerMatchingCost_joint_continuousOn
+#print axioms TDA.Persistence.finitePMatchingCost_joint_continuousOn
+#print axioms TDA.Persistence.finitePowerBoundaryTransportCost_joint_continuousOn
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_joint_continuousOn

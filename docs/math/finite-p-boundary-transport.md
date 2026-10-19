@@ -226,6 +226,42 @@ For identical singleton bars (0,2), the powered optimum is also 1 at zero and 0
 at positive exponents. These positive-side limits differ from the values at zero.
 The continuity API keeps the definitions and the PH exponent domain unchanged.
 
+## Joint continuity with moving coordinates
+
+Keep the finite occurrence types I and J fixed, and give their coordinate
+families the ordinary function-space topology. On
+ℝ × ((I → ℝ²) × (J → ℝ²)), restricted to p ≥ 1, the four optimized values
+mₚ(x,y), dₚ(x,y), tₚ(x,y) and tₚ(x,y)^(1/p) are jointly continuous.
+Consequently, a continuous parameter family a ↦ (p(a),x(a),y(a)) with p(a) ≥ 1
+has continuous optimized costs. Both families and the exponent may move together.
+
+For a fixed matching, pair coefficients are maxima of absolute coordinate
+differences, and boundary coefficients are half the absolute lifetime. These
+are continuous real functions. Joint continuity of real powers at positive
+exponents includes zero coefficients. Both unmatched sums remain, and their
+branch choices depend only on the fixed matching. Taking the finite nonempty
+minimum, then its positive reciprocal power, preserves continuity even at a
+zero minimum. The assignment equalities again transfer the result to all
+feasible real reservoir matrices.
+
+For example, let p(t)=1+t² and take singleton families x(t)=(t,t+2) and
+y(t)=(-t,2-t). Both bars have lifetime 2, and their actual powered optimum is
+min((2|t|)^(1+t²),2). All four optimized path costs are continuous. At t=0 they
+vanish; at t=1/2 pairing costs 1 while deleting both costs 2; at t=1 pairing
+costs 4 while deleting both still costs 2. Thus the result includes a change of
+minimizing matching with both coordinates and exponent moving.
+
+The examples also vary the lifetime of two repeated labels in both one-empty
+orientations. A raw singleton (t,-t) versus empty has rooted cost |t|, continuous
+through its diagonal collision at zero. It is a positive bar for t<0 and lies
+below the diagonal for t>0. The diagonal and below-diagonal cases exercise the
+raw cost algebra.
+Fixed label types and cardinalities are part of the joint domain. This finite
+library derivation introduces no topology on changing presentations or general
+persistence measures. The exponent-zero discontinuities above still apply:
+identical singleton bars (q,q+2) have powered optimum 1 at exponent q=0 and
+optimum 0 for q>0, even as their coordinates move.
+
 ## Diagonal translation and nonnegative scaling
 
 Fix p ≥ 1 and use mₚ and dₚ on raw real coordinate families, which permit diagonal

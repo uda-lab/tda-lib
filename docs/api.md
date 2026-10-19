@@ -479,6 +479,11 @@ derivations use unnormalized unit masses and keep the maximum ground norm fixed.
 powered and rooted matching and actual real-plan optima, for fixed families.
 The finite-minimum proof includes empty and zero-distance inputs and permits
 optimizer changes. Exponent zero remains outside the public continuity domain.
+`FinitePCostJointContinuity` proves joint continuity of the same four optimized
+values in the exponent and both coordinate families, with fixed finite label
+types and the ordinary product/Pi topology. Continuous parameter families with
+p≥1 therefore give continuous optimized costs, including through zero costs,
+coordinate collisions and changes of minimizing matching.
 `FinitePCostSimilarity` proves invariance under
 common diagonal translation and homogeneity under nonnegative coordinate scaling,
 including zero scaling on raw coordinate families. See
