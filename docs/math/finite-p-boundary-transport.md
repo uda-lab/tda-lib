@@ -168,6 +168,35 @@ The comparison is about optimized plans. A fractional candidate sending mass
 3/4 between identical bars (0,2) has C₁=C₂=1/2, so its rooted second-order cost
 exceeds its first-order cost even though their common optimum is zero.
 
+## Comparison at two real exponents
+
+For real 1 ≤ r ≤ s and the same occurrence count N,
+
+dₛ(x,y) ≤ dᵣ(x,y) ≤ N^(1/r−1/s) dₛ(x,y).
+
+Both inequalities also hold for the actual rooted real-plan optima. Thus each
+optimized distance is antitone on [1,∞), with the maximum ground norm fixed.
+The families may be empty and distances may vanish. At r=s the factor is one,
+including 0^0=1 when N=0.
+
+For the matching charge vector a, apply the preceding finite-sum inequalities
+to the vector with entries a_k^r at exponent s/r, then raise both sides to 1/r.
+Nonnegative-base power identities give the displayed factor without dividing by N. To pass to optima,
+choose an r-minimizer for the lower comparison and an s-minimizer for the upper
+comparison. Equality of matching and real-plan optima transfers the result to
+all feasible real reservoir matrices after optimization.
+
+Two labelled copies of (0,2) versus empty attain the upper bound: their rooted
+costs at r=3/2 and s=3 are 2^(2/3) and 2^(1/3), with factor 2^(1/3).
+For the singletons (0,2) and (3/2,7/2), the optimum changes from pairing at
+exponent one, with cost 3/2, to deleting both at exponent two, with rooted
+cost √2. The comparison does not require a common optimizer.
+
+Candidate plans need not be antitone. Sending half a unit from (0,2) to (6,8)
+and leaving half a unit at each boundary has powered costs 4 and 19 at exponents
+one and two. Its rooted second cost √19 exceeds 4, while the actual optimized
+distances are 2 and √2 and satisfy the comparison.
+
 ## Diagonal translation and nonnegative scaling
 
 Fix p ≥ 1 and use mₚ and dₚ on raw real coordinate families, which permit diagonal
@@ -306,8 +335,9 @@ the rooted distance laws and positive-lifetime separation.
 `FinitePMatchingCostBottleneck` supplies the powered and rooted occurrence-count
 bounds, finite radius and cardinality-budget forms. `FinitePFilterStability` applies
 them to the finite parts of actual sublevel diagrams.
-`FinitePMatchingCostComparison` supplies the two first-order comparisons for
-matching and real-plan optima, including empty occurrence families.
+`FinitePMatchingCostComparison` supplies first-order and two-real-exponent
+comparisons for matching and real-plan optima, including empty occurrence
+families, and their antitonicity on [1,∞).
 `FinitePCostSimilarity` supplies common diagonal-translation invariance and
 nonnegative scaling for powered and rooted matching and real-plan optima.
 `FinitePBottleneckLimit` supplies the lower bottleneck comparison and real-exponent
@@ -329,12 +359,12 @@ The finite occurrence allocation above is checked library reasoning correspondin
 to that mechanism. It uses pinned mathlib's `Real.Lp_add_le`, not a measure-gluing
 assumption or a triangle law for the raw augmented blocks.
 
-The first-order comparison is a finite library derivation from DL formula (1)
-and pinned mathlib's power inequalities, rather than a theorem quoted from DL.
-It uses `Real.add_rpow_le_rpow_add` and
+The exponent comparisons are finite library derivations from DL formula (1)
+and pinned mathlib's power inequalities, rather than theorems quoted from DL.
+They use `Real.add_rpow_le_rpow_add` and
 `Real.rpow_sum_le_const_mul_sum_rpow_of_nonneg` on the matching charge vector.
 Probability-normalized Wasserstein exponent comparisons concern a different
-normalization and do not supply this unnormalized occurrence bound.
+normalization and do not supply these unnormalized occurrence bounds.
 
 The perturbation estimates are checked finite sum-to-maximum reasoning from
 DL formulas (1)/(2) and the existing bottleneck attainment and stability theorems.

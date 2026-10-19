@@ -469,6 +469,11 @@ instances remain outside this API. `FinitePBottleneckLimit` proves the reverse
 bottleneck comparison and convergence of both optimized costs as the real exponent
 tends to infinity, for fixed diagrams with empty essential parts. It includes the
 empty-input case and both real and extended nonnegative real limits.
+`FinitePMatchingCostComparison` proves, for real 1≤r≤s,
+dₛ≤dᵣ≤N^(1/r−1/s)dₛ for both optimized matching and real-plan costs, and
+their antitonicity on [1,∞). N counts both occurrence families, including empty
+ones; separate minimizers are used at the two exponents. These finite library
+derivations use unnormalized unit masses and keep the maximum ground norm fixed.
 `FinitePCostSimilarity` proves invariance under
 common diagonal translation and homogeneity under nonnegative coordinate scaling,
 including zero scaling on raw coordinate families. See
