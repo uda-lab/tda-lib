@@ -134,4 +134,5 @@ import TDA.Persistence.FinitePCostContinuity
 import TDA.Persistence.SimplicialMultivaluedMap
 import TDA.Persistence.FinitePCostJointContinuity
 import TDA.Persistence.FinitePBottleneckUniformLimit
+import TDA.Persistence.CechFinitePBottleneckUniformLimit
 import TDA.Persistence.SimplicialMultivaluedMapComposition
