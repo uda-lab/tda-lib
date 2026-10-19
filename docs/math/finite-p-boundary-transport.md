@@ -365,6 +365,45 @@ Essential-free inputs are necessary for this comparison with the full B.
 Essential-only diagrams with births 0 and 1 have zero finite-part transport at
 every p≥1, but full bottleneck one. Merely assuming B<∞ would not fix this.
 
+## Uniform recovery under count and radius bounds
+
+Let m be a natural number and R≥0. Consider all pairs D,E with empty essential
+parts, total finite occurrence count N≤m, and bottleneck B≤R. Set M=max(1,m).
+For either optimized rooted cost and every real p≥1,
+
+|dₚ(D,E) − B| ≤ (M^(1/p) − 1) R.
+
+Indeed, B≤dₚ≤N^(1/p)B≤M^(1/p)B. Subtract B before using the radius bound:
+the error is at most (M^(1/p)−1)B, and this is at most (M^(1/p)−1)R.
+Since M≥1, its reciprocal-power factor tends to one. The common error envelope
+therefore tends to zero. The API gives `TendstoUniformlyOn` in real p along
+`atTop`: one exponent threshold works for every pair in this budget class,
+even when its occurrence types and minimizing matchings vary. This needs no
+topology or compactness of the set of diagrams. Empty inputs satisfy m=0;
+identical nonempty positive diagrams also lie in a zero-radius class.
+
+For R>0, two copies of (0,2R) versus empty have B=R and rooted cost
+2^(1/p)R. They attain the budget-two error bound, including p=3/2.
+The singleton pair (0,2), (3/2,7/2) belongs to the same count-two, radius-one
+class while its optimizer changes from pairing at one to deleting both at two.
+
+Both budgets matter. At exponent n≥1, take 2^n copies of (0,2) versus empty.
+Their bottleneck is one and their actual rooted costs are two, so the error
+stays one along cofinal real exponents without a count cap. With count two
+fixed, choose a(p)=(2^(1/p)−1)⁻¹>0 and two copies of (0,2a(p)) versus empty.
+Their error is one for every p≥1 without a common radius bound. These examples
+obstruct a uniform epsilon-one-half tail on the corresponding larger classes;
+each fixed pair still has the pointwise limit above. The essential-birth
+example also excludes removing the empty-essential hypotheses.
+
+This uniform estimate is a finite library derivation using the DL matching
+convention and the existing optimized bounds. The probability-measure theorem
+[`TauCeti.tendsto_wassersteinEDist_atTop`](https://github.com/TauCetiProject/TauCeti/blob/5283b03c90ba08f975b65098ee412a890b567a6e/TauCeti/MeasureTheory/OptimalTransport/Wasserstein/Infinity/Basic.lean)
+is a related pointwise result: its normalized costs increase to their supremum,
+using compactness of couplings. These unit-occurrence costs approach bottleneck
+from above. The count/radius uniformity here concerns finite essential-free
+diagrams; it gives no uniform all-Radon or powered-cost convergence theorem.
+
 ## Examples
 
 | Example | Powered/rooted calculation |
@@ -409,6 +448,8 @@ for the powered and rooted matching and actual real-plan optima.
 nonnegative scaling for powered and rooted matching and real-plan optima.
 `FinitePBottleneckLimit` supplies the lower bottleneck comparison and real-exponent
 limits for matching and real-plan optima on diagrams with empty essential parts.
+`FinitePBottleneckUniformLimit` supplies the common absolute-error bound and
+uniform convergence on essential-free count/radius budget classes for both optima.
 
 [Figalli–Gigli](references.md#FG10) retains priority for boundary-reservoir transport;
 its original bounded-domain quadratic Euclidean setting is distinct from this model.
