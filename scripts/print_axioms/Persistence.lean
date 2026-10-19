@@ -2743,3 +2743,15 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePMatchingCost_continuousOn
 #print axioms TDA.Persistence.finitePowerBoundaryTransportCost_continuousOn
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_continuousOn
+
+-- Actual shifted simplicial homology maps and canonical selectors.
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap_app
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_eq
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_app
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMap_graph
+#print axioms TDA.Persistence.simplicialHomology_reindex_nnreal
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal
+#print axioms TDA.Persistence.multivaluedSimplicialHomologyMapNNReal_eq
+#print axioms TDA.Persistence.shiftedSimplicialHomologyMap_id

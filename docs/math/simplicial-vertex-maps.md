@@ -71,16 +71,59 @@ nonzero mixed triangle prism, collapsed tuples, disconnected endpoints with
 distinct H₀ maps, absent ambient vertices, empty sources, and a noncentral
 matrix coefficient.
 
+## Shifted functions and canonical multivalued maps
+
+For real-indexed filtrations F and G, a global function is ε-simplicial when it sends
+every actual face at t to a face at t + ε. The geometric predicates in
+`Filtration.ShiftedSimplicialMap` allow independent vertex universes and arbitrary real ε.
+The actual signed homology construction retains the common vertex universe and independent
+vertex orders described above.
+
+A multivalued map is a native set relation C ⊆ X × Y, total on all ambient source
+vertices. Its face condition requires every nonempty finite subset of C(σ) to be a face
+of G(t + ε) whenever σ is a face of F(t). Relational images may be infinite. Totality
+includes unsupported vertices, while the face condition tests actual faces only.
+
+`shiftedSimplicialHomologyMap` gives a natural transformation whose components are the
+existing actual homology maps of the global function. Both composites in its naturality
+square have the same underlying vertex function, so strict composition and inclusion
+compatibility prove the square. The target is reindexed by t ↦ t + ε; negative ε are
+allowed for appropriately related filtrations. At nonnegative ε this target agrees with
+`RealShift.shift`, and the zero-shift identity agrees with the existing zero identification.
+
+`multivaluedSimplicialHomologyMap` chooses one global subordinate function and proves that
+the resulting whole transformation equals the map of every subordinate function. For any
+two such functions, the union of their finite images of σ is a nonempty finite subset of
+C(σ). The face condition therefore proves actual contiguity, and the signed homotopy
+proves equality on homology in every natural degree over any ring. A function graph gives
+exactly the ordinary function's map. Parameterwise choices subordinate to one fixed valid
+relation also give these canonical components; individual simplicial stage maps without
+that common relation need not form a natural transformation.
+
+To compare with the source's empty-subset convention, adjoin only the empty simplex to
+each face collection. The relation image of the empty set is empty, so this adds no
+condition to the nonempty finite-face tests. It changes none of the ordinary chain groups,
+which use n + 1 vertices in degree n ≥ 0. Adding every ambient singleton would change
+support and is a different construction. The empty ambient source and target require no
+target inhabitation instance; a nonempty ambient source admits no total relation to an
+empty target, even when its filtration has no faces.
+
+The examples check shifted endpoint selectors with different chain maps and a common
+nonzero H₀ image, negative shifts, a changing filtration in which an edge kills a nonzero
+H₀ difference, infinite relational images, and disconnected-target selectors with distinct
+H₀ maps. Ghost vertices, empty ambient types, a noncentral matrix coefficient and the
+trivial ring test the construction's support and coefficient boundaries.
+
 ## Sources and scope
 
 This is a source-motivated library bridge, proved for the library's actual
 support-aware chains. Chazal–de Silva–Oudot,
 [*Persistence stability for geometric complexes*, arXiv:1207.3885v3, §3](https://arxiv.org/html/1207.3885v3#S3),
 uses simplicial maps and their induced homology maps in Definition 3.1 and
-Proposition 3.3. The prism proves the unfiltered contiguity step used there,
-with arbitrary rings in place of the source's field coefficients. This is a
-supporting library extension; the filtered selector-independence proposition
-requires its own packaging. The Munkres proofs cited by that article were not
+Proposition 3.3. The prism proves the contiguity step used there. The shifted construction realizes
+Proposition 3.3's global-selector and naturality mechanism on these actual chains.
+Its arbitrary-ring statement specializes to the source's fixed field; the coefficient
+generalization and explicit nonempty-face convention are supporting library extensions. The Munkres proofs cited by that article were not
 directly audited.
 
 The algebraic ingredients are the pinned mathlib tuple-sorting, permutation-sign,
@@ -99,6 +142,5 @@ identifies the adaptation. Mixed-tuple identities and actual face membership
 connect that cancellation to this chain model; mathlib's homotopy theorem
 supplies equality of the actual homology maps.
 
-Independence of filtered refinement selectors, varying vertex-type persistence
-modules, and correspondence or Hausdorff stability remain separate results.
-The present construction supplies their unfiltered contiguity prerequisite.
+Mapper refinement consumers, varying vertex-type persistence modules, relation composition
+and correspondence or Hausdorff stability remain separate results.
