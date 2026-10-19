@@ -43,8 +43,9 @@ consumes that Topology theorem. This removes the previous Simplicial-to-Topology
 Arbitrary vertex maps induce signed maps of the actual chains and homology over a ring,
 with independent source and target orders in a common vertex universe. Collapsed faces
 map to zero; injective images retain their permutation signs. Identity, composition and
-compatibility with the existing inclusions are strict. This gives no contiguity homotopy
-or different-point-set stability theorem. See [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
+compatibility with the existing inclusions are strict. Contiguous maps have an actual
+signed prism homotopy and induce equal homology maps in every natural degree.
+Different-point-set stability requires further results. See [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
 
 Structure projections and the existing coercions provide access to values and vertex-map
 functions; they do not erase support, monotonicity or face-preservation hypotheses. Use
