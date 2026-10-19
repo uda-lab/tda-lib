@@ -474,6 +474,10 @@ dₛ≤dᵣ≤N^(1/r−1/s)dₛ for both optimized matching and real-plan costs,
 their antitonicity on [1,∞). N counts both occurrence families, including empty
 ones; separate minimizers are used at the two exponents. These finite library
 derivations use unnormalized unit masses and keep the maximum ground norm fixed.
+`FinitePCostContinuity` proves continuity on [1,∞) in the real exponent of the
+powered and rooted matching and actual real-plan optima, for fixed families.
+The finite-minimum proof includes empty and zero-distance inputs and permits
+optimizer changes. Exponent zero remains outside the public continuity domain.
 `FinitePCostSimilarity` proves invariance under
 common diagonal translation and homogeneity under nonnegative coordinate scaling,
 including zero scaling on raw coordinate families. See

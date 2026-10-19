@@ -2737,3 +2737,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_le_card_rpow_mul_of_exponent_le
 #print axioms TDA.Persistence.finitePMatchingCost_antitoneOn
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_antitoneOn
+
+-- Continuity in the finite real exponent
+#print axioms TDA.Persistence.finitePowerMatchingCost_continuousOn
+#print axioms TDA.Persistence.finitePMatchingCost_continuousOn
+#print axioms TDA.Persistence.finitePowerBoundaryTransportCost_continuousOn
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_continuousOn
