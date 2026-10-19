@@ -2729,3 +2729,11 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_tendsto_bottleneck
 #print axioms TDA.Persistence.ofReal_finitePMatchingCost_tendsto_bottleneck
 #print axioms TDA.Persistence.ofReal_finitePBoundaryTransportCost_tendsto_bottleneck
+
+-- Comparison at two finite real exponents
+#print axioms TDA.Persistence.finitePMatchingCost_le_of_exponent_le
+#print axioms TDA.Persistence.finitePMatchingCost_le_card_rpow_mul_of_exponent_le
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_le_of_exponent_le
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_le_card_rpow_mul_of_exponent_le
+#print axioms TDA.Persistence.finitePMatchingCost_antitoneOn
+#print axioms TDA.Persistence.finitePBoundaryTransportCost_antitoneOn
