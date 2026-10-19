@@ -323,3 +323,13 @@ import TDA
 #print axioms TDA.Filtration.FilterFunctionMapExamples.no_negated_filter
 #print axioms TDA.Filtration.FilterFunctionMapExamples.scale_round_trip
 #print axioms TDA.Filtration.Rips.diameter_pos
+
+-- Actual shifted simplicial homology maps and canonical selectors.
+#print axioms TDA.Filtration.IsShiftedSimplicial
+#print axioms TDA.Filtration.IsShiftedSimplicialRelation
+#print axioms TDA.Filtration.IsShiftedSimplicial.vertexMap
+#print axioms TDA.Filtration.IsShiftedSimplicial.vertexMap_apply
+#print axioms TDA.Filtration.IsShiftedSimplicialRelation.of_subordinate
+#print axioms TDA.Filtration.IsShiftedSimplicialRelation.contiguous
+#print axioms TDA.Filtration.isShiftedSimplicialRelation_graph_iff
+#print axioms TDA.Filtration.isShiftedSimplicial_id
