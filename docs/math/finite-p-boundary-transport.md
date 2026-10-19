@@ -455,9 +455,13 @@ infimal enclosing radius over all ambient centers. Its sublevels contain the
 closed-ball Čech nerves, and equal them under the existing proper-space
 specialization. Attainment is not assumed for the results here.
 
-For n≥1, each D(a) has empty essential part and at most choose(card V,n+2)
-finite occurrences. Same-label displacement δ(a,b) bounds the full bottleneck
-B(a,b). Thus, if δ(a,b)≤R with R≥0, put M=max(1,2 choose(card V,n+2)). For each
+For n≥1, each D(a) has empty essential part. In degree zero, nonempty labels
+give exactly the essential-birth multiset {0}; empty labels give the empty
+diagram without choosing an ambient point. Thus the entire essential
+multisets of D(a) and D(b) agree in every natural degree. Each diagram has at
+most choose(card V,n+2) finite occurrences, and same-label displacement δ(a,b)
+bounds the full bottleneck B(a,b). If δ(a,b)≤R with R≥0, put
+M=max(1,2 choose(card V,n+2)). For each
 actual optimized rooted cost and every real p≥1,
 
 |dₚ(D(a),D(b)) − B(a,b)| ≤ (M^(1/p) − 1) R.
@@ -482,8 +486,32 @@ This is a finite library composition using the DL matching convention. The
 geometric input; its [CDSO Hausdorff comparison](cech-displacement-stability.md#source-correspondence-and-scope)
 and the [radius-filter attainment distinction](cech-rips-sandwich.md#the-radius-filter)
 have separate scopes. No uniform p-limit is attributed to that source.
-Degree zero is unclaimed here; n≥1 supplies automatic
-essential vanishing, rather than a necessity theorem for geometric recovery.
+
+The birth-zero proof uses an actual vertex at time zero whose inclusion into
+a full late stage has nonzero homology range. The diagram-rank formula gives
+a point alive between those stages. Every finite death is a critical face
+value at most that late time, so this point is essential. Its birth is at
+most zero and is a nonnegative critical value, hence zero. Only then does the
+essential count one identify the full multiset. An eventual count alone
+would not determine the birth.
+
+This ordinary H₀ calculation uses the radius filter's empty negative tail.
+CDSO retains vertices at nonpositive scales, so no whole real-indexed H₀
+module identification is asserted. The proper-ambient closed-nerve
+specialization here is at nonnegative radius. Translating a singleton's
+filter values by one gives an essential birth at one, finite costs zero and
+full bottleneck one against the original diagram; equal essential counts
+alone remain insufficient. The H₀ log module still has no finite-grid zero
+left tail. The all-degree real-parameter consumers do not change that fact.
+
+For the actual clouds (0,2) and (0,6), the H₀ finite bars are (0,1) and
+(0,3), with a common essential birth zero. Displacement is four, while full
+bottleneck is 3/2. Both rooted finite optima are two at exponent one and
+√(5/2) at exponent two: pairing is optimal at one, and deleting both is
+strictly better at two. The exponent-one error is 1/2. Comparing the acute
+triangle with a constant cloud gives two finite deletions with charges
+1/2 and √5/4; repeated labels (0,0,2) give only the positive bar (0,1),
+since the simultaneous zero-length merge is filtered out.
 
 ## Examples
 
@@ -536,6 +564,9 @@ uniform convergence on essential-free count/radius budget classes for both optim
 when the essential-birth multisets agree, without essential count or range bounds.
 `CechFinitePBottleneckUniformLimit` derives both bounds and uniform limits for
 actual positive-degree Čech sublevel diagrams from a same-label displacement budget.
+`CechEssentialBirth` proves the actual degree-zero essential multiset, and
+`CechFinitePBottleneckAllDegrees` derives both bounds and uniform limits for
+every natural degree from the same input budget.
 
 [Figalli–Gigli](references.md#FG10) retains priority for boundary-reservoir transport;
 its original bounded-domain quadratic Euclidean setting is distinct from this model.

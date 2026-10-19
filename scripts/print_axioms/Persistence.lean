@@ -2797,6 +2797,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving_ψ
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyConverseInterleaving
 
+-- Actual Čech H₀ birth and all-degree finite-p recovery.
+#print axioms TDA.Persistence.Cech.essentialPart_dgm_zero_eq_singleton
+#print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_abs_sub_bottleneck_le_uniformBound_allDegrees
+#print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_abs_sub_bottleneck_le_uniformBound_allDegrees
+#print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_tendstoUniformlyOn_bottleneck_allDegrees
+#print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_tendstoUniformlyOn_bottleneck_allDegrees
+
 #print axioms TDA.Persistence.Rips.relationInterleaving
 #print axioms TDA.Persistence.Rips.relationInterleaving_φ
 #print axioms TDA.Persistence.Rips.relationInterleaving_ψ
