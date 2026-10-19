@@ -172,5 +172,5 @@ identifies the adaptation. Mixed-tuple identities and actual face membership
 connect that cancellation to this chain model; mathlib's homotopy theorem
 supplies equality of the actual homology maps.
 
-Mapper refinement consumers, varying vertex-type persistence modules, relation composition
-and correspondence or Hausdorff stability remain separate results.
+Mapper refinement consumers, varying vertex-type persistence modules, and correspondence
+or Hausdorff stability remain separate results.
