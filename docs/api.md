@@ -523,6 +523,18 @@ finite-point weights. `eq_of_diagramEmbedding_eq` recovers the whole diagram onl
 the essential parts are also assumed equal. The hypotheses are σ ≠ 0, not 0 < σ, and
 pointwise positivity of the weight at the finite points.
 
+`TDA.Persistence.WeightedKernelIsometry` constructs `KernelWeight.weightIsometry`,
+a real linear isometry equivalence for any scalar PSD kernel and nowhere-zero real
+weight. Its action on all functions is multiplication by the weight; its inverse
+is pointwise division. `upperWeightIsometry` specializes KFH18 Proposition 7 to the
+Gaussian on `UpperPoint` (birth < death), with positive weights and every real σ,
+including zero. The arctan specialization requires C > 0, with no uniform positive
+lower bound on the weight. `weightedUpperDiagramEmbedding` uses the weighted-kernel
+RKHS on that domain; its finite-part inner products and pair norms agree with the
+existing full-plane `diagramEmbedding`, even without weight positivity. Multiplicity
+is retained and essential bars are omitted. No full-plane restriction isomorphism
+or pixel-norm identification is asserted.
+
 `TDA.Persistence.GaussianFeature` proves that unit vectors with inner product
 `exp(-r² / (2s²))` are at distance at most `|r| / |s|`. It also builds the Gaussian RKHS
 `GaussianSpace τ E` of any real inner product space with kernel functions

@@ -91,4 +91,5 @@ import TDA.Persistence.CechRipsLogScaleConsumersExamples
 import TDA.Persistence.LogScaleScalingExamples
 import TDA.Persistence.TotalPersistenceRipsCechExamples
 import TDA.Persistence.EssentialVanishingExamples
+import TDA.Persistence.WeightedKernelIsometryExamples
 import TDA.Persistence.FinitePBottleneckLimitExamples
