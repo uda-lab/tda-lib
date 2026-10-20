@@ -17,3 +17,11 @@ import TDA.Mapper.OneSkeletonReebData
 import TDA.Mapper.GraphPLCosheaf
 import TDA.Mapper.GraphPLReebQuotient
 import TDA.Mapper.GraphPLConstructible
+import TDA.Mapper.CoverComponents
+import TDA.Mapper.CategoricalMapper
+import TDA.Mapper.CoverComponentsCosheaf
+import TDA.Mapper.CoverComponentsConstructible
+
+import TDA.Mapper.MapperReebApproximation
+
+import TDA.Mapper.RetainedCover
