@@ -2878,3 +2878,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteWeightedDiagram.pBoundaryTransportCost_zero_left
 #print axioms TDA.Persistence.FiniteWeightedDiagram.powerBoundaryTransportCost_zero
 #print axioms TDA.Persistence.FiniteWeightedDiagram.pBoundaryTransportCost_zero
+#print axioms TDA.Persistence.FiniteWeightedBoundaryPlan.instNonempty
