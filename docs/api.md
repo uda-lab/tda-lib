@@ -538,6 +538,19 @@ common diagonal translation and homogeneity under nonnegative coordinate scaling
 including zero scaling on raw coordinate families. See
 [real-exponent finite transport](math/finite-p-boundary-transport.md).
 
+## Finite real-weight boundary transport
+
+`FiniteWeightedBoundaryTransport` allows arbitrary nonnegative real marginal
+masses and actual splitting between finite labels, retaining both boundary
+residuals at the existing maximum ground norm. The full feasible matrix set is
+compact, and powered and rooted optima are attained at each real p≥1. Constant
+unit masses recover the existing transport API exactly. Symmetry, equivalent
+relabelling and weighted diagonal-moment formulas for empty inputs are included.
+`FiniteWeightedDiagram` is a finitely supported mass function on the strict
+upper half-plane; its actual transport consumers inherit these results. This
+finite weighted model supplies no all-Radon coupling identification or weighted
+exponent limit. See [finite real-weight boundary transport](math/finite-weighted-boundary-transport.md).
+
 ## Gaussian persistence images
 
 `TDA.Persistence.GaussianKernel` proves normalization and L¹ translation estimates for
