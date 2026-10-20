@@ -274,6 +274,13 @@ This scoped inventory motivates the independently proved
 dependency is imported. Its toolchain is Lean 4.36.0-rc1, distinct from the
 library's pin. No academic affiliations, author ordering or release dates inferred.
 
+The separately inspected `Representation/Basic.lean` defines `QuiverRep` as
+`Paths Q ⥤ ModuleCat k`. Its general path-algebra module equivalence and
+finite-dimensional Krull–Schmidt infrastructure are not dependencies of the
+[finite-line and based-matrix adapters](finite-representations.md), which use
+mathlib's path category directly. This is an interface comparison, with no
+TauCeti proof copied or imported.
+
 <a id="ReebOrdering-aa7d10f"></a>
 ### ReebOrdering-aa7d10f
 

@@ -79,6 +79,17 @@ the ranks of all actual structure maps, including composites. The canonical obje
 the interval multiset; the chosen summands and isomorphism are not canonical. See
 [finite interval decomposition](math/finite-interval-decomposition.md).
 
+`FiniteLine.moduleOfAdjacent` constructs finite persistence from adjacent linear
+maps, and its path-category equivalence identifies equioriented finite-line
+representations with `PModule`. `MatrixSequence.toPModule` accepts rectangular
+transition matrices with target rows and source columns; its morphisms extend
+adjacent commuting squares to all structure maps. Supplied bases give genuine
+natural coordinate isomorphisms, basis-independent barcodes, and the existing
+finite decomposition. A zero-initial padded sequence can also be extended across
+an explicit real critical grid, retaining its original endpoint values and a
+constant final cell. These are theory adapters, not executable extraction.
+See [finite representations](math/finite-representations.md).
+
 `FiniteBarcode.monoEmbedding` takes a natural transformation of these finite modules
 whose components are injective and constructs an embedding of their canonical barcode
 occurrences. It preserves each observed death and bounds the target birth by the source

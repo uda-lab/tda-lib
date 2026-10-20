@@ -106,3 +106,6 @@ import TDA.Persistence.RipsRelationInterleavingExamples
 import TDA.Persistence.FiniteWeightedBoundaryTransportExamples
 
 import TDA.Persistence.RipsGromovHausdorffExamples
+
+import TDA.Persistence.MatrixSequenceExamples
+import TDA.Persistence.FiniteRepresentationRealExamples

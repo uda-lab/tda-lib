@@ -144,3 +144,7 @@ import TDA.Persistence.RipsRelationInterleaving
 import TDA.Persistence.FiniteWeightedBoundaryTransport
 
 import TDA.Persistence.RipsGromovHausdorff
+
+import TDA.Persistence.FiniteLine
+import TDA.Persistence.MatrixSequence
+import TDA.Persistence.MatrixSequenceReal
