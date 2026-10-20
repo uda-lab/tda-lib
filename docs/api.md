@@ -692,6 +692,30 @@ pairwise disjoint pixels. The line has the bottleneck form
 `Cech.bottleneck_dgm_le_half_pairwiseDiscrepancy_real` only. See
 [Sup-norm consumers](math/cech-weighted-kernel-images.md#sup-norm-consumers).
 
+## Categorical Mapper and Reeb approximation
+
+`categoricalMapperData` retains components of every nonempty cover intersection.
+`categoricalMapperIsColimit` identifies its selected-simplex colimit over a test interval
+with `categoricalMapperAssembly`, and `categoricalMapperCocone_map` characterizes the
+inclusion-induced interval maps. Finite bounded interval families with finite pullback
+component sets give a constructible cosheaf; `categoricalMapperReconstruction` applies the
+existing finite real-graph reconstruction equivalence.
+
+For a finite graph-PL input covered on its attained height range,
+`geometricInterleavingDistance_mapperReeb_le_retained` bounds the geometric interleaving
+distance from `graphPLMapperReconstruction` to the actual `GraphPL.graphPLReebGraph` by
+`retainedCoverResolution`. Empty pullbacks may be removed through
+`coverComponentsRetainedIso`; retained intervals contribute their full widths.
+`clippedCoverResolution` separately defines the attained-range diameter maximum; it is not
+the resolution used by this bound.
+`tendsto_geometricInterleavingDistance_mapperReeb` and its `_retained` form permit varying
+finite index types and prove convergence for vanishing full or retained resolutions.
+`exists_graphPLMapperCover_resolution_le` retains the finite cover and resolution witness;
+`exists_graphPLMapperReconstruction_error_le` gives its geometric estimate at every positive error. Horizontal edges, repeated
+heights and disconnected graphs are allowed. The construction is abstract theory, with
+geometric reconstruction in universe zero; the ordinary Mapper simple graph and executable
+algorithms have separate contracts. See [categorical Mapper approximation](math/mapper-reeb-approximation.md).
+
 ## Review and extension boundaries
 
 The selected PH claims and their proof-critical bridges received the source-based review

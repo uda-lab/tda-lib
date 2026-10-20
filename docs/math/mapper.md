@@ -214,7 +214,8 @@ then contained in every component member that meets it, and so equals the
 intersection of the component members over the corresponding labels. The
 component-level condition is the hypothesis under which component-sensitive
 statements of Munch–Wang or Carrière–Oudot type would transfer to ordinary
-Mapper. No such transfer and no approximation or stability result is proved.
+Mapper. Such a transfer to ordinary Mapper is not asserted. The interval-indexed
+categorical assembly has a separate [resolution bound and convergence theorem](mapper-reeb-approximation.md).
 
 On the 4-cycle with vertex heights `0, 1, 2, 1` and the intervals `(-1, 3/2)` and
 `(1/2, 3)`, each interval preimage is path-connected, so ordinary Mapper has two
@@ -275,9 +276,9 @@ the identity selector gives an injective Mapper vertex map, but the two edge cel
 represented by the vertices `1` and `3` are sent to one cell, because both
 vertices lie in one path component of the preimage of `(-1/2, 5/2)`.
 
-No geometric realization, homology, Nerve Lemma, contiguity or
-selector-independence of multinerve maps, interleaving, approximation or stability
-statement is proved.
+This refinement API does not assert a geometric realization, homology, Nerve Lemma,
+contiguity or selector-independence of multinerve maps, nor an interleaving,
+approximation or stability theorem for those maps.
 
 ## Graph-PL incidence labels and finite consumers
 
@@ -567,9 +568,11 @@ Constructibility of the precosheaf and its cosheaf identification with the
 realized data are proved in the subsection `Constructibility and the cosheaf of
 graph-PL height` below; the Reeb quotient identification is proved in the
 subsection `The Reeb quotient of graph-PL height`, under a covering
-critical-value list. No geometric realization of either Mapper construction, no
-refinement tower of height-separating covers and no approximation statement is
-proved; refinement of covering critical lists is treated in the last subsection.
+critical-value list. The separate [categorical assembly](mapper-reeb-approximation.md)
+is reconstructed as an actual real graph and compared with the actual Reeb quotient.
+These finite-data comparisons do not identify the ordinary Mapper or MultiNerve Mapper
+with that reconstruction. A refinement tower of height-separating covers is not asserted;
+refinement of covering critical lists is treated in the last subsection.
 
 ### Closed level sets of graph-PL height
 
