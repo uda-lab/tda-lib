@@ -45,7 +45,7 @@ Each area owns `scripts/print_axioms/<Area>.lean` and the imports-only
 `TDA/<Area>.lean` module list. `TDA.lean` imports those lists and `TDA.Basic`.
 Append pins and imports in the area that owns a new module; do not edit another area's
 list for an independent result. A textually mergeable PR can use its reviewed, validated
-validated head without a gratuitous develop refresh. Actual source overlap or a failed
+head without a gratuitous develop refresh. Actual source overlap or a failed
 integrated build needs resolution and renewed validation of the changed head.
 
 ## Evidence and foundations
@@ -63,6 +63,11 @@ before applying `agent:ready` to the Issue. No routine human reapproval is requi
 `docs/math/` holds durable source-grounded mathematics, not a second work queue.
 Research mathlib and TauCeti coverage before choosing foundations; TauCeti is not currently
 a dependency. Keep independent source fidelity review for statement changes.
+Use [lean-review-routing](../.agents/skills/lean-review-routing/SKILL.md#semantic-and-api-quality)
+for semantic and API quality in ordinary reviews. The consolidated review/refactoring in
+CONTRIBUTING.md applies the same criteria to the selected release's exported APIs, starting
+with a bounded pilot. Keep concrete findings and remaining scope in the existing Issue/PR
+records and route targeted fixes through the normal gates.
 
 ## Intake and concurrency
 

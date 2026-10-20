@@ -26,6 +26,7 @@ optional supported Bash adapters; their activation depends on harness support an
 ## Code Conventions
 - No unmarked `sorry`/`admit` or custom axioms; Issue-authorized private staging holes on develop obey inherited guards and cannot enter pinned theorem closures or stable releases.
 - Never weaken or trivialize statements to close proofs; statement changes need independent source ↔ Lean review.
+- Apply `.agents/skills/lean-review-routing/SKILL.md` § Semantic and API quality to current work and the pre-release consolidated review; use existing CI evidence for mechanical checks.
 - Pin every public theorem in its area's append-only `scripts/print_axioms/<Area>.lean`; keep `TDA.lean` and each `TDA/<Area>.lean` aggregator imports-only. Add modules to their owning area aggregator.
 
 ## Architecture
