@@ -741,19 +741,33 @@ recorded in [#34](https://github.com/uda-lab/tda-lib/issues/34) and
 [#215](https://github.com/uda-lab/tda-lib/issues/215) is complete: it is source-based for
 the selected PH, Mapper and DMP Reeb claims it covers, and digest-based for the
 graph-realization, piecewise-linear and ordering adaptations. The implemented
-graph/cosheaf equivalence, component bounds and smoothing results do not establish every
-deferred comparison. In the library's finite real-graph
-category, geometric and cosheaf interleavings agree with equal extended distances;
-product thickenings of graph objects are constructible, constructible cosheaves remain
-constructible under smoothing, and quotient absorption applies under (H1)
-constructibility and (H2) the graph-object condition on the relevant quotient
-thickening, with no general topological-space comparison. For finite graph-PL input
-under the stated covering, adaptedness and gap/radius hypotheses, MultiNerve Mapper
-finite Reeb data are identified with the extracted star-and-gap component data, and
-those finite data have the constructible interval-components cosheaf of the graph-PL
-height. The Reeb quotient of the graph-PL realization is not identified, and neither
-Mapper construction claims a Nerve Lemma, homology selector-independence, stability or
-Mapper–Reeb convergence.
+graph/cosheaf equivalence, component bounds and smoothing results have their stated
+finite-graph and constructible-space hypotheses. In the finite real-graph category,
+geometric and cosheaf interleavings agree with equal extended distances. Product
+thickenings of graph objects and smoothings of constructible cosheaves are
+constructible; quotient absorption holds for every constructible real space, without
+a general topological-space comparison.
+
+For finite graph-PL input under the stated covering, adaptedness and gap/radius
+hypotheses, MultiNerve Mapper finite Reeb data agree with extracted star-and-gap
+components and their constructible interval-components cosheaf. The actual Reeb
+quotient of the graph-PL realization is identified with its finite graph realization.
+Categorical Mapper reconstruction for finite bounded interval covers of the attained
+range has geometric error at most the full width of retained intervals; vanishing
+full or retained resolution yields convergence to that actual quotient. These
+results do not identify categorical Mapper with the ordinary Mapper simple graph
+or supply an executable component algorithm. Neither Mapper construction claims
+a Nerve Lemma or homology selector-independence. The quotient and convergence
+claims concern finite graph-PL inputs, not arbitrary higher-dimensional Reeb spaces.
+
+Finite GH–Rips stability and sampling compare full diagrams of finite metric spaces;
+the possibly infinite sampling target has no diagram in these results. Finite
+weighted boundary transport permits real masses but does not identify all Radon
+couplings. Finite-line and matrix-sequence adapters reuse finite interval
+classification; they do not compute barcodes over arbitrary fields. Gaussian
+C₀ universality and signed-measure separation concern the full birth–death plane;
+positive persistence measures require a strictly positive weight and finite weighted
+mass. These conclusions do not make finite-pixel images characteristic.
 
 General geometric tame-function PH stability, infinite/q-tame theory, manifold charts
 and executable arbitrary-field decomposition are outside the reviewed PH scope. A first
