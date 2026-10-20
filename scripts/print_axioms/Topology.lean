@@ -215,3 +215,7 @@ import TDA
 #print axioms TDA.Topology.MultiNerveMapExamples.collapse_nerveMap_not_injective
 #print axioms TDA.Topology.MultiNerveMapExamples.collapse_multiNerveMap_separates
 #print axioms TDA.Topology.MultiNerveMapExamples.multiNerveMap_id_pointCell
+
+-- Bounded C₀ functionals and compact-support approximation.
+#print axioms TDA.Topology.C0MeasureRepresentation.denseRange_compactlySupported
+#print axioms TDA.Topology.C0MeasureRepresentation.exists_finite_regular_measure_sub

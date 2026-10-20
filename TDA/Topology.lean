@@ -8,3 +8,4 @@ import TDA.Topology.PathComponents
 import TDA.Topology.NerveMap
 import TDA.Topology.NerveContiguity
 import TDA.Topology.MultiNerveMap
+import TDA.Topology.C0MeasureRepresentation

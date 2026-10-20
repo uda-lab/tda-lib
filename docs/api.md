@@ -759,3 +759,40 @@ General geometric tame-function PH stability, infinite/q-tame theory, manifold c
 and executable arbitrary-field decomposition are outside the reviewed PH scope. A first
 stable release must state its selected results and limitations; it need not finish every
 roadmap extension. This guide describes the current API and does not announce a release.
+
+
+### Gaussian signed measures and C₀ universality
+
+`TDA.Persistence.GaussianMeasureEmbedding` defines the actual Banach-valued signed integral
+`signedEmbedding` into the existing `WeightedKernel.Space`. Continuity and unit feature norm
+prove integrability for every finite signed Borel measure on ℝ². For nonzero bandwidth,
+`signedEmbedding_injective` separates these measures, and `probabilityEmbedding_injective`
+gives the probability characteristic corollary. `inner_signedEmbedding`,
+`signedEmbedding_apply`, `norm_signedEmbedding_sq` and `norm_signedEmbedding_sub_sq` expose
+actual signed pairing, evaluation and kernel energy. `norm_signedEmbedding_le_totalVariation`
+controls the mean by total variation. Linearity, Jordan comparison and atomic formulas include compatibility with the existing finite-support and weighted finite-diagram
+embeddings. `WeightedKernel.GaussianSpectral.eq_of_gaussian_integrals` supplies the
+finite positive-measure separation result on the Euclidean plane.
+
+`TDA.Persistence.GaussianUniversality` proves every actual RKHS function lies in C₀(ℝ²),
+with the continuous linear inclusion `rkhsToC0CLM` of norm at most one. Gaussian sections span
+a uniformly dense subspace (`gaussian_sections_dense`), and `denseRange_rkhsToC0` states
+C₀ universality of the actual RKHS. `exists_gaussian_span_approx` exposes uniform approximation
+without unfolding density. The bounded-functional representation used by the proof is
+`TDA.Topology.C0MeasureRepresentation.exists_finite_regular_measure_sub`.
+
+`TDA.Persistence.WeightedPersistenceMeasure` uses the existing open finite-bar space
+`UpperPoint`. A measurable strictly positive weight with finite weighted mass gives
+`weightedPersistenceEmbedding_eq_iff`, recovering positive measures that may have infinite
+original mass. `weightedPersistenceEmbedding_eq_iff_continuous` exposes the continuous
+positive-weight Radon consumer. Finite weighted measures are regular; actual weighted-feature
+integrability and the integral comparison are public. `weightedPersistenceEmbedding_finite_occurrences`
+connects finite occurrence measures to the existing birth–persistence weighted embedding, and
+`countableDiagramEmbedding_eq_iff` recovers locally finite occurrence measures under explicit
+summability. `GaussianUniversalityExamples` includes a non-atomic signed Gaussian law with
+noncompact support, unequal multiplicities, infinite-total-mass Radon data accumulating at the
+diagonal with summable positive weights, cross-bandwidth uniform approximation, and explicit
+zero-weight, zero-bandwidth and open-half-plane C₀ failure controls. Essential bars stay separate.
+The results provide abstract noncomputable integration and approximation existence, with finite
+atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
+or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).

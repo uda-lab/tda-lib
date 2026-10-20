@@ -148,3 +148,9 @@ import TDA.Persistence.RipsGromovHausdorff
 import TDA.Persistence.FiniteLine
 import TDA.Persistence.MatrixSequence
 import TDA.Persistence.MatrixSequenceReal
+
+import TDA.Persistence.GaussianSpectralSeparation
+import TDA.Persistence.GaussianMeasureEmbedding
+import TDA.Persistence.GaussianUniversality
+import TDA.Persistence.WeightedPersistenceMeasure
+import TDA.Persistence.GaussianUniversalityExamples
