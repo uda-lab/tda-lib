@@ -239,7 +239,8 @@ theorem bottleneck_diagram_le_two_mul_sampling_errors (k : Type z) [Field k]
 
 /-- Finite samples converging in ambient Hausdorff distance to a fixed finite
 nonempty space have full actual diagrams converging in bottleneck distance.
-The sample carrier, cardinality and label universe may vary with the index. -/
+The sample carrier and cardinality may vary with the index. All sample carriers
+share one ambient universe, independent of the target and coefficient universes. -/
 theorem tendsto_bottleneck_diagram_of_hausdorffDist_tendsto_zero
     (k : Type z) [Field k] {ι : Type*} {l : Filter ι}
     (X : ι → Type u) (Y : Type v) {Z : Type w}
