@@ -142,3 +142,5 @@ import TDA.Persistence.CechEssentialBirth
 import TDA.Persistence.CechFinitePBottleneckAllDegrees
 import TDA.Persistence.RipsRelationInterleaving
 import TDA.Persistence.FiniteWeightedBoundaryTransport
+
+import TDA.Persistence.RipsGromovHausdorff

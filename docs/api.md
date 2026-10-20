@@ -317,8 +317,15 @@ exact forward/backward field formulas and an interleaving-distance bound. The ge
 finite-face theorem requires no totality or finite image; same-antecedent pairs remain
 in the distortion premise. For finite ordered label types and a field, each actual Rips
 filter supplies its own critical grid, giving a full actual-diagram bottleneck bound ε.
-These supplied-relation results neither select Gromov–Hausdorff correspondences nor put
-a genuine metric on labels of a noninjective point cloud.
+`RipsGromovHausdorff` selects a closed Hausdorff correspondence from isometric finite
+images and uses mathlib's optimal GH coupling. It proves the full actual-diagram bound
+`dB ≤ 2 dGH`, ambient Hausdorff sampling bounds and convergence to a fixed finite
+target. The
+order-free `Rips.diagram` accepts finite metric spaces and a field in independent
+universes; `diagram_eq_dgm` identifies it with the existing actual diagram for every
+auxiliary order. Finite samples of a common possibly infinite target are compared
+only through their finite diagrams. General totally bounded/q-tame diagram existence
+remains separate. See [metric-input stability](math/rips-metric-stability.md).
 
 ## Ambient Čech complexes
 

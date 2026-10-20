@@ -113,8 +113,64 @@ This implements the supplied-distortion mechanism in CDSO Lemma 4.3's proof,
 through Proposition 4.2, at nonnegative scales. The target-distance estimate is
 derived directly from the absolute bound; the printed proof's first displayed
 comparison is not used without its additive allowance. No erratum is asserted.
-The source first selects a relation from a strict Gromov–Hausdorff bound; that
-selection and the source's whole real H₀ convention are not identified here.
+The supplied-relation theorem accepts the relation as input. The finite GH bridge
+below supplies one; the source's whole-real H₀ convention remains distinct.
 Arbitrary-ring signed chains and the finite-diagram corollary are library extensions.
 An arbitrary noninjective cloud has no genuine label metric agreeing with all
 ambient pair distances; no pseudometric or quotient-cloud foundation is supplied.
+
+## Gromov–Hausdorff stability and sampling
+
+For finite nonempty metric spaces X and Y, every field k and every degree n,
+
+bottleneck(dgm_k(Rips(X), n), dgm_k(Rips(Y), n)) ≤ 2 d_GH(X,Y).
+
+`RipsGromovHausdorff` proves this bound for the full actual diagrams, with their
+finite and essential occurrences. The Lean bound is
+`ENNReal.ofReal (2 * GromovHausdorff.ghDist X Y)`. The GH normalization
+is the usual half-distortion normalization; the constant two accompanies the
+library's diameter time. There is no equal-cardinality or supplied-correspondence
+hypothesis.
+
+In a common metric ambient space, let f and g be isometric embeddings of X and Y,
+and put r = d_H(range f, range g). The relation
+
+C = {(x,y) | dist(f(x),g(y)) ≤ r}
+
+is total on both sides: each finite image is compact, so the distance to it is
+attained. The triangle inequality bounds the distortion of C by 2r, including
+pairs sharing a source or target. The existing canonical relation interleaving
+then bounds the actual diagrams by 2r. Mathlib's optimal coupling realizes
+r = d_GH(X,Y), so the GH bound follows without assuming an optimizing
+correspondence or taking a limit of diagram matchings. The ambient space itself
+need not be compact or proper.
+
+`bottleneck_dgm_le_two_mul_ghDist` is the ordered-label entry point. `diagram k X n`
+also accepts an arbitrary finite metric space without a vertex order, even when
+the field and the two spaces live in different universes. It is the existing
+actual diagram on isometric finite labels in the field's universe.
+`diagram_eq_dgm` identifies it with the existing diagram for every vertex order;
+`dgm_eq_of_isometryEquiv` permits isometric relabellings that reverse that order.
+The chosen finite enumeration changes neither the full diagram nor the estimates.
+
+For finite samples isometrically embedded in one ambient space, Hausdorff error
+at most ε gives bottleneck error at most 2ε. If two finite samples are within
+extended Hausdorff errors ε and δ of the same possibly infinite set, their finite
+diagrams are within 2(ε+δ). Extended Hausdorff distance is used for those hypotheses
+so that an empty or unbounded target cannot create a spurious zero error through
+the real-valued convention at infinity. Convergence in Hausdorff distance to a
+fixed finite nonempty target therefore gives convergence of the full actual
+diagrams in bottleneck distance, with varying sample cardinalities allowed.
+
+The correspondence argument specializes the mechanism of CDSO13-v3 §4.2 and
+Lemma 4.3 to finite metric spaces, using mathlib's GH coupling and the library's
+actual-diagram theorem. It retains the library's empty negative tail; it makes no
+whole-real H₀ identification with the source's nonpositive-time vertex convention.
+Theorem 5.2's totally bounded extension would also require q-tameness and an actual
+possibly infinite diagram construction. Neither follows from the finite sampling
+comparison above, which compares only finite diagrams.
+
+These results are abstract existence and correctness statements. Finite labels can
+support executable consumers when exact distance comparisons are available; no
+algorithm for optimizing GH distance over arbitrary real data or for computing
+homology over an arbitrary abstract field is asserted.
