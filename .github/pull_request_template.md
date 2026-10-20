@@ -27,7 +27,8 @@ whether a required exact public name and type is preserved. Otherwise write
 results, and the hosted CI run for this head. Require the existing workflow's `check` to succeed;
 local success does not replace it. For prose-only changes, report focused checks and the workflow's
 conditional build skip honestly. Keep existing docs/note conditions; do not add CI-skip markers
-to suppress routine validation or run full doc generation merely for this section. -->
+to suppress routine validation or run full doc generation merely for this section.
+Distinguish checks performed, failed and not run, including unavailable source searches. -->
 
 ## Remaining sorry / custom-axiom footprint
 <!-- "none", or each ALLOW_SORRY / ALLOW_AXIOM marker with its authorising Issue. -->
@@ -36,3 +37,7 @@ to suppress routine validation or run full doc generation merely for this sectio
 <!-- Reviewer identity distinct from the implementer, with a link. For statement-changing PRs the review
 must cover: literal Lean vs source; proof integrity and hidden assumptions; adversarial boundary cases and
 quantifier/domain mistakes; unnecessary bookkeeping or transient artefacts. -->
+<!-- Apply lean-review-routing § Semantic and API quality to the changed surface and relevant
+consumers: concrete reuse candidates and compatibility, characteristic API, extensionality,
+nondegenerate examples and natural hypotheses. State actual coverage and limitations; reuse
+successful mechanical CI evidence instead of repeating those checks in review. -->

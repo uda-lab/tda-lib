@@ -36,6 +36,25 @@ parent-approval checkpoint.
 
 ## Preparing and completing a release
 
+During preparation, apply the semantic and API criteria in
+[lean-review-routing](.agents/skills/lean-review-routing/SKILL.md#semantic-and-api-quality)
+to the actual exported API planned for the release. Begin with a bounded representative
+API pilot, then record the remaining areas and consumer paths in the governing release
+Issue. Keep detailed pilot results, findings, dispositions and validation on the review/fix
+PRs under lean-review-routing's evidence-placement rule. Inspect characteristic lemmas,
+meaningful examples, concrete upstream reuse and hypothesis strength alongside mathematical
+correctness and public exposition.
+
+Group concrete findings as mathematical correctness, API usability or maintainability.
+Apply safe targeted improvements through ordinary develop PRs without weakening statements;
+preserve compatibility or document the migration. Reuse completed source-fidelity and
+exhaustive audit evidence for the scope it covers. Verify fixes through the existing
+applicable checks and independent final-head review. Record exact dependencies for changes
+that overlap active packages and continue independent work. This consolidated review and
+refactoring is part of the current release preparation; it adds no routine approval stage
+or library-wide merge hold. The release Issue links outstanding review/fix PRs that affect
+the selected scope before the release head is validated.
+
 1. Record the release scope, version and selected `develop` base in the governing Issue.
    Cut `release/<version>` at that base. Stabilization, release metadata and bounded fixes
    belong there; unrelated new work continues on `develop`.
