@@ -763,9 +763,9 @@ claims concern finite graph-PL inputs, not arbitrary higher-dimensional Reeb spa
 Finite GH–Rips stability and sampling compare full diagrams of finite metric spaces;
 the possibly infinite sampling target has no diagram in these results. Finite
 weighted boundary transport permits real masses but does not identify all Radon
-couplings. Finite-line and matrix-sequence adapters construct modules over a
-ring and reuse finite interval classification over a field; they do not compute
-barcodes over arbitrary fields. Gaussian
+couplings. Finite-line adapters construct modules over a ring; rectangular
+matrix-sequence adapters require a commutative ring. Over a field, both reuse
+finite interval classification without computing barcodes over arbitrary fields. Gaussian
 C₀ universality and signed-measure separation concern the full birth–death plane;
 positive persistence measures require a strictly positive weight and finite weighted
 mass. These conclusions do not make finite-pixel images characteristic.

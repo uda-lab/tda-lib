@@ -116,9 +116,9 @@ The `develop` branch includes these additional bounded results. The
   in one ambient metric space have a twice-Hausdorff-error bound; two samples of
   a possibly infinite target have a bound of twice their summed errors, comparing
   their finite diagrams only. Hausdorff-convergent samples of a fixed finite target
-  have bottleneck-convergent full diagrams. Adjacent maps and rectangular matrix
-  sequences give finite persistence modules over a ring. Over a field, their
-  interval barcodes are independent of supplied bases; a zero-left-tail,
+  have bottleneck-convergent full diagrams. Adjacent maps give finite persistence
+  modules over a ring; rectangular matrix sequences require a commutative ring.
+  Over a field, their interval barcodes are independent of supplied bases; a zero-left-tail,
   constant-final-cell adapter retains supplied real
   critical values and their finite or essential endpoints. These are theory
   adapters, not executable extraction. Exact diagrams and bottleneck values over
