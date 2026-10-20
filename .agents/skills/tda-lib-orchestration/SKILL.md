@@ -44,6 +44,10 @@ Apply evaluated-head binding and existing review/validation gates to both method
 
 State the next target scope/milestone in the governing Issue/Project. A release version
 may be undecided before release cut, when the actual version and included scope are fixed.
+Apply `lean-review-routing` § Semantic and API quality now and during CONTRIBUTING.md's
+pre-release consolidated review/refactoring. Keep pilot results, concrete findings and
+validation evidence on the normal PRs; the governing release Issue defines the remaining
+exported-API scope and dependencies and links outstanding review/fix PRs. Use the existing gates.
 The actual reviewed release head may include fixes after its develop base; preserve that
 head as a main-merge parent and verify the reviewed tree before any authorized tag.
 Propagate release/hotfix/main-first README corrections and verify intended content on

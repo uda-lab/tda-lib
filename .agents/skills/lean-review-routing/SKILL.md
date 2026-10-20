@@ -17,9 +17,12 @@ updated in place for each new head rather than appended as comments. Findings an
 dispositions live in the PR's review threads or one grouped PR comment. The governing Issue
 receives one short pickup line, one closing pointer to the integration commit, and only the
 reports this loop requires of the driver: a genuine specification change for dot's ruling,
-or a missing-source record under the source-fidelity policy. Nothing else goes there (no
-scratch source, hashes, probe narratives, progress or chronology). The commit SHA and the
-PR's Review events identify the evidence; do not restate them in prose.
+or a missing-source record under the source-fidelity policy. The governing release Issue
+defines the review scope, consumer paths and dependencies under CONTRIBUTING.md and links
+outstanding review/fix PRs that affect the selected scope. Detailed pilot results, findings,
+dispositions and validation evidence stay on those PRs. Keep scratch source, probe narratives,
+progress and chronology out of Issues. The commit SHA and the PR's Review events identify
+the evidence; do not restate them in prose.
 
 ## Local review (conditional, before the PR)
 
@@ -38,8 +41,9 @@ Frame it as **numbered, falsifiable risks**, never "review this" (a generic prom
    § Contract-aware comparison, not assumed harmless or fatal;
 2. no proxy hypothesis replaced a source hypothesis (bounded for compact, separable for
    Polish, …);
-3. every claimed public theorem is appended to its area's `scripts/print_axioms/<Area>.lean`;
-4. no `sorry`/`axiom` outside an Issue-authorised `ALLOW_` marker;
+3. the semantic and API risks in § Semantic and API quality, scoped to the changed surface;
+4. any unresolved limitation in the gate evidence (including axiom audit and public theorem
+   coverage); use successful mechanical results rather than independently repeating them;
 5. no transient artefact, bookkeeping or chronology added to the tree;
 6. the Issue's own traps.
 
@@ -60,7 +64,61 @@ LOOP_JOB_ID=tda-lib/issue-<n>/review scripts/codex.sh exec -C <worktree> --sandb
 Resolve model and effort using dot's runtime. Claude Code may use its available read-only
 reviewer facility under the same identity. No plugin is required.
 
+## Semantic and API quality
+
+Apply these criteria in the existing review route to the changed public surface and its
+relevant consumers. They apply during current development and the pre-release consolidated
+pass in CONTRIBUTING.md. Successful CI establishes the mechanical checks it actually ran;
+reviewers spend their effort on the mathematical meaning and use of the API.
+
+- **Faithfulness.** Read definitions, inherited hypotheses and structure fields against the
+  intended mathematics. Detect conclusions assumed as premises or hidden in fields, circular
+  prerequisites, inconsistent or vacuous hypotheses, and trivial stand-ins. Distinguish an
+  honest interface assumption from a missing result presented as proved. For bundled data,
+  ask whether unused freedoms allow objects with the same mathematical meaning to differ;
+  check extensionality on the inputs the operations and laws actually use. Preserve genuinely
+  meaningful choices, such as a selected refinement's index map.
+- **Concrete reuse.** Search the pinned mathlib, this library and relevant TauCeti sources
+  for the changed constructions and substantial proof steps. A duplication finding names
+  the existing declaration, its source revision and how to use it (a short replacement proof
+  when useful). Separate exact reuse from a bridge requiring different hypotheses, semantics
+  or toolchain. A similarly named object is not evidence of duplication; unavailable search
+  is not evidence of absence. Do not introduce a dependency or change a pin merely to satisfy
+  a reuse suggestion.
+- **Usable interface.** Try representative downstream uses through public lemmas, without
+  unfolding implementation definitions. Supply the useful characteristic, introduction,
+  elimination, membership, extensionality and operation lemmas for the object's intended
+  use; do not require every lemma shape for every definition. Prefer stable simplification
+  normal forms and existing combinators to repeated low-level proof plumbing. Keep reusable
+  results public in their natural home and proof-specific helpers private.
+- **Examples and hypotheses.** Exercise a nondegenerate witness or meaningful consumer as
+  well as relevant empty, zero and boundary cases. Existing examples can supply this evidence;
+  add a focused example when they cannot. Choose the naturally weakest sufficient hypotheses,
+  showing the proposed signature and a checked specialisation when needed. Avoid both unused
+  assumptions and speculative abstraction. Apply § Contract-aware comparison to frozen
+  interfaces and source claims; a shorter hypothesis list alone proves no comparison.
+- **Computability and exposition.** Review abstract theory, executable finite procedures
+  and correctness bridges as separate contracts. Noncomputable abstract constructions are
+  legitimate; require executability where the procedure promises it and verify the bridge
+  to its mathematical specification. Do not turn this into a library-wide constructive
+  rewrite. Public mathematical documentation explains objects, hypotheses, results and
+  limitations in prerequisite order, without maintenance history or unsupported overclaims.
+
+Record the specific declarations and consumers examined, evidence for each concrete finding,
+and checks performed, failed or not run. A green review summary does not establish source
+search or execution that failed. Use the existing PR validation block and review findings;
+no separate scorecard, fixed search count, reviewer roster or routine probe is required.
+Classify findings and dispose of them under the existing rules below. Preserve compatibility
+or state the migration explicitly when a justified API change is made.
+
+These criteria adapt the [TauCeti review rubrics](https://github.com/TauCetiProject/TauCetiReview/tree/76c58c3cffeefb1979e673d71e46c5359237e1dd/rubrics)
+on correctness, reuse, API design and generality. Their repository-specific scoring, routing
+and compatibility policies do not govern tda-lib.
+
 ## PR review (evidence for `github-driven-workflow` §8)
+
+Include § Semantic and API quality in the review scope and give the reviewer the relevant
+consumer paths and existing gate evidence. Use the route below; this adds no review stage.
 
 - **Broker route** (when `REVIEW_ACQUIRE_SCRIPT` is set): `python3 "$REVIEW_ACQUIRE_SCRIPT"
   <owner>/<repo> <PR> <kind>` verbatim — never copy, relocate, unset or self-point it. Kind
@@ -126,7 +184,9 @@ A finding is **substantive** (blocking) if acting on it would change a Lean stat
 validity of a proof step, the axiom footprint, the behaviour of a guard or CI, or the
 correspondence between the Lean development and the source. Severity follows the established
 mathematical defect or contract violation (§ Contract-aware comparison), not the mere absence
-of a written hypothesis. Wording, naming, comment style,
+of a written hypothesis. An unusable or incompatible required API, unconstrained data that
+breaks its equality contract, or a mathematical overclaim is classified by that defect;
+cosmetic API preferences alone are non-substantive. Wording, naming, comment style,
 preference and restatement of something already correct are not, however confidently argued.
 
 - Substantive → fix, push, record the disposition, and re-request review of the new head

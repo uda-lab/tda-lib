@@ -2880,6 +2880,32 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteWeightedDiagram.pBoundaryTransportCost_zero
 #print axioms TDA.Persistence.FiniteWeightedBoundaryPlan.instNonempty
 
+-- Finite Gromov–Hausdorff Rips stability and sampling.
+#print axioms TDA.Persistence.Rips.exists_relation_distortion_le_hausdorffDist
+#print axioms TDA.Persistence.Rips.bottleneck_dgm_le_two_mul_hausdorffDist
+#print axioms TDA.Persistence.Rips.bottleneck_dgm_le_two_mul_ghDist
+#print axioms TDA.Persistence.Rips.dgm_eq_of_isometryEquiv
+#print axioms TDA.Persistence.Rips.diagram
+#print axioms TDA.Persistence.Rips.diagram_isPositive
+#print axioms TDA.Persistence.Rips.diagram_eq_dgm
+#print axioms TDA.Persistence.Rips.bottleneck_diagram_le_two_mul_hausdorffDist
+#print axioms TDA.Persistence.Rips.bottleneck_diagram_le_two_mul_ghDist
+#print axioms TDA.Persistence.Rips.diagram_eq_of_isometryEquiv
+#print axioms TDA.Persistence.Rips.bottleneck_diagram_le_two_mul_of_hausdorffDist_le
+#print axioms TDA.Persistence.Rips.bottleneck_diagram_le_two_mul_sampling_errors
+#print axioms TDA.Persistence.Rips.tendsto_bottleneck_diagram_of_hausdorffDist_tendsto_zero
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_triangle_gh_bound
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_points_actual_diagram
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_triangle_positive_discrepancy
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_triangle_same_essential
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.diameter_scale_control
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.midpoint_sampling_bound
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.midpoint_many_to_one
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.lifted_field_gh_bound
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.reversedEquiv_not_monotone
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.reversed_labels_same_diagram
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.reversed_labels_zero_bottleneck
+
 -- Finite-line representations and adjacent-map reconstruction.
 #print axioms TDA.Persistence.FiniteLine
 #print axioms TDA.Persistence.FiniteLine.le_of_path
