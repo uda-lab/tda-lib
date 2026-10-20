@@ -17,9 +17,12 @@ updated in place for each new head rather than appended as comments. Findings an
 dispositions live in the PR's review threads or one grouped PR comment. The governing Issue
 receives one short pickup line, one closing pointer to the integration commit, and only the
 reports this loop requires of the driver: a genuine specification change for dot's ruling,
-or a missing-source record under the source-fidelity policy. Nothing else goes there (no
-scratch source, hashes, probe narratives, progress or chronology). The commit SHA and the
-PR's Review events identify the evidence; do not restate them in prose.
+or a missing-source record under the source-fidelity policy. The governing release Issue
+defines the review scope, consumer paths and dependencies under CONTRIBUTING.md and links
+outstanding review/fix PRs that affect the selected scope. Detailed pilot results, findings,
+dispositions and validation evidence stay on those PRs. Keep scratch source, probe narratives,
+progress and chronology out of Issues. The commit SHA and the PR's Review events identify
+the evidence; do not restate them in prose.
 
 ## Local review (conditional, before the PR)
 

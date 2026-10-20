@@ -66,8 +66,9 @@ a dependency. Keep independent source fidelity review for statement changes.
 Use [lean-review-routing](../.agents/skills/lean-review-routing/SKILL.md#semantic-and-api-quality)
 for semantic and API quality in ordinary reviews. The consolidated review/refactoring in
 CONTRIBUTING.md applies the same criteria to the selected release's exported APIs, starting
-with a bounded pilot. Keep concrete findings and remaining scope in the existing Issue/PR
-records and route targeted fixes through the normal gates.
+with a bounded pilot. Define remaining scope and dependencies on the release Issue and link
+outstanding review/fix PRs there. Keep detailed pilot results, findings and validation on
+those PRs and route targeted fixes through the normal gates.
 
 ## Intake and concurrency
 
