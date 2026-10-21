@@ -349,6 +349,102 @@ Only the statement shape of DMP15-v1 Definition 4.36 is attributed here; the ref
 constructible smoothing, interleaving equivalence and distance results are library statements.
 Constructibility of `T_ε X` itself is not claimed.
 
+## Level perturbations of a fixed presentation
+
+Let `P : CylinderPresentation n` and let `S T : CriticalValues n` have the same number of
+levels. The presentation pieces and endpoint maps stay fixed. On each segment, `segMap S T`
+is the affine map sending the lower and upper `S` endpoints to the corresponding `T`
+endpoints. Its endpoint and inverse laws allow `levelMap` to descend through `CompatibleMaps`
+and `lift`; `levelHomeomorph` is a homeomorphism `P.Realization S ≃ₜ P.Realization T`.
+These constructions and the pointwise height bound are universe-polymorphic and need no
+compactness or local path-connectedness assumptions.
+
+The transported height on the fixed carrier `P.Realization S` is
+`(P.height T).comp (P.levelMap S T)`. The segment displacement is a convex combination of
+the endpoint displacements, so `abs_height_sub_height_levelMap_le` and
+`edist_height_levelMap_le` bound its difference from `P.height S` by the literal mathlib sup
+distance `edist S.value T.value`.
+
+For the constructible-space interfaces, `P` is in universe `0` and all vertex and edge pieces
+are compact and locally path-connected. `isConstructibleSpace_realization` packages its
+realization as `P.realizationSpace S`. `levelOverIso` identifies the transported height with
+the realization at `T`, proving `isConstructibleSpace_height_comp_levelMap`. Thus the second
+height is constructible by construction. Sup-norm stability gives
+
+```lean
+constructibleInterleavingDistance (P.realizationSpace S) (P.realizationSpace T) ≤
+  edist S.value T.value
+```
+
+by `constructibleInterleavingDistance_realizationSpace_le`.
+
+More generally, a specified presentation isomorphism
+`i : A ≅ Over.mk (TopCat.ofHom (P.height S))` determines `P.levelPerturbation i T` on the
+original carrier `A.left`. Both objects are constructible, by
+`isConstructibleSpace_of_iso_realization` and `isConstructibleSpace_levelPerturbation`.
+The carrier form `constructibleInterleavingDistance_levelPerturbation_le` bounds their
+distance by the actual sup distance of their heights on `A.left`; `edist_levelPerturbation_le`
+then bounds that quantity by `edist S.value T.value`. On fixed finite incidence data `D`,
+`geometricInterleavingDistance_toRGraph_le` gives the graph-object form
+
+```lean
+geometricInterleavingDistance ((toRGraph S).obj D) ((toRGraph T).obj D) ≤
+  edist S.value T.value
+```
+
+`heightRange_quotientRGraphFunctor_obj` proves that passing to the Reeb graph preserves the
+height range. For nonempty constructible spaces `X` and `Y`, the boundedness of these ranges
+and the Hausdorff height-range obstruction give
+
+```lean
+ENNReal.ofReal |sSup (Set.range (overBaseMap X.obj)) -
+    sSup (Set.range (overBaseMap Y.obj))| ≤ constructibleInterleavingDistance X Y
+```
+
+by `ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance`. Both nonempty carrier
+hypotheses are explicit. The ranges are the actual sets of attained heights; extreme listed
+levels need not be occupied.
+
+`CriticalValues.translate S c` adds `c` to every level and retains strict monotonicity.
+`edist_translate` identifies the level-list distance with `ENNReal.ofReal |c|`, and
+`height_levelMap_translate` says that every point's height increases by `c`. For a nonempty
+realization, the translated height range is the image of the original range under addition
+by `c`, so its supremum also increases by `c`. The upper bound and the general supremum
+lower bound therefore agree:
+
+```lean
+constructibleInterleavingDistance (P.realizationSpace S)
+    (P.realizationSpace (S.translate c)) = ENNReal.ofReal |c|
+```
+
+This is `constructibleInterleavingDistance_realizationSpace_translate`, with
+`[Nonempty (P.Realization S)]` and no sign restriction on `c`.
+
+The acceptance fixtures in `TDA.Reeb.ConstructiblePerturbationExamples` cover:
+
+- **P1:** `singleton_stability_attained` applies the new finite-data bound to arbitrary singleton
+  heights and reuses the exact singleton distance to show attainment.
+- **P2:** `singleEdge_geometric_distance_eq_one` moves the top level from `1` to `2`; the upper
+  bound and the supremum lower bound both give distance `1`.
+- **P3:** `cycle_translation_distance` gives the exact translation value for `cycleData` over
+  `S012`, for every real `c`.
+- **P4:** `pinchI_transported_height_constructible` and `pinchI_constructible_stability_le_one`
+  exercise the thickened pinch, with continuous pieces and a noninjective attachment. The
+  carrier fixtures also use a nonidentity presentation isomorphism.
+- **N1:** `reversed_levels_not_criticalValues` rejects the assignment `![1, 0]`.
+- **N2:** `empty_translation_distance_zero` proves that an empty realization has distance `0`
+  from its unit translate, which differs from `ENNReal.ofReal |1|`. The nonempty hypothesis
+  of the exact translation theorem is necessary.
+- **N3:** `pinchI_identity` gives the identity level map and distance at most `0` on the
+  thickened pinch.
+
+This API changes only the level list of a fixed presentation with the same `n`. It does not
+compare different presentations or level counts. Arbitrary continuous perturbations, such
+as a bump on a cylinder, need not preserve constructibility and are outside this API. The
+homeomorphism, constructibility transfer, stability compositions, supremum lower bound and
+exact translation value are library derivations from the cylinder-presentation and sup-norm
+stability APIs; no new numbered source result is attributed to them.
+
 ## Source correspondence
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4. As in `reeb-geometric-interleaving.md`,

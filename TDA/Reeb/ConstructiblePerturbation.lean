@@ -2,6 +2,7 @@ import TDA.Reeb.ConstructibleGeometricInterleaving
 import TDA.Reeb.GeometricDistanceBounds
 import Mathlib.Topology.MetricSpace.Pseudo.Pi
 import Mathlib.Topology.MetricSpace.UniformConvergence
+import Mathlib.Order.ConditionallyCompleteLattice.Indexed
 
 /-!
 # Level changes of a fixed cylinder presentation
@@ -17,7 +18,10 @@ realizations and the transported heights are constructible spaces. A specified
 presentation also gives a constructible level perturbation on any isomorphic
 carrier, with the same bound on the sup distance of the heights. Sup-norm
 stability then bounds the constructible distance, and its graph specialization
-bounds the geometric distance for fixed finite incidence data.
+bounds the geometric distance for fixed finite incidence data. The Reeb quotient
+preserves the height range, whose supremum difference gives a lower bound for
+the distance between nonempty constructible spaces. In particular, vertical
+translation by `c` has distance exactly `|c|` whenever the realization is nonempty.
 -/
 
 set_option autoImplicit false
@@ -321,6 +325,126 @@ theorem geometricInterleavingDistance_toRGraph_le (D : FiniteReebData.{0} n)
     ((CylinderPresentation.ofFiniteData D).realizationSpace S)
     ((CylinderPresentation.ofFiniteData D).realizationSpace T) ≤ _
   exact constructibleInterleavingDistance_realizationSpace_le _ S T
+
+/-- Passing to the Reeb graph preserves the entire height range. -/
+theorem heightRange_quotientRGraphFunctor_obj (X : ConstructibleSpaceCat) :
+    heightRange (quotientRGraphFunctor.obj X) = Set.range (overBaseMap X.obj) := by
+  change Set.range (ReebQuotient.height (overBaseMap X.obj)) = Set.range (overBaseMap X.obj)
+  ext t
+  constructor
+  · rintro ⟨q, rfl⟩
+    obtain ⟨x, rfl⟩ := ReebQuotient.mk_surjective (overBaseMap X.obj) q
+    exact ⟨x, rfl⟩
+  · rintro ⟨x, rfl⟩
+    exact ⟨ReebQuotient.mk (overBaseMap X.obj) x, rfl⟩
+
+/-- The suprema of the height ranges of nonempty constructible spaces differ
+by at most their constructible interleaving distance. -/
+theorem ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance
+    (X Y : ConstructibleSpaceCat) [Nonempty X.obj.left] [Nonempty Y.obj.left] :
+    ENNReal.ofReal |sSup (Set.range (overBaseMap X.obj)) - sSup (Set.range (overBaseMap Y.obj))| ≤
+      constructibleInterleavingDistance X Y := by
+  have hbX := bddAbove_heightRange (quotientRGraphFunctor.obj X)
+  have hbY := bddAbove_heightRange (quotientRGraphFunctor.obj Y)
+  rw [heightRange_quotientRGraphFunctor_obj] at hbX hbY
+  have h := ofReal_abs_sSup_sub_le_hausdorffEDist (Set.range_nonempty _) (Set.range_nonempty _)
+    hbX hbY
+  rw [constructibleInterleavingDistance_eq_geometricInterleavingDistance]
+  exact h.trans (by
+    simpa only [heightRange_quotientRGraphFunctor_obj] using
+      hausdorffEDist_heightRange_le_geometricInterleavingDistance
+        (quotientRGraphFunctor.obj X) (quotientRGraphFunctor.obj Y))
+
+end RGraph
+
+namespace CriticalValues
+
+variable {n : ℕ}
+
+/-- Vertical translation of all levels by the same real constant. -/
+def translate (S : CriticalValues n) (c : ℝ) : CriticalValues n :=
+  ⟨fun i => S.value i + c, S.strictMono.add_const c⟩
+
+/-- The sup distance of a level list from its vertical translate is the translation size. -/
+theorem edist_translate (S : CriticalValues n) (c : ℝ) :
+    edist S.value (S.translate c).value = ENNReal.ofReal |c| := by
+  have h (i : Fin (n + 1)) :
+      edist (S.value i) ((S.translate c).value i) = ENNReal.ofReal |c| := by
+    rw [edist_dist, Real.dist_eq]
+    change ENNReal.ofReal |S.value i - (S.value i + c)| = _
+    rw [show S.value i - (S.value i + c) = -c by ring, abs_neg]
+  apply le_antisymm
+  · exact edist_pi_le_iff.mpr fun i => (h i).le
+  · exact (h 0).symm.le.trans (edist_le_pi_edist S.value (S.translate c).value 0)
+
+end CriticalValues
+
+namespace CylinderPresentation
+
+variable {n : ℕ} (P : CylinderPresentation.{u} n)
+
+/-- Translating the levels translates every point's height by the same constant. -/
+theorem height_levelMap_translate (S : CriticalValues n) (c : ℝ) (q : P.Realization S) :
+    P.height (S.translate c) (P.levelMap S (S.translate c) q) = P.height S q + c := by
+  obtain ⟨x, rfl⟩ := P.quotMk_surjective S q
+  rcases x with ⟨i, v⟩ | ⟨e, y, t⟩
+  · change P.height (S.translate c) (P.levelMap S (S.translate c) (P.ofVertex S i v)) =
+      P.height S (P.ofVertex S i v) + c
+    rw [levelMap_ofVertex, height_ofVertex, height_ofVertex]
+    rfl
+  · change P.height (S.translate c) (P.levelMap S (S.translate c)
+      (P.ofCylinder S e (y, t))) = _
+    simp only [levelMap_ofCylinder, height_ofCylinder]
+    have hs : S.value e.succ - S.value e.castSucc ≠ 0 :=
+      (sub_pos.mpr (S.value_castSucc_lt_succ e)).ne'
+    change S.value e.castSucc + c + ((t : ℝ) - S.value e.castSucc) /
+      (S.value e.succ - S.value e.castSucc) *
+      ((S.value e.succ + c) - (S.value e.castSucc + c)) = (t : ℝ) + c
+    field_simp
+    ring
+
+end CylinderPresentation
+
+namespace RGraph
+
+variable {n : ℕ} (P : CylinderPresentation.{0} n)
+  [∀ i, CompactSpace (P.V i)] [∀ i, LocallyPathConnectedSpace (P.V i)]
+  [∀ e, CompactSpace (P.E e)] [∀ e, LocallyPathConnectedSpace (P.E e)]
+
+/-- A nonempty realization has constructible distance exactly `|c|` from its vertical translate. -/
+theorem constructibleInterleavingDistance_realizationSpace_translate (S : CriticalValues n)
+    (c : ℝ) [Nonempty (P.Realization S)] :
+    constructibleInterleavingDistance (P.realizationSpace S)
+        (P.realizationSpace (S.translate c)) = ENNReal.ofReal |c| := by
+  apply le_antisymm
+  · simpa only [S.edist_translate c] using
+      constructibleInterleavingDistance_realizationSpace_le P S (S.translate c)
+  · obtain ⟨q⟩ := (inferInstance : Nonempty (P.Realization S))
+    let : Nonempty (P.realizationSpace S).obj.left := ⟨q⟩
+    let : Nonempty (P.realizationSpace (S.translate c)).obj.left :=
+      ⟨P.levelMap S (S.translate c) q⟩
+    have h := ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance
+      (P.realizationSpace S) (P.realizationSpace (S.translate c))
+    have hrange : Set.range (P.height (S.translate c)) =
+        (fun t : ℝ => t + c) '' Set.range (P.height S) := by
+      ext t
+      constructor
+      · rintro ⟨y, rfl⟩
+        obtain ⟨x, rfl⟩ := (P.levelHomeomorph S (S.translate c)).surjective y
+        exact ⟨P.height S x, ⟨x, rfl⟩, (P.height_levelMap_translate S c x).symm⟩
+      · rintro ⟨t, ⟨x, rfl⟩, rfl⟩
+        exact ⟨P.levelMap S (S.translate c) x, P.height_levelMap_translate S c x⟩
+    have hb : BddAbove (Set.range (P.height S)) :=
+      ⟨S.value (Fin.last n), fun _ ⟨x, hx⟩ => hx ▸ (P.height_mem_Icc S x).2⟩
+    have hsup : sSup (Set.range (P.height (S.translate c))) =
+        sSup (Set.range (P.height S)) + c := by
+      rw [hrange]
+      exact ((OrderIso.addRight c).map_csSup' (Set.range_nonempty _) hb).symm
+    change ENNReal.ofReal |sSup (Set.range (P.height S)) -
+      sSup (Set.range (P.height (S.translate c)))| ≤ _ at h
+    rw [hsup, show sSup (Set.range (P.height S)) -
+      (sSup (Set.range (P.height S)) + c) = -c by ring, abs_neg] at h
+    exact h
 
 end RGraph
 

@@ -3094,3 +3094,24 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.singleEdge_geometric_stability_le_one
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_constructible_stability_le_one
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_carrier_stability
+
+-- Height-range lower bounds for nonempty constructible spaces.
+#print axioms TDA.Reeb.RGraph.heightRange_quotientRGraphFunctor_obj
+#print axioms TDA.Reeb.RGraph.ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.one_le_pinchI_constructible_distance
+
+-- Exact distance under vertical translation of the levels.
+#print axioms TDA.Reeb.CriticalValues.translate
+#print axioms TDA.Reeb.CriticalValues.edist_translate
+#print axioms TDA.Reeb.CylinderPresentation.height_levelMap_translate
+#print axioms TDA.Reeb.RGraph.constructibleInterleavingDistance_realizationSpace_translate
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_translation_distance
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.interval_zero_gap_translation_distance
+
+-- Acceptance fixtures for level perturbations of a fixed presentation.
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.singleton_stability_attained
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.singleEdge_geometric_distance_eq_one
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.cycle_translation_distance
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.reversed_levels_not_criticalValues
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.empty_translation_distance_zero
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_identity
