@@ -1,5 +1,6 @@
 import TDA.Reeb.ConstructiblePerturbation
 import TDA.Reeb.ConstructibleSpaceExamples
+import TDA.Reeb.ConstructibleQuotientExamples
 
 /-!
 # Carrier-level fixtures for changes of levels
@@ -7,7 +8,9 @@ import TDA.Reeb.ConstructibleSpaceExamples
 The pinch presentation has a noninjective attachment map. Stretching its single
 gap changes the midpoint height, preserves the endpoint identifications and has
 the inverse supplied by the level homeomorphism. These fixtures concern the
-carrier-level API; they make no interleaving-distance claim.
+carrier-level API; they make no interleaving-distance claim. The thickened pinch
+also exercises constructibility on continuous pieces and on a carrier presented
+by a nonidentity level isomorphism.
 -/
 
 set_option autoImplicit false
@@ -47,6 +50,37 @@ theorem pinch_levelHomeomorph_roundTrip (q : pinch.Realization S01) :
 /-- With no level change, the induced continuous map is the identity. -/
 theorem pinch_levelMap_self : pinch.levelMap S01 S01 = ContinuousMap.id _ :=
   pinch.levelMap_self S01
+
+section thickened
+
+open CategoryTheory
+open Examples.ConstructibleQuotient (pinchI pinchI_left_not_injective)
+
+attribute [local instance] Examples.ConstructibleQuotient.locallyPathConnectedSpace_unitInterval
+
+/-- Continuous pieces with a noninjective attachment retain constructibility after a level change. -/
+theorem pinchI_transported_height_constructible :
+    ¬ Function.Injective (pinchI.left 0) ∧
+      IsConstructibleSpace (Over.mk (TopCat.ofHom
+        ((pinchI.height S02).comp (pinchI.levelMap S01 S02)))) :=
+  ⟨pinchI_left_not_injective, pinchI.isConstructibleSpace_height_comp_levelMap S01 S02⟩
+
+/-- The supplied presentation isomorphism can change the underlying realization's level list. -/
+theorem pinchI_carrier_perturbation_constructible :
+    IsConstructibleSpace (pinchI.levelPerturbation (pinchI.levelOverIso S02 S01) S02) :=
+  RGraph.isConstructibleSpace_levelPerturbation pinchI (pinchI.levelOverIso S02 S01) S02
+
+/-- The carrier bound applies through the nonidentity isomorphism from `S02` to `S01`. -/
+theorem pinchI_carrier_perturbation_edist_le :
+    edist (UniformFun.ofFun ⇑((pinchI.height S01).comp (pinchI.levelMap S02 S01)))
+        (UniformFun.ofFun ⇑(overBaseMap
+          (pinchI.levelPerturbation (pinchI.levelOverIso S02 S01) S02))) ≤ 1 := by
+  refine (RGraph.edist_levelPerturbation_le pinchI (pinchI.levelOverIso S02 S01) S02).trans ?_
+  apply edist_pi_le_iff.mpr
+  intro i
+  fin_cases i <;> norm_num [S01, S02, edist_dist, Real.dist_eq]
+
+end thickened
 
 end
 

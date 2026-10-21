@@ -3073,3 +3073,16 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinch_levelMap_glued_bottom
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinch_levelHomeomorph_roundTrip
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinch_levelMap_self
+
+-- Constructibility of level perturbations on presented carriers.
+#print axioms TDA.Reeb.CylinderPresentation.isConstructibleSpace_realization
+#print axioms TDA.Reeb.CylinderPresentation.realizationSpace
+#print axioms TDA.Reeb.CylinderPresentation.levelOverIso
+#print axioms TDA.Reeb.CylinderPresentation.isConstructibleSpace_height_comp_levelMap
+#print axioms TDA.Reeb.CylinderPresentation.levelPerturbation
+#print axioms TDA.Reeb.RGraph.isConstructibleSpace_of_iso_realization
+#print axioms TDA.Reeb.RGraph.isConstructibleSpace_levelPerturbation
+#print axioms TDA.Reeb.RGraph.edist_levelPerturbation_le
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_transported_height_constructible
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_carrier_perturbation_constructible
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_carrier_perturbation_edist_le
