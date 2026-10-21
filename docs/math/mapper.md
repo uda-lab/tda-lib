@@ -752,8 +752,8 @@ refinement `0 < 1 < 2` whose middle level is vertex-free; the Y-tree; and the
 horizontal edge, whose level has one component. The negative control uses two
 isolated vertices of heights `0` and `2` at the single level `0`: the
 precosheaf has one component over `(-1, 1)` and two over `ℝ`, so it is not
-constructible, as recorded by `missing_not_isConstructibleAt`. Thus the
-covering hypothesis cannot be dropped.
+constructible at this single-level list, as recorded by `missing_not_isConstructibleAt`.
+Thus the covering hypothesis cannot be dropped from the critical-list comparison.
 
 These graph-PL statements are elementary library results, not attributed to a
 source. The Reeb quotient homeomorphism of the realization is proved in
