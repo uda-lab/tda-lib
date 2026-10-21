@@ -15,7 +15,9 @@ needed for these carrier-level constructions.
 When the presentation pieces are compact and locally path-connected, its
 realizations and the transported heights are constructible spaces. A specified
 presentation also gives a constructible level perturbation on any isomorphic
-carrier, with the same bound on the sup distance of the heights.
+carrier, with the same bound on the sup distance of the heights. Sup-norm
+stability then bounds the constructible distance, and its graph specialization
+bounds the geometric distance for fixed finite incidence data.
 -/
 
 set_option autoImplicit false
@@ -262,6 +264,63 @@ theorem edist_levelPerturbation_le {A : Over (TopCat.of ℝ)} {S : CriticalValue
     (P.height T (P.levelMap S T (i.hom.left.hom x))) ≤ edist S.value T.value
   rw [← hi, edist_dist, edist_dist, Real.dist_eq]
   exact ENNReal.ofReal_le_ofReal (P.abs_height_sub_height_levelMap_le S T _)
+
+section stability
+
+variable [∀ i, CompactSpace (P.V i)] [∀ i, LocallyPathConnectedSpace (P.V i)]
+  [∀ e, CompactSpace (P.E e)] [∀ e, LocallyPathConnectedSpace (P.E e)]
+
+/-- The constructible distance between two level realizations of a fixed presentation
+is bounded by the sup distance of the level lists. -/
+theorem constructibleInterleavingDistance_realizationSpace_le (S T : CriticalValues n) :
+    constructibleInterleavingDistance (P.realizationSpace S) (P.realizationSpace T) ≤
+      edist S.value T.value := by
+  let hg := P.isConstructibleSpace_height_comp_levelMap S T
+  have e : P.realizationSpace T ≅ (⟨_, hg⟩ : ConstructibleSpaceCat) :=
+    ObjectProperty.isoMk _ (P.levelOverIso S T).symm
+  calc
+    _ = constructibleInterleavingDistance (P.realizationSpace S) ⟨_, hg⟩ :=
+      constructibleInterleavingDistance_congr (Iso.refl _) e
+    _ ≤ edist (UniformFun.ofFun ⇑(P.height S))
+        (UniformFun.ofFun ⇑((P.height T).comp (P.levelMap S T))) :=
+      constructibleInterleavingDistance_le_edist (P.isConstructibleSpace_realization S) hg
+    _ ≤ _ := P.edist_height_levelMap_le S T
+
+/-- The constructible distance to a level perturbation is bounded by the actual
+sup distance of the two heights on the original carrier. -/
+theorem constructibleInterleavingDistance_levelPerturbation_le {A : Over (TopCat.of ℝ)}
+    {S : CriticalValues n} (i : A ≅ Over.mk (TopCat.ofHom (P.height S)))
+    (T : CriticalValues n) :
+    constructibleInterleavingDistance ⟨A, isConstructibleSpace_of_iso_realization P i⟩
+        ⟨_, isConstructibleSpace_levelPerturbation P i T⟩ ≤
+      edist (UniformFun.ofFun ⇑(overBaseMap A))
+        (UniformFun.ofFun ⇑(overBaseMap (P.levelPerturbation i T))) := by
+  let f := overBaseMap A
+  let g := overBaseMap (P.levelPerturbation i T)
+  let e : A ≅ Over.mk (TopCat.ofHom f) :=
+    Over.isoMk (Iso.refl _) (by simp [f, overBaseMap])
+  have hf : IsConstructibleSpace (Over.mk (TopCat.ofHom f)) :=
+    isConstructibleSpace_of_iso_realization P (e.symm ≪≫ i)
+  have hg : IsConstructibleSpace (Over.mk (TopCat.ofHom g)) :=
+    isConstructibleSpace_levelPerturbation P i T
+  calc
+    _ = constructibleInterleavingDistance ⟨_, hf⟩ ⟨_, hg⟩ :=
+      constructibleInterleavingDistance_congr (ObjectProperty.isoMk _ e) (Iso.refl _)
+    _ ≤ _ := constructibleInterleavingDistance_le_edist hf hg
+
+end stability
+
+/-- Moving the levels of fixed finite incidence data changes the geometric graph
+distance by at most the sup distance of the level lists. -/
+theorem geometricInterleavingDistance_toRGraph_le (D : FiniteReebData.{0} n)
+    (S T : CriticalValues n) :
+    geometricInterleavingDistance ((toRGraph S).obj D) ((toRGraph T).obj D) ≤
+      edist S.value T.value := by
+  rw [← constructibleInterleavingDistance_rgraphToConstructible]
+  change constructibleInterleavingDistance
+    ((CylinderPresentation.ofFiniteData D).realizationSpace S)
+    ((CylinderPresentation.ofFiniteData D).realizationSpace T) ≤ _
+  exact constructibleInterleavingDistance_realizationSpace_le _ S T
 
 end RGraph
 

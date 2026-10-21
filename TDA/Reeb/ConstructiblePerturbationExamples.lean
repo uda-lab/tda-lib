@@ -1,16 +1,17 @@
 import TDA.Reeb.ConstructiblePerturbation
 import TDA.Reeb.ConstructibleSpaceExamples
 import TDA.Reeb.ConstructibleQuotientExamples
+import TDA.Reeb.RGraphExamples
 
 /-!
-# Carrier-level fixtures for changes of levels
+# Fixtures for changes of levels
 
 The pinch presentation has a noninjective attachment map. Stretching its single
 gap changes the midpoint height, preserves the endpoint identifications and has
-the inverse supplied by the level homeomorphism. These fixtures concern the
-carrier-level API; they make no interleaving-distance claim. The thickened pinch
-also exercises constructibility on continuous pieces and on a carrier presented
-by a nonidentity level isomorphism.
+the inverse supplied by the level homeomorphism. The thickened pinch exercises
+constructibility and stability on continuous pieces, including a carrier
+presented by a nonidentity level isomorphism. A single-edge graph also satisfies
+the geometric stability bound.
 -/
 
 set_option autoImplicit false
@@ -51,6 +52,18 @@ theorem pinch_levelHomeomorph_roundTrip (q : pinch.Realization S01) :
 theorem pinch_levelMap_self : pinch.levelMap S01 S01 = ContinuousMap.id _ :=
   pinch.levelMap_self S01
 
+private theorem S01_S02_edist_le_one : edist S01.value S02.value ≤ 1 := by
+  apply edist_pi_le_iff.mpr
+  intro i
+  fin_cases i <;> norm_num [S01, S02, edist_dist, Real.dist_eq]
+
+/-- The single-edge graph satisfies the level-list geometric stability bound. -/
+theorem singleEdge_geometric_stability_le_one :
+    RGraph.geometricInterleavingDistance
+        ((RGraph.toRGraph S01).obj TDA.Reeb.RGraph.Examples.singleEdge)
+        ((RGraph.toRGraph S02).obj TDA.Reeb.RGraph.Examples.singleEdge) ≤ 1 :=
+  (RGraph.geometricInterleavingDistance_toRGraph_le _ S01 S02).trans S01_S02_edist_le_one
+
 section thickened
 
 open CategoryTheory
@@ -79,6 +92,29 @@ theorem pinchI_carrier_perturbation_edist_le :
   apply edist_pi_le_iff.mpr
   intro i
   fin_cases i <;> norm_num [S01, S02, edist_dist, Real.dist_eq]
+
+/-- Stability applies to the thickened pinch, with its noninjective attachment. -/
+theorem pinchI_constructible_stability_le_one :
+    RGraph.constructibleInterleavingDistance
+      (pinchI.realizationSpace S01) (pinchI.realizationSpace S02) ≤ 1 :=
+  (RGraph.constructibleInterleavingDistance_realizationSpace_le pinchI S01 S02).trans
+    S01_S02_edist_le_one
+
+/-- The carrier theorem retains its actual height-distance bound through a nonidentity
+presentation isomorphism, and that distance is at most one in this example. -/
+theorem pinchI_carrier_stability :
+    let X : ConstructibleSpaceCat :=
+      ⟨_, pinchI.isConstructibleSpace_height_comp_levelMap S02 S01⟩
+    let Y : ConstructibleSpaceCat :=
+      ⟨_, RGraph.isConstructibleSpace_levelPerturbation pinchI
+        (pinchI.levelOverIso S02 S01) S02⟩
+    RGraph.constructibleInterleavingDistance X Y ≤
+        edist (UniformFun.ofFun ⇑(overBaseMap X.obj))
+          (UniformFun.ofFun ⇑(overBaseMap Y.obj)) ∧
+      RGraph.constructibleInterleavingDistance X Y ≤ 1 := by
+  have h := RGraph.constructibleInterleavingDistance_levelPerturbation_le pinchI
+    (pinchI.levelOverIso S02 S01) S02
+  exact ⟨h, h.trans pinchI_carrier_perturbation_edist_le⟩
 
 end thickened
 

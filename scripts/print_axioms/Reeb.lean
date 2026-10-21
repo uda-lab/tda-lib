@@ -3086,3 +3086,11 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_transported_height_constructible
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_carrier_perturbation_constructible
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_carrier_perturbation_edist_le
+
+-- Constructible and geometric stability under changes of levels.
+#print axioms TDA.Reeb.RGraph.constructibleInterleavingDistance_realizationSpace_le
+#print axioms TDA.Reeb.RGraph.constructibleInterleavingDistance_levelPerturbation_le
+#print axioms TDA.Reeb.RGraph.geometricInterleavingDistance_toRGraph_le
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.singleEdge_geometric_stability_le_one
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_constructible_stability_le_one
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_carrier_stability
