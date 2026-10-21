@@ -3051,3 +3051,25 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructibleGeometricInterleaving.constZero_isConstructibleSpace
 #print axioms TDA.Reeb.Examples.ConstructibleGeometricInterleaving.constOne_isConstructibleSpace
 #print axioms TDA.Reeb.Examples.ConstructibleGeometricInterleaving.constructibleInterleavingDistance_const_zero_one_le
+
+-- Changes of levels: segment and realization maps.
+#print axioms TDA.Reeb.CylinderPresentation.segMap
+#print axioms TDA.Reeb.CylinderPresentation.segMap_segBot
+#print axioms TDA.Reeb.CylinderPresentation.segMap_segTop
+#print axioms TDA.Reeb.CylinderPresentation.segMap_segMap
+#print axioms TDA.Reeb.CylinderPresentation.segMap_self
+#print axioms TDA.Reeb.CylinderPresentation.abs_sub_segMap_le
+#print axioms TDA.Reeb.CylinderPresentation.levelMap
+#print axioms TDA.Reeb.CylinderPresentation.levelMap_ofVertex
+#print axioms TDA.Reeb.CylinderPresentation.levelMap_ofCylinder
+#print axioms TDA.Reeb.CylinderPresentation.levelMap_levelMap
+#print axioms TDA.Reeb.CylinderPresentation.levelMap_self
+#print axioms TDA.Reeb.CylinderPresentation.levelHomeomorph
+#print axioms TDA.Reeb.CylinderPresentation.levelHomeomorph_apply
+#print axioms TDA.Reeb.CylinderPresentation.abs_height_sub_height_levelMap_le
+#print axioms TDA.Reeb.CylinderPresentation.edist_height_levelMap_le
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.S02
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinch_midpoint_height_change
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinch_levelMap_glued_bottom
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinch_levelHomeomorph_roundTrip
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinch_levelMap_self
