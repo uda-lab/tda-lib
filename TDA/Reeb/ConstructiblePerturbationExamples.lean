@@ -11,7 +11,8 @@ gap changes the midpoint height, preserves the endpoint identifications and has
 the inverse supplied by the level homeomorphism. The thickened pinch exercises
 constructibility and stability on continuous pieces, including a carrier
 presented by a nonidentity level isomorphism. A single-edge graph also satisfies
-the geometric stability bound.
+the geometric stability bound. A lower-bound fixture detects the moved upper
+level in the thickened pinch.
 -/
 
 set_option autoImplicit false
@@ -115,6 +116,31 @@ theorem pinchI_carrier_stability :
   have h := RGraph.constructibleInterleavingDistance_levelPerturbation_le pinchI
     (pinchI.levelOverIso S02 S01) S02
   exact ⟨h, h.trans pinchI_carrier_perturbation_edist_le⟩
+
+private theorem pinchI_sSup_height (S : CriticalValues 1) :
+    sSup (Set.range (pinchI.height S)) = S.value 1 := by
+  apply IsGreatest.csSup_eq
+  refine ⟨?_, ?_⟩
+  · exact ⟨pinchI.ofVertex S 1 ((false : Bool), (0 : unitInterval)),
+      pinchI.height_ofVertex S 1 _⟩
+  · rintro _ ⟨q, rfl⟩
+    exact (pinchI.height_mem_Icc S q).2
+
+/-- The general supremum obstruction detects the moved top level in a thickened pinch. -/
+theorem one_le_pinchI_constructible_distance :
+    1 ≤ RGraph.constructibleInterleavingDistance
+      (pinchI.realizationSpace S01) (pinchI.realizationSpace S02) := by
+  let : Nonempty (pinchI.realizationSpace S01).obj.left :=
+    ⟨pinchI.ofVertex S01 1 ((false : Bool), (0 : unitInterval))⟩
+  let : Nonempty (pinchI.realizationSpace S02).obj.left :=
+    ⟨pinchI.ofVertex S02 1 ((false : Bool), (0 : unitInterval))⟩
+  have h := RGraph.ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance
+    (pinchI.realizationSpace S01) (pinchI.realizationSpace S02)
+  change ENNReal.ofReal |sSup (Set.range (pinchI.height S01)) -
+      sSup (Set.range (pinchI.height S02))| ≤ _ at h
+  rw [pinchI_sSup_height S01, pinchI_sSup_height S02] at h
+  norm_num [S01, S02] at h
+  exact h
 
 end thickened
 

@@ -17,7 +17,9 @@ realizations and the transported heights are constructible spaces. A specified
 presentation also gives a constructible level perturbation on any isomorphic
 carrier, with the same bound on the sup distance of the heights. Sup-norm
 stability then bounds the constructible distance, and its graph specialization
-bounds the geometric distance for fixed finite incidence data.
+bounds the geometric distance for fixed finite incidence data. The Reeb quotient
+preserves the height range, whose supremum difference gives a lower bound for
+the distance between nonempty constructible spaces.
 -/
 
 set_option autoImplicit false
@@ -321,6 +323,35 @@ theorem geometricInterleavingDistance_toRGraph_le (D : FiniteReebData.{0} n)
     ((CylinderPresentation.ofFiniteData D).realizationSpace S)
     ((CylinderPresentation.ofFiniteData D).realizationSpace T) ≤ _
   exact constructibleInterleavingDistance_realizationSpace_le _ S T
+
+/-- Passing to the Reeb graph preserves the entire height range. -/
+theorem heightRange_quotientRGraphFunctor_obj (X : ConstructibleSpaceCat) :
+    heightRange (quotientRGraphFunctor.obj X) = Set.range (overBaseMap X.obj) := by
+  change Set.range (ReebQuotient.height (overBaseMap X.obj)) = Set.range (overBaseMap X.obj)
+  ext t
+  constructor
+  · rintro ⟨q, rfl⟩
+    obtain ⟨x, rfl⟩ := ReebQuotient.mk_surjective (overBaseMap X.obj) q
+    exact ⟨x, rfl⟩
+  · rintro ⟨x, rfl⟩
+    exact ⟨ReebQuotient.mk (overBaseMap X.obj) x, rfl⟩
+
+/-- The suprema of the height ranges of nonempty constructible spaces differ
+by at most their constructible interleaving distance. -/
+theorem ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance
+    (X Y : ConstructibleSpaceCat) [Nonempty X.obj.left] [Nonempty Y.obj.left] :
+    ENNReal.ofReal |sSup (Set.range (overBaseMap X.obj)) - sSup (Set.range (overBaseMap Y.obj))| ≤
+      constructibleInterleavingDistance X Y := by
+  have hbX := bddAbove_heightRange (quotientRGraphFunctor.obj X)
+  have hbY := bddAbove_heightRange (quotientRGraphFunctor.obj Y)
+  rw [heightRange_quotientRGraphFunctor_obj] at hbX hbY
+  have h := ofReal_abs_sSup_sub_le_hausdorffEDist (Set.range_nonempty _) (Set.range_nonempty _)
+    hbX hbY
+  rw [constructibleInterleavingDistance_eq_geometricInterleavingDistance]
+  exact h.trans (by
+    simpa only [heightRange_quotientRGraphFunctor_obj] using
+      hausdorffEDist_heightRange_le_geometricInterleavingDistance
+        (quotientRGraphFunctor.obj X) (quotientRGraphFunctor.obj Y))
 
 end RGraph
 

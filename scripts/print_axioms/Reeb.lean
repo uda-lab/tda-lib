@@ -3094,3 +3094,8 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.singleEdge_geometric_stability_le_one
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_constructible_stability_le_one
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_carrier_stability
+
+-- Height-range lower bounds for nonempty constructible spaces.
+#print axioms TDA.Reeb.RGraph.heightRange_quotientRGraphFunctor_obj
+#print axioms TDA.Reeb.RGraph.ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.one_le_pinchI_constructible_distance
