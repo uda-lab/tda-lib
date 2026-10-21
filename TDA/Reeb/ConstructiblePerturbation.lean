@@ -11,6 +11,11 @@ pieces, induces a homeomorphism between realizations of the same presentation at
 two strictly increasing level lists. The transported height differs by at most
 the sup distance between those lists. No compactness or local connectedness is
 needed for these carrier-level constructions.
+
+When the presentation pieces are compact and locally path-connected, its
+realizations and the transported heights are constructible spaces. A specified
+presentation also gives a constructible level perturbation on any isomorphic
+carrier, with the same bound on the sup distance of the heights.
 -/
 
 set_option autoImplicit false
@@ -175,3 +180,91 @@ theorem edist_height_levelMap_le :
 end
 
 end TDA.Reeb.CylinderPresentation
+
+namespace TDA.Reeb
+
+open CategoryTheory
+
+noncomputable section
+
+namespace CylinderPresentation
+
+variable {n : ℕ} (P : CylinderPresentation.{0} n)
+
+/-- The transported height and the target realization are isomorphic over `ℝ`. -/
+def levelOverIso (S T : CriticalValues n) :
+    Over.mk (TopCat.ofHom ((P.height T).comp (P.levelMap S T))) ≅
+      Over.mk (TopCat.ofHom (P.height T)) :=
+  Over.isoMk (TopCat.isoOfHomeo (P.levelHomeomorph S T)) (by ext q; rfl)
+
+/-- Change the levels of a presented object, retaining its original carrier. -/
+def levelPerturbation {A : Over (TopCat.of ℝ)} {S : CriticalValues n}
+    (i : A ≅ Over.mk (TopCat.ofHom (P.height S))) (T : CriticalValues n) :
+    Over (TopCat.of ℝ) :=
+  Over.mk (TopCat.ofHom ((P.height T).comp ((P.levelMap S T).comp i.hom.left.hom)))
+
+variable [∀ i, CompactSpace (P.V i)] [∀ i, LocallyPathConnectedSpace (P.V i)]
+  [∀ e, CompactSpace (P.E e)] [∀ e, LocallyPathConnectedSpace (P.E e)]
+
+/-- A realization with compact locally path-connected pieces is a constructible space. -/
+theorem isConstructibleSpace_realization (S : CriticalValues n) :
+    IsConstructibleSpace (Over.mk (TopCat.ofHom (P.height S))) :=
+  ⟨n, S, P, fun _ => inferInstance, fun _ => inferInstance, fun _ => inferInstance,
+    fun _ => inferInstance, ⟨Iso.refl _⟩⟩
+
+/-- The realization as a constructible `ℝ`-space. -/
+abbrev realizationSpace (S : CriticalValues n) : ConstructibleSpaceCat :=
+  ⟨_, P.isConstructibleSpace_realization S⟩
+
+/-- A level change gives a constructible height on the fixed original carrier. -/
+theorem isConstructibleSpace_height_comp_levelMap (S T : CriticalValues n) :
+    IsConstructibleSpace (Over.mk (TopCat.ofHom ((P.height T).comp (P.levelMap S T)))) :=
+  ⟨n, T, P, fun _ => inferInstance, fun _ => inferInstance, fun _ => inferInstance,
+    fun _ => inferInstance, ⟨P.levelOverIso S T⟩⟩
+
+end CylinderPresentation
+
+namespace RGraph
+
+variable {n : ℕ} (P : CylinderPresentation.{0} n)
+
+section constructible
+
+variable [∀ i, CompactSpace (P.V i)] [∀ i, LocallyPathConnectedSpace (P.V i)]
+  [∀ e, CompactSpace (P.E e)] [∀ e, LocallyPathConnectedSpace (P.E e)]
+
+/-- A specified presentation supplies constructibility of the presented object. -/
+theorem isConstructibleSpace_of_iso_realization {A : Over (TopCat.of ℝ)}
+    {S : CriticalValues n} (i : A ≅ Over.mk (TopCat.ofHom (P.height S))) :
+    IsConstructibleSpace A :=
+  ⟨n, S, P, fun _ => inferInstance, fun _ => inferInstance, fun _ => inferInstance,
+    fun _ => inferInstance, ⟨i⟩⟩
+
+/-- The level perturbation of a specified presentation is constructible. -/
+theorem isConstructibleSpace_levelPerturbation {A : Over (TopCat.of ℝ)}
+    {S : CriticalValues n} (i : A ≅ Over.mk (TopCat.ofHom (P.height S)))
+    (T : CriticalValues n) : IsConstructibleSpace (P.levelPerturbation i T) := by
+  apply isConstructibleSpace_of_iso_realization P (S := T)
+  exact Over.isoMk ((Over.forget (TopCat.of ℝ)).mapIso i ≪≫
+    TopCat.isoOfHomeo (P.levelHomeomorph S T)) (by ext x; rfl)
+
+end constructible
+
+/-- On the original carrier, the height change is bounded by the sup distance of the levels. -/
+theorem edist_levelPerturbation_le {A : Over (TopCat.of ℝ)} {S : CriticalValues n}
+    (i : A ≅ Over.mk (TopCat.ofHom (P.height S))) (T : CriticalValues n) :
+    edist (UniformFun.ofFun ⇑(overBaseMap A))
+        (UniformFun.ofFun ⇑(overBaseMap (P.levelPerturbation i T))) ≤ edist S.value T.value := by
+  apply UniformFun.edist_le.mpr
+  intro x
+  have hi : P.height S (i.hom.left.hom x) = overBaseMap A x := overBaseMap_comm i.hom x
+  change edist (overBaseMap A x)
+    (P.height T (P.levelMap S T (i.hom.left.hom x))) ≤ edist S.value T.value
+  rw [← hi, edist_dist, edist_dist, Real.dist_eq]
+  exact ENNReal.ofReal_le_ofReal (P.abs_height_sub_height_levelMap_le S T _)
+
+end RGraph
+
+end
+
+end TDA.Reeb
