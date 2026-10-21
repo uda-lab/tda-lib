@@ -20,9 +20,10 @@ with the interleaving distance of the log-scale modules. A multiplicative sandwi
 `g ≤ f ≤ c · g` bounds it by `log c`, and the Rips and Čech filters of finite metric data are
 at bottleneck distance at most `log 2`.
 
-In degree `0` every vertex of nonpositive value is present at every log time, so the log-scale
-module is not constructible on any finite grid. No statement is made about degree `0`, and no
-relation between `logDgm` and the radius-level diagram `dgm` is stated.
+If some vertex has nonpositive value, it is present at every log time, so over a field the
+degree-`0` log-scale module is not constructible on any finite grid. The diagram comparison
+results require degree `n ≥ 1`; no relation between `logDgm` and the radius-level diagram `dgm`
+is stated here.
 
 These are library extensions proved from the merged definitions.
 -/
