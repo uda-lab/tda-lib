@@ -12,7 +12,8 @@ the inverse supplied by the level homeomorphism. The thickened pinch exercises
 constructibility and stability on continuous pieces, including a carrier
 presented by a nonidentity level isomorphism. A single-edge graph also satisfies
 the geometric stability bound. A lower-bound fixture detects the moved upper
-level in the thickened pinch.
+level in the thickened pinch. Exact translation distances are exercised both on
+that presentation and on a one-level interval presentation with no edges.
 -/
 
 set_option autoImplicit false
@@ -68,7 +69,7 @@ theorem singleEdge_geometric_stability_le_one :
 section thickened
 
 open CategoryTheory
-open Examples.ConstructibleQuotient (pinchI pinchI_left_not_injective)
+open Examples.ConstructibleQuotient (pinchI pinchI_left_not_injective intervalPres)
 
 attribute [local instance] Examples.ConstructibleQuotient.locallyPathConnectedSpace_unitInterval
 
@@ -141,6 +142,25 @@ theorem one_le_pinchI_constructible_distance :
   rw [pinchI_sSup_height S01, pinchI_sSup_height S02] at h
   norm_num [S01, S02] at h
   exact h
+
+/-- A noninjective-attachment presentation with interval pieces attains the translation distance. -/
+theorem pinchI_translation_distance (c : ℝ) :
+    RGraph.constructibleInterleavingDistance (pinchI.realizationSpace S01)
+      (pinchI.realizationSpace (S01.translate c)) = ENNReal.ofReal |c| := by
+  let : Nonempty (pinchI.Realization S01) :=
+    ⟨pinchI.ofVertex S01 1 ((false : Bool), (0 : unitInterval))⟩
+  exact RGraph.constructibleInterleavingDistance_realizationSpace_translate pinchI S01 c
+
+/-- The exact formula also holds with one level, continuous vertex pieces and no edges. -/
+theorem interval_zero_gap_translation_distance (c : ℝ) :
+    RGraph.constructibleInterleavingDistance
+        (intervalPres.realizationSpace Examples.ConstructibleCylinder.S0)
+        (intervalPres.realizationSpace (Examples.ConstructibleCylinder.S0.translate c)) =
+      ENNReal.ofReal |c| := by
+  let : Nonempty (intervalPres.Realization Examples.ConstructibleCylinder.S0) :=
+    ⟨intervalPres.ofVertex Examples.ConstructibleCylinder.S0 0 (0 : unitInterval)⟩
+  exact RGraph.constructibleInterleavingDistance_realizationSpace_translate
+    intervalPres Examples.ConstructibleCylinder.S0 c
 
 end thickened
 

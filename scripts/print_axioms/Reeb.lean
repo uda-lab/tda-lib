@@ -3099,3 +3099,11 @@ import TDA
 #print axioms TDA.Reeb.RGraph.heightRange_quotientRGraphFunctor_obj
 #print axioms TDA.Reeb.RGraph.ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.one_le_pinchI_constructible_distance
+
+-- Exact distance under vertical translation of the levels.
+#print axioms TDA.Reeb.CriticalValues.translate
+#print axioms TDA.Reeb.CriticalValues.edist_translate
+#print axioms TDA.Reeb.CylinderPresentation.height_levelMap_translate
+#print axioms TDA.Reeb.RGraph.constructibleInterleavingDistance_realizationSpace_translate
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_translation_distance
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.interval_zero_gap_translation_distance
