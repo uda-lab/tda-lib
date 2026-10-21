@@ -76,7 +76,7 @@ theorem constructibleSmoothingUnit_comp_constructibleSmoothingMap {ε δ : ℝ�
   exact congrArg (fun t => t.app G.obj) (smoothingUnit_comp_smoothingMap h)
 
 /--
-The lifted composition isomorphism `S_δ S_ε ≅ S_(ε+δ)` on constructible cosheaves.
+The lifted composition isomorphism `S_ε S_δ ≅ S_(ε+δ)` on constructible cosheaves.
 -/
 def constructibleSmoothingCompIso (ε δ : ℝ≥0) :
     constructibleSmoothing.{u} δ ⋙ constructibleSmoothing ε ≅
