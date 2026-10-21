@@ -29,7 +29,20 @@ if [ ! -d "$PIN_DIR" ]; then
   echo "ERROR: missing axiom pin directory $PIN_DIR." >&2
   exit 1
 fi
-mapfile -d '' SCRIPTS < <(find "$PIN_DIR" -maxdepth 1 -type f -name '*.lean' -print0 | sort -z)
+# Bash 3.2 (the system Bash on macOS) has no `mapfile`. Check the producer's
+# status before reading its NUL-delimited, sorted stream: process substitution
+# would silently accept a partial list if `find` or `sort` failed after output.
+pin_paths_file="$(mktemp)"
+trap 'rm -f "$pin_paths_file"' EXIT
+if ! find "$PIN_DIR" -maxdepth 1 -type f -name '*.lean' -print0 | sort -z >"$pin_paths_file"; then
+  echo "ERROR: failed to enumerate $PIN_DIR; axiom audit incomplete." >&2
+  exit 1
+fi
+# Preserve spaces, newlines and a final record without a terminating NUL byte.
+SCRIPTS=()
+while IFS= read -r -d '' script_path || [ -n "$script_path" ]; do
+  SCRIPTS+=("$script_path")
+done <"$pin_paths_file"
 if [ "${#SCRIPTS[@]}" -eq 0 ]; then
   echo "ERROR: $PIN_DIR has no Lean audit files." >&2
   exit 1
@@ -43,18 +56,23 @@ fi
 # Capture with errexit disabled so a failing lean run is diagnosed loudly instead of
 # aborting before its output is shown.
 OUTPUT=""
+stderr_file="$(mktemp)"
+trap 'rm -f "$pin_paths_file" "$stderr_file"' EXIT
 for SCRIPT in "${SCRIPTS[@]}"; do
   echo "==> lake env lean $SCRIPT"
   set +e
-  result="$("$ROOT/scripts/lean.sh" lake env lean "$SCRIPT" 2>&1)"
+  result="$("$ROOT/scripts/lean.sh" lake env lean "$SCRIPT" 2>"$stderr_file")"
   STATUS=$?
   set -e
   printf '%s\n' "$result"
+  cat "$stderr_file" >&2
   if [ "$STATUS" -ne 0 ]; then
     echo "ERROR: 'lake env lean $SCRIPT' failed with exit $STATUS." >&2
     echo "  Run 'lake build' first; a pinned declaration that no longer exists also fails here." >&2
     exit 1
   fi
+  # Only Lean's stdout contains `#print axioms` records. Resource-guard notices and
+  # other stderr diagnostics are still shown above, but cannot corrupt a record.
   OUTPUT+="$result"$'\n'
 done
 
