@@ -2,6 +2,8 @@ import TDA.Reeb.ConstructiblePerturbation
 import TDA.Reeb.ConstructibleSpaceExamples
 import TDA.Reeb.ConstructibleQuotientExamples
 import TDA.Reeb.RGraphExamples
+import TDA.Reeb.GeometricDistanceBoundsExamples
+import TDA.Reeb.ConstructibleThickeningQuotientExamples
 
 /-!
 # Fixtures for changes of levels
@@ -14,6 +16,9 @@ presented by a nonidentity level isomorphism. A single-edge graph also satisfies
 the geometric stability bound. A lower-bound fixture detects the moved upper
 level in the thickened pinch. Exact translation distances are exercised both on
 that presentation and on a one-level interval presentation with no edges.
+Acceptance fixtures also cover attained singleton and single-edge bounds, a
+translated cycle, rejected reversed levels, the empty-realization boundary and
+the identity change on the thickened pinch.
 -/
 
 set_option autoImplicit false
@@ -23,6 +28,11 @@ namespace TDA.Reeb.Examples.ConstructiblePerturbation
 noncomputable section
 
 open CylinderPresentation Examples.Cylinder
+open TDA.Reeb.Examples.ConstructibleCylinder (S012)
+open TDA.Reeb.Examples.ConstructibleRepresentation (pt0)
+open TDA.Reeb.Examples.RGraphThickening (single)
+open TDA.Reeb.Examples.RGraphSmoothing (singletonGraph)
+open TDA.Reeb.RGraph.Examples (singleEdge cycleData)
 
 /-- Levels `0 < 2`. -/
 def S02 : CriticalValues 1 where
@@ -65,6 +75,84 @@ theorem singleEdge_geometric_stability_le_one :
         ((RGraph.toRGraph S01).obj TDA.Reeb.RGraph.Examples.singleEdge)
         ((RGraph.toRGraph S02).obj TDA.Reeb.RGraph.Examples.singleEdge) ≤ 1 :=
   (RGraph.geometricInterleavingDistance_toRGraph_le _ S01 S02).trans S01_S02_edist_le_one
+
+/-- The new finite-data stability bound is attained on singleton graphs at arbitrary heights. -/
+theorem singleton_stability_attained (a b : ℝ) :
+    RGraph.geometricInterleavingDistance (singletonGraph a) (singletonGraph b) ≤
+        ENNReal.ofReal |a - b| ∧
+      RGraph.geometricInterleavingDistance (singletonGraph a) (singletonGraph b) =
+        ENNReal.ofReal |a - b| := by
+  have hlevels : edist (single a).value (single b).value = ENNReal.ofReal |a - b| := by
+    change edist (fun _ : Fin 1 => a) (fun _ : Fin 1 => b) = _
+    rw [edist_pi_const, edist_dist, Real.dist_eq]
+  constructor
+  · simpa only [hlevels] using
+      RGraph.geometricInterleavingDistance_toRGraph_le pt0 (single a) (single b)
+  · exact Examples.GeometricDistanceBounds.geometricInterleavingDistance_singleton
+
+private abbrev singleEdgePresentation := ofFiniteData singleEdge
+
+private theorem singleEdge_sSup_height (S : CriticalValues 1) :
+    sSup (Set.range (singleEdgePresentation.height S)) = S.value 1 := by
+  apply IsGreatest.csSup_eq
+  refine ⟨?_, ?_⟩
+  · exact ⟨singleEdgePresentation.ofVertex S 1 (), singleEdgePresentation.height_ofVertex S 1 _⟩
+  · rintro _ ⟨q, rfl⟩
+    exact (singleEdgePresentation.height_mem_Icc S q).2
+
+/-- Moving the single edge's top from one to two has geometric distance exactly one. -/
+theorem singleEdge_geometric_distance_eq_one :
+    RGraph.geometricInterleavingDistance
+      ((RGraph.toRGraph S01).obj singleEdge) ((RGraph.toRGraph S02).obj singleEdge) = 1 := by
+  apply le_antisymm singleEdge_geometric_stability_le_one
+  rw [← RGraph.constructibleInterleavingDistance_rgraphToConstructible]
+  change 1 ≤ RGraph.constructibleInterleavingDistance
+    (singleEdgePresentation.realizationSpace S01) (singleEdgePresentation.realizationSpace S02)
+  let : Nonempty (singleEdgePresentation.realizationSpace S01).obj.left :=
+    ⟨singleEdgePresentation.ofVertex S01 1 ()⟩
+  let : Nonempty (singleEdgePresentation.realizationSpace S02).obj.left :=
+    ⟨singleEdgePresentation.ofVertex S02 1 ()⟩
+  have h := RGraph.ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance
+    (singleEdgePresentation.realizationSpace S01) (singleEdgePresentation.realizationSpace S02)
+  change ENNReal.ofReal |sSup (Set.range (singleEdgePresentation.height S01)) -
+    sSup (Set.range (singleEdgePresentation.height S02))| ≤ _ at h
+  rw [singleEdge_sSup_height S01, singleEdge_sSup_height S02] at h
+  norm_num [S01, S02] at h
+  exact h
+
+/-- The exact translation formula applies to the actual cycle data over three levels. -/
+theorem cycle_translation_distance (c : ℝ) :
+    RGraph.constructibleInterleavingDistance ((ofFiniteData cycleData).realizationSpace S012)
+        ((ofFiniteData cycleData).realizationSpace (S012.translate c)) = ENNReal.ofReal |c| := by
+  let : Nonempty ((ofFiniteData cycleData).Realization S012) :=
+    ⟨(ofFiniteData cycleData).ofVertex S012 0 ⟨0, by decide⟩⟩
+  exact RGraph.constructibleInterleavingDistance_realizationSpace_translate _ S012 c
+
+/-- A reversed reassignment is excluded by the strict monotonicity of a level list. -/
+theorem reversed_levels_not_criticalValues : ¬ ∃ S : CriticalValues 1, S.value = ![1, 0] := by
+  rintro ⟨S, hS⟩
+  have h := S.strictMono (show (0 : Fin 2) < 1 by decide)
+  rw [hS] at h
+  norm_num at h
+
+/-- Empty realizations have distance zero after translation, so the nonempty hypothesis
+of the exact translation theorem cannot be dropped. -/
+theorem empty_translation_distance_zero :
+    let d := RGraph.constructibleInterleavingDistance
+      ((ofFiniteData (emptyData 1)).realizationSpace S01)
+      ((ofFiniteData (emptyData 1)).realizationSpace (S01.translate 1))
+    d = 0 ∧ d ≠ ENNReal.ofReal |(1 : ℝ)| := by
+  let P := ofFiniteData (emptyData 1)
+  have e : P.realizationSpace S01 ≅ P.realizationSpace (S01.translate 1) :=
+    CategoryTheory.ObjectProperty.isoMk _ (CategoryTheory.Over.isoMk
+      (TopCat.isoOfHomeo (P.levelHomeomorph S01 (S01.translate 1))) (by
+        ext q
+        exact ((emptyData_isEmpty 1 S01).false q).elim))
+  have hz : RGraph.constructibleInterleavingDistance
+      (P.realizationSpace S01) (P.realizationSpace (S01.translate 1)) = 0 := by
+    rw [RGraph.constructibleInterleavingDistance_congr (CategoryTheory.Iso.refl _) e.symm]
+    exact RGraph.constructibleInterleavingDistance_self _
+  exact ⟨hz, by rw [hz]; norm_num⟩
 
 section thickened
 
@@ -161,6 +249,15 @@ theorem interval_zero_gap_translation_distance (c : ℝ) :
     ⟨intervalPres.ofVertex Examples.ConstructibleCylinder.S0 0 (0 : unitInterval)⟩
   exact RGraph.constructibleInterleavingDistance_realizationSpace_translate
     intervalPres Examples.ConstructibleCylinder.S0 c
+
+/-- The identity level change fixes the thickened pinch and has distance at most zero. -/
+theorem pinchI_identity :
+    pinchI.levelMap S01 S01 = ContinuousMap.id _ ∧
+      RGraph.constructibleInterleavingDistance
+        (pinchI.realizationSpace S01) (pinchI.realizationSpace S01) ≤ 0 := by
+  refine ⟨pinchI.levelMap_self S01, ?_⟩
+  simpa only [edist_self] using
+    RGraph.constructibleInterleavingDistance_realizationSpace_le pinchI S01 S01
 
 end thickened
 

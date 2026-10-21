@@ -3107,3 +3107,11 @@ import TDA
 #print axioms TDA.Reeb.RGraph.constructibleInterleavingDistance_realizationSpace_translate
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_translation_distance
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.interval_zero_gap_translation_distance
+
+-- Acceptance fixtures for level perturbations of a fixed presentation.
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.singleton_stability_attained
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.singleEdge_geometric_distance_eq_one
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.cycle_translation_distance
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.reversed_levels_not_criticalValues
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.empty_translation_distance_zero
+#print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_identity
