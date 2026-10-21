@@ -52,10 +52,10 @@ for the finite-part persistence images I with 0 < σ and measurable pairwise dis
 The arctan instances replace the constants by 2C + √2·π/(2|σ|) and 2C + 3·√(π/2)/σ. There
 is no arctan instance for the second-level Gaussian features, as on the Rips side.
 
-Essential bars and occurrence multiplicity stay in the bottleneck comparison but are
-omitted from the embedding and the image. The count factor N_p + N_q is the one of the Rips
-consumers. Zero displacement, either from a configuration against itself or from the empty
-label type, makes all three bounds zero.
+Essential bars stay in the bottleneck comparison but are omitted from the embedding and
+the image. Occurrence multiplicities are retained throughout. The count factor N_p + N_q is
+the one of the Rips consumers. Zero displacement, either from a configuration against itself
+or from the empty label type, makes all three bounds zero.
 
 No distance-compatible label metric is assumed. The Rips route needs metrics d, e on the
 labels with d(v, w) = dist(p v, p w), which fail to exist when two labels sit at the same

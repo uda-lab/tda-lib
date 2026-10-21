@@ -789,17 +789,18 @@ controls the mean by total variation. Linearity, Jordan comparison and atomic fo
 embeddings. `WeightedKernel.GaussianSpectral.eq_of_gaussian_integrals` supplies the
 finite positive-measure separation result on the Euclidean plane.
 
-`TDA.Persistence.GaussianUniversality` proves every actual RKHS function lies in C₀(ℝ²),
-with the continuous linear inclusion `rkhsToC0CLM` of norm at most one. Gaussian sections span
-a uniformly dense subspace (`gaussian_sections_dense`), and `denseRange_rkhsToC0` states
+At nonzero bandwidth, `TDA.Persistence.GaussianUniversality` proves every actual RKHS function
+lies in C₀(ℝ²), with the continuous linear inclusion `rkhsToC0CLM` of norm at most one.
+Gaussian sections span a uniformly dense subspace (`gaussian_sections_dense`), and
+`denseRange_rkhsToC0` states
 C₀ universality of the actual RKHS. `exists_gaussian_span_approx` exposes uniform approximation
 without unfolding density. The bounded-functional representation used by the proof is
 `TDA.Topology.C0MeasureRepresentation.exists_finite_regular_measure_sub`.
 
 `TDA.Persistence.WeightedPersistenceMeasure` uses the existing open finite-bar space
-`UpperPoint`. A measurable strictly positive weight with finite weighted mass gives
-`weightedPersistenceEmbedding_eq_iff`, recovering positive measures that may have infinite
-original mass. `weightedPersistenceEmbedding_eq_iff_continuous` exposes the continuous
+`UpperPoint`. At nonzero bandwidth, a measurable strictly positive weight with finite
+weighted mass gives `weightedPersistenceEmbedding_eq_iff`, recovering positive measures that
+may have infinite original mass. `weightedPersistenceEmbedding_eq_iff_continuous` exposes the continuous
 positive-weight Radon consumer. Finite weighted measures are regular; actual weighted-feature
 integrability and the integral comparison are public. `weightedPersistenceEmbedding_finite_occurrences`
 connects finite occurrence measures to the existing birth–persistence weighted embedding, and
