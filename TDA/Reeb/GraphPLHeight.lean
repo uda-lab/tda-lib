@@ -13,7 +13,8 @@ reversal equation `dartHeight h d.symm (σ t) = dartHeight h d t` and the start 
 gives the piecewise-linear height `plHeight G h : C(Realization G, ℝ)`, with
 `plHeight G h (vertex G v) = h v` and `plHeight G h (edgePoint G d t) = dartHeight h d t` by `rfl`
 and uniqueness among continuous maps with these values (`plHeight_unique`). Equal endpoint heights
-are allowed: a horizontal dart has constant height (`dartHeight_of_eq`).
+are allowed: a horizontal dart has constant height (`dartHeight_of_eq`), while the height of a
+nonhorizontal dart is injective in the parameter (`dartHeight_injective`).
 
 ## Unoriented edges and their support
 
@@ -84,6 +85,15 @@ theorem dartHeight_of_eq {d : G.Dart} (hd : h d.fst = h d.snd) (t : unitInterval
     dartHeight h d t = h d.fst := by
   rw [dartHeight, ← hd]
   ring
+
+/-- On a nonhorizontal dart the height is injective in the parameter. -/
+theorem dartHeight_injective {d : G.Dart} (hne : h d.fst ≠ h d.snd) :
+    Function.Injective (dartHeight h d) := by
+  intro s t hst
+  apply Subtype.ext
+  apply mul_right_cancel₀ (sub_ne_zero.mpr hne.symm)
+  unfold dartHeight at hst
+  linear_combination hst
 
 /-- The real parameters whose affine height lies in an order-convex set form an order-convex
 set; the constant-height case is included. -/

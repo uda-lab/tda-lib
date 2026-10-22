@@ -500,13 +500,6 @@ private theorem crossingParam_interior {c : ℝ} {d : G.Dart}
     apply (div_lt_one (by linarith)).2
     linarith
 
-private theorem level_eq_of_dartHeight_eq {d : G.Dart} {s t : unitInterval}
-    (hne : h d.fst ≠ h d.snd) (hst : dartHeight h d s = dartHeight h d t) : s = t := by
-  apply Subtype.ext
-  apply mul_right_cancel₀ (sub_ne_zero.mpr hne.symm)
-  unfold dartHeight at hst
-  linear_combination hst
-
 private theorem level_crossing_not_level_graph {c : ℝ}
     (z : Realization (G.induce {v | h v = c}))
     (e : {e : G.edgeSet // EdgeCrosses G h c e}) :
@@ -658,12 +651,12 @@ theorem levelPieceMap_bijective (c : ℝ) : Function.Bijective (levelPieceMap G 
                 intro hfc
                 have hzero : dartHeight h d 0 = dartHeight h d t := by
                   rw [dartHeight_zero, hfc, ht]
-                exact ht₀ (level_eq_of_dartHeight_eq G h hne hzero).symm
+                exact ht₀ (dartHeight_injective h hne hzero).symm
               have hsnd : h d.snd ≠ c := by
                 intro hsc
                 have hone : dartHeight h d 1 = dartHeight h d t := by
                   rw [dartHeight_one, hsc, ht]
-                exact ht₁ (level_eq_of_dartHeight_eq G h hne hone).symm
+                exact ht₁ (dartHeight_injective h hne hone).symm
               have hcross : EdgeCrosses G h c (dartEdge d) := by
                 rw [edgeCrosses_dartEdge_iff]
                 rcases le_total (h d.fst) (h d.snd) with hab | hab
@@ -1093,9 +1086,9 @@ theorem graphPLPresentationMap_surjective {S : CriticalValues n} (hS : CoversVer
         have hsc : dartHeight h d' s = dartHeight h d t := hsheight
         have hde : dartEdge d' = dartEdge d := hd'.1
         rcases dartEdge_eq_iff.1 hde with rfl | rfl
-        · exact congrArg (edgePoint G d') (level_eq_of_dartHeight_eq G h hne hsc)
+        · exact congrArg (edgePoint G d') (dartHeight_injective h hne hsc)
         · have hst : s = unitInterval.symm t :=
-            level_eq_of_dartHeight_eq G h (d := d.symm) hne.symm
+            dartHeight_injective h (d := d.symm) hne.symm
               (hsc.trans (dartHeight_symm h d t).symm)
           rw [hst, edgePoint_symm]
 
