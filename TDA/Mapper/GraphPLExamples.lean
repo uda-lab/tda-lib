@@ -99,7 +99,7 @@ private theorem overlappingIntervals_cover_of_bounds {V : Type*} (G : SimpleGrap
 private theorem h02_mem_Icc (b : Bool) : h02 b ∈ Set.Icc (0 : ℝ) 2 := by
   cases b <;> norm_num [h02]
 
-/-- The overlapping interval family covers the actual range of the single-edge PL height. -/
+/-- The overlapping interval family covers the range of the single-edge PL height. -/
 theorem overlappingIntervals_cover_edge_range :
     Covers (fun i => (overlappingIntervals i : Set ℝ))
       (Set.range (plHeight edgeGraph h02)) :=
@@ -254,7 +254,7 @@ private theorem twoEdgeHeight_mem_Icc (v : Bool ⊕ Bool) :
     twoEdgeHeight v ∈ Set.Icc (0 : ℝ) 2 := by
   rcases v with b | b <;> exact h02_mem_Icc b
 
-/-- The overlapping interval family covers the actual range of the two-edge PL height. -/
+/-- The overlapping interval family covers the range of the two-edge PL height. -/
 theorem overlappingIntervals_cover_twoEdge_range :
     Covers (fun i => (overlappingIntervals i : Set ℝ))
       (Set.range (plHeight twoEdgeGraph twoEdgeHeight)) :=
@@ -496,7 +496,7 @@ private theorem twoEdgeOverlapIndex_pair_surjective :
   · exact ⟨(false, i), Sigma.ext rfl (heq_of_eq hc.symm)⟩
   · exact ⟨(true, i), Sigma.ext rfl (heq_of_eq hc.symm)⟩
 
-/-- The four actual component-cover indices are exactly the graph-copy/interval-label pairs. -/
+/-- The four component-cover indices are exactly the graph-copy/interval-label pairs. -/
 def twoEdgeIndexEquiv :
     Bool × Bool ≃ ComponentIndex (plHeight twoEdgeGraph twoEdgeHeight)
       (fun i => (overlappingIntervals i : Set ℝ)) :=
@@ -529,7 +529,7 @@ def overlapToWide : Refinement (fun i => (overlappingIntervals i : Set ℝ))
   subset i x hx := by
     cases i <;> rcases hx with ⟨hx₁, hx₂⟩ <;> constructor <;> linarith
 
-/-- The wide interval covers the actual range of the two-edge PL height. -/
+/-- The wide interval covers the range of the two-edge PL height. -/
 theorem wideIntervals_cover_twoEdge_range :
     Covers (fun i => (wideIntervals i : Set ℝ))
       (Set.range (plHeight twoEdgeGraph twoEdgeHeight)) := by
@@ -547,7 +547,7 @@ private def twoEdgeWideEdge (side : Bool) :
     rw [twoEdge_midpoint_height]
     norm_num [wideIntervals, mem_ioo])⟩
 
-/-- For every displayed source vertex, the general transport square identifies its actual Mapper
+/-- For every displayed source vertex, the general transport square identifies its Mapper
 image with the corresponding incidence-graph edge-node component in the wide interval. -/
 theorem twoEdge_wide_refinement_incidence (side i : Bool) :
     componentIndexEquiv twoEdgeGraph twoEdgeHeight wideIntervals

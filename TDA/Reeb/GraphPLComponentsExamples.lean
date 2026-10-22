@@ -27,7 +27,7 @@ Acceptance fixtures for `TDA.Reeb.GraphPLComponents`:
   edge point lies in the class of the surviving vertex.
 * **4-cycle.** On `cycleGraph 4` with heights `0, 1, 2, 1` and `I = (1/2, 3/2)`, the surviving
   vertices are exactly `1` and `3`. Their incidence classes are distinct, by a side function that
-  every adjacency preserves, and every class is one of them; the actual preimage classes `x1` and
+  every adjacency preserves, and every class is one of them; the preimage classes `x1` and
   `x3` of the two vertices are therefore distinct and exhaustive, and the edge points at parameter
   `3/4` of the darts `0 → 1` and `2 → 3` lie in the classes of `1` and `3`.
 * **Proper inclusion.** For `I < J = (-1/2, 5/2)`, the two classes merge on both sides of the
@@ -133,7 +133,7 @@ theorem single_card_cell (h0 : (0 : ℝ) ∉ I) (h2 : (2 : ℝ) ∉ I) (h1 : (1 
     ⟨(cellGraph edgeGraph h02 I).connectedComponentMk
       (Sum.inr ⟨dartEdge d₀, single_active h1⟩)⟩⟩
 
-/-- Exactly one actual preimage path component. -/
+/-- Exactly one preimage path component. -/
 theorem single_card_preimage (h0 : (0 : ℝ) ∉ I) (h2 : (2 : ℝ) ∉ I) (h1 : (1 : ℝ) ∈ I) :
     Nat.card (ZerothHomotopy {p : Realization edgeGraph // plHeight edgeGraph h02 p ∈ I}) = 1 :=
   (Nat.card_congr (preimageComponentsEquiv edgeGraph h02 I)).trans (single_card_cell h0 h2 h1)
@@ -185,7 +185,7 @@ theorem zeroTwo_activeEdge_eq (e : {e : edgeGraph.edgeSet // EdgeActive edgeGrap
     e = ⟨dartEdge d₀, single_active ioo_zero_two_one⟩ :=
   single_activeEdge_eq ioo_zero_two_one e
 
-/-- `I = (0, 2)`: exactly one actual preimage path component. -/
+/-- `I = (0, 2)`: exactly one preimage path component. -/
 theorem zeroTwo_card_preimage :
     Nat.card (ZerothHomotopy {p : Realization edgeGraph // plHeight edgeGraph h02 p ∈ ioo 0 2})
       = 1 :=
@@ -245,7 +245,7 @@ theorem opposite_points_ne : edgePoint edgeGraph d₀ third ≠ edgePoint edgeGr
   change (1 / 3 : ℝ) = 1 - 1 / 3 at this
   norm_num at this
 
-/-- ...in one actual preimage path component. -/
+/-- ...in one preimage path component. -/
 theorem opposite_points_same_class :
     (ZerothHomotopy.mk ⟨edgePoint edgeGraph d₀ third, third_mem⟩ : ZerothHomotopy
         {p : Realization edgeGraph // plHeight edgeGraph h02 p ∈ ioo (1 / 2) (3 / 2)}) =
@@ -344,7 +344,7 @@ theorem ray_card_induced :
       rw [ray_vertex_eq x, ray_vertex_eq y]⟩,
     ⟨(edgeGraph.induce _).connectedComponentMk rayVertex⟩⟩
 
-/-- One actual preimage path component, through the vertex-only corollary. -/
+/-- One preimage path component, through the vertex-only corollary. -/
 theorem ray_card :
     Nat.card (ZerothHomotopy {p : Realization edgeGraph // plHeight edgeGraph h02 p ∈ ioi 1})
       = 1 :=
@@ -493,11 +493,11 @@ theorem c4_card_cell : Nat.card (cellGraph C4 h4 I4).ConnectedComponent = 2 :=
     · exact Or.inl rfl
     · exact Or.inr rfl⟩
 
-/-- The actual preimage class of the vertex `1`. -/
+/-- The preimage class of the vertex `1`. -/
 def x1 : ZerothHomotopy {p : Realization C4 // plHeight C4 h4 p ∈ I4} :=
   ZerothHomotopy.mk ⟨vertex C4 1, one_mem_I4⟩
 
-/-- The actual preimage class of the vertex `3`. -/
+/-- The preimage class of the vertex `3`. -/
 def x3 : ZerothHomotopy {p : Realization C4 // plHeight C4 h4 p ∈ I4} :=
   ZerothHomotopy.mk ⟨vertex C4 3, three_mem_I4⟩
 
@@ -509,11 +509,11 @@ theorem c4_equiv_x3 :
     preimageComponentsEquiv C4 h4 I4 x3 = (cellGraph C4 h4 I4).connectedComponentMk n3 :=
   preimageComponentsEquiv_mk_vertex C4 h4 I4 3 three_mem_I4
 
-/-- Two distinct actual preimage classes. -/
+/-- Two distinct preimage classes. -/
 theorem c4_x1_ne_x3 : x1 ≠ x3 := fun hx =>
   c4_cell_ne (by rw [← c4_equiv_x1, ← c4_equiv_x3, hx])
 
-/-- Exhaustive classification of the actual preimage classes. -/
+/-- Exhaustive classification of the preimage classes. -/
 theorem c4_preimage_classification
     (c : ZerothHomotopy {p : Realization C4 // plHeight C4 h4 p ∈ I4}) : c = x1 ∨ c = x3 := by
   rcases c4_cell_classification (preimageComponentsEquiv C4 h4 I4 c) with hc | hc

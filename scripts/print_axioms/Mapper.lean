@@ -835,7 +835,7 @@ import TDA
 #print axioms TDA.Mapper.GraphPLConstructibleExamples.c4_quotientRGraphFunctor_obj
 #print axioms TDA.Mapper.GraphPLConstructibleExamples.c4_Y_geometricInterleavingDistance
 
--- Categorical Mapper colimits, reconstruction and actual Reeb approximation.
+-- Categorical Mapper colimits, reconstruction and Reeb approximation.
 #print axioms TDA.Mapper.coverSaturation
 #print axioms TDA.Mapper.mem_coverSaturation
 #print axioms TDA.Mapper.coverSaturation_mono

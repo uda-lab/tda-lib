@@ -19,7 +19,7 @@ open scoped NNReal
 variable {X : Type u} {Y : Type v}
 
 /-- A pairwise distortion bound sends every finite part of a relational face image
-to the actual closed Rips sublevel at the shifted diameter threshold. -/
+to the closed Rips sublevel at the shifted diameter threshold. -/
 theorem isShiftedSimplicialRelation_of_distortion (dX : MetricSpace X) (dY : MetricSpace Y)
     {C : SetRel X Y} {ε : ℝ≥0}
     (h : ∀ x x' y y', (x,y) ∈ C → (x',y') ∈ C →

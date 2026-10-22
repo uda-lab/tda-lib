@@ -2,7 +2,7 @@ import TDA.Simplicial.VertexChainMap
 import TDA.Simplicial.H0Augmentation
 import Mathlib.LinearAlgebra.Matrix.Notation
 
-/-! Concrete orientation, collapse, composition and actual-homology fixtures. -/
+/-! Concrete orientation, collapse, composition and simplicial-homology fixtures. -/
 
 namespace TDA.Simplicial.VertexChainMapExamples
 
@@ -70,7 +70,7 @@ theorem edge_boundary_nonzero :
   simp [boundary_single, Fin.sum_univ_succ, edge_delete_zero, edge_delete_one,
     edgeVertex] at h
 
-/-- Reversal changes the orientation of an actual nonzero edge chain. -/
+/-- Reversal changes the orientation of a nonzero edge chain. -/
 theorem edge_reversal :
     vertexChainMap ℤ (fullMap (Equiv.swap (0 : Fin 2) 1)) 1
       (Finsupp.single (fullFace 1) 1) = -Finsupp.single (fullFace 1) 1 := by
@@ -153,7 +153,7 @@ theorem triangle_one_pair_boundary :
     exact (by decide : (0 : Fin 3) ≠ 1) (h (by decide))
   rw [orientedTuple_of_not_injective _ ℤ _ hx, map_zero]
 
-/-- The actual triangle boundary has zero chain image by the general boundary equation. -/
+/-- The triangle boundary has zero chain image by the general boundary equation. -/
 theorem triangle_one_pair_boundary_image :
     vertexChainMap ℤ (fullMap triangleCollapse) 1
       (boundary (⊤ : PreAbstractSimplicialComplex (Fin 3)) ℤ 1
@@ -206,8 +206,8 @@ private theorem vertex_class_ne_zero {V : Type} [LinearOrder V]
   rw [simplicialHomologyClass_quotient, map_zero] at hq
   exact zeroVertexCycle_not_boundary K ℚ s ((Submodule.Quotient.mk_eq_zero _).mp hq)
 
-/-- Edge collapse sends a nonzero actual vertex class to the normalized nonzero singleton class. -/
-theorem edge_collapse_actualH0 :
+/-- Edge collapse sends a nonzero vertex class to the normalized nonzero singleton class. -/
+theorem edge_collapse_simplicialH0 :
     (simplicialHomologyMap ℚ collapseMap 0).hom
       (simplicialHomologyClass ℚ (⊤ : PreAbstractSimplicialComplex (Fin 2)) 0
         (zeroVertexCycle _ ℚ (edgeVertex 0))) =
@@ -259,7 +259,7 @@ theorem bottom_map_zero (n : ℕ) : vertexChainMap ℤ bottomMap n = 0 := by
   rw [emptyChain_eq_zero ℤ n c]
   simp
 
-/-- The identity on a genuinely empty ambient type has its required actual-chain behavior. -/
+/-- The identity on a genuinely empty ambient type has its required simplicial-chain behavior. -/
 theorem empty_ambient_identity (n : ℕ) :
     vertexChainMap ℤ (VertexMap.id (⊤ : PreAbstractSimplicialComplex (Fin 0))) n =
       LinearMap.id := vertexChainMap_id _ _ _
@@ -276,7 +276,7 @@ private theorem edgeInTriangle_le : edgeInTriangle ≤ (⊤ : PreAbstractSimplic
 private def includedEdge : Face edgeInTriangle 1 :=
   ⟨{0, 1}, by constructor <;> simp, by decide⟩
 
-/-- A proper inclusion keeps the old nonzero actual degree-one inclusion map. -/
+/-- A proper inclusion keeps the old nonzero degree-one inclusion map. -/
 theorem proper_inclusion_agrees :
     vertexChainMap ℤ (inclusionVertexMap edgeInTriangle_le) 1
       (Finsupp.single includedEdge 1) =
@@ -291,8 +291,8 @@ theorem proper_inclusion_agrees :
   rw [chainIncl_single]
   exact Finsupp.single_ne_zero.mpr (by decide)
 
-/-- Actual homology identity and composition specialize to the explicit triangle maps. -/
-theorem actual_homology_functor_laws :
+/-- Homology identity and composition specialize to the explicit triangle maps. -/
+theorem homology_functor_laws :
     simplicialHomologyMap ℚ (VertexMap.id (⊤ : PreAbstractSimplicialComplex (Fin 3))) 0 =
       𝟙 (simplicialHomology (⊤ : PreAbstractSimplicialComplex (Fin 3)) ℚ 0) ∧
     simplicialHomologyMap ℚ
@@ -368,7 +368,7 @@ theorem edge_chain_nonzero :
     (Finsupp.single (fullFace 1) (1 : ℤ) : Chain (⊤ : PreAbstractSimplicialComplex (Fin 2)) ℤ 1) ≠ 0 :=
   Finsupp.single_ne_zero.mpr (by decide)
 
-/-- Degeneracy introduced by the second map also vanishes in the actual composed linear map. -/
+/-- Degeneracy introduced by the second map also vanishes in the composed linear map. -/
 theorem triangle_composed_collapse :
     ((vertexChainMap ℤ (fullMap triangleCollapse) 2).comp
       (vertexChainMap ℤ (fullMap (Equiv.swap (0 : Fin 3) 1)) 2))
@@ -376,7 +376,7 @@ theorem triangle_composed_collapse :
   rw [← vertexChainMap_comp]
   exact triangle_second_map_collapses
 
-/-- The unique map from an empty ambient type into a singleton has zero actual chains. -/
+/-- The unique map from an empty ambient type into a singleton has zero chains. -/
 theorem empty_ambient_to_singleton (n : ℕ) :
     vertexChainMap ℤ (fullMap (Fin.elim0 : Fin 0 → Fin 1)) n = 0 := by
   have : IsEmpty (Face (⊤ : PreAbstractSimplicialComplex (Fin 0)) n) :=

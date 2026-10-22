@@ -108,7 +108,7 @@ instance intervalModule_finiteDimensional {N : ℕ} {k : Type u} [Field k]
   dsimp
   infer_instance
 
-/-- The rank of an actual structure map, defined as the dimension of its linear-map range.
+/-- The rank of a structure map, defined as the dimension of its linear-map range.
 
 The finite-dimensional hypothesis is on the source fiber; the range inherits finite
 dimensionality as a submodule. -/

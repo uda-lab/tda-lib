@@ -32,9 +32,9 @@ private theorem s01 : ({0,1} : Finset (Fin 2)).sort (· ≤ ·) = [0,1] := by
   rw [Finset.sort_insert (· ≤ ·) (by decide) (by decide)]
   simp [Finset.sort_singleton]
 
-theorem actual_eq : actualBoundaryMatrix (ZMod 2) e = expected := by
+theorem faceBoundaryMatrix_eq_expected : faceBoundaryMatrix (ZMod 2) e = expected := by
   funext i j
-  rw [actualBoundaryMatrix_apply]
+  rw [faceBoundaryMatrix_apply]
   fin_cases i <;> fin_cases j <;>
     norm_num [faceDegree, e, enumFun, expected, indexedFace, deletedFace,
       Finset.orderEmbOfFin_apply, s01]
@@ -42,14 +42,14 @@ theorem actual_eq : actualBoundaryMatrix (ZMod 2) e = expected := by
 
 theorem delayed_edge_pivots :
     List.ofFn (fun j : Fin (faceCount C.toPre) =>
-      columnPivot ((actualReducedBoundary (ZMod 2) e).col j)) =
+      columnPivot ((reducedFaceBoundary (ZMod 2) e).col j)) =
       [none, none, some ⟨1, by decide⟩] := by
-  rw [actualReducedBoundary, actual_eq]
+  rw [reducedFaceBoundary, faceBoundaryMatrix_eq_expected]
   decide +kernel
 
 theorem delayed_edge_essential (i : Fin (faceCount C.toPre)) :
-    IsEssential (actualReducedBoundary (ZMod 2) e) i ↔ i.val = 0 := by
-  rw [actualReducedBoundary, actual_eq]
+    IsEssential (reducedFaceBoundary (ZMod 2) e) i ↔ i.val = 0 := by
+  rw [reducedFaceBoundary, faceBoundaryMatrix_eq_expected]
   unfold IsEssential IsPivot
   fin_cases i <;> decide +kernel
 
@@ -67,17 +67,17 @@ noncomputable def swappedOrder : CompatibleOrder f where
   face_lt := by decide +kernel
   monotone := by decide +kernel
 
-theorem swapped_actual_eq : actualBoundaryMatrix (ZMod 2) swappedOrder = expected := by
+theorem swapped_faceBoundaryMatrix_eq_expected : faceBoundaryMatrix (ZMod 2) swappedOrder = expected := by
   funext i j
-  rw [actualBoundaryMatrix_apply]
+  rw [faceBoundaryMatrix_apply]
   fin_cases i <;> fin_cases j <;>
     norm_num [faceDegree, swappedOrder, swappedEnumFun, expected, indexedFace, deletedFace,
       Finset.orderEmbOfFin_apply, s01]
   all_goals decide +kernel
 
 theorem swapped_reduced_eq :
-    actualReducedBoundary (ZMod 2) swappedOrder = actualReducedBoundary (ZMod 2) e := by
-  simp only [actualReducedBoundary, swapped_actual_eq, actual_eq]
+    reducedFaceBoundary (ZMod 2) swappedOrder = reducedFaceBoundary (ZMod 2) e := by
+  simp only [reducedFaceBoundary, swapped_faceBoundaryMatrix_eq_expected, faceBoundaryMatrix_eq_expected]
 
 theorem equal_grade_reordering :
     (∀ i : Fin (faceCount C.toPre), f.value (swappedOrder.enum i) = f.value (e.enum i)) ∧

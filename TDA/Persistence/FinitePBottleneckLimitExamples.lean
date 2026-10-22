@@ -4,8 +4,7 @@ import TDA.Persistence.DiagramBottleneckExamples
 /-!
 # Bottleneck limits on finite diagrams
 
-Unit-height bars test empty inputs, occurrence multiplicity and an actual
-pair-and-delete matching. Essential singleton births show the necessity of
+Unit-height bars test empty inputs, occurrence multiplicity and a pair-and-delete matching. Essential singleton births show the necessity of
 excluding essential bars from the finite-part limit theorem.
 -/
 

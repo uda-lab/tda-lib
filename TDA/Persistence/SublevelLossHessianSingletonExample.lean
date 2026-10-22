@@ -1,7 +1,7 @@
-import TDA.Persistence.ActualLossHessian
-import TDA.Persistence.ActualLossHessianExamples
+import TDA.Persistence.SublevelLossHessian
+import TDA.Persistence.SublevelLossHessianExamples
 
-/-! The nonlinear singleton fixture exercises the actual face-scattered Hessian,
+/-! The nonlinear singleton fixture exercises the face-scattered Hessian,
 including its separate gradient and curvature sums. -/
 
 set_option autoImplicit false
@@ -40,14 +40,14 @@ private theorem singleton_squared_face_second
   norm_num
 
 /-- The existing first-order coefficient and the scattered second-order coefficient
-are both `2` at `t = 1`, for any compatible order of the actual singleton. -/
-theorem nonlinear_singleton_actual_face_coefficients
+are both `2` at `t = 1`, for any compatible order of the singleton. -/
+theorem nonlinear_singleton_face_coefficients
     (e : CompatibleOrder (nonlinearSingletonFilter (1 : ℝ)))
     (s r : TotalFace (singletonFace (0 : Fin 2))) :
     faceLossCoefficient (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum s = 2 ∧
     faceLossHessianCoefficient (ZMod 2) nonlinearSingletonFilter e 0
       squaredEssentialBirthSum s r = 2 := by
-  have hD := actualPHScalarLoss_c2_fderiv (ZMod 2) nonlinearSingletonFilter e 0
+  have hD := sublevelDiagramScalarLoss_c2_fderiv (ZMod 2) nonlinearSingletonFilter e 0
     isOpen_univ (Set.mem_univ (1 : ℝ)) singleton_squared_face_smooth
     singleton_squared_ordering squaredEssentialBirthSum (squaredEssentialBirthSum_c2_all _)
   have hf : (fun t : ℝ => squaredEssentialBirthSum
@@ -65,11 +65,11 @@ theorem nonlinear_singleton_actual_face_coefficients
       congrArg (fun A : ℝ →L[ℝ] ℝ => A 1) hD
   have hb : faceLossCoefficient (ZMod 2) nonlinearSingletonFilter e 0
       squaredEssentialBirthSum default = 2 := by linarith
-  have hH := actualPHScalarLoss_second_fderiv (ZMod 2) nonlinearSingletonFilter e 0
+  have hH := sublevelDiagramScalarLoss_second_fderiv (ZMod 2) nonlinearSingletonFilter e 0
     isOpen_univ (Set.mem_univ (1 : ℝ)) singleton_squared_face_smooth
     singleton_squared_ordering squaredEssentialBirthSum (squaredEssentialBirthSum_c2_all _)
   have hval := congrArg (fun A : ℝ →L[ℝ] ℝ →L[ℝ] ℝ => A 1 1) hH
-  rw [actualFaceLossHessian_apply] at hval
+  rw [faceCoordinateLossHessian_apply] at hval
   have hscalar := nonlinear_singleton_second_derivative
   change fderiv ℝ (fderiv ℝ (fun t : ℝ => squaredEssentialBirthSum
     (dgm (ZMod 2) (nonlinearSingletonFilter t) 0))) 1 1 1 = 12 at hscalar
@@ -82,9 +82,9 @@ theorem nonlinear_singleton_actual_face_coefficients
       squaredEssentialBirthSum default default = 2 := by linarith
   simpa only [Subsingleton.elim s default, Subsingleton.elim r default] using And.intro hb hg
 
-/-- The double sum in the actual face formula is `8`, and the face-curvature
+/-- The double sum in the face formula is `8`, and the face-curvature
 single sum is `4`; omitting the latter would give the wrong second derivative. -/
-theorem nonlinear_singleton_actual_face_hessian_terms
+theorem nonlinear_singleton_face_hessian_terms
     (e : CompatibleOrder (nonlinearSingletonFilter (1 : ℝ))) :
     (∑ s : TotalFace (singletonFace (0 : Fin 2)),
       ∑ r : TotalFace (singletonFace (0 : Fin 2)),
@@ -95,40 +95,40 @@ theorem nonlinear_singleton_actual_face_hessian_terms
     (∑ s : TotalFace (singletonFace (0 : Fin 2)),
       faceLossCoefficient (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum s *
         fderiv ℝ (fderiv ℝ (fun t : ℝ => (nonlinearSingletonFilter t).value s)) 1 1 1) = 4 := by
-  have hc := nonlinear_singleton_actual_face_coefficients e default default
+  have hc := nonlinear_singleton_face_coefficients e default default
   simp only [Finset.univ_unique, Finset.sum_singleton, singleton_squared_face_first,
     singleton_squared_face_second, hc.1, hc.2]
   norm_num
 
-/-- The actual face-scattered bilinear form evaluates to `12`. -/
-theorem nonlinear_singleton_actual_face_hessian
+/-- The face-scattered bilinear form evaluates to `12`. -/
+theorem nonlinear_singleton_face_hessian
     (e : CompatibleOrder (nonlinearSingletonFilter (1 : ℝ))) :
-    actualFaceLossHessian (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum 1 1 = 12 := by
-  rw [actualFaceLossHessian_apply, (nonlinear_singleton_actual_face_hessian_terms e).1,
-    (nonlinear_singleton_actual_face_hessian_terms e).2]
+    faceCoordinateLossHessian (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum 1 1 = 12 := by
+  rw [faceCoordinateLossHessian_apply, (nonlinear_singleton_face_hessian_terms e).1,
+    (nonlinear_singleton_face_hessian_terms e).2]
   norm_num
 
-/-- The actual face-scattered form is a genuine derivative of the scalar derivative map. -/
-theorem nonlinear_singleton_actual_face_hasFDerivAt
+/-- The face-scattered form is a genuine derivative of the scalar derivative map. -/
+theorem nonlinear_singleton_face_hasFDerivAt
     (e : CompatibleOrder (nonlinearSingletonFilter (1 : ℝ))) :
     HasFDerivAt (fderiv ℝ (fun t : ℝ => squaredEssentialBirthSum
       (dgm (ZMod 2) (nonlinearSingletonFilter t) 0)))
-      (actualFaceLossHessian (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum) 1 :=
-  actualPHScalarLoss_hasFDerivAt_fderiv (ZMod 2) nonlinearSingletonFilter e 0
+      (faceCoordinateLossHessian (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum) 1 :=
+  sublevelDiagramScalarLoss_hasFDerivAt_fderiv (ZMod 2) nonlinearSingletonFilter e 0
     isOpen_univ (Set.mem_univ (1 : ℝ)) singleton_squared_face_smooth
     singleton_squared_ordering squaredEssentialBirthSum (squaredEssentialBirthSum_c2_all _)
 
-/-- A compatible actual template exists, and its face form is the genuine Hessian
+/-- A compatible template exists, and its face form is the genuine Hessian
 with value `12` on the two unit directions. -/
-theorem nonlinear_singleton_actual_face_example :
+theorem nonlinear_singleton_face_example :
     ∃ e : CompatibleOrder (nonlinearSingletonFilter (1 : ℝ)),
-      actualFaceLossHessian (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum 1 1 = 12 ∧
+      faceCoordinateLossHessian (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum 1 1 = 12 ∧
       HasFDerivAt (fderiv ℝ (fun t : ℝ => squaredEssentialBirthSum
         (dgm (ZMod 2) (nonlinearSingletonFilter t) 0)))
-        (actualFaceLossHessian (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum) 1 := by
+        (faceCoordinateLossHessian (ZMod 2) nonlinearSingletonFilter e 0 squaredEssentialBirthSum) 1 := by
   obtain ⟨e⟩ := exists_compatibleOrder (nonlinearSingletonFilter (1 : ℝ))
-  exact ⟨e, nonlinear_singleton_actual_face_hessian e,
-    nonlinear_singleton_actual_face_hasFDerivAt e⟩
+  exact ⟨e, nonlinear_singleton_face_hessian e,
+    nonlinear_singleton_face_hasFDerivAt e⟩
 
 end
 end TDA.Persistence

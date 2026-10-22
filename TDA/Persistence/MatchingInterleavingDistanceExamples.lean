@@ -53,7 +53,7 @@ theorem duplicate_deletion_bound :
   exact (RealBarcode.distance_le_bottleneck copies emptyDiagram copies_positive
     empty_positive).trans_eq hp
 
-/-- Essential cardinality mismatch gives an actually empty matching type. -/
+/-- Essential cardinality mismatch gives an empty matching type. -/
 theorem essential_matching_empty : IsEmpty (OccurrenceMatching essentialDiagram.finiteOccurrences
     emptyDiagram.finiteOccurrences essentialDiagram.essentialOccurrences
     emptyDiagram.essentialOccurrences) := by
@@ -121,7 +121,7 @@ private theorem step_finite (t : ℝ) : FiniteDimensional ℚ (step.obj t) := by
       ModuleCat.isZero_iff_subsingleton.mp (isZero_zero (ModuleCat ℚ))
     infer_instance
 
-/-- The differing-grid consumer has an actual nonzero fiber at its critical birth. -/
+/-- The differing-grid consumer has a nonzero fiber at its critical birth. -/
 theorem different_grids_nonzero : ¬ IsZero (step.obj 0) := by
   change ¬ IsZero ((sample oneGrid constantRationals).obj (cellIndex oneGrid 0))
   rw [show cellIndex oneGrid 0 = 1 from cellIndex_critical oneGrid 0]

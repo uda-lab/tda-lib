@@ -5,7 +5,7 @@ import TDA.Persistence.FiniteInducedSpecialization
 /-!
 # Identity, duplicate and essential controls for real induced matchings
 
-An actual finite barcode has two finite copies and two essential copies on an
+A finite barcode has two finite copies and two essential copies on an
 irregular grid. The identity map retains each original occurrence label, even
 at parameter zero or when the finite bar equals the shortness threshold.
 -/
@@ -54,7 +54,7 @@ private theorem sum_id (i : RealBarcode.Occurrences D) :
   rw [inducedMap_id]
   simp only [Option.map_some, Equiv.apply_symm_apply]
 
-/-- The actual induced identity preserves every finite and essential duplicate label. -/
+/-- The induced identity preserves every finite and essential duplicate label. -/
 theorem identity_labels (δ : ℝ≥0) :
     (∀ p : D.finiteOccurrences, (identityMatching δ).finite p = some p) ∧
       (∀ b : D.essentialOccurrences, (identityMatching δ).essential b = b) := by
@@ -73,7 +73,7 @@ private theorem diagram_points : D.points =
   simp only [bars, Multiset.map_cons, Multiset.map_zero]
   rfl
 
-/-- Finite and essential duplicates each retain their two actual occurrence labels. -/
+/-- Finite and essential duplicates each retain their two occurrence labels. -/
 theorem multiplicities : D.points.count (0, (3 : WithTop ℝ)) = 2 ∧
     D.points.count (1, ⊤) = 2 := by
   rw [diagram_points]
@@ -135,7 +135,7 @@ theorem essential_every_threshold (δ : ℝ≥0) :
       Function.Bijective (identityMatching δ).essential :=
   ⟨(identity_labels δ).2, (identityMatching δ).essential.bijective⟩
 
-/-- Parameter zero retains all actual labels and derives exact endpoint bounds. -/
+/-- Parameter zero retains all labels and derives exact endpoint bounds. -/
 theorem zero_parameter : RealMatchingBounds 0 0 (identityMatching 0) ∧
     (∀ p : D.finiteOccurrences, (identityMatching 0).finite p = some p) ∧
       (∀ b : D.essentialOccurrences, (identityMatching 0).essential b = b) :=
@@ -162,7 +162,7 @@ theorem empty_matching (δK δC : ℝ≥0) :
   exact ⟨RealInduced.matching emptyGrid (𝟙 emptyModule) δK δC hk hc,
     RealInduced.matching_bounds emptyGrid (𝟙 emptyModule) δK δC hk hc⟩
 
-/-- The actual identity-induced bounds return a zero-cost matching with both
+/-- The identity-induced bounds return a zero-cost matching with both
 copies of each finite and essential value retained. -/
 theorem duplicate_zero_cost :
     ∃ A : OccurrenceMatching D.finiteOccurrences D.finiteOccurrences

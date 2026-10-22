@@ -3,7 +3,7 @@ import Mathlib.Algebra.Category.ModuleCat.Abelian
 import Mathlib.CategoryTheory.Limits.FunctorCategory.EpiMono
 
 /-!
-# Actual defects of real interleaving morphisms
+# Defects of real interleaving morphisms
 
 The categorical kernel and cokernel of an epsilon-interleaving morphism have
 zero double-shift transition. This proves Bauer--Lesnick v4, Lemma 6.3, directly
@@ -43,7 +43,7 @@ private theorem transition_double_eq_zero (A : PModule.{u,0,w} R ℝ)
   change structureMap A (le_add_of_nonneg_right (NNReal.coe_nonneg (ε + ε))) = 0
   rw [he, h t, zero_comp]
 
-/-- The actual kernel of the forward interleaving morphism is `2ε`-trivial.
+/-- The kernel of the forward interleaving morphism is `2ε`-trivial.
 Finite dimensionality and constructibility are not needed. -/
 theorem kernel_transition_eq_zero (i : RealInterleaving ε M N) :
     transition (ε + ε) (kernel i.φ) = 0 := by
@@ -64,7 +64,7 @@ theorem kernel_transition_eq_zero (i : RealInterleaving ε M N) :
   change (kernel.ι i.φ).app t ≫ i.φ.app t = 0 at hc
   erw [hc, zero_comp]
 
-/-- The actual cokernel of the forward interleaving morphism is `2ε`-trivial.
+/-- The cokernel of the forward interleaving morphism is `2ε`-trivial.
 Its target is the shifted module, so the reverse equation is evaluated at `t+ε`. -/
 theorem cokernel_transition_eq_zero (i : RealInterleaving ε M N) :
     transition (ε + ε) (cokernel i.φ) = 0 := by

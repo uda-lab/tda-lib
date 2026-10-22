@@ -3,7 +3,7 @@ import TDA.Persistence.FiniteInducedSpecialization
 import TDA.Persistence.RealInducedMatching
 import Mathlib.Data.Rat.Defs
 
-/-! # Actual epimorphisms and canonical barcode embedding consumers -/
+/-! # epimorphisms and canonical barcode embedding consumers -/
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -145,7 +145,7 @@ theorem noninjective_translation : theta 0 = 1 ∧ theta 1 = 1 ∧ ¬ Function.I
   have he := congrArg Fin.val (h (show theta 0 = theta 1 from rfl))
   norm_num at he
 
-/-- A nonidentity epi attains the finite death upper bound derived from its actual kernel. -/
+/-- A nonidentity epi attains the finite death upper bound derived from its kernel. -/
 theorem finite_death_bound_attained :
     TranslationTrivial theta theta_forward (finiteKernel first) ∧
       ∃ j : BarcodeOccurrence 4 (rankBarcode (intervalModule (k := ℚ) middle)),
@@ -190,7 +190,7 @@ private theorem identity_kernel_short {n : ℕ} (M : PModule.{0,0,0} ℚ (Fin n)
 private noncomputable abbrev terminal := intervalModule (k := ℚ)
   (⟨0, 4, by decide, by decide⟩ : FiniteInterval 4)
 
-/-- Every actual terminal source is covered, and the translated terminal endpoint stays four. -/
+/-- Every terminal source is covered, and the translated terminal endpoint stays four. -/
 theorem terminal_coverage (i : BarcodeOccurrence 4 (rankBarcode terminal)) :
     (occurrence _ i).death = 4 ∧ (occurrence _ i).translatedDeath theta = 4 ∧
       ∃! j, epiEmbedding (𝟙 terminal) (fun _ => Function.surjective_id) j = i := by
@@ -280,7 +280,7 @@ theorem duplicate_long_coverage :
   · exact epiEmbedding_covers_long_of_kernelTrivial theta theta_forward (𝟙 duplicates)
       (fun _ => Function.surjective_id) (identity_kernel_short _ _ _) j (hlong j)
 
-/-- Identity translation forces equal deaths and covers the complete actual source barcode. -/
+/-- Identity translation forces equal deaths and covers the complete source barcode. -/
 theorem identity_translation (i : BarcodeOccurrence 4 (rankBarcode duplicates)) :
     (occurrence _ (epiEmbedding (𝟙 duplicates) (fun _ => Function.surjective_id) i)).death =
       (occurrence (rankBarcode duplicates) i).death ∧
@@ -297,7 +297,7 @@ private def fixedBar : FiniteInterval 4 := ⟨1, 2, by decide, by decide⟩
 private noncomputable abbrev fixedSource := intervalModule (k := ℚ) fixedBar
 private noncomputable def eraseFixed : fixedSource ⟶ zeroModule := 0
 
-/-- A nonzero actual kernel at a fixed point rejects an incorrectly coarse shortness criterion. -/
+/-- A nonzero kernel at a fixed point rejects an incorrectly coarse shortness criterion. -/
 theorem fixed_point_rejects_shortness :
     ¬ TranslationTrivial theta theta_forward (finiteKernel eraseFixed) := by
   intro hk
@@ -437,7 +437,7 @@ theorem overlap_two_sided_bounds :
   · rw [single_occurrence]; rfl
   · rw [single_occurrence]; rfl
 
-/-- Long-target coverage also reaches this same actual overlap matching, independently of kernel shortness. -/
+/-- Long-target coverage also reaches this same overlap matching, independently of kernel shortness. -/
 theorem overlap_unique_source (j : BarcodeOccurrence 4 (rankBarcode (intervalModule (k := ℚ) targetBar))) :
     ∃! i, inducedMap overlap i = some j := by
   apply inducedMap_covers_long_target_of_cokernelTrivial theta theta_forward
@@ -490,7 +490,7 @@ private theorem erase_real_cokernel :
     (FiniteConstructible.sampleTranslation realGrid 1 i))]
   exact le_top
 
-/-- An actual erased real bar can be unmatched at threshold equality. -/
+/-- An erased real bar can be unmatched at threshold equality. -/
 theorem real_threshold_unmatched :
     ∃ p, (RealInduced.matching realGrid eraseShort 1 1
       erase_real_kernel erase_real_cokernel).finite p = none ∧ p.1 = (0, 1) ∧
@@ -521,7 +521,7 @@ theorem real_threshold_unmatched :
       q.1 ∈ finitePart s) hempty) hq
     simp [finitePart] at hm
 
-/-- The overlap control has nonzero actual categorical defects, not just changed endpoints. -/
+/-- The overlap control has nonzero categorical defects, not just changed endpoints. -/
 theorem real_overlap_defects_nonzero :
     ¬ CategoryTheory.Limits.IsZero (finiteKernel overlap) ∧
       ¬ CategoryTheory.Limits.IsZero (finiteCokernel overlap) := by
@@ -544,7 +544,7 @@ theorem real_overlap_defects_nonzero :
       ((hz.obj i).eq_zero_of_src (structureMap (finiteCokernel overlap) (le_refl i)))
     simpa only [structureMapLinear_self, LinearMap.range_id] using he
 
-/-- On the irregular grid `[0,1,3,4]`, the actual induced real matching attains
+/-- On the irregular grid `[0,1,3,4]`, the induced real matching attains
 both displacement-one bounds. The larger interior gap adds no mesh error. -/
 theorem real_overlap_bounds_attained :
     ∃ p q, realOverlapMatching.finite p = some q ∧ p.1 = (1, 4) ∧ q.1 = (0, 3) ∧

@@ -6,8 +6,7 @@ import TDA.Persistence.ConstructibleBarcode
 # Interleaving distance bounded by finite barcode bottleneck
 
 Each occurrence matching has finite cost and supplies an interleaving at that cost.
-Taking the infimum proves the bound without selecting an optimal matching. The actual
-finite-constructible barcode isomorphisms then transport both witnesses and distances.
+Taking the infimum proves the bound without selecting an optimal matching. The finite-constructible barcode isomorphisms then transport both witnesses and distances.
 -/
 
 set_option autoImplicit false

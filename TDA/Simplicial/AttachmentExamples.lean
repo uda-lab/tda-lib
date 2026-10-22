@@ -1,6 +1,6 @@
 import TDA.Simplicial.Attachment
 
-/-! Concrete additions of actual faces on three ordered vertices. -/
+/-! Concrete additions of faces on three ordered vertices. -/
 
 namespace TDA.Simplicial.AttachmentExamples
 
@@ -199,7 +199,7 @@ example (k : Type*) [Field k] :
       Function.Bijective (simplicialHomologyIncl k isolatedVertex.inclusion r).hom :=
   isolatedVertex.isolatedVertex_birth k
 
-/-- Joining the two components kills the span of the actual attaching class in H₀. -/
+/-- Joining the two components kills the span of the attaching class in H₀. -/
 example (k : Type*) [Field k] :
     LinearMap.ker (simplicialHomologyIncl k connectingEdge.inclusion 0).hom =
       k ∙ connectingEdge.attachingHomologyClass k ∧
@@ -209,7 +209,7 @@ example (k : Type*) [Field k] :
     (connectingEdge.attachingClass_ne_zero_of_no_old_coface k)
   exact ⟨h.2.1, h.2.2.1⟩
 
-/-- The last edge of the triangle boundary creates an actual H₁ class. -/
+/-- The last edge of the triangle boundary creates a H₁ class. -/
 example (k : Type*) [Field k] :
     Function.Injective (simplicialHomologyIncl k closingEdge.inclusion 1).hom ∧
     Module.finrank k (simplicialHomology cycle k 1 ⧸
@@ -227,7 +227,7 @@ example (k : Type*) [Field k] :
         k ∙ closingEdge.birthCokernelClass k z = ⊤ :=
   closingEdge.positive_birth_generator k (closingEdge_attachingClass_zero k)
 
-/-- Filling the triangle kills the boundary's actual degree-one class. -/
+/-- Filling the triangle kills the boundary's degree-one class. -/
 example (k : Type*) [Field k] :
     LinearMap.ker (simplicialHomologyIncl k fillingTriangle.inclusion 1).hom =
       k ∙ fillingTriangle.attachingHomologyClass k ∧
@@ -237,9 +237,8 @@ example (k : Type*) [Field k] :
     (fillingTriangle.attachingClass_ne_zero_of_no_old_coface k)
   exact ⟨h.2.1, h.2.2.1⟩
 
-/-- The actual last edge of a three-vertex cycle creates one H₁ class, and
-attaching its filling triangle kills one H₁ class. These are events in actual
-simplicial homology, rather than events in a raw reduction matrix. -/
+/-- The last edge of a three-vertex cycle creates one H₁ class, and
+attaching its filling triangle kills one H₁ class. These are events in simplicial homology, rather than events in a raw reduction matrix. -/
 theorem filled_triangle_H1_birth_and_death (k : Type*) [Field k] :
     ∃ (P C T : PreAbstractSimplicialComplex (Fin 3))
       (A : SimplexAttachment P C 1) (B : SimplexAttachment C T 2),

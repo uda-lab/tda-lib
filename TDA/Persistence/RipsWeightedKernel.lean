@@ -4,7 +4,7 @@ import TDA.Persistence.ArctanWeight
 /-!
 # Distance-matrix perturbations of Rips weighted-kernel embeddings
 
-The same-label actual-diagram Rips bound composes with the count-times-bottleneck
+The same-label sublevel-diagram Rips bound composes with the count-times-bottleneck
 stability of the weighted Gaussian kernel embedding, its second-level Gaussian feature and
 the `(k, w)`-Gaussian kernel values. The full bottleneck bound is finite and its real
 conversion is at most the pairwise discrepancy; essential bars remain in that comparison but

@@ -7,9 +7,8 @@ import Mathlib.Algebra.Order.Group.OrderIso
 /-!
 # Canonical shifted homology maps
 
-A global shifted simplicial function gives a natural transformation with the existing actual
-homology maps as components. A left-total simplicial relation gives the same transformation
-for every subordinate function: finite joint images prove contiguity, and the actual signed
+A global shifted simplicial function gives a natural transformation with the existing homology maps as components. A left-total simplicial relation gives the same transformation
+for every subordinate function: finite joint images prove contiguity, and the signed
 chain homotopy proves equality on homology. This realizes the mechanism of CDSO Proposition
 3.3 over an arbitrary ring, with all real shifts and the library's nonempty-face convention.
 -/
@@ -27,7 +26,7 @@ variable {X Y : Type u} [LinearOrder X] [LinearOrder Y]
 variable (R : Type v) [Ring R]
 variable {F : SimplicialFiltration ℝ X} {G : SimplicialFiltration ℝ Y} {ε : ℝ}
 
-/-- Actual homology maps of one global function form a degree-ε natural transformation. -/
+/-- Homology maps of one global function form a degree-ε natural transformation. -/
 def shiftedSimplicialHomologyMap {f : X → Y} (hf : IsShiftedSimplicial F G ε f) (n : ℕ) :
     simplicialHomologyPModule R F n ⟶
       reindex (OrderHomClass.toOrderHom (OrderIso.addRight ε)) (simplicialHomologyPModule R G n) where
@@ -41,7 +40,7 @@ def shiftedSimplicialHomologyMap {f : X → Y} (hf : IsShiftedSimplicial F G ε 
       ← simplicialHomologyMap_comp, ← simplicialHomologyMap_comp]
     exact congrArg (fun q => simplicialHomologyMap R q n) (VertexMap.ext (fun _ => rfl))
 
-/-- A component is the actual map of the stage vertex map. -/
+/-- A component is the map of the stage vertex map. -/
 @[simp] theorem shiftedSimplicialHomologyMap_app {f : X → Y}
     (hf : IsShiftedSimplicial F G ε f) (n : ℕ) (t : ℝ) :
     (shiftedSimplicialHomologyMap R hf n).app t =
@@ -58,7 +57,7 @@ private theorem selector_subordinate {C : SetRel X Y}
   rw [← hxy]
   exact Classical.choose_spec (hC x)
 
-/-- Canonical actual homology transformation of a total shifted simplicial relation.
+/-- Canonical homology transformation of a total shifted simplicial relation.
 Selection uses all ambient vertices once, independently of the level. -/
 def multivaluedSimplicialHomologyMap {C : SetRel X Y}
     (hTotal : Relator.LeftTotal (fun x y => (x,y) ∈ C))
@@ -79,7 +78,7 @@ theorem multivaluedSimplicialHomologyMap_eq {C : SetRel X Y}
   exact Contiguous.simplicialHomologyMap_eq R
     (hC.contiguous (selector_subordinate hTotal) hf t) n
 
-/-- Canonical components are the existing actual homology maps of any selector. -/
+/-- Canonical components are the existing homology maps of any selector. -/
 theorem multivaluedSimplicialHomologyMap_app {C : SetRel X Y}
     (hTotal : Relator.LeftTotal (fun x y => (x,y) ∈ C))
     (hC : IsShiftedSimplicialRelation F G ε C) {f : X → Y}
@@ -89,7 +88,7 @@ theorem multivaluedSimplicialHomologyMap_app {C : SetRel X Y}
   rw [multivaluedSimplicialHomologyMap_eq R hTotal hC hf n]
   rfl
 
-/-- On a function graph the canonical map is exactly its ordinary actual map. -/
+/-- On a function graph the canonical map is exactly its ordinary map. -/
 theorem multivaluedSimplicialHomologyMap_graph {f : X → Y}
     (hf : IsShiftedSimplicial F G ε f) (n : ℕ) :
     multivaluedSimplicialHomologyMap R (C := Function.graph f)
@@ -111,7 +110,7 @@ def multivaluedSimplicialHomologyMapNNReal {C : SetRel X Y} {δ : ℝ≥0}
       (RealShift.shift δ).obj (simplicialHomologyPModule R G n) :=
   multivaluedSimplicialHomologyMap R hTotal hC n
 
-/-- Nonnegative compatibility preserves the actual canonical map, including its components. -/
+/-- Nonnegative compatibility preserves the canonical map, including its components. -/
 @[simp] theorem multivaluedSimplicialHomologyMapNNReal_eq {C : SetRel X Y} {δ : ℝ≥0}
     (hTotal : Relator.LeftTotal (fun x y => (x,y) ∈ C))
     (hC : IsShiftedSimplicialRelation F G (δ : ℝ) C) (n : ℕ) :

@@ -10,7 +10,7 @@ continuous endpoint maps (see `reeb-constructible-space.md`). Write `X = P.Reali
 
 For an open interval `W`, `P.heightPreimage S W` is the subspace `{x : X // h x ∈ W}`. Its path
 components are `(intervalComponents h).obj W` by definition (`intervalComponents_obj_eq`, proved by
-`rfl`). The actual fiber inclusions are
+`rfl`). The fiber inclusions are
 
 - `vertexFiberInclusion i : V i → heightPreimage (J i)`, `v ↦ ofVertex i v`;
 - `regularFiberInclusion e t : E e → heightPreimage (K e)`, `y ↦ ofStrip e (y, t)` for a chosen
@@ -59,8 +59,7 @@ homotopy, not a homotopy over `ℝ`, because heights move.
   are end maps of the same homotopy restricted to `W = I` and `W = J`. So the inclusion is a
   homotopy equivalence (`nestedHomotopyEquiv`).
 
-These need no hypothesis on the pieces. The forward map of each `HomotopyEquiv` is the actual
-inclusion; that is the interface. The homotopy inverses are chosen clamp retractions and are not
+These need no hypothesis on the pieces. The forward map of each `HomotopyEquiv` is the inclusion; that is the interface. The homotopy inverses are chosen clamp retractions and are not
 part of it. The construction shows that the inclusion `heightPreimage I → heightPreimage J` is a
 homotopy equivalence; it does not exhibit `heightPreimage I` as a deformation retract, since the
 clamp also moves points of `heightPreimage I`.
@@ -76,7 +75,7 @@ vertexComponentsEquiv i  : ZerothHomotopy (V i) ≃ (intervalComponents h).obj (
 edgeComponentsEquiv e t  : ZerothHomotopy (E e) ≃ (intervalComponents h).obj (K e)
 ```
 
-with generators sent to the classes of the actual inclusions (`vertexComponentsEquiv_mk`,
+with generators sent to the classes of the inclusions (`vertexComponentsEquiv_mk`,
 `edgeComponentsEquiv_mk`).
 
 The cylinder line from `(y, t)` to `(y, a e)` stays in `J e.castSucc` (`joinedIn_cylinder`). So
@@ -102,7 +101,7 @@ is assumed; a height-preserving map may vary along a cylinder.
 - `φ` restricts to fibers, defining `vertexFiberMap φ i : V i → V' i` and
   `regularFiberMap φ e t : E e → E' e` through the fiber homeomorphisms, with
   `map_ofVertex_eq` and `map_ofStrip_eq`.
-- The actual fiber inclusions commute with `φ` on the nose (`vertexFiberInclusion_naturality`,
+- The fiber inclusions commute with `φ` on the nose (`vertexFiberInclusion_naturality`,
   `regularFiberInclusion_naturality`, stated with `preimageRestrict`).
 - Hence the component bijections are natural for `componentNatTrans φ`
   (`componentNatTrans_vertexComponentsEquiv`, `componentNatTrans_edgeComponentsEquiv`) and for its
@@ -139,7 +138,7 @@ its only hypotheses.
   `(Σ levels k in I, π₀ (V k)) ⊕ (Σ e with I ≤ K e, π₀ (E e))`. Compactness of an open inverse
   image is never used; it fails in general, since `h⁻¹(K e) ≅ E e × K e`.
 - **Bijectivity** (`intervalComponents_map_bijective`). For nonempty `I ≤ J` with the same levels,
-  the actual map `(intervalComponents h).map (homOfLE _)` equals the component bijection of
+  the map `(intervalComponents h).map (homOfLE _)` equals the component bijection of
   `nestedHomotopyEquiv`.
 - **Exterior values** are empty by `height_preimage_lowerTail` and `height_preimage_upperTail`.
 
@@ -152,7 +151,7 @@ every continuous height.
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleCylinderExamples` computes the actual `intervalComponents` of realized
+`TDA.Reeb.ConstructibleCylinderExamples` computes the `intervalComponents` of realized
 finite data:
 
 - `n = 0` with two vertices: the value on `ℝ` has two elements, and the inclusion of `(-1, 1)` into
@@ -182,7 +181,7 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
   the homotopy equivalences are `vertexHomotopyEquiv` and `regularHomotopyEquiv`, for arbitrary
   pieces. The incidence diagrams are proved on path components
   (`map_K_le_J_castSucc_edgeComponentsEquiv`, `map_K_le_J_succ_edgeComponentsEquiv`), and the
-  naturality as exact squares of the actual fiber inclusions
+  naturality as exact squares of the fiber inclusions
   (`vertexFiberInclusion_naturality`, `regularFiberInclusion_naturality`). The parenthesis of the
   lemma indexes the absent edge sets so that the first genuine edge set would be empty. Here the
   incident edges of level `i` are the `e` with `e.castSucc = i` or `e.succ = i`, and `n = 0` has

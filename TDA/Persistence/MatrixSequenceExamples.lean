@@ -34,11 +34,11 @@ theorem dimensions (i : Fin 3) :
     compositeZero.dim i = ![1, 2, 1] i ∧ compositeIdentity.dim i = ![1, 2, 1] i := by
   fin_cases i <;> exact ⟨rfl, rfl⟩
 
-/-- The first actual transition matrix is the column inclusion. -/
+/-- The first transition matrix is the column inclusion. -/
 theorem first_matrix (a b : ℚ) :
     (threeStage a b).step 0 1 (by decide) = !![1; 0] := rfl
 
-/-- The second actual transition matrix is the supplied row. -/
+/-- The second transition matrix is the supplied row. -/
 theorem second_matrix (a b : ℚ) :
     (threeStage a b).step 1 2 (by decide) = !![a, b] := rfl
 
@@ -104,16 +104,16 @@ def compositeIdentityIso :
       change ((!![1, 0] : Matrix (Fin 1) (Fin 2) ℚ) *ᵥ x) 0 = x (0 : Fin 2)
       simp [Matrix.mulVec, dotProduct])
 
-/-- The actual zero-composite input has barcode `[0,2)+[1,3)`. -/
+/-- The zero-composite input has barcode `[0,2)+[1,3)`. -/
 theorem compositeZero_barcode : compositeZero.barcode = ThreeStageExamples.zeroBarcode := by
   exact (rankBarcode_eq_of_iso compositeZeroIso).trans ThreeStageExamples.zero_rankBarcode
 
-/-- The actual identity-composite input has barcode `[0,3)+[1,2)`. -/
+/-- The identity-composite input has barcode `[0,3)+[1,2)`. -/
 theorem compositeIdentity_barcode :
     compositeIdentity.barcode = ThreeStageExamples.identityBarcode := by
   exact (rankBarcode_eq_of_iso compositeIdentityIso).trans ThreeStageExamples.identity_rankBarcode
 
-/-- The two actual matrix barcodes are different. -/
+/-- The two matrix barcodes are different. -/
 theorem barcodes_distinct : compositeZero.barcode ≠ compositeIdentity.barcode := by
   rw [compositeZero_barcode, compositeIdentity_barcode]
   decide
@@ -146,7 +146,7 @@ def oneStagePair : MatrixSequence ℚ 1 where
   dim _ := 2
   step i j h := by have hi := i.isLt; have hj := j.isLt; omega
 
-/-- The one-stage coordinate plane is the actual pair module. -/
+/-- The one-stage coordinate plane is the pair module. -/
 def oneStagePairIso :
     oneStagePair.toPModule ≅ FiniteDecompositionExamples.oneStagePair (k := ℚ) :=
   FiniteLine.isoOfAdjacent (fun _ => (LinearEquiv.finTwoArrow ℚ ℚ).toModuleIso)
@@ -157,7 +157,7 @@ theorem oneStagePair_barcode : oneStagePair.barcode =
     Multiset.replicate 2 FiniteDecompositionExamples.bar01 :=
   (rankBarcode_eq_of_iso oneStagePairIso).trans FiniteDecompositionExamples.oneStagePair_barcode
 
-/-- A nonempty input with an actual zero-dimensional stage. -/
+/-- A nonempty input with a zero-dimensional stage. -/
 def oneStageZero : MatrixSequence ℚ 1 where
   dim _ := 0
   step i j h := by have hi := i.isLt; have hj := j.isLt; omega
@@ -172,7 +172,7 @@ def oneStageZeroIso :
 theorem oneStageZero_barcode : oneStageZero.barcode = 0 :=
   (rankBarcode_eq_of_iso oneStageZeroIso).trans (FiniteDecompositionExamples.zeroDiagram_barcode 1)
 
-/-- A scalar transition whose actual coefficient is two. -/
+/-- A scalar transition whose coefficient is two. -/
 def scalarTwo : MatrixSequence ℚ 2 where
   dim _ := 1
   step _ _ _ := !![2]
@@ -184,7 +184,7 @@ theorem scalarTwo_apply (x : Fin 1 → ℚ) :
   change ((!![2] : Matrix (Fin 1) (Fin 1) ℚ) *ᵥ x) 0 = 2 * x 0
   simp [Matrix.mulVec, dotProduct]
 
-/-- The actual scalar transition is not the identity. -/
+/-- The scalar transition is not the identity. -/
 theorem scalarTwo_nonidentity :
     structureMapLinear scalarTwo.toPModule (show (0 : Fin 2) ≤ 1 by decide) ≠ LinearMap.id := by
   intro he
@@ -193,7 +193,7 @@ theorem scalarTwo_nonidentity :
   change (2 : ℚ) * 1 = 1 at hx
   norm_num at hx
 
-/-- The scalar transition is nonzero as an actual linear map. -/
+/-- The scalar transition is nonzero as a linear map. -/
 theorem scalarTwo_nonzero :
     structureMapLinear scalarTwo.toPModule (show (0 : Fin 2) ≤ 1 by decide) ≠ 0 := by
   intro he
@@ -202,14 +202,14 @@ theorem scalarTwo_nonzero :
   change (2 : ℚ) * 1 = 0 at hx
   norm_num at hx
 
-/-- An actual matrix endomorphism multiplies every stage by two. -/
+/-- A matrix endomorphism multiplies every stage by two. -/
 def doubleHom : MatrixSequence.Hom scalarTwo scalarTwo where
   app _ := !![2]
   comm i j h := by
     change (!![2] : Matrix (Fin 1) (Fin 1) ℚ) * !![2] = !![2] * !![2]
     rfl
 
-/-- The stage matrices become the actual nonidentity natural transformation. -/
+/-- The stage matrices become the nonidentity natural transformation. -/
 theorem doubleHom_nonidentity : doubleHom.toNatTrans ≠ 𝟙 scalarTwo.toPModule := by
   intro he
   have hx := congrArg (fun α : scalarTwo.toPModule ⟶ scalarTwo.toPModule =>
@@ -246,7 +246,7 @@ def basisSwapped : MatrixSequence ℚ 3 where
     | ⟨1, _⟩, ⟨_ + 2, _⟩ => !![1, 0]
     | _, _ => 0
 
-/-- The transformed adjacent matrices are the actual transformed inclusion and projection. -/
+/-- The transformed adjacent matrices are the transformed inclusion and projection. -/
 theorem basisSwapped_matrices :
     basisSwapped.step 0 1 (by decide) = !![0; 1] ∧
       basisSwapped.step 1 2 (by decide) = !![1, 0] := ⟨rfl, rfl⟩
@@ -267,7 +267,7 @@ def swapStage (i : Fin 3) :
   | ⟨1, _⟩ => swapTwo
   | ⟨_ + 2, _⟩ => LinearEquiv.refl _ _
 
-/-- The basis change actually interchanges the middle coordinate vectors. -/
+/-- The basis change interchanges the middle coordinate vectors. -/
 theorem swapStage_nontrivial : swapStage 1 ![1, 0] = ![0, 1] := rfl
 
 /-- The explicit coordinate change intertwines the transformed adjacent matrices. -/

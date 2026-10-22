@@ -1,7 +1,7 @@
 import TDA.Persistence.FiniteDecomposition
 
 /-!
-# Actual image factorization on a finite chain
+# Image factorization on a finite chain
 
 The image fibers are linear-map ranges. Naturality restricts the target structure
 maps to these ranges, giving a natural componentwise epi–mono factorization.
@@ -18,7 +18,7 @@ open CategoryTheory
 variable {s : ℕ} {k : Type u} [Field k]
 variable {M N : PModule.{u,0,u} k (Fin s)}
 
-/-- The persistence module of actual component images, with induced structure maps. -/
+/-- The persistence module of component images, with induced structure maps. -/
 def finiteImage (f : M ⟶ N) : PModule.{u,0,u} k (Fin s) where
   obj i := ModuleCat.of k (LinearMap.range (f.app i).hom)
   map {i j} g := ModuleCat.ofHom <|
@@ -50,7 +50,7 @@ instance finiteImage_finiteDimensional (f : M ⟶ N)
   change FiniteDimensional k (LinearMap.range (f.app i).hom)
   infer_instance
 
-/-- The actual componentwise corestriction to the image. -/
+/-- The componentwise corestriction to the image. -/
 def toFiniteImage (f : M ⟶ N) : M ⟶ finiteImage f where
   app i := ModuleCat.ofHom (f.app i).hom.rangeRestrict
   naturality {i j} g := by
@@ -60,7 +60,7 @@ def toFiniteImage (f : M ⟶ N) : M ⟶ finiteImage f where
     apply Subtype.ext
     exact congrArg (fun h : M.obj i ⟶ N.obj j => h.hom x) (f.naturality g)
 
-/-- The actual componentwise inclusion of the image. -/
+/-- The componentwise inclusion of the image. -/
 def fromFiniteImage (f : M ⟶ N) : finiteImage f ⟶ N where
   app i := ModuleCat.ofHom (LinearMap.range (f.app i).hom).subtype
   naturality {_i _j} _g := rfl
@@ -72,7 +72,7 @@ theorem toFiniteImage_comp_fromFiniteImage (f : M ⟶ N) :
   funext i
   rfl
 
-/-- Corestriction to an actual range is surjective at every stage. -/
+/-- Corestriction to a range is surjective at every stage. -/
 theorem toFiniteImage_surjective (f : M ⟶ N) (i : Fin s) :
     Function.Surjective ((toFiniteImage f).app i).hom :=
   LinearMap.surjective_rangeRestrict _

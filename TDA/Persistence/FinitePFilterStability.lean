@@ -4,9 +4,9 @@ import TDA.Persistence.FiniteFilterStability
 /-!
 # Finite-part boundary transport under filtration perturbations
 
-The existing bottleneck stability theorem compares actual sublevel diagrams,
+The existing bottleneck stability theorem compares sublevel diagrams,
 including across pairing changes. Its finite radius therefore controls the
-actual finite-part real-plan optimum, with an explicit occurrence-count factor.
+finite-part real-plan optimum, with an explicit occurrence-count factor.
 Essential bars may exist in the diagrams and remain outside this finite cost.
 -/
 
@@ -17,7 +17,7 @@ open TDA.Filtration TDA.Simplicial
 variable {V : Type u} [LinearOrder V]
 variable {K : PreAbstractSimplicialComplex V} [Fintype (TotalFace K)]
 
-/-- Actual finite-part real-p transport is bounded by the face-value perturbation
+/-- Finite-part real-p transport is bounded by the face-value perturbation
 times the reciprocal-power occurrence-count factor, without a fixed pairing. -/
 theorem finitePBoundaryTransportCost_dgm_le_card_rpow_mul_faceSupDifference
     {p : ℝ} (hp : 1 ≤ p) (k : Type u) [Field k]

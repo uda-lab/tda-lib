@@ -7,7 +7,7 @@ set_option autoImplicit false
 
 These fixtures exercise empty and nonempty face sets, tied and nonconstant grades, a
 noncanonical compatible order, absent ambient vertices, and rational thresholds. The
-prefixes are checked as actual preabstract complexes; values are also evaluated on concrete
+prefixes are checked as preabstract complexes; values are also evaluated on concrete
 finite presentations.
 -/
 

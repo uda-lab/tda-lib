@@ -126,7 +126,7 @@ import TDA
 #print axioms TDA.Persistence.structureMapRank_drop
 #print axioms TDA.Persistence.structureMapRank_four_le
 #print axioms TDA.Persistence.moduleMultiplicityInteger_nonneg
--- TDA.Persistence.RankReconstruction: finite rectangular telescoping and actual-map ranks.
+-- TDA.Persistence.RankReconstruction: finite rectangular telescoping and transition-map ranks.
 #print axioms TDA.Persistence.moduleMultiplicityInteger_sum_rectangle
 #print axioms TDA.Persistence.structureMapRank_eq_sum_moduleMultiplicityInteger
 
@@ -137,7 +137,7 @@ import TDA
 #print axioms TDA.Persistence.rankBarcode_barcodeModule
 #print axioms TDA.Persistence.rankBarcode_eq_iff
 
--- TDA.Persistence.RankBarcodeIso: actual-map rank and canonical barcode invariance.
+-- TDA.Persistence.RankBarcodeIso: transition-map rank and canonical barcode invariance.
 #print axioms TDA.Persistence.structureMapRank_eq_of_iso
 #print axioms TDA.Persistence.rankBarcode_eq_of_iso
 #print axioms TDA.Persistence.rankBarcode_eq_of_iso_barcodeModule
@@ -229,7 +229,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.matrixReductionTrace_certificate
 #print axioms TDA.Persistence.Reduction.matrixReductionTrace_graded_certificate
 
--- Fixed face-order templates and actual sublevel diagram evaluation (Issue #176).
+-- Fixed face-order templates and sublevel diagram evaluation (Issue #176).
 #print axioms TDA.Persistence.faceCount
 #print axioms TDA.Persistence.facePrefixModule
 #print axioms TDA.Persistence.facePrefix_finiteDimensional
@@ -277,7 +277,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.essentialOnly_coordinates_vary
 #print axioms TDA.Persistence.finiteOnly_coordinates_vary
 #print axioms TDA.Persistence.absoluteFiniteEndpointDifference_not_c1_empty
--- Fixed C¹ coordinates of actual sublevel diagrams (Issue #181).
+-- Fixed C¹ coordinates of sublevel diagrams (Issue #181).
 #print axioms TDA.Persistence.faceLiftCounts
 #print axioms TDA.Persistence.fixedFaceLift
 #print axioms TDA.Persistence.fixedFaceLift_factorization
@@ -363,7 +363,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.bottleneck_permuted_presentations
 #print axioms TDA.Persistence.bottleneck_repeated_pair_ne_zero
 
--- Actual scalar PH loss derivatives (Issue #191).
+-- scalar PH loss derivatives (Issue #191).
 #print axioms TDA.Persistence.faceLossSlotFace_injective
 #print axioms TDA.Persistence.faceLossSlotRead_pack
 #print axioms TDA.Persistence.faceValueSelection_norm_le_one
@@ -373,14 +373,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.faceLossCoefficient_unused
 #print axioms TDA.Persistence.allFaceValues_fderiv_apply
 #print axioms TDA.Persistence.fixedFaceLift_fderiv_eq_selection
-#print axioms TDA.Persistence.actualPHScalarLoss_c1_neighborhood
-#print axioms TDA.Persistence.actualPHScalarLoss_hasFDerivAt
-#print axioms TDA.Persistence.actualPHScalarLoss_fderiv
-#print axioms TDA.Persistence.actualPHScalarLoss_norm_bound
-#print axioms TDA.Persistence.actualPHScalarLoss_derivative_independent
-#print axioms TDA.Persistence.actualPHScalarLoss_direction_independent
-#print axioms TDA.Persistence.actualPHScalarLoss_empty_fderiv
-#print axioms TDA.Persistence.actualPHScalarLoss_any_lifts_independent
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_c1_neighborhood
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_hasFDerivAt
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_fderiv
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_norm_bound
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_derivative_independent
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_direction_independent
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_empty_fderiv
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_any_lifts_independent
 #print axioms TDA.Persistence.essentialBirthSum_orderedQ
 #print axioms TDA.Persistence.essentialBirthSum_c1_all
 #print axioms TDA.Persistence.singleton_essential_loss
@@ -397,7 +397,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Examples.moving_tied_edge_has_finite_slot
 #print axioms TDA.Persistence.Examples.moving_tied_edge_lift
 
--- Actual finite-filter bottleneck stability and its finite closed-segment subdivision (#193).
+-- finite-filter bottleneck stability and its finite closed-segment subdivision (#193).
 #print axioms TDA.Persistence.filterInterpolate_zero
 #print axioms TDA.Persistence.filterInterpolate_one
 #print axioms TDA.Persistence.intervalFilter_value
@@ -422,10 +422,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.StabilityCrossingFixtures.crossing_at_left_endpoint
 #print axioms TDA.Persistence.Examples.triangle_family_interpolation
 #print axioms TDA.Persistence.faceTemplatePairs_mem_of_barcodeMultiplicity_pos
-#print axioms TDA.Persistence.Examples.triangle_actual_pairing_change
+#print axioms TDA.Persistence.Examples.triangle_pairing_change
 #print axioms TDA.Persistence.Examples.triangle_explicit_midpoint_diagrams
-#print axioms TDA.Persistence.Examples.triangle_actual_face_pairings
-#print axioms TDA.Persistence.Examples.triangle_actual_midpoint_diagram_points
+#print axioms TDA.Persistence.Examples.triangle_face_pairings
+#print axioms TDA.Persistence.Examples.triangle_midpoint_diagram_points
 #print axioms TDA.Persistence.dgm_finite_death_from_faceTemplate
 #print axioms TDA.Persistence.Examples.triangle_diagram_path_nonconstant
 #print axioms TDA.Persistence.Reduction.DistinctPivots
@@ -564,7 +564,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.originalHomologyMap_id
 #print axioms TDA.Persistence.Reduction.originalHomologyMap_comp
 
--- Actual simplicial boundary, natural prefix homology, pivot barcode and F₂ fixtures (Issue #199).
+-- simplicial boundary, natural prefix homology, pivot barcode and F₂ fixtures (Issue #199).
 #print axioms TDA.Persistence.Reduction.finiteIndexPair_paired
 #print axioms TDA.Persistence.Reduction.finiteIndexPair_essential
 #print axioms TDA.Persistence.Reduction.essentialIndex_paired
@@ -575,45 +575,45 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.pivotEssentialIntervals_count
 #print axioms TDA.Persistence.Reduction.pivotBarcode_rank
 #print axioms TDA.Persistence.Reduction.face_card_eq_degree_add_one
-#print axioms TDA.Persistence.Reduction.actualFaceIndex_degree
-#print axioms TDA.Persistence.Reduction.actualFaceIndex_indexedFace
-#print axioms TDA.Persistence.Reduction.indexedFace_actualFaceIndex
+#print axioms TDA.Persistence.Reduction.degreewiseFaceIndex_degree
+#print axioms TDA.Persistence.Reduction.degreewiseFaceIndex_indexedFace
+#print axioms TDA.Persistence.Reduction.indexedFace_degreewiseFaceIndex
 #print axioms TDA.Persistence.Reduction.mem_prefixDegreeSpace_iff
 #print axioms TDA.Persistence.Reduction.prefixChainEquiv_apply
 #print axioms TDA.Persistence.Reduction.prefixChainEquiv_apply_zero
 #print axioms TDA.Persistence.Reduction.prefixChainEquiv_single_apply
 #print axioms TDA.Persistence.Reduction.prefixFaceIndex_inclusion
 #print axioms TDA.Persistence.Reduction.prefixChainEquiv_inclusion
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_degree
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_vertex
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_apply
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_of_degree
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_deletedFace
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_strict
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_lowersDegree
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_degree
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_vertex
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_apply
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_of_degree
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_deletedFace
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_strict
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_lowersDegree
 #print axioms TDA.Persistence.Reduction.boundaryMatrix_inclusion_entry
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_prefix_entry
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_prefix_entry
 #print axioms TDA.Persistence.Reduction.prefixChainEquiv_single_vector
 #print axioms TDA.Persistence.Reduction.prefixMatrixBoundary_single
 #print axioms TDA.Persistence.Reduction.prefixChainEquiv_boundary
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_mulVec_prefix
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_mulVec_zero_degree
-#print axioms TDA.Persistence.Reduction.actualBoundaryMatrix_sq_zero
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_mulVec_prefix
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_mulVec_zero_degree
+#print axioms TDA.Persistence.Reduction.faceBoundaryMatrix_sq_zero
 #print axioms TDA.Persistence.Reduction.prefixChainEquiv_cycle_iff
 #print axioms TDA.Persistence.Reduction.prefixChainEquiv_boundary_iff
-#print axioms TDA.Persistence.Reduction.actualCycleEquiv_inclusion
-#print axioms TDA.Persistence.Reduction.actualReduction_normalForm
-#print axioms TDA.Persistence.Reduction.actualOriginalHomology_eq_originalHomology
-#print axioms TDA.Persistence.Reduction.actualCycleEquiv_boundaries
-#print axioms TDA.Persistence.Reduction.actualLiveMap_kernel_eq_boundaries
-#print axioms TDA.Persistence.Reduction.actualLiveMap_surjective
-#print axioms TDA.Persistence.Reduction.actualQuotientOriginal_mkQ
-#print axioms TDA.Persistence.Reduction.actualOriginalHomologyMap_mkQ
-#print axioms TDA.Persistence.Reduction.actualQuotientOriginal_naturality
-#print axioms TDA.Persistence.Reduction.actualHomologyEquivOriginal_naturality
-#print axioms TDA.Persistence.Reduction.actualPivotBarcode_rank
-#print axioms TDA.Persistence.Reduction.actualPrefixHomology_rank
-#print axioms TDA.Persistence.Reduction.actualPivotBarcode_eq_facePrefixBarcode
+#print axioms TDA.Persistence.Reduction.prefixCycleCoordinateEquiv_inclusion
+#print axioms TDA.Persistence.Reduction.faceReduction_normalForm
+#print axioms TDA.Persistence.Reduction.faceMatrixHomology_eq_originalHomology
+#print axioms TDA.Persistence.Reduction.prefixCycleCoordinateEquiv_boundaries
+#print axioms TDA.Persistence.Reduction.prefixCycleToLive_kernel_eq_boundaries
+#print axioms TDA.Persistence.Reduction.prefixCycleToLive_surjective
+#print axioms TDA.Persistence.Reduction.prefixQuotientToMatrixHomology_mkQ
+#print axioms TDA.Persistence.Reduction.faceMatrixHomologyMap_mkQ
+#print axioms TDA.Persistence.Reduction.prefixQuotientToMatrixHomology_naturality
+#print axioms TDA.Persistence.Reduction.prefixHomologyEquivMatrixHomology_naturality
+#print axioms TDA.Persistence.Reduction.facePivotBarcode_rank
+#print axioms TDA.Persistence.Reduction.facePrefixHomology_rank
+#print axioms TDA.Persistence.Reduction.facePivotBarcode_eq_facePrefixBarcode
 #print axioms TDA.Persistence.Reduction.faceTemplatePairs_eq_pivotIndexPairs
 #print axioms TDA.Persistence.Reduction.faceTemplateEssential_eq_pivotEssentialIndices
 #print axioms TDA.Persistence.Reduction.evaluatePivotTemplate_eq_dgm
@@ -622,17 +622,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.mem_pivotIndexPairs_iff
 #print axioms TDA.Persistence.Reduction.pivotEssentialIndices_nodup
 #print axioms TDA.Persistence.Reduction.mem_pivotEssentialIndices_iff
-#print axioms TDA.Persistence.Reduction.Examples.Empty.empty_actual_matrix
+#print axioms TDA.Persistence.Reduction.Examples.Empty.empty_matrix
 #print axioms TDA.Persistence.Reduction.Examples.Empty.empty_reduced_matrix
 #print axioms TDA.Persistence.Reduction.Examples.Empty.empty_pivots
-#print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.actual_zero
+#print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.faceBoundaryMatrix_zero
 #print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.reduced_zero
 #print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.essential
 #print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.delayed_grade
 #print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.exact_pairs_zero
 #print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.exact_essential_zero
-#print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.actual_diagram_zero
-#print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.actual_eq
+#print axioms TDA.Persistence.Reduction.Examples.IsolatedVertex.diagram_zero
+#print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.faceBoundaryMatrix_eq_expected
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.filled_pivots
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.filled_essential
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.face_grades
@@ -640,15 +640,15 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.tied_face_grades
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.tied_pivot_grade_endpoints
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.tied_off_diagonal_multiplicity
-#print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.actual_eq
+#print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.faceBoundaryMatrix_eq_expected
 #print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.hollow_pivots
 #print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.hollow_essential
 #print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.face_grades
-#print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.actual_eq
+#print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.faceBoundaryMatrix_eq_expected
 #print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.delayed_edge_pivots
 #print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.delayed_edge_essential
 #print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.delayed_edge_grades
-#print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.swapped_actual_eq
+#print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.swapped_faceBoundaryMatrix_eq_expected
 #print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.swapped_reduced_eq
 #print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.equal_grade_reordering
 #print axioms TDA.Persistence.Reduction.Examples.DelayedEdge.equal_grade_diagram
@@ -660,25 +660,25 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.exact_pairs_one
 #print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.exact_essential_zero
 #print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.exact_essential_one
-#print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.actual_diagram_zero
-#print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.actual_diagram_one
+#print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.diagram_zero
+#print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.diagram_one
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.tied_diagram_zero
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.tied_diagram_one
 #print axioms TDA.Persistence.Reduction.pivotBarcode_endpoints
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.stage_intervals_zero
 #print axioms TDA.Persistence.Reduction.Examples.FilledTriangle.stage_intervals_one
-#print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.actual_diagram_zero
-#print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.actual_diagram_one
+#print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.diagram_zero
+#print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.diagram_one
 #print axioms TDA.Persistence.Reduction.Examples.HollowTriangle.stage_intervals_one
 #print axioms TDA.Persistence.Reduction.Examples.Empty.empty_index_pairs
 #print axioms TDA.Persistence.Reduction.Examples.Empty.empty_essential_indices
-#print axioms TDA.Persistence.Reduction.Examples.Empty.empty_actual_barcode
-#print axioms TDA.Persistence.Reduction.Examples.Empty.empty_actual_diagram
+#print axioms TDA.Persistence.Reduction.Examples.Empty.empty_barcode
+#print axioms TDA.Persistence.Reduction.Examples.Empty.empty_diagram
 #print axioms TDA.Persistence.Reduction.Examples.Empty.instIsEmptyFinFaceCountOfNatNatToPreC
 #print axioms TDA.Persistence.Reduction.Examples.Empty.instIsEmptyTotalFaceFinOfNatNatToPreC
 #print axioms TDA.Persistence.Reduction.prefixFaceFinite
 
--- Second-order scalar calculus and shared coordinate/actual-edge helpers.
+-- Second-order scalar calculus and shared coordinate/simplicial-edge helpers.
 #print axioms TDA.Persistence.faceValueSelection_single_eq_unit
 #print axioms TDA.Persistence.faceValueSelection_single_eq_zero
 #print axioms TDA.Persistence.faceLossCoefficient_eq_basis
@@ -702,29 +702,29 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.faceLossHessianCoefficient_selected
 #print axioms TDA.Persistence.faceLossHessianCoefficient_unused_left
 #print axioms TDA.Persistence.faceLossHessianCoefficient_unused_right
-#print axioms TDA.Persistence.actualFaceLossHessian_apply
+#print axioms TDA.Persistence.faceCoordinateLossHessian_apply
 #print axioms TDA.Persistence.allFaceValues_second_fderiv_apply
 #print axioms TDA.Persistence.fixedFaceLift_second_fderiv_eq_selection
 #print axioms TDA.Persistence.fixedFaceLift_slot_second_derivative
-#print axioms TDA.Persistence.actualPHScalarLoss_c2_neighborhood
-#print axioms TDA.Persistence.actualPHScalarLoss_c2_fderiv
-#print axioms TDA.Persistence.secondDerivativeChain_eq_actualFaceLossHessian
-#print axioms TDA.Persistence.actualPHScalarLoss_hasFDerivAt_fderiv
-#print axioms TDA.Persistence.actualPHScalarLoss_second_fderiv
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_c2_neighborhood
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_c2_fderiv
+#print axioms TDA.Persistence.secondDerivativeChain_eq_faceCoordinateLossHessian
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_hasFDerivAt_fderiv
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_second_fderiv
 #print axioms TDA.Persistence.faceLossHessianCoefficient_symmetric
-#print axioms TDA.Persistence.actualFaceLossHessian_symmetric
-#print axioms TDA.Persistence.actualFaceLossHessian_norm_bound
-#print axioms TDA.Persistence.actualPHScalarLoss_second_norm_bound
-#print axioms TDA.Persistence.actualPHScalarLoss_second_derivative_independent
-#print axioms TDA.Persistence.actualPHScalarLoss_any_c2_lifts_independent
-#print axioms TDA.Persistence.actualFaceLossHessian_of_face_second_deriv_zero
-#print axioms TDA.Persistence.actualPHScalarLoss_second_fderiv_of_face_second_deriv_zero
+#print axioms TDA.Persistence.faceCoordinateLossHessian_symmetric
+#print axioms TDA.Persistence.faceCoordinateLossHessian_norm_bound
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_second_norm_bound
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_second_derivative_independent
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_any_c2_lifts_independent
+#print axioms TDA.Persistence.faceCoordinateLossHessian_of_face_second_deriv_zero
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_second_fderiv_of_face_second_deriv_zero
 #print axioms TDA.Persistence.tiedFaceValues_fderiv_eq
 #print axioms TDA.Persistence.tiedFaceValues_second_fderiv_eq
-#print axioms TDA.Persistence.actualPHScalarLoss_empty_second_fderiv
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_empty_second_fderiv
 #print axioms TDA.Persistence.faceLossHessianCoefficient_eq_scatter
 #print axioms TDA.Persistence.affineFaceValues_second_fderiv_zero
-#print axioms TDA.Persistence.actualPHScalarLoss_affine_second_fderiv
+#print axioms TDA.Persistence.sublevelDiagramScalarLoss_affine_second_fderiv
 #print axioms TDA.Persistence.squaredEssentialBirthSum_orderedQ
 #print axioms TDA.Persistence.squaredSignedFiniteEndpointDifference_orderedQ
 #print axioms TDA.Persistence.essentialBirthFunctional_apply
@@ -781,26 +781,26 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.quadraticEssentialLift_second_derivative_relabel
 #print axioms TDA.Persistence.quadraticEssentialLift_second_derivative_padding
 #print axioms TDA.Persistence.quadraticEssentialLift_second_derivative_values
-#print axioms TDA.Persistence.emptyActualFilter_diagram
-#print axioms TDA.Persistence.emptyActualFilter_scalar_loss
-#print axioms TDA.Persistence.emptyActualFilter_scalar_hasFDerivAt_fderiv
-#print axioms TDA.Persistence.emptyActualFilter_scalar_second_fderiv
+#print axioms TDA.Persistence.emptyComplexFilter_diagram
+#print axioms TDA.Persistence.emptyComplexFilter_scalar_loss
+#print axioms TDA.Persistence.emptyComplexFilter_scalar_hasFDerivAt_fderiv
+#print axioms TDA.Persistence.emptyComplexFilter_scalar_second_fderiv
 #print axioms TDA.Persistence.absoluteFiniteEndpointDifference_not_c2_empty
-#print axioms TDA.Persistence.nonlinear_singleton_actual_face_coefficients
-#print axioms TDA.Persistence.nonlinear_singleton_actual_face_hessian_terms
-#print axioms TDA.Persistence.nonlinear_singleton_actual_face_hessian
-#print axioms TDA.Persistence.nonlinear_singleton_actual_face_hasFDerivAt
-#print axioms TDA.Persistence.nonlinear_singleton_actual_face_example
-#print axioms TDA.Persistence.actualQuadraticSingletonCoordinates_factorization
-#print axioms TDA.Persistence.paddedActualQuadraticSingletonCoordinates_factorization
-#print axioms TDA.Persistence.swappedActualQuadraticSingletonCoordinates_factorization
-#print axioms TDA.Persistence.actualQuadraticSingletonCoordinates_swap_nontrivial
-#print axioms TDA.Persistence.actualQuadraticSingletonDiagram_scalar_loss
-#print axioms TDA.Persistence.actualQuadraticSingletonDiagram_scalar_hasFDerivAt_fderiv
-#print axioms TDA.Persistence.actualQuadraticSingletonDiagram_scalar_secondFDeriv_apply
-#print axioms TDA.Persistence.actualQuadraticSingletonLift_second_derivative_relabel
-#print axioms TDA.Persistence.actualQuadraticSingletonLift_second_derivative_padding
-#print axioms TDA.Persistence.actualQuadraticSingletonLift_second_derivative_values
+#print axioms TDA.Persistence.nonlinear_singleton_face_coefficients
+#print axioms TDA.Persistence.nonlinear_singleton_face_hessian_terms
+#print axioms TDA.Persistence.nonlinear_singleton_face_hessian
+#print axioms TDA.Persistence.nonlinear_singleton_face_hasFDerivAt
+#print axioms TDA.Persistence.nonlinear_singleton_face_example
+#print axioms TDA.Persistence.sublevelQuadraticSingletonCoordinates_factorization
+#print axioms TDA.Persistence.paddedSublevelQuadraticSingletonCoordinates_factorization
+#print axioms TDA.Persistence.swappedSublevelQuadraticSingletonCoordinates_factorization
+#print axioms TDA.Persistence.sublevelQuadraticSingletonCoordinates_swap_nontrivial
+#print axioms TDA.Persistence.sublevelQuadraticSingletonDiagram_scalar_loss
+#print axioms TDA.Persistence.sublevelQuadraticSingletonDiagram_scalar_hasFDerivAt_fderiv
+#print axioms TDA.Persistence.sublevelQuadraticSingletonDiagram_scalar_secondFDeriv_apply
+#print axioms TDA.Persistence.sublevelQuadraticSingletonLift_second_derivative_relabel
+#print axioms TDA.Persistence.sublevelQuadraticSingletonLift_second_derivative_padding
+#print axioms TDA.Persistence.sublevelQuadraticSingletonLift_second_derivative_values
 
 -- Finite F₂ simplex-list computation and certified fixtures (Issue #203).
 #print axioms TDA.Persistence.Reduction.FiniteInput.validBool_iff
@@ -808,7 +808,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.FiniteInput.listFace_bijective
 #print axioms TDA.Persistence.Reduction.FiniteInput.faceCount_eq_length
 #print axioms TDA.Persistence.Reduction.FiniteInput.positionEquiv_val
-#print axioms TDA.Persistence.Reduction.FiniteInput.boundary_eq_actual
+#print axioms TDA.Persistence.Reduction.FiniteInput.boundary_eq_faceBoundaryMatrix
 #print axioms TDA.Persistence.Reduction.FiniteInput.boundary_reindex
 #print axioms TDA.Persistence.Reduction.FiniteInput.degree_eq_faceDegree
 #print axioms TDA.Persistence.Reduction.FiniteInput.boundary_sq_zero
@@ -978,7 +978,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.TranslationExamples.finite_only_translation_counterexample
 #print axioms TDA.Persistence.TranslationExamples.finite_only_shift_three_distance
 #print axioms TDA.Persistence.TranslationExamples.isolated_vertex_translation_exact
--- Uniform finite/smooth regularity and fixed full/strict actual face lifts.
+-- Uniform finite/smooth regularity and fixed full/strict face lifts.
 #print axioms TDA.Persistence.CrThroughAllRepresentatives.of_le
 #print axioms TDA.Persistence.DiagramContDiffAt.of_le
 #print axioms TDA.Persistence.localLift_scalar_cr
@@ -1000,8 +1000,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.absoluteLoss_diagonal_not_ambient_c1
 #print axioms TDA.Persistence.fixedFaceLift_contDiffOn_cr
 #print axioms TDA.Persistence.fixedFaceCrLift
-#print axioms TDA.Persistence.actualDiagram_scalar_contDiffOn_cr
-#print axioms TDA.Persistence.actualDiagram_scalar_contDiffOn_cr_of_mem_relative_orderChamber
+#print axioms TDA.Persistence.sublevelDiagram_scalar_contDiffOn_cr
+#print axioms TDA.Persistence.sublevelDiagram_scalar_contDiffOn_cr_of_mem_relative_orderChamber
 #print axioms TDA.Persistence.strictFacePairs
 #print axioms TDA.Persistence.strictFacePairList
 #print axioms TDA.Persistence.strictFaceLiftCounts
@@ -1017,7 +1017,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.moving_tied_edge_full_pair
 #print axioms TDA.Persistence.moving_tied_edge_strict_essential_birth
 
-#print axioms TDA.Persistence.Reduction.nonempty_actualPrefixHomologyIsoPivotBarcode
+#print axioms TDA.Persistence.Reduction.nonempty_facePrefixHomologyIsoPivotBarcode
 #print axioms TDA.Persistence.birthPersistence_snd_pos
 #print axioms TDA.Persistence.norm_birthPersistence_sub_le
 #print axioms TDA.Persistence.finitePairCost_toReal
@@ -1334,7 +1334,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteBarcode.BirthOccurrence.ext
 #print axioms TDA.Persistence.FiniteBarcode.BirthOccurrence.ext_iff
 
--- Actual finite image factorization and induced occurrence matchings.
+-- finite image factorization and induced occurrence matchings.
 #print axioms TDA.Persistence.finiteImage
 #print axioms TDA.Persistence.finiteImage_finiteDimensional
 #print axioms TDA.Persistence.toFiniteImage
@@ -1371,7 +1371,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteInducedMatchingExamples.nontrivial_endpoints
 #print axioms TDA.Persistence.FiniteInducedMatchingExamples.empty_chain
 
--- Actual cokernel shortness and quantitative canonical mono matchings.
+-- cokernel shortness and quantitative canonical mono matchings.
 #print axioms TDA.Persistence.finiteCokernel
 #print axioms TDA.Persistence.finiteCokernelFiberIso
 #print axioms TDA.Persistence.finiteCokernel_π_fiberIso
@@ -1399,7 +1399,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteBarcode.monoEmbedding_mem_range_iff
 #print axioms TDA.Persistence.FiniteMonoTranslationExamples.short_matched_birth_bound
 
--- Finite kernel shortness, quantitative epi and actual image-induced matching.
+-- Finite kernel shortness, quantitative epi and image-induced matching.
 #print axioms TDA.Persistence.FiniteInterval.translatedDeath
 #print axioms TDA.Persistence.FiniteInterval.translatedDeath_of_lt
 #print axioms TDA.Persistence.FiniteInterval.translatedDeath_terminal
@@ -1444,7 +1444,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteBarcode.epiEmbedding_mem_range_iff
 #print axioms TDA.Persistence.RealInterleaving.kernel_transition_eq_zero
 #print axioms TDA.Persistence.RealInterleaving.cokernel_transition_eq_zero
-#print axioms TDA.Persistence.RealInterleavingShortnessExamples.actual_defects_threshold
+#print axioms TDA.Persistence.RealInterleavingShortnessExamples.defects_threshold
 #print axioms TDA.Persistence.RealInterleavingShortnessExamples.integer_zero_parameter
 
 -- Čech diagram stability.
@@ -1493,7 +1493,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.ConstructibleRefinementExamples.refined_multiplicities
 #print axioms TDA.Persistence.ConstructibleRefinementExamples.shifted_sign_boundaries_and_tail
 #print axioms TDA.Persistence.ConstructibleRefinementExamples.zero_shift
-#print axioms TDA.Persistence.ConstructibleRefinementExamples.actual_common_shift_grid
+#print axioms TDA.Persistence.ConstructibleRefinementExamples.common_shift_grid
 #print axioms TDA.Persistence.ConstructibleRefinementExamples.empty_refinement
 #print axioms TDA.Persistence.FiniteConstructible.IsConstructible.kernel
 #print axioms TDA.Persistence.FiniteConstructible.IsConstructible.cokernel
@@ -1514,8 +1514,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteConstructible.criticalKernel_translationTrivial
 #print axioms TDA.Persistence.FiniteConstructible.criticalCokernel_translationTrivial
 #print axioms TDA.Persistence.FiniteConstructible.interleaving_critical_defects
-#print axioms TDA.Persistence.ConstructibleDefectExamples.actual_nonzero_defects
-#print axioms TDA.Persistence.ConstructibleDefectExamples.actual_common_defects
+#print axioms TDA.Persistence.ConstructibleDefectExamples.nonzero_defects
+#print axioms TDA.Persistence.ConstructibleDefectExamples.common_defects
 #print axioms TDA.Persistence.ConstructibleDefectExamples.shorter_parameter_rejected
 #print axioms TDA.Persistence.ConstructibleDefectExamples.common_grid_negative
 #print axioms TDA.Persistence.ConstructibleDefectExamples.sampling_inclusion_projection
@@ -1524,7 +1524,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.ConstructibleDefectExamples.zero_parameter
 #print axioms TDA.Persistence.ConstructibleDefectExamples.empty_grid
 
--- Actual real shift diagrams and occurrence untranslation
+-- real shift diagrams and occurrence untranslation
 #print axioms TDA.Persistence.finiteTranslationEquiv
 #print axioms TDA.Persistence.finiteTranslationEquiv_value
 #print axioms TDA.Persistence.essentialTranslationEquiv
@@ -1558,11 +1558,11 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.ConstructibleShiftBarcodeExamples.occurrence_round_trip
 #print axioms TDA.Persistence.ConstructibleShiftBarcodeExamples.unmatched_round_trip
 #print axioms TDA.Persistence.ConstructibleShiftBarcodeExamples.inverse_values
-#print axioms TDA.Persistence.ConstructibleShiftBarcodeExamples.actual_shift_matching
+#print axioms TDA.Persistence.ConstructibleShiftBarcodeExamples.shift_matching
 #print axioms TDA.Persistence.ConstructibleShiftBarcodeExamples.zero_shift
 #print axioms TDA.Persistence.ConstructibleShiftBarcodeExamples.empty_shift
 
--- Actual real induced occurrence matching and exact endpoint/coverage bounds.
+-- real induced occurrence matching and exact endpoint/coverage bounds.
 #print axioms TDA.Persistence.RealBarcode.indexOccurrenceEquiv
 #print axioms TDA.Persistence.RealBarcode.indexOccurrenceEquiv_value
 #print axioms TDA.Persistence.RealBarcode.indexOccurrenceEquiv_symm_value
@@ -1597,9 +1597,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteInducedTranslationExamples.real_threshold_unmatched
 #print axioms TDA.Persistence.FiniteInducedTranslationExamples.real_overlap_defects_nonzero
 #print axioms TDA.Persistence.FiniteInducedTranslationExamples.real_overlap_bounds_attained
-#print axioms TDA.Persistence.ConstructibleDefectExamples.actual_shifted_induced_matching
+#print axioms TDA.Persistence.ConstructibleDefectExamples.shifted_induced_matching
 
--- Finite-constructible isometry and actual target-return cost controls.
+-- Finite-constructible isometry and target-return cost controls.
 #print axioms TDA.Persistence.RealMatchingBounds.untranslateTarget_cost_le
 #print axioms TDA.Persistence.FiniteConstructible.interleavingMatching
 #print axioms TDA.Persistence.FiniteConstructible.interleavingMatching_cost_le
@@ -2756,7 +2756,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finitePMatchingCost_tendstoUniformlyOn_bottleneck
 #print axioms TDA.Persistence.finitePBoundaryTransportCost_tendstoUniformlyOn_bottleneck
 
--- Actual shifted simplicial homology maps and canonical selectors.
+-- shifted simplicial homology maps and canonical selectors.
 #print axioms TDA.Persistence.shiftedSimplicialHomologyMap
 #print axioms TDA.Persistence.shiftedSimplicialHomologyMap_app
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyMap
@@ -2774,7 +2774,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_tendstoUniformlyOn_bottleneck
 #print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_tendstoUniformlyOn_bottleneck
 
--- Native relation and actual shifted homology composition.
+-- Native relation and shifted homology composition.
 #print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso
 #print axioms TDA.Persistence.shiftedSimplicialHomologyCompIso_hom_app
 #print axioms TDA.Persistence.shiftedSimplicialHomologyMap_comp
@@ -2797,7 +2797,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyInterleaving_ψ
 #print axioms TDA.Persistence.multivaluedSimplicialHomologyConverseInterleaving
 
--- Actual Čech H₀ birth and all-degree finite-p recovery.
+-- Čech H₀ birth and all-degree finite-p recovery.
 #print axioms TDA.Persistence.Cech.essentialPart_dgm_zero_eq_singleton
 #print axioms TDA.Persistence.Cech.finitePMatchingCost_dgm_abs_sub_bottleneck_le_uniformBound_allDegrees
 #print axioms TDA.Persistence.Cech.finitePBoundaryTransportCost_dgm_abs_sub_bottleneck_le_uniformBound_allDegrees
@@ -2895,7 +2895,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.bottleneck_diagram_le_two_mul_sampling_errors
 #print axioms TDA.Persistence.Rips.tendsto_bottleneck_diagram_of_hausdorffDist_tendsto_zero
 #print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_triangle_gh_bound
-#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_points_actual_diagram
+#print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_points_diagram
 #print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_triangle_positive_discrepancy
 #print axioms TDA.Persistence.Rips.GromovHausdorffExamples.two_triangle_same_essential
 #print axioms TDA.Persistence.Rips.GromovHausdorffExamples.diameter_scale_control

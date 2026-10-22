@@ -1,6 +1,6 @@
-import TDA.Persistence.ActualLossHessianExamples
+import TDA.Persistence.SublevelLossHessianExamples
 
-/-! An actual positive edge bar with a nonlinear death coordinate. -/
+/-! A positive edge bar with a nonlinear death coordinate. -/
 
 namespace TDA.Persistence.LossExamples
 open TDA.Simplicial TDA.Filtration
@@ -41,7 +41,7 @@ private theorem nonlinearEdgeFilter_value (x : ℝ × ℝ) (hx : x ∈ nonlinear
   simp only [nonlinearEdgeFilter, max_eq_right hd.le,
     max_eq_right (le_trans hb.le hd.le)]
 
-/-- Each actual face value is `C²` throughout the original open box. -/
+/-- Each face value is `C²` throughout the original open box. -/
 theorem nonlinearEdgeFilter_contDiffOn (σ : TotalFace edgeK) :
     ContDiffOn ℝ 2 (fun x => (nonlinearEdgeFilter x).value σ) nonlinearEdgeBox := by
   have hs : ContDiff ℝ 2 (fun x : ℝ × ℝ =>
@@ -66,7 +66,7 @@ theorem nonlinearEdgeFilter_ordering (x y : ℝ × ℝ)
     rcases edge_face_cases τ with hτ | hτ | hτ <;>
     norm_num [hσ, hτ, Finset.ext_iff] <;> constructor <;> intro h <;> linarith
 
-/-- The diagram is transported from the existing actual edge homology
+/-- The diagram is transported from the existing edge homology
 calculation, retaining one essential class and one positive finite bar. -/
 theorem nonlinearEdgeFilter_points (x : ℝ × ℝ) (hx : x ∈ nonlinearEdgeBox) :
     (dgm (ZMod 2) (nonlinearEdgeFilter x) 0).points =
@@ -93,11 +93,11 @@ theorem nonlinearEdgeFilter_points (x : ℝ × ℝ) (hx : x ∈ nonlinearEdgeBox
     (nonlinearEdgeFilter x) φ hφ hvalue 0, edge_points]
   norm_num [φ]
 
-/-- The full ordered presentation of this actual edge diagram. -/
+/-- The full ordered presentation of this edge diagram. -/
 def nonlinearEdgeCoordinates (x : ℝ × ℝ) : DiagramCoordinates 1 1 :=
   (fun _ => (1 + x.1, 3 + x.2 + x.1 ^ 2), fun _ => 0)
 
-/-- Every coordinate is an evaluation at its fixed actual face: finite birth
+/-- Every coordinate is an evaluation at its fixed face: finite birth
 at the second vertex, death at the edge, and essential birth at the first vertex. -/
 theorem nonlinearEdgeCoordinates_faces (x : ℝ × ℝ) (hx : x ∈ nonlinearEdgeBox) :
     (nonlinearEdgeCoordinates x).1 0 =
@@ -106,7 +106,7 @@ theorem nonlinearEdgeCoordinates_faces (x : ℝ × ℝ) (hx : x ∈ nonlinearEdg
   simp [nonlinearEdgeCoordinates, nonlinearEdgeFilter_value x hx,
     edge_v0, edge_v1, edge_e01, Finset.ext_iff]
 
-/-- Actual factorization throughout the original open box. -/
+/-- Factorization throughout the original open box. -/
 theorem nonlinearEdgeCoordinates_factorization (x : ℝ × ℝ)
     (hx : x ∈ nonlinearEdgeBox) :
     dgm (ZMod 2) (nonlinearEdgeFilter x) 0 =
@@ -118,7 +118,7 @@ theorem nonlinearEdgeCoordinates_factorization (x : ℝ × ℝ)
   simp [hne]
   exact Multiset.pair_comm _ _
 
-/-- The signed finite loss is the actual death minus birth. -/
+/-- The signed finite loss is the death minus birth. -/
 theorem nonlinearEdge_signed_loss (x : ℝ × ℝ) (hx : x ∈ nonlinearEdgeBox) :
     signedFiniteEndpointDifference (dgm (ZMod 2) (nonlinearEdgeFilter x) 0) =
       2 + x.2 - x.1 + x.1 ^ 2 := by
@@ -141,7 +141,7 @@ theorem nonlinearEdgeCoordinates_contDiff : ContDiff ℝ 2 nonlinearEdgeCoordina
   unfold nonlinearEdgeCoordinates
   fun_prop
 
-/-- The actual edge family admits this full `C²` ordered presentation. -/
+/-- The edge family admits this full `C²` ordered presentation. -/
 def nonlinearEdgeLift : LocalC2DiagramLift
     (fun x => dgm (ZMod 2) (nonlinearEdgeFilter x) 0) 1 1 where
   carrier := nonlinearEdgeBox
@@ -205,7 +205,7 @@ private theorem nonlinearEdgeCoordinates_second_fderiv (x : ℝ × ℝ) :
   rw [heq] at hh
   simpa using hh.fderiv
 
-/-- The square loss evaluates on the actual diagram to the prescribed polynomial. -/
+/-- The square loss evaluates on the diagram to the prescribed polynomial. -/
 theorem nonlinearEdge_squared_loss (x : ℝ × ℝ) (hx : x ∈ nonlinearEdgeBox) :
     squaredSignedFiniteEndpointDifference (dgm (ZMod 2) (nonlinearEdgeFilter x) 0) =
       (2 + x.2 - x.1 + x.1 ^ 2) ^ 2 := by
@@ -235,7 +235,7 @@ theorem nonlinearEdge_curvature_hessian (h k : ℝ × ℝ) :
     edgeDeathDirection, edgeDeathUnit]
   ring
 
-/-- The derivative of the actual loss derivative exists, with both terms of
+/-- The derivative of the loss derivative exists, with both terms of
 ordinary second-order chain calculus. -/
 theorem nonlinearEdge_squared_loss_hasFDerivAt_fderiv :
     HasFDerivAt (fderiv ℝ (squaredSignedFiniteEndpointDifference ∘
@@ -245,7 +245,7 @@ theorem nonlinearEdge_squared_loss_hasFDerivAt_fderiv :
   exact localLift_scalar_hasFDerivAt_fderiv _ _ 1 1 nonlinearEdgeLift 0
     nonlinearEdgeBox_zero (squaredSignedFiniteEndpointDifference_c2_all _)
 
-/-- The actual scalar Hessian, identified by genuine derivative existence. -/
+/-- The scalar Hessian, identified by genuine derivative existence. -/
 theorem nonlinearEdge_squared_loss_hessian (h k : ℝ × ℝ) :
     fderiv ℝ (fderiv ℝ (squaredSignedFiniteEndpointDifference ∘
       (fun x => dgm (ZMod 2) (nonlinearEdgeFilter x) 0))) 0 h k =

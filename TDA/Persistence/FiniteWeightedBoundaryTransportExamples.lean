@@ -1,7 +1,7 @@
 import TDA.Persistence.FiniteWeightedBoundaryTransport
 
 /-!
-# Fractional masses and actual optimized boundary costs
+# Fractional masses and optimized boundary costs
 
 The examples quantify over all feasible plans where an optimum is asserted.
 They distinguish real mass splitting from unit-occurrence matching, allow zero
@@ -64,7 +64,7 @@ private theorem fractional_plan_and_residuals :
     FiniteWeightedBoundaryPlan.insertionMass, sourceMass, targetMass,
     scalar_objective, fractional_power_optimum_one]
 
-/- The actual minimizing plan changes with the exponent. -/
+/- The minimizing plan changes with the exponent. -/
 
 private theorem fractional_power_optimum_two :
     weightedPowerBoundaryTransportCost 2 sourceMass targetMass sourcePoint targetPoint = 2 := by
@@ -109,7 +109,7 @@ private def splitTargetPoint : Bool → ℝ × ℝ
   | false => (0, 4)
   | true => (1, 5)
 
-private theorem actual_split_balances_and_cost :
+private theorem split_balances_and_cost :
     splitTargetPoint false ≠ splitTargetPoint true ∧
       splitPlan.mass () false = 1 / 2 ∧ splitPlan.mass () true = 1 / 2 ∧
       splitPlan.deletionMass () = 0 ∧
@@ -132,7 +132,7 @@ private theorem split_entries_are_not_incidence :
     ¬ (splitPlan.mass () false = 0 ∨ splitPlan.mass () false = 1) := by
   norm_num [splitPlan]
 
-/- Zero labels contribute nothing, and either side may actually be empty. -/
+/- Zero labels contribute nothing, and either side may be empty. -/
 
 private theorem zero_mass_nonempty_labels (p : ℝ) (x : Bool → ℝ × ℝ) (y : Fin 3 → ℝ × ℝ) :
     weightedPowerBoundaryTransportCost p (fun _ => 0) (fun _ => 0) x y = 0 :=
@@ -172,12 +172,12 @@ private theorem repeated_unit_occurrences :
   rw [weightedPowerBoundaryTransportCost_of_isEmpty_right]
   norm_num [repeatedPoints, diagonalCost, Fin.sum_univ_two]
 
-/- Actual positive weighted diagrams use the finite support of their atom masses. -/
+/- positive weighted diagrams use the finite support of their atom masses. -/
 
 private def positivePoint : {z : ℝ × ℝ // z.1 < z.2} := ⟨(0, 2), by norm_num⟩
 private def fractionalDiagram : FiniteWeightedDiagram := Finsupp.single positivePoint (1 / 2)
 
-private theorem actual_weighted_diagram_moment :
+private theorem weighted_diagram_moment :
     FiniteWeightedDiagram.powerBoundaryTransportCost 1 fractionalDiagram 0 = 1 / 2 := by
   rw [FiniteWeightedDiagram.powerBoundaryTransportCost_zero_right]
   change (∑ i : ↥fractionalDiagram.support,
@@ -188,14 +188,14 @@ private theorem actual_weighted_diagram_moment :
       Finset.sum_coe_sort fractionalDiagram.support _
     _ = _ := by norm_num [fractionalDiagram, positivePoint, diagonalCost]
 
-private theorem actual_weighted_diagram_optimizer :
+private theorem weighted_diagram_optimizer :
     ∃ a : FiniteWeightedBoundaryPlan fractionalDiagram.weights
         (0 : FiniteWeightedDiagram).weights,
       a.powerCost 1 fractionalDiagram.coordinates (0 : FiniteWeightedDiagram).coordinates = 1 / 2 := by
   obtain ⟨a, ha⟩ := FiniteWeightedDiagram.exists_minimizing_powerPlan 1 fractionalDiagram 0
-  exact ⟨a, ha.trans actual_weighted_diagram_moment⟩
+  exact ⟨a, ha.trans weighted_diagram_moment⟩
 
-private theorem actual_weighted_zero_diagram {p : ℝ} (hp : 1 ≤ p) :
+private theorem weighted_zero_diagram {p : ℝ} (hp : 1 ≤ p) :
     FiniteWeightedDiagram.pBoundaryTransportCost p 0 0 = 0 :=
   FiniteWeightedDiagram.pBoundaryTransportCost_zero hp
 

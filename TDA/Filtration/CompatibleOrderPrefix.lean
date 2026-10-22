@@ -6,7 +6,7 @@ set_option autoImplicit false
 /-!
 # Prefix complexes from compatible face orders
 
-A `CompatibleOrder` enumerates the actual faces of a preabstract simplicial complex. Its
+A `CompatibleOrder` enumerates the faces of a preabstract simplicial complex. Its
 first `k` faces form a subcomplex because every proper face precedes its cofaces. Counting
 the enumerated faces whose filtration value is at most a threshold recovers that sublevel
 as one of these prefixes. Equal grades enter together in the recovered sublevel, even though
@@ -22,7 +22,7 @@ variable {K : PreAbstractSimplicialComplex V}
 variable [Fintype (TDA.Simplicial.TotalFace K)]
 variable {f : TDA.Filtration.FilterFunction K α}
 
-/-- The subcomplex consisting of actual faces whose compatible-order index is below `k`. -/
+/-- The subcomplex consisting of faces whose compatible-order index is below `k`. -/
 def prefixComplex (e : CompatibleOrder f) (k : ℕ) :
     PreAbstractSimplicialComplex V where
   faces := {s | ∃ hs : s ∈ K, (e.enum.symm ⟨s, hs⟩).val < k}
@@ -42,7 +42,7 @@ def prefixComplex (e : CompatibleOrder f) (k : ℕ) :
           (e.enum.symm ⟨s, hsK⟩) (by simpa using hproper)
         exact lt_trans hindex hsidx
 
-/-- Membership in a prefix is actual membership in `K` plus an index bound. -/
+/-- Membership in a prefix is membership in `K` plus an index bound. -/
 theorem mem_prefixComplex (e : CompatibleOrder f) (k : ℕ) (s : Finset V) :
     s ∈ e.prefixComplex k ↔
       ∃ hs : s ∈ K, (e.enum.symm ⟨s, hs⟩).val < k := Iff.rfl
@@ -56,7 +56,7 @@ theorem prefixComplex_zero (e : CompatibleOrder f) :
     omega
   · exact bot_le
 
-/-- Once the stage reaches the number of actual faces, the prefix is all of `K`. -/
+/-- Once the stage reaches the number of faces, the prefix is all of `K`. -/
 theorem prefixComplex_eq_self_of_card_le (e : CompatibleOrder f) (k : ℕ)
     (hk : Fintype.card (TDA.Simplicial.TotalFace K) ≤ k) :
     e.prefixComplex k = K := by
@@ -85,7 +85,7 @@ def sublevelCount (e : CompatibleOrder f) (r : α) : ℕ :=
   (Finset.univ.filter (fun i : Fin (Fintype.card (TDA.Simplicial.TotalFace K)) =>
     f.value (e.enum i) ≤ r)).card
 
-/-- A sublevel count never exceeds the total number of actual faces. -/
+/-- A sublevel count never exceeds the total number of faces. -/
 theorem sublevelCount_le_card (e : CompatibleOrder f) (r : α) :
     e.sublevelCount r ≤ Fintype.card (TDA.Simplicial.TotalFace K) := by
   unfold sublevelCount

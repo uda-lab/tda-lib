@@ -185,7 +185,7 @@ def dropZero (I : FiniteInterval (n + 1)) (hb : 0 < I.birth) : FiniteInterval n 
   birth_lt_death := by have := I.birth_lt_death; omega
   death_le_size := by have := I.death_le_size; omega
 
-/-- The actual endpoint cut for sampling at `1,...,n` subtracts one from positive endpoints. -/
+/-- The endpoint cut for sampling at `1,...,n` subtracts one from positive endpoints. -/
 theorem sampledEndpoint_succ (e : ℕ) (he : 0 < e) (hen : e ≤ n + 1) :
     sampledEndpoint (Fin.succOrderEmb n).toOrderHom e = e - 1 := by
   unfold sampledEndpoint
@@ -237,7 +237,7 @@ theorem alive_endpoints_dropZero (c : Fin n ↪o ℝ)
     dsimp only
     omega
 
-/-- The real support identification respects actual maps, not only dimensions or ranks. -/
+/-- The real support identification respects maps, not only dimensions or ranks. -/
 noncomputable def intervalPullbackIso (c : Fin n ↪o ℝ)
     (I : FiniteInterval (n + 1)) (hb : 0 < I.birth) :
     reindex (FiniteConstructible.cellIndex c) (TDA.Persistence.intervalModule (k := k) I) ≅
@@ -262,7 +262,7 @@ noncomputable def intervalPullbackIso (c : Fin n ↪o ℝ)
     simp [e, intervalMap, TDA.Persistence.intervalMap, alive_endpoints_dropZero, hs, ht,
       LinearEquiv.coe_ofEq_apply]
 
-/-- A finite death becomes the corresponding actual critical value, not infinity. -/
+/-- A finite death becomes the corresponding critical value, not infinity. -/
 theorem endpoints_dropZero_finite (c : Fin n ↪o ℝ)
     (I : FiniteInterval (n + 1)) (hb : 0 < I.birth) (hd : I.death ≤ n) :
     (endpoints c (dropZero I hb)).2 =
@@ -297,7 +297,7 @@ private noncomputable def pointEnumeration (c : Fin n ↪o ℝ)
   List.ofFn (fun i : Fin B.toList.length => endpoints c
     (dropZero (B.toList.get i) (hB _ (Multiset.mem_toList.mp (List.get_mem B.toList i)))))
 
--- Compare lists only after computing the actual filterMap. Because every option is
+-- Compare lists only after computing the filterMap. Because every option is
 -- `some`, there is one output coordinate for every input coordinate, including duplicates.
 private theorem pointEnumeration_points (c : Fin n ↪o ℝ)
     (B : Multiset (FiniteInterval (n + 1))) (hB : ∀ I ∈ B, 0 < I.birth) :

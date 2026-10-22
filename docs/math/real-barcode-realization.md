@@ -10,7 +10,7 @@ the final critical stage extend over the entire right tail.
 Fix a field `k : Type u`, a module `M : PModule.{u,0,u} k ℝ`, and a strictly increasing
 critical grid `c : Fin n ↪o ℝ`. The field and module carriers share universe `u`, as in
 the existing finite decomposition. Assume `IsConstructible c M`: fibers before all
-critical values are zero, and actual structure maps within each left-closed/right-open
+critical values are zero, and structure maps within each left-closed/right-open
 stratum are isomorphisms. The last stratum is unbounded. See
 [finite-stratum reconstruction](constructible-modules.md) for this predicate.
 
@@ -52,12 +52,12 @@ stage receives no real grade. The infinity case is justified by the unbounded fi
 cell of `q`, rather than by finite observation alone.
 
 `moduleDiagram c M hfd` is defined from `rankBarcode (reindex c M)`, using only the
-actual critical values. `moduleDiagram_eq_reindex_sample` identifies it with the
+critical values. `moduleDiagram_eq_reindex_sample` identifies it with the
 `Fin.succ` restriction of the padded sample's barcode via `rankBarcode_reindex`.
 The resulting endpoint diagram is positive. For `n=0` both barcodes and the endpoint
 multiset are empty, and their real realization is zero.
 
-## Actual interval modules and natural isomorphisms
+## Interval modules and natural isomorphisms
 
 `RealBarcode.intervalModule (b,d)` is defined independently of `q`: its fiber is the
 full coefficient field on `b≤t<d` and the zero submodule elsewhere. Structure maps
@@ -73,7 +73,7 @@ values. Each realization fiber is finite-dimensional.
 For each padded finite interval, `intervalPullbackIso` identifies its pullback with
 the real interval at the converted endpoints. The support equivalence follows from
 the critical-value counts. The fiber isomorphisms preserve the underlying coefficient,
-and their naturality checks the actual identity/zero maps. `barcodePullbackIso`
+and their naturality checks the identity/zero maps. `barcodePullbackIso`
 assembles those maps over all occurrences and transports the enumeration to the
 existing endpoint diagram.
 
@@ -84,7 +84,7 @@ M\cong q^*A\cong q^*(\operatorname{barcodeModule}(\operatorname{rankBarcode}A))
 \cong\operatorname{Realize}(D).
 \]
 
-The first map uses `reconstructionIso`; the middle map actually whiskers
+The first map uses `reconstructionIso`; the middle map whiskers
 `rankBarcodeIso A` along `q`. The final map is the occurrencewise interval comparison.
 These are natural isomorphisms, so both transformations, their real structure-map
 naturality and both inverse identities are part of the constructed value. The chosen

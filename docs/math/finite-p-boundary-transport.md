@@ -35,8 +35,8 @@ The real plan infimum tₚ satisfies
 
 tₚ = inf_a Cₚ(a) = mₚ,    tₚ^(1/p) = dₚ.
 
-Every plan admits an actual partial matching of no greater powered cost. Conversely,
-the incidence matrix of an mₚ-minimizing matching attains tₚ. Some optimal plans can
+Every plan admits a partial matching of no greater powered cost. Conversely,
+the incidence matrix of a mₚ-minimizing matching attains tₚ. Some optimal plans can
 still be fractional. Nonnegativity supplies lower bounds for both real infima; a
 zero mass matrix supplies a feasible plan.
 
@@ -56,8 +56,8 @@ insertion coefficients. The first-order APIs retain their definitions and types;
 their relabelling and assignment proofs reuse these helpers. The powered APIs
 supply c^p and δ^p as coefficients.
 
-The augmentation has actual-source rows followed by target dummies, and
-actual-target columns followed by source dummies. Every source-row deletion
+The augmentation has source-occurrence rows followed by target dummies, and
+target-occurrence columns followed by source dummies. Every source-row deletion
 coefficient is constant over its full dummy block, and every target-column insertion
 coefficient is constant over its full block. Dummy-to-dummy cost is zero. Restriction
 and completion preserve the three cost sums; completion is a section, not a two-sided
@@ -132,7 +132,7 @@ Monotonicity of positive real powers and finite-sum Minkowski now give
 
 Sₚ(N∘M)^(1/p) ≤ (Σ (A+B)^p)^(1/p) ≤ Sₚ(M)^(1/p) + Sₚ(N)^(1/p).
 
-Choose actual minimizing matchings for the two input costs to obtain the optimum
+Choose minimizing matchings for the two input costs to obtain the optimum
 triangle law. For separation, a sum of nonnegative powered charges is zero
 exactly when every raw charge is zero. The existing first-order zero-cost
 characterization then supplies the value-preserving equivalence. Conversely,
@@ -145,7 +145,7 @@ the unnormalized matching distances satisfy
 
 dₚ(x,y) ≤ d₁(x,y) ≤ N^(1−1/p) dₚ(x,y).
 
-The same comparison holds for the actual rooted finite-real-plan optima, by
+The same comparison holds for the rooted finite-real-plan optima, by
 their equality with the matching optima. Empty families are included: if N=0,
 all distances are zero. At p=1 the factor is one and both inequalities are equalities.
 
@@ -174,7 +174,7 @@ For real 1 ≤ r ≤ s and the same occurrence count N,
 
 dₛ(x,y) ≤ dᵣ(x,y) ≤ N^(1/r−1/s) dₛ(x,y).
 
-Both inequalities also hold for the actual rooted real-plan optima. Thus each
+Both inequalities also hold for the rooted real-plan optima. Thus each
 optimized distance is antitone on [1,∞), with the maximum ground norm fixed.
 The families may be empty and distances may vanish. At r=s the factor is one,
 including 0^0=1 when N=0.
@@ -194,7 +194,7 @@ cost √2. The comparison does not require a common optimizer.
 
 Candidate plans need not be antitone. Sending half a unit from (0,2) to (6,8)
 and leaving half a unit at each boundary has powered costs 4 and 19 at exponents
-one and two. Its rooted second cost √19 exceeds 4, while the actual optimized
+one and two. Its rooted second cost √19 exceeds 4, while the optimized
 distances are 2 and √2 and satisfy the comparison.
 
 ## Continuity at finite exponents
@@ -245,7 +245,7 @@ zero minimum. The assignment equalities again transfer the result to all
 feasible real reservoir matrices.
 
 For example, let p(t)=1+t² and take singleton families x(t)=(t,t+2) and
-y(t)=(-t,2-t). Both bars have lifetime 2, and their actual powered optimum is
+y(t)=(-t,2-t). Both bars have lifetime 2, and their powered optimum is
 min((2|t|)^(1+t²),2). All four optimized path costs are continuous. At t=0 they
 vanish; at t=1/2 pairing costs 1 while deleting both costs 2; at t=1 pairing
 costs 4 while deleting both still costs 2. Thus the result includes a change of
@@ -298,20 +298,20 @@ library derivations from the cost definitions at fixed maximum ground norm.
 Let D and E be library diagrams and let N be the sum of their finite occurrence
 counts. Write B for their full bottleneck distance, mₚᶠⁱⁿ for the powered matching
 minimum on their finite occurrence coordinate functions, and dₚᶠⁱⁿ for its root.
-This root is also the actual rooted finite-real-plan optimum by the equality above. Essential occurrences
+This root is also the rooted finite-real-plan optimum by the equality above. Essential occurrences
 are excluded from this transport cost and from N, even if D and E contain them.
 Assume B is finite. For real p≥1,
 
 mₚᶠⁱⁿ ≤ N B^p,    dₚᶠⁱⁿ ≤ N^(1/p) B.
 
-Choose an actual full matching attaining B and retain its finite partial injection.
+Choose a full matching attaining B and retain its finite partial injection.
 Each finite source contributes a pair or deletion charge at most B. Each target
 contributes zero when selected and a boundary charge at most B otherwise. Summing
 their p-th powers gives at most N B^p; the finite powered minimum is no larger than
 this candidate. This uses a bottleneck optimizer as an upper-bound witness, without
 asserting that it also minimizes the p-cost. Nonnegativity, p≠0 and real-power
 factorization give the rooted estimate, including N=0 and B=0. Equality with the
-real-plan optimum transfers this to the actual infimum over all feasible matrices.
+real-plan optimum transfers this to the infimum over all feasible matrices.
 
 More generally, if N≤m for a natural cardinality budget m and 0≤r with B≤r, then
 
@@ -325,7 +325,7 @@ transport cost is positive.
 
 For two face filters f,g on the same finite complex, let Δ be the maximum absolute
 change of their face values, with Δ=0 for an empty face set. Over the coefficient
-field and ordered-vertex assumptions of the actual degree-n sublevel diagrams,
+field and ordered-vertex assumptions of the degree-n sublevel diagrams,
 put D=dgm(f,n) and E=dgm(g,n), and let N(f,g,n) count their finite occurrences on both sides.
 The proved full-diagram bottleneck stability gives B≤Δ and hence
 
@@ -334,7 +334,7 @@ dₚᶠⁱⁿ(dgm(f,n),dgm(g,n)) ≤ N(f,g,n)^(1/p) Δ.
 The cardinality-budget version replaces N(f,g,n) by any explicit upper bound m.
 The existing bottleneck argument allows the barcode pairing and compatible face
 order to change; no fixed pairing or order is required here. Essential bars in
-these actual diagrams still belong to the full bottleneck comparison and remain
+these diagrams still belong to the full bottleneck comparison and remain
 outside the finite-part transport quantity.
 
 ## Limit as the matching exponent tends to infinity
@@ -389,7 +389,7 @@ The singleton pair (0,2), (3/2,7/2) belongs to the same count-two, radius-one
 class while its optimizer changes from pairing at one to deleting both at two.
 
 Both budgets matter. At exponent n≥1, take 2^n copies of (0,2) versus empty.
-Their bottleneck is one and their actual rooted costs are two, so the error
+Their bottleneck is one and their rooted costs are two, so the error
 stays one along cofinal real exponents without a count cap. With count two
 fixed, choose a(p)=(2^(1/p)−1)⁻¹>0 and two copies of (0,2a(p)) versus empty.
 Their error is one for every p≥1 without a common radius bound. These examples
@@ -426,7 +426,7 @@ cost of the same finite matching with empty essential types. The existing
 rooted-sum bound gives the lower comparison; the arbitrary-essential finite
 upper bound gives the same count factor. Equality of essential cardinalities
 first establishes full bottleneck finiteness before conversion to real.
-Actual optimized real plans use the proved matching equality after optimization.
+optimized real plans use the proved matching equality after optimization.
 
 For example, reordered essential births [-3,-3,7] have full bottleneck and
 both finite costs zero. Any number of identical common births, at any real
@@ -450,7 +450,7 @@ claimed. The essential-free class is a checked restriction of this domain.
 Fix a finite linearly ordered label type V, a coefficient field k in the same
 universe, and a pseudometric ambient space X in an independent universe. A cloud
 is an arbitrary function a : V → X; repeated points and empty labels are allowed.
-Write D(a) for the actual diagram `dgm k (Cech.filter a) n`. The filter uses the
+Write D(a) for the diagram `dgm k (Cech.filter a) n`. The filter uses the
 infimal enclosing radius over all ambient centers. Its sublevels contain the
 closed-ball Čech nerves, and equal them under the existing proper-space
 specialization. Attainment is not assumed for the results here.
@@ -462,7 +462,7 @@ multisets of D(a) and D(b) agree in every natural degree. Each diagram has at
 most choose(card V,n+2) finite occurrences, and same-label displacement δ(a,b)
 bounds the full bottleneck B(a,b). If δ(a,b)≤R with R≥0, put
 M=max(1,2 choose(card V,n+2)). For each
-actual optimized rooted cost and every real p≥1,
+optimized rooted cost and every real p≥1,
 
 |dₚ(D(a),D(b)) − B(a,b)| ≤ (M^(1/p) − 1) R.
 
@@ -474,7 +474,7 @@ restricts to the displacement class. No topology on clouds or diagrams, fixed
 barcode length or common optimizing matching is required.
 
 For labels (0,0),(2,0),(1,2) versus (0,0),(2,0),(2,2) in the Euclidean plane,
-the actual degree-one diagrams over ZMod 2 are the singleton (√5/2,5/4) and
+the degree-one diagrams over ZMod 2 are the singleton (√5/2,5/4) and
 the empty diagram. Displacement is exactly one; B and both rooted optima are
 r=(5/4−√5/2)/2>0 for every p≥1. This tests nonzero quantities, including p=2
 and p=3/2; its error is zero and does not attain the coarse budget-two rate.
@@ -487,7 +487,7 @@ geometric input; its [CDSO Hausdorff comparison](cech-displacement-stability.md#
 and the [radius-filter attainment distinction](cech-rips-sandwich.md#the-radius-filter)
 have separate scopes. No uniform p-limit is attributed to that source.
 
-The birth-zero proof uses an actual vertex at time zero whose inclusion into
+The birth-zero proof uses a vertex at time zero whose inclusion into
 a full late stage has nonzero homology range. The diagram-rank formula gives
 a point alive between those stages. Every finite death is a critical face
 value at most that late time, so this point is essential. Its birth is at
@@ -504,7 +504,7 @@ full bottleneck one against the original diagram; equal essential counts
 alone remain insufficient. The H₀ log module still has no finite-grid zero
 left tail. The all-degree real-parameter consumers do not change that fact.
 
-For the actual clouds (0,2) and (0,6), the H₀ finite bars are (0,1) and
+For the clouds (0,2) and (0,6), the H₀ finite bars are (0,1) and
 (0,3), with a common essential birth zero. Displacement is four, while full
 bottleneck is 3/2. Both rooted finite optima are two at exponent one and
 √(5/2) at exponent two: pairing is optimal at one, and deleting both is
@@ -521,13 +521,13 @@ since the simultaneous zero-length merge is filtered out.
 | One bar (0,2) versus empty, every p≥1 | Both rooted optima and bottleneck are one |
 | Empty target, diagonal charges 1 and 2, p=2 | Powered optimum 5; rooted optimum √5 |
 | Half mass from (0,2) to (0,4), p=2 | Plan cost 9/2; both boundary deficits are 1/2; optimum is 4 |
-| Two copies of (0,2) versus one copy, every p≥1 | Rooted optimum and bottleneck are one, with an actual pair-one/delete-one matching |
+| Two copies of (0,2) versus one copy, every p≥1 | Rooted optimum and bottleneck are one, with a pair-one/delete-one matching |
 | (0,2) versus (3/2,7/2) | p=1 pairs, cost 3/2; p=2 deletes both, powered cost 2, strictly below the paired cost 9/4 |
 | (0,8) versus empty, p=3/2 | Powered optimum 8; rooted optimum 4 |
 | Two copies of (0,2) versus empty, any p≥1 | Powered optimum 2; rooted optimum 2^(1/p); bottleneck 1, attaining the occurrence-count factor |
 | Essential-only births 0 versus 1, every p≥1 | Finite-part cost zero, full bottleneck one; equal essential counts do not suffice for recovery |
 | Two bars (0,2R) versus none, with common essential births [-3,-3,7], R>0 | Full bottleneck R; both rooted optima 2^(1/p)R; the count-two error bound is attained |
-| Actual filled triangle versus its tied filter, H₁ | The finite parts have one bar and zero bars; their transport is bounded by the face perturbation, including p=2 and p=3/2 |
+| filled triangle versus its tied filter, H₁ | The finite parts have one bar and zero bars; their transport is bounded by the face perturbation, including p=2 and p=3/2 |
 | Four middle roles with unmatched endpoints, p=2 | Candidate powers 11 and 16; composite power 19; √19 ≤ √11+4 |
 | Singletons (0,10), (1,11), (2,12), every p≥1 | Consecutive rooted optima 1 and 1; direct rooted optimum 2; sharp triangle at p=2 and p=3/2 |
 
@@ -542,18 +542,18 @@ claims about rooted quantities.
 candidate bounds, root-infimum equality, empty formulas, singleton alternatives,
 reindexing and first-order compatibility. `FinitePBoundaryTransport` supplies the
 real-plan costs, matching/transport equalities, attaining incidence plans and the
-corresponding bounds and formulas. The example module uses these actual definitions.
+corresponding bounds and formulas. The example module uses these definitions.
 `FinitePMatchingCostLaws` supplies powered-cost reversal, rooted candidate composition,
 the rooted distance laws and positive-lifetime separation.
-`FinitePBoundaryTransportLaws` transfers those laws to the actual real-plan optimum.
+`FinitePBoundaryTransportLaws` transfers those laws to the real-plan optimum.
 `FinitePMatchingCostBottleneck` supplies the powered and rooted occurrence-count
 bounds, finite radius and cardinality-budget forms. `FinitePFilterStability` applies
-them to the finite parts of actual sublevel diagrams.
+them to the finite parts of sublevel diagrams.
 `FinitePMatchingCostComparison` supplies first-order and two-real-exponent
 comparisons for matching and real-plan optima, including empty occurrence
 families, and their antitonicity on [1,∞).
 `FinitePCostContinuity` supplies continuity in the real exponent on [1,∞)
-for the powered and rooted matching and actual real-plan optima.
+for the powered and rooted matching and real-plan optima.
 `FinitePCostSimilarity` supplies common diagonal-translation invariance and
 nonnegative scaling for powered and rooted matching and real-plan optima.
 `FinitePBottleneckLimit` supplies the lower bottleneck comparison and real-exponent
@@ -563,8 +563,8 @@ uniform convergence on essential-free count/radius budget classes for both optim
 `FinitePCommonEssentialBottleneck` supplies the same error and uniform conclusions
 when the essential-birth multisets agree, without essential count or range bounds.
 `CechFinitePBottleneckUniformLimit` derives both bounds and uniform limits for
-actual positive-degree Čech sublevel diagrams from a same-label displacement budget.
-`CechEssentialBirth` proves the actual degree-zero essential multiset, and
+positive-degree Čech sublevel diagrams from a same-label displacement budget.
+`CechEssentialBirth` proves the degree-zero essential multiset, and
 `CechFinitePBottleneckAllDegrees` derives both bounds and uniform limits for
 every natural degree from the same input budget.
 

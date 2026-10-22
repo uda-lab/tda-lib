@@ -109,7 +109,7 @@ theorem pairMatching_cost :
     pairMatching.totalFiniteCost (single (0, 2)) (single (0, 3)) = 1 := by
   norm_num [OccurrenceMatching.totalFiniteCost, pairMatching, single, Prod.norm_def]
 
-/-- Matched pair: the bound `2 + √2` against the actual squared distance `2 - 2e^{-1/2}`. -/
+/-- Matched pair: the bound `2 + √2` against the squared distance `2 - 2e^{-1/2}`. -/
 theorem matched_stability :
     ‖embedding 1 clippedWeight (single (0, 2)) - embedding 1 clippedWeight (single (0, 3))‖ ≤
         2 + √2 ∧
@@ -132,7 +132,7 @@ theorem emptyMatching_cost :
     emptyMatching.totalFiniteCost (single (0, 2)) (Fin.elim0 : Fin 0 → ℝ × ℝ) = 1 := by
   norm_num [OccurrenceMatching.totalFiniteCost, emptyMatching, single]
 
-/-- Unmatched point against the empty family: the bound `2 + √2`, actual norm `1`. -/
+/-- Unmatched point against the empty family: the bound `2 + √2`, norm `1`. -/
 theorem unmatched_stability :
     ‖embedding 1 clippedWeight (single (0, 2))‖ ≤ 2 + √2 ∧
       ‖embedding 1 clippedWeight (single (0, 2))‖ = 1 := by

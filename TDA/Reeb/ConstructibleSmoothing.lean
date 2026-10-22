@@ -11,7 +11,7 @@ cosheaves (de Silva–Munch–Patel, Proposition 4.19 and the constructible half
 ## Constructibility
 
 `CriticalValues.IsConstructibleAt.smoothing`: for `F : OpenInterval ⥤ Type u` constructible at
-`S`, the actual `(smoothing ε).obj F` is constructible at `S.shifted ε`, for every `ε : ℝ≥0` and
+`S`, the `(smoothing ε).obj F` is constructible at `S.shifted ε`, for every `ε : ℝ≥0` and
 every value universe `u`. No cosheaf hypothesis is used. The predicate is the corrected one of
 `TDA.Reeb.ConstructibleCosheaf`, whose interval rule requires a nonempty source.
 
@@ -40,7 +40,7 @@ components are those of `smoothing ε` (`constructibleSmoothing_obj_obj`,
 
 The lifted unit `constructibleSmoothingUnit ε : 𝟭 ⟶ constructibleSmoothing ε` and the lifted zero
 comparison `constructibleSmoothingZeroIso : constructibleSmoothing 0 ≅ 𝟭` have as underlying maps
-the actual `smoothingUnit ε` and `smoothingZeroIso` (`constructibleSmoothingUnit_app_hom`,
+the `smoothingUnit ε` and `smoothingZeroIso` (`constructibleSmoothingUnit_app_hom`,
 `constructibleSmoothingZeroIso_hom_app_hom`, `constructibleSmoothingZeroIso_inv_app_hom`, by
 `rfl`). The lifted zero unit is the inverse of the lifted zero comparison
 (`constructibleSmoothingUnit_zero`).
@@ -100,7 +100,7 @@ theorem smoothing {F : OpenInterval ⥤ Type u} (hF : IsConstructibleCosheaf F) 
 
 end IsConstructibleCosheaf
 
-/-- Smoothing of constructible interval cosheaves: the actual `smoothing ε`, lifted through the
+/-- Smoothing of constructible interval cosheaves: the `smoothing ε`, lifted through the
 full subcategory `ConstructibleCosheafCat`. -/
 def constructibleSmoothing (ε : ℝ≥0) :
     ConstructibleCosheafCat.{u} ⥤ ConstructibleCosheafCat.{u} :=
@@ -125,7 +125,7 @@ theorem constructibleSmoothing_map_hom_app (ε : ℝ≥0) {G G' : ConstructibleC
     ((constructibleSmoothing ε).map f).hom.app I = f.hom.app (thicken ε I) :=
   rfl
 
-/-- The lifted unit `G ⟶ S_ε G`; its underlying transformation is the actual `smoothingUnit`. -/
+/-- The lifted unit `G ⟶ S_ε G`; its underlying transformation is the `smoothingUnit`. -/
 def constructibleSmoothingUnit (ε : ℝ≥0) :
     𝟭 ConstructibleCosheafCat.{u} ⟶ constructibleSmoothing ε where
   app G := ObjectProperty.homMk ((smoothingUnit ε).app G.obj)
@@ -137,8 +137,7 @@ def constructibleSmoothingUnit (ε : ℝ≥0) :
     ((constructibleSmoothingUnit ε).app G).hom = (smoothingUnit ε).app G.obj :=
   rfl
 
-/-- The lifted zero comparison `S_0 ≅ 𝟭`; its underlying isomorphism is the actual
-`smoothingZeroIso`. -/
+/-- The lifted zero comparison `S_0 ≅ 𝟭`; its underlying isomorphism is the `smoothingZeroIso`. -/
 def constructibleSmoothingZeroIso : constructibleSmoothing.{u} 0 ≅ 𝟭 ConstructibleCosheafCat.{u} :=
   NatIso.ofComponents (fun G => ObjectProperty.isoMk _ (smoothingZeroIso.app G.obj)) fun f => by
     ext : 1

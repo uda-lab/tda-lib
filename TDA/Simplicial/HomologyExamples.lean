@@ -1,6 +1,6 @@
 import TDA.Simplicial.Homology
 
-/-! Actual-face regressions for homology and its inclusion maps. -/
+/-! Face regressions for homology and its inclusion maps. -/
 
 namespace TDA.Simplicial.HomologyExamples
 
@@ -124,7 +124,7 @@ private theorem edgeCycle_class_zero :
   exact (Submodule.Quotient.mk_eq_zero (simplicialBoundaries K ℤ 0)).2
     edgeCycle_is_boundary
 
-private theorem edgeCycle_actualH0_zero :
+private theorem edgeCycle_simplicialH0_zero :
     (homologyKernelQuotient ℤ (simplicialChainComplex K ℤ) 0).inv.hom
       ((simplicialBoundaries K ℤ 0).mkQ edgeCycle) = 0 := by
   rw [edgeCycle_class_zero]
@@ -188,7 +188,7 @@ private noncomputable def zeroRingHomology : ModuleCat (ZMod 1) :=
 #print axioms edgeCycle_nonzero
 #print axioms edgeCycle_is_boundary
 #print axioms edgeCycle_class_zero
-#print axioms edgeCycle_actualH0_zero
+#print axioms edgeCycle_simplicialH0_zero
 #print axioms included_edgeCycle_class_zero
 #print axioms twoStep_cycles
 #print axioms twoStep_quotients

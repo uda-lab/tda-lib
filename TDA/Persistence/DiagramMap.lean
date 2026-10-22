@@ -11,7 +11,7 @@ An order embedding `φ : α ↪o β` maps every occurrence `(b, d)` of a diagram
 `(φ b, WithTop.map φ d)`: births and finite deaths are mapped and the essential death `⊤`
 is fixed. Injectivity of `φ` keeps every mapped occurrence off the diagonal, and strict
 monotonicity preserves positivity. The merged attained-grade transport theorem identifies
-the actual diagram of a reparametrized filter with the reparametrized actual diagram,
+the diagram of a reparametrized filter with the reparametrized diagram,
 in every degree and over every field.
 
 These are library extensions proved from the merged definitions. Monotone non-injective
@@ -94,7 +94,7 @@ theorem Diagram.map_map (D : Diagram α) (φ : α ↪o β) (ψ : β ↪o γ) :
   obtain ⟨b, d⟩ := p
   cases d <;> rfl
 
-/-- The actual diagram of a reparametrized filter is the reparametrized actual diagram. -/
+/-- The diagram of a reparametrized filter is the reparametrized diagram. -/
 theorem dgm_map {V : Type u} [LinearOrder V] (k : Type u) [Field k]
     {K : PreAbstractSimplicialComplex V} [Fintype (TDA.Simplicial.TotalFace K)]
     (f : TDA.Filtration.FilterFunction K α) (φ : α ↪o β) (n : ℕ) :

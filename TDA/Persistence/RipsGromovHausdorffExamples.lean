@@ -21,15 +21,15 @@ theorem two_triangle_gh_bound (k : Type) [Field k] (n : ℕ) :
       ENNReal.ofReal (2 * ghDist (Fin 2) (Fin 3)) :=
   bottleneck_diagram_le_two_mul_ghDist k _ _ n
 
-/-- The new entry point is the existing actual two-point diagram, including its
+/-- The new entry point is the existing two-point diagram, including its
 essential occurrence and finite death at the edge's diameter time two. -/
-theorem two_points_actual_diagram :
+theorem two_points_diagram :
     (diagram (ZMod 2) (Fin 2) 0).points =
       {((0 : ℝ), (⊤ : WithTop ℝ)), (0, ((2 : ℝ) : WithTop ℝ))} := by
   rw [diagram_eq_dgm]
   exact twoPoints_rips_dgm_zero
 
-private theorem triangle_actual_diagram :
+private theorem triangle_diagram :
     (diagram (ZMod 2) (Fin 3) 0).points =
       {((0 : ℝ), (⊤ : WithTop ℝ)), (0, ((2 : ℝ) : WithTop ℝ)),
         (0, ((Real.sqrt 5 : ℝ) : WithTop ℝ))} := by
@@ -44,7 +44,7 @@ theorem two_triangle_positive_discrepancy :
   intro h
   have he := (bottleneck_eq_zero_iff _ _).mp h
   have hc := congrArg (fun D : Diagram ℝ => D.points.card) he
-  rw [two_points_actual_diagram, triangle_actual_diagram] at hc
+  rw [two_points_diagram, triangle_diagram] at hc
   norm_num at hc
 
 /-- The preceding positive discrepancy is between finite parts; the essential
@@ -53,9 +53,9 @@ theorem two_triangle_same_essential :
     essentialPart (diagram (ZMod 2) (Fin 2) 0).points = {0} ∧
       essentialPart (diagram (ZMod 2) (Fin 3) 0).points = {0} := by
   constructor
-  · rw [two_points_actual_diagram]
+  · rw [two_points_diagram]
     rfl
-  · rw [triangle_actual_diagram]
+  · rw [triangle_diagram]
     rfl
 
 /-- Diameter rather than ball radius controls the finite death. -/
@@ -142,7 +142,7 @@ theorem reversedEquiv_not_monotone : ¬ Monotone (reversedEquiv : Fin 2 → Bool
   change true ≤ false at hh
   exact (by decide : ¬ (true ≤ false)) hh
 
-/-- Actual diagrams agree across the explicitly non-order-preserving isometry. -/
+/-- Diagrams agree across the explicitly non-order-preserving isometry. -/
 theorem reversed_labels_same_diagram (k : Type) [Field k] (n : ℕ) :
     diagram k (Fin 2) n = diagram k Bool n := by
   exact diagram_eq_of_isometryEquiv k reversedEquiv n

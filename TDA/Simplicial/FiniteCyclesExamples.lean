@@ -3,10 +3,10 @@ import TDA.Simplicial.FiniteComplex
 import Mathlib.Data.ZMod.Basic
 import Mathlib.LinearAlgebra.Matrix.Reindex
 
-/-! # Actual-face coordinate fixtures
+/-! # face coordinate fixtures
 
 The complete displayed arrays are reindexed through proved face bijections.
-They use the actual boundary and inclusion matrices over integers and `ZMod 1`.
+They use the boundary and inclusion matrices over integers and `ZMod 1`.
 -/
 
 universe u v
@@ -392,16 +392,16 @@ private theorem edge_triangle_common_column :
       (!![1; 0; 0] : Matrix (Fin 3) (Fin 1) ℤ) = !![-1; 1; 0] := by
   decide
 
-private theorem triangle_square_actual :
+private theorem triangle_square :
     boundaryMatrix triangleK ℤ 0 * boundaryMatrix triangleK ℤ 1 = 0 :=
   boundaryMatrix_mul_boundaryMatrix triangleK ℤ 0
 
-private theorem edge_triangle_square_actual :
+private theorem edge_triangle_square :
     boundaryMatrix triangleK ℤ 0 * chainInclusionMatrix ℤ edge_le_triangle 1 =
       chainInclusionMatrix ℤ edge_le_triangle 0 * boundaryMatrix edgeK ℤ 0 :=
   boundaryMatrix_chainInclusionMatrix ℤ edge_le_triangle 0
 
-private theorem singleton_edge_square_actual :
+private theorem singleton_edge_square :
     boundaryMatrix edgeK ℤ 0 * chainInclusionMatrix ℤ singleton_le_edge 1 =
       chainInclusionMatrix ℤ singleton_le_edge 0 *
         boundaryMatrix (Filtration.singletonFace (0 : Fin 3)) ℤ 0 :=
@@ -499,7 +499,7 @@ private theorem singletonJ0_reindexed :
   simpa [Matrix.reindex_apply, edgeVertexEquiv, singletonColumnEquiv] using
     congrFun (congrFun singletonJ0_array i) j
 
-private theorem triangle_actual_cancel_reindexed :
+private theorem triangle_cancel_reindexed :
     Matrix.reindex triangleVertexEquiv.symm triangleColumnEquiv.symm
       (boundaryMatrix triangleK ℤ 0 * boundaryMatrix triangleK ℤ 1) = 0 := by
   change (Matrix.reindexLinearEquiv ℤ ℤ
@@ -514,7 +514,7 @@ private theorem triangle_actual_cancel_reindexed :
       (boundaryMatrix triangleK ℤ 1) = 0
   rw [triangleB0_reindexed, triangleB1_reindexed, triangle_arrays_cancel]
 
-private theorem edge_triangle_actual_common_reindexed :
+private theorem edge_triangle_common_reindexed :
     Matrix.reindex triangleVertexEquiv.symm edgeColumnEquiv.symm
       (boundaryMatrix triangleK ℤ 0 * chainInclusionMatrix ℤ edge_le_triangle 1) =
         !![-1; 1; 0] := by
@@ -531,7 +531,7 @@ private theorem edge_triangle_actual_common_reindexed :
       (chainInclusionMatrix ℤ edge_le_triangle 1) = !![-1; 1; 0]
   rw [triangleB0_reindexed, edgeJ1_reindexed, edge_triangle_common_column]
 
-private theorem edge_triangle_actual_right_reindexed :
+private theorem edge_triangle_right_reindexed :
     Matrix.reindex triangleVertexEquiv.symm edgeColumnEquiv.symm
       (chainInclusionMatrix ℤ edge_le_triangle 0 * boundaryMatrix edgeK ℤ 0) =
         !![-1; 1; 0] := by
@@ -715,7 +715,7 @@ private theorem signedUnfilled_naturality :
       coordinateCycles triangleK ℤ 1 => f signedUnfilledCycle)
     (cycleCoordinates_naturality ℤ unfilled_le_triangle 1)
 
-private theorem signedUnfilled_included_actual_boundary :
+private theorem signedUnfilled_included_simplicial_boundary :
     (simplicialCycleIncl ℤ unfilled_le_triangle 1 signedUnfilledCycle) ∈
       simplicialBoundaries triangleK ℤ 1 := by
   apply (mem_simplicialBoundaries_iff ℤ triangleK 1 _).mpr
@@ -744,7 +744,7 @@ private theorem signedUnfilledCoord_kernel :
       triangleVertexEquiv.symm triangleColumnEquiv.symm).injective
     change Matrix.reindex triangleVertexEquiv.symm triangleColumnEquiv.symm
       (boundaryMatrix triangleK ℤ 0 * boundaryMatrix triangleK ℤ 1) = 0
-    exact triangle_actual_cancel_reindexed
+    exact triangle_cancel_reindexed
   have hinc := congrArg Subtype.val signedUnfilled_included_eq_boundary
   change chainInclusionMatrix ℤ unfilled_le_triangle 1 *ᵥ
       (signedUnfilledCoord : Face unfilledK 1 → ℤ) =
@@ -800,7 +800,7 @@ private theorem signedUnfilledCoord_kernel :
     simpa only [hid] using hker
   simpa only [hid] using hcycle
 
-private theorem signedUnfilled_included_inverse_actual :
+private theorem signedUnfilled_included_inverse :
     ((cycleCoordinates triangleK ℤ 1).symm
       (coordinateCycleIncl ℤ unfilled_le_triangle 1 signedUnfilledCoord) :
         Chain triangleK ℤ 1) =
@@ -913,7 +913,7 @@ private theorem edge_boundary_scalar_mem (a : ℤ) :
       coordinateBoundaries edgeK ℤ 0 :=
   LinearMap.mem_range_self _ _
 
-private theorem edge_boundary_scalar_actual (a : ℤ) :
+private theorem edge_boundary_scalar_finsupp (a : ℤ) :
     ((cycleCoordinates edgeK ℤ 0).symm
       (coordinateBoundaryToCycles edgeK ℤ 0 (fun _ => a)) : Chain edgeK ℤ 0) =
       boundary edgeK ℤ 0 (Finsupp.single edge01 a) := by

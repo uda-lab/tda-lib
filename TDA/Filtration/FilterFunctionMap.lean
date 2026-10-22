@@ -27,7 +27,7 @@ variable {V : Type u} {K : PreAbstractSimplicialComplex V}
 variable {α : Type v} {β : Type w} {γ : Type z}
 variable [LinearOrder α] [LinearOrder β] [LinearOrder γ]
 
-/-- Two filters with the same value on every actual face are equal. -/
+/-- Two filters with the same value on every face are equal. -/
 @[ext] theorem ext {f g : FilterFunction K α} (h : ∀ s, f.value s = g.value s) : f = g := by
   cases f
   cases g

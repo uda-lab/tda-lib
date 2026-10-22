@@ -39,7 +39,7 @@ Essential occurrences are absent. The infimum is an attained finite minimum. -/
 noncomputable def finiteFirstOrderMatchingCost (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) : ℝ :=
   ⨅ M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1}, M.totalFiniteCost x y
 
-/-- The existing nonempty finite matching family supplies an actual minimizer,
+/-- The existing nonempty finite matching family supplies a minimizer,
 including when either occurrence type is empty. -/
 theorem exists_minimizing_occurrenceMatching (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
     ∃ M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1},

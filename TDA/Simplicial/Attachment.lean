@@ -2,10 +2,10 @@ import TDA.Simplicial.FiniteDimensionalHomology
 import Mathlib.LinearAlgebra.Transvection.Generation
 
 /-!
-# Adding one actual simplex
+# Adding one simplex
 
 The face-set equation supplies the extra chain coordinate. All homology maps below
-are induced by the existing inclusion of actual oriented face chains.
+are induced by the existing inclusion of oriented face chains.
 -/
 
 universe u v
@@ -18,7 +18,7 @@ open CategoryTheory Module
 
 variable {V : Type u} [LinearOrder V]
 
-/-- An attachment specified by the difference of the *actual* face sets. -/
+/-- An attachment specified by the difference of the face sets. -/
 structure SimplexAttachment (K L : PreAbstractSimplicialComplex V) (q : ℕ) where
   simplex : Finset V
   card_simplex : simplex.card = q + 1
@@ -38,7 +38,7 @@ theorem inclusion : K ≤ L := by
 theorem simplex_mem : A.simplex ∈ L :=
   (A.face_iff A.simplex).2 (Or.inr rfl)
 
-/-- The actual new basis face. -/
+/-- The new basis face. -/
 def newFace : Face L q := ⟨A.simplex, A.simplex_mem, A.card_simplex⟩
 
 theorem faceIncl_injective (n : ℕ) :
@@ -81,7 +81,7 @@ theorem chainIncl_surjective_of_ne {n : ℕ} (hn : n ≠ q) :
     (A.faceIncl_injective n) c).2
     (fun s hs => (hs (A.old_face_of_degree_ne hn s)).elim)
 
-/-- In all other degrees the actual face inclusion is a chain isomorphism. -/
+/-- In all other degrees the face inclusion is a chain isomorphism. -/
 noncomputable def chainEquivOfNe {n : ℕ} (hn : n ≠ q) :
     Chain K k n ≃ₗ[k] Chain L k n :=
   LinearEquiv.ofBijective (chainIncl k A.inclusion n)
@@ -116,7 +116,7 @@ theorem chain_decomposition (c : Chain L k q) :
   change chainIncl k A.inclusion q a = _ at ha
   exact ⟨a, by rw [ha]; abel⟩
 
-/-- The old component is unique once the actual new-face coefficient is fixed. -/
+/-- The old component is unique once the new-face coefficient is fixed. -/
 theorem chain_decomposition_unique (c : Chain L k q) :
     ∃! a : Chain K k q,
       c = chainIncl k A.inclusion q a + Finsupp.single A.newFace (c A.newFace) := by
@@ -393,7 +393,7 @@ theorem quotientIncl_surjective_of_ne {n : ℕ} (hn : n ≠ q) :
         (simplicialBoundaries L k n) z
     rw [simplicialQuotientIncl_mkQ, ha]
 
-/-- Actual homology inclusion is bijective away from the two adjacent degrees. -/
+/-- Homology inclusion is bijective away from the two adjacent degrees. -/
 theorem homologyIncl_bijective_of_ne {n : ℕ}
     (hn : n ≠ q) (hn' : n + 1 ≠ q) :
     Function.Bijective (simplicialHomologyIncl k A.inclusion n).hom := by
@@ -455,7 +455,7 @@ theorem homologyIncl_surjective_of_quotient {n : ℕ}
   exact hx.trans ((congrArg (simplicialQuotientIncl k A.inclusion n)
     (eK.apply_symm_apply z)).trans hz)
 
-/-- The quotient comparison transports the cokernel of the actual homology map. -/
+/-- The quotient comparison transports the cokernel of the homology map. -/
 noncomputable def homologyCokernelEquiv (n : ℕ) :
     (simplicialHomology L k n ⧸
       LinearMap.range (simplicialHomologyIncl k A.inclusion n).hom) ≃ₗ[k]
@@ -505,7 +505,7 @@ noncomputable def birthQuotientClass (w : simplicialCycles L k q) :
     (simplicialBoundaries L k q) w
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The actual homology class represented by a cycle with a new coordinate. -/
+/-- The homology class represented by a cycle with a new coordinate. -/
 noncomputable def birthHomologyClass (w : simplicialCycles L k q) :
     simplicialHomology L k q :=
   (homologyKernelQuotient.{v,u,v} k
@@ -520,7 +520,7 @@ noncomputable def birthCokernelClass (w : simplicialCycles L k q) :
   (LinearMap.range (simplicialHomologyIncl k A.inclusion q).hom).mkQ
     (birthHomologyClass (L := L) k w)
 
-/-- The cycle with new coefficient one gives an actual homology cokernel generator. -/
+/-- The cycle with new coefficient one gives a homology cokernel generator. -/
 theorem homologyIncl_birth_generator [Finite (TotalFace L)]
     (w : simplicialCycles L k q)
     (hw : (w : Chain L k q) A.newFace = 1) :
@@ -725,7 +725,7 @@ theorem quotientIncl_ker_eq_span_attachingClass :
       (A.attachingQuotientClass_maps_zero k))
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The actual homology class of the attaching boundary. -/
+/-- The homology class of the attaching boundary. -/
 noncomputable def attachingHomologyClass : simplicialHomology K k p :=
   (homologyKernelQuotient.{v,u,v} k (simplicialChainComplex K k) p).toLinearEquiv.symm
     (A.attachingQuotientClass k)
@@ -737,7 +737,7 @@ theorem attachingHomologyClass_equiv :
   exact LinearEquiv.apply_symm_apply _ _
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The kernel of the actual inclusion map is exactly the attaching class's span. -/
+/-- The kernel of the inclusion map is exactly the attaching class's span. -/
 theorem homologyIncl_ker_eq_span_attachingClass :
     LinearMap.ker (simplicialHomologyIncl k A.inclusion p).hom =
       k ∙ A.attachingHomologyClass k := by
@@ -908,7 +908,7 @@ theorem isolatedVertexCycle_coeff :
     ((A.isolatedVertexCycle k : simplicialCycles L k 0) : Chain L k 0) A.newFace = 1 := by
   simp [isolatedVertexCycle]
 
-/-- The actual degree-zero inclusion has one birth; every positive degree is unchanged. -/
+/-- The degree-zero inclusion has one birth; every positive degree is unchanged. -/
 theorem isolatedVertex_birth [Finite (TotalFace L)] :
     Function.Injective (simplicialHomologyIncl k A.inclusion 0).hom ∧
     Module.finrank k (simplicialHomology L k 0 ⧸
@@ -968,7 +968,7 @@ theorem positive_birth [Finite (TotalFace L)]
     exact ⟨hinj, hsurj⟩
   · exact A.homologyIncl_bijective_of_ne k hr (by omega)
 
-/-- The explicit cycle `σ - a` spans the actual birth cokernel. -/
+/-- The explicit cycle `σ - a` spans the birth cokernel. -/
 theorem positive_birth_generator [Finite (TotalFace L)]
     (hzero : A.attachingHomologyClass k = 0) :
     ∃ a : Chain K k (p + 1), boundary K k p a = A.attachingBoundary k ∧
@@ -980,7 +980,7 @@ theorem positive_birth_generator [Finite (TotalFace L)]
   obtain ⟨a, ha, z, hz, hc⟩ := h
   exact ⟨a, ha, z, hz, A.homologyIncl_birth_generator k z hc⟩
 
-/-- A nonzero attaching class dies; all other actual inclusion maps are bijective. -/
+/-- A nonzero attaching class dies; all other inclusion maps are bijective. -/
 theorem positive_death
     (hne : A.attachingHomologyClass k ≠ 0) :
     Function.Surjective (simplicialHomologyIncl k A.inclusion p).hom ∧

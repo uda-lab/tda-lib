@@ -3,7 +3,7 @@ import TDA.Persistence.ConstructibleBarcode
 /-!
 # Real-barcode reconstruction boundary cases
 
-The grid has actual values -2 and 3. Two copies of `[1,2)` in the padded chain become
+The grid has values -2 and 3. Two copies of `[1,2)` in the padded chain become
 two real intervals `[-2,3)`, while `[2,3)` becomes the essential interval `[3,∞)`.
 An empty grid has an empty barcode and a zero realization.
 -/
@@ -115,7 +115,7 @@ private noncomputable def zeroModule : PModule.{0,0,0} ℚ ℝ :=
 theorem empty_diagram : (moduleDiagram emptyGrid zeroModule (fun i => Fin.elim0 i)).points = 0 :=
   moduleDiagram_empty_grid emptyGrid zeroModule
 
-/-- The empty-grid realization is an actual zero module. -/
+/-- The empty-grid realization is a zero module. -/
 theorem empty_realization : IsZero (RealBarcode.realize (k := ℚ)
     (moduleDiagram emptyGrid zeroModule (fun i => Fin.elim0 i))) :=
   RealBarcode.realize_isZero_of_points_eq_zero _ empty_diagram

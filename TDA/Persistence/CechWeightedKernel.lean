@@ -4,7 +4,7 @@ import TDA.Persistence.ArctanWeight
 /-!
 # Same-label displacements of Čech weighted-kernel embeddings
 
-The same-label actual-diagram Čech bound composes with the count-times-bottleneck stability
+The same-label sublevel-diagram Čech bound composes with the count-times-bottleneck stability
 of the weighted Gaussian kernel embedding, its second-level Gaussian feature and the
 `(k, w)`-Gaussian kernel values. The full bottleneck bound is finite and its real conversion
 is at most the displacement; essential bars remain in that comparison but are omitted from

@@ -286,8 +286,8 @@ For a simple graph `G`, a vertex height `h : V → ℝ`, and a labelled family o
 open real intervals, the path-component label over each interval is equivalent
 to a connected component of the incidence graph `cellGraph G h I`. Combining
 these equivalences over the interval labels gives a vertex equivalence from the
-actual ordinary Mapper of `plHeight G h` to an incidence-labelled nerve. The
-members of that nerve are the actual path-component cover members transported
+ordinary Mapper of `plHeight G h` to an incidence-labelled nerve. The
+members of that nerve are the path-component cover members transported
 along the equivalence, so a finite vertex set is a face on one side exactly when
 its image is a face on the other. Coverage is inherited when the interval family
 covers `Set.range (plHeight G h)`, rather than only the heights of the original
@@ -302,13 +302,12 @@ labels on one connected graph piece without connecting distinct pieces of the
 domain.
 
 If both the graph vertex type and the interval-label type are finite, the Mapper
-component-index type, its supported-vertex subtype, and the subtype of actual
-finite faces are finite. This is a noncomputable finiteness result. Finitely many
+component-index type, its supported-vertex subtype, and the subtype of finite faces are finite. This is a noncomputable finiteness result. Finitely many
 interval labels alone are insufficient: for the constant map from discrete
 `ℕ` to a point and the one-member full cover, the supported Mapper vertex type
 is explicitly equivalent to `ℕ`.
 
-The concrete graph fixtures use the actual PL-height inverse images. An open
+The concrete graph fixtures use the PL-height inverse images. An open
 arc over the interval `(0, 2)` has one Mapper vertex even though neither endpoint
 survives. The overlapping intervals `(-1, 3/2)` and `(1/2, 3)` give one Mapper
 edge on a single graph edge and two disconnected copies on a disjoint union of
@@ -569,7 +568,7 @@ realized data are proved in the subsection `Constructibility and the cosheaf of
 graph-PL height` below; the Reeb quotient identification is proved in the
 subsection `The Reeb quotient of graph-PL height`, under a covering
 critical-value list. The separate [categorical assembly](mapper-reeb-approximation.md)
-is reconstructed as an actual real graph and compared with the actual Reeb quotient.
+is reconstructed as a real graph and compared with the Reeb quotient.
 These finite-data comparisons do not identify the ordinary Mapper or MultiNerve Mapper
 with that reconstruction. A refinement tower of height-separating covers is not asserted;
 refinement of covering critical lists is treated in the last subsection.

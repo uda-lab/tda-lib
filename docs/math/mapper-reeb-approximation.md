@@ -9,7 +9,7 @@ intervals meeting only an edge interior are retained.
 For every nonempty simplex `σ` of the cover nerve, categorical Mapper stores the path
 components of `f⁻¹(U_σ)`, where `U_σ` is the full intersection of the intervals indexed by `σ`.
 Its maps are induced by the inclusions belonging to faces. `categoricalMapperData` formalizes
-this diagram. `coverIntersectionInterval` presents each intersection as an actual open
+this diagram. `coverIntersectionInterval` presents each intersection as an open
 interval, and `finite_graphPL_categoricalMapperData` proves that every graph-PL component
 value of this diagram is finite. It preserves distinct components of an intersection, even when ordinary
 Mapper records only a single edge over the same pair of component vertices.
@@ -31,7 +31,7 @@ interval cover in a connected chain; local compatible functions therefore agree 
 original cover component. The endpoints of the bounded cover form a finite critical-value
 witness. Finiteness of the graph-PL pullback components then gives a constructible cosheaf.
 These facts supply the hypotheses of the existing finite reconstruction equivalence, whose
-inverse `D` yields the actual real graph `graphPLMapperReconstruction`.
+inverse `D` yields the real graph `graphPLMapperReconstruction`.
 
 ## Error and convergence
 
@@ -58,8 +58,8 @@ d_{\mathrm{geo}}\bigl(DP_KC_K(f),\mathcal R(f)\bigr)
  \le \operatorname{res}_f(U).
 \]
 
-Here `𝓡(f)` is `GraphPL.graphPLReebGraph`, the actual Reeb quotient equipped with its finite
-real-graph property. The proof constructs both natural comparison maps on actual input
+Here `𝓡(f)` is `GraphPL.graphPLReebGraph`, the Reeb quotient equipped with its finite
+real-graph property. The proof constructs both natural comparison maps on input
 points, verifies their interleaving composites, and transports the result through the
 reconstruction and quotient component isomorphisms. The version
 `geometricInterleavingDistance_mapperReeb_le` uses all cover members' widths.
@@ -77,7 +77,7 @@ geometric error bounds and convergence.
 The interval-indexed categorical bound follows the objects and conclusion of Munch–Wang,
 *Convergence between Categorical Representations of Reeb Space and Mapper*, arXiv v2,
 Theorem 4.1, Lemma 7.1 and Corollary 8.1. The formalization begins with finite graph-PL input
-in universe zero and uses the library's existing actual quotient and finite reconstruction.
+in universe zero and uses the library's existing quotient and finite reconstruction.
 Its interval arguments use the one-dimensional intersection property of real intervals.
 No higher-dimensional Reeb-space theorem or automatic identification with the ordinary
 Mapper simple graph is asserted.
@@ -90,7 +90,7 @@ require a separate specification and a correctness bridge to these objects.
 The examples cover a horizontal edge, repeated heights on a disconnected graph, a retained
 edge-interior hit with no retained vertex, an empty pullback, the constant-input width
 boundary, and the four-cycle's two categorical intersection components over one ordinary
-Mapper edge. A finer three-member cover has a reconstructed graph with two actual components
+Mapper edge. A finer three-member cover has a reconstructed graph with two components
 over its central test interval, established through the reconstruction isomorphism. A coarse
 assembly may merge those components; the categorical input count alone does not prove that
 the reconstructed graph preserves the loop. See the [source register](references.md#MW16-v2) for source and rights scope.

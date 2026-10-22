@@ -159,7 +159,7 @@ theorem complex_le_sublevel (p : V → X) (r : ℝ) : complex p r ≤ (filter p)
   exact (filter_value_le_radiusAt p ⟨s, ⟨v₀, hv₀⟩⟩ x).trans
     ((radiusAt_le_iff p x s r).2 ⟨dist_nonneg.trans (hx v₀ hv₀), hx⟩)
 
-/-- In a proper ambient space, every actual face attains its Čech value. -/
+/-- In a proper ambient space, every face attains its Čech value. -/
 theorem exists_radiusAt_eq_value [ProperSpace X] (p : V → X)
     (s : TotalFace (Rips.fullComplex V)) :
     ∃ x, radiusAt p x s.val = (filter p).value s := by

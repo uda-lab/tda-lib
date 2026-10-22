@@ -2,7 +2,7 @@
 
 A matching with cost at most ε compares two finite barcodes by pairing nearby
 intervals and leaving sufficiently short intervals unpaired. Over a field, the
-construction below turns that matching into two actual natural transformations
+construction below turns that matching into two natural transformations
 between the barcode realizations. Their composites are the original structure
 maps across twice the shift.
 
@@ -75,7 +75,7 @@ zero maps. The essential equivalence selects every essential coordinate.
 The two composite equations are checked coordinate by coordinate. Matched
 coordinates use `interleavingOfBounds`; unmatched coordinates use the proved
 length criterion. The constructed occurrence isomorphisms then transport these
-maps to the actual realizations. The finite coordinate product is the existing
+maps to the realizations. The finite coordinate product is the existing
 barcode product; `familyModule` and `familyIso` expose that construction and its
 coordinate change. No dimension or rank equality substitutes for a natural map.
 
@@ -140,7 +140,7 @@ Source identity and rights are recorded in [BL15-v4](references.md#BL15-v4).
 Lemma 8.1 leaves its proof details to the reader. Its item (ii), in both v4 HTML
 and PDF page 26, writes `b+ε ≥ d` after fixing δ, without relating those symbols
 there. The precise half-open criterion used here is proved from the double-shift
-equations and the actual structure maps: `d−b ≤ 2ε`. These numeric equality rules apply to the fixed half-open convention; other
+equations and the structure maps: `d−b ≤ 2ε`. These numeric equality rules apply to the fixed half-open convention; other
 endpoint decorations require their own boundary conditions.
 
 The [finite-chain mono embedding](finite-mono-matching.md) and

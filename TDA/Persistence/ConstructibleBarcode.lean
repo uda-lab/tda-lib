@@ -79,7 +79,7 @@ noncomputable def moduleDiagram (c : Fin n ↪o ℝ) (M : PModule.{u,0,u} k ℝ)
   letI : ∀ i, FiniteDimensional k ((reindex c.toOrderHom M).obj i) := hfd
   exact ofIndexBars c c.strictMono (rankBarcode (reindex c.toOrderHom M))
 
-/-- The padded sample's barcode gives the same diagram after actual `Fin.succ` sampling. -/
+/-- The padded sample's barcode gives the same diagram after `Fin.succ` sampling. -/
 theorem moduleDiagram_eq_reindex_sample (c : Fin n ↪o ℝ) (M : PModule.{u,0,u} k ℝ)
     (hfd : ∀ i, FiniteDimensional k (M.obj (c i))) :
     moduleDiagram c M hfd = ofIndexBars c c.strictMono
@@ -106,7 +106,7 @@ theorem moduleDiagram_empty_grid (c : Fin 0 ↪o ℝ) (M : PModule.{u,0,u} k ℝ
 /-- A finite-constructible real module is naturally isomorphic to its half-open barcode
 realization. Only the critical fibers require finite-dimensionality.
 
-The finite decomposition isomorphism is actually whiskered along `cellIndex c`; the final
+The finite decomposition isomorphism is whiskered along `cellIndex c`; the final
 isomorphism transports every occurrence to the existing real endpoint diagram. -/
 noncomputable def barcodeRealizationIso (c : Fin n ↪o ℝ) (M : PModule.{u,0,u} k ℝ)
     (hM : IsConstructible c M) (hfd : ∀ i, FiniteDimensional k (M.obj (c i))) :

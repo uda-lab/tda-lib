@@ -5,7 +5,7 @@ import TDA.Mapper.TowerExamples
 /-!
 # MultiNerve Mapper refinement fixtures
 
-Acceptance fixtures for `TDA.Mapper.MultiNerveRefinement`, on the actual merged objects.
+Acceptance fixtures for `TDA.Mapper.MultiNerveRefinement`, on the merged objects.
 
 * **Coherent three-stage tower.** On the merged three-stage tower, the first-to-middle map
   sends the first-stage cell over two component indices to the middle-stage vertex cell, so the

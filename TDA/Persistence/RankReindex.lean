@@ -7,7 +7,7 @@ import Mathlib.Data.Fintype.Fin
 Endpoint cuts count sample occurrences, including repeated source indices. Restriction
 uses these cuts to retain precisely the sampled part of each half-open interval and
 drops empty restrictions. For an arbitrary module with finite-dimensional fibers,
-reindexing transports actual structure-map ranks, sums integer multiplicities over
+reindexing transports structure-map ranks, sums integer multiplicities over
 endpoint rectangles, and restricts the canonical rank barcode by `Multiset.filterMap`.
 
 Death at the size of the sample denotes survival through its last observed stage.
@@ -131,7 +131,7 @@ private instance reindex_finiteDimensional (s : Fin N →o Fin L) (i : Fin N) :
   change FiniteDimensional k (M.obj (s i))
   infer_instance
 
-/-- The sampled structure map has the rank of the actual source map at its sampled endpoints. -/
+/-- The sampled structure map has the rank of the source map at its sampled endpoints. -/
 theorem structureMapRank_reindex (s : Fin N →o Fin L)
     (i j : Fin N) (hij : i ≤ j) :
     structureMapRank (reindex s M) i j hij =

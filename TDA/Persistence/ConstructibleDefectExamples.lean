@@ -6,7 +6,7 @@ import TDA.Persistence.RealIntervalInterleaving
 /-!
 # Nonzero defects, rounded translations and the terminal observation
 
-Zero comparison maps on a length-two interval give actual nonzero defects whose
+Zero comparison maps on a length-two interval give nonzero defects whose
 critical samples are two-short but fail the shorter bound. Irregular grids and
 an essential tail distinguish rounding from truncation.
 -/
@@ -81,8 +81,8 @@ private theorem shifted_input_nonzero : ¬ IsZero ((shift 1).obj input) := by
   exact threshold_fiber_nonzero 0 (by norm_num [RealBarcode.alive])
     (hz.of_iso (intervalIso.app 0).symm)
 
-/-- The actual comparison is neither mono nor epi, and both actual defects are nonzero. -/
-theorem actual_nonzero_defects :
+/-- The comparison is neither mono nor epi, and both defects are nonzero. -/
+theorem nonzero_defects :
     ¬ Mono witness.φ ∧ ¬ Epi witness.φ ∧
       ¬ IsZero (kernel witness.φ) ∧ ¬ IsZero (cokernel witness.φ) := by
   refine ⟨fun h => input_nonzero (IsZero.of_mono_eq_zero witness.φ witness_φ_zero),
@@ -94,9 +94,9 @@ theorem actual_nonzero_defects :
     intro h
     exact shifted_input_nonzero (h.of_iso cokernelZeroIsoTarget.symm)
 
-/-- The constructed common grid gives both actual constructible defects and
+/-- The constructed common grid gives both constructible defects and
 both finite shortness conclusions without an assumed shortness certificate. -/
-theorem actual_common_defects :
+theorem common_defects :
     let e := commonGrid coarse (shiftGrid 1 coarse)
     IsConstructible e (kernel witness.φ) ∧ IsConstructible e (cokernel witness.φ) ∧
       TranslationTrivial (sampleTranslation e (1 + 1)) (le_sampleTranslation e (1 + 1))
@@ -149,7 +149,7 @@ private theorem threshold_sample_map_nonzero :
   rw [RealBarcode.map_val] at hx
   exact (one_ne_zero : (1 : ℚ) ≠ 0) (by simpa only [if_pos ht, x] using hx)
 
-/-- The actual sampled kernel is not one-short: its map from real 0 to 1 survives. -/
+/-- The sampled kernel is not one-short: its map from real 0 to 1 survives. -/
 theorem shorter_parameter_rejected :
     ¬ TranslationTrivial (sampleTranslation fine 1) (le_sampleTranslation fine 1)
       (finiteKernel (reindexNatTrans fine.toOrderHom witness.φ)) := by
@@ -164,13 +164,13 @@ theorem shorter_parameter_rejected :
     (Functor.isoWhiskerLeft fine.toOrderHom.toFunctor intervalIso) hi
   exact threshold_sample_map_nonzero (hr (1 : Fin 4))
 
-/-- The constructed common grid contains the actual negative shifted critical value. -/
+/-- The constructed common grid contains the negative shifted critical value. -/
 theorem common_grid_negative :
     (-1 : ℝ) ∈ Set.range (commonGrid coarse (shiftGrid 1 coarse)) := by
   rw [range_commonGrid]
   exact Or.inr ⟨0, by norm_num [shiftGrid_apply, coarse_apply]⟩
 
-/-- Sampling comparisons retain the actual inclusion and projection of this nonzero example. -/
+/-- Sampling comparisons retain the inclusion and projection of this nonzero example. -/
 theorem sampling_inclusion_projection :
     (criticalKernelIso fine witness.φ).inv ≫ reindexNatTrans fine.toOrderHom (kernel.ι witness.φ) =
       kernel.ι (reindexNatTrans fine.toOrderHom witness.φ) ∧
@@ -309,7 +309,7 @@ private theorem zero_of_zero_double_transition {A : PModule.{0,0,0} ℚ ℝ}
   rw [hz, zero_comp] at ht
   exact ht.symm
 
-/-- Zero parameter gives actual zero defects and identity-translation shortness
+/-- Zero parameter gives zero defects and identity-translation shortness
 for a module that itself is nonzero. -/
 theorem zero_parameter : ¬ IsZero input ∧ IsZero (kernel zeroWitness.φ) ∧
     IsZero (cokernel zeroWitness.φ) ∧
@@ -334,7 +334,7 @@ private noncomputable def zeroInput : PModule.{0,0,0} ℚ ℝ := 0
 private theorem empty_constructible : IsConstructible empty zeroInput :=
   (isConstructible_empty_iff _ _).mpr (fun t => Functor.zero_obj t)
 
-/-- Empty critical sampling has no stages; its actual constructible real module is zero. -/
+/-- Empty critical sampling has no stages; its constructible real module is zero. -/
 theorem empty_grid (δ : ℝ≥0) : sampleTranslation empty δ = OrderHom.id ∧
     (∀ t, IsZero (zeroInput.obj t)) ∧
     TranslationTrivial (sampleTranslation empty δ) (le_sampleTranslation empty δ)
@@ -352,9 +352,9 @@ private theorem matching_critical_finite (j : Fin 2) :
   change FiniteDimensional ℚ ((intervalModule (k := ℚ) bar).obj (cellIndex coarse (coarse j)))
   infer_instance
 
-/-- Actual zero comparison maps with nonzero defects give the derived real
+/-- Zero comparison maps with nonzero defects give the derived real
 induced matching into the shifted target, without a shortness or matching input. -/
-theorem actual_shifted_induced_matching :
+theorem shifted_induced_matching :
     ∃ A : OccurrenceMatching (moduleDiagram coarse input matching_critical_finite).finiteOccurrences
         (translateDiagram (moduleDiagram coarse input matching_critical_finite) (-1)).finiteOccurrences
         (moduleDiagram coarse input matching_critical_finite).essentialOccurrences
@@ -408,7 +408,7 @@ private noncomputable def zero_target_witness : RealInterleaving 1 input zeroInp
 private noncomputable def threshold_matching := interleavingMatching input_constructible
   empty_constructible matching_critical_finite (fun j => Fin.elim0 j) zero_target_witness
 
-/-- The actual length-two module interleaves with zero at one. Its constructed
+/-- The length-two module interleaves with zero at one. Its constructed
 matching leaves the real bar unmatched and attains diagonal cost one exactly. -/
 theorem threshold_cost_attained :
     ∃ p, threshold_matching.finite p = none ∧ p.1 = (0, 2) ∧ diagonalCost p.1 = 1 ∧

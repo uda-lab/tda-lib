@@ -5,8 +5,8 @@ import TDA.Reeb.ConstructibleCylinderExamples
 /-!
 # Examples: constructible Reeb quotients and component graphs
 
-The fixtures use actual presentations with compact locally path-connected pieces, their
-realizations, and actual slice morphisms.
+The fixtures use presentations with compact locally path-connected pieces, their
+realizations, and slice morphisms.
 
 * `[0, 1]` is locally path-connected and path-connected. The pinned mathlib has no instance for
   `unitInterval`, so both are local instances here.

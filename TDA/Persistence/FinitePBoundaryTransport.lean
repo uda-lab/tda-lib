@@ -8,7 +8,7 @@ Costs raise geometric distances to `p`, while real mass coefficients and boundar
 residuals remain linear. The existing assignment/Birkhoff bridge proves equality
 with the powered partial-matching minimum. At `1 ≤ p`, the rooted optimum also
 minimizes rooted candidate costs. A minimizing incidence plan is constructed from
-an actual powered-cost minimizing matching; first-order optimizers are not reused.
+a powered-cost minimizing matching; first-order optimizers are not reused.
 
 These are finite unit-occurrence reservoir matrices. The maximum ground norm is
 independent of the real matching exponent. The finite cost-matrix adaptation of

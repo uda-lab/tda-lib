@@ -78,7 +78,7 @@ then supplies the stated image estimate.
 
 ## Lean interfaces and sources
 
-`TDA.Persistence.GaussianKernel` supplies the actual one- and two-dimensional densities,
+`TDA.Persistence.GaussianKernel` supplies the one- and two-dimensional densities,
 normalization and L¹ translation estimates. `TDA.Persistence.PersistenceImage` defines
 `Weight`, `pixelIntegral`, `feature` and `image`; `image_apply` identifies the coordinates
 with integrals of the surface. `norm_image_sub_le_matching` is the matching estimate.

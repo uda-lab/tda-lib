@@ -25,7 +25,7 @@ def fullComplex (V : Type u) : PreAbstractSimplicialComplex V := ⊤
 @[simp] theorem mem_fullComplex_iff (s : Finset V) :
     s ∈ fullComplex V ↔ s.Nonempty := Iff.rfl
 
-/-- Finitely many vertices give finitely many actual faces, without assuming a vertex exists. -/
+/-- Finitely many vertices give finitely many faces, without assuming a vertex exists. -/
 noncomputable instance fullComplexFintype [Fintype V] : Fintype (TotalFace (fullComplex V)) :=
   Fintype.ofFinite _
 
@@ -93,7 +93,7 @@ theorem diameter_pair [DecidableEq V] (d : MetricSpace V) (v w : V) :
       simp [d.dist_comm]
   · exact dist_le_diameter d (by simp) (by simp)
 
-/-- The real-valued diameter filter on all actual faces. -/
+/-- The real-valued diameter filter on all faces. -/
 noncomputable def filter (d : MetricSpace V) : FilterFunction (fullComplex V) ℝ where
   value s := diameter d s.val
   mono h := diameter_mono d h

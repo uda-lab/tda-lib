@@ -5,7 +5,7 @@ import TDA.Mapper.GraphPLCosheaf
 # Finite constructibility of interval-cover assembly
 
 The endpoints of a finite family of bounded intervals form a critical-value witness for
-the assembled component precosheaf. The proof compares the actual saturated open sets:
+the assembled component precosheaf. The proof compares the saturated open sets:
 a nested nonempty interval enlargement that sees no new endpoint changes no active member.
 No vertex-height genericity or absence of horizontal graph edges is needed.
 -/
@@ -102,7 +102,7 @@ theorem coverSaturation_eq_of_same_endpoints {n : ℕ} (S : CriticalValues n)
 
 variable {X : Type u} [TopologicalSpace X]
 
-/-- Finite component values and endpoint bounds prove constructibility of the actual assembly. -/
+/-- Finite component values and endpoint bounds prove constructibility of the assembly. -/
 theorem isConstructibleAt_coverComponents [Finite ι] (f : C(X, ℝ))
     (hfinite : ∀ i, Finite ((intervalComponents f).obj (ioo (a i) (b i))))
     {n : ℕ} (S : CriticalValues n) (hS : CoversIntervalEndpoints a b S) :

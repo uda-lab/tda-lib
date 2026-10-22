@@ -62,7 +62,7 @@ private theorem four_path_root_budget : Real.sqrt 19 ≤ Real.sqrt 11 + 4 := by
   norm_num [← Real.sqrt_eq_rpow] at h
   exact h
 
-/-- This checks the actual singleton minimum, rather than assuming a chosen pair is optimal. -/
+/-- This checks the singleton minimum, rather than assuming a chosen pair is optimal. -/
 private theorem singleton_root_eq_pair_of_le_diagonal {p : ℝ} (hp : 1 ≤ p)
     (a b : ℝ × ℝ) (hc : (finitePairCost a b).toReal ≤ (diagonalCost a).toReal) :
     finitePBoundaryTransportCost p (fun _ : Fin 1 => a) (fun _ : Fin 1 => b) =

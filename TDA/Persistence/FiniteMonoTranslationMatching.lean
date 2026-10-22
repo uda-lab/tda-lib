@@ -4,7 +4,7 @@ import TDA.Persistence.FiniteMonoMatching
 /-!
 # Quantitative canonical mono matchings for monotone translations
 
-Actual cokernel shortness bounds the source birth by the translated target birth
+cokernel shortness bounds the source birth by the translated target birth
 and covers every long target occurrence. The original canonical labels are used.
 -/
 

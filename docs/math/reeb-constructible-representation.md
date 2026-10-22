@@ -11,12 +11,12 @@ with both endpoint functions; `Hom.id`, `Hom.comp` and, for bijective components
 the only operations used. No category instance on `FiniteReebData` is used.
 
 For `F : OpenInterval ⥤ Type u` with finite values, `S.extract F` has `V i = F (J i)`,
-`E e = F (K e)` and the actual inclusion maps `F (K e ≤ J e.castSucc)` and `F (K e ≤ J e.succ)`
+`E e = F (K e)` and the inclusion maps `F (K e ≤ J e.castSucc)` and `F (K e ≤ J e.succ)`
 as endpoint functions.
 
 ## The cosheaf of finite data
 
-`D.toCosheaf S` is the actual path-component cosheaf `intervalComponents ((ofFiniteData D).height S)`
+`D.toCosheaf S` is the path-component cosheaf `intervalComponents ((ofFiniteData D).height S)`
 of the cylinder realization of `D`, whose pieces are discrete (see `reeb-constructible-space.md`).
 Write `C_D` for it. No second, combinatorial cosheaf is constructed.
 
@@ -118,7 +118,7 @@ data with a common index relates them.
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleRepresentationExamples` uses actual component cosheaves of realized finite
+`TDA.Reeb.ConstructibleRepresentationExamples` uses component cosheaves of realized finite
 data and arbitrary constructible interval cosheaves:
 
 - the pinch over levels `0 < 1`, whose two edges both start at vertex `0`: the left incidence

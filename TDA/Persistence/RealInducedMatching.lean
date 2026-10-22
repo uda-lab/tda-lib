@@ -4,7 +4,7 @@ import TDA.Persistence.FiniteInducedTranslationMatching
 import TDA.Persistence.MatchingInterleaving
 
 /-!
-# Real occurrence labels for the actual finite induced matching
+# Real occurrence labels for the finite induced matching
 
 Finite index occurrences identify the finite/essential occurrence presentation
 of their real endpoint diagram. Rounded finite translation bounds give exact
@@ -39,14 +39,14 @@ private theorem index_point_multiset {n : ℕ} (c : Fin n ↪o ℝ)
         Multiset (FiniteInterval n)).map _ = _
       rw [List.ofFn_get, Multiset.coe_toList]
 
-/-- Finite index labels and actual real diagram occurrences agree with multiplicity. -/
+/-- Finite index labels and real diagram occurrences agree with multiplicity. -/
 noncomputable def indexOccurrenceEquiv {n : ℕ} (c : Fin n ↪o ℝ)
     (B : Multiset (FiniteInterval n)) :
     BarcodeOccurrence n B ≃ Occurrences (ofIndexBars c c.strictMono B) :=
   (presentationEquiv (fun i => endpoints c (occurrence B i)) (occurrencePoint _)
     (index_point_multiset c B)).1
 
-/-- The occurrence equivalence retains each actual real endpoint pair. -/
+/-- The occurrence equivalence retains each real endpoint pair. -/
 theorem indexOccurrenceEquiv_value {n : ℕ} (c : Fin n ↪o ℝ)
     (B : Multiset (FiniteInterval n)) (i : BarcodeOccurrence n B) :
     occurrencePoint _ (indexOccurrenceEquiv c B i) = endpoints c (occurrence B i) :=
@@ -60,7 +60,7 @@ theorem indexOccurrenceEquiv_symm_value {n : ℕ} (c : Fin n ↪o ℝ)
   simpa only [Equiv.apply_symm_apply] using
     (indexOccurrenceEquiv_value c B ((indexOccurrenceEquiv c B).symm i)).symm
 
-/-- An observed finite death gives an actual finite diagram occurrence with its endpoints. -/
+/-- An observed finite death gives a finite diagram occurrence with its endpoints. -/
 theorem indexOccurrenceEquiv_finite {n : ℕ} (c : Fin n ↪o ℝ)
     (B : Multiset (FiniteInterval n)) (i : BarcodeOccurrence n B)
     (hi : (occurrence B i).death < n) :
@@ -73,7 +73,7 @@ theorem indexOccurrenceEquiv_finite {n : ℕ} (c : Fin n ↪o ℝ)
     have hd := congrArg Prod.snd hv
     simp [h, occurrencePoint, endpoints, hi] at hd
 
-/-- A terminal index death gives an actual essential occurrence, never a finite sentinel. -/
+/-- A terminal index death gives an essential occurrence, never a finite sentinel. -/
 theorem indexOccurrenceEquiv_essential {n : ℕ} (c : Fin n ↪o ℝ)
     (B : Multiset (FiniteInterval n)) (i : BarcodeOccurrence n B)
     (hi : (occurrence B i).death = n) :
@@ -198,12 +198,12 @@ variable {n : ℕ} {k : Type u} [Field k]
 variable {M N : PModule.{u,0,u} k (Fin n)}
 variable [∀ i, FiniteDimensional k (M.obj i)] [∀ i, FiniteDimensional k (N.obj i)]
 
-/-- The existing real endpoint diagram of the actual finite rank barcode. -/
+/-- The existing real endpoint diagram of the finite rank barcode. -/
 noncomputable abbrev diagram (c : Fin n ↪o ℝ) (M : PModule.{u,0,u} k (Fin n))
     [∀ i, FiniteDimensional k (M.obj i)] : Diagram ℝ :=
   ofIndexBars c c.strictMono (rankBarcode M)
 
-/-- Transport the actual induced partial injection, including essential index bars. -/
+/-- Transport the induced partial injection, including essential index bars. -/
 noncomputable def sumMap (c : Fin n ↪o ℝ) (f : M ⟶ N)
     (i : RealBarcode.Occurrences (diagram c M)) :
     Option (RealBarcode.Occurrences (diagram c N)) :=
@@ -233,7 +233,7 @@ theorem sumMap_injective (c : Fin n ↪o ℝ) (f : M ⟶ N)
     (inducedMap_injective f _ _ _ ((sumMap_eq_some_iff c f i j).mp hi)
       ((sumMap_eq_some_iff c f i' j).mp hi'))
 
-/-- Actual finite defect shortness gives exact real matched bounds without mesh error. -/
+/-- Finite defect shortness gives exact real matched bounds without mesh error. -/
 theorem sumMap_bounds (c : Fin n ↪o ℝ) (f : M ⟶ N) (δK δC : ℝ≥0)
     (hk : TranslationTrivial (FiniteConstructible.sampleTranslation c δK)
       (FiniteConstructible.le_sampleTranslation c δK) (finiteKernel f))
@@ -315,7 +315,7 @@ private theorem essential_surjective (d : (diagram c N).essentialOccurrences) :
   | inl i => exact False.elim (no_cross c f δK δC hk hc i d hi)
   | inr b => exact ⟨b, hi⟩
 
-/-- The actual finite induced partial injection, split into a real finite partial
+/-- The finite induced partial injection, split into a real finite partial
 injection and the derived total essential-occurrence equivalence. -/
 noncomputable def matching : OccurrenceMatching (diagram c M).finiteOccurrences
     (diagram c N).finiteOccurrences (diagram c M).essentialOccurrences
@@ -323,14 +323,14 @@ noncomputable def matching : OccurrenceMatching (diagram c M).finiteOccurrences
   splitMatching (sumMap c f) (sumMap_injective c f)
     (essential_total c f δK δC hk hc) (essential_surjective c f δK δC hk hc)
 
-/-- A finite pair is selected exactly by the transported actual induced partial injection. -/
+/-- A finite pair is selected exactly by the transported induced partial injection. -/
 theorem matching_finite_eq_some_iff (i : (diagram c M).finiteOccurrences)
     (j : (diagram c N).finiteOccurrences) :
     (matching c f δK δC hk hc).finite i = some j ↔
       sumMap c f (.inl i) = some (.inl j) :=
   splitMatching_finite_some_iff _ _ _ _ i j
 
-/-- Every essential pair is selected by that same actual induced partial injection. -/
+/-- Every essential pair is selected by that same induced partial injection. -/
 theorem matching_essential_match (b : (diagram c M).essentialOccurrences) :
     sumMap c f (.inr b) = some (.inr ((matching c f δK δC hk hc).essential b)) :=
   splitMatching_essential_match _ _ _ _ b

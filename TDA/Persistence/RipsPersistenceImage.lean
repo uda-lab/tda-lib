@@ -4,7 +4,7 @@ import TDA.Persistence.PersistenceImageDiagram
 /-!
 # Distance-matrix perturbations of Rips persistence images
 
-The existing same-label actual-diagram bound and Gaussian pixel ℓ¹ estimate compose
+The existing same-label sublevel-diagram bound and Gaussian pixel ℓ¹ estimate compose
 through a finite occurrence-count bound. The constant is an independently derived,
 nonsharp library estimate. Rips time is simplex diameter; essential bars remain in
 the bottleneck comparison but are deliberately omitted from the image.

@@ -3,7 +3,7 @@
 An epsilon-interleaving compares two real-indexed modules by natural maps into
 each other's shifts. Their two composites must equal the original modules'
 structure maps across twice the shift. The API constructs the shifts and these
-comparison maps from actual real parameters and structure maps. Taking the infimum
+comparison maps from real parameters and structure maps. Taking the infimum
 of all admissible finite parameters gives an extended pseudometric, with no
 assumption that the infimum is attained.
 
@@ -34,7 +34,7 @@ the coherence statements display these transports explicitly.
 ## Transitions and the two witness equations
 
 The transition `ηεM`, written `RealShift.transition ε M`, has component
-the actual structure map `M[t≤t+ε]`. It is natural in the real index and
+the structure map `M[t≤t+ε]`. It is natural in the real index and
 commutes with every module transformation. The zero transition is the inverse
 of `zeroIso`; two transitions, followed by `compIso`, give `η(ε+δ)M`.
 
@@ -56,8 +56,7 @@ where `μ` is the constructed `compIso ε ε` and `2ε` means `ε+ε`.
 At `t`, the first composite is `f_t` followed by `g_(t+ε)` and the transport
 from `(t+ε)+ε` to `t+2ε`; it equals `M[t≤t+2ε]`. The other composite has the
 same condition for `N`. `equations_iff` proves equivalence of the natural-
-transformation equations and these component equations. `ofApp` accepts actual
-natural maps and proofs of the component equations.
+transformation equations and these component equations. `ofApp` accepts natural maps and proofs of the component equations.
 
 ## Enlargement, composition and isomorphism transport
 
@@ -85,7 +84,7 @@ conjugating the comparison maps without changing the parameter.
 
 ## Zero interleavings and the zero module
 
-`RealInterleaving.symm` exchanges the maps; `refl` uses the actual transitions.
+`RealInterleaving.symm` exchanges the maps; `refl` uses the transitions.
 `zeroEquivIso` gives an equivalence between zero-interleaving witnesses and
 natural isomorphisms. Its two conversions are inverse, using the constructed
 unit and composition coherences.
@@ -99,7 +98,7 @@ For the zero functor, `nonempty_zero_iff` proves
 
 In one direction the maps to and from the shifted zero module are zero, so the
 witness equation forces annihilation. In the other direction the zero maps
-construct the witness. This criterion uses the actual structure map.
+construct the witness. This criterion uses the structure map.
 
 The checked interval examples use the existing field-valued
 `RealBarcode.intervalModule`. At `ε=1`, `[0,2)` interleaves with zero: exact
@@ -110,9 +109,9 @@ the map from `0` to `2ε` preserves `1`. A field has `1≠0`; this nontriviality
 is needed for the negative examples. The basic ring-valued API does not impose it.
 
 The [kernel and cokernel shortness results](real-interleaving-shortness.md)
-prove that either interleaving morphism has actual defects with zero
+prove that either interleaving morphism has defects with zero
 double-shift transitions. They use the witness equations and naturality of
-the actual kernel inclusion and cokernel projection, over the same rings.
+the kernel inclusion and cokernel projection, over the same rings.
 
 ## Distance, infinity and approximation
 
@@ -226,8 +225,7 @@ log-scale Čech–Rips interleaving, are constructed in
 Generic flows remain separate. The
 [matching-to-interleaving construction](matching-interleavings.md) supplies
 concrete witnesses and `d_I≤d_B` for finite positive barcode realizations,
-transported to finite-constructible modules by the actual
-[barcode realization](real-barcode-realization.md) isomorphism. The
+transported to finite-constructible modules by the [barcode realization](real-barcode-realization.md) isomorphism. The
 [finite-constructible isometry](constructible-isometry.md) constructs the
 opposite cost-bounded matching and proves extended-distance equality and
 finite-parameter witness equivalence. Its field, critical-fiber finiteness,

@@ -7,7 +7,7 @@ import TDA.Persistence.DiagramBottleneckLaws
 /-!
 # Count and radius controls for uniform bottleneck recovery
 
-The fixtures use actual canonical diagram occurrences and both optimized costs.
+The fixtures use canonical diagram occurrences and both optimized costs.
 Repeated bars attain the error bound; changing the count or radius gives error
 one without the corresponding budget. Essential bars test the excluded domain.
 -/
@@ -56,7 +56,7 @@ private theorem empty_card : Fintype.card empty.finiteOccurrences = 0 := by
 private instance empty_occurrences : IsEmpty empty.finiteOccurrences :=
   Fintype.card_eq_zero_iff.mp empty_card
 
-/-- The zero-count budget contains the empty pair and its costs are actually zero. -/
+/-- The zero-count budget contains the empty pair and its costs are zero. -/
 private theorem empty_zero_budget {p : ℝ} (hp : 1 ≤ p) :
     (empty, empty) ∈ budgetSet 0 1 ∧ matching p empty empty = 0 ∧
       transport p empty empty = 0 ∧ bottleneck empty empty = 0 ∧ uniformLimits 0 1 := by
@@ -235,7 +235,7 @@ private theorem switch_bottleneck : bottleneck (singleBar 0) (singleBar (3 / 2))
         norm_num [finitePairCost]
       exact this.trans (by simpa [h] using hs)
 
-/-- The same bounded class contains a pair whose actual optimizer changes:
+/-- The same bounded class contains a pair whose optimizer changes:
 pair at one, delete both at two. Canonical occurrence costs are reindexed before
 using the explicit matching and zero-plan witnesses. -/
 private theorem optimizer_change_in_budget :
@@ -314,7 +314,7 @@ private theorem missing_count_exponents_cofinal :
     Tendsto (fun n : ℕ => (n : ℝ)) atTop atTop := tendsto_natCast_atTop_atTop
 
 /-- With count two fixed, the positive radius may depend on each exponent.
-The actual error remains one on the essential-free count-two class without a
+The error remains one on the essential-free count-two class without a
 radius bound, so epsilon `1/2` has no uniform tail on that larger class. -/
 private theorem missing_radius {p : ℝ} (hp : 1 ≤ p) :
     let a := ((2 : ℝ) ^ p⁻¹ - 1)⁻¹

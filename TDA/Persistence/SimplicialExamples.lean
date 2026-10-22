@@ -1,6 +1,6 @@
 import TDA.Persistence.Simplicial
 
-/-! The vertex-birth filtration evaluated with actual degree-zero homology. -/
+/-! The vertex-birth filtration evaluated with degree-zero homology. -/
 
 namespace TDA.Persistence.SimplicialExamples
 
@@ -31,7 +31,7 @@ private theorem birthTransition_zero (x : Fin 3) :
   subst z
   simp
 
-private theorem birthTransition_is_actual_inclusion (x : Fin 3) :
+private theorem birthTransition_is_inclusion (x : Fin 3) :
     structureMap (birthModule x) (show (0 : Fin 2) ≤ 1 by decide) =
       simplicialHomologyIncl ℤ
         ((Filtration.vertexBirth x).monotone (show (0 : Fin 2) ≤ 1 by decide)) 0 :=
@@ -61,7 +61,7 @@ private noncomputable def zeroRingBirth : PModule.{0,0,0} (ZMod 1) (Fin 2) :=
 #print axioms birthTargetEquiv
 #print axioms birthTarget_nonzero
 #print axioms birthTransition_zero
-#print axioms birthTransition_is_actual_inclusion
+#print axioms birthTransition_is_inclusion
 #print axioms birthSelf_zero
 #print axioms birthSelf_one
 #print axioms matrixBirth

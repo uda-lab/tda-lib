@@ -4,7 +4,7 @@ import TDA.Persistence.RealIntervalInterleaving
 /-!
 # Sharpness of real interleaving defect shortness
 
-Zero maps give a one-interleaving of `[0,2)` with itself. Both actual defects
+Zero maps give a one-interleaving of `[0,2)` with itself. Both defects
 are two-trivial but fail to be one-trivial. A zero-parameter witness over the
 integers also checks the ring-valued boundary of the general result.
 -/
@@ -33,7 +33,7 @@ private theorem transition_zero_of_iso {A B : PModule.{0,0,0} ℚ ℝ}
   apply (cancel_epi e.hom).mp
   rw [comp_zero, transition_naturality, h, zero_comp]
 
--- Actual interval maps preserve coefficient one while both parameters are alive.
+-- interval maps preserve coefficient one while both parameters are alive.
 private theorem threshold_map_nonzero {a b : ℝ} (hab : a ≤ b)
     (ha : alive (0, (2 : WithTop ℝ)) a) (hb : alive (0, (2 : WithTop ℝ)) b) :
     structureMap threshold hab ≠ 0 := by
@@ -62,9 +62,9 @@ private theorem shifted_threshold_one_nonzero :
     (show (-1 : ℝ) + 1 ≤ (-1 + 1) + 1 by norm_num) = 0 at ht
   exact threshold_map_nonzero _ (by norm_num [alive]) (by norm_num [alive]) ht
 
-/-- Both actual defects attain the factor-two threshold: their two-transitions
+/-- Both defects attain the factor-two threshold: their two-transitions
 vanish, while their one-transitions are nonzero. In particular both objects are nonzero. -/
-theorem actual_defects_threshold :
+theorem defects_threshold :
     transition (1 + 1) (kernel zeroMaps.φ) = 0 ∧
     transition (1 + 1) (cokernel zeroMaps.φ) = 0 ∧
     transition 1 (kernel zeroMaps.φ) ≠ 0 ∧
@@ -92,7 +92,7 @@ private theorem isZero_of_zero_double_transition {A : PModule.{0,0,0} ℤ ℝ}
   rw [hz, zero_comp] at ht
   exact ht.symm
 
-/-- An actual zero-interleaving over the integers has zero actual defects,
+/-- A zero-interleaving over the integers has zero defects,
 even though its source and target have nonzero fibers. -/
 theorem integer_zero_parameter :
     ¬ IsZero integerConstant ∧ IsZero (kernel integerWitness.φ) ∧

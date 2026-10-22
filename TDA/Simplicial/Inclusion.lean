@@ -1,9 +1,9 @@
 import TDA.Simplicial.ChainComplex
 
 /-!
-# Naturality of actual simplicial chain inclusions
+# Naturality of simplicial chain inclusions
 
-For subcomplexes in one ordered ambient vertex type, the actual signed deletion
+For subcomplexes in one ordered ambient vertex type, the signed deletion
 boundary commutes with the canonical face and chain inclusions. These maps form
 chain maps between the ordinary unaugmented complexes.
 -/
@@ -35,7 +35,7 @@ theorem chainIncl_single (h : K ≤ L) (n : ℕ)
       Finsupp.single (faceIncl h n s) a := by
   simp [chainIncl]
 
-/-- The actual signed deletion boundary is natural for every same-ambient
+/-- The signed deletion boundary is natural for every same-ambient
 subcomplex inclusion. The proof checks the arbitrary-coefficient singleton
 chains and then uses linear extensionality; the coefficient stays a left
 scalar throughout, so no commutativity of `R` is needed. -/
@@ -53,7 +53,7 @@ theorem boundary_chainIncl (h : K ≤ L) (n : ℕ) :
   intro i hi
   rw [chainIncl_single, faceIncl_deletedFace]
 
-/-- The chain map induced by inclusion of actual faces. -/
+/-- The chain map induced by inclusion of faces. -/
 noncomputable def simplicialChainIncl (h : K ≤ L) :
     simplicialChainComplex K R ⟶ simplicialChainComplex L R :=
   ChainComplex.ofHom (fun n => ModuleCat.ofHom (chainIncl R h n)) (by

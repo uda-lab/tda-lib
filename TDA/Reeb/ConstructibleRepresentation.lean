@@ -12,7 +12,7 @@ Proposition 3.12).
 
 `S : CriticalValues n` has levels `a 0 < ⋯ < a n`, and `D : FiniteReebData.{u} n` lives at an
 arbitrary value universe `u`. Write `P = ofFiniteData D` for the realization data with discrete
-pieces and `C_D = D.toCosheaf S`. By definition `C_D` is the actual path-component cosheaf
+pieces and `C_D = D.toCosheaf S`. By definition `C_D` is the path-component cosheaf
 `intervalComponents (P.height S)` of the cylinder realization. It is constructible at `S`
 (`toCosheaf_isConstructibleAt`) and an interval cosheaf for covers indexed in any universe
 (`toCosheaf_isIntervalCosheaf`). No second combinatorial cosheaf is constructed.
@@ -22,11 +22,11 @@ pieces and `C_D = D.toCosheaf S`. By definition `C_D` is the actual path-compone
 The labels run from the vertex and edge sets of `D` to components.
 
 * `vertexLabel S i : D.V i ≃ C_D (J i)` is `(zerothHomotopyEquivOfDiscrete (P.V i)).symm`
-  followed by `P.vertexComponentsEquiv S i`. A vertex `v` goes to the class of the actual vertex
+  followed by `P.vertexComponentsEquiv S i`. A vertex `v` goes to the class of the vertex
   point `ofVertex S i v` (`vertexLabel_apply`).
 * `edgeLabel S e : D.E e ≃ C_D (K e)` is the analogous composite with
   `P.edgeComponentsEquiv S e (S.gapMidpoint e)`. For every regular height `t ∈ K e` it equals the
-  composite at `t` (`edgeLabel_eq`), so `y` goes to the class of the actual strip point `(y, t)`
+  composite at `t` (`edgeLabel_eq`), so `y` goes to the class of the strip point `(y, t)`
   (`edgeLabel_apply`). The midpoint is therefore invisible in every statement about the labels.
   No retraction is claimed to be natural.
 * Incidence: `C_D (K e ≤ J e.castSucc) (λE y) = λV (D.left e y)` and
@@ -43,8 +43,7 @@ category instance on `FiniteReebData` is used.
 ## Labelled existence and uniqueness
 
 Let `G` be constructible at `S` with `IsIntervalCosheaf.{0} G`, in the value universe of `D`, and
-let `j : D.Hom (S.extract G hG.finite)` be any finite map. `toCosheafLift hG hGc j` is the actual
-`ShortMaps.extend` of the short maps `ShortMaps.ofHom (fromExtractHom.comp j)`. It is the unique
+let `j : D.Hom (S.extract G hG.finite)` be any finite map. `toCosheafLift hG hGc j` is the `ShortMaps.extend` of the short maps `ShortMaps.ofHom (fromExtractHom.comp j)`. It is the unique
 natural transformation `α : C_D ⟶ G` with `α (J i) (λV x) = j.v i x` and
 `α (K e) (λE x) = j.e e x` (`existsUnique_natTrans_labelled`). Uniqueness uses the surjectivity of
 the labels and `natTrans_ext`; it does not need bijectivity of `j`. If `j` has bijective
@@ -96,8 +95,7 @@ variable {n : ℕ} (D : FiniteReebData.{u} n) (S : CriticalValues n)
 
 /-! ### The cosheaf of finite data -/
 
-/-- The cosheaf of finite data at the levels `S` (DMP Proposition 3.18, existence): the actual
-path-component cosheaf `intervalComponents` of the height of the cylinder realization of `D`. -/
+/-- The cosheaf of finite data at the levels `S` (DMP Proposition 3.18, existence): the path-component cosheaf `intervalComponents` of the height of the cylinder realization of `D`. -/
 def toCosheaf : OpenInterval ⥤ Type u :=
   intervalComponents ((ofFiniteData D).height S)
 
@@ -124,7 +122,7 @@ def edgeLabel (e : Fin n) : D.E e ≃ (D.toCosheaf S).obj (S.K e) :=
   (zerothHomotopyEquivOfDiscrete ((ofFiniteData D).E e)).symm.trans
     ((ofFiniteData D).edgeComponentsEquiv S e (S.gapMidpoint e))
 
-/-- Generator formula: `λV i v` is the class of the actual vertex point at `v`. -/
+/-- Generator formula: `λV i v` is the class of the vertex point at `v`. -/
 theorem vertexLabel_apply (i : Fin (n + 1)) (v : D.V i) :
     D.vertexLabel S i v =
       ZerothHomotopy.mk (⟨(ofFiniteData D).ofVertex S i v, S.value_mem_J i⟩ :
@@ -138,7 +136,7 @@ theorem edgeLabel_eq (e : Fin n) (t : (S.K e : Set ℝ)) :
   rw [edgeLabel, (ofFiniteData D).edgeComponentsEquiv_indep S e (S.gapMidpoint e) t]
   rfl
 
-/-- Generator formula: `λE e y` is the class of the actual strip point `(y, t)`, at any regular
+/-- Generator formula: `λE e y` is the class of the strip point `(y, t)`, at any regular
 height `t`. -/
 theorem edgeLabel_apply (e : Fin n) (t : (S.K e : Set ℝ)) (y : D.E e) :
     D.edgeLabel S e y =
@@ -219,8 +217,7 @@ variable {S} {G : OpenInterval ⥤ Type u} (hG : S.IsConstructibleAt G)
 def labelledShortMaps (j : D.Hom (S.extract G hG.finite)) : S.ShortMaps (D.toCosheaf S) G :=
   ShortMaps.ofHom ((D.fromExtractHom S).comp j)
 
-/-- The natural transformation `C_D ⟶ G` with prescribed labels: the actual
-`ShortMaps.extend` of `labelledShortMaps`. -/
+/-- The natural transformation `C_D ⟶ G` with prescribed labels: the `ShortMaps.extend` of `labelledShortMaps`. -/
 def toCosheafLift (j : D.Hom (S.extract G hG.finite)) : D.toCosheaf S ⟶ G :=
   (D.labelledShortMaps hG j).extend (D.toCosheaf_isConstructibleAt S)
     (D.toCosheaf_isIntervalCosheaf S) hG hGc

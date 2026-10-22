@@ -18,7 +18,7 @@ complete missing faces, or choose faces from a proof of finiteness.
 `mem_toPre` identifies converted membership with stored membership, and
 `empty_not_mem_faces` records the nonempty-face invariant. `image_univ_totalFace_val` says that
 forgetting membership proofs from every enumerated face gives exactly the stored collection.
-`card_totalFace` identifies the number of actual faces with `C.faces.card`.
+`card_totalFace` identifies the number of faces with `C.faces.card`.
 `toPre_injective` says that this conversion retains the full presentation data up to proof
 irrelevance. These results concern finite sets and the existing complex structure; they assert
 no persistence, homology, or external TDA theorem.

@@ -39,7 +39,7 @@ def S02 : CriticalValues 1 where
   value i := 2 * ((i : ℕ) : ℝ)
   strictMono _ _ h := mul_lt_mul_of_pos_left (Nat.cast_lt.mpr h) (by norm_num)
 
-/-- Stretching moves an actual interior point even when the attachment is noninjective. -/
+/-- Stretching moves an interior point even when the attachment is noninjective. -/
 theorem pinch_midpoint_height_change :
     ¬ Function.Injective (pinch.left 0) ∧
     |pinch.height S01 (pinch.ofCylinder S01 0 (false, gapIncl S01 0 half)) -
@@ -120,7 +120,7 @@ theorem singleEdge_geometric_distance_eq_one :
   norm_num [S01, S02] at h
   exact h
 
-/-- The exact translation formula applies to the actual cycle data over three levels. -/
+/-- The exact translation formula applies to the cycle data over three levels. -/
 theorem cycle_translation_distance (c : ℝ) :
     RGraph.constructibleInterleavingDistance ((ofFiniteData cycleData).realizationSpace S012)
         ((ofFiniteData cycleData).realizationSpace (S012.translate c)) = ENNReal.ofReal |c| := by
@@ -190,7 +190,7 @@ theorem pinchI_constructible_stability_le_one :
   (RGraph.constructibleInterleavingDistance_realizationSpace_le pinchI S01 S02).trans
     S01_S02_edist_le_one
 
-/-- The carrier theorem retains its actual height-distance bound through a nonidentity
+/-- The carrier theorem retains its height-distance bound through a nonidentity
 presentation isomorphism, and that distance is at most one in this example. -/
 theorem pinchI_carrier_stability :
     let X : ConstructibleSpaceCat :=

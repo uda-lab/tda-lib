@@ -73,7 +73,7 @@ theorem nonempty_iso_iff_rankBarcode_eq :
     exact ⟨rankBarcodeIso M ≪≫ eqToIso (congrArg (barcodeModule (k := k)) h) ≪≫
       (rankBarcodeIso L).symm⟩
 
-/-- The ranks of all actual structure maps form a complete invariant. Diagonal ranks alone
+/-- The ranks of all structure maps form a complete invariant. Diagonal ranks alone
 or diagonal and adjacent ranks alone do not suffice. -/
 theorem nonempty_iso_iff_structureMapRank_eq :
     Nonempty (M ≅ L) ↔ ∀ (i j : Fin N) (hij : i ≤ j),

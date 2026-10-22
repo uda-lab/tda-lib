@@ -6,7 +6,7 @@ set_option autoImplicit false
 /-!
 # Sup-norm Čech/Rips equality fixtures
 
-The fixtures test the actual `Cech.complex` and `Cech.filter` definitions in the sup-norm
+The fixtures test the `Cech.complex` and `Cech.filter` definitions in the sup-norm
 plane `Fin 2 → ℝ`: the vertices of the merged Euclidean triangle fixture now span a face at
 radius `1`, witnessed by the coordinatewise Helly point, and the Čech value is exactly half
 the Rips value. A diagonal pair, the line read as `Fin 1 → ℝ`, and the empty index type
@@ -71,7 +71,7 @@ def tri : Finset (Fin 3) := {0, 1, 2}
 
 theorem tri_nonempty : tri.Nonempty := ⟨0, by simp [tri]⟩
 
-/-- The triangle as an actual face of the full complex. -/
+/-- The triangle as a face of the full complex. -/
 def triFace : TotalFace (Rips.fullComplex (Fin 3)) := ⟨tri, tri_nonempty⟩
 
 /-- The coordinatewise Helly point of the triangle at radius `1` is `(1, 1)`. -/

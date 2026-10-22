@@ -3,10 +3,10 @@ import TDA.Persistence.Reduction.PivotBarcode
 import TDA.Persistence.FiniteDecomposition
 
 /-!
-# Actual homology semantics of reducer occurrences
+# Homology semantics of reducer occurrences
 
-The actual-to-original homology equivalences commute with every prefix inclusion.
-Transporting the ranges through that square proves the actual rank formula. The same
+The simplicial-to-matrix homology equivalences commute with every prefix inclusion.
+Transporting the ranges through that square proves the rank formula. The same
 formula holds for the pivot interval realization, so all-map rank reconstruction identifies
 its occurrence multiset. Finite decomposition then supplies a genuine natural isomorphism;
 the argument never substitutes equality of fiber dimensions for naturality.
@@ -54,82 +54,81 @@ private noncomputable def rangeEquivOfSquare
   map_add' := by intro x y; apply Subtype.ext; simp
   map_smul' := by intro c x; apply Subtype.ext; simp
 
-/-- Each actual pivot row or unpaired zero column contributes one interval
+/-- Each pivot row or unpaired zero column contributes one interval
 occurrence at face-entry stages; the terminal stage is `m + 1`. -/
-noncomputable def actualPivotBarcode (e : CompatibleOrder f) (p : ℕ) :
+noncomputable def facePivotBarcode (e : CompatibleOrder f) (p : ℕ) :
     Multiset (FiniteInterval (faceCount K + 1)) :=
-  let h := actualReduction_normalForm k e
-  pivotBarcode (faceDegree e) (actualReducedBoundary k e) h.2.2.2.1 p
+  let h := faceReduction_normalForm k e
+  pivotBarcode (faceDegree e) (reducedFaceBoundary k e) h.2.2.2.1 p
 
 /-- The reducer's interval occurrences reproduce its prefix rank formula. -/
-theorem actualPivotBarcode_rank (e : CompatibleOrder f) (p : ℕ)
+theorem facePivotBarcode_rank (e : CompatibleOrder f) (p : ℕ)
     (s t : Fin (faceCount K + 1)) (hst : s ≤ t) :
-    structureMapRank (barcodeModule (k := k) (actualPivotBarcode k e p))
+    structureMapRank (barcodeModule (k := k) (facePivotBarcode k e p))
         s t hst =
-      (deathSurvivorFinset (faceDegree e) (actualReducedBoundary k e)
+      (deathSurvivorFinset (faceDegree e) (reducedFaceBoundary k e)
         p s.val t.val).card +
-      (essentialSurvivorFinset (faceDegree e) (actualReducedBoundary k e)
+      (essentialSurvivorFinset (faceDegree e) (reducedFaceBoundary k e)
         p s.val).card := by
-  let h := actualReduction_normalForm k e
+  let h := faceReduction_normalForm k e
   rw [rank_barcodeMap]
-  change (pivotBarcode (faceDegree e) (actualReducedBoundary k e)
+  change (pivotBarcode (faceDegree e) (reducedFaceBoundary k e)
     h.2.2.2.1 p).countP
       (fun I => I.birth ≤ s.val ∧ t.val < I.death) = _
-  exact pivotBarcode_rank (faceDegree e) (actualReducedBoundary k e)
+  exact pivotBarcode_rank (faceDegree e) (reducedFaceBoundary k e)
     h.2.2.2.1 h.2.2.2.2.1 p s.val t.val hst (by omega)
 
-/-- Every actual prefix-homology structure map has the reducer's pivot rank. -/
-theorem actualPrefixHomology_rank (e : CompatibleOrder f) (p : ℕ)
+/-- Every prefix-homology structure map has the reducer's pivot rank. -/
+theorem facePrefixHomology_rank (e : CompatibleOrder f) (p : ℕ)
     (s t : Fin (faceCount K + 1)) (hst : s ≤ t) :
     structureMapRank (facePrefixModule k e p) s t hst =
-      (deathSurvivorFinset (faceDegree e) (actualReducedBoundary k e)
+      (deathSurvivorFinset (faceDegree e) (reducedFaceBoundary k e)
         p s.val t.val).card +
-      (essentialSurvivorFinset (faceDegree e) (actualReducedBoundary k e)
+      (essentialSurvivorFinset (faceDegree e) (reducedFaceBoundary k e)
         p s.val).card := by
   let F := (simplicialHomologyIncl k (e.prefixComplex_mono hst) p).hom
-  let G := actualOriginalHomologyMap k e p s.val t.val
-  have hcomm := actualHomologyEquivOriginal_naturality k e p s.val t.val hst
+  let G := faceMatrixHomologyMap k e p s.val t.val
+  have hcomm := prefixHomologyEquivMatrixHomology_naturality k e p s.val t.val hst
   have hrange := rangeEquivOfSquare k
-    (actualHomologyEquivOriginal k e s.val p)
-    (actualHomologyEquivOriginal k e t.val p) F G hcomm.symm
+    (prefixHomologyEquivMatrixHomology k e s.val p)
+    (prefixHomologyEquivMatrixHomology k e t.val p) F G hcomm.symm
   have hrank := hrange.finrank_eq
   change Module.finrank k (LinearMap.range F) = _
   rw [hrank]
   -- Use the original differential's square-zero law separately from reduction.
   -- hChange supplies both inverse laws and filtered degree support for V and W.
-  have hSquareZero := actualBoundaryMatrix_sq_zero k e
-  rcases actualReduction_normalForm k e with
+  have hSquareZero := faceBoundaryMatrix_sq_zero k e
+  rcases faceReduction_normalForm k e with
     ⟨hReducedEq, hChange, hLowersDegree, _, hDistinctPivots, _⟩
   exact originalHomologyMap_rank_formula (faceDegree e)
-    (actualBoundaryMatrix k e) (actualReducedBoundary k e)
-    (actualTraceChange k e) (actualTraceChangeInv k e)
+    (faceBoundaryMatrix k e) (reducedFaceBoundary k e)
+    (faceReductionChange k e) (faceReductionChangeInv k e)
     hSquareZero hReducedEq hChange hLowersDegree
     hDistinctPivots p s.val t.val hst (by omega)
 
-/-- The reducer's occurrence multiset is the canonical barcode of actual
-prefix simplicial homology. The comparison uses every structure-map rank. -/
-theorem actualPivotBarcode_eq_facePrefixBarcode
+/-- The reducer's occurrence multiset is the canonical barcode of prefix simplicial homology. The comparison uses every structure-map rank. -/
+theorem facePivotBarcode_eq_facePrefixBarcode
     (e : CompatibleOrder f) (p : ℕ) :
-    actualPivotBarcode k e p = facePrefixBarcode k e p := by
+    facePivotBarcode k e p = facePrefixBarcode k e p := by
   have hcomparison :
-      rankBarcode (barcodeModule (k := k) (actualPivotBarcode k e p)) =
+      rankBarcode (barcodeModule (k := k) (facePivotBarcode k e p)) =
         rankBarcode (facePrefixModule k e p) := by
     apply (rankBarcode_eq_iff
-      (barcodeModule (k := k) (actualPivotBarcode k e p))
+      (barcodeModule (k := k) (facePivotBarcode k e p))
       (facePrefixModule k e p)).2
     intro s t hst
-    rw [actualPivotBarcode_rank k e p s t hst,
-      actualPrefixHomology_rank k e p s t hst]
+    rw [facePivotBarcode_rank k e p s t hst,
+      facePrefixHomology_rank k e p s t hst]
   simpa only [rankBarcode_barcodeModule, facePrefixBarcode] using hcomparison
 
-/-- Actual prefix homology is naturally isomorphic to the reducer's interval realization.
+/-- Prefix homology is naturally isomorphic to the reducer's interval realization.
 This uses the constructed finite decomposition and all structure-map ranks; the chosen
 isomorphism is generally noncanonical and does not belong to the executable F₂ pipeline. -/
-theorem nonempty_actualPrefixHomologyIsoPivotBarcode
+theorem nonempty_facePrefixHomologyIsoPivotBarcode
     (e : CompatibleOrder f) (p : ℕ) :
-    Nonempty (facePrefixModule k e p ≅ barcodeModule (k := k) (actualPivotBarcode k e p)) := by
+    Nonempty (facePrefixModule k e p ≅ barcodeModule (k := k) (facePivotBarcode k e p)) := by
   -- Identify the occurrence multiset only after constructing a genuine natural decomposition.
-  rw [actualPivotBarcode_eq_facePrefixBarcode k e p]
+  rw [facePivotBarcode_eq_facePrefixBarcode k e p]
   exact nonempty_rankBarcodeIso (facePrefixModule k e p)
 
 end TDA.Persistence.Reduction

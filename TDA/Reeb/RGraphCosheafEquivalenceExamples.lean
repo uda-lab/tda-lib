@@ -7,7 +7,7 @@ import Mathlib.CategoryTheory.Limits.Shapes.IsTerminal
 /-!
 # Fixtures for the graph–constructible-cosheaf equivalence
 
-Fixtures for `TDA.Reeb.RGraph.cosheafEquivalence` on actual graph objects and actual component
+Fixtures for `TDA.Reeb.RGraph.cosheafEquivalence` on graph objects and component
 transformations:
 
 * the edge swap of two parallel edges over `0 < 1` is a non-identity involutive graph

@@ -1,9 +1,9 @@
 import TDA.Simplicial.Inclusion
 import Mathlib.LinearAlgebra.Matrix.ToLin
 
-/-! # Degreewise coordinates of actual simplicial chains
+/-! # Degreewise coordinates of simplicial chains
 
-Rows of `boundaryMatrix K R n` are actual degree-`n` faces and columns are
+Rows of `boundaryMatrix K R n` are degree-`n` faces and columns are
 degree-`n+1` faces. The matrix represents the existing signed `boundary`.
 `chainInclusionMatrix` similarly represents the existing same-ambient `chainIncl`.
 These noncomputable theory coordinates do not define a master matrix.

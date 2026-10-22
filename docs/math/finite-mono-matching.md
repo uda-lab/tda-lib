@@ -10,7 +10,7 @@ of occurrence embeddings.
 
 Fix `k : Type u` with `[Field k]`, a chain `Fin s`, and
 `M N : PModule.{u,0,u} k (Fin s)` with finite-dimensional fibers at every stage.
-The input is an actual natural transformation `j : M ⟶ N` and injectivity of each
+The input is a natural transformation `j : M ⟶ N` and injectivity of each
 `(j.app i).hom`. Neither a barcode matching nor a decomposition is supplied.
 
 Write `B = rankBarcode M` and `C = rankBarcode N`. Their intervals satisfy
@@ -26,7 +26,7 @@ finite enumeration, and `deathOrdinal` is an occurrence's zero-based position.
 These definitions make the correspondence canonical relative to the existing labels;
 they do not select interval generators or bases.
 
-## From actual subspaces to cumulative counts
+## From subspaces to cumulative counts
 
 Let `deathPrefixCount B b d` count the occurrences with birth at most `b` and death
 exactly `d`. For `b < d < s`, set
@@ -35,7 +35,7 @@ exactly `d`. For `b < d < s`, set
 U_M(b,d) = image M(b → d−1) ∩ kernel M(d−1 → d).
 ```
 
-`deathSubspace` is this actual submodule of `M(d−1)`. The inequalities supply the
+`deathSubspace` is this submodule of `M(d−1)`. The inequalities supply the
 finite indices and justify the predecessor. The barcode rank formula partitions
 `rank M(b → d−1)` into bars dying at `d` and bars surviving beyond `d`.
 The restricted rank-nullity formula identifies the same rank drop with the dimension
@@ -46,7 +46,7 @@ deathPrefixCount (rankBarcode M) b d = dim U_M(b,d),  b < d < s.
 ```
 
 Naturality sends `U_M(b,d)` into `U_N(b,d)`: it sends images into images and
-kernels into kernels. Restricting `j(d−1)` gives an actual linear injection between
+kernels into kernels. Restricting `j(d−1)` gives a linear injection between
 these subspaces, whose dimensions can then be compared. Subtracting unrelated rank
 inequalities would not justify this step.
 
@@ -61,7 +61,7 @@ Together these cases prove `deathPrefixCount_le_of_injective` for `b < d ≤ s`.
 
 Taking the cutoff `d−1` bounds the size of each nonempty source death group by the
 target group's size. `FiniteBarcode.monoEmbedding j hj` maps the occurrence of ordinal
-`r` to target ordinal `r` at that same death. It is an actual embedding of all source
+`r` to target ordinal `r` at that same death. It is an embedding of all source
 occurrence labels into all target labels.
 
 The cumulative inequality also proves the birth bound. The source prefix through
@@ -76,7 +76,7 @@ persistence-module morphisms is asserted.
 
 ## Examples and scope
 
-Consumers use actual inclusions `[2,3) → [1,3) → [0,3)`, duplicate one-stage bars,
+Consumers use inclusions `[2,3) → [1,3) → [0,3)`, duplicate one-stage bars,
 an empty chain, and a bar dying before the final observed stage. Distinct duplicate
 labels remain distinct. The rank-domination boundary uses `[1,2)` and `[0,3)` on
 `Fin 3`: all source structure-map ranks are bounded by the target ranks, but their
@@ -102,7 +102,7 @@ The finite-chain mono statement follows the structure theorem in
 with the monomorphism composition rule in
 [Proposition 5.7](https://arxiv.org/html/1311.3681v4#S5.SS2).
 Their same-death ordering puts longer intervals first, which is ascending birth here.
-The actual image/kernel injection implements the proof-critical comparison; finite
+The image/kernel injection implements the proof-critical comparison; finite
 predecessors, the terminal-image case and the list-index tie break are explicit library
 representation details. This result does not establish the quantitative induced
 matching theorem or `d_B ≤ d_I`.

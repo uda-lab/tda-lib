@@ -9,7 +9,7 @@ For critical levels `S : CriticalValues n`, `S.IsConstructibleAt F` is the corre
 de Silva–Munch–Patel, Definition 3.9, for `F : OpenInterval ⥤ Type u`:
 
 * every value `F I` is finite;
-* for `I ≤ J` with `I` **nonempty** and `I`, `J` meeting the same levels, the actual inclusion
+* for `I ≤ J` with `I` **nonempty** and `I`, `J` meeting the same levels, the inclusion
   map `F I → F J` is bijective;
 * the values on the two exterior tails are empty (equivalently, on every interval inside them:
   `isEmpty_lowerTail_iff`, `isEmpty_upperTail_iff`).
@@ -22,7 +22,7 @@ is a separate hypothesis. The predicate is invariant under refinement of the lev
 (`IsConstructibleAt.of_refines`) and under natural isomorphism (`IsConstructibleAt.of_iso`).
 
 `S.extract F` is the finite incidence data of Notation 3.11: vertex values `F (J i)` on stars,
-edge values `F (K e)` on gaps, and the actual inclusion maps of `F` as endpoint functions.
+edge values `F (K e)` on gaps, and the inclusion maps of `F` as endpoint functions.
 `S.ShortMaps F G` collects functions on all stars and gaps commuting with both incidence maps;
 these are exactly maps of the extracted data (`ShortMaps.equivHom`).
 
@@ -42,7 +42,7 @@ universe `u`) constructible at the same `S`:
   the extension is the map glued over the selected stars, whose compatibility comes from the
   incidence equations on adjacent stars and the empty value on `⊥` for nonadjacent ones.
 
-Helper sections: gluing on the actual `IsIntervalCosheaf.existsUnique_glue`, local compatibility,
+Helper sections: gluing on the `IsIntervalCosheaf.existsUnique_glue`, local compatibility,
 and transport of a transformation along a normalization `η : 𝟭 ⟶ N`. See
 `docs/math/reeb-constructible-cosheaf.md`.
 -/
@@ -57,7 +57,7 @@ noncomputable section
 
 open OpenInterval
 
-/-! ### Gluing helpers on the actual `existsUnique_glue` -/
+/-! ### Gluing helpers on the `existsUnique_glue` -/
 
 namespace IsIntervalCosheaf
 
@@ -244,7 +244,7 @@ variable {n : ℕ} (S : CriticalValues n)
 /-! ### The corrected constructibility predicate -/
 
 /-- Corrected constructibility (DMP Definition 3.9 with the nonempty-source correction): finite
-values, bijective actual inclusion maps for nested `I ≤ J` with nonempty `I` and the same
+values, bijective inclusion maps for nested `I ≤ J` with nonempty `I` and the same
 levels, and empty values on the two exterior rays. The cosheaf condition is separate. -/
 structure IsConstructibleAt (F : OpenInterval ⥤ Type u) : Prop where
   /-- Every value is finite. -/
@@ -314,7 +314,7 @@ variable (S)
 /-! ### Extraction and short maps -/
 
 /-- Extraction of finite data (DMP Notation 3.11): vertex values `F (J i)`, edge values
-`F (K e)`, endpoint maps the actual inclusion maps of `F`. -/
+`F (K e)`, endpoint maps the inclusion maps of `F`. -/
 def extract (F : OpenInterval ⥤ Type u) (hF : ∀ I, Finite (F.obj I)) : FiniteReebData.{u} n where
   V i := F.obj (S.J i)
   E e := F.obj (S.K e)
@@ -323,19 +323,19 @@ def extract (F : OpenInterval ⥤ Type u) (hF : ∀ I, Finite (F.obj I)) : Finit
   left e x := F.map (homOfLE (S.K_le_J_castSucc e)) x
   right e x := F.map (homOfLE (S.K_le_J_succ e)) x
 
-/-- The left endpoint function of the extracted data is the actual inclusion `K e ≤ J e`. -/
+/-- The left endpoint function of the extracted data is the inclusion `K e ≤ J e`. -/
 theorem extract_left (F : OpenInterval ⥤ Type u) (hF : ∀ I, Finite (F.obj I)) (e : Fin n)
     (x : F.obj (S.K e)) : (S.extract F hF).left e x = F.map (homOfLE (S.K_le_J_castSucc e)) x :=
   rfl
 
-/-- The right endpoint function of the extracted data is the actual inclusion
+/-- The right endpoint function of the extracted data is the inclusion
 `K e ≤ J (e + 1)`. -/
 theorem extract_right (F : OpenInterval ⥤ Type u) (hF : ∀ I, Finite (F.obj I)) (e : Fin n)
     (x : F.obj (S.K e)) : (S.extract F hF).right e x = F.map (homOfLE (S.K_le_J_succ e)) x :=
   rfl
 
 /-- Short-interval maps between precosheaves: functions on all stars and gaps commuting with
-both actual incidence inclusions. -/
+both incidence inclusions. -/
 @[ext]
 structure ShortMaps (F G : OpenInterval ⥤ Type u) where
   /-- Star components. -/

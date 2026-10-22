@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecificLimits.Basic
 /-!
 # Categorical Mapper approximation examples
 
-The examples exercise actual graph realizations and interval-component maps: an edge-interior
+The examples exercise graph realizations and interval-component maps: an edge-interior
 hit missed by every vertex; a horizontal edge and a disconnected graph with repeated heights;
 a loop with two intersection components over one ordinary Mapper edge; and arbitrary positive
 approximation error for a nonconstant edge. A constant input with a wide member shows why a
@@ -65,7 +65,7 @@ theorem constant_wide_cover_clipped_resolution_zero :
   simp only [Metric.diam_subsingleton hs, Real.toNNReal_zero]
   exact Finset.sup_bot _
 
-/-- A wide interval on constant input has strictly positive actual reconstruction error;
+/-- A wide interval on constant input has strictly positive reconstruction error;
 clipping its width to the attained singleton would give a false zero-error bound. -/
 theorem constant_wide_cover_geometric_error_pos :
     0 < RGraph.geometricInterleavingDistance
@@ -127,7 +127,7 @@ theorem horizontal_edge_error :
   norm_num [coverResolution] at h
   exact h
 
-/-- A disconnected graph with repeated vertex heights satisfies the same actual quotient bound. -/
+/-- A disconnected graph with repeated vertex heights satisfies the same quotient bound. -/
 theorem disconnected_repeated_height_error :
     RGraph.geometricInterleavingDistance
       (graphPLMapperReconstruction (⊥ : SimpleGraph Bool) (fun _ => (0 : ℝ))
@@ -139,7 +139,7 @@ theorem disconnected_repeated_height_error :
   norm_num [coverResolution] at h
   exact h
 
-/-- Retention uses the actual edge interior, even when no vertex height meets the member. -/
+/-- Retention uses the edge interior, even when no vertex height meets the member. -/
 theorem interior_hit_retained :
     (∀ v : Bool, h02 v ∉ ioo (1 / 4) (3 / 4)) ∧
     Nonempty (RetainedCoverMember (plHeight edgeGraph h02)
@@ -259,7 +259,7 @@ private theorem cycleFine_central_saturation :
     exact mem_coverSaturation.mpr ⟨1, hx, 1,
       by norm_num [cycleFineLeft, cycleFineRight, mem_ioo], by norm_num [mem_ioo]⟩
 
-/-- The actual reconstructed graph, through its reconstruction counit, has two path components
+/-- The reconstructed graph, through its reconstruction counit, has two path components
 in the middle interval; this is a property of `D P_K C_K`, beyond the categorical input data. -/
 theorem cycleFine_reconstruction_central_card :
     Nat.card (((RGraph.cosheafFunctor.obj
@@ -279,14 +279,14 @@ theorem cycleFine_reconstruction_central_card :
       rw [cycleFine_central_saturation]
       exact c4_card_preimage
 
-/-- The same finer reconstructed graph satisfies the actual geometric quotient error bound. -/
+/-- The same finer reconstructed graph satisfies the geometric quotient error bound. -/
 theorem cycleFine_geometric_error :
     RGraph.geometricInterleavingDistance
       (graphPLMapperReconstruction C4 h4 cycleFineLeft cycleFineRight)
       (GraphPL.graphPLReebGraph C4 h4) ≤ (coverResolution cycleFineLeft cycleFineRight : ℝ≥0∞) :=
   geometricInterleavingDistance_mapperReeb_le C4 h4 cycleFineLeft cycleFineRight cycleFine_covers
 
-/-- A nonconstant edge admits actual finite categorical Mapper reconstructions at every
+/-- A nonconstant edge admits finite categorical Mapper reconstructions at every
 positive geometric error. -/
 theorem nonconstant_edge_arbitrary_error {r : ℝ} (hr : 0 < r) :
     ∃ n : ℕ, ∃ a b : Fin n → ℝ,
@@ -295,8 +295,8 @@ theorem nonconstant_edge_arbitrary_error {r : ℝ} (hr : 0 < r) :
         (GraphPL.graphPLReebGraph edgeGraph h02) ≤ (Real.toNNReal r : ℝ≥0∞) :=
   exists_graphPLMapperReconstruction_error_le edgeGraph h02 hr
 
-/-- Full resolutions of actual finite covers of the nonconstant edge vanish, and their
-reconstructed graphs converge to its actual Reeb quotient with the corresponding error bound. -/
+/-- Full resolutions of finite covers of the nonconstant edge vanish, and their
+reconstructed graphs converge to its Reeb quotient with the corresponding error bound. -/
 theorem nonconstant_edge_convergent_reconstructions :
     ∃ n : ℕ → ℕ, ∃ a b : ∀ t, Fin (n t) → ℝ,
       (∀ t x, ∃ i, plHeight edgeGraph h02 x ∈ ioo (a t i) (b t i)) ∧

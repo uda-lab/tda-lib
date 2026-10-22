@@ -7,7 +7,7 @@ import Mathlib.Order.Fin.Basic
 # Oriented chains of vertex tuples
 
 Repeated vertices give zero. Injective tuples are expressed in the increasing
-actual-face basis with the sign of the sorting permutation.
+face basis with the sign of the sorting permutation.
 -/
 
 namespace TDA.Simplicial
@@ -64,12 +64,12 @@ private theorem tupleImage_perm {n : ℕ} (x : Fin n → V) (p : Equiv.Perm (Fin
   · rintro ⟨i, rfl⟩
     exact ⟨p.symm i, by simp⟩
 
-/-- The actual image face of an injective vertex tuple. -/
+/-- The image face of an injective vertex tuple. -/
 def tupleFace (K : PreAbstractSimplicialComplex V) {n : ℕ} (x : Fin (n + 1) → V)
     (hx : Function.Injective x) (hk : Finset.univ.image x ∈ K) : Face K n :=
   ⟨Finset.univ.image x, hk, by simp [Finset.card_image_of_injective, hx]⟩
 
-/-- The oriented actual-face chain of a tuple; repetitions and absent faces give zero. -/
+/-- The oriented face chain of a tuple; repetitions and absent faces give zero. -/
 def orientedTuple (K : PreAbstractSimplicialComplex V) (R : Type v) [Ring R]
     {n : ℕ} (x : Fin (n + 1) → V) : Chain K R n := by
   classical
@@ -314,7 +314,7 @@ private theorem boundary_orientedTuple_of_monotone (K : PreAbstractSimplicialCom
     tupleFace_delete K x hx hk hm i]
   simp [Finsupp.smul_single]
 
-/-- The actual signed boundary is the alternating deletion sum, including repeated vertices. -/
+/-- The signed boundary is the alternating deletion sum, including repeated vertices. -/
 theorem boundary_orientedTuple (K : PreAbstractSimplicialComplex V)
     (R : Type v) [Ring R] {n : ℕ} (x : Fin (n + 2) → V)
     (hk : Finset.univ.image x ∈ K) :

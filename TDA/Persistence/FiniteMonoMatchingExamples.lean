@@ -150,7 +150,7 @@ theorem duplicate_terminal_count : deathPrefixCount (rankBarcode duplicates) 0 1
 private noncomputable def empty : PModule.{0,0,0} ℚ (Fin 0) := barcodeModule (k := ℚ) 0
 private instance empty_fd (i : Fin 0) : FiniteDimensional ℚ (empty.obj i) := i.elim0
 
-/-- The empty chain has an actual empty occurrence embedding, without selecting a predecessor. -/
+/-- The empty chain has an empty occurrence embedding, without selecting a predecessor. -/
 theorem empty_chain : IsEmpty (BarcodeOccurrence 0 (rankBarcode empty)) ∧
     monoEmbedding (𝟙 empty) (fun _ => Function.injective_id) = Function.Embedding.refl _ := by
   refine ⟨?_, monoEmbedding_id empty⟩

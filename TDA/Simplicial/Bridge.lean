@@ -22,7 +22,7 @@ open CategoryTheory Module
 
 variable {V : Type u} [LinearOrder V]
 
-/-- Actual nonempty `(n+1)`-vertex faces, with no ambient singleton completion. -/
+/-- Nonempty `(n+1)`-vertex faces, with no ambient singleton completion. -/
 abbrev Face (K : PreAbstractSimplicialComplex V) (n : ℕ) :=
   {s : Finset V // s ∈ K ∧ s.card = n + 1}
 
@@ -36,7 +36,7 @@ instance faceFiniteOfTotalFinite (K : PreAbstractSimplicialComplex V) (n : ℕ)
     have hv : a.1 = b.1 := congrArg (fun t : TotalFace K => t.1) h
     exact Subtype.ext hv)
 
-/-- Free oriented chains on actual faces, with the orientation from the ambient order. -/
+/-- Free oriented chains on faces, with the orientation from the ambient order. -/
 abbrev Chain (K : PreAbstractSimplicialComplex V) (R : Type*) [Ring R] (n : ℕ) :=
   Face K n →₀ R
 
@@ -144,7 +144,7 @@ noncomputable def singletonH0Iso (x : V) (R : Type u) [Ring R] :
 
 section Triangle
 
-/-- The complete triangle on the three ambient vertices; each face below is an actual face. -/
+/-- The complete triangle on the three ambient vertices; each face below is a face. -/
 private def triangleK : PreAbstractSimplicialComplex (Fin 3) := ⊤
 
 private def vertex (i : Fin 3) : Face triangleK 0 :=
@@ -162,7 +162,7 @@ private def edge12 : Face triangleK 1 :=
 private def triangle : Face triangleK 2 :=
   ⟨{0, 1, 2}, by change ({0, 1, 2} : Finset (Fin 3)).Nonempty; decide, by decide⟩
 
-/-- Every actual edge of this finite complex is one of the three listed edges. -/
+/-- Every edge of this finite complex is one of the three listed edges. -/
 private theorem edge_cover :
     ∀ e : Face triangleK 1, e = edge01 ∨ e = edge02 ∨ e = edge12 := by
   have h : ∀ s : Finset (Fin 3), s.card = 2 →
@@ -179,11 +179,11 @@ private noncomputable def edgeBoundary (e : Face triangleK 1) : Chain triangleK 
   else if e = edge02 then Finsupp.single (vertex 2) 1 - Finsupp.single (vertex 0) 1
   else Finsupp.single (vertex 2) 1 - Finsupp.single (vertex 1) 1
 
-/-- The boundary on the actual finite edge basis, extended linearly. -/
+/-- The boundary on the finite edge basis, extended linearly. -/
 private noncomputable def signedD1 : Chain triangleK ℤ 1 →ₗ[ℤ] Chain triangleK ℤ 0 :=
   Finsupp.linearCombination ℤ edgeBoundary
 
-/-- `[1,2] - [0,2] + [0,1]` as an actual edge chain. -/
+/-- `[1,2] - [0,2] + [0,1]` as an edge chain. -/
 private noncomputable def triangleBoundary : Chain triangleK ℤ 1 :=
   Finsupp.single edge12 1 - Finsupp.single edge02 1 + Finsupp.single edge01 1
 
@@ -220,7 +220,7 @@ private theorem matrix_coordinate {K : PreAbstractSimplicialComplex V} (R : Type
       (faceBasis K R n).repr (d ((faceBasis K R (n + 1)) j)) i := by
   exact LinearMap.toMatrix_apply _ _ _ _ _
 
-/-- A signed matrix coordinate on the actual three-edge/two-dimensional triangle fixture. -/
+/-- A signed matrix coordinate on the three-edge/two-dimensional triangle fixture. -/
 private theorem signed_matrix_entry :
     ∃ (M : Matrix (Face triangleK 0) (Face triangleK 1) ℤ),
       M (vertex 1) edge01 = 1 ∧ M (vertex 0) edge01 = -1 := by

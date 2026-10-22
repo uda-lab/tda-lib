@@ -1,7 +1,7 @@
 import TDA.Persistence.FiniteMonoTranslationMatching
 import Mathlib.Data.Rat.Defs
 
-/-! # Actual mono/cokernel translation consumers -/
+/-! # mono/cokernel translation consumers -/
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -166,7 +166,7 @@ theorem finite_birth_bound_attained :
       (delayed 3 (by decide) (by decide)) (delayed_injective 3 (by decide) (by decide))
         (delayed_short 3 (by decide) (by decide)) 0 3 (by decide) (by decide)
 
-/-- Terminal targets are long and have a unique actual preimage; no infinite life is inferred. -/
+/-- Terminal targets are long and have a unique preimage; no infinite life is inferred. -/
 theorem terminal_coverage :
     ∀ a : BarcodeOccurrence 4 (rankBarcode (intervalModule (k := ℚ) (early 4 (by decide) (by decide)))),
       (occurrence _ a).death = 4 ∧
@@ -334,7 +334,7 @@ theorem fixed_point_rejects_shortness :
 
 private noncomputable abbrev empty : PModule.{0,0,0} ℚ (Fin 0) := barcodeModule (k := ℚ) 0
 
-/-- The empty chain has an actual short cokernel and empty occurrence domain. -/
+/-- The empty chain has a short cokernel and empty occurrence domain. -/
 theorem empty_chain :
     TranslationTrivial OrderHom.id (fun _ : Fin 0 => le_rfl) (finiteCokernel (𝟙 empty)) ∧
       IsEmpty (BarcodeOccurrence 0 (rankBarcode empty)) := by

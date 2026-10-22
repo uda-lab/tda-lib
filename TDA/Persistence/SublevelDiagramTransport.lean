@@ -2,7 +2,7 @@ import TDA.Persistence.SublevelDiagram
 import TDA.Filtration.OrderingEquivalent
 
 /-!
-# Transport of actual diagrams across ordering-equivalent face filters
+# Transport of diagrams across ordering-equivalent face filters
 
 The two laws relabel attained endpoint occurrences and preserve essential top.
 Strictness is required only on attained source grades; there is no arbitrary
@@ -164,7 +164,7 @@ private theorem common_at_card (f : FilterFunction K α) (g : FilterFunction K �
     dsimp [endpointPoint, witness]
     split_ifs <;> simp [htarget]
 
-/-- Ordering-equivalent actual filters share a multiset of face-witnessed endpoint
+/-- Ordering-equivalent filters share a multiset of face-witnessed endpoint
 occurrences. `none` witnesses essential death, while every finite endpoint is attained. -/
 theorem dgm_common_face_endpoints_of_orderingEquivalent
     (f : TDA.Filtration.FilterFunction K α)
@@ -182,7 +182,7 @@ theorem dgm_common_face_endpoints_of_orderingEquivalent
   exact common_at_card k f g hfg f.criticalValues.card rfl
     (critical_card_eq f g e).symm e he n
 
-/-- A map strictly increasing on attained source grades transports the actual point
+/-- A map strictly increasing on attained source grades transports the point
 multiset and fixes essential death. No behavior away from attained grades is assumed. -/
 theorem dgm_points_map_of_strictMonoOn
     (f : TDA.Filtration.FilterFunction K α)

@@ -7,7 +7,7 @@ import Mathlib.Tactic.Linarith
 
 At epsilon one, `[0,2)` interleaves with zero while `[0,3)` does not. The essential
 interval `[0,∞)` cannot interleave with zero at any finite parameter over a field,
-whose coefficients are nontrivial. These are statements about actual structure maps.
+whose coefficients are nontrivial. These are statements about structure maps.
 -/
 
 set_option autoImplicit false
@@ -56,7 +56,7 @@ private theorem interval_map_eq_zero (p : ℝ × WithTop ℝ) {s t : ℝ} (h : s
       infer_instance
     exact (ModuleCat.isZero_of_subsingleton _).eq_of_src _ _
 
--- Evaluating the actual map on coefficient one makes the nontrivial coefficient
+-- Evaluating the map on coefficient one makes the nontrivial coefficient
 -- hypothesis explicit; a dimension comparison alone would not identify that map.
 private theorem interval_map_ne_zero (p : ℝ × WithTop ℝ) {s t : ℝ} (h : s ≤ t)
     (hs : RealBarcode.alive p s) (ht : RealBarcode.alive p t) :

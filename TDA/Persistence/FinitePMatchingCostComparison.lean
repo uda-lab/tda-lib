@@ -200,7 +200,7 @@ theorem finiteFirstOrderMatchingCost_le_card_rpow_mul_p {p : ℝ} (hp : 1 ≤ p)
   exact (finiteFirstOrderMatchingCost_le_totalFiniteCost x y M).trans
     (by simpa only [hM] using M.totalFiniteCost_le_card_rpow_mul_root hp x y)
 
-/-- Comparison of actual finite-real-plan optima, via the proved assignment equality. -/
+/-- Comparison of finite-real-plan optima, via the proved assignment equality. -/
 theorem finitePBoundaryTransportCost_le_firstOrder {p : ℝ} (hp : 1 ≤ p)
     (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
     finitePBoundaryTransportCost p x y ≤ finiteFirstOrderBoundaryTransportCost x y := by
@@ -236,7 +236,7 @@ theorem finitePMatchingCost_le_card_rpow_mul_of_exponent_le {r s : ℝ}
   exact (finitePMatchingCost_le_matching hr x y M).trans
     (by simpa only [hM] using (M.root_totalFinitePowerCost_comparison hr hrs x y).2)
 
-/-- Antitonicity of the actual real-plan optimum, with linear transported masses. -/
+/-- Antitonicity of the real-plan optimum, with linear transported masses. -/
 theorem finitePBoundaryTransportCost_le_of_exponent_le {r s : ℝ}
     (hr : 1 ≤ r) (hrs : r ≤ s) (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
     finitePBoundaryTransportCost s x y ≤ finitePBoundaryTransportCost r x y := by
@@ -258,7 +258,7 @@ theorem finitePMatchingCost_antitoneOn (x : I → ℝ × ℝ) (y : J → ℝ × 
   intro r hr s _ hrs
   exact finitePMatchingCost_le_of_exponent_le hr hrs x y
 
-/-- The actual finite real-plan distance decreases on real exponents ≥ 1. -/
+/-- The finite real-plan distance decreases on real exponents ≥ 1. -/
 theorem finitePBoundaryTransportCost_antitoneOn (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
     AntitoneOn (fun p : ℝ => finitePBoundaryTransportCost p x y) (Set.Ici 1) := by
   intro r hr s _ hrs

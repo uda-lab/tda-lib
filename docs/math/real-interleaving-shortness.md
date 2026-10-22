@@ -1,6 +1,6 @@
 # Kernel and cokernel shortness from a real interleaving
 
-An actual ε-interleaving forces the kernel and cokernel of either comparison
+An ε-interleaving forces the kernel and cokernel of either comparison
 morphism to have zero transition across `2ε`. This supplies an algebraic input
 to induced matching estimates without assuming a matching or a barcode decomposition.
 
@@ -12,7 +12,7 @@ The shift parameter `ε : ℝ≥0` is finite, and the
 [real shift](real-interleavings.md#modules-parameters-and-shifts) has positive
 evaluation direction: `(SεN)(t)=N(t+ε)`.
 
-Let `i : RealInterleaving ε M N`, with actual natural transformations
+Let `i : RealInterleaving ε M N`, with natural transformations
 `f=i.φ : M → SεN` and `g=i.ψ : N → SεM`. Their component equations, before
 the canonical addition transport, are
 
@@ -21,9 +21,9 @@ g_{t+\varepsilon}f_t=M[t\le(t+\varepsilon)+\varepsilon],\qquad
 f_{t+\varepsilon}g_t=N[t\le(t+\varepsilon)+\varepsilon].
 \]
 
-Write `K=kernel f` and `C=cokernel f` for mathlib's actual objects in the
+Write `K=kernel f` and `C=cokernel f` for mathlib's objects in the
 functor category. Their inclusion `κ:K→M` and projection `π:SεN→C` are
-natural transformations. Write `η_A^δ` for the actual transition
+natural transformations. Write `η_A^δ` for the transition
 `RealShift.transition δ A`. A module is δ-trivial when this morphism is zero.
 
 ## The two annihilation statements
@@ -51,25 +51,24 @@ the transition of N from `t+ε` to `((t+ε)+ε)+ε` factors through
 `f_((t+ε)+ε)`. The cokernel relation kills this final factor. Cancellation of
 `π_t` gives the zero cokernel transition.
 
-Both arguments first reach the nested index `(t+ε)+ε`. Applying the actual
-functor map along `(t+ε)+ε=t+(ε+ε)` transports these zero maps to the declared
+Both arguments first reach the nested index `(t+ε)+ε`. Applying the functor map along `(t+ε)+ε=t+(ε+ε)` transports these zero maps to the declared
 double-shift transition. This keeps the shifted target in the cokernel argument
 and the addition identification explicit.
 
 ## Sharp threshold and parameter zero
 
-The actual rational interval module `[0,2)` has zero two-transition. Thus zero
+The rational interval module `[0,2)` has zero two-transition. Thus zero
 forward and reverse maps define a one-interleaving of this nonzero module with
-itself. Its actual kernel is isomorphic to `[0,2)`, and its actual cokernel to
+itself. Its kernel is isomorphic to `[0,2)`, and its cokernel to
 the shifted interval `[-1,1)`, by the categorical zero-morphism isomorphisms.
 The one-transitions of both defects are nonzero: evaluate at `0` for the kernel
 and at `-1` for the cokernel. Both retain coefficient one. Consequently the
 factor two cannot uniformly be replaced by one, including at the half-open
 length-equals-two boundary.
 
-At parameter zero an actual natural isomorphism of the constant integer module
+At parameter zero a natural isomorphism of the constant integer module
 gives a zero-interleaving. The proved shortness and the canonical zero-shift
-unit imply that both actual defects are zero objects, while the original
+unit imply that both defects are zero objects, while the original
 constant module has nonzero fibers.
 
 These consumers are in `TDA.Persistence.RealInterleavingShortnessExamples`.
@@ -88,8 +87,8 @@ Source and rights metadata are recorded in [BL15-v4](references.md#BL15-v4).
 Lemma 6.2 is the separate duality statement, whose proof the source omits;
 this argument does not use it. The
 [constructible defect and sampling bridge](constructible-defects-sampling.md)
-derives actual defect constructibility on a common grid and transfers this
-annihilation to the actual finite sampled kernels and cokernels. The
+derives defect constructibility on a common grid and transfers this
+annihilation to the finite sampled kernels and cokernels. The
 [finite quantitative induced matching](finite-quantitative-induced-matching.md)
 retains its finite-dimensionality and endpoint hypotheses. The
 [shift-diagram correspondence](constructible-shift-diagrams.md) returns shifted

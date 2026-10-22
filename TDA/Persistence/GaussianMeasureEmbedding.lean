@@ -20,7 +20,7 @@ namespace TDA.Persistence.WeightedKernel
 open MeasureTheory
 open scoped InnerProductSpace
 
-/-- The actual Gaussian feature map is continuous, including the library's zero-bandwidth
+/-- The Gaussian feature map is continuous, including the library's zero-bandwidth
 convention. -/
 theorem continuous_featureAt (σ : ℝ) : Continuous (featureAt σ) := by
   apply (LipschitzWith.of_dist_le' (K := Real.sqrt 2 / |σ|) ?_).continuous
@@ -31,13 +31,13 @@ private theorem inner_featureAt_left (σ : ℝ) (f : Space σ) (p : ℝ × ℝ) 
     ⟪featureAt σ p, f⟫_ℝ = f p := by
   simp [featureAt, RKHS.kerFun_inner]
 
-/-- Every actual Gaussian RKHS function is continuous on the plane. -/
+/-- Every Gaussian RKHS function is continuous on the plane. -/
 theorem continuous_rkhsFunction (σ : ℝ) (f : Space σ) : Continuous f := by
   have h : Continuous (fun p => ⟪featureAt σ p, f⟫_ℝ) :=
     (continuous_featureAt σ).inner continuous_const
   simpa only [inner_featureAt_left] using h
 
-/-- Unit diagonal gives a uniform bound by the actual Hilbert norm. -/
+/-- Unit diagonal gives a uniform bound by the Hilbert norm. -/
 theorem norm_rkhsFunction_apply_le (σ : ℝ) (f : Space σ) (p : ℝ × ℝ) :
     ‖f p‖ ≤ ‖f‖ := by
   rw [← inner_featureAt_left σ f p]
@@ -58,19 +58,18 @@ theorem signed_integrable_featureAt (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ))
     infer_instance
   exact integrable_featureAt σ μ.variation
 
-/-- Actual RKHS functions are integrable against every finite positive measure. -/
+/-- RKHS functions are integrable against every finite positive measure. -/
 theorem integrable_rkhsFunction (σ : ℝ) (f : Space σ) (μ : Measure (ℝ × ℝ))
     [IsFiniteMeasure μ] : Integrable f μ := by
   exact (integrable_const ‖f‖).mono'
     (continuous_rkhsFunction σ f).stronglyMeasurable.aestronglyMeasurable
     (Filter.Eventually.of_forall fun p => norm_rkhsFunction_apply_le σ f p)
 
-/-- The Gaussian RKHS embedding of a finite signed measure, defined by the actual
-Banach-valued vector-measure integral. -/
+/-- The Gaussian RKHS embedding of a finite signed measure, defined by the Banach-valued vector-measure integral. -/
 def signedEmbedding (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ)) : Space σ :=
   ∫ᵛ p, featureAt σ p ∂<•μ
 
-/-- The ordinary Bochner mean of the actual feature for a finite positive measure. -/
+/-- The ordinary Bochner mean of the feature for a finite positive measure. -/
 def positiveEmbedding (σ : ℝ) (μ : Measure (ℝ × ℝ)) : Space σ :=
   ∫ p, featureAt σ p ∂μ
 
@@ -99,7 +98,7 @@ theorem positiveEmbedding_apply (σ : ℝ) (μ : Measure (ℝ × ℝ)) [IsFinite
   have h := integral_inner (𝕜 := ℝ) (integrable_featureAt σ μ) (featureAt σ z)
   simpa only [inner_featureAt, inner_featureAt_left, featureAt_apply, positiveEmbedding] using h.symm
 
-/-- Pairing a positive mean with any actual RKHS function integrates that function. -/
+/-- Pairing a positive mean with any RKHS function integrates that function. -/
 theorem inner_positiveEmbedding (σ : ℝ) (μ : Measure (ℝ × ℝ)) [IsFiniteMeasure μ]
     (f : Space σ) : ⟪f, positiveEmbedding σ μ⟫_ℝ = ∫ p, f p ∂μ := by
   have h := integral_inner (𝕜 := ℝ) (integrable_featureAt σ μ) f
@@ -134,7 +133,7 @@ theorem signedEmbedding_sub (σ : ℝ) (μ ν : SignedMeasure (ℝ × ℝ)) :
     [IsFiniteMeasure μ] : signedEmbedding σ μ.toSignedMeasure = positiveEmbedding σ μ := by
   exact VectorMeasure.integral_toSignedMeasure
 
-/-- The actual signed integral agrees with the difference of its two Jordan means. -/
+/-- The signed integral agrees with the difference of its two Jordan means. -/
 theorem signedEmbedding_eq_jordan (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ)) :
     signedEmbedding σ μ = positiveEmbedding σ μ.toJordanDecomposition.posPart -
       positiveEmbedding σ μ.toJordanDecomposition.negPart := by
@@ -142,7 +141,7 @@ theorem signedEmbedding_eq_jordan (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ)) :
   rw [JordanDecomposition.toSignedMeasure, signedEmbedding_sub,
     signedEmbedding_toSignedMeasure, signedEmbedding_toSignedMeasure]
 
-/-- Unit feature norm controls the actual signed mean by total variation. This follows
+/-- Unit feature norm controls the signed mean by total variation. This follows
 through the proved Jordan bridge and the ordinary Bochner norm estimate. -/
 theorem norm_signedEmbedding_le_totalVariation (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ)) :
     ‖signedEmbedding σ μ‖ ≤ μ.totalVariation.real Set.univ := by
@@ -156,7 +155,7 @@ theorem norm_signedEmbedding_le_totalVariation (σ : ℝ) (μ : SignedMeasure (�
     _ = μ.totalVariation.real Set.univ := by
       rw [SignedMeasure.totalVariation, measureReal_add_apply]
 
-/-- Pairing with any actual RKHS function is the actual scalar signed integral of that
+/-- Pairing with any RKHS function is the scalar signed integral of that
 function. The proof reduces the existing vector integral through its Jordan parts. -/
 theorem inner_signedEmbedding (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ)) (f : Space σ) :
     ⟪f, signedEmbedding σ μ⟫_ℝ = ∫ᵛ p, f p ∂<•μ := by
@@ -172,13 +171,13 @@ theorem inner_signedEmbedding (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ)) (f : 
   rw [JordanDecomposition.toSignedMeasure, VectorMeasure.integral_sub_vectorMeasure hp hn,
     VectorMeasure.integral_toSignedMeasure, VectorMeasure.integral_toSignedMeasure]
 
-/-- Evaluation of the actual signed mean is the actual signed integral of the section. -/
+/-- Evaluation of the signed mean is the signed integral of the section. -/
 theorem signedEmbedding_apply (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ)) (z : ℝ × ℝ) :
     signedEmbedding σ μ z = ∫ᵛ p, kernel σ z p ∂<•μ := by
   simpa only [inner_featureAt_left, featureAt_apply, kernel_symm] using
     inner_signedEmbedding σ μ (featureAt σ z)
 
-/-- The genuine RKHS squared norm is the iterated actual signed kernel integral. -/
+/-- The genuine RKHS squared norm is the iterated signed kernel integral. -/
 theorem norm_signedEmbedding_sq (σ : ℝ) (μ : SignedMeasure (ℝ × ℝ)) :
     ‖signedEmbedding σ μ‖ ^ 2 =
       ∫ᵛ p, (∫ᵛ q, kernel σ p q ∂<•μ) ∂<•μ := by
@@ -191,7 +190,7 @@ theorem norm_signedEmbedding_sub_sq (σ : ℝ) (μ ν : SignedMeasure (ℝ × �
       ∫ᵛ p, (∫ᵛ q, kernel σ p q ∂<•(μ - ν)) ∂<•(μ - ν) := by
   rw [← signedEmbedding_sub, norm_signedEmbedding_sq]
 
-/-- An atom contributes its signed coefficient times the actual feature. -/
+/-- An atom contributes its signed coefficient times the feature. -/
 @[simp] theorem signedEmbedding_dirac (σ : ℝ) (p : ℝ × ℝ) (c : ℝ) :
     signedEmbedding σ (VectorMeasure.dirac p c) = c • featureAt σ p := by
   simp [signedEmbedding]
@@ -244,7 +243,7 @@ theorem positiveEmbedding_injective {σ : ℝ} (hσ : σ ≠ 0)
     rfl
   simpa only [hker] using hp
 
-/-- The actual Gaussian RKHS embedding is injective on all finite signed Borel measures
+/-- The Gaussian RKHS embedding is injective on all finite signed Borel measures
 on the full plane when bandwidth is nonzero. -/
 theorem signedEmbedding_injective {σ : ℝ} (hσ : σ ≠ 0) :
     Function.Injective (signedEmbedding σ) := by
@@ -263,7 +262,7 @@ theorem signedEmbedding_eq_zero_iff {σ : ℝ} (hσ : σ ≠ 0)
     (μ : SignedMeasure (ℝ × ℝ)) : signedEmbedding σ μ = 0 ↔ μ = 0 := by
   rw [← signedEmbedding_zero σ, (signedEmbedding_injective hσ).eq_iff]
 
-/-- The actual Hilbert distance separates arbitrary finite signed measures. -/
+/-- The Hilbert distance separates arbitrary finite signed measures. -/
 theorem norm_signedEmbedding_sub_eq_zero_iff {σ : ℝ} (hσ : σ ≠ 0)
     (μ ν : SignedMeasure (ℝ × ℝ)) :
     ‖signedEmbedding σ μ - signedEmbedding σ ν‖ = 0 ↔ μ = ν :=

@@ -31,7 +31,7 @@ local instance (α : Type*) : DecidableEq α := Classical.decEq α
 variable {X : Type u} {Y : Type v}
 variable {F : SimplicialFiltration ℝ X} {G : SimplicialFiltration ℝ Y} {ε : ℝ}
 
-/-- A single global function sends each actual face at t to a face at t + ε. -/
+/-- A single global function sends each face at t to a face at t + ε. -/
 def IsShiftedSimplicial (F : SimplicialFiltration ℝ X) (G : SimplicialFiltration ℝ Y)
     (ε : ℝ) (f : X → Y) : Prop :=
   ∀ t σ, σ ∈ F t → σ.image f ∈ G (t + ε)
@@ -43,7 +43,7 @@ def IsShiftedSimplicialRelation (F : SimplicialFiltration ℝ X)
   ∀ t σ, σ ∈ F t → ∀ τ : Finset Y, τ.Nonempty →
     (↑τ : Set Y) ⊆ C.image (↑σ) → τ ∈ G (t + ε)
 
-/-- The actual vertex map supplied by a shifted simplicial function at a level. -/
+/-- The vertex map supplied by a shifted simplicial function at a level. -/
 def IsShiftedSimplicial.vertexMap {f : X → Y} (hf : IsShiftedSimplicial F G ε f)
     (t : ℝ) : VertexMap (F t) (G (t + ε)) where
   toFun := f
@@ -64,7 +64,7 @@ theorem IsShiftedSimplicialRelation.of_subordinate {C : SetRel X Y}
     obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
     exact ⟨x, hx, hf rfl⟩
 
-/-- Two subordinate functions are contiguous on every actual stage. -/
+/-- Two subordinate functions are contiguous on every stage. -/
 theorem IsShiftedSimplicialRelation.contiguous {C : SetRel X Y}
     (hC : IsShiftedSimplicialRelation F G ε C) {f g : X → Y}
     (hf : Function.graph f ⊆ C) (hg : Function.graph g ⊆ C) (t : ℝ) :

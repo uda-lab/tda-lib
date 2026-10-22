@@ -4,7 +4,7 @@ import TDA.Persistence.ConstructibleBarcode
 /-!
 # Real endpoint diagrams are invariant under grid refinement
 
-Refinement changes finite index intervals by actual monotone restriction of the
+Refinement changes finite index intervals by monotone restriction of the
 reconstructed coarse module. The endpoint cuts retain every positive-birth
 occurrence and recover the same real finite endpoints and essential tails.
 -/
@@ -53,7 +53,7 @@ private theorem cut_terminal : sampledEndpoint (criticalSample c d) (n + 1) = m 
   unfold sampledEndpoint
   rw [hs, Finset.card_univ, Fintype.card_fin]
 
--- These are the actual interval restrictions used by rankBarcode_reindex. The
+-- These are the interval restrictions used by rankBarcode_reindex. The
 -- finite and terminal death cases have different endpoint interpretations.
 private theorem restricted_real_endpoint (h : Refines c d)
     (I : FiniteInterval (n + 1)) (hb : 0 < I.birth) :
@@ -123,8 +123,7 @@ theorem finiteDimensional_of_isConstructible (hM : IsConstructible c M)
     exact finiteDimensional_sample c M hfd _
   exact ((reconstructionIso c M hM).app t).toLinearEquiv.finiteDimensional
 
-/-- Adding critical values changes the finite index barcode but leaves the actual
-real endpoint diagram unchanged. Finiteness at new critical values is derived. -/
+/-- Adding critical values changes the finite index barcode but leaves the real endpoint diagram unchanged. Finiteness at new critical values is derived. -/
 theorem moduleDiagram_refinement (h : Refines c d) (hM : IsConstructible c M)
     (hfd : ∀ i, FiniteDimensional k (M.obj (c i))) :
     moduleDiagram d M (fun j => finiteDimensional_of_isConstructible M hM hfd (d j)) =

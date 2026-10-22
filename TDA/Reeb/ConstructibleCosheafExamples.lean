@@ -6,7 +6,7 @@ import Mathlib.Analysis.Convex.PathConnected
 # Constructible cosheaf fixtures
 
 Fixtures for `TDA.Reeb.CriticalValues.natTransEquivShortMaps` and its supporting geometry. Every
-cosheaf below is an actual interval component functor with the merged cosheaf law
+cosheaf below is an interval component functor with the merged cosheaf law
 `intervalComponents_isIntervalCosheaf`; no table of values stands in for a cosheaf.
 
 * Singleton levels `S1 = {0}`: the only star is `ℝ`, there are no gaps, the tails are the two
@@ -677,7 +677,7 @@ theorem strip_corrected_not_uncorrected :
   ⟨strip_isConstructibleAt PUnit.{1}, uncorrected_rule_fails⟩
 
 /-- Endpoint computation: the left endpoint function of the extracted data of the point strip
-is the actual inclusion map on representatives. -/
+is the inclusion map on representatives. -/
 theorem strip_extract_left_mk
     (x : {x : PUnit.{1} × Icc (0 : ℝ) 2 // strip PUnit.{1} x ∈ toOpens (S2.K 0)}) :
     (S2.extract (intervalComponents (strip PUnit.{1}))

@@ -23,7 +23,7 @@ namespace TDA.Persistence
 open Filter
 open scoped Topology
 
-/-- Extend the actual finite optimizer by matching identical essential values. -/
+/-- Extend the finite optimizer by matching identical essential values. -/
 private def matchCommonEssential (D E : Diagram ℝ)
     (he : essentialPart D.points = essentialPart E.points)
     (m : OccurrenceMatching D.finiteOccurrences E.finiteOccurrences PEmpty.{1} PEmpty.{1}) :
@@ -158,7 +158,7 @@ theorem finitePMatchingCost_tendstoUniformlyOn_bottleneck_of_essentialParts_eq
   exact (finitePMatchingCost_abs_sub_bottleneck_le_uniformBound_of_essentialParts_eq hp z.1 z.2
     hz.1 hz.2.1 hR hz.2.2).trans_lt herror
 
-/-- Uniform recovery for the actual optimized real boundary-reservoir cost. -/
+/-- Uniform recovery for the optimized real boundary-reservoir cost. -/
 theorem finitePBoundaryTransportCost_tendstoUniformlyOn_bottleneck_of_essentialParts_eq
     (m : ℕ) (R : ℝ) (hR : 0 ≤ R) :
     TendstoUniformlyOn

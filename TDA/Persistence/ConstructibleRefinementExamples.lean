@@ -132,13 +132,13 @@ theorem shifted_sign_boundaries_and_tail :
       rw [coarse_apply]
       norm_num)
 
-/-- Zero shift uses the original grid and the actual zero-shift module. -/
+/-- Zero shift uses the original grid and the zero-shift module. -/
 theorem zero_shift : shiftGrid 0 coarse = coarse ∧ IsConstructible coarse ((shift 0).obj input) := by
   refine ⟨shiftGrid_zero _, ?_⟩
   simpa only [shiftGrid_zero] using input_constructible.shift 0
 
 /-- The value shared by the original and shifted grid is included once in their union. -/
-theorem actual_common_shift_grid :
+theorem common_shift_grid :
     (criticalValues coarse ∪ criticalValues (shiftGrid 2 coarse)).card = 3 ∧
     IsConstructible (commonGrid coarse (shiftGrid 2 coarse)) input ∧
     IsConstructible (commonGrid coarse (shiftGrid 2 coarse)) ((shift 2).obj input) := by
@@ -168,7 +168,7 @@ theorem empty_refinement (ε : ℝ≥0) :
     rw [moduleDiagram_refinement zeroInput h zero_constructible (fun i => Fin.elim0 i)]
     exact moduleDiagram_empty_grid empty zeroInput
 
-/-- An actual self-interleaving gives a cost-bounded original-diagram matching
+/-- A self-interleaving gives a cost-bounded original-diagram matching
 across unequal grids. The refined fibers are derived from the coarse ones. -/
 theorem unequal_grid_isometry_control (ε : ℝ≥0) :
     let A := interleavingMatching input_constructible (input_constructible.refine coarse_fine)
@@ -182,7 +182,7 @@ theorem unequal_grid_isometry_control (ε : ℝ≥0) :
   · rw [bottleneck_eq_distance input_constructible (input_constructible.refine coarse_fine)
       critical_finite fine_finite, realInterleavingDistance_self]
 
-/-- Empty diagrams and actual zero modules have equal zero distances without
+/-- Empty diagrams and zero modules have equal zero distances without
 choosing a critical stage or an optimal matching. -/
 theorem empty_isometry_control :
     let A := interleavingMatching zero_constructible zero_constructible

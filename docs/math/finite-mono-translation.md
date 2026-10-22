@@ -10,21 +10,21 @@ the two rank barcodes, preserving death and the ordinal at that death.
 Repeated interval values keep their original list labels.
 
 Intervals use `[birth,death)` with `birth < death ≤ s`.
-`FiniteInterval.birthStage` packages the birth as an actual index in `Fin s`.
+`FiniteInterval.birthStage` packages the birth as an index in `Fin s`.
 Let `theta : Fin s →o Fin s` be monotone and suppose `hTheta : ∀ i, i ≤ theta i`.
 It may identify stages and need not advance a fixed number of indices.
 Call a target interval `[b,d)` long when `(theta b).val < d`.
 Equality belongs to the short case because the interval excludes its death.
 
-## Shortness of the actual cokernel
+## Shortness of the cokernel
 
 `finiteCokernel f` is mathlib's categorical cokernel in the functor category.
 `finiteCokernelFiberIso` identifies its fiber at `i` with
-`N_i / range(f_i)`. The identification sends the actual cokernel projection to
+`N_i / range(f_i)`. The identification sends the cokernel projection to
 the quotient map, and target finite dimensionality gives cokernel finite dimensionality.
 The structure maps are those induced by the original natural transformation.
 
-`TranslationTrivial theta hTheta K` says that every actual structure map
+`TranslationTrivial theta hTheta K` says that every structure map
 `K(i → theta i)` is zero. In particular, it imposes no barcode or matching condition.
 `cokernel_translationTrivial_iff` proves the equivalent image criterion:
 
@@ -35,7 +35,7 @@ TranslationTrivial theta hTheta (finiteCokernel f)
 
 The equivalence uses the natural cokernel projection, its component epimorphisms,
 and the concrete range-quotient identification. Thus the image criterion is a
-consequence of the actual shortness hypothesis.
+consequence of the shortness hypothesis.
 
 ## Shifted prefix counts
 
@@ -47,7 +47,7 @@ D_N(b,d) ≤ D_M(theta b,d),    (theta b).val < d ≤ s.
 ```
 
 `deathPrefixCount_le_translated_of_cokernelTrivial` proves this inequality.
-For `d < s`, the counts are dimensions of the actual image/kernel intersections
+For `d < s`, the counts are dimensions of the image/kernel intersections
 at `d−1`. A target vector born by `b` lifts at `theta b` by the image criterion.
 Transporting the lift to `d−1` produces the target vector by naturality.
 Its image at `d` is zero; injectivity of `f_d` forces the source lift to die there too.
@@ -78,7 +78,7 @@ prefix count and hence below the source death-group cardinality.
 `monoEmbedding_unmatched_short_of_cokernelTrivial` states the contrapositive:
 every unmatched target is short. Short targets can also be matched.
 
-The consumers use a nonidentity translation identifying stages, an actual delayed-birth
+The consumers use a nonidentity translation identifying stages, a delayed-birth
 inclusion attaining the upper bound, a threshold-equality target left unmatched,
 duplicate long bars, terminal coverage, the identity translation and an empty chain.
 A nonzero quotient at a fixed point fails the shortness condition.

@@ -90,7 +90,7 @@ private theorem optimized_comparisons {I J : Type*} [Fintype I] [Fintype J]
 
 private def emptyFamily : Fin 0 → ℝ × ℝ := Fin.elim0
 
-/-- Empty families exercise arbitrary real exponents and the actual two optima. -/
+/-- Empty families exercise arbitrary real exponents and the two optima. -/
 private theorem empty_two_exponents {r s : ℝ} (hr : 1 ≤ r) (hrs : r ≤ s) :
     finitePMatchingCost r emptyFamily emptyFamily = 0 ∧
     finitePMatchingCost s emptyFamily emptyFamily = 0 ∧
@@ -290,7 +290,7 @@ private theorem half_plan_root_increases :
   · rw [show (2 : ℝ)⁻¹ = 1 / 2 by norm_num, ← Real.sqrt_eq_rpow]
     exact (Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 4)).mpr (by norm_num)
 
-/-- The actual optima still decrease, despite the half-plan counterexample. -/
+/-- The optima still decrease, despite the half-plan counterexample. -/
 private theorem far_optimized_roots :
     finitePMatchingCost 1 oneBar farTarget = 2 ∧
     finitePMatchingCost 2 oneBar farTarget = Real.sqrt 2 ∧

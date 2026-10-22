@@ -44,7 +44,7 @@ constructible interval cosheaf at `T`, and both conditions are invariant under n
    `φ ↦ realizeNatTrans S φ` a bijection (`realizeNatTransEquiv`); realization followed by interval
    components is fully faithful over a common `S` (`realizationCosheafFullyFaithful`).
 2. **Full faithfulness.** Graph objects `A`, `B` have presentations over one common list `T`
-   (`exists_common_presentation`). The actual component map of a slice morphism `g` is the realized
+   (`exists_common_presentation`). The component map of a slice morphism `g` is the realized
    transformation of its classified finite map `homEquivOfIso iA iB g`, conjugated by the images of
    the presentations (`intervalComponentsOver_map_eq`). So `cosheafFunctor.map` is a composite of
    bijections (`cosheafHomEquiv_apply`) and is bijective on all continuous height-preserving maps
@@ -126,7 +126,7 @@ precomposition with `toOpensFunctor`. -/
 def intervalComponentsOver : Over (TopCat.of ℝ) ⥤ (OpenInterval ⥤ Type) :=
   ReebQuotient.componentFunctorOver ℝ ⋙ (Functor.whiskeringLeft _ _ _).obj toOpensFunctor
 
-/-- On objects: the actual `intervalComponents` of the structure map. -/
+/-- On objects: the `intervalComponents` of the structure map. -/
 theorem intervalComponentsOver_obj (A : Over (TopCat.of ℝ)) :
     intervalComponentsOver.obj A = intervalComponents (overBaseMap A) := rfl
 
@@ -348,7 +348,7 @@ def cosheafHomEquiv (iA : A.obj ≅ toOver T DA) (iB : B.obj ≅ toOver T DB) :
         ((ObjectProperty.fullyFaithfulι IsConstructibleCosheaf.{0}).homEquiv
           (X := cosheafFunctor.obj A) (Y := cosheafFunctor.obj B)).symm
 
-/-- The bijection is the actual functor map. -/
+/-- The bijection is the functor map. -/
 theorem cosheafHomEquiv_apply (iA : A.obj ≅ toOver T DA) (iB : B.obj ≅ toOver T DB)
     (f : A ⟶ B) : cosheafHomEquiv iA iB f = cosheafFunctor.map f := by
   apply ObjectProperty.hom_ext
@@ -356,7 +356,7 @@ theorem cosheafHomEquiv_apply (iA : A.obj ≅ toOver T DA) (iB : B.obj ≅ toOve
 
 end comparison
 
-/-- **Full faithfulness, Hom-set form**: the actual functor map is bijective. -/
+/-- **Full faithfulness, Hom-set form**: the functor map is bijective. -/
 theorem cosheafFunctor_map_bijective (A B : RGraphCat) :
     Function.Bijective
       (cosheafFunctor.map : (A ⟶ B) → (cosheafFunctor.obj A ⟶ cosheafFunctor.obj B)) := by

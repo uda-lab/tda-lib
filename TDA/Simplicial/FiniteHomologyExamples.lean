@@ -9,7 +9,7 @@ set_option maxHeartbeats 200000
 universe u v
 
 
-/-! # Actual-face coordinate fixtures
+/-! # Face coordinate fixtures
 
 The quotient-level fixtures reuse the proved finite-cycle examples instead of
 copying their boundary and inclusion matrix developments.
@@ -25,7 +25,7 @@ open TDA.Simplicial.InternalFiniteCycleFixtures
 
 variable {V : Type u} [LinearOrder V]
 
-private noncomputable abbrev actualCyclesQuotientWitnessExamples
+private noncomputable abbrev simplicialCyclesQuotientWitnessExamples
     (K : PreAbstractSimplicialComplex V) (R : Type v) [CommRing R] (n : ℕ) :
     HasQuotient (simplicialCycles K R n) (Submodule R (simplicialCycles K R n)) :=
   Submodule.hasQuotient (R := R) (M := simplicialCycles K R n)
@@ -36,7 +36,7 @@ private noncomputable abbrev coordinateCyclesQuotientWitnessExamples
     HasQuotient (coordinateCycles K R n) (Submodule R (coordinateCycles K R n)) :=
   Submodule.hasQuotient (R := R) (M := coordinateCycles K R n)
 
-attribute [local instance] actualCyclesQuotientWitnessExamples coordinateCyclesQuotientWitnessExamples
+attribute [local instance] simplicialCyclesQuotientWitnessExamples coordinateCyclesQuotientWitnessExamples
 
 section TheoryFixtures
 
@@ -113,7 +113,7 @@ private theorem signedQuotient_nonzero :
   intro h
   exact signedUnfilledCoord_not_boundary ((Submodule.Quotient.mk_eq_zero _).mp h)
 
-private theorem signedActualHomology_nonzero :
+private theorem signedSimplicialHomology_nonzero :
     (homologyKernelQuotient.{0,0,0} ℤ (simplicialChainComplex unfilledK ℤ) 1).inv.hom
       ((simplicialBoundaries unfilledK ℤ 1).mkQ signedUnfilledCycle) ≠ 0 := by
   intro h
@@ -138,7 +138,7 @@ private theorem signedQuotient_image_zero :
   rw [coordinateHomologyIncl_mkQ]
   exact signedIncludedClass_zero
 
-private theorem signedActualHomology_image_zero :
+private theorem signedSimplicialHomology_image_zero :
     (simplicialHomologyIncl ℤ unfilled_le_triangle 1).hom
       ((homologyKernelQuotient.{0,0,0} ℤ (simplicialChainComplex unfilledK ℤ) 1).inv.hom
         ((simplicialBoundaries unfilledK ℤ 1).mkQ signedUnfilledCycle)) = 0 := by
@@ -163,11 +163,11 @@ private theorem signedActualHomology_image_zero :
     _ = (simplicialHomologyCoordinates triangleK ℤ 1) 0 := (map_zero _).symm
 
 
-private noncomputable def edgeActualVertexCycle (i : Fin 2) : simplicialCycles edgeK ℤ 0 :=
+private noncomputable def edgeVertexCycle (i : Fin 2) : simplicialCycles edgeK ℤ 0 :=
   ⟨Finsupp.single (edgeVertex i) 1, by rw [simplicialCycles_zero]; trivial⟩
 
 private noncomputable def edgeCoordVertexCycle (i : Fin 2) : coordinateCycles edgeK ℤ 0 :=
-  cycleCoordinates edgeK ℤ 0 (edgeActualVertexCycle i)
+  cycleCoordinates edgeK ℤ 0 (edgeVertexCycle i)
 
 private theorem edgeCoordVertex_coeff (i j : Fin 2) :
     (edgeCoordVertexCycle i : Face edgeK 0 → ℤ) (edgeVertex j) =
@@ -196,19 +196,19 @@ private theorem edgeEndpoint_classes_equal :
   rw [edgeVertex_difference_boundary]
   exact LinearMap.mem_range_self _ _
 
-private theorem edgeActualEndpoint_classes_equal :
+private theorem edgeVertexEndpoint_classes_equal :
     (homologyKernelQuotient.{0,0,0} ℤ (simplicialChainComplex edgeK ℤ) 0).inv.hom
-      ((simplicialBoundaries edgeK ℤ 0).mkQ (edgeActualVertexCycle 1)) =
+      ((simplicialBoundaries edgeK ℤ 0).mkQ (edgeVertexCycle 1)) =
     (homologyKernelQuotient.{0,0,0} ℤ (simplicialChainComplex edgeK ℤ) 0).inv.hom
-      ((simplicialBoundaries edgeK ℤ 0).mkQ (edgeActualVertexCycle 0)) := by
+      ((simplicialBoundaries edgeK ℤ 0).mkQ (edgeVertexCycle 0)) := by
   apply (simplicialHomologyCoordinates edgeK ℤ 0).injective
   calc
     _ = (coordinateBoundaries edgeK ℤ 0).mkQ (edgeCoordVertexCycle 1) :=
-      simplicialHomologyCoordinates_mkQ edgeK ℤ 0 (edgeActualVertexCycle 1)
+      simplicialHomologyCoordinates_mkQ edgeK ℤ 0 (edgeVertexCycle 1)
     _ = (coordinateBoundaries edgeK ℤ 0).mkQ (edgeCoordVertexCycle 0) :=
       edgeEndpoint_classes_equal
     _ = _ := (simplicialHomologyCoordinates_mkQ edgeK ℤ 0
-      (edgeActualVertexCycle 0)).symm
+      (edgeVertexCycle 0)).symm
 
 private theorem singletonEdge_class_naturality (a : ℤ) :
     coordinateHomologyIncl ℤ singleton_le_edge 0
@@ -219,7 +219,7 @@ private theorem singletonEdge_class_naturality (a : ℤ) :
           (simplicialCycleIncl ℤ singleton_le_edge 0 (singletonCycle a))) := by
   rw [coordinateHomologyIncl_mkQ, singleton_edge_naturality]
 
-private theorem singletonEdge_actual_naturality (a : ℤ) :
+private theorem singletonEdge_naturality (a : ℤ) :
     coordinateHomologyIncl ℤ singleton_le_edge 0
       (simplicialHomologyCoordinates (Filtration.singletonFace (0 : Fin 3)) ℤ 0
         ((homologyKernelQuotient.{0,0,0} ℤ
@@ -251,14 +251,14 @@ private theorem zmod1_quotient_naturality :
       (simplicialQuotientIncl (ZMod 1) edge_le_triangle 0) :=
   quotientCoordinates_naturality (ZMod 1) edge_le_triangle 0
 
-private theorem zmod1_actual_naturality :
+private theorem zmod1_naturality :
     (coordinateHomologyIncl (ZMod 1) edge_le_triangle 0).comp
       (simplicialHomologyCoordinates edgeK (ZMod 1) 0).toLinearMap =
     (simplicialHomologyCoordinates triangleK (ZMod 1) 0).toLinearMap.comp
       (simplicialHomologyIncl (ZMod 1) edge_le_triangle 0).hom :=
   simplicialHomologyCoordinates_naturality (ZMod 1) edge_le_triangle 0
 
-private theorem finiteTotal_quotient_and_actual
+private theorem finiteTotal_quotient_and_simplicialHomology
     {A B : PreAbstractSimplicialComplex V}
     [Finite (TotalFace A)] [Finite (TotalFace B)]
     (S : Type v) [CommRing S] (h : A ≤ B) (n : ℕ) :
@@ -304,7 +304,7 @@ private theorem singletonEdgeTriangle_class_comp (a : ℤ) :
     (coordinateHomologyIncl_comp ℤ singleton_le_edge edge_le_triangle 0)
   simpa only [LinearMap.comp_apply] using h
 
-private theorem singletonEdgeTriangle_actual_comp (a : ℤ) :
+private theorem singletonEdgeTriangle_comp (a : ℤ) :
     coordinateHomologyIncl ℤ (singleton_le_edge.trans edge_le_triangle) 0
       (simplicialHomologyCoordinates (Filtration.singletonFace (0 : Fin 3)) ℤ 0
         ((homologyKernelQuotient.{0,0,0} ℤ
@@ -331,7 +331,7 @@ private theorem singletonEdgeTriangle_actual_comp (a : ℤ) :
   exact hn
 
 
-private theorem singletonEdgeTriangle_actual_two_step (a : ℤ) :
+private theorem singletonEdgeTriangle_two_step (a : ℤ) :
     (simplicialHomologyIncl ℤ (singleton_le_edge.trans edge_le_triangle) 0).hom
       ((homologyKernelQuotient.{0,0,0} ℤ
         (simplicialChainComplex (Filtration.singletonFace (0 : Fin 3)) ℤ) 0).inv.hom

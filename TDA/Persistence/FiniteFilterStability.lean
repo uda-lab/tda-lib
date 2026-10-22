@@ -6,9 +6,9 @@ import Mathlib.Topology.Order.IntermediateValue
 set_option autoImplicit false
 
 /-!
-# Bottleneck stability for actual finite-complex sublevel diagrams
+# Bottleneck stability for finite-complex sublevel diagrams
 
-The interpolation is divided at the finitely many times when two actual face
+The interpolation is divided at the finitely many times when two face
 values meet. Each resulting closed segment has one face-compatible order;
 the orders on adjacent segments need not agree. A midpoint order stays compatible at
 both endpoints by continuity of the weak face-value inequalities. The template bound
@@ -54,7 +54,7 @@ def intervalFilter (f g : FilterFunction K ℝ) (t : Set.Icc (0 : ℝ) 1) :
     (t : Set.Icc (0 : ℝ) 1) (σ : TotalFace K) :
     (intervalFilter f g t).value σ = (1 - t) * f.value σ + t * g.value σ := rfl
 
-/-- Maximum absolute change over actual faces; the empty maximum is zero. -/
+/-- Maximum absolute change over faces; the empty maximum is zero. -/
 noncomputable def faceSupDifference (f g : FilterFunction K ℝ) : ℝ :=
   Finset.univ.fold max 0 (fun σ : TotalFace K => |f.value σ - g.value σ|)
 
@@ -136,7 +136,7 @@ private theorem faceDifference_eq_zero_of_slope_zero (f g : FilterFunction K ℝ
   exact ht
 
 /-- All crossing times in the unit interval, plus both endpoints. This finite
-set deduplicates simultaneous crossings and does not require an actual face. -/
+set deduplicates simultaneous crossings and does not require a face. -/
 noncomputable def faceCrossingTimes (f g : FilterFunction K ℝ) : Finset ℝ := by
   classical
   let candidates : Finset ℝ := (Finset.univ.filter (fun p : TotalFace K × TotalFace K =>
@@ -480,7 +480,7 @@ theorem finiteFilterCrossingSubdivision_consecutive_order
     ((finiteFilterCrossingSubdivision f g).get_mem j) hlt
     (finiteFilterCrossingSubdivision_consecutive_gap f g i j hij)
 
-/-- Bottleneck stability of actual sublevel persistence diagrams on a finite
+/-- Bottleneck stability of sublevel persistence diagrams on a finite
 complex. The coefficient field and ordered-vertex assumptions are those of
 `dgm`; no genericity or essential-cardinality assumption is used. -/
 theorem bottleneck_dgm_le_faceSupDifference (k : Type u) [Field k]

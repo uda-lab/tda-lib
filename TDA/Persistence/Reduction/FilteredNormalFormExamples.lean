@@ -236,7 +236,7 @@ private theorem interleaved_dies_at_death :
 private theorem interleaved_trace_nil : matrixReductionTrace interleaved = [] := by
   decide +kernel
 
-/-- The actual original-boundary homology map kills this pair at stage three.
+/-- The original-boundary homology map kills this pair at stage three.
 The class is specified through the proved simultaneous coordinate equivalence. -/
 private theorem interleaved_original_map_kills_pair :
     let ops := matrixReductionTrace interleaved

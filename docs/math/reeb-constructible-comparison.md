@@ -172,8 +172,7 @@ matching `Over (TopCat.of ℝ)`; the constructible-cosheaf form is at value univ
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleComparisonExamples` works with the actual comparison on actual
-presentations, built from the constructible-space, cylinder, finite-graph and quotient fixtures:
+`TDA.Reeb.ConstructibleComparisonExamples` works with the comparison on presentations, built from the constructible-space, cylinder, finite-graph and quotient fixtures:
 
 - **Constant-height interval.** For `[0, 1]` at one level, `q` is not injective
   (`interval_proj_not_injective`), while the comparison is an isomorphism (`interval_isIso`) with
@@ -188,8 +187,7 @@ presentations, built from the constructible-space, cylinder, finite-graph and qu
   and `(1, ∞)`. The quotient counts are `1, 2, 1` on the stars and `2` on each gap, and the
   quotient's incidence maps into the bottom and top stars are not injective.
 - **Branching at equal cardinality.** For the thickened pinch, the counts at the bottom star and the
-  gap are both `2`, and the gap-to-star map is not injective in the source, through the actual
-  bottom gluing, and in the quotient, through the comparison.
+  gap are both `2`, and the gap-to-star map is not injective in the source, through the bottom gluing, and in the quotient, through the comparison.
 - **Graph case.** For parallel edges over `0 < 1`, the comparison and its inverse are the
   path-component maps of `RGraph.projHomeomorph` and `RGraph.projInv`, the functor-level component
   is the image of `RGraph.projNatIso`, and the two edges stay two components of the quotient over

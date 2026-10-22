@@ -1,8 +1,8 @@
 # Real induced occurrence matchings
 
-An actual morphism between finite-constructible real persistence modules gives
+A morphism between finite-constructible real persistence modules gives
 an occurrence matching with exact real endpoint and long-bar bounds when its
-actual kernel and cokernel have zero transitions at the specified parameters.
+kernel and cokernel have zero transitions at the specified parameters.
 The construction retains multiplicities and essential tails. An interleaving
 supplies these hypotheses for its comparison into the shifted target.
 
@@ -11,15 +11,15 @@ supplies these hypotheses for its comparison into the shifted target.
 Fix a field `k : Type u` and modules `M N : PModule.{u,0,u} k ℝ`
 constructible on a common finite increasing grid `c : Fin n ↪o ℝ`.
 Assume finite dimensionality only at the original critical fibers. Write
-`D_M=moduleDiagram c M` and `D_N=moduleDiagram c N` for their actual critical
+`D_M=moduleDiagram c M` and `D_N=moduleDiagram c N` for their critical
 rank-barcode diagrams. The [constructible convention](constructible-modules.md)
 is a zero left tail, left-closed/right-open finite strata and a constant final
 tail. A terminal index death n represents real death `⊤`.
 
-For `f : M → N` and finite `δK δC : ℝ≥0`, assume the actual transition
+For `f : M → N` and finite `δK δC : ℝ≥0`, assume the transition
 of `kernel f` across δK and of `cokernel f` across δC is zero.
 The [sampling comparison](constructible-defects-sampling.md) derives shortness
-of the actual sampled finite defects. No chosen decomposition, matching or
+of the sampled finite defects. No chosen decomposition, matching or
 endpoint estimate is supplied.
 
 A diagram is a multiset. An occurrence label contains both an endpoint value
@@ -27,13 +27,13 @@ and an index among its copies. Finite occurrence labels and essential birth
 labels form a disjoint sum. An `OccurrenceMatching` consists of a partial
 injection on finite labels and a total equivalence on essential labels.
 
-## The actual induced map on real labels
+## The induced map on real labels
 
 `RealBarcode.indexOccurrenceEquiv` identifies finite rank-barcode list labels
 with the finite/essential sum of the real endpoint diagram. Equality of their
 value multisets proves a value-preserving equivalence; equal endpoint values
 retain distinct labels. `FiniteBarcode.RealInduced.sumMap` conjugates the
-[actual finite induced partial injection](finite-induced-matching.md) by these
+[finite induced partial injection](finite-induced-matching.md) by these
 equivalences. Its selected-pair theorem and injectivity refer to that same map.
 
 Let source `[b,d)` be selected with target `[b′,d′)`. For finite deaths,
@@ -59,7 +59,7 @@ its finite right side; the unmatched-target estimate gives the analogous
 contradiction for essential targets. Partial injectivity then makes the
 selected essential map a total equivalence, including every repeated birth.
 
-`FiniteBarcode.RealInduced.matching` splits this actual map into the required
+`FiniteBarcode.RealInduced.matching` splits this map into the required
 finite partial injection and essential equivalence. Its finite and essential
 pair theorems retain the exact selected-pair relation. The theorem
 `matching_bounds` derives `RealMatchingBounds δK δC`, which collects the
@@ -75,21 +75,21 @@ exactly one partner. Equality is the short case: a threshold-equality bar may
 be matched or unmatched. Essential occurrences are always covered in both
 directions.
 
-## Constructible morphisms and actual interleavings
+## Constructible morphisms and interleavings
 
 `FiniteConstructible.inducedOccurrenceMatching` constructs the matching of
-`D_M` with `D_N` from the actual real defect hypotheses above.
+`D_M` with `D_N` from the real defect hypotheses above.
 `inducedOccurrenceMatching_bounds` derives every field of its bounds object.
 Only critical-fiber finite dimensionality is supplied; finite sampled
-shortness is obtained from actual constructibility and defect annihilation.
+shortness is obtained from constructibility and defect annihilation.
 
-For an actual ε-interleaving of M on c and N on another grid d,
+For an ε-interleaving of M on c and N on another grid d,
 `interleaving_shifted_induced_matching` constructs the common grid of c and
-`shiftGrid ε d`. The interleaving equations give actual kernel and cokernel
+`shiftGrid ε d`. The interleaving equations give kernel and cokernel
 `2ε`-annihilation for `M → SεN`. Refinement derives finiteness at the new
 observations. The [shift-diagram formula](constructible-shift-diagrams.md)
 identifies the resulting target with `translateDiagram D_N (−ε)`. The output
-is an actual matching into that shifted diagram with `RealMatchingBounds
+is a matching into that shifted diagram with `RealMatchingBounds
 (ε+ε) (ε+ε)`, including its essential equivalence and strict long-bar coverage.
 No common-grid, new-fiber-finiteness, shortness or matching witness is an input.
 
@@ -103,15 +103,15 @@ on the original interleaving.
 ## Concrete boundary cases
 
 On the grid `[0,1,3,4]`, a genuine overlap map from `[1,4)` to `[0,3)`
-has nonzero actual kernel and cokernel and attains both displacement-one
-upper bounds. The gap of length two adds no error. An actual map erasing
+has nonzero kernel and cokernel and attains both displacement-one
+upper bounds. The gap of length two adds no error. A map erasing
 `[0,1)` leaves its sole real source unmatched at threshold one. Identity
 maps retain threshold-short bars, two distinct copies of `[0,3)` and two
 essential copies born at one. They also give unique strict-long coverage,
 essential coverage at every finite threshold and the parameter-zero result.
 The empty grid constructs the empty matching without choosing a stage.
 
-The actual zero-comparison one-interleaving on `[0,2)` derives a matching into
+The zero-comparison one-interleaving on `[0,2)` derives a matching into
 its shifted target with both bounds equal to two. These consumers are in
 `RealInducedMatchingExamples`, `FiniteInducedTranslationExamples` and
 `ConstructibleDefectExamples`.
@@ -129,7 +129,7 @@ no verification of that omitted argument is claimed.
 
 In the proof of Theorem 6.1(ii), both the v4 HTML and PDF define a submodule
 of N using an image labelled with M, then use the transition of N in the
-following cokernel argument. The formal theorem and the actual target maps
+following cokernel argument. The formal theorem and the target maps
 of N determine the specialization used here. This notation inconsistency
 does not alter the library's hypotheses or endpoint inequalities.
 

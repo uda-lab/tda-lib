@@ -104,7 +104,7 @@ noncomputable def exact_deletion_length :
     (by intro i; norm_num) (by intro i; exact Fin.elim0 i) 1 deletionMatching
   norm_num [OccurrenceMatching.cost, deletionMatching, diagonalCost]
 
-/-- A longer finite interval fails the actual zero-module criterion. -/
+/-- A longer finite interval fails the zero-module criterion. -/
 theorem longer_interval_fails :
     ¬ Nonempty (RealInterleaving 1 (RealBarcode.intervalModule (k := k) (0, (3 : WithTop ℝ))) 0) := by
   intro h

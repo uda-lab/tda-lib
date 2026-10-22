@@ -2,11 +2,11 @@ import TDA.Filtration.Rips
 import TDA.Persistence.FiniteFilterStability
 
 /-!
-# Same-label metric stability of actual Rips diagrams
+# Same-label metric stability of Rips diagrams
 
 On a fixed finite labelled vertex set, changing the metric changes every simplex
 diameter by at most the maximum distance-matrix discrepancy. The existing
-finite-face stability theorem then bounds the actual diagrams, with their existing
+finite-face stability theorem then bounds the diagrams, with their existing
 occurrence multiplicity and essential-bar semantics, in every homological degree.
 -/
 
@@ -26,7 +26,7 @@ theorem faceSupDifference_filter_le (d e : MetricSpace V) :
   exact ⟨Rips.pairwiseDiscrepancy_nonneg d e,
     fun s _ => Rips.abs_diameter_sub_le_pairwiseDiscrepancy d e s.val⟩
 
-/-- Actual diagram stability with diameter time, retaining precisely the existing
+/-- Diagram stability with diameter time, retaining precisely the existing
 ordered-vertex, finite-carrier and coefficient-field assumptions. -/
 theorem bottleneck_dgm_le_pairwiseDiscrepancy (k : Type u) [Field k]
     (d e : MetricSpace V) (n : ℕ) :

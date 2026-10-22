@@ -5,7 +5,7 @@ import Mathlib.Tactic.Linarith
 /-!
 # Infinite and unattained real interleaving distances
 
-The ephemeral module has a nonzero fiber only at time zero. Its actual functor maps
+The ephemeral module has a nonzero fiber only at time zero. Its functor maps
 give positive-parameter witnesses with zero, while its nonzero fiber excludes attainment.
 -/
 
@@ -78,7 +78,7 @@ private theorem ephemeral_transition_zero (ε : ℝ≥0) (hε : 0 < ε) :
   simp [transition, structureMap, ephemeral, pointMap, hn']
   rfl
 
-/-- Every positive parameter admits actual zero comparison maps for the ephemeral module. -/
+/-- Every positive parameter admits zero comparison maps for the ephemeral module. -/
 theorem ephemeral_positive_interleaving (ε : ℝ≥0) (hε : 0 < ε) :
     Nonempty (RealInterleaving ε ephemeral 0) :=
   (RealInterleaving.nonempty_zero_iff ε ephemeral).mpr (ephemeral_transition_zero ε hε)

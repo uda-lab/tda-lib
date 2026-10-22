@@ -71,7 +71,7 @@ def returnWalk : deleted.Walk d01.snd d01.fst :=
 def triangleLoop : Path (vertex triangle 0) (vertex triangle 0) :=
   returnLoop triangle d01 returnWalk
 
-/-- The actual loop: the three edge paths `0 → 1`, `1 → 2`, `2 → 0`, then the constant path. -/
+/-- The loop: the three edge paths `0 → 1`, `1 → 2`, `2 → 0`, then the constant path. -/
 theorem triangleLoop_eq :
     triangleLoop = (edgePath triangle d01).trans
       ((edgePath triangle d12).trans ((edgePath triangle d20).trans (Path.refl _))) := rfl

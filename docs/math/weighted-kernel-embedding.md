@@ -183,7 +183,7 @@ the latter. The arctan specialization
 works for C > 0 despite weights approaching zero near the diagonal. Every real σ is
 allowed: the isometry survives the degenerate all-ones kernel at σ = 0.
 
-The actual inner products and pair distances of `weightedUpperEmbedding` agree with
+The inner products and pair distances of `weightedUpperEmbedding` agree with
 the existing full-plane `embedding`. The corresponding `weightedUpperDiagramEmbedding`
 identities retain finite occurrences and multiplicity, omit essential bars, and need
 neither weight positivity nor a bandwidth restriction. This finite-sum comparison

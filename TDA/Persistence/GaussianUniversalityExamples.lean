@@ -6,7 +6,7 @@ import TDA.Persistence.WeightedPersistenceMeasure
 
 The countable diagram below has one unit atom at each `(0, 2⁻ⁿ)`. Its total
 mass is infinite, it is locally finite in the open half-plane, and persistence
-weighting makes its mass finite. The remaining examples exercise actual signed
+weighting makes its mass finite. The remaining examples exercise signed
 integration, C₀ section approximation, and the zero-bandwidth/zero-weight limits.
 -/
 
@@ -17,7 +17,7 @@ namespace TDA.Persistence.GaussianUniversalityExamples
 open MeasureTheory WeightedKernel Set Filter _root_.Topology
 open scoped ZeroAtInfty ENNReal
 
-/-- A signed pair of distinct atoms is detected by the actual Gaussian integral. -/
+/-- A signed pair of distinct atoms is detected by the Gaussian integral. -/
 theorem signed_pair_detected :
     signedEmbedding 1 (VectorMeasure.dirac ((0 : ℝ), (1 : ℝ)) 1 -
       VectorMeasure.dirac ((0 : ℝ), (2 : ℝ)) 1) ≠ 0 := by
@@ -95,7 +95,7 @@ theorem diffuseSignedMeasure_noncompactSupport (K : Set (ℝ × ℝ)) (hK : IsCo
   intro he
   exact hK.ne_univ (compl_empty_iff.1 he)
 
-/-- The actual signed integral agrees with negating the positive Bochner mean. -/
+/-- The signed integral agrees with negating the positive Bochner mean. -/
 theorem diffuseSignedMeasure_mean :
     signedEmbedding 1 diffuseSignedMeasure = -positiveEmbedding 1 diffusePlaneLaw := by
   simpa only [diffuseSignedMeasure, zero_sub, signedEmbedding_zero,
@@ -109,7 +109,7 @@ theorem diffuseSignedMeasure_detected : signedEmbedding 1 diffuseSignedMeasure �
   have hmass := congrArg (fun μ : SignedMeasure (ℝ × ℝ) => μ univ) h
   norm_num [diffuseSignedMeasure, neg_apply, Measure.toSignedMeasure_apply] at hmass
 
-/-- Coincident atoms with unequal positive multiplicities have unequal actual means. -/
+/-- Coincident atoms with unequal positive multiplicities have unequal means. -/
 theorem unequal_multiplicities_detected :
     signedEmbedding 1 (VectorMeasure.dirac ((0 : ℝ), (1 : ℝ)) 1) ≠
       signedEmbedding 1 (VectorMeasure.dirac ((0 : ℝ), (1 : ℝ)) 2) := by
@@ -124,7 +124,7 @@ theorem section_nonzero : gaussianSection (by norm_num : (1 : ℝ) ≠ 0) (0, 1)
   have hp := congrArg (fun f : C₀(ℝ × ℝ, ℝ) => f (0, 1)) h
   simp [gaussianSection_apply, kernel_self] at hp
 
-/-- The actual RKHS feature gives the same C₀ section through the public evaluation API. -/
+/-- The RKHS feature gives the same C₀ section through the public evaluation API. -/
 theorem feature_c0_agrees (p : ℝ × ℝ) :
     rkhsToC0 (by norm_num : (1 : ℝ) ≠ 0) (featureAt 1 p) =
       gaussianSection (by norm_num : (1 : ℝ) ≠ 0) p := by
@@ -204,7 +204,7 @@ theorem persistenceWeight_pos (p : UpperPoint) : 0 < persistenceWeight p :=
 /-- A concrete positive finite bar for the finite and zero-weight controls. -/
 def unitBar : UpperPoint := ⟨(0, 1), by norm_num⟩
 
-/-- Coincident occurrences contribute twice to the actual positive-measure mean. -/
+/-- Coincident occurrences contribute twice to the positive-measure mean. -/
 theorem two_coincident_weighted_atoms :
     weightedPersistenceEmbedding 1 persistenceWeight
         (Measure.sum fun _ : Fin 2 => Measure.dirac unitBar) =
@@ -272,7 +272,7 @@ theorem zero_weight_not_injective (σ : ℝ) :
   have hmass := congrArg (fun μ : Measure UpperPoint => μ univ) heq
   simp at hmass
 
-/-- At zero bandwidth two distinct atoms have the same actual signed mean. -/
+/-- At zero bandwidth two distinct atoms have the same signed mean. -/
 theorem zero_bandwidth_atoms_equal :
     signedEmbedding 0 (VectorMeasure.dirac ((0 : ℝ), (1 : ℝ)) 1) =
       signedEmbedding 0 (VectorMeasure.dirac ((0 : ℝ), (2 : ℝ)) 1) := by

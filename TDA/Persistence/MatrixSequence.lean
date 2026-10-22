@@ -48,7 +48,7 @@ def toPModule (A : MatrixSequence R N) : PModule.{u,0,u} R (Fin N) :=
   rw [FiniteLine.structureMap_moduleOfAdjacent_adjacent]
   rfl
 
-/-- The actual composite matrix between any two ordered stages. -/
+/-- The composite matrix between any two ordered stages. -/
 def compositeMatrix (A : MatrixSequence R N) {i j : Fin N} (h : i ≤ j) :
     Matrix (Fin (A.dim j)) (Fin (A.dim i)) R :=
   LinearMap.toMatrix' (structureMapLinear A.toPModule h)
@@ -174,7 +174,7 @@ theorem compositeMatrix_comm (F : Hom A B) {i j : Fin N} (h : i ≤ j) :
   exact (congrArg (fun f => f.hom) (F.toNatTrans.naturality (homOfLE h))).symm
 end Hom
 
-/-- Explicit intertwining stage linear equivalences give an actual natural isomorphism. -/
+/-- Explicit intertwining stage linear equivalences give a natural isomorphism. -/
 def isoOfLinearEquiv (A B : MatrixSequence R N)
     (e : ∀ i, (Fin (A.dim i) → R) ≃ₗ[R] (Fin (B.dim i) → R))
     (he : ∀ i j (h : i.val + 1 = j.val),
@@ -253,7 +253,7 @@ def basisChangeIso (M : PModule.{u,0,u} R (Fin N)) (d e : Fin N → ℕ)
     (ofBases M d b).toPModule ≅ (ofBases M e c).toPModule :=
   (coordinateIso M d b).symm ≪≫ coordinateIso M e c
 
-/-- The component of a basis change is the actual coordinate change. -/
+/-- The component of a basis change is the coordinate change. -/
 @[simp] theorem basisChangeIso_hom_app (M : PModule.{u,0,u} R (Fin N)) (d e : Fin N → ℕ)
     (b : ∀ i, Basis (Fin (d i)) R (M.obj i))
     (c : ∀ i, Basis (Fin (e i)) R (M.obj i)) (i : Fin N) :

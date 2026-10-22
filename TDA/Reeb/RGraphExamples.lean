@@ -6,7 +6,7 @@ import Mathlib.CategoryTheory.Limits.Shapes.IsTerminal
 /-!
 # Examples: finite ℝ-graphs, their maps and refinements
 
-All fixtures use actual realizations of finite data and actual slice morphisms. The level lists
+All fixtures use realizations of finite data and slice morphisms. The level lists
 `S01` (`0 < 1`), `S0` (the single level `0`) and `S012` (`0 < 1 < 2`) are the shared fixtures of
 `ConstructibleSpaceExamples` and `ConstructibleCylinderExamples`; `Shalf` is `0 < 1/2 < 1`.
 

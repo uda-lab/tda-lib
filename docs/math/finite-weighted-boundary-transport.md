@@ -37,7 +37,7 @@ C_p(a) = Σ_i Σ_j a(i,j)c(i,j)^p
 Mass coefficients remain linear. `weightedPowerBoundaryTransportCost` takes
 the infimum over every feasible real matrix, and
 `weightedPBoundaryTransportCost` takes its reciprocal-`p` root. At each fixed
-exponent an actual feasible plan attains both quantities, and the rooted value
+exponent a feasible plan attains both quantities, and the rooted value
 also equals the infimum of rooted plan costs. The optimizer may change with `p`.
 
 Every feasible entry lies between zero and its source mass. The marginal
@@ -46,7 +46,7 @@ intervals. The objective is continuous affine in the matrix. This proves
 attainment by the extreme value theorem, including zero masses and empty
 types; it requires no supplied optimizer or compactness certificate.
 
-## Compatibility and actual consumers
+## Compatibility and consumers
 
 When every label has mass one, plan conversion in both directions proves exact
 equality with `finitePowerBoundaryTransportCost` and
@@ -58,7 +58,7 @@ masses together.
 If the target is empty, the powered optimum is exactly
 `Σ_i w(i)d(i)^p`; the source-empty formula uses `Σ_j v(j)e(j)^p`.
 Zero total mass gives zero cost even when labels and their coordinates are
-present. The actual `FiniteWeightedDiagram.powerBoundaryTransportCost` and
+present. The `FiniteWeightedDiagram.powerBoundaryTransportCost` and
 `pBoundaryTransportCost` use the diagram's finite support, inherit attainment,
 and give these same weighted diagonal moments against the zero diagram.
 
@@ -67,7 +67,7 @@ The examples include a source of mass `3/2` at `(0,2)` and a target of mass
 `t∈[0,1/2]` and has cost `2+t((3/2)^p−2)`. At `p=1`, the minimum is `7/4`
 at `t=1/2`; at `p=2`, the powered minimum is `2` at `t=0`. The first
 optimizer has second-powered cost `17/8`, so reusing it would be incorrect.
-Other examples exercise an actual split to two distinct targets, zero-weight
+Other examples exercise a split to two distinct targets, zero-weight
 labels, empty inputs, repeated unit occurrences, and fractional masses in the
 positive weighted-diagram object.
 

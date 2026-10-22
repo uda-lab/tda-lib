@@ -10,7 +10,7 @@ values of f, with `dgm k f n` as its module diagram, so the
 
 ## Conventions
 
-A filter f on a complex K with finitely many actual faces attains finitely many values. The
+A filter f on a complex K with finitely many faces attains finitely many values. The
 critical grid is their increasing enumeration c₀ < … < c_{N−1}, with tied face values merged
 and no sentinel. It is empty exactly for the empty complex. The sublevel module at t is the
 homology Hₙ(f_t; R) of the sublevel complex f_t of faces with value at most t, over a ring
@@ -61,8 +61,7 @@ d = crit g gives
   bottleneck (dgm k f n) (dgm k g n) = interleaving distance of the sublevel modules.
 
 The grids may have different lengths and are otherwise unrelated. No genericity and no
-condition on essential multiplicities is assumed. At every finite parameter ε, an actual
-ε-interleaving of the sublevel modules exists exactly when a cost-bounded occurrence matching
+condition on essential multiplicities is assumed. At every finite parameter ε, an ε-interleaving of the sublevel modules exists exactly when a cost-bounded occurrence matching
 of the two diagrams exists.
 
 The inclusion interleaving bounds the interleaving distance by the largest face difference of

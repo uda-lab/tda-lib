@@ -453,7 +453,7 @@ theorem normalColumn_zero_boundary (D R V : Matrix (Fin m) (Fin m) k)
     ext r; exact he r
 
 /-- A death column kills exactly its normalized paired cycle, with its
-actual nonzero coefficient in the original differential. -/
+nonzero coefficient in the original differential. -/
 theorem normalColumn_death_boundary (degree : Fin m → ℕ)
     (D R V W : Matrix (Fin m) (Fin m) k)
     (hD2 : D * D = 0) (hR : R = D * V)
@@ -691,7 +691,7 @@ def NormalCycle (degree : Fin m → ℕ)
   PrefixSupported t x ∧ Homogeneous degree p x ∧
     (normalDifferential R).mulVec x = 0
 
-/-- Actual boundaries in the normal coordinates at a prefix. -/
+/-- Boundaries in the normal coordinates at a prefix. -/
 def NormalBoundary (degree : Fin m → ℕ)
     (R : Matrix (Fin m) (Fin m) k) (p t : ℕ) (x : Fin m → k) : Prop :=
   ∃ y : Fin m → k, PrefixSupported t y ∧ Homogeneous degree (p + 1) y ∧
@@ -736,7 +736,7 @@ noncomputable def aliveRepresentative (degree : Fin m → ℕ)
   classical
   exact fun i => if AliveCoordinate degree R p t i then x i else 0
 
-/-- To erase an expired pivot coordinate, divide it by its actual pivot
+/-- To erase an expired pivot coordinate, divide it by its pivot
 coefficient and place it at the paired death generator. -/
 noncomputable def expiredPreimage (degree : Fin m → ℕ)
     (R : Matrix (Fin m) (Fin m) k) (p t : ℕ) (x : Fin m → k) : Fin m → k :=
@@ -1101,7 +1101,7 @@ theorem cycleLiveMap_surjective (degree : Fin m → ℕ)
 
 /-- The quotient of cycles by the kernel of live-coordinate projection is
 the degree-`p` homology at this prefix. The next theorem identifies that
-kernel with actual boundaries. -/
+kernel with boundaries. -/
 abbrev normalHomology (degree : Fin m → ℕ)
     (R : Matrix (Fin m) (Fin m) k) (p t : ℕ) : Type _ :=
   (normalCycleSpace degree R p t) ⧸
@@ -1189,7 +1189,7 @@ theorem aliveSpaceMap_comp (degree : Fin m → ℕ)
     exact aliveSpace_prefix degree R p s x j (le_trans hst hj)
   exact congrFun (aliveRepresentative_transition degree R p t u htu x.1 hx) i
 
-/-- The actual normal-coordinate homology map is transported through the
+/-- The normal-coordinate homology map is transported through the
 proved quotient/basis equivalences. -/
 noncomputable def normalHomologyMap (degree : Fin m → ℕ)
     (D R V W : Matrix (Fin m) (Fin m) k)
@@ -1460,7 +1460,7 @@ noncomputable def normalHomologyMap_rangeEquiv (degree : Fin m → ℕ)
     apply Subtype.ext
     simp
 
-/-- Structure-map rank on the actual quotient homology spaces. -/
+/-- Structure-map rank on the quotient homology spaces. -/
 theorem normalHomologyMap_rank_formula (degree : Fin m → ℕ)
     (D R V W : Matrix (Fin m) (Fin m) k)
     (hD2 : D * D = 0) (hR : R = D * V)

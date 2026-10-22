@@ -7,7 +7,7 @@ open CategoryTheory Module
 namespace TDA.Simplicial
 variable {V : Type u} [LinearOrder V]
 
-private noncomputable abbrev actualCyclesQuotientWitness
+private noncomputable abbrev simplicialCyclesQuotientWitness
     (K : PreAbstractSimplicialComplex V) (R : Type v) [CommRing R] (n : ℕ) :
     HasQuotient (simplicialCycles K R n) (Submodule R (simplicialCycles K R n)) :=
   Submodule.hasQuotient (R := R) (M := simplicialCycles K R n)
@@ -18,7 +18,7 @@ private noncomputable abbrev coordinateCyclesQuotientWitness
     HasQuotient (coordinateCycles K R n) (Submodule R (coordinateCycles K R n)) :=
   Submodule.hasQuotient (R := R) (M := coordinateCycles K R n)
 
-attribute [local instance] actualCyclesQuotientWitness coordinateCyclesQuotientWitness
+attribute [local instance] simplicialCyclesQuotientWitness coordinateCyclesQuotientWitness
 
 
 abbrev coordinateHomology

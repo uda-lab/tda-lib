@@ -70,7 +70,7 @@ private def positiveIso :
           MatrixSequenceExamples.compositeZero _ _ (by decide)]
       rfl)
 
-/-- The actual original endpoints survive conversion from rectangular matrices. -/
+/-- The original endpoints survive conversion from rectangular matrices. -/
 theorem real_endpoints : (observations.realDiagram coarse).points =
     ((-1 : ℝ), (4 : WithTop ℝ)) ::ₘ (1 / 10, ⊤) ::ₘ 0 := by
   letI : ∀ i : Fin 3, FiniteDimensional ℚ

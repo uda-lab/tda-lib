@@ -72,7 +72,7 @@ theorem vertexChainMap_orientedTuple (f : VertexMap K L) {n : ℕ}
     rw [orientedTuple_of_not_injective K R x hx, map_zero,
       orientedTuple_of_not_injective L R _ hfx]
 
-/-- The actual signed boundary commutes with every simplicial vertex map. -/
+/-- The signed boundary commutes with every simplicial vertex map. -/
 theorem boundary_vertexChainMap (f : VertexMap K L) (n : ℕ) :
     (boundary L R n).comp (vertexChainMap R f (n + 1)) =
       (vertexChainMap R f n).comp (boundary K R n) := by
@@ -135,7 +135,7 @@ theorem simplicialChainMap_id (K : PreAbstractSimplicialComplex V) :
   intro n
   simp [vertexChainMap_id]
 
-/-- Arbitrary vertex maps induce strictly composable actual chain maps. -/
+/-- Arbitrary vertex maps induce strictly composable chain maps. -/
 theorem simplicialChainMap_comp (f : VertexMap K L) (g : VertexMap L M) :
     simplicialChainMap R (VertexMap.comp f g) =
       simplicialChainMap R f ≫ simplicialChainMap R g := by
@@ -156,7 +156,7 @@ def inclusionVertexMap {K L : PreAbstractSimplicialComplex V} (h : K ≤ L) :
     rw [he]
     exact h hs
 
-/-- The new signed map specializes to the existing actual linear inclusion. -/
+/-- The new signed map specializes to the existing linear inclusion. -/
 theorem vertexChainMap_inclusion {K L : PreAbstractSimplicialComplex V}
     (h : K ≤ L) (n : ℕ) : vertexChainMap R (inclusionVertexMap h) n = chainIncl R h n := by
   apply Finsupp.lhom_ext
@@ -167,26 +167,26 @@ theorem vertexChainMap_inclusion {K L : PreAbstractSimplicialComplex V}
   rw [ht, orientedTuple_face]
   simp
 
-/-- The new chain map agrees with the existing actual chain inclusion. -/
+/-- The new chain map agrees with the existing chain inclusion. -/
 theorem simplicialChainMap_inclusion {K L : PreAbstractSimplicialComplex V}
     (h : K ≤ L) : simplicialChainMap R (inclusionVertexMap h) = simplicialChainIncl R h := by
   apply HomologicalComplex.hom_ext
   intro n
   simp [vertexChainMap_inclusion]
 
-/-- The map on the existing actual simplicial homology induced by a vertex map. -/
+/-- The map on the existing simplicial homology induced by a vertex map. -/
 def simplicialHomologyMap (f : VertexMap K L) (n : ℕ) :
     simplicialHomology K R n ⟶ simplicialHomology L R n :=
   HomologicalComplex.homologyMap (simplicialChainMap R f) n
 
-/-- Actual homology takes identity vertex maps to identity maps. -/
+/-- Homology takes identity vertex maps to identity maps. -/
 theorem simplicialHomologyMap_id (K : PreAbstractSimplicialComplex V) (n : ℕ) :
     simplicialHomologyMap R (VertexMap.id K) n = 𝟙 (simplicialHomology K R n) := by
   unfold simplicialHomologyMap
   rw [simplicialChainMap_id]
   exact HomologicalComplex.homologyMap_id _ n
 
-/-- Actual homology takes vertex-map composition to composition. -/
+/-- Homology takes vertex-map composition to composition. -/
 theorem simplicialHomologyMap_comp (f : VertexMap K L) (g : VertexMap L M) (n : ℕ) :
     simplicialHomologyMap R (VertexMap.comp f g) n =
       simplicialHomologyMap R f n ≫ simplicialHomologyMap R g n := by
@@ -194,7 +194,7 @@ theorem simplicialHomologyMap_comp (f : VertexMap K L) (g : VertexMap L M) (n : 
   rw [simplicialChainMap_comp]
   exact HomologicalComplex.homologyMap_comp _ _ n
 
-/-- The actual induced homology map specializes to the existing inclusion. -/
+/-- The induced homology map specializes to the existing inclusion. -/
 theorem simplicialHomologyMap_inclusion {K L : PreAbstractSimplicialComplex V}
     (h : K ≤ L) (n : ℕ) :
     simplicialHomologyMap R (inclusionVertexMap h) n = simplicialHomologyIncl R h n := by
@@ -207,7 +207,7 @@ theorem vertexChainMap_single_of_not_injective (f : VertexMap K L) (n : ℕ)
     vertexChainMap R f n (Finsupp.single s a) = 0 := by
   rw [vertexChainMap_single, orientedTuple_of_not_injective L R _ hx, smul_zero]
 
-/-- The actual image face when a vertex map is injective on the enumerated face. -/
+/-- The image face when a vertex map is injective on the enumerated face. -/
 def vertexImageFace (f : VertexMap K L) {n : ℕ} (s : Face K n)
     (hx : Function.Injective (f ∘ s.1.orderEmbOfFin s.2.2)) : Face L n :=
   tupleFace L _ hx (vertexTuple_mem f _ (by
@@ -223,7 +223,7 @@ theorem vertexChainMap_single_of_injective (f : VertexMap K L) (n : ℕ)
     (vertexTuple_mem f _ (by simpa only [Finset.image_orderEmbOfFin_univ] using s.2.1))]
   rfl
 
-/-- A vertex generator maps to its actual image vertex generator with unchanged coefficient. -/
+/-- A vertex generator maps to its image vertex generator with unchanged coefficient. -/
 theorem vertexChainMap_vertex (f : VertexMap K L) (s : Face K 0) (a : R) :
     vertexChainMap R f 0 (Finsupp.single s a) =
       Finsupp.single (vertexImageFace f s (fun i j _ => Fin.ext (by omega))) a := by
@@ -261,7 +261,7 @@ private theorem shortHomologyClass_map
   rw [hc] at hn
   exact hn
 
-/-- The actual homology class of an actual cycle, through mathlib's homology projection. -/
+/-- The homology class of a cycle, through mathlib's homology projection. -/
 def simplicialHomologyClass (K : PreAbstractSimplicialComplex V) (n : ℕ)
     (z : simplicialCycles K R n) : simplicialHomology K R n :=
   shortHomologyClass R ((simplicialChainComplex K R).sc n) z
@@ -277,7 +277,7 @@ theorem simplicialHomologyClass_quotient (K : PreAbstractSimplicialComplex V) (n
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rfl
 
-/-- The actual induced homology map takes a cycle class to its actual chain image class. -/
+/-- The induced homology map takes a cycle class to its chain image class. -/
 theorem simplicialHomologyMap_class (f : VertexMap K L) (n : ℕ)
     (z : simplicialCycles K R n) (w : simplicialCycles L R n)
     (h : vertexChainMap R f n (z : Chain K R n) = (w : Chain L R n)) :
@@ -286,7 +286,7 @@ theorem simplicialHomologyMap_class (f : VertexMap K L) (n : ℕ)
   exact shortHomologyClass_map R _ _
     ((HomologicalComplex.shortComplexFunctor _ _ n).map (simplicialChainMap R f)) z w h
 
-/-- The actual singleton vertex class has its original coefficient under the existing H0 equivalence. -/
+/-- The singleton vertex class has its original coefficient under the existing H0 equivalence. -/
 theorem simplicialSingletonH0Equiv_class (v : V) (a : R) :
     simplicialSingletonH0Equiv R v
       (simplicialHomologyClass R (Filtration.singletonFace v) 0

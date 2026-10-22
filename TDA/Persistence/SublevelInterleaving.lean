@@ -8,8 +8,8 @@ set_option autoImplicit false
 # Inclusion-induced interleavings of simplicial persistence modules
 
 A pointwise inclusion of simplicial filtrations induces a natural transformation of their
-homology persistence modules, whose components are the actual homology inclusions. Two real
-filtrations, each contained in the other after a shift by `ε`, give an actual real
+homology persistence modules, whose components are the homology inclusions. Two real
+filtrations, each contained in the other after a shift by `ε`, give a real
 `ε`-interleaving: every map in both double-shift equations is a homology inclusion, so both
 equations reduce to the functoriality of homology inclusions. For two real filters on the
 same complex whose face values differ by at most `ε`, this is an `ε`-interleaving of their
@@ -36,7 +36,7 @@ section Inclusion
 variable {P : Type w} [Preorder P] {F G H : SimplicialFiltration P V}
 
 /-- A pointwise inclusion of filtrations induces the morphism of homology persistence modules
-whose components are the actual homology inclusions. -/
+whose components are the homology inclusions. -/
 noncomputable def inclusionHom (h : ∀ p, F p ≤ G p) :
     simplicialHomologyPModule R F n ⟶ simplicialHomologyPModule R G n where
   app p := simplicialHomologyIncl R (h p) n
@@ -46,7 +46,7 @@ noncomputable def inclusionHom (h : ∀ p, F p ≤ G p) :
       simplicialHomologyIncl R (h p) n ≫ simplicialHomologyIncl R (G.monotone (leOfHom f)) n
     rw [← simplicialHomologyIncl_comp, ← simplicialHomologyIncl_comp]
 
-/-- The component of the inclusion morphism is the actual homology inclusion. -/
+/-- The component of the inclusion morphism is the homology inclusion. -/
 @[simp] theorem inclusionHom_app (h : ∀ p, F p ≤ G p) (p : P) :
     (inclusionHom R n h).app p = simplicialHomologyIncl R (h p) n := rfl
 
@@ -97,8 +97,7 @@ private theorem incl_comp_comp {K L M N : PreAbstractSimplicialComplex V}
 
 variable {F G : SimplicialFiltration ℝ V} {ε : ℝ≥0}
 
-/-- Two real filtrations, each contained in the other after a shift by `ε`, give an actual
-real `ε`-interleaving of their homology modules, with homology inclusions as maps. -/
+/-- Two real filtrations, each contained in the other after a shift by `ε`, give a real `ε`-interleaving of their homology modules, with homology inclusions as maps. -/
 noncomputable def inclusionInterleaving (hFG : ∀ t, F t ≤ G (t + ε))
     (hGF : ∀ t, G t ≤ F (t + ε)) :
     RealInterleaving ε (simplicialHomologyPModule R F n) (simplicialHomologyPModule R G n) :=

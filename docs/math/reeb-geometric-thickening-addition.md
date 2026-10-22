@@ -82,8 +82,7 @@ intervalComponentNatTrans (addMap X ε δ) _ ≫ componentComparison f (ε + δ)
 (`addMap_comp_componentComparison`). On a representative `((x, s), t)` both sides give the class of
 `x` in `f ⁻¹ (thicken (ε + δ) I)`: the left side through `(x, s + t)`, the right side through
 `(x, s)`, then `x` in `f ⁻¹ (thicken δ (thicken ε I))`, then the transport of
-`thickenCompIso ε δ`, which is the identity on points. The equation uses the actual
-`smoothingCompIso`. On the slice it holds objectwise
+`thickenCompIso ε δ`, which is the identity on points. The equation uses the `smoothingCompIso`. On the slice it holds objectwise
 (`map_addNatTrans_comp_componentComparisonNatIso`) and as an equation of natural transformations
 `(functor δ ⋙ functor ε) ⋙ 𝒞 ⟶ 𝒞 ⋙ smoothing (ε + δ)`
 (`whiskerRight_addNatTrans_comp_componentComparisonNatIso`).

@@ -7,7 +7,7 @@ import Mathlib.Tactic.Linarith
 
 Interval comparisons preserve the coefficient on their overlap. Endpoint bounds
 ensure naturality, including when the overlap is empty. Opposite comparisons give
-actual interleavings; short intervals have zero double-shift maps at equality too.
+interleavings; short intervals have zero double-shift maps at equality too.
 -/
 
 set_option autoImplicit false
@@ -25,7 +25,7 @@ private theorem val_eq_zero {p : ℝ × WithTop ℝ} {t : ℝ}
     (h : ¬ alive p t) (x : fiber (k := k) p t) : (x : k) = 0 := by
   simpa only [fiber, if_neg h, Submodule.mem_bot] using x.property
 
-/-- The actual interval structure map preserves coefficients until the excluded death. -/
+/-- The interval structure map preserves coefficients until the excluded death. -/
 theorem map_val (p : ℝ × WithTop ℝ) {s t : ℝ} (f : s ⟶ t)
     (x : fiber (k := k) p s) :
     ((show fiber (k := k) p t from ((intervalModule p).map f).hom x) : k) = if alive p t then (x : k) else 0 := by
@@ -88,7 +88,7 @@ noncomputable def comparison (ε : ℝ≥0) (p q : ℝ × WithTop ℝ)
       · simp [ht]
     · simp [val_eq_zero hs x]
 
-/-- Comparison components preserve the actual coefficient exactly on the target support. -/
+/-- Comparison components preserve the coefficient exactly on the target support. -/
 theorem comparison_app_val (ε : ℝ≥0) (p q : ℝ × WithTop ℝ)
     (hb : q.1 ≤ p.1 + (ε : ℝ))
     (hd : q.2 ≤ p.2 + ((ε : ℝ) : WithTop ℝ)) (t : ℝ)

@@ -253,7 +253,7 @@ theorem bottleneck_translate_eq_of_essential (D : Diagram ℝ) (c : ℝ)
   le_antisymm (bottleneck_translate_le D c)
     (bottleneck_translate_ge_of_essential D c hne)
 
-/-- Add a constant to every actual face value of a finite-complex filter. -/
+/-- Add a constant to every face value of a finite-complex filter. -/
 def translateFilterFunction {V : Type*} [LinearOrder V]
     {K : PreAbstractSimplicialComplex V}
     (f : TDA.Filtration.FilterFunction K ℝ) (c : ℝ) :
@@ -261,7 +261,7 @@ def translateFilterFunction {V : Type*} [LinearOrder V]
   value σ := f.value σ + c
   mono h := by simpa [add_comm] using add_le_add_right (f.mono h) c
 
-/-- The attained-grade diagram transport theorem identifies the shifted actual diagram
+/-- The attained-grade diagram transport theorem identifies the shifted diagram
 with the pointwise translation of the original one. -/
 theorem dgm_translateFilterFunction (k : Type u) [Field k]
     {V : Type u} [LinearOrder V]
@@ -285,7 +285,7 @@ theorem dgm_translateFilterFunction (k : Type u) [Field k]
   exact dgm_points_map_of_strictMonoOn k f (translateFilterFunction f c)
     φ hφ hvalue n
 
-/-- The constant-shift bottleneck bound for any actual finite-complex diagram. -/
+/-- The constant-shift bottleneck bound for any finite-complex diagram. -/
 theorem bottleneck_dgm_translateFilterFunction_le (k : Type u) [Field k]
     {V : Type u} [LinearOrder V]
     {K : PreAbstractSimplicialComplex V}
@@ -296,7 +296,7 @@ theorem bottleneck_dgm_translateFilterFunction_le (k : Type u) [Field k]
   rw [dgm_translateFilterFunction]
   exact bottleneck_translate_le (dgm k f n) c
 
-/-- Exact constant-shift displacement for an actual degree diagram whenever it has an
+/-- Exact constant-shift displacement for a degree diagram whenever it has an
 essential occurrence. -/
 theorem bottleneck_dgm_translateFilterFunction_eq_of_essential (k : Type u) [Field k]
     {V : Type u} [LinearOrder V]
@@ -362,7 +362,7 @@ namespace OccurrenceMatching
 variable {D E : Diagram ℝ}
 
 /-- Return a translated target to its original occurrence labels. This operation
-uses a supplied actual matching and makes no existence or cost claim about it. -/
+uses a supplied matching and makes no existence or cost claim about it. -/
 noncomputable def untranslateTarget (a : ℝ)
     (A : OccurrenceMatching D.finiteOccurrences (translateDiagram E a).finiteOccurrences
       D.essentialOccurrences (translateDiagram E a).essentialOccurrences) :

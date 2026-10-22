@@ -5,7 +5,7 @@ import TDA.Filtration.CechDisplacementExamples
 set_option autoImplicit false
 
 /-!
-# Actual Čech diagram stability fixtures
+# Čech diagram stability fixtures
 
 One point of a two-point configuration on the line moves by one, which changes the edge's
 Čech value by only `1/2` while the diagrams stay within the displacement. The three-point
@@ -45,7 +45,7 @@ theorem displacement_eq : Cech.displacement p q = 1 := by
     norm_num [Cech.Examples.TwoPoints.pts, q, Real.dist_eq] at h
     exact h
 
-/-- The edge joining the two labels, as an actual face. -/
+/-- The edge joining the two labels, as a face. -/
 abbrev edgeFace : TotalFace (Rips.fullComplex (Fin 2)) := Cech.Examples.TwoPoints.edgeFace
 
 theorem cech_value_p : (Cech.filter p).value edgeFace = 1 :=

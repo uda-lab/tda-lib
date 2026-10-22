@@ -6,7 +6,7 @@ Authors: Fabian Odermatt
 The finite-partition proof in prism_sum_cancel is adapted from
 Mathlib/AlgebraicTopology/SimplicialObject/ChainHomotopy.lean at
 0df444a360eaa60ab8c11dca51a86af692955474. The adaptation separates the
-additive cancellation from simplicial objects and supplies actual-face tuple
+additive cancellation from simplicial objects and supplies face tuple
 identities and face membership for the signed prism constructed here.
 -/
 import TDA.Simplicial.Contiguity
@@ -14,7 +14,7 @@ import TDA.Simplicial.VertexChainMap
 import Mathlib.Algebra.Homology.Homotopy
 
 /-!
-# Contiguity on actual signed simplicial chains
+# Contiguity on signed simplicial chains
 
 Two vertex maps are contiguous when the union of their images of each source
 face is a target face. Their signed prism `P` satisfies `∂P + P∂ = g# - f#`
@@ -22,7 +22,7 @@ on the existing ordered-face complex, over every ring. In degree zero this
 reduces to `∂P₀ = g₀ - f₀`. Mathlib's homotopy from `f#` to `g#` therefore
 has component `-P`.
 
-Contiguity supplies the actual face membership of every mixed tuple. Repeated
+Contiguity supplies the face membership of every mixed tuple. Repeated
 vertices are handled by the existing oriented-tuple cancellation theorem, so
 the maps may identify vertices and the coefficient ring may have torsion.
 -/
@@ -284,7 +284,7 @@ variable {f g : VertexMap K L}
 
 namespace Contiguous
 
-/-- The positive signed prism of two contiguous maps on actual ordered faces. -/
+/-- The positive signed prism of two contiguous maps on ordered faces. -/
 def prismMap (_h : Contiguous f g) (n : ℕ) : Chain K R n →ₗ[R] Chain L R (n + 1) :=
   Finsupp.linearCombination R (fun s : Face K n =>
     tuplePrism L R (f ∘ s.1.orderEmbOfFin s.2.2) (g ∘ s.1.orderEmbOfFin s.2.2))
@@ -329,7 +329,7 @@ theorem boundary_prismMap_zero (h : Contiguous f g) :
   simp only [prismMap_single_tuple, vertexChainMap_single, one_smul]
   exact tuplePrism_boundary_zero L R _ _ (face_union_mem h s)
 
-/-- In every positive degree the actual prism satisfies the signed chain-homotopy equation. -/
+/-- In every positive degree the prism satisfies the signed chain-homotopy equation. -/
 theorem boundary_prismMap_succ (h : Contiguous f g) (n : ℕ) :
     (boundary L R (n + 1)).comp (prismMap R h (n + 1)) +
       (prismMap R h n).comp (boundary K R n) =
@@ -372,7 +372,7 @@ private theorem homotopyComponent_succ (h : Contiguous f g) (i : ℕ) :
     homotopyComponent R h i (i + 1) = ModuleCat.ofHom (-prismMap R h i) := by
   simp [homotopyComponent]
 
-/-- The actual chain homotopy of contiguous maps. Its component is the negative prism. -/
+/-- The chain homotopy of contiguous maps. Its component is the negative prism. -/
 def chainHomotopy (h : Contiguous f g) :
     Homotopy (simplicialChainMap R f) (simplicialChainMap R g) where
   hom := homotopyComponent R h
@@ -414,7 +414,7 @@ theorem chainHomotopy_hom_eq_zero (h : Contiguous f g) (i j : ℕ) (hij : i + 1 
     (chainHomotopy R h).hom i j = 0 := by
   exact dif_neg hij
 
-/-- Contiguous arbitrary vertex maps induce equal maps on the existing actual homology. -/
+/-- Contiguous arbitrary vertex maps induce equal maps on the existing homology. -/
 theorem simplicialHomologyMap_eq (h : Contiguous f g) (n : ℕ) :
     TDA.Simplicial.simplicialHomologyMap R f n = TDA.Simplicial.simplicialHomologyMap R g n :=
   (chainHomotopy R h).homologyMap_eq n

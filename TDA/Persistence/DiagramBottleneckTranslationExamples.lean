@@ -110,7 +110,7 @@ theorem finite_only_shift_three_distance :
   rw [hshift]
   exact finite_only_translation_counterexample
 
-/-- The actual one-vertex degree-zero diagram is essential, and translating its
+/-- The one-vertex degree-zero diagram is essential, and translating its
 face value by `c` moves it by exactly `|c|`. -/
 theorem isolated_vertex_translation_exact (a c : ℝ) :
     bottleneck

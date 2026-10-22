@@ -3,7 +3,7 @@ import TDA.Persistence.CechStability
 import TDA.Persistence.EssentialVanishing
 
 /-!
-# Uniform bottleneck recovery for actual Čech sublevel diagrams
+# Uniform bottleneck recovery for Čech sublevel diagrams
 
 On a fixed finite label type, positive-degree Čech diagrams have no essential
 bars and each finite occurrence count is bounded by the number of possible
@@ -50,8 +50,7 @@ private theorem diagramPair_mem_uniformBudget (k : Type u) [Field k]
   · exact (bottleneck_dgm_le_displacement k a b n).trans
       (ENNReal.ofReal_le_ofReal hδ)
 
-/-- A displacement budget supplies the count/radius error bound for actual
-positive-degree Čech sublevel diagrams and the rooted matching optimum. -/
+/-- A displacement budget supplies the count/radius error bound for positive-degree Čech sublevel diagrams and the rooted matching optimum. -/
 theorem finitePMatchingCost_dgm_abs_sub_bottleneck_le_uniformBound
     {p : ℝ} (hp : 1 ≤ p) (k : Type u) [Field k] (a b : V → X)
     {n : ℕ} (hn : 1 ≤ n) {R : ℝ} (hR : 0 ≤ R)
@@ -64,7 +63,7 @@ theorem finitePMatchingCost_dgm_abs_sub_bottleneck_le_uniformBound
   exact finitePMatchingCost_abs_sub_bottleneck_le_uniformBound hp _ _
     h.1 h.2.1 h.2.2.1 hR h.2.2.2
 
-/-- The actual optimized real reservoir cost satisfies the same input-level
+/-- The optimized real reservoir cost satisfies the same input-level
 bound, through its equality with the optimized matching cost. -/
 theorem finitePBoundaryTransportCost_dgm_abs_sub_bottleneck_le_uniformBound
     {p : ℝ} (hp : 1 ≤ p) (k : Type u) [Field k] (a b : V → X)
@@ -94,7 +93,7 @@ theorem finitePMatchingCost_dgm_tendstoUniformlyOn_bottleneck
       (fun z : (V → X) × (V → X) => (dgm k (Cech.filter z.1) n, dgm k (Cech.filter z.2) n))
   exact h.mono fun z hz => diagramPair_mem_uniformBudget k z.1 z.2 hn hz
 
-/-- Uniform recovery of full bottleneck by the actual rooted all-real-plan
+/-- Uniform recovery of full bottleneck by the rooted all-real-plan
 optimum on the same displacement class of positive-degree sublevel diagrams. -/
 theorem finitePBoundaryTransportCost_dgm_tendstoUniformlyOn_bottleneck
     (k : Type u) [Field k] (n : ℕ) (hn : 1 ≤ n) (R : ℝ) (hR : 0 ≤ R) :

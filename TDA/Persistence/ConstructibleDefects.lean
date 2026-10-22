@@ -5,12 +5,11 @@ import Mathlib.CategoryTheory.Limits.Preserves.FunctorCategory
 import Mathlib.CategoryTheory.Limits.Preserves.Shapes.Kernels
 
 /-!
-# Constructibility and critical sampling of actual defects
+# Constructibility and critical sampling of defects
 
-On a finite real grid, constructibility means an actual zero left tail and
-isomorphic actual structure maps within each cell, including the right tail.
-Naturality between within-cell isomorphisms induces isomorphisms on the actual
-kernel and cokernel. Critical sampling preserves these defects as natural
+On a finite real grid, constructibility means a zero left tail and
+isomorphic structure maps within each cell, including the right tail.
+Naturality between within-cell isomorphisms induces isomorphisms on the kernel and cokernel. Critical sampling preserves these defects as natural
 isomorphisms, with their inclusions and projections retained.
 These constructions work over a ring with independent carrier universe.
 -/
@@ -26,7 +25,7 @@ open CategoryTheory CategoryTheory.Limits
 variable {R : Type u} [Ring R] {n : ℕ} {c : Fin n ↪o ℝ}
 variable {M N : PModule.{u,0,w} R ℝ}
 
--- Evaluation compares an actual defect map with the map induced by the
+-- Evaluation compares a defect map with the map induced by the
 -- naturality square. Invertible source and target maps make that map invertible.
 private theorem kernel_structureMap_isIso (f : M ⟶ N) {s t : ℝ} (h : s ≤ t)
     [IsIso (structureMap M h)] [IsIso (structureMap N h)] :
@@ -80,7 +79,7 @@ private theorem cokernel_structureMap_isIso (f : M ⟶ N) {s t : ℝ} (h : s ≤
   rw [he]
   infer_instance
 
-/-- The actual kernel of a morphism between modules on the same grid is constructible. -/
+/-- The kernel of a morphism between modules on the same grid is constructible. -/
 theorem IsConstructible.kernel (hM : IsConstructible c M) (hN : IsConstructible c N)
     (f : M ⟶ N) : IsConstructible c (kernel f) where
   zero_left t ht := IsZero.of_mono_eq_zero ((kernel.ι f).app t)
@@ -90,7 +89,7 @@ theorem IsConstructible.kernel (hM : IsConstructible c M) (hN : IsConstructible 
     have := hN.isIso_map s t h hc
     exact kernel_structureMap_isIso f h
 
-/-- The actual cokernel is constructible; its zero left tail comes from the target. -/
+/-- The cokernel is constructible; its zero left tail comes from the target. -/
 theorem IsConstructible.cokernel (hM : IsConstructible c M) (hN : IsConstructible c N)
     (f : M ⟶ N) : IsConstructible c (cokernel f) where
   zero_left t ht := IsZero.of_epi_eq_zero ((cokernel.π f).app t)
@@ -100,24 +99,24 @@ theorem IsConstructible.cokernel (hM : IsConstructible c M) (hN : IsConstructibl
     have := hN.isIso_map s t h hc
     exact cokernel_structureMap_isIso f h
 
-/-- Critical sampling, as used by `moduleDiagram`, preserves the actual kernel.
+/-- Critical sampling, as used by `moduleDiagram`, preserves the kernel.
 This sampling has no padded zero stage. -/
 noncomputable def criticalKernelIso (c : Fin n ↪o ℝ) (f : M ⟶ N) :
     reindex c.toOrderHom (kernel f) ≅ kernel (reindexNatTrans c.toOrderHom f) :=
   PreservesKernel.iso ((Functor.whiskeringLeft _ _ _).obj c.toOrderHom.toFunctor) f
 
-/-- The natural kernel comparison retains its actual inclusion. -/
+/-- The natural kernel comparison retains its inclusion. -/
 theorem criticalKernelIso_inv_ι (c : Fin n ↪o ℝ) (f : M ⟶ N) :
     (criticalKernelIso c f).inv ≫ reindexNatTrans c.toOrderHom (kernel.ι f) =
       kernel.ι (reindexNatTrans c.toOrderHom f) :=
   PreservesKernel.iso_inv_ι ((Functor.whiskeringLeft _ _ _).obj c.toOrderHom.toFunctor) f
 
-/-- Critical sampling preserves the actual cokernel as a natural isomorphism. -/
+/-- Critical sampling preserves the cokernel as a natural isomorphism. -/
 noncomputable def criticalCokernelIso (c : Fin n ↪o ℝ) (f : M ⟶ N) :
     reindex c.toOrderHom (cokernel f) ≅ cokernel (reindexNatTrans c.toOrderHom f) :=
   PreservesCokernel.iso ((Functor.whiskeringLeft _ _ _).obj c.toOrderHom.toFunctor) f
 
-/-- The natural cokernel comparison retains its actual projection. -/
+/-- The natural cokernel comparison retains its projection. -/
 theorem criticalCokernelIso_π_hom (c : Fin n ↪o ℝ) (f : M ⟶ N) :
     reindexNatTrans c.toOrderHom (cokernel.π f) ≫ (criticalCokernelIso c f).hom =
       cokernel.π (reindexNatTrans c.toOrderHom f) :=

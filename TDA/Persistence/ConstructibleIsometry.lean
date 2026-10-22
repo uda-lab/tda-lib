@@ -4,7 +4,7 @@ import TDA.Persistence.MatchingInterleavingDistance
 /-!
 # Isometry for finite-constructible real persistence modules
 
-Returning the actual induced matching's shifted target gives an epsilon-cost
+Returning the induced matching's shifted target gives an epsilon-cost
 matching of the original diagrams. Every interleaving parameter therefore
 bounds the bottleneck. Taking the extended infimum and combining the existing
 reverse inequality proves equality, without assuming either infimum is attained.
@@ -82,7 +82,7 @@ variable (hfdN : ∀ j, FiniteDimensional k (N.obj (d j)))
 
 include hM hN
 
-/-- An actual interleaving constructs a matching of the original unshifted
+/-- An interleaving constructs a matching of the original unshifted
 diagrams. All common-grid, finiteness and defect data are derived. -/
 noncomputable def interleavingMatching {ε : ℝ≥0} (i : RealInterleaving ε M N) :
     OccurrenceMatching (moduleDiagram c M hfdM).finiteOccurrences
@@ -90,7 +90,7 @@ noncomputable def interleavingMatching {ε : ℝ≥0} (i : RealInterleaving ε M
       (moduleDiagram c M hfdM).essentialOccurrences (moduleDiagram d N hfdN).essentialOccurrences :=
   (interleaving_shifted_induced_matching hM hN hfdM hfdN i).choose.untranslateTarget (-(ε : ℝ))
 
-/-- The matching constructed from the actual interleaving has cost at most its
+/-- The matching constructed from the interleaving has cost at most its
 parameter, including zero; no supplied cost or optimality witness is needed. -/
 theorem interleavingMatching_cost_le {ε : ℝ≥0} (i : RealInterleaving ε M N) :
     (interleavingMatching hM hN hfdM hfdN i).cost
@@ -99,7 +99,7 @@ theorem interleavingMatching_cost_le {ε : ℝ≥0} (i : RealInterleaving ε M N
     (moduleDiagram_isPositive d N hfdN) ε _
     (interleaving_shifted_induced_matching hM hN hfdM hfdN i).choose_spec
 
-/-- Every actual finite-parameter interleaving bounds the bottleneck of the two
+/-- Every finite-parameter interleaving bounds the bottleneck of the two
 original diagrams; the critical grids may have different sizes. -/
 theorem bottleneck_le_of_interleaving {ε : ℝ≥0} (i : RealInterleaving ε M N) :
     bottleneck (moduleDiagram c M hfdM) (moduleDiagram d N hfdN) ≤ (ε : ℝ≥0∞) :=
@@ -123,7 +123,7 @@ theorem bottleneck_eq_distance :
   le_antisymm (bottleneck_le_distance hM hN hfdM hfdN)
     (distance_le_bottleneck c d M N hM hN hfdM hfdN)
 
-/-- At every finite parameter, actual interleavings and cost-bounded occurrence
+/-- At every finite parameter, interleavings and cost-bounded occurrence
 matchings exist together, without infimum attainment as a hypothesis. -/
 theorem interleaving_iff_matching (ε : ℝ≥0) :
     Nonempty (RealInterleaving ε M N) ↔

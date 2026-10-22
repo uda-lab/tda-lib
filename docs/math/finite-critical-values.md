@@ -2,8 +2,7 @@
 
 ## Construction
 
-Let `K` be a preabstract simplicial complex on an arbitrary type `V`, and suppose the actual
-face type `TDA.Simplicial.TotalFace K` is equipped with `Fintype`. For a
+Let `K` be a preabstract simplicial complex on an arbitrary type `V`, and suppose the face type `TDA.Simplicial.TotalFace K` is equipped with `Fintype`. For a
 `FilterFunction K α` with `[LinearOrder α]`, define
 
 ```lean
@@ -13,7 +12,7 @@ gradeFiltration f =
   TDA.Filtration.reindex f.criticalValue.toOrderHom f.sublevelFiltration
 ```
 
-The finite set contains the distinct values on actual nonempty faces, so its cardinality counts
+The finite set contains the distinct values on nonempty faces, so its cardinality counts
 grades rather than faces. `criticalValue` lists those values in increasing order. The grade
 filtration is exactly the existing sublevel filtration reindexed along this embedding.
 
@@ -21,7 +20,7 @@ filtration is exactly the existing sublevel filtration reindexed along this embe
 
 The public laws in `TDA.Filtration.CriticalValues` establish that:
 
-- `mem_criticalValues` identifies membership with attainment on an actual face.
+- `mem_criticalValues` identifies membership with attainment on a face.
 - `criticalValues_eq_empty_iff` characterizes the empty image by `K = ⊥`.
 - `criticalValue_mem` and `exists_criticalValue_eq` give the two directions of coverage
   between the enumeration and face values.
@@ -53,13 +52,13 @@ that data from a finite presentation.
 This construction extends the existing face-value sublevel API directly:
 
 - `TDA/Filtration/FilterFunction.lean` (blob
-  `bcf4907aaec0a1cb2ce116c661230a115fdf4a65`) defines the actual-face domain, sublevel
+  `bcf4907aaec0a1cb2ce116c661230a115fdf4a65`) defines the face domain, sublevel
   membership, monotonicity, and bottom/self endpoint lemmas.
 - `TDA/Filtration/Basic.lean` (blob
   `77a63f98ba6e7c3cbfe6fc92f6a51014643ef32f`) supplies `SimplicialFiltration`,
   `reindex`, and its evaluation law.
 - `TDA/Simplicial/Bridge.lean` (blob
-  `a811965673ef1d3da54efe0aef768bcbf3ae1d50`) supplies the type of actual nonempty faces.
+  `a811965673ef1d3da54efe0aef768bcbf3ae1d50`) supplies the type of nonempty faces.
 - `Mathlib.Data.Finset.Sort` at pinned mathlib revision
   `0df444a360eaa60ab8c11dca51a86af692955474` supplies `Finset.orderEmbOfFin` and the
   increasing finite enumeration used here.

@@ -383,7 +383,7 @@ More generally, a specified presentation isomorphism
 original carrier `A.left`. Both objects are constructible, by
 `isConstructibleSpace_of_iso_realization` and `isConstructibleSpace_levelPerturbation`.
 The carrier form `constructibleInterleavingDistance_levelPerturbation_le` bounds their
-distance by the actual sup distance of their heights on `A.left`; `edist_levelPerturbation_le`
+distance by the sup distance of their heights on `A.left`; `edist_levelPerturbation_le`
 then bounds that quantity by `edist S.value T.value`. On fixed finite incidence data `D`,
 `geometricInterleavingDistance_toRGraph_le` gives the graph-object form
 
@@ -402,7 +402,7 @@ ENNReal.ofReal |sSup (Set.range (overBaseMap X.obj)) -
 ```
 
 by `ofReal_abs_sSup_range_sub_le_constructibleInterleavingDistance`. Both nonempty carrier
-hypotheses are explicit. The ranges are the actual sets of attained heights; extreme listed
+hypotheses are explicit. The ranges are the sets of attained heights; extreme listed
 levels need not be occupied.
 
 `CriticalValues.translate S c` adds `c` to every level and retains strict monotonicity.

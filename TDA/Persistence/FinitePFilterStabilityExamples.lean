@@ -1,8 +1,8 @@
 import TDA.Persistence.FinitePFilterStability
-import TDA.Persistence.Reduction.ActualTriangleDiagrams
+import TDA.Persistence.Reduction.TriangleSublevelDiagrams
 import TDA.Persistence.DiagramMap
 
-/-! Cardinality, empty-input and actual-sublevel acceptance fixtures. -/
+/-! Cardinality, empty-input and sublevel acceptance fixtures. -/
 
 namespace TDA.Persistence.FinitePFilterStabilityExamples
 
@@ -140,13 +140,13 @@ private def triangleFilter : FilterFunction Reduction.Examples.FilledTriangle.C.
 private def tiedTriangleFilter : FilterFunction Reduction.Examples.FilledTriangle.C.toPre ℝ :=
   Reduction.Examples.FilledTriangle.tiedFilter.map Nat.castOrderEmbedding
 
-/-- An actual positive finite H₁ bar disappears when the final grades tie. -/
+/-- A positive finite H₁ bar disappears when the final grades tie. -/
 private theorem triangle_finite_parts :
     finitePart (dgm (ZMod 2) triangleFilter 1).points = {(1, 2)} ∧
       finitePart (dgm (ZMod 2) tiedTriangleFilter 1).points = 0 := by
   constructor
   · rw [triangleFilter, dgm_map, finitePart_map_points,
-      Reduction.Examples.FilledTriangle.actual_diagram_one]
+      Reduction.Examples.FilledTriangle.diagram_one]
     change Multiset.map (fun q : ℕ × ℕ => ((q.1 : ℝ), (q.2 : ℝ))) {(1, 2)} = _
     norm_num
   · rw [tiedTriangleFilter, dgm_map, finitePart_map_points,
@@ -172,7 +172,7 @@ private theorem triangle_face_perturbation : faceSupDifference triangleFilter ti
   generalize σ.1.card - 1 = a at hd ⊢
   interval_cases a <;> norm_num
 
-private theorem actual_triangle_bound {p : ℝ} (hp : 1 ≤ p) :
+private theorem triangle_bound {p : ℝ} (hp : 1 ≤ p) :
     finitePBoundaryTransportCost p (fun q : (dgm (ZMod 2) triangleFilter 1).finiteOccurrences => q.1)
       (fun q : (dgm (ZMod 2) tiedTriangleFilter 1).finiteOccurrences => q.1) ≤ 1 := by
   have hc : Fintype.card (dgm (ZMod 2) triangleFilter 1).finiteOccurrences +
@@ -186,16 +186,16 @@ private theorem actual_triangle_bound {p : ℝ} (hp : 1 ≤ p) :
       faceSupDifference triangleFilter tiedTriangleFilter := by simpa using h
   exact h'.trans triangle_face_perturbation
 
-private theorem actual_triangle_squared :
+private theorem triangle_squared :
     finitePBoundaryTransportCost 2 (fun q : (dgm (ZMod 2) triangleFilter 1).finiteOccurrences => q.1)
       (fun q : (dgm (ZMod 2) tiedTriangleFilter 1).finiteOccurrences => q.1) ≤ 1 :=
-  actual_triangle_bound (by norm_num)
+  triangle_bound (by norm_num)
 
-private theorem actual_triangle_noninteger :
+private theorem triangle_noninteger :
     finitePBoundaryTransportCost ((3 : ℝ) / 2)
       (fun q : (dgm (ZMod 2) triangleFilter 1).finiteOccurrences => q.1)
       (fun q : (dgm (ZMod 2) tiedTriangleFilter 1).finiteOccurrences => q.1) ≤ 1 :=
-  actual_triangle_bound (by norm_num)
+  triangle_bound (by norm_num)
 
 end
 

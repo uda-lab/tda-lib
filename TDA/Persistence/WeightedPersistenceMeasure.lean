@@ -49,7 +49,7 @@ theorem regular_withDensity_weight (w : UpperPoint → ℝ) (μ : Measure UpperP
   have := isFiniteMeasure_withDensity hμ.ne
   infer_instance
 
-/-- The weighted Gaussian embedding uses the actual full-plane RKHS mean. -/
+/-- The weighted Gaussian embedding uses the full-plane RKHS mean. -/
 def weightedPersistenceEmbedding (σ : ℝ) (w : UpperPoint → ℝ)
     (μ : Measure UpperPoint) : Space σ := positiveEmbedding σ (weightedPlaneMeasure w μ)
 
@@ -62,7 +62,7 @@ theorem weightedPlaneMeasure_atoms {I : Type*} (w : UpperPoint → ℝ) (x : I �
   simp only [dirac_withDensity, Measure.map_smul,
     Measure.map_dirac' measurable_subtype_coe]
 
-/-- The finite weighted positive-measure mean is the actual occurrence sum.
+/-- The finite weighted positive-measure mean is the occurrence sum.
 Only the sampled weights must be nonnegative. -/
 theorem weightedPersistenceEmbedding_finite {I : Type*} [Fintype I] (σ : ℝ)
     (w : UpperPoint → ℝ) (x : I → UpperPoint) (hw : ∀ i, 0 ≤ w (x i)) :
@@ -86,7 +86,7 @@ theorem weightedPersistenceEmbedding_finite_occurrences {I : Type*} [Fintype I]
     (fun i => w.nonneg (birthPersistence (x i).1))]
   rfl
 
-/-- Finite weighted mass makes the weighted actual feature genuinely Bochner integrable. -/
+/-- Finite weighted mass makes the weighted feature genuinely Bochner integrable. -/
 theorem integrable_weightedFeature (σ : ℝ) (w : UpperPoint → ℝ) (hw : Measurable w)
     (hpos : ∀ p, 0 ≤ w p) (μ : Measure UpperPoint)
     (hμ : (∫⁻ p, ENNReal.ofReal (w p) ∂μ) < ∞) :
@@ -100,7 +100,7 @@ theorem integrable_weightedFeature (σ : ℝ) (w : UpperPoint → ℝ) (hw : Mea
   filter_upwards [] with p
   simp [norm_smul, norm_featureAt, Real.norm_eq_abs, abs_of_nonneg (hpos p)]
 
-/-- The weighted measure construction agrees with integrating the weighted actual feature
+/-- The weighted measure construction agrees with integrating the weighted feature
 against the original, possibly infinite, positive measure. -/
 theorem weightedPersistenceEmbedding_eq_integral (σ : ℝ) (w : UpperPoint → ℝ)
     (hw : Measurable w) (hpos : ∀ p, 0 ≤ w p) (μ : Measure UpperPoint) :

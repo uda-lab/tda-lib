@@ -88,7 +88,7 @@ private theorem moduleDiagram_eq_of_eq {m : ℕ} {g : Fin m ↪o ℝ}
   cases h
   rfl
 
-/-- The module diagram on the scaled critical grid agrees with the actual scaled filter diagram. -/
+/-- The module diagram on the scaled critical grid agrees with the scaled filter diagram. -/
 theorem moduleDiagram_sublevelModule_scale (f : FilterFunction K ℝ) (c : ℝ) (hc : 0 < c) :
     moduleDiagram (FiniteConstructible.scaleGrid c hc f.criticalValue)
         (sublevelModule k (f.scale c hc) n)

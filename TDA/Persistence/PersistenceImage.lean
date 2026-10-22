@@ -16,7 +16,7 @@ open GaussianKernel
 
 variable {K : Type*} [Fintype K]
 
-/-- Integrate an actual scalar surface over each fixed pixel. -/
+/-- Integrate a scalar surface over each fixed pixel. -/
 noncomputable def pixelIntegral (P : K → Set (ℝ × ℝ)) (f : ℝ × ℝ → ℝ) :
     PiLp 1 (fun _ : K => ℝ) := WithLp.toLp 1 (fun k => ∫ z in P k, f z)
 
@@ -90,7 +90,7 @@ noncomputable def feature {A B : ℝ} (σ : ℝ) (w : Weight A B)
   w (birthPersistence p) • pixelIntegral P (density2D σ (birthPersistence p))
 
 omit [Fintype K] in
-/-- Each feature coordinate is the actual integral of the weighted density. -/
+/-- Each feature coordinate is the integral of the weighted density. -/
 theorem feature_apply {A B : ℝ} (σ : ℝ) (w : Weight A B)
     (P : K → Set (ℝ × ℝ)) (p : ℝ × ℝ) (k : K) :
     feature σ w P p k = ∫ z in P k, w (birthPersistence p) *
@@ -196,7 +196,7 @@ theorem norm_feature_diagonal_le {σ A B : ℝ} (hσ : 0 < σ) (hB : 0 ≤ B)
     _ = (2 * A) * (diagonalCost p).toReal := by rw [hcost]; ring
     _ ≤ _ := mul_le_mul_of_nonneg_right hC ENNReal.toReal_nonneg
 
-/-- A finite image sums actual occurrence features, retaining multiplicity. -/
+/-- A finite image sums occurrence features, retaining multiplicity. -/
 noncomputable def image {I : Type*} [Fintype I] {A B : ℝ} (σ : ℝ) (w : Weight A B)
     (P : K → Set (ℝ × ℝ)) (x : I → ℝ × ℝ) : PiLp 1 (fun _ : K => ℝ) :=
   finiteFeatureSum (feature σ w P) x

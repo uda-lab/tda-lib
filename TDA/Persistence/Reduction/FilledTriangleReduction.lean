@@ -51,9 +51,9 @@ private theorem s012 : ({0,1,2} : Finset (Fin 3)).sort (· ≤ ·) = [0,1,2] := 
   rw [Finset.sort_insert (· ≤ ·) (by decide) (by decide)]
   simp [s12]
 
-theorem actual_eq : actualBoundaryMatrix (ZMod 2) e = expected := by
+theorem faceBoundaryMatrix_eq_expected : faceBoundaryMatrix (ZMod 2) e = expected := by
   funext i j
-  rw [actualBoundaryMatrix_apply]
+  rw [faceBoundaryMatrix_apply]
   fin_cases i <;> fin_cases j <;>
     norm_num [faceDegree, e, enumFun, expected, indexedFace, deletedFace,
       show (0 : Fin 3) ≠ 2 by decide, show (1 : Fin 3) ≠ 2 by decide,
@@ -63,14 +63,14 @@ theorem actual_eq : actualBoundaryMatrix (ZMod 2) e = expected := by
 
 theorem filled_pivots :
     List.ofFn (fun j : Fin (faceCount C.toPre) =>
-      columnPivot ((actualReducedBoundary (ZMod 2) e).col j)) =
+      columnPivot ((reducedFaceBoundary (ZMod 2) e).col j)) =
       [none, none, none, some ⟨1, by decide⟩, some ⟨2, by decide⟩, none, some ⟨5, by decide⟩] := by
-  rw [actualReducedBoundary, actual_eq]
+  rw [reducedFaceBoundary, faceBoundaryMatrix_eq_expected]
   decide +kernel
 
 theorem filled_essential (i : Fin (faceCount C.toPre)) :
-    IsEssential (actualReducedBoundary (ZMod 2) e) i ↔ i.val = 0 := by
-  rw [actualReducedBoundary, actual_eq]
+    IsEssential (reducedFaceBoundary (ZMod 2) e) i ↔ i.val = 0 := by
+  rw [reducedFaceBoundary, faceBoundaryMatrix_eq_expected]
   unfold IsEssential IsPivot
   fin_cases i <;> decide +kernel
 
@@ -92,7 +92,7 @@ noncomputable def tiedOrder : CompatibleOrder tiedFilter where
   monotone := by decide +kernel
 
 theorem tied_reduced_eq :
-    actualReducedBoundary (ZMod 2) tiedOrder = actualReducedBoundary (ZMod 2) e := rfl
+    reducedFaceBoundary (ZMod 2) tiedOrder = reducedFaceBoundary (ZMod 2) e := rfl
 
 theorem tied_face_grades :
     List.ofFn (fun i : Fin (faceCount C.toPre) =>

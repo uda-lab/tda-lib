@@ -9,7 +9,7 @@ set_option autoImplicit false
 
 In the sup-metric product `ι → ℝ`, every Čech value is half the Rips value under
 distance-compatible label metrics. Hence the Čech filter is the Rips filter scaled by `2⁻¹`,
-the actual Čech diagram is the actual Rips diagram with every finite coordinate halved, in
+the Čech diagram is the Rips diagram with every finite coordinate halved, in
 every degree and over every field, and the Čech bottleneck distance is half the Rips one.
 Rips metric stability then bounds the Čech diagrams by half the pairwise discrepancy.
 The line `ℝ` has the same filter and diagram identities, through the merged line value
@@ -55,7 +55,7 @@ section Diagrams
 
 variable [LinearOrder V] [Fintype V] (k : Type u) [Field k]
 
-/-- The actual sup-norm Čech diagram is the actual Rips diagram with every finite
+/-- The sup-norm Čech diagram is the Rips diagram with every finite
 coordinate halved, in every degree. -/
 theorem dgm_eq_scale_rips (d : MetricSpace V) (p : V → ι → ℝ)
     (hd : ∀ v w, d.dist v w = dist (p v) (p w)) (n : ℕ) :
@@ -64,7 +64,7 @@ theorem dgm_eq_scale_rips (d : MetricSpace V) (p : V → ι → ℝ)
   rw [filter_eq_scale_rips d p hd]
   exact dgm_scale k (Rips.filter d) n _
 
-/-- On the line, the actual Čech diagram is the halved actual Rips diagram. -/
+/-- On the line, the Čech diagram is the halved Rips diagram. -/
 theorem dgm_eq_scale_rips_real (d : MetricSpace V) (q : V → ℝ)
     (hd : ∀ v w, d.dist v w = dist (q v) (q w)) (n : ℕ) :
     dgm k (Cech.filter q) n =

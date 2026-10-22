@@ -35,7 +35,7 @@ Only then does `rankBarcode_eq_of_iso_barcodeModule` identify the constructed mu
 with `rankBarcode M`. The chosen `rankBarcodeIso M` is generally noncanonical: the
 generators, functionals and complements involve choices. The barcode itself is canonical.
 Composing these constructed isomorphisms proves that natural-isomorphism existence,
-canonical-barcode equality, and equality of every actual structure-map rank are equivalent.
+canonical-barcode equality, and equality of every structure-map rank are equivalent.
 The existing four-rank multiplicity laws also show that any two decomposition multisets
 are equal. No uniqueness of the chosen summands or isomorphisms is asserted.
 

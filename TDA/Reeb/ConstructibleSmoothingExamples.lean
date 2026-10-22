@@ -16,7 +16,7 @@ built on the constructible-cosheaf, representation and graph-cosheaf fixtures:
   two levels; the smoothed point cosheaf is constructible at `{-1, 1}`.
 * **Between shifted levels.** `(1/4, 3/4) ≤ (-1, 1)` meet no shifted level of `{0}` at `ε = 1`.
   The old level `0` lies outside `(1/4, 3/4)` but inside its thickening `(-3/4, 7/4)`; the key
-  interval lemma applies and the actual smoothed inclusion is bijective.
+  interval lemma applies and the smoothed inclusion is bijective.
 * **Empty source.** `⊥ ≤ (-1, 1)` also meet no shifted level, but the smoothed point cosheaf is
   empty at `⊥` and nonempty at `(-1, 1)`, so its inclusion map is not bijective. The interval rule
   therefore needs a nonempty source.
@@ -169,7 +169,7 @@ theorem between_old_level :
   rw [thicken_ioo (by norm_num), mem_ioo]
   norm_num
 
-/-- The key interval lemma applies, and the actual smoothed inclusion is bijective. -/
+/-- The key interval lemma applies, and the smoothed inclusion is bijective. -/
 theorem between_key :
     ((S1.value 0 ∈ thicken 1 (ioo (1 / 4) (3 / 4))) ↔ S1.value 0 ∈ thicken 1 (ioo (-1) 1)) ∧
       Function.Bijective (((smoothing 1).obj pointCosheaf).map (homOfLE between_le)) :=
@@ -186,8 +186,7 @@ theorem emptySource_hits (j : Fin (S1.shiftedCount 1 + 1)) :
   refine iff_of_false (fun h => notMem_empty _ h) ?_
   rcases S1_shifted_one_value j with h | h <;> rw [h, mem_ioo] <;> norm_num
 
-/-- The uncorrected rule fails for the smoothed point cosheaf at the shifted witness: the actual
-smoothed inclusion `⊥ ≤ (-1, 1)` is not bijective, since `(-1, 1)` thickens to `(-2, 2)`. -/
+/-- The uncorrected rule fails for the smoothed point cosheaf at the shifted witness: the smoothed inclusion `⊥ ≤ (-1, 1)` is not bijective, since `(-1, 1)` thickens to `(-2, 2)`. -/
 theorem emptySource_not_bijective :
     ¬ Function.Bijective (((smoothing 1).obj pointCosheaf).map
       (homOfLE (bot_le : (⊥ : OpenInterval) ≤ ioo (-1) 1))) := by
@@ -204,12 +203,12 @@ theorem emptySource_not_bijective :
 
 /-! ### The branching pinch: two edges with a common lower vertex -/
 
-/-- DMP Proposition 4.19 on the actual pinch cosheaf. -/
+/-- DMP Proposition 4.19 on the pinch cosheaf. -/
 theorem smoothedPinch_isConstructibleAt (ε : ℝ≥0) :
     (S01.shifted ε).IsConstructibleAt ((smoothing ε).obj FP) :=
   FP_isConstructibleAt.smoothing ε
 
-/-- DMP Theorem 4.18 (constructible half) on the actual pinch cosheaf. -/
+/-- DMP Theorem 4.18 (constructible half) on the pinch cosheaf. -/
 theorem smoothedPinch_isConstructibleCosheaf (ε : ℝ≥0) :
     IsConstructibleCosheaf ((smoothing ε).obj FP) :=
   (IsConstructibleCosheaf.of_isConstructibleAt FP_isConstructibleAt FP_isIntervalCosheaf).smoothing ε
@@ -251,12 +250,12 @@ theorem smoothedPinch_iio_zero_nonempty : Nonempty (((smoothing 1).obj FP).obj (
   rw [h]
   exact ⟨DP.vertexLabel S01 0 (0 : Fin 2)⟩
 
-/-! ### The bundled lift on actual graph objects -/
+/-! ### The bundled lift on graph objects -/
 
-/-- The pinch as an actual graph object. -/
+/-- The pinch as a graph object. -/
 abbrev pinchGraph : RGraphCat := (toRGraph S01).obj DP
 
-/-- The smoothed pinch in `ConstructibleCosheafCat`, through the lift of the actual smoothing. -/
+/-- The smoothed pinch in `ConstructibleCosheafCat`, through the lift of the smoothing. -/
 abbrev smoothedPinchObj (ε : ℝ≥0) : ConstructibleCosheafCat.{0} :=
   (constructibleSmoothing ε).obj (cosheafFunctor.obj pinchGraph)
 
@@ -275,7 +274,7 @@ theorem smoothedPinch_zeroIso_app (I : OpenInterval) :
       FP.map (thickenZeroIso.hom.app I) :=
   rfl
 
-/-- Underlying-map equality for the image of the actual edge swap. -/
+/-- Underlying-map equality for the image of the edge swap. -/
 theorem smoothedSwap_hom (ε : ℝ≥0) :
     ((constructibleSmoothing ε).map (cosheafFunctor.map swapGraph)).hom =
       (smoothing ε).map (cosheafFunctor.map swapGraph).hom :=

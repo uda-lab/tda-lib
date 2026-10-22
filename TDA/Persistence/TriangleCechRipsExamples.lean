@@ -1,5 +1,5 @@
 import TDA.Filtration.CechExamples
-import TDA.Persistence.Reduction.ActualTriangleDiagrams
+import TDA.Persistence.Reduction.TriangleSublevelDiagrams
 import TDA.Persistence.SublevelDiagramMonotone
 import TDA.Persistence.LogScaleDiagramComparison
 import TDA.Persistence.LogScaleDiagramExamples

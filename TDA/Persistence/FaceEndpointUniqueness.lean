@@ -113,7 +113,7 @@ theorem faceDeathCount_add_rank (e : CompatibleOrder f) (n : ℕ)
     prefix_rank_eq_count k e n a a le_rfl]
   exact hp
 
-/-- The birth count is the actual adjacent-map cokernel dimension. -/
+/-- The birth count is the adjacent-map cokernel dimension. -/
 theorem faceBirthCount_eq_cokernel (e : CompatibleOrder f) (n : ℕ)
     (i : Fin (faceCount K)) :
     faceBirthCount k e n i =
@@ -138,7 +138,7 @@ theorem faceBirthCount_eq_cokernel (e : CompatibleOrder f) (n : ℕ)
       Module.finrank k ((facePrefixModule k e n).obj b) at hq
   exact Nat.add_right_cancel (hr.trans hq.symm)
 
-/-- The death count is the actual adjacent-map kernel dimension. -/
+/-- The death count is the adjacent-map kernel dimension. -/
 theorem faceDeathCount_eq_kernel (e : CompatibleOrder f) (n : ℕ)
     (i : Fin (faceCount K)) :
     faceDeathCount k e n i =
@@ -162,7 +162,7 @@ theorem faceDeathCount_eq_kernel (e : CompatibleOrder f) (n : ℕ)
     Module.finrank k (LinearMap.ker (structureMapLinear (facePrefixModule k e n) h))
   omega
 
-/-- Consecutive compatible prefixes differ by exactly the enumerated actual face. -/
+/-- Consecutive compatible prefixes differ by exactly the enumerated face. -/
 def faceStepAttachment (e : CompatibleOrder f) (i : Fin (faceCount K)) :
     SimplexAttachment (e.prefixComplex i.val) (e.prefixComplex (i.val + 1))
       ((e.enum i).val.card - 1) where

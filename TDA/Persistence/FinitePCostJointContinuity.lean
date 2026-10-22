@@ -6,8 +6,7 @@ import TDA.Persistence.FinitePCostContinuity
 The exponent and both labelled coordinate families vary in the ordinary product
 and function-space topologies. Geometric coefficients are continuous real
 functions. Joint continuity of real powers at positive exponents includes zero
-coefficients, so every fixed matching has a continuous powered cost. The actual
-optimum is its finite nonempty minimum, even when the minimizing matching changes.
+coefficients, so every fixed matching has a continuous powered cost. The optimum is its finite nonempty minimum, even when the minimizing matching changes.
 
 Positive reciprocal powers include zero minima. The existing assignment
 equalities transfer both conclusions to the infimum over every feasible real
@@ -113,14 +112,14 @@ theorem finitePMatchingCost_joint_continuousOn :
   exact (finitePMatchingCost_joint_continuousAt_pos
     (lt_of_lt_of_le zero_lt_one hz)).continuousWithinAt
 
-/-- Joint continuity of the actual powered infimum over all feasible real reservoir plans. -/
+/-- Joint continuity of the powered infimum over all feasible real reservoir plans. -/
 theorem finitePowerBoundaryTransportCost_joint_continuousOn :
     ContinuousOn (fun z : ℝ × ((I → ℝ × ℝ) × (J → ℝ × ℝ)) =>
       finitePowerBoundaryTransportCost z.1 z.2.1 z.2.2) {z | 1 ≤ z.1} := by
   simpa only [finitePowerBoundaryTransportCost_eq_matchingCost] using
     (finitePowerMatchingCost_joint_continuousOn (I := I) (J := J))
 
-/-- Joint continuity of the actual rooted real-plan optimum on the PH exponent domain. -/
+/-- Joint continuity of the rooted real-plan optimum on the PH exponent domain. -/
 theorem finitePBoundaryTransportCost_joint_continuousOn :
     ContinuousOn (fun z : ℝ × ((I → ℝ × ℝ) × (J → ℝ × ℝ)) =>
       finitePBoundaryTransportCost z.1 z.2.1 z.2.2) {z | 1 ≤ z.1} := by

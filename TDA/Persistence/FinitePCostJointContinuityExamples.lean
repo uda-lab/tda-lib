@@ -20,7 +20,7 @@ private theorem exponent_pos (t : ℝ) : 0 < exponent t :=
 private theorem exponent_continuous : Continuous exponent :=
   continuous_const.add (continuous_id.pow 2)
 
-/-- Values refer to the actual matching and all-real-plan optima. -/
+/-- Values refer to the matching and all-real-plan optima. -/
 private def costsAt {I J : Type*} [Fintype I] [Fintype J] (p : ℝ)
     (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) (powered rooted : ℝ) : Prop :=
   finitePowerMatchingCost p x y = powered ∧ finitePMatchingCost p x y = rooted ∧
@@ -137,7 +137,7 @@ private theorem moving_charges (t : ℝ) :
   norm_num [movingSource, movingTarget, finitePairCost, diagonalCost, hb, hd, hs, ht,
     abs_mul, ENNReal.toReal_ofReal, mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) (abs_nonneg t)]
 
-/-- Both coordinate families and the exponent vary in this actual minimum curve. -/
+/-- Both coordinate families and the exponent vary in this minimum curve. -/
 private theorem moving_values (t : ℝ) :
     costsAt (exponent t) (movingSource t) (movingTarget t)
       (min ((2 * |t|) ^ exponent t) 2)

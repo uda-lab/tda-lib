@@ -5,13 +5,13 @@ import TDA.Persistence.FinitePCommonEssentialBottleneck
 /-!
 # Input-uniform bottleneck recovery in every Čech degree
 
-On a fixed finite label type, the essential multisets of any two actual Čech
+On a fixed finite label type, the essential multisets of any two Čech
 diagrams agree: in degree zero they are both `{0}` for nonempty labels, and in
 positive degree they vanish. Empty labels require no ambient point. Finite
 occurrence counts and same-label displacement supply the remaining budgets
 for the existing common-essential error and uniform-convergence theorems.
 
-These finite library consumers use the actual infimal-radius filter and the
+These finite library consumers use the infimal-radius filter and the
 existing optimized finite costs. The real H₀ conclusion uses its empty negative
 tail; the nonnegative proper-ambient closed-nerve comparison does not identify
 the whole real-indexed module with CDSO's vertex-retaining convention.
@@ -71,7 +71,7 @@ private theorem diagramPair_mem_commonEssentialBudget (k : Type u) [Field k]
       (ENNReal.ofReal_le_ofReal hδ)
 
 /-- Displacement alone supplies the finite-count/radius error estimate for the
-actual rooted matching optimum in every natural degree, including H₀. -/
+rooted matching optimum in every natural degree, including H₀. -/
 theorem finitePMatchingCost_dgm_abs_sub_bottleneck_le_uniformBound_allDegrees
     {p : ℝ} (hp : 1 ≤ p) (k : Type u) [Field k] (a b : V → X)
     (n : ℕ) {R : ℝ} (hR : 0 ≤ R) (hδ : Cech.displacement a b ≤ R) :
@@ -113,7 +113,7 @@ theorem finitePMatchingCost_dgm_tendstoUniformlyOn_bottleneck_allDegrees
       (fun z : (V → X) × (V → X) => (dgm k (Cech.filter z.1) n, dgm k (Cech.filter z.2) n))
   exact h.mono fun z hz => diagramPair_mem_commonEssentialBudget k z.1 z.2 n hz
 
-/-- Uniform recovery by the actual all-real-plan optimum on the same literal
+/-- Uniform recovery by the all-real-plan optimum on the same literal
 input class, including zero radius, empty labels and repeated labels. -/
 theorem finitePBoundaryTransportCost_dgm_tendstoUniformlyOn_bottleneck_allDegrees
     (k : Type u) [Field k] (n : ℕ) (R : ℝ) (hR : 0 ≤ R) :

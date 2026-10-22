@@ -424,7 +424,7 @@ def thickeningQuotient (ε : ℝ≥0) : ConstructibleSpaceCat ⥤ RGraphCat :=
   IsRGraph.lift (IsConstructibleSpace.ι ⋙ GeometricThickening.functor ε ⋙ ℛ)
     fun X => isRGraph_quotient_thickening_of_isConstructibleSpace X.property ε
 
-/-- The inclusion of `thickeningQuotient` is the actual thickening followed by the Reeb quotient. -/
+/-- The inclusion of `thickeningQuotient` is the thickening followed by the Reeb quotient. -/
 theorem thickeningQuotient_comp_ι (ε : ℝ≥0) :
     thickeningQuotient ε ⋙ IsRGraph.ι =
       IsConstructibleSpace.ι ⋙ GeometricThickening.functor ε ⋙ ℛ :=
