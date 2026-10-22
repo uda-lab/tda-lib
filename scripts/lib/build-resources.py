@@ -17,9 +17,10 @@ def resources(root):
         scanned.add(directory)
         # Nested output-directory symlinks can share files even when .lake/build differs.
         for entry in directory.iterdir():
+            if entry.is_symlink():
+                # A missing output target is still shared when the build creates it.
+                paths.add(entry.resolve())
             if entry.is_dir():
-                if entry.is_symlink():
-                    paths.add(entry.resolve())
                 build_links(entry)
 
     def visit(package):
@@ -54,27 +55,41 @@ def resources(root):
     return sorted(str(path) for path in paths)
 
 
-def lock_files(root):
-    # Stable across checkout paths, processes and TMPDIR overrides on this host.
+def lock_path(path):
+    # Stable across checkouts, processes and TMPDIR overrides for this account.
     directory = Path('/tmp') / f'lean-resource-locks-{os.getuid()}'
     directory.mkdir(mode=0o700, exist_ok=True)
-    return sorted(str(directory / (hashlib.sha256(p.encode()).hexdigest() + '.lock'))
-                  for p in resources(root))
+    return str(directory / (hashlib.sha256(path.encode()).hexdigest() + '.lock'))
+
+
+def lock_plan(root):
+    paths = resources(root)
+    modes = {path: 'X' for path in paths}
+    # Shared ancestors detect asymmetric overlap: /shared and /shared/lib conflict,
+    # while separate /shared/a and /shared/b can both hold the /shared lock shared.
+    for path in paths:
+        for parent in Path(path).parents:
+            modes.setdefault(str(parent), 'S')
+    return sorted((lock_path(path), mode) for path, mode in modes.items())
 
 
 if __name__ == '__main__':
     try:
         if sys.argv[1] == '--inherited':
             for pair in os.environ.get('LEAN_RESOURCE_LOCK_FDS', '').split():
-                descriptor, path = pair.split(':', 1)
+                descriptor, mode, path = pair.split(':', 2)
+                if mode not in ('S', 'X'):
+                    continue
                 try:
                     held, target = os.fstat(int(descriptor)), os.stat(path)
                 except (OSError, ValueError):
                     continue
                 if (held.st_dev, held.st_ino) == (target.st_dev, target.st_ino):
                     print(pair)
+        elif sys.argv[1] == '--root-lock':
+            print(lock_path(str(Path(sys.argv[2]).resolve())))
         else:
-            for path in lock_files(sys.argv[1]):
-                print(path)
-    except (OSError, ValueError, KeyError) as error:
+            for path, mode in lock_plan(sys.argv[1]):
+                print(f'{mode}:{path}')
+    except (OSError, ValueError, KeyError, RuntimeError) as error:
         sys.exit(f'ERROR: cannot determine Lake resources: {error}')

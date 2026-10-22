@@ -66,6 +66,23 @@ with tempfile.TemporaryDirectory(prefix='lean-resources-') as temporary:
     pair(True)
     for root in (a, b):
         (root / '.lake/build/lib').unlink()
+    # Asymmetric ancestor/descendant output targets must conflict too.
+    shared_lib = shared / 'lib'
+    shared_lib.mkdir()
+    (a / '.lake/build/lib').symlink_to(shared_lib, target_is_directory=True)
+    (b / '.lake/build').rmdir()
+    (b / '.lake/build').symlink_to(shared, target_is_directory=True)
+    pair(True)
+    (a / '.lake/build/lib').unlink()
+    (b / '.lake/build').unlink()
+    (b / '.lake/build').mkdir()
+    # Dangling directory symlinks still identify the future shared output path.
+    missing = base / 'not-created' / 'lib'
+    for root in (a, b):
+        (root / '.lake/build/lib').symlink_to(missing, target_is_directory=True)
+    pair(True)
+    for root in (a, b):
+        (root / '.lake/build/lib').unlink()
     # Shared dependency checkout, including aliased package names.
     dependency = base / 'dependency'
     dependency.mkdir()
@@ -82,7 +99,7 @@ with tempfile.TemporaryDirectory(prefix='lean-resources-') as temporary:
     pair(True)
     # Same workspace lock reentry; an env marker without descriptors must fail closed.
     assert run(a, 'bash -c \'. "$ROOT/scripts/lib/build-lock.sh"\'').wait(timeout=5) == 0
-    forged = dict(os.environ, ROOT=str(a), LEAN_RESOURCE_LOCK_FDS='9:/tmp/forged.lock')
+    forged = dict(os.environ, ROOT=str(a), LEAN_RESOURCE_LOCK_FDS='9:X:/tmp/forged.lock')
     assert subprocess.run(['bash', '-c', '. "$ROOT/scripts/lib/build-lock.sh"'], env=forged,
                           stderr=subprocess.DEVNULL).returncode != 0
     # Failure and interruption release descriptors; independent process can acquire again.

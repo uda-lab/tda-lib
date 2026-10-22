@@ -116,7 +116,9 @@ scripts/agent/session-brief.sh
 ```
 
 For jobs under the same execution account, the wrappers exclude concurrent writes to the same canonical checkout, Lake build or
-dependency paths, including symlink targets. They acquire the path locks in a common order
+dependency paths, including symlink targets. Each target has an exclusive lock and its ancestors have shared locks, so overlapping
+directory trees conflict while independent descendants can proceed. Missing symlink targets
+are included before creation. The wrappers acquire locks in a common order
 and retain them across nested checks and documentation generation. Independent worktrees
 with separate mutable dependencies do not share a host-wide build lock. The Lake wrapper
 accepts this checkout and its docbuild project; project/config redirection is rejected

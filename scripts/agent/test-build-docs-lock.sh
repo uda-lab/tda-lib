@@ -36,10 +36,12 @@ cat > "$tmp/bin/flock" <<'EOF'
 import fcntl, os, subprocess, sys, time
 args = sys.argv[1:]
 nonblock = False
+shared = False
 deadline = None
 while args and args[0].startswith('-'):
     flag = args.pop(0)
     if flag == '-n': nonblock = True
+    elif flag == '-s': shared = True
     elif flag == '-w': deadline = time.monotonic() + float(args.pop(0))
     else: sys.exit(64)
 target = args.pop(0)
@@ -51,7 +53,7 @@ else:
     fd = os.open(target, os.O_WRONLY | os.O_CREAT, 0o600)
 while True:
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX | (fcntl.LOCK_NB if nonblock or deadline else 0))
+        fcntl.flock(fd, (fcntl.LOCK_SH if shared else fcntl.LOCK_EX) | (fcntl.LOCK_NB if nonblock or deadline else 0))
         break
     except BlockingIOError:
         if nonblock or time.monotonic() >= deadline: sys.exit(1)
@@ -62,7 +64,7 @@ chmod +x "$tmp/bin/flock"
 export PATH="$tmp/bin:$PATH"
 cp "$SOURCE_ROOT/scripts/build-docs.sh" "$fixture/scripts/build-docs.sh"
 cp "$SOURCE_ROOT/scripts/lib/"build-{lock.sh,resources.py} "$fixture/scripts/lib/"
-LOCK=$(python3 "$fixture/scripts/lib/build-resources.py" "$fixture" | head -1)
+LOCK=$(python3 "$fixture/scripts/lib/build-resources.py" --root-lock "$fixture")
 export LOCK
 chmod +x "$fixture/scripts/build-docs.sh"
 cat > "$fixture/.gitignore" <<'EOF'
