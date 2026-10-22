@@ -28,7 +28,8 @@ not a minimal critical set.
   (`envelope_piece`). Every interval that is its own envelope is the union of the pieces it
   contains (`iUnion_piece_eq`), and an envelope meeting a level is the union of the stars of the
   levels it meets (`iUnion_J_eq_envelope`). A gap inside such an interval either is the whole
-  interval or lies in an incident star contained in it (`K_le_envelope_cases`).
+  interval or lies in an incident star contained in it (`K_le_envelope_cases`). A point of the
+  closed span of the extreme levels that is not a level lies in a gap (`exists_mem_K_of_mem_Icc`).
 
 See `docs/math/reeb-constructible-cosheaf.md`.
 -/
@@ -621,6 +622,17 @@ theorem exists_piece (x : ℝ) :
     rw [← he] at this
     exact absurd this (not_le.2 Fin.castSucc_lt_succ)
   exact ⟨.gap e, ⟨he ▸ hi, hsucc⟩, fun k hk => (S.value_notMem_K e k hk).elim⟩
+
+/-- A point in the closed span of the extreme levels, which is not a level, lies in a gap. -/
+theorem exists_mem_K_of_mem_Icc {x : ℝ}
+    (hx : x ∈ Icc (S.value 0) (S.value (Fin.last n)))
+    (hne : ∀ i, S.value i ≠ x) : ∃ e : Fin n, x ∈ (S.K e : Set ℝ) := by
+  obtain ⟨p, hxp, hp⟩ := S.exists_piece x
+  cases p with
+  | star i => exact (hne i (hp i (S.value_mem_J i))).elim
+  | gap e => exact ⟨e, hxp⟩
+  | lowerTail => exact (not_lt_of_ge hx.1 (S.mem_lowerTail.1 hxp)).elim
+  | upperTail => exact (not_lt_of_ge hx.2 (S.mem_upperTail.1 hxp)).elim
 
 /-- Every point of an envelope lies in a piece contained in that envelope. -/
 theorem exists_piece_le_envelope {I : OpenInterval} {x : ℝ} (hx : x ∈ S.envelope I) :

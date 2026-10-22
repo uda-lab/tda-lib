@@ -93,18 +93,6 @@ theorem value_le_or_le {m : ℕ} (T : CriticalValues m) (j : Fin (m + 1)) (k : F
     simp only [Fin.val_succ, Fin.val_castSucc] at h ⊢
     omega
 
-/-- A height in `[b 0, b m]` that is not a level lies in an open gap; from the merged
-`CriticalValues.exists_piece`. -/
-private theorem exists_mem_K {m : ℕ} (T : CriticalValues m) {u : ℝ}
-    (hu : u ∈ Icc (T.value 0) (T.value (Fin.last m))) (hne : ∀ j, T.value j ≠ u) :
-    ∃ k : Fin m, u ∈ (T.K k : Set ℝ) := by
-  obtain ⟨p, hp, hp'⟩ := T.exists_piece u
-  cases p with
-  | star i => exact absurd (hp' i (T.value_mem_J i)) (hne i)
-  | gap e => exact ⟨e, hp⟩
-  | lowerTail => exact absurd hu.1 (not_le.2 hp)
-  | upperTail => exact absurd hu.2 (not_le.2 hp)
-
 /-- **Window transfer hypotheses** from height `c` to height `u`: `c` avoids every event
 `a i ± ε`, and the lower and upper fragment branches persist from `c` to `u`. -/
 structure TransferOK (c u : ℝ) : Prop where
@@ -614,7 +602,7 @@ theorem thickMap_surjective (hε : 0 < ε) : Function.Surjective (thickMap S D �
       rw [S.shifted_value_zero, S.shifted_value_last]
       have := (ofFiniteData D).height_mem_Icc S y
       exact ⟨by linarith [hy.1, hy.2, this.1, this.2], by linarith [hy.1, hy.2, this.1, this.2]⟩
-    obtain ⟨k, hk⟩ := exists_mem_K (S.shifted ε) hu hlev
+    obtain ⟨k, hk⟩ := (S.shifted ε).exists_mem_K_of_mem_Icc hu hlev
     have hok' : TransferOK S ε u (mid S ε k) :=
       transferOK_of_mem S ε hk (Ioo_subset_Icc_self (mid_mem_K S ε k))
     have hok := transferOK_of_mem S ε (mid_mem_K S ε k) (Ioo_subset_Icc_self hk)

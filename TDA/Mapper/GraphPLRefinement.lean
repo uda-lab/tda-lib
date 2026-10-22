@@ -25,17 +25,6 @@ variable {V : Type u} (G : SimpleGraph V) (h : V → ℝ)
 
 /-! ## Level geometry -/
 
-/-- A point in the closed span of the extreme levels, which is not a level, lies in a gap. -/
-theorem exists_mem_K_of_mem_Icc {x : ℝ}
-    (hx : x ∈ Icc (S.value 0) (S.value (Fin.last n)))
-    (hne : ∀ i, S.value i ≠ x) : ∃ e : Fin n, x ∈ (S.K e : Set ℝ) := by
-  obtain ⟨p, hxp, hp⟩ := S.exists_piece x
-  cases p with
-  | star i => exact (hne i (hp i (S.value_mem_J i))).elim
-  | gap e => exact ⟨e, hxp⟩
-  | lowerTail => exact (not_lt_of_ge hx.1 (S.mem_lowerTail.1 hxp)).elim
-  | upperTail => exact (not_lt_of_ge hx.2 (S.mem_upperTail.1 hxp)).elim
-
 /-- A refined gap whose base point is exterior to the old extreme segment is exterior on one side. -/
 theorem exterior_segment (hST : Set.range S.value ⊆ Set.range T.value) (k : Fin m)
     (hk : (RGraph.basePt T k : ℝ) ∉ Icc (S.value 0) (S.value (Fin.last n))) :
@@ -254,7 +243,7 @@ private theorem value_exterior_of_not_old_not_gap
     (he : ¬ ∃ e, T.value j ∈ (S.K e : Set ℝ)) :
     T.value j ∉ Icc (S.value 0) (S.value (Fin.last n)) := by
   intro hx
-  obtain ⟨e, he'⟩ := exists_mem_K_of_mem_Icc hx (fun i h => hi ⟨i, h.symm⟩)
+  obtain ⟨e, he'⟩ := S.exists_mem_K_of_mem_Icc hx (fun i h => hi ⟨i, h.symm⟩)
   exact he ⟨e, he'⟩
 
 private theorem basePt_exterior_of_not_gap
@@ -262,7 +251,7 @@ private theorem basePt_exterior_of_not_gap
     (he : ¬ ∃ e, (RGraph.basePt T k : ℝ) ∈ (S.K e : Set ℝ)) :
     (RGraph.basePt T k : ℝ) ∉ Icc (S.value 0) (S.value (Fin.last n)) := by
   intro hx
-  obtain ⟨e, he'⟩ := exists_mem_K_of_mem_Icc hx
+  obtain ⟨e, he'⟩ := S.exists_mem_K_of_mem_Icc hx
     (fun i h => RGraph.value_ne hST (RGraph.basePt T k).2 i h)
   exact he ⟨e, he'⟩
 

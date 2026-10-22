@@ -628,7 +628,6 @@ import TDA
 #print axioms TDA.Mapper.GraphPLLevelSetsExamples.c4_star_triangle
 
 -- Refinement of graph-PL finite Reeb data.
-#print axioms TDA.Mapper.GraphPL.exists_mem_K_of_mem_Icc
 #print axioms TDA.Mapper.GraphPL.exterior_segment
 #print axioms TDA.Mapper.GraphPL.CoversVertexHeights.mono
 #print axioms TDA.Mapper.GraphPL.levelVertexEquivOfEq
