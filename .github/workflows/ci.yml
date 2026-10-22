@@ -176,7 +176,7 @@ jobs:
       - name: Restore TDA build cache
         if: steps.changes.outputs.build == 'true'
         id: tda-cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         continue-on-error: true
         with:
           path: .lake/build
@@ -202,7 +202,7 @@ jobs:
       # cannot be reused by develop or other PRs and would consume quota.
       - name: Save TDA build cache
         if: ${{ success() && github.event_name == 'push' && github.ref == 'refs/heads/develop' && steps.changes.outputs.build == 'true' && steps.tda-cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
         continue-on-error: true
         with:
           path: .lake/build
