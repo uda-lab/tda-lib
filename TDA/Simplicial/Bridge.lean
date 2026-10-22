@@ -7,11 +7,11 @@ import Mathlib.LinearAlgebra.Finsupp.Pi
 import Mathlib.LinearAlgebra.Matrix.ToLin
 
 /-!
-# Finite-face chain bridge prototype
+# Face chains and homology
 
-The basis uses precisely the faces of a preabstract simplicial complex. The generic
-chain-complex constructor below accepts a square-zero proof; it does not prove the
-simplicial boundary theorem. The only concrete differential here is for small fixtures.
+The basis uses precisely the faces of a preabstract simplicial complex. This module defines
+face inclusions, the induced maps of free modules, and the kernel/image presentation of
+homology, together with small chain fixtures.
 -/
 
 universe u
@@ -70,25 +70,6 @@ theorem chainIncl_comp {K L M : PreAbstractSimplicialComplex V} (R : Type*) [Rin
     rfl
   simpa [chainIncl, he] using
     (Finsupp.lmapDomain_comp (M := R) (R := R) (faceIncl h n) (faceIncl g n))
-
-/-- Conditional packaging only: the supplied `sq` is not constructed here. -/
-noncomputable def packagedComplex (K : PreAbstractSimplicialComplex V) (R : Type*) [Ring R]
-    (d : ∀ n, ModuleCat.of R (Chain K R (n + 1)) ⟶ ModuleCat.of R (Chain K R n))
-    (sq : ∀ n, d (n + 1) ≫ d n = 0) : ChainComplex (ModuleCat R) ℕ :=
-  ChainComplex.of (fun n => ModuleCat.of R (Chain K R n)) d sq
-
-/-- Conditional chain-map packaging, with differential commutation supplied by the caller. -/
-noncomputable def packagedInclusion {K L : PreAbstractSimplicialComplex V} (R : Type*) [Ring R]
-    (dK : ∀ n, ModuleCat.of R (Chain K R (n + 1)) ⟶ ModuleCat.of R (Chain K R n))
-    (sqK : ∀ n, dK (n + 1) ≫ dK n = 0)
-    (dL : ∀ n, ModuleCat.of R (Chain L R (n + 1)) ⟶ ModuleCat.of R (Chain L R n))
-    (sqL : ∀ n, dL (n + 1) ≫ dL n = 0) (h : K ≤ L)
-    (comm : ∀ n, ModuleCat.ofHom (chainIncl R h (n + 1)) ≫ dL n =
-      dK n ≫ ModuleCat.ofHom (chainIncl R h n)) :
-    packagedComplex K R dK sqK ⟶ packagedComplex L R dL sqL :=
-  ChainComplex.ofHom (fun n => ModuleCat.ofHom (chainIncl R h n)) (by
-    intro n
-    simpa [packagedComplex] using comm n)
 
 /-- The existing ModuleCat kernel/image-inside-kernel quotient, for any supplied
 chain complex. This identifies ordinary homology rather than defining a new quotient. -/
