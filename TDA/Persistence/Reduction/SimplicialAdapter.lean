@@ -1,4 +1,4 @@
-import TDA.Persistence.Reduction.FilteredNormalForm
+import TDA.Persistence.Reduction.FilteredNormalForm.OriginalHomology
 import TDA.Persistence.FaceOrderTemplate
 import TDA.Simplicial.FiniteHomology
 
