@@ -17,8 +17,9 @@ finite coordinates, and a PH algorithm remain separate work. The APIs are in
 [TDA/Simplicial/Boundary.lean](../../TDA/Simplicial/Boundary.lean),
 [TDA/Simplicial/ChainComplex.lean](../../TDA/Simplicial/ChainComplex.lean), and
 [TDA/Simplicial/Inclusion.lean](../../TDA/Simplicial/Inclusion.lean).
-`packagedComplex` and `packagedInclusion` remain conditional compatibility helpers;
-the chain complex and inclusion map do not take caller-supplied proofs.
+Mathlib's `ChainComplex.of` and `ChainComplex.ofHom` accept caller-supplied differentials,
+square-zero proofs and commutation proofs. The signed simplicial complex and inclusion map
+construct these proofs internally.
 
 | Route or layer | Reused declaration and source | Proposed declaration or obligation | Coefficients, universe, finite data |
 | --- | --- | --- | --- |
@@ -54,9 +55,8 @@ repository's pin.
 
 `Face K n` and `faceBasis` use only present `(n+1)`-faces. Same-ambient
 `chainIncl` preserves each face; `chainIncl_id` and `chainIncl_comp` are proved
-for all degrees and rings. `packagedComplex` and `packagedInclusion` remain
-conditional helpers; `ChainComplex.lean` and `Inclusion.lean` construct the
-chain complex and maps.
+for all degrees and rings. `ChainComplex.lean` and `Inclusion.lean` construct the
+signed chain complex and its inclusion maps.
 
 `Boundary.lean` defines `deletedFace` by erasing the selected vertex from the
 face and obtains its face membership from the precomplex lower-set law.
