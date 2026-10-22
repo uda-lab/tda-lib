@@ -5,7 +5,7 @@
 #   2. no unmarked sorry/admit, no custom axiom/opaque/unsafe in the working tree, and the
 #      root and area aggregators are imports-only;
 #   3. if Lean sources or build config changed, the full gate (scripts/check.sh:
-#      serialised lake build + live axiom audit) must pass.
+#      resource-guarded lake build + live axiom audit) must pass.
 # The build log stays in a temp file; only its tail is printed on failure, so full
 # Lean logs never enter an agent's context.
 set -uo pipefail
@@ -57,7 +57,7 @@ bash scripts/check-no-custom-axiom.sh || { echo "[pre-push] BLOCK: check-no-cust
 bash scripts/check-root-aggregator.sh || { echo "[pre-push] BLOCK: check-root-aggregator failed"; exit 1; }
 
 if printf '%s\n' "$changed" | grep -qE '\.lean$|lakefile|lean-toolchain|lake-manifest'; then
-  echo "[pre-push] Lean sources or build config changed — running scripts/check.sh (serialised)…"
+  echo "[pre-push] Lean sources or build config changed — running scripts/check.sh (resource-guarded)…"
   LOG="$(mktemp)"
   if ! bash scripts/check.sh >"$LOG" 2>&1; then
     echo "[pre-push] BLOCK: scripts/check.sh FAILED. Tail:"
