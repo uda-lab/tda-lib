@@ -1,4 +1,5 @@
 import TDA.Mapper.GraphPLCosheaf
+import TDA.Mapper.GraphPLRealizationTopology
 import TDA.Reeb.ConstructibleQuotient
 import TDA.Reeb.ConstructibleComparison
 import Mathlib.Topology.Compactness.Compact
@@ -43,25 +44,6 @@ universe u
 section general
 
 variable {V : Type u} [Finite V] (G : SimpleGraph V) (h : V → ℝ) {n : ℕ} {S : CriticalValues n}
-
-/-- The graph realization is compact when its vertex type is finite. -/
-theorem compactSpace_realization : CompactSpace (Realization G) := by
-  classical
-  let _ : TopologicalSpace V := ⊥
-  let _ : Fintype V := Fintype.ofFinite V
-  let _ : DecidableRel G.Adj := Classical.decRel G.Adj
-  let _ : Fintype G.Dart := SimpleGraph.Dart.fintype
-  let _ : CompactSpace V := @Finite.compactSpace V ⊥ inferInstance
-  let _ : CompactSpace (Σ _ : G.Dart, unitInterval) := by
-    constructor
-    rw [Sigma.univ]
-    exact isCompact_iUnion fun d => isCompact_range continuous_sigmaMk
-  let _ : CompactSpace (Cells G) := by
-    constructor
-    change IsCompact (Set.univ : Set (V ⊕ Σ _ : G.Dart, unitInterval))
-    rw [← range_inl_union_range_inr]
-    exact (isCompact_range continuous_inl).union (isCompact_range continuous_inr)
-  exact Quot.compactSpace
 
 /-- Some finite critical-value list covers all vertex heights. -/
 theorem exists_coversVertexHeights : ∃ (n : ℕ) (S : CriticalValues n), CoversVertexHeights S h := by
