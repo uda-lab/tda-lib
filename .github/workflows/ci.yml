@@ -2,6 +2,7 @@ name: ci
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
   push:
     branches: [develop, main]      # post-merge run; the develop/main rulesets does not require PR branches to be up to date
   workflow_dispatch:
@@ -59,6 +60,9 @@ jobs:
     name: check
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    # Draft events create a skipped check without allocating a runner. Marking the PR ready
+    # triggers a fresh, real check; develop/main pushes and manual runs remain unchanged.
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
     steps:
       - uses: actions/checkout@v4
         with:
