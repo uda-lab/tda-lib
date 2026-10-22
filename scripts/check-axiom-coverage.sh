@@ -4,7 +4,7 @@
 # in scripts/print_axioms/*.lean; private theorem roots outside their dependency closures
 # are audited against the same axiom allowlist. The pins are the append-only inputs used by
 # scripts/check-axioms.sh. scripts/check.sh runs this immediately after that audit, under
-# the same /tmp/lean-build.lock as the rest of the gate.
+# the same resource locks as the rest of the gate.
 #
 # Requires a completed `lake build` (scripts/check.sh orders this correctly). The pass/fail
 # decision and the `MISSING: <name>` diagnostics are produced entirely by the Lean file

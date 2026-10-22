@@ -9,7 +9,8 @@ if [ "$#" -ne 0 ]; then
   echo 'usage: scripts/test-private-axioms.sh' >&2
   exit 64
 fi
-tmp="$(mktemp -d)"
+mkdir -p "$ROOT/.agents/scratch"
+tmp="$(mktemp -d "$ROOT/.agents/scratch/private-axioms.XXXXXX")"
 trap 'rm -rf -- "$tmp"' EXIT
 mkdir -p "$tmp/TDA" "$tmp/scripts/print_axioms"
 cp scripts/check_axiom_coverage.lean "$tmp/scripts/"

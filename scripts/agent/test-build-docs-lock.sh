@@ -18,7 +18,7 @@ cleanup() {
   for pid in "$holder" "$first" "$second" "$stopped"; do
     [ -n "$pid" ] && wait "$pid" 2>/dev/null
   done
-  if ! flock -w 5 -n /tmp/lean-build.lock true 2>/dev/null; then
+  if [ -n "${LOCK:-}" ] && ! flock -w 5 -n "$LOCK" true 2>/dev/null; then
     echo 'test cleanup could not confirm the shared build lock was released' >&2
     result=1
   fi
@@ -30,17 +30,42 @@ fixture="$tmp/repo"
 mkdir -p "$fixture/scripts/lib" "$fixture/docbuild/.lake/build/doc-data" \
   "$fixture/docbuild/.lake/build/doc/TDA" "$fixture/docbuild/.lake/build/doc/declarations" \
   "$tmp/bin"
-export REAL_FLOCK="$(command -v flock)"
+# Portable fixture-only flock adapter; production supports flock or Perl.
 cat > "$tmp/bin/flock" <<'EOF'
-#!/usr/bin/env bash
-if [ "$#" -eq 1 ] && [ "$1" = 9 ] && [ -n "${WATCH_LOCK_ATTEMPTS:-}" ]; then
-  touch "$WATCH_LOCK_ATTEMPTS"
-fi
-exec "$REAL_FLOCK" "$@"
+#!/usr/bin/env python3
+import fcntl, os, subprocess, sys, time
+args = sys.argv[1:]
+nonblock = False
+shared = False
+deadline = None
+while args and args[0].startswith('-'):
+    flag = args.pop(0)
+    if flag == '-n': nonblock = True
+    elif flag == '-s': shared = True
+    elif flag == '-w': deadline = time.monotonic() + float(args.pop(0))
+    else: sys.exit(64)
+target = args.pop(0)
+if target.isdigit():
+    fd = int(target)
+    if os.environ.get('WATCH_LOCK_ATTEMPTS'):
+        open(os.environ['WATCH_LOCK_ATTEMPTS'], 'a').close()
+else:
+    fd = os.open(target, os.O_WRONLY | os.O_CREAT, 0o600)
+while True:
+    try:
+        fcntl.flock(fd, (fcntl.LOCK_SH if shared else fcntl.LOCK_EX) | (fcntl.LOCK_NB if nonblock or deadline else 0))
+        break
+    except BlockingIOError:
+        if nonblock or time.monotonic() >= deadline: sys.exit(1)
+        time.sleep(.01)
+if args: sys.exit(subprocess.call(args))
 EOF
 chmod +x "$tmp/bin/flock"
+export PATH="$tmp/bin:$PATH"
 cp "$SOURCE_ROOT/scripts/build-docs.sh" "$fixture/scripts/build-docs.sh"
-cp "$SOURCE_ROOT/scripts/lib/build-lock.sh" "$fixture/scripts/lib/build-lock.sh"
+cp "$SOURCE_ROOT/scripts/lib/"build-{lock.sh,resources.py} "$fixture/scripts/lib/"
+LOCK=$(python3 "$fixture/scripts/lib/build-resources.py" --root-lock "$fixture")
+export LOCK
 chmod +x "$fixture/scripts/build-docs.sh"
 cat > "$fixture/.gitignore" <<'EOF'
 /docbuild/.lake/
@@ -56,6 +81,7 @@ export TEST_EVENTS="$tmp/events"
 cat > "$fixture/scripts/lean.sh" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
+ROOT="$TEST_ROOT"
 . "$TEST_ROOT/scripts/lib/build-lock.sh"
 [[ "$PWD" == "$TEST_ROOT/docbuild" ]]
 [[ "$#" -eq 3 && "$1" == lake && "$2" == build && "$3" == TDA:docs ]]
@@ -84,13 +110,9 @@ chmod +x "$fixture/scripts/lean.sh"
 cat > "$fixture/scripts/check-doc-lock.sh" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-fd_target="$(readlink "/proc/$$/fd/9" 2>/dev/null || true)"
-if [ "$fd_target" != /tmp/lean-build.lock ]; then
-  echo "check-doc-lock ran without inherited build lock (fd 9: $fd_target)" >&2
-  exit 1
-fi
-if flock -n /tmp/lean-build.lock true 2>/dev/null; then
-  echo 'build lock was not held through dependency verification' >&2
+[ -n "${LEAN_RESOURCE_LOCK_FDS:-}" ]
+if flock -n "$LOCK" true 2>/dev/null; then
+  echo 'resource lock was not held through dependency verification' >&2
   exit 1
 fi
 [[ -f "$TEST_ROOT/docbuild/.lake/build/doc/TDA/generated" ]]
@@ -180,7 +202,7 @@ printf 'stop-wait-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"
 printf 'keep-while-waiting\n' > "$fixture/docbuild/.lake/build/doc/TDA/keep"
 ready="$tmp/lock-held"
 (
-  exec 9>>/tmp/lean-build.lock
+  exec 9>>"$LOCK"
   flock -w 5 9 || exit 1
   touch "$ready"
   for _ in $(seq 1 1000); do
@@ -238,7 +260,7 @@ if [ "${TEST_CLEANUP_CHILD:-0}" != 1 ]; then
       echo "$mode returned $injected_status, expected 97" >&2
       exit 1
     fi
-    flock -w 5 -n /tmp/lean-build.lock true || {
+    flock -w 5 -n "$LOCK" true || {
       echo "$mode leaked the shared build lock" >&2
       exit 1
     }

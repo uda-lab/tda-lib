@@ -17,7 +17,7 @@ Read the governing Issue and authorized decision comments, current PRs, review f
 labels. GitHub is the authoritative roadmap, queue and evidence surface. dot may create,
 revise and authorize work, including mathematical and dependency decisions. Do not prescribe
 roadmap Issue granularity or replace existing Issue templates. Dispatch only ready work with
-satisfied dependencies and no hard-stop labels. Keep one driver per lane; serialize Lean builds.
+satisfied dependencies and no hard-stop labels. Keep one driver per lane; exclude concurrent writes to shared build/dependency paths and coordinate independent builds for resource capacity.
 
 ## Execute
 
