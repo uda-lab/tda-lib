@@ -47,6 +47,9 @@ import TDA.Persistence.Reduction.Trace
 import TDA.Persistence.Reduction.TraceCertificate
 import TDA.Persistence.Reduction.ColumnReduction
 import TDA.Persistence.Reduction.MatrixReduction
+import TDA.Persistence.Reduction.FilteredNormalForm.NormalMatrix
+import TDA.Persistence.Reduction.FilteredNormalForm.NormalHomology
+import TDA.Persistence.Reduction.FilteredNormalForm.OriginalHomology
 import TDA.Persistence.Reduction.FilteredNormalForm
 import TDA.Persistence.Reduction.PivotBarcode
 import TDA.Persistence.Reduction.SimplicialAdapter
