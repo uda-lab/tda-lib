@@ -602,7 +602,7 @@ theorem thickMap_surjective (hε : 0 < ε) : Function.Surjective (thickMap S D �
       rw [S.shifted_value_zero, S.shifted_value_last]
       have := (ofFiniteData D).height_mem_Icc S y
       exact ⟨by linarith [hy.1, hy.2, this.1, this.2], by linarith [hy.1, hy.2, this.1, this.2]⟩
-    obtain ⟨k, hk⟩ := (S.shifted ε).exists_mem_K_of_mem_Icc hu hlev
+    obtain ⟨k, hk⟩ := CriticalValues.exists_mem_K_of_mem_Icc hu hlev
     have hok' : TransferOK S ε u (mid S ε k) :=
       transferOK_of_mem S ε hk (Ioo_subset_Icc_self (mid_mem_K S ε k))
     have hok := transferOK_of_mem S ε (mid_mem_K S ε k) (Ioo_subset_Icc_self hk)

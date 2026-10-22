@@ -623,6 +623,7 @@ theorem exists_piece (x : ℝ) :
     exact absurd this (not_le.2 Fin.castSucc_lt_succ)
   exact ⟨.gap e, ⟨he ▸ hi, hsucc⟩, fun k hk => (S.value_notMem_K e k hk).elim⟩
 
+variable {S} in
 /-- A point in the closed span of the extreme levels, which is not a level, lies in a gap. -/
 theorem exists_mem_K_of_mem_Icc {x : ℝ}
     (hx : x ∈ Icc (S.value 0) (S.value (Fin.last n)))

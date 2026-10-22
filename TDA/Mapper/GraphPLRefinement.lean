@@ -243,7 +243,7 @@ private theorem value_exterior_of_not_old_not_gap
     (he : ¬ ∃ e, T.value j ∈ (S.K e : Set ℝ)) :
     T.value j ∉ Icc (S.value 0) (S.value (Fin.last n)) := by
   intro hx
-  obtain ⟨e, he'⟩ := S.exists_mem_K_of_mem_Icc hx (fun i h => hi ⟨i, h.symm⟩)
+  obtain ⟨e, he'⟩ := CriticalValues.exists_mem_K_of_mem_Icc hx (fun i h => hi ⟨i, h.symm⟩)
   exact he ⟨e, he'⟩
 
 private theorem basePt_exterior_of_not_gap
@@ -251,7 +251,7 @@ private theorem basePt_exterior_of_not_gap
     (he : ¬ ∃ e, (RGraph.basePt T k : ℝ) ∈ (S.K e : Set ℝ)) :
     (RGraph.basePt T k : ℝ) ∉ Icc (S.value 0) (S.value (Fin.last n)) := by
   intro hx
-  obtain ⟨e, he'⟩ := S.exists_mem_K_of_mem_Icc hx
+  obtain ⟨e, he'⟩ := CriticalValues.exists_mem_K_of_mem_Icc hx
     (fun i h => RGraph.value_ne hST (RGraph.basePt T k).2 i h)
   exact he ⟨e, he'⟩
 

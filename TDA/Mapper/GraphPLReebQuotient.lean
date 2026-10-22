@@ -138,7 +138,7 @@ omit [Finite V] in
 private theorem reebQuot_dart_mem_gap (hS : CoversVertexHeights S h) (d : G.Dart)
     (t : unitInterval) (hi : ¬ ∃ i, dartHeight h d t = S.value i) :
     ∃ e : Fin n, dartHeight h d t ∈ (S.K e : Set ℝ) := by
-  apply S.exists_mem_K_of_mem_Icc
+  apply CriticalValues.exists_mem_K_of_mem_Icc
   · simpa [plHeight_edgePoint] using
       reebQuot_plHeight_mem_Icc G h hS (edgePoint G d t)
   · intro i hci
