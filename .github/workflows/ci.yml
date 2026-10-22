@@ -170,6 +170,25 @@ jobs:
         if: steps.changes.outputs.build == 'true'
         run: bash scripts/bootstrap.sh
 
+      # Reuse only this project's compiled outputs; mathlib keeps its own pinned cache.
+      # A PR can read the cache seeded by its base develop branch. Lake still checks
+      # source-content and dependency traces during the full build below.
+      - name: Restore TDA build cache
+        if: steps.changes.outputs.build == 'true'
+        id: tda-cache
+        uses: actions/cache/restore@v5
+        continue-on-error: true
+        with:
+          path: .lake/build
+          key: tda-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          restore-keys: |
+            tda-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json', 'lakefile.toml') }}-
+
+      # A failed extraction must not leave partial artifacts for Lake to consume.
+      - name: Discard failed TDA cache restore
+        if: steps.tda-cache.outcome == 'failure'
+        run: rm -rf .lake/build
+
       # Same gate as local: guards, no-op rebuild, live #print axioms audit.
       - name: Full gate (scripts/check.sh)
         if: steps.changes.outputs.build == 'true'
@@ -178,6 +197,16 @@ jobs:
         run: |
           if [ "$TDA_STABLE_RELEASE" = true ]; then export TDA_STABLE_RELEASE=1; fi
           bash scripts/check.sh
+
+      # Save only after a successful trusted develop push. PR merge-ref caches
+      # cannot be reused by develop or other PRs and would consume quota.
+      - name: Save TDA build cache
+        if: ${{ success() && github.event_name == 'push' && github.ref == 'refs/heads/develop' && steps.changes.outputs.build == 'true' && steps.tda-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v5
+        continue-on-error: true
+        with:
+          path: .lake/build
+          key: tda-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
 
       - name: Build skipped (no build-relevant changes)
         if: steps.changes.outputs.build != 'true'
