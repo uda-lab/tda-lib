@@ -301,6 +301,7 @@ private theorem reebQuot_segments_cover (hS : CoversVertexHeights S h) (hn : 0 <
   | lowerTail => exact (not_lt_of_ge hc.1 hp).elim
   | upperTail => exact (not_lt_of_ge hc.2 hp).elim
 
+omit [Finite V] in
 private theorem reebQuot_segment_subsingleton (hS : CoversVertexHeights S h)
     {d : G.Dart} (hne : h d.fst ≠ h d.snd) (e : Fin n)
     (hspan : ¬ EdgeSpans G h (S.value e.castSucc) (S.value e.succ) (dartEdge d)) :
