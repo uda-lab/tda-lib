@@ -38,7 +38,7 @@ Add the release to your `lakefile.toml`:
 [[require]]
 name = "TDA"
 git = "https://github.com/uda-lab/tda-lib.git"
-rev = "v0.1.0"
+rev = "v0.2.0"
 ```
 
 Run `lake update` and `lake build TDA`, then import the area you need:
