@@ -300,3 +300,15 @@ import TDA
 #print axioms TDA.Simplicial.Contiguous.chainHomotopy_hom_succ
 #print axioms TDA.Simplicial.Contiguous.chainHomotopy_hom_eq_zero
 #print axioms TDA.Simplicial.Contiguous.simplicialHomologyMap_eq
+
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.bottom_cycles_zero
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.edgeVertex_bijective
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.edge_boundary_scalar
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.edge_le_triangle
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.signedUnfilledCoord_not_boundary
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.signedUnfilled_included_boundary
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.signedUnfilled_included_ne_zero
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_edge_naturality
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_le_edge
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_one_not_boundary
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.unfilled_le_triangle
