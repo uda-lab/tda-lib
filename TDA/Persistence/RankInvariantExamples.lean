@@ -15,19 +15,21 @@ private theorem rankEmpty (M : PModule.{u,0,u} k (Fin 0))
   · rfl
 
 private theorem noEmptyEndpoints (b d : ℕ) : ¬(b < d ∧ d ≤ 0) := by omega
+-- Fixtures shared by the rank-invariant example modules; not part of the library API.
+namespace RankExampleFixtures
 
-private def oneStageDiagram : PModule.{u,0,u} k (Fin 1) where
+def oneStageDiagram : PModule.{u,0,u} k (Fin 1) where
   obj _ := ModuleCat.of k k
   map _ := 𝟙 _
   map_id _ := by simp
   map_comp _ _ := by simp
 
-private instance oneStageFD (i : Fin 1) :
+instance oneStageFD (i : Fin 1) :
     FiniteDimensional k ((oneStageDiagram (k := k)).obj i) := by
   change FiniteDimensional k k
   infer_instance
 
-private theorem oneStageMultiplicity (M : PModule.{u,0,u} k (Fin 1))
+theorem oneStageMultiplicity (M : PModule.{u,0,u} k (Fin 1))
     [∀ i : Fin 1, FiniteDimensional k (M.obj i)] :
     moduleMultiplicityInteger M 0 1 = Module.finrank k (M.obj 0) := by
   have hself := moduleRankInteger_fin M (0 : Fin 1) (0 : Fin 1) (le_refl _)
@@ -43,38 +45,38 @@ private theorem oneStageMultiplicity (M : PModule.{u,0,u} k (Fin 1))
   rw [hself, hr]
   ring
 
-private theorem oneStageField : moduleMultiplicityInteger (oneStageDiagram (k := k)) 0 1 = 1 := by
+theorem oneStageField : moduleMultiplicityInteger (oneStageDiagram (k := k)) 0 1 = 1 := by
   rw [oneStageMultiplicity]
   change ((Module.finrank k k : ℕ) : ℤ) = 1
   rw [Module.finrank_self]
   rfl
 
-private theorem oneStageZeroFiber (M : PModule.{u,0,u} k (Fin 1))
+theorem oneStageZeroFiber (M : PModule.{u,0,u} k (Fin 1))
     [∀ i : Fin 1, FiniteDimensional k (M.obj i)]
     [Subsingleton (M.obj (0 : Fin 1))] : moduleMultiplicityInteger M 0 1 = 0 := by
   rw [oneStageMultiplicity]
   exact_mod_cast Module.finrank_zero_of_subsingleton (R := k) (M := M.obj (0 : Fin 1))
 
 
-private def oneStageZeroDiagram : PModule.{u,0,u} k (Fin 1) where
+def oneStageZeroDiagram : PModule.{u,0,u} k (Fin 1) where
   obj _ := ModuleCat.of k (Fin 0 → k)
   map _ := 𝟙 _
   map_id _ := by simp
   map_comp _ _ := by simp
 
-private instance oneStageZeroFD (i : Fin 1) :
+instance oneStageZeroFD (i : Fin 1) :
     FiniteDimensional k ((oneStageZeroDiagram (k := k)).obj i) := by
   change FiniteDimensional k (Fin 0 → k)
   infer_instance
 
-private theorem oneStageZero : moduleMultiplicityInteger (oneStageZeroDiagram (k := k)) 0 1 = 0 := by
+theorem oneStageZero : moduleMultiplicityInteger (oneStageZeroDiagram (k := k)) 0 1 = 0 := by
   have hzero : Subsingleton ((oneStageZeroDiagram (k := k)).obj (0 : Fin 1)) := by
     change Subsingleton (Fin 0 → k)
     infer_instance
   exact @oneStageZeroFiber k _ (oneStageZeroDiagram (k := k))
     (fun i => oneStageZeroFD i) hzero
 
-private theorem twoStageValues (M : PModule.{u,0,u} k (Fin 2))
+theorem twoStageValues (M : PModule.{u,0,u} k (Fin 2))
     [∀ i : Fin 2, FiniteDimensional k (M.obj i)] :
     moduleMultiplicityInteger M 0 1 =
       (Module.finrank k (M.obj (0 : Fin 2)) : ℤ) -
@@ -108,28 +110,28 @@ private theorem twoStageValues (M : PModule.{u,0,u} k (Fin 2))
   · ring
   · constructor <;> ring
 
-private instance identityTwoStageFD (i : Fin 2) :
+instance identityTwoStageFD (i : Fin 2) :
     FiniteDimensional k ((identityTransitionDiagram k).obj i) := by
   change FiniteDimensional k k
   infer_instance
 
-private instance zeroTwoStageFD (i : Fin 2) :
+instance zeroTwoStageFD (i : Fin 2) :
     FiniteDimensional k ((zeroTransitionDiagram k).obj i) := by
   change FiniteDimensional k k
   infer_instance
 
-private theorem identityTwoStageRanks :
+theorem identityTwoStageRanks :
     structureMapRank (identityTransitionDiagram k) 0 1 (by decide) = 1 := by
   change Module.finrank k (LinearMap.range (LinearMap.id : k →ₗ[k] k)) = 1
   rw [LinearMap.range_id, finrank_top]
   exact Module.finrank_self k
 
-private theorem zeroTwoStageRanks :
+theorem zeroTwoStageRanks :
     structureMapRank (zeroTransitionDiagram k) 0 1 (by decide) = 0 := by
   change Module.finrank k (LinearMap.range (0 : k →ₗ[k] k)) = 0
   simp
 
-private theorem identityTwoStage :
+theorem identityTwoStage :
     moduleMultiplicityInteger (identityTransitionDiagram k) 0 1 = 0 ∧
     moduleMultiplicityInteger (identityTransitionDiagram k) 0 2 = 1 ∧
     moduleMultiplicityInteger (identityTransitionDiagram k) 1 2 = 0 := by
@@ -140,7 +142,7 @@ private theorem identityTwoStage :
     show Module.finrank k ((identityTransitionDiagram k).obj (1 : Fin 2)) = 1
       from Module.finrank_self k, Nat.cast_one, sub_self] using h
 
-private theorem zeroTwoStage :
+theorem zeroTwoStage :
     moduleMultiplicityInteger (zeroTransitionDiagram k) 0 1 = 1 ∧
     moduleMultiplicityInteger (zeroTransitionDiagram k) 0 2 = 0 ∧
     moduleMultiplicityInteger (zeroTransitionDiagram k) 1 2 = 1 := by
@@ -150,6 +152,10 @@ private theorem zeroTwoStage :
       from Module.finrank_self k,
     show Module.finrank k ((zeroTransitionDiagram k).obj (1 : Fin 2)) = 1
       from Module.finrank_self k, Nat.cast_one, Nat.cast_zero, sub_zero] using h
+
+end RankExampleFixtures
+
+open RankExampleFixtures
 
 private def threeStageDiagram (f : k →ₗ[k] k × k) (g : (k × k) →ₗ[k] k) :
     PModule.{u,0,u} k (Fin 3) where
