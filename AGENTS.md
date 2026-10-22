@@ -2,6 +2,8 @@
 
 ## Core Principles
 - Load `.agents/skills/tda-lib-orchestration/SKILL.md` first; its project policy takes precedence over inherited scaffold defaults.
+- Read and apply the relevant installed workflow, Lean and exposition skills; pass the same
+  governing Issue and skill requirements to workers and reviewers.
 - [CONTRIBUTING.md](CONTRIBUTING.md) is the canonical branch-lifecycle and release/hotfix propagation policy. Keep `develop` and `main` persistent.
 
 ## Project Overview
@@ -18,9 +20,10 @@ LOOP_JOB_ID=tda-lib/issue-N/role scripts/codex.sh <args> # child Codex
 scripts/github-setup.sh # broad labels/settings/ruleset bootstrap; not a targeted repair command
 ```
 
-Shared runtime safeguards live in `scripts/agent/`. Honor `/tmp/codex-stop`; keep
-`LEAN_NUM_THREADS=1` unless the runtime explicitly configures another safe value. Codex
-commands must use these entry points regardless of hook activation. Codex and Claude have
+Shared runtime safeguards live in `scripts/agent/`. Honor `/tmp/codex-stop` and
+exclusion for shared build/dependency paths. Set `LEAN_NUM_THREADS` for the execution
+environment; an unset value falls back conservatively to 1. This per-process setting is
+separate from concurrent build count. Codex commands must use these entry points regardless of hook activation. Codex and Claude have
 optional supported Bash adapters; their activation depends on harness support and trust. See `docs/orchestration.md`.
 
 ## Code Conventions
@@ -38,7 +41,7 @@ optional supported Bash adapters; their activation depends on harness support an
 
 ## Execution defaults
 - Base workers use Luna xhigh; difficult mathematics/Lean work may use Sol low/high. Sol high may prepare Issues when dot is unavailable.
-- dot considers intake after roughly three hours without observed activity in other repositories, checking competition and dependencies. Two to three disjoint tasks are conditional; Lean builds remain serialized. Other-repository activity holds new intake, rather than interrupting ongoing tasks; ongoing work proceeds through quality-gated PR merge unless legitimately blocked.
+- dot considers intake after roughly three hours without observed activity in other repositories, checking competition and dependencies. Two to three disjoint tasks are conditional; builds writing shared paths remain mutually exclusive; independent builds depend on available resources. Other-repository activity holds new intake, rather than interrupting ongoing tasks; ongoing work proceeds through quality-gated PR merge unless legitimately blocked.
 - Public API documentation requires doc-gen4; Blueprint is optional, and ellalpha is an independent consumer. The first stable release need not complete every milestone; do not invent dates or a serial milestone order.
 
 ## Maintenance Notes
