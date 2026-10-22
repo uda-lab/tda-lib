@@ -3,8 +3,9 @@
 `tda-lib` is a Lean 4 library for topological data analysis. It formalizes finite
 persistent homology, a certified computation of persistence over the two-element
 field, and selected Reeb and Mapper constructions.
-[v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) is the
-first release of its mathematical results.
+[v0.2.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.2.0) is the
+current release of its mathematical results;
+[v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) was the first.
 
 ## Results
 
@@ -70,10 +71,10 @@ records consulted papers and the limits of source comparison.
 
 <a id="future-directions"></a>
 
-## Development beyond v0.1.0
+## Results added in v0.2.0
 
-The `develop` branch includes these additional bounded results. The
-[API guide](docs/api.md) and its mathematical notes give their exact hypotheses.
+The v0.2.0 release adds these bounded results to the v0.1.0 core described above.
+The [API guide](docs/api.md) and its mathematical notes give their exact hypotheses.
 
 - **PH distances and stability.** For finite positive diagrams with unit occurrence
   masses and finite deaths, partial-matching minima equal optima over finite real
