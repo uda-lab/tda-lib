@@ -125,7 +125,8 @@ accepts this checkout and its docbuild project; project/config redirection is re
 because it would select resources outside the guarded set. Manifest `lakeDir` and
 `packagesDir` select the discovered paths. Explicit Lean outputs (`-o`, `-i`, `-c`, `-b`
 and snapshot output options) must stay within these protected resources; temporary fixture
-outputs belong under the checkout's ignored scratch directory. Do not change
+outputs belong under the checkout's ignored scratch directory. Output-shaped arguments
+remain conservatively checked with `--run` too. Do not change
 dependency/symlink topology during a guarded operation; a detected change requires restarting
 the outer gate. Before using the updated wrappers with a shared cache, let jobs using older
 wrappers finish: the former `/tmp/lean-build.lock` does not coordinate with path locks.

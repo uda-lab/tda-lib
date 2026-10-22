@@ -52,6 +52,14 @@ done
 if "$ROOT/scripts/lean.sh" lean --c="$test_dir/shared.c" fixture.lean >/dev/null 2>&1; then
   echo 'external C output escaped resource exclusion'; exit 1
 fi
+for form in '--o' '--incr-save'; do
+  if "$ROOT/scripts/lean.sh" lean "$form" "$test_dir/shared.out" fixture.lean >/dev/null 2>&1; then
+    echo 'separate long output escaped resource exclusion'; exit 1
+  fi
+done
+if "$ROOT/scripts/lean.sh" lean --run -o "$test_dir/shared.olean" fixture.lean >/dev/null 2>&1; then
+  echo 'run flag bypassed compiler output checking'; exit 1
+fi
 # A parent gate and its nested wrapper share the inherited descriptor.
 # Watchdog makes a regression fail instead of hanging CI forever.
 python3 - "$ROOT" <<'PY_NESTED'

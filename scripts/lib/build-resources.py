@@ -82,9 +82,10 @@ def check_outputs(root, tool, args):
     index = 0
     while index < len(args):
         arg = args[index]
-        if arg == '--run':
-            break  # Remaining arguments belong to the executed Lean program.
-        if arg in ('-o', '-i', '-c', '-b'):
+        # --run is a compiler flag, not an option-parsing boundary. Conservatively
+        # validate output-shaped arguments throughout the invocation.
+        if arg in ('-o', '-i', '-c', '-b', '--o', '--i', '--c', '--bc',
+                   '--incr-save', '--incr-header-save'):
             index += 1
             outputs.append(args[index])
         elif arg.startswith(('--o=', '--i=', '--c=', '--bc=',
