@@ -464,6 +464,13 @@ TDA.X
 'TDA.X' does not depend on any axioms
 'TDA.X' does not depend on any axioms
 EOF
+# A malformed producer that emits only one record must not hide duplicate pins.
+audit_case duplicate_pin_single_record 1 "+ERROR: TDA.X is pinned 2 times in scripts/print_axioms; pin it once." <<'EOF'
+TDA.X
+TDA.X
+---
+'TDA.X' does not depend on any axioms
+EOF
 audit_case duplicate_exact_x 1 "=ERROR: 2 '#print axioms' records for TDA.X; expected exactly one." '-OK: TDA.X ' <<'EOF'
 TDA.X
 ---
