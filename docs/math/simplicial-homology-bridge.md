@@ -11,8 +11,8 @@ added. This choice makes the face basis itself the finite matrix basis. It
 requires no chain-model comparison before finite PH can use its coordinates.
 
 The choice is an interface decision. The signed boundary, its square-zero
-law, and same-ambient inclusion chain maps are now proved. Functorial homology,
-finite coordinates, and a PH algorithm remain separate work. The APIs are in
+law, and same-ambient inclusion chain maps are proved. The later layers provide
+functorial homology, finite coordinates, and certified finite F₂ persistence. The chain APIs are in
 [TDA/Simplicial/Bridge.lean](../../TDA/Simplicial/Bridge.lean),
 [TDA/Simplicial/Boundary.lean](../../TDA/Simplicial/Boundary.lean),
 [TDA/Simplicial/ChainComplex.lean](../../TDA/Simplicial/ChainComplex.lean), and
@@ -25,8 +25,8 @@ construct these proofs internally.
 | --- | --- | --- | --- |
 | faces | mathlib `PreAbstractSimplicialComplex`; merged `TDA.Filtration.singletonFace`, `vertexBirth`, `face_mono` | `Face K n`, `Chain K R n`, ordered deletion boundary | `V` linearly ordered, with one order across stages; `Ring R` for signed chain theory; no finite ambient `V` |
 | Chain packaging | mathlib `Finsupp.basisSingleOne`, `ChainComplex.of`, `ChainComplex.ofHom` | General ordered-face `d²=0` and same-ambient inclusion commutation, identity, and composition are proved | `ModuleCat R` supports a general `Ring R`; no finite-face assumption is used |
-| Ordinary homology | mathlib `ShortComplex.moduleCatMk`, `moduleCatToCycles`, `moduleCatHomologyIso`; merged persistence module API | Identify `Hₙ` with `ker dₙ / range(dₙ₊₁ → ker dₙ)`, construct inclusion-induced maps and their identity/composition laws, then instantiate the covariant module of #11 | `Ring R`; a nonzero vertex birth additionally needs `Nontrivial R` |
-| Finite coordinates | mathlib `LinearMap.toMatrix`, `toMatrix_apply`, `toMatrix_comp` | Coordinate equivalence for each `Cₙ`, differential and inclusion squares; transport cycles, boundaries and quotient homology naturally | Finite **total** face set for bounded finite-rank stages; `Fintype` and `DecidableEq` for executable enumeration. This matrix API uses `CommSemiring`; signed boundaries use `CommRing`, hence any `Field` |
+| Ordinary homology | mathlib `ShortComplex.moduleCatMk`, `moduleCatToCycles`, `moduleCatHomologyIso`; persistence module API | `simplicialHomologyIncl` has identity, composition and quotient-naturality laws; `simplicialHomologyPModule` assembles the inclusion maps over a filtration | `Ring R`; no finite-face assumption; a nonzero vertex birth additionally needs `Nontrivial R` |
+| Finite coordinates | mathlib `LinearMap.toMatrix`, `toMatrix_apply`, `toMatrix_comp` | `chainCoordinates` and `boundaryMatrix_mulVec` identify chains and their boundary matrices; `simplicialHomologyCoordinates` identifies quotient homology naturally under inclusions | `CommRing R`; degreewise finite faces and the stated `Fintype`/`DecidableEq` data for matrix columns. A finite total face set supplies degreewise finiteness; these theory coordinates are noncomputable |
 | SSet alternative | mathlib `SSet.chainComplex`, `normalizedMooreComplex`, `inclusionOfMooreComplex`, Dold–Kan homotopy equivalence | Construct a support-preserving precomplex-to-SSet functor and a natural identification of normalized chains with the finite ordered-face basis | `SSet.{u}` with coefficients `ModuleCat.of R R` in `ModuleCat.{u} R` type-checks for `R : Type u`, `[Ring R]` after importing `ModuleCat.Colimits`. The alternating complex contains degenerate simplices, so finite input alone does not bound its chain groups |
 
 The prototype's `TotalFace K` makes the missing finiteness hypothesis explicit;
@@ -119,26 +119,43 @@ are also kernel checked. Every private fixture declaration prints its axiom
 footprint in the example module; the public theorems and constructor are pinned
 in the corresponding `scripts/print_axioms/<Area>.lean` files.
 
-## Remaining homology and coordinate scope
+## Homology, coordinates and finite persistence
 
-1. Use `ShortComplex.moduleCatHomologyIso` to expose the kernel quotient.
-   A commuting chain square maps cycles to cycles and boundaries to
-   boundaries, so it descends to homology. Prove the induced identity and
-   composition laws and assemble the covariant `ModuleCat R` valued
-   persistence module over the filtration preorder from #10 and #11.
-   Empty support has `C₀=0`; a single isolated vertex has `C₀≅R` and
-   `C₁=0`, hence ordinary `H₀≅R`. Its birth class is nonzero only when
-   `Nontrivial R` is assumed.
-2. Under a finite total face set, define coordinate isomorphisms from each
-   free face module to the explicitly enumerated column module. Prove
-   `M(d)·coord = coord·d` and the analogous inclusion square. Show the
-   induced maps identify matrix kernels and images **inside kernels**, then
-   descend to isomorphisms of quotient homology. Prove the naturality square
-   for every same-ambient inclusion. Equality of dimensions or ranks alone
-   does not meet this contract. Restrict this `LinearMap.toMatrix` route to
-   `CommRing R`; retain `Ring R` for the abstract chain/homology theory.
+[Homology.lean](../../TDA/Simplicial/Homology.lean) defines ordinary homology over
+`Ring R`, without a finite-face assumption. `simplicialHomologyIncl` is induced
+by the face inclusion, with identity and composition laws;
+`simplicialHomologyIncl_quotient_naturality` identifies it with the induced map
+on the kernel quotient. [Simplicial.lean](../../TDA/Persistence/Simplicial.lean)
+assembles these maps into `simplicialHomologyPModule` for a filtration over a
+preorder. Empty support has `H₀=0`, and an isolated vertex has `H₀≅R`;
+a nonzero vertex class additionally requires `Nontrivial R`.
 
-Arbitrary vertex maps, collapsing simplices, general SSet comparison and PH
-reduction are outside this initial bridge. Any later second chain model needs
-natural chain equivalences and induced homology isomorphisms, not only equal
-Betti numbers.
+[FiniteCoordinates.lean](../../TDA/Simplicial/FiniteCoordinates.lean) works over
+`CommRing R`. `chainCoordinates` requires `Finite (Face K n)`;
+`boundaryMatrix_mulVec` also requires `Fintype (Face K (n + 1))` and
+`DecidableEq (Face K (n + 1))` and identifies matrix multiplication with the
+signed boundary. [FiniteHomology.lean](../../TDA/Simplicial/FiniteHomology.lean)
+uses the same degreewise data for `simplicialHomologyCoordinates`, a linear
+equivalence with coordinate cycles modulo coordinate boundaries.
+`simplicialHomologyCoordinates_naturality` proves compatibility with
+same-ambient inclusions, using the corresponding source and target enumeration
+data. These are noncomputable theory coordinates; finite total faces provide
+the finiteness hypotheses, rather than an executable master matrix.
+
+[FiniteInput.lean](../../TDA/Persistence/Reduction/FiniteInput.lean) supplies the
+certified F₂ procedure for finite lists of natural-number-labelled simplices
+with integer grades. `run_eq_some_iff` states that `run xs = some out` exactly
+when `Valid xs` and `out = occurrences xs`; invalid lists return `none`.
+For valid input, `outputDiagram_eq_dgm` identifies the output diagram in every
+natural degree with `dgm (ZMod 2) (gradeFilter xs h)`. This executable procedure
+and its correctness bridge are distinct from the noncomputable coordinate API.
+
+[VertexChainMap.lean](../../TDA/Simplicial/VertexChainMap.lean) constructs signed
+chain and homology maps for simplicial vertex maps, sending a collapsed face
+to zero in its original degree.
+[ContiguityHomotopy.lean](../../TDA/Simplicial/ContiguityHomotopy.lean) constructs
+a chain homotopy for contiguous maps and proves equality of their induced
+homology maps. General comparison with simplicial-set or singular homology,
+and executable extraction over arbitrary fields, are not supplied by these
+results. A second chain model needs natural chain equivalences and induced
+homology isomorphisms, not only equal Betti numbers.
