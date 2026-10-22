@@ -201,22 +201,6 @@ theorem heightSeparating_covers_range [Finite V] (h : V → ℝ) {m M ρ : ℝ}
 
 end separating
 
-/-! ## Vertex cells -/
-
-section vertexCells
-
-variable {X : Type u} {Y : Type v} {I : Type w} [TopologicalSpace X] [TopologicalSpace Y]
-
-/-- **Vertex cells.** The MultiNerve Mapper cells with label set `{i}` are the path components of
-`f ⁻¹' U i`. -/
-def vertexCellsEquiv (f : C(X, Y)) (U : I → Set Y) (i : I) [DecidableEq I] :
-    {c : multiNerveMapper f U // c.support.image Sigma.fst = {i}} ≃
-      ZerothHomotopy (f ⁻¹' U i) :=
-  (cellsOverLabelsEquiv f U {i} (Finset.singleton_nonempty i)).trans
-    (zerothHomotopySetCongr (by rw [Finset.set_biInter_singleton]))
-
-end vertexCells
-
 /-! ## Graph-PL cells -/
 
 namespace GraphPL
