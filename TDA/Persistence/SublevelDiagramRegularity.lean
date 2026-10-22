@@ -2,7 +2,7 @@ import TDA.Persistence.SmoothFaceLift
 import TDA.Persistence.DiagramRegularity
 import Mathlib.Data.List.NodupEquivFin
 
-/-! Fixed regular coordinates for actual persistent homology diagrams. -/
+/-! Fixed regular face coordinates for sublevel persistence diagrams. -/
 
 set_option autoImplicit false
 
@@ -45,9 +45,9 @@ noncomputable def fixedFaceCrLift (r : ℕ∞ω) (F : E → FilterFunction K ℝ
   factorization := fixedFaceLift_factorization k F e n horder
   regular := fixedFaceLift_contDiffOn_cr k r F e n hF
 
-/-- Actual scalar losses inherit `Cʳ` regularity from a fixed full template,
+/-- Scalar losses inherit `Cʳ` regularity from a fixed full template,
 provided the loss is regular at every presentation of the base diagram. -/
-theorem actualDiagram_scalar_contDiffOn_cr (r : ℕ∞ω)
+theorem sublevelDiagram_scalar_contDiffOn_cr (r : ℕ∞ω)
     (F : E → FilterFunction K ℝ) {x₀ : E} {U : Set E}
     (hU : IsOpen U) (hx₀ : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ r (fun x => (F x).value s) U)
@@ -64,7 +64,7 @@ theorem actualDiagram_scalar_contDiffOn_cr (r : ℕ∞ω)
 
 /-- Relative chamber membership supplies a neighborhood inside the domain;
 face regularity is required only on that domain. -/
-theorem actualDiagram_scalar_contDiffOn_cr_of_mem_relative_orderChamber
+theorem sublevelDiagram_scalar_contDiffOn_cr_of_mem_relative_orderChamber
     (r : ℕ∞ω) (F : E → FilterFunction K ℝ) {D : Set E} (hD : IsOpen D)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ r (fun x => (F x).value s) D)
     {x₀ : E} (hx₀ : x₀ ∈ D)
@@ -92,7 +92,7 @@ theorem actualDiagram_scalar_contDiffOn_cr_of_mem_relative_orderChamber
     obtain ⟨y, hy, rfl⟩ := hx
     exact hWoEq y hy
   obtain ⟨U', hU', hxU', hsubset, hs⟩ :=
-    actualDiagram_scalar_contDiffOn_cr k r F hU hxU
+    sublevelDiagram_scalar_contDiffOn_cr k r F hU hxU
       (fun s => (hF s).mono hUD) horder n Vloss hV
   exact ⟨U', hU', hxU', hsubset.trans hUD, hs⟩
 
@@ -199,7 +199,7 @@ private theorem strict_iff_unequal (F : E → FilterFunction K ℝ)
   have hne := not_congr (horder.value_eq_iff (e.enum p.1) (e.enum p.2))
   exact ⟨fun h => hne.mp h.2, fun h => ⟨hle₀, hne.mpr h⟩⟩
 
-/-- The strict lift and the full lift represent the same actual diagram on
+/-- The strict lift and the full lift represent the same diagram on
 the whole order chamber. No values are resorted at the parameter. -/
 theorem strictFaceLift_factorization (F : E → FilterFunction K ℝ)
     {x₀ : E} (e : CompatibleOrder (F x₀)) (n : ℕ)
@@ -233,7 +233,7 @@ theorem strictFaceLift_factorization (F : E → FilterFunction K ℝ)
       fun h => h.1⟩
   · simp [strictFaceLift, strictFaceLiftCounts, fixedFaceLift, faceLiftCounts]
 
-/-- The reduced actual template is a `Cʳ` local lift with fixed counts. -/
+/-- The reduced template is a `Cʳ` local lift with fixed counts. -/
 noncomputable def strictFaceCrLift (r : ℕ∞ω) (F : E → FilterFunction K ℝ)
     {x₀ : E} (e : CompatibleOrder (F x₀)) (n : ℕ) {U : Set E}
     (hU : IsOpen U)

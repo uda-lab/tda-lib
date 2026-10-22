@@ -4,7 +4,7 @@ import Mathlib.Data.ENNReal.Operations
 /-!
 # Extended real interleaving distance
 
-The distance is the infimum of finite parameters with actual witnesses. Empty infima are
+The distance is the infimum of finite parameters with witnesses. Empty infima are
 infinite; no attainment or separation assumption is imposed.
 -/
 
@@ -20,7 +20,7 @@ open scoped NNReal ENNReal
 variable {R : Type u} [Ring R]
 variable {M N P M' N' : PModule.{u,0,w} R ℝ}
 
-/-- The infimum of all finite parameters admitting an actual real interleaving. -/
+/-- The infimum of all finite parameters admitting a real interleaving. -/
 noncomputable def realInterleavingDistance (M N : PModule.{u,0,w} R ℝ) : ℝ≥0∞ :=
   ⨅ (ε : ℝ≥0) (_ : Nonempty (RealInterleaving ε M N)), (ε : ℝ≥0∞)
 

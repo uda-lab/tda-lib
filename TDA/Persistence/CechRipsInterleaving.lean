@@ -8,7 +8,7 @@ set_option autoImplicit false
 # The log-scale Čech–Rips interleaving
 
 Reindexing a sublevel filtration along `exp` turns a multiplicative value sandwich
-`g ≤ f ≤ c · g` with `1 ≤ c` into inclusions shifted by `log c`, hence into an actual real
+`g ≤ f ≤ c · g` with `1 ≤ c` into inclusions shifted by `log c`, hence into a real
 `log c`-interleaving of the log-scale homology modules. The merged value bounds
 `čech ≤ rips ≤ 2 · čech` give the log-scale Čech–Rips interleaving with parameter `log 2`,
 in every degree, over every ring and in every pseudometric ambient space.
@@ -16,7 +16,7 @@ in every degree, over every ring and in every pseudometric ambient space.
 At radius level, the inclusions `Rips_r ⊆ Čech_r ⊆ Rips_{2r}` are morphisms of sublevel
 modules, the second into the module reindexed along `r ↦ 2r`. Their composites are the
 inclusion morphisms `Rips_r ⊆ Rips_{2r}` and `Čech_r ⊆ Čech_{2r}`, for every real `r`.
-For `0 ≤ r` these components are the actual structure maps; for `r < 0` both sublevels are
+For `0 ≤ r` these components are the structure maps; for `r < 0` both sublevels are
 empty.
 
 The Čech side is the radius-filter sublevel; no properness of the ambient space is used.
@@ -91,7 +91,7 @@ theorem log_sublevel_le_of_le_mul (hc : 1 ≤ c) (hfc : ∀ s, f.value s ≤ c *
   rw [exp_add_logParam hc]
   exact (hfc _).trans (mul_le_mul_of_nonneg_left hsr (by linarith))
 
-/-- A multiplicative sandwich `g ≤ f ≤ c · g` with `1 ≤ c` gives an actual real
+/-- A multiplicative sandwich `g ≤ f ≤ c · g` with `1 ≤ c` gives a real
 `log c`-interleaving of the log-scale modules, with homology inclusions as maps. -/
 noncomputable def logInterleaving (hc : 1 ≤ c) (hgf : ∀ s, g.value s ≤ f.value s)
     (hfc : ∀ s, f.value s ≤ c * g.value s) :
@@ -218,12 +218,12 @@ theorem cechToRips_comp_ripsToCech (d : MetricSpace V) (p : V → X)
   inclusionHom_comp R n (H := Filtration.reindex twoMul (Cech.filter p).sublevelFiltration)
     _ _
 
-/-- For `0 ≤ r`, the Rips doubling component is the actual structure map. -/
+/-- For `0 ≤ r`, the Rips doubling component is the structure map. -/
 theorem ripsDouble_app_of_nonneg (d : MetricSpace V) {r : ℝ} (hr : 0 ≤ r) :
     (ripsDouble R n d).app r =
       structureMap (sublevelModule R (Rips.filter d) n) (show r ≤ 2 * r by linarith) := rfl
 
-/-- For `0 ≤ r`, the Čech doubling component is the actual structure map. -/
+/-- For `0 ≤ r`, the Čech doubling component is the structure map. -/
 theorem cechDouble_app_of_nonneg (p : V → X) {r : ℝ} (hr : 0 ≤ r) :
     (cechDouble R n p).app r =
       structureMap (sublevelModule R (Cech.filter p) n) (show r ≤ 2 * r by linarith) := rfl

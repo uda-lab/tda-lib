@@ -2,7 +2,7 @@ import TDA.Persistence.SimplicialMultivaluedMapComposition
 import TDA.Simplicial.H0Augmentation
 import Mathlib.LinearAlgebra.Matrix.Notation
 
-/-! Actual nonzero composition, signed orientation, infinite images and support controls. -/
+/-! Nonzero composition, signed orientation, infinite images and support controls. -/
 
 namespace TDA.Persistence.SimplicialMultivaluedMapCompositionExamples
 
@@ -265,7 +265,7 @@ private theorem parity_composite_endpoints (i : Fin 2) :
   change parity (i : ℕ) = i
   exact Fin.ext (Nat.mod_eq_of_lt i.2)
 
-private theorem infinite_actual_composition_image :
+private theorem infinite_composition_image :
     ((multivaluedSimplicialHomologyMap ℚ (univTotal (V := Fin 1) (0 : ℕ)) infiniteC 0 ≫
       reindexNatTrans (OrderHomClass.toOrderHom (OrderIso.addRight (0 : ℝ)))
         (multivaluedSimplicialHomologyMap ℚ (fun k => ⟨parity k,rfl⟩) parityD 0) ≫
@@ -322,7 +322,7 @@ private theorem signed_image_nonzero :
   rw [signed_reversal_injection]
   exact neg_ne_zero.mpr injection_chain_nonzero
 
-private theorem actual_collapse_after_injection :
+private theorem collapse_after_injection :
     vertexChainMap ℤ (VertexMap.comp (fullMap inj) (fullMap collapse)) 1
       (orientedTuple edgeK ℤ (id : Fin 2 → Fin 2)) = 0 := by
   rw [vertexChainMap_orientedTuple ℤ _ _ (by simp)]
@@ -443,7 +443,7 @@ private theorem empty_relation (ε : ℝ) :
   intro t σ hσ
   exact False.elim hσ
 
-private theorem empty_actual_composition :
+private theorem empty_composition :
     multivaluedSimplicialHomologyMap ℤ empty_total (empty_relation (-3)) 0 ≫
       reindexNatTrans (OrderHomClass.toOrderHom (OrderIso.addRight (-3 : ℝ)))
         (multivaluedSimplicialHomologyMap ℤ empty_total (empty_relation 2) 0) ≫

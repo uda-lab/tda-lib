@@ -6,7 +6,7 @@ import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
 
 An empty grid reconstructs a zero module. A one-value grid includes its critical endpoint and
 has an unbounded nonzero final tail. A change of coordinates by a factor of two produces an
-actual nonidentity transition within that single tail cell.
+nonidentity transition within that single tail cell.
 -/
 
 set_option autoImplicit false
@@ -27,7 +27,7 @@ private def oneGrid : Fin 1 ↪o ℝ where
 private noncomputable def zeroModule : PModule.{0,0,0} ℤ ℝ :=
   (Functor.const ℝ).obj (0 : ModuleCat.{0} ℤ)
 
-/-- No critical values give an actual natural isomorphism to the zero module. -/
+/-- No critical values give a natural isomorphism to the zero module. -/
 noncomputable def emptyReconstruction :
     reindex (cellIndex emptyGrid) (sample emptyGrid zeroModule) ≅ zeroModule :=
   reconstructionIso emptyGrid zeroModule
@@ -57,7 +57,7 @@ theorem critical_and_left_cells :
 theorem unbounded_final_cell (t : ℝ) (ht : 0 ≤ t) : cellIndex oneGrid t = 1 :=
   cellIndex_of_last_le oneGrid t ht
 
-/-- The entire left ray has actual zero fibers. -/
+/-- The entire left ray has zero fibers. -/
 theorem step_zero_left (t : ℝ) (ht : t < 0) : IsZero (stepModule.obj t) :=
   step_constructible.zero_left t (fun _ => ht)
 
@@ -73,7 +73,7 @@ private noncomputable def coordinateChange (t : ℝ) : stepModule.obj t ≅ step
   (LinearEquiv.smulOfNeZero ℚ (stepModule.obj t) (if t < 1 then 1 else 2)
     (by split_ifs <;> norm_num)).toModuleIso
 
--- Conjugation changes actual maps while keeping the fibers and zero left tail.
+-- Conjugation changes maps while keeping the fibers and zero left tail.
 private noncomputable def twistedStep : PModule ℚ ℝ where
   obj := stepModule.obj
   map {s t} f := (coordinateChange s).inv ≫ stepModule.map f ≫ (coordinateChange t).hom

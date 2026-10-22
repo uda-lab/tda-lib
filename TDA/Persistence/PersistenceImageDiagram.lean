@@ -2,7 +2,7 @@ import TDA.Persistence.PersistenceImageMatching
 import TDA.Persistence.FiniteMatchingCostBottleneck
 
 /-!
-# Persistence images of the finite part of an actual diagram
+# Persistence images of the finite part of a diagram
 
 Canonical occurrence labels preserve multiplicity. Essential bars are omitted from
 this feature, without replacing their deaths by a finite value. A finite full

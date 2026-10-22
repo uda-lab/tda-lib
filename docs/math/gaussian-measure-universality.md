@@ -12,7 +12,7 @@ the Euclidean geometry. Negative bandwidths give the same kernel as their absolu
 values. The nonzero hypothesis is necessary because Lean's division convention
 makes the zero-bandwidth kernel constant.
 
-Let Hσ be the actual reproducing kernel Hilbert space constructed by
+Let Hσ be the reproducing kernel Hilbert space constructed by
 `WeightedKernel.Space σ`, and let φσ(p) be its kernel feature
 `WeightedKernel.featureAt σ p`. Its Hilbert norm is one. Continuity and this
 bound prove Bochner integrability against every finite positive measure and
@@ -30,7 +30,7 @@ finite sums agree with the existing finite-support `measureEmbedding` and
 weighted finite-diagram embedding, preserving multiplicities.
 `norm_signedEmbedding_le_totalVariation` gives ‖Eσ(μ)‖ ≤ |μ|(ℝ²).
 `inner_signedEmbedding` identifies pairing with a function f in Hσ with its
-actual scalar signed integral. `signedEmbedding_apply` gives evaluation by a
+scalar signed integral. `signedEmbedding_apply` gives evaluation by a
 Gaussian section, and `norm_signedEmbedding_sq` and
 `norm_signedEmbedding_sub_sq` identify squared norms and distances with
 iterated signed kernel integrals. The Jordan comparison and bounded feature
@@ -43,7 +43,7 @@ to probability measures gives `probabilityEmbedding_injective`, the
 characteristic-kernel conclusion. The diffuse fixture uses the negative of the
 product of two standard Gaussian probability laws. Its total variation is
 non-atomic and has positive mass outside every compact subset of ℝ²; the signed
-mean comparison and injectivity theorem apply to this actual input.
+mean comparison and injectivity theorem apply to this input.
 
 The separation proof specializes mathlib's standard Gaussian characteristic
 function. Bounded Fubini interchanges identify Gaussian double integrals with
@@ -58,7 +58,7 @@ measures. This supplies the general-measure step beyond finite Gram matrices.
 C₀(ℝ²) consists of continuous real functions vanishing at infinity, with the
 uniform norm. Every Gaussian section belongs to C₀, and
 `rkhsFunction_zero_at_infty` proves the same for every element of Hσ.
-`rkhsToC0CLM` is the actual continuous linear inclusion, whose operator bound is
+`rkhsToC0CLM` is the continuous linear inclusion, whose operator bound is
 one.
 
 `gaussian_sections_dense` proves that finite linear combinations of Gaussian
@@ -88,7 +88,7 @@ strictly positive at every point. Assume
 \]
 
 `weightedPlaneMeasure` weights μ and includes it into ℝ².
-`weightedPersistenceEmbedding` takes its actual full-plane Gaussian mean.
+`weightedPersistenceEmbedding` takes its full-plane Gaussian mean.
 `integrable_weightedFeature` verifies integrability of the weighted feature
 against μ, and `weightedPersistenceEmbedding_eq_integral` identifies the two
 integral expressions. `weightedPersistenceEmbedding_eq_iff_continuous` proves recovery of μ among

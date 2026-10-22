@@ -6,7 +6,7 @@ import Mathlib.LinearAlgebra.Dimension.Constructions
 
 For an observed death, count the image of an earlier structure map intersected with
 the kernel of the next one. A terminal death instead uses the final image. Naturality
-restricts a component injection to these actual subspaces, before dimensions are compared.
+restricts a component injection to these subspaces, before dimensions are compared.
 -/
 
 set_option autoImplicit false
@@ -51,7 +51,7 @@ private theorem count_terminal (B : Multiset (FiniteInterval s)) (b : ℕ) (hs :
 
 variable {k : Type u} [Field k]
 
-/-- The actual image/kernel intersection at the stage immediately before a finite death.
+/-- The image/kernel intersection at the stage immediately before a finite death.
 The bounds supply both finite indices and justify the predecessor. -/
 def deathSubspace (M : PModule.{u,0,u} k (Fin s)) (b d : ℕ) (hbd : b < d) (hd : d < s) :
     Submodule k (M.obj ⟨d - 1, by omega⟩) :=
@@ -75,8 +75,7 @@ private theorem finrank_restricted_kernel (M : PModule.{u,0,u} k (Fin s))
     (LinearMap.ker ((structureMapLinear M hcd).domRestrict U))) = _
   rw [LinearMap.ker_domRestrict, Submodule.map_comap_subtype]
 
-/-- For `b < d < s`, the same-death prefix count is the dimension of the actual
-image/kernel intersection. This statement does not form a terminal predecessor. -/
+/-- For `b < d < s`, the same-death prefix count is the dimension of the image/kernel intersection. This statement does not form a terminal predecessor. -/
 theorem deathPrefixCount_eq_finrank (M : PModule.{u,0,u} k (Fin s))
     [∀ i, FiniteDimensional k (M.obj i)] (b d : ℕ) (hbd : b < d) (hd : d < s) :
     deathPrefixCount (rankBarcode M) b d =
@@ -152,7 +151,7 @@ private theorem imageMap_injective {M N : PModule.{u,0,u} k (Fin s)} (j : M ⟶ 
   exact hj _ (congrArg Subtype.val hxy)
 
 /-- A componentwise injection increases each cumulative count at one fixed death.
-The proof compares actual restricted subspace injections, including terminal images. -/
+The proof compares restricted subspace injections, including terminal images. -/
 theorem deathPrefixCount_le_of_injective {M N : PModule.{u,0,u} k (Fin s)}
     [∀ i, FiniteDimensional k (M.obj i)] [∀ i, FiniteDimensional k (N.obj i)]
     (j : M ⟶ N) (hj : ∀ i, Function.Injective (j.app i).hom) (b d : ℕ)

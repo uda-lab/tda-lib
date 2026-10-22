@@ -4,7 +4,7 @@ import TDA.Reeb.ConstructibleCylinderExamples
 /-!
 # Examples: constructible cosheaves from finite data
 
-All cosheaves below are actual component cosheaves `D.toCosheaf S` of realized finite data, or
+All cosheaves below are component cosheaves `D.toCosheaf S` of realized finite data, or
 arbitrary constructible interval cosheaves.
 
 * Pinch `DP` at the levels `S01 = {0, 1}`: two edges whose bottom ends both go to vertex `0`.
@@ -50,7 +50,7 @@ open TDA.Reeb.Examples.Cylinder TDA.Reeb.Examples.ConstructibleCylinder
 
 /-! ### The pinch fixture `DP` at `S01 = {0, 1}` -/
 
-/-- The pinch cosheaf: the actual component cosheaf of the pinch data `DP`. -/
+/-- The pinch cosheaf: the component cosheaf of the pinch data `DP`. -/
 abbrev FP : OpenInterval ⥤ Type := DP.toCosheaf S01
 
 /-- The pinch cosheaf is the path-component cosheaf of the pinch height. -/
@@ -470,7 +470,7 @@ theorem F0_card_top : Nat.card (F0.obj ⊤) = 1 := by
 abbrev pt0Recon := realizeExtractIso (pt0.toCosheaf_isConstructibleAt S0)
   (pt0.toCosheaf_isIntervalCosheaf S0)
 
-/-- The reconstruction on `ℝ = J 0`, through the actual inclusion `J 0 ≤ ⊤`. -/
+/-- The reconstruction on `ℝ = J 0`, through the inclusion `J 0 ≤ ⊤`. -/
 theorem pt0_recon_top (x : F0.obj (S0.J 0)) :
     pt0Recon.hom.app ⊤
         (((S0.extract F0 (pt0.toCosheaf_isConstructibleAt S0).finite).toCosheaf S0).map

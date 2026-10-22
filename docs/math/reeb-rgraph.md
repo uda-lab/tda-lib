@@ -163,7 +163,7 @@ discreteness of the pieces.
 
 ## Fixtures
 
-`TDA.Reeb.RGraphExamples` works with actual realizations and actual slice morphisms:
+`TDA.Reeb.RGraphExamples` works with realizations and slice morphisms:
 
 - two parallel edges over `0 < 1` and a single edge are not isomorphic graph objects;
 - exchanging the two parallel edges is an involutive non-identity automorphism of the data and of

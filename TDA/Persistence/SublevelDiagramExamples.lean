@@ -1961,7 +1961,7 @@ private theorem edge_first_full_coordinates (a : ZMod 2) :
   rw [hc, hy, edge_two_full_pair_coordinates]
   simp
 
-/-! Actual template evaluations reuse the independently established homology
+/-! Template evaluations reuse the independently established homology
 computations above. The empty and singleton cases also check the face-index
 offset and the absence of finite pairs with fewer than two faces. -/
 
@@ -2037,7 +2037,7 @@ private theorem edge_tied_template_example (e : CompatibleOrder edgeFilter) :
   exact evaluateFaceTemplate_constant_points (ZMod 2) e edgeTiedFilter
     (by intro i j _; exact le_rfl) 0 5 (by intro s; rfl)
 
-/-- Empty actual complexes have no coordinate labels in any degree. -/
+/-- Empty complexes have no coordinate labels in any degree. -/
 private theorem empty_smooth_lift (n : ℕ) :
     ∃ (L : ℝ → (Fin 0 → ℝ × ℝ) × (Fin 0 → ℝ)),
       (∀ x : ℝ, dgm (ZMod 2) (emptyFilter (Fin 2) ℝ) n =
@@ -2050,7 +2050,7 @@ private theorem empty_smooth_lift (n : ℕ) :
     simp [orderedQ, empty_points]
   · exact contDiffOn_const
 
-/-- A translating singleton has a moving essential coordinate in its actual H₀ diagram. -/
+/-- A translating singleton has a moving essential coordinate in its H₀ diagram. -/
 private theorem singleton_smooth_lift :
     ∃ (m l : ℕ) (L : ℝ → (Fin m → ℝ × ℝ) × (Fin l → ℝ)),
       m = 0 ∧ l = 1 ∧
@@ -2076,7 +2076,7 @@ private theorem singleton_smooth_lift :
         exact contDiffOn_id)
 
 /-- Translating all three edge face values keeps the weak order fixed while the
-actual finite death coordinate and essential birth both vary. -/
+finite death coordinate and essential birth both vary. -/
 private def movingEdgeFilter (x : ℝ) : FilterFunction edgeK ℝ where
   value := fun s => edgeFilter.value s + x
   mono := by
@@ -2101,7 +2101,7 @@ private theorem moving_edge_smooth_lift :
       (x₀ := 0) isOpen_univ (Set.mem_univ 0) hF horder 0
   exact ⟨m, l, L, fun x => hfactor x (Set.mem_univ x), hsmooth⟩
 
-/-- The actual edge diagram has a finite death at `9 + x` and an essential
+/-- The edge diagram has a finite death at `9 + x` and an essential
 birth at `2 + x`, so both kinds of coordinates genuinely move. -/
 private theorem moving_edge_points (x : ℝ) :
     (dgm (ZMod 2) (movingEdgeFilter x) 0).points =
@@ -2120,7 +2120,7 @@ def movingTiedEdgeFilter (x : ℝ) : FilterFunction edgeK ℝ where
   value := fun _ => x
   mono := by intros; exact le_rfl
 
-/-- The actual tied edge retains a finite endpoint pair: choose an enumeration
+/-- The tied edge retains a finite endpoint pair: choose an enumeration
 whose same prefix barcode displays the strict finite bar at grades `5,9`. -/
 theorem moving_tied_edge_has_finite_slot :
     ∃ e : CompatibleOrder (movingTiedEdgeFilter (0 : ℝ)),

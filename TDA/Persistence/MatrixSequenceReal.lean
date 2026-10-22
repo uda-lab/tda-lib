@@ -22,7 +22,7 @@ variable {k : Type u} [Field k] {n m : ℕ}
 
 noncomputable section
 
-/-- Extend the supplied finite observations through the cells of the actual real grid.
+/-- Extend the supplied finite observations through the cells of the real grid.
 The initial stage is the entire left tail, so constructibility requires it to be zero. -/
 def realModule (A : MatrixSequence k (n + 1)) (c : Fin n ↪o ℝ) :
     PModule.{u,0,u} k ℝ := reindex (cellIndex c) A.toPModule
@@ -72,7 +72,7 @@ private theorem criticalIndex (c : Fin n ↪o ℝ) :
   exact cellIndex_critical c i
 
 /-- Restricting the real extension to its critical values recovers the positive stages,
-including every actual structure map. -/
+including every structure map. -/
 def criticalSampleIso (A : MatrixSequence k (n + 1)) (c : Fin n ↪o ℝ) :
     reindex c.toOrderHom (A.realModule c) ≅
       reindex (Fin.succOrderEmb n).toOrderHom A.toPModule :=
@@ -83,7 +83,7 @@ def realDiagram (A : MatrixSequence k (n + 1)) (c : Fin n ↪o ℝ) : Diagram �
   moduleDiagram c (A.realModule c) (fun _ => inferInstance)
 
 /-- Real endpoints are obtained from the barcode of the positive observed stages.
-In particular, the actual critical values are retained instead of their ordinal labels. -/
+In particular, the critical values are retained instead of their ordinal labels. -/
 theorem realDiagram_eq_ofIndexBars (A : MatrixSequence k (n + 1)) (c : Fin n ↪o ℝ) :
     A.realDiagram c = ofIndexBars c c.strictMono
       (rankBarcode (reindex (Fin.succOrderEmb n).toOrderHom A.toPModule)) := by
@@ -96,7 +96,7 @@ theorem realDiagram_eq_ofIndexBars (A : MatrixSequence k (n + 1)) (c : Fin n ↪
   unfold realDiagram moduleDiagram
   rw [rankBarcode_eq_of_iso (A.criticalSampleIso c)]
 
-/-- The matrix extension is naturally isomorphic to its actual real endpoint realization. -/
+/-- The matrix extension is naturally isomorphic to its real endpoint realization. -/
 def realBarcodeIso (A : MatrixSequence k (n + 1)) (c : Fin n ↪o ℝ)
     (hA : A.dim 0 = 0) :
     A.realModule c ≅ RealBarcode.realize (k := k) (A.realDiagram c) :=

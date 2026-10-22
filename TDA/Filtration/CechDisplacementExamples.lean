@@ -5,7 +5,7 @@ set_option autoImplicit false
 /-!
 # Same-label Čech displacement fixtures
 
-The fixtures test the actual `Cech.radiusAt`, `Cech.filter`, `Cech.displacement` and
+The fixtures test the `Cech.radiusAt`, `Cech.filter`, `Cech.displacement` and
 `Rips` definitions: three points on the line where the Čech change attains the
 displacement and the Rips change attains twice it, two labellings of the same image with
 positive displacement, and the failure of the radius estimate on the empty set for a

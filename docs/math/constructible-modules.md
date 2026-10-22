@@ -18,7 +18,7 @@ contains `[c_i,c_{i+1})` when a next critical value exists, and the final cell i
 `[c_{n-1},∞)`. In particular, `q(c_i)=i+1`: a critical endpoint belongs to the new
 cell. With `n=0`, every parameter belongs to cell zero.
 
-`sample c M` is a finite module `A` with an actual zero object at index zero and
+`sample c M` is a finite module `A` with a zero object at index zero and
 `A(i+1)=M(c_i)`. Its positive structure maps are the original maps between critical
 parameters; maps from the initial zero object are zero. This initial stage has no
 real critical value and must not be passed to an endpoint adapter as an extra grade.
@@ -28,7 +28,7 @@ real critical value and must not be passed to an endpoint adapter as an extra gr
 `IsConstructible c M` requires two properties:
 
 - `M(t)` is a zero object whenever `t` lies below every critical value.
-- Whenever `s≤t` and `q(s)=q(t)`, the actual structure map `M(s)→M(t)` is an
+- Whenever `s≤t` and `q(s)=q(t)`, the structure map `M(s)→M(t)` is an
   isomorphism.
 
 These conditions concern the module's fibers and maps. They assume no finite
@@ -42,7 +42,7 @@ with zero initial fiber satisfies the predicate after reindexing along `q`.
 q^*A\;\cong\;M.
 \]
 
-On a positive cell its forward component is the actual map `M(c_i)→M(t)`, with the
+On a positive cell its forward component is the map `M(c_i)→M(t)`, with the
 sample fiber identified by its cell index. On the left cell it is the map from the
 zero object. Naturality is proved before invertibility: for positive source and target
 cells, both sides of the square are the same composite `M(c_i)→M(t)`; for a zero
@@ -61,7 +61,7 @@ cell, as well as empty, left-ray and exact-critical-value cases.
 
 The [common-grid and refinement API](constructible-refinement.md) constructs
 sorted unions of critical-value sets, proves constructibility on refinements,
-and places the actual positive-evaluation shift on the grid `c_i-ε`.
+and places the positive-evaluation shift on the grid `c_i-ε`.
 For field-valued modules it derives finiteness at added critical values and
 proves that refinement preserves the real endpoint diagram, including repeated
 bars and essential tails.

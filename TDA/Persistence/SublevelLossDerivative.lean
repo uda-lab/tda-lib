@@ -3,7 +3,7 @@ import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.DiagramCalculus
 
 /-!
-# Derivatives of actual persistence losses
+# Derivatives of scalar losses on sublevel persistence diagrams
 
 The finite coordinates below are the *full* fixed template.  In particular a
 pair tied along the parameter family still has both of its real coordinates.
@@ -53,7 +53,7 @@ private theorem endpointIndexMultiset_nodup :
   simpa only [endpointIndexMultiset, Multiset.count_add, Multiset.count_map,
     Multiset.countP_eq_card_filter, eq_comm, add_assoc, add_comm, add_left_comm] using h
 
-/-- Every slot in the full template selects a different actual face. -/
+/-- Every slot in the full template selects a different face. -/
 theorem faceLossSlotFace_injective :
     Function.Injective (faceLossSlotFace k F e p) := by
   classical
@@ -144,10 +144,10 @@ def faceLossSlotPack (w : FaceLossSlot k F e p → ℝ) :
     faceLossSlotRead k F e p j (faceLossSlotPack k F e p w) = w j := by
   rcases j with ((i | i) | i) <;> rfl
 
-/-- All actual face values, with the finite-product maximum norm. -/
+/-- All face values, with the finite-product maximum norm. -/
 def allFaceValues (x : E) : TotalFace K → ℝ := fun s => (F x).value s
 
-/-- Selection of the actual face values into every finite and essential slot. -/
+/-- Selection of the face values into every finite and essential slot. -/
 noncomputable def faceValueSelectionLinear :
     (TotalFace K → ℝ) →ₗ[ℝ]
       DiagramCoordinates (faceLiftCounts k F e p).1 (faceLiftCounts k F e p).2 where
@@ -193,7 +193,7 @@ theorem faceValueSelection_norm_le_one : ‖faceValueSelection k F e p‖ ≤ 1 
     intro v
     simpa using faceValueSelectionLinear_norm_le k F e p v)
 
-/-- The actual fixed lift is the linear selection of the complete face-value vector. -/
+/-- The fixed lift is the linear selection of the complete face-value vector. -/
 theorem fixedFaceLift_eq_selection (x : E) :
     fixedFaceLift k F e p x =
       faceValueSelection k F e p (allFaceValues F x) := by
@@ -235,7 +235,7 @@ theorem faceValueSelection_single_eq_zero (s : TotalFace K)
   rw [hz]
   rfl
 
-/-- A selected coordinate differentiates as the corresponding actual face
+/-- A selected coordinate differentiates as the corresponding face
 value. The formula is valid for every slot, including diagonal pairs. -/
 theorem fixedFaceLift_slot_derivative {U : Set E} (hU : IsOpen U) (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
@@ -262,8 +262,8 @@ theorem fixedFaceLift_slot_derivative {U : Set E} (hU : IsOpen U) (hx : x₀ ∈
     ((hF s).contDiffAt (hU.mem_nhds hx)).differentiableAt_one)]
   rfl
 
-/-- The actual diagram family carries the merged smooth full-template lift. -/
-noncomputable def actualFaceLossLift {U : Set E} (hU : IsOpen U)
+/-- The diagram family carries the merged smooth full-template lift. -/
+noncomputable def fixedFaceC1Lift {U : Set E} (hU : IsOpen U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x)) :
     LocalDiagramLift (fun x => dgm k (F x) p)
@@ -354,9 +354,9 @@ theorem fixedFaceLift_fderiv_eq_selection {U : Set E} (hU : IsOpen U)
     hG.hasFDerivAt).fderiv
   simpa only [Function.comp_def, ← fixedFaceLift_eq_selection] using hc
 
-/-- The actual scalar PH loss is `C¹` on an open neighborhood contained in
+/-- The scalar PH loss is `C¹` on an open neighborhood contained in
 the original weak-order chamber. -/
-theorem actualPHScalarLoss_c1_neighborhood
+theorem sublevelDiagramScalarLoss_c1_neighborhood
     (e : CompatibleOrder (F x₀)) (p : ℕ) {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
@@ -368,12 +368,12 @@ theorem actualPHScalarLoss_c1_neighborhood
   obtain ⟨N, hNo, hNx, hNU, hNc⟩ :=
     localLift_scalar_c1 (fun x => dgm k (F x) p) W
       (faceLiftCounts k F e p).1 (faceLiftCounts k F e p).2
-      (actualFaceLossLift k F e p hU hF horder) x₀ hx hW
+      (fixedFaceC1Lift k F e p hU hF horder) x₀ hx hW
   exact ⟨N, hNo, hNx, hNU, hNc⟩
 
-/-- The genuine Fréchet derivative of an actual scalar PH loss, expressed as
-a finite sum of derivatives of actual simplex-value functions. -/
-theorem actualPHScalarLoss_hasFDerivAt {U : Set E} (hU : IsOpen U)
+/-- The Fréchet derivative of `x ↦ W (dgm k (F x) p)`, expressed as
+a finite sum of derivatives of the face-value functions. -/
+theorem sublevelDiagramScalarLoss_hasFDerivAt {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -390,9 +390,9 @@ theorem actualPHScalarLoss_hasFDerivAt {U : Set E} (hU : IsOpen U)
   let G := fderiv ℝ (allFaceValues F) x₀
   have hchain : HasFDerivAt (fun x => W (dgm k (F x) p))
       (D.comp (fderiv ℝ (fixedFaceLift k F e p) x₀)) x₀ := by
-    simpa only [D, Function.comp_def, actualFaceLossLift] using
+    simpa only [D, Function.comp_def, fixedFaceC1Lift] using
       localLift_scalar_hasFDerivAt (fun x => dgm k (F x) p) W Q H
-        (actualFaceLossLift k F e p hU hF horder) x₀ hx hW
+        (fixedFaceC1Lift k F e p hU hF horder) x₀ hx hW
   have hder : D.comp (fderiv ℝ (fixedFaceLift k F e p) x₀) =
       ∑ s : TotalFace K, faceLossCoefficient k F e p W s •
         fderiv ℝ (fun x => (F x).value s) x₀ := by
@@ -423,7 +423,7 @@ theorem actualPHScalarLoss_hasFDerivAt {U : Set E} (hU : IsOpen U)
   exact hchain
 
 /-- Equality with `fderiv` follows from the derivative-existence theorem. -/
-theorem actualPHScalarLoss_fderiv {U : Set E} (hU : IsOpen U)
+theorem sublevelDiagramScalarLoss_fderiv {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -432,10 +432,10 @@ theorem actualPHScalarLoss_fderiv {U : Set E} (hU : IsOpen U)
     fderiv ℝ (fun x => W (dgm k (F x) p)) x₀ =
       ∑ s : TotalFace K, faceLossCoefficient k F e p W s •
         fderiv ℝ (fun x => (F x).value s) x₀ :=
-  (actualPHScalarLoss_hasFDerivAt k F e p hU hx hF horder W hW).fderiv
+  (sublevelDiagramScalarLoss_hasFDerivAt k F e p hU hx hF horder W hW).fderiv
 
-/-- Quantitative operator-norm bound on the actual derivative functional. -/
-theorem actualPHScalarLoss_norm_bound {U : Set E} (hU : IsOpen U)
+/-- Quantitative operator-norm bound on the derivative functional. -/
+theorem sublevelDiagramScalarLoss_norm_bound {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -444,7 +444,7 @@ theorem actualPHScalarLoss_norm_bound {U : Set E} (hU : IsOpen U)
     ‖fderiv ℝ (fun x => W (dgm k (F x) p)) x₀‖ ≤
       ∑ s : TotalFace K, |faceLossCoefficient k F e p W s| *
         ‖fderiv ℝ (fun x => (F x).value s) x₀‖ := by
-  rw [actualPHScalarLoss_fderiv k F e p hU hx hF horder W hW]
+  rw [sublevelDiagramScalarLoss_fderiv k F e p hU hx hF horder W hW]
   calc
     ‖∑ s : TotalFace K, faceLossCoefficient k F e p W s •
         fderiv ℝ (fun x => (F x).value s) x₀‖ ≤
@@ -455,7 +455,7 @@ theorem actualPHScalarLoss_norm_bound {U : Set E} (hU : IsOpen U)
 /-- Compatible template choices yield the same linear functional. This is a
 consequence of derivative uniqueness and does not identify ambient coefficient
 vectors across presentations. -/
-theorem actualPHScalarLoss_derivative_independent
+theorem sublevelDiagramScalarLoss_derivative_independent
     (e' : CompatibleOrder (F x₀)) {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
@@ -466,12 +466,12 @@ theorem actualPHScalarLoss_derivative_independent
       fderiv ℝ (fun x => (F x).value s) x₀) =
     (∑ s : TotalFace K, faceLossCoefficient k F e' p W s •
       fderiv ℝ (fun x => (F x).value s) x₀) := by
-  rw [← actualPHScalarLoss_fderiv k F e p hU hx hF horder W hW,
-    ← actualPHScalarLoss_fderiv k F e' p hU hx hF horder W hW]
+  rw [← sublevelDiagramScalarLoss_fderiv k F e p hU hx hF horder W hW,
+    ← sublevelDiagramScalarLoss_fderiv k F e' p hU hx hF horder W hW]
 
 /-- The preceding identity gives equal directional derivatives, including
 after a permutation of the fixed occurrence labels. -/
-theorem actualPHScalarLoss_direction_independent
+theorem sublevelDiagramScalarLoss_direction_independent
     (e' : CompatibleOrder (F x₀)) {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
@@ -482,10 +482,10 @@ theorem actualPHScalarLoss_direction_independent
       fderiv ℝ (fun x => (F x).value s) x₀) h =
     (∑ s : TotalFace K, faceLossCoefficient k F e' p W s •
       fderiv ℝ (fun x => (F x).value s) x₀) h := by
-  rw [actualPHScalarLoss_derivative_independent k F e p e' hU hx hF horder W hW]
+  rw [sublevelDiagramScalarLoss_derivative_independent k F e p e' hU hx hF horder W hW]
 
-/-- The empty actual complex has no face terms in the derivative sum. -/
-theorem actualPHScalarLoss_empty_fderiv (hm : faceCount K = 0)
+/-- The empty complex has no face terms in the derivative sum. -/
+theorem sublevelDiagramScalarLoss_empty_fderiv (hm : faceCount K = 0)
     {U : Set E} (hU : IsOpen U) (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -494,12 +494,11 @@ theorem actualPHScalarLoss_empty_fderiv (hm : faceCount K = 0)
     fderiv ℝ (fun x => W (dgm k (F x) p)) x₀ = 0 := by
   obtain ⟨e⟩ := exists_compatibleOrder (F x₀)
   have : IsEmpty (TotalFace K) := Fintype.card_eq_zero_iff.mp hm
-  simpa using actualPHScalarLoss_fderiv k F e p hU hx hF horder W hW
+  simpa using sublevelDiagramScalarLoss_fderiv k F e p hU hx hF horder W hW
 
-/-- More generally, every admissible smooth ordered lift of the same actual
-diagram family, including a permutation of fixed occurrence labels, produces
+/-- More generally, every admissible smooth ordered lift of the same diagram family, including a permutation of fixed occurrence labels, produces
 the same derivative functional. -/
-theorem actualPHScalarLoss_any_lifts_independent
+theorem sublevelDiagramScalarLoss_any_lifts_independent
     (W : Diagram ℝ → ℝ) (m n m' n' : ℕ)
     (L : LocalDiagramLift (fun x => dgm k (F x) p) m n)
     (L' : LocalDiagramLift (fun x => dgm k (F x) p) m' n')

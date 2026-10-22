@@ -4,7 +4,7 @@ import TDA.Mapper.GraphPLExamples
 /-!
 # MultiNerve Mapper fixtures
 
-Acceptance fixtures for `TDA.Mapper.MultiNerve`, on the actual merged graph-PL and Mapper
+Acceptance fixtures for `TDA.Mapper.MultiNerve`, on the merged graph-PL and Mapper
 objects. Every graph-PL fixture uses the two overlapping intervals `(-1, 3/2)` and `(1/2, 3)`.
 
 * **4-cycle, MultiNerve Mapper differs from Mapper.** On `cycleGraph 4` with heights `0, 1, 2, 1`

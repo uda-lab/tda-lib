@@ -1,6 +1,6 @@
 # Transfer of compatible face enumerations
 
-Let `e : CompatibleOrder f` enumerate the actual faces of the same complex `K`. If the
+Let `e : CompatibleOrder f` enumerate the faces of the same complex `K`. If the
 values of another filter `g` are monotone along `e.enum`, the transfer keeps `e.enum`
 unchanged. Both compatible orders use the supplied `Fintype (TotalFace K)`, so their index
 type is the same `Fin (Fintype.card (TotalFace K))`. Proper-face ordering depends only on
@@ -12,7 +12,7 @@ The public API consists of `CompatibleOrder.transfer`, its enumeration law
 pair `CompatibleOrder.transferOfOrderingEquivalent` and
 `CompatibleOrder.transferOfOrderingEquivalent_enum`.
 
-For `OrderingEquivalent f g`, each pair of actual faces has the same weak comparison under
+For `OrderingEquivalent f g`, each pair of faces has the same weak comparison under
 both value functions. Given `i ≤ j`, monotonicity of `f.value ∘ e.enum` gives the comparison
 between `f` at those two enumerated faces. The forward direction of ordering equivalence
 transfers it to `g`, proving `Monotone (g.value ∘ e.enum)`. The convenience constructor applies
@@ -36,11 +36,11 @@ are executable.
 
 ## Source and API notes
 
-- [`CompatibleOrder.lean`](../../TDA/Filtration/CompatibleOrder.lean) defines the actual-face
+- [`CompatibleOrder.lean`](../../TDA/Filtration/CompatibleOrder.lean) defines the face
   enumeration, proper-face ordering, and grade monotonicity fields. The transfer preserves
   the given structure's first two fields verbatim.
 - [`OrderingEquivalent.lean`](../../TDA/Filtration/OrderingEquivalent.lean) defines ordering
-  equivalence as the pairwise iff of weak comparisons on actual faces. The proof uses that
+  equivalence as the pairwise iff of weak comparisons on faces. The proof uses that
   implication directly; it does not use the attained-range characterization or choose an
   order isomorphism.
 - [`FilterFunction.lean`](../../TDA/Filtration/FilterFunction.lean) assigns values to

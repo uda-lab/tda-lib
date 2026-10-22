@@ -5,11 +5,11 @@ import TDA.Mapper.GraphPLReebQuotient
 import Mathlib.Topology.MetricSpace.Bounded
 
 /-!
-# Categorical Mapper reconstruction and the actual Reeb quotient
+# Categorical Mapper reconstruction and the Reeb quotient
 
 Finite bounded interval covers yield constructible categorical Mapper assemblies. Applying
-the existing reconstruction equivalence gives an actual finite real graph. Its geometric
-interleaving distance from the actual graph-PL Reeb quotient is bounded by the full cover
+the existing reconstruction equivalence gives a finite real graph. Its geometric
+interleaving distance from the graph-PL Reeb quotient is bounded by the full cover
 resolution. The construction is abstract and noncomputable; it does not assert an executable
 component algorithm or identify the ordinary Mapper simple graph with this reconstruction.
 -/
@@ -39,13 +39,13 @@ def categoricalMapperConstructible (f : C(X, ℝ)) (a b : ι → ℝ)
   ⟨categoricalMapperAssembly f (fun i => ioo (a i) (b i)),
     isConstructibleCosheaf_coverComponents a b f hfinite⟩
 
-/-- `D P_K C_K`, realized as an actual finite real graph. -/
+/-- `D P_K C_K`, realized as a finite real graph. -/
 def categoricalMapperReconstruction (f : C(X, ℝ)) (a b : ι → ℝ)
     (hfinite : ∀ i, Finite ((intervalComponents f).obj (ioo (a i) (b i)))) :
     RGraph.RGraphCat :=
   RGraph.ofCosheafFunctor.obj (categoricalMapperConstructible f a b hfinite)
 
-/-- The reconstruction's actual interval components are naturally the categorical assembly. -/
+/-- The reconstruction's interval components are naturally the categorical assembly. -/
 def categoricalMapperReconstructionIso (f : C(X, ℝ)) (a b : ι → ℝ)
     (hfinite : ∀ i, Finite ((intervalComponents f).obj (ioo (a i) (b i)))) :
     (RGraph.cosheafFunctor.obj (categoricalMapperReconstruction f a b hfinite)).obj ≅
@@ -58,7 +58,7 @@ def coverResolution (a b : ι → ℝ) : ℝ≥0 :=
   letI := Fintype.ofFinite ι
   Finset.univ.sup (fun i => Real.toNNReal (b i - a i))
 
-/-- The distinct attained-range resolution. This clips each interval to the actual height
+/-- The distinct attained-range resolution. This clips each interval to the height
 range; it is not the resolution in the categorical reconstruction bound. -/
 def clippedCoverResolution (f : C(X, ℝ)) (a b : ι → ℝ) : ℝ≥0 :=
   letI := Fintype.ofFinite ι
@@ -92,20 +92,20 @@ variable {V : Type} [Finite V] (G : SimpleGraph V) (h : V → ℝ)
 
 omit [Finite ι] in
 /-- Every categorical Mapper intersection value for finite graph-PL input is genuinely finite.
-This uses the actual interval presentation of the finite intersection, including empty fibers. -/
+This uses the interval presentation of the finite intersection, including empty fibers. -/
 theorem finite_graphPL_categoricalMapperData (U : ι → OpenInterval) (s : CoverSimplex U) :
     Finite ((categoricalMapperData (plHeight G h) U).obj s) := by
   change Finite ((componentFunctor (plHeight G h)).obj (coverIntersection U s))
   rw [← toOpens_coverIntersectionInterval U s]
   exact finite_zerothHomotopy G h (coverIntersectionInterval U s)
 
-/-- Categorical Mapper reconstruction for finite graph-PL input, with actual finite fibers. -/
+/-- Categorical Mapper reconstruction for finite graph-PL input, with finite fibers. -/
 def graphPLMapperReconstruction (a b : ι → ℝ) : RGraph.RGraphCat :=
   categoricalMapperReconstruction (plHeight G h) a b
     (fun i => finite_zerothHomotopy G h (ioo (a i) (b i)))
 
-/-- The actual geometric reconstruction error equals the assembled component distance.
-No coverage assumption is needed for this comparison of the two actual graph objects. -/
+/-- The geometric reconstruction error equals the assembled component distance.
+No coverage assumption is needed for this comparison of the two graph objects. -/
 theorem geometricInterleavingDistance_mapperReeb_eq (a b : ι → ℝ) :
     RGraph.geometricInterleavingDistance (graphPLMapperReconstruction G h a b)
       (GraphPL.graphPLReebGraph G h) =
@@ -208,7 +208,7 @@ theorem exists_graphPLMapperReconstruction_error_le {r : ℝ} (hr : 0 < r) :
   exact ⟨n, a, b, hcov, (geometricInterleavingDistance_mapperReeb_le G h a b hcov).trans
     (ENNReal.coe_le_coe.mpr hres)⟩
 
-/-- Vanishing cover resolution gives convergence in the actual geometric interleaving distance. -/
+/-- Vanishing cover resolution gives convergence in the geometric interleaving distance. -/
 theorem tendsto_geometricInterleavingDistance_mapperReeb
     {α : Type*} {l : Filter α} (κ : α → Type) [∀ t, Finite (κ t)]
     (a b : ∀ t, κ t → ℝ)

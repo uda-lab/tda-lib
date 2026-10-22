@@ -398,7 +398,7 @@ section Comparison
 variable {X : Type u} {Y : Type u} [TopologicalSpace X] [TopologicalSpace Y]
 
 /-- `ρ_f : C(T_ε f) ⟶ S_ε C(f)` with `(ρ_f)_I = π₀[p_I]` (DMP proof of Theorem 4.24), into the
-actual smoothing of the actual interval components. -/
+smoothing of the interval components. -/
 def componentComparison (f : C(X, ℝ)) (ε : ℝ≥0) :
     intervalComponents (height f ε) ⟶ (smoothing ε).obj (intervalComponents f) where
   app I := TypeCat.ofHom (componentMap (preimageProjection f ε I))
@@ -463,8 +463,7 @@ theorem componentComparison_natural {f : C(X, ℝ)} {h : C(Y, ℝ)} (g : C(X, Y)
   induction c using ZerothHomotopy.rec with
   | mk z => rfl
 
-/-- **Unit compatibility.** `π₀` of the zero section followed by the comparison is the actual
-smoothing unit `σ^ε`, as an equation of natural transformations at arbitrary carrier universe. It
+/-- **Unit compatibility.** `π₀` of the zero section followed by the comparison is the smoothing unit `σ^ε`, as an equation of natural transformations at arbitrary carrier universe. It
 holds on representatives because `p ∘ τ^ε` is the inclusion `f⁻¹ I ⊆ f⁻¹ I^ε`; DMP
 Proposition 4.35 states the same square through the homotopy inverse, up to homotopy. -/
 theorem zeroSection_comp_componentComparison (f : C(X, ℝ)) (ε : ℝ≥0) :

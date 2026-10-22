@@ -2,14 +2,14 @@ import TDA.Persistence.ConstructibleRefinementBarcode
 import TDA.Persistence.DiagramBottleneckTranslation
 
 /-!
-# Actual real shift diagrams and occurrence untranslation
+# Real shift diagrams and occurrence untranslation
 
 Positive evaluation at `t+ε` translates critical values and both finite endpoints
 by `−ε`. The critical restrictions are naturally isomorphic through equality of
 their real indices. Rank-barcode invariance then proves the diagram formula,
 also on refinements with their finiteness derived from constructibility.
 
-Translation supplies actual finite and essential occurrence equivalences. Their
+Translation supplies finite and essential occurrence equivalences. Their
 inverses add ε back to endpoint values and relabel the target of a matching.
 The constructed complete matching below compares a module with its own shift;
 the induced matching for two arbitrary interleaved modules is a separate result.
@@ -28,7 +28,7 @@ namespace FiniteConstructible
 
 variable {n m : ℕ}
 
-/-- The actual shifted critical restriction compares through `(c_i−ε)+ε=c_i`. -/
+/-- The shifted critical restriction compares through `(c_i−ε)+ε=c_i`. -/
 def shiftedCriticalIso {R : Type u} [Ring R] (c : Fin n ↪o ℝ)
     (M : PModule.{u,0,w} R ℝ) (ε : ℝ≥0) :
     reindex (shiftGrid ε c).toOrderHom ((shift ε).obj M) ≅ reindex c.toOrderHom M := by
@@ -40,7 +40,7 @@ def shiftedCriticalIso {R : Type u} [Ring R] (c : Fin n ↪o ℝ)
 
 variable {k : Type u} [Field k]
 
-/-- Finiteness at shifted critical fibers follows from the equality of actual indices. -/
+/-- Finiteness at shifted critical fibers follows from the equality of indices. -/
 theorem finiteDimensional_shiftedCritical (c : Fin n ↪o ℝ)
     (M : PModule.{u,0,u} k ℝ)
     (hfd : ∀ i, FiniteDimensional k (M.obj (c i))) (ε : ℝ≥0) (i : Fin n) :
@@ -55,7 +55,7 @@ private theorem endpoints_shift (c : Fin n ↪o ℝ) (ε : ℝ≥0) (I : FiniteI
   dsimp only [RealBarcode.endpoints, translateDiagramPoint]
   split_ifs <;> simp [shiftGrid_apply, sub_eq_add_neg]
 
-/-- Relabel actual index bars by the shifted real grid, with terminal deaths still top. -/
+/-- Relabel index bars by the shifted real grid, with terminal deaths still top. -/
 theorem ofIndexBars_shiftGrid (c : Fin n ↪o ℝ) (ε : ℝ≥0)
     (B : Multiset (FiniteInterval n)) :
     ofIndexBars (shiftGrid ε c) (shiftGrid ε c).strictMono B =
@@ -68,7 +68,7 @@ theorem ofIndexBars_shiftGrid (c : Fin n ↪o ℝ) (ε : ℝ≥0)
   funext I
   exact endpoints_shift c ε I
 
-/-- Actual critical-module isomorphism and rank-barcode invariance give the shift formula.
+/-- Critical-module isomorphism and rank-barcode invariance give the shift formula.
 Constructibility is unnecessary on the native shifted grid. -/
 theorem moduleDiagram_shift (c : Fin n ↪o ℝ) (M : PModule.{u,0,u} k ℝ)
     (hfd : ∀ i, FiniteDimensional k (M.obj (c i))) (ε : ℝ≥0) :
@@ -103,7 +103,7 @@ theorem moduleDiagram_unshift (c : Fin n ↪o ℝ) (M : PModule.{u,0,u} k ℝ)
         moduleDiagram c M hfd := by
   rw [moduleDiagram_shift, translateDiagram_add, neg_add_cancel, translateDiagram_zero]
 
-/-- A module and its actual shift have a constructed complete occurrence matching.
+/-- A module and its shift have a constructed complete occurrence matching.
 Every endpoint evaluation and the cost bound are proved, with no matching input. -/
 theorem exists_shift_matching (c : Fin n ↪o ℝ) (M : PModule.{u,0,u} k ℝ)
     (hfd : ∀ i, FiniteDimensional k (M.obj (c i))) (ε : ℝ≥0) :
@@ -133,7 +133,7 @@ theorem exists_shift_matching (c : Fin n ↪o ℝ) (M : PModule.{u,0,u} k ℝ)
   · simpa only [abs_neg, abs_of_nonneg ε.coe_nonneg, ENNReal.ofReal_coe_nnreal] using
       translatedMatching_cost_le D (-(ε : ℝ))
 
-/-- The complete matching also uses the actual diagram on any shifted-grid
+/-- The complete matching also uses the diagram on any shifted-grid
 refinement; added critical-fiber finiteness is derived rather than assumed. -/
 theorem exists_shift_refinement_matching (c : Fin n ↪o ℝ) (e : Fin m ↪o ℝ)
     (M : PModule.{u,0,u} k ℝ) (hM : IsConstructible c M)

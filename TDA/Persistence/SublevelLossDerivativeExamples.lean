@@ -1,9 +1,9 @@
-import TDA.Persistence.ActualLossDerivative
+import TDA.Persistence.SublevelLossDerivative
 import TDA.Persistence.DiagramCalculusExamples
 import TDA.Persistence.SublevelDiagramExamples
 import TDA.Simplicial.AttachmentExamples
 
-/-! Concrete scalar losses and actual sublevel examples. -/
+/-! Concrete scalar losses and sublevel examples. -/
 
 set_option autoImplicit false
 universe u v
@@ -33,7 +33,7 @@ theorem essentialBirthSum_c1_all (D : Diagram ℝ) :
     fun_prop
   simpa [Function.comp_def, essentialBirthSum_orderedQ] using hs
 
-/-- The actual degree-zero diagram of one moving vertex has essential-birth
+/-- The degree-zero diagram of one moving vertex has essential-birth
 loss equal to its simplex value. -/
 theorem singleton_essential_loss (x : ℝ) :
     essentialBirthSum (dgm (ZMod 2) (Examples.singletonFilter x) 0) = x := by
@@ -57,7 +57,7 @@ theorem singleton_essential_loss_hasDerivAt (x : ℝ) :
   rw [hf]
   exact hasDerivAt_id x
 
-/-- The sole actual face receives coefficient `+1` in the essential-birth
+/-- The sole face receives coefficient `+1` in the essential-birth
 loss, for a compatible full-template presentation. -/
 theorem singleton_essential_face_coefficient :
     ∃ e : CompatibleOrder (Examples.singletonFilter (0 : ℝ)),
@@ -80,7 +80,7 @@ theorem singleton_essential_face_coefficient :
     decide
   letI : Unique (TotalFace (singletonFace (0 : Fin 2))) :=
     Classical.choice (Fintype.card_eq_one_iff_nonempty_unique.mp hm)
-  have hD := actualPHScalarLoss_fderiv (ZMod 2) F e 0
+  have hD := sublevelDiagramScalarLoss_fderiv (ZMod 2) F e 0
     isOpen_univ (Set.mem_univ (0 : ℝ)) hF horder
     essentialBirthSum (essentialBirthSum_c1_all _)
   have hf : (fun x : ℝ => essentialBirthSum (dgm (ZMod 2) (F x) 0)) =
@@ -164,7 +164,7 @@ theorem signed_finite_death_slot_coefficient
   · intro hi
     exact (hi (Finset.mem_univ i)).elim
 
-/-- In the actual tied edge family every full-template finite pair is diagonal.
+/-- In the tied edge family every full-template finite pair is diagonal.
 The signed loss cancels identically, even though its ambient birth and death
 weights are `-1` and `+1` by the preceding theorems. -/
 theorem moving_tied_edge_signed_loss_zero (x : ℝ) :
@@ -186,7 +186,7 @@ theorem moving_tied_edge_signed_loss_hasDerivAt (x : ℝ) :
   rw [hf]
   exact hasDerivAt_const x 0
 
-/-- For each retained finite pair of the actual tied-edge template, the two
+/-- For each retained finite pair of the tied-edge template, the two
 nonzero ambient weights cancel after composition with equal face-value paths. -/
 theorem moving_tied_edge_pair_contributions_cancel
     (e : CompatibleOrder (Examples.movingTiedEdgeFilter (0 : ℝ)))
@@ -216,7 +216,7 @@ theorem moving_tied_edge_pair_contributions_cancel
   rw [hb, hd]
   norm_num
 
-/-- A genuine retained finite pair exists in this tied actual filtration, with
+/-- A genuine retained finite pair exists in this tied filtration, with
 both nonzero ambient weights and zero composed contribution. -/
 theorem moving_tied_edge_nonvacuous_cancellation :
     ∃ (e : CompatibleOrder (Examples.movingTiedEdgeFilter (0 : ℝ)))

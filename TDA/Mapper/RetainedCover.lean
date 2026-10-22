@@ -46,7 +46,7 @@ theorem preimage_coverSaturation_eq_retained (f : C(X, ℝ)) (U : ι → OpenInt
   · intro hx
     exact retainedCoverSaturation_le f U I hx
 
-/-- Removing empty pullbacks preserves the assembly by an actual natural component isomorphism. -/
+/-- Removing empty pullbacks preserves the assembly by a natural component isomorphism. -/
 def coverComponentsRetainedIso (f : C(X, ℝ)) (U : ι → OpenInterval) :
     coverComponents f U ≅ coverComponents f (retainedCover f U) :=
   NatIso.ofComponents (fun I =>

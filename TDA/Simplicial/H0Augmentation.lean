@@ -2,8 +2,8 @@ import TDA.Simplicial.Attachment
 
 set_option autoImplicit false
 
-/-! The coefficient sum on actual degree-zero chains is preserved by every
-simplex inclusion and annihilates every actual edge boundary. -/
+/-! The coefficient sum on degree-zero chains is preserved by every
+simplex inclusion and annihilates every edge boundary. -/
 
 namespace TDA.Simplicial
 
@@ -14,7 +14,7 @@ universe u v
 variable {V : Type u} [LinearOrder V]
 variable (K : PreAbstractSimplicialComplex V) (k : Type v) [Field k]
 
-/-- Sum of the coefficients of actual vertices. -/
+/-- Sum of the coefficients of vertices. -/
 noncomputable def zeroChainSum : Chain K k 0 →ₗ[k] k :=
   Finsupp.lsum k (fun _ => LinearMap.id)
 
@@ -68,7 +68,7 @@ theorem selectedZeroChainSum_boundary (P : Face K 0 → Prop) [DecidablePred P]
   · have hp' := mt (hP σ).mpr hp
     simp [Fin.sum_univ_succ, hp, hp']
 
-/-- The actual zero-cycle carried by one vertex. -/
+/-- The zero-cycle carried by one vertex. -/
 noncomputable def zeroVertexCycle (σ : Face K 0) : simplicialCycles K k 0 :=
   ⟨Finsupp.single σ 1, by rw [simplicialCycles_zero]; trivial⟩
 
@@ -134,7 +134,7 @@ theorem zeroShortG : ((simplicialChainComplex K k).sc 0).g = 0 := by
   rw [ChainComplex.next_nat_zero]
   exact simplicialChainComplex_d_zero K k 0
 
-/-- In an actual complex without edges, H₀ is the free module on its vertices. -/
+/-- In a complex without edges, H₀ is the free module on its vertices. -/
 noncomputable def zeroHomologyEquivOfNoEdges [IsEmpty (Face K 1)] :
     simplicialHomology K k 0 ≃ₗ[k] Chain K k 0 :=
   (ShortComplex.LeftHomologyData.ofZeros
@@ -148,7 +148,7 @@ theorem finrank_zeroHomology_of_no_edges [IsEmpty (Face K 1)]
   exact Module.finrank_finsupp_self k
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The quotient presentation and actual homology inclusion have the same
+/-- The quotient presentation and homology inclusion have the same
 range dimension. This uses their natural isomorphisms, not a rank model. -/
 theorem finrank_homologyIncl_range_eq_quotientIncl_range
     {L : PreAbstractSimplicialComplex V} (h : K ≤ L) :
@@ -199,7 +199,7 @@ theorem finrank_homologyIncl_range_eq_quotientIncl_range
       exact he
   exact (LinearEquiv.ofBijective g hg).finrank_eq
 
-/-- A vertex cycle stays a vertex cycle under actual simplicial inclusion. -/
+/-- A vertex cycle stays a vertex cycle under simplicial inclusion. -/
 theorem zeroVertexCycle_incl {L : PreAbstractSimplicialComplex V}
     (h : K ≤ L) (σ : Face K 0) :
     simplicialCycleIncl k h 0 (zeroVertexCycle K k σ) =
@@ -217,7 +217,7 @@ theorem zeroVertexCycle_incl_not_boundary
   exact zeroVertexCycle_not_boundary L k (faceIncl h 0 σ)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Every included actual vertex gives a nonzero element of the H₀ map range. -/
+/-- Every included vertex gives a nonzero element of the H₀ map range. -/
 theorem finrank_homologyIncl_range_pos_of_vertex
     {L : PreAbstractSimplicialComplex V} [Finite (TotalFace L)]
     (h : K ≤ L) (σ : Face K 0) :
@@ -254,7 +254,7 @@ theorem finrank_homologyIncl_range_pos_of_vertex
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Two source vertices in distinct target edge components remain independent
-under the actual degree-zero quotient inclusion. -/
+under the degree-zero quotient inclusion. -/
 theorem quotientIncl_injective_of_two_vertices_separated
     {L : PreAbstractSimplicialComplex V} (h : K ≤ L)
     (u v : Face K 0)
@@ -294,7 +294,7 @@ theorem quotientIncl_injective_of_two_vertices_separated
     exact map_zero _
 
 set_option backward.isDefEq.respectTransparency false in
-/-- An edge joining distinct old components kills a nonzero actual H₀ class. -/
+/-- An edge joining distinct old components kills a nonzero H₀ class. -/
 theorem SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_vertices
     {L : PreAbstractSimplicialComplex V}
     (A : SimplexAttachment K L 1)

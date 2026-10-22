@@ -7,7 +7,7 @@ set_option autoImplicit false
 /-!
 # Čech complex and Rips/Čech sandwich fixtures
 
-The fixtures test the actual `Cech.complex` and `Cech.filter` definitions: a closed boundary
+The fixtures test the `Cech.complex` and `Cech.filter` definitions: a closed boundary
 on the line with a sharp lower value bound, an acute planar triangle on which both sandwich
 inclusions are strict, the failure of attainment in the punctured line, repeated labels, and
 empty negative-radius stages.
@@ -41,7 +41,7 @@ def edge : Finset (Fin 2) := {0, 1}
 
 theorem edge_nonempty : edge.Nonempty := ⟨0, by simp [edge]⟩
 
-/-- The edge as an actual face of the full complex. -/
+/-- The edge as a face of the full complex. -/
 def edgeFace : TotalFace (Rips.fullComplex (Fin 2)) := ⟨edge, edge_nonempty⟩
 
 theorem dist_pts : dist (pts 0) (pts 1) = 2 := by

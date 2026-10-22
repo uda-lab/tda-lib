@@ -1,39 +1,39 @@
-import TDA.Persistence.Reduction.ActualFilledTriangle
-import TDA.Persistence.Reduction.ActualHollowTriangle
+import TDA.Persistence.Reduction.FilledTriangleReduction
+import TDA.Persistence.Reduction.HollowTriangleReduction
 
 open TDA.Persistence TDA.Simplicial TDA.Filtration TDA.Persistence.Reduction
 set_option maxRecDepth 10000
 set_option maxHeartbeats 800000
 namespace TDA.Persistence.Reduction.Examples.FilledTriangle
 
-theorem exact_pairs_zero : pivotIndexPairs (faceDegree e) (actualReducedBoundary (ZMod 2) e) 0 =
+theorem exact_pairs_zero : pivotIndexPairs (faceDegree e) (reducedFaceBoundary (ZMod 2) e) 0 =
     {(⟨1, by decide⟩, ⟨3, by decide⟩), (⟨2, by decide⟩, ⟨4, by decide⟩)} := by
   apply (pivotIndexPairs_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   rintro ⟨i,j⟩
-  have hpiv : DistinctPivots (actualReducedBoundary (ZMod 2) e) :=
+  have hpiv : DistinctPivots (reducedFaceBoundary (ZMod 2) e) :=
     matrixReductionTrace_pivots_distinct _
-  rw [mem_pivotIndexPairs_iff (faceDegree e) (actualReducedBoundary (ZMod 2) e) hpiv]
-  rw [actualReducedBoundary, actual_eq]
+  rw [mem_pivotIndexPairs_iff (faceDegree e) (reducedFaceBoundary (ZMod 2) e) hpiv]
+  rw [reducedFaceBoundary, faceBoundaryMatrix_eq_expected]
   fin_cases i <;> fin_cases j <;> decide +kernel
 
-theorem exact_pairs_one : pivotIndexPairs (faceDegree e) (actualReducedBoundary (ZMod 2) e) 1 =
+theorem exact_pairs_one : pivotIndexPairs (faceDegree e) (reducedFaceBoundary (ZMod 2) e) 1 =
     {(⟨5, by decide⟩, ⟨6, by decide⟩)} := by
   apply (pivotIndexPairs_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   rintro ⟨i,j⟩
-  have hpiv : DistinctPivots (actualReducedBoundary (ZMod 2) e) :=
+  have hpiv : DistinctPivots (reducedFaceBoundary (ZMod 2) e) :=
     matrixReductionTrace_pivots_distinct _
-  rw [mem_pivotIndexPairs_iff (faceDegree e) (actualReducedBoundary (ZMod 2) e) hpiv]
-  rw [actualReducedBoundary, actual_eq]
+  rw [mem_pivotIndexPairs_iff (faceDegree e) (reducedFaceBoundary (ZMod 2) e) hpiv]
+  rw [reducedFaceBoundary, faceBoundaryMatrix_eq_expected]
   fin_cases i <;> fin_cases j <;> decide +kernel
 
-theorem exact_essential_zero : pivotEssentialIndices (faceDegree e) (actualReducedBoundary (ZMod 2) e) 0 =
+theorem exact_essential_zero : pivotEssentialIndices (faceDegree e) (reducedFaceBoundary (ZMod 2) e) 0 =
     {⟨0, by decide⟩} := by
   apply (pivotEssentialIndices_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   intro i
   rw [mem_pivotEssentialIndices_iff, filled_essential]
   fin_cases i <;> decide +kernel
 
-theorem exact_essential_one : pivotEssentialIndices (faceDegree e) (actualReducedBoundary (ZMod 2) e) 1 = 0 := by
+theorem exact_essential_one : pivotEssentialIndices (faceDegree e) (reducedFaceBoundary (ZMod 2) e) 1 = 0 := by
   apply (pivotEssentialIndices_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   intro i
   rw [mem_pivotEssentialIndices_iff, filled_essential]
@@ -41,34 +41,34 @@ theorem exact_essential_one : pivotEssentialIndices (faceDegree e) (actualReduce
 end TDA.Persistence.Reduction.Examples.FilledTriangle
 namespace TDA.Persistence.Reduction.Examples.HollowTriangle
 
-theorem exact_pairs_zero : pivotIndexPairs (faceDegree e) (actualReducedBoundary (ZMod 2) e) 0 =
+theorem exact_pairs_zero : pivotIndexPairs (faceDegree e) (reducedFaceBoundary (ZMod 2) e) 0 =
     {(⟨1, by decide⟩, ⟨3, by decide⟩), (⟨2, by decide⟩, ⟨4, by decide⟩)} := by
   apply (pivotIndexPairs_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   rintro ⟨i,j⟩
-  have hpiv : DistinctPivots (actualReducedBoundary (ZMod 2) e) :=
+  have hpiv : DistinctPivots (reducedFaceBoundary (ZMod 2) e) :=
     matrixReductionTrace_pivots_distinct _
-  rw [mem_pivotIndexPairs_iff (faceDegree e) (actualReducedBoundary (ZMod 2) e) hpiv]
-  rw [actualReducedBoundary, actual_eq]
+  rw [mem_pivotIndexPairs_iff (faceDegree e) (reducedFaceBoundary (ZMod 2) e) hpiv]
+  rw [reducedFaceBoundary, faceBoundaryMatrix_eq_expected]
   fin_cases i <;> fin_cases j <;> decide +kernel
 
-theorem exact_pairs_one : pivotIndexPairs (faceDegree e) (actualReducedBoundary (ZMod 2) e) 1 =
+theorem exact_pairs_one : pivotIndexPairs (faceDegree e) (reducedFaceBoundary (ZMod 2) e) 1 =
     0 := by
   apply (pivotIndexPairs_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   rintro ⟨i,j⟩
-  have hpiv : DistinctPivots (actualReducedBoundary (ZMod 2) e) :=
+  have hpiv : DistinctPivots (reducedFaceBoundary (ZMod 2) e) :=
     matrixReductionTrace_pivots_distinct _
-  rw [mem_pivotIndexPairs_iff (faceDegree e) (actualReducedBoundary (ZMod 2) e) hpiv]
-  rw [actualReducedBoundary, actual_eq]
+  rw [mem_pivotIndexPairs_iff (faceDegree e) (reducedFaceBoundary (ZMod 2) e) hpiv]
+  rw [reducedFaceBoundary, faceBoundaryMatrix_eq_expected]
   fin_cases i <;> fin_cases j <;> decide +kernel
 
-theorem exact_essential_zero : pivotEssentialIndices (faceDegree e) (actualReducedBoundary (ZMod 2) e) 0 =
+theorem exact_essential_zero : pivotEssentialIndices (faceDegree e) (reducedFaceBoundary (ZMod 2) e) 0 =
     {⟨0, by decide⟩} := by
   apply (pivotEssentialIndices_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   intro i
   rw [mem_pivotEssentialIndices_iff, hollow_essential]
   fin_cases i <;> decide +kernel
 
-theorem exact_essential_one : pivotEssentialIndices (faceDegree e) (actualReducedBoundary (ZMod 2) e) 1 = {⟨5, by decide⟩} := by
+theorem exact_essential_one : pivotEssentialIndices (faceDegree e) (reducedFaceBoundary (ZMod 2) e) 1 = {⟨5, by decide⟩} := by
   apply (pivotEssentialIndices_nodup _ _ _ |>.ext (by decide +kernel)).mpr
   intro i
   rw [mem_pivotEssentialIndices_iff, hollow_essential]
@@ -76,14 +76,14 @@ theorem exact_essential_one : pivotEssentialIndices (faceDegree e) (actualReduce
 end TDA.Persistence.Reduction.Examples.HollowTriangle
 namespace TDA.Persistence.Reduction.Examples.FilledTriangle
 
-theorem actual_diagram_zero :
+theorem diagram_zero :
     (dgm (ZMod 2) f 0).points = {(0, (1 : WithTop ℕ)), (0, 1), (0, ⊤)} := by
   rw [← evaluatePivotTemplate_eq_dgm (ZMod 2) e f e.monotone 0]
   simp only [evaluatePivotTemplate]
   rw [exact_pairs_zero, exact_essential_zero]
   simp [Multiset.filter_singleton, pairValues, birthValue, f, e, enumFun]
 
-theorem actual_diagram_one :
+theorem diagram_one :
     (dgm (ZMod 2) f 1).points = {(1, (2 : WithTop ℕ))} := by
   rw [← evaluatePivotTemplate_eq_dgm (ZMod 2) e f e.monotone 1]
   simp only [evaluatePivotTemplate]
@@ -108,27 +108,27 @@ end TDA.Persistence.Reduction.Examples.FilledTriangle
 namespace TDA.Persistence.Reduction.Examples.FilledTriangle
 
 theorem stage_intervals_zero :
-    (actualPivotBarcode (ZMod 2) e 0).map (fun I => (I.birth,I.death)) =
+    (facePivotBarcode (ZMod 2) e 0).map (fun I => (I.birth,I.death)) =
       {(2,4),(3,5),(1,8)} := by
-  rw [actualPivotBarcode, pivotBarcode_endpoints, exact_pairs_zero, exact_essential_zero]
+  rw [facePivotBarcode, pivotBarcode_endpoints, exact_pairs_zero, exact_essential_zero]
   rfl
 
 theorem stage_intervals_one :
-    (actualPivotBarcode (ZMod 2) e 1).map (fun I => (I.birth,I.death)) = {(6,7)} := by
-  rw [actualPivotBarcode, pivotBarcode_endpoints, exact_pairs_one, exact_essential_one]
+    (facePivotBarcode (ZMod 2) e 1).map (fun I => (I.birth,I.death)) = {(6,7)} := by
+  rw [facePivotBarcode, pivotBarcode_endpoints, exact_pairs_one, exact_essential_one]
   rfl
 
 end TDA.Persistence.Reduction.Examples.FilledTriangle
 namespace TDA.Persistence.Reduction.Examples.HollowTriangle
 
-theorem actual_diagram_zero :
+theorem diagram_zero :
     (dgm (ZMod 2) f 0).points = {(0, (1 : WithTop ℕ)), (0, 1), (0, ⊤)} := by
   rw [← evaluatePivotTemplate_eq_dgm (ZMod 2) e f e.monotone 0]
   simp only [evaluatePivotTemplate]
   rw [exact_pairs_zero, exact_essential_zero]
   simp [Multiset.filter_singleton, pairValues, birthValue, f, e, enumFun]
 
-theorem actual_diagram_one :
+theorem diagram_one :
     (dgm (ZMod 2) f 1).points = {(1, (⊤ : WithTop ℕ))} := by
   rw [← evaluatePivotTemplate_eq_dgm (ZMod 2) e f e.monotone 1]
   simp only [evaluatePivotTemplate]
@@ -137,7 +137,7 @@ theorem actual_diagram_one :
     show (0 : Fin 3) ≠ 2 by decide]
 
 theorem stage_intervals_one :
-    (actualPivotBarcode (ZMod 2) e 1).map (fun I => (I.birth,I.death)) = {(6,7)} := by
-  rw [actualPivotBarcode, pivotBarcode_endpoints, exact_pairs_one, exact_essential_one]
+    (facePivotBarcode (ZMod 2) e 1).map (fun I => (I.birth,I.death)) = {(6,7)} := by
+  rw [facePivotBarcode, pivotBarcode_endpoints, exact_pairs_one, exact_essential_one]
   rfl
 end TDA.Persistence.Reduction.Examples.HollowTriangle

@@ -3,7 +3,7 @@
 ## Modules, occurrences and translations
 
 Fix a field `k : Type u` and pointwise finite-dimensional modules
-`M N : PModule.{u,0,u} k (Fin s)`. The input is an actual natural transformation
+`M N : PModule.{u,0,u} k (Fin s)`. The input is a natural transformation
 `f : M ⟶ N`. The field and module carriers share their universe.
 The canonical barcodes contain half-open intervals `[birth,death)` with
 `birth < death ≤ s`. Occurrences retain their original list indices, including
@@ -11,7 +11,7 @@ separate labels for repeated interval values.
 
 A translation `theta : Fin s →o Fin s` is monotone and inflationary:
 `hTheta : ∀ i, i ≤ theta i`. It may identify stages or fix them.
-`TranslationTrivial theta hTheta K` means that every actual structure map
+`TranslationTrivial theta hTheta K` means that every structure map
 `K(i → theta i)` is zero. An interval `[b,d)` is long when `theta(b) < d`;
 equality belongs to the short case.
 
@@ -28,11 +28,10 @@ only on death, and identity translation leaves every endpoint unchanged.
 The terminal endpoint records finite observed survival and is never used as a
 `Fin s` stage. The empty chain supplies no occurrence and selects no stage.
 
-## Actual kernel shortness
+## Kernel shortness
 
 `finiteKernel f` is mathlib's categorical kernel in the functor category.
-`finiteKernelFiberIso` identifies its fiber with `ker(f_i)` and takes the actual
-kernel inclusion to the subtype inclusion. Its finite dimensionality follows
+`finiteKernelFiberIso` identifies its fiber with `ker(f_i)` and takes the kernel inclusion to the subtype inclusion. Its finite dimensionality follows
 from the source subspace. Naturality of the inclusion and its component
 monomorphisms prove `finiteKernel_map_eq_zero_iff`. Thus
 `kernel_translationTrivial_iff` gives
@@ -42,14 +41,14 @@ TranslationTrivial theta hTheta (finiteKernel f)
   ↔ ∀ i, ker(f_i) ≤ ker M(i → theta i).
 ```
 
-The right side is a proved criterion for the actual kernel, rather than a
+The right side is a proved criterion for the kernel, rather than a
 substitute object or an assumed barcode condition.
-The analogous actual cokernel criterion is explained in
+The analogous cokernel criterion is explained in
 [the mono translation estimate](finite-mono-translation.md).
 
 ## Shifted survival counts for an epimorphism
 
-First suppose `p : M ⟶ N` is componentwise surjective and its actual kernel is
+First suppose `p : M ⟶ N` is componentwise surjective and its kernel is
 translation-trivial. Let `S_M(b,c)` count bars born exactly at `b` that survive
 at `c`. The result is
 
@@ -57,7 +56,7 @@ at `c`. The result is
 S_M(b,theta(c)) ≤ S_N(b,c),    b ≤ c < s.
 ```
 
-The proof uses actual linear maps. Kernel shortness makes `M(c → theta c)`
+The proof uses linear maps. Kernel shortness makes `M(c → theta c)`
 kill `ker(p_c)`. The first isomorphism theorem therefore descends this transition
 through the surjection `p_c` to a map `N_c → M_(theta c)`.
 For any earlier stage `a ≤ c`, naturality identifies the image of
@@ -101,12 +100,12 @@ preimage for every long source. The unmatched-source result is its contrapositiv
 Short source bars may also be matched. Terminal source bars are always long for
 an endomap of `Fin s`, so kernel shortness forces their coverage too.
 
-## Quantitative matching through the actual image
+## Quantitative matching through the image
 
-For an arbitrary `f`, the [actual image factorization](finite-induced-matching.md)
+For an arbitrary `f`, the [image factorization](finite-induced-matching.md)
 is an epi followed by a mono. Corestriction preserves the component kernel;
 the image inclusion has the same range as `f`. The proved kernel/range criteria
-therefore transfer actual shortness to the respective factors, without choosing
+therefore transfer shortness to the respective factors, without choosing
 new kernel or cokernel objects as hypotheses.
 
 Let `inducedMap f i = some j`, and write `I` and `J` for the source and target
@@ -118,14 +117,14 @@ birth(I) < death(J) ≤ death(I) ≤ thetaKPlus(death(J)).
 ```
 
 The unique intermediate image occurrence has source birth and target death.
-This connects the two factor estimates to the actual partial injection.
+This connects the two factor estimates to the partial injection.
 `inducedMap_endpoint_bounds_of_shortness` combines them.
 The one-sided birth/death theorems require only their respective shortness
 hypothesis. Independently, every kernel-long source has exactly one selected
 target, and every cokernel-long target has exactly one selected source.
 Unmatched occurrences satisfy the corresponding shortness bound.
 
-Consumers include actual truncations attaining the finite death bound, a
+Consumers include truncations attaining the finite death bound, a
 positive-birth quotient, a noninjective translation, terminal coverage, distinct
 duplicate labels, identity translation and the empty chain. Threshold-short
 sources occur both matched and unmatched. A nonzero kernel at a fixed point
@@ -145,10 +144,10 @@ The arbitrary finite monotone translation theorem is a library extension.
 The direct quotient-surjection proof here replaces the source's duality route;
 no linear-dual or order-reversal adapter is supplied. The
 [real induced matching](real-induced-matchings.md) converts the rounded
-finite bounds and actual partial injection to exact real endpoint estimates,
+finite bounds and partial injection to exact real endpoint estimates,
 long-bar coverage and a total essential equivalence. The
 [common-grid sampled defects](constructible-defects-sampling.md) supply its
-actual shortness inputs. Its interleaving consumer reaches the shifted target;
+shortness inputs. Its interleaving consumer reaches the shifted target;
 the [finite-constructible isometry](constructible-isometry.md) completes +ε
 untranslation, ε-cost and the distance-infimum comparison.
 The matching retains the qualitative construction and its restriction of

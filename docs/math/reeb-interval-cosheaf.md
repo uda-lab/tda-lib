@@ -17,7 +17,7 @@ Overlaps are the meets `I k ⊓ I l` of the interval category, which are interse
 index universe is the first universe parameter, as for `IsPairwiseCosheaf.{w}` in `cosheaf.md`.
 By the elementary correspondence of `cosheaf.md`, the condition says that every value over `J`
 comes from a member and that two local values with the same image over `J` are related through
-values over actual overlaps.
+values over overlaps.
 
 Covers of `⊥`, of rays and of `ℝ` are included, and so are `⊥` members; these follow the
 library's convention that the interval category contains every open order-convex subset of `ℝ`.
@@ -98,7 +98,7 @@ member. In the kernel, an overlap step of `F` on the thickened cover has a witne
 `W = T_ε (I i) ⊓ T_ε (I j)`. Along the interval chain from `i` to `j`, the images of `c` over the
 thickened overlaps `T_ε (I k ⊓ I l)` are witnesses of overlap steps of `S_ε F`, so the two local
 values are related for `S_ε F` (`eqvGen_overlapRel_smoothing`). Agreement is therefore always
-established on actual overlap values. The empty-value condition is not used in this step, by the
+established on overlap values. The empty-value condition is not used in this step, by the
 empty-overlap convention above; the empty value of `S_ε F` follows from the theorem.
 
 At `ε = 0` the statement is an equivalence with the hypothesis

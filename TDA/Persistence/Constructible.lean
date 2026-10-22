@@ -8,7 +8,7 @@ import Mathlib.Data.Real.Basic
 For strictly increasing real critical values, `cellIndex` counts the values at or below a
 parameter. Its zero cell is the left tail; its positive cells are left-closed and right-open,
 with an unbounded final cell. `sample` adds a zero stage before the critical-value samples.
-The reconstruction uses actual structure-map isomorphisms within cells, over any ring and
+The reconstruction uses structure-map isomorphisms within cells, over any ring and
 without a finite-dimensionality hypothesis.
 
 This is a library construction using functor semantics as in Bauer--Lesnick, arXiv:1311.3681v4,
@@ -144,7 +144,7 @@ private noncomputable def sampleMap (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R 
     | zero => exact 0
     | succ j => exact structureMap M (c.monotone (Fin.succ_le_succ_iff.mp h))
 
-/-- The critical samples, preceded by an actual zero module. -/
+/-- The critical samples, preceded by a zero module. -/
 noncomputable def sample (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R ℝ) :
     PModule.{u,0,w} R (Fin (n + 1)) where
   obj := sampleObj c M
@@ -168,7 +168,7 @@ noncomputable def sample (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R ℝ) :
 @[simp] theorem sample_obj_zero (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R ℝ) :
     (sample c M).obj 0 = 0 := rfl
 
-/-- Positive samples are values at actual critical parameters. -/
+/-- Positive samples are values at critical parameters. -/
 @[simp] theorem sample_obj_succ (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R ℝ)
     (i : Fin n) : (sample c M).obj i.succ = M.obj (c i) := rfl
 
@@ -179,7 +179,7 @@ noncomputable def sample (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R ℝ) :
       structureMap M (c.monotone h) := rfl
 
 /-- Right-continuous finite constructibility with an explicit zero left tail.
-Only the actual within-cell structure maps are required to be isomorphisms. -/
+Only the within-cell structure maps are required to be isomorphisms. -/
 structure IsConstructible (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R ℝ) : Prop where
   zero_left : ∀ t, (∀ i, t < c i) → IsZero (M.obj t)
   isIso_map : ∀ (s t : ℝ) (h : s ≤ t), cellIndex c s = cellIndex c t →
@@ -234,7 +234,7 @@ private theorem comparisonMap_naturality (c : Fin n ↪o ℝ)
         structureMap M _ ≫ structureMap M _
       rw [structureMap_comp, structureMap_comp]
 
-/-- The forward reconstruction map exists for every module, using the actual critical
+/-- The forward reconstruction map exists for every module, using the critical
 sample-to-parameter structure maps on positive cells and the zero map on the left cell. -/
 noncomputable def toOriginal (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R ℝ) :
     reindex (cellIndex c) (sample c M) ⟶ M where
@@ -255,7 +255,7 @@ private theorem isIso_comparisonMap (c : Fin n ↪o ℝ)
     apply hM.isIso_map (c i) t
     exact (cellIndex_critical c i).trans hq.symm
 
-/-- Constructibility makes the actual forward comparison an isomorphism at every parameter. -/
+/-- Constructibility makes the forward comparison an isomorphism at every parameter. -/
 theorem isIso_toOriginal_app (c : Fin n ↪o ℝ) (M : PModule.{u,0,w} R ℝ)
     (hM : IsConstructible c M) (t : ℝ) : IsIso ((toOriginal c M).app t) :=
   isIso_comparisonMap c M hM (cellIndex c t) t _ rfl

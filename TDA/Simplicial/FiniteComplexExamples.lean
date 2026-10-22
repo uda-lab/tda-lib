@@ -6,7 +6,7 @@ set_option autoImplicit false
 /-!
 # Executable finite-complex regressions
 
-These private fixtures check support preservation, exact actual-face enumeration, malformed
+These private fixtures check support preservation, exact face enumeration, malformed
 presentation rejection, and use of the merged face-value sublevel API. The explicit `#eval`
 commands select the presentation-specific instances so the executable data path stays visible.
 -/

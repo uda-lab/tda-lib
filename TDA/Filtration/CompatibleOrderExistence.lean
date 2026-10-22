@@ -52,7 +52,7 @@ private noncomputable def sortedEnumeration (f : FilterFunction K α) :
   change rankKey f q (e i) < rankKey f q (e j)
   exact e.strictMono hij
 
-/-- Every filter with finitely many actual faces admits a compatible enumeration. -/
+/-- Every filter with finitely many faces admits a compatible enumeration. -/
 theorem exists_compatibleOrder (f : FilterFunction K α) :
     Nonempty (CompatibleOrder f) := by
   let sorted := sortedEnumeration f

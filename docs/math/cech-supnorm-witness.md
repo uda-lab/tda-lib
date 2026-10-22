@@ -61,7 +61,7 @@ For a label metric d with d(v, w) = dist (p v) (p w):
   two filters are ordering-equivalent, since s ↦ rips(s)/2 preserves and reflects every
   weak comparison.
 
-Positive scaling of filters turns these identities into identities of actual diagrams and
+Positive scaling of filters turns these identities into identities of diagrams and
 bottleneck distances; see [filter and diagram reparametrization](filter-reparametrization.md).
 The resulting half-discrepancy consumers and the additive one-configuration comparison are
 described in [Sup-norm consumers](cech-weighted-kernel-images.md#sup-norm-consumers) and

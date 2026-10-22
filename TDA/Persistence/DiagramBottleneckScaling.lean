@@ -177,25 +177,24 @@ theorem bottleneck_scale (D E : Diagram ℝ) {c : ℝ} (hc : 0 < c) :
   unfold bottleneck
   exact presentationBottleneck_scale _ _ _ _ hc
 
-section Actual
+section SublevelDiagrams
 
 variable {V : Type u} [LinearOrder V] (k : Type u) [Field k]
 variable {K : PreAbstractSimplicialComplex V} [Fintype (TDA.Simplicial.TotalFace K)]
 
-/-- The actual diagram of a positively scaled filter is the scaled actual diagram. -/
+/-- The diagram of a positively scaled filter is the scaled diagram. -/
 theorem dgm_scale (f : FilterFunction K ℝ) (n : ℕ) {c : ℝ} (hc : 0 < c) :
     dgm k (f.scale c hc) n = (dgm k f n).scale c hc :=
   dgm_map k f _ n
 
-/-- Positive scaling of two filters multiplies the bottleneck distance of their actual
-diagrams by `c`. -/
+/-- Positive scaling of two filters multiplies the bottleneck distance of their diagrams by `c`. -/
 theorem bottleneck_dgm_scale (f g : FilterFunction K ℝ) (n : ℕ) {c : ℝ} (hc : 0 < c) :
     bottleneck (dgm k (f.scale c hc) n) (dgm k (g.scale c hc) n) =
       ENNReal.ofReal c * bottleneck (dgm k f n) (dgm k g n) := by
   rw [dgm_scale, dgm_scale]
   exact bottleneck_scale _ _ hc
 
-end Actual
+end SublevelDiagrams
 
 /-- The merged filter translation is the reparametrization along `x ↦ x + c`. -/
 theorem translateFilterFunction_eq_map {V : Type*} [LinearOrder V]

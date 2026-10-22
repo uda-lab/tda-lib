@@ -5,7 +5,7 @@ import Mathlib.Data.Finite.Sigma
 # Components over cover saturations
 
 For an interval `I`, its saturation by an interval family `U` is the union of all members
-meeting `I`. Applying the actual inverse-image path-component functor to these unions gives
+meeting `I`. Applying the inverse-image path-component functor to these unions gives
 an interval precosheaf. A uniform diameter bound on the members and coverage of the attained
 range give an explicit interleaving with the original interval-component precosheaf.
 
@@ -46,13 +46,13 @@ theorem coverSaturation_mono (U : ι → OpenInterval) {I J : OpenInterval} (h :
   obtain ⟨i, hx, y, hy, hyI⟩ := mem_coverSaturation.mp hx
   exact mem_coverSaturation.mpr ⟨i, hx, y, hy, h hyI⟩
 
-/-- The monotone saturation construction, valued in actual open subsets of the line. -/
+/-- The monotone saturation construction, valued in open subsets of the line. -/
 def coverSaturationFunctor (U : ι → OpenInterval) :
     OpenInterval ⥤ TopologicalSpace.Opens ℝ where
   obj := coverSaturation U
   map h := homOfLE (coverSaturation_mono U (leOfHom h))
 
-/-- A diameter bound gives the actual inclusion of the saturation into the thickening. -/
+/-- A diameter bound gives the inclusion of the saturation into the thickening. -/
 theorem coverSaturation_le_thicken (U : ι → OpenInterval) (r : ℝ≥0)
     (hdiam : ∀ i x, x ∈ U i → ∀ y, y ∈ U i → |x - y| ≤ r) (I : OpenInterval) :
     coverSaturation U I ≤ toOpens (thicken r I) := by
@@ -62,7 +62,7 @@ theorem coverSaturation_le_thicken (U : ι → OpenInterval) (r : ℝ≥0)
 
 variable {X : Type u} [TopologicalSpace X]
 
-/-- Path components of inverse images of the actual saturated open sets. -/
+/-- Path components of inverse images of the saturated open sets. -/
 def coverComponents (f : C(X, ℝ)) (U : ι → OpenInterval) : OpenInterval ⥤ Type u :=
   coverSaturationFunctor U ⋙ componentFunctor f
 
@@ -70,14 +70,14 @@ def coverComponents (f : C(X, ℝ)) (U : ι → OpenInterval) : OpenInterval ⥤
 abbrev ActiveCoverMember (U : ι → OpenInterval) (I : OpenInterval) :=
   {i : ι // ((U i : Set ℝ) ∩ I).Nonempty}
 
-/-- An active member is contained in the actual saturation. -/
+/-- An active member is contained in the saturation. -/
 theorem coverMember_le_saturation (U : ι → OpenInterval) (I : OpenInterval)
     (i : ActiveCoverMember U I) : toOpens (U i.val) ≤ coverSaturation U I := by
   intro x hx
   obtain ⟨y, hyU, hyI⟩ := i.property
   exact mem_coverSaturation.mpr ⟨i.val, hx, y, hyU, hyI⟩
 
-/-- The actual component map from a selected cover member to the saturated inverse image. -/
+/-- The component map from a selected cover member to the saturated inverse image. -/
 def coverComponentGenerator (f : C(X, ℝ)) (U : ι → OpenInterval) (I : OpenInterval) :
     (Σ i : ActiveCoverMember U I, (intervalComponents f).obj (U i.val)) →
       (coverComponents f U).obj I :=
@@ -100,7 +100,7 @@ theorem finite_coverComponents [Finite ι] (f : C(X, ℝ)) (U : ι → OpenInter
     fun i => hfinite i.val
   exact Finite.of_surjective _ (coverComponentGenerator_surjective f U I)
 
-/-- Coverage is required only on values actually attained by `f`. -/
+/-- Coverage is required only on values attained by `f`. -/
 theorem preimage_subset_coverSaturation (f : C(X, ℝ)) (U : ι → OpenInterval)
     (hcov : ∀ x, ∃ i, f x ∈ U i) (I : OpenInterval) :
     f ⁻¹' (I : Set ℝ) ⊆ f ⁻¹' (coverSaturation U I : Set ℝ) := by

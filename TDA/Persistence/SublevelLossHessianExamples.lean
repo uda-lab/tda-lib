@@ -1,7 +1,7 @@
 import TDA.Persistence.DiagramSecondOrderCalculus
-import TDA.Persistence.ActualLossDerivativeExamples
+import TDA.Persistence.SublevelLossDerivativeExamples
 
-/-! Actual nonlinear losses, persistent diagonal cancellation, and presentation changes. -/
+/-! Nonlinear losses, persistent diagonal cancellation, and presentation changes. -/
 
 set_option autoImplicit false
 universe u v
@@ -144,7 +144,7 @@ theorem quadraticCurve_secondFDeriv_apply
   change R (fderiv ℝ (fderiv ℝ (fun t : ℝ => t ^ 2)) x h k) = _
   exact congrArg R (squareLinear_secondFDeriv_apply (ContinuousLinearMap.id ℝ ℝ) x h k)
 
-/-- The nonlinear actual singleton family has face value `t²`. -/
+/-- The nonlinear singleton family has face value `t²`. -/
 def nonlinearSingletonFilter (t : ℝ) := Examples.singletonFilter (t ^ 2)
 
 theorem nonlinear_singleton_scalar_loss (t : ℝ) :
@@ -164,7 +164,7 @@ theorem singletonBirthLinear_apply (t : ℝ) :
   · ext i
     simp [singletonBirthLinear]
 
-/-- An actual nonlinear singleton lift, with no finite pairs. -/
+/-- A nonlinear singleton lift, with no finite pairs. -/
 noncomputable def nonlinearSingletonLift :
     LocalC2DiagramLift (fun t : ℝ => dgm (ZMod 2) (nonlinearSingletonFilter t) 0) 0 1 where
   carrier := Set.univ
@@ -178,7 +178,7 @@ noncomputable def nonlinearSingletonLift :
   smooth := by fun_prop
   smooth_two := by fun_prop
 
-/-- Both terms of the ordinary chain expression are needed in this actual family:
+/-- Both terms of the ordinary chain expression are needed in this family:
 the coordinate Hessian gives `8` and parametrization curvature gives `4`. -/
 theorem nonlinear_singleton_chain_terms :
     fderiv ℝ (fderiv ℝ (squaredEssentialBirthSum ∘ orderedQ 0 1))
@@ -204,7 +204,7 @@ theorem nonlinear_singleton_chain_terms :
   rw [hf, h1, h2, squareLinear_secondFDeriv_apply, squareLinear_fderiv]
   norm_num [essentialBirthFunctional_apply, singletonBirthLinear_apply]
 
-/-- This is the second derivative of the actual diagram scalar loss, identified
+/-- This is the second derivative of the diagram scalar loss, identified
 through the general second-order theorem rather than a detached polynomial computation. -/
 theorem nonlinear_singleton_second_derivative :
     fderiv ℝ (fderiv ℝ (squaredEssentialBirthSum ∘
@@ -228,7 +228,7 @@ theorem nonlinear_tied_edge_squared_loss_zero (t : ℝ) :
   norm_num
 
 /-- Nonzero linear endpoint coefficients cancel against the equal, nonzero face
-second derivatives of the quadratic actual tied-edge family. -/
+second derivatives of the quadratic tied-edge family. -/
 theorem nonlinear_tied_edge_pair_curvature_cancel
     (e : CompatibleOrder (nonlinearTiedEdgeFilter (0 : ℝ)))
     (i : Fin (faceLiftCounts (ZMod 2) nonlinearTiedEdgeFilter e 0).1) :
@@ -253,7 +253,7 @@ theorem nonlinear_tied_edge_pair_curvature_cancel
     squareLinear_secondFDeriv_apply]
   norm_num
 
-/-- The quadratic tied actual edge has a genuinely nonempty finite template block. -/
+/-- The quadratic tied edge has a genuinely nonempty finite template block. -/
 theorem nonlinear_tied_edge_has_finite_slot :
     ∃ e : CompatibleOrder (nonlinearTiedEdgeFilter (0 : ℝ)),
       0 < (faceLiftCounts (ZMod 2) nonlinearTiedEdgeFilter e 0).1 := by
@@ -312,7 +312,7 @@ noncomputable def nonlinearTiedEdgeLift
     fun_prop
 
 /-- The ambient Hessian at a retained birth direction equals `2`, including at
-an actual diagonal evaluation. -/
+a diagonal evaluation. -/
 theorem nonlinear_tied_edge_ambient_birth_hessian
     (e : CompatibleOrder (nonlinearTiedEdgeFilter (0 : ℝ)))
     (i : Fin (faceLiftCounts (ZMod 2) nonlinearTiedEdgeFilter e 0).1) :
@@ -350,7 +350,7 @@ theorem nonlinear_tied_edge_hessian_pullback_zero
   rw [squaredSignedFiniteEndpointDifference_secondFDeriv_apply, hf, quadraticCurve_fderiv]
   simp [signedCoordinateFunctional_apply, tiedFullLinear_apply]
 
-/-- The scalar squared loss has a genuine zero second derivative on the actual tied edge. -/
+/-- The scalar squared loss has a genuine zero second derivative on the tied edge. -/
 theorem nonlinear_tied_edge_squared_second_derivative (t : ℝ) :
     HasFDerivAt (𝕜 := ℝ) (fderiv ℝ (squaredSignedFiniteEndpointDifference ∘
       (fun x : ℝ => dgm (ZMod 2) (nonlinearTiedEdgeFilter x) 0))) 0 t := by
@@ -368,7 +368,7 @@ theorem nonlinear_tied_edge_squared_second_derivative (t : ℝ) :
   exact hasFDerivAt_const _ _
 
 /-- The retained birth and death faces have nonzero existing β coefficients,
-and their actual face-curvature contributions cancel. -/
+and their face-curvature contributions cancel. -/
 theorem nonlinear_tied_edge_face_curvature_cancel
     (e : CompatibleOrder (nonlinearTiedEdgeFilter (0 : ℝ)))
     (i : Fin (faceLiftCounts (ZMod 2) nonlinearTiedEdgeFilter e 0).1) :
@@ -391,7 +391,7 @@ theorem nonlinear_tied_edge_face_curvature_cancel
   simp_rw [faceLossCoefficient_selected]
   exact nonlinear_tied_edge_pair_curvature_cancel e i
 
-/-- Nonempty actual template coordinates witness a nonzero ambient Hessian whose
+/-- Nonempty template coordinates witness a nonzero ambient Hessian whose
 pullback along the persistently diagonal quadratic family is zero. -/
 theorem nonlinear_tied_edge_nonvacuous_hessian_cancellation :
     ∃ (e : CompatibleOrder (nonlinearTiedEdgeFilter (0 : ℝ)))
@@ -413,7 +413,7 @@ theorem nonlinear_tied_edge_nonvacuous_hessian_cancellation :
   exact ⟨e, i, nonlinear_tied_edge_ambient_birth_hessian e i,
     nonlinear_tied_edge_hessian_pullback_zero e 1 1 1⟩
 
-/-- The signed actual scalar loss also has a genuine zero second derivative. -/
+/-- The signed scalar loss also has a genuine zero second derivative. -/
 theorem nonlinear_tied_edge_signed_second_derivative (t : ℝ) :
     HasFDerivAt (𝕜 := ℝ) (fderiv ℝ (signedFiniteEndpointDifference ∘
       (fun x : ℝ => dgm (ZMod 2) (nonlinearTiedEdgeFilter x) 0))) 0 t := by

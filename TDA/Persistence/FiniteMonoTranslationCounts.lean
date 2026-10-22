@@ -2,7 +2,7 @@ import TDA.Persistence.FiniteCokernel
 import TDA.Persistence.FiniteMonoCounts
 
 /-!
-# Shifted same-death counts from actual cokernel shortness
+# Shifted same-death counts from cokernel shortness
 
 The target image at a later stage lifts through the source image from the translated
 birth. At an observed death, injectivity of the component at death also lifts the
@@ -59,7 +59,7 @@ private theorem deathSubspace_le_map_translated (theta : Fin s →o Fin s)
   exact hk
 
 /-- Cokernel shortness gives the reverse prefix comparison after translating the birth.
-Finite deaths lift an actual kernel condition; terminal death compares final images. -/
+Finite deaths lift a kernel condition; terminal death compares final images. -/
 theorem deathPrefixCount_le_translated_of_cokernelTrivial
     [∀ i, FiniteDimensional k (M.obj i)] [∀ i, FiniteDimensional k (N.obj i)]
     (theta : Fin s →o Fin s) (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N)

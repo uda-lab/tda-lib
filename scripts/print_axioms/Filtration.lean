@@ -42,7 +42,7 @@ import TDA
 #print axioms TDA.Filtration.FilterFunction.sublevel_eq_self_of_last_le
 #print axioms TDA.Filtration.FilterFunction.sublevel_eq_bot_or_grade
 
--- Canonical grade-compatible actual-face enumeration (Issue #99).
+-- Canonical grade-compatible face enumeration (Issue #99).
 #print axioms TDA.Filtration.CompatibleOrder.mk
 #print axioms TDA.Filtration.CompatibleOrder.enum
 #print axioms TDA.Filtration.CompatibleOrder.face_lt
@@ -65,7 +65,7 @@ import TDA
 #print axioms TDA.Filtration.CompatibleOrder.thresholdMap
 #print axioms TDA.Filtration.CompatibleOrder.reindex_prefixFiltration
 
--- Ordering equivalence on actual faces and its attained-range characterization (Issue #107).
+-- Ordering equivalence on faces and its attained-range characterization (Issue #107).
 #print axioms TDA.Filtration.OrderingEquivalent.refl
 #print axioms TDA.Filtration.OrderingEquivalent.symm
 #print axioms TDA.Filtration.OrderingEquivalent.trans
@@ -80,7 +80,7 @@ import TDA
 #print axioms TDA.Filtration.CompatibleOrder.transferOfOrderingEquivalent
 #print axioms TDA.Filtration.CompatibleOrder.transferOfOrderingEquivalent_enum
 
--- Generic finite actual-face compatible-order laws (Issue #112).
+-- Generic finite face compatible-order laws (Issue #112).
 #print axioms TDA.Filtration.exists_compatibleOrder
 #print axioms TDA.Filtration.CompatibleOrder.monotone_enum_iff_reflects_lt
 
@@ -324,7 +324,7 @@ import TDA
 #print axioms TDA.Filtration.FilterFunctionMapExamples.scale_round_trip
 #print axioms TDA.Filtration.Rips.diameter_pos
 
--- Actual shifted simplicial homology maps and canonical selectors.
+-- shifted simplicial homology maps and canonical selectors.
 #print axioms TDA.Filtration.IsShiftedSimplicial
 #print axioms TDA.Filtration.IsShiftedSimplicialRelation
 #print axioms TDA.Filtration.IsShiftedSimplicial.vertexMap
@@ -334,7 +334,7 @@ import TDA
 #print axioms TDA.Filtration.isShiftedSimplicialRelation_graph_iff
 #print axioms TDA.Filtration.isShiftedSimplicial_id
 
--- Native relation and actual shifted homology composition.
+-- Native relation and shifted homology composition.
 #print axioms TDA.Filtration.IsShiftedSimplicial.comp
 #print axioms TDA.Filtration.IsShiftedSimplicial.comp_vertexMap
 #print axioms TDA.Filtration.IsShiftedSimplicialRelation.comp

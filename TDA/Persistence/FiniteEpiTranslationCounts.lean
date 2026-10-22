@@ -3,9 +3,9 @@ import TDA.Persistence.FiniteEpiCounts
 import Mathlib.LinearAlgebra.Isomorphisms
 
 /-!
-# Shifted same-birth survival counts from actual kernel shortness
+# Shifted same-birth survival counts from kernel shortness
 
-The source transition kills the actual component kernel, so it descends through
+The source transition kills the component kernel, so it descends through
 an epimorphism. Restriction to birth images and passage to the preceding-image
 quotients give genuine surjections before dimensions are compared.
 -/
@@ -31,7 +31,7 @@ variable (theta : Fin s →o Fin s) (hTheta : ∀ i, i ≤ theta i)
 variable (p : M ⟶ N) (hp : ∀ i, Function.Surjective (p.app i).hom)
 variable (hk : TranslationTrivial theta hTheta (finiteKernel p))
 
--- First descend an actual source transition through the component surjection.
+-- First descend a source transition through the component surjection.
 private noncomputable def descendAt (c : Fin s) : N.obj c →ₗ[k] M.obj (theta c) :=
   ((LinearMap.ker (p.app c).hom).liftQ (structureMapLinear M (hTheta c))
     ((kernel_translationTrivial_iff theta hTheta p).mp hk c)).comp
@@ -98,7 +98,7 @@ private theorem translatedBirthQuotientMap_surjective (b c : Fin s)
 include hTheta p hp hk
 
 /-- Kernel shortness bounds source survival after translation by target survival before it.
-The positive-birth quotient and initial image are compared by actual surjections. -/
+The positive-birth quotient and initial image are compared by surjections. -/
 theorem birthSuffixCount_translated_le_of_kernelTrivial
     [∀ i, FiniteDimensional k (M.obj i)] [∀ i, FiniteDimensional k (N.obj i)]
     (b c : Fin s) (hbc : b ≤ c) :

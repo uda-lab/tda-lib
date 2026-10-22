@@ -21,7 +21,7 @@ open scoped Classical NNReal
 
 variable {n m l : ℕ}
 
-/-- A refinement contains every actual critical value of the original grid. -/
+/-- A refinement contains every critical value of the original grid. -/
 def Refines (c : Fin n ↪o ℝ) (d : Fin m ↪o ℝ) : Prop := Set.range c ⊆ Set.range d
 
 /-- Every grid refines itself. -/
@@ -53,7 +53,7 @@ theorem Refines.embedding_unique {c : Fin n ↪o ℝ} {d : Fin m ↪o ℝ}
   apply d.injective
   rw [he, h.embedding_value]
 
-/-- The finite set of actual critical values, with no sentinel grade. -/
+/-- The finite set of critical values, with no sentinel grade. -/
 noncomputable def criticalValues (c : Fin n ↪o ℝ) : Finset ℝ := Finset.univ.image c
 
 /-- The sorted union grid identifies values shared by the two input grids. -/
@@ -99,7 +99,7 @@ theorem cellIndex_eq_of_refines {c : Fin n ↪o ℝ} {d : Fin m ↪o ℝ}
 
 variable {R : Type u} [Ring R] {M N : PModule.{u,0,w} R ℝ}
 
-/-- Adding critical values preserves actual constructibility. -/
+/-- Adding critical values preserves constructibility. -/
 theorem IsConstructible.refine {c : Fin n ↪o ℝ} {d : Fin m ↪o ℝ}
     (hM : IsConstructible c M) (h : Refines c d) : IsConstructible d M where
   zero_left t ht := hM.zero_left t (fun i => by
@@ -123,7 +123,7 @@ def shiftGrid (ε : ℝ≥0) (c : Fin n ↪o ℝ) : Fin n ↪o ℝ where
   ext i
   simp
 
-/-- Cell counts commute with the actual positive-evaluation shift at every parameter. -/
+/-- Cell counts commute with the positive-evaluation shift at every parameter. -/
 theorem cellIndex_shiftGrid (ε : ℝ≥0) (c : Fin n ↪o ℝ) (t : ℝ) :
     cellIndex (shiftGrid ε c) t = cellIndex c (t + (ε : ℝ)) := by
   apply Fin.ext
@@ -133,7 +133,7 @@ theorem cellIndex_shiftGrid (ε : ℝ≥0) (c : Fin n ↪o ℝ) (t : ℝ) :
   ext i
   simp
 
-/-- The actual shifted module is constructible on the grid translated to the left. -/
+/-- The shifted module is constructible on the grid translated to the left. -/
 theorem IsConstructible.shift {c : Fin n ↪o ℝ}
     (hM : IsConstructible c M) (ε : ℝ≥0) :
     IsConstructible (shiftGrid ε c) ((shift ε).obj M) where

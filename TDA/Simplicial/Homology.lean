@@ -3,9 +3,9 @@ import Mathlib.Algebra.Category.ModuleCat.Abelian
 import Mathlib.LinearAlgebra.Quotient.Basic
 
 /-!
-# Homology of actual ordered simplicial chains
+# Homology of ordered simplicial chains
 
-The cycles and boundaries below are those of the existing actual-face chain
+The cycles and boundaries below are those of the existing face chain
 complex. Inclusion acts on representatives by the existing chain inclusion.
 -/
 
@@ -322,8 +322,8 @@ private noncomputable def singletonVertexCycle (x : V) (a : R) :
     rw [singletonShort_g_zero R x]
     rfl⟩
 
-/-- The actual vertex class is sent to its coefficient. The quotient projection
-and comparison inverse are those of the actual degree-zero short complex. -/
+/-- The vertex class is sent to its coefficient. The quotient projection
+and comparison inverse are those of the degree-zero short complex. -/
 private theorem singletonVertex_normalization (x : V) (a : R) :
     simplicialSingletonH0Equiv R x
       ((homologyKernelQuotient.{v,u,v} R

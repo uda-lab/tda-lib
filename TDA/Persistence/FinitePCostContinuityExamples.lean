@@ -1,7 +1,7 @@
 import TDA.Persistence.FinitePCostContinuity
 import TDA.Persistence.FinitePBoundaryTransportExamples
 
-/-! Continuity of actual finite optima and the boundary at exponent zero. -/
+/-! Continuity of finite optima and the boundary at exponent zero. -/
 
 noncomputable section
 namespace TDA.Persistence.FinitePCostContinuityExamples
@@ -9,7 +9,7 @@ namespace TDA.Persistence.FinitePCostContinuityExamples
 open Filter
 open scoped Topology
 
-/-- Exact values of both matching optima and both actual real-plan optima. -/
+/-- Exact values of both matching optima and both real-plan optima. -/
 private def costsAt {I J : Type*} [Fintype I] [Fintype J] (p : ℝ)
     (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) (powered rooted : ℝ) : Prop :=
   finitePowerMatchingCost p x y = powered ∧ finitePMatchingCost p x y = rooted ∧
@@ -119,7 +119,7 @@ private def switchTarget : Fin 1 → ℝ × ℝ := fun _ => (3 / 2, 7 / 2)
 private theorem switchTarget_positive (j : Fin 1) :
     (switchTarget j).1 < (switchTarget j).2 := by norm_num [switchTarget]
 
-/-- The actual curve minimizes powered candidates before taking the reciprocal power. -/
+/-- The curve minimizes powered candidates before taking the reciprocal power. -/
 private theorem switch_values (p : ℝ) :
     costsAt p oneBar switchTarget (min ((3 / 2 : ℝ) ^ p) 2)
       ((min ((3 / 2 : ℝ) ^ p) 2) ^ p⁻¹) := by
@@ -146,7 +146,7 @@ private theorem switch_continuity_and_optimizers :
     FinitePBoundaryTransportExamples.optimizer_changes_with_exponent.2,
     FinitePBoundaryTransportExamples.deleting_both_optimal_at_two⟩
 
-/-- The existing `0^0` convention is visible in actual empty rooted costs. -/
+/-- The existing `0^0` convention is visible in empty rooted costs. -/
 private theorem empty_zero_exponent : costsAt 0 emptyFamily emptyFamily 0 1 := by
   apply costsAt_of_matching (finitePowerMatchingCost_empty _ _ _)
   simp [finitePMatchingCost]
@@ -165,7 +165,7 @@ private theorem tendsto_zero_of_positive_values {f : ℝ → ℝ}
   filter_upwards [self_mem_nhdsWithin] with p hp
   exact (hf p hp).symm
 
-/-- Positive-side limits disagree with the actual value one at exponent zero. -/
+/-- Positive-side limits disagree with the value one at exponent zero. -/
 private theorem zero_boundary_limits :
     Tendsto (fun p : ℝ => finitePMatchingCost p emptyFamily emptyFamily)
       (𝓝[Set.Ioi 0] 0) (𝓝 0) ∧

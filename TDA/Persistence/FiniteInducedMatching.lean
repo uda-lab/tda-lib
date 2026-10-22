@@ -2,7 +2,7 @@ import TDA.Persistence.FiniteImage
 import TDA.Persistence.FiniteEpiMatching
 
 /-!
-# Induced occurrence matchings through the actual image
+# Induced occurrence matchings through the image
 
 The epi embedding puts image occurrences inside source occurrences. Its inverse on
 that range, followed by the mono embedding, is a partial injection into the target.
@@ -40,7 +40,7 @@ noncomputable def imageOccurrenceEquivDomain (f : M ⟶ N) :
     BarcodeOccurrence s (rankBarcode (finiteImage f)) ≃ inducedDomain f :=
   Equiv.ofInjective (imageSourceEmbedding f) (imageSourceEmbedding f).injective
 
-/-- The actual partial injection, represented as an embedding of its exact domain. -/
+/-- The partial injection, represented as an embedding of its exact domain. -/
 noncomputable def inducedMatching (f : M ⟶ N) :
     inducedDomain f ↪ BarcodeOccurrence s (rankBarcode N) :=
   (imageOccurrenceEquivDomain f).symm.toEmbedding.trans (imageTargetEmbedding f)
@@ -62,7 +62,7 @@ theorem inducedMatching_from_image (f : M ⟶ N)
   exact congrArg (imageTargetEmbedding f)
     (Equiv.ofInjective_symm_apply (imageSourceEmbedding f).injective a)
 
-/-- A pair is matched exactly when an actual intermediate occurrence produces both labels. -/
+/-- A pair is matched exactly when an intermediate occurrence produces both labels. -/
 theorem inducedMap_eq_some_iff (f : M ⟶ N)
     (i : BarcodeOccurrence s (rankBarcode M)) (j : BarcodeOccurrence s (rankBarcode N)) :
     inducedMap f i = some j ↔
@@ -129,7 +129,7 @@ theorem inducedMap_injective (f : M ⟶ N)
   have he := (imageTargetEmbedding f).injective (hj.trans hj'.symm)
   exact ha.symm.trans (he ▸ ha')
 
-/-- Image occurrences and actual matched pairs are equivalent as labeled finite sets. -/
+/-- Image occurrences and matched pairs are equivalent as labeled finite sets. -/
 noncomputable def imageOccurrenceEquivPairs (f : M ⟶ N) :
     BarcodeOccurrence s (rankBarcode (finiteImage f)) ≃
       {p : BarcodeOccurrence s (rankBarcode M) × BarcodeOccurrence s (rankBarcode N) //

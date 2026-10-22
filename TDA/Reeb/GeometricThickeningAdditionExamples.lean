@@ -6,8 +6,8 @@ import TDA.Reeb.RGraphCosheafEquivalenceExamples
 /-!
 # Fixtures for the thickening addition map
 
-Acceptance fixtures for `TDA.Reeb.GeometricThickeningAddition`, on the actual thickening, the
-actual slice functors and the actual realizations of finite data:
+Acceptance fixtures for `TDA.Reeb.GeometricThickeningAddition`, on the thickening, the
+slice functors and the realizations of finite data:
 
 * **One point.** No isomorphism `T_1 T_1 P ≅ T_(1+1) P` exists. The explicit pair
   `((*, 0), 0) ≠ ((*, 1), -1)` has one image under `μ_(1,1)`, and the boundary point `(*, 2)` is

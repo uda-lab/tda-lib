@@ -12,7 +12,7 @@ cosheaves (Proposition 4.32).
 ## The functor
 
 `geometricSmoothing ε : RGraphCat ⥤ RGraphCat` is `thickeningToConstructible ε ⋙
-quotientRGraphFunctor`: the actual product thickening `T_ε`, which is a constructible ℝ-space on
+quotientRGraphFunctor`: the product thickening `T_ε`, which is a constructible ℝ-space on
 graph input (Proposition 4.26), followed by the Reeb functor on constructible ℝ-spaces. Under the
 graph inclusion it is literally `IsRGraph.ι ⋙ GeometricThickening.functor ε ⋙
 ReebQuotient.quotientFunctor ℝ`, on objects and on all maps (`geometricSmoothing_comp_ι`, by
@@ -47,8 +47,8 @@ to `X` is asserted.
 
 ## The unit
 
-`geometricSmoothingUnit ε : 𝟭 ⟶ geometricSmoothing ε` is the actual zero section `x ↦ (x, 0)`
-followed by the actual Reeb projection of the thickening (Observation 4.34). The comparison sends
+`geometricSmoothingUnit ε : 𝟭 ⟶ geometricSmoothing ε` is the zero section `x ↦ (x, 0)`
+followed by the Reeb projection of the thickening (Observation 4.34). The comparison sends
 `C''(ζ)` to the lifted smoothing unit
 (`cosheafFunctor_map_geometricSmoothingUnit_comp_geometricSmoothingComparisonIso`, Proposition
 4.35): `C''` of the projection is `η`, which cancels, and the unit equation of the first-projection
@@ -87,13 +87,12 @@ open OpenInterval
 
 /-! ### The functor -/
 
-/-- **Geometric smoothing of graph objects** `U_ε = ℛ T_ε` (DMP Definition 4.30): the actual
-product thickening, lifted to constructible ℝ-spaces by `thickeningToConstructible`, followed by
+/-- **Geometric smoothing of graph objects** `U_ε = ℛ T_ε` (DMP Definition 4.30): the product thickening, lifted to constructible ℝ-spaces by `thickeningToConstructible`, followed by
 the Reeb functor `quotientRGraphFunctor` on constructible ℝ-spaces. -/
 def geometricSmoothing (ε : ℝ≥0) : RGraphCat ⥤ RGraphCat :=
   thickeningToConstructible ε ⋙ quotientRGraphFunctor
 
-/-- Under the graph inclusion, `U_ε` is literally the Reeb quotient functor of the actual product
+/-- Under the graph inclusion, `U_ε` is literally the Reeb quotient functor of the product
 thickening, on objects and on all maps. -/
 theorem geometricSmoothing_comp_ι (ε : ℝ≥0) :
     geometricSmoothing ε ⋙ IsRGraph.ι =
@@ -111,7 +110,7 @@ theorem geometricSmoothing_map_hom (ε : ℝ≥0) {A B : RGraphCat} (φ : A ⟶ 
   rfl
 
 /-- The underlying precosheaves of `C'' U_ε`: interval components of the Reeb quotient of the
-actual thickening. -/
+thickening. -/
 theorem geometricSmoothing_comp_cosheafFunctor_comp_ι (ε : ℝ≥0) :
     geometricSmoothing ε ⋙ cosheafFunctor ⋙ ObjectProperty.ι IsConstructibleCosheaf.{0} =
       IsRGraph.ι ⋙ GeometricThickening.functor ε ⋙ ReebQuotient.quotientFunctor ℝ ⋙
@@ -139,9 +138,8 @@ theorem thickeningCosheafComparisonIso_hom_app_hom (ε : ℝ≥0) (A : RGraphCat
 
 /-- **DMP Proposition 4.32** on graph objects: `C'' U_ε ≅ S_ε C''`, as a natural isomorphism of
 functors `RGraphCat ⥤ ConstructibleCosheafCat.{0}`. The component at `A` is the inverse of the
-comparison `η = constructibleCosheafComparisonIso` at the actual thickening `T_ε A`, followed by
-the first-projection comparison `ρ_A`; naturality is that of the composite of the two actual
-natural isomorphisms. -/
+comparison `η = constructibleCosheafComparisonIso` at the thickening `T_ε A`, followed by
+the first-projection comparison `ρ_A`; naturality is that of the composite of the two natural isomorphisms. -/
 def geometricSmoothingComparisonIso (ε : ℝ≥0) :
     geometricSmoothing ε ⋙ cosheafFunctor ≅ cosheafFunctor ⋙ constructibleSmoothing ε :=
   NatIso.ofComponents
@@ -173,7 +171,7 @@ theorem constructibleCosheafComparisonIso_hom_app_comp_geometricSmoothingCompari
   rw [geometricSmoothingComparisonIso_hom_app, Iso.hom_inv_id_app_assoc]
 
 /-- **Canonical hom-component equation** `η_(T_ε A).hom ≫ β_A = ρ_A.hom`, with `η` the
-functor-level comparison `constructibleComponentComparisonIso` at the actual thickening and `ρ`
+functor-level comparison `constructibleComponentComparisonIso` at the thickening and `ρ`
 the first-projection comparison `GeometricThickening.componentComparisonNatIso`. -/
 theorem constructibleComponentComparisonIso_hom_app_comp_geometricSmoothingComparisonIso_hom_app
     (ε : ℝ≥0) (A : RGraphCat) :
@@ -182,9 +180,8 @@ theorem constructibleComponentComparisonIso_hom_app_comp_geometricSmoothingCompa
       (GeometricThickening.componentComparisonNatIso ε).hom.app A.obj :=
   Iso.hom_inv_id_app_assoc constructibleComponentComparisonIso _ _
 
-/-- **Canonical hom-component equation**, unbundled: the actual comparison
-`intervalComponentComparison` of the thickened height, followed by `β_A`, is the actual
-first-projection comparison `componentComparison`. -/
+/-- **Canonical hom-component equation**, unbundled: the comparison
+`intervalComponentComparison` of the thickened height, followed by `β_A`, is the first-projection comparison `componentComparison`. -/
 theorem intervalComponentComparison_comp_geometricSmoothingComparisonIso_hom_app_hom
     (ε : ℝ≥0) (A : RGraphCat) :
     ReebQuotient.intervalComponentComparison
@@ -211,8 +208,8 @@ theorem geometricSmoothingComparisonIso_hom_app_hom_app_mk (ε : ℝ≥0) (A : R
 
 /-! ### The geometric unit (DMP Observation 4.34 and Proposition 4.35) -/
 
-/-- **The geometric unit** `ζ^ε : 𝟭 ⟶ U_ε`: the actual zero section `x ↦ (x, 0)` followed by the
-actual Reeb projection of the thickening. -/
+/-- **The geometric unit** `ζ^ε : 𝟭 ⟶ U_ε`: the zero section `x ↦ (x, 0)` followed by the
+Reeb projection of the thickening. -/
 def geometricSmoothingUnit (ε : ℝ≥0) : 𝟭 RGraphCat ⟶ geometricSmoothing ε where
   app A := ObjectProperty.homMk ((GeometricThickening.zeroSectionNatTrans ε).app A.obj ≫
     (ReebQuotient.projNatTrans ℝ).app ((GeometricThickening.functor ε).obj A.obj))

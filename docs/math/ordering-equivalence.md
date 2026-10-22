@@ -1,7 +1,7 @@
 # Ordering equivalence and attained ranges
 
 For filters `f : FilterFunction K α` and `g : FilterFunction K β`, ordering equivalence means
-that for every pair of actual nonempty faces `s` and `t`,
+that for every pair of nonempty faces `s` and `t`,
 
 ```text
 f.value s ≤ f.value t  ↔  g.value s ≤ g.value t.
@@ -23,13 +23,13 @@ order isomorphism. The reverse direction uses the order isomorphism's comparison
 and the specified face-wise value law.
 
 The tie theorem follows by transferring both weak comparisons and applying antisymmetry, in
-both directions. For the sublevel theorem, membership provides an actual-face witness; the
+both directions. For the sublevel theorem, membership provides a face witness; the
 definition of ordering equivalence then transfers that face's comparison with the attained
 grade. Thus the two subcomplexes agree, including on absent ambient vertices.
 
 ## Boundary cases
 
-If `K = ⊥`, the actual-face type is empty. Filters into `Unit` and `Empty` are both valid, their
+If `K = ⊥`, the face type is empty. Filters into `Unit` and `Empty` are both valid, their
 ordering equivalence is vacuous, and both attained ranges are empty and order-isomorphic. This
 does not imply a total function `Unit → Empty`; such a function is impossible. The public
 characterization therefore uses the attained ranges and makes no ambient-grade extension
@@ -40,7 +40,7 @@ constant grade `()` in `Unit` and constant grade `0` in `ℤ`, the filters are o
 The `Unit` sublevel at `()` is the singleton complex, while the `ℤ` sublevel at `-1` is bottom.
 Consequently, the result does not identify arbitrary ambient-threshold sublevel families.
 
-The edge fixtures use actual vertices with tied grade `0`, an edge with grade `1`, and the
+The edge fixtures use vertices with tied grade `0`, an edge with grade `1`, and the
 second filter `2 * f + 1`. They check the face-wise range map and all attained sublevel
 equalities. A separate edge fixture breaks the vertex tie while preserving all forward strict
 comparisons, demonstrating why one-way strict preservation is insufficient. Concrete

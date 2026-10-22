@@ -169,7 +169,7 @@ realization of `D.toComponentData` (`quotientComponentGraphMap_projHomeomorph`).
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleQuotientExamples` works with actual presentations, realizations and slice
+`TDA.Reeb.ConstructibleQuotientExamples` works with presentations, realizations and slice
 morphisms. `[0, 1]` is locally path-connected and path-connected; the pinned mathlib has no such
 instances for `unitInterval`, so they are local instances there. Thickening finite data `D` by
 `[0, 1]` replaces every label `x` by `x × [0, 1]`, with the endpoint maps acting on labels. The

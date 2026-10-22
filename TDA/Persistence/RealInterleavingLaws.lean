@@ -29,7 +29,7 @@ def shiftLE {ε δ : ℝ≥0} (h : ε ≤ δ) (M : PModule.{u,0,w} R ℝ) :
     erw [← M.map_comp, ← M.map_comp]
     congr 1
 
-/-- Components of parameter enlargement are the actual translated structure maps. -/
+/-- Components of parameter enlargement are the translated structure maps. -/
 @[simp] theorem shiftLE_app {ε δ : ℝ≥0} (h : ε ≤ δ)
     (M : PModule.{u,0,w} R ℝ) (t : ℝ) :
     (shiftLE h M).app t =
@@ -82,7 +82,7 @@ private theorem enlarge_equation (h : ε ≤ δ) (i : RealInterleaving ε M N) (
   erw [← M.map_comp, ← M.map_comp]
   congr 1
 
-/-- Enlarge an actual interleaving without changing its modules. -/
+/-- Enlarge an interleaving without changing its modules. -/
 def mono (i : RealInterleaving ε M N) (h : ε ≤ δ) : RealInterleaving δ M N :=
   ofStructureMapEquations (i.φ ≫ shiftLE h N) (i.ψ ≫ shiftLE h M)
     (enlarge_equation h i) (enlarge_equation h i.symm)
@@ -115,7 +115,7 @@ private theorem compose_equation (i : RealInterleaving ε M N)
   repeat' erw [← M.map_comp]
   congr 1
 
-/-- Compose two actual interleavings, adding their finite parameters. -/
+/-- Compose two interleavings, adding their finite parameters. -/
 def trans (i : RealInterleaving ε M N) (j : RealInterleaving δ N P) :
     RealInterleaving (ε + δ) M P :=
   ofStructureMapEquations (composeMap i.φ j.φ rfl) (composeMap j.ψ i.ψ (add_comm δ ε))

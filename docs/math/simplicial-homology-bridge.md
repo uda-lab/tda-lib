@@ -2,7 +2,7 @@
 
 ## Decision and boundary
 
-Use free oriented chains on the **actual faces** of a
+Use free oriented chains on the **faces** of a
 `PreAbstractSimplicialComplex V`, with one fixed `LinearOrder V` for every
 filtration stage. A face of cardinality `n+1` is one degree-`n` basis element.
 The coefficient carrier is `Face K n →₀ R`; the ordinary differential in degree
@@ -10,7 +10,7 @@ zero is zero. No empty face, degree `-1` term, or unused ambient singleton is
 added. This choice makes the face basis itself the finite matrix basis. It
 requires no chain-model comparison before finite PH can use its coordinates.
 
-The choice is an interface decision. The actual signed boundary, its square-zero
+The choice is an interface decision. The signed boundary, its square-zero
 law, and same-ambient inclusion chain maps are now proved. Functorial homology,
 finite coordinates, and a PH algorithm remain separate work. The APIs are in
 [TDA/Simplicial/Bridge.lean](../../TDA/Simplicial/Bridge.lean),
@@ -18,14 +18,14 @@ finite coordinates, and a PH algorithm remain separate work. The APIs are in
 [TDA/Simplicial/ChainComplex.lean](../../TDA/Simplicial/ChainComplex.lean), and
 [TDA/Simplicial/Inclusion.lean](../../TDA/Simplicial/Inclusion.lean).
 `packagedComplex` and `packagedInclusion` remain conditional compatibility helpers;
-the actual chain complex and inclusion map do not take caller-supplied proofs.
+the chain complex and inclusion map do not take caller-supplied proofs.
 
 | Route or layer | Reused declaration and source | Proposed declaration or obligation | Coefficients, universe, finite data |
 | --- | --- | --- | --- |
-| Actual faces | mathlib `PreAbstractSimplicialComplex`; merged `TDA.Filtration.singletonFace`, `vertexBirth`, `face_mono` | `Face K n`, `Chain K R n`, ordered deletion boundary | `V` linearly ordered, with one order across stages; `Ring R` for signed chain theory; no finite ambient `V` |
+| faces | mathlib `PreAbstractSimplicialComplex`; merged `TDA.Filtration.singletonFace`, `vertexBirth`, `face_mono` | `Face K n`, `Chain K R n`, ordered deletion boundary | `V` linearly ordered, with one order across stages; `Ring R` for signed chain theory; no finite ambient `V` |
 | Chain packaging | mathlib `Finsupp.basisSingleOne`, `ChainComplex.of`, `ChainComplex.ofHom` | General ordered-face `d²=0` and same-ambient inclusion commutation, identity, and composition are proved | `ModuleCat R` supports a general `Ring R`; no finite-face assumption is used |
 | Ordinary homology | mathlib `ShortComplex.moduleCatMk`, `moduleCatToCycles`, `moduleCatHomologyIso`; merged persistence module API | Identify `Hₙ` with `ker dₙ / range(dₙ₊₁ → ker dₙ)`, construct inclusion-induced maps and their identity/composition laws, then instantiate the covariant module of #11 | `Ring R`; a nonzero vertex birth additionally needs `Nontrivial R` |
-| Finite coordinates | mathlib `LinearMap.toMatrix`, `toMatrix_apply`, `toMatrix_comp` | Coordinate equivalence for each `Cₙ`, differential and inclusion squares; transport cycles, boundaries and quotient homology naturally | Finite **total** face set for bounded finite-rank stages; actual `Fintype` and `DecidableEq` for executable enumeration. This matrix API uses `CommSemiring`; signed boundaries use `CommRing`, hence any `Field` |
+| Finite coordinates | mathlib `LinearMap.toMatrix`, `toMatrix_apply`, `toMatrix_comp` | Coordinate equivalence for each `Cₙ`, differential and inclusion squares; transport cycles, boundaries and quotient homology naturally | Finite **total** face set for bounded finite-rank stages; `Fintype` and `DecidableEq` for executable enumeration. This matrix API uses `CommSemiring`; signed boundaries use `CommRing`, hence any `Field` |
 | SSet alternative | mathlib `SSet.chainComplex`, `normalizedMooreComplex`, `inclusionOfMooreComplex`, Dold–Kan homotopy equivalence | Construct a support-preserving precomplex-to-SSet functor and a natural identification of normalized chains with the finite ordered-face basis | `SSet.{u}` with coefficients `ModuleCat.of R R` in `ModuleCat.{u} R` type-checks for `R : Type u`, `[Ring R]` after importing `ModuleCat.Colimits`. The alternating complex contains degenerate simplices, so finite input alone does not bound its chain groups |
 
 The prototype's `TotalFace K` makes the missing finiteness hypothesis explicit;
@@ -56,10 +56,10 @@ repository's pin.
 `chainIncl` preserves each face; `chainIncl_id` and `chainIncl_comp` are proved
 for all degrees and rings. `packagedComplex` and `packagedInclusion` remain
 conditional helpers; `ChainComplex.lean` and `Inclusion.lean` construct the
-actual chain complex and maps.
+chain complex and maps.
 
 `Boundary.lean` defines `deletedFace` by erasing the selected vertex from the
-actual face and obtains its face membership from the precomplex lower-set law.
+face and obtains its face membership from the precomplex lower-set law.
 `enumerationAfterDeletion` identifies the resulting increasing enumeration with
 the original enumeration composed with `Fin.succAbove`. The noncomputable
 `boundary K R n` is the signed `Finsupp.linearCombination` of these deletions;
@@ -70,7 +70,7 @@ particular `boundary K R 0` is the edge-to-vertex map.
 For the merged #10 bottom and `singletonFace` complexes, the prototype proves
 all bottom chain groups are zero, the singleton's positive-degree groups are
 zero, bottom ordinary `H₀=0`, and singleton ordinary `H₀≅R`. The H₀ checks use
-the actual degree-zero face chains and mathlib's zero-map short complex:
+the degree-zero face chains and mathlib's zero-map short complex:
 absence of degree-one faces forces any boundary from degree one to vanish,
 and the ordinary degree-zero boundary is zero. The generic
 `zeroBoundaryH0` helper is only a zero-differential fixture; it is not a
@@ -85,14 +85,14 @@ coefficients `1` at vertex `1` and `-1` at vertex `0`, so `boundary K ℤ 0` is
 not zero, and that the triangle's twice-applied boundary cancels. These are
 fixture results; the general `d²=0` theorem is proved by `boundary_comp_boundary`.
 The general boundary is
-also zero as a linear map in every degree on the actual bottom and singleton
+also zero as a linear map in every degree on the bottom and singleton
 complexes, whose positive-degree chains have no faces.
 
 The earlier private matrix and inclusion fixtures in `Bridge.lean` use their own
 finite prototype maps; they are not claimed as coordinates of the general
 boundary or the inclusion maps proved in `Inclusion.lean`.
 
-## Issue #86 — actual inclusion chain maps
+## Issue #86 — inclusion chain maps
 
 For `K ≤ L` in one ordered ambient `V`, `Inclusion.lean` proves
 `faceIncl_deletedFace`, `chainIncl_single`, and `boundary_chainIncl` for
@@ -101,20 +101,20 @@ proof checks arbitrary-coefficient singleton chains and extends by Finsupp
 linear extensionality. It keeps coefficients as left scalar multiples and does
 not assume that `R` is commutative.
 
-`simplicialChainIncl` uses the actual `simplicialChainComplex` values and
+`simplicialChainIncl` uses the `simplicialChainComplex` values and
 `ChainComplex.ofHom`; it supplies no caller-provided commutation or
 square-zero field. Its component theorem identifies each component with
 `ModuleCat.ofHom (chainIncl R h n)`, and the proved identity and composition
 laws reuse `chainIncl_id` and `chainIncl_comp`.
 
-`InclusionExamples.lean` checks two proper inclusions on actual faces of `Fin 4`,
+`InclusionExamples.lean` checks two proper inclusions on faces of `Fin 4`,
 including a two-step chain-map composite on an edge generator. The ℤ edge
-fixture proves the actual boundary `[1] − [0]`, the inclusion square, target
+fixture proves the boundary `[1] − [0]`, the inclusion square, target
 coefficients `+1` and `−1`, and nonzeroness. The degree-two fixture computes
-`[1,2] − [0,2] + [0,1]` from the actual boundary in both the triangle complex
+`[1,2] − [0,2] + [0,1]` from the boundary in both the triangle complex
 and its ambient target, then checks their inclusion square. Bottom and singleton
 support, the singleton's degree-zero image and positive-degree vanishing, the
-actual ordinary `d₀ = 0`, and a specialization to `Matrix (Fin 2) (Fin 2) ℤ`
+ordinary `d₀ = 0`, and a specialization to `Matrix (Fin 2) (Fin 2) ℤ`
 are also kernel checked. Every private fixture declaration prints its axiom
 footprint in the example module; the public theorems and constructor are pinned
 in the corresponding `scripts/print_axioms/<Area>.lean` files.

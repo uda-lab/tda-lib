@@ -118,7 +118,7 @@ private theorem triangle_edge_values (t : Set.Icc (0 : ℝ) 1) :
   simp [triangleFilter, triangleValue, triangleEdge01, triangleEdge12, triangleEdge02]
 
 /-- The concrete crossing path is exactly the linear interpolation of its
-actual endpoint filters, face by face. -/
+endpoint filters, face by face. -/
 private theorem triangle_family_values_interpolate
     (t : Set.Icc (0 : ℝ) 1) (σ : TotalFace triangleBoundary) :
     (triangleFilter t).value σ =
@@ -149,7 +149,7 @@ private theorem triangleFilter_ext
       cases hv
       rfl
 
-/-- The triangle-boundary family is the actual interpolation between its
+/-- The triangle-boundary family is the interpolation between its
 endpoint filters, so the pairing regression lies on the stability path. -/
 theorem triangle_family_interpolation (t : Set.Icc (0 : ℝ) 1) :
     triangleFilter t =
@@ -266,7 +266,7 @@ private noncomputable def triangleCompatibleHalf1 :
     CompatibleOrder (triangleFilter triangleTimeHalf) :=
   triangleCompatible1.transfer triangle_half_order1_monotone
 
-/-- The first two actual edge grades meet and exchange order in this filter family. -/
+/-- The first two edge grades meet and exchange order in this filter family. -/
 private theorem triangle_edge_order_crosses :
     (triangleFilter triangleTime0).value triangleEdge01 <
       (triangleFilter triangleTime0).value triangleEdge12 ∧
@@ -277,7 +277,7 @@ private theorem triangle_edge_order_crosses :
   simp [triangle_edge_values, triangleTime0, triangleTimeHalf, triangleTime1]
   norm_num
 
-/-- Every compatible enumeration reverses the two actual edges after the
+/-- Every compatible enumeration reverses the two edges after the
 crossing. This records the change of order without asserting a pairing law. -/
 private theorem triangle_compatible_orders_reverse
     (e0 : CompatibleOrder (triangleFilter triangleTime0))
@@ -292,9 +292,9 @@ private theorem triangle_compatible_orders_reverse
     simpa only [e1.enum.apply_symm_apply, Function.comp_apply] using
       triangle_edge_order_crosses.2.2
 
-/-- Every fiber of the concrete family is represented by its actual full face
+/-- Every fiber of the concrete family is represented by its full face
 template, including the crossing fiber with tied edge grades. -/
-private theorem triangle_actual_diagram_template (t : Set.Icc (0 : ℝ) 1) :
+private theorem triangle_diagram_template (t : Set.Icc (0 : ℝ) 1) :
     ∃ e : CompatibleOrder (triangleFilter t),
       evaluateFaceTemplate (ZMod 2) e (triangleFilter t) e.monotone 0 =
         dgm (ZMod 2) (triangleFilter t) 0 := by
@@ -314,7 +314,7 @@ private theorem triangle_explicit_endpoint_diagrams :
       (triangleFilter triangleTime1) triangleCompatible1.monotone 0⟩
 
 /-- Both edge orders remain compatible at the crossing time: their tied-edge
-templates evaluate to the same actual sublevel persistence diagram. -/
+templates evaluate to the same sublevel persistence diagram. -/
 theorem triangle_explicit_midpoint_diagrams :
     evaluateFaceTemplate (ZMod 2) triangleCompatibleHalf0
         (triangleFilter triangleTimeHalf) triangleCompatibleHalf0.monotone 0 =
@@ -327,7 +327,7 @@ theorem triangle_explicit_midpoint_diagrams :
     evaluateFaceTemplate_eq_dgm (ZMod 2) triangleCompatibleHalf1
       (triangleFilter triangleTimeHalf) triangleCompatibleHalf1.monotone 0⟩
 
-/-! The six actual prefix attachments used to test the changing H₀ pair labels. -/
+/-! The six prefix attachments used to test the changing H₀ pair labels. -/
 
 private theorem triangle_order0_entering_faces :
     (∀ i : Fin (faceCount triangleBoundary),
@@ -1086,7 +1086,7 @@ private def triangle_order1_prefix1_vertex :
     exact (mem_singletonFace_iff (0 : Fin 3) {0}).mpr rfl,
     by decide⟩
 
-private theorem triangle_multiplicities_from_actual_ranks
+private theorem triangle_multiplicities_from_ranks
     {f : FilterFunction triangleBoundary ℝ} (e : CompatibleOrder f)
     (r33 : structureMapRank (facePrefixModule (ZMod 2) e 0)
       (triangleStage 3) (triangleStage 3) (by decide) = 3)
@@ -1146,10 +1146,10 @@ private theorem triangle_multiplicities_from_actual_ranks
       moduleMultiplicityInteger M 2 5 at h
     exact_mod_cast h.trans mu25
 
-/-- The actual prefix H₀ classes change their death attachments when the first
+/-- The prefix H₀ classes change their death attachments when the first
 two edge grades exchange order. Both multiplicities use ordinary homology of
 the six-face triangle boundary, not a stipulated rank diagram. -/
-theorem triangle_actual_pairing_change :
+theorem triangle_pairing_change :
     barcodeMultiplicity (facePrefixBarcode (ZMod 2) triangleCompatible0 0) 3 4 = 1 ∧
     barcodeMultiplicity (facePrefixBarcode (ZMod 2) triangleCompatible0 0) 2 5 = 1 ∧
     barcodeMultiplicity (facePrefixBarcode (ZMod 2) triangleCompatible1 0) 3 4 = 1 ∧
@@ -1164,7 +1164,7 @@ theorem triangle_actual_pairing_change :
       (simplicialHomology (triangleCompatible1.prefixComplex 1) (ZMod 2) 0) = 1 := by
     rw [triangle_order1_prefix1, ← triangle_order0_prefix1]
     exact triangle_prefix1_h0_dim
-  have h0 := triangle_multiplicities_from_actual_ranks triangleCompatible0
+  have h0 := triangle_multiplicities_from_ranks triangleCompatible0
     (triangle_rank33 triangleCompatible0 rfl)
     (triangle_rank23 triangleCompatible0 rfl hvertex0)
     (triangle_rank34 triangleCompatible0 rfl triangle_order0_first_edge_card)
@@ -1175,7 +1175,7 @@ theorem triangle_actual_pairing_change :
       (triangle_prefix2_vertex 0) (Or.inr triangle_order0_stage5_h0_dim))
     (triangle_rank_one_of_vertex triangleCompatible0 1 5 (by decide)
       triangle_order0_prefix1_vertex (Or.inr triangle_order0_stage5_h0_dim))
-  have h1 := triangle_multiplicities_from_actual_ranks triangleCompatible1
+  have h1 := triangle_multiplicities_from_ranks triangleCompatible1
     (triangle_rank33 triangleCompatible1 triangle_prefix3_eq.symm)
     (triangle_rank23 triangleCompatible1 triangle_prefix2_eq.symm hvertex1)
     (triangle_rank34 triangleCompatible1 triangle_prefix3_eq.symm
@@ -1223,9 +1223,9 @@ private theorem triangle_pair25_mem
   rw [hp'] at hp
   exact hp
 
-/-- The concrete finite pairings use different actual edge faces on the two
+/-- The concrete finite pairings use different edge faces on the two
 sides of the crossing, even though the birth vertices are the same. -/
-theorem triangle_actual_face_pairings :
+theorem triangle_face_pairings :
     (triangleVertex1, triangleEdge01) ∈
       (faceTemplatePairs (ZMod 2) triangleCompatible0 0).map
         (fun p => (triangleCompatible0.enum p.1, triangleCompatible0.enum p.2)) ∧
@@ -1238,7 +1238,7 @@ theorem triangle_actual_face_pairings :
     (triangleVertex2, triangleEdge01) ∈
       (faceTemplatePairs (ZMod 2) triangleCompatible1 0).map
         (fun p => (triangleCompatible1.enum p.1, triangleCompatible1.enum p.2)) := by
-  have hm := triangle_actual_pairing_change
+  have hm := triangle_pairing_change
   constructor
   · apply Multiset.mem_map.mpr
     refine ⟨(triangleIndex 2, triangleIndex 3),
@@ -1280,14 +1280,14 @@ private theorem triangle_pair_point_in_dgm
       ⟨Multiset.mem_map.mpr ⟨p, hp, rfl⟩, by simpa [pairValues] using hne⟩
   · rfl
 
-/-- Both finite H₀ intervals give positive points in the actual crossing
+/-- Both finite H₀ intervals give positive points in the crossing
 diagram, even though the two edges have equal grades there. -/
-theorem triangle_actual_midpoint_diagram_points :
+theorem triangle_midpoint_diagram_points :
     (2, ((7 / 2 : ℝ) : WithTop ℝ)) ∈
       (dgm (ZMod 2) (triangleFilter triangleTimeHalf) 0).points ∧
     (1, ((7 / 2 : ℝ) : WithTop ℝ)) ∈
       (dgm (ZMod 2) (triangleFilter triangleTimeHalf) 0).points := by
-  have hm := triangle_actual_pairing_change
+  have hm := triangle_pairing_change
   have hp34 := triangle_pair34_mem triangleCompatible0 (by omega)
   have hp25 := triangle_pair25_mem triangleCompatible0 (by omega)
   have hneq34 :
@@ -1339,13 +1339,13 @@ private theorem triangle_time0_no_half_grade (σ : TotalFace triangleBoundary) :
       show ({0, 2} : Finset (Fin 3)).card ≠ 1 by decide] <;>
     norm_num
 
-/-- The actual triangle-boundary H₀ diagram moves along the interpolated
+/-- The triangle-boundary H₀ diagram moves along the interpolated
 filter family: the crossing creates a finite death grade absent at time zero. -/
 theorem triangle_diagram_path_nonconstant :
     dgm (ZMod 2) (triangleFilter triangleTime0) 0 ≠
       dgm (ZMod 2) (triangleFilter triangleTimeHalf) 0 := by
   intro heq
-  have hpoint := triangle_actual_midpoint_diagram_points.1
+  have hpoint := triangle_midpoint_diagram_points.1
   rw [← heq] at hpoint
   obtain ⟨p, _, hdeath⟩ := dgm_finite_death_from_faceTemplate
     (ZMod 2) triangleCompatible0 (triangleFilter triangleTime0)
@@ -1360,7 +1360,7 @@ theorem triangle_diagram_path_nonconstant :
 #print axioms triangle_edge_values
 #print axioms triangle_edge_order_crosses
 #print axioms triangle_compatible_orders_reverse
-#print axioms triangle_actual_diagram_template
+#print axioms triangle_diagram_template
 #print axioms triangle_explicit_endpoint_diagrams
 
 end TDA.Persistence.Examples

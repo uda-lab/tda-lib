@@ -28,10 +28,10 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 
 | Import and namespace | Main definitions and theorem families | Requirements and scope |
 |---|---|---|
-| `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers | Values belong to actual nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
-| `TDA.Simplicial` / `TDA.Simplicial` | Actual-face `Chain`, signed `boundary`, square-zero chain complex, inclusion maps, `vertexChainMap`, `simplicialChainMap`, `simplicialHomology` / `simplicialHomologyMap`, finite coordinates and `VertexMap` / `Contiguous` | Signed chains use an ambient vertex order and a ring. Finite-dimensional homology additionally uses a field and finite faces. A vertex map may identify vertices; contiguity is reflexive and symmetric, with composition laws, and is not asserted transitive. |
-| `TDA.Persistence` / `TDA.Persistence` | `PModule`, structure maps and reindexing; finite intervals, rank barcodes and decomposition; `Diagram`, `dgm`, reduction, stability and calculus | The functor core needs a ring and a preorder, with independent coefficient/index/carrier universes. Finite decomposition has its narrower field, finite-chain, pointwise finite-dimensional and same carrier/coefficient universe assumptions. Actual face diagrams and calculus retain their stated vertex-order, finite-face and local-lift hypotheses. |
-| `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has an actual common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. |
+| `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers | Values belong to nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
+| `TDA.Simplicial` / `TDA.Simplicial` | Face `Chain`, signed `boundary`, square-zero chain complex, inclusion maps, `vertexChainMap`, `simplicialChainMap`, `simplicialHomology` / `simplicialHomologyMap`, finite coordinates and `VertexMap` / `Contiguous` | Signed chains use an ambient vertex order and a ring. Finite-dimensional homology additionally uses a field and finite faces. A vertex map may identify vertices; contiguity is reflexive and symmetric, with composition laws, and is not asserted transitive. |
+| `TDA.Persistence` / `TDA.Persistence` | `PModule`, structure maps and reindexing; finite intervals, rank barcodes and decomposition; `Diagram`, `dgm`, reduction, stability and calculus | The functor core needs a ring and a preorder, with independent coefficient/index/carrier universes. Finite decomposition has its narrower field, finite-chain, pointwise finite-dimensional and same carrier/coefficient universe assumptions. Sublevel diagrams and calculus retain their stated vertex-order, finite-face and local-lift hypotheses. |
+| `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has a common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. |
 | `TDA.Reeb` / `TDA.Reeb` | Inverse-image path components, Reeb quotients and comparison maps; interval cosheaves, smoothing, interleavings and extended distance; finite data, graph realizations, the incidence quiver and `incidenceGraph` of finite data with `card_incidenceGraph_edgeSet_le` and `RGraph.cosheafEquivalence`; `thickeningQuotient`, `thickeningQuotientAbsorptionIso`, `thickeningQuotientCompIso`, and `isRGraph_quotient_thickening_of_isConstructibleSpace`; `rgraphToConstructible`, `quotientRGraphAdjunction`, `RGraph.constructibleSmoothing`, `ConstructibleInterleaving`, `ConstructibleInterleaving.equivGeometric`, `constructibleInterleavingDistance`, `constructibleInterleavingDistance_eq_geometricInterleavingDistance` and `constructibleInterleavingDistance_eq_interleavingDistance`; `CylinderPresentation.levelHomeomorph`, `realizationSpace`, `levelPerturbation`, `CriticalValues.translate`, and the [level-change stability, range and exact-distance API](math/reeb-geometric-interleaving-equivalence.md#level-perturbations-of-a-fixed-presentation) | Components are path components of the inverse-image subspace. General quotient comparison is a natural transformation. The graph/constructible-cosheaf equivalence is scoped to the declared finite real-graph category and value universe `0`. Smoothing and geometric comparisons have separate contracts; geometric thickening composes laxly, by a height-preserving addition map that is not an isomorphism but becomes one after the Reeb quotient, and geometric smoothing of graph objects composes additively, `U_ε U_δ ≅ U_(ε+δ)`; geometric interleavings of graph objects correspond bijectively to interleavings of their component cosheaves, so the geometric and cosheaf interleaving distances coincide and the geometric one satisfies the triangle inequality. Geometric smoothing enlarges along `ε ≤ δ`, geometric interleavings are monotone in the parameter, and every graph object is within geometric distance `ε` of its `ε`-smoothing. Constructible interleavings correspond bijectively to geometric interleavings of the Reeb graphs; the constructible distance equals the cosheaf distance of the interval components of the spaces themselves; zero distance does not give an isomorphism of spaces. The incidence graph forgets parallel edges; edge counts use `Nat.card`. An interval-local component obstruction excludes geometric interleavings whose double-thickening restriction is injective from a nontrivial to a subsingleton value; the parallel loop and the single edge have geometric distance exactly `1/4`. Absorption `ℛ T_ε ≅ U_ε ℛ` holds on all constructible ℝ-spaces; constructibility of `T_ε X` itself is not claimed. Level-change stability fixes the presentation and number of levels; compact locally path-connected pieces supply constructibility. Exact translation distance requires a nonempty realization. Arbitrary continuous perturbations are outside that API. |
 | `TDA.Mapper` / `TDA.Mapper` | `ComponentIndex`, pullback component covers, `mapper`, its one-skeleton, `multiNerveMapper` and its projection onto `mapper`, refinement maps including `multiNerveMapperMap`, graph-PL comparison, uniform interval covers (`uniformCover`) with attained-range coverage, the label-set cell equivalence `cellsOverLabelsEquiv` with graph-PL edge cells, height-separating uniform covers (`HeightSeparating`, `exists_heightSeparating_uniformCover`, `range_plHeight_eq_Icc`) with the splitting `cellComponentsEquivSum`, vertex cells (`vertexCellsEquiv`) and the cell classification `uniformVertexCellsEquivLevel`, `uniformVertexCellsEquivSpans`, `uniformEdgeCellsEquivSpans` through `EdgeCrosses` and `EdgeSpans`, finite Reeb data of graph-PL input (`CoversVertexHeights`, `vertexHeightLevels`, `LevelVertex`, `SpanEdge`, `levelEnd`, `graphPLReebData`, `uncoveredEdgeEquivCrossesOfLevel`, `induceComponentsEquivOfEq`) with the star and gap bijections `graphPLStarEquiv`, `graphPLGapEquiv`, their incidence laws `graphPLStarEquiv_map_left`, `graphPLStarEquiv_map_right` and the finite-data isomorphism `graphPLExtractHom`, `graphPLExtractIso`, closed level sets of graph-PL height (`ClosedLevel`, `IsLevelWindow`, `closedLevelComponentsEquiv`, `componentMap_levelInclusion_bijective`, `graphPLReebDataVEquivClosedLevel`), constructibility and the cosheaf identification of graph-PL height (`isConstructibleAt_intervalComponents_plHeight`, `cellGraphIsoOfSameLevels`, `graphPLCosheafIsoOfIso`, `graphPLCosheafIso`, `isConstructibleCosheaf_intervalComponents_plHeight`, `cosheafFunctorGraphPLIso`, `geometricInterleavingDistance_graphPL`), the Reeb quotient of graph-PL height (`compactSpace_realization`, `exists_coversVertexHeights`, `graphPLReebMap`, `graphPLReebQuotientHomeomorph`, `graphPLReebQuotientIso`, `graphPLReebQuotientIsoOfIso`, `intervalComponentNatTrans_graphPLReebMap`, `isRGraph_graphPLReebQuotient`, `graphPLReebGraph`, `graphPLReebGraphIso`, `isIso_intervalComponentComparison_plHeight`, `geometricInterleavingDistance_graphPLReebGraph`), the graph-PL realization as a constructible ℝ-space (`barycentric`, `t2Space_realization`, `edgePoint_eq_vertex_iff`, `edgePoint_eq_edgePoint_iff`, `locallyPathConnectedSpace_realization`, `realizationMap_injective`, `LevelPiece`, `levelPieceHomeomorph`, `compactSpace_closedLevel`, `locallyPathConnectedSpace_closedLevel`, `graphPLPresentation`, `graphPLPresentationMap`, `graphPLPresentationHomeomorph`, `graphPLComponentDataIso`, `graphPLReebMap_graphPLPresentationMap`, `graphPLPresentationIso`, `isConstructibleSpace_graphPLOver`, `graphPLReebQuotientIsoOfIso_graphPLComponentDataIso`, `graphPLSpace`, `quotientRGraphFunctor_obj_graphPLSpace`, `overBaseMap_graphPLSpace`, `isRGraph_quotient_thickening_graphPLOver`), and `CoherentCoverTower`, member-adapted MultiNerve Mapper comparison (`LevelsAdapted`, `exists_levelsAdapted`, `labelFace`, `uniformMapperData`, `uniformMapperCellsEquiv`, `uniformMapperIso`), refinement of graph-PL finite Reeb data (`graphPLRefineIso`, `graphPLRefineHom_trans_v`, `uniformMapperCanonicalIso`, `graphPLRefineToOverIso`), the ordinary one-skeleton comparison `incidenceGraphUniformMapperIso`, `mapperOneSkeletonGraphPLIso` and `mapperOneSkeleton_connected_iff` | Input is a continuous map and an indexed target family. Coverage and multiplicity are explicit hypotheses where used. The MultiNerve Mapper is the multinerve of the component cover; its projection onto `mapper` is surjective and is an order isomorphism under `IntersectionsPathSubsingleton (componentCover f U)`. Every real number lies in at most two members of the uniform family exactly when `2g ≤ r` (for at least three members and `g < r`); its union is the window `(a, a + n(r − g) + g)` for `0 < g ≤ r`. The graph-PL finite Reeb data need no covering hypothesis; closed-level components are classified by `LevelVertex` for finite vertex sets, and inclusion into any level window is bijective on components. The star and gap comparison assumes every vertex height is a level of the critical list, while the Mapper comparison is at member-adapted levels. The refinement comparison assumes the coarser list covers the vertex heights. Constructibility at the specified critical list and the corresponding cosheaf identification assume a list covering the vertex heights and `V : Type`; constructibility at a noncovering list can fail (fixture D5). The Reeb quotient identification assumes a covering list, which cannot be dropped (fixture R6); the slice statements use `V : Type`, while the list-free corollaries need no list. The presentation map is injective for every list, while the homeomorphism assumes a covering list (fixture K5). Closed levels are compact and locally path-connected for finite vertex sets. The slice statements use `V : Type`. Finiteness is conditional; tower identity/composition are supplied coherence data. These constructions are noncomputable theory, not an executable Mapper implementation. The one-skeleton isomorphism assumes `2g ≤ r` and fails without it (fixture M5). |
 
@@ -40,23 +40,22 @@ the whole area. Generic simplicial contiguity depends only on the simplicial ver
 API; nerve-specific contiguity is owned by `TDA.Topology.NerveContiguity`. Mapper Tower
 consumes that Topology theorem. This removes the previous Simplicial-to-Topology dependency.
 
-Arbitrary vertex maps induce signed maps of the actual chains and homology over a ring,
+Arbitrary vertex maps induce signed maps of the chains and homology over a ring,
 with independent source and target orders in a common vertex universe. Collapsed faces
 map to zero; injective images retain their permutation signs. Identity, composition and
-compatibility with the existing inclusions are strict. Contiguous maps have an actual
-signed prism homotopy and induce equal homology maps in every natural degree.
-For real-indexed filtrations, `shiftedSimplicialHomologyMap` gives the actual degree-ε
+compatibility with the existing inclusions are strict. Contiguous maps have a signed prism homotopy and induce equal homology maps in every natural degree.
+For real-indexed filtrations, `shiftedSimplicialHomologyMap` gives the degree-ε
 natural map of a global function, and `multivaluedSimplicialHomologyMap` gives the canonical
 map of a total relation satisfying the nonempty finite-image face condition. It equals the
 map of every subordinate function, over any ring and for every real ε. Its target evaluates
 at t + ε and agrees with `RealShift.shift` for nonnegative ε. Relational images may be
-infinite; totality covers ambient ghosts while face tests preserve actual support.
-Native relation composition is first C then D. Their actual canonical homology maps
+infinite; totality covers ambient ghosts while face tests preserve support.
+Native relation composition is first C then D. Their canonical homology maps
 compose with degree ε + δ, using the second component at t + ε and the canonical
 index transport `(t + ε) + δ = t + (ε + δ)`. The specialized comparison agrees with
 `RealShift.compIso` for nonnegative degrees. Total subrelations induce the same canonical
 transformation. Two total ε-simplicial relations whose native round trips contain the
-identities give an actual `RealInterleaving ε`, with the canonical maps as its fields;
+identities give a `RealInterleaving ε`, with the canonical maps as its fields;
 a relation and its converse specialize this construction. Subrelation invariance permits
 all real degrees, while interleavings use finite nonnegative ε. See
 [signed simplicial vertex maps](math/simplicial-vertex-maps.md).
@@ -75,7 +74,7 @@ universe is `0`, and the field and module-carrier universes are both `u`; this
 does not extend the decomposition theorem to independent carrier universes.
 `exists_barcode_decomposition` and `nonempty_rankBarcodeIso` construct genuine natural
 interval semantics. `nonempty_iso_iff_structureMapRank_eq` classifies these modules by
-the ranks of all actual structure maps, including composites. The canonical object is
+the ranks of all structure maps, including composites. The canonical object is
 the interval multiset; the chosen summands and isomorphism are not canonical. See
 [finite interval decomposition](math/finite-interval-decomposition.md).
 
@@ -94,31 +93,28 @@ See [finite representations](math/finite-representations.md).
 whose components are injective and constructs an embedding of their canonical barcode
 occurrences. It preserves each observed death and bounds the target birth by the source
 birth. At each death it pairs equal ordinals in birth/index order, retaining duplicates;
-the embedding respects identities and mono composition. Its count comparison uses actual
-image/kernel injections, with a separate terminal-image case. See
+the embedding respects identities and mono composition. Its count comparison uses image/kernel injections, with a separate terminal-image case. See
 [finite-chain mono embeddings](math/finite-mono-matching.md) for the endpoint conventions,
 proof and rank-domination boundary.
 
 For a monotone `theta : Fin s →o Fin s` with `i ≤ theta i`, `TranslationTrivial`
-means vanishing of the actual maps `i → theta i`. `finiteCokernel` is the categorical
+means vanishing of the maps `i → theta i`. `finiteCokernel` is the categorical
 cokernel; its shortness is proved equivalent to a target-image inclusion.
 Under this shortness condition, the canonical mono embedding satisfies
 `birth(target) ≤ birth(source) ≤ theta(birth(target))` and uniquely covers every
-target bar with `theta(birth) < death`. Its shifted-prefix comparison uses actual
-vector lifts and a separate terminal-image case. See
+target bar with `theta(birth) < death`. Its shifted-prefix comparison uses vector lifts and a separate terminal-image case. See
 [quantitative mono matchings](math/finite-mono-translation.md) for the general finite
 translation extension and the still unformalized real-grid connection.
 
-`FiniteBarcode.epiEmbedding` takes an actual componentwise surjective transformation
+`FiniteBarcode.epiEmbedding` takes a componentwise surjective transformation
 `p : M ⟶ N` of the same finite modules and embeds target barcode occurrences back into
 source occurrences. It preserves birth, bounds the target bar's death by the corresponding
 source bar's death, and pairs equal ordinals in descending-death/original-index order at
 each birth. Identities and epi composition give identity and contravariant composition
-laws. Its count comparison uses actual image-quotient surjections, with a separate
+laws. Its count comparison uses image-quotient surjections, with a separate
 initial-stage image case. See [finite-chain epi embeddings](math/finite-epi-matching.md).
 
-For an arbitrary transformation `f : M ⟶ N`, `finiteImage f` constructs its actual
-range-valued module and natural epi–mono factorization. `FiniteBarcode.inducedMatching`
+For an arbitrary transformation `f : M ⟶ N`, `finiteImage f` constructs its range-valued module and natural epi–mono factorization. `FiniteBarcode.inducedMatching`
 embeds precisely the source occurrence labels selected by the epi embedding into the
 target labels via their unique intermediate image occurrences. Its Option-valued
 `inducedMap` exposes the partial injection on all labels, with exact domain/range,
@@ -126,38 +122,37 @@ qualitative endpoint order and an equivalence between image occurrences and matc
 It specializes to the existing mono/epi correspondences and the identity matching;
 composition laws apply to monos and epis. See
 [finite induced matchings](math/finite-induced-matching.md).
-`finiteKernel` is the actual categorical kernel, with evaluated component-kernel
+`finiteKernel` is the categorical kernel, with evaluated component-kernel
 fibers and finite dimensionality derived from the source. Its theta-shortness
 gives shifted same-birth survival counts, canonical epi death bounds and unique
 long-source coverage. These estimates and the mono/cokernel bounds transfer through
-the actual image to the existing induced matching, with independent kernel and
+the image to the existing induced matching, with independent kernel and
 cokernel translations. See
 [quantitative finite induced matchings](math/finite-quantitative-induced-matching.md)
 for terminal endpoint extension, hypotheses and the general finite-translation scope.
 
 `FiniteConstructible.reconstructionIso` reconstructs a real-indexed module from a finite
 chain of critical samples preceded by a zero stage. It uses left-closed/right-open strata,
-an actual zero left tail and actual structure-map isomorphisms within each stratum; the
+a zero left tail and structure-map isomorphisms within each stratum; the
 final tail may be nonzero. The reconstruction works over any ring with independent
 module-carrier universe and no finite-dimensionality assumption. It supplies both natural
 transformations and their inverse identities. See
 [finite-stratum reconstruction](math/constructible-modules.md).
 
 `FiniteConstructible.commonGrid` constructs a refinement from a sorted union of
-critical values. Actual constructibility survives refinement and positive-evaluation
+critical values. Constructibility survives refinement and positive-evaluation
 shift on the grid `c_i-ε`. `moduleDiagram_refinement` proves equality of real endpoint
 diagrams, deriving finiteness at added critical values from the original ones and
 retaining duplicate bars and essential tails. See
 [common grids and diagram invariance](math/constructible-refinement.md).
 
 `IsConstructible.kernel` and `IsConstructible.cokernel` prove constructibility of
-actual categorical defects on a shared grid. `interleaving_critical_defects`
-constructs that grid and derives finite sampled defect shortness from an actual
-real interleaving, using natural sampling comparisons and within-cell cancellation.
+categorical defects on a shared grid. `interleaving_critical_defects`
+constructs that grid and derives finite sampled defect shortness from a real interleaving, using natural sampling comparisons and within-cell cancellation.
 See [constructible defects and critical sampling](math/constructible-defects-sampling.md)
 for the rounded translation, terminal observation and coefficient scope.
 
-`moduleDiagram_shift` proves that actual positive evaluation translates the
+`moduleDiagram_shift` proves that positive evaluation translates the
 native shifted-grid diagram by −ε; its refinement version derives finiteness
 at added observations. Finite and essential occurrence equivalences return
 shifted target labels by +ε, and the complete matching of a diagram with its
@@ -166,27 +161,27 @@ untranslation operation is available for existing occurrence matchings. See
 [real shift diagrams and occurrence untranslation](math/constructible-shift-diagrams.md)
 for multiplicities, boundary conventions and the target-return operation.
 
-`FiniteConstructible.inducedOccurrenceMatching` transports the actual sampled
+`FiniteConstructible.inducedOccurrenceMatching` transports the sampled
 finite induced partial injection to real finite and essential occurrence labels.
-Actual real kernel/cokernel annihilation gives exact endpoint and unmatched-length
+Real kernel/cokernel annihilation gives exact endpoint and unmatched-length
 bounds, unique coverage of strictly long finite bars and a total essential
 equivalence. `interleaving_shifted_induced_matching` derives these bounds at `2ε`
-from an actual interleaving on possibly different grids, into the translated target
+from an interleaving on possibly different grids, into the translated target
 `D_N−ε`. No mesh error or supplied matching is used. See
-[real induced occurrence matchings](math/real-induced-matchings.md). `interleavingMatching` returns the actual target labels by +ε and
+[real induced occurrence matchings](math/real-induced-matchings.md). `interleavingMatching` returns the target labels by +ε and
 `interleavingMatching_cost_le` proves cost at most ε.
 
 `FiniteConstructible.barcodeRealizationIso` connects this reconstruction to finite
 decomposition and `RealBarcode.realize`. It requires a coefficient field and carrier in
 the same universe, with finite-dimensionality only at the critical fibers. The sampled
-zero stage produces no bars; actual `Fin.succ` restriction preserves all remaining
+zero stage produces no bars; `Fin.succ` restriction preserves all remaining
 occurrences before `ofIndexBars` assigns the real finite endpoints and essential tails.
-The result is an actual natural isomorphism to the fixed grid's endpoint barcode, with
+The result is a natural isomorphism to the fixed grid's endpoint barcode, with
 duplicate summands retained. See [real barcode realization](math/real-barcode-realization.md).
 
 `RealShift` constructs real shifts and transitions over any ring, with natural unit
 and composition identifications satisfying the coherence equations.
-`RealInterleaving` contains actual natural maps and both double-shift identities;
+`RealInterleaving` contains natural maps and both double-shift identities;
 zero-interleaving witnesses correspond to natural isomorphisms, and interleaving
 with zero is equivalent to a zero double-shift structure map. Its interval examples
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
@@ -200,7 +195,7 @@ the exact `ENNReal.ofReal c` distance law over every ring, including `⊤`. See 
 scaling](math/real-interleavings.md#positive-scaling).
 
 `RealInterleaving.kernel_transition_eq_zero` and `cokernel_transition_eq_zero`
-prove that either comparison morphism has actual categorical kernel and cokernel
+prove that either comparison morphism has categorical kernel and cokernel
 with zero `2ε`-transition, over any ring without dimension assumptions. See
 [real interleaving defect shortness](math/real-interleaving-shortness.md)
 for the naturality proof, the sharp threshold example and its constructible matching consumer.
@@ -214,11 +209,11 @@ positive parameter and need not give a zero-interleaving or an isomorphism.
 The explicit ephemeral example exhibits this nonattainment. See
 [distance and approximation](math/real-interleavings.md#distance-infinity-and-approximation).
 
-`RealBarcode.matchingInterleaving` constructs a witness between the actual realizations
+`RealBarcode.matchingInterleaving` constructs a witness between the realizations
 of two positive finite diagrams from an existing occurrence matching with cost at most ε.
 Matched finite bars use endpoint bounds; unmatched bars have length at most `2ε`,
 including equality; essential occurrences use the matching's total equivalence.
-Multiplicity, actual structure maps and ε=0 are retained. See
+Multiplicity, structure maps and ε=0 are retained. See
 [matching-induced interleavings](math/matching-interleavings.md) for the constructed
 maps and exact source specialization. `RealBarcode.distance_le_bottleneck` bounds
 the interleaving distance by the bottleneck, taking the infimum of the individual
@@ -250,12 +245,12 @@ sublevel modules with `PModule.scale`, proves the ring-level distance law, and s
 `moduleDiagram_sublevelModule_scale` agrees with `dgm_scale`; it also provides
 `logModule_scale_shiftIso` for `1 ≤ c`. See [positive scaling](math/real-interleavings.md#positive-scaling).
 
-`dgm` is the diagram of actual simplicial sublevel homology, with multiplicities retained,
+`dgm` is the diagram of simplicial sublevel homology, with multiplicities retained,
 half-open finite intervals, omitted zero-length value bars and essential deaths at `⊤`.
-The graded reduction adapter reaches this diagram through actual homology and natural
-maps; `nonempty_actualPrefixHomologyIsoPivotBarcode` exposes its natural interval
+The graded reduction adapter reaches this diagram through homology and natural
+maps; `nonempty_facePrefixHomologyIsoPivotBarcode` exposes its natural interval
 isomorphism. The original boundary differential is distinct from its reduced matrix.
-See [actual sublevel diagrams](math/finite-sublevel-diagram.md) and
+See [sublevel diagrams](math/finite-sublevel-diagram.md) and
 [reduction](math/persistence-reduction.md).
 
 `bottleneck_dgm_le_faceSupDifference` proves finite-complex real-filter stability over a
@@ -266,7 +261,7 @@ not supply a comparison with singular homology of general tame functions.
 `TDA.Filtration.FilterFunction.map` reparametrizes a filter along an order embedding
 φ : α ↪o β, and `TDA.Persistence.Diagram.map` maps births and finite deaths of a diagram
 along φ while fixing the essential top. Sublevels correspond at every source threshold, and
-at every target threshold for an order isomorphism; `dgm_map` identifies the actual diagram
+at every target threshold for an order isomorphism; `dgm_map` identifies the diagram
 of `f.map φ` with `(dgm k f n).map φ` for every field, degree and finite complex.
 `FilterFunction.scale` and `Diagram.scale` are the cases x ↦ c x with c > 0, and
 `bottleneck_scale` multiplies the bottleneck distance of any two real diagrams by c,
@@ -280,21 +275,21 @@ reparametrisation law `dgm_points_map_of_monotoneOn`. It maps births and deaths 
 `⊤`; its hypotheses are monotonicity on `Set.range f.value` and
 `g.value s = φ (f.value s)`. The same module proves
 `finrank_sublevelHomology_eq_countP`, `not_isZero_sublevelHomology_of_mem_dgm` and
-`dgm_points_eq_zero_of_isZero`. These are library extensions of the actual face-template and
+`dgm_points_eq_zero_of_isZero`. These are library extensions of the face-template and
 rank-diagram APIs.
 
-The `ActualDiagramRegularity`, `ActualLossDerivative` and `ActualLossHessian` APIs use
+The `SublevelDiagramRegularity`, `SublevelLossDerivative` and `SublevelLossHessian` APIs use
 ordered local representatives with explicit hypotheses on face values and loss lifts.
 The full lift retains tied finite pairs, including their diagonal coordinates; the
 Hessian includes both chain-rule terms. These are local results on the declared
 neighborhoods, not a claim of global smoothness at arbitrary pairing changes. See
 [local regularity](math/diagram-calculus.md) and
-[actual loss Hessians](math/actual-ph-loss-hessians.md).
+[loss Hessians](math/sublevel-loss-hessians.md).
 
 For general regularity, use `LocalCrDiagramLift r`, `DiagramContDiffAt r`,
 `CrThroughAllRepresentatives r` and the face-template APIs `fixedFaceLift_contDiffOn_cr`
-and `fixedFaceCrLift`. The C¹/C² lift structures and `actualFaceLossLift` /
-`actualFaceLossC2Lift` remain convenient inputs to derivative and Hessian theorems.
+and `fixedFaceCrLift`. The C¹/C² lift structures and `fixedFaceC1Lift` /
+`fixedFaceC2Lift` remain convenient inputs to derivative and Hessian theorems.
 Their conversions to/from the general layer preserve the carrier, coordinates and
 factorization; at orders one and two the all-representative predicates are
 definitionally equivalent. These wrappers do not supply stronger regularity or new
@@ -316,24 +311,24 @@ zero, the empty face is excluded, and stages below zero are empty. Sublevels are
 Rips complexes with diameter time. `pairwiseDiscrepancy` is the maximum absolute
 distance-matrix difference, with empty maximum zero.
 
-`TDA.Persistence.Rips.bottleneck_dgm_le_pairwiseDiscrepancy` bounds the actual diagrams
+`TDA.Persistence.Rips.bottleneck_dgm_le_pairwiseDiscrepancy` bounds the diagrams
 in every degree by that discrepancy. For V : Type u it requires `LinearOrder V`,
 `Fintype V`, and a coefficient field k : Type u, retaining existing multiplicity and
 essential-bar semantics. This noncomputable consumer of finite-face stability covers
 the fixed labelled carrier. See [the construction, proof and source scope](math/rips-metric-stability.md).
 `RipsRelationInterleaving` compares different genuine metric label types using a native
 relation and transpose total on both ambient sets. An absolute pairwise distortion bound ε
-gives actual canonical homology maps forming `RealInterleaving ε` over any ring, with
+gives canonical homology maps forming `RealInterleaving ε` over any ring, with
 exact forward/backward field formulas and an interleaving-distance bound. The geometric
 finite-face theorem requires no totality or finite image; same-antecedent pairs remain
-in the distortion premise. For finite ordered label types and a field, each actual Rips
-filter supplies its own critical grid, giving a full actual-diagram bottleneck bound ε.
+in the distortion premise. For finite ordered label types and a field, each Rips
+filter supplies its own critical grid, giving a full sublevel-diagram bottleneck bound ε.
 `RipsGromovHausdorff` selects a closed Hausdorff correspondence from isometric finite
-images and uses mathlib's optimal GH coupling. It proves the full actual-diagram bound
+images and uses mathlib's optimal GH coupling. It proves the full sublevel-diagram bound
 `dB ≤ 2 dGH`, ambient Hausdorff sampling bounds and convergence to a fixed finite
 target. The
 order-free `Rips.diagram` accepts finite metric spaces and a field in independent
-universes; `diagram_eq_dgm` identifies it with the existing actual diagram for every
+universes; `diagram_eq_dgm` identifies it with the existing diagram for every
 auxiliary order. Finite samples of a common possibly infinite target are compared
 only through their finite diagrams. General totally bounded/q-tame diagram existence
 remains separate. See [metric-input stability](math/rips-metric-stability.md).
@@ -349,8 +344,8 @@ equality when X is proper. See [the conventions, proofs and fixtures](math/cech-
 
 `TDA.Persistence.SublevelInterleaving` turns pointwise inclusions of simplicial filtrations
 into morphisms of homology persistence modules, `inclusionHom`, whose components are the
-actual homology inclusions. Real filtrations with F t ⊆ G (t + ε) and G t ⊆ F (t + ε)
-give an actual `RealInterleaving ε`, `inclusionInterleaving`, with both double-shift
+homology inclusions. Real filtrations with F t ⊆ G (t + ε) and G t ⊆ F (t + ε)
+give a `RealInterleaving ε`, `inclusionInterleaving`, with both double-shift
 equations proved. For filters within ε face by face, `sublevelInterleaving` interleaves the
 sublevel modules, and `realInterleavingDistance_sublevel_le_faceSupDifference` bounds their
 distance by the largest face difference. `TDA.Persistence.CechRipsInterleaving` reindexes
@@ -417,9 +412,9 @@ ambient space label by label. Moving the points of a face by at most ε changes 
 value by at most ε; the closed-ball radius estimate also needs ε ≥ 0 for the empty set.
 For a finite V, `displacement` is the largest label-wise distance with empty maximum
 zero, and the Rips pairwise discrepancy of distance-compatible label metrics is at most
-twice it. `TDA.Persistence.Cech.bottleneck_dgm_le_displacement` bounds the actual Čech
+twice it. `TDA.Persistence.Cech.bottleneck_dgm_le_displacement` bounds the Čech
 diagrams in every degree by the displacement, and
-`bottleneck_rips_dgm_le_two_mul_displacement` bounds the actual Rips diagrams by twice
+`bottleneck_rips_dgm_le_two_mul_displacement` bounds the Rips diagrams by twice
 it. Both keep the `LinearOrder V`, `Fintype V` and field assumptions of finite-face
 stability. These are same-label bounds, not Hausdorff bounds. See [the proofs, attained
 constants and source scope](math/cech-displacement-stability.md).
@@ -436,8 +431,8 @@ value, and the two filters are ordering-equivalent; no properness is assumed. Th
 scope](math/cech-supnorm-witness.md).
 
 `TDA.Persistence.CechSupNormDiagram` turns that value identity into diagram identities. The
-sup-norm Čech filter is the Rips filter scaled by 2⁻¹, so the actual Čech diagram is the
-actual Rips diagram with every finite coordinate halved, in every degree and over every
+sup-norm Čech filter is the Rips filter scaled by 2⁻¹, so the Čech diagram is the
+Rips diagram with every finite coordinate halved, in every degree and over every
 field, and the Čech bottleneck distance is half the Rips one. With Rips metric stability the
 Čech diagrams are within half the pairwise discrepancy. The hypotheses are the merged
 distance-compatibility conditions, with any finite ι and no properness; the line ℝ has the
@@ -502,9 +497,9 @@ and p=1 compatibility are included. `FinitePMatchingCostLaws` proves sharp roote
 composition, self cost, symmetry, triangle inequality and positive-lifetime separation
 by value-preserving occurrence equivalences. `FinitePBoundaryTransportLaws` transfers
 these laws to the real-plan optimum. `FinitePMatchingCostBottleneck` bounds finite-part
-real-p matching and actual boundary transport by N^(1/p) times a finite full bottleneck,
+real-p matching and boundary transport by N^(1/p) times a finite full bottleneck,
 where N counts both finite occurrence sets. Explicit radius and cardinality-budget forms
-are included. `FinitePFilterStability` applies these bounds to actual sublevel diagrams
+are included. `FinitePFilterStability` applies these bounds to sublevel diagrams
 using face-value perturbations, without a fixed pairing; essential bars remain outside
 the finite-part transport cost. All-Radon-coupling equality and quotient/metric
 instances remain outside this API. `FinitePBottleneckLimit` proves the reverse
@@ -522,14 +517,13 @@ The common multiset may vary across pairs without a count or birth-range budget.
 These remain the existing finite-part costs; no essential p-cost is introduced.
 Equal essential cardinalities alone do not suffice.
 `CechFinitePBottleneckUniformLimit` derives the corresponding bounds and uniform
-limits for actual `dgm k (Cech.filter a) n`, n≥1, on a fixed finite label type
+limits for `dgm k (Cech.filter a) n`, n≥1, on a fixed finite label type
 under a same-label displacement budget R≥0. The total finite count is bounded
 automatically by twice choose(card V,n+2), and both essential parts vanish. The ambient
 pseudometric space may be arbitrary; these are infimal-radius sublevel diagrams,
 with the existing proper-space specialization identifying closed Čech nerves.
 Empty and repeated labels remain allowed.
-`CechEssentialBirth` identifies the entire essential multiset of an actual
-nonempty Čech H₀ diagram as `{0}`, through the nonzero rank of a vertex
+`CechEssentialBirth` identifies the entire essential multiset of a nonempty Čech H₀ diagram as `{0}`, through the nonzero rank of a vertex
 inclusion. `CechFinitePBottleneckAllDegrees` then supplies both error bounds
 and both literal input-uniform limits for every natural degree, including H₀.
 It derives equality of the essential multisets, the finite-count bound and the
@@ -543,7 +537,7 @@ their antitonicity on [1,∞). N counts both occurrence families, including empt
 ones; separate minimizers are used at the two exponents. These finite library
 derivations use unnormalized unit masses and keep the maximum ground norm fixed.
 `FinitePCostContinuity` proves continuity on [1,∞) in the real exponent of the
-powered and rooted matching and actual real-plan optima, for fixed families.
+powered and rooted matching and real-plan optima, for fixed families.
 The finite-minimum proof includes empty and zero-distance inputs and permits
 optimizer changes. Exponent zero remains outside the public continuity domain.
 `FinitePCostJointContinuity` proves joint continuity of the same four optimized
@@ -559,20 +553,20 @@ including zero scaling on raw coordinate families. See
 ## Finite real-weight boundary transport
 
 `FiniteWeightedBoundaryTransport` allows arbitrary nonnegative real marginal
-masses and actual splitting between finite labels, retaining both boundary
+masses and splitting between finite labels, retaining both boundary
 residuals at the existing maximum ground norm. The full feasible matrix set is
 compact, and powered and rooted optima are attained at each real p≥1. Constant
 unit masses recover the existing transport API exactly. Symmetry, equivalent
 relabelling and weighted diagonal-moment formulas for empty inputs are included.
 `FiniteWeightedDiagram` is a finitely supported mass function on the strict
-upper half-plane; its actual transport consumers inherit these results. This
+upper half-plane; its transport consumers inherit these results. This
 finite weighted model supplies no all-Radon coupling identification or weighted
 exponent limit. See [finite real-weight boundary transport](math/finite-weighted-boundary-transport.md).
 
 ## Gaussian persistence images
 
 `TDA.Persistence.GaussianKernel` proves normalization and L¹ translation estimates for
-the actual product Gaussian at positive bandwidth σ. `TDA.Persistence.PersistenceImage`
+the product Gaussian at positive bandwidth σ. `TDA.Persistence.PersistenceImage`
 integrates its weighted surface over a fixed finite family of measurable pairwise
 disjoint pixels. The target `PiLp 1` carries the pixel vector ℓ¹ norm. A nonnegative
 weight bounded by B, maximum-norm Lipschitz with constant A, and zero at persistence zero
@@ -601,7 +595,7 @@ real σ. The birth–death kernel `kernel σ` uses the Euclidean squared distanc
 the persistence-image `Weight` in birth–persistence coordinates. `diagramEmbedding` is the
 same embedding of a diagram's finite occurrences, keeping multiplicity and omitting
 essential bars. The evaluation formula, `inner_embedding` (the linear kernel) and
-`norm_embedding_sub_sq` are statements about the actual RKHS inner product and norm.
+`norm_embedding_sub_sq` are statements about the RKHS inner product and norm.
 Linear and Gaussian diagram Gram matrices are positive semidefinite for any family of
 diagrams. The RKHS norm is not the pixel ℓ¹ norm above; no identification or computable
 kernel evaluation is supplied.
@@ -668,7 +662,7 @@ with finite full bottleneck β, its pixel ℓ¹ error is at most C (N_D+N_E) β,
 count finite occurrences and C is the existing PI coefficient. The finite bottleneck
 condition is explicit because `ENNReal.toReal ⊤ = 0`.
 
-`Rips.norm_finiteDiagramImage_sub_le_pairwiseDiscrepancy` specializes this to actual Rips
+`Rips.norm_finiteDiagramImage_sub_le_pairwiseDiscrepancy` specializes this to Rips
 diagrams in every degree: error ≤ C (N_D+N_E) δ for maximum pairwise metric discrepancy δ.
 It inherits the same finite ordered carrier and field assumptions as the Rips API, with
 no new cardinality/genericity hypothesis. These noncomputable APIs give a count-dependent
@@ -676,7 +670,7 @@ certificate, with essential bars still present in the bottleneck comparison. See
 [the definitions, bridge and exact scope](math/rips-persistence-images.md).
 
 `TDA.Persistence.RipsWeightedKernel` proves `Rips.bottleneck_dgm_lt_top` and
-`Rips.toReal_bottleneck_dgm_le_pairwiseDiscrepancy` for actual Rips diagrams. It bounds
+`Rips.toReal_bottleneck_dgm_le_pairwiseDiscrepancy` for Rips diagrams. It bounds
 the weighted-kernel embedding difference by `stabilityConstant σ A B (N_d+N_e) δ`, and
 the second-level Gaussian feature difference and kernel-value change against an arbitrary
 fixed diagram by the same quantity over `|τ|`. Arctan specializations carry the explicit
@@ -684,7 +678,7 @@ constant. No bandwidth sign hypothesis is assumed. See
 [the composition](math/arctan-weight-rips-kernel.md).
 
 `TDA.Persistence.CechWeightedKernel` and `TDA.Persistence.CechPersistenceImage` give the
-same consumers for actual Čech diagrams of labelled configurations `p q : V → X` in one
+same consumers for Čech diagrams of labelled configurations `p q : V → X` in one
 pseudometric space. `Cech.bottleneck_dgm_lt_top` and
 `Cech.toReal_bottleneck_dgm_le_displacement` bound the full bottleneck by the same-label
 displacement δ. The embedding, second-level Gaussian feature, kernel-value and finite-part
@@ -714,7 +708,7 @@ existing finite real-graph reconstruction equivalence.
 
 For a finite graph-PL input covered on its attained height range,
 `geometricInterleavingDistance_mapperReeb_le_retained` bounds the geometric interleaving
-distance from `graphPLMapperReconstruction` to the actual `GraphPL.graphPLReebGraph` by
+distance from `graphPLMapperReconstruction` to the `GraphPL.graphPLReebGraph` by
 `retainedCoverResolution`. Empty pullbacks may be removed through
 `coverComponentsRetainedIso`; retained intervals contribute their full widths.
 `clippedCoverResolution` separately defines the attained-range diameter maximum; it is not
@@ -750,11 +744,11 @@ a general topological-space comparison.
 
 For finite graph-PL input under the stated covering, adaptedness and gap/radius
 hypotheses, MultiNerve Mapper finite Reeb data agree with extracted star-and-gap
-components and their constructible interval-components cosheaf. The actual Reeb
+components and their constructible interval-components cosheaf. The Reeb
 quotient of the graph-PL realization is identified with its finite graph realization.
 Categorical Mapper reconstruction for finite bounded interval covers of the attained
 range has geometric error at most the full width of retained intervals; vanishing
-full or retained resolution yields convergence to that actual quotient. These
+full or retained resolution yields convergence to that quotient. These
 results do not identify categorical Mapper with the ordinary Mapper simple graph
 or supply an executable component algorithm. Neither Mapper construction claims
 a Nerve Lemma or homology selector-independence. The quotient and convergence
@@ -778,22 +772,22 @@ roadmap extension. This guide describes the current API and does not announce a 
 
 ### Gaussian signed measures and C₀ universality
 
-`TDA.Persistence.GaussianMeasureEmbedding` defines the actual Banach-valued signed integral
+`TDA.Persistence.GaussianMeasureEmbedding` defines the Banach-valued signed integral
 `signedEmbedding` into the existing `WeightedKernel.Space`. Continuity and unit feature norm
 prove integrability for every finite signed Borel measure on ℝ². For nonzero bandwidth,
 `signedEmbedding_injective` separates these measures, and `probabilityEmbedding_injective`
 gives the probability characteristic corollary. `inner_signedEmbedding`,
 `signedEmbedding_apply`, `norm_signedEmbedding_sq` and `norm_signedEmbedding_sub_sq` expose
-actual signed pairing, evaluation and kernel energy. `norm_signedEmbedding_le_totalVariation`
+signed pairing, evaluation and kernel energy. `norm_signedEmbedding_le_totalVariation`
 controls the mean by total variation. Linearity, Jordan comparison and atomic formulas include compatibility with the existing finite-support and weighted finite-diagram
 embeddings. `WeightedKernel.GaussianSpectral.eq_of_gaussian_integrals` supplies the
 finite positive-measure separation result on the Euclidean plane.
 
-At nonzero bandwidth, `TDA.Persistence.GaussianUniversality` proves every actual RKHS function
+At nonzero bandwidth, `TDA.Persistence.GaussianUniversality` proves every RKHS function
 lies in C₀(ℝ²), with the continuous linear inclusion `rkhsToC0CLM` of norm at most one.
 Gaussian sections span a uniformly dense subspace (`gaussian_sections_dense`), and
 `denseRange_rkhsToC0` states
-C₀ universality of the actual RKHS. `exists_gaussian_span_approx` exposes uniform approximation
+C₀ universality of the RKHS. `exists_gaussian_span_approx` exposes uniform approximation
 without unfolding density. The bounded-functional representation used by the proof is
 `TDA.Topology.C0MeasureRepresentation.exists_finite_regular_measure_sub`.
 
@@ -801,7 +795,7 @@ without unfolding density. The bounded-functional representation used by the pro
 `UpperPoint`. At nonzero bandwidth, a measurable strictly positive weight with finite
 weighted mass gives `weightedPersistenceEmbedding_eq_iff`, recovering positive measures that
 may have infinite original mass. `weightedPersistenceEmbedding_eq_iff_continuous` exposes the continuous
-positive-weight Radon consumer. Finite weighted measures are regular; actual weighted-feature
+positive-weight Radon consumer. Finite weighted measures are regular; weighted-feature
 integrability and the integral comparison are public. `weightedPersistenceEmbedding_finite_occurrences`
 connects finite occurrence measures to the existing birth–persistence weighted embedding, and
 `countableDiagramEmbedding_eq_iff` recovers locally finite occurrence measures under explicit

@@ -3,11 +3,11 @@
 Fix two metrics d,e on the same finite labelled vertex set V, a coefficient field k
 and a homological degree n. Use the [diameter-time Rips filtration](rips-metric-stability.md):
 vertices enter at zero, thresholds are closed, and stages below zero are empty. Let
-D_d,D_e be the diagrams of actual sublevel homology, and write
+D_d,D_e be the diagrams of sublevel homology, and write
 
 δ = max { |d(v,w) − e(v,w)| : v,w ∈ V },
 
-with empty maximum zero. The existing actual-diagram theorem bounds their full
+with empty maximum zero. The existing sublevel-diagram theorem bounds their full
 bottleneck distance by δ, including their essential bars.
 
 ## Finite image and bound
@@ -58,7 +58,7 @@ the bound would therefore be false. The Rips bound is below `ENNReal.ofReal δ`,
 finite, so its consumer needs no extra essential-cardinality hypothesis.
 
 Apply the existing bound ‖PI(x)−PI(y)‖₁ ≤ C m₁(x,y), then the finite-sum comparison
-and the Rips bottleneck bound. Positivity of actual diagrams supplies every finite
+and the Rips bottleneck bound. Positivity of diagrams supplies every finite
 positive-length hypothesis. Pairing changes require no fixed template.
 
 Multiplicity explains the count factor: m+1 copies of (0,2) against the empty input

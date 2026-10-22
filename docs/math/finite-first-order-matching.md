@@ -102,7 +102,7 @@ Use the same bandwidth σ > 0, weight and pixel family on both inputs, as in the
 [Gaussian PI construction](persistence-images.md). On birth–persistence coordinates,
 the weight is nonnegative, bounded by B, globally A-Lipschitz in the maximum norm,
 and zero at persistence zero, with A,B ≥ 0. Pixels form a fixed finite measurable
-pairwise disjoint family. Write C = 2A + 3B sqrt(2/π)/σ. Then the actual pixel vectors
+pairwise disjoint family. Write C = 2A + 3B sqrt(2/π)/σ. Then the pixel vectors
 in `PiLp 1` satisfy
 
 ‖PI(x) − PI(y)‖₁ ≤ C m₁(x,y).

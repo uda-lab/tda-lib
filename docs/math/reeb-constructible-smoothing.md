@@ -119,7 +119,7 @@ the inclusion, the underlying object and the underlying map are those of `smooth
 (`constructibleSmoothing_comp_ι`, `constructibleSmoothing_obj_obj`,
 `constructibleSmoothing_map_hom`, `constructibleSmoothing_map_hom_app`).
 
-Two structure maps are lifted, with their underlying maps the actual ones, by `rfl`:
+Two structure maps are lifted, with their underlying maps the ones, by `rfl`:
 
 - the unit `constructibleSmoothingUnit ε : 𝟭 ⟶ constructibleSmoothing ε`, whose component at `G`
   has underlying map `(smoothingUnit ε).app G.obj` (`constructibleSmoothingUnit_app_hom`);
@@ -128,7 +128,7 @@ Two structure maps are lifted, with their underlying maps the actual ones, by `r
   `smoothingZeroIso.inv.app G.obj` (`constructibleSmoothingZeroIso_hom_app_hom`,
   `constructibleSmoothingZeroIso_inv_app_hom`).
 
-Their naturality is that of the actual transformations, and the lifted zero unit is the inverse of
+Their naturality is that of the transformations, and the lifted zero unit is the inverse of
 the lifted zero comparison (`constructibleSmoothingUnit_zero`, from `smoothingUnit_zero`). The
 remaining smoothing structure also lifts to `ConstructibleCosheafCat`:
 
@@ -157,7 +157,7 @@ instantiates them at value universe `1`. The cosheaf condition is at cover unive
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleSmoothingExamples` works with the actual smoothing of actual cosheaves:
+`TDA.Reeb.ConstructibleSmoothingExamples` works with the smoothing of cosheaves:
 
 - **`ε = 0`.** The two shifts of every level coincide; the witness of `{0, 2}` has two levels, not
   four, with range `{0, 2}`; the smoothed pinch at `ε = 0` is constructible at its own levels
@@ -168,7 +168,7 @@ instantiates them at value universe `1`. The cosheaf condition is at cover unive
   two levels; the smoothed point cosheaf is constructible at `{-1, 1}`.
 - **Between shifted levels.** `(1/4, 3/4) ≤ (-1, 1)` meet no shifted level of `{0}` at `ε = 1`.
   The old level `0` lies outside `(1/4, 3/4)` and inside its thickening `(-3/4, 7/4)`. The key
-  lemma applies, and the actual smoothed inclusion of the point cosheaf is bijective.
+  lemma applies, and the smoothed inclusion of the point cosheaf is bijective.
 - **Empty source.** `⊥ ≤ (-1, 1)` also meet no shifted level, but the smoothed point cosheaf is
   empty at `⊥` and nonempty at `(-1, 1)`, so its inclusion map is not bijective
   (`emptySource_hits`, `emptySource_not_bijective`).

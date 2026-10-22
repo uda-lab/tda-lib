@@ -7,7 +7,7 @@ import TDA.Persistence.FinitePBoundaryTransport
 The finite restriction of a full matching has at most one charge per source and
 one per target. Bounding each by the full maximum gives a powered sum bound;
 taking the root gives the occurrence-count factor to the reciprocal power.
-An actual bottleneck minimizer then bounds the optimized finite matching and
+A bottleneck minimizer then bounds the optimized finite matching and
 real boundary-plan costs. Essential occurrences supply only the full bottleneck
 witness and are not part of the finite transport quantity.
 -/
@@ -86,7 +86,7 @@ theorem finitePMatchingCost_le_card_rpow_mul_bottleneck
     Real.mul_rpow (Nat.cast_nonneg _) (Real.rpow_nonneg ENNReal.toReal_nonneg p),
     Real.rpow_rpow_inv ENNReal.toReal_nonneg hp0] using h
 
-/-- The bound applies to the actual optimum over all feasible real reservoir plans. -/
+/-- The bound applies to the optimum over all feasible real reservoir plans. -/
 theorem finitePBoundaryTransportCost_le_card_rpow_mul_bottleneck
     {p : ℝ} (hp : 1 ≤ p) (D E : Diagram ℝ) (hfinite : bottleneck D E < ⊤) :
     finitePBoundaryTransportCost p (fun q : D.finiteOccurrences => q.1)

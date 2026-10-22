@@ -18,7 +18,7 @@ The `(k, w)`-Gaussian diagram kernel of KFH18 eq. (13) is the Gaussian kernel of
 `Space σ`; its feature map is the Gaussian RKHS of `Space σ`. Its kernel functions and
 kernel values are Lipschitz in the embedding with constant `1/|τ|`, and composition gives
 matching-cost and count-times-bottleneck bounds. No bandwidth sign hypothesis is assumed.
-Norms are the actual `RKHS.OfKernel` norms; the pixel norm of `PersistenceImage` is not
+Norms are the `RKHS.OfKernel` norms; the pixel norm of `PersistenceImage` is not
 involved.
 -/
 

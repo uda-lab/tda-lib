@@ -4,7 +4,7 @@ import TDA.Persistence.FinitePBoundaryTransportExamples
 import TDA.Persistence.FinitePBoundaryTransportLaws
 
 /-!
-# Actual diagrams with common essential births
+# Diagrams with common essential births
 
 Repeated essential values contribute no finite-part charge and match at zero
 full cost. The positive finite examples retain their count, sharp rate and
@@ -394,8 +394,8 @@ private theorem singleton_power (p : ℝ) :
   rw [hu, hv] at h
   exact h.symm
 
-/-- A pairing attains p=1 and loses at p=2; the actual zero plan attains p=2. -/
-private theorem actual_optimizer_change :
+/-- A pairing attains p=1 and loses at p=2; the zero plan attains p=2. -/
+private theorem optimizer_change :
     (∃ M : OccurrenceMatching switchLeft.finiteOccurrences switchRight.finiteOccurrences
         PEmpty.{1} PEmpty.{1},
       M.totalFinitePowerCost 1 (fun q => q.1) (fun q => q.1) =
@@ -442,7 +442,7 @@ private theorem actual_optimizer_change :
       FiniteBoundaryPlan.insertionMass, diagonalCost, Real.rpow_two,
       Finset.sum_const, Finset.card_univ, hcL, hcR]
 
-/-- The four new capstones apply to actual bounded positive common-essential pairs. -/
+/-- The four new capstones apply to bounded positive common-essential pairs. -/
 private theorem switch_bounds {p : ℝ} (hp : 1 ≤ p) :
     |matching p switchLeft switchRight - (1 : ℝ)| ≤ (2 : ℝ) ^ p⁻¹ - 1 ∧
     |transport p switchLeft switchRight - (1 : ℝ)| ≤ (2 : ℝ) ^ p⁻¹ - 1 ∧
@@ -544,7 +544,7 @@ private theorem essential_free_restriction (m : ℕ) {R : ℝ} (hR : 0 ≤ R) :
   ⟨(uniform_limits m hR).1.mono (essential_free_inclusion m R),
     (uniform_limits m hR).2.mono (essential_free_inclusion m R)⟩
 
-private theorem essential_free_actual_examples {p : ℝ} (hp : 1 ≤ p) :
+private theorem essential_free_examples {p : ℝ} (hp : 1 ≤ p) :
     (empty, empty) ∈ oldBudgetSet 0 0 ∧
     (FinitePBottleneckLimitExamples.unitBars 1, empty) ∈ oldBudgetSet 1 1 ∧
     (FinitePBottleneckLimitExamples.unitBars 1).IsPositive ∧

@@ -1,6 +1,6 @@
 import TDA.Persistence.PersistenceImageMatching
 
-/-! Empty, repeated and one-point matching minima, and an actual PI application. -/
+/-! Empty, repeated and one-point matching minima, and a PI application. -/
 
 namespace TDA.Persistence.FiniteMatchingCostExamples
 

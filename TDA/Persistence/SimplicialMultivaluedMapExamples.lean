@@ -2,7 +2,7 @@ import TDA.Persistence.SimplicialMultivaluedMap
 import TDA.Simplicial.H0Augmentation
 import Mathlib.LinearAlgebra.Matrix.Notation
 
-/-! Actual shifted maps, selector independence and controls on support and coefficients. -/
+/-! Shifted maps, selector independence and controls on support and coefficients. -/
 
 namespace TDA.Persistence.SimplicialMultivaluedMapExamples
 
@@ -179,7 +179,7 @@ private theorem negative_identity :
     simpa [birth, hh] using (show σ ∈ pointK by simpa [birth, ht] using hσ)
   · simp [birth, ht] at hσ
 
-private theorem negative_actual_image :
+private theorem negative_image :
     ((multivaluedSimplicialHomologyMap ℚ (C := Function.graph (id : Fin 1 → Fin 1))
       (fun x => ⟨x, rfl⟩) ((isShiftedSimplicialRelation_graph_iff _).mpr negative_identity) 0).app 1).hom
         (vClass ℚ (birth 1 pointK 1) 0 (by norm_num [birth]) 1) ≠ 0 := by
@@ -426,7 +426,7 @@ private theorem edge_classes_equal :
   apply (mem_simplicialBoundaries_iff ℚ edgeK 0 _).mpr
   exact ⟨orientedTuple edgeK ℚ ![0,1], edge_boundary_explicit⟩
 
-private theorem actual_inclusion_kills_early_difference :
+private theorem inclusion_kills_early_difference :
     (simplicialHomologyIncl ℚ (changing.monotone (show (0 : ℝ) ≤ 1 by norm_num)) 0).hom
       (vClass ℚ (changing 0) 1 (by rw [changing_zero]; exact isolated_vertex 1) 1 -
         vClass ℚ (changing 0) 0 (by rw [changing_zero]; exact isolated_vertex 0) 1) = 0 := by
@@ -449,7 +449,7 @@ private theorem graph_identity_fixture :
   rw [multivaluedSimplicialHomologyMap_graph]
   exact shiftedSimplicialHomologyMap_id ℚ changing 0
 
-/-! Ambient totality includes ghosts; only actual faces impose target facehood. -/
+/-! Ambient totality includes ghosts; only faces impose target facehood. -/
 
 private def ghostEdge : PreAbstractSimplicialComplex (Fin 3) where
   faces := {s | s.Nonempty ∧ s ⊆ {0,1}}
@@ -562,7 +562,7 @@ private theorem nonempty_to_empty_not_total (C : SetRel (Fin 1) (Fin 0)) :
   obtain ⟨y,_⟩ := h 0
   exact Fin.elim0 y
 
-/-! Actual canonical components retain a noncentral coefficient over a noncommutative ring. -/
+/-! Canonical components retain a noncentral coefficient over a noncommutative ring. -/
 
 private theorem singletonIdentity :
     IsShiftedSimplicial (constF (singletonFace (0 : Fin 1)))

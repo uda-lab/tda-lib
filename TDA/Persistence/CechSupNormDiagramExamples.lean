@@ -7,9 +7,9 @@ set_option autoImplicit false
 /-!
 # Sup-norm Čech diagram fixtures
 
-The fixtures test the actual `Cech.filter`, `Rips.filter`, `dgm`, `Diagram.scale` and
+The fixtures test the `Cech.filter`, `Rips.filter`, `dgm`, `Diagram.scale` and
 `bottleneck` definitions. Two points on the line and the merged triangle in the sup-norm
-plane have actual Čech diagrams equal to their halved actual Rips diagrams in every degree,
+plane have Čech diagrams equal to their halved Rips diagrams in every degree,
 and the scaled Rips values at the top faces agree with the merged Čech values. For one point
 moved by one on the line, the halving law with Rips stability gives the bound `1/2`, sharper
 than the merged displacement bound `1`.
@@ -26,7 +26,7 @@ namespace TwoPoints
 
 open TDA.Filtration.Cech.Examples.TwoPoints
 
-/-- The actual Čech diagram of the points `0, 2` is the halved Rips diagram, for every
+/-- The Čech diagram of the points `0, 2` is the halved Rips diagram, for every
 field and degree. -/
 theorem dgm_eq (k : Type) [Field k] (n : ℕ) :
     dgm k (Cech.filter pts) n =
@@ -51,7 +51,7 @@ namespace Triangle
 
 open TDA.Filtration.Cech.SupNormExamples.Triangle
 
-/-- The actual Čech diagram of the sup-norm triangle is the halved Rips diagram in every
+/-- The Čech diagram of the sup-norm triangle is the halved Rips diagram in every
 degree. -/
 theorem dgm_eq (k : Type) [Field k] (n : ℕ) :
     dgm k (Cech.filter pts) n =
@@ -95,7 +95,7 @@ namespace MovedPoint
 open TDA.Persistence.Cech.Examples.MovedPoint
 
 /-- The halving identity for the moved configuration, in every degree, from the line filter
-identity and the scaling law for actual diagrams. The labels lie on the line `ℝ`, not in a
+identity and the scaling law for diagrams. The labels lie on the line `ℝ`, not in a
 sup-norm product `ι → ℝ`, so the product-form halving theorem does not apply directly. -/
 theorem bottleneck_eq_half (n : ℕ) :
     bottleneck (dgm ℚ (Cech.filter p) n) (dgm ℚ (Cech.filter q) n) =

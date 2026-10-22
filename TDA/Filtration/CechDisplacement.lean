@@ -42,7 +42,7 @@ theorem abs_radiusAt_sub_le_of_dist_le (p q : V → X) (x : X) (s : Finset V) {�
     fun v hv => (dist_comm _ _).trans_le (h v hv)
   exact abs_sub_le_iff.2 ⟨by linarith, by linarith⟩
 
-/-- On an actual face, a bound on the displacement of its points bounds the Čech value
+/-- On a face, a bound on the displacement of its points bounds the Čech value
 change; no sign condition is needed because the face is nonempty. -/
 theorem filter_value_le_add_of_dist_le (p q : V → X) {ε : ℝ}
     (s : TotalFace (Rips.fullComplex V)) (h : ∀ v ∈ s.val, dist (p v) (q v) ≤ ε) :

@@ -18,7 +18,7 @@ category and `Fin N` therefore induces an equivalence between representations
 `FiniteLine.moduleOfAdjacent V step` requires a module `V i` at each vertex
 and one linear map for each adjacent pair. It supplies identities and all
 chronological composites. `homMk` and `isoOfAdjacent` extend commuting adjacent
-squares to actual natural transformations and natural isomorphisms. These
+squares to natural transformations and natural isomorphisms. These
 constructions work over a ring, including the empty line. They impose no
 injectivity or chain-complex square-zero condition.
 
@@ -38,7 +38,7 @@ is a natural isomorphism from `M` to that sequence's module. Its components are
 the basis coordinate equivalences, and `coordinateIso_naturality` identifies
 every structure map in coordinates. Standard coordinate bases recover the
 input sequence exactly. `coordinateHom` transports genuine natural
-transformations, while `basisChangeIso` supplies the actual coordinate-change
+transformations, while `basisChangeIso` supplies the coordinate-change
 maps between two choices of bases.
 
 Over a field `k : Type u`, the coordinate fibers are finite-dimensional and
@@ -83,7 +83,7 @@ coordinate change.
 pads the zero-composite input by a zero stage and places it at `-1, 1/10, 4`.
 Its diagram has `[-1,4)` and `[1/10,∞)`, with the latter lifetime supplied by the
 constant final cell. Inserting `2` into the grid preserves these original real
-endpoints. The reconstruction is an actual natural isomorphism.
+endpoints. The reconstruction is a natural isomorphism.
 
 ## Mathematical and computational scope
 

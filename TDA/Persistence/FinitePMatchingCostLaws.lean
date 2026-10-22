@@ -350,7 +350,7 @@ theorem finitePMatchingCost_comm (p : ℝ) (x : I → ℝ × ℝ) (y : J → ℝ
     finitePMatchingCost p x y = finitePMatchingCost p y x := by
   simp only [finitePMatchingCost, finitePowerMatchingCost_comm p x y]
 
-/-- Compose two actual minimizing matchings, then apply the rooted candidate inequality. -/
+/-- Compose two minimizing matchings, then apply the rooted candidate inequality. -/
 theorem finitePMatchingCost_triangle {p : ℝ} (hp : 1 ≤ p)
     (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) (z : K → ℝ × ℝ) :
     finitePMatchingCost p x z ≤ finitePMatchingCost p x y + finitePMatchingCost p y z := by

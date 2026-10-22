@@ -1,9 +1,9 @@
-# Finite induced matchings through the actual image
+# Finite induced matchings through the image
 
 ## Modules and labeled barcodes
 
 Fix a field `k : Type u`, a finite chain `Fin s`, and pointwise finite-dimensional
-modules `M N : PModule.{u,0,u} k (Fin s)`. The input is an arbitrary actual natural
+modules `M N : PModule.{u,0,u} k (Fin s)`. The input is an arbitrary natural
 transformation `f : M ⟶ N`. The field and module carriers share their universe.
 
 The canonical barcode `rankBarcode M` is a multiset of half-open intervals
@@ -12,7 +12,7 @@ The canonical barcode `rankBarcode M` is a multiset of half-open intervals
 is the interval at that index. Equal interval values retain distinct labels.
 Death `s` records survival through the final observed stage.
 
-## The actual image factorization
+## The image factorization
 
 `finiteImage f` has fiber `range (f.app i).hom` at stage `i`. Naturality sends
 each such range into the next one, so restricting the structure maps of `N`
@@ -27,7 +27,7 @@ is `f`, as proved by `toFiniteImage_comp_fromFiniteImage`.
 Write `A = O(rankBarcode (finiteImage f))`, `B = O(rankBarcode M)` and
 `C = O(rankBarcode N)` for the three occurrence types. The existing
 [epi embedding](finite-epi-matching.md) and
-[mono embedding](finite-mono-matching.md) give actual embeddings
+[mono embedding](finite-mono-matching.md) give embeddings
 
 ```text
 E : A ↪ B,    J : A ↪ C.
@@ -55,7 +55,7 @@ inducedMap f i = some j  ↔  ∃! a : A, E(a) = i and J(a) = j.
 
 Consequently its domain is exactly `range E` and its range is exactly `range J`.
 `inducedMap_injective` proves that equal selected values have equal source labels.
-`imageOccurrenceEquivPairs` is an actual equivalence from `A` to the subtype of
+`imageOccurrenceEquivPairs` is an equivalence from `A` to the subtype of
 matched pairs `(i,j)`. This retains intermediate multiplicities even when several
 bars have equal endpoint values. The construction also works with empty occurrence
 sets and on the empty chain: no stage or unmatched output value is chosen.
@@ -80,14 +80,14 @@ For componentwise surjective `f`, the inclusion from its image is an isomorphism
 Isomorphism invariance identifies the corresponding canonical barcodes. Transport
 along that equality preserves the original list indices and both group ordinals;
 the mono and epi embeddings across the isomorphic factor are inverse transports.
-This proves the specializations of the actual constructed map:
+This proves the specializations of the constructed map:
 
 - `inducedMap_of_injective` is `some (monoEmbedding f hf i)` on every source label.
 - `inducedMap_of_surjective_iff` is the reverse graph of `epiEmbedding f hf`.
 - `inducedMap_id` matches every occurrence to itself.
 
 Consumers include a rank-one endomorphism between modules with two repeated bars,
-whose actual image supplies exactly one matched pair; a zero map selecting none;
+whose image supplies exactly one matched pair; a zero map selecting none;
 an overlap map `[1,3) → [0,2)`; duplicate identity labels; terminal bars; and an empty chain.
 
 ## Source correspondence and limits
@@ -108,7 +108,7 @@ so it is not the interface for this construction on all finite-chain occurrences
 [Finite mono/cokernel translation estimates](finite-mono-translation.md) bound the
 source birth and cover long targets for component injections.
 [Quantitative induced matching](finite-quantitative-induced-matching.md) transfers
-actual kernel and cokernel shortness through the image factors, bounds both
+kernel and cokernel shortness through the image factors, bounds both
 endpoints and uniquely covers the corresponding long source and target occurrences.
 Constructible closure, real-grid/shift compatibility, distance-matching conversion
 and `d_B ≤ d_I` remain separate results.

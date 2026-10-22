@@ -7,12 +7,12 @@ set_option autoImplicit false
 
 A `FiniteComplex n` records exactly a finite collection of nonempty, downward-closed faces
 on `Fin n`. Its conversion to mathlib's preabstract complex preserves that collection, and
-its actual-face subtype has a computable enumeration directly from the stored `Finset`.
+its face subtype has a computable enumeration directly from the stored `Finset`.
 -/
 
 namespace TDA.Simplicial
 
-/-- A finite list of actual nonempty faces on the ambient vertex type `Fin n`. -/
+/-- A finite list of nonempty faces on the ambient vertex type `Fin n`. -/
 structure FiniteComplex (n : ℕ) where
   faces : Finset (Finset (Fin n))
   nonempty : ∀ s ∈ faces, s.Nonempty
@@ -35,7 +35,7 @@ instance instDecidableMemToPre (C : FiniteComplex n) :
     DecidablePred (fun s : Finset (Fin n) => s ∈ C.toPre) :=
   fun s => inferInstanceAs (Decidable (s ∈ C.faces))
 
-/-- Enumerate actual faces by attaching membership proofs to the stored faces. -/
+/-- Enumerate faces by attaching membership proofs to the stored faces. -/
 instance instFintypeTotalFace (C : FiniteComplex n) :
     Fintype (TDA.Simplicial.TotalFace C.toPre) :=
   Fintype.subtype C.faces (fun _ => Iff.rfl)
@@ -50,7 +50,7 @@ theorem empty_not_mem_faces (C : FiniteComplex n) :
   intro h
   exact (C.nonempty ∅ h).ne_empty rfl
 
-/-- Erasing membership proofs from the actual-face enumeration recovers exactly `faces`. -/
+/-- Erasing membership proofs from the face enumeration recovers exactly `faces`. -/
 theorem image_univ_totalFace_val (C : FiniteComplex n) :
     (Finset.univ : Finset (TDA.Simplicial.TotalFace C.toPre)).image
       (fun s => s.val) = C.faces := by
@@ -62,7 +62,7 @@ theorem image_univ_totalFace_val (C : FiniteComplex n) :
   · intro hs
     exact Finset.mem_image.mpr ⟨⟨s, hs⟩, Finset.mem_univ _, rfl⟩
 
-/-- The executable actual-face enumeration has one element per stored face. -/
+/-- The executable face enumeration has one element per stored face. -/
 theorem card_totalFace (C : FiniteComplex n) :
     Fintype.card (TDA.Simplicial.TotalFace C.toPre) = C.faces.card := by
   exact Fintype.subtype_card C.faces (fun _ => Iff.rfl)

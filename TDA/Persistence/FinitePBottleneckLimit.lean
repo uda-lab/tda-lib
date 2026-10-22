@@ -3,7 +3,7 @@ import TDA.Persistence.FinitePMatchingCostBottleneck
 /-!
 # Finite real-p transport converges to bottleneck distance
 
-For diagrams without essential bars, the maximum charge of an actual matching is
+For diagrams without essential bars, the maximum charge of a matching is
 bounded by its rooted powered sum. Choosing a minimizing finite matching supplies
 the missing lower bound by the full bottleneck distance. The existing upper bound
 has factor `N^(1/p)`, where `N` counts both finite occurrence families. For positive
@@ -103,7 +103,7 @@ theorem bottleneck_lt_top_of_essentialParts_eq_zero (D E : Diagram ℝ)
     bottleneck D E < ⊤ :=
   (bottleneck_lt_top_iff D E).mpr (by simp only [hD, hE])
 
-/-- An optimizing finite partial matching extends to an actual full matching when
+/-- An optimizing finite partial matching extends to a full matching when
 both essential parts are empty. Its maximum is at most its rooted powered sum. -/
 theorem bottleneck_le_ofReal_finitePMatchingCost {p : ℝ} (hp : 1 ≤ p)
     (D E : Diagram ℝ) (hD : essentialPart D.points = 0) (hE : essentialPart E.points = 0) :
@@ -142,7 +142,7 @@ theorem bottleneck_toReal_le_finitePMatchingCost {p : ℝ} (hp : 1 ≤ p)
     (bottleneck_le_ofReal_finitePMatchingCost hp D E hD hE)
   simpa only [ENNReal.toReal_ofReal (finitePMatchingCost_nonneg p _ _)] using h
 
-/-- The lower comparison concerns the actual optimized real reservoir-plan cost. -/
+/-- The lower comparison concerns the optimized real reservoir-plan cost. -/
 theorem bottleneck_le_ofReal_finitePBoundaryTransportCost {p : ℝ} (hp : 1 ≤ p)
     (D E : Diagram ℝ) (hD : essentialPart D.points = 0) (hE : essentialPart E.points = 0) :
     bottleneck D E ≤ ENNReal.ofReal
@@ -186,7 +186,7 @@ theorem finitePMatchingCost_tendsto_bottleneck (D E : Diagram ℝ)
     · exact (eventually_ge_atTop (1 : ℝ)).mono fun p hp =>
         finitePMatchingCost_le_card_rpow_mul_bottleneck hp D E hfinite
 
-/-- The actual real boundary-reservoir optimum has the same bottleneck limit. -/
+/-- The real boundary-reservoir optimum has the same bottleneck limit. -/
 theorem finitePBoundaryTransportCost_tendsto_bottleneck (D E : Diagram ℝ)
     (hD : essentialPart D.points = 0) (hE : essentialPart E.points = 0) :
     Tendsto (fun p : ℝ => finitePBoundaryTransportCost p (fun q : D.finiteOccurrences => q.1)
@@ -194,7 +194,7 @@ theorem finitePBoundaryTransportCost_tendsto_bottleneck (D E : Diagram ℝ)
   simpa only [finitePBoundaryTransportCost_eq_matchingCost] using
     finitePMatchingCost_tendsto_bottleneck D E hD hE
 
-/-- Extended-valued limit identifies the actual bottleneck, with its finiteness
+/-- Extended-valued limit identifies the bottleneck, with its finiteness
 derived from empty essential parts before converting back from its real value. -/
 theorem ofReal_finitePMatchingCost_tendsto_bottleneck (D E : Diagram ℝ)
     (hD : essentialPart D.points = 0) (hE : essentialPart E.points = 0) :

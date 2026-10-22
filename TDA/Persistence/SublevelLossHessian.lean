@@ -1,12 +1,12 @@
-import TDA.Persistence.ActualLossDerivative
+import TDA.Persistence.SublevelLossDerivative
 import TDA.Persistence.DiagramSecondOrderCalculus
 import Mathlib.Analysis.Normed.Operator.NormedSpace
 
 /-!
-# Hessians of actual persistence losses
+# Hessians of scalar losses on sublevel persistence diagrams
 
 The full fixed template, including diagonal finite pairs, is selected linearly
-from all actual face values. Its scalar Hessian scatters to a face-gradient
+from all face values. Its scalar Hessian scatters to a face-gradient
 double sum and a face-curvature single sum. These are the two terms of the ordinary
 second-order chain rule: the Hessian of the loss acts on first derivatives of face
 values, and the gradient of the loss acts on their second derivatives. Persistent ties
@@ -40,8 +40,8 @@ theorem fixedFaceLift_contDiffOn_two {U : Set E}
     intro i
     exact hF (e.enum ((faceTemplateEssential k e p).toList.get i))
 
-/-- The C² actual lift retains the same carrier and whole-carrier factorization. -/
-noncomputable def actualFaceLossC2Lift {U : Set E} (hU : IsOpen U)
+/-- The C² lift retains the same carrier and whole-carrier factorization. -/
+noncomputable def fixedFaceC2Lift {U : Set E} (hU : IsOpen U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x)) :
     LocalC2DiagramLift (fun x => dgm k (F x) p)
@@ -95,7 +95,7 @@ theorem faceLossHessianCoefficient_unused_right (W : Diagram ℝ → ℝ)
 
 /-- The explicit curried continuous bilinear form: gradient interactions plus
 curvature of the face-value parametrization. -/
-noncomputable def actualFaceLossHessian (W : Diagram ℝ → ℝ) : E →L[ℝ] E →L[ℝ] ℝ :=
+noncomputable def faceCoordinateLossHessian (W : Diagram ℝ → ℝ) : E →L[ℝ] E →L[ℝ] ℝ :=
   (∑ s : TotalFace K, ∑ t : TotalFace K,
     faceLossHessianCoefficient k F e p W s t •
       (fderiv ℝ (fun x => (F x).value s) x₀).smulRight
@@ -104,8 +104,8 @@ noncomputable def actualFaceLossHessian (W : Diagram ℝ → ℝ) : E →L[ℝ] 
     fderiv ℝ (fderiv ℝ (fun x => (F x).value s)) x₀
 
 /-- Evaluation gives the face-gradient double sum and face-curvature single sum. -/
-theorem actualFaceLossHessian_apply (W : Diagram ℝ → ℝ) (h q : E) :
-    actualFaceLossHessian k F e p W h q =
+theorem faceCoordinateLossHessian_apply (W : Diagram ℝ → ℝ) (h q : E) :
+    faceCoordinateLossHessian k F e p W h q =
       (∑ s : TotalFace K, ∑ t : TotalFace K,
         faceLossHessianCoefficient k F e p W s t *
           fderiv ℝ (fun x => (F x).value s) x₀ h *
@@ -113,7 +113,7 @@ theorem actualFaceLossHessian_apply (W : Diagram ℝ → ℝ) (h q : E) :
       ∑ s : TotalFace K, faceLossCoefficient k F e p W s *
         fderiv ℝ (fderiv ℝ (fun x => (F x).value s)) x₀ h q := by
   classical
-  simp [actualFaceLossHessian, ContinuousLinearMap.smulRight_apply, mul_assoc]
+  simp [faceCoordinateLossHessian, ContinuousLinearMap.smulRight_apply, mul_assoc]
 
 private theorem bilinearFunctional_face_sum {I : Type*} [Fintype I] [DecidableEq I]
     (T : (I → ℝ) →L[ℝ] (I → ℝ) →L[ℝ] ℝ) (a b : I → ℝ) :
@@ -179,7 +179,7 @@ theorem fixedFaceLift_slot_second_derivative {U : Set E} (hU : IsOpen U)
   rw [hs, allFaceValues_second_fderiv_apply F hU hx hF]
 
 /-- The scalar loss is C² on an open neighborhood contained in the original chamber. -/
-theorem actualPHScalarLoss_c2_neighborhood (e : CompatibleOrder (F x₀)) (p : ℕ) {U : Set E} (hU : IsOpen U)
+theorem sublevelDiagramScalarLoss_c2_neighborhood (e : CompatibleOrder (F x₀)) (p : ℕ) {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -189,10 +189,10 @@ theorem actualPHScalarLoss_c2_neighborhood (e : CompatibleOrder (F x₀)) (p : �
       ContDiffOn ℝ 2 (fun x => W (dgm k (F x) p)) N := by
   exact localLift_scalar_c2 (fun x => dgm k (F x) p) W
     (faceLiftCounts k F e p).1 (faceLiftCounts k F e p).2
-    (actualFaceLossC2Lift k F e p hU hF horder) x₀ hx hW
+    (fixedFaceC2Lift k F e p hU hF horder) x₀ hx hW
 
 /-- C² losses retain exactly the merged first-order face coefficient convention. -/
-theorem actualPHScalarLoss_c2_fderiv {U : Set E} (hU : IsOpen U)
+theorem sublevelDiagramScalarLoss_c2_fderiv {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -201,17 +201,17 @@ theorem actualPHScalarLoss_c2_fderiv {U : Set E} (hU : IsOpen U)
     fderiv ℝ (fun x => W (dgm k (F x) p)) x₀ =
       ∑ s : TotalFace K, faceLossCoefficient k F e p W s •
         fderiv ℝ (fun x => (F x).value s) x₀ :=
-  actualPHScalarLoss_fderiv k F e p hU hx
+  sublevelDiagramScalarLoss_fderiv k F e p hU hx
     (fun s => (hF s).of_le (by norm_num)) horder W hW.c1
 
 /-- Scattering the full chain expression gives the explicit face bilinear form. -/
-theorem secondDerivativeChain_eq_actualFaceLossHessian {U : Set E}
+theorem secondDerivativeChain_eq_faceCoordinateLossHessian {U : Set E}
     (hU : IsOpen U) (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (W : Diagram ℝ → ℝ) :
     secondDerivativeChain
       (W ∘ orderedQ (faceLiftCounts k F e p).1 (faceLiftCounts k F e p).2)
-      (fixedFaceLift k F e p) x₀ = actualFaceLossHessian k F e p W := by
+      (fixedFaceLift k F e p) x₀ = faceCoordinateLossHessian k F e p W := by
   classical
   let D := fderiv ℝ (W ∘ orderedQ (faceLiftCounts k F e p).1
     (faceLiftCounts k F e p).2) (fixedFaceLift k F e p x₀)
@@ -223,7 +223,7 @@ theorem secondDerivativeChain_eq_actualFaceLossHessian {U : Set E}
   have hFone : ∀ s : TotalFace K, ContDiffOn ℝ 1 (fun x => (F x).value s) U :=
     fun s => (hF s).of_le (by norm_num)
   ext h q
-  rw [secondDerivativeChain_apply, actualFaceLossHessian_apply,
+  rw [secondDerivativeChain_apply, faceCoordinateLossHessian_apply,
     fixedFaceLift_fderiv_eq_selection k F e p hU hx hFone,
     fixedFaceLift_second_fderiv_eq_selection k F e p hU hx hF]
   simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.compL_apply]
@@ -254,36 +254,36 @@ theorem secondDerivativeChain_eq_actualFaceLossHessian {U : Set E}
     intro s _
     rw [allFaceValues_second_fderiv_apply F hU hx hF]
 
-/-- The derivative map of the actual scalar loss genuinely has the face Hessian
+/-- The derivative map of the scalar loss genuinely has the face Hessian
 as its Fréchet derivative. Both gradient and face-curvature terms are retained. -/
-theorem actualPHScalarLoss_hasFDerivAt_fderiv {U : Set E} (hU : IsOpen U)
+theorem sublevelDiagramScalarLoss_hasFDerivAt_fderiv {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
     (W : Diagram ℝ → ℝ)
     (hW : C2ThroughAllRepresentatives W (dgm k (F x₀) p)) :
     HasFDerivAt (fderiv ℝ (fun x => W (dgm k (F x) p)))
-      (actualFaceLossHessian k F e p W) x₀ := by
+      (faceCoordinateLossHessian k F e p W) x₀ := by
   have hc := localLift_scalar_hasFDerivAt_fderiv
     (fun x => dgm k (F x) p) W
     (faceLiftCounts k F e p).1 (faceLiftCounts k F e p).2
-    (actualFaceLossC2Lift k F e p hU hF horder) x₀ hx hW
+    (fixedFaceC2Lift k F e p hU hF horder) x₀ hx hW
   change HasFDerivAt (fderiv ℝ (fun x => W (dgm k (F x) p)))
     (secondDerivativeChain
       (W ∘ orderedQ (faceLiftCounts k F e p).1 (faceLiftCounts k F e p).2)
         (fixedFaceLift k F e p) x₀) x₀ at hc
-  rwa [secondDerivativeChain_eq_actualFaceLossHessian k F e p hU hx hF W] at hc
+  rwa [secondDerivativeChain_eq_faceCoordinateLossHessian k F e p hU hx hF W] at hc
 
 /-- The ordinary second derivative equals the face Hessian by derivative uniqueness. -/
-theorem actualPHScalarLoss_second_fderiv {U : Set E} (hU : IsOpen U)
+theorem sublevelDiagramScalarLoss_second_fderiv {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
     (W : Diagram ℝ → ℝ)
     (hW : C2ThroughAllRepresentatives W (dgm k (F x₀) p)) :
     fderiv ℝ (fderiv ℝ (fun x => W (dgm k (F x) p))) x₀ =
-      actualFaceLossHessian k F e p W :=
-  (actualPHScalarLoss_hasFDerivAt_fderiv k F e p hU hx hF horder W hW).fderiv
+      faceCoordinateLossHessian k F e p W :=
+  (sublevelDiagramScalarLoss_hasFDerivAt_fderiv k F e p hU hx hF horder W hW).fderiv
 
 /-- The scattered coordinate Hessian is symmetric under C² loss regularity. -/
 theorem faceLossHessianCoefficient_symmetric {U : Set E} (hx : x₀ ∈ U)
@@ -298,15 +298,15 @@ theorem faceLossHessianCoefficient_symmetric {U : Set E} (hx : x₀ ∈ U)
   exact (hN.contDiffAt (hNo.mem_nhds hzN)).isSymmSndFDerivAt (by norm_num) _ _
 
 /-- Symmetry of the final bilinear form follows from scalar C² regularity. -/
-theorem actualFaceLossHessian_symmetric {U : Set E} (hU : IsOpen U)
+theorem faceCoordinateLossHessian_symmetric {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
     (W : Diagram ℝ → ℝ)
     (hW : C2ThroughAllRepresentatives W (dgm k (F x₀) p)) (h q : E) :
-    actualFaceLossHessian k F e p W h q = actualFaceLossHessian k F e p W q h := by
-  rw [← actualPHScalarLoss_second_fderiv k F e p hU hx hF horder W hW]
-  obtain ⟨N, hNo, hxN, _, hN⟩ := actualPHScalarLoss_c2_neighborhood
+    faceCoordinateLossHessian k F e p W h q = faceCoordinateLossHessian k F e p W q h := by
+  rw [← sublevelDiagramScalarLoss_second_fderiv k F e p hU hx hF horder W hW]
+  obtain ⟨N, hNo, hxN, _, hN⟩ := sublevelDiagramScalarLoss_c2_neighborhood
     k F e p hU hx hF horder W hW
   exact (hN.contDiffAt (hNo.mem_nhds hxN)).isSymmSndFDerivAt (by norm_num) h q
 
@@ -343,8 +343,8 @@ private theorem finiteFaceHessian_norm_bound {I : Type*} [Fintype I]
     (∑ i : I, β i • J i)).trans (add_le_add hdouble hsingle)
 
 /-- The operator norm of the face form is bounded termwise, including empty sums. -/
-theorem actualFaceLossHessian_norm_bound (W : Diagram ℝ → ℝ) :
-    ‖actualFaceLossHessian k F e p W‖ ≤
+theorem faceCoordinateLossHessian_norm_bound (W : Diagram ℝ → ℝ) :
+    ‖faceCoordinateLossHessian k F e p W‖ ≤
       (∑ s : TotalFace K, ∑ t : TotalFace K,
         |faceLossHessianCoefficient k F e p W s t| *
           ‖fderiv ℝ (fun x => (F x).value s) x₀‖ *
@@ -357,7 +357,7 @@ theorem actualFaceLossHessian_norm_bound (W : Diagram ℝ → ℝ) :
     (fun s => fderiv ℝ (fderiv ℝ (fun x => (F x).value s)) x₀)
 
 /-- Quantitative bound for the genuine ordinary scalar second derivative. -/
-theorem actualPHScalarLoss_second_norm_bound {U : Set E} (hU : IsOpen U)
+theorem sublevelDiagramScalarLoss_second_norm_bound {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -370,25 +370,25 @@ theorem actualPHScalarLoss_second_norm_bound {U : Set E} (hU : IsOpen U)
           ‖fderiv ℝ (fun x => (F x).value t) x₀‖) +
       ∑ s : TotalFace K, |faceLossCoefficient k F e p W s| *
         ‖fderiv ℝ (fderiv ℝ (fun x => (F x).value s)) x₀‖ := by
-  rw [actualPHScalarLoss_second_fderiv k F e p hU hx hF horder W hW]
-  exact actualFaceLossHessian_norm_bound k F e p W
+  rw [sublevelDiagramScalarLoss_second_fderiv k F e p hU hx hF horder W hW]
+  exact faceCoordinateLossHessian_norm_bound k F e p W
 
 /-- Compatible template choices yield the same final scalar Hessian, without
 identifying the ambient coefficient arrays. -/
-theorem actualPHScalarLoss_second_derivative_independent
+theorem sublevelDiagramScalarLoss_second_derivative_independent
     (e' : CompatibleOrder (F x₀)) {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
     (W : Diagram ℝ → ℝ)
     (hW : C2ThroughAllRepresentatives W (dgm k (F x₀) p)) :
-    actualFaceLossHessian k F e p W = actualFaceLossHessian k F e' p W := by
-  rw [← actualPHScalarLoss_second_fderiv k F e p hU hx hF horder W hW,
-    ← actualPHScalarLoss_second_fderiv k F e' p hU hx hF horder W hW]
+    faceCoordinateLossHessian k F e p W = faceCoordinateLossHessian k F e' p W := by
+  rw [← sublevelDiagramScalarLoss_second_fderiv k F e p hU hx hF horder W hW,
+    ← sublevelDiagramScalarLoss_second_fderiv k F e' p hU hx hF horder W hW]
 
 /-- Arbitrary admissible C² lifts, including redundant diagonal coordinates and
 different counts, determine the same final scalar Hessian. -/
-theorem actualPHScalarLoss_any_c2_lifts_independent
+theorem sublevelDiagramScalarLoss_any_c2_lifts_independent
     (W : Diagram ℝ → ℝ) (m n m' n' : ℕ)
     (L : LocalC2DiagramLift (fun x => dgm k (F x) p) m n)
     (L' : LocalC2DiagramLift (fun x => dgm k (F x) p) m' n')
@@ -400,19 +400,19 @@ theorem actualPHScalarLoss_any_c2_lifts_independent
     W m n m' n' L L' x₀ hx hx' hW
 
 /-- Vanishing face second derivatives remove exactly the curvature summand. -/
-theorem actualFaceLossHessian_of_face_second_deriv_zero
+theorem faceCoordinateLossHessian_of_face_second_deriv_zero
     (W : Diagram ℝ → ℝ)
     (hzero : ∀ s : TotalFace K, fderiv ℝ (fderiv ℝ (fun x => (F x).value s)) x₀ = 0) :
-    actualFaceLossHessian k F e p W =
+    faceCoordinateLossHessian k F e p W =
       ∑ s : TotalFace K, ∑ t : TotalFace K,
         faceLossHessianCoefficient k F e p W s t •
           (fderiv ℝ (fun x => (F x).value s) x₀).smulRight
             (fderiv ℝ (fun x => (F x).value t) x₀) := by
   classical
-  simp [actualFaceLossHessian, hzero]
+  simp [faceCoordinateLossHessian, hzero]
 
 /-- Scalar Hessian pullback when all face-value curvatures vanish at the point. -/
-theorem actualPHScalarLoss_second_fderiv_of_face_second_deriv_zero
+theorem sublevelDiagramScalarLoss_second_fderiv_of_face_second_deriv_zero
     {U : Set E} (hU : IsOpen U) (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -424,8 +424,8 @@ theorem actualPHScalarLoss_second_fderiv_of_face_second_deriv_zero
         faceLossHessianCoefficient k F e p W s t •
           (fderiv ℝ (fun x => (F x).value s) x₀).smulRight
             (fderiv ℝ (fun x => (F x).value t) x₀) := by
-  rw [actualPHScalarLoss_second_fderiv k F e p hU hx hF horder W hW]
-  exact actualFaceLossHessian_of_face_second_deriv_zero k F e p W hzero
+  rw [sublevelDiagramScalarLoss_second_fderiv k F e p hU hx hF horder W hW]
+  exact faceCoordinateLossHessian_of_face_second_deriv_zero k F e p W hzero
 
 omit [LinearOrder V] [Fintype (TotalFace K)] in
 /-- Persistent ties give equal first derivatives, so full-template terms can cancel. -/
@@ -450,8 +450,8 @@ theorem tiedFaceValues_second_fderiv_eq {U : Set E} (hU : IsOpen U) (hx : x₀ �
     exact htie x hxU
   exact heq.fderiv.fderiv_eq
 
-/-- The empty actual complex has zero scalar Hessian and empty face sums. -/
-theorem actualPHScalarLoss_empty_second_fderiv (hm : faceCount K = 0)
+/-- The empty complex has zero scalar Hessian and empty face sums. -/
+theorem sublevelDiagramScalarLoss_empty_second_fderiv (hm : faceCount K = 0)
     {U : Set E} (hU : IsOpen U) (hx : x₀ ∈ U)
     (hF : ∀ s : TotalFace K, ContDiffOn ℝ 2 (fun x => (F x).value s) U)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -460,8 +460,8 @@ theorem actualPHScalarLoss_empty_second_fderiv (hm : faceCount K = 0)
     fderiv ℝ (fderiv ℝ (fun x => W (dgm k (F x) p))) x₀ = 0 := by
   obtain ⟨e⟩ := exists_compatibleOrder (F x₀)
   have : IsEmpty (TotalFace K) := Fintype.card_eq_zero_iff.mp hm
-  rw [actualPHScalarLoss_second_fderiv k F e p hU hx hF horder W hW]
-  simp [actualFaceLossHessian]
+  rw [sublevelDiagramScalarLoss_second_fderiv k F e p hU hx hF horder W hW]
+  simp [faceCoordinateLossHessian]
 
 /-- The basis-selection definition is also the unambiguous selected-slot scatter. -/
 theorem faceLossHessianCoefficient_eq_scatter (W : Diagram ℝ → ℝ)
@@ -499,7 +499,7 @@ theorem affineFaceValues_second_fderiv_zero {U : Set E} (hU : IsOpen U)
 
 /-- For a genuinely affine family on the chamber, the Hessian is the ordinary
 pullback of the ambient coordinate Hessian, with no face-curvature term. -/
-theorem actualPHScalarLoss_affine_second_fderiv {U : Set E} (hU : IsOpen U)
+theorem sublevelDiagramScalarLoss_affine_second_fderiv {U : Set E} (hU : IsOpen U)
     (hx : x₀ ∈ U) (A : TotalFace K → E →L[ℝ] ℝ) (b : TotalFace K → ℝ)
     (haff : ∀ s : TotalFace K, ∀ x ∈ U, (F x).value s = b s + A s x)
     (horder : ∀ x ∈ U, OrderingEquivalent (F x₀) (F x))
@@ -514,7 +514,7 @@ theorem actualPHScalarLoss_affine_second_fderiv {U : Set E} (hU : IsOpen U)
     apply ((contDiff_const.add (A s).contDiff).contDiffOn).congr
     intro x hxU
     exact haff s x hxU
-  rw [actualPHScalarLoss_second_fderiv_of_face_second_deriv_zero
+  rw [sublevelDiagramScalarLoss_second_fderiv_of_face_second_deriv_zero
     k F e p hU hx hF horder W hW
       (affineFaceValues_second_fderiv_zero F hU hx A b haff)]
   have hd : ∀ s : TotalFace K, fderiv ℝ (fun x => (F x).value s) x₀ = A s := by

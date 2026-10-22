@@ -34,7 +34,7 @@ do not.
 ## Čech consumers
 
 Fix labelled configurations p, q : V → X in one pseudometric space on the same finite
-ordered label type, a coefficient field and a degree. Let D_p, D_q be the actual Čech
+ordered label type, a coefficient field and a degree. Let D_p, D_q be the Čech
 diagrams, N_p, N_q their numbers of finite occurrences, and δ the same-label displacement,
 the largest distance dist(p v, q v). The Čech bound gives full bottleneck at most δ, so the
 bottleneck is finite and its real value is at most δ. With the count-times-bottleneck
@@ -111,7 +111,7 @@ proof matches each occurrence to its own scaled image. The bound is sharp for th
 finite bar (0, 2) at c = 1/2: the scaled point is (0, 1), and the bottleneck distance is
 exactly 1.
 
-The coordinates of actual diagrams are critical values by
+The coordinates of diagrams are critical values by
 `mem_criticalValues_of_mem_finitePart_dgm` and
 `mem_criticalValues_of_mem_essentialPart_dgm`. For a Rips filter, every such value lies in
 [0, diameter of the whole carrier] by `Rips.filter_value_le_diameter_univ`. Combining this

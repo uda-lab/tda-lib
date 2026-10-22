@@ -1,8 +1,8 @@
 import TDA.Persistence.SublevelConstructible
 import TDA.Persistence.DiagramMap
 import TDA.Persistence.FiniteFilterStabilitySingletonExamples
-import TDA.Persistence.Reduction.ActualTriangleDiagrams
-import TDA.Persistence.Reduction.ActualEmpty
+import TDA.Persistence.Reduction.TriangleSublevelDiagrams
+import TDA.Persistence.Reduction.EmptyComplexReduction
 import TDA.Filtration.CechExamples
 import TDA.Filtration.FilterFunctionMap
 
@@ -14,7 +14,7 @@ set_option autoImplicit false
 The bridge is tested on the two-point and Euclidean-triangle Čech and Rips filters, on the
 certified filled, hollow, tied and empty ℕ-graded examples transported to `ℝ`, and on the
 one-vertex filter, where the isometry gives the exact interleaving distance. Two negative
-controls refute the actual constructibility predicate on a grid above the first critical value
+controls refute the constructibility predicate on a grid above the first critical value
 and on a grid omitting a critical value.
 -/
 
@@ -160,7 +160,7 @@ noncomputable def filledReal : FilterFunction FilledTriangle.C.toPre ℝ :=
 theorem filledReal_dgm_zero :
     (dgm (ZMod 2) filledReal 0).points =
       {((0 : ℝ), ((1 : ℝ) : WithTop ℝ)), (0, ((1 : ℝ) : WithTop ℝ)), (0, ⊤)} := by
-  rw [filledReal, dgm_map, Diagram.map_points, FilledTriangle.actual_diagram_zero]
+  rw [filledReal, dgm_map, Diagram.map_points, FilledTriangle.diagram_zero]
   simp
 
 /-- The degree-zero module diagram of the transported filled triangle. -/
@@ -176,7 +176,7 @@ theorem filledReal_moduleDiagram_one :
         (sublevelModule_finiteDimensional (ZMod 2) 1 _)).points =
       {((1 : ℝ), ((2 : ℝ) : WithTop ℝ))} := by
   rw [moduleDiagram_sublevelModule, filledReal, dgm_map, Diagram.map_points,
-    FilledTriangle.actual_diagram_one]
+    FilledTriangle.diagram_one]
   simp
 
 /-- The hollow triangle with its dimension grading cast to `ℝ`. -/
@@ -188,7 +188,7 @@ theorem hollowReal_moduleDiagram_one :
     (moduleDiagram hollowReal.criticalValue (sublevelModule (ZMod 2) hollowReal 1)
         (sublevelModule_finiteDimensional (ZMod 2) 1 _)).points = {((1 : ℝ), ⊤)} := by
   rw [moduleDiagram_sublevelModule, hollowReal, dgm_map, Diagram.map_points,
-    HollowTriangle.actual_diagram_one]
+    HollowTriangle.diagram_one]
   simp
 
 /-! ### One vertex -/
@@ -284,7 +284,7 @@ theorem emptyReal_moduleDiagram (n : ℕ) :
         (sublevelModule_finiteDimensional (ZMod 2) n _)).points = 0 ∧
       (dgm (ZMod 2) emptyReal n).points = 0 := by
   have h : (dgm (ZMod 2) emptyReal n).points = 0 := by
-    rw [emptyReal, dgm_map, Diagram.map_points, Empty.empty_actual_diagram, Multiset.map_zero]
+    rw [emptyReal, dgm_map, Diagram.map_points, Empty.empty_diagram, Multiset.map_zero]
   exact ⟨h, h⟩
 
 /-- The empty sublevel module is constructible on the empty grid, with empty module diagram. -/

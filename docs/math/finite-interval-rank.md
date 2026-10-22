@@ -10,7 +10,7 @@ the same convention with `p = b` and `q = d - 1`; thus `d = N` means the last ob
 `N - 1` is alive. It does not encode an infinite lifetime.
 
 For an explicitly supplied finite multiset `B` of these intervals, the range dimension of the
-actual map `M_B(i → j)` is the number of occurrences with `b ≤ i` and `j < d`. Extending this
+map `M_B(i → j)` is the number of occurrences with `b ≤ i` and `j < d`. Extending this
 table to integers with the left sentinel `r(-1,j) = 0` and right sentinel `r(i,N) = 0`, the
 finite difference is
 

@@ -6,7 +6,7 @@ set_option autoImplicit false
 /-!
 # Witness-space change fixtures
 
-The fixtures test the actual `Cech.complex` and `Cech.filter` definitions. The intrinsic
+The fixtures test the `Cech.complex` and `Cech.filter` definitions. The intrinsic
 Čech complex of two points on the line loses the edge that the ambient complex has at
 radius `1`, so the witness-space inclusion is strict. A convex subspace with the nearest
 point projection loses nothing, and the identity witness map is the trivial control.

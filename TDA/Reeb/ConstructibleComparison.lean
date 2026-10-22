@@ -123,7 +123,7 @@ def intervalComponentComparison (f : C(X, ℝ)) :
     intervalComponents f ⟶ intervalComponents (height f) :=
   Functor.whiskerLeft OpenInterval.toOpensFunctor (componentComparison f)
 
-/-- The comparison map is the actual map `componentComparison f`, precomposed. -/
+/-- The comparison map is the map `componentComparison f`, precomposed. -/
 theorem intervalComponentComparison_eq (f : C(X, ℝ)) :
     intervalComponentComparison f =
       Functor.whiskerLeft OpenInterval.toOpensFunctor (componentComparison f) := rfl

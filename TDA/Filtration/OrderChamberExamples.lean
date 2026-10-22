@@ -292,7 +292,7 @@ private theorem arbitrary_relative_domain {E : Type u} [TopologicalSpace E]
   exact ⟨isOpen_orderChamber F, dense_orderChamber F hF,
     fun _ hx => exists_open_le_iff_of_mem_orderChamber F hF hx⟩
 
--- 8. An actual edge filter, with an explicitly supplied face enumeration.
+-- 8. An edge filter, with an explicitly supplied face enumeration.
 private def edgeC : FiniteComplex 2 where
   faces := {{0}, {1}, {0, 1}}
   nonempty := by decide

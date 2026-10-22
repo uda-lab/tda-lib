@@ -89,7 +89,7 @@ private theorem single_sq :
     kernel_self, kernel_adjacent]
   ring
 
-/-- The actual squared distance of the one-point embeddings `{(0, 2)}` and `{(0, 3)}`, and
+/-- The squared distance of the one-point embeddings `{(0, 2)}` and `{(0, 3)}`, and
 the bound `2 + √2·π/2` from the matching of cost `1`. -/
 theorem occurrence_bound :
     ‖embedding 1 w (single (0, 2)) - embedding 1 w (single (0, 3))‖ ^ 2 =

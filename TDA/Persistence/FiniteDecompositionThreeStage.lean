@@ -4,7 +4,7 @@ import Mathlib.LinearAlgebra.Prod
 /-!
 # Three-stage examples distinguishing composite ranks
 
-The input modules have the actual fibers `k`, `k × k`, `k`. Both first maps send
+The input modules have the fibers `k`, `k × k`, `k`. Both first maps send
 `x` to `(x, 0)`. The second maps project to the second or first coordinate.
 -/
 
@@ -65,14 +65,14 @@ instance compositeIdentityFD (i : Fin 3) :
   · change FiniteDimensional k (k × k); infer_instance
   · change FiniteDimensional k k; infer_instance
 
-/-- Both first transitions are the actual inclusion `x ↦ (x, 0)`. -/
+/-- Both first transitions are the inclusion `x ↦ (x, 0)`. -/
 theorem first_maps :
     structureMapLinear (compositeZero (k := k)) (show (0 : Fin 3) ≤ 1 by decide) =
       LinearMap.inl k k k ∧
     structureMapLinear (compositeIdentity (k := k)) (show (0 : Fin 3) ≤ 1 by decide) =
       LinearMap.inl k k k := ⟨rfl, rfl⟩
 
-/-- The second transitions are the actual second and first projections. -/
+/-- The second transitions are the second and first projections. -/
 theorem second_maps :
     structureMapLinear (compositeZero (k := k)) (show (1 : Fin 3) ≤ 2 by decide) =
       LinearMap.snd k k k ∧
@@ -91,7 +91,7 @@ theorem stage_dimensions (i : Fin 3) :
   · change Module.finrank k k = 1 ∧ Module.finrank k k = 1
     simp [Module.finrank_self]
 
-/-- Both actual first transitions have rank one. -/
+/-- Both first transitions have rank one. -/
 theorem first_ranks :
     structureMapRank (compositeZero (k := k)) 0 1 (by decide) = 1 ∧
     structureMapRank (compositeIdentity (k := k)) 0 1 (by decide) = 1 := by
@@ -99,7 +99,7 @@ theorem first_ranks :
     change Module.finrank k (LinearMap.range (LinearMap.inl k k k)) = 1 <;>
     rw [LinearMap.finrank_range_of_inj LinearMap.inl_injective, Module.finrank_self]
 
-/-- Both actual second transitions have rank one. -/
+/-- Both second transitions have rank one. -/
 theorem second_ranks :
     structureMapRank (compositeZero (k := k)) 1 2 (by decide) = 1 ∧
     structureMapRank (compositeIdentity (k := k)) 1 2 (by decide) = 1 := by
@@ -111,7 +111,7 @@ theorem second_ranks :
     rw [LinearMap.range_eq_top.mpr LinearMap.fst_surjective, finrank_top,
       Module.finrank_self]
 
-/-- The actual composites have rank zero and one, respectively. -/
+/-- The composites have rank zero and one, respectively. -/
 theorem composite_ranks :
     structureMapRank (compositeZero (k := k)) 0 2 (by decide) = 0 ∧
     structureMapRank (compositeIdentity (k := k)) 0 2 (by decide) = 1 := by
@@ -163,7 +163,7 @@ private theorem self_rank (M : PModule.{u,0,u} k (Fin 3))
   unfold structureMapRank
   rw [structureMapLinear_self, LinearMap.range_id, finrank_top]
 
-/-- The canonical barcode of the actual module with zero composite. -/
+/-- The canonical barcode of the module with zero composite. -/
 theorem zero_rankBarcode : rankBarcode (compositeZero (k := k)) = zeroBarcode := by
   have h : rankBarcode (compositeZero (k := k)) =
       rankBarcode (barcodeModule (k := k) zeroBarcode) := by
@@ -188,7 +188,7 @@ theorem zero_rankBarcode : rankBarcode (compositeZero (k := k)) = zeroBarcode :=
       decide
   simpa only [rankBarcode_barcodeModule] using h
 
-/-- The canonical barcode of the actual module with identity composite. -/
+/-- The canonical barcode of the module with identity composite. -/
 theorem identity_rankBarcode :
     rankBarcode (compositeIdentity (k := k)) = identityBarcode := by
   have h : rankBarcode (compositeIdentity (k := k)) =

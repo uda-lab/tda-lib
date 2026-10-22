@@ -3,9 +3,9 @@ import TDA.Persistence.FiniteMonoTranslationMatching
 import TDA.Persistence.FiniteInducedMatching
 
 /-!
-# Quantitative induced matchings through the actual image
+# Quantitative induced matchings through the image
 
-Component kernel/range identities transfer actual shortness to the epi/mono
+Component kernel/range identities transfer shortness to the epi/mono
 factors. Their quantitative estimates then apply to the unique intermediate
 occurrence of the existing induced matching. Kernel and cokernel may use different translations.
 -/
@@ -21,7 +21,7 @@ open CategoryTheory
 variable {s : ℕ} {k : Type u} [Field k]
 variable {M N : PModule.{u,0,u} k (Fin s)}
 
-/-- Actual kernel shortness is unchanged by corestricting to the actual image. -/
+/-- Kernel shortness is unchanged by corestricting to the image. -/
 theorem kernel_translationTrivial_toFiniteImage_iff (theta : Fin s →o Fin s)
     (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N) :
     TranslationTrivial theta hTheta (finiteKernel (toFiniteImage f)) ↔
@@ -32,7 +32,7 @@ theorem kernel_translationTrivial_toFiniteImage_iff (theta : Fin s →o Fin s)
   change LinearMap.ker (f.app i).hom.rangeRestrict ≤ _ ↔ _
   rw [LinearMap.ker_rangeRestrict]
 
-/-- Actual cokernel shortness is unchanged by replacing the morphism with its image inclusion. -/
+/-- Cokernel shortness is unchanged by replacing the morphism with its image inclusion. -/
 theorem cokernel_translationTrivial_fromFiniteImage_iff (theta : Fin s →o Fin s)
     (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N) :
     TranslationTrivial theta hTheta (finiteCokernel (fromFiniteImage f)) ↔
@@ -47,7 +47,7 @@ namespace FiniteBarcode
 
 variable [∀ i, FiniteDimensional k (M.obj i)] [∀ i, FiniteDimensional k (N.obj i)]
 
-/-- Actual kernel shortness controls every matched death, for an arbitrary morphism. -/
+/-- Kernel shortness controls every matched death, for an arbitrary morphism. -/
 theorem inducedMap_death_bounds_of_kernelTrivial
     (theta : Fin s →o Fin s) (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N)
     (hk : TranslationTrivial theta hTheta (finiteKernel f))
@@ -66,7 +66,7 @@ theorem inducedMap_death_bounds_of_kernelTrivial
   refine ⟨hd.trans_le he.1, ?_⟩
   exact he.2.trans_eq (FiniteInterval.translatedDeath_congr _ _ theta hd.symm)
 
-/-- Actual cokernel shortness controls every matched birth, for an arbitrary morphism. -/
+/-- Cokernel shortness controls every matched birth, for an arbitrary morphism. -/
 theorem inducedMap_birth_bounds_of_cokernelTrivial
     (theta : Fin s →o Fin s) (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N)
     (hc : TranslationTrivial theta hTheta (finiteCokernel f))
@@ -102,7 +102,7 @@ theorem inducedMap_endpoint_bounds_of_shortness
   have hd := inducedMap_death_bounds_of_kernelTrivial thetaK hK f hk i j h
   exact ⟨hb.1, hb.2, (inducedMap_endpoints f i j h).2.1, hd⟩
 
-/-- Every long source has exactly one selected target, using only actual kernel shortness. -/
+/-- Every long source has exactly one selected target, using only kernel shortness. -/
 theorem inducedMap_covers_long_source_of_kernelTrivial
     (theta : Fin s →o Fin s) (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N)
     (hk : TranslationTrivial theta hTheta (finiteKernel f))
@@ -116,7 +116,7 @@ theorem inducedMap_covers_long_source_of_kernelTrivial
   have hj := (inducedMap_eq_some_iff f i (imageTargetEmbedding f a)).mpr ⟨a, ha, rfl⟩
   exact ⟨imageTargetEmbedding f a, hj, fun _ hj' => Option.some.inj (hj'.symm.trans hj)⟩
 
-/-- Every long target has exactly one selected source, using only actual cokernel shortness. -/
+/-- Every long target has exactly one selected source, using only cokernel shortness. -/
 theorem inducedMap_covers_long_target_of_cokernelTrivial
     (theta : Fin s →o Fin s) (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N)
     (hc : TranslationTrivial theta hTheta (finiteCokernel f))

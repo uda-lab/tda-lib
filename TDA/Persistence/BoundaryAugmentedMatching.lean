@@ -4,8 +4,8 @@ import TDA.Persistence.DiagramBottleneckLaws
 /-!
 # Boundary augmentation of finite partial matchings
 
-Rows are actual source occurrences `I` followed by target dummies `J`; columns
-are actual target occurrences `J` followed by source dummies `I`. A deletion
+Rows are source occurrences `I` followed by target dummies `J`; columns
+are target occurrences `J` followed by source dummies `I`. A deletion
 cost is constant across its entire source row, and an insertion cost across its
 entire target column. Dummy-to-dummy assignments cost zero. Restriction and
 completion preserve the existing total finite cost. Completion is a section of
@@ -47,7 +47,7 @@ def boundaryAssignmentCost (x : I → ℝ × ℝ) (y : J → ℝ × ℝ)
 
 namespace OccurrenceMatching
 
-/-- Keep exactly the actual-source to actual-target assignments. -/
+/-- Keep exactly the source-occurrence to target-occurrence assignments. -/
 def ofBoundaryAssignment (e : (I ⊕ J) ≃ (J ⊕ I)) :
     OccurrenceMatching I J PEmpty.{1} PEmpty.{1} where
   finite i := match e (.inl i) with | .inl j => some j | .inr _ => none

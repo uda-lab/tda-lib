@@ -14,7 +14,7 @@ a i (C_f.map (U i ⊓ U j ≤ U i) c) = a j (C_f.map (U i ⊓ U j ≤ U j) c)
 for all `i`, `j` and every class `c` over `U i ⊓ U j`, then there is a unique
 `g : C_f(W) → A` with `g ∘ C_f(U i ≤ W) = a i` for every `i`
 (`TDA.Reeb.componentFunctor_existsUnique_glue`). The test object `A` lies in an arbitrary `Sort`.
-Agreement is on classes over the actual overlap, not on labels of components.
+Agreement is on classes over the overlap, not on labels of components.
 
 The empty cover is included. It forces `C_f(W)` to be empty (`Examples.emptyCover_isEmpty`), and
 then the unique `g` is the map out of the empty type.

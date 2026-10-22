@@ -1,7 +1,7 @@
-import TDA.Persistence.ActualDiagramRegularity
+import TDA.Persistence.SublevelDiagramRegularity
 import TDA.Persistence.SublevelDiagramExamples
 
-/-! A moving, persistently tied actual face template. -/
+/-! A moving, persistently tied face template. -/
 
 set_option autoImplicit false
 
@@ -22,8 +22,8 @@ theorem moving_tied_edge_strict_essential_birth
     (t : ℝ) (i : Fin (strictFaceLiftCounts (ZMod 2) Examples.movingTiedEdgeFilter e 0).2) :
     (strictFaceLift (ZMod 2) Examples.movingTiedEdgeFilter e 0 t).2 i = t := rfl
 
-/-- The actual tied edge has a nonempty full finite template but no strict
-finite slots. Both fixed lifts represent the same actual diagram for every
+/-- The tied edge has a nonempty full finite template but no strict
+finite slots. Both fixed lifts represent the same diagram for every
 parameter, including repeated face values and essential real births. -/
 theorem moving_tied_edge_full_strict_cr (r : ℕ∞ω) :
     ∃ e : CompatibleOrder (Examples.movingTiedEdgeFilter (0 : ℝ)),

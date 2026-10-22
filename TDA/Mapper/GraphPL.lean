@@ -39,7 +39,7 @@ def componentIndexEquiv (G : SimpleGraph V) (h : V → ℝ) (U : I → OpenInter
       IncidenceComponentIndex G h U :=
   Equiv.sigmaCongrRight fun i => preimageComponentsEquiv G h (U i)
 
-/-- The actual component-cover members, relabelled by incidence-graph components. -/
+/-- The component-cover members, relabelled by incidence-graph components. -/
 def incidenceComponentCover (G : SimpleGraph V) (h : V → ℝ) (U : I → OpenInterval) :
     CoverFamily (Realization G) (IncidenceComponentIndex G h U) :=
   fun a => componentCover (plHeight G h) (fun i => (U i : Set ℝ))
@@ -50,7 +50,7 @@ def incidenceMapper (G : SimpleGraph V) (h : V → ℝ) (U : I → OpenInterval)
     PreAbstractSimplicialComplex (IncidenceComponentIndex G h U) :=
   nerve (incidenceComponentCover G h U)
 
-/-- Coverage of the actual realization-height range gives full coverage by the relabelled
+/-- Coverage of the realization-height range gives full coverage by the relabelled
 component members. -/
 theorem incidenceComponentCover_covers (G : SimpleGraph V) (h : V → ℝ)
     (U : I → OpenInterval)
@@ -116,7 +116,7 @@ def incidenceRefinementMap (G : SimpleGraph V) (h : V → ℝ)
   fun a => ⟨R.selector a.1,
     a.2.map (cellInclusion G h (OpenInterval.le_iff_subset.2 (R.subset a.1)))⟩
 
-/-- The graph-PL component comparison conjugates the actual Mapper refinement map to the
+/-- The graph-PL component comparison conjugates the Mapper refinement map to the
 incidence-component refinement map. -/
 @[simp] theorem componentIndexEquiv_mapperMap (G : SimpleGraph V) (h : V → ℝ)
     {U : I → OpenInterval} {W : J → OpenInterval}
@@ -167,7 +167,7 @@ def incidenceMapperMap (G : SimpleGraph V) (h : V → ℝ)
     (a : IncidenceComponentIndex G h U) :
     incidenceMapperMap G h R a = incidenceRefinementMap G h R a := rfl
 
-/-- A finite graph and finitely many interval labels give finitely many actual Mapper component
+/-- A finite graph and finitely many interval labels give finitely many Mapper component
 indices. -/
 theorem finite_componentIndex [Finite V] [Finite I] (G : SimpleGraph V) (h : V → ℝ)
     (U : I → OpenInterval) :
@@ -186,7 +186,7 @@ theorem finite_mapperVertex [Finite V] [Finite I] (G : SimpleGraph V) (h : V →
   let _ := finite_componentIndex G h U
   exact Finite.of_injective Subtype.val Subtype.val_injective
 
-/-- Under the same two finiteness hypotheses, the subtype of actual finite Mapper faces is
+/-- Under the same two finiteness hypotheses, the subtype of finite Mapper faces is
 finite. -/
 theorem finite_mapperFaces [Finite V] [Finite I] (G : SimpleGraph V) (h : V → ℝ)
     (U : I → OpenInterval) :

@@ -23,7 +23,7 @@ For a valid list, `complex` has exactly its listed faces (`mem_complex`), and
 `listEquiv` pairs positions bijectively with its total faces. `gradeFilter`
 assigns each face its unique listed integer grade. Face precedence together
 with nondecreasing list grades proves monotonicity. `compatibleOrder` takes
-the given list order as the compatible actual-face enumeration. These semantic
+the given list order as the compatible face enumeration. These semantic
 objects and their proof-derived equivalences may be noncomputable; none occurs
 in the transitive definition path of `run`.
 
@@ -37,9 +37,9 @@ column is zero in ordinary **unaugmented** homology. In particular, an isolated
 vertex contributes an essential H₀ class. The computation does not insert an
 empty face as a chain generator.
 
-`boundary_eq_actual` compares every computed entry with the existing
-`actualBoundaryMatrix` under the position equivalence. `boundary_reindex` is
-the whole-matrix version. The existing actual-boundary theorems then yield
+`boundary_eq_faceBoundaryMatrix` compares every computed entry with the existing
+`faceBoundaryMatrix` under the position equivalence. `boundary_reindex` is
+the whole-matrix version. The existing face-boundary theorems then yield
 `boundary_sq_zero`, `boundary_strict` (nonzero rows precede their columns),
 and `boundary_lowersDegree` (the column degree is one above its row degree).
 This bridge uses the signed simplicial deletion convention already formalized
@@ -48,7 +48,7 @@ one.
 
 `trace` invokes the existing chronological `matrixReductionTrace` on that
 computed matrix, and `reduced` invokes `replay`. `reduced_reindex` shows that
-this is the `actualReducedBoundary` used by the semantic certificate.
+this is the `reducedFaceBoundary` used by the semantic certificate.
 `pivotPairs` produces one pair `(i,j)` for each nonzero reduced column `j`,
 where `i = columnPivot (reduced.col j)`. A pivot at row zero is `some 0`;
 `none` means a zero column. `essentialIndices` selects zero columns outside
@@ -83,12 +83,12 @@ the computed grade multisets with the existing pivot template's grade maps.
 `outputDiagram_points` separates the finite off-diagonal and essential
 contributions. The final `outputDiagram_eq_dgm` invokes merged
 `evaluatePivotTemplate_eq_dgm` from `SimplicialAdapterTemplate.lean`, which
-already connects the actual boundary reducer and filtered normal form to
-actual simplicial homology. The proof-only
-`nonempty_actualPrefixHomologyIsoPivotBarcode` additionally exposes the
+already connects the boundary reducer and filtered normal form to
+simplicial homology. The proof-only
+`nonempty_facePrefixHomologyIsoPivotBarcode` additionally exposes the
 genuine natural interval isomorphism of that prefix module. Thus, for every valid input and every degree,
 the interpreted records equal `dgm (ZMod 2) (gradeFilter xs h) p` as a
-`Diagram ℤ`. This is a statement about the actual integer sublevel filtration,
+`Diagram ℤ`. This is a statement about the integer sublevel filtration,
 not a declared pairing or a separately assumed barcode decomposition.
 
 `outputDiagram_eq_of_same_graded_complex` states the order-independence
@@ -114,13 +114,13 @@ with `run_eq_none_iff` justify their invalidity.
 The computational dependencies are pinned Lean/mathlib finite lists and
 sets, `Finset.orderEmbOfFin`, integer comparisons, `ZMod 2`, `Matrix`, the
 existing `columnPivot`, `matrixReductionTrace`, and `replay`. The semantic
-chain uses `SimplicialAdapter.lean` for the actual signed boundary;
+chain uses `SimplicialAdapter.lean` for the signed boundary;
 `FilteredNormalForm.lean` for the reducer-to-normal-form theorem;
-`SimplicialAdapterTemplate.lean` for the merged actual-homology diagram
+`SimplicialAdapterTemplate.lean` for the merged simplicial-homology diagram
 equality; and `SublevelDiagram.lean`/`IndexDiagram.lean` for the value
 diagram and essential-tail interpretation. The earlier mathematical source
 inventory and precise correspondence for reduction are in
-[persistence-reduction.md](persistence-reduction.md), and the actual sublevel
+[persistence-reduction.md](persistence-reduction.md), and the sublevel
 convention is in [finite-sublevel-diagram.md](finite-sublevel-diagram.md).
 This unit specializes those results to finite F₂ input with integer grades.
 It adds no sparse-matrix optimization, file parser, real-grade computation,

@@ -128,7 +128,7 @@ theorem triangle_distance_le (n : ℕ) :
 
 /-! ### Radius-level factorization -/
 
-/-- At radius `1`, the composite `Rips_1 ⊆ Čech_1 ⊆ Rips_2` is the actual structure map. -/
+/-- At radius `1`, the composite `Rips_1 ⊆ Čech_1 ⊆ Rips_2` is the structure map. -/
 theorem twoPoints_factor_one :
     (ripsToCech (ZMod 2) 0 TwoPoints.metric TwoPoints.pts TwoPoints.metric_dist ≫
         cechToRips (ZMod 2) 0 TwoPoints.metric TwoPoints.pts TwoPoints.metric_dist).app 1 =

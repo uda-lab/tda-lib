@@ -123,7 +123,7 @@ theorem inducedMap_of_surjective_iff (f : M ⟶ N)
       ⟨epiEmbedding (fromFiniteImage f) hs j, (hc j).symm.trans h, ?_⟩
     exact mono_epi_cancel (fromFiniteImage f) (fromFiniteImage_injective f) hs j
 
-/-- The actual image-induced matching of an identity matches each occurrence to itself. -/
+/-- The image-induced matching of an identity matches each occurrence to itself. -/
 theorem inducedMap_id (M : PModule.{u,0,u} k (Fin s))
     [∀ i, FiniteDimensional k (M.obj i)] (i : BarcodeOccurrence s (rankBarcode M)) :
     inducedMap (𝟙 M) i = some i := by

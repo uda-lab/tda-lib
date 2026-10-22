@@ -4,7 +4,7 @@ import TDA.Persistence.ArctanPersistenceImage
 /-!
 # Same-label displacements of Čech persistence images
 
-The same-label actual-diagram Čech bound and the Gaussian pixel ℓ¹ estimate compose through
+The same-label sublevel-diagram Čech bound and the Gaussian pixel ℓ¹ estimate compose through
 the finite occurrence-count bound. Essential bars remain in the bottleneck comparison but are
 omitted from the image. The bandwidth hypothesis `0 < σ` is that of the persistence-image
 theorem; no label metric or distance compatibility is assumed. The composition is a library

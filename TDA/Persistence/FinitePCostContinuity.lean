@@ -6,11 +6,11 @@ import Mathlib.Topology.Order.Lattice
 /-!
 # Continuity in the finite matching exponent
 
-The actual powered matching optimum is a minimum over a finite nonempty family.
+The powered matching optimum is a minimum over a finite nonempty family.
 Each candidate is continuous at positive exponents, including zero charges, so
 the minimum stays continuous when its optimizer changes. Taking the reciprocal
 power preserves continuity even at a zero minimum, since the exponent is positive.
-The proved assignment equalities transfer both results to the actual real-plan
+The proved assignment equalities transfer both results to the real-plan
 optima, whose transported and residual masses remain linear.
 
 The public domain is `p ≥ 1`, with fixed maximum ground norm and labelled unit
@@ -87,7 +87,7 @@ theorem finitePowerBoundaryTransportCost_continuousOn
   simpa only [finitePowerBoundaryTransportCost_eq_matchingCost] using
     finitePowerMatchingCost_continuousOn x y
 
-/-- Continuity of the actual rooted real-plan optimum, including empty and zero-cost inputs. -/
+/-- Continuity of the rooted real-plan optimum, including empty and zero-cost inputs. -/
 theorem finitePBoundaryTransportCost_continuousOn
     (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
     ContinuousOn (fun p : ℝ => finitePBoundaryTransportCost p x y) (Set.Ici 1) := by

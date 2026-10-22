@@ -7,7 +7,7 @@ import Mathlib.Data.ZMod.Basic
 
 Private fixtures exercise empty and identity samples, repeated and constant sampling,
 skipped stages, merged interval occurrences, and terminal truncation. They compare
-actual structure-map ranks and canonical barcode multiplicities over `ℚ` and `ZMod 2`.
+structure-map ranks and canonical barcode multiplicities over `ℚ` and `ZMod 2`.
 A constant module with carrier `k × k` also exercises the construction independently
 of a supplied barcode realization.
 -/
@@ -37,7 +37,7 @@ private theorem emptySample_barcode (L : ℕ) (B : Multiset (FiniteInterval L)) 
     rw [Multiset.filterMap_cons_none I B (emptySample_interval L I)]
     exact ih
 
-private theorem emptySample_actual {L : ℕ} {k : Type u} [Field k]
+private theorem emptySample {L : ℕ} {k : Type u} [Field k]
     (M : PModule.{u,0,u} k (Fin L))
     [∀ i : Fin L, FiniteDimensional k (M.obj i)] :
     rankBarcode (reindex (emptySampling L) M) = 0 := by
@@ -52,11 +52,11 @@ private def emptySource (k : Type u) [Field k] : PModule.{u,0,u} k (Fin 0) where
 private instance emptySourceFD {k : Type u} [Field k] (i : Fin 0) :
     FiniteDimensional k ((emptySource k).obj i) := Fin.elim0 i
 
-private theorem emptySource_actual {k : Type u} [Field k] :
+private theorem emptySource_diagram_eq_zero {k : Type u} [Field k] :
     rankBarcode (reindex (emptySampling 0) (emptySource k)) = 0 :=
-  emptySample_actual (emptySource k)
+  emptySample (emptySource k)
 
-private theorem identitySample_actual {N : ℕ} {k : Type u} [Field k]
+private theorem identitySample {N : ℕ} {k : Type u} [Field k]
     (B : Multiset (FiniteInterval N)) :
     rankBarcode (reindex (OrderHom.id : Fin N →o Fin N)
       (barcodeModule (k := k) B)) = B := by
@@ -167,7 +167,7 @@ private theorem repeatedZeroBarcode {k : Type u} [Field k] :
   rw [rankBarcode_reindex, zeroSourceBarcode]
   decide
 
-private theorem repeatedActualRanks {k : Type u} [Field k] :
+private theorem repeatedModuleRanks {k : Type u} [Field k] :
     structureMapRank (reindex repeatedSample (identityTransitionDiagram k))
         (0 : Fin 3) 1 (by decide) = 1 ∧
       structureMapRank (reindex repeatedSample (zeroTransitionDiagram k))
@@ -235,7 +235,7 @@ private theorem constantSample_zeroBarcode {k : Type u} [Field k] :
   rw [rankBarcode_reindex, zeroSourceBarcode]
   decide
 
-private theorem constantSample_actualRank {k : Type u} [Field k] :
+private theorem constantSampleRank {k : Type u} [Field k] :
     structureMapRank (reindex constantSample (zeroTransitionDiagram k))
       (0 : Fin 3) 2 (by decide) = 1 := by
   rw [structureMapRank_reindex]
@@ -255,7 +255,7 @@ private theorem rationalTransitionFixtures :
      moduleMultiplicityInteger Mi 0 1 = 0 ∧
      moduleMultiplicityInteger Mz 0 1 = 0) := by
   exact ⟨repeatedIdentityBarcode, repeatedZeroBarcode,
-    repeatedActualRanks, repeatedBoundaryZero⟩
+    repeatedModuleRanks, repeatedBoundaryZero⟩
 
 private theorem binaryTransitionFixtures :
     let Mi := reindex repeatedSample (identityTransitionDiagram (ZMod 2))
@@ -271,7 +271,7 @@ private theorem binaryTransitionFixtures :
      moduleMultiplicityInteger Mi 0 1 = 0 ∧
      moduleMultiplicityInteger Mz 0 1 = 0) := by
   exact ⟨repeatedIdentityBarcode, repeatedZeroBarcode,
-    repeatedActualRanks, repeatedBoundaryZero⟩
+    repeatedModuleRanks, repeatedBoundaryZero⟩
 
 private def mixedSource : Multiset (FiniteInterval 6) :=
   {⟨0, 6, by omega, by omega⟩,
@@ -295,13 +295,13 @@ private theorem nonterminalBecomesTerminal :
       (⟨2, 5, by omega, by omega⟩ : FiniteInterval 6) =
       some (⟨2, 4, by omega, by omega⟩ : FiniteInterval 4) := by decide
 
-private theorem mixedActualBarcode {k : Type u} [Field k] :
+private theorem mixedModuleBarcode {k : Type u} [Field k] :
     rankBarcode (reindex mixedSample (barcodeModule (k := k) mixedSource)) =
       mixedTarget := by
   rw [rankBarcode_reindex, rankBarcode_barcodeModule]
   decide
 
-private theorem mixedActualRanks {k : Type u} [Field k] :
+private theorem mixedModuleRanks {k : Type u} [Field k] :
     structureMapRank (reindex mixedSample (barcodeModule (k := k) mixedSource))
       (0 : Fin 4) 1 (by decide) = 3 ∧
     structureMapRank (reindex mixedSample (barcodeModule (k := k) mixedSource))
@@ -345,10 +345,10 @@ private theorem mixedIntegerFromNatural {k : Type u} [Field k]
   have hcast := barcodeMultiplicity_rankBarcode
     (reindex mixedSample (barcodeModule (k := k) mixedSource)) b d hbd hd
   rw [hn] at hcast
-  have hactual := hcast.symm
+  have hdiagram := hcast.symm
   have hrectangle := moduleMultiplicityInteger_reindex
     (barcodeModule (k := k) mixedSource) mixedSample b d hbd hd
-  exact ⟨hactual, hrectangle.symm.trans hactual⟩
+  exact ⟨hdiagram, hrectangle.symm.trans hdiagram⟩
 
 private theorem mixedIntegerBlocks {k : Type u} [Field k] :
     moduleMultiplicityInteger
@@ -383,7 +383,7 @@ private theorem rationalMixedFixtures :
        moduleMultiplicityInteger M 2 4 = 2 ∧
        moduleMultiplicityInteger M 1 4 = 0 ∧
        moduleMultiplicityInteger M 0 1 = 0) := by
-  exact ⟨mixedActualBarcode, mixedNaturalBlocks, mixedIntegerBlocks⟩
+  exact ⟨mixedModuleBarcode, mixedNaturalBlocks, mixedIntegerBlocks⟩
 
 private theorem binaryMixedFixtures :
     let M := reindex mixedSample (barcodeModule (k := ZMod 2) mixedSource)
@@ -396,7 +396,7 @@ private theorem binaryMixedFixtures :
        moduleMultiplicityInteger M 2 4 = 2 ∧
        moduleMultiplicityInteger M 1 4 = 0 ∧
        moduleMultiplicityInteger M 0 1 = 0) := by
-  exact ⟨mixedActualBarcode, mixedNaturalBlocks, mixedIntegerBlocks⟩
+  exact ⟨mixedModuleBarcode, mixedNaturalBlocks, mixedIntegerBlocks⟩
 
 private def twoCopies (k : Type u) [Field k] : PModule.{u,0,u} k (Fin 2) where
   obj _ := ModuleCat.of k (k × k)
@@ -464,7 +464,7 @@ private theorem rationalConstantZero :
       ({targetBar03} : Multiset (FiniteInterval 3)) ∧
     structureMapRank (reindex constantSample (zeroTransitionDiagram ℚ))
       (0 : Fin 3) 2 (by decide) = 1 :=
-  ⟨constantSample_identityBarcode, constantSample_zeroBarcode, constantSample_actualRank⟩
+  ⟨constantSample_identityBarcode, constantSample_zeroBarcode, constantSampleRank⟩
 
 private theorem binaryConstantZero :
     rankBarcode (reindex constantSample (identityTransitionDiagram (ZMod 2))) =
@@ -473,6 +473,6 @@ private theorem binaryConstantZero :
       ({targetBar03} : Multiset (FiniteInterval 3)) ∧
     structureMapRank (reindex constantSample (zeroTransitionDiagram (ZMod 2)))
       (0 : Fin 3) 2 (by decide) = 1 :=
-  ⟨constantSample_identityBarcode, constantSample_zeroBarcode, constantSample_actualRank⟩
+  ⟨constantSample_identityBarcode, constantSample_zeroBarcode, constantSampleRank⟩
 
 end TDA.Persistence

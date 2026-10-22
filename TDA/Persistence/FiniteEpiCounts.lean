@@ -6,7 +6,7 @@ import Mathlib.LinearAlgebra.Dimension.Constructions
 
 At a positive birth, count the image at a later stage modulo the preceding image.
 At birth zero there is no preceding stage, so use the image itself. Naturality and
-component surjectivity supply actual surjections before dimensions are compared.
+component surjectivity supply surjections before dimensions are compared.
 -/
 
 set_option autoImplicit false
@@ -68,8 +68,7 @@ private theorem previous_image_finrank (M : PModule.{u,0,u} k (Fin s))
   rw [← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype,
     inf_of_le_right (previous_image_le M b c hb hbc hc)]
 
-/-- For a positive birth, the survival count is the dimension of the actual
-image quotient. The preceding image lies inside the current one by composition. -/
+/-- For a positive birth, the survival count is the dimension of the image quotient. The preceding image lies inside the current one by composition. -/
 theorem birthSuffixCount_eq_finrank (M : PModule.{u,0,u} k (Fin s))
     [∀ i, FiniteDimensional k (M.obj i)] (b c : ℕ)
     (hb : 0 < b) (hbc : b ≤ c) (hc : c < s) :
@@ -153,7 +152,7 @@ private theorem birthQuotientMap_surjective {M N : PModule.{u,0,u} k (Fin s)} (p
     exact ⟨Submodule.Quotient.mk x, rfl⟩
 
 /-- A componentwise surjection decreases the same-birth survival counts.
-The proof compares actual image quotient surjections, with birth zero handled separately. -/
+The proof compares image quotient surjections, with birth zero handled separately. -/
 theorem birthSuffixCount_le_of_surjective {M N : PModule.{u,0,u} k (Fin s)}
     [∀ i, FiniteDimensional k (M.obj i)] [∀ i, FiniteDimensional k (N.obj i)]
     (p : M ⟶ N) (hp : ∀ i, Function.Surjective (p.app i).hom)

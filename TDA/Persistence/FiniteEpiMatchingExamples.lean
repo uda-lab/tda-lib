@@ -1,7 +1,7 @@
 import TDA.Persistence.FiniteEpiMatching
 import Mathlib.Data.Rat.Defs
 
-/-! # Actual epimorphisms and canonical barcode embedding consumers -/
+/-! # epimorphisms and canonical barcode embedding consumers -/
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -126,7 +126,7 @@ theorem three_death_composition :
       (epiEmbedding second second_surjective).trans (epiEmbedding first first_surjective) :=
   epiEmbedding_comp first second first_surjective second_surjective
 
-/-- A positive birth exercises the actual predecessor-image quotient and its surjection. -/
+/-- A positive birth exercises the predecessor-image quotient and its surjection. -/
 theorem positive_birth_quotient :
     birthSuffixCount (rankBarcode (intervalModule (k := ℚ) laterShort)) 1 1 = 1 ∧
     birthSuffixCount (rankBarcode (intervalModule (k := ℚ) laterShort)) 1 1 =

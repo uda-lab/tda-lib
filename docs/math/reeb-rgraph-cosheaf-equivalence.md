@@ -60,7 +60,7 @@ RGraph.cosheafFunctor : RGraphCat ⥤ ConstructibleCosheafCat.{0}
 
 with `cosheafFunctor ⋙ ι = IsRGraph.ι ⋙ intervalComponentsOver` (`cosheafFunctor_comp_ι`). Its
 object and morphism formulas `cosheafFunctor_obj_obj` and `cosheafFunctor_map_hom` hold by `rfl`:
-the functor is the actual path-component functor on underlying spaces, not a combinatorial model.
+the functor is the path-component functor on underlying spaces, not a combinatorial model.
 
 ## Finite level
 
@@ -91,8 +91,7 @@ Realization followed by interval components acts by `realizeNatTrans`
 ## Full faithfulness
 
 Graph objects `A` and `B` have presentations `iA : A ≅ toOver T DA` and `iB : B ≅ toOver T DB` over
-one common list `T` (`exists_common_presentation`). For every slice morphism `g`, the actual
-component map is the realized transformation of the classified finite map, conjugated by the images
+one common list `T` (`exists_common_presentation`). For every slice morphism `g`, the component map is the realized transformation of the classified finite map, conjugated by the images
 of the presentations (`intervalComponentsOver_map_eq`). For a morphism `f : A ⟶ B` of graph
 objects:
 
@@ -113,8 +112,7 @@ morphisms, the classification `homEquivOfIso iA iB` of `reeb-rgraph.md`, `realiz
 conjugation by the images of the presentations, and the morphisms of `ConstructibleCosheafCat` as
 natural transformations. It equals the functor's map (`cosheafHomEquiv_apply`). Hence
 `cosheafFunctor.map` is bijective on every Hom set (`cosheafFunctor_map_bijective`), which gives
-the `Full` and `Faithful` instances and `cosheafFullyFaithful`. The statement concerns the actual
-map of the functor on all continuous height-preserving maps between graph objects; no objectwise
+the `Full` and `Faithful` instances and `cosheafFullyFaithful`. The statement concerns the map of the functor on all continuous height-preserving maps between graph objects; no objectwise
 bijection of Hom sets replaces it.
 
 ## Essential surjectivity
@@ -181,7 +179,7 @@ hypothesis appears, since graph realizations have discrete pieces.
 
 ## Fixtures
 
-`TDA.Reeb.RGraphCosheafEquivalenceExamples` works with actual graph objects and actual component
+`TDA.Reeb.RGraphCosheafEquivalenceExamples` works with graph objects and component
 transformations:
 
 - **Automorphism.** The swap of two parallel edges over `0 < 1` is a non-identity involutive graph

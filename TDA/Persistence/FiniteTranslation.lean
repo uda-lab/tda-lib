@@ -8,23 +8,23 @@ universe u
 
 namespace TDA.Persistence
 
-/-- Translation-triviality means vanishing of the actual maps `i → theta i`.
+/-- Translation-triviality means vanishing of the maps `i → theta i`.
 The translation may identify stages; inflationarity supplies the required inequalities. -/
 def TranslationTrivial {s : ℕ} {k : Type u} [Field k] (theta : Fin s →o Fin s) (hTheta : ∀ i, i ≤ theta i)
     (K : PModule.{u,0,u} k (Fin s)) : Prop :=
   ∀ i, structureMap K (hTheta i) = 0
 
-/-- The birth of a nonempty finite interval is an actual observed stage. -/
+/-- The birth of a nonempty finite interval is an observed stage. -/
 def FiniteInterval.birthStage {s : ℕ} (I : FiniteInterval s) : Fin s :=
   ⟨I.birth, I.birth_lt_death.trans_le I.death_le_size⟩
 
 /-- Translate an observed death; terminal death remains the finite observation boundary.
-Only deaths strictly below `s` are interpreted as actual stages. -/
+Only deaths strictly below `s` are interpreted as stages. -/
 def FiniteInterval.translatedDeath {s : ℕ} (I : FiniteInterval s)
     (theta : Fin s →o Fin s) : ℕ :=
   if h : I.death < s then (theta ⟨I.death, h⟩).val else s
 
-/-- A finite observed death is translated at that actual stage. -/
+/-- A finite observed death is translated at that stage. -/
 theorem FiniteInterval.translatedDeath_of_lt {s : ℕ} (I : FiniteInterval s)
     (theta : Fin s →o Fin s) (h : I.death < s) :
     I.translatedDeath theta = (theta ⟨I.death, h⟩).val := dif_pos h

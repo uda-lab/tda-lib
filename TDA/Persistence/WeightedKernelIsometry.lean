@@ -8,7 +8,7 @@ import Mathlib.Analysis.Normed.Operator.Extend
 # Multiplication isometry for weighted kernels
 
 For a real positive semidefinite kernel and a nowhere-zero weight, multiplication
-by the weight identifies the actual completed RKHSs by a linear isometry equivalence.
+by the weight identifies the completed RKHSs by a linear isometry equivalence.
 This proves the multiplication claim of KFH18 Proposition 7 without requiring
 C₀-universality. The Gaussian specialization uses the open upper half-plane;
 its finite-sum norms agree with the existing full-plane diagram embedding.
@@ -43,10 +43,10 @@ instance fact_posSemidef_weightedKernel (k : Matrix X X ℝ) [Fact k.PosSemidef]
 instance fact_posSemidef_scalarOp (k : Matrix X X ℝ) [Fact k.PosSemidef] :
     Fact (scalarOp k).PosSemidef := ⟨posSemidef_scalarOp Fact.out⟩
 
-/-- The actual scalar-output RKHS of a scalar kernel. -/
+/-- The scalar-output RKHS of a scalar kernel. -/
 abbrev BaseSpace (k : Matrix X X ℝ) [Fact k.PosSemidef] := RKHS.OfKernel (scalarOp k)
 
-/-- The actual RKHS of the weighted kernel, including weights with zeros. -/
+/-- The RKHS of the weighted kernel, including weights with zeros. -/
 abbrev WeightedSpace (k : Matrix X X ℝ) [Fact k.PosSemidef] (g : X → ℝ) :=
   BaseSpace (weightedKernel k g)
 

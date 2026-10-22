@@ -77,7 +77,7 @@ geometricSmoothing ε : RGraphCat ⥤ RGraphCat :=
   thickeningToConstructible ε ⋙ quotientRGraphFunctor
 ```
 
-is `U_ε = ℛ T_ε`: the actual product thickening, constructible on graph input, followed by the
+is `U_ε = ℛ T_ε`: the product thickening, constructible on graph input, followed by the
 Reeb functor. Under the graph inclusion it is literally
 `IsRGraph.ι ⋙ GeometricThickening.functor ε ⋙ ReebQuotient.quotientFunctor ℝ`, on objects and on
 all maps (`geometricSmoothing_comp_ι`, `geometricSmoothing_obj_obj`, `geometricSmoothing_map_hom`,
@@ -136,8 +136,8 @@ asserted, and none is well defined in general.
 
 ## The unit
 
-`geometricSmoothingUnit ε : 𝟭 RGraphCat ⟶ geometricSmoothing ε` has component the actual zero
-section `x ↦ (x, 0)` followed by the actual Reeb projection of `T_ε A`
+`geometricSmoothingUnit ε : 𝟭 RGraphCat ⟶ geometricSmoothing ε` has component the zero
+section `x ↦ (x, 0)` followed by the Reeb projection of `T_ε A`
 (`geometricSmoothingUnit_app_hom`); on points `ζ x = q (x, 0)`
 (`geometricSmoothingUnit_app_hom_left_apply`). The comparison sends `C''(ζ)` to the lifted
 smoothing unit:
@@ -215,7 +215,7 @@ The declarations live in namespace `TDA.Reeb.RGraph`. The packaging is in univer
 
 ## Fixtures
 
-`TDA.Reeb.RGraphSmoothingExamples` works with actual graph objects. The levels `S01` are `0 < 1`;
+`TDA.Reeb.RGraphSmoothingExamples` works with graph objects. The levels `S01` are `0 < 1`;
 the parallel-edge loop, the single edge and two disjoint segments over `0 < 1` are the merged
 fixtures of `reeb-constructible-space.md`, `reeb-rgraph.md` and
 `reeb-rgraph-cosheaf-equivalence.md`. A value `C(U_ε A)(I)` is transported to `C(A)(I^ε)` by
@@ -261,7 +261,7 @@ fixtures of `reeb-constructible-space.md`, `reeb-rgraph.md` and
   most one element (`parallel_smoothed_subsingleton`; the equality case `ε = 1/2` is
   `parallel_half_subsingleton`), values are nonempty on every interval meeting `[-ε, 1 + ε]`
   (`parallel_smoothed_nonempty`) and empty on both outer rays (`parallel_smoothed_isEmpty_rays`).
-  For the actual height fibers of `U_ε`: for `ε ≥ 1/2` every fiber has at most one point
+  For the height fibers of `U_ε`: for `ε ≥ 1/2` every fiber has at most one point
   (`parallel_smoothed_fiber_subsingleton`, with `parallel_half_fiber_subsingleton` at `ε = 1/2`);
   for every `ε` the fiber over `t` is nonempty exactly when `t ∈ [-ε, 1 + ε]`
   (`parallel_smoothed_fiber_nonempty_iff`) and empty outside (`parallel_smoothed_fiber_isEmpty`).
@@ -278,7 +278,7 @@ fixtures of `reeb-constructible-space.md`, `reeb-rgraph.md` and
   `[-ε, 1 + ε]` (`single_stretched_nonempty`); for `ε < 1/2` an interior height is reached by an
   edge point. On `(1/4, 3/4)` at `ε = 1/4`, where the loop has two distinct elements, the single
   edge has exactly one (`single_quarter_gap`). Values on both outer rays are empty
-  (`single_smoothed_isEmpty_rays`). The actual fibers have at most one point
+  (`single_smoothed_isEmpty_rays`). The fibers have at most one point
   (`single_smoothed_fiber_subsingleton`) and are nonempty exactly over `[-ε, 1 + ε]`
   (`single_smoothed_fiber_nonempty_iff`). For `ε ≥ 1/2`, `single_smoothed_subsingleton` and
   `single_smoothed_nonempty` are the long-interval forms.
@@ -309,7 +309,7 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3–4.4:
   fixtures prove the fiber statements of the loop and the single edge directly.
 - **Example 4.31**, items (1), the line stretched by `ε` in both directions, and (3), the loop with
   height `b - a ≤ 2ε` whose thickening has one component in every levelset, are the single-edge and
-  loop fixtures over `[a, b] = [0, 1]`, both for values on intervals and for the actual fibers.
+  loop fixtures over `[a, b] = [0, 1]`, both for values on intervals and for the fibers.
 - **Proposition 4.32** states `C''U_ε ≅ S_εC'' : Reeb → Cshᶜ`, proved by
   `C''ℛT_ε ≃ C'T_ε ≃ S_εC''` with Theorems 3.17 and 4.24. `geometricSmoothingComparisonIso` is that
   composite: the inverse of `η` (Theorem 3.17, see `reeb-constructible-comparison.md`) whiskered by

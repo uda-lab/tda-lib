@@ -2,7 +2,7 @@ import TDA.Persistence.SimplicialMultivaluedInterleaving
 import TDA.Simplicial.H0Augmentation
 import Mathlib.LinearAlgebra.Matrix.Notation
 
-/-! Actual canonical interleavings, nonzero maps, round-trip obstruction and coefficient controls. -/
+/-! Canonical interleavings, nonzero maps, round-trip obstruction and coefficient controls. -/
 
 namespace TDA.Persistence.SimplicialMultivaluedInterleavingExamples
 
@@ -221,7 +221,7 @@ private theorem born_selectors_distinct :
   intro h
   exact (by decide : (0 : Fin 2) ≠ 1) (congrFun h 0)
 
-/-! Subrelations retain actual maps at negative degrees; a missing birth cannot be ignored. -/
+/-! Subrelations retain maps at negative degrees; a missing birth cannot be ignored. -/
 
 private abbrev point2 := birth 2 pointK
 private theorem negativeRelation : IsShiftedSimplicialRelation point2 edge1 (-1)
@@ -258,7 +258,7 @@ private theorem missing_birth_degree_zero :
     (by intro y _; exact ⟨0,by simp,trivial⟩)
   norm_num [birth] at hh
 
-/-! Two individually simplicial total maps can fail one actual round-trip triangle. -/
+/-! Two individually simplicial total maps can fail one round-trip triangle. -/
 
 private def isolatedK : PreAbstractSimplicialComplex (Fin 2) where
   faces := {s | s.Nonempty ∧ s.card ≤ 1}
@@ -352,7 +352,7 @@ private theorem bad_roundTrip_image :
     (f := collapse) (g := chooseZero) (Set.Subset.refl _) (Set.Subset.refl _)
     0 1 (isolated_vertex 1) (isolated_vertex 0) 1
 
-private theorem bad_actual_triangle_fails :
+private theorem bad_triangle_fails :
     badComposite ≠ RealShift.transition (0+0) (simplicialHomologyPModule ℚ isolatedF 0) := by
   intro he
   have hc := congrArg (fun m => (m.app 0).hom
@@ -361,7 +361,7 @@ private theorem bad_actual_triangle_fails :
   exact isolated_classes_differ (hc.trans (transition_image ℚ isolatedF (0+0) 0 1
     (isolated_vertex 1) (isolated_vertex 1) 1))
 
-/-! Infinite relational images still yield actual zero-interleavings and an actual isomorphism. -/
+/-! Infinite relational images still yield zero-interleavings and an isomorphism. -/
 
 private abbrev naturalF := constF (⊤ : PreAbstractSimplicialComplex ℕ)
 private theorem infiniteForward : IsShiftedSimplicialRelation pointF naturalF 0 Set.univ :=
@@ -535,7 +535,7 @@ private theorem empty_target_control (C : SetRel (Fin 1) (Fin 0)) :
     obtain ⟨y,_⟩ := h 0
     exact Fin.elim0 y
 
-/-! Actual fields and triangles retain a noncentral matrix coefficient, and allow the zero ring. -/
+/-! Fields and triangles retain a noncentral matrix coefficient, and allow the zero ring. -/
 
 private abbrev singletonF := constF (singletonFace (0 : Fin 1))
 private theorem singletonTotal :
@@ -597,7 +597,7 @@ private theorem matrix_noncentral :
   have hh := congrArg (fun M : Matrix (Fin 2) (Fin 2) ℤ => M 0 1) h
   norm_num [Matrix.mul_apply,Fin.sum_univ_two] at hh
 
-private theorem matrix_actual_fields_and_triangles :
+private theorem matrix_fields_and_triangles :
     let R := Matrix (Fin 2) (Fin 2) ℤ
     let A : R := !![0,1;0,0]
     (simplicialSingletonH0Equiv R (0 : Fin 1)
@@ -614,7 +614,7 @@ private theorem matrix_actual_fields_and_triangles :
           (vClass R (singletonFace (0 : Fin 1)) 0 rfl A)) = A) :=
   ⟨coefficient_fields _ _,coefficient_triangles _ _⟩
 
-private theorem trivial_ring_actual_fields_and_triangles :
+private theorem trivial_ring_fields_and_triangles :
     let R := ZMod 1
     (simplicialSingletonH0Equiv R (0 : Fin 1)
       (((coefficientI R).φ.app 0).hom (vClass R (singletonFace (0 : Fin 1)) 0 rfl 0)) = 0 ∧

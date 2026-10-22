@@ -1,7 +1,7 @@
 import TDA.Simplicial.Inclusion
 
 /-!
-# Finite checks for actual simplicial chain inclusions
+# Finite checks for simplicial chain inclusions
 
 These private fixtures exercise the public naturality and chain-map APIs on
 proper subcomplexes in one ordered ambient type. Their `#print axioms` records

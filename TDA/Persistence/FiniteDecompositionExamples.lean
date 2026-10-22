@@ -118,7 +118,7 @@ private theorem delayedBirthFiber_mono {i j : Fin 3} (hij : i ≤ j) :
     simp only [delayedBirthFiber, if_neg hi, if_neg hj]
     exact le_refl _
 
-/-- The maps are the actual inclusions of zero or full-field fibers. -/
+/-- The maps are the inclusions of zero or full-field fibers. -/
 noncomputable def delayedBirthDiagram : PModule.{u,0,u} k (Fin 3) where
   obj i := ModuleCat.of k (delayedBirthFiber (k := k) i)
   map f := ModuleCat.ofHom (Submodule.inclusion (delayedBirthFiber_mono (k := k) (leOfHom f)))
@@ -162,7 +162,7 @@ theorem delayedBirth_barcode : rankBarcode (delayedBirthDiagram (k := k)) =
   fin_cases i <;> fin_cases j <;>
     simp_all [delayedBirthFiber, bar23, ← Multiset.cons_zero]
 
-/-- Multiplication by `c` is the actual transition; self maps remain identities. -/
+/-- Multiplication by `c` is the transition; self maps remain identities. -/
 def scalarTransitionDiagram (c : k) : PModule.{u,0,u} k (Fin 2) where
   obj _ := ModuleCat.of k k
   map {i j} _ := if i = j then 𝟙 _ else ModuleCat.ofHom (c • LinearMap.id)
@@ -181,7 +181,7 @@ theorem scalarTransitionDiagram_map (c : k) (x : k) :
     structureMapLinear (scalarTransitionDiagram c) (show (0 : Fin 2) ≤ 1 by decide) x =
       c * x := rfl
 
-/-- The second component divides by `c`; naturality cancels the actual transition scalar. -/
+/-- The second component divides by `c`; naturality cancels the transition scalar. -/
 noncomputable def scalarTransitionIso (c : k) (hc : c ≠ 0) :
     scalarTransitionDiagram c ≅ identityTransitionDiagram k := by
   refine NatIso.ofComponents (fun i =>

@@ -4,7 +4,7 @@ import TDA.Mapper.Refinement
 /-!
 # Ordinary Mapper fixtures
 
-These examples exercise the actual `mapper` definition: disconnected fibers,
+These examples exercise the `mapper` definition: disconnected fibers,
 duplicate labels, a genuine triangle, a component-merging refinement, and the
 multiplicity-two one-skeleton theorem at empty and isolated complexes.
 -/

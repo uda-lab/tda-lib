@@ -2,7 +2,7 @@ import TDA.Persistence.RipsRelationInterleaving
 import TDA.Simplicial.H0Augmentation
 import Mathlib.LinearAlgebra.Matrix.Notation
 
-/-! Actual Rips relation maps, finite diagrams, quantitative obstructions and coefficient controls. -/
+/-! Rips relation maps, finite diagrams, quantitative obstructions and coefficient controls. -/
 
 namespace TDA.Persistence.RipsRelationInterleavingExamples
 
@@ -208,7 +208,7 @@ private theorem edge_thresholds :
     Rips.diameter dTwo {0,1} = 2 ∧ Rips.diameter dThree {false,true} = 3 := by
   constructor <;> rw [Rips.diameter_pair] <;> norm_num [dTwo,dThree,discreteMetric]
 
-private theorem pair_actual_fields :
+private theorem pair_fields :
     ((pairI.φ.app 0).hom (rc ℚ dTwo 0 0 (by norm_num) 1) =
       rc ℚ dThree (0+((1:ℝ≥0):ℝ)) false (by norm_num) 1) ∧
     ((pairI.ψ.app 0).hom (rc ℚ dThree 0 true (by norm_num) 1) =
@@ -219,10 +219,10 @@ private theorem pair_actual_fields :
   · exact backward_image ℚ dTwo dThree pairTotal pairInvTotal pairBound
       pairInvGraph 0 true (by norm_num) (by norm_num) 1
 
-private theorem pair_actual_images_nonzero :
+private theorem pair_images_nonzero :
     (pairI.φ.app 0).hom (rc ℚ dTwo 0 0 (by norm_num) 1) ≠ 0 ∧
     (pairI.ψ.app 0).hom (rc ℚ dThree 0 true (by norm_num) 1) ≠ 0 := by
-  rw [pair_actual_fields.1,pair_actual_fields.2]
+  rw [pair_fields.1,pair_fields.2]
   exact ⟨vClass_nonzero _ _ _,vClass_nonzero _ _ _⟩
 
 private theorem pair_difference_survives :
@@ -234,7 +234,7 @@ private theorem pair_difference_survives :
   have he : (pairI.φ.app 0).hom
       (rc ℚ dTwo 0 0 (by norm_num) 1 - rc ℚ dTwo 0 1 (by norm_num) 1) =
         rc ℚ dThree (0+((1:ℝ≥0):ℝ)) false (by norm_num) 1 - rc ℚ dThree (0+((1:ℝ≥0):ℝ)) true (by norm_num) 1 := by
-    rw [map_sub,pair_actual_fields.1]
+    rw [map_sub,pair_fields.1]
     congr 1
     exact forward_image ℚ dTwo dThree pairTotal pairInvTotal pairBound
       (Set.Subset.refl _) 0 1 (by norm_num) (by norm_num) 1
@@ -243,7 +243,7 @@ private theorem pair_difference_survives :
   letI := discrete_no_edges (V := Bool) 3 (by norm_num) (0+((1:ℝ≥0):ℝ)) (by norm_num)
   exact classes_differ _ false true Bool.false_ne_true _ _
 
-private theorem pair_actual_triangles :
+private theorem pair_triangles :
     ((((pairI.φ ≫ (RealShift.shift 1).map pairI.ψ ≫
       (RealShift.compIso 1 1 (sublevelModule ℚ (Rips.filter dTwo) 0)).hom).app 0).hom
         (rc ℚ dTwo 0 0 (by norm_num) 1)) = rc ℚ dTwo (0+((1+1:ℝ≥0):ℝ)) 0 (by norm_num) 1) ∧
@@ -256,7 +256,7 @@ private theorem pair_actual_triangles :
   · rw [pairI.ψ_φ]
     exact transition_image ℚ (rf dThree) (1+1) 0 true _ _ 1
 
-private theorem pair_actual_diagrams (n : ℕ) :
+private theorem pair_diagrams (n : ℕ) :
     bottleneck (dgm ℚ (Rips.filter dTwo) n) (dgm ℚ (Rips.filter dThree) n) ≤ 1 :=
   Rips.bottleneck_dgm_le_of_relation dTwo dThree pairTotal pairInvTotal pairBound ℚ n
 
@@ -279,18 +279,18 @@ private theorem multiBackwardGraph : Function.graph (fun _ : Fin 2 => (0 : Fin 1
   Set.subset_univ _
 private def multiI := Rips.relationInterleaving ℚ dPoint dTwo multiTotal multiInvTotal multiBound 0
 
-private theorem multi_actual_forward :
+private theorem multi_forward :
     (multiI.φ.app 0).hom (rc ℚ dPoint 0 0 (by norm_num) 1) =
       rc ℚ dTwo (0+((2:ℝ≥0):ℝ)) 0 (by norm_num) 1 :=
   forward_image ℚ dPoint dTwo multiTotal multiInvTotal multiBound multiForwardGraph
     0 0 (by norm_num) (by norm_num) 1
 
-private theorem multi_actual_forward_nonzero :
+private theorem multi_forward_nonzero :
     (multiI.φ.app 0).hom (rc ℚ dPoint 0 0 (by norm_num) 1) ≠ 0 := by
-  rw [multi_actual_forward]
+  rw [multi_forward]
   exact vClass_nonzero _ _ _
 
-private theorem multi_actual_difference_collapses :
+private theorem multi_difference_collapses :
     (multiI.ψ.app 0).hom
       (rc ℚ dTwo 0 0 (by norm_num) 1 - rc ℚ dTwo 0 1 (by norm_num) 1) = 0 := by
   have h0 := backward_image ℚ dPoint dTwo multiTotal multiInvTotal multiBound multiBackwardGraph
@@ -314,7 +314,7 @@ private theorem multi_common_vertex_persists (γ : ℝ≥0) :
   rw [he]
   exact vClass_nonzero _ _ _
 
-private theorem multi_actual_transition_kills_difference :
+private theorem multi_transition_kills_difference :
     ((RealShift.transition (2+2) (sublevelModule ℚ (Rips.filter dTwo) 0)).app 0).hom
       (rc ℚ dTwo 0 0 (by norm_num) 1 - rc ℚ dTwo 0 1 (by norm_num) 1) = 0 := by
   have he := congrArg (fun m => (m.app 0).hom
@@ -322,9 +322,9 @@ private theorem multi_actual_transition_kills_difference :
   rw [← he]
   change ((RealShift.compIso 2 2 (sublevelModule ℚ (Rips.filter dTwo) 0)).hom.app 0).hom
     ((multiI.φ.app (0+((2:ℝ≥0):ℝ))).hom ((multiI.ψ.app 0).hom _)) = 0
-  rw [multi_actual_difference_collapses,map_zero,map_zero]
+  rw [multi_difference_collapses,map_zero,map_zero]
 
-private theorem multi_actual_triangles :
+private theorem multi_triangles :
     ((((multiI.φ ≫ (RealShift.shift 2).map multiI.ψ ≫
       (RealShift.compIso 2 2 (sublevelModule ℚ (Rips.filter dPoint) 0)).hom).app 0).hom
         (rc ℚ dPoint 0 0 (by norm_num) 1)) = rc ℚ dPoint (0+((2+2:ℝ≥0):ℝ)) 0 (by norm_num) 1) ∧
@@ -337,7 +337,7 @@ private theorem multi_actual_triangles :
   · rw [multiI.ψ_φ]
     exact transition_image ℚ (rf dTwo) (2+2) 0 1 _ _ 1
 
-private theorem multi_actual_diagrams (n : ℕ) :
+private theorem multi_diagrams (n : ℕ) :
     bottleneck (dgm ℚ (Rips.filter dPoint) n) (dgm ℚ (Rips.filter dTwo) n) ≤ 2 :=
   Rips.bottleneck_dgm_le_of_relation dPoint dTwo multiTotal multiInvTotal multiBound ℚ n
 
@@ -384,7 +384,7 @@ private theorem pair_geometry_zero_fails :
   have hd := ((Rips.mem_sublevel_iff dThree _ _).mp hh).2 false (by simp) true (by simp)
   norm_num [dThree,discreteMetric] at hd
 
-/-! Empty carriers, genuine metric separation and the actual zero left tail. -/
+/-! Empty carriers, genuine metric separation and the zero left tail. -/
 
 private abbrev dEmpty : MetricSpace (Fin 0) := discreteMetric (Fin 0) 1 (by norm_num)
 private theorem emptyTotal : Relator.LeftTotal (fun x y =>
@@ -398,7 +398,7 @@ private theorem emptyBound (ε : ℝ≥0) : ∀ x x' y y',
   exact isEmptyElim x
 private def emptyI (R : Type) [Ring R] (ε : ℝ≥0) (n : ℕ) :=
   Rips.relationInterleaving R dEmpty dEmpty emptyTotal emptyInvTotal (emptyBound ε) n
-private theorem empty_actual_diagrams (k : Type) [Field k] (ε : ℝ≥0) (n : ℕ) :
+private theorem empty_diagrams (k : Type) [Field k] (ε : ℝ≥0) (n : ℕ) :
     bottleneck (dgm k (Rips.filter dEmpty) n) (dgm k (Rips.filter dEmpty) n) ≤ (ε:ℝ≥0∞) :=
   Rips.bottleneck_dgm_le_of_relation dEmpty dEmpty emptyTotal emptyInvTotal (emptyBound ε) k n
 private theorem no_total_nonempty_empty (C : SetRel (Fin 1) (Fin 0)) :
@@ -408,7 +408,7 @@ private theorem no_total_nonempty_empty (C : SetRel (Fin 1) (Fin 0)) :
   exact isEmptyElim y
 private theorem no_inverse_total_empty_nonempty (C : SetRel (Fin 0) (Fin 1)) :
     ¬ Relator.LeftTotal (fun y x => (y,x) ∈ C.inv) := no_total_nonempty_empty C.inv
-private theorem actual_scale_conventions :
+private theorem scale_conventions :
     ({0} : Finset (Fin 1)) ∈ rf dPoint 0 ∧
     ({0} : Finset (Fin 1)) ∉ rf dPoint (-1) ∧
     rf dPoint (-1) = ⊥ := by
@@ -422,7 +422,7 @@ private theorem repeated_points_do_not_define_a_label_metric :
   have he := d.eq_of_dist_eq_zero hz
   exact (by decide : (0 : Fin 2) ≠ 1) he
 
-/-! Different infinite carriers give an actual zero-interleaving isomorphism. -/
+/-! Different infinite carriers give a zero-interleaving isomorphism. -/
 
 private abbrev NatCopy := {n : ℕ // True}
 private def natCopyEquiv : ℕ ≃ NatCopy where
@@ -445,7 +445,7 @@ private theorem natBound : ∀ x x' y y', (x,y) ∈ natC → (x',y') ∈ natC �
   · subst x'; simp [dNat,dNatCopy,discreteMetric]
   · have hy : natCopyEquiv x ≠ natCopyEquiv x' := fun he => hx (natCopyEquiv.injective he)
     simp [dNat,dNatCopy,discreteMetric,hx,hy]
-private theorem nat_actual_isometry :
+private theorem nat_isometry :
     @Isometry ℕ NatCopy dNat.toPseudoMetricSpace.toPseudoEMetricSpace
       dNatCopy.toPseudoMetricSpace.toPseudoEMetricSpace natCopyEquiv := by
   apply @Isometry.of_dist_eq ℕ NatCopy dNat.toPseudoMetricSpace dNatCopy.toPseudoMetricSpace
@@ -458,16 +458,16 @@ private def natI := Rips.relationInterleaving ℚ dNat dNatCopy natTotal natInvT
 private theorem infinite_carriers :
     Set.Infinite (Set.univ : Set ℕ) ∧ Set.Infinite (Set.univ : Set NatCopy) :=
   ⟨Set.infinite_univ,Set.infinite_univ⟩
-private theorem nat_actual_image :
+private theorem nat_image :
     (natI.φ.app 0).hom (rc ℚ dNat 0 0 (by norm_num) 1) =
       rc ℚ dNatCopy (0+((0:ℝ≥0):ℝ)) (natCopyEquiv 0) (by norm_num) 1 := by
   exact forward_image ℚ dNat dNatCopy natTotal natInvTotal natBound (Set.Subset.refl _)
     0 0 (by norm_num) (by norm_num) 1
-private theorem nat_actual_image_nonzero :
+private theorem nat_image_nonzero :
     (natI.φ.app 0).hom (rc ℚ dNat 0 0 (by norm_num) 1) ≠ 0 := by
-  rw [nat_actual_image]
+  rw [nat_image]
   exact vClass_nonzero _ _ _
-private theorem nat_actual_isomorphism_nonzero :
+private theorem nat_isomorphism_nonzero :
     (((RealInterleaving.toIso natI).hom.app 0).hom
       (rc ℚ dNat 0 0 (by norm_num) 1)) ≠ 0 := by
   have he : (((RealInterleaving.toIso natI).hom.app 0).hom
@@ -475,12 +475,12 @@ private theorem nat_actual_isomorphism_nonzero :
       rc ℚ dNatCopy 0 (natCopyEquiv 0) (by norm_num) 1 := by
     change ((RealShift.zeroIso (sublevelModule ℚ (Rips.filter dNatCopy) 0)).hom.app 0).hom
       ((natI.φ.app 0).hom (rc ℚ dNat 0 0 (by norm_num) 1)) = _
-    rw [nat_actual_image]
+    rw [nat_image]
     exact zeroIso_image ℚ (rf dNatCopy) 0 (natCopyEquiv 0) _ _ 1
   rw [he]
   exact vClass_nonzero _ _ _
 
-/-! Actual fields and positive-shift triangles retain noncentral coefficients. -/
+/-! Fields and positive-shift triangles retain noncentral coefficients. -/
 
 private abbrev dUnit : MetricSpace Unit := discreteMetric Unit 1 (by norm_num)
 private abbrev coefficientC : SetRel Unit (Fin 1) := Function.graph (fun _ => 0)
@@ -543,7 +543,7 @@ private def coefficientEvaluations (R : Type) [Ring R] (a : R) : Prop :=
         (RealShift.compIso 1 1 (sublevelModule R (Rips.filter dPoint) 0)).hom).app 0).hom
           (rc R dPoint 0 0 (by norm_num) a)) = a)
 
-private theorem coefficient_actual_evaluations (R : Type) [Ring R] (a : R) :
+private theorem coefficient_evaluations (R : Type) [Ring R] (a : R) :
     coefficientEvaluations R a := by
   have hf := forward_image R dUnit dPoint coefficientTotal coefficientInvTotal coefficientBound
     (Set.Subset.refl _) 0 () (by norm_num) (by norm_num) a
@@ -572,11 +572,11 @@ private theorem matrix_noncentral :
   intro h
   have hh := congrArg (fun M : Matrix (Fin 2) (Fin 2) ℤ => M 0 1) h
   norm_num [Matrix.mul_apply,Fin.sum_univ_two] at hh
-private theorem matrix_actual_fields_and_triangles :
+private theorem matrix_fields_and_triangles :
     coefficientEvaluations (Matrix (Fin 2) (Fin 2) ℤ) !![0,1;0,0] :=
-  coefficient_actual_evaluations _ _
-private theorem trivial_ring_actual_fields_and_triangles : coefficientEvaluations (ZMod 1) 0 :=
-  coefficient_actual_evaluations _ _
+  coefficient_evaluations _ _
+private theorem trivial_ring_fields_and_triangles : coefficientEvaluations (ZMod 1) 0 :=
+  coefficient_evaluations _ _
 
 end
 end TDA.Persistence.RipsRelationInterleavingExamples

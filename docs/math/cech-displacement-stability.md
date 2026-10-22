@@ -17,7 +17,7 @@ Hence radius_p(x, s) ≤ radius_q(x, s) + ε, and by symmetry the radii differ b
 The sign condition matters only for s = ∅: there both radii are zero, the displacement
 hypothesis holds vacuously for ε = −1, and the inequality 0 ≤ 0 − 1 fails.
 
-For an actual face s, nonempty by definition, the hypothesis at any v₀ ∈ s forces ε ≥ 0,
+For a face s, nonempty by definition, the hypothesis at any v₀ ∈ s forces ε ≥ 0,
 and p v₀ shows that X is nonempty. For every x the Čech value of s under p is at most
 radius_p(x, s) ≤ radius_q(x, s) + ε. Taking the infimum over x gives
 čech_p(s) ≤ čech_q(s) + ε, and by symmetry |čech_p(s) − čech_q(s)| ≤ ε. The hypothesis
@@ -35,7 +35,7 @@ satisfies δ(p, q) ≤ ε exactly when ε ≥ 0 and every label moves by at most
 
 For a finite linearly ordered V, the largest face difference of the two Čech filters is
 at most δ(p, q). The existing finite-face stability theorem then bounds the bottleneck
-distance between the actual Čech diagrams by δ(p, q) in every homological degree. The
+distance between the Čech diagrams by δ(p, q) in every homological degree. The
 diagrams keep their occurrence multiplicities and essential bars at infinity. No
 injectivity, properness or cardinality hypothesis is added. An explicit bound ε ≥ 0 on
 every label-wise distance gives the same diagram bound with ε.
@@ -52,7 +52,7 @@ v, w the reverse triangle inequality for distances gives
 |dist (p v) (p w) − dist (q v) (q w)| ≤ dist (p v) (q v) + dist (p w) (q w) ≤ 2δ(p, q).
 
 So the Rips pairwise discrepancy is at most 2δ(p, q), every Rips diameter moves by at most
-2δ(p, q), and the existing Rips stability theorem bounds the actual Rips diagrams by
+2δ(p, q), and the existing Rips stability theorem bounds the Rips diagrams by
 2δ(p, q). Čech values are 1-Lipschitz and Rips values 2-Lipschitz in the displacement.
 
 ## Fixtures

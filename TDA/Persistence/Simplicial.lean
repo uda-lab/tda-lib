@@ -1,7 +1,7 @@
 import TDA.Simplicial.Homology
 import TDA.Persistence.Basic
 
-/-! Actual simplicial homology as a covariant persistence module. -/
+/-! Simplicial homology as a covariant persistence module. -/
 
 universe u v w
 

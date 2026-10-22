@@ -160,7 +160,7 @@ ends. The raw maps and the product cover used for the descents are private.
   surjective, after which compactness of the realization and Hausdorffness of the band upgrade it
   to a homeomorphism.
 - `thickProdHomeomorph` composes `thickHomeomorph` with the inverse band reparametrization, thereby
-  identifying the presentation realization with the actual product thickening.
+  identifying the presentation realization with the product thickening.
 - `thickOverIso` reverses `thickProdHomeomorph` and bundles its height equation as an isomorphism
   over `ℝ`; it inherits the hypothesis `0 < ε`, while the separate zero-thickening argument handles
   `ε = 0`.
@@ -226,27 +226,25 @@ to height `t` (`fst_thickProdHomeomorph_ofStrip`, `snd_thickProdHomeomorph_ofStr
 `thickOverIso S D ε hε` is the isomorphism over `ℝ` from `(GeometricThickening.functor ε).obj
 (toOver S D)` to `Over.mk` of the presentation height, given by the inverse of
 `thickProdHomeomorph`. At `ε = 0` the merged `zeroIso` identifies the thickening with the graph
-object itself, which is constructible by `isConstructibleSpace_of_isRGraph`. Hence the actual
-thickening of every graph object is constructible:
+object itself, which is constructible by `isConstructibleSpace_of_isRGraph`. Hence the thickening of every graph object is constructible:
 
 ```lean
 isConstructibleSpace_thickening (hA : IsRGraph A) (ε : ℝ≥0) :
     IsConstructibleSpace ((GeometricThickening.functor ε).obj A)
 ```
 
-For an arbitrary graph object `A`, an isomorphism `A ≅ toOver S D` is carried through the actual
-thickening functor and composed with the isomorphism above, so the statement does not depend on
+For an arbitrary graph object `A`, an isomorphism `A ≅ toOver S D` is carried through the thickening functor and composed with the isomorphism above, so the statement does not depend on
 the chosen presentation. The lift
 
 ```lean
 thickeningToConstructible ε : RGraphCat ⥤ ConstructibleSpaceCat
 ```
 
-is the actual `IsRGraph.ι ⋙ GeometricThickening.functor ε` with values in the full subcategory, so
+is the `IsRGraph.ι ⋙ GeometricThickening.functor ε` with values in the full subcategory, so
 it acts on every height-preserving continuous map between graph objects
 (`thickeningToConstructible_comp_ι`, `thickeningToConstructible_obj_obj`,
 `thickeningToConstructible_map_hom`, all by `rfl`). Followed by `quotientRGraphFunctor` and the
-graph inclusion, it is literally the Reeb quotient of the actual product thickening:
+graph inclusion, it is literally the Reeb quotient of the product thickening:
 `thickeningToConstructible ε ⋙ quotientRGraphFunctor ⋙ IsRGraph.ι =
 IsRGraph.ι ⋙ GeometricThickening.functor ε ⋙ ReebQuotient.quotientFunctor ℝ`, by `rfl`
 (`thickeningToConstructible_comp_quotientRGraphFunctor`). This composite is the geometric smoothing
@@ -261,7 +259,7 @@ universe `0`, as `RGraphCat` and `ConstructibleSpaceCat` do.
 
 ## Fixtures
 
-`TDA.Reeb.RGraphThickeningExamples` works with actual windows, presentations and thickenings. The
+`TDA.Reeb.RGraphThickeningExamples` works with windows, presentations and thickenings. The
 two-parallel-edge loop `parallelData` over `0 < 1` and the levels `S01` are the merged fixtures of
 `reeb-constructible-space.md`.
 
@@ -283,12 +281,11 @@ two-parallel-edge loop `parallelData` over `0 < 1` and the levels `S01` are the 
   (`pwMid_isEmpty_V`). The edge label of its raw points respects the gluing and descends along the
   window quotient to a continuous map (`pwMidLabel`, `pwMidLabel_windowCover`), so the window is
   not preconnected (`pwMid_not_preconnected`).
-- **The empty graph.** For every list of levels and every `ε`, the actual thickening of the empty
+- **The empty graph.** For every list of levels and every `ε`, the thickening of the empty
   graph is empty (`emptyThick_isEmpty`), the realization of its thickening presentation is empty
   (`emptyPresentation_isEmpty`), and the thickening is constructible
   (`emptyThick_isConstructibleSpace`).
-- **A singleton at height `a`.** For the single vertex at an arbitrary height `a`, the actual
-  thickening is homeomorphic to the closed segment `Band ε = [-ε, ε]` (`singletonHomeomorph`), and
+- **A singleton at height `a`.** For the single vertex at an arbitrary height `a`, the thickening is homeomorphic to the closed segment `Band ε = [-ε, ε]` (`singletonHomeomorph`), and
   the thickened height of the point `t` of the segment is `a + t`
   (`height_singletonHomeomorph_symm`). For `ε > 0`, every strip point of its thickening
   presentation has band coordinate `t - a` at height `t` (`singleton_snd_ofStrip`).
@@ -301,7 +298,7 @@ two-parallel-edge loop `parallelData` over `0 < 1` and the levels `S01` are the 
   stretch.
 - **Disjoint edges.** For two disjoint segments `twoSegData`, the left attaching map of gap `k0` at
   `ε = 1` sends the points of the two segments to their own, distinct lower vertices
-  (`twoSeg_left_apply`, `twoSeg_left_ne`), and for every `ε` the actual thickening is not
+  (`twoSeg_left_apply`, `twoSeg_left_ne`), and for every `ε` the thickening is not
   preconnected (`twoSegThick_not_preconnected`).
 - **A shifted-level collision.** For `0 < 1` at `ε = 1/2`, the shifts `0 + ε` and `1 - ε` coincide:
   the shifted set is `{-1/2, 1/2, 3/2}` (`S01_shiftedSet_half`), so the witness has three levels,
@@ -311,7 +308,7 @@ two-parallel-edge loop `parallelData` over `0 < 1` and the levels `S01` are the 
   fragment end `c + ε = 1/2` at the midpoint `c = 0` to the original upper vertex
   (`collision_right_apply`).
 - **The bundled lift.** On the parallel-edge loop at `ε = 1`, the underlying object of the lift is
-  the actual thickening (`parallelThick_obj`).
+  the thickening (`parallelThick_obj`).
 
 ## Source correspondence
 

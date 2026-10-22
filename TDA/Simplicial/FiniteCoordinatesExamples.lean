@@ -3,10 +3,10 @@ import TDA.Simplicial.FiniteComplex
 import Mathlib.Data.ZMod.Basic
 import Mathlib.LinearAlgebra.Matrix.Reindex
 
-/-! # Actual-face coordinate fixtures
+/-! # Face coordinate fixtures
 
 The complete displayed arrays are reindexed through proved face bijections.
-They use the actual boundary and inclusion matrices over integers and `ZMod 1`.
+They use the boundary and inclusion matrices over integers and `ZMod 1`.
 -/
 
 universe u v
@@ -392,16 +392,16 @@ private theorem edge_triangle_common_column :
       (!![1; 0; 0] : Matrix (Fin 3) (Fin 1) ℤ) = !![-1; 1; 0] := by
   decide
 
-private theorem triangle_square_actual :
+private theorem triangle_square :
     boundaryMatrix triangleK ℤ 0 * boundaryMatrix triangleK ℤ 1 = 0 :=
   boundaryMatrix_mul_boundaryMatrix triangleK ℤ 0
 
-private theorem edge_triangle_square_actual :
+private theorem edge_triangle_square :
     boundaryMatrix triangleK ℤ 0 * chainInclusionMatrix ℤ edge_le_triangle 1 =
       chainInclusionMatrix ℤ edge_le_triangle 0 * boundaryMatrix edgeK ℤ 0 :=
   boundaryMatrix_chainInclusionMatrix ℤ edge_le_triangle 0
 
-private theorem singleton_edge_square_actual :
+private theorem singleton_edge_square :
     boundaryMatrix edgeK ℤ 0 * chainInclusionMatrix ℤ singleton_le_edge 1 =
       chainInclusionMatrix ℤ singleton_le_edge 0 *
         boundaryMatrix (Filtration.singletonFace (0 : Fin 3)) ℤ 0 :=
@@ -499,7 +499,7 @@ private theorem singletonJ0_reindexed :
   simpa [Matrix.reindex_apply, edgeVertexEquiv, singletonColumnEquiv] using
     congrFun (congrFun singletonJ0_array i) j
 
-private theorem triangle_actual_cancel_reindexed :
+private theorem triangle_cancel_reindexed :
     Matrix.reindex triangleVertexEquiv.symm triangleColumnEquiv.symm
       (boundaryMatrix triangleK ℤ 0 * boundaryMatrix triangleK ℤ 1) = 0 := by
   change (Matrix.reindexLinearEquiv ℤ ℤ
@@ -514,7 +514,7 @@ private theorem triangle_actual_cancel_reindexed :
       (boundaryMatrix triangleK ℤ 1) = 0
   rw [triangleB0_reindexed, triangleB1_reindexed, triangle_arrays_cancel]
 
-private theorem edge_triangle_actual_common_reindexed :
+private theorem edge_triangle_common_reindexed :
     Matrix.reindex triangleVertexEquiv.symm edgeColumnEquiv.symm
       (boundaryMatrix triangleK ℤ 0 * chainInclusionMatrix ℤ edge_le_triangle 1) =
         !![-1; 1; 0] := by
@@ -531,7 +531,7 @@ private theorem edge_triangle_actual_common_reindexed :
       (chainInclusionMatrix ℤ edge_le_triangle 1) = !![-1; 1; 0]
   rw [triangleB0_reindexed, edgeJ1_reindexed, edge_triangle_common_column]
 
-private theorem edge_triangle_actual_right_reindexed :
+private theorem edge_triangle_right_reindexed :
     Matrix.reindex triangleVertexEquiv.symm edgeColumnEquiv.symm
       (chainInclusionMatrix ℤ edge_le_triangle 0 * boundaryMatrix edgeK ℤ 0) =
         !![-1; 1; 0] := by
@@ -607,9 +607,9 @@ end TheoryFixtures
 #print axioms triangle_arrays_cancel
 #print axioms edge_triangle_arrays_agree
 #print axioms edge_triangle_common_column
-#print axioms triangle_square_actual
-#print axioms edge_triangle_square_actual
-#print axioms singleton_edge_square_actual
+#print axioms triangle_square
+#print axioms edge_triangle_square
+#print axioms singleton_edge_square
 #print axioms edge_scalar
 #print axioms triangle_middle_generic
 #print axioms triangle_middle_zero_ring
@@ -627,9 +627,9 @@ end TheoryFixtures
 #print axioms edgeJ0_reindexed
 #print axioms edgeJ1_reindexed
 #print axioms singletonJ0_reindexed
-#print axioms triangle_actual_cancel_reindexed
-#print axioms edge_triangle_actual_common_reindexed
-#print axioms edge_triangle_actual_right_reindexed
+#print axioms triangle_cancel_reindexed
+#print axioms edge_triangle_common_reindexed
+#print axioms edge_triangle_right_reindexed
 #print axioms edge01._proof_1
 #print axioms edge01.eq_1
 #print axioms edgeColumn.eq_1

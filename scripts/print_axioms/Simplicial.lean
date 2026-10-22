@@ -13,17 +13,17 @@ import TDA
 #print axioms TDA.Simplicial.singletonFaceZeroSubsingleton
 #print axioms TDA.Simplicial.singletonFaceHigherIsEmpty
 
--- Ordered actual-face boundary (Issue #23).
+-- Ordered face boundary (Issue #23).
 #print axioms TDA.Simplicial.enumerationAfterDeletion
 #print axioms TDA.Simplicial.boundary_single
 
--- Ordered actual-face square-zero and ordinary chain complex (Issue #39).
+-- Ordered face square-zero and ordinary chain complex (Issue #39).
 #print axioms TDA.Simplicial.boundary_comp_boundary
 #print axioms TDA.Simplicial.simplicialChainComplex_X
 #print axioms TDA.Simplicial.simplicialChainComplex_d
 #print axioms TDA.Simplicial.simplicialChainComplex_d_zero
 
--- Actual simplicial chain inclusion naturality and chain maps (Issue #86).
+-- simplicial chain inclusion naturality and chain maps (Issue #86).
 #print axioms TDA.Simplicial.simplicialChainIncl
 #print axioms TDA.Simplicial.faceIncl_deletedFace
 #print axioms TDA.Simplicial.chainIncl_single
@@ -32,14 +32,14 @@ import TDA
 #print axioms TDA.Simplicial.simplicialChainIncl_id
 #print axioms TDA.Simplicial.simplicialChainIncl_comp
 
--- Finite support-aware complex presentations and their exact actual-face conversion (Issue #97).
+-- Finite support-aware complex presentations and their exact face conversion (Issue #97).
 #print axioms TDA.Simplicial.FiniteComplex.mem_toPre
 #print axioms TDA.Simplicial.FiniteComplex.empty_not_mem_faces
 #print axioms TDA.Simplicial.FiniteComplex.image_univ_totalFace_val
 #print axioms TDA.Simplicial.FiniteComplex.card_totalFace
 #print axioms TDA.Simplicial.FiniteComplex.toPre_injective
 
--- Actual simplicial homology and inclusion (Issue #117).
+-- simplicial homology and inclusion (Issue #117).
 #print axioms TDA.Simplicial.simplicialHomology
 #print axioms TDA.Simplicial.simplicialCycles
 #print axioms TDA.Simplicial.simplicialBoundaries
@@ -76,7 +76,7 @@ import TDA
 #print axioms TDA.Simplicial.chainInclusionMatrix_mulVec
 #print axioms TDA.Simplicial.boundaryMatrix_chainInclusionMatrix
 
--- Coordinate cycles and incoming boundaries in actual finite simplicial chains.
+-- Coordinate cycles and incoming boundaries in finite simplicial chains.
 #print axioms TDA.Simplicial.coordinateCycles_zero
 #print axioms TDA.Simplicial.coordinateCycles_succ
 #print axioms TDA.Simplicial.cycleCoordinates_coe
@@ -101,10 +101,10 @@ import TDA
 #print axioms TDA.Simplicial.coordinateHomologyIncl_id
 #print axioms TDA.Simplicial.coordinateHomologyIncl_comp
 
--- Actual critical-grade simplicial homology and its canonical finite-index barcode (Issue #146).
+-- critical-grade simplicial homology and its canonical finite-index barcode (Issue #146).
 #print axioms TDA.Simplicial.simplicialHomology_finiteDimensional
 
--- Actual one-simplex homology attachment (Issue #183).
+-- one-simplex homology attachment (Issue #183).
 #print axioms TDA.Simplicial.SimplexAttachment.inclusion
 #print axioms TDA.Simplicial.SimplexAttachment.simplex_mem
 #print axioms TDA.Simplicial.SimplexAttachment.faceIncl_injective
@@ -225,7 +225,7 @@ import TDA
 #print axioms TDA.Simplicial.ConeExamples.not_isApexCone_top_one
 #print axioms TDA.Simplicial.ConeExamples.not_isApexCone_bot_zero
 
--- Arbitrary signed vertex maps on actual chains and homology (Issue #410).
+-- Arbitrary signed vertex maps on chains and homology (Issue #410).
 #print axioms TDA.Simplicial.deletedPerm
 #print axioms TDA.Simplicial.deletedPerm_succAbove
 #print axioms TDA.Simplicial.sign_deletedPerm
@@ -278,12 +278,12 @@ import TDA
 #print axioms TDA.Simplicial.VertexChainMapExamples.triangle_transpositions_compose
 #print axioms TDA.Simplicial.VertexChainMapExamples.triangle_second_map_collapses
 #print axioms TDA.Simplicial.VertexChainMapExamples.matrix_edge_reversal
-#print axioms TDA.Simplicial.VertexChainMapExamples.edge_collapse_actualH0
+#print axioms TDA.Simplicial.VertexChainMapExamples.edge_collapse_simplicialH0
 #print axioms TDA.Simplicial.VertexChainMapExamples.ghost_vertex_stays_absent
 #print axioms TDA.Simplicial.VertexChainMapExamples.bottom_map_zero
 #print axioms TDA.Simplicial.VertexChainMapExamples.empty_ambient_identity
 #print axioms TDA.Simplicial.VertexChainMapExamples.proper_inclusion_agrees
-#print axioms TDA.Simplicial.VertexChainMapExamples.actual_homology_functor_laws
+#print axioms TDA.Simplicial.VertexChainMapExamples.homology_functor_laws
 #print axioms TDA.Simplicial.VertexChainMapExamples.triangle_one_pair_terms
 #print axioms TDA.Simplicial.VertexChainMapExamples.triangle_transpositions_image
 #print axioms TDA.Simplicial.VertexChainMapExamples.proper_inclusion_missing_vertex

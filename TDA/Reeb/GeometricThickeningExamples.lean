@@ -3,8 +3,8 @@ import TDA.Reeb.GeometricThickening
 /-!
 # Fixtures for the geometric thickening
 
-Acceptance fixtures for `TDA.Reeb.GeometricThickening`, with the actual comparison
-`componentComparison` into the actual smoothing of the actual interval components:
+Acceptance fixtures for `TDA.Reeb.GeometricThickening`, with the comparison
+`componentComparison` into the smoothing of the interval components:
 
 * **Every kind of open interval.** For an arbitrary space and height, both inverse images are empty
   at `⊥`, and the comparison is bijective at `⊥`, at bounded intervals, at both kinds of rays and

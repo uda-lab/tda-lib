@@ -6,7 +6,7 @@ import Mathlib.CategoryTheory.Limits.FunctorCategory.Basic
 /-!
 # Real shifts and interleaving witnesses
 
-Shifts are actual reindexings by `t ↦ t + ε`. The canonical index identifications
+Shifts are reindexings by `t ↦ t + ε`. The canonical index identifications
 and the original structure maps supply the coherence and transition maps. Parameters
 are finite nonnegative reals. No interleaving distance is defined here.
 -/
@@ -40,7 +40,7 @@ def shift (ε : ℝ≥0) : PModule.{u,0,w} R ℝ ⥤ PModule.{u,0,w} R ℝ where
 @[simp] theorem shift_obj (ε : ℝ≥0) (M : PModule.{u,0,w} R ℝ) (t : ℝ) :
     ((shift ε).obj M).obj t = M.obj (t + (ε : ℝ)) := rfl
 
-/-- Shifted transformations use the actual translated components. -/
+/-- Shifted transformations use the translated components. -/
 @[simp] theorem shift_map_app (ε : ℝ≥0) {M N : PModule.{u,0,w} R ℝ}
     (f : M ⟶ N) (t : ℝ) : ((shift ε).map f).app t = f.app (t + (ε : ℝ)) := rfl
 
@@ -73,7 +73,7 @@ def compIso (ε δ : ℝ≥0) (M : PModule.{u,0,w} R ℝ) :
 @[simp] theorem zeroIso_inv_app (M : PModule.{u,0,w} R ℝ) (t : ℝ) :
     (zeroIso M).inv.app t = M.map (eqToHom (add_zero t).symm) := rfl
 
-/-- The composition component transports the actual translated index. -/
+/-- The composition component transports the translated index. -/
 @[simp] theorem compIso_hom_app (ε δ : ℝ≥0) (M : PModule.{u,0,w} R ℝ) (t : ℝ) :
     (compIso ε δ M).hom.app t =
       M.map (eqToHom (show (t + (ε : ℝ)) + (δ : ℝ) = t + ((ε + δ : ℝ≥0) : ℝ) by
@@ -106,7 +106,7 @@ def congrIso {ε δ : ℝ≥0} (h : ε = δ) (M : PModule.{u,0,w} R ℝ) :
     (shift ε).obj M ≅ (shift δ).obj M :=
   reindexIso (fun t => congrArg (fun a : ℝ≥0 => t + (a : ℝ)) h) M
 
-/-- Equal-parameter transport is the actual map along equality of translated indices. -/
+/-- Equal-parameter transport is the map along equality of translated indices. -/
 @[simp] theorem congrIso_hom_app {ε δ : ℝ≥0} (h : ε = δ)
     (M : PModule.{u,0,w} R ℝ) (t : ℝ) :
     (congrIso h M).hom.app t =
@@ -159,7 +159,7 @@ def transition (ε : ℝ≥0) (M : PModule.{u,0,w} R ℝ) : M ⟶ (shift ε).obj
     rw [← M.map_comp, ← M.map_comp]
     congr 1
 
-/-- Transition components are the actual structure maps from `t` to `t + ε`. -/
+/-- Transition components are the structure maps from `t` to `t + ε`. -/
 @[simp] theorem transition_app (ε : ℝ≥0) (M : PModule.{u,0,w} R ℝ) (t : ℝ) :
     (transition ε M).app t = structureMap M (le_add_of_nonneg_right ε.coe_nonneg) := rfl
 
@@ -191,7 +191,7 @@ theorem transition_congr {ε δ : ℝ≥0} (h : ε = δ) (M : PModule.{u,0,w} R 
   cases h
   simp only [congrIso_refl, Iso.refl_hom, Category.comp_id]
 
-/-- Two actual transitions compose to the transition by the sum. -/
+/-- Two transitions compose to the transition by the sum. -/
 theorem transition_add (ε δ : ℝ≥0) (M : PModule.{u,0,w} R ℝ) :
     transition ε M ≫ (shift ε).map (transition δ M) ≫ (compIso ε δ M).hom =
       transition (ε + δ) M := by
@@ -207,16 +207,16 @@ open RealShift
 
 variable {R : Type u} [Ring R]
 
-/-- A real epsilon-interleaving consists of actual natural maps and both double-shift
+/-- A real epsilon-interleaving consists of natural maps and both double-shift
 identities. The shift-composition comparison is the one constructed from real addition. -/
 structure RealInterleaving (ε : ℝ≥0) (M N : PModule.{u,0,w} R ℝ) where
   /-- The map from the first module to the shifted second module. -/
   φ : M ⟶ (shift ε).obj N
   /-- The map from the second module to the shifted first module. -/
   ψ : N ⟶ (shift ε).obj M
-  /-- The first composite is the actual double-shift structure map. -/
+  /-- The first composite is the double-shift structure map. -/
   φ_ψ : φ ≫ (shift ε).map ψ ≫ (compIso ε ε M).hom = transition (ε + ε) M
-  /-- The second composite is the actual double-shift structure map. -/
+  /-- The second composite is the double-shift structure map. -/
   ψ_φ : ψ ≫ (shift ε).map φ ≫ (compIso ε ε N).hom = transition (ε + ε) N
 
 namespace RealInterleaving
@@ -256,7 +256,7 @@ theorem equations_iff (f : M ⟶ (shift ε).obj N) (g : N ⟶ (shift ε).obj M) 
     · apply NatTrans.ext; funext t; exact hf t
     · apply NatTrans.ext; funext t; exact hg t
 
-/-- Construct a witness from actual natural maps and checked component identities. -/
+/-- Construct a witness from natural maps and checked component identities. -/
 def ofApp (f : M ⟶ (shift ε).obj N) (g : N ⟶ (shift ε).obj M)
     (hf : ∀ t, f.app t ≫ g.app (t + (ε : ℝ)) ≫ (compIso ε ε M).hom.app t =
       (transition (ε + ε) M).app t)
@@ -264,11 +264,11 @@ def ofApp (f : M ⟶ (shift ε).obj N) (g : N ⟶ (shift ε).obj M)
       (transition (ε + ε) N).app t) : RealInterleaving ε M N :=
   ⟨f, g, ((equations_iff f g).mpr ⟨hf, hg⟩).1, ((equations_iff f g).mpr ⟨hf, hg⟩).2⟩
 
-/-- Interchange the two actual transformations. -/
+/-- Interchange the two transformations. -/
 def symm (i : RealInterleaving ε M N) : RealInterleaving ε N M :=
   ⟨i.ψ, i.φ, i.ψ_φ, i.φ_ψ⟩
 
-/-- A module is interleaved with itself by its actual transition maps. -/
+/-- A module is interleaved with itself by its transition maps. -/
 def refl (ε : ℝ≥0) (M : PModule.{u,0,w} R ℝ) : RealInterleaving ε M M :=
   ⟨transition ε M, transition ε M, transition_add ε ε M, transition_add ε ε M⟩
 
@@ -332,7 +332,7 @@ theorem shift_isZero_zero (ε : ℝ≥0) :
   intro t
   exact Functor.zero_obj (t + (ε : ℝ))
 
-/-- Interleaving with zero is exactly annihilation by the actual double-shift map. -/
+/-- Interleaving with zero is exactly annihilation by the double-shift map. -/
 theorem nonempty_zero_iff (ε : ℝ≥0) (M : PModule.{u,0,w} R ℝ) :
     Nonempty (RealInterleaving ε M 0) ↔ transition (ε + ε) M = 0 := by
   constructor

@@ -6,8 +6,7 @@ import TDA.Reeb.ConstructibleRepresentationExamples
 /-!
 # Fixtures for constructible graph thickenings
 
-Acceptance fixtures for `TDA.Reeb.RGraphWindow` and `TDA.Reeb.RGraphThickening`, on actual
-realizations, windows, thickening presentations and slice thickenings:
+Acceptance fixtures for `TDA.Reeb.RGraphWindow` and `TDA.Reeb.RGraphThickening`, on realizations, windows, thickening presentations and slice thickenings:
 
 * **Window gluing on the parallel-edge loop.** In the window `[-1/2, 1/2]` both parallel fragments
   are glued to the common lower vertex, and their interior points at parameter `1/4` stay
@@ -37,7 +36,7 @@ realizations, windows, thickening presentations and slice thickenings:
   witness has three levels `-1/2`, `1/2`, `3/2`. The vertex piece at the collision level is the
   whole single edge, and the right attaching map of the first gap sends the upper end `c + ε` of
   the edge fragment at the midpoint `c = 0` to the upper vertex.
-* **The bundled lift** on the parallel-edge loop has underlying object the actual thickening.
+* **The bundled lift** on the parallel-edge loop has underlying object the thickening.
 -/
 
 open Set Topology CategoryTheory
@@ -106,7 +105,7 @@ theorem pw_separate :
   exact Bool.false_ne_true
     (congrArg Prod.fst ((ofFiniteData parallelData).ofStrip_injective S01 0 h'))
 
-/-! ### Endpoint collapse in the actual thickening presentation -/
+/-! ### Endpoint collapse in the thickening presentation -/
 
 theorem S01_shifted_zero : (S01.shifted 1).value 0 = -1 := by
   rw [S01.shifted_value_zero, S01_value_zero, NNReal.coe_one]
@@ -183,7 +182,7 @@ theorem collapsePt_ne : collapsePt false ≠ collapsePt true := by
   exact Bool.false_ne_true
     (congrArg Prod.fst ((ofFiniteData parallelData).ofStrip_injective S01 0 h'))
 
-/-- The actual left attaching map of gap `k0` sends both interior points to the common vertex:
+/-- The left attaching map of gap `k0` sends both interior points to the common vertex:
 the window at `b 0 = -1` meets each edge only at that vertex, so both fragments collapse onto
 it. -/
 theorem left_collapse_apply (b : Bool) :
@@ -208,13 +207,13 @@ theorem left_collapse_apply (b : Bool) :
   exact (ofFiniteData parallelData).ofCylinder_segBot S01 0 b
 
 /-- **Nontrivial endpoint collapse.** Two distinct interior points of the parallel edges have the
-same image under the actual left attaching map. -/
+same image under the left attaching map. -/
 theorem left_collapse :
     (thickPresentation S01 parallelData 1).left k0 (collapsePt false) =
       (thickPresentation S01 parallelData 1).left k0 (collapsePt true) :=
   Subtype.ext ((left_collapse_apply false).trans (left_collapse_apply true).symm)
 
-/-- The left attaching map of the actual presentation is not injective. -/
+/-- The left attaching map of the presentation is not injective. -/
 theorem left_not_injective :
     ¬ Function.Injective ((thickPresentation S01 parallelData 1).left k0) :=
   fun h => collapsePt_ne (h left_collapse)
@@ -397,7 +396,7 @@ theorem pwMid_not_preconnected : ¬ PreconnectedSpace pwMid := fun h => by
 
 /-! ### The empty graph -/
 
-/-- **The empty graph.** Its actual thickening is empty, for every `ε`. -/
+/-- **The empty graph.** Its thickening is empty, for every `ε`. -/
 theorem emptyThick_isEmpty (n : ℕ) (S : CriticalValues n) (ε : ℝ≥0) :
     IsEmpty ((GeometricThickening.functor ε).obj (toOver S (emptyData n))).left :=
   haveI := emptyData_isEmpty n S
@@ -426,7 +425,7 @@ def single (a : ℝ) : CriticalValues 0 where
   strictMono i j h :=
     absurd h (by rw [Fin.fin_one_eq_zero i, Fin.fin_one_eq_zero j]; exact lt_irrefl _)
 
-/-- **A singleton at height `a`.** The actual thickening of a single vertex at height `a` is the
+/-- **A singleton at height `a`.** The thickening of a single vertex at height `a` is the
 closed segment `Band ε = [-ε, ε]`. -/
 def singletonHomeomorph (a : ℝ) (ε : ℝ≥0) :
     ((GeometricThickening.functor ε).obj (toOver (single a) pt0)).left ≃ₜ
@@ -523,7 +522,7 @@ def twoSegPt (b : Bool) : win S01 twoSegData 1 (mid S01 1 k0) :=
   ⟨(ofFiniteData twoSegData).ofCylinder S01 0 (b, ⟨_, frag_subset_seg s0_mem⟩),
     frag_subset_Icc s0_mem⟩
 
-/-- The actual left attaching map of gap `k0` sends the point of each segment to that segment's
+/-- The left attaching map of gap `k0` sends the point of each segment to that segment's
 own lower vertex. -/
 theorem twoSeg_left_apply (b : Bool) :
     ((thickPresentation S01 twoSegData 1).left k0 (twoSegPt b)).1 =
@@ -546,7 +545,7 @@ theorem twoSeg_left_ne :
     ((twoSeg_left_apply false).symm.trans ((congrArg Subtype.val h).trans
       (twoSeg_left_apply true))))
 
-/-- The actual thickening of the two disjoint segments is not preconnected, for every `ε`: the
+/-- The thickening of the two disjoint segments is not preconnected, for every `ε`: the
 component label of the segments factors through the first coordinate. -/
 theorem twoSegThick_not_preconnected (ε : ℝ≥0) :
     ¬ PreconnectedSpace ((GeometricThickening.functor ε).obj (toOver S01 twoSegData)).left :=

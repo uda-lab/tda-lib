@@ -3,7 +3,7 @@
 Finite-constructible real modules can be placed on a common finite grid without
 changing their real endpoint diagrams. The grid may add observations before,
 between and after the old critical values. Positive evaluation shifts move
-critical values left. These constructions supply actual grid data for comparing
+critical values left. These constructions supply grid data for comparing
 a module with a shifted target.
 
 ## Grids and constructibility
@@ -13,8 +13,7 @@ A grid is a strictly increasing `c : Fin n ↪o ℝ`, including `n=0`.
 Its cells are a zero left tail, left-closed/right-open cells between successive
 values, and an unbounded final cell. No sentinel real grade represents the zero
 cell. The [reconstruction API](constructible-modules.md) defines
-`IsConstructible c M` using an actual zero left tail and isomorphic actual
-structure maps within each cell.
+`IsConstructible c M` using a zero left tail and isomorphic structure maps within each cell.
 
 Constructibility results work for `M : PModule.{u,0,w} R ℝ` over a ring,
 with independent coefficient and carrier universes. Barcode and dimension
@@ -34,7 +33,7 @@ below every d-value is also below every c-value, preserving the zero left tail.
 
 ## Positive evaluation shifts
 
-For finite nonnegative `ε : ℝ≥0`, the actual shift satisfies
+For finite nonnegative `ε : ℝ≥0`, the shift satisfies
 `(SεM)(t)=M(t+ε)`. The grid `shiftGrid ε c` has values `c_i-ε`, and
 
 \[
@@ -42,7 +41,7 @@ For finite nonnegative `ε : ℝ≥0`, the actual shift satisfies
  =\operatorname{cellIndex}(c,t+\varepsilon).
 \]
 
-This identity proves `IsConstructible.shift` for the actual shifted module,
+This identity proves `IsConstructible.shift` for the shifted module,
 including negative shifted critical values, exact critical parameters and the
 whole right tail. At ε=0 the shifted grid equals c. Empty grids select no stage.
 
@@ -53,7 +52,7 @@ For M constructible on c and N constructible on d,
 ## Finiteness and the diagram on a refinement
 
 Suppose M is c-constructible and its original critical fibers are finite
-dimensional. The actual reconstruction component identifies each real fiber
+dimensional. The reconstruction component identifies each real fiber
 with its finite sample fiber, which is either zero or an original critical
 fiber. Thus `finiteDimensional_of_isConstructible` derives finiteness everywhere,
 including at all added d-critical values.
@@ -61,7 +60,7 @@ including at all added d-critical values.
 The existing `moduleDiagram c M` assigns real endpoints to the canonical rank
 barcode of the critical samples. Its terminal index means the constant essential
 tail. Under `Refines c d`, `moduleDiagram_refinement` proves equality of the two
-actual diagrams. Finite-index barcodes on c and d have different types and are
+diagrams. Finite-index barcodes on c and d have different types and are
 related by monotone sampling; the equality is of their real endpoint multisets.
 
 Let A be the coarse sample with its initial zero stage. Sample its reconstruction
@@ -71,7 +70,7 @@ at the fine critical parameters using
 q(j)=\operatorname{cellIndex}(c,d_j)\in\operatorname{Fin}(n+1).
 \]
 
-Whiskering the actual reconstruction isomorphism identifies this module with the
+Whiskering the reconstruction isomorphism identifies this module with the
 fine samples of M. Finite rank-barcode invariance and `rankBarcode_reindex`
 therefore restrict each original occurrence along q.
 
@@ -86,7 +85,7 @@ later observations. Applying this identity occurrence by occurrence through
 
 ## Boundary consumers
 
-An actual rational module reconstructed on `[1,3]` has two copies of `[1,3)`
+A rational module reconstructed on `[1,3]` has two copies of `[1,3)`
 and one essential bar `[3,∞)`. Refining to `[-2,1,2,3,8]` gives exactly the same
 real endpoint multiset. The new observation at 8 creates no finite death for the
 essential occurrence. The grid `[1,2]` fails refinement because it omits 3.
@@ -99,8 +98,7 @@ refinement of the zero module from an empty grid are also checked in
 
 ## Source correspondence and scope
 
-[Bauer–Lesnick v4](https://arxiv.org/html/1311.3681v4), §2.1, supplies the actual
-functor, interval and multiset-barcode semantics. Section 3.1 evaluates a shift
+[Bauer–Lesnick v4](https://arxiv.org/html/1311.3681v4), §2.1, supplies the functor, interval and multiset-barcode semantics. Section 3.1 evaluates a shift
 at `t+ε`; the barcode correspondence preceding Theorem 6.4 in §6.1 moves its
 endpoints left by ε, with the inverse correspondence adding ε.
 The zero-left/right-continuous finite grid model and its refinement theorem are
@@ -109,11 +107,10 @@ results. They are not attributed to a numbered source refinement theorem or to
 an inspected proof of general infinite decomposition. Source and rights metadata
 are recorded in [BL15-v4](references.md#BL15-v4).
 
-The [actual defect and sampling API](constructible-defects-sampling.md) proves
+The [defect and sampling API](constructible-defects-sampling.md) proves
 kernel/cokernel constructibility for morphisms between modules on a shared grid
-and transfers real annihilation to finite sampled defects. It uses actual
-naturality and within-cell isomorphisms, without arbitrary-submodule closure.
-The [actual shift-diagram formula](constructible-shift-diagrams.md) moves
+and transfers real annihilation to finite sampled defects. It uses naturality and within-cell isomorphisms, without arbitrary-submodule closure.
+The [shift-diagram formula](constructible-shift-diagrams.md) moves
 endpoints by −ε and returns occurrence labels by +ε. The [finite-constructible isometry](constructible-isometry.md) constructs
 the original-diagram ε-cost matching and proves equality of the extended distances. The
 [finite quantitative induced matching](finite-quantitative-induced-matching.md)

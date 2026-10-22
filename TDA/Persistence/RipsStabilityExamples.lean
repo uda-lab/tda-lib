@@ -77,7 +77,7 @@ private theorem perturbation_discrepancy : Rips.pairwiseDiscrepancy metricOne me
     norm_num at h
     exact h
 
-private theorem perturbation_actual_diagram_bound (n : ℕ) :
+private theorem perturbation_diagram_bound (n : ℕ) :
     bottleneck (dgm ℚ (Rips.filter metricOne) n) (dgm ℚ (Rips.filter metricTwo) n) ≤ 1 := by
   simpa only [perturbation_discrepancy, ENNReal.ofReal_one] using
     bottleneck_dgm_le_pairwiseDiscrepancy ℚ metricOne metricTwo n

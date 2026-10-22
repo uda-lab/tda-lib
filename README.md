@@ -9,16 +9,16 @@ first release of its mathematical results.
 ## Results
 
 - **Persistent homology.** The library builds signed simplicial chains and homology
-  from actual faces, decomposes pointwise finite-dimensional persistence modules
+  from faces, decomposes pointwise finite-dimensional persistence modules
   indexed by a finite chain into intervals, and relates a finite simplex filtration
-  to its actual sublevel persistence diagram. The diagram retains multiplicities,
+  to its sublevel persistence diagram. The diagram retains multiplicities,
   finite half-open intervals and essential bars. For real-valued finite filters it
   proves a bottleneck stability bound, including changes in simplex pairing.
   Local regularity, derivative and Hessian results for diagram-based losses use
   explicit hypotheses on ordered representatives and lifts.
 - **Certified computation.** An executable reduction computes persistence over
   F₂ from a valid finite list of graded simplices. Its correctness theorem
-  identifies the output with the actual sublevel diagram in every degree;
+  identifies the output with the sublevel diagram in every degree;
   invalid lists are rejected.
 - **Reeb and Mapper theory.** The library develops interval cosheaves, finite
   graph and constructible-cosheaf comparisons, and ordinary Mapper from pullback
@@ -88,7 +88,7 @@ The `develop` branch includes these additional bounded results. The
   total-persistence bounds using the carrier diameter or a stated enclosing radius.
   Finite-constructible real-indexed modules over a field satisfy barcode isometry
   with finite-dimensional critical fibers, a zero left tail, half-open strata and a
-  possibly nonzero final tail. This also applies to actual finite-complex sublevel
+  possibly nonzero final tail. This also applies to finite-complex sublevel
   homology modules. Finite boundary transport additionally permits arbitrary
   nonnegative real masses that split between labels: powered and rooted optima
   are attained for p ≥ 1, and unit masses recover the occurrence-based costs.
@@ -97,7 +97,7 @@ The `develop` branch includes these additional bounded results. The
   have stability bounds on finite diagram parts against first-order matching cost under
   explicit weight assumptions. For the arctan weight with C ≥ 0, the kernel constant
   is 2C + √2·π/(2|σ|), with no bandwidth-sign hypothesis, and the image constant is
-  2C + 3·√(π/2)/σ for σ > 0. Actual Rips and Čech diagrams have radius-scale embedding,
+  2C + 3·√(π/2)/σ for σ > 0. Rips and Čech diagrams have radius-scale embedding,
   fixed-diagram kernel-value and image consumers under their stated same-label
   hypotheses; the sup-norm Čech consumers use half the pairwise discrepancy.
   Log-scale Rips–Čech consumers use the exact bottleneck or log 2 bounds in degrees
@@ -111,7 +111,7 @@ The `develop` branch includes these additional bounded results. The
   bounds are available for general weights, but have no arctan instance.
 - **Metric inputs.** Finite Rips and ambient Čech filtrations are constructed.
   Rips diagrams satisfy a same-label pairwise-discrepancy bound. For finite nonempty
-  metric spaces, full actual Rips diagrams satisfy d_B ≤ 2 d_GH in every degree,
+  metric spaces, full Rips diagrams satisfy d_B ≤ 2 d_GH in every degree,
   without equal-cardinality or common-label assumptions. Finite samples embedded
   in one ambient metric space have a twice-Hausdorff-error bound; two samples of
   a possibly infinite target have a bound of twice their summed errors, comparing
@@ -155,17 +155,17 @@ The `develop` branch includes these additional bounded results. The
   covering refinements. Under 2g ≤ r, the ordinary Mapper one-skeleton agrees with
   the incidence graph, which forgets parallel edge cells. Under the vertex-height-
   covering hypothesis, the interval-components cosheaf is constructible and agrees
-  with the cosheaf of the finite Reeb data. The actual Reeb quotient of a finite
+  with the cosheaf of the finite Reeb data. The Reeb quotient of a finite
   graph-PL realization is identified with its finite graph realization. For a finite
   bounded interval cover of the attained height range, categorical Mapper retains
   components of every nonempty intersection; its reconstructed real graph lies
-  within the full width of the retained intervals of that actual Reeb quotient in
+  within the full width of the retained intervals of that Reeb quotient in
   geometric interleaving distance. Vanishing full or retained resolutions give
   convergence, including families with varying finite cover index types. This is
   abstract categorical reconstruction, not an executable Mapper algorithm.
 
 Further directions include all-Radon boundary-transport identification, general
-infinite or q-tame persistence, metric stability with actual diagrams of infinite
+infinite or q-tame persistence, metric stability with diagrams of infinite
 point sets, higher-dimensional Mapper–Reeb approximation, and constructibility of
 the product thickening of a general constructible real space beyond graph input as
 in DMP Theorem 4.27. [Issue #227](https://github.com/uda-lab/tda-lib/issues/227)

@@ -179,7 +179,7 @@ slice packaging is in universe `0`, as `intervalComponentsOver` is.
 
 ## Fixtures
 
-`TDA.Reeb.GeometricThickeningExamples` works with the actual comparison into the actual smoothing:
+`TDA.Reeb.GeometricThickeningExamples` works with the comparison into the smoothing:
 
 - **Every kind of open interval.** For arbitrary `X` and `f`, both inverse images are empty at `⊥`
   (`bot_isEmpty`), and the comparison is bijective at `⊥`, `ioo a b`, `ioi a`, `iio b` and `⊤`.

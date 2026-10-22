@@ -6,7 +6,7 @@ set_option autoImplicit false
 /-!
 # Filter reparametrization fixtures
 
-The fixtures test the actual `FilterFunction.map` and `FilterFunction.scale` definitions on
+The fixtures test the `FilterFunction.map` and `FilterFunction.scale` definitions on
 the merged two-point Rips filter: the scaled sublevels at `2` and `4` are the original
 sublevels at `1` and `2`, so the edge appears exactly at the scaled threshold `4`. Negating
 the same filter violates monotonicity, so order reversal is not a reparametrization. Scaling
@@ -48,7 +48,7 @@ theorem scale_edge_value : (f.scale 2 two_pos).value TwoPoints.edgeFace = 4 := b
 
 /-! ### Order reversal is not a reparametrization -/
 
-/-- The vertex `{0}` as an actual face. -/
+/-- The vertex `{0}` as a face. -/
 def vertexFace : TotalFace (Rips.fullComplex (Fin 2)) := ⟨{0}, Finset.singleton_nonempty 0⟩
 
 theorem vertex_value : f.value vertexFace = 0 := by

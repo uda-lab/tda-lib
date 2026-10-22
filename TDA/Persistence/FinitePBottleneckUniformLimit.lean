@@ -14,7 +14,7 @@ The four results below concern unnormalized unit occurrences at fixed maximum
 ground norm. Their positive finite-diagram specialization uses the matching
 convention of Divol–Lacombe, corrected v4, §1.1. The uniform estimate is a finite
 library derivation. No topology on diagrams or common optimizing matching is
-needed. The plan results use the actual optimum over all feasible real reservoir
+needed. The plan results use the optimum over all feasible real reservoir
 matrices through its proved matching equality.
 -/
 
@@ -105,7 +105,7 @@ theorem finitePMatchingCost_tendstoUniformlyOn_bottleneck
   exact (finitePMatchingCost_abs_sub_bottleneck_le_uniformBound hp z.1 z.2
     hz.1 hz.2.1 hz.2.2.1 hR hz.2.2.2).trans_lt herror
 
-/-- Uniform recovery for the actual optimized real boundary-reservoir cost. -/
+/-- Uniform recovery for the optimized real boundary-reservoir cost. -/
 theorem finitePBoundaryTransportCost_tendstoUniformlyOn_bottleneck
     (m : ℕ) (R : ℝ) (hR : 0 ≤ R) :
     TendstoUniformlyOn

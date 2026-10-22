@@ -290,8 +290,7 @@ theorem constructibleInterleavingDistance_realizationSpace_le (S T : CriticalVal
       constructibleInterleavingDistance_le_edist (P.isConstructibleSpace_realization S) hg
     _ ≤ _ := P.edist_height_levelMap_le S T
 
-/-- The constructible distance to a level perturbation is bounded by the actual
-sup distance of the two heights on the original carrier. -/
+/-- The constructible distance to a level perturbation is bounded by the sup distance of the two heights on the original carrier. -/
 theorem constructibleInterleavingDistance_levelPerturbation_le {A : Over (TopCat.of ℝ)}
     {S : CriticalValues n} (i : A ≅ Over.mk (TopCat.ofHom (P.height S)))
     (T : CriticalValues n) :

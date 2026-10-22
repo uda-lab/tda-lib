@@ -6,7 +6,7 @@ set_option autoImplicit false
 /-!
 # Positive scaling fixtures
 
-The fixtures test the actual `Diagram.scale`, `FilterFunction.scale`, `dgm` and
+The fixtures test the `Diagram.scale`, `FilterFunction.scale`, `dgm` and
 `bottleneck` definitions. Scaling the merged one-vertex filter multiplies its sharp
 bottleneck distance by `c`, and the result agrees with the merged sharp value. Translation
 moves a vertex at zero by one, while scaling fixes it. Diagrams with different essential
@@ -82,7 +82,7 @@ theorem scale_vertex_distance {c : ℝ} (hc : 0 < c) :
   rw [scale_vertexFilter_zero, vertex_bottleneck_sharp]
   simp
 
-/-- The translation bridges on the one-vertex filter and its actual diagram. -/
+/-- The translation bridges on the one-vertex filter and its diagram. -/
 theorem vertex_translate_eq_map (a c : ℝ) :
     translateFilterFunction (vertexFilter a) c =
         (vertexFilter a).map (OrderIso.addRight c).toOrderEmbedding ∧

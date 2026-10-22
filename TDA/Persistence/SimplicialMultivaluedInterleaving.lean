@@ -3,10 +3,10 @@ import TDA.Persistence.SimplicialMultivaluedMapComposition
 /-!
 # Canonical interleavings from simplicial relations
 
-Restricting a total simplicial relation preserves its actual canonical homology map.
+Restricting a total simplicial relation preserves its canonical homology map.
 When two total relations are simplicial with the same nonnegative shift and each round
 trip contains the identity relation, their canonical maps satisfy both interleaving
-triangles. The identity relation at the double shift gives the actual transition map.
+triangles. The identity relation at the double shift gives the transition map.
 
 Subrelation invariance permits every real degree. Interleavings use the existing finite
 nonnegative parameters. The converse-relation specialization realizes CDSO Propositions
@@ -30,7 +30,7 @@ variable {X Y : Type u} [LinearOrder X] [LinearOrder Y]
 variable (R : Type v) [Ring R]
 variable {F : SimplicialFiltration ℝ X} {G : SimplicialFiltration ℝ Y}
 
-/-- A total subrelation induces the same entire actual canonical transformation. -/
+/-- A total subrelation induces the same entire canonical transformation. -/
 theorem multivaluedSimplicialHomologyMap_of_subset {C C' : SetRel X Y} {a : ℝ}
     (hCT : Relator.LeftTotal (fun x y => (x,y) ∈ C))
     (hC'T : Relator.LeftTotal (fun x y => (x,y) ∈ C'))
@@ -87,7 +87,7 @@ private theorem roundTrip_transition {C : SetRel X Y} {D : SetRel Y X} {ε : ℝ
     hdiag n).symm.trans (identityMap_transition R F (ε + ε) n)
 
 /-- Total forward/backward simplicial relations with diagonal-containing round trips give
-an actual interleaving whose maps are their canonical homology transformations. -/
+an interleaving whose maps are their canonical homology transformations. -/
 def multivaluedSimplicialHomologyInterleaving {C : SetRel X Y} {D : SetRel Y X} {ε : ℝ≥0}
     (hCT : Relator.LeftTotal (fun x y => (x,y) ∈ C))
     (hDT : Relator.LeftTotal (fun y x => (y,x) ∈ D))

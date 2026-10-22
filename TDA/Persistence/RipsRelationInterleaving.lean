@@ -7,8 +7,8 @@ import TDA.Persistence.SublevelConstructible
 
 A native relation total on both ambient types, with a pairwise distance-distortion
 bound, supplies both shifted Rips geometries. Its canonical homology maps form an
-actual interleaving over every ring. For finite label types and field coefficients,
-the existing different-grid constructible theorem bounds the full actual diagrams.
+interleaving over every ring. For finite label types and field coefficients,
+the existing different-grid constructible theorem bounds the full diagrams.
 
 This is the supplied-relation mechanism of CDSO Lemma 4.3 at nonnegative scales,
 with ring coefficients and finite-diagram consequences as library extensions.
@@ -41,7 +41,7 @@ private theorem inverse_distortion :
   intro y y' x x' hy hy'
   simpa only [abs_sub_comm] using h x x' y y' hy hy'
 
-/-- The actual canonical maps of a total bounded-distortion relation and its
+/-- The canonical maps of a total bounded-distortion relation and its
 native transpose give the Rips homology interleaving, in every degree. -/
 def relationInterleaving (n : ℕ) :
     RealInterleaving ε (sublevelModule R (Rips.filter dX) n)
@@ -65,14 +65,14 @@ def relationInterleaving (n : ℕ) :
           simpa only [abs_sub_comm] using h x x' y y' hy hy')) n := rfl
 
 include hCT hIT h in
-/-- The constructed actual interleaving bounds the extended interleaving distance. -/
+/-- The constructed interleaving bounds the extended interleaving distance. -/
 theorem realInterleavingDistance_le_of_relation (n : ℕ) :
     realInterleavingDistance (sublevelModule R (Rips.filter dX) n)
       (sublevelModule R (Rips.filter dY) n) ≤ (ε : ℝ≥0∞) :=
   (relationInterleaving R dX dY hCT hIT h n).distance_le
 
 include hCT hIT h in
-/-- Finite metric label types give stability of their full actual Rips diagrams.
+/-- Finite metric label types give stability of their full Rips diagrams.
 Each filter supplies its own critical grid and finite-dimensional fibers. -/
 theorem bottleneck_dgm_le_of_relation [Fintype X] [Fintype Y] (k : Type u) [Field k]
     (n : ℕ) :

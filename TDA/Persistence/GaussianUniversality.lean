@@ -4,7 +4,7 @@ import TDA.Topology.C0MeasureRepresentation
 /-!
 # C₀ universality of the full-plane Gaussian
 
-At nonzero bandwidth Gaussian sections vanish at infinity. The actual RKHS
+At nonzero bandwidth Gaussian sections vanish at infinity. The RKHS
 embeds continuously into C₀, and the span of its sections is uniformly dense
 there. Density follows by bounded-functional separation and finite-measure
 representation, using Gaussian measure separation.
@@ -57,7 +57,7 @@ def gaussianSection {σ : ℝ} (hσ : σ ≠ 0) (q : ℝ × ℝ) : C₀(ℝ × �
 @[simp] theorem gaussianSection_apply {σ : ℝ} (hσ : σ ≠ 0) (p q : ℝ × ℝ) :
     gaussianSection hσ q p = kernel σ p q := rfl
 
-/-- Every actual Gaussian RKHS function vanishes at infinity at nonzero bandwidth. -/
+/-- Every Gaussian RKHS function vanishes at infinity at nonzero bandwidth. -/
 theorem rkhsFunction_zero_at_infty {σ : ℝ} (hσ : σ ≠ 0) (f : Space σ) :
     Tendsto f (cocompact (ℝ × ℝ)) (𝓝 0) := by
   let S : Submodule ℝ (Space σ) :=
@@ -95,7 +95,7 @@ theorem rkhsFunction_zero_at_infty {σ : ℝ} (hσ : σ ≠ 0) (f : Space σ) :
   rw [← heq]
   exact zero_at_infty g
 
-/-- The actual Gaussian RKHS function, regarded as a C₀ function. -/
+/-- The Gaussian RKHS function, regarded as a C₀ function. -/
 def rkhsToC0 {σ : ℝ} (hσ : σ ≠ 0) (f : Space σ) : C₀(ℝ × ℝ, ℝ) where
   toFun := f
   continuous_toFun := continuous_rkhsFunction σ f
@@ -110,7 +110,7 @@ theorem norm_rkhsToC0_le {σ : ℝ} (hσ : σ ≠ 0) (f : Space σ) :
   (BoundedContinuousFunction.norm_le (norm_nonneg f)).2
     (norm_rkhsFunction_apply_le σ f)
 
-/-- The actual Gaussian RKHS includes continuously and linearly in C₀. -/
+/-- The Gaussian RKHS includes continuously and linearly in C₀. -/
 def rkhsToC0CLM {σ : ℝ} (hσ : σ ≠ 0) : Space σ →L[ℝ] C₀(ℝ × ℝ, ℝ) :=
   ({ toFun := rkhsToC0 hσ
      map_add' := fun f g => by ext p; simp [rkhsToC0_apply, RKHS.coe_add]
@@ -177,7 +177,7 @@ theorem exists_gaussian_span_approx {σ : ℝ} (hσ : σ ≠ 0) (f : C₀(ℝ ×
   obtain ⟨g, hg, hdist⟩ := Metric.mem_closure_iff.1 (gaussian_sections_dense hσ f) ε hε
   exact ⟨g, hg, by simpa [dist_eq_norm, norm_sub_rev] using hdist⟩
 
-/-- C₀ universality for the actual Gaussian RKHS, with its genuine uniform inclusion. -/
+/-- C₀ universality for the Gaussian RKHS, with its genuine uniform inclusion. -/
 theorem denseRange_rkhsToC0 {σ : ℝ} (hσ : σ ≠ 0) : DenseRange (rkhsToC0CLM hσ) := by
   have hsub : Submodule.span ℝ (range (gaussianSection hσ)) ≤
       (rkhsToC0CLM hσ).range := by

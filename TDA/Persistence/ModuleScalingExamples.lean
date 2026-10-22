@@ -187,7 +187,7 @@ theorem twoPoints_cech_rips_distance_scale (n : ℕ) :
   realInterleavingDistance_sublevelModule_scale (ZMod 2) n
     (Rips.filter TwoPoints.metric) (Cech.filter TwoPoints.pts) 2 two_pos
 
-/-- The scaled Čech--Rips module distance is the bottleneck of the scaled actual diagrams. -/
+/-- The scaled Čech--Rips module distance is the bottleneck of the scaled diagrams. -/
 theorem twoPoints_cech_rips_scale_isometry (n : ℕ) :
     realInterleavingDistance
         (sublevelModule (ZMod 2) ((Rips.filter TwoPoints.metric).scale 2 two_pos) n)

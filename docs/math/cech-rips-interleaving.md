@@ -3,7 +3,7 @@
 This note continues the [closed ambient Čech complex](cech-rips-sandwich.md) and the
 [real interleavings](real-interleavings.md). It lifts inclusions of simplicial
 filtrations to morphisms of homology persistence modules, and inclusions shifted by ε to
-actual real ε-interleavings. The Rips/Čech value sandwich then becomes an interleaving
+real ε-interleavings. The Rips/Čech value sandwich then becomes an interleaving
 of log-scale modules with parameter log 2.
 
 ## Conventions
@@ -95,7 +95,7 @@ complexes.
 The distance bounds are statements about real interleaving distances of homology
 modules, not about persistence diagrams. At radius level, the
 [constructibility bridge](sublevel-constructibility.md) shows that the sublevel module of a
-finite filter is finite-constructible with the actual diagram as its module diagram, so the
+finite filter is finite-constructible with the diagram as its module diagram, so the
 [finite-constructible isometry](constructible-isometry.md) turns the radius-level
 face-difference bound into a bottleneck bound. In degrees n ≥ 1 the
 [log-scale diagrams](log-scale-diagrams.md) turn the log 2 bound into a bottleneck bound

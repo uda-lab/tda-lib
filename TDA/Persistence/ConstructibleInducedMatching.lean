@@ -1,13 +1,13 @@
 import TDA.Persistence.RealInducedMatching
 
 /-!
-# Actual constructible morphisms give real induced occurrence matchings
+# Constructible morphisms give real induced occurrence matchings
 
-The hypotheses on the two defects are vanishing of their actual real
-transitions. Constructibility transfers them to actual sampled kernel/cokernel
+The hypotheses on the two defects are vanishing of their real
+transitions. Constructibility transfers them to sampled kernel/cokernel
 shortness. The finite induced partial injection is then transported to the
 canonical real finite and essential occurrence labels, with exact real bounds.
-An actual interleaving derives both defect hypotheses on its constructed
+An interleaving derives both defect hypotheses on its constructed
 common grid with the shifted target.
 -/
 
@@ -28,8 +28,8 @@ variable (hM : IsConstructible c M) (hN : IsConstructible c N) (f : M ⟶ N)
 variable (δK δC : ℝ≥0)
 variable (hk : transition δK (kernel f) = 0) (hc : transition δC (cokernel f) = 0)
 
-/-- Construct the real occurrence matching from the actual sampled induced map.
-Only actual real defect annihilation and critical-fiber finiteness are supplied. -/
+/-- Construct the real occurrence matching from the sampled induced map.
+Only real defect annihilation and critical-fiber finiteness are supplied. -/
 noncomputable def inducedOccurrenceMatching :
     OccurrenceMatching (moduleDiagram c M hfdM).finiteOccurrences
       (moduleDiagram c N hfdN).finiteOccurrences
@@ -41,7 +41,7 @@ noncomputable def inducedOccurrenceMatching :
     (criticalCokernel_translationTrivial hM hN f δC hc)
 
 /-- Exact real endpoint bounds, essential bijection and unmatched-length bounds
-are derived for the actual morphism; no grid-rounding term is added. -/
+are derived for the morphism; no grid-rounding term is added. -/
 theorem inducedOccurrenceMatching_bounds : RealMatchingBounds δK δC
     (inducedOccurrenceMatching c M N hfdM hfdN hM hN f δK δC hk hc) := by
   let : ∀ i, FiniteDimensional k ((reindex c.toOrderHom M).obj i) := hfdM
@@ -52,8 +52,7 @@ theorem inducedOccurrenceMatching_bounds : RealMatchingBounds δK δC
 
 omit hfdM hfdN hM hN f δK δC hk hc
 
-/-- An actual interleaving supplies a real induced matching into its actual
-shifted target diagram, with derived double-shift bounds and essential coverage.
+/-- An interleaving supplies a real induced matching into its shifted target diagram, with derived double-shift bounds and essential coverage.
 No common grid, new-fiber finiteness, shortness or matching witness is assumed. -/
 theorem interleaving_shifted_induced_matching {c : Fin n ↪o ℝ} {d : Fin m ↪o ℝ}
     {M N : PModule.{u,0,u} k ℝ} (hM : IsConstructible c M) (hN : IsConstructible d N)

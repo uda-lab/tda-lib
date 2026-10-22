@@ -6,8 +6,7 @@ import TDA.Reeb.RGraphCosheafEquivalenceExamples
 /-!
 # Fixtures for the Reeb quotient of the thickening addition map
 
-Acceptance fixtures for `TDA.Reeb.QuotientThickeningAddition`, on the actual thickening, the actual
-Reeb quotient and the actual realizations of finite data:
+Acceptance fixtures for `TDA.Reeb.QuotientThickeningAddition`, on the thickening, the Reeb quotient and the realizations of finite data:
 
 * **One point.** `ℛ T_1 T_1 P ≅ ℛ T_(1+1) P` holds, next to the merged `T_1 T_1 P ≇ T_(1+1) P`.
   The height-`0` segment `s ↦ ((*, s), -s)` collapses to one class, proved along the segment and by

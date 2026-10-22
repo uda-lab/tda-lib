@@ -5,10 +5,10 @@ import Mathlib.CategoryTheory.Limits.FunctorCategory.EpiMono
 import Mathlib.CategoryTheory.Limits.Preserves.Shapes.Kernels
 
 /-!
-# Actual finite-chain cokernels and translation-triviality
+# Finite-chain cokernels and translation-triviality
 
 The cokernel is mathlib's cokernel in the functor category. Evaluation and the
-concrete module cokernel identify its fibers with the actual range quotients.
+concrete module cokernel identify its fibers with the range quotients.
 Vanishing of its structure maps is equivalent to a target-image inclusion.
 -/
 
@@ -23,17 +23,17 @@ open CategoryTheory CategoryTheory.Limits
 variable {s : ℕ} {k : Type u} [Field k]
 variable {M N : PModule.{u,0,u} k (Fin s)}
 
-/-- The actual cokernel in the category of finite-chain persistence modules. -/
+/-- The cokernel in the category of finite-chain persistence modules. -/
 noncomputable abbrev finiteCokernel (f : M ⟶ N) : PModule.{u,0,u} k (Fin s) :=
   cokernel f
 
-/-- Evaluation of the actual cokernel identifies its fiber with the range quotient. -/
+/-- Evaluation of the cokernel identifies its fiber with the range quotient. -/
 noncomputable def finiteCokernelFiberIso (f : M ⟶ N) (i : Fin s) :
     (finiteCokernel f).obj i ≅ ModuleCat.of k (N.obj i ⧸ LinearMap.range (f.app i).hom) :=
   PreservesCokernel.iso ((evaluation (Fin s) (ModuleCat k)).obj i) f ≪≫
     ModuleCat.cokernelIsoRangeQuotient (f.app i)
 
-/-- This fiber identification takes the actual cokernel projection to the quotient map. -/
+/-- This fiber identification takes the cokernel projection to the quotient map. -/
 theorem finiteCokernel_π_fiberIso (f : M ⟶ N) (i : Fin s) :
     (cokernel.π f).app i ≫ (finiteCokernelFiberIso f i).hom =
       ModuleCat.ofHom (LinearMap.range (f.app i).hom).mkQ := by
@@ -50,7 +50,7 @@ instance finiteCokernel_finiteDimensional (f : M ⟶ N)
     FiniteDimensional k ((finiteCokernel f).obj i) :=
   (finiteCokernelFiberIso f i).toLinearEquiv.symm.finiteDimensional
 
-/-- A vector is killed by the actual cokernel projection exactly when it is in the image. -/
+/-- A vector is killed by the cokernel projection exactly when it is in the image. -/
 theorem finiteCokernel_π_eq_zero_iff (f : M ⟶ N) (i : Fin s) (y : N.obj i) :
     ((cokernel.π f).app i).hom y = 0 ↔ y ∈ LinearMap.range (f.app i).hom := by
   have he := congrArg (fun g : N.obj i ⟶
@@ -63,7 +63,7 @@ theorem finiteCokernel_π_eq_zero_iff (f : M ⟶ N) (i : Fin s) (y : N.obj i) :
   rw [← he]
   exact ((finiteCokernelFiberIso f i).toLinearEquiv.map_eq_zero_iff).symm
 
-/-- Actual cokernel structure maps vanish precisely when the target image lies in the
+/-- Cokernel structure maps vanish precisely when the target image lies in the
 component image at the later stage. No matching or dimension comparison is assumed. -/
 theorem finiteCokernel_map_eq_zero_iff (f : M ⟶ N) {a b : Fin s} (h : a ≤ b) :
     structureMap (finiteCokernel f) h = 0 ↔
@@ -88,7 +88,7 @@ theorem finiteCokernel_map_eq_zero_iff (f : M ⟶ N) {a b : Fin s} (h : a ≤ b)
     intro x
     exact (finiteCokernel_π_eq_zero_iff f b _).mpr (hi ⟨x, rfl⟩)
 
-/-- Shortness of the actual cokernel is equivalent to the target-image condition. -/
+/-- Shortness of the cokernel is equivalent to the target-image condition. -/
 theorem cokernel_translationTrivial_iff (theta : Fin s →o Fin s)
     (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N) :
     TranslationTrivial theta hTheta (finiteCokernel f) ↔

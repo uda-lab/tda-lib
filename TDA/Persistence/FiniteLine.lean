@@ -248,7 +248,7 @@ theorem isoOfAdjacent_hom_app {M W : PModule.{u,0,w} R (Fin N)} (e) (he) (i : Fi
 theorem isoOfAdjacent_inv_app {M W : PModule.{u,0,w} R (Fin N)} (e) (he) (i : Fin N) :
     (isoOfAdjacent (M := M) (W := W) e he).inv.app i = (e i).inv := rfl
 
-/-- Actual structure maps are evaluated by lifting the unique chronological path. -/
+/-- Structure maps are evaluated by lifting the unique chronological path. -/
 theorem structureMap_moduleOfAdjacent_path (V : Fin N → ModuleCat.{w} R)
     (step : ∀ (i j : Fin N), i.val + 1 = j.val → (V i ⟶ V j))
     {i j : Fin N} (h : i ≤ j) :
@@ -301,7 +301,7 @@ theorem structureMap_adjacentRecovery (M : PModule.{u,0,w} R (Fin N))
     𝟙 _ ≫ structureMap M h at hn
   exact (Category.comp_id _).symm.trans (hn.trans (Category.id_comp _))
 
-/-- Recovery is compatible with actual morphisms, not only the module fibers. -/
+/-- Recovery is compatible with morphisms, not only the module fibers. -/
 theorem adjacentRecovery_naturality {M W : PModule.{u,0,w} R (Fin N)} (α : M ⟶ W) :
     homOfAdjacent M.obj W.obj (adjacentMap M) (adjacentMap W) α.app
       (fun _ _ h => α.naturality (homOfLE (show _ ≤ _ by omega))) ≫
@@ -333,7 +333,7 @@ theorem representationEquivalence_structureMap
     (F : Paths (FiniteLine N) ⥤ ModuleCat.{w} R) {i j : Fin N} (h : i ≤ j) :
     structureMap ((representationEquivalence R N).functor.obj F) h = F.map (path h) := rfl
 
-/-- The representation equivalence carries the actual components of natural transformations. -/
+/-- The representation equivalence carries the components of natural transformations. -/
 @[simp]
 theorem representationEquivalence_map_app
     {F G : Paths (FiniteLine N) ⥤ ModuleCat.{w} R} (α : F ⟶ G) (i : Fin N) :
@@ -381,7 +381,7 @@ theorem representationEquivalence_map_id (F : Paths (FiniteLine N) ⥤ ModuleCat
       𝟙 ((representationEquivalence R N).functor.obj F) :=
   (representationEquivalence R N).functor.map_id F
 
-/-- The forward equivalence preserves composition of actual natural transformations. -/
+/-- The forward equivalence preserves composition of natural transformations. -/
 @[simp]
 theorem representationEquivalence_map_comp
     {F G H : Paths (FiniteLine N) ⥤ ModuleCat.{w} R} (α : F ⟶ G) (β : G ⟶ H) :

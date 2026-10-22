@@ -248,7 +248,7 @@ private theorem occurrence_eq_of_birth_ordinal (B : Multiset (FiniteInterval s))
   exact congrArg BirthOccurrence.index ((birthEnumeration B b).symm.injective hxy)
 
 /-- The canonical birth-preserving embedding from target occurrences into source occurrences.
-It uses death/index order and assumes only an actual componentwise surjection. -/
+It uses death/index order and assumes only a componentwise surjection. -/
 noncomputable def epiEmbedding (p : M ⟶ N) (hp : ∀ i, Function.Surjective (p.app i).hom) :
     BarcodeOccurrence s (rankBarcode N) ↪ BarcodeOccurrence s (rankBarcode M) where
   toFun := mapOccurrence p hp

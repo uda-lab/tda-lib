@@ -46,7 +46,7 @@ theorem occurrencePoint_multiset (D : Diagram ℝ) :
 noncomputable def occurrenceModule (D : Diagram ℝ) : PModule.{u,0,u} k ℝ :=
   familyModule (fun i : Occurrences D => intervalModule (k := k) (occurrencePoint D i))
 
-/-- Every occurrence, including repetitions, is transported to the actual `realize` list. -/
+/-- Every occurrence, including repetitions, is transported to the `realize` list. -/
 noncomputable def occurrenceIso (D : Diagram ℝ) :
     occurrenceModule (k := k) D ≅ realize D := by
   let xs := D.points.toList
@@ -227,8 +227,7 @@ theorem finite_positive {D : Diagram ℝ} (hD : D.IsPositive)
     have hi : i.1 = (b, d) := heq.symm
     simpa only [hi, WithTop.coe_lt_coe] using h
 
-/-- A finite occurrence matching with cost at most `ε` constructs the actual
-interleaving of its two positive diagram realizations. -/
+/-- A finite occurrence matching with cost at most `ε` constructs the interleaving of its two positive diagram realizations. -/
 noncomputable def matchingInterleaving (D E : Diagram ℝ) (hD : D.IsPositive)
     (hE : E.IsPositive) (ε : ℝ≥0)
     (M : OccurrenceMatching D.finiteOccurrences E.finiteOccurrences

@@ -3,7 +3,7 @@ import TDA.Persistence.EssentialVanishing
 /-!
 # The essential Čech H₀ bar starts at zero
 
-Every singleton has infimal enclosing radius zero. Its actual vertex class
+Every singleton has infimal enclosing radius zero. Its vertex class
 survives inclusion into a full stage, so the diagram has an essential point
 already alive at zero. Nonnegative critical values and the existing essential
 count identify the entire essential multiset, including its multiplicity.
@@ -31,7 +31,7 @@ private theorem singleton_value_eq_zero (a : V → X) (v : V) :
   apply (Cech.filter_value_le_radiusAt a _ (a v)).trans
   exact (Cech.radiusAt_le_iff a (a v) {v} 0).mpr ⟨le_rfl, by simp⟩
 
-/-- The surviving point is obtained from the rank of an actual inclusion,
+/-- The surviving point is obtained from the rank of an inclusion,
 rather than inferred from the eventual essential count. -/
 private theorem zero_mem_essentialPart_dgm (k : Type u) [Field k]
     (a : V → X) [Nonempty V] :
@@ -82,7 +82,7 @@ private theorem zero_mem_essentialPart_dgm (k : Type u) [Field k]
   have hbirth : p.1 = 0 := le_antisymm hb hnonneg
   simpa only [hbirth] using hessential
 
-/-- The actual ordinary degree-zero Čech diagram has exactly one essential
+/-- The ordinary degree-zero Čech diagram has exactly one essential
 occurrence, born at zero, on every nonempty finite label type. Repeated labels
 and arbitrary pseudometric ambient spaces are included. -/
 theorem essentialPart_dgm_zero_eq_singleton (k : Type u) [Field k]

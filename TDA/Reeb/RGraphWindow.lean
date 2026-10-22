@@ -5,7 +5,7 @@ import Mathlib.Topology.Algebra.Module.LocallyConvex
 # Closed height windows of finite ℝ-graphs
 
 For finite data `D` over a list of levels `S`, the closed window
-`window S D lo hi = {x | lo ≤ height x ≤ hi}` of the actual realization, with its exact topology,
+`window S D lo hi = {x | lo ≤ height x ≤ hi}` of the realization, with its exact topology,
 and the affine fragment map that moves fragments of a segment between windows.
 
 ## The affine fragment map
@@ -190,7 +190,7 @@ abbrev WindowE (lo hi : ℝ) := Σ c : (Σ e, D.E e), frag S c.1 lo hi
 /-- The raw window: a finite sum of points and closed real intervals. -/
 abbrev WindowRaw (lo hi : ℝ) := WindowV S D lo hi ⊕ WindowE S D lo hi
 
-/-- Raw window points as raw points of the actual presentation. -/
+/-- Raw window points as raw points of the presentation. -/
 def windowIncl (lo hi : ℝ) : WindowRaw S D lo hi → (ofFiniteData D).Raw S :=
   Sum.map Subtype.val fun c => ⟨c.1.1, c.1.2, ⟨c.2.1, frag_subset_seg c.2.2⟩⟩
 
@@ -205,7 +205,7 @@ theorem windowIncl_mem {lo hi : ℝ} (r : WindowRaw S D lo hi) :
   · exact p.2
   · exact frag_subset_Icc c.2.2
 
-/-- The raw cover of the window: the actual quotient map on raw window points. -/
+/-- The raw cover of the window: the quotient map on raw window points. -/
 def windowCover (lo hi : ℝ) : C(WindowRaw S D lo hi, window S D lo hi) where
   toFun r := ⟨(ofFiniteData D).quotMk S (windowIncl S D lo hi r), windowIncl_mem S D r⟩
   continuous_toFun :=
@@ -233,7 +233,7 @@ theorem windowCover_surjective (lo hi : ℝ) : Function.Surjective (windowCover 
     exact ⟨.inr ⟨⟨e, y⟩, ⟨t, max_le t.2.1.le ht.1, le_min t.2.2.le ht.2⟩⟩, rfl⟩
 
 /-- **The topology bridge.** The raw cover is a quotient map: a continuous surjection from a
-compact space onto a Hausdorff subspace of the actual graph realization. -/
+compact space onto a Hausdorff subspace of the graph realization. -/
 theorem isQuotientMap_windowCover (lo hi : ℝ) : IsQuotientMap (windowCover S D lo hi) :=
   IsQuotientMap.of_surjective_continuous (windowCover_surjective S D lo hi)
     (windowCover S D lo hi).continuous

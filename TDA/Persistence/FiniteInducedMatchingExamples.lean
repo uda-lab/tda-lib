@@ -1,7 +1,7 @@
 import TDA.Persistence.FiniteInducedSpecialization
 import Mathlib.Data.Rat.Defs
 
-/-! # Actual image-induced matching consumers -/
+/-! # image-induced matching consumers -/
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -85,7 +85,7 @@ theorem proper_linear_map :
     change (0 : ℚ) = 1 at this
     norm_num at this
 
-/-- Two repeated source and target bars produce exactly one actual matched pair. -/
+/-- Two repeated source and target bars produce exactly one matched pair. -/
 theorem rank_one_partial_matching :
     Fintype.card (BarcodeOccurrence 1 (rankBarcode two)) = 2 ∧
     Fintype.card {p : BarcodeOccurrence 1 (rankBarcode two) × BarcodeOccurrence 1 (rankBarcode two) //
@@ -96,7 +96,7 @@ theorem rank_one_partial_matching :
   · rw [← Fintype.card_congr (imageOccurrenceEquivPairs projection)]
     simp [BarcodeOccurrence, projection_barcode]
 
-/-- Duplicate labels stay distinct under the actual identity induced matching. -/
+/-- Duplicate labels stay distinct under the identity induced matching. -/
 theorem duplicate_identity :
     ∃ i j : BarcodeOccurrence 1 (rankBarcode two), i ≠ j ∧
       inducedMap (𝟙 two) i = some i ∧ inducedMap (𝟙 two) j = some j := by
@@ -132,7 +132,7 @@ private theorem zero_image_barcode : rankBarcode (finiteImage (0 : two ⟶ two))
   rw [hd]
   simp
 
-/-- An actual zero transformation selects no occurrence, despite nonempty repeated barcodes. -/
+/-- A zero transformation selects no occurrence, despite nonempty repeated barcodes. -/
 theorem zero_matching (i : BarcodeOccurrence 1 (rankBarcode two)) :
     inducedMap (0 : two ⟶ two) i = none := by
   apply (inducedMap_eq_none_iff _ _).mpr
@@ -221,7 +221,7 @@ private theorem single_occurrence (I : FiniteInterval 3)
       occurrence (rankBarcode (intervalModule (k := ℚ) I)) a ∈ B) (single_barcode I)) hmem
   simpa using hmem'
 
-/-- The actual overlap map matches [1,3) to [0,2), exercising both strict outer endpoint changes. -/
+/-- The overlap map matches [1,3) to [0,2), exercising both strict outer endpoint changes. -/
 theorem nontrivial_endpoints :
     ∃ (i : BarcodeOccurrence 3 (rankBarcode (intervalModule (k := ℚ) sourceBar)))
       (j : BarcodeOccurrence 3 (rankBarcode (intervalModule (k := ℚ) targetBar))),

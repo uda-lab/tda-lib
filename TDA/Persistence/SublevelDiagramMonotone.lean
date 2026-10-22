@@ -125,7 +125,7 @@ theorem not_isZero_sublevelHomology_of_mem_dgm (f : FilterFunction K α) {n : �
     Module.finrank_zero_of_subsingleton (R := k)
   exact (Nat.not_lt_zero _ (hzero ▸ hfin))
 
-/-- If every sublevel homology group in a degree is zero, its actual diagram is empty. -/
+/-- If every sublevel homology group in a degree is zero, its diagram is empty. -/
 theorem dgm_points_eq_zero_of_isZero (f : FilterFunction K α) {n : ℕ}
     (h : ∀ t, IsZero (simplicialHomology (f.sublevel t) k n)) :
     (dgm k f n).points = 0 := by

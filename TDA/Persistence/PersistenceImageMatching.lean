@@ -4,7 +4,7 @@ import TDA.Persistence.PersistenceImage
 /-!
 # Gaussian PI stability against the attained finite matching cost
 
-An actual minimizing partial occurrence matching turns the existing every-matching
+A minimizing partial occurrence matching turns the existing every-matching
 Gaussian pixel ℓ¹ estimate into a bound by the finite first-order matching minimum.
 The bandwidth, weight, pixels, positivity and explicit coefficient are unchanged.
 -/

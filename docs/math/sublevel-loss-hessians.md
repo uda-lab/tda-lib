@@ -1,13 +1,13 @@
-# Second derivatives of actual scalar PH losses
+# Second derivatives of scalar PH losses
 
-Let `K` have finitely many actual nonempty faces, and let `F` be a family of real
+Let `K` have finitely many nonempty faces, and let `F` be a family of real
 filter functions on a real normed parameter space. On an open set `U`, assume
 each face value is `C²` and the complete weak ordering of face values agrees
 with that at `x₀ ∈ U`. Neither a finite ambient vertex type nor an inner product
 on the parameter space is needed.
 
 The fixed full-template lift `L` is `C²` on the same `U` and represents the
-actual sublevel diagram throughout `U`. It is the composite `R ∘ G`, where `G`
+sublevel diagram throughout `U`. It is the composite `R ∘ G`, where `G`
 collects all face values and `R = faceValueSelection` is fixed and continuous
 linear. Thus both derivatives select the corresponding face derivatives;
 there is no differentiation of a changing sort or pairing.
@@ -16,7 +16,7 @@ there is no differentiation of a changing sort or pairing.
 every ordered representative of `D₀`, for every pair of coordinate counts.
 The domain includes reversed and diagonal finite pairs. At `z = L(x₀)`, write
 `φ = V ∘ orderedQ`. The coordinate neighborhood supplied by this condition
-may shrink the scalar neighborhood: the actual scalar function
+may shrink the scalar neighborhood: the scalar function
 `ℓ(x) = V(dgmₚ(F(x)))` is `C²` on an open `W` with `x₀ ∈ W ⊆ U`.
 
 ## Face formula
@@ -35,7 +35,7 @@ where `eσ` is a unit in the complete face-value space. This equals
 `D²φ(z)[uⱼ,uₗ]` for `σ = s(j)` and `τ = s(l)`; an unused face gives a zero row
 and column. The corresponding first-order evaluation is the existing `βσ`.
 
-The bilinear form `actualFaceLossHessian` is
+The bilinear form `faceCoordinateLossHessian` is
 
 \[
 B[h,k] = \sum_\sigma\sum_\tau
@@ -43,7 +43,7 @@ B[h,k] = \sum_\sigma\sum_\tau
  + \sum_\sigma\beta_\sigma\,D^2F_\sigma(x_0)[h,k].
 \]
 
-`actualPHScalarLoss_hasFDerivAt_fderiv` proves that the derivative map `Dℓ`
+`sublevelDiagramScalarLoss_hasFDerivAt_fderiv` proves that the derivative map `Dℓ`
 has derivative `B` at `x₀`. This establishes existence before identifying the
 nested `fderiv`, so the theorem cannot be satisfied by its default value at a
 nondifferentiable function. The C² condition implies the existing C¹ condition,
@@ -80,23 +80,23 @@ these equalities, without assuming that either ambient coefficient vanishes.
 The squared signed endpoint-difference loss has a nonzero ambient Hessian at a
 diagonal pair even though its restriction to the diagonal is zero.
 
-## Actual examples
+## Examples
 
 * A singleton with value `t²`, with loss `essentialBirthSum²`, has scalar loss
   `t⁴`. At `t = 1`, the second derivative is `12`: the coordinate-loss term is
   `8` and the face-curvature term is `4`.
-* An actual edge has vertex values `0`, `1+s` and edge value `3+t+s²` on
-  `|s|, |t| < 1/4`. Its actual degree-zero diagram has essential birth `0` and
-  finite interval `(1+s,3+t+s²)`, obtained from the existing actual homology
+* An edge has vertex values `0`, `1+s` and edge value `3+t+s²` on
+  `|s|, |t| < 1/4`. Its degree-zero diagram has essential birth `0` and
+  finite interval `(1+s,3+t+s²)`, obtained from the existing homology
   fixture by grade transport. For squared signed endpoint difference, the
   loss is `(2+t−s+s²)²`. At the origin the Hessian is
   `[[10,−2],[−2,2]]`; its coordinate contribution is `[[2,−2],[−2,2]]`
   and its face-curvature contribution is `[[8,0],[0,0]]`.
-* An actual edge with every face valued `t²` retains a finite template pair.
+* An edge with every face valued `t²` retains a finite template pair.
   The signed loss's nonzero birth and death weights cancel against equal face
   second derivatives. For its square, a nonzero ambient Hessian pulls back
-  to zero. Both actual scalar losses have zero second derivative.
-* An actual singleton with face value `1+2*t²` has minimal, padded, and
+  to zero. Both scalar losses have zero second derivative.
+* A singleton with face value `1+2*t²` has minimal, padded, and
   nontrivially relabeled C² lifts. The larger lifts retain two unequal moving
   diagonal pairs; all three yield the genuine scalar Hessian `4*h*k`.
   Additional presentation examples swap unequal essential paths. The absolute
@@ -121,5 +121,5 @@ and
 
 All conclusions concern ordinary scalar derivatives. No topology or Hessian on
 `Diagram` is installed, and no derivative at an ordering frontier is claimed.
-The examples do not depend on the actual simplicial reducer adapter or close
+The examples do not depend on the simplicial reducer adapter or close
 the separate filled-triangle fixture under #45.

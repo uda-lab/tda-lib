@@ -5,10 +5,10 @@ import Mathlib.CategoryTheory.Limits.FunctorCategory.EpiMono
 import Mathlib.CategoryTheory.Limits.Preserves.Shapes.Kernels
 
 /-!
-# Actual finite-chain kernels and translation-triviality
+# Finite-chain kernels and translation-triviality
 
 Evaluation identifies the categorical kernel with the component linear kernel.
-Its inclusion and naturality detect exactly when an actual kernel structure map vanishes.
+Its inclusion and naturality detect exactly when a kernel structure map vanishes.
 -/
 
 set_option autoImplicit false
@@ -22,16 +22,16 @@ open CategoryTheory CategoryTheory.Limits
 variable {s : ℕ} {k : Type u} [Field k]
 variable {M N : PModule.{u,0,u} k (Fin s)}
 
-/-- The actual kernel in the category of finite-chain persistence modules. -/
+/-- The kernel in the category of finite-chain persistence modules. -/
 noncomputable abbrev finiteKernel (f : M ⟶ N) : PModule.{u,0,u} k (Fin s) := kernel f
 
-/-- Evaluation of the actual kernel identifies its fiber with the component kernel. -/
+/-- Evaluation of the kernel identifies its fiber with the component kernel. -/
 noncomputable def finiteKernelFiberIso (f : M ⟶ N) (i : Fin s) :
     (finiteKernel f).obj i ≅ ModuleCat.of k (LinearMap.ker (f.app i).hom) :=
   PreservesKernel.iso ((evaluation (Fin s) (ModuleCat k)).obj i) f ≪≫
     ModuleCat.kernelIsoKer (f.app i)
 
-/-- The fiber identification takes the actual kernel inclusion to the subtype map. -/
+/-- The fiber identification takes the kernel inclusion to the subtype map. -/
 theorem finiteKernel_ι_fiberIso (f : M ⟶ N) (i : Fin s) :
     (finiteKernelFiberIso f i).inv ≫ (kernel.ι f).app i =
       ModuleCat.ofHom (LinearMap.ker (f.app i).hom).subtype := by
@@ -47,7 +47,7 @@ instance finiteKernel_finiteDimensional (f : M ⟶ N)
     FiniteDimensional k ((finiteKernel f).obj i) :=
   (finiteKernelFiberIso f i).toLinearEquiv.symm.finiteDimensional
 
-/-- The actual kernel inclusion has precisely the component linear kernel as its range. -/
+/-- The kernel inclusion has precisely the component linear kernel as its range. -/
 theorem finiteKernel_ι_range (f : M ⟶ N) (i : Fin s) :
     LinearMap.range ((kernel.ι f).app i).hom = LinearMap.ker (f.app i).hom := by
   ext x
@@ -60,7 +60,7 @@ theorem finiteKernel_ι_range (f : M ⟶ N) (i : Fin s) :
     exact congrArg (fun g : ModuleCat.of k (LinearMap.ker (f.app i).hom) ⟶ M.obj i =>
       g.hom ⟨x, hx⟩) (finiteKernel_ι_fiberIso f i)
 
-/-- Actual kernel maps vanish exactly when the source transition kills the component kernel. -/
+/-- Kernel maps vanish exactly when the source transition kills the component kernel. -/
 theorem finiteKernel_map_eq_zero_iff (f : M ⟶ N) {a b : Fin s} (h : a ≤ b) :
     structureMap (finiteKernel f) h = 0 ↔
       LinearMap.ker (f.app a).hom ≤ LinearMap.ker (structureMapLinear M h) := by
@@ -82,7 +82,7 @@ theorem finiteKernel_map_eq_zero_iff (f : M ⟶ N) {a b : Fin s} (h : a ≤ b) :
     intro z
     exact hk (by rw [← finiteKernel_ι_range f a]; exact ⟨z, rfl⟩)
 
-/-- Shortness of the actual kernel is equivalent to the component kernel-killing condition. -/
+/-- Shortness of the kernel is equivalent to the component kernel-killing condition. -/
 theorem kernel_translationTrivial_iff (theta : Fin s →o Fin s)
     (hTheta : ∀ i, i ≤ theta i) (f : M ⟶ N) :
     TranslationTrivial theta hTheta (finiteKernel f) ↔

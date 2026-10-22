@@ -45,7 +45,7 @@ weighted-kernel theorems. No bandwidth sign hypothesis is assumed; at σ = 0 the
 ## Rips consumers
 
 Fix metrics d, e on one finite labelled vertex set, a coefficient field and a degree. Let
-D_d, D_e be the actual Rips diagrams, N_d, N_e their numbers of finite occurrences, and δ
+D_d, D_e be the Rips diagrams, N_d, N_e their numbers of finite occurrences, and δ
 the maximum pairwise discrepancy of d and e. The Rips bound gives full bottleneck at most δ,
 so the bottleneck is finite and its real value is at most δ. With the count-times-bottleneck
 theorems this gives

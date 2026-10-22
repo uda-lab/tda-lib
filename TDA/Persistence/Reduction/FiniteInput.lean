@@ -49,7 +49,7 @@ def complex (xs : Input) (h : Valid xs) : PreAbstractSimplicialComplex ℕ where
 theorem mem_complex (xs : Input) (h : Valid xs) (s : Finset ℕ) :
     s ∈ complex xs h ↔ s ∈ faces xs := Iff.rfl
 
-/-- List positions enumerate actual nonempty faces without a search oracle. -/
+/-- List positions enumerate nonempty faces without a search oracle. -/
 def listFace (xs : Input) (h : Valid xs) (i : Fin xs.length) :
     TotalFace (complex xs h) :=
   ⟨(xs.get i).1, by
@@ -108,13 +108,13 @@ noncomputable def gradeFilter (xs : Input) (h : Valid xs) :
           exact Finset.ssubset_iff_subset_ne.mpr ⟨hst, heq⟩))
     exact h.2.2.2.2 i j hij
 
-/-- Cast list positions to the cardinality of the actual face type. -/
+/-- Cast list positions to the cardinality of the face type. -/
 noncomputable def positionEquiv (xs : Input) (h : Valid xs) :
     Fin (@faceCount ℕ (complex xs h) (faceFintype xs h)) ≃
       TotalFace (complex xs h) :=
   (finCongr (faceCount_eq_length xs h)).trans (listEquiv xs h)
 
-/-- The input order is itself a compatible actual-face enumeration. -/
+/-- The input order is itself a compatible face enumeration. -/
 noncomputable def compatibleOrder (xs : Input) (h : Valid xs) :
     letI := faceFintype xs h
     CompatibleOrder (gradeFilter xs h) := by
@@ -156,13 +156,13 @@ theorem positionEquiv_val (xs : Input) (h : Valid xs)
   simp only [positionEquiv, Equiv.trans_apply, finCongr_apply,
     listEquiv, Equiv.ofBijective_apply, listFace]
 
-/-- The finite deletion computation is the actual signed simplicial boundary. -/
-theorem boundary_eq_actual (xs : Input) (h : Valid xs) :
+/-- The finite deletion computation is the signed simplicial boundary. -/
+theorem boundary_eq_faceBoundaryMatrix (xs : Input) (h : Valid xs) :
     letI := faceFintype xs h
     ∀ i j : Fin (faceCount (complex xs h)),
       boundary xs (Fin.cast (faceCount_eq_length xs h) i)
         (Fin.cast (faceCount_eq_length xs h) j) =
-        actualBoundaryMatrix (ZMod 2) (compatibleOrder xs h) i j := by
+        faceBoundaryMatrix (ZMod 2) (compatibleOrder xs h) i j := by
   letI := faceFintype xs h
   intro i j
   let a := Fin.cast (faceCount_eq_length xs h) i
@@ -182,7 +182,7 @@ theorem boundary_eq_actual (xs : Input) (h : Valid xs) :
     rw [show ((compatibleOrder xs h).enum i).val = (xs.get a).1 from hia,
       show ((compatibleOrder xs h).enum j).val = (xs.get b).1 from hjb]
     omega
-  rw [actualBoundaryMatrix_apply]
+  rw [faceBoundaryMatrix_apply]
   by_cases hc : (xs.get b).1.card = ((xs.get a).1.card - 1) + 2
   · have hg := hd.mp hc
     have hc' : (xs.get (Fin.cast (faceCount_eq_length xs h) j)).1.card =
@@ -213,13 +213,13 @@ theorem boundary_reindex (xs : Input) (h : Valid xs) :
     boundary xs =
       (Matrix.reindex (finCongr (faceCount_eq_length xs h))
         (finCongr (faceCount_eq_length xs h)))
-        (actualBoundaryMatrix (ZMod 2) (compatibleOrder xs h)) := by
+        (faceBoundaryMatrix (ZMod 2) (compatibleOrder xs h)) := by
   letI := faceFintype xs h
   apply Matrix.ext
   intro i j
   let a := (finCongr (faceCount_eq_length xs h)).symm i
   let b := (finCongr (faceCount_eq_length xs h)).symm j
-  have he := boundary_eq_actual xs h a b
+  have he := boundary_eq_faceBoundaryMatrix xs h a b
   simpa [Matrix.reindex_apply, a, b] using he
 
 def degree (xs : Input) (i : Fin xs.length) : ℕ :=
@@ -244,11 +244,11 @@ theorem boundary_sq_zero (xs : Input) (h : Valid xs) :
   let e := finCongr (faceCount_eq_length xs h)
   rw [boundary_reindex xs h]
   change (Matrix.reindexRingEquiv (ZMod 2) e)
-      (actualBoundaryMatrix (ZMod 2) (compatibleOrder xs h)) *
+      (faceBoundaryMatrix (ZMod 2) (compatibleOrder xs h)) *
     (Matrix.reindexRingEquiv (ZMod 2) e)
-      (actualBoundaryMatrix (ZMod 2) (compatibleOrder xs h)) = 0
+      (faceBoundaryMatrix (ZMod 2) (compatibleOrder xs h)) = 0
   rw [← map_mul]
-  rw [actualBoundaryMatrix_sq_zero]
+  rw [faceBoundaryMatrix_sq_zero]
   exact map_zero _
 
 theorem boundary_strict (xs : Input) (h : Valid xs) :
@@ -256,10 +256,10 @@ theorem boundary_strict (xs : Input) (h : Valid xs) :
   letI := faceFintype xs h
   intro i j hij
   let e := finCongr (faceCount_eq_length xs h)
-  have ha : actualBoundaryMatrix (ZMod 2) (compatibleOrder xs h)
+  have ha : faceBoundaryMatrix (ZMod 2) (compatibleOrder xs h)
       (e.symm i) (e.symm j) ≠ 0 := by
     simpa [boundary_reindex xs h, Matrix.reindex_apply, e] using hij
-  have hs := actualBoundaryMatrix_strict (ZMod 2) (compatibleOrder xs h)
+  have hs := faceBoundaryMatrix_strict (ZMod 2) (compatibleOrder xs h)
     (e.symm i) (e.symm j) ha
   exact hs
 
@@ -268,10 +268,10 @@ theorem boundary_lowersDegree (xs : Input) (h : Valid xs) :
   letI := faceFintype xs h
   intro i j hij
   let e := finCongr (faceCount_eq_length xs h)
-  have ha : actualBoundaryMatrix (ZMod 2) (compatibleOrder xs h)
+  have ha : faceBoundaryMatrix (ZMod 2) (compatibleOrder xs h)
       (e.symm i) (e.symm j) ≠ 0 := by
     simpa [boundary_reindex xs h, Matrix.reindex_apply, e] using hij
-  have hd := actualBoundaryMatrix_lowersDegree (ZMod 2) (compatibleOrder xs h)
+  have hd := faceBoundaryMatrix_lowersDegree (ZMod 2) (compatibleOrder xs h)
     (e.symm i) (e.symm j) ha
   simpa [degree_eq_faceDegree xs h, e] using hd
 
@@ -304,10 +304,10 @@ theorem reduced_reindex (xs : Input) (h : Valid xs) :
     reduced xs =
       (Matrix.reindex (finCongr (faceCount_eq_length xs h))
         (finCongr (faceCount_eq_length xs h)))
-        (actualReducedBoundary (ZMod 2) (compatibleOrder xs h)) := by
+        (reducedFaceBoundary (ZMod 2) (compatibleOrder xs h)) := by
   letI := faceFintype xs h
   have hD := boundary_reindex xs h
-  simp only [reduced, trace, actualReducedBoundary]
+  simp only [reduced, trace, reducedFaceBoundary]
   rw [hD]
   exact reduce_reindex_cast (faceCount_eq_length xs h) _
 
@@ -432,7 +432,7 @@ theorem pivotPairs_semantic (xs : Input) (h : Valid xs) (p : ℕ) :
     ((pivotPairs xs).filter (fun q => degree xs q.1 = p) :
       Multiset (Fin xs.length × Fin xs.length)) =
     (pivotIndexPairs (faceDegree (compatibleOrder xs h))
-      (actualReducedBoundary (ZMod 2) (compatibleOrder xs h)) p).map
+      (reducedFaceBoundary (ZMod 2) (compatibleOrder xs h)) p).map
       (fun q => ((finCongr (faceCount_eq_length xs h)) q.1,
         (finCongr (faceCount_eq_length xs h)) q.2)) := by
   letI := faceFintype xs h
@@ -449,7 +449,7 @@ theorem essentialIndices_semantic (xs : Input) (h : Valid xs) (p : ℕ) :
     ((essentialIndices xs).filter (fun i => degree xs i = p) :
       Multiset (Fin xs.length)) =
     (pivotEssentialIndices (faceDegree (compatibleOrder xs h))
-      (actualReducedBoundary (ZMod 2) (compatibleOrder xs h)) p).map
+      (reducedFaceBoundary (ZMod 2) (compatibleOrder xs h)) p).map
       (finCongr (faceCount_eq_length xs h)) := by
   letI := faceFintype xs h
   let e := finCongr (faceCount_eq_length xs h)
@@ -615,7 +615,7 @@ theorem pairValuesAtDegree_semantic (xs : Input) (h : Valid xs) (p : ℕ) :
     letI := faceFintype xs h
     pairValuesAtDegree xs p =
       (pivotIndexPairs (faceDegree (compatibleOrder xs h))
-        (actualReducedBoundary (ZMod 2) (compatibleOrder xs h)) p).map
+        (reducedFaceBoundary (ZMod 2) (compatibleOrder xs h)) p).map
         (pairValues (gradeFilter xs h) (compatibleOrder xs h)) := by
   letI := faceFintype xs h
   unfold pairValuesAtDegree
@@ -630,7 +630,7 @@ theorem essentialBirthsAtDegree_semantic (xs : Input) (h : Valid xs) (p : ℕ) :
     letI := faceFintype xs h
     essentialBirthsAtDegree xs p =
       (pivotEssentialIndices (faceDegree (compatibleOrder xs h))
-        (actualReducedBoundary (ZMod 2) (compatibleOrder xs h)) p).map
+        (reducedFaceBoundary (ZMod 2) (compatibleOrder xs h)) p).map
         (birthValue (gradeFilter xs h) (compatibleOrder xs h)) := by
   letI := faceFintype xs h
   unfold essentialBirthsAtDegree
@@ -640,7 +640,7 @@ theorem essentialBirthsAtDegree_semantic (xs : Input) (h : Valid xs) (p : ℕ) :
   simp only [Function.comp_def, birthValue]
   exact grade_eq_semantic xs h i
 
-/-- The records produced by the finite computation are the actual sublevel
+/-- The records produced by the finite computation are the sublevel
 diagram occurrences in every degree, including the constant essential tail. -/
 theorem outputDiagram_eq_dgm (xs : Input) (h : Valid xs) (p : ℕ) :
     letI := faceFintype xs h

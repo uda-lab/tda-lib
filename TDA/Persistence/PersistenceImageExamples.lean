@@ -37,7 +37,7 @@ private theorem whole_feature {σ : ℝ} (hσ : 0 < σ) (p : ℝ × ℝ) :
   rw [feature_apply]
   simp [wholePixel, integral_const_mul, integral_density2D hσ, clippedWeight, birthPersistence]
 
--- The actual integral is nonzero; this is not a zero-feature fixture.
+-- The integral is nonzero; this is not a zero-feature fixture.
 private theorem nonzero_feature {σ : ℝ} (hσ : 0 < σ) :
     feature σ clippedWeight wholePixel (0, 2) () = 1 := by
   rw [whole_feature hσ]

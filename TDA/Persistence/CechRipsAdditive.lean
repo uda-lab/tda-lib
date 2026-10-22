@@ -7,7 +7,7 @@ set_option autoImplicit false
 # Additive Rips-versus-Čech comparison
 
 Positive scaling moves a real diagram by at most `|1 - c|` times a coordinate
-bound, via the identity matching. Coordinates of actual diagrams are critical
+bound, via the identity matching. Coordinates of diagrams are critical
 values, and Rips values are at most the carrier diameter. Hence in the
 sup-metric product and on the line the Rips and Čech diagrams of one
 configuration are at bottleneck distance at most half the carrier diameter,
@@ -93,7 +93,7 @@ variable {V : Type u} [LinearOrder V] (k : Type u) [Field k]
   {α : Type w} [LinearOrder α]
   (f : TDA.Filtration.FilterFunction K α)
 
-/-- Each finite coordinate of an actual diagram is a critical value of its
+/-- Each finite coordinate of a diagram is a critical value of its
 filter function. -/
 theorem mem_criticalValues_of_mem_finitePart_dgm {n : ℕ} {p : α × α}
     (hp : p ∈ finitePart (dgm k f n).points) :
@@ -116,7 +116,7 @@ theorem mem_criticalValues_of_mem_finitePart_dgm {n : ℕ} {p : α × α}
     exact ⟨hfirst ▸ hbirth, hsecond ▸ hdeath'⟩
   · simp [indexEndpoints, hdeath] at hzp
 
-/-- Each essential birth coordinate of an actual diagram is a critical value
+/-- Each essential birth coordinate of a diagram is a critical value
 of its filter function. -/
 theorem mem_criticalValues_of_mem_essentialPart_dgm {n : ℕ} {b : α}
     (hb : b ∈ essentialPart (dgm k f n).points) :

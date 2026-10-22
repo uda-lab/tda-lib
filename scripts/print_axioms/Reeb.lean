@@ -1754,7 +1754,7 @@ import TDA
 #print axioms TDA.Reeb.RGraph.window_t2Space
 #print axioms TDA.Reeb.RGraph.window_compactSpace
 #print axioms TDA.Reeb.RGraph.window_locallyPathConnectedSpace
--- TDA.Reeb.RGraphThickening: slabs of the shifted witness and the transfer hypotheses, the window transfer with its vertex and edge formulas, interior inverse and homeomorphism, the joint cylinder map, the thickening presentation with its piece instances, compatible maps, comparison map, bijectivity and homeomorphisms to the band and to the actual product thickening with height and coordinate equations, the isomorphism over ℝ, constructibility of graph thickenings, and the lifted functor with its equations.
+-- TDA.Reeb.RGraphThickening: slabs of the shifted witness and the transfer hypotheses, the window transfer with its vertex and edge formulas, interior inverse and homeomorphism, the joint cylinder map, the thickening presentation with its piece instances, compatible maps, comparison map, bijectivity and homeomorphisms to the band and to the product thickening with height and coordinate equations, the isomorphism over ℝ, constructibility of graph thickenings, and the lifted functor with its equations.
 #print axioms TDA.Reeb.RGraph.value_le_or_le
 #print axioms TDA.Reeb.RGraph.TransferOK
 #print axioms TDA.Reeb.RGraph.transferOK_of_mem
@@ -1917,7 +1917,7 @@ import TDA
 #print axioms TDA.Reeb.RGraph.geometricSmoothingValueEquiv
 #print axioms TDA.Reeb.RGraph.geometricSmoothingValueEquiv_apply
 #print axioms TDA.Reeb.RGraph.interleavingDistance_geometricSmoothing_le
--- TDA.Reeb.RGraphSmoothingExamples: every kind of open interval, ε = 0, the empty graph, a singleton at an arbitrary height, two-level helpers, height fibers of graph objects, the parallel-edge loop with its values and actual fibers, the single edge for every ε with its values and actual fibers, disjoint segments, graph maps across critical lists, and the contraction corollary.
+-- TDA.Reeb.RGraphSmoothingExamples: every kind of open interval, ε = 0, the empty graph, a singleton at an arbitrary height, two-level helpers, height fibers of graph objects, the parallel-edge loop with its values and fibers, the single edge for every ε with its values and fibers, disjoint segments, graph maps across critical lists, and the contraction corollary.
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.smoothed_bot_isEmpty
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.rep_unit_ioo
 #print axioms TDA.Reeb.Examples.RGraphSmoothing.rep_unit_iio

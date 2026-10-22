@@ -29,7 +29,7 @@ import TDA.Persistence.PersistenceImageMatching
 import TDA.Persistence.PersistenceImageDiagram
 import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramCalculus
-import TDA.Persistence.ActualLossDerivative
+import TDA.Persistence.SublevelLossDerivative
 import TDA.Persistence.FiniteBarcode
 import TDA.Persistence.FiniteMonoCounts
 import TDA.Persistence.FiniteMonoMatching
@@ -62,7 +62,7 @@ import TDA.Persistence.CechStability
 import TDA.Persistence.RipsPersistenceImage
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
-import TDA.Persistence.ActualDiagramRegularity
+import TDA.Persistence.SublevelDiagramRegularity
 import TDA.Persistence.SublevelDiagramTransport
 import TDA.Persistence.DiagramBottleneckTranslation
 import TDA.Persistence.DiagramMap
@@ -70,7 +70,7 @@ import TDA.Persistence.DiagramBottleneckScaling
 import TDA.Persistence.CechSupNormDiagram
 import TDA.Persistence.DiagramSecondOrderCalculus
 import TDA.Persistence.DiagramRegularity
-import TDA.Persistence.ActualLossHessian
+import TDA.Persistence.SublevelLossHessian
 import TDA.Persistence.Reduction.FiniteInput
 import TDA.Persistence.FiniteDecompositionSupport
 import TDA.Persistence.IntervalExtraction

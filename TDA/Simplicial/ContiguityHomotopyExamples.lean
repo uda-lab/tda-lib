@@ -3,7 +3,7 @@ import TDA.Simplicial.VertexChainMapExamples
 import TDA.Simplicial.H0Augmentation
 import Mathlib.LinearAlgebra.Matrix.Notation
 
-/-! Signed prisms, nonzero actual homology, collapse and support controls. -/
+/-! Signed prisms, nonzero homology, collapse and support controls. -/
 
 namespace TDA.Simplicial.ContiguityHomotopyExamples
 
@@ -123,7 +123,7 @@ private theorem vertexClass_ne_zero {V : Type} [LinearOrder V]
   rw [simplicialHomologyClass_quotient, map_zero] at hq
   exact zeroVertexCycle_not_boundary K ℚ s ((Submodule.Quotient.mk_eq_zero _).mp hq)
 
-private theorem endpoint_actualH0 :
+private theorem endpoint_simplicialH0 :
     simplicialHomologyMap ℚ (endpoint 0) 0 = simplicialHomologyMap ℚ (endpoint 1) 0 ∧
     (simplicialHomologyMap ℚ (endpoint 0) 0).hom
       (simplicialHomologyClass ℚ pointK 0 (zeroVertexCycle pointK ℚ (fullFace 0))) ≠ 0 ∧
@@ -381,7 +381,7 @@ private theorem isolated_endpoints_not_contiguous :
   have hc := ht.2
   norm_num [isolatedEndpoint] at hc
 
-private theorem isolated_actualH0_maps_differ :
+private theorem isolated_simplicialH0_maps_differ :
     simplicialHomologyMap ℚ (isolatedEndpoint 0) 0 ≠
       simplicialHomologyMap ℚ (isolatedEndpoint 1) 0 := by
   intro he

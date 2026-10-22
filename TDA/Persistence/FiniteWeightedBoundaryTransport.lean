@@ -55,7 +55,7 @@ theorem mass_mem (a : FiniteWeightedBoundaryPlan w v) :
     a.mass ∈ weightedBoundaryMatrices w v :=
   ⟨a.nonneg, a.row_le, a.col_le⟩
 
-/-- A matrix satisfying the actual marginal inequalities defines a plan. -/
+/-- A matrix satisfying the marginal inequalities defines a plan. -/
 def ofMass (a : I → J → ℝ) (ha : a ∈ weightedBoundaryMatrices w v) :
     FiniteWeightedBoundaryPlan w v :=
   ⟨a, ha.1, ha.2.1, ha.2.2⟩
@@ -447,11 +447,11 @@ def coordinates (D : FiniteWeightedDiagram) (i : D.supportLabels) : ℝ × ℝ :
 
 def weights (D : FiniteWeightedDiagram) (i : D.supportLabels) : ℝ≥0 := D i.1
 
-/-- The actual finite weighted diagram's powered optimum on its positive support. -/
+/-- The finite weighted diagram's powered optimum on its positive support. -/
 def powerBoundaryTransportCost (p : ℝ) (D E : FiniteWeightedDiagram) : ℝ :=
   weightedPowerBoundaryTransportCost p D.weights E.weights D.coordinates E.coordinates
 
-/-- Rooted boundary transport of two actual finite positive weighted diagrams. -/
+/-- Rooted boundary transport of two finite positive weighted diagrams. -/
 def pBoundaryTransportCost (p : ℝ) (D E : FiniteWeightedDiagram) : ℝ :=
   weightedPBoundaryTransportCost p D.weights E.weights D.coordinates E.coordinates
 

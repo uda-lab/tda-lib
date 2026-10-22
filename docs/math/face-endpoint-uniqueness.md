@@ -1,14 +1,14 @@
 # One endpoint role per face
 
 Fix a face-compatible enumeration of a finite complex and a coefficient field.
-At step `i + 1`, the actual prefix inclusion adds exactly the face at index `i`.
+At step `i + 1`, the prefix inclusion adds exactly the face at index `i`.
 For each homological degree, the canonical rank barcode counts births by the
 cokernel dimension and deaths by the kernel dimension of this adjacent inclusion.
 This follows by subtracting the adjacent rank from the target and source ranks,
 respectively. It uses the rank barcode's interval rank count, not an interval
-decomposition of the actual homology module.
+decomposition of the homology module.
 
-The actual attachment theorem classifies the new face: an isolated vertex gives
+The attachment theorem classifies the new face: an isolated vertex gives
 one degree-zero birth; a higher simplex gives either one birth in its own degree
 or one death in the degree below. All other inclusion maps are bijective. Thus
 exactly one birth or death count is one across *all* degrees, and every other

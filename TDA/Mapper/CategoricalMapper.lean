@@ -6,7 +6,7 @@ import TDA.Reeb.ComponentsGluing
 # Categorical Mapper intersection data
 
 The categorical Mapper retains path components over every nonempty intersection of
-cover members. Its face maps are induced by the actual inclusions of those intersections.
+cover members. Its face maps are induced by the inclusions of those intersections.
 For a test interval, the selected simplices are precisely those whose cover intersection
 meets that interval. Their component maps form a cocone into the path components of the
 cover saturation.
@@ -26,7 +26,7 @@ variable {ι : Type v}
 abbrev CoverSimplex (U : ι → OpenInterval) :=
   {s : Finset ι // s ∈ TDA.Topology.nerve (fun i => (U i : Set ℝ))}
 
-/-- The actual open intersection belonging to a cover simplex. -/
+/-- The open intersection belonging to a cover simplex. -/
 def coverIntersection (U : ι → OpenInterval) (s : CoverSimplex U) :
     TopologicalSpace.Opens ℝ :=
   ⨅ i : s.val, toOpens (U i.val)
@@ -39,7 +39,7 @@ def coverIntersection (U : ι → OpenInterval) (s : CoverSimplex U) :
   exact ⟨fun h i hi => h ⟨i, hi⟩, fun h i => h i.val i.property⟩
 
 
-/-- A finite intersection of cover intervals, regarded as an actual open interval. -/
+/-- A finite intersection of cover intervals, regarded as an open interval. -/
 def coverIntersectionInterval (U : ι → OpenInterval) (s : CoverSimplex U) : OpenInterval where
   carrier := coverIntersection U s
   isOpen' := (coverIntersection U s).isOpen
@@ -68,7 +68,7 @@ def coverIntersectionFunctor (U : ι → OpenInterval) :
 
 variable {X : Type u} [TopologicalSpace X]
 
-/-- Categorical Mapper: all intersection-component sets and their actual incidence maps. -/
+/-- Categorical Mapper: all intersection-component sets and their incidence maps. -/
 def categoricalMapperData (f : C(X, ℝ)) (U : ι → OpenInterval) :
     (CoverSimplex U)ᵒᵈ ⥤ Type u :=
   coverIntersectionFunctor U ⋙ componentFunctor f
@@ -106,7 +106,7 @@ theorem coverIntersection_le_saturation (U : ι → OpenInterval) (I : OpenInter
   exact mem_coverSaturation.mpr ⟨i, (mem_coverIntersection U s.val x).mp hx i hi,
     y, (mem_coverIntersection U s.val y).mp hyU i hi, hyI⟩
 
-/-- The component-inclusion cocone from categorical Mapper data to the actual saturated set. -/
+/-- The component-inclusion cocone from categorical Mapper data to the saturated set. -/
 def categoricalMapperCocone (f : C(X, ℝ)) (U : ι → OpenInterval) (I : OpenInterval) :
     Cocone (categoricalMapperDiagram f U I) where
   pt := (coverComponents f U).obj I
@@ -200,7 +200,7 @@ theorem categoricalMapperMemberMap_face (f : C(X, ℝ)) (U : ι → OpenInterval
   induction e using ZerothHomotopy.rec with
   | mk x => exact hw
 
-/-- The saturated component set is the colimit of the actual categorical Mapper diagram. -/
+/-- The saturated component set is the colimit of the categorical Mapper diagram. -/
 def categoricalMapperIsColimit (f : C(X, ℝ)) (U : ι → OpenInterval) (I : OpenInterval) :
     IsColimit (categoricalMapperCocone f U I) := by
   classical

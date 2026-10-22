@@ -112,7 +112,7 @@ composition (`realizeHom_comp`).
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleSpaceExamples` states every fixture about the actual quotient:
+`TDA.Reeb.ConstructibleSpaceExamples` states every fixture about the quotient:
 
 - `n = 0`: every presentation realizes `V 0` at the single height (`homeomorphZero`);
 - all pieces empty: an empty realization;

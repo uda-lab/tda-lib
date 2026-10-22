@@ -34,7 +34,7 @@ Indeed, d(v,w) ≤ e(v,w) + δ ≤ f_e(s) + δ for each pair in s. Taking the ma
 including its zero seed, gives f_d(s) ≤ f_e(s) + δ. Reversing the metrics proves the
 absolute-value estimate. The zero seed also handles s empty without choosing a vertex.
 
-Let dgm_k(f_d,n) be the existing diagram of actual simplicial sublevel homology in
+Let dgm_k(f_d,n) be the existing diagram of simplicial sublevel homology in
 degree n over a field k. The face supremum discrepancy is at most δ, so the existing
 finite-face stability theorem gives
 
@@ -62,7 +62,7 @@ they do not provide an executable distance-matrix or point-cloud reduction pipel
 
 The example module checks the empty carrier and a singleton, then compares two metrics
 on `Fin 2` with off-diagonal distances one and two. Their edge entry times are one and
-two, their discrepancy is one, and their actual diagrams satisfy the stated bound in
+two, their discrepancy is one, and their diagrams satisfy the stated bound in
 every degree.
 
 ## Source correspondence and scope
@@ -87,27 +87,27 @@ Let X and Y carry explicit genuine metrics dX and dY. Supply a native relation C
 ε≥0 with |dX(x,x′)−dY(y,y′)|≤ε whenever (x,y),(x′,y′) belong to C. This includes
 pairs with x=x′: two images of the same vertex can have distance at most ε.
 For a source face at t, each pair in a nonempty finite subset of its relational
-image has antecedents in that face. Hence dY≤dX+ε≤t+ε, proving the actual shifted
+image has antecedents in that face. Hence dY≤dX+ε≤t+ε, proving the shifted
 Rips face condition without totality or a finite-image premise. Reversing the relation
 and the absolute difference proves the converse geometry.
 
 When C and its native transpose are ambient-total, `Rips.relationInterleaving` uses
-the canonical relation maps to construct an actual homology interleaving. Both fields
-are exposed exactly; their double-shift composites are the actual inclusion-induced
+the canonical relation maps to construct a homology interleaving. Both fields
+are exposed exactly; their double-shift composites are the inclusion-induced
 transitions. This works over every ring, every natural homology degree, empty types
 and infinite types, with independent orders in a common vertex universe. It bounds
 the existing extended interleaving distance. For finite types and a field in the
 diagram universe, `bottleneck_dgm_le_of_relation` derives constructibility and finite
-dimensionality separately for the two actual filters. The existing different-grid
+dimensionality separately for the two filters. The existing different-grid
 matching theorem then bounds their full diagrams, including essential occurrences.
 
 Fixtures compare distance-two and distance-three pairs on different types, and a
-singleton with a distance-two pair. Actual nonzero H₀ images and triangles are
+singleton with a distance-two pair. Nonzero H₀ images and triangles are
 evaluated; a two-vertex difference survives before an edge enters and collapses after
-the required transition. Quantitative negative controls refute the actual geometric
+the required transition. Quantitative negative controls refute the geometric
 predicate when the bound is too small. Empty, infinite, repeated-point metric
 obstruction, noncentral matrix coefficient and trivial-ring cases retain the same
-actual maps.
+maps.
 
 This implements the supplied-distortion mechanism in CDSO Lemma 4.3's proof,
 through Proposition 4.2, at nonnegative scales. The target-distance estimate is
@@ -125,7 +125,7 @@ For finite nonempty metric spaces X and Y, every field k and every degree n,
 
 bottleneck(dgm_k(Rips(X), n), dgm_k(Rips(Y), n)) ≤ 2 d_GH(X,Y).
 
-`RipsGromovHausdorff` proves this bound for the full actual diagrams, with their
+`RipsGromovHausdorff` proves this bound for the full diagrams, with their
 finite and essential occurrences. The Lean bound is
 `ENNReal.ofReal (2 * GromovHausdorff.ghDist X Y)`. The GH normalization
 is the usual half-distortion normalization; the constant two accompanies the
@@ -140,7 +140,7 @@ C = {(x,y) | dist(f(x),g(y)) ≤ r}
 is total on both sides: each finite image is compact, so the distance to it is
 attained. The triangle inequality bounds the distortion of C by 2r, including
 pairs sharing a source or target. The existing canonical relation interleaving
-then bounds the actual diagrams by 2r. Mathlib's optimal coupling realizes
+then bounds the diagrams by 2r. Mathlib's optimal coupling realizes
 r = d_GH(X,Y), so the GH bound follows without assuming an optimizing
 correspondence or taking a limit of diagram matchings. The ambient space itself
 need not be compact or proper.
@@ -148,7 +148,7 @@ need not be compact or proper.
 `bottleneck_dgm_le_two_mul_ghDist` is the ordered-label entry point. `diagram k X n`
 also accepts an arbitrary finite metric space without a vertex order, even when
 the field and the two spaces live in different universes. It is the existing
-actual diagram on isometric finite labels in the field's universe.
+diagram on isometric finite labels in the field's universe.
 `diagram_eq_dgm` identifies it with the existing diagram for every vertex order;
 `dgm_eq_of_isometryEquiv` permits isometric relabellings that reverse that order.
 The chosen finite enumeration changes neither the full diagram nor the estimates.
@@ -159,15 +159,13 @@ extended Hausdorff errors ε and δ of the same possibly infinite set, their fin
 diagrams are within 2(ε+δ). Extended Hausdorff distance is used for those hypotheses
 so that an empty or unbounded target cannot create a spurious zero error through
 the real-valued convention at infinity. Convergence in Hausdorff distance to a
-fixed finite nonempty target therefore gives convergence of the full actual
-diagrams in bottleneck distance, with varying sample cardinalities allowed.
+fixed finite nonempty target therefore gives convergence of the full diagrams in bottleneck distance, with varying sample cardinalities allowed.
 
 The correspondence argument specializes the mechanism of CDSO13-v3 §4.2 and
 Lemma 4.3 to finite metric spaces, using mathlib's GH coupling and the library's
-actual-diagram theorem. It retains the library's empty negative tail; it makes no
+sublevel-diagram theorem. It retains the library's empty negative tail; it makes no
 whole-real H₀ identification with the source's nonpositive-time vertex convention.
-Theorem 5.2's totally bounded extension would also require q-tameness and an actual
-possibly infinite diagram construction. Neither follows from the finite sampling
+Theorem 5.2's totally bounded extension would also require q-tameness and a possibly infinite diagram construction. Neither follows from the finite sampling
 comparison above, which compares only finite diagrams.
 
 These results are abstract existence and correctness statements. Finite labels can

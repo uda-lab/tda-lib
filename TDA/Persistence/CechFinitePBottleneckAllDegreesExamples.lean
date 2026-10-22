@@ -9,7 +9,7 @@ import TDA.Persistence.FinitePBoundaryTransportExamples
 import TDA.Persistence.FinitePBottleneckLimitExamples
 
 /-!
-# Actual all-degree Čech recovery examples
+# All-degree Čech recovery examples
 -/
 
 noncomputable section
@@ -127,7 +127,7 @@ private theorem singleton_points {X : Type w} [PseudoMetricSpace X]
   simpa only [singleton_finitePart k a, Cech.essentialPart_dgm_zero_eq_singleton k a,
     Multiset.map_zero, Multiset.map_singleton, zero_add] using h.symm
 
-private theorem singleton_actual_costs {X : Type w} [PseudoMetricSpace X]
+private theorem singleton_costs {X : Type w} [PseudoMetricSpace X]
     (k : Type) [Field k] (a b : Fin 1 → X) {p : ℝ} (hp : 1 ≤ p) :
     essentialPart (dgm k (Cech.filter a) 0).points = ({0} : Multiset ℝ) ∧
     Fintype.card (dgm k (Cech.filter a) 0).finiteOccurrences = 0 ∧
@@ -177,16 +177,16 @@ private theorem singleton_moving_budget (k : Type) [Field k] (x y : ℝ)
     error_bounds hp k _ _ 0 (abs_nonneg _) (singleton_displacement x y).le,
     uniform_limits k 0 (abs_nonneg _)⟩
 
-/-! ### Empty labels, including an actually empty ambient space -/
+/-! ### Empty labels, including an empty ambient space -/
 
-private theorem empty_actual_diagram {X : Type w} [PseudoMetricSpace X]
+private theorem empty_diagram {X : Type w} [PseudoMetricSpace X]
     (k : Type) [Field k] (a : Fin 0 → X) (n : ℕ) :
     (dgm k (Cech.filter a) n).points = 0 := by
   letI : IsEmpty (TotalFace (Rips.fullComplex (Fin 0))) :=
     ⟨fun s => by obtain ⟨v, _⟩ := s.property; exact Fin.elim0 v⟩
   exact dgm_empty_faces k (Cech.filter a) n
 
-private theorem empty_actual_costs {X : Type w} [PseudoMetricSpace X]
+private theorem empty_costs {X : Type w} [PseudoMetricSpace X]
     (k : Type) [Field k] (a b : Fin 0 → X) (n : ℕ) {p : ℝ} (hp : 1 ≤ p) :
     finitePart (dgm k (Cech.filter a) n).points = 0 ∧
     essentialPart (dgm k (Cech.filter a) n).points = 0 ∧
@@ -197,10 +197,10 @@ private theorem empty_actual_costs {X : Type w} [PseudoMetricSpace X]
     transport p (dgm k (Cech.filter a) n) (dgm k (Cech.filter b) n) = 0 ∧
     errorBounds p k a b n 0 ∧ uniformLimits (V := Fin 0) (X := X) k n 0 := by
   have hf (c : Fin 0 → X) : finitePart (dgm k (Cech.filter c) n).points = 0 := by
-    rw [empty_actual_diagram k c n]
+    rw [empty_diagram k c n]
     rfl
   have he : essentialPart (dgm k (Cech.filter a) n).points = 0 := by
-    rw [empty_actual_diagram k a n]
+    rw [empty_diagram k a n]
     rfl
   have ha := card_of_empty_finitePart _ (hf a)
   have hb := card_of_empty_finitePart _ (hf b)
@@ -208,7 +208,7 @@ private theorem empty_actual_costs {X : Type w} [PseudoMetricSpace X]
   letI := Fintype.card_eq_zero_iff.mp hb
   have heq : dgm k (Cech.filter a) n = dgm k (Cech.filter b) n := by
     apply Diagram.ext
-    rw [empty_actual_diagram k a n, empty_actual_diagram k b n]
+    rw [empty_diagram k a n, empty_diagram k b n]
   refine ⟨hf a, he, ha, by simp, ?_, finitePMatchingCost_empty hp _ _,
     finitePBoundaryTransportCost_empty hp _ _,
     error_bounds hp k a b n le_rfl (by simp), uniform_limits k n le_rfl⟩
@@ -220,18 +220,18 @@ private instance emptyAmbient : PseudoMetricSpace Empty :=
 
 private theorem empty_ambient_diagram (n : ℕ) :
     (dgm (ZMod 2) (Cech.filter (Fin.elim0 : Fin 0 → Empty)) n).points = 0 :=
-  empty_actual_diagram (ZMod 2) _ n
+  empty_diagram (ZMod 2) _ n
 
 private theorem empty_ambient_bounds_and_uniform (n : ℕ) {p : ℝ} (hp : 1 ≤ p) :
     errorBounds p (ZMod 2) (Fin.elim0 : Fin 0 → Empty) Fin.elim0 n 0 ∧
     uniformLimits (V := Fin 0) (X := Empty) (ZMod 2) n 0 :=
-  (empty_actual_costs (ZMod 2) (Fin.elim0 : Fin 0 → Empty) Fin.elim0 n hp).2.2.2.2.2.2.2
+  (empty_costs (ZMod 2) (Fin.elim0 : Fin 0 → Empty) Fin.elim0 n hp).2.2.2.2.2.2.2
 
 private theorem nonempty_labels_cannot_map_to_empty : ¬ Nonempty (Fin 1 → Empty) := by
   rintro ⟨a⟩
   exact Empty.elim (a 0)
 
-/-! ### Two actual two-point clouds and a change of optimizer -/
+/-! ### Two two-point clouds and a change of optimizer -/
 
 private abbrev twoA : Fin 2 → ℝ := Cech.Examples.TwoPoints.pts
 private def twoB : Fin 2 → ℝ := fun i => (3 : ℝ) • twoA i
@@ -360,7 +360,7 @@ private theorem two_bounds_and_uniform {p : ℝ} (hp : 1 ≤ p) :
     error_bounds (by norm_num) _ _ _ 0 (by norm_num) two_displacement.le,
     uniform_limits _ 0 (by norm_num)⟩
 
-/-- This is a matching of the actual canonical occurrence types. -/
+/-- This is a matching of the canonical occurrence types. -/
 private def twoCanonicalPair : OccurrenceMatching twoDA.finiteOccurrences
     twoDB.finiteOccurrences PEmpty.{1} PEmpty.{1} :=
   FinitePBoundaryTransportExamples.pairSingletons.relabel
@@ -398,7 +398,7 @@ private theorem two_zero_plan_power (p : ℝ) :
     FiniteBoundaryPlan.zero, FiniteBoundaryPlan.deletionMass, FiniteBoundaryPlan.insertionMass,
     two_source_value, two_target_value, two_counts.1, two_counts.2.1, diagonalCost]
 
-private theorem two_actual_real_optimizer_change :
+private theorem two_real_optimizer_change :
     (FiniteBoundaryPlan.ofMatching twoCanonicalPair).powerCost 1
         (fun q => q.1) (fun q => q.1) =
       (transport 1 twoDA twoDB) ^ (1 : ℝ) ∧
@@ -415,7 +415,7 @@ private theorem two_actual_real_optimizer_change :
   rw [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 5 / 2)]
   norm_num
 
-/-! ### The actual Euclidean triangle versus a constant cloud -/
+/-! ### The Euclidean triangle versus a constant cloud -/
 
 private theorem deleting_common_essential {I : Type*} [Fintype I] (x : I → ℝ × ℝ) :
     presentationBottleneck x (Fin.elim0 : Fin 0 → ℝ × ℝ)
@@ -725,14 +725,14 @@ private theorem singleton_translation_boundary {p : ℝ} (hp : 1 ≤ p) :
   · rw [hbase, hshift]
     exact hc.2
 
-private theorem actual_cech_h0_log_obstruction (k : Type) [Field k]
+private theorem cech_h0_log_obstruction (k : Type) [Field k]
     {m : ℕ} (c : Fin m ↪o ℝ) (x : ℝ) :
     ¬ IsConstructible c (logModule k (Cech.filter (oneCloud x)) 0) := by
   let σ : TotalFace (Rips.fullComplex (Fin 1)) := ⟨{0}, by simp⟩
   exact not_isConstructible_logModule_zero k c σ (by simp [σ])
     (TriangleCechRipsExamples.cech_value_singleton _ 0).le
 
-private theorem actual_positive_triangle_nonzero :
+private theorem positive_triangle_nonzero :
     (dgm (ZMod 2) (Cech.filter triA) 1).points ≠ 0 ∧
     (Real.sqrt 5 / 2 : ℝ) < 5 / 4 := by
   constructor

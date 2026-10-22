@@ -3,9 +3,9 @@ import TDA.Persistence.ConstructibleShiftBarcode
 /-!
 # Shifted duplicate bars, essential tails and occurrence round trips
 
-The input is an actual finite-barcode pullback with two `[1,3)` copies and
+The input is a finite-barcode pullback with two `[1,3)` copies and
 one essential bar born at 3. Its shifted diagrams and support checks use the
-actual positive-evaluation shift, with additional observations on both tails.
+positive-evaluation shift, with additional observations on both tails.
 -/
 
 set_option autoImplicit false
@@ -78,7 +78,7 @@ private theorem input_points : (moduleDiagram coarse input critical_finite).poin
     Multiset.map_cons, Multiset.map_zero]
   rfl
 
-/-- The actual shift moves finite births/deaths left and keeps the essential death top. -/
+/-- The shift moves finite births/deaths left and keeps the essential death top. -/
 theorem shifted_points :
     (moduleDiagram (shiftGrid 2 coarse) ((shift 2).obj input)
       (finiteDimensional_shiftedCritical coarse input critical_finite 2)).points =
@@ -158,7 +158,7 @@ theorem distinct_duplicate_labels (a : ℝ) :
   exact ⟨p, q, hpq, rfl, fun h => hpq ((finiteTranslationEquiv D a).injective h)⟩
 
 /-- The constructed common grid for this source and its shifted target gives the
-same actual shifted diagram without new finiteness assumptions. -/
+same shifted diagram without new finiteness assumptions. -/
 theorem common_grid_shift (ε : ℝ≥0) :
     let e := commonGrid coarse (shiftGrid ε coarse)
     moduleDiagram e ((shift ε).obj input)
@@ -169,7 +169,7 @@ theorem common_grid_shift (ε : ℝ≥0) :
   moduleDiagram_shift_refinement coarse _ input input_constructible critical_finite ε
     (refines_commonGrid_right _ _)
 
-/-- A complete cost-bounded matching is constructed for the actual refined shift. -/
+/-- A complete cost-bounded matching is constructed for the refined shift. -/
 theorem refined_shift_matching :
     ∃ A : OccurrenceMatching (moduleDiagram coarse input critical_finite).finiteOccurrences
         (moduleDiagram fine ((shift 2).obj input) fine_finite).finiteOccurrences
@@ -202,7 +202,7 @@ private noncomputable def deletedFiniteMatching (D : Diagram ℝ) (a : ℝ) :
   finite_injective := by intros; contradiction
   essential := essentialTranslationEquiv D a
 
-/-- With both actual finite bars unselected, target untranslation retains both
+/-- With both finite bars unselected, target untranslation retains both
 unmatched sides and returns every essential label exactly. -/
 theorem unmatched_round_trip (a : ℝ) :
     let D := moduleDiagram coarse input critical_finite
@@ -230,8 +230,8 @@ theorem inverse_values (ε : ℝ≥0)
   · simpa only [sub_neg_eq_add] using finiteTranslationEquiv_symm_value _ (-(ε : ℝ)) p
   · simpa only [sub_neg_eq_add] using essentialTranslationEquiv_symm_value _ (-(ε : ℝ)) b
 
-/-- The constructed complete matching applies to the actual nonempty shifted module. -/
-theorem actual_shift_matching (ε : ℝ≥0) :
+/-- The constructed complete matching applies to the nonempty shifted module. -/
+theorem shift_matching (ε : ℝ≥0) :
     let D := moduleDiagram coarse input critical_finite
     let E := moduleDiagram (shiftGrid ε coarse) ((shift ε).obj input)
       (finiteDimensional_shiftedCritical coarse input critical_finite ε)
@@ -244,7 +244,7 @@ theorem actual_shift_matching (ε : ℝ≥0) :
       A.cost (fun p => p.1) (fun p => p.1) (fun b => b.1) (fun b => b.1) ≤ ε :=
   exists_shift_matching coarse input critical_finite ε
 
-/-- Parameter zero has the same actual diagram; the constructed complete matching costs zero. -/
+/-- Parameter zero has the same diagram; the constructed complete matching costs zero. -/
 theorem zero_shift :
     moduleDiagram (shiftGrid 0 coarse) ((shift 0).obj input)
         (finiteDimensional_shiftedCritical coarse input critical_finite 0) =

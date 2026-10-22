@@ -54,8 +54,7 @@ The right side is the [attained finite partial-matching minimum](finite-first-or
 `ofMatching` embeds its partial injections as 0–1 incidence plans, and
 `cost_ofMatching` preserves their paired and both unmatched costs exactly.
 The converse inequality, `matchingCost_le_cost`, quantifies over every feasible
-real plan. Consequently `exists_minimizing_boundaryPlan` supplies an actual
-incidence-plan minimizer, and `exists_matching_cost_le` supplies a partial matching
+real plan. Consequently `exists_minimizing_boundaryPlan` supplies an incidence-plan minimizer, and `exists_matching_cost_le` supplies a partial matching
 of no greater cost than any given plan. These are noncomputable existence results;
 no numerical optimization algorithm is supplied.
 
@@ -66,7 +65,7 @@ those of their original APIs.
 
 ## Boundary augmentation and the fractional inequality
 
-Use rows `I ⊕ J` and columns `J ⊕ I`. The first summands are actual occurrences;
+Use rows `I ⊕ J` and columns `J ⊕ I`. The first summands are occurrences;
 the second are dummies labelled by the opposite diagram. The raw cost blocks are
 
 ```text
@@ -81,11 +80,11 @@ block across each entire target column. A dummy with a different label is allowe
 at exactly the same boundary cost.
 
 `OccurrenceMatching.ofBoundaryAssignment` restricts any augmented bijection to
-its actual-to-actual partial injection. `totalFiniteCost_ofBoundaryAssignment`
+its occurrence-to-partial injection. `totalFiniteCost_ofBoundaryAssignment`
 proves exact cost preservation by reindexing the dummy charges: an unmatched target
 has precisely a dummy predecessor. `toBoundaryAssignment` completes a partial
 matching using its reverse: unmatched sources use their own dummies, unmatched
-target dummies go to their actual targets, and matched target dummies go to the
+target dummies go to their targets, and matched target dummies go to the
 dummies of their matched sources. Restriction of this completion is the original
 matching. This is a section, not a bijection of representations; other dummy
 permutations can encode the same partial matching.
@@ -110,7 +109,7 @@ an already minimizing matching proves the reverse inequality and attainment.
 
 ## Concrete controls
 
-The examples compile against the actual definitions:
+The examples compile against the definitions:
 
 - For `(0,2)` and `(0,4)`, sending mass `1/2` between them leaves boundary mass
   `1/2` on each side and costs `5/2`. Pairing costs `2`; deleting both costs `3`.
@@ -118,7 +117,7 @@ The examples compile against the actual definitions:
   The raw cost after collapsing the boundary therefore fails the triangle inequality.
 - An augmented permutation deletes a source through a differently labelled dummy
   and inserts a target from a differently labelled dummy. Their costs are `1` and
-  `3`, with one additional actual pair of cost zero.
+  `3`, with one additional pair of cost zero.
 - Two source copies and one target copy of `(0,2)` have minimum `1`. Sending half
   of each source to the target is a fractional optimum, alongside an integral
   optimum. Removing duplicate occurrences would change this result.

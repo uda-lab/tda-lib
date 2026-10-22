@@ -5,7 +5,7 @@ import Mathlib.Topology.MetricSpace.GromovHausdorff
 /-!
 # Gromov–Hausdorff stability of finite Rips persistence
 
-Finite nonempty metric spaces have full actual Rips diagrams at bottleneck distance
+Finite nonempty metric spaces have full Rips diagrams at bottleneck distance
 at most twice their Gromov–Hausdorff distance. Rips time is diameter, not ball radius.
 The proof uses a closed Hausdorff correspondence in mathlib's optimal coupling and
 the existing canonical relation interleaving. Compactness of the two finite images
@@ -81,7 +81,7 @@ variable {X Y : Type u} [LinearOrder X] [LinearOrder Y]
   [Fintype X] [Fintype Y] [MetricSpace X] [MetricSpace Y]
   [Nonempty X] [Nonempty Y]
 
-/-- Ambient Hausdorff sampling controls the full actual diagrams in every degree.
+/-- Ambient Hausdorff sampling controls the full diagrams in every degree.
 The finite images, rather than the ambient space, supply compactness. -/
 theorem bottleneck_dgm_le_two_mul_hausdorffDist (k : Type u) [Field k]
     {Z : Type w} [MetricSpace Z] {f : X → Z} {g : Y → Z}
@@ -107,7 +107,7 @@ theorem bottleneck_dgm_le_two_mul_ghDist (k : Type u) [Field k] (n : ℕ) :
       (isometry_optimalGHInjl X Y) (isometry_optimalGHInjr X Y) n
 
 omit [Nonempty X] [Nonempty Y] in
-/-- Isometric relabelling preserves the actual full diagram; it need not preserve
+/-- Isometric relabelling preserves the full diagram; it need not preserve
 vertex order. This also compares different auxiliary linear orders. -/
 theorem dgm_eq_of_isometryEquiv (k : Type u) [Field k] (e : X ≃ᵢ Y) (n : ℕ) :
     dgm k (Rips.filter (inferInstance : MetricSpace X)) n =
@@ -137,7 +137,7 @@ private abbrev labelsMetric {X : Type u} [Fintype X] (dX : MetricSpace X) :
     MetricSpace (FiniteLabels.{u, v} X) :=
   @MetricSpace.induced _ X (labelsEquiv X) (labelsEquiv X).injective dX
 
-/-- The enumeration is an actual isometric equivalence. -/
+/-- The enumeration is an isometric equivalence. -/
 private def labelsIsometryEquiv (X : Type u) [Fintype X] [MetricSpace X] :
     letI : MetricSpace (FiniteLabels.{u, v} X) := labelsMetric (inferInstance : MetricSpace X)
     FiniteLabels.{u, v} X ≃ᵢ X := by
@@ -145,21 +145,21 @@ private def labelsIsometryEquiv (X : Type u) [Fintype X] [MetricSpace X] :
   exact { labelsEquiv X with
     isometry_toFun := MetricSpace.isometry_induced _ (labelsEquiv X).injective }
 
-/-- The full actual Rips diagram of a finite metric space over any field, with no
-vertex order required. It is the existing actual diagram on isometric finite labels. -/
+/-- The full Rips diagram of a finite metric space over any field, with no
+vertex order required. It is the existing diagram on isometric finite labels. -/
 def diagram (k : Type v) [Field k] (X : Type u) [Fintype X] [MetricSpace X] (n : ℕ) :
     Diagram ℝ :=
   dgm k (Rips.filter (labelsMetric (inferInstance : MetricSpace X) :
     MetricSpace (FiniteLabels.{u, v} X))) n
 
-/-- The order-free actual diagram has strictly positive lifetimes, including its
+/-- The order-free diagram has strictly positive lifetimes, including its
 possible essential occurrences. -/
 theorem diagram_isPositive (k : Type v) [Field k] (X : Type u)
     [Fintype X] [MetricSpace X] (n : ℕ) : (diagram k X n).IsPositive :=
   dgm_isPositive k (Rips.filter (labelsMetric (inferInstance : MetricSpace X) :
     MetricSpace (FiniteLabels.{u, v} X))) n
 
-/-- The order-free finite-space entry point agrees with the existing actual diagram
+/-- The order-free finite-space entry point agrees with the existing diagram
 for every auxiliary vertex order, including orders unrelated to the enumeration. -/
 theorem diagram_eq_dgm (k : Type u) [Field k] (X : Type u) [Fintype X]
     [MetricSpace X] [LinearOrder X] (n : ℕ) :
@@ -238,7 +238,7 @@ theorem bottleneck_diagram_le_two_mul_sampling_errors (k : Type z) [Field k]
   simpa only [ENNReal.ofReal_add hε hδ] using h
 
 /-- Finite samples converging in ambient Hausdorff distance to a fixed finite
-nonempty space have full actual diagrams converging in bottleneck distance.
+nonempty space have full diagrams converging in bottleneck distance.
 The sample carrier and cardinality may vary with the index. All sample carriers
 share one ambient universe, independent of the target and coefficient universes. -/
 theorem tendsto_bottleneck_diagram_of_hausdorffDist_tendsto_zero

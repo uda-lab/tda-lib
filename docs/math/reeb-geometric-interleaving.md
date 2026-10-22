@@ -89,7 +89,7 @@ smoothingCompIso`, for arbitrary `ε`, `δ`. So a geometric `ε`-interleaving gi
 interleavingDistance (C A).obj (C B).obj ≤ geometricInterleavingDistance A B.
 ```
 
-The left side is the merged distance on the actual underlying precosheaves. Neither the full
+The left side is the merged distance on the underlying precosheaves. Neither the full
 faithfulness `cosheafFullyFaithful` nor the equivalence `cosheafEquivalence` is used, so no
 critical-value or witness scope is inherited.
 

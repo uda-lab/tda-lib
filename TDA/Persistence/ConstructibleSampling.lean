@@ -9,7 +9,7 @@ import TDA.Persistence.RealInterleavingShortness
 Critical samples evaluate the module at the grid values, as in `moduleDiagram`;
 they differ from the padded zero-stage `sample` used in reconstruction.
 Translate a critical parameter forward, then select the last critical value in
-its cell. The intervening actual structure map is an isomorphism. Cancelling
+its cell. The intervening structure map is an isomorphism. Cancelling
 that map transfers real transition annihilation to finite sampled defects.
 The last observation remains fixed; no terminal zero stage is appended.
 Cancellation works over rings. The finite shortness wrappers use the existing
@@ -27,7 +27,7 @@ open scoped NNReal
 
 variable {n : ℕ}
 
-/-- Round a translated critical value down to the start of its actual grid cell.
+/-- Round a translated critical value down to the start of its grid cell.
 This acts on critical samples, without the padded zero stage of `sample`. -/
 noncomputable def sampleTranslation (c : Fin n ↪o ℝ) (δ : ℝ≥0) : Fin n →o Fin n where
   toFun i := ⟨(cellIndex c (c i + (δ : ℝ))).val - 1, by
@@ -84,7 +84,7 @@ theorem cellIndex_sampleTranslation (c : Fin n ↪o ℝ) (δ : ℝ≥0) (i : Fin
 variable {R : Type u} [Ring R] {c : Fin n ↪o ℝ}
 variable {A : PModule.{u,0,w} R ℝ}
 
-/-- Actual real annihilation transfers to critical samples by cancelling the
+/-- Real annihilation transfers to critical samples by cancelling the
 within-cell isomorphism after the rounded endpoint. -/
 theorem critical_structureMap_eq_zero (hA : IsConstructible c A) (δ : ℝ≥0)
     (hz : transition δ A = 0) (i : Fin n) :
@@ -105,7 +105,7 @@ theorem critical_translationTrivial (hM : IsConstructible c M) (δ : ℝ≥0)
     TranslationTrivial (sampleTranslation c δ) (le_sampleTranslation c δ)
       (reindex c.toOrderHom M) := critical_structureMap_eq_zero hM δ hz
 
-/-- A natural isomorphism transports finite shortness through its actual naturality square. -/
+/-- A natural isomorphism transports finite shortness through its naturality square. -/
 theorem translationTrivial_of_iso {B C : PModule.{u,0,u} k (Fin n)}
     (θ : Fin n →o Fin n) (hθ : ∀ i, i ≤ θ i) (e : B ≅ C)
     (hB : TranslationTrivial θ hθ B) : TranslationTrivial θ hθ C := by
@@ -117,7 +117,7 @@ theorem translationTrivial_of_iso {B C : PModule.{u,0,u} k (Fin n)}
   change structureMap B (hθ i) ≫ e.hom.app (θ i) = 0
   rw [hB i, zero_comp]
 
-/-- Sampling the actual morphism gives an actual finite kernel with derived shortness. -/
+/-- Sampling the morphism gives a finite kernel with derived shortness. -/
 theorem criticalKernel_translationTrivial (hM : IsConstructible c M)
     (hN : IsConstructible c N) (f : M ⟶ N) (δ : ℝ≥0)
     (hz : transition δ (kernel f) = 0) :
@@ -126,7 +126,7 @@ theorem criticalKernel_translationTrivial (hM : IsConstructible c M)
   translationTrivial_of_iso _ _ (criticalKernelIso c f)
     (critical_translationTrivial (hM.kernel hN f) δ hz)
 
-/-- The actual finite sampled cokernel inherits real shortness through its natural comparison. -/
+/-- The finite sampled cokernel inherits real shortness through its natural comparison. -/
 theorem criticalCokernel_translationTrivial (hM : IsConstructible c M)
     (hN : IsConstructible c N) (f : M ⟶ N) (δ : ℝ≥0)
     (hz : transition δ (cokernel f) = 0) :
@@ -135,7 +135,7 @@ theorem criticalCokernel_translationTrivial (hM : IsConstructible c M)
   translationTrivial_of_iso _ _ (criticalCokernelIso c f)
     (critical_translationTrivial (hM.cokernel hN f) δ hz)
 
-/-- An actual interleaving supplies constructible real defects and both finite
+/-- An interleaving supplies constructible real defects and both finite
 sampled shortness statements on the constructed common grid. No shortness is an input. -/
 theorem interleaving_critical_defects {m : ℕ} {d : Fin m ↪o ℝ} {ε : ℝ≥0}
     (hM : IsConstructible c M) (hN : IsConstructible d N) (i : RealInterleaving ε M N) :

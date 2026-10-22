@@ -6,7 +6,7 @@ import Mathlib.Analysis.Calculus.ContDiff.Operations
 set_option autoImplicit false
 
 /-!
-Fixed face-index occurrences give smooth coordinates for actual sublevel diagrams.
+Fixed face-index occurrences give smooth coordinates for sublevel diagrams.
 The lists below enumerate index multisets once, before a parameter is evaluated.
 -/
 
@@ -33,7 +33,7 @@ noncomputable def fixedFaceLift (F : E → FilterFunction K ℝ)
   (fun i => pairValues (F x) e ((faceTemplatePairs k e n).toList.get i),
    fun i => birthValue (F x) e ((faceTemplateEssential k e n).toList.get i))
 
-/-- A fixed lift represents the actual degree-`n` sublevel diagram everywhere
+/-- A fixed lift represents the degree-`n` sublevel diagram everywhere
 that the reference enumeration stays compatible. -/
 theorem fixedFaceLift_factorization (F : E → FilterFunction K ℝ)
     {x₀ : E} (e : CompatibleOrder (F x₀)) (n : ℕ)
@@ -66,7 +66,7 @@ theorem fixedFaceLift_contDiffOn (F : E → FilterFunction K ℝ)
     intro i
     exact hF (e.enum ((faceTemplateEssential k e n).toList.get i))
 
-/-- A whole open weak-order neighborhood has one C¹ lift of its actual diagrams,
+/-- A whole open weak-order neighborhood has one C¹ lift of its diagrams,
 with fixed counts and fixed face-index labels. -/
 theorem exists_smooth_face_lift (F : E → FilterFunction K ℝ)
     {x₀ : E} {U : Set E} (hU : IsOpen U) (hx₀ : x₀ ∈ U)

@@ -5,7 +5,7 @@ import TDA.Reeb.RGraphThickeningExamples
 /-!
 # Fixtures for the geometric smoothing of finite ℝ-graphs
 
-Acceptance fixtures for `TDA.Reeb.RGraphSmoothing`, on actual graph objects:
+Acceptance fixtures for `TDA.Reeb.RGraphSmoothing`, on graph objects:
 
 * **Every kind of open interval.** For an arbitrary graph object, the representative comparison
   and unit formulas hold on bounded intervals, both rays and `ℝ`; the value at `⊥` is empty.
@@ -17,7 +17,7 @@ Acceptance fixtures for `TDA.Reeb.RGraphSmoothing`, on actual graph objects:
   support.
 * **The parallel-edge loop over `0 < 1`, height span `1 ≤ 2ε`.** For every `ε ≥ 1/2`, every
   smoothed value has at most one element; values are nonempty on every interval meeting
-  `[-ε, 1 + ε]` and empty on the rays below `-ε` and above `1 + ε`. Every actual height fiber of
+  `[-ε, 1 + ε]` and empty on the rays below `-ε` and above `1 + ε`. Every height fiber of
   `U_ε` has at most one point, and the fiber over `t` is nonempty exactly when `t ∈ [-ε, 1 + ε]`.
   So every nonempty fiber is a single point, also in the equality case `ε = 1/2` and at both ends
   of the support. At `ε = 1/4` the loop survives: the value on `(1/4, 3/4)` has two distinct
@@ -25,7 +25,7 @@ Acceptance fixtures for `TDA.Reeb.RGraphSmoothing`, on actual graph objects:
 * **The single edge over `0 < 1`, for every `ε`.** The line is stretched to `[-ε, 1 + ε]`. Every
   smoothed value has at most one element, including, for `ε < 1/2`, on intervals whose thickening
   lies in the gap. Values are nonempty on every interval meeting `[-ε, 1 + ε]`, through interior
-  edge points when `ε < 1/2`, and empty on both outer rays. The actual fibers have at most one
+  edge points when `ε < 1/2`, and empty on both outer rays. The fibers have at most one
   point and are nonempty exactly over `[-ε, 1 + ε]`.
 * **Two disjoint segments.** Their classes on `ℝ` stay distinct for every `ε`.
 * **Graph maps.** Naturality holds at the non-identity edge swap, whose image under `U_(1/4)` is not
@@ -668,9 +668,9 @@ theorem parallel_zero_not_subsingleton :
   rw [thicken_zero] at h1
   exact parallel_mid_not_subsingleton h1
 
-/-! ### The parallel-edge loop: actual height fibers -/
+/-! ### The parallel-edge loop: height fibers -/
 
-/-- **Loop, actual fibers, span `1 ≤ 2ε`.** For every `ε ≥ 1/2`, every height fiber of `U_ε` of the
+/-- **Loop, fibers, span `1 ≤ 2ε`.** For every `ε ≥ 1/2`, every height fiber of `U_ε` of the
 parallel-edge loop has at most one point. -/
 theorem parallel_smoothed_fiber_subsingleton {ε : ℝ≥0} (hε : 1 / 2 ≤ (ε : ℝ)) (t : ℝ) :
     Subsingleton (overBaseMap ((geometricSmoothing ε).obj parallelGraph).obj ⁻¹' {t}) :=
@@ -681,7 +681,7 @@ theorem parallel_half_fiber_subsingleton (t : ℝ) :
     Subsingleton (overBaseMap ((geometricSmoothing halfNN).obj parallelGraph).obj ⁻¹' {t}) :=
   parallel_smoothed_fiber_subsingleton (by rw [coe_halfNN]) t
 
-/-- **Loop, support of the actual fibers, every `ε`.** The fiber over `t` is nonempty exactly when
+/-- **Loop, support of the fibers, every `ε`.** The fiber over `t` is nonempty exactly when
 `t ∈ [-ε, 1 + ε]`, endpoints included. -/
 theorem parallel_smoothed_fiber_nonempty_iff (ε : ℝ≥0) (t : ℝ) :
     (overBaseMap ((geometricSmoothing ε).obj parallelGraph).obj ⁻¹' {t}).Nonempty ↔
@@ -822,13 +822,13 @@ theorem single_quarter_gap :
       (by rw [coe_quarter]; norm_num) (by rw [coe_quarter]; norm_num),
     single_stretched_subsingleton quarter _⟩
 
-/-- **Single edge, actual fibers, every `ε`.** Every height fiber of `U_ε` of the single edge has
+/-- **Single edge, fibers, every `ε`.** Every height fiber of `U_ε` of the single edge has
 at most one point. -/
 theorem single_smoothed_fiber_subsingleton (ε : ℝ≥0) (t : ℝ) :
     Subsingleton (overBaseMap ((geometricSmoothing ε).obj singleGraph).obj ⁻¹' {t}) :=
   fiber_subsingleton_of_cosheaf _ (single_stretched_subsingleton ε) t
 
-/-- **Single edge, support of the actual fibers, every `ε`.** The fiber over `t` is nonempty exactly
+/-- **Single edge, support of the fibers, every `ε`.** The fiber over `t` is nonempty exactly
 when `t ∈ [-ε, 1 + ε]`. -/
 theorem single_smoothed_fiber_nonempty_iff (ε : ℝ≥0) (t : ℝ) :
     (overBaseMap ((geometricSmoothing ε).obj singleGraph).obj ⁻¹' {t}).Nonempty ↔

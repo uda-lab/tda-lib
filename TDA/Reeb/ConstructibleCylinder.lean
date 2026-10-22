@@ -16,7 +16,7 @@ arbitrary topological pieces, and write `X = P.Realization S` and `h = P.height 
 interval `W`, `P.heightPreimage S W` is the subspace `{x : X // h x ∈ W}`; its path components are
 `(intervalComponents h).obj W` by definition (`intervalComponents_obj_eq`). This file proves the
 homotopy equivalences of the cylinder principle of de Silva–Munch–Patel (Lemma 2.4), with its
-incidence diagrams (2.5) on path components and its naturality (2.6) for the actual fiber
+incidence diagrams (2.5) on path components and its naturality (2.6) for the fiber
 inclusions, and
 the constructibility of the path-component cosheaf of a realization (Proposition 3.16).
 
@@ -63,9 +63,9 @@ deformation retract.
   maximum of one point of `I` together with the levels in `I`. The end map is a map
   `heightPreimage J → heightPreimage I`, and both composites with the inclusion are end maps of
   the same homotopy restricted to `W = I` and `W = J` (`nestedHomotopyEquiv`). Bijectivity of the
-  actual map `(intervalComponents h).map (homOfLE _)` follows.
+  map `(intervalComponents h).map (homOfLE _)` follows.
 
-Only the forward map of each homotopy equivalence, the actual fiber or interval inclusion, is
+Only the forward map of each homotopy equivalence, the fiber or interval inclusion, is
 part of the interface. The homotopy inverses are chosen clamp retractions.
 
 The parenthesis of DMP Lemma 2.4 indexes edges so that the first genuine edge set would be
@@ -80,7 +80,7 @@ and `n = 0` has no edge.
   form (`vertexComponentsEquiv_symm_map_castSucc`, `vertexComponentsEquiv_symm_map_succ`).
 * For two presentations over the same `S` and an arbitrary continuous
   `φ : P.Realization S → P'.Realization S` with `h' ∘ φ = h`, `φ` restricts to the fibers and
-  defines `vertexFiberMap` and `regularFiberMap`. The actual fiber inclusions commute with `φ`
+  defines `vertexFiberMap` and `regularFiberMap`. The fiber inclusions commute with `φ`
   on the nose (`vertexFiberInclusion_naturality`, `regularFiberInclusion_naturality`), hence the
   component bijections are natural for `componentNatTrans φ` and its restriction to intervals.
   The chosen retractions are not claimed to commute with `φ`.
@@ -604,7 +604,7 @@ def nestedHomotopyEquiv {I J : OpenInterval} (hIJ : I ≤ J) (hI : (I : Set ℝ)
 
 /-! ### Constructibility of `intervalComponents` -/
 
-/-- Bijectivity clause: for nonempty `I ≤ J` meeting the same levels, the actual map is
+/-- Bijectivity clause: for nonempty `I ≤ J` meeting the same levels, the map is
 bijective. -/
 theorem intervalComponents_map_bijective {I J : OpenInterval} (hIJ : I ≤ J)
     (hI : (I : Set ℝ).Nonempty) (hhit : ∀ i, S.value i ∈ I ↔ S.value i ∈ J) :
@@ -795,14 +795,14 @@ theorem map_ofStrip_eq (e : Fin n) (t : (S.K e : Set ℝ)) (y : P.E e) :
   rw [regularFiberHomeomorph_apply] at this
   exact this.symm
 
-/-- The actual vertex fiber inclusions commute with `φ` on the nose. -/
+/-- The vertex fiber inclusions commute with `φ` on the nose. -/
 theorem vertexFiberInclusion_naturality (i : Fin (n + 1)) :
     (preimageRestrict φ hφ (OpenInterval.toOpens (S.J i))).comp (P.vertexFiberInclusion S i) =
       (P'.vertexFiberInclusion S i).comp (vertexFiberMap S φ hφ i) := by
   ext v
   exact map_ofVertex_eq S φ hφ i v
 
-/-- The actual regular fiber inclusions commute with `φ` on the nose. -/
+/-- The regular fiber inclusions commute with `φ` on the nose. -/
 theorem regularFiberInclusion_naturality (e : Fin n) (t : (S.K e : Set ℝ)) :
     (preimageRestrict φ hφ (OpenInterval.toOpens (S.K e))).comp (P.regularFiberInclusion S e t) =
       (P'.regularFiberInclusion S e t).comp (regularFiberMap S φ hφ e t) := by

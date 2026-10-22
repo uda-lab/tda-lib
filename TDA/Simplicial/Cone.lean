@@ -52,7 +52,7 @@ namespace IsApexCone
 
 variable {K : PreAbstractSimplicialComplex V} {v : V}
 
-/-- The apex as an actual zero-dimensional face. -/
+/-- The apex as a zero-dimensional face. -/
 def apexFace (hK : IsApexCone K v) : Face K 0 :=
   ⟨{v}, hK.apex_mem, by simp⟩
 

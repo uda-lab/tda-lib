@@ -3,18 +3,16 @@
 This note extends [attained-grade diagram transport](sublevel-diagram-transport.md) to a
 global reparametrization of filters and diagrams along order embeddings. It proves the
 positive scaling law of the bottleneck distance and uses both to read the
-[sup-norm value identity](cech-supnorm-witness.md) čech = rips/2 as identities of actual
-diagrams and bottleneck distances.
+[sup-norm value identity](cech-supnorm-witness.md) čech = rips/2 as identities of diagrams and bottleneck distances.
 
 ## Conventions
 
-A filter function f on a complex K assigns a value in a linear order α to each actual
-face, monotonically along face inclusion. Its sublevel at r is the set of faces with value
+A filter function f on a complex K assigns a value in a linear order α to each face, monotonically along face inclusion. Its sublevel at r is the set of faces with value
 at most r. Two filters are ordering-equivalent when they make the same weak comparisons
 between face values. A diagram over α is a finite multiset of pairs (b, d) with
 b ∈ α and d ∈ α ∪ {⊤} and b ≠ d. Its finite part keeps the pairs with d ≠ ⊤, and its
 essential part keeps the births b of the pairs with d = ⊤. The diagram dgm_k(f, n) is the
-existing diagram of actual sublevel homology in degree n over a field k.
+existing diagram of sublevel homology in degree n over a field k.
 
 Throughout, φ : α → β and ψ : β → γ are order embeddings between linear orders, that is,
 maps with φ x ≤ φ y exactly when x ≤ y. An order isomorphism is a surjective order
@@ -59,7 +57,7 @@ finite deaths are mapped and the essential top is fixed; multiplicities are reta
   by occurrence, on the two cases d = ⊤ and d finite.
 - **Functoriality.** The identity and composition laws hold occurrence by occurrence.
 
-**Actual diagrams.** For every finite complex, field and degree,
+**diagrams.** For every finite complex, field and degree,
 
 dgm_k(f.map φ, n) = dgm_k(f, n).map φ.
 
@@ -107,8 +105,8 @@ so
 bottleneck(D.scale c, E.scale c) = c · bottleneck(D, E)
 
 for all real diagrams D, E, including reversed finite pairs and unequal essential counts,
-where both sides are ⊤. For actual diagrams, dgm_k(f.scale c, n) = dgm_k(f, n).scale c,
-and the bottleneck distance of two scaled filters' actual diagrams is c times the
+where both sides are ⊤. For diagrams, dgm_k(f.scale c, n) = dgm_k(f, n).scale c,
+and the bottleneck distance of two scaled filters' diagrams is c times the
 original one.
 
 **Translation.** The merged translation of a filter by c is the filter map along x ↦ x + c,
@@ -124,9 +122,8 @@ holds for every face. Hence:
 
 - **Filters.** The Čech filter is the Rips filter scaled by 2⁻¹, and the Rips filter is the
   Čech filter scaled by 2.
-- **Diagrams.** In every degree and over every field, the actual Čech diagram is the actual
-  Rips diagram scaled by 2⁻¹: every finite coordinate is halved and essential deaths stay
-  at ⊤. This is the scaling law for actual diagrams applied to the filter identity; no
+- **Diagrams.** In every degree and over every field, the Čech diagram is the Rips diagram scaled by 2⁻¹: every finite coordinate is halved and essential deaths stay
+  at ⊤. This is the scaling law for diagrams applied to the filter identity; no
   second transport argument is used.
 - **Bottleneck halving.** For a second configuration q with a compatible label metric e,
   the bottleneck distance of the Čech diagrams of p and q is 2⁻¹ times that of the Rips
@@ -155,7 +152,7 @@ bound is exported; the moved-point fixture derives both from the line diagram id
   checked on the one-vertex filter and its diagram.
 - **Infinite distance.** A diagram with one essential birth and the empty diagram are at
   distance ⊤, and their scaled diagrams remain at distance ⊤.
-- **Two points on the line.** The actual Čech diagram of 0 and 2 is the halved actual Rips
+- **Two points on the line.** The Čech diagram of 0 and 2 is the halved Rips
   diagram in every degree over every field. At the edge the halved Rips value is
   2⁻¹ · 2 = 1, the merged Čech value.
 - **The sup-norm triangle.** For (0,0), (2,0) and (1,2) in the sup-norm plane, the diagram

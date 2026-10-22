@@ -4,7 +4,7 @@ import TDA.Persistence.TotalPersistenceRipsCechExamples
 import TDA.Persistence.FinitePBoundaryTransportLaws
 
 /-!
-# Actual Čech diagrams in a displacement-budget class
+# Čech diagrams in a displacement-budget class
 
 The acute triangle has a positive degree-one bar, whereas the right triangle's
 degree-one diagram is empty. Both optimized rooted costs equal their positive
@@ -110,8 +110,8 @@ private theorem acute_coordinates (q : acuteDiagram.finiteOccurrences) :
   Multiset.mem_singleton.mp
     (by simpa only [acute_finitePart] using (Multiset.coe_mem (x := q)))
 
-/-- Both clouds are actual certified reducer-to-diagram computations. -/
-private theorem actual_diagram_counts :
+/-- Both clouds are certified reducer-to-diagram computations. -/
+private theorem diagram_counts :
     Fintype.card acuteDiagram.finiteOccurrences = 1 ∧
     Fintype.card rightDiagram.finiteOccurrences = 0 ∧
     2 * Nat.choose (Fintype.card (Fin 3)) (1 + 2) = 2 := by
@@ -155,7 +155,7 @@ private theorem acute_right_bottleneck :
   rw [right_eq_empty_rips, bottleneck_comm]
   exact triangle_bottleneck_one
 
-/-- Reindex the actual canonical occurrences, retaining their certified values. -/
+/-- Reindex the canonical occurrences, retaining their certified values. -/
 private theorem acute_right_matching_reindex (p : ℝ) :
     matching p acuteDiagram rightDiagram =
       finitePMatchingCost p (fun _ : Fin 1 => ((Real.sqrt 5 / 2, 5 / 4) : ℝ × ℝ))
@@ -180,8 +180,8 @@ private theorem acute_right_matching {p : ℝ} (hp : 1 ≤ p) :
   simp only [acute_diagonal, ENNReal.toReal_ofReal radius_pos.le, Fin.sum_univ_one]
   exact Real.rpow_rpow_inv radius_pos.le (ne_of_gt (lt_of_lt_of_le zero_lt_one hp))
 
-/-- A positive full bottleneck and both actual optimized costs, for every real p ≥ 1. -/
-private theorem acute_right_actual_costs {p : ℝ} (hp : 1 ≤ p) :
+/-- A positive full bottleneck and both optimized costs, for every real p ≥ 1. -/
+private theorem acute_right_costs {p : ℝ} (hp : 1 ≤ p) :
     0 < radius ∧ bottleneck acuteDiagram rightDiagram = ENNReal.ofReal radius ∧
     matching p acuteDiagram rightDiagram = radius ∧
     transport p acuteDiagram rightDiagram = radius := by
@@ -209,7 +209,7 @@ private theorem acute_right_error_examples :
 private theorem acute_right_errors_zero {p : ℝ} (hp : 1 ≤ p) :
     |matching p acuteDiagram rightDiagram - (bottleneck acuteDiagram rightDiagram).toReal| = 0 ∧
     |transport p acuteDiagram rightDiagram - (bottleneck acuteDiagram rightDiagram).toReal| = 0 := by
-  rcases acute_right_actual_costs hp with ⟨hr, hB, hm, ht⟩
+  rcases acute_right_costs hp with ⟨hr, hB, hm, ht⟩
   simp only [hB, hm, ht, ENNReal.toReal_ofReal hr.le, sub_self, abs_zero, and_self]
 
 /-- Zero displacement is tested on the retained positive triangle bar. -/
@@ -230,7 +230,7 @@ private theorem diagram_points_zero_of_parts (D : Diagram ℝ)
   simpa only [hf, he, Multiset.map_zero, zero_add] using h.symm
 
 /-- Empty labels require no chosen ambient point, even when the ambient type is empty. -/
-private theorem empty_actual_diagram {X : Type w} [PseudoMetricSpace X]
+private theorem empty_diagram {X : Type w} [PseudoMetricSpace X]
     (a : Fin 0 → X) (n : ℕ) : (dgm (ZMod 2) (Cech.filter a) n).points = 0 := by
   let : IsEmpty (TDA.Simplicial.TotalFace (Rips.fullComplex (Fin 0))) :=
     ⟨fun s => by obtain ⟨v, _⟩ := s.property; exact Fin.elim0 v⟩
@@ -249,7 +249,7 @@ private theorem empty_label_controls {X : Type w} [PseudoMetricSpace X]
     uniformLimits (V := Fin 0) (X := X) (ZMod 2) 1 0 := by
   have hc (c : Fin 0 → X) :
       Fintype.card (dgm (ZMod 2) (Cech.filter c) 1).finiteOccurrences = 0 := by
-    rw [Multiset.card_coe, empty_actual_diagram c 1]
+    rw [Multiset.card_coe, empty_diagram c 1]
     rfl
   let : IsEmpty (dgm (ZMod 2) (Cech.filter a) 1).finiteOccurrences :=
     Fintype.card_eq_zero_iff.mp (hc a)
@@ -257,7 +257,7 @@ private theorem empty_label_controls {X : Type w} [PseudoMetricSpace X]
     Fintype.card_eq_zero_iff.mp (hc b)
   have heq : dgm (ZMod 2) (Cech.filter a) 1 = dgm (ZMod 2) (Cech.filter b) 1 := by
     apply Diagram.ext
-    rw [empty_actual_diagram a 1, empty_actual_diagram b 1]
+    rw [empty_diagram a 1, empty_diagram b 1]
   refine ⟨by simp, hc a, ?_, finitePMatchingCost_empty hp _ _,
     finitePBoundaryTransportCost_empty hp _ _, by norm_num [Nat.choose],
     by norm_num [Nat.choose], ?_,

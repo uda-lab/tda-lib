@@ -4,7 +4,7 @@ import TDA.Reeb.QuotientThickeningAbsorptionExamples
 /-!
 # Fixtures for geometric interleavings of graph objects
 
-Acceptance fixtures for `TDA.Reeb.GeometricInterleaving`, on actual graph objects:
+Acceptance fixtures for `TDA.Reeb.GeometricInterleaving`, on graph objects:
 
 * **Unit coherence on a representative.** On the single edge over `0 < 1` with `ε = δ = 1/4`,
   both unit coherence forms send the edge point at height `1/2` to its class at band coordinate

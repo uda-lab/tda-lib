@@ -6,8 +6,8 @@ import TDA.Reeb.RGraphCosheafEquivalenceExamples
 /-!
 # Fixtures for absorption and the geometric smoothing semigroup
 
-Acceptance fixtures for `TDA.Reeb.QuotientThickeningAbsorption`, on the actual thickening, the
-actual Reeb quotient and the actual realizations of finite data:
+Acceptance fixtures for `TDA.Reeb.QuotientThickeningAbsorption`, on the thickening, the
+Reeb quotient and the realizations of finite data:
 
 * **Negative control.** The Reeb projection of `T_(1/4)` of the single edge is not an
   isomorphism: two distinct points at height `1/2` are joined by a constant-height path. Absorption

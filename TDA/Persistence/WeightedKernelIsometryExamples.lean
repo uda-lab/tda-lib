@@ -7,7 +7,7 @@ import TDA.Persistence.WeightedKernelInjectivityExamples
 
 Nonconstant arctan weights, arbitrary completed-space elements, weights approaching
 zero, repeated occurrences, zero bandwidth, a vanishing-weight obstruction and
-finite/essential diagram boundaries exercise the actual RKHS equivalence.
+finite/essential diagram boundaries exercise the RKHS equivalence.
 -/
 
 namespace TDA.Persistence.WeightedKernelIsometryExamples

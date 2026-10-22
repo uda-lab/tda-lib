@@ -44,7 +44,7 @@ def zero : FiniteBoundaryPlan I J where
 
 instance : Nonempty (FiniteBoundaryPlan I J) := ⟨zero⟩
 
-/-- Source mass not sent to an actual target. -/
+/-- Source mass not sent to a target. -/
 def deletionMass (a : FiniteBoundaryPlan I J) (i : I) : ℝ := 1 - ∑ j, a.mass i j
 
 /-- Target mass supplied by the boundary. -/
@@ -198,7 +198,7 @@ private theorem assignmentLinearCost_perm (c : I → J → ℝ) (u : I → ℝ) 
     ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true,
     boundaryAssignmentCostWith, Equiv.trans_apply]
 
-/-- Birkhoff decomposition gives an actual partial matching no more expensive than
+/-- Birkhoff decomposition gives a partial matching no more expensive than
 any real plan, for arbitrary fixed pair and boundary coefficients. -/
 theorem exists_matching_linearCost_le (a : FiniteBoundaryPlan I J)
     (c : I → J → ℝ) (u : I → ℝ) (v : J → ℝ) :
@@ -269,7 +269,7 @@ theorem exists_minimizing_boundaryPlan (x : I → ℝ × ℝ) (y : J → ℝ × 
   exact ⟨M, by rw [FiniteBoundaryPlan.cost_ofMatching,
     finiteFirstOrderBoundaryTransportCost_eq_matchingCost, hM]⟩
 
-/-- Every real plan admits an actual partial matching of no greater cost. -/
+/-- Every real plan admits a partial matching of no greater cost. -/
 theorem FiniteBoundaryPlan.exists_matching_cost_le (a : FiniteBoundaryPlan I J)
     (x : I → ℝ × ℝ) (y : J → ℝ × ℝ) :
     ∃ M : OccurrenceMatching I J PEmpty.{1} PEmpty.{1}, M.totalFiniteCost x y ≤ a.cost x y := by

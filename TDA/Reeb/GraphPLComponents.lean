@@ -286,7 +286,7 @@ theorem some_preimageLabel (p : {p : Realization G // plHeight G h p ∈ I}) :
   Option.some_injective _ ((some_preimageLabel G h I _).trans (edgeLabel_of_mem G h I ht))
 
 /-- **Restricted quotient/discrete-label bridge.** The label is locally constant on the open
-preimage `U`. The restriction of the actual quotient map over `U` is a quotient map
+preimage `U`. The restriction of the quotient map over `U` is a quotient map
 (`IsQuotientMap.restrictPreimage_isOpen`); on its domain, an open subspace of the cells, the raw
 label is constant on the trace of each open vertex cell and of each open dart interval. -/
 theorem isLocallyConstant_preimageLabel : IsLocallyConstant (preimageLabel G h I) := by
@@ -352,7 +352,7 @@ theorem mk_edgePoint_eq_of_dartEdge_eq {d₁ d₂ : G.Dart} (hd : dartEdge d₁ 
       _ = ZerothHomotopy.mk ⟨edgePoint G d₂ t₂, h₂⟩ :=
           mk_eq_of_joinedIn G h I (joinedIn_edgePoint d₂ h₁' h₂) _ _
 
-/-- The inverse on nodes: the actual point class of a surviving vertex, and the class of a chosen
+/-- The inverse on nodes: the point class of a surviving vertex, and the class of a chosen
 interior support witness of an active edge. The witness is an arbitrary classical choice, not a
 canonical one; no law depends on it, and `cellPoint_inr` holds for every support witness. -/
 def cellPoint : Cell G h I → ZerothHomotopy {p : Realization G // plHeight G h p ∈ I}
@@ -386,7 +386,7 @@ theorem cellPoint_eq_of_adj {x y : Cell G h I} (hxy : (cellGraph G h I).Adj x y)
   · exact (cellPoint_inl_eq_inr G h I hxy).symm
   · exact (hxy : False).elim
 
-/-- **The actual preimage comparison.** Path components of the PL-height preimage of `I` are the
+/-- **The preimage comparison.** Path components of the PL-height preimage of `I` are the
 connected components of the incidence graph; no endpoint coverage is assumed. -/
 def preimageComponentsEquiv :
     ZerothHomotopy {p : Realization G // plHeight G h p ∈ I} ≃

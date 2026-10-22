@@ -4,7 +4,7 @@ import TDA.Persistence.FiniteEpiMatching
 /-!
 # Quantitative canonical epi matchings for monotone translations
 
-Actual kernel shortness bounds the death of every selected source occurrence and
+kernel shortness bounds the death of every selected source occurrence and
 covers every source surviving its translated birth. Birth and occurrence labels
 remain those of the existing canonical embedding.
 -/
