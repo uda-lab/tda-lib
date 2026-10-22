@@ -52,7 +52,7 @@ private def emptySource (k : Type u) [Field k] : PModule.{u,0,u} k (Fin 0) where
 private instance emptySourceFD {k : Type u} [Field k] (i : Fin 0) :
     FiniteDimensional k ((emptySource k).obj i) := Fin.elim0 i
 
-private theorem emptySource_diagram_eq_zero {k : Type u} [Field k] :
+private theorem emptySource_rankBarcode_eq_zero {k : Type u} [Field k] :
     rankBarcode (reindex (emptySampling 0) (emptySource k)) = 0 :=
   emptySample (emptySource k)
 
