@@ -5,7 +5,8 @@
 lean_lock_root=${ROOT:?ROOT must name the repository}
 lean_lock_helper="$lean_lock_root/scripts/lib/build-resources.py"
 lean_lock_files=$(python3 "$lean_lock_helper" "$lean_lock_root") || exit 1
-lean_inherited_locks=${LEAN_RESOURCE_LOCK_FDS:-}
+lean_had_inherited_locks=${LEAN_RESOURCE_LOCK_FDS:-}
+lean_inherited_locks=$(python3 "$lean_lock_helper" --inherited) || exit 1
 LEAN_RESOURCE_LOCK_FDS=
 lean_next_fd=9
 for lean_lock_path in $lean_lock_files; do
@@ -14,15 +15,13 @@ for lean_lock_path in $lean_lock_files; do
     lean_candidate=${lean_pair%%:*}
     [[ "$lean_candidate" =~ ^[0-9]+$ ]] || continue
     [ "${lean_pair#*:}" = "$lean_lock_path" ] || continue
-    if perl -e 'my ($fd,$path)=@ARGV; open(my $fh, ">>&=", $fd) or exit 1; my @a=stat($fh); my @b=stat($path); exit(!(@a && @b && $a[0]==$b[0] && $a[1]==$b[1]));' "$lean_candidate" "$lean_lock_path" 2>/dev/null; then
-      lean_lock_fd=$lean_candidate
-      break
-    fi
+    lean_lock_fd=$lean_candidate
+    break
   done
   if [ -z "$lean_lock_fd" ]; then
     # A nested operation must not expand its lock set while holding a partial set:
     # that could invert global acquisition order. The outer gate covers docbuild too.
-    if [ -n "$lean_inherited_locks" ]; then
+    if [ -n "$lean_had_inherited_locks" ]; then
       echo 'ERROR: Lake resource topology changed inside a guarded operation; restart the outer gate.' >&2
       exit 1
     fi
@@ -45,4 +44,4 @@ export LEAN_RESOURCE_LOCK_FDS
   echo 'ERROR: Lake resource topology changed while waiting; restart the guarded operation.' >&2
   exit 1
 }
-unset lean_lock_files lean_inherited_locks lean_next_fd lean_lock_path lean_lock_fd lean_pair lean_candidate
+unset lean_lock_files lean_had_inherited_locks lean_inherited_locks lean_next_fd lean_lock_path lean_lock_fd lean_pair lean_candidate

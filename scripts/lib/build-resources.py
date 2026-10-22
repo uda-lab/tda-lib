@@ -64,7 +64,17 @@ def lock_files(root):
 
 if __name__ == '__main__':
     try:
-        for path in lock_files(sys.argv[1]):
-            print(path)
+        if sys.argv[1] == '--inherited':
+            for pair in os.environ.get('LEAN_RESOURCE_LOCK_FDS', '').split():
+                descriptor, path = pair.split(':', 1)
+                try:
+                    held, target = os.fstat(int(descriptor)), os.stat(path)
+                except (OSError, ValueError):
+                    continue
+                if (held.st_dev, held.st_ino) == (target.st_dev, target.st_ino):
+                    print(pair)
+        else:
+            for path in lock_files(sys.argv[1]):
+                print(path)
     except (OSError, ValueError, KeyError) as error:
         sys.exit(f'ERROR: cannot determine Lake resources: {error}')
