@@ -14,7 +14,7 @@ universe u v
 open scoped BigOperators Matrix
 open Module
 
-namespace TDA.Simplicial
+namespace TDA.Simplicial.InternalFiniteCycleFixtures
 
 variable {V : Type u} [LinearOrder V]
 
@@ -72,15 +72,15 @@ private theorem singleton_outgoing_zero (j : ℕ) :
         0 := by
   exact simplicialChainComplex_d_zero_toMatrix _ ℤ j
 
-private def edgeK : PreAbstractSimplicialComplex (Fin 3) where
+def edgeK : PreAbstractSimplicialComplex (Fin 3) where
   faces := {s | s.Nonempty ∧ s ⊆ ({0, 1} : Finset (Fin 3))}
   isRelLowerSet_faces := by
     intro s hs
     exact ⟨hs.1, fun t hts ht => ⟨ht, hts.trans hs.2⟩⟩
 
-private def triangleK : PreAbstractSimplicialComplex (Fin 3) := ⊤
+def triangleK : PreAbstractSimplicialComplex (Fin 3) := ⊤
 
-private theorem singleton_le_edge :
+theorem singleton_le_edge :
     Filtration.singletonFace (0 : Fin 3) ≤ edgeK := by
   intro s hs
   have hs' := (Filtration.mem_singletonFace_iff (0 : Fin 3) s).mp hs
@@ -88,11 +88,11 @@ private theorem singleton_le_edge :
   subst s
   decide
 
-private theorem edge_le_triangle : edgeK ≤ triangleK := by
+theorem edge_le_triangle : edgeK ≤ triangleK := by
   intro s hs
   exact hs.1
 
-private def edgeVertex (i : Fin 2) : Face edgeK 0 :=
+def edgeVertex (i : Fin 2) : Face edgeK 0 :=
   ⟨{Fin.castLE (by decide : 2 ≤ 3) i}, by
     change ({Fin.castLE (by decide : 2 ≤ 3) i} : Finset (Fin 3)).Nonempty ∧
       ({Fin.castLE (by decide : 2 ≤ 3) i} : Finset (Fin 3)) ⊆
@@ -126,7 +126,7 @@ private def triangleFace : Face triangleK 2 :=
 private def edgeColumn (_ : Fin 1) : Face edgeK 1 := edge01
 private def triangleColumn (_ : Fin 1) : Face triangleK 2 := triangleFace
 
-private theorem edgeVertex_bijective : Function.Bijective edgeVertex := by
+theorem edgeVertex_bijective : Function.Bijective edgeVertex := by
   constructor
   · intro i j h
     have hv := congrArg Subtype.val h
@@ -549,13 +549,13 @@ private theorem edge_triangle_actual_right_reindexed :
   rw [edgeJ0_reindexed, edgeB0_reindexed]
   decide
 
-private def unfilledK : PreAbstractSimplicialComplex (Fin 3) where
+def unfilledK : PreAbstractSimplicialComplex (Fin 3) where
   faces := {s | s.Nonempty ∧ s.card ≤ 2}
   isRelLowerSet_faces := by
     intro s hs
     exact ⟨hs.1, fun t hts ht => ⟨ht, (Finset.card_le_card hts).trans hs.2⟩⟩
 
-private theorem unfilled_le_triangle : unfilledK ≤ triangleK := by
+theorem unfilled_le_triangle : unfilledK ≤ triangleK := by
   intro s hs
   exact hs.1
 
@@ -659,10 +659,10 @@ private theorem signedUnfilled_cycle :
   exact chainIncl_injective_fixture unfilled_le_triangle 0
     (hs.symm.trans (map_zero _).symm)
 
-private noncomputable def signedUnfilledCycle : simplicialCycles unfilledK ℤ 1 :=
+noncomputable def signedUnfilledCycle : simplicialCycles unfilledK ℤ 1 :=
   ⟨signedUnfilled, signedUnfilled_cycle⟩
 
-private noncomputable def signedUnfilledCoord : coordinateCycles unfilledK ℤ 1 :=
+noncomputable def signedUnfilledCoord : coordinateCycles unfilledK ℤ 1 :=
   cycleCoordinates unfilledK ℤ 1 signedUnfilledCycle
 
 private theorem signedUnfilledCoord_coeff (i : Fin 3) :
@@ -689,12 +689,12 @@ private theorem unfilledBoundaries_bot : coordinateBoundaries unfilledK ℤ 1 = 
   change z = 0
   exact Subtype.ext hx.symm
 
-private theorem signedUnfilledCoord_not_boundary :
+theorem signedUnfilledCoord_not_boundary :
     signedUnfilledCoord ∉ coordinateBoundaries unfilledK ℤ 1 := by
   rw [unfilledBoundaries_bot]
   simpa using signedUnfilledCoord_ne_zero
 
-private theorem signedUnfilled_included_boundary :
+theorem signedUnfilled_included_boundary :
     coordinateCycleIncl ℤ unfilled_le_triangle 1 signedUnfilledCoord ∈
       coordinateBoundaries triangleK ℤ 1 := by
   apply (mem_coordinateBoundaries_iff triangleK ℤ 1 _).mpr
@@ -813,7 +813,7 @@ private theorem signedUnfilled_included_inverse_actual :
   rw [← hcc, signedUnfilled_included_eq_boundary,
     coordinateBoundaryToCycles_coe, boundaryMatrix_mulVec]
 
-private theorem signedUnfilled_included_ne_zero :
+theorem signedUnfilled_included_ne_zero :
     coordinateCycleIncl ℤ unfilled_le_triangle 1 signedUnfilledCoord ≠ 0 := by
   intro hz
   have h := congrArg (fun z : coordinateCycles triangleK ℤ 1 =>
@@ -831,7 +831,7 @@ private theorem signedUnfilled_included_ne_zero :
   have hneq2 : ({1, 2} : Finset (Fin 3)) ≠ {0, 1} := by decide
   simp [hneq1, hneq2] at h
 
-private theorem bottom_cycles_zero (n : ℕ) (z :
+theorem bottom_cycles_zero (n : ℕ) (z :
     coordinateCycles (⊥ : PreAbstractSimplicialComplex (Fin 3)) ℤ n) : z = 0 := by
   apply Subtype.ext
   funext σ
@@ -869,7 +869,7 @@ private theorem singleton_boundaries_bot :
   change z = 0
   exact Subtype.ext hx.symm
 
-private noncomputable def singletonCycle (a : ℤ) :
+noncomputable def singletonCycle (a : ℤ) :
     simplicialCycles (Filtration.singletonFace (0 : Fin 3)) ℤ 0 :=
   ⟨Finsupp.single (singletonVertex 0) a,
     by rw [simplicialCycles_zero]; trivial⟩
@@ -882,7 +882,7 @@ private theorem singleton_cycle_coefficient (a : ℤ) :
     (Finsupp.single (singletonVertex 0) a) (singletonVertex 0) = a
   exact singleton_coordinate a
 
-private theorem singleton_one_not_boundary :
+theorem singleton_one_not_boundary :
     (cycleCoordinates (Filtration.singletonFace (0 : Fin 3)) ℤ 0
       (singletonCycle 1)) ∉
       coordinateBoundaries (Filtration.singletonFace (0 : Fin 3)) ℤ 0 := by
@@ -900,7 +900,7 @@ private theorem edge_coordinate_input (a : ℤ) :
   rw [chainCoordinates_apply]
   simp [edgeColumn]
 
-private theorem edge_boundary_scalar (a : ℤ) (i : Fin 2) :
+theorem edge_boundary_scalar (a : ℤ) (i : Fin 2) :
     ((coordinateBoundaryToCycles edgeK ℤ 0 (fun _ => a) :
       coordinateCycles edgeK ℤ 0) : Face edgeK 0 → ℤ) (edgeVertex i) =
         if i = 0 then -a else a := by
@@ -987,7 +987,7 @@ private theorem singleton_edge_scalar (a : ℤ) (i : Fin 2) :
     (simp [faceIncl, edgeVertex, singletonVertex, Finsupp.single_apply]
      all_goals decide)
 
-private theorem singleton_edge_naturality (a : ℤ) :
+theorem singleton_edge_naturality (a : ℤ) :
     coordinateCycleIncl ℤ singleton_le_edge 0
       (cycleCoordinates (Filtration.singletonFace (0 : Fin 3)) ℤ 0
         (singletonCycle a)) =
@@ -1083,4 +1083,4 @@ private theorem finiteTotal_incoming_square
 
 end TheoryFixtures
 
-end TDA.Simplicial
+end TDA.Simplicial.InternalFiniteCycleFixtures
