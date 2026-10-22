@@ -397,6 +397,7 @@ import TDA
 #print axioms TDA.Reeb.CriticalValues.eq_of_K_le_K
 #print axioms TDA.Reeb.CriticalValues.exists_envelope_inf_ne
 #print axioms TDA.Reeb.CriticalValues.exists_piece
+#print axioms TDA.Reeb.CriticalValues.exists_mem_K_of_mem_Icc
 #print axioms TDA.Reeb.CriticalValues.exists_piece_le_envelope
 #print axioms TDA.Reeb.CriticalValues.iUnion_J_eq_envelope
 #print axioms TDA.Reeb.CriticalValues.iUnion_piece_eq
@@ -2120,13 +2121,14 @@ import TDA
 #print axioms TDA.Reeb.Examples.GraphRealization.real_not_pathConnectedSpace
 
 -- Graph components and path components of piecewise-linear height preimages (Issue #52).
--- TDA.Reeb.GraphPLHeight: the affine dart height with its continuity, reversal, endpoint and horizontal equations and order-convex parameter sets, the piecewise-linear height of the realization with its vertex and edge-point formulas and uniqueness, unoriented edges of darts with membership and representing darts, edge activity with openness, monotonicity, orientation independence, the nonempty-parameter-set form, surviving endpoints and the horizontal case, and paths in convex edge fragments.
+-- TDA.Reeb.GraphPLHeight: the affine dart height with its continuity, reversal, endpoint and horizontal equations, nonhorizontal injectivity and order-convex parameter sets, the piecewise-linear height of the realization with its vertex and edge-point formulas and uniqueness, unoriented edges of darts with membership and representing darts, edge activity with openness, monotonicity, orientation independence, the nonempty-parameter-set form, surviving endpoints and the horizontal case, and paths in convex edge fragments.
 #print axioms TDA.Reeb.GraphPL.dartHeight
 #print axioms TDA.Reeb.GraphPL.continuous_dartHeight
 #print axioms TDA.Reeb.GraphPL.dartHeight_symm
 #print axioms TDA.Reeb.GraphPL.dartHeight_zero
 #print axioms TDA.Reeb.GraphPL.dartHeight_one
 #print axioms TDA.Reeb.GraphPL.dartHeight_of_eq
+#print axioms TDA.Reeb.GraphPL.dartHeight_injective
 #print axioms TDA.Reeb.GraphPL.ordConnected_preimage_lineHeight
 #print axioms TDA.Reeb.GraphPL.plHeight
 #print axioms TDA.Reeb.GraphPL.plHeight_vertex
@@ -2216,7 +2218,7 @@ import TDA
 #print axioms TDA.Reeb.GraphPL.preimageInducedEquiv_mk_edgePoint
 #print axioms TDA.Reeb.GraphPL.endpointCoverage_top
 #print axioms TDA.Reeb.GraphPL.full_componentsEquiv
--- TDA.Reeb.GraphPLHeightExamples: reversal formulas and orientation discrimination on one edge of heights 0 and 2, interior-only, endpoint and inactive support, monotonicity, and a horizontal edge inside and outside an interval.
+-- TDA.Reeb.GraphPLHeightExamples: reversal formulas and orientation discrimination on one edge of heights 0 and 2, interior-only, endpoint and inactive support, monotonicity, a horizontal edge inside and outside an interval, and injective height on the reversed dart versus noninjective height on a horizontal dart.
 #print axioms TDA.Reeb.Examples.GraphPL.coe_half
 #print axioms TDA.Reeb.Examples.GraphPL.quarter
 #print axioms TDA.Reeb.Examples.GraphPL.coe_quarter
@@ -2242,6 +2244,8 @@ import TDA
 #print axioms TDA.Reeb.Examples.GraphPL.horizontal_active_iff
 #print axioms TDA.Reeb.Examples.GraphPL.horizontal_inside_active
 #print axioms TDA.Reeb.Examples.GraphPL.horizontal_outside_inactive
+#print axioms TDA.Reeb.Examples.GraphPL.reversed_injective
+#print axioms TDA.Reeb.Examples.GraphPL.horizontal_not_injective
 -- TDA.Reeb.GraphPLComponentsExamples: the empty interval, the empty vertex type, one edge of heights 0 and 2 over intervals containing its interior height 1 but neither endpoint height, with the failure of endpoint coverage, opposite darts, a horizontal edge, a ray, the 4-cycle with heights 0, 1, 2, 1 and its two classes, their merge under a proper inclusion on both sides of the naturality square, and the vertex-only corollary with its counterexample.
 #print axioms TDA.Reeb.Examples.GraphPL.cell_bot_isEmpty
 #print axioms TDA.Reeb.Examples.GraphPL.cellComponents_bot_isEmpty

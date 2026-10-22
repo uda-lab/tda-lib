@@ -20,6 +20,8 @@ Acceptance fixtures for `TDA.Reeb.GraphPLHeight`, on the single edge `false — 
   is inactive. Activity passes from `(1/4, 3/4)` to `(0, 2)`.
 * **Horizontal edge.** With constant height `1`, the edge is active over `I` exactly when `1 ∈ I`:
   active over `(0, 2)` and inactive over `(2, 3)`.
+* **Injectivity.** The reversed dart of the edge with heights `0` and `2` has injective height,
+  while the horizontal dart does not, so `dartHeight_injective` needs unequal endpoint heights.
 
 The short names `quarter` and `coe_quarter` also occur in `TDA.Reeb.Examples.ConstructibleSmoothing`,
 and `support_mono` as `TDA.Filtration.support_mono`.
@@ -143,6 +145,19 @@ theorem horizontal_outside_inactive : ¬ EdgeActive edgeGraph hconst (ioo 2 3) (
     have h1 := (horizontal_active_iff _).1 he
     rw [mem_ioo] at h1
     norm_num at h1
+
+/-- The reversed nonhorizontal dart has injective height. -/
+theorem reversed_injective : Function.Injective (dartHeight h02 d₀.symm) :=
+  dartHeight_injective h02 fun hne => by
+    have h01 := (dartHeight_zero h02 d₀.symm).trans (hne.trans (dartHeight_one h02 d₀.symm).symm)
+    rw [dartHeight_d₀_symm, dartHeight_d₀_symm] at h01
+    norm_num at h01
+
+/-- A horizontal dart has noninjective height, so the nonhorizontal hypothesis is needed. -/
+theorem horizontal_not_injective : ¬ Function.Injective (dartHeight hconst d₀) := fun hinj => by
+  have h01 := congrArg (fun t : unitInterval => (t : ℝ))
+    (hinj ((dartHeight_of_eq hconst rfl 0).trans (dartHeight_of_eq hconst rfl 1).symm))
+  norm_num at h01
 
 end
 

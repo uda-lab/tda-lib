@@ -1,4 +1,5 @@
 import TDA.Mapper.GraphPLCosheaf
+import TDA.Mapper.GraphPLRealizationTopology
 import TDA.Reeb.ConstructibleQuotient
 import TDA.Reeb.ConstructibleComparison
 import Mathlib.Topology.Compactness.Compact
@@ -44,25 +45,6 @@ section general
 
 variable {V : Type u} [Finite V] (G : SimpleGraph V) (h : V → ℝ) {n : ℕ} {S : CriticalValues n}
 
-/-- The graph realization is compact when its vertex type is finite. -/
-theorem compactSpace_realization : CompactSpace (Realization G) := by
-  classical
-  let _ : TopologicalSpace V := ⊥
-  let _ : Fintype V := Fintype.ofFinite V
-  let _ : DecidableRel G.Adj := Classical.decRel G.Adj
-  let _ : Fintype G.Dart := SimpleGraph.Dart.fintype
-  let _ : CompactSpace V := @Finite.compactSpace V ⊥ inferInstance
-  let _ : CompactSpace (Σ _ : G.Dart, unitInterval) := by
-    constructor
-    rw [Sigma.univ]
-    exact isCompact_iUnion fun d => isCompact_range continuous_sigmaMk
-  let _ : CompactSpace (Cells G) := by
-    constructor
-    change IsCompact (Set.univ : Set (V ⊕ Σ _ : G.Dart, unitInterval))
-    rw [← range_inl_union_range_inr]
-    exact (isCompact_range continuous_inl).union (isCompact_range continuous_inr)
-  exact Quot.compactSpace
-
 /-- Some finite critical-value list covers all vertex heights. -/
 theorem exists_coversVertexHeights : ∃ (n : ℕ) (S : CriticalValues n), CoversVertexHeights S h := by
   classical
@@ -96,18 +78,6 @@ private theorem reebQuot_dartHeight_mem_Icc (d : G.Dart) (t : unitInterval) :
     · nlinarith [mul_nonneg t.2.1 (sub_nonneg.2 hba)]
 
 omit [Finite V] in
-private theorem reebQuot_dartHeight_injective {d : G.Dart}
-    (hne : h d.fst ≠ h d.snd) : Function.Injective (dartHeight h d) := by
-  intro s t hst
-  apply Subtype.ext
-  have hprod : ((s : ℝ) - (t : ℝ)) * (h d.snd - h d.fst) = 0 := by
-    unfold dartHeight at hst
-    linear_combination hst
-  rcases mul_eq_zero.mp hprod with hst' | hab
-  · exact sub_eq_zero.mp hst'
-  · exact False.elim (hne (sub_eq_zero.mp hab).symm)
-
-omit [Finite V] in
 private theorem reebQuot_plHeight_mem_Icc (hS : CoversVertexHeights S h)
     (x : Realization G) :
     plHeight G h x ∈ Icc (S.value 0) (S.value (Fin.last n)) := by
@@ -116,17 +86,6 @@ private theorem reebQuot_plHeight_mem_Icc (hS : CoversVertexHeights S h)
   obtain ⟨i, hi⟩ := hS v
   rw [← hi]
   exact ⟨S.strictMono.monotone (Fin.zero_le i), S.strictMono.monotone (Fin.le_last i)⟩
-
-omit [Finite V] in
-private theorem reebQuot_exists_mem_K {x : ℝ}
-    (hx : x ∈ Icc (S.value 0) (S.value (Fin.last n)))
-    (hne : ∀ i, S.value i ≠ x) : ∃ e : Fin n, x ∈ (S.K e : Set ℝ) := by
-  obtain ⟨p, hp, hp'⟩ := S.exists_piece x
-  cases p with
-  | star i => exact (hne i (hp' i (S.value_mem_J i))).elim
-  | gap e => exact ⟨e, hp⟩
-  | lowerTail => exact (not_lt_of_ge hx.1 hp).elim
-  | upperTail => exact (not_lt_of_ge hx.2 hp).elim
 
 omit [Finite V] in
 private theorem reebQuot_edgeSpans_of_mem_K (hS : CoversVertexHeights S h)
@@ -161,7 +120,7 @@ omit [Finite V] in
 private theorem reebQuot_dart_mem_gap (hS : CoversVertexHeights S h) (d : G.Dart)
     (t : unitInterval) (hi : ¬ ∃ i, dartHeight h d t = S.value i) :
     ∃ e : Fin n, dartHeight h d t ∈ (S.K e : Set ℝ) := by
-  apply reebQuot_exists_mem_K
+  apply CriticalValues.exists_mem_K_of_mem_Icc
   · simpa [plHeight_edgePoint] using
       reebQuot_plHeight_mem_Icc G h hS (edgePoint G d t)
   · intro i hci
@@ -324,6 +283,7 @@ private theorem reebQuot_segments_cover (hS : CoversVertexHeights S h) (hn : 0 <
   | lowerTail => exact (not_lt_of_ge hc.1 hp).elim
   | upperTail => exact (not_lt_of_ge hc.2 hp).elim
 
+omit [Finite V] in
 private theorem reebQuot_segment_subsingleton (hS : CoversVertexHeights S h)
     {d : G.Dart} (hne : h d.fst ≠ h d.snd) (e : Fin n)
     (hspan : ¬ EdgeSpans G h (S.value e.castSucc) (S.value e.succ) (dartEdge d)) :
@@ -370,7 +330,7 @@ private theorem reebQuot_segment_subsingleton (hS : CoversVertexHeights S h)
   have hs' := hendpoint s hs
   have ht' := hendpoint t ht
   by_cases hst : dartHeight h d s = dartHeight h d t
-  · exact reebQuot_dartHeight_injective G h hne hst
+  · exact dartHeight_injective h hne hst
   apply Subtype.ext
   rcases hs' with hs' | hs' <;> rcases ht' with ht' | ht'
   · exact (hst (hs'.trans ht'.symm)).elim
@@ -681,7 +641,7 @@ private theorem reebQuot_edgePoint_eq_of_map_eq (hS : CoversVertexHeights S h)
     congrArg Subtype.val (congrArg Prod.snd hp)
   rcases (dartEdge_eq_iff).1 hde with hdd | hdd
   · subst d'
-    have htt : t = t' := reebQuot_dartHeight_injective G h hne hdt
+    have htt : t = t' := dartHeight_injective h hne hdt
     subst t'
     rfl
   · have hdt' : dartHeight h d' (unitInterval.symm t) = dartHeight h d' t' := by
@@ -689,7 +649,7 @@ private theorem reebQuot_edgePoint_eq_of_map_eq (hS : CoversVertexHeights S h)
       rw [unitInterval.symm_symm] at hsymm
       exact hsymm.symm.trans (by simpa [hdd] using hdt)
     have htt : unitInterval.symm t = t' :=
-      reebQuot_dartHeight_injective G h hne' hdt'
+      dartHeight_injective h hne' hdt'
     calc
       edgePoint G d t = edgePoint G d'.symm t := by rw [hdd]
       _ = edgePoint G d' (unitInterval.symm t) := by

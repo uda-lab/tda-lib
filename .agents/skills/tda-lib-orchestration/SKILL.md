@@ -65,7 +65,7 @@ local result as a replacement for hosted success. Observe actual checks and bran
 never invent a status.
 
 Run applicable local checks and the mandatory pre-push gate. Implementation changes retain
-the full guarded `scripts/check.sh`, serialized build, live axiom audit, public coverage and
+the full guarded `scripts/check.sh`, shared-path exclusion, live axiom audit, public coverage and
 Issue acceptance checks. For prose-only changes, use focused patch, link, consistency and
 whitespace checks plus the existing textual guards; let workflow change detection select
 the hosted build steps. Do not add redundant full builds or full doc generation.
@@ -90,15 +90,16 @@ completion returns to the continuing queue, rather than terminating the program.
 ## Execution and repository defaults
 
 Codex operation and scheduling are managed by dot. No project budget cap is imposed.
-Preserve inherited VPS resource guards, serialized Lean builds, one driver per lane,
-independent reviews, process ownership cleanup and notification rules. Resolve actual
+Preserve memory/headroom and stop guards, exclusion for shared mutable build/dependency paths,
+one driver per lane, independent reviews, process ownership cleanup and notification rules. Resolve actual
 available models at dispatch time. Base workers use Luna xhigh; difficult mathematics/Lean
 work may use Sol low/high. Sol high may prepare Issues when dot is unavailable. Do not encode
 the initialization host's hardware facts in repository policy.
 
 dot considers intake after roughly three hours without observed activity in other
 repositories, checking competition and dependencies. Two to three disjoint tasks are
-conditional on resources, independence and review capacity; keep Lean builds serialized.
+conditional on resources, independence and review capacity. Exclude writes to shared
+build/dependency paths; coordinate independent builds for actual resource capacity.
 If other-repository work starts, hold new intake rather than interrupt ongoing tasks.
 Ongoing work proceeds through quality-gated PR merge unless legitimately blocked.
 

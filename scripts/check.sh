@@ -4,10 +4,8 @@
 #   aggregator) → lake build →
 #   live axiom audit → axiom-coverage guard (every public theorem is pinned in
 #   scripts/print_axioms/*.lean; uncovered private theorem roots obey the same allowlist).
-# The whole run is serialised container-wide on /tmp/lean-build.lock (scripts/lib/build-lock.sh
-# holds it on fd 9 for the lifetime of this process and every child): concurrent mathlib
-# builds in a shared container OOM each other. A killed run releases the lock with its
-# descriptor — nothing stale to reclaim.
+# The whole gate holds canonical build/dependency path locks across its nested wrappers.
+# Independent workspaces may proceed when resources permit; shared mutable paths exclude.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

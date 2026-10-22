@@ -3179,3 +3179,29 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.GaussianUniversalityExamples.signed_pair_energy_pos
 
 #print axioms TDA.Persistence.GaussianUniversalityExamples.diffuseSignedMeasure_regular
+
+#print axioms TDA.Persistence.RankExampleFixtures.oneStageMultiplicity
+
+#print axioms TDA.Persistence.RankExampleFixtures.oneStageField
+
+#print axioms TDA.Persistence.RankExampleFixtures.oneStageZeroFiber
+
+#print axioms TDA.Persistence.RankExampleFixtures.oneStageZero
+
+#print axioms TDA.Persistence.RankExampleFixtures.twoStageValues
+
+#print axioms TDA.Persistence.RankExampleFixtures.identityTwoStageRanks
+
+#print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageRanks
+
+#print axioms TDA.Persistence.RankExampleFixtures.identityTwoStage
+
+#print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStage
+
+#print axioms TDA.Persistence.RankExampleFixtures.oneStageFD
+
+#print axioms TDA.Persistence.RankExampleFixtures.oneStageZeroFD
+
+#print axioms TDA.Persistence.RankExampleFixtures.identityTwoStageFD
+
+#print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
