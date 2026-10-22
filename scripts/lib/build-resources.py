@@ -30,12 +30,12 @@ def resources(root):
         seen.add(package)
         # Lock both the checkout and its outputs: either can be a shared symlink.
         paths.add(package)
-        lake = package / '.lake'
-        paths.update((lake.resolve(), (lake / 'build').resolve()))
-        build_links(lake / 'build')
         manifest = package / 'lake-manifest.json'
         data = json.loads(manifest.read_text()) if manifest.exists() else {}
-        packages = package / data.get('packagesDir', '.lake/packages')
+        lake = package / data.get('lakeDir', '.lake')
+        paths.update((lake.resolve(), (lake / 'build').resolve()))
+        build_links(lake / 'build')
+        packages = package / data.get('packagesDir', str(lake / 'packages'))
         paths.add(packages.resolve())
         for entry in data.get('packages', []):
             dependency = (package / entry['dir'] if entry.get('type') == 'path'
@@ -73,9 +73,40 @@ def lock_plan(root):
     return sorted((lock_path(path), mode) for path, mode in modes.items())
 
 
+def check_outputs(root, tool, args):
+    if tool == 'lake':
+        if len(args) < 2 or args[0] != 'env' or Path(args[1]).name != 'lean':
+            return
+        args = args[2:]
+    outputs = []
+    index = 0
+    while index < len(args):
+        arg = args[index]
+        if arg == '--run':
+            break  # Remaining arguments belong to the executed Lean program.
+        if arg in ('-o', '-i', '-c', '-b'):
+            index += 1
+            outputs.append(args[index])
+        elif arg.startswith(('--o=', '--i=', '--c=', '--bc=',
+                             '--incr-save=', '--incr-header-save=')):
+            outputs.append(arg.split('=', 1)[1])
+        elif arg.startswith(('-o', '-i', '-c', '-b')) and not arg.startswith('--'):
+            outputs.append(arg[2:])
+        index += 1
+    if outputs:
+        protected = {Path(path) for path in resources(root)}
+        for output in outputs:
+            path = Path(output).resolve()
+            if not any(parent in protected for parent in (path, *path.parents)):
+                raise ValueError(f'Lean output outside guarded resources: {output}; '
+                                 'use a directory inside this checkout')
+
+
 if __name__ == '__main__':
     try:
-        if sys.argv[1] == '--inherited':
+        if sys.argv[1] == '--check-outputs':
+            check_outputs(sys.argv[2], sys.argv[3], sys.argv[4:])
+        elif sys.argv[1] == '--inherited':
             for pair in os.environ.get('LEAN_RESOURCE_LOCK_FDS', '').split():
                 descriptor, mode, path = pair.split(':', 2)
                 if mode not in ('S', 'X'):
@@ -91,5 +122,5 @@ if __name__ == '__main__':
         else:
             for path, mode in lock_plan(sys.argv[1]):
                 print(f'{mode}:{path}')
-    except (OSError, ValueError, KeyError, RuntimeError) as error:
+    except (OSError, ValueError, KeyError, RuntimeError, IndexError) as error:
         sys.exit(f'ERROR: cannot determine Lake resources: {error}')

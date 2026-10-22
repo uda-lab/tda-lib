@@ -21,6 +21,7 @@ if [ -n "${SERIAL_OUT:-}" ]; then
 fi
 FAKE
 cp "$test_dir/bin/lake" "$test_dir/bin/codex"
+cp "$test_dir/bin/lake" "$test_dir/bin/lean"
 chmod +x "$test_dir/bin/"*
 export PATH="$test_dir/bin:$PATH" ARGV_OUT="$test_dir/args" LEAN_GUARD_MIN_AVAIL_MIB=0
 "$ROOT/scripts/lean.sh" lake env lean 'space name.lean' '' '*'
@@ -40,6 +41,16 @@ if "$ROOT/scripts/lean.sh" lake --dir /tmp build >/dev/null 2>&1; then
 fi
 if (cd "$test_dir" && "$ROOT/scripts/lean.sh" lake build) >/dev/null 2>&1; then
   echo 'foreign cwd escaped resource exclusion'; exit 1
+fi
+for tool in lean 'lake env lean'; do
+  # Intentional word splitting selects only these fixed tool/subcommand names.
+  if "$ROOT/scripts/lean.sh" $tool -o "$test_dir/shared.olean" fixture.lean >/dev/null 2>&1; then
+    echo 'external Lean output escaped resource exclusion'; exit 1
+  fi
+done
+"$ROOT/scripts/lean.sh" lean --c="$ROOT/fixture.c" fixture.lean
+if "$ROOT/scripts/lean.sh" lean --c="$test_dir/shared.c" fixture.lean >/dev/null 2>&1; then
+  echo 'external C output escaped resource exclusion'; exit 1
 fi
 # A parent gate and its nested wrapper share the inherited descriptor.
 # Watchdog makes a regression fail instead of hanging CI forever.

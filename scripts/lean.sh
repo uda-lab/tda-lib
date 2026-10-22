@@ -26,6 +26,7 @@ done
 export LEAN_NUM_THREADS=${LEAN_NUM_THREADS:-1}
 [[ "$LEAN_NUM_THREADS" =~ ^[1-9][0-9]*$ ]] || { echo 'ERROR: LEAN_NUM_THREADS must be positive' >&2; exit 64; }
 if [ -e "${CODEX_STOP_FILE:-/tmp/codex-stop}" ]; then echo "ERROR: stopped by ${CODEX_STOP_FILE:-/tmp/codex-stop}" >&2; exit 2; fi
+python3 "$ROOT/scripts/lib/build-resources.py" --check-outputs "$ROOT" "$tool" "$@"
 . "$ROOT/scripts/lib/build-lock.sh"
 if [ -e "${CODEX_STOP_FILE:-/tmp/codex-stop}" ]; then echo "ERROR: stopped by ${CODEX_STOP_FILE:-/tmp/codex-stop}" >&2; exit 2; fi
 . "$ROOT/scripts/lib/resources.sh"

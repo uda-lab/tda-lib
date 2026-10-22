@@ -122,7 +122,10 @@ are included before creation. The wrappers acquire locks in a common order
 and retain them across nested checks and documentation generation. Independent worktrees
 with separate mutable dependencies do not share a host-wide build lock. The Lake wrapper
 accepts this checkout and its docbuild project; project/config redirection is rejected
-because it would select resources outside the guarded set. Do not change
+because it would select resources outside the guarded set. Manifest `lakeDir` and
+`packagesDir` select the discovered paths. Explicit Lean outputs (`-o`, `-i`, `-c`, `-b`
+and snapshot output options) must stay within these protected resources; temporary fixture
+outputs belong under the checkout's ignored scratch directory. Do not change
 dependency/symlink topology during a guarded operation; a detected change requires restarting
 the outer gate. Before using the updated wrappers with a shared cache, let jobs using older
 wrappers finish: the former `/tmp/lean-build.lock` does not coordinate with path locks.

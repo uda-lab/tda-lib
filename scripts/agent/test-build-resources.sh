@@ -97,6 +97,13 @@ with tempfile.TemporaryDirectory(prefix='lean-resources-') as temporary:
         (root / 'lake-manifest.json').write_text(json.dumps({
             'packages': [{'type': 'path', 'name': name, 'dir': '../dependency'}]}))
     pair(True)
+    # Nondefault lakeDir values must resolve shared writable caches too.
+    custom = base / 'custom-lake'
+    custom.mkdir()
+    for root in (a, b):
+        (root / 'cache').symlink_to(custom, target_is_directory=True)
+        (root / 'lake-manifest.json').write_text(json.dumps({'lakeDir': 'cache'}))
+    pair(True)
     # Same workspace lock reentry; an env marker without descriptors must fail closed.
     assert run(a, 'bash -c \'. "$ROOT/scripts/lib/build-lock.sh"\'').wait(timeout=5) == 0
     forged = dict(os.environ, ROOT=str(a), LEAN_RESOURCE_LOCK_FDS='9:X:/tmp/forged.lock')
