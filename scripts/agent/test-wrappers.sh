@@ -8,6 +8,7 @@ mkdir "$test_dir/bin"
 cat > "$test_dir/bin/lake" <<'FAKE'
 #!/usr/bin/env bash
 printf '%s\0' "$@" > "$ARGV_OUT"
+printf '%s' "${LEAN_NUM_THREADS:-unset}" > "$ARGV_OUT.threads"
 if [ -n "${SERIAL_OUT:-}" ]; then
  printf 'start\n' >> "$SERIAL_OUT"
  sleep .15
@@ -23,9 +24,21 @@ import sys
 assert open(sys.argv[1], 'rb').read().split(b'\0')[:-1] == [b'env', b'lean', b'space name.lean', b'', b'*']
 PY
 if "$ROOT/scripts/lean.sh" lake build -M 4000 >/dev/null 2>&1; then echo 'manual limit accepted'; exit 1; fi
+[ "$(cat "$ARGV_OUT.threads")" = 1 ]
+LEAN_NUM_THREADS=3 "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.threads")" = 3 ]
+if LEAN_NUM_THREADS=0 "$ROOT/scripts/lean.sh" lake build >/dev/null 2>&1; then
+  echo 'invalid thread configuration accepted'; exit 1
+fi
+if "$ROOT/scripts/lean.sh" lake --dir /tmp build >/dev/null 2>&1; then
+  echo 'project redirection escaped resource exclusion'; exit 1
+fi
+if (cd "$test_dir" && "$ROOT/scripts/lean.sh" lake build) >/dev/null 2>&1; then
+  echo 'foreign cwd escaped resource exclusion'; exit 1
+fi
 # A parent gate and its nested wrapper share the inherited descriptor.
 # Watchdog makes a regression fail instead of hanging CI forever.
-bash -c '. "$1/scripts/lib/build-lock.sh"; "$1/scripts/lean.sh" lake build' _ "$ROOT" & nested=$!
+bash -c 'ROOT="$1"; . "$1/scripts/lib/build-lock.sh"; "$1/scripts/lean.sh" lake build' _ "$ROOT" & nested=$!
 (sleep 5; kill "$nested" 2>/dev/null || :) & watchdog=$!
 if wait "$nested"; then
   kill "$watchdog" 2>/dev/null || :

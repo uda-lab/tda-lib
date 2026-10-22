@@ -10,9 +10,9 @@ dot owns the roadmap, mathematical scope and decisions, Issue creation and autho
 implementation routing, review, integration, release selection and continuing Codex operation.
 The scaffold's orchestrator, driver, worker, independent reviewer and judge roles remain in
 use. Issue/PR evidence and independent review remain mandatory; authority does not bypass
-integrity gates. The owner has imposed no budget cap. Preserve scaffold VPS resource defaults,
-including serialized Lean builds and one driver per lane. Runtime scheduling remains
-external to this repository. Base workers use Luna xhigh; difficult mathematics/Lean work
+integrity gates. The owner has imposed no budget cap. Keep one driver per lane and exclude
+concurrent writes to shared build/dependency paths. Runtime scheduling remains external to
+this repository. Base workers use Luna xhigh; difficult mathematics/Lean work
 may use Sol low/high. Sol high may prepare Issues when dot is unavailable.
 
 ## Branches and releases
@@ -76,8 +76,9 @@ dot considers new intake after approximately three hours without observed activi
 other repositories, then checks competing work and dependencies. Two to three disjoint
 tasks may run concurrently only when directory or other boundaries clearly separate work,
 shared API changes and merge conflicts are unlikely, and resources and review capacity permit;
-Lean builds remain serialized. When other-repository work starts, hold new intake rather
-than interrupt existing tasks. Ongoing tasks continue through quality-gated PR merge unless
+builds that share mutable paths remain mutually exclusive. Independent builds still need
+sufficient resources. When other-repository work starts, hold new intake rather than interrupt
+existing tasks. Ongoing tasks continue through quality-gated PR merge unless
 legitimately blocked. This is an intake guideline, not a repository-local scheduler.
 
 ## Documentation and milestone interpretation
@@ -114,10 +115,28 @@ LOOP_JOB_ID=tda-lib/issue-<n>/worker scripts/codex.sh exec <arguments>
 scripts/agent/session-brief.sh
 ```
 
-The shared runtime serializes Lean builds, checks memory headroom and honors
-`/tmp/codex-stop`. Defaults are `LEAN_NUM_THREADS=1` and
-`LEAN_GUARD_MIN_AVAIL_MIB=1536`; runtime configuration may adapt them to available hardware.
-`scripts/bootstrap.sh`, `scripts/check.sh` and axiom audits invoke shared protection directly.
+For jobs under the same execution account, the wrappers exclude concurrent writes to the same canonical checkout, Lake build or
+dependency paths, including symlink targets. They acquire the path locks in a common order
+and retain them across nested checks and documentation generation. Independent worktrees
+with separate mutable dependencies do not share a host-wide build lock. The Lake wrapper
+accepts this checkout and its docbuild project; project/config redirection is rejected
+because it would select resources outside the guarded set. Do not change
+dependency/symlink topology during a guarded operation; a detected change requires restarting
+the outer gate. Before using the updated wrappers with a shared cache, let jobs using older
+wrappers finish: the former `/tmp/lean-build.lock` does not coordinate with path locks.
+Do not share writable artifacts through hardlinked copies; use separate copies or visible
+symlinked directories whose actual paths the wrappers can lock.
+
+Exclusion protects shared files; it is not a host resource scheduler. Coordinate independent
+builds with the other owners according to CPU, memory/cgroup headroom and expected workloads.
+A free lock or the headroom probe alone does not establish capacity for another build.
+`LEAN_NUM_THREADS` configures each Lean process, separately from the number of concurrent
+builds. Explicit positive values are preserved; an unset value falls back to 1. Choose
+resource-aware overrides in the execution environment, not fixed hardware facts in this
+repository. Cross-account jobs need external coordination; these locks are account-scoped.
+`LEAN_GUARD_MIN_AVAIL_MIB` defaults to 1536 and remains configurable. Unavailable
+platform metrics are reported as unknown, never as measured spare capacity.
+`scripts/bootstrap.sh`, `scripts/check.sh` and axiom audits use the same guarded wrappers.
 The stop file blocks guarded Lean work and new child Codex launches; remove it only when
 the stopping condition has been resolved. It does not terminate existing jobs automatically.
 

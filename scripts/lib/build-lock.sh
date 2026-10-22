@@ -1,43 +1,48 @@
 # shellcheck shell=bash
-# Acquire the container-wide Lean build lock on file descriptor 9 for the lifetime of the
-# sourcing script (and of every child it starts, since the descriptor is inherited).
-#
-#   . "$ROOT/scripts/lib/build-lock.sh"
-#
-# Serialisation is the gate's safety contract in small shared containers: two concurrent
-# mathlib builds OOM each other. This file therefore
-#   - fails closed when no lock implementation exists (neither flock(1) nor perl);
-#   - carries no re-entry marker in the environment — a caller cannot spoof its way past the
-#     lock. Re-entrancy (a script that already holds the lock calling another that sources
-#     this file) is detected from the inherited descriptor: if fd 9 is open on the lock file,
-#     `flock` on that same open file description is a no-op when an ancestor holds it, and
-#     acquires or waits otherwise. A descriptor that merely *points* at the lock file without
-#     holding the lock buys nothing.
-#   - portable hosts verify descriptor identity using Perl stat.
-LEAN_BUILD_LOCK=/tmp/lean-build.lock
-
-# Verify inherited descriptor identity on Linux and portable Perl hosts.
-lock_inherited=0
-if [ -e /dev/fd/9 ]; then
-  if [ -d /proc/self/fd ]; then
-    [ "$(readlink /proc/self/fd/9 2>/dev/null)" = "$LEAN_BUILD_LOCK" ] && lock_inherited=1
-  elif command -v perl >/dev/null 2>&1; then
-    if perl -e 'open(my $fh, ">>&=", 9) or exit 1; my @a=stat($fh); my @b=stat($ARGV[0]); exit(!(@a && @b && $a[0]==$b[0] && $a[1]==$b[1]));' "$LEAN_BUILD_LOCK"; then lock_inherited=1; fi
+# Exclude writes to canonical checkout/build/dependency paths, including symlink targets.
+# Sorted locks avoid deadlock; inherited descriptors support nested gates and wrappers.
+# No environment marker alone skips acquisition. Do not wrap these scripts in outer locks.
+lean_lock_root=${ROOT:?ROOT must name the repository}
+lean_lock_helper="$lean_lock_root/scripts/lib/build-resources.py"
+lean_lock_files=$(python3 "$lean_lock_helper" "$lean_lock_root") || exit 1
+lean_inherited_locks=${LEAN_RESOURCE_LOCK_FDS:-}
+LEAN_RESOURCE_LOCK_FDS=
+lean_next_fd=9
+for lean_lock_path in $lean_lock_files; do
+  lean_lock_fd=
+  for lean_pair in $lean_inherited_locks; do
+    lean_candidate=${lean_pair%%:*}
+    [[ "$lean_candidate" =~ ^[0-9]+$ ]] || continue
+    [ "${lean_pair#*:}" = "$lean_lock_path" ] || continue
+    if perl -e 'my ($fd,$path)=@ARGV; open(my $fh, ">>&=", $fd) or exit 1; my @a=stat($fh); my @b=stat($path); exit(!(@a && @b && $a[0]==$b[0] && $a[1]==$b[1]));' "$lean_candidate" "$lean_lock_path" 2>/dev/null; then
+      lean_lock_fd=$lean_candidate
+      break
+    fi
+  done
+  if [ -z "$lean_lock_fd" ]; then
+    # A nested operation must not expand its lock set while holding a partial set:
+    # that could invert global acquisition order. The outer gate covers docbuild too.
+    if [ -n "$lean_inherited_locks" ]; then
+      echo 'ERROR: Lake resource topology changed inside a guarded operation; restart the outer gate.' >&2
+      exit 1
+    fi
+    while [ -e "/dev/fd/$lean_next_fd" ]; do lean_next_fd=$((lean_next_fd + 1)); done
+    lean_lock_fd=$lean_next_fd
+    lean_next_fd=$((lean_next_fd + 1))
+    # Only a locally generated integer enters eval; the path remains a quoted variable.
+    eval "exec ${lean_lock_fd}>>\"\$lean_lock_path\"" || exit 1
   fi
-fi
-if [ "$lock_inherited" = 0 ]; then
-  exec 9>>"$LEAN_BUILD_LOCK" || { echo "ERROR: cannot open $LEAN_BUILD_LOCK" >&2; exit 1; }
-fi
-
-if command -v flock >/dev/null 2>&1; then
-  flock 9 || { echo "ERROR: flock on $LEAN_BUILD_LOCK failed" >&2; exit 1; }
-elif command -v perl >/dev/null 2>&1; then
-  # flock(2) locks belong to the open file description, shared with this shell through
-  # fd 9; the lock survives the perl child's exit because this shell still holds the fd.
-  perl -e 'use Fcntl qw(:flock); open(my $fh, ">>&=", 9) or die "fd 9: $!\n"; flock($fh, LOCK_EX) or die "flock: $!\n"' \
-    || { echo "ERROR: perl flock on $LEAN_BUILD_LOCK failed" >&2; exit 1; }
-else
-  echo "ERROR: neither flock(1) nor perl is available; the gate cannot serialise Lean builds." >&2
-  echo "       Install util-linux (flock) or perl. Refusing to build unserialised." >&2
+  if command -v flock >/dev/null 2>&1; then
+    flock "$lean_lock_fd" || exit 1
+  else
+    perl -e 'use Fcntl qw(:flock); open(my $fh, ">>&=", $ARGV[0]) or die "lock fd: $!"; flock($fh, LOCK_EX) or die "flock: $!"' "$lean_lock_fd" || exit 1
+  fi
+  LEAN_RESOURCE_LOCK_FDS="$LEAN_RESOURCE_LOCK_FDS $lean_lock_fd:$lean_lock_path"
+done
+export LEAN_RESOURCE_LOCK_FDS
+# Refuse to run if symlink/dependency topology changed while waiting for the locks.
+[ "$(python3 "$lean_lock_helper" "$lean_lock_root")" = "$lean_lock_files" ] || {
+  echo 'ERROR: Lake resource topology changed while waiting; restart the guarded operation.' >&2
   exit 1
-fi
+}
+unset lean_lock_files lean_inherited_locks lean_next_fd lean_lock_path lean_lock_fd lean_pair lean_candidate

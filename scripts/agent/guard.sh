@@ -76,17 +76,11 @@ build never runs. Parallelism is Lean's internal scheduler; control it with
 LEAN_NUM_THREADS, not with a lake CLI flag."
 fi
 
-# --- rules 1 & 2: every Lean invocation must hold the build lock -----------------------
-if printf '%s\n' "$findings" | grep -q '^LEAN 0 '; then
-  deny "Every Lean invocation must be serialised on $LOCK — that includes standalone
-\`lean file.lean\` and \`lake env lean\` type-checks, not just \`lake build\`, and a build
-started from a command substitution or a subshell. Two concurrent Lean process groups do
-not fit in a small shared container.
-
-Use one of:
-  bash scripts/check.sh                     # canonical gate; takes the lock itself
-  scripts/lean.sh lake build                # guarded raw build
-  scripts/lean.sh lake env lean <file>.lean  # guarded typecheck"
+# Raw flock cannot prove coverage of a checkout's dependencies. Use guarded entrypoints.
+if printf '%s\n' "$findings" | grep -q '^LEAN '; then
+  deny "Use scripts/lean.sh for direct Lean/Lake commands. Repository check/bootstrap/audit
+wrappers exclude writes to their actual shared build and dependency paths. An outer
+flock does not establish resource coverage and must not wrap a self-locking script."
 fi
 
 . "$HERE/../lib/resources.sh"

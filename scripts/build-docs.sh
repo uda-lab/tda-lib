@@ -15,7 +15,7 @@ check_stop() {
 # Refuse work before waiting, then recheck after the wait before touching generated output.
 check_stop
 # Keep invalidation, generation, lock verification, and the revision marker in one
-# transaction. The Lean wrapper re-enters this same lock through inherited fd 9.
+# transaction. The Lean wrapper re-enters the same resource locks through inherited descriptors.
 . "$ROOT/scripts/lib/build-lock.sh"
 check_stop
 
