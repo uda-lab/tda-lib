@@ -1,4 +1,5 @@
 import TDA.Persistence.FinitePresentation
+import TDA.Persistence.RealCoordinates
 import Mathlib.CategoryTheory.Limits.Preserves.Shapes.Kernels
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Finite.Basic
@@ -19,6 +20,7 @@ universe u v w
 namespace TDA.Persistence.GradedFree
 
 open CategoryTheory CategoryTheory.Limits
+open scoped TDA.Persistence
 
 variable {R : Type u} [Ring R] {P : Type v} [Preorder P]
 
@@ -111,8 +113,8 @@ theorem Presentation.relations_birth_iff_of_no_critical
     by_contra h
     exact Set.disjoint_left.mp (hgap i) ⟨lt_of_not_ge h, hb i⟩ (Or.inr ⟨y, rfl⟩)
 
-/-- A finite presentation has invertible transition maps across rectangles
-whose open-right coordinate gaps contain no presentation grade. -/
+/-- A presentation has invertible transition maps across coordinate gaps
+`(aᵢ, bᵢ]` that contain no presentation grade. -/
 theorem Presentation.structureMap_isIso_of_no_critical
     (D : Presentation.{u,0,w} (R := R) (P := Fin n → ℝ))
     {a b : Fin n → ℝ} (hab : a ≤ b)

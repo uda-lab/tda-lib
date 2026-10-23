@@ -52,6 +52,14 @@ implement the free-cover ingredients of
 [Lesnick, §4.1](https://arxiv.org/html/1106.5305v4). The finite cross-presentation
 characterization in Theorem 4.4 requires an additional generator-elimination proof.
 
+A map from a presented module lifts through a natural transformation ρ when
+ρ is surjective at every generator grade and injective at every relation grade.
+The proof chooses preimages of the generators, then uses injectivity to show
+that the relations vanish. If ρ is also injective at generator grades, the lift
+is unique. Thus postcomposition with ρ gives a bijection on these morphisms.
+These assertions hold over any ring and preorder; the presentation need not
+be finite. They test only its declared grades.
+
 For coordinatewise ordered `Fin n → ℝ`, each finite presentation determines a
 finite set of critical values in every coordinate: the generator and relation
 grade coordinates. If no critical value lies in any interval `(aᵢ, bᵢ]`, the
@@ -61,8 +69,8 @@ isomorphism of presented fibers. This property transfers through the natural
 isomorphism in `FinitelyPresented`. Taking less than the least positive gap
 from a fixed `a` to the finitely many grade coordinates gives a positive
 right-diagonal slack valid for every smaller nonnegative shift, including
-the empty-grade and zero-coordinate cases. This is the finite-grade step of
-[Lesnick, §6, Lemma 6.4](https://arxiv.org/html/1106.5305v4).
+the empty-grade and zero-coordinate cases. These are the local results in
+[Lesnick, §6, Lemmas 6.4 and 6.6](https://arxiv.org/html/1106.5305v4).
 
 ## Rank exactness and hook lifting
 
@@ -80,8 +88,13 @@ killed at j. `Hook.exists_lift` therefore lifts an entire hook morphism through
 a rank-exact quotient with pointwise finite-dimensional middle fibers. The support may
 be unbounded. This proves the finite-death hook lifting ingredient of
 [Botnan–Oppermann–Oudot–Scoccola, §2.14 and Appendix A](https://arxiv.org/html/2208.00300v3).
-Principal upsets, an exact-category instance, projective classification and
-rank-projective resolutions have separate proof obligations.
+The principal-upset module, representing a hook with infinite death, is the
+graded free module on one generator. `HookInfinity.homEquivFiber` identifies
+its morphisms with the target's birth fiber. Surjectivity at that single fiber
+therefore suffices to lift any such morphism. This assertion holds over any
+ring and preorder, without finite-dimensionality assumptions, and in particular
+applies to rank-exact quotient maps over a field. An exact-category instance,
+projective classification and rank-projective resolutions remain further results.
 
 ## Attainment on real finite-constructible modules
 

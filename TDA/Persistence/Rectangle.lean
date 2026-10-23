@@ -1,5 +1,5 @@
 import TDA.Persistence.SupportInterval
-import Mathlib.Data.Real.Basic
+import TDA.Persistence.RealCoordinates
 import Mathlib.Tactic.Linarith
 
 /-!
@@ -106,11 +106,6 @@ end BoundedInterval
 /-- One bounded interval for each coordinate. Families of rectangles can be
 indexed by occurrences, so equal rectangles need not be identified. -/
 abbrev Rectangle (n : ℕ) := Fin n → BoundedInterval
-
-/-- The coordinatewise preorder category for real grades. Open the
-`TDA.Persistence` scope to select this category in multiparameter consumers. -/
-scoped instance (priority := 10000) realCoordinatePreorderCategory (n : ℕ) :
-    CategoryTheory.SmallCategory (Fin n → ℝ) := Preorder.smallCategory _
 
 namespace Rectangle
 

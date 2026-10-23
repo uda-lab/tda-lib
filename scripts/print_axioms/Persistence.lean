@@ -3377,3 +3377,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.HookInfinity.exists_lift_of_birth_surjective
 #print axioms TDA.Persistence.HookInfinity.exists_lift_of_surjective
 #print axioms TDA.Persistence.HookInfinity.exists_lift_rankExact
+
+#print axioms TDA.Persistence.GradedFree.hom_ext_birth
+#print axioms TDA.Persistence.GradedFree.Presentation.hom_ext_birth
+#print axioms TDA.Persistence.GradedFree.Presentation.postcomp_injective_of_birth_injective
+#print axioms TDA.Persistence.GradedFree.Presentation.exists_lift_of_birth_surjective_relation_injective
+#print axioms TDA.Persistence.GradedFree.Presentation.postcomp_bijective_of_birth_bijective_relation_injective

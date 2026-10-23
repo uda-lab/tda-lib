@@ -2,6 +2,8 @@
 import TDA.Persistence.Basic
 import TDA.Persistence.GradedFree
 import TDA.Persistence.FinitePresentation
+import TDA.Persistence.FinitePresentationLifting
+import TDA.Persistence.RealCoordinates
 import TDA.Persistence.FinitePresentationGrid
 import TDA.Persistence.RealInterleaving
 import TDA.Persistence.RealInterleavingLaws

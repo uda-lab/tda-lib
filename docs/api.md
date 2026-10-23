@@ -84,8 +84,14 @@ gives positive right-diagonal slack at every index. At a pair of indices,
 `IsPointwiseShortExact.rank_add_iff_lift_kernel` equates rank additivity and lifting
 dying vectors when the middle source fiber is finite dimensional. `IsRankExact`
 requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`
-constructs lifts of finite-death hook morphisms in that domain. For coordinatewise
-real indices, use `open scoped TDA.Persistence` to select the preorder category.
+constructs lifts of finite-death hook morphisms in that domain.
+`HookInfinity.homEquivFiber` identifies principal-upset morphisms with birth-fiber
+vectors; surjectivity at birth suffices to lift them over any ring and preorder.
+`FinitePresentationLifting` proves that maps from a presented module lift through
+a natural transformation surjective at generator grades and injective at relation
+grades. With bijectivity at generator grades, the lift is unique. For coordinatewise
+real indices, import `RealCoordinates` and use `open scoped TDA.Persistence` to
+select the preorder category; rectangles and finite grids already import it.
 See
 [the constructions and their scope](math/multiparameter-foundations.md).
 
