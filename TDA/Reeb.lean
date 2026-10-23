@@ -52,3 +52,4 @@ import TDA.Reeb.ConstructibleGeometricInterleaving
 
 import TDA.Reeb.ConstructiblePerturbation
 import TDA.Reeb.GraphPLVertexPerturbation
+import TDA.Reeb.GraphTreeContraction
