@@ -3138,6 +3138,14 @@ import TDA
 #print axioms TDA.Reeb.Examples.GraphPLVertexPerturbation.flat_tilted_edist_ofFun_plHeight
 #print axioms TDA.Reeb.Examples.GraphPLVertexPerturbation.bump_not_controlled
 
+-- Topologist's sine curve: the quotient-to-component comparison is not injective.
+#print axioms TDA.Reeb.Examples.TopologistsSineCurve.zero_mem_T
+#print axioms TDA.Reeb.Examples.TopologistsSineCurve.w_mem_T
+#print axioms TDA.Reeb.Examples.TopologistsSineCurve.not_joinedIn_T
+#print axioms TDA.Reeb.Examples.TopologistsSineCurve.joined_mk_zero_mk_w
+#print axioms TDA.Reeb.Examples.TopologistsSineCurve.componentComparison_not_injective
+#print axioms TDA.Reeb.Examples.TopologistsSineCurve.intervalComponentComparison_not_injective
+
 -- Contractible realizations of finite trees.
 #print axioms TDA.Reeb.GraphTreeContraction.deleteVertexInclusion
 #print axioms TDA.Reeb.GraphTreeContraction.deleteVertexInclusion_vertex

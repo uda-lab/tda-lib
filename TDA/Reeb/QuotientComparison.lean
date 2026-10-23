@@ -13,9 +13,10 @@ composition. The carrier universes of `X`, `Y` and `Z` are independent.
 
 The comparison `η_f = ReebQuotient.componentComparison f : C_f ⟶ C_{f̄}` is
 `componentNatTrans` (`TDA.Reeb.Components`) applied to `q_f`. It is natural in the open set and in `h`, and it is
-surjective on every open. It need not be injective: de Silva, Munch and Patel, Example 3.21,
-give a non-constructible space where it is not (source-established, not machine-checked here).
-No injectivity or isomorphism is claimed.
+surjective on every open. It need not be injective: for the first coordinate of the topologist's
+sine curve (de Silva, Munch and Patel, Example 3.21) it is not injective at `⊤`, as the fixture
+`TDA.Reeb.Examples.TopologistsSineCurve.componentComparison_not_injective` proves. No injectivity
+or isomorphism is claimed in general.
 
 On the slice category `Over (TopCat.of Y)`, `ReebQuotient.quotientFunctor Y` with the point
 `ReebQuotient.projNatTrans Y : 𝟭 ⟶ quotientFunctor Y` is the pointed endofunctor of the source;
@@ -113,7 +114,8 @@ namespace ReebQuotient
 /-- `η_f : C_f ⟶ C_{f̄}`, #24's `componentNatTrans` applied to `q_f` (`f̄ ∘ q_f = f`). It sends
 the class of `x` in `f ⁻¹ U` to the class of `q_f x` in `f̄ ⁻¹ U`. It is surjective on every open
 (`componentComparison_app_surjective`) but need not be injective: de Silva–Munch–Patel,
-Example 3.21 (source-established, not machine-checked here). -/
+Example 3.21, machine-checked as
+`TDA.Reeb.Examples.TopologistsSineCurve.componentComparison_not_injective`. -/
 def componentComparison (f : C(X, Y)) : componentFunctor f ⟶ componentFunctor (height f) :=
   componentNatTrans (proj f) (fun _ => rfl)
 
