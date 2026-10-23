@@ -6,8 +6,9 @@ Authors: Daniele Bolla, David Loeffler
 The definitions `S`, `Z`, `T`, `w` and the proof of `not_joinedIn_T` are adapted from
 Counterexamples/TopologistsSineCurve.lean in mathlib at
 0df444a360eaa60ab8c11dca51a86af692955474. The adaptation restricts the graph to `0 < x ≤ 1`,
-drops the module-system syntax and the closure and connectedness results, and states the
-contradiction step of `not_isPathConnected_T` as the pointwise `¬ JoinedIn T (0, 0) w`.
+renames the namespace and makes the helpers private, drops the module-system syntax and the
+closure and connectedness results, and states the contradiction step of `not_isPathConnected_T`
+as the pointwise `¬ JoinedIn T (0, 0) w`.
 -/
 import TDA.Reeb.ConstructibleComparison
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
@@ -31,8 +32,7 @@ is the first coordinate, `fstHeight : C(T, ℝ)`. Then:
   interval `ℝ`.
 
 The statements carry no hypotheses. Connectedness of `T` is not used. Only failure of injectivity
-of `η` is proved; that the cosheaves of `fstHeight` and of its Reeb height are not isomorphic by
-any isomorphism is not claimed.
+of `η` is proved. Non-isomorphism of the two cosheaves is not claimed.
 
 Source: de Silva, Munch and Patel, *Categorified Reeb Graphs*, Example 3.21; the sine-curve
 facts follow mathlib's `Counterexamples/TopologistsSineCurve.lean`. See

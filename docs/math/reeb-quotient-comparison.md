@@ -59,12 +59,12 @@ theorem intervalComponentComparison_not_injective :
 
 with no hypotheses; the second is the same statement on the open interval `ℝ`.
 
-Take `z = (0, 0)` and `w = (1, sin 1)`.
+Take `z = (0, 0)` and `w = (1, sin 1⁻¹)`.
 
 1. *No path in `T` joins `z` to `w`* (`not_joinedIn_T`). Suppose `p` is one, and let `t₀` be the
    last time with `p(t₀)` on the segment. Continuity at `t₀` gives `δ > 0` with
-   `‖p(t) - p(t₀)‖ < 1` whenever `|t - t₀| < δ`. Pick `t₁ ∈ (t₀, t₀ + δ)`. Then `p(t₁) ∈ S`, so
-   `a = p(t₁)₁ > 0`, and the first coordinate of `p` takes every value in `[0, a]` on `[t₀, t₁]`.
+   `‖p(t) - p(t₀)‖ < 1` whenever `|t - t₀| < δ`. Pick `t₁ ∈ (t₀, t₀ + δ) ∩ [0, 1]` (`t₀ < 1`
+   since `p(1) = w` has first coordinate 1). Then `p(t₁) ∈ S`, so `a = p(t₁)₁ > 0`, and the first coordinate of `p` takes every value in `[0, a]` on `[t₀, t₁]`.
    Since `sin x⁻¹` attains both `1` and `-1` for some `x ∈ (0, a]`, two times within `δ` of `t₀`
    have second coordinates `1` and `-1`. Their images are at distance at least `2`, but both
    lie within `1` of `p(t₀)`.
