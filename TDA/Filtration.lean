@@ -12,6 +12,7 @@ import TDA.Filtration.OrderChamberFilterFunction
 import TDA.Filtration.CompatibleOrderExistence
 import TDA.Filtration.CompatibleOrderClosed
 import TDA.Filtration.Cech
+import TDA.Filtration.CechRelation
 import TDA.Filtration.CechDisplacement
 import TDA.Filtration.CechWitness
 import TDA.Filtration.CechSupNorm
