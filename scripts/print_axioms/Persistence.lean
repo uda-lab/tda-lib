@@ -3206,6 +3206,22 @@ set_option linter.auxLemma false
 
 #print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
 
+-- Normalized subdivision-Rips and restricted measure bifiltrations.
+#print axioms TDA.Persistence.SubdivisionRips.homology_obj
+#print axioms TDA.Persistence.SubdivisionRips.homology_structureMap
+#print axioms TDA.Persistence.SubdivisionRips.cechBifiltration_eq
+#print axioms TDA.Persistence.SubdivisionRips.cechHomology_eq
+#print axioms TDA.Persistence.SubdivisionRips.distanceCoordinates_cechHomology_eq
+#print axioms TDA.Persistence.SubdivisionRips.metricInterleaving_left
+#print axioms TDA.Persistence.SubdivisionRips.metricInterleaving_right
+#print axioms TDA.Persistence.SubdivisionRips.relabelVertex_symm_apply
+#print axioms TDA.Persistence.SubdivisionRips.homology
+#print axioms TDA.Persistence.SubdivisionRips.metricInterleaving
+#print axioms TDA.Persistence.SubdivisionRips.relabelIso
+#print axioms TDA.Persistence.SubdivisionRips.pairwiseInterleaving
+#print axioms TDA.Persistence.SubdivisionRips.pairwiseInterleaving_left
+#print axioms TDA.Persistence.SubdivisionRips.pairwiseInterleaving_right
+
 -- Different-label ambient Cech stability.
 #print axioms TDA.Persistence.Cech.relationInterleaving_φ
 #print axioms TDA.Persistence.Cech.relationInterleaving_ψ

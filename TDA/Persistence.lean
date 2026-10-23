@@ -161,6 +161,8 @@ import TDA.Persistence.GaussianMeasureEmbedding
 import TDA.Persistence.GaussianUniversality
 import TDA.Persistence.WeightedPersistenceMeasure
 
+import TDA.Persistence.SubdivisionRips
+
 import TDA.Persistence.CompatibleSections
 import TDA.Persistence.CutSubspaces
 
