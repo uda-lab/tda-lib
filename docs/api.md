@@ -879,6 +879,11 @@ the capacity raised to 1/p. Together with the comparison theorem, this identifie
 boundary transport with that scaled capacity-one reservoir value. The paired
 probability statement retains the full sum-of-masses capacity bound.
 
+`BoundaryTransportZero` identifies the powered value against zero with the
+diagonal persistence moment, for every finite-mass input and p at least one.
+It gives both the reciprocal-p root formula and the p-th power of distance to
+zero, including when the moment is infinite.
+
 The bridge to an ordinary Wasserstein API, minimizing Radon plans, sharp triangle
 and separation, native weighted atomic compatibility and finite atomic
 approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
