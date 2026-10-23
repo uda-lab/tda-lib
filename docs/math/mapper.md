@@ -673,11 +673,71 @@ them.
 
 Not included: diagrams or bottleneck bounds for towers that are not step towers,
 in particular the centred tower, or for q-tame modules; a finite capped version
-of the centred tower; tightness of the bound and bottleneck values beyond the
-fixtures; identification of the essential multiplicity with the top-stage
-homology dimension; DMW16-v2 `(c, s)`-good towers, reindexing and truncation;
+of the centred tower; exact bottleneck values for pairs of grids that are not
+translates and tightness of the bound `η` beyond translations; identification
+of the essential multiplicity with the top-stage homology dimension; DMW16-v2 `(c, s)`-good towers, reindexing and truncation;
 independence of the component orders; multinerve diagrams; executable
 extraction.
+
+### Tightness of the step bounds
+
+Let both step data have an empty initial family and finitely many faces in
+degree `n`. The rank obstructions of the previous section apply to the two step
+modules and, through the identification of the bottleneck distance with the real
+interleaving distance, bound the bottleneck distance of the two diagrams below:
+if for every `ε < ρ` there is a radius `t` such that the homology map of the
+selected refinement of the first tower from `t` to `t + 2ε` has rank larger than
+the dimension of the homology of the second tower's family at `t + ε`, or that
+family has no `n`-faces and the map is nonzero, then `ρ` is a lower bound. At
+one parameter, a nonzero map across `2ε` with no `n`-faces in the second tower's
+family at `t + ε` excludes an `ε`-interleaving.
+
+The step tower on `shiftGrid ε c`, whose grid values are `c j - ε`, has at the
+radius `t` the family of the step tower on `c` at `t + ε`, because
+`cellIndex (shiftGrid ε c) t = cellIndex c (t + ε)`. The selected refinements
+between the two stage families are cover maps shifting by `ε` in both directions:
+from the tower on `c` at `t` to the tower on `shiftGrid ε c` at `t + ε`, which
+passes to a later stage, and back, where the stages coincide. Hence the
+bottleneck distance of the two diagrams is at most `ε` for all step data.
+
+Suppose moreover that the grid has at least one value and that the homology map
+in degree `n` of the selected refinement from the first nonempty stage `1` to the
+last stage is nonzero (`SurvivesToLast`). Then the bottleneck distance of the
+diagrams on `c` and on `shiftGrid ε c`, and the real interleaving distance of
+their modules, equal `ε`. For `δ < ε` and `t = c 0 - ε`, the module on
+`shiftGrid ε c` has at `t` its stage `1` and at `t + 2δ` a stage `j ≥ 1`; its
+structure map is the selected refinement from stage `1` to stage `j`, nonzero
+because its composite with the refinement from stage `j` to the last stage is the
+nonzero map from stage `1` to the last stage. The module on `c` is zero at
+`t + δ < c 0`, where its stage is the empty initial one. The rank obstruction then
+gives the lower bound `ε`.
+
+In degree `0` the hypothesis holds whenever the first nonempty stage has a
+component index: the class of the corresponding vertex is nonzero over a field
+and is sent by the homology map of any refinement to the class of a vertex. The
+diagrams of a degree-`0` step tower and of its translate by `ε` are then at
+bottleneck distance exactly `ε`. The bottleneck distance of two step diagrams
+is infinite exactly when their numbers of essential bars differ.
+
+Fixtures: the two-stage merge at the radii `0, 1` and `1/2, 3/2`, whose
+first nonempty stage has two vertices and whose grids differ by the translate
+`1/2`, has diagrams at bottleneck distance exactly `1/2`, not only at most `1/2`.
+Over a point, the stages given by the empty family and the
+full space on the grid `{1}` and on its translate `{0}` by `1` have degree-zero
+diagrams at bottleneck distance exactly `1`; their members are right-continuous
+steps. The zero translate is the grid, and the merge diagram is at distance `0`
+from itself. As a negative control for the hypothesis, the stages empty,
+three-member cover and one-member cover of the 4-cycle at the radii `0, 1` have
+the degree-one diagram `{(0, 1)}`, and its translate by `1` has `{(-1, 0)}`; every
+structure map across `1` of either module is zero, because its source or its
+target is zero, so the zero maps form a `1/2`-interleaving and the bottleneck
+distance is at most `1/2 < 1`; the homology map from the three-member stage to the
+last stage is zero. As a negative control for the infinite distance, the diagram
+of the empty grid has no essential bar and the merge diagram has one.
+
+The hypothesis is stated through the nonzero map and not through the diagram;
+that it holds exactly when an essential bar is born at `c 0` is a statement
+about the rank barcode that is not formalised here.
 
 ## Uniform interval covers and edge cells
 
