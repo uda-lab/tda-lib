@@ -113,8 +113,8 @@ metric-space input.
   The quotient of every constructible real space satisfies the smoothing absorption
   comparison, while constructibility of its product thickening is established for
   graph input.
-- **Mapper.** Graph-PL inputs, piecewise-linear height functions on finite graphs,
-  have ordinary and MultiNerve Mapper constructions, a cover-dependent cell
+- **Mapper.** Graph-PL inputs, piecewise-linear height functions on finite simple
+  graphs, have ordinary and MultiNerve Mapper constructions, a cover-dependent cell
   classification and finite Reeb incidence data under explicit cover and height
   assumptions. A uniform cover by open intervals of length r whose consecutive starts
   are r − g apart, so that g is the overlap, with 0 < g and 2g ≤ r, and which is
