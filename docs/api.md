@@ -326,8 +326,18 @@ canonical comparison with the existing `RealBarcode.familyModule` product is a
 natural isomorphism when finitely many fibers are nonzero at each parameter.
 Pointwise finite dimension of a direct-sum representation implies this local
 finiteness, and only finitely many occurrences meet a finite observation list.
-The index family may be uncountable. The full interval decomposition and equality
-with finite-observation barcodes remain open in [the decomposition contract](https://github.com/uda-lab/tda-lib/issues/506).
+The index family may be uncountable.
+
+`TDA.Persistence.CutDecomposition` proves that the chosen interval complements
+span every fiber and that every finite relation among distinct complements is
+trivial. Its `sumIso` is a natural isomorphism from their algebraic direct sum
+to any pointwise finite-dimensional real-indexed module. The construction includes
+singleton supports and assumes no decomposition or global countability. Finite
+activity at each parameter, and finite activity over a finite observation list,
+follow from finite dimension. `CutSubspacesExamples` checks cut endpoints and the
+singleton image/kernel spaces of a module with zero maps at strict inequalities.
+Scalar interval decomposition and equality with finite-observation barcodes remain
+open in [the decomposition contract](https://github.com/uda-lab/tda-lib/issues/506).
 
 ## Metric input and Rips diagrams
 
@@ -358,6 +368,21 @@ universes; `diagram_eq_dgm` identifies it with the existing diagram for every
 auxiliary order. Finite samples of a common possibly infinite target are compared
 only through their finite diagrams. General totally bounded/q-tame diagram existence
 remains separate. See [metric-input stability](math/rips-metric-stability.md).
+
+`TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
+`a < b` has finite-dimensional image over the coefficient field.
+`TDA.Persistence.RipsQTame` proves `Rips.qTame_of_totallyBounded` for the
+existing closed diameter Rips homology of any totally bounded metric space,
+over every field and in every degree. A finite net and the relation-interleaving
+law give the actual factorization through finite-dimensional homology.
+Empty spaces and negative source times are included. The auxiliary vertex
+order is arbitrary; `sublevelModuleIsoOfIsometryEquiv` supplies natural
+isomorphisms under isometric relabelling without order preservation.
+The infinite compact unit interval is a checked example: its strict maps have
+finite-dimensional images, while its unreduced H₀ fiber at zero is
+infinite-dimensional. This result supplies q-tameness; locally finite diagrams
+and their algebraic stability require separate foundations. See
+[the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
 ## Ambient Čech complexes
 
@@ -790,7 +815,8 @@ C₀ universality and signed-measure separation concern the full birth–death p
 positive persistence measures require a strictly positive weight and finite weighted
 mass. These conclusions do not make finite-pixel images characteristic.
 
-General geometric tame-function PH stability, infinite diagram and q-tame stability, manifold charts
+General geometric tame-function PH stability, locally finite diagrams and their stability
+for infinite q-tame modules, manifold charts
 and executable arbitrary-field decomposition are outside the reviewed PH scope. A first
 stable release must state its selected results and limitations; it need not finish every
 roadmap extension. This guide describes the current API and does not announce a release.
@@ -846,3 +872,39 @@ zero-weight, zero-bandwidth and open-half-plane C₀ failure controls. Essential
 The results provide abstract noncomputable integration and approximation existence, with finite
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
+
+### Greedy sparse Rips geometry and deletion maps
+
+`TDA.Filtration.SparseRips.GreedyNet` constructs a farthest-first permutation of a
+finite metric space from a chosen initial vertex. Its prefixes satisfy covering
+and separation bounds; insertion radii decrease. The initial vertex has no finite
+insertion radius. `threshold_net` gives a closed covering bound and strict
+separation at the same threshold, including threshold zero.
+
+For `0 < η ≤ 1/3`, `deletionTime` assigns each other vertex its insertion radius
+divided by `η(1−2η)`. The initial vertex's time is `none`, interpreted as survival
+forever. `finiteWeight` implements the three specified weight branches.
+`relaxedComplex` uses the dissimilarity `dist x y + w x + w y`, including self-pairs.
+Its monotonicity and the diameter-scale Rips sandwich are proved. `sparseFiltration`
+is the union of closed active complexes over earlier nonnegative scales and is
+an ordinary inclusion filtration, extended by bottom at negative scales.
+
+`deletionMap_domination` proves the weighted distance bound for an explicit
+projection onto open active vertices. `closedActiveHomologyIso` identifies the
+closed active complex with the relaxed complex at one nonnegative scale, in every
+degree and over every ring in the existing ordered-vertex chain model, using the
+signed prism homotopy.
+`unionDeletionHomologyIso` proves the adjacent two-scale union step under an
+explicit absence of intervening deletion times. `ClosedBallDoubling.packing_bound`
+gives the uniform separated-set bound `Λ^h` from iterated closed-ball covers.
+`facesOfDimension_card_le` bounds the number of distinct j-simplices in the full
+all-scales carrier by `|P|·(Λ^h)^j`; `skeletonFaces_card_le` bounds its m-skeleton
+by `|P|·Σ_{j=0}^m(Λ^h)^j`. Here `2/2^h < η(1−2η)`, and the depth can be chosen
+from η alone. The constants are independent of cardinality, metric spread and
+maximum scale. `LineSamples.uniform_skeleton_bound` uses one doubling bound of
+four at every sample size.
+
+The exported results do not yet identify the full sparse union's persistence module
+with the relaxed module. The finite entry-time presentation, diagram approximation,
+and full union comparison remain part of
+[the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).

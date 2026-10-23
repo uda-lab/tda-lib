@@ -144,6 +144,8 @@ import TDA.Persistence.SimplicialMultivaluedInterleaving
 import TDA.Persistence.CechEssentialBirth
 import TDA.Persistence.CechFinitePBottleneckAllDegrees
 import TDA.Persistence.RipsRelationInterleaving
+import TDA.Persistence.QTame
+import TDA.Persistence.RipsQTame
 import TDA.Persistence.FiniteWeightedBoundaryTransport
 
 import TDA.Persistence.RipsGromovHausdorff
@@ -163,5 +165,8 @@ import TDA.Persistence.CutSubspaces
 import TDA.Persistence.AlgebraicFamily
 
 import TDA.Persistence.CompatibleSectionsExamples
+
+import TDA.Persistence.CutDecomposition
+import TDA.Persistence.CutSubspacesExamples
 
 import TDA.Persistence.BoundaryTransportGeometry
