@@ -397,8 +397,88 @@ zero ring `ZMod 1` their homology maps coincide, so the nontriviality of the
 coefficient ring is necessary for this control.
 
 No multinerve chain complex or multinerve selector independence, Nerve Lemma,
-categorical reconstruction, stability estimate, barcode algorithm or q-tame
-theory is included.
+categorical reconstruction, barcode algorithm or q-tame theory is included. The
+stability statement for interleaved cover towers is in the next section.
+
+## Interleaved cover towers and Mapper homology stability
+
+A real cover tower on `Y` is a family `U t : IndexU t → Set Y` for every
+`t : ℝ` with a selected refinement `rU h : Refinement (U s) (U t)` for every
+`h : s ≤ t`; no identity or composition equation is required. Fix
+`f : C(X, Y)`, a ring `R`, a degree `n` and linear orders on the component-index
+types. For `η : ℝ≥0`, two towers `U` and `V` (index types in one universe) are
+related by selected cover maps `ζ t : Refinement (U t) (V (t + η))` and
+`ξ t : Refinement (V t) (U (t + η))` for every `t`. This is Definition 5 of
+[DMW16-v2](references.md#DMW16-v2); as there, no commutation between the cover
+maps and the tower maps is assumed.
+
+`mapperHomologyInterleaving R f rU rV ζ ξ n` is a real `η`-interleaving of
+`mapperHomologyPModule R f U rU n` and `mapperHomologyPModule R f V rV n`. The
+component of its first map at `t` is `mapperHomologyMap R f (ζ t) n` and that of
+its second map is `mapperHomologyMap R f (ξ t) n`. Naturality at `s ≤ t`
+compares two refinements `U s → V (t + η)`, the composite through `U t` and the
+composite through `V (s + η)`. The double-shift identity at `t` compares the
+composite of `ζ t`, `ξ (t + η)` and the parameter transport with the tower
+refinement `U t → U (t + 2η)`. In each case both sides are induced by
+refinements between the same families, so they agree on homology by the
+selector independence of the previous section. The components, and for fixed
+tower refinements the whole interleaving, do not depend on which cover maps or
+tower refinements were selected. Hence
+`realInterleavingDistance_mapperHomologyPModule_le` bounds the real interleaving
+distance of the two modules by `η`, and composing an `η₁`-pair of cover maps
+with an `η₂`-pair bounds the distance between the outer modules by `η₁ + η₂`.
+This is the homology-module form of DMW16-v2 Proposition 4.2 and Corollary 4.3,
+with Proposition 4.1(i) at the level of modules. The source states the
+conclusion for nerve towers up to contiguity (Definition 6) and for persistence
+diagrams of finite towers; neither form is formalised here.
+
+The Mapper complex of `f` along `U t` is definitionally the Mapper complex of the
+identity of `X` along `pullback f (U t)`, with `pullbackRefinement f` applied to
+the tower refinements and the same component orders, so
+`mapperHomologyPModule_pullback` is an equality of persistence modules. This is
+the module form of Proposition 4.1(ii).
+
+For `s t : ℝ`, `centredCover s t k` is the open interval of radius `t` about
+`k * s`, indexed by `k : ℤ`; it is empty for `t ≤ 0`, increasing the radius gives
+the identity-selector refinement `centredCoverRefinement s`, and for `s ≠ 0` and
+`|s| / 2 < t` the family covers `ℝ`. Let `f g : C(X, ℝ)` satisfy
+`|f x - g x| ≤ δ` for every `x`. Then `f x` in the member of label `k` and radius
+`t` puts `g x` in the member of label `k` and radius `t + δ`, so identity
+selectors are cover maps between the pulled-back centred towers on `X` in both
+directions. By the pullback identification, the interleaving theorem for the
+identity of `X` gives `centredMapperHomologyInterleaving`, a `δ`-interleaving
+of the Mapper homology modules of `f` and `g` along the centred tower, and
+`realInterleavingDistance_centredMapperHomology_le` bounds their distance by
+`δ`, for every spacing, degree, ring and supplied component orders. This
+specialisation is a library result; it is not the function-perturbation
+statement of DMW16-v2 Proposition 4.5 and Corollary 4.6, which use
+`(c, s)`-good towers, logarithmic reindexing and truncation.
+
+No finiteness, openness, coverage, field, nonemptiness or local
+path-connectedness hypothesis enters. A source tower with resolution `r` is
+represented by any extension of it to all of `ℝ`, for example by empty families
+below `r`; the library does not identify the two conventions.
+
+Fixtures: interleaving a tower with itself at `η = 0`, with tower refinements as
+cover maps, gives the identity isomorphism of its module. Over a one-point
+domain, cover maps whose composite selector differs from the tower selector
+still give an interleaving. The centred tower is interleaved with its own
+`η`-shift, and its Mapper complexes have no faces at nonpositive radius, with no
+inhabitedness assumption on the domain. On the unit interval, the constant map
+`0` and the map `x ↦ 4x` are at pointwise distance `4`; along the centred tower
+of spacing `1`, their `H₀` over `ℚ` at radius `1/2` has dimensions `1` and `5`,
+so their modules are not isomorphic, while the distance between them is at
+most `4`. For the identity map, the pullback form agrees with the direct form.
+As a control, refinements between one family pair induce one homology map,
+while the two simplicial maps from a point to two isolated vertices of the
+previous section, which are not induced by refinements, have different `H₀`
+maps over `ZMod 2`.
+
+Not included: the simplicial-tower interleaving up to contiguity as a separate
+structure; `(c, s)`-good towers, reindexing or truncation (DMW16-v2
+Propositions 4.4–4.5, Corollary 4.6, Theorems 4.7–4.8); persistence diagrams or
+bottleneck bounds; lower bounds or tightness of the distance; independence of
+the component orders; multinerve homology; any Nerve Lemma.
 
 ## Uniform interval covers and edge cells
 
