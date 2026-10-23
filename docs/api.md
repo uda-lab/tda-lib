@@ -764,8 +764,8 @@ C₀ universality and signed-measure separation concern the full birth–death p
 positive persistence measures require a strictly positive weight and finite weighted
 mass. These conclusions do not make finite-pixel images characteristic.
 
-General geometric tame-function PH stability, infinite/q-tame theory, manifold charts
-and executable arbitrary-field decomposition are outside the reviewed PH scope. A first
+General geometric tame-function PH stability, decorated locally finite diagram stability,
+manifold charts and executable arbitrary-field decomposition are outside the reviewed PH scope. A first
 stable release must state its selected results and limitations; it need not finish every
 roadmap extension. This guide describes the current API and does not announce a release.
 
@@ -806,3 +806,18 @@ zero-weight, zero-bandwidth and open-half-plane C₀ failure controls. Essential
 The results provide abstract noncomputable integration and approximation existence, with finite
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
+
+### Q-tame persistence rectangle measures
+
+`TDA.Persistence.PersistenceMeasure` constructs the image-and-kernel quotient
+`PersistenceMeasureSpace` and its dimension `persistenceMeasureValue` for
+real modules over a field. A finite crossing image suffices for the
+four-rank formula, birth and death splitting, and the crossing-rank bound;
+`PModule.QTame.persistenceMeasureSpace_finiteDimensional` supplies this
+finiteness on every rectangle separated from the diagonal.
+`TDA.Persistence.PersistenceMeasureEssential` constructs essential-boundary
+strip counts as the eventual dimensions of image quotients and proves
+birth-coordinate additivity. It includes no assumed interval decomposition.
+The decorated locally finite diagram representation and its bottleneck
+stability are not supplied by this API. See
+[persistence rectangle measures](math/persistence-rectangle-measure.md).
