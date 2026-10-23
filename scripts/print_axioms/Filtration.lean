@@ -499,3 +499,17 @@ import TDA
 #print axioms TDA.Filtration.SparseRips.sparseToRelaxedHom_app
 #print axioms TDA.Filtration.SparseRips.isIso_sparseToRelaxedHom
 #print axioms TDA.Filtration.SparseRips.sparseRelaxedHomologyIso
+#print axioms TDA.Filtration.SparseRips.approximationFactor
+#print axioms TDA.Filtration.SparseRips.approximationFactor_mul
+#print axioms TDA.Filtration.SparseRips.one_le_approximationFactor
+#print axioms TDA.Filtration.SparseRips.approximationFactor_one_third
+#print axioms TDA.Filtration.SparseRips.parameterOfTolerance
+#print axioms TDA.Filtration.SparseRips.parameterOfTolerance_pos
+#print axioms TDA.Filtration.SparseRips.parameterOfTolerance_le_third
+#print axioms TDA.Filtration.SparseRips.approximationFactor_parameterOfTolerance
+#print axioms TDA.Filtration.SparseRips.relaxed_le_rips_log
+#print axioms TDA.Filtration.SparseRips.rips_le_relaxed_log
+#print axioms TDA.Filtration.SparseRips.relaxedRipsLogInterleaving
+#print axioms TDA.Filtration.SparseRips.sparseRelaxedLogIso
+#print axioms TDA.Filtration.SparseRips.sparseRipsLogInterleaving
+#print axioms TDA.Filtration.SparseRips.sparseRipsLogDistance_le

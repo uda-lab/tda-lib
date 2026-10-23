@@ -864,7 +864,13 @@ the next one. `isIso_terminal_activeUnion` iterates this retraction over a
 complete grid. `isIso_sparse_relaxed` identifies the resulting sparse complex
 with the relaxed complex on homology; `sparseRelaxedHomologyIso` is the natural
 isomorphism of their real-indexed persistence modules, including degree zero
-and negative scales. `ClosedBallDoubling.packing_bound`
+and negative scales. `sparseRipsLogInterleaving` combines that isomorphism
+with the relaxed/Rips inclusions. Reindexing positive radii by `exp` gives an
+interleaving with shift `log((1−2η)⁻¹)` in every degree, including degree zero.
+`sparseRipsLogDistance_le` bounds the corresponding module interleaving distance.
+`parameterOfTolerance` converts `0 < τ ≤ 1` to `η = τ/(2(1+τ))`, for which the
+multiplicative factor is `1+τ`; at `η=1/3` the factor is `3`.
+`ClosedBallDoubling.packing_bound`
 gives the uniform separated-set bound `Λ^h` from iterated closed-ball covers.
 `facesOfDimension_card_le` bounds the number of distinct j-simplices in the full
 all-scales carrier by `|P|·(Λ^h)^j`; `skeletonFaces_card_le` bounds its m-skeleton
@@ -873,6 +879,6 @@ from η alone. The constants are independent of cardinality, metric spread and
 maximum scale. `LineSamples.uniform_skeleton_bound` uses one doubling bound of
 four at every sample size.
 
-The closed face-entry presentation, multiplicative/logarithmic approximation,
-and diagram comparison remain part of
+The closed face-entry presentation and finite log-diagram bottleneck comparison
+remain part of
 [the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).
