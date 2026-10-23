@@ -360,7 +360,7 @@ The index family may be uncountable.
 `TDA.Persistence.CutDecomposition` proves that the chosen interval complements
 span every fiber and that every finite relation among distinct complements is
 trivial. Its `sumIso` is a natural isomorphism from their algebraic direct sum
-to any pointwise finite-dimensional real-indexed module. The construction includes
+to any pointwise finite-dimensional real-indexed module over a field. The construction includes
 singleton supports and assumes no decomposition or global countability. Finite
 activity at each parameter, and finite activity over a finite observation list,
 follow from finite dimension. `CutSubspacesExamples` checks cut endpoints and the
