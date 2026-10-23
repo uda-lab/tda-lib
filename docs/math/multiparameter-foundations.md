@@ -98,15 +98,15 @@ projective classification and rank-projective resolutions remain further results
 
 ## Attainment on real finite-constructible modules
 
-For right-continuous real modules on finite critical grids, with zero left tails
-and finite-dimensional critical fibers, the barcode isometry and an
+Over a field k, for right-continuous real modules on finite critical grids,
+with zero left tails and finite-dimensional critical fibers, the barcode isometry and an
 optimal finite matching give an interleaving at every finite distance bound.
 The admissible parameters form a closed upper ray when the distance is finite,
 and are empty when it is infinite. Distance zero is equivalent to a natural
 isomorphism. See [finite-constructible closure](constructible-isometry.md#attainment-and-separation).
 
 This assertion depends on the stated constructibility and finiteness hypotheses.
-`RealRay.distance_eq_zero` and `RealRay.not_nonempty_iso` show that k_[0,∞) and
+For a field k, `RealRay.distance_eq_zero` and `RealRay.not_nonempty_iso` show that k_[0,∞) and
 k_(0,∞) have zero distance but are not isomorphic: positive shifts interleave them,
 while their fibers at zero differ. The zero distance is not attained. The
 multidimensional finite-presentation closure theorem remains a further result.
