@@ -3206,6 +3206,45 @@ set_option linter.auxLemma false
 
 #print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
 
+-- Persistence rectangle measures and the essential boundary.
+#print axioms TDA.Persistence.persistenceImage_mono
+#print axioms TDA.Persistence.persistenceKernel_mono
+#print axioms TDA.Persistence.persistenceImage_finrank_drop
+#print axioms TDA.Persistence.persistenceMeasureSpace_finiteDimensional
+#print axioms TDA.Persistence.PModule.QTame.persistenceMeasureSpace_finiteDimensional
+#print axioms TDA.Persistence.persistenceMeasureValue_add_kernel
+#print axioms TDA.Persistence.persistenceMeasureValue_four_rank
+#print axioms TDA.Persistence.persistenceImage_finiteDimensional_target
+#print axioms TDA.Persistence.persistenceMeasureValue_split_birth
+#print axioms TDA.Persistence.persistenceMeasureValue_split_death
+#print axioms TDA.Persistence.persistenceMeasureValue_le_crossing_rank
+#print axioms TDA.Persistence.persistenceMeasureValue_eq_zero_of_crossing_eq_zero
+#print axioms TDA.Persistence.persistenceMeasureValue_birth_self
+#print axioms TDA.Persistence.persistenceMeasureValue_death_self
+#print axioms TDA.Persistence.persistenceTailMeasureValue_add_image
+#print axioms TDA.Persistence.persistenceMeasureValue_add_tail
+#print axioms TDA.Persistence.persistenceTailMeasureValue_antitone
+#print axioms TDA.Persistence.persistenceTailMeasureValue_split_birth
+#print axioms TDA.Persistence.essentialMeasureValue_le_tail
+#print axioms TDA.Persistence.exists_tail_eq_essentialMeasureValue
+#print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_eventually
+#print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_split_birth
+#print axioms TDA.Persistence.PersistenceMeasureExamples.upper_edges_count_one
+#print axioms TDA.Persistence.PersistenceMeasureExamples.lower_birth_edge_count_zero
+#print axioms TDA.Persistence.PersistenceMeasureExamples.essential_interval_count_one
+
+#print axioms TDA.Persistence.PersistenceMeasureExamples.infinite_ephemeral_qTame
+#print axioms TDA.Persistence.PersistenceMeasureExamples.infinite_ephemeral_not_finiteDimensional
+#print axioms TDA.Persistence.PersistenceMeasureExamples.infinite_ephemeral_rectangle_zero
+#print axioms TDA.Persistence.essentialMeasureValue_le_crossing_rank
+#print axioms TDA.Persistence.PModule.QTame.persistenceMeasureValue_eventually_zero
+#print axioms TDA.Persistence.persistenceTailSpace_finiteDimensional
+
+-- Rectangle monotonicity and essential-boundary fixtures.
+#print axioms TDA.Persistence.persistenceMeasureValue_mono
+#print axioms TDA.Persistence.PersistenceMeasureExamples.essential_interval_finite_rectangle_zero
+#print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_self
+
 -- Normalized subdivision-Rips and restricted measure bifiltrations.
 #print axioms TDA.Persistence.SubdivisionRips.homology_obj
 #print axioms TDA.Persistence.SubdivisionRips.homology_structureMap

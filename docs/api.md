@@ -897,6 +897,8 @@ The results provide abstract noncomputable integration and approximation existen
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
 
+### Normalized subdivision-Rips and measure stability
+
 The normalized subdivision-Rips modules construct open-radius finite flag
 bifiltrations and their actual simplicial homology, including restricted-index
 stability for a bounded perturbation of one labelled distance matrix. The
@@ -904,6 +906,21 @@ measure bifiltration has a restricted Prokhorov interleaving, and finite
 sup-norm Čech/Rips flag homology diagrams agree naturally. The natural
 multicover nerve bridge and full GP-to-SR bound remain open. See
 [normalized subdivision-Rips and measure stability](math/subdivision-rips.md).
+
+### Q-tame persistence rectangle measures
+
+`TDA.Persistence.PersistenceMeasure` constructs the image-and-kernel quotient
+`PersistenceMeasureSpace` and its dimension `persistenceMeasureValue` for
+real modules over a field. A finite crossing image suffices for the
+four-rank formula, birth and death splitting, and the crossing-rank bound;
+`PModule.QTame.persistenceMeasureSpace_finiteDimensional` supplies this
+finiteness on every rectangle separated from the diagonal.
+`TDA.Persistence.PersistenceMeasureEssential` constructs essential-boundary
+strip counts as the eventual dimensions of image quotients and proves
+birth-coordinate additivity. It includes no assumed interval decomposition.
+The decorated locally finite diagram representation and its bottleneck
+stability are not supplied by this API. See
+[persistence rectangle measures](math/persistence-rectangle-measure.md).
 
 ### Greedy sparse Rips geometry and deletion maps
 
