@@ -3,6 +3,7 @@ import TDA.Persistence.Basic
 import TDA.Persistence.PersistenceMeasure
 import TDA.Persistence.PersistenceMeasureEssential
 import TDA.Persistence.PersistenceMeasureBox
+import TDA.Persistence.PersistenceMeasureEssentialBox
 import TDA.Persistence.PersistenceMeasureMatching
 import TDA.Persistence.RealInterleaving
 import TDA.Persistence.RealInterleavingLaws

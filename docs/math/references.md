@@ -375,6 +375,15 @@ entire article or all its algorithms have been formalized.
 
 - **Identity/version:** Frédéric Chazal; Vin de Silva; Marc Glisse; Steve Oudot. *The structure and stability of persistence modules*. [arXiv:1207.3674v3](https://arxiv.org/abs/1207.3674v3), 20 March 2013; [PDF](https://arxiv.org/pdf/1207.3674v3).
 - **Use/classification:** `PersistenceMeasure` constructs the image-and-kernel quotient of Proposition 2.5 (§2.2), proves finite-dimensionality from q-tameness, the Proposition 2.3 four-rank identity, and coordinate-splitting additivity. `PersistenceMeasureEssential` constructs the essential birth-strip measure by eventual finite-target image quotient dimensions, following the boundary considered in §2.6. `PersistenceMeasureBox` proves the finite-rectangle inequality of Lemma 4.22 (§4.6) from actual interleaving maps, requiring only a finite expanded crossing image in its local form. This is an ingredient of Theorems 4.20–4.21, whose locally finite matching conclusion remains open here. See [persistence rectangle measures](persistence-rectangle-measure.md) and [interleavings and rectangle measures](persistence-measure-box.md).
+
+`PersistenceMeasureEssentialBox` proves the positive-death boundary case of
+CDGO13-v3, Proposition 4.23 (§4.6), for q-tame source and target, directly from
+interleaving maps on image quotients. The essential value is then the attained
+minimum of §2.6. Its raw inequality of defined natural-valued `Module.finrank` minima needs only
+target q-tameness; that weaker assumption does not identify the source minimum
+with its genuine essential boundary count. No essential matching or diagram
+decomposition is assumed. See
+[interleavings and essential birth strips](persistence-measure-essential-box.md).
 - **Rights/evidence:** **U**, inspected 2026-10-23. The source is used for mathematical statements and an original formal proof; no source prose, figures or source code are redistributed.
 
 `PersistenceMeasureMatching` formalizes the finite local matching step of

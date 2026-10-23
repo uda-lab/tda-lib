@@ -3491,6 +3491,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RealInterleaving.persistenceMeasureValue_box_le
 #print axioms TDA.Persistence.RealInterleaving.persistenceMeasureValue_box_le_of_qTame
 #print axioms TDA.Persistence.PersistenceMeasureBoxExamples.displaced_interval_box_nonzero
+#print axioms TDA.Persistence.RealInterleaving.persistenceTailMeasureValue_box_le
+#print axioms TDA.Persistence.RealInterleaving.essentialMeasureValue_box_le_of_qTame
+#print axioms TDA.Persistence.PersistenceMeasureEssentialBoxExamples.displaced_essential_interval_box_nonzero
 #print axioms TDA.Persistence.PersistenceMeasureMatching.finiteBoxCount_box_le
 #print axioms TDA.Persistence.PersistenceMeasureMatching.exists_matching_of_separated_box_bounds
 #print axioms TDA.Persistence.PersistenceMeasureMatchingExamples.duplicated_shift_with_short_target
