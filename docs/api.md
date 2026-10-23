@@ -84,8 +84,14 @@ vanishing criterion for bounded rectangles over a field.
 from an actual ε-interleaving of finite rectangle sums: a selected family
 whose `(4n−2)ε` transitions are nonzero has at least as many neighbors at radius
 `(2n−1)ε`, retaining occurrence multiplicities, endpoint decorations and ε = 0.
-This result assumes a field and n ≥ 1; matching and distance estimates require
-further arguments. `GradedFree.lift`
+For a field and n ≥ 1, `RectangleMatching.exists_matching` uses this bound and
+the reversed interleaving to produce one radius-`(2n−1)ε` occurrence matching.
+Every paired rectangle module has an actual interleaving at that radius, and
+every unmatched module on either side is actually interleaved with zero.
+`IsMatching.source_covered` and `IsMatching.target_covered` expose coverage of
+all significant occurrences by that same matching. Multiplicities, arbitrary
+endpoint decorations and ε = 0 are retained. Distance comparisons still require
+matching-to-family assembly and infimum arguments. `GradedFree.lift`
 and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
 expresses finite presentation by homogeneous cokernels. For finitely presented modules on
