@@ -16,8 +16,8 @@ packaging:
 
 The fold shows that a continuous height-preserving surjection need not induce injections on path
 components of inverse images. It is not a witness that `η` itself fails to be injective; that
-limitation is source-established (de Silva, Munch and Patel, Example 3.21) and not
-machine-checked here.
+witness is the topologist's sine curve of de Silva, Munch and Patel, Example 3.21, in
+`TDA.Reeb.QuotientComparisonSineCurveExamples`.
 -/
 
 open CategoryTheory

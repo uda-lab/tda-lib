@@ -32,17 +32,67 @@ because every point of `f̄ ⁻¹ U` is `q_f x` for some `x` with `f x ∈ U`. `
 independent universes for `X` and `Y`; naturality in `h` requires `X` and `Z` to share a carrier
 universe, as `componentNatTrans` does.
 
-`η_f` need not be injective. For the topologist's sine curve with the first-coordinate projection,
-de Silva, Munch and Patel show that `C(f)` and `C(f̄)` are not isomorphic (Example 3.21): over the
-interval `ℝ`, the curve has more than one path component while its Reeb quotient has one, so the
-surjective `η_f` is not injective there. This limitation is source-established and is not machine-checked here. No injectivity, bijectivity or
-natural isomorphism is claimed for `η` in general. On constructible inputs, `η` restricted to open
-intervals is a natural isomorphism (see `reeb-constructible-comparison.md`).
+`η_f` need not be injective: for the topologist's sine curve with the first-coordinate projection
+it is not injective at `U = ⊤` (see [the sine-curve witness](#the-topologists-sine-curve)). No
+injectivity, bijectivity or natural isomorphism is claimed for `η` in general. On constructible
+inputs, `η` restricted to open intervals is a natural isomorphism (see
+`reeb-constructible-comparison.md`).
 
 A separate, weaker fact is machine-checked. A continuous height-preserving surjection need not
 induce injections on path components of inverse images. The fold `Bool × ℝ → ℝ` over `(ℝ, id)`
 merges the two sheets at `U = ⊤` (`Examples.componentNatTrans_fold_not_injective`), and its
 induced `Q_fold` is not injective (`Examples.map_fold_not_injective`).
+
+## The topologist's sine curve
+
+Let `S` be the graph of `x ↦ sin x⁻¹` over `0 < x ≤ 1`, `Z = {0} × [-1, 1]` the vertical segment,
+`T = S ∪ Z ⊆ ℝ × ℝ`, and `f : C(T, ℝ)` the first coordinate. The fixture module
+`TDA.Reeb.QuotientComparisonSineCurveExamples` (namespace `TDA.Reeb.Examples.TopologistsSineCurve`,
+height `fstHeight`) proves
+
+```lean
+theorem componentComparison_not_injective :
+    ¬ Function.Injective ((componentComparison fstHeight).app ⊤)
+theorem intervalComponentComparison_not_injective :
+    ¬ Function.Injective ((intervalComponentComparison fstHeight).app ⊤)
+```
+
+with no hypotheses; the second is the same statement on the open interval `ℝ`.
+
+Take `z = (0, 0)` and `w = (1, sin 1⁻¹)`.
+
+1. *No path in `T` joins `z` to `w`* (`not_joinedIn_T`). Suppose `p` is one, and let `t₀` be the
+   last time with `p(t₀)` on the segment. Continuity at `t₀` gives `δ > 0` with
+   `‖p(t) - p(t₀)‖ < 1` whenever `|t - t₀| < δ`. Pick `t₁ ∈ (t₀, t₀ + δ) ∩ [0, 1]` (`t₀ < 1`
+   since `p(1) = w` has first coordinate 1). Then `p(t₁) ∈ S`, so `a = p(t₁)₁ > 0`, and the first coordinate of `p` takes every value in `[0, a]` on `[t₀, t₁]`.
+   Since `sin x⁻¹` attains both `1` and `-1` for some `x ∈ (0, a]`, two times within `δ` of `t₀`
+   have second coordinates `1` and `-1`. Their images are at distance at least `2`, but both
+   lie within `1` of `p(t₀)`.
+2. *The classes of `z` and `w` in the Reeb quotient `Q` are joined* (`joined_mk_zero_mk_w`). The
+   segment `Z` is the fibre `f⁻¹(0)` and is path connected, so it is a single point `q(Z)` of `Q`.
+   Let `γ(0) = q(Z)` and `γ(t) = q(t, sin t⁻¹)` for `0 < t ≤ 1`. Continuity at `t > 0` is that of
+   a composite. At `0`: an open `V ∋ q(Z)` has open preimage `q⁻¹V = N ∩ T` with `N` open in
+   `ℝ²`, and `Z ⊆ q⁻¹V` gives `{0} × [-1, 1] ⊆ N`. The tube lemma yields an open `u ∋ 0` with
+   `u × [-1, 1] ⊆ N`, so `γ(t) ∈ V` for every `t ∈ u ∩ [0, 1]`.
+3. The comparison sends the classes of `z` and `w` in `π₀(f⁻¹ℝ) = π₀(T)` to the classes of
+   `q(z)` and `q(w)` in `π₀(Q)`. By (1) the former are distinct, and by (2) the latter are equal.
+
+Connectedness of `T` is not used.
+
+Source correspondence: de Silva, Munch and Patel, Example 3.21, take the space `𝕊` of §3.4, the
+graph of `sin(1/x)` over `0 < x ≤ 1` together with `{0} × [-1, 1]`, with the first-coordinate
+map. They observe that every level set over `[0, 1]` is path connected, so the Reeb graph is
+homeomorphic to `[0, 1]` and has one path component while `𝕊` has more than one; hence `𝒞(𝕊, x)`
+and `𝒞ℛ(𝕊, x)` differ at the interval `ℝ` (or any interval containing `0`) and are not isomorphic.
+`T` is `𝕊`. The Lean results establish that the specific comparison `η` is not injective at `ℝ`.
+They do not prove that the two cosheaves admit no isomorphism, that the Reeb quotient is
+homeomorphic to `[0, 1]`, or the failure at smaller intervals containing `0`.
+
+The sine-curve definitions and the proof of (1) are adapted from mathlib's
+[`Counterexamples/TopologistsSineCurve.lean`](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Counterexamples/TopologistsSineCurve.lean)
+(Daniele Bolla and David Loeffler, Apache-2.0). That file lies outside the `Mathlib` library
+target and takes the graph over all `0 < x`; the adapted copy restricts the graph to
+`0 < x ≤ 1` and keeps the upstream notice.
 
 ## Slice-category packaging
 
@@ -78,4 +128,5 @@ not source claims. The source case is the specialization `Y = ℝ` restricted to
 
 Sources: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.4, §3.4, Theorem 3.17 and
 Example 3.21](https://arxiv.org/html/1501.04147v1);
-[pinned mathlib over categories](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/CategoryTheory/Comma/Over/Basic.lean).
+[pinned mathlib over categories](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/CategoryTheory/Comma/Over/Basic.lean);
+[pinned mathlib topologist's sine curve](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Counterexamples/TopologistsSineCurve.lean).

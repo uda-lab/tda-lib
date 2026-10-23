@@ -41,7 +41,8 @@ Both have the comparison itself as components (`constructibleComponentComparison
 `constructibleCosheafComparisonIso_hom_app_hom`). No hypothesis or statement claims the comparison
 invertible in general, and no instance supplies `IsIso` for an arbitrary map. The source's
 Example 3.21, the topologist's sine curve, is a nonconstructible ℝ-space at which the comparison is
-not injective; it is not formalized here.
+not injective at the interval `ℝ`; that failure is the fixture
+`TDA.Reeb.Examples.TopologistsSineCurve.intervalComponentComparison_not_injective`.
 
 ## Proof
 

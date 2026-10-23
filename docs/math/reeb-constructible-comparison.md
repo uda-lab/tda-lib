@@ -159,9 +159,11 @@ element on every interval containing the level and is constructible at the same 
 comparison over `ℝ` sends two elements to one. The piece is compact but not locally
 path-connected. This variant of the source's Example 3.21 is not machine-checked.
 
-The source's Example 3.21, the topologist's sine curve with the first-coordinate projection, remains
-the documented nonconstructible obstruction: there `𝒞(𝕊, x)` and `𝒞ℛ(𝕊, x)` are not isomorphic. It
-is not formalized here.
+The source's Example 3.21, the topologist's sine curve with the first-coordinate projection, is the
+nonconstructible obstruction: there `𝒞(𝕊, x)` and `𝒞ℛ(𝕊, x)` are not isomorphic. The fixture
+`Examples.TopologistsSineCurve.intervalComponentComparison_not_injective` proves that the
+comparison is not injective at the interval `ℝ`; see `reeb-quotient-comparison.md`. That no
+isomorphism exists between the two cosheaves is not formalized.
 
 ## Universes
 
@@ -235,10 +237,13 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*:
   path-connected pieces, implies these hypotheses, and the slice-level theorems use exactly that
   class.
 - Example 3.21: the topologist's sine curve, where `𝒞(𝕊, x)` and `𝒞ℛ(𝕊, x)` are not isomorphic.
+  The comparison is not injective at `ℝ`
+  (`Examples.TopologistsSineCurve.intervalComponentComparison_not_injective`).
 
 Not claimed here: an isomorphism of `componentComparison` on all open sets of `ℝ`; invertibility of
-the comparison for arbitrary maps or for nonconstructible spaces; a formalization of Example 3.21 or
-of the constant-height sine-curve variant; the functor-level statements in universes other than
+the comparison for arbitrary maps or for nonconstructible spaces; the non-isomorphism of the two
+cosheaves in Example 3.21 (only non-injectivity of the comparison at `ℝ` is proved) or the
+constant-height sine-curve variant; the functor-level statements in universes other than
 `0`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §3.4, Theorem 3.17 and
