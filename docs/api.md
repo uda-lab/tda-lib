@@ -77,7 +77,13 @@ preorder over a ring, including the empty support. A structure map with an
 endpoint outside the support is zero over any ring; the converse requires a
 nontrivial ring. The comparison and morphism lemmas remain over fields.
 `Rectangle.diagonal_maps_eq_zero_iff` gives the exact endpoint-sensitive
-vanishing criterion for bounded rectangles over a field. `GradedFree.lift`
+vanishing criterion for bounded rectangles over a field.
+`RectangleHall.card_le_neighbors` derives the Hall neighbor cardinality bound
+from an actual ε-interleaving of finite rectangle sums: a selected family
+whose `(4n−2)ε` transitions are nonzero has at least as many neighbors at radius
+`(2n−1)ε`, retaining occurrence multiplicities, endpoint decorations and ε = 0.
+This result assumes a field and n ≥ 1; matching and distance estimates require
+further arguments. `GradedFree.lift`
 and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
 expresses finite presentation by homogeneous cokernels. For finitely presented modules on

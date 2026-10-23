@@ -2,9 +2,9 @@
 
 The persistence-module API supports constructions on an arbitrary preorder,
 including coordinatewise ordered real vector spaces. The results below provide
-interval geometry, free presentations and lifting lemmas. Stability of rectangle
-barcodes and of rank-exact signed barcodes requires further matching and
-resolution arguments.
+interval geometry, Hall neighbor bounds for finite rectangle sums, free
+presentations and lifting lemmas. Barcode stability requires further matching,
+distance and resolution arguments.
 
 ## Supports and rectangle transitions
 
@@ -31,6 +31,48 @@ Consumers use `open scoped TDA.Persistence` to select the coordinatewise preorde
 These are local geometry and morphism results used in
 [Bjerkevik's rectangle stability proof](https://doi.org/10.1007/s00454-021-00298-0).
 They do not extract a matching from an interleaving.
+
+## Hall bounds for finite rectangle sums
+
+Let k be a field, n ≥ 1 and ε ≥ 0. Take two finite families Rᵢ and Sⱼ of
+nonempty bounded rectangles in ℝⁿ, retaining the inclusion choice at every
+endpoint. `RectangleFamily.module` is their finite biproduct of interval
+modules. Indices label occurrences, so repeated rectangles remain distinct.
+
+A rectangle is δ-significant if some p and p + δ·1 both belong to its support.
+`RectangleHall.significant_iff_transition_ne_zero` identifies this condition
+with nonvanishing of its actual δ transition. Put ρ = (2n−1)ε. A neighbor of
+Rᵢ is an occurrence Sⱼ whose interval module is ρ-interleaved with that of Rᵢ.
+For a selected set A of source indices, let μ(A) consist of all their neighbor
+indices. Given an actual ε-interleaving of the two family modules,
+`RectangleHall.card_le_neighbors` proves
+
+```text
+|A| ≤ |μ(A)|
+```
+
+whenever every Rᵢ selected by A is 2ρ-significant. The inequality counts
+occurrences in both families. It includes empty A and ε = 0; at the latter
+parameter closed singletons are significant. The radius is ε in one
+coordinate and 3ε in two coordinates.
+
+The proof orders the selected occurrences by the sum of their lower and
+upper endpoints, breaking equal sums by the number of plus decorations.
+A lower endpoint is plus-decorated when excluded, and an upper endpoint when
+included. A nonzero shifted rectangle map has one scalar on its overlap.
+For ordered significant endpoints of a two-step path, the geometric bounds
+give a common source, middle and target grade; this proves that composition
+multiplies their scalars, including closed-endpoint equality cases.
+
+Expanding the interleaving equations through the finite biproduct gives sums
+of these component paths. In the ordered entries, every intermediate
+occurrence outside μ(A) contributes zero. The restricted scalar matrices
+therefore multiply to a triangular matrix with diagonal one. Its full rank
+is at most the number of intermediate occurrences, proving the inequality.
+This implements the finite bounded part of
+[Bjerkevik's Lemmas 4.7–4.9](https://doi.org/10.1007/s00454-021-00298-0).
+The two-sided matching construction, bottleneck distance estimates and sharp
+two-coordinate example remain separate results.
 
 ## Graded free modules and finite presentations
 
