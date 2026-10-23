@@ -7,6 +7,8 @@ import TDA.Persistence.RealInterleavingLaws
 import TDA.Persistence.RealInterleavingShortness
 import TDA.Persistence.GradedFree
 import TDA.Persistence.GradedFreeSum
+import TDA.Persistence.GradedFreeShift
+import TDA.Persistence.CrossPresentation
 import TDA.Persistence.FinitePresentationRedundant
 import TDA.Persistence.FinitePresentationComparison
 import TDA.Persistence.FinitePresentationClosure

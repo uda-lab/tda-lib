@@ -65,8 +65,36 @@ relation free modules making both presentation squares commute. The proof
 derives the fiberwise kernel of the cover as the image of the relation map
 from its cokernel, then chooses lifts of relation generators. These
 statements work over any ring and preorder without finiteness assumptions.
-The finite cross-presentation characterization still requires the shift and
-interleaving-specific relation construction.
+For real coordinate grades, `W(σ)` has generator grades `gr(w) − σ`, so
+`W(−ε)` delays every birth by ε. `GradedFree.shiftIso` identifies
+`F(W(ε))` with `F(W)[ε]`, and `delayedInclusion` embeds `F(W(−ε))` in `F(W)`.
+
+To give cross-presentations at ε ≥ 0, choose graded families W₁, W₂, Y₁, Y₂
+and homogeneous maps from F(Y₁) to F(W₁ ⊔ W₂(−ε)) and from F(Y₂) to
+F(W₁(−ε) ⊔ W₂). These are the fields of `GradedFree.CrossData`. Each
+primitive relation also gives a relation on the opposite side born ε later:
+the free cross map retains its coefficients and advances its availability
+grade. The resulting quotients are
+
+```text
+M = ⟨W₁, W₂(−ε) | Y₁, Y₂(−ε)⟩,
+N = ⟨W₁(−ε), W₂ | Y₁(−ε), Y₂⟩.
+```
+
+`CrossData.quotientInterleaving` constructs an actual ε-interleaving of M and N.
+Both free cross maps kill both relation families in the opposite quotient,
+so the cokernel universal property supplies the quotient maps. Their two
+composites are the 2ε transitions: this follows from the free cross-map
+identities by cancellation of the surjective free covers.
+`CrossData.interleavingOfIso` transports the result to modules with these
+presentations. Finite primitive families give finite presentations, and at
+ε = 0 the construction gives a natural isomorphism. The proof works over any
+ring, for arbitrary families and dimension zero as well.
+
+This is the cross-presentations-to-interleaving direction of
+[Lesnick, Theorem 4.4](https://arxiv.org/html/1106.5305v4#S4.SS2).
+Constructing finite cross-presentations from an arbitrary interleaving
+remains the other direction of the characterization.
 
 A map from a presented module lifts through a natural transformation ρ when
 ρ is surjective at every generator grade and injective at every relation grade.

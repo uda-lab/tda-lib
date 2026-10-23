@@ -96,7 +96,12 @@ grades. With bijectivity at generator grades, the lift is unique. For coordinate
 real indices, import `RealCoordinates` and use `open scoped TDA.Persistence` to
 select the preorder category; rectangles and finite grids already import it.
 `CoordinateInterleaving` supplies actual diagonal-shift witnesses and their
-composition laws. For two finitely presented modules on `Fin n → ℝ`,
+composition laws. `GradedFree.CrossData` specifies shared shifted generators
+and primitive homogeneous relations. `CrossData.quotientInterleaving` constructs
+the interleaving of the resulting cross-presented quotients, over any ring;
+`CrossData.interleavingOfIso` transports it along presentation isomorphisms.
+Finite cross-presentations from an arbitrary interleaving remain unproved.
+For two finitely presented modules on `Fin n → ℝ`,
 `GradedFree.finitelyPresented_distance_le_iff_interleaving` identifies a finite
 distance bound with an interleaving at that exact parameter. Finite distances
 are attained, admissible parameter sets are closed, and distance zero is
