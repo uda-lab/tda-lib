@@ -18,5 +18,6 @@ import TDA.Mapper.GraphPLConstructibleExamples
 
 import TDA.Mapper.MapperReebApproximationExamples
 import TDA.Mapper.GraphPLReebStabilityExamples
+import TDA.Mapper.GraphPLReebExtremalExamples
 import TDA.Mapper.RefinementHomologyExamples
 import TDA.Mapper.RefinementHomologyInterleavingExamples

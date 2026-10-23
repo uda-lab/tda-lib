@@ -1004,3 +1004,22 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.flat_steep_perturbation
 #print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.pullback_id_mapperHomologyPModule
 #print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.refinement_homology_control
+-- Extremal vertex heights and the graph-PL Reeb distance.
+#print axioms TDA.Mapper.GraphPL.sSup_range_plHeight
+#print axioms TDA.Mapper.GraphPL.sInf_range_plHeight
+#print axioms TDA.Mapper.GraphPL.ofReal_abs_sup'_sub_le_geometricInterleavingDistance_graphPLReebGraph
+#print axioms TDA.Mapper.GraphPL.ofReal_abs_inf'_sub_le_geometricInterleavingDistance_graphPLReebGraph
+#print axioms TDA.Mapper.GraphPL.max_ofReal_abs_sub_le_geometricInterleavingDistance_graphPLReebGraph
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_sup'
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_inf'
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_add_const
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_of_isEmpty
+
+-- Extremal vertex-height fixtures.
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.tilted_widened_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.twoEdges_translate_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.triangle_translate_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.reversal_extremal_bounds
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.empty_extremal
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.point_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.flat_tilted_geometricInterleavingDistance
