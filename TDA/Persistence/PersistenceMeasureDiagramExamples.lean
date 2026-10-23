@@ -42,4 +42,12 @@ theorem interval_has_decorated_unit_atom :
   change moduleDiagramMultiplicity M hM p = 1
   omega
 
+/-- The existing module with infinite-dimensional ephemeral fibers really extracts to zero. -/
+theorem infinite_ephemeral_extracted_diagram_zero (p : Cut ℝ × Cut ℝ) :
+    moduleDiagramMultiplicity _
+      (PersistenceMeasureExamples.infinite_ephemeral_qTame (k := k)) p = 0 := by
+  apply moduleDiagramMultiplicity_eq_zero_of_rectangle_zero
+  intro a b c d hab hbc hcd
+  exact PersistenceMeasureExamples.infinite_ephemeral_rectangle_zero hab.le hbc hcd.le
+
 end TDA.Persistence.RectangleMeasure

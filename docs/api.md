@@ -1264,8 +1264,8 @@ finiteness on every rectangle separated from the diagonal.
 `TDA.Persistence.PersistenceMeasureEssential` constructs essential-boundary
 strip counts as the eventual dimensions of image quotients and proves
 birth-coordinate additivity. It includes no assumed interval decomposition.
-The decorated locally finite diagram representation and its bottleneck
-stability are not supplied by this API. See
+The decorated multiplicity representation is constructed below; its
+bottleneck stability remains open. See
 [persistence rectangle measures](math/persistence-rectangle-measure.md).
 
 `TDA.Persistence.PersistenceMeasureBox` derives a rectangle box inequality
@@ -1300,8 +1300,15 @@ support with exact cell counts. The construction permits infinite global support
 actual module quotient split identities; `PersistenceMeasureContent` constructs the
 module's actual `AddContent`. `PersistenceMeasureDiagram.moduleDiagramMultiplicity`
 extracts finite-death decorated point counts, with finite local support and exact rectangle
-counts. `DecoratedCutEndpoints` supplies their finite numeric endpoints. Essential-boundary
-extraction, finite diagram compatibility and algebraic stability remain separate obligations.
+counts. `DecoratedCutEndpoints` supplies finite numeric endpoints.
+`PersistenceMeasureEssentialContent` and `PersistenceMeasureEssentialDiagram`
+construct the essential birth-strip content and its multiplicities.
+`PersistenceMeasureExtendedDiagram.moduleExtendedDiagramMultiplicity` includes death at
+infinity, with exact finite rectangle, essential strip and full tail-rectangle counts and
+finite positive support on every separated tail rectangle.
+`PersistenceMeasureDiagramCountability` proves countable global support;
+`PersistenceMeasureLowerBound` transfers a module zero tail to a birth lower bound.
+Finite diagram compatibility and algebraic stability remain separate obligations.
 See [integer contents on decorated cells](math/persistence-measure-atoms.md).
 
 

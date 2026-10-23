@@ -130,4 +130,20 @@ theorem moduleDiagramMultiplicity_rectangle_counts (hM : M.QTame) (a b c d : ℝ
     (rectangleCell_mem_separatedRectangleCells a b c d hbc)
   exact ⟨S, hS, (moduleRectangleContent_apply M hM a b c d hab hbc hcd).symm.trans hcount⟩
 
+/-- Modules with zero separated rectangle counts have zero extracted finite-death diagram. -/
+theorem moduleDiagramMultiplicity_eq_zero_of_rectangle_zero (hM : M.QTame)
+    (hzero : ∀ (a b c d : ℝ) (hab : a < b) (hbc : b < c) (hcd : c < d),
+      persistenceMeasureValue M hab.le hbc.le hcd.le = 0) (p : Cut ℝ × Cut ℝ) :
+    moduleDiagramMultiplicity M hM p = 0 := by
+  by_contra hne
+  have hpos := Nat.pos_of_ne_zero hne
+  obtain ⟨U, hU, hpU⟩ := moduleDiagramMultiplicity_visible_of_pos M hM hpos
+  rcases hU with rfl | ⟨a, b, c, d, hab, hbc, hcd, rfl⟩
+  · exact hpU.elim
+  · have hle := moduleDiagramMultiplicity_le_content M hM
+      (rectangleCell_mem_separatedRectangleCells a b c d hbc) hpU
+    rw [moduleRectangleContent_apply M hM a b c d hab hbc hcd,
+      hzero a b c d hab hbc hcd] at hle
+    omega
+
 end TDA.Persistence.RectangleMeasure

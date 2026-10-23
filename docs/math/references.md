@@ -385,7 +385,19 @@ with its genuine essential boundary count. No essential matching or diagram
 decomposition is assumed. See
 [interleavings and essential birth strips](persistence-measure-essential-box.md).
 
-`IntegerContentAtoms` formalizes the finite local atomic representation behind CDGO13-v3, Theorem 2.8, using compact open decorated cells. `DecoratedMeasureCuts`, `DecoratedRectangleCells` and `DecoratedRectangleTopology` retain boundary decorations. `PersistenceMeasureBoxContent` and `PersistenceMeasureContent` construct the actual module content from quotient split identities, and `PersistenceMeasureDiagram` extracts finite-death decorated multiplicities with finite local support and exact rectangle counts. Essential-boundary extraction, finite diagram compatibility and algebraic stability remain separate. See [integer contents on decorated cells](persistence-measure-atoms.md).
+`IntegerContentAtoms` formalizes the finite local atomic representation behind
+CDGO13-v3, Theorem 2.8, using compact open decorated cells. `DecoratedMeasureCuts`,
+`DecoratedRectangleCells` and `DecoratedRectangleTopology` retain boundary
+decorations. `PersistenceMeasureBoxContent` and `PersistenceMeasureContent`
+construct the actual module content from quotient split identities.
+`PersistenceMeasureDiagram` extracts finite-death multiplicities with exact
+rectangle counts; `PersistenceMeasureEssentialContent`,
+`PersistenceMeasureEssentialDiagram` and `PersistenceMeasureExtendedDiagram`
+add the essential boundary, exact tail counts and local finiteness.
+`PersistenceMeasureDiagramCountability` proves countable support, and
+`PersistenceMeasureLowerBound` transfers a module zero tail to a birth lower
+bound. Finite diagram compatibility and algebraic stability remain open. See
+[integer contents on decorated cells](persistence-measure-atoms.md).
 
 - **Rights/evidence:** **U**, inspected 2026-10-23. The source is used for mathematical statements and an original formal proof; no source prose, figures or source code are redistributed.
 

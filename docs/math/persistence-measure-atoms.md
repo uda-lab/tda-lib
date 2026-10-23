@@ -61,6 +61,30 @@ the two principal decorations of its real supremum; positive diagram points ther
 have strictly ordered finite numeric endpoints. The interval-module fixture extracts a
 point of multiplicity one from the actual module `[0,2)`.
 
-This constructs the finite-death part of the decorated persistence diagram. The essential
-boundary, compatibility with the existing finite diagram type, and algebraic stability
-remain separate obligations.
+`PersistenceMeasureEssentialContent` constructs the natural-valued content of the actual
+essential birth-strip quotients. A signed primitive, with reference grade zero, gives a
+mathlib interval content; taking minus-cut preimages and retaining its nonnegative values
+proves full finite additivity on decorated birth cells. `PersistenceMeasureEssentialDiagram`
+extracts its birth multiplicities and proves exact strip counts and finite local support.
+
+`PersistenceMeasureExtendedDiagram.moduleExtendedDiagramMultiplicity` combines the
+finite-death and essential multiplicities on the existing pair-of-cuts point space. Its
+`tailRectangleCell a b c` contains birth cuts in `cutCell a b` and death cuts having `c`
+in their lower part, including the infinite death cut. Every such tail rectangle with
+`a < b < c` has finite positive support, and its multiplicities sum to the original
+finite-target image quotient dimension. The proof uses eventual stabilization of the
+tail quotient to exclude later finite deaths inside the fixed birth strip. Thus finiteness
+also holds in neighborhoods of the essential boundary.
+
+`PersistenceMeasureDiagramCountability` covers positive finite-death support by rational
+separated rectangles and essential support by rational birth cells, proving countable
+global support. `PersistenceMeasureLowerBound` proves that if every actual module fiber
+below `T` is zero, then each positive extracted birth has numeric endpoint at least `T`.
+The essential-interval fixture identifies the exact unit atom `(0⁻,∞)` of `[0,∞)` and
+checks that it has no finite-death atoms. Another fixture extracts zero multiplicity
+from the existing q-tame module with infinite-dimensional ephemeral fibers.
+
+The construction covers finite births, finite deaths and essential deaths. Its module
+lower-bound theorem supplies the relevant birth-support bound for lower-bounded modules.
+Compatibility with the existing finite diagram type and algebraic stability remain
+separate obligations.

@@ -6,6 +6,8 @@ import TDA.Persistence.DecoratedRectangleCells
 import TDA.Persistence.DecoratedRectangleTopology
 import TDA.Persistence.IntegerContentAtoms
 import TDA.Persistence.PersistenceMeasureDiagram
+import TDA.Persistence.PersistenceMeasureDiagramCountability
+import TDA.Persistence.PersistenceMeasureLowerBound
 import TDA.Persistence.PersistenceMeasure
 import TDA.Persistence.PersistenceMeasureEssential
 import TDA.Persistence.PersistenceMeasureBox
