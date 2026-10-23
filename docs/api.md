@@ -856,8 +856,48 @@ and separable. The interior has its usual topology, is open and dense, and its B
 sets determine the Borel structure of the enlarged space. Collapsing the diagonal of
 the closed half-plane defines a measurable Lipschitz map onto this space.
 
-These results supply the underlying Polish space for finite-measure boundary
-transport. The reservoir comparison, optimal Radon plans and finite atomic
+`TDA.Persistence.BoundaryPlans` uses Borel measures on closed-half-plane pairs
+outside the diagonal–diagonal region. Their two interior marginals are prescribed;
+boundary marginals are free. Every admissible plan has mass at most the sum of
+the input masses. The explicit deletion/insertion plan sends each bar to its
+nearest diagonal point and has cost equal to the sum of the diagonal persistence
+moments. Finite moments therefore give a finite-cost competitor and a finite
+powered infimum over all admissible plans. `BoundaryPlanLaws` proves self-value
+zero and symmetry by identity plans and a cost-preserving measurable transposition.
+The optimization and its reciprocal-p root remain extended nonnegative values.
+
+`ReservoirMeasure` augments an interior measure to a common finite mass by adding
+a boundary atom. The interior restriction is preserved, and for every positive p
+the p-th boundary moment is exactly the original diagonal persistence moment.
+Paired capacities dominate the sum of the original masses. Finite augmented
+measures are regular on the collapsed Polish space; dividing by a positive
+capacity gives probability measures and the corresponding moment scaling.
+
+`BoundaryTransportForward` and `BoundaryTransportReverse` compare every admissible
+plan in both directions. The forward map collapses the diagonal and adds a
+boundary–boundary atom. The reverse map keeps a direct interior leg when its
+distance is no greater than the two boundary legs, and otherwise splits it into
+deletion and insertion. For p at least one, both transformations preserve the
+required marginals and do not increase powered cost, including infinite values.
+`BoundaryTransportComparison.boundaryTransportPowerValue_eq_reservoirPowerValue`
+identifies the two infima for every finite capacity dominating the sum of the
+original masses; the reservoir value is independent of that capacity. Taking the
+reciprocal-p root gives the corresponding distance-value equality.
+
+`ReservoirNormalization` proves the probability scaling law by multiplying every
+competitor measure by the reciprocal capacity and reversing that operation.
+The powered value scales by the capacity; for positive p its root scales by
+the capacity raised to 1/p. Together with the comparison theorem, this identifies
+boundary transport with that scaled capacity-one reservoir value. The paired
+probability statement retains the full sum-of-masses capacity bound.
+
+`BoundaryTransportZero` identifies the powered value against zero with the
+diagonal persistence moment, for every finite-mass input and p at least one.
+It gives both the reciprocal-p root formula and the p-th power of distance to
+zero, including when the moment is infinite.
+
+The bridge to an ordinary Wasserstein API, minimizing Radon plans, sharp triangle
+and separation, native weighted atomic compatibility and finite atomic
 approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 
 ### Gaussian signed measures and C₀ universality
