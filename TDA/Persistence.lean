@@ -179,3 +179,6 @@ import TDA.Persistence.CutDecomposition
 import TDA.Persistence.CutSubspacesExamples
 
 import TDA.Persistence.BoundaryTransportGeometry
+
+import TDA.Persistence.MulticoverNerve
+import TDA.Persistence.GromovProkhorovMulticover

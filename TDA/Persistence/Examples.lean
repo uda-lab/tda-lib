@@ -116,3 +116,4 @@ import TDA.Persistence.GaussianUniversalityExamples
 import TDA.Persistence.RipsSamplingExamples
 import TDA.Persistence.PersistenceMeasureExamples
 import TDA.Persistence.SubdivisionRipsExamples
+import TDA.Persistence.MulticoverExamples
