@@ -3360,3 +3360,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.AlgebraicFamily.finite_nontrivial_of_iso
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial_of_iso
+#print axioms TDA.Persistence.GradedFree.Presentation.structureMap_isIso_of_birth_iff
