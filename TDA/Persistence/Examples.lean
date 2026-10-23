@@ -115,3 +115,4 @@ import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
 import TDA.Persistence.PersistenceMeasureExamples
 import TDA.Persistence.SubdivisionRipsExamples
+import TDA.Persistence.MulticoverExamples

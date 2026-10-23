@@ -49,15 +49,55 @@ witness at a radius strictly below `r`, preserving the open boundary.
 Čech flag homology diagram with the subdivision-Rips module. This is equality
 of whole diagrams and therefore preserves both parameter structure maps.
 
-The full Gromov–Prokhorov bound for subdivision-Rips homology is not yet
-proved. The remaining bridge is a natural homology equivalence between the
-multicover bifiltration and normalized subdivision-Čech, together with its
-compatibility with the restricted interleaving. The finite common-ambient GP
-infimum and the outlier-mass GP regression also remain to be connected. No
-GP-to-SR distance bound or homotopy interleaving is exported by these modules.
+For finite nonempty metric inputs, `FiniteGromovProkhorov` takes the infimum
+of the ambient Lévy–Prokhorov costs of their uniform measures over common
+metric spaces and isometric embeddings. Every parameter above this infimum
+has an actual ambient witness. Distances to the finitely many points in the
+two images embed their joint support into the fixed sup-norm product
+`(X ⊕ Y) → ℝ`. `coordinatesAmbient_cost` proves that this replacement preserves
+the exact Prokhorov cost, using the finite-uniform cross-distance transport
+lemmas. Finite closed subsets of the support suffice to test the cost, as in
+`levyProkhorovDist_uniform_le_of_isClosed`, agreeing with the source
+closed-set convention. Every such ambient cost therefore gives an upper bound on the same GP
+infimum.
+`supNormWitness` constructs the resulting finite-dimensional witness and its
+actual restricted multicover interleaving.
+
+If an isometric inclusion adds points to a finite uniform sample, then
+`gromovProkhorovEDist_embedding_le` proves
+
+`d_GP(X,Y) ≤ (|Y| − |X|) / |Y|`.
+
+The locations of the added points are unrestricted. This follows from the
+normalized-count inequality and `levyProkhorovEDist_uniform_embedding_le` in
+the enlarged sample's own ambient space. `uniformOutlierInterleaving` gives
+the multicover interleaving for each larger shift. The half-mass example adds
+one point at any prescribed nonzero distance. The denominator `|Y|` gives a
+sharper library bound than the `|X|` denominator displayed in the source
+Remark 2.16.
+
+For the next comparison, index a cover by all finite label sets `σ`. Its
+member is the common intersection of their radius-`r` open balls when `σ`
+is a Čech simplex with `|σ| / |X| ≥ k`, and is empty otherwise.
+`stage_uniform_eq_iUnion_largeFaceCover` proves that the union is exactly the
+actual multicover stage. The cover is open and increases under both parameter
+structure maps. In a real normed ambient every nonempty finite intersection
+is contractible. A maximal member of a Čech flag supplies a common center,
+giving `subdivision_openCech_le_largeFaceNerve` and the natural morphism
+`cechHomologyToLargeFaceNerve` on actual simplicial homology. The same finite
+sup-norm GP witness supplies these comparison morphisms for both input SR
+modules on the ambient used by its multicover interleaving.
+
+The full Gromov–Prokhorov bound for subdivision-Rips homology remains open.
+The concrete flag-to-cover-nerve morphism still requires a proof of
+invertibility, followed by a natural comparison between cover-nerve homology
+and the multicover space that is compatible with the library's ordered
+simplicial chains. These comparisons must preserve both structure maps and
+the mixed interleaving composites. No GP-to-SR distance bound or homotopy
+interleaving is exported by these modules.
 
 Source: A. J. Blumberg and M. Lesnick, [*Stability of 2-Parameter Persistent
-Homology*](https://arxiv.org/pdf/2010.09628), Definitions 2.10–2.13,
-2.32–2.33, Theorem 3.1, and the finite sup-norm embedding step in the proof of
-Theorem 1.6(iii). The natural multicover nerve theorem is Theorem 3.3; its
-proof in Section 4 is outside the results stated here.
+Homology*](https://arxiv.org/pdf/2010.09628), Definitions 2.10–2.15,
+2.32–2.33, Remark 2.16, Theorem 3.1, and the finite sup-norm embedding step in the proof of
+Theorem 1.6(iii). Theorem 3.3 and its Section 4 proof provide the natural
+multicover nerve comparison whose equivalence remains to be established.
