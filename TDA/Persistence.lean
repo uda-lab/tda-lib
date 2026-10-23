@@ -177,3 +177,12 @@ import TDA.Persistence.CutDecomposition
 import TDA.Persistence.CutSubspacesExamples
 
 import TDA.Persistence.BoundaryTransportGeometry
+
+import TDA.Persistence.BoundaryPlans
+import TDA.Persistence.BoundaryPlanLaws
+import TDA.Persistence.ReservoirMeasure
+import TDA.Persistence.BoundaryTransportForward
+import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.BoundaryTransportComparison
+import TDA.Persistence.ReservoirNormalization
+import TDA.Persistence.BoundaryTransportZero
