@@ -62,6 +62,7 @@ import TDA.Persistence.FiniteInducedMatchingExamples
 import TDA.Persistence.FiniteMonoTranslationExamples
 import TDA.Persistence.FiniteInducedTranslationExamples
 import TDA.Persistence.CechStabilityExamples
+import TDA.Persistence.CechRelationExamples
 import TDA.Persistence.DiagramBottleneckScalingExamples
 import TDA.Persistence.CechSupNormDiagramExamples
 import TDA.Persistence.ConstructibleShiftBarcodeExamples
@@ -104,6 +105,7 @@ import TDA.Persistence.SimplicialMultivaluedInterleavingExamples
 import TDA.Persistence.CechFinitePBottleneckAllDegreesExamples
 import TDA.Persistence.RipsRelationInterleavingExamples
 import TDA.Persistence.RipsQTameExamples
+import TDA.Persistence.RipsHausdorffInterleavingExamples
 import TDA.Persistence.FiniteWeightedBoundaryTransportExamples
 
 import TDA.Persistence.RipsGromovHausdorffExamples
@@ -111,3 +113,5 @@ import TDA.Persistence.RipsGromovHausdorffExamples
 import TDA.Persistence.MatrixSequenceExamples
 import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
+import TDA.Persistence.PersistenceMeasureExamples
+import TDA.Persistence.SubdivisionRipsExamples

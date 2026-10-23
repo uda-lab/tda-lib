@@ -344,6 +344,37 @@ import TDA
 
 #print axioms TDA.Filtration.Rips.isShiftedSimplicialRelation_of_distortion
 
+-- Normalized subdivision-Rips and restricted measure bifiltrations.
+#print axioms TDA.Filtration.SubdivisionRips.index_le_iff
+#print axioms TDA.Filtration.SubdivisionRips.mem_subdivision_iff
+#print axioms TDA.Filtration.SubdivisionRips.mem_subdivision_iff_of_least
+#print axioms TDA.Filtration.SubdivisionRips.subdivision_mono
+#print axioms TDA.Filtration.SubdivisionRips.mem_openRips_iff
+#print axioms TDA.Filtration.SubdivisionRips.openRips_mono
+#print axioms TDA.Filtration.SubdivisionRips.bifiltration_apply
+#print axioms TDA.Filtration.SubdivisionRips.mem_openRips_iff_diameter_lt
+#print axioms TDA.Filtration.SubdivisionRips.mem_openCech_iff
+#print axioms TDA.Filtration.SubdivisionRips.openCech_eq_openRips
+#print axioms TDA.Filtration.SubdivisionRips.subdivision_openCech_eq
+#print axioms TDA.Filtration.SubdivisionRips.distanceCoordinates_dist
+#print axioms TDA.Filtration.SubdivisionRips.isometry_distanceCoordinates
+#print axioms TDA.Filtration.SubdivisionRips.bifiltration_le_of_dist_le
+#print axioms TDA.Filtration.SubdivisionRips.mem_subdivision_relabel_iff
+#print axioms TDA.Filtration.SubdivisionRips.mem_openRips_relabel_iff
+#print axioms TDA.Filtration.SubdivisionRips.mem_bifiltration_relabel_iff
+#print axioms TDA.Filtration.SubdivisionRips.subdivision_eq_bot_of_one_lt
+#print axioms TDA.Filtration.SubdivisionRips.subdivision_one_eq_singleton
+#print axioms TDA.Filtration.SubdivisionRips.mass_pos
+#print axioms TDA.Filtration.SubdivisionRips.radius_pos
+
+-- Different-label ambient Cech stability.
+#print axioms TDA.Filtration.Cech.complexFiltration_apply
+#print axioms TDA.Filtration.Cech.sublevelFiltration_eq_complexFiltration
+#print axioms TDA.Filtration.Cech.radiusAt_le_add_of_relation
+#print axioms TDA.Filtration.Cech.filter_value_le_add_of_relation
+#print axioms TDA.Filtration.Cech.isShiftedSimplicialRelation_of_dist_le
+#print axioms TDA.Filtration.Cech.isShiftedSimplicialRelation_complex_of_dist_le
+
 -- Greedy sparse Rips geometry, relaxed complexes and deletion equivalences.
 #print axioms TDA.Filtration.SparseRips.deletionTime_seed
 #print axioms TDA.Filtration.SparseRips.openActive_none
@@ -469,3 +500,47 @@ import TDA
 #print axioms TDA.Filtration.SparseRips.mem_orientedEdges
 #print axioms TDA.Filtration.SparseRips.pair_mem_carrier_iff_oriented
 #print axioms TDA.Filtration.SparseRips.unionDeletionHomologyIso_hom
+#print axioms TDA.Filtration.SparseRips.deletionTimes
+#print axioms TDA.Filtration.SparseRips.mem_deletionTimes
+#print axioms TDA.Filtration.SparseRips.deletionGrid
+#print axioms TDA.Filtration.SparseRips.mem_deletionGrid
+#print axioms TDA.Filtration.SparseRips.activeUnion
+#print axioms TDA.Filtration.SparseRips.mem_activeUnion
+#print axioms TDA.Filtration.SparseRips.sparseComplex_eq_activeUnion_deletionGrid
+#print axioms TDA.Filtration.SparseRips.activeUnion_mono
+#print axioms TDA.Filtration.SparseRips.closedActiveComplex_le_activeUnion
+#print axioms TDA.Filtration.SparseRips.TailDeletionData
+#print axioms TDA.Filtration.SparseRips.tailDeletionVertexMap
+#print axioms TDA.Filtration.SparseRips.tailDeletion_inclusion_contiguous
+#print axioms TDA.Filtration.SparseRips.inclusion_tailDeletion_contiguous
+#print axioms TDA.Filtration.SparseRips.tailDeletionHomologyIso
+#print axioms TDA.Filtration.SparseRips.tailDeletionHomologyIso_hom
+#print axioms TDA.Filtration.SparseRips.DeletionComplete
+#print axioms TDA.Filtration.SparseRips.deletionGrid_complete
+#print axioms TDA.Filtration.SparseRips.deletionGrid_nonneg_le
+#print axioms TDA.Filtration.SparseRips.deletionComplete_erase_min
+#print axioms TDA.Filtration.SparseRips.tailDeletionData_of_complete
+#print axioms TDA.Filtration.SparseRips.terminal_le_activeUnion
+#print axioms TDA.Filtration.SparseRips.isIso_terminal_activeUnion
+#print axioms TDA.Filtration.SparseRips.isIso_closedActive_sparse
+#print axioms TDA.Filtration.SparseRips.isIso_sparse_relaxed
+#print axioms TDA.Filtration.SparseRips.relaxedFiltration
+#print axioms TDA.Filtration.SparseRips.isIso_sparse_relaxed_all
+#print axioms TDA.Filtration.SparseRips.sparseToRelaxedHom
+#print axioms TDA.Filtration.SparseRips.sparseToRelaxedHom_app
+#print axioms TDA.Filtration.SparseRips.isIso_sparseToRelaxedHom
+#print axioms TDA.Filtration.SparseRips.sparseRelaxedHomologyIso
+#print axioms TDA.Filtration.SparseRips.approximationFactor
+#print axioms TDA.Filtration.SparseRips.approximationFactor_mul
+#print axioms TDA.Filtration.SparseRips.one_le_approximationFactor
+#print axioms TDA.Filtration.SparseRips.approximationFactor_one_third
+#print axioms TDA.Filtration.SparseRips.parameterOfTolerance
+#print axioms TDA.Filtration.SparseRips.parameterOfTolerance_pos
+#print axioms TDA.Filtration.SparseRips.parameterOfTolerance_le_third
+#print axioms TDA.Filtration.SparseRips.approximationFactor_parameterOfTolerance
+#print axioms TDA.Filtration.SparseRips.relaxed_le_rips_log
+#print axioms TDA.Filtration.SparseRips.rips_le_relaxed_log
+#print axioms TDA.Filtration.SparseRips.relaxedRipsLogInterleaving
+#print axioms TDA.Filtration.SparseRips.sparseRelaxedLogIso
+#print axioms TDA.Filtration.SparseRips.sparseRipsLogInterleaving
+#print axioms TDA.Filtration.SparseRips.sparseRipsLogDistance_le

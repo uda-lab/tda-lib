@@ -1,13 +1,22 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
+import TDA.Persistence.PersistenceMeasure
+import TDA.Persistence.PersistenceMeasureEssential
+import TDA.Persistence.RealInterleaving
+import TDA.Persistence.RealInterleavingLaws
+import TDA.Persistence.RealInterleavingShortness
 import TDA.Persistence.GradedFree
 import TDA.Persistence.FinitePresentation
 import TDA.Persistence.FinitePresentationLifting
 import TDA.Persistence.RealCoordinates
 import TDA.Persistence.FinitePresentationGrid
-import TDA.Persistence.RealInterleaving
-import TDA.Persistence.RealInterleavingLaws
-import TDA.Persistence.RealInterleavingShortness
+import TDA.Persistence.RankExact
+import TDA.Persistence.SupportInterval
+import TDA.Persistence.HookProjective
+import TDA.Persistence.Rectangle
+import TDA.Persistence.RealRaySeparation
+import TDA.Persistence.ConstructibleClosure
+import TDA.Persistence.HookInfinity
 import TDA.Persistence.RealInterleavingDistance
 import TDA.Persistence.RealIntervalInterleaving
 import TDA.Persistence.MatchingInterleaving
@@ -67,6 +76,8 @@ import TDA.Persistence.FaceOrderTemplate
 import TDA.Persistence.FiniteFilterStability
 import TDA.Persistence.RipsStability
 import TDA.Persistence.CechStability
+import TDA.Persistence.CechRelationInterleaving
+import TDA.Persistence.CechHausdorff
 import TDA.Persistence.RipsPersistenceImage
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
@@ -151,6 +162,7 @@ import TDA.Persistence.CechFinitePBottleneckAllDegrees
 import TDA.Persistence.RipsRelationInterleaving
 import TDA.Persistence.QTame
 import TDA.Persistence.RipsQTame
+import TDA.Persistence.RipsHausdorffInterleaving
 import TDA.Persistence.FiniteWeightedBoundaryTransport
 
 import TDA.Persistence.RipsGromovHausdorff
@@ -164,15 +176,8 @@ import TDA.Persistence.GaussianMeasureEmbedding
 import TDA.Persistence.GaussianUniversality
 import TDA.Persistence.WeightedPersistenceMeasure
 
-import TDA.Persistence.RankExact
-import TDA.Persistence.SupportInterval
+import TDA.Persistence.SubdivisionRips
 
-import TDA.Persistence.HookProjective
-import TDA.Persistence.Rectangle
-
-import TDA.Persistence.RealRaySeparation
-
-import TDA.Persistence.ConstructibleClosure
 import TDA.Persistence.CompatibleSections
 import TDA.Persistence.CutSubspaces
 
@@ -180,15 +185,24 @@ import TDA.Persistence.AlgebraicFamily
 
 import TDA.Persistence.CompatibleSectionsExamples
 
-import TDA.Persistence.HookInfinity
 import TDA.Persistence.CutDecomposition
 import TDA.Persistence.CutSubspacesExamples
-
 import TDA.Persistence.AlgebraicFamilyIso
-import TDA.Persistence.RealIntervalDecomposition
+import TDA.Persistence.EphemeralIntervalIso
 import TDA.Persistence.FiniteObservation
 import TDA.Persistence.IntervalCompatibility
-import TDA.Persistence.EphemeralIntervalIso
-import TDA.Persistence.RealIntervalExamples
 import TDA.Persistence.LocallyFiniteIntervalExamples
+import TDA.Persistence.RealIntervalDecomposition
+import TDA.Persistence.RealIntervalExamples
 import TDA.Persistence.RealIntervalObservation
+
+import TDA.Persistence.BoundaryTransportGeometry
+
+import TDA.Persistence.BoundaryPlans
+import TDA.Persistence.BoundaryPlanLaws
+import TDA.Persistence.ReservoirMeasure
+import TDA.Persistence.BoundaryTransportForward
+import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.BoundaryTransportComparison
+import TDA.Persistence.ReservoirNormalization
+import TDA.Persistence.BoundaryTransportZero
