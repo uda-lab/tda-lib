@@ -66,6 +66,18 @@ the declared field/ring, order, finite-face and topological instances at the cal
 Universe requirements belong to each definition's signature; the areas do not impose a
 single shared universe on the whole library.
 
+## Interval supports, presentations and rank-exact lifting
+
+`SupportInterval.module` constructs a module on any order-convex subset of a
+preorder over a field. `Rectangle.diagonal_maps_eq_zero_iff` gives the exact
+endpoint-sensitive vanishing criterion for bounded rectangles. `GradedFree.lift`
+and `exists_lift_of_surjective` provide the natural universal property and lifting
+property of graded free modules over a ring; `GradedFree.FinitelyPresented`
+expresses finite presentation by homogeneous cokernels. Rank additivity in a
+pointwise short exact sequence is equivalent to lifting dying vectors, and
+`Hook.exists_lift` constructs lifts of finite-death hook morphisms. See
+[the constructions and their scope](math/multiparameter-foundations.md).
+
 ## Persistent homology results and computational boundary
 
 The finite decomposition API takes `M : PModule.{u,0,u} k (Fin N)` with

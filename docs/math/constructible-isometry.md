@@ -102,6 +102,24 @@ The scaling consequence `bottleneck_moduleDiagram_scale` is summarized in the
 [positive-scaling section](real-interleavings.md#positive-scaling) of the real
 interleaving note.
 
+## Attainment and separation
+
+An optimal occurrence matching exists whenever the finite bottleneck distance
+is finite. Combining it with the isometry and the matching-induced interleaving
+gives `FiniteConstructible.distance_le_iff_interleaving`: for every finite ε ≥ 0,
+the inequality d_I(M,N) ≤ ε is equivalent to the existence of an ε-interleaving.
+`interleaving_at_distance` obtains a witness at the distance when it is finite.
+The interleaving parameters then form the closed upper ray starting at that
+distance; for infinite distance the parameter set is empty.
+`isClosed_interleaving_parameters` covers both cases.
+
+At ε = 0, a zero-interleaving is equivalent to a natural isomorphism, so
+`distance_eq_zero_iff_iso` gives separation on this finite-constructible domain.
+The assumptions are those in the objects section, including finite-dimensional
+critical fibers and a field. This is the one-dimensional argument described in
+[Lesnick, Theorem 6.1 and Remark 6.3](https://arxiv.org/html/1106.5305v4).
+It does not prove the multidimensional finite-presentation closure theorem.
+
 ## Concrete controls and limits
 
 self-interleavings are consumed across a two-point critical grid and a
