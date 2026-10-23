@@ -1,5 +1,6 @@
 import TDA.Persistence.GradedFree
 import Mathlib.Algebra.Category.ModuleCat.Colimits
+import Mathlib.Algebra.Category.ModuleCat.EpiMono
 import Mathlib.CategoryTheory.Limits.FunctorCategory.Basic
 import Mathlib.CategoryTheory.Limits.FunctorCategory.EpiMono
 import Mathlib.CategoryTheory.Limits.Shapes.Equalizers
@@ -61,6 +62,23 @@ noncomputable def Presentation.presented : PModule.{u,v,max u w} R P :=
 noncomputable def Presentation.cover :
     module (R := R) D.generators ⟶ D.presented :=
   cokernel.π D.relationMap
+
+/-- The canonical map from generators onto a presented module is surjective
+at every index. -/
+theorem Presentation.cover_surjective (a : P) :
+    Function.Surjective (D.cover.app a) := by
+  have hcover : Epi D.cover := by
+    change Epi (cokernel.π D.relationMap)
+    infer_instance
+  exact (ModuleCat.epi_iff_surjective (D.cover.app a)).mp
+    ((NatTrans.epi_iff_epi_app D.cover).mp hcover a)
+
+/-- Any map from a graded free module into a presented module lifts to its
+canonical free cover. -/
+theorem Presentation.exists_lift (W : GradedGenerators.{v,w} P)
+    (f : module (R := R) W ⟶ D.presented) :
+    ∃ l : module (R := R) W ⟶ module D.generators, l ≫ D.cover = f :=
+  exists_lift_of_surjective (R := R) W D.cover D.cover_surjective f
 
 /-- Every relation vanishes in the presented quotient. -/
 theorem Presentation.relations_vanish : D.relationMap ≫ D.cover = 0 :=

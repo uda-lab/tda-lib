@@ -3269,6 +3269,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.GradedFree.exists_lift_of_surjective
 #print axioms TDA.Persistence.GradedFree.sub_lifts_mem_ker
 #print axioms TDA.Persistence.GradedFree.Presentation.ofRelations_at_birth
+#print axioms TDA.Persistence.GradedFree.Presentation.cover_surjective
+#print axioms TDA.Persistence.GradedFree.Presentation.exists_lift
 #print axioms TDA.Persistence.GradedFree.Presentation.relations_vanish
 #print axioms TDA.Persistence.GradedFree.Presentation.cover_desc
 #print axioms TDA.Persistence.GradedFree.Presentation.desc_unique
