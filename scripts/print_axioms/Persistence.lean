@@ -3366,6 +3366,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelMinus_singleton_eq_bot
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_singleton_interval_spaces
 
+#print axioms TDA.Persistence.Rips.exists_relation_distortion_le_of_hausdorffDist_lt
+#print axioms TDA.Persistence.Rips.hausdorffInterleavingOfLt
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffDist_of_ne_top
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffEDist
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffDist_of_totallyBounded
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.intervals_infinite
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_image_not_isClosed
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_closed_interval_distance_zero
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_closed_interval_interleaving
+
 #print axioms TDA.Persistence.BoundaryTransport.depth_eq
 #print axioms TDA.Persistence.BoundaryTransport.depth_pos
 #print axioms TDA.Persistence.BoundaryTransport.depth_nonneg

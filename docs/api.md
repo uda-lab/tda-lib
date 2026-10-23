@@ -384,6 +384,18 @@ infinite-dimensional. This result supplies q-tameness; locally finite diagrams
 and their algebraic stability require separate foundations. See
 [the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
+`TDA.Persistence.RipsHausdorffInterleaving` compares the actual Rips homology
+modules of arbitrary isometric images in a common metric space, over every
+ring and in every degree. Finite Hausdorff distance r gives an actual
+ε-interleaving whenever ε > 2r and hence a module-distance bound of 2r.
+Near points with positive slack replace closest-point selection, so the
+images may be nonclosed. An extended-Hausdorff-distance bound handles
+arbitrary images; nonempty totally bounded images give the real-valued
+bound without compactness or completeness. The infinite open and closed
+unit intervals provide a nonclosed fixture at zero module distance.
+These results make no infinite-diagram claim. See
+[the construction and scope](math/rips-hausdorff-interleaving.md).
+
 ## Ambient Čech complexes
 
 `TDA.Filtration.Cech` defines the closed Čech complex of labelled points p : V → X in a
