@@ -3222,6 +3222,37 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.SubdivisionRips.pairwiseInterleaving_left
 #print axioms TDA.Persistence.SubdivisionRips.pairwiseInterleaving_right
 
+-- Different-label ambient Cech stability.
+#print axioms TDA.Persistence.Cech.relationInterleaving_φ
+#print axioms TDA.Persistence.Cech.relationInterleaving_ψ
+#print axioms TDA.Persistence.Cech.realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Cech.complex_realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_relation
+#print axioms TDA.Persistence.Cech.exists_relation_dist_le_hausdorffDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_hausdorffDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_hausdorffEDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_hausdorffEDist_le
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_sampling_errors
+#print axioms TDA.Persistence.Cech.dgm_eq_of_range_eq
+
+-- Ambient Cech relation fixtures.
+#print axioms TDA.Persistence.Cech.RelationExamples.collapse_is_many_to_one
+#print axioms TDA.Persistence.Cech.RelationExamples.repeated_diagram_eq
+#print axioms TDA.Persistence.Cech.RelationExamples.repeated_bottleneck_zero
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_bottleneck_le
+#print axioms TDA.Persistence.Cech.RelationExamples.pair_full_h0
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_edge_value
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_essential_bar
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_budget_zero_fails
+#print axioms TDA.Persistence.Cech.RelationExamples.proper_ambient_closed_ball_comparison
+#print axioms TDA.Persistence.Cech.RelationExamples.empty_diagrams_eq
+#print axioms TDA.Persistence.Cech.RelationExamples.common_target_samples
+#print axioms TDA.Persistence.Cech.complexRelationInterleaving_φ
+#print axioms TDA.Persistence.Cech.complexRelationInterleaving_ψ
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_full_h0
+#print axioms TDA.Persistence.Cech.RelationExamples.interval_target_samples
+#print axioms TDA.Persistence.Cech.RelationExamples.punctured_sublevel_ne_complex
+
 #print axioms TDA.Persistence.finiteDimensional_range_of_factorization
 #print axioms TDA.Persistence.PModule.qTame_of_finiteDimensional
 #print axioms TDA.Persistence.RealInterleaving.finiteDimensional_range_structureMap

@@ -367,6 +367,14 @@ import TDA
 #print axioms TDA.Filtration.SubdivisionRips.mass_pos
 #print axioms TDA.Filtration.SubdivisionRips.radius_pos
 
+-- Different-label ambient Cech stability.
+#print axioms TDA.Filtration.Cech.complexFiltration_apply
+#print axioms TDA.Filtration.Cech.sublevelFiltration_eq_complexFiltration
+#print axioms TDA.Filtration.Cech.radiusAt_le_add_of_relation
+#print axioms TDA.Filtration.Cech.filter_value_le_add_of_relation
+#print axioms TDA.Filtration.Cech.isShiftedSimplicialRelation_of_dist_le
+#print axioms TDA.Filtration.Cech.isShiftedSimplicialRelation_complex_of_dist_le
+
 -- Greedy sparse Rips geometry, relaxed complexes and deletion equivalences.
 #print axioms TDA.Filtration.SparseRips.deletionTime_seed
 #print axioms TDA.Filtration.SparseRips.openActive_none
