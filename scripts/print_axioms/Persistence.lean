@@ -3312,3 +3312,25 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.AlgebraicFamily.finite_nontrivial_of_iso
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial_of_iso
+
+#print axioms TDA.Persistence.CutDecomposition.exists_interval_escapes
+#print axioms TDA.Persistence.CutDecomposition.chosenFiber_iSup_eq_top_real
+#print axioms TDA.Persistence.CutDecomposition.chosenFiber_iSupIndep_real
+#print axioms TDA.Persistence.CutDecomposition.sumToM_app
+#print axioms TDA.Persistence.CutDecomposition.sumToM_bijective
+#print axioms TDA.Persistence.CutDecomposition.sumIso_hom
+#print axioms TDA.Persistence.CutDecomposition.finite_active
+#print axioms TDA.Persistence.CutDecomposition.finite_observed
+
+#print axioms TDA.Persistence.CutSubspacesExamples.support_before_after
+#print axioms TDA.Persistence.CutSubspacesExamples.support_after_before
+#print axioms TDA.Persistence.CutSubspacesExamples.support_before_after_singleton
+#print axioms TDA.Persistence.CutSubspacesExamples.support_before_after_empty_of_reversed
+#print axioms TDA.Persistence.CutSubspacesExamples.ephemeralModule_pfd
+#print axioms TDA.Persistence.CutSubspacesExamples.ephemeralModule_strict_map_zero
+#print axioms TDA.Persistence.CutSubspacesExamples.ephemeralModule_self_map
+#print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_imagePlus_singleton_eq_top
+#print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_imageMinus_singleton_eq_bot
+#print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelPlus_singleton_eq_top
+#print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelMinus_singleton_eq_bot
+#print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_singleton_interval_spaces

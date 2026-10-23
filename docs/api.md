@@ -326,8 +326,18 @@ canonical comparison with the existing `RealBarcode.familyModule` product is a
 natural isomorphism when finitely many fibers are nonzero at each parameter.
 Pointwise finite dimension of a direct-sum representation implies this local
 finiteness, and only finitely many occurrences meet a finite observation list.
-The index family may be uncountable. The full interval decomposition and equality
-with finite-observation barcodes remain open in [the decomposition contract](https://github.com/uda-lab/tda-lib/issues/506).
+The index family may be uncountable.
+
+`TDA.Persistence.CutDecomposition` proves that the chosen interval complements
+span every fiber and that every finite relation among distinct complements is
+trivial. Its `sumIso` is a natural isomorphism from their algebraic direct sum
+to any pointwise finite-dimensional real-indexed module. The construction includes
+singleton supports and assumes no decomposition or global countability. Finite
+activity at each parameter, and finite activity over a finite observation list,
+follow from finite dimension. `CutSubspacesExamples` checks cut endpoints and the
+singleton image/kernel spaces of a module with zero maps at strict inequalities.
+Scalar interval decomposition and equality with finite-observation barcodes remain
+open in [the decomposition contract](https://github.com/uda-lab/tda-lib/issues/506).
 
 ## Metric input and Rips diagrams
 
