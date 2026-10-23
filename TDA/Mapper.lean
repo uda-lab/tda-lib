@@ -32,3 +32,4 @@ import TDA.Mapper.GraphPLReebExtremal
 import TDA.Mapper.RefinementHomology
 import TDA.Mapper.RefinementHomologyInterleaving
 import TDA.Mapper.RefinementHomologyBarcode
+import TDA.Mapper.RefinementHomologyLowerBound
