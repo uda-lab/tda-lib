@@ -2,6 +2,14 @@
 import TDA.Filtration.Basic
 import TDA.Filtration.FilterFunction
 import TDA.Filtration.Rips
+import TDA.Filtration.SparseRips.GreedyNet
+import TDA.Filtration.SparseRips.Weight
+import TDA.Filtration.SparseRips.Deletion
+import TDA.Filtration.SparseRips.Relaxed
+import TDA.Filtration.SparseRips.DeletionHomology
+import TDA.Filtration.SparseRips.UnionDeletion
+import TDA.Filtration.SparseRips.Packing
+import TDA.Filtration.SparseRips.Sparsity
 import TDA.Filtration.CompatibleOrder
 import TDA.Filtration.CriticalValues
 import TDA.Filtration.CompatibleOrderPrefix
