@@ -230,3 +230,4 @@ import TDA.Persistence.BoundaryTransportZero
 import TDA.Persistence.RectangleStabilityGeometry
 import TDA.Persistence.RectangleFamily
 import TDA.Persistence.RectangleHall
+import TDA.Persistence.RectangleMatching

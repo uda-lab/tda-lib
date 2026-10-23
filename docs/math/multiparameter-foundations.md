@@ -2,9 +2,9 @@
 
 The persistence-module API supports constructions on an arbitrary preorder,
 including coordinatewise ordered real vector spaces. The results below provide
-interval geometry, Hall neighbor bounds for finite rectangle sums, free
-presentations and lifting lemmas. Barcode stability requires further matching,
-distance and resolution arguments.
+interval geometry, Hall neighbor bounds and two-sided matchings for finite
+rectangle sums, free presentations and lifting lemmas. Distance comparisons
+and rank-exact resolutions require further arguments.
 
 ## Supports and rectangle transitions
 
@@ -71,8 +71,39 @@ therefore multiply to a triangular matrix with diagonal one. Its full rank
 is at most the number of intermediate occurrences, proving the inequality.
 This implements the finite bounded part of
 [Bjerkevik's Lemmas 4.7–4.9](https://doi.org/10.1007/s00454-021-00298-0).
-The two-sided matching construction, bottleneck distance estimates and sharp
-two-coordinate example remain separate results.
+
+## Two-sided occurrence matchings
+
+A partial occurrence matching is an injection from selected source indices to
+target indices; its unselected source and target indices are unmatched. At
+radius ρ it is admissible when paired rectangle modules are actually
+ρ-interleaved and every unmatched module on either side is actually
+ρ-interleaved with zero. The existing `OccurrenceMatching` type records the
+partial injection, while `RectangleMatching.IsMatching` states these module
+conditions. Repeated rectangles retain their distinct occurrence indices.
+
+A rectangle module is ρ-interleaved with zero exactly when its transition by
+2ρ vanishes, equivalently when it is not 2ρ-significant. The zero natural maps
+give the forward construction; the composite equation forces the reverse
+implication. This equivalence retains closed-endpoint equality and ε = 0.
+
+For finite bounded rectangle families over any field, n ≥ 1 and an actual
+ε-interleaving, set ρ = (2n−1)ε. The Hall inequality above and Mathlib's Hall
+theorem give an injection from the 2ρ-significant source occurrences to
+admissible target partners. Reversing the interleaving supplies the corresponding
+injection for significant target occurrences. These injections need not agree.
+Relation-preserving Schröder–Bernstein combines them into one partial matching
+covering both significant sets. Its auxiliary dummy labels allow deletion only
+of non-significant occurrences and are discarded from the resulting matching.
+`RectangleMatching.exists_matching` exports the actual pair and deletion
+interleavings, with no Hall or matching premise.
+
+This is the finite bounded matching-existence conclusion of
+[Bjerkevik's Theorem 4.3](https://doi.org/10.1007/s00454-021-00298-0), using
+Theorem 4.10 and the following Cantor–Bernstein argument. The distance
+inequalities require assembling an interleaving from arbitrary admissible
+matchings and comparing infima. The one-dimensional compatibility bridge and
+the sharp two-coordinate distance example remain separate results.
 
 ## Graded free modules and finite presentations
 
