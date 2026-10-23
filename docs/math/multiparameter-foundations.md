@@ -50,7 +50,23 @@ isomorphism to the given module. The quotient universal property, invariance
 under isomorphism and redundant zero relations are supported. These constructions
 implement the free-cover ingredients of
 [Lesnick, §4.1](https://arxiv.org/html/1106.5305v4). The finite cross-presentation
-characterization in Theorem 4.4 requires an additional generator-elimination proof.
+characterization in Theorem 4.4 requires constructing both presentations from
+shared shifted generator and relation families.
+
+The free module on a disjoint union of graded families has the corresponding
+sum universal property. A presentation can adjoin an arbitrary graded family
+of redundant generators by adding the relations `new_v − chosenLift_v`.
+`Presentation.adjoinRedundantIso` proves that the enlarged quotient is naturally
+isomorphic to the original one; finite families remain finite.
+
+For any morphism between two presented modules,
+`Presentation.exists_chainMap_lift` supplies maps between their generator and
+relation free modules making both presentation squares commute. The proof
+derives the fiberwise kernel of the cover as the image of the relation map
+from its cokernel, then chooses lifts of relation generators. These
+statements work over any ring and preorder without finiteness assumptions.
+The finite cross-presentation characterization still requires the shift and
+interleaving-specific relation construction.
 
 A map from a presented module lifts through a natural transformation ρ when
 ρ is surjective at every generator grade and injective at every relation grade.
@@ -108,5 +124,6 @@ isomorphism. See [finite-constructible closure](constructible-isometry.md#attain
 This assertion depends on the stated constructibility and finiteness hypotheses.
 For a field k, `RealRay.distance_eq_zero` and `RealRay.not_nonempty_iso` show that k_[0,∞) and
 k_(0,∞) have zero distance but are not isomorphic: positive shifts interleave them,
-while their fibers at zero differ. The zero distance is not attained. The
-multidimensional finite-presentation closure theorem remains a further result.
+while their fibers at zero differ. The zero distance is not attained. For finitely presented modules on ℝⁿ,
+[the multiparameter closure theorem](multiparameter-closure.md) gives attainment,
+closedness and distance-zero separation directly from finite generators and relations.
