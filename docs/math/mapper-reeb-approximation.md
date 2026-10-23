@@ -115,12 +115,32 @@ vanish. `exists_graphPLMapperReconstruction_pair_le` gives, for every `r > 0`, f
 Coverage of each height's attained range is required by the ingredients: the empty cover of a
 nonempty graph reconstructs the empty graph, which is at distance `⊤` from the Reeb quotient
 although its resolution is `0`. None of the bounds is claimed to be sharp. With equal heights
-and one cover the distance is `0` while the bound is `2 res`. No isomorphism is claimed between the
-reconstruction of a translate with the translated cover and the translate of a reconstruction;
-the translation fixture reaches the Reeb distance `1` through the limit theorem. Reconstructions
+and one cover the distance is `0` while the bound is `2 res`. Reconstructions
 over different graphs or edge sets are not compared. The two-input bounds are compositions of the
 one-input approximation with the triangle inequality and are attributed to neither source paper;
 the perturbation step is de Silva–Munch–Patel, Theorem 4.6(i).
+
+For vertical translation the distance is exact at every finite cover. Translating the height to
+`f + c` and every member to `U i + c` gives an assembled precosheaf naturally isomorphic to
+`translatePre c (coverComponents f U)` (`coverComponentsTranslateIso`), so the two assemblies are
+at distance at most `|c|`. For a finite bounded-interval cover `(a, b)` with an active member,
+that is a member with nonempty inverse image, the distance is exactly `|c|`
+(`interleavingDistance_coverComponents_add_const`): for `c > 0` and `ε < c`, the interval
+`(a i₀, a i₀ + (c - ε)/2)` at the least left endpoint `a i₀` of an active member has a nonempty
+assembled value for `f`, while every member meeting the translated thickening lies below `a i₀`
+and is inactive. Hence, for graph-PL input,
+\[
+d_{\mathrm{geo}}\bigl(M_h(a, b),\ M_{h + c}(a + c, b + c)\bigr) = |c|
+\]
+(`geometricInterleavingDistance_graphPLMapperReconstruction_add_const`, and `_of_covers` when the
+cover covers the attained range of `h` on a nonempty vertex type). No coverage, resolution bound
+or boundedness is assumed. The active member cannot be dropped: two graph objects with empty
+total spaces are at distance `0` (`RGraph.geometricInterleavingDistance_eq_zero_of_isEmpty`), so
+over empty covers of a nonempty graph the reconstructions of `h` and `h + 1` are at distance `0`
+while the Reeb quotients are at distance `1` and both resolutions are `0`, so the comparison
+`d_geo(𝓡(h), 𝓡(g)) ≤ d_geo(M_h, M_g) + res + res'` also needs coverage. No translation functor on graph objects is
+constructed, and translating the height without the cover, or the cover without the height, is
+covered only by the perturbation bounds above.
 
 ## Scope and computation
 

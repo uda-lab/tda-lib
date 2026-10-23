@@ -21,7 +21,9 @@ plHeight G h (edgePoint G d t) = dartHeight h d t
 ```
 
 both by `rfl`, and `plHeight G h` is the only continuous map with these values
-(`plHeight_unique`). Equal endpoint heights are allowed; a horizontal dart has constant height
+(`plHeight_unique`). By uniqueness, translating every vertex height by `c` translates the
+piecewise-linear height: `plHeight G (fun v => h v + c) = plHeight G h + ContinuousMap.const _ c`
+(`plHeight_add_const`, pointwise `plHeight_add_const_apply`). Equal endpoint heights are allowed; a horizontal dart has constant height
 (`dartHeight_of_eq`). For an order-convex set `s ⊆ ℝ`, the real parameters `r` with
 `(1 - r) h d.fst + r h d.snd ∈ s` form an order-convex set, also when the dart is horizontal
 (`ordConnected_preimage_lineHeight`); intersected with `[0, 1]` it is convex.
@@ -375,6 +377,15 @@ a critical-value list, an order condition on the heights, a fixed number of dist
 constructibility proof. The height range of `graphPLReebGraph G h` is the range of `plHeight G h`
 (`heightRange_graphPLReebGraph`), which supplies the lower bounds in the fixtures. The universe-zero
 restriction comes from the real-graph category; the pointwise and uniform statements have none.
+
+Vertical translation is exact already for interval components: for continuous `f` on a nonempty
+space with range bounded below, `intervalComponents (f + c)` is the translate
+`translatePre c (intervalComponents f)` and
+`interleavingDistance (intervalComponents f) (intervalComponents (f + c)) = ‖c‖₊`
+(`interleavingDistance_intervalComponents_add_const` in `TDA/Reeb/IntervalTranslation.lean`;
+the upper bound is `translationInterleaving`, the lower bound the obstruction at a short interval
+around the infimum of the range, and the identity height of `ℝ` shows that `BddBelow` is needed). With
+`plHeight_add_const` this rederives `geometricInterleavingDistance_graphPLReebGraph_add_const`.
 
 The estimate controls the piecewise-linear extension only. A continuous function on the
 realization with the same vertex values as `plHeight G h` can differ from it by any amount inside

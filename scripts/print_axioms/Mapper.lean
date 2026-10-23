@@ -1066,7 +1066,6 @@ import TDA
 #print axioms TDA.Mapper.tendsto_geometricInterleavingDistance_mapperReeb_pair_retained
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.cycleFine_coverResolution_pos
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.equal_heights_same_cover
-#print axioms TDA.Mapper.MapperReebPerturbationExamples.plHeight_add_const
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.coverResolution_add_const
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.translation_limit
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.g4
@@ -1074,7 +1073,6 @@ import TDA
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.raised_apex_le
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.raised_apex_ge
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.twoEdges_lower_bound
-#print axioms TDA.Mapper.MapperReebPerturbationExamples.isEmpty_graphPLMapperReconstruction_of_isEmpty_cover
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.empty_cover_distance_top
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.empty_vertex_type
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.upper_bound_via_cosheaf
@@ -1131,3 +1129,19 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyDiagramExamples.loop_stepMapperDiagram
 #print axioms TDA.Mapper.RefinementHomologyDiagramExamples.oneSource_not_isConstructible
 #print axioms TDA.Mapper.RefinementHomologyDiagramExamples.centred_not_isConstructible
+#print axioms TDA.Mapper.add_const_mem_coverSaturation_translate_iff
+#print axioms TDA.Mapper.preimage_coverSaturation_add_const
+#print axioms TDA.Mapper.coverComponentsTranslateIso
+#print axioms TDA.Mapper.interleavingDistance_coverComponents_translate_le
+#print axioms TDA.Mapper.interleavingDistance_coverComponents_add_const
+#print axioms TDA.Mapper.geometricInterleavingDistance_graphPLMapperReconstruction_add_const
+#print axioms TDA.Mapper.geometricInterleavingDistance_graphPLMapperReconstruction_add_const_of_covers
+#print axioms TDA.Mapper.isEmpty_graphPLMapperReconstruction_of_isEmpty_cover
+#print axioms TDA.Mapper.geometricInterleavingDistance_graphPLMapperReconstruction_of_isEmpty
+#print axioms TDA.Mapper.MapperReebTranslationExamples.translation_exact
+#print axioms TDA.Mapper.MapperReebTranslationExamples.zero_translation
+#print axioms TDA.Mapper.MapperReebTranslationExamples.graphPLReebGraph_add_const_via_intervalComponents
+#print axioms TDA.Mapper.MapperReebTranslationExamples.triangle_add_const_via_intervalComponents
+#print axioms TDA.Mapper.MapperReebTranslationExamples.twoEdges_add_const_via_intervalComponents
+#print axioms TDA.Mapper.MapperReebTranslationExamples.scaleMap_translation
+#print axioms TDA.Mapper.MapperReebTranslationExamples.empty_cover_translation
