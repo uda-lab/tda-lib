@@ -1253,6 +1253,13 @@ rectangle stays strictly above the diagonal. The public crossing factorization
 and a displaced-interval fixture check the comparison on actual modules. See
 [interleavings and rectangle measures](math/persistence-measure-box.md).
 
+`TDA.Persistence.PersistenceMeasureMatching` derives a finite local occurrence
+matching from two-sided positive-square count inequalities. Source lifetimes
+must exceed 4ε and distinct source values must be separated by more than 2ε.
+Its Hall argument retains multiplicities and bounds unmatched target costs.
+See [local matching from finite box counts](math/persistence-measure-matching.md)
+for the precise hypotheses and the remaining algebraic-stability bridge.
+
 ### Greedy sparse Rips geometry and deletion maps
 
 `TDA.Filtration.SparseRips.GreedyNet` constructs a farthest-first permutation of a
