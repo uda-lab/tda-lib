@@ -403,6 +403,42 @@ infinite-dimensional. This result supplies q-tameness; locally finite diagrams
 and their algebraic stability require separate foundations. See
 [the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
+## Greedy sparse Rips geometry and deletion maps
+
+`TDA.Filtration.SparseRips.GreedyNet` constructs a farthest-first permutation of a
+finite metric space from a chosen initial vertex. Its prefixes satisfy covering
+and separation bounds; insertion radii decrease. The initial vertex has no finite
+insertion radius. `threshold_net` gives a closed covering bound and strict
+separation at the same threshold, including threshold zero.
+
+For `0 < η ≤ 1/3`, `deletionTime` assigns each other vertex its insertion radius
+divided by `η(1−2η)`. The initial vertex's time is `none`, interpreted as survival
+forever. `finiteWeight` implements the three specified weight branches.
+`relaxedComplex` uses the dissimilarity `dist x y + w x + w y`, including self-pairs.
+Its monotonicity and the diameter-scale Rips sandwich are proved. `sparseFiltration`
+is the union of closed active complexes over earlier nonnegative scales and is
+an ordinary inclusion filtration, extended by bottom at negative scales.
+
+`deletionMap_domination` proves the weighted distance bound for an explicit
+projection onto open active vertices. `closedActiveHomologyIso` identifies the
+closed active complex with the relaxed complex at one nonnegative scale, in every
+degree and over every ring in the existing ordered-vertex chain model, using the
+signed prism homotopy.
+`unionDeletionHomologyIso` proves the adjacent two-scale union step under an
+explicit absence of intervening deletion times. `ClosedBallDoubling.packing_bound`
+gives the uniform separated-set bound `Λ^h` from iterated closed-ball covers.
+`facesOfDimension_card_le` bounds the number of distinct j-simplices in the full
+all-scales carrier by `|P|·(Λ^h)^j`; `skeletonFaces_card_le` bounds its m-skeleton
+by `|P|·Σ_{j=0}^m(Λ^h)^j`. Here `2/2^h < η(1−2η)`, and the depth can be chosen
+from η alone. The constants are independent of cardinality, metric spread and
+maximum scale. `LineSamples.uniform_skeleton_bound` uses one doubling bound of
+four at every sample size.
+
+The exported results do not yet identify the full sparse union's persistence module
+with the relaxed module. The finite entry-time presentation, diagram approximation,
+and full union comparison remain part of
+[the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).
+
 ## Ambient Čech complexes
 
 `TDA.Filtration.Cech` defines the closed Čech complex of labelled points p : V → X in a
@@ -877,39 +913,3 @@ zero-weight, zero-bandwidth and open-half-plane C₀ failure controls. Essential
 The results provide abstract noncomputable integration and approximation existence, with finite
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
-
-### Greedy sparse Rips geometry and deletion maps
-
-`TDA.Filtration.SparseRips.GreedyNet` constructs a farthest-first permutation of a
-finite metric space from a chosen initial vertex. Its prefixes satisfy covering
-and separation bounds; insertion radii decrease. The initial vertex has no finite
-insertion radius. `threshold_net` gives a closed covering bound and strict
-separation at the same threshold, including threshold zero.
-
-For `0 < η ≤ 1/3`, `deletionTime` assigns each other vertex its insertion radius
-divided by `η(1−2η)`. The initial vertex's time is `none`, interpreted as survival
-forever. `finiteWeight` implements the three specified weight branches.
-`relaxedComplex` uses the dissimilarity `dist x y + w x + w y`, including self-pairs.
-Its monotonicity and the diameter-scale Rips sandwich are proved. `sparseFiltration`
-is the union of closed active complexes over earlier nonnegative scales and is
-an ordinary inclusion filtration, extended by bottom at negative scales.
-
-`deletionMap_domination` proves the weighted distance bound for an explicit
-projection onto open active vertices. `closedActiveHomologyIso` identifies the
-closed active complex with the relaxed complex at one nonnegative scale, in every
-degree and over every ring in the existing ordered-vertex chain model, using the
-signed prism homotopy.
-`unionDeletionHomologyIso` proves the adjacent two-scale union step under an
-explicit absence of intervening deletion times. `ClosedBallDoubling.packing_bound`
-gives the uniform separated-set bound `Λ^h` from iterated closed-ball covers.
-`facesOfDimension_card_le` bounds the number of distinct j-simplices in the full
-all-scales carrier by `|P|·(Λ^h)^j`; `skeletonFaces_card_le` bounds its m-skeleton
-by `|P|·Σ_{j=0}^m(Λ^h)^j`. Here `2/2^h < η(1−2η)`, and the depth can be chosen
-from η alone. The constants are independent of cardinality, metric spread and
-maximum scale. `LineSamples.uniform_skeleton_bound` uses one doubling bound of
-four at every sample size.
-
-The exported results do not yet identify the full sparse union's persistence module
-with the relaxed module. The finite entry-time presentation, diagram approximation,
-and full union comparison remain part of
-[the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).
