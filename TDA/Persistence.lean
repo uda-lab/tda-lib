@@ -156,3 +156,10 @@ import TDA.Persistence.GaussianSpectralSeparation
 import TDA.Persistence.GaussianMeasureEmbedding
 import TDA.Persistence.GaussianUniversality
 import TDA.Persistence.WeightedPersistenceMeasure
+
+import TDA.Persistence.CompatibleSections
+import TDA.Persistence.CutSubspaces
+
+import TDA.Persistence.AlgebraicFamily
+
+import TDA.Persistence.CompatibleSectionsExamples
