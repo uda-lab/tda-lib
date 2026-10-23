@@ -303,6 +303,32 @@ essential classes have explicit conventions. Proof-derived semantic objects and 
 arbitrary-field decomposition remain noncomputable. See
 [the input contract and correctness route](math/finite-ph-computation.md).
 
+## Compatible lifts and algebraic sums over the reals
+
+`TDA.Persistence.CompatibleSections` constructs compatible sections of a persistence
+module on any real subset when its transition maps are surjective. A section can
+pass through any prescribed fiber vector. The proof uses a decreasing sequence
+with a point below every index, together with the natural-number inverse-limit
+theorem, without assuming finite underlying fibers. Open endpoints, singletons
+and unbounded subsets are allowed.
+
+`TDA.Persistence.CutSubspaces` uses cuts, which partition the parameter order into
+a lower part and an upper part. Two cuts determine a possibly empty support,
+which is an interval when nonempty; their image/kernel subspaces encode birth
+and death conditions. For a pointwise finite-dimensional
+module, the required surjectivity is derived for these subspaces. The module
+transports their quotients isomorphically and chooses one global section complement
+whose evaluations complement the corresponding lower subspace at every interval
+point. The compatible lift and complement are constructed from finite dimension.
+
+`TDA.Persistence.AlgebraicFamily` realizes families by algebraic direct sums. Its
+canonical comparison with the existing `RealBarcode.familyModule` product is a
+natural isomorphism when finitely many fibers are nonzero at each parameter.
+Pointwise finite dimension of a direct-sum representation implies this local
+finiteness, and only finitely many occurrences meet a finite observation list.
+The index family may be uncountable. The full interval decomposition and equality
+with finite-observation barcodes remain open in [the decomposition contract](https://github.com/uda-lab/tda-lib/issues/506).
+
 ## Metric input and Rips diagrams
 
 `TDA.Filtration.Rips` takes explicit metrics on a fixed finite labelled vertex type,
@@ -764,7 +790,7 @@ C₀ universality and signed-measure separation concern the full birth–death p
 positive persistence measures require a strictly positive weight and finite weighted
 mass. These conclusions do not make finite-pixel images characteristic.
 
-General geometric tame-function PH stability, infinite/q-tame theory, manifold charts
+General geometric tame-function PH stability, infinite diagram and q-tame stability, manifold charts
 and executable arbitrary-field decomposition are outside the reviewed PH scope. A first
 stable release must state its selected results and limitations; it need not finish every
 roadmap extension. This guide describes the current API and does not announce a release.
