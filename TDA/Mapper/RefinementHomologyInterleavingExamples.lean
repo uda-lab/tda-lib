@@ -295,16 +295,18 @@ theorem pullback_id_mapperHomologyPModule {X : Type u} [TopologicalSpace X] (R :
 /-! ## Negative control -/
 
 /-- Any two refinements of one family pair induce the same `H₀` map, while the two simplicial
-maps from a point to two isolated vertices, which are not induced by refinements of one family
-pair, have different `H₀` maps over `ZMod 2`. The interleaving equations rest on the cover maps
-being refinements. -/
+maps from a point to two isolated vertices are not contiguous, unlike the Mapper maps of any
+two refinements of one family pair, and have different `H₀` maps over `ZMod 2`. The
+interleaving equations rest on the cover maps being refinements. -/
 theorem refinement_homology_control :
     (∀ r r' : Refinement selectorSource selectorTarget,
-      mapperHomologyMap ℚ threeStageMap r 0 = mapperHomologyMap ℚ threeStageMap r' 0) ∧
+      Contiguous (TDA.Mapper.mapperMap threeStageMap r) (TDA.Mapper.mapperMap threeStageMap r') ∧
+        mapperHomologyMap ℚ threeStageMap r 0 = mapperHomologyMap ℚ threeStageMap r' 0) ∧
+    ¬ Contiguous (mapToIsolated false) (mapToIsolated true) ∧
     simplicialHomologyMap (ZMod 2) (mapToIsolated false) 0 ≠
       simplicialHomologyMap (ZMod 2) (mapToIsolated true) 0 :=
-  ⟨fun r r' => mapperHomologyMap_eq ℚ threeStageMap r r' 0,
-    isolated_vertex_maps_homology_ne.2⟩
+  ⟨fun r r' => ⟨mapperMap_contiguous threeStageMap r r',
+    mapperHomologyMap_eq ℚ threeStageMap r r' 0⟩, isolated_vertex_maps_homology_ne⟩
 
 end
 

@@ -54,9 +54,7 @@ variable (f : C(X, Y)) {IndexU IndexV : ℝ → Type w}
   {U : (t : ℝ) → IndexU t → Set Y} {V : (t : ℝ) → IndexV t → Set Y}
   [∀ t, LinearOrder (ComponentIndex f (U t))] [∀ t, LinearOrder (ComponentIndex f (V t))]
 
-/-- Every transition map of a Mapper homology module is the homology map of the selected
-refinement at the corresponding comparison. -/
-theorem mapperHomologyPModule_map (rU : ∀ {s t : ℝ}, s ≤ t → Refinement (U s) (U t)) (n : ℕ)
+private theorem mapperHomologyPModule_map (rU : ∀ {s t : ℝ}, s ≤ t → Refinement (U s) (U t)) (n : ℕ)
     {s t : ℝ} (h : s ⟶ t) :
     (mapperHomologyPModule R f U rU n).map h = mapperHomologyMap R f (rU (leOfHom h)) n :=
   rfl

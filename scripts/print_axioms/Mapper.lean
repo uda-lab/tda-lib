@@ -978,7 +978,6 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyExamples.isolated_vertex_maps_homology_ne
 #print axioms TDA.Mapper.RefinementHomologyExamples.isolated_vertex_maps_homology_eq_zero_ring
 
-#print axioms TDA.Mapper.mapperHomologyPModule_map
 #print axioms TDA.Mapper.mapperHomologyShiftMap_app
 #print axioms TDA.Mapper.mapperHomologyShiftMap_app_eq
 #print axioms TDA.Mapper.mapperHomologyShiftMap_eq

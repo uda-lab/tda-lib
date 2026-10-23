@@ -408,9 +408,12 @@ A real cover tower on `Y` is a family `U t : IndexU t → Set Y` for every
 `f : C(X, Y)`, a ring `R`, a degree `n` and linear orders on the component-index
 types. For `η : ℝ≥0`, two towers `U` and `V` (index types in one universe) are
 related by selected cover maps `ζ t : Refinement (U t) (V (t + η))` and
-`ξ t : Refinement (V t) (U (t + η))` for every `t`. This is Definition 5 of
-[DMW16-v2](references.md#DMW16-v2); as there, no commutation between the cover
-maps and the tower maps is assumed.
+`ξ t : Refinement (V t) (U (t + η))` for every `t`. This is a library form of
+Definition 5 of [DMW16-v2](references.md#DMW16-v2): the families need not be
+finite or cover `Y`, the tower refinements need not satisfy identity or
+composition equations, and the parameter has no resolution lower bound. As in
+the source, no commutation between the cover maps and the tower maps is
+assumed.
 
 `mapperHomologyInterleaving R f rU rV ζ ξ n` is a real `η`-interleaving of
 `mapperHomologyPModule R f U rU n` and `mapperHomologyPModule R f V rV n`. The
@@ -436,7 +439,9 @@ The Mapper complex of `f` along `U t` is definitionally the Mapper complex of th
 identity of `X` along `pullback f (U t)`, with `pullbackRefinement f` applied to
 the tower refinements and the same component orders, so
 `mapperHomologyPModule_pullback` is an equality of persistence modules. This is
-the module form of Proposition 4.1(ii).
+the module form of the source definition `MM(𝔘, f) := N(f*(𝔘))`; together with
+the pulled-back cover maps it plays the role of Proposition 4.1(ii) in the
+perturbation result below.
 
 For `s t : ℝ`, `centredCover s t k` is the open interval of radius `t` about
 `k * s`, indexed by `k : ℤ`; it is empty for `t ≤ 0`, increasing the radius gives
