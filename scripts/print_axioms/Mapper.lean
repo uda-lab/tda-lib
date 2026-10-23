@@ -937,3 +937,18 @@ import TDA
 #print axioms TDA.Mapper.exists_graphPLMapperCover_resolution_le_of_bounds
 
 #print axioms TDA.Mapper.exists_graphPLMapperCover_resolution_le
+
+-- Stability of graph-PL Reeb quotients under vertex-height perturbation.
+#print axioms TDA.Mapper.GraphPL.heightRange_graphPLReebGraph
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_le_edist_ofFun
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_le_edist
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_le
+
+-- Graph-PL Reeb stability fixtures.
+#print axioms TDA.Mapper.GraphPLReebStabilityExamples.empty_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebStabilityExamples.tilted_self_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebStabilityExamples.point_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebStabilityExamples.flat_tilted_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebStabilityExamples.reversal_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebStabilityExamples.collision_geometricInterleavingDistance_le
+#print axioms TDA.Mapper.GraphPLReebStabilityExamples.twoEdges_geometricInterleavingDistance_le
