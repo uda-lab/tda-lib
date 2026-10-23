@@ -9,6 +9,9 @@ import TDA.Persistence.GradedFree
 import TDA.Persistence.GradedFreeSum
 import TDA.Persistence.GradedFreeShift
 import TDA.Persistence.CrossPresentation
+import TDA.Persistence.GradedFreeDelay
+import TDA.Persistence.CrossPresentationConverse
+import TDA.Persistence.FinitePresentationShift
 import TDA.Persistence.FinitePresentationRedundant
 import TDA.Persistence.FinitePresentationComparison
 import TDA.Persistence.FinitePresentationClosure
