@@ -1289,6 +1289,22 @@ Its Hall argument retains multiplicities and bounds unmatched target costs.
 See [local matching from finite box counts](math/persistence-measure-matching.md)
 for the precise hypotheses and the remaining algebraic-stability bridge.
 
+`TDA.Persistence.DecoratedMeasureCuts` identifies the existing persistence cuts with
+mathlib lower sets, retaining boundary decorations and compact open coordinate cells.
+`DecoratedRectangleCells` proves the semiring laws for finite separated rectangles, and
+`DecoratedRectangleTopology` proves their compactness, openness and point separation.
+`IntegerContentAtoms` constructs minimum-cell multiplicities of natural-valued additive
+contents, finite atomic representations on compact cells, and finite local positive
+support with exact cell counts. The construction permits infinite global support.
+`PersistenceMeasureBoxContent` proves arbitrary finite box-partition additivity from the
+actual module quotient split identities; `PersistenceMeasureContent` constructs the
+module's actual `AddContent`. `PersistenceMeasureDiagram.moduleDiagramMultiplicity`
+extracts finite-death decorated point counts, with finite local support and exact rectangle
+counts. `DecoratedCutEndpoints` supplies their finite numeric endpoints. Essential-boundary
+extraction, finite diagram compatibility and algebraic stability remain separate obligations.
+See [integer contents on decorated cells](math/persistence-measure-atoms.md).
+
+
 ### Greedy sparse Rips geometry and deletion maps
 
 `TDA.Filtration.SparseRips.GreedyNet` constructs a farthest-first permutation of a

@@ -1,5 +1,11 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
+import TDA.Persistence.DecoratedMeasureCuts
+import TDA.Persistence.DecoratedCutEndpoints
+import TDA.Persistence.DecoratedRectangleCells
+import TDA.Persistence.DecoratedRectangleTopology
+import TDA.Persistence.IntegerContentAtoms
+import TDA.Persistence.PersistenceMeasureDiagram
 import TDA.Persistence.PersistenceMeasure
 import TDA.Persistence.PersistenceMeasureEssential
 import TDA.Persistence.PersistenceMeasureBox

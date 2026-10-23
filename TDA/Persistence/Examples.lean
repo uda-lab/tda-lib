@@ -128,5 +128,7 @@ import TDA.Persistence.PersistenceMeasureExamples
 import TDA.Persistence.PersistenceMeasureBoxExamples
 import TDA.Persistence.PersistenceMeasureEssentialBoxExamples
 import TDA.Persistence.PersistenceMeasureMatchingExamples
+import TDA.Persistence.PersistenceMeasureAtomExamples
+import TDA.Persistence.PersistenceMeasureDiagramExamples
 import TDA.Persistence.SubdivisionRipsExamples
 import TDA.Persistence.MulticoverExamples
