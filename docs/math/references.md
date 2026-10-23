@@ -363,6 +363,13 @@ entire article or all its algorithms have been formalized.
 - **Use/classification:** `TDA.Topology.C0MeasureRepresentation` adapts the necessary C_c positive/negative decomposition privately to the pinned mathlib, retaining the copyright, authors, license and change notice. Its public bounded C₀ representation adds finite-mass bounds and uniform cutoff density. The source snapshot pins mathlib `e3e75e86143b43849829fdcd44a39a6b0fe35234`; tda-lib retains `0df444a360eaa60ab8c11dca51a86af692955474`. The adapted source is not a package dependency. Compact-domain kernel universality in that snapshot does not supply the noncompact C₀ theorem.
 - **Rights/evidence:** **AP2**, inspected 2026-10-20, the pinned repository [LICENSE](https://github.com/TauCetiProject/TauCeti/blob/b971ef7017efd17b28899a41289f2f11cdced2a2/LICENSE) and source headers. The inspected tree has no NOTICE file. The adapted file preserves the source notice and identifies its immutable source and modifications; tda-lib also distributes Apache-2.0 in its root LICENSE.
 
+<a id="BL24"></a>
+### BL24 — normalized subdivision and measure bifiltrations
+
+- **Identity/version:** Andrew J. Blumberg and Michael Lesnick, *Stability of 2-Parameter Persistent Homology*, Foundations of Computational Mathematics 24 (2024), [arXiv:2010.09628](https://arxiv.org/pdf/2010.09628).
+- **Use/classification:** Definitions 2.10–2.13 define normalized subdivision flags; Definitions 2.32–2.33 give the restricted interleaving category. `MeasureBifiltration` proves the finite-measure inclusion argument of Theorem 3.1 using mathlib's Lévy–Prokhorov inequalities. `SubdivisionRips` proves the finite sup-norm comparison step in Theorem 1.6(iii) and connects the concrete flag filtration to simplicial homology. Theorem 3.3's natural multicover nerve equivalence and the full GP-to-SR bound remain unproved. [Exact scope](subdivision-rips.md).
+- **Rights/evidence:** **U**, primary PDF inspected 2026-10-23. Original definitions, proofs, and summary are supplied; no source prose or figures are reproduced.
+
 <a id="Sheehy13-v2"></a>
 ### Sheehy13-v2 — sparse Rips weights, deletion and packing
 

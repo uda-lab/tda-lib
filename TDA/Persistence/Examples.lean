@@ -112,3 +112,5 @@ import TDA.Persistence.RipsGromovHausdorffExamples
 import TDA.Persistence.MatrixSequenceExamples
 import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
+
+import TDA.Persistence.SubdivisionRipsExamples

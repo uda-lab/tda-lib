@@ -413,6 +413,16 @@ infinite-dimensional. This result supplies q-tameness; locally finite diagrams
 and their algebraic stability require separate foundations. See
 [the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
+## Normalized subdivision-Rips homology
+
+The normalized subdivision-Rips modules construct open-radius finite flag
+bifiltrations and their actual simplicial homology, including restricted-index
+stability for a bounded perturbation of one labelled distance matrix. The
+measure bifiltration has a restricted Prokhorov interleaving, and finite
+sup-norm Čech/Rips flag homology diagrams agree naturally. The natural
+multicover nerve bridge and full GP-to-SR bound remain open. See
+[normalized subdivision-Rips and measure stability](math/subdivision-rips.md).
+
 ## Greedy sparse Rips geometry and deletion maps
 
 `TDA.Filtration.SparseRips.GreedyNet` constructs a farthest-first permutation of a
@@ -898,6 +908,20 @@ and executable arbitrary-field decomposition are outside the reviewed PH scope. 
 stable release must state its selected results and limitations; it need not finish every
 roadmap extension. This guide describes the current API and does not announce a release.
 
+
+### Collapsed-boundary geometry
+
+`TDA.Persistence.BoundaryTransportGeometry` equips the strict birth–death half-plane
+with one additional boundary point. The distance between interior points is the
+minimum of their maximum-coordinate distance and the sum of their distances to the
+diagonal; the distance to the boundary is half the lifetime. This metric is complete
+and separable. The interior has its usual topology, is open and dense, and its Borel
+sets determine the Borel structure of the enlarged space. Collapsing the diagonal of
+the closed half-plane defines a measurable Lipschitz map onto this space.
+
+These results supply the underlying Polish space for finite-measure boundary
+transport. The reservoir comparison, optimal Radon plans and finite atomic
+approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 
 ### Gaussian signed measures and C₀ universality
 

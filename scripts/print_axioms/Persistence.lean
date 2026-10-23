@@ -3295,6 +3295,22 @@ set_option linter.auxLemma false
 
 #print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
 
+-- Normalized subdivision-Rips and restricted measure bifiltrations.
+#print axioms TDA.Persistence.SubdivisionRips.homology_obj
+#print axioms TDA.Persistence.SubdivisionRips.homology_structureMap
+#print axioms TDA.Persistence.SubdivisionRips.cechBifiltration_eq
+#print axioms TDA.Persistence.SubdivisionRips.cechHomology_eq
+#print axioms TDA.Persistence.SubdivisionRips.distanceCoordinates_cechHomology_eq
+#print axioms TDA.Persistence.SubdivisionRips.metricInterleaving_left
+#print axioms TDA.Persistence.SubdivisionRips.metricInterleaving_right
+#print axioms TDA.Persistence.SubdivisionRips.relabelVertex_symm_apply
+#print axioms TDA.Persistence.SubdivisionRips.homology
+#print axioms TDA.Persistence.SubdivisionRips.metricInterleaving
+#print axioms TDA.Persistence.SubdivisionRips.relabelIso
+#print axioms TDA.Persistence.SubdivisionRips.pairwiseInterleaving
+#print axioms TDA.Persistence.SubdivisionRips.pairwiseInterleaving_left
+#print axioms TDA.Persistence.SubdivisionRips.pairwiseInterleaving_right
+
 -- Different-label ambient Cech stability.
 #print axioms TDA.Persistence.Cech.relationInterleaving_φ
 #print axioms TDA.Persistence.Cech.relationInterleaving_ψ
@@ -3438,3 +3454,40 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelPlus_singleton_eq_top
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelMinus_singleton_eq_bot
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_singleton_interval_spaces
+
+#print axioms TDA.Persistence.BoundaryTransport.depth_eq
+#print axioms TDA.Persistence.BoundaryTransport.depth_pos
+#print axioms TDA.Persistence.BoundaryTransport.depth_nonneg
+#print axioms TDA.Persistence.BoundaryTransport.rho_boundary_boundary
+#print axioms TDA.Persistence.BoundaryTransport.rho_point_boundary
+#print axioms TDA.Persistence.BoundaryTransport.rho_boundary_point
+#print axioms TDA.Persistence.BoundaryTransport.rho_point_point
+#print axioms TDA.Persistence.BoundaryTransport.rho_self
+#print axioms TDA.Persistence.BoundaryTransport.rho_comm
+#print axioms TDA.Persistence.BoundaryTransport.rho_triangle
+#print axioms TDA.Persistence.BoundaryTransport.rho_eq_zero_iff
+#print axioms TDA.Persistence.BoundaryTransport.dist_point_boundary
+#print axioms TDA.Persistence.BoundaryTransport.dist_boundary_point
+#print axioms TDA.Persistence.BoundaryTransport.dist_point_point
+#print axioms TDA.Persistence.BoundaryTransport.lipschitz_point
+#print axioms TDA.Persistence.BoundaryTransport.continuous_point
+#print axioms TDA.Persistence.BoundaryTransport.cauchySeq_exists_tendsto
+#print axioms TDA.Persistence.BoundaryTransport.isOpenEmbedding_point
+#print axioms TDA.Persistence.BoundaryTransport.measurableEmbedding_point
+#print axioms TDA.Persistence.BoundaryTransport.measurableSet_iff_interior
+#print axioms TDA.Persistence.BoundaryTransport.collapse_interior
+#print axioms TDA.Persistence.BoundaryTransport.collapse_diagonal
+#print axioms TDA.Persistence.BoundaryTransport.lipschitz_collapse
+#print axioms TDA.Persistence.BoundaryTransport.collapse_surjective
+#print axioms TDA.Persistence.BoundaryTransport.continuous_collapse
+#print axioms TDA.Persistence.BoundaryTransport.measurable_collapse
+#print axioms TDA.Persistence.BoundaryTransport.dist_collapse_boundary
+#print axioms TDA.Persistence.BoundaryTransport.far_points_shortcut
+#print axioms TDA.Persistence.BoundaryTransport.far_points_squared_shortcut_and_boundary_legs
+#print axioms TDA.Persistence.BoundaryTransport.exists_point_dist_boundary_lt
+#print axioms TDA.Persistence.BoundaryTransport.denseRange_point
+#print axioms TDA.Persistence.BoundaryTransport.instBorelSpaceSpace
+#print axioms TDA.Persistence.BoundaryTransport.instCompleteSpaceSpace
+#print axioms TDA.Persistence.BoundaryTransport.instPolishSpaceSpace
+#print axioms TDA.Persistence.BoundaryTransport.instSecondCountableTopologySpace
+#print axioms TDA.Persistence.BoundaryTransport.instSeparableSpaceSpace
