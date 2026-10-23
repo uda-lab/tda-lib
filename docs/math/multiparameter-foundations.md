@@ -2,9 +2,9 @@
 
 The persistence-module API supports constructions on an arbitrary preorder,
 including coordinatewise ordered real vector spaces. The results below provide
-interval geometry, free presentations and lifting lemmas. Stability of rectangle
-barcodes and of rank-exact signed barcodes requires further matching and
-resolution arguments.
+interval geometry, Hall neighbor bounds for finite rectangle sums, free
+presentations and lifting lemmas. Barcode stability requires further matching,
+distance and resolution arguments.
 
 ## Supports and rectangle transitions
 
@@ -32,6 +32,48 @@ These are local geometry and morphism results used in
 [Bjerkevik's rectangle stability proof](https://doi.org/10.1007/s00454-021-00298-0).
 They do not extract a matching from an interleaving.
 
+## Hall bounds for finite rectangle sums
+
+Let k be a field, n ≥ 1 and ε ≥ 0. Take two finite families Rᵢ and Sⱼ of
+nonempty bounded rectangles in ℝⁿ, retaining the inclusion choice at every
+endpoint. `RectangleFamily.module` is their finite biproduct of interval
+modules. Indices label occurrences, so repeated rectangles remain distinct.
+
+A rectangle is δ-significant if some p and p + δ·1 both belong to its support.
+`RectangleHall.significant_iff_transition_ne_zero` identifies this condition
+with nonvanishing of its actual δ transition. Put ρ = (2n−1)ε. A neighbor of
+Rᵢ is an occurrence Sⱼ whose interval module is ρ-interleaved with that of Rᵢ.
+For a selected set A of source indices, let μ(A) consist of all their neighbor
+indices. Given an actual ε-interleaving of the two family modules,
+`RectangleHall.card_le_neighbors` proves
+
+```text
+|A| ≤ |μ(A)|
+```
+
+whenever every Rᵢ selected by A is 2ρ-significant. The inequality counts
+occurrences in both families. It includes empty A and ε = 0; at the latter
+parameter closed singletons are significant. The radius is ε in one
+coordinate and 3ε in two coordinates.
+
+The proof orders the selected occurrences by the sum of their lower and
+upper endpoints, breaking equal sums by the number of plus decorations.
+A lower endpoint is plus-decorated when excluded, and an upper endpoint when
+included. A nonzero shifted rectangle map has one scalar on its overlap.
+For ordered significant endpoints of a two-step path, the geometric bounds
+give a common source, middle and target grade; this proves that composition
+multiplies their scalars, including closed-endpoint equality cases.
+
+Expanding the interleaving equations through the finite biproduct gives sums
+of these component paths. In the ordered entries, every intermediate
+occurrence outside μ(A) contributes zero. The restricted scalar matrices
+therefore multiply to a triangular matrix with diagonal one. Its full rank
+is at most the number of intermediate occurrences, proving the inequality.
+This implements the finite bounded part of
+[Bjerkevik's Lemmas 4.7–4.9](https://doi.org/10.1007/s00454-021-00298-0).
+The two-sided matching construction, bottleneck distance estimates and sharp
+two-coordinate example remain separate results.
+
 ## Graded free modules and finite presentations
 
 For a ring R and a graded generator family W, `GradedFree.module W` at a consists
@@ -49,9 +91,9 @@ of such a presentation with finite generator and relation sets and a natural
 isomorphism to the given module. The quotient universal property, invariance
 under isomorphism and redundant zero relations are supported. These constructions
 implement the free-cover ingredients of
-[Lesnick, §4.1](https://arxiv.org/html/1106.5305v4). The finite cross-presentation
-characterization in Theorem 4.4 requires constructing both presentations from
-shared shifted generator and relation families.
+[Lesnick, §4.1](https://arxiv.org/html/1106.5305v4). The finite-presentation
+characterization in Theorem 4.4 relates interleavings to simultaneous
+presentations with shared shifted generator and relation families.
 
 The free module on a disjoint union of graded families has the corresponding
 sum universal property. A presentation can adjoin an arbitrary graded family
@@ -91,10 +133,41 @@ presentations. Finite primitive families give finite presentations, and at
 ε = 0 the construction gives a natural isomorphism. The proof works over any
 ring, for arbitrary families and dimension zero as well.
 
-This is the cross-presentations-to-interleaving direction of
-[Lesnick, Theorem 4.4](https://arxiv.org/html/1106.5305v4#S4.SS2).
-Constructing finite cross-presentations from an arbitrary interleaving
-remains the other direction of the characterization.
+For finitely presented M and N, the existence of an ε-interleaving is
+equivalent to the existence of finite W₁, W₂, Y₁, Y₂ with the two displayed
+presentations. `finitelyPresented_interleaving_iff_crossPresentation` proves
+this finite-presentation version of
+[Lesnick, Theorem 4.4](https://arxiv.org/html/1106.5305v4#S4.SS2), over any ring
+and including dimension zero. The construction accepts arbitrary specified
+presentations; finiteness of the original families ensures finiteness of all
+four shared families.
+
+To construct them from an interleaving, take W₁ and W₂ to be the original
+generator families and write Z₁ and Z₂ for the original relation families.
+The interleaving maps give values for W₂(−ε) in M and W₁(−ε) in N at their
+delayed births. Lift these values through the free covers and add the
+homogeneous graph relations `new generator − chosen free lift`. Thus
+Y₁ = Z₁ ⊔ W₂(−ε) and Y₂ = Z₂ ⊔ W₁(−ε). `Presentation.crossData` builds the
+primitive maps with precisely these relations.
+
+The two collapse maps send the old generators through their free covers and
+the added delayed generators to their prescribed interleaving images.
+Both interleaving equations show that crossing and then using the shifted
+opposite collapse agrees with collapse followed by the interleaving map.
+Consequently the opposite delayed relations also vanish. The quotient maps
+then descend by the cokernel universal property. Redundant-generator
+elimination and the quotient universal property in both directions prove
+`Presentation.crossDataLeftIso` and `crossDataRightIso`, the natural
+isomorphisms to M and N. No relation-vanishing or quotient-isomorphism
+condition is included in the input data.
+
+`Presentation.shift` shifts both original indexing families without changing
+their cardinalities. Its relation map is conjugated through the free-shift
+isomorphisms. `Presentation.presentedShiftIso` identifies the resulting
+cokernel with the shift of the original quotient, using Mathlib's preservation
+of cokernels under reindexing. Its free-cover compatibility is
+`Presentation.cover_presentedShiftIso`; `finitelyPresented_shift` gives the
+corresponding closure of finite presentation.
 
 A map from a presented module lifts through a natural transformation ρ when
 ρ is surjective at every generator grade and injective at every relation grade.

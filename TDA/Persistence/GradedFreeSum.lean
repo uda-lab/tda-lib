@@ -43,6 +43,30 @@ noncomputable def sumInr : module (R := R) V ⟶ module (W.sum V) :=
       birth (W.sum V) (Sum.inr g) :=
   lift_birth V (module (W.sum V)) _ g
 
+/-- At every available grade, the first inclusion retains its basis vector. -/
+theorem sumInl_generator (g : W.Carrier) {a : P} (h : W.grade g ≤ a) :
+    (sumInl (R := R) W V).app a (generator W g h) =
+      generator (W.sum V) (Sum.inl g) h := by
+  have hn := (sumInl (R := R) W V).naturality (homOfLE h)
+  have hv := congrArg (fun q => q (birth (R := R) W g)) hn
+  change (sumInl W V).app a (generator W g h) =
+    (module (R := R) (W.sum V)).map (homOfLE h)
+      ((sumInl W V).app (W.grade g) (birth W g)) at hv
+  rw [sumInl_birth] at hv
+  exact hv
+
+/-- At every available grade, the second inclusion retains its basis vector. -/
+theorem sumInr_generator (g : V.Carrier) {a : P} (h : V.grade g ≤ a) :
+    (sumInr (R := R) W V).app a (generator V g h) =
+      generator (W.sum V) (Sum.inr g) h := by
+  have hn := (sumInr (R := R) W V).naturality (homOfLE h)
+  have hv := congrArg (fun q => q (birth (R := R) V g)) hn
+  change (sumInr W V).app a (generator V g h) =
+    (module (R := R) (W.sum V)).map (homOfLE h)
+      ((sumInr W V).app (V.grade g) (birth V g)) at hv
+  rw [sumInr_birth] at hv
+  exact hv
+
 /-- A pair of maps out of free families extends uniquely across their union. -/
 noncomputable def sumDesc {M : PModule.{u,v,max u w} R P}
     (f : module (R := R) W ⟶ M) (g : module (R := R) V ⟶ M) :
@@ -130,5 +154,17 @@ noncomputable def sumHomEquiv (M : PModule.{u,v,max u w} R P) :
     intro p
     cases p
     simp
+
+/-- Interchanging the two graded families gives a canonical free-module isomorphism. -/
+noncomputable def sumCommIso :
+    module (R := R) (W.sum V) ≅ module (V.sum W) where
+  hom := sumDesc W V (sumInr V W) (sumInl V W)
+  inv := sumDesc V W (sumInr W V) (sumInl W V)
+  hom_inv_id := by
+    apply sumHom_ext W V <;>
+      simp only [← Category.assoc, sumInl_sumDesc, sumInr_sumDesc, Category.comp_id]
+  inv_hom_id := by
+    apply sumHom_ext V W <;>
+      simp only [← Category.assoc, sumInl_sumDesc, sumInr_sumDesc, Category.comp_id]
 
 end TDA.Persistence.GradedFree
