@@ -96,8 +96,14 @@ the sampled-law bound. An iid sample sees both points with probability
 `1−(1−ε)^n−ε^n`; the law keeps this probability rather than replacing it with one.
 
 The singleton distortion identity is exposed as
-`gromovWasserstein_of_subsingleton`. The explicit two-point diagram and limit
-regression remain to be formalized.
+`gromovWasserstein_of_subsingleton`. A separate uniform two-point fixture at
+distance two proves that distinct draws have one essential and one finite full
+H₀ occurrence, while repeated draws retain only the essential occurrence.
+Each of these distinct diagrams receives at least half of the two-draw law's
+probability. `uniformTwoPoints_sampleLaw_nonconstant` therefore witnesses a
+nonconstant pushforward law with positive mass at both outputs. The exact
+ε-dependent full-support H₀ diagram and limit regression remain to be
+formalized.
 
 ## Sources and reuse
 

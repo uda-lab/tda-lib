@@ -813,5 +813,5 @@ moment bounds, and distortion GW with factor one half. `RipsSampling` applies
 these estimates to the actual full diagrams of finite tuple ranges.
 `RipsSampleQuotient` identifies tuple-index and metric-sample Rips homology
 filtrations by a natural isomorphism. See [sampled Rips laws](math/sampled-rips-laws.md)
-for the finite-p and infinity bounds and the remaining measure and reduced-homology
-bridges.
+for the finite-p and infinity bounds, a nonconstant full-H₀ law fixture with
+explicit positive mass, and the remaining measure and reduced-homology bridges.
