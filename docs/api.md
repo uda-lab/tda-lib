@@ -860,7 +860,11 @@ terminal scale and actual finite vertex-deletion times at or before it;
 `sparseComplex_eq_activeUnion_deletionGrid` proves this finite union presents the
 sparse complex. `tailDeletionHomologyIso` retracts the earliest stage from a
 finite union when the remaining scales are later and no deletion occurs before
-the next one. `ClosedBallDoubling.packing_bound`
+the next one. `isIso_terminal_activeUnion` iterates this retraction over a
+complete grid. `isIso_sparse_relaxed` identifies the resulting sparse complex
+with the relaxed complex on homology; `sparseRelaxedHomologyIso` is the natural
+isomorphism of their real-indexed persistence modules, including degree zero
+and negative scales. `ClosedBallDoubling.packing_bound`
 gives the uniform separated-set bound `Λ^h` from iterated closed-ball covers.
 `facesOfDimension_card_le` bounds the number of distinct j-simplices in the full
 all-scales carrier by `|P|·(Λ^h)^j`; `skeletonFaces_card_le` bounds its m-skeleton
@@ -869,7 +873,6 @@ from η alone. The constants are independent of cardinality, metric spread and
 maximum scale. `LineSamples.uniform_skeleton_bound` uses one doubling bound of
 four at every sample size.
 
-The exported results do not yet identify the full sparse union's persistence module
-with the relaxed module. The closed face-entry presentation, finite-union induction,
-and logarithmic diagram approximation remain part of
+The closed face-entry presentation, multiplicative/logarithmic approximation,
+and diagram comparison remain part of
 [the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).

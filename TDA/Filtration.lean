@@ -10,6 +10,8 @@ import TDA.Filtration.SparseRips.DeletionHomology
 import TDA.Filtration.SparseRips.UnionDeletion
 import TDA.Filtration.SparseRips.DeletionGrid
 import TDA.Filtration.SparseRips.UnionTailDeletion
+import TDA.Filtration.SparseRips.UnionGridHomology
+import TDA.Filtration.SparseRips.NaturalEquivalence
 import TDA.Filtration.SparseRips.Packing
 import TDA.Filtration.SparseRips.Sparsity
 import TDA.Filtration.CompatibleOrder

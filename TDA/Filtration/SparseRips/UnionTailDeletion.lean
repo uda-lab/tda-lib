@@ -40,6 +40,67 @@ structure TailDeletionData (seed : V) (η : ℝ) (G H : Finset ℝ) (d s : ℝ) 
   first_lt_tail : ∀ a ∈ H, d < a
   no_deletion : NoDeletionBetween seed η d s
 
+/-- Completeness of a grid above its earliest retained stage. -/
+def DeletionComplete (seed : V) (η : ℝ) (F : Finset ℝ) (r : ℝ) : Prop :=
+  ∀ x t, deletionTime seed η x = some t →
+    (∃ a ∈ F, a ≤ t) → t ≤ r → t ∈ F
+
+theorem deletionGrid_complete (seed : V) (η r : ℝ) :
+    DeletionComplete seed η (deletionGrid seed η r) r := by
+  intro x t ht _ htr
+  exact (mem_deletionGrid seed η r t).mpr (Or.inr ⟨htr, x, ht⟩)
+
+theorem deletionGrid_nonneg_le (seed : V) {η : ℝ} (hη : 0 < η)
+    (hη' : η ≤ 1 / 3) {r a : ℝ} (hr : 0 ≤ r)
+    (ha : a ∈ deletionGrid seed η r) : 0 ≤ a ∧ a ≤ r := by
+  rcases (mem_deletionGrid seed η r a).mp ha with rfl | ⟨har, x, hx⟩
+  · exact ⟨hr, le_rfl⟩
+  · exact ⟨deletionTime_nonneg seed hη hη' x a hx, har⟩
+
+/-- Removing the minimum from a complete grid preserves completeness. -/
+theorem deletionComplete_erase_min (seed : V) (η : ℝ) {F : Finset ℝ} {r : ℝ}
+    (hF : F.Nonempty) (hcomplete : DeletionComplete seed η F r) :
+    DeletionComplete seed η (F.erase (F.min' hF)) r := by
+  intro x t ht hbefore htr
+  obtain ⟨a, ha, hat⟩ := hbefore
+  have htF : t ∈ F := hcomplete x t ht ⟨a, Finset.mem_of_mem_erase ha, hat⟩ htr
+  have hdt : F.min' hF < t :=
+    (Finset.min'_lt_of_mem_erase_min' F hF ha).trans_le hat
+  exact Finset.mem_erase.mpr ⟨ne_of_gt hdt, htF⟩
+
+/-- The minimum and its next successor in a complete grid satisfy the tail
+retraction hypotheses, including simultaneous vertex deletions. -/
+theorem tailDeletionData_of_complete (seed : V) {η : ℝ}
+    {F : Finset ℝ} {r : ℝ} (hF : F.Nonempty)
+    (hbound : ∀ a ∈ F, 0 ≤ a ∧ a ≤ r)
+    (hcomplete : DeletionComplete seed η F r)
+    (hH : (F.erase (F.min' hF)).Nonempty) :
+    TailDeletionData seed η F (F.erase (F.min' hF))
+      (F.min' hF) ((F.erase (F.min' hF)).min' hH) where
+  first_mem := Finset.min'_mem F hF
+  next_mem := Finset.min'_mem _ hH
+  tail_subset := Finset.erase_subset _ _
+  first_or_tail := by
+    intro a ha
+    by_cases had : a = F.min' hF
+    · exact Or.inl had
+    · exact Or.inr (Finset.mem_erase.mpr ⟨had, ha⟩)
+  first_nonneg := (hbound _ (Finset.min'_mem F hF)).1
+  first_lt_tail := by
+    intro a ha
+    exact Finset.min'_lt_of_mem_erase_min' F hF ha
+  no_deletion := by
+    intro x t ht hdt
+    let H := F.erase (F.min' hF)
+    let s := H.min' hH
+    have hsr : s ≤ r := (hbound s (Finset.mem_of_mem_erase (Finset.min'_mem H hH))).2
+    by_contra hst
+    have htr : t ≤ r := (le_of_lt (lt_of_not_ge hst)).trans hsr
+    have htF : t ∈ F := hcomplete x t ht
+      ⟨F.min' hF, Finset.min'_mem F hF, hdt.le⟩ htr
+    have htH : t ∈ H := Finset.mem_erase.mpr ⟨ne_of_gt hdt, htF⟩
+    exact (not_lt_of_ge (Finset.min'_le H t htH)) (lt_of_not_ge hst)
+
 def tailDeletionVertexMap (seed : V) {η : ℝ} (hη : 0 < η)
     (hη' : η ≤ 1 / 3) {G H : Finset ℝ} {d s : ℝ}
     (data : TailDeletionData seed η G H d s) :
