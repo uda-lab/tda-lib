@@ -1,4 +1,5 @@
 -- Persistence examples and acceptance fixtures, included by the comprehensive TDA root.
+import TDA.Persistence.RectangleHallExamples
 import TDA.Persistence.CrossPresentationExamples
 import TDA.Persistence.CrossPresentationConverseExamples
 import TDA.Persistence.ConstructibleExamples
