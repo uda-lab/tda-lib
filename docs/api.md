@@ -374,7 +374,7 @@ with open or closed endpoints, singletons, infinite tails and the whole real
 line allowed. Finite activity is derived at every parameter, with no global
 countability assumption.
 
-`RealIntervalObservation.rankBarcode_eq_sampledBarcode` identifies the existing
+`RealIntervalObservation` proves `RealIntervalDecomposition.rankBarcode_eq_sampledBarcode`, identifying the existing
 rank barcode of every strict finite real observation list with the multiset of
 nonempty sampled intersections of these summands, retaining multiplicities.
 Only finitely many occurrences meet the list. `FiniteObservation` supplies the
