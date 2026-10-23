@@ -6,6 +6,7 @@ import TDA.Filtration.SparseRips.GreedyNet
 import TDA.Filtration.SparseRips.Weight
 import TDA.Filtration.SparseRips.Deletion
 import TDA.Filtration.SparseRips.Relaxed
+import TDA.Filtration.SparseRips.WeightContinuity
 import TDA.Filtration.SparseRips.DeletionHomology
 import TDA.Filtration.SparseRips.UnionDeletion
 import TDA.Filtration.SparseRips.DeletionGrid

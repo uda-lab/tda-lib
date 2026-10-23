@@ -544,3 +544,7 @@ import TDA
 #print axioms TDA.Filtration.SparseRips.sparseRelaxedLogIso
 #print axioms TDA.Filtration.SparseRips.sparseRipsLogInterleaving
 #print axioms TDA.Filtration.SparseRips.sparseRipsLogDistance_le
+#print axioms TDA.Filtration.SparseRips.finiteWeight_eq_max_min
+#print axioms TDA.Filtration.SparseRips.continuous_finiteWeight
+#print axioms TDA.Filtration.SparseRips.continuous_weight
+#print axioms TDA.Filtration.SparseRips.continuous_relaxedDistance
