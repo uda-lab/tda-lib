@@ -30,3 +30,4 @@ import TDA.Mapper.RetainedCover
 import TDA.Mapper.GraphPLReebStability
 import TDA.Mapper.GraphPLReebExtremal
 import TDA.Mapper.RefinementHomology
+import TDA.Mapper.RefinementHomologyInterleaving
