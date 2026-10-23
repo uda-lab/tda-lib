@@ -433,7 +433,9 @@ with an `η₂`-pair bounds the distance between the outer modules by `η₁ + �
 This is the homology-module form of DMW16-v2 Proposition 4.2 and Corollary 4.3,
 with Proposition 4.1(i) at the level of modules. The source states the
 conclusion for nerve towers up to contiguity (Definition 6) and for persistence
-diagrams of finite towers; neither form is formalised here.
+diagrams of finite towers. The nerve-tower form is not formalised; the diagram
+form is obtained for step towers in
+[a later section](#diagrams-of-mapper-homology-along-step-towers).
 
 The Mapper complex of `f` along `U t` is definitionally the Mapper complex of the
 identity of `X` along `pullback f (U t)`, with `pullbackRefinement f` applied to
@@ -482,8 +484,9 @@ maps over `ZMod 2`.
 Not included: the simplicial-tower interleaving up to contiguity as a separate
 structure; `(c, s)`-good towers, reindexing or truncation (DMW16-v2
 Propositions 4.4–4.5, Corollary 4.6, Theorems 4.7–4.8); persistence diagrams or
-bottleneck bounds; lower bounds or tightness of the distance; independence of
-the component orders; multinerve homology; any Nerve Lemma.
+bottleneck bounds other than those for step towers; lower bounds or tightness of
+the distance; independence of the component orders; multinerve homology; any
+Nerve Lemma.
 
 ## Finite Mapper barcodes
 
@@ -534,9 +537,94 @@ Mapper vertices, and for every component order its degree-zero homology is not
 finite-dimensional, so no degree-zero barcode is defined; the complex has no
 edges, so degree one still satisfies the finiteness hypothesis.
 
-Real-indexed or q-tame Mapper barcodes, bottleneck stability of Mapper barcodes,
-independence of the barcode from the supplied component orders, multinerve
-barcodes and executable barcode extraction are not provided.
+Real diagrams and their bottleneck stability are given for step towers in the
+next section; q-tame Mapper barcodes, independence of the barcode from the
+supplied component orders, multinerve barcodes and executable barcode
+extraction are not provided.
+
+## Diagrams of Mapper homology along step towers
+
+Keep the setting of the previous two sections. A grid is a strictly increasing
+`c : Fin m ↪o ℝ`, and `cellIndex c t ∈ Fin (m + 1)` counts the grid values at or
+below `t` ([finite-constructible modules](constructible-modules.md)): cell `0` is
+the left ray below `c 0`, cell `i + 1` is `[c i, c (i + 1))`, and the last cell
+is unbounded on the right. Step data on the grid are cover families
+`cover i : Index i → Set Y` for `i : Fin (m + 1)` with a selected refinement for
+every `i ≤ j` and supplied component orders; no identity or composition
+equation is required. The step tower `stepTower c cover` is the real tower whose
+family at radius `t` is `cover (cellIndex c t)`, with refinements
+`stepRefinement c cover r` taken from the cells. Its Mapper homology module is
+definitionally the finite-chain module `mapperHomologyPModule R f cover r n`
+reindexed along `cellIndex c`, over every ring and in every degree.
+
+A family with an empty index type, or more generally without component
+indices, has the empty Mapper complex, and its homology vanishes in every
+degree. If `Index 0` is empty, the step module is therefore zero on the left ray
+and its structure maps within a cell are identities, so it is finite-constructible
+on `c`. If moreover every stage has finitely many `n`-faces and the field, `X`
+and the index types lie in one universe, the step module is finite-dimensional
+at the grid values and `stepMapperDiagram k f c cover r n` is its real endpoint
+diagram. Because `cellIndex c (c j) = j + 1`, the diagram is the image under
+`ofIndexBars c` of the finite Mapper barcode of the stages `1, …, m`: a bar
+`[b, d)` of that barcode becomes the real bar `[c b, c d)`, or the essential bar
+`[c b, ∞)` when `d = m`. Equivalently, it is the image of the barcode of all
+`m + 1` stages restricted along `Fin.succ`; the empty stage `0` contributes no
+bar. The diagram has positive bars and does not depend on the selected
+refinements.
+
+Let `(c, cover, r)` and `(d, cover', r')` be step data, possibly on grids of
+different sizes, both with an empty initial family and finitely many faces in
+degree `n`. For `η : ℝ≥0`, selected cover maps between the two step towers
+shifting the radius by `η` in both directions bound the bottleneck distance of
+the two step diagrams by `η`. Through any intermediate real tower, cover maps
+shifting by `η₁` and `η₂` bound the bottleneck distance of the outer step
+diagrams by `η₁ + η₂`. The [finite-constructible isometry](constructible-isometry.md)
+identifies this bottleneck distance with the real interleaving distance of the
+two step modules; at every finite parameter, an interleaving exists exactly
+when an occurrence matching of that cost exists; and the distance is infinite
+exactly when the two diagrams have different numbers of essential bars. No
+identification of the number of essential bars with the dimension of the top
+stage is stated. For the piecewise-linear height of a finite graph and finitely
+many open-interval labels at every stage, the face-finiteness hypothesis holds
+by instance.
+
+The empty initial family is the zero left tail of the finite-constructible
+convention and not a restriction on the Mapper data: a tower that starts with a
+nonempty family is placed on the grid after an empty stage. The diagram
+consequence that [DMW16-v2](references.md#DMW16-v2) draws for finite towers is
+obtained here only for step towers on finite grids, as a library specialisation
+of the module interleaving of the previous section through the BL15-v4
+isometry; no theorem of DMW16-v2 is formalised in this form.
+
+Fixtures: with no grid values and one empty stage, the module vanishes at every
+radius, the diagram is empty and its bottleneck distance to itself is `0`. The
+two-stage merge of the previous section, placed after an empty stage at the
+radii `0` and `1`, has the degree-zero diagram over `ℚ` with finite part
+`{(0, 1)}` and essential part `{0}`. The same stages at `1/2` and `3/2` are
+related to it by identity selectors shifting the radius by `1/2` in both
+directions; the bottleneck distance is at most `1/2` and equals the interleaving
+distance, while the essential bars are born at `0` and at `1/2`, so the diagrams
+differ. The skew three-stage family over a point, after an empty stage, has the
+same diagram `{[c 0, ∞)}` for its skew and its coherent selections. The loop on
+the 4-cycle at the radii `0` and `1` has the degree-one diagram `{(0, 1)}` with
+no essential bar, with all finiteness instances synthesized. As negative
+controls, the constant tower of the one full member over a point has nonzero
+`H₀` below every grid, so it is not finite-constructible on any grid, for every
+field and component order. Along the centred tower of spacing `1`, the constant
+map `0` on the unit interval has zero Mapper homology at radius `0` and nonzero
+`H₀` at every positive radius; every grid has a positive radius in the cell of
+`0`, so this module is not finite-constructible on any grid. Radius-indexed
+towers of open members are left-open at their first nonempty radius and lie
+outside the zero-left, right-continuous convention; no diagram is defined for
+them.
+
+Not included: diagrams or bottleneck bounds for towers that are not step towers,
+in particular the centred tower, or for q-tame modules; a finite capped version
+of the centred tower; tightness of the bound and bottleneck values beyond the
+fixtures; identification of the essential multiplicity with the top-stage
+homology dimension; DMW16-v2 `(c, s)`-good towers, reindexing and truncation;
+independence of the component orders; multinerve diagrams; executable
+extraction.
 
 ## Uniform interval covers and edge cells
 
