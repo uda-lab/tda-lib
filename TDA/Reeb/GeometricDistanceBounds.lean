@@ -150,6 +150,14 @@ theorem geometricInterleavingDistance_eq_top_of_isEmpty_of_nonempty
   rw [hzero] at hle
   exact top_unique hle
 
+/-- Two graph objects with empty total spaces are isomorphic, hence at geometric interleaving
+distance `0`. -/
+theorem geometricInterleavingDistance_eq_zero_of_isEmpty {A B : RGraphCat}
+    (hA : IsEmpty A.obj.left) (hB : IsEmpty B.obj.left) :
+    geometricInterleavingDistance A B = 0 :=
+  geometricInterleavingDistance_eq_zero_of_iso <| ObjectProperty.isoMk _ <|
+    Over.isoMk (TopCat.isoOfHomeo Homeomorph.empty) (by ext x; exact hA.elim x)
+
 /-! ### Suprema of height ranges -/
 
 /-- On the real line, the supremum difference of two nonempty bounded sets is bounded by their
