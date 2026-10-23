@@ -481,12 +481,63 @@ while the two simplicial maps from a point to two isolated vertices of the
 previous section, which are not induced by refinements, have different `H₀`
 maps over `ZMod 2`.
 
+Rank obstructions give lower bounds. Let `k` be a field and `i` a real
+`ε`-interleaving of persistence modules `M` and `N` over `k`. The double-shift
+identity writes the structure map `M(t → t + 2ε)` as `i.φ` at `t`, followed by
+`i.ψ` at `t + ε` and the parameter transport, so it factors through `N (t + ε)`.
+If `N (t + ε)` is finite-dimensional, then
+`finrank_range_structureMapLinear_le_of_realInterleaving` bounds the rank of
+`M(t → t + 2ε)` by `dim N (t + ε)`; the primed form exchanges `M` and `N`, and
+`structureMap_eq_zero_of_realInterleaving` gives `M(t → t + 2ε) = 0` when
+`N (t + ε)` is zero. No other value of `M` or `N` need be finite-dimensional.
+`le_realInterleavingDistance_of_finrank_lt` concludes `r ≤ d(M, N)` when every
+finite `ε < r` admits some `t` with `dim N (t + ε)` finite and smaller than the
+rank of `M(t → t + 2ε)`; `le_realInterleavingDistance_of_structureMap_ne_zero`
+is the zero-fibre form. This is the elementary factorisation step behind
+algebraic stability, not a theorem of a cited source. The statements are kept
+in the Mapper module and are generic in the modules.
+
+For a map `f` with a real tower `U` and a map `g` with a real tower `V`, the
+structure maps of `mapperHomologyPModule k f U rU n` are the homology maps of
+the selected refinements, so
+`isEmpty_realInterleaving_mapperHomologyPModule_of_finrank_lt` excludes an
+`ε`-interleaving when the homology map of `U t → U (t + 2ε)` has rank larger than
+`dim Hₙ(mapper g (V (t + ε)))`. The zero-fibre form requires
+`mapper g (V (t + ε))` to have no `n`-faces, which holds when it has no vertices
+(`isEmpty_face_mapper`), and a nonzero homology map; both have distance forms.
+With `g = f` these compare two towers of one map; with `U = V` the centred tower
+they restate as `isEmpty_realInterleaving_centredMapperHomology_of_finrank_lt`
+and `le_realInterleavingDistance_centredMapperHomology_of_finrank_lt`, which
+combine with the perturbation bound above.
+
+Fixtures: over the one-point domain, let the single member be the whole space
+from radius `1` on in the tower `lateTower` and from radius `0` on in
+`earlyTower`, with identity selectors. Cover maps shifting by `1` exist in both
+directions. For `ε < 1`, the early tower's `H₀` map from `1 - ε` to `1 + ε` sends
+the nonzero class of its unique vertex to the class of the unique vertex, while
+the late tower's Mapper complex at radius `1` has no vertices. Hence
+`realInterleavingDistance_late_early` states that the two degree-zero modules
+are at distance exactly `1`, over every field. For the flat and steep maps,
+the Mapper complexes along the centred tower of spacing `1` have no edges at
+every radius in `(0, 1/2]`, with `H₀` of dimension `1` and `5` respectively, and
+the steep refinement maps between such radii are bijective on `H₀`, so they have
+rank `5`. At `t = 1/4` and `ε < 1/8` this excludes an `ε`-interleaving, and
+`flat_steep_distance_bounds` places the distance in `[1/8, 4]`. For a module and
+itself, the identity `0`-interleaving satisfies every rank inequality and the
+hypothesis of the distance lower bound fails at `ε = 0`. As a negative control,
+for the constant map from discrete `ℕ` with one full member every value of the
+degree-zero module is infinite-dimensional, so the rank bound does not apply;
+`Module.finrank` is `0` there by convention and no inequality is asserted.
+
 Not included: the simplicial-tower interleaving up to contiguity as a separate
-structure; `(c, s)`-good towers, reindexing or truncation (DMW16-v2
-Propositions 4.4–4.5, Corollary 4.6, Theorems 4.7–4.8); persistence diagrams or
-bottleneck bounds other than those for step towers; lower bounds or tightness of
-the distance; independence of the component orders; multinerve homology; any
-Nerve Lemma.
+structure; `(c, s)`-good towers, reindexing or truncation (DMW16-v2 Propositions
+4.4–4.5, Corollary 4.6, Theorems 4.7–4.8); persistence diagrams or bottleneck
+bounds other than those for step towers; the bar-length lower bound
+`(death − birth)/2` or any lower bound through decompositions, induced matchings or the
+isometry theorem, except the step-tower isometry below; tightness of the rank
+obstruction in general and the exact flat/steep distance; lower bounds for
+graph-PL Reeb distances; independence of the component orders; multinerve
+homology; any Nerve Lemma.
 
 ## Finite Mapper barcodes
 
