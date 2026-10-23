@@ -72,6 +72,56 @@ positive prescribed resolution; finite vertex heights provide range bounds.
 The nonconstant single-edge example exposes a family with vanishing full resolutions, its
 geometric error bounds and convergence.
 
+## Two inputs
+
+Let `h, g : V → ℝ` be vertex heights on one finite simple graph `G`, and let `(a, b)` and
+`(a', b')` be finite bounded-interval covers of the attained ranges of `plHeight G h` and
+`plHeight G g`, with resolutions `res` and `res'`. Write `M_h`, `M_g` for the two
+reconstructions and `𝓡(h)`, `𝓡(g)` for the Reeb quotients. At the cosheaf level, for
+continuous `f, g : C(X, ℝ)` with `|f x - g x| ≤ ε` and covers whose members have diameters at
+most `r` and `r'`, the triangle inequality for the interleaving distance and the one-input bound
+give
+\[
+d(C_{U}f,\ C_{U'}g) \le r + \varepsilon + r',
+\]
+and `r + ‖f - g‖∞ + r'` with the uniform extended distance
+(`interleavingDistance_coverComponents_le_add`, `_edist`).
+
+For graph-PL input, the geometric triangle inequality with
+`geometricInterleavingDistance_mapperReeb_le` and the vertex-height bound
+`geometricInterleavingDistance_graphPLReebGraph_le_edist` give
+\[
+d_{\mathrm{geo}}(M_h, M_g) \le \operatorname{res} + \operatorname{edist}(h, g)
+ + \operatorname{res}'
+\]
+(`geometricInterleavingDistance_mapperReeb_le_add_edist`), with forms for a vertex budget `ε`,
+for retained resolutions, and for one cover (`2 res + edist h g`). The same triangle inequality
+in the other direction gives the two-sided comparison
+`d_geo(𝓡(h), 𝓡(g)) ≤ d_geo(M_h, M_g) + res + res'` and
+`d_geo(M_h, M_g) ≤ d_geo(𝓡(h), 𝓡(g)) + res + res'`
+(`geometricInterleavingDistance_graphPLReebGraph_le_mapperReeb_add` and
+`geometricInterleavingDistance_mapperReeb_le_graphPLReebGraph_add`). With the extremal
+lower bounds of the Reeb distance, for nonempty `V`,
+`|max h - max g| ≤ d_geo(M_h, M_g) + res + res'`, and the same for `min`.
+
+Along families of covers (`κ t`, `a t`, `b t`) and (`κ' t`, `a' t`, `b' t`) that cover the
+attained ranges at every `t` and have both resolutions tending to `0`,
+`tendsto_geometricInterleavingDistance_mapperReeb_pair` shows that `d_geo(M_h^t, M_g^t)` tends to
+`d_geo(𝓡(h), 𝓡(g))`, by squeezing between `d_geo(𝓡) - (res_t + res'_t)` and
+`d_geo(𝓡) + res_t + res'_t` in `ℝ≥0∞`; the retained form needs only retained resolutions to
+vanish. `exists_graphPLMapperReconstruction_pair_le` gives, for every `r > 0`, finite covers with
+`d_geo(M_h, M_g) ≤ edist h g + 2 r`.
+
+Coverage of each height's attained range is required by the ingredients: the empty cover of a
+nonempty graph reconstructs the empty graph, which is at distance `⊤` from the Reeb quotient
+although its resolution is `0`. None of the bounds is claimed to be sharp. With equal heights
+and one cover the distance is `0` while the bound is `2 res`. No isomorphism is claimed between the
+reconstruction of a translate with the translated cover and the translate of a reconstruction;
+the translation fixture reaches the Reeb distance `1` through the limit theorem. Reconstructions
+over different graphs or edge sets are not compared. The two-input bounds are compositions of the
+one-input approximation with the triangle inequality and are attributed to neither source paper;
+the perturbation step is de Silva–Munch–Patel, Theorem 4.6(i).
+
 ## Scope and computation
 
 The interval-indexed categorical bound follows the objects and conclusion of Munch–Wang,
