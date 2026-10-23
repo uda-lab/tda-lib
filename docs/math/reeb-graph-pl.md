@@ -326,10 +326,10 @@ quotient induction over vertices and edge points,
 ∀ x : Realization G, |plHeight G h x - plHeight G g x| ≤ ε
 ```
 
-(`abs_plHeight_sub_le`). These statements hold for `V` in any universe and for every simple graph, with `ε : ℝ` arbitrary;
-no finiteness, connectivity, nonemptiness or injectivity of heights is assumed. Nothing relates
-the orders of the two height functions: vertex heights may cross, coincide or separate, so the
-number of distinct heights and the set of horizontal edges may change.
+(`abs_plHeight_sub_le`). These statements hold for `V` in any universe and for every simple graph,
+with `ε : ℝ` arbitrary; no finiteness, connectivity, nonemptiness or injectivity of heights is
+assumed. Nothing relates the orders of the two height functions: vertex heights may cross, coincide
+or separate, so the number of distinct heights and the set of horizontal edges may change.
 
 Vertex evaluation gives the converse inequality. In mathlib's uniform extended distance on
 `α →ᵤ ℝ` (`UniformFun`, `edist f g = ⨆ x, edist (f x) (g x)`),
@@ -456,9 +456,9 @@ that TauCeti has no such comparison. Nothing from TauCeti is used, and TauCeti i
 
 **Vertex-height perturbations.** The general step, that a uniform bound `|f x - g x| ≤ ε` gives an
 `ε`-interleaving of the interval-component precosheaves, is de Silva, Munch and Patel,
-arXiv:1501.04147v1, Theorem 4.6(i), already formalised as `perturbationInterleaving`. The vertex-to-edge estimate, the
-uniform-distance equality and the graph-PL Reeb-quotient bound are library results and are not
-attributed to the paper.
+arXiv:1501.04147v1, Theorem 4.6(i), already formalised as `perturbationInterleaving`. The
+vertex-to-edge estimate, the uniform-distance equality and the graph-PL Reeb-quotient bound are
+library results and are not attributed to the paper.
 
 Not claimed here: equality of the Reeb-quotient distance with `edist h g`; comparison of different
 graphs or edge sets; constructible thickening; any distance or interleaving comparison of
