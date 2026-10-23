@@ -601,8 +601,10 @@ radius, the diagram is empty and its bottleneck distance to itself is `0`. The
 two-stage merge of the previous section, placed after an empty stage at the
 radii `0` and `1`, has the degree-zero diagram over `ℚ` with finite part
 `{(0, 1)}` and essential part `{0}`. The same stages at `1/2` and `3/2` are
-related to it by identity selectors shifting the radius by `1/2` in both
-directions; the bottleneck distance is at most `1/2` and equals the interleaving
+related to it by selected stage refinements shifting the radius by `1/2` in
+both directions: identities from the first copy, whose stage at `t` is the
+stage of the copy at `t + 1/2`, and the merge refinements back, whose selector
+to the coarse stage is constant; the bottleneck distance is at most `1/2` and equals the interleaving
 distance, while the essential bars are born at `0` and at `1/2`, so the diagrams
 differ. The skew three-stage family over a point, after an empty stage, has the
 same diagram `{[c 0, ∞)}` for its skew and its coherent selections. The loop on

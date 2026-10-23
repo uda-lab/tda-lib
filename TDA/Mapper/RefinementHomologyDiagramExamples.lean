@@ -16,7 +16,9 @@ an empty stage (`padIndex`, `padCover`, `padRefinement`); its step diagram on a 
   `(2/3, 2)` and then `(-1, 2)` placed at the radii `0` and `1` give the degree-zero diagram
   over `ℚ` with finite part `{(0, 1)}` and essential part `{0}`.
 * **Shifted copy.** The same stages at the radii `1/2` and `3/2` are related to the first copy
-  by identity selectors shifting the radius by `1/2` in both directions. The bottleneck
+  by selected stage refinements shifting the radius by `1/2` in both directions: the identity
+  from radius `t` to `t + 1/2`, which lie in the same stage, and the merge refinement, whose
+  selector to the coarse stage is constant, in the other direction. The bottleneck
   distance is at most `1/2` and equals the interleaving distance, while the two diagrams differ
   in their essential births `0` and `1/2`.
 * **Refinement independence.** The skew three-stage family over a point, padded by an empty
@@ -219,15 +221,16 @@ private theorem cellIndex_grid01 (t : ℝ) :
     cellIndex grid01 t = cellIndex gridHalf (t + ((1 / 2 : ℝ≥0) : ℝ)) := by
   rw [grid01_eq_shiftGrid, cellIndex_shiftGrid]
 
-/-- Identity selectors from the merge at the radii `0, 1` into the copy at `1/2, 3/2`, shifted
-by `1/2`. -/
+/-- Cover maps from the merge at the radii `0, 1` into the copy at `1/2, 3/2`, shifted by `1/2`.
+Both radii lie in the same stage, so each map is the identity refinement of that stage. -/
 def mergeShiftForward (t : ℝ) :
     Refinement (stepTower grid01 (padCover mergeCover) t)
       (stepTower gridHalf (padCover mergeCover) (t + ((1 / 2 : ℝ≥0) : ℝ))) :=
   padRefinement mergeCover mergeRefinement (cellIndex_grid01 t).le
 
-/-- Identity selectors from the copy at `1/2, 3/2` into the merge at `0, 1`, shifted by
-`1/2`. -/
+/-- Cover maps from the copy at `1/2, 3/2` into the merge at `0, 1`, shifted by `1/2`: the
+selected stage refinement from the stage at `t` to the stage at `t + 1/2`, which is the constant
+merge selector when these stages differ. -/
 def mergeShiftBackward (t : ℝ) :
     Refinement (stepTower gridHalf (padCover mergeCover) t)
       (stepTower grid01 (padCover mergeCover) (t + ((1 / 2 : ℝ≥0) : ℝ))) :=
