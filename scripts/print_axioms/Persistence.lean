@@ -3240,3 +3240,21 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rectangle.hom_ext
 #print axioms TDA.Persistence.Rectangle.exists_mem_add_iff
 #print axioms TDA.Persistence.Rectangle.diagonal_maps_eq_zero_iff
+
+#print axioms TDA.Persistence.RealRay.interleaving
+
+#print axioms TDA.Persistence.RealRay.distance_eq_zero
+
+#print axioms TDA.Persistence.RealRay.not_nonempty_iso
+
+#print axioms TDA.Persistence.RealRay.not_nonempty_zero_interleaving
+
+#print axioms TDA.Persistence.FiniteConstructible.distance_le_iff_interleaving
+
+#print axioms TDA.Persistence.FiniteConstructible.interleaving_at_distance
+
+#print axioms TDA.Persistence.FiniteConstructible.distance_eq_zero_iff_iso
+
+#print axioms TDA.Persistence.FiniteConstructible.interleaving_parameters_eq_Ici
+
+#print axioms TDA.Persistence.FiniteConstructible.isClosed_interleaving_parameters

@@ -162,3 +162,7 @@ import TDA.Persistence.SupportInterval
 
 import TDA.Persistence.HookProjective
 import TDA.Persistence.Rectangle
+
+import TDA.Persistence.RealRaySeparation
+
+import TDA.Persistence.ConstructibleClosure
