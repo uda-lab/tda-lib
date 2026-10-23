@@ -76,7 +76,7 @@ nontrivial ring. The comparison and morphism lemmas remain over fields.
 vanishing criterion for bounded rectangles over a field. `GradedFree.lift`
 and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
-expresses finite presentation by homogeneous cokernels. For modules on
+expresses finite presentation by homogeneous cokernels. For finitely presented modules on
 `Fin n → ℝ`, `GradedFree.finitelyPresented_exists_finite_criticalCoordinates`
 gives finite coordinate sets outside which comparable structure maps are
 isomorphisms, and `GradedFree.finitelyPresented_exists_pos_structureMap_isIso`
