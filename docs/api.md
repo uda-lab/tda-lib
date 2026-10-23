@@ -92,7 +92,15 @@ a natural transformation surjective at generator grades and injective at relatio
 grades. With bijectivity at generator grades, the lift is unique. For coordinatewise
 real indices, import `RealCoordinates` and use `open scoped TDA.Persistence` to
 select the preorder category; rectangles and finite grids already import it.
-See
+`CoordinateInterleaving` supplies actual diagonal-shift witnesses and their
+composition laws. For two finitely presented modules on `Fin n → ℝ`,
+`GradedFree.finitelyPresented_distance_le_iff_interleaving` identifies a finite
+distance bound with an interleaving at that exact parameter. Finite distances
+are attained, admissible parameter sets are closed, and distance zero is
+equivalent to natural isomorphism, over any ring and including dimension zero.
+`GradedFree.FinitePresentationIsoClasses` equips their natural-isomorphism classes
+with an `EMetricSpace` whose extended distance agrees with the module distance.
+See [attainment and separation](math/multiparameter-closure.md) and
 [the constructions and their scope](math/multiparameter-foundations.md).
 
 ## Persistent homology results and computational boundary
