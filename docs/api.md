@@ -834,6 +834,20 @@ stable release must state its selected results and limitations; it need not fini
 roadmap extension. This guide describes the current API and does not announce a release.
 
 
+### Collapsed-boundary geometry
+
+`TDA.Persistence.BoundaryTransportGeometry` equips the strict birth–death half-plane
+with one additional boundary point. The distance between interior points is the
+minimum of their maximum-coordinate distance and the sum of their distances to the
+diagonal; the distance to the boundary is half the lifetime. This metric is complete
+and separable. The interior has its usual topology, is open and dense, and its Borel
+sets determine the Borel structure of the enlarged space. Collapsing the diagonal of
+the closed half-plane defines a measurable Lipschitz map onto this space.
+
+These results supply the underlying Polish space for finite-measure boundary
+transport. The reservoir comparison, optimal Radon plans and finite atomic
+approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
+
 ### Gaussian signed measures and C₀ universality
 
 `TDA.Persistence.GaussianMeasureEmbedding` defines the Banach-valued signed integral

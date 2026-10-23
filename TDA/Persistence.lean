@@ -170,3 +170,5 @@ import TDA.Persistence.CompatibleSectionsExamples
 
 import TDA.Persistence.CutDecomposition
 import TDA.Persistence.CutSubspacesExamples
+
+import TDA.Persistence.BoundaryTransportGeometry
