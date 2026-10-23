@@ -181,3 +181,5 @@ import TDA.Persistence.AlgebraicFamily
 import TDA.Persistence.CompatibleSectionsExamples
 
 import TDA.Persistence.HookInfinity
+import TDA.Persistence.CutDecomposition
+import TDA.Persistence.CutSubspacesExamples
