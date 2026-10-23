@@ -978,6 +978,52 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyExamples.isolated_vertex_maps_homology_ne
 #print axioms TDA.Mapper.RefinementHomologyExamples.isolated_vertex_maps_homology_eq_zero_ring
 
+#print axioms TDA.Mapper.mapperHomologyShiftMap_app
+#print axioms TDA.Mapper.mapperHomologyShiftMap_app_eq
+#print axioms TDA.Mapper.mapperHomologyShiftMap_eq
+#print axioms TDA.Mapper.mapperHomologyInterleaving_φ
+#print axioms TDA.Mapper.mapperHomologyInterleaving_ψ
+#print axioms TDA.Mapper.mapperHomologyInterleaving_φ_app
+#print axioms TDA.Mapper.mapperHomologyInterleaving_ψ_app
+#print axioms TDA.Mapper.mapperHomologyInterleaving_app_eq
+#print axioms TDA.Mapper.mapperHomologyInterleaving_eq
+#print axioms TDA.Mapper.realInterleavingDistance_mapperHomologyPModule_le
+#print axioms TDA.Mapper.realInterleavingDistance_mapperHomologyPModule_le_add
+#print axioms TDA.Mapper.mapperHomologyPModule_pullback
+#print axioms TDA.Mapper.mem_centredCover_iff
+#print axioms TDA.Mapper.centredCover_eq_empty
+#print axioms TDA.Mapper.covers_centredCover
+#print axioms TDA.Mapper.realInterleavingDistance_centredMapperHomology_le
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.mapperHomologyInterleaving_zero_toIso
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.duplicatedTower_interleaving
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.centredCover_shift_interleaving
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.scaleMap_zerothHomotopy_subsingleton
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.centredCover_half_no_edges
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.finrank_scaleMap_centredCover_half
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.flat_steep_dist
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.flat_steep_perturbation
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.pullback_id_mapperHomologyPModule
+#print axioms TDA.Mapper.RefinementHomologyInterleavingExamples.refinement_homology_control
+-- Extremal vertex heights and the graph-PL Reeb distance.
+#print axioms TDA.Mapper.GraphPL.sSup_range_plHeight
+#print axioms TDA.Mapper.GraphPL.sInf_range_plHeight
+#print axioms TDA.Mapper.GraphPL.ofReal_abs_sup'_sub_le_geometricInterleavingDistance_graphPLReebGraph
+#print axioms TDA.Mapper.GraphPL.ofReal_abs_inf'_sub_le_geometricInterleavingDistance_graphPLReebGraph
+#print axioms TDA.Mapper.GraphPL.max_ofReal_abs_sub_le_geometricInterleavingDistance_graphPLReebGraph
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_sup'
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_inf'
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_add_const
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_of_isEmpty
+
+-- Extremal vertex-height fixtures.
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.tilted_widened_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.twoEdges_translate_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.triangle_translate_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.reversal_extremal_bounds
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.empty_extremal
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.point_geometricInterleavingDistance
+#print axioms TDA.Mapper.GraphPLReebExtremalExamples.flat_tilted_geometricInterleavingDistance
+
 -- Barcodes of finite Mapper homology modules.
 #print axioms TDA.Mapper.mapperHomologyPModule_finiteDimensional
 #print axioms TDA.Mapper.mapperBarcode_eq

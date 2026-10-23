@@ -3189,3 +3189,4 @@ import TDA
 #print axioms TDA.Reeb.Examples.GraphTreeContraction.star4_simplyConnectedSpace
 #print axioms TDA.Reeb.Examples.GraphTreeContraction.triangle_not_simplyConnectedSpace
 #print axioms TDA.Reeb.Examples.GraphTreeContraction.triangle_not_contractibleSpace
+#print axioms TDA.Reeb.RGraph.ofReal_abs_sInf_sub_le_hausdorffEDist
