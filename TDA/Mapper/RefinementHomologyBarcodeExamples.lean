@@ -27,8 +27,8 @@ import TDA.Simplicial.FiniteCoordinates
   over `ℚ` is the single bar `[0, 1)`.
 * **Negative control.** For the constant map from discrete `ℕ` with one full member, the Mapper
   complex has infinitely many vertices and its degree-zero homology is not finite-dimensional
-  for any component order and field, so the finiteness hypothesis fails and no barcode is
-  defined.
+  for any component order and field, so the finiteness hypothesis fails in degree zero and no
+  degree-zero barcode is defined.  Degree one has no faces, so that degree is unaffected.
 
 The component orders of the graph fixtures are arbitrary well orders; the homology computations
 do not depend on the orientation signs.
@@ -73,11 +73,7 @@ private theorem finrank_range_homologyMap_zero_pos {W : Type} [LinearOrder W]
   let τ := vertexImageFace g σ (fun i j _ => Fin.ext (by omega))
   have hclass := simplicialHomologyMap_class k g 0 (zeroVertexCycle K k σ)
     (zeroVertexCycle L k τ) (vertexChainMap_vertex k g σ 1)
-  have hne : simplicialHomologyClass k L 0 (zeroVertexCycle L k τ) ≠ 0 := by
-    intro hz
-    have hq := congrArg (homologyKernelQuotient k (simplicialChainComplex L k) 0).hom.hom hz
-    rw [simplicialHomologyClass_quotient, map_zero] at hq
-    exact zeroVertexCycle_not_boundary L k τ ((Submodule.Quotient.mk_eq_zero _).mp hq)
+  have hne := simplicialHomologyClass_zeroVertexCycle_ne_zero L k τ
   apply Module.finrank_pos_iff_exists_ne_zero.mpr
   refine ⟨⟨_, ⟨_, hclass⟩⟩, ?_⟩
   intro hz
@@ -1104,8 +1100,8 @@ theorem natToUnit_not_finite_face : ¬ Finite (Face (mapper natToUnit unitCover)
   exact not_finite ℕ
 
 /-- For every linear order on its component indices, the degree-zero homology of this Mapper
-complex is not finite-dimensional over any field, so no Mapper homology module with this stage
-has a barcode. -/
+complex is not finite-dimensional over any field, so no degree-zero Mapper homology module with
+this stage has a barcode. -/
 theorem natToUnit_not_finiteDimensional [LinearOrder (ComponentIndex natToUnit unitCover)]
     (k : Type) [Field k] :
     ¬ FiniteDimensional k (simplicialHomology (mapper natToUnit unitCover) k 0) := by

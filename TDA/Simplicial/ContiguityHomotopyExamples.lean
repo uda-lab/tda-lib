@@ -115,26 +115,18 @@ private theorem endpoint_prism_nonzero_boundary :
     have hc := congrArg (fun c : Chain edgeK ℤ 0 => c (edgeVertex 1)) hz
     norm_num [edgeVertex] at hc
 
-private theorem vertexClass_ne_zero {V : Type} [LinearOrder V]
-    (K : PreAbstractSimplicialComplex V) (s : Face K 0) :
-    simplicialHomologyClass ℚ K 0 (zeroVertexCycle K ℚ s) ≠ 0 := by
-  intro hz
-  have hq := congrArg (homologyKernelQuotient ℚ (simplicialChainComplex K ℚ) 0).hom.hom hz
-  rw [simplicialHomologyClass_quotient, map_zero] at hq
-  exact zeroVertexCycle_not_boundary K ℚ s ((Submodule.Quotient.mk_eq_zero _).mp hq)
-
 private theorem endpoint_simplicialH0 :
     simplicialHomologyMap ℚ (endpoint 0) 0 = simplicialHomologyMap ℚ (endpoint 1) 0 ∧
     (simplicialHomologyMap ℚ (endpoint 0) 0).hom
       (simplicialHomologyClass ℚ pointK 0 (zeroVertexCycle pointK ℚ (fullFace 0))) ≠ 0 ∧
     simplicialHomologyClass ℚ pointK 0 (zeroVertexCycle pointK ℚ (fullFace 0)) ≠ 0 := by
   refine ⟨Contiguous.simplicialHomologyMap_eq ℚ endpoints_contiguous 0, ?_,
-    vertexClass_ne_zero _ _⟩
+    simplicialHomologyClass_zeroVertexCycle_ne_zero _ ℚ _⟩
   have hm := simplicialHomologyMap_class ℚ (endpoint 0) 0
     (zeroVertexCycle pointK ℚ (fullFace 0)) (zeroVertexCycle edgeK ℚ (edgeVertex 0))
     (endpoint_vertex ℚ 0 1)
   rw [hm]
-  exact vertexClass_ne_zero _ _
+  exact simplicialHomologyClass_zeroVertexCycle_ne_zero _ ℚ _
 
 private theorem prism_edge {W : Type} [LinearOrder W] {L : PreAbstractSimplicialComplex W}
     (R : Type) [Ring R] {f g : VertexMap edgeK L} (h : Contiguous f g) :

@@ -54,15 +54,6 @@ local instance {I : Type} [LinearOrder I] (U : I → Set Unit) :
     LinearOrder (ComponentIndex threeStageMap U) :=
   componentIndexLinearOrder threeStageMap U
 
-/-- Over a field, the class of a single vertex is nonzero, by the augmentation. -/
-private theorem vertexClass_ne_zero {V : Type} [LinearOrder V]
-    (K : PreAbstractSimplicialComplex V) (k : Type) [Field k] (σ : Face K 0) :
-    simplicialHomologyClass k K 0 (zeroVertexCycle K k σ) ≠ 0 := by
-  intro hz
-  have hq := congrArg (homologyKernelQuotient k (simplicialChainComplex K k) 0).hom.hom hz
-  rw [simplicialHomologyClass_quotient, map_zero] at hq
-  exact zeroVertexCycle_not_boundary K k σ ((Submodule.Quotient.mk_eq_zero _).mp hq)
-
 private theorem vertexChainMap_singleton_face {V W : Type} [LinearOrder V] [LinearOrder W]
     {K : PreAbstractSimplicialComplex V} {L : PreAbstractSimplicialComplex W}
     (g : VertexMap K L) (R : Type) [Ring R] (σ : Face K 0) (τ : Face L 0) (v : V)
@@ -130,7 +121,7 @@ theorem select_mapperHomologyMap_class_ne_zero :
     (vertexChainMap_singleton_face _ ℚ sourceFace (targetFace false) sourceVertex rfl rfl)
   refine ⟨hclass, ?_⟩
   rw [mapperHomologyMap_def, hclass]
-  exact vertexClass_ne_zero _ ℚ _
+  exact simplicialHomologyClass_zeroVertexCycle_ne_zero _ ℚ _
 
 /-! ## A three-stage family of refinements without strict coherence -/
 
@@ -247,7 +238,7 @@ theorem skew_first_middle_collapse (R : Type) [Ring R] :
           (simplicialHomologyClass ℚ _ 0 (zeroVertexCycle _ ℚ (firstVertexFace b))) =
         simplicialHomologyClass ℚ _ 0 (zeroVertexCycle _ ℚ middleVertexFace)) ∧
     simplicialHomologyClass ℚ _ 0 (zeroVertexCycle _ ℚ middleVertexFace) ≠ 0 := by
-  refine ⟨?_, ?_, vertexClass_ne_zero _ ℚ _⟩
+  refine ⟨?_, ?_, simplicialHomologyClass_zeroVertexCycle_ne_zero _ ℚ _⟩
   · apply vertexChainMap_single_of_not_injective
     intro hinj
     have h01 := hinj (Subsingleton.elim

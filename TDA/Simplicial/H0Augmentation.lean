@@ -1,4 +1,5 @@
 import TDA.Simplicial.Attachment
+import TDA.Simplicial.VertexChainMap
 
 set_option autoImplicit false
 
@@ -84,6 +85,16 @@ theorem zeroVertexCycle_not_boundary (σ : Face K 0) :
     exact zeroChainSum_single K k σ 1
   rw [hd] at hb
   exact one_ne_zero (hv.symm.trans hb)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Over a field, the homology class of a single vertex is nonzero. -/
+theorem simplicialHomologyClass_zeroVertexCycle_ne_zero (σ : Face K 0) :
+    simplicialHomologyClass k K 0 (zeroVertexCycle K k σ) ≠ 0 := by
+  intro hz
+  have hq := congrArg
+    (homologyKernelQuotient.{v, u, v} k (simplicialChainComplex K k) 0).hom.hom hz
+  rw [simplicialHomologyClass_quotient, map_zero] at hq
+  exact zeroVertexCycle_not_boundary K k σ ((Submodule.Quotient.mk_eq_zero _).mp hq)
 
 theorem vertexCombination_not_boundary_of_selected
     (P : Face K 0 → Prop) [DecidablePred P]

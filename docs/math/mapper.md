@@ -446,7 +446,8 @@ homology of rank one, and after a constant refinement to `(-1, 3)` the
 degree-one barcode over `ℚ` is the single bar `[0, 1)`. As a negative control,
 the constant map from discrete `ℕ` with one full member has infinitely many
 Mapper vertices, and for every component order its degree-zero homology is not
-finite-dimensional, so no barcode is defined.
+finite-dimensional, so no degree-zero barcode is defined; the complex has no
+edges, so degree one still satisfies the finiteness hypothesis.
 
 Real-indexed or q-tame Mapper barcodes, bottleneck stability of Mapper barcodes,
 independence of the barcode from the supplied component orders, multinerve
