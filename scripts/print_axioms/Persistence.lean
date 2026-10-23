@@ -1,6 +1,95 @@
 -- Live axiom audit pins for Persistence. Append new pins here; do not remove existing pins.
 import TDA
 
+#print axioms TDA.Persistence.IsPointwiseShortExact.rank_add_iff_lift_kernel
+#print axioms TDA.Persistence.IsRankExact.lift_kernel
+#print axioms TDA.Persistence.IsPointwiseShortExact.reindex
+#print axioms TDA.Persistence.IsRankExact.reindex
+#print axioms TDA.Persistence.IsPointwiseShortExact.rankExact_of_section
+#print axioms TDA.Persistence.SupportInterval.fiber
+#print axioms TDA.Persistence.SupportInterval.module
+#print axioms TDA.Persistence.SupportInterval.one
+#print axioms TDA.Persistence.SupportInterval.val_eq_zero
+#print axioms TDA.Persistence.SupportInterval.structureMap_val
+#print axioms TDA.Persistence.SupportInterval.structureMap_eq_zero_of_not_mem
+#print axioms TDA.Persistence.SupportInterval.structureMap_eq_zero_iff
+#print axioms TDA.Persistence.SupportInterval.comparison_app_val
+#print axioms TDA.Persistence.SupportInterval.comparison_ne_zero_iff
+#print axioms TDA.Persistence.SupportInterval.app_val_eq_mul
+#print axioms TDA.Persistence.SupportInterval.ne_zero_iff_exists_coefficient
+#print axioms TDA.Persistence.SupportInterval.coefficient_eq_of_le
+#print axioms TDA.Persistence.SupportInterval.mem_target_of_nonzero
+#print axioms TDA.Persistence.SupportInterval.mem_source_of_nonzero
+#print axioms TDA.Persistence.Hook.support_ordConnected
+#print axioms TDA.Persistence.Hook.hom_ext
+#print axioms TDA.Persistence.Hook.generator_dies
+#print axioms TDA.Persistence.Hook.fromGenerator_birth
+#print axioms TDA.Persistence.Hook.exists_lift
+#print axioms TDA.Persistence.Hook.homEquivKernel
+#print axioms TDA.Persistence.Hook.birth_mem
+#print axioms TDA.Persistence.Hook.death_not_mem
+#print axioms TDA.Persistence.Hook.fromGenerator_app
+#print axioms TDA.Persistence.BoundedInterval.ordConnected
+#print axioms TDA.Persistence.BoundedInterval.exists_mem_add_iff
+#print axioms TDA.Persistence.BoundedInterval.support_nonempty
+#print axioms TDA.Persistence.Rectangle.ordConnected
+#print axioms TDA.Persistence.Rectangle.support_nonempty
+#print axioms TDA.Persistence.Rectangle.inf_mem
+#print axioms TDA.Persistence.Rectangle.hom_coefficient_eq
+#print axioms TDA.Persistence.Rectangle.hom_ext
+#print axioms TDA.Persistence.Rectangle.exists_mem_add_iff
+#print axioms TDA.Persistence.Rectangle.diagonal_maps_eq_zero_iff
+#print axioms TDA.Persistence.RealRay.interleaving
+#print axioms TDA.Persistence.RealRay.distance_eq_zero
+#print axioms TDA.Persistence.RealRay.not_nonempty_iso
+#print axioms TDA.Persistence.RealRay.not_nonempty_zero_interleaving
+#print axioms TDA.Persistence.FiniteConstructible.distance_le_iff_interleaving
+#print axioms TDA.Persistence.FiniteConstructible.interleaving_at_distance
+#print axioms TDA.Persistence.FiniteConstructible.distance_eq_zero_iff_iso
+#print axioms TDA.Persistence.FiniteConstructible.interleaving_parameters_eq_Ici
+#print axioms TDA.Persistence.FiniteConstructible.isClosed_interleaving_parameters
+#print axioms TDA.Persistence.GradedFree.fiber_mono
+#print axioms TDA.Persistence.GradedFree.fiber_eq_of_birth_iff
+#print axioms TDA.Persistence.GradedFree.structureMap_apply
+#print axioms TDA.Persistence.GradedFree.generator_eq_structureMap
+#print axioms TDA.Persistence.GradedFree.fiberLift_generator
+#print axioms TDA.Persistence.GradedFree.fiberLift_unique
+#print axioms TDA.Persistence.GradedFree.lift_birth
+#print axioms TDA.Persistence.GradedFree.lift_unique
+#print axioms TDA.Persistence.GradedFree.exists_lift_of_surjective
+#print axioms TDA.Persistence.GradedFree.sub_lifts_mem_ker
+#print axioms TDA.Persistence.GradedFree.Presentation.ofRelations_at_birth
+#print axioms TDA.Persistence.GradedFree.Presentation.cover_surjective
+#print axioms TDA.Persistence.GradedFree.Presentation.exists_lift
+#print axioms TDA.Persistence.GradedFree.Presentation.relations_vanish
+#print axioms TDA.Persistence.GradedFree.Presentation.cover_desc
+#print axioms TDA.Persistence.GradedFree.Presentation.desc_unique
+#print axioms TDA.Persistence.GradedFree.Presentation.finitelyPresented
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_of_iso
+#print axioms TDA.Persistence.GradedFree.free_finitelyPresented
+#print axioms TDA.Persistence.GradedFree.Presentation.structureMap_isIso_of_birth_iff
+#print axioms TDA.Persistence.GradedFree.Presentation.criticalCoordinates_finite
+#print axioms TDA.Persistence.GradedFree.Presentation.generators_birth_iff_of_no_critical
+#print axioms TDA.Persistence.GradedFree.Presentation.relations_birth_iff_of_no_critical
+#print axioms TDA.Persistence.GradedFree.Presentation.structureMap_isIso_of_no_critical
+#print axioms TDA.Persistence.GradedFree.Presentation.exists_pos_structureMap_isIso
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_finite_criticalCoordinates
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_pos_structureMap_isIso
+#print axioms TDA.Persistence.HookInfinity.fiberEquivOfLe_apply
+#print axioms TDA.Persistence.HookInfinity.fiberEquivOfLe_structureMap
+#print axioms TDA.Persistence.HookInfinity.fiber_eq_zero_of_not_le
+#print axioms TDA.Persistence.HookInfinity.fromBirth_birth
+#print axioms TDA.Persistence.HookInfinity.hom_ext
+#print axioms TDA.Persistence.HookInfinity.homEquivFiber
+#print axioms TDA.Persistence.HookInfinity.exists_lift_of_birth_surjective
+#print axioms TDA.Persistence.HookInfinity.exists_lift_of_surjective
+#print axioms TDA.Persistence.HookInfinity.exists_lift_rankExact
+#print axioms TDA.Persistence.GradedFree.hom_ext_birth
+#print axioms TDA.Persistence.GradedFree.Presentation.hom_ext_birth
+#print axioms TDA.Persistence.GradedFree.Presentation.postcomp_injective_of_birth_injective
+#print axioms TDA.Persistence.GradedFree.Presentation.exists_lift_of_birth_surjective_relation_injective
+#print axioms TDA.Persistence.GradedFree.Presentation.postcomp_bijective_of_birth_bijective_relation_injective
+
 
 -- Public one-step prefix-span API.
 #print axioms TDA.Persistence.Reduction.prefixSpan
@@ -3206,81 +3295,37 @@ set_option linter.auxLemma false
 
 #print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
 
-#print axioms TDA.Persistence.IsPointwiseShortExact.rank_add_iff_lift_kernel
-#print axioms TDA.Persistence.IsRankExact.lift_kernel
-#print axioms TDA.Persistence.IsPointwiseShortExact.reindex
-#print axioms TDA.Persistence.IsRankExact.reindex
-#print axioms TDA.Persistence.IsPointwiseShortExact.rankExact_of_section
-#print axioms TDA.Persistence.SupportInterval.fiber
-#print axioms TDA.Persistence.SupportInterval.module
-#print axioms TDA.Persistence.SupportInterval.one
-#print axioms TDA.Persistence.SupportInterval.val_eq_zero
-#print axioms TDA.Persistence.SupportInterval.structureMap_val
-#print axioms TDA.Persistence.SupportInterval.structureMap_eq_zero_of_not_mem
-#print axioms TDA.Persistence.SupportInterval.structureMap_eq_zero_iff
-#print axioms TDA.Persistence.SupportInterval.comparison_app_val
-#print axioms TDA.Persistence.SupportInterval.comparison_ne_zero_iff
-#print axioms TDA.Persistence.SupportInterval.app_val_eq_mul
-#print axioms TDA.Persistence.SupportInterval.ne_zero_iff_exists_coefficient
-#print axioms TDA.Persistence.SupportInterval.coefficient_eq_of_le
-#print axioms TDA.Persistence.SupportInterval.mem_target_of_nonzero
-#print axioms TDA.Persistence.SupportInterval.mem_source_of_nonzero
-#print axioms TDA.Persistence.Hook.support_ordConnected
-#print axioms TDA.Persistence.Hook.hom_ext
-#print axioms TDA.Persistence.Hook.generator_dies
-#print axioms TDA.Persistence.Hook.fromGenerator_birth
-#print axioms TDA.Persistence.Hook.exists_lift
-#print axioms TDA.Persistence.Hook.homEquivKernel
-#print axioms TDA.Persistence.Hook.birth_mem
-#print axioms TDA.Persistence.Hook.death_not_mem
-#print axioms TDA.Persistence.Hook.fromGenerator_app
-#print axioms TDA.Persistence.BoundedInterval.ordConnected
-#print axioms TDA.Persistence.BoundedInterval.exists_mem_add_iff
-#print axioms TDA.Persistence.BoundedInterval.support_nonempty
-#print axioms TDA.Persistence.Rectangle.ordConnected
-#print axioms TDA.Persistence.Rectangle.support_nonempty
-#print axioms TDA.Persistence.Rectangle.inf_mem
-#print axioms TDA.Persistence.Rectangle.hom_coefficient_eq
-#print axioms TDA.Persistence.Rectangle.hom_ext
-#print axioms TDA.Persistence.Rectangle.exists_mem_add_iff
-#print axioms TDA.Persistence.Rectangle.diagonal_maps_eq_zero_iff
+-- Different-label ambient Cech stability.
+#print axioms TDA.Persistence.Cech.relationInterleaving_φ
+#print axioms TDA.Persistence.Cech.relationInterleaving_ψ
+#print axioms TDA.Persistence.Cech.realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Cech.complex_realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_relation
+#print axioms TDA.Persistence.Cech.exists_relation_dist_le_hausdorffDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_hausdorffDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_hausdorffEDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_hausdorffEDist_le
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_sampling_errors
+#print axioms TDA.Persistence.Cech.dgm_eq_of_range_eq
 
-#print axioms TDA.Persistence.RealRay.interleaving
+-- Ambient Cech relation fixtures.
+#print axioms TDA.Persistence.Cech.RelationExamples.collapse_is_many_to_one
+#print axioms TDA.Persistence.Cech.RelationExamples.repeated_diagram_eq
+#print axioms TDA.Persistence.Cech.RelationExamples.repeated_bottleneck_zero
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_bottleneck_le
+#print axioms TDA.Persistence.Cech.RelationExamples.pair_full_h0
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_edge_value
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_essential_bar
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_budget_zero_fails
+#print axioms TDA.Persistence.Cech.RelationExamples.proper_ambient_closed_ball_comparison
+#print axioms TDA.Persistence.Cech.RelationExamples.empty_diagrams_eq
+#print axioms TDA.Persistence.Cech.RelationExamples.common_target_samples
+#print axioms TDA.Persistence.Cech.complexRelationInterleaving_φ
+#print axioms TDA.Persistence.Cech.complexRelationInterleaving_ψ
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_full_h0
+#print axioms TDA.Persistence.Cech.RelationExamples.interval_target_samples
+#print axioms TDA.Persistence.Cech.RelationExamples.punctured_sublevel_ne_complex
 
-#print axioms TDA.Persistence.RealRay.distance_eq_zero
-
-#print axioms TDA.Persistence.RealRay.not_nonempty_iso
-
-#print axioms TDA.Persistence.RealRay.not_nonempty_zero_interleaving
-
-#print axioms TDA.Persistence.FiniteConstructible.distance_le_iff_interleaving
-
-#print axioms TDA.Persistence.FiniteConstructible.interleaving_at_distance
-
-#print axioms TDA.Persistence.FiniteConstructible.distance_eq_zero_iff_iso
-
-#print axioms TDA.Persistence.FiniteConstructible.interleaving_parameters_eq_Ici
-
-#print axioms TDA.Persistence.FiniteConstructible.isClosed_interleaving_parameters
-#print axioms TDA.Persistence.GradedFree.fiber_mono
-#print axioms TDA.Persistence.GradedFree.fiber_eq_of_birth_iff
-#print axioms TDA.Persistence.GradedFree.structureMap_apply
-#print axioms TDA.Persistence.GradedFree.generator_eq_structureMap
-#print axioms TDA.Persistence.GradedFree.fiberLift_generator
-#print axioms TDA.Persistence.GradedFree.fiberLift_unique
-#print axioms TDA.Persistence.GradedFree.lift_birth
-#print axioms TDA.Persistence.GradedFree.lift_unique
-#print axioms TDA.Persistence.GradedFree.exists_lift_of_surjective
-#print axioms TDA.Persistence.GradedFree.sub_lifts_mem_ker
-#print axioms TDA.Persistence.GradedFree.Presentation.ofRelations_at_birth
-#print axioms TDA.Persistence.GradedFree.Presentation.cover_surjective
-#print axioms TDA.Persistence.GradedFree.Presentation.exists_lift
-#print axioms TDA.Persistence.GradedFree.Presentation.relations_vanish
-#print axioms TDA.Persistence.GradedFree.Presentation.cover_desc
-#print axioms TDA.Persistence.GradedFree.Presentation.desc_unique
-#print axioms TDA.Persistence.GradedFree.Presentation.finitelyPresented
-#print axioms TDA.Persistence.GradedFree.finitelyPresented_of_iso
-#print axioms TDA.Persistence.GradedFree.free_finitelyPresented
 #print axioms TDA.Persistence.finiteDimensional_range_of_factorization
 #print axioms TDA.Persistence.PModule.qTame_of_finiteDimensional
 #print axioms TDA.Persistence.RealInterleaving.finiteDimensional_range_structureMap
@@ -3371,29 +3416,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.AlgebraicFamily.finite_nontrivial_of_iso
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial_of_iso
-#print axioms TDA.Persistence.GradedFree.Presentation.structureMap_isIso_of_birth_iff
-#print axioms TDA.Persistence.GradedFree.Presentation.criticalCoordinates_finite
-#print axioms TDA.Persistence.GradedFree.Presentation.generators_birth_iff_of_no_critical
-#print axioms TDA.Persistence.GradedFree.Presentation.relations_birth_iff_of_no_critical
-#print axioms TDA.Persistence.GradedFree.Presentation.structureMap_isIso_of_no_critical
-#print axioms TDA.Persistence.GradedFree.Presentation.exists_pos_structureMap_isIso
-#print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_finite_criticalCoordinates
-#print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_pos_structureMap_isIso
-#print axioms TDA.Persistence.HookInfinity.fiberEquivOfLe_apply
-#print axioms TDA.Persistence.HookInfinity.fiberEquivOfLe_structureMap
-#print axioms TDA.Persistence.HookInfinity.fiber_eq_zero_of_not_le
-#print axioms TDA.Persistence.HookInfinity.fromBirth_birth
-#print axioms TDA.Persistence.HookInfinity.hom_ext
-#print axioms TDA.Persistence.HookInfinity.homEquivFiber
-#print axioms TDA.Persistence.HookInfinity.exists_lift_of_birth_surjective
-#print axioms TDA.Persistence.HookInfinity.exists_lift_of_surjective
-#print axioms TDA.Persistence.HookInfinity.exists_lift_rankExact
-
-#print axioms TDA.Persistence.GradedFree.hom_ext_birth
-#print axioms TDA.Persistence.GradedFree.Presentation.hom_ext_birth
-#print axioms TDA.Persistence.GradedFree.Presentation.postcomp_injective_of_birth_injective
-#print axioms TDA.Persistence.GradedFree.Presentation.exists_lift_of_birth_surjective_relation_injective
-#print axioms TDA.Persistence.GradedFree.Presentation.postcomp_bijective_of_birth_bijective_relation_injective
 
 #print axioms TDA.Persistence.CutDecomposition.exists_interval_escapes
 #print axioms TDA.Persistence.CutDecomposition.chosenFiber_iSup_eq_top_real

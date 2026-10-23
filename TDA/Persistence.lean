@@ -1,10 +1,18 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
+
 import TDA.Persistence.GradedFree
 import TDA.Persistence.FinitePresentation
 import TDA.Persistence.FinitePresentationLifting
 import TDA.Persistence.RealCoordinates
 import TDA.Persistence.FinitePresentationGrid
+import TDA.Persistence.RankExact
+import TDA.Persistence.SupportInterval
+import TDA.Persistence.HookProjective
+import TDA.Persistence.Rectangle
+import TDA.Persistence.RealRaySeparation
+import TDA.Persistence.ConstructibleClosure
+import TDA.Persistence.HookInfinity
 import TDA.Persistence.RealInterleaving
 import TDA.Persistence.RealInterleavingLaws
 import TDA.Persistence.RealInterleavingShortness
@@ -67,6 +75,8 @@ import TDA.Persistence.FaceOrderTemplate
 import TDA.Persistence.FiniteFilterStability
 import TDA.Persistence.RipsStability
 import TDA.Persistence.CechStability
+import TDA.Persistence.CechRelationInterleaving
+import TDA.Persistence.CechHausdorff
 import TDA.Persistence.RipsPersistenceImage
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
@@ -164,15 +174,6 @@ import TDA.Persistence.GaussianMeasureEmbedding
 import TDA.Persistence.GaussianUniversality
 import TDA.Persistence.WeightedPersistenceMeasure
 
-import TDA.Persistence.RankExact
-import TDA.Persistence.SupportInterval
-
-import TDA.Persistence.HookProjective
-import TDA.Persistence.Rectangle
-
-import TDA.Persistence.RealRaySeparation
-
-import TDA.Persistence.ConstructibleClosure
 import TDA.Persistence.CompatibleSections
 import TDA.Persistence.CutSubspaces
 
@@ -180,6 +181,5 @@ import TDA.Persistence.AlgebraicFamily
 
 import TDA.Persistence.CompatibleSectionsExamples
 
-import TDA.Persistence.HookInfinity
 import TDA.Persistence.CutDecomposition
 import TDA.Persistence.CutSubspacesExamples
