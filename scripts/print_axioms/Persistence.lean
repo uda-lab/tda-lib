@@ -3452,6 +3452,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.BoundaryTransport.instSecondCountableTopologySpace
 #print axioms TDA.Persistence.BoundaryTransport.instSeparableSpaceSpace
 
+-- Finite uniform GP, outliers and concrete multicover comparisons.
+#print axioms TDA.Persistence.SubdivisionRips.cechHomologyToLargeFaceNerve
+#print axioms TDA.Persistence.SubdivisionRips.ripsHomologyToLargeFaceNerve
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.leftHomologyComparison
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.rightHomologyComparison
+#print axioms TDA.Persistence.MulticoverExamples.added_point_distance
+#print axioms TDA.Persistence.MulticoverExamples.arbitrary_outlier_gp_le_half
+#print axioms TDA.Persistence.MulticoverExamples.incomparable_pair_mem_cover_nerve
+#print axioms TDA.Persistence.MulticoverExamples.incomparable_pair_not_mem_flag
+#print axioms TDA.Persistence.MulticoverExamples.outlierWitness
+
 #print axioms TDA.Persistence.BoundaryTransport.planSpace_iff_not_both_diagonal
 #print axioms TDA.Persistence.BoundaryTransport.boundaryPlan_mass_le
 #print axioms TDA.Persistence.BoundaryTransport.boundaryPlan_mass_lt_top

@@ -941,10 +941,14 @@ or second-level Gaussian universality claim. See [Gaussian measure embeddings an
 
 The normalized subdivision-Rips modules construct open-radius finite flag
 bifiltrations and their actual simplicial homology, including restricted-index
-stability for a bounded perturbation of one labelled distance matrix. The
-measure bifiltration has a restricted Prokhorov interleaving, and finite
-sup-norm Čech/Rips flag homology diagrams agree naturally. The natural
-multicover nerve bridge and full GP-to-SR bound remain open. See
+stability for a bounded perturbation of one labelled distance matrix. Finite
+sup-norm Čech/Rips flag homology diagrams agree naturally. Common-ambient
+finite-uniform GP has exact finite sup-norm witness reduction, the arbitrary
+outlier-mass bound, and a concrete multicover interleaving. The large-face cover
+has the exact multicover union and contractible intersections in normed
+ambients; its flag inclusion induces natural maps on actual subdivision-Rips
+homology. The maps' invertibility, the natural spatial homology comparison,
+and the full GP-to-SR bound remain open. See
 [normalized subdivision-Rips and measure stability](math/subdivision-rips.md).
 
 ### Q-tame persistence rectangle measures

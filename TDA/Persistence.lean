@@ -178,6 +178,8 @@ import TDA.Persistence.CutSubspacesExamples
 
 import TDA.Persistence.BoundaryTransportGeometry
 
+import TDA.Persistence.MulticoverNerve
+import TDA.Persistence.GromovProkhorovMulticover
 import TDA.Persistence.BoundaryPlans
 import TDA.Persistence.BoundaryPlanLaws
 import TDA.Persistence.ReservoirMeasure
