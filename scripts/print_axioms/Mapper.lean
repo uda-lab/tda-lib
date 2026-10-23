@@ -937,3 +937,28 @@ import TDA
 #print axioms TDA.Mapper.exists_graphPLMapperCover_resolution_le_of_bounds
 
 #print axioms TDA.Mapper.exists_graphPLMapperCover_resolution_le
+
+#print axioms TDA.Mapper.mapperHomologyMap_def
+#print axioms TDA.Mapper.mapperHomologyMap_id
+#print axioms TDA.Mapper.mapperHomologyMap_comp
+#print axioms TDA.Mapper.mapperChainHomotopy_hom_succ
+#print axioms TDA.Mapper.mapperHomologyMap_eq
+#print axioms TDA.Mapper.mapperHomologyMap_eq_id
+#print axioms TDA.Mapper.mapperHomologyMap_comp_eq
+#print axioms TDA.Mapper.mapperHomologyPModule_obj
+#print axioms TDA.Mapper.structureMap_mapperHomologyPModule
+#print axioms TDA.Mapper.structureMapLinear_mapperHomologyPModule
+#print axioms TDA.Mapper.mapperHomologyPModule_eq
+#print axioms TDA.Mapper.CoherentCoverTower.structureMap_mapperHomologyPModule
+#print axioms TDA.Mapper.RefinementHomologyExamples.subsingleton_zerothHomotopy
+#print axioms TDA.Mapper.RefinementHomologyExamples.select_mapperMap_ne
+#print axioms TDA.Mapper.RefinementHomologyExamples.select_mapperHomologyMap_eq
+#print axioms TDA.Mapper.RefinementHomologyExamples.select_mapperHomologyMap_class_ne_zero
+#print axioms TDA.Mapper.RefinementHomologyExamples.skew_not_coherent
+#print axioms TDA.Mapper.RefinementHomologyExamples.skew_mapperHomologyPModule
+#print axioms TDA.Mapper.RefinementHomologyExamples.threeStageTower_structureMap
+#print axioms TDA.Mapper.RefinementHomologyExamples.skew_first_middle_collapse
+#print axioms TDA.Mapper.RefinementHomologyExamples.emptySource_componentIndex_isEmpty
+#print axioms TDA.Mapper.RefinementHomologyExamples.empty_source_mapper
+#print axioms TDA.Mapper.RefinementHomologyExamples.isolated_vertex_maps_homology_ne
+#print axioms TDA.Mapper.RefinementHomologyExamples.isolated_vertex_maps_homology_eq_zero_ring
