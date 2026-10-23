@@ -3285,3 +3285,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.AlgebraicFamily.finite_nontrivial_of_iso
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial_of_iso
+
+#print axioms TDA.Persistence.Rips.exists_relation_distortion_le_of_hausdorffDist_lt
+#print axioms TDA.Persistence.Rips.hausdorffInterleavingOfLt
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffDist_of_ne_top
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffEDist
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffDist_of_totallyBounded
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.intervals_infinite
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_image_not_isClosed
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_closed_interval_distance_zero
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_closed_interval_interleaving
