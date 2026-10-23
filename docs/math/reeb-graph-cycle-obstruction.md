@@ -4,7 +4,9 @@ Consulted manifestations, attribution and rights: [ReebOrdering-aa7d10f](referen
 
 This digest builds on the realization of simple graphs in
 [reeb-graph-realization.md](reeb-graph-realization.md) and proves its necessary tree condition:
-a graph whose realization is simply connected is a tree. The converse is not proved.
+a graph whose realization is simply connected is a tree. The converse for finite vertex types,
+and the resulting tree criteria, are in
+[reeb-graph-tree-contraction.md](reeb-graph-tree-contraction.md).
 
 ## The one-edge winding map
 
@@ -154,8 +156,9 @@ Changes: the names; public visibility; bundled edge data through the merged `con
 the return loop, its lift and its non-null-homotopy as separate public declarations; the
 reversed-dart formula and the endpoint values as statements; and graph connectedness from the
 merged `connected_iff_pathConnectedSpace` in place of the source's private connectedness lemma.
-Every other declaration, including every fixture, is new. The source's finite-tree and Hasse-order
-results are not ported.
+Every other declaration, including every fixture, is new. The source's finite-tree results are
+adapted in [reeb-graph-tree-contraction.md](reeb-graph-tree-contraction.md); its Hasse-order result
+is not ported.
 
 **de Silva, Munch and Patel.** The arbitrary-graph theorem here is not a result of *Categorified
 Reeb Graphs*; its Notation 2.7 is context for the realization only, as recorded in
@@ -168,8 +171,9 @@ acyclicity to simple connectivity. The search of TauCeti recorded in
 [reeb-graph-realization.md](reeb-graph-realization.md) applies with the same limits; nothing from
 TauCeti is used.
 
-Not claimed here: the converse, that the realization of a tree is simply connected; contractibility
-or leaf collapse of finite trees; fundamental groups of realizations; Hasse-order results; flows.
+Not claimed here: the converse, that the realization of a tree is simply connected, which is
+proved for finite vertex types in [reeb-graph-tree-contraction.md](reeb-graph-tree-contraction.md);
+fundamental groups of realizations; Hasse-order results; flows.
 
 Sources: [pinned mathlib path lifting](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Topology/Homotopy/Lifting.lean),
 [the circle covering](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Topology/Covering/AddCircle.lean),
