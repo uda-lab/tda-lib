@@ -1,5 +1,7 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
+import TDA.Persistence.PersistenceMeasure
+import TDA.Persistence.PersistenceMeasureEssential
 import TDA.Persistence.RealInterleaving
 import TDA.Persistence.RealInterleavingLaws
 import TDA.Persistence.RealInterleavingShortness
@@ -148,6 +150,7 @@ import TDA.Persistence.CechFinitePBottleneckAllDegrees
 import TDA.Persistence.RipsRelationInterleaving
 import TDA.Persistence.QTame
 import TDA.Persistence.RipsQTame
+import TDA.Persistence.RipsHausdorffInterleaving
 import TDA.Persistence.FiniteWeightedBoundaryTransport
 
 import TDA.Persistence.RipsGromovHausdorff
@@ -177,3 +180,11 @@ import TDA.Persistence.BoundaryTransportGeometry
 
 import TDA.Persistence.MulticoverNerve
 import TDA.Persistence.GromovProkhorovMulticover
+import TDA.Persistence.BoundaryPlans
+import TDA.Persistence.BoundaryPlanLaws
+import TDA.Persistence.ReservoirMeasure
+import TDA.Persistence.BoundaryTransportForward
+import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.BoundaryTransportComparison
+import TDA.Persistence.ReservoirNormalization
+import TDA.Persistence.BoundaryTransportZero

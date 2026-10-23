@@ -384,6 +384,18 @@ infinite-dimensional. This result supplies q-tameness; locally finite diagrams
 and their algebraic stability require separate foundations. See
 [the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
+`TDA.Persistence.RipsHausdorffInterleaving` compares the actual Rips homology
+modules of arbitrary isometric images in a common metric space, over every
+ring and in every degree. Finite Hausdorff distance r gives an actual
+ε-interleaving whenever ε > 2r and hence a module-distance bound of 2r.
+Near points with positive slack replace closest-point selection, so the
+images may be nonclosed. An extended-Hausdorff-distance bound handles
+arbitrary images; nonempty totally bounded images give the real-valued
+bound without compactness or completeness. The infinite open and closed
+unit intervals provide a nonclosed fixture at zero module distance.
+These results make no infinite-diagram claim. See
+[the construction and scope](math/rips-hausdorff-interleaving.md).
+
 ## Ambient Čech complexes
 
 `TDA.Filtration.Cech` defines the closed Čech complex of labelled points p : V → X in a
@@ -844,8 +856,48 @@ and separable. The interior has its usual topology, is open and dense, and its B
 sets determine the Borel structure of the enlarged space. Collapsing the diagonal of
 the closed half-plane defines a measurable Lipschitz map onto this space.
 
-These results supply the underlying Polish space for finite-measure boundary
-transport. The reservoir comparison, optimal Radon plans and finite atomic
+`TDA.Persistence.BoundaryPlans` uses Borel measures on closed-half-plane pairs
+outside the diagonal–diagonal region. Their two interior marginals are prescribed;
+boundary marginals are free. Every admissible plan has mass at most the sum of
+the input masses. The explicit deletion/insertion plan sends each bar to its
+nearest diagonal point and has cost equal to the sum of the diagonal persistence
+moments. Finite moments therefore give a finite-cost competitor and a finite
+powered infimum over all admissible plans. `BoundaryPlanLaws` proves self-value
+zero and symmetry by identity plans and a cost-preserving measurable transposition.
+The optimization and its reciprocal-p root remain extended nonnegative values.
+
+`ReservoirMeasure` augments an interior measure to a common finite mass by adding
+a boundary atom. The interior restriction is preserved, and for every positive p
+the p-th boundary moment is exactly the original diagonal persistence moment.
+Paired capacities dominate the sum of the original masses. Finite augmented
+measures are regular on the collapsed Polish space; dividing by a positive
+capacity gives probability measures and the corresponding moment scaling.
+
+`BoundaryTransportForward` and `BoundaryTransportReverse` compare every admissible
+plan in both directions. The forward map collapses the diagonal and adds a
+boundary–boundary atom. The reverse map keeps a direct interior leg when its
+distance is no greater than the two boundary legs, and otherwise splits it into
+deletion and insertion. For p at least one, both transformations preserve the
+required marginals and do not increase powered cost, including infinite values.
+`BoundaryTransportComparison.boundaryTransportPowerValue_eq_reservoirPowerValue`
+identifies the two infima for every finite capacity dominating the sum of the
+original masses; the reservoir value is independent of that capacity. Taking the
+reciprocal-p root gives the corresponding distance-value equality.
+
+`ReservoirNormalization` proves the probability scaling law by multiplying every
+competitor measure by the reciprocal capacity and reversing that operation.
+The powered value scales by the capacity; for positive p its root scales by
+the capacity raised to 1/p. Together with the comparison theorem, this identifies
+boundary transport with that scaled capacity-one reservoir value. The paired
+probability statement retains the full sum-of-masses capacity bound.
+
+`BoundaryTransportZero` identifies the powered value against zero with the
+diagonal persistence moment, for every finite-mass input and p at least one.
+It gives both the reciprocal-p root formula and the p-th power of distance to
+zero, including when the moment is infinite.
+
+The bridge to an ordinary Wasserstein API, minimizing Radon plans, sharp triangle
+and separation, native weighted atomic compatibility and finite atomic
 approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 
 ### Gaussian signed measures and C₀ universality
@@ -885,6 +937,8 @@ The results provide abstract noncomputable integration and approximation existen
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
 
+### Normalized subdivision-Rips and measure stability
+
 The normalized subdivision-Rips modules construct open-radius finite flag
 bifiltrations and their actual simplicial homology, including restricted-index
 stability for a bounded perturbation of one labelled distance matrix. Finite
@@ -896,6 +950,21 @@ ambients; its flag inclusion induces natural maps on actual subdivision-Rips
 homology. The maps' invertibility, the natural spatial homology comparison,
 and the full GP-to-SR bound remain open. See
 [normalized subdivision-Rips and measure stability](math/subdivision-rips.md).
+
+### Q-tame persistence rectangle measures
+
+`TDA.Persistence.PersistenceMeasure` constructs the image-and-kernel quotient
+`PersistenceMeasureSpace` and its dimension `persistenceMeasureValue` for
+real modules over a field. A finite crossing image suffices for the
+four-rank formula, birth and death splitting, and the crossing-rank bound;
+`PModule.QTame.persistenceMeasureSpace_finiteDimensional` supplies this
+finiteness on every rectangle separated from the diagonal.
+`TDA.Persistence.PersistenceMeasureEssential` constructs essential-boundary
+strip counts as the eventual dimensions of image quotients and proves
+birth-coordinate additivity. It includes no assumed interval decomposition.
+The decorated locally finite diagram representation and its bottleneck
+stability are not supplied by this API. See
+[persistence rectangle measures](math/persistence-rectangle-measure.md).
 
 ### Greedy sparse Rips geometry and deletion maps
 
@@ -919,7 +988,22 @@ closed active complex with the relaxed complex at one nonnegative scale, in ever
 degree and over every ring in the existing ordered-vertex chain model, using the
 signed prism homotopy.
 `unionDeletionHomologyIso` proves the adjacent two-scale union step under an
-explicit absence of intervening deletion times. `ClosedBallDoubling.packing_bound`
+explicit absence of intervening deletion times. `deletionGrid` consists of the
+terminal scale and actual finite vertex-deletion times at or before it;
+`sparseComplex_eq_activeUnion_deletionGrid` proves this finite union presents the
+sparse complex. `tailDeletionHomologyIso` retracts the earliest stage from a
+finite union when the remaining scales are later and no deletion occurs before
+the next one. `isIso_terminal_activeUnion` iterates this retraction over a
+complete grid. `isIso_sparse_relaxed` identifies the resulting sparse complex
+with the relaxed complex on homology; `sparseRelaxedHomologyIso` is the natural
+isomorphism of their real-indexed persistence modules, including degree zero
+and negative scales. `sparseRipsLogInterleaving` combines that isomorphism
+with the relaxed/Rips inclusions. Reindexing positive radii by `exp` gives an
+interleaving with shift `log((1−2η)⁻¹)` in every degree, including degree zero.
+`sparseRipsLogDistance_le` bounds the corresponding module interleaving distance.
+`parameterOfTolerance` converts `0 < τ ≤ 1` to `η = τ/(2(1+τ))`, for which the
+multiplicative factor is `1+τ`; at `η=1/3` the factor is `3`.
+`ClosedBallDoubling.packing_bound`
 gives the uniform separated-set bound `Λ^h` from iterated closed-ball covers.
 `facesOfDimension_card_le` bounds the number of distinct j-simplices in the full
 all-scales carrier by `|P|·(Λ^h)^j`; `skeletonFaces_card_le` bounds its m-skeleton
@@ -928,7 +1012,6 @@ from η alone. The constants are independent of cardinality, metric spread and
 maximum scale. `LineSamples.uniform_skeleton_bound` uses one doubling bound of
 four at every sample size.
 
-The exported results do not yet identify the full sparse union's persistence module
-with the relaxed module. The finite entry-time presentation, diagram approximation,
-and full union comparison remain part of
+The closed face-entry presentation and finite log-diagram bottleneck comparison
+remain part of
 [the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).
