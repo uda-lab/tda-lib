@@ -92,4 +92,6 @@ since faces are label sets and labels may repeat, and the bound is proved throug
 finite-face stability theorem rather than exported from Corollary 4.10 or Theorem 5.6.
 The Rips factor 2 matches the factor of Theorem 5.2 informally. No Hausdorff or
 Gromov–Hausdorff statement, interleaving, change of witness space or relabelling is
-formalized.
+formalized by the same-label modules. The separate
+[ambient relation and Hausdorff results](cech-hausdorff-stability.md) compare different
+label types in a fixed ambient space and retain repeated coordinates.

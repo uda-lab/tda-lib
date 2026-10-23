@@ -64,6 +64,8 @@ import TDA.Persistence.FaceOrderTemplate
 import TDA.Persistence.FiniteFilterStability
 import TDA.Persistence.RipsStability
 import TDA.Persistence.CechStability
+import TDA.Persistence.CechRelationInterleaving
+import TDA.Persistence.CechHausdorff
 import TDA.Persistence.RipsPersistenceImage
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
@@ -170,3 +172,5 @@ import TDA.Persistence.CompatibleSectionsExamples
 
 import TDA.Persistence.CutDecomposition
 import TDA.Persistence.CutSubspacesExamples
+
+import TDA.Persistence.BoundaryTransportGeometry

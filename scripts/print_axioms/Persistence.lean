@@ -3245,6 +3245,37 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.PersistenceMeasureExamples.essential_interval_finite_rectangle_zero
 #print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_self
 
+-- Different-label ambient Cech stability.
+#print axioms TDA.Persistence.Cech.relationInterleaving_φ
+#print axioms TDA.Persistence.Cech.relationInterleaving_ψ
+#print axioms TDA.Persistence.Cech.realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Cech.complex_realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_relation
+#print axioms TDA.Persistence.Cech.exists_relation_dist_le_hausdorffDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_hausdorffDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_hausdorffEDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_hausdorffEDist_le
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_sampling_errors
+#print axioms TDA.Persistence.Cech.dgm_eq_of_range_eq
+
+-- Ambient Cech relation fixtures.
+#print axioms TDA.Persistence.Cech.RelationExamples.collapse_is_many_to_one
+#print axioms TDA.Persistence.Cech.RelationExamples.repeated_diagram_eq
+#print axioms TDA.Persistence.Cech.RelationExamples.repeated_bottleneck_zero
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_bottleneck_le
+#print axioms TDA.Persistence.Cech.RelationExamples.pair_full_h0
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_edge_value
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_essential_bar
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_budget_zero_fails
+#print axioms TDA.Persistence.Cech.RelationExamples.proper_ambient_closed_ball_comparison
+#print axioms TDA.Persistence.Cech.RelationExamples.empty_diagrams_eq
+#print axioms TDA.Persistence.Cech.RelationExamples.common_target_samples
+#print axioms TDA.Persistence.Cech.complexRelationInterleaving_φ
+#print axioms TDA.Persistence.Cech.complexRelationInterleaving_ψ
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_full_h0
+#print axioms TDA.Persistence.Cech.RelationExamples.interval_target_samples
+#print axioms TDA.Persistence.Cech.RelationExamples.punctured_sublevel_ne_complex
+
 #print axioms TDA.Persistence.finiteDimensional_range_of_factorization
 #print axioms TDA.Persistence.PModule.qTame_of_finiteDimensional
 #print axioms TDA.Persistence.RealInterleaving.finiteDimensional_range_structureMap
@@ -3357,3 +3388,40 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelPlus_singleton_eq_top
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelMinus_singleton_eq_bot
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_singleton_interval_spaces
+
+#print axioms TDA.Persistence.BoundaryTransport.depth_eq
+#print axioms TDA.Persistence.BoundaryTransport.depth_pos
+#print axioms TDA.Persistence.BoundaryTransport.depth_nonneg
+#print axioms TDA.Persistence.BoundaryTransport.rho_boundary_boundary
+#print axioms TDA.Persistence.BoundaryTransport.rho_point_boundary
+#print axioms TDA.Persistence.BoundaryTransport.rho_boundary_point
+#print axioms TDA.Persistence.BoundaryTransport.rho_point_point
+#print axioms TDA.Persistence.BoundaryTransport.rho_self
+#print axioms TDA.Persistence.BoundaryTransport.rho_comm
+#print axioms TDA.Persistence.BoundaryTransport.rho_triangle
+#print axioms TDA.Persistence.BoundaryTransport.rho_eq_zero_iff
+#print axioms TDA.Persistence.BoundaryTransport.dist_point_boundary
+#print axioms TDA.Persistence.BoundaryTransport.dist_boundary_point
+#print axioms TDA.Persistence.BoundaryTransport.dist_point_point
+#print axioms TDA.Persistence.BoundaryTransport.lipschitz_point
+#print axioms TDA.Persistence.BoundaryTransport.continuous_point
+#print axioms TDA.Persistence.BoundaryTransport.cauchySeq_exists_tendsto
+#print axioms TDA.Persistence.BoundaryTransport.isOpenEmbedding_point
+#print axioms TDA.Persistence.BoundaryTransport.measurableEmbedding_point
+#print axioms TDA.Persistence.BoundaryTransport.measurableSet_iff_interior
+#print axioms TDA.Persistence.BoundaryTransport.collapse_interior
+#print axioms TDA.Persistence.BoundaryTransport.collapse_diagonal
+#print axioms TDA.Persistence.BoundaryTransport.lipschitz_collapse
+#print axioms TDA.Persistence.BoundaryTransport.collapse_surjective
+#print axioms TDA.Persistence.BoundaryTransport.continuous_collapse
+#print axioms TDA.Persistence.BoundaryTransport.measurable_collapse
+#print axioms TDA.Persistence.BoundaryTransport.dist_collapse_boundary
+#print axioms TDA.Persistence.BoundaryTransport.far_points_shortcut
+#print axioms TDA.Persistence.BoundaryTransport.far_points_squared_shortcut_and_boundary_legs
+#print axioms TDA.Persistence.BoundaryTransport.exists_point_dist_boundary_lt
+#print axioms TDA.Persistence.BoundaryTransport.denseRange_point
+#print axioms TDA.Persistence.BoundaryTransport.instBorelSpaceSpace
+#print axioms TDA.Persistence.BoundaryTransport.instCompleteSpaceSpace
+#print axioms TDA.Persistence.BoundaryTransport.instPolishSpaceSpace
+#print axioms TDA.Persistence.BoundaryTransport.instSecondCountableTopologySpace
+#print axioms TDA.Persistence.BoundaryTransport.instSeparableSpaceSpace
