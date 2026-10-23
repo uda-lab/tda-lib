@@ -167,3 +167,6 @@ import TDA.Persistence.CutSubspaces
 import TDA.Persistence.AlgebraicFamily
 
 import TDA.Persistence.CompatibleSectionsExamples
+
+import TDA.Persistence.CutDecomposition
+import TDA.Persistence.CutSubspacesExamples
