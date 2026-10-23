@@ -7,7 +7,7 @@ together with a natural isomorphism to the given module. The construction is
 described in [graded free modules and finite presentations](multiparameter-foundations.md#graded-free-modules-and-finite-presentations).
 
 Write 1 for the all-ones vector. For a nonnegative finite parameter ε,
-write M[ε](a) = M(a + ε·1). An
+write `M[ε](a) = M(a + ε·1)`. An
 ε-interleaving consists of natural maps M → N[ε] and N → M[ε] whose two
 composites are the structure maps to M[2ε] and N[2ε]. The extended distance
 dᵢ(M,N) is the infimum of the parameters admitting such maps; an empty
