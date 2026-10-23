@@ -365,8 +365,30 @@ singleton supports and assumes no decomposition or global countability. Finite
 activity at each parameter, and finite activity over a finite observation list,
 follow from finite dimension. `CutSubspacesExamples` checks cut endpoints and the
 singleton image/kernel spaces of a module with zero maps at strict inequalities.
-Scalar interval decomposition and equality with finite-observation barcodes remain
-open in [the decomposition contract](https://github.com/uda-lab/tda-lib/issues/506).
+`TDA.Persistence.RealIntervalDecomposition` chooses a basis of each compatible
+section complement and obtains scalar interval summands. Its `scalarIso` is a
+natural isomorphism from their algebraic direct sum to any pointwise
+finite-dimensional real-indexed module; `exists_interval_decomposition` states
+the corresponding existence theorem. The nonempty supports are order-convex,
+with open or closed endpoints, singletons, infinite tails and the whole real
+line allowed. Finite activity is derived at every parameter, with no global
+countability assumption.
+
+`RealIntervalObservation.rankBarcode_eq_sampledBarcode` identifies the existing
+rank barcode of every strict finite real observation list with the multiset of
+nonempty sampled intersections of these summands, retaining multiplicities.
+Only finitely many occurrences meet the list. `FiniteObservation` supplies the
+rank and visible-occurrence arguments for arbitrary algebraic interval families.
+No finite critical grid or continuity hypothesis is required.
+
+`IntervalCompatibility` identifies the generic support modules with existing
+real half-open interval modules and their finite diagram realizations by natural
+isomorphisms, including the existing finite-constructible decomposition.
+`EphemeralIntervalIso` proves `IntervalCompatibility.ephemeralIso`, realizing the real-indexed ephemeral module as the sum of all real
+singleton intervals. The examples also include an empty family, both left-tail
+conventions, and an infinite locally finite interval module family accumulating
+at zero. These decomposition results require finite-dimensional fibers; the
+q-tame class has a different hypothesis.
 
 ## Metric input and Rips diagrams
 
