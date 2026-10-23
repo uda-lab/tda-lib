@@ -554,4 +554,18 @@ noncomputable def CrossData.zeroIso (C : CrossData.{u,w} (R := R) (n := n) 0) :
     C.leftPresentation.presented ≅ C.rightPresentation.presented :=
   C.quotientInterleaving.toIso
 
+/-- The first primitive relation family vanishes in the first quotient. -/
+theorem CrossData.primitive_left_vanish : C.r₁ ≫ C.leftPresentation.cover = 0 := by
+  have h := congrArg (fun f => sumInl C.Y₁ (C.Y₂.shiftGrade (-(ε : ℝ))) ≫ f)
+    C.leftPresentation.relations_vanish
+  simpa only [CrossData.leftPresentation, ← Category.assoc, sumInl_sumDesc,
+    comp_zero] using h
+
+/-- The second primitive relation family vanishes in the second quotient. -/
+theorem CrossData.primitive_right_vanish : C.r₂ ≫ C.rightPresentation.cover = 0 := by
+  have h := congrArg (fun f => sumInr (C.Y₁.shiftGrade (-(ε : ℝ))) C.Y₂ ≫ f)
+    C.rightPresentation.relations_vanish
+  simpa only [CrossData.rightPresentation, ← Category.assoc, sumInr_sumDesc,
+    comp_zero] using h
+
 end TDA.Persistence.GradedFree

@@ -101,7 +101,13 @@ composition laws. `GradedFree.CrossData` specifies shared shifted generators
 and primitive homogeneous relations. `CrossData.quotientInterleaving` constructs
 the interleaving of the resulting cross-presented quotients, over any ring;
 `CrossData.interleavingOfIso` transports it along presentation isomorphisms.
-Finite cross-presentations from an arbitrary interleaving remain unproved.
+For finitely presented modules,
+`GradedFree.finitelyPresented_interleaving_iff_crossPresentation` equates an
+actual ε-interleaving with finite shared cross-presentation data and natural
+isomorphisms to both modules. `Presentation.crossData` reconstructs the data
+from any supplied presentations and interleaving; `crossDataLeftIso` and
+`crossDataRightIso` prove the quotient identifications. `Presentation.presentedShiftIso`
+also identifies the quotient of a shifted presentation with its shifted quotient.
 For two finitely presented modules on `Fin n → ℝ`,
 `GradedFree.finitelyPresented_distance_le_iff_interleaving` identifies a finite
 distance bound with an interleaving at that exact parameter. Finite distances
