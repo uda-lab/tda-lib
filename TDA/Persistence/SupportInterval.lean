@@ -5,7 +5,7 @@ import Mathlib.Order.Interval.Set.OrdConnected
 # Modules supported on order-convex sets
 
 An order-convex subset of a preorder supports a persistence module with one copy
-of the coefficient field at each point of the subset. Structure maps preserve
+of the coefficient ring at each point of the subset. Structure maps preserve
 coefficients when both indices belong to the subset and vanish otherwise.
 Order convexity is precisely what makes these maps compose.
 
@@ -23,9 +23,11 @@ namespace TDA.Persistence.SupportInterval
 open CategoryTheory
 open scoped Classical
 
-variable {k : Type u} [Field k] {P : Type v} [Preorder P]
+section Ring
 
-/-- The coefficient field on the support, and its zero submodule elsewhere. -/
+variable {k : Type u} [Ring k] {P : Type v} [Preorder P]
+
+/-- The coefficient ring on the support, and its zero submodule elsewhere. -/
 noncomputable def fiber (S : Set P) (p : P) : Submodule k k := by
   classical
   exact if p ∈ S then ⊤ else ⊥
@@ -82,9 +84,20 @@ theorem structureMap_val (S : Set P) (hS : S.OrdConnected) {p q : P}
   · simp [map, hp, hq, val_eq_zero S hp x]
   · simp [map, hp, hq]
 
+/-- A transition with an endpoint outside the support is zero over any ring,
+including the zero ring. -/
+theorem structureMap_eq_zero_of_not_mem (S : Set P) (hS : S.OrdConnected)
+    {p q : P} (h : p ≤ q) (hz : ¬ (p ∈ S ∧ q ∈ S)) :
+    structureMapLinear (module (k := k) S hS) h = 0 := by
+  classical
+  change map S = 0
+  simp [map, hz]
+
 /-- The unit coefficient in a supported fiber. -/
 noncomputable def one (S : Set P) {p : P} (hp : p ∈ S) : fiber (k := k) S p :=
   ⟨1, by classical exact by simp [fiber, hp]⟩
+
+variable [Nontrivial k]
 
 /-- A transition is zero exactly when at least one index is outside the support. -/
 theorem structureMap_eq_zero_iff (S : Set P) (hS : S.OrdConnected)
@@ -96,9 +109,13 @@ theorem structureMap_eq_zero_iff (S : Set P) (hS : S.OrdConnected)
     have he := congrArg (fun f => (f (one (k := k) S hp) : k)) hz
     rw [structureMap_val] at he
     simp [hq, one] at he
-  · intro hz
-    change map S = 0
-    simp [map, hz]
+  · exact structureMap_eq_zero_of_not_mem S hS h
+
+end Ring
+
+section Field
+
+variable {k : Type u} [Field k] {P : Type v} [Preorder P]
 
 private noncomputable def comparisonLinear (S T : Set P) (c : k) (p : P) :
     fiber (k := k) S p →ₗ[k] fiber (k := k) T p := by
@@ -264,5 +281,20 @@ theorem mem_source_of_nonzero (S T : Set P) (hS : S.OrdConnected)
   rw [hm, LinearMap.zero_apply, map_zero, ZeroMemClass.coe_zero,
     structureMap_val, if_pos hq] at hn
   exact hne hn.symm
+
+end Field
+
+-- These consumers exercise the ring constructor on a nonempty support and on
+-- the empty support over a zero ring.
+noncomputable example : PModule ℤ ℕ :=
+  module (k := ℤ) (Set.univ : Set ℕ) Set.ordConnected_univ
+
+noncomputable example : PModule (ZMod 1) ℕ :=
+  module (k := ZMod 1) (∅ : Set ℕ) Set.ordConnected_empty
+
+example : structureMapLinear
+    (module (k := ZMod 1) (∅ : Set ℕ) Set.ordConnected_empty)
+    (show (0 : ℕ) ≤ 1 by decide) = 0 :=
+  structureMap_eq_zero_of_not_mem _ _ _ (by simp)
 
 end TDA.Persistence.SupportInterval

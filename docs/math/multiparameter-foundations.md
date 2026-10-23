@@ -8,12 +8,14 @@ resolution arguments.
 
 ## Supports and rectangle transitions
 
-Fix a field k and an order-convex subset S of a preorder P. The module
-`SupportInterval.module S hS` has fiber k on S and zero elsewhere. Its structure
-map from a to b preserves coefficients when both points lie in S. The map
-vanishes exactly when at least one point is outside S. Naturality supplies
-coefficient and support-boundary restrictions on morphisms between such modules.
+Fix a ring R and an order-convex subset S of a preorder P. The module
+`SupportInterval.module S hS` has fiber R on S and zero elsewhere, even when S
+is empty. Its structure map from a to b preserves coefficients when both points
+lie in S and is zero if either point lies outside S. For a nontrivial ring, it
+is zero exactly in that case. Over a field, naturality also supplies coefficient
+and support-boundary restrictions on morphisms between these modules.
 
+For the rectangle results below, take coefficients in a field k.
 A `BoundedInterval` records two real endpoints and whether each is included.
 Nonempty intervals include closed singletons. A `Rectangle n` is a family of n
 such intervals, with product support. For δ ≥ 0,
@@ -21,9 +23,9 @@ such intervals, with product support. For δ ≥ 0,
 p + δ·1 is zero exactly when some coordinate interval has length less than δ,
 or has length δ and at least one endpoint excluded. At equality, a closed
 interval retains its endpoint-to-endpoint map. In particular, a closed singleton
-has a nonzero identity map at δ = 0. `Rectangle.hom_ext` shows that a morphism is
-determined by its scalar at one point of a nonempty overlap. Consumers use
-`open scoped TDA.Persistence` to select the coordinatewise preorder category on
+has a nonzero identity map at δ = 0. `Rectangle.hom_ext` shows
+that a morphism is determined by its scalar at one point of a nonempty overlap.
+Consumers use `open scoped TDA.Persistence` to select the coordinatewise preorder category on
 `Fin n → ℝ`, rather than mathlib's category of families of category objects.
 
 These are local geometry and morphism results used in

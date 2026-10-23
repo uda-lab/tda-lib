@@ -69,8 +69,11 @@ single shared universe on the whole library.
 ## Interval supports, presentations and rank-exact lifting
 
 `SupportInterval.module` constructs a module on any order-convex subset of a
-preorder over a field. `Rectangle.diagonal_maps_eq_zero_iff` gives the exact
-endpoint-sensitive vanishing criterion for bounded rectangles. `GradedFree.lift`
+preorder over a ring, including the empty support. A structure map with an
+endpoint outside the support is zero over any ring; the converse requires a
+nontrivial ring. The comparison and morphism lemmas remain over fields.
+`Rectangle.diagonal_maps_eq_zero_iff` gives the exact endpoint-sensitive
+vanishing criterion for bounded rectangles over a field. `GradedFree.lift`
 and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
 expresses finite presentation by homogeneous cokernels. At a pair of indices,

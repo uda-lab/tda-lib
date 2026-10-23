@@ -3211,8 +3211,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IsPointwiseShortExact.reindex
 #print axioms TDA.Persistence.IsRankExact.reindex
 #print axioms TDA.Persistence.IsPointwiseShortExact.rankExact_of_section
+#print axioms TDA.Persistence.SupportInterval.fiber
+#print axioms TDA.Persistence.SupportInterval.module
+#print axioms TDA.Persistence.SupportInterval.one
 #print axioms TDA.Persistence.SupportInterval.val_eq_zero
 #print axioms TDA.Persistence.SupportInterval.structureMap_val
+#print axioms TDA.Persistence.SupportInterval.structureMap_eq_zero_of_not_mem
 #print axioms TDA.Persistence.SupportInterval.structureMap_eq_zero_iff
 #print axioms TDA.Persistence.SupportInterval.comparison_app_val
 #print axioms TDA.Persistence.SupportInterval.comparison_ne_zero_iff
