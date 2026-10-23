@@ -68,14 +68,13 @@ private theorem vertexChainMap_singleton_face {V W : Type} [LinearOrder V] [Line
     (g : VertexMap K L) (R : Type) [Ring R] (σ : Face K 0) (τ : Face L 0) (v : V)
     (hσ : σ.1 = {v}) (hτ : τ.1 = {g v}) :
     vertexChainMap R g 0 (Finsupp.single σ 1) = Finsupp.single τ 1 := by
-  rw [vertexChainMap_single, one_smul, ← orientedTuple_face L R τ]
+  rw [vertexChainMap_vertex]
   congr 1
-  funext k
+  apply Subtype.ext
   rcases σ with ⟨s, hs⟩
-  rcases τ with ⟨t, ht⟩
   dsimp only at hσ hτ
-  subst hσ hτ
-  simp [Function.comp, Finset.orderEmbOfFin_singleton]
+  subst hσ
+  simp [vertexImageFace, tupleFace, hτ, Finset.orderEmbOfFin_singleton]
 
 /-! ## Distinct refinements into duplicated members -/
 
@@ -238,8 +237,8 @@ private instance : Subsingleton (ComponentIndex threeStageMap (threeStageCover .
       (PullbackSpace threeStageMap (threeStageCover .middle) i)) h1) a.2 b.2)⟩
 
 /-- The first transition collapses the edge: its signed chain map kills the edge
-generator in degree one over every ring, while on `H₀` it sends each endpoint
-class to the nonzero class of the middle vertex. -/
+generator in degree one over every ring, while on `H₀` over `ℚ` it sends each
+endpoint class to the nonzero class of the middle vertex. -/
 theorem skew_first_middle_collapse (R : Type) [Ring R] :
     vertexChainMap R (TDA.Mapper.mapperMap threeStageMap
         (skewRefinement ThreeStageLE.first_middle)) 1 (Finsupp.single firstEdge 1) = 0 ∧

@@ -386,7 +386,8 @@ member give different Mapper vertex maps and the same nonzero `H₀` map over
 the composite of the adjacent selectors gives a persistence module equal to
 the module of the strictly coherent three-stage tower; its first transition
 collapses an edge, killing the edge generator in degree one over every ring
-while sending both endpoint classes to the nonzero middle-vertex class; an
+while, over `ℚ`, sending both endpoint classes in `H₀` to the nonzero
+middle-vertex class; an
 empty domain over a nonempty index type gives an empty Mapper, zero chain
 maps and equal homology maps in every degree over every ring. As a negative
 control, the two simplicial maps from a point to two isolated vertices are
