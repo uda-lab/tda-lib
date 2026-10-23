@@ -140,24 +140,13 @@ private theorem lateTower_componentIndex_isEmpty {t : ℝ} (ht : ¬ 1 < t) :
     induction a.2 using ZerothHomotopy.rec with
     | mk x => exact ht x.2⟩
 
-/-- The vertex of the early tower at a positive radius. -/
-private def earlyVertex {t : ℝ} (ht : 0 < t) :
-    Face (mapper threeStageMap (earlyTower t)) 0 :=
-  ⟨{⟨(), ZerothHomotopy.mk ⟨(), ht⟩⟩}, componentIndex_supported _ _ _, Finset.card_singleton _⟩
-
 /-- Over every field, the refinement map of the early tower between positive radii is nonzero
 on `H₀`: it sends the nonzero class of the unique vertex to the class of the unique vertex. -/
 theorem mapperHomologyMap_earlyRefinement_ne_zero (k : Type c) [Field k] {s t : ℝ}
     (hs : 0 < s) (h : s ≤ t) :
-    mapperHomologyMap k threeStageMap (earlyRefinement h) 0 ≠ 0 := by
-  intro h0
-  have hclass := simplicialHomologyMap_class k (mapperMap threeStageMap (earlyRefinement h)) 0
-    (zeroVertexCycle _ k (earlyVertex hs))
-    (zeroVertexCycle _ k (vertexImageFace (mapperMap threeStageMap (earlyRefinement h))
-      (earlyVertex hs) (fun i j _ => Fin.ext (by omega))))
-    (vertexChainMap_vertex k _ _ 1)
-  rw [← mapperHomologyMap_def, h0] at hclass
-  exact simplicialHomologyClass_zeroVertexCycle_ne_zero _ k _ hclass.symm
+    mapperHomologyMap k threeStageMap (earlyRefinement h) 0 ≠ 0 :=
+  mapperHomologyMap_zero_ne_zero k (earlyRefinement h)
+    ⟨(), ZerothHomotopy.mk ⟨(), hs⟩⟩
 
 /-- Over every field, the degree-zero Mapper homology modules of the late and early towers are
 at real interleaving distance exactly `1`. -/

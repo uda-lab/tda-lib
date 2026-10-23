@@ -1,5 +1,6 @@
 import TDA.Mapper.RefinementHomologyInterleaving
 import TDA.Simplicial.FiniteDimensionalHomology
+import TDA.Simplicial.H0Augmentation
 
 /-!
 # Rank obstructions to interleavings of Mapper homology modules
@@ -218,6 +219,21 @@ theorem le_realInterleavingDistance_mapperHomologyPModule_of_isEmpty_face {r : �
   obtain ⟨t, h, _, hne⟩ := hr ε hε
   exact ⟨t, h, ModuleCat.subsingleton_of_isZero
     (isZero_simplicialHomology (mapper g (V (t + ε))) k n), hne⟩
+
+/-- Over a field, the degree-`0` homology map of a refinement is nonzero when the source family
+has a component index: the class of the corresponding vertex is nonzero and maps to the class of
+a vertex. -/
+theorem mapperHomologyMap_zero_ne_zero {ι κ : Type w} {U : ι → Set Y} {V : κ → Set Y}
+    [LinearOrder (ComponentIndex f U)] [LinearOrder (ComponentIndex f V)]
+    (ρ : Refinement U V) (a : ComponentIndex f U) :
+    mapperHomologyMap k f ρ 0 ≠ 0 := by
+  intro h0
+  let σ : Face (mapper f U) 0 := ⟨{a}, componentIndex_supported f U a, Finset.card_singleton a⟩
+  have hclass := simplicialHomologyMap_class k (mapperMap f ρ) 0 (zeroVertexCycle _ k σ)
+    (zeroVertexCycle _ k (vertexImageFace (mapperMap f ρ) σ (fun i j _ => Fin.ext (by omega))))
+    (vertexChainMap_vertex k _ _ 1)
+  rw [← mapperHomologyMap_def, h0] at hclass
+  exact simplicialHomologyClass_zeroVertexCycle_ne_zero _ k _ hclass.symm
 
 end Mapper
 
