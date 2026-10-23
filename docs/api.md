@@ -806,3 +806,11 @@ zero-weight, zero-bandwidth and open-half-plane C₀ failure controls. Essential
 The results provide abstract noncomputable integration and approximation existence, with finite
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
+
+The normalized subdivision-Rips modules construct open-radius finite flag
+bifiltrations and their actual simplicial homology, including restricted-index
+stability for a bounded perturbation of one labelled distance matrix. The
+measure bifiltration has a restricted Prokhorov interleaving, and finite
+sup-norm Čech/Rips flag homology diagrams agree naturally. The natural
+multicover nerve bridge and full GP-to-SR bound remain open. See
+[normalized subdivision-Rips and measure stability](math/subdivision-rips.md).

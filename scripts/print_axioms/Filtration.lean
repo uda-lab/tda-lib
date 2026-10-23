@@ -343,3 +343,26 @@ import TDA
 #print axioms TDA.Filtration.IsShiftedSimplicialRelation.of_subset
 
 #print axioms TDA.Filtration.Rips.isShiftedSimplicialRelation_of_distortion
+
+-- Normalized subdivision-Rips and restricted measure bifiltrations.
+#print axioms TDA.Filtration.SubdivisionRips.index_le_iff
+#print axioms TDA.Filtration.SubdivisionRips.mem_subdivision_iff
+#print axioms TDA.Filtration.SubdivisionRips.mem_subdivision_iff_of_least
+#print axioms TDA.Filtration.SubdivisionRips.subdivision_mono
+#print axioms TDA.Filtration.SubdivisionRips.mem_openRips_iff
+#print axioms TDA.Filtration.SubdivisionRips.openRips_mono
+#print axioms TDA.Filtration.SubdivisionRips.bifiltration_apply
+#print axioms TDA.Filtration.SubdivisionRips.mem_openRips_iff_diameter_lt
+#print axioms TDA.Filtration.SubdivisionRips.mem_openCech_iff
+#print axioms TDA.Filtration.SubdivisionRips.openCech_eq_openRips
+#print axioms TDA.Filtration.SubdivisionRips.subdivision_openCech_eq
+#print axioms TDA.Filtration.SubdivisionRips.distanceCoordinates_dist
+#print axioms TDA.Filtration.SubdivisionRips.isometry_distanceCoordinates
+#print axioms TDA.Filtration.SubdivisionRips.bifiltration_le_of_dist_le
+#print axioms TDA.Filtration.SubdivisionRips.mem_subdivision_relabel_iff
+#print axioms TDA.Filtration.SubdivisionRips.mem_openRips_relabel_iff
+#print axioms TDA.Filtration.SubdivisionRips.mem_bifiltration_relabel_iff
+#print axioms TDA.Filtration.SubdivisionRips.subdivision_eq_bot_of_one_lt
+#print axioms TDA.Filtration.SubdivisionRips.subdivision_one_eq_singleton
+#print axioms TDA.Filtration.SubdivisionRips.mass_pos
+#print axioms TDA.Filtration.SubdivisionRips.radius_pos

@@ -18,3 +18,5 @@ import TDA.Filtration.CechSupNorm
 import TDA.Filtration.FilterFunctionMap
 import TDA.Filtration.ShiftedSimplicialMap
 import TDA.Filtration.RipsRelation
+
+import TDA.Filtration.SubdivisionRips

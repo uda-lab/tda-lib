@@ -219,3 +219,20 @@ import TDA
 -- Bounded C₀ functionals and compact-support approximation.
 #print axioms TDA.Topology.C0MeasureRepresentation.denseRange_compactlySupported
 #print axioms TDA.Topology.C0MeasureRepresentation.exists_finite_regular_measure_sub
+
+-- Normalized subdivision-Rips and restricted measure bifiltrations.
+#print axioms TDA.Topology.MeasureBifiltration.cross_le_iff
+#print axioms TDA.Topology.MeasureBifiltration.stage_mono
+#print axioms TDA.Topology.MeasureBifiltration.ball_mass_le
+#print axioms TDA.Topology.MeasureBifiltration.stage_cross
+#print axioms TDA.Topology.MeasureBifiltration.interleavingDiagram_left
+#print axioms TDA.Topology.MeasureBifiltration.interleavingDiagram_right
+#print axioms TDA.Topology.MeasureBifiltration.uniformMeasure_apply
+#print axioms TDA.Topology.MeasureBifiltration.uniformMeasure_real
+#print axioms TDA.Topology.MeasureBifiltration.topologicalInterleaving_left
+#print axioms TDA.Topology.MeasureBifiltration.topologicalInterleaving_right
+#print axioms TDA.Topology.MeasureBifiltration.interleavingDiagram
+#print axioms TDA.Topology.MeasureBifiltration.topologicalInterleaving
+#print axioms TDA.Topology.MeasureBifiltration.uniformInterleavingDiagram
+#print axioms TDA.Topology.MeasureBifiltration.uniformMeasure_probability
+#print axioms TDA.Topology.MeasureBifiltration.interleavingIndex_le_iff
