@@ -297,7 +297,8 @@ not a content-level inspection of every file, so it does not establish that TauC
 simple-graph realization. Nothing from TauCeti is used, and TauCeti is not a dependency.
 
 Not claimed here: edge contraction; the fundamental group of a triangle or any other higher
-homotopy; trees as simply connected realizations; realization of Hasse orders; piecewise-linear
+homotopy; trees as simply connected realizations, which are in `reeb-graph-cycle-obstruction.md`
+and `reeb-graph-tree-contraction.md`; realization of Hasse orders; piecewise-linear
 heights and cell graphs of interval preimages, which are in `reeb-graph-pl.md`; comparisons with
 multigraphs, cylinder presentations or simplicial sets; a product-of-quotient-maps lemma; a
 continuous retraction of the realization to its vertices.

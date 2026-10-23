@@ -3119,3 +3119,47 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.reversed_levels_not_criticalValues
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.empty_translation_distance_zero
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_identity
+
+-- Contractible realizations of finite trees.
+#print axioms TDA.Reeb.GraphTreeContraction.deleteVertexInclusion
+#print axioms TDA.Reeb.GraphTreeContraction.deleteVertexInclusion_vertex
+#print axioms TDA.Reeb.GraphTreeContraction.deleteVertexInclusion_edgePoint
+#print axioms TDA.Reeb.GraphTreeContraction.leafCollapse
+#print axioms TDA.Reeb.GraphTreeContraction.leafCollapse_vertex_self
+#print axioms TDA.Reeb.GraphTreeContraction.leafCollapse_vertex_of_ne
+#print axioms TDA.Reeb.GraphTreeContraction.leafCollapse_edgePoint_of_ne
+#print axioms TDA.Reeb.GraphTreeContraction.leafCollapse_edgePoint_of_eq
+#print axioms TDA.Reeb.GraphTreeContraction.leafCollapse_comp_deleteVertexInclusion
+#print axioms TDA.Reeb.GraphTreeContraction.leafHomotopy
+#print axioms TDA.Reeb.GraphTreeContraction.leafHomotopy_vertex_self
+#print axioms TDA.Reeb.GraphTreeContraction.leafHomotopy_vertex_of_ne
+#print axioms TDA.Reeb.GraphTreeContraction.leafHomotopy_edgePoint_of_fst_eq
+#print axioms TDA.Reeb.GraphTreeContraction.leafHomotopy_edgePoint_of_snd_eq
+#print axioms TDA.Reeb.GraphTreeContraction.leafHomotopy_edgePoint_of_ne
+#print axioms TDA.Reeb.GraphTreeContraction.leafHomotopyEquiv
+#print axioms TDA.Reeb.GraphTreeContraction.contractibleSpace_realization_of_isTree
+#print axioms TDA.Reeb.GraphTreeContraction.simplyConnectedSpace_realization_of_isTree
+#print axioms TDA.Reeb.GraphTreeContraction.isTree_iff_simplyConnectedSpace_realization
+#print axioms TDA.Reeb.GraphTreeContraction.isTree_iff_contractibleSpace_realization
+
+-- Acceptance fixtures for contractible realizations of finite trees.
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.empty_not_contractibleSpace
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.point_contractibleSpace
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_eq_starGraph
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_isTree
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_contractibleSpace
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_simplyConnectedSpace
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_adj_01
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_eq_one_of_adj_zero
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3LeafEquiv
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_slide_leaf
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_slide_d01
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_slide_two
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_slide_d12
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_collapse_leaf
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.path3_remainder_contractibleSpace
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.star4
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.star4_contractibleSpace
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.star4_simplyConnectedSpace
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.triangle_not_simplyConnectedSpace
+#print axioms TDA.Reeb.Examples.GraphTreeContraction.triangle_not_contractibleSpace
