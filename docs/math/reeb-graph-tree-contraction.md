@@ -49,8 +49,8 @@ leafHomotopy (s, edgePoint G d t)   = edgePoint G d t                     -- oth
 (`leafHomotopy_vertex_self`, `leafHomotopy_vertex_of_ne`, `leafHomotopy_edgePoint_of_fst_eq`,
 `leafHomotopy_edgePoint_of_snd_eq`, `leafHomotopy_edgePoint_of_ne`). The two leaf-edge formulas
 agree under reversal: the point of `m → ℓ` at `(1 - t)(1 - s)` is the point of `ℓ → m` at
-`1 - (1 - t)(1 - s)`. At `t = 0` they give the track of `ℓ` and the fixed vertex `m`. At `s = 0` every formula
-is the identity; at `s = 1` the leaf edge and `ℓ` are at `m`, which is the collapse followed by the
+`1 - (1 - t)(1 - s)`. At `t = 0` they give the track of `ℓ` and the fixed vertex `m`.
+At `s = 0` every formula is the identity; at `s = 1` the leaf edge and `ℓ` are at `m`, which is the collapse followed by the
 inclusion. The dart leaving the leaf is determined by `huniq`, while the two cases are told apart by
 `d.fst = ℓ` and `d.snd = ℓ` alone, which cannot both hold.
 
