@@ -439,7 +439,9 @@ The acceptance fixtures in `TDA.Reeb.ConstructiblePerturbationExamples` cover:
   thickened pinch.
 
 This API changes only the level list of a fixed presentation with the same `n`. It does not
-compare different presentations or level counts. Arbitrary continuous perturbations, such
+compare different presentations or level counts; for piecewise-linear heights on a fixed
+finite graph, where vertex heights may cross and the number of levels may change, see
+[vertex-height perturbations](reeb-graph-pl.md#vertex-height-perturbations-of-a-fixed-graph). Arbitrary continuous perturbations, such
 as a bump on a cylinder, need not preserve constructibility and are outside this API. The
 homeomorphism, constructibility transfer, stability compositions, supremum lower bound and
 exact translation value are library derivations from the cylinder-presentation and sup-norm
