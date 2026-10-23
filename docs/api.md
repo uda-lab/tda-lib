@@ -359,6 +359,21 @@ auxiliary order. Finite samples of a common possibly infinite target are compare
 only through their finite diagrams. General totally bounded/q-tame diagram existence
 remains separate. See [metric-input stability](math/rips-metric-stability.md).
 
+`TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
+`a < b` has finite-dimensional image over the coefficient field.
+`TDA.Persistence.RipsQTame` proves `Rips.qTame_of_totallyBounded` for the
+existing closed diameter Rips homology of any totally bounded metric space,
+over every field and in every degree. A finite net and the relation-interleaving
+law give the actual factorization through finite-dimensional homology.
+Empty spaces and negative source times are included. The auxiliary vertex
+order is arbitrary; `sublevelModuleIsoOfIsometryEquiv` supplies natural
+isomorphisms under isometric relabelling without order preservation.
+The infinite compact unit interval is a checked example: its strict maps have
+finite-dimensional images, while its unreduced H₀ fiber at zero is
+infinite-dimensional. This result supplies q-tameness; locally finite diagrams
+and their algebraic stability require separate foundations. See
+[the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
+
 ## Ambient Čech complexes
 
 `TDA.Filtration.Cech` defines the closed Čech complex of labelled points p : V → X in a
@@ -790,7 +805,8 @@ C₀ universality and signed-measure separation concern the full birth–death p
 positive persistence measures require a strictly positive weight and finite weighted
 mass. These conclusions do not make finite-pixel images characteristic.
 
-General geometric tame-function PH stability, infinite diagram and q-tame stability, manifold charts
+General geometric tame-function PH stability, locally finite diagrams and their stability
+for infinite q-tame modules, manifold charts
 and executable arbitrary-field decomposition are outside the reviewed PH scope. A first
 stable release must state its selected results and limitations; it need not finish every
 roadmap extension. This guide describes the current API and does not announce a release.
