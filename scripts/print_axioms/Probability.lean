@@ -1,0 +1,34 @@
+-- Live axiom audit pins for Probability. Append new pins here.
+import TDA
+
+#print axioms TDA.Probability.expectation_const
+#print axioms TDA.Probability.expectation_pure
+#print axioms TDA.Probability.expectation_map
+#print axioms TDA.Probability.expectation_bind
+#print axioms TDA.Probability.expectation_mono
+#print axioms TDA.Probability.Coupling.cost_map
+#print axioms TDA.Probability.Coupling.instNonempty
+#print axioms TDA.Probability.iid_zero
+#print axioms TDA.Probability.iid_succ
+#print axioms TDA.Probability.iid_map
+#print axioms TDA.Probability.transportCost_le_coupling
+#print axioms TDA.Probability.essentialSup_map
+#print axioms TDA.Probability.expectation_add
+#print axioms TDA.Probability.expectation_sum
+#print axioms TDA.Probability.iid_eval
+#print axioms TDA.Probability.pairEnergy_zero
+#print axioms TDA.Probability.pairEnergy_succ
+#print axioms TDA.Probability.cost_le_pairEnergy
+#print axioms TDA.Probability.expectation_pairEnergy
+#print axioms TDA.Probability.cost_le_pairMaximum
+#print axioms TDA.Probability.pairMaximum_rpow_le_pairEnergy
+#print axioms TDA.Probability.expectation_pairMaximum_rpow_le
+#print axioms TDA.Probability.mem_support_of_mem_support_iid
+#print axioms TDA.Probability.essentialSup_pairMaximum_le
+#print axioms TDA.Probability.distortion_self
+#print axioms TDA.Probability.distortion_comm
+#print axioms TDA.Probability.Coupling.distortionMoment_of_subsingleton
+#print axioms TDA.Probability.gromovWasserstein_of_subsingleton
+#print axioms TDA.Probability.wasserstein_eq_iInf
+#print axioms TDA.Probability.Coupling.row_sum
+#print axioms TDA.Probability.Coupling.col_sum
