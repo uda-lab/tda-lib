@@ -3258,3 +3258,20 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteConstructible.interleaving_parameters_eq_Ici
 
 #print axioms TDA.Persistence.FiniteConstructible.isClosed_interleaving_parameters
+#print axioms TDA.Persistence.GradedFree.fiber_mono
+#print axioms TDA.Persistence.GradedFree.fiber_eq_of_birth_iff
+#print axioms TDA.Persistence.GradedFree.structureMap_apply
+#print axioms TDA.Persistence.GradedFree.generator_eq_structureMap
+#print axioms TDA.Persistence.GradedFree.fiberLift_generator
+#print axioms TDA.Persistence.GradedFree.fiberLift_unique
+#print axioms TDA.Persistence.GradedFree.lift_birth
+#print axioms TDA.Persistence.GradedFree.lift_unique
+#print axioms TDA.Persistence.GradedFree.exists_lift_of_surjective
+#print axioms TDA.Persistence.GradedFree.sub_lifts_mem_ker
+#print axioms TDA.Persistence.GradedFree.Presentation.ofRelations_at_birth
+#print axioms TDA.Persistence.GradedFree.Presentation.relations_vanish
+#print axioms TDA.Persistence.GradedFree.Presentation.cover_desc
+#print axioms TDA.Persistence.GradedFree.Presentation.desc_unique
+#print axioms TDA.Persistence.GradedFree.Presentation.finitelyPresented
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_of_iso
+#print axioms TDA.Persistence.GradedFree.free_finitelyPresented

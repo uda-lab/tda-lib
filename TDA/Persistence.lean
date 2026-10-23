@@ -1,5 +1,7 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
+import TDA.Persistence.GradedFree
+import TDA.Persistence.FinitePresentation
 import TDA.Persistence.RealInterleaving
 import TDA.Persistence.RealInterleavingLaws
 import TDA.Persistence.RealInterleavingShortness
