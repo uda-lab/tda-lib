@@ -3240,10 +3240,98 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.PModule.QTame.persistenceMeasureValue_eventually_zero
 #print axioms TDA.Persistence.persistenceTailSpace_finiteDimensional
 
--- Q-tame finite-image dependency.
-#print axioms TDA.Persistence.finiteDimensional_range_of_factorization
-#print axioms TDA.Persistence.PModule.qTame_of_finiteDimensional
-#print axioms TDA.Persistence.RealInterleaving.finiteDimensional_range_structureMap
+-- Rectangle monotonicity and essential-boundary fixtures.
 #print axioms TDA.Persistence.persistenceMeasureValue_mono
 #print axioms TDA.Persistence.PersistenceMeasureExamples.essential_interval_finite_rectangle_zero
 #print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_self
+
+#print axioms TDA.Persistence.finiteDimensional_range_of_factorization
+#print axioms TDA.Persistence.PModule.qTame_of_finiteDimensional
+#print axioms TDA.Persistence.RealInterleaving.finiteDimensional_range_structureMap
+#print axioms TDA.Persistence.Rips.sublevelModuleIsoOfIsometryEquiv
+#print axioms TDA.Persistence.Rips.exists_finite_net_relation
+#print axioms TDA.Persistence.Rips.qTame_of_totallyBounded
+#print axioms TDA.Persistence.Rips.not_finiteDimensional_zero_homology
+#print axioms TDA.Persistence.RipsQTameExamples.unitInterval_qTame
+#print axioms TDA.Persistence.RipsQTameExamples.unitInterval_zero_not_finiteDimensional
+#print axioms TDA.Persistence.RipsQTameExamples.empty_qTame
+
+-- Compatible sections and real-indexed lift fixtures.
+#print axioms TDA.Persistence.CompatibleSections.exists_antitone_coinitial
+#print axioms TDA.Persistence.CompatibleSections.compatible
+#print axioms TDA.Persistence.CompatibleSections.evaluation_apply
+#print axioms TDA.Persistence.CompatibleSections.mem_vanishingAt
+#print axioms TDA.Persistence.CompatibleSections.exists_sequenceSection
+#print axioms TDA.Persistence.CompatibleSections.extend_apply
+#print axioms TDA.Persistence.CompatibleSections.extend_at_sequence
+#print axioms TDA.Persistence.CompatibleSections.evaluation_surjective_of_coinitial
+#print axioms TDA.Persistence.CompatibleSections.evaluation_surjective_real
+#print axioms TDA.Persistence.CompatibleSections.structureMapLinear_subspaceModule
+#print axioms TDA.Persistence.CompatibleSections.exists_compatible_lift_real
+#print axioms TDA.Persistence.CompatibleSections.ker_quotientEvaluation
+#print axioms TDA.Persistence.CompatibleSections.quotientEvaluation_surjective
+#print axioms TDA.Persistence.CompatibleSectionsExamples.signChangeModule_surjective
+#print axioms TDA.Persistence.CompatibleSectionsExamples.exists_prescribed_section
+#print axioms TDA.Persistence.CompatibleSectionsExamples.exists_section_open_left_tail
+#print axioms TDA.Persistence.CompatibleSectionsExamples.exists_section_closed_interval
+#print axioms TDA.Persistence.CompatibleSectionsExamples.exists_section_singleton
+#print axioms TDA.Persistence.CompatibleSectionsExamples.crossing_zero_map_one
+
+-- Finite-dimensional cut transport and coherent interval complements.
+#print axioms TDA.Persistence.Cut.not_mem_upper
+#print axioms TDA.Persistence.Cut.lower_of_le
+#print axioms TDA.Persistence.Cut.upper_of_le
+#print axioms TDA.Persistence.Cut.exists_eq_iInf_of_directed
+#print axioms TDA.Persistence.Cut.imagePlus_eq_range
+#print axioms TDA.Persistence.Cut.imagePlus_map_mem
+#print axioms TDA.Persistence.Cut.imagePlus_map_surjective
+#print axioms TDA.Persistence.Cut.kernelPlus_map_mem_iff
+#print axioms TDA.Persistence.Cut.intervalPlus_map_mem
+#print axioms TDA.Persistence.Cut.intervalPlus_map_surjective
+#print axioms TDA.Persistence.Cut.kernelPlus_eq_kernel
+#print axioms TDA.Persistence.Cut.imageMinus_le_imagePlus
+#print axioms TDA.Persistence.Cut.kernelMinus_le_kernelPlus
+#print axioms TDA.Persistence.Cut.intervalMinus_le_intervalPlus
+#print axioms TDA.Persistence.Cut.imageMinus_map_eq
+#print axioms TDA.Persistence.Cut.kernelMinus_map_mem
+#print axioms TDA.Persistence.Cut.ker_le_kernelMinus
+#print axioms TDA.Persistence.Cut.imagePlus_map_eq
+#print axioms TDA.Persistence.Cut.kernelPlus_comap_eq
+#print axioms TDA.Persistence.Cut.mem_kernelMinus_iff
+#print axioms TDA.Persistence.Cut.kernelMinus_map_mem_iff
+#print axioms TDA.Persistence.Cut.kernelMinus_comap_eq
+#print axioms TDA.Persistence.Cut.intervalMinus_map_eq
+#print axioms TDA.Persistence.Cut.intervalPlusMap_apply
+#print axioms TDA.Persistence.Cut.intervalPlusMap_surjective
+#print axioms TDA.Persistence.Cut.intervalMinusInPlus_comap_eq
+#print axioms TDA.Persistence.Cut.intervalQuotientMap_injective
+#print axioms TDA.Persistence.Cut.intervalQuotientMap_surjective
+#print axioms TDA.Persistence.Cut.intervalQuotientEquiv_mkQ
+#print axioms TDA.Persistence.Cut.structureMapLinear_intervalPlusModule
+#print axioms TDA.Persistence.Cut.intervalPlus_evaluation_surjective_real
+#print axioms TDA.Persistence.Cut.exists_intervalPlus_compatible_lift_real
+#print axioms TDA.Persistence.Cut.mem_ker_intervalQuotientEvaluation
+#print axioms TDA.Persistence.Cut.intervalQuotientEvaluation_surjective_real
+#print axioms TDA.Persistence.Cut.intervalQuotientEvaluation_naturality
+#print axioms TDA.Persistence.Cut.ker_intervalQuotientEvaluation_eq
+#print axioms TDA.Persistence.Cut.isCompl_sectionComplement
+#print axioms TDA.Persistence.Cut.isCompl_sectionComplement_at
+#print axioms TDA.Persistence.Cut.sectionComplement_quotientEvaluation_bijective_real
+#print axioms TDA.Persistence.Cut.isCompl_sectionComplementAt_real
+#print axioms TDA.Persistence.Cut.sectionComplementAt_map_eq
+#print axioms TDA.Persistence.Cut.sectionComplementFiber_map_mem
+#print axioms TDA.Persistence.Cut.sectionComplementFiber_eq_bot
+
+-- Algebraic direct-sum families and finite observation activity.
+#print axioms TDA.Persistence.AlgebraicFamily.inclusion_apply_self
+#print axioms TDA.Persistence.AlgebraicFamily.inclusion_apply_ne
+#print axioms TDA.Persistence.AlgebraicFamily.inclusion_desc
+#print axioms TDA.Persistence.AlgebraicFamily.structureMap_apply
+#print axioms TDA.Persistence.AlgebraicFamily.toProduct_apply
+#print axioms TDA.Persistence.AlgebraicFamily.toProduct_injective
+#print axioms TDA.Persistence.AlgebraicFamily.toProduct_surjective
+#print axioms TDA.Persistence.AlgebraicFamily.productIso_hom
+#print axioms TDA.Persistence.AlgebraicFamily.finite_nontrivial_of_finiteDimensional
+#print axioms TDA.Persistence.AlgebraicFamily.finite_nontrivial_of_iso
+#print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial
+#print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial_of_iso
