@@ -165,10 +165,59 @@ The correspondence argument specializes the mechanism of CDSO13-v3 §4.2 and
 Lemma 4.3 to finite metric spaces, using mathlib's GH coupling and the library's
 sublevel-diagram theorem. It retains the library's empty negative tail; it makes no
 whole-real H₀ identification with the source's nonpositive-time vertex convention.
-Theorem 5.2's totally bounded extension would also require q-tameness and a possibly infinite diagram construction. Neither follows from the finite sampling
-comparison above, which compares only finite diagrams.
+The finite sampling comparison above compares only finite diagrams. The
+q-tameness theorem below concerns the target module itself; Theorem 5.2's
+totally bounded diagram bound also requires a locally finite diagram
+construction and algebraic stability for those diagrams.
 
 These results are abstract existence and correctness statements. Finite labels can
 support executable consumers when exact distance comparisons are available; no
 algorithm for optimizing GH distance over arbitrary real data or for computing
 homology over an arbitrary abstract field is asserted.
+
+## Totally bounded spaces
+
+For a field k, a real persistence module M is **q-tame** if the image of
+M(a) → M(b) is finite-dimensional whenever a < b. The fibers M(a) need not be
+finite-dimensional. In Lean, `PModule.QTame` uses
+`FiniteDimensional k (LinearMap.range (structureMapLinear M hab.le))`.
+
+Let X be any totally bounded metric space. Its closed diameter Rips homology
+module is q-tame over every field and in every degree. Fix a < b and put
+ε = (b−a)/2 > 0. Total boundedness supplies a finite ε/2-net F ⊆ X. The relation
+
+C = {(x,f) ∈ X × F | dist(x,f) < ε/2}
+
+is total on both sides, since the net covers X and every f is related to itself.
+The triangle inequality bounds its pairwise distortion by ε. The canonical
+relation interleaving gives a composite
+
+M_X(a) → M_F(a+ε) → M_X((a+ε)+ε) = M_X(b).
+
+The interleaving law identifies this composite with the structure map, and the
+middle homology is finite-dimensional because F is finite. The range is
+therefore finite-dimensional. This proof works for the empty space and all
+real source times; no vertex is added to the negative tail.
+
+`Rips.exists_finite_net_relation` proves the finite-net geometry and
+`Rips.qTame_of_totallyBounded` gives the module theorem. The reusable
+`finiteDimensional_range_of_factorization` and
+`RealInterleaving.finiteDimensional_range_structureMap` expose the linear and
+interleaving steps. Vertex and coefficient universes are independent; the
+auxiliary vertex order may be chosen arbitrarily.
+`Rips.sublevelModuleIsoOfIsometryEquiv` compares the modules under any
+isometric relabelling, using the graph relation and its zero-interleaving,
+without requiring order preservation or finiteness.
+
+At time zero a genuine metric admits only singleton faces, so an infinite
+vertex type gives infinite-dimensional unreduced H₀.
+`Rips.not_finiteDimensional_zero_homology` proves this fact.
+`RipsQTameExamples` applies both results to the infinite compact interval
+[0,1] ⊆ ℝ. It witnesses finite-dimensional images across every strict gap
+and an infinite-dimensional fiber at zero in the same example.
+
+The finite-net argument formalizes the Rips part of CDSO13-v3 Proposition 5.1
+through Lemma 4.3. The library retains closed thresholds and its empty negative
+tail. Q-tameness alone is the conclusion here: constructing the persistence
+measure, its locally finite decorated diagram with essential deaths, and its
+algebraic stability remains separate from this theorem.
