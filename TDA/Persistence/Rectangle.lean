@@ -107,12 +107,14 @@ end BoundedInterval
 indexed by occurrences, so equal rectangles need not be identified. -/
 abbrev Rectangle (n : ℕ) := Fin n → BoundedInterval
 
+/-- The coordinatewise preorder category for real grades. Open the
+`TDA.Persistence` scope to select this category in multiparameter consumers. -/
+scoped instance (priority := 10000) realCoordinatePreorderCategory (n : ℕ) :
+    CategoryTheory.SmallCategory (Fin n → ℝ) := Preorder.smallCategory _
+
 namespace Rectangle
 
--- Mathlib also provides a product category on this function type. Persistence
--- modules use its preorder category, induced by coordinatewise comparison.
-local instance (priority := 10000) (n : ℕ) :
-    CategoryTheory.SmallCategory (Fin n → ℝ) := Preorder.smallCategory _
+open scoped TDA.Persistence
 
 /-- The cartesian product support of a rectangle. -/
 def support {n : ℕ} (R : Rectangle n) : Set (Fin n → ℝ) :=

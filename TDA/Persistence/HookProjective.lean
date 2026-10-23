@@ -7,8 +7,9 @@ import Mathlib.LinearAlgebra.Span.Basic
 
 For grades `i < j` in a partial order, the hook has support `{a | i ≤ a ∧ ¬ j ≤ a}`.
 A morphism from this hook to a persistence module is determined by a vector at `i` killed
-by the structure map to `j`. Rank exactness permits lifting that vector while retaining
-its vanishing relation, which constructs a lift of the entire hook morphism.
+by the structure map to `j`. For pointwise finite-dimensional middle modules,
+rank exactness permits lifting that vector while retaining its vanishing relation,
+which constructs a lift of the entire hook morphism.
 
 This proves the lifting property for hooks with a finite death grade, using the kernel
 criterion in `RankExact`. Principal upsets (the death-at-infinity case), exact-category
@@ -180,7 +181,7 @@ noncomputable def homEquivKernel {i j : P} (hij : i < j) (M : PModule.{u,v,u} k 
 birth generator while preserving the death relation. -/
 theorem exists_lift {i j : P} (hij : i < j)
     {L M N : PModule.{u,v,u} k P} {ι : L ⟶ M} {π : M ⟶ N}
-    (hs : IsRankExact ι π) [FiniteDimensional k (M.obj i)]
+    (hs : IsRankExact ι π)
     (α : module (k := k) i j ⟶ N) :
     ∃ β : module (k := k) i j ⟶ M, β ≫ π = α := by
   obtain ⟨m, hm, hdie⟩ := hs.lift_kernel hij.le

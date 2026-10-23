@@ -71,11 +71,15 @@ single shared universe on the whole library.
 `SupportInterval.module` constructs a module on any order-convex subset of a
 preorder over a field. `Rectangle.diagonal_maps_eq_zero_iff` gives the exact
 endpoint-sensitive vanishing criterion for bounded rectangles. `GradedFree.lift`
-and `exists_lift_of_surjective` provide the natural universal property and lifting
+and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
-expresses finite presentation by homogeneous cokernels. Rank additivity in a
-pointwise short exact sequence is equivalent to lifting dying vectors, and
-`Hook.exists_lift` constructs lifts of finite-death hook morphisms. See
+expresses finite presentation by homogeneous cokernels. At a pair of indices,
+`IsPointwiseShortExact.rank_add_iff_lift_kernel` equates rank additivity and lifting
+dying vectors when the middle source fiber is finite dimensional. `IsRankExact`
+requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`
+constructs lifts of finite-death hook morphisms in that domain. For coordinatewise
+real indices, use `open scoped TDA.Persistence` to select the preorder category.
+See
 [the constructions and their scope](math/multiparameter-foundations.md).
 
 ## Persistent homology results and computational boundary

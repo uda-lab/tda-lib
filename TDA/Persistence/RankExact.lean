@@ -33,10 +33,11 @@ structure IsPointwiseShortExact (ι : L ⟶ M) (π : M ⟶ N) : Prop where
   surjective : ∀ p, Function.Surjective (π.app p).hom
   range_eq_ker : ∀ p, LinearMap.range (ι.app p).hom = LinearMap.ker (π.app p).hom
 
-/-- Rank additivity is imposed in addition to ordinary pointwise short exactness.
-The definition is intended for pointwise finite dimensional modules. -/
+/-- Rank exactness for pointwise finite-dimensional modules. Short exactness
+derives finite dimensionality of the outer fibers from the middle fibers. -/
 structure IsRankExact (ι : L ⟶ M) (π : M ⟶ N) : Prop extends
     IsPointwiseShortExact ι π where
+  finiteDimensional : ∀ a, FiniteDimensional k (M.obj a)
   rank_add : ∀ {a b : P} (hab : a ≤ b),
     Module.finrank k (LinearMap.range (structureMapLinear M hab)) =
       Module.finrank k (LinearMap.range (structureMapLinear L hab)) +
@@ -158,10 +159,10 @@ theorem IsPointwiseShortExact.rank_add_iff_lift_kernel
 /-- Rank exactness supplies lifts preserving the grade where an element dies. -/
 theorem IsRankExact.lift_kernel {ι : L ⟶ M} {π : M ⟶ N} (hs : IsRankExact ι π)
     {a b : P} (hab : a ≤ b)
-    [FiniteDimensional k (M.obj a)]
     (n : N.obj a) (hn : structureMapLinear N hab n = 0) :
-    ∃ m : M.obj a, (π.app a).hom m = n ∧ structureMapLinear M hab m = 0 :=
-  (hs.toIsPointwiseShortExact.rank_add_iff_lift_kernel hab).mp (hs.rank_add hab) n hn
+    ∃ m : M.obj a, (π.app a).hom m = n ∧ structureMapLinear M hab m = 0 := by
+  letI := hs.finiteDimensional a
+  exact (hs.toIsPointwiseShortExact.rank_add_iff_lift_kernel hab).mp (hs.rank_add hab) n hn
 
 /-- A natural section makes an ordinary short exact sequence rank exact. -/
 theorem IsPointwiseShortExact.rankExact_of_section
@@ -169,6 +170,7 @@ theorem IsPointwiseShortExact.rankExact_of_section
     [∀ a, FiniteDimensional k (M.obj a)]
     (σ : N ⟶ M) (hσ : σ ≫ π = 𝟙 N) : IsRankExact ι π where
   toIsPointwiseShortExact := hs
+  finiteDimensional _ := inferInstance
   rank_add := by
     intro a b hab
     apply (hs.rank_add_iff_lift_kernel hab).mpr
@@ -196,6 +198,7 @@ theorem IsRankExact.reindex {Q : Type x} [Preorder Q]
     {ι : L ⟶ M} {π : M ⟶ N} (hs : IsRankExact ι π) (f : Q →o P) :
     IsRankExact (reindexNatTrans f ι) (reindexNatTrans f π) where
   toIsPointwiseShortExact := hs.toIsPointwiseShortExact.reindex f
+  finiteDimensional q := hs.finiteDimensional (f q)
   rank_add hab := hs.rank_add (f.monotone hab)
 
 end TDA.Persistence

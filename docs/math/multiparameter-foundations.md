@@ -22,7 +22,9 @@ p + δ·1 is zero exactly when some coordinate interval has length less than δ,
 or has length δ and at least one endpoint excluded. At equality, a closed
 interval retains its endpoint-to-endpoint map. In particular, a closed singleton
 has a nonzero identity map at δ = 0. `Rectangle.hom_ext` shows that a morphism is
-determined by its scalar at one point of a nonempty overlap.
+determined by its scalar at one point of a nonempty overlap. Consumers use
+`open scoped TDA.Persistence` to select the coordinatewise preorder category on
+`Fin n → ℝ`, rather than mathlib's category of families of category objects.
 
 These are local geometry and morphism results used in
 [Bjerkevik's rectangle stability proof](https://doi.org/10.1007/s00454-021-00298-0).
@@ -35,8 +37,8 @@ of finite linear combinations of generators whose grades are at most a.
 Structure maps retain the coefficients. Choosing an image for each generator
 at its birth grade gives a unique natural transformation from this free module.
 Consequently a map from a free module lifts through a componentwise surjective
-natural transformation; two lifts differ by an element of its kernel at every
-index. A structure map is an isomorphism if exactly the same generators are
+natural transformation; two lifts differ by a kernel element on each generator
+at its birth grade. A structure map is an isomorphism if exactly the same generators are
 available at its source and target.
 
 A presentation is the cokernel of a homogeneous map from a free relation module
@@ -54,13 +56,14 @@ Consider a pointwise short exact sequence L → M → N. At a ≤ b, assume only
 M(a) is finite dimensional. `IsPointwiseShortExact.rank_add_iff_lift_kernel`
 proves that rank additivity at this pair is equivalent to the following lifting
 property: every vector of N(a) killed at b has a preimage in M(a) also killed at b.
-Naturally split pointwise short exact sequences are rank exact, and reindexing
+`IsRankExact` requires pointwise finite-dimensional middle fibers. Naturally split
+pointwise short exact sequences in this domain are rank exact, and reindexing
 preserves rank exactness.
 
 For i < j in a partial order, the hook has support {a | i ≤ a and j ≰ a}.
 `Hook.homEquivKernel` identifies maps from this hook to N with vectors of N(i)
 killed at j. `Hook.exists_lift` therefore lifts an entire hook morphism through
-a rank-exact quotient, assuming finite dimensionality of M(i). The support may
+a rank-exact quotient with pointwise finite-dimensional middle fibers. The support may
 be unbounded. This proves the finite-death hook lifting ingredient of
 [Botnan–Oppermann–Oudot–Scoccola, §2.14 and Appendix A](https://arxiv.org/html/2208.00300v3).
 Principal upsets, an exact-category instance, projective classification and
@@ -69,7 +72,7 @@ rank-projective resolutions have separate proof obligations.
 ## Attainment on real finite-constructible modules
 
 For right-continuous real modules on finite critical grids, with zero left tails
-and finite-dimensional critical fibers, the existing barcode isometry and an
+and finite-dimensional critical fibers, the barcode isometry and an
 optimal finite matching give an interleaving at every finite distance bound.
 The admissible parameters form a closed upper ray when the distance is finite,
 and are empty when it is infinite. Distance zero is equivalent to a natural
