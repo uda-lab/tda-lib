@@ -3230,3 +3230,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Hook.birth_mem
 #print axioms TDA.Persistence.Hook.death_not_mem
 #print axioms TDA.Persistence.Hook.fromGenerator_app
+#print axioms TDA.Persistence.BoundedInterval.ordConnected
+#print axioms TDA.Persistence.BoundedInterval.exists_mem_add_iff
+#print axioms TDA.Persistence.BoundedInterval.support_nonempty
+#print axioms TDA.Persistence.Rectangle.ordConnected
+#print axioms TDA.Persistence.Rectangle.support_nonempty
+#print axioms TDA.Persistence.Rectangle.inf_mem
+#print axioms TDA.Persistence.Rectangle.hom_coefficient_eq
+#print axioms TDA.Persistence.Rectangle.hom_ext
+#print axioms TDA.Persistence.Rectangle.exists_mem_add_iff
+#print axioms TDA.Persistence.Rectangle.diagonal_maps_eq_zero_iff

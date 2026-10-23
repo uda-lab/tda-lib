@@ -161,3 +161,4 @@ import TDA.Persistence.RankExact
 import TDA.Persistence.SupportInterval
 
 import TDA.Persistence.HookProjective
+import TDA.Persistence.Rectangle
