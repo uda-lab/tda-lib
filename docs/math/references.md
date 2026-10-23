@@ -364,6 +364,13 @@ entire article or all its algorithms have been formalized.
 - **Use/classification:** `TDA.Topology.C0MeasureRepresentation` adapts the necessary C_c positive/negative decomposition privately to the pinned mathlib, retaining the copyright, authors, license and change notice. Its public bounded C₀ representation adds finite-mass bounds and uniform cutoff density. The source snapshot pins mathlib `e3e75e86143b43849829fdcd44a39a6b0fe35234`; tda-lib retains `0df444a360eaa60ab8c11dca51a86af692955474`. The adapted source is not a package dependency. Compact-domain kernel universality in that snapshot does not supply the noncompact C₀ theorem.
 - **Rights/evidence:** **AP2**, inspected 2026-10-20, the pinned repository [LICENSE](https://github.com/TauCetiProject/TauCeti/blob/b971ef7017efd17b28899a41289f2f11cdced2a2/LICENSE) and source headers. The inspected tree has no NOTICE file. The adapted file preserves the source notice and identifies its immutable source and modifications; tda-lib also distributes Apache-2.0 in its root LICENSE.
 
+<a id="CDGO13-v3"></a>
+### CDGO13-v3 — persistence rectangle measures
+
+- **Identity/version:** Frédéric Chazal; Vin de Silva; Marc Glisse; Steve Oudot. *The structure and stability of persistence modules*. [arXiv:1207.3674v3](https://arxiv.org/abs/1207.3674v3), 20 March 2013; [PDF](https://arxiv.org/pdf/1207.3674v3).
+- **Use/classification:** `PersistenceMeasure` constructs the image-and-kernel quotient of Proposition 2.5 (§2.2), proves finite-dimensionality from q-tameness, the Proposition 2.3 four-rank identity, and coordinate-splitting additivity. `PersistenceMeasureEssential` constructs the essential birth-strip measure by eventual finite-target image quotient dimensions, following the boundary considered in §2.6. It does not prove the Theorem 2.8 decorated-diagram representation or Theorems 4.20–4.21 algebraic stability. See [persistence rectangle measures](persistence-rectangle-measure.md).
+- **Rights/evidence:** **U**, inspected 2026-10-23. The source is used for mathematical statements and an original formal proof; no source prose, figures or source code are redistributed.
+
 <a id="BL24"></a>
 ### BL24 — normalized subdivision and measure bifiltrations
 
@@ -372,8 +379,8 @@ entire article or all its algorithms have been formalized.
 - **Rights/evidence:** **U**, primary PDF inspected 2026-10-23. Original definitions, proofs, and summary are supplied; no source prose or figures are reproduced.
 
 <a id="Sheehy13-v2"></a>
-### Sheehy13-v2 — sparse Rips weights, deletion and packing
+### Sheehy13-v2 — sparse Rips weights, persistence and packing
 
 - **Identity/version:** Donald R. Sheehy. *Linear-Size Approximations to the Vietoris–Rips Filtration*. [arXiv:1203.6786v2](https://arxiv.org/abs/1203.6786v2), revised 2013-03-06, [versioned PDF](https://arxiv.org/pdf/1203.6786v2).
-- **Use/classification:** `TDA.Filtration.SparseRips` uses the weight convention of §4 and the deletion/contiguity and packing arguments of §§7–9. The finite farthest-first permutation is a library realization of the net geometry, with insertion radius `ρ` giving deletion time `ρ/[η(1−2η)]`. The checked consumers are the single-scale closed-active homology isomorphism, the adjacent two-scale union step, separated-set packing, and the all-scales per-dimension and fixed-skeleton linear size bounds. The coefficient-ring form uses the library's chain-homotopy bridge; the source formulates its homology comparison over fields. The complete sparse-filtration persistence equivalence and diagram approximation are not claimed by these consumers.
+- **Use/classification:** `TDA.Filtration.SparseRips` uses the weight convention of §4, the deletion and contiguity arguments of §7, the finite tail-union mechanism of Lemma 8.1, the persistence comparison of Theorem 8.2, and the approximation and packing arguments of §9. The finite farthest-first permutation is a library realization of the net geometry, with insertion radius `ρ` giving deletion time `ρ/[η(1−2η)]`. Checked consumers include the single-scale closed-active homology isomorphism, the finite deletion-grid union retraction, `sparseRelaxedHomologyIso` as a natural equivalence of persistence modules, and `sparseRipsLogInterleaving` with logarithmic shift `log((1−2η)⁻¹)` following §9.1. Separated-set packing and the all-scales per-dimension and fixed-skeleton linear size bounds use the same construction. The coefficient-ring form uses the library's chain-homotopy bridge; the source formulates its homology comparison over fields. The closed face-entry presentation and finite log-diagram bottleneck bound remain unproved.
 - **Rights/evidence:** **U** for third-party reuse; the linked manifestation is used for mathematical reading and an original summary. No article text, figure or source code is reproduced here, and no broader article-reuse permission is claimed.
