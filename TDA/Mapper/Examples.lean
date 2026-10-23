@@ -23,3 +23,4 @@ import TDA.Mapper.RefinementHomologyExamples
 import TDA.Mapper.RefinementHomologyInterleavingExamples
 import TDA.Mapper.RefinementHomologyBarcodeExamples
 import TDA.Mapper.MapperReebPerturbationExamples
+import TDA.Mapper.RefinementHomologyLowerBoundExamples
