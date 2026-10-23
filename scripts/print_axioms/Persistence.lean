@@ -3234,6 +3234,46 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.tupleProjection_surjective
 #print axioms TDA.Persistence.Rips.dist_tupleProjection
 #print axioms TDA.Persistence.Rips.mem_tupleFilter_iff
+
+-- Persistence rectangle measures and the essential boundary.
+#print axioms TDA.Persistence.persistenceImage_mono
+#print axioms TDA.Persistence.persistenceKernel_mono
+#print axioms TDA.Persistence.persistenceImage_finrank_drop
+#print axioms TDA.Persistence.persistenceMeasureSpace_finiteDimensional
+#print axioms TDA.Persistence.PModule.QTame.persistenceMeasureSpace_finiteDimensional
+#print axioms TDA.Persistence.persistenceMeasureValue_add_kernel
+#print axioms TDA.Persistence.persistenceMeasureValue_four_rank
+#print axioms TDA.Persistence.persistenceImage_finiteDimensional_target
+#print axioms TDA.Persistence.persistenceMeasureValue_split_birth
+#print axioms TDA.Persistence.persistenceMeasureValue_split_death
+#print axioms TDA.Persistence.persistenceMeasureValue_le_crossing_rank
+#print axioms TDA.Persistence.persistenceMeasureValue_eq_zero_of_crossing_eq_zero
+#print axioms TDA.Persistence.persistenceMeasureValue_birth_self
+#print axioms TDA.Persistence.persistenceMeasureValue_death_self
+#print axioms TDA.Persistence.persistenceTailMeasureValue_add_image
+#print axioms TDA.Persistence.persistenceMeasureValue_add_tail
+#print axioms TDA.Persistence.persistenceTailMeasureValue_antitone
+#print axioms TDA.Persistence.persistenceTailMeasureValue_split_birth
+#print axioms TDA.Persistence.essentialMeasureValue_le_tail
+#print axioms TDA.Persistence.exists_tail_eq_essentialMeasureValue
+#print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_eventually
+#print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_split_birth
+#print axioms TDA.Persistence.PersistenceMeasureExamples.upper_edges_count_one
+#print axioms TDA.Persistence.PersistenceMeasureExamples.lower_birth_edge_count_zero
+#print axioms TDA.Persistence.PersistenceMeasureExamples.essential_interval_count_one
+
+#print axioms TDA.Persistence.PersistenceMeasureExamples.infinite_ephemeral_qTame
+#print axioms TDA.Persistence.PersistenceMeasureExamples.infinite_ephemeral_not_finiteDimensional
+#print axioms TDA.Persistence.PersistenceMeasureExamples.infinite_ephemeral_rectangle_zero
+#print axioms TDA.Persistence.essentialMeasureValue_le_crossing_rank
+#print axioms TDA.Persistence.PModule.QTame.persistenceMeasureValue_eventually_zero
+#print axioms TDA.Persistence.persistenceTailSpace_finiteDimensional
+
+-- Rectangle monotonicity and essential-boundary fixtures.
+#print axioms TDA.Persistence.persistenceMeasureValue_mono
+#print axioms TDA.Persistence.PersistenceMeasureExamples.essential_interval_finite_rectangle_zero
+#print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_self
+
 -- Normalized subdivision-Rips and restricted measure bifiltrations.
 #print axioms TDA.Persistence.SubdivisionRips.homology_obj
 #print axioms TDA.Persistence.SubdivisionRips.homology_structureMap
@@ -3393,6 +3433,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelPlus_singleton_eq_top
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_kernelMinus_singleton_eq_bot
 #print axioms TDA.Persistence.CutSubspacesExamples.ephemeral_singleton_interval_spaces
+
+#print axioms TDA.Persistence.Rips.exists_relation_distortion_le_of_hausdorffDist_lt
+#print axioms TDA.Persistence.Rips.hausdorffInterleavingOfLt
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffDist_of_ne_top
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffEDist
+#print axioms TDA.Persistence.Rips.realInterleavingDistance_le_two_mul_hausdorffDist_of_totallyBounded
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.intervals_infinite
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_image_not_isClosed
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_closed_interval_distance_zero
+#print axioms TDA.Persistence.RipsHausdorffInterleavingExamples.open_closed_interval_interleaving
 
 #print axioms TDA.Persistence.BoundaryTransport.depth_eq
 #print axioms TDA.Persistence.BoundaryTransport.depth_pos
