@@ -12,7 +12,7 @@ X2. Vertical translation is exact on two disjoint edges (a disconnected graph) a
 triangle (a cycle).
 
 X3. The reversal `(0, 1)` to `(1, 0)` has equal maxima and equal minima, lower bound `0`, distance
-`0` and `edist = 1`: neither the lower bound nor the upper bound is an equality in general.
+`0` and `edist = 1`: the lower bounds are attained and the upper bound `edist` is not.
 
 X4. On an empty vertex type the distance is `0`; the extremal statements need `Nonempty`.
 
@@ -89,10 +89,10 @@ theorem triangle_translate_geometricInterleavingDistance (c : ℝ) :
   ⟨TDA.Reeb.Examples.GraphCycleObstruction.triangle_not_isAcyclic,
     geometricInterleavingDistance_graphPLReebGraph_add_const c⟩
 
-/-! ## X3. Strict lower bound -/
+/-! ## X3. Upper bound not attained -/
 
-/-- The reversal `(0, 1)` to `(1, 0)`: equal maxima and equal minima give lower bound `0`, the
-distance is `0`, and `edist = 1`. -/
+/-- The reversal `(0, 1)` to `(1, 0)`: equal maxima and equal minima give lower bound `0`, which
+is the distance, while `edist = 1`. -/
 theorem reversal_extremal_bounds :
     Finset.univ.sup' Finset.univ_nonempty tilted =
         Finset.univ.sup' Finset.univ_nonempty reversed ∧

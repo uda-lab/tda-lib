@@ -986,7 +986,6 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.max_ofReal_abs_sub_le_geometricInterleavingDistance_graphPLReebGraph
 #print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_sup'
 #print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_inf'
-#print axioms TDA.Mapper.GraphPL.edist_add_const
 #print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_add_const
 #print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_of_isEmpty
 

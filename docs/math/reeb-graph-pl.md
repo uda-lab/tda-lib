@@ -481,9 +481,9 @@ and `_of_inf'`). For every `c : ℝ`, the distance between `h` and the translate
 `ENNReal.ofReal |c|` and both extremes move by `c`
 (`geometricInterleavingDistance_graphPLReebGraph_add_const`); the graph may be disconnected or
 contain cycles. For empty `V` the distance is `0`
-(`geometricInterleavingDistance_graphPLReebGraph_of_isEmpty`). The lower bounds are not equalities
-in general: the reversal `(0, 1)` to `(1, 0)` on a single edge has equal maxima and equal minima,
-distance `0` and `edist h g = 1`. Minimal displacement alone is detected only by the `inf'` bound:
+(`geometricInterleavingDistance_graphPLReebGraph_of_isEmpty`). The reversal `(0, 1)` to `(1, 0)` on a
+single edge has equal maxima and equal minima, distance `0` and `edist h g = 1`: the lower bounds
+are attained there, and the upper bound `edist h g` is not. Minimal displacement alone is detected only by the `inf'` bound:
 on a single edge, `(0, 1)` against `(-1, 1)` has equal maxima and distance exactly `1`. These
 statements are library results.
 

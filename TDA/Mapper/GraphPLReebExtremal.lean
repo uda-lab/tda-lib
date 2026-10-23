@@ -19,8 +19,8 @@ displacement attains it. This holds for every vertical translation `fun v => h v
 distance from `h` is `ENNReal.ofReal |c|`, for any graph, connected or not. For an empty vertex
 type the distance is `0`.
 
-No equality is claimed in general: the lower bounds can be strict, and the exactness criterion is
-a hypothesis.
+The distance is not claimed to equal `edist h g` in general; exactness is conditional on the
+stated hypothesis.
 -/
 
 namespace TDA.Mapper.GraphPL
@@ -123,8 +123,7 @@ theorem geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_inf'
   le_antisymm (geometricInterleavingDistance_graphPLReebGraph_le_edist G h g)
     (hinf ▸ ofReal_abs_inf'_sub_le_geometricInterleavingDistance_graphPLReebGraph G h g)
 
-/-- The vertex sup distance of a vertical translate is the translation size. -/
-theorem edist_add_const (c : ℝ) : edist h (fun v => h v + c) = ENNReal.ofReal |c| := by
+private theorem edist_add_const (c : ℝ) : edist h (fun v => h v + c) = ENNReal.ofReal |c| := by
   have hv (v : V) : edist (h v) (h v + c) = ENNReal.ofReal |c| := by
     rw [edist_dist, Real.dist_eq, show h v - (h v + c) = -c by ring, abs_neg]
   exact le_antisymm (edist_pi_le_iff.2 fun v => (hv v).le)
