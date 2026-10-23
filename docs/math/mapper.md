@@ -327,8 +327,8 @@ face lies in every target member selected by either refinement, so it witnesses
 the union face. Applying this result to the component-cover refinements shows
 that any two selected target-cover refinements induce contiguous ordinary
 Mapper maps. The maps can differ on vertices; contiguity, rather than equality,
-is the choice-independence statement at this level. No homology-map equality or
-chain homotopy is inferred.
+is the choice-independence statement at the vertex level. The homology-map
+equality it yields on the ordered chain model is stated below.
 
 A coherent cover tower over a preorder consists of a possibly varying index
 type and indexed family at every parameter, together with a selected
@@ -339,7 +339,65 @@ not inferred from unrelated selector choices. Ordinary Mapper assigns a
 complex to every parameter and a simplicial vertex map to every comparison,
 and the existing strict refinement laws prove identity and composition for
 these maps. This direct interface makes no fixed-ambient inclusion claim and
-adds no categorical, diagram, stability, or persistence conclusion.
+adds no categorical, diagram or stability conclusion; the persistence module
+below does not need the strict equations.
+
+## Refinement-induced homology maps and Mapper persistence modules
+
+Fix a continuous map `f : X → Y`, a ring `R` and a degree `n`. For families
+`U : I → Set Y` and `V : J → Set Y` with `I` and `J` in one universe, and
+linear orders on the component-index types of `mapper f U` and `mapper f V`,
+a selected refinement `r : Refinement U V` induces the map
+`mapperHomologyMap R f r n = simplicialHomologyMap R (mapperMap f r) n` on
+the ordered-chain homology. The identity refinement induces the identity map
+and composition of refinements induces composition. No openness, coverage,
+multiplicity, finiteness, field or local path-connectedness hypothesis
+enters. The linear orders are chain-model data; nothing is claimed about
+replacing them by other orders.
+
+Two selected refinements `r, s : Refinement U V` induce contiguous Mapper
+maps, so the signed prism of the contiguity bridge is a chain homotopy
+`mapperChainHomotopy R f r s` between their chain maps and
+`mapperHomologyMap R f r n = mapperHomologyMap R f s n`. Consequently every
+refinement of a family into itself induces the identity on homology, and the
+composite of the maps induced by `r : Refinement U V` and `s : Refinement V W`
+is the map induced by any `t : Refinement U W`. The vertex maps and the chain
+maps may still differ; the equality is a statement about homology. This is a
+library consequence of the contiguity statement above and of the signed prism
+homotopy of the [simplicial vertex-map bridge](simplicial-vertex-maps.md); it
+adds no source claim beyond those already recorded for them.
+
+Along a preorder `P`, cover families `U p` with index types in one universe,
+linear orders on their component-index types, and a selected refinement
+`r h : Refinement (U p) (U q)` for every `h : p ≤ q` form the persistence
+module `mapperHomologyPModule R f U r n : PModule R P`. Its value at `p` is
+`simplicialHomology (mapper f (U p)) R n` and its structure map at `h` is
+`mapperHomologyMap R f (r h) n`. The functor laws follow from the homology
+equalities above, so no identity or composition equation on the selectors is
+required, and replacing the whole family `r` by another choice of refinements
+between the same families gives the same module. A `CoherentCoverTower`
+supplies such a family; the homology maps of its strict Mapper maps are
+exactly the structure maps of this module, and the strict tower interface is
+unchanged.
+
+Fixtures: over a one-point domain, the two selections of a duplicated target
+member give different Mapper vertex maps and the same nonzero `H₀` map over
+`ℚ`; a three-stage family whose direct first-to-last selector differs from
+the composite of the adjacent selectors gives a persistence module equal to
+the module of the strictly coherent three-stage tower; its first transition
+collapses an edge, killing the edge generator in degree one over every ring
+while sending both endpoint classes to the nonzero middle-vertex class; an
+empty domain over a nonempty index type gives an empty Mapper, zero chain
+maps and equal homology maps in every degree over every ring. As a negative
+control, the two simplicial maps from a point to two isolated vertices are
+not contiguous and have different `H₀` maps over `ZMod 2`; they are not the
+Mapper maps of two refinements between one pair of families, and over the
+zero ring `ZMod 1` their homology maps coincide, so the nontriviality of the
+coefficient ring is necessary for this control.
+
+No multinerve chain complex or multinerve selector independence, Nerve Lemma,
+categorical reconstruction, stability estimate, barcode algorithm or q-tame
+theory is included.
 
 ## Uniform interval covers and edge cells
 
