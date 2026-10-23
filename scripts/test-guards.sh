@@ -10,17 +10,41 @@ cd "$ROOT"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 fail=0; n=0
 
+# Lexer calls here run in C, as in the guard scripts; the root:locale fixtures cover UTF-8 callers.
 # case <name> <expected-sorry-hits> <expected-axiom-hits> <<'EOF' ... EOF
 case_() {
   local name="$1" want_s="$2" want_a="$3" f="$tmp/$1.lean" got_s got_a
   cat > "$f"
   n=$((n + 1))
-  got_s="$(awk -v mode=sorry -f scripts/lean-code-scan.awk "$f" | wc -l)"
-  got_a="$(awk -v mode=axiom -f scripts/lean-code-scan.awk "$f" | wc -l)"
+  got_s="$(LC_ALL=C awk -v mode=sorry -f scripts/lean-code-scan.awk "$f" | wc -l)"
+  got_a="$(LC_ALL=C awk -v mode=axiom -f scripts/lean-code-scan.awk "$f" | wc -l)"
   if [ "$got_s" -ne "$want_s" ] || [ "$got_a" -ne "$want_a" ]; then
     echo "FAIL [$name]: sorry want $want_s got $got_s; axiom want $want_a got $got_a"; fail=1
   fi
 }
+
+# Multibyte text and non-UTF-8 bytes are scanned byte-wise (case_ forces C; see root:locale).
+case_ multibyte_bytes 1 0 < <(printf '%b\n' 'example : True := \xe2\x9f\xa8rfl\xe2\x9f\xa9' 'def x := \xff -- sorry' 'example : True := sorry')
+
+# Character literals with a multibyte character (2-, 3- and 4-byte) close at their own quote.
+case_ char_literal_guillemet 1 0 <<'EOF'
+example : Char × True := ('«', sorry)
+EOF
+case_ char_literal_guillemet_admit 1 0 <<'EOF'
+def c := '«'; admit
+EOF
+case_ char_literal_3byte 1 0 <<'EOF'
+def c := 'ℝ'; sorry
+EOF
+case_ char_literal_4byte 1 0 <<'EOF'
+def c := '😀'; sorry
+EOF
+case_ char_literal_escape 1 0 <<'EOF'
+def c := '\n'; sorry
+EOF
+case_ char_literal_then_string 0 0 <<'EOF'
+def c := ('«', "sorry")
+EOF
 
 case_ plain_sorry 1 0 <<'EOF'
 theorem t : True := by sorry
@@ -148,16 +172,16 @@ EOF
 
 # Stable releases reject Issue-authorized holes too; comments remain harmless.
 for fixture in marked_sorry plain_sorry; do
-  hits="$(awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
+  hits="$(LC_ALL=C awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
   if [ "$hits" -ne 1 ]; then echo "FAIL [stable:$fixture]: expected one hole"; fail=1; fi
 done
 for fixture in sorry_in_comments sorry_in_string; do
-  hits="$(awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
+  hits="$(LC_ALL=C awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
   if [ "$hits" -ne 0 ]; then echo "FAIL [stable:$fixture]: comment/string counted"; fail=1; fi
 done
 
 printf 'private axiom staging : True -- ALLOW_AXIOM: #1 staging\n' > "$tmp/stable-axiom.lean"
-hits="$(awk -v mode=stable_axiom -f scripts/lean-code-scan.awk "$tmp/stable-axiom.lean" | wc -l)"
+hits="$(LC_ALL=C awk -v mode=stable_axiom -f scripts/lean-code-scan.awk "$tmp/stable-axiom.lean" | wc -l)"
 if [ "$hits" -ne 1 ]; then echo "FAIL [stable:marked_axiom]: expected one declaration"; fail=1; fi
 
 if [ "$fail" -eq 0 ]; then echo "guard lexer self-test OK ($n cases)"; else exit 1; fi
@@ -320,6 +344,18 @@ for a in gawk mawk nawk; do
      || [ "$(LC_ALL=C.UTF-8 "$a" -v mode=root -f scripts/lean-code-scan.awk "$tmp/bad.lean" | wc -l)" -ne 1 ]; then
     echo "FAIL [root:awk-$a]: lexer rejected or misjudged under $a: $out"; rfail=1
   fi
+done
+# The guards must not depend on the caller's locale: multibyte characters before an `r` in code, and a non-UTF-8 line.
+for loc in en_US.UTF-8 C; do
+  rn=$((rn + 1)); d="$tmp/root-locale-$rn"; fixture "$d"
+  printf '%b\n' "import $root_lib.Basic" "import $root_lib.\xe2\x84\x9dr" > "$d/$root_lib.lean"
+  printf '%b\n' 'example : True := \xe2\x9f\xa8rfl\xe2\x9f\xa9' '-- caf\xe9 \xff' > "$d/$root_lib/Multibyte.lean"
+  cp scripts/check-no-sorry.sh scripts/check-no-custom-axiom.sh "$d/scripts/"
+  for g in check-root-aggregator check-no-sorry check-no-custom-axiom; do
+    if ! out="$(LC_ALL=$loc bash "$d/scripts/$g.sh" 2>&1)"; then
+      echo "FAIL [root:locale $loc $g]: $out"; rfail=1
+    fi
+  done
 done
 if [ "$rfail" -eq 0 ]; then echo "root-aggregator guard self-test OK ($rn cases)"; else exit 1; fi
 
