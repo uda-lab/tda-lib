@@ -3368,3 +3368,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.GradedFree.Presentation.exists_pos_structureMap_isIso
 #print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_finite_criticalCoordinates
 #print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_pos_structureMap_isIso
+#print axioms TDA.Persistence.HookInfinity.fiberEquivOfLe_apply
+#print axioms TDA.Persistence.HookInfinity.fiberEquivOfLe_structureMap
+#print axioms TDA.Persistence.HookInfinity.fiber_eq_zero_of_not_le
+#print axioms TDA.Persistence.HookInfinity.fromBirth_birth
+#print axioms TDA.Persistence.HookInfinity.hom_ext
+#print axioms TDA.Persistence.HookInfinity.homEquivFiber
+#print axioms TDA.Persistence.HookInfinity.exists_lift_of_birth_surjective
+#print axioms TDA.Persistence.HookInfinity.exists_lift_of_surjective
+#print axioms TDA.Persistence.HookInfinity.exists_lift_rankExact
