@@ -3205,3 +3205,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankExampleFixtures.identityTwoStageFD
 
 #print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
+
+#print axioms TDA.Persistence.IsPointwiseShortExact.rank_add_iff_lift_kernel
+#print axioms TDA.Persistence.IsRankExact.lift_kernel
+#print axioms TDA.Persistence.IsPointwiseShortExact.reindex
+#print axioms TDA.Persistence.IsRankExact.reindex
+#print axioms TDA.Persistence.IsPointwiseShortExact.rankExact_of_section
