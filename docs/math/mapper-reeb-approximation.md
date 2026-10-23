@@ -127,8 +127,8 @@ at distance at most `|c|`. For a finite bounded-interval cover `(a, b)` with an 
 that is a member with nonempty inverse image, the distance is exactly `|c|`
 (`interleavingDistance_coverComponents_add_const`): for `c > 0` and `ε < c`, the interval
 `(a i₀, a i₀ + (c - ε)/2)` at the least left endpoint `a i₀` of an active member has a nonempty
-assembled value for `f`, while every member meeting the translated thickening lies below `a i₀`
-and is inactive. Hence, for graph-PL input,
+assembled value for `f`, while every original member meeting `translate c (thicken ε I)` has
+left endpoint strictly below `a i₀` and is therefore inactive. Hence, for graph-PL input,
 \[
 d_{\mathrm{geo}}\bigl(M_h(a, b),\ M_{h + c}(a + c, b + c)\bigr) = |c|
 \]

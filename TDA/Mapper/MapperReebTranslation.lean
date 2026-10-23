@@ -13,9 +13,9 @@ For a finite bounded-interval cover `U i = (a i, b i)` with at least one active 
 a member with nonempty inverse image, the distance is exactly `|c|`
 (`interleavingDistance_coverComponents_add_const`). For `c > 0` and `ε < c`, take an active
 member with least left endpoint `a i₀` and a short interval `I` starting at `a i₀`: the
-assembled value of `f` at `I` is nonempty, while every member that meets the translated
-thickening of `I` lies below `a i₀` and is therefore inactive. No coverage or boundedness of `f`
-is needed.
+assembled value of `f` at `I` is nonempty, while every original member that meets
+`translate c (thicken ε I)` has left endpoint strictly below `a i₀` and is therefore inactive. No
+coverage or boundedness of `f` is needed.
 
 For vertex heights `h` on a finite graph `G`, write `M_h(a, b)` for
 `graphPLMapperReconstruction G h a b`. With an active member,
