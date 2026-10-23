@@ -3205,3 +3205,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankExampleFixtures.identityTwoStageFD
 
 #print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
+
+#print axioms TDA.Persistence.finiteDimensional_range_of_factorization
+#print axioms TDA.Persistence.PModule.qTame_of_finiteDimensional
+#print axioms TDA.Persistence.RealInterleaving.finiteDimensional_range_structureMap
+#print axioms TDA.Persistence.Rips.sublevelModuleIsoOfIsometryEquiv
+#print axioms TDA.Persistence.Rips.exists_finite_net_relation
+#print axioms TDA.Persistence.Rips.qTame_of_totallyBounded
+#print axioms TDA.Persistence.Rips.not_finiteDimensional_zero_homology
+#print axioms TDA.Persistence.RipsQTameExamples.unitInterval_qTame
+#print axioms TDA.Persistence.RipsQTameExamples.unitInterval_zero_not_finiteDimensional
+#print axioms TDA.Persistence.RipsQTameExamples.empty_qTame
