@@ -76,7 +76,11 @@ nontrivial ring. The comparison and morphism lemmas remain over fields.
 vanishing criterion for bounded rectangles over a field. `GradedFree.lift`
 and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
-expresses finite presentation by homogeneous cokernels. At a pair of indices,
+expresses finite presentation by homogeneous cokernels. For modules on
+`Fin n → ℝ`, `GradedFree.finitelyPresented_exists_finite_criticalCoordinates`
+gives finite coordinate sets outside which comparable structure maps are
+isomorphisms, and `GradedFree.finitelyPresented_exists_pos_structureMap_isIso`
+gives positive right-diagonal slack at every index. At a pair of indices,
 `IsPointwiseShortExact.rank_add_iff_lift_kernel` equates rank additivity and lifting
 dying vectors when the middle source fiber is finite dimensional. `IsRankExact`
 requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`

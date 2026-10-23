@@ -3361,3 +3361,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial
 #print axioms TDA.Persistence.AlgebraicFamily.finite_observed_nontrivial_of_iso
 #print axioms TDA.Persistence.GradedFree.Presentation.structureMap_isIso_of_birth_iff
+#print axioms TDA.Persistence.GradedFree.Presentation.criticalCoordinates_finite
+#print axioms TDA.Persistence.GradedFree.Presentation.generators_birth_iff_of_no_critical
+#print axioms TDA.Persistence.GradedFree.Presentation.relations_birth_iff_of_no_critical
+#print axioms TDA.Persistence.GradedFree.Presentation.structureMap_isIso_of_no_critical
+#print axioms TDA.Persistence.GradedFree.Presentation.exists_pos_structureMap_isIso
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_finite_criticalCoordinates
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_pos_structureMap_isIso

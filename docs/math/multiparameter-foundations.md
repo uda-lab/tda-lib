@@ -52,6 +52,18 @@ implement the free-cover ingredients of
 [Lesnick, §4.1](https://arxiv.org/html/1106.5305v4). The finite cross-presentation
 characterization in Theorem 4.4 requires an additional generator-elimination proof.
 
+For coordinatewise ordered `Fin n → ℝ`, each finite presentation determines a
+finite set of critical values in every coordinate: the generator and relation
+grade coordinates. If no critical value lies in any interval `(aᵢ, bᵢ]`, the
+structure map from `a` to `b` is an isomorphism. Evaluation preserves the
+presentation cokernel, so the generator and relation isomorphisms induce the
+isomorphism of presented fibers. This property transfers through the natural
+isomorphism in `FinitelyPresented`. Taking less than the least positive gap
+from a fixed `a` to the finitely many grade coordinates gives a positive
+right-diagonal slack valid for every smaller nonnegative shift, including
+the empty-grade and zero-coordinate cases. This is the finite-grade step of
+[Lesnick, §6, Lemma 6.4](https://arxiv.org/html/1106.5305v4).
+
 ## Rank exactness and hook lifting
 
 Consider a pointwise short exact sequence L → M → N. At a ≤ b, assume only that
