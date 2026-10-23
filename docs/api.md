@@ -482,6 +482,18 @@ it. Both keep the `LinearOrder V`, `Fintype V` and field assumptions of finite-f
 stability. These are same-label bounds, not Hausdorff bounds. See [the proofs, attained
 constants and source scope](math/cech-displacement-stability.md).
 
+`TDA.Filtration.CechRelation` compares different label types through a native relation
+whose related coordinates are within ε in one ambient space. It proves shifted-face
+geometry for both infimum-radius sublevels and exact closed-ball nerves, without
+assuming an optimal center. `TDA.Persistence.CechRelationInterleaving` supplies their
+canonical homology interleavings over arbitrary rings and the full finite-diagram
+relation bound over fields. `Cech.bottleneck_dgm_le_hausdorffDist` bounds the finite
+radius-filter diagrams by the Hausdorff distance of their ranges, with constant one,
+allowing unequal label counts and repeated coordinates. Its extended-distance form
+gives an α+β bound for two finite samples of any common target; the target needs no
+diagram. Same-range configurations have equal full diagrams. The real Hausdorff bound
+requires nonempty configurations. See [ambient Čech Hausdorff stability](math/cech-hausdorff-stability.md).
+
 `TDA.Filtration.CechWitness` compares Čech complexes over a witness space W mapped into X
 by f. An isometry can only add faces and lower values; a 1-Lipschitz g : X → W fixing the
 labelled points reverses both, so with both maps the complexes and values agree. The
@@ -833,6 +845,20 @@ and executable arbitrary-field decomposition are outside the reviewed PH scope. 
 stable release must state its selected results and limitations; it need not finish every
 roadmap extension. This guide describes the current API and does not announce a release.
 
+
+### Collapsed-boundary geometry
+
+`TDA.Persistence.BoundaryTransportGeometry` equips the strict birth–death half-plane
+with one additional boundary point. The distance between interior points is the
+minimum of their maximum-coordinate distance and the sum of their distances to the
+diagonal; the distance to the boundary is half the lifetime. This metric is complete
+and separable. The interior has its usual topology, is open and dense, and its Borel
+sets determine the Borel structure of the enlarged space. Collapsing the diagonal of
+the closed half-plane defines a measurable Lipschitz map onto this space.
+
+These results supply the underlying Polish space for finite-measure boundary
+transport. The reservoir comparison, optimal Radon plans and finite atomic
+approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 
 ### Gaussian signed measures and C₀ universality
 
