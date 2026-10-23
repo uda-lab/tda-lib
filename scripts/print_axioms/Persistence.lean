@@ -3206,6 +3206,37 @@ set_option linter.auxLemma false
 
 #print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
 
+-- Different-label ambient Cech stability.
+#print axioms TDA.Persistence.Cech.relationInterleaving_φ
+#print axioms TDA.Persistence.Cech.relationInterleaving_ψ
+#print axioms TDA.Persistence.Cech.realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Cech.complex_realInterleavingDistance_le_of_relation
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_relation
+#print axioms TDA.Persistence.Cech.exists_relation_dist_le_hausdorffDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_hausdorffDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_hausdorffEDist
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_of_hausdorffEDist_le
+#print axioms TDA.Persistence.Cech.bottleneck_dgm_le_sampling_errors
+#print axioms TDA.Persistence.Cech.dgm_eq_of_range_eq
+
+-- Ambient Cech relation fixtures.
+#print axioms TDA.Persistence.Cech.RelationExamples.collapse_is_many_to_one
+#print axioms TDA.Persistence.Cech.RelationExamples.repeated_diagram_eq
+#print axioms TDA.Persistence.Cech.RelationExamples.repeated_bottleneck_zero
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_bottleneck_le
+#print axioms TDA.Persistence.Cech.RelationExamples.pair_full_h0
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_edge_value
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_essential_bar
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_budget_zero_fails
+#print axioms TDA.Persistence.Cech.RelationExamples.proper_ambient_closed_ball_comparison
+#print axioms TDA.Persistence.Cech.RelationExamples.empty_diagrams_eq
+#print axioms TDA.Persistence.Cech.RelationExamples.common_target_samples
+#print axioms TDA.Persistence.Cech.complexRelationInterleaving_φ
+#print axioms TDA.Persistence.Cech.complexRelationInterleaving_ψ
+#print axioms TDA.Persistence.Cech.RelationExamples.moved_full_h0
+#print axioms TDA.Persistence.Cech.RelationExamples.interval_target_samples
+#print axioms TDA.Persistence.Cech.RelationExamples.punctured_sublevel_ne_complex
+
 #print axioms TDA.Persistence.finiteDimensional_range_of_factorization
 #print axioms TDA.Persistence.PModule.qTame_of_finiteDimensional
 #print axioms TDA.Persistence.RealInterleaving.finiteDimensional_range_structureMap
@@ -3413,3 +3444,38 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_symm
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_lt_top
 #print axioms TDA.Persistence.BoundaryTransport.reservoirMeasure_regular
+#print axioms TDA.Persistence.BoundaryTransport.measurable_collapsePlanPair
+#print axioms TDA.Persistence.BoundaryTransport.collapsedAugmentation_mass
+#print axioms TDA.Persistence.BoundaryTransport.collapsedAugmentation_isFiniteMeasure
+#print axioms TDA.Persistence.BoundaryTransport.collapsedAugmentation_first_marginal
+#print axioms TDA.Persistence.BoundaryTransport.collapsedAugmentation_second_marginal
+#print axioms TDA.Persistence.BoundaryTransport.collapsePlanPair_dist_le
+#print axioms TDA.Persistence.BoundaryTransport.collapsePlanPair_powerCost_le
+#print axioms TDA.Persistence.BoundaryTransport.measurable_collapsedPowerCost
+#print axioms TDA.Persistence.BoundaryTransport.collapsedAugmentation_cost_le
+#print axioms TDA.Persistence.BoundaryTransport.collapsedAugmentation_forward
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.interiorIncl_mem_image
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.diagonalProjection_not_mem_image
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.boundaryPlan_admissible
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.boundaryPlan_cost_le
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.exists_boundaryPlan_cost_le
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.boundaryPlan_finite
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.boundaryPlan_zero
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.boundaryPlan_boundaryAtom
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.far_shortcut_reverse_cost
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.far_shortcut_original_cost
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.singlePairReservoirCompetitor_first
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.singlePairReservoirCompetitor_second
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.singlePairReservoirCompetitor_admissible
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.far_reservoir_cost_reduction
+#print axioms TDA.Persistence.BoundaryTransport.reservoirPowerValue_le_plan
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportPowerValue_eq_reservoirPowerValue
+#print axioms TDA.Persistence.BoundaryTransport.reservoirPowerValue_independent
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_eq_reservoirDistance
+
+#print axioms TDA.Persistence.BoundaryTransport.normalizedReservoirMeasure_eq_reservoirMeasure_inv
+#print axioms TDA.Persistence.BoundaryTransport.scaledReservoirPair_originalMass_le_one
+#print axioms TDA.Persistence.BoundaryTransport.scaledReservoirPair_isProbability
+#print axioms TDA.Persistence.BoundaryTransport.reservoirPowerValue_normalization
+#print axioms TDA.Persistence.BoundaryTransport.reservoirDistance_normalization
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_eq_normalizedReservoirDistance

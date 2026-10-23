@@ -62,6 +62,8 @@ import TDA.Persistence.FaceOrderTemplate
 import TDA.Persistence.FiniteFilterStability
 import TDA.Persistence.RipsStability
 import TDA.Persistence.CechStability
+import TDA.Persistence.CechRelationInterleaving
+import TDA.Persistence.CechHausdorff
 import TDA.Persistence.RipsPersistenceImage
 import TDA.Persistence.FaceEndpointUniqueness
 import TDA.Persistence.SmoothFaceLift
@@ -174,3 +176,7 @@ import TDA.Persistence.BoundaryTransportGeometry
 import TDA.Persistence.BoundaryPlans
 import TDA.Persistence.BoundaryPlanLaws
 import TDA.Persistence.ReservoirMeasure
+import TDA.Persistence.BoundaryTransportForward
+import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.BoundaryTransportComparison
+import TDA.Persistence.ReservoirNormalization

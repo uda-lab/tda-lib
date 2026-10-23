@@ -470,6 +470,18 @@ it. Both keep the `LinearOrder V`, `Fintype V` and field assumptions of finite-f
 stability. These are same-label bounds, not Hausdorff bounds. See [the proofs, attained
 constants and source scope](math/cech-displacement-stability.md).
 
+`TDA.Filtration.CechRelation` compares different label types through a native relation
+whose related coordinates are within ε in one ambient space. It proves shifted-face
+geometry for both infimum-radius sublevels and exact closed-ball nerves, without
+assuming an optimal center. `TDA.Persistence.CechRelationInterleaving` supplies their
+canonical homology interleavings over arbitrary rings and the full finite-diagram
+relation bound over fields. `Cech.bottleneck_dgm_le_hausdorffDist` bounds the finite
+radius-filter diagrams by the Hausdorff distance of their ranges, with constant one,
+allowing unequal label counts and repeated coordinates. Its extended-distance form
+gives an α+β bound for two finite samples of any common target; the target needs no
+diagram. Same-range configurations have equal full diagrams. The real Hausdorff bound
+requires nonempty configurations. See [ambient Čech Hausdorff stability](math/cech-hausdorff-stability.md).
+
 `TDA.Filtration.CechWitness` compares Čech complexes over a witness space W mapped into X
 by f. An isometry can only add faces and lower values; a 1-Lipschitz g : X → W fixing the
 labelled points reverses both, so with both maps the complexes and values agree. The
@@ -849,9 +861,27 @@ Paired capacities dominate the sum of the original masses. Finite augmented
 measures are regular on the collapsed Polish space; dividing by a positive
 capacity gives probability measures and the corresponding moment scaling.
 
-The full finite-total-mass reservoir/Wasserstein comparison, minimizing Radon
-plans, sharp triangle and separation, native weighted atomic compatibility and
-finite atomic approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
+`BoundaryTransportForward` and `BoundaryTransportReverse` compare every admissible
+plan in both directions. The forward map collapses the diagonal and adds a
+boundary–boundary atom. The reverse map keeps a direct interior leg when its
+distance is no greater than the two boundary legs, and otherwise splits it into
+deletion and insertion. For p at least one, both transformations preserve the
+required marginals and do not increase powered cost, including infinite values.
+`BoundaryTransportComparison.boundaryTransportPowerValue_eq_reservoirPowerValue`
+identifies the two infima for every finite capacity dominating the sum of the
+original masses; the reservoir value is independent of that capacity. Taking the
+reciprocal-p root gives the corresponding distance-value equality.
+
+`ReservoirNormalization` proves the probability scaling law by multiplying every
+competitor measure by the reciprocal capacity and reversing that operation.
+The powered value scales by the capacity; for positive p its root scales by
+the capacity raised to 1/p. Together with the comparison theorem, this identifies
+boundary transport with that scaled capacity-one reservoir value. The paired
+probability statement retains the full sum-of-masses capacity bound.
+
+The bridge to an ordinary Wasserstein API, minimizing Radon plans, sharp triangle
+and separation, native weighted atomic compatibility and finite atomic
+approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 
 ### Gaussian signed measures and C₀ universality
 
