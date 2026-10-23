@@ -460,7 +460,36 @@ arXiv:1501.04147v1, Theorem 4.6(i), already formalised as `perturbationInterleav
 vertex-to-edge estimate, the uniform-distance equality and the graph-PL Reeb-quotient bound are
 library results and are not attributed to the paper.
 
-Not claimed here: equality of the Reeb-quotient distance with `edist h g`; comparison of different
+**Extremal vertex heights.** For finite nonempty `V`, vertices attain the extremes of the
+piecewise-linear height, and `plHeight_mem_Icc_of_forall` bounds every point, so
+`sSup (range (plHeight G h)) = Finset.univ.sup' _ h` and `sInf (range (plHeight G h)) =
+Finset.univ.inf' _ h` (`sSup_range_plHeight`, `sInf_range_plHeight`). The Hausdorff
+edistance of the height ranges is at most the geometric interleaving distance, and on the real line
+`ENNReal.ofReal |sInf s - sInf t| ≤ Metric.hausdorffEDist s t` for nonempty sets bounded below
+(`ofReal_abs_sInf_sub_le_hausdorffEDist`, the twin of the supremum bound). Hence
+
+```lean
+ENNReal.ofReal |sup' h - sup' g| ≤ geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G g)
+ENNReal.ofReal |inf' h - inf' g| ≤ geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G g)
+```
+
+(`ofReal_abs_sup'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, the `inf'` form and the
+`max` form), for arbitrary `G`, `h`, `g`. If `edist h g` equals one of the two displacements, the
+distance equals `edist h g` (`geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_sup'`
+and `_of_inf'`). For every `c : ℝ`, the distance between `h` and the translate
+`fun v => h v + c` is `ENNReal.ofReal |c|`, because `edist h (fun v => h v + c)` is
+`ENNReal.ofReal |c|` and both extremes move by `c`
+(`geometricInterleavingDistance_graphPLReebGraph_add_const`); the graph may be disconnected or
+contain cycles. For empty `V` the distance is `0`
+(`geometricInterleavingDistance_graphPLReebGraph_of_isEmpty`). The lower bounds are not equalities
+in general: the reversal `(0, 1)` to `(1, 0)` on a single edge has equal maxima and equal minima,
+distance `0` and `edist h g = 1`. Minimal displacement alone is detected only by the `inf'` bound:
+on a single edge, `(0, 1)` against `(-1, 1)` has equal maxima and distance exactly `1`. These
+statements are library results.
+
+Not claimed here: equality of the Reeb-quotient distance with `edist h g` beyond the exactness
+criterion above, including exact distance for non-translation perturbations; the Hausdorff
+distance of height ranges for disconnected graphs beyond the extremal bounds; comparison of different
 graphs or edge sets; constructible thickening; any distance or interleaving comparison of
 realizations beyond the vertex-height bounds above; Definition 4.36 of de Silva, Munch and Patel;
 trees or simple connectivity; naturality across changes of graph or heights; general finite CW
