@@ -312,3 +312,4 @@ import TDA
 #print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_le_edge
 #print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_one_not_boundary
 #print axioms TDA.Simplicial.InternalFiniteCycleFixtures.unfilled_le_triangle
+#print axioms TDA.Simplicial.simplicialHomologyClass_zeroVertexCycle_ne_zero

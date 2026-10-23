@@ -21,3 +21,4 @@ import TDA.Mapper.GraphPLReebStabilityExamples
 import TDA.Mapper.GraphPLReebExtremalExamples
 import TDA.Mapper.RefinementHomologyExamples
 import TDA.Mapper.RefinementHomologyInterleavingExamples
+import TDA.Mapper.RefinementHomologyBarcodeExamples

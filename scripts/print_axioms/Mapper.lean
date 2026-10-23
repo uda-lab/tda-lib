@@ -1023,3 +1023,26 @@ import TDA
 #print axioms TDA.Mapper.GraphPLReebExtremalExamples.empty_extremal
 #print axioms TDA.Mapper.GraphPLReebExtremalExamples.point_geometricInterleavingDistance
 #print axioms TDA.Mapper.GraphPLReebExtremalExamples.flat_tilted_geometricInterleavingDistance
+
+-- Barcodes of finite Mapper homology modules.
+#print axioms TDA.Mapper.mapperHomologyPModule_finiteDimensional
+#print axioms TDA.Mapper.mapperBarcode_eq
+#print axioms TDA.Mapper.nonempty_mapperBarcodeIso
+#print axioms TDA.Mapper.finrank_range_mapperHomologyMap
+#print axioms TDA.Mapper.mapperBarcode_eq_iff
+#print axioms TDA.Mapper.nonempty_iso_iff_mapperBarcode_eq
+#print axioms TDA.Mapper.CoherentCoverTower.finrank_range_simplicialHomologyMap
+#print axioms TDA.Mapper.GraphPL.finite_mapperFace
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.mapperBarcode_fin_zero
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.emptyDomain_mapperBarcode
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.merge_finrank_H0_values
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.merge_mapperBarcode
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.skewStage_le
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.skew_mapperBarcode
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.coherentTowerFin_finrank_range
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.pair_finrank_H1
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.loopFine_eq
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.loop_finrank_H1
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.loop_mapperBarcode
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.natToUnit_not_finite_face
+#print axioms TDA.Mapper.RefinementHomologyBarcodeExamples.natToUnit_not_finiteDimensional

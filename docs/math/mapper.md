@@ -485,6 +485,59 @@ Propositions 4.4–4.5, Corollary 4.6, Theorems 4.7–4.8); persistence diagrams
 bottleneck bounds; lower bounds or tightness of the distance; independence of
 the component orders; multinerve homology; any Nerve Lemma.
 
+## Finite Mapper barcodes
+
+Keep the setting of the previous section and fix a degree `n`. If every Mapper
+complex `mapper f (U p)` has finitely many `n`-faces, then over a field `k`
+every value of `mapperHomologyPModule k f U r n` is finite-dimensional, because
+its chain module in degree `n` is.
+
+Now let the preorder be the finite chain `Fin N` and let the field, the domain
+`X` and the index types lie in one universe, as the
+[finite interval decomposition](finite-interval-decomposition.md) requires of
+its carriers. The Mapper barcode `mapperBarcode k f U r n` is the canonical rank
+barcode of `mapperHomologyPModule k f U r n`: a multiset of half-open intervals
+`[b, d)` with `b < d ≤ N`. A bar with `d = N` records a class that survives to
+the last observed stage; it does not assert an infinite lifetime. Because the
+module does not depend on the selected refinements, neither does its barcode.
+The finite interval decomposition gives a natural isomorphism from the module to
+the realization of its barcode; the isomorphism is chosen and not canonical. For
+stages `q ≤ t`, the rank of `mapperHomologyMap k f (r h) n` is the number of
+bars with `b ≤ q` and `t < d`, and a multiset is the barcode exactly when it
+satisfies all of these rank equations. Two such modules, with possibly different
+maps, covers and degrees, are naturally isomorphic exactly when their barcodes
+agree. For a `CoherentCoverTower` on `Fin N`, the same counts are the ranks of
+the homology maps of the tower's strict Mapper maps. These statements specialize
+the finite interval decomposition to the Mapper module of the
+[DMW16-v2](references.md#DMW16-v2) towers above and add no source claim.
+
+For the piecewise-linear height of a finite graph and finitely many open
+interval labels at a stage, the finiteness of the Mapper faces recorded above
+holds in every degree, so the barcode is available without further hypotheses.
+Coverage of the height range is not needed.
+
+Fixtures: on `Fin 0` and on the empty domain every barcode is empty, without a
+nonemptiness hypothesis. On the single edge with heights `0` and `1`, the
+members `(-1, 1/3)` and `(2/3, 2)` refine by a constant selector to `(-1, 2)`;
+over `ℚ` the degree-zero barcode is `{[0, 2), [0, 1)}` and the degree-one
+barcode is empty. On `Fin 3`, the three-stage family over a point whose direct
+selector differs from the composite of its adjacent selectors has the barcode
+`{[0, 3)}` of the strictly coherent tower. On the 4-cycle with heights
+`0, 1, 2, 1`, the members `(-1, 3/2)` and `(1/2, 3)` meet in two components, yet
+ordinary Mapper is a single edge with no degree-one homology; only the
+multinerve retains the second intersection component. The three members
+`(-1, 3/4)`, `(1/2, 3/2)` and `(5/4, 3)` give a Mapper 4-cycle with degree-one
+homology of rank one, and after a constant refinement to `(-1, 3)` the
+degree-one barcode over `ℚ` is the single bar `[0, 1)`. As a negative control,
+the constant map from discrete `ℕ` with one full member has infinitely many
+Mapper vertices, and for every component order its degree-zero homology is not
+finite-dimensional, so no degree-zero barcode is defined; the complex has no
+edges, so degree one still satisfies the finiteness hypothesis.
+
+Real-indexed or q-tame Mapper barcodes, bottleneck stability of Mapper barcodes,
+independence of the barcode from the supplied component orders, multinerve
+barcodes and executable barcode extraction are not provided.
+
 ## Uniform interval covers and edge cells
 
 For a base point `a`, an interval length `r` and an overlap length `g`, the
