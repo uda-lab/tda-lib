@@ -806,3 +806,12 @@ zero-weight, zero-bandwidth and open-half-plane C₀ failure controls. Essential
 The results provide abstract noncomputable integration and approximation existence, with finite
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
+
+`Probability.FiniteSampling`, `SamplingMoments`, and `GromovWasserstein` provide
+atomic probability couplings, iid sampling with replacement, sharp unordered-pair
+moment bounds, and distortion GW with factor one half. `RipsSampling` applies
+these estimates to the actual full diagrams of finite tuple ranges.
+`RipsSampleQuotient` identifies tuple-index and metric-sample Rips homology
+filtrations by a natural isomorphism. See [sampled Rips laws](math/sampled-rips-laws.md)
+for the finite-p and infinity bounds and the remaining measure and reduced-homology
+bridges.

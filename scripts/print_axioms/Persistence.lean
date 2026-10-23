@@ -3205,3 +3205,21 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankExampleFixtures.identityTwoStageFD
 
 #print axioms TDA.Persistence.RankExampleFixtures.zeroTwoStageFD
+
+-- Atomic iid Rips diagram laws.
+#print axioms TDA.Persistence.Rips.bottleneck_diagram_le_of_relation
+#print axioms TDA.Persistence.Rips.sampleProjection_surjective
+#print axioms TDA.Persistence.Rips.dist_sampleProjection
+#print axioms TDA.Persistence.Rips.sampleProjection_eq_iff
+#print axioms TDA.Persistence.Rips.sampleDiagram_eq_of_range_eq
+#print axioms TDA.Persistence.Rips.bottleneck_sampleDiagram_le
+#print axioms TDA.Persistence.Rips.bottleneck_sampleDiagram_le_pairMaximum
+#print axioms TDA.Persistence.Rips.transportCost_sampleLaw_le
+#print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_le_gromovWasserstein
+#print axioms TDA.Persistence.Rips.wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity
+#print axioms TDA.Persistence.RipsSamplingExamples.twoPoint_gromovWasserstein_singleton
+#print axioms TDA.Persistence.RipsSamplingExamples.weighted_twoPoint_sampleLaw_bound
+#print axioms TDA.Persistence.Rips.sampleDiagram_eq_diagram_of_surjective
+#print axioms TDA.Persistence.Rips.tupleProjection_surjective
+#print axioms TDA.Persistence.Rips.dist_tupleProjection
+#print axioms TDA.Persistence.Rips.mem_tupleFilter_iff
