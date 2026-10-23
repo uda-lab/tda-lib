@@ -189,6 +189,14 @@ import TDA.Persistence.CompatibleSectionsExamples
 
 import TDA.Persistence.CutDecomposition
 import TDA.Persistence.CutSubspacesExamples
+import TDA.Persistence.AlgebraicFamilyIso
+import TDA.Persistence.EphemeralIntervalIso
+import TDA.Persistence.FiniteObservation
+import TDA.Persistence.IntervalCompatibility
+import TDA.Persistence.LocallyFiniteIntervalExamples
+import TDA.Persistence.RealIntervalDecomposition
+import TDA.Persistence.RealIntervalExamples
+import TDA.Persistence.RealIntervalObservation
 
 import TDA.Persistence.BoundaryTransportGeometry
 
