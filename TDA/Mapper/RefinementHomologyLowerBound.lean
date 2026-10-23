@@ -1,6 +1,5 @@
 import TDA.Mapper.RefinementHomologyInterleaving
 import TDA.Simplicial.FiniteDimensionalHomology
-import TDA.Persistence.LogScaleDiagram
 
 /-!
 # Rank obstructions to interleavings of Mapper homology modules
@@ -153,6 +152,14 @@ theorem isEmpty_face_mapper {I : Type w} (f : C(X, Y)) (U : I → Set Y)
     obtain ⟨a, _⟩ := ((mem_mapper_iff f U σ.1).1 σ.2.1).1
     exact isEmptyElim a⟩
 
+private theorem isZero_simplicialHomology {V : Type*} [LinearOrder V]
+    (K : PreAbstractSimplicialComplex V) (R : Type*) [Ring R] (n : ℕ) [IsEmpty (Face K n)] :
+    Limits.IsZero (simplicialHomology K R n) := by
+  have hX : Limits.IsZero ((simplicialChainComplex K R).X n) := by
+    rw [simplicialChainComplex_X]
+    exact ModuleCat.isZero_of_subsingleton _
+  exact ShortComplex.isZero_homology_of_isZero_X₂ _ hX
+
 variable (k : Type c) [Field k] {f g : C(X, Y)} {IndexU IndexV : ℝ → Type w}
   {U : (t : ℝ) → IndexU t → Set Y} {V : (t : ℝ) → IndexV t → Set Y}
   [∀ t, LinearOrder (ComponentIndex f (U t))] [∀ t, LinearOrder (ComponentIndex g (V t))]
@@ -195,7 +202,7 @@ theorem isEmpty_realInterleaving_mapperHomologyPModule_of_isEmpty_face (t : ℝ)
     IsEmpty (RealInterleaving ε (mapperHomologyPModule k f U rU n)
       (mapperHomologyPModule k g V rV n)) :=
   have : Subsingleton ((mapperHomologyPModule k g V rV n).obj (t + ε)) :=
-    ModuleCat.subsingleton_of_isZero (isZero_simplicialHomology_of_isEmpty_face k n)
+    ModuleCat.subsingleton_of_isZero (isZero_simplicialHomology (mapper g (V (t + ε))) k n)
   isEmpty_realInterleaving_of_structureMap_ne_zero t h hne
 
 /-- **Mapper distance lower bound, zero-fibre form.** If for every finite parameter `ε < r` some
@@ -210,7 +217,7 @@ theorem le_realInterleavingDistance_mapperHomologyPModule_of_isEmpty_face {r : �
   refine le_realInterleavingDistance_of_structureMap_ne_zero fun ε hε => ?_
   obtain ⟨t, h, _, hne⟩ := hr ε hε
   exact ⟨t, h, ModuleCat.subsingleton_of_isZero
-    (isZero_simplicialHomology_of_isEmpty_face (K := mapper g (V (t + ε))) k n), hne⟩
+    (isZero_simplicialHomology (mapper g (V (t + ε))) k n), hne⟩
 
 end Mapper
 

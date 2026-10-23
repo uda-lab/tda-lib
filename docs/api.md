@@ -42,9 +42,8 @@ consumes that Topology theorem. This removes the previous Simplicial-to-Topology
 `TDA.Mapper.RefinementHomology` consumes the signed prism homotopy and the Persistence
 functor core, `TDA.Mapper.RefinementHomologyInterleaving` consumes the real interleaving
 distance, `TDA.Mapper.RefinementHomologyBarcode` consumes the finite interval
-decomposition, and `TDA.Mapper.RefinementHomologyLowerBound` consumes the vanishing
-lemma `isZero_simplicialHomology_of_isEmpty_face` of `TDA.Persistence.LogScaleDiagram`;
-the Persistence core does not import Mapper.
+decomposition, and `TDA.Mapper.RefinementHomologyLowerBound` consumes the real
+interleaving distance and simplicial homology; the Persistence core does not import Mapper.
 
 Arbitrary vertex maps induce signed maps of the chains and homology over a ring,
 with independent source and target orders in a common vertex universe. Collapsed faces
