@@ -108,11 +108,13 @@ homogeneous graph relations `new generator − chosen free lift`. Thus
 Y₁ = Z₁ ⊔ W₂(−ε) and Y₂ = Z₂ ⊔ W₁(−ε). `Presentation.crossData` builds the
 primitive maps with precisely these relations.
 
-Both interleaving equations are used to show that crossing and then mapping
-to an original module agrees with its interleaving map after the collapse.
+The two collapse maps send the old generators through their free covers and
+the added delayed generators to their prescribed interleaving images.
+Both interleaving equations show that crossing and then using the shifted
+opposite collapse agrees with collapse followed by the interleaving map.
 Consequently the opposite delayed relations also vanish. The quotient maps
 then descend by the cokernel universal property. Redundant-generator
-elimination and mutual descent of the relations prove
+elimination and the quotient universal property in both directions prove
 `Presentation.crossDataLeftIso` and `crossDataRightIso`, the natural
 isomorphisms to M and N. No relation-vanishing or quotient-isomorphism
 condition is included in the input data.
