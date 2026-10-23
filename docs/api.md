@@ -313,8 +313,9 @@ theorem, without assuming finite underlying fibers. Open endpoints, singletons
 and unbounded subsets are allowed.
 
 `TDA.Persistence.CutSubspaces` uses cuts, which partition the parameter order into
-a lower part and an upper part. Two cuts bound an interval, and their image/kernel
-subspaces encode birth and death conditions. For a pointwise finite-dimensional
+a lower part and an upper part. Two cuts determine a possibly empty support,
+which is an interval when nonempty; their image/kernel subspaces encode birth
+and death conditions. For a pointwise finite-dimensional
 module, the required surjectivity is derived for these subspaces. The module
 transports their quotients isomorphically and chooses one global section complement
 whose evaluations complement the corresponding lower subspace at every interval
