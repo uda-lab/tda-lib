@@ -98,7 +98,7 @@ def cappedCentredCover : (i : Fin (m + 1)) → cappedIndex W i → OpenInterval 
   Fin.cases (motive := fun i => cappedIndex W i → OpenInterval) (fun e => isEmptyElim e)
     fun j w => if j.val + 1 = m then ⊤ else centredInterval a s ℓ (c j) w
 
-/-- Stage `j + 1 < m + 1` is the centred family of radius `c j`. -/
+/-- Stage `j + 1` with `j + 1 < m` is the centred family of radius `c j`. -/
 theorem cappedCentredCover_succ_of_lt (j : Fin m) (hj : j.val + 1 < m) (w : W) :
     cappedCentredCover a s ℓ c j.succ w = centredInterval a s ℓ (c j) w :=
   if_neg hj.ne
@@ -118,7 +118,7 @@ def stageRadius : Fin (m + 1) → EReal :=
 theorem stageRadius_zero : stageRadius c 0 = ⊥ :=
   rfl
 
-/-- Stage `j + 1 < m + 1` has radius `c j`. -/
+/-- Stage `j + 1` with `j + 1 < m` has radius `c j`. -/
 theorem stageRadius_succ_of_lt (j : Fin m) (hj : j.val + 1 < m) :
     stageRadius c j.succ = c j :=
   if_neg hj.ne
