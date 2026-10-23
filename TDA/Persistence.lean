@@ -168,3 +168,9 @@ import TDA.Persistence.Rectangle
 import TDA.Persistence.RealRaySeparation
 
 import TDA.Persistence.ConstructibleClosure
+import TDA.Persistence.CompatibleSections
+import TDA.Persistence.CutSubspaces
+
+import TDA.Persistence.AlgebraicFamily
+
+import TDA.Persistence.CompatibleSectionsExamples
