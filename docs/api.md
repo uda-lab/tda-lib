@@ -66,6 +66,35 @@ the declared field/ring, order, finite-face and topological instances at the cal
 Universe requirements belong to each definition's signature; the areas do not impose a
 single shared universe on the whole library.
 
+## Interval supports, presentations and rank-exact lifting
+
+`SupportInterval.module` constructs a module on any order-convex subset of a
+preorder over a ring, including the empty support. A structure map with an
+endpoint outside the support is zero over any ring; the converse requires a
+nontrivial ring. The comparison and morphism lemmas remain over fields.
+`Rectangle.diagonal_maps_eq_zero_iff` gives the exact endpoint-sensitive
+vanishing criterion for bounded rectangles over a field. `GradedFree.lift`
+and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
+property of graded free modules over a ring; `GradedFree.FinitelyPresented`
+expresses finite presentation by homogeneous cokernels. For finitely presented modules on
+`Fin n → ℝ`, `GradedFree.finitelyPresented_exists_finite_criticalCoordinates`
+gives finite coordinate sets outside which comparable structure maps are
+isomorphisms, and `GradedFree.finitelyPresented_exists_pos_structureMap_isIso`
+gives positive right-diagonal slack at every index. At a pair of indices,
+`IsPointwiseShortExact.rank_add_iff_lift_kernel` equates rank additivity and lifting
+dying vectors when the middle source fiber is finite dimensional. `IsRankExact`
+requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`
+constructs lifts of finite-death hook morphisms in that domain.
+`HookInfinity.homEquivFiber` identifies principal-upset morphisms with birth-fiber
+vectors; surjectivity at birth suffices to lift them over any ring and preorder.
+`FinitePresentationLifting` proves that maps from a presented module lift through
+a natural transformation surjective at generator grades and injective at relation
+grades. With bijectivity at generator grades, the lift is unique. For coordinatewise
+real indices, import `RealCoordinates` and use `open scoped TDA.Persistence` to
+select the preorder category; rectangles and finite grids already import it.
+See
+[the constructions and their scope](math/multiparameter-foundations.md).
+
 ## Persistent homology results and computational boundary
 
 The finite decomposition API takes `M : PModule.{u,0,u} k (Fin N)` with
@@ -331,7 +360,7 @@ The index family may be uncountable.
 `TDA.Persistence.CutDecomposition` proves that the chosen interval complements
 span every fiber and that every finite relation among distinct complements is
 trivial. Its `sumIso` is a natural isomorphism from their algebraic direct sum
-to any pointwise finite-dimensional real-indexed module. The construction includes
+to any pointwise finite-dimensional real-indexed module over a field. The construction includes
 singleton supports and assumes no decomposition or global countability. Finite
 activity at each parameter, and finite activity over a finite observation list,
 follow from finite dimension. `CutSubspacesExamples` checks cut endpoints and the
