@@ -159,3 +159,5 @@ import TDA.Persistence.WeightedPersistenceMeasure
 
 import TDA.Persistence.RankExact
 import TDA.Persistence.SupportInterval
+
+import TDA.Persistence.HookProjective

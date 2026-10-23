@@ -3221,3 +3221,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.SupportInterval.coefficient_eq_of_le
 #print axioms TDA.Persistence.SupportInterval.mem_target_of_nonzero
 #print axioms TDA.Persistence.SupportInterval.mem_source_of_nonzero
+#print axioms TDA.Persistence.Hook.support_ordConnected
+#print axioms TDA.Persistence.Hook.hom_ext
+#print axioms TDA.Persistence.Hook.generator_dies
+#print axioms TDA.Persistence.Hook.fromGenerator_birth
+#print axioms TDA.Persistence.Hook.exists_lift
+#print axioms TDA.Persistence.Hook.homEquivKernel
+#print axioms TDA.Persistence.Hook.birth_mem
+#print axioms TDA.Persistence.Hook.death_not_mem
+#print axioms TDA.Persistence.Hook.fromGenerator_app
