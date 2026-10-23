@@ -37,7 +37,8 @@ if [ ! -s "$list" ]; then
   exit 0
 fi
 
-violations="$(xargs -0 awk -v mode="$mode" -f scripts/lean-code-scan.awk < "$list")"
+# The lexer splits multibyte characters byte-wise; BSD/macOS awk aborts on the fragments in a UTF-8 locale, so run it in C.
+violations="$(LC_ALL=C xargs -0 awk -v mode="$mode" -f scripts/lean-code-scan.awk < "$list")"
 
 if [ -n "$violations" ]; then
   printf '%s\n' "$violations"

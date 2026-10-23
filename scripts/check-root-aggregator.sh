@@ -52,7 +52,8 @@ check_aggregator() {
     status=1
     return
   fi
-  violations="$(awk -v mode=root -f scripts/lean-code-scan.awk "$f")"
+  # The lexer splits multibyte characters byte-wise; BSD/macOS awk aborts on the fragments in a UTF-8 locale, so run it in C.
+  violations="$(LC_ALL=C awk -v mode=root -f scripts/lean-code-scan.awk "$f")"
   if [ -n "$violations" ]; then
     printf '%s\n' "$violations" >&2
     echo "ERROR: $f is the $kind aggregator: one 'import <Module>' per line, comments and blank lines only. Move the lines above into a module of lean_lib '$lib' and import it here." >&2
