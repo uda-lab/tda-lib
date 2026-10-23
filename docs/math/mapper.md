@@ -672,12 +672,112 @@ outside the zero-left, right-continuous convention; no diagram is defined for
 them.
 
 Not included: diagrams or bottleneck bounds for towers that are not step towers,
-in particular the centred tower, or for q-tame modules; a finite capped version
-of the centred tower; tightness of the bound and bottleneck values beyond the
+in particular the centred tower, or for q-tame modules (the capped centred step
+towers are treated in [the next section](#capped-centred-step-towers)); tightness
+of the bound and bottleneck values beyond the
 fixtures; identification of the essential multiplicity with the top-stage
 homology dimension; DMW16-v2 `(c, s)`-good towers, reindexing and truncation;
 independence of the component orders; multinerve diagrams; executable
 extraction.
+
+## Capped centred step towers
+
+Fix a label window `W`, integer labels `ℓ : W → ℤ` (repetitions allowed), a
+base `a` and a spacing `s`; no sign or coverage condition is imposed. The
+centred interval `centredInterval a s ℓ r w` is the open interval of radius `r`
+about `a + ℓ w * s`. It is empty for `r ≤ 0`, and for `a = 0` its carrier is the
+member of label `ℓ w` of the centred family `centredCover s r` of
+[the stability section](#interleaved-cover-towers-and-mapper-homology-stability).
+
+For a grid `c : Fin m ↪o ℝ`, the capped centred stages
+`cappedCentredCover a s ℓ c` on `Fin (m + 1)` are indexed by `cappedIndex W`,
+which is empty at stage `0` and `W` at every later stage. Stage `j + 1` with
+`j + 1 < m` consists of the centred intervals of radius `c j`, and the last
+stage assigns `ℝ` to every label. The stage radius `stageRadius c` in `EReal` is
+`⊥` at stage `0`, `c j` at stage `j + 1 < m` and `⊤` at the last stage; a point
+lies in the member of label `w` at a positive stage exactly when its distance to
+`a + ℓ w * s` is less than the stage radius. The stage refinements
+`cappedCentredRefinement` select the same label. For `f : C(X, ℝ)` with supplied
+component orders and finitely many `n`-faces at every stage,
+`cappedCentredDiagram k f a s ℓ c n` is the step diagram of these data. It is
+definitionally the step diagram of the identity of `X` along the pulled-back
+stages. Stage `0` is the zero left tail of the step-diagram convention, and the
+last stage is the cap.
+
+Let `f g : C(X, ℝ)` satisfy `|f x − g x| ≤ δ` for every `x`, and let `d` be a
+second grid. Suppose that the stage radius of `c` at `t` plus `δ` is at most the
+stage radius of `d` at `t + η` for every `t`. By the triangle inequality
+`|g x − y| ≤ |g x − f x| + |f x − y|`, each pulled-back member of `f` at `t` then
+lies in the pulled-back member of `g` with the same label at `t + η`; an empty
+source stage and a full target stage are included. Domination in both
+directions bounds the bottleneck distance of the capped centred diagrams of `f`
+on `c` and of `g` on `d` by `η`, and this distance is the real interleaving
+distance of the two step modules.
+
+Three domination checks give the main bounds.
+
+* **Perturbation.** Let consecutive radii of `c` differ by at most `μ`. A radius
+  `t` in the cell `[c i, c (i + 1))` has stage radius `c i ≤ t`. The stage at
+  `t + δ + μ` is the last one, or it lies in a cell `[c j, c (j + 1))` with
+  `t + δ + μ < c (j + 1) ≤ c j + μ`, so its radius `c j` exceeds `t + δ`. A
+  radius in the last cell stays in it. Hence the capped centred diagrams of `f`
+  and `g` on `c` are at bottleneck distance at most `δ + μ`.
+* **Uniform grids.** On the grid `uniformGrid x₀ h hh m` of radii `x₀ + i h`,
+  with `δ = p h` for a natural number `p`, the shift by `δ` moves the grid value
+  `c i` to `c (i + p)` or past the last grid value, so the bound is `δ`.
+* **Mesh comparison.** For one map and two nonempty grids `c` and `d`, each of
+  mesh at most `η`, whose first radii differ by at most `η` and whose last radii
+  differ by at most `η`, domination holds with `δ = 0` in both directions. The
+  first-radius condition keeps the target stage nonempty, and the last-radius
+  condition sends the last cell to the last cell. The diagrams are at bottleneck
+  distance at most `η`.
+
+By the triangle inequality for the bottleneck distance, the diagram of `f` on
+`c` and the diagram of `g` on `d` are at distance at most `(δ + μ) + η` under the
+hypotheses of the perturbation bound for `c` and the mesh comparison of `c` and
+`d`. For the piecewise-linear heights of two vertex-height functions on a finite
+graph within `ε` at every vertex, the heights are within `ε` at every point of
+the realization
+([vertex-height perturbations](reeb-graph-pl.md#vertex-height-perturbations-of-a-fixed-graph)).
+With a finite label window every face-finiteness hypothesis holds by instance,
+and the capped centred diagrams are at bottleneck distance at most `ε + μ`, or
+at most `ε` on a uniform grid with `ε = p h`.
+
+These statements are a library specialisation of §4.1 of
+[DMW16-v2](references.md#DMW16-v2) in the step-diagram form of the previous
+section. The capped tower is not a `(c, s)`-good tower of the source, and the
+bounds are not its Proposition 4.5, Corollary 4.6 or Theorems 4.7 and 4.8.
+
+Fixtures use the constants `0` and `1/2` on the one-point space, one label of
+integer label `0`, base `0` and spacing `1`, in degree `0` over any field; the
+stage of radius `r` is `(−r, r)`. On the grid `0, 1/4, 1/2, 3/4, 1` the two
+capped centred diagrams are at bottleneck distance exactly `1/2`: the uniform
+bound gives `≤ 1/2`, and for `ε < 1/2` the map of `0` from radius `1/4` to
+`1/4 + 2ε` is nonzero on `H₀` while the stage of `1/2` at radius `1/4 + ε` has
+no component. The perturbation bound `δ + μ = 3/4` is not attained there. One
+map on that grid has bottleneck distance `0` to itself by the uniform bound with
+`p = 0`. For the constant `0`, the diagrams on the grids `0, 1/2, 1` and
+`0, 1/4, 1/2, 3/4, 1` are at distance at most `1/2`. On the single edge with
+vertex heights `(0, 1)` and `(0, 3/2)`, the labels `0, 1, 2`, base `0`, spacing
+`1` and the uniform grid of spacing `1/4` from `0` to `2`, the diagrams in every
+degree are at distance at most `1/2`, with every finiteness instance
+synthesized. Two negative controls show that neither the cap nor the mesh term
+can be dropped. On the grid `0, 1/4` with the stages `∅`, radius `0` and radius
+`1/4` and no full stage, the step module of `1/2` vanishes at every radius while
+that of `0` has a nonzero map from radius `1/4` to every larger radius; the
+bottleneck distance is `⊤` and the numbers of essential bars differ, although the
+maps differ by `1/2`. On the grid `0, 1/4, 1` of mesh `3/4`, the capped centred
+diagrams of `0` and `1/2` are at distance at least `3/4 > 1/2`, while the
+perturbation bound gives at most `5/4`.
+
+Not included: coverage of the attained range by a capped stage; diagrams or
+bounds for the `ℤ`-labelled centred tower itself, q-tame or real-decomposition
+statements, or the limit of vanishing mesh; sharpness of `δ + μ` in general and
+exact values beyond the first fixture; identification of capped step diagrams
+with the multiscale Mapper diagrams of `(c, s)`-good towers and DMW16-v2
+Propositions 4.4 and 4.5, Corollary 4.6 and Theorems 4.7 and 4.8; perturbation
+bounds for step towers whose stages are not centred intervals; independence of
+the component orders; multinerve diagrams; executable extraction.
 
 ## Uniform interval covers and edge cells
 

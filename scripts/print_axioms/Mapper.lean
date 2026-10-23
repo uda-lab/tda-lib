@@ -1131,3 +1131,36 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyDiagramExamples.loop_stepMapperDiagram
 #print axioms TDA.Mapper.RefinementHomologyDiagramExamples.oneSource_not_isConstructible
 #print axioms TDA.Mapper.RefinementHomologyDiagramExamples.centred_not_isConstructible
+
+-- Capped centred step towers: perturbation, mesh comparison and graph-PL bounds.
+#print axioms TDA.Mapper.mem_centredInterval_iff
+#print axioms TDA.Mapper.coe_centredInterval_zero
+#print axioms TDA.Mapper.isEmpty_cappedIndex_zero
+#print axioms TDA.Mapper.finite_cappedIndex
+#print axioms TDA.Mapper.cappedCentredCover_succ_of_lt
+#print axioms TDA.Mapper.cappedCentredCover_last
+#print axioms TDA.Mapper.stageRadius_zero
+#print axioms TDA.Mapper.stageRadius_succ_of_lt
+#print axioms TDA.Mapper.stageRadius_last
+#print axioms TDA.Mapper.stageRadius_eq_bot_iff
+#print axioms TDA.Mapper.stageRadius_mono
+#print axioms TDA.Mapper.mem_cappedCentredCover_succ_iff
+#print axioms TDA.Mapper.cappedCentredDiagram_eq_pullback
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_le_of_stageRadius_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_eq
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_grid_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_le_add
+#print axioms TDA.Mapper.uniformGrid_apply
+#print axioms TDA.Mapper.uniformGrid_of_val_eq_succ
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_uniformGrid_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_plHeight_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_plHeight_uniformGrid_le
+#print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.const_bottleneck_eq
+#print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.const_bottleneck_self
+#print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.const_bottleneck_grid_le
+#print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.edge_bottleneck_le
+#print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.openIndex_isEmpty
+#print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.openIndex_finite
+#print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.open_bottleneck_eq_top
+#print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.coarse_bottleneck_bounds

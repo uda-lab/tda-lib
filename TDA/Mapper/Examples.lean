@@ -25,3 +25,4 @@ import TDA.Mapper.RefinementHomologyBarcodeExamples
 import TDA.Mapper.MapperReebPerturbationExamples
 import TDA.Mapper.RefinementHomologyLowerBoundExamples
 import TDA.Mapper.RefinementHomologyDiagramExamples
+import TDA.Mapper.RefinementHomologyCappedTowerExamples
