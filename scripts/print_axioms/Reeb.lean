@@ -3120,6 +3120,24 @@ import TDA
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.empty_translation_distance_zero
 #print axioms TDA.Reeb.Examples.ConstructiblePerturbation.pinchI_identity
 
+-- Vertex-height perturbations of a fixed graph: pointwise and uniform control of PL heights.
+#print axioms TDA.Reeb.GraphPL.abs_dartHeight_sub_le
+#print axioms TDA.Reeb.GraphPL.abs_plHeight_sub_le
+#print axioms TDA.Reeb.GraphPL.edist_ofFun_plHeight
+#print axioms TDA.Reeb.GraphPL.edist_ofFun_plHeight_eq_edist
+#print axioms TDA.Reeb.GraphPL.vertexHeightInterleaving_eq
+#print axioms TDA.Reeb.GraphPL.vertexHeightInterleaving_φ_app_mk
+#print axioms TDA.Reeb.GraphPL.vertexHeightInterleaving_ψ_app_mk
+#print axioms TDA.Reeb.GraphPL.interleavingDistance_intervalComponents_plHeight_le
+#print axioms TDA.Reeb.GraphPL.interleavingDistance_intervalComponents_plHeight_le_edist_ofFun
+#print axioms TDA.Reeb.GraphPL.interleavingDistance_intervalComponents_plHeight_le_edist
+
+-- Vertex-height perturbation fixtures: empty graph, single edge and interior-bump control.
+#print axioms TDA.Reeb.Examples.GraphPLVertexPerturbation.empty_edist_ofFun_plHeight
+#print axioms TDA.Reeb.Examples.GraphPLVertexPerturbation.edist_flat_tilted
+#print axioms TDA.Reeb.Examples.GraphPLVertexPerturbation.flat_tilted_edist_ofFun_plHeight
+#print axioms TDA.Reeb.Examples.GraphPLVertexPerturbation.bump_not_controlled
+
 -- Contractible realizations of finite trees.
 #print axioms TDA.Reeb.GraphTreeContraction.deleteVertexInclusion
 #print axioms TDA.Reeb.GraphTreeContraction.deleteVertexInclusion_vertex

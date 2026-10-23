@@ -27,3 +27,4 @@ import TDA.Mapper.CoverComponentsConstructible
 import TDA.Mapper.MapperReebApproximation
 
 import TDA.Mapper.RetainedCover
+import TDA.Mapper.GraphPLReebStability

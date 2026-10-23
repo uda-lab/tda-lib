@@ -39,4 +39,5 @@ import TDA.Reeb.SmoothingExamples
 import TDA.Reeb.StabilityExamples
 import TDA.Reeb.ConstructibleGeometricInterleavingExamples
 import TDA.Reeb.ConstructiblePerturbationExamples
+import TDA.Reeb.GraphPLVertexPerturbationExamples
 import TDA.Reeb.GraphTreeContractionExamples

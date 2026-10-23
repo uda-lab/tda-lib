@@ -33,7 +33,16 @@
 # never a byte range, so mawk, nawk and gawk in any locale agree).
 # The ALLOW_ markers are honoured ONLY in the trailing line comment of the violating line
 # (`… := sorry -- ALLOW_SORRY: #12 reason`), never inside a string or a block comment.
-BEGIN { q = "\047"; G = "«"; GC = "»"; LG = length(G); LGC = length(GC) }
+BEGIN { q = "\047"; G = "«"; GC = "»"; LG = length(G); LGC = length(GC)
+  # Byte mode (LG > 1): a multibyte character literal is its lead byte plus continuation bytes;
+  # seqlen maps each UTF-8 lead byte to the length of the sequence. In character mode substr()
+  # already returns a whole character, so the table stays empty and the ASCII rules apply.
+  if (LG > 1) {
+    for (b = 192; b < 224; b++) seqlen[sprintf("%c", b)] = 2
+    for (b = 224; b < 240; b++) seqlen[sprintf("%c", b)] = 3
+    for (b = 240; b < 248; b++) seqlen[sprintf("%c", b)] = 4
+  }
+}
 FNR == 1 { depth = 0; inStr = 0; rawHashes = -1; interp = 0; hole = 0; holeStr = 0; holeCmt = 0 }
 {
   line = $0; code = ""; inLine = 0; trailing = ""
@@ -85,6 +94,8 @@ FNR == 1 { depth = 0; inStr = 0; rawHashes = -1; interp = 0; hole = 0; holeStr =
     if (c == q) {
       prev = (code == "") ? "" : substr(code, length(code), 1)
       if (prev == "" || (prev !~ /[A-Za-z0-9_.!?]/ && prev != q)) {
+        c1 = substr(line, i + 1, 1)
+        if ((c1 in seqlen) && substr(line, i + 1 + seqlen[c1], 1) == q) { code = code "''"; i += 2 + seqlen[c1]; continue }
         if (substr(line, i + 1, 1) == "\\" && substr(line, i + 3, 1) == q) { code = code "''"; i += 4; continue }
         if (substr(line, i + 1, 1) != q && substr(line, i + 2, 1) == q) { code = code "''"; i += 3; continue }
       }
