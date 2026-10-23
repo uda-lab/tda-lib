@@ -1,6 +1,7 @@
 import TDA.Reeb.GraphRealization
 import TDA.Reeb.Interval
 import Mathlib.Analysis.Convex.PathConnected
+import Mathlib.Topology.ContinuousMap.Algebra
 import Mathlib.Topology.Order.ProjIcc
 
 /-!
@@ -12,7 +13,8 @@ reversal equation `dartHeight h d.symm (σ t) = dartHeight h d t` and the start 
 `dartHeight h d 0 = h d.fst`, so the universal lift `TDA.Reeb.GraphRealization.continuousLift`
 gives the piecewise-linear height `plHeight G h : C(Realization G, ℝ)`, with
 `plHeight G h (vertex G v) = h v` and `plHeight G h (edgePoint G d t) = dartHeight h d t` by `rfl`
-and uniqueness among continuous maps with these values (`plHeight_unique`). Equal endpoint heights
+and uniqueness among continuous maps with these values (`plHeight_unique`). Uniqueness gives
+`plHeight G (fun v => h v + c) = plHeight G h + c` (`plHeight_add_const`). Equal endpoint heights
 are allowed: a horizontal dart has constant height (`dartHeight_of_eq`), while the height of a
 nonhorizontal dart is injective in the parameter (`dartHeight_injective`).
 
@@ -126,6 +128,19 @@ def plHeight : C(Realization G, ℝ) :=
 theorem plHeight_unique (g : C(Realization G, ℝ)) (hv : ∀ v, g (vertex G v) = h v)
     (he : ∀ d t, g (edgePoint G d t) = dartHeight h d t) : g = plHeight G h :=
   continuousLift_unique G _ _ _ _ g hv he
+
+/-- Translating every vertex height by `c` translates the piecewise-linear height by `c`. -/
+theorem plHeight_add_const (c : ℝ) :
+    plHeight G (fun v => h v + c) = plHeight G h + ContinuousMap.const (Realization G) c :=
+  (plHeight_unique G _ _ (fun v => by simp) fun d t => by
+    simp only [ContinuousMap.add_apply, plHeight_edgePoint, ContinuousMap.const_apply,
+      dartHeight]
+    ring).symm
+
+theorem plHeight_add_const_apply (c : ℝ) (x : Realization G) :
+    plHeight G (fun v => h v + c) x = plHeight G h x + c := by
+  rw [plHeight_add_const]
+  rfl
 
 end plHeight
 

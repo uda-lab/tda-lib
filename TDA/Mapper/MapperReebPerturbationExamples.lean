@@ -1,4 +1,5 @@
 import TDA.Mapper.MapperReebPerturbation
+import TDA.Mapper.MapperReebTranslation
 import TDA.Mapper.MapperReebApproximationExamples
 import TDA.Mapper.GraphPLReebStabilityExamples
 
@@ -69,18 +70,6 @@ theorem equal_heights_same_cover :
 
 /-! ## M2. Translation limit -/
 
-/-- The piecewise-linear height of a vertical translate is the translate of the height. -/
-theorem plHeight_add_const {V : Type} (G : SimpleGraph V) (h : V → ℝ) (c : ℝ)
-    (x : Realization G) : plHeight G (fun v => h v + c) x = plHeight G h x + c := by
-  have := plHeight_unique G (fun v => h v + c)
-    (plHeight G h + ContinuousMap.const (Realization G) c)
-    (fun v => by simp) (fun d t => by
-      simp only [ContinuousMap.add_apply, plHeight_edgePoint, ContinuousMap.const_apply,
-        dartHeight]
-      ring)
-  rw [← this]
-  rfl
-
 /-- Translating a cover by `c` preserves its resolution. -/
 theorem coverResolution_add_const {ι : Type} [Finite ι] (a b : ι → ℝ) (c : ℝ) :
     coverResolution (fun i => a i + c) (fun i => b i + c) = coverResolution a b := by
@@ -104,7 +93,7 @@ theorem translation_limit :
     intro t x
     obtain ⟨i, hi⟩ := hcov t x
     refine ⟨i, ?_⟩
-    rw [plHeight_add_const]
+    rw [plHeight_add_const_apply]
     exact ⟨by linarith [hi.1], by linarith [hi.2]⟩
   refine ⟨n, a, b, hcov, hcov', ?_⟩
   have hres' : Tendsto (fun t => (coverResolution (fun i => a t i + 1)
@@ -193,23 +182,6 @@ theorem twoEdges_lower_bound {ι ι' : Type} [Finite ι] [Finite ι'] (a b : ι 
     show |(1 : ℝ) - 2| = 1 by norm_num [abs_of_neg]] at this
 
 /-! ## M5. The coverage hypothesis -/
-
-/-- The empty cover reconstructs the empty graph. -/
-theorem isEmpty_graphPLMapperReconstruction_of_isEmpty_cover {V : Type} [Finite V]
-    (G : SimpleGraph V) (h : V → ℝ) {ι : Type} [Finite ι] [IsEmpty ι] (a b : ι → ℝ) :
-    IsEmpty (graphPLMapperReconstruction G h a b).obj.left := by
-  refine ⟨fun x => ?_⟩
-  let t := overBaseMap (graphPLMapperReconstruction G h a b).obj x
-  let I : OpenInterval := ioo (t - 1) (t + 1)
-  have hx : t ∈ I := ⟨by simp, by simp⟩
-  have c : ((RGraph.cosheafFunctor.obj (graphPLMapperReconstruction G h a b)).obj).obj I :=
-    ZerothHomotopy.mk ⟨x, hx⟩
-  have d := (categoricalMapperReconstructionIso (plHeight G h) a b
-    (fun i => finite_zerothHomotopy G h (ioo (a i) (b i)))).hom.app I c
-  induction d using ZerothHomotopy.rec with
-  | mk y =>
-    obtain ⟨i, -⟩ := mem_coverSaturation.mp y.2
-    exact isEmptyElim i
 
 /-- With the empty cover of a nonempty graph the reconstruction is at distance `⊤` from the Reeb
 quotient, although the cover resolution is `0`. -/

@@ -36,3 +36,4 @@ import TDA.Mapper.MapperReebPerturbation
 import TDA.Mapper.RefinementHomologyLowerBound
 import TDA.Mapper.RefinementHomologyDiagram
 import TDA.Mapper.RefinementHomologyDiagramTightness
+import TDA.Mapper.MapperReebTranslation
