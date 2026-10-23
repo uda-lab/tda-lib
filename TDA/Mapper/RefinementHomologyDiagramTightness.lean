@@ -118,28 +118,6 @@ theorem isEmpty_realInterleaving_stepTower_of_isEmpty_face {ε : ℝ≥0} (t : �
 
 end LowerBound
 
-/-! ## Vertex classes -/
-
-section Vertex
-
-variable {X : Type u} {Y : Type v} [TopologicalSpace X] [TopologicalSpace Y]
-  (k : Type c) [Field k] (f : C(X, Y)) {ι κ : Type w} {U : ι → Set Y} {V : κ → Set Y}
-  [LinearOrder (ComponentIndex f U)] [LinearOrder (ComponentIndex f V)]
-
-/-- Over a field, the degree-`0` homology map of a refinement is nonzero when the source family
-has a component index: the class of the corresponding vertex maps to the class of a vertex. -/
-theorem mapperHomologyMap_zero_ne_zero (ρ : Refinement U V) (a : ComponentIndex f U) :
-    mapperHomologyMap k f ρ 0 ≠ 0 := by
-  intro h0
-  let σ : Face (mapper f U) 0 := ⟨{a}, componentIndex_supported f U a, Finset.card_singleton a⟩
-  have hclass := simplicialHomologyMap_class k (mapperMap f ρ) 0 (zeroVertexCycle _ k σ)
-    (zeroVertexCycle _ k (vertexImageFace (mapperMap f ρ) σ (fun i j _ => Fin.ext (by omega))))
-    (vertexChainMap_vertex k _ _ 1)
-  rw [← mapperHomologyMap_def, h0] at hclass
-  exact simplicialHomologyClass_zeroVertexCycle_ne_zero _ k _ hclass.symm
-
-end Vertex
-
 /-! ## Translation of the grid -/
 
 section Translation
@@ -174,8 +152,9 @@ variable (k : Type u) [Field k] (f : C(X, Y)) (n : ℕ)
   [∀ i, LinearOrder (ComponentIndex f (cover i))] [∀ i, Finite (Face (mapper f (cover i)) n)]
   [IsEmpty (Index 0)]
 
-/-- The step diagram of a step tower and that of its translate by `ε` are at bottleneck
-distance at most `ε`. -/
+/-- Upper bound for a translated grid: the selected stage refinements are cover maps shifting by
+`ε` in both directions. No survival hypothesis is needed; it is the upper half of the exact
+distance. -/
 theorem bottleneck_stepMapperDiagram_shiftGrid_le :
     bottleneck (stepMapperDiagram k f c cover r n)
         (stepMapperDiagram k f (shiftGrid ε c) cover r n) ≤ ε :=
@@ -278,7 +257,7 @@ omit [∀ i, Finite (Face (mapper f (cover i)) 0)] [IsEmpty (Index 0)] in
 /-- A vertex of the first nonempty stage survives to the last stage in degree `0`. -/
 theorem survivesToLast_zero (a : ComponentIndex f (cover (0 : Fin (m₀ + 1)).succ)) :
     SurvivesToLast k f 0 r :=
-  mapperHomologyMap_zero_ne_zero k f _ a
+  mapperHomologyMap_zero_ne_zero k _ a
 
 /-- If the first nonempty stage has a vertex, the degree-`0` step diagrams on `c` and on
 `shiftGrid ε c` are at bottleneck distance exactly `ε`. -/
