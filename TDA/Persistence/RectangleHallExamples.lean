@@ -25,44 +25,62 @@ private theorem closedBar_significant (a : ℝ) : Significant 2 (closedBar a) :=
     norm_num [Rectangle.support, BoundedInterval.support, closedBar, translation_apply]
 
 private theorem forward_bounds (a : ℝ) : ∀ j,
-    decoratedLE (endpoint (closedBar (a + 1)) j)
+    decoratedLE (endpoint (closedBar a) j)
       (endpoint (closedBar a) j + (1 : ℝ))
-      (plus (closedBar (a + 1)) j) (plus (closedBar a) j) := by
+      (plus (closedBar a) j) (plus (closedBar a) j) := by
   rintro ⟨j, b⟩
   cases b <;> norm_num [decoratedLE, endpoint, plus, closedBar, add_assoc]
 
 private noncomputable def forward (a : ℝ) :
-    (closedBar a).module (k := ℚ) ⟶ (shift 1).obj (closedBar (a + 1)).module :=
+    (closedBar a).module (k := ℚ) ⟶ (shift 1).obj (closedBar a).module :=
   comparison _ _ 1 (forward_bounds a)
 
 private theorem forward_coefficient (a : ℝ) :
-    shiftedCoefficient (closedBar a) (closedBar (a + 1)) 1 (forward a) = 1 := by
+    shiftedCoefficient (closedBar a) (closedBar a) 1 (forward a) = 1 := by
   apply shiftedCoefficient_comparison (p := fun _ => a)
   · intro j
     norm_num [Rectangle.support, BoundedInterval.support, closedBar]
   · intro j
     norm_num [Rectangle.support, BoundedInterval.support, closedBar, translation_apply]
 
+/-- A bar of width two overlaps its twice-shifted copy at just its lower
+endpoint; this certifies the critical support geometry of the next example. -/
+theorem closed_double_overlap (a : ℝ) :
+    {p : Fin 1 → ℝ | p ∈ (closedBar a).support ∧
+      translation 2 p ∈ (closedBar a).support} = {fun _ => a} := by
+  ext p
+  constructor
+  · rintro ⟨hp, hp'⟩
+    apply Set.mem_singleton_iff.mpr
+    funext j
+    have h := hp j
+    have h' := hp' j
+    change (a < p j ∨ (a = p j ∧ true = true)) ∧ _ at h
+    change _ ∧ (p j + 2 < a + 2 ∨ (p j + 2 = a + 2 ∧ true = true)) at h'
+    rcases h.1 with h | ⟨h, _⟩ <;>
+      (rcases h'.2 with h' | ⟨h', _⟩ <;> linarith)
+  · intro hp
+    have he := Set.mem_singleton_iff.mp hp
+    subst p
+    constructor <;> intro j <;>
+      norm_num [Rectangle.support, BoundedInterval.support, closedBar, translation_apply]
+
 /-- The twice-shifted overlap is a single closed endpoint. The composition
 law still gives one, so the path is nonzero at the critical significance bound. -/
 theorem closed_boundary_composite (a : ℝ) :
-    shiftedCoefficient (closedBar a) (closedBar (a + 1 + 1)) (1 + 1)
-      (forward a ≫ (shift 1).map (forward (a + 1)) ≫
-        (compIso 1 1 ((closedBar (a + 1 + 1)).module (k := ℚ))).hom) = 1 := by
-  have hα : alphaLE (closedBar a) (closedBar (a + 1 + 1)) := by
-    left
-    simp only [alphaValue, Fintype.sum_prod_type, Fin.sum_univ_one, endpoint]
-    norm_num [closedBar]
-    linarith
+    shiftedCoefficient (closedBar a) (closedBar a) (1 + 1)
+      (forward a ≫ (shift 1).map (forward a) ≫
+        (compIso 1 1 ((closedBar a).module (k := ℚ))).hom) = 1 := by
+  have hα : alphaLE (closedBar a) (closedBar a) := Or.inr ⟨rfl, le_rfl⟩
   have he := shiftedCoefficient_composite (k := ℚ) (by decide : 0 < 1)
-    (closedBar a) (closedBar (a + 1)) (closedBar (a + 1 + 1)) 1 hα
+    (closedBar a) (closedBar a) (closedBar a) 1 hα
     (by
       convert closedBar_significant a using 1
       norm_num [stabilityRadius, Significant])
     (by
-      convert closedBar_significant (a + 1 + 1) using 1
+      convert closedBar_significant a using 1
       norm_num [stabilityRadius, Significant])
-    (forward a) (forward (a + 1))
+    (forward a) (forward a)
   simpa only [forward_coefficient, one_mul] using he
 
 private def halfOpenBar : Rectangle 1 := fun _ =>

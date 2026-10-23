@@ -4006,3 +4006,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RectangleHall.Examples.empty_families
 #print axioms TDA.Persistence.RectangleHall.Examples.empty_selection
 #print axioms TDA.Persistence.RectangleHall.composite_ne_zero_of_significant
+#print axioms TDA.Persistence.RectangleHall.Examples.closed_double_overlap
