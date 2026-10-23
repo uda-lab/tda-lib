@@ -99,7 +99,7 @@ private theorem overlappingIntervals_cover_of_bounds {V : Type*} (G : SimpleGrap
 private theorem h02_mem_Icc (b : Bool) : h02 b ∈ Set.Icc (0 : ℝ) 2 := by
   cases b <;> norm_num [h02]
 
-/-- The overlapping interval family covers the actual range of the single-edge PL height. -/
+/-- The overlapping interval family covers the range of the single-edge PL height. -/
 theorem overlappingIntervals_cover_edge_range :
     Covers (fun i => (overlappingIntervals i : Set ℝ))
       (Set.range (plHeight edgeGraph h02)) :=
@@ -158,7 +158,9 @@ private theorem edgeCellComponents_subsingleton {K : OpenInterval} (b : Bool)
 private theorem overlap_endpoint_mem (i : Bool) : h02 i ∈ overlappingIntervals i := by
   cases i <;> norm_num [h02, overlappingIntervals, mem_ioo]
 
-private theorem overlap_components_subsingleton (i : Bool) :
+/-- Each preimage of an overlapping interval under the single-edge PL height has at most one path
+component. -/
+theorem overlap_components_subsingleton (i : Bool) :
     Subsingleton (ZerothHomotopy
       {p : Realization edgeGraph // plHeight edgeGraph h02 p ∈ overlappingIntervals i}) :=
   ⟨fun _c _d => (preimageComponentsEquiv edgeGraph h02 (overlappingIntervals i)).injective
@@ -208,7 +210,8 @@ private theorem edgeOverlap_pair_face :
   · exact ⟨(edgeOverlapPoint false).2, rfl⟩
   · exact ⟨(edgeOverlapPoint true).2, rfl⟩
 
-private theorem overlappingIntervals_multiplicity_two {V : Type*} (G : SimpleGraph V)
+/-- The two overlapping intervals have multiplicity at most two over every graph PL height. -/
+theorem overlappingIntervals_multiplicity_two {V : Type*} (G : SimpleGraph V)
     (h : V → ℝ) :
     CoverMultiplicityAtMost (plHeight G h) (fun i => (overlappingIntervals i : Set ℝ)) 2 := by
   intro _ _ t _
@@ -251,7 +254,7 @@ private theorem twoEdgeHeight_mem_Icc (v : Bool ⊕ Bool) :
     twoEdgeHeight v ∈ Set.Icc (0 : ℝ) 2 := by
   rcases v with b | b <;> exact h02_mem_Icc b
 
-/-- The overlapping interval family covers the actual range of the two-edge PL height. -/
+/-- The overlapping interval family covers the range of the two-edge PL height. -/
 theorem overlappingIntervals_cover_twoEdge_range :
     Covers (fun i => (overlappingIntervals i : Set ℝ))
       (Set.range (plHeight twoEdgeGraph twoEdgeHeight)) :=
@@ -265,7 +268,8 @@ private theorem edgeSetSumEquiv_right :
     SimpleGraph.edgeSetSumEquiv (dartEdge (twoEdgeDart true)) =
       Sum.inr (dartEdge d₀) := rfl
 
-private theorem twoEdge_edge_eq (e : twoEdgeGraph.edgeSet) :
+/-- Every edge of the two-edge graph is the edge of one of the two selected darts. -/
+theorem twoEdge_edge_eq (e : twoEdgeGraph.edgeSet) :
     e = dartEdge (twoEdgeDart false) ∨ e = dartEdge (twoEdgeDart true) := by
   let E := SimpleGraph.edgeSetSumEquiv (G := edgeGraph) (H := edgeGraph)
   rcases hE : E e with eL | eR
@@ -398,7 +402,8 @@ private theorem twoEdge_cell_anchors_ne (i : Bool) :
   have hs := eq_of_walk (fun _ _ => twoEdgeCellSide_adj) p
   simp [twoEdgeCellSide, twoEdgeVertex] at hs
 
-private theorem twoEdge_midpoint_height (side : Bool) :
+/-- The midpoint of either selected dart has height `1`. -/
+theorem twoEdge_midpoint_height (side : Bool) :
     dartHeight twoEdgeHeight (twoEdgeDart side) half = 1 := by
   cases side <;> norm_num [dartHeight, twoEdgeDart, twoEdgeHeight, h02, coe_half]
 
@@ -407,7 +412,8 @@ private theorem twoEdge_midpoint_mem (side i : Bool) :
   rw [twoEdge_midpoint_height]
   cases i <;> norm_num [overlappingIntervals, mem_ioo]
 
-private def twoEdgeOverlapPoint (side i : Bool) :
+/-- The midpoint of the selected dart of a graph copy, as a point of an interval preimage. -/
+def twoEdgeOverlapPoint (side i : Bool) :
     PullbackSpace (plHeight twoEdgeGraph twoEdgeHeight)
       (fun i => (overlappingIntervals i : Set ℝ)) i :=
   ⟨edgePoint twoEdgeGraph (twoEdgeDart side) half, twoEdge_midpoint_mem side i⟩
@@ -490,7 +496,7 @@ private theorem twoEdgeOverlapIndex_pair_surjective :
   · exact ⟨(false, i), Sigma.ext rfl (heq_of_eq hc.symm)⟩
   · exact ⟨(true, i), Sigma.ext rfl (heq_of_eq hc.symm)⟩
 
-/-- The four actual component-cover indices are exactly the graph-copy/interval-label pairs. -/
+/-- The four component-cover indices are exactly the graph-copy/interval-label pairs. -/
 def twoEdgeIndexEquiv :
     Bool × Bool ≃ ComponentIndex (plHeight twoEdgeGraph twoEdgeHeight)
       (fun i => (overlappingIntervals i : Set ℝ)) :=
@@ -523,7 +529,7 @@ def overlapToWide : Refinement (fun i => (overlappingIntervals i : Set ℝ))
   subset i x hx := by
     cases i <;> rcases hx with ⟨hx₁, hx₂⟩ <;> constructor <;> linarith
 
-/-- The wide interval covers the actual range of the two-edge PL height. -/
+/-- The wide interval covers the range of the two-edge PL height. -/
 theorem wideIntervals_cover_twoEdge_range :
     Covers (fun i => (wideIntervals i : Set ℝ))
       (Set.range (plHeight twoEdgeGraph twoEdgeHeight)) := by
@@ -541,7 +547,7 @@ private def twoEdgeWideEdge (side : Bool) :
     rw [twoEdge_midpoint_height]
     norm_num [wideIntervals, mem_ioo])⟩
 
-/-- For every displayed source vertex, the general transport square identifies its actual Mapper
+/-- For every displayed source vertex, the general transport square identifies its Mapper
 image with the corresponding incidence-graph edge-node component in the wide interval. -/
 theorem twoEdge_wide_refinement_incidence (side i : Bool) :
     componentIndexEquiv twoEdgeGraph twoEdgeHeight wideIntervals

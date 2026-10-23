@@ -14,14 +14,14 @@ variable {α : Type w} [LinearOrder α]
 variable {K : PreAbstractSimplicialComplex V}
 variable [Fintype (TDA.Simplicial.TotalFace K)]
 
-/-- The value-labelled rank diagram of actual homology at the attained critical grades. -/
+/-- The value-labelled rank diagram of homology at the attained critical grades. -/
 noncomputable def dgm
     (f : TDA.Filtration.FilterFunction K α) (n : ℕ) :
     Diagram α :=
   ofIndexBars f.criticalValue f.criticalValue.strictMono
     (gradeHomologyBarcode k f n)
 
-/-- Every point of the actual sublevel diagram has birth strictly before death. -/
+/-- Every point of the sublevel diagram has birth strictly before death. -/
 theorem dgm_isPositive
     (f : TDA.Filtration.FilterFunction K α) (n : ℕ) :
     (dgm k f n).IsPositive :=
@@ -218,7 +218,7 @@ private theorem countP_threshold_grades (f : TDA.Filtration.FilterFunction K α)
   intro I _
   exact propext (indexPoint_slice_threshold f I r s i j hri hsj)
 
-/-- The rank of the actual sublevel inclusion at arbitrary ordered thresholds is its
+/-- The rank of the sublevel inclusion at arbitrary ordered thresholds is its
 diagram slice count, with inclusive birth and strict death. -/
 theorem rank_sublevelHomologyMap
     (f : TDA.Filtration.FilterFunction K α) (n : ℕ)
@@ -371,7 +371,7 @@ private theorem essential_total (f : FilterFunction K α)
   exact last_tail_rank k f n hN _ _ le_rfl le_rfl
 
 /-- Agreement with a barcode is conditional on a supplied natural isomorphism of the
-actual critical-grade homology module. -/
+critical-grade homology module. -/
 theorem dgm_eq_ofIndexBars_of_iso
     (f : TDA.Filtration.FilterFunction K α) (n : ℕ)
     (B : Multiset (FiniteInterval f.criticalValues.card))

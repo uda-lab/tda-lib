@@ -5,9 +5,9 @@ import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 /-!
-# The ordered actual-face chain complex
+# The ordered face chain complex
 
-The two ways to delete a pair of ordered vertices give the same actual face
+The two ways to delete a pair of ordered vertices give the same face
 with opposite coefficients. This proves that the signed boundary squares to zero.
 -/
 
@@ -113,7 +113,7 @@ private theorem double_sum_zero (n : ℕ) (s : Face K (n + 2)) :
     (fun _ _ => Finset.mem_univ _)
     (fun x _ => swapDeletion_involutive (n + 1) x))
 
-/-- The signed boundary on actual ordered faces squares to zero. -/
+/-- The signed boundary on ordered faces squares to zero. -/
 theorem boundary_comp_boundary (n : ℕ) :
     (boundary K R n).comp (boundary K R (n + 1)) = 0 := by
   apply Finsupp.lhom_ext
@@ -126,7 +126,7 @@ theorem boundary_comp_boundary (n : ℕ) :
 
 open CategoryTheory Module
 
-/-- The ordinary unaugmented chain complex on the actual ordered faces. -/
+/-- The ordinary unaugmented chain complex on the ordered faces. -/
 noncomputable def simplicialChainComplex : ChainComplex (ModuleCat R) ℕ :=
   ChainComplex.of (fun n => ModuleCat.of R (Chain K R n))
     (fun n => ModuleCat.ofHom (boundary K R n)) (by

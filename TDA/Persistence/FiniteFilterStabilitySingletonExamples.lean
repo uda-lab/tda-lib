@@ -3,7 +3,7 @@ import Mathlib.Data.ZMod.Basic
 
 set_option autoImplicit false
 
-/-! An actual one-vertex degree-zero diagram attains the stability bound. -/
+/-! An one-vertex degree-zero diagram attains the stability bound. -/
 
 namespace TDA.Persistence.StabilityExamples
 open TDA.Simplicial TDA.Filtration TDA.Persistence CategoryTheory
@@ -15,7 +15,7 @@ private instance vertexMem (s : Finset (Fin 2)) :
 private instance vertexFaces : Fintype (TotalFace (singletonFace (0 : Fin 2))) :=
   inferInstance
 
-/-- The real filter on one actual vertex. -/
+/-- The real filter on one vertex. -/
 def vertexFilter (a : ℝ) :
     FilterFunction (singletonFace (0 : Fin 2)) ℝ where
   value := fun _ => a
@@ -137,8 +137,7 @@ private theorem vertex_faceSupDifference (a b : ℝ) :
     simpa [vertexFilter] using
       (abs_face_difference_le (vertexFilter a) (vertexFilter b) σ)
 
-/-- The unique essential point moves by exactly the change in the actual
-vertex grade. Infinity is retained as the death sentinel. -/
+/-- The unique essential point moves by exactly the change in the vertex grade. Infinity is retained as the death sentinel. -/
 theorem vertex_bottleneck_sharp (a b : ℝ) :
     bottleneck (dgm (ZMod 2) (vertexFilter a) 0)
       (dgm (ZMod 2) (vertexFilter b) 0) = ENNReal.ofReal |a - b| := by

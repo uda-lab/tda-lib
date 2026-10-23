@@ -4,7 +4,7 @@ import Mathlib.Data.Finset.Sort
 /-!
 # Finite critical-value filtrations
 
-For a filter function on the supplied finite type of actual faces, this module forms the finite
+For a filter function on the supplied finite type of faces, this module forms the finite
 image of its values, enumerates the distinct values increasingly, and reindexes its existing
 sublevel filtration. Tied face values share a grade, and no sentinel or default grade is added.
 
@@ -23,7 +23,7 @@ variable {V : Type u} {α : Type w} [LinearOrder α]
 variable {K : PreAbstractSimplicialComplex V}
 variable [Fintype (TDA.Simplicial.TotalFace K)]
 
-/-- The finite set of values attained on actual faces of `K`. -/
+/-- The finite set of values attained on faces of `K`. -/
 def criticalValues (f : FilterFunction K α) : Finset α :=
   Finset.univ.image f.value
 
@@ -37,7 +37,7 @@ def gradeFiltration (f : FilterFunction K α) :
     TDA.Filtration.SimplicialFiltration (Fin (f.criticalValues.card)) V :=
   TDA.Filtration.reindex f.criticalValue.toOrderHom f.sublevelFiltration
 
-/-- Membership in `criticalValues` is exactly attainment on an actual face. -/
+/-- Membership in `criticalValues` is exactly attainment on a face. -/
 theorem mem_criticalValues (f : FilterFunction K α) (a : α) :
     a ∈ f.criticalValues ↔ ∃ s : TDA.Simplicial.TotalFace K, f.value s = a := by
   simp [criticalValues]
@@ -76,7 +76,7 @@ private theorem exists_criticalValue_of_mem (f : FilterFunction K α) {a : α}
     exact ha
   exact hr
 
-/-- Each actual face value occurs at an enumerated grade. -/
+/-- Each face value occurs at an enumerated grade. -/
 theorem exists_criticalValue_eq (f : FilterFunction K α)
     (s : TDA.Simplicial.TotalFace K) :
     ∃ i : Fin (f.criticalValues.card), f.criticalValue i = f.value s := by

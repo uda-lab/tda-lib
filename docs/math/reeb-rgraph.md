@@ -48,6 +48,26 @@ A slice object `A` is a graph object, `IsRGraph A`, when `A ≅ toOver T D` for 
 evidence for the property, not an object. The packaging lives in universe `0`, the universe of the
 real slice; the classification above holds in every universe.
 
+## Incidence quiver and incidence graph
+
+For finite Reeb data `D`, `IncidenceVertex D` is the sigma type of all vertices over all
+levels. It carries the incidence quiver (`instQuiverIncidenceVertex`), whose arrows are the
+edges `x : D.E e` from `left e x` at level `e.castSucc` to `right e x` at level `e.succ`.
+Thus parallel edges are distinct arrows, as witnessed by `homCastSuccSuccEquiv` and
+`arrowTotalEquiv`, while `isEmpty_hom_of_ne` rules out arrows except between consecutive
+levels.
+
+The simple graph `incidenceGraph D` joins two vertices when an arrow exists in either
+direction (`incidenceGraph_adj_iff`). It is functorial through `incidenceGraphHom` and
+`incidenceGraphIso`, but forgets parallel edges. The map `incidenceEdgeSet` is onto the
+simple-graph edge set and is injective exactly when no two edges share endpoints
+(`incidenceEdgeSet_injective_iff`). Hence the simple-graph edge count is at most the total
+number of edges (`card_incidenceGraph_edgeSet_le`), with equality in the injective case
+(`card_incidenceGraph_edgeSet_eq`). Fixtures G1–G6 are in
+`TDA/Reeb/FiniteDataGraphExamples.lean`; G2 exhibits two parallel edges giving one graph
+edge, and G3 shows that the parallel and single-edge finite Reeb data have isomorphic
+incidence graphs without being isomorphic as finite Reeb data.
+
 ## Refinement
 
 Let `T : CriticalValues m` with `range S.value ⊆ range T.value`. The refined data
@@ -83,6 +103,8 @@ These identifications cover every vertex set, edge set and incidence of the refi
 them, inserting a regular level into `K e` replaces the edge set `E e` by a new vertex set and two
 copies of `E e` with identity incidences, and exterior levels add empty pieces. The refined data
 are built from fibers; no separate insertion constructor is used.
+
+The graph-PL instance `graphPLRefineIso` in `TDA.Mapper.GraphPLDataRefinement` shows that graph-PL finite Reeb data over a refinement of a covering list are isomorphic to `refineData` of the coarser data; see [docs/math/mapper.md](mapper.md).
 
 ## Common refinement, coherence and presentation independence
 
@@ -141,7 +163,7 @@ discreteness of the pieces.
 
 ## Fixtures
 
-`TDA.Reeb.RGraphExamples` works with actual realizations and actual slice morphisms:
+`TDA.Reeb.RGraphExamples` works with realizations and slice morphisms:
 
 - two parallel edges over `0 < 1` and a single edge are not isomorphic graph objects;
 - exchanging the two parallel edges is an involutive non-identity automorphism of the data and of
@@ -159,6 +181,9 @@ discreteness of the pieces.
   two points at one level are all functions `Bool → Bool`;
 - the realization of the empty data is empty, and any graph object with an empty carrier, in
   particular the empty graph over any level list, is initial in `RGraphCat`.
+
+`TDA.Reeb.FiniteDataGraphExamples` records the incidence-quiver and incidence-graph fixtures
+G1–G6, including the loss of parallel-edge multiplicity.
 
 ## Source correspondence
 

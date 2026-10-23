@@ -31,7 +31,7 @@ private theorem natTrans_apply {M L : PModule.{u,0,u} k (Fin N)}
     (a.app j).hom ((M.map f).hom x) = (L.map f).hom ((a.app i).hom x) := by
   exact congrArg (fun g : M.obj i ⟶ L.obj j => g.hom x) (a.naturality f)
 
-/-- Fiberwise products preserve actual natural isomorphisms. -/
+/-- Fiberwise products preserve natural isomorphisms. -/
 noncomputable def pointwiseProdIso {M M' L L' : PModule.{u,0,u} k (Fin N)}
     (e : M ≅ M') (f : L ≅ L') : pointwiseProd M L ≅ pointwiseProd M' L' :=
   NatIso.ofComponents
@@ -204,7 +204,7 @@ private noncomputable def barcodeConsLinearEquiv (I : FiniteInterval N)
     funext t
     refine Fin.cases ?_ (fun t => ?_) t <;> rfl
 
-/-- Prepending an interval is the actual pointwise product with that interval. -/
+/-- Prepending an interval is the pointwise product with that interval. -/
 noncomputable def barcodeModuleOfListConsIso (I : FiniteInterval N)
     (xs : List (FiniteInterval N)) :
     pointwiseProd (intervalModule (k := k) I) (barcodeModuleOfList (k := k) xs) ≅

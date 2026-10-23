@@ -1,9 +1,9 @@
 # Closed loci for a fixed compatible face enumeration
 
 Fix a filter `f₀` on a preabstract simplicial complex `K` and a compatible
-enumeration `e` of its actual faces. Let `F : X → FilterFunction K α` be a family
+enumeration `e` of its faces. Let `F : X → FilterFunction K α` be a family
 over a topological space `X`. The grades `α` carry a linear order, a topology,
-and `OrderClosedTopology α`. Assume each actual face coordinate
+and `OrderClosedTopology α`. Assume each face coordinate
 `x ↦ (F x).value s` is continuous. Then
 `CompatibleOrder.isClosed_compatible_locus` proves that the parameters at which
 *this exact enumeration* is compatible form a closed subset of `X`:
@@ -19,13 +19,13 @@ and its proper-face order while replacing its grades. Each monotonicity
 comparison is a weak inequality between two continuous coordinate functions;
 `isClosed_le` makes its parameter set closed. Intersecting these sets over all
 index pairs gives the locus. The argument also covers an empty parameter
-space or an empty actual-face enumeration. It uses no topology on vertices,
+space or an empty face enumeration. It uses no topology on vertices,
 faces, or `FilterFunction`, and does not sort or choose an enumeration.
 
 The `OrderClosedTopology α` hypothesis is essential to this proof: a linear
 order alone does not make the weak-order relation topologically closed. Ties
 are permitted because every comparison uses `≤`. Continuity is required for
-each actual face coordinate; no global continuity of `F` is asserted.
+each face coordinate; no global continuity of `F` is asserted.
 
 The private fixtures in
 [`CompatibleOrderClosedExamples.lean`](../../TDA/Filtration/CompatibleOrderClosedExamples.lean)
@@ -40,7 +40,7 @@ are continuous. For the fixed enumeration `[vertex 0, vertex 1, edge]`, the
 compatibility locus is exactly `{x : ℝ | 0 ≤ x}`. It contains the tied boundary
 `0` and excludes `-1`, although a different compatible enumeration exists at
 `-1`. Thus the theorem concerns the fixed enumeration rather than existence
-of some compatible order, which holds for every finite actual-face filter.
+of some compatible order, which holds for every finite face filter.
 
 The theorem reuses [`CompatibleOrder.transfer`](../../TDA/Filtration/CompatibleOrderTransfer.lean)
 and Mathlib's `isClosed_le` and `isClosed_iInter`. Its public type has no

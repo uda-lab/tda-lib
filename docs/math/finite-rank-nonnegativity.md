@@ -2,7 +2,7 @@
 
 Let `M` be a persistence module on `Fin N` over a field, with each fiber finite
 dimensional. For `0 ≤ i ≤ j < N`, let `r(i,j)` be the dimension of the image of
-the actual structure map `M(i → j)`. The auxiliary integer extension
+the structure map `M(i → j)`. The auxiliary integer extension
 `moduleRankInteger` is zero unless `0 ≤ i ≤ j < N`. Thus `r(-1,j) = 0` and
 `r(i,N) = 0`; an invalid pair does not represent a reverse structure map.
 
@@ -39,7 +39,7 @@ two-stage transitions, and two three-stage modules
 `k → k × k → k`. Both three-stage modules use `x ↦ (x,0)` first. Projection
 onto the first coordinate yields `μ(1,2)=1`; projection onto the second gives
 `μ(1,2)=0` and `μ(0,2)=1`, because the long composite is zero. These
-calculations exercise the actual functor maps over `ℚ` and `ZMod 2`.
+calculations exercise the functor maps over `ℚ` and `ZMod 2`.
 
 The closed interval `[p,q]` four-rank formula in
 [Chazal–Crawley-Boevey–de Silva, §1.1](https://arxiv.org/pdf/1405.5644)

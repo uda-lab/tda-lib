@@ -67,7 +67,7 @@ an update at the target index. The proof specializes mathlib's pinned
 prefix, all included generators are unchanged. No `[DecidableEq k]` or nonzero coefficient
 hypothesis is required. `prefixSpan_cancel` specializes this preservation result to the existing
 `-(M p j / M p i)` cancellation coefficient; it does not claim that an arbitrary row is a pivot.
-Actual pivot decrease remains the separate `pivotHeight_mul_transvection_lt` theorem with its
+pivot decrease remains the separate `pivotHeight_mul_transvection_lt` theorem with its
 common-pivot hypotheses.
 
 `PrefixSpanExamples.lean` checks the empty `Fin 0` matrix and zero matrices, a rational
@@ -210,11 +210,11 @@ including repeated interval endpoints. `matrixReductionTrace_normalForm_input` a
 `matrixReductionTrace_originalHomologyMap_rank_formula` discharge the generic premises for
 the existing all-column reducer. `FilteredNormalFormExamples.lean` checks empty and
 mixed-degree zero boundaries, arbitrary nonzero pair coefficients, interleaved pairs and
-an essential cycle, actual map death, a nontrivial change of basis, and an input with
+an essential cycle, map death, a nontrivial change of basis, and an input with
 `D² = 0` but `R² ≠ 0`. The matrix theorem itself does not assume a simplicial origin.
-`SimplicialAdapter` constructs the signed square boundary from actual faces,
+`SimplicialAdapter` constructs the signed square boundary from faces,
 and `SimplicialAdapterNaturality` identifies its prefix-homology maps with
-actual simplicial inclusions.
+simplicial inclusions.
 
 Sources and conventions: [Zomorodian–Carlsson, *Computing Persistent Homology*, §4](https://geometry.stanford.edu/paper/zc-cph-04/zc-cph-04.pdf)
 for graded filtered basis reduction; [Bauer, *Ripser*, §3.1](https://doi.org/10.1007/s41468-021-00071-5)
@@ -222,18 +222,18 @@ for greatest-row pivot column reduction; and the [finite interval convention](fi
 for the library's half-open finite-stage modules. The Lean statements above derive their
 normal form and homology comparison directly from the matrix certificate.
 
-## Actual homology and interval realization
+## Homology and interval realization
 
-`actualPrefixHomology_rank` transports the original-boundary quotient maps
-through natural linear equivalences to actual simplicial homology. The
+`facePrefixHomology_rank` transports the original-boundary quotient maps
+through natural linear equivalences to simplicial homology. The
 commuting square identifies their ranges, so its rank is the rank of the
-actual inclusion map, not a declared count. `actualPivotBarcode_rank` proves
+inclusion map, not a declared count. `facePivotBarcode_rank` proves
 the same count for the interval realization. Equality of every structure-map
-rank then gives `actualPivotBarcode_eq_facePrefixBarcode`.
+rank then gives `facePivotBarcode_eq_facePrefixBarcode`.
 
-`nonempty_actualPrefixHomologyIsoPivotBarcode` combines that equality with
+`nonempty_facePrefixHomologyIsoPivotBarcode` combines that equality with
 the constructed finite interval decomposition. Its conclusion is a genuine
-natural isomorphism between actual prefix homology and the reducer's
+natural isomorphism between prefix homology and the reducer's
 interval realization. The decomposition is constructed before rank
 classification is used; equal dimensions alone are never used to infer
 an isomorphism. This existence theorem involves classical choices and is
@@ -250,7 +250,7 @@ preserved. These library lemmas have no dependency on acceptance fixtures.
 [Bauer, §§2–3, Propositions 2.1 and 3.1](https://arxiv.org/pdf/1908.02518v2)
 gives simplexwise grade reindexing and the filtered cycle/death basis,
 including essential indices. His coefficient convention is a prime field.
-The library's graded certificate and actual homology comparison recover
+The library's graded certificate and homology comparison recover
 that finite specialization; their arbitrary-field scope is supported by
 [Zomorodian–Carlsson, §§3–4](https://geometry.stanford.edu/paper/zc-cph-04/zc-cph-04.pdf).
 The elementary finite splitting proof and its explicit natural-isomorphism

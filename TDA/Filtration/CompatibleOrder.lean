@@ -9,7 +9,7 @@ set_option autoImplicit false
 /-!
 # Canonical grade-compatible orders on finite face presentations
 
-`CompatibleOrder` records a bijective enumeration of actual faces, with proper faces before
+`CompatibleOrder` records a bijective enumeration of faces, with proper faces before
 cofaces and nondecreasing filtration values. `CompatibleOrder.ofLex` constructs one for a
 finite presentation by sorting the key `(grade, cardinality, colex)`. The finite presentation
 provides the executable face data; the order on grades determines whether a particular value
@@ -23,10 +23,10 @@ namespace TDA.Filtration
 variable {V : Type u} {α : Type w} [LinearOrder α]
 variable {K : PreAbstractSimplicialComplex V}
 
-/-- A bijective enumeration of actual faces that respects both face inclusion and grade. -/
+/-- A bijective enumeration of faces that respects both face inclusion and grade. -/
 structure CompatibleOrder [Fintype (TDA.Simplicial.TotalFace K)]
     (f : FilterFunction K α) where
-  /-- Every actual face occurs exactly once, indexed by its finite cardinality. -/
+  /-- Every face occurs exactly once, indexed by its finite cardinality. -/
   enum : Fin (Fintype.card (TDA.Simplicial.TotalFace K)) ≃
     TDA.Simplicial.TotalFace K
   /-- A proper face always occurs before its coface, including at tied grades. -/
@@ -45,7 +45,7 @@ def lexKey (C : TDA.Simplicial.FiniteComplex n)
     Lex (α × Lex (ℕ × Colex (Finset (Fin n)))) :=
   _root_.toLex (f.value s, _root_.toLex (s.val.card, toColex s.val))
 
-/-- The key distinguishes actual faces, even when grades and cardinalities tie. -/
+/-- The key distinguishes faces, even when grades and cardinalities tie. -/
 theorem lexKey_injective (C : TDA.Simplicial.FiniteComplex n)
     (f : FilterFunction C.toPre α) :
     Function.Injective (lexKey C f) := by
@@ -78,7 +78,7 @@ private def sortedEnumeration (C : TDA.Simplicial.FiniteComplex n)
   change lexKey C f (e i) < lexKey C f (e j)
   exact e.strictMono hij
 
-/-- Sort the actual finite face type by its canonical key and certify the resulting order. -/
+/-- Sort the finite face type by its canonical key and certify the resulting order. -/
 def ofLex (C : TDA.Simplicial.FiniteComplex n)
     (f : FilterFunction C.toPre α) : CompatibleOrder f := by
   let sorted := sortedEnumeration C f

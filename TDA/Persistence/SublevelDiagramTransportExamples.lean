@@ -6,7 +6,7 @@ import Mathlib.Order.ULift
 set_option autoImplicit false
 
 /-!
-Actual diagram transport regression fixtures.
+diagram transport regression fixtures.
 All data and proofs are private and use public simplicial homology and inclusion APIs.
 -/
 
@@ -71,7 +71,7 @@ private theorem f0_inhabited_to_empty (n : ℕ) :
       (dgm (ZMod 2) (prepEmptyFilter (Fin 2) Empty) n).points = 0 :=
   f0_empty_diagrams (Fin 2) (ZMod 2) ℚ Empty n
 
-/-- F0: the second law uses an actual empty-domain total function. -/
+/-- F0: the second law uses an empty-domain total function. -/
 private theorem f0_empty_domain_phi (n : ℕ) :
     (dgm (ZMod 2) (prepEmptyFilter (Fin 2) ℚ) n).points =
       (dgm (ZMod 2) (prepEmptyFilter (Fin 2) Empty) n).points.map
@@ -355,7 +355,7 @@ private noncomputable def f1_constant_bar {K : PreAbstractSimplicialComplex (Fin
     FiniteInterval (f1_constant K b).criticalValues.card :=
   ⟨0, 1, by decide, by rw [f1_constant_card s b]⟩
 
-/-- Compute a one-grade barcode from the rank of its actual homology identity map. -/
+/-- Compute a one-grade barcode from the rank of its homology identity map. -/
 private theorem f1_constant_barcode {K : PreAbstractSimplicialComplex (Fin 2)}
     [Fintype (TotalFace K)] (s : TotalFace K) (b : ℚ) (d : ℕ)
     (hd : Module.finrank (ZMod 2) (simplicialHomology K (ZMod 2) 0) = d) :
@@ -452,7 +452,7 @@ private theorem f1_value (s : TotalFace (singletonFace (0 : Fin 2))) :
     f1_target.value s = f1_phi (f1_source.value s) := by
   norm_num [f1_source, f1_target, f1_constant, f1_phi]
 
-/-- F1 consumes the common-face occurrence law on the actual numerical singleton diagrams. -/
+/-- F1 consumes the common-face occurrence law on the numerical singleton diagrams. -/
 private theorem f1_common :
     ∃ E : Multiset (TotalFace (singletonFace (0 : Fin 2)) ×
         Option (TotalFace (singletonFace (0 : Fin 2)))),
@@ -533,8 +533,8 @@ private theorem f4_dimension :
   rw [Module.finrank_finsupp_self]
   exact f4_vertices_card
 
-/-- The one actual critical-grade structure map has rank two. -/
-private theorem f4_actual_rank (i j : Fin f4_source.criticalValues.card) (hij : i ≤ j) :
+/-- The one critical-grade structure map has rank two. -/
+private theorem f4_rank (i j : Fin f4_source.criticalValues.card) (hij : i ≤ j) :
     Module.finrank (ZMod 2) (LinearMap.range
       (simplicialHomologyIncl (ZMod 2) (f4_source.gradeFiltration.monotone hij) 0).hom) = 2 := by
   change structureMapRank
@@ -657,7 +657,7 @@ private theorem f4_points_map :
 
 open CategoryTheory
 
-/-! Actual three-grade filtered-edge H0 computation from chains, quotient classes
+/-! Three-grade filtered-edge H0 computation from chains, quotient classes
 and inclusion maps. -/
 
 private theorem f2_edge_values :
@@ -1375,7 +1375,7 @@ private theorem f2_target_points :
   rw [f3_points_map, f2_edge_points]
   norm_num [prepSupportPhi]
 
-/-- F2 records both computed actual diagrams alongside the points.map law. -/
+/-- F2 records both computed diagrams alongside the points.map law. -/
 private theorem f2_numerical_points_map :
     (dgm (ZMod 2) prepEdgeSource 0).points =
       ({((2 : ℚ), (⊤ : WithTop ℚ)), ((5 : ℚ), (9 : WithTop ℚ))} :
@@ -1418,7 +1418,7 @@ private theorem f2_matched_third : prepEdgeSource.sublevel 9 = prepEdgeTarget.su
   have h := f3_ordering.sublevel_eq prepEdgeE01
   simpa only [prepEdgeValues.2.2.1, prepEdgeValues.2.2.2.2.2] using h
 
-/-- Actual equality-induced square, at matched first and second critical grades. -/
+/-- Equality-induced square, at matched first and second critical grades. -/
 private theorem f2_matched_inclusion_square :
     simplicialHomologyIncl (ZMod 2)
         (prepEdgeSource.sublevel_mono (show (2 : ℚ) ≤ 5 by norm_num)) 0 ≫
@@ -1460,7 +1460,7 @@ private theorem f2_target_rank_dimension :
   · rw [← f2_matched_second]
     exact f2_source_rank_dimension.2
 
-/-- Actual inclusion composition through all three source critical grades. -/
+/-- Inclusion composition through all three source critical grades. -/
 private theorem f2_source_inclusion_composition :
     simplicialHomologyIncl (ZMod 2)
         (prepEdgeSource.sublevel_mono (show (2 : ℚ) ≤ 9 by norm_num)) 0 =
@@ -1472,7 +1472,7 @@ private theorem f2_source_inclusion_composition :
     (prepEdgeSource.sublevel_mono (show (2 : ℚ) ≤ 5 by norm_num))
     (prepEdgeSource.sublevel_mono (show (5 : ℚ) ≤ 9 by norm_num)) 0
 
-/-- Actual inclusion composition through all three target critical grades. -/
+/-- Inclusion composition through all three target critical grades. -/
 private theorem f2_target_inclusion_composition :
     simplicialHomologyIncl (ZMod 2)
         (prepEdgeTarget.sublevel_mono (show (3 : ℚ) ≤ 10 by norm_num)) 0 =

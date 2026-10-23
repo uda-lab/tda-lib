@@ -4,7 +4,7 @@ import TDA.Reeb.ConstructibleSpaceExamples
 /-!
 # Examples: local cylinder comparisons and constructibility
 
-All fixtures compute the actual `intervalComponents` of realized finite data
+All fixtures compute the `intervalComponents` of realized finite data
 (`ofFiniteData`).
 
 * `n = 0`: two vertices at one level give the value `2` on `ℝ`, and the inclusion of `(-1, 1)`

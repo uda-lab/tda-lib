@@ -51,13 +51,11 @@ is the window transfer of `x` to height `t` (`fst_thickProdHomeomorph_ofStrip`,
 
 ## The real slice
 
-`thickOverIso S D ε hε` is the isomorphism over `ℝ` from the actual thickening of the graph object
+`thickOverIso S D ε hε` is the isomorphism over `ℝ` from the thickening of the graph object
 `toOver S D` to the realization of the presentation. With the merged `GeometricThickening.zeroIso`
 at `ε = 0`, every graph object has a constructible thickening (`isConstructibleSpace_thickening`),
-and `thickeningToConstructible ε : RGraphCat ⥤ ConstructibleSpaceCat` lifts the actual
-`GeometricThickening.functor ε` on all height-preserving maps. Followed by the merged
-`quotientRGraphFunctor` and the graph inclusion, it is literally the Reeb quotient of the actual
-thickening (`thickeningToConstructible_comp_quotientRGraphFunctor`).
+and `thickeningToConstructible ε : RGraphCat ⥤ ConstructibleSpaceCat` lifts the `GeometricThickening.functor ε` on all height-preserving maps. Followed by the merged
+`quotientRGraphFunctor` and the graph inclusion, it is literally the Reeb quotient of the thickening (`thickeningToConstructible_comp_quotientRGraphFunctor`).
 
 The unbundled construction holds at an arbitrary value universe `u`; the slice packaging is in
 universe `0`, as `RGraphCat` and `ConstructibleSpaceCat` are. The raw descent maps are private.
@@ -94,18 +92,6 @@ theorem value_le_or_le {m : ℕ} (T : CriticalValues m) (j : Fin (m + 1)) (k : F
     rw [Fin.lt_def] at h
     simp only [Fin.val_succ, Fin.val_castSucc] at h ⊢
     omega
-
-/-- A height in `[b 0, b m]` that is not a level lies in an open gap; from the merged
-`CriticalValues.exists_piece`. -/
-private theorem exists_mem_K {m : ℕ} (T : CriticalValues m) {u : ℝ}
-    (hu : u ∈ Icc (T.value 0) (T.value (Fin.last m))) (hne : ∀ j, T.value j ≠ u) :
-    ∃ k : Fin m, u ∈ (T.K k : Set ℝ) := by
-  obtain ⟨p, hp, hp'⟩ := T.exists_piece u
-  cases p with
-  | star i => exact absurd (hp' i (T.value_mem_J i)) (hne i)
-  | gap e => exact ⟨e, hp⟩
-  | lowerTail => exact absurd hu.1 (not_le.2 hp)
-  | upperTail => exact absurd hu.2 (not_le.2 hp)
 
 /-- **Window transfer hypotheses** from height `c` to height `u`: `c` avoids every event
 `a i ± ε`, and the lower and upper fragment branches persist from `c` to `u`. -/
@@ -513,7 +499,7 @@ theorem snd_slabCylinder (k : Fin (S.shiftedCount ε)) (x : win S D ε (mid S ε
     (t : Seg (S.shifted ε) k) : (slabCylinder S D ε k (x, t)).1.2 = t :=
   congrArg Prod.snd (coe_slabCylinder S D ε k x t)
 
-/-- **The thickening presentation** over the actual shifted witness `S.shifted ε`: vertex piece
+/-- **The thickening presentation** over the shifted witness `S.shifted ε`: vertex piece
 `j` is the window at `b j`, edge piece `k` the window at the midpoint of gap `k`, and the endpoint
 maps are the window transfers to the two ends of the gap. -/
 def thickPresentation : CylinderPresentation.{u} (S.shiftedCount ε) where
@@ -616,7 +602,7 @@ theorem thickMap_surjective (hε : 0 < ε) : Function.Surjective (thickMap S D �
       rw [S.shifted_value_zero, S.shifted_value_last]
       have := (ofFiniteData D).height_mem_Icc S y
       exact ⟨by linarith [hy.1, hy.2, this.1, this.2], by linarith [hy.1, hy.2, this.1, this.2]⟩
-    obtain ⟨k, hk⟩ := exists_mem_K (S.shifted ε) hu hlev
+    obtain ⟨k, hk⟩ := CriticalValues.exists_mem_K_of_mem_Icc hu hlev
     have hok' : TransferOK S ε u (mid S ε k) :=
       transferOK_of_mem S ε hk (Ioo_subset_Icc_self (mid_mem_K S ε k))
     have hok := transferOK_of_mem S ε (mid_mem_K S ε k) (Ioo_subset_Icc_self hk)
@@ -634,14 +620,14 @@ def thickHomeomorph (hε : 0 < ε) :
     (f := Equiv.ofBijective _ ⟨thickMap_injective S D ε hε, thickMap_surjective S D ε hε⟩)
     (thickMap S D ε).continuous
 
-/-- The realization is the actual product thickening `X × Band ε`. -/
+/-- The realization is the product thickening `X × Band ε`. -/
 def thickProdHomeomorph (hε : 0 < ε) :
     (thickPresentation S D ε).Realization (S.shifted ε) ≃ₜ
       (ofFiniteData D).Realization S × GeometricThickening.Band ε :=
   (thickHomeomorph S D ε hε).trans
     (GeometricThickening.bandHomeomorph ((ofFiniteData D).height S) ε).symm
 
-/-- Height preservation into the actual thickened height. -/
+/-- Height preservation into the thickened height. -/
 theorem height_thickProdHomeomorph (hε : 0 < ε)
     (q : (thickPresentation S D ε).Realization (S.shifted ε)) :
     GeometricThickening.height ((ofFiniteData D).height S) ε (thickProdHomeomorph S D ε hε q) =
@@ -720,7 +706,7 @@ theorem isConstructibleSpace_thickening_toOver :
       fun _ => inferInstance, fun _ => inferInstance, fun _ => inferInstance,
       ⟨thickOverIso S D ε hε⟩⟩
 
-/-- **DMP Proposition 4.26.** The actual thickening of every graph object is a constructible
+/-- **DMP Proposition 4.26.** The thickening of every graph object is a constructible
 ℝ-space, for every `ε ≥ 0`. -/
 theorem isConstructibleSpace_thickening {A : Over (TopCat.of ℝ)} (hA : IsRGraph A) (ε : ℝ≥0) :
     IsConstructibleSpace ((GeometricThickening.functor ε).obj A) := by
@@ -728,7 +714,7 @@ theorem isConstructibleSpace_thickening {A : Over (TopCat.of ℝ)} (hA : IsRGrap
   obtain ⟨m, T, P, h1, h2, h3, h4, ⟨j⟩⟩ := isConstructibleSpace_thickening_toOver S D ε
   exact ⟨m, T, P, h1, h2, h3, h4, ⟨(GeometricThickening.functor ε).mapIso i ≪≫ j⟩⟩
 
-/-- The actual thickening functor restricted to graph objects, with values in constructible
+/-- The thickening functor restricted to graph objects, with values in constructible
 ℝ-spaces, on all height-preserving maps. -/
 def thickeningToConstructible (ε : ℝ≥0) : RGraphCat ⥤ ConstructibleSpaceCat :=
   IsConstructibleSpace.lift (IsRGraph.ι ⋙ GeometricThickening.functor ε)
@@ -748,7 +734,7 @@ theorem thickeningToConstructible_map_hom (ε : ℝ≥0) {A B : RGraphCat} (φ :
   rfl
 
 /-- The Reeb-quotient form of the lift: followed by the merged `quotientRGraphFunctor` and the graph
-inclusion, the lift is literally the Reeb quotient of the actual product thickening. -/
+inclusion, the lift is literally the Reeb quotient of the product thickening. -/
 theorem thickeningToConstructible_comp_quotientRGraphFunctor (ε : ℝ≥0) :
     thickeningToConstructible ε ⋙ quotientRGraphFunctor ⋙ IsRGraph.ι =
       IsRGraph.ι ⋙ GeometricThickening.functor ε ⋙ ReebQuotient.quotientFunctor ℝ :=

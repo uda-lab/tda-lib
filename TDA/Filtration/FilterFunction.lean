@@ -5,7 +5,7 @@ set_option autoImplicit false
 /-!
 # Face-value sublevel filtrations
 
-A `FilterFunction` assigns an ordered value to each actual nonempty face of a preabstract
+A `FilterFunction` assigns an ordered value to each nonempty face of a preabstract
 simplicial complex. Its sublevel at `r` contains exactly the faces whose values are at most `r`;
 the resulting complexes form a support-aware simplicial filtration.
 
@@ -28,7 +28,7 @@ namespace TDA.Filtration
 
 variable {V : Type u} {α : Type w}
 
-/-- A monotone value assignment on the actual faces of a preabstract simplicial complex. -/
+/-- A monotone value assignment on the faces of a preabstract simplicial complex. -/
 structure FilterFunction (K : PreAbstractSimplicialComplex V)
     (α : Type w) [LinearOrder α] where
   value : TDA.Simplicial.TotalFace K → α
@@ -39,7 +39,7 @@ namespace FilterFunction
 
 variable [LinearOrder α] {K : PreAbstractSimplicialComplex V}
 
-/-- The subcomplex of actual faces whose assigned value is at most `r`. -/
+/-- The subcomplex of faces whose assigned value is at most `r`. -/
 def sublevel (f : FilterFunction K α) (r : α) :
     PreAbstractSimplicialComplex V where
   faces := {s | ∃ hs : s ∈ K, f.value ⟨s, hs⟩ ≤ r}
@@ -53,11 +53,11 @@ def sublevel (f : FilterFunction K α) (r : α) :
       refine ⟨htK, ?_⟩
       exact (f.mono (τ := ⟨t, htK⟩) (σ := ⟨s, hs⟩) hts).trans hsr
 
-/-- Membership in a sublevel means being an actual face with value at most the threshold. -/
+/-- Membership in a sublevel means being a face with value at most the threshold. -/
 theorem mem_sublevel_iff (f : FilterFunction K α) (r : α) (s : Finset V) :
     s ∈ f.sublevel r ↔ ∃ hs : s ∈ K, f.value ⟨s, hs⟩ ≤ r := Iff.rfl
 
-/-- For an actual face, sublevel membership is equivalent to its value bound. -/
+/-- For a face, sublevel membership is equivalent to its value bound. -/
 theorem mem_sublevel_iff_of_mem (f : FilterFunction K α) (r : α)
     (s : TDA.Simplicial.TotalFace K) :
     s.val ∈ f.sublevel r ↔ f.value s ≤ r := by
@@ -90,7 +90,7 @@ def sublevelFiltration (f : FilterFunction K α) : SimplicialFiltration α V whe
 theorem sublevelFiltration_apply (f : FilterFunction K α) (r : α) :
     f.sublevelFiltration r = f.sublevel r := rfl
 
-/-- A vertex is supported at `r` exactly when its singleton is an actual face of value at most
+/-- A vertex is supported at `r` exactly when its singleton is a face of value at most
 `r`; an absent singleton is never inserted by the sublevel construction. -/
 theorem mem_support_sublevelFiltration_iff
     (f : FilterFunction K α) (r : α) (v : V) :
@@ -98,7 +98,7 @@ theorem mem_support_sublevelFiltration_iff
       ∃ hs : ({v} : Finset V) ∈ K, f.value ⟨{v}, hs⟩ ≤ r := by
   exact mem_sublevel_iff f r {v}
 
-/-- If every actual face has value at most `r`, the sublevel is the original complex. -/
+/-- If every face has value at most `r`, the sublevel is the original complex. -/
 theorem sublevel_eq_self_of_forall_le (f : FilterFunction K α) (r : α)
     (h : ∀ s : TDA.Simplicial.TotalFace K, f.value s ≤ r) :
     f.sublevel r = K := by
@@ -106,7 +106,7 @@ theorem sublevel_eq_self_of_forall_le (f : FilterFunction K α) (r : α)
   intro s hs
   exact (mem_sublevel_iff f r s).mpr ⟨hs, h ⟨s, hs⟩⟩
 
-/-- If `r` is strictly below every actual face value, the sublevel is bottom. -/
+/-- If `r` is strictly below every face value, the sublevel is bottom. -/
 theorem sublevel_eq_bot_of_forall_lt (f : FilterFunction K α) (r : α)
     (h : ∀ s : TDA.Simplicial.TotalFace K, r < f.value s) :
     f.sublevel r = ⊥ := by

@@ -9,12 +9,24 @@ import TDA.Reeb.ConstructibleCosheaf
 import TDA.Reeb.ConstructibleCylinder
 import TDA.Reeb.ConstructibleQuotient
 import TDA.Reeb.ConstructibleRepresentation
+import TDA.Reeb.ConstructibleShiftMap
 import TDA.Reeb.ConstructibleSmoothing
+import TDA.Reeb.ConstructibleSmoothingLift
 import TDA.Reeb.ConstructibleSpace
+import TDA.Reeb.ConstructibleThickeningQuotient
 import TDA.Reeb.CriticalValues
 import TDA.Reeb.CriticalValuesShift
+import TDA.Reeb.FiniteDataGraph
 import TDA.Reeb.FiniteDiagram
+import TDA.Reeb.GeometricComponentObstruction
+import TDA.Reeb.GeometricDistanceBounds
+import TDA.Reeb.GeometricEnlargement
+import TDA.Reeb.GeometricInterleaving
+import TDA.Reeb.GeometricInterleavingEquivalence
+import TDA.Reeb.GeometricSmoothInterleaving
 import TDA.Reeb.GeometricThickening
+import TDA.Reeb.GeometricThickeningAddition
+import TDA.Reeb.GraphCycleObstruction
 import TDA.Reeb.GraphPLComponents
 import TDA.Reeb.GraphPLHeight
 import TDA.Reeb.GraphRealization
@@ -26,6 +38,8 @@ import TDA.Reeb.Perturbation
 import TDA.Reeb.PerturbationDistance
 import TDA.Reeb.Quotient
 import TDA.Reeb.QuotientComparison
+import TDA.Reeb.QuotientThickeningAbsorption
+import TDA.Reeb.QuotientThickeningAddition
 import TDA.Reeb.RGraph
 import TDA.Reeb.RGraphCosheafEquivalence
 import TDA.Reeb.RGraphRefinement
@@ -34,3 +48,6 @@ import TDA.Reeb.RGraphThickening
 import TDA.Reeb.RGraphWindow
 import TDA.Reeb.Smoothing
 import TDA.Reeb.Stability
+import TDA.Reeb.ConstructibleGeometricInterleaving
+
+import TDA.Reeb.ConstructiblePerturbation

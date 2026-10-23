@@ -292,7 +292,7 @@ private theorem list_get_sum_countP {α : Type*} (xs : List α) (p : α → Prop
 
 /-- The rank of the barcode structure map is the number of active interval summands.
 
-Rank is computed from the range of the actual structure map, then its finite-product range is
+Rank is computed from the range of the structure map, then its finite-product range is
 identified with the product of coordinate ranges. -/
 theorem rank_barcodeMap {N : ℕ} {k : Type u} [Field k]
     (B : Multiset (FiniteInterval N)) (i j : Fin N) (hij : i ≤ j) :
@@ -341,7 +341,7 @@ noncomputable def barcodeRankInteger {N : ℕ} {k : Type u} [Field k]
     (structureMapRank (barcodeModule (k := k) B) fi fj hFin : ℤ)
   else 0
 
-/-- At natural valid indices, the integer extension is the cast of the actual range rank. -/
+/-- At natural valid indices, the integer extension is the cast of the range rank. -/
 theorem barcodeRankInteger_nat {N : ℕ} {k : Type u} [Field k]
     (B : Multiset (FiniteInterval N)) (i j : ℕ) (hij : i ≤ j) (hj : j < N) :
     barcodeRankInteger (k := k) B (i : ℤ) (j : ℤ) =
@@ -533,7 +533,7 @@ theorem barcodeRankInteger_injective {N : ℕ} {k : Type u} [Field k]
     omega
   · rfl
 
-/-- Every actual structure map of the empty finite barcode module has rank zero. -/
+/-- Every structure map of the empty finite barcode module has rank zero. -/
 theorem rank_emptyBarcode {N : ℕ} {k : Type u} [Field k]
     (i j : Fin N) (hij : i ≤ j) :
     structureMapRank (barcodeModule (k := k) (0 : Multiset (FiniteInterval N)))
@@ -642,7 +642,7 @@ private instance zeroTransitionDiagram_finiteDimensional {k : Type u} [Field k]
   dsimp
   infer_instance
 
-/-- Equal-dimensional two-stage modules can have different actual structure-map ranks. -/
+/-- Equal-dimensional two-stage modules can have different structure-map ranks. -/
 theorem equal_dimensions_different_structureMapRanks {k : Type u} [Field k] :
     (∀ i : Fin 2,
       Module.finrank k ((identityTransitionDiagram k).obj i) =

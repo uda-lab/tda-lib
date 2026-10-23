@@ -1,6 +1,6 @@
 # Finite rank reconstruction by rectangular telescoping
 
-Let `M` be a persistence module on `Fin N` over a field, with every fiber finite dimensional. Write `r(i,j)` for the integer cast of the rank of its actual structure map when `0 ≤ i ≤ j < N`; `moduleRankInteger` extends this value by zero outside those bounds. In particular, `r(-1,j)=0` and `r(i,N)=0`. The endpoint `N` denotes survival through the last observed stage, not infinity.
+Let `M` be a persistence module on `Fin N` over a field, with every fiber finite dimensional. Write `r(i,j)` for the integer cast of the rank of its structure map when `0 ≤ i ≤ j < N`; `moduleRankInteger` extends this value by zero outside those bounds. In particular, `r(-1,j)=0` and `r(i,N)=0`. The endpoint `N` denotes survival through the last observed stage, not infinity.
 
 The existing `moduleMultiplicityInteger M b d` is the integer four-rank difference
 
@@ -17,7 +17,7 @@ Both predecessor operations in this formula are in integers. For `a ≤ b ≤ c 
 
 For each fixed birth, the death sum telescopes the difference `r(x,t)-r(x-1,t)` from `t=c` to `t=d`. The remaining birth differences telescope from `x=a` to `x=b`. This is finite algebraic cancellation. It also covers an empty death interval `c=d`, a single birth `a=b`, and `N=0`, without a positive-size assumption.
 
-Taking `a=0`, `b=i`, `c=j`, and `d=N` makes the three sentinel terms zero. `structureMapRank_eq_sum_moduleMultiplicityInteger` therefore recovers every actual map rank:
+Taking `a=0`, `b=i`, `c=j`, and `d=N` makes the three sentinel terms zero. `structureMapRank_eq_sum_moduleMultiplicityInteger` therefore recovers every map rank:
 
 ```text
 rank M(i → j) = ∑_{b≤i} ∑_{j<d≤N} μ(b,d),  for i≤j in Fin N.

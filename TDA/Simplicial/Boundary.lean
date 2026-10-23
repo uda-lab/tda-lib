@@ -3,10 +3,10 @@ import Mathlib.Data.Finset.Sort
 import Mathlib.LinearAlgebra.Finsupp.LinearCombination
 
 /-!
-# Ordered simplicial boundary on actual faces
+# Ordered simplicial boundary on faces
 
 Faces are oriented by the fixed ambient linear order. Deleting an enumerated vertex
-produces an actual face, and the signed deletion sum extends linearly to chains.
+produces a face, and the signed deletion sum extends linearly to chains.
 -/
 
 universe u v
@@ -18,7 +18,7 @@ namespace TDA.Simplicial
 variable {V : Type u} [LinearOrder V]
 variable (K : PreAbstractSimplicialComplex V)
 
-/-- Delete the vertex at position `i` from an actual face. -/
+/-- Delete the vertex at position `i` from a face. -/
 def deletedFace (n : ℕ) (s : Face K (n + 1)) (i : Fin (n + 2)) : Face K n := by
   have hv : s.1.orderEmbOfFin s.2.2 i ∈ s.1 :=
     Finset.orderEmbOfFin_mem s.1 s.2.2 i

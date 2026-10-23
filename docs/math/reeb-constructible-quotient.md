@@ -154,6 +154,8 @@ on all morphisms, including those between objects presented over different lists
 objects are constructible, with discrete pieces (`isConstructibleSpace_of_isRGraph`). Their
 geometric thickenings are constructible too, with compact locally path-connected windows as pieces
 (see `reeb-rgraph-thickening.md`).
+Moreover, the Reeb quotient of `T_ε X` is a graph object for every constructible `X`; see
+[Absorption on all constructible ℝ-spaces](reeb-quotient-thickening-absorption.md#absorption-on-all-constructible-ℝ-spaces).
 
 ## The graph case
 
@@ -167,7 +169,7 @@ realization of `D.toComponentData` (`quotientComponentGraphMap_projHomeomorph`).
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleQuotientExamples` works with actual presentations, realizations and slice
+`TDA.Reeb.ConstructibleQuotientExamples` works with presentations, realizations and slice
 morphisms. `[0, 1]` is locally path-connected and path-connected; the pinned mathlib has no such
 instances for `unitInterval`, so they are local instances there. Thickening finite data `D` by
 `[0, 1]` replaces every label `x` by `x × [0, 1]`, with the endpoint maps acting on labels. The

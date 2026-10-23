@@ -10,36 +10,42 @@ dot owns the roadmap, mathematical scope and decisions, Issue creation and autho
 implementation routing, review, integration, release selection and continuing Codex operation.
 The scaffold's orchestrator, driver, worker, independent reviewer and judge roles remain in
 use. Issue/PR evidence and independent review remain mandatory; authority does not bypass
-integrity gates. The owner has imposed no budget cap. Preserve scaffold VPS resource defaults,
-including serialized Lean builds and one driver per lane. Runtime scheduling remains
-external to this repository. Base workers use Luna xhigh; difficult mathematics/Lean work
+integrity gates. The owner has imposed no budget cap. Keep one driver per lane and exclude
+concurrent writes to shared build/dependency paths. Runtime scheduling remains external to
+this repository. Base workers use Luna xhigh; difficult mathematics/Lean work
 may use Sol low/high. Sol high may prepare Issues when dot is unavailable.
 
 ## Branches and releases
 
-Regular Issue branches start from `develop` and PRs target `develop`. The default branch
-may remain `main`; explicitly specify the integration base rather than infer it from GitHub's
-default. `main` receives reviewed stable promotions only. Both branches require PRs and
-`check`; no direct pushes, force pushes or deletion.
+[CONTRIBUTING.md](../CONTRIBUTING.md) is the canonical lifecycle policy. `develop` and
+stable `main` are persistent. Ordinary code/documentation topics start from and target
+develop using squash PRs. Release branches start from a selected develop base; release
+and hotfix propagation uses merge-commit PRs, including into develop. Explicitly name the
+target scope/milestone; the next version may be `undecided` until release cut. The GitHub
+default branch does not choose an integration target. Keep both long-lived branches.
 
-A stable promotion identifies its exact develop revision and included results on the Issue
-and PR, excludes staging holes, runs the full gate and obtains independent mathematical
-review as appropriate. Promote that revision through a PR to main; audit the merged main
-revision and tag it with release notes describing results, compatibility and limitations.
-Infrastructure-only releases make no mathematical-result claims.
+A release identifies its develop base, actual reviewed release head and included results,
+excludes staging holes, and satisfies the existing release checks/review. The release head
+may contain corrections after its base. Its main merge must preserve that actual head as
+a parent and match the reviewed release tree before any authorized tag. Content equality
+and commit ancestry are separate checks; neither replaces the other. Infrastructure-only
+releases make no mathematical-result claims.
 
-Ordinary develop PRs use squash merges. Stable main promotions use merge commits, preserving
-the exact released develop head as a parent. The merged main tree must equal the reviewed
-release tree before tagging. This ancestry keeps later promotion diffs limited to new work;
-no synchronization PR is needed when release trees match. Resolve and review any actual
-main/develop content divergence before promotion. Keep develop after each release.
-dot determines release cadence and version numbers from maturity and API changes.
+Propagate every release/hotfix/main-first documentation correction to develop, directly
+or through an active release, and verify both the intended fix and retention of later
+development. An active-release destination remains tracked until develop receives it.
+No extra synchronization PR is needed only when the relevant release head is already
+integrated and no release/main fixes remain unpropagated, not merely when trees match.
+dot determines release cadence and versions from actual maturity, scope and API changes.
+PR protection, applicable local validation and normal hosted CI remain in force. Require
+the existing workflow's `check` to succeed for the evaluated PR head. No direct/force pushes,
+long-lived branch deletion or new approval wait.
 
 Each area owns `scripts/print_axioms/<Area>.lean` and the imports-only
 `TDA/<Area>.lean` module list. `TDA.lean` imports those lists and `TDA.Basic`.
 Append pins and imports in the area that owns a new module; do not edit another area's
-list for an independent result. A textually mergeable PR can use its reviewed, locally
-validated head without a gratuitous develop refresh. Actual source overlap or a failed
+list for an independent result. A textually mergeable PR can use its reviewed, validated
+head without a gratuitous develop refresh. Actual source overlap or a failed
 integrated build needs resolution and renewed validation of the changed head.
 
 ## Evidence and foundations
@@ -57,6 +63,12 @@ before applying `agent:ready` to the Issue. No routine human reapproval is requi
 `docs/math/` holds durable source-grounded mathematics, not a second work queue.
 Research mathlib and TauCeti coverage before choosing foundations; TauCeti is not currently
 a dependency. Keep independent source fidelity review for statement changes.
+Use [lean-review-routing](../.agents/skills/lean-review-routing/SKILL.md#semantic-and-api-quality)
+for semantic and API quality in ordinary reviews. The consolidated review/refactoring in
+CONTRIBUTING.md applies the same criteria to the selected release's exported APIs, starting
+with a bounded pilot. Define remaining scope and dependencies on the release Issue and link
+outstanding review/fix PRs there. Keep detailed pilot results, findings and validation on
+those PRs and route targeted fixes through the normal gates.
 
 ## Intake and concurrency
 
@@ -64,8 +76,9 @@ dot considers new intake after approximately three hours without observed activi
 other repositories, then checks competing work and dependencies. Two to three disjoint
 tasks may run concurrently only when directory or other boundaries clearly separate work,
 shared API changes and merge conflicts are unlikely, and resources and review capacity permit;
-Lean builds remain serialized. When other-repository work starts, hold new intake rather
-than interrupt existing tasks. Ongoing tasks continue through quality-gated PR merge unless
+builds that share mutable paths remain mutually exclusive. Independent builds still need
+sufficient resources. When other-repository work starts, hold new intake rather than interrupt
+existing tasks. Ongoing tasks continue through quality-gated PR merge unless
 legitimately blocked. This is an intake guideline, not a repository-local scheduler.
 
 ## Documentation and milestone interpretation
@@ -78,7 +91,14 @@ dot establishes dependencies and release scope from actual mathematical decision
 ## Commands and gates
 
 `scripts/bootstrap.sh` prepares caches and hooks; `scripts/check.sh` is the full integrity
-gate. `scripts/github-setup.sh` installs labels, squash settings and develop/main protections.
+gate. `scripts/github-setup.sh` is the broad labels/settings/protection bootstrap; do not run
+it wholesale for a targeted live setting correction. Read current settings and update only
+the approved fields. Develop needs squash and merge methods for its two integration roles;
+main uses merge commits. Preserve protections and the existing workflow triggers and
+conditional steps. Ordinary PR and integration pushes run CI; do not suppress them with
+CI-skip markers. Prose-only changes use focused local checks and the workflow's lightweight
+path. Implementation changes retain the full guarded local check and applicable hosted
+build/audit. Optional documentation generation and the note lane retain their own conditions.
 Review acquisition and merge evidence follow `github-driven-workflow`; review disposition
 follows `lean-review-routing`. All review findings are observed and resolved or disposed of.
 No unsolicited notifications; authorized reports and the Issue/PR record are unaffected.
@@ -95,10 +115,34 @@ LOOP_JOB_ID=tda-lib/issue-<n>/worker scripts/codex.sh exec <arguments>
 scripts/agent/session-brief.sh
 ```
 
-The shared runtime serializes Lean builds, checks memory headroom and honors
-`/tmp/codex-stop`. Defaults are `LEAN_NUM_THREADS=1` and
-`LEAN_GUARD_MIN_AVAIL_MIB=1536`; runtime configuration may adapt them to available hardware.
-`scripts/bootstrap.sh`, `scripts/check.sh` and axiom audits invoke shared protection directly.
+For jobs under the same execution account, the wrappers exclude concurrent writes to the same canonical checkout, Lake build or
+dependency paths, including symlink targets. Each target has an exclusive lock and its ancestors have shared locks, so overlapping
+directory trees conflict while independent descendants can proceed. Missing symlink targets
+are included before creation. The wrappers acquire locks in a common order
+and retain them across nested checks and documentation generation. Independent worktrees
+with separate mutable dependencies do not share a host-wide build lock. The Lake wrapper
+accepts this checkout and its docbuild project; project/config redirection is rejected
+because it would select resources outside the guarded set. Manifest `lakeDir` and
+`packagesDir` select the discovered paths. Explicit Lean outputs (`-o`, `-i`, `-c`, `-b`
+and snapshot output options) must stay within these protected resources; temporary fixture
+outputs belong under the checkout's ignored scratch directory. Output-shaped arguments
+remain conservatively checked with `--run` too. Do not change
+dependency/symlink topology during a guarded operation; a detected change requires restarting
+the outer gate. Before using the updated wrappers with a shared cache, let jobs using older
+wrappers finish: the former `/tmp/lean-build.lock` does not coordinate with path locks.
+Do not share writable artifacts through hardlinked copies; use separate copies or visible
+symlinked directories whose actual paths the wrappers can lock.
+
+Exclusion protects shared files; it is not a host resource scheduler. Coordinate independent
+builds with the other owners according to CPU, memory/cgroup headroom and expected workloads.
+A free lock or the headroom probe alone does not establish capacity for another build.
+`LEAN_NUM_THREADS` configures each Lean process, separately from the number of concurrent
+builds. Explicit positive values are preserved; an unset value falls back to 1. Choose
+resource-aware overrides in the execution environment, not fixed hardware facts in this
+repository. Cross-account jobs need external coordination; these locks are account-scoped.
+`LEAN_GUARD_MIN_AVAIL_MIB` defaults to 1536 and remains configurable. Unavailable
+platform metrics are reported as unknown, never as measured spare capacity.
+`scripts/bootstrap.sh`, `scripts/check.sh` and axiom audits use the same guarded wrappers.
 The stop file blocks guarded Lean work and new child Codex launches; remove it only when
 the stopping condition has been resolved. It does not terminate existing jobs automatically.
 

@@ -2,23 +2,26 @@
 
 `tda-lib` is a Lean 4 library for topological data analysis. It formalizes finite
 persistent homology, a certified computation of persistence over the two-element
-field, and selected Reeb and Mapper constructions.
-[v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) is the
-first release of its mathematical results.
+field, distances and stability bounds for persistence diagrams, Rips and Čech
+filtrations of finite metric spaces, persistence images and kernels, and selected
+Reeb and Mapper constructions. The current release is
+[v0.2.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.2.0);
+[v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) was the first
+release with mathematical results.
 
-## Results
+## Results in v0.1.0
 
 - **Persistent homology.** The library builds signed simplicial chains and homology
-  from actual faces, decomposes pointwise finite-dimensional persistence modules
+  from faces, decomposes pointwise finite-dimensional persistence modules
   indexed by a finite chain into intervals, and relates a finite simplex filtration
-  to its actual sublevel persistence diagram. The diagram retains multiplicities,
+  to its sublevel persistence diagram. The diagram retains multiplicities,
   finite half-open intervals and essential bars. For real-valued finite filters it
   proves a bottleneck stability bound, including changes in simplex pairing.
   Local regularity, derivative and Hessian results for diagram-based losses use
   explicit hypotheses on ordered representatives and lifts.
 - **Certified computation.** An executable reduction computes persistence over
   F₂ from a valid finite list of graded simplices. Its correctness theorem
-  identifies the output with the actual sublevel diagram in every degree;
+  identifies the output with the sublevel diagram in every degree;
   invalid lists are rejected.
 - **Reeb and Mapper theory.** The library develops interval cosheaves, finite
   graph and constructible-cosheaf comparisons, and ordinary Mapper from pullback
@@ -26,63 +29,169 @@ first release of its mathematical results.
   coverage or constructibility assumptions. These are theory interfaces rather
   than an executable Mapper package or a general convergence theorem.
 
-The [API guide](docs/api.md) gives the precise assumptions, theorem names and
-limits of these results. General geometric or infinite-dimensional persistence
-and an executable arbitrary-field reduction are outside the current scope.
+## Results added in v0.2.0
+
+The v0.2.0 release adds the following results to those above; each holds under the
+hypotheses stated. The [API guide](docs/api.md) and its mathematical notes give their
+exact hypotheses. Two kinds of distance statement appear: distances between
+persistence diagrams or modules, and stability of diagrams under perturbation of a
+metric-space input.
+
+- **Diagram and module distances.** For finite positive diagrams with unit occurrence
+  masses and finite deaths, the powered p-cost is the minimal sum of p-th powers of
+  ground distances over partial matchings, with unmatched points matched to the
+  diagonal, for a real exponent p ≥ 1 and the maximum ground norm, and the rooted cost
+  d_p is its p-th root. These partial-matching minima
+  equal the optima over finite real boundary plans; powered and rooted matching and
+  real-plan optima agree and are attained. Rooted costs satisfy distance laws and
+  explicit cardinality-dependent perturbation bounds for filters on the same finite
+  complex. If N is the total finite-occurrence count, d_p ≤ d_1 ≤ N^(1−1/p) d_p.
+  Common diagonal translation preserves these costs; nonnegative coordinate scaling by
+  c multiplies powered costs by c^p and rooted costs by c. Finite boundary transport
+  additionally permits arbitrary nonnegative real masses that split between labels:
+  powered and rooted optima are attained for p ≥ 1, and unit masses recover the
+  occurrence-based costs. For natural p, total persistence over finite bars is
+  translation-invariant and homogeneous under positive scaling. Finite-constructible
+  real-indexed modules over a field satisfy the isometry theorem, their interleaving
+  distance equals the bottleneck distance of their barcodes, under finite-dimensional
+  critical fibers, a zero left tail, half-open strata and a possibly nonzero final
+  tail. This also applies to finite-complex sublevel homology modules. Positive
+  scaling of real-indexed modules scales their interleaving distance by the same
+  positive factor, over every ring and including infinite distance. Sequences of
+  adjacent linear maps define finite persistence modules over a ring; rectangular
+  matrix sequences require a commutative ring. Over a field, their interval barcodes
+  are independent of supplied bases; a construction with zero left tail and constant
+  final cell retains supplied real critical values and their finite or essential
+  endpoints. These are theory constructions, not executable extraction.
+- **Persistence representations.** Gaussian persistence images at fixed positive
+  bandwidth and fixed disjoint measurable pixels, and weighted Gaussian kernels, have
+  stability bounds on finite diagram parts against first-order matching cost under
+  explicit weight assumptions. For the arctan weight with C ≥ 0, the kernel constant
+  is 2C + √2·π/(2|σ|), with no bandwidth-sign hypothesis, and the image constant
+  is 2C + 3·√(π/2)/σ for σ > 0. The embedding, kernel-value and image bounds apply to Rips
+  and Čech diagrams at radius scale when both diagrams carry the same simplex
+  labelling; for sup-norm Čech configurations the bound uses half the pairwise
+  discrepancy of the two configurations. At log scale they apply to Rips–Čech
+  comparisons in degrees n ≥ 1 through the exact bottleneck or log 2 bounds, under the
+  compatible-label and positivity hypotheses. At nonzero bandwidth, the Gaussian RKHS
+  on the full birth–death plane separates finite signed Borel measures and is
+  uniformly dense in C₀(ℝ²). Strictly positive measurable weights with finite weighted
+  mass give injective embeddings of positive persistence measures, including
+  infinite-mass Radon measures; finite atomic embeddings agree with the finite diagram
+  embeddings. These analytic constructions are abstract, and do not make finite-pixel
+  images characteristic. Second-level Gaussian feature bounds are available for
+  general weights, but have no arctan instance.
+- **Metric inputs and sampling stability.** Finite Rips and ambient Čech filtrations
+  are constructed. For two metrics on the same labelled finite set, the Rips diagrams
+  are within the pairwise discrepancy of the metrics in bottleneck distance. Finite
+  Rips and Čech diagrams satisfy face-count bar bounds and corresponding
+  total-persistence bounds using the carrier diameter or a stated enclosing radius.
+  For finite nonempty metric spaces, full Rips diagrams satisfy d_B ≤ 2 d_GH in every
+  degree, without equal-cardinality or common-label assumptions. Finite samples
+  embedded in one ambient metric space have a twice-Hausdorff-error bound; two samples
+  of a possibly infinite target have a bound of twice their summed errors, comparing
+  their finite diagrams only. Hausdorff-convergent samples of a fixed finite target
+  have bottleneck-convergent full diagrams. Exact diagrams and bottleneck values over
+  `ZMod 2` are proved for two points at radius scale in degree zero and every positive
+  degree, and for the acute triangle at radius scale in degrees zero and one and log
+  scale in degree one. For two filters positive on edges, common positive scaling
+  translates their log-scale diagrams and preserves their mutual log-scale bottleneck
+  and interleaving distances in every degree n ≥ 1. For one finite sup-norm
+  configuration, Rips and Čech diagrams are within half the carrier diameter in
+  bottleneck distance, and log-scale Čech–Rips diagrams are within log 2 in degrees
+  n ≥ 1 under the stated positivity and embedding assumptions.
+- **Reeb.** In the library's finite real-graph category, geometric smoothing has
+  coherent composition, and geometric and cosheaf interleavings agree, with equal
+  extended distances. Geometric smoothing admits parameter enlargement, geometric
+  interleavings are monotone, constructible smoothing lifts to constructible
+  cosheaves, and smoothing a geometric interleaving preserves its parameter with
+  two-sided distance bounds. Height-range, top-component and interval-local
+  obstructions give lower bounds; exact distances for small examples include 1/2
+  between the edge and its midpoint, 1/4 between the parallel-edge and single-edge
+  graphs, and ⊤ under a component obstruction. Finite Reeb data have an incidence
+  quiver and a simple incidence graph; the latter forgets parallel-edge multiplicity.
+  The quotient of every constructible real space satisfies the smoothing absorption
+  comparison, while constructibility of its product thickening is established for
+  graph input.
+- **Mapper.** Graph-PL inputs, piecewise-linear height functions on finite simple
+  graphs, have ordinary and MultiNerve Mapper constructions, a cover-dependent cell
+  classification and finite Reeb incidence data under explicit cover and height
+  assumptions. A uniform cover by open intervals of length r whose consecutive starts
+  are r − g apart, so that g is the overlap, with 0 < g and 2g ≤ r, and which is
+  member-adapted, height-separating and vertex-height-covering, identifies its
+  MultiNerve Mapper data with the graph-PL finite Reeb data; such covers exist with r
+  below any prescribed positive bound. Closed levels have the stated vertex and
+  crossing-edge components, and inclusion into a level window is bijective on path
+  components. Finite Reeb data and member-adapted Mapper data are compatible with
+  covering refinements. Under 2g ≤ r, the ordinary Mapper one-skeleton agrees with the
+  incidence graph, which forgets parallel edge cells. Under the
+  vertex-height-covering hypothesis, the interval-components cosheaf is constructible and agrees
+  with the cosheaf of the finite Reeb data. The Reeb quotient of a finite graph-PL
+  realization is identified with its finite graph realization. For a finite bounded
+  interval cover of the attained height range, categorical Mapper retains components
+  of every nonempty intersection; its reconstructed real graph lies within the full
+  width of the retained intervals of that Reeb quotient in geometric interleaving
+  distance. Vanishing full or retained resolutions give convergence, including
+  families with varying finite cover index types. This is abstract categorical
+  reconstruction, not an executable Mapper algorithm.
 
 ## Use in a Lean project
 
-Add the release to your `lakefile.toml`:
+Use the Lean toolchain pinned in this repository's `lean-toolchain` (currently
+`leanprover/lean4:v4.33.1`) and add the release to your `lakefile.toml`:
 
 ```toml
 [[require]]
 name = "TDA"
 git = "https://github.com/uda-lab/tda-lib.git"
-rev = "v0.1.0"
+rev = "v0.2.0"
 ```
 
-Run `lake update` and `lake build TDA`, then import the area you need:
+Run `lake update TDA`, fetch the prebuilt mathlib dependencies with `lake exe cache get`,
+and run `lake build TDA`. Then import the area you need:
 
 ```lean
 import TDA.Persistence
 -- Or import TDA.Library for all six library areas.
 ```
 
-The ordinary area imports and `TDA.Library` omit standalone examples. `import TDA`
-also loads the example modules. The [import guide](docs/api.md#entry-points)
-lists all six areas and their requirements.
+The six areas are `TDA.Simplicial`, `TDA.Filtration`, `TDA.Persistence`, `TDA.Topology`,
+`TDA.Reeb` and `TDA.Mapper`. The area imports and `TDA.Library` omit the standalone
+example modules; `import TDA` also loads them. The
+[import guide](docs/api.md#entry-points) lists the areas and their requirements.
 
 ## Build and documentation
 
-The repository pins Lean in `lean-toolchain` and mathlib in `lake-manifest.json`.
-From a checkout, prepare the cached dependencies and run the local library check:
+The repository pins Lean in `lean-toolchain` and mathlib in `lake-manifest.json`;
+`elan` installs the pinned toolchain on first use. From a checkout, prepare the cached
+dependencies and run the local library check:
 
 ```sh
 scripts/bootstrap.sh
 scripts/check.sh
 ```
 
-For generated API pages, run `scripts/build-docs.sh` from a clean committed
-checkout. It writes the site to `docbuild/.lake/build/doc`; the site is not
+For generated API pages, run `scripts/build-docs.sh` from a checkout with no
+uncommitted changes. It writes the site to `docbuild/.lake/build/doc`; the site is not
 hosted by this repository. The [mathematical notes](docs/math/README.md) explain
 individual constructions, and the [source register](docs/math/references.md)
 records consulted papers and the limits of source comparison.
 
-## Future directions
+<a id="future-directions"></a>
 
-The following are proposed work, not results of v0.1.0.
-[Issue #227](https://github.com/uda-lab/tda-lib/issues/227) sets out their
-hypotheses, source links and boundaries.
+## Scope and limitations
 
-- Extend finite diagram distances to partial-matching p-costs and boundary
-  transport, and develop finite-constructible real-index interleavings.
-- Prove stability of persistence images with fixed bandwidth, weights and pixels.
-- Build finite Rips and Čech inputs, starting with a bottleneck bound for two
-  metrics on the same labelled set.
-- Extend Reeb smoothing comparisons toward coherent geometric interleavings
-  and a comparison with cosheaf distance.
-- Study resolution-controlled Reeb approximation for graph-based Mapper,
-  with the ordinary Mapper and enhanced constructions distinguished.
+The [API guide](docs/api.md) gives the precise assumptions, theorem names and
+limits of these results. General geometric or infinite-dimensional persistence
+and an executable arbitrary-field reduction are outside the current scope.
+
+Further directions include all-Radon boundary-transport identification, general
+infinite or q-tame persistence, metric stability with diagrams of infinite
+point sets, higher-dimensional Mapper–Reeb approximation, and constructibility of
+the product thickening of a general constructible real space beyond graph input as
+in de Silva, Munch and Patel, *Categorified Reeb Graphs*, Theorem 4.27.
+[Issue #227](https://github.com/uda-lab/tda-lib/issues/227) records their scope and
+source links.
 
 ## License
 

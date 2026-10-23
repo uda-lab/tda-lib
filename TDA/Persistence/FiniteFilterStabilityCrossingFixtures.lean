@@ -3,7 +3,7 @@ import TDA.Simplicial.FiniteComplex
 
 set_option autoImplicit false
 
-/-! Concrete finite-filter crossing fixtures on three actual isolated vertices. -/
+/-! Concrete finite-filter crossing fixtures on three isolated vertices. -/
 
 namespace TDA.Persistence.StabilityCrossingFixtures
 
@@ -35,7 +35,7 @@ private theorem threePoints_cases (s : TotalFace threePoints) :
   have hc := classify s.1 s.2.1 s.2.2
   rcases hc with h | h | h <;> simp_all [v0, v1, v2, Subtype.ext_iff]
 
-/-- An actual real filter on three isolated vertices. -/
+/-- A real filter on three isolated vertices. -/
 def threePointFilter (a b c : ℝ) : FilterFunction threePoints ℝ where
   value s := if s = v0 then a else if s = v1 then b else c
   mono := by
@@ -159,7 +159,7 @@ theorem simultaneous_crossing_closed_orders :
       Monotone ((intervalFilter beforeFilter afterFilter t).value ∘ afterOrder.enum)) :=
   ⟨forward_before_mono, reverse_after_mono⟩
 
-/-- Two different actual face pairs cross simultaneously at the midpoint,
+/-- Two different face pairs cross simultaneously at the midpoint,
 while the first two faces are tied for the whole interpolation. -/
 theorem persistent_tie_and_simultaneous_crossing :
     (∀ t : Set.Icc (0 : ℝ) 1,
@@ -177,7 +177,7 @@ theorem persistent_tie_and_simultaneous_crossing :
     half, zero, one]
   norm_num
 
-/-- Two actual face values meet at the left endpoint and separate on the
+/-- Two face values meet at the left endpoint and separate on the
 interior, with no strict order forced at the endpoint. -/
 theorem crossing_at_left_endpoint :
     (intervalFilter endpointBefore endpointAfter zero).value v0 =

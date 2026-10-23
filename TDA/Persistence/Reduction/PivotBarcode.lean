@@ -1,4 +1,4 @@
-import TDA.Persistence.Reduction.FilteredNormalForm
+import TDA.Persistence.Reduction.FilteredNormalForm.NormalHomology
 
 set_option maxHeartbeats 800000
 

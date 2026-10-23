@@ -8,7 +8,7 @@ set_option autoImplicit false
 
 /-!
 A fixed compatible enumeration supplies a value-independent prefix homology barcode.
-The comparison with attained grades uses actual inclusion maps between the equal
+The comparison with attained grades uses inclusion maps between the equal
 subcomplexes, including when several faces have one grade.
 -/
 
@@ -23,11 +23,11 @@ variable {K : PreAbstractSimplicialComplex V}
 variable [Fintype (TotalFace K)]
 variable {f : FilterFunction K α}
 
-/-- The number of actual nonempty faces of a simplicial complex. -/
+/-- The number of nonempty faces of a simplicial complex. -/
 abbrev faceCount (K : PreAbstractSimplicialComplex V) [Fintype (TotalFace K)] :=
   Fintype.card (TotalFace K)
 
-/-- Actual homology of the first `t` faces, including the empty stage `t = 0`. -/
+/-- Homology of the first `t` faces, including the empty stage `t = 0`. -/
 noncomputable def facePrefixModule (e : CompatibleOrder f) (n : ℕ) :
     PModule.{u,0,u} k (Fin (faceCount K + 1)) :=
   simplicialHomologyPModule k
@@ -48,7 +48,7 @@ noncomputable instance facePrefix_finiteDimensional
   change FiniteDimensional k (simplicialHomology (e.prefixComplex i.val) k n)
   infer_instance
 
-/-- Canonical barcode of actual prefix homology. It depends on the enumeration,
+/-- Canonical barcode of prefix homology. It depends on the enumeration,
 coefficient field and homological degree, and has `m + 1` stages. -/
 noncomputable def facePrefixBarcode (e : CompatibleOrder f) (n : ℕ) :
     Multiset (FiniteInterval (faceCount K + 1)) :=
@@ -78,7 +78,7 @@ private theorem empty_homology_subsingleton (n : ℕ) :
     (simplicialChainComplex (⊥ : PreAbstractSimplicialComplex V) k) n).toLinearEquiv
   exact ⟨fun a b => eqv.injective (Subsingleton.elim _ _)⟩
 
-/-- No canonical prefix interval is born at stage zero, since it has actual zero homology. -/
+/-- No canonical prefix interval is born at stage zero, since it has zero homology. -/
 theorem facePrefixBarcode_birth_pos (e : CompatibleOrder f) (n : ℕ)
     (I : FiniteInterval (faceCount K + 1))
     (hI : I ∈ facePrefixBarcode k e n) : 0 < I.birth := by
@@ -124,7 +124,7 @@ def faceGradeSample (e : CompatibleOrder f) :
     intro i j hij
     exact Fin.le_def.mpr (e.sublevelCount_mono (f.criticalValue.monotone hij))
 
-/-- A sampled prefix homology map has the rank of the corresponding actual grade
+/-- A sampled prefix homology map has the rank of the corresponding grade
 homology inclusion. The two endpoint identifications commute with inclusion. -/
 theorem faceGradeSample_map_rank (e : CompatibleOrder f) (n : ℕ)
     (i j : Fin f.criticalValues.card) (hij : i ≤ j) :
@@ -143,7 +143,7 @@ theorem faceGradeSample_map_rank (e : CompatibleOrder f) (n : ℕ)
     exact (e.sublevel_eq_prefixComplex _).symm.trans (f.gradeFiltration_apply j).symm
   exact inclusion_rank_congr k hi hj _ _ n
 
-/-- The actual attained-grade barcode is the restriction of the fixed prefix barcode. -/
+/-- The attained-grade barcode is the restriction of the fixed prefix barcode. -/
 theorem gradeHomologyBarcode_eq_reindex_facePrefixBarcode
     (e : CompatibleOrder f) (n : ℕ) :
     gradeHomologyBarcode k f n =
@@ -175,7 +175,7 @@ noncomputable def faceTemplatePairs (e : CompatibleOrder f) (n : ℕ) :
       else none
     else none
 
-/-- A positive actual prefix-barcode multiplicity supplies the corresponding
+/-- A positive prefix-barcode multiplicity supplies the corresponding
 face-index occurrence in the fixed full template. -/
 theorem faceTemplatePairs_mem_of_barcodeMultiplicity_pos
     (e : CompatibleOrder f) (n b d : ℕ)
@@ -524,7 +524,7 @@ private theorem filterMap_congr_mem {X Y : Type*} (B : Multiset X)
       exact h y (Multiset.mem_cons_of_mem hy)
     simp [Multiset.filterMap_cons, hx, ih hB]
 
-/-- Evaluation agrees with the actual sublevel persistence diagram for every
+/-- Evaluation agrees with the sublevel persistence diagram for every
 filter monotone along the fixed enumeration. -/
 theorem evaluateFaceTemplate_eq_dgm {β : Type*} [LinearOrder β]
     (e : CompatibleOrder f) (g : FilterFunction K β)
@@ -551,8 +551,8 @@ theorem evaluateFaceTemplate_eq_dgm {β : Type*} [LinearOrder β]
   intro I hI
   exact facePoint_restrictAlong eg I (facePrefixBarcode_birth_pos k eg n I hI)
 
-/-- A finite death coordinate of an actual diagram comes from the value of
-an actual face in any compatible full face template. -/
+/-- A finite death coordinate of a diagram comes from the value of
+a face in any compatible full face template. -/
 theorem dgm_finite_death_from_faceTemplate {β : Type*} [LinearOrder β]
     (e : CompatibleOrder f) (g : FilterFunction K β)
     (hg : Monotone (g.value ∘ e.enum)) (n : ℕ) (b d : β)
@@ -576,7 +576,7 @@ theorem dgm_finite_death_from_faceTemplate {β : Type*} [LinearOrder β]
     simp at hdeath
 
 /-- Changing the compatible reference filter while retaining the enumeration does
-not change the actual prefix barcode. -/
+not change the prefix barcode. -/
 theorem facePrefixBarcode_transfer {β : Type*} [LinearOrder β]
     (e : CompatibleOrder f) (g : FilterFunction K β)
     (hg : Monotone (g.value ∘ e.enum)) (n : ℕ) :
@@ -596,7 +596,7 @@ theorem faceTemplateEssential_transfer {β : Type*} [LinearOrder β]
   rfl
 
 /-- Any two compatible witnesses with the same enumeration give the same
-actual prefix barcode, regardless of their reference filters. -/
+prefix barcode, regardless of their reference filters. -/
 theorem facePrefixBarcode_sameEnumeration {β : Type*} [LinearOrder β]
     (e : CompatibleOrder f) {g : FilterFunction K β}
     (e' : CompatibleOrder g) (henum : e.enum = e'.enum) (n : ℕ) :
@@ -680,7 +680,7 @@ theorem faceTemplatePairs_tied_orderingEquivalent {β : Type*} [LinearOrder β]
   exact hfg.value_eq_iff (e.enum p.1) (e.enum p.2)
 
 /-- Two face-compatible orders for one filter can have different index templates,
-but evaluate to the same actual diagram. -/
+but evaluate to the same diagram. -/
 theorem evaluateFaceTemplate_order_independent {β : Type*} [LinearOrder β]
     (g : FilterFunction K β) (e₁ e₂ : CompatibleOrder g) (n : ℕ) :
     evaluateFaceTemplate k e₁ g e₁.monotone n =

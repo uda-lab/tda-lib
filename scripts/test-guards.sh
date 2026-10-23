@@ -464,6 +464,13 @@ TDA.X
 'TDA.X' does not depend on any axioms
 'TDA.X' does not depend on any axioms
 EOF
+# A malformed producer that emits only one record must not hide duplicate pins.
+audit_case duplicate_pin_single_record 1 "+ERROR: TDA.X is pinned 2 times in scripts/print_axioms; pin it once." <<'EOF'
+TDA.X
+TDA.X
+---
+'TDA.X' does not depend on any axioms
+EOF
 audit_case duplicate_exact_x 1 "=ERROR: 2 '#print axioms' records for TDA.X; expected exactly one." '-OK: TDA.X ' <<'EOF'
 TDA.X
 ---
@@ -535,22 +542,6 @@ if [[ "$out" != *'TDA.X is pinned 2 times in scripts/print_axioms'* ]]; then
   echo 'FAIL [audit:cross-area-duplicate]: missing duplicate diagnostic'; afail=1; fi
 if [ "$afail" -eq 0 ]; then echo "axiom-audit parser self-test OK ($an cases)"; else exit 1; fi
 
-# --- build-lock semantics (scripts/lib/build-lock.sh) ---------------------------------
-# Uses the real lock file; skipped when another process holds it for more than 5 s.
-LOCK=/tmp/lean-build.lock
-if ! flock -w 5 "$LOCK" true; then echo "build-lock self-test SKIPPED (lock busy)"; exit 0; fi
-lfail=0
-# 1. sourcing acquires the lock: an outside probe cannot take it while the holder lives
-if ! bash -c '. scripts/lib/build-lock.sh; ! flock -n /tmp/lean-build.lock true'; then
-  echo "FAIL [lock-acquire]: lock not held after sourcing"; lfail=1; fi
-# 2. re-entrancy: a child that inherits fd 9 sources the file again without blocking
-if ! timeout 5 bash -c '. scripts/lib/build-lock.sh; bash -c ". scripts/lib/build-lock.sh; echo reentered"' | grep -q reentered; then
-  echo "FAIL [lock-reentrant]: nested source blocked or failed"; lfail=1; fi
-# 3. an environment marker is not a lock: the spoofed caller still has to wait for the holder
-if ! timeout 5 bash -c 'exec 9>>/tmp/lean-build.lock; flock 9; LEAN_SCAFFOLD_LOCKED=1 timeout 2 bash -c "exec 9>&-; . scripts/lib/build-lock.sh; echo bypassed" | grep -q bypassed && exit 1; exit 0'; then
-  echo "FAIL [lock-spoof]: a caller without the descriptor got past the held lock"; lfail=1; fi
-# 4. release: after the holder exits the lock is free again
-if ! flock -w 5 -n "$LOCK" true; then echo "FAIL [lock-release]: lock still held after holder exited"; lfail=1; fi
-if [ "$lfail" -eq 0 ]; then echo "build-lock self-test OK (4 cases)"; else exit 1; fi
-
+# Resource locking is tested in isolated fake workspaces, without the host's active locks.
+bash scripts/agent/test-build-resources.sh
 bash scripts/agent/test-build-docs-lock.sh

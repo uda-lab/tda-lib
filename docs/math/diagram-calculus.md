@@ -2,7 +2,7 @@
 
 Consulted manifestations, attribution and rights: [LOT21-v4](references.md#LOT21-v4).
 
-The [second-order extension](actual-ph-loss-hessians.md) establishes C² scalar
+The [second-order extension](sublevel-loss-hessians.md) establishes C² scalar
 regularity and genuine second derivatives, retaining both terms of the
 ordinary second-order chain rule.
 
@@ -27,8 +27,7 @@ Two local lifts of the same `B` give the same composed derivative, even with
 different numbers of finite and essential coordinates. This follows by
 uniqueness of the derivative of `V ∘ B`; their coordinate derivatives are not
 compared. These are statements about scalar maps on normed spaces. They do not
-define a derivative or topology on `Diagram`, and do not assert that an actual
-persistent homology map admits such a lift.
+define a derivative or topology on `Diagram`, and do not assert that a persistent homology map admits such a lift.
 
 The signed finite endpoint-difference loss assigns `d - b` to a finite pair
 and zero to an essential point. Its pullback through every `orderedQ` is the
@@ -49,7 +48,7 @@ any fixed ordered representative give constant lifts.
 are the canonical general regularity layer, with `r : ℕ∞ω` governed by mathlib's
 `ContDiff`. `localLift_scalar_cr` gives the scalar conclusion at that order.
 `fixedFaceLift_contDiffOn_cr` and `fixedFaceCrLift` supply the corresponding
-full-template face-coordinate results for actual PH under their stated hypotheses.
+full-template face-coordinate results for PH under their stated hypotheses.
 
 The first-order `LocalDiagramLift` and second-order `LocalC2DiagramLift` are
 deliberate convenience structures for derivative and Hessian APIs. `toCr`, `toC1`
@@ -58,8 +57,8 @@ structure also stores a C¹ proof; `toC2` obtains it by lowering the regularity
 order. The `one_iff` / `two_iff` lemmas for `CrThroughAllRepresentatives` are
 `Iff.rfl`, so `C1ThroughAllRepresentatives` and `C2ThroughAllRepresentatives`
 express the same loss hypotheses at those orders. The specialized
-`fixedFaceLift_contDiffOn` / `_two` results and `actualFaceLossLift` /
-`actualFaceLossC2Lift` retain the convenient fixed-order interfaces. They use
+`fixedFaceLift_contDiffOn` / `_two` results and `fixedFaceC1Lift` /
+`fixedFaceC2Lift` retain the convenient fixed-order interfaces. They use
 the same full face-coordinate template and add no independent smoothness claim.
 
 ## Correspondence with ordered-barcode calculus
@@ -83,7 +82,7 @@ charts are not formalized here. The index `ω` applies mathlib's regularity
 predicate to the coordinate map; no separate barcode analyticity
 equivalence is asserted.
 
-`ActualDiagramRegularity` supplies both the full-template lift and the
+`SublevelDiagramRegularity` supplies both the full-template lift and the
 occurrence-preserving strict lift on the original open ordering-equivalent
 neighborhood. The strict lift deletes the persistently diagonal pairs,
 recovering Theorem 4.7 and Proposition 4.14. The present local-lift API

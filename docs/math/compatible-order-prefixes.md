@@ -1,7 +1,7 @@
 # Prefix complexes from compatible face orders
 
 Let `K` be a preabstract simplicial complex, `f : FilterFunction K α`, and let `e` be a
-`CompatibleOrder f` with a finite type of actual faces of cardinality `m`. For a natural
+`CompatibleOrder f` with a finite type of faces of cardinality `m`. For a natural
 number `k`, `prefixComplex e k` consists of precisely the faces of `K` whose inverse
 enumeration index has value below `k`. The stage is a face count, not a grade or a critical
 value.
@@ -35,12 +35,11 @@ last faces of a tied block can split that block, so the theorem does not say tha
 is a grade sublevel. The constant-grade edge fixture demonstrates this distinction.
 
 The lower-set proof uses the support-aware face membership and proper-face order in
-[CompatibleOrder](../../TDA/Filtration/CompatibleOrder.lean), while recovery uses the actual
-sublevel convention in [FilterFunction](../../TDA/Filtration/FilterFunction.lean) and
+[CompatibleOrder](../../TDA/Filtration/CompatibleOrder.lean), while recovery uses the sublevel convention in [FilterFunction](../../TDA/Filtration/FilterFunction.lean) and
 reindexing from [Filtration.Basic](../../TDA/Filtration/Basic.lean). The finite count argument
 uses the pinned mathlib `Fin.card_Iic` and `Fin.card_Iio` formulas in
 [`Order/Interval/Finset/Fin.lean`](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Order/Interval/Finset/Fin.lean).
 
-The API assumes a linear order on grades and a `Fintype` of actual faces. It requires no
+The API assumes a linear order on grades and a `Fintype` of faces. It requires no
 inhabited grade type, vertex order, or vertex decidability. It makes no claim about homology,
 barcodes, or invariance under changing the compatible order.

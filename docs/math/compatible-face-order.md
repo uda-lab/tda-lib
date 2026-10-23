@@ -2,7 +2,7 @@
 
 For a finite presentation `C : TDA.Simplicial.FiniteComplex n` and a monotone face-value
 function `f`, `TDA.Filtration.CompatibleOrder.ofLex C f` gives a bijection from
-`Fin (Fintype.card (TotalFace C.toPre))` to the actual nonempty faces. Its key orders faces by
+`Fin (Fintype.card (TotalFace C.toPre))` to the nonempty faces. Its key orders faces by
 
 1. `f.value s`;
 2. `s.val.card`;
@@ -14,7 +14,7 @@ tie. Consequently, the returned enumeration has nondecreasing grades and strict 
 All faces of the supplied presentation occur once; absent ambient vertices and the empty face
 are not added.
 
-The key's lexicographic order is pulled back along its injective map to the actual-face subtype.
+The key's lexicographic order is pulled back along its injective map to the face subtype.
 The finite order isomorphism from `Fintype.orderIsoFinOfCardEq` then supplies the canonical
 sorted enumeration. This local order is used only inside the constructor and its key-order
 theorem. The ambient `TotalFace` order remains set inclusion, so unrelated singleton faces
@@ -38,8 +38,7 @@ barcode consequence.
 - [`FiniteComplex.lean`](../../TDA/Simplicial/FiniteComplex.lean) converts the stored finite
   face collection directly to `TotalFace` and provides its `Fintype`; this constructor reuses
   that instance and its membership proofs.
-- [`FilterFunction.lean`](../../TDA/Filtration/FilterFunction.lean) supplies values on actual
-  faces and weak monotonicity under inclusion. No additional filter assumption is introduced.
+- [`FilterFunction.lean`](../../TDA/Filtration/FilterFunction.lean) supplies values on faces and weak monotonicity under inclusion. No additional filter assumption is introduced.
 - The repository baseline for those modules is develop
   [`fa0cece24f7c00a820981872494092d8a4a3df76`](https://github.com/uda-lab/tda-lib/commit/fa0cece24f7c00a820981872494092d8a4a3df76).
 - Mathlib is pinned at `0df444a360eaa60ab8c11dca51a86af692955474`. The implementation reuses

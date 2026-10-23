@@ -264,7 +264,7 @@ private noncomputable def reorderedIso :
   unfold barcodeModule
   exact barcodeEnumerationNatIso (k := k) chosenPerm
 
-private theorem reorderedActualRanks (i j : Fin 3) (hij : i ≤ j) :
+private theorem reorderedModuleRanks (i j : Fin 3) (hij : i ≤ j) :
     structureMapRank (barcodeModuleOfList (k := k) chosenBars) i j hij =
       structureMapRank (barcodeModule (k := k) repeatedBars) i j hij := by
   exact structureMapRank_eq_of_iso (reorderedIso (k := k)) i j hij
@@ -276,7 +276,7 @@ private theorem reorderedCanonicalBarcode :
 private theorem reorderedRankOne :
     structureMapRank (barcodeModuleOfList (k := k) chosenBars)
       (1 : Fin 3) 1 (by decide) = 3 := by
-  rw [reorderedActualRanks, rank_barcodeMap]
+  rw [reorderedModuleRanks, rank_barcodeMap]
   decide
 
 

@@ -21,7 +21,7 @@ private instance emptyFaces (V : Type u) :
     ⟨fun s => ((mem_bot_iff s.val).mp s.property).elim⟩
   exact Fintype.ofIsEmpty
 
-private theorem empty_actual (V : Type u) [LinearOrder V] (α : Type w)
+private theorem empty (V : Type u) [LinearOrder V] (α : Type w)
     [LinearOrder α] (k : Type u) [Field k] (n : ℕ) :
     (emptyFilter V α).criticalValues.card = 0 ∧
     gradeHomologyBarcode k (emptyFilter V α) n = 0 := by

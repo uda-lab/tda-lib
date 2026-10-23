@@ -51,6 +51,12 @@ equations (`CompatibleMaps`) descends to a unique continuous map on the realizat
 `lift_unique`, `existsUnique_lift`). `liftEquiv` is this correspondence as an equivalence, with
 both inverse laws; the inverse restricts a map to the pieces.
 
+For a fixed presentation, affine changes of the strictly increasing level list give
+`CylinderPresentation.levelHomeomorph`. With compact locally path-connected pieces, the
+transported height is constructible. See
+[Level perturbations of a fixed presentation](reeb-geometric-interleaving-equivalence.md#level-perturbations-of-a-fixed-presentation)
+for the stability bounds, supremum lower bound and exact translation distance.
+
 ## Strip and fiber normal forms
 
 The first three are homeomorphisms onto subspaces of the realization, not only bijections.
@@ -106,7 +112,7 @@ composition (`realizeHom_comp`).
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleSpaceExamples` states every fixture about the actual quotient:
+`TDA.Reeb.ConstructibleSpaceExamples` states every fixture about the quotient:
 
 - `n = 0`: every presentation realizes `V 0` at the single height (`homeomorphZero`);
 - all pieces empty: an empty realization;

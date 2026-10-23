@@ -5,7 +5,7 @@ set_option autoImplicit false
 /-!
 # Ordering equivalence of face-value filtrations
 
-`OrderingEquivalent f g` records agreement of every weak comparison between actual face
+`OrderingEquivalent f g` records agreement of every weak comparison between face
 values, in both directions. The public characterization identifies this relation exactly
 with an order isomorphism between the attained ranges that sends each face value to its
 corresponding value. The order isomorphism is existential theory data; no selected map or
@@ -24,7 +24,7 @@ variable [LinearOrder α] [LinearOrder β] [LinearOrder γ]
 variable {K : PreAbstractSimplicialComplex V}
 
 /-- Two face-value filters have exactly the same weak order comparisons on every pair of
-actual faces. The grade types may differ, and ties are preserved in both directions. -/
+faces. The grade types may differ, and ties are preserved in both directions. -/
 def OrderingEquivalent (f : FilterFunction K α) (g : FilterFunction K β) : Prop :=
   ∀ s t : TDA.Simplicial.TotalFace K,
     f.value s ≤ f.value t ↔ g.value s ≤ g.value t
@@ -50,7 +50,7 @@ theorem trans (hfg : OrderingEquivalent f g) (hgh : OrderingEquivalent g h) :
   intro s t
   exact (hfg s t).trans (hgh s t)
 
-/-- Ordering equivalence identifies exactly the same tied pairs of actual faces. -/
+/-- Ordering equivalence identifies exactly the same tied pairs of faces. -/
 theorem value_eq_iff (hfg : OrderingEquivalent f g)
     (s t : TDA.Simplicial.TotalFace K) :
     f.value s = f.value t ↔ g.value s = g.value t := by

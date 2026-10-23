@@ -131,11 +131,11 @@ private theorem badEnum_grade_mono :
 
 private theorem edge3_card : Fintype.card (TotalFace edge3.toPre) = 3 := by decide
 
-/-- The finite presentation's direct actual-face enumeration remains the selected instance. -/
+/-- The finite presentation's direct face enumeration remains the selected instance. -/
 private theorem selected_fintype {n : ℕ} (C : FiniteComplex n) :
     (inferInstance : Fintype (TotalFace C.toPre)) = instFintypeTotalFace C := rfl
 
-/-- Ambient actual-face order remains set inclusion, not the local key order. -/
+/-- Ambient face order remains set inclusion, not the local key order. -/
 private theorem ambient_singletons_incomparable :
     ¬ ((⟨{0}, by decide⟩ : TotalFace edge3.toPre) ≤
       (⟨{1}, by decide⟩ : TotalFace edge3.toPre)) ∧

@@ -60,7 +60,7 @@ star contained in it (`K_le_envelope_cases`).
 For `F : OpenInterval ⥤ Type u`, `S.IsConstructibleAt F` asks that
 
 1. every value `F I` is finite;
-2. for `I ≤ J` with **`I` nonempty** and `∀ i, a i ∈ I ↔ a i ∈ J`, the actual inclusion map
+2. for `I ≤ J` with **`I` nonempty** and `∀ i, a i ∈ I ↔ a i ∈ J`, the inclusion map
    `F.map (homOfLE _) : F I → F J` is bijective;
 3. the values on the two tails are empty.
 
@@ -89,7 +89,7 @@ A map with bijective components has an inverse map (`Hom.inv`, `Hom.comp_inv`, `
 The data are indexed by `n`; the levels enter through `extract`, which always takes `S`
 explicitly.
 
-`S.extract F` has `V i = F (J i)`, `E e = F (K e)`, and the actual inclusion maps of `F` as
+`S.extract F` has `V i = F (J i)`, `E e = F (K e)`, and the inclusion maps of `F` as
 endpoint functions (`extract_left`, `extract_right`). `S.ShortMaps F G` collects functions
 `F (J i) → G (J i)` and `F (K e) → G (K e)` commuting with both incidence inclusions; these are
 exactly maps of the extracted data (`ShortMaps.equivHom`). Restriction `S.restrict` sends a natural
@@ -113,8 +113,7 @@ The forward map is restriction. The inverse `ShortMaps.extend` is built in three
    (`ShortMaps.extendNormal`). Compatibility on two pieces uses that their intersection is its own
    envelope, hence covered by pieces, together with the naturality of the short maps for every
    inclusion of pieces (`ShortMaps.onPiece_map`): identities, the two incidence inclusions of each
-   gap, and inclusions out of the empty tails. The gluing is the actual
-   `IsIntervalCosheaf.existsUnique_glue`, including empty overlaps.
+   gap, and inclusions out of the empty tails. The gluing is the `IsIntervalCosheaf.existsUnique_glue`, including empty overlaps.
 2. **Full naturality.** For `U ≤ V`, every piece below `U` is a piece below `V`, so naturality is
    a cover-refinement statement (`IsIntervalCosheaf.glue_comp_map`). A gap at the fringe of `V`,
    which is not an overlap of two stars selected for `V`, is itself a member of the cover of `V`,

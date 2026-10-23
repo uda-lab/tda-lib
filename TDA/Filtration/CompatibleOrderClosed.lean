@@ -12,7 +12,7 @@ variable {K : PreAbstractSimplicialComplex V}
 variable [Fintype (TDA.Simplicial.TotalFace K)]
 variable {f0 : FilterFunction K α}
 
-/-- The parameters where the supplied actual-face enumeration remains compatible form a
+/-- The parameters where the supplied face enumeration remains compatible form a
 closed set when every face grade varies continuously. -/
 theorem CompatibleOrder.isClosed_compatible_locus
     (e : CompatibleOrder f0) (F : X → FilterFunction K α)

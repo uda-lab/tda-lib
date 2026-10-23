@@ -119,7 +119,7 @@ the inclusion, the underlying object and the underlying map are those of `smooth
 (`constructibleSmoothing_comp_ι`, `constructibleSmoothing_obj_obj`,
 `constructibleSmoothing_map_hom`, `constructibleSmoothing_map_hom_app`).
 
-Two structure maps are lifted, with their underlying maps the actual ones, by `rfl`:
+Two structure maps are lifted, with their underlying maps the ones, by `rfl`:
 
 - the unit `constructibleSmoothingUnit ε : 𝟭 ⟶ constructibleSmoothing ε`, whose component at `G`
   has underlying map `(smoothingUnit ε).app G.obj` (`constructibleSmoothingUnit_app_hom`);
@@ -128,22 +128,36 @@ Two structure maps are lifted, with their underlying maps the actual ones, by `r
   `smoothingZeroIso.inv.app G.obj` (`constructibleSmoothingZeroIso_hom_app_hom`,
   `constructibleSmoothingZeroIso_inv_app_hom`).
 
-Their naturality is that of the actual transformations, and the lifted zero unit is the inverse of
+Their naturality is that of the transformations, and the lifted zero unit is the inverse of
 the lifted zero comparison (`constructibleSmoothingUnit_zero`, from `smoothingUnit_zero`). The
-enlargement maps, the composition isomorphisms and the commutation isomorphism of
-`reeb-smoothing.md` are not lifted. On the cosheaves of graph objects, `constructibleSmoothing ε`
-and its unit correspond to the geometric smoothing `U_ε` and its unit (see
-`reeb-rgraph-smoothing.md`).
+remaining smoothing structure also lifts to `ConstructibleCosheafCat`:
+
+- `constructibleSmoothingMap h` has the refl, composition and unit-compatibility laws
+  `constructibleSmoothingMap_refl`, `constructibleSmoothingMap_comp` and
+  `constructibleSmoothingUnit_comp_constructibleSmoothingMap`.
+- `constructibleSmoothingCompIso ε δ` has two unit laws, associativity and two zero laws,
+  namely `constructibleSmoothingUnit_comp_constructibleSmoothingUnit`,
+  `constructibleSmoothingUnit_comp_map_constructibleSmoothingUnit`,
+  `constructibleSmoothingCompIso_assoc`, `constructibleSmoothingCompIso_zero_left` and
+  `constructibleSmoothingCompIso_zero_right`; the zero laws reuse
+  `constructibleSmoothingZeroIso`.
+- `constructibleSmoothingCommIso ε δ` lifts the commutation isomorphism.
+
+The underlying maps and isomorphisms are the corresponding precosheaf ones by definition. On
+the cosheaves of graph objects, `constructibleSmoothing ε` and its unit correspond to the
+geometric smoothing `U_ε` and its unit (see `reeb-rgraph-smoothing.md`).
 
 ## Universes
 
 `IsConstructibleAt.smoothing`, `IsConstructibleCosheaf.smoothing`, `constructibleSmoothing` and the
-lifted unit and zero comparison hold at every value universe `u`. The cosheaf condition is at cover
-universe `0`, as in `IsConstructibleCosheaf`.
+lifted unit and zero comparison hold at every value universe `u`. The lifted enlargement maps,
+composition isomorphisms and commutation isomorphism also hold at every value universe; a fixture
+instantiates them at value universe `1`. The cosheaf condition is at cover universe `0`, as in
+`IsConstructibleCosheaf`.
 
 ## Fixtures
 
-`TDA.Reeb.ConstructibleSmoothingExamples` works with the actual smoothing of actual cosheaves:
+`TDA.Reeb.ConstructibleSmoothingExamples` works with the smoothing of cosheaves:
 
 - **`ε = 0`.** The two shifts of every level coincide; the witness of `{0, 2}` has two levels, not
   four, with range `{0, 2}`; the smoothed pinch at `ε = 0` is constructible at its own levels
@@ -154,7 +168,7 @@ universe `0`, as in `IsConstructibleCosheaf`.
   two levels; the smoothed point cosheaf is constructible at `{-1, 1}`.
 - **Between shifted levels.** `(1/4, 3/4) ≤ (-1, 1)` meet no shifted level of `{0}` at `ε = 1`.
   The old level `0` lies outside `(1/4, 3/4)` and inside its thickening `(-3/4, 7/4)`. The key
-  lemma applies, and the actual smoothed inclusion of the point cosheaf is bijective.
+  lemma applies, and the smoothed inclusion of the point cosheaf is bijective.
 - **Empty source.** `⊥ ≤ (-1, 1)` also meet no shifted level, but the smoothed point cosheaf is
   empty at `⊥` and nonempty at `(-1, 1)`, so its inclusion map is not bijective
   (`emptySource_hits`, `emptySource_not_bijective`).
@@ -168,6 +182,16 @@ universe `0`, as in `IsConstructibleCosheaf`.
   `I ≤ thicken ε I` and to `thicken 0 I = I`. For the parallel-edge swap, the lifted map has
   underlying map the smoothing of the swap, and at `ε = 1/4` it is not the identity: the
   thickening of `(1/4, 3/4)` is the gap `(0, 1)`, where the swap exchanges the two edges.
+- **Lifted composition.** At `ε = δ = 1/4`, the component of the lifted composition
+  isomorphism on the parallel graph is its cosheaf applied to `thickenCompIso`, and its inverse
+  followed by its hom is the identity.
+- **Lifted enlargement.** The map from `1` to `2` on the pinch graph is not an isomorphism,
+  while the equal-parameter map at `1/4` is the identity.
+- **Zero and universe controls.** The left-zero composition law holds on the single
+  graph, with the stated interval component, and the composition and enlargement lifts elaborate
+  at value universe `1`.
+- **Commutation.** At `1/4` and `1`, the lifted commutation component on the parallel graph
+  is the cosheaf map induced by the interval commutation inclusion.
 
 ## Source correspondence
 
@@ -203,9 +227,8 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.2:
   form by `isEmpty_lowerTail_iff` and `isEmpty_upperTail_iff`.
 
 Not claimed here: a minimal critical set for the smoothing or an exact length of the shifted
-witness; a cast-based identification of `S.shifted 0` with `S`; lifts of the enlargement maps, the
-composition isomorphisms or the commutation isomorphism of smoothing to **Csh**ᶜ; any statement
-for cover universes other than `0`.
+witness; a cast-based identification of `S.shifted 0` with `S`; any statement for cover universes
+other than `0`.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.2, Theorem 4.18 and
 Propositions 4.19–4.20](https://arxiv.org/html/1501.04147v1).

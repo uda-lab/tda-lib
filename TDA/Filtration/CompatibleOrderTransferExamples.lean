@@ -5,7 +5,7 @@ set_option autoImplicit false
 /-!
 # Fixtures for compatible-order transfer
 
-Private examples exercise empty actual-face types, a deliberately noncanonical tied edge
+Private examples exercise empty face types, a deliberately noncanonical tied edge
 enumeration, cross-codomain ordering equivalence, direct transfer without ordering equivalence,
 and a grade reversal that fails monotonicity along the supplied enumeration. The finite list
 checks demonstrate that transfer preserves the supplied order.

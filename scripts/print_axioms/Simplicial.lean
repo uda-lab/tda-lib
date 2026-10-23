@@ -13,17 +13,17 @@ import TDA
 #print axioms TDA.Simplicial.singletonFaceZeroSubsingleton
 #print axioms TDA.Simplicial.singletonFaceHigherIsEmpty
 
--- Ordered actual-face boundary (Issue #23).
+-- Ordered face boundary (Issue #23).
 #print axioms TDA.Simplicial.enumerationAfterDeletion
 #print axioms TDA.Simplicial.boundary_single
 
--- Ordered actual-face square-zero and ordinary chain complex (Issue #39).
+-- Ordered face square-zero and ordinary chain complex (Issue #39).
 #print axioms TDA.Simplicial.boundary_comp_boundary
 #print axioms TDA.Simplicial.simplicialChainComplex_X
 #print axioms TDA.Simplicial.simplicialChainComplex_d
 #print axioms TDA.Simplicial.simplicialChainComplex_d_zero
 
--- Actual simplicial chain inclusion naturality and chain maps (Issue #86).
+-- simplicial chain inclusion naturality and chain maps (Issue #86).
 #print axioms TDA.Simplicial.simplicialChainIncl
 #print axioms TDA.Simplicial.faceIncl_deletedFace
 #print axioms TDA.Simplicial.chainIncl_single
@@ -32,14 +32,14 @@ import TDA
 #print axioms TDA.Simplicial.simplicialChainIncl_id
 #print axioms TDA.Simplicial.simplicialChainIncl_comp
 
--- Finite support-aware complex presentations and their exact actual-face conversion (Issue #97).
+-- Finite support-aware complex presentations and their exact face conversion (Issue #97).
 #print axioms TDA.Simplicial.FiniteComplex.mem_toPre
 #print axioms TDA.Simplicial.FiniteComplex.empty_not_mem_faces
 #print axioms TDA.Simplicial.FiniteComplex.image_univ_totalFace_val
 #print axioms TDA.Simplicial.FiniteComplex.card_totalFace
 #print axioms TDA.Simplicial.FiniteComplex.toPre_injective
 
--- Actual simplicial homology and inclusion (Issue #117).
+-- simplicial homology and inclusion (Issue #117).
 #print axioms TDA.Simplicial.simplicialHomology
 #print axioms TDA.Simplicial.simplicialCycles
 #print axioms TDA.Simplicial.simplicialBoundaries
@@ -76,7 +76,7 @@ import TDA
 #print axioms TDA.Simplicial.chainInclusionMatrix_mulVec
 #print axioms TDA.Simplicial.boundaryMatrix_chainInclusionMatrix
 
--- Coordinate cycles and incoming boundaries in actual finite simplicial chains.
+-- Coordinate cycles and incoming boundaries in finite simplicial chains.
 #print axioms TDA.Simplicial.coordinateCycles_zero
 #print axioms TDA.Simplicial.coordinateCycles_succ
 #print axioms TDA.Simplicial.cycleCoordinates_coe
@@ -101,10 +101,10 @@ import TDA
 #print axioms TDA.Simplicial.coordinateHomologyIncl_id
 #print axioms TDA.Simplicial.coordinateHomologyIncl_comp
 
--- Actual critical-grade simplicial homology and its canonical finite-index barcode (Issue #146).
+-- critical-grade simplicial homology and its canonical finite-index barcode (Issue #146).
 #print axioms TDA.Simplicial.simplicialHomology_finiteDimensional
 
--- Actual one-simplex homology attachment (Issue #183).
+-- one-simplex homology attachment (Issue #183).
 #print axioms TDA.Simplicial.SimplexAttachment.inclusion
 #print axioms TDA.Simplicial.SimplexAttachment.simplex_mem
 #print axioms TDA.Simplicial.SimplexAttachment.faceIncl_injective
@@ -199,3 +199,116 @@ import TDA
 #print axioms TDA.Simplicial.Contiguous.symm
 #print axioms TDA.Simplicial.Contiguous.precomp
 #print axioms TDA.Simplicial.Contiguous.postcomp
+
+-- Apex cones are acyclic (Issue #399).
+#print axioms TDA.Simplicial.IsApexCone
+#print axioms TDA.Simplicial.isApexCone_top
+#print axioms TDA.Simplicial.exists_isApexCone_top
+#print axioms TDA.Simplicial.IsApexCone.apexFace
+#print axioms TDA.Simplicial.IsApexCone.coneFace
+#print axioms TDA.Simplicial.IsApexCone.coneOperator
+#print axioms TDA.Simplicial.IsApexCone.coneOperator_single_of_notMem
+#print axioms TDA.Simplicial.IsApexCone.coneOperator_single_of_mem
+#print axioms TDA.Simplicial.IsApexCone.boundary_coneOperator_add
+#print axioms TDA.Simplicial.IsApexCone.boundary_coneOperator_zero
+#print axioms TDA.Simplicial.IsApexCone.isZero_simplicialHomology_succ
+#print axioms TDA.Simplicial.IsApexCone.finrank_simplicialHomology_zero
+#print axioms TDA.Simplicial.isZero_simplicialHomology_top_succ
+#print axioms TDA.Simplicial.finrank_simplicialHomology_top_zero
+
+-- Apex-cone fixtures (Issue #399).
+#print axioms TDA.Simplicial.ConeExamples.isZero_simplicialHomology_triangle_one
+#print axioms TDA.Simplicial.ConeExamples.isZero_simplicialHomology_triangle_two
+#print axioms TDA.Simplicial.ConeExamples.finrank_simplicialHomology_triangle_zero
+#print axioms TDA.Simplicial.ConeExamples.coneOperator_triangle_face_eq_zero
+#print axioms TDA.Simplicial.ConeExamples.boundary_coneOperator_triangle_face
+#print axioms TDA.Simplicial.ConeExamples.not_isApexCone_top_one
+#print axioms TDA.Simplicial.ConeExamples.not_isApexCone_bot_zero
+
+-- Arbitrary signed vertex maps on chains and homology (Issue #410).
+#print axioms TDA.Simplicial.deletedPerm
+#print axioms TDA.Simplicial.deletedPerm_succAbove
+#print axioms TDA.Simplicial.sign_deletedPerm
+#print axioms TDA.Simplicial.tupleFace
+#print axioms TDA.Simplicial.orientedTuple
+#print axioms TDA.Simplicial.orientedTuple_of_not_injective
+#print axioms TDA.Simplicial.orientedTuple_of_injective
+#print axioms TDA.Simplicial.orientedTuple_comp_perm
+#print axioms TDA.Simplicial.tupleBoundarySum
+#print axioms TDA.Simplicial.tupleBoundarySum_comp_perm
+#print axioms TDA.Simplicial.tupleBoundarySum_eq_zero_of_adjacent
+#print axioms TDA.Simplicial.tupleBoundarySum_eq_zero_of_not_injective
+#print axioms TDA.Simplicial.tupleImage_delete_mem
+#print axioms TDA.Simplicial.orientedTuple_of_monotone
+#print axioms TDA.Simplicial.boundary_orientedTuple
+#print axioms TDA.Simplicial.tupleFace_sorted_enumeration
+#print axioms TDA.Simplicial.orientedTuple_face
+#print axioms TDA.Simplicial.vertexChainMap
+#print axioms TDA.Simplicial.vertexChainMap_single
+#print axioms TDA.Simplicial.vertexChainMap_orientedTuple
+#print axioms TDA.Simplicial.boundary_vertexChainMap
+#print axioms TDA.Simplicial.simplicialChainMap
+#print axioms TDA.Simplicial.simplicialChainMap_f
+#print axioms TDA.Simplicial.vertexChainMap_id
+#print axioms TDA.Simplicial.vertexChainMap_comp
+#print axioms TDA.Simplicial.simplicialChainMap_id
+#print axioms TDA.Simplicial.simplicialChainMap_comp
+#print axioms TDA.Simplicial.inclusionVertexMap
+#print axioms TDA.Simplicial.vertexChainMap_inclusion
+#print axioms TDA.Simplicial.simplicialChainMap_inclusion
+#print axioms TDA.Simplicial.simplicialHomologyMap
+#print axioms TDA.Simplicial.simplicialHomologyMap_id
+#print axioms TDA.Simplicial.simplicialHomologyMap_comp
+#print axioms TDA.Simplicial.simplicialHomologyMap_inclusion
+#print axioms TDA.Simplicial.vertexChainMap_single_of_not_injective
+#print axioms TDA.Simplicial.vertexImageFace
+#print axioms TDA.Simplicial.vertexChainMap_single_of_injective
+#print axioms TDA.Simplicial.vertexChainMap_vertex
+#print axioms TDA.Simplicial.simplicialHomologyClass
+#print axioms TDA.Simplicial.simplicialHomologyClass_quotient
+#print axioms TDA.Simplicial.simplicialHomologyMap_class
+#print axioms TDA.Simplicial.simplicialSingletonH0Equiv_class
+#print axioms TDA.Simplicial.VertexChainMapExamples.edge_boundary_nonzero
+#print axioms TDA.Simplicial.VertexChainMapExamples.edge_reversal
+#print axioms TDA.Simplicial.VertexChainMapExamples.edge_reversal_boundary
+#print axioms TDA.Simplicial.VertexChainMapExamples.edge_collapse
+#print axioms TDA.Simplicial.VertexChainMapExamples.edge_collapse_boundary
+#print axioms TDA.Simplicial.VertexChainMapExamples.triangle_one_pair_collapse
+#print axioms TDA.Simplicial.VertexChainMapExamples.triangle_one_pair_boundary
+#print axioms TDA.Simplicial.VertexChainMapExamples.triangle_transpositions_compose
+#print axioms TDA.Simplicial.VertexChainMapExamples.triangle_second_map_collapses
+#print axioms TDA.Simplicial.VertexChainMapExamples.matrix_edge_reversal
+#print axioms TDA.Simplicial.VertexChainMapExamples.edge_collapse_simplicialH0
+#print axioms TDA.Simplicial.VertexChainMapExamples.ghost_vertex_stays_absent
+#print axioms TDA.Simplicial.VertexChainMapExamples.bottom_map_zero
+#print axioms TDA.Simplicial.VertexChainMapExamples.empty_ambient_identity
+#print axioms TDA.Simplicial.VertexChainMapExamples.proper_inclusion_agrees
+#print axioms TDA.Simplicial.VertexChainMapExamples.homology_functor_laws
+#print axioms TDA.Simplicial.VertexChainMapExamples.triangle_one_pair_terms
+#print axioms TDA.Simplicial.VertexChainMapExamples.triangle_transpositions_image
+#print axioms TDA.Simplicial.VertexChainMapExamples.proper_inclusion_missing_vertex
+#print axioms TDA.Simplicial.VertexChainMapExamples.matrix_coefficient_noncentral
+#print axioms TDA.Simplicial.VertexChainMapExamples.edge_chain_nonzero
+#print axioms TDA.Simplicial.VertexChainMapExamples.triangle_composed_collapse
+#print axioms TDA.Simplicial.VertexChainMapExamples.empty_ambient_to_singleton
+#print axioms TDA.Simplicial.VertexChainMapExamples.triangle_one_pair_boundary_image
+#print axioms TDA.Simplicial.Contiguous.prismMap
+#print axioms TDA.Simplicial.Contiguous.prismMap_single
+#print axioms TDA.Simplicial.Contiguous.boundary_prismMap_zero
+#print axioms TDA.Simplicial.Contiguous.boundary_prismMap_succ
+#print axioms TDA.Simplicial.Contiguous.chainHomotopy
+#print axioms TDA.Simplicial.Contiguous.chainHomotopy_hom_succ
+#print axioms TDA.Simplicial.Contiguous.chainHomotopy_hom_eq_zero
+#print axioms TDA.Simplicial.Contiguous.simplicialHomologyMap_eq
+
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.bottom_cycles_zero
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.edgeVertex_bijective
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.edge_boundary_scalar
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.edge_le_triangle
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.signedUnfilledCoord_not_boundary
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.signedUnfilled_included_boundary
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.signedUnfilled_included_ne_zero
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_edge_naturality
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_le_edge
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_one_not_boundary
+#print axioms TDA.Simplicial.InternalFiniteCycleFixtures.unfilled_le_triangle

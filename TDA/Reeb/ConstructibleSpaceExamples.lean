@@ -5,7 +5,7 @@ import Mathlib.Topology.Order.IntermediateValue
 /-!
 # Realization fixtures
 
-Fixtures for `TDA.Reeb.CylinderPresentation`. Every statement is about the actual quotient
+Fixtures for `TDA.Reeb.CylinderPresentation`. Every statement is about the quotient
 `Realization`, mostly at the two levels `S01 = {0, 1}` with the regular height `1/2`.
 
 * `n = 0`: every presentation realizes `V 0` at the single height (`homeomorphZero`,

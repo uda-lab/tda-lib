@@ -14,7 +14,7 @@ is the dual of mathlib's `TopCat.Presheaf.IsSheafPairwiseIntersections`.
 * `coverCocone U hU`: the pairwise-intersection cocone with an explicit upper bound `W` as apex;
   it needs only `SemilatticeInf`, so the union of the members need not exist in `α`.
 * `overlapRel F U`: two local values are related when they are the two restrictions of one value
-  over the actual overlap `U i ⊓ U j`. Agreement is on the overlap object, not on labels.
+  over the overlap `U i ⊓ U j`. Agreement is on the overlap object, not on labels.
 * `nonempty_isColimit_mapCocone_iff`: `F` sends a cocone to a colimit iff every value over the
   apex comes from a member and two local values with the same image are related by the
   equivalence closure of `overlapRel F U`. The proof goes through mathlib's bijectivity
@@ -52,8 +52,7 @@ def coverCocone (U : ι → α) {W : α} (hU : ∀ i, U i ≤ W) : Cocone (Pairw
         | .pair i _ => homOfLE (inf_le_left.trans (hU i))
       naturality := fun _ _ _ => Subsingleton.elim _ _ }
 
-/-- Overlap relation on local values: `p` and `q` are restrictions of one value over the actual
-overlap `U p.1 ⊓ U q.1` (agreement on the overlap object, not on labels). -/
+/-- Overlap relation on local values: `p` and `q` are restrictions of one value over the overlap `U p.1 ⊓ U q.1` (agreement on the overlap object, not on labels). -/
 def overlapRel (F : α ⥤ Type w₀) (U : ι → α) (p q : Σ i, F.obj (U i)) : Prop :=
   ∃ c : F.obj (U p.1 ⊓ U q.1),
     F.map (homOfLE inf_le_left) c = p.2 ∧ F.map (homOfLE inf_le_right) c = q.2

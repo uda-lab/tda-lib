@@ -39,7 +39,7 @@ private theorem rankBarcode_count_eq (B C : Multiset (FiniteInterval N))
   rw [hB, hC, he]
 
 -- Genuine boundary and discriminating fixtures. These propositions all mention rankBarcode
--- or ranks of actual persistence modules.
+-- or ranks of persistence modules.
 private def bar01 : FiniteInterval 1 := ⟨0, 1, by omega, by omega⟩
 private def bar02 : FiniteInterval 2 := ⟨0, 2, by omega, by omega⟩
 private def bar01two : FiniteInterval 2 := ⟨0, 1, by omega, by omega⟩
@@ -173,11 +173,11 @@ private theorem twoStageValues (M : PModule.{u,0,u} k (Fin 2))
   · ring
   · constructor <;> ring
 
-private theorem identityActualRank :
+private theorem identityModuleRank :
     structureMapRank (identityTransitionDiagram k) 0 1 (by decide) = 1 :=
   (equal_dimensions_different_structureMapRanks (k := k)).2.1
 
-private theorem zeroActualRank :
+private theorem zeroModuleRank :
     structureMapRank (zeroTransitionDiagram k) 0 1 (by decide) = 0 :=
   (equal_dimensions_different_structureMapRanks (k := k)).2.2
 
@@ -186,7 +186,7 @@ private theorem identityMu :
     moduleMultiplicityInteger (identityTransitionDiagram k) 0 2 = 1 ∧
     moduleMultiplicityInteger (identityTransitionDiagram k) 1 2 = 0 := by
   have h := twoStageValues (identityTransitionDiagram k)
-  rw [identityActualRank] at h
+  rw [identityModuleRank] at h
   simpa only [show Module.finrank k ((identityTransitionDiagram k).obj (0 : Fin 2)) = 1
       from Module.finrank_self k,
     show Module.finrank k ((identityTransitionDiagram k).obj (1 : Fin 2)) = 1
@@ -197,7 +197,7 @@ private theorem zeroMu :
     moduleMultiplicityInteger (zeroTransitionDiagram k) 0 2 = 0 ∧
     moduleMultiplicityInteger (zeroTransitionDiagram k) 1 2 = 1 := by
   have h := twoStageValues (zeroTransitionDiagram k)
-  rw [zeroActualRank] at h
+  rw [zeroModuleRank] at h
   simpa only [show Module.finrank k ((zeroTransitionDiagram k).obj (0 : Fin 2)) = 1
       from Module.finrank_self k,
     show Module.finrank k ((zeroTransitionDiagram k).obj (1 : Fin 2)) = 1
@@ -254,7 +254,7 @@ private theorem sameDimensionsDifferentBarcodes :
   · intro he
     have hr := (rankBarcode_eq_iff (identityTransitionDiagram k)
       (zeroTransitionDiagram k)).mp he 0 1 (by decide)
-    rw [identityActualRank, zeroActualRank] at hr
+    rw [identityModuleRank, zeroModuleRank] at hr
     omega
 
 private theorem equalityCriterionForward :
@@ -303,7 +303,7 @@ private instance twoCopiesFD (i : Fin 2) :
 private theorem twoCopiesDimension : Module.finrank k (k × k) = 2 := by
   simp only [Module.finrank_prod, Module.finrank_self]
 
-private theorem twoCopiesActualRank :
+private theorem twoCopiesModuleRank :
     structureMapRank (twoCopies (k := k)) 0 1 (by decide) = 2 := by
   change Module.finrank k (LinearMap.range (LinearMap.id : (k × k) →ₗ[k] (k × k))) = 2
   rw [LinearMap.range_id, finrank_top]
@@ -314,7 +314,7 @@ private theorem twoCopiesMu :
     moduleMultiplicityInteger (twoCopies (k := k)) 0 2 = 2 ∧
     moduleMultiplicityInteger (twoCopies (k := k)) 1 2 = 0 := by
   have h := twoStageValues (twoCopies (k := k))
-  rw [twoCopiesActualRank] at h
+  rw [twoCopiesModuleRank] at h
   simpa only [show Module.finrank k ((twoCopies (k := k)).obj (0 : Fin 2)) = 2
       from twoCopiesDimension,
     show Module.finrank k ((twoCopies (k := k)).obj (1 : Fin 2)) = 2
@@ -352,16 +352,16 @@ private theorem mixed3RoundTrip :
     rankBarcode (barcodeModule (k := k) mixed3) = mixed3 :=
   rankBarcode_barcodeModule mixed3
 
-private theorem mixed3ActualRank :
+private theorem mixed3ModuleRank :
     structureMapRank (barcodeModule (k := k) mixed3) (0 : Fin 3) 2 (by decide) = 2 := by
   rw [rank_barcodeMap]
   decide
 
-private theorem mixed3CanonicalActualRank :
+private theorem mixed3CanonicalModuleRank :
     structureMapRank (barcodeModule (k := k)
       (rankBarcode (barcodeModule (k := k) mixed3))) (0 : Fin 3) 2 (by decide) = 2 := by
   rw [mixed3RoundTrip]
-  exact mixed3ActualRank
+  exact mixed3ModuleRank
 
 private theorem mixed3Interior : barcodeMultiplicity mixed3 1 2 = 1 := by
   decide
@@ -379,7 +379,7 @@ private theorem rationalInstances :
     rankBarcode (identityTransitionDiagram ℚ) ≠
       rankBarcode (zeroTransitionDiagram ℚ) := by
   exact ⟨identityBarcode, zeroBarcode, twoCopiesMultiplicity,
-    twoCopiesActualRank, (sameDimensionsDifferentBarcodes (k := ℚ)).2⟩
+    twoCopiesModuleRank, (sameDimensionsDifferentBarcodes (k := ℚ)).2⟩
 
 private theorem zmodTwoInstances :
     rankBarcode (identityTransitionDiagram (ZMod 2)) =
@@ -391,6 +391,6 @@ private theorem zmodTwoInstances :
     rankBarcode (identityTransitionDiagram (ZMod 2)) ≠
       rankBarcode (zeroTransitionDiagram (ZMod 2)) := by
   exact ⟨identityBarcode, zeroBarcode, twoCopiesMultiplicity,
-    twoCopiesActualRank, (sameDimensionsDifferentBarcodes (k := ZMod 2)).2⟩
+    twoCopiesModuleRank, (sameDimensionsDifferentBarcodes (k := ZMod 2)).2⟩
 
 end TDA.Persistence
