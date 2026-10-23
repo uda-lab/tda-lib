@@ -105,6 +105,7 @@ import TDA.Persistence.SimplicialMultivaluedInterleavingExamples
 import TDA.Persistence.CechFinitePBottleneckAllDegreesExamples
 import TDA.Persistence.RipsRelationInterleavingExamples
 import TDA.Persistence.RipsQTameExamples
+import TDA.Persistence.RipsHausdorffInterleavingExamples
 import TDA.Persistence.FiniteWeightedBoundaryTransportExamples
 
 import TDA.Persistence.RipsGromovHausdorffExamples
@@ -113,3 +114,4 @@ import TDA.Persistence.MatrixSequenceExamples
 import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
 import TDA.Persistence.PersistenceMeasureExamples
+import TDA.Persistence.SubdivisionRipsExamples

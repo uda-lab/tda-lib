@@ -9,3 +9,5 @@ import TDA.Topology.NerveMap
 import TDA.Topology.NerveContiguity
 import TDA.Topology.MultiNerveMap
 import TDA.Topology.C0MeasureRepresentation
+
+import TDA.Topology.MeasureBifiltration

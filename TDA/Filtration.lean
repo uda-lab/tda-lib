@@ -8,6 +8,11 @@ import TDA.Filtration.SparseRips.Deletion
 import TDA.Filtration.SparseRips.Relaxed
 import TDA.Filtration.SparseRips.DeletionHomology
 import TDA.Filtration.SparseRips.UnionDeletion
+import TDA.Filtration.SparseRips.DeletionGrid
+import TDA.Filtration.SparseRips.UnionTailDeletion
+import TDA.Filtration.SparseRips.UnionGridHomology
+import TDA.Filtration.SparseRips.NaturalEquivalence
+import TDA.Filtration.SparseRips.Approximation
 import TDA.Filtration.SparseRips.Packing
 import TDA.Filtration.SparseRips.Sparsity
 import TDA.Filtration.CompatibleOrder
@@ -27,3 +32,5 @@ import TDA.Filtration.CechSupNorm
 import TDA.Filtration.FilterFunctionMap
 import TDA.Filtration.ShiftedSimplicialMap
 import TDA.Filtration.RipsRelation
+
+import TDA.Filtration.SubdivisionRips
