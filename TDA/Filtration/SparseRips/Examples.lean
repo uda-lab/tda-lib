@@ -1,5 +1,6 @@
 import TDA.Filtration.SparseRips.UnionDeletion
 import TDA.Filtration.SparseRips.Sparsity
+import TDA.Filtration.SparseRips.LogDiagramStability
 
 /-!
 # Sparse Rips boundary and deletion examples
@@ -69,6 +70,22 @@ theorem weighted_self_pair :
     relaxedDistance (1 / 3) (deletionTime (0 : Fin 2) (1 / 3)) 9 1 1 = 6 := by
   rw [relaxedDistance_self, deletionTime_one]
   norm_num [weight, finiteWeight]
+
+/-- The attained relaxed entry of the genuine edge is its metric distance.
+The later deletion at time nine does not change this first entry. -/
+theorem edge_pairEntry_eq_one :
+    pairEntry (η := 1 / 3) (deletionTime (0 : Fin 2) (1 / 3)) 0 1 = 1 := by
+  have hle : pairEntry (η := 1 / 3) (deletionTime (0 : Fin 2) (1 / 3)) 0 1 ≤ 1 :=
+    (pairEntry_le_iff (by norm_num) (by norm_num)
+      (deletionTime (0 : Fin 2) (1 / 3))
+      (deletionTime_nonneg 0 (by norm_num) (by norm_num)) 0 1 (by norm_num)).mpr (by
+        norm_num [relaxedDistance, deletionTime_one, weight, finiteWeight,
+          metric_dist, pts, Real.dist_eq])
+  have hge := dist_le_pairEntry (η := (1 / 3 : ℝ)) (by norm_num) (by norm_num)
+    (deletionTime (0 : Fin 2) (1 / 3))
+    (deletionTime_nonneg 0 (by norm_num) (by norm_num)) 0 1
+  have hdist : dist (0 : Fin 2) 1 = 1 := by norm_num [metric_dist, pts, Real.dist_eq]
+  exact le_antisymm hle (hdist ▸ hge)
 
 /-- A genuine finite deletion, including the closed tie boundary. -/
 theorem singleton_at_deletion :
