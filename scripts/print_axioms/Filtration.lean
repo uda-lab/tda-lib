@@ -570,3 +570,6 @@ import TDA
 #print axioms TDA.Filtration.SparseRips.pairEntry_le_of_mem
 #print axioms TDA.Filtration.SparseRips.pairEntry_nonneg
 #print axioms TDA.Filtration.SparseRips.sparseFilter_sublevelFiltration_eq
+#print axioms TDA.Filtration.SparseRips.H1Examples.sparse_eq_rips_one
+#print axioms TDA.Filtration.SparseRips.H1Examples.sparseFilter_h1_nonzero
+#print axioms TDA.Filtration.SparseRips.H1Examples.sparse_relaxed_h1_nonzero

@@ -1399,5 +1399,11 @@ from η alone. The constants are independent of cardinality, metric spread and
 maximum scale. `LineSamples.uniform_skeleton_bound` uses one doubling bound of
 four at every sample size.
 
-The nonzero sparse `H₁` comparison fixture remains part of
+On four vertices with the shortest-path metric of a cycle, adjacent distances
+are one and opposite distances are two. At scale one,
+`H1Examples.sparseFilter_h1_nonzero` constructs a rational `H₁` class from the
+four-edge chain: its boundary cancels, and there are no 2-faces to fill it.
+`H1Examples.sparse_relaxed_h1_nonzero` shows that the sparse-to-relaxed
+inclusion carries this class nontrivially. All four vertices remain active at
+this scale. A nonzero `H₁` fixture across an actual vertex deletion remains in
 [the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).
