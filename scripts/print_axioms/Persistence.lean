@@ -4792,6 +4792,15 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RealInterleaving.exists_finite_saturating_matching
 #print axioms TDA.Persistence.Rips.exists_finite_saturating_matching_of_hausdorff_lt
 
+-- Exact metric stability of the complete locally finite q-tame Rips diagrams.
+#print axioms TDA.Persistence.Rips.ofQModule_eq_of_iso
+#print axioms TDA.Persistence.Rips.qTameLocallyFiniteDiagram_eq_of_isometryEquiv
+#print axioms TDA.Persistence.Rips.qTameLocallyFiniteDiagram_bottleneck_le_of_hausdorffDist
+#print axioms TDA.Persistence.Rips.qTameLocallyFiniteDiagram_bottleneck_le_two_mul_ghDist
+#print axioms TDA.Persistence.Rips.tendsto_qTameLocallyFiniteDiagram_bottleneck_of_hausdorffDist_tendsto_zero
+#print axioms TDA.Persistence.Rips.InfiniteMetricStabilityExamples.reciprocalTarget_infinite
+#print axioms TDA.Persistence.Rips.InfiniteMetricStabilityExamples.tendsto_reciprocalSample_qTameDiagram_bottleneck
+
 -- Finite-poset classification of rank-projectives and hook-sum multiplicities.
 #print axioms TDA.Persistence.FiniteRankProjectiveClassification.exists_uniform_fitting_complement
 #print axioms TDA.Persistence.FiniteRankProjectiveClassification.indecomposable_endomorphism_dichotomy

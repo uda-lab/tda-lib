@@ -695,15 +695,15 @@ target. The
 order-free `Rips.diagram` accepts finite metric spaces and a field in independent
 universes; `diagram_eq_dgm` identifies it with the existing diagram for every
 auxiliary order. Finite samples of a common possibly infinite target are compared
-only through their finite diagrams. A decorated multiplicity for totally bounded targets is provided by
-`RipsQTameDiagram` below. `RipsQTameFiniteCompatibility` proves that on finite
+through their finite diagrams by this finite API. `RipsQTameDiagram` below
+provides decorated multiplicities for totally bounded targets.
+`RipsQTameFiniteCompatibility` proves that on finite
 metric spaces its point multiplicities agree with the existing finite diagram,
 using `(minusCut birth, minusCut death)` for finite bars and
 `(minusCut birth, infinityCut)` for essential bars. This Lean compatibility
 theorem currently requires the coefficient field and vertex type in the same
 universe because the rank-to-diagram bridge has that universe restriction; the
-mathematical statement is field-independent. Bottleneck stability for the
-locally finite diagram of a general totally bounded space remains open. See
+mathematical statement is field-independent. See
 [metric-input stability](math/rips-metric-stability.md).
 
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
@@ -726,16 +726,27 @@ decorated point multiplicity with its occurrence count in the existing finite
 `Rips.diagram`, including essential bars. The coefficient field and vertex
 type must currently share a Lean universe for this theorem because the existing
 rank/barcode bridge has that restriction; the mathematical compatibility holds
-over every field. `LocallyFiniteDiagramBottleneck` constructs a countably
+over every field. Isometric relabelling preserves the complete decorated diagram
+even when the auxiliary linear orders are unrelated, by proving equality of the
+finite-death rectangle contents and essential birth-strip contents.
+`LocallyFiniteDiagramBottleneck` constructs a countably
 supported, locally finite decorated occurrence diagram from any q-tame real
 module and defines its extended matching-cost infimum. `Diagram.toLocallyFinite`
 embeds a finite diagram only with an explicit `Diagram.IsPositive` proof, and
 `bottleneck_toLocallyFinite` proves finite bottleneck compatibility on that
 positive domain. `RipsQTameBottleneck` uses the Rips multiplicity theorem to
 prove the corresponding finite Rips statement between two finite metric spaces.
+`RipsQTameInfiniteMetricStability` passes the strict-slack Hausdorff interleaving
+bound to the exact factor-two bound for the complete locally finite diagrams of
+nonempty totally bounded spaces. The carrier types share a universe, while the
+coefficient and ambient spaces may use independent universes. The compact
+Gromov–Hausdorff consumer has the same carrier-universe restriction and needs no
+order-preserving optimal-coupling isometries. Variable finite samples converge
+to any nonempty totally bounded target when their ambient Hausdorff distances tend
+to zero. `RipsQTameInfiniteMetricStabilityExamples` checks this with increasing
+finite samples of the genuinely infinite compact set `{0} ∪ {1/(n+1) | n ∈ ℕ}`.
 Endpoint decorations remain in multiplicity while only real endpoints enter
-matching costs. Algebraic stability and infinite-space Hausdorff/Gromov–Hausdorff
-diagram bounds remain unproved. See
+matching costs. See
 [the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
 `TDA.Persistence.RipsHausdorffInterleaving` compares the actual Rips homology
