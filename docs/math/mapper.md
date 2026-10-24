@@ -702,11 +702,14 @@ diagrams by `η₁ + η₂`. The [finite-constructible isometry](constructible-i
 identifies this bottleneck distance with the real interleaving distance of the
 two step modules; at every finite parameter, an interleaving exists exactly
 when an occurrence matching of that cost exists; and the distance is infinite
-exactly when the two diagrams have different numbers of essential bars. No
-identification of the number of essential bars with the dimension of the top
-stage is stated. For the piecewise-linear height of a finite graph and finitely
-many open-interval labels at every stage, the face-finiteness hypothesis holds
-by instance.
+exactly when the two diagrams have different numbers of essential bars. The
+number of essential bars equals the degree-`n` homology dimension of the last
+stage (`card_essentialPart_stepMapperDiagram`), including zero for an empty
+grid. Consequently, two step diagrams of maps on possibly different spaces are
+at finite bottleneck distance exactly when these dimensions agree
+(`bottleneck_stepMapperDiagram_lt_top_iff`). For the piecewise-linear height
+of a finite graph and finitely many open-interval labels at every stage, the
+face-finiteness hypothesis holds by instance.
 
 The empty initial family is the zero left tail of the finite-constructible
 convention and not a restriction on the Mapper data: a tower that starts with a
@@ -743,8 +746,9 @@ them.
 Not included: diagrams or bottleneck bounds for towers that are not step towers,
 in particular the centred tower, or for q-tame modules (capped centred step
 towers are treated in [a later section](#capped-centred-step-towers)); exact
-bottleneck values for pairs of grids that are not translates and tightness of the bound `η` beyond translations; identification
-of the essential multiplicity with the top-stage homology dimension; DMW16-v2 `(c, s)`-good towers, reindexing and truncation;
+bottleneck values for pairs of grids that are not translates and tightness of
+the bound `η` beyond translations; DMW16-v2 `(c, s)`-good towers, reindexing and
+truncation;
 independence of the component orders; multinerve diagrams; executable
 extraction.
 
@@ -910,6 +914,54 @@ with the multiscale Mapper diagrams of `(c, s)`-good towers and DMW16-v2
 Propositions 4.4 and 4.5, Corollary 4.6 and Theorems 4.7 and 4.8; perturbation
 bounds for step towers whose stages are not centred intervals; independence of
 the component orders; multinerve diagrams; executable extraction.
+
+### Essential bars of the full cap
+
+For a continuous map `f : C(X, Y)`, the full family `fun _ : I => univ`
+has component indices in bijection with `I × ZerothHomotopy X`
+(`fullComponentIndexEquiv`). If `X` is path-connected, projection to `I` is a
+bijection (`componentIndexFullEquiv`) and every nonempty finite set of vertices
+is a Mapper face (`mapper_full_eq_top`). The induced vertex maps give
+`fullMapperHomologyIso` with the full simplex on `I`. For finite `I`, the cone
+computation therefore gives one degree-zero class when `I` is nonempty and
+zero homology in every positive degree, over any ring in the latter case.
+For a single label on any space with finitely many path components, the Mapper
+complex has no edges and its degree-zero homology dimension is
+`Nat.card (ZerothHomotopy X)`
+(`finrank_simplicialHomology_mapper_full_zero_of_unique`).
+
+The last-stage count now applies to `cappedCentredDiagram` on a nonempty grid.
+For a path-connected domain and a finite nonempty label window, it has exactly
+one essential bar in degree zero
+(`card_essentialPart_cappedCentredDiagram_zero`) and none in positive degree
+(`card_essentialPart_cappedCentredDiagram_succ`). Thus two such diagrams, even
+for different maps, spaces, windows and grids, are always at finite bottleneck
+distance in every degree (`bottleneck_cappedCentredDiagram_lt_top`). Component
+orders and face finiteness are supplied as for the step diagram. On a finite
+connected graph all finiteness instances are synthesized
+(`card_essentialPart_cappedCentredDiagram_plHeight`); with a single label the
+degree-zero count is the number of graph components
+(`card_essentialPart_cappedCentredDiagram_plHeight_zero_of_unique`).
+
+Fixtures include the triangle with arbitrary heights and one label: its
+realization is not simply connected, but its capped diagram has no essential
+loop. Capped centred diagrams record cycles only as finite bars, if at all.
+The two constant diagrams of the exact-distance fixture each have one essential
+bar by the cap computation, as does the single edge with heights `(0, 1)`, two
+labels and a uniform grid. Truncating the 4-cycle tower after its three-member
+stage leaves one essential degree-one bar, whereas the full two-stage tower
+has none. Two disjoint edges with one label have two essential degree-zero
+bars, so their diagram is at infinite bottleneck distance from that of a single
+edge. With an empty grid, every essential count is zero: the only stage is the
+empty initial family, so the full-cap conclusions require at least one grid
+value.
+
+These are library specialisations of the finite step-diagram convention, not
+additional numbered results of [DMW16-v2](references.md#DMW16-v2) §3. Birth
+values of essential bars, degree-zero essential counts with several labels on
+disconnected domains, finite bars, and bottleneck values or matchings beyond
+finiteness are outside these results. No q-tame or non-step tower statement,
+multinerve diagram, order independence or executable extraction is claimed.
 
 ## Uniform interval covers and edge cells
 

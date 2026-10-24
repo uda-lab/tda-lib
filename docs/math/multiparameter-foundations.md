@@ -362,6 +362,65 @@ right-diagonal slack valid for every smaller nonnegative shift, including
 the empty-grade and zero-coordinate cases. These are the local results in
 [Lesnick, §6, Lemmas 6.4 and 6.6](https://arxiv.org/html/1106.5305v4).
 
+## Finite-grid Kan reconstruction
+
+Let R be a ring and let M be a finitely presented module on coordinatewise
+ordered ℝⁿ. Choose a homogeneous presentation with finite generator family
+W and finite relation family Y. For each coordinate, collect the values of
+all generator and relation grades and add zero. Their product is a finite
+grid G, and coordinate inclusion gives an order embedding j:G→ℝⁿ.
+Adding zero handles empty presentations uniformly; no minimal-grid claim
+is needed. Every occurrence in W and Y is retained, even when grades agree.
+
+The reconstructed module is the actual Mathlib left Kan extension of the
+presentation's restriction to G. `Presentation.gridKanIso` proves its
+natural isomorphism with the original presented quotient.
+`finitelyPresented_exists_finiteGridKan` transports this comparison along
+the presentation isomorphism to M, so grid constructibility is a conclusion.
+The real-indexed module may have unbounded support although G is finite.
+This is the finite-grid reconstruction step in
+[Botnan–Oppermann–Oudot–Scoccola, Appendix A's proof of Theorem 2.7](https://arxiv.org/html/2208.00300v3).
+
+The proof uses a more general presentation argument. For an order embedding
+j:Q→P containing every generator and relation birth, form the chosen Kan
+extension of the restricted quotient and its canonical comparison ρ to
+the quotient. Full faithfulness makes the Kan unit invertible on Q;
+the comparison is therefore invertible at every embedded grade. In
+particular it is surjective at generator births and injective at relation
+births. The existing presentation lifting theorem constructs a section
+of ρ from precisely these conditions. The Kan universal property and
+invertibility on Q prove the other inverse law. `Presentation.kanIso`
+is the resulting comparison, and `isLeftKanExtension` establishes the
+standard Mathlib universal property with identity on the restriction.
+
+Consequently restriction gives a bijection between maps from the quotient
+and arbitrary natural maps from its restriction. `restrictionHomEquiv`
+and the selected-grid specialization `gridHomEquiv` expose this bijection,
+with forward restriction, extension/restriction and uniqueness laws.
+The inverse construction uses the existing graded-free generator lift
+and presentation cokernel descent through the presentation lifting theorem;
+an extension or an inverse comparison is not an input.
+
+Over a field, the finite free cover is finite dimensional at each grade,
+and its surjectivity proves that the presented quotient is pfd. Only
+finiteness of W is needed for this argument. Transporting along the
+presentation isomorphism proves `finitelyPresented_finiteDimensional`;
+the field version of the Kan theorem supplies pfd fibers on G.
+
+Consumers use two generators born at the same grade, with a genuine
+nonzero relation killing the first. The second survives by mapping to a
+principal upset. Distinct generator vectors remain distinct despite equal
+grid birth points. Extending the restricted doubling map recovers the
+nonzero doubling map at every real grade over ℚ; in characteristic two
+it recovers zero while the relation and quotient remain nonzero. Integer
+coefficients, the zero ring and empty families are included. In dimension
+zero, G has one point and the same quotient is nonzero.
+
+Reconstruction does not yet prove that Kan extension preserves rank
+exactness, hook projectivity or minimal resolutions. Those preservation
+results, finite minimal resolutions and their length bound are additional
+inputs to signed barcode stability.
+
 ## Rank exactness and hook lifting
 
 Consider a pointwise short exact sequence L → M → N. At a ≤ b, assume only that
@@ -512,8 +571,56 @@ nonzero dying images, zero base change and characteristic two.
 These prove the deflation-side closure laws in
 [Botnan–Oppermann–Oudot–Scoccola, §2.12](https://arxiv.org/html/2208.00300v3),
 including the pullback step used in Appendix A's Lemma A.1. They do not
-establish the full exact structure, its inflation/pushout laws, persistent
-Schanuel or signed barcode stability.
+establish the full exact structure or its inflation/pushout laws.
+
+## One-step persistent Schanuel
+
+Fix a field k and coordinatewise ordered ℝⁿ. Suppose K→P→M and L→Q→N
+are rank-exact short exact sequences and P,Q are rank projective. The
+rank-exactness hypothesis includes pointwise finite dimensionality; no
+finite grid or finite presentation is required here. An actual
+ε-interleaving i between M and N, for any finite ε≥0, induces an actual
+ε-interleaving
+
+\[
+P\oplus L[\varepsilon]\quad\longleftrightarrow\quad K[\varepsilon]\oplus Q.
+\]
+
+Here A[ε](a)=A(a+ε). This is the rank-exact specialization of
+[Botnan–Oppermann–Oudot–Scoccola, Appendix A Lemma A.1](https://arxiv.org/html/2208.00300v3).
+`RankSchanuel.interleavingOfSequences` uses the original K and L; it does
+not require chosen sections or identifications with categorical kernels.
+
+Write α:P→M and β:Q→N for the quotient maps. Form the crossed pullbacks
+X=Q[ε]×_{N[ε]}P and Y=P[ε]×_{M[ε]}Q, using α followed by i's forward
+map, and β followed by its reverse map. A vector of X(a) is a compatible
+pair (q,p), with q in Q(a+ε) and p in P(a). The forward map sends it to
+(P(a→a+2ε)(p),q) in Y(a+ε). Naturality and the interleaving equations
+prove compatibility. The symmetric map gives the reverse direction;
+both composites are the corresponding double transitions. The public
+projection laws expose these coordinates without unfolding the proofs.
+This crossed-pullback interleaving only requires a coefficient ring.
+
+Over the field, rank-exact pullback closure makes X→P and Y→Q
+rank-exact deflations. Relative projectivity lifts identity to derive
+their sections. Mathlib's splitting theorem and its pullback-kernel and
+shift-kernel comparisons then identify X with P⊕(ker β)[ε] and Y with
+(ker α)[ε]⊕Q. `IsPointwiseShortExact.kernelIso` identifies K with ker α
+and L with ker β, preserving the original inclusions. Transporting the
+constructed maps proves the stated interleaving with the same ε.
+
+At ε=0 and a common quotient, the zero-shift comparison gives
+`RankSchanuel.kernelSumIso`. Concrete consumers use two-copy and three-copy
+covers of an unbounded planar hook. The first kernel inclusion is the
+diagonal (1,−1), so the given-sequence theorem genuinely transports a
+noncanonical kernel term. Both actual kernels are nonzero, including in
+characteristic two. A principal-upset consumer detects a nonzero forward
+map at positive width through its public projection law. Zero modules
+and n=0 are also allowed; ℝ⁰ has one grade, rather than no grades.
+
+This one-step theorem is an input to persistent Schanuel for resolutions.
+It does not construct finite minimal resolutions, bound their length or
+prove signed barcode stability.
 
 ## Attainment on real finite-constructible modules
 

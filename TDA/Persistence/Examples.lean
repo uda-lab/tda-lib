@@ -7,6 +7,8 @@ import TDA.Persistence.RectangleSharpExampleExamples
 import TDA.Persistence.FiniteHookDeflationExamples
 import TDA.Persistence.HookEndomorphismExamples
 import TDA.Persistence.RankDeflationExamples
+import TDA.Persistence.RankSchanuelExamples
+import TDA.Persistence.FinitePresentationKanExamples
 import TDA.Persistence.CrossPresentationExamples
 import TDA.Persistence.CrossPresentationConverseExamples
 import TDA.Persistence.ConstructibleExamples

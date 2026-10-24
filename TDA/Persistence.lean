@@ -43,6 +43,8 @@ import TDA.Persistence.SupportInterval
 import TDA.Persistence.HookProjective
 import TDA.Persistence.RankProjective
 import TDA.Persistence.RankDeflation
+import TDA.Persistence.RankExactKernel
+import TDA.Persistence.RankSchanuel
 import TDA.Persistence.FiniteHookDeflation
 import TDA.Persistence.Rectangle
 import TDA.Persistence.RealRaySeparation
@@ -264,3 +266,6 @@ import TDA.Persistence.RectangleSharpExample
 import TDA.Persistence.BoundaryTransportNorm
 import TDA.Persistence.BoundaryTransportMetric
 import TDA.Persistence.BoundaryTransportMetricExamples
+import TDA.Persistence.FinitePresentationFiniteDimensional
+import TDA.Persistence.FinitePresentationKan
+import TDA.Persistence.FinitePresentationGridKan
