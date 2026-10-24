@@ -96,7 +96,9 @@ join-indexed projective resolution of its generated-upset support module.
 `differential_comp_augmentation` and `resolution_pointwise_exact_at` establish
 projectivity, the chain laws, surjectivity and exactness at every index. Repeated
 generator values remain distinct occurrences; the empty-family boundary is stated
-separately. See [join-indexed upset resolutions](math/generated-upset-resolution.md).
+separately. `term_isZero_of_degree_ge` shows that the degree-`r` term vanishes for
+`m ≤ r`; when `m ≥ 1`, the resolution therefore gives projective dimension at most
+`m−1`. See [join-indexed upset resolutions](math/generated-upset-resolution.md).
 `RectangleHall.card_le_neighbors` derives the Hall neighbor cardinality bound
 from an actual ε-interleaving of finite rectangle sums: a selected family
 whose `(4n−2)ε` transitions are nonzero has at least as many neighbors at radius

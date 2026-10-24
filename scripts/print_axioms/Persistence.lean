@@ -4766,3 +4766,5 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.GeneratedUpsetResolution.activeComplex_positive_exact
 #print axioms TDA.Persistence.GeneratedUpsetResolution.activeComplex_zero_exact
 #print axioms TDA.Persistence.GeneratedUpsetResolution.HookInfinity.projective
+#print axioms TDA.Persistence.GeneratedUpsetResolution.term_isZero_of_degree_ge
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.singleton_top_term_isZero

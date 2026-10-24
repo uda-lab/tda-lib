@@ -786,6 +786,24 @@ theorem term_eq_zero_of_no_active {m r : ℕ} (f : Fin m → P) (p : P)
   obtain ⟨i, hi⟩ := σ.2.1.1.exists_mem
   exact (h ⟨⟨i, σ.2.1.2 i hi⟩⟩).elim
 
+/-- The degree-`r` term vanishes when it asks for more occurrences than `Fin m` contains. -/
+theorem term_isZero_of_degree_ge {m r : ℕ} (f : Fin m → P) (hmr : m ≤ r) :
+    IsZero (term (k := k) f r) := by
+  rw [Functor.isZero_iff]
+  intro p
+  rw [ModuleCat.isZero_iff_subsingleton]
+  constructor
+  intro x y
+  have hzero (z : (term (k := k) f r).obj p) : z = 0 := by
+    apply (termEvaluationEquiv (k := k) f p (r := r)).injective
+    apply Finsupp.ext
+    intro σ
+    have hcard := Finset.card_le_univ σ.1
+    simp only [Fintype.card_fin] at hcard
+    have hdeg : σ.1.card = r + 1 := σ.2.2
+    omega
+  exact (hzero x).trans (hzero y).symm
+
 /-- The zero-generator family has empty generated support. -/
 theorem generatedSupport_fin_zero (f : Fin 0 → P) : generatedSupport f = ∅ := by
   ext p

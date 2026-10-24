@@ -30,6 +30,11 @@ theorem singleton_exact_at_zero (p : ℕ)
       ((differential (k := ℚ) singletonFamily 0).app p).hom y = x :=
   augmentation_exact_at_zero (k := ℚ) singletonFamily p x hx
 
+/-- The resolution term above the singleton family's top degree is zero. -/
+theorem singleton_top_term_isZero :
+    IsZero (term (k := ℚ) singletonFamily 1) :=
+  term_isZero_of_degree_ge (k := ℚ) singletonFamily (by decide)
+
 abbrev repeatedFamily : Fin 2 → ℕ := fun _ => 1
 
 def repeatedFaceZero : FaceIndex 2 0 := singletonFaceIndex (0 : Fin 2)
