@@ -226,6 +226,8 @@ import TDA.Persistence.ReservoirMeasure
 import TDA.Persistence.BoundaryTransportForward
 import TDA.Persistence.BoundaryTransportReverse
 import TDA.Persistence.BoundaryTransportComparison
+import TDA.Persistence.BoundaryTransportAttainment
+import TDA.Persistence.BoundaryTransportAttainmentExamples
 import TDA.Persistence.ReservoirNormalization
 import TDA.Persistence.BoundaryTransportZero
 import TDA.Persistence.BoundaryTransportAtomic

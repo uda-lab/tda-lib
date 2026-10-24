@@ -4195,3 +4195,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RectangleSharpExample.Examples.matching_below_three_impossible
 #print axioms TDA.Persistence.RectangleSharpExample.Examples.coefficient_two_fails
 #print axioms TDA.Persistence.RectangleSharpExample.Examples.matching_all_occurrences
+
+#print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_reservoirPlan
+#print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_boundaryPlan
+#print axioms TDA.Persistence.BoundaryTransport.exists_finite_cost_minimizing_boundaryPlan
+#print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_boundaryPlan_rooted
