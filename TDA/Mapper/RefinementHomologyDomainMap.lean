@@ -225,7 +225,9 @@ section GraphPL
 
 open TDA.Reeb.GraphRealization TDA.Reeb.GraphPL
 
-variable {V V' : Type u} {G : SimpleGraph V} {G' : SimpleGraph V'}
+section Realization
+
+variable {V : Type u} {V' : Type v} {G : SimpleGraph V} {G' : SimpleGraph V'}
 
 /-- The realization map of a graph isomorphism is a homeomorphism of realizations, with inverse
 the realization map of the inverse isomorphism. -/
@@ -260,7 +262,10 @@ theorem plHeight_realizationHomeomorph (e : G ≃g G') {h : V → ℝ} {g : V' �
       rw [hg, hg]
   exact congrArg (fun φ : C(Realization G, ℝ) => φ x) key
 
-variable (k : Type u) [Field k] [Finite V] [Finite V'] {W : Type u} [Finite W]
+end Realization
+
+variable {V V' : Type u} {G : SimpleGraph V} {G' : SimpleGraph V'}
+  (k : Type u) [Field k] [Finite V] [Finite V'] {W : Type u} [Finite W]
   (a s : ℝ) (ℓ : W → ℤ) {m : ℕ} (c : Fin m ↪o ℝ) (n : ℕ)
 
 /-- Isomorphic finite graphs with corresponding vertex heights have capped centred diagrams of

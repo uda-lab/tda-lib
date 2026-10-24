@@ -14,16 +14,18 @@ import Mathlib.Topology.UnitInterval
   uniform grid of spacing `1/4` from `0` to `2`, the capped centred diagrams of the two
   piecewise-linear heights are at bottleneck distance `0` in every degree, although the vertex
   heights are at distance `1`.
-* **Identity and composite.** On the one-point domain and the unit interval, the domain map of
-  the identity is the identity vertex map, and the domain map of a composite is the composite of
-  the domain maps.
+* **Identity and composite.** The identity of the unit interval induces the identity vertex
+  map.  The point map `Unit → Bool` selecting `false`, followed by the endpoint inclusion
+  `Bool → unitInterval`, gives a composition law instance with two non-identity maps over
+  their heights.
 * **Not a homeomorphism.** The two endpoints of the unit interval, at heights `0` and `1`, map into
   the interval by inclusion over the height `x ↦ x`, with the single member `ℝ`.  The Mapper of the
   endpoints has two vertices and no edge, that of the interval has one, and the induced `H₀` map
   over `ℚ` goes from dimension `2` to dimension `1`; it is not injective.
-* **Graph automorphism.** The reflection of the 4-cycle fixing the vertices `0` and `2` preserves
-  the heights `0, 1, 2, 1`.  Its realization is a homeomorphism over the height, so the capped
-  centred diagrams are at bottleneck distance `0`; on the level `1`, its domain map sends the
+* **Graph relabelling and reflection.** Swapping the vertices `0` and `1` sends the 4-cycle
+  with heights `0, 1, 2, 1` to a different graph on `Fin 4` with heights `1, 0, 2, 1`; their
+  capped centred diagrams are at bottleneck distance `0`.  Separately, the reflection fixing
+  `0` and `2` preserves the original heights.  On the level `1`, its domain map sends the
   class of the vertex `1` to the class of the vertex `3`, a different component index.
 -/
 
@@ -102,17 +104,7 @@ example (U : Bool → Set ℝ) :
         (fun _ => rfl) U = VertexMap.id (mapper intervalHeight U) :=
   mapperDomainMap_id U
 
-example (U : Bool → Set ℝ) :
-    mapperDomainMap (f := pointHeight) (f' := intervalHeight)
-        ((ContinuousMap.id unitInterval).comp pointToZero) (fun _ => rfl) U =
-      VertexMap.comp (mapperDomainMap (f := pointHeight) (f' := intervalHeight) pointToZero
-          intervalHeight_pointToZero U)
-        (mapperDomainMap (f := intervalHeight) (f' := intervalHeight)
-          (ContinuousMap.id unitInterval) (fun _ => rfl) U) :=
-  mapperDomainMap_comp (f := pointHeight) (f' := intervalHeight) (f'' := intervalHeight)
-    pointToZero intervalHeight_pointToZero (ContinuousMap.id unitInterval) (fun _ => rfl) U
-
-/-! ## Graph automorphism -/
+/-! ## Graph relabelling and reflection -/
 
 /-- The 4-cycle. -/
 abbrev cycle4 : SimpleGraph (Fin 4) :=
@@ -133,15 +125,40 @@ def reflection : cycle4 ≃g cycle4 where
 theorem cycleHeight_reflection (v : Fin 4) : cycleHeight (reflection v) = cycleHeight v := by
   fin_cases v <;> simp [cycleHeight, reflection]
 
-/-- The capped centred diagrams of the 4-cycle height, taken along the height-preserving
-reflection, are at bottleneck distance `0`. -/
-theorem cycle4_reflection_bottleneck_eq_zero (k : Type) [Field k] (n : ℕ) :
+/-- The graph obtained by swapping the labels `0` and `1` of the 4-cycle. -/
+abbrev cycle4' : SimpleGraph (Fin 4) :=
+  cycle4.map (Equiv.swap (0 : Fin 4) 1).toEmbedding
+
+/-- Heights `1, 0, 2, 1` on the relabelled 4-cycle. -/
+def cycleHeight' : Fin 4 → ℝ :=
+  cycleHeight ∘ Equiv.swap 0 1
+
+/-- The relabelling isomorphism swapping the vertices `0` and `1`. -/
+def cycleRelabelIso : cycle4 ≃g cycle4' :=
+  SimpleGraph.Iso.map (Equiv.swap 0 1) cycle4
+
+example : cycle4' ≠ cycle4 := by
+  intro h
+  have hadj : cycle4'.Adj 0 2 := by
+    have h := cycleRelabelIso.toHom.map_adj (show cycle4.Adj 1 2 by decide)
+    change cycle4'.Adj ((Equiv.swap (0 : Fin 4) 1) 1) ((Equiv.swap (0 : Fin 4) 1) 2) at h
+    convert h using 1 <;> decide
+  rw [h] at hadj
+  exact (by decide : ¬ cycle4.Adj 0 2) hadj
+
+/-- The capped centred diagrams of the 4-cycle with heights `0, 1, 2, 1` and its relabelling
+by the swap of `0` and `1`, with heights `1, 0, 2, 1`, are at bottleneck distance `0`. -/
+theorem cycle4_relabel_bottleneck_eq_zero (k : Type) [Field k] (n : ℕ) :
     bottleneck (cappedCentredDiagram k (plHeight cycle4 cycleHeight) 0 1
         (fun w : Fin 3 => (w : ℤ)) edgeGrid n)
-      (cappedCentredDiagram k (plHeight cycle4 cycleHeight) 0 1
+      (cappedCentredDiagram k (plHeight cycle4' cycleHeight') 0 1
         (fun w : Fin 3 => (w : ℤ)) edgeGrid n) = 0 :=
-  bottleneck_cappedCentredDiagram_plHeight_iso k 0 1 _ edgeGrid n reflection
-    cycleHeight_reflection
+  bottleneck_cappedCentredDiagram_plHeight_iso k 0 1 _ edgeGrid n cycleRelabelIso
+    (by
+      intro v
+      change cycleHeight ((Equiv.swap (0 : Fin 4) 1) ((Equiv.swap (0 : Fin 4) 1) v)) =
+        cycleHeight v
+      simp)
 
 /-- The level `1` of the 4-cycle height. -/
 abbrev levelOne : Unit → Set ℝ :=
@@ -215,6 +232,22 @@ def endpoints : C(Bool, unitInterval) :=
 /-- The height `x ↦ x` restricted to the two endpoints, at heights `0` and `1`. -/
 def endpointHeight : C(Bool, ℝ) :=
   intervalHeight.comp endpoints
+
+/-- The point map selecting the endpoint `false`, of height `0`. -/
+def pointToFalse : C(Unit, Bool) :=
+  ContinuousMap.const Unit false
+
+/-- Composition of the point map to the two endpoints and their inclusion into the interval
+induces the composite of the two Mapper vertex maps, for any `Bool`-indexed family. -/
+example (U : Bool → Set ℝ) :
+    mapperDomainMap (f := pointHeight) (f' := intervalHeight)
+        (endpoints.comp pointToFalse) (fun _ => rfl) U =
+      VertexMap.comp (mapperDomainMap (f := pointHeight) (f' := endpointHeight) pointToFalse
+          (fun _ => rfl) U)
+        (mapperDomainMap (f := endpointHeight) (f' := intervalHeight)
+          endpoints (fun _ => rfl) U) :=
+  mapperDomainMap_comp (f := pointHeight) (f' := endpointHeight) (f'' := intervalHeight)
+    pointToFalse (fun _ => rfl) endpoints (fun _ => rfl) U
 
 /-- The single member `ℝ`. -/
 abbrev wholeLine : Unit → Set ℝ :=

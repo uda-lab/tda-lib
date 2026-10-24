@@ -450,16 +450,19 @@ Fixtures. On the single edge, the vertex swap is a graph isomorphism from the he
 to `(1, 0)`; with the labels `0, 1, 2`, base `0`, spacing `1` and the uniform grid of spacing
 `1/4` from `0` to `2`, the capped centred diagrams of the two piecewise-linear heights are at
 bottleneck distance `0` in every degree, while the vertex heights are at distance `1`. The
-identity and composition laws are instantiated on the one-point space and the unit interval.
+identity law is instantiated on the unit interval. The composition law is instantiated by
+`Unit → Bool → unitInterval`: the point selects `false` at height `0`, and the second map
+includes the two endpoints at heights `0` and `1`. Both factors are non-identity maps.
 For the two endpoints of the unit interval at heights `0` and `1` and the single member `ℝ`,
 the inclusion into the interval over the height `x ↦ x` induces an `H₀` map over `ℚ` from a
 space of dimension `2` to a space of dimension `1`, which is not injective, so the domain map
-exists without being an isomorphism. For the 4-cycle with heights `0, 1, 2, 1` and the
-reflection fixing the vertices `0` and `2`, the capped centred diagrams are at distance `0`,
-and over the level `1` the domain map sends the class of the vertex `1` to the class of the
-vertex `3`, a different component index. The identity of the realization of the single edge
-between the heights `(0, 1)` and `(0, 3/2)` does not commute with the heights; no domain map is
-defined, and the capped fixture bounds the diagrams only by `1/2`.
+exists without being an isomorphism. Swapping the labels `0` and `1` sends the 4-cycle with
+heights `0, 1, 2, 1` to a different graph on `Fin 4` with heights `1, 0, 2, 1`; the capped
+centred diagrams of these two heights are at distance `0`. Separately, the reflection of the
+original 4-cycle fixing `0` and `2` preserves its height, and over the level `1` its domain map
+sends the class of the vertex `1` to the class of the vertex `3`, a different component index.
+The identity of the realization of the single edge between the heights `(0, 1)` and `(0, 3/2)`
+does not commute with the heights; no domain map is defined, and the capped fixture bounds the diagrams only by `1/2`.
 
 Not included: equality of the diagrams themselves for homeomorphic heights; compatibility of the
 domain maps with the interleavings `mapperHomologyInterleaving` or with the multinerve maps;
