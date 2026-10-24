@@ -1234,3 +1234,4 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyDomainMapExamples.mk_levelPoint₁_ne_mk_levelPoint₃
 #print axioms TDA.Mapper.RefinementHomologyDomainMapExamples.reflection_domainIndexMap_vertex_one
 #print axioms TDA.Mapper.RefinementHomologyDomainMapExamples.endpoints_homologyDomainMap_not_injective
+#print axioms TDA.Mapper.RefinementHomologyDomainMapExamples.edge_reversal_bottleneck_eq_zero_two_labels

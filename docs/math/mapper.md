@@ -463,8 +463,7 @@ defined, and the capped fixture bounds the diagrams only by `1/2`.
 
 Not included: equality of the diagrams themselves for homeomorphic heights; compatibility of the
 domain maps with the interleavings `mapperHomologyInterleaving` or with the multinerve maps;
-functoriality in the codomain beyond the pullback identity; homotopy invariance, since maps
-homotopic over `Y` need not induce equal homology maps in this generality; independence of the
+functoriality in the codomain beyond the pullback identity; homotopy invariance; independence of the
 component orders; executable extraction.
 
 ## Interleaved cover towers and Mapper homology stability

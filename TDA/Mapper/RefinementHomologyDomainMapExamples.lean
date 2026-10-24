@@ -69,6 +69,17 @@ theorem edge_reversal_bottleneck_eq_zero (k : Type) [Field k] (n : ℕ) :
       (fun v => reversed_swapIso v),
     (reversal_geometricInterleavingDistance).2.2.1⟩
 
+/-- With the labels `0, 1` the same holds. -/
+theorem edge_reversal_bottleneck_eq_zero_two_labels (k : Type) [Field k] (n : ℕ) :
+    bottleneck (cappedCentredDiagram k (plHeight edgeGraph tilted) 0 1
+        (fun w : Fin 2 => (w : ℤ)) edgeGrid n)
+      (cappedCentredDiagram k (plHeight edgeGraph reversed) 0 1
+        (fun w : Fin 2 => (w : ℤ)) edgeGrid n) = 0 ∧
+      edist tilted reversed = 1 :=
+  ⟨bottleneck_cappedCentredDiagram_plHeight_iso k 0 1 _ edgeGrid n swapIso
+      (fun v => reversed_swapIso v),
+    (reversal_geometricInterleavingDistance).2.2.1⟩
+
 /-! ## Identity and composite -/
 
 /-- The constant height `0` on the one-point space. -/
