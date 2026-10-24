@@ -400,6 +400,75 @@ No multinerve chain complex or multinerve selector independence, Nerve Lemma,
 categorical reconstruction, barcode algorithm or q-tame theory is included. The
 stability statement for interleaved cover towers is in the next section.
 
+## Height-preserving maps
+
+Let `f : X → Y` and `f' : X' → Y` be continuous and let `φ : X → X'` be continuous with
+`f' (φ x) = f x` for all `x`. For every family `U : I → Set Y`, the restriction of `φ`
+to the inverse images over the members `U i` is a continuous map
+`pullbackRestrict φ hφ U i`, and acts on path components. The map
+`domainIndexMap φ hφ U` sends the class over `i` of a point `x` to the class over `i` of
+`φ x`. It is a selected refinement of `componentCover f U` into the pullback along `φ` of
+`componentCover f' U` (`componentDomainRefinement`), and therefore a vertex map
+`mapperDomainMap φ hφ U : mapper f U → mapper f' U`. The identity of `X` induces the
+identity, a composite induces the composite, and for every selected refinement
+`R : Refinement U V` of target families
+`mapperMap f R` followed by `mapperDomainMap` over `V` equals `mapperDomainMap` over `U`
+followed by `mapperMap f' R`, as an equality of vertex maps. The two domains may lie in
+different universes at this level; `φ` need not be injective, surjective or open, and no
+ordering of component indices is involved. This is the Mapper counterpart of the natural
+transformation `componentNatTrans` of the Reeb component cosheaf, which
+[DMP15-v1](references.md#DMP15-v1) §3.4 induces from a map over the codomain; no numbered
+statement of either source is claimed.
+
+With the two domains in one universe, linear orders on `ComponentIndex f U` and
+`ComponentIndex f' U` supplied independently on the two sides, and any ring `R`,
+the vertex map induces `mapperHomologyDomainMap R φ hφ U n`
+on the ordered-chain homology. It preserves identities and composition, and its square with
+`mapperHomologyMap R f r n` and `mapperHomologyMap R f' r n` commutes for every selected
+refinement `r`. Along a preorder of cover families with selected refinements `r`, the maps
+`mapperHomologyDomainMap` therefore form a morphism of persistence modules
+`mapperHomologyPModuleMap R φ hφ U r n : mapperHomologyPModule R f U r n ⟶
+mapperHomologyPModule R f' U r n`, again compatible with identities and composition. The
+vertex orders are not assumed monotone for `φ`.
+
+For a homeomorphism `e : X ≃ₜ X'` with `f' (e x) = f x`, the inverse homeomorphism satisfies the
+same hypothesis, and the composites of the two induced morphisms are the identities by the
+composition and identity laws. This gives an isomorphism `mapperHomologyPModuleIso` of the
+Mapper homology modules. Consequently, over `ℝ`, the real interleaving distance of the two
+modules is `0`. For step data with an empty initial family and finitely many faces of the
+given degree on both sides, the step diagrams of `f` and `f'` are at bottleneck distance
+`0`; the same holds for the capped centred diagrams of `f` and `f'` for maps to `ℝ`. Here the
+bottleneck distance is obtained from the isometry theorem for finite-constructible modules
+applied separately to the two domains. For a graph isomorphism `e : G ≃g G'` of finite
+graphs and vertex heights with `g' (e v) = h v`, the realization map of `e` is a homeomorphism
+over the piecewise-linear heights (`realizationHomeomorph`, `plHeight_realizationHomeomorph`),
+so every capped centred diagram of `plHeight G h` is at bottleneck distance `0` from that of
+`plHeight G' g'`. Invariance of the diagrams is stated as distance `0`, not as equality of the
+diagrams, which would require an isomorphism-invariance lemma for `moduleDiagram`.
+
+Fixtures. On the single edge, the vertex swap is a graph isomorphism from the heights `(0, 1)`
+to `(1, 0)`; with the labels `0, 1, 2`, base `0`, spacing `1` and the uniform grid of spacing
+`1/4` from `0` to `2`, the capped centred diagrams of the two piecewise-linear heights are at
+bottleneck distance `0` in every degree, while the vertex heights are at distance `1`. The
+identity law is instantiated on the unit interval. The composition law is instantiated by
+`Unit → Bool → unitInterval`: the point selects `false` at height `0`, and the second map
+includes the two endpoints at heights `0` and `1`. Both factors are non-identity maps.
+For the two endpoints of the unit interval at heights `0` and `1` and the single member `ℝ`,
+the inclusion into the interval over the height `x ↦ x` induces an `H₀` map over `ℚ` from a
+space of dimension `2` to a space of dimension `1`, which is not injective, so the domain map
+exists without being an isomorphism. Swapping the labels `0` and `1` sends the 4-cycle with
+heights `0, 1, 2, 1` to a different graph on `Fin 4` with heights `1, 0, 2, 1`; the capped
+centred diagrams of these two heights are at distance `0`. Separately, the reflection of the
+original 4-cycle fixing `0` and `2` preserves its height, and over the level `1` its domain map
+sends the class of the vertex `1` to the class of the vertex `3`, a different component index.
+The identity of the realization of the single edge between the heights `(0, 1)` and `(0, 3/2)`
+does not commute with the heights; no domain map is defined, and the capped fixture bounds the diagrams only by `1/2`.
+
+Not included: equality of the diagrams themselves for homeomorphic heights; compatibility of the
+domain maps with the interleavings `mapperHomologyInterleaving` or with the multinerve maps;
+functoriality in the codomain beyond the pullback identity; homotopy invariance; independence of the
+component orders; executable extraction.
+
 ## Interleaved cover towers and Mapper homology stability
 
 A real cover tower on `Y` is a family `U t : IndexU t → Set Y` for every
@@ -832,6 +901,10 @@ bottleneck distance is `⊤` and the numbers of essential bars differ, although 
 maps differ by `1/2`. On the grid `0, 1/4, 1` of mesh `3/4`, the capped centred
 diagrams of `0` and `1/2` are at distance at least `3/4 > 1/2`, while the
 perturbation bound gives at most `5/4`.
+
+Capped centred diagrams of two heights on homeomorphic domains over `ℝ` are at bottleneck
+distance `0`, in particular for isomorphic finite graphs with corresponding vertex heights
+([height-preserving maps](#height-preserving-maps)).
 
 Not included: coverage of the attained range by a capped stage; diagrams or
 bounds for the `ℤ`-labelled centred tower itself, q-tame or real-decomposition
