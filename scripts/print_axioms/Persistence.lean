@@ -4771,3 +4771,5 @@ set_option linter.auxLemma false
 
 -- Finite-dimensional fibers of the actual canonical finite-hook cover kernel.
 #print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.finitelyPresented_actual_cover_kernel_finiteDimensional
+#print axioms TDA.Persistence.RealInterleaving.interpolatingModule_qTame
+#print axioms TDA.Persistence.RealInterleaving.exists_qTame_interpolating_family

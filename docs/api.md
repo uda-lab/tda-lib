@@ -435,6 +435,15 @@ with zero is equivalent to a zero double-shift structure map. Its interval examp
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
 for the finite nonnegative parameters and witness equations.
 
+For q-tame real modules over a field, an actual `ε`-interleaving gives the
+quotient family `RealInterleaving.exists_qTame_interpolating_family` on the closed
+interval `[0, ε]`. Its endpoints are naturally isomorphic to the input modules,
+each member is q-tame, and every pair has an actual interleaving witness at the
+nonnegative distance between its parameters. This algebraic interpolation result
+does not assert a bottleneck or metric stability theorem. See the
+[real interleaving interpolation](math/real-interleavings.md#q-tame-algebraic-interpolation)
+section for the quotient and the precise scope.
+
 `TDA.Persistence.ModuleScaling` defines positive scaling of real persistence modules by
 reindexing along `t ↦ c⁻¹ * t`. `PModule.scaleShiftIso` compares scaling with shifts,
 `RealInterleaving.scale` transports witnesses with parameter `Real.toNNReal c * ε`, and
