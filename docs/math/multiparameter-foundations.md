@@ -693,9 +693,9 @@ classification component related to
 [Botnan–Oppermann–Oudot–Scoccola, Theorem 2.7(1), v3](https://arxiv.org/html/2208.00300v3).
 The source theorem also asserts exact-structure axioms and finite minimal
 rank-projective resolutions; this result proves neither. It does not cover
-arbitrary pfd real-indexed modules, minimal covers or resolutions,
-choice-independent decomposition, resolution-length bounds, or closure of the
-larger parent scope left open by #501. The focused
+arbitrary pfd real-indexed modules, minimal covers or resolutions, or
+choice-independent decomposition. It also does not establish the associated
+`2n−2` resolution-length bound or signed-bottleneck stability. The focused
 `FinitePresentationRankProjectiveClassificationExamples` module exercises a
 nonzero finite-death hook, a principal upset with nonzero fibers above every
 grade, repeated hook occurrences and the zero/empty-sum boundary.
