@@ -1,0 +1,148 @@
+# Ordinary optimal transport and the finite-Radon boundary problem
+
+The native boundary-plan infimum already equals the collapsed-space reservoir
+infimum for arbitrary finite inputs. Identifying this value with an existing
+ordinary Wasserstein API still needs a compatible optimal-transport package.
+The present Lean/mathlib pin supplies the measure-theoretic ingredients for a
+smaller, fixed-space attainment argument; it does not supply the ordinary
+Wasserstein interface itself.
+
+## Existing boundary-transport results
+
+Let `H` be the strict birth–death half-plane, `δ(x) = (death − birth)/2`, and
+`X = H ⊔ {*}` with collapsed metric
+
+`ρ(x,y) = min(‖x−y‖∞, δ(x)+δ(y))`, `ρ(x,*) = δ(x)`.
+
+For finite Borel measures `μ,ν` on `H`, choose finite `R ≥ μ(H)+ν(H)` and put
+`μ_R = μ + (R−μ(H))δ_*`, with the interior measure pushed into `X`.
+Both reservoir measures have total mass `R`. The topology on `X` is induced by
+`ρ`; it is Polish and has the proved interior Borel identification.
+
+For real `p ≥ 1`, the library proves equality between the infimum of full
+powered boundary-plan costs and the infimum of `ρ^p` over **all** measures with
+reservoir marginals `μ_R,ν_R`. This includes infinite competitor costs and
+does not require atomic inputs. The capacity is independent of the chosen
+admissible `R`; positive capacities admit probability normalization with the
+factor `R^(1/p)`. Self, symmetry, finite-distance bounds from finite
+`p`-persistence, the exact zero-target moment, and the native finite atomic
+and indexed/coalesced bridges are also proved.
+
+The reservoir infimum has a native definition. These results alone do not
+identify it with a separately implemented ordinary Wasserstein distance or
+produce a minimizing measure for general finite inputs. See
+[the exported contracts](../api.md#collapsed-boundary-geometry).
+
+## Compatible API boundary
+
+The library uses Lean **4.33.1** and mathlib
+[`0df444a360eaa60ab8c11dca51a86af692955474`](https://github.com/leanprover-community/mathlib4/tree/0df444a360eaa60ab8c11dca51a86af692955474).
+That source has no `IsCoupling`, `transportCost` or `wassersteinEDist`
+declarations. It does provide the following relevant ingredients:
+
+| Existing mathlib API | Contribution to the missing argument |
+|---|---|
+| `ProbabilityMeasure.continuous_map` | Prescribed marginal equations define a weakly closed set of probability plans. |
+| `isTightMeasureSet_singleton` and `IsTightMeasureSet.prodMk` | All plans with fixed finite Polish marginals form a tight family. |
+| `isCompact_closure_of_isTightMeasureSet` | Tight probability-plan families have compact closure. Closedness then gives compactness of the feasible set. |
+| `FiniteMeasure.continuous_lintegral_boundedContinuousFunction` | The integral of each bounded continuous cost truncation is continuous under weak convergence. |
+| `lintegral_iSup`, `lowerSemicontinuous_iSup` and `LowerSemicontinuousOn.exists_isMinOn` | Increasing truncations give a lower semicontinuous full cost and an attained minimum on a nonempty compact feasible set. |
+
+Pinned sources: [probability maps](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/MeasureTheory/Measure/ProbabilityMeasure.lean),
+[tightness](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/MeasureTheory/Measure/Tight.lean),
+[Prokhorov](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/MeasureTheory/Measure/Prokhorov.lean)
+and [weak integral continuity](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/MeasureTheory/Measure/FiniteMeasure.lean).
+These ingredients are not a packaged coupling minimizer or a Wasserstein
+triangle/separation theorem.
+
+## TauCeti candidates
+
+The [licensed OT source at `575dbdf`](https://github.com/TauCetiProject/TauCeti/tree/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport)
+and the [inspected main snapshot `6a7e27a`](https://github.com/TauCetiProject/TauCeti/tree/6a7e27a62b6dd48620f54667a7a9a9b3d24a2bda)
+both pin Lean **4.36.0-rc1** and mathlib
+`2cabef97b63d3275776b8b060d802de6a6fa1055`. They are not directly compatible
+with this project's pinned toolchain and mathlib. The first main-history
+[`Wasserstein/Basic` snapshot](https://github.com/TauCetiProject/TauCeti/tree/1f12668e9c3a6a3af5b4fc3bbc429191cadee75a)
+already pins Lean **4.34.0-rc2** and mathlib `03616a12cdf1e3f499349f69e80eee82b28745bc`.
+
+The distinct [`releases/v4.33.0` snapshot](https://github.com/TauCetiProject/TauCeti/tree/300a11453493c8aed49d49a49409c79b8fd185c5)
+pins Lean **4.33.0** and mathlib `db584cd6d46c92f209a44c0f1c829460d327499d`.
+It contains gluing and multimarginal constructions, but no coupling/cost,
+existence or Wasserstein modules. Its version name therefore does not supply
+the required OT spine. No claim is made about every uninspected side branch
+or independently maintained fork.
+
+At `575dbdf`, the substantial ordinary APIs include:
+
+| API | Exact role and relevant hypotheses |
+|---|---|
+| `IsCoupling` | The two raw measure marginals, expressed as `Measure.fst` and `Measure.snd`, agree with the prescribed measures. These match the native reservoir marginal equations. |
+| `wassersteinEDist_rpow_eq_transportCost` and `wassersteinEDist_eq_transportCost_rpow` | Identify the `eLpNorm` infimum and the powered-integral infimum for a measurable ground extended distance and a finite nonzero ENNReal exponent. For real `p ≥ 1`, use exponent `ENNReal.ofReal p`. |
+| `wassersteinEDist_smul` | Common finite nonzero measure scaling gives the factor `a^((1/p).toReal)`. Together with the native reservoir normalization, this supplies the requested probability convention. |
+| `exists_isCoupling_eLpNorm_eq_wassersteinEDist` | Produces an actual optimizer on a complete second-countable Borel metric space for finite source mass, a finite nonzero exponent and existence of a coupling. Equal finite reservoir masses provide the last condition; an optimizer is not a caller premise. |
+| `wassersteinEDist_triangle` and `wassersteinEDist_eq_zero_iff` | Sharp triangle uses standard-Borel gluing and finite intermediate mass. Separation uses a genuine metric, Polish/Borel hypotheses, finite source mass and finite nonzero exponent. |
+| `exists_ae_mem_finset_wassersteinEDist_le` | On a separable pseudo-metric space with measurable opens and measurable singletons, approximates a probability law of finite moment at finite exponent `p ≥ 1` and nonzero ENNReal accuracy. Native same-mass approximation additionally needs the interior-support adjustment and common-reservoir mass constraint. |
+
+Sources: [`Coupling`](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Coupling.lean),
+[`Wasserstein/Basic`](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Wasserstein/Basic.lean)
+and [`FiniteSupport`](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Wasserstein/FiniteSupport.lean).
+The full spine includes general coupling and cost laws, weak compactness,
+lower semicontinuity, kernel gluing and Wasserstein norm/metric arguments.
+It is not a single theorem that can be imported independently of its package.
+
+## A bounded native attainment bridge
+
+Attainment of the existing native reservoir value can be separated from that
+full ordinary-OT dependency. Keep every auxiliary plan set on the already
+proved space `X × X`. Normalize the two reservoirs to probability measures;
+their product makes the feasible set nonempty. The pinned APIs above prove
+its weak compactness. For the continuous cost `ρ^p`, the functions
+`min(ρ^p,n)` are bounded continuous nonnegative functions increasing to the
+full cost. Their weakly continuous integrals have the full integral as
+supremum, so the full cost is lower semicontinuous, including at infinite
+values. It therefore attains its minimum.
+
+The proposed exported contract is: for `p ≥ 1` and arbitrary finite Borel
+`μ,ν`, produce an actual reservoir minimizing measure, then an admissible
+boundary minimizing measure by the existing reverse construction and the
+proved equality of infima. Choosing `R = μ(H)+ν(H)+1` handles zero inputs
+without division by zero. Finite `p`-persistence is needed for finite cost,
+not for existence of a minimizer whose value may be infinite. Neither
+compact support nor a Euclidean moment along the diagonal is required.
+
+This is a fixed-space bridge to the native infimum. It needs no generic
+coupling class, ordinary Wasserstein definition or gluing library under TDA
+names. The closed/tight-plan argument can be adapted from
+[TauCeti `Compactness`](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Compactness.lean);
+the specific continuous-cost truncation avoids importing its more general
+lower-semicontinuous approximation layer. This describes an implementation
+route, not an exported general-attainment theorem already in the library.
+
+The remaining obligations have distinct dependencies. Native separation can
+follow attainment by proving that a zero-cost minimizer is concentrated on
+equal collapsed endpoints and then restricting equal reservoir marginals to
+`H`. Sharp native triangle still needs a compatible finite-plan gluing step
+and the `L^p` triangle inequality; the older release's gluing code is a
+candidate for a separate bounded adaptation, not an already compiled bridge.
+Same-mass approximation additionally needs a finite-support construction,
+interior-point adjustment and the reservoir constraint described above.
+
+For identification with an independently maintained ordinary Wasserstein API,
+the recommended dependency decision is a reviewed external backport of its
+required closure to this exact Lean/mathlib pin, with compilation and axiom
+validation. Merely selecting the older release branch is insufficient.
+A project-wide toolchain/mathlib upgrade is a different dependency decision;
+none is made here. The native attainment route does not depend on that choice.
+
+## Source-use boundary
+
+The inspected TauCeti code is [Apache-2.0 licensed](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/LICENSE).
+A source adaptation must retain its applicable notices and identify the
+source revision and modifications. Code availability does not certify a
+compiled backport or authorize a dependency change.
+
+The corrected Divol–Lacombe article has a separate, unresolved article-text
+AI-input/reuse condition in [#505](https://github.com/uda-lab/tda-lib/issues/505).
+Open-access metadata does not establish that permission. The native contract
+and the route above use the repository's mathematical digest and licensed
+Lean sources; they do not claim a new comparison with the article body.

@@ -1111,6 +1111,9 @@ The bridge to an ordinary Wasserstein API, minimizing plans for general finite
 Radon inputs, sharp triangle and separation, and same-mass finite atomic
 approximation remain open
 in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
+The [ordinary-OT dependency map](math/boundary-transport-ot-dependency.md)
+identifies the incompatible package pins, available measure-theoretic APIs and
+the bounded native attainment route.
 
 ### Gaussian signed measures and C₀ universality
 
