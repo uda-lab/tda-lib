@@ -144,8 +144,11 @@ expresses finite presentation by homogeneous cokernels. For finitely presented m
 gives finite coordinate sets outside which comparable structure maps are
 isomorphisms, and `GradedFree.finitelyPresented_exists_pos_structureMap_isIso`
 gives positive right-diagonal slack at every index.
-`GradedFree.finitelyPresented_finiteDimensional` proves finite-dimensional
-fibers over a field; finite generators suffice even without finite relations.
+Over a field and any preorder, `GradedFree.finitelyPresented_finiteDimensional`
+proves every fiber of a finitely presented module finite-dimensional. Its proof
+uses the actual finite free cover and its componentwise surjectivity; finite
+generators suffice, so this consequence needs neither finite relations nor a
+finite indexing poset.
 For a ring and any coordinate dimension, `finitelyPresented_exists_finiteGridKan`
 constructs a finite product grid, its order embedding and an actual natural
 isomorphism from the chosen Mathlib left Kan extension to the original module.
@@ -257,6 +260,9 @@ closure under kernels, minimality, or a resolution-length bound. The focused
 `FinitePresentationHookKernelExamples` module applies the result to the
 nonzero relation presentation over `ℚ` and `ZMod 2`, and checks empty-family
 and zero-dimensional zero-module boundaries.
+`finitelyPresented_actual_cover_kernel_finiteDimensional` applies the
+finite-dimensional fiber theorem to the actual constructed kernel using only
+the original module's finite-presentation hypothesis.
 
 `IsRankDeflation` means that a natural map is the quotient of an actual
 rank-exact sequence. Its `rankExact_kernel` law supplies the categorical

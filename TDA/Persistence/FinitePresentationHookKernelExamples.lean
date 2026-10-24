@@ -1,4 +1,5 @@
 import TDA.Persistence.FinitePresentationHookKernel
+import TDA.Persistence.FinitePresentationFiniteDimensional
 import TDA.Persistence.FinitePresentationKanExamples
 
 /-!
@@ -10,6 +11,8 @@ families separately.
 -/
 
 set_option autoImplicit false
+
+universe u
 
 namespace TDA.Persistence.FinitePresentationHookKernel.Examples
 
@@ -93,5 +96,30 @@ theorem zero_empty_index_actual_cover_kernel_finitelyPresented
   obtain ⟨G, A, hA, e, _, _, hkernel⟩ :=
     GradedFree.finitelyPresented_exists_finiteHookRankExactCoverKernel hfp
   exact ⟨G, A, hA, e, hkernel⟩
+
+/-- The actual finite-hook cover kernel supplied for a finitely presented
+real-coordinate module has finite-dimensional fibers. The only input about
+the original module is its finite presentation. -/
+theorem finitelyPresented_actual_cover_kernel_finiteDimensional
+    {k : Type u} [Field k] {n : ℕ}
+    {M : PModule.{u,0,u} k (Fin n → ℝ)}
+    (hM : FinitelyPresented (R := k) (P := Fin n → ℝ) M) :
+    ∃ (G : CoordinateGrid n) (A : PModule.{u,0,u} k G.Point)
+      (hA : ∀ p, FiniteDimensional k (A.obj p))
+      (e : G.lan.obj A ≅ M),
+      IsRankExact
+        (G.lan.map (kernel.ι (FiniteHookDeflation.π A)) ≫
+          (G.finiteHookDeflationLanIso A).hom)
+        ((G.finiteHookDeflationLanIso A).inv ≫
+          G.lan.map (FiniteHookDeflation.π A) ≫ e.hom) ∧
+      IsRankProjective (⨁ fun t => G.embeddedCoverFamily A t) ∧
+      ∀ p, FiniteDimensional k
+        ((kernel ((G.finiteHookDeflationLanIso A).inv ≫
+          G.lan.map (FiniteHookDeflation.π A) ≫ e.hom)).obj p) := by
+  obtain ⟨G, A, hA, e, hrank, hprojective, hkernel⟩ :=
+    GradedFree.finitelyPresented_exists_finiteHookRankExactCoverKernel hM
+  refine ⟨G, A, hA, e, hrank, hprojective, ?_⟩
+  intro p
+  exact GradedFree.finitelyPresented_finiteDimensional _ hkernel p
 
 end TDA.Persistence.FinitePresentationHookKernel.Examples
