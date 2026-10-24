@@ -731,9 +731,11 @@ compact, and powered and rooted optima are attained at each real p≥1. Constant
 unit masses recover the existing transport API exactly. Symmetry, equivalent
 relabelling and weighted diagonal-moment formulas for empty inputs are included.
 `FiniteWeightedDiagram` is a finitely supported mass function on the strict
-upper half-plane; its transport consumers inherit these results. This
-finite weighted model supplies no all-Radon coupling identification or weighted
-exponent limit. See [finite real-weight boundary transport](math/finite-weighted-boundary-transport.md).
+upper half-plane; its transport consumers inherit these results.
+`BoundaryTransportAtomic` identifies its native matrix optima with boundary
+transport over all Borel plans between the associated atomic measures, as
+described below. A weighted exponent limit remains outside this API. See
+[finite real-weight boundary transport](math/finite-weighted-boundary-transport.md).
 
 ## Gaussian persistence images
 
@@ -992,9 +994,10 @@ claims concern finite graph-PL inputs, not arbitrary higher-dimensional Reeb spa
 
 Finite GH–Rips stability and sampling compare full diagrams of finite metric spaces;
 the possibly infinite sampling target has no diagram in these results. Finite
-weighted boundary transport permits real masses but does not identify all Radon
-couplings. Finite-line adapters construct modules over a ring; rectangular
-matrix-sequence adapters require a commutative ring. Over a field, both reuse
+weighted boundary transport permits real masses, and its canonical atomic
+measures have the same optima over all Borel boundary plans. Attainment for
+general finite Radon inputs remains open. Finite-line adapters construct modules
+over a ring; rectangular matrix-sequence adapters require a commutative ring. Over a field, both reuse
 finite interval classification without computing barcodes over arbitrary fields. Gaussian
 C₀ universality and signed-measure separation concern the full birth–death plane;
 positive persistence measures require a strictly positive weight and finite weighted
@@ -1057,9 +1060,28 @@ diagonal persistence moment, for every finite-mass input and p at least one.
 It gives both the reciprocal-p root formula and the p-th power of distance to
 zero, including when the moment is infinite.
 
-The bridge to an ordinary Wasserstein API, minimizing Radon plans, sharp triangle
-and separation, native weighted atomic compatibility and finite atomic
-approximation remain open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
+`BoundaryTransport.atomicMeasure` assigns each native finite weighted
+diagram its positive atomic measure on the strict half-plane. Its singleton
+masses are exactly the diagram's coefficients, so coincident terms in a
+finitely supported sum contribute their combined mass. Every feasible native
+matrix gives an admissible measure plan with exactly its native powered cost.
+Conversely, every Borel plan between these atomic measures gives a feasible
+matrix by taking its interior singleton-pair masses. The remaining row and
+column masses equal its deletion and insertion masses, whose nearest-diagonal
+charges bound the original plan's charges. This comparison permits arbitrary
+diagonal endpoints, including a continuous distribution of them, and infinite
+competitor costs.
+
+`boundaryTransportPowerValue_atomic_eq_native` identifies the all-plan powered
+infimum with the native finite weighted optimum for nonnegative exponents.
+For p at least one, the reciprocal-p roots agree as well. The native finite
+optimizer supplies an actual minimizing Borel boundary plan; fractional masses
+and zero inputs are included.
+
+The bridge to an ordinary Wasserstein API, minimizing plans for general finite
+Radon inputs, sharp triangle and separation, general indexed-to-coalesced
+optimizer compatibility and same-mass finite atomic approximation remain open
+in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 
 ### Gaussian signed measures and C₀ universality
 

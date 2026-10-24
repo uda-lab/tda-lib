@@ -71,6 +71,33 @@ Other examples exercise a split to two distinct targets, zero-weight
 labels, empty inputs, repeated unit occurrences, and fractional masses in the
 positive weighted-diagram object.
 
+## Atomic measures and all boundary plans
+
+For a native diagram `D`, `BoundaryTransport.atomicMeasure D` places mass
+`D(x)` at each support point `x`. A sum of coefficients at the same point
+therefore gives one atom with their combined mass. The measure has finite total
+mass, with no integrality or probability normalization requirement.
+
+`BoundaryTransportAtomic` converts every feasible native matrix into a Borel
+boundary plan by combining its interior-pair atoms with nearest-diagonal
+deletion and insertion atoms. Its integral powered cost is exactly the matrix
+cost. In the other direction, take any Borel boundary plan between the two
+atomic measures. The masses of its interior singleton pairs define a feasible
+matrix. The remaining row and column masses are exactly its deletion and
+insertion masses. Moving those boundary endpoints to the nearest diagonal
+points can only reduce their charges for a nonnegative exponent. The argument
+retains extended nonnegative integral values, so a competitor may have infinite
+cost or continuously distributed, non-nearest diagonal endpoints.
+
+Consequently `boundaryTransportPowerValue_atomic_eq_native` identifies the
+infimum over all such plans with
+`ENNReal.ofReal (FiniteWeightedDiagram.powerBoundaryTransportCost p D E)`
+for `p≥0`. For `p≥1`, the rooted values agree as well. Applying the native finite attainment theorem
+constructs a genuine minimizing Borel plan. This proves the canonical
+finite-diagram bridge; equality between a general indexed presentation with
+repeated coordinates and its coalesced native optimum requires a further
+compatibility theorem.
+
 ## Sources and scope
 
 Figalli–Gigli introduced boundary transport in their original bounded-domain
@@ -79,8 +106,9 @@ and §3.2 Lemma 3.2, supply the persistence-measure setting and the pair,
 deletion and insertion cost families used here. The library proves a finite
 real-weight reservoir adaptation with maximum ground norm. Finite-product
 compactness and the extreme value theorem are taken from the pinned mathlib.
-This does not establish a conversion to every Radon coupling, the full
-collapsed-metric identification of Proposition 3.7, or infinite-diagram theory.
+The atomic bridge compares every Borel boundary plan for native finite
+diagrams. Ordinary Wasserstein API integration, minimizing plans for general
+finite Radon inputs and infinite-diagram theory remain outside this result.
 
 The existing unit-occurrence exponent limits remain unchanged. The weighted
 extension here proves neither an exponent limit nor uniformity over arbitrary
