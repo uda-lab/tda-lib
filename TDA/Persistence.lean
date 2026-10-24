@@ -290,3 +290,5 @@ import TDA.Persistence.CoordinateGridProjective
 import TDA.Persistence.CoordinateGridHook
 import TDA.Persistence.FinitePresentationHookCover
 import TDA.Persistence.FinitePresentationHookKernel
+import TDA.Persistence.FinitePresentationRankProjectiveClassification
+import TDA.Persistence.FinitePresentationRankProjectiveClassificationExamples
