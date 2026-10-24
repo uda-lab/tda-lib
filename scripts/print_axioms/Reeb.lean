@@ -3264,3 +3264,20 @@ import TDA
 #print axioms TDA.Reeb.Examples.RGraphTranslation.emptyGraph_isEmpty
 #print axioms TDA.Reeb.Examples.RGraphTranslation.empty_translate_distance
 #print axioms TDA.Reeb.Examples.RGraphTranslation.empty_translate_distance_ne
+
+-- TDA.Reeb.InterleavingCardinality: cardinality obstructions for interleavings of interval precosheaves.
+#print axioms TDA.Reeb.Interleaving.range_map_subset_range_ψ
+#print axioms TDA.Reeb.Interleaving.card_range_map_le
+#print axioms TDA.Reeb.Interleaving.card_range_map_add_le
+#print axioms TDA.Reeb.Interleaving.finite_of_injective
+#print axioms TDA.Reeb.Interleaving.card_le_of_injective
+#print axioms TDA.Reeb.Interleaving.isEmpty_of_card_lt_card_range
+#print axioms TDA.Reeb.le_interleavingDistance_of_forall_exists_card_lt
+#print axioms TDA.Reeb.le_interleavingDistance_of_forall_exists_card_lt_symm
+#print axioms TDA.Reeb.interleavingDistance_eq_top_of_card_ne
+#print axioms TDA.Reeb.RGraph.geometricInterleavingDistance_eq_top_of_card_ne
+
+-- TDA.Reeb.InterleavingCardinalityExamples: cardinality obstruction fixtures.
+#print axioms TDA.Reeb.Examples.InterleavingCardinality.point_distance_eq_one_of_card
+#print axioms TDA.Reeb.Examples.InterleavingCardinality.isEmpty_of_nonempty_of_isEmpty_of_finite
+#print axioms TDA.Reeb.Examples.InterleavingCardinality.geometricInterleavingDistance_eq_top_of_isEmpty_of_nonempty_of_card

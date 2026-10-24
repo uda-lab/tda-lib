@@ -498,10 +498,60 @@ are attained there, and the upper bound `edist h g` is not. Minimal displacement
 on a single edge, `(0, 1)` against `(-1, 1)` has equal maxima and distance exactly `1`. These
 statements are library results.
 
+**Component counts.** If no vertex height lies in `I`, the incidence graph over `I` has no edges,
+and its components are the active edges (`cellComponentsEquivActiveEdges`,
+`card_cellComponents_eq_card_activeEdges`). If `h w ∈ I`, `EndpointCoverage G h I` holds and every
+vertex with height in `I` is `w` or adjacent to `w`, the incidence graph over `I` is connected
+(`card_cellComponents_eq_one`). At `⊤` the interval components of `plHeight G h` are as many as
+the connected components of `G` (`card_intervalComponents_plHeight_top`). With the cardinality
+obstruction of `reeb-interleaving-distance.md`, finite graphs `G` on `V` and `G'` on `V'` with
+different numbers of connected components give
+`geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G' h') = ⊤` for all
+heights (`geometricInterleavingDistance_graphPLReebGraph_eq_top_of_card_ne`). This is a statement
+about the distance only; no map between the two graphs is involved.
+
+**Merge-height change.** Let `mergeY` be the tree on `Fin 4` with edges `0 — 2`, `1 — 2`, `2 — 3`,
+and `mergeHeights a M = (0, 0, a, M)`: two leaves at `0` merge at the apex `2` at height `a`, below
+the top vertex `3` at `M`. For `0 < a < b ≤ 2a` and `b ≤ M`,
+
+```lean
+geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights a M))
+  (graphPLReebGraph mergeY (mergeHeights b M)) = ENNReal.ofReal (b - a)
+```
+
+(`geometricInterleavingDistance_mergeY`). The value is `edist (mergeHeights a M)
+(mergeHeights b M)` (`edist_mergeHeights`), while both extremal displacements are `0`
+(`max_ofReal_abs_sub_mergeHeights_eq_zero`). The upper bound is the vertex budget `b - a`. For the lower bound fix `ε < b - a` and `I = (0, b - 2ε)`, nonempty because
+`ε < b - a ≤ b/2`. Then `T_ε I = (-ε, b - ε)` and `T_ε T_ε I = (-2ε, b)`.
+
+- With the apex at `b`, no vertex height lies in `I`, the two leaf edges are active and the top
+  edge is not, so there are two components over `I` (`card_cellComponents_mergeHeights_ioo`).
+  Over `(-2ε, b)` the apex and the top vertex are still absent, and the two leaf edges stay in
+  different components; for `ε > 0` each leaf vertex joins the component of its edge. The
+  restriction from `I` is injective (`injective_cellComponentFunctor_mergeHeights_map`).
+- With the apex at `a`, `-ε < a < b - ε`, every edge contains the apex and every other vertex is
+  adjacent to it, so there is one component over `(-ε, b - ε)`
+  (`card_cellComponents_mergeHeights_eq_one`).
+
+The obstruction `1 < 2` holds for every `ε < b - a`, so `ENNReal.ofReal (b - a)` is a lower bound.
+The hypothesis `b ≤ 2a` is used by this obstruction family only: for `b > 2a` and `ε` near
+`b - a`, the interval `(0, b - 2ε)` is empty. The distance for `b > 2a` is not determined; neither
+an upper bound below `b - a` nor the value `b - a` is asserted. The injectivity hypothesis of the
+obstruction cannot be dropped: for `(0, 0, a, M)` against `(0, 0, 0, M)` with `ε = a` and
+`I = (0, a/2)`, the counts are again `2` and `1`, but the apex height `a` lies in
+`T_ε T_ε I = (-2a, 5a/2)`, both leaf edges reach one component there, and the vertex budget `a`
+gives an `a`-interleaving (`mergeY_injective_needed`). The production module is
+`TDA/Mapper/GraphPLReebMergeHeight.lean` (namespace `TDA.Mapper.GraphPL`), with fixtures in
+`TDA/Mapper/GraphPLReebMergeHeightExamples.lean`: the numeric instance `a = 2`, `b = 3`, `M = 4` at
+distance `1` with extremal and height-range bounds `0` (`mergeY_numeric`), the negative control
+above, and two disjoint edges against a single edge at distance `⊤`
+(`twoEdges_edge_geometricInterleavingDistance`). These are library results.
+
 Not claimed here: equality of the Reeb-quotient distance with `edist h g` beyond the exactness
-criterion above, including exact distance for non-translation perturbations; the Hausdorff
-distance of height ranges for disconnected graphs beyond the extremal bounds; comparison of different
-graphs or edge sets; constructible thickening; any distance or interleaving comparison of
+criterion and the merge-height value above; exact distances for other non-translation
+perturbations, and for the merge tree with `b > 2a`; the Hausdorff
+distance of height ranges for disconnected graphs beyond the extremal bounds; comparison maps
+between different graphs or edge sets; constructible thickening; any distance or interleaving comparison of
 realizations beyond the vertex-height bounds above; Definition 4.36 of de Silva, Munch and Patel;
 trees or simple connectivity; naturality across changes of graph or heights; general finite CW
 complexes; another realization; algorithms.

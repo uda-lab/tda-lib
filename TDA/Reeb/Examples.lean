@@ -44,3 +44,4 @@ import TDA.Reeb.QuotientComparisonSineCurveExamples
 import TDA.Reeb.GraphTreeContractionExamples
 import TDA.Reeb.IntervalTranslationExamples
 import TDA.Reeb.RGraphTranslationExamples
+import TDA.Reeb.InterleavingCardinalityExamples
