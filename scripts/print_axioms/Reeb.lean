@@ -3299,3 +3299,16 @@ import TDA
 #print axioms TDA.Reeb.interleavingDistance_scalePre_neg_one
 #print axioms TDA.Reeb.intervalComponents_smul
 #print axioms TDA.Reeb.interleavingDistance_intervalComponents_smul
+
+-- Interleavings induced by height-controlled map pairs.
+#print axioms TDA.Reeb.HeightMapPair.natTrans
+#print axioms TDA.Reeb.HeightMapPair.natTransSymm
+#print axioms TDA.Reeb.HeightMapPair.natTrans_app_mk
+#print axioms TDA.Reeb.HeightMapPair.natTransSymm_app_mk
+#print axioms TDA.Reeb.HeightMapPair.interleaving
+#print axioms TDA.Reeb.HeightMapPair.interleaving_φ
+#print axioms TDA.Reeb.HeightMapPair.interleaving_ψ
+#print axioms TDA.Reeb.HeightMapPair.symm
+#print axioms TDA.Reeb.HeightMapPair.interleavingDistance_le
+#print axioms TDA.Reeb.HeightMapPair.ofUniformBound
+#print axioms TDA.Reeb.HeightMapPair.interleaving_eq_perturbationInterleaving

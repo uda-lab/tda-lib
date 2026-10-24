@@ -57,3 +57,4 @@ import TDA.Reeb.IntervalTranslation
 import TDA.Reeb.RGraphTranslation
 import TDA.Reeb.InterleavingCardinality
 import TDA.Reeb.IntervalScaling
+import TDA.Reeb.HeightMapPair

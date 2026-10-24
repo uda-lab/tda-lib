@@ -422,6 +422,30 @@ The fixtures are `TDA/Reeb/GraphPLVertexPerturbationExamples.lean` and
   differs from `plHeight edgeGraph 0` by `1` at the midpoint, so their uniform distance is at
   least `1` (`bump_not_controlled`).
 
+## Height-controlled maps between graph-PL spaces
+
+For continuous heights `f : C(X, ℝ)` and `g : C(X', ℝ)`, a `HeightMapPair f g ε` consists of
+continuous maps in both directions with height error at most `ε`. Each composite must be joined
+to the identity by paths whose height remains within `2ε` of its starting value. The pair induces
+an `ε`-interleaving of `intervalComponents f` and `intervalComponents g`, hence bounds their
+interleaving distance. Identity maps and constant paths recover `perturbationInterleaving` from a
+pointwise perturbation bound.
+
+For finite graph vertex types, applying the same criterion to the piecewise-linear heights bounds
+the geometric interleaving distance of their Reeb quotients
+(`geometricInterleavingDistance_graphPLReebGraph_le_of_heightMapPair`). The fixtures include a
+zero-distance collapse from the zero-height interval to the zero-height point, the exact distance
+`1/2` from an edge of height range `[0, 1]` to a point at height `1/2`, recovery of the fixed-graph
+perturbation interleaving, and a discrete two-point-to-one-point negative control whose distance
+is `⊤`.
+
+This sufficient criterion has no converse or functional-distortion identity. No optimality claim
+is made for the `2ε` path-deviation allowance. No comparison morphism in `RGraphCat`, map of Reeb
+quotients, or consequence for Mapper covers, reconstructions or homology is established. The
+criterion is a library result;
+its fixed-space specialization recovers the perturbation result attributed above to de Silva, Munch
+and Patel.
+
 ## Source correspondence
 
 This is a library formulation of the standard combinatorial description of path components of
@@ -593,14 +617,15 @@ fixture records the limit of this obstruction family. The scaling and branch-hei
 are library results; no numbered theorem of de Silva–Munch–Patel states scaling homogeneity.
 Their Definition 4.4 and Theorem 4.6(i) supply the distance and perturbation-bound context.
 Scaling on `RGraphCat`, commutation with the Reeb quotient or geometric smoothing, nonlinear
-height changes, scaling Mapper covers or Mapper persistence modules, and comparison maps
-between different graphs are outside these results.
+height changes, scaling Mapper covers or Mapper persistence modules, maps between graph objects in `RGraphCat` or maps of Reeb quotients are outside these
+scaling results.
 
 Not claimed here: equality of the Reeb-quotient distance with `edist h g` beyond the exactness
 criterion and the merge/split values above; exact distances for other
 perturbations, and for the merge tree with `b > 2a`; the Hausdorff
-distance of height ranges for disconnected graphs beyond the extremal bounds; comparison maps
-between different graphs or edge sets; constructible thickening; any distance or interleaving comparison of
+distance of height ranges for disconnected graphs beyond the extremal bounds; maps between graph
+objects in `RGraphCat` or maps of Reeb quotients; Mapper cover, reconstruction or homology
+consequences of `HeightMapPair`; constructible thickening; any distance or interleaving comparison of
 realizations beyond the vertex-height bounds above; Definition 4.36 of de Silva, Munch and Patel;
 trees or simple connectivity; naturality across changes of graph or heights; general finite CW
 complexes; another realization; algorithms.

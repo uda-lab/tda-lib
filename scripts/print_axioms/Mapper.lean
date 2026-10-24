@@ -1304,3 +1304,11 @@ import TDA
 #print axioms TDA.Mapper.GraphPLReebScalingExamples.mergeY_eq_from_bracket
 #print axioms TDA.Mapper.GraphPLReebScalingExamples.zero_scaling_fails
 #print axioms TDA.Mapper.GraphPLReebScalingExamples.obstruction_interval_empty
+
+-- Graph-PL distance bound from a height-controlled map pair and fixtures.
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_le_of_heightMapPair
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.interval_to_point_distance_zero
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.edge_to_point_distance_eq_half
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.edge_pair_recovers_perturbation
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.bool_to_point_path_condition_fails
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.bool_to_point_distance_eq_top
