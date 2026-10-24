@@ -132,6 +132,16 @@ requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`
 constructs lifts of finite-death hook morphisms in that domain.
 `HookInfinity.homEquivFiber` identifies principal-upset morphisms with birth-fiber
 vectors; surjectivity at birth suffices to lift them over any ring and preorder.
+`IsRankProjective` states the relative lifting property against actual rank-exact
+sequences. Finite-death hooks, principal upsets and their finite categorical
+biproducts satisfy it; natural isomorphisms and retracts preserve it. For a pfd
+module M on a finite poset, `FiniteHookDeflation.π M` is an actual natural
+surjection from a finite occurrence-indexed hook sum. Fiber and structure-map
+kernel bases prove surjectivity and all dying-element lifts. `rankExact` gives
+its actual rank-exact kernel sequence; both source and kernel are pfd.
+`isRankProjective_iff_retract` characterizes rank projectivity by splitting this
+constructed map. This proves enough relative projectives on finite posets,
+without claiming minimality, a classification of retracts or signed stability.
 `FinitePresentationLifting` proves that maps from a presented module lift through
 a natural transformation surjective at generator grades and injective at relation
 grades. With bijectivity at generator grades, the lift is unique. For coordinatewise
