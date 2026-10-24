@@ -11,6 +11,7 @@ import TDA.Persistence.RankSchanuelExamples
 import TDA.Persistence.FinitePresentationKanExamples
 import TDA.Persistence.CoordinateGridKanExamples
 import TDA.Persistence.CoordinateGridHookExamples
+import TDA.Persistence.FinitePresentationHookKernelExamples
 import TDA.Persistence.CrossPresentationExamples
 import TDA.Persistence.CrossPresentationConverseExamples
 import TDA.Persistence.ConstructibleExamples

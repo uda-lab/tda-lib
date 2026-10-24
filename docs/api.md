@@ -220,6 +220,28 @@ transition, principal-upset tails, repeated and mixed occurrences, empty and
 zero-dimensional cases, characteristic two, and consumers of the cover
 theorem over `ℚ` and `ZMod 2`.
 
+`GradedFree.pfd_finitelyPresented_of_finite_poset` constructs a genuine finite
+graded-free presentation of every pointwise finite-dimensional module on a
+finite poset. Its generator and relation occurrences are finite basis indices
+of the fibers and component kernels, and the componentwise image/kernel
+equality identifies the actual quotient with the input. For a finite
+coordinate grid, `CoordinateGrid.lanFreeIso` transports each finite free
+occurrence sum through the actual Lan hook comparison, while
+`GradedFree.finitelyPresented_lan_of_finiteGrid` conjugates the actual
+relation map and uses preservation of its cokernel to prove that Lan preserves
+finite presentation. Finally,
+`GradedFree.finitelyPresented_exists_finiteHookRankExactCoverKernel` extends
+the finite-dimensional grid kernel presentation and identifies its actual
+Lan with the categorical kernel of the displayed `finiteHookDeflationLanIso`
+cover map. Starting only from finite presentation of the original module, the
+theorem returns this constructed finite-hook rank-exact cover, proves its
+cover term relatively rank projective, and proves its actual categorical
+kernel finitely presented. It does not assert generic finite-presentation
+closure under kernels, minimality, or a resolution-length bound. The focused
+`FinitePresentationHookKernelExamples` module applies the result to the
+nonzero relation presentation over `ℚ` and `ZMod 2`, and checks empty-family
+and zero-dimensional zero-module boundaries.
+
 `IsRankDeflation` means that a natural map is the quotient of an actual
 rank-exact sequence. Its `rankExact_kernel` law supplies the categorical
 kernel sequence; `id` and `comp` prove identity and composition closure.
