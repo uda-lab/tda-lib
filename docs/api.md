@@ -597,8 +597,16 @@ decorated point multiplicity with its occurrence count in the existing finite
 `Rips.diagram`, including essential bars. The coefficient field and vertex
 type must currently share a Lean universe for this theorem because the existing
 rank/barcode bridge has that restriction; the mathematical compatibility holds
-over every field. Bottleneck stability for the locally finite diagram of a
-general totally bounded space remains open. See
+over every field. `LocallyFiniteDiagramBottleneck` constructs a countably
+supported, locally finite decorated occurrence diagram from any q-tame real
+module and defines its extended matching-cost infimum. `Diagram.toLocallyFinite`
+embeds a finite diagram only with an explicit `Diagram.IsPositive` proof, and
+`bottleneck_toLocallyFinite` proves finite bottleneck compatibility on that
+positive domain. `RipsQTameBottleneck` uses the Rips multiplicity theorem to
+prove the corresponding finite Rips statement between two finite metric spaces.
+Endpoint decorations remain in multiplicity while only real endpoints enter
+matching costs. Algebraic stability and infinite-space Hausdorff/Gromov–Hausdorff
+diagram bounds remain unproved. See
 [the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
 `TDA.Persistence.RipsHausdorffInterleaving` compares the actual Rips homology
