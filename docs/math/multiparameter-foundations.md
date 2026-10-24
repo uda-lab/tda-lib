@@ -512,8 +512,56 @@ nonzero dying images, zero base change and characteristic two.
 These prove the deflation-side closure laws in
 [Botnan–Oppermann–Oudot–Scoccola, §2.12](https://arxiv.org/html/2208.00300v3),
 including the pullback step used in Appendix A's Lemma A.1. They do not
-establish the full exact structure, its inflation/pushout laws, persistent
-Schanuel or signed barcode stability.
+establish the full exact structure or its inflation/pushout laws.
+
+## One-step persistent Schanuel
+
+Fix a field k and coordinatewise ordered ℝⁿ. Suppose K→P→M and L→Q→N
+are rank-exact short exact sequences and P,Q are rank projective. The
+rank-exactness hypothesis includes pointwise finite dimensionality; no
+finite grid or finite presentation is required here. An actual
+ε-interleaving i between M and N, for any finite ε≥0, induces an actual
+ε-interleaving
+
+\[
+P\oplus L[\varepsilon]\quad\longleftrightarrow\quad K[\varepsilon]\oplus Q.
+\]
+
+Here A[ε](a)=A(a+ε). This is the rank-exact specialization of
+[Botnan–Oppermann–Oudot–Scoccola, Appendix A Lemma A.1](https://arxiv.org/html/2208.00300v3).
+`RankSchanuel.interleavingOfSequences` uses the original K and L; it does
+not require chosen sections or identifications with categorical kernels.
+
+Write α:P→M and β:Q→N for the quotient maps. Form the crossed pullbacks
+X=Q[ε]×_{N[ε]}P and Y=P[ε]×_{M[ε]}Q, using α followed by i's forward
+map, and β followed by its reverse map. A vector of X(a) is a compatible
+pair (q,p), with q in Q(a+ε) and p in P(a). The forward map sends it to
+(P(a→a+2ε)(p),q) in Y(a+ε). Naturality and the interleaving equations
+prove compatibility. The symmetric map gives the reverse direction;
+both composites are the corresponding double transitions. The public
+projection laws expose these coordinates without unfolding the proofs.
+This crossed-pullback interleaving only requires a coefficient ring.
+
+Over the field, rank-exact pullback closure makes X→P and Y→Q
+rank-exact deflations. Relative projectivity lifts identity to derive
+their sections. Mathlib's splitting theorem and its pullback-kernel and
+shift-kernel comparisons then identify X with P⊕(ker β)[ε] and Y with
+(ker α)[ε]⊕Q. `IsPointwiseShortExact.kernelIso` identifies K with ker α
+and L with ker β, preserving the original inclusions. Transporting the
+constructed maps proves the stated interleaving with the same ε.
+
+At ε=0 and a common quotient, the zero-shift comparison gives
+`RankSchanuel.kernelSumIso`. Concrete consumers use two-copy and three-copy
+covers of an unbounded planar hook. The first kernel inclusion is the
+diagonal (1,−1), so the given-sequence theorem genuinely transports a
+noncanonical kernel term. Both actual kernels are nonzero, including in
+characteristic two. A principal-upset consumer detects a nonzero forward
+map at positive width through its public projection law. Zero modules
+and n=0 are also allowed; ℝ⁰ has one grade, rather than no grades.
+
+This one-step theorem is an input to persistent Schanuel for resolutions.
+It does not construct finite minimal resolutions, bound their length or
+prove signed barcode stability.
 
 ## Attainment on real finite-constructible modules
 

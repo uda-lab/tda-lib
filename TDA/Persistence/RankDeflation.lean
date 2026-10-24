@@ -96,6 +96,34 @@ theorem element_ext (p : P) {x y : (pullback π f).obj p}
     mk π f p 0 0 (by simp) = 0 := by
   apply element_ext π f p <;> simp
 
+variable {V : Type u} [AddCommGroup V] [Module R V]
+
+/-- Compatible linear maps give a linear map into the actual pullback fiber. -/
+noncomputable def liftLinear (p : P) (a : V →ₗ[R] M.obj p) (b : V →ₗ[R] T.obj p)
+    (h : ∀ x, (π.app p).hom (a x) = (f.app p).hom (b x)) :
+    V →ₗ[R] (pullback π f).obj p where
+  toFun x := mk π f p (a x) (b x) (h x)
+  map_add' x y := by
+    apply element_ext π f p
+    · simp only [fst_mk, map_add]
+    · simp only [snd_mk, map_add]
+  map_smul' c x := by
+    apply element_ext π f p
+    · simp only [fst_mk, map_smul, RingHom.id_apply]
+    · simp only [snd_mk, map_smul, RingHom.id_apply]
+
+/-- The first projection of a linear pullback lift is the given first map. -/
+@[simp] theorem fst_liftLinear (p : P) (a : V →ₗ[R] M.obj p) (b : V →ₗ[R] T.obj p)
+    (h : ∀ x, (π.app p).hom (a x) = (f.app p).hom (b x)) (x : V) :
+    ((pullback.fst π f).app p).hom (liftLinear π f p a b h x) = a x :=
+  fst_mk π f p (a x) (b x) (h x)
+
+/-- The second projection of a linear pullback lift is the given second map. -/
+@[simp] theorem snd_liftLinear (p : P) (a : V →ₗ[R] M.obj p) (b : V →ₗ[R] T.obj p)
+    (h : ∀ x, (π.app p).hom (a x) = (f.app p).hom (b x)) (x : V) :
+    ((pullback.snd π f).app p).hom (liftLinear π f p a b h x) = b x :=
+  snd_mk π f p (a x) (b x) (h x)
+
 end Ring
 
 section Field

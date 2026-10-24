@@ -141,7 +141,8 @@ def zeroEquivIso : CoordinateInterleaving 0 M N ≃ (M ≅ N) where
     change (e.hom ≫ (zeroIso N).inv) ≫ (zeroIso N).hom = e.hom
     simp [Category.assoc]
 
-private theorem twice_le (ε : ℝ≥0) (a : Fin n → ℝ) :
+/-- Every coordinate grade precedes its double nonnegative translate. -/
+theorem twice_le (ε : ℝ≥0) (a : Fin n → ℝ) :
     a ≤ translation ε (translation ε a) := by
   intro j
   change a j ≤ (a j + (ε : ℝ)) + (ε : ℝ)
@@ -158,7 +159,8 @@ private theorem twice_le (ε : ℝ≥0) (a : Fin n → ℝ) :
   erw [← M.map_comp]
   congr 1
 
-private def ofStructureMapEquations (f : M ⟶ (shift ε).obj N)
+/-- Construct an interleaving from its two pointwise structure-map equations. -/
+def ofStructureMapEquations (f : M ⟶ (shift ε).obj N)
     (g : N ⟶ (shift ε).obj M)
     (hf : ∀ a, f.app a ≫ g.app (translation ε a) = structureMap M (twice_le ε a))
     (hg : ∀ a, g.app a ≫ f.app (translation ε a) = structureMap N (twice_le ε a)) :
