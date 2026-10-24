@@ -215,7 +215,10 @@ imply categorical indecomposability, including unbounded supports.
 `Hook.nonempty_iso_iff` retains both finite endpoints, and the corresponding
 principal-upset law retains its birth; finite and infinite death cannot be
 isomorphic. Death at or before birth gives the zero hook. These are results
-about individual hooks; uniqueness of finite hook decompositions remains separate.
+about individual hooks. `FiniteRankProjectiveClassification.RankProjectiveHookTag`
+records either a strict finite birth/death pair or the birth of a principal
+upset; `rankProjectiveHookSum_multiplicity_unique` proves that isomorphic finite
+sums of nonzero hooks have the same multiplicity for each tag.
 `IsRankProjective` states the relative lifting property against actual rank-exact
 sequences. Finite-death hooks, principal upsets and their finite categorical
 biproducts satisfy it; natural isomorphisms and retracts preserve it. For a pfd
@@ -225,7 +228,10 @@ kernel bases prove surjectivity and all dying-element lifts. `rankExact` gives
 its actual rank-exact kernel sequence; both source and kernel are pfd.
 `isRankProjective_iff_retract` characterizes rank projectivity by splitting this
 constructed map. This proves enough relative projectives on finite posets,
-without claiming minimality, a classification of retracts or signed stability.
+without claiming minimality or signed stability. For pointwise finite-dimensional
+modules on a finite poset, `rankProjective_iff_exists_canonical_subfamily`
+characterizes rank projectivity exactly by isomorphism to a finite selection of
+the actual cover occurrences, retaining repeated hooks.
 
 Over a field, `IsPointwiseShortExact.of_iso` and `IsRankExact.of_iso` transport
 actual short exact and rank-exact sequences along natural isomorphisms,

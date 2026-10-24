@@ -54,6 +54,8 @@ import TDA.Persistence.ConstructibleClosure
 import TDA.Persistence.HookInfinity
 import TDA.Persistence.GeneratedUpsetResolution
 import TDA.Persistence.HookEndomorphisms
+import TDA.Persistence.FiniteRankProjectiveClassification
+import TDA.Persistence.FiniteRankProjectiveClassificationExamples
 import TDA.Persistence.RealInterleavingDistance
 import TDA.Persistence.RealIntervalInterleaving
 import TDA.Persistence.MatchingInterleaving

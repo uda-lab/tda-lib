@@ -205,7 +205,8 @@ theorem exists_retract (hM : IsRankProjective M) :
   hM _ _ _ _ _ (rankExact M) (𝟙 M)
 
 /-- Rank projectivity is equivalent to splitting the constructed deflation.
-This does not classify retracts as hook sums. -/
+The finite-poset hook-sum classification of these retracts is proved in
+`FiniteRankProjectiveClassification`. -/
 theorem isRankProjective_iff_retract :
     IsRankProjective M ↔ ∃ s : M ⟶ module M, s ≫ π M = 𝟙 M := by
   constructor
