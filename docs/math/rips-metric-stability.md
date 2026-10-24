@@ -244,6 +244,17 @@ factorization of Chazal–de Silva–Oudot, Proposition 5.1, and the integer-con
 extraction of Chazal–de Silva–Glisse–Oudot, Theorem 2.8 and §2.6, under the
 library's closed-threshold and empty-negative-tail conventions.
 
-Identification with the existing finite `Diagram`, a bottleneck distance for
-these locally finite occurrences, algebraic stability and the resulting
-infinite-space Hausdorff/Gromov–Hausdorff diagram bounds remain open.
+For finite metric spaces, `Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount`
+identifies each canonical q-tame multiplicity with the occurrence count in the
+existing finite Rips diagram. A finite occurrence `(b,d)` maps to
+`(minusCut b, minusCut d)`; an essential occurrence `(b,⊤)` maps to
+`(minusCut b, infinityCut)`. Thus the existing finite barcode's half-open
+endpoint decorations and essential bars are preserved. The Lean theorem uses
+`k : Type u` when the vertex type is `X : Type u`, matching the universe
+restriction of the current rank-to-diagram API; no q-tameness or finite-fiber
+assumption is passed by the caller. The mathematical compatibility statement
+holds over every coefficient field.
+
+A bottleneck distance for the locally finite occurrences, algebraic stability,
+and the resulting infinite-space Hausdorff/Gromov–Hausdorff diagram bounds
+remain open.
