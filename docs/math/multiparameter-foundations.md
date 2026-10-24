@@ -145,8 +145,56 @@ distance is therefore not identified with a parameter-zero witness.
 
 For n = 1 the coefficient is one, giving equality for this decorated occurrence
 family distance. The common half-open subclass connects to the existing
-one-dimensional endpoint-diagram API as follows. The sharp two-coordinate
-distance example remains a separate result.
+one-dimensional endpoint-diagram API below. In dimension two, the following
+example attains the factor three.
+
+## Sharpness in two coordinates
+
+Fix any field k. `RectangleSharpExample.source` and `.target` are the two
+Fin 3-indexed families of open rectangles in
+[Bjerkevik's Example 5.2](https://d-nb.info/1242337318/34), pp. 117–118:
+
+| Occurrence | Source Rᵢ | Target Sᵢ |
+| --- | --- | --- |
+| 0 | (0,10) × (1,11) | (1,11) × (0,10) |
+| 1 | (0,12) × (-1,11) | (1,9) × (0,12) |
+| 2 | (2,10) × (1,9) | (-1,11) × (2,10) |
+
+Let M and N be their existing finite biproduct modules. The forward matrix F
+has rows indexed by R and columns indexed by S; the reverse matrix G has
+rows indexed by S and columns indexed by R:
+
+```text
+F = [1 1 1]       G = [-1  1  1]
+    [1 1 0]           [ 1  0 -1]
+    [1 0 1]           [ 1 -1  0].
+```
+
+Every nonzero entry is an admissible shifted rectangle map. All endpoint
+sums are 22, and every rectangle is 6-significant, so the proved scalar
+composition law applies to each two-step path. The identities FG = GF = I
+give both family interleaving equations by component extensionality.
+`RectangleSharpExample.interleaving` is this actual 1-interleaving. Its public
+component laws recover F and G. The integer identities hold in every field,
+including characteristic two.
+
+For ρ < 3, the occurrences R₁ and R₂ are 2ρ-significant, hence neither can be
+unmatched. Nonzero forward and reverse maps impose endpoint inequalities.
+Pairing either occurrence with S₁ or S₂ would force ρ ≥ 3. Both would
+therefore need S₀, contrary to the matching's injection. Thus every actual
+matching has radius at least 3. Conversely all endpoint differences are at
+most 3, and matching equal indices gives an actual 3-matching with no
+deletions. `bottleneckDistance_eq_three` proves d_B(R,S) = 3.
+
+The proved factor-three matching theorem sends every actual ε-interleaving
+of M and N to a 3ε-matching. The obstruction then gives ε ≥ 1. Together
+with the explicit witness this proves `interleavingDistance_eq_one`, namely
+d_I(M,N) = 1. Both lower bounds test all witnesses before taking infima.
+The two distances are attained in this example. `fails_smaller_constant`
+shows that every coefficient below three fails on this same pair, and
+`interleavingDistance_lt_bottleneckDistance` gives a finite rectangle example
+where the two distances differ. These results concern dimension two; they
+make no optimality assertion for dimensions three and above.
 
 ## One-dimensional barcode compatibility
 
