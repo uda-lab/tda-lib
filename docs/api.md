@@ -465,6 +465,17 @@ does not assert a bottleneck or metric stability theorem. See the
 [real interleaving interpolation](math/real-interleavings.md#q-tame-algebraic-interpolation)
 section for the quotient and the precise scope.
 
+For an actual q-tame `ε`-interleaving, `RealInterleaving.exists_finite_saturating_matching`
+constructs finite injective edge sets for any prescribed finite sets of finite-death
+occurrences of lifetime greater than `2ε` and essential occurrences on both sides.
+Every selected token is covered and every edge has cost at most `ε`. The
+`FiniteSaturatingMatching` predicate states the injectivity, cost, and coverage
+conditions explicitly. This finite saturation result does not assert a matching of
+the full diagrams. `Rips.exists_finite_saturating_matching_of_hausdorff_lt` applies
+it to totally bounded Rips spaces embedded isometrically in a common metric space,
+when `2 * hausdorffDist < ε`. See [Rips metric stability](math/rips-metric-stability.md)
+for this consumer and the scope of the result.
+
 `TDA.Persistence.ModuleScaling` defines positive scaling of real persistence modules by
 reindexing along `t ↦ c⁻¹ * t`. `PModule.scaleShiftIso` compares scaling with shifts,
 `RealInterleaving.scale` transports witnesses with parameter `Real.toNNReal c * ε`, and
