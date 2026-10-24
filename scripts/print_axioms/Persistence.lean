@@ -4715,3 +4715,56 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.characteristic_two_presentation_actual_cover_kernel_finitelyPresented
 #print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.empty_family_lan_finitelyPresented
 #print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.zero_empty_index_actual_cover_kernel_finitelyPresented
+
+-- The actual join-indexed resolution of a finitely generated upset.
+#print axioms TDA.Persistence.GeneratedUpsetResolution.term_projective
+#print axioms TDA.Persistence.GeneratedUpsetResolution.differential_comp_differential
+#print axioms TDA.Persistence.GeneratedUpsetResolution.differential_comp_augmentation
+#print axioms TDA.Persistence.GeneratedUpsetResolution.augmentation_surjective_at
+#print axioms TDA.Persistence.GeneratedUpsetResolution.differential_exact_at_succ
+#print axioms TDA.Persistence.GeneratedUpsetResolution.augmentation_exact_at_zero
+#print axioms TDA.Persistence.GeneratedUpsetResolution.resolution_pointwise_exact_at
+#print axioms TDA.Persistence.GeneratedUpsetResolution.generatedSupport_fin_zero
+#print axioms TDA.Persistence.GeneratedUpsetResolution.generatedSupport_fin_zero_module_isZero
+#print axioms TDA.Persistence.GeneratedUpsetResolution.term_fin_zero_eq_zero
+
+-- Singleton, repeated, nontrivial and empty-family consumers.
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.singleton_augmentation_surjective
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.singleton_exact_at_zero
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.repeated_occurrences_are_distinct
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.repeated_active_faces_are_distinct
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.three_generator_cycle_is_boundary
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.empty_family_boundary
+
+-- Public supporting lemmas for the resolution construction and its fiberwise proof.
+#print axioms TDA.Persistence.GeneratedUpsetResolution.face_nonempty
+#print axioms TDA.Persistence.GeneratedUpsetResolution.faceJoin_mono
+#print axioms TDA.Persistence.GeneratedUpsetResolution.faceJoin_le_iff
+#print axioms TDA.Persistence.GeneratedUpsetResolution.inclusion_birth
+#print axioms TDA.Persistence.GeneratedUpsetResolution.freeToTerm_birth
+#print axioms TDA.Persistence.GeneratedUpsetResolution.termToFree_ι
+#print axioms TDA.Persistence.GeneratedUpsetResolution.eraseFaceAt_subset
+#print axioms TDA.Persistence.GeneratedUpsetResolution.signedDeletionAt_birth
+#print axioms TDA.Persistence.GeneratedUpsetResolution.differential_ι
+#print axioms TDA.Persistence.GeneratedUpsetResolution.generatedSupport_ordConnected
+#print axioms TDA.Persistence.GeneratedUpsetResolution.faceJoin_mem_support
+#print axioms TDA.Persistence.GeneratedUpsetResolution.augmentation_ι
+#print axioms TDA.Persistence.GeneratedUpsetResolution.augmentationComponent_val
+#print axioms TDA.Persistence.GeneratedUpsetResolution.activeFaceEquiv_eraseFaceAt
+#print axioms TDA.Persistence.GeneratedUpsetResolution.termEvaluationEquiv_apply
+#print axioms TDA.Persistence.GeneratedUpsetResolution.termEvaluationEquiv_faceGenerator
+#print axioms TDA.Persistence.GeneratedUpsetResolution.biproduct_ι_structureMap
+#print axioms TDA.Persistence.GeneratedUpsetResolution.augmentation_faceGenerator_val
+#print axioms TDA.Persistence.GeneratedUpsetResolution.augmentation_val
+#print axioms TDA.Persistence.GeneratedUpsetResolution.faceJoin_singleton
+#print axioms TDA.Persistence.GeneratedUpsetResolution.differential_faceBirth
+#print axioms TDA.Persistence.GeneratedUpsetResolution.termEvaluationEquiv_differential_face
+#print axioms TDA.Persistence.GeneratedUpsetResolution.termEvaluationEquiv_differential
+#print axioms TDA.Persistence.GeneratedUpsetResolution.mem_generatedSupport_iff_active
+#print axioms TDA.Persistence.GeneratedUpsetResolution.term_eq_zero_of_no_active
+#print axioms TDA.Persistence.GeneratedUpsetResolution.activeComplex_isApexCone
+#print axioms TDA.Persistence.GeneratedUpsetResolution.activeComplex_positive_exact
+#print axioms TDA.Persistence.GeneratedUpsetResolution.activeComplex_zero_exact
+#print axioms TDA.Persistence.GeneratedUpsetResolution.HookInfinity.projective
+#print axioms TDA.Persistence.GeneratedUpsetResolution.term_isZero_of_degree_ge
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.singleton_top_term_isZero
