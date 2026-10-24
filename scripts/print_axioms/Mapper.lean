@@ -1378,3 +1378,4 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.constant_pair_recovery_le_half
 #print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.edge_to_point_bottleneck_bracket
 #print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.bool_to_unit_path_condition_needed
+#print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.edge_to_point_bottleneck_le_half

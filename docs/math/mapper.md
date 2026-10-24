@@ -938,7 +938,8 @@ nonempty-domain assumption. `bottleneck_cappedCentredDiagram_pair_le` gives `δ 
 mesh at most `μ`, while `bottleneck_cappedCentredDiagram_pair_uniformGrid_le` gives `δ` on a
 uniform grid when `δ = p * h`. `bottleneck_cappedCentredDiagram_pair_le_ofUniformBound` recovers
 the same-domain perturbation result, and the graph-PL corollaries supply face finiteness for finite
-graphs. The edge-to-point fixture on the quarter grid proves a bottleneck bracket `[1/4, 1/2]`;
+graphs. The edge-to-point fixture on `edgeGrid` proves a bottleneck bracket `[1/4, 1/2]` in
+degree zero and the upper bound `1/2` in every degree;
 the Bool-to-Unit fixture shows that height-preserving maps alone do not suffice, because the
 composite-path condition fails and the full-stage essential counts differ. These are bounds, not
 exact-value claims for the edge-to-point pair.
@@ -950,7 +951,8 @@ exact values beyond the first fixture; identification of capped step diagrams
 with the multiscale Mapper diagrams of `(c, s)`-good towers and DMW16-v2
 Propositions 4.4 and 4.5, Corollary 4.6 and Theorems 4.7 and 4.8; perturbation
 bounds for step towers whose stages are not centred intervals; independence of
-the component orders; multinerve diagrams; executable extraction.
+the component orders; mesh comparison across different grids for one map pair;
+multinerve diagrams; executable extraction.
 
 ### Essential bars of the full cap
 
