@@ -475,9 +475,9 @@ hypothesis is used. The same-space pointwise bound follows as a specialization, 
 graph-PL maps inherit the bound. This is a library specialization in the setting of
 DMW16-v2 §4.1 ([reference](references.md#DMW16-v2)); the pair hypotheses and no numbered
 source result are attributed to that paper. The maps are induced by the pair, not by cover
-refinements. Map-pair bounds for step or capped centred diagrams and bottleneck distance, a
-converse, multinerve Mapper, independence of component orders, and executable extraction
-are not provided.
+refinements. This section concerns the centred-tower modules; capped centred step-diagram bounds
+from a height-map pair are given in the later capped-tower section. A converse, multinerve Mapper,
+independence of component orders, and executable extraction are not provided.
 
 The path condition cannot be omitted: the constant height maps from discrete `Bool` to `Unit`
 preserve heights, but no `HeightMapPair` exists between them for any parameter, and their
@@ -925,6 +925,23 @@ perturbation bound gives at most `5/4`.
 Capped centred diagrams of two heights on homeomorphic domains over `ℝ` are at bottleneck
 distance `0`, in particular for isomorphic finite graphs with corresponding vertex heights
 ([height-preserving maps](#height-preserving-maps)).
+
+For maps `f : C(X, ℝ)` and `g : C(X', ℝ)` on possibly different domains, a
+`HeightMapPair f g δ` gives direct vertex maps between any two capped stages whose radii satisfy
+the pair's domination inequality. They are natural in both stage indices. The composites are
+homotopic through the pair's paths to the corresponding tower maps, so the two step modules are
+directly `η`-interleaved whenever the stage radii dominate in both directions after shift `η`.
+The `bottleneck_eq_distance` theorem for the two finite-constructible step modules then gives
+`bottleneck_cappedCentredDiagram_le_of_heightMapPair`. The statement requires supplied component
+orders and finite Mapper faces in the chosen degree on both sides; it requires no coverage or
+nonempty-domain assumption. `bottleneck_cappedCentredDiagram_pair_le` gives `δ + μ` on a grid of
+mesh at most `μ`, while `bottleneck_cappedCentredDiagram_pair_uniformGrid_le` gives `δ` on a
+uniform grid when `δ = p * h`. `bottleneck_cappedCentredDiagram_pair_le_ofUniformBound` recovers
+the same-domain perturbation result, and the graph-PL corollaries supply face finiteness for finite
+graphs. The edge-to-point fixture on the quarter grid proves a bottleneck bracket `[1/4, 1/2]`;
+the Bool-to-Unit fixture shows that height-preserving maps alone do not suffice, because the
+composite-path condition fails and the full-stage essential counts differ. These are bounds, not
+exact-value claims for the edge-to-point pair.
 
 Not included: coverage of the attained range by a capped stage; diagrams or
 bounds for the `ℤ`-labelled centred tower itself, q-tame or real-decomposition

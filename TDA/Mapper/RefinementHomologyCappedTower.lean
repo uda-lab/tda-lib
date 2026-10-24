@@ -166,9 +166,9 @@ theorem mem_cappedCentredCover_succ_iff (j : Fin m) (w : W) (y : ℝ) :
       EReal.coe_lt_coe_iff]
     exact mem_centredInterval_iff a s ℓ
 
-/-- The label selector between two stages: empty out of stage `0`, the identity of `W`
-otherwise. -/
-private def stageSelector {m m' : ℕ} (i : Fin (m + 1)) (j : Fin (m' + 1)) (h : j = 0 → i = 0) :
+/-- The label selector between two capped stages: the empty initial stage has no labels, and
+positive stages carry the same label type. -/
+def stageSelector {m m' : ℕ} (i : Fin (m + 1)) (j : Fin (m' + 1)) (h : j = 0 → i = 0) :
     cappedIndex W i → cappedIndex W j :=
   Fin.cases (motive := fun i => (j = 0 → i = 0) → cappedIndex W i → cappedIndex W j)
     (fun _ e => isEmptyElim e)
@@ -178,7 +178,9 @@ private def stageSelector {m m' : ℕ} (i : Fin (m + 1)) (j : Fin (m' + 1)) (h :
 
 variable {a s ℓ c}
 
-private theorem eq_zero_of_stageRadius_le {m' : ℕ} {d : Fin m' ↪o ℝ} {δ : ℝ}
+/-- If a stage radius plus a finite real shift is at most the target radius, then an empty target
+stage forces the source stage to be empty. -/
+theorem eq_zero_of_stageRadius_le {m' : ℕ} {d : Fin m' ↪o ℝ} {δ : ℝ}
     {i : Fin (m + 1)} {j : Fin (m' + 1)} (h : stageRadius c i + δ ≤ stageRadius d j) :
     j = 0 → i = 0 := by
   rintro rfl
@@ -189,7 +191,7 @@ private theorem eq_zero_of_stageRadius_le {m' : ℕ} {d : Fin m' ↪o ℝ} {δ :
 
 /-- A point within `δ` of a point of a stage member lies in the member with the same label of a
 stage whose radius exceeds the first by at least `δ`. -/
-private theorem mem_cappedCentredCover_of_stageRadius_le {m' : ℕ} {d : Fin m' ↪o ℝ} {δ : ℝ}
+theorem mem_cappedCentredCover_of_stageRadius_le {m' : ℕ} {d : Fin m' ↪o ℝ} {δ : ℝ}
     {i : Fin (m + 1)} {j : Fin (m' + 1)} (h : stageRadius c i + δ ≤ stageRadius d j)
     (w : cappedIndex W i) {y z : ℝ} (hyz : |z - y| ≤ δ)
     (hy : y ∈ cappedCentredCover a s ℓ c i w) :
@@ -382,7 +384,7 @@ private theorem stageRadius_add_le_of_mesh {m m' : ℕ} (c : Fin (m + 1) ↪o �
 
 /-- On one grid of mesh at most `μ`, the stage radius at `t` plus `δ` is at most the stage
 radius at `t + (δ + μ)`. -/
-private theorem stageRadius_add_le_of_gap {m : ℕ} (c : Fin m ↪o ℝ) {δ μ : ℝ} (hδμ : 0 ≤ δ + μ)
+theorem stageRadius_add_le_of_gap {m : ℕ} (c : Fin m ↪o ℝ) {δ μ : ℝ} (hδμ : 0 ≤ δ + μ)
     (hgap : ∀ i j : Fin m, j.val = i.val + 1 → c j ≤ c i + μ) (t : ℝ) :
     stageRadius c (cellIndex c t) + δ ≤ stageRadius c (cellIndex c (t + (δ + μ))) := by
   cases m with
@@ -479,7 +481,7 @@ theorem uniformGrid_of_val_eq_succ (x₀ h : ℝ) (hh : 0 < h) {m : ℕ} {i j : 
 
 /-- On a uniform grid of spacing `h`, the stage radius at `t` plus `p * h` is at most the stage
 radius at `t + p * h`. -/
-private theorem stageRadius_add_le_uniformGrid (x₀ h : ℝ) (hh : 0 < h) (m p : ℕ) (t : ℝ) :
+theorem stageRadius_add_le_uniformGrid (x₀ h : ℝ) (hh : 0 < h) (m p : ℕ) (t : ℝ) :
     stageRadius (uniformGrid x₀ h hh m) (cellIndex (uniformGrid x₀ h hh m) t) + (p * h : ℝ) ≤
       stageRadius (uniformGrid x₀ h hh m) (cellIndex (uniformGrid x₀ h hh m) (t + p * h)) := by
   set c := uniformGrid x₀ h hh m
