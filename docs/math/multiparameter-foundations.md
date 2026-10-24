@@ -268,6 +268,15 @@ implement the free-cover ingredients of
 characterization in Theorem 4.4 relates interleavings to simultaneous
 presentations with shared shifted generator and relation families.
 
+Over a field, a finite generator family gives finite-dimensional values of its
+graded-free module at every grade of any preorder. The canonical cover of a
+presentation is surjective at each grade, so finite generators imply
+finite-dimensional fibers of the presented quotient; the relation family is
+not needed for this consequence. A natural isomorphism transfers the result
+to any module finitely presented by that quotient. Thus
+`GradedFree.finitelyPresented_finiteDimensional` proves pointwise finite
+dimensionality without requiring a finite indexing preorder.
+
 The free module on a disjoint union of graded families has the corresponding
 sum universal property. A presentation can adjoin an arbitrary graded family
 of redundant generators by adding the relations `new_v − chosenLift_v`.

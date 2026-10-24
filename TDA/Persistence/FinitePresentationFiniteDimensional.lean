@@ -34,8 +34,8 @@ theorem finiteDimensional_of_finite_generators
     (D : GradedFree.Presentation.{u,v,w} (R := k) (P := P))
     (hW : Finite D.generators.Carrier) (a : P) :
     FiniteDimensional k (D.presented.obj a) := by
-  let : Finite D.generators.Carrier := hW
-  have : FiniteDimensional k ((module (R := k) D.generators).obj a) :=
+  letI : Finite D.generators.Carrier := hW
+  haveI : FiniteDimensional k ((module (R := k) D.generators).obj a) :=
     finiteDimensional_fiber D.generators a
   apply FiniteDimensional.of_surjective (D.cover.app a).hom
   exact D.cover_surjective a
@@ -50,7 +50,7 @@ theorem finitelyPresented_finiteDimensional
     FiniteDimensional k (M.obj a) := by
   classical
   obtain ⟨D, hD, ⟨e⟩⟩ := hM
-  let : FiniteDimensional k (D.presented.obj a) :=
+  letI : FiniteDimensional k (D.presented.obj a) :=
     D.finiteDimensional_of_finite_generators hD.1 a
   exact (e.app a).toLinearEquiv.finiteDimensional
 

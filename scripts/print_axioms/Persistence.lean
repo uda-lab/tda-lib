@@ -4768,3 +4768,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.GeneratedUpsetResolution.HookInfinity.projective
 #print axioms TDA.Persistence.GeneratedUpsetResolution.term_isZero_of_degree_ge
 #print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.singleton_top_term_isZero
+
+-- Finite-dimensional fibers of the actual canonical finite-hook cover kernel.
+#print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.finitelyPresented_actual_cover_kernel_finiteDimensional
