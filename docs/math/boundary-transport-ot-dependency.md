@@ -137,7 +137,7 @@ optimum has cost one. Thus finite optimal cost is compatible with infinite
 competitor costs.
 
 The native metric laws use existing current-pin APIs directly.
-`Measure.condKernel`, `Measure.compProd_fst_condKernel` and `Measure.fst_compProd`
+`Measure.condKernel`, `Measure.disintegrate` and `Measure.fst_compProd`
 glue finite minimizing plans on the fixed space; measurable kernel sections
 identify the second prescribed pair marginal. `eLpNorm_add_le` gives the sharp
 triangle estimate at a common full sum-capacity for all three pairs. A
