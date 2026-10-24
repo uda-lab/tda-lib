@@ -548,3 +548,14 @@ import TDA
 #print axioms TDA.Filtration.SparseRips.continuous_finiteWeight
 #print axioms TDA.Filtration.SparseRips.continuous_weight
 #print axioms TDA.Filtration.SparseRips.continuous_relaxedDistance
+#print axioms TDA.Filtration.SparseRips.pairEntry_mem
+#print axioms TDA.Filtration.SparseRips.pairEntry_le_iff
+#print axioms TDA.Filtration.SparseRips.dist_le_pairEntry
+#print axioms TDA.Filtration.SparseRips.faceEntry_le_iff
+#print axioms TDA.Filtration.SparseRips.mem_sparseCarrier_iff_faceEntry
+#print axioms TDA.Filtration.SparseRips.mem_sparseComplex_iff_faceEntry
+#print axioms TDA.Filtration.SparseRips.sparseFilter_sublevel_eq
+#print axioms TDA.Filtration.SparseRips.sparseFilter_positiveOnEdges
+#print axioms TDA.Filtration.SparseRips.sparseFilter_logModule_eq
+#print axioms TDA.Filtration.SparseRips.sparseLogDiagram_bottleneck_le
+#print axioms TDA.Filtration.SparseRips.Examples.TwoPoints.edge_pairEntry_eq_one
