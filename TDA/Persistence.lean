@@ -181,6 +181,7 @@ import TDA.Persistence.QTame
 import TDA.Persistence.RipsQTame
 import TDA.Persistence.RipsHausdorffInterleaving
 import TDA.Persistence.FiniteWeightedBoundaryTransport
+import TDA.Persistence.FiniteWeightedCoalescing
 
 import TDA.Persistence.RipsGromovHausdorff
 
@@ -229,6 +230,8 @@ import TDA.Persistence.ReservoirNormalization
 import TDA.Persistence.BoundaryTransportZero
 import TDA.Persistence.BoundaryTransportAtomic
 import TDA.Persistence.BoundaryTransportAtomicExamples
+import TDA.Persistence.BoundaryTransportIndexed
+import TDA.Persistence.FiniteWeightedCoalescingExamples
 import TDA.Persistence.RectangleStabilityGeometry
 import TDA.Persistence.RectangleFamily
 import TDA.Persistence.RectangleHall

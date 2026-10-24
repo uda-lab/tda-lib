@@ -750,6 +750,14 @@ unit masses recover the existing transport API exactly. Symmetry, equivalent
 relabelling and weighted diagonal-moment formulas for empty inputs are included.
 `FiniteWeightedDiagram` is a finitely supported mass function on the strict
 upper half-plane; its transport consumers inherit these results.
+`FiniteWeightedCoalescing` forms such a diagram from finite indexed strict bars
+by summing masses at equal coordinates. Feasible matrices aggregate along the
+coordinate fibers and split back by explicit proportional kernels. These maps
+preserve the full geometric powered boundary cost and carry optimizers in both
+directions, including zero weights and repeated coordinates. The powered and
+rooted value identities hold for every real exponent; rooted minimization uses
+p≥1. Unit weights recover the existing
+unit-occurrence transport and matching values.
 `BoundaryTransportAtomic` identifies its native matrix optima with boundary
 transport over all Borel plans between the associated atomic measures, as
 described below. A weighted exponent limit remains outside this API. See
@@ -1096,9 +1104,19 @@ For p at least one, the reciprocal-p roots agree as well. The native finite
 optimizer supplies an actual minimizing Borel boundary plan; fractional masses
 and zero inputs are included.
 
+In `BoundaryTransportIndexed`, `atomicMeasure_ofIndexed` identifies the same
+measure with the original indexed Dirac sum. The indexed/coalesced plan maps
+preserve the full powered boundary cost of every feasible finite matrix and
+transport actual optimizers in both directions. Their all-Borel powered and
+rooted values recover the indexed
+weighted values for p≥0 and p≥1, respectively, and recover the existing finite
+matching values for unit masses. The construction accepts repeated coordinates
+and zero weights; splitting and then aggregating recovers every coalesced matrix
+entry.
+
 The bridge to an ordinary Wasserstein API, minimizing plans for general finite
-Radon inputs, sharp triangle and separation, general indexed-to-coalesced
-optimizer compatibility and same-mass finite atomic approximation remain open
+Radon inputs, sharp triangle and separation, and same-mass finite atomic
+approximation remain open
 in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 
 ### Gaussian signed measures and C₀ universality
