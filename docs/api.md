@@ -162,8 +162,20 @@ map from a pfd module. `PullbackFiber.mk`, its projection laws and
 the pullback fibers are pfd. Same-death lifts derive rank additivity without
 an exact-category assumption. A principal upset surjecting onto its
 finite-death truncation shows that an ordinary pointwise epimorphism need
-not be rank admissible. Inflation/pushout axioms and persistent Schanuel
-remain separate results.
+not be rank admissible. Inflation/pushout axioms remain separate results.
+`IsPointwiseShortExact.kernelIso` identifies a given exact sequence's left
+term with its actual categorical kernel and preserves its inclusion.
+`IsRankDeflation.splitKernelIso` derives a splitting when the quotient is
+rank projective. For rank-exact sequences K→P→M and L→Q→N over a field,
+with rank-projective P,Q, `RankSchanuel.interleavingOfSequences` constructs
+an ε-interleaving between P⊕L[ε] and K[ε]⊕Q from an actual ε-interleaving
+of M,N. The crossed-pullback maps, their projection laws and both
+double-transition equations are public; the pullback construction itself
+works over any ring. `kernelSumIso` gives the static specialization for
+two deflations onto the same quotient. Consumers include redundant covers
+with nonzero kernels, positive width, width zero, characteristic two, zero
+modules and zero coordinate directions. Finite resolutions, their length
+bound and signed barcode stability require further results.
 `FinitePresentationLifting` proves that maps from a presented module lift through
 a natural transformation surjective at generator grades and injective at relation
 grades. With bijectivity at generator grades, the lift is unique. For coordinatewise
