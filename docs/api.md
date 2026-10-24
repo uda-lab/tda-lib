@@ -99,8 +99,19 @@ radii. `two_sided_distance_bounds` proves `d_I ≤ d_B ≤ (2n−1)d_I` for n �
 and `bottleneckDistance_eq_interleavingDistance_one` gives equality for this
 decorated-rectangle family distance in dimension one. No minimizing radius is
 assumed: over ℚ, a singleton module versus zero has distance zero without a
-parameter-zero witness. The separate one-dimensional diagram bridge and sharp
-two-dimensional distance example remain outside these results. `GradedFree.lift`
+parameter-zero witness. On positive finite half-open intervals,
+`RectangleBarcodeBridge.realizationIso` identifies the existing rectangle
+biproduct with the reindexed existing real barcode realization, retaining every
+occurrence. `rectangle_bottleneck_eq_diagram` and
+`diagram_bottleneck_eq_real_distance` identify their distances;
+`interleaving_iff_cost_matching` compares actual witnesses at every radius.
+An actual matching may pair short intervals whose endpoint cost exceeds the
+radius; the bridge removes those pairs and proves both ends deletable.
+Empty occurrence families are included. Empty half-open supports are zero in
+the raw barcode constructor and are excluded by the positive-length bridge;
+other endpoint decorations are not identified with half-open modules. Zero
+distance implies a natural isomorphism on this common subclass. The sharp
+two-dimensional distance example remains outside these results. `GradedFree.lift`
 and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
 expresses finite presentation by homogeneous cokernels. For finitely presented modules on
