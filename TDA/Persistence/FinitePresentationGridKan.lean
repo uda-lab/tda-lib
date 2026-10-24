@@ -16,9 +16,8 @@ is required.
 This proves the reconstruction step in BOOS, arXiv:2208.00300v3,
 Appendix A's proof of Theorem 2.7. Over a field, the actual Kan functor also
 preserves pointwise finite dimensionality and rank-exact sequences on finite
-product grids. Hook projectivity and minimal-resolution preservation remain
-Kan preservation of hook projectivity and minimal resolutions is a separate
-result.
+product grids. Kan preservation of hook projectivity and minimal resolutions
+remains a separate result.
 -/
 
 set_option autoImplicit false
