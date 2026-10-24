@@ -405,7 +405,11 @@ rectangle counts; `PersistenceMeasureEssentialContent`,
 add the essential boundary, exact tail counts and local finiteness.
 `PersistenceMeasureDiagramCountability` proves countable support, and
 `PersistenceMeasureLowerBound` transfers a module zero tail to a birth lower
-bound. Finite diagram compatibility and algebraic stability remain open. See
+bound. `LocallyFiniteMatchingCompactness` proves algebraic bottleneck
+stability for the extracted finite-birth diagrams, and `RipsQTameBottleneck`
+identifies the finite-space Rips bottleneck with the bottleneck of the existing
+full finite diagrams. Birth-at-minus-infinity strata for unrestricted q-tame
+modules and generic finite-diagram compatibility remain open. See
 [integer contents on decorated cells](persistence-measure-atoms.md).
 
 - **Rights/evidence:** **U**, inspected 2026-10-23. The source is used for mathematical statements and an original formal proof; no source prose, figures or source code are redistributed.
