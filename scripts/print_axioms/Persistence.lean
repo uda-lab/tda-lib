@@ -4641,3 +4641,53 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CoordinateGrid.lan_isPointwiseShortExact
 #print axioms TDA.Persistence.CoordinateGrid.lan_lift_kernel
 #print axioms TDA.Persistence.CoordinateGrid.lan_isRankExact
+
+-- Grid projectivity, hook-image comparisons and finite-presentation hook covers.
+#print axioms TDA.Persistence.CoordinateGrid.le_floor_iff
+#print axioms TDA.Persistence.IsPointwiseShortExact.of_iso
+#print axioms TDA.Persistence.IsRankExact.of_iso
+#print axioms TDA.Persistence.CoordinateGrid.lan_isRankProjective
+#print axioms TDA.Persistence.CoordinateGrid.lanBiproductIso
+#print axioms TDA.Persistence.CoordinateGrid.lanBiproductIso_hom_π
+#print axioms TDA.Persistence.CoordinateGrid.lanBiproductIso_inv_ι
+#print axioms TDA.Persistence.CoordinateGrid.infinityLanIso
+#print axioms TDA.Persistence.CoordinateGrid.infinityLanIso_apply_coefficient
+#print axioms TDA.Persistence.CoordinateGrid.hookLanIso
+#print axioms TDA.Persistence.CoordinateGrid.hookLanIso_apply_coefficient
+#print axioms TDA.Persistence.CoordinateGrid.embeddedCoverFamily
+#print axioms TDA.Persistence.CoordinateGrid.finiteHookDeflationLanIso
+#print axioms TDA.Persistence.CoordinateGrid.finiteHookDeflationLanIso_hom_π
+#print axioms TDA.Persistence.CoordinateGrid.finiteHookDeflationLanIso_inv_ι
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_finiteHookRankExactCover
+
+-- Actual planar, multiplicity, zero-dimensional and capstone consumers.
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.armVector
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.armVector_coefficient
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.armVector_ne_zero
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.armVector_dies_across_real_transition
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.principal_upset_actual_tail
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.principal_upset_tail_coefficient
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.zeroGrid
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.zeroGridPoint
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.zeroGridGrade
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.zero_dim_degenerate_hook_fiber_isZero
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.zero_dim_degenerate_hook_lanIso
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.zero_dim_infinite_hook_lan_nonzero
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.emptyFamily
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.emptyFamilyLanIso
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeated_cover_occurrences_distinct
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeated_cover_occurrences_same_hook
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeated_cover_first_projection_law
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeated_cover_second_inclusion_law
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.mixed_cover_family_endpoints_and_multiplicity
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.mixed_cover_finite_projection_law
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.mixed_cover_infinite_inclusion_law
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.lan_hook_deflation_lifts_identity
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeated_finite_occurrences_distinct_and_equal_endpoints
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeatedFiniteHookLanIso
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeated_finite_first_projection_law
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeated_finite_second_inclusion_law
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.repeated_finite_offDiagonal_zero
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.characteristic_two_arm_vector_survives_and_dies
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.rational_presentation_actual_hook_cover
+#print axioms TDA.Persistence.CoordinateGridHook.Examples.characteristic_two_presentation_actual_hook_cover

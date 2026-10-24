@@ -175,6 +175,7 @@ at the same real grade after applying the finite-grid Kan functor, and
 pointwise finite-dimensional domain.
 `HookInfinity.homEquivFiber` identifies principal-upset morphisms with birth-fiber
 vectors; surjectivity at birth suffices to lift them over any ring and preorder.
+
 Over a field and partial order, `Hook.endRingEquiv` and
 `HookInfinity.endRingEquiv` identify the actual endomorphism rings with the
 coefficient field by evaluation at birth. Their public scalar/evaluation laws
@@ -194,6 +195,31 @@ its actual rank-exact kernel sequence; both source and kernel are pfd.
 `isRankProjective_iff_retract` characterizes rank projectivity by splitting this
 constructed map. This proves enough relative projectives on finite posets,
 without claiming minimality, a classification of retracts or signed stability.
+
+Over a field, `IsPointwiseShortExact.of_iso` and `IsRankExact.of_iso` transport
+actual short exact and rank-exact sequences along natural isomorphisms,
+constructing the conjugated maps. For a finite coordinate grid,
+`CoordinateGrid.lan_isRankProjective` preserves relative rank projectivity by
+restricting an actual rank-exact sequence and using the Kan/restriction
+adjunction. `lanBiproductIso` is the canonical comparison for finite
+categorical sums over a ring, with projection and inclusion laws. Over a ring,
+`infinityLanIso` identifies the actual Kan image of a principal upset with the
+corresponding real principal upset and provides its coefficient law. Over a
+field, `hookLanIso` does the same for finite-death hooks.
+`embeddedCoverFamily` applies the coordinate embedding to the existing
+occurrence-indexed `FiniteHookDeflation.family`, preserving multiplicities;
+over a field, `finiteHookDeflationLanIso` gives its actual finite-biproduct
+comparison with projection/inclusion equations. Finally,
+`GradedFree.finitelyPresented_exists_finiteHookRankExactCover` constructs for
+every originally finitely presented real-coordinate module a rank-exact map
+from such a relative rank-projective hook sum, with pointwise finite-dimensional
+kernel fibers. This theorem requires a field. It does not assert that this
+kernel is finitely presented or that the cover is minimal. The focused
+`CoordinateGridHookExamples` module checks planar death across a real
+transition, principal-upset tails, repeated and mixed occurrences, empty and
+zero-dimensional cases, characteristic two, and consumers of the cover
+theorem over `ℚ` and `ZMod 2`.
+
 `IsRankDeflation` means that a natural map is the quotient of an actual
 rank-exact sequence. Its `rankExact_kernel` law supplies the categorical
 kernel sequence; `id` and `comp` prove identity and composition closure.

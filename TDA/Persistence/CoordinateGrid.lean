@@ -76,6 +76,14 @@ theorem le_floor (a : Fin n → ℝ) (ha : G.HasLowerPoint a) {p : G.Point}
   intro i
   exact Finset.le_max' _ _ (Finset.mem_filter.mpr ⟨(p i).property, hp i⟩)
 
+/-- The floor is the greatest grid point below a real grade. -/
+theorem le_floor_iff (a : Fin n → ℝ) (ha : G.HasLowerPoint a) (p : G.Point) :
+    G.embedding p ≤ a ↔ p ≤ G.floor a ha := by
+  constructor
+  · exact G.le_floor a ha
+  · intro hp
+    exact (G.embedding.monotone hp).trans (G.floor_le a ha)
+
 /-- A grid point is the floor exactly when it is greatest among the lower points. -/
 theorem floor_eq_iff (a : Fin n → ℝ) (ha : G.HasLowerPoint a) (p : G.Point) :
     G.floor a ha = p ↔ G.embedding p ≤ a ∧ ∀ q : G.Point, G.embedding q ≤ a → q ≤ p := by
