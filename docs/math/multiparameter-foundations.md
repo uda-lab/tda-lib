@@ -471,6 +471,50 @@ projective cover. An exact-category instance, classification of retracts as
 hook sums, minimal resolutions, the real-grid transfer and signed barcode
 stability remain further results.
 
+## Pullbacks and composites of rank-exact deflations
+
+Fix a field k and partially ordered grades. A rank-exact deflation is a
+natural map π:M→N that is the quotient of an actual rank-exact short exact
+sequence; `IsRankDeflation` expresses this condition. Its
+`rankExact_kernel` law identifies the actual categorical kernel sequence as
+rank exact. Ordinary pointwise surjectivity alone is insufficient. For
+example, the principal upset born at zero on the two-grade chain surjects
+onto the hook dying at grade one. The target's unit dies, but every
+transition of the principal upset preserves its coefficient, so that unit
+has no dying lift. `epi_not_rankDeflation` verifies this obstruction.
+
+Given a rank-exact deflation π:M→N and any f:T→N with T pointwise finite
+dimensional, form the existing categorical pullback X. At grade p, a pair
+(m,t) is compatible when πₚ(m)=fₚ(t). Maps from the principal upset born at
+p represent m and t. Their compatibility gives a map into X by the
+pullback universal property, and its value at birth constructs the pair
+in X(p). `PullbackFiber.mk` and its projection laws express this
+construction. Conversely, the two projections distinguish every vector
+in X(p), by the same generator property and categorical extensionality.
+Thus X(p) embeds linearly into M(p)×T(p), proving it finite dimensional.
+
+The projection X→T is surjective: lift fₚ(t) through πₚ and pair that lift
+with t. If t is killed between a≤b, naturality shows that fₐ(t) is killed
+as well. Rank exactness of π gives a lift m killed at b. The compatible
+pair (m,t) is killed in X because both projected images vanish. The kernel
+criterion therefore proves rank additivity for the actual kernel of X→T.
+`IsRankDeflation.pullback_snd` establishes this closure without assuming an
+exact-category instance or the desired lifting property.
+
+Identity on any pfd module is a rank-exact deflation. For two composable
+deflations, lift each dying vector through the second and then through
+the first, retaining the same death at both steps. Surjectivity also
+composes, so the kernel criterion proves `IsRankDeflation.comp` for the
+actual composite kernel sequence. Consumers apply these laws to successive
+finite hook deflations and to a nonidentity pullback, with genuinely
+nonzero dying images, zero base change and characteristic two.
+
+These prove the deflation-side closure laws in
+[Botnan–Oppermann–Oudot–Scoccola, §2.12](https://arxiv.org/html/2208.00300v3),
+including the pullback step used in Appendix A's Lemma A.1. They do not
+establish the full exact structure, its inflation/pushout laws, persistent
+Schanuel or signed barcode stability.
+
 ## Attainment on real finite-constructible modules
 
 Over a field k, for right-continuous real modules on finite critical grids,

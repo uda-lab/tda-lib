@@ -151,6 +151,17 @@ its actual rank-exact kernel sequence; both source and kernel are pfd.
 `isRankProjective_iff_retract` characterizes rank projectivity by splitting this
 constructed map. This proves enough relative projectives on finite posets,
 without claiming minimality, a classification of retracts or signed stability.
+`IsRankDeflation` means that a natural map is the quotient of an actual
+rank-exact sequence. Its `rankExact_kernel` law supplies the categorical
+kernel sequence; `id` and `comp` prove identity and composition closure.
+`pullback_snd` proves closure under the actual categorical pullback along a
+map from a pfd module. `PullbackFiber.mk`, its projection laws and
+`element_ext` construct compatible pairs and distinguish their vectors;
+the pullback fibers are pfd. Same-death lifts derive rank additivity without
+an exact-category assumption. A principal upset surjecting onto its
+finite-death truncation shows that an ordinary pointwise epimorphism need
+not be rank admissible. Inflation/pushout axioms and persistent Schanuel
+remain separate results.
 `FinitePresentationLifting` proves that maps from a presented module lift through
 a natural transformation surjective at generator grades and injective at relation
 grades. With bijectivity at generator grades, the lift is unique. For coordinatewise
