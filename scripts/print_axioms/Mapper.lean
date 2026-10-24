@@ -1313,6 +1313,26 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.bool_to_point_path_condition_fails
 #print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.bool_to_point_distance_eq_top
 
+#print axioms TDA.Mapper.GraphPL.mergeSection
+#print axioms TDA.Mapper.GraphPL.mergeSection_apply
+#print axioms TDA.Mapper.GraphPL.mergeSection_lower
+#print axioms TDA.Mapper.GraphPL.mergeSection_upper
+#print axioms TDA.Mapper.GraphPL.mergeSection_at_top_apex
+#print axioms TDA.Mapper.GraphPL.plHeight_mergeSection
+#print axioms TDA.Mapper.GraphPL.exists_mergeSection_path
+#print axioms TDA.Mapper.GraphPL.mergeFoldHeightMapPair
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_mergeY_eq_min
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_mergeY_eq_half
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_mergeY_lt_vertex_budget
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_splitY_eq_min
+
+#print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_beyond_twice_exact
+#print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_below_twice_matches_mergeY
+#print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_numeric_from_exact
+#print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.splitY_beyond_twice_exact
+#print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_top_boundary_fold
+#print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_fold_improves_vertex_budget
+#print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeSection_clamps_above_top
 -- Centred Mapper homology interleavings from height-map pairs and fixtures.
 #print axioms TDA.Mapper.centredMapperPairVertexMap_mk
 #print axioms TDA.Mapper.centredMapperPairVertexMapSymm_mk
