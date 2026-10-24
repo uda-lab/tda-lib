@@ -1421,5 +1421,10 @@ are one and opposite distances are two. At scale one,
 four-edge chain: its boundary cancels, and there are no 2-faces to fill it.
 `H1Examples.sparse_relaxed_h1_nonzero` shows that the sparse-to-relaxed
 inclusion carries this class nontrivially. All four vertices remain active at
-this scale. A nonzero `H₁` fixture across an actual vertex deletion remains in
-[the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).
+this scale. `H1Examples.deleted_pendant_h1_nonzero` extends the metric by a
+short pendant point attached near the seed. That point passes its deletion time
+before scale one (`pendant_inactive_one`), while the four cycle vertices remain
+active. The core inclusion and collapse compose to the identity, so the cycle's
+nonzero `H₁` class survives in the sparse complex and maps nontrivially to the
+relaxed complex. The sparse complex retains faces from earlier scales through its union;
+the deletion claim concerns the closed active complex at scale one.

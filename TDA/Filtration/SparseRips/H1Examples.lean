@@ -392,6 +392,331 @@ theorem sparse_relaxed_h1_nonzero :
   have hinj : Function.Injective f.hom := (ModuleCat.mono_iff_injective f).mp inferInstance
   exact hz (hinj (by simpa [f] using hzero))
 
+/-! A short pendant at the seed can be deleted while the four-cycle survives. -/
+
+private abbrev PendantCycle := Option (Fin 4)
+
+private instance : LinearOrder PendantCycle :=
+  LinearOrder.lift'
+    (fun x => match x with
+      | none => (0 : ℕ)
+      | some i => i.val + 1)
+    (by
+      intro x y h
+      cases x with
+      | none =>
+          cases y with
+          | none => rfl
+          | some j => simp at h
+      | some i =>
+          cases y with
+          | none => simp at h
+          | some j =>
+              apply congrArg some
+              change i.val + 1 = j.val + 1 at h
+              exact Fin.ext (by omega))
+
+private def anchor : PendantCycle → Fin 4
+  | none => 0
+  | some i => i
+
+private def leafPenalty : PendantCycle → ℝ
+  | none => 1 / 20
+  | some _ => 0
+
+private theorem leafPenalty_nonneg (x : PendantCycle) : 0 ≤ leafPenalty x := by
+  cases x <;> norm_num [leafPenalty]
+
+private def leafDist (x y : PendantCycle) : ℝ :=
+  if x = y then 0 else dist (anchor x) (anchor y) + leafPenalty x + leafPenalty y
+
+private theorem leafDist_nonneg (x y : PendantCycle) : 0 ≤ leafDist x y := by
+  unfold leafDist
+  split_ifs
+  · norm_num
+  · have hx := leafPenalty_nonneg x
+    have hy := leafPenalty_nonneg y
+    linarith [dist_nonneg (x := anchor x) (y := anchor y)]
+
+private theorem leafDist_pos_of_ne {x y : PendantCycle} (hxy : x ≠ y) :
+    0 < leafDist x y := by
+  cases x with
+  | none =>
+      cases y with
+      | none => exact False.elim (hxy rfl)
+      | some j =>
+          have hd := dist_nonneg (x := (0 : Fin 4)) (y := j)
+          simp only [leafDist, reduceCtorEq, if_false, anchor, leafPenalty]
+          linarith
+  | some i =>
+      cases y with
+      | none =>
+          have hd := dist_nonneg (x := i) (y := (0 : Fin 4))
+          simp only [leafDist, reduceCtorEq, if_false, anchor, leafPenalty]
+          linarith
+      | some j =>
+          have hij : i ≠ j := fun h => hxy (congrArg some h)
+          have hd : 0 < dist i j := dist_pos.mpr hij
+          simpa [leafDist, anchor, leafPenalty, hij] using hd
+
+private instance : MetricSpace PendantCycle where
+  dist := leafDist
+  dist_self := by intro x; simp [leafDist]
+  dist_comm := by
+    intro x y
+    by_cases hxy : x = y
+    · subst y; rfl
+    · simp only [leafDist, if_neg hxy, if_neg (Ne.symm hxy)]
+      rw [dist_comm]
+      ring
+  dist_triangle := by
+    intro x y z
+    by_cases hxy : x = y
+    · subst y; simp [leafDist]
+    · by_cases hyz : y = z
+      · subst z; simp [leafDist]
+      · by_cases hxz : x = z
+        · subst z
+          have h₁ := leafDist_nonneg x y
+          have h₂ := leafDist_nonneg y x
+          simpa [leafDist] using (add_nonneg h₁ h₂)
+        · simp only [leafDist, if_neg hxy, if_neg hyz, if_neg hxz]
+          have ht := dist_triangle (anchor x) (anchor y) (anchor z)
+          have hp := leafPenalty_nonneg y
+          linarith
+  eq_of_dist_eq_zero := by
+    intro x y h
+    by_contra hxy
+    exact (ne_of_gt (leafDist_pos_of_ne hxy)) h
+
+private theorem pendantRadius_eq_nearest {x : PendantCycle} (hx : x ≠ some (0 : Fin 4)) :
+    radius (some (0 : Fin 4)) (insertionIndex (some (0 : Fin 4)) x - 1) =
+      nearestDistance (greedyPrefix (some (0 : Fin 4)) (insertionIndex (some (0 : Fin 4)) x - 1)) x := by
+  letI : DecidableEq PendantCycle := Classical.decEq _
+  have hi : 0 < insertionIndex (some (0 : Fin 4)) x := by
+    have := (insertionIndex_eq_zero_iff (some (0 : Fin 4)) x).not.mpr hx
+    omega
+  have hnot := not_mem_before_insertionIndex (some (0 : Fin 4)) x
+    (show insertionIndex (some (0 : Fin 4)) x - 1 < insertionIndex (some (0 : Fin 4)) x by omega)
+  have hmem := mem_insertionIndex (some (0 : Fin 4)) x
+  have heq : insertionIndex (some (0 : Fin 4)) x =
+      (insertionIndex (some (0 : Fin 4)) x - 1) + 1 := by omega
+  rw [heq, prefix_succ, Finset.mem_insert] at hmem
+  have hxnext : x = next (some (0 : Fin 4))
+      (greedyPrefix (some (0 : Fin 4)) (insertionIndex (some (0 : Fin 4)) x - 1)) :=
+    hmem.resolve_right hnot
+  unfold radius
+  exact congrArg (nearestDistance
+    (greedyPrefix (some (0 : Fin 4)) (insertionIndex (some (0 : Fin 4)) x - 1)))
+    hxnext.symm
+
+private theorem coreDist_ge_one {i : Fin 4} (hi : i ≠ 0)
+    {y : PendantCycle} (hy : y ≠ some i) : 1 ≤ dist (some i) y := by
+  cases y with
+  | none =>
+      have hd := dist_ge_one_of_ne hi
+      change 1 ≤ dist i (0 : Fin 4) + 0 + 1 / 20
+      linarith
+  | some j =>
+      have hij : i ≠ j := fun h => hy (congrArg some h.symm)
+      change 1 ≤ leafDist (some i) (some j)
+      simpa [leafDist, anchor, leafPenalty, hij] using
+        (dist_ge_one_of_ne hij)
+
+private theorem coreRadius_ge_one {i : Fin 4} (hi : i ≠ 0) :
+    1 ≤ radius (some (0 : Fin 4))
+      (insertionIndex (some (0 : Fin 4)) (some i) - 1) := by
+  have hx : (some i : PendantCycle) ≠ some (0 : Fin 4) := by simp [hi]
+  rw [pendantRadius_eq_nearest hx]
+  let s := greedyPrefix (some (0 : Fin 4))
+    (insertionIndex (some (0 : Fin 4)) (some i) - 1)
+  have hs : s.Nonempty := prefix_nonempty (some (0 : Fin 4)) _
+  have hnot : (some i : PendantCycle) ∉ s :=
+    not_mem_before_insertionIndex (some (0 : Fin 4)) (some i)
+      (by have := (insertionIndex_eq_zero_iff (some (0 : Fin 4)) (some i)).not.mpr hx
+          omega)
+  obtain ⟨y, hy, heq⟩ := exists_nearest hs (some i)
+  rw [← heq]
+  exact coreDist_ge_one hi (fun h => hnot (h ▸ hy))
+
+private theorem pendantRadius_le :
+    radius (some (0 : Fin 4))
+      (insertionIndex (some (0 : Fin 4)) (none : PendantCycle) - 1) ≤ 1 / 20 := by
+  rw [pendantRadius_eq_nearest (by simp)]
+  have hseed : (some (0 : Fin 4)) ∈
+      greedyPrefix (some (0 : Fin 4)) (insertionIndex (some (0 : Fin 4)) (none : PendantCycle) - 1) :=
+    seed_mem_prefix (some (0 : Fin 4)) _
+  have hle := nearestDistance_le (x := (none : PendantCycle)) hseed
+  have hd : dist (none : PendantCycle) (some (0 : Fin 4)) = (1 / 20 : ℝ) := by
+    change leafDist none (some (0 : Fin 4)) = _
+    simp [leafDist, anchor, leafPenalty]
+  simpa [hd] using hle
+
+/-- The pendant point has a finite deletion time strictly before the scale-one cycle. -/
+theorem pendant_deleted_before_one :
+    ∃ t, deletionTime (some (0 : Fin 4)) (1 / 3) (none : PendantCycle) = some t ∧
+      t < 1 := by
+  let t := radius (some (0 : Fin 4))
+      (insertionIndex (some (0 : Fin 4)) (none : PendantCycle) - 1) /
+        ((1 / 3 : ℝ) * (1 - 2 * (1 / 3 : ℝ)))
+  refine ⟨t, deletionTime_of_ne (some (0 : Fin 4)) (1 / 3) (by simp), ?_⟩
+  have hr := pendantRadius_le
+  dsimp [t]
+  norm_num at hr ⊢
+  linarith
+
+/-- At scale one the pendant vertex has passed its deletion time. -/
+theorem pendant_inactive_one :
+    ¬ ClosedActive
+      (deletionTime (some (0 : Fin 4)) (1 / 3) (none : Option (Fin 4))) 1 := by
+  obtain ⟨t, ht, hlt⟩ := pendant_deleted_before_one
+  rw [ht]
+  exact not_le_of_gt hlt
+
+private theorem core_closedActive_one (i : Fin 4) :
+    ClosedActive (deletionTime (some (0 : Fin 4)) (1 / 3) (some i)) 1 := by
+  by_cases hi : i = 0
+  · subst i; simp [ClosedActive]
+  · rw [deletionTime_of_ne (some (0 : Fin 4)) (1 / 3) (by simp [hi])]
+    have hr := coreRadius_ge_one hi
+    norm_num [ClosedActive] at hr ⊢
+    linarith
+
+private theorem core_weight_one_eq_zero (i : Fin 4) :
+    weight (1 / 3) (deletionTime (some (0 : Fin 4)) (1 / 3) (some i)) 1 = 0 := by
+  by_cases hi : i = 0
+  · subst i; simp [weight]
+  · rw [deletionTime_of_ne (some (0 : Fin 4)) (1 / 3) (by simp [hi]), weight_some]
+    have hr := coreRadius_ge_one hi
+    apply finiteWeight_of_le
+    norm_num at hr ⊢
+    linarith
+
+private theorem core_distance_eq (i j : Fin 4) :
+    dist (some i : PendantCycle) (some j) = dist i j := by
+  change leafDist (some i) (some j) = dist i j
+  by_cases hij : i = j
+  · subst j; simp [leafDist, anchor, leafPenalty]
+  · simp [leafDist, anchor, leafPenalty, hij]
+
+private theorem anchor_distance_le (x y : PendantCycle) :
+    dist (anchor x) (anchor y) ≤ dist x y := by
+  change dist (anchor x) (anchor y) ≤ leafDist x y
+  unfold leafDist
+  split_ifs with h
+  · subst y; simp
+  · have hx := leafPenalty_nonneg x
+    have hy := leafPenalty_nonneg y
+    linarith
+
+private abbrev coreSparse : PreAbstractSimplicialComplex (Fin 4) :=
+  sparseComplex (0 : Fin 4) (1 / 3) 1
+
+private abbrev pendantSparse : PreAbstractSimplicialComplex PendantCycle :=
+  sparseComplex (some (0 : Fin 4)) (1 / 3) 1
+
+private def coreSection : VertexMap coreSparse pendantSparse where
+  toFun := some
+  map_face := by
+    classical
+    letI : DecidableEq PendantCycle := Classical.decEq _
+    intro σ hσ
+    have hrips : σ ∈ (Rips.filter inferInstance).sublevel 1 := by
+      rw [← sparse_eq_rips_one]
+      exact hσ
+    obtain ⟨hne, hdist⟩ := (Rips.mem_sublevel_iff _ _ _).mp hrips
+    apply closedActiveComplex_le_sparseComplex (some (0 : Fin 4)) (1 / 3)
+      (by norm_num : (0 : ℝ) ≤ 1)
+    refine ⟨⟨hne.image some, by norm_num, ?_⟩, ?_⟩
+    · intro x hx y hy
+      obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hx
+      obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hy
+      have hxy := hdist i hi j hj
+      simpa only [relaxedDistance, core_weight_one_eq_zero, core_distance_eq,
+        add_zero] using hxy
+    · intro x hx
+      obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+      exact core_closedActive_one i
+
+private def pendantCollapse : VertexMap pendantSparse coreSparse where
+  toFun := anchor
+  map_face := by
+    classical
+    letI : DecidableEq (Fin 4) := Classical.decEq _
+    intro σ hσ
+    have hrelaxed := sparseComplex_le_relaxedComplex (some (0 : Fin 4))
+      (by norm_num : (0 : ℝ) < 1 / 3)
+      (by norm_num : (1 / 3 : ℝ) ≤ 1 / 3) 1 hσ
+    have hrips := relaxedComplex_le_rips (by norm_num : (0 : ℝ) ≤ 1 / 3)
+      (deletionTime (some (0 : Fin 4)) (1 / 3)) hrelaxed
+    dsimp only [coreSparse]
+    rw [sparse_eq_rips_one]
+    apply (Rips.mem_sublevel_iff _ _ _).mpr
+    obtain ⟨hne, hdist⟩ := (Rips.mem_sublevel_iff _ _ _).mp hrips
+    refine ⟨hne.image anchor, ?_⟩
+    intro i hi j hj
+    obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hi
+    obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hj
+    exact (anchor_distance_le x y).trans (hdist x hx y hy)
+
+private theorem coreSection_collapse :
+    VertexMap.comp coreSection pendantCollapse = VertexMap.id coreSparse := by
+  apply VertexMap.ext
+  intro i
+  rfl
+
+/-- A pendant vertex is actually deleted before scale one, while the surviving four-cycle
+has a nonzero rational `H₁` class in the sparse complex. The sparse-to-relaxed comparison
+also sends this class to a nonzero class. -/
+theorem deleted_pendant_h1_nonzero :
+    (∃ t : ℝ, deletionTime (some (0 : Fin 4)) (1 / 3) (none : Option (Fin 4)) = some t ∧
+      t < 1) ∧
+    ∃ z : simplicialHomology
+        (sparseComplex (some (0 : Fin 4)) (1 / 3) 1) ℚ 1,
+      z ≠ 0 ∧
+      (simplicialHomologyIncl ℚ
+        (sparseComplex_le_relaxedComplex (some (0 : Fin 4))
+          (by norm_num : (0 : ℝ) < 1 / 3)
+          (by norm_num : (1 / 3 : ℝ) ≤ 1 / 3) 1) 1).hom z ≠ 0 := by
+  constructor
+  · exact pendant_deleted_before_one
+  have hcore : ∃ z : simplicialHomology coreSparse ℚ 1, z ≠ 0 := by
+    change ∃ z : simplicialHomology (sparseComplex (0 : Fin 4) (1 / 3) 1) ℚ 1,
+      z ≠ 0
+    rw [sparse_eq_rips_one, rips_one_eq_cycleK]
+    exact ⟨simplicialHomologyClass ℚ cycleK 1 cycleHomologyCycle,
+      cycleHomologyClass_ne_zero⟩
+  obtain ⟨z, hz⟩ := hcore
+  let f := simplicialHomologyMap ℚ coreSection 1
+  let g := simplicialHomologyMap ℚ pendantCollapse 1
+  have hfg : f ≫ g = 𝟙 (simplicialHomology coreSparse ℚ 1) := by
+    dsimp only [f, g]
+    rw [← simplicialHomologyMap_comp, coreSection_collapse]
+    exact simplicialHomologyMap_id ℚ coreSparse 1
+  have hcomp : g.hom (f.hom z) = z := by
+    have h := congrArg
+      (fun q : simplicialHomology coreSparse ℚ 1 ⟶
+          simplicialHomology coreSparse ℚ 1 => q.hom z) hfg
+    simpa only [ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_id,
+      LinearMap.id_apply] using h
+  have hnonzero : f.hom z ≠ 0 := by
+    intro hzero
+    rw [hzero, map_zero] at hcomp
+    exact hz hcomp.symm
+  let h := simplicialHomologyIncl ℚ
+    (sparseComplex_le_relaxedComplex (some (0 : Fin 4))
+      (by norm_num : (0 : ℝ) < 1 / 3)
+      (by norm_num : (1 / 3 : ℝ) ≤ 1 / 3) 1) 1
+  have hIso : IsIso h :=
+    isIso_sparse_relaxed_all ℚ (some (0 : Fin 4))
+      (show (0 : ℝ) < 1 / 3 by norm_num)
+      (show (1 / 3 : ℝ) ≤ 1 / 3 by norm_num) 1 1
+  refine ⟨f.hom z, hnonzero, ?_⟩
+  intro hzero
+  haveI : IsIso h := hIso
+  have hinj : Function.Injective h.hom := (ModuleCat.mono_iff_injective h).mp inferInstance
+  exact hnonzero (hinj (by simpa [h] using hzero))
+
 end
 
 end TDA.Filtration.SparseRips.H1Examples

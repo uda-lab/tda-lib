@@ -573,3 +573,6 @@ import TDA
 #print axioms TDA.Filtration.SparseRips.H1Examples.sparse_eq_rips_one
 #print axioms TDA.Filtration.SparseRips.H1Examples.sparseFilter_h1_nonzero
 #print axioms TDA.Filtration.SparseRips.H1Examples.sparse_relaxed_h1_nonzero
+#print axioms TDA.Filtration.SparseRips.H1Examples.pendant_deleted_before_one
+#print axioms TDA.Filtration.SparseRips.H1Examples.pendant_inactive_one
+#print axioms TDA.Filtration.SparseRips.H1Examples.deleted_pendant_h1_nonzero
