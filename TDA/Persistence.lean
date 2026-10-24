@@ -245,3 +245,6 @@ import TDA.Persistence.RectangleMatchingInterleaving
 import TDA.Persistence.RectangleMatchingDistance
 import TDA.Persistence.RectangleBarcodeBridge
 import TDA.Persistence.RectangleSharpExample
+import TDA.Persistence.BoundaryTransportNorm
+import TDA.Persistence.BoundaryTransportMetric
+import TDA.Persistence.BoundaryTransportMetricExamples
