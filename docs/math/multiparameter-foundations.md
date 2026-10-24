@@ -383,8 +383,52 @@ graded free module on one generator. `HookInfinity.homEquivFiber` identifies
 its morphisms with the target's birth fiber. Surjectivity at that single fiber
 therefore suffices to lift any such morphism. This assertion holds over any
 ring and preorder, without finite-dimensionality assumptions, and in particular
-applies to rank-exact quotient maps over a field. An exact-category instance,
-projective classification and rank-projective resolutions remain further results.
+applies to rank-exact quotient maps over a field.
+
+## Enough rank projectives on finite posets
+
+Fix a field k and a finite partially ordered set P. `IsRankProjective Q`
+means that every natural map from Q lifts along every rank-exact quotient.
+The hook lifting results above give this property for finite-death hooks and
+principal upsets. It is preserved by finite categorical biproducts, natural
+isomorphisms and retracts. This relative property is distinct from lifting
+along all ordinary epimorphisms.
+
+Let M be a pointwise finite-dimensional P-module. For each grade a, choose a
+basis of M(a); for every a < b, choose a basis of the kernel of M(a→b).
+`FiniteHookDeflation.Index M` labels each basis vector separately. A fiber
+basis vector contributes a principal upset born at a; a kernel basis vector
+contributes the hook with birth a and death b. The number of occurrences is
+
+```text
+sum over a<b of dim ker M(a→b) + sum over a of dim M(a).
+```
+
+Their existing categorical biproduct is `FiniteHookDeflation.module M`.
+The corresponding generator maps assemble to the natural transformation
+`FiniteHookDeflation.π M`. Fiber bases make it surjective at every grade.
+For any vector killed by M(a→b), its expansion in the kernel basis gives
+a lift in the hook sum also killed at b. At a = b the only such vector is
+zero. Thus `lift_kernel` proves the dying-element criterion at every pair,
+and `rankExact` derives rank additivity for the actual categorical kernel
+sequence. Both the hook sum and its kernel have finite-dimensional fibers.
+No rank equality or already existing deflation is an input.
+
+The hook sum is rank projective. Consequently a pfd module M on P is rank
+projective exactly when its constructed deflation admits a natural section:
+`isRankProjective_iff_retract`. In particular every rank projective is a
+retract of a finite hook sum. This supplies enough relative projectives in
+the finite-poset part of
+[Botnan–Oppermann–Oudot–Scoccola, Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3).
+The construction retains repeated occurrences and includes zero modules and
+the empty poset. Consumers also give a branching-poset pfd module whose
+rank-exact deflation does not split, and check the construction in
+characteristic two.
+
+The deflation can have redundant summands; it is not asserted to be a minimal
+projective cover. An exact-category instance, classification of retracts as
+hook sums, minimal resolutions, the real-grid transfer and signed barcode
+stability remain further results.
 
 ## Attainment on real finite-constructible modules
 

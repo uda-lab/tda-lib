@@ -30,6 +30,8 @@ import TDA.Persistence.FinitePresentationGrid
 import TDA.Persistence.RankExact
 import TDA.Persistence.SupportInterval
 import TDA.Persistence.HookProjective
+import TDA.Persistence.RankProjective
+import TDA.Persistence.FiniteHookDeflation
 import TDA.Persistence.Rectangle
 import TDA.Persistence.RealRaySeparation
 import TDA.Persistence.ConstructibleClosure
