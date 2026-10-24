@@ -573,6 +573,19 @@ private theorem sum_biprod_right {ι κ : Type} [Fintype ι] [Fintype κ]
   intro j hj
   simp only [Category.assoc]
 
+private theorem sum_biprod_right_obj (X : PModule.{u,0,u} k P)
+    {κ : Type} [Fintype κ] (G : κ → PModule.{u,0,u} k P) :
+    (∑ j, (biprod.snd (X := X) (Y := ⨁ G) ≫ biproduct.π G j) ≫
+        (biproduct.ι G j ≫ biprod.inr (X := X) (Y := ⨁ G))) =
+      biprod.snd (X := X) (Y := ⨁ G) ≫
+        (∑ j, biproduct.π G j ≫ biproduct.ι G j) ≫
+          biprod.inr (X := X) (Y := ⨁ G) := by
+  symm
+  rw [← Category.assoc, Preadditive.comp_sum, Preadditive.sum_comp]
+  apply Finset.sum_congr rfl
+  intro j hj
+  simp only [Category.assoc]
+
 /-- The biproduct of a disjoint union of two finite families is the binary
 biproduct of their categorical biproducts. -/
 private noncomputable def biproduct_sum_iso {ι κ : Type} [Fintype ι] [Fintype κ]
@@ -638,6 +651,60 @@ private noncomputable def biproduct_sum_iso {ι κ : Type} [Fintype ι] [Fintype
       biproduct.total, biproduct.total]
     simp
   exact biproduct.uniqueUpToIso H (isBilimitOfTotal b htotal)
+
+/-- Split the first term of a finite biproduct. -/
+private noncomputable def biproduct_split_fin_succ {n : ℕ}
+    (F : Fin (n + 1) → PModule.{u,0,u} k P) :
+    F 0 ⊞ (⨁ fun i : Fin n => F i.succ) ≅ ⨁ F := by
+  classical
+  let tail : Fin n → PModule.{u,0,u} k P := fun i => F i.succ
+  let b : CategoryTheory.Limits.Bicone F := {
+    pt := F 0 ⊞ ⨁ tail
+    π := Fin.cases biprod.fst (fun i => biprod.snd ≫ biproduct.π tail i)
+    ι := Fin.cases biprod.inl
+      (fun i => biproduct.ι tail i ≫ biprod.inr)
+    ι_π := by
+      intro i j
+      refine Fin.cases ?_ (fun i => ?_) i
+      · refine Fin.cases ?_ (fun j => ?_) j
+        · simp [Category.assoc]
+        · simp [Category.assoc] <;> intro h <;> cases h
+      · refine Fin.cases ?_ (fun j => ?_) j
+        · simp [Category.assoc]
+        · by_cases h : i = j
+          · subst j
+            simp [tail, Category.assoc, biproduct.ι_π]
+          · simp [tail, Category.assoc, h, biproduct.ι_π]
+  }
+  have htotal : ∑ j : Fin (n + 1), b.π j ≫ b.ι j = 𝟙 b.pt := by
+    rw [Fin.sum_univ_succ]
+    change biprod.fst ≫ biprod.inl +
+      ∑ i : Fin n, (biprod.snd ≫ biproduct.π tail i) ≫
+        (biproduct.ι tail i ≫ biprod.inr) = 𝟙 _
+    rw [sum_biprod_right_obj (F 0) tail]
+    rw [biproduct.total]
+    exact biprod.total
+  exact biproduct.uniqueUpToIso F (isBilimitOfTotal b htotal)
+
+private theorem biproduct_split_fin_succ_inl_hom {n : ℕ}
+    (F : Fin (n + 1) → PModule.{u,0,u} k P) :
+    biprod.inl ≫ (biproduct_split_fin_succ F).hom = biproduct.ι F 0 := by
+  apply biproduct.hom_ext
+  intro j
+  refine Fin.cases ?_ (fun j => ?_) j <;>
+    simp [biproduct_split_fin_succ, biproduct.uniqueUpToIso,
+      Category.assoc, biproduct.lift_π,
+      biproduct.ι_π_ne _ (Fin.succ_ne_zero _).symm]
+
+private theorem biproduct_split_fin_succ_inv_fst {n : ℕ}
+    (F : Fin (n + 1) → PModule.{u,0,u} k P) :
+    (biproduct_split_fin_succ F).inv ≫ biprod.fst = biproduct.π F 0 := by
+  apply biproduct.hom_ext'
+  intro i
+  refine Fin.cases ?_ (fun i => ?_) i <;>
+    simp [biproduct_split_fin_succ, biproduct.uniqueUpToIso,
+      Category.assoc, biproduct.ι_desc,
+      biproduct.ι_π_ne _ (Fin.succ_ne_zero _).symm]
 
 private noncomputable def totalFiberDimension (M : PModule.{u,0,u} k P) : ℕ :=
   ∑ p, Module.finrank k (M.obj p)
@@ -781,8 +848,20 @@ theorem indecomposable_rankProjective_iso_hook
   exact indecomposable_biproduct_summand (FiniteHookDeflation.family M)
     hI hM hFamily inc (FiniteHookDeflation.π M) hinc
 
-private abbrev HookTag (P : Type) [PartialOrder P] :=
+/-- Tags for the two canonical hook types in the finite rank-projective cover.
+
+A finite tag records its birth and death as a strict pair; an infinite tag
+records only its birth. -/
+abbrev RankProjectiveHookTag (P : Type) [PartialOrder P] :=
   Sum (FiniteHookDeflation.StrictPair P) P
+
+/-- The persistence module represented by a finite or infinite hook tag. -/
+noncomputable def rankProjectiveHookModule : RankProjectiveHookTag P →
+    PModule.{u,0,u} k P
+  | .inl ab => Hook.module ab.val.1 ab.val.2
+  | .inr a => HookInfinity.module (R := k) a
+
+private abbrev HookTag (P : Type) [PartialOrder P] := RankProjectiveHookTag P
 
 private def hookTag {M : PModule.{u,0,u} k P}
     (t : FiniteHookDeflation.Index M) : HookTag P :=
@@ -790,9 +869,420 @@ private def hookTag {M : PModule.{u,0,u} k P}
   | .inl t => .inl t.1
   | .inr t => .inr t.1
 
-private noncomputable def hookTagModule : HookTag P → PModule.{u,0,u} k P
-  | .inl ab => Hook.module ab.val.1 ab.val.2
-  | .inr a => HookInfinity.module (R := k) a
+private noncomputable def hookTagModule : HookTag P → PModule.{u,0,u} k P :=
+  rankProjectiveHookModule (k := k)
+
+private noncomputable def hookTagEndRingEquiv : ∀ c : HookTag P,
+    End (hookTagModule (k := k) c) ≃+* k
+  | .inl ab => Hook.endRingEquiv ab.property
+  | .inr a => HookInfinity.endRingEquiv a
+
+private theorem hookTag_iso_of_nonzero_composite {c d : HookTag P}
+    {α : hookTagModule (k := k) c ⟶ hookTagModule (k := k) d}
+    {β : hookTagModule (k := k) d ⟶ hookTagModule (k := k) c}
+    (h : α ≫ β ≠ 0) :
+    IsIso α := by
+  classical
+  let ec : End (hookTagModule (k := k) c) ≃+* k := hookTagEndRingEquiv c
+  have hc : ec (α ≫ β) ≠ 0 := by
+    intro hz
+    apply h
+    exact ec.injective (by simpa using hz)
+  have hunitScalar : IsUnit (ec (α ≫ β)) := isUnit_iff_ne_zero.mpr hc
+  let ab : End (hookTagModule (k := k) c) := α ≫ β
+  have hunit : IsUnit ab := by
+    have hm := IsUnit.map ec.symm.toRingHom hunitScalar
+    simpa [ec] using hm
+  letI : IsIso ab := (CategoryTheory.isUnit_iff_isIso _).mp hunit
+  let r : hookTagModule d ⟶ hookTagModule c := β ≫ inv ab
+  have hsection : α ≫ r = 𝟙 (hookTagModule c) := by
+    dsimp [r]
+    rw [← Category.assoc]
+    exact IsIso.hom_inv_id ab
+  let p : End (hookTagModule d) := r ≫ α
+  have hp : p ≫ p = p := by
+    calc
+      p ≫ p = r ≫ (α ≫ r) ≫ α := by simp [p, Category.assoc]
+      _ = r ≫ 𝟙 _ ≫ α := by rw [hsection]
+      _ = p := by simp [p]
+  let ed : End (hookTagModule (k := k) d) ≃+* k := hookTagEndRingEquiv d
+  have hpidem : IsIdempotentElem (ed p) := by
+    change ed p * ed p = ed p
+    simpa only [← map_mul, End.mul_def] using congrArg ed hp
+  rcases IsIdempotentElem.iff_eq_zero_or_one.mp hpidem with hz | ho
+  · have hp0 : p = 0 := ed.injective (by simpa using hz)
+    have hα0 : α = 0 := by
+      calc
+        α = α ≫ p := by
+          dsimp [p]
+          rw [← Category.assoc, hsection]
+          simp
+        _ = 0 := by rw [hp0]; simp
+    exact (h (by simp [hα0])).elim
+  · have hp1 : p = 𝟙 (hookTagModule d) := ed.injective (by simpa using ho)
+    exact ⟨⟨r, hsection, hp1⟩⟩
+
+private theorem hookTag_indecomposable (c : HookTag P) :
+    Indecomposable (hookTagModule (k := k) c) := by
+  cases c with
+  | inl ab => exact Hook.indecomposable ab.property
+  | inr a => exact HookInfinity.indecomposable a
+
+private theorem hookTag_eq_of_iso {c d : HookTag P}
+    (h : Nonempty (hookTagModule (k := k) c ≅ hookTagModule d)) : c = d := by
+  cases c with
+  | inl ab =>
+    cases d with
+    | inl cd =>
+      have h' : Nonempty (Hook.module (k := k) ab.val.1 ab.val.2 ≅
+          Hook.module (k := k) cd.val.1 cd.val.2) := by
+        simpa [hookTagModule, rankProjectiveHookModule] using h
+      rcases (Hook.nonempty_iso_iff ab.property cd.property).mp h' with ⟨ha, hd⟩
+      have hab : ab = cd := Subtype.ext (Prod.ext ha hd)
+      cases hab
+      rfl
+    | inr a =>
+      have h' : Nonempty (Hook.module (k := k) ab.val.1 ab.val.2 ≅
+          HookInfinity.module (R := k) a) := by
+        simpa [hookTagModule, rankProjectiveHookModule] using h
+      exact (Hook.not_nonempty_iso_infinity ab.property h').elim
+  | inr a =>
+    cases d with
+    | inl ab =>
+      have h' : Nonempty (Hook.module (k := k) ab.val.1 ab.val.2 ≅
+          HookInfinity.module (R := k) a) := by
+        rcases h with ⟨e⟩
+        exact ⟨e.symm⟩
+      exact (Hook.not_nonempty_iso_infinity ab.property h').elim
+    | inr b =>
+      have h' : Nonempty (HookInfinity.module (R := k) a ≅
+          HookInfinity.module (R := k) b) := by
+        simpa [hookTagModule, rankProjectiveHookModule] using h
+      have hab : a = b := (HookInfinity.nonempty_iso_iff (k := k)).mp h'
+      subst b
+      rfl
+
+private theorem hookTag_component_sum {n m : ℕ}
+    (F : Fin n → HookTag P) (G : Fin m → HookTag P)
+    (e : (⨁ fun i => hookTagModule (k := k) (F i)) ≅
+      ⨁ fun j => hookTagModule (k := k) (G j)) (i : Fin n) :
+    ∑ j : Fin m,
+      ((biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom ≫
+          biproduct.π (fun j => hookTagModule (k := k) (G j)) j) ≫
+        (biproduct.ι (fun j => hookTagModule (k := k) (G j)) j ≫ e.inv ≫
+          biproduct.π (fun i => hookTagModule (k := k) (F i)) i)) =
+      𝟙 (hookTagModule (k := k) (F i)) := by
+  classical
+  calc
+    _ = ∑ j : Fin m,
+          biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom ≫
+            (biproduct.π (fun j => hookTagModule (k := k) (G j)) j ≫
+              biproduct.ι (fun j => hookTagModule (k := k) (G j)) j) ≫ e.inv ≫
+              biproduct.π (fun i => hookTagModule (k := k) (F i)) i := by
+        apply Finset.sum_congr rfl
+        intro j hj
+        simp only [Category.assoc]
+    _ = biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom ≫
+          (∑ j : Fin m,
+            biproduct.π (fun j => hookTagModule (k := k) (G j)) j ≫
+              biproduct.ι (fun j => hookTagModule (k := k) (G j)) j) ≫ e.inv ≫
+          biproduct.π (fun i => hookTagModule (k := k) (F i)) i := by
+        symm
+        calc
+          _ = (biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom) ≫
+                (∑ j : Fin m,
+                  biproduct.π (fun j => hookTagModule (k := k) (G j)) j ≫
+                    biproduct.ι (fun j => hookTagModule (k := k) (G j)) j) ≫
+                (e.inv ≫ biproduct.π (fun i => hookTagModule (k := k) (F i)) i) := by
+              simp only [Category.assoc]
+          _ = (∑ j : Fin m,
+                (biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom) ≫
+                  (biproduct.π (fun j => hookTagModule (k := k) (G j)) j ≫
+                    biproduct.ι (fun j => hookTagModule (k := k) (G j)) j)) ≫
+                (e.inv ≫ biproduct.π (fun i => hookTagModule (k := k) (F i)) i) := by
+              exact congrArg (fun f => f ≫
+                (e.inv ≫ biproduct.π (fun i => hookTagModule (k := k) (F i)) i))
+                (Preadditive.comp_sum Finset.univ
+                  (biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom)
+                  (fun j => biproduct.π (fun j => hookTagModule (k := k) (G j)) j ≫
+                    biproduct.ι (fun j => hookTagModule (k := k) (G j)) j))
+          _ = ∑ j : Fin m,
+                ((biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom) ≫
+                  (biproduct.π (fun j => hookTagModule (k := k) (G j)) j ≫
+                    biproduct.ι (fun j => hookTagModule (k := k) (G j)) j)) ≫
+                  (e.inv ≫ biproduct.π (fun i => hookTagModule (k := k) (F i)) i) := by
+              exact Preadditive.sum_comp Finset.univ
+                (fun j => (biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom) ≫
+                  (biproduct.π (fun j => hookTagModule (k := k) (G j)) j ≫
+                    biproduct.ι (fun j => hookTagModule (k := k) (G j)) j))
+                (e.inv ≫ biproduct.π (fun i => hookTagModule (k := k) (F i)) i)
+          _ = _ := by
+              apply Finset.sum_congr rfl
+              intro j hj
+              simp only [Category.assoc]
+    _ = biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫
+          e.hom ≫ e.inv ≫
+            biproduct.π (fun i => hookTagModule (k := k) (F i)) i := by
+        rw [biproduct.total]
+        simp [Category.assoc]
+    _ = 𝟙 (hookTagModule (k := k) (F i)) := by
+        calc
+          _ = biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫
+                𝟙 _ ≫ biproduct.π (fun i => hookTagModule (k := k) (F i)) i :=
+              congrArg (fun f => biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫
+                f ≫ biproduct.π (fun i => hookTagModule (k := k) (F i)) i) e.hom_inv_id
+          _ = 𝟙 _ := by simp
+
+private theorem exists_hookTag_iso_component {n m : ℕ}
+    (F : Fin n → HookTag P) (G : Fin m → HookTag P)
+    (e : (⨁ fun i => hookTagModule (k := k) (F i)) ≅
+      ⨁ fun j => hookTagModule (k := k) (G j)) (i : Fin n) :
+    ∃ j : Fin m, IsIso
+      (biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom ≫
+        biproduct.π (fun j => hookTagModule (k := k) (G j)) j) := by
+  classical
+  let a (j : Fin m) : End (hookTagModule (k := k) (F i)) :=
+    (biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom ≫
+      biproduct.π (fun j => hookTagModule (k := k) (G j)) j) ≫
+    (biproduct.ι (fun j => hookTagModule (k := k) (G j)) j ≫ e.inv ≫
+      biproduct.π (fun i => hookTagModule (k := k) (F i)) i)
+  have hsum : ∑ j : Fin m, a j = 𝟙 (hookTagModule (k := k) (F i)) :=
+    hookTag_component_sum F G e i
+  let ec : End (hookTagModule (k := k) (F i)) ≃+* k :=
+    hookTagEndRingEquiv (F i)
+  have hscalar : (∑ j : Fin m, ec (a j)) = 1 := by
+    rw [← map_sum, hsum]
+    simp
+  obtain ⟨j, hj⟩ : ∃ j : Fin m, ec (a j) ≠ 0 := by
+    by_contra h
+    have hz : ∀ j : Fin m, ec (a j) = 0 := by
+      intro j
+      by_contra hj
+      exact h ⟨j, hj⟩
+    have hzero : (∑ j : Fin m, ec (a j)) = 0 := by
+      apply Finset.sum_eq_zero
+      intro j hj
+      exact hz j
+    rw [hzero] at hscalar
+    exact zero_ne_one hscalar
+  have hunitScalar : IsUnit (ec (a j)) := isUnit_iff_ne_zero.mpr hj
+  have hunit : IsUnit (a j) := by
+    have hm := IsUnit.map ec.symm.toRingHom hunitScalar
+    simpa [ec] using hm
+  letI : IsIso (a j) := (CategoryTheory.isUnit_iff_isIso _).mp hunit
+  have hnonzero : a j ≠ 0 := by
+    intro hz
+    have hid : 𝟙 (hookTagModule (k := k) (F i)) = 0 := by
+      calc
+        𝟙 (hookTagModule (k := k) (F i)) = a j ≫ inv (a j) :=
+          (IsIso.hom_inv_id (a j)).symm
+        _ = 0 := by
+          have hcomp := congrArg (fun f : End (hookTagModule (k := k) (F i)) =>
+            f ≫ inv (a j)) hz
+          exact hcomp.trans zero_comp
+    exact (hookTag_indecomposable (k := k) (F i)).1
+      ((IsZero.iff_id_eq_zero _).mpr hid)
+  let α := biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom ≫
+      biproduct.π (fun j => hookTagModule (k := k) (G j)) j
+  let β := biproduct.ι (fun j => hookTagModule (k := k) (G j)) j ≫ e.inv ≫
+      biproduct.π (fun i => hookTagModule (k := k) (F i)) i
+  have hcomp : α ≫ β = a j := rfl
+  have hαβ : α ≫ β ≠ 0 := by rw [hcomp]; exact hnonzero
+  exact ⟨j, by simpa [α] using hookTag_iso_of_nonzero_composite hαβ⟩
+
+private theorem fin_succ_hookTag_card {n : ℕ}
+    [DecidableEq P]
+    (F : Fin (n + 1) → HookTag P) (c : HookTag P) :
+    Fintype.card {i : Fin (n + 1) // F i = c} =
+      (if F 0 = c then 1 else 0) +
+        Fintype.card {i : Fin n // F i.succ = c} := by
+  classical
+  calc
+    Fintype.card {i : Fin (n + 1) // F i = c} =
+        ∑ i : Fin (n + 1), (if F i = c then 1 else 0 : ℕ) := by
+      rw [Fintype.card_subtype]
+      symm
+      exact Finset.sum_boole (fun i : Fin (n + 1) => F i = c) Finset.univ
+    _ = (if F 0 = c then 1 else 0 : ℕ) +
+        ∑ i : Fin n, (if F i.succ = c then 1 else 0 : ℕ) := by
+      rw [Fin.sum_univ_succ]
+    _ = (if F 0 = c then 1 else 0 : ℕ) +
+        Fintype.card {i : Fin n // F i.succ = c} := by
+      congr 1
+      rw [Fintype.card_subtype]
+      exact Finset.sum_boole (R := ℕ) (fun i : Fin n => F i.succ = c) Finset.univ
+
+private theorem hookTag_sum_multiplicity_unique [DecidableEq P] :
+    ∀ n m (F : Fin n → HookTag P) (G : Fin m → HookTag P),
+      Nonempty ((⨁ fun i => hookTagModule (k := k) (F i)) ≅
+        ⨁ fun j => hookTagModule (k := k) (G j)) →
+      ∀ c : HookTag P,
+        Fintype.card {i : Fin n // F i = c} =
+          Fintype.card {j : Fin m // G j = c} := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | h n ih =>
+    intro m F G he c
+    classical
+    rcases he with ⟨e⟩
+    cases n with
+    | zero =>
+      let F0 : Fin 0 → PModule.{u,0,u} k P := fun i => hookTagModule (F i)
+      let G0 : Fin m → PModule.{u,0,u} k P := fun j => hookTagModule (G j)
+      have hzeroSource : IsZero (⨁ F0) := by
+        apply (IsZero.iff_id_eq_zero _).mpr
+        have htotal : (∑ i : Fin 0, biproduct.π F0 i ≫ biproduct.ι F0 i) =
+            𝟙 (⨁ F0) := biproduct.total (f := F0)
+        simpa using htotal.symm
+      have hidSource : 𝟙 (⨁ F0) = 0 := (IsZero.iff_id_eq_zero _).mp hzeroSource
+      have hzeroTarget : IsZero (⨁ G0) := by
+        apply (IsZero.iff_id_eq_zero _).mpr
+        calc
+          𝟙 (⨁ G0) = e.inv ≫ e.hom := e.inv_hom_id.symm
+          _ = e.inv ≫ 𝟙 (⨁ F0) ≫ e.hom := by rw [Category.id_comp]
+          _ = 0 := by rw [hidSource]; simp
+      have hfactor (j : Fin m) : IsZero (G0 j) := by
+        apply (IsZero.iff_id_eq_zero _).mpr
+        have hcoord := congrArg
+          (fun f : End (⨁ G0) => biproduct.ι G0 j ≫ f ≫ biproduct.π G0 j)
+          ((IsZero.iff_id_eq_zero _).mp hzeroTarget)
+        simpa [Category.assoc] using hcoord
+      have hm : m = 0 := by
+        by_contra hm
+        have hp : 0 < m := Nat.pos_of_ne_zero hm
+        exact (hookTag_indecomposable (k := k) (G ⟨0, hp⟩)).1 (hfactor ⟨0, hp⟩)
+      subst m
+      simp
+    | succ n =>
+      obtain ⟨j, hAlpha⟩ := exists_hookTag_iso_component F G e 0
+      let α : hookTagModule (k := k) (F 0) ⟶ hookTagModule (k := k) (G j) :=
+        biproduct.ι (fun i : Fin (n + 1) => hookTagModule (k := k) (F i)) 0 ≫
+          e.hom ≫ biproduct.π (fun q : Fin m => hookTagModule (k := k) (G q)) j
+      have hα : IsIso α := by simpa [α] using hAlpha
+      letI : IsIso α := hα
+      have hIso : Nonempty (hookTagModule (k := k) (F 0) ≅ hookTagModule (k := k) (G j)) :=
+        ⟨asIso α⟩
+      have htag : F 0 = G j := hookTag_eq_of_iso hIso
+      cases m with
+      | zero => exact Fin.elim0 j
+      | succ m =>
+        let σ : Fin (m + 1) ≃ Fin (m + 1) := Equiv.swap 0 j
+        have hσ0 : σ 0 = j := by simp [σ]
+        let G' : Fin (m + 1) → HookTag P := fun q => G (σ q)
+        let reindex : (⨁ fun q => hookTagModule (k := k) (G' q)) ≅
+            ⨁ fun q : Fin (m + 1) => hookTagModule (k := k) (G q) :=
+          biproduct.reindex σ (fun q : Fin (m + 1) => hookTagModule (k := k) (G q))
+        let e' : (⨁ fun i => hookTagModule (k := k) (F i)) ≅
+            ⨁ fun q => hookTagModule (k := k) (G' q) := e.trans reindex.symm
+        let splitF := biproduct_split_fin_succ
+          (fun i : Fin (n + 1) => hookTagModule (k := k) (F i))
+        let splitG := biproduct_split_fin_succ
+          (fun i : Fin (m + 1) => hookTagModule (k := k) (G' i))
+        let E := splitF.trans (e'.trans splitG.symm)
+        have hsplitF : biprod.inl ≫ splitF.hom =
+            biproduct.ι (fun i : Fin (n + 1) => hookTagModule (k := k) (F i)) 0 :=
+          biproduct_split_fin_succ_inl_hom _
+        have hsplitG : splitG.inv ≫ biprod.fst =
+            biproduct.π (fun i : Fin (m + 1) => hookTagModule (k := k) (G' i)) 0 :=
+          biproduct_split_fin_succ_inv_fst _
+        let targetIso : hookTagModule (k := k) (G' 0) ≅
+            hookTagModule (k := k) (G j) :=
+          eqToIso (congrArg (fun i => hookTagModule (k := k) (G i)) hσ0)
+        letI : IsIso targetIso.hom := targetIso.isIso_hom
+        have htargetComponent : reindex.inv ≫
+            biproduct.π (fun q : Fin (m + 1) => hookTagModule (k := k) (G' q)) 0 ≫
+              targetIso.hom =
+            biproduct.π (fun q : Fin (m + 1) => hookTagModule (k := k) (G q)) j := by
+          change (biproduct.lift fun q : Fin (m + 1) =>
+            biproduct.π (fun q : Fin (m + 1) => hookTagModule (k := k) (G q)) (σ q)) ≫
+              biproduct.π (fun q : Fin (m + 1) =>
+                hookTagModule (k := k) (G (σ q))) 0 ≫ targetIso.hom = _
+          have hLift := biproduct.lift_π
+            (fun q : Fin (m + 1) =>
+              biproduct.π (fun q : Fin (m + 1) => hookTagModule (k := k) (G q)) (σ q)) 0
+          calc
+            _ = biproduct.π (fun q : Fin (m + 1) => hookTagModule (k := k) (G q))
+                  (σ 0) ≫ targetIso.hom := congrArg (fun f => f ≫ targetIso.hom) hLift
+            _ = _ := by
+              dsimp [targetIso]
+              exact biproduct.π_comp_eqToHom
+                (fun q : Fin (m + 1) => hookTagModule (k := k) (G q)) hσ0
+        have hfirstBare : biprod.inl ≫ E.hom ≫ biprod.fst =
+            biproduct.ι (fun i : Fin (n + 1) => hookTagModule (k := k) (F i)) 0 ≫
+              e'.hom ≫ biproduct.π (fun q : Fin (m + 1) =>
+                hookTagModule (k := k) (G' q)) 0 := by
+          change ((biprod.inl ≫ splitF.hom) ≫ e'.hom ≫ splitG.inv ≫ biprod.fst) = _
+          rw [hsplitF]
+          calc
+            _ = (biproduct.ι (fun i : Fin (n + 1) =>
+                    hookTagModule (k := k) (F i)) 0 ≫ e'.hom) ≫
+                  (splitG.inv ≫ biprod.fst) := by simp [Category.assoc]
+            _ = (biproduct.ι (fun i : Fin (n + 1) =>
+                    hookTagModule (k := k) (F i)) 0 ≫ e'.hom) ≫
+                  biproduct.π (fun q : Fin (m + 1) =>
+                    hookTagModule (k := k) (G' q)) 0 := congrArg _ hsplitG
+            _ = _ := by simp [Category.assoc]
+        have hfirstTransport :
+            (biprod.inl ≫ E.hom ≫ biprod.fst) ≫ targetIso.hom = α := by
+          calc
+            _ = (biproduct.ι (fun i : Fin (n + 1) =>
+                  hookTagModule (k := k) (F i)) 0 ≫ e'.hom ≫
+                  biproduct.π (fun q : Fin (m + 1) =>
+                    hookTagModule (k := k) (G' q)) 0) ≫ targetIso.hom :=
+              congrArg (fun f => f ≫ targetIso.hom) hfirstBare
+            _ = (biproduct.ι (fun i : Fin (n + 1) =>
+                    hookTagModule (k := k) (F i)) 0 ≫ e.hom) ≫
+                  (reindex.inv ≫ biproduct.π (fun q : Fin (m + 1) =>
+                    hookTagModule (k := k) (G' q)) 0 ≫ targetIso.hom) := by
+              simp [e', Category.assoc]
+            _ = α := by
+              rw [htargetComponent]
+              rfl
+        have hfirstEq : biprod.inl ≫ E.hom ≫ biprod.fst = α ≫ targetIso.inv := by
+          apply (cancel_mono targetIso.hom).1
+          calc
+            (biprod.inl ≫ E.hom ≫ biprod.fst) ≫ targetIso.hom = α := hfirstTransport
+            _ = (α ≫ targetIso.inv) ≫ targetIso.hom := by simp [Category.assoc]
+        have hfirst : IsIso (biprod.inl ≫ E.hom ≫ biprod.fst) := by
+          rw [hfirstEq]
+          infer_instance
+        letI : IsIso (biprod.inl ≫ E.hom ≫ biprod.fst) := hfirst
+        let tailF : Fin n → HookTag P := fun i => F i.succ
+        let tailG : Fin m → HookTag P := fun i => G' i.succ
+        let tailIso : (⨁ fun i => hookTagModule (k := k) (tailF i)) ≅
+            ⨁ fun i => hookTagModule (k := k) (tailG i) := Biprod.isoElim E
+        have htail : Fintype.card {i : Fin n // tailF i = c} =
+            Fintype.card {i : Fin m // tailG i = c} :=
+          ih n (Nat.lt_succ_self n) m tailF tailG ⟨tailIso⟩ c
+        have htop : F 0 = G' 0 := by simpa [G', hσ0] using htag
+        have hswap : Fintype.card {i : Fin (m + 1) // G' i = c} =
+            Fintype.card {i : Fin (m + 1) // G i = c} :=
+          Fintype.card_congr (σ.subtypeEquiv (by intro i; rfl))
+        calc
+          Fintype.card {i : Fin (n + 1) // F i = c} =
+              (if F 0 = c then 1 else 0) +
+                Fintype.card {i : Fin n // F i.succ = c} :=
+            fin_succ_hookTag_card F c
+          _ = (if G' 0 = c then 1 else 0) +
+                Fintype.card {i : Fin m // G' i.succ = c} := by
+            rw [htop, htail]
+          _ = Fintype.card {i : Fin (m + 1) // G' i = c} :=
+            (fin_succ_hookTag_card G' c).symm
+          _ = Fintype.card {i : Fin (m + 1) // G i = c} := hswap
+
+/-- Isomorphic finite sums of nonzero finite or infinite hooks have the same
+multiplicity for each birth/death tag. The statement retains repeated hooks
+through the subtype cardinalities. -/
+theorem rankProjectiveHookSum_multiplicity_unique [DecidableEq P]
+    {n m : ℕ} (F : Fin n → RankProjectiveHookTag P)
+    (G : Fin m → RankProjectiveHookTag P)
+    (h : Nonempty
+      ((⨁ fun i => rankProjectiveHookModule (k := k) (F i)) ≅
+        ⨁ fun j => rankProjectiveHookModule (k := k) (G j)))
+    (c : RankProjectiveHookTag P) :
+    Fintype.card {i : Fin n // F i = c} =
+      Fintype.card {j : Fin m // G j = c} := by
+  exact hookTag_sum_multiplicity_unique n m F G h c
 
 private theorem family_eq_hookTagModule {M : PModule.{u,0,u} k P}
     (t : FiniteHookDeflation.Index M) :
@@ -866,7 +1356,7 @@ private theorem finiteHookTag_source_card_le [DecidableEq P]
   letI : ∀ p, FiniteDimensional k (M.obj p) := hM
   let eHook (i : I) : F i.val ≅ Hook.module (k := k) ab.val.1 ab.val.2 := by
     exact (Classical.choice (hIso i.val)).trans
-      (eqToIso (by simpa [hookTagModule] using congrArg hookTagModule i.property))
+      (eqToIso (by simpa [hookTagModule, rankProjectiveHookModule] using congrArg hookTagModule i.property))
   let x (i : I) : (F i.val).obj ab.val.1 :=
     ((eHook i).inv.app ab.val.1).hom
       (SupportInterval.one (Hook.support ab.val.1 ab.val.2)
@@ -920,7 +1410,7 @@ private theorem infiniteHookTag_source_card_le [DecidableEq P]
   letI : ∀ p, FiniteDimensional k (M.obj p) := hM
   let eHook (i : I) : F i.val ≅ HookInfinity.module (R := k) a := by
     exact (Classical.choice (hIso i.val)).trans
-      (eqToIso (by simpa [hookTagModule] using congrArg hookTagModule i.property))
+      (eqToIso (by simpa [hookTagModule, rankProjectiveHookModule] using congrArg hookTagModule i.property))
   let x (i : I) : (F i.val).obj a :=
     ((eHook i).inv.app a).hom (HookInfinity.birth (R := k) a)
   have hx (i : I) : x i ≠ 0 := by
