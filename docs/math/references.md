@@ -46,6 +46,13 @@ article text/figures, not citation of bibliographic facts or original mathematic
 
 ## Sources already used
 
+<a id="BOOS24-v3"></a>
+### BOOS24-v3 — generated-upset projective resolutions
+
+- **Identity/version:** Magnus Bakke Botnan; Steffen Oppermann; Steve Oudot; Luis Scoccola. *On the bottleneck stability of rank decompositions of multi-parameter persistence modules*. Consulted [arXiv:2208.00300v3](https://arxiv.org/html/2208.00300v3), posted 2024-08-30; Proposition 5.1. The page links the arXiv perpetual non-exclusive distribution license; no separate journal-version comparison is needed for this proposition.
+- **Use:** Proposition 5.1 gives the join-indexed projective resolution of the module on a finitely generated upset. The library constructs its actual signed deletion maps and proves pointwise exactness through the active-occurrence simplex; repeated labels are retained as distinct indexed occurrences. See [join-indexed upset resolutions](generated-upset-resolution.md). Minimality and global-dimension claims are outside this result's implementation.
+- **Rights/evidence:** **AR**, inspected 2026-10-24. The arXiv page links its nonexclusive distribution grant. The library documentation gives bibliographic attribution and an original mathematical summary; no article text, figures or code are reproduced.
+
 The following manifestations each have at least one Lean consumer named in their own use line.
 
 <a id="CCDS14-v1"></a>
@@ -306,6 +313,8 @@ These mappings retain theorem numbers, conventions and explicit library extensio
 the mathematical digests. Paper citation keys resolve to the manifestation cards above;
 software links resolve to immutable versions. A source reference is not a claim that its
 entire article or all its algorithms have been formalized.
+
+- [BOOS24-v3](#BOOS24-v3) — [Botnan–Oppermann–Oudot–Scoccola, *On the bottleneck stability of rank decompositions of multi-parameter persistence modules*, Proposition 5.1](https://arxiv.org/html/2208.00300v3#S5.SS1): `TDA.Persistence.GeneratedUpsetResolution` constructs the actual join-indexed resolution and proves ordinary projectivity, chain laws, and exactness at every lattice index via the simplex on active generator occurrences. Repeated values retain their occurrence indices. Minimality and global-dimension results are not claimed; see [the proof exposition](generated-upset-resolution.md).
 
 - [DMW16-v2](#DMW16-v2) — [Dey–Mémoli–Wang, *Multiscale Mapper: Topological Summarization via Codomain Covers*, §2–3](https://arxiv.org/html/1504.03763v2): indexed cover maps, pullbacks and refinement towers underlying the set-theoretic cover interface; the library interface permits arbitrary sets and support-aware range coverage. §4.1: interleaved cover towers give interleaved Mapper homology modules, in [Mapper foundations](mapper.md#interleaved-cover-towers-and-mapper-homology-stability), with bottleneck bounds for step towers on finite grids as a library specialisation in [Mapper foundations](mapper.md#diagrams-of-mapper-homology-along-step-towers).
 
