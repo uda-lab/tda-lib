@@ -38,3 +38,5 @@ import TDA.Mapper.RefinementHomologyDiagram
 import TDA.Mapper.RefinementHomologyDiagramTightness
 import TDA.Mapper.MapperReebTranslation
 import TDA.Mapper.RefinementHomologyCappedTower
+import TDA.Mapper.DomainMap
+import TDA.Mapper.RefinementHomologyDomainMap
