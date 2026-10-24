@@ -2,6 +2,7 @@ import TDA.Persistence.RipsSampling
 import TDA.Persistence.RipsGromovHausdorffExamples
 import TDA.Persistence.EssentialVanishing
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Topology.Instances.ENNReal.Lemmas
 
 /-! Concrete atomic examples of sampled Rips laws and the vanishing-mass input. -/
 
@@ -47,6 +48,111 @@ theorem weighted_twoPoint_sampleLaw_bound (ε : ℝ≥0) (hε : ε ≤ 1)
           (PMF.pure (() : Unit))) :=
   wasserstein_sampleLaw_le_gromovWasserstein (ZMod 2)
     (twoPointLaw ε hε) (PMF.pure (() : Unit)) hp n degree hn
+
+section EpsilonRegression
+
+open TDA.Filtration.Cech.Examples
+open TDA.Filtration.Cech.Examples.TwoPoints
+open TDA.Persistence.Rips.GromovHausdorffExamples
+open TDA.Filtration
+
+local instance epsilonFinTwoMetric : MetricSpace (Fin 2) := TwoPoints.metric
+
+private def epsilonPointBase (b : Bool) : ℝ := if b then 2 else 0
+
+private def epsilonPointUnit (b : Bool) : ℝ := if b then 1 else 0
+
+/-- The metric on `Bool` induced by placing its two points at `0` and `1` in `ℝ`.
+This is the finite metric model used by the ε-weighted two-point sample fixture. -/
+abbrev epsilonTwoPointMetric : MetricSpace Bool :=
+  MetricSpace.induced (fun b => if b then (1 : ℝ) else 0)
+    (by
+      intro b c h
+      cases b <;> cases c <;> simp_all)
+    inferInstance
+
+private theorem epsilonPointBase_injective : Function.Injective epsilonPointBase := by
+  intro b c h
+  cases b <;> cases c <;> simp_all [epsilonPointBase]
+
+private abbrev epsilonBaseMetric : MetricSpace Bool :=
+  MetricSpace.induced epsilonPointBase epsilonPointBase_injective inferInstance
+
+local instance epsilonUnitMetric : MetricSpace Bool :=
+  epsilonTwoPointMetric
+
+private theorem epsilonUnitMetric_dist (b c : Bool) :
+    epsilonUnitMetric.dist b c = (1 / 2 : ℝ) * epsilonBaseMetric.dist b c := by
+  change dist (epsilonPointUnit b) (epsilonPointUnit c) =
+    (1 / 2 : ℝ) * dist (epsilonPointBase b) (epsilonPointBase c)
+  cases b <;> cases c <;>
+    norm_num [epsilonPointUnit, epsilonPointBase, Real.dist_eq]
+
+private theorem rips_diameter_scale {V : Type*} (d e : MetricSpace V) (c : ℝ)
+    (hc : 0 < c) (hdist : ∀ x y, e.dist x y = c * d.dist x y)
+    (s : Finset V) :
+    Rips.diameter e s = c * Rips.diameter d s := by
+  apply le_antisymm
+  · apply (Rips.diameter_le_iff e s _).2
+    refine ⟨mul_nonneg hc.le (Rips.diameter_nonneg d s), ?_⟩
+    intro x hx y hy
+    rw [hdist]
+    exact mul_le_mul_of_nonneg_left (Rips.dist_le_diameter d hx hy) hc.le
+  · have hbase : Rips.diameter d s ≤ c⁻¹ * Rips.diameter e s := by
+      apply (Rips.diameter_le_iff d s _).2
+      refine ⟨mul_nonneg (inv_nonneg.mpr hc.le) (Rips.diameter_nonneg e s), ?_⟩
+      intro x hx y hy
+      have hdist' : d.dist x y = c⁻¹ * e.dist x y := by
+        rw [hdist]
+        field_simp
+      rw [hdist']
+      exact mul_le_mul_of_nonneg_left (Rips.dist_le_diameter e hx hy)
+        (inv_nonneg.mpr hc.le)
+    calc
+      c * Rips.diameter d s ≤ c * (c⁻¹ * Rips.diameter e s) :=
+        mul_le_mul_of_nonneg_left hbase hc.le
+      _ = Rips.diameter e s := by field_simp
+
+private theorem epsilonUnitFilter_eq_scale :
+    Rips.filter epsilonUnitMetric =
+      (Rips.filter epsilonBaseMetric).scale (1 / 2) (by norm_num) := by
+  ext s
+  rw [Rips.filter_value, FilterFunction.scale_value, Rips.filter_value,
+    rips_diameter_scale epsilonBaseMetric epsilonUnitMetric (1 / 2) (by norm_num)
+      epsilonUnitMetric_dist]
+
+private def boolFinTwo : Bool ≃ Fin 2 where
+  toFun b := if b then 1 else 0
+  invFun i := if i = 1 then true else false
+  left_inv b := by cases b <;> rfl
+  right_inv i := by fin_cases i <;> rfl
+
+private theorem epsilonBaseDgm_eq_twoPoints :
+    dgm (ZMod 2) (Rips.filter epsilonBaseMetric) 0 = diagram (ZMod 2) (Fin 2) 0 := by
+  letI : MetricSpace Bool := epsilonBaseMetric
+  let e : Bool ≃ᵢ Fin 2 :=
+    { boolFinTwo with
+      isometry_toFun := Isometry.of_dist_eq (by
+        intro b c
+        change dist (TwoPoints.pts (boolFinTwo b)) (TwoPoints.pts (boolFinTwo c)) =
+          dist (epsilonPointBase b) (epsilonPointBase c)
+        cases b <;> cases c <;>
+          norm_num [boolFinTwo, epsilonPointBase, TwoPoints.pts, Real.dist_eq]) }
+  rw [diagram_eq_dgm]
+  exact dgm_eq_of_isometryEquiv (ZMod 2) e 0
+
+/-- The two-point Rips diagram has an essential component and a finite H₀ bar
+dying at distance one. -/
+theorem epsilonTwoPoint_fullH0_points :
+    (diagram (ZMod 2) Bool 0).points =
+      {((0 : ℝ), (⊤ : WithTop ℝ)), ((0 : ℝ), ((1 : ℝ) : WithTop ℝ))} := by
+  rw [diagram_eq_dgm]
+  rw [epsilonUnitFilter_eq_scale, dgm_scale, epsilonBaseDgm_eq_twoPoints]
+  rw [Diagram.scale, Diagram.map_points]
+  rw [two_points_diagram]
+  norm_num [scaleFinitePair]
+
+end EpsilonRegression
 
 section NontrivialLaw
 
@@ -243,5 +349,270 @@ theorem uniformTwoPoints_sampleLaw_nonconstant :
   · exact lt_of_lt_of_le (by norm_num) uniformTwoPoints_singleton_fullH0_mass
 
 end NontrivialLaw
+
+section EpsilonSampleLaw
+
+open Filter
+open scoped _root_.Topology
+
+/-- The one-point metric on the singleton sample used in the bottleneck comparison. -/
+abbrev epsilonSingletonMetric : MetricSpace (Fin 1) :=
+  MetricSpace.induced (fun _ : Fin 1 => (0 : ℝ))
+    (fun a b _ => Subsingleton.elim a b) inferInstance
+
+local instance epsilonSamplingMetric : MetricSpace Bool :=
+  epsilonTwoPointMetric
+
+local instance epsilonSamplingSingletonMetric : MetricSpace (Fin 1) :=
+  epsilonSingletonMetric
+
+private theorem epsilonPointUnit_isometry : Isometry epsilonPointUnit := by
+  intro b c
+  change edist (epsilonPointUnit b) (epsilonPointUnit c) = edist b c
+  rfl
+
+/-- Both atoms of the weighted two-point input have positive mass exactly when
+`ε` lies strictly between zero and one. -/
+theorem twoPointWeights_fullSupport (ε : ℝ≥0) (hε : ε ≤ 1)
+    (hεpos : 0 < ε) (hεlt : ε < 1) :
+    0 < twoPointWeights ε hε false ∧ 0 < twoPointWeights ε hε true := by
+  constructor
+  · change 0 < ((1 - ε : ℝ≥0) : ℝ≥0∞)
+    exact ENNReal.coe_pos.mpr (tsub_pos_of_lt hεlt)
+  · change 0 < (ε : ℝ≥0∞)
+    exact ENNReal.coe_pos.mpr hεpos
+
+/-- The real-valued input law has the prescribed masses at its two support points. -/
+theorem twoPointLaw_atom_masses (ε : ℝ≥0) (hε : ε ≤ 1) :
+    twoPointLaw ε hε 0 = ((1 - ε : ℝ≥0) : ℝ≥0∞) ∧
+    twoPointLaw ε hε 1 = (ε : ℝ≥0∞) := by
+  constructor <;>
+    simp [twoPointLaw, PMF.map_apply, tsum_fintype, twoPointWeights,
+      PMF.ofFintype_apply]
+
+/-- The real-valued two-point input has full support for `0 < ε < 1`. -/
+theorem twoPointLaw_fullSupport (ε : ℝ≥0) (hε : ε ≤ 1)
+    (hεpos : 0 < ε) (hεlt : ε < 1) :
+    0 < twoPointLaw ε hε 0 ∧ 0 < twoPointLaw ε hε 1 := by
+  rcases twoPointLaw_atom_masses ε hε with ⟨h0, h1⟩
+  rw [h0, h1]
+  exact ⟨ENNReal.coe_pos.mpr (tsub_pos_of_lt hεlt), ENNReal.coe_pos.mpr hεpos⟩
+
+private def epsilonRepeatedDraws (b : Bool) : Fin 2 → Bool := fun _ => b
+
+private def epsilonTwoDraws (b c : Bool) : Fin 2 → Bool :=
+  Fin.cons b (Fin.cons c Fin.elim0)
+
+private theorem epsilonRepeatedDraws_diagram_eq_singleton (b : Bool) :
+    sampleDiagram (ZMod 2) (epsilonRepeatedDraws b) 0 = diagram (ZMod 2) (Fin 1) 0 := by
+  let t : Fin 2 → Bool := epsilonRepeatedDraws b
+  letI : Subsingleton (Sample t) := ⟨by
+    intro a c
+    apply Subtype.ext
+    rcases a.property with ⟨i, hi⟩
+    rcases c.property with ⟨j, hj⟩
+    simpa [t, epsilonRepeatedDraws] using hi.symm.trans hj⟩
+  let e : Sample t ≃ᵢ Fin 1 :=
+    { Equiv.ofBijective (fun _ : Sample t => (0 : Fin 1))
+        ⟨fun a c _ => Subsingleton.elim a c,
+         fun y => ⟨sampleProjection t 0, Subsingleton.elim _ y⟩⟩ with
+      isometry_toFun := by
+        intro a c
+        have hac : a = c := Subsingleton.elim a c
+        subst c
+        simp }
+  exact diagram_eq_of_isometryEquiv (ZMod 2) e 0
+
+private theorem epsilonTwoDraws_diagram (b c : Bool) :
+    sampleDiagram (ZMod 2) (Fin.cons b (Fin.cons c Fin.elim0)) 0 =
+      if b = c then diagram (ZMod 2) (Fin 1) 0 else diagram (ZMod 2) Bool 0 := by
+  cases b <;> cases c
+  · have h : epsilonTwoDraws false false = epsilonRepeatedDraws false := by
+      funext i
+      fin_cases i <;> rfl
+    change sampleDiagram (ZMod 2)
+      (Fin.cons false (Fin.cons false Fin.elim0)) 0 = _
+    rw [show Fin.cons false (Fin.cons false Fin.elim0) = epsilonRepeatedDraws false by
+      funext i
+      fin_cases i <;> rfl, if_pos rfl]
+    exact epsilonRepeatedDraws_diagram_eq_singleton false
+  · have h : Function.Surjective (epsilonTwoDraws false true) := by
+      intro x
+      cases x
+      · exact ⟨0, by simp [epsilonTwoDraws]⟩
+      · exact ⟨1, by simp [epsilonTwoDraws]⟩
+    rw [if_neg (by decide)]
+    exact sampleDiagram_eq_diagram_of_surjective (ZMod 2) _ h 0
+  · have h : Function.Surjective (epsilonTwoDraws true false) := by
+      intro x
+      cases x
+      · exact ⟨1, by simp [epsilonTwoDraws]⟩
+      · exact ⟨0, by simp [epsilonTwoDraws]⟩
+    rw [if_neg (by decide)]
+    exact sampleDiagram_eq_diagram_of_surjective (ZMod 2) _ h 0
+  · have h : epsilonTwoDraws true true = epsilonRepeatedDraws true := by
+      funext i
+      fin_cases i <;> rfl
+    change sampleDiagram (ZMod 2)
+      (Fin.cons true (Fin.cons true Fin.elim0)) 0 = _
+    rw [show Fin.cons true (Fin.cons true Fin.elim0) = epsilonRepeatedDraws true by
+      funext i
+      fin_cases i <;> rfl, if_pos rfl]
+    exact epsilonRepeatedDraws_diagram_eq_singleton true
+
+private theorem epsilon_bar_diagonalCost :
+    diagonalCost ((0 : ℝ), (1 : ℝ)) = (2 : ℝ≥0∞)⁻¹ := by
+  rw [diagonalCost]
+  have hreal : |(1 : ℝ) - 0| / 2 = (2 : ℝ)⁻¹ := by norm_num
+  rw [hreal, ENNReal.ofReal_inv_of_pos (by norm_num : (0 : ℝ) < 2)]
+  norm_num
+
+/-- The nontrivial full H₀ diagram and the singleton diagram are separated by
+exactly half the finite bar's lifetime. -/
+theorem epsilonTwoPoint_bottleneck_singleton :
+    bottleneck (diagram (ZMod 2) Bool 0) (diagram (ZMod 2) (Fin 1) 0) =
+      (2 : ℝ≥0∞)⁻¹ := by
+  classical
+  let x : Fin 1 → ℝ × ℝ := fun _ => ((0 : ℝ), (1 : ℝ))
+  let y : Fin 0 → ℝ × ℝ := Fin.elim0
+  let b : Fin 1 → ℝ := fun _ => 0
+  let D : Diagram ℝ := orderedQ 1 1 (x, b)
+  let E : Diagram ℝ := orderedQ 0 1 (y, b)
+  have hD : diagram (ZMod 2) Bool 0 = D := by
+    apply Diagram.ext
+    rw [epsilonTwoPoint_fullH0_points]
+    simp [D, x, b, orderedQ, List.ofFn_succ]
+    change ((0 : ℝ), (⊤ : WithTop ℝ)) ::ₘ
+        (((0 : ℝ), ((1 : ℝ) : WithTop ℝ)) ::ₘ 0) =
+      ((0 : ℝ), ((1 : ℝ) : WithTop ℝ)) ::ₘ
+        (((0 : ℝ), (⊤ : WithTop ℝ)) ::ₘ 0)
+    exact Multiset.cons_swap _ _ _
+  have hE : diagram (ZMod 2) (Fin 1) 0 = E := by
+    apply Diagram.ext
+    rw [singleton_fullH0_points]
+    simp [E, y, b, orderedQ, List.ofFn_succ]
+  have hfD : (Finset.univ : Finset (Fin 1)).val.map x = finitePart D.points := by
+    change (Finset.univ : Finset (Fin 1)).val.map x =
+      finitePart (orderedQ 1 1 (x, b)).points
+    rw [finitePart_orderedQ]
+    simp [x]
+  have hfE : (Finset.univ : Finset (Fin 0)).val.map y = finitePart E.points := by
+    change (Finset.univ : Finset (Fin 0)).val.map y =
+      finitePart (orderedQ 0 1 (y, b)).points
+    rw [finitePart_orderedQ]
+    simp [y]
+  have heD : (Finset.univ : Finset (Fin 1)).val.map b = essentialPart D.points := by
+    change (Finset.univ : Finset (Fin 1)).val.map b =
+      essentialPart (orderedQ 1 1 (x, b)).points
+    rw [essentialPart_orderedQ]
+    simp [b]
+  have heE : (Finset.univ : Finset (Fin 1)).val.map b = essentialPart E.points := by
+    change (Finset.univ : Finset (Fin 1)).val.map b =
+      essentialPart (orderedQ 0 1 (y, b)).points
+    rw [essentialPart_orderedQ]
+    simp [b]
+  rw [hD, hE, bottleneck_eq_presentation D E x y b b hfD hfE heD heE]
+  let M : OccurrenceMatching (Fin 1) (Fin 0) (Fin 1) (Fin 1) :=
+    { finite := fun _ => none
+      finite_injective := by simp
+      essential := Equiv.refl _ }
+  have hupper : presentationBottleneck
+      (fun _ : Fin 1 => ((0 : ℝ), (1 : ℝ)))
+      (Fin.elim0 : Fin 0 → ℝ × ℝ)
+      (fun _ : Fin 1 => (0 : ℝ)) (fun _ : Fin 1 => (0 : ℝ)) ≤
+      (2 : ℝ≥0∞)⁻¹ := by
+    calc
+      _ ≤ M.cost x y b b := presentationBottleneck_le_cost x y b b M
+      _ = (2 : ℝ≥0∞)⁻¹ := by
+        simp [M, OccurrenceMatching.cost, essentialPairCost, x, y, b]
+        exact epsilon_bar_diagonalCost
+  have hlower : (2 : ℝ≥0∞)⁻¹ ≤ presentationBottleneck
+      (fun _ : Fin 1 => ((0 : ℝ), (1 : ℝ)))
+      (Fin.elim0 : Fin 0 → ℝ × ℝ)
+      (fun _ : Fin 1 => (0 : ℝ)) (fun _ : Fin 1 => (0 : ℝ)) := by
+    have hhalf : (2 : ℝ≥0∞)⁻¹ = diagonalCost ((0 : ℝ), (1 : ℝ)) := by
+      exact epsilon_bar_diagonalCost.symm
+    apply le_iInf
+    intro M
+    unfold OccurrenceMatching.cost
+    apply le_trans ?_ (le_max_left _ _)
+    have h := Finset.le_sup (s := (Finset.univ : Finset (Fin 1)))
+      (f := fun i => match M.finite i with
+        | some j => finitePairCost (x i) (y j)
+        | none => diagonalCost (x i))
+      (Finset.mem_univ (0 : Fin 1))
+    rw [hhalf]
+    cases hm : M.finite 0 with
+    | none =>
+        simp [hm, x, diagonalCost]
+    | some j => exact Fin.elim0 j
+  exact le_antisymm hupper hlower
+
+private theorem epsilonSingleton_ne_twoPoint :
+    diagram (ZMod 2) (Fin 1) 0 ≠ diagram (ZMod 2) Bool 0 := by
+  intro h
+  have hc := congrArg (fun D : Diagram ℝ => D.points.card) h
+  rw [singleton_fullH0_points, epsilonTwoPoint_fullH0_points] at hc
+  norm_num at hc
+
+/-- In two iid draws, the diagram with the finite H₀ bar occurs exactly when
+the two positive-mass points are both sampled, with mass `2ε(1-ε)`. -/
+theorem epsilonTwoPoint_sampleLaw_nontrivial_mass (ε : ℝ≥0) (hε : ε ≤ 1) :
+    (sampleLaw (ZMod 2) (twoPointWeights ε hε) 2 0) (diagram (ZMod 2) Bool 0) =
+      (2 : ℝ≥0∞) * (ε : ℝ≥0∞) * ((1 - ε : ℝ≥0) : ℝ≥0∞) := by
+  classical
+  let μ := twoPointWeights ε hε
+  let D := diagram (ZMod 2) Bool 0
+  have hmass : expectation (sampleLaw (ZMod 2) μ 2 0)
+      (fun E => if E = D then 1 else 0) = (sampleLaw (ZMod 2) μ 2 0) D := by
+    simp [expectation]
+  rw [← hmass]
+  unfold sampleLaw
+  rw [expectation_map, iid_succ, expectation_bind]
+  simp only [expectation_map, iid_succ, expectation_bind, iid_zero, expectation_pure]
+  simp [expectation, tsum_fintype, epsilonTwoDraws_diagram,
+    epsilonSingleton_ne_twoPoint, twoPointWeights, PMF.ofFintype_apply, μ, D]
+  ring
+
+/-- The actual real-valued two-point sample law has the same exact rare atom
+as its Bool metric chart, transported by the isometric coordinate map `0,1`. -/
+theorem epsilonTwoPoint_realSampleLaw_nontrivial_mass (ε : ℝ≥0) (hε : ε ≤ 1) :
+    (sampleLaw (ZMod 2) (twoPointLaw ε hε) 2 0) (diagram (ZMod 2) Bool 0) =
+      (2 : ℝ≥0∞) * (ε : ℝ≥0∞) * ((1 - ε : ℝ≥0) : ℝ≥0∞) := by
+  rw [show twoPointLaw ε hε = (twoPointWeights ε hε).map epsilonPointUnit by rfl]
+  rw [sampleLaw_map_isometry (ZMod 2) (twoPointWeights ε hε) epsilonPointUnit
+    epsilonPointUnit_isometry 2 0]
+  exact epsilonTwoPoint_sampleLaw_nontrivial_mass ε hε
+
+/-- The exact rare-atom mass tends to zero as the second point's weight tends to zero. -/
+theorem epsilonTwoPoint_sampleLaw_nontrivial_mass_tendsto_zero :
+    Tendsto (fun ε : ℝ≥0 =>
+      (2 : ℝ≥0∞) * (ε : ℝ≥0∞) * ((1 - ε : ℝ≥0) : ℝ≥0∞))
+      (𝓝 0) (𝓝 0) := by
+  let f : ℝ≥0 → ℝ≥0∞ := fun ε =>
+    (2 : ℝ≥0∞) * (ε : ℝ≥0∞) * ((1 - ε : ℝ≥0) : ℝ≥0∞)
+  have hcoe : Tendsto (fun ε : ℝ≥0 => (ε : ℝ≥0∞)) (𝓝 0) (𝓝 0) := by
+    simpa only [ENNReal.coe_zero] using
+      (ENNReal.continuous_coe.continuousAt (x := 0)).tendsto
+  have hupper : Tendsto (fun ε : ℝ≥0 => (2 : ℝ≥0∞) * (ε : ℝ≥0∞))
+      (𝓝 0) (𝓝 0) := by
+    have hm : Continuous (fun x : ℝ≥0∞ => (2 : ℝ≥0∞) * x) :=
+      ENNReal.continuous_const_mul (by norm_num)
+    have hc : Continuous (fun ε : ℝ≥0 => (2 : ℝ≥0∞) * (ε : ℝ≥0∞)) :=
+      hm.comp ENNReal.continuous_coe
+    simpa using (hc.continuousAt (x := 0)).tendsto
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hupper
+  · intro ε
+    exact bot_le
+  · intro ε
+    have hsubNN : (1 - ε : ℝ≥0) ≤ 1 := tsub_le_self
+    have hsub : ((1 - ε : ℝ≥0) : ℝ≥0∞) ≤ 1 := by
+      exact_mod_cast hsubNN
+    calc
+      f ε = ((2 : ℝ≥0∞) * (ε : ℝ≥0∞)) * ((1 - ε : ℝ≥0) : ℝ≥0∞) := rfl
+      _ ≤ ((2 : ℝ≥0∞) * (ε : ℝ≥0∞)) * 1 := by gcongr
+      _ = (2 : ℝ≥0∞) * (ε : ℝ≥0∞) := by simp
+
+end EpsilonSampleLaw
 
 end TDA.Persistence.RipsSamplingExamples

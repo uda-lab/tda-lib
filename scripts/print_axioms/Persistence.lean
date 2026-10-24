@@ -3424,9 +3424,11 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.dist_sampleProjection
 #print axioms TDA.Persistence.Rips.sampleProjection_eq_iff
 #print axioms TDA.Persistence.Rips.sampleDiagram_eq_of_range_eq
+#print axioms TDA.Persistence.Rips.sampleDiagram_eq_of_isometry
 #print axioms TDA.Persistence.Rips.bottleneck_sampleDiagram_le
 #print axioms TDA.Persistence.Rips.bottleneck_sampleDiagram_le_pairMaximum
 #print axioms TDA.Persistence.Rips.transportCost_sampleLaw_le
+#print axioms TDA.Persistence.Rips.sampleLaw_map_isometry
 #print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_le_gromovWasserstein
 #print axioms TDA.Persistence.Rips.wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity
 #print axioms TDA.Persistence.RipsSamplingExamples.twoPoint_gromovWasserstein_singleton
@@ -3442,6 +3444,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RipsSamplingExamples.uniformTwoPoints_singleton_fullH0_mass
 #print axioms TDA.Persistence.RipsSamplingExamples.distinctDraws_ne_repeatedDraws
 #print axioms TDA.Persistence.RipsSamplingExamples.uniformTwoPoints_sampleLaw_nonconstant
+#print axioms TDA.Persistence.RipsSamplingExamples.epsilonTwoPoint_fullH0_points
+#print axioms TDA.Persistence.RipsSamplingExamples.twoPointWeights_fullSupport
+#print axioms TDA.Persistence.RipsSamplingExamples.twoPointLaw_atom_masses
+#print axioms TDA.Persistence.RipsSamplingExamples.twoPointLaw_fullSupport
+#print axioms TDA.Persistence.RipsSamplingExamples.epsilonTwoPoint_bottleneck_singleton
+#print axioms TDA.Persistence.RipsSamplingExamples.epsilonTwoPoint_sampleLaw_nontrivial_mass
+#print axioms TDA.Persistence.RipsSamplingExamples.epsilonTwoPoint_realSampleLaw_nontrivial_mass
+#print axioms TDA.Persistence.RipsSamplingExamples.epsilonTwoPoint_sampleLaw_nontrivial_mass_tendsto_zero
 #print axioms TDA.Persistence.Rips.sampleDiagram_eq_diagram_of_surjective
 #print axioms TDA.Persistence.Rips.tupleProjection_surjective
 #print axioms TDA.Persistence.Rips.dist_tupleProjection

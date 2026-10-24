@@ -1312,8 +1312,15 @@ moment bounds, and distortion GW with factor one half. `RipsSampling` applies
 these estimates to the actual full diagrams of finite tuple ranges.
 `RipsSampleQuotient` identifies tuple-index and metric-sample Rips homology
 filtrations by a natural isomorphism. See [sampled Rips laws](math/sampled-rips-laws.md)
-for the finite-p and infinity bounds, a nonconstant full-H₀ law fixture with
-explicit positive mass, and the remaining measure and reduced-homology bridges.
+for the finite-p and infinity bounds and the ε regression. The real-valued input
+law has positive atoms at `0` and `1` for `0 < ε < 1`; on the separate Bool metric
+chart induced by those coordinates, the full H₀ diagram has a finite bar dying
+at `1` and lies exactly `1/2` from the singleton diagram. In that chart, the
+`n = 2` sample-law atom at the nontrivial diagram is `2ε(1−ε)`, tending to zero
+as `ε → 0`; `sampleLaw_map_isometry` transports the whole law under isometric
+embeddings, and `epsilonTwoPoint_realSampleLaw_nontrivial_mass` states this atom
+for the real-valued input law. This does not give an arbitrary-`n` atom formula;
+the compact/Borel and reduced/full bridges remain open.
 
 ### Normalized subdivision-Rips and measure stability
 

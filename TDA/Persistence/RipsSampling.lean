@@ -45,6 +45,30 @@ theorem sampleProjection_eq_iff (t : Fin n → X) (i j : Fin n) :
 def sampleDiagram (k : Type w) [Field k] (t : Fin n → X) (degree : ℕ) : Diagram ℝ :=
   diagram k (Sample t) degree
 
+/-- An isometric embedding of metric spaces preserves the full Rips diagram of
+every finite tuple range, including tuples with repeated values. -/
+theorem sampleDiagram_eq_of_isometry (k : Type w) [Field k]
+    (f : X → Y) (hf : Isometry f) (t : Fin n → X) (degree : ℕ) :
+    sampleDiagram k (fun i => f (t i)) degree = sampleDiagram k t degree := by
+  let g : Sample t → Sample (fun i => f (t i)) := fun x =>
+    ⟨f x.1, by
+      rcases x.2 with ⟨i, hi⟩
+      exact ⟨i, congrArg f hi⟩⟩
+  have hg : Function.Bijective g := by
+    constructor
+    · intro a b hab
+      apply Subtype.ext
+      exact hf.injective (congrArg Subtype.val hab)
+    · rintro ⟨y, i, rfl⟩
+      exact ⟨sampleProjection t i, by apply Subtype.ext; rfl⟩
+  let e : Sample t ≃ᵢ Sample (fun i => f (t i)) :=
+    { Equiv.ofBijective g hg with
+      isometry_toFun := by
+        intro a b
+        change edist (f a.1) (f b.1) = edist a.1 b.1
+        exact hf a.1 b.1 }
+  exact (diagram_eq_of_isometryEquiv k e degree).symm
+
 /-- The diagram depends on the set of sampled values, so relabelling and changing
 the number of repeated occurrences do not change this sample diagram. -/
 theorem sampleDiagram_eq_of_range_eq (k : Type w) [Field k]
@@ -104,6 +128,19 @@ theorem bottleneck_sampleDiagram_le_pairMaximum (k : Type w) [Field k]
 empty diagram remains a point of this probability law. -/
 def sampleLaw (k : Type w) [Field k] (μ : PMF X) (n degree : ℕ) : PMF (Diagram ℝ) :=
   (iid μ n).map (fun t => sampleDiagram k t degree)
+
+/-- Isometric embeddings preserve the iid law of full finite-sample Rips
+diagrams: mapping every input draw before sampling leaves the diagram law
+unchanged. -/
+theorem sampleLaw_map_isometry (k : Type w) [Field k]
+    (μ : PMF X) (f : X → Y) (hf : Isometry f) (n degree : ℕ) :
+    sampleLaw k (μ.map f) n degree = sampleLaw k μ n degree := by
+  change (iid (μ.map f) n).map (fun t => sampleDiagram k t degree) =
+    (iid μ n).map (fun t => sampleDiagram k t degree)
+  rw [← iid_map μ f n, PMF.map_comp]
+  congr 1
+  funext t
+  exact sampleDiagram_eq_of_isometry k f hf t degree
 
 /-- The iid joint input law pushes forward to an exact coupling of diagram laws. -/
 def sampleLawCoupling (k : Type w) [Field k] {μ : PMF X} {ν : PMF Y}
