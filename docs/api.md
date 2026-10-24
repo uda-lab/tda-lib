@@ -729,6 +729,18 @@ universe because the rank-to-diagram bridge has that universe restriction; the
 mathematical statement is field-independent. See
 [metric-input stability](math/rips-metric-stability.md).
 
+`TDA.Persistence.DiagramBottleneckTopology` gives `Diagram ℝ` its extended
+bottleneck metric and Borel topology. `TDA.Persistence.RipsSamplingMeasure`
+defines `Rips.sampleLawMeasure` as the actual Borel probability law of an iid
+sample diagram from a compact metric probability space. The sample map has
+Lipschitz constant 2 and is continuous; its range is compact and has full law.
+In positive degree, the law has finite `p`th moment from the empty diagram
+for every real `p > 0`. Isometric embeddings preserve the law after pushforward,
+and finite `PMF` inputs agree with the existing atomic `sampleLaw` after
+`toMeasure`.
+The compact-law Gromov–Wasserstein stability bound remains open. See
+[sampled Rips diagram laws](math/sampled-rips-laws.md).
+
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
 `a < b` has finite-dimensional image over the coefficient field.
 `TDA.Persistence.RipsQTame` proves `Rips.qTame_of_totallyBounded` for the
@@ -1493,6 +1505,8 @@ The results provide abstract noncomputable integration and approximation existen
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
 
+### Sampled Rips laws
+
 `Probability.FiniteSampling`, `SamplingMoments`, and `GromovWasserstein` provide
 atomic probability couplings, iid sampling with replacement, sharp unordered-pair
 moment bounds, and distortion GW with factor one half. `RipsSampling` applies
@@ -1503,11 +1517,13 @@ for the finite-p and infinity bounds and the ε regression. The real-valued inpu
 law has positive atoms at `0` and `1` for `0 < ε < 1`; on the separate Bool metric
 chart induced by those coordinates, the full H₀ diagram has a finite bar dying
 at `1` and lies exactly `1/2` from the singleton diagram. In that chart, the
-`n = 2` sample-law atom at the nontrivial diagram is `2ε(1−ε)`, tending to zero
+`n = 2` atomic sample-law mass at the nontrivial diagram is `2ε(1−ε)`, tending to zero
 as `ε → 0`; `sampleLaw_map_isometry` transports the whole law under isometric
 embeddings, and `epsilonTwoPoint_realSampleLaw_nontrivial_mass` states this atom
-for the real-valued input law. This does not give an arbitrary-`n` atom formula;
-the compact/Borel and reduced/full bridges remain open.
+for the real-valued input law. This does not give an arbitrary-`n` atom formula.
+The compact Borel law and its finite-PMF agreement are described with the
+`Rips.sampleLawMeasure` API above. Reduced/unreduced H₀ correspondence remains
+open.
 
 ### Normalized subdivision-Rips and measure stability
 

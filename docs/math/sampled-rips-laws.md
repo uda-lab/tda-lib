@@ -1,4 +1,4 @@
-# Atomic laws of sampled Rips diagrams
+# Probability laws of sampled Rips diagrams
 
 An iid tuple `t : Fin n → X` represents the finite metric subspace `Set.range t`.
 A point drawn several times appears once in this space. `Rips.sampleDiagram k t q`
@@ -65,6 +65,27 @@ The separate theorem
 `W_∞ ≤ 2 GW_∞`. It uses supported tuples and essential suprema, without a finite-p
 limit argument or an assumption that an optimal coupling exists.
 
+## Compact Borel laws
+
+`DiagramBottleneckTopology` equips `Diagram ℝ` with the extended metric induced by
+bottleneck distance. Distances may be infinite for diagrams with different
+essential-bar multiplicities. Ordered finite-coordinate presentations prove
+separability and second countability, so the measurable space is the Borel space
+of this topology.
+
+For a compact metric space `X` with Borel probability measure `μ`,
+`Rips.sampleLawMeasure k μ n q` is the pushforward of the iid product measure on
+`X^n` through the actual finite-sample diagram map. `lipschitzWith_sampleDiagram`
+proves its Lipschitz constant is 2, hence it is continuous and measurable. Its
+range is compact, and the sampled law assigns that range probability one.
+In positive degree, compact diameter bounds the bottleneck distance from every
+sample diagram to the empty diagram by twice the diameter of `X`. Consequently
+every real power `p > 0` has finite moment from that base diagram.
+
+An isometric embedding preserves the law after pushing forward the input measure.
+On a finite input type, `sampleLawMeasure_eq_toMeasure_sampleLaw` identifies the
+Borel law of a finite `PMF` with the `toMeasure` of the existing atomic sample law.
+
 ## Scope and remaining bridges
 
 The theorems use probability mass functions and the library's full finite Rips
@@ -79,11 +100,13 @@ persistence-module isomorphism in every degree and over every coefficient ring.
 The identification of reduced and unreduced positive-degree persistence remains
 separate work.
 
-The atomic transport definition is not yet identified with an infimum over all
-Borel measure couplings on the bottleneck ground space. Compact probability
-inputs, measurability, finite moments, and the reduced-H₀ essential-interval
-bridge remain open. Thus these results do not complete the full sampled-law
-contract in [Issue #503](https://github.com/uda-lab/tda-lib/issues/503).
+The finite atomic transport definition is not yet identified with an infimum over
+all Borel measure couplings on the bottleneck ground space. The compact Borel law
+and its finite PMF bridge are established, but the general compact-input
+Gromov–Wasserstein to Wasserstein stability bound remains open. The reduced-H₀
+essential-interval correspondence also remains separate work. These results do
+not yet complete the full sampled-law contract in
+[Issue #503](https://github.com/uda-lab/tda-lib/issues/503).
 
 ## Why the whole support diagram is different
 
