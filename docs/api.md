@@ -1144,7 +1144,7 @@ values as literal infima of these norms over the two marginal equations.
 `boundaryTransportDistance_eq_normalized_iInf_eLpNorm` gives the probability
 form with the exact factor R^(1/p) and the full sum-of-masses capacity bound.
 
-`BoundaryTransportMetric.boundaryTransportDistance_triangle` proves the sharp
+`BoundaryTransportMetric` exports `boundaryTransportDistance_triangle`, the sharp
 triangle inequality for arbitrary finite original measures and p≥1, using one
 common reservoir capacity, actual minimizing plans and pinned mathlib kernel
 composition and Minkowski. `boundaryTransportDistance_eq_zero_iff` proves

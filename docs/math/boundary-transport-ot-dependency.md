@@ -158,7 +158,8 @@ the recommended dependency decision is a reviewed external backport of its
 required closure to this exact Lean/mathlib pin, with compilation and axiom
 validation. Merely selecting the older release branch is insufficient.
 A project-wide toolchain/mathlib upgrade is a different dependency decision;
-none is made here. The native attainment, metric laws and literal coupling-norm forms do not depend on that choice.
+none is made here. The native attainment, metric laws and literal coupling-norm
+forms do not depend on that choice.
 
 ## Source-use boundary
 
