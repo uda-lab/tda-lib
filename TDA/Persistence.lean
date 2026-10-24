@@ -239,3 +239,4 @@ import TDA.Persistence.RectangleMatching
 import TDA.Persistence.RectangleMatchingInterleaving
 import TDA.Persistence.RectangleMatchingDistance
 import TDA.Persistence.RectangleBarcodeBridge
+import TDA.Persistence.RectangleSharpExample

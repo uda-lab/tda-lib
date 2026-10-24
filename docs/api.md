@@ -110,8 +110,15 @@ radius; the bridge removes those pairs and proves both ends deletable.
 Empty occurrence families are included. Empty half-open supports are zero in
 the raw barcode constructor and are excluded by the positive-length bridge;
 other endpoint decorations are not identified with half-open modules. Zero
-distance implies a natural isomorphism on this common subclass. The sharp
-two-dimensional distance example remains outside these results. `GradedFree.lift`
+distance implies a natural isomorphism on this common subclass.
+`RectangleSharpExample.interleaving` constructs Bjerkevik's Example 5.2 over
+any field, using two Fin 3-indexed families of open rectangles and the source's
+integral coefficient matrices. `interleavingDistance_eq_one` and
+`bottleneckDistance_eq_three` prove the exact values 1 and 3, with lower
+bounds on every actual witness radius. The explicit radius-three matching
+retains all occurrences. `fails_smaller_constant` establishes sharpness of
+the two-dimensional factor three, including in characteristic two; it makes
+no optimality assertion in higher dimensions. `GradedFree.lift`
 and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
 expresses finite presentation by homogeneous cokernels. For finitely presented modules on
