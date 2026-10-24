@@ -4200,3 +4200,22 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_boundaryPlan
 #print axioms TDA.Persistence.BoundaryTransport.exists_finite_cost_minimizing_boundaryPlan
 #print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_boundaryPlan_rooted
+
+#print axioms TDA.Persistence.BoundaryTransport.simpleFuncDiagram
+#print axioms TDA.Persistence.BoundaryTransport.atomicMeasure_simpleFuncDiagram
+#print axioms TDA.Persistence.BoundaryTransport.simpleFuncDiagram_mass
+#print axioms TDA.Persistence.BoundaryTransport.simpleFuncDiagram_zero
+#print axioms TDA.Persistence.BoundaryTransport.quantizerCapacity
+#print axioms TDA.Persistence.BoundaryTransport.simpleFuncReservoirPlan
+#print axioms TDA.Persistence.BoundaryTransport.simpleFuncReservoirPlan_first
+#print axioms TDA.Persistence.BoundaryTransport.simpleFuncReservoirPlan_second
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportPowerValue_simpleFuncDiagram_le
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_simpleFuncDiagram_le
+#print axioms TDA.Persistence.BoundaryTransport.interiorQuantizer
+#print axioms TDA.Persistence.BoundaryTransport.quantizedDiagram
+#print axioms TDA.Persistence.BoundaryTransport.atomicMeasure_quantizedDiagram
+#print axioms TDA.Persistence.BoundaryTransport.quantizedDiagram_mass
+#print axioms TDA.Persistence.BoundaryTransport.quantizedDiagram_zero
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportPowerValue_quantizedDiagram_tendsto
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_quantizedDiagram_tendsto
+#print axioms TDA.Persistence.BoundaryTransport.exists_atomicMeasure_approx_same_mass

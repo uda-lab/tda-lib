@@ -1126,8 +1126,19 @@ caller premise. A nonatomic band and a countable noncompact input with
 infinite Euclidean first moment exercise the result. An admissible
 infinite-cost competitor still permits a finite attained optimum.
 
-The bridge to an ordinary Wasserstein API, sharp triangle and separation,
-and same-mass finite atomic approximation remain open
+`BoundaryTransportQuantization` identifies the native diagram of a simple
+interior quantizer with the exact pushforward of its input. Its graph plan
+uses a full sum-of-masses reservoir and bounds the native powered/rooted
+costs. `BoundaryTransportApproximation` constructs `quantizedDiagram μ n`
+with exactly the original mass at every index. For finite original mass,
+finite diagonal p-persistence and p≥1, its powered and rooted transport
+errors tend to zero. `exists_atomicMeasure_approx_same_mass` gives a native
+diagram at every positive accuracy, including zero inputs. Quantizers take
+only interior values; the added reservoir atom remains separate from the
+original mass. Scaled nonatomic and countable noncompact inputs exercise
+this [same-mass approximation](math/boundary-transport-approximation.md).
+
+The bridge to an ordinary Wasserstein API and sharp triangle/separation remain open
 in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 The [ordinary-OT dependency map](math/boundary-transport-ot-dependency.md)
 identifies the incompatible package pins, available measure-theoretic APIs and
