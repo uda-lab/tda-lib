@@ -294,3 +294,5 @@ import TDA.Persistence.FinitePresentationHookCover
 import TDA.Persistence.FinitePresentationHookKernel
 import TDA.Persistence.FinitePresentationRankProjectiveClassification
 import TDA.Persistence.FinitePresentationRankProjectiveClassificationExamples
+import TDA.Persistence.FiniteRankProjectiveResolution
+import TDA.Persistence.FiniteRankProjectiveResolutionExamples

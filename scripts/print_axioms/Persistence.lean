@@ -4840,3 +4840,33 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FinitePresentationRankProjectiveClassification.Examples.unbounded_principal_upset_classifies
 #print axioms TDA.Persistence.FinitePresentationRankProjectiveClassification.Examples.repeated_finite_hook_classifies
 #print axioms TDA.Persistence.FinitePresentationRankProjectiveClassification.Examples.zero_empty_tagged_sum_classifies
+
+-- Euler ranks of supplied finite rank-exact projective resolutions.
+#print axioms TDA.Persistence.rankOfStructureMap
+#print axioms TDA.Persistence.rankOfStructureMap_zero
+#print axioms TDA.Persistence.rankOfStructureMap_iso
+#print axioms TDA.Persistence.FiniteRankExactResolution
+#print axioms TDA.Persistence.FiniteRankExactResolution.length
+#print axioms TDA.Persistence.FiniteRankExactResolution.kernel
+#print axioms TDA.Persistence.FiniteRankExactResolution.term
+#print axioms TDA.Persistence.FiniteRankExactResolution.inclusion
+#print axioms TDA.Persistence.FiniteRankExactResolution.quotient
+#print axioms TDA.Persistence.FiniteRankExactResolution.row_rank_exact
+#print axioms TDA.Persistence.FiniteRankExactResolution.initial_iso
+#print axioms TDA.Persistence.FiniteRankExactResolution.terminal_iso
+#print axioms TDA.Persistence.FiniteRankExactResolution.rank_eq_alternating_sum
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.term_rank_projective
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.rank_eq_alternating_sum
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.zeroModule
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.nonzeroHook
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.zeroLengthResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.zeroLength_rank_zero
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.zeroLength_euler
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.oneTermHookResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.oneTermHook_is_nonzero_projective
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.oneTermHook_rank_euler
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZeroResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZero_repeated_terms
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZero_differential_is_identity
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZero_rank_cancellation
