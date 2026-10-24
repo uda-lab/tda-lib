@@ -138,9 +138,14 @@ or boundedness is assumed. The active member cannot be dropped: two graph object
 total spaces are at distance `0` (`RGraph.geometricInterleavingDistance_eq_zero_of_isEmpty`), so
 over empty covers of a nonempty graph the reconstructions of `h` and `h + 1` are at distance `0`
 while the Reeb quotients are at distance `1` and both resolutions are `0`, so the comparison
-`d_geo(𝓡(h), 𝓡(g)) ≤ d_geo(M_h, M_g) + res + res'` also needs coverage. No translation functor on graph objects is
-constructed, and translating the height without the cover, or the cover without the height, is
-covered only by the perturbation bounds above.
+`d_geo(𝓡(h), 𝓡(g)) ≤ d_geo(M_h, M_g) + res + res'` also needs coverage. Translation of graph
+objects, `RGraph.translateRGraph c`, preserves the geometric interleaving distance and moves every
+graph object with nonempty total space by exactly `|c|` (see
+[reeb-rgraph-translation.md](reeb-rgraph-translation.md)); the reconstruction of `h + c` over the
+translated cover is not identified with the translate of the reconstruction of `h`. Translating
+the cover by `c` preserves its resolution (`coverResolution_add_const`). Translating the height
+without the cover, or the cover without the height, is covered only by the perturbation bounds
+above.
 
 ## Scope and computation
 
