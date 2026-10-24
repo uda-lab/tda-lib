@@ -127,7 +127,23 @@ expresses finite presentation by homogeneous cokernels. For finitely presented m
 `Fin n → ℝ`, `GradedFree.finitelyPresented_exists_finite_criticalCoordinates`
 gives finite coordinate sets outside which comparable structure maps are
 isomorphisms, and `GradedFree.finitelyPresented_exists_pos_structureMap_isIso`
-gives positive right-diagonal slack at every index. At a pair of indices,
+gives positive right-diagonal slack at every index.
+`GradedFree.finitelyPresented_finiteDimensional` proves finite-dimensional
+fibers over a field; finite generators suffice even without finite relations.
+For a ring and any coordinate dimension, `finitelyPresented_exists_finiteGridKan`
+constructs a finite product grid, its order embedding and an actual natural
+isomorphism from the chosen Mathlib left Kan extension to the original module.
+`finitelyPresented_exists_pfd_finiteGridKan` supplies pfd grid fibers over a
+field. `Presentation.gridKanIso` gives the comparison for a chosen finite
+presentation, and `gridHomEquiv` extends every natural map on that grid
+uniquely. Its restriction laws expose the constructed maps.
+More generally, `Presentation.kanIso` and `isLeftKanExtension` apply to an order
+embedding containing all generator and relation births. Both comparison
+inverse laws are derived using existing presentation lifting and Mathlib Kan
+uniqueness. Repeated births remain separate generator occurrences, empty
+families and n=0 are allowed, and the reconstructed module may have unbounded
+support. This reconstruction alone makes no claim about preservation of rank
+exactness or minimal resolutions. At a pair of indices,
 `IsPointwiseShortExact.rank_add_iff_lift_kernel` equates rank additivity and lifting
 dying vectors when the middle source fiber is finite dimensional. `IsRankExact`
 requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`

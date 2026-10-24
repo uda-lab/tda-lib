@@ -266,3 +266,6 @@ import TDA.Persistence.RectangleSharpExample
 import TDA.Persistence.BoundaryTransportNorm
 import TDA.Persistence.BoundaryTransportMetric
 import TDA.Persistence.BoundaryTransportMetricExamples
+import TDA.Persistence.FinitePresentationFiniteDimensional
+import TDA.Persistence.FinitePresentationKan
+import TDA.Persistence.FinitePresentationGridKan

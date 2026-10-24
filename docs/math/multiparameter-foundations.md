@@ -362,6 +362,65 @@ right-diagonal slack valid for every smaller nonnegative shift, including
 the empty-grade and zero-coordinate cases. These are the local results in
 [Lesnick, §6, Lemmas 6.4 and 6.6](https://arxiv.org/html/1106.5305v4).
 
+## Finite-grid Kan reconstruction
+
+Let R be a ring and let M be a finitely presented module on coordinatewise
+ordered ℝⁿ. Choose a homogeneous presentation with finite generator family
+W and finite relation family Y. For each coordinate, collect the values of
+all generator and relation grades and add zero. Their product is a finite
+grid G, and coordinate inclusion gives an order embedding j:G→ℝⁿ.
+Adding zero handles empty presentations uniformly; no minimal-grid claim
+is needed. Every occurrence in W and Y is retained, even when grades agree.
+
+The reconstructed module is the actual Mathlib left Kan extension of the
+presentation's restriction to G. `Presentation.gridKanIso` proves its
+natural isomorphism with the original presented quotient.
+`finitelyPresented_exists_finiteGridKan` transports this comparison along
+the presentation isomorphism to M, so grid constructibility is a conclusion.
+The real-indexed module may have unbounded support although G is finite.
+This is the finite-grid reconstruction step in
+[Botnan–Oppermann–Oudot–Scoccola, Appendix A's proof of Theorem 2.7](https://arxiv.org/html/2208.00300v3).
+
+The proof uses a more general presentation argument. For an order embedding
+j:Q→P containing every generator and relation birth, form the chosen Kan
+extension of the restricted quotient and its canonical comparison ρ to
+the quotient. Full faithfulness makes the Kan unit invertible on Q;
+the comparison is therefore invertible at every embedded grade. In
+particular it is surjective at generator births and injective at relation
+births. The existing presentation lifting theorem constructs a section
+of ρ from precisely these conditions. The Kan universal property and
+invertibility on Q prove the other inverse law. `Presentation.kanIso`
+is the resulting comparison, and `isLeftKanExtension` establishes the
+standard Mathlib universal property with identity on the restriction.
+
+Consequently restriction gives a bijection between maps from the quotient
+and arbitrary natural maps from its restriction. `restrictionHomEquiv`
+and the selected-grid specialization `gridHomEquiv` expose this bijection,
+with forward restriction, extension/restriction and uniqueness laws.
+The inverse construction uses the existing graded-free generator lift
+and presentation cokernel descent through the presentation lifting theorem;
+an extension or an inverse comparison is not an input.
+
+Over a field, the finite free cover is finite dimensional at each grade,
+and its surjectivity proves that the presented quotient is pfd. Only
+finiteness of W is needed for this argument. Transporting along the
+presentation isomorphism proves `finitelyPresented_finiteDimensional`;
+the field version of the Kan theorem supplies pfd fibers on G.
+
+Consumers use two generators born at the same grade, with a genuine
+nonzero relation killing the first. The second survives by mapping to a
+principal upset. Distinct generator vectors remain distinct despite equal
+grid birth points. Extending the restricted doubling map recovers the
+nonzero doubling map at every real grade over ℚ; in characteristic two
+it recovers zero while the relation and quotient remain nonzero. Integer
+coefficients, the zero ring and empty families are included. In dimension
+zero, G has one point and the same quotient is nonzero.
+
+Reconstruction does not yet prove that Kan extension preserves rank
+exactness, hook projectivity or minimal resolutions. Those preservation
+results, finite minimal resolutions and their length bound are additional
+inputs to signed barcode stability.
+
 ## Rank exactness and hook lifting
 
 Consider a pointwise short exact sequence L → M → N. At a ≤ b, assume only that
