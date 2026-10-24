@@ -4284,3 +4284,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteHookDeflation.Examples.binaryModule
 #print axioms TDA.Persistence.FiniteHookDeflation.Examples.binaryModule_finiteDimensional
 #print axioms TDA.Persistence.FiniteHookDeflation.Examples.characteristic_two
+#print axioms TDA.Persistence.FiniteHookDeflation.Examples.ForkGrade.ofNat_ctorIdx
