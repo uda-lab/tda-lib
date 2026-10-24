@@ -255,6 +255,25 @@ restriction of the current rank-to-diagram API; no q-tameness or finite-fiber
 assumption is passed by the caller. The mathematical compatibility statement
 holds over every coefficient field.
 
-A bottleneck distance for the locally finite occurrences, algebraic stability,
-and the resulting infinite-space Hausdorff/Gromov–Hausdorff diagram bounds
-remain open.
+`LocallyFiniteDiagramBottleneck` builds the canonical decorated occurrence
+diagram of any q-tame real module directly from its persistence-measure
+multiplicity. It retains countable support, finite separated rectangles and
+finite tail rectangles, and defines an extended bottleneck matching-cost
+infimum on finite and essential occurrence tokens. Decorations remain part of
+the multiplicity; the cost forgets them only through their real endpoints.
+
+For the existing full finite `Diagram ℝ` type, `Diagram.toLocallyFinite` takes
+an explicit `Diagram.IsPositive` proof and preserves point multiplicities.
+`bottleneck_toLocallyFinite` proves an isometry for positive finite diagrams.
+Positivity is required because the legacy `Diagram` type also permits reverse
+bars, while q-tame finite-death multiplicity is supported only on the positive
+half of the decorated endpoint plane. For finite metric spaces,
+`Rips.qTameLocallyFiniteDiagram_bottleneck_eq_finite` combines this result with
+`Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount`; the generic endpoint
+map is definitionally the existing Rips occurrence map, including the true
+`infinityCut` for essential deaths.
+
+These results provide a finite compatibility layer. They do not prove the
+triangle inequality or algebraic stability for arbitrary locally finite
+diagrams, and no infinite-space Hausdorff/Gromov–Hausdorff bottleneck bound is
+claimed yet.

@@ -3682,6 +3682,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_tail_locally_finite
 #print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_countable_support
 #print axioms TDA.Persistence.RipsQTameDiagramExamples.unitInterval_infinite_fiber_with_diagram
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.matchingCost
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.bottleneck
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.ofQModule
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.ext
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.ext_iff
+#print axioms TDA.Persistence.Diagram.toLocallyFinite
+#print axioms TDA.Persistence.bottleneck_toLocallyFinite
+#print axioms TDA.Persistence.Rips.genericDiagramOccurrence_eq_diagramOccurrence
+#print axioms TDA.Persistence.Rips.qTameLocallyFiniteDiagram_multiplicity_eq
+#print axioms TDA.Persistence.Rips.qTameLocallyFiniteDiagram_bottleneck_eq_finite
 
 -- Compatible sections and real-indexed lift fixtures.
 #print axioms TDA.Persistence.CompatibleSections.exists_antitone_coinitial
