@@ -1376,6 +1376,18 @@ and negative scales. `sparseRipsLogInterleaving` combines that isomorphism
 with the relaxed/Rips inclusions. Reindexing positive radii by `exp` gives an
 interleaving with shift `log((1−2η)⁻¹)` in every degree, including degree zero.
 `sparseRipsLogDistance_le` bounds the corresponding module interleaving distance.
+Each relaxed pair, including a weighted self-pair, has a closed, attained first
+entry time (`pairEntry_mem`). `faceEntry` takes the maximum over a face's pairs.
+`mem_sparseCarrier_iff_faceEntry` shows that a nonempty candidate face occurs
+precisely when this entry is at most every finite vertex-deletion time, including
+equality. On that actual carrier,
+`sparseFilter_sublevel_eq` identifies the finite filter's closed sublevels with
+the sparse filtration. For every field and degree `n ≥ 1`,
+`sparseLogDiagram_bottleneck_le` bounds the bottleneck distance from its
+log-scale diagram to the diameter-scale Rips log diagram by
+`log((1−2η)⁻¹)`. The diagram bound uses the proved module interleaving and
+finite-constructible matching. Degree zero retains the module interleaving;
+zero-born classes do not fit the finite positive-log diagram.
 `parameterOfTolerance` converts `0 < τ ≤ 1` to `η = τ/(2(1+τ))`, for which the
 multiplicative factor is `1+τ`; at `η=1/3` the factor is `3`.
 `ClosedBallDoubling.packing_bound`
@@ -1387,6 +1399,5 @@ from η alone. The constants are independent of cardinality, metric spread and
 maximum scale. `LineSamples.uniform_skeleton_bound` uses one doubling bound of
 four at every sample size.
 
-The closed face-entry presentation and finite log-diagram bottleneck comparison
-remain part of
+The nonzero sparse `H₁` comparison fixture remains part of
 [the sparse Rips theorem](https://github.com/uda-lab/tda-lib/issues/502).
