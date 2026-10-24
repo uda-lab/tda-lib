@@ -1200,3 +1200,26 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.openIndex_finite
 #print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.open_bottleneck_eq_top
 #print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.coarse_bottleneck_bounds
+
+-- Graph-PL component counts and the Reeb distance of a merge-height change.
+#print axioms TDA.Mapper.GraphPL.cellComponentsEquivActiveEdges
+#print axioms TDA.Mapper.GraphPL.card_cellComponents_eq_card_activeEdges
+#print axioms TDA.Mapper.GraphPL.card_cellComponents_eq_one
+#print axioms TDA.Mapper.GraphPL.card_intervalComponents_plHeight_top
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_top_of_card_ne
+#print axioms TDA.Mapper.GraphPL.mergeY
+#print axioms TDA.Mapper.GraphPL.mergeHeights
+#print axioms TDA.Mapper.GraphPL.mergeY_adj
+#print axioms TDA.Mapper.GraphPL.card_cellComponents_mergeHeights_ioo
+#print axioms TDA.Mapper.GraphPL.card_cellComponents_mergeHeights_eq_one
+#print axioms TDA.Mapper.GraphPL.injective_cellComponentFunctor_mergeHeights_map
+#print axioms TDA.Mapper.GraphPL.edist_mergeHeights
+#print axioms TDA.Mapper.GraphPL.max_ofReal_abs_sub_mergeHeights_eq_zero
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_mergeY
+
+-- Merge-height Reeb distance fixtures.
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.mergeY_connected
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.range_plHeight_mergeHeights
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.mergeY_numeric
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.mergeY_injective_needed
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.twoEdges_edge_geometricInterleavingDistance

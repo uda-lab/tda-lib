@@ -982,8 +982,21 @@ particular `GraphPL.geometricInterleavingDistance_graphPLReebGraph_add_const` gi
 is `0` (`GraphPL.geometricInterleavingDistance_graphPLReebGraph_of_isEmpty`). The translate is
 exact already for interval components: `interleavingDistance_intervalComponents_add_const` gives
 `‖c‖₊` for every continuous height on a nonempty space with range bounded below, and with
-`GraphPL.plHeight_add_const` it rederives the graph-PL value. Exactness for
-non-translation perturbations is not claimed. The bound does not extend to continuous
+`GraphPL.plHeight_add_const` it rederives the graph-PL value. For the merge tree
+`GraphPL.mergeY` with heights `GraphPL.mergeHeights a M = (0, 0, a, M)` and
+`0 < a < b ≤ 2a`, `b ≤ M`, `GraphPL.geometricInterleavingDistance_mergeY` gives the exact
+distance `ENNReal.ofReal (b - a)`, which is `edist` of the heights (`GraphPL.edist_mergeHeights`),
+while both extremal displacements are `0` (`GraphPL.max_ofReal_abs_sub_mergeHeights_eq_zero`).
+The lower bound is the cardinality obstruction
+`le_interleavingDistance_of_forall_exists_card_lt` (with `_symm`,
+`Interleaving.card_range_map_le`, `Interleaving.card_le_of_injective` and
+`Interleaving.isEmpty_of_card_lt_card_range`) applied to the component counts
+`GraphPL.card_cellComponents_eq_card_activeEdges` and `GraphPL.card_cellComponents_eq_one`;
+`interleavingDistance_eq_top_of_card_ne`, `RGraph.geometricInterleavingDistance_eq_top_of_card_ne`
+and `GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_top_of_card_ne` give distance `⊤`
+for different top counts, in particular for finite graphs with different numbers of connected
+components. The merge value for `b > 2a` and exact distances for other non-translation
+perturbations are not claimed. The bound does not extend to continuous
 functions that agree with the heights only at the vertices. See [graph-PL heights](math/reeb-graph-pl.md#vertex-height-perturbations-of-a-fixed-graph).
 
 For categorical Mapper reconstructions of two vertex-height functions on one finite graph, with
