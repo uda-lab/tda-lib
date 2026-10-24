@@ -746,9 +746,10 @@ upper half-plane; its transport consumers inherit these results.
 `FiniteWeightedCoalescing` forms such a diagram from finite indexed strict bars
 by summing masses at equal coordinates. Feasible matrices aggregate along the
 coordinate fibers and split back by explicit proportional kernels. These maps
-preserve full costs and powered/rooted values, and carry optimizers in both
-directions, including zero weights and repeated coordinates. The value identities hold for every real
-exponent; rooted minimization uses p≥1. Unit weights recover the existing
+preserve the full geometric powered boundary cost and carry optimizers in both
+directions, including zero weights and repeated coordinates. The powered and
+rooted value identities hold for every real exponent; rooted minimization uses
+p≥1. Unit weights recover the existing
 unit-occurrence transport and matching values.
 `BoundaryTransportAtomic` identifies its native matrix optima with boundary
 transport over all Borel plans between the associated atomic measures, as
@@ -1098,8 +1099,9 @@ and zero inputs are included.
 
 In `BoundaryTransportIndexed`, `atomicMeasure_ofIndexed` identifies the same
 measure with the original indexed Dirac sum. The indexed/coalesced plan maps
-preserve all finite matrix costs and transport actual optimizers in both
-directions. Their all-Borel powered and rooted values recover the indexed
+preserve the full powered boundary cost of every feasible finite matrix and
+transport actual optimizers in both directions. Their all-Borel powered and
+rooted values recover the indexed
 weighted values for p≥0 and p≥1, respectively, and recover the existing finite
 matching values for unit masses. The construction accepts repeated coordinates
 and zero weights; splitting and then aggregating recovers every coalesced matrix
