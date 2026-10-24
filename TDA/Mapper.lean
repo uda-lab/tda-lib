@@ -43,3 +43,4 @@ import TDA.Mapper.GraphPLReebMergeHeight
 import TDA.Mapper.RefinementHomologyEssential
 import TDA.Mapper.DomainMap
 import TDA.Mapper.RefinementHomologyDomainMap
+import TDA.Mapper.GraphPLReebScaling

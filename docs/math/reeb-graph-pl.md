@@ -534,9 +534,12 @@ geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights a M))
   (`card_cellComponents_mergeHeights_eq_one`).
 
 The obstruction `1 < 2` holds for every `ε < b - a`, so `ENNReal.ofReal (b - a)` is a lower bound.
-The hypothesis `b ≤ 2a` is used by this obstruction family only: for `b > 2a` and `ε` near
-`b - a`, the interval `(0, b - 2ε)` is empty. The distance for `b > 2a` is not determined; neither
-an upper bound below `b - a` nor the value `b - a` is asserted. The injectivity hypothesis of the
+For every `0 < a < b ≤ M`, restricting the same obstruction to
+`ε < min (b - a) (b / 2)` gives the lower bound `ENNReal.ofReal (min (b - a) (b / 2))`
+(`ofReal_min_le_geometricInterleavingDistance_mergeY`). Thus for `2a < b` the distance lies in
+`[b/2, b-a]` (`geometricInterleavingDistance_mergeY_bounds`). Neither endpoint is claimed to be
+the value. At `ε ≥ b/2` the interval `(0, b - 2ε)` is empty; this limits this obstruction
+family, without determining the true distance. The injectivity hypothesis of the
 obstruction cannot be dropped: for `(0, 0, a, M)` against `(0, 0, 0, M)` with `ε = a` and
 `I = (0, a/2)`, the counts are again `2` and `1`, but the apex height `a` lies in
 `T_ε T_ε I = (-2a, 5a/2)`, both leaf edges reach one component there, and the vertex budget `a`
@@ -547,8 +550,54 @@ distance `1` with extremal and height-range bounds `0` (`mergeY_numeric`), the n
 above, and two disjoint edges against a single edge at distance `⊤`
 (`twoEdges_edge_geometricInterleavingDistance`). These are library results.
 
+## Scaling heights
+
+For a real scalar `s`, `OpenInterval.scale s I = {x | s * x ∈ I}` is an open interval,
+including when `s ≤ 0`, and `scalePre s F = scaleFunctor s ⋙ F`. The endpoint formulas
+`scale_ioo_of_pos` and `scale_ioo_of_neg` divide the endpoints by `s`, reversing their order
+in the negative case. At zero the interval is `⊤` if `0 ∈ I` and `⊥` otherwise (`scale_zero`).
+The thickening identity
+
+```lean
+thicken ε (scale s I) = scale s (thicken (‖s‖₊ * ε) I)
+```
+
+(`thicken_scale`) transports an `ε`-interleaving to a `‖s‖₊ * ε`-interleaving
+(`Interleaving.scalePre`). For precosheaves into any category and `s ≠ 0`, scaling back by
+`s⁻¹` proves `interleavingDistance_scalePre`: the distance is multiplied by
+`(‖s‖₊ : ℝ≥0∞)`, including infinite distances. Reflection preserves distance
+(`interleavingDistance_scalePre_neg_one`). The height identity
+`intervalComponents (s • f) = scalePre s (intervalComponents f)` is definitional
+(`intervalComponents_smul`); `interleavingDistance_intervalComponents_smul` applies to heights
+on different topological spaces in the same universe.
+
+For vertex types in any universe, `plHeight_smul` identifies the PL height of `fun v => s * h v`
+with `s • plHeight G h`. For finite `V V' : Type`, arbitrary graphs `G`, `G'` and heights `h`,
+`h'`, a common nonzero scale multiplies the geometric Reeb-quotient distance by
+`ENNReal.ofReal |s|` (`geometricInterleavingDistance_graphPLReebGraph_smul`). The `_neg` form is
+reflection invariance; `_affine` allows a common added constant after scaling.
+
+The split tree has heights `splitHeights a M v = -mergeHeights a M v`. Reflection gives the
+exact split-tree distance `b-a` for `0 < a < b ≤ 2a` and `b ≤ M`
+(`geometricInterleavingDistance_splitY`), and the same lower bound and bracket outside this
+range (`ofReal_min_le_geometricInterleavingDistance_splitY`,
+`geometricInterleavingDistance_splitY_bounds`).
+
+The modules are `TDA/Reeb/IntervalScaling.lean` and `TDA/Mapper/GraphPLReebScaling.lean`, with
+fixtures in `TDA/Mapper/GraphPLReebScalingExamples.lean`: a point realizes the factor `|s|`;
+scaling the numeric merge tree by `1/2` agrees with the direct distance `1/2`; the reflected
+numeric tree has distance `1` with both extremal displacements zero; apex heights `1`, `3`
+below top height `4` give `[3/2,2]`. Two disjoint edges and one edge stay at distance `⊤` under
+zero scaling, whereas `0 * ⊤ = 0`, so the nonzero hypothesis is necessary. The empty-interval
+fixture records the limit of this obstruction family. The scaling and branch-height statements
+are library results; no numbered theorem of de Silva–Munch–Patel states scaling homogeneity.
+Their Definition 4.4 and Theorem 4.6(i) supply the distance and perturbation-bound context.
+Scaling on `RGraphCat`, commutation with the Reeb quotient or geometric smoothing, nonlinear
+height changes, scaling Mapper covers or Mapper persistence modules, and comparison maps
+between different graphs are outside these results.
+
 Not claimed here: equality of the Reeb-quotient distance with `edist h g` beyond the exactness
-criterion and the merge-height value above; exact distances for other non-translation
+criterion and the merge/split values above; exact distances for other
 perturbations, and for the merge tree with `b > 2a`; the Hausdorff
 distance of height ranges for disconnected graphs beyond the extremal bounds; comparison maps
 between different graphs or edge sets; constructible thickening; any distance or interleaving comparison of
