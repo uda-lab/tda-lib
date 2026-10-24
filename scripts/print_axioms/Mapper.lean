@@ -1066,7 +1066,6 @@ import TDA
 #print axioms TDA.Mapper.tendsto_geometricInterleavingDistance_mapperReeb_pair_retained
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.cycleFine_coverResolution_pos
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.equal_heights_same_cover
-#print axioms TDA.Mapper.MapperReebPerturbationExamples.coverResolution_add_const
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.translation_limit
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.g4
 #print axioms TDA.Mapper.MapperReebPerturbationExamples.cycleFine_covers_raised
@@ -1200,6 +1199,10 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.openIndex_finite
 #print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.open_bottleneck_eq_top
 #print axioms TDA.Mapper.RefinementHomologyCappedTowerExamples.coarse_bottleneck_bounds
+#print axioms TDA.Mapper.coverResolution_add_const
+#print axioms TDA.Mapper.GraphPLReebTranslationExamples.edgeTranslateIso
+#print axioms TDA.Mapper.GraphPLReebTranslationExamples.edge_translate_distance
+#print axioms TDA.Mapper.GraphPLReebTranslationExamples.flat_tilted_translate_distance
 #print axioms TDA.Mapper.pullbackRestrict_apply_val
 #print axioms TDA.Mapper.domainIndexMap_mk
 #print axioms TDA.Mapper.domainIndexMap_fst

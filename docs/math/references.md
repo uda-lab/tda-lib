@@ -93,7 +93,7 @@ The following manifestations each have at least one Lean consumer named in their
 
 - **Identity/version:** Vin de Silva; Elizabeth Munch; Amit Patel. *Categorified Reeb Graphs*. Consulted [arXiv:1501.04147v1](https://arxiv.org/abs/1501.04147v1), submitted 2015-01-17, internally dated 2015-01-20. Related [VoR](https://link.springer.com/article/10.1007/s00454-016-9763-9), DOI 10.1007/s00454-016-9763-9, online 2016-04-13. Full version/hypothesis comparison is not certified.
 - **Affiliation evidence:** no formal author-affiliation block established in v1; acknowledgments identify de Silva's home Pomona College and Munch/Patel as IMA postdoctoral fellows during the project. These are acknowledgments, not inferred printed author affiliations.
-- **Use:** selected source matches and corrected/specialized predicates in §2–4, detailed in the mapping below and linked Reeb digests; graph/PL adaptations retain their narrower review scope. In particular literal Definition 3.9's empty-source issue requires the corrected nonempty-source predicate for Proposition 4.19. No unproved semigroup/coherent geometric interleaving result is silently attributed. #227 direction 4 is future work.
+- **Use:** selected source matches and corrected/specialized predicates in §2–4, detailed in the mapping below and linked Reeb digests; graph/PL adaptations retain their narrower review scope. In particular literal Definition 3.9's empty-source issue requires the corrected nonempty-source predicate for Proposition 4.19. No unproved semigroup/coherent geometric interleaving result is silently attributed. Translation of interval precosheaves and of graph objects ([reeb-rgraph-translation.md](reeb-rgraph-translation.md)) consists of library statements with §4.1–4.4 as context. #227 direction 4 is future work.
 - **Rights:** v1 **AR**; separate holder notice not established. Publisher preview identifies no CC grant; not a verified licensed alternative. Text quotation/copying/AI input/reproduction needs exact holder/platform clarification or an aligned licensed version.
 
 <a id="DMW16-v2"></a>
@@ -384,6 +384,21 @@ target q-tameness; that weaker assumption does not identify the source minimum
 with its genuine essential boundary count. No essential matching or diagram
 decomposition is assumed. See
 [interleavings and essential birth strips](persistence-measure-essential-box.md).
+
+`IntegerContentAtoms` formalizes the finite local atomic representation behind
+CDGO13-v3, Theorem 2.8, using compact open decorated cells. `DecoratedMeasureCuts`,
+`DecoratedRectangleCells` and `DecoratedRectangleTopology` retain boundary
+decorations. `PersistenceMeasureBoxContent` and `PersistenceMeasureContent`
+construct the actual module content from quotient split identities.
+`PersistenceMeasureDiagram` extracts finite-death multiplicities with exact
+rectangle counts; `PersistenceMeasureEssentialContent`,
+`PersistenceMeasureEssentialDiagram` and `PersistenceMeasureExtendedDiagram`
+add the essential boundary, exact tail counts and local finiteness.
+`PersistenceMeasureDiagramCountability` proves countable support, and
+`PersistenceMeasureLowerBound` transfers a module zero tail to a birth lower
+bound. Finite diagram compatibility and algebraic stability remain open. See
+[integer contents on decorated cells](persistence-measure-atoms.md).
+
 - **Rights/evidence:** **U**, inspected 2026-10-23. The source is used for mathematical statements and an original formal proof; no source prose, figures or source code are redistributed.
 
 `PersistenceMeasureMatching` formalizes the finite local matching step of

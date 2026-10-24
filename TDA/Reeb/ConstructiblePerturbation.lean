@@ -376,9 +376,26 @@ theorem edist_translate (S : CriticalValues n) (c : ℝ) :
   · exact edist_pi_le_iff.mpr fun i => (h i).le
   · exact (h 0).symm.le.trans (edist_le_pi_edist S.value (S.translate c).value 0)
 
+@[simp] theorem translate_value (S : CriticalValues n) (c : ℝ) (i : Fin (n + 1)) :
+    (S.translate c).value i = S.value i + c := rfl
+
+@[simp] theorem translate_zero (S : CriticalValues n) : S.translate 0 = S := by
+  cases S
+  simp only [translate, add_zero]
+
+theorem translate_translate (S : CriticalValues n) (c d : ℝ) :
+    (S.translate c).translate d = S.translate (c + d) := by
+  cases S
+  simp only [translate, add_assoc]
+
 end CriticalValues
 
 namespace CylinderPresentation
+
+/-- The segment of an edge at the translated levels is the translate of its segment. -/
+theorem seg_translate {n : ℕ} (S : CriticalValues n) (c : ℝ) (e : Fin n) :
+    Seg (S.translate c) e = (· + c) '' Seg S e := by
+  simp only [Seg, CriticalValues.translate_value, Set.image_add_const_Icc]
 
 variable {n : ℕ} (P : CylinderPresentation.{u} n)
 
