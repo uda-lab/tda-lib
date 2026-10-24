@@ -558,12 +558,19 @@ geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights a M))
   (`card_cellComponents_mergeHeights_eq_one`).
 
 The obstruction `1 < 2` holds for every `ε < b - a`, so `ENNReal.ofReal (b - a)` is a lower bound.
-For every `0 < a < b ≤ M`, restricting the same obstruction to
-`ε < min (b - a) (b / 2)` gives the lower bound `ENNReal.ofReal (min (b - a) (b / 2))`
-(`ofReal_min_le_geometricInterleavingDistance_mergeY`). Thus for `2a < b` the distance lies in
-`[b/2, b-a]` (`geometricInterleavingDistance_mergeY_bounds`). Neither endpoint is claimed to be
-the value. At `ε ≥ b/2` the interval `(0, b - 2ε)` is empty; this limits this obstruction
-family, without determining the true distance. The injectivity hypothesis of the
+For every `0 < a < b ≤ M`, the exact distance is
+`ENNReal.ofReal (min (b - a) (b / 2))` (`geometricInterleavingDistance_mergeY_eq_min`). The
+continuous section `mergeSection c M` selects the point at each clamped height on the path
+`0 — 2 — 3`; `plHeight_mergeSection` proves height preservation on `[0, M]`. Every point joins
+the section point at its height by a path whose heights stay between that height and `c`, or are
+constant when the input height exceeds `c` (`exists_mergeSection_path`). If `c = M`, a point on
+the horizontal edge `2 — 3` joins vertex `2` along that edge at constant height `M`.
+`mergeFoldHeightMapPair` supplies a map pair with error `b / 2`; together with the identity-map
+budget `b - a`, it proves the upper bound by their minimum. For `b ≤ 2a` the formula gives `b-a`,
+recovering `geometricInterleavingDistance_mergeY`; for `2a < b` it gives `b/2 < b-a`. Reflection
+proves the exact split-tree formula `geometricInterleavingDistance_splitY_eq_min`. The new
+exactness theorem is a library result; the cited source supplies the distance and perturbation
+context, not this formula. The injectivity hypothesis of the
 obstruction cannot be dropped: for `(0, 0, a, M)` against `(0, 0, 0, M)` with `ε = a` and
 `I = (0, a/2)`, the counts are again `2` and `1`, but the apex height `a` lies in
 `T_ε T_ε I = (-2a, 5a/2)`, both leaf edges reach one component there, and the vertex budget `a`
@@ -603,9 +610,9 @@ reflection invariance; `_affine` allows a common added constant after scaling.
 
 The split tree has heights `splitHeights a M v = -mergeHeights a M v`. Reflection gives the
 exact split-tree distance `b-a` for `0 < a < b ≤ 2a` and `b ≤ M`
-(`geometricInterleavingDistance_splitY`), and the same lower bound and bracket outside this
-range (`ofReal_min_le_geometricInterleavingDistance_splitY`,
-`geometricInterleavingDistance_splitY_bounds`).
+(`geometricInterleavingDistance_splitY`), and for all `0 < a < b ≤ M` reflection of the exact
+merge formula gives `ENNReal.ofReal (min (b-a) (b/2))`
+(`geometricInterleavingDistance_splitY_eq_min`).
 
 The modules are `TDA/Reeb/IntervalScaling.lean` and `TDA/Mapper/GraphPLReebScaling.lean`, with
 fixtures in `TDA/Mapper/GraphPLReebScalingExamples.lean`: a point realizes the factor `|s|`;
@@ -622,7 +629,7 @@ scaling results.
 
 Not claimed here: equality of the Reeb-quotient distance with `edist h g` beyond the exactness
 criterion and the merge/split values above; exact distances for other
-perturbations, and for the merge tree with `b > 2a`; the Hausdorff
+perturbations and other tree shapes; the Hausdorff
 distance of height ranges for disconnected graphs beyond the extremal bounds; maps between graph
 objects in `RGraphCat` or maps of Reeb quotients; Mapper cover, reconstruction or homology
 consequences of `HeightMapPair`; constructible thickening; any distance or interleaving comparison of
