@@ -273,7 +273,8 @@ map from a pfd module. `PullbackFiber.mk`, its projection laws and
 the pullback fibers are pfd. Same-death lifts derive rank additivity without
 an exact-category assumption. A principal upset surjecting onto its
 finite-death truncation shows that an ordinary pointwise epimorphism need
-not be rank admissible. Inflation/pushout axioms remain separate results.
+not be rank admissible. The deflation-side closure laws do not establish the
+full exact structure; inflation-side pushout closure is proved separately below.
 `IsPointwiseShortExact.kernelIso` identifies a given exact sequence's left
 term with its actual categorical kernel and preserves its inclusion.
 `IsRankDeflation.splitKernelIso` derives a splitting when the quotient is
@@ -287,6 +288,26 @@ two deflations onto the same quotient. Consumers include redundant covers
 with nonzero kernels, positive width, width zero, characteristic two, zero
 modules and zero coordinate directions. Finite resolutions, their length
 bound and signed barcode stability require further results.
+
+### Pushouts of rank-exact sequences
+
+Let `0 → L --ι→ M --π→ N → 0` be rank exact over a field, with `P` any
+partially ordered set, and let `f : L ⟶ L'` have pointwise finite-dimensional
+target fibers. `IsPointwiseShortExact.pushoutQuotient` defines the quotient map
+from the actual categorical pushout by applying `π` on `M` and zero on `L'`.
+`IsPointwiseShortExact.pushout_pointwise` proves that this quotient and the
+canonical map from `L'` form a pointwise short exact row. `IsRankExact.pushout`
+also proves that the pushout fibers are finite dimensional and that the new
+row is rank exact. Each middle fiber is finite dimensional because the actual
+`ModuleCat` pushout is a quotient of `M(p) ⊕ L'(p)`.
+
+For rank additivity, the proof lifts a quotient vector killed by a structure
+map through the original rank-exact row with a lift killed at the same grade,
+then maps that lift into the pushout. `RankExactPushoutExamples` checks the
+theorem on a nonzero pushout of a split sequence. This closure result supplies
+the pushout part of the rank-exact theory; the remaining exact-structure laws
+are separate results.
+
 `FinitePresentationLifting` proves that maps from a presented module lift through
 a natural transformation surjective at generator grades and injective at relation
 grades. With bijectivity at generator grades, the lift is unique. For coordinatewise

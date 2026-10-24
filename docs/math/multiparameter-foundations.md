@@ -685,7 +685,43 @@ nonzero dying images, zero base change and characteristic two.
 These prove the deflation-side closure laws in
 [Botnan–Oppermann–Oudot–Scoccola, §2.12](https://arxiv.org/html/2208.00300v3),
 including the pullback step used in Appendix A's Lemma A.1. They do not
-establish the full exact structure or its inflation/pushout laws.
+establish the full exact structure; pushout closure for rank-exact sequences
+is proved separately below.
+
+## Pushouts of rank-exact sequences
+
+Let `k` be a field and `P` any partially ordered set. Suppose
+`0 → L --ι→ M --π→ N → 0` is rank exact, and let `f : L → L'` with `L'`
+pointwise finite dimensional. The actual pushout of `ι` along `f` has a
+canonical row
+
+\[
+0 \longrightarrow L' \longrightarrow L'\amalg_L M \longrightarrow N
+\longrightarrow 0.
+\]
+
+The last map is induced by `π` on `M` and zero on `L'`. At each grade, the
+actual `ModuleCat` pushout is the quotient of `M(p) ⊕ L'(p)` by the relation
+coming from `l ↦ (ι_p(l), -f_p(l))`. The original row is short exact, so this
+quotient map has kernel equal to the image of `L'(p)`, and its map from `L'(p)`
+is injective. The quotient description also proves that each pushout fiber is
+finite dimensional.
+
+For `a ≤ b`, take `n ∈ N(a)` killed by the structure map to `N(b)`. The
+original rank-exact sequence lifts `n` to `m ∈ M(a)` killed at `b`. Its image
+in the pushout still dies at `b` by naturality and maps to `n` under the new
+quotient. Thus the new row has the same-death lifting property. Since its
+middle fibers are finite dimensional, the equivalence between this lifting
+property and rank additivity proves the new row rank exact. This is
+`IsRankExact.pushout`; it does not assume exactness or rank additivity of the
+output row.
+
+This argument is fiberwise and uses no finiteness assumption on `P`. It proves
+the pushout-closure law alone. The exact-structure theorem in
+[Botnan–Oppermann–Oudot–Scoccola, §2.14, Theorem 2.7](https://arxiv.org/html/2208.00300v3#S2.SS14)
+also includes other exact-category axioms and has its stated finite-poset or
+finitely presented real-coordinate scope; those conclusions do not follow from
+this local closure theorem.
 
 ## One-step persistent Schanuel
 
