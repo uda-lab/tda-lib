@@ -4219,3 +4219,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportPowerValue_quantizedDiagram_tendsto
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_quantizedDiagram_tendsto
 #print axioms TDA.Persistence.BoundaryTransport.exists_atomicMeasure_approx_same_mass
+#print axioms TDA.Persistence.BoundaryTransport.eLpNorm_dist_eq_collapsedPowerCost
+#print axioms TDA.Persistence.BoundaryTransport.eLpNorm_edist_eq_dist
+#print axioms TDA.Persistence.BoundaryTransport.reservoirDistance_eq_iInf_eLpNorm
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_eq_iInf_eLpNorm
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_eq_normalized_iInf_eLpNorm
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_eq_zero_iff
+#print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_triangle

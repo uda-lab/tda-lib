@@ -1138,11 +1138,28 @@ only interior values; the added reservoir atom remains separate from the
 original mass. Scaled nonatomic and countable noncompact inputs exercise
 this [same-mass approximation](math/boundary-transport-approximation.md).
 
-The bridge to an ordinary Wasserstein API and sharp triangle/separation remain open
-in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
+`BoundaryTransportNorm` identifies each coupling's actual mathlib `eLpNorm`
+with its rooted collapsed cost. It exposes the reservoir and native boundary
+values as literal infima of these norms over the two marginal equations.
+`boundaryTransportDistance_eq_normalized_iInf_eLpNorm` gives the probability
+form with the exact factor R^(1/p) and the full sum-of-masses capacity bound.
+
+`BoundaryTransportMetric` exports `boundaryTransportDistance_triangle`, the sharp
+triangle inequality for arbitrary finite original measures and p≥1, using one
+common reservoir capacity, actual minimizing plans and pinned mathlib kernel
+composition and Minkowski. `boundaryTransportDistance_eq_zero_iff` proves
+separation. Both permit infinite distances and require no persistence moment;
+finite moments give finite distance through the existing bound. Translated
+unit atoms realize the sharp triangle, the wrong-capacity example has full
+powered infimum four instead of the native value two, and two same-mass
+approximants control the error in the original distance. See
+[finite-measure metric laws](math/boundary-transport-metric.md).
+
+The bridge to an independently maintained ordinary Wasserstein API remains
+open in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 The [ordinary-OT dependency map](math/boundary-transport-ot-dependency.md)
-identifies the incompatible package pins, available measure-theoretic APIs and
-the native finite-measure attainment argument.
+identifies incompatible package pins, the current native bridges and the
+unresolved article-source comparison.
 
 ### Gaussian signed measures and C₀ universality
 

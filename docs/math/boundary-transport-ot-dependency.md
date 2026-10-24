@@ -3,8 +3,9 @@
 The native boundary-plan infimum already equals the collapsed-space reservoir
 infimum for arbitrary finite inputs. Identifying this value with an existing
 ordinary Wasserstein API still needs a compatible optimal-transport package.
-The library proves finite-measure attainment through a fixed-space argument
-using the current Lean/mathlib pin. The ordinary Wasserstein interface
+The library proves native finite-measure attainment, sharp triangle and
+separation, and a literal mathlib coupling-norm formulation using the current
+Lean/mathlib pin. The independently maintained ordinary Wasserstein interface
 remains a separate dependency.
 
 ## Existing boundary-transport results
@@ -26,7 +27,10 @@ does not require atomic inputs. The capacity is independent of the chosen
 admissible `R`; positive capacities admit probability normalization with the
 factor `R^(1/p)`. Self, symmetry, finite-distance bounds from finite
 `p`-persistence, the exact zero-target moment, and the native finite atomic
-and indexed/coalesced bridges are also proved.
+and indexed/coalesced bridges are also proved. The
+[metric-law bridge](boundary-transport-metric.md) gives sharp triangle and
+separation for every finite original measure, without a moment premise.
+Finite moments make the extended distance finite.
 
 The reservoir infimum has a native definition. The attainment theorem below
 constructs general finite-input minimizers for that value and the boundary
@@ -132,12 +136,16 @@ every compact subset of `H`. Sending its mass to the fixed diagonal point
 optimum has cost one. Thus finite optimal cost is compatible with infinite
 competitor costs.
 
-The remaining obligations have distinct dependencies. Native separation can
-follow attainment by proving that a zero-cost minimizer is concentrated on
-equal collapsed endpoints and then restricting equal reservoir marginals to
-`H`. Sharp native triangle still needs a compatible finite-plan gluing step
-and the `L^p` triangle inequality; the older release's gluing code is a
-candidate for a separate bounded adaptation, not an already compiled bridge.
+The native metric laws use existing current-pin APIs directly.
+`Measure.condKernel`, `Measure.disintegrate` and `Measure.fst_compProd`
+glue finite minimizing plans on the fixed space; measurable kernel sections
+identify the second prescribed pair marginal. `eLpNorm_add_le` gives the sharp
+triangle estimate at a common full sum-capacity for all three pairs. A
+zero-cost actual optimizer has equal endpoints almost everywhere, which
+proves separation by equality of interior restrictions. The norm bridge
+expresses both the unnormalized reservoir value and its probability scaling
+as literal infima of mathlib `eLpNorm` over all marginal equations. No generic
+coupling class, Wasserstein definition or general gluing API is added.
 Native [same-mass finite atomic approximation](boundary-transport-approximation.md)
 is proved directly using the current-pin metric `SimpleFunc.approxOn` and
 dominated convergence. Every target is chosen in the interior image;
@@ -150,7 +158,8 @@ the recommended dependency decision is a reviewed external backport of its
 required closure to this exact Lean/mathlib pin, with compilation and axiom
 validation. Merely selecting the older release branch is insufficient.
 A project-wide toolchain/mathlib upgrade is a different dependency decision;
-none is made here. The native attainment route does not depend on that choice.
+none is made here. The native attainment, metric laws and literal coupling-norm
+forms do not depend on that choice.
 
 ## Source-use boundary
 
