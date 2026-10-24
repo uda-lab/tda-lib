@@ -122,7 +122,10 @@ band-inclusion isomorphism `geometricSmoothingEqIso`; the resulting formula is r
 
 The triangle inequality for `d_geo` and invariance under isomorphism of graph objects, in both
 arguments, follow from the equality and the precosheaf results. The distance stays a plain
-function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installed.
+function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installed. Vertical
+translation of graph objects is an isometry of `d_geo`
+(`geometricInterleavingDistance_translateRGraph`, see
+[reeb-rgraph-translation.md](reeb-rgraph-translation.md)).
 
 ## Fixtures
 

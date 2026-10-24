@@ -70,12 +70,6 @@ theorem equal_heights_same_cover :
 
 /-! ## M2. Translation limit -/
 
-/-- Translating a cover by `c` preserves its resolution. -/
-theorem coverResolution_add_const {ι : Type} [Finite ι] (a b : ι → ℝ) (c : ℝ) :
-    coverResolution (fun i => a i + c) (fun i => b i + c) = coverResolution a b := by
-  unfold coverResolution
-  simp
-
 /-- Covers of the edge with heights `(0, 2)` and the translated covers of its translate by `1`
 have vanishing resolutions, and the distance of the reconstructions tends to `1`. -/
 theorem translation_limit :
