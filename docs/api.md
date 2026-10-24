@@ -1353,8 +1353,9 @@ interleaving with shift `log((1−2η)⁻¹)` in every degree, including degree 
 `sparseRipsLogDistance_le` bounds the corresponding module interleaving distance.
 Each relaxed pair, including a weighted self-pair, has a closed, attained first
 entry time (`pairEntry_mem`). `faceEntry` takes the maximum over a face's pairs.
-`mem_sparseCarrier_iff_faceEntry` shows that a face occurs precisely when this
-entry precedes every vertex's deletion time. On that actual carrier,
+`mem_sparseCarrier_iff_faceEntry` shows that a nonempty candidate face occurs
+precisely when this entry is at most every finite vertex-deletion time, including
+equality. On that actual carrier,
 `sparseFilter_sublevel_eq` identifies the finite filter's closed sublevels with
 the sparse filtration. For every field and degree `n ≥ 1`,
 `sparseLogDiagram_bottleneck_le` bounds the bottleneck distance from its
