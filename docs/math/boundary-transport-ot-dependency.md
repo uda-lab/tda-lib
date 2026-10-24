@@ -81,7 +81,7 @@ At `575dbdf`, the substantial ordinary APIs include:
 | `wassersteinEDist_smul` | Common finite nonzero measure scaling gives the factor `a^((1/p).toReal)`. Together with the native reservoir normalization, this supplies the requested probability convention. |
 | `exists_isCoupling_eLpNorm_eq_wassersteinEDist` | Produces an actual optimizer on a complete second-countable Borel metric space for finite source mass, a finite nonzero exponent and existence of a coupling. Equal finite reservoir masses provide the last condition; an optimizer is not a caller premise. |
 | `wassersteinEDist_triangle` and `wassersteinEDist_eq_zero_iff` | Sharp triangle uses standard-Borel gluing and finite intermediate mass. Separation uses a genuine metric, Polish/Borel hypotheses, finite source mass and finite nonzero exponent. |
-| `exists_ae_mem_finset_wassersteinEDist_le` | On a separable pseudo-metric space with measurable opens and measurable singletons, approximates a probability law of finite moment at finite exponent `p ≥ 1` and nonzero ENNReal accuracy. Native same-mass approximation additionally needs the interior-support adjustment and common-reservoir mass constraint. |
+| `exists_ae_mem_finset_wassersteinEDist_le` | On a separable pseudo-metric space with measurable opens and measurable singletons, approximates a probability law of finite moment at finite exponent `p ≥ 1` and nonzero ENNReal accuracy. The native same-mass theorem instead quantizes the original measure into interior values, preserving the common-reservoir mass constraint. |
 
 Sources: [`Coupling`](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Coupling.lean),
 [`Wasserstein/Basic`](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Wasserstein/Basic.lean)
@@ -138,8 +138,12 @@ equal collapsed endpoints and then restricting equal reservoir marginals to
 `H`. Sharp native triangle still needs a compatible finite-plan gluing step
 and the `L^p` triangle inequality; the older release's gluing code is a
 candidate for a separate bounded adaptation, not an already compiled bridge.
-Same-mass approximation additionally needs a finite-support construction,
-interior-point adjustment and the reservoir constraint described above.
+Native [same-mass finite atomic approximation](boundary-transport-approximation.md)
+is proved directly using the current-pin metric `SimpleFunc.approxOn` and
+dominated convergence. Every target is chosen in the interior image;
+quantizing only the original measure preserves its mass and leaves the
+common boundary reservoir padding unchanged. No ordinary Wasserstein
+finite-support theorem is needed for this native endpoint.
 
 For identification with an independently maintained ordinary Wasserstein API,
 the recommended dependency decision is a reviewed external backport of its

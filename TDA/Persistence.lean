@@ -228,6 +228,9 @@ import TDA.Persistence.BoundaryTransportReverse
 import TDA.Persistence.BoundaryTransportComparison
 import TDA.Persistence.BoundaryTransportAttainment
 import TDA.Persistence.BoundaryTransportAttainmentExamples
+import TDA.Persistence.BoundaryTransportQuantization
+import TDA.Persistence.BoundaryTransportApproximation
+import TDA.Persistence.BoundaryTransportApproximationExamples
 import TDA.Persistence.ReservoirNormalization
 import TDA.Persistence.BoundaryTransportZero
 import TDA.Persistence.BoundaryTransportAtomic
