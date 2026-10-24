@@ -70,7 +70,11 @@ The realization is empty for an empty vertex type and nonempty for a nonempty on
 (`walkPath_nil`, `walkPath_cons`). Hence reachable vertices have joined images
 (`joined_vertex_of_reachable`). Every edge point is joined to the first endpoint of its dart
 (`joined_edgePoint_vertex`), by the straight path from `t` to `0` in the unit interval followed
-by the edge map.
+by the edge map. For any parameters `s t : unitInterval`, `edgeSegment G d s t` is the subpath
+from `edgePoint G d s` to `edgePoint G d t`. Its value at `r` is the edge point at
+`Set.Icc.convexComb s t r` (`edgeSegment_apply`); the endpoint laws are `edgeSegment_zero` and
+`edgeSegment_one`. This provides paths along one dart and says nothing about decomposing arbitrary
+paths into dart segments. The construction is Mathlib's `Path.subpath` applied to `edgePath G d`.
 
 ## Maps induced by graph homomorphisms
 
@@ -259,7 +263,8 @@ New declarations: `isOpen_vertexCell`, `quotMk_surjective`, `continuous_quotMk`,
 `quotMk_eq_quotMk_iff`, `function_ext`, `hom_ext`, `lift_unique`, `continuousLift`,
 `continuousLift_vertex`, `continuousLift_edgePoint`, `continuousLift_unique`,
 `existsUnique_continuousLift`, `vertex_injective`, `instIsEmptyRealization`,
-`instNonemptyRealization`, `edgePath_apply`, `walkPath_nil`, `walkPath_cons`,
+`instNonemptyRealization`, `edgePath_apply`, `edgeSegment`, `edgeSegment_apply`, `edgeSegment_zero`,
+`edgeSegment_one`, `walkPath_nil`, `walkPath_cons`,
 `joined_vertex_of_reachable`, the private straight path `pathToZero`, `joined_edgePoint_vertex`,
 `realizationMap_id`, `realizationMap_comp`, `componentLabel_vertex`, `componentLabel_edgePoint`,
 `joined_vertex_iff`, `mk_edgePoint`, `componentsEquiv` with its three formulas,
@@ -306,4 +311,5 @@ continuous retraction of the realization to its vertices.
 Sources: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.3, Notation 2.7](https://arxiv.org/abs/1501.04147);
 [pinned mathlib graph components](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean#L390-L493),
 [graph homomorphisms on darts](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Combinatorics/SimpleGraph/Maps.lean#L372-L378)
-and [path components](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Topology/Connected/PathConnected.lean).
+and [path components](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Topology/Connected/PathConnected.lean);
+[subpaths](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Topology/Subpath.lean) supply the parameterized dart paths.

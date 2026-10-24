@@ -16,7 +16,9 @@ gives the piecewise-linear height `plHeight G h : C(Realization G, ℝ)`, with
 and uniqueness among continuous maps with these values (`plHeight_unique`). Uniqueness gives
 `plHeight G (fun v => h v + c) = plHeight G h + c` (`plHeight_add_const`). Equal endpoint heights
 are allowed: a horizontal dart has constant height (`dartHeight_of_eq`), while the height of a
-nonhorizontal dart is injective in the parameter (`dartHeight_injective`).
+nonhorizontal dart is injective in the parameter (`dartHeight_injective`). Along the subpath of any
+dart between parameters `s` and `t`, `plHeight_edgeSegment_bounds` bounds the height between the
+two endpoint heights, with no condition on their order or equality.
 
 ## Unoriented edges and their support
 
@@ -124,6 +126,39 @@ def plHeight : C(Realization G, ℝ) :=
 
 @[simp] theorem plHeight_edgePoint (d : G.Dart) (t : unitInterval) :
     plHeight G h (edgePoint G d t) = dartHeight h d t := rfl
+
+/-- Along a dart subpath, the piecewise-linear height lies between its endpoint heights. -/
+theorem plHeight_edgeSegment_bounds (d : G.Dart) (s t r : unitInterval) :
+    min (plHeight G h (edgePoint G d s)) (plHeight G h (edgePoint G d t)) ≤
+        plHeight G h (edgeSegment G d s t r) ∧
+      plHeight G h (edgeSegment G d s t r) ≤
+        max (plHeight G h (edgePoint G d s)) (plHeight G h (edgePoint G d t)) := by
+  have hformula :
+      plHeight G h (edgeSegment G d s t r) =
+        (1 - (r : ℝ)) * plHeight G h (edgePoint G d s) +
+          (r : ℝ) * plHeight G h (edgePoint G d t) := by
+    simp only [edgeSegment_apply, plHeight_edgePoint, dartHeight, Set.Icc.coe_convexComb]
+    ring
+  have hr0 : 0 ≤ (r : ℝ) := r.2.1
+  have hr1 : (r : ℝ) ≤ 1 := r.2.2
+  have h1r0 : 0 ≤ 1 - (r : ℝ) := by linarith
+  let a := plHeight G h (edgePoint G d s)
+  let b := plHeight G h (edgePoint G d t)
+  change min a b ≤ plHeight G h (edgeSegment G d s t r) ∧
+    plHeight G h (edgeSegment G d s t r) ≤ max a b
+  rcases le_total a b with hab | hba
+  · rw [min_eq_left hab, max_eq_right hab]
+    constructor
+    · rw [hformula]
+      nlinarith [mul_nonneg hr0 (sub_nonneg.mpr hab)]
+    · rw [hformula]
+      nlinarith [mul_nonneg h1r0 (sub_nonneg.mpr hab)]
+  · rw [min_eq_right hba, max_eq_left hba]
+    constructor
+    · rw [hformula]
+      nlinarith [mul_nonneg h1r0 (sub_nonneg.mpr hba)]
+    · rw [hformula]
+      nlinarith [mul_nonneg hr0 (sub_nonneg.mpr hba)]
 
 theorem plHeight_unique (g : C(Realization G, ℝ)) (hv : ∀ v, g (vertex G v) = h v)
     (he : ∀ d t, g (edgePoint G d t) = dartHeight h d t) : g = plHeight G h :=

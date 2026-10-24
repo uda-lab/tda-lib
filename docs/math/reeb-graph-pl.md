@@ -28,6 +28,10 @@ piecewise-linear height: `plHeight G (fun v => h v + c) = plHeight G h + Continu
 `(1 - r) h d.fst + r h d.snd ∈ s` form an order-convex set, also when the dart is horizontal
 (`ordConnected_preimage_lineHeight`); intersected with `[0, 1]` it is convex.
 
+For any `s t r : unitInterval`, `plHeight_edgeSegment_bounds` bounds the height at
+`edgeSegment G d s t r` between its values at `edgePoint G d s` and `edgePoint G d t`. It needs no
+ordering or distinctness assumption on the endpoint parameters or heights.
+
 ## Unoriented edges and support
 
 An unoriented edge is an element of mathlib's edge set `G.edgeSet`, not a dart. The edge of a dart
