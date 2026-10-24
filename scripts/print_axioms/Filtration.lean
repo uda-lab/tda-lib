@@ -559,3 +559,14 @@ import TDA
 #print axioms TDA.Filtration.SparseRips.sparseFilter_logModule_eq
 #print axioms TDA.Filtration.SparseRips.sparseLogDiagram_bottleneck_le
 #print axioms TDA.Filtration.SparseRips.Examples.TwoPoints.edge_pairEntry_eq_one
+#print axioms TDA.Filtration.SparseRips.faceEntry_mono
+#print axioms TDA.Filtration.SparseRips.faceEntry_nonneg
+#print axioms TDA.Filtration.SparseRips.mem_relaxedComplex_iff_faceEntry
+#print axioms TDA.Filtration.SparseRips.pairEntrySet_bddBelow
+#print axioms TDA.Filtration.SparseRips.pairEntrySet_closed
+#print axioms TDA.Filtration.SparseRips.pairEntrySet_mono
+#print axioms TDA.Filtration.SparseRips.pairEntrySet_nonempty
+#print axioms TDA.Filtration.SparseRips.pairEntry_le_faceEntry
+#print axioms TDA.Filtration.SparseRips.pairEntry_le_of_mem
+#print axioms TDA.Filtration.SparseRips.pairEntry_nonneg
+#print axioms TDA.Filtration.SparseRips.sparseFilter_sublevelFiltration_eq
