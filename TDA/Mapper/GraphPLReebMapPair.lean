@@ -1,6 +1,5 @@
 import TDA.Reeb.HeightMapPair
 import TDA.Mapper.GraphPLReebQuotient
-import TDA.Mapper.GraphPLReebExtremal
 
 /-!
 # Graph-PL Reeb distance from height-map pairs

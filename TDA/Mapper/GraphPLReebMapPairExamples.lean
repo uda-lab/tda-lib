@@ -1,4 +1,5 @@
 import TDA.Mapper.GraphPLReebMapPair
+import TDA.Mapper.GraphPLReebExtremal
 import TDA.Reeb.GraphRealizationExamples
 import TDA.Reeb.GraphPLVertexPerturbationExamples
 import TDA.Reeb.ComponentsExamples
@@ -197,17 +198,17 @@ private theorem no_path_true_false : ¬ Nonempty (Path (true : Bool) false) := b
   have h := TDA.Reeb.Examples.eq_of_joined_of_discrete (⟨γ⟩ : Joined true false)
   exact Bool.noConfusion h
 
-/-- The constant maps `Bool → Unit → Bool` preserve both zero heights exactly, but their
-composite cannot be joined to the identity at `true`. -/
+/-- The constant maps `Bool → Unit → Bool` preserve both zero heights exactly, but for every
+height bound `r` their composite cannot be joined to the identity at `true`. -/
 theorem bool_to_point_path_condition_fails :
     (∀ b, boolZero b = unitZero (boolToUnit b)) ∧
       (∀ x, unitZero x = boolZero (unitToFalse x)) ∧
-      ¬ ∃ γ : Path (true : Bool) (unitToFalse (boolToUnit true)),
-        ∀ t, |boolZero (γ t) - boolZero true| ≤ (0 : ℝ) := by
+      ∀ r : ℝ, ¬ ∃ γ : Path (true : Bool) (unitToFalse (boolToUnit true)),
+        ∀ t, |boolZero (γ t) - boolZero true| ≤ r := by
   refine ⟨by intro b; simp [boolZero, unitZero, boolToUnit], ?_, ?_⟩
   · intro x
     simp [boolZero, unitZero, unitToFalse]
-  · rintro ⟨γ, _⟩
+  · rintro r ⟨γ, _⟩
     exact no_path_true_false ⟨γ⟩
 
 private def boolTopComponentsEquiv : (intervalComponents boolZero).obj ⊤ ≃ Bool where
