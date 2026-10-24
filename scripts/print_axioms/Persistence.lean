@@ -3674,6 +3674,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RipsQTameExamples.unitInterval_zero_not_finiteDimensional
 #print axioms TDA.Persistence.RipsQTameExamples.empty_qTame
 #print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount
+#print axioms TDA.Persistence.Rips.diagramOccurrence_finite
+#print axioms TDA.Persistence.Rips.diagramOccurrence_essential
 #print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_rectangle_counts
 #print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_essential_counts
 #print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_tail_counts
