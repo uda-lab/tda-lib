@@ -1226,3 +1226,28 @@ import TDA
 #print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.mergeY_numeric
 #print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.mergeY_injective_needed
 #print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.twoEdges_edge_geometricInterleavingDistance
+
+#print axioms TDA.Mapper.card_essentialPart_stepMapperDiagram
+#print axioms TDA.Mapper.bottleneck_stepMapperDiagram_lt_top_iff
+#print axioms TDA.Mapper.mapper_full_eq_top
+#print axioms TDA.Mapper.finrank_simplicialHomology_mapper_full_zero
+#print axioms TDA.Mapper.isZero_simplicialHomology_mapper_full_succ
+#print axioms TDA.Mapper.isEmpty_mapper_face_one_of_unique
+#print axioms TDA.Mapper.finrank_simplicialHomology_mapper_full_zero_of_unique
+#print axioms TDA.Mapper.card_essentialPart_cappedCentredDiagram_zero
+#print axioms TDA.Mapper.card_essentialPart_cappedCentredDiagram_succ
+#print axioms TDA.Mapper.card_essentialPart_cappedCentredDiagram_zero_of_unique
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_lt_top
+#print axioms TDA.Mapper.card_essentialPart_cappedCentredDiagram_plHeight
+#print axioms TDA.Mapper.card_essentialPart_cappedCentredDiagram_plHeight_zero_of_unique
+#print axioms TDA.Mapper.RefinementHomologyEssentialExamples.triangle_no_essential_loop
+#print axioms TDA.Mapper.RefinementHomologyEssentialExamples.const_essential_counts
+#print axioms TDA.Mapper.RefinementHomologyEssentialExamples.edge_essential_zero
+#print axioms TDA.Mapper.RefinementHomologyEssentialExamples.truncated_loop_essential
+#print axioms TDA.Mapper.RefinementHomologyEssentialExamples.twoEdges_essential_zero
+#print axioms TDA.Mapper.RefinementHomologyEssentialExamples.twoEdges_edge_bottleneck_eq_top
+#print axioms TDA.Mapper.RefinementHomologyEssentialExamples.emptyGrid_essential_count
+
+#print axioms TDA.Mapper.fullComponentIndexEquiv
+#print axioms TDA.Mapper.componentIndexFullEquiv
+#print axioms TDA.Mapper.fullMapperHomologyIso

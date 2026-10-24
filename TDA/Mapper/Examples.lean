@@ -30,3 +30,5 @@ import TDA.Mapper.MapperReebTranslationExamples
 import TDA.Mapper.RefinementHomologyCappedTowerExamples
 import TDA.Mapper.GraphPLReebTranslationExamples
 import TDA.Mapper.GraphPLReebMergeHeightExamples
+
+import TDA.Mapper.RefinementHomologyEssentialExamples

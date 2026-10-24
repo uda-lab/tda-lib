@@ -39,3 +39,5 @@ import TDA.Mapper.RefinementHomologyDiagramTightness
 import TDA.Mapper.MapperReebTranslation
 import TDA.Mapper.RefinementHomologyCappedTower
 import TDA.Mapper.GraphPLReebMergeHeight
+
+import TDA.Mapper.RefinementHomologyEssential
