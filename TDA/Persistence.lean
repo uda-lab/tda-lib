@@ -45,6 +45,7 @@ import TDA.Persistence.HookProjective
 import TDA.Persistence.RankProjective
 import TDA.Persistence.RankDeflation
 import TDA.Persistence.RankExactKernel
+import TDA.Persistence.RankExactPushout
 import TDA.Persistence.RankSchanuel
 import TDA.Persistence.FiniteHookDeflation
 import TDA.Persistence.Rectangle

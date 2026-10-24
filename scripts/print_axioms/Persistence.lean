@@ -4773,3 +4773,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.finitelyPresented_actual_cover_kernel_finiteDimensional
 #print axioms TDA.Persistence.RealInterleaving.interpolatingModule_qTame
 #print axioms TDA.Persistence.RealInterleaving.exists_qTame_interpolating_family
+
+-- Pushout closure for rank-exact sequences and its nonzero consumer.
+#print axioms TDA.Persistence.IsPointwiseShortExact.pushoutQuotient
+#print axioms TDA.Persistence.IsPointwiseShortExact.pushoutQuotient_inl
+#print axioms TDA.Persistence.IsPointwiseShortExact.pushoutQuotient_inr
+#print axioms TDA.Persistence.IsPointwiseShortExact.pushout_pointwise
+#print axioms TDA.Persistence.IsRankExact.pushout
+#print axioms TDA.Persistence.RankExactPushoutExamples.pushed_row_rankExact
+#print axioms TDA.Persistence.RankExactPushoutExamples.pushed_middle_nontrivial
+#print axioms TDA.Persistence.IsPointwiseShortExact.pushoutQuotient_inl_assoc
+#print axioms TDA.Persistence.IsPointwiseShortExact.pushoutQuotient_inr_assoc
