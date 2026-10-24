@@ -132,6 +132,15 @@ requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`
 constructs lifts of finite-death hook morphisms in that domain.
 `HookInfinity.homEquivFiber` identifies principal-upset morphisms with birth-fiber
 vectors; surjectivity at birth suffices to lift them over any ring and preorder.
+Over a field and partial order, `Hook.endRingEquiv` and
+`HookInfinity.endRingEquiv` identify the actual endomorphism rings with the
+coefficient field by evaluation at birth. Their public scalar/evaluation laws
+imply categorical indecomposability, including unbounded supports.
+`SupportInterval.support_eq_of_iso` recovers supports from natural isomorphisms.
+`Hook.nonempty_iso_iff` retains both finite endpoints, and the corresponding
+principal-upset law retains its birth; finite and infinite death cannot be
+isomorphic. Death at or before birth gives the zero hook. These are results
+about individual hooks; uniqueness of finite hook decompositions remains separate.
 `IsRankProjective` states the relative lifting property against actual rank-exact
 sequences. Finite-death hooks, principal upsets and their finite categorical
 biproducts satisfy it; natural isomorphisms and retracts preserve it. For a pfd
