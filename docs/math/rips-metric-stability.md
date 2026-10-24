@@ -218,6 +218,32 @@ and an infinite-dimensional fiber at zero in the same example.
 
 The finite-net argument formalizes the Rips part of CDSO13-v3 Proposition 5.1
 through Lemma 4.3. The library retains closed thresholds and its empty negative
-tail. Q-tameness alone is the conclusion here: constructing the persistence
-measure, its locally finite decorated diagram with essential deaths, and its
-algebraic stability remains separate from this theorem.
+tail. The finite-net argument supplies q-tameness; the next construction
+consumes that fact to obtain actual decorated diagram counts.
+
+
+## Decorated diagrams of infinite Rips spaces
+
+For every totally bounded X, field k and homological degree n,
+`Rips.qTameDiagramMultiplicity` specializes the q-tame module's canonical
+finite-death and essential multiplicities to the existing closed-diameter Rips
+homology. The construction takes no finite sample or finite-dimensional fiber.
+For each separated finite rectangle, the sum of positive decorated
+multiplicities equals the Rips module's image-and-kernel quotient dimension.
+On a birth strip at death infinity, it equals the stabilized essential quotient
+count. On each separated tail rectangle, including finite deaths surviving the
+tail threshold and the infinite-death boundary, it equals the actual finite-target
+image quotient dimension. The tail has finite positive support; the full diagram
+has countable positive support.
+
+`RipsQTameDiagramExamples.unitInterval_infinite_fiber_with_diagram` combines
+these conclusions for the compact interval [0,1] with its infinite-dimensional
+unreduced H₀ fiber at time zero. This tests the intended q-tame infinite-space
+case rather than a finite-only barcode. The result uses the finite-net
+factorization of Chazal–de Silva–Oudot, Proposition 5.1, and the integer-content
+extraction of Chazal–de Silva–Glisse–Oudot, Theorem 2.8 and §2.6, under the
+library's closed-threshold and empty-negative-tail conventions.
+
+Identification with the existing finite `Diagram`, a bottleneck distance for
+these locally finite occurrences, algebraic stability and the resulting
+infinite-space Hausdorff/Gromov–Hausdorff diagram bounds remain open.
