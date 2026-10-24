@@ -207,6 +207,7 @@ import TDA.Persistence.RipsQTameFiniteCompatibility
 import TDA.Persistence.LocallyFiniteDiagramBottleneck
 import TDA.Persistence.PersistenceMeasureWindowMatching
 import TDA.Persistence.QTameFiniteSaturation
+import TDA.Persistence.LocallyFiniteMatchingCompactness
 import TDA.Persistence.RipsQTameBottleneck
 import TDA.Persistence.RipsHausdorffInterleaving
 import TDA.Persistence.RipsQTameFiniteSaturation

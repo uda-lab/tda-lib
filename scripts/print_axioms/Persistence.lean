@@ -3692,6 +3692,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.genericDiagramOccurrence_eq_diagramOccurrence
 #print axioms TDA.Persistence.Rips.qTameLocallyFiniteDiagram_multiplicity_eq
 #print axioms TDA.Persistence.Rips.qTameLocallyFiniteDiagram_bottleneck_eq_finite
+#print axioms TDA.Persistence.qTame_bottleneck_le_of_realInterleaving
+#print axioms TDA.Persistence.Rips.qTameLocallyFiniteDiagram_bottleneck_le_of_hausdorff_lt
 
 -- Compatible sections and real-indexed lift fixtures.
 #print axioms TDA.Persistence.CompatibleSections.exists_antitone_coinitial

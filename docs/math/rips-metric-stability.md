@@ -273,20 +273,27 @@ half of the decorated endpoint plane. For finite metric spaces,
 map is definitionally the existing Rips occurrence map, including the true
 `infinityCut` for essential deaths.
 
-These results provide a finite compatibility layer. They do not prove the
-triangle inequality or algebraic stability for arbitrary locally finite
-diagrams, and no infinite-space Hausdorff/Gromov–Hausdorff bottleneck bound is
-claimed yet.
+The finite results above are joined by a global compactness theorem. For
+the finite-birth diagrams extracted from arbitrary q-tame modules,
+`qTame_bottleneck_le_of_realInterleaving` constructs, for each actual
+interleaving, an occurrence matching with cost at most its parameter.
+It uses finite saturation on each finite set of required vertices and a
+coherent section of the resulting finite inverse system; no decomposition or
+global-matching hypothesis is assumed. The generic diagram representation does
+not include birth-at-minus-infinity strata.
 
-For arbitrary q-tame modules, `RealInterleaving.exists_finite_saturating_matching`
-does prove finite saturation from an actual interleaving: given finite prescribed
+For those finite-birth diagrams, `RealInterleaving.exists_finite_saturating_matching`
+proves finite saturation from an actual interleaving: given finite prescribed
 sets of finite bars longer than `2ε` and essential occurrences on each side, it
 constructs finite injective edge sets that cover those tokens with pair costs at
 most `ε`. The proof uses local finite-window counts and a coefficient-one
 continuation argument, and does not assume a matching or interval decomposition.
-As a concrete metric consumer, `Rips.exists_finite_saturating_matching_of_hausdorff_lt`
-combines this theorem with the existing Rips Hausdorff interleaving and q-tameness
-results for totally bounded spaces embedded isometrically in a common ambient
-space. It requires `2 * hausdorffDist < ε` and saturates the prescribed long finite
-bars and essential occurrences. It does not yet produce a matching of the complete
-infinite diagrams or an infinite-space bottleneck bound.
+As a metric consumer, `Rips.qTameLocallyFiniteDiagram_bottleneck_le_of_hausdorff_lt`
+combines global algebraic stability with the existing actual Rips Hausdorff
+interleaving for totally bounded spaces embedded isometrically in a common
+ambient space. Under strict slack `2 * hausdorffDist < ε`, it bounds the
+bottleneck distance of the complete locally finite q-tame diagrams by `ε`.
+The Rips modules vanish at negative times, so their finite-birth diagrams have
+no omitted birth-at-minus-infinity occurrences.
+This does not yet establish the triangle inequality for the locally finite
+bottleneck interface, a Gromov–Hausdorff bound, or sample-target compatibility.

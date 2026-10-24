@@ -1,20 +1,24 @@
 import TDA.Persistence.LocallyFiniteDiagramBottleneck
+import TDA.Persistence.LocallyFiniteMatchingCompactness
 import TDA.Persistence.RipsQTameFiniteCompatibility
+import TDA.Persistence.RipsQTameFiniteSaturation
 
 /-!
-# Finite Rips diagrams inside the q-tame bottleneck interface
+# Rips diagrams inside the q-tame bottleneck interface
 
 For a finite metric space, the q-tame multiplicity from the actual Rips module
 agrees with the occurrence count of the existing full finite diagram.  The
 locally finite bottleneck therefore restricts to that finite diagram's existing
-bottleneck.  No metric stability or sampling estimate is asserted here.
+bottleneck.  For totally bounded spaces, actual Hausdorff interleavings also
+control the bottleneck between their full q-tame locally finite diagrams.
 -/
 
-universe u v
+universe u v w
 
 namespace TDA.Persistence.Rips
 
-open TDA.Filtration TDA.Persistence.RectangleMeasure
+open TDA.Filtration TDA.Persistence.RectangleMeasure Metric Set
+open scoped NNReal ENNReal
 
 noncomputable section
 
@@ -92,6 +96,26 @@ theorem qTameLocallyFiniteDiagram_bottleneck_eq_finite
     qTameLocallyFiniteDiagram_eq_finite (X := Y) k n]
   exact bottleneck_toLocallyFinite (diagram k X n) (diagram k Y n)
     (diagram_isPositive k X n) (diagram_isPositive k Y n)
+
+/-- A strict-slack Hausdorff interleaving of totally bounded Rips spaces induces the
+same bound for the bottleneck distance of their complete q-tame locally finite diagrams. -/
+theorem qTameLocallyFiniteDiagram_bottleneck_le_of_hausdorff_lt
+    {X Y : Type u} [LinearOrder X] [MetricSpace X]
+    [LinearOrder Y] [MetricSpace Y]
+    {Z : Type v} [MetricSpace Z] {f : X → Z} {g : Y → Z}
+    (hf : Isometry f) (hg : Isometry g)
+    (hfin : Metric.hausdorffEDist (Set.range f) (Set.range g) ≠ ⊤)
+    {ε : ℝ≥0} (hε : 2 * Metric.hausdorffDist (Set.range f) (Set.range g) < (ε : ℝ))
+    (hX : TotallyBounded (Set.univ : Set X))
+    (hY : TotallyBounded (Set.univ : Set Y))
+    (k : Type w) [Field k] (n : ℕ) :
+    (qTameLocallyFiniteDiagram (X := X) k hX n).bottleneck
+      (qTameLocallyFiniteDiagram (X := Y) k hY n) ≤ ENNReal.ofReal (ε : ℝ) := by
+  let hQX := qTame_of_totallyBounded k hX n
+  let hQY := qTame_of_totallyBounded k hY n
+  simpa [qTameLocallyFiniteDiagram, hQX, hQY] using
+    TDA.Persistence.qTame_bottleneck_le_of_realInterleaving
+      (Rips.hausdorffInterleavingOfLt k hf hg hfin hε n) hQX hQY
 
 end
 end TDA.Persistence.Rips
