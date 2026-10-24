@@ -282,6 +282,29 @@ and zero-dimensional zero-module boundaries.
 finite-dimensional fiber theorem to the actual constructed kernel using only
 the original module's finite-presentation hypothesis.
 
+For a field `k`, `n ≥ 1`, and `M : PModule k (Fin n → ℝ)`,
+`GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum` gives the
+following classification under only the original
+`GradedFree.FinitelyPresented M` predicate: `M` is rank projective exactly
+when it is isomorphic to a finite biproduct of hooks tagged by
+`RankProjectiveHookTag (Fin n → ℝ)`. A finite tag records a strict birth/death
+pair; an infinite tag records the birth of a principal upset. The `Fin m`
+indexing retains repeated occurrences, including the zero module as the empty
+sum. The forward proof splits the actual cover from
+`finitelyPresented_exists_finiteHookRankExactCover`, descends the section
+through the actual grid Kan unit and finite-biproduct comparisons, and applies
+the finite-poset canonical-subfamily classification. The public
+`CoordinateGrid.lan_map_injective` helper records faithfulness of the actual
+grid left Kan functor. No hook decomposition is assumed for `M`.
+`FinitePresentationRankProjectiveClassificationExamples` checks a nonzero
+finite-death hook, an unbounded principal upset, two repeated hooks and the
+zero/empty-sum case. This formalizes the finite-coordinate, finitely-presented
+projective-classification component related to
+[Botnan–Oppermann–Oudot–Scoccola, Theorem 2.7(1), v3](https://arxiv.org/html/2208.00300v3),
+not its exact-structure axioms or minimal-resolution result. It does not
+classify arbitrary pfd real-indexed modules or provide minimal covers,
+resolutions, choice-independent decompositions or a length bound.
+
 `IsRankDeflation` means that a natural map is the quotient of an actual
 rank-exact sequence. Its `rankExact_kernel` law supplies the categorical
 kernel sequence; `id` and `comp` prove identity and composition closure.

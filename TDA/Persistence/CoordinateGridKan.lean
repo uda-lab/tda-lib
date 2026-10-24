@@ -99,6 +99,29 @@ section Maps
 
 variable {M} {N : PModule.{u,0,w} R G.Point}
 
+/-- The actual left Kan map on a coordinate grid is faithful. The Kan unit is
+an isomorphism at every embedded grid point, so restricting a Kan image to
+those points recovers the original natural transformation. -/
+theorem lan_map_injective {M N : PModule.{u,0,w} R G.Point}
+    {θ θ' : M ⟶ N} (h : G.lan.map θ = G.lan.map θ') : θ = θ' := by
+  apply NatTrans.ext
+  funext p
+  let ηM := G.embedding.monotone.functor.leftKanExtensionUnit M
+  let ηN := G.embedding.monotone.functor.leftKanExtensionUnit N
+  have hηN : IsIso (ηN.app p) :=
+    (Functor.isPointwiseLeftKanExtensionLeftKanExtensionUnit
+      G.embedding.monotone.functor N (G.embedding p)).isIso_hom_app
+  have hθ := NatTrans.congr_app
+    (G.embedding.monotone.functor.lanUnit.naturality θ) p
+  have hθ' := NatTrans.congr_app
+    (G.embedding.monotone.functor.lanUnit.naturality θ') p
+  change θ.app p ≫ ηN.app p = ηM.app p ≫ (G.lan.map θ).app (G.embedding p) at hθ
+  change θ'.app p ≫ ηN.app p = ηM.app p ≫ (G.lan.map θ').app (G.embedding p) at hθ'
+  have hcomp : θ.app p ≫ ηN.app p = θ'.app p ≫ ηN.app p := by
+    rw [hθ, hθ', h]
+  letI : IsIso (ηN.app p) := hηN
+  exact (cancel_mono (ηN.app p)).mp hcomp
+
 /-- Canonical inclusions commute with the actual Lan map of a natural transformation. -/
 theorem kanInclusion_naturality (θ : M ⟶ N) (a : Fin n → ℝ) (ha : G.HasLowerPoint a) :
     G.kanInclusion M a ha ≫ (G.lan.map θ).app a =

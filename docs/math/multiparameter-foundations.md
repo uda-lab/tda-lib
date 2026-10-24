@@ -654,6 +654,52 @@ empty-family comparison, a zero finite hook and nonzero principal upset in
 dimension zero, characteristic two, and cover consumers on the original
 finite presentations over `ℚ` and `ZMod 2`.
 
+## Rank-projectives among finitely presented real modules
+
+Fix a field `k` and `n ≥ 1`. For a module `M` on `Fin n → ℝ` satisfying the
+original `GradedFree.FinitelyPresented M` predicate,
+`GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum` proves
+
+```text
+IsRankProjective M ↔
+  ∃ m : ℕ, ∃ t : Fin m → RankProjectiveHookTag (Fin n → ℝ),
+    Nonempty (M ≅ ⨁ fun i => rankProjectiveHookModule (t i)).
+```
+
+A finite tag stores a strict birth/death pair, while an infinite tag stores the
+birth of a principal upset. Indexing the sum by `Fin m` retains every repeated
+occurrence; the zero module is represented by the empty sum. Neither direction
+assumes a decomposition of `M`: the reverse direction uses lifting for each
+hook, finite-biproduct closure and transport across the given isomorphism.
+
+For the forward direction, `finitelyPresented_exists_finiteHookRankExactCover`
+provides an actual finite grid `G`, a pfd grid module `A`, a reconstruction
+isomorphism `e : G.lan.obj A ≅ M`, and the actual rank-exact cover map. Relative
+projectivity lifts `𝟙 M` through that displayed right map. The resulting
+section is transported back through `e` and the finite-hook biproduct
+comparison. It is then descended to a section of
+`FiniteHookDeflation.π A`: the Kan unit is an isomorphism on the full grid
+embedding, so a map between these Kan extensions has its grid map recovered
+and lifted through that unit. `CoordinateGrid.lan_map_injective` records the
+faithfulness needed to verify the descended section against the actual Kan
+image. Thus `A` is a retract of its actual finite-hook cover, hence rank
+projective. The finite-poset
+`rankProjective_iff_exists_canonical_subfamily` theorem selects actual cover
+occurrences, which are transported to real hooks by the existing Lan and
+biproduct comparisons.
+
+This formalizes the finite-coordinate, finitely-presented projective
+classification component related to
+[Botnan–Oppermann–Oudot–Scoccola, Theorem 2.7(1), v3](https://arxiv.org/html/2208.00300v3).
+The source theorem also asserts exact-structure axioms and finite minimal
+rank-projective resolutions; this result proves neither. It does not cover
+arbitrary pfd real-indexed modules, minimal covers or resolutions,
+choice-independent decomposition, resolution-length bounds, or closure of the
+larger parent scope left open by #501. The focused
+`FinitePresentationRankProjectiveClassificationExamples` module exercises a
+nonzero finite-death hook, a principal upset with nonzero fibers above every
+grade, repeated hook occurrences and the zero/empty-sum boundary.
+
 ## Pullbacks and composites of rank-exact deflations
 
 Fix a field k and partially ordered grades. A rank-exact deflation is a
