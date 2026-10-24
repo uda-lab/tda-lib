@@ -3685,6 +3685,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.matchingCost
 #print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.bottleneck
 #print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.ofQModule
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.ext
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.ext_iff
 #print axioms TDA.Persistence.Diagram.toLocallyFinite
 #print axioms TDA.Persistence.bottleneck_toLocallyFinite
 #print axioms TDA.Persistence.Rips.genericDiagramOccurrence_eq_diagramOccurrence
