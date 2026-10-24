@@ -231,3 +231,5 @@ import TDA.Persistence.RectangleStabilityGeometry
 import TDA.Persistence.RectangleFamily
 import TDA.Persistence.RectangleHall
 import TDA.Persistence.RectangleMatching
+import TDA.Persistence.RectangleMatchingInterleaving
+import TDA.Persistence.RectangleMatchingDistance
