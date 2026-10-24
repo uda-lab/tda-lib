@@ -417,8 +417,10 @@ coefficients, the zero ring and empty families are included. In dimension
 zero, G has one point and the same quotient is nonzero.
 
 Finite-grid reconstruction identifies the presentation with an actual Kan
-extension. Kan preservation of hook projectivity and of minimal resolutions is
-separate from this reconstruction and from the rank-exactness result below.
+extension. Reconstruction alone gives no hook-projectivity or minimal-resolution
+claim. The later finite-grid cover result combines this reconstruction with
+rank exactness and hook lifting; preservation of minimal resolutions remains
+outside its scope.
 
 ## Kan fibers on finite product grids
 
@@ -567,8 +569,71 @@ characteristic two.
 
 The deflation can have redundant summands; it is not asserted to be a minimal
 projective cover. An exact-category instance, classification of retracts as
-hook sums, minimal resolutions, the real-grid transfer and signed barcode
-stability remain further results.
+hook sums, minimal resolutions and signed barcode stability remain further
+results.
+
+## Finite-hook covers after grid Kan extension
+
+Let `G` be a finite coordinate grid with its inclusion into `ℝⁿ`. For any
+grid point pair `i,d`, `CoordinateGrid.hookLanIso` identifies the actual
+left Kan extension of `Hook.module i d` with the real hook at the embedded
+endpoints. It is valid even when `d ≤ i`, including coincident endpoints,
+where the support and both module fibers vanish; no nonzero-hook premise is
+hidden in the comparison. The
+ring-level `infinityLanIso` does the same for the principal upset born at
+`i`, which has unbounded support. Their coefficient laws are expressed using
+the canonical grid-floor fiber comparison and the existing coefficient
+maps. The finite-biproduct comparison is also ring-level and its projection
+and inclusion laws are the actual images of the grid maps.
+
+Over a field, `CoordinateGrid.lan_isRankProjective` proves preservation of
+the relative lifting property. Given a rank-projective grid module and an
+actual rank-exact sequence on `ℝⁿ`, restrict the sequence along the grid
+inclusion, use the grid module's own lift, and transfer that lift back through
+Mathlib's Lan/restriction adjunction. The result does not assume projectivity
+of the target or a lift on `ℝⁿ` as input, and it is not ordinary categorical
+projectivity.
+
+For a pfd grid module `A`, `embeddedCoverFamily A` is indexed by exactly the
+existing `FiniteHookDeflation.Index A`: every kernel-basis and fiber-basis
+occurrence is retained, even if two endpoints agree. The finite occurrence
+sum has its actual `finiteHookDeflationLanIso` comparison with the biproduct
+of the embedded finite-death and principal-upset hooks. Its projection and
+inclusion equations identify each summand map with the corresponding Kan
+image followed by that summand's actual hook isomorphism.
+
+For any module `M` satisfying the original
+`GradedFree.FinitelyPresented M` predicate, the finite-presentation grid
+theorem supplies `G`, a pfd grid module `A`, and an actual isomorphism
+`e : G.lan.obj A ≅ M`. The constructed cover term is
+`H = ⨁ fun t => G.embeddedCoverFamily A t`; its projectivity follows from
+the grid deflation's projectivity and preservation under Lan. With
+`c : G.lan.obj (FiniteHookDeflation.module A) ≅ H`, the maps are the actual
+conjugated composites
+
+```text
+G.lan.map (kernel.ι (FiniteHookDeflation.π A)) ≫ c.hom
+c.inv ≫ G.lan.map (FiniteHookDeflation.π A) ≫ e.hom.
+```
+
+`finitelyPresented_exists_finiteHookRankExactCover` proves these maps are
+rank exact and that the displayed kernel term has pfd fibers. The kernel's
+finite presentation is not proved here. Neither a full exact structure on
+finitely presented modules, classification of all rank-projectives,
+minimality, resolution length, decomposition uniqueness nor signed stability
+follows from this cover. This finite-coordinate-inclusion case implements
+the hook-image and cover ingredients related to
+[Botnan–Oppermann–Oudot, §4.3, Lemma 4.16 and Proposition 4.17](https://arxiv.org/html/2107.06800v3)
+and [Botnan–Oppermann–Oudot–Scoccola, Theorem 2.7 and Appendix A](https://arxiv.org/html/2208.00300v3);
+it does not claim the full generality of the source's poset-map lemma.
+
+The focused fixtures verify a nonzero planar vector on an unbounded arm and
+its death under a genuine real transition, the infinite principal-upset tail,
+separate equal-endpoint occurrences and mixed finite/infinite summands, and
+the actual identity lift supplied by relative projectivity. They also cover
+empty-family comparison, a zero finite hook and nonzero principal upset in
+dimension zero, characteristic two, and cover consumers on the original
+finite presentations over `ℚ` and `ZMod 2`.
 
 ## Pullbacks and composites of rank-exact deflations
 

@@ -39,6 +39,7 @@ import TDA.Persistence.FinitePresentationLifting
 import TDA.Persistence.RealCoordinates
 import TDA.Persistence.FinitePresentationGrid
 import TDA.Persistence.RankExact
+import TDA.Persistence.RankExactIso
 import TDA.Persistence.SupportInterval
 import TDA.Persistence.HookProjective
 import TDA.Persistence.RankProjective
@@ -272,3 +273,6 @@ import TDA.Persistence.FinitePresentationGridKan
 import TDA.Persistence.CoordinateGrid
 import TDA.Persistence.CoordinateGridKan
 import TDA.Persistence.CoordinateGridRankExact
+import TDA.Persistence.CoordinateGridProjective
+import TDA.Persistence.CoordinateGridHook
+import TDA.Persistence.FinitePresentationHookCover
