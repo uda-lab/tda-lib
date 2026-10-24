@@ -87,13 +87,29 @@ contract in [Issue #503](https://github.com/uda-lab/tda-lib/issues/503).
 
 ## Why the whole support diagram is different
 
-Consider two points at distance one with masses `1−ε` and `ε`. Against a singleton,
-the distortion moment is `2ε(1−ε)`, so the finite-p distortion GW distance is
-`(1/2)(2ε(1−ε))^(1/p)`. Nevertheless their usual reduced H₀ diagram contains
-`(0,1)` whenever both points have positive mass, at bottleneck distance `1/2`
-from the empty diagram. A diagram of the entire support therefore does not obey
-the sampled-law bound. An iid sample sees both points with probability
-`1−(1−ε)^n−ε^n`; the law keeps this probability rather than replacing it with one.
+Consider the real-valued two-point law on `0` and `1` with masses `1−ε` and `ε`.
+Against a singleton, its distortion moment is `2ε(1−ε)`, so the finite-p
+distortion GW distance is `(1/2)(2ε(1−ε))^(1/p)`. The Lean regression proves
+that both real-law atoms are positive for `0 < ε < 1`. It also uses the finite
+Bool metric chart induced by the same coordinates `false ↦ 0`, `true ↦ 1`:
+`epsilonTwoPoint_fullH0_points` gives its full H₀ diagram, with an essential
+component and a finite bar `(0,1)`, and
+`epsilonTwoPoint_bottleneck_singleton` proves the chart's diagram is exactly
+bottleneck distance `1/2` from the one-point diagram. Thus the whole-support
+diagram stays nontrivial even as the rare atom's mass tends to zero.
+
+The exact sample-law regression is first stated on that Bool metric chart with
+`twoPointWeights`. For `n = 2`,
+`epsilonTwoPoint_sampleLaw_nontrivial_mass` proves that the atom at the diagram
+with the finite H₀ bar has mass exactly `2ε(1−ε)`, and
+`epsilonTwoPoint_sampleLaw_nontrivial_mass_tendsto_zero` proves this mass tends
+to zero as `ε → 0`. The reusable `sampleLaw_map_isometry` theorem transports the
+full diagram law through an isometric embedding; its specialization
+`epsilonTwoPoint_realSampleLaw_nontrivial_mass` proves the same exact atom for
+the actual real-valued `twoPointLaw`. This transports the entire law for any
+sample size, but the explicit rare-atom formula here is for `n = 2`; no
+arbitrary-`n` atom formula is asserted. The full-support diagram therefore
+cannot replace the sampled diagram law.
 
 The singleton distortion identity is exposed as
 `gromovWasserstein_of_subsingleton`. A separate uniform two-point fixture at
@@ -101,9 +117,9 @@ distance two proves that distinct draws have one essential and one finite full
 H₀ occurrence, while repeated draws retain only the essential occurrence.
 Each of these distinct diagrams receives at least half of the two-draw law's
 probability. `uniformTwoPoints_sampleLaw_nonconstant` therefore witnesses a
-nonconstant pushforward law with positive mass at both outputs. The exact
-ε-dependent full-support H₀ diagram and limit regression remain to be
-formalized.
+nonconstant pushforward law with positive mass at both outputs. The ε-dependent
+full-support diagram, bottleneck obstruction, exact two-draw atom and
+vanishing-mass limit are formalized on the Bool metric chart described above.
 
 ## Sources and reuse
 
