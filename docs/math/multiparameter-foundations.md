@@ -385,6 +385,47 @@ therefore suffices to lift any such morphism. This assertion holds over any
 ring and preorder, without finite-dimensionality assumptions, and in particular
 applies to rank-exact quotient maps over a field.
 
+## Individual hook endomorphisms and indecomposability
+
+Fix a field k and a partially ordered grade set. A finite-death hook with
+birth i < j has a unit vector at its birth, and every supported vector is a
+scalar multiple of its transport from i. Naturality therefore forces an
+endomorphism to act by the same scalar throughout the support. The same
+argument applies to a principal upset through its single free generator.
+`Hook.end_eq_smul_id` and `HookInfinity.end_eq_smul_id` express these actual
+natural transformations, and `endRingEquiv` in each namespace identifies
+the endomorphism ring with k. The comparison reads the coefficient at birth;
+its inverse is scalar multiplication of the identity. The multiplication
+law uses the actual categorical composition, whose order is reversed in
+Mathlib's endomorphism ring.
+
+Since the field has only zero and one as idempotents, these endomorphism
+rings have only the zero map and identity as idempotents. A decomposition
+into two nonzero summands would give a further idempotent by projecting
+onto either summand. Thus `Hook.indecomposable` and
+`HookInfinity.indecomposable` prove indecomposability in Mathlib's existing
+categorical sense. Neither a finite grade set nor bounded support is needed.
+Consumers include the two-coordinate hook with birth (0,0) and death (1,1),
+whose support contains the whole ray {(t,0) | t ≥ 0}, and its genuinely
+decomposable sum with a second identical occurrence.
+
+An isomorphism of interval modules identifies their supports, including the
+empty support: a nonzero supported unit cannot map into an inactive fiber.
+`SupportInterval.support_eq_of_iso` proves this without assuming connectedness.
+For individual nonzero hooks the least support point determines birth, and
+the excluded principal upset determines finite death. Consequently
+`Hook.nonempty_iso_iff` recovers both endpoints, while
+`HookInfinity.nonempty_iso_iff` recovers birth. Finite and infinite death are
+never isomorphic. In contrast, death at or before birth has empty support
+and is a zero object, so the nonzero hook assertions require i < j.
+
+These results supply the individual-hook ingredients for
+[Botnan–Oppermann–Oudot–Scoccola, §2.6 and Theorem 2.7](https://arxiv.org/html/2208.00300v3).
+Order convexity alone does not assert indecomposability for an arbitrary
+support. The results here do not establish uniqueness of finite hook
+decompositions, classification of rank-projective retracts or minimal
+rank-projective resolutions.
+
 ## Enough rank projectives on finite posets
 
 Fix a field k and a finite partially ordered set P. `IsRankProjective Q`
