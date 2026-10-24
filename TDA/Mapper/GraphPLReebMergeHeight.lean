@@ -113,17 +113,12 @@ section top
 
 variable {V : Type*} (G : SimpleGraph V) (h : V → ℝ)
 
-/-- The graph induced on the vertices with height in `⊤` is `G`. -/
-private def induceTopIso : G.induce (h ⁻¹' ((⊤ : OpenInterval) : Set ℝ)) ≃g G where
-  toEquiv := Equiv.subtypeUnivEquiv fun _ => trivial
-  map_rel_iff' := Iff.rfl
-
 /-- The interval components of `plHeight G h` at `⊤` are as many as the connected components
 of `G`. -/
 theorem card_intervalComponents_plHeight_top :
     Nat.card ((intervalComponents (plHeight G h)).obj ⊤) = Nat.card G.ConnectedComponent :=
   Nat.card_congr ((preimageInducedEquiv G h ⊤ (endpointCoverage_top G h)).trans
-    (induceTopIso G h).connectedComponentEquiv)
+    (SimpleGraph.induceUnivIso G).connectedComponentEquiv)
 
 end top
 

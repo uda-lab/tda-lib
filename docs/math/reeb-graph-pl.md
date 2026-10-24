@@ -526,9 +526,9 @@ geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights a M))
 
 - With the apex at `b`, no vertex height lies in `I`, the two leaf edges are active and the top
   edge is not, so there are two components over `I` (`card_cellComponents_mergeHeights_ioo`).
-  Over `(-2ε, b)` the apex and the top vertex are still absent, and the leaf `0` with its edge and
-  the leaf `1` with its edge lie in different components; the restriction from `I` is injective
-  (`injective_cellComponentFunctor_mergeHeights_map`).
+  Over `(-2ε, b)` the apex and the top vertex are still absent, and the two leaf edges stay in
+  different components; for `ε > 0` each leaf vertex joins the component of its edge. The
+  restriction from `I` is injective (`injective_cellComponentFunctor_mergeHeights_map`).
 - With the apex at `a`, `-ε < a < b - ε`, every edge contains the apex and every other vertex is
   adjacent to it, so there is one component over `(-ε, b - ε)`
   (`card_cellComponents_mergeHeights_eq_one`).
