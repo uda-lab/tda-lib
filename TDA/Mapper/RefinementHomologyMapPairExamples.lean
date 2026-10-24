@@ -1,9 +1,9 @@
 import TDA.Mapper.RefinementHomologyMapPair
 import TDA.Mapper.RefinementHomologyInterleavingExamples
 import TDA.Mapper.RefinementHomologyLowerBound
+import TDA.Mapper.RefinementHomologyLowerBoundExamples
 import TDA.Mapper.RefinementHomologyDomainMapExamples
 import TDA.Mapper.RefinementHomologyEssential
-import TDA.Mapper.RefinementHomologyLowerBound
 import TDA.Mapper.GraphPLReebMapPairExamples
 import TDA.Reeb.GraphRealizationExamples
 import TDA.Reeb.GraphPLVertexPerturbationExamples
@@ -14,7 +14,10 @@ import TDA.Simplicial.H0Augmentation
 
 The fixed-space perturbation bound is recovered by the map-pair theorem. On the single edge of
 heights `0` and `1`, a map pair to a point at height `1/2` gives distance at most `1/2`, although
-the degree-zero modules are not isomorphic at radius `1/2`.
+the degree-zero modules are not isomorphic at radius `1/2`. The constant height maps from discrete
+`Bool` to `Unit` preserve heights but admit no `HeightMapPair` at any parameter; their centred
+Mapper modules over `ℚ` have distance at least `1/2` in degree zero. For the constant full-cover
+tower, the corresponding distance is `⊤`.
 -/
 
 namespace TDA.Mapper.RefinementHomologyMapPairExamples
@@ -27,7 +30,7 @@ open TDA.Reeb.Examples.GraphRealization (edgeGraph d₀ half pointGraph edgeHome
 open TDA.Reeb.Examples.GraphPLVertexPerturbation (tilted)
 open TDA.Mapper.RefinementHomologyDomainMapExamples (wholeLine)
 open TDA.Mapper.RefinementHomologyInterleavingExamples
-open scoped NNReal unitInterval
+open scoped NNReal ENNReal unitInterval
 
 noncomputable section
 
@@ -217,14 +220,13 @@ theorem edgeToPoint_mapper_pair (n : ℕ) :
   norm_num at h ⊢
   exact h
 
-/-- The edge at heights `(0, 1)` and the point at height `1/2` have nonisomorphic degree-zero
-centred Mapper modules over `ℚ`. -/
-theorem edgeToPoint_mapper_noniso :
-    IsEmpty (mapperHomologyPModule ℚ edgeHeight (centredCover 1)
-        (centredCoverRefinement 1) 0 ≅
-      mapperHomologyPModule ℚ pointHeight (centredCover 1)
-        (centredCoverRefinement 1) 0) := by
-  refine ⟨fun e => ?_⟩
+/-- At radius `1/2`, the edge at heights `(0, 1)` and the point at height `1/2` have degree-zero
+centred Mapper dimensions `2` and `0`, respectively, over `ℚ`. -/
+theorem edgeToPoint_mapper_dimensions :
+    Module.finrank ℚ ((mapperHomologyPModule ℚ edgeHeight (centredCover 1)
+      (centredCoverRefinement 1) 0).obj (1 / 2)) = 2 ∧
+    Module.finrank ℚ ((mapperHomologyPModule ℚ pointHeight (centredCover 1)
+      (centredCoverRefinement 1) 0).obj (1 / 2)) = 0 := by
   have hscale : Module.finrank ℚ (simplicialHomology
       (mapper (scaleMap 1) (centredCover 1 (1 / 2))) ℚ 0) = 2 :=
     scaleMap_one_centred_half_finrank
@@ -245,12 +247,22 @@ theorem edgeToPoint_mapper_noniso :
     change Module.finrank ℚ (simplicialHomology
       (mapper (scaleMap 1) (centredCover 1 (1 / 2))) ℚ 0) = 2
     exact hscale
-  have hsrc := hrank'.trans hscale'
-  have htgt : Module.finrank ℚ ((mapperHomologyPModule ℚ pointHeight
-      (centredCover 1) (centredCoverRefinement 1) 0).obj (1 / 2)) = 0 := by
-    change Module.finrank ℚ (simplicialHomology
+  constructor
+  · exact hrank'.trans hscale'
+  · change Module.finrank ℚ (simplicialHomology
       (mapper pointHeight (centredCover 1 (1 / 2))) ℚ 0) = 0
     exact pointMapper_finrank_zero
+
+/-- The edge at heights `(0, 1)` and the point at height `1/2` have nonisomorphic degree-zero
+centred Mapper modules over `ℚ`. -/
+theorem edgeToPoint_mapper_noniso :
+    IsEmpty (mapperHomologyPModule ℚ edgeHeight (centredCover 1)
+        (centredCoverRefinement 1) 0 ≅
+      mapperHomologyPModule ℚ pointHeight (centredCover 1)
+        (centredCoverRefinement 1) 0) := by
+  refine ⟨fun e => ?_⟩
+  have hsrc := edgeToPoint_mapper_dimensions.1
+  have htgt := edgeToPoint_mapper_dimensions.2
   have heq := (e.app (1 / 2)).toLinearEquiv.finrank_eq
   have heq' : Module.finrank ℚ ((mapperHomologyPModule ℚ edgeHeight
       (centredCover 1) (centredCoverRefinement 1) 0).obj (1 / 2)) =
@@ -349,18 +361,272 @@ private theorem unitZeroMapper_finrank :
     Module.finrank ℚ (simplicialHomology (mapper unitZeroHeight wholeLine) ℚ 0) = 1 :=
   finrank_simplicialHomology_mapper_full_zero unitZeroHeight ℚ
 
-/-- Constant, height-preserving maps from discrete `Bool` to `Unit` do not form a height-map
-pair at parameter `0`: the reverse composite would require a path from `true` to `false`.
-Their Mapper modules for the constant full-cover tower have distance `⊤` in degree zero. -/
+private theorem zeroHeight_componentIndex_label_eq_zero {X : Type} [TopologicalSpace X]
+    (f : C(X, ℝ)) (hf : ∀ x, f x = 0) {r : ℝ} (hr : r < 1)
+    (a : ComponentIndex f (centredCover 1 r)) : a.1 = 0 := by
+  obtain ⟨x, _⟩ := ZerothHomotopy.mk_surjective a.2
+  have hmem : |(a.1 : ℝ)| < r := by
+    have h := mem_centredCover_iff.mp x.2
+    simpa [hf x.1] using h
+  have hkReal : |(a.1 : ℝ)| < 1 := hmem.trans hr
+  have hkInt : |a.1| < 1 := by exact_mod_cast hkReal
+  exact Int.abs_lt_one_iff.1 hkInt
+
+private theorem zeroHeight_mapper_no_edges {X : Type} [TopologicalSpace X]
+    (f : C(X, ℝ)) (hf : ∀ x, f x = 0) {r : ℝ} (hr : r < 1) :
+    IsEmpty (Face (mapper f (centredCover 1 r)) 1) := by
+  refine ⟨fun F => ?_⟩
+  obtain ⟨a, b, hab, hF⟩ := Finset.card_eq_two.1 F.2.2
+  have hface := F.2.1
+  rw [hF] at hface
+  have ha := zeroHeight_componentIndex_label_eq_zero f hf hr a
+  have hb := zeroHeight_componentIndex_label_eq_zero f hf hr b
+  exact hab (eq_of_mem_mapper_face_of_fst_eq f _ hface (by simp) (by simp)
+    (ha.trans hb.symm))
+
+private noncomputable def mapper_vertexFace_equiv {X ι : Type} [TopologicalSpace X]
+    (f : C(X, ℝ)) (U : ι → Set ℝ) [LinearOrder (ComponentIndex f U)] :
+    Face (mapper f U) 0 ≃ ComponentIndex f U := by
+  classical
+  refine {
+    toFun := fun s => (Finset.card_eq_one.1 s.2.2).choose
+    invFun := fun a => ⟨{a}, componentIndex_supported f U a, Finset.card_singleton a⟩
+    left_inv := fun s => Subtype.ext (Finset.card_eq_one.1 s.2.2).choose_spec.symm
+    right_inv := fun a => ?_ }
+  have h := (Finset.card_eq_one.1 (Finset.card_singleton a)).choose_spec
+  exact (Finset.singleton_inj.1 h).symm
+
+private noncomputable def boolZeroComponentIndexVertex {r : ℝ} (hr : 0 < r) (b : Bool) :
+    ComponentIndex boolZeroHeight (centredCover 1 r) :=
+  ⟨0, ZerothHomotopy.mk ⟨b, by
+    rw [mem_centredCover_iff]
+    simpa [boolZeroHeight] using hr⟩⟩
+
+private noncomputable def boolZeroComponentIndexEquiv {r : ℝ} (hr : 0 < r) (hr' : r < 1) :
+    Bool ≃ ComponentIndex boolZeroHeight (centredCover 1 r) := by
+  classical
+  let q := boolZeroComponentIndexVertex hr
+  have hq : Function.Bijective q := by
+    constructor
+    · intro a b hab
+      have hclass :
+          ZerothHomotopy.mk (⟨a, by
+            rw [mem_centredCover_iff]
+            simpa [boolZeroHeight] using hr⟩ :
+              PullbackSpace boolZeroHeight (centredCover 1 r) 0) =
+          ZerothHomotopy.mk (⟨b, by
+            rw [mem_centredCover_iff]
+            simpa [boolZeroHeight] using hr⟩ :
+              PullbackSpace boolZeroHeight (centredCover 1 r) 0) := by
+        have hparts := Sigma.ext_iff.mp hab
+        exact eq_of_heq hparts.2
+      by_contra hne
+      obtain ⟨p⟩ := Quotient.exact hclass
+      have hc : Continuous fun t => (p t).1 := continuous_subtype_val.comp p.continuous
+      have hconst := PreconnectedSpace.constant inferInstance hc (x := 0) (y := 1)
+      exact hne (by simpa using hconst)
+    · intro a
+      rcases a with ⟨k, c⟩
+      have hk := zeroHeight_componentIndex_label_eq_zero boolZeroHeight
+        (by intro _; rfl) hr' ⟨k, c⟩
+      change k = 0 at hk
+      subst k
+      obtain ⟨x, hx⟩ := ZerothHomotopy.mk_surjective c
+      refine ⟨x.1, ?_⟩
+      change boolZeroComponentIndexVertex hr x.1 = ⟨0, c⟩
+      unfold boolZeroComponentIndexVertex
+      exact Sigma.ext rfl (heq_of_eq (calc
+        ZerothHomotopy.mk (⟨x.1, by
+          rw [mem_centredCover_iff]
+          simpa [boolZeroHeight] using hr⟩ :
+            PullbackSpace boolZeroHeight (centredCover 1 r) 0) = ZerothHomotopy.mk x := by
+              congr 1
+        _ = c := hx))
+  exact Equiv.ofBijective q hq
+
+private theorem boolZeroMapper_centredMap_bijective {a b : ℝ} (ha : 0 < a)
+    (hab : a ≤ b) (hb : b < 1) :
+    Function.Bijective (mapperMap boolZeroHeight (centredCoverRefinement 1 hab)) := by
+  let ea := boolZeroComponentIndexEquiv ha (lt_of_le_of_lt hab hb)
+  let eb := boolZeroComponentIndexEquiv (lt_of_lt_of_le ha hab) hb
+  have hmap (x : Bool) :
+      mapperMap boolZeroHeight (centredCoverRefinement 1 hab) (ea x) = eb x := by
+    change mapperMap boolZeroHeight (centredCoverRefinement 1 hab)
+        (boolZeroComponentIndexVertex ha x) =
+          boolZeroComponentIndexVertex (lt_of_lt_of_le ha hab) x
+    unfold boolZeroComponentIndexVertex
+    rw [mapperMap_mk]
+    apply Sigma.ext rfl
+    apply heq_of_eq
+    apply congrArg ZerothHomotopy.mk
+    exact Subtype.ext rfl
+  constructor
+  · intro x y hxy
+    obtain ⟨u, rfl⟩ := ea.surjective x
+    obtain ⟨v, rfl⟩ := ea.surjective y
+    have huv : u = v := eb.injective ((hmap u).symm.trans (hxy.trans (hmap v)))
+    subst v
+    rfl
+  · intro y
+    obtain ⟨v, rfl⟩ := eb.surjective y
+    exact ⟨ea v, hmap v⟩
+
+private theorem boolZeroMapper_centred_finrank {r : ℝ} (hr : 0 < r) (hr' : r < 1) :
+    Module.finrank ℚ (simplicialHomology
+      (mapper boolZeroHeight (centredCover 1 r)) ℚ 0) = 2 := by
+  let e := boolZeroComponentIndexEquiv hr hr'
+  letI : Fintype (ComponentIndex boolZeroHeight (centredCover 1 r)) :=
+    Fintype.ofEquiv Bool e
+  let hfaceEquiv := mapper_vertexFace_equiv boolZeroHeight (centredCover 1 r)
+  letI : Fintype (Face (mapper boolZeroHeight (centredCover 1 r)) 0) :=
+    Fintype.ofEquiv (ComponentIndex boolZeroHeight (centredCover 1 r)) hfaceEquiv.symm
+  letI : IsEmpty (Face (mapper boolZeroHeight (centredCover 1 r)) 1) :=
+    zeroHeight_mapper_no_edges boolZeroHeight (by intro _; rfl) hr'
+  calc
+    Module.finrank ℚ (simplicialHomology
+        (mapper boolZeroHeight (centredCover 1 r)) ℚ 0) =
+        Fintype.card (Face (mapper boolZeroHeight (centredCover 1 r)) 0) :=
+      finrank_zeroHomology_of_no_edges (mapper boolZeroHeight (centredCover 1 r)) ℚ
+    _ = Fintype.card (ComponentIndex boolZeroHeight (centredCover 1 r)) :=
+      Fintype.card_congr hfaceEquiv
+    _ = 2 := by
+      rw [← Fintype.card_congr e]
+      simp
+
+private theorem unitZeroMapper_centred_half_finrank :
+    Module.finrank ℚ (simplicialHomology
+      (mapper unitZeroHeight (centredCover 1 (1 / 2))) ℚ 0) = 1 := by
+  letI : Unique (ComponentIndex unitZeroHeight (centredCover 1 (1 / 2))) := by
+    refine ⟨⟨0, ZerothHomotopy.mk ⟨(), by
+      rw [mem_centredCover_iff]
+      norm_num [unitZeroHeight]⟩⟩, ?_⟩
+    intro a
+    rcases a with ⟨k, c⟩
+    have hk := zeroHeight_componentIndex_label_eq_zero unitZeroHeight
+      (by intro _; rfl) (by norm_num) ⟨k, c⟩
+    change k = 0 at hk
+    subst k
+    obtain ⟨x, hx⟩ := ZerothHomotopy.mk_surjective c
+    change (⟨0, c⟩ : ComponentIndex unitZeroHeight (centredCover 1 (1 / 2))) =
+      ⟨0, ZerothHomotopy.mk (⟨(), by
+        rw [mem_centredCover_iff]
+        norm_num [unitZeroHeight]⟩ :
+          PullbackSpace unitZeroHeight (centredCover 1 (1 / 2)) 0)⟩
+    exact Sigma.ext rfl (heq_of_eq (calc
+      c = ZerothHomotopy.mk x := hx.symm
+      _ = ZerothHomotopy.mk (⟨(), by
+        rw [mem_centredCover_iff]
+        norm_num [unitZeroHeight]⟩ :
+          PullbackSpace unitZeroHeight (centredCover 1 (1 / 2)) 0) := by
+            congr 1))
+  letI : Fintype (ComponentIndex unitZeroHeight (centredCover 1 (1 / 2))) :=
+    Fintype.ofFinite _
+  let hfaceEquiv := mapper_vertexFace_equiv unitZeroHeight (centredCover 1 (1 / 2))
+  letI : Fintype (Face (mapper unitZeroHeight (centredCover 1 (1 / 2))) 0) :=
+    Fintype.ofEquiv (ComponentIndex unitZeroHeight (centredCover 1 (1 / 2))) hfaceEquiv.symm
+  letI : IsEmpty (Face (mapper unitZeroHeight (centredCover 1 (1 / 2))) 1) :=
+    zeroHeight_mapper_no_edges unitZeroHeight (by intro _; rfl) (by norm_num)
+  calc
+    Module.finrank ℚ (simplicialHomology
+        (mapper unitZeroHeight (centredCover 1 (1 / 2))) ℚ 0) =
+        Fintype.card (Face (mapper unitZeroHeight (centredCover 1 (1 / 2))) 0) :=
+      finrank_zeroHomology_of_no_edges (mapper unitZeroHeight (centredCover 1 (1 / 2))) ℚ
+    _ = Fintype.card (ComponentIndex unitZeroHeight (centredCover 1 (1 / 2))) :=
+      Fintype.card_congr hfaceEquiv
+    _ = 1 := by
+      simp
+
+private theorem boolToUnit_centred_distance_ge_half :
+    ENNReal.ofReal (1 / 2) ≤ realInterleavingDistance
+      (mapperHomologyPModule ℚ boolZeroHeight (centredCover 1)
+        (centredCoverRefinement 1) 0)
+      (mapperHomologyPModule ℚ unitZeroHeight (centredCover 1)
+        (centredCoverRefinement 1) 0) := by
+  have hbound : ((1 / 2 : ℝ≥0) : ℝ≥0∞) ≤ realInterleavingDistance
+      (mapperHomologyPModule ℚ boolZeroHeight (centredCover 1)
+        (centredCoverRefinement 1) 0)
+      (mapperHomologyPModule ℚ unitZeroHeight (centredCover 1)
+        (centredCoverRefinement 1) 0) := by
+    apply le_realInterleavingDistance_of_finrank_lt (k := ℚ)
+      (M := mapperHomologyPModule ℚ boolZeroHeight (centredCover 1)
+        (centredCoverRefinement 1) 0)
+      (N := mapperHomologyPModule ℚ unitZeroHeight (centredCover 1)
+        (centredCoverRefinement 1) 0)
+      (r := (1 / 2 : ℝ≥0))
+    intro ε hε
+    have hε' : (ε : ℝ≥0∞) < ((1 / 2 : ℝ≥0) : ℝ≥0∞) := by simpa using hε
+    have hεReal : (ε : ℝ) < 1 / 2 := by
+      exact_mod_cast ENNReal.coe_lt_coe.1 hε'
+    let t : ℝ := (1 - 2 * (ε : ℝ)) / 2
+    have htpos : 0 < t := by dsimp [t]; linarith
+    have hmid : t + (ε : ℝ) = 1 / 2 := by dsimp [t]; ring
+    have hdouble : t + ((ε + ε : ℝ≥0) : ℝ) = 1 / 2 + (ε : ℝ) := by
+      dsimp [t]
+      ring
+    have hdouble_pos : 0 < t + ((ε + ε : ℝ≥0) : ℝ) := by rw [hdouble]; positivity
+    have hdouble_lt : t + ((ε + ε : ℝ≥0) : ℝ) < 1 := by
+      rw [hdouble]
+      linarith
+    have h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ) := by
+      rw [hdouble]
+      linarith [ε.coe_nonneg]
+    have hmapBij : Function.Bijective (mapperMap boolZeroHeight
+        (centredCoverRefinement 1 h)) :=
+      boolZeroMapper_centredMap_bijective htpos h hdouble_lt
+    letI : IsEmpty (Face (mapper boolZeroHeight
+        (centredCover 1 (t + ((ε + ε : ℝ≥0) : ℝ)))) 1) :=
+      zeroHeight_mapper_no_edges boolZeroHeight (by intro _; rfl) hdouble_lt
+    have hhomBij : Function.Bijective
+        (mapperHomologyMap ℚ boolZeroHeight (centredCoverRefinement 1 h) 0).hom :=
+      RefinementHomologyLowerBoundExamples.mapperHomologyMap_bijective_of_bijective
+        ℚ boolZeroHeight _ hmapBij 0
+    have hsurj : Function.Surjective (structureMapLinear
+        (mapperHomologyPModule ℚ boolZeroHeight (centredCover 1)
+          (centredCoverRefinement 1) 0) h) := by
+      change Function.Surjective
+        (mapperHomologyMap ℚ boolZeroHeight (centredCoverRefinement 1 h) 0).hom
+      exact hhomBij.2
+    have hrank : Module.finrank ℚ (LinearMap.range (structureMapLinear
+        (mapperHomologyPModule ℚ boolZeroHeight (centredCover 1)
+          (centredCoverRefinement 1) 0) h)) = 2 := by
+      rw [LinearMap.range_eq_top.2 hsurj, finrank_top]
+      change Module.finrank ℚ (simplicialHomology
+        (mapper boolZeroHeight (centredCover 1 (t + ((ε + ε : ℝ≥0) : ℝ)))) ℚ 0) = 2
+      exact boolZeroMapper_centred_finrank hdouble_pos hdouble_lt
+    have htarget : Module.finrank ℚ ((mapperHomologyPModule ℚ unitZeroHeight
+        (centredCover 1) (centredCoverRefinement 1) 0).obj (t + (ε : ℝ))) = 1 := by
+      change Module.finrank ℚ (simplicialHomology
+        (mapper unitZeroHeight (centredCover 1 (t + (ε : ℝ)))) ℚ 0) = 1
+      rw [hmid]
+      exact unitZeroMapper_centred_half_finrank
+    refine ⟨t, h, Module.finite_of_finrank_eq_succ htarget, ?_⟩
+    rw [htarget, hrank]
+    norm_num
+  have hconvert : ENNReal.ofReal (1 / 2 : ℝ) = (1 / 2 : ℝ≥0∞) := by
+    have hreal : (1 / 2 : ℝ) = ((1 / 2 : ℝ≥0) : ℝ) := by norm_num
+    rw [hreal, ENNReal.ofReal_coe_nnreal]
+    norm_num
+  simpa [hconvert] using hbound
+
+/-- The constant maps from discrete `Bool` to `Unit` preserve heights but admit no height-map pair
+at any parameter, since the reverse composite would require a path from `true` to `false`. Their
+degree-zero Mapper modules over `ℚ` on the centred tower of spacing `1` have distance at least
+`1/2`; on the constant full-cover tower their distance is `⊤`. -/
 theorem boolToUnit_pathCondition_needed :
     (∀ b, unitZeroHeight (boolToUnit b) = boolZeroHeight b) ∧
       (∀ u, boolZeroHeight (unitToBool u) = unitZeroHeight u) ∧
-      ¬ Nonempty (HeightMapPair boolZeroHeight unitZeroHeight 0) ∧
+      (∀ δ : ℝ≥0, ¬ Nonempty (HeightMapPair boolZeroHeight unitZeroHeight δ)) ∧
+      ENNReal.ofReal (1 / 2) ≤ realInterleavingDistance
+        (mapperHomologyPModule ℚ boolZeroHeight (centredCover 1)
+          (centredCoverRefinement 1) 0)
+        (mapperHomologyPModule ℚ unitZeroHeight (centredCover 1)
+          (centredCoverRefinement 1) 0) ∧
       realInterleavingDistance
         (mapperHomologyPModule ℚ boolZeroHeight fullCoverTower fullCoverRefinement 0)
         (mapperHomologyPModule ℚ unitZeroHeight fullCoverTower fullCoverRefinement 0) = ⊤ := by
-  refine ⟨fun _ => rfl, fun _ => rfl, ?_, ?_⟩
-  · rintro ⟨P⟩
+  refine ⟨fun _ => rfl, fun _ => rfl, ?_, boolToUnit_centred_distance_ge_half, ?_⟩
+  · intro δ
+    rintro ⟨P⟩
     have htrue : P.ψ (P.φ true) = true := by
       obtain ⟨γ, _⟩ := P.hψφ true
       have hconst := PreconnectedSpace.constant inferInstance γ.continuous (x := 0) (y := 1)

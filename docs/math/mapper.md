@@ -479,6 +479,11 @@ refinements. Map-pair bounds for step or capped centred diagrams and bottleneck 
 converse, multinerve Mapper, independence of component orders, and executable extraction
 are not provided.
 
+The path condition cannot be omitted: the constant height maps from discrete `Bool` to `Unit`
+preserve heights, but no `HeightMapPair` exists between them for any parameter, and their
+degree-zero Mapper modules over `ℚ` on the centred tower of spacing `1` have real interleaving
+distance at least `1/2`. For the constant full-cover tower, the distance is `⊤`.
+
 Not included: equality of the diagrams themselves for homeomorphic heights; compatibility of the
 domain maps with the interleavings `mapperHomologyInterleaving` or with the multinerve maps;
 functoriality in the codomain beyond the pullback identity; homotopy invariance; independence of the

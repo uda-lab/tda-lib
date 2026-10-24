@@ -1329,3 +1329,4 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyMapPairExamples.edgeToPoint_mapper_pair
 #print axioms TDA.Mapper.RefinementHomologyMapPairExamples.edgeToPoint_mapper_noniso
 #print axioms TDA.Mapper.RefinementHomologyMapPairExamples.boolToUnit_pathCondition_needed
+#print axioms TDA.Mapper.RefinementHomologyMapPairExamples.edgeToPoint_mapper_dimensions

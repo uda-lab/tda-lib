@@ -310,7 +310,8 @@ theorem realInterleavingDistance_centredMapperPair_le_ofUniformBound
     (HeightMapPair.ofUniformBound hfg)
 
 /-- Finite graph-PL inputs with a height-map pair have centred Mapper homology modules at real
-interleaving distance at most the pair parameter. -/
+interleaving distance at most the pair parameter. The theorem also holds without these finiteness
+assumptions because it instantiates the general bound. -/
 theorem realInterleavingDistance_centredMapperPair_graphPL_le
     {V V' : Type} [Finite V] [Finite V'] {G : SimpleGraph V} {G' : SimpleGraph V'}
     {h : V → ℝ} {h' : V' → ℝ}
