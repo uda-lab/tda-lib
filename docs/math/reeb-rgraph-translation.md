@@ -106,8 +106,10 @@ own translate only.
 ## Scope
 
 Not claimed: translation of the display locale `𝒟`, or of categorical Mapper reconstructions as
-graph objects; scaling and other affine reparametrizations of the height; translation of a Mapper
-cover without its height.
+graph objects; scaling on `RGraphCat` or its commutation with the Reeb quotient and geometric
+smoothing; nonlinear reparametrizations; translation of a Mapper cover without its height.
+Scaling interval precosheaves and nonzero affine changes of graph-PL heights satisfy the distance
+homogeneity law in [reeb-graph-pl.md](reeb-graph-pl.md#scaling-heights).
 
 ## Source correspondence
 
