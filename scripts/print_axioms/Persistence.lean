@@ -4691,3 +4691,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CoordinateGridHook.Examples.characteristic_two_arm_vector_survives_and_dies
 #print axioms TDA.Persistence.CoordinateGridHook.Examples.rational_presentation_actual_hook_cover
 #print axioms TDA.Persistence.CoordinateGridHook.Examples.characteristic_two_presentation_actual_hook_cover
+
+-- Finite graded-free presentations, finite-grid Lan preservation and the actual cover-kernel capstone.
+#print axioms TDA.Persistence.GradedFree.pfd_finitelyPresented_of_finite_poset
+#print axioms TDA.Persistence.GradedFree.moduleBiproductIso
+#print axioms TDA.Persistence.CoordinateGrid.embeddedGenerators
+#print axioms TDA.Persistence.CoordinateGrid.lanFreeIso
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_lan_of_finiteGrid
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_exists_finiteHookRankExactCoverKernel
+
+-- Nonzero, characteristic-two, empty-family and zero-dimensional consumers.
+#print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.rational_presentation_actual_cover_kernel_finitelyPresented
+#print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.characteristic_two_presentation_actual_cover_kernel_finitelyPresented
+#print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.empty_family_lan_finitelyPresented
+#print axioms TDA.Persistence.FinitePresentationHookKernel.Examples.zero_empty_index_actual_cover_kernel_finitelyPresented
