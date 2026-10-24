@@ -1246,6 +1246,13 @@ The decorated locally finite diagram representation and its bottleneck
 stability are not supplied by this API. See
 [persistence rectangle measures](math/persistence-rectangle-measure.md).
 
+`TDA.Persistence.PersistenceMeasureBox` derives a rectangle box inequality
+from a real interleaving. Its local theorem needs only a finite-dimensional
+crossing image in the expanded rectangle; q-tameness supplies this when that
+rectangle stays strictly above the diagonal. The public crossing factorization
+and a displaced-interval fixture check the comparison on actual modules. See
+[interleavings and rectangle measures](math/persistence-measure-box.md).
+
 ### Greedy sparse Rips geometry and deletion maps
 
 `TDA.Filtration.SparseRips.GreedyNet` constructs a farthest-first permutation of a

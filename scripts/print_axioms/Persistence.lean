@@ -3486,6 +3486,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.PersistenceMeasureExamples.essential_interval_finite_rectangle_zero
 #print axioms TDA.Persistence.PModule.QTame.essentialMeasureValue_self
 
+-- Box inequalities from actual real interleavings.
+#print axioms TDA.Persistence.RealInterleaving.crossing_factorization
+#print axioms TDA.Persistence.RealInterleaving.persistenceMeasureValue_box_le
+#print axioms TDA.Persistence.RealInterleaving.persistenceMeasureValue_box_le_of_qTame
+#print axioms TDA.Persistence.PersistenceMeasureBoxExamples.displaced_interval_box_nonzero
+
 -- Normalized subdivision-Rips and restricted measure bifiltrations.
 #print axioms TDA.Persistence.SubdivisionRips.homology_obj
 #print axioms TDA.Persistence.SubdivisionRips.homology_structureMap
