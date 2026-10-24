@@ -1275,6 +1275,13 @@ rectangle stays strictly above the diagonal. The public crossing factorization
 and a displaced-interval fixture check the comparison on actual modules. See
 [interleavings and rectangle measures](math/persistence-measure-box.md).
 
+`TDA.Persistence.PersistenceMeasureEssentialBox` compares finite-target tail
+quotients along an actual interleaving. A finite expanded crossing image is
+sufficient locally. The inequality of defined essential minima needs only
+target q-tameness; its interpretation as a genuine essential birth-strip box
+inequality requires q-tameness of both modules. See
+[interleavings and essential birth strips](math/persistence-measure-essential-box.md).
+
 `TDA.Persistence.PersistenceMeasureMatching` derives a finite local occurrence
 matching from two-sided positive-square count inequalities. Source lifetimes
 must exceed 4ε and distinct source values must be separated by more than 2ε.
