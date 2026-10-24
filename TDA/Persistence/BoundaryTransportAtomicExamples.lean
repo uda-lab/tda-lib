@@ -15,14 +15,15 @@ namespace TDA.Persistence.BoundaryTransport.AtomicExamples
 open MeasureTheory
 open scoped ENNReal NNReal Classical
 
-private def point : Interior := ⟨(0, 2), by norm_num⟩
+private def point : Interior := ⟨(0, 4), by norm_num⟩
 private def halfDiagram : FiniteWeightedDiagram := Finsupp.single point (1 / 2)
 
 private theorem single_power_zero (p : ℝ) (w : ℝ≥0) :
-    FiniteWeightedDiagram.powerBoundaryTransportCost p (Finsupp.single point w) 0 = w := by
+    FiniteWeightedDiagram.powerBoundaryTransportCost p (Finsupp.single point w) 0 =
+      w * (2 : ℝ) ^ p := by
   rw [FiniteWeightedDiagram.powerBoundaryTransportCost_zero_right]
   change (∑ i : ↥(Finsupp.single point w).support,
-    ((Finsupp.single point w) i.1 : ℝ) * (diagonalCost i.1.1).toReal ^ p) = w
+    ((Finsupp.single point w) i.1 : ℝ) * (diagonalCost i.1.1).toReal ^ p) = w * 2 ^ p
   calc
     _ = ∑ z ∈ (Finsupp.single point w).support,
         ((Finsupp.single point w) z : ℝ) * (diagonalCost z.1).toReal ^ p :=
@@ -34,15 +35,15 @@ private theorem single_power_zero (p : ℝ) (w : ℝ≥0) :
         norm_num [point, diagonalCost]
 
 private theorem fractional_powered_cost :
-    boundaryTransportPowerValue 2 (atomicMeasure halfDiagram) (atomicMeasure 0) = 1 / 2 := by
+    boundaryTransportPowerValue 2 (atomicMeasure halfDiagram) (atomicMeasure 0) = 2 := by
   rw [boundaryTransportPowerValue_atomic_eq_native 2 (by norm_num)]
   norm_num [halfDiagram, single_power_zero, ENNReal.ofReal_div_of_pos]
 
 private theorem fractional_rooted_cost :
-    boundaryTransportDistance 1 (atomicMeasure halfDiagram) (atomicMeasure 0) = 1 / 2 := by
+    boundaryTransportDistance 1 (atomicMeasure halfDiagram) (atomicMeasure 0) = 1 := by
   rw [boundaryTransportDistance_atomic_eq_native 1 (by norm_num)]
   change ENNReal.ofReal
-    ((FiniteWeightedDiagram.powerBoundaryTransportCost 1 halfDiagram 0) ^ (1 : ℝ)⁻¹) = 1 / 2
+    ((FiniteWeightedDiagram.powerBoundaryTransportCost 1 halfDiagram 0) ^ (1 : ℝ)⁻¹) = 1
   norm_num [halfDiagram, single_power_zero, ENNReal.ofReal_div_of_pos]
 
 private theorem coincident_half_masses :
@@ -52,7 +53,7 @@ private theorem coincident_half_masses :
 
 private theorem coalesced_powered_cost :
     boundaryTransportPowerValue 2 (atomicMeasure (halfDiagram + halfDiagram))
-      (atomicMeasure 0) = 1 := by
+      (atomicMeasure 0) = 4 := by
   have hsum : halfDiagram + halfDiagram = Finsupp.single point 1 := by
     unfold halfDiagram
     rw [← Finsupp.single_add, show (1 / 2 : ℝ≥0) + 1 / 2 = 1 by norm_num]
@@ -67,7 +68,7 @@ private theorem zero_powered_cost (p : ℝ) (hp : 0 ≤ p) :
 private theorem fractional_minimizer :
     ∃ π : Measure PlanSpace,
       IsBoundaryPlan π (atomicMeasure halfDiagram) (atomicMeasure 0) ∧
-      (∫⁻ z, planPowerCost 2 z ∂π) = 1 / 2 := by
+      (∫⁻ z, planPowerCost 2 z ∂π) = 2 := by
   obtain ⟨π, hπ, hcost⟩ := exists_atomic_minimizing_boundaryPlan 2 (by norm_num) halfDiagram 0
   exact ⟨π, hπ, hcost.trans fractional_powered_cost⟩
 
