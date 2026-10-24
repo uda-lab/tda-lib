@@ -27,13 +27,16 @@ namespace TDA.Mapper.GraphPL
 
 noncomputable section
 
-private def mergeFoldD02 : mergeY.Dart :=
+/-- The dart `0 → 2` of `mergeY`. -/
+def mergeFoldD02 : mergeY.Dart :=
   ⟨(0, 2), (mergeY_adj 0 2).2 (by decide)⟩
 
-private def mergeFoldD12 : mergeY.Dart :=
+/-- The dart `1 → 2` of `mergeY`. -/
+def mergeFoldD12 : mergeY.Dart :=
   ⟨(1, 2), (mergeY_adj 1 2).2 (by decide)⟩
 
-private def mergeFoldD23 : mergeY.Dart :=
+/-- The dart `2 → 3` of `mergeY`. -/
+def mergeFoldD23 : mergeY.Dart :=
   ⟨(2, 3), (mergeY_adj 2 3).2 (by decide)⟩
 
 @[simp] private theorem mergeFoldD02_fst : mergeFoldD02.fst = 0 := rfl
