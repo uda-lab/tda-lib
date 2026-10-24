@@ -567,8 +567,15 @@ order-free `Rips.diagram` accepts finite metric spaces and a field in independen
 universes; `diagram_eq_dgm` identifies it with the existing diagram for every
 auxiliary order. Finite samples of a common possibly infinite target are compared
 only through their finite diagrams. A decorated multiplicity for totally bounded targets is provided by
-`RipsQTameDiagram` below; its finite-diagram compatibility and bottleneck
-stability remain separate. See [metric-input stability](math/rips-metric-stability.md).
+`RipsQTameDiagram` below. `RipsQTameFiniteCompatibility` proves that on finite
+metric spaces its point multiplicities agree with the existing finite diagram,
+using `(minusCut birth, minusCut death)` for finite bars and
+`(minusCut birth, infinityCut)` for essential bars. This Lean compatibility
+theorem currently requires the coefficient field and vertex type in the same
+universe because the rank-to-diagram bridge has that universe restriction; the
+mathematical statement is field-independent. Bottleneck stability for the
+locally finite diagram of a general totally bounded space remains open. See
+[metric-input stability](math/rips-metric-stability.md).
 
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
 `a < b` has finite-dimensional image over the coefficient field.
@@ -584,8 +591,14 @@ finite-dimensional images, while its unreduced H₀ fiber at zero is
 infinite-dimensional. `RipsQTameDiagram` consumes this q-tameness to extract
 decorated finite and essential occurrences with exact rectangle, essential-strip
 and tail counts. Their support is countable and locally finite even for this
-infinite-fiber example. Finite-diagram compatibility and bottleneck stability
-remain open. See
+infinite-fiber example. On finite metric spaces,
+`Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` identifies every
+decorated point multiplicity with its occurrence count in the existing finite
+`Rips.diagram`, including essential bars. The coefficient field and vertex
+type must currently share a Lean universe for this theorem because the existing
+rank/barcode bridge has that restriction; the mathematical compatibility holds
+over every field. Bottleneck stability for the locally finite diagram of a
+general totally bounded space remains open. See
 [the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
 `TDA.Persistence.RipsHausdorffInterleaving` compares the actual Rips homology
