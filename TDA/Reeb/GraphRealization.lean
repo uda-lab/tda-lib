@@ -1,6 +1,7 @@
 import TDA.Reeb.Components
 import TDA.Reeb.ComponentsDiscrete
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
+import Mathlib.Topology.Subpath
 import Mathlib.Topology.UnitInterval
 
 /-!
@@ -26,8 +27,11 @@ retraction; no continuous retraction to the vertices is asserted.
 
 ## Paths and maps
 
-`edgePath d` runs from `vertex G d.fst` to `vertex G d.snd`, `walkPath` concatenates the edge paths
-of a walk, and every edge point is joined to the first endpoint of its dart. A graph homomorphism
+`edgePath d` runs from `vertex G d.fst` to `vertex G d.snd`. For `s t : unitInterval`,
+`edgeSegment G d s t` is the subpath from `edgePoint G d s` to `edgePoint G d t`, with parameter
+`Set.Icc.convexComb s t r` (`edgeSegment_apply`, `edgeSegment_zero`, `edgeSegment_one`).
+`walkPath` concatenates the edge paths of a walk, and every edge point is joined to the first
+endpoint of its dart. A graph homomorphism
 `φ : G →g H` induces `realizationMap φ : C(Realization G, Realization H)` with
 `vertex v ↦ vertex (φ v)` and `edgePoint d t ↦ edgePoint (φ.mapDart d) t`, and with identity and
 composition laws as equalities of continuous maps; the vertex types may live in independent
@@ -279,6 +283,24 @@ def edgePath (d : G.Dart) : Path (vertex G d.fst) (vertex G d.snd) where
 
 @[simp] theorem edgePath_apply (d : G.Dart) (t : unitInterval) :
     edgePath G d t = edgePoint G d t := rfl
+
+/-- The part of a dart path from parameter `s` to parameter `t`, in either order. -/
+def edgeSegment (d : G.Dart) (s t : unitInterval) :
+    Path (edgePoint G d s) (edgePoint G d t) :=
+  (edgePath G d).subpath s t
+
+@[simp] theorem edgeSegment_apply (d : G.Dart) (s t r : unitInterval) :
+    edgeSegment G d s t r = edgePoint G d (Set.Icc.convexComb s t r) := by
+  change edgePath G d (Set.Icc.convexComb s t r) = _
+  exact edgePath_apply G d _
+
+@[simp] theorem edgeSegment_zero (d : G.Dart) (s t : unitInterval) :
+    edgeSegment G d s t 0 = edgePoint G d s := by
+  simp [edgeSegment, Path.subpath]
+
+@[simp] theorem edgeSegment_one (d : G.Dart) (s t : unitInterval) :
+    edgeSegment G d s t 1 = edgePoint G d t := by
+  simp [edgeSegment, Path.subpath]
 
 /-- The concatenated path of a graph walk. -/
 def walkPath : {v w : V} → G.Walk v w → Path (vertex G v) (vertex G w)

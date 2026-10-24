@@ -3312,3 +3312,9 @@ import TDA
 #print axioms TDA.Reeb.HeightMapPair.interleavingDistance_le
 #print axioms TDA.Reeb.HeightMapPair.ofUniformBound
 #print axioms TDA.Reeb.HeightMapPair.interleaving_eq_perturbationInterleaving
+
+-- Generic paths along darts and their piecewise-linear height bounds.
+#print axioms TDA.Reeb.GraphRealization.edgeSegment_apply
+#print axioms TDA.Reeb.GraphRealization.edgeSegment_zero
+#print axioms TDA.Reeb.GraphRealization.edgeSegment_one
+#print axioms TDA.Reeb.GraphPL.plHeight_edgeSegment_bounds

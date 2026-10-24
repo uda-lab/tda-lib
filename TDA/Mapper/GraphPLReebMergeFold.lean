@@ -2,6 +2,7 @@ import TDA.Mapper.GraphPLReebMapPair
 import TDA.Mapper.GraphPLReebScaling
 import TDA.Mapper.UniformCover
 import TDA.Reeb.GraphRealization
+import TDA.Reeb.GraphPLHeight
 
 /-!
 # Height-preserving folds for merge-height trees
@@ -232,47 +233,6 @@ theorem plHeight_mergeSection (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M) {y : ℝ
     change (1 - ((y - c) / (M - c))) * c + ((y - c) / (M - c)) * M = y
     field_simp [hden0]; ring_nf
 
-private def unitSegmentParam (s t r : unitInterval) : unitInterval :=
-  ⟨(1 - (r : ℝ)) * (s : ℝ) + (r : ℝ) * (t : ℝ), by
-    constructor
-    · exact add_nonneg (mul_nonneg (by linarith [r.2.2]) s.2.1)
-        (mul_nonneg r.2.1 t.2.1)
-    · calc
-        (1 - (r : ℝ)) * (s : ℝ) + (r : ℝ) * (t : ℝ) ≤
-            (1 - (r : ℝ)) * 1 + (r : ℝ) * 1 := by
-              exact add_le_add
-                (mul_le_mul_of_nonneg_left s.2.2 (by linarith [r.2.2]))
-                (mul_le_mul_of_nonneg_left t.2.2 r.2.1)
-        _ = 1 := by ring⟩
-
-private theorem unitSegmentParam_mem {s t r : unitInterval} (hst : s ≤ t) :
-    (s : ℝ) ≤ (unitSegmentParam s t r : ℝ) ∧
-      (unitSegmentParam s t r : ℝ) ≤ (t : ℝ) := by
-  have hr0 : (0 : ℝ) ≤ r := r.2.1
-  have h1r : (0 : ℝ) ≤ 1 - (r : ℝ) := by linarith [r.2.2]
-  have hst' : (s : ℝ) ≤ (t : ℝ) := hst
-  have hdiff : (0 : ℝ) ≤ (t : ℝ) - (s : ℝ) := by linarith
-  have hrdiff := mul_nonneg hr0 hdiff
-  have h1rdiff := mul_nonneg h1r hdiff
-  change (s : ℝ) ≤ (1 - (r : ℝ)) * (s : ℝ) + (r : ℝ) * (t : ℝ) ∧
-    (1 - (r : ℝ)) * (s : ℝ) + (r : ℝ) * (t : ℝ) ≤ (t : ℝ)
-  constructor <;> nlinarith [hrdiff, h1rdiff]
-
-private def edgeSegment (d : mergeY.Dart) (s t : unitInterval) :
-    Path (edgePoint mergeY d s) (edgePoint mergeY d t) where
-  toFun r := edgePoint mergeY d (unitSegmentParam s t r)
-  continuous_toFun := (continuous_edgePoint mergeY d).comp (by
-    change Continuous (fun r : unitInterval =>
-      (⟨(1 - (r : ℝ)) * (s : ℝ) + (r : ℝ) * (t : ℝ), _⟩ : unitInterval))
-    have hval : Continuous (fun r : unitInterval =>
-        (1 - (r : ℝ)) * (s : ℝ) + (r : ℝ) * (t : ℝ)) := by fun_prop
-    exact hval.subtype_mk _)
-  source' := by simp [unitSegmentParam]
-  target' := by simp [unitSegmentParam]
-
-@[simp] private theorem edgeSegment_apply (d : mergeY.Dart) (s t r : unitInterval) :
-    edgeSegment d s t r = edgePoint mergeY d (unitSegmentParam s t r) := rfl
-
 private theorem castPath_apply {x y x' y' : Realization mergeY}
     (γ : Path x y) (hx : x' = x) (hy : y' = y) (t : unitInterval) :
     γ.cast hx hy t = γ t := by
@@ -292,6 +252,9 @@ private theorem mergeFoldHeight_d23 (c M : ℝ) (t : unitInterval) :
   simp [GraphPL.plHeight_edgePoint, GraphPL.dartHeight, mergeHeights, mergeFoldD23]
   ring
 
+private abbrev mergeFoldHeight (c M : ℝ) : C(Realization mergeY, ℝ) :=
+  plHeight mergeY (mergeHeights c M)
+
 private theorem mergeSection_top_eq_d23zero (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M)
     (hcm : c = M) :
     mergeSection c M h0c hcM M = edgePoint mergeY mergeFoldD23 0 := by
@@ -310,8 +273,9 @@ private theorem mergeFoldD12TurnSource :
 
 private def mergeFoldD12Route (t : unitInterval) :
     Path (edgePoint mergeY mergeFoldD12 t) (edgePoint mergeY mergeFoldD02 t) :=
-  ((edgeSegment mergeFoldD12 t 1).cast rfl (edgePoint_one mergeY mergeFoldD12).symm).trans
-    ((edgeSegment mergeFoldD02 1 t).cast mergeFoldD12TurnSource rfl)
+  ((edgeSegment mergeY mergeFoldD12 t 1).cast rfl
+    (edgePoint_one mergeY mergeFoldD12).symm).trans
+    ((edgeSegment mergeY mergeFoldD02 1 t).cast mergeFoldD12TurnSource rfl)
 
 private theorem mergeFoldPathD02_target (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M)
     (t : unitInterval) :
@@ -368,7 +332,7 @@ private def mergeFoldPathD23 (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M)
       (mergeSection c M h0c hcM
         (plHeight mergeY (mergeHeights c M) (edgePoint mergeY mergeFoldD23 t))) := by
   by_cases hcm : c = M
-  · exact (edgeSegment mergeFoldD23 t 0).cast rfl
+  · exact (edgeSegment mergeY mergeFoldD23 t 0).cast rfl
       (mergeFoldPathD23_target_top c M h0c hcM t hcm)
   · have hcM' : c < M := by
       rcases lt_or_eq_of_le hcM with h | heq
@@ -432,47 +396,48 @@ private theorem mergeFoldD12Route_height (c M : ℝ) (hc : 0 ≤ c) (t r : unitI
     c * (t : ℝ) ≤
         plHeight mergeY (mergeHeights c M) (mergeFoldD12Route t r) ∧
       plHeight mergeY (mergeHeights c M) (mergeFoldD12Route t r) ≤ c := by
-  have ht1 : (t : ℝ) ≤ 1 := t.2.2
+  have hct : c * (t : ℝ) ≤ c := by
+    calc
+      c * (t : ℝ) ≤ c * 1 := mul_le_mul_of_nonneg_left t.2.2 hc
+      _ = c := by ring
+  have hD12 (u : unitInterval) :
+      c * (t : ℝ) ≤ mergeFoldHeight c M (edgeSegment mergeY mergeFoldD12 t 1 u) ∧
+        mergeFoldHeight c M (edgeSegment mergeY mergeFoldD12 t 1 u) ≤ c := by
+    have h := GraphPL.plHeight_edgeSegment_bounds mergeY (mergeHeights c M)
+      mergeFoldD12 t 1 u
+    change min (mergeFoldHeight c M (edgePoint mergeY mergeFoldD12 t))
+        (mergeFoldHeight c M (edgePoint mergeY mergeFoldD12 1)) ≤ _ ∧
+      _ ≤ max (mergeFoldHeight c M (edgePoint mergeY mergeFoldD12 t))
+        (mergeFoldHeight c M (edgePoint mergeY mergeFoldD12 1)) at h
+    have hone : ((1 : unitInterval) : ℝ) = 1 := rfl
+    rw [mergeFoldHeight_d12 c M t, mergeFoldHeight_d12 c M 1, hone, mul_one,
+      min_eq_left hct, max_eq_right hct] at h
+    exact h
+  have hD02 (u : unitInterval) :
+      c * (t : ℝ) ≤ mergeFoldHeight c M (edgeSegment mergeY mergeFoldD02 1 t u) ∧
+        mergeFoldHeight c M (edgeSegment mergeY mergeFoldD02 1 t u) ≤ c := by
+    have h := GraphPL.plHeight_edgeSegment_bounds mergeY (mergeHeights c M)
+      mergeFoldD02 1 t u
+    change min (mergeFoldHeight c M (edgePoint mergeY mergeFoldD02 1))
+        (mergeFoldHeight c M (edgePoint mergeY mergeFoldD02 t)) ≤ _ ∧
+      _ ≤ max (mergeFoldHeight c M (edgePoint mergeY mergeFoldD02 1))
+        (mergeFoldHeight c M (edgePoint mergeY mergeFoldD02 t)) at h
+    have hone : ((1 : unitInterval) : ℝ) = 1 := rfl
+    rw [mergeFoldHeight_d02 c M 1, mergeFoldHeight_d02 c M t, hone, mul_one,
+      min_eq_right hct, max_eq_left hct] at h
+    exact h
   unfold mergeFoldD12Route
   rw [Path.trans_apply]
   split_ifs with h
   · let u : unitInterval := ⟨2 * (r : ℝ),
       (unitInterval.mul_pos_mem_iff (by norm_num)).2 ⟨r.2.1, h⟩⟩
-    have hparam := unitSegmentParam_mem (s := t) (t := (1 : unitInterval)) (r := u) ht1
-    change c * (t : ℝ) ≤
-      plHeight mergeY (mergeHeights c M)
-        (edgePoint mergeY mergeFoldD12 (unitSegmentParam t 1 u)) ∧
-      plHeight mergeY (mergeHeights c M)
-        (edgePoint mergeY mergeFoldD12 (unitSegmentParam t 1 u)) ≤ c
-    simp [GraphPL.plHeight_edgePoint, GraphPL.dartHeight, mergeHeights, mergeFoldD12]
-    have hlow := mul_le_mul_of_nonneg_left hparam.1 hc
-    have hhigh := mul_le_mul_of_nonneg_left hparam.2 hc
-    have hhigh' : c * (unitSegmentParam t 1 u : ℝ) ≤ c := by simpa using hhigh
-    exact ⟨by nlinarith [hlow], by nlinarith [hhigh']⟩
+    simpa only [castPath_apply, mergeFoldHeight] using hD12 u
   · have hr0 : (0 : ℝ) ≤ r := r.2.1
     have hr1 : (r : ℝ) ≤ 1 := r.2.2
     have hq0 : (0 : ℝ) ≤ 2 * (r : ℝ) - 1 := by linarith
     have hq1 : 2 * (r : ℝ) - 1 ≤ 1 := by linarith
     let u : unitInterval := ⟨2 * (r : ℝ) - 1, ⟨hq0, hq1⟩⟩
-    have hparam : (t : ℝ) ≤ (unitSegmentParam 1 t u : ℝ) := by
-      have hprod := mul_nonneg (by linarith [u.2.2] : 0 ≤ 1 - (u : ℝ))
-        (by linarith [t.2.2] : 0 ≤ 1 - (t : ℝ))
-      change (t : ℝ) ≤ (1 - (u : ℝ)) * 1 + (u : ℝ) * (t : ℝ)
-      nlinarith [hprod]
-    change c * (t : ℝ) ≤
-      plHeight mergeY (mergeHeights c M)
-        (edgePoint mergeY mergeFoldD02 (unitSegmentParam 1 t u)) ∧
-      plHeight mergeY (mergeHeights c M)
-        (edgePoint mergeY mergeFoldD02 (unitSegmentParam 1 t u)) ≤ c
-    simp [GraphPL.plHeight_edgePoint, GraphPL.dartHeight, mergeHeights, mergeFoldD02]
-    have hlow := mul_le_mul_of_nonneg_left hparam hc
-    have hhigh := mul_le_mul_of_nonneg_left (show (unitSegmentParam 1 t u : ℝ) ≤ 1 from
-      (unitSegmentParam 1 t u).2.2) hc
-    have hhigh' : c * (unitSegmentParam 1 t u : ℝ) ≤ c := by simpa using hhigh
-    exact ⟨by nlinarith [hlow], by nlinarith [hhigh']⟩
-
-private abbrev mergeFoldHeight (c M : ℝ) : C(Realization mergeY, ℝ) :=
-  plHeight mergeY (mergeHeights c M)
+    simpa only [castPath_apply, mergeFoldHeight] using hD02 u
 
 private def mergeFoldPathProperty (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M)
     (x : Realization mergeY) : Prop :=
@@ -521,9 +486,20 @@ private theorem mergeFoldPath_d12_good (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M)
 
 private theorem mergeFoldPath_d23_top_height (c M : ℝ) (hcm : c = M)
     (t s : unitInterval) :
-    mergeFoldHeight c M (edgeSegment mergeFoldD23 t 0 s) = c := by
-  rw [edgeSegment_apply, mergeFoldHeight_d23, hcm]
-  simp [unitSegmentParam]
+    mergeFoldHeight c M (edgeSegment mergeY mergeFoldD23 t 0 s) = c := by
+  have hbounds := GraphPL.plHeight_edgeSegment_bounds mergeY (mergeHeights c M)
+    mergeFoldD23 t 0 s
+  change min (mergeFoldHeight c M (edgePoint mergeY mergeFoldD23 t))
+      (mergeFoldHeight c M (edgePoint mergeY mergeFoldD23 0)) ≤ _ ∧
+    _ ≤ max (mergeFoldHeight c M (edgePoint mergeY mergeFoldD23 t))
+      (mergeFoldHeight c M (edgePoint mergeY mergeFoldD23 0)) at hbounds
+  rw [mergeFoldHeight_d23 c M t, mergeFoldHeight_d23 c M 0, hcm] at hbounds
+  simp only [sub_self, zero_mul, add_zero, min_self, max_self] at hbounds
+  change M ≤ mergeFoldHeight M M (edgeSegment mergeY mergeFoldD23 t 0 s) ∧
+    mergeFoldHeight M M (edgeSegment mergeY mergeFoldD23 t 0 s) ≤ M at hbounds
+  have hEq : mergeFoldHeight M M (edgeSegment mergeY mergeFoldD23 t 0 s) = M :=
+    le_antisymm hbounds.2 hbounds.1
+  simpa [hcm] using hEq
 
 private theorem mergeFoldPath_d23_good (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M)
     (t : unitInterval) :
@@ -536,13 +512,13 @@ private theorem mergeFoldPath_d23_good (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M)
     have hpath :
         mergeFoldHeight c M (mergeFoldPathD23 c M h0c hcM t s) = c := by
       have hpath' :
-          mergeFoldPathD23 c M h0c hcM t s = edgeSegment mergeFoldD23 t 0 s := by
+          mergeFoldPathD23 c M h0c hcM t s = edgeSegment mergeY mergeFoldD23 t 0 s := by
         simp only [mergeFoldPathD23, hcm]
-        exact castPath_apply (edgeSegment mergeFoldD23 t 0) rfl
+        exact castPath_apply (edgeSegment mergeY mergeFoldD23 t 0) rfl
           (mergeFoldPathD23_target_top c M h0c hcM t hcm) s
       calc
         mergeFoldHeight c M (mergeFoldPathD23 c M h0c hcM t s) =
-            mergeFoldHeight c M (edgeSegment mergeFoldD23 t 0 s) :=
+            mergeFoldHeight c M (edgeSegment mergeY mergeFoldD23 t 0 s) :=
           congrArg (mergeFoldHeight c M) hpath'
         _ = c := mergeFoldPath_d23_top_height c M hcm t s
     constructor

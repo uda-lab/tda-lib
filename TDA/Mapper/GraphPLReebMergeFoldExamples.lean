@@ -16,12 +16,6 @@ open TDA.Reeb.GraphRealization
 open TDA.Mapper.GraphPL
 open scoped NNReal ENNReal
 
-private def mergeYExampleD23 : mergeY.Dart :=
-  ⟨(2, 3), (mergeY_adj 2 3).2 (by decide)⟩
-
-@[simp] private theorem mergeYExampleD23_fst : mergeYExampleD23.fst = 2 := rfl
-@[simp] private theorem mergeYExampleD23_snd : mergeYExampleD23.snd = 3 := rfl
-
 /-- F1: the branch heights `1` and `3` below top height `4` give distance `3/2`. -/
 theorem mergeY_beyond_twice_exact :
     geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights 1 4))
@@ -58,10 +52,10 @@ theorem mergeY_top_boundary_fold :
       mergeHeights 3 3 2 = mergeHeights 3 3 3 ∧
       geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights 1 3))
         (graphPLReebGraph mergeY (mergeHeights 3 3)) = ENNReal.ofReal (3 / 2) ∧
-      ∃ γ : Path (edgePoint mergeY mergeYExampleD23 (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval))
+      ∃ γ : Path (edgePoint mergeY mergeFoldD23 (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval))
           (mergeSection 3 3 (by norm_num) le_rfl
             (plHeight mergeY (mergeHeights 3 3)
-              (edgePoint mergeY mergeYExampleD23 (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval)))),
+              (edgePoint mergeY mergeFoldD23 (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval)))),
         ∀ t, plHeight mergeY (mergeHeights 3 3) (γ t) = 3 := by
   refine ⟨?_, rfl, ?_, ?_⟩
   · calc
@@ -76,18 +70,18 @@ theorem mergeY_top_boundary_fold :
     norm_num
   · have hstart :
         plHeight mergeY (mergeHeights 3 3)
-          (edgePoint mergeY mergeYExampleD23 (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval)) = 3 := by
-      simp [GraphPL.plHeight_edgePoint, GraphPL.dartHeight, mergeHeights, mergeYExampleD23]
+          (edgePoint mergeY mergeFoldD23 (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval)) = 3 := by
+      simp [GraphPL.plHeight_edgePoint, GraphPL.dartHeight, mergeHeights, mergeFoldD23]
       norm_num
     obtain ⟨γ, hγ⟩ := exists_mergeSection_path 3 3 (by norm_num) le_rfl
-      (edgePoint mergeY mergeYExampleD23 (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval))
+      (edgePoint mergeY mergeFoldD23 (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval))
     refine ⟨γ, ?_⟩
     intro t
     obtain ⟨hlo, hhi⟩ := (hγ t).1 (by rw [hstart])
     have hlo' : 3 ≤ plHeight mergeY (mergeHeights 3 3) (γ t) := by
       calc
         3 = plHeight mergeY (mergeHeights 3 3)
-            (edgePoint mergeY mergeYExampleD23
+            (edgePoint mergeY mergeFoldD23
               (⟨(1 / 2 : ℝ), by norm_num⟩ : unitInterval)) := hstart.symm
         _ ≤ plHeight mergeY (mergeHeights 3 3) (γ t) := hlo
     exact le_antisymm hhi hlo'
