@@ -532,9 +532,9 @@ and is a zero object, so the nonzero hook assertions require i < j.
 These results supply the individual-hook ingredients for
 [Botnan–Oppermann–Oudot–Scoccola, §2.6 and Theorem 2.7](https://arxiv.org/html/2208.00300v3).
 Order convexity alone does not assert indecomposability for an arbitrary
-support. The results here do not establish uniqueness of finite hook
-decompositions, classification of rank-projective retracts or minimal
-rank-projective resolutions.
+support. The finite-poset classification and finite-sum multiplicity uniqueness
+that use these individual-hook results are established in the next section;
+minimal rank-projective resolutions remain separate.
 
 ## Enough rank projectives on finite posets
 
@@ -576,10 +576,20 @@ the empty poset. Consumers also give a branching-poset pfd module whose
 rank-exact deflation does not split, and check the construction in
 characteristic two.
 
+The classification theorem `rankProjective_iff_exists_canonical_subfamily`
+strengthens this retract statement: M is rank projective exactly when it is
+isomorphic to a finite selection of the actual occurrences in its canonical
+hook cover. Thus repeated hooks are retained as distinct cover indices. The
+public `RankProjectiveHookTag` distinguishes a finite hook by its strict birth
+and death pair and a principal upset by its birth. The theorem
+`rankProjectiveHookSum_multiplicity_unique` proves that any isomorphic finite
+sums of these nonzero hooks have equal multiplicity for every tag. The
+nonzero-hook and zero-module consumers verify the theorem at both boundaries;
+the zero module selects the empty occurrence family.
+
 The deflation can have redundant summands; it is not asserted to be a minimal
-projective cover. An exact-category instance, classification of retracts as
-hook sums, minimal resolutions and signed barcode stability remain further
-results.
+projective cover. An exact-category instance, minimal resolutions and signed
+barcode stability remain further results.
 
 ## Finite-hook covers after grid Kan extension
 

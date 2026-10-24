@@ -12,10 +12,11 @@ rank exactness permits lifting that vector while retaining its vanishing relatio
 which constructs a lift of the entire hook morphism.
 
 This proves the lifting property for hooks with a finite death grade, using the kernel
-criterion in `RankExact`. Principal upsets (the death-at-infinity case), exact-category
-axioms, and classification of all rank projectives require separate results. Hook supports
-here may be unbounded. See Botnan, Oppermann, Oudot and Scoccola, arXiv:2208.00300v3,
-Section 2.14 and Theorem 2.7.
+criterion in `RankExact`. Principal upsets are treated in `HookInfinity`; the finite-poset
+classification for pointwise finite-dimensional modules is in
+`FiniteRankProjectiveClassification`. Exact-category axioms and classification beyond
+that finite setting remain separate. Hook supports here may be unbounded. See Botnan,
+Oppermann, Oudot and Scoccola, arXiv:2208.00300v3, Section 2.14 and Theorem 2.7.
 -/
 
 set_option autoImplicit false
