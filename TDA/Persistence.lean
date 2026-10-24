@@ -227,6 +227,8 @@ import TDA.Persistence.BoundaryTransportReverse
 import TDA.Persistence.BoundaryTransportComparison
 import TDA.Persistence.ReservoirNormalization
 import TDA.Persistence.BoundaryTransportZero
+import TDA.Persistence.BoundaryTransportAtomic
+import TDA.Persistence.BoundaryTransportAtomicExamples
 import TDA.Persistence.RectangleStabilityGeometry
 import TDA.Persistence.RectangleFamily
 import TDA.Persistence.RectangleHall
