@@ -2,6 +2,7 @@
 import TDA.Persistence.RectangleHallExamples
 import TDA.Persistence.RectangleMatchingExamples
 import TDA.Persistence.RectangleMatchingDistanceExamples
+import TDA.Persistence.RectangleBarcodeBridgeExamples
 import TDA.Persistence.CrossPresentationExamples
 import TDA.Persistence.CrossPresentationConverseExamples
 import TDA.Persistence.ConstructibleExamples

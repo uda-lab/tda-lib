@@ -144,8 +144,60 @@ have neither a zero-radius interleaving nor a zero-radius matching. Zero
 distance is therefore not identified with a parameter-zero witness.
 
 For n = 1 the coefficient is one, giving equality for this decorated occurrence
-family distance. Its bridge to the separate one-dimensional endpoint-diagram
-API and the sharp two-coordinate distance example remain separate results.
+family distance. The common half-open subclass connects to the existing
+one-dimensional endpoint-diagram API as follows. The sharp two-coordinate
+distance example remains a separate result.
+
+## One-dimensional barcode compatibility
+
+The common objects are finite occurrence-indexed families of intervals [b,d)
+with real endpoints b < d. Their one-coordinate rectangles have included lower
+endpoints and excluded upper endpoints. The existing `RealBarcode.intervalModule`
+uses exactly this support; its endpoint-pair constructor also permits empty
+supports and essential right tails. The bridge restricts to positive length
+and finite death, as required for these nonempty bounded rectangles.
+
+`RectangleBarcodeBridge.halfOpenRectangle` constructs each rectangle.
+`familyIso` identifies its finite categorical biproduct with the reindexing of
+the existing real barcode coordinate product along evaluation at the unique
+coordinate. `diagram` places each endpoint pair in the existing diagram
+multiset, with no essential occurrences. `realizationIso` extends the comparison
+to the existing diagram realization by a value-preserving occurrence bijection.
+Equal endpoint values remain separate coordinates; an empty occurrence family
+is allowed. These are natural isomorphisms of modules, including all structure
+maps and inactive fibers.
+
+For endpoint families x and y, let D_x and D_y be these diagrams. The original
+diagram bottleneck takes the infimum of maximum endpoint-pair costs and diagonal
+deletion costs, the latter equal to half the interval length. The rectangle
+definition instead asks for actual pair and zero interleavings. The bridge proves
+
+`d_B(rectangles x, rectangles y) = bottleneck(D_x,D_y)
+ = realInterleavingDistance(realize D_x, realize D_y)`.
+
+Passing from endpoint costs to actual witnesses uses the half-open endpoint
+comparisons and the closed deletion threshold d−b ≤ 2ε. The reverse passage
+requires care: two short intervals can be ε-interleaved even when their endpoint
+pair cost exceeds ε. For example, [0,1) and [100,101) have such a radius-one
+interleaving with zero maps, whereas pairing their endpoints costs 100. If either
+interval has a nonzero 2ε transition, the two actual composite laws force both
+pair maps nonzero, and the proved Hom endpoint bounds force pair cost at most ε.
+Consequently every excessive-cost pair has both ends deletable. Removing precisely
+those pairs gives a numerical matching at the same radius. Taking infima proves
+the equality without selecting an optimal radius. The actual witness conversions
+also yield `interleaving_iff_cost_matching` at every ε ≥ 0.
+
+This is the finite bounded half-open common subclass of the interval and matching
+conventions in [Bauer–Lesnick, §§2.1–2.3 and 3.1–3.3](https://arxiv.org/html/1311.3681v4).
+It connects Bjerkevik's n=1 conclusion to the library's original endpoint diagram
+and real barcode distance APIs. It does not identify all decorated interval modules
+with half-open modules. In the raw half-open constructor, b ≥ d gives the zero
+module; a nonempty half-open rectangle therefore requires b < d. In contrast,
+the decorated rectangle [b,b] is a nonzero singleton module with zero distance
+from zero and no parameter-zero interleaving. On the common positive half-open
+subclass, `real_distance_zero_iff_diagram_eq` and `real_distance_zero_iff_iso`
+derive separation from the existing endpoint diagram result. That conclusion
+does not apply to the larger decorated domain.
 
 ## Graded free modules and finite presentations
 
