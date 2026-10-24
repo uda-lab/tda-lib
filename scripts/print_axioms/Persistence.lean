@@ -4564,3 +4564,67 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FinitePresentationKanExamples.no_relations
 #print axioms TDA.Persistence.FinitePresentationKanExamples.zero_module
 #print axioms TDA.Persistence.FinitePresentationKanExamples.zero_ring
+
+-- Actual finite-grid Kan fibers, maps, rank exactness and consumers.
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.planarGrid
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.planarLower
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.planarUpper
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.gradeA
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.gradeC
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.gradeB
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.gradeA_hasLowerPoint
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.gradeC_hasLowerPoint
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.gradeB_hasLowerPoint
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.finiteHook
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.kanHookVector
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.kanHookVectorAtC
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.kanHookVector_ne_zero
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.kanHookVectorAtC_ne_zero
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.within_cell_transition_preserves_vector
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.across_cell_transition_kills_vector
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.quotient_map_at_gradeA
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.rankExact_lifts_nonzero_dying_vector
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.characteristic_two_nonzero_dying_lift
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.emptyGrid
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.empty_grid_lan_fiber_isZero
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.negativeGrade
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.below_minimum_lan_fiber_isZero
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.zero_input_lan_fiber_isZero
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.zeroGrid
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.zeroGridPoint
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.zeroGridGrade
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.zeroDimPrincipalUpset
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.zero_dim_identity_lan_rankExact
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.zero_dim_principal_upset_lan_nonzero
+#print axioms TDA.Persistence.CoordinateGridKan.Examples.principal_upset_unbounded_tail
+
+-- Finite coordinate-grid geometry.
+#print axioms TDA.Persistence.CoordinateGrid.HasLowerPoint
+#print axioms TDA.Persistence.CoordinateGrid.hasLowerPoint_mono
+#print axioms TDA.Persistence.CoordinateGrid.floor
+#print axioms TDA.Persistence.CoordinateGrid.floor_le
+#print axioms TDA.Persistence.CoordinateGrid.le_floor
+#print axioms TDA.Persistence.CoordinateGrid.floor_eq_iff
+#print axioms TDA.Persistence.CoordinateGrid.floor_mono
+
+-- Canonical fibers and maps of the actual grid left Kan extension.
+#print axioms TDA.Persistence.CoordinateGrid.lan
+#print axioms TDA.Persistence.CoordinateGrid.kanInclusion
+#print axioms TDA.Persistence.CoordinateGrid.appIso
+#print axioms TDA.Persistence.CoordinateGrid.appIso_inv
+#print axioms TDA.Persistence.CoordinateGrid.kanInclusion_appIso_hom
+#print axioms TDA.Persistence.CoordinateGrid.appIso_hom_kanInclusion
+#print axioms TDA.Persistence.CoordinateGrid.isZero_obj_of_not_hasLowerPoint
+#print axioms TDA.Persistence.CoordinateGrid.eq_zero_of_not_hasLowerPoint
+#print axioms TDA.Persistence.CoordinateGrid.kanInclusion_naturality
+#print axioms TDA.Persistence.CoordinateGrid.appIso_naturality
+#print axioms TDA.Persistence.CoordinateGrid.appIso_map_apply
+#print axioms TDA.Persistence.CoordinateGrid.kanInclusion_structureMap
+#print axioms TDA.Persistence.CoordinateGrid.appIso_structureMap
+#print axioms TDA.Persistence.CoordinateGrid.appIso_structureMap_apply
+
+-- Finite-dimensional and rank-exact Kan preservation.
+#print axioms TDA.Persistence.CoordinateGrid.lan_finiteDimensional
+#print axioms TDA.Persistence.CoordinateGrid.lan_isPointwiseShortExact
+#print axioms TDA.Persistence.CoordinateGrid.lan_lift_kernel
+#print axioms TDA.Persistence.CoordinateGrid.lan_isRankExact

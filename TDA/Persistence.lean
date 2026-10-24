@@ -269,3 +269,6 @@ import TDA.Persistence.BoundaryTransportMetricExamples
 import TDA.Persistence.FinitePresentationFiniteDimensional
 import TDA.Persistence.FinitePresentationKan
 import TDA.Persistence.FinitePresentationGridKan
+import TDA.Persistence.CoordinateGrid
+import TDA.Persistence.CoordinateGridKan
+import TDA.Persistence.CoordinateGridRankExact

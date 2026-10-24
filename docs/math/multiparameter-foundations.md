@@ -416,10 +416,30 @@ it recovers zero while the relation and quotient remain nonzero. Integer
 coefficients, the zero ring and empty families are included. In dimension
 zero, G has one point and the same quotient is nonzero.
 
-Reconstruction does not yet prove that Kan extension preserves rank
-exactness, hook projectivity or minimal resolutions. Those preservation
-results, finite minimal resolutions and their length bound are additional
-inputs to signed barcode stability.
+Finite-grid reconstruction identifies the presentation with an actual Kan
+extension. Kan preservation of hook projectivity and of minimal resolutions is
+separate from this reconstruction and from the rank-exactness result below.
+
+## Kan fibers on finite product grids
+
+Let G be a finite product of finite coordinate sets, j:G→ℝⁿ its coordinate
+inclusion, R a ring and A a module on G. At a real grade a, consider the
+grid points p with j(p)≤a. When this set is nonempty, each coordinate has a
+greatest selected value below aᵢ. Their tuple is the greatest grid point
+floor_G(a). It is terminal in the indexing category for the pointwise Kan
+colimit, so the actual Mathlib left Kan extension has a canonical fiber
+isomorphism to A(floor_G(a)). The comparison is induced by the Kan unit at the
+floor followed by the real structure map. If no grid point lies below a, the
+indexing category is empty and the actual fiber is zero.
+
+These comparisons control maps as well as fibers. A natural transformation
+between grid modules induces the same map, under the fiber isomorphisms, as
+its component at that grade's greatest lower grid point. A real structure map
+from a to b becomes the grid structure map from floor_G(a) to floor_G(b). Thus
+vectors, maps and death grades can be followed through the actual Kan
+extension. These claims use the finite product grid, whose coordinatewise
+floors are again grid points; arbitrary order embeddings need not have this
+pointwise exactness.
 
 ## Rank exactness and hook lifting
 
@@ -430,6 +450,26 @@ property: every vector of N(a) killed at b has a preimage in M(a) also killed at
 `IsRankExact` requires pointwise finite-dimensional middle fibers. Naturally split
 pointwise short exact sequences in this domain are rank exact, and reindexing
 preserves rank exactness.
+
+For a finite product grid, the canonical fiber and map comparisons transfer
+these statements to the actual left Kan extension. Over a field, `lan_finiteDimensional`
+proves pfd for every grid module with pfd fibers. For every original
+`IsRankExact` sequence, `lan_isPointwiseShortExact` derives ordinary
+pointwise exactness of the actual Lan maps, while `lan_isRankExact` proves
+pfd middle fibers and rank additivity. Its `lan_lift_kernel` consequence
+transports a quotient vector killed by a real transition to a middle vector
+with the same image that is killed by that same transition. This preservation
+theorem has no finite-presentation or bounded-support hypothesis.
+This is the finite-product-grid case of the pointwise Kan preservation result
+in [Botnan–Oppermann–Oudot, §4.3, Lemma 4.15](https://arxiv.org/html/2107.06800v3).
+
+For example, on the grid with coordinate values 0 and 2, a finite-death hook
+from (0,0) to (2,2) supplies a nonzero vector at real grade (1/2,1/2). The
+actual transition to (1,1) preserves it, and the transition to (5/2,5/2)
+kills it. Applying the finite-hook rank-exact deflation on the grid and
+`lan_lift_kernel` produces a nonzero lift in the actual real-grade Lan fiber
+that dies at the same later grade. The fixture also checks the induced
+quotient map through the canonical fiber comparison.
 
 For i < j in a partial order, the hook has support {a | i ≤ a and j ≰ a}.
 `Hook.homEquivKernel` identifies maps from this hook to N with vectors of N(i)

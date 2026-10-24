@@ -142,8 +142,29 @@ embedding containing all generator and relation births. Both comparison
 inverse laws are derived using existing presentation lifting and Mathlib Kan
 uniqueness. Repeated births remain separate generator occurrences, empty
 families and n=0 are allowed, and the reconstructed module may have unbounded
-support. This reconstruction alone makes no claim about preservation of rank
-exactness or minimal resolutions. At a pair of indices,
+support.
+
+For a finite coordinate grid, `CoordinateGrid.lan` is Mathlib's actual left
+Kan extension along the grid inclusion. At each real grade with a lower grid
+point, `floor` selects the greatest such point and `appIso` identifies the
+actual Kan fiber with the grid fiber there. `kanInclusion` is the Kan unit
+followed by the real structure map; without a lower grid point, the actual
+fiber is zero. `appIso_map_apply` and `appIso_structureMap_apply` identify the
+images of actual Lan maps and transitions with the corresponding grid maps,
+not only with equal fiber dimensions.
+
+Over a field, `lan_finiteDimensional` preserves pointwise finite-dimensional
+fibers. Given any `IsRankExact` sequence on the finite product grid,
+`lan_isPointwiseShortExact` proves ordinary pointwise exactness after applying
+the actual Lan functor, and `lan_isRankExact` also proves pfd middle fibers and
+rank additivity. `lan_lift_kernel` gives the corresponding lift that dies at
+the same real grade. These theorems require a finite product coordinate grid;
+they do not assert exactness for arbitrary order embeddings. The focused
+`CoordinateGridKanExamples` module exercises nonzero finite-death lifts, actual
+within-cell and death transitions, characteristic two, empty and zero inputs,
+grades below the grid and a principal-upset tail.
+
+At a pair of indices,
 `IsPointwiseShortExact.rank_add_iff_lift_kernel` equates rank additivity and lifting
 dying vectors when the middle source fiber is finite dimensional. `IsRankExact`
 requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`
