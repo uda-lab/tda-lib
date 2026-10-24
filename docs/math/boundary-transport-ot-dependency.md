@@ -3,9 +3,9 @@
 The native boundary-plan infimum already equals the collapsed-space reservoir
 infimum for arbitrary finite inputs. Identifying this value with an existing
 ordinary Wasserstein API still needs a compatible optimal-transport package.
-The present Lean/mathlib pin supplies the measure-theoretic ingredients for a
-smaller, fixed-space attainment argument; it does not supply the ordinary
-Wasserstein interface itself.
+The library proves finite-measure attainment through a fixed-space argument
+using the current Lean/mathlib pin. The ordinary Wasserstein interface
+remains a separate dependency.
 
 ## Existing boundary-transport results
 
@@ -28,10 +28,10 @@ factor `R^(1/p)`. Self, symmetry, finite-distance bounds from finite
 `p`-persistence, the exact zero-target moment, and the native finite atomic
 and indexed/coalesced bridges are also proved.
 
-The reservoir infimum has a native definition. These results alone do not
-identify it with a separately implemented ordinary Wasserstein distance or
-produce a minimizing measure for general finite inputs. See
-[the exported contracts](../api.md#collapsed-boundary-geometry).
+The reservoir infimum has a native definition. The attainment theorem below
+constructs general finite-input minimizers for that value and the boundary
+value. Identification with a separately implemented ordinary Wasserstein
+distance remains open. See [the exported contracts](../api.md#collapsed-boundary-geometry).
 
 ## Compatible API boundary
 
@@ -90,7 +90,7 @@ The full spine includes general coupling and cost laws, weak compactness,
 lower semicontinuity, kernel gluing and Wasserstein norm/metric arguments.
 It is not a single theorem that can be imported independently of its package.
 
-## A bounded native attainment bridge
+## Native finite-measure attainment
 
 Attainment of the existing native reservoir value can be separated from that
 full ordinary-OT dependency. Keep every auxiliary plan set on the already
@@ -102,21 +102,35 @@ full cost. Their weakly continuous integrals have the full integral as
 supremum, so the full cost is lower semicontinuous, including at infinite
 values. It therefore attains its minimum.
 
-The proposed exported contract is: for `p ≥ 1` and arbitrary finite Borel
-`μ,ν`, produce an actual reservoir minimizing measure, then an admissible
-boundary minimizing measure by the existing reverse construction and the
-proved equality of infima. Choosing `R = μ(H)+ν(H)+1` handles zero inputs
+`exists_minimizing_reservoirPlan` produces an actual minimum for every
+nonnegative real exponent and every finite positive full sum-capacity.
+For `p ≥ 1` and arbitrary finite Borel `μ,ν`,
+`exists_minimizing_boundaryPlan` then produces an admissible boundary
+minimizing measure by the existing reverse construction and the proved
+equality of infima. Choosing `R = μ(H)+ν(H)+1` handles zero inputs
 without division by zero. Finite `p`-persistence is needed for finite cost,
-not for existence of a minimizer whose value may be infinite. Neither
-compact support nor a Euclidean moment along the diagonal is required.
+not for existence of a minimizer whose value may be infinite.
+`exists_finite_cost_minimizing_boundaryPlan` records this finite-cost
+consequence. `exists_minimizing_boundaryPlan_rooted` gives one plan realizing
+both powered and rooted values. Neither compact support nor a Euclidean
+moment along the diagonal is required.
 
 This is a fixed-space bridge to the native infimum. It needs no generic
 coupling class, ordinary Wasserstein definition or gluing library under TDA
 names. The closed/tight-plan argument can be adapted from
 [TauCeti `Compactness`](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Compactness.lean);
 the specific continuous-cost truncation avoids importing its more general
-lower-semicontinuous approximation layer. This describes an implementation
-route, not an exported general-attainment theorem already in the library.
+lower-semicontinuous approximation layer. Compactness and a minimizing
+coupling are proved internally, not requested as caller premises.
+
+The consumers include a nonatomic uniform band of bars `(t,t+2)` and the
+countable law with weights `2^(−n−1)` at `(2^(n+2),2^(n+2)+2)`. Both have
+total mass one and diagonal moment one at every real exponent. The latter
+has divergent first birth-coordinate moment and gives positive mass outside
+every compact subset of `H`. Sending its mass to the fixed diagonal point
+`(0,0)` is an admissible infinite-cost competitor at `p=1`, while an attained
+optimum has cost one. Thus finite optimal cost is compatible with infinite
+competitor costs.
 
 The remaining obligations have distinct dependencies. Native separation can
 follow attainment by proving that a zero-cost minimizer is concentrated on

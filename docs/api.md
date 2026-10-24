@@ -1107,13 +1107,24 @@ matching values for unit masses. The construction accepts repeated coordinates
 and zero weights; splitting and then aggregating recovers every coalesced matrix
 entry.
 
-The bridge to an ordinary Wasserstein API, minimizing plans for general finite
-Radon inputs, sharp triangle and separation, and same-mass finite atomic
-approximation remain open
+`BoundaryTransportAttainment` exports `exists_minimizing_boundaryPlan`, constructing a
+minimizing Borel plan for arbitrary finite inputs and p≥1, including when the
+optimal cost is infinite. `exists_minimizing_reservoirPlan` gives the
+reservoir minimum for p≥0 and finite positive full sum-capacity.
+`exists_finite_cost_minimizing_boundaryPlan` uses finite diagonal moments to
+obtain finite cost, and `exists_minimizing_boundaryPlan_rooted` realizes both
+powered and rooted values with the same plan. The proof derives weak
+compactness and cost lower semicontinuity from pinned mathlib; neither is a
+caller premise. A nonatomic band and a countable noncompact input with
+infinite Euclidean first moment exercise the result. An admissible
+infinite-cost competitor still permits a finite attained optimum.
+
+The bridge to an ordinary Wasserstein API, sharp triangle and separation,
+and same-mass finite atomic approximation remain open
 in [the transport contract](https://github.com/uda-lab/tda-lib/issues/505).
 The [ordinary-OT dependency map](math/boundary-transport-ot-dependency.md)
 identifies the incompatible package pins, available measure-theoretic APIs and
-the bounded native attainment route.
+the native finite-measure attainment argument.
 
 ### Gaussian signed measures and C₀ universality
 

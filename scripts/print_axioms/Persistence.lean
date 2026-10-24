@@ -4172,3 +4172,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_boundaryPlan_ofIndexed
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportPowerValue_ofIndexed_unit
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_ofIndexed_unit
+
+#print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_reservoirPlan
+#print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_boundaryPlan
+#print axioms TDA.Persistence.BoundaryTransport.exists_finite_cost_minimizing_boundaryPlan
+#print axioms TDA.Persistence.BoundaryTransport.exists_minimizing_boundaryPlan_rooted
