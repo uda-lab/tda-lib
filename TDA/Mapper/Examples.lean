@@ -35,3 +35,4 @@ import TDA.Mapper.RefinementHomologyEssentialExamples
 import TDA.Mapper.RefinementHomologyDomainMapExamples
 import TDA.Mapper.GraphPLReebScalingExamples
 import TDA.Mapper.GraphPLReebMapPairExamples
+import TDA.Mapper.RefinementHomologyMapPairExamples

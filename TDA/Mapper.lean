@@ -45,3 +45,4 @@ import TDA.Mapper.DomainMap
 import TDA.Mapper.RefinementHomologyDomainMap
 import TDA.Mapper.GraphPLReebScaling
 import TDA.Mapper.GraphPLReebMapPair
+import TDA.Mapper.RefinementHomologyMapPair
