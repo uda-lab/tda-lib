@@ -1203,6 +1203,29 @@ import TDA
 #print axioms TDA.Mapper.GraphPLReebTranslationExamples.edgeTranslateIso
 #print axioms TDA.Mapper.GraphPLReebTranslationExamples.edge_translate_distance
 #print axioms TDA.Mapper.GraphPLReebTranslationExamples.flat_tilted_translate_distance
+
+-- Graph-PL component counts and the Reeb distance of a merge-height change.
+#print axioms TDA.Mapper.GraphPL.cellComponentsEquivActiveEdges
+#print axioms TDA.Mapper.GraphPL.card_cellComponents_eq_card_activeEdges
+#print axioms TDA.Mapper.GraphPL.card_cellComponents_eq_one
+#print axioms TDA.Mapper.GraphPL.card_intervalComponents_plHeight_top
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_graphPLReebGraph_eq_top_of_card_ne
+#print axioms TDA.Mapper.GraphPL.mergeY
+#print axioms TDA.Mapper.GraphPL.mergeHeights
+#print axioms TDA.Mapper.GraphPL.mergeY_adj
+#print axioms TDA.Mapper.GraphPL.card_cellComponents_mergeHeights_ioo
+#print axioms TDA.Mapper.GraphPL.card_cellComponents_mergeHeights_eq_one
+#print axioms TDA.Mapper.GraphPL.injective_cellComponentFunctor_mergeHeights_map
+#print axioms TDA.Mapper.GraphPL.edist_mergeHeights
+#print axioms TDA.Mapper.GraphPL.max_ofReal_abs_sub_mergeHeights_eq_zero
+#print axioms TDA.Mapper.GraphPL.geometricInterleavingDistance_mergeY
+
+-- Merge-height Reeb distance fixtures.
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.mergeY_connected
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.range_plHeight_mergeHeights
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.mergeY_numeric
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.mergeY_injective_needed
+#print axioms TDA.Mapper.GraphPLReebMergeHeightExamples.twoEdges_edge_geometricInterleavingDistance
 #print axioms TDA.Mapper.pullbackRestrict_apply_val
 #print axioms TDA.Mapper.domainIndexMap_mk
 #print axioms TDA.Mapper.domainIndexMap_fst
