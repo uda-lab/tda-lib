@@ -166,9 +166,8 @@ Lemma 4.3 to finite metric spaces, using mathlib's GH coupling and the library's
 sublevel-diagram theorem. It retains the library's empty negative tail; it makes no
 whole-real H₀ identification with the source's nonpositive-time vertex convention.
 The finite sampling comparison above compares only finite diagrams. The
-q-tameness theorem below concerns the target module itself; Theorem 5.2's
-totally bounded diagram bound also requires a locally finite diagram
-construction and algebraic stability for those diagrams.
+sections below construct the q-tame diagram of a possibly infinite target and
+prove its exact Hausdorff and compact Gromov–Hausdorff stability.
 
 These results are abstract existence and correctness statements. Finite labels can
 support executable consumers when exact distance comparisons are available; no
@@ -295,5 +294,43 @@ ambient space. Under strict slack `2 * hausdorffDist < ε`, it bounds the
 bottleneck distance of the complete locally finite q-tame diagrams by `ε`.
 The Rips modules vanish at negative times, so their finite-birth diagrams have
 no omitted birth-at-minus-infinity occurrences.
-This does not yet establish the triangle inequality for the locally finite
-bottleneck interface, a Gromov–Hausdorff bound, or sample-target compatibility.
+
+## Exact metric stability for the q-tame diagrams
+
+If `X` and `Y` are nonempty totally bounded metric spaces with isometric
+embeddings `f : X → Z` and `g : Y → Z` into a common metric space, then
+
+`bottleneck(D_X, D_Y) ≤ ENNReal.ofReal (2 * hausdorffDist (range f) (range g))`.
+
+Here `D_X` and `D_Y` include every finite-death and essential occurrence of the
+q-tame Rips homology modules. The image sets need not be closed and no nearest
+point is assumed to exist. The proof first uses each positive slack above twice
+the Hausdorff distance in the strict interleaving theorem, then takes the
+infimum of the slack in `ℝ≥0∞`. Total boundedness makes the real Hausdorff
+distance finite. The vertex types `X` and `Y` currently share a Lean universe,
+as required by the Rips relation-interleaving construction; the coefficient
+field and ambient space may use independent universes. The public theorem
+requires an auxiliary linear order on each vertex type, but the diagram itself
+is order-independent: a module isomorphism preserves both separated-rectangle
+and essential birth-strip contents, hence their actual multiplicities.
+
+For nonempty compact metric spaces, mathlib's optimal compact Gromov–Hausdorff
+coupling specializes the ambient theorem to
+`bottleneck(D_X,D_Y) ≤ ENNReal.ofReal (2 * ghDist X Y)`. The isometries in the
+optimal coupling need not preserve either auxiliary order. On finite spaces,
+the exact compatibility theorem identifies these complete diagrams with the
+existing full finite Rips diagrams.
+
+There is also a convergence statement with varying finite sample types and
+cardinalities. If nonempty finite Rips spaces embed isometrically in one ambient
+space and their Hausdorff distances to a fixed nonempty totally bounded target
+tend to zero, then the bottleneck distances of their q-tame diagrams to the
+target diagram tend to zero. The target need not be finite or compact. The
+checked fixture `RipsQTameInfiniteMetricStabilityExamples` uses increasing
+initial samples of the genuinely infinite compact space
+`{0} ∪ {1/(n+1) : n ∈ ℕ}`.
+
+These Rips consumers use finite-net q-tameness and algebraic stability for
+q-tame modules. They do not claim a theorem for arbitrary q-tame modules with
+birth-at-minus-infinity strata, which are outside the current locally finite
+diagram representation.

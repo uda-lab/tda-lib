@@ -209,6 +209,7 @@ import TDA.Persistence.PersistenceMeasureWindowMatching
 import TDA.Persistence.QTameFiniteSaturation
 import TDA.Persistence.LocallyFiniteMatchingCompactness
 import TDA.Persistence.RipsQTameBottleneck
+import TDA.Persistence.RipsQTameInfiniteMetricStability
 import TDA.Persistence.RipsHausdorffInterleaving
 import TDA.Persistence.RipsQTameFiniteSaturation
 import TDA.Persistence.FiniteWeightedBoundaryTransport
