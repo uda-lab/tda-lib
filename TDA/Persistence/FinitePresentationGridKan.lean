@@ -1,3 +1,4 @@
+import TDA.Persistence.CoordinateGrid
 import TDA.Persistence.FinitePresentationKan
 import TDA.Persistence.FinitePresentationGrid
 import TDA.Persistence.FinitePresentationFiniteDimensional
@@ -13,8 +14,10 @@ dimensional. Neither minimality nor a decomposition of the original module
 is required.
 
 This proves the reconstruction step in BOOS, arXiv:2208.00300v3,
-Appendix A's proof of Theorem 2.7. Preservation of rank exactness and of
-minimal resolutions requires further results.
+Appendix A's proof of Theorem 2.7. Over a field, the actual Kan functor also
+preserves pointwise finite dimensionality and rank-exact sequences on finite
+product grids. Kan preservation of hook projectivity and minimal resolutions
+remains a separate result.
 -/
 
 set_option autoImplicit false
@@ -24,41 +27,6 @@ universe u w
 namespace TDA.Persistence
 
 open CategoryTheory
-open scoped TDA.Persistence
-
-/-- A finite set of real coordinate values in each direction. -/
-abbrev CoordinateGrid (n : ℕ) := Fin n → Finset ℝ
-
-namespace CoordinateGrid
-
-variable {n : ℕ} (G : CoordinateGrid n)
-
-/-- The finite product of the selected coordinate sets, with coordinatewise order. -/
-abbrev Point := ∀ i : Fin n, {x : ℝ // x ∈ G i}
-
-noncomputable instance pointFintype : Fintype G.Point := by
-  classical
-  unfold Point
-  infer_instance
-
-/-- The actual inclusion of the product grid into real coordinate space. -/
-def embedding : G.Point ↪o (Fin n → ℝ) where
-  toFun x i := (x i).val
-  inj' := by
-    intro x y h
-    funext i
-    exact Subtype.ext (congrFun h i)
-  map_rel_iff' := Iff.rfl
-
-/-- Grid inclusion reads the selected coordinate value. -/
-@[simp] theorem embedding_apply (p : G.Point) (i : Fin n) : G.embedding p i = (p i).val := rfl
-
-end CoordinateGrid
-
-/-- Select the coordinatewise preorder category on a finite product grid. -/
-scoped instance (priority := 10000) coordinateGridPreorderCategory {n : ℕ}
-    (G : CoordinateGrid n) : SmallCategory G.Point := Preorder.smallCategory _
-
 open scoped TDA.Persistence
 
 namespace GradedFree

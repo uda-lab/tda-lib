@@ -142,12 +142,37 @@ embedding containing all generator and relation births. Both comparison
 inverse laws are derived using existing presentation lifting and Mathlib Kan
 uniqueness. Repeated births remain separate generator occurrences, empty
 families and n=0 are allowed, and the reconstructed module may have unbounded
-support. This reconstruction alone makes no claim about preservation of rank
-exactness or minimal resolutions. At a pair of indices,
-`IsPointwiseShortExact.rank_add_iff_lift_kernel` equates rank additivity and lifting
-dying vectors when the middle source fiber is finite dimensional. `IsRankExact`
-requires pointwise finite-dimensional middle fibers, and `Hook.exists_lift`
-constructs lifts of finite-death hook morphisms in that domain.
+support.
+
+For a finite coordinate grid, `CoordinateGrid.lan` is Mathlib's actual left
+Kan extension along the grid inclusion. At each real grade with a lower grid
+point, `floor` selects the greatest such point and `appIso` identifies the
+actual Kan fiber with the grid fiber there. `kanInclusion` is the Kan unit
+followed by the real structure map; without a lower grid point, the actual
+fiber is zero. `appIso_map_apply` and `appIso_structureMap_apply` identify the
+images of actual Lan maps and transitions with the corresponding grid maps,
+not only with equal fiber dimensions.
+
+Over a field, `lan_finiteDimensional` preserves pointwise finite-dimensional
+fibers. Here `IsRankExact` means a pointwise short exact sequence (the first map
+is injective, the second is surjective, and the image of the first equals the
+kernel of the second at every index), with finite-dimensional middle fibers
+and additive ranks of structure-map images for every comparable pair. Given
+such a sequence on the finite product grid, `lan_isPointwiseShortExact` proves
+ordinary pointwise exactness after applying the actual Lan functor, while
+`lan_isRankExact` preserves finite-dimensional middle fibers and rank
+additivity. These theorems require a finite product coordinate grid; they do
+not assert exactness for arbitrary order embeddings. The focused
+`CoordinateGridKanExamples` module exercises nonzero finite-death lifts, actual
+within-cell and death transitions, characteristic two, empty and zero inputs,
+grades below the grid and a principal-upset tail.
+
+At each pair of comparable indices, `IsPointwiseShortExact.rank_add_iff_lift_kernel`
+equates rank additivity with lifting dying vectors when the middle source fiber
+is finite dimensional. `lan_lift_kernel` gives the corresponding lift that dies
+at the same real grade after applying the finite-grid Kan functor, and
+`Hook.exists_lift` constructs lifts of finite-death hook morphisms in this
+pointwise finite-dimensional domain.
 `HookInfinity.homEquivFiber` identifies principal-upset morphisms with birth-fiber
 vectors; surjectivity at birth suffices to lift them over any ring and preorder.
 Over a field and partial order, `Hook.endRingEquiv` and
