@@ -4784,3 +4784,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankExactPushoutExamples.pushed_middle_nontrivial
 #print axioms TDA.Persistence.IsPointwiseShortExact.pushoutQuotient_inl_assoc
 #print axioms TDA.Persistence.IsPointwiseShortExact.pushoutQuotient_inr_assoc
+
+-- Finite saturation for q-tame persistence and its Rips consumer.
+#print axioms TDA.Persistence.PersistenceMeasureWindowMatching.exists_finite_window_matching_of_center_counts
+#print axioms TDA.Persistence.RealInterleaving.exists_finite_saturating_matching
+#print axioms TDA.Persistence.Rips.exists_finite_saturating_matching_of_hausdorff_lt

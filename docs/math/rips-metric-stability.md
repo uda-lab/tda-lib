@@ -277,3 +277,16 @@ These results provide a finite compatibility layer. They do not prove the
 triangle inequality or algebraic stability for arbitrary locally finite
 diagrams, and no infinite-space Hausdorff/Gromov–Hausdorff bottleneck bound is
 claimed yet.
+
+For arbitrary q-tame modules, `RealInterleaving.exists_finite_saturating_matching`
+does prove finite saturation from an actual interleaving: given finite prescribed
+sets of finite bars longer than `2ε` and essential occurrences on each side, it
+constructs finite injective edge sets that cover those tokens with pair costs at
+most `ε`. The proof uses local finite-window counts and a coefficient-one
+continuation argument, and does not assume a matching or interval decomposition.
+As a concrete metric consumer, `Rips.exists_finite_saturating_matching_of_hausdorff_lt`
+combines this theorem with the existing Rips Hausdorff interleaving and q-tameness
+results for totally bounded spaces embedded isometrically in a common ambient
+space. It requires `2 * hausdorffDist < ε` and saturates the prescribed long finite
+bars and essential occurrences. It does not yet produce a matching of the complete
+infinite diagrams or an infinite-space bottleneck bound.
