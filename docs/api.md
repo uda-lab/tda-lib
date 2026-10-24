@@ -233,10 +233,11 @@ finite presentation. Finally,
 `GradedFree.finitelyPresented_exists_finiteHookRankExactCoverKernel` extends
 the finite-dimensional grid kernel presentation and identifies its actual
 Lan with the categorical kernel of the displayed `finiteHookDeflationLanIso`
-cover map. The theorem starts only from finite presentation of the original
-module and includes the #605 rank-exact cover and relative projectivity
-witnesses. It does not assert generic finite-presentation closure under
-kernels, minimality, or a resolution-length bound. The focused
+cover map. Starting only from finite presentation of the original module, the
+theorem returns this constructed finite-hook rank-exact cover, proves its
+cover term relatively rank projective, and proves its actual categorical
+kernel finitely presented. It does not assert generic finite-presentation
+closure under kernels, minimality, or a resolution-length bound. The focused
 `FinitePresentationHookKernelExamples` module applies the result to the
 nonzero relation presentation over `ℚ` and `ZMod 2`, and checks empty-family
 and zero-dimensional zero-module boundaries.
