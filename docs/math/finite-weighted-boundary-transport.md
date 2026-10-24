@@ -71,6 +71,59 @@ Other examples exercise a split to two distinct targets, zero-weight
 labels, empty inputs, repeated unit occurrences, and fractional masses in the
 positive weighted-diagram object.
 
+## Repeated indexed coordinates
+
+Write `H` for the strict birth–death half-plane. Coalescing into a native
+weighted diagram uses a finite indexed family `x : I → H`, with nonnegative
+real masses `w : I → ℝ≥0`. Coordinates may repeat and masses may vanish.
+`FiniteWeightedDiagram.ofIndexed w x` assigns the coefficient
+
+```text
+D(q) = Σ_{i : x(i)=q} w(i).
+```
+
+It preserves total mass: coincident occurrences contribute their combined
+coefficient, and zero-weight labels add no support point. The coefficient-sum
+identity also holds after multiplying by any real function of the coordinate.
+
+`FiniteWeightedCoalescing` uses a proportional splitting kernel from a support
+point `q` of `D` to the original labels:
+
+```text
+K(q,i) = w(i)/D(q) if x(i)=q, and 0 otherwise.
+```
+
+Every denominator is positive because `q` belongs to the native support.
+For each such `q`, the sum over `i` is one; for each original label `i`,
+`Σ_q D(q)K(q,i)=w(i)`. These identities include zero-weight labels and empty
+input types.
+
+Let `E` be the coalesced target diagram, with splitting kernel `L`. The plan map
+`FiniteWeightedBoundaryPlan.aggregate` sums matrix entries over each pair of
+coordinate fibers. The map `splitLift` assigns a coalesced matrix `b`
+to the original labels by
+
+```text
+a(i,j) = Σ_q Σ_r K(q,i) b(q,r) L(r,j).
+```
+
+Here `q` and `r` range over the two finite native supports.
+
+Both maps produce feasible matrices and preserve the full pair, deletion and
+insertion cost for every real exponent. The powered infima therefore agree,
+as do the values obtained by taking their reciprocal-`p` roots. The
+infimum-of-rooted-cost interpretation uses the existing `p≥1` domain. Powered
+and rooted optimizers transfer in both directions, and the finite attainment
+theorems supply optimizing plans without a caller providing one. Splitting and
+then aggregating recovers each coalesced matrix entry. Several indexed matrices
+can share the same aggregate; the lift selects a proportional allocation within
+each fiber.
+
+With unit input masses, these identities recover the existing finite
+unit-occurrence transport and matching values. A proportional lift can have
+fractional entries even for unit masses. The existing integral-optimizer
+theorem supplies a matching optimizer as a separate choice.
+
 ## Atomic measures and all boundary plans
 
 For a native diagram `D`, `BoundaryTransport.atomicMeasure D` places mass
@@ -93,10 +146,16 @@ Consequently `boundaryTransportPowerValue_atomic_eq_native` identifies the
 infimum over all such plans with
 `ENNReal.ofReal (FiniteWeightedDiagram.powerBoundaryTransportCost p D E)`
 for `p≥0`. For `p≥1`, the rooted values agree as well. Applying the native finite attainment theorem
-constructs a genuine minimizing Borel plan. This proves the canonical
-finite-diagram bridge; equality between a general indexed presentation with
-repeated coordinates and its coalesced native optimum requires a further
-compatibility theorem.
+constructs a genuine minimizing Borel plan. The coalescing laws identify this
+same native optimum with the indexed weighted objective, including repeated
+coordinates and zero masses.
+
+`BoundaryTransport.atomicMeasure_ofIndexed` identifies that measure with the
+original indexed sum of weighted Dirac measures. Its powered and rooted
+all-Borel values equal the indexed weighted values for `p≥0` and `p≥1`,
+respectively. An indexed optimizer gives a minimizing Borel plan by aggregation
+followed by the native atomic-plan construction. Unit masses recover the
+existing finite matching quantities through their unit-transport compatibility.
 
 ## Sources and scope
 
