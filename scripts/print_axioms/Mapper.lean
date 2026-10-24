@@ -1350,3 +1350,32 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyMapPairExamples.edgeToPoint_mapper_noniso
 #print axioms TDA.Mapper.RefinementHomologyMapPairExamples.boolToUnit_pathCondition_needed
 #print axioms TDA.Mapper.RefinementHomologyMapPairExamples.edgeToPoint_mapper_dimensions
+
+-- Capped centred Mapper diagrams from height-map pairs and fixtures.
+#print axioms TDA.Mapper.stageSelector
+#print axioms TDA.Mapper.eq_zero_of_stageRadius_le
+#print axioms TDA.Mapper.mem_cappedCentredCover_of_stageRadius_le
+#print axioms TDA.Mapper.stageRadius_add_le_of_gap
+#print axioms TDA.Mapper.stageRadius_add_le_uniformGrid
+#print axioms TDA.Mapper.cappedCentredPairVertexMap
+#print axioms TDA.Mapper.cappedCentredPairVertexMap_mk
+#print axioms TDA.Mapper.cappedCentredPairVertexMapSymm
+#print axioms TDA.Mapper.cappedCentredPairVertexMapSymm_mk
+#print axioms TDA.Mapper.cappedCentredPairVertexMap_natural
+#print axioms TDA.Mapper.cappedCentredPairVertexMap_comp
+#print axioms TDA.Mapper.cappedCentredPairVertexMapSymm_comp
+#print axioms TDA.Mapper.cappedCentredPairHomologyMap
+#print axioms TDA.Mapper.cappedCentredPairHomologyMap_app
+#print axioms TDA.Mapper.cappedCentredPairHomologyMapSymm
+#print axioms TDA.Mapper.cappedCentredPairHomologyMapSymm_app
+#print axioms TDA.Mapper.cappedCentredPairInterleaving
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_le_of_heightMapPair
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_pair_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_pair_uniformGrid_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_pair_le_ofUniformBound
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_pair_plHeight_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagram_pair_plHeight_uniformGrid_le
+#print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.constant_pair_recovery_le_half
+#print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.edge_to_point_bottleneck_bracket
+#print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.bool_to_unit_path_condition_needed
+#print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.edge_to_point_bottleneck_le_half
