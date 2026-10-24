@@ -91,8 +91,16 @@ Every paired rectangle module has an actual interleaving at that radius, and
 every unmatched module on either side is actually interleaved with zero.
 `IsMatching.source_covered` and `IsMatching.target_covered` expose coverage of
 all significant occurrences by that same matching. Multiplicities, arbitrary
-endpoint decorations and ε = 0 are retained. Distance comparisons still require
-matching-to-family assembly and infimum arguments. `GradedFree.lift`
+endpoint decorations and ε = 0 are retained. `IsMatching.interleaving` assembles
+these pair and deletion witnesses into an actual interleaving of the finite
+biproduct families, with public component laws for paired and zero entries.
+`RectangleMatching.bottleneckDistance` is the extended infimum of actual matching
+radii. `two_sided_distance_bounds` proves `d_I ≤ d_B ≤ (2n−1)d_I` for n ≥ 1,
+and `bottleneckDistance_eq_interleavingDistance_one` gives equality for this
+decorated-rectangle family distance in dimension one. No minimizing radius is
+assumed: over ℚ, a singleton module versus zero has distance zero without a
+parameter-zero witness. The separate one-dimensional diagram bridge and sharp
+two-dimensional distance example remain outside these results. `GradedFree.lift`
 and `GradedFree.exists_lift_of_surjective` provide the natural universal property and lifting
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
 expresses finite presentation by homogeneous cokernels. For finitely presented modules on

@@ -2,9 +2,9 @@
 
 The persistence-module API supports constructions on an arbitrary preorder,
 including coordinatewise ordered real vector spaces. The results below provide
-interval geometry, Hall neighbor bounds and two-sided matchings for finite
-rectangle sums, free presentations and lifting lemmas. Distance comparisons
-and rank-exact resolutions require further arguments.
+interval geometry, Hall neighbor bounds, two-sided matchings and distance bounds
+for finite rectangle sums, together with free presentations and lifting lemmas.
+Rank-exact resolutions require further arguments.
 
 ## Supports and rectangle transitions
 
@@ -100,10 +100,52 @@ interleavings, with no Hall or matching premise.
 
 This is the finite bounded matching-existence conclusion of
 [Bjerkevik's Theorem 4.3](https://doi.org/10.1007/s00454-021-00298-0), using
-Theorem 4.10 and the following Cantor–Bernstein argument. The distance
-inequalities require assembling an interleaving from arbitrary admissible
-matchings and comparing infima. The one-dimensional compatibility bridge and
-the sharp two-coordinate distance example remain separate results.
+Theorem 4.10 and the following Cantor–Bernstein argument.
+
+## Assembly and distance bounds
+
+Let M and N be the finite biproduct families associated with R and S.
+An admissible radius-ε matching supplies actual interleavings of the paired
+rectangle modules and actual interleavings with zero for all unmatched modules
+on both sides. `IsMatching.interleaving` assembles these into an actual
+ε-interleaving of M and N, in every coordinate dimension.
+
+The assembled maps have a finite occurrence matrix. A matched edge contributes
+the forward and reverse maps of the same chosen pair interleaving; every other
+entry is zero. The partial injection gives at most one path through each row
+and column of a composite. For a matched diagonal entry, the pair's composite
+equation gives the summand transition by 2ε. An unmatched diagonal entry is zero,
+as required by its interleaving with zero; off-diagonal entries are zero.
+The public `RectangleFamily.component_ext` and reconstruction lemmas lift these
+component equations to the two full family equations. The underlying realization
+remains the existing finite biproduct.
+
+Write d_I(M,N) for the extended infimum of finite parameters admitting an actual
+interleaving. Define d_B(R,S) as the extended infimum of finite parameters
+admitting an actual occurrence matching, including its deletion witnesses.
+`RectangleMatching.bottleneckDistance` implements this second value. Both take
+values in the extended nonnegative reals, with empty infima equal to infinity.
+Assembly and the matching-existence theorem give, for n ≥ 1,
+
+`d_I(M,N) ≤ d_B(R,S) ≤ (2n−1) d_I(M,N)`.
+
+The first inequality follows by taking the infimum of all assembled witnesses.
+For the second, each actual ε-interleaving yields a matching at `(2n−1)ε`.
+Multiplication by this finite positive coefficient commutes with both infima,
+even when the witness set is empty. Thus no optimal radius or attainment is
+assumed. This is the finite bounded distance conclusion of
+[Bjerkevik's Theorem 4.3](https://doi.org/10.1007/s00454-021-00298-0), using
+Definition 2.9 and the following matching-to-interleaving observation.
+
+Endpoint decorations can prevent attainment. Over ℚ, the singleton-supported
+interval module and the zero module have both distances zero: they are
+interleaved, and admit a deletion matching, at every positive radius. They
+have neither a zero-radius interleaving nor a zero-radius matching. Zero
+distance is therefore not identified with a parameter-zero witness.
+
+For n = 1 the coefficient is one, giving equality for this decorated occurrence
+family distance. Its bridge to the separate one-dimensional endpoint-diagram
+API and the sharp two-coordinate distance example remain separate results.
 
 ## Graded free modules and finite presentations
 
