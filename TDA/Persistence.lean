@@ -194,6 +194,7 @@ import TDA.Persistence.CechFinitePBottleneckAllDegrees
 import TDA.Persistence.RipsRelationInterleaving
 import TDA.Persistence.QTame
 import TDA.Persistence.RipsQTame
+import TDA.Persistence.RipsQTameDiagram
 import TDA.Persistence.RipsHausdorffInterleaving
 import TDA.Persistence.FiniteWeightedBoundaryTransport
 import TDA.Persistence.FiniteWeightedCoalescing

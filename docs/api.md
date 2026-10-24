@@ -513,8 +513,9 @@ target. The
 order-free `Rips.diagram` accepts finite metric spaces and a field in independent
 universes; `diagram_eq_dgm` identifies it with the existing diagram for every
 auxiliary order. Finite samples of a common possibly infinite target are compared
-only through their finite diagrams. General totally bounded/q-tame diagram existence
-remains separate. See [metric-input stability](math/rips-metric-stability.md).
+only through their finite diagrams. A decorated multiplicity for totally bounded targets is provided by
+`RipsQTameDiagram` below; its finite-diagram compatibility and bottleneck
+stability remain separate. See [metric-input stability](math/rips-metric-stability.md).
 
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
 `a < b` has finite-dimensional image over the coefficient field.
@@ -527,8 +528,11 @@ order is arbitrary; `sublevelModuleIsoOfIsometryEquiv` supplies natural
 isomorphisms under isometric relabelling without order preservation.
 The infinite compact unit interval is a checked example: its strict maps have
 finite-dimensional images, while its unreduced H₀ fiber at zero is
-infinite-dimensional. This result supplies q-tameness; locally finite diagrams
-and their algebraic stability require separate foundations. See
+infinite-dimensional. `RipsQTameDiagram` consumes this q-tameness to extract
+decorated finite and essential occurrences with exact rectangle, essential-strip
+and tail counts. Their support is countable and locally finite even for this
+infinite-fiber example. Finite-diagram compatibility and bottleneck stability
+remain open. See
 [the finite-net proof](math/rips-metric-stability.md#totally-bounded-spaces).
 
 `TDA.Persistence.RipsHausdorffInterleaving` compares the actual Rips homology

@@ -3663,6 +3663,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RipsQTameExamples.unitInterval_qTame
 #print axioms TDA.Persistence.RipsQTameExamples.unitInterval_zero_not_finiteDimensional
 #print axioms TDA.Persistence.RipsQTameExamples.empty_qTame
+#print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_rectangle_counts
+#print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_essential_counts
+#print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_tail_counts
+#print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_tail_locally_finite
+#print axioms TDA.Persistence.Rips.qTameDiagramMultiplicity_countable_support
+#print axioms TDA.Persistence.RipsQTameDiagramExamples.unitInterval_infinite_fiber_with_diagram
 
 -- Compatible sections and real-indexed lift fixtures.
 #print axioms TDA.Persistence.CompatibleSections.exists_antitone_coinitial
