@@ -464,6 +464,26 @@ sends the class of the vertex `1` to the class of the vertex `3`, a different co
 The identity of the realization of the single edge between the heights `(0, 1)` and `(0, 3/2)`
 does not commute with the heights; no domain map is defined, and the capped fixture bounds the diagrams only by `1/2`.
 
+For a `HeightMapPair` between `f : C(X, ℝ)` and `g : C(X', ℝ)`, the maps in both
+directions have height error at most `δ`, and paths from each double composite to the
+identity have height deviation at most `2δ`. For every spacing `s`, ring `R`, degree `n`,
+and supplied linear orders on both component-index types, the pair induces natural
+transformations between the centred Mapper homology modules and their `δ`-shifts. Their
+composites equal the tower maps through radius `t + 2δ`, so the modules are `δ`-interleaved
+and their real interleaving distance is at most `δ`. No finiteness, coverage or nonemptiness
+hypothesis is used. The same-space pointwise bound follows as a specialization, and finite
+graph-PL maps inherit the bound. This is a library specialization in the setting of
+DMW16-v2 §4.1 ([reference](references.md#DMW16-v2)); the pair hypotheses and no numbered
+source result are attributed to that paper. The maps are induced by the pair, not by cover
+refinements. Map-pair bounds for step or capped centred diagrams and bottleneck distance, a
+converse, multinerve Mapper, independence of component orders, and executable extraction
+are not provided.
+
+The path condition cannot be omitted: the constant height maps from discrete `Bool` to `Unit`
+preserve heights, but no `HeightMapPair` exists between them for any parameter, and their
+degree-zero Mapper modules over `ℚ` on the centred tower of spacing `1` have real interleaving
+distance at least `1/2`. For the constant full-cover tower, the distance is `⊤`.
+
 Not included: equality of the diagrams themselves for homeomorphic heights; compatibility of the
 domain maps with the interleavings `mapperHomologyInterleaving` or with the multinerve maps;
 functoriality in the codomain beyond the pullback identity; homotopy invariance; independence of the

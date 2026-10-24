@@ -1333,3 +1333,20 @@ import TDA
 #print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_top_boundary_fold
 #print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_fold_improves_vertex_budget
 #print axioms TDA.Mapper.GraphPLReebMergeFoldExamples.mergeSection_clamps_above_top
+-- Centred Mapper homology interleavings from height-map pairs and fixtures.
+#print axioms TDA.Mapper.centredMapperPairVertexMap_mk
+#print axioms TDA.Mapper.centredMapperPairVertexMapSymm_mk
+#print axioms TDA.Mapper.centredMapperPairVertexMap_natural
+#print axioms TDA.Mapper.centredMapperPairVertexMapSymm_natural
+#print axioms TDA.Mapper.centredMapperPairVertexMap_comp
+#print axioms TDA.Mapper.centredMapperPairVertexMapSymm_comp
+#print axioms TDA.Mapper.centredMapperPairHomologyMap_app
+#print axioms TDA.Mapper.centredMapperPairHomologyMapSymm_app
+#print axioms TDA.Mapper.realInterleavingDistance_centredMapperPair_le
+#print axioms TDA.Mapper.realInterleavingDistance_centredMapperPair_le_ofUniformBound
+#print axioms TDA.Mapper.realInterleavingDistance_centredMapperPair_graphPL_le
+#print axioms TDA.Mapper.RefinementHomologyMapPairExamples.flatSteep_mapPair_distance_le
+#print axioms TDA.Mapper.RefinementHomologyMapPairExamples.edgeToPoint_mapper_pair
+#print axioms TDA.Mapper.RefinementHomologyMapPairExamples.edgeToPoint_mapper_noniso
+#print axioms TDA.Mapper.RefinementHomologyMapPairExamples.boolToUnit_pathCondition_needed
+#print axioms TDA.Mapper.RefinementHomologyMapPairExamples.edgeToPoint_mapper_dimensions
