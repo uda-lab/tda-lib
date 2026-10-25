@@ -1222,7 +1222,7 @@ theorem lanMinimalFiniteRankProjectiveResolution (G : CoordinateGrid n)
             G.lan.map u₀ ≫ G.lan.map (R.resolution.quotient i) :=
           Functor.map_comp _ _ _
         _ = u ≫ (G.lanFiniteRankProjectiveResolution R.resolution).quotient i := by
-          rw [hmap, ← hquot]
+          rw [hmap, hquot]
         _ = (G.lanFiniteRankProjectiveResolution R.resolution).quotient i := hu
     letI : IsIso u₀ := (R.quotient_is_cover i).endomorphism_isIso u₀ hu₀
     have hLanIso : IsIso (G.lan.map u₀) := Functor.map_isIso _ _
