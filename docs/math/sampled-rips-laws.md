@@ -104,6 +104,23 @@ The proof pushes each input coupling through iid
 pair sampling and the Rips diagram maps, bounds its cost, and then takes the
 infimum; it does not assume an optimal coupling exists.
 
+The compact-law infinity theorem
+`Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity`
+proves, for every sample size `n` and positive degree `q+1`,
+
+\[
+ W_\infty(U_{n,q+1}(μ),U_{n,q+1}(ν))
+ \le 2\,GW_\infty(μ,ν).
+\]
+
+Here both Wasserstein and Gromov–Wasserstein infinity use essential suprema;
+the diagram cost is `bottleneck`, and the input cost is the distortion under
+two independent draws from one arbitrary probability coupling. The proof
+pushes iid tuples through the sample-law coupling and bounds the diagram
+essential supremum by that coupling's distortion essential supremum before
+taking the infimum. The factor `2` comes from the one-half GW normalization.
+This result assumes no optimal coupling and uses no limit in finite `p`.
+
 ## Scope and remaining bridges
 
 The atomic theorems use probability mass functions and the library's full finite
@@ -118,12 +135,10 @@ persistence-module isomorphism in every degree and over every coefficient ring.
 The identification of reduced and unreduced positive-degree persistence remains
 separate work.
 
-The compact Borel theorem uses the independent `MeasureCoupling` transport
-definition directly on whole diagrams. It does not yet identify that transport
-infimum with the existing finite-PMF transport cost on finite support. Measure
-coupling and GW infinity definitions are available, but this unit makes no
-compact-law infinity stability claim. The reduced-H₀ essential-interval
-correspondence also remains separate work.
+The compact Borel theorems use the independent `MeasureCoupling` transport
+definition directly on whole diagrams. They do not yet identify that transport
+infimum with the existing finite-PMF transport cost on finite support. The
+reduced-H₀ essential-interval correspondence also remains separate work.
 
 ## Why the whole support diagram is different
 
