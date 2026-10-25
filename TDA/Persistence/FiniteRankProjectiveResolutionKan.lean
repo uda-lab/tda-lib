@@ -1,6 +1,7 @@
 import TDA.Persistence.CoordinateGridProjective
 import TDA.Persistence.FiniteRankProjectiveClassification
 import TDA.Persistence.FiniteRankProjectiveResolution
+import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 
 /-!
 # Finite rank-projective resolutions under coordinate-grid Kan extension
@@ -19,7 +20,9 @@ universe u
 namespace TDA.Persistence
 
 open CategoryTheory
+open CategoryTheory.Limits
 open scoped TDA.Persistence
+open scoped ZeroObject
 
 variable {k : Type u} [Field k] {n : ℕ}
 
@@ -29,7 +32,7 @@ namespace FiniteRankProjectiveResolution
 the coordinatewise order. This is the finite-poset direction used to prove
 termination of minimal hook resolutions. -/
 theorem hook_hom_nonzero_implies_endpoint_order
-    {P : Type} [PartialOrder P] {i j m n : P} (hij : i < j) (hmn : m < n)
+    {P : Type} [PartialOrder P] {i j m n : P} (hij : i < j) (_hmn : m < n)
     (f : Hook.module (k := k) i j ⟶ Hook.module (k := k) m n) (hf : f ≠ 0) :
     m ≤ i ∧ n ≤ j := by
   let v := (Hook.homEquivKernel hij (Hook.module (k := k) m n)) f
@@ -38,7 +41,11 @@ theorem hook_hom_nonzero_implies_endpoint_order
     apply hf
     exact (Hook.homEquivKernel hij (Hook.module (k := k) m n)).injective
       (Subtype.ext hzero)
-  have hsupport : i ∈ Hook.support m n := v.val.property
+  have hsupport : i ∈ Hook.support m n := by
+    by_contra hi
+    apply hv
+    apply Subtype.ext
+    exact SupportInterval.val_eq_zero (Hook.support m n) hi v.val
   refine ⟨hsupport.1, ?_⟩
   by_contra hnj
   have hdie : structureMapLinear (Hook.module (k := k) m n) hij.le v.val = 0 :=
@@ -91,16 +98,15 @@ theorem rankProjectiveHook_hom_nonzero_order
       have hbi : b ≤ ab.val.1 := by
         by_contra hbi
         exact hv (HookInfinity.fiber_eq_zero_of_not_le hbi v.val)
-      have hbj : b ≤ ab.val.2 := hbi.trans ab.property.le
       have hdie : structureMapLinear (HookInfinity.module (R := k) b)
           ab.property.le v.val = 0 := v.property
-      have hcoeff : HookInfinity.fiberEquivOfLe (R := k) hbj v.val = 0 := by
+      have hcoeff : HookInfinity.fiberEquivOfLe (R := k) hbi v.val = 0 := by
         calc
-          HookInfinity.fiberEquivOfLe (R := k) hbj v.val =
-              HookInfinity.fiberEquivOfLe (R := k) hbj
+          HookInfinity.fiberEquivOfLe (R := k) hbi v.val =
+              HookInfinity.fiberEquivOfLe (R := k) (hbi.trans ab.property.le)
                 (structureMapLinear (HookInfinity.module (R := k) b)
                   ab.property.le v.val) := by
-                    rw [HookInfinity.fiberEquivOfLe_structureMap hbi ab.property.le]
+                    exact (HookInfinity.fiberEquivOfLe_structureMap hbi ab.property.le v.val).symm
           _ = 0 := by rw [hdie, map_zero]
       exact (False.elim (hv
         ((HookInfinity.fiberEquivOfLe (R := k) hbi).injective hcoeff)))
@@ -114,7 +120,15 @@ theorem rankProjectiveHook_hom_nonzero_order
         apply hf
         exact (HookInfinity.homEquivFiber (R := k) a
           (Hook.module (k := k) cd.val.1 cd.val.2)).injective hzero
-      exact v.property.1
+      have hbirth : cd.val.1 ≤ a := by
+        by_contra h
+        have ha : a ∉ Hook.support cd.val.1 cd.val.2 := by
+          intro ha
+          exact h ha.1
+        apply hv
+        apply Subtype.ext
+        exact SupportInterval.val_eq_zero (Hook.support cd.val.1 cd.val.2) ha v
+      exact hbirth
     | inr b =>
       let v := (HookInfinity.homEquivFiber (R := k) a
         (HookInfinity.module (R := k) b)) f
@@ -167,11 +181,11 @@ noncomputable def ofRankProjective {P : Type} [PartialOrder P]
     change M ⟶ M
     exact 𝟙 M
   have zeroIdRankExact : IsRankExact (0 : Z ⟶ M) (𝟙 M) := by
-    letI : ∀ p, FiniteDimensional k (M.obj p) := hfd
+    let : ∀ p, FiniteDimensional k (M.obj p) := hfd
     have hshort : IsPointwiseShortExact (0 : Z ⟶ M) (𝟙 M) := by
       constructor
       · intro p x y _
-        exact (ModuleCat.subsingleton_of_isZero (Functor.zero_obj p)).elim x y
+        simpa [Z] using (ModuleCat.subsingleton_of_isZero (Functor.zero_obj p)).elim x y
       · intro p x
         exact ⟨x, rfl⟩
       · intro p
@@ -193,9 +207,9 @@ noncomputable def ofRankProjective {P : Type} [PartialOrder P]
     change IsRankExact (0 : Z ⟶ M) (𝟙 M)
     exact zeroIdRankExact
   · change kernel 0 ≅ M
-    simp [kernel]
-  · change kernel (Fin.last 1) ≅ 0
-    simp [kernel, Z]
+    exact Iso.refl M
+  · change Z ≅ 0
+    exact Iso.refl Z
   · intro i
     have hi : i = 0 := Subsingleton.elim _ _
     subst i
@@ -214,9 +228,10 @@ private noncomputable def lanZeroIso (G : CoordinateGrid n) :
       (IsZero.iff_id_eq_zero _).mp (isZero_zero _)
     calc
       𝟙 (G.lan.obj (0 : PModule.{u,0,u} k G.Point)) =
-          G.lan.map (𝟙 (0 : PModule.{u,0,u} k G.Point)) := by simp
+          G.lan.map (𝟙 (0 : PModule.{u,0,u} k G.Point)) := by
+            exact (G.lan.map_id _).symm
       _ = G.lan.map (0 : (0 : PModule.{u,0,u} k G.Point) ⟶ 0) := by rw [hz]
-      _ = 0 := map_zero _
+      _ = 0 := G.lan.map_zero _ _
   exact hzero.iso (isZero_zero _)
 
 /-- Transfer every actual row of a finite rank-projective grid resolution through
