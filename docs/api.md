@@ -324,7 +324,10 @@ biproduct isomorphisms, and the reconstructed presentation of the original
 module. `MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq` combines
 zero-padded termwise uniqueness with hook-sum multiplicity uniqueness to show
 that the multiset in each degree is independent of the selected resolution
-and of the finite hook presentation. `evenHookBetti_eq` and `oddHookBetti_eq`
+and of the finite hook presentation. Given a concrete term presentation,
+`hookBettiMultiset_eq_tagMultiset` identifies its occurrence multiset with the
+choice-based value without exposing the internal choice. `evenHookBetti_eq`
+and `oddHookBetti_eq`
 extend each finite sum by the empty multisets beyond the chosen resolution
 length, so they remain invariant when the compared resolutions have different
 raw lengths. `signedHookBarcode_eq` records those two finite multisets

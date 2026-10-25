@@ -183,6 +183,20 @@ noncomputable def MinimalFiniteRankProjectiveResolution.hookBettiMultiset
   hookTagMultiset
     (Classical.choice (R.exists_hook_sum_presentation (k := k) (n := n) _hn M hM j)).tag
 
+/-- Relate the chosen degreewise multiset to any supplied actual hook-sum
+presentation, without unfolding the choice-based definition. -/
+theorem MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
+    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ)
+    (P : FiniteHookSumPresentation (k := k) (n := n) (R.termAt j)) :
+    R.hookBettiMultiset (k := k) (n := n) hn M hM j =
+      hookTagMultiset P.tag := by
+  let Q := Classical.choice
+    (R.exists_hook_sum_presentation (k := k) (n := n) hn M hM j)
+  have h := Q.tagMultiset_eq_of_iso P (Iso.refl (R.termAt j))
+  simpa [MinimalFiniteRankProjectiveResolution.hookBettiMultiset, Q] using h
+
 /-- Degreewise hook multiplicities do not depend on the chosen minimal finite
 resolution. This combines zero-padded term isomorphism with finite hook-sum
 multiplicity uniqueness. -/
