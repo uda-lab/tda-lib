@@ -56,7 +56,8 @@ exactly as `binom(n,2) A_p(π)`. Taking infima gives
 degree `q+1`:
 
 \[
- W_p(U_{n,q+1}(μ),U_{n,q+1}(ν))
+ W_p(\operatorname{sampleLaw}(k,μ,n,q+1),
+     \operatorname{sampleLaw}(k,ν,n,q+1))
  \leq 2{n\choose2}^{1/p}\,GW_p(μ,ν).
 \]
 
@@ -85,31 +86,35 @@ every real power `p > 0` has finite moment from that base diagram.
 An isometric embedding preserves the law after pushing forward the input measure.
 On a finite input type, `sampleLawMeasure_eq_toMeasure_sampleLaw` identifies the
 Borel law of a finite `PMF` with the `toMeasure` of the existing atomic sample law.
-Write `U_{n,q+1}(μ)` for `sampleLawMeasure k μ n (q+1)`, with one fixed coefficient
-field `k`. A probability coupling `π` of `μ` and `ν` is a measure on `X × Y`
+For compact-law stability, write `U_{n,q}(μ)` for `sampleLawMeasure k μ n q`, with
+one fixed coefficient field `k` and any `q : ℕ`. A probability coupling `π` of
+`μ` and `ν` is a measure on `X × Y`
 with those exact marginals. In the diameter-time convention used here,
 `GW_p(μ,ν)` is one half the infimum over such couplings of the `p`-th root of
 the distortion moment integrated against `π ⊗ π`.
-For compact Borel probability inputs, `Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein`
+For compact Borel probability inputs, the all-degree theorem
+`Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees`
 proves the finite-p bound for the actual probability laws on `Diagram ℝ`, using
 `bottleneck` as the ground cost:
 
 \[
- W_p(U_{n,q+1}(μ),U_{n,q+1}(ν))
+ W_p(U_{n,q}(μ),U_{n,q}(ν))
  \le 2{n\choose2}^{1/p}\,GW_p(μ,ν),
- \qquad p\ge1,\ n\ge2.
+ \qquad p\ge1,\ n\ge2,\ q\in\mathbb N.
 \]
 
 The proof pushes each input coupling through iid
 pair sampling and the Rips diagram maps, bounds its cost, and then takes the
-infimum; it does not assume an optimal coupling exists.
+infimum; it does not assume an optimal coupling exists. The positive-degree
+wrapper `Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein` retains
+the specialization to degree `q+1`.
 
 The compact-law infinity theorem
-`Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity`
-proves, for every sample size `n` and positive degree `q+1`,
+`Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity_allDegrees`
+proves, for every sample size `n` and natural degree `q`,
 
 \[
- W_\infty(U_{n,q+1}(μ),U_{n,q+1}(ν))
+ W_\infty(U_{n,q}(μ),U_{n,q}(ν))
  \le 2\,GW_\infty(μ,ν).
 \]
 
@@ -119,7 +124,13 @@ two independent draws from one arbitrary probability coupling. The proof
 pushes iid tuples through the sample-law coupling and bounds the diagram
 essential supremum by that coupling's distortion essential supremum before
 taking the infimum. The factor `2` comes from the one-half GW normalization.
-This result assumes no optimal coupling and uses no limit in finite `p`.
+This result assumes no optimal coupling and uses no limit in finite `p`. The
+positive-degree wrapper
+`Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity`
+retains the specialization to degree `q+1`.
+At `q = 0`, both compact-law bounds concern the actual full ordinary H₀ diagrams;
+for a nonempty sample they retain the essential `(0,∞)` occurrence. The bounds
+do not assert stability for a probability law of reduced H₀ diagrams.
 
 ## Scope and remaining bridges
 
@@ -145,8 +156,9 @@ one `(0, ⊤)` occurrence while preserving all other multiplicities.
 The compact Borel theorems use the independent `MeasureCoupling` transport
 definition directly on whole diagrams. They do not yet identify that transport
 infimum with the existing finite-PMF transport cost on finite support, and the
-finite-space reduced-H₀ bridge has not yet been used to extend compact sampled-law
-stability to degree zero.
+finite-space reduced-H₀ bridge does not supply a reduced-diagram probability-law
+bound. The compact bounds above apply to full diagrams, including full H₀ at
+degree zero.
 
 ## Why the whole support diagram is different
 
@@ -189,10 +201,11 @@ vanishing-mass limit are formalized on the Bool metric chart described above.
 The source is Gómez and Mémoli, *Curvature Sets Over Persistence Diagrams*,
 [arXiv:2103.04470v5](https://arxiv.org/abs/2103.04470v5), Definitions 2.9–2.10 and
 3.18, Theorems 3.8 and 3.19. The finite-p estimate combines their distance-matrix
-bound with Rips' diameter-scale Lipschitz constant two. The library proves both
-atomic and compact Borel probability-law bounds using full finite sample
-diagrams. The finite Rips reduced-H₀ diagram correspondence is proved above;
-using it to state compact sampled-law stability in degree zero remains separate.
+bound with Rips' diameter-scale Lipschitz constant two. The atomic and compact
+Borel probability-law bounds use full finite sample diagrams. The compact Borel
+bounds apply in every degree; at degree zero they are laws of full ordinary H₀
+diagrams. The separate finite Rips reduced-H₀ diagram correspondence is pointwise
+and does not assert compact reduced-law stability.
 
 Pinned mathlib supplies probability mass functions, their monad laws, and
 extended-real sums and powers. TauCeti's
