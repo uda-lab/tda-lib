@@ -62,6 +62,27 @@ theorem zero_identity_isRankProjectiveCover :
     refine ⟨0, ?_⟩
     exact Subsingleton.elim _ _
 
+/-- A shortest cover of the zero module on a finite poset is genuinely empty,
+and its public certificate still records the actual empty quotient row. -/
+noncomputable def zeroSelectedMinimalHookSumCover :
+    MinimalHookSumCover (0 : PModule ℚ ForkGrade) :=
+  Classical.choice <| exists_minimalHookSumCover
+    (0 : PModule ℚ ForkGrade) (by intro p; infer_instance)
+
+theorem zero_selected_minimal_cover_index_isEmpty :
+    IsEmpty zeroSelectedMinimalHookSumCover.cover.Index := by
+  apply Fintype.card_eq_zero_iff.mp
+  have hminimal := zeroSelectedMinimalHookSumCover.minimal
+    (canonicalHookSumCover (0 : PModule ℚ ForkGrade) (by intro p; infer_instance))
+  change Fintype.card zeroSelectedMinimalHookSumCover.cover.Index ≤
+    Fintype.card (FiniteHookDeflation.Index (0 : PModule ℚ ForkGrade)) at hminimal
+  rw [zero_occurrences] at hminimal
+  omega
+
+theorem zero_selected_minimal_cover_is_projective_cover :
+    IsRankProjectiveCover zeroSelectedMinimalHookSumCover.cover.quotient :=
+  zeroSelectedMinimalHookSumCover.isRankProjectiveCover
+
 /-- A principal-upset projective also satisfies the public cover certificate
 for its identity quotient. -/
 theorem principalUpset_identity_isRankProjectiveCover (a : Fin 2) :
