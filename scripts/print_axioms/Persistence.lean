@@ -4960,3 +4960,6 @@ set_option linter.auxLemma false
 -- Common-target uniqueness for rank-projective covers.
 #print axioms TDA.Persistence.IsRankProjectiveCover.exists_iso_over_quotient
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.principalUpset_identity_iso_minimal_cover
+
+-- Large-face nerve homology comparison (Issue #504).
+#print axioms TDA.Persistence.SubdivisionRips.cechHomologyToLargeFaceNerve_isIso
