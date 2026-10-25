@@ -329,7 +329,13 @@ back to `M`. No pfd, grid, hook decomposition, or resolution is an extra input.
 For a quotient `π : Q ⟶ K`, `IsRankProjectiveCover π` certifies that `Q` is
 rank-projective, that the actual categorical-kernel row
 `kernel.ι π` followed by `π` is rank exact, and that every endomorphism of `Q`
-fixed by `π` is an isomorphism. On a finite poset, the separate
+fixed by `π` is an isomorphism. `IsRankProjectiveCover.exists_iso_over_quotient`
+uses both covers' rank-projective lifting properties against the opposite
+actual kernel rows and both quotient-fixed endomorphism criteria to show that
+any two certified covers of the same target are naturally isomorphic over
+that target. It makes no finiteness or resolution assumption, and does not
+claim uniqueness of the comparison isomorphism or of an entire resolution.
+On a finite poset, the separate
 `FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset`
 theorem constructs a resolution whose every quotient row has this certificate.
 The public `CoordinateGrid.lanMinimalFiniteRankProjectiveResolution` transfers

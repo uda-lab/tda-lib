@@ -42,6 +42,51 @@ structure IsRankProjectiveCover {P : Type} [PartialOrder P]
   row_rank_exact : IsRankExact (kernel.ι π) π
   endomorphism_isIso : ∀ u : End A, u ≫ π = π → IsIso u
 
+namespace IsRankProjectiveCover
+
+/-- Two rank-projective covers of the same target are naturally isomorphic
+through an isomorphism commuting with their quotient maps. -/
+theorem exists_iso_over_quotient {P : Type} [PartialOrder P]
+    {A B C : PModule.{u,0,u} k P} {π : A ⟶ C} {ρ : B ⟶ C}
+    (hπ : IsRankProjectiveCover π) (hρ : IsRankProjectiveCover ρ) :
+    ∃ e : A ≅ B, e.hom ≫ ρ = π := by
+  obtain ⟨f, hf⟩ := hπ.term_rank_projective
+    (kernel ρ) B C (kernel.ι ρ) ρ hρ.row_rank_exact π
+  obtain ⟨g, hg⟩ := hρ.term_rank_projective
+    (kernel π) A C (kernel.ι π) π hπ.row_rank_exact ρ
+  have hfg : (f ≫ g) ≫ π = π := by
+    calc
+      (f ≫ g) ≫ π = f ≫ (g ≫ π) := Category.assoc _ _ _
+      _ = f ≫ ρ := by rw [hg]
+      _ = π := hf
+  have hgf : (g ≫ f) ≫ ρ = ρ := by
+    calc
+      (g ≫ f) ≫ ρ = g ≫ (f ≫ ρ) := Category.assoc _ _ _
+      _ = g ≫ π := by rw [hf]
+      _ = ρ := hg
+  letI : IsIso (f ≫ g) := hπ.endomorphism_isIso (f ≫ g) hfg
+  letI : IsIso (g ≫ f) := hρ.endomorphism_isIso (g ≫ f) hgf
+  let r : B ⟶ A := g ≫ (asIso (f ≫ g)).inv
+  let l : B ⟶ A := (asIso (g ≫ f)).inv ≫ g
+  have hfr : f ≫ r = 𝟙 A := by
+    dsimp [r]
+    exact (asIso (f ≫ g)).hom_inv_id
+  have hlf : l ≫ f = 𝟙 B := by
+    dsimp [l]
+    rw [Category.assoc]
+    exact (asIso (g ≫ f)).inv_hom_id
+  have hrl : r = l := by
+    calc
+      r = (𝟙 B) ≫ r := by simp
+      _ = (l ≫ f) ≫ r := by rw [hlf]
+      _ = l ≫ (f ≫ r) := Category.assoc _ _ _
+      _ = l := by rw [hfr]; simp
+  refine ⟨⟨f, r, hfr, ?_⟩, hf⟩
+  rw [hrl]
+  exact hlf
+
+end IsRankProjectiveCover
+
 /-- A finite rank-projective resolution together with the projective-cover
 certificate for every indexed row quotient. -/
 structure MinimalFiniteRankProjectiveResolution {P : Type} [PartialOrder P]
