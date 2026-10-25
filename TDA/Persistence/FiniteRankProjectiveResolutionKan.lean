@@ -1122,6 +1122,47 @@ theorem exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset
   change IsRankProjectiveCover ((iteratedMinimalHookCover X i.val).cover.quotient)
   exact (iteratedMinimalHookCover X i.val).isRankProjectiveCover
 
+/-- The finite-poset construction retains an occurrence-indexed finite hook
+sum presentation of every term. The family is reindexed to `Fin` without
+identifying repeated tags. -/
+theorem exists_minimalFiniteRankProjectiveResolution_with_hook_sum_terms_of_pfd_finitePoset
+    {P : Type} [PartialOrder P] [Fintype P]
+    (M : PModule.{u,0,u} k P) (hM : ∀ p, FiniteDimensional k (M.obj p)) :
+    ∃ R : MinimalFiniteRankProjectiveResolution (k := k) (M := M),
+      ∀ i, ∃ m : ℕ, ∃ t : Fin m →
+        FiniteRankProjectiveClassification.RankProjectiveHookTag P,
+        Nonempty (R.resolution.term i ≅
+          ⨁ fun j => FiniteRankProjectiveClassification.rankProjectiveHookModule
+            (k := k) (t j)) := by
+  classical
+  let X : PointwisePfdModule (k := k) P := ⟨M, hM⟩
+  let R : MinimalFiniteRankProjectiveResolution (k := k) (M := M) := {
+    resolution := ofPointwisePfdFinitePoset M hM
+    quotient_is_cover := fun i => by
+      change IsRankProjectiveCover ((iteratedMinimalHookCover X i.val).cover.quotient)
+      exact (iteratedMinimalHookCover X i.val).isRankProjectiveCover
+  }
+  refine ⟨R, ?_⟩
+  intro i
+  let C := iteratedMinimalHookCover X i.val
+  let eIndex : Fin (Fintype.card C.cover.Index) ≃ C.cover.Index :=
+    (Fintype.equivFin C.cover.Index).symm
+  let t : Fin (Fintype.card C.cover.Index) →
+      FiniteRankProjectiveClassification.RankProjectiveHookTag P :=
+    fun j => C.cover.tag (eIndex j)
+  refine ⟨Fintype.card C.cover.Index, t, ?_⟩
+  let eTag : (⨁ C.cover.summand) ≅
+      ⨁ fun j : C.cover.Index =>
+        FiniteRankProjectiveClassification.rankProjectiveHookModule
+          (k := k) (C.cover.tag j) :=
+    biproduct.mapIso (fun j => eqToIso (C.cover.summand_eq_tag j))
+  let F : C.cover.Index → PModule.{u,0,u} k P := fun j =>
+    FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k) (C.cover.tag j)
+  let eReindex : (⨁ fun j : Fin (Fintype.card C.cover.Index) => F (eIndex j)) ≅
+      ⨁ F := biproduct.reindex eIndex F
+  have hterm : R.resolution.term i = ⨁ C.cover.summand := rfl
+  refine ⟨(eqToIso hterm).trans (eTag.trans eReindex.symm)⟩
+
 end FiniteRankProjectiveResolution
 
 namespace FiniteRankProjectiveResolution
@@ -1238,15 +1279,15 @@ noncomputable def lanFiniteRankProjectiveResolution (G : CoordinateGrid n)
 every row of a minimal finite-grid resolution. For the endomorphism condition,
 the quotient-fixed map is lifted through the full-faithful Lan map, certified
 on the grid, then mapped back through Lan. -/
-theorem lanMinimalFiniteRankProjectiveResolution (G : CoordinateGrid n)
+noncomputable def lanMinimalFiniteRankProjectiveResolutionObj (G : CoordinateGrid n)
     {A : PModule.{u,0,u} k G.Point}
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := A)) :
-    Nonempty (MinimalFiniteRankProjectiveResolution (k := k) (M := G.lan.obj A)) := by
+    MinimalFiniteRankProjectiveResolution (k := k) (M := G.lan.obj A) := by
   classical
-  refine ⟨{
+  refine {
     resolution := G.lanFiniteRankProjectiveResolution R.resolution
     quotient_is_cover := ?_
-  }⟩
+  }
   intro i
   refine ⟨?_, ?_, ?_⟩
   · exact G.lan_isRankProjective (R.resolution.term i)
@@ -1268,6 +1309,13 @@ theorem lanMinimalFiniteRankProjectiveResolution (G : CoordinateGrid n)
     have hLanIso : IsIso (G.lan.map u₀) := Functor.map_isIso _ _
     rw [← hmap]
     exact hLanIso
+
+/-- Left Kan extension preserves the certified minimality of every row. -/
+theorem lanMinimalFiniteRankProjectiveResolution (G : CoordinateGrid n)
+    {A : PModule.{u,0,u} k G.Point}
+    (R : MinimalFiniteRankProjectiveResolution (k := k) (M := A)) :
+    Nonempty (MinimalFiniteRankProjectiveResolution (k := k) (M := G.lan.obj A)) :=
+  ⟨G.lanMinimalFiniteRankProjectiveResolutionObj R⟩
 
 /-- Transport a finite rank-projective resolution across the presentation-grid
 reconstruction isomorphism, retaining all Lan-transferred rows. -/

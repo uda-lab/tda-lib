@@ -314,12 +314,31 @@ hypothesis, no preselected grid, and no endpoint-membership premise.
 finite-death hook, an unbounded principal upset, two repeated hooks, the
 zero/empty-sum case, and multiplicity invariance for a reordered mixed sum and
 empty families. Together, these results give choice-independent hook
-multiplicities for finite real-coordinate rank-projective decompositions. They
-do not select a canonical decomposition or a unique comparison isomorphism, or
-establish choice-independence of a signed barcode. They do not establish the
-rank-exact
-structure axioms stated in [Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3)
-or the `2n−2` resolution-length bound stated in
+multiplicities for finite real-coordinate rank-projective decompositions.
+`FiniteRankProjectiveResolution.finitelyPresented_exists_minimal_resolution_with_hook_sum_terms`
+then constructs a minimal resolution for every finitely presented module on
+`Fin n → ℝ` (`n ≥ 1`), with each zero-padded term represented by an actual
+finite hook sum. The proof transports the occurrence-indexed terms of a finite
+grid resolution through the genuine left Kan extension, its hook and
+biproduct isomorphisms, and the reconstructed presentation of the original
+module. `MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq` combines
+zero-padded termwise uniqueness with hook-sum multiplicity uniqueness to show
+that the multiset in each degree is independent of the selected resolution
+and of the finite hook presentation. `evenHookBetti_eq` and `oddHookBetti_eq`
+extend each finite sum by the empty multisets beyond the chosen resolution
+length, so they remain invariant when the compared resolutions have different
+raw lengths. `signedHookBarcode_eq` records those two finite multisets
+separately; repeated hooks retain their multiplicity and even and odd degrees
+are not cancelled against one another. The principal-upset example confirms
+that positive-degree terms vanish when the resolved module is already
+projective.
+
+These results do not select a canonical hook decomposition or a unique
+comparison isomorphism. Choice independence of the signed multisets is not a
+stability theorem: these declarations do not establish signed-barcode
+stability, the rank-exact structure axioms stated in
+[Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3), or the `2n−2`
+resolution-length bound stated in
 [Theorem 5.18](https://arxiv.org/html/2208.00300v3).
 
 For a field `k`, `n ≥ 1`, and an originally finitely presented module

@@ -4979,3 +4979,33 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_rank_eq
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionUniquenessExamples.principalHookMinimalResolution
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionUniquenessExamples.principalHook_positive_terms_are_zero
+
+-- Finite presentation-independent hook multisets and parity-separated signed barcodes (Issue #655).
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_with_hook_sum_terms_of_pfd_finitePoset
+#print axioms TDA.Persistence.CoordinateGrid.lanMinimalFiniteRankProjectiveResolutionObj
+#print axioms TDA.Persistence.FiniteHookSumPresentation
+#print axioms TDA.Persistence.FiniteHookSumPresentation.count
+#print axioms TDA.Persistence.FiniteHookSumPresentation.tag
+#print axioms TDA.Persistence.FiniteHookSumPresentation.iso
+#print axioms TDA.Persistence.hookTagMultiset
+#print axioms TDA.Persistence.hookTagMultiset_count
+#print axioms TDA.Persistence.FiniteHookSumPresentation.tagMultiset_eq_of_iso
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.finitelyPresented_exists_minimal_resolution_with_hook_sum_terms
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.exists_hook_sum_presentation
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.hookBettiMultiset
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_zero_of_length_le
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_zero_of_term_isZero
+#print axioms TDA.Persistence.evenHookDegrees
+#print axioms TDA.Persistence.oddHookDegrees
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.evenHookBetti
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.oddHookBetti
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.evenHookBetti_eq
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.oddHookBetti_eq
+#print axioms TDA.Persistence.SignedHookBarcode
+#print axioms TDA.Persistence.SignedHookBarcode.positive
+#print axioms TDA.Persistence.SignedHookBarcode.negative
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.signedHookBarcode
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.signedHookBarcode_eq
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionHookBettiExamples.principalHookIdentityMinimalResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionHookBettiExamples.principalHook_positive_degree_terms_have_empty_hook_multiset
