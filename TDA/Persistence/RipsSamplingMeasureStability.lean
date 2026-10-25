@@ -4,11 +4,12 @@ import TDA.Probability.MeasureSampling
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 
 /-!
-# Finite-p stability of compact sampled Rips diagram laws
+# Wasserstein stability of compact sampled Rips diagram laws
 
 The output Wasserstein distance is on probability measures over whole diagrams,
-with the bottleneck metric as ground cost. The proof couples iid tuples by
-sampling pairs from an arbitrary input coupling and then takes its infimum.
+with the bottleneck metric as ground cost. Finite-p and essential-supremum bounds
+couple iid tuples by sampling pairs from an arbitrary input coupling and then
+take its infimum.
 -/
 
 noncomputable section
