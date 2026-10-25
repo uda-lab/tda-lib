@@ -114,6 +114,31 @@ theorem principalUpset_identity_isRankProjectiveCover (a : Fin 2) :
     infer_instance
   · exact HookInfinity.isRankProjective a
 
+/-- A selected shortest hook-sum cover of a principal upset compares with its
+identity cover through the public common-quotient uniqueness theorem. -/
+noncomputable def principalUpsetSelectedMinimalHookSumCover (a : Fin 2) :
+    MinimalHookSumCover (HookInfinity.module (R := ℚ) a) :=
+  Classical.choice <| exists_minimalHookSumCover
+    (HookInfinity.module (R := ℚ) a) (by intro p; infer_instance)
+
+/-- The identity cover and a selected minimal hook-sum cover of a nonzero
+principal upset are isomorphic over their shared target. -/
+theorem principalUpset_identity_iso_minimal_cover (a : Fin 2) :
+    (∃ e : HookInfinity.module (R := ℚ) a ≅
+        (⨁ (principalUpsetSelectedMinimalHookSumCover a).cover.summand),
+      e.hom ≫ (principalUpsetSelectedMinimalHookSumCover a).cover.quotient =
+        𝟙 (HookInfinity.module (R := ℚ) a)) ∧
+      ∃ x : (HookInfinity.module (R := ℚ) a).obj a, x ≠ 0 := by
+  constructor
+  · exact IsRankProjectiveCover.exists_iso_over_quotient
+      (principalUpset_identity_isRankProjectiveCover a)
+      (principalUpsetSelectedMinimalHookSumCover a).isRankProjectiveCover
+  · let e := HookInfinity.fiberEquivOfLe (R := ℚ) (i := a) (a := a) le_rfl
+    refine ⟨e.symm 1, ?_⟩
+    intro hx
+    have hone := congrArg e hx
+    exact (one_ne_zero : (1 : ℚ) ≠ 0) (by simpa using hone)
+
 /-- A selected shortest cover of the nonzero branching module has nonzero
 kernel. If its kernel vanished, the rank-exact quotient would be an
 isomorphism, making this non-projective module rank projective. -/
