@@ -73,6 +73,107 @@ def rankProjectiveHookHomOrder {P : Type} [PartialOrder P]
   | .inr a, .inl cd => cd.val.1 ≤ a
   | .inr a, .inr b => b ≤ a
 
+/-- A finite hook sum with its actual rank-exact deflation onto `M`. The
+occurrence index is retained, so isomorphic summands are not identified. -/
+structure HookSumCover {P : Type} [PartialOrder P] [Fintype P]
+    (M : PModule.{u,0,u} k P) where
+  length : ℕ
+  tag : Fin length → FiniteRankProjectiveClassification.RankProjectiveHookTag P
+  quotient : (⨁ fun i =>
+    FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k) (tag i)) ⟶ M
+  row_rank_exact : IsRankExact (kernel.ι quotient) quotient
+
+/-- The finite middle term of a hook-sum cover is rank projective. -/
+theorem HookSumCover.term_isRankProjective {P : Type} [PartialOrder P] [Fintype P]
+    {M : PModule.{u,0,u} k P} (C : HookSumCover M) :
+    IsRankProjective (⨁ fun i =>
+      FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k) (C.tag i)) := by
+  apply IsRankProjective.biproduct
+  intro i
+  cases C.tag i with
+  | inl ab => exact Hook.isRankProjective ab.property
+  | inr a => exact HookInfinity.isRankProjective a
+
+private def canonicalHookTag {P : Type} [PartialOrder P]
+    {M : PModule.{u,0,u} k P} : FiniteHookDeflation.Index M →
+      FiniteRankProjectiveClassification.RankProjectiveHookTag P
+  | .inl t => .inl t.1
+  | .inr t => .inr t.1
+
+private theorem canonicalFamily_eq_tag {P : Type} [PartialOrder P]
+    {M : PModule.{u,0,u} k P} (t : FiniteHookDeflation.Index M) :
+    FiniteHookDeflation.family M t =
+      FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k)
+        (canonicalHookTag t) := by
+  cases t <;> rfl
+
+/-- Reindex the canonical finite-hook deflation as a `Fin`-indexed hook sum. -/
+private noncomputable def canonicalHookSumIso {P : Type} [PartialOrder P]
+    [Fintype P] {M : PModule.{u,0,u} k P} :
+    FiniteHookDeflation.module M ≅
+      (⨁ fun i : Fin (Fintype.card (FiniteHookDeflation.Index M)) =>
+        FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k)
+          (canonicalHookTag ((Fintype.equivFin (FiniteHookDeflation.Index M)).symm i))) := by
+  classical
+  let σ : Fin (Fintype.card (FiniteHookDeflation.Index M)) ≃
+      FiniteHookDeflation.Index M := (Fintype.equivFin _).symm
+  let F : FiniteHookDeflation.Index M → PModule.{u,0,u} k P :=
+    FiniteHookDeflation.family M
+  have eReindex : (⨁ fun i => F (σ i)) ≅ ⨁ F := biproduct.reindex σ F
+  let eFamily : (⨁ F) ≅ ⨁ fun i => F (σ i) := eReindex.symm
+  have eTag : (⨁ fun i => F (σ i)) ≅
+      (⨁ fun i : Fin (Fintype.card (FiniteHookDeflation.Index M)) =>
+        FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k)
+          (canonicalHookTag (σ i))) :=
+    biproduct.mapIso (fun i => eqToIso (canonicalFamily_eq_tag (σ i)))
+  change (⨁ F) ≅ _
+  exact eFamily.trans eTag
+
+/-- The finite-pfd hook deflation, expressed as a `Fin`-indexed hook-sum cover. -/
+noncomputable def canonicalHookSumCover {P : Type} [PartialOrder P] [Fintype P]
+    (M : PModule.{u,0,u} k P) (hfd : ∀ p, FiniteDimensional k (M.obj p)) :
+    HookSumCover M := by
+  classical
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hfd
+  let e := canonicalHookSumIso (M := M)
+  let q := e.inv ≫ FiniteHookDeflation.π M
+  have eKernel : kernel (FiniteHookDeflation.π M) ≅ kernel q :=
+    (kernel.mapIso q (FiniteHookDeflation.π M) e.symm (Iso.refl M) (by
+      simp [q])).symm
+  refine {
+    length := Fintype.card (FiniteHookDeflation.Index M)
+    tag := fun i => canonicalHookTag ((Fintype.equivFin _).symm i)
+    quotient := q
+    row_rank_exact := ?_
+  }
+  exact (FiniteHookDeflation.rankExact M).of_iso eKernel e (Iso.refl M)
+
+/-- A shortest hook-sum rank-exact deflation among all finite hook-sum
+deflations onto `M`. -/
+structure MinimalHookSumCover {P : Type} [PartialOrder P] [Fintype P]
+    (M : PModule.{u,0,u} k P) where
+  cover : HookSumCover M
+  minimal : ∀ C : HookSumCover M, cover.length ≤ C.length
+
+/-- Pointwise finite-dimensional modules on finite posets admit a shortest
+finite hook-sum rank-exact cover. -/
+theorem exists_minimalHookSumCover {P : Type} [PartialOrder P] [Fintype P]
+    (M : PModule.{u,0,u} k P) (hfd : ∀ p, FiniteDimensional k (M.obj p)) :
+    Nonempty (MinimalHookSumCover M) := by
+  classical
+  let hasCover : ℕ → Prop := fun m => ∃ C : HookSumCover M, C.length = m
+  have hCover : ∃ m, hasCover m := by
+    refine ⟨(canonicalHookSumCover M hfd).length, ?_⟩
+    exact ⟨canonicalHookSumCover M hfd, rfl⟩
+  let m := Nat.find hCover
+  obtain ⟨C, hC⟩ := Nat.find_spec hCover
+  refine ⟨⟨C, ?_⟩⟩
+  intro D
+  by_contra hnot
+  have hlt : D.length < C.length := Nat.lt_of_not_ge hnot
+  have hmin := Nat.find_min' hCover (show hasCover D.length from ⟨D, rfl⟩)
+  omega
+
 /-- Every nonzero hook component follows the finite endpoint order. This is the
 strictness input for finite termination once minimality rules out equal-hook
 components in successive differentials. -/
