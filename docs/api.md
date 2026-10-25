@@ -1553,12 +1553,26 @@ moment bounds, and distortion GW with factor one half. Their measure-valued
 counterparts in `MeasureCoupling`, `MeasureSampling`, and `MeasureGromovWasserstein`
 use actual `ProbabilityMeasure` couplings with exact marginals. `RipsSampling`
 applies the atomic estimates to full diagrams of finite tuple ranges, and
-`RipsSamplingMeasureStability` proves the finite-p compact-law bound and the
-compact-law `W_∞` bound on whole diagram laws with bottleneck ground cost. The
-infinity theorem is
-`Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity`
-and uses the half-distortion convention's factor `2` without an optimizer or a
-finite-`p` limit.
+`RipsSamplingMeasureStability` proves finite-p and `W_∞` bounds on whole diagram
+laws with bottleneck ground cost in every natural degree `q`, including degree
+zero. The theorems
+`Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees` and
+`Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity_allDegrees`
+state these bounds. Writing `U_{n,q}(μ) = Rips.sampleLawMeasure k μ n q`, they are
+
+\[
+ W_p(U_{n,q}(μ),U_{n,q}(ν))
+ \le 2 {n\choose2}^{1/p} GW_p(μ,ν), \qquad p\ge1,\ n\ge2,
+\]
+
+and `W_∞(U_{n,q}(μ),U_{n,q}(ν)) ≤ 2 GW_∞(μ,ν)` for every `n`. The existing
+positive-degree wrappers retain the names
+`Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein` and
+`Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity`.
+At `q = 0` these are laws of the actual full ordinary H₀ diagrams, including
+the essential `(0, ⊤)` occurrence for each nonempty sample; they do not state a
+probability-law bound for reduced H₀ diagrams. The factor `2` uses the
+half-distortion convention, without an optimizer or a finite-`p` limit.
 `RipsSampleQuotient` identifies tuple-index and metric-sample Rips homology
 filtrations by a natural isomorphism. See [sampled Rips laws](math/sampled-rips-laws.md)
 for the finite-p and infinity bounds and the ε regression. The real-valued input
@@ -1571,8 +1585,15 @@ embeddings, and `epsilonTwoPoint_realSampleLaw_nontrivial_mass` states this atom
 for the real-valued input law. This does not give an arbitrary-`n` atom formula.
 The compact Borel law and its finite-PMF agreement are described with the
 `Rips.sampleLawMeasure` API above. The finite-PMF transport cost has not yet been
-identified with the infimum over all Borel couplings on finite support, and the
-reduced/unreduced H₀ correspondence remains open.
+identified with the infimum over all Borel couplings on finite support.
+`RipsReducedH0` defines reduced sublevel H₀ as the categorical kernel of the
+augmentation induced by collapsing each Rips sublevel to a point. For a finite
+nonempty metric space, `reducedSublevelH0Diagram_points_eq_finitePart` identifies
+its diagram points with the finite part of the ordinary H₀ diagram, and
+`reducedSublevelH0Diagram_points_eq_eraseEssential` proves that removing one
+`(0, ⊤)` occurrence gives that multiset, preserving all other multiplicities.
+This pointwise finite-space bridge concerns reduced diagrams; the compact
+sampled-law bounds above concern full H₀ diagrams.
 
 ### Normalized subdivision-Rips and measure stability
 

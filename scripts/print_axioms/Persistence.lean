@@ -4923,6 +4923,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.reducedSublevelH0Diagram_points_eq_finitePart
 #print axioms TDA.Persistence.Rips.reducedSublevelH0Diagram_points_eq_eraseEssential
 
+-- Compact sampled-law stability in every homological degree.
+#print axioms TDA.Persistence.Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees
+#print axioms TDA.Persistence.Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity_allDegrees
+
 -- Finite-poset minimal rank-projective covers and resolutions.
 #print axioms TDA.Persistence.IsRankProjectiveCover
 #print axioms TDA.Persistence.IsRankProjectiveCover.term_rank_projective

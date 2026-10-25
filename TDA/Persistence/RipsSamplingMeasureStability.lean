@@ -128,14 +128,15 @@ theorem measureTransportCost_sampleLawMeasure_le (k : Type w) [Field k]
     _ ≤ (n.choose 2 : ℝ≥0∞) * π.distortionMoment p :=
       sampleDiagramPairCost_le k π hp n degree
 
-/-- Finite-p stability of the actual compact-input iid Rips diagram laws for
-diameter-time Vietoris–Rips filtrations and the standard half-distortion GW
-normalization. -/
-theorem wasserstein_sampleLawMeasure_le_measureGromovWasserstein
+/-- Finite-p stability of the actual compact-input iid Rips diagram laws in
+every homological degree, including degree zero, for diameter-time
+Vietoris–Rips filtrations and the standard half-distortion GW normalization.
+At degree zero, the diagrams are the full ordinary H₀ diagrams. -/
+theorem wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees
     (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
-    {p : ℝ} (hp : 1 ≤ p) (n degree : ℕ) (hn : 2 ≤ n) :
-    measureWasserstein p bottleneck (sampleLawMeasure k μ n (degree + 1))
-      (sampleLawMeasure k ν n (degree + 1)) ≤
+    {p : ℝ} (hp : 1 ≤ p) (n q : ℕ) (hn : 2 ≤ n) :
+    measureWasserstein p bottleneck (sampleLawMeasure k μ n q)
+      (sampleLawMeasure k ν n q) ≤
         (2 : ℝ≥0∞) * (n.choose 2 : ℝ≥0∞) ^ p⁻¹ *
           measureGromovWasserstein p μ ν := by
   have hp0 : 0 < p := lt_of_lt_of_le zero_lt_one hp
@@ -151,19 +152,31 @@ theorem wasserstein_sampleLawMeasure_le_measureGromovWasserstein
     simp only [measureGromovWasserstein, ← mul_assoc]
     rw [ENNReal.mul_inv_cancel (by norm_num) (by norm_num), one_mul]
   have hbound :
-      measureWasserstein p bottleneck (sampleLawMeasure k μ n (degree + 1))
-        (sampleLawMeasure k ν n (degree + 1)) ≤
+      measureWasserstein p bottleneck (sampleLawMeasure k μ n q)
+        (sampleLawMeasure k ν n q) ≤
         (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * (2 * measureGromovWasserstein p μ ν) := by
     rw [hGW, ENNReal.mul_iInf_of_ne hC0 hCtop]
     apply le_iInf
     intro π
     exact (ENNReal.rpow_le_rpow
-        (measureTransportCost_sampleLawMeasure_le k π hp0 n (degree + 1))
+        (measureTransportCost_sampleLawMeasure_le k π hp0 n q)
         (inv_nonneg.mpr hp0.le)).trans_eq
       (ENNReal.mul_rpow_of_nonneg _ _ (inv_nonneg.mpr hp0.le))
   calc
     _ ≤ (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * (2 * measureGromovWasserstein p μ ν) := hbound
     _ = 2 * (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * measureGromovWasserstein p μ ν := by ring
+
+/-- Positive-degree specialization of
+`wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees`. -/
+theorem wasserstein_sampleLawMeasure_le_measureGromovWasserstein
+    (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
+    {p : ℝ} (hp : 1 ≤ p) (n degree : ℕ) (hn : 2 ≤ n) :
+    measureWasserstein p bottleneck (sampleLawMeasure k μ n (degree + 1))
+      (sampleLawMeasure k ν n (degree + 1)) ≤
+        (2 : ℝ≥0∞) * (n.choose 2 : ℝ≥0∞) ^ p⁻¹ *
+          measureGromovWasserstein p μ ν := by
+  simpa using wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees
+    k μ ν hp n (degree + 1) hn
 
 private theorem essSup_pairMaximum_iidMeasure_le {Z : Type*} [MeasurableSpace Z]
     (ρ : ProbabilityMeasure Z) (n : ℕ) (c : Z → Z → ℝ≥0∞)
@@ -221,17 +234,17 @@ private theorem essSup_pairMaximum_iidMeasure_le {Z : Type*} [MeasurableSpace Z]
 
 private theorem sampleLawMeasureCoupling_essSup_le_distortionInfinity
     (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
-    (π : MeasureCoupling μ ν) (n degree : ℕ) :
+    (π : MeasureCoupling μ ν) (n q : ℕ) :
     essSup (fun de : Diagram ℝ × Diagram ℝ => bottleneck de.1 de.2)
-      ((sampleLawMeasureCoupling k π n (degree + 1)).joint : Measure
+      ((sampleLawMeasureCoupling k π n q).joint : Measure
         (Diagram ℝ × Diagram ℝ)) ≤
         π.distortionInfinity := by
-  let f : (Fin n → X) → Diagram ℝ := fun t => sampleDiagram k t (degree + 1)
-  let g : (Fin n → Y) → Diagram ℝ := fun t => sampleDiagram k t (degree + 1)
+  let f : (Fin n → X) → Diagram ℝ := fun t => sampleDiagram k t q
+  let g : (Fin n → Y) → Diagram ℝ := fun t => sampleDiagram k t q
   let pairTuple : (Fin n → X × Y) → (Fin n → X) × (Fin n → Y) :=
     fun t => (fun i => (t i).1, fun i => (t i).2)
-  have hf : Measurable f := (continuous_sampleDiagram k (degree + 1)).measurable
-  have hg : Measurable g := (continuous_sampleDiagram k (degree + 1)).measurable
+  have hf : Measurable f := (continuous_sampleDiagram k q).measurable
+  have hg : Measurable g := (continuous_sampleDiagram k q).measurable
   have hpairTuple : Measurable pairTuple := by
     apply Measurable.prodMk
     · apply measurable_pi_lambda
@@ -250,10 +263,10 @@ private theorem sampleLawMeasureCoupling_essSup_le_distortionInfinity
     measurableSet_le htupleCost measurable_const
   have hpairMax := essSup_pairMaximum_iidMeasure_le π.joint n distortion distortion_self
   have hsource : ∀ᵐ t ∂(iidMeasure π.joint n : Measure (Fin n → X × Y)),
-      bottleneck (sampleDiagram k (fun i => (t i).1) (degree + 1))
-        (sampleDiagram k (fun i => (t i).2) (degree + 1)) ≤ π.distortionInfinity := by
+      bottleneck (sampleDiagram k (fun i => (t i).1) q)
+        (sampleDiagram k (fun i => (t i).2) q) ≤ π.distortionInfinity := by
     filter_upwards [ae_le_essSup (f := pairMaximum distortion)] with t ht
-    exact (bottleneck_sampleDiagram_le_pairMaximum k t (degree + 1)).trans
+    exact (bottleneck_sampleDiagram_le_pairMaximum k t q).trans
       (ht.trans hpairMax)
   have htuple : ∀ᵐ ts ∂((π.tuples n).joint : Measure
       ((Fin n → X) × (Fin n → Y))),
@@ -266,10 +279,10 @@ private theorem sampleLawMeasureCoupling_essSup_le_distortionInfinity
       (Fin n → X × Y)),
       bottleneck (f (pairTuple t).1) (g (pairTuple t).2) ≤ π.distortionInfinity
     simpa [f, g, pairTuple, iidMeasure, ProbabilityMeasure.toMeasure_pi] using hsource
-  have hdiagram : ∀ᵐ de ∂((sampleLawMeasureCoupling k π n (degree + 1)).joint :
+  have hdiagram : ∀ᵐ de ∂((sampleLawMeasureCoupling k π n q).joint :
       Measure (Diagram ℝ × Diagram ℝ)),
       bottleneck de.1 de.2 ≤ π.distortionInfinity := by
-    have hsampleLaw : sampleLawMeasureCoupling k π n (degree + 1) =
+    have hsampleLaw : sampleLawMeasureCoupling k π n q =
         MeasureCoupling.map (π.tuples n) f g hf hg := by
       rfl
     rw [hsampleLaw]
@@ -283,26 +296,28 @@ private theorem sampleLawMeasureCoupling_essSup_le_distortionInfinity
 
 private theorem measureWassersteinInfinity_sampleLawMeasure_le_coupling
     (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
-    (π : MeasureCoupling μ ν) (n degree : ℕ) :
-    measureWassersteinInfinity bottleneck (sampleLawMeasure k μ n (degree + 1))
-      (sampleLawMeasure k ν n (degree + 1)) ≤ π.distortionInfinity := by
-  change (⨅ γ : MeasureCoupling (sampleLawMeasure k μ n (degree + 1))
-      (sampleLawMeasure k ν n (degree + 1)),
+    (π : MeasureCoupling μ ν) (n q : ℕ) :
+    measureWassersteinInfinity bottleneck (sampleLawMeasure k μ n q)
+      (sampleLawMeasure k ν n q) ≤ π.distortionInfinity := by
+  change (⨅ γ : MeasureCoupling (sampleLawMeasure k μ n q)
+      (sampleLawMeasure k ν n q),
       essSup (fun de : Diagram ℝ × Diagram ℝ => bottleneck de.1 de.2)
         (γ.joint : Measure (Diagram ℝ × Diagram ℝ))) ≤ π.distortionInfinity
-  exact (iInf_le _ (sampleLawMeasureCoupling k π n (degree + 1))).trans
-    (sampleLawMeasureCoupling_essSup_le_distortionInfinity k μ ν π n degree)
+  exact (iInf_le _ (sampleLawMeasureCoupling k π n q)).trans
+    (sampleLawMeasureCoupling_essSup_le_distortionInfinity k μ ν π n q)
 
-/-- Infinity stability of the actual compact-input iid Rips diagram laws for
-diameter-time Vietoris–Rips filtrations and the standard half-distortion GW
-normalization. The proof pushes any input probability coupling through the iid
-sample maps, bounds its essential-supremum cost by the input distortion, and
-then takes the infimum; no optimal coupling is assumed. -/
-theorem wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity
+/-- Infinity stability of the actual compact-input iid Rips diagram laws in
+every homological degree, including degree zero, for diameter-time
+Vietoris–Rips filtrations and the standard half-distortion GW normalization.
+At degree zero, the diagrams are the full ordinary H₀ diagrams. The proof
+pushes any input probability coupling through the iid sample maps, bounds its
+essential-supremum cost by the input distortion, and then takes the infimum;
+no optimal coupling is assumed. -/
+theorem wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity_allDegrees
     (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
-    (n degree : ℕ) :
-    measureWassersteinInfinity bottleneck (sampleLawMeasure k μ n (degree + 1))
-      (sampleLawMeasure k ν n (degree + 1)) ≤
+    (n q : ℕ) :
+    measureWassersteinInfinity bottleneck (sampleLawMeasure k μ n q)
+      (sampleLawMeasure k ν n q) ≤
         (2 : ℝ≥0∞) * measureGromovWassersteinInfinity μ ν := by
   have hGW : (2 : ℝ≥0∞) * measureGromovWassersteinInfinity μ ν =
       ⨅ π : MeasureCoupling μ ν, π.distortionInfinity := by
@@ -311,6 +326,17 @@ theorem wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity
   rw [hGW]
   apply le_iInf
   intro π
-  exact measureWassersteinInfinity_sampleLawMeasure_le_coupling k μ ν π n degree
+  exact measureWassersteinInfinity_sampleLawMeasure_le_coupling k μ ν π n q
+
+/-- Positive-degree specialization of
+`wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity_allDegrees`. -/
+theorem wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity
+    (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
+    (n degree : ℕ) :
+    measureWassersteinInfinity bottleneck (sampleLawMeasure k μ n (degree + 1))
+      (sampleLawMeasure k ν n (degree + 1)) ≤
+        (2 : ℝ≥0∞) * measureGromovWassersteinInfinity μ ν := by
+  simpa using wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity_allDegrees
+    k μ ν n (degree + 1)
 
 end TDA.Persistence.Rips
