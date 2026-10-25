@@ -4890,6 +4890,7 @@ set_option linter.auxLemma false
 
 -- Finite-poset minimal hook-cover termination and finite-presentation existence.
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.HookSumCover.term_finiteDimensional
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.HookSumCover.term_isRankProjective
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.HookSumCover.kernel_finiteDimensional
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.emptyBiproductIsoZero
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.HookSumCover.isZero_of_isEmpty_index
@@ -4903,7 +4904,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.finitePosetRank_strictMono
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.rankProjectiveHookTagWeight
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.rankProjectiveHookHomOrder_weight_strict
-#print axioms TDA.Persistence.FiniteRankProjectiveResolution.MinimalHookSumCover.differential_component_weight_strict
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.minimalHookCover_differential_component_weight_strict
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.exists_finiteRankProjectiveResolution_of_pfd_finitePoset
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.finitelyPresented_exists_finiteRankProjectiveResolution
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.principalUpset_has_finiteRankProjectiveResolution

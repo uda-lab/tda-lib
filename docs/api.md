@@ -302,9 +302,8 @@ zero/empty-sum case. This formalizes the finite-coordinate, finitely-presented
 projective-classification component related to
 [Botnan–Oppermann–Oudot–Scoccola, Theorem 2.7(1), v3](https://arxiv.org/html/2208.00300v3),
 not its exact-structure axioms or minimal-resolution result. It does not
-classify arbitrary pfd real-indexed modules or provide minimal covers,
-minimal resolutions, choice-independent decompositions or the `2n−2` length
-bound.
+classify arbitrary pfd real-indexed modules, provide choice-independent
+decompositions or minimal resolutions, or prove the `2n−2` length bound.
 
 For a field `k`, `n ≥ 1`, and an originally finitely presented module
 `M : PModule k (Fin n → ℝ)`,
@@ -312,14 +311,18 @@ For a field `k`, `n ≥ 1`, and an originally finitely presented module
 constructs an actual finite rank-projective resolution of `M`. It first uses the
 finite presentation to reconstruct `M` as the actual left Kan extension of a
 pointwise finite-dimensional module on a finite coordinate grid. On that finite
-poset it chooses shortest rank-exact hook-sum covers of successive kernels.
-Minimality rules out a nonzero diagonal component, and every nonzero differential
-component strictly increases a bounded hook-endpoint weight; hence a kernel
-eventually vanishes. The existing Kan preservation maps then transport all rows
-and projective terms back to `M`. No pfd, grid, hook decomposition, or resolution
-is an extra input. This proves finite resolution existence only: minimality,
-choice independence, the `2n−2` length bound, hook matching stability, persistent
-Schanuel and signed bottleneck stability remain separate results.
+poset it chooses rank-exact hook-sum covers with the fewest summands for each
+successive kernel. A nonzero same-hook component into the preceding kernel
+would split off a summand and contradict that choice. Thus every nonzero
+differential component strictly increases a weight built from the sizes of the
+hooks' endpoint lower sets, with infinite hooks placed above finite hooks. This
+weight is bounded on the finite poset, so the iteration ends with zero kernel.
+The existing Kan preservation maps then transport all rows and projective terms
+back to `M`. No pfd, grid, hook decomposition, or resolution is an extra input.
+This proves finite resolution existence only: minimality of the assembled
+resolution, choice independence, the `2n−2` length bound, hook matching
+stability, persistent Schanuel and signed bottleneck stability remain separate
+results.
 `FiniteRankProjectiveResolutionKanExamples` checks the theorem on a nonzero
 principal-upset free module; the earlier resolution examples retain the zero and
 contractible-row boundary cases.
