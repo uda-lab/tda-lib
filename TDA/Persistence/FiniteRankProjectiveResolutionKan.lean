@@ -1188,6 +1188,43 @@ noncomputable def lanFiniteRankProjectiveResolution (G : CoordinateGrid n)
   intro i
   exact G.lan_isRankProjective (R.term i) (R.term_rank_projective i)
 
+/-- Left Kan extension transfers the actual projective-cover certificate on
+every row of a minimal finite-grid resolution. For the endomorphism condition,
+the quotient-fixed map is lifted through the full-faithful Lan map, certified
+on the grid, then mapped back through Lan. -/
+theorem lanMinimalFiniteRankProjectiveResolution (G : CoordinateGrid n)
+    {A : PModule.{u,0,u} k G.Point}
+    (R : MinimalFiniteRankProjectiveResolution (k := k) (M := A)) :
+    Nonempty (MinimalFiniteRankProjectiveResolution (k := k) (M := G.lan.obj A)) := by
+  classical
+  refine ⟨{
+    resolution := G.lanFiniteRankProjectiveResolution R.resolution
+    quotient_is_cover := ?_
+  }⟩
+  intro i
+  refine ⟨?_, ?_, ?_⟩
+  · exact G.lan_isRankProjective (R.resolution.term i)
+      (R.resolution.term_rank_projective i)
+  · exact (G.lan_isRankExact (R.quotient_is_cover i).row_rank_exact).isRankDeflation.rankExact_kernel
+  · intro u hu
+    let u₀ := G.lanMapPreimage u
+    have hmap : G.lan.map u₀ = u := by
+      dsimp [u₀]
+      exact G.lan_map_preimage u
+    have hu₀ : u₀ ≫ R.resolution.quotient i = R.resolution.quotient i := by
+      apply G.lan_map_injective
+      calc
+        G.lan.map (u₀ ≫ R.resolution.quotient i) =
+            G.lan.map u₀ ≫ G.lan.map (R.resolution.quotient i) :=
+          Functor.map_comp _ _ _
+        _ = u ≫ (G.lanFiniteRankProjectiveResolution R.resolution).quotient i := by
+          rw [hmap]
+        _ = (G.lanFiniteRankProjectiveResolution R.resolution).quotient i := hu
+    letI : IsIso u₀ := (R.quotient_is_cover i).endomorphism_isIso u₀ hu₀
+    have hLanIso : IsIso (G.lan.map u₀) := Functor.map_isIso _ _
+    rw [← hmap]
+    exact hLanIso
+
 /-- Transport a finite rank-projective resolution across the presentation-grid
 reconstruction isomorphism, retaining all Lan-transferred rows. -/
 noncomputable def lanFiniteRankProjectiveResolutionOfReconstruction
@@ -1217,6 +1254,31 @@ theorem finitelyPresented_exists_finiteRankProjectiveResolution
   let R := Classical.choice
     (exists_finiteRankProjectiveResolution_of_pfd_finitePoset A hA)
   exact ⟨CoordinateGrid.lanFiniteRankProjectiveResolutionOfReconstruction G R e⟩
+
+/-- Every originally finitely presented module on a positive-dimensional real
+coordinate poset has an actual finite rank-projective resolution whose every
+quotient row is certified as a projective cover. The construction reconstructs
+the presentation on a finite grid, transfers its minimal resolution through
+the actual left Kan extension, then transports the rows across the reconstruction
+isomorphism. -/
+theorem finitelyPresented_exists_minimalFiniteRankProjectiveResolution
+    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0}
+      (R := k) (P := Fin n → ℝ) M) :
+    Nonempty (MinimalFiniteRankProjectiveResolution (k := k) (M := M)) := by
+  classical
+  obtain ⟨G, A, hA, ⟨e⟩⟩ :=
+    GradedFree.finitelyPresented_exists_pfd_finiteGridKan M hM
+  obtain ⟨R⟩ :=
+    FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset
+      A hA
+  obtain ⟨R'⟩ := G.lanMinimalFiniteRankProjectiveResolution R
+  exact ⟨{
+    resolution := R'.resolution.ofIso e
+    quotient_is_cover := fun i => by
+      change IsRankProjectiveCover (R'.resolution.quotient i)
+      exact R'.quotient_is_cover i
+  }⟩
 
 end FiniteRankProjectiveResolution
 
