@@ -297,3 +297,4 @@ import TDA.Persistence.FinitePresentationRankProjectiveClassification
 import TDA.Persistence.FinitePresentationRankProjectiveClassificationExamples
 import TDA.Persistence.FiniteRankProjectiveResolution
 import TDA.Persistence.FiniteRankProjectiveResolutionExamples
+import TDA.Persistence.FiniteRankProjectiveResolutionKan

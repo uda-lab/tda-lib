@@ -4878,3 +4878,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZero_differential_is_identity
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZero_rank_cancellation
 #print axioms TDA.Persistence.Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity
+
+-- Actual row-by-row transfer of finite rank-projective resolutions through grid Kan extension.
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.ofIso
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.ofRankProjective
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.hook_hom_nonzero_implies_endpoint_order
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.rankProjectiveHookHomOrder
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.rankProjectiveHook_hom_nonzero_order
+#print axioms TDA.Persistence.CoordinateGrid.lanFiniteRankProjectiveResolution
+#print axioms TDA.Persistence.CoordinateGrid.lanFiniteRankProjectiveResolutionOfReconstruction
