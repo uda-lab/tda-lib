@@ -967,5 +967,37 @@ theorem subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist
         if subdivisionRipsHomologyInterleavingExistsAt ε d e R n then
           (ε : ℝ≥0∞) else ∞) δ).trans (by simp [hExists])
   exact (not_lt_of_ge hdist) (hδr.trans hr)
+
+/-- If a finite metric sample is enlarged by `m` vertices through an isometric
+inclusion, every scale above the added uniform mass admits an interleaving of
+the actual normalized subdivision-Rips homology diagrams. Distances involving
+the added vertices are unrestricted. -/
+theorem subdivisionRipsHomologyInterleaving_of_isometric_embedding
+    (R : Type w) [Ring R] (n : ℕ) (i : X ↪ Y) (hi : Isometry i)
+    (m : ℕ) (hcard : Fintype.card Y = Fintype.card X + m)
+    (δ : ℝ≥0) (hδ : (m : ℝ) / Fintype.card Y < (δ : ℝ)) :
+    ∃ M : PModule.{w, 0, max u w} R (InterleavingIndex δ),
+      (copy δ false).toFunctor ⋙ M =
+        homology R (inferInstance : MetricSpace X) n ∧
+      (copy δ true).toFunctor ⋙ M =
+        homology R (inferInstance : MetricSpace Y) n := by
+  have hcardReal : (Fintype.card Y : ℝ) = (Fintype.card X : ℝ) + (m : ℝ) := by
+    exact_mod_cast hcard
+  have hfrac :
+      ((Fintype.card Y : ℝ) - Fintype.card X) / Fintype.card Y =
+        (m : ℝ) / Fintype.card Y := by
+    rw [hcardReal]
+    ring
+  have hgp : gromovProkhorovEDist X Y ≤
+      ENNReal.ofReal ((m : ℝ) / Fintype.card Y) := by
+    rw [← hfrac]
+    exact gromovProkhorovEDist_embedding_le i hi
+  have hmass : 0 ≤ (m : ℝ) / Fintype.card Y := by positivity
+  have hstrict :
+      ENNReal.ofReal ((m : ℝ) / Fintype.card Y) < (δ : ℝ≥0∞) :=
+    (ENNReal.ofReal_lt_coe_iff hmass).2 hδ
+  let s : SupNormWitness X Y δ := supNormWitness δ (hgp.trans_lt hstrict)
+  exact ⟨s.homologyInterleaving R n, s.homologyInterleaving_left R n,
+    s.homologyInterleaving_right R n⟩
 end
 end TDA.Topology.FiniteGromovProkhorov
