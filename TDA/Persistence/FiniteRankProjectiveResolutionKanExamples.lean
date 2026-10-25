@@ -35,6 +35,27 @@ theorem principalUpset_has_finiteRankProjectiveResolution
   exact GradedFree.free_finitelyPresented (R := k) (P := Fin n → ℝ)
     (HookInfinity.generators (P := Fin n → ℝ) a)
 
+/-- The nonzero principal-upset free module has a finite resolution whose
+actual quotient rows all satisfy the transferred projective-cover certificate. -/
+theorem principalUpset_has_minimalFiniteRankProjectiveResolution
+    (hn : 0 < n) (a : Fin n → ℝ) :
+    (∃ R : MinimalFiniteRankProjectiveResolution (k := k)
+        (M := HookInfinity.module (R := k) a),
+      ∀ i, IsRankProjectiveCover (R.resolution.quotient i)) ∧
+      ∃ x : (HookInfinity.module (R := k) a).obj a, x ≠ 0 := by
+  constructor
+  · obtain ⟨R⟩ :=
+      FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution
+        hn (HookInfinity.module (R := k) a)
+        (GradedFree.free_finitelyPresented (R := k) (P := Fin n → ℝ)
+          (HookInfinity.generators (P := Fin n → ℝ) a))
+    exact ⟨R, R.quotient_is_cover⟩
+  · let e := HookInfinity.fiberEquivOfLe (R := k) (i := a) (a := a) le_rfl
+    refine ⟨e.symm 1, ?_⟩
+    intro hx
+    have hone := congrArg e hx
+    exact (one_ne_zero : (1 : k) ≠ 0) (by simpa using hone)
+
 private theorem identity_isRankProjectiveCover
     {k : Type u} [Field k] {P : Type} [PartialOrder P]
     (M : PModule.{u,0,u} k P) (hfd : ∀ p, FiniteDimensional k (M.obj p))
@@ -92,6 +113,31 @@ theorem principalUpset_identity_isRankProjectiveCover (a : Fin 2) :
   · intro p
     infer_instance
   · exact HookInfinity.isRankProjective a
+
+/-- A selected shortest hook-sum cover of a principal upset compares with its
+identity cover through the public common-quotient uniqueness theorem. -/
+noncomputable def principalUpsetSelectedMinimalHookSumCover (a : Fin 2) :
+    MinimalHookSumCover (HookInfinity.module (R := ℚ) a) :=
+  Classical.choice <| exists_minimalHookSumCover
+    (HookInfinity.module (R := ℚ) a) (by intro p; infer_instance)
+
+/-- The identity cover and a selected minimal hook-sum cover of a nonzero
+principal upset are isomorphic over their shared target. -/
+theorem principalUpset_identity_iso_minimal_cover (a : Fin 2) :
+    (∃ e : HookInfinity.module (R := ℚ) a ≅
+        (⨁ (principalUpsetSelectedMinimalHookSumCover a).cover.summand),
+      e.hom ≫ (principalUpsetSelectedMinimalHookSumCover a).cover.quotient =
+        𝟙 (HookInfinity.module (R := ℚ) a)) ∧
+      ∃ x : (HookInfinity.module (R := ℚ) a).obj a, x ≠ 0 := by
+  constructor
+  · exact IsRankProjectiveCover.exists_iso_over_quotient
+      (principalUpset_identity_isRankProjectiveCover a)
+      (principalUpsetSelectedMinimalHookSumCover a).isRankProjectiveCover
+  · let e := HookInfinity.fiberEquivOfLe (R := ℚ) (i := a) (a := a) le_rfl
+    refine ⟨e.symm 1, ?_⟩
+    intro hx
+    have hone := congrArg e hx
+    exact (one_ne_zero : (1 : ℚ) ≠ 0) (by simpa using hone)
 
 /-- A selected shortest cover of the nonzero branching module has nonzero
 kernel. If its kernel vanished, the rank-exact quotient would be an

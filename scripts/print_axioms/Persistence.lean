@@ -4949,5 +4949,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.fork_selected_cover_kernel_nonzero
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.double_canonical_cover_retains_repeated_occurrences
 
+-- Full-faithful grid Kan maps and transferred minimal resolutions.
+#print axioms TDA.Persistence.CoordinateGrid.lanMapPreimage
+#print axioms TDA.Persistence.CoordinateGrid.lan_map_preimage
+#print axioms TDA.Persistence.CoordinateGrid.lan_map_surjective
+#print axioms TDA.Persistence.CoordinateGrid.lanMinimalFiniteRankProjectiveResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.principalUpset_has_minimalFiniteRankProjectiveResolution
+
+-- Common-target uniqueness for rank-projective covers.
+#print axioms TDA.Persistence.IsRankProjectiveCover.exists_iso_over_quotient
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.principalUpset_identity_iso_minimal_cover
+
 -- Large-face nerve homology comparison (Issue #504).
 #print axioms TDA.Persistence.SubdivisionRips.cechHomologyToLargeFaceNerve_isIso

@@ -44,15 +44,47 @@ This statement concerns a supplied finite family of rows. It does not assert
 that every finitely presented module has such a resolution, or that a supplied
 resolution is minimal, unique, or of a bounded length. It makes no barcode
 decomposition or stability claim. The source describes the rank invariant and
-rank exactness in [§1.2 and §2.14 of the paper], and Theorem 2.7 gives finite
-minimal rank-projective resolutions in its stated categories. The Lean identity
-is the finite telescoping consequence of the row additivity equation.
+rank exactness in [§1.2 and §2.14 of the paper]; the finite telescoping identity
+above follows directly from rank additivity in each row.
 
-Separately, `FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset`
-constructs a finite rank-projective resolution on a finite poset and certifies
-each actual kernel-row quotient as a projective cover. Its input is a
-pointwise finite-dimensional module on that finite poset; it does not certify
-minimality of the real-coordinate resolution obtained from a finite
-presentation by left Kan extension.
+## Minimal resolutions from real-coordinate finite presentations
+
+For a quotient `π : Q ⟶ K`, the public `IsRankProjectiveCover` certificate
+says that `Q` is rank-projective, the actual categorical-kernel row
+`kernel.ι π` followed by `π` is rank exact, and every endomorphism
+`u : Q ⟶ Q` satisfying `u ≫ π = π` is an isomorphism. In this API, a
+`MinimalFiniteRankProjectiveResolution` is a finite rank-projective resolution
+for which every actual quotient row carries this certificate.
+
+Let `k` be a field, let `n > 0`, and let
+`M : PModule k (Fin n → ℝ)` be originally finitely presented in the
+real-coordinate category, in the sense of `GradedFree.FinitelyPresented M`.
+Then
+`FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution`
+proves that an actual `MinimalFiniteRankProjectiveResolution M` exists.
+
+The proof starts from the finite presentation of `M` and reconstructs an
+isomorphism from the actual left Kan extension of a pointwise
+finite-dimensional module on a finite coordinate grid. The finite-poset
+theorem
+`FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset`
+supplies a resolution with the cover certificate on every grid row. The actual
+grid left Kan functor preserves rank-projectivity and rank-exactness of the
+actual categorical-kernel rows. It is also full and faithful on maps between
+its images:
+`CoordinateGrid.lanMapPreimage` gives the grid map for a real-coordinate map,
+`CoordinateGrid.lan_map_preimage` proves its Lan image is the given map, and
+`CoordinateGrid.lan_map_surjective` exposes existence;
+`CoordinateGrid.lan_map_injective` gives uniqueness.
+Consequently, a quotient-fixed endomorphism of a Lan row lifts to the grid,
+where the cover certificate makes it invertible. Lan carries that inverse back
+to an inverse on the real-coordinate row. Finally, the resolution and all row
+certificates are transported across the reconstruction isomorphism.
+
+This finite-grid Kan transfer is the content of [Theorem 2.7(2), proved in
+Appendix A by Botnan, Oppermann, Oudot and Scoccola](https://arxiv.org/html/2208.00300v3).
+The only module-specific input to the Lean theorem is the original
+finite-presentation predicate; the finite grid and its pointwise
+finite-dimensional module are constructed in the proof.
 
 [§1.2 and §2.14 of the paper]: https://arxiv.org/html/2208.00300v3
