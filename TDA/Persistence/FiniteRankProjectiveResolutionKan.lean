@@ -2,6 +2,7 @@ import TDA.Persistence.CoordinateGridProjective
 import TDA.Persistence.FinitePresentationGridKan
 import TDA.Persistence.FiniteRankProjectiveClassification
 import TDA.Persistence.FiniteRankProjectiveResolution
+import TDA.Persistence.RankDeflation
 import TDA.Persistence.RankExactIso
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 
@@ -1211,6 +1212,9 @@ theorem lanMinimalFiniteRankProjectiveResolution (G : CoordinateGrid n)
     have hmap : G.lan.map u₀ = u := by
       dsimp [u₀]
       exact G.lan_map_preimage u
+    have hquot :
+        (G.lanFiniteRankProjectiveResolution R.resolution).quotient i =
+          G.lan.map (R.resolution.quotient i) := rfl
     have hu₀ : u₀ ≫ R.resolution.quotient i = R.resolution.quotient i := by
       apply G.lan_map_injective
       calc
@@ -1218,7 +1222,7 @@ theorem lanMinimalFiniteRankProjectiveResolution (G : CoordinateGrid n)
             G.lan.map u₀ ≫ G.lan.map (R.resolution.quotient i) :=
           Functor.map_comp _ _ _
         _ = u ≫ (G.lanFiniteRankProjectiveResolution R.resolution).quotient i := by
-          rw [hmap]
+          rw [hmap, ← hquot]
         _ = (G.lanFiniteRankProjectiveResolution R.resolution).quotient i := hu
     letI : IsIso u₀ := (R.quotient_is_cover i).endomorphism_isIso u₀ hu₀
     have hLanIso : IsIso (G.lan.map u₀) := Functor.map_isIso _ _
