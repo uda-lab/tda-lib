@@ -1565,8 +1565,15 @@ embeddings, and `epsilonTwoPoint_realSampleLaw_nontrivial_mass` states this atom
 for the real-valued input law. This does not give an arbitrary-`n` atom formula.
 The compact Borel law and its finite-PMF agreement are described with the
 `Rips.sampleLawMeasure` API above. The finite-PMF transport cost has not yet been
-identified with the infimum over all Borel couplings on finite support, and the
-reduced/unreduced H₀ correspondence remains open.
+identified with the infimum over all Borel couplings on finite support.
+`RipsReducedH0` defines reduced sublevel H₀ as the categorical kernel of the
+augmentation induced by collapsing each Rips sublevel to a point. For a finite
+nonempty metric space, `reducedSublevelH0Diagram_points_eq_finitePart` identifies
+its diagram points with the finite part of the ordinary H₀ diagram, and
+`reducedSublevelH0Diagram_points_eq_eraseEssential` proves that removing one
+`(0, ⊤)` occurrence gives that multiset, preserving all other multiplicities.
+This finite-space result has not yet been used to extend the compact sampled-law
+stability theorems to degree zero.
 
 ### Normalized subdivision-Rips and measure stability
 

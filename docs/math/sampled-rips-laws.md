@@ -135,10 +135,18 @@ persistence-module isomorphism in every degree and over every coefficient ring.
 The identification of reduced and unreduced positive-degree persistence remains
 separate work.
 
+`RipsReducedH0` defines reduced sublevel H₀ as the kernel of the natural
+augmentation induced by collapsing each Rips sublevel to a point. On a finite
+nonempty metric space, `reducedSublevelH0Diagram_points_eq_finitePart` identifies
+the reduced diagram points with the finite part of the ordinary H₀ diagram;
+`reducedSublevelH0Diagram_points_eq_eraseEssential` proves this removes exactly
+one `(0, ⊤)` occurrence while preserving all other multiplicities.
+
 The compact Borel theorems use the independent `MeasureCoupling` transport
 definition directly on whole diagrams. They do not yet identify that transport
-infimum with the existing finite-PMF transport cost on finite support. The
-reduced-H₀ essential-interval correspondence also remains separate work.
+infimum with the existing finite-PMF transport cost on finite support, and the
+finite-space reduced-H₀ bridge has not yet been used to extend compact sampled-law
+stability to degree zero.
 
 ## Why the whole support diagram is different
 
@@ -182,8 +190,9 @@ The source is Gómez and Mémoli, *Curvature Sets Over Persistence Diagrams*,
 [arXiv:2103.04470v5](https://arxiv.org/abs/2103.04470v5), Definitions 2.9–2.10 and
 3.18, Theorems 3.8 and 3.19. The finite-p estimate combines their distance-matrix
 bound with Rips' diameter-scale Lipschitz constant two. The library proves both
-atomic and compact Borel probability-law versions using full finite sample
-diagrams; the reduced-diagram correspondence remains separate.
+atomic and compact Borel probability-law bounds using full finite sample
+diagrams. The finite Rips reduced-H₀ diagram correspondence is proved above;
+using it to state compact sampled-law stability in degree zero remains separate.
 
 Pinned mathlib supplies probability mass functions, their monad laws, and
 extended-real sums and powers. TauCeti's
