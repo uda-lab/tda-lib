@@ -48,4 +48,11 @@ rank exactness in [§1.2 and §2.14 of the paper], and Theorem 2.7 gives finite
 minimal rank-projective resolutions in its stated categories. The Lean identity
 is the finite telescoping consequence of the row additivity equation.
 
+Separately, `FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset`
+constructs a finite rank-projective resolution on a finite poset and certifies
+each actual kernel-row quotient as a projective cover. Its input is a
+pointwise finite-dimensional module on that finite poset; it does not certify
+minimality of the real-coordinate resolution obtained from a finite
+presentation by left Kan extension.
+
 [§1.2 and §2.14 of the paper]: https://arxiv.org/html/2208.00300v3
