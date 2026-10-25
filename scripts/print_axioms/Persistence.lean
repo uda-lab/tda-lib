@@ -4957,6 +4957,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.principalUpset_has_minimalFiniteRankProjectiveResolution
 
+-- Zero-padded termwise uniqueness of minimal finite rank-projective resolutions (Issue #653).
+#print axioms TDA.Persistence.IsRankProjectiveCover.ofIso
+#print axioms TDA.Persistence.IsRankProjectiveCover.postcomposeIso
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_eq_zero
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_eq
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_nonempty_iso
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_rank_eq
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionUniquenessExamples.principalHookMinimalResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionUniquenessExamples.principalHook_positive_terms_are_zero
+
 -- Common-target uniqueness for rank-projective covers.
 #print axioms TDA.Persistence.IsRankProjectiveCover.exists_iso_over_quotient
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.principalUpset_identity_iso_minimal_cover

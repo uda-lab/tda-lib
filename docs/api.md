@@ -315,9 +315,9 @@ finite-death hook, an unbounded principal upset, two repeated hooks, the
 zero/empty-sum case, and multiplicity invariance for a reordered mixed sum and
 empty families. Together, these results give choice-independent hook
 multiplicities for finite real-coordinate rank-projective decompositions. They
-do not select a canonical decomposition or a unique comparison isomorphism,
-prove termwise uniqueness for whole minimal resolutions, or establish
-choice-independence of a signed barcode. They do not establish the rank-exact
+do not select a canonical decomposition or a unique comparison isomorphism, or
+establish choice-independence of a signed barcode. They do not establish the
+rank-exact
 structure axioms stated in [Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3)
 or the `2n−2` resolution-length bound stated in
 [Theorem 5.18](https://arxiv.org/html/2208.00300v3).
@@ -373,6 +373,19 @@ Botnan–Oppermann–Oudot–Scoccola](https://arxiv.org/html/2208.00300v3).
 `FiniteRankProjectiveResolutionKanExamples` checks the finite-resolution and
 minimal-resolution interfaces on a nonzero principal-upset free module; the
 earlier resolution examples retain the zero and contractible-row boundary cases.
+
+For any field and any partially ordered index type, two
+`MinimalFiniteRankProjectiveResolution`s of the same module have isomorphic
+terms in each degree after padding the shorter resolution by zero:
+`MinimalFiniteRankProjectiveResolution.termAt_nonempty_iso` returns the
+comparison as a `Nonempty` isomorphism, and `termAt_rank_eq` shows that every
+structure-map rank in corresponding terms is independent of the chosen
+resolution. The theorem uses only the cover certificates carried by the two
+inputs; it neither assumes equal raw lengths nor chooses a canonical
+comparison isomorphism. The example
+`FiniteRankProjectiveResolutionUniquenessExamples.principalHook_positive_terms_are_zero`
+uses a one-term resolution of a principal-upset projective to show that every
+positive-degree term in any minimal resolution of that module is zero.
 
 `IsRankDeflation` means that a natural map is the quotient of an actual
 rank-exact sequence. Its `rankExact_kernel` law supplies the categorical
