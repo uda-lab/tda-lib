@@ -219,6 +219,7 @@ import TDA.Persistence.FiniteWeightedBoundaryTransport
 import TDA.Persistence.FiniteWeightedCoalescing
 
 import TDA.Persistence.RipsGromovHausdorff
+import TDA.Persistence.RipsReducedH0
 
 import TDA.Persistence.FiniteLine
 import TDA.Persistence.MatrixSequence
