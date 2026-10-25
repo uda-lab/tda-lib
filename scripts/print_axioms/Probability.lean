@@ -32,3 +32,29 @@ import TDA
 #print axioms TDA.Probability.wasserstein_eq_iInf
 #print axioms TDA.Probability.Coupling.row_sum
 #print axioms TDA.Probability.Coupling.col_sum
+
+-- Probability-measure couplings, iid tuple sampling, and measure GW.
+#print axioms TDA.Probability.MeasureCoupling
+#print axioms TDA.Probability.MeasureCoupling.independent
+#print axioms TDA.Probability.MeasureCoupling.instNonempty
+#print axioms TDA.Probability.MeasureCoupling.map
+#print axioms TDA.Probability.MeasureCoupling.cost
+#print axioms TDA.Probability.MeasureCoupling.cost_map
+#print axioms TDA.Probability.measureTransportCost
+#print axioms TDA.Probability.measureTransportCost_le_coupling
+#print axioms TDA.Probability.measureWasserstein
+#print axioms TDA.Probability.measureWasserstein_eq_iInf
+#print axioms TDA.Probability.measureWassersteinInfinity
+#print axioms TDA.Probability.iidMeasure
+#print axioms TDA.Probability.MeasureCoupling.tuples
+#print axioms TDA.Probability.MeasureCoupling.cost_tuples
+#print axioms TDA.Probability.MeasureCoupling.sampleLaw
+#print axioms TDA.Probability.lintegral_iid_pairEnergy
+#print axioms TDA.Probability.lintegral_iid_pairMaximum_rpow_le
+#print axioms TDA.Probability.measureDistortion
+#print axioms TDA.Probability.measureDistortion_self
+#print axioms TDA.Probability.measureDistortion_comm
+#print axioms TDA.Probability.MeasureCoupling.distortionMoment
+#print axioms TDA.Probability.measureGromovWasserstein
+#print axioms TDA.Probability.MeasureCoupling.distortionInfinity
+#print axioms TDA.Probability.measureGromovWassersteinInfinity

@@ -738,8 +738,13 @@ In positive degree, the law has finite `p`th moment from the empty diagram
 for every real `p > 0`. Isometric embeddings preserve the law after pushforward,
 and finite `PMF` inputs agree with the existing atomic `sampleLaw` after
 `toMeasure`.
-The compact-law Gromov–Wasserstein stability bound remains open. See
-[sampled Rips diagram laws](math/sampled-rips-laws.md).
+`RipsSamplingMeasureStability` proves that, for compact Borel probability
+inputs, the actual diagram laws satisfy
+`W_p ≤ 2 * choose(n,2)^(1/p) * GW_p` for real `p ≥ 1`, `n ≥ 2`, and positive
+degree. The Wasserstein cost is over couplings of whole diagrams with
+`bottleneck` as its ground metric; the input distortion GW infimum ranges over
+all probability couplings and needs no optimizer. No compact-law infinity
+stability theorem is claimed. See [sampled Rips diagram laws](math/sampled-rips-laws.md).
 
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
 `a < b` has finite-dimensional image over the coefficient field.
@@ -1509,8 +1514,12 @@ or second-level Gaussian universality claim. See [Gaussian measure embeddings an
 
 `Probability.FiniteSampling`, `SamplingMoments`, and `GromovWasserstein` provide
 atomic probability couplings, iid sampling with replacement, sharp unordered-pair
-moment bounds, and distortion GW with factor one half. `RipsSampling` applies
-these estimates to the actual full diagrams of finite tuple ranges.
+moment bounds, and distortion GW with factor one half. Their measure-valued
+counterparts in `MeasureCoupling`, `MeasureSampling`, and `MeasureGromovWasserstein`
+use actual `ProbabilityMeasure` couplings with exact marginals. `RipsSampling`
+applies the atomic estimates to full diagrams of finite tuple ranges, and
+`RipsSamplingMeasureStability` proves the finite-p compact-law bound on whole
+diagram laws with bottleneck ground cost.
 `RipsSampleQuotient` identifies tuple-index and metric-sample Rips homology
 filtrations by a natural isomorphism. See [sampled Rips laws](math/sampled-rips-laws.md)
 for the finite-p and infinity bounds and the ε regression. The real-valued input
@@ -1522,8 +1531,9 @@ as `ε → 0`; `sampleLaw_map_isometry` transports the whole law under isometric
 embeddings, and `epsilonTwoPoint_realSampleLaw_nontrivial_mass` states this atom
 for the real-valued input law. This does not give an arbitrary-`n` atom formula.
 The compact Borel law and its finite-PMF agreement are described with the
-`Rips.sampleLawMeasure` API above. Reduced/unreduced H₀ correspondence remains
-open.
+`Rips.sampleLawMeasure` API above. The finite-PMF transport cost has not yet been
+identified with the infimum over all Borel couplings on finite support, and the
+compact-law infinity bound and reduced/unreduced H₀ correspondence remain open.
 
 ### Normalized subdivision-Rips and measure stability
 
