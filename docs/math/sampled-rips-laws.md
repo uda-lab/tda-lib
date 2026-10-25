@@ -85,11 +85,29 @@ every real power `p > 0` has finite moment from that base diagram.
 An isometric embedding preserves the law after pushing forward the input measure.
 On a finite input type, `sampleLawMeasure_eq_toMeasure_sampleLaw` identifies the
 Borel law of a finite `PMF` with the `toMeasure` of the existing atomic sample law.
+Write `U_{n,q+1}(μ)` for `sampleLawMeasure k μ n (q+1)`, with one fixed coefficient
+field `k`. A probability coupling `π` of `μ` and `ν` is a measure on `X × Y`
+with those exact marginals. In the diameter-time convention used here,
+`GW_p(μ,ν)` is one half the infimum over such couplings of the `p`-th root of
+the distortion moment integrated against `π ⊗ π`.
+For compact Borel probability inputs, `Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein`
+proves the finite-p bound for the actual probability laws on `Diagram ℝ`, using
+`bottleneck` as the ground cost:
+
+\[
+ W_p(U_{n,q+1}(μ),U_{n,q+1}(ν))
+ \le 2{n\choose2}^{1/p}\,GW_p(μ,ν),
+ \qquad p\ge1,\ n\ge2.
+\]
+
+The proof pushes each input coupling through iid
+pair sampling and the Rips diagram maps, bounds its cost, and then takes the
+infimum; it does not assume an optimal coupling exists.
 
 ## Scope and remaining bridges
 
-The theorems use probability mass functions and the library's full finite Rips
-diagrams. The finite-range projection is surjective and preserves all distances;
+The atomic theorems use probability mass functions and the library's full finite
+Rips diagrams. The finite-range projection is surjective and preserves all distances;
 `sampleProjection_eq_iff` characterizes its fibers by zero pseudodistance, and
 `sampleDiagram_eq_of_range_eq` establishes independence from repeated labels.
 `tupleFilter` puts the closed-diameter filtration directly on the tuple indices,
@@ -100,13 +118,12 @@ persistence-module isomorphism in every degree and over every coefficient ring.
 The identification of reduced and unreduced positive-degree persistence remains
 separate work.
 
-The finite atomic transport definition is not yet identified with an infimum over
-all Borel measure couplings on the bottleneck ground space. The compact Borel law
-and its finite PMF bridge are established, but the general compact-input
-Gromov–Wasserstein to Wasserstein stability bound remains open. The reduced-H₀
-essential-interval correspondence also remains separate work. These results do
-not yet complete the full sampled-law contract in
-[Issue #503](https://github.com/uda-lab/tda-lib/issues/503).
+The compact Borel theorem uses the independent `MeasureCoupling` transport
+definition directly on whole diagrams. It does not yet identify that transport
+infimum with the existing finite-PMF transport cost on finite support. Measure
+coupling and GW infinity definitions are available, but this unit makes no
+compact-law infinity stability claim. The reduced-H₀ essential-interval
+correspondence also remains separate work.
 
 ## Why the whole support diagram is different
 
@@ -149,9 +166,9 @@ vanishing-mass limit are formalized on the Bool metric chart described above.
 The source is Gómez and Mémoli, *Curvature Sets Over Persistence Diagrams*,
 [arXiv:2103.04470v5](https://arxiv.org/abs/2103.04470v5), Definitions 2.9–2.10 and
 3.18, Theorems 3.8 and 3.19. The finite-p estimate combines their distance-matrix
-bound with Rips' diameter-scale Lipschitz constant two. The library proof is
-atomic and retains full finite diagrams; the reduced-diagram correspondence is
-limited by the bridges listed above.
+bound with Rips' diameter-scale Lipschitz constant two. The library proves both
+atomic and compact Borel probability-law versions using full finite sample
+diagrams; the reduced-diagram correspondence remains separate.
 
 Pinned mathlib supplies probability mass functions, their monad laws, and
 extended-real sums and powers. TauCeti's

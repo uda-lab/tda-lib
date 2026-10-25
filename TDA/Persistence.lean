@@ -83,6 +83,7 @@ import TDA.Persistence.PersistenceImageDiagram
 import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramBottleneckTopology
 import TDA.Persistence.RipsSamplingMeasure
+import TDA.Persistence.RipsSamplingMeasureStability
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.SublevelLossDerivative
 import TDA.Persistence.FiniteBarcode

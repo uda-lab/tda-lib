@@ -3450,6 +3450,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.sampleLawMeasure_eq_toMeasure_sampleLaw
 #print axioms TDA.Persistence.Rips.bottleneck_sampleDiagram_empty_le_two_mul_diam
 #print axioms TDA.Persistence.Rips.sampleLawMeasure_finite_rpow_moment
+#print axioms TDA.Persistence.Rips.sampleLawMeasureCoupling
+#print axioms TDA.Persistence.Rips.sampleDiagramBottleneckCost
+#print axioms TDA.Persistence.Rips.sampleDiagramPairCost_eq_integral
+#print axioms TDA.Persistence.Rips.sampleDiagramPairCost_le_pairMaximum
+#print axioms TDA.Persistence.Rips.sampleDiagramPairCost_le
+#print axioms TDA.Persistence.Rips.measureTransportCost_sampleLawMeasure_le
+#print axioms TDA.Persistence.Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein
 #print axioms TDA.Persistence.RipsSamplingExamples.twoPoint_gromovWasserstein_singleton
 #print axioms TDA.Persistence.RipsSamplingExamples.weighted_twoPoint_sampleLaw_bound
 #print axioms TDA.Persistence.RipsSamplingExamples.uniformTwoPoints
