@@ -4961,5 +4961,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IsRankProjectiveCover.exists_iso_over_quotient
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.principalUpset_identity_iso_minimal_cover
 
+-- Multiplicity uniqueness for actual real-coordinate hook sums.
+#print axioms TDA.Persistence.GradedFree.rankProjectiveHookSum_multiplicity_unique_of_iso
+#print axioms TDA.Persistence.FinitePresentationRankProjectiveClassification.Examples.reordered_mixed_hook_sum_preserves_every_multiplicity
+#print axioms TDA.Persistence.FinitePresentationRankProjectiveClassification.Examples.empty_hook_sums_have_equal_every_multiplicity
+
 -- Large-face nerve homology comparison (Issue #504).
 #print axioms TDA.Persistence.SubdivisionRips.cechHomologyToLargeFaceNerve_isIso

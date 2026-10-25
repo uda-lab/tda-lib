@@ -6,8 +6,9 @@ import Mathlib.Tactic
 # Consumers of the finitely-presented real rank-projective classification
 
 The examples exercise finite-death and infinite-death hooks, repeated
-occurrences, and the empty sum. Every ambient example is obtained from an
-actual finite coordinate grid, so the hypotheses match the public theorem.
+occurrences, the empty sum, and equality of multiplicities after reordering a
+mixed ambient sum. The classification examples come from actual finite
+coordinate grids, so their hypotheses match the public theorem.
 -/
 
 set_option autoImplicit false
@@ -114,6 +115,45 @@ theorem unbounded_principal_upset_classifies :
 
 private noncomputable def finiteTag : RankProjectiveHookTag P :=
   .inl ⟨(birth, death), birth_lt_death⟩
+
+private noncomputable def infiniteTag : RankProjectiveHookTag P := .inr birth
+
+private noncomputable def mixedHookTags : Fin 3 → RankProjectiveHookTag P := fun i =>
+  if i.val = 1 then infiniteTag else finiteTag
+
+/-- Reordering a mixed sum with repeated finite hooks preserves every
+finite-death and infinite-death occurrence count. -/
+theorem reordered_mixed_hook_sum_preserves_every_multiplicity
+    (c : RankProjectiveHookTag P) :
+    Fintype.card {i : Fin 3 // mixedHookTags i = c} =
+      Fintype.card {i : Fin 3 // mixedHookTags (Equiv.swap (0 : Fin 3) 1 i) = c} := by
+  classical
+  let σ : Fin 3 ≃ Fin 3 := Equiv.swap (0 : Fin 3) 1
+  let reordered : Fin 3 → RankProjectiveHookTag P := fun i => mixedHookTags (σ i)
+  have hReordered : (fun i : Fin 3 =>
+      rankProjectiveHookModule (k := ℚ) (reordered i)) =
+      (fun i : Fin 3 => rankProjectiveHookModule (k := ℚ) (mixedHookTags i)) ∘ σ := by
+    funext i
+    rfl
+  have e : (⨁ fun i : Fin 3 =>
+      rankProjectiveHookModule (k := ℚ) (mixedHookTags i)) ≅
+      ⨁ fun i : Fin 3 => rankProjectiveHookModule (k := ℚ) (reordered i) := by
+    simpa only [hReordered] using
+      (biproduct.reindex σ
+        (fun i : Fin 3 => rankProjectiveHookModule (k := ℚ) (mixedHookTags i))).symm
+  simpa [σ, reordered] using
+    GradedFree.rankProjectiveHookSum_multiplicity_unique_of_iso
+      (k := ℚ) (n := 1) mixedHookTags reordered ⟨e⟩ c
+
+/-- Empty occurrence families have equal multiplicity for every real tag. -/
+theorem empty_hook_sums_have_equal_every_multiplicity
+    (c : RankProjectiveHookTag P) :
+    Fintype.card {i : Fin 0 // (Fin.elim0 i : RankProjectiveHookTag P) = c} =
+      Fintype.card {i : Fin 0 // (Fin.elim0 i : RankProjectiveHookTag P) = c} := by
+  exact GradedFree.rankProjectiveHookSum_multiplicity_unique_of_iso
+    (k := ℚ) (n := 1) Fin.elim0 Fin.elim0 ⟨Iso.refl
+      (⨁ fun i : Fin 0 => rankProjectiveHookModule (k := ℚ)
+        (Fin.elim0 i : RankProjectiveHookTag P))⟩ c
 
 private theorem repeatedFiniteHook_finitelyPresented :
     FinitelyPresented (R := ℚ) (P := P)
