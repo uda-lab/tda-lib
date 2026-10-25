@@ -339,10 +339,11 @@ projective.
 For a field `k`, `n ≥ 1`, and two finite occurrence-indexed families of these
 finite-death or principal-upset hooks over `Fin n → ℝ`,
 `HookMatching.exists_matching` turns an actual `ε`-interleaving of their
-biproducts into an occurrence matching at radius `(2n−1)ε`. Each paired hook
-and each hook left unmatched on either side carries an actual interleaving
-witness; repeated isomorphic tags remain separate occurrences, and the
-unbounded principal-upset supports are included. The proof derives the Hall
+biproducts into an occurrence matching at radius `(2n−1)ε`. Every matched pair
+has an actual `((2n−1)ε)`-interleaving, and every unmatched hook on either side
+has an actual interleaving with zero at that radius. Repeated isomorphic tags
+remain separate occurrences, and the unbounded principal-upset supports are
+included. The proof derives the Hall
 inequality `card_le_neighbors` from the component maps: endpoint geometry and
 composition of the hook coefficients make the selected finite matrix product
 triangular with unit diagonal, after which finite Hall matching and the
