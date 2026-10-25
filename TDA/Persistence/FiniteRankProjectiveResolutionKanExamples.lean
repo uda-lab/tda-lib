@@ -39,8 +39,8 @@ theorem principalUpset_has_finiteRankProjectiveResolution
 actual quotient rows all satisfy the transferred projective-cover certificate. -/
 theorem principalUpset_has_minimalFiniteRankProjectiveResolution
     (hn : 0 < n) (a : Fin n → ℝ) :
-    (∃ R : MinimalFiniteRankProjectiveResolution
-        (HookInfinity.module (R := k) a),
+    (∃ R : MinimalFiniteRankProjectiveResolution (k := k)
+        (M := HookInfinity.module (R := k) a),
       ∀ i, IsRankProjectiveCover (R.resolution.quotient i)) ∧
       ∃ x : (HookInfinity.module (R := k) a).obj a, x ≠ 0 := by
   constructor
