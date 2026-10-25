@@ -293,9 +293,13 @@ indexing retains repeated occurrences, including the zero module as the empty
 sum. The forward proof splits the actual cover from
 `finitelyPresented_exists_finiteHookRankExactCover`, descends the section
 through the actual grid Kan unit and finite-biproduct comparisons, and applies
-the finite-poset canonical-subfamily classification. The public
-`CoordinateGrid.lan_map_injective` helper records faithfulness of the actual
-grid left Kan functor. No hook decomposition is assumed for `M`.
+the finite-poset canonical-subfamily classification. `CoordinateGrid.lanMapPreimage`
+constructs a grid map representing any morphism between Lan images;
+`CoordinateGrid.lan_map_preimage` proves that this grid map reconstructs the
+morphism, and `CoordinateGrid.lan_map_surjective` states that every such
+morphism arises this way. Together with `CoordinateGrid.lan_map_injective`,
+these declarations expose full faithfulness, so the grid-map preimage is
+unique. No hook decomposition is assumed for `M`.
 `FinitePresentationRankProjectiveClassificationExamples` checks a nonzero
 finite-death hook, an unbounded principal upset, two repeated hooks and the
 zero/empty-sum case. This formalizes the finite-coordinate, finitely-presented
@@ -321,19 +325,35 @@ lower sets, with infinite hooks placed above finite hooks. It is bounded on the
 finite poset, so the iteration ends with zero kernel.
 The existing Kan preservation maps then transport all rows and projective terms
 back to `M`. No pfd, grid, hook decomposition, or resolution is an extra input.
-This proves finite resolution existence only. On a finite poset, the separate
+
+For a quotient `π : Q ⟶ K`, `IsRankProjectiveCover π` certifies that `Q` is
+rank-projective, that the actual categorical-kernel row
+`kernel.ι π` followed by `π` is rank exact, and that every endomorphism of `Q`
+fixed by `π` is an isomorphism. On a finite poset, the separate
 `FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset`
-theorem constructs a resolution of a pointwise finite-dimensional module whose
-actual kernel rows are rank-projective covers: each middle term is
-rank-projective, each row is rank exact, and every endomorphism fixed by the
-quotient is an isomorphism. The proof uses shortest hook-sum covers and finite
-hook-weight descent. It does not transfer minimality through the real-coordinate
-left Kan extension above. Choice independence, the `2n−2` length bound, hook
-matching stability, persistent Schanuel and signed bottleneck stability remain
-separate results.
-`FiniteRankProjectiveResolutionKanExamples` checks the theorem on a nonzero
-principal-upset free module; the earlier resolution examples retain the zero and
-contractible-row boundary cases.
+theorem constructs a resolution whose every quotient row has this certificate.
+The public `CoordinateGrid.lanMinimalFiniteRankProjectiveResolution` transfers
+the certificates through the actual left Kan extension. It preserves the
+projective middle terms and rank-exactness of the actual categorical-kernel
+rows; for the endomorphism condition,
+it lifts each quotient-fixed endomorphism to the grid by full faithfulness,
+applies the grid cover certificate, and maps the resulting isomorphism through
+Lan.
+
+For a field `k`, positive `n`, and `M : PModule k (Fin n → ℝ)`, the public
+`GradedFree.FinitelyPresented M` hypothesis therefore proves that an actual
+`MinimalFiniteRankProjectiveResolution` of `M` exists:
+`FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution`.
+The construction reconstructs `M` up to isomorphism as the actual left Kan
+extension of a pointwise finite-dimensional module on a finite coordinate grid,
+applies the finite-poset minimal theorem, transfers every row through Lan, and
+transports the result across the reconstruction isomorphism. Every quotient
+row in the returned resolution carries the public projective-cover certificate.
+This is the finite-grid Kan transfer of [Theorem 2.7(2) and Appendix A of
+Botnan–Oppermann–Oudot–Scoccola](https://arxiv.org/html/2208.00300v3).
+`FiniteRankProjectiveResolutionKanExamples` checks the finite-resolution and
+minimal-resolution interfaces on a nonzero principal-upset free module; the
+earlier resolution examples retain the zero and contractible-row boundary cases.
 
 `IsRankDeflation` means that a natural map is the quotient of an actual
 rank-exact sequence. Its `rankExact_kernel` law supplies the categorical
