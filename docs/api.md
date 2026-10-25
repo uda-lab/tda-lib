@@ -321,10 +321,16 @@ lower sets, with infinite hooks placed above finite hooks. It is bounded on the
 finite poset, so the iteration ends with zero kernel.
 The existing Kan preservation maps then transport all rows and projective terms
 back to `M`. No pfd, grid, hook decomposition, or resolution is an extra input.
-This proves finite resolution existence only: minimality of the assembled
-resolution, choice independence, the `2n−2` length bound, hook matching
-stability, persistent Schanuel and signed bottleneck stability remain separate
-results.
+This proves finite resolution existence only. On a finite poset, the separate
+`FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset`
+theorem constructs a resolution of a pointwise finite-dimensional module whose
+actual kernel rows are rank-projective covers: each middle term is
+rank-projective, each row is rank exact, and every endomorphism fixed by the
+quotient is an isomorphism. The proof uses shortest hook-sum covers and finite
+hook-weight descent. It does not transfer minimality through the real-coordinate
+left Kan extension above. Choice independence, the `2n−2` length bound, hook
+matching stability, persistent Schanuel and signed bottleneck stability remain
+separate results.
 `FiniteRankProjectiveResolutionKanExamples` checks the theorem on a nonzero
 principal-upset free module; the earlier resolution examples retain the zero and
 contractible-row boundary cases.
