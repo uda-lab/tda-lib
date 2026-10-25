@@ -313,3 +313,23 @@ import TDA
 #print axioms TDA.Simplicial.InternalFiniteCycleFixtures.singleton_one_not_boundary
 #print axioms TDA.Simplicial.InternalFiniteCycleFixtures.unfilled_le_triangle
 #print axioms TDA.Simplicial.simplicialHomologyClass_zeroVertexCycle_ne_zero
+
+-- Arbitrary-apex cone and barycentric subdivision homology (Issue #504).
+#print axioms TDA.Simplicial.zeroChainCoefficientSum_single
+#print axioms TDA.Simplicial.zeroChainCoefficientSum_vertexChainMap
+#print axioms TDA.Simplicial.arbitraryApexConeOperator_single
+#print axioms TDA.Simplicial.boundary_arbitraryApexConeOperator_add
+#print axioms TDA.Simplicial.boundary_arbitraryApexConeOperator_zero
+#print axioms TDA.Simplicial.arbitraryApexConeFill_eq_operator
+#print axioms TDA.Simplicial.boundary_arbitraryApexConeFill_add
+#print axioms TDA.Simplicial.boundary_arbitraryApexConeFill_zero
+#print axioms TDA.Simplicial.boundary_arbitraryApexConeFill_add_of_closed
+#print axioms TDA.Simplicial.boundary_arbitraryApexConeFill_zero_of_closed
+#print axioms TDA.Simplicial.barycentricSubdivisionChainMap_f
+#print axioms TDA.Simplicial.barycentricSubdivisionChainMap_lastVertex_eq_id
+#print axioms TDA.Simplicial.lastVertexChainMap_f
+#print axioms TDA.Simplicial.lastVertex_of_nonempty
+#print axioms TDA.Simplicial.lastVertexHomologyMap_naturality
+#print axioms TDA.Simplicial.barycentricHomologyIso_naturality
+#print axioms TDA.Simplicial.simplicialHomologyMap_eq_of_prismAdmissible
+#print axioms TDA.Simplicial.arbitraryApexConeFill_zero

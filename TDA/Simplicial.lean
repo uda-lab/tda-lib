@@ -17,3 +17,5 @@ import TDA.Simplicial.Contiguity
 import TDA.Simplicial.OrientedTuple
 import TDA.Simplicial.VertexChainMap
 import TDA.Simplicial.ContiguityHomotopy
+import TDA.Simplicial.ArbitraryApexCone
+import TDA.Simplicial.BarycentricHomology

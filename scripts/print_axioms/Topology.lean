@@ -289,3 +289,10 @@ import TDA
 #print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.interleaving
 #print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.interleaving_left
 #print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.interleaving_right
+
+-- Finite GP stability of the normalized subdivision-Rips homology consumer (Issue #504).
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.largeFaceNerveHomologyInterleaving_left
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.largeFaceNerveHomologyInterleaving_right
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.homologyInterleaving_left
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.homologyInterleaving_right
+#print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist
