@@ -300,14 +300,27 @@ morphism, and `CoordinateGrid.lan_map_surjective` states that every such
 morphism arises this way. Together with `CoordinateGrid.lan_map_injective`,
 these declarations expose full faithfulness, so the grid-map preimage is
 unique. No hook decomposition is assumed for `M`.
+`GradedFree.rankProjectiveHookSum_multiplicity_unique_of_iso` proves that any
+two naturally isomorphic finite sums of real-coordinate hook tags have equal
+occurrence counts for every tag. It constructs a common coordinate grid from
+both families' endpoints and the queried tag, transports each actual hook sum
+through the Lan hook and biproduct comparisons, reflects the isomorphism with
+`lanMapPreimage`, `lan_map_preimage`, and `lan_map_injective`, then applies the
+finite-poset multiplicity theorem. The result includes repeated hooks,
+finite-death and infinite-death hooks, tags absent from either family, and empty
+families. It needs no finite-presentation or pointwise finite-dimensionality
+hypothesis, no preselected grid, and no endpoint-membership premise.
 `FinitePresentationRankProjectiveClassificationExamples` checks a nonzero
-finite-death hook, an unbounded principal upset, two repeated hooks and the
-zero/empty-sum case. This formalizes the finite-coordinate, finitely-presented
-projective-classification component related to
-[Botnan–Oppermann–Oudot–Scoccola, Theorem 2.7(1), v3](https://arxiv.org/html/2208.00300v3),
-not its exact-structure axioms or minimal-resolution result. It does not
-classify arbitrary pfd real-indexed modules, provide choice-independent
-decompositions or minimal resolutions, or prove the `2n−2` length bound.
+finite-death hook, an unbounded principal upset, two repeated hooks, the
+zero/empty-sum case, and multiplicity invariance for a reordered mixed sum and
+empty families. Together, these results give choice-independent hook
+multiplicities for finite real-coordinate rank-projective decompositions. They
+do not select a canonical decomposition or a unique comparison isomorphism,
+prove termwise uniqueness for whole minimal resolutions, or establish
+choice-independence of a signed barcode. They do not establish the rank-exact
+structure axioms stated in [Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3)
+or the `2n−2` resolution-length bound stated in
+[Theorem 5.18](https://arxiv.org/html/2208.00300v3).
 
 For a field `k`, `n ≥ 1`, and an originally finitely presented module
 `M : PModule k (Fin n → ℝ)`,
