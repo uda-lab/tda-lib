@@ -4968,3 +4968,14 @@ set_option linter.auxLemma false
 
 -- Large-face nerve homology comparison (Issue #504).
 #print axioms TDA.Persistence.SubdivisionRips.cechHomologyToLargeFaceNerve_isIso
+
+-- Zero-padded termwise uniqueness of minimal finite rank-projective resolutions (Issue #653).
+#print axioms TDA.Persistence.IsRankProjectiveCover.ofIso
+#print axioms TDA.Persistence.IsRankProjectiveCover.postcomposeIso
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_eq_zero
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_eq
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_nonempty_iso
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_rank_eq
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionUniquenessExamples.principalHookMinimalResolution
+#print axioms TDA.Persistence.FiniteRankProjectiveResolutionUniquenessExamples.principalHook_positive_terms_are_zero
