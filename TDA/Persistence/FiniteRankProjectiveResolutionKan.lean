@@ -10,12 +10,14 @@ import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 
 Pointwise finite-dimensional modules on finite posets admit actual finite
 rank-projective resolutions: shortest rank-exact hook-sum covers of successive
-kernels have strictly increasing hook weights along nonzero differentials, and
-the finite poset bounds those weights. A finite presentation on a real coordinate
-poset reconstructs the module from a finite grid with pfd fibers. The grid's
-actual left Kan extension transports each resolution row by row, preserving rank
-exactness and relative projectivity. The resulting existence theorem assumes no
-prior grid, pfd, or hook decomposition of the real-indexed module.
+kernels move to strictly higher weights: each nonzero differential component
+points from a higher-weight hook in a later cover to a lower-weight hook in the
+preceding cover. The finite poset bounds those weights. A finite presentation
+on a real coordinate poset reconstructs the module from a finite grid with pfd
+fibers. The grid's actual left Kan extension transports each resolution row by
+row, preserving rank exactness and relative projectivity. The resulting
+existence theorem assumes no prior grid, pfd, or hook decomposition of the
+real-indexed module.
 -/
 
 set_option autoImplicit false
@@ -789,7 +791,9 @@ private theorem rankProjectiveHookTagWeight_le_card
 /-- Every pointwise-finite-dimensional module over a finite poset has an actual
 finite rank-projective resolution. The proof repeatedly takes a shortest
 rank-exact hook-sum cover of each kernel. Every nonzero differential component
-strictly increases the finite hook weight, so the iterated kernel reaches zero. -/
+has higher weight at its source (in the later cover) than at its target (in the
+preceding cover). Thus successive kernel covers move to higher weights. Since
+the finite-poset weights are bounded, the iterated kernel reaches zero. -/
 private noncomputable def ofPointwisePfdFinitePoset
     {P : Type} [PartialOrder P] [Fintype P]
     (M : PModule.{u,0,u} k P) (hM : ∀ p, FiniteDimensional k (M.obj p)) :

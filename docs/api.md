@@ -314,9 +314,11 @@ pointwise finite-dimensional module on a finite coordinate grid. On that finite
 poset it chooses rank-exact hook-sum covers with the fewest summands for each
 successive kernel. A nonzero same-hook component into the preceding kernel
 would split off a summand and contradict that choice. Thus every nonzero
-differential component strictly increases a weight built from the sizes of the
-hooks' endpoint lower sets, with infinite hooks placed above finite hooks. This
-weight is bounded on the finite poset, so the iteration ends with zero kernel.
+differential arrow lowers the weight from its source hook to its target hook;
+equivalently, the weights strictly increase as one passes to covers of
+successive kernels. The weight is built from the sizes of the hooks' endpoint
+lower sets, with infinite hooks placed above finite hooks. It is bounded on the
+finite poset, so the iteration ends with zero kernel.
 The existing Kan preservation maps then transport all rows and projective terms
 back to `M`. No pfd, grid, hook decomposition, or resolution is an extra input.
 This proves finite resolution existence only: minimality of the assembled
