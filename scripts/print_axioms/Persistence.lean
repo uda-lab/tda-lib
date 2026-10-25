@@ -4908,3 +4908,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.exists_finiteRankProjectiveResolution_of_pfd_finitePoset
 #print axioms TDA.Persistence.FiniteRankProjectiveResolution.finitelyPresented_exists_finiteRankProjectiveResolution
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.principalUpset_has_finiteRankProjectiveResolution
+
+-- Reduced degree-zero Rips H₀ is the kernel of the ordinary augmentation.
+#print axioms TDA.Persistence.Rips.h0Basepoint
+#print axioms TDA.Persistence.Rips.pointCollapseVertexMap
+#print axioms TDA.Persistence.Rips.zeroHomologyCoefficientSum
+#print axioms TDA.Persistence.Rips.zeroHomologyCoefficientSum_natural
+#print axioms TDA.Persistence.Rips.zeroHomologyCoefficientSum_vertex
+#print axioms TDA.Persistence.Rips.sublevelH0Augmentation
+#print axioms TDA.Persistence.Rips.reducedSublevelH0Module
+#print axioms TDA.Persistence.Rips.reducedSublevelH0_finiteDimensional
+#print axioms TDA.Persistence.Rips.reducedSublevelH0Diagram
+#print axioms TDA.Persistence.Rips.reducedCriticalH0Barcode
+#print axioms TDA.Persistence.Rips.reducedSublevelH0Diagram_points_eq_finitePart
+#print axioms TDA.Persistence.Rips.reducedSublevelH0Diagram_points_eq_eraseEssential
