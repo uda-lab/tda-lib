@@ -298,3 +298,4 @@ import TDA.Persistence.FinitePresentationRankProjectiveClassificationExamples
 import TDA.Persistence.FiniteRankProjectiveResolution
 import TDA.Persistence.FiniteRankProjectiveResolutionExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionKan
+import TDA.Persistence.FiniteRankProjectiveResolutionKanExamples
