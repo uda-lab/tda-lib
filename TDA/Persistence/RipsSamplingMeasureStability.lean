@@ -19,6 +19,7 @@ namespace TDA.Persistence.Rips
 
 open MeasureTheory
 open TDA.Probability
+open ProbabilityTheory
 open scoped ENNReal
 
 variable {X : Type u} {Y : Type v}
@@ -162,5 +163,153 @@ theorem wasserstein_sampleLawMeasure_le_measureGromovWasserstein
   calc
     _ ≤ (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * (2 * measureGromovWasserstein p μ ν) := hbound
     _ = 2 * (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * measureGromovWasserstein p μ ν := by ring
+
+private theorem essSup_pairMaximum_iidMeasure_le {Z : Type*} [MeasurableSpace Z]
+    (ρ : ProbabilityMeasure Z) (n : ℕ) (c : Z → Z → ℝ≥0∞)
+    (hc : ∀ z, c z z = 0) :
+    essSup (pairMaximum c) (iidMeasure ρ n : Measure (Fin n → Z)) ≤
+      essSup (fun ab : Z × Z => c ab.1 ab.2) ((ρ : Measure Z).prod ρ) := by
+  classical
+  let ν : Fin n → Measure Z := fun _ => (ρ : Measure Z)
+  let μn : Measure (Fin n → Z) := Measure.pi ν
+  let B : ℝ≥0∞ := essSup (fun ab : Z × Z => c ab.1 ab.2)
+    ((ρ : Measure Z).prod ρ)
+  have hpair (i j : Fin n) :
+      ∀ᵐ t ∂μn, c (t i) (t j) ≤ B := by
+    by_cases hij : i = j
+    · subst j
+      filter_upwards with t
+      rw [hc]
+      exact bot_le
+    · let proj : (Fin n → Z) → Z × Z := fun t => (t i, t j)
+      have hproj : AEMeasurable proj μn := by fun_prop
+      have hind : iIndepFun (fun (i : Fin n) (t : Fin n → Z) => t i)
+          (Measure.pi ν) :=
+        iIndepFun_pi (X := fun _ : Fin n => id) (fun _ => aemeasurable_id)
+      have hmap0 := (hind.indepFun hij).map_prod_eq_prod_map_map
+        (measurable_pi_apply i).aemeasurable (measurable_pi_apply j).aemeasurable
+      have hi : Measure.map (fun t : Fin n → Z => t i) (Measure.pi ν) = ρ := by
+        exact (measurePreserving_eval ν i).map_eq
+      have hj : Measure.map (fun t : Fin n → Z => t j) (Measure.pi ν) = ρ := by
+        exact (measurePreserving_eval ν j).map_eq
+      have hmap : Measure.map proj μn = (ρ : Measure Z).prod ρ := by
+        simpa [proj, μn, ν, hi, hj] using hmap0
+      have hsup : essSup (fun t => c (t i) (t j)) μn ≤ B := by
+        calc
+          essSup (fun t => c (t i) (t j)) μn ≤
+              essSup (fun ab : Z × Z => c ab.1 ab.2) (Measure.map proj μn) := by
+            simpa [proj, Function.comp_def] using
+              (essSup_comp_le_essSup_map_measure (f := proj)
+                (g := fun ab : Z × Z => c ab.1 ab.2) hproj)
+          _ = B := by rw [hmap]
+      filter_upwards [ae_le_essSup (f := fun t => c (t i) (t j))] with t ht
+      exact ht.trans hsup
+  have hforall : ∀ᵐ t ∂μn, ∀ ij : Fin n × Fin n, c (t ij.1) (t ij.2) ≤ B := by
+    rw [ae_all_iff]
+    intro ij
+    exact hpair ij.1 ij.2
+  have hmax : ∀ᵐ t ∂μn, pairMaximum c t ≤ B := by
+    filter_upwards [hforall] with t ht
+    exact Finset.sup_le fun ij _ => ht ij
+  have hmain : essSup (pairMaximum c) μn ≤ B := essSup_le_of_ae_le B hmax
+  have hμn : (iidMeasure ρ n : Measure (Fin n → Z)) = μn := by
+    simp only [iidMeasure, ProbabilityMeasure.toMeasure_pi]
+    rfl
+  rw [hμn]
+  exact hmain
+
+private theorem sampleLawMeasureCoupling_essSup_le_distortionInfinity
+    (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
+    (π : MeasureCoupling μ ν) (n degree : ℕ) :
+    essSup (fun de : Diagram ℝ × Diagram ℝ => bottleneck de.1 de.2)
+      ((sampleLawMeasureCoupling k π n (degree + 1)).joint : Measure
+        (Diagram ℝ × Diagram ℝ)) ≤
+        π.distortionInfinity := by
+  let f : (Fin n → X) → Diagram ℝ := fun t => sampleDiagram k t (degree + 1)
+  let g : (Fin n → Y) → Diagram ℝ := fun t => sampleDiagram k t (degree + 1)
+  let pairTuple : (Fin n → X × Y) → (Fin n → X) × (Fin n → Y) :=
+    fun t => (fun i => (t i).1, fun i => (t i).2)
+  have hf : Measurable f := (continuous_sampleDiagram k (degree + 1)).measurable
+  have hg : Measurable g := (continuous_sampleDiagram k (degree + 1)).measurable
+  have hpairTuple : Measurable pairTuple := by
+    apply Measurable.prodMk
+    · apply measurable_pi_lambda
+      intro i
+      exact measurable_fst.comp (measurable_pi_apply i)
+    · apply measurable_pi_lambda
+      intro i
+      exact measurable_snd.comp (measurable_pi_apply i)
+  have hpairMap : Measurable (Prod.map f g) := hf.prodMap hg
+  have htupleCost : Measurable
+      (fun ts : (Fin n → X) × (Fin n → Y) => bottleneck (f ts.1) (g ts.2)) :=
+    measurable_bottleneck.comp (f := Prod.map f g) hpairMap
+  have htupleCostSet : MeasurableSet
+      {ts : (Fin n → X) × (Fin n → Y) |
+        bottleneck (f ts.1) (g ts.2) ≤ π.distortionInfinity} :=
+    measurableSet_le htupleCost measurable_const
+  have hpairMax := essSup_pairMaximum_iidMeasure_le π.joint n distortion distortion_self
+  have hsource : ∀ᵐ t ∂(iidMeasure π.joint n : Measure (Fin n → X × Y)),
+      bottleneck (sampleDiagram k (fun i => (t i).1) (degree + 1))
+        (sampleDiagram k (fun i => (t i).2) (degree + 1)) ≤ π.distortionInfinity := by
+    filter_upwards [ae_le_essSup (f := pairMaximum distortion)] with t ht
+    exact (bottleneck_sampleDiagram_le_pairMaximum k t (degree + 1)).trans
+      (ht.trans hpairMax)
+  have htuple : ∀ᵐ ts ∂((π.tuples n).joint : Measure
+      ((Fin n → X) × (Fin n → Y))),
+      bottleneck (f ts.1) (g ts.2) ≤ π.distortionInfinity := by
+    rw [MeasureCoupling.tuples, ProbabilityMeasure.toMeasure_map]
+    rw [ae_map_iff (by
+      change AEMeasurable pairTuple _
+      exact hpairTuple.aemeasurable) htupleCostSet]
+    change ∀ᵐ t ∂(ProbabilityMeasure.pi (fun _ : Fin n => π.joint) : Measure
+      (Fin n → X × Y)),
+      bottleneck (f (pairTuple t).1) (g (pairTuple t).2) ≤ π.distortionInfinity
+    simpa [f, g, pairTuple, iidMeasure, ProbabilityMeasure.toMeasure_pi] using hsource
+  have hdiagram : ∀ᵐ de ∂((sampleLawMeasureCoupling k π n (degree + 1)).joint :
+      Measure (Diagram ℝ × Diagram ℝ)),
+      bottleneck de.1 de.2 ≤ π.distortionInfinity := by
+    have hsampleLaw : sampleLawMeasureCoupling k π n (degree + 1) =
+        MeasureCoupling.map (π.tuples n) f g hf hg := by
+      rfl
+    rw [hsampleLaw]
+    have hdiagramSet : MeasurableSet
+        {de : Diagram ℝ × Diagram ℝ | bottleneck de.1 de.2 ≤ π.distortionInfinity} :=
+      measurableSet_le measurable_bottleneck measurable_const
+    rw [MeasureCoupling.map, ProbabilityMeasure.toMeasure_map]
+    rw [ae_map_iff hpairMap.aemeasurable hdiagramSet]
+    simpa only [Prod.map_fst, Prod.map_snd] using htuple
+  exact essSup_le_of_ae_le _ hdiagram
+
+private theorem measureWassersteinInfinity_sampleLawMeasure_le_coupling
+    (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
+    (π : MeasureCoupling μ ν) (n degree : ℕ) :
+    measureWassersteinInfinity bottleneck (sampleLawMeasure k μ n (degree + 1))
+      (sampleLawMeasure k ν n (degree + 1)) ≤ π.distortionInfinity := by
+  change (⨅ γ : MeasureCoupling (sampleLawMeasure k μ n (degree + 1))
+      (sampleLawMeasure k ν n (degree + 1)),
+      essSup (fun de : Diagram ℝ × Diagram ℝ => bottleneck de.1 de.2)
+        (γ.joint : Measure (Diagram ℝ × Diagram ℝ))) ≤ π.distortionInfinity
+  exact (iInf_le _ (sampleLawMeasureCoupling k π n (degree + 1))).trans
+    (sampleLawMeasureCoupling_essSup_le_distortionInfinity k μ ν π n degree)
+
+/-- Infinity stability of the actual compact-input iid Rips diagram laws for
+diameter-time Vietoris–Rips filtrations and the standard half-distortion GW
+normalization. The proof pushes any input probability coupling through the iid
+sample maps, bounds its essential-supremum cost by the input distortion, and
+then takes the infimum; no optimal coupling is assumed. -/
+theorem wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity
+    (k : Type w) [Field k] (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y)
+    (n degree : ℕ) :
+    measureWassersteinInfinity bottleneck (sampleLawMeasure k μ n (degree + 1))
+      (sampleLawMeasure k ν n (degree + 1)) ≤
+        (2 : ℝ≥0∞) * measureGromovWassersteinInfinity μ ν := by
+  have hGW : (2 : ℝ≥0∞) * measureGromovWassersteinInfinity μ ν =
+      ⨅ π : MeasureCoupling μ ν, π.distortionInfinity := by
+    simp only [measureGromovWassersteinInfinity, ← mul_assoc]
+    rw [ENNReal.mul_inv_cancel (by norm_num) (by norm_num), one_mul]
+  rw [hGW]
+  apply le_iInf
+  intro π
+  exact measureWassersteinInfinity_sampleLawMeasure_le_coupling k μ ν π n degree
 
 end TDA.Persistence.Rips
