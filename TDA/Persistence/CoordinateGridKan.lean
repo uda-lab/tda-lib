@@ -99,6 +99,65 @@ section Maps
 
 variable {M} {N : PModule.{u,0,w} R G.Point}
 
+private noncomputable def lanUnitIso (A : PModule.{u,0,w} R G.Point) :
+    A ≅ G.embedding.monotone.functor ⋙ G.lan.obj A := by
+  let i := G.embedding.monotone.functor
+  let η := i.lanUnit.app A
+  have hη (p : G.Point) : IsIso (η.app p) :=
+    (Functor.isPointwiseLeftKanExtensionLeftKanExtensionUnit i A (i.obj p)).isIso_hom_app
+  haveI (p : G.Point) : IsIso (η.app p) := hη p
+  letI : IsIso η := NatIso.isIso_of_isIso_app η
+  exact asIso η
+
+/-- A map between two finite-grid left Kan extensions has its unique preimage
+under the actual Lan functor. -/
+noncomputable def lanMapPreimage {A C : PModule.{u,0,w} R G.Point}
+    (f : G.lan.obj A ⟶ G.lan.obj C) : A ⟶ C :=
+  (G.lanUnitIso A).hom ≫
+    G.embedding.monotone.functor.whiskerLeft f ≫
+    (G.lanUnitIso C).inv
+
+/-- The Lan map of the canonical preimage is the original map. -/
+theorem lan_map_preimage {A C : PModule.{u,0,w} R G.Point}
+    (f : G.lan.obj A ⟶ G.lan.obj C) :
+    G.lan.map (G.lanMapPreimage f) = f := by
+  let i := G.embedding.monotone.functor
+  let ηA := i.lanUnit.app A
+  let ηC := i.lanUnit.app C
+  letI : (G.lan.obj A).IsLeftKanExtension ηA := by
+    change (i.lan.obj A).IsLeftKanExtension (i.lanUnit.app A)
+    infer_instance
+  apply Functor.hom_ext_of_isLeftKanExtension (G.lan.obj A) ηA
+    (G.lan.map (G.lanMapPreimage f)) f
+  apply NatTrans.ext
+  funext p
+  have hn := NatTrans.congr_app
+    (i.lanUnit.naturality (G.lanMapPreimage f)) p
+  change (G.lanMapPreimage f).app p ≫ ηC.app p =
+    ηA.app p ≫ (G.lan.map (G.lanMapPreimage f)).app (i.obj p) at hn
+  haveI : IsIso (ηC.app p) :=
+    (Functor.isPointwiseLeftKanExtensionLeftKanExtensionUnit i C (i.obj p)).isIso_hom_app
+  have hidx : i.obj p = G.embedding p := rfl
+  let ηCinv := (G.lanUnitIso C).inv.app p
+  have hcancel : ηCinv ≫ ηC.app p = 𝟙 _ := by
+    simpa [ηCinv, lanUnitIso, ηC, i] using
+      (G.lanUnitIso C).inv_hom_id_app p
+  simp only [NatTrans.comp_app, Functor.whiskerLeft_app]
+  have hpre : (G.lanMapPreimage f).app p ≫ ηC.app p =
+      ηA.app p ≫ f.app (i.obj p) := by
+    change (((ηA.app p ≫ f.app (i.obj p)) ≫ ηCinv) ≫ ηC.app p) =
+      ηA.app p ≫ f.app (i.obj p)
+    rw [Category.assoc, Category.assoc, hcancel]
+    simp [i, ← hidx]
+  rw [← hn, hpre]
+
+/-- The actual Lan functor is surjective on maps between its objects. Together
+with `lan_map_injective`, this expresses full faithfulness on the grid. -/
+theorem lan_map_surjective {A C : PModule.{u,0,w} R G.Point} :
+    Function.Surjective (fun θ : A ⟶ C => G.lan.map θ) := by
+  intro f
+  exact ⟨G.lanMapPreimage f, G.lan_map_preimage f⟩
+
 /-- The actual left Kan map on a coordinate grid is faithful. The Kan unit is
 an isomorphism at every embedded grid point, so restricting a Kan image to
 those points recovers the original natural transformation. -/

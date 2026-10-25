@@ -23,58 +23,6 @@ open scoped TDA.Persistence
 
 variable {k : Type u} [Field k] {n : ℕ}
 
-private noncomputable def coordinateGridLanUnitIso
-    (G : CoordinateGrid n) (A : PModule.{u,0,u} k G.Point) :
-    A ≅ G.embedding.monotone.functor ⋙ G.lan.obj A := by
-  let i := G.embedding.monotone.functor
-  let η := i.lanUnit.app A
-  have hη (p : G.Point) : IsIso (η.app p) :=
-    (Functor.isPointwiseLeftKanExtensionLeftKanExtensionUnit i A (i.obj p)).isIso_hom_app
-  haveI (p : G.Point) : IsIso (η.app p) := hη p
-  letI : IsIso η := NatIso.isIso_of_isIso_app η
-  exact asIso η
-
-private noncomputable def coordinateGridLanPreimage
-    (G : CoordinateGrid n) {A C : PModule.{u,0,u} k G.Point}
-    (f : G.lan.obj A ⟶ G.lan.obj C) : A ⟶ C :=
-  (coordinateGridLanUnitIso G A).hom ≫
-    G.embedding.monotone.functor.whiskerLeft f ≫
-    (coordinateGridLanUnitIso G C).inv
-
-private theorem coordinateGridLan_map_preimage
-    (G : CoordinateGrid n) {A C : PModule.{u,0,u} k G.Point}
-    (f : G.lan.obj A ⟶ G.lan.obj C) :
-    G.lan.map (coordinateGridLanPreimage G f) = f := by
-  let i := G.embedding.monotone.functor
-  let ηA := i.lanUnit.app A
-  let ηC := i.lanUnit.app C
-  letI : (G.lan.obj A).IsLeftKanExtension ηA := by
-    change (i.lan.obj A).IsLeftKanExtension (i.lanUnit.app A)
-    infer_instance
-  apply Functor.hom_ext_of_isLeftKanExtension (G.lan.obj A) ηA
-    (G.lan.map (coordinateGridLanPreimage G f)) f
-  apply NatTrans.ext
-  funext p
-  have hn := NatTrans.congr_app
-    (i.lanUnit.naturality (coordinateGridLanPreimage G f)) p
-  change (coordinateGridLanPreimage G f).app p ≫ ηC.app p =
-    ηA.app p ≫ (G.lan.map (coordinateGridLanPreimage G f)).app (i.obj p) at hn
-  haveI : IsIso (ηC.app p) :=
-    (Functor.isPointwiseLeftKanExtensionLeftKanExtensionUnit i C (i.obj p)).isIso_hom_app
-  have hidx : i.obj p = G.embedding p := rfl
-  let ηCinv := (coordinateGridLanUnitIso G C).inv.app p
-  have hcancel : ηCinv ≫ ηC.app p = 𝟙 _ := by
-    simpa [ηCinv, coordinateGridLanUnitIso, ηC, i, ← hidx] using
-      (coordinateGridLanUnitIso G C).inv_hom_id_app p
-  simp only [NatTrans.comp_app, Functor.whiskerLeft_app]
-  have hpre : (coordinateGridLanPreimage G f).app p ≫ ηC.app p =
-      ηA.app p ≫ f.app (i.obj p) := by
-    change (((ηA.app p ≫ f.app (i.obj p)) ≫ ηCinv) ≫ ηC.app p) =
-      ηA.app p ≫ f.app (i.obj p)
-    rw [Category.assoc, Category.assoc, hcancel]
-    simp [i, ← hidx]
-  rw [← hn, hpre]
-
 private def embeddedCoverTag (G : CoordinateGrid n)
     (A : PModule.{u,0,u} k G.Point) :
     FiniteHookDeflation.Index A → RankProjectiveHookTag (Fin n → ℝ)
@@ -130,8 +78,8 @@ theorem finitelyPresented_rankProjective_iff_exists_hook_sum
         (t ≫ f) ≫ e.hom = e.hom ≫ (β ≫ c.inv ≫ f ≫ e.hom) := by
           simp [t, Category.assoc]
         _ = e.hom := by rw [hβ']; simp
-    let s : A ⟶ C := coordinateGridLanPreimage G t
-    have hmap : G.lan.map s = t := coordinateGridLan_map_preimage G t
+    let s : A ⟶ C := G.lanMapPreimage t
+    have hmap : G.lan.map s = t := G.lan_map_preimage t
     have hs : s ≫ FiniteHookDeflation.π A = 𝟙 A := by
       apply G.lan_map_injective
       calc

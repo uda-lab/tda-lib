@@ -35,6 +35,27 @@ theorem principalUpset_has_finiteRankProjectiveResolution
   exact GradedFree.free_finitelyPresented (R := k) (P := Fin n → ℝ)
     (HookInfinity.generators (P := Fin n → ℝ) a)
 
+/-- The nonzero principal-upset free module has a finite resolution whose
+actual quotient rows all satisfy the transferred projective-cover certificate. -/
+theorem principalUpset_has_minimalFiniteRankProjectiveResolution
+    (hn : 0 < n) (a : Fin n → ℝ) :
+    (∃ R : MinimalFiniteRankProjectiveResolution (k := k)
+        (M := HookInfinity.module (R := k) a),
+      ∀ i, IsRankProjectiveCover (R.resolution.quotient i)) ∧
+      ∃ x : (HookInfinity.module (R := k) a).obj a, x ≠ 0 := by
+  constructor
+  · obtain ⟨R⟩ :=
+      FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution
+        hn (HookInfinity.module (R := k) a)
+        (GradedFree.free_finitelyPresented (R := k) (P := Fin n → ℝ)
+          (HookInfinity.generators (P := Fin n → ℝ) a))
+    exact ⟨R, R.quotient_is_cover⟩
+  · let e := HookInfinity.fiberEquivOfLe (R := k) (i := a) (a := a) le_rfl
+    refine ⟨e.symm 1, ?_⟩
+    intro hx
+    have hone := congrArg e hx
+    exact (one_ne_zero : (1 : k) ≠ 0) (by simpa using hone)
+
 private theorem identity_isRankProjectiveCover
     {k : Type u} [Field k] {P : Type} [PartialOrder P]
     (M : PModule.{u,0,u} k P) (hfd : ∀ p, FiniteDimensional k (M.obj p))
