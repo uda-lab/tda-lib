@@ -449,8 +449,28 @@ double-transition equations are public; the pullback construction itself
 works over any ring. `kernelSumIso` gives the static specialization for
 two deflations onto the same quotient. Consumers include redundant covers
 with nonzero kernels, positive width, width zero, characteristic two, zero
-modules and zero coordinate directions. Finite resolutions, their length
-bound and signed barcode stability require further results.
+modules and zero coordinate directions. This one-step result supplies the
+first row in the finite-resolution comparison below; the uniform
+resolution-length bound and signed-barcode stability require further results.
+
+For a field `k`, finite coordinate dimension `n`, actual finite
+rank-projective resolutions `R` of `M` and `S` of `N`, and an actual
+`CoordinateInterleaving ε M N`,
+`schanuelInterleavingOfResolutions R S ε i` constructs an
+`ε`-interleaving between the following finite biproducts. Set
+`L = max R.length S.length`, extend each resolution's term sequence by zero
+after its last term, and shift its degree-`j` summand by `jε`. The first sum
+uses `R` in even degrees and `S` in odd degrees; the second uses the opposite
+choice. This is the rank-exact specialization of [Proposition 2.9 and
+Appendix A](https://arxiv.org/html/2208.00300v3).
+
+The theorem covers unequal lengths, including length zero, and includes both
+interleaving maps and their two double-transition equations. It requires no
+minimality, grid, or additional finiteness assumption on the given finite
+resolutions. `RankSchanuelResolutionExamples` exercises the zero-length,
+one-term, nonzero two-term-tail, unequal-length, and `ε = 0` cases. The result
+retains the degree shifts; by itself it does not establish a shift-free signed
+barcode inequality or a uniform bound on the resolution length.
 
 ### Pushouts of rank-exact sequences
 
