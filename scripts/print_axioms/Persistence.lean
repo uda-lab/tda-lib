@@ -5195,3 +5195,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveHomExact.rankExact_iff_postcompose_surjective
 #print axioms TDA.Persistence.FiniteRankProjectiveHomExact.homShortComplex
 #print axioms TDA.Persistence.FiniteRankProjectiveHomExact.homFunctor_map_shortExact
+
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.projection
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.inclusion
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.encode
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.encode_birth
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.preimage
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.preimage_app
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.postcompose_preimage
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.preimage_postcompose
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.homEquiv
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.homFunctor_fullyFaithful
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.homFunctor_full
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.homFunctor_faithful
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.rankProjective_iff_homProjective
