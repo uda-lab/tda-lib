@@ -5065,3 +5065,18 @@ set_option linter.auxLemma false
 
 -- Shared finite partial-matching construction consumed by Issue #657.
 #print axioms TDA.Persistence.FiniteOccurrenceMatching.exists_two_sided
+
+-- Persistent Schanuel for finite rank-projective resolutions (Issue #659).
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.appendZeros_length
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.termAt_eq_term
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.termAt_eq_zero
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.termAt_appendZero
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.termAt_appendZeros
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.length_tail
+#print axioms TDA.Persistence.FiniteRankProjectiveResolution.termAt_tail
+#print axioms TDA.Persistence.schanuelInterleavingOfResolutions
+#print axioms TDA.Persistence.RankSchanuelResolutionExamples.zeroLengthComparison
+#print axioms TDA.Persistence.RankSchanuelResolutionExamples.twoTerm_tail_nonzero
+#print axioms TDA.Persistence.RankSchanuelResolutionExamples.zeroVsTwoTermComparison
+#print axioms TDA.Persistence.RankSchanuelResolutionExamples.oneTermComparison
+#print axioms TDA.Persistence.RankSchanuelResolutionExamples.zeroParameterComparison

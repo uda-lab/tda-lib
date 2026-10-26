@@ -47,6 +47,7 @@ import TDA.Persistence.RankDeflation
 import TDA.Persistence.RankExactKernel
 import TDA.Persistence.RankExactPushout
 import TDA.Persistence.RankSchanuel
+import TDA.Persistence.RankSchanuelResolution
 import TDA.Persistence.FiniteHookDeflation
 import TDA.Persistence.Rectangle
 import TDA.Persistence.RealRaySeparation
@@ -298,6 +299,7 @@ import TDA.Persistence.FinitePresentationRankProjectiveClassification
 import TDA.Persistence.FinitePresentationRankProjectiveClassificationExamples
 import TDA.Persistence.FiniteRankProjectiveResolution
 import TDA.Persistence.FiniteRankProjectiveResolutionExamples
+import TDA.Persistence.RankSchanuelResolutionExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionKan
 import TDA.Persistence.FiniteRankProjectiveResolutionKanExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionUniqueness
