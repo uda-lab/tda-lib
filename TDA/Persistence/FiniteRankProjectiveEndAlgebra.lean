@@ -1281,7 +1281,7 @@ theorem incidenceToEndAlgHom_kernel_coefficient_zero
   · exact hzero
   · exact (normalizedHom_ne_zero (k := k) source target hst hnorm).elim
 
-private theorem crossingDeltaSpan_coeff_zero_of_not_crosses
+theorem crossingDeltaSpan_coeff_zero_of_not_crosses
     (f : Incidence (k := k) (S := S))
     (hf : f ∈ crossingDeltaSpan (k := k) (S := S))
     (p q : PairPoset S) (hnc : ¬ CrossesDiagonal (S := S) p q) :

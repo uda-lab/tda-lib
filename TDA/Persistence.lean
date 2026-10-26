@@ -58,6 +58,8 @@ import TDA.Persistence.HookEndomorphisms
 import TDA.Persistence.FiniteRankProjectiveClassification
 import TDA.Persistence.FiniteRankProjectiveHom
 import TDA.Persistence.FiniteRankProjectiveEndAlgebra
+import TDA.Persistence.FiniteRankProjectiveDiagonalIdealProjective
+import TDA.Persistence.FiniteRankProjectiveDiagonalIdealProjectiveExamples
 import TDA.Persistence.FiniteRankProjectiveHomProjective
 import TDA.Persistence.FiniteRankProjectiveHomExact
 import TDA.Persistence.FiniteRankProjectiveHomFullyFaithful
