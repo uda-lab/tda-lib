@@ -5080,3 +5080,34 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankSchanuelResolutionExamples.zeroVsTwoTermComparison
 #print axioms TDA.Persistence.RankSchanuelResolutionExamples.oneTermComparison
 #print axioms TDA.Persistence.RankSchanuelResolutionExamples.zeroParameterComparison
+
+-- Finite rank-projective hook Hom classification and normalized composition (Issue #662).
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.HookTag
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.hookModule
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.birth
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.death
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.endpoints
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.HomCondition
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.homCondition_finite_finite
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.homCondition_finite_infinite
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.homCondition_infinite_finite
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.homCondition_infinite_infinite
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.birthUnit
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.unitAt
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.unitAt_ne_zero
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.normalizedHom
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.normalizedHom_app_birth
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.unitCoefficient
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.unitAt_span
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.hom_eq_smul_normalized
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.hom_scalar_unique
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.normalizedHom_app_unitAt
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.normalizedHom_ne_zero
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.hom_nonzero_implies_condition
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.exists_nonzero_hom_iff
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.hom_eq_zero_of_not_condition
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.normalizedHom_comp_of_condition
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.composite_endpoint_order
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.normalizedHom_comp_of_not_condition
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.composite_condition_iff_no_diagonal
+#print axioms TDA.Persistence.FiniteRankProjectiveHom.normalizedHom_comp_of_diagonal
