@@ -778,14 +778,15 @@ arbitrary-field decomposition remain noncomputable. See
 ### Derived vertex tensors for the interval-pair incidence algebra
 
 For a field `k`, a finite lattice `S`, and a strict vertex `v`,
+let `A` be the interval-pair incidence algebra, `I` its diagonal ideal, and `B = A/I`.
 `TDA.Persistence.IncidenceVertexTensorFunctor.vertexTensor v` is the additive functor from left
 modules over the interval-pair incidence algebra to `k`-modules; write `F_v` for this functor. It
-takes the actual character
-coinvariants, is left adjoint to `characterRestriction v`, and preserves finite colimits, hence is
-right exact. Its Mathlib left-derived functors use the second, left-module argument. The
-`diagonalQuotientProjectiveResolution` in `TDA.Persistence.IncidenceVertexTor` is the actual
-two-term resolution `0 → I → A → A/I`, with the proved projectivity and exactness of these terms
-and maps. Applying the functor gives zero in every positive derived degree, including one. The
+takes the actual character coinvariants, is left adjoint to `characterRestriction v`, and preserves
+finite colimits, hence is right exact. Its Mathlib left-derived functors use the second,
+left-module argument. The `diagonalQuotientProjectiveResolution` in
+`TDA.Persistence.IncidenceVertexTor` is the actual projective resolution from the short exact row
+`0 → I ↪ A ↠ B → 0`, with proved projectivity and exactness of these terms and maps. Applying the
+functor gives zero in every positive derived degree, including one. The
 canonical degree-zero comparison identifies `((F_v.leftDerived 0).obj B) ≅ k`, hence
 `F_v(B) ≅ k`; the quotient-unit class maps to `1`. These statements hold for every strict vertex
 and field. See [the resolution and derived comparison](math/incidence-vertex-tor.md) and the

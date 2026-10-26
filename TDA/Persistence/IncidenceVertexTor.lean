@@ -308,8 +308,8 @@ private noncomputable def diagonalQuotientVertexCoinvariantsEquiv :=
       rw [Ideal.Quotient.mk_algebraMap, Algebra.smul_def])
     (fun _ _ => rfl)
 
-/-- On pure quotient classes, the actual quotient-module coinvariants map to the character
-value. -/
+/-- The scalar-transport equivalence preserves the representative `b` of a diagonal quotient
+class. -/
 @[simp] theorem diagonalQuotientVertexCoinvariantsEquiv_mkQ
     (b : DiagonalQuotient (k := k) (S := S)) :
     diagonalQuotientVertexCoinvariantsEquiv (k := k) (S := S) v
