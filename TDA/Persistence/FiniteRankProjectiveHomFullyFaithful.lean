@@ -59,6 +59,22 @@ noncomputable def encode (M : PModule.{u,0,u} k S) (a : S) (x : M.obj a) :
   rw [← Category.assoc, inclusion_projection, Category.id_comp]
   exact HookInfinity.fromBirth_birth a M x
 
+/-- The zero birth vector gives the zero map from the hook generator. -/
+@[simp] theorem encode_zero (M : PModule.{u,0,u} k S) (a : S) :
+    encode M a 0 = 0 := by
+  have h : HookInfinity.fromBirth a M 0 = 0 := by
+    apply HookInfinity.hom_ext
+    simp
+  simp [encode, h]
+
+/-- The birth generator of a principal upset recovers its summand identity. -/
+theorem encode_birth_generator (a : S) :
+    inclusion (k := k) (S := S) a ≫
+      encode (HookInfinity.module (R := k) a) a (HookInfinity.birth a) =
+        𝟙 (HookInfinity.module (R := k) a) := by
+  apply HookInfinity.hom_ext
+  exact encode_birth (HookInfinity.module (R := k) a) a (HookInfinity.birth a)
+
 private theorem encode_add (M : PModule.{u,0,u} k S) (a : S)
     (x y : M.obj a) : encode M a (x + y) = encode M a x + encode M a y := by
   have h : HookInfinity.fromBirth a M (x + y) =

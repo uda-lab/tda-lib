@@ -5200,6 +5200,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.inclusion
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.encode
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.encode_birth
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.encode_zero
+#print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.encode_birth_generator
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.preimage
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.preimage_app
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.postcompose_preimage
