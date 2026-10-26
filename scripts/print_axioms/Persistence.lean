@@ -5181,3 +5181,5 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdeal_eq_incidenceToEndAlgHom_ker
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.hookEndAlgEquivIncidenceQuotient
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.hookEndAlgEquivIncidenceQuotient_symm_mk_delta
+#print axioms TDA.Persistence.FiniteRankProjectiveHomProjective.hookHom_isProjective
+#print axioms TDA.Persistence.FiniteRankProjectiveHomProjective.hom_from_hookSum_isProjective

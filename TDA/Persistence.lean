@@ -58,6 +58,7 @@ import TDA.Persistence.HookEndomorphisms
 import TDA.Persistence.FiniteRankProjectiveClassification
 import TDA.Persistence.FiniteRankProjectiveHom
 import TDA.Persistence.FiniteRankProjectiveEndAlgebra
+import TDA.Persistence.FiniteRankProjectiveHomProjective
 import TDA.Persistence.FiniteRankProjectiveClassificationExamples
 import TDA.Persistence.RealInterleavingDistance
 import TDA.Persistence.RealIntervalInterleaving
