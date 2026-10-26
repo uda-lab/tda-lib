@@ -326,3 +326,6 @@ import TDA.Persistence.GeneratedUpsetQuotientFiniteResolutionExamples
 import TDA.Persistence.PrincipalDownsetInjective
 import TDA.Persistence.FiniteInjectivePresentation
 import TDA.Persistence.FiniteInjectivePresentationExamples
+import TDA.Persistence.PrincipalDownsetRankResolution
+import TDA.Persistence.PrincipalDownsetRankDimension
+import TDA.Persistence.PrincipalDownsetRankDimensionExamples
