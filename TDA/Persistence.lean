@@ -318,3 +318,6 @@ import TDA.Persistence.FiniteRankProjectiveHomDimensionExamples
 import TDA.Persistence.RankExactGenerated
 import TDA.Persistence.GeneratedUpsetResolutionMap
 import TDA.Persistence.GeneratedUpsetResolutionMapExamples
+import TDA.Persistence.GeneratedUpsetQuotientResolution
+import TDA.Persistence.HookCokernel
+import TDA.Persistence.GeneratedUpsetQuotientResolutionExamples
