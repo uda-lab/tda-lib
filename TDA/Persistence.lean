@@ -315,3 +315,6 @@ import TDA.Persistence.FiniteRankProjectiveResolutionHookBettiExamples
 import TDA.Persistence.HookMatching
 import TDA.Persistence.FiniteRankProjectiveHomDimension
 import TDA.Persistence.FiniteRankProjectiveHomDimensionExamples
+import TDA.Persistence.RankExactGenerated
+import TDA.Persistence.GeneratedUpsetResolutionMap
+import TDA.Persistence.GeneratedUpsetResolutionMapExamples
