@@ -5527,3 +5527,34 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveDiagonalIdealProjective.columnModule_projective
 #print axioms TDA.Persistence.FiniteRankProjectiveDiagonalIdealProjective.diagonalIdeal_projective
 #print axioms TDA.Persistence.FiniteRankProjectiveDiagonalIdealProjective.diagonalIdeal_projective_object
+
+-- Degree-zero vertex tensors for the incidence algebra (Issue #695).
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalIdealTwoSided
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientIsScalarTower
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexRightAction_one
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexRightAction_mul
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexRelation_mkQ
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexPureBilinear_apply
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexPure_balanced
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexBalancedFactor_pure
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexBalanced_universal
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexCharacter_apply
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexCharacter_one
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexCharacter_mul
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexCharacter_algebraMap
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexCharacter_delta
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexCharacter_vanishes_on_diagonalIdeal
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexCharacter_zero_on_diagonalIdeal
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexQuotientCharacter_mk
+#print axioms TDA.Persistence.IncidenceVertexTensor.crossingDelta_killed_in_diagonalIdealVertexCoinvariants
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalIdealVertexCoinvariants_mkQ_eq_zero
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalIdealVertexCoinvariants_eq_zero
+#print axioms TDA.Persistence.IncidenceVertexTensor.vertexQuotientCharacter_smul
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientVertexCharacter_balances
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientVertexTensorEvaluation_mk
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientVertexTensorEvaluation_unit
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientVertexTensor_reconstruct
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientVertexTensorEquiv_mk
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientVertexTensorEquiv_symm_apply
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientVertexTensorUnit_ne_zero
+#print axioms TDA.Persistence.IncidenceVertexTensor.diagonalQuotientVertexTensorEvaluation_mul
