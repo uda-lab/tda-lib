@@ -323,3 +323,6 @@ import TDA.Persistence.HookCokernel
 import TDA.Persistence.GeneratedUpsetQuotientResolutionExamples
 import TDA.Persistence.GeneratedUpsetQuotientFiniteResolution
 import TDA.Persistence.GeneratedUpsetQuotientFiniteResolutionExamples
+import TDA.Persistence.PrincipalDownsetInjective
+import TDA.Persistence.FiniteInjectivePresentation
+import TDA.Persistence.FiniteInjectivePresentationExamples
