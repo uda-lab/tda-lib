@@ -170,10 +170,11 @@ noncomputable def normalizedHom (s t : HookTag P) (h : HomCondition s t) :
   | inl ab =>
       cases t with
       | inl cd =>
-          refine Hook.fromGenerator ab.property (hookModule (k := k) (.inl cd))
-            (unitAt (k := k) (.inl cd) ab.val.1
-              (by simpa [HomCondition, endpoints, birth, death] using h.1))
-            (finiteTargetMapZero (k := k) ab cd h)
+          exact (Hook.homEquivKernel ab.property
+            (hookModule (k := k) (.inl cd))).symm
+            ⟨unitAt (k := k) (.inl cd) ab.val.1
+                (by simpa [HomCondition, endpoints, birth, death] using h.1),
+              finiteTargetMapZero (k := k) ab cd h⟩
       | inr c =>
           simp [HomCondition, endpoints, birth, death] at h
   | inr a =>
@@ -181,12 +182,14 @@ noncomputable def normalizedHom (s t : HookTag P) (h : HomCondition s t) :
       | inl cd =>
           have hc : cd.val.1 ≤ a ∧ ¬ cd.val.2 ≤ a := by
             simpa [HomCondition, endpoints, birth, death] using h
-          exact HookInfinity.fromBirth a (hookModule (k := k) (.inl cd))
+          exact (HookInfinity.homEquivFiber a
+            (hookModule (k := k) (.inl cd))).symm
             (unitAt (k := k) (.inl cd) a (by simpa [birth] using hc.1))
       | inr b =>
           have hc : b ≤ a := by
             simpa [HomCondition, endpoints, birth, death] using h
-          exact HookInfinity.fromBirth a (hookModule (k := k) (.inr b))
+          exact (HookInfinity.homEquivFiber a
+            (hookModule (k := k) (.inr b))).symm
             (unitAt (k := k) (.inr b) a (by simpa [birth] using hc))
 
 /-- The normalized morphism sends the source birth unit to the target's unit
@@ -295,7 +298,9 @@ theorem hom_eq_smul_normalized (s t : HookTag P) (h : HomCondition s t)
           let f' : hookModule (k := k) (.inl ab) ⟶ hookModule (k := k) (.inl cd) := f
           let g : hookModule (k := k) (.inl ab) ⟶ hookModule (k := k) (.inl cd) :=
             normalizedHom (k := k) (.inl ab) (.inl cd) h
-          apply Hook.hom_ext ab.property
+          apply (Hook.homEquivKernel ab.property
+            (hookModule (k := k) (.inl cd))).injective
+          apply Subtype.ext
           have hnorm : (g.app ab.val.1).hom
               (SupportInterval.one (Hook.support ab.val.1 ab.val.2)
                 (Hook.birth_mem ab.property)) =
@@ -320,7 +325,8 @@ theorem hom_eq_smul_normalized (s t : HookTag P) (h : HomCondition s t)
           let f' : hookModule (k := k) (.inr a) ⟶ hookModule (k := k) (.inl cd) := f
           let g : hookModule (k := k) (.inr a) ⟶ hookModule (k := k) (.inl cd) :=
             normalizedHom (k := k) (.inr a) (.inl cd) h
-          apply HookInfinity.hom_ext
+          apply (HookInfinity.homEquivFiber a
+            (hookModule (k := k) (.inl cd))).injective
           have hnorm : (g.app a).hom (HookInfinity.birth a) =
               unitAt (k := k) (.inl cd) a h.1 := by
             exact normalizedHom_app_birth (k := k) (.inr a) (.inl cd) h
@@ -336,7 +342,8 @@ theorem hom_eq_smul_normalized (s t : HookTag P) (h : HomCondition s t)
           let f' : hookModule (k := k) (.inr a) ⟶ hookModule (k := k) (.inr b) := f
           let g : hookModule (k := k) (.inr a) ⟶ hookModule (k := k) (.inr b) :=
             normalizedHom (k := k) (.inr a) (.inr b) h
-          apply HookInfinity.hom_ext
+          apply (HookInfinity.homEquivFiber a
+            (hookModule (k := k) (.inr b))).injective
           have hnorm : (g.app a).hom (HookInfinity.birth a) =
               unitAt (k := k) (.inr b) a h.1 := by
             exact normalizedHom_app_birth (k := k) (.inr a) (.inr b) h
@@ -446,7 +453,9 @@ theorem hom_nonzero_implies_condition (s t : HookTag P)
               intro hx
               exact hx.2 hd
             have hzero : f = 0 := by
-              apply Hook.hom_ext ab.property
+              apply (Hook.homEquivKernel ab.property
+                (hookModule (k := k) (.inl cd))).injective
+              apply Subtype.ext
               apply Subtype.ext
               exact SupportInterval.val_eq_zero (Hook.support cd.val.1 cd.val.2) hnot _
             exact hf hzero
@@ -465,7 +474,8 @@ theorem hom_nonzero_implies_condition (s t : HookTag P)
               intro hx
               exact hx.2 hd
             have hzero : f = 0 := by
-              apply HookInfinity.hom_ext
+              apply (HookInfinity.homEquivFiber a
+                (hookModule (k := k) (.inl cd))).injective
               apply Subtype.ext
               exact SupportInterval.val_eq_zero (Hook.support cd.val.1 cd.val.2) hnot _
             exact hf hzero
@@ -553,14 +563,15 @@ theorem normalizedHom_comp_of_condition (s t u : HookTag P)
         rw [normalizedHom_app_birth]
   cases s with
   | inl ab =>
-      apply Hook.hom_ext ab.property
+      apply (Hook.homEquivKernel ab.property (hookModule (k := k) u)).injective
+      apply Subtype.ext
       change ((f ≫ g).app (birth (.inl ab))).hom (birthUnit (k := k) (.inl ab)) =
         ((normalizedHom (k := k) (.inl ab) u hsu).app (birth (.inl ab))).hom
           (birthUnit (k := k) (.inl ab))
       exact hbirth
 
   | inr a =>
-      apply HookInfinity.hom_ext
+      apply (HookInfinity.homEquivFiber a (hookModule (k := k) u)).injective
       change ((f ≫ g).app (birth (.inr a))).hom (birthUnit (k := k) (.inr a)) =
         ((normalizedHom (k := k) (.inr a) u hsu).app (birth (.inr a))).hom
           (birthUnit (k := k) (.inr a))
