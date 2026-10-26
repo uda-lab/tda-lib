@@ -61,6 +61,7 @@ import TDA.Persistence.FiniteRankProjectiveEndAlgebra
 import TDA.Persistence.FiniteRankProjectiveHomProjective
 import TDA.Persistence.FiniteRankProjectiveHomExact
 import TDA.Persistence.FiniteRankProjectiveHomFullyFaithful
+import TDA.Persistence.FiniteRankProjectiveHomCover
 import TDA.Persistence.FiniteRankProjectiveClassificationExamples
 import TDA.Persistence.RealInterleavingDistance
 import TDA.Persistence.RealIntervalInterleaving
