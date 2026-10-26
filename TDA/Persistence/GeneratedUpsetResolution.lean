@@ -263,7 +263,7 @@ noncomputable def signedDeletionAt {m r : ℕ} (f : Fin m → P)
     (A : FaceIndex m (r + 1)) (j : Fin (r + 2)) :
     faceModule (k := k) f A ⟶ faceModule (k := k) f (eraseFaceAt A j) :=
   scalarMultiple ((-1 : k) ^ (j : ℕ))
-    (inclusion (k := k) f A (eraseFaceAt A j) (Finset.erase_subset _ _))
+    (inclusion (k := k) f A (eraseFaceAt A j) (eraseFaceAt_subset A j))
 
 /-- A signed face inclusion sends the source birth to the signed target birth image. -/
 @[simp] theorem signedDeletionAt_birth {m r : ℕ} (f : Fin m → P)
