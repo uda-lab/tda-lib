@@ -86,7 +86,7 @@ theorem top_resolution_and_dimension :
   refine ⟨hc, by simp [resolution_length, hc], ?_⟩
   simpa [hc] using hasProjectiveDimensionLE (k := k) (⊤ : Bool × Bool)
 
-/-- On the singleton lattice the unique module uses the top identity resolution. -/
+/-- On the singleton lattice the unique principal-downset module uses the top identity resolution. -/
 theorem singleton_resolution_and_dimension :
     (resolution (k := k) (0 : Fin 1)).length = 1 ∧
       HasProjectiveDimensionLE
