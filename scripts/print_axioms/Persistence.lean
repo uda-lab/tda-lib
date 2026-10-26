@@ -5211,3 +5211,11 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.homFunctor_full
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.homFunctor_faithful
 #print axioms TDA.Persistence.FiniteRankProjectiveHomFullyFaithful.rankProjective_iff_homProjective
+#print axioms TDA.Persistence.FiniteRankProjectiveHomCover.isIso_map_iff
+#print axioms TDA.Persistence.FiniteRankProjectiveHomCover.map_comp_eq_map_iff
+#print axioms TDA.Persistence.FiniteRankProjectiveHomCover.rightMinimal_iff
+#print axioms TDA.Persistence.FiniteRankProjectiveHomCover.pointwise_surjective_of_postcompose_surjective
+#print axioms TDA.Persistence.FiniteRankProjectiveHomCover.rankProjectiveCover_iff
+#print axioms TDA.Persistence.FiniteRankProjectiveHomCover.minimalResolution_row_homCover
+#print axioms TDA.Persistence.FiniteRankProjectiveHomCover.Examples.zero_identity_homCover
+#print axioms TDA.Persistence.FiniteRankProjectiveHomCover.Examples.principalUpset_identity_homCover
