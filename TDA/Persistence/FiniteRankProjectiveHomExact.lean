@@ -34,7 +34,7 @@ private instance : HasFiniteBiproducts (PModule.{u,0,u} k S) :=
 
 /-- The opposite endomorphism algebra acting on maps from the finite hook
  generator. -/
-abbrev HomScalars := (End (HookSum (k := k) (S := S)))ᵐᵒᵖ
+abbrev HomScalars := FiniteRankProjectiveHomProjective.HomScalars (k := k) (S := S)
 
 /-- The E-opposite-linear map induced by postcomposition with a persistence
 morphism. -/
