@@ -331,3 +331,6 @@ import TDA.Persistence.PrincipalDownsetRankDimension
 import TDA.Persistence.PrincipalDownsetRankDimensionExamples
 import TDA.Persistence.FiniteInjectiveRankDimension
 import TDA.Persistence.FiniteInjectiveRankDimensionExamples
+import TDA.Persistence.TwoInjectivePresentation
+import TDA.Persistence.TwoInjectiveHomDimension
+import TDA.Persistence.TwoInjectiveHomDimensionExamples
