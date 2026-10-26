@@ -336,9 +336,27 @@ are not cancelled against one another. The principal-upset example confirms
 that positive-degree terms vanish when the resolved module is already
 projective.
 
-These results do not select a canonical hook decomposition or a unique
-comparison isomorphism. Choice independence of the signed multisets is not a
-stability theorem: these declarations do not establish signed-barcode
+For a field `k`, `n ≥ 1`, and two finite occurrence-indexed families of these
+finite-death or principal-upset hooks over `Fin n → ℝ`,
+`HookMatching.exists_matching` turns an actual `ε`-interleaving of their
+biproducts into an occurrence matching at radius `(2n−1)ε`. Every matched pair
+has an actual `((2n−1)ε)`-interleaving, and every unmatched hook on either side
+has an actual interleaving with zero at that radius. Repeated isomorphic tags
+remain separate occurrences, and the unbounded principal-upset supports are
+included. The proof derives the Hall
+inequality `card_le_neighbors` from the component maps: endpoint geometry and
+composition of the hook coefficients make the selected finite matrix product
+triangular with unit diagonal, after which finite Hall matching and the
+two-sided injection construction give the matching. For `ε = 0`, the result
+uses hook-sum multiplicity uniqueness to produce the matching directly.
+This is the finite-family matching consequence of
+[Botnan–Oppermann–Oudot–Scoccola, Theorem 4.1 and Proposition 4.3](https://arxiv.org/html/2208.00300v3).
+It does not assert countable-family stability or the signed-barcode stability
+of a full resolution.
+
+The signed-multiset results do not select a canonical hook decomposition or a
+unique comparison isomorphism. Choice independence of the signed multisets is
+not a stability theorem: these declarations do not establish signed-barcode
 stability, the rank-exact structure axioms stated in
 [Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3), or the `2n−2`
 resolution-length bound stated in

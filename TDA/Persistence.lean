@@ -304,3 +304,4 @@ import TDA.Persistence.FiniteRankProjectiveResolutionUniqueness
 import TDA.Persistence.FiniteRankProjectiveResolutionUniquenessExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionHookBetti
 import TDA.Persistence.FiniteRankProjectiveResolutionHookBettiExamples
+import TDA.Persistence.HookMatching
