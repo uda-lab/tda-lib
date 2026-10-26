@@ -32,7 +32,9 @@ private instance : HasFiniteBiproducts (PModule.{u,0,u} k S) :=
   HasFiniteBiproducts.of_hasFiniteProducts
 
 private abbrev EndRing := End (HookSum (k := k) (S := S))
-private abbrev HomScalars := (EndRing (k := k) (S := S))ᵐᵒᵖ
+/-- The opposite endomorphism algebra acting on maps from the finite hook
+generator. This is the same scalar type used by the Hom functor. -/
+abbrev HomScalars := (EndRing (k := k) (S := S))ᵐᵒᵖ
 
 /-- Postcomposition with the hook inclusion embeds maps from the hook generator
 into its endomorphism ring. -/
@@ -112,7 +114,7 @@ private def homPostcomposeLinearEquiv {M N : PModule.{u,0,u} k S}
 
 /-- Maps from the hook generator into a finite biproduct are the finite product
 of the corresponding Hom modules, compatibly with precomposition. -/
-private def homBiproductEquivPi {I : Type} [Fintype I]
+def homBiproductEquivPi {I : Type} [Fintype I]
     (F : I → PModule.{u,0,u} k S) :
     (HookSum (k := k) (S := S) ⟶ ⨁ F) ≃ₗ[HomScalars (k := k) (S := S)]
       (∀ i, HookSum (k := k) (S := S) ⟶ F i) where
@@ -133,6 +135,12 @@ private def homBiproductEquivPi {I : Type} [Fintype I]
     change (r.unop ≫ f) ≫ biproduct.π F i =
       r.unop ≫ (f ≫ biproduct.π F i)
     exact Category.assoc _ _ _
+
+/-- The finite-biproduct comparison reads each coordinate by composing with the
+corresponding categorical projection. -/
+@[simp] theorem homBiproductEquivPi_apply {I : Type} [Fintype I]
+    (F : I → PModule.{u,0,u} k S) (f : HookSum (k := k) (S := S) ⟶ ⨁ F) (i : I) :
+    homBiproductEquivPi (k := k) (S := S) F f i = f ≫ biproduct.π F i := rfl
 
 private def indexTag {M : PModule.{u,0,u} k S} :
     FiniteHookDeflation.Index M → HookTag (S := S)
