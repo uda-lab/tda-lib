@@ -164,6 +164,37 @@ noncomputable def homShortComplex
         (f ≫ ι) ≫ π = f ≫ (ι ≫ π) := Category.assoc _ _ _
         _ = 0 := by rw [hs.comp_eq_zero]; simp)
 
+/-- Ordinary left exactness of maps out of the hook generator along a
+pointwise short exact row. This uses only the actual categorical kernel
+factorization and does not require rank exactness or finite-dimensionality. -/
+theorem homShortComplex_exact
+    {A B C : PModule.{u,0,u} k S} {ι : A ⟶ B} {π : B ⟶ C}
+    (hs : IsPointwiseShortExact ι π) :
+    (homShortComplex (k := k) (S := S) hs).Exact := by
+  let S' := homShortComplex (k := k) (S := S) hs
+  have hExact : S'.Exact := by
+    rw [ShortComplex.moduleCat_exact_iff]
+    intro f hf
+    change postcompose (k := k) (S := S) π f = 0 at hf
+    change HookSum (k := k) (S := S) ⟶ B at f
+    let e := hs.kernelIso
+    let fk : HookSum (k := k) (S := S) ⟶ kernel π :=
+      kernel.lift π f hf
+    refine ⟨fk ≫ e.inv, ?_⟩
+    change postcompose (k := k) (S := S) ι (fk ≫ e.inv) = f
+    dsimp [postcompose]
+    have hfactor : fk ≫ kernel.ι π = f := by
+      dsimp [fk]
+      exact kernel.lift_ι π f hf
+    have heι : e.hom ≫ kernel.ι π = ι := hs.kernelIso_hom_ι
+    calc
+      (fk ≫ e.inv) ≫ ι = (fk ≫ e.inv) ≫ (e.hom ≫ kernel.ι π) := by
+        exact congrArg (fun q => (fk ≫ e.inv) ≫ q) heι.symm
+      _ = ((fk ≫ e.inv) ≫ e.hom) ≫ kernel.ι π := Category.assoc _ _ _
+      _ = fk ≫ kernel.ι π := by simp
+      _ = f := hfactor
+  simpa only [S'] using hExact
+
 /-- Postcomposition sends a rank-exact row to a short exact row in the actual
 module category over the opposite endomorphism algebra. In particular the
 first map is injective and the middle term is the kernel of the last map. -/
@@ -179,28 +210,8 @@ theorem homFunctor_map_shortExact
     intro f g h
     ext p x
     exact hs.injective p (congrArg (fun q => (q.app p).hom x) h)
-  have hExact : S'.Exact := by
-    rw [ShortComplex.moduleCat_exact_iff]
-    intro f hf
-    change postcompose (k := k) (S := S) π f = 0 at hf
-    change HookSum (k := k) (S := S) ⟶ B at f
-    let e := hs.toIsPointwiseShortExact.kernelIso
-    let fk : HookSum (k := k) (S := S) ⟶ kernel π :=
-      kernel.lift π f hf
-    refine ⟨fk ≫ e.inv, ?_⟩
-    change postcompose (k := k) (S := S) ι (fk ≫ e.inv) = f
-    dsimp [postcompose]
-    have hfactor : fk ≫ kernel.ι π = f := by
-      dsimp [fk]
-      exact kernel.lift_ι π f hf
-    have heι : e.hom ≫ kernel.ι π = ι :=
-      hs.toIsPointwiseShortExact.kernelIso_hom_ι
-    calc
-      (fk ≫ e.inv) ≫ ι = (fk ≫ e.inv) ≫ (e.hom ≫ kernel.ι π) := by
-        exact congrArg (fun q => (fk ≫ e.inv) ≫ q) heι.symm
-      _ = ((fk ≫ e.inv) ≫ e.hom) ≫ kernel.ι π := Category.assoc _ _ _
-      _ = fk ≫ kernel.ι π := by simp
-      _ = f := hfactor
+  have hExact : S'.Exact :=
+    homShortComplex_exact (k := k) (S := S) hs.toIsPointwiseShortExact
   haveI : Mono S'.f :=
     (ModuleCat.mono_iff_injective _).2 (by
       change Function.Injective (postcompose (k := k) (S := S) ι)
