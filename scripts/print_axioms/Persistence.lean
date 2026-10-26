@@ -5183,3 +5183,15 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.hookEndAlgEquivIncidenceQuotient_symm_mk_delta
 #print axioms TDA.Persistence.FiniteRankProjectiveHomProjective.hookHom_isProjective
 #print axioms TDA.Persistence.FiniteRankProjectiveHomProjective.hom_from_hookSum_isProjective
+
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.HomScalars
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.postcompose
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.postcompose_apply
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.postcompose_id
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.postcompose_comp
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.homFunctor
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.homFunctor_map_apply
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.hookSum_isRankProjective
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.rankExact_iff_postcompose_surjective
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.homShortComplex
+#print axioms TDA.Persistence.FiniteRankProjectiveHomExact.homFunctor_map_shortExact
