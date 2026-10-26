@@ -338,3 +338,5 @@ import TDA.Persistence.FiniteInjectiveRankDimensionExamples
 import TDA.Persistence.TwoInjectivePresentation
 import TDA.Persistence.TwoInjectiveHomDimension
 import TDA.Persistence.TwoInjectiveHomDimensionExamples
+import TDA.Persistence.IncidenceVertexTensorFunctor
+import TDA.Persistence.IncidenceVertexTor
