@@ -321,3 +321,5 @@ import TDA.Persistence.GeneratedUpsetResolutionMapExamples
 import TDA.Persistence.GeneratedUpsetQuotientResolution
 import TDA.Persistence.HookCokernel
 import TDA.Persistence.GeneratedUpsetQuotientResolutionExamples
+import TDA.Persistence.GeneratedUpsetQuotientFiniteResolution
+import TDA.Persistence.GeneratedUpsetQuotientFiniteResolutionExamples
