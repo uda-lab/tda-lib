@@ -10,7 +10,8 @@ certified minimal rank-projective resolution to a short exact sequence with
 projective middle term and right-minimal quotient. Ext dimension shifting
 then identifies ordinary projective-dimension bounds with vanishing above
 the corresponding degree. The terms are extended by zero, so terminal zero
-padding does not affect the comparison.
+padding does not affect the comparison. For a supplied finite resolution,
+the same Ext dimension shifting gives an upper bound without minimality.
 -/
 
 set_option autoImplicit false
@@ -106,6 +107,26 @@ private theorem finite_rows_dimension_iff
         simp only [Fin.forall_fin_succ, Fin.val_zero, Fin.val_succ]
         simp
 
+private theorem finite_rows_dimension_lt
+    {C : Type*} [Category* C] [Abelian C] (n : ℕ)
+    (K : Fin (n + 1) → C) (P : Fin n → C)
+    (f : ∀ i, K i.succ ⟶ P i) (g : ∀ i, P i ⟶ K i.castSucc)
+    (w : ∀ i, f i ≫ g i = 0)
+    (hex : ∀ i, (ShortComplex.mk (f i) (g i) (w i)).ShortExact)
+    (hproj : ∀ i, Projective (P i))
+    (hlast : IsZero (K (Fin.last n))) :
+    HasProjectiveDimensionLT (K 0) n := by
+  induction n with
+  | zero => exact hlast.hasProjectiveDimensionLT_zero
+  | succ n ih =>
+    have htail := ih (fun i => K i.succ) (fun i => P i.succ)
+      (fun i => f i.succ) (fun i => g i.succ) (fun i => w i.succ)
+      (fun i => hex i.succ) (fun i => hproj i.succ) hlast
+    have := hproj 0
+    have hmiddle : HasProjectiveDimensionLT (P 0) (n + 1) :=
+      hasProjectiveDimensionLT_of_ge (P 0) 1 (n + 1) (Nat.succ_le_succ (Nat.zero_le n))
+    exact (hex 0).hasProjectiveDimensionLT_X₃ n htail hmiddle
+
 variable {k : Type u} [Field k] {S : Type} [Lattice S] [Finite S]
 
 private abbrev F := homFunctor (k := k) (S := S)
@@ -127,6 +148,28 @@ theorem isZero_hom_obj_iff (M : PModule.{u,0,u} k S) :
     rw [(F (k := k) (S := S)).map_id, (F (k := k) (S := S)).map_zero]
     exact h
   · exact (F (k := k) (S := S)).map_isZero
+
+/-- Any supplied finite rank-projective resolution bounds ordinary projective
+dimension after applying the hook-generator Hom functor. No minimality is needed;
+a length-zero resolution has zero target. -/
+theorem hasProjectiveDimensionLT_length
+    {M : PModule.{u,0,u} k S} (R : FiniteRankProjectiveResolution M) :
+    HasProjectiveDimensionLT ((homFunctor (k := k) (S := S)).obj M) R.length := by
+  have h := finite_rows_dimension_lt R.length
+    (fun i => (F (k := k) (S := S)).obj (R.kernel i))
+    (fun i => (F (k := k) (S := S)).obj (R.term i))
+    (fun i => (F (k := k) (S := S)).map (R.inclusion i))
+    (fun i => (F (k := k) (S := S)).map (R.quotient i))
+    (fun i => (homShortComplex (R.row_rank_exact i).toIsPointwiseShortExact).zero)
+    (fun i => homFunctor_map_shortExact (R.row_rank_exact i))
+    (fun i => by
+      have := (FiniteRankProjectiveHomFullyFaithful.rankProjective_iff_homProjective
+        (R.term i) (R.row_rank_exact i).finiteDimensional).mp (R.term_rank_projective i)
+      infer_instance)
+    ((isZero_hom_obj_iff _).mpr (IsZero.of_iso (isZero_zero _) R.terminal_iso))
+  have := h
+  exact hasProjectiveDimensionLT_of_iso
+    ((F (k := k) (S := S)).mapIso R.initial_iso) R.length
 
 /-- The finite rows of every supplied certified minimal resolution compute
 the ordinary Ext-based projective-dimension bound after applying Hom. -/
