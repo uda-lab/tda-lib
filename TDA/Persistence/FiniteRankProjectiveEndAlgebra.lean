@@ -1079,6 +1079,31 @@ private theorem diagonalIdempotent_eq_diagonalDeltaExpansion :
     · rw [dif_neg hpd]
       simp
 
+/-- The diagonal support function is an idempotent in the incidence algebra. -/
+theorem diagonalIdempotent_mul_self :
+    diagonalIdempotent (k := k) (S := S) *
+        diagonalIdempotent (k := k) (S := S) =
+      diagonalIdempotent (k := k) (S := S) := by
+  classical
+  rw [diagonalIdempotent_eq_diagonalDeltaExpansion]
+  simp only [diagonalDeltaExpansion, Finset.sum_mul, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro p hp
+  by_cases hpdiag : IsDiagonal (S := S) p
+  · rw [dif_pos hpdiag]
+    rw [Finset.sum_eq_single p]
+    · rw [dif_pos hpdiag]
+      rw [delta_mul (k := k) (S := S) p p p p le_rfl le_rfl]
+      simp
+    · intro q hq hqp
+      by_cases hqdiag : IsDiagonal (S := S) q
+      · rw [dif_pos hqdiag]
+        rw [delta_mul (k := k) (S := S) q q p p le_rfl le_rfl]
+        simp [hqp]
+      · simp [hqdiag]
+    · simp
+  · simp [hpdiag]
+
 private theorem delta_mul_diagonalIdempotent_right (p q : PairPoset S)
     (hpq : p ≤ q) (hq : IsDiagonal (S := S) q) :
     delta (k := k) p q hpq * diagonalIdempotent (k := k) (S := S) =

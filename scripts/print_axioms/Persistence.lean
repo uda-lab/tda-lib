@@ -5164,6 +5164,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.incidenceToEndAlgHom_surjective
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdempotent
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdempotent_apply
+#print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdempotent_mul_self
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdeal
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdeal_mem_delta_of_cross
 #print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.crossingDeltaSpan
