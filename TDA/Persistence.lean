@@ -359,3 +359,5 @@ import TDA.Persistence.IncidenceVertexProjectiveDimension
 import TDA.Persistence.FiniteGridInjectiveRankDimension
 import TDA.Persistence.IncidenceQuotientBaseChangeExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionDimension
+import TDA.Persistence.CoordinateInterleavingDelay
+import TDA.Persistence.RankSchanuelUnshifted
