@@ -792,6 +792,19 @@ canonical degree-zero comparison identifies `((F_v.leftDerived 0).obj B) ≅ k`,
 and field. See [the resolution and derived comparison](math/incidence-vertex-tor.md) and the
 focused consumers in `TDA.Persistence.IncidenceVertexTorExamples`.
 
+`TDA.Persistence.IncidenceQuotientSimple` classifies the actual simple left modules over
+`C = (A/I)ᵐᵒᵖ`, equivalently simple right modules over `B = A/I`. For every simple module there
+is a unique strict vertex `v` with a `C`-linear isomorphism to the actual character-restriction
+module `RightVertexModule v`; `rightVertexModule_iso_iff` distinguishes the vertices. The
+underlying-`k` comparison with `((F_v.leftDerived 0).obj B)` is an existence isomorphism that
+depends on the classification choice, while `IncidenceVertexTor.diagonalQuotient_leftDerivedZeroIso`
+is the canonical degree-zero field comparison. Positive left-derived vanishing is supplied by
+`IncidenceVertexTor.diagonalQuotient_leftDerived_pos_isZero`. See
+[simple right modules over the quotient](math/incidence-quotient-simple-modules.md) and the
+focused consumers in `TDA.Persistence.IncidenceQuotientSimpleExamples`. This is the simple-module
+classification step used in BOOS24-v3 Lemma 5.7, specialized to the interval-pair quotient; it
+does not assert the global-dimension conclusion of that lemma.
+
 ## Compatible lifts and algebraic sums over the reals
 
 `TDA.Persistence.CompatibleSections` constructs compatible sections of a persistence

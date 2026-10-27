@@ -341,3 +341,4 @@ import TDA.Persistence.TwoInjectiveHomDimensionExamples
 import TDA.Persistence.IncidenceVertexTensorFunctor
 import TDA.Persistence.IncidenceVertexTor
 import TDA.Persistence.IncidenceQuotientSimple
+import TDA.Persistence.IncidenceQuotientSimpleExamples
