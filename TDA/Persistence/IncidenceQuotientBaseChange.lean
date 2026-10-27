@@ -771,6 +771,121 @@ noncomputable def regularExtensionIso :
       quotientHom (k := k) (S := S) a := by
   exact regularExtensionMap_mkQ (k := k) (S := S) a
 
+/-- The actual right incidence matrix unit before quotienting. -/
+def rightIncidenceMatrixUnit (p q : PairPoset S) (hpq : p ≤ q) :
+    RightIncidence (k := k) (S := S) :=
+  MulOpposite.op (FiniteRankProjectiveEndAlgebra.delta (k := k) (S := S) p q hpq)
+
+@[simp] theorem quotientHom_rightIncidenceMatrixUnit (p q : PairPoset S) (hpq : p ≤ q) :
+    quotientHom (k := k) (S := S)
+        (rightIncidenceMatrixUnit (k := k) (S := S) p q hpq) =
+      rightMatrixUnit (k := k) (S := S) p q hpq := by
+  rfl
+
+/-- The right-vertex character pulled back to the actual incidence ring. -/
+def rightVertexRestrictedCharacter (v : StrictVertex S) :
+    RightIncidence (k := k) (S := S) →+* k :=
+  (rightVertexCharacter (k := k) (S := S) v).comp
+    (quotientHom (k := k) (S := S))
+
+/-- The actual right incidence module obtained by restricting the existing quotient vertex module. -/
+abbrev RightVertexRestrictedModule (v : StrictVertex S) :
+    ModuleCat (RightIncidence (k := k) (S := S)) :=
+  (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj
+    (RightVertexModule (k := k) (S := S) v)
+
+theorem rightVertexRestrictedCharacter_surjective (v : StrictVertex S) :
+    Function.Surjective (rightVertexRestrictedCharacter (k := k) (S := S) v) := by
+  intro a
+  obtain ⟨c, hc⟩ := rightVertexCharacter_surjective (k := k) (S := S) v a
+  obtain ⟨r, hr⟩ := quotientHom_surjective (k := k) (S := S) c
+  exact ⟨r, by simp [rightVertexRestrictedCharacter, hr, hc]⟩
+
+local instance rightVertexRestrictedModule_k (v : StrictVertex S) :
+    Module k (RightVertexRestrictedModule (k := k) (S := S) v) := by
+  change Module k (RightVertexModule (k := k) (S := S) v)
+  infer_instance
+
+@[simp] theorem rightVertexRestrictedModule_smul (v : StrictVertex S)
+    (r : RightIncidence (k := k) (S := S)) (t : RightVertexRestrictedModule (k := k) (S := S) v) :
+    r • t = rightVertexRestrictedCharacter (k := k) (S := S) v r • t := by
+  change quotientHom (k := k) (S := S) r • t =
+    rightVertexCharacter (k := k) (S := S) v
+      (quotientHom (k := k) (S := S) r) • t
+  exact rightVertexModule_smul (k := k) (S := S) v
+    (quotientHom (k := k) (S := S) r) t
+
+@[simp] theorem rightIncidenceMatrixUnit_smul (v : StrictVertex S)
+    (p q : PairPoset S) (hpq : p ≤ q) (t : RightVertexRestrictedModule (k := k) (S := S) v) :
+    rightIncidenceMatrixUnit (k := k) (S := S) p q hpq • t =
+      if v.1 = p ∧ v.1 = q then t else 0 := by
+  rw [rightVertexRestrictedModule_smul]
+  change rightVertexCharacter (k := k) (S := S) v
+      (quotientHom (k := k) (S := S)
+        (rightIncidenceMatrixUnit (k := k) (S := S) p q hpq)) • t = _
+  rw [quotientHom_rightIncidenceMatrixUnit]
+  change rightVertexCharacter (k := k) (S := S) v
+      (rightMatrixUnit (k := k) (S := S) p q hpq) •
+        (show RightVertexModule (k := k) (S := S) v from t) = _
+  calc
+    _ = rightMatrixUnit (k := k) (S := S) p q hpq •
+        (show RightVertexModule (k := k) (S := S) v from t) :=
+          (rightVertexModule_smul (k := k) (S := S) v
+            (rightMatrixUnit (k := k) (S := S) p q hpq) t).symm
+    _ = _ := rightMatrixUnit_smul (k := k) (S := S) v p q hpq t
+
+/-- Restriction along the surjective quotient preserves the simplicity of each vertex module. -/
+theorem rightVertexRestrictedModule_isSimpleModule (v : StrictVertex S) :
+    IsSimpleModule (RightIncidence (k := k) (S := S))
+      (RightVertexRestrictedModule (k := k) (S := S) v) := by
+  let χ := rightVertexCharacter (k := k) (S := S) v
+  let ψ := rightVertexRestrictedCharacter (k := k) (S := S) v
+  letI : RingHomSurjective ψ :=
+    ⟨rightVertexRestrictedCharacter_surjective (k := k) (S := S) v⟩
+  letI : Module (RightIncidence (k := k) (S := S)) k := Module.compHom k ψ
+  let f : k →ₛₗ[ψ] k :=
+    { toFun := id
+      map_add' := by intro a b; rfl
+      map_smul' := by intro a b; rfl }
+  have hf : Function.Bijective f := by
+    constructor <;> intro a <;> simp [f]
+  have hs : IsSimpleModule (RightIncidence (k := k) (S := S)) k :=
+    (LinearMap.isSimpleModule_iff_of_bijective f hf).2 inferInstance
+  let i := ModuleCat.restrictScalarsComp'App
+    (quotientHom (k := k) (S := S)) χ ψ rfl (ModuleCat.of k k)
+  exact (LinearEquiv.isSimpleModule_iff i.toLinearEquiv).mp hs
+
+instance rightVertexRestrictedModule_isSimple (v : StrictVertex S) :
+    Simple (RightVertexRestrictedModule (k := k) (S := S) v) :=
+  (simple_iff_isSimpleModule'
+    (RightVertexRestrictedModule (k := k) (S := S) v)).2
+      (rightVertexRestrictedModule_isSimpleModule (k := k) (S := S) v)
+
+/-- Base change of the restricted incidence vertex is the existing quotient vertex module. -/
+noncomputable def extensionRightVertexIso (v : StrictVertex S) :
+    (extensionFunctor (k := k) (S := S)).obj
+      (RightVertexRestrictedModule (k := k) (S := S) v) ≅
+      RightVertexModule (k := k) (S := S) v :=
+  (extensionRestrictionIso (k := k) (S := S)).app
+    (RightVertexModule (k := k) (S := S) v)
+
+@[simp] theorem extensionRightVertexIso_hom_mkQ (v : StrictVertex S)
+    (t : RightVertexModule (k := k) (S := S) v) :
+    (extensionRightVertexIso (k := k) (S := S) v).hom
+      ((relation (k := k) (S := S)
+        (RightVertexRestrictedModule (k := k) (S := S) v)).mkQ t) = t :=
+  extensionRestrictionIso_hom_mkQ (k := k) (S := S)
+    (RightVertexModule (k := k) (S := S) v) t
+
+/-- The canonical C-linear degree-zero derived comparison for the restricted vertex. -/
+noncomputable def rightVertexExtensionDerivedZeroIso (v : StrictVertex S) :
+    (((extensionFunctor (k := k) (S := S)).leftDerived 0).obj
+      (RightVertexRestrictedModule (k := k) (S := S) v)) ≅
+      RightVertexModule (k := k) (S := S) v :=
+  (extensionFunctor (k := k) (S := S)).leftDerivedZeroIsoSelf.app
+      (RightVertexRestrictedModule (k := k) (S := S) v) ≪≫
+    extensionRightVertexIso (k := k) (S := S) v
+
 end
 
 end TDA.Persistence.IncidenceQuotientBaseChange
