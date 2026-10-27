@@ -60,7 +60,7 @@ theorem bool_vertex_modules_not_isomorphic {k : Type} [Field k] :
     ((rightVertexModule_iso_iff (k := k) (S := Bool)
       boolLowerStrictVertex boolUpperStrictVertex).mp h)
 
-/-- A representative arbitrary-field instance of the classification theorem. -/
+/-- A rational-field specialization of the arbitrary-field classification theorem. -/
 theorem rational_bool_vertex_classified :
     ∃! v : StrictVertex Bool,
       Nonempty (RightVertexModule (k := ℚ) (S := Bool) boolLowerStrictVertex ≅
