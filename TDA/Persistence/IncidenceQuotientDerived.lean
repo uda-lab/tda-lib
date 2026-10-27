@@ -172,8 +172,9 @@ theorem extension_leftDerived_isZero_atLeastTwo
     exact hExact
   exact IsZero.of_iso hHomology (P.isoLeftDerivedObj E n)
 
-/-- On a restricted quotient module, exactness holds in every positive degree: #715 supplies
-degree one and the projective-column argument supplies all degrees at least two. -/
+/-- On a restricted quotient module, exactness holds in every positive degree: the existing
+`extensionMappedResolution_exactAt_one` theorem supplies degree one, and the projective-column
+argument supplies all degrees at least two. -/
 theorem extensionMappedResolution_exactAt_positive_restricted
     (N : ModuleCat.{u} (C (k := k) (S := S)))
     (P : ProjectiveResolution
