@@ -147,3 +147,4 @@ import TDA.Persistence.IncidenceQuotientDimensionExamples
 import TDA.Persistence.IncidenceQuotientBaseChangeExamples
 import TDA.Persistence.IncidenceQuotientDerivedOneExamples
 import TDA.Persistence.IncidenceQuotientDerivedExamples
+import TDA.Persistence.IncidenceQuotientProjectiveResolutionExamples
