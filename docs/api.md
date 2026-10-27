@@ -496,8 +496,10 @@ arbitrary supplied resolutions. The proof follows the upper-bound portion of
 BOOS Theorem 5.18 and Proposition 5.17; it proves no lower witness or equality.
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
-ordinary one-dimensional barcode connection, boundary conventions, and a
-counterexample to a triangle inequality remain separate questions.
+ordinary one-dimensional barcode connection and its half-open boundary
+conventions are proved in [One-dimensional signed hooks and ordinary
+barcodes](#one-dimensional-signed-hooks-and-ordinary-barcodes). The #501
+triangle-inequality question remains separate.
 
 For any field and any partially ordered index type in universe zero, two
 `MinimalFiniteRankProjectiveResolution`s of the same module have isomorphic
@@ -608,7 +610,10 @@ side has an actual interleaving with zero. The extended bottleneck
 dissimilarity `hookMultisetBottleneckDistance A B` is the ENNReal infimum of
 finite radii admitting such a matching. The signed dissimilarity is the
 cross-sign comparison
-`dHook(C.positive + D.negative, D.positive + C.negative)`.
+`dHook(C.positive + D.negative, D.positive + C.negative)`, where
+`dHook(A,B) := hookMultisetBottleneckDistance (k := k) A B` and
+`dSigned(C,D) := signedHookBottleneckDissimilarity (k := k) C D` are shorthand
+for the existing declarations.
 
 For every actual `ε`-interleaving of `M,N`,
 `finitelyPresented_exists_signedHookMultisetMatching` constructs an actual
@@ -630,12 +635,52 @@ existing choice-independence theorem, giving
 finite-presentation hypotheses alone. The result formalizes the finite-hook
 matching argument of [BOOS Theorem 6.1 and §§2.7–2.9, with the finite part of
 Proposition 4.3](https://arxiv.org/html/2208.00300v3); it does not claim the
-source's countable extension, a metric instance, or the ordinary one-dimensional
-barcode connection. The #501 boundary and triangle-inequality questions remain
-separate. Examples apply the capstone in dimensions one and two (coefficients
-one and nine), at zero interleaving parameter, and to nonzero finite-presentation
-inputs; finite-death, principal-upset, empty, and repeated cross-sign tags are
-also exercised.
+source's countable extension or a metric instance. The ordinary one-dimensional
+barcode connection is a separate result documented below; the #501 boundary and
+triangle-inequality questions remain separate. Examples apply the capstone in
+dimensions one and two (coefficients one and nine), at zero interleaving
+parameter, and to nonzero finite-presentation inputs; finite-death,
+principal-upset, empty, and repeated cross-sign tags are also exercised.
+
+### One-dimensional signed hooks and ordinary barcodes
+
+For a real-indexed module `M`, the original input hypothesis is
+`GradedFree.FinitelyPresented.{u,0,0}
+(CoordinateRealBridge.fromReal M)`. The declarations in
+`RankSignedBarcodeOneDimensional` use the existing choice
+`finitelyPresentedSignedHookBarcode`; they derive a finite constructibility
+grid and finite-dimensional critical fibers internally. In dimension one,
+positive-degree terms of every minimal resolution vanish, so the positive
+signed multiset is the degree-zero hook presentation and the negative multiset
+is empty. `oneDimensionalHookEndpoints` sends finite hooks to `[b,d)` and
+principal hooks to `[b,∞)`, retaining negative births and each occurrence.
+`finitelyPresentedOneDimensionalBarcodeDiagram` is the resulting ordinary
+diagram, and `finitelyPresentedOneDimensionalBarcodeRealizationIso` realizes
+the original module by it.
+
+For every pair of modules with those original finite presentations,
+`finitelyPresentedOneDimensionalBarcode_bottleneck_eq_distance` proves that
+the ordinary bottleneck distance of their diagrams equals their real
+interleaving distance. The coordinate-distance version follows through
+`CoordinateRealBridge.distance_eq`. The proof compares with the module diagram
+on an internally derived critical grid and reuses the existing finite-
+constructible isometry; it assumes no supplied grid, matching, finite-distance
+condition, or infimum attainment. This result concerns the ordinary diagrams
+of the module-level signed barcode choice. It does not identify `dHook` or
+`dSigned` with ordinary bottleneck distance and does not settle the #501
+triangle-inequality question. The examples cover negative births, repeated
+finite bars, finite and essential bars together, the empty diagram, the exact
+finite-death deletion boundary, and a nonzero interval with an actual original
+finite presentation. The endpoint conventions follow
+[Bauer--Lesnick, §§2.1--2.3](https://arxiv.org/abs/1311.3681). This library's
+critical-grade argument derives finite constructibility from the actual
+presentation using its critical coordinates, free cover, and
+transition-isomorphism criterion. The one-dimensional collapse and
+ordinary-barcode connection follow the [BOOS v3 introduction after Result D](https://arxiv.org/html/2208.00300v3#S1),
+[§2.10's one-dimensional paragraph](https://arxiv.org/html/2208.00300v3#S2.SS10),
+and the `n = 1` consequence of [Theorem 5.18](https://arxiv.org/html/2208.00300v3#S5.Thmtheorem18);
+[Theorem 6.1](https://arxiv.org/html/2208.00300v3#S6.SS1) gives signed-stability
+context.
 
 ### Pushouts of rank-exact sequences
 

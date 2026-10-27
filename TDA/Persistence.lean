@@ -364,4 +364,6 @@ import TDA.Persistence.FiniteRankProjectiveResolutionDimension
 import TDA.Persistence.CoordinateInterleavingDelay
 import TDA.Persistence.RankSchanuelUnshifted
 import TDA.Persistence.RankSignedStability
+import TDA.Persistence.RankSignedBarcodeOneDimensional
 import TDA.Persistence.RankSignedStabilityExamples
+import TDA.Persistence.RankSignedBarcodeOneDimensionalExamples
