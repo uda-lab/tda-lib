@@ -34,9 +34,11 @@ The representation result is for actual `PModule` objects, and this module
 comparison is for finite-dimensional incidence modules. Together they do not
 assert essential surjectivity of the vertex representation, an equivalence
 with all persistence modules, or finite projective dimension for arbitrary
-incidence modules. They do not bound the Hom-cokernel used in minimal relative
-rank-resolution comparisons, prove the relative `2n−2` estimate, or establish
-a stability result.
+incidence modules. A separate result proves the ordinary projective-dimension
+bounds for the actual Hom module and the actual cokernel of its two-injective
+differential, including the finite-grid `2n−2` Hom-module bound; see
+[finite-grid Hom-module and Hom-cokernel dimensions](finite-rank-projective-hom-quotient-dimension.md).
+The real-coordinate transfer and final stability result remain separate.
 
 The source context is BOOS24-v3 §2.4, Lemma 2.1 and Remark 2.2, together with
 the ordinary-dimension ingredient around Theorem 5.16. The library gives an

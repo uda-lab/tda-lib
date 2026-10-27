@@ -152,3 +152,4 @@ import TDA.Persistence.IncidenceQuotientProjectiveResolutionExamples
 import TDA.Persistence.FiniteGridComplementCardinalityExamples
 import TDA.Persistence.IncidenceVertexProjectiveDimensionExamples
 import TDA.Persistence.OrdinaryFiniteLatticeDimensionExamples
+import TDA.Persistence.FiniteRankProjectiveHomQuotientDimensionExamples

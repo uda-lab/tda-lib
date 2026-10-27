@@ -47,10 +47,12 @@ in minimal relative rank-resolution comparisons is a different invariant, and
 this theorem does not imply relative resolution-term vanishing. No arbitrary
 incidence-module equivalence or Hom-cokernel bound follows from this
 representation theorem alone. The finite-dimensional actual incidence-module
-comparison is a separate result; no global-dimension bound for arbitrary
-incidence modules, universal `2n−2` relative estimate, or stability conclusion
-is included here. See
-[ordinary projective dimensions of actual incidence modules](incidence-projective-dimension.md).
+comparison and the actual Hom-module/Hom-cokernel dimensions are proved
+separately; see [ordinary projective dimensions of actual incidence modules](incidence-projective-dimension.md)
+and [finite-grid Hom-module and Hom-cokernel dimensions](finite-rank-projective-hom-quotient-dimension.md).
+This representation-category theorem does not establish a global-dimension
+bound for arbitrary incidence modules, the real-coordinate transfer, or the
+final stability result.
 
 The proof is a bounded representation-category component of the arguments in
 [BOOS24-v3](references.md#BOOS24-v3), including the ordinary-dimension step
