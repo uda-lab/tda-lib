@@ -65,8 +65,8 @@ interleaving through both comparisons gives
 `ε+δ=(2n−1)ε`, with both transported double-transition equations proved.
 
 The distance proof commutes the positive finite coefficient through both
-infima, so empty witness sets and nonattained infima are included. This is only
-the module-interleaving unit of Theorem 6.1. The later identification with
-choice-independent signed hook multisets and the signed matching/dissimilarity
-argument for the `(2n−1)^2` bound remain separate downstream results. No
-optimality or sharpness statement is made here.
+infima, so empty witness sets and nonattained infima are included. This is the
+module-interleaving unit of Theorem 6.1; the actual finite matching of the
+choice-independent signed hook multisets and the `(2n−1)^2` dissimilarity
+bound are proved in [signed hook bottleneck stability](../api.md#signed-hook-bottleneck-stability).
+No optimality or sharpness statement is made here.

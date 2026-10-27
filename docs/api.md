@@ -494,7 +494,10 @@ This is a highest-nonzero-degree result, not a bound on the raw stored
 dimensions one and two, repeated birth occurrences, the zero module, and
 arbitrary supplied resolutions. The proof follows the upper-bound portion of
 BOOS Theorem 5.18 and Proposition 5.17; it proves no lower witness or equality.
-The final signed-barcode stability theorem remains unproved. See [the mathematical argument](math/finite-rank-projective-resolution.md#the-real-coordinate-degree-bound).
+The finite-hypothesis signed hook stability result is proved in
+[signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
+ordinary one-dimensional barcode connection, boundary conventions, and a
+counterexample to a triangle inequality remain separate questions.
 
 For any field and any partially ordered index type in universe zero, two
 `MinimalFiniteRankProjectiveResolution`s of the same module have isomorphic
@@ -533,8 +536,9 @@ two deflations onto the same quotient. Consumers include redundant covers
 with nonzero kernels, positive width, width zero, characteristic two, zero
 modules and zero coordinate directions. This one-step result supplies the
 first row in the finite-resolution comparison below. The real-coordinate
-minimal-resolution degree bound is proved separately; the final signed-barcode
-stability theorem still requires further results.
+minimal-resolution degree bound is proved separately; the finite signed-hook
+matching and squared bound are documented in
+[signed hook bottleneck stability](#signed-hook-bottleneck-stability).
 
 For a field `k`, finite coordinate dimension `n`, actual finite
 rank-projective resolutions `R` of `M` and `S` of `N`, and an actual
@@ -553,7 +557,8 @@ minimality, grid, or additional finiteness assumption on the given finite
 resolutions. `RankSchanuelResolutionExamples` exercises the zero-length,
 one-term, nonzero two-term-tail, unequal-length, and `ε = 0` cases. The result
 retains the degree shifts; by itself it does not establish a shift-free signed
-barcode inequality or the final signed-barcode stability theorem. The
+barcode inequality. That finite signed-hook result is documented in
+[signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 real-coordinate minimal-resolution degree bound is documented above; it does
 not bound raw stored resolution lengths.
 
@@ -576,8 +581,61 @@ The asymmetric finite-family comparison maps, their two equations, and their
 component computation laws are in `CoordinateInterleavingDelay`. The explicit
 parity-sum definitions and construction appear in
 [unshifted Schanuel interleavings](math/unshifted-schanuel-stability.md).
-This is the module-interleaving step only; the signed matching and final
-`(2*n-1)^2` coefficient remain downstream.
+This is the module-interleaving step only; the actual finite signed matching
+and `(2*n-1)^2` bound are proved in
+[signed hook bottleneck stability](#signed-hook-bottleneck-stability).
+
+### Signed hook bottleneck stability
+
+Let `k` be a field, `n ≥ 1`, and let `M,N : PModule k (Fin n → ℝ)` satisfy
+the original `GradedFree.FinitelyPresented.{u,0,0}` hypotheses. For any
+supplied certified minimal finite-rank-projective resolutions `R,S`, write
+`C = R.signedHookBarcode M` and `D = S.signedHookBarcode N`. Their positive
+and negative multisets remain separate. Put
+`L = max R.resolution.length S.resolution.length`; the actual unshifted
+Schanuel biproducts collect `R` in even degrees and `S` in odd degrees on one
+side, with the choices exchanged on the other. Their finite hook-sum
+presentations are constructed from the actual term presentations. The
+occurrence-indexed biproduct construction
+`FiniteHookSumPresentation.biproduct` proves that their tag multisets are
+`C.positive + D.negative` and `D.positive + C.negative`, with every repeated
+tag counted.
+
+`HasMultisetMatching ρ A B` means that exact finite enumerations of `A` and
+`B` carry an existing `HookMatching.IsMatching`: each paired occurrence has
+an actual coordinate interleaving, and every deleted occurrence on either
+side has an actual interleaving with zero. The extended bottleneck
+dissimilarity `hookMultisetBottleneckDistance A B` is the ENNReal infimum of
+finite radii admitting such a matching. The signed dissimilarity is the
+cross-sign comparison
+`dHook(C.positive + D.negative, D.positive + C.negative)`.
+
+For every actual `ε`-interleaving of `M,N`,
+`finitelyPresented_exists_signedHookMultisetMatching` constructs an actual
+matching of these cross-sign multisets at radius `(2*n-1)^2 * ε`. For any
+fixed supplied `R,S`,
+`finitelyPresented_signedHookBottleneckDistance_le` bounds their signed
+dissimilarity by `((2*n-1 : ℕ) : ℝ≥0∞)^2` times the extended interleaving
+distance:
+
+```text
+dSigned(C, D) ≤ ((2*n-1 : ℕ) : ℝ≥0∞)^2 * coordinateInterleavingDistance M N.
+```
+
+It assumes neither finite distance nor attainment. The module-level
+barcode choice `finitelyPresentedSignedHookBarcode` comes from proved minimal
+resolution existence and agrees with every supplied resolution by the
+existing choice-independence theorem, giving
+`finitelyPresented_moduleSignedHookBottleneckDistance_le` under the original
+finite-presentation hypotheses alone. The result formalizes the finite-hook
+matching argument of [BOOS Theorem 6.1 and §§2.7–2.9, with the finite part of
+Proposition 4.3](https://arxiv.org/html/2208.00300v3); it does not claim the
+source's countable extension, a metric instance, or the ordinary one-dimensional
+barcode connection. The #501 boundary and triangle-inequality questions remain
+separate. Examples apply the capstone in dimensions one and two (coefficients
+one and nine), at zero interleaving parameter, and to nonzero finite-presentation
+inputs; finite-death, principal-upset, empty, and repeated cross-sign tags are
+also exercised.
 
 ### Pushouts of rank-exact sequences
 
@@ -1085,7 +1143,8 @@ most `2*n-2`. Every supplied certified
 minimal finite-rank-projective resolution of such an `M` has zero `termAt j` for `j > 2*n-2`.
 This concerns the highest nonzero degree and is insensitive to terminal zero padding; it is not a
 bound on the raw stored length. The coefficient field remains arbitrary. Its real-coordinate
-transfer is documented above; neither conclusion proves the final signed-stability theorem. See
+transfer is documented above; the finite signed-hook matching and squared
+bound are proved in [signed hook bottleneck stability](#signed-hook-bottleneck-stability). See
 [finite-grid Hom-module and Hom-cokernel dimensions](math/finite-rank-projective-hom-quotient-dimension.md)
 and the rational and grid consumers in
 `TDA.Persistence.FiniteRankProjectiveHomQuotientDimensionExamples`.
