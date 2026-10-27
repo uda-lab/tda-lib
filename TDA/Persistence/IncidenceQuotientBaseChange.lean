@@ -448,6 +448,73 @@ instance extensionFunctor_additive :
     rw [mapQuotient_mkQ, mapQuotient_mkQ, mapQuotient_mkQ]
     rfl
 
+/-- The hom-set equivalence defining extension as left adjoint to restriction. -/
+noncomputable def extensionHomEquiv
+    (M : ModuleCat (RightIncidence (k := k) (S := S)))
+    (N : ModuleCat (RightQuotient (k := k) (S := S))) :
+    ((extensionFunctor (k := k) (S := S)).obj M ⟶ N) ≃
+      (M ⟶ (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N) where
+  toFun f := quotientProjection (k := k) (S := S) M ≫
+    (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).map f
+  invFun := liftMap (k := k) (S := S)
+  left_inv f := by
+    apply ModuleCat.hom_ext
+    apply LinearMap.ext
+    intro x
+    obtain ⟨m, hm⟩ := (relation (k := k) (S := S) M).mkQ_surjective x
+    rw [← hm]
+    change (liftMap (k := k) (S := S)
+        (quotientProjection (k := k) (S := S) M ≫
+          (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).map f)).hom
+        ((relation (k := k) (S := S) M).mkQ m) =
+      f.hom ((relation (k := k) (S := S) M).mkQ m)
+    rw [liftMap_mkQ]
+    simp only [ModuleCat.comp_apply, ModuleCat.restrictScalars.map_apply,
+      quotientProjection_apply]
+    rfl
+  right_inv g := by
+    apply ModuleCat.hom_ext
+    apply LinearMap.ext
+    intro m
+    change (liftMap (k := k) (S := S) g).hom
+        ((relation (k := k) (S := S) M).mkQ m) = g.hom m
+    exact liftMap_mkQ (k := k) (S := S) g m
+
+/-- Extension of scalars along the actual quotient map is left adjoint to restriction. -/
+noncomputable def extensionAdjunction :
+    extensionFunctor (k := k) (S := S) ⊣
+      ModuleCat.restrictScalars (quotientHom (k := k) (S := S)) :=
+  Adjunction.mkOfHomEquiv {
+    homEquiv := extensionHomEquiv (k := k) (S := S)
+    homEquiv_naturality_left_symm := by
+      intro M' M N f g
+      apply ModuleCat.hom_ext
+      apply LinearMap.ext
+      intro x
+      obtain ⟨m, hm⟩ := (relation (k := k) (S := S) M').mkQ_surjective x
+      rw [← hm]
+      change (liftMap (k := k) (S := S) (f ≫ g)).hom
+          ((relation (k := k) (S := S) M').mkQ m) =
+        (extensionMap (k := k) (S := S) f ≫
+          liftMap (k := k) (S := S) g).hom
+          ((relation (k := k) (S := S) M').mkQ m)
+      simp only [liftMap_mkQ, ModuleCat.comp_apply, extensionMap_mkQ]
+      rfl
+    homEquiv_naturality_right := by
+      intro M N N' f g
+      apply ModuleCat.hom_ext
+      apply LinearMap.ext
+      intro m
+      change (quotientProjection (k := k) (S := S) M ≫
+          (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).map (f ≫ g)).hom m =
+        ((quotientProjection (k := k) (S := S) M ≫
+          (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).map f) ≫
+          (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).map g).hom m
+      simp only [ModuleCat.comp_apply, ModuleCat.restrictScalars.map_apply,
+        quotientProjection_apply]
+      rfl
+  }
+
 end
 
 end TDA.Persistence.IncidenceQuotientBaseChange
