@@ -874,7 +874,7 @@ Here `minimalComplement p` means the minimal elements of `{a | ¬ a ≤ p}` in a
 
 `TDA.Persistence.FiniteLatticeComplementCardinality` proves the one-active-coordinate classification for minimal complements in finite products, the old-top singleton correction for `WithTop`, and the exact restricted-diagonal plus bottom-axis decomposition for the existing `PairPoset` subtype. It then proves the `n`, `n`, and `2*n` maximum bounds for `G.Point`, `WithTop G.Point`, and `PairPoset G.Point` when the coordinate factors are nonempty (the last two require `n ≥ 1`). The old and new tops are treated as distinct elements.
 
-`TDA.Persistence.FiniteGridInjectiveRankDimension.hasProjectiveDimensionLE_of_coordinateGrid` derives the actual `n - 1` Hom projective-dimension bound for every pointwise finite-dimensional ordinary injective on such a grid, for an arbitrary field. Its `termAt_isZero_of_coordinateGrid` consumer proves the same high-term vanishing for each supplied certified minimal resolution. The proof uses the proved grid count and the existing finite-injective dimension theorem; no dimension bound is supplied as input. These generator-count bounds and the ordinary-injective Hom dimension corollary do not establish a numerical ordinary incidence/global-dimension bound or the universal `2n−2` persistence estimate. See [minimal-complement cardinalities in finite grids](math/finite-grid-complement-cardinality.md).
+`TDA.Persistence.FiniteGridInjectiveRankDimension.hasProjectiveDimensionLE_of_coordinateGrid` derives the actual `n - 1` Hom projective-dimension bound for every pointwise finite-dimensional ordinary injective on such a grid, for an arbitrary field. Its `termAt_isZero_of_coordinateGrid` consumer proves the same high-term vanishing for each supplied certified minimal resolution. The proof uses the proved grid count and the existing finite-injective dimension theorem; no dimension bound is supplied as input. These counts and the ordinary-injective Hom corollary are representation-side ingredients; the actual finite-dimensional incidence and quotient-module bound is stated below. That module result does not give a global-dimension bound for arbitrary modules or the universal `2n−2` persistence estimate. See [minimal-complement cardinalities in finite grids](math/finite-grid-complement-cardinality.md).
 
 ### Ordinary projective dimension on finite lattices
 
@@ -984,9 +984,34 @@ matrix-unit reconstruction proves full faithfulness and provides both Hom invers
 by pointwise fiber exactness, and `finiteDimensional_iff_vertexFibers` characterizes finite
 dimension over the restricted field. The results apply to arbitrary modules and include
 diagonal vertices; essential surjectivity, an equivalence with all persistence functors, and
-projective-dimension transport are not established here. See
+projective-dimension transport by this representation theorem alone are not established here. The
+separate finite-dimensional module comparison below uses the actual regular-module vertex image
+and finite-free covers. See
 [actual vertex representations of right incidence modules](math/incidence-vertex-representation.md)
 and the Bool regular-module examples in `TDA.Persistence.IncidenceVertexRepresentationExamples`.
+
+### Ordinary projective dimensions of actual incidence modules
+
+For an arbitrary field and finite bounded lattice `S`,
+`TDA.Persistence.IncidenceVertexProjectiveDimension.hasProjectiveDimensionLE` proves that every
+finite-dimensional actual right module over the interval-pair incidence ring has projective
+dimension at most the maximum minimal-complement count of `PairPoset S`. The module's ordinary
+projective dimension is compared with that of its actual all-vertex representation by
+`hasProjectiveDimensionLE_of_vertex`; the representation bound comes from
+`OrdinaryFiniteLatticeDimension`. The quotient theorem
+`quotient_hasProjectiveDimensionLE` gives the same bound for finite-dimensional actual right
+modules over the diagonal quotient, measured with the canonical restricted `k`-action.
+
+For an actual coordinate grid `G : CoordinateGrid n` with nonempty factors and `n ≥ 1`, the
+incidence and quotient grid theorems give bound `2*n` for every such finite-dimensional module.
+These are unconditional consequences for the stated finite-dimensional modules: no resolution or
+projective-dimension bound is an input. The result does not establish essential surjectivity of the
+vertex representation or finite projective dimension for arbitrary incidence modules. It also
+does not bound the relative Hom-cokernel, prove the relative `2n−2` estimate, or establish
+stability. See
+[ordinary projective dimensions of actual incidence modules](math/incidence-projective-dimension.md)
+and the focused consumers in
+`TDA.Persistence.IncidenceVertexProjectiveDimensionExamples`.
 
 ## Compatible lifts and algebraic sums over the reals
 
