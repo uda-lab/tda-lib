@@ -52,6 +52,7 @@ local instance : DecidableLT (PairPoset S) := Classical.decRel _
 local instance : LocallyFiniteOrder (PairPoset S) := Fintype.toLocallyFiniteOrder
 local instance : DecidableEq (PairPoset S) := Classical.decEq _
 local instance : Fintype (ComparablePair S) := Fintype.ofFinite _
+local instance : Fintype (HookTag (S := S)) := Fintype.ofFinite _
 local instance :
     (IncidenceQuotientBaseChange.DiagonalIdeal (k := k) (S := S)).IsTwoSided :=
   FiniteRankProjectiveEndAlgebra.diagonalIdeal_isTwoSided
@@ -67,6 +68,12 @@ abbrev RightQuotient := IncidenceQuotientBaseChange.RightQuotient (k := k) (S :=
 abbrev canonicalFieldRestriction {R : Type u} [Ring R] [Algebra k R]
     (N : ModuleCat.{u} R) : ModuleCat.{u} k :=
   (ModuleCat.restrictScalars (algebraMap k R)).obj N
+
+/-- Scalar multiplication in the canonical restricted module is the original
+module action through the coefficient-field algebra map. -/
+@[simp] theorem canonicalFieldRestriction_smul {R : Type u} [Ring R] [Algebra k R]
+    (N : ModuleCat.{u} R) (c : k) (x : canonicalFieldRestriction (k := k) N) :
+    c • x = (algebraMap k R c) • x := rfl
 
 /-- The actual algebra equivalence from the Hom scalars to the quotient ring. -/
 noncomputable def hookHomAlgEquivRightQuotient :
@@ -112,6 +119,15 @@ noncomputable def quotientModuleSemilinearEquiv
     (N : ModuleCat.{u} (HomScalars (k := k) (S := S))) (x : N) :
     quotientModuleSemilinearEquiv (k := k) (S := S) N x = x := rfl
 
+/-- Scalar compatibility of the quotient-module semilinear equivalence. -/
+@[simp] theorem quotientModuleSemilinearEquiv_smul
+    (N : ModuleCat.{u} (HomScalars (k := k) (S := S)))
+    (c : RightQuotient (k := k) (S := S)) (x : quotientModuleOfHomModule (k := k) (S := S) N) :
+    quotientModuleSemilinearEquiv (k := k) (S := S) N (c • x) =
+      ((hookHomAlgEquivRightQuotient (k := k) (S := S)).symm c) •
+        quotientModuleSemilinearEquiv (k := k) (S := S) N x :=
+  map_smulₛₗ _ _ _
+
 /-- Canonical field restriction commutes with the actual algebra-equivalence
 restriction, by the algebra map identity of that equivalence. -/
 noncomputable def quotientRestrictionFieldIso
@@ -127,6 +143,23 @@ noncomputable def quotientRestrictionFieldIso
   exact ModuleCat.restrictScalarsComp'App
     (algebraMap k (RightQuotient (k := k) (S := S))) e.symm.toRingHom
     (algebraMap k (HomScalars (k := k) (S := S))) hfield N
+
+/-- The actual field-restriction comparison preserves every vector. -/
+@[simp] theorem quotientRestrictionFieldIso_hom_apply
+    (N : ModuleCat.{u} (HomScalars (k := k) (S := S))) (x : N) :
+    (quotientRestrictionFieldIso (k := k) (S := S) N).hom x = x := rfl
+
+/-- The inverse field-restriction comparison preserves every vector. -/
+@[simp] theorem quotientRestrictionFieldIso_inv_apply
+    (N : ModuleCat.{u} (HomScalars (k := k) (S := S))) (x : N) :
+    (quotientRestrictionFieldIso (k := k) (S := S) N).inv x = x := rfl
+
+/-- The field-restriction comparison is `k`-linear on actual elements. -/
+@[simp] theorem quotientRestrictionFieldIso_hom_smul
+    (N : ModuleCat.{u} (HomScalars (k := k) (S := S))) (c : k) (x : N) :
+    (quotientRestrictionFieldIso (k := k) (S := S) N).hom (c • x) =
+      c • (quotientRestrictionFieldIso (k := k) (S := S) N).hom x :=
+  map_smul _ _ _
 
 /-- The actual C-module estimate transfers to every finite-dimensional actual
 Hom-scalar module. -/
@@ -152,6 +185,199 @@ theorem homScalarModule_hasProjectiveDimensionLE
     (hookHomAlgEquivRightQuotient (k := k) (S := S)).symm.toRingEquiv
     (quotientModuleSemilinearEquiv (k := k) (S := S) N)
     (maxComplementCard (S := PairPoset S))
+
+/-- The canonical field restriction of the actual Hom-scalar module is
+k-linearly equivalent to the natural persistence-morphism space. -/
+private theorem homScalar_action_eq (M : PModule.{u,0,u} k S) (c : k)
+    (f : HookSum (k := k) (S := S) ⟶ M) :
+    (algebraMap k (HomScalars (k := k) (S := S)) c) • f = c • f := by
+  change MulOpposite.unop (algebraMap k (HomScalars (k := k) (S := S)) c) ≫ f = c • f
+  have hscalar :
+      MulOpposite.unop (algebraMap k (HomScalars (k := k) (S := S)) c) =
+        c • (𝟙 (HookSum (k := k) (S := S))) := by
+    change algebraMap k (End (HookSum (k := k) (S := S))) c = _
+    simpa [Algebra.algebraMap_eq_smul_one]
+  rw [hscalar, CategoryTheory.Linear.smul_comp]
+  simp
+
+noncomputable def homScalarFieldLinearEquiv (M : PModule.{u,0,u} k S) :
+    canonicalFieldRestriction (k := k) ((homFunctor (k := k) (S := S)).obj M) ≃ₗ[k]
+      (HookSum (k := k) (S := S) ⟶ M) where
+  toFun := id
+  invFun := id
+  left_inv := fun _ => rfl
+  right_inv := fun _ => rfl
+  map_add' := by intros; rfl
+  map_smul' := by
+    intro c f
+    rw [canonicalFieldRestriction_smul]
+    exact homScalar_action_eq (k := k) (S := S) M c f
+
+/-- The scalar bridge preserves the underlying natural transformation. -/
+@[simp] theorem homScalarFieldLinearEquiv_apply (M : PModule.{u,0,u} k S)
+    (f : HookSum (k := k) (S := S) ⟶ M) :
+    homScalarFieldLinearEquiv (k := k) (S := S) M f = f := rfl
+
+/-- Its inverse also preserves the underlying natural transformation. -/
+@[simp] theorem homScalarFieldLinearEquiv_symm_apply (M : PModule.{u,0,u} k S)
+    (f : HookSum (k := k) (S := S) ⟶ M) :
+    (homScalarFieldLinearEquiv (k := k) (S := S) M).symm f = f := rfl
+
+private theorem hookSum_finiteDimensional (p : S) :
+    FiniteDimensional k ((HookSum (k := k) (S := S)).obj p) := by
+  haveI : ∀ t : HookTag (S := S),
+      FiniteDimensional k ((hookFamily (k := k) (S := S) t).obj p) := by
+    intro t
+    cases t with
+    | inl ab =>
+        change FiniteDimensional k ((Hook.module (k := k) ab.val.1 ab.val.2).obj p)
+        infer_instance
+    | inr a =>
+        change FiniteDimensional k ((HookInfinity.module (R := k) a).obj p)
+        infer_instance
+  exact FiniteBiproduct.finiteDimensional (hookFamily (k := k) (S := S)) p
+
+/-- For every pointwise finite-dimensional persistence module, the actual Hom
+module from the finite hook generator is finite-dimensional over the canonical
+field restriction. -/
+theorem homFunctor_obj_finiteDimensional (M : PModule.{u,0,u} k S)
+    (hM : ∀ p, FiniteDimensional k (M.obj p)) :
+    FiniteDimensional k
+      (canonicalFieldRestriction (k := k) ((homFunctor (k := k) (S := S)).obj M)) := by
+  have hHom : FiniteDimensional k (HookSum (k := k) (S := S) ⟶ M) :=
+    FiniteHomDimension.finiteDimensional_hom (k := k)
+      (HookSum (k := k) (S := S)) M hookSum_finiteDimensional hM
+  letI : FiniteDimensional k (HookSum (k := k) (S := S) ⟶ M) := hHom
+  exact (homScalarFieldLinearEquiv (k := k) (S := S) M).symm.finiteDimensional
+
+/-- The actual cokernel of Hom applied to the two-injective differential is
+finite-dimensional by its epic categorical cokernel projection. -/
+theorem homCokernel_finiteDimensional
+    [OrderBot S] [OrderTop S]
+    (M : PModule.{u,0,u} k S)
+    (hM : ∀ p, FiniteDimensional k (M.obj p)) :
+    FiniteDimensional k
+      (canonicalFieldRestriction (k := k)
+        (homCokernel (k := k) (S := S) M)) := by
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hM
+  have hQ : ∀ p, FiniteDimensional k ((TwoInjectivePresentation.quotient M).obj p) :=
+    TwoInjectivePresentation.quotient_finiteDimensional M
+  have hSecond : ∀ p, FiniteDimensional k ((secondInjective M).obj p) := by
+    intro p
+    letI : ∀ p, FiniteDimensional k ((TwoInjectivePresentation.quotient M).obj p) := hQ
+    exact FiniteInjectivePresentation.finiteDimensional
+      (TwoInjectivePresentation.quotient M) p
+  have hDomain := homFunctor_obj_finiteDimensional (k := k) (S := S)
+    (secondInjective M) hSecond
+  letI : FiniteDimensional k
+      (canonicalFieldRestriction (k := k) ((homFunctor (k := k) (S := S)).obj
+        (secondInjective M))) := hDomain
+  have hEpi : Epi (homCokernelProjection M) := inferInstance
+  have hSurj : Function.Surjective (homCokernelProjection M).hom :=
+    (ModuleCat.epi_iff_surjective _).mp hEpi
+  have hSurj' : Function.Surjective
+      (((ModuleCat.restrictScalars
+        (algebraMap k (HomScalars (k := k) (S := S)))).map
+        (homCokernelProjection M)).hom) := by
+    change Function.Surjective (homCokernelProjection M).hom
+    exact hSurj
+  exact FiniteDimensional.of_surjective
+    (((ModuleCat.restrictScalars
+      (algebraMap k (HomScalars (k := k) (S := S)))).map
+      (homCokernelProjection M)).hom) hSurj'
+
+/-- For every pointwise finite-dimensional source module, the actual
+two-injective Hom cokernel has the unconditional finite-lattice bound. -/
+theorem homCokernel_hasProjectiveDimensionLE
+    [OrderBot S] [OrderTop S]
+    (M : PModule.{u,0,u} k S)
+    (hM : ∀ p, FiniteDimensional k (M.obj p)) :
+    letI : Lattice (PairPoset S) := pairPosetLattice (S := S)
+    letI : BoundedOrder (PairPoset S) := pairPosetBoundedOrder (S := S)
+    HasProjectiveDimensionLE (homCokernel (k := k) (S := S) M)
+      (maxComplementCard (S := PairPoset S)) := by
+  letI : Lattice (PairPoset S) := pairPosetLattice (S := S)
+  letI : BoundedOrder (PairPoset S) := pairPosetBoundedOrder (S := S)
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hM
+  have hK : FiniteDimensional k
+      (canonicalFieldRestriction (k := k) (homCokernel (k := k) (S := S) M)) :=
+    homCokernel_finiteDimensional (k := k) (S := S) M hM
+  exact homScalarModule_hasProjectiveDimensionLE (k := k) (S := S)
+    (homCokernel (k := k) (S := S) M) hK
+
+/-- The actual two-injective Hom cokernel on a nonempty-factor coordinate grid
+has ordinary projective dimension at most twice the number of coordinates. -/
+theorem coordinateGrid_homCokernel_hasProjectiveDimensionLE
+    {n : ℕ} (G : CoordinateGrid n) (hn : 1 ≤ n)
+    (hG : ∀ i : Fin n, (G i).Nonempty)
+    (M : PModule.{u,0,u} k G.Point)
+    (hM : ∀ p, FiniteDimensional k (M.obj p)) :
+    letI : BoundedOrder G.Point := coordinateGridBoundedOrder G hG
+    HasProjectiveDimensionLE
+      (homCokernel (k := k) (S := G.Point) M) (2 * n) := by
+  letI : BoundedOrder G.Point := coordinateGridBoundedOrder G hG
+  letI : Lattice (PairPoset G.Point) := pairPosetLattice (S := G.Point)
+  letI : BoundedOrder (PairPoset G.Point) :=
+    pairPosetBoundedOrder (S := G.Point)
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hM
+  let K := homCokernel (k := k) (S := G.Point) M
+  have hK : FiniteDimensional k (canonicalFieldRestriction (k := k) K) :=
+    homCokernel_finiteDimensional (k := k) (S := G.Point) M hM
+  letI : FiniteDimensional k (canonicalFieldRestriction (k := k) K) := hK
+  have hQ : FiniteDimensional k
+      (IncidenceQuotientSimple.restrictRightQuotientModule (k := k) (S := G.Point)
+        (quotientModuleOfHomModule (k := k) (S := G.Point) K)) :=
+    (quotientRestrictionFieldIso (k := k) (S := G.Point) K).toLinearEquiv.finiteDimensional
+  have hPDQ := IncidenceVertexProjectiveDimension.coordinateGrid_rightQuotient_hasProjectiveDimensionLE
+    (k := k) (G := G) hn hG (quotientModuleOfHomModule (k := k) (S := G.Point) K) hQ
+  letI : HasProjectiveDimensionLE
+      (quotientModuleOfHomModule (k := k) (S := G.Point) K) (2 * n) := hPDQ
+  exact ModuleCat.hasProjectiveDimensionLE_of_semiLinearEquiv
+    (hookHomAlgEquivRightQuotient (k := k) (S := G.Point)).symm.toRingEquiv
+    (quotientModuleSemilinearEquiv (k := k) (S := G.Point) K) (2 * n)
+
+/-- The actual Hom module on an `n`-coordinate grid has ordinary projective
+dimension at most `2*n-2`. -/
+theorem coordinateGrid_homFunctor_obj_hasProjectiveDimensionLE
+    {n : ℕ} (G : CoordinateGrid n) (hn : 1 ≤ n)
+    (hG : ∀ i : Fin n, (G i).Nonempty)
+    (M : PModule.{u,0,u} k G.Point)
+    (hM : ∀ p, FiniteDimensional k (M.obj p)) :
+    letI : BoundedOrder G.Point := coordinateGridBoundedOrder G hG
+    HasProjectiveDimensionLE ((homFunctor (k := k) (S := G.Point)).obj M)
+      (2 * n - 2) := by
+  letI : BoundedOrder G.Point := coordinateGridBoundedOrder G hG
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hM
+  have hcount := maxComplementCard_coordinateGrid_le G hG
+  have hD : maxComplementCard (S := G.Point) - 1 ≤ 2 * n - 2 := by omega
+  have hK : HasProjectiveDimensionLE
+      (homCokernel (k := k) (S := G.Point) M) ((2 * n - 2) + 2) := by
+    have hK' := coordinateGrid_homCokernel_hasProjectiveDimensionLE
+      (k := k) G hn hG M hM
+    convert hK' using 1 <;> omega
+  exact TwoInjectiveHomDimension.hom_hasProjectiveDimensionLE_of_actualCokernel
+    (k := k) (S := G.Point) M (2 * n - 2) hD hK
+
+/-- Every supplied certified minimal rank-projective resolution of a
+pointwise-finite module on the grid has zero terms strictly above `2*n-2`. -/
+theorem coordinateGrid_minimalResolution_termAt_isZero
+    {n : ℕ} (G : CoordinateGrid n) (hn : 1 ≤ n)
+    (hG : ∀ i : Fin n, (G i).Nonempty)
+    (M : PModule.{u,0,u} k G.Point)
+    (hM : ∀ p, FiniteDimensional k (M.obj p))
+    (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
+    ∀ j, 2 * n - 2 < j → IsZero (R.termAt j) := by
+  letI : BoundedOrder G.Point := coordinateGridBoundedOrder G hG
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hM
+  have hcount := maxComplementCard_coordinateGrid_le G hG
+  have hD : maxComplementCard (S := G.Point) - 1 ≤ 2 * n - 2 := by omega
+  have hK : HasProjectiveDimensionLE
+      (homCokernel (k := k) (S := G.Point) M) ((2 * n - 2) + 2) := by
+    have hK' := coordinateGrid_homCokernel_hasProjectiveDimensionLE
+      (k := k) G hn hG M hM
+    convert hK' using 1 <;> omega
+  exact TwoInjectiveHomDimension.minimalResolution_termAt_isZero_of_actualCokernel
+    (k := k) (S := G.Point) M R (2 * n - 2) hD hK
 
 end
 
