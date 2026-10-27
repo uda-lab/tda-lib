@@ -5784,6 +5784,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IncidenceQuotientDerivedOneExamples.rational_unit_vertex_derived_one_isZero
 
 -- Higher quotient extension by fixed diagonal-floor columns.
+#print axioms TDA.Persistence.FiniteRankProjectiveDiagonalIdealProjective.mul_delta_right_apply_column
 #print axioms TDA.Persistence.FiniteRankProjectiveDiagonalIdealProjective.includeColumns_mul_diagonalFloorIdempotent
 #print axioms TDA.Persistence.FiniteRankProjectiveDiagonalIdealProjective.assembleColumns_eq_sum_mul_delta
 #print axioms TDA.Persistence.IncidenceQuotientColumnAction.R

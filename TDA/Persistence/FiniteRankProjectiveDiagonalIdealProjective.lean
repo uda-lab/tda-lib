@@ -173,7 +173,8 @@ def includeColumns :
     includeColumns (k := k) (S := S) f q p t =
       if t = diagonalFloor (S := S) q then f.1 p q else 0 := rfl
 
-private theorem mul_delta_right_apply_column
+/-- Right multiplication by `δ_{d,q}` places the `d`-column at `q`. -/
+theorem mul_delta_right_apply_column
     (a : Incidence (k := k) (S := S)) (d q p t : PairPoset S)
     (hdq : d ≤ q) :
     (a * delta (k := k) (S := S) d q hdq) p t =

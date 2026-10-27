@@ -370,33 +370,7 @@ private theorem mul_diagonalDelta_apply
     (d p t : Pair (S := S)) :
     (a * delta (k := k) (S := S) d d le_rfl) p t =
       if t = d then a p d else 0 := by
-  classical
-  by_cases ht : t = d
-  · subst t
-    by_cases hpd : p ≤ d
-    · rw [IncidenceAlgebra.mul_apply]
-      have hdmem : d ∈ Finset.Icc p d := Finset.mem_Icc.mpr ⟨hpd, le_rfl⟩
-      rw [Finset.sum_eq_single d]
-      · simp [delta_apply]
-      · intro x hx hxd
-        simp [delta_apply, hxd]
-      · intro h
-        exact (h hdmem).elim
-    · rw [IncidenceAlgebra.mul_apply]
-      have ha : a p d = 0 := a.eq_zero_of_not_le' hpd
-      simp only [if_pos rfl, ha]
-      apply Finset.sum_eq_zero
-      intro x hx
-      have hxd : x ≠ d := by
-        intro h
-        subst x
-        exact hpd (Finset.mem_Icc.mp hx).1
-      simp [delta_apply, hxd]
-  · rw [IncidenceAlgebra.mul_apply]
-    simp only [if_neg ht]
-    apply Finset.sum_eq_zero
-    intro x hx
-    simp [delta_apply, ht]
+  simpa using mul_delta_right_apply_column (k := k) (S := S) a d d p t le_rfl
 
 private abbrev regularColumnModule : ModuleCat (R (k := k) (S := S)) :=
   ModuleCat.of (R (k := k) (S := S)) (R (k := k) (S := S))
