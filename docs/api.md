@@ -911,11 +911,20 @@ extension preserves short exact rows with restricted quotient-module cokernel, a
 extension to any projective resolution of a restricted quotient module is exact at degree one.
 Consequently `extension_leftDerived_one_isZero` proves the actual first left-derived vanishing for
 every restricted quotient module, with `rightVertexExtension_leftDerived_one_isZero` as its
-strict-vertex specialization. This degree-one result does not imply exactness in higher degrees or
-of the entire mapped resolution. See
+strict-vertex specialization. `IncidenceQuotientColumnAction` constructs an auxiliary additive
+column functor whose natural assembly has image equal to the actual relation submodule and is
+injective on every projective incidence module. `IncidenceQuotientDerived` uses this construction
+to prove that the actual extension of every projective resolution is exact at every degree `n ≥ 2`
+for every incidence module, and that `extension_leftDerived_isZero_atLeastTwo` gives the actual
+categorical vanishing there. For a restricted quotient module, exactness and derived vanishing hold
+in every positive degree, with `rightVertexExtension_leftDerived_positive_isZero` giving the
+strict-vertex case. The unaugmented mapped resolution retains its potentially nonzero degree-zero
+comparison; degree-one exactness for arbitrary incidence modules and degree-zero exactness are not
+claimed. No numerical dimension bound or `2n−2` persistence estimate follows here. See
 [right-module base change along the diagonal quotient](math/incidence-quotient-base-change.md)
-and the focused consumers in `TDA.Persistence.IncidenceQuotientBaseChangeExamples` and
-`TDA.Persistence.IncidenceQuotientDerivedOneExamples`.
+and the focused consumers in `TDA.Persistence.IncidenceQuotientBaseChangeExamples`,
+`TDA.Persistence.IncidenceQuotientDerivedOneExamples`, and
+`TDA.Persistence.IncidenceQuotientDerivedExamples`.
 
 `TDA.Persistence.IncidenceQuotientDimension` proves that the projective dimension of any
 finite-length right quotient module is bounded by the supremum of the dimensions of the actual
