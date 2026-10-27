@@ -805,6 +805,19 @@ focused consumers in `TDA.Persistence.IncidenceQuotientSimpleExamples`. This is 
 classification step used in BOOS24-v3 Lemma 5.7, specialized to the interval-pair quotient; it
 does not assert the global-dimension conclusion of that lemma.
 
+`TDA.Persistence.IncidenceQuotientBaseChange.extensionFunctor` constructs actual right-module
+extension along the quotient projection `A → A/I` by quotienting each incidence module by the
+action of the kernel. The actual universal property is packaged as `extensionAdjunction`; the
+functor preserves projectives and finite colimits (so it is right exact). `extensionRestrictionIso`
+is the natural counit, identifying the extension of any restricted quotient module with that
+module, and `regularExtensionIso` sends the regular incidence module to the regular quotient
+module by the actual quotient map. For each strict vertex, `rightVertexExtensionDerivedZeroIso`
+gives the canonical `C`-linear degree-zero derived comparison. These results establish the
+underived construction and degree-zero value; projective preservation does not by itself prove
+that extension preserves a chosen projective resolution's exactness. See
+[right-module base change along the diagonal quotient](math/incidence-quotient-base-change.md)
+and the focused consumers in `TDA.Persistence.IncidenceQuotientBaseChangeExamples`.
+
 `TDA.Persistence.IncidenceQuotientDimension` proves that the projective dimension of any
 finite-length right quotient module is bounded by the supremum of the dimensions of the actual
 strict-vertex modules. It also gives the natural uniform-bound equivalence and the corresponding
