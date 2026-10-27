@@ -344,3 +344,5 @@ import TDA.Persistence.IncidenceQuotientSimple
 import TDA.Persistence.IncidenceQuotientSimpleExamples
 import TDA.Persistence.IncidenceQuotientDimension
 import TDA.Persistence.IncidenceQuotientDimensionExamples
+import TDA.Persistence.IncidenceQuotientBaseChange
+import TDA.Persistence.IncidenceQuotientBaseChangeExamples
