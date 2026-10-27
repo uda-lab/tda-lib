@@ -342,3 +342,5 @@ import TDA.Persistence.IncidenceVertexTensorFunctor
 import TDA.Persistence.IncidenceVertexTor
 import TDA.Persistence.IncidenceQuotientSimple
 import TDA.Persistence.IncidenceQuotientSimpleExamples
+import TDA.Persistence.IncidenceQuotientDimension
+import TDA.Persistence.IncidenceQuotientDimensionExamples
