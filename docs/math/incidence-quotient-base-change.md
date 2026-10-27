@@ -45,15 +45,23 @@ For every quotient module `N` and every projective resolution `P` of `Res(N)`,
 previous degree-zero comparison remains the canonical `C`-linear isomorphism
 `((E.leftDerived 0).obj (Res(Vᵥ))) ≅ Vᵥ`.
 
+For an interval pair `q = (a,b)` with `a,b ∈ WithTop S` and `a ≤ b` (so either endpoint may be
+`⊤`), put `d(q) = (a,a)`, and write `δ_{p,r}` for the actual incidence matrix unit at a comparable
+pair `p ≤ r` of interval-pair indices. For a right `A`-module `M`, define the additive group
+`G(M) = ∏_q {m ∈ M | m · δ_{d(q),d(q)} = m}` and the assembly
+`τ_M((m_q)) = Σ_q m_q · δ_{d(q),q}`, with both product and sum indexed by all interval pairs.
+The functor `G` is exact: project a preimage onto the fixed subgroup in each coordinate. The image
+of `τ_M` is the actual quotient relation submodule, and `τ_M` is injective for projective `M`, by
+regular-module columns, arbitrary free modules, and the projective splitting. The higher-degree
+cycle lift uses these exactness, image, and injectivity properties.
+
 For every right-incidence module `M`, every actual projective resolution `P` of `M`, and every
 `n ≥ 2`, `extensionMappedResolution_exactAt` proves that `E(P)` is exact at degree `n`.
 Consequently, `extension_leftDerived_isZero_atLeastTwo` proves the actual categorical statement
-`IsZero ((E.leftDerived n).obj M)` in that range. The auxiliary additive column functor realizes
-the diagonal-floor column mechanism: its natural assembly has image exactly the actual quotient
-relation submodule, and the assembly is injective on every projective module. For a restricted
-quotient module `Res(N)`, this higher result combines with the degree-one theorem to give exactness
-of every positive degree and vanishing of every positive left-derived value. The same conclusion
-specializes to each strict vertex.
+`IsZero ((E.leftDerived n).obj M)` in that range. For a restricted quotient module `Res(N)`, this
+higher result combines with the degree-one theorem to give exactness of every positive degree and
+vanishing of every positive left-derived value. The same conclusion specializes to each strict
+vertex.
 
 The range is deliberately positive: on restricted modules the unaugmented mapped resolution has
 the existing degree-zero comparison with `N`, which may be nonzero. No degree-one result for an
@@ -62,7 +70,8 @@ bound, or stability statement is established here.
 
 The quotient extension is the right-module base-change construction in [BOOS24-v3, §2.4,
 Definition 5.4 and Notation 5.9](references.md#BOOS24-v3). Its idempotent-kernel factorization
-formalizes the degree-one mechanism and the higher-degree projective-ideal/column mechanism of
+formalizes the degree-one mechanism for the restricted-cokernel row. Separately, the actual
+diagonal-column construction gives the higher-degree projective-ideal/column mechanism of
 [Lemma 5.6](references.md#BOOS24-v3) for this interval-pair quotient. The underived vertex
 comparison is also consistent with the right-module setup of [Lemma 5.7](references.md#BOOS24-v3).
 
