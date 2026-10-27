@@ -269,8 +269,8 @@ theorem rationalSingletonInjective_hom_dimension_zero :
   simpa using hasProjectiveDimensionLE_of_coordinateGrid
     (k := ℚ) singletonGrid rationalSingletonInjective singletonGrid_nonempty
 
-/-- Every supplied certified minimal resolution of that Hom object vanishes
-in positive degrees. -/
+/-- Every supplied certified minimal rank-projective resolution of that
+ordinary injective vanishes in positive degrees. -/
 theorem rationalSingletonInjective_resolution_positive_vanishing
     (R : MinimalFiniteRankProjectiveResolution
       (k := ℚ) (M := rationalSingletonInjective))

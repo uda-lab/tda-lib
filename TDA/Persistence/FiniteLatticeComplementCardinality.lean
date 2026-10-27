@@ -247,14 +247,12 @@ private theorem minimalComplement_withTop_coe_ne_top (p : S) (hp : p ≠ ⊤)
 
 private noncomputable def minimalComplement_withTop_coe_val (p : S) (hp : p ≠ ⊤)
     (x : minimalComplement (p : WithTop S)) : S :=
-  Classical.choose (WithTop.ne_top_iff_exists.mp
-    (minimalComplement_withTop_coe_ne_top (S := S) p hp x))
+  x.1.untop (minimalComplement_withTop_coe_ne_top (S := S) p hp x)
 
 private theorem minimalComplement_withTop_coe_val_spec (p : S) (hp : p ≠ ⊤)
     (x : minimalComplement (p : WithTop S)) :
     (minimalComplement_withTop_coe_val (S := S) p hp x : WithTop S) = x.1 :=
-  Classical.choose_spec (WithTop.ne_top_iff_exists.mp
-    (minimalComplement_withTop_coe_ne_top (S := S) p hp x))
+  WithTop.coe_untop x.1 (minimalComplement_withTop_coe_ne_top (S := S) p hp x)
 
 /-- Coercion identifies minimal complements below the old top with the
 original minimal complements. -/

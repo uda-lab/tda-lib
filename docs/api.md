@@ -870,6 +870,8 @@ arbitrary-field decomposition remain noncomputable. See
 
 ### Minimal-complement cardinalities for finite grids
 
+Here `minimalComplement p` means the minimal elements of `{a | ¬ a ≤ p}` in a finite bounded lattice. `PairPoset S` is the actual subtype `{q : WithTop S × WithTop S // q.1 ≤ q.2}` with inherited coordinatewise order. The grid bounds concern an actual `G : CoordinateGrid n` with nonempty coordinate factors.
+
 `TDA.Persistence.FiniteLatticeComplementCardinality` proves the one-active-coordinate classification for minimal complements in finite products, the old-top singleton correction for `WithTop`, and the exact restricted-diagonal plus bottom-axis decomposition for the existing `PairPoset` subtype. It then proves the `n`, `n`, and `2*n` maximum bounds for `G.Point`, `WithTop G.Point`, and `PairPoset G.Point` when the coordinate factors are nonempty (the last two require `n ≥ 1`). The old and new tops are treated as distinct elements.
 
 `TDA.Persistence.FiniteGridInjectiveRankDimension.hasProjectiveDimensionLE_of_coordinateGrid` derives the actual `n - 1` Hom projective-dimension bound for every pointwise finite-dimensional ordinary injective on such a grid, for an arbitrary field. Its `termAt_isZero_of_coordinateGrid` consumer proves the same high-term vanishing for each supplied certified minimal resolution. The proof uses the proved grid count and the existing finite-injective dimension theorem; no dimension bound is supplied as input. These generator-count bounds and the ordinary-injective Hom dimension corollary do not establish a numerical ordinary incidence/global-dimension bound or the universal `2n−2` persistence estimate. See [minimal-complement cardinalities in finite grids](math/finite-grid-complement-cardinality.md).
