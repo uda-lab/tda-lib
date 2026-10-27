@@ -1099,6 +1099,17 @@ private noncomputable def ofPointwisePfdFinitePoset
   · intro i
     exact (iteratedMinimalHookCover X i.val).cover.term_isRankProjective
 
+/-- The chosen finite-poset construction has this recorded number of middle
+terms. This records one existing witness and makes no assertion about other
+resolutions of the same module. -/
+theorem exists_finiteRankProjectiveResolution_with_recorded_length
+    {P : Type} [PartialOrder P] [Fintype P]
+    (M : PModule.{u,0,u} k P) (hM : ∀ p, FiniteDimensional k (M.obj p)) :
+    ∃ R : FiniteRankProjectiveResolution M,
+      R.length = 3 * Fintype.card P + 2 := by
+  refine ⟨ofPointwisePfdFinitePoset M hM, ?_⟩
+  rfl
+
 /-- Every pointwise finite-dimensional module on a finite poset admits an
 actual finite rank-projective resolution. -/
 theorem exists_finiteRankProjectiveResolution_of_pfd_finitePoset
