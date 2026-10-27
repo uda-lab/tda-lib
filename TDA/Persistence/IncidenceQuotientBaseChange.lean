@@ -542,6 +542,114 @@ instance extensionFunctor_preservesFiniteColimits :
       (extensionAdjunction (k := k) (S := S))
   infer_instance
 
+/-- The counit isomorphism on a quotient-ring module: a class represented by `n` maps to `n`. -/
+noncomputable def extensionRestrictionEquiv
+    (N : ModuleCat (RightQuotient (k := k) (S := S))) :
+    quotientModule (k := k) (S := S)
+        ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N) ≃ₗ[
+          RightQuotient (k := k) (S := S)] N where
+  toFun := liftCLinearMap (k := k) (S := S) (𝟙 _)
+  invFun := fun n =>
+    (relation (k := k) (S := S)
+      ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ
+        (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N from n)
+  left_inv x := by
+    obtain ⟨n, hn⟩ :=
+      (relation (k := k) (S := S)
+        ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ_surjective x
+    rw [← hn]
+    change (relation (k := k) (S := S)
+        ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ
+      (liftCLinearMap (k := k) (S := S) (𝟙 _)
+        ((relation (k := k) (S := S)
+          ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ
+            (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N from n))) = _
+    rw [liftCLinearMap_mkQ]
+    rfl
+  right_inv n := by
+    change liftCLinearMap (k := k) (S := S) (𝟙 _)
+      ((relation (k := k) (S := S)
+        ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ
+          (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N from n)) = n
+    rw [liftCLinearMap_mkQ]
+    rfl
+  map_add' := by
+    intro x y
+    exact (liftCLinearMap (k := k) (S := S) (𝟙 _)).map_add x y
+  map_smul' := by
+    exact (liftCLinearMap (k := k) (S := S) (𝟙 _)).map_smul
+
+/-- The quotient-extension counit, with inverse sending `n` to its class. -/
+noncomputable def extensionRestrictionIso :
+    (ModuleCat.restrictScalars (quotientHom (k := k) (S := S)) ⋙
+      extensionFunctor (k := k) (S := S)) ≅ 𝟭 _ :=
+  NatIso.ofComponents
+    (fun N => (extensionRestrictionEquiv (k := k) (S := S) N).toModuleIso)
+    (by
+      intro N N' f
+      apply ModuleCat.hom_ext
+      apply LinearMap.ext
+      intro x
+      obtain ⟨n, hn⟩ :=
+        (relation (k := k) (S := S)
+          ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ_surjective x
+      rw [← hn]
+      change (liftCLinearMap (k := k) (S := S) (𝟙 _))
+          ((relation (k := k) (S := S)
+            ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N')).mkQ
+              (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N' from
+                f.hom (show N from n))) =
+        f.hom ((liftCLinearMap (k := k) (S := S) (𝟙 _))
+          ((relation (k := k) (S := S)
+            ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ n))
+      rw [liftCLinearMap_mkQ, liftCLinearMap_mkQ]
+      rfl)
+
+@[simp] theorem extensionRestrictionIso_hom_mkQ
+    (N : ModuleCat (RightQuotient (k := k) (S := S))) (n : N) :
+    (extensionRestrictionIso (k := k) (S := S)).hom.app N
+      ((relation (k := k) (S := S)
+        ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ n) = n := by
+  change (extensionRestrictionEquiv (k := k) (S := S) N)
+    ((relation (k := k) (S := S)
+      ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ
+        (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N from n)) = n
+  change liftCLinearMap (k := k) (S := S) (𝟙 _)
+    ((relation (k := k) (S := S)
+      ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ
+        (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N from n)) = n
+  rw [liftCLinearMap_mkQ]
+  rfl
+
+@[simp] theorem extensionRestrictionIso_inv_apply
+    (N : ModuleCat (RightQuotient (k := k) (S := S))) (n : N) :
+    (extensionRestrictionIso (k := k) (S := S)).inv.app N n =
+      (relation (k := k) (S := S)
+        ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ n := by
+  rfl
+
+/-- The natural isomorphism above is the counit of the constructed adjunction. -/
+theorem extensionAdjunction_counit_eq_extensionRestrictionIso
+    (N : ModuleCat (RightQuotient (k := k) (S := S))) :
+    (extensionAdjunction (k := k) (S := S)).counit.app N =
+      (extensionRestrictionIso (k := k) (S := S)).hom.app N := by
+  apply ModuleCat.hom_ext
+  apply LinearMap.ext
+  intro x
+  obtain ⟨n, hn⟩ :=
+    (relation (k := k) (S := S)
+      ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ_surjective x
+  rw [← hn]
+  change (liftMap (k := k) (S := S) (𝟙 _)).hom
+      ((relation (k := k) (S := S)
+        ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ
+          (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N from n)) =
+    (liftCLinearMap (k := k) (S := S) (𝟙 _))
+      ((relation (k := k) (S := S)
+        ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)).mkQ
+          (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N from n))
+  rw [liftMap_mkQ, liftCLinearMap_mkQ]
+
 end
 
 end TDA.Persistence.IncidenceQuotientBaseChange
