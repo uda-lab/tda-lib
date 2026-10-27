@@ -161,6 +161,15 @@ noncomputable def quotientRestrictionFieldIso
       c • (quotientRestrictionFieldIso (k := k) (S := S) N).hom x :=
   map_smul _ _ _
 
+/-- The inverse field-restriction comparison is `k`-linear on actual elements. -/
+@[simp] theorem quotientRestrictionFieldIso_inv_smul
+    (N : ModuleCat.{u} (HomScalars (k := k) (S := S))) (c : k)
+    (x : IncidenceQuotientSimple.restrictRightQuotientModule (k := k) (S := S)
+      (quotientModuleOfHomModule (k := k) (S := S) N)) :
+    (quotientRestrictionFieldIso (k := k) (S := S) N).inv (c • x) =
+      c • (quotientRestrictionFieldIso (k := k) (S := S) N).inv x :=
+  map_smul _ _ _
+
 /-- The actual C-module estimate transfers to every finite-dimensional actual
 Hom-scalar module. -/
 theorem homScalarModule_hasProjectiveDimensionLE
@@ -222,6 +231,16 @@ noncomputable def homScalarFieldLinearEquiv (M : PModule.{u,0,u} k S) :
 @[simp] theorem homScalarFieldLinearEquiv_symm_apply (M : PModule.{u,0,u} k S)
     (f : HookSum (k := k) (S := S) ⟶ M) :
     (homScalarFieldLinearEquiv (k := k) (S := S) M).symm f = f := rfl
+
+/-- The natural-Hom and restricted-field scalar actions agree under the
+identity-on-elements linear equivalence. -/
+@[simp] theorem homScalarFieldLinearEquiv_smul (M : PModule.{u,0,u} k S)
+    (c : k)
+    (f : canonicalFieldRestriction (k := k)
+      ((homFunctor (k := k) (S := S)).obj M)) :
+    homScalarFieldLinearEquiv (k := k) (S := S) M (c • f) =
+      c • homScalarFieldLinearEquiv (k := k) (S := S) M f :=
+  map_smul _ _ _
 
 private theorem hookSum_finiteDimensional (p : S) :
     FiniteDimensional k ((HookSum (k := k) (S := S)).obj p) := by

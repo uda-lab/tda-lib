@@ -889,8 +889,8 @@ poset when `n ≥ 1`.
 
 This is a result in the actual `PModule` representation category. It does not assume an ordinary
 dimension bound on the input, and it does not estimate arbitrary modules over the incidence
-algebra. The Hom module in the minimal relative rank-resolution comparison is a different object;
-no relative term-vanishing or universal `2n−2` conclusion follows here. See
+algebra. The actual Hom module and its finite-grid dimension bound are handled separately below;
+they do not follow from this representation-category theorem alone. See
 [ordinary projective dimension on finite lattices](math/ordinary-finite-lattice-dimension.md).
 
 ### Derived vertex tensors for the interval-pair incidence algebra
@@ -1012,11 +1012,32 @@ incidence and quotient grid theorems give bound `2*n` for every such finite-dime
 These are unconditional consequences for the stated finite-dimensional modules: no resolution or
 projective-dimension bound is an input. The result does not establish essential surjectivity of the
 vertex representation or finite projective dimension for arbitrary incidence modules. It also
-does not bound the relative Hom-cokernel, prove the relative `2n−2` estimate, or establish
-stability. See
+does not establish the real-coordinate transfer or final stability result. See
 [ordinary projective dimensions of actual incidence modules](math/incidence-projective-dimension.md)
 and the focused consumers in
 `TDA.Persistence.IncidenceVertexProjectiveDimensionExamples`.
+
+### Actual Hom modules and their cokernels
+
+For an arbitrary field and a finite bounded lattice `S`, let `P = PairPoset S` and let
+`D(P) = maxComplementCard (S := P)`. Write `H(M) = (homFunctor.obj M)` and let `K(M)` be the
+actual categorical cokernel of the map induced by `homFunctor` on the two-injective differential.
+For every pointwise finite-dimensional `M : PModule k S`,
+`FiniteRankProjectiveHomQuotientDimension.homCokernel_hasProjectiveDimensionLE` proves the
+ordinary projective-dimension bound `D(P)` for `K(M)`. The proof establishes its
+finite-dimensionality from `M`; neither a projective-dimension estimate nor compatible scalar
+action is assumed.
+
+For an actual `n`-coordinate grid with nonempty factors and `n ≥ 1`, the actual Hom cokernel has
+ordinary projective dimension at most `2*n`, while `H(M)` has ordinary projective dimension at
+most `2*n-2`. Every supplied certified
+minimal finite-rank-projective resolution of such an `M` has zero `termAt j` for `j > 2*n-2`.
+This concerns the highest nonzero degree and is insensitive to terminal zero padding; it is not a
+bound on the raw stored length. The coefficient field remains arbitrary. The result does not
+establish a real-coordinate transfer or a stability theorem. See
+[finite-grid Hom-module and Hom-cokernel dimensions](math/finite-rank-projective-hom-quotient-dimension.md)
+and the rational and grid consumers in
+`TDA.Persistence.FiniteRankProjectiveHomQuotientDimensionExamples`.
 
 ## Compatible lifts and algebraic sums over the reals
 
