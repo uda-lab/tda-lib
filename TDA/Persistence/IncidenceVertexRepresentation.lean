@@ -45,6 +45,8 @@ local instance : DecidableLE (PairPoset S) := Classical.decRel _
 local instance : DecidableLT (PairPoset S) := Classical.decRel _
 local instance : LocallyFiniteOrder (PairPoset S) := Fintype.toLocallyFiniteOrder
 local instance : DecidableEq (PairPoset S) := Classical.decEq _
+local instance : Fintype (FiniteRankProjectiveEndAlgebra.ComparablePair (S := S)) :=
+  Fintype.ofFinite _
 
 abbrev Incidence := FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S)
 abbrev RightIncidence := (Incidence (k := k) (S := S))ᵐᵒᵖ
@@ -259,6 +261,11 @@ noncomputable def vertexRepresentation
       smul_smul, rightIncidenceMatrixUnit_mul]
     simp
 
+@[simp] theorem vertexRepresentation_obj
+    (M : ModuleCat.{u} (RightIncidence (k := k) (S := S))) (p : PairPoset S) :
+    (vertexRepresentation (k := k) (S := S) M).obj p =
+      VertexSpace (k := k) (S := S) M p := rfl
+
 /-- An actual incidence-linear map restricted to one fixed vertex fiber. -/
 noncomputable def mapOnVertexFiber
     {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))} (f : M ⟶ N)
@@ -457,6 +464,195 @@ theorem reconstructVertexNaturalTransformation_apply_vertex
         exact congrArg (fun y : vertexFiber (k := k) (S := S) N q => (y : N))
           ((naturalTransformationComponent (k := k) (S := S) α q).map_zero)
     _ = ((naturalTransformationComponent (k := k) (S := S) α p x) : N) := by simp
+
+/-- Projecting a reconstructed map recovers exactly the corresponding component map. -/
+theorem projectToVertexFiber_reconstructVertexNaturalTransformation
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N)
+    (p : PairPoset S) (m : restrictedKModule (k := k) (S := S) M) :
+    projectToVertexFiber (k := k) (S := S) N p
+      (reconstructVertexNaturalTransformation (k := k) (S := S) α m) =
+        naturalTransformationComponent (k := k) (S := S) α p
+          (projectToVertexFiber (k := k) (S := S) M p m) := by
+  apply Subtype.ext
+  rw [reconstructVertexNaturalTransformation_apply]
+  change diagonalProjector (k := k) (S := S) N p
+      (∑ r : PairPoset S,
+        (naturalTransformationComponent (k := k) (S := S) α r
+          (projectToVertexFiber (k := k) (S := S) M r m) : N)) = _
+  rw [map_sum, Finset.sum_eq_single p]
+  · simpa using diagonalProjector_apply_vertex (k := k) (S := S) N p p
+      (naturalTransformationComponent (k := k) (S := S) α p
+        (projectToVertexFiber (k := k) (S := S) M p m))
+  · intro r hr hrne
+    have hpr : p ≠ r := fun h => hrne h.symm
+    have h := diagonalProjector_apply_vertex (k := k) (S := S) N p r
+      (naturalTransformationComponent (k := k) (S := S) α r
+        (projectToVertexFiber (k := k) (S := S) M r m))
+    rw [if_neg hpr] at h
+    simpa using h
+  · simp
+
+/-- A component of a natural transformation commutes with the vertex structure maps. -/
+theorem naturalTransformationComponent_naturality
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N)
+    {p q : PairPoset S} (hpq : p ≤ q) (x : vertexFiber (k := k) (S := S) M p) :
+    naturalTransformationComponent (k := k) (S := S) α q
+        (vertexStructureMap (k := k) (S := S) M hpq x) =
+      vertexStructureMap (k := k) (S := S) N hpq
+        (naturalTransformationComponent (k := k) (S := S) α p x) := by
+  change (α.app q).hom (vertexStructureMap (k := k) (S := S) M hpq x) =
+    vertexStructureMap (k := k) (S := S) N hpq ((α.app p).hom x)
+  exact congrArg (fun f => f.hom x) (α.naturality (homOfLE hpq))
+
+/-- The reconstructed `k`-linear map commutes with each actual incidence matrix unit. -/
+theorem reconstructVertexNaturalTransformation_map_rightMatrixUnit
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N)
+    {p q : PairPoset S} (hpq : p ≤ q)
+    (m : restrictedKModule (k := k) (S := S) M) :
+    reconstructVertexNaturalTransformation (k := k) (S := S) α
+        (IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+          p q hpq • m) =
+      IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+        p q hpq • reconstructVertexNaturalTransformation (k := k) (S := S) α m := by
+  calc
+    reconstructVertexNaturalTransformation (k := k) (S := S) α
+        (IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+          p q hpq • m) =
+        reconstructVertexNaturalTransformation (k := k) (S := S) α
+          (vertexStructureMap (k := k) (S := S) M hpq
+            (projectToVertexFiber (k := k) (S := S) M p m)) := by
+          congr 1
+          rw [rightMatrixUnit_smul_projector]
+          rw [← vertexStructureMap_val]
+    _ = (naturalTransformationComponent (k := k) (S := S) α q
+          (vertexStructureMap (k := k) (S := S) M hpq
+            (projectToVertexFiber (k := k) (S := S) M p m)) : N) := by
+          rw [reconstructVertexNaturalTransformation_apply_vertex]
+    _ = (vertexStructureMap (k := k) (S := S) N hpq
+          (naturalTransformationComponent (k := k) (S := S) α p
+            (projectToVertexFiber (k := k) (S := S) M p m)) : N) := by
+          exact congrArg (fun x : vertexFiber (k := k) (S := S) N q => (x : N))
+            (naturalTransformationComponent_naturality (k := k) (S := S) α hpq _)
+    _ = IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+          p q hpq • reconstructVertexNaturalTransformation (k := k) (S := S) α m := by
+          rw [rightMatrixUnit_smul_projector (k := k) (S := S) N hpq
+            (reconstructVertexNaturalTransformation (k := k) (S := S) α m)]
+          rw [projectToVertexFiber_reconstructVertexNaturalTransformation]
+          rw [vertexStructureMap_val]
+
+/-- A scalar multiple of a matrix unit is the corresponding right scalar multiple in the opposite ring. -/
+private theorem rightIncidenceMatrixUnit_scalar_mul
+    (p q : PairPoset S) (hpq : p ≤ q) (a : k) :
+    MulOpposite.op
+        (a • FiniteRankProjectiveEndAlgebra.delta (k := k) (S := S) p q hpq) =
+      IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq *
+        algebraMap k (RightIncidence (k := k) (S := S)) a := by
+  rw [Algebra.smul_def]
+  change MulOpposite.op
+      (algebraMap k (Incidence (k := k) (S := S)) a *
+        FiniteRankProjectiveEndAlgebra.delta (k := k) (S := S) p q hpq) = _
+  rw [MulOpposite.op_mul]
+  simp [IncidenceQuotientBaseChange.rightIncidenceMatrixUnit]
+
+/-- Every element of the actual opposite incidence ring is a finite scalar sum of matrix units. -/
+private theorem rightIncidence_eq_matrixUnit_sum
+    (r : RightIncidence (k := k) (S := S)) :
+    r = ∑ cp : FiniteRankProjectiveEndAlgebra.ComparablePair (S := S),
+      IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+          cp.val.1 cp.val.2 cp.property *
+        algebraMap k (RightIncidence (k := k) (S := S))
+          (MulOpposite.unop r cp.val.1 cp.val.2) := by
+  classical
+  calc
+    r = MulOpposite.op (MulOpposite.unop r) := (MulOpposite.op_unop r).symm
+    _ = MulOpposite.op
+          (FiniteRankProjectiveEndAlgebra.deltaExpansion (k := k) (S := S)
+            (MulOpposite.unop r)) := by
+          conv_lhs =>
+            rw [FiniteRankProjectiveEndAlgebra.incidence_eq_deltaExpansion
+              (k := k) (S := S) (MulOpposite.unop r)]
+    _ = ∑ cp : FiniteRankProjectiveEndAlgebra.ComparablePair (S := S),
+          IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+              cp.val.1 cp.val.2 cp.property *
+            algebraMap k (RightIncidence (k := k) (S := S))
+              (MulOpposite.unop r cp.val.1 cp.val.2) := by
+          rw [FiniteRankProjectiveEndAlgebra.deltaExpansion, Finset.op_sum]
+          apply Finset.sum_congr rfl
+          intro cp hcp
+          exact rightIncidenceMatrixUnit_scalar_mul (k := k) (S := S)
+            cp.val.1 cp.val.2 cp.property
+            (MulOpposite.unop r cp.val.1 cp.val.2)
+
+/-- Reconstruct the actual right-incidence-linear map underlying a natural transformation. -/
+noncomputable def reconstructVertexNaturalTransformationRLinear
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N) :
+    M →ₗ[RightIncidence (k := k) (S := S)] N where
+  toFun := reconstructVertexNaturalTransformation (k := k) (S := S) α
+  map_add' := (reconstructVertexNaturalTransformation (k := k) (S := S) α).map_add
+  map_smul' r m := by
+    classical
+    rw [rightIncidence_eq_matrixUnit_sum (k := k) (S := S) r]
+    simp only [RingHom.id_apply]
+    rw [Finset.sum_smul, Finset.sum_smul, map_sum]
+    apply Finset.sum_congr rfl
+    intro cp hcp
+    let u := IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+      cp.val.1 cp.val.2 cp.property
+    let c := MulOpposite.unop r cp.val.1 cp.val.2
+    change reconstructVertexNaturalTransformation (k := k) (S := S) α
+        ((u * algebraMap k (RightIncidence (k := k) (S := S)) c) • m) =
+      (u * algebraMap k (RightIncidence (k := k) (S := S)) c) •
+        reconstructVertexNaturalTransformation (k := k) (S := S) α m
+    have hcomm (y : M) : u • (c • y) = c • (u • y) := by
+      calc
+        u • (c • y) = u • (algebraMap k (RightIncidence (k := k) (S := S)) c • y) := by
+          rw [← IsScalarTower.algebraMap_smul (RightIncidence (k := k) (S := S)) c y]
+        _ = (u * algebraMap k (RightIncidence (k := k) (S := S)) c) • y := by
+          rw [mul_smul]
+        _ = (algebraMap k (RightIncidence (k := k) (S := S)) c * u) • y := by
+          rw [← Algebra.commutes c u]
+        _ = algebraMap k (RightIncidence (k := k) (S := S)) c • (u • y) := by
+          rw [mul_smul]
+        _ = c • (u • y) := by
+          rw [IsScalarTower.algebraMap_smul (RightIncidence (k := k) (S := S)) c (u • y)]
+    have hcommN (y : N) : u • (c • y) = c • (u • y) := by
+      calc
+        u • (c • y) = u • (algebraMap k (RightIncidence (k := k) (S := S)) c • y) := by
+          rw [← IsScalarTower.algebraMap_smul (RightIncidence (k := k) (S := S)) c y]
+        _ = (u * algebraMap k (RightIncidence (k := k) (S := S)) c) • y := by
+          rw [mul_smul]
+        _ = (algebraMap k (RightIncidence (k := k) (S := S)) c * u) • y := by
+          rw [← Algebra.commutes c u]
+        _ = algebraMap k (RightIncidence (k := k) (S := S)) c • (u • y) := by
+          rw [mul_smul]
+        _ = c • (u • y) := by
+          rw [IsScalarTower.algebraMap_smul (RightIncidence (k := k) (S := S)) c (u • y)]
+    calc
+      _ = reconstructVertexNaturalTransformation (k := k) (S := S) α
+            (u • (c • m)) := by
+              rw [mul_smul, IsScalarTower.algebraMap_smul
+                (RightIncidence (k := k) (S := S)) c m]
+      _ = reconstructVertexNaturalTransformation (k := k) (S := S) α
+            (c • (u • m)) := by rw [hcomm]
+      _ = c • reconstructVertexNaturalTransformation (k := k) (S := S) α (u • m) := by
+            rw [(reconstructVertexNaturalTransformation (k := k) (S := S) α).map_smul]
+      _ = c • (u • reconstructVertexNaturalTransformation (k := k) (S := S) α m) := by
+            rw [reconstructVertexNaturalTransformation_map_rightMatrixUnit]
+      _ = u • (c • reconstructVertexNaturalTransformation (k := k) (S := S) α m) :=
+            (hcommN (reconstructVertexNaturalTransformation (k := k) (S := S) α m)).symm
+      _ = (u * algebraMap k (RightIncidence (k := k) (S := S)) c) •
+            reconstructVertexNaturalTransformation (k := k) (S := S) α m := by
+            rw [mul_smul, ← IsScalarTower.algebraMap_smul
+              (RightIncidence (k := k) (S := S)) c
+              (reconstructVertexNaturalTransformation (k := k) (S := S) α m)]
 
 end
 
