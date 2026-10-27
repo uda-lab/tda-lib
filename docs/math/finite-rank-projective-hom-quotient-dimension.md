@@ -37,14 +37,18 @@ so adding terminal zero terms does not affect it; no bound on the stored `length
 The bounds hold over arbitrary fields and do not require a finite coefficient field or a
 finite-dimensionality premise beyond pointwise finite-dimensionality of `M`.
 
-These results are the ordinary ambient projective dimensions of the actual modules. They do not
-establish the real-coordinate transfer or the final stability result, and they do not claim a
-sharp bound for arbitrary grids. The grid count used here is the existing finite-grid
-complement-cardinality bound.
+These results are the ordinary ambient projective dimensions of the actual modules. Their
+real-coordinate minimal-resolution transfer is proved separately in
+[the finite-presentation resolution result](finite-rank-projective-resolution.md#the-real-coordinate-degree-bound),
+using the actual finite-grid Kan reconstruction and zero-padded uniqueness. Together they prove
+the `2*n-2` upper degree bound for every certified minimal resolution of an originally finitely
+presented real-coordinate module. They do not prove a lower witness, equality, or the final
+signed-stability result, and they do not claim a sharp bound for arbitrary grids. The grid count
+used here is the existing finite-grid complement-cardinality bound.
 
 The source context is the upper-bound argument of Theorem 5.16 and the upper-bound consequence of
-Proposition 5.17 in [BOOS24-v3](references.md#BOOS24-v3), together with Lemma 5.11's Hom and
-resolution comparison. The library reuses its actual two-injective rows and minimal-resolution
-comparison, proves finite-dimensionality and quotient transport for the actual Hom cokernel, and
-specializes the resulting bounds to finite coordinate grids. The real-coordinate transfer is a
-separate result.
+Proposition 5.17 and Theorem 5.18 in [BOOS24-v3](references.md#BOOS24-v3), together with Lemma
+5.11's Hom and resolution comparison. The library reuses its actual two-injective rows and
+minimal-resolution comparison, proves finite-dimensionality and quotient transport for the actual
+Hom cokernel, and specializes the resulting bounds to finite coordinate grids. The real-coordinate
+transfer is stated and documented separately.

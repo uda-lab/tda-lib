@@ -139,6 +139,25 @@ theorem finitelyPresented_exists_pfd_finiteGridKan
   intro p
   exact D.finiteDimensional_of_finite_generators hD.1 ((D.gridCoordinates hD).embedding p)
 
+/-- The finite presentation's actual reconstruction grid has nonempty factors.
+The same presentation, restriction, and Kan reconstruction as in
+`finitelyPresented_exists_pfd_finiteGridKan` are retained, with the already
+proved zero membership exposed for each coordinate. -/
+theorem finitelyPresented_exists_pfd_nonempty_finiteGridKan
+    {k : Type u} [Field k] (M : PModule.{u,0,max u w} k (Fin n → ℝ))
+    (hM : FinitelyPresented (R := k) (P := Fin n → ℝ) M) :
+    ∃ (G : CoordinateGrid n) (N : PModule.{u,0,max u w} k G.Point),
+      (∀ p, FiniteDimensional k (N.obj p)) ∧
+        (∀ i : Fin n, (G i).Nonempty) ∧
+          Nonempty (G.embedding.monotone.functor.leftKanExtension N ≅ M) := by
+  obtain ⟨D, hD, ⟨e⟩⟩ := hM
+  refine ⟨D.gridCoordinates hD, D.gridModule hD, ?_, ?_, ⟨D.gridKanIso hD ≪≫ e⟩⟩
+  · intro p
+    exact D.finiteDimensional_of_finite_generators hD.1
+      ((D.gridCoordinates hD).embedding p)
+  · intro i
+    exact ⟨0, D.zero_mem_gridCoordinates hD i⟩
+
 end GradedFree
 
 end TDA.Persistence

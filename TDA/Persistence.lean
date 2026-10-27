@@ -358,3 +358,4 @@ import TDA.Persistence.OrdinaryFiniteLatticeDimension
 import TDA.Persistence.IncidenceVertexProjectiveDimension
 import TDA.Persistence.FiniteGridInjectiveRankDimension
 import TDA.Persistence.IncidenceQuotientBaseChangeExamples
+import TDA.Persistence.FiniteRankProjectiveResolutionDimension
