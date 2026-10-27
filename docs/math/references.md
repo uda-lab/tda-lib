@@ -1,7 +1,7 @@
 # Source register and mathematical mappings
 
 This is the canonical bibliography for existing library sources and the five next
-[README directions](../../README.md#future-directions). Stable keys identify consulted
+[README directions](../../README.md#scope-and-limitations). Stable keys identify consulted
 manifestations, not interchangeable editions of a work. Dates distinguish initial public
 submission, version revision, online publication and issue year. Evidence was inspected
 on 2026-10-14. Missing evidence is labeled unresolved; neither a citation nor an accessible
@@ -444,7 +444,7 @@ stability. See [local matching from finite box counts](persistence-measure-match
 ### BL24 — normalized subdivision and measure bifiltrations
 
 - **Identity/version:** Andrew J. Blumberg and Michael Lesnick, *Stability of 2-Parameter Persistent Homology*, Foundations of Computational Mathematics 24 (2024), [arXiv:2010.09628](https://arxiv.org/pdf/2010.09628).
-- **Use/classification:** Definitions 2.10–2.13 define normalized subdivision flags; Definitions 2.32–2.33 give the restricted interleaving category. `MeasureBifiltration` proves the finite-measure inclusion argument of Theorem 3.1 using mathlib's Lévy–Prokhorov inequalities. `SubdivisionRips` proves the finite sup-norm comparison step in Theorem 1.6(iii) and connects the concrete flag filtration to simplicial homology. `FiniteGromovProkhorov` proves the common-ambient finite-uniform GP witness reduction and arbitrary-outlier mass estimate. `MulticoverCover` proves the exact cover, its naturality and contractible finite intersections; `MulticoverNerve` constructs the actual natural homology comparison morphism. Theorem 3.3's equivalence and the full GP-to-SR bound remain unproved. [Exact scope](subdivision-rips.md).
+- **Use/classification:** Definitions 2.10–2.13 define normalized subdivision flags; Definitions 2.32–2.33 give the restricted interleaving category. `MeasureBifiltration` proves the finite-measure inclusion argument of Theorem 3.1 using mathlib's Lévy–Prokhorov inequalities. `SubdivisionRips` proves the finite sup-norm comparison step in Theorem 1.6(iii) and connects the concrete flag filtration to simplicial homology. `FiniteGromovProkhorov` proves the common-ambient finite-uniform GP witness reduction and arbitrary-outlier mass estimate. `MulticoverCover` proves the exact cover, its naturality and contractible finite intersections; `MulticoverNerve` proves that the natural homology comparison morphism is an isomorphism (`cechHomologyToLargeFaceNerve_isIso`), and `GromovProkhorovMulticover` proves the finite-uniform GP-to-SR homology interleaving bound (`subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist`). Theorem 3.3's space-level equivalence remains unproved. [Exact scope](subdivision-rips.md).
 - **Rights/evidence:** **U**, primary PDF inspected 2026-10-23. Original definitions, proofs, and summary are supplied; no source prose or figures are reproduced.
 
 <a id="Sheehy13-v2"></a>
