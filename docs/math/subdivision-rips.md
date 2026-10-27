@@ -88,8 +88,8 @@ giving `subdivision_openCech_le_largeFaceNerve` and the natural morphism
 sup-norm GP witness supplies these comparison morphisms for both input SR
 modules on the ambient used by its multicover interleaving.
 
-The full Gromov–Prokhorov bound for subdivision-Rips homology remains open.
-The flag-to-cover-nerve inclusion is a natural isomorphism on homology:
+For finite uniform measures the Gromov–Prokhorov bound for subdivision-Rips
+homology is proved at the homology level. The flag-to-cover-nerve inclusion is a natural isomorphism on homology:
 `cechHomologyToLargeFaceNerve_isIso` proves this at every index and degree over
 every ring, comparing the subdivision of a large-face nerve with the flag complex
 through face unions and the barycentric homology isomorphism

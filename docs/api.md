@@ -231,9 +231,9 @@ grades below the grid and a principal-upset tail.
 
 Naturally split pointwise short exact sequences with pointwise finite-dimensional middle fibers
 are rank exact (`IsPointwiseShortExact.rankExact_of_section`), and restriction along a monotone
-map preserves rank exactness (`IsRankExact.reindex`). For `i < j` in a partial order, the hook has
-support `{a | i ≤ a and j ≰ a}`, and `Hook.homEquivKernel` identifies maps from it to `N` with
-vectors of `N(i)` killed at `j`. Over a field, `Hook.end_eq_smul_id` and
+map preserves rank exactness (`IsRankExact.reindex`). Over a field, for `i < j` in a partial
+order, the hook has support `{a | i ≤ a and j ≰ a}`, `Hook.homEquivKernel` identifies maps from it
+to `N` with vectors of `N(i)` killed at `j`, and `Hook.end_eq_smul_id` and
 `HookInfinity.end_eq_smul_id` show that every endomorphism acts by one scalar throughout the
 support, and `Hook.indecomposable` and `HookInfinity.indecomposable` prove indecomposability in
 mathlib's categorical sense, with neither a finite grade set nor bounded support.
@@ -585,7 +585,7 @@ under natural isomorphism, symmetry and the extended triangle inequality. For a 
 source, `GradedFree.finitelyPresented_exists_finite_postcomp_tests` gives a finite set of generator
 and relation grades at which bijectivity of a natural map induces a bijection on maps out of the
 module, and `GradedFree.finitelyPresented_exists_pos_postcomp_shiftLE_bijective` combines this test
-set with the target's finite critical coordinates so that `Hom(M,N[ε]) → Hom(M,N[ε+δ])` is bijective
+set with a finitely presented target's finite critical coordinates so that `Hom(M,N[ε]) → Hom(M,N[ε+δ])` is bijective
 for all sufficiently small `δ ≥ 0`. `CoordinateInterleaving.of_postcomp_lifting` is the algebraic
 lowering step, taking the two surjections and the two injections as hypotheses; the
 finite-presentation proof establishes all four. `FinitePresentationClosure` also proves
@@ -1245,9 +1245,9 @@ optimization with the existing matching minimum, using cost-preserving boundary
 augmentation and the pinned mathlib Birkhoff decomposition. An incidence plan attains
 the minimum; fractional optima can coexist with it. Empty formulas and reindexing are
 included. For unit masses, `BoundaryTransport.boundaryTransportPowerValue_ofIndexed_unit`
-identifies the infimum over all Borel boundary plans between the atomic measures with this
-matching minimum for `p ≥ 0`; an identification with an ordinary Wasserstein coupling API
-remains outside the API.
+identifies the infimum over all Borel boundary plans between the atomic measures with the
+powered finite matching minimum `finitePowerMatchingCost p` for `p ≥ 0`. No identification
+with an ordinary Wasserstein coupling API is provided.
 See [finite boundary transport](math/finite-boundary-transport.md).
 
 ## Finite real-exponent matching and transport costs
@@ -1628,7 +1628,8 @@ claimed. The Mapper–Reeb quotient identification and convergence
 claims concern finite graph-PL inputs, not arbitrary higher-dimensional Reeb spaces.
 
 Finite GH–Rips stability and sampling compare full diagrams of finite metric spaces;
-the possibly infinite sampling target has no diagram in these results. Finite
+the possibly infinite sampling target has no diagram in these results; the q-tame Rips
+diagrams above supply diagrams and sample convergence for totally bounded targets. Finite
 weighted boundary transport permits real masses, and its canonical atomic
 measures have the same optima over all Borel boundary plans, and minimizing Borel plans exist
 for arbitrary finite Borel inputs and `p ≥ 1` (`BoundaryTransport.exists_minimizing_boundaryPlan`),
@@ -1639,9 +1640,10 @@ C₀ universality and signed-measure separation concern the full birth–death p
 positive persistence measures require a strictly positive weight and finite weighted
 mass. These conclusions do not make finite-pixel images characteristic.
 
-General geometric tame-function PH stability, locally finite diagrams and their stability
-for infinite q-tame modules, manifold charts
-and executable arbitrary-field decomposition are outside the reviewed PH scope. A first
+General geometric tame-function PH stability, manifold charts and executable
+arbitrary-field decomposition are outside the reviewed PH scope. Locally finite decorated
+diagrams of q-tame modules and their algebraic stability are proved, but are not covered by
+the source-based review above. A first
 stable release must state its selected results and limitations; it need not finish every
 roadmap extension. This guide describes the current API and does not announce a release.
 
@@ -1869,8 +1871,8 @@ be inserted into every face (`ApexInsertionClosed`), `boundary_arbitraryApexCone
 contracts positive-degree chains and `boundary_arbitraryApexConeFill_zero` subtracts the
 coefficient sum at the apex in degree zero. `TDA.Simplicial.BarycentricHomology` takes the
 barycentric subdivision to be the mass-zero normalized subdivision flag complex. For a finite
-nonempty ordered vertex type, the subdivision chain map and the last-vertex map form
-`barycentricChainHomotopyEquiv`, and `barycentricHomologyIso` is natural for inclusions of
+nonempty ordered vertex type with an auxiliary linear order on its finite subsets, the
+subdivision chain map and the last-vertex map form `barycentricChainHomotopyEquiv`, and `barycentricHomologyIso` is natural for inclusions of
 complexes. Over a field, `simplicialHomologyClass_zeroVertexCycle_ne_zero` shows that every
 vertex has a nonzero `H₀` class. These results are stated for the ordered chain model only;
 no comparison with singular homology is made.
@@ -1958,10 +1960,11 @@ for the precise hypotheses. The global algebraic-stability bridge,
 `qTame_bottleneck_le_of_realInterleaving`, is proved by finite window matching and saturation
 rather than through this separated local step:
 `PersistenceMeasureWindowMatching.exists_finite_window_matching_of_center_counts` is the
-finite-window step, which for `δ ≥ 0`, source point values separated by more than `2δ` and
-closed-ball count comparisons at the source values injects every source occurrence within
-distance `δ` and covers every target occurrence whose exit value exceeds `δ`; repeated values
-remain separate tokens and target values need no separation.
+finite-window step, which, for `δ ≥ 0` and source point values separated by more than `2δ`,
+uses closed-ball count comparisons at the source values to inject every source occurrence
+within distance `δ`, and the reverse comparison at each target value whose exit value exceeds
+`δ` to cover that target occurrence; repeated values remain separate tokens and target values
+need no separation.
 
 `TDA.Persistence.DecoratedMeasureCuts` identifies the existing persistence cuts with
 mathlib lower sets, retaining boundary decorations and compact open coordinate cells.
@@ -1998,8 +2001,8 @@ No interval decomposition is assumed. The extracted diagrams have finite births;
 birth-at-minus-infinity strata of unrestricted q-tame modules are not represented. Positive
 finite diagrams embed isometrically (`Diagram.toLocallyFinite`, `bottleneck_toLocallyFinite`), and
 for finite metric spaces `Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` identifies the
-extracted Rips diagram with the finite one; compatibility for arbitrary q-tame modules remains
-open. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
+extracted Rips diagram with the finite one; compatibility with the finite `Diagram` API for
+other finite-type q-tame modules remains open. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
 [decorated diagrams of infinite Rips spaces](math/rips-metric-stability.md#decorated-diagrams-of-infinite-rips-spaces).
 
 
