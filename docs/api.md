@@ -678,7 +678,7 @@ presentation using its critical coordinates, free cover, and
 transition-isomorphism criterion. The one-dimensional collapse and
 ordinary-barcode connection follow the [BOOS v3 introduction after Result D](https://arxiv.org/html/2208.00300v3#S1),
 [§2.10's one-dimensional paragraph](https://arxiv.org/html/2208.00300v3#S2.SS10),
-and the `n = 1` consequence of [Theorem 5.18](https://arxiv.org/html/2208.00300v3#S5.SS3);
+and the `n = 1` consequence of [Theorem 5.18](https://arxiv.org/html/2208.00300v3#S5.Thmtheorem18);
 [Theorem 6.1](https://arxiv.org/html/2208.00300v3#S6.SS1) gives signed-stability
 context.
 
