@@ -316,6 +316,148 @@ noncomputable instance vertexFunctor_additive :
     ext p x
     rfl
 
+/-- A comparable-pair unit acts on a fixed vertex fiber only at its source vertex. -/
+theorem rightMatrixUnit_smul_vertex
+    (M : ModuleCat.{u} (RightIncidence (k := k) (S := S)))
+    {p q : PairPoset S} (hpq : p ≤ q) {r : PairPoset S}
+    (x : vertexFiber (k := k) (S := S) M r) :
+    IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+        (x : M) =
+      if r = p then
+        IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+          (x : M)
+      else 0 := by
+  by_cases hr : r = p
+  · subst r
+    simp
+  · have hmul :
+        IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq *
+            IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) r r le_rfl = 0 := by
+      rw [rightIncidenceMatrixUnit_mul]
+      simp [hr]
+    have hx : IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+        r r le_rfl • (x : M) = (x : M) :=
+      (mem_vertexFiber_iff (k := k) (S := S) M r x).1 x.property
+    rw [if_neg hr, ← hx, smul_smul, hmul]
+    exact zero_smul (RightIncidence (k := k) (S := S)) (x : M)
+
+/-- A comparable-pair unit only sees the corresponding projector of an arbitrary element. -/
+theorem rightMatrixUnit_smul_projector
+    (M : ModuleCat.{u} (RightIncidence (k := k) (S := S)))
+    {p q : PairPoset S} (hpq : p ≤ q)
+    (m : restrictedKModule (k := k) (S := S) M) :
+    IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq • m =
+      IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+        (projectToVertexFiber (k := k) (S := S) M p m : M) := by
+  classical
+  have hdecomp :
+      (∑ r : PairPoset S, (projectToVertexFiber (k := k) (S := S) M r m : M)) = m := by
+    calc
+      (∑ r : PairPoset S, (projectToVertexFiber (k := k) (S := S) M r m : M)) =
+          ∑ r : PairPoset S, diagonalProjector (k := k) (S := S) M r m := by
+        apply Finset.sum_congr rfl
+        intro r hr
+        exact projectToVertexFiber_val (k := k) (S := S) M r m
+      _ = m := diagonalProjector_sum (k := k) (S := S) M m
+  calc
+    IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq • m =
+        IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+          ∑ r : PairPoset S, (projectToVertexFiber (k := k) (S := S) M r m : M) := by
+            rw [hdecomp]
+    _ = ∑ r : PairPoset S,
+          IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+            (projectToVertexFiber (k := k) (S := S) M r m : M) := by
+          change rightMatrixUnitAction (k := k) (S := S) M p q hpq
+            (∑ r : PairPoset S, (projectToVertexFiber (k := k) (S := S) M r m : M)) = _
+          rw [map_sum]
+          apply Finset.sum_congr rfl
+          intro r hr
+          exact rightMatrixUnitAction_apply (k := k) (S := S) M p q hpq
+            (projectToVertexFiber (k := k) (S := S) M r m)
+    _ = IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+          (projectToVertexFiber (k := k) (S := S) M p m : M) := by
+          calc
+            (∑ r : PairPoset S,
+                IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+                  (projectToVertexFiber (k := k) (S := S) M r m : M)) =
+                ∑ r : PairPoset S, if r = p then
+                  IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+                    (projectToVertexFiber (k := k) (S := S) M r m : M) else 0 := by
+              apply Finset.sum_congr rfl
+              intro r hr
+              exact rightMatrixUnit_smul_vertex (k := k) (S := S) M hpq
+                (projectToVertexFiber (k := k) (S := S) M r m)
+            _ = IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S) p q hpq •
+                (projectToVertexFiber (k := k) (S := S) M p m : M) := by simp
+
+/-- The component linear map of a natural transformation on the explicitly named vertex fibers. -/
+noncomputable def naturalTransformationComponent
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N) (p : PairPoset S) :
+    vertexFiber (k := k) (S := S) M p →ₗ[k]
+      vertexFiber (k := k) (S := S) N p :=
+  (α.app p).hom
+
+/-- Reconstruct a `k`-linear map from the component maps of a natural transformation. -/
+noncomputable def reconstructVertexNaturalTransformation
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N) :
+    restrictedKModule (k := k) (S := S) M →ₗ[k]
+      restrictedKModule (k := k) (S := S) N :=
+  ∑ p : PairPoset S,
+    ((vertexFiber (k := k) (S := S) N p).subtype.comp
+      (naturalTransformationComponent (k := k) (S := S) α p)).comp
+        (projectToVertexFiber (k := k) (S := S) M p)
+
+@[simp] theorem reconstructVertexNaturalTransformation_apply
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N)
+    (m : restrictedKModule (k := k) (S := S) M) :
+    reconstructVertexNaturalTransformation (k := k) (S := S) α m =
+      ∑ p : PairPoset S,
+        ((naturalTransformationComponent (k := k) (S := S) α p
+          (projectToVertexFiber (k := k) (S := S) M p m)) : N) := by
+  simp [reconstructVertexNaturalTransformation]
+
+/-- On an element already in one vertex fiber, reconstruction is the corresponding component. -/
+theorem reconstructVertexNaturalTransformation_apply_vertex
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N)
+    (p : PairPoset S) (x : vertexFiber (k := k) (S := S) M p) :
+    reconstructVertexNaturalTransformation (k := k) (S := S) α x =
+      ((naturalTransformationComponent (k := k) (S := S) α p x) : N) := by
+  classical
+  rw [reconstructVertexNaturalTransformation_apply]
+  calc
+    (∑ q : PairPoset S,
+      ((naturalTransformationComponent (k := k) (S := S) α q
+        (projectToVertexFiber (k := k) (S := S) M q x)) : N)) =
+        ∑ q : PairPoset S, if q = p then
+          ((naturalTransformationComponent (k := k) (S := S) α p x) : N) else 0 := by
+      apply Finset.sum_congr rfl
+      intro q hq
+      by_cases hqp : q = p
+      · subst q
+        have hproj : projectToVertexFiber (k := k) (S := S) M p x = x := by
+          apply Subtype.ext
+          simp only [projectToVertexFiber_val]
+          exact (mem_vertexFiber_iff (k := k) (S := S) M p x).1 x.property
+        simp [hproj]
+      · have hzero : projectToVertexFiber (k := k) (S := S) M q x = 0 := by
+          apply Subtype.ext
+          change diagonalProjector (k := k) (S := S) M q x = 0
+          have hx := diagonalProjector_apply_vertex (k := k) (S := S) M q p x
+          simpa [hqp] using hx
+        rw [hzero]
+        simp only [if_neg hqp]
+        exact congrArg (fun y : vertexFiber (k := k) (S := S) N q => (y : N))
+          ((naturalTransformationComponent (k := k) (S := S) α q).map_zero)
+    _ = ((naturalTransformationComponent (k := k) (S := S) α p x) : N) := by simp
+
 end
 
 end TDA.Persistence.IncidenceVertexRepresentation
