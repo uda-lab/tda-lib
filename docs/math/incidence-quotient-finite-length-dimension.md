@@ -26,11 +26,11 @@ isomorphism to one of the actual `Vᵥ`. Transporting its dimension bound and ap
 Mathlib's zero-object criterion for `HasProjectiveDimensionLT`.
 
 For the unconditional inequality, write the candidate bound as `D = ⨆ v, projectiveDimension Vᵥ`.
-The proof unfolds `projectiveDimension` as the infimum of natural degrees admitting Ext
-vanishing. Whenever `D < i`, each vertex dimension is below `i`; `projectiveDimension_lt_iff`
-then supplies the common Ext-vanishing degree used in the finite-length theorem. Thus `D` is
-admissible for `M`, even when the supremum is infinite or the vertex set is empty. No degree value
-is introduced as a premise.
+The proof unfolds `projectiveDimension` as the infimum of bounds `n : WithBot ℕ∞` for which every
+natural degree `i : ℕ` with `n < i` satisfies `HasProjectiveDimensionLT M i`. Whenever `D < i`, each
+vertex dimension is below `i`; `projectiveDimension_lt_iff` then supplies the common Ext-vanishing
+degree used in the finite-length theorem. Thus `D` is admissible for `M`, even when the supremum
+is infinite or the vertex set is empty. No degree value is introduced as a premise.
 
 The underlying-field version uses the existing `restrictRightQuotientModule M` action. Its
 finite-dimensionality gives both Noetherianity and Artinianity over `k`. With the actual scalar

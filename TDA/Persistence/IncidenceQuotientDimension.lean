@@ -165,8 +165,8 @@ theorem finiteLength_uniform_projectiveDimensionLE_iff (d : ℕ) :
   · intro h M hM
     exact hasProjectiveDimensionLE_of_vertex_bound (k := k) (S := S) d h M hM
 
-/-- The actual restricted field action on a quotient module retains finite
-dimensionality over `k` when its underlying restricted module is finite-dimensional. -/
+/-- A quotient module finite-dimensional under its actual restricted `k`-action has finite length
+over the quotient. -/
 theorem isFiniteLength_of_finiteDimensional
     (M : ModuleCat.{u} (RightQuotient (k := k) (S := S)))
     (hM : FiniteDimensional k
