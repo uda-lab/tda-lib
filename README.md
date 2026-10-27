@@ -252,8 +252,8 @@ beyond q-tame modules and an executable arbitrary-field reduction are outside th
 scope.
 
 Further directions include identification of boundary transport with an ordinary
-Wasserstein coupling API, birth-at-minus-infinity strata and finite-diagram compatibility
-of arbitrary q-tame modules, the multiparameter `2n−2` bound and signed-barcode stability,
+Wasserstein coupling API, birth-at-minus-infinity strata and compatibility with the finite
+`Diagram` API for other finite-type q-tame modules, the multiparameter `2n−2` bound and signed-barcode stability,
 higher-dimensional Mapper–Reeb approximation, and constructibility of
 the product thickening of a general constructible real space beyond graph input as
 in de Silva, Munch and Patel, *Categorified Reeb Graphs*, Theorem 4.27.

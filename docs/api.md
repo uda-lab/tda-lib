@@ -233,7 +233,7 @@ Naturally split pointwise short exact sequences with pointwise finite-dimensiona
 are rank exact (`IsPointwiseShortExact.rankExact_of_section`), and restriction along a monotone
 map preserves rank exactness (`IsRankExact.reindex`). Over a field, for `i < j` in a partial
 order, the hook has support `{a | i ≤ a and j ≰ a}`, `Hook.homEquivKernel` identifies maps from it
-to `N` with vectors of `N(i)` killed at `j`, and `Hook.end_eq_smul_id` and
+to `N` with vectors of `N(i)` killed at `j`. `Hook.end_eq_smul_id` and
 `HookInfinity.end_eq_smul_id` show that every endomorphism acts by one scalar throughout the
 support, and `Hook.indecomposable` and `HookInfinity.indecomposable` prove indecomposability in
 mathlib's categorical sense, with neither a finite grade set nor bounded support.
