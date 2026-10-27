@@ -173,6 +173,57 @@ def includeColumns :
     includeColumns (k := k) (S := S) f q p t =
       if t = diagonalFloor (S := S) q then f.1 p q else 0 := rfl
 
+private theorem mul_delta_right_apply_column
+    (a : Incidence (k := k) (S := S)) (d q p t : PairPoset S)
+    (hdq : d ≤ q) :
+    (a * delta (k := k) (S := S) d q hdq) p t =
+      if t = q then a p d else 0 := by
+  classical
+  by_cases ht : t = q
+  · subst t
+    by_cases hpd : p ≤ d
+    · rw [IncidenceAlgebra.mul_apply]
+      have hdmem : d ∈ Finset.Icc p q := Finset.mem_Icc.mpr ⟨hpd, hdq⟩
+      rw [Finset.sum_eq_single d]
+      · simp [delta_apply]
+      · intro x hx hxd
+        simp [delta_apply, hxd]
+      · intro h
+        exact (h hdmem).elim
+    · rw [IncidenceAlgebra.mul_apply]
+      have ha : a p d = 0 := a.eq_zero_of_not_le' hpd
+      simp only [if_pos rfl, ha]
+      apply Finset.sum_eq_zero
+      intro x hx
+      have hxd : x ≠ d := by
+        intro h
+        subst x
+        exact hpd (Finset.mem_Icc.mp hx).1
+      simp [delta_apply, hxd]
+  · rw [IncidenceAlgebra.mul_apply]
+    simp only [if_neg ht]
+    apply Finset.sum_eq_zero
+    intro x hx
+    simp [delta_apply, ht]
+
+/-- Each included diagonal-floor column is fixed by right multiplication by its
+diagonal-floor idempotent. -/
+theorem includeColumns_mul_diagonalFloorIdempotent
+    (f : DiagonalIdeal (k := k) (S := S)) (q : PairPoset S) :
+    includeColumns (k := k) (S := S) f q *
+        delta (k := k) (S := S) (diagonalFloor (S := S) q)
+          (diagonalFloor (S := S) q) le_rfl =
+      includeColumns (k := k) (S := S) f q := by
+  classical
+  ext p t
+  rw [mul_delta_right_apply_column (k := k) (S := S)
+    (includeColumns (k := k) (S := S) f q) (diagonalFloor (S := S) q)
+    (diagonalFloor (S := S) q) p t le_rfl]
+  by_cases ht : t = diagonalFloor (S := S) q
+  · subst t
+    simp
+  · simp [ht]
+
 /-- Reassemble the chosen diagonal-floor coefficients as an incidence
 function. -/
 private def assembleValue (g : ColumnModule (k := k) (S := S)) :
@@ -225,6 +276,29 @@ def assembleColumns :
     (g : ColumnModule (k := k) (S := S)) (p q : PairPoset S) :
     (assembleColumns (k := k) (S := S) g).1 p q =
       g q p (diagonalFloor (S := S) q) := rfl
+
+private theorem incidenceFinsetSum_apply_column {ι : Type}
+    (s : Finset ι) (g : ι → Incidence (k := k) (S := S))
+    (p q : PairPoset S) :
+    (∑ i ∈ s, g i) p q = ∑ i ∈ s, g i p q := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert i s hi ih => simp [hi, IncidenceAlgebra.add_apply, ih]
+
+/-- Reassembly is the sum of the chosen terminal columns multiplied by their
+diagonal-floor matrix units. -/
+theorem assembleColumns_eq_sum_mul_delta
+    (g : ColumnModule (k := k) (S := S)) :
+    (assembleColumns (k := k) (S := S) g).1 =
+      ∑ q : PairPoset S,
+        g q * delta (k := k) (S := S) (diagonalFloor (S := S) q) q
+          (diagonalFloor_le (S := S) q) := by
+  classical
+  ext p t
+  rw [assembleColumns_apply, incidenceFinsetSum_apply_column]
+  simp_rw [mul_delta_right_apply_column]
+  simp
 
 /-- Reassembling the included columns returns the original ideal element. -/
 theorem assembleColumns_comp_includeColumns :
