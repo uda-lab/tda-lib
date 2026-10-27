@@ -654,6 +654,98 @@ noncomputable def reconstructVertexNaturalTransformationRLinear
               (RightIncidence (k := k) (S := S)) c
               (reconstructVertexNaturalTransformation (k := k) (S := S) α m)]
 
+
+/-- The actual module morphism reconstructed from a natural transformation. -/
+noncomputable def naturalTransformationToRightIncidenceHom
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N) : M ⟶ N :=
+  ModuleCat.ofHom (reconstructVertexNaturalTransformationRLinear (k := k) (S := S) α)
+
+/-- Reconstructing the image of an actual module map returns that map. -/
+theorem reconstructVertexNaturalTransformationRLinear_vertexFunctor_map
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))} (f : M ⟶ N) :
+    reconstructVertexNaturalTransformationRLinear (k := k) (S := S)
+      ((vertexFunctor (k := k) (S := S)).map f) = f.hom := by
+  let α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N := by
+    change vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N
+    exact (vertexFunctor (k := k) (S := S)).map f
+  apply LinearMap.ext
+  intro m
+  change reconstructVertexNaturalTransformation (k := k) (S := S) α m = f.hom m
+  rw [reconstructVertexNaturalTransformation_apply]
+  calc
+    (∑ p : PairPoset S,
+      (naturalTransformationComponent (k := k) (S := S)
+        α p
+        (projectToVertexFiber (k := k) (S := S) M p m) : N)) =
+      ∑ p : PairPoset S, f.hom (projectToVertexFiber (k := k) (S := S) M p m : M) := by
+        apply Finset.sum_congr rfl
+        intro p hp
+        change (mapOnVertexFiber (k := k) (S := S) f p
+          (projectToVertexFiber (k := k) (S := S) M p m) : N) = _
+        exact mapOnVertexFiber_val (k := k) (S := S) f p
+          (projectToVertexFiber (k := k) (S := S) M p m)
+    _ = f.hom m := by
+        rw [← map_sum]
+        congr 1
+        exact diagonalProjector_sum (k := k) (S := S) M m
+
+/-- The component maps of a natural transformation followed by reconstruction recover it. -/
+theorem vertexFunctor_map_naturalTransformationToRightIncidenceHom
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (α : vertexRepresentation (k := k) (S := S) M ⟶
+      vertexRepresentation (k := k) (S := S) N) :
+    (vertexFunctor (k := k) (S := S)).map
+        (naturalTransformationToRightIncidenceHom (k := k) (S := S) α) = α := by
+  apply NatTrans.ext
+  funext p
+  apply ModuleCat.hom_ext
+  apply LinearMap.ext
+  intro x
+  change VertexSpace (k := k) (S := S) M p at x
+  let x' : vertexFiber (k := k) (S := S) M p := x
+  apply Subtype.ext
+  change reconstructVertexNaturalTransformation (k := k) (S := S) α (x' : M) =
+    (naturalTransformationComponent (k := k) (S := S) α p x' : N)
+  exact reconstructVertexNaturalTransformation_apply_vertex (k := k) (S := S) α p x'
+
+/-- Actual module morphisms are in bijection with natural transformations of vertex representations. -/
+noncomputable def vertexFunctorHomEquiv
+    (M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))) :
+    (M ⟶ N) ≃
+      (vertexRepresentation (k := k) (S := S) M ⟶
+        vertexRepresentation (k := k) (S := S) N) where
+  toFun := (vertexFunctor (k := k) (S := S)).map
+  invFun := naturalTransformationToRightIncidenceHom (k := k) (S := S)
+  left_inv f := by
+    apply ModuleCat.hom_ext
+    exact reconstructVertexNaturalTransformationRLinear_vertexFunctor_map
+      (k := k) (S := S) f
+  right_inv α := vertexFunctor_map_naturalTransformationToRightIncidenceHom
+    (k := k) (S := S) α
+
+/-- The vertex-fiber functor is fully faithful on all actual right-incidence modules. -/
+noncomputable def vertexFunctorFullyFaithful :
+    (vertexFunctor (k := k) (S := S)).FullyFaithful where
+  preimage := naturalTransformationToRightIncidenceHom (k := k) (S := S)
+  map_preimage := vertexFunctor_map_naturalTransformationToRightIncidenceHom
+    (k := k) (S := S)
+  preimage_map f := by
+    apply ModuleCat.hom_ext
+    exact reconstructVertexNaturalTransformationRLinear_vertexFunctor_map
+      (k := k) (S := S) f
+
+noncomputable instance vertexFunctor_full :
+    Functor.Full (vertexFunctor (k := k) (S := S)) :=
+  (vertexFunctorFullyFaithful (k := k) (S := S)).full
+
+noncomputable instance vertexFunctor_faithful :
+    Functor.Faithful (vertexFunctor (k := k) (S := S)) :=
+  (vertexFunctorFullyFaithful (k := k) (S := S)).faithful
+
 end
 
 end TDA.Persistence.IncidenceVertexRepresentation
