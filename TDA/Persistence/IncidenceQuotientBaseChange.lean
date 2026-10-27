@@ -650,6 +650,127 @@ theorem extensionAdjunction_counit_eq_extensionRestrictionIso
           (show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N from n))
   rw [liftMap_mkQ, liftCLinearMap_mkQ]
 
+/-- The regular right module over the incidence ring. -/
+abbrev regularRightIncidenceModule :=
+  ModuleCat.of (RightIncidence (k := k) (S := S))
+    (RightIncidence (k := k) (S := S))
+
+/-- The regular right module over the diagonal quotient. -/
+abbrev regularRightQuotientModule :=
+  ModuleCat.of (RightQuotient (k := k) (S := S))
+    (RightQuotient (k := k) (S := S))
+
+/-- The quotient map, regarded as a map from the regular right-incidence module to the restricted
+regular right-quotient module. -/
+noncomputable def quotientHomOnRegular :
+    regularRightIncidenceModule (k := k) (S := S) ⟶
+      (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj
+        (regularRightQuotientModule (k := k) (S := S)) := by
+  letI : Module (RightIncidence (k := k) (S := S))
+      (RightQuotient (k := k) (S := S)) :=
+    ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj
+      (regularRightQuotientModule (k := k) (S := S))).isModule
+  exact ModuleCat.ofHom {
+    toFun := quotientHom (k := k) (S := S)
+    map_add' := (quotientHom (k := k) (S := S)).map_add
+    map_smul' := by
+      intro r a
+      change quotientHom (k := k) (S := S) (r * a) =
+        quotientHom (k := k) (S := S) r * quotientHom (k := k) (S := S) a
+      exact (quotientHom (k := k) (S := S)).map_mul r a
+  }
+
+/-- The quotient-induced map from the extension of the regular module to the quotient ring. -/
+noncomputable def regularExtensionMap :
+    (extensionFunctor (k := k) (S := S)).obj
+        (regularRightIncidenceModule (k := k) (S := S)) ⟶
+      regularRightQuotientModule (k := k) (S := S) :=
+  liftMap (k := k) (S := S) (quotientHomOnRegular (k := k) (S := S))
+
+@[simp] theorem regularExtensionMap_mkQ (a : RightIncidence (k := k) (S := S)) :
+    (regularExtensionMap (k := k) (S := S)).hom
+      ((relation (k := k) (S := S)
+        (regularRightIncidenceModule (k := k) (S := S))).mkQ a) =
+      quotientHom (k := k) (S := S) a :=
+  by
+    change (liftMap (k := k) (S := S)
+      (quotientHomOnRegular (k := k) (S := S))).hom
+        ((relation (k := k) (S := S)
+          (regularRightIncidenceModule (k := k) (S := S))).mkQ a) =
+      quotientHom (k := k) (S := S) a
+    rw [liftMap_mkQ]
+    rfl
+
+private theorem kernel_le_regularRelation :
+    RingHom.ker (quotientHom (k := k) (S := S)) ≤
+      relation (k := k) (S := S) (regularRightIncidenceModule (k := k) (S := S)) := by
+  intro a ha
+  change a ∈ Submodule.span (RightIncidence (k := k) (S := S))
+    (Set.range fun z :
+      (RingHom.ker (quotientHom (k := k) (S := S))) × RightIncidence (k := k) (S := S) =>
+        (z.1 : RightIncidence (k := k) (S := S)) • z.2)
+  apply Submodule.subset_span
+  exact ⟨(⟨a, ha⟩, 1), by simp⟩
+
+private theorem regularExtensionMap_injective :
+    Function.Injective (regularExtensionMap (k := k) (S := S)).hom := by
+  intro x y hxy
+  let K := relation (k := k) (S := S) (regularRightIncidenceModule (k := k) (S := S))
+  obtain ⟨a, ha⟩ := K.mkQ_surjective x
+  obtain ⟨b, hb⟩ := K.mkQ_surjective y
+  have hxy' := hxy
+  rw [← ha, ← hb] at hxy'
+  rw [← ha, ← hb]
+  apply (Submodule.Quotient.eq K).2
+  have hq : quotientHom (k := k) (S := S) a = quotientHom (k := k) (S := S) b := by
+    change (regularExtensionMap (k := k) (S := S)).hom
+        ((relation (k := k) (S := S)
+          (regularRightIncidenceModule (k := k) (S := S))).mkQ a) =
+      (regularExtensionMap (k := k) (S := S)).hom
+        ((relation (k := k) (S := S)
+          (regularRightIncidenceModule (k := k) (S := S))).mkQ b) at hxy'
+    rw [regularExtensionMap_mkQ, regularExtensionMap_mkQ] at hxy'
+    exact hxy'
+  apply kernel_le_regularRelation (k := k) (S := S)
+  apply RingHom.mem_ker.mpr
+  rw [map_sub, hq, sub_self]
+
+private theorem regularExtensionMap_surjective :
+    Function.Surjective (regularExtensionMap (k := k) (S := S)).hom := by
+  intro c
+  let K := relation (k := k) (S := S) (regularRightIncidenceModule (k := k) (S := S))
+  obtain ⟨a, ha⟩ := quotientHom_surjective (k := k) (S := S) c
+  refine ⟨K.mkQ a, ?_⟩
+  change (regularExtensionMap (k := k) (S := S)).hom
+      ((relation (k := k) (S := S)
+        (regularRightIncidenceModule (k := k) (S := S))).mkQ a) = c
+  rw [regularExtensionMap_mkQ]
+  exact ha
+
+/-- The actual quotient projection identifies the extension of the regular module with the
+regular quotient module. -/
+noncomputable def regularExtensionEquiv :
+    quotientModule (k := k) (S := S)
+      (regularRightIncidenceModule (k := k) (S := S)) ≃ₗ[RightQuotient (k := k) (S := S)]
+      RightQuotient (k := k) (S := S) :=
+  LinearEquiv.ofBijective (regularExtensionMap (k := k) (S := S)).hom
+    ⟨regularExtensionMap_injective (k := k) (S := S),
+      regularExtensionMap_surjective (k := k) (S := S)⟩
+
+/-- The regular-module base-change isomorphism induced by the actual quotient ring map. -/
+noncomputable def regularExtensionIso :
+    (extensionFunctor (k := k) (S := S)).obj
+      (regularRightIncidenceModule (k := k) (S := S)) ≅
+      regularRightQuotientModule (k := k) (S := S) :=
+  (regularExtensionEquiv (k := k) (S := S)).toModuleIso
+
+@[simp] theorem regularExtensionIso_hom_mkQ (a : RightIncidence (k := k) (S := S)) :
+    (regularExtensionIso (k := k) (S := S)).hom
+      ((relation (k := k) (S := S)
+        (regularRightIncidenceModule (k := k) (S := S))).mkQ a) =
+      quotientHom (k := k) (S := S) a := by
+  exact regularExtensionMap_mkQ (k := k) (S := S) a
+
 end
 
 end TDA.Persistence.IncidenceQuotientBaseChange
