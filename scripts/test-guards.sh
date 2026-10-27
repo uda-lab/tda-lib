@@ -45,6 +45,7 @@ EOF
 case_ char_literal_then_string 2 0 <<'EOF'
 def c := ('«', "sorry"); sorry
 example : True := sorry
+def d := ('«', "sorry")
 EOF
 
 case_ plain_sorry 1 0 <<'EOF'
@@ -337,7 +338,7 @@ done
 d="$tmp/root-missing"; rn=$((rn + 1)); fixture "$d"
 if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then echo "FAIL [root:missing]: not rejected"; rfail=1; fi
 # Portability: every awk found must parse the shared lexer and agree, in a UTF-8 locale.
-# A character-aware awk (gawk) takes the lexer's character-mode path here; mawk and nawk stay byte-wise.
+# A character-aware awk (gawk) takes the lexer's character-mode path here; a byte-wise awk (mawk) uses the lead-byte table.
 printf 'import Foo.Δ\nimport Foo.«match»\n' > "$tmp/uni.lean"; printf 'import A open B\n' > "$tmp/bad.lean"
 printf "def c := '«'; sorry\n" > "$tmp/charlit.lean"
 for a in gawk mawk nawk; do
