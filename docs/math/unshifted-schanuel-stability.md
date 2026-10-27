@@ -1,46 +1,72 @@
 # Unshifted Schanuel interleavings
 
-This module formalizes the module-interleaving step in the proof of
+Let `k` be any field, let `n ≥ 1`, and let
+`M,N : PModule k (Fin n → ℝ)` satisfy the original
+`GradedFree.FinitelyPresented` predicates. Let `R` and `S` be any certified
+minimal finite rank-projective resolutions of `M` and `N`, and put
+`L = max R.resolution.length S.resolution.length`. Using the existing
+zero-padded `FiniteRankProjectiveResolution.termAt`, define the actual finite
+parity sums
+
+```text
+A(R,S) = ⨁ j : Fin L, if Even j.val then R.resolution.termAt j.val
+                                  else S.resolution.termAt j.val
+B(R,S) = ⨁ j : Fin L, if Even j.val then S.resolution.termAt j.val
+                                  else R.resolution.termAt j.val.
+```
+
+For each fixed `R,S`, these targets are independent of `ε`. For every finite
+`ε : ℝ≥0` and every actual `CoordinateInterleaving ε M N`, the capstone
+constructs an actual interleaving
+
+```text
+CoordinateInterleaving (((2*n-1 : ℕ) : ℝ≥0) * ε) A(R,S) B(R,S).
+```
+
+Writing `d_I` for the extended `coordinateInterleavingDistance`, it also proves
+the fixed-resolution inequality
+
+```text
+d_I(A(R,S), B(R,S)) ≤ ((2*n-1 : ℕ) : ℝ≥0∞) * d_I(M,N).
+```
+
+The distance conclusion assumes neither finite distance nor attainment of an
+infimum. The original finite-presentation hypotheses also provide certified
+minimal resolutions, giving the separate existence specialization.
+
+The construction follows the module-interleaving step in
 [Botnan–Oppermann–Oudot–Scoccola, Theorem 6.1, §6.1](https://arxiv.org/html/2208.00300v3#S6.SS1).
-That proof first applies the persistent Schanuel comparison to obtain an
-`ε`-interleaving between alternating sums whose degree-`j` terms are shifted by
-`jε`. It then removes the shifts using the resolution length bound and obtains
-an interleaving between the unshifted alternating sums at radius
-`(2n−1)ε`.
+For a given `ε`, define the shifted parity sums
 
-Here the `ε`-interleaving is the existing
-`schanuelInterleavingOfResolutions`. The degree bound comes from the original
-finite-presentation theorem: for every supplied certified minimal resolution,
-the zero-padded term `termAt j` is zero when `j > 2n−2`. This concerns the last
-nonzero degree, not a bound on the stored resolution length. The finite sums
-remain indexed by the actual maximum of the two stored lengths, so unequal
-lengths and arbitrarily long zero padding remain valid inputs.
+```text
+A′(ε) = ⨁ j : Fin L,
+  (shift ((j.val : ℝ≥0) * ε)).obj
+    (if Even j.val then R.resolution.termAt j.val else S.resolution.termAt j.val)
+B′(ε) = ⨁ j : Fin L,
+  (shift ((j.val : ℝ≥0) * ε)).obj
+    (if Even j.val then S.resolution.termAt j.val else R.resolution.termAt j.val).
+```
 
-For `δ=(2n−2)ε`, the source-to-target comparison is asymmetric. On each parity
-sum it supplies maps `u : A ⟶ A'` and `v : A' ⟶ shift δ A` with
-`u ≫ v = transition δ A` and
-`v ≫ (shift δ).map u = transition δ A'`. A degree-`j` summand with
-`jε ≤ δ` uses `shiftLE`; a zero summand uses the zero reverse map even when
-`jε > δ`. The proof assembles both object-level equations from the actual
-biproduct inclusions. The public finite-family API exposes the component maps
-and the active-delay/zero cases.
+The existing persistent Schanuel comparison supplies an `ε`-interleaving
+between `A′(ε)` and `B′(ε)`. The proved finite-presentation degree bound says
+that every supplied minimal resolution has zero-padded terms zero for
+`j > 2n−2`. It bounds the last nonzero degree, not the stored resolution
+length; the actual sums above remain indexed by the maximum stored length and
+allow arbitrarily long zero padding.
 
-Transporting the shifted Schanuel interleaving through these two comparisons
-gives `ε+δ=(2n−1)ε`. The transported maps and both double-transition equations
-are proved explicitly. Taking the double infimum over interleaving witnesses
-then gives the fixed-resolution extended-distance bound; positive finite
-multiplication commutes with both infima, so the proof needs no attainment or
-finite-distance assumption.
+Set `δ=(2n−2)ε`. Each pair `(A,A′)` and `(B,B′)` has an asymmetric comparison
+with maps `u : X ⟶ X′` and `v : X′ ⟶ shift δ X` satisfying
+`u ≫ v = transition δ X` and
+`v ≫ (shift δ).map u = transition δ X′`. A degree-`j` summand with
+`jε ≤ δ` uses `shiftLE`. A zero summand uses the zero reverse map even if
+`jε > δ`. The finite-family API proves the component laws, both assembled
+comparison equations, and the inactive-zero case. Transporting the Schanuel
+interleaving through both comparisons gives
+`ε+δ=(2n−1)ε`, with both transported double-transition equations proved.
 
-The public capstone is
-`finitelyPresented_unshiftedSchanuel_interleaving`, which accepts any
-certified minimal resolutions of modules satisfying the original
-`GradedFree.FinitelyPresented` predicates. The companion existence theorem
-constructs such resolutions from those hypotheses, and
-`finitelyPresented_unshiftedSchanuel_distance_le` is stated for the actual
-parity sums of any supplied pair.
-
-This is only the module-interleaving unit of Theorem 6.1. Identifying these
-parity sums with the choice-independent signed hook multisets and proving the
-signed matching/dissimilarity estimate remain separate work. No optimality or
-sharpness statement is made here.
+The distance proof commutes the positive finite coefficient through both
+infima, so empty witness sets and nonattained infima are included. This is only
+the module-interleaving unit of Theorem 6.1. The later identification with
+choice-independent signed hook multisets and the signed matching/dissimilarity
+argument for the `(2n−1)^2` bound remain separate downstream results. No
+optimality or sharpness statement is made here.

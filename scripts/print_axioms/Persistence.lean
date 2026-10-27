@@ -5094,6 +5094,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.finiteFamilyDelayComparison
 #print axioms TDA.Persistence.finiteFamilyDelayComparison_ι_forward
 #print axioms TDA.Persistence.finiteFamilyDelayComparison_ι_reverse
+#print axioms TDA.Persistence.finiteFamilyDelayComparison_ι_forward_assoc
+#print axioms TDA.Persistence.finiteFamilyDelayComparison_ι_reverse_assoc
 #print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.termAt_eq_resolution_termAt
 #print axioms TDA.Persistence.unshiftedSchanuelLeftSummand
 #print axioms TDA.Persistence.unshiftedSchanuelRightSummand
