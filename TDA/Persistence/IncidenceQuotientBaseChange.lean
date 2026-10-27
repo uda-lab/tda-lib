@@ -136,38 +136,8 @@ noncomputable def quotientAction
     (M : ModuleCat (RightIncidence (k := k) (S := S))) :
     Module (RightQuotient (k := k) (S := S)) (quotient (k := k) (S := S) M) := by
   let Q := quotient (k := k) (S := S) M
-  letI : SMul (RightQuotient (k := k) (S := S)) Q :=
-    ⟨fun c x => quotientAction (k := k) (S := S) M c x⟩
-  exact {
-    one_smul x := by
-      change quotientAction (k := k) (S := S) M 1 x = x
-      rw [(quotientAction (k := k) (S := S) M).map_one]
-      exact rfl
-    mul_smul c d x := by
-      change quotientAction (k := k) (S := S) M (c * d) x =
-        quotientAction (k := k) (S := S) M c
-          (quotientAction (k := k) (S := S) M d x)
-      rw [(quotientAction (k := k) (S := S) M).map_mul]
-      rfl
-    smul_zero c := by
-      change quotientAction (k := k) (S := S) M c 0 = 0
-      exact (quotientAction (k := k) (S := S) M c).map_zero
-    smul_add c x y := by
-      change quotientAction (k := k) (S := S) M c (x + y) =
-        quotientAction (k := k) (S := S) M c x +
-          quotientAction (k := k) (S := S) M c y
-      exact (quotientAction (k := k) (S := S) M c).map_add x y
-    zero_smul x := by
-      change quotientAction (k := k) (S := S) M 0 x = 0
-      rw [(quotientAction (k := k) (S := S) M).map_zero]
-      rfl
-    add_smul c d x := by
-      change quotientAction (k := k) (S := S) M (c + d) x =
-        quotientAction (k := k) (S := S) M c x +
-          quotientAction (k := k) (S := S) M d x
-      rw [(quotientAction (k := k) (S := S) M).map_add]
-      rfl
-  }
+  letI : Module (AddMonoid.End Q) Q := AddMonoid.End.applyModule
+  exact Module.compHom Q (quotientAction (k := k) (S := S) M)
 
 @[instance_reducible] noncomputable instance quotientModule_isModule
     (M : ModuleCat (RightIncidence (k := k) (S := S))) :
