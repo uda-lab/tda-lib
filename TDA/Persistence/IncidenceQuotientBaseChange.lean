@@ -515,6 +515,33 @@ noncomputable def extensionAdjunction :
       rfl
   }
 
+/-- Restriction along a ring map preserves epimorphisms because it does not change the underlying
+function. -/
+instance restrictionPreservesEpimorphisms :
+    (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).PreservesEpimorphisms where
+  preserves {X Y} f hf := by
+    rw [ModuleCat.epi_iff_surjective] at hf ⊢
+    intro y
+    obtain ⟨x, hx⟩ := hf (show Y from y)
+    refine ⟨show (ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj X from x,
+      ?_⟩
+    change f.hom x = (show Y from y)
+    exact hx
+
+/-- Extension sends projectives to projectives by the adjunction criterion. -/
+instance extensionFunctor_preservesProjectiveObjects :
+    (extensionFunctor (k := k) (S := S)).PreservesProjectiveObjects :=
+  Functor.preservesProjectiveObjects_of_adjunction_of_preservesEpimorphisms
+    (extensionAdjunction (k := k) (S := S))
+
+/-- As a left adjoint, extension preserves finite colimits. -/
+instance extensionFunctor_preservesFiniteColimits :
+    PreservesFiniteColimits (extensionFunctor (k := k) (S := S)) := by
+  letI : PreservesColimitsOfSize.{0, 0} (extensionFunctor (k := k) (S := S)) :=
+    Adjunction.leftAdjoint_preservesColimits.{0, 0}
+      (extensionAdjunction (k := k) (S := S))
+  infer_instance
+
 end
 
 end TDA.Persistence.IncidenceQuotientBaseChange
