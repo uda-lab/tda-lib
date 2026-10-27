@@ -6135,3 +6135,45 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionDimensionExamples.repeatedPresentation_all_terms_above_two_are_zero
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionDimensionExamples.repeatedPresentation_exists_bounded_minimal_resolution
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionDimensionExamples.zeroModule_all_terms_above_bound_are_zero
+
+-- Finite-presentation index-universe bridge consumed by the signed capstone (Issue #737).
+#print axioms TDA.Persistence.GradedFree.GradedGenerators.liftIndexUniverse
+#print axioms TDA.Persistence.GradedFree.GradedGenerators.liftIndexUniverseIso
+#print axioms TDA.Persistence.GradedFree.Presentation.liftIndexUniverse
+#print axioms TDA.Persistence.GradedFree.Presentation.liftIndexUniversePresentedIso
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_liftIndexUniverse
+
+-- Actual finite hook-multiset matching and extended bottleneck infimum (Issue #737).
+#print axioms TDA.Persistence.FiniteHookSumPresentation.biproduct
+#print axioms TDA.Persistence.FiniteHookSumPresentation.hookTagMultiset_biproduct
+#print axioms TDA.Persistence.HasMultisetMatching
+#print axioms TDA.Persistence.HasMultisetMatching.intro
+#print axioms TDA.Persistence.HasMultisetMatching.elim
+#print axioms TDA.Persistence.hookMultisetBottleneckDistance
+#print axioms TDA.Persistence.hookMultisetBottleneckDistance_le_of_matching
+#print axioms TDA.Persistence.le_hookMultisetBottleneckDistance_iff
+#print axioms TDA.Persistence.hookMultisetBottleneckDistance_lt_iff
+
+-- Signed parity-sum presentation identities, actual matching and squared stability (Issue #737).
+#print axioms TDA.Persistence.signedHookBottleneckDissimilarity
+#print axioms TDA.Persistence.unshiftedSchanuelLeftHookPresentation
+#print axioms TDA.Persistence.unshiftedSchanuelLeftHookPresentation_tagMultiset
+#print axioms TDA.Persistence.unshiftedSchanuelRightHookPresentation
+#print axioms TDA.Persistence.unshiftedSchanuelRightHookPresentation_tagMultiset
+#print axioms TDA.Persistence.finitelyPresented_exists_signedHookMultisetMatching
+#print axioms TDA.Persistence.finitelyPresented_signedHookBottleneckDistance_le
+#print axioms TDA.Persistence.finitelyPresentedSignedHookBarcode
+#print axioms TDA.Persistence.finitelyPresentedSignedHookBarcode_eq
+#print axioms TDA.Persistence.finitelyPresented_moduleSignedHookBottleneckDistance_le
+
+-- Focused consumers include original finite presentations, multiplicity, and deletion examples (Issue #737).
+#print axioms TDA.Persistence.RankSignedStabilityExamples.oneCoordinate_signedMatching
+#print axioms TDA.Persistence.RankSignedStabilityExamples.oneCoordinate_self_signedDistance_zero
+#print axioms TDA.Persistence.RankSignedStabilityExamples.twoCoordinate_signedMatching
+#print axioms TDA.Persistence.RankSignedStabilityExamples.twoCoordinate_self_signedDistance_zero
+#print axioms TDA.Persistence.RankSignedStabilityExamples.repeatedCrossSignFiniteMatching
+#print axioms TDA.Persistence.RankSignedStabilityExamples.repeatedCrossSignFinite_leftCount
+#print axioms TDA.Persistence.RankSignedStabilityExamples.repeatedCrossSignFinite_rightCount
+#print axioms TDA.Persistence.RankSignedStabilityExamples.repeatedCrossSignFinite_distance_le_one
+#print axioms TDA.Persistence.RankSignedStabilityExamples.emptyMultiset_zeroMatching
+#print axioms TDA.Persistence.RankSignedStabilityExamples.principalOccurrence_zeroMatching

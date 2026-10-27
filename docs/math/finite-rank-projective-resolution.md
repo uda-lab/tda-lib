@@ -130,7 +130,9 @@ nonzero degree, not the raw stored `resolution.length`; terminal zero padding
 is allowed. It proves only the upper-bound part of Theorem 5.18 and Proposition
 5.17 of [BOOS24-v3](references.md#BOOS24-v3), together with Theorem 2.7(2)'s
 real-coordinate reconstruction. It does not prove a lower witness or equality.
-The final signed-barcode stability theorem remains unproved. The focused consumers in
+The finite signed-hook matching and squared stability bound are proved
+separately in [signed hook bottleneck stability](../api.md#signed-hook-bottleneck-stability);
+this resolution-degree result does not include that argument. The focused consumers in
 `FiniteRankProjectiveResolutionDimensionExamples` cover a nonzero one-coordinate
 free module, a nonzero two-coordinate finite presentation with repeated births,
 and the zero module.

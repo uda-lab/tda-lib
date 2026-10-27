@@ -36,6 +36,7 @@ import TDA.Persistence.CoordinateInterleavingLowering
 import TDA.Persistence.CoordinateRealBridge
 import TDA.Persistence.FinitePresentation
 import TDA.Persistence.FinitePresentationLifting
+import TDA.Persistence.FinitePresentationIndexLift
 import TDA.Persistence.RealCoordinates
 import TDA.Persistence.FinitePresentationGrid
 import TDA.Persistence.RankExact
@@ -317,6 +318,7 @@ import TDA.Persistence.FiniteRankProjectiveResolutionUniquenessExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionHookBetti
 import TDA.Persistence.FiniteRankProjectiveResolutionHookBettiExamples
 import TDA.Persistence.HookMatching
+import TDA.Persistence.HookMultisetBottleneck
 import TDA.Persistence.FiniteRankProjectiveHomDimension
 import TDA.Persistence.FiniteHomDimension
 import TDA.Persistence.FiniteRankProjectiveHomQuotientDimension
@@ -361,3 +363,5 @@ import TDA.Persistence.IncidenceQuotientBaseChangeExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionDimension
 import TDA.Persistence.CoordinateInterleavingDelay
 import TDA.Persistence.RankSchanuelUnshifted
+import TDA.Persistence.RankSignedStability
+import TDA.Persistence.RankSignedStabilityExamples
