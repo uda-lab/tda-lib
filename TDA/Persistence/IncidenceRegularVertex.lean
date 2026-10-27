@@ -64,35 +64,6 @@ local instance : Module k (RightIncidence (k := k) (S := S)) :=
 local instance : SMul k (RightIncidence (k := k) (S := S)) :=
   (restrictedKModule (k := k) (S := S) (regular (k := k) (S := S))).isModule.toDistribMulAction.toDistribSMul.toSMul
 
-private def regularCoefficients :
-    restrictedKModule (k := k) (S := S) (regular (k := k) (S := S)) →ₗ[k]
-      (FiniteRankProjectiveEndAlgebra.PairPoset S) →
-        (FiniteRankProjectiveEndAlgebra.PairPoset S) → k where
-  toFun r a b := (MulOpposite.unop (r : RightIncidence (k := k) (S := S)) :
-    FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S)) a b
-  map_add' r s := by ext a b; rfl
-  map_smul' c r := by
-    ext a b
-    have hscalar : c • r = algebraMap k (RightIncidence (k := k) (S := S)) c • r := rfl
-    calc
-      _ = (MulOpposite.unop
-          (algebraMap k (RightIncidence (k := k) (S := S)) c *
-            (r : RightIncidence (k := k) (S := S)))) a b :=
-        congrArg (fun x : restrictedKModule (k := k) (S := S)
-          (regular (k := k) (S := S)) => (MulOpposite.unop x) a b) hscalar
-      _ = _ := by
-        rw [MulOpposite.unop_mul, MulOpposite.algebraMap_apply, MulOpposite.unop_op,
-          ← Algebra.commutes, ← Algebra.smul_def]
-        rfl
-
-private theorem regularCoefficients_injective : Function.Injective
-    (regularCoefficients (k := k) (S := S)) := by
-  intro x y h
-  apply MulOpposite.unop_injective
-  apply IncidenceAlgebra.ext
-  intro a b hab
-  exact congrFun (congrFun h a) b
-
 /-- Embed an incidence algebra element into its finite table of coefficients. -/
 def incidenceToFunctions :
     FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S) →ₗ[k]
@@ -109,6 +80,38 @@ theorem incidenceToFunctions_injective : Function.Injective
   ext a b
   exact congrFun (congrFun h a) b
 
+/-- The canonical restricted field action on the actual regular module, after
+unop, is the natural field action on the incidence algebra. -/
+noncomputable def regularIncidenceLinearEquiv :
+    restrictedKModule (k := k) (S := S) (regular (k := k) (S := S)) ≃ₗ[k]
+      FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S) where
+  toFun r := MulOpposite.unop (r : RightIncidence (k := k) (S := S))
+  invFun a := MulOpposite.op a
+  left_inv r := by rfl
+  right_inv a := by rfl
+  map_add' r s := by rfl
+  map_smul' c r := by
+    have hscalar : c • r = algebraMap k (RightIncidence (k := k) (S := S)) c • r := rfl
+    calc
+      MulOpposite.unop (c • r) = MulOpposite.unop
+          (algebraMap k (RightIncidence (k := k) (S := S)) c *
+            (r : RightIncidence (k := k) (S := S))) := congrArg MulOpposite.unop hscalar
+      _ = c • MulOpposite.unop (r : RightIncidence (k := k) (S := S)) := by
+        rw [MulOpposite.unop_mul, MulOpposite.algebraMap_apply, MulOpposite.unop_op,
+          ← Algebra.commutes, ← Algebra.smul_def]
+
+private def regularCoefficients :
+    restrictedKModule (k := k) (S := S) (regular (k := k) (S := S)) →ₗ[k]
+      (FiniteRankProjectiveEndAlgebra.PairPoset S) →
+        (FiniteRankProjectiveEndAlgebra.PairPoset S) → k :=
+  (incidenceToFunctions (k := k) (S := S)).comp
+    (regularIncidenceLinearEquiv (k := k) (S := S)).toLinearMap
+
+private theorem regularCoefficients_injective : Function.Injective
+    (regularCoefficients (k := k) (S := S)) := by
+  exact (incidenceToFunctions_injective (k := k) (S := S)).comp
+    (regularIncidenceLinearEquiv (k := k) (S := S)).injective
+
 /-- The actual regular right-incidence module is finite-dimensional over the
 canonical restricted field scalars. -/
 theorem regular_finiteDimensional :
@@ -120,26 +123,21 @@ theorem regular_finiteDimensional :
   exact FiniteDimensional.of_injective (regularCoefficients (k := k) (S := S))
     (regularCoefficients_injective (k := k) (S := S))
 
+/-- The natural incidence algebra is finite-dimensional over `k`, by the
+generic canonical restricted-scalar result for the regular module. -/
+theorem incidence_finiteDimensional :
+    FiniteDimensional k (FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S)) := by
+  letI : FiniteDimensional k
+      (restrictedKModule (k := k) (S := S) (regular (k := k) (S := S))) :=
+    regular_finiteDimensional (k := k) (S := S)
+  exact (regularIncidenceLinearEquiv (k := k) (S := S)).finiteDimensional
+
 private def columnAt (q : (FiniteRankProjectiveEndAlgebra.PairPoset S)) :
     restrictedKModule (k := k) (S := S) (regular (k := k) (S := S)) →ₗ[k]
-      (FiniteRankProjectiveEndAlgebra.PairPoset S) → k where
-  toFun r a := (MulOpposite.unop (r : RightIncidence (k := k) (S := S)) :
-    FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S)) a q
-  map_add' r s := by ext a; rfl
-  map_smul' c r := by
-    ext a
-    have hscalar : c • r = algebraMap k (RightIncidence (k := k) (S := S)) c • r :=
-      rfl
-    calc
-      _ = (MulOpposite.unop
-          (algebraMap k (RightIncidence (k := k) (S := S)) c *
-            (r : RightIncidence (k := k) (S := S)))) a q :=
-        congrArg (fun x : restrictedKModule (k := k) (S := S)
-          (regular (k := k) (S := S)) => (MulOpposite.unop x) a q) hscalar
-      _ = _ := by
-        rw [MulOpposite.unop_mul, MulOpposite.algebraMap_apply, MulOpposite.unop_op,
-          ← Algebra.commutes, ← Algebra.smul_def]
-        rfl
+      (FiniteRankProjectiveEndAlgebra.PairPoset S) → k :=
+  (LinearMap.pi fun a =>
+    (LinearMap.proj q).comp (LinearMap.proj a)).comp
+      (regularCoefficients (k := k) (S := S))
 
 private def columnFinsupp (q : (FiniteRankProjectiveEndAlgebra.PairPoset S)) :
     restrictedKModule (k := k) (S := S) (regular (k := k) (S := S)) →ₗ[k]
@@ -153,7 +151,8 @@ private theorem columnFinsupp_apply (q : (FiniteRankProjectiveEndAlgebra.PairPos
     columnFinsupp (k := k) (S := S) q r a =
       (MulOpposite.unop (r : RightIncidence (k := k) (S := S)) :
         FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S)) a q := by
-  simp [columnFinsupp, columnAt]
+  change (regularCoefficients (k := k) (S := S) r) a q = _
+  rfl
 
 private theorem columnFinsupp_supported (q : (FiniteRankProjectiveEndAlgebra.PairPoset S))
     (r : restrictedKModule (k := k) (S := S) (regular (k := k) (S := S))) :
@@ -349,6 +348,30 @@ noncomputable def regularVertexIso :
   letI : IsIso (columnNaturalTransformation (k := k) (S := S)) :=
     NatIso.isIso_of_isIso_app _
   exact asIso (columnNaturalTransformation (k := k) (S := S))
+
+/-- Under the public regular-vertex identification, the coefficient at `a`
+of a fixed vector in the `q`-fiber is the `(a,q)` coefficient of its
+unop-incidence element. -/
+theorem regularVertexIso_hom_coefficient
+    (q a : FiniteRankProjectiveEndAlgebra.PairPoset S)
+    (x : vertexFiber (k := k) (S := S) (regular (k := k) (S := S)) q) :
+    (((regularVertexIso (k := k) (S := S)).hom.app q x :
+      GradedFree.fiber (R := k) (generators (S := S)) q).val a) =
+      (MulOpposite.unop (x.val : RightIncidence (k := k) (S := S)) :
+        FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S)) a q := by
+  change ((columnMap (k := k) (S := S) q x :
+    GradedFree.fiber (R := k) (generators (S := S)) q).val a) = _
+  exact columnMap_apply (k := k) (S := S) q x a
+
+/-- The public regular-vertex identification sends the diagonal projector to
+the free generator born at that vertex. -/
+theorem regularVertexIso_hom_birth (p : FiniteRankProjectiveEndAlgebra.PairPoset S) :
+    (regularVertexIso (k := k) (S := S)).hom.app p
+      (projectToVertexFiber (k := k) (S := S) (regular (k := k) (S := S)) p 1) =
+      GradedFree.birth (R := k) (generators (S := S)) p := by
+  change (columnNaturalTransformation (k := k) (S := S)).app p
+    (projectToVertexFiber (k := k) (S := S) (regular (k := k) (S := S)) p 1) = _
+  exact columnMap_birth (k := k) (S := S) p
 
 /-- The graded free vertex module is projective in the actual persistence-module category. -/
 instance freeVertexModule_projective :

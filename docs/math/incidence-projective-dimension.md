@@ -1,15 +1,16 @@
 # Ordinary projective dimensions of actual incidence modules
 
-Let `k` be any field and `S` a finite bounded lattice. Let `R` be the actual
-right-incidence ring on the interval-pair poset `PairPoset S`, and let `C` be
-the actual right-module ring of its diagonal quotient. Write
-`D(PairPoset S) = maxComplementCard (S := PairPoset S)`.
+Let `k` be any field and `S` a finite bounded lattice. Let `P = PairPoset S`
+be the actual interval-pair poset, `A` its incidence algebra, and `I` its
+diagonal ideal. Put `R = Aᵐᵒᵖ` and `C = (A/I)ᵐᵒᵖ`. The objects of `ModuleCat R`
+and `ModuleCat C` are left modules; equivalently, they encode right modules
+over `A` and `A/I`, respectively. Write
+`D(P) = maxComplementCard (S := P)`.
 
-For every finite-dimensional actual right `R`-module `M`,
+For every finite-dimensional object `M` of `ModuleCat R`,
 `TDA.Persistence.IncidenceVertexProjectiveDimension.hasProjectiveDimensionLE`
-proves
-`HasProjectiveDimensionLE M (D(PairPoset S))`. The same bound holds for every
-finite-dimensional actual right `C`-module, measured using its canonical
+proves `HasProjectiveDimensionLE M (D(P))`. The same bound holds for every
+finite-dimensional object of `ModuleCat C`, measured using its canonical
 restricted `k`-action, by `quotient_hasProjectiveDimensionLE`. No projective
 resolution or projective-dimension bound is supplied as input.
 
@@ -40,6 +41,6 @@ a stability result.
 The source context is BOOS24-v3 §2.4, Lemma 2.1 and Remark 2.2, together with
 the ordinary-dimension ingredient around Theorem 5.16. The library gives an
 explicit finite-free dimension-reflection proof through its actual vertex
-representation and representation-category dimension result; it does not
-claim the whole source equivalence or a correction to the paper. See
+representation and representation-category dimension result, without
+constructing the whole source equivalence. See
 [BOOS24-v3 in the reference register](references.md#BOOS24-v3).

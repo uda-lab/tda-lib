@@ -989,6 +989,11 @@ separate finite-dimensional module comparison below uses the actual regular-modu
 and finite-free covers. See
 [actual vertex representations of right incidence modules](math/incidence-vertex-representation.md)
 and the Bool regular-module examples in `TDA.Persistence.IncidenceVertexRepresentationExamples`.
+`IncidenceRegularVertex.regularVertexIso` identifies the regular module's actual vertex image with
+the graded free module on interval-pair vertices; its public coefficient and birth laws compute
+the identification on each fiber. Its generic regular-module dimension result is proved for the
+canonical restricted field action and transported to the natural incidence action by an explicit
+unop linear equivalence.
 
 ### Ordinary projective dimensions of actual incidence modules
 

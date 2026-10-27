@@ -111,12 +111,8 @@ theorem boolRegular_finiteDimensional {k : Type} [Field k] :
     FiniteDimensional k (restrictedKModule (k := k) (S := Bool) (boolRegular k)) := by
   change FiniteDimensional k (RightIncidence (k := k) (S := Bool))
   have hfd : FiniteDimensional k
-      (FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := Bool)) := by
-    letI : FiniteDimensional k
-        (PairPoset Bool → PairPoset Bool → k) := by infer_instance
-    exact FiniteDimensional.of_injective
-      (IncidenceRegularVertex.incidenceToFunctions (k := k) (S := Bool))
-      (IncidenceRegularVertex.incidenceToFunctions_injective (k := k) (S := Bool))
+      (FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := Bool)) :=
+    IncidenceRegularVertex.incidence_finiteDimensional (k := k) (S := Bool)
   letI := hfd
   exact (MulOpposite.opLinearEquiv k :
     FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := Bool) ≃ₗ[k]

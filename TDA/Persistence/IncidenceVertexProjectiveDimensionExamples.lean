@@ -96,6 +96,44 @@ theorem bool_regular_vertex_projective :
 private def boolBirthGrade : FiniteRankProjectiveEndAlgebra.PairPoset Bool :=
   ⟨((false : WithTop Bool), (false : WithTop Bool)), by simp⟩
 
+/-- The public regular-vertex coefficient and birth laws identify the
+diagonal projector's coefficient with the corresponding free birth value. -/
+theorem bool_regularVertexIso_birth_coefficient :
+    (((regularVertexIso (k := ℚ) (S := Bool)).hom.app boolBirthGrade
+      (projectToVertexFiber (k := ℚ) (S := Bool) boolRegular boolBirthGrade 1) :
+      (freeVertexModule (k := ℚ) (S := Bool)).obj boolBirthGrade).val boolBirthGrade) = 1 := by
+  calc
+    _ = (MulOpposite.unop
+        ((projectToVertexFiber (k := ℚ) (S := Bool) boolRegular boolBirthGrade 1).val :
+          IncidenceQuotientBaseChange.RightIncidence (k := ℚ) (S := Bool)) :
+        FiniteRankProjectiveEndAlgebra.Incidence (k := ℚ) (S := Bool))
+          boolBirthGrade boolBirthGrade :=
+      regularVertexIso_hom_coefficient (k := ℚ) (S := Bool)
+        boolBirthGrade boolBirthGrade _
+    _ = ((GradedFree.birth (R := ℚ) (generators (S := Bool))
+        boolBirthGrade : (freeVertexModule (k := ℚ) (S := Bool)).obj boolBirthGrade).val
+          boolBirthGrade) := by
+      exact (regularVertexIso_hom_coefficient (k := ℚ) (S := Bool)
+        boolBirthGrade boolBirthGrade _).symm.trans
+          (congrArg (fun z : (freeVertexModule (k := ℚ) (S := Bool)).obj boolBirthGrade =>
+            z.val boolBirthGrade)
+            (regularVertexIso_hom_birth (k := ℚ) (S := Bool) boolBirthGrade))
+    _ = 1 := by simp [GradedFree.birth, GradedFree.generator]
+
+/-- The regular module's actual ordinary projective-dimension comparison is
+exercised at degree zero using its proved finite-dimensionality and projective
+vertex image. -/
+theorem bool_regular_hasProjectiveDimensionLE_zero :
+    HasProjectiveDimensionLE boolRegular 0 := by
+  have hV : HasProjectiveDimensionLE
+      ((vertexFunctor (k := ℚ) (S := Bool)).obj boolRegular) 0 :=
+    (projective_iff_hasProjectiveDimensionLE_zero
+      ((vertexFunctor (k := ℚ) (S := Bool)).obj boolRegular)).mp
+      bool_regular_vertex_projective
+  exact hasProjectiveDimensionLE_of_vertex (k := ℚ) (S := Bool) boolRegular
+    (regular_finiteDimensional (k := ℚ) (S := Bool)) 0
+    hV
+
 /-- The regular vertex image is nonzero because its actual graded-free
 decomposition contains the birth vector. -/
 theorem bool_regular_vertex_not_isZero :
