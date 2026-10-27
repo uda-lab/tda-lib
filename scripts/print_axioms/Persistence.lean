@@ -6177,3 +6177,44 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankSignedStabilityExamples.repeatedCrossSignFinite_distance_le_one
 #print axioms TDA.Persistence.RankSignedStabilityExamples.emptyMultiset_zeroMatching
 #print axioms TDA.Persistence.RankSignedStabilityExamples.principalOccurrence_zeroMatching
+
+-- One-dimensional hook endpoints, multiplicity, and the ordinary barcode bridge (Issue #739).
+#print axioms TDA.Persistence.oneDimensionalHookEndpoints
+#print axioms TDA.Persistence.oneDimensionalHookEndpoints_positive
+#print axioms TDA.Persistence.finiteHook_intervalIso
+#print axioms TDA.Persistence.principalHook_intervalIso
+#print axioms TDA.Persistence.oneDimensionalHookDiagram
+#print axioms TDA.Persistence.oneDimensionalHookDiagram_isPositive
+#print axioms TDA.Persistence.hookTagMultiset_eq_univ_map
+#print axioms TDA.Persistence.oneDimensionalHookDiagram_points
+#print axioms TDA.Persistence.oneDimensionalEndpointTag
+#print axioms TDA.Persistence.oneDimensionalHookEndpoints_endpointTag
+#print axioms TDA.Persistence.oneDimensionalEndpointTag_endpoints
+#print axioms TDA.Persistence.oneDimensionalEndpointTagOnPositive
+#print axioms TDA.Persistence.oneDimensionalEndpointTagOnPositive_endpoints
+#print axioms TDA.Persistence.oneDimensionalHookEndpoints_injective
+#print axioms TDA.Persistence.positiveDiagram_hookPresentation
+#print axioms TDA.Persistence.positiveDiagram_hookPresentation_diagram
+#print axioms TDA.Persistence.finiteHookSum_realizationIso
+#print axioms TDA.Persistence.minimalResolution_degreeZeroIso
+#print axioms TDA.Persistence.MinimalFiniteRankProjectiveResolution.signedHookBarcode_eq_degreeZero
+#print axioms TDA.Persistence.oneDimensionalPositiveBarcodeDiagram
+#print axioms TDA.Persistence.oneDimensionalPositiveBarcodeDiagram_isPositive
+#print axioms TDA.Persistence.finitelyPresentedOneDimensionalBarcodeDiagram
+#print axioms TDA.Persistence.finitelyPresentedOneDimensionalBarcodeDiagram_isPositive
+#print axioms TDA.Persistence.finitelyPresentedOneDimensionalBarcodeDiagram_eq_resolution
+#print axioms TDA.Persistence.degreeZeroHookPresentation
+#print axioms TDA.Persistence.finitelyPresentedOneDimensionalBarcodeRealizationIso
+#print axioms TDA.Persistence.finitelyPresented_exists_oneDimensionalConstructible
+#print axioms TDA.Persistence.finitelyPresentedOneDimensionalBarcodeDiagram_eq_moduleDiagram
+#print axioms TDA.Persistence.finitelyPresentedOneDimensionalBarcode_bottleneck_eq_distance
+#print axioms TDA.Persistence.finitelyPresentedOneDimensionalBarcode_bottleneck_eq_coordinateDistance
+
+-- Endpoint and original-presentation consumers (Issue #739).
+#print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.repeated_negative_hooks_keep_multiplicity
+#print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.finite_and_essential_endpoints
+#print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.mixed_finite_and_essential_roundtrip
+#print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.empty_diagram_roundtrip
+#print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.finite_death_deletion_boundary_roundtrip
+#print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.finite_death_deletion_boundary
+#print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.nonzero_original_fp_barcode_self_distance
