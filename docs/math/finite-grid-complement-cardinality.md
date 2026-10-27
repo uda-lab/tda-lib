@@ -13,7 +13,7 @@ including the empty product and singleton factors.
 
 Adjoining a new top requires a correction: the old top has the singleton
 complement consisting of the new top, while the new top itself has empty
-complement. A non-top point retains precisely the old minimal complements.
+complement. An old non-top point retains precisely the old minimal complements.
 Consequently the maximum for `WithTop S` is at most
 `max 1 (maxComplementCard S)`.
 
@@ -35,16 +35,17 @@ when the underlying point lattice has only one element.
 Combining the point-grid count with the existing finite-injective Hom
 dimension theorem proves `HasProjectiveDimensionLE (Hom(HookSum,M)) (n - 1)`
 for every pointwise finite-dimensional ordinary injective `M` on the grid, over
-any field. Every supplied certified minimal rank-projective resolution of
-that Hom module vanishes above the same bound. The result supplies a
+any field. Every supplied certified minimal rank-projective resolution of `M`
+has zero terms in degrees `j > n - 1`. The result supplies a
 combinatorial input for later incidence-algebra estimates; it does not claim a
 global-dimension bound or the `2n−2` persistence estimate.
 
 The source context is [BOOS24-v3, §2.4 and Notations 5.2 and 5.9,
 Proposition 5.14, and the minimal-complement count used in Theorem
 5.16](references.md#BOOS24-v3). This formalization proves the displayed
-finite-product, adjoined-top, and actual interval-pair counts directly. It
-does not claim the rest of Theorem 5.16 or identify a source error.
+finite-product, adjoined-top, and actual interval-pair counts directly, along
+with the ordinary-injective Hom corollary above. It does not establish the
+remaining conclusions of Theorem 5.16.
 
 The implementation is in `TDA.Persistence.FiniteLatticeComplementCardinality`
 and `TDA.Persistence.FiniteGridInjectiveRankDimension`; the focused fixtures
