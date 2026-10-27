@@ -470,6 +470,11 @@ Botnan–Oppermann–Oudot–Scoccola](https://arxiv.org/html/2208.00300v3).
 minimal-resolution interfaces on a nonzero principal-upset free module; the
 earlier resolution examples retain the zero and contractible-row boundary cases.
 
+For a certified minimal resolution `R`, `R.termAt j` is its recorded term when
+`j < R.resolution.length` and the zero module afterward. Degree-vanishing
+statements about `termAt` therefore concern the highest nonzero degree and do
+not bound the stored length.
+
 For arbitrary `k`, `n ≥ 1`, and only the original
 `GradedFree.FinitelyPresented.{u,0,0}` hypothesis on `M`,
 `FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution_with_bound`
@@ -488,8 +493,8 @@ This is a highest-nonzero-degree result, not a bound on the raw stored
 `resolution.length`. Examples cover nonzero originally presented modules in
 dimensions one and two, repeated birth occurrences, the zero module, and
 arbitrary supplied resolutions. The proof follows the upper-bound portion of
-BOOS Theorem 5.18 and Proposition 5.17; it proves no lower witness, equality,
-or final signed-stability theorem. See [the mathematical argument](math/finite-rank-projective-resolution.md#the-real-coordinate-degree-bound).
+BOOS Theorem 5.18 and Proposition 5.17; it proves no lower witness or equality.
+The final signed-barcode stability theorem remains unproved. See [the mathematical argument](math/finite-rank-projective-resolution.md#the-real-coordinate-degree-bound).
 
 For any field and any partially ordered index type in universe zero, two
 `MinimalFiniteRankProjectiveResolution`s of the same module have isomorphic

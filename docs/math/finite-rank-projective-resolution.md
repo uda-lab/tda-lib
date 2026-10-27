@@ -56,6 +56,10 @@ says that `Q` is rank-projective, the actual categorical-kernel row
 `MinimalFiniteRankProjectiveResolution` is a finite rank-projective resolution
 for which every actual quotient row carries this certificate.
 
+For such a resolution `R`, `R.termAt j` is its recorded term when
+`j < R.resolution.length` and the zero module afterward. A degree bound on
+`termAt` therefore concerns the highest nonzero degree, not the stored length.
+
 Let `k` be a field, let `n > 0`, and let
 `M : PModule k (Fin n → ℝ)` be originally finitely presented in the
 real-coordinate category, in the sense of `GradedFree.FinitelyPresented M`.
@@ -104,7 +108,12 @@ input.
 The construction uses
 `GradedFree.finitelyPresented_exists_pfd_nonempty_finiteGridKan`, which keeps
 the actual presentation grid and reconstruction isomorphism while exposing
-the zero inserted in each coordinate factor. The finite-grid certificate is
+the zero inserted in each coordinate factor. On a finite product grid with
+nonempty factors and `n ≥ 1`, the reused grid theorem says that every
+pointwise finite-dimensional module has zero terms above degree `2*n-2` in
+every certified minimal resolution. See [the Hom-module and Hom-cokernel
+dimension argument](finite-rank-projective-hom-quotient-dimension.md). Its
+Lean statement is
 `FiniteRankProjectiveHomQuotientDimension.coordinateGrid_minimalResolution_termAt_isZero`.
 `CoordinateGrid.lanMinimalFiniteRankProjectiveResolutionObj_termAtIso`
 identifies every zero-padded term of the actual Lan-transferred resolution
@@ -120,8 +129,8 @@ The degree convention is strict: `n = 1` gives zero terms for `j > 0`, and
 nonzero degree, not the raw stored `resolution.length`; terminal zero padding
 is allowed. It proves only the upper-bound part of Theorem 5.18 and Proposition
 5.17 of [BOOS24-v3](references.md#BOOS24-v3), together with Theorem 2.7(2)'s
-real-coordinate reconstruction. It does not prove a lower witness, equality,
-or the remaining signed-barcode stability theorem. The focused consumers in
+real-coordinate reconstruction. It does not prove a lower witness or equality.
+The final signed-barcode stability theorem remains unproved. The focused consumers in
 `FiniteRankProjectiveResolutionDimensionExamples` cover a nonzero one-coordinate
 free module, a nonzero two-coordinate finite presentation with repeated births,
 and the zero module.
