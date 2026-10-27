@@ -926,6 +926,21 @@ and the focused consumers in `TDA.Persistence.IncidenceQuotientBaseChangeExample
 `TDA.Persistence.IncidenceQuotientDerivedOneExamples`, and
 `TDA.Persistence.IncidenceQuotientDerivedExamples`.
 
+`TDA.Persistence.IncidenceQuotientProjectiveResolution.extensionProjectiveResolution` turns any
+actual projective resolution of a restricted quotient module into an augmented projective
+resolution of the quotient module, with complex literally given by termwise extension and
+augmentation followed by the natural counit. Its computation laws expose the terms,
+differentials, and representative-class formula, and it transports any supplied termwise
+vanishing-above-degree condition. `extension_hasProjectiveDimensionLE_restricted` transfers each
+finite projective-dimension bound from the restricted module, while
+`projectiveDimension_le_restriction` proves the unconditional comparison in `WithBot ℕ∞`,
+including zero and infinite-dimensional cases. These results use the actual diagonal-column
+assembly and ordinary projective epimorphisms; they do not imply a numerical incidence bound or a
+`2n−2` stability estimate. See
+[right-module base change along the diagonal quotient](math/incidence-quotient-base-change.md)
+and the focused consumers in
+`TDA.Persistence.IncidenceQuotientProjectiveResolutionExamples`.
+
 `TDA.Persistence.IncidenceQuotientDimension` proves that the projective dimension of any
 finite-length right quotient module is bounded by the supremum of the dimensions of the actual
 strict-vertex modules. It also gives the natural uniform-bound equivalence and the corresponding

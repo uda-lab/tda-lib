@@ -68,15 +68,36 @@ the existing degree-zero comparison with `N`, which may be nonzero. No degree-on
 arbitrary right-incidence module, exactness at degree zero, numerical dimension bound, `2n−2`
 bound, or stability statement is established here.
 
+For every actual projective resolution `P` of `Res(N)`,
+`extensionProjectiveResolution N P` is an actual projective resolution of `N`. Its complex is
+literally `E(P)`, and its augmentation is `E(P.π.f 0)` followed by the counit. The public
+computation laws identify its terms, differentials, and representative-class augmentation; any
+supplied termwise zero-above-degree condition on `P` also transfers to this augmented resolution.
+The unaugmented complex `E(P)` still need not be exact at degree zero.
+
+For every `d : ℕ`, `extension_hasProjectiveDimensionLE_restricted` transfers an actual bound
+`HasProjectiveDimensionLE (Res(N)) d` to `N`. The extended-natural comparison
+`projectiveDimension_le_restriction` also covers zero objects and infinite projective dimension.
+Its proof uses the diagonal-column assembly criterion: extension carries a short exact row to a
+short exact row when assembly is injective on the right endpoint, and assembly is injective on
+the restriction of every quotient module because its fixed-column group is zero. The induction
+uses ordinary projective epimorphisms and dimension shifting; it does not require minimal or
+essential projective covers. This is a right-module projective-dimension comparison, not a
+numerical bound from the incidence algebra or a `2n−2` persistence estimate.
+
 The quotient extension is the right-module base-change construction in [BOOS24-v3, §2.4,
 Definition 5.4 and Notation 5.9](references.md#BOOS24-v3). Its idempotent-kernel factorization
 formalizes the degree-one mechanism for the restricted-cokernel row. Separately, the actual
 diagonal-column construction gives the higher-degree projective-ideal/column mechanism of
 [Lemma 5.6](references.md#BOOS24-v3) for this interval-pair quotient. The underived vertex
-comparison is also consistent with the right-module setup of [Lemma 5.7](references.md#BOOS24-v3).
+comparison and projective-dimension comparison specialize the right-module setup of
+[Lemma 5.7](references.md#BOOS24-v3); the finite-length and numerical conclusions of that source
+are not asserted here.
 
 The separate vertex-tensor vanishing in [the resolution and derived comparison](incidence-vertex-tor.md)
 uses the other derived variable and is not a premise here; no derived tensor comparison is asserted.
 The Bool and singleton examples exercise the zero and regular modules, projectivity, vertex and
 degree-zero comparisons, the counit class formula, naturality for a nonidentity endomorphism, and
-the degree-one and degree-two consumers.
+the degree-one and degree-two consumers. The projective-resolution examples also check bottom
+projective dimension, transport at the projective boundary, the augmented class formula, and
+supplied termwise support bounds on an actual strict-vertex resolution.
