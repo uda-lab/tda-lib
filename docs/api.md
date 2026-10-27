@@ -905,11 +905,17 @@ functor preserves projectives and finite colimits (so it is right exact). `exten
 is the natural counit, identifying the extension of any restricted quotient module with that
 module, and `regularExtensionIso` sends the regular incidence module to the regular quotient
 module by the actual quotient map. For each strict vertex, `rightVertexExtensionDerivedZeroIso`
-gives the canonical `C`-linear degree-zero derived comparison. These results establish the
-underived construction and degree-zero value; projective preservation does not by itself prove
-that extension preserves a chosen projective resolution's exactness. See
+gives the canonical `C`-linear degree-zero derived comparison. The
+`IncidenceQuotientDerivedOne` module proves that the actual quotient kernel is idempotent, that
+extension preserves short exact rows with restricted quotient-module cokernel, and that applying
+extension to any projective resolution of a restricted quotient module is exact at degree one.
+Consequently `extension_leftDerived_one_isZero` proves the actual first left-derived vanishing for
+every restricted quotient module, with `rightVertexExtension_leftDerived_one_isZero` as its
+strict-vertex specialization. This degree-one result does not imply exactness in higher degrees or
+of the entire mapped resolution. See
 [right-module base change along the diagonal quotient](math/incidence-quotient-base-change.md)
-and the focused consumers in `TDA.Persistence.IncidenceQuotientBaseChangeExamples`.
+and the focused consumers in `TDA.Persistence.IncidenceQuotientBaseChangeExamples` and
+`TDA.Persistence.IncidenceQuotientDerivedOneExamples`.
 
 `TDA.Persistence.IncidenceQuotientDimension` proves that the projective dimension of any
 finite-length right quotient module is bounded by the supremum of the dimensions of the actual

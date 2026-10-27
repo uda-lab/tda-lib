@@ -145,3 +145,4 @@ import TDA.Persistence.MulticoverExamples
 import TDA.Persistence.IncidenceVertexTorExamples
 import TDA.Persistence.IncidenceQuotientDimensionExamples
 import TDA.Persistence.IncidenceQuotientBaseChangeExamples
+import TDA.Persistence.IncidenceQuotientDerivedOneExamples
