@@ -152,11 +152,12 @@ and run `lake build TDA`. Then import the area you need:
 
 ```lean
 import TDA.Persistence
--- Or import TDA.Library for all six library areas.
+-- Or import TDA.Library for the six ordinary library areas.
 ```
 
-The six areas are `TDA.Simplicial`, `TDA.Filtration`, `TDA.Persistence`, `TDA.Topology`,
-`TDA.Reeb` and `TDA.Mapper`. The area imports and `TDA.Library` omit the standalone
+The library areas are `TDA.Simplicial`, `TDA.Filtration`, `TDA.Persistence`, `TDA.Topology`,
+`TDA.Reeb`, `TDA.Mapper` and `TDA.Probability`; `TDA.Library` loads the first six, and
+`TDA.Probability` is reached through `TDA.Persistence` or `import TDA`. The area imports and `TDA.Library` omit the standalone
 example modules; `import TDA` also loads them. The
 [import guide](docs/api.md#entry-points) lists the areas and their requirements.
 

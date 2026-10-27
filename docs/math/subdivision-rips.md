@@ -89,15 +89,26 @@ sup-norm GP witness supplies these comparison morphisms for both input SR
 modules on the ambient used by its multicover interleaving.
 
 The full Gromov–Prokhorov bound for subdivision-Rips homology remains open.
-The concrete flag-to-cover-nerve morphism still requires a proof of
-invertibility, followed by a natural comparison between cover-nerve homology
-and the multicover space that is compatible with the library's ordered
-simplicial chains. These comparisons must preserve both structure maps and
-the mixed interleaving composites. No GP-to-SR distance bound or homotopy
-interleaving is exported by these modules.
+The flag-to-cover-nerve inclusion is a natural isomorphism on homology:
+`cechHomologyToLargeFaceNerve_isIso` proves this at every index and degree over
+every ring, comparing the subdivision of a large-face nerve with the flag complex
+through face unions and the barycentric homology isomorphism
+(`barycentricHomologyIso`). For a sup-norm GP witness at scale δ, near-label
+vertex maps between the two large-face covers give
+`SupNormWitness.largeFaceNerveHomologyInterleaving` on the restricted two-copy
+index, including all mixed composites; transport along the two isomorphisms gives
+`SupNormWitness.homologyInterleaving`, whose restrictions are exactly the two
+subdivision-Rips homology modules. Hence
+`subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist`: the
+restricted homology interleaving distance is at most the finite-uniform GP
+distance, for finite nonempty metric spaces in one universe, every ring and every
+degree. The comparison stays combinatorial. It does not identify cover-nerve
+homology with the homology of the multicover space, exports no homotopy
+interleaving, and states no bound for non-uniform measures.
 
 Source: A. J. Blumberg and M. Lesnick, [*Stability of 2-Parameter Persistent
 Homology*](https://arxiv.org/pdf/2010.09628), Definitions 2.10–2.15,
 2.32–2.33, Remark 2.16, Theorem 3.1, and the finite sup-norm embedding step in the proof of
-Theorem 1.6(iii). Theorem 3.3 and its Section 4 proof provide the natural
-multicover nerve comparison whose equivalence remains to be established.
+Theorem 1.6(iii). Theorem 3.3 and its Section 4 proof motivate the flag-to-cover-nerve
+comparison; the library proves its homology-level invertibility combinatorially and
+does not identify cover-nerve homology with the homology of the multicover space.

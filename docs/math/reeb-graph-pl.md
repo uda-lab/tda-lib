@@ -445,7 +445,9 @@ is `⊤`.
 
 This sufficient criterion has no converse or functional-distortion identity. No optimality claim
 is made for the `2ε` path-deviation allowance. No comparison morphism in `RGraphCat`, map of Reeb
-quotients, or consequence for Mapper covers, reconstructions or homology is established. The
+quotients, or consequence for Mapper covers or reconstructions is established; the Mapper
+homology consequences of a height-map pair (`realInterleavingDistance_centredMapperPair_graphPL_le`,
+`bottleneck_cappedCentredDiagram_pair_plHeight_le`) are recorded in [the Mapper digest](mapper.md). The
 criterion is a library result;
 its fixed-space specialization recovers the perturbation result attributed above to de Silva, Munch
 and Patel.
@@ -635,8 +637,8 @@ Not claimed here: equality of the Reeb-quotient distance with `edist h g` beyond
 criterion and the merge/split values above; exact distances for other
 perturbations and other tree shapes; the Hausdorff
 distance of height ranges for disconnected graphs beyond the extremal bounds; maps between graph
-objects in `RGraphCat` or maps of Reeb quotients; Mapper cover, reconstruction or homology
-consequences of `HeightMapPair`; constructible thickening; any distance or interleaving comparison of
+objects in `RGraphCat` or maps of Reeb quotients; Mapper cover or reconstruction
+consequences of `HeightMapPair` (its Mapper homology consequences are in [the Mapper digest](mapper.md)); constructible thickening; any distance or interleaving comparison of
 realizations beyond the vertex-height bounds above; Definition 4.36 of de Silva, Munch and Patel;
 trees or simple connectivity; naturality across changes of graph or heights; general finite CW
 complexes; another realization; algorithms.
