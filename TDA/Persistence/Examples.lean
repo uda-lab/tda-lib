@@ -149,3 +149,4 @@ import TDA.Persistence.IncidenceQuotientDerivedOneExamples
 import TDA.Persistence.IncidenceQuotientDerivedExamples
 import TDA.Persistence.IncidenceQuotientProjectiveResolutionExamples
 import TDA.Persistence.FiniteGridComplementCardinalityExamples
+import TDA.Persistence.OrdinaryFiniteLatticeDimensionExamples

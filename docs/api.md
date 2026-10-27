@@ -876,6 +876,23 @@ Here `minimalComplement p` means the minimal elements of `{a | ¬ a ≤ p}` in a
 
 `TDA.Persistence.FiniteGridInjectiveRankDimension.hasProjectiveDimensionLE_of_coordinateGrid` derives the actual `n - 1` Hom projective-dimension bound for every pointwise finite-dimensional ordinary injective on such a grid, for an arbitrary field. Its `termAt_isZero_of_coordinateGrid` consumer proves the same high-term vanishing for each supplied certified minimal resolution. The proof uses the proved grid count and the existing finite-injective dimension theorem; no dimension bound is supplied as input. These generator-count bounds and the ordinary-injective Hom dimension corollary do not establish a numerical ordinary incidence/global-dimension bound or the universal `2n−2` persistence estimate. See [minimal-complement cardinalities in finite grids](math/finite-grid-complement-cardinality.md).
 
+### Ordinary projective dimension on finite lattices
+
+For an arbitrary field and finite bounded lattice, `TDA.Persistence.OrdinaryFiniteLatticeDimension.hasProjectiveDimensionLE`
+proves that every pointwise finite-dimensional persistence functor itself has ordinary projective
+dimension at most `FiniteInjectiveRankDimension.maxComplementCard`. The module also exposes the
+actual hook-inclusion monomorphism, the ordinary dimension bound for finite hooks and pfd
+rank-projectives, the loose bound from any actual finite rank-projective resolution's recorded
+term count, and the complement-card bound for principal-downset and ordinary injective objects.
+Its grid corollaries give bounds `n` on `CoordinateGrid n` and `2*n` on the actual interval-pair
+poset when `n ≥ 1`.
+
+This is a result in the actual `PModule` representation category. It does not assume an ordinary
+dimension bound on the input, and it does not estimate arbitrary modules over the incidence
+algebra. The Hom module in the minimal relative rank-resolution comparison is a different object;
+no relative term-vanishing or universal `2n−2` conclusion follows here. See
+[ordinary projective dimension on finite lattices](math/ordinary-finite-lattice-dimension.md).
+
 ### Derived vertex tensors for the interval-pair incidence algebra
 
 For a field `k`, a finite lattice `S`, and a strict vertex `v`,
