@@ -975,6 +975,19 @@ dimension bound and no quotient-versus-incidence global-dimension comparison. Se
 [finite-length quotient dimensions](math/incidence-quotient-finite-length-dimension.md) and the
 consumers in `TDA.Persistence.IncidenceQuotientDimensionExamples`.
 
+`TDA.Persistence.IncidenceVertexRepresentation.vertexFunctor` sends every actual right module
+over the interval-pair incidence ring to its covariant representation on all diagonal-unit-fixed
+vertex fibers, with the canonical restricted field action. The actual projector maps give a
+linear equivalence between the module and the finite product of its fibers. An explicit
+matrix-unit reconstruction proves full faithfulness and provides both Hom inverse laws.
+`rightIncidenceShortExact_iff_vertexPointwise` characterizes actual categorical short exact rows
+by pointwise fiber exactness, and `finiteDimensional_iff_vertexFibers` characterizes finite
+dimension over the restricted field. The results apply to arbitrary modules and include
+diagonal vertices; essential surjectivity, an equivalence with all persistence functors, and
+projective-dimension transport are not established here. See
+[actual vertex representations of right incidence modules](math/incidence-vertex-representation.md)
+and the Bool regular-module examples in `TDA.Persistence.IncidenceVertexRepresentationExamples`.
+
 ## Compatible lifts and algebraic sums over the reals
 
 `TDA.Persistence.CompatibleSections` constructs compatible sections of a persistence
