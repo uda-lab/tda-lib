@@ -4,9 +4,9 @@ import TDA.Persistence.PrincipalDownsetInjective
 /-!
 # Finite grid complement-count fixtures
 
-These fixtures exercise the empty grid, a grid with a singleton factor, a
-genuine two-coordinate real grid, the old and new tops, both families in the
-actual interval-pair subtype, and a nonzero rational injective module.
+These fixtures exercise the zero-coordinate product, a grid with a singleton
+factor, a genuine two-coordinate real grid, the old and new tops, both families
+in the actual interval-pair subtype, and a nonzero rational injective module.
 -/
 
 set_option autoImplicit false
