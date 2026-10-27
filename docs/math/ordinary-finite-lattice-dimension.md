@@ -45,8 +45,12 @@ actual interval-pair poset it yields at most `2n` when `n ≥ 1`. These are
 representation-category bounds. The ordinary dimension of the Hom module used
 in minimal relative rank-resolution comparisons is a different invariant, and
 this theorem does not imply relative resolution-term vanishing. No arbitrary
-incidence-module equivalence, numerical incidence-algebra bound, universal
-`2n−2` relative estimate, or stability conclusion is included.
+incidence-module equivalence or Hom-cokernel bound follows from this
+representation theorem alone. The finite-dimensional actual incidence-module
+comparison is a separate result; no global-dimension bound for arbitrary
+incidence modules, universal `2n−2` relative estimate, or stability conclusion
+is included here. See
+[ordinary projective dimensions of actual incidence modules](incidence-projective-dimension.md).
 
 The proof is a bounded representation-category component of the arguments in
 [BOOS24-v3](references.md#BOOS24-v3), including the ordinary-dimension step

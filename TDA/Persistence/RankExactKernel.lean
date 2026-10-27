@@ -75,6 +75,27 @@ noncomputable def kernelIso (hs : IsPointwiseShortExact ι π) : L ≅ kernel π
 theorem kernelIso_hom_ι (hs : IsPointwiseShortExact ι π) :
     hs.kernelIso.hom ≫ kernel.ι π = ι := kernelComparison_ι hs
 
+/-- A pointwise short exact sequence of persistence modules is short exact in
+the actual functor category. The proof identifies the given first object with
+the categorical kernel and uses pointwise surjectivity for the categorical
+epimorphism. -/
+theorem shortExact (hs : IsPointwiseShortExact ι π) :
+    (ShortComplex.mk ι π hs.comp_eq_zero).ShortExact := by
+  let Q := ShortComplex.mk ι π hs.comp_eq_zero
+  have hEpi : Epi π := (NatTrans.epi_iff_epi_app π).2 (fun p =>
+    (ModuleCat.epi_iff_surjective _).2 (hs.surjective p))
+  let K := ShortComplex.mk (kernel.ι π) π (kernel.condition π)
+  have hK : K.ShortExact := ShortComplex.ShortExact.mk'
+    (ShortComplex.exact_kernel π) inferInstance hEpi
+  have hinv : (hs.kernelIso).inv ≫ ι = kernel.ι π := by
+    calc
+      (hs.kernelIso).inv ≫ ι = (hs.kernelIso).inv ≫
+          ((hs.kernelIso).hom ≫ kernel.ι π) := by rw [hs.kernelIso_hom_ι]
+      _ = kernel.ι π := by simp [Category.assoc]
+  let e : K ≅ Q := ShortComplex.isoMk (hs.kernelIso).symm (Iso.refl _)
+    (Iso.refl _) hinv
+  exact ShortComplex.shortExact_of_iso e hK
+
 end IsPointwiseShortExact
 
 namespace IsRankDeflation

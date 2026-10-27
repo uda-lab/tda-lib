@@ -112,20 +112,7 @@ private theorem pointwiseShortExact_toShortExact
     {A B C : PModule.{u,0,u} k S} {f : A ⟶ B} {g : B ⟶ C}
     (hs : IsPointwiseShortExact f g) :
     (ShortComplex.mk f g hs.comp_eq_zero).ShortExact := by
-  let Q := ShortComplex.mk f g hs.comp_eq_zero
-  have hEpi : Epi g := (NatTrans.epi_iff_epi_app g).2 (fun p =>
-    (ModuleCat.epi_iff_surjective _).2 (hs.surjective p))
-  let K := ShortComplex.mk (kernel.ι g) g (kernel.condition g)
-  have hK : K.ShortExact := ShortComplex.ShortExact.mk'
-    (ShortComplex.exact_kernel g) inferInstance hEpi
-  have hinv : (hs.kernelIso).inv ≫ f = kernel.ι g := by
-    calc
-      (hs.kernelIso).inv ≫ f = (hs.kernelIso).inv ≫
-          ((hs.kernelIso).hom ≫ kernel.ι g) := by rw [hs.kernelIso_hom_ι]
-      _ = kernel.ι g := by simp [Category.assoc]
-  let e : K ≅ Q := ShortComplex.isoMk (hs.kernelIso).symm (Iso.refl _)
-    (Iso.refl _) hinv
-  exact ShortComplex.shortExact_of_iso e hK
+  exact hs.shortExact
 
 private theorem finiteRows_hasProjectiveDimensionLE
     (n : ℕ) (K : Fin (n + 1) → PModule.{u,0,u} k S)
