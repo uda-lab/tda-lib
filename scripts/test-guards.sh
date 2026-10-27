@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Self-test for the textual guards' shared lexer (scripts/lean-code-scan.awk), the
-# root-aggregator guard, the merge-conflict marker guard, the exposition note check, the live axiom audit's record parsing and
-# the build lock.
+# root-aggregator guard, the merge-conflict marker guard, the exposition note check, the live
+# axiom audit's record parsing and the build lock.
 # Each case is a Lean snippet plus the expected number of violating lines per mode.
 # Run after every edit of the lexer:  bash scripts/test-guards.sh
 set -euo pipefail
@@ -363,24 +363,30 @@ if [ "$rfail" -eq 0 ]; then echo "root-aggregator guard self-test OK ($rn cases)
 # The real guard runs inside a fixture git repository. Marker lines are built with printf so this
 # file never contains one at the start of a line (the guard scans this file too).
 cfail=0; cn=0
-m7() { printf '%s' "$(printf "$1%.0s" 1 2 3 4 5 6 7)"; }   # m7 '<' → <<<<<<<
+m7() { printf "$1%.0s" 1 2 3 4 5 6 7; }   # m7 '<' → <<<<<<<
+# Fixture git runs without the caller's GIT_DIR/worktree variables and without user or system
+# configuration (signing, hooks), so the fixture never touches the real repository.
+fenv() { env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@"; }
+fgit() { fenv git "$@"; }
 marker_case() {  # marker_case <name> <want: 0 pass | 1 fail> <<'EOF' tracked file content EOF
   local name="$1" want="$2" d="$tmp/marker-$1" got
   cn=$((cn + 1)); mkdir -p "$d/scripts"
   cp scripts/check-conflict-markers.sh "$d/scripts/"
-  git -C "$d" init -q && git -C "$d" config user.email t@example.invalid && git -C "$d" config user.name t
+  fgit -C "$d" init -q && fgit -C "$d" config user.email t@example.invalid && fgit -C "$d" config user.name t
   cat > "$d/doc.md"
-  git -C "$d" add -A && git -C "$d" commit -q -m fixture
-  got=0; bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1 || got=$?
+  fgit -C "$d" add -A && fgit -C "$d" commit -q -m fixture
+  got=0; fenv bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1 || got=$?
   if [ "$got" -ne "$want" ]; then echo "FAIL [marker:$name index]: want exit $want got $got"; cfail=1; fi
-  got=0; bash "$d/scripts/check-conflict-markers.sh" HEAD >/dev/null 2>&1 || got=$?
+  got=0; fenv bash "$d/scripts/check-conflict-markers.sh" HEAD >/dev/null 2>&1 || got=$?
   if [ "$got" -ne "$want" ]; then echo "FAIL [marker:$name HEAD]: want exit $want got $got"; cfail=1; fi
 }
 marker_case clean 0 <<EOF
 # Title
-Prose with <<< and === and >>> inside a line, and a six-character rule:
+Prose with <<< and === and >>> inside a line, six- and eight-character rules:
 ======
+$(m7 '=')=
 $(m7 '=')x
+$(m7 '>')x
  $(m7 '<') indented is not a marker
 EOF
 marker_case conflict 1 <<EOF
@@ -398,19 +404,19 @@ text
 EOF
 # Only tracked content counts: an untracked file with markers passes, a staged one fails.
 d="$tmp/marker-untracked"; cn=$((cn + 1)); mkdir -p "$d/scripts"; cp scripts/check-conflict-markers.sh "$d/scripts/"
-git -C "$d" init -q && git -C "$d" config user.email t@example.invalid && git -C "$d" config user.name t
-printf 'clean\n' > "$d/a.md"; git -C "$d" add -A && git -C "$d" commit -q -m fixture
+fgit -C "$d" init -q && fgit -C "$d" config user.email t@example.invalid && fgit -C "$d" config user.name t
+printf 'clean\n' > "$d/a.md"; fgit -C "$d" add -A && fgit -C "$d" commit -q -m fixture
 printf '%s HEAD\nx\n%s\ny\n%s theirs\n' "$(m7 '<')" "$(m7 '=')" "$(m7 '>')" > "$d/b.md"
-if ! bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1; then echo 'FAIL [marker:untracked]: untracked file rejected'; cfail=1; fi
-git -C "$d" add b.md
-if bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1; then echo 'FAIL [marker:staged]: staged markers accepted'; cfail=1; fi
-if bash "$d/scripts/check-conflict-markers.sh" HEAD >/dev/null 2>&1; then :; else echo 'FAIL [marker:staged HEAD]: clean HEAD rejected'; cfail=1; fi
+if ! fenv bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1; then echo 'FAIL [marker:untracked]: untracked file rejected'; cfail=1; fi
+fgit -C "$d" add b.md
+if fenv bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1; then echo 'FAIL [marker:staged]: staged markers accepted'; cfail=1; fi
+if fenv bash "$d/scripts/check-conflict-markers.sh" HEAD >/dev/null 2>&1; then :; else echo 'FAIL [marker:staged HEAD]: clean HEAD rejected'; cfail=1; fi
 # The guard reports the offending path and line.
-out="$(bash "$tmp/marker-conflict/scripts/check-conflict-markers.sh" HEAD 2>&1)" || true
+out="$(fenv bash "$tmp/marker-conflict/scripts/check-conflict-markers.sh" HEAD 2>&1)" || true
 if [[ "$out" != *'doc.md:2:'* ]]; then echo "FAIL [marker:report]: missing path:line in: $out"; cfail=1; fi
 # The repository itself is clean.
 cn=$((cn + 1)); bash scripts/check-conflict-markers.sh >/dev/null || { echo 'FAIL [marker:self]: repository index rejected'; cfail=1; }
-if [ "$cfail" -eq 0 ]; then echo "merge-conflict marker guard self-test OK ($cn cases)"; else exit 1; fi
+if [ "$cfail" -eq 0 ]; then echo "merge-conflict marker guard self-test OK ($cn fixtures)"; else exit 1; fi
 
 # --- exposition note check (scripts/check-note.sh) ----------------------------------------
 # Fixture repositories with a fake latexmk (deterministic) and, when TeX is installed, one real

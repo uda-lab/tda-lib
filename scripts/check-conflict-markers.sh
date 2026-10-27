@@ -21,17 +21,19 @@ rev="${1:-}"
 pattern='^(<{7}|={7}|>{7})( |$)'
 status=0
 if [ -n "$rev" ]; then
-  hits="$(git grep -n -I -E "$pattern" "$rev" -- . 2>&1)" || status=$?
+  hits="$(git --no-pager grep --no-color -n -I -E "$pattern" "$rev" -- . 2>&1)" || status=$?
   what="commit $rev"
 else
-  hits="$(git grep --cached -n -I -E "$pattern" -- . 2>&1)" || status=$?
+  hits="$(git --no-pager grep --no-color --cached -n -I -E "$pattern" -- . 2>&1)" || status=$?
   what="index"
 fi
 
 case "$status" in
   0)
-    # `rev:path:line:text` or `path:line:text`; keep the path, line and text.
-    if [ -n "$rev" ]; then hits="${hits//"$rev:"/}"; fi
+    # `rev:path:line:text` or `path:line:text`; strip the revision prefix of each line only.
+    if [ -n "$rev" ]; then
+      hits="$(while IFS= read -r l; do printf '%s\n' "${l#"$rev:"}"; done <<< "$hits")"
+    fi
     printf '%s\n' "$hits" >&2
     echo "ERROR: merge-conflict markers are tracked in the $what (resolve the merge before committing)." >&2
     exit 1 ;;
