@@ -934,7 +934,7 @@ differentials, and representative-class formula, and it transports any supplied 
 vanishing-above-degree condition. `extension_hasProjectiveDimensionLE_restricted` transfers each
 finite projective-dimension bound from the restricted module, while
 `projectiveDimension_le_restriction` proves the unconditional comparison in `WithBot ℕ∞`,
-including zero and infinite-dimensional cases. These results use the actual diagonal-column
+including zero objects and infinite projective dimension. These results use the actual diagonal-column
 assembly and ordinary projective epimorphisms; they do not imply a numerical incidence bound or a
 `2n−2` stability estimate. See
 [right-module base change along the diagonal quotient](math/incidence-quotient-base-change.md)

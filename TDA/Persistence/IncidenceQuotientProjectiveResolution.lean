@@ -362,8 +362,8 @@ theorem extension_projectiveDimension_le_of_assemble_injective
   exact extension_hasProjectiveDimensionLT_of_assemble_injective
     (k := k) (S := S) M i hτ (hn i hi)
 
-/-- For an actual quotient module, extension never increases projective dimension, including the
-zero-object and infinite-dimension cases. -/
+/-- For an actual quotient module, extension never increases projective dimension, including zero
+objects and infinite projective dimension. -/
 theorem projectiveDimension_le_restriction
     (N : ModuleCat.{u} (C (k := k) (S := S))) :
     CategoryTheory.projectiveDimension N ≤
