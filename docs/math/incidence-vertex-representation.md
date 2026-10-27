@@ -1,9 +1,13 @@
 # Actual vertex representations of right incidence modules
 
-Let `k` be a field, `S` a finite lattice, `P = PairPoset S`, `A` the actual incidence
-algebra on `P`, and `R = Aᵐᵒᵖ`. For an actual right `A`-module `M`, use its canonical
-`k`-module structure restricted along `k → R`. The diagonal matrix unit `e(p)` defines the
-vertex fiber
+Let `k` be a field and `S` a finite lattice. Write `WithTop S` for `S` with a newly adjoined
+top element, and let
+
+`P = { (a,b) ∈ WithTop S × WithTop S | a ≤ b }`,
+
+ordered coordinatewise; this is the repository's `PairPoset S`. Let `A` be the actual incidence
+algebra on `P` and `R = Aᵐᵒᵖ`. For an actual right `A`-module `M`, use its canonical `k`-module
+structure restricted along `k → R`. The diagonal matrix unit `e(p)` defines the vertex fiber
 
 `V(M)(p) = {m ∈ M | e(p) • m = m}`.
 
@@ -28,11 +32,12 @@ matrix units; the finite matrix-unit expansion and central field scalars then pr
 `vertexFunctor` is fully faithful.
 
 For an actual module map, injectivity and surjectivity are equivalent to those properties on
-every vertex fiber. The range equals the kernel exactly when it does on every fiber: project a
-global preimage to each fiber in one direction, and sum the fiberwise preimages in the other.
-Consequently an actual composable module row with zero composite is short exact if and only if
-its image under `vertexFunctor` is pointwise short exact. This is ordinary categorical
-short-exactness, with no finite-dimensionality or rank-exactness premise.
+every vertex fiber. For actual composable module maps `f : L → M` and `g : M → N` with `f ≫ g = 0`,
+the range of `f` equals the kernel of `g` exactly when this holds on every vertex fiber: project
+a global preimage to each fiber in one direction, and sum the fiberwise preimages in the other.
+Consequently the actual row `L ⟶ M ⟶ N` is short exact if and only if its image under
+`vertexFunctor` is pointwise short exact. This is ordinary categorical short-exactness, with no
+finite-dimensionality or rank-exactness premise.
 
 Each vertex fiber is a submodule of the canonically restricted `k`-module, and the finite
 projector decomposition identifies that module with a finite product of its fibers. Thus the

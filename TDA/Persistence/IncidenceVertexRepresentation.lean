@@ -611,43 +611,18 @@ noncomputable def reconstructVertexNaturalTransformationRLinear
         ((u * algebraMap k (RightIncidence (k := k) (S := S)) c) • m) =
       (u * algebraMap k (RightIncidence (k := k) (S := S)) c) •
         reconstructVertexNaturalTransformation (k := k) (S := S) α m
-    have hcomm (y : M) : u • (c • y) = c • (u • y) := by
-      calc
-        u • (c • y) = u • (algebraMap k (RightIncidence (k := k) (S := S)) c • y) := by
-          rw [← IsScalarTower.algebraMap_smul (RightIncidence (k := k) (S := S)) c y]
-        _ = (u * algebraMap k (RightIncidence (k := k) (S := S)) c) • y := by
-          rw [mul_smul]
-        _ = (algebraMap k (RightIncidence (k := k) (S := S)) c * u) • y := by
-          rw [← Algebra.commutes c u]
-        _ = algebraMap k (RightIncidence (k := k) (S := S)) c • (u • y) := by
-          rw [mul_smul]
-        _ = c • (u • y) := by
-          rw [IsScalarTower.algebraMap_smul (RightIncidence (k := k) (S := S)) c (u • y)]
-    have hcommN (y : N) : u • (c • y) = c • (u • y) := by
-      calc
-        u • (c • y) = u • (algebraMap k (RightIncidence (k := k) (S := S)) c • y) := by
-          rw [← IsScalarTower.algebraMap_smul (RightIncidence (k := k) (S := S)) c y]
-        _ = (u * algebraMap k (RightIncidence (k := k) (S := S)) c) • y := by
-          rw [mul_smul]
-        _ = (algebraMap k (RightIncidence (k := k) (S := S)) c * u) • y := by
-          rw [← Algebra.commutes c u]
-        _ = algebraMap k (RightIncidence (k := k) (S := S)) c • (u • y) := by
-          rw [mul_smul]
-        _ = c • (u • y) := by
-          rw [IsScalarTower.algebraMap_smul (RightIncidence (k := k) (S := S)) c (u • y)]
     calc
       _ = reconstructVertexNaturalTransformation (k := k) (S := S) α
             (u • (c • m)) := by
               rw [mul_smul, IsScalarTower.algebraMap_smul
                 (RightIncidence (k := k) (S := S)) c m]
-      _ = reconstructVertexNaturalTransformation (k := k) (S := S) α
-            (c • (u • m)) := by rw [hcomm]
-      _ = c • reconstructVertexNaturalTransformation (k := k) (S := S) α (u • m) := by
-            rw [(reconstructVertexNaturalTransformation (k := k) (S := S) α).map_smul]
-      _ = c • (u • reconstructVertexNaturalTransformation (k := k) (S := S) α m) := by
+      _ = u • reconstructVertexNaturalTransformation (k := k) (S := S) α (c • m) := by
+            change reconstructVertexNaturalTransformation (k := k) (S := S) α
+                (IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+                  cp.val.1 cp.val.2 cp.property • (c • m)) = _
             rw [reconstructVertexNaturalTransformation_map_rightMatrixUnit]
-      _ = u • (c • reconstructVertexNaturalTransformation (k := k) (S := S) α m) :=
-            (hcommN (reconstructVertexNaturalTransformation (k := k) (S := S) α m)).symm
+      _ = u • (c • reconstructVertexNaturalTransformation (k := k) (S := S) α m) := by
+            rw [(reconstructVertexNaturalTransformation (k := k) (S := S) α).map_smul]
       _ = (u * algebraMap k (RightIncidence (k := k) (S := S)) c) •
             reconstructVertexNaturalTransformation (k := k) (S := S) α m := by
             rw [mul_smul, ← IsScalarTower.algebraMap_smul
