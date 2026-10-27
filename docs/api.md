@@ -672,9 +672,15 @@ triangle-inequality question. The examples cover negative births, repeated
 finite bars, finite and essential bars together, the empty diagram, the exact
 finite-death deletion boundary, and a nonzero interval with an actual original
 finite presentation. The endpoint conventions follow
-[Bauer--Lesnick, §§2.1--2.3](https://arxiv.org/abs/1311.3681); the finite
-presentation and signed-resolution steps connect to
-[BOOS v3, §§2.7--2.9 and Theorem 6.1](https://arxiv.org/html/2208.00300v3).
+[Bauer--Lesnick, §§2.1--2.3](https://arxiv.org/abs/1311.3681). This library's
+critical-grade argument derives finite constructibility from the actual
+presentation using its critical coordinates, free cover, and
+transition-isomorphism criterion. The one-dimensional collapse and
+ordinary-barcode connection follow the [BOOS v3 introduction after Result D](https://arxiv.org/html/2208.00300v3#S1),
+[§2.10's one-dimensional paragraph](https://arxiv.org/html/2208.00300v3#S2.SS10),
+and the `n = 1` consequence of [Theorem 5.18](https://arxiv.org/html/2208.00300v3#S5.SS3);
+[Theorem 6.1](https://arxiv.org/html/2208.00300v3#S6.SS1) gives signed-stability
+context.
 
 ### Pushouts of rank-exact sequences
 

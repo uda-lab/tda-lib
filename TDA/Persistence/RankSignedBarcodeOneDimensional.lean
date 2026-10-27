@@ -17,10 +17,15 @@ In one real coordinate, finite hooks have the right-open interval convention
 and principal hooks are essential intervals.  This module connects the
 degree-zero hook multiset of a minimal resolution to the existing real
 barcode realization and finite-constructible isometry.  The endpoint
-convention is the half-open convention used by Bauer--Lesnick, §§2.1--2.3;
-the finite-presentation-to-grid step reuses the results from BOOS v3,
-§§2.7--2.9 and Theorem 6.1.  The public module-level result keeps the original
-small finite-presentation hypothesis on `CoordinateRealBridge.fromReal M`.
+convention is the half-open convention used by Bauer--Lesnick, §§2.1--2.3.
+This library derives finite constructibility from the actual finite
+presentation by its critical-grade argument, using the presentation's
+critical coordinates, free cover, and transition-isomorphism criterion.  The
+one-dimensional collapse and ordinary-barcode connection follow the BOOS v3
+introduction after Result D, its §2.10 one-dimensional paragraph, and the
+`n = 1` consequence of Theorem 5.18; Theorem 6.1 provides signed-stability
+context.  The public module-level result keeps the original small
+finite-presentation hypothesis on `CoordinateRealBridge.fromReal M`.
 It proves the ordinary one-dimensional barcode isometry and does not identify
 the signed hook bottleneck dissimilarity with ordinary bottleneck distance.
 -/
