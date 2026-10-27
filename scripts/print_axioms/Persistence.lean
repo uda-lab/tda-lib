@@ -5762,3 +5762,23 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IncidenceQuotientBaseChangeExamples.rationalUnitDoubleMap_apply_one
 #print axioms TDA.Persistence.IncidenceQuotientBaseChangeExamples.rationalUnitDoubleMap_ne_identity
 #print axioms TDA.Persistence.IncidenceQuotientBaseChangeExamples.rationalUnitDoubleMap_extension_naturality
+
+-- Degree-one exactness and left-derived quotient extension (Issue #715).
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.R
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.C
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.J
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.diagonalIdealTwoSided
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.mem_kernel_iff_unop_mem
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.quotientKernel_mul_self
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.relation_eq_kernel_smul_top
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.kernel_smul_restricted
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.relation_restricted_eq_bot
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.extension_maps_shortExact_restricted
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.extensionMappedResolution
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.extensionMappedResolution_exactAt_one
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.extension_leftDerived_one_isZero
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.extension_leftDerived_one_isZero_zero
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOne.rightVertexExtension_leftDerived_one_isZero
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOneExamples.diagonalIdealTwoSidedUnit
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOneExamples.rational_unit_zero_derived_one_isZero
+#print axioms TDA.Persistence.IncidenceQuotientDerivedOneExamples.rational_unit_vertex_derived_one_isZero

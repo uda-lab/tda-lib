@@ -4,6 +4,8 @@ Let `k` be a field, `S` a finite lattice, `A` the interval-pair incidence algebr
 diagonal ideal, and `B = A/I`. Put `R = Aᵐᵒᵖ`, `C = Bᵐᵒᵖ`, and let `f : R →+* C` be the
 opposite of the actual quotient projection. Modules in `ModuleCat R` and `ModuleCat C` are
 right modules over `A` and `B`, respectively.
+Write `Res` for restriction along `f` and `E` for the quotient-extension functor
+`extensionFunctor`.
 
 For `M : ModuleCat R`, form the `R`-submodule
 
@@ -30,9 +32,30 @@ because `f` is surjective. Its extension is the original quotient vertex module 
 counit. The canonical comparison
 `((extensionFunctor.leftDerived 0).obj (restrictScalars Vᵥ)) ≅ Vᵥ` is `C`-linear.
 
-This is the underived quotient base-change construction used in the right-module argument of
-[BOOS24-v3, §2.4 and Lemma 5.7](references.md#BOOS24-v3). Positive derived vanishing and exactness
-of a base-changed projective resolution are separate results; neither follows from the
-projective-preservation statement alone. The Bool and singleton examples exercise the zero and
-regular modules, projectivity, the vertex and degree-zero comparisons, the counit class formula,
-and naturality for a nonidentity endomorphism.
+The kernel `J = ker f` is idempotent: `quotientKernel_mul_self` proves `J * J = J` from the
+actual diagonal ideal and its idempotent generator. This identity shows that `E` carries every
+short exact row with restricted quotient-module cokernel to a short exact row. The restriction on
+the cokernel is essential to this argument.
+
+For every quotient module `N` and every projective resolution `P` of `Res(N)`,
+`extensionMappedResolution_exactAt_one` proves that `E(P)` is exact at degree one. Hence
+`extension_leftDerived_one_isZero` gives the actual categorical vanishing
+`IsZero ((E.leftDerived 1).obj (Res(N)))`. The theorem
+`rightVertexExtension_leftDerived_one_isZero` specializes this result to each strict vertex. The
+previous degree-zero comparison remains the canonical `C`-linear isomorphism
+`((E.leftDerived 0).obj (Res(Vᵥ))) ≅ Vᵥ`.
+
+The quotient extension is the right-module base-change construction in [BOOS24-v3, §2.4,
+Definition 5.4 and Notation 5.9](references.md#BOOS24-v3). Its idempotent-kernel factorization
+formalizes the degree-one mechanism around [Lemma 5.6](references.md#BOOS24-v3) for this
+interval-pair quotient, and proves the result for every restricted quotient module. The
+underived vertex comparison is also consistent with the right-module setup of [Lemma
+5.7](references.md#BOOS24-v3).
+
+The degree-one proof uses the restricted-cokernel row for the first syzygy; it gives no claim at
+higher degrees or of exactness of the entire base-changed resolution. The separate vertex-tensor
+vanishing in [the resolution and derived comparison](incidence-vertex-tor.md) uses the other
+derived variable and is not a premise of this proof. No numerical dimension bound, `2n−2` bound,
+or stability statement is established here. The Bool and singleton examples exercise the zero and
+regular modules, projectivity, vertex and degree-zero comparisons, the counit class formula,
+naturality for a nonidentity endomorphism, and the degree-one consumers.
