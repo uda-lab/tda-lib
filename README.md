@@ -135,6 +135,72 @@ metric-space input.
   families with varying finite cover index types. This is abstract categorical
   reconstruction, not an executable Mapper algorithm.
 
+## Results added since v0.2.0
+
+The following results are merged on `develop` after v0.2.0; each holds under the
+hypotheses stated. The [API guide](docs/api.md) and its mathematical notes give their
+exact hypotheses and declaration names. The multiparameter material is a lane in
+progress and is listed with its present scope only.
+
+- **Borel boundary transport.** The strict birth–death half-plane with one collapsed
+  boundary point is a complete separable metric space. Boundary plans between finite
+  Borel measures on it have the same powered optimum as reservoir plans of any capacity
+  dominating the total masses, and as the native finite weighted optimum for atomic
+  inputs; for unit masses this is the finite matching minimum. For p ≥ 1 and arbitrary
+  finite Borel inputs a minimizing plan exists, the rooted distance satisfies the sharp
+  triangle inequality and separates measures, and same-mass quantizations converge in
+  cost. The rooted cost is a literal infimum of mathlib `eLpNorm`s over couplings.
+  Identification with an ordinary Wasserstein coupling API is not claimed.
+- **Q-tame modules and decorated diagrams.** Rectangle measures of real modules over a
+  field are defined by image-and-kernel quotients with the four-rank formula, finite on
+  rectangles separated from the diagonal for q-tame modules; essential strips, box
+  inequalities along interleavings, additive contents and decorated multiplicities with
+  death at infinity follow, with countable support. The locally finite decorated diagram
+  of a q-tame module is bottleneck-stable: an actual ε-interleaving of q-tame modules
+  bounds the distance of the extracted diagrams by ε. Rips sublevel modules of totally
+  bounded spaces are q-tame, their diagrams agree with the finite diagrams on finite
+  spaces, and they are stable under Hausdorff and Gromov–Hausdorff perturbation, with
+  convergence of finite samples to a totally bounded target. Birth-at-minus-infinity
+  strata and finite-diagram compatibility for arbitrary q-tame modules are not claimed.
+- **Multiparameter persistence (in progress).** Support-interval and rectangle modules,
+  Hall bounds and two-sided occurrence matchings with the sharp two-dimensional factor
+  three, graded free modules and finite presentations with finite critical coordinates,
+  cross-presentations, the coordinate interleaving distance with attainment, closed
+  parameter sets and separation for finitely presented modules, finite-grid Kan
+  reconstruction, rank exactness and hooks, hook Betti multisets, finite rank-projective
+  resolutions with existence, minimality and termwise uniqueness on universe-zero
+  partial orders, the Euler rank formula, and the interval-pair incidence algebra with
+  its vertex tensors. The `2n−2` bound and signed-barcode stability are not claimed.
+- **Metric inputs and sampling.** Greedy sparse Rips filtrations have a natural homology
+  isomorphism with the relaxed filtration, a log-scale interleaving with the Rips
+  filtration of shift `log((1−2η)⁻¹)`, and explicit skeleton-size bounds under a
+  doubling hypothesis. Normalized subdivision-Rips bifiltrations have a natural homology
+  isomorphism with the large-face cover nerve, and the finite-uniform Gromov–Prokhorov
+  distance bounds their restricted homology interleaving distance. Ambient Čech diagrams
+  of finite samples are stable under the Hausdorff distance, Rips homology of totally
+  bounded subsets is interleaved within twice the Hausdorff distance, and the laws of
+  iid Rips sample diagrams satisfy Wasserstein and `W_∞` bounds by the Gromov–Wasserstein
+  distance in every degree. The new area `TDA.Probability` holds the couplings and
+  moment bounds.
+- **Simplicial and topological tools.** Prism-admissible vertex maps induce equal
+  homology maps, barycentric subdivision is a homology isomorphism natural for inclusions,
+  arbitrary-apex cones contract chains, and measure bifiltrations with finite-uniform
+  Gromov–Prokhorov witnesses support the subdivision-Rips results.
+- **Reeb.** Height-map pairs between spaces over ℝ bound the interleaving distance of
+  interval-component cosheaves and of graph-PL Reeb quotients; vertex-height
+  perturbations, extremal lower bounds, exact vertical translation, scaling by the
+  absolute slope, exact merge- and split-tree values and cardinality obstructions are
+  proved. Translation is a functor on finite real graphs compatible with quotients,
+  thickening and smoothing. Realizations of finite trees are contractible and simply
+  connected, and conversely; the general quotient comparison is not injective on the
+  topologist's sine curve.
+- **Mapper.** Refinements induce selector-independent homology maps and persistence
+  modules; cover maps between real towers give interleavings, finite barcodes, step
+  diagrams with tight bottleneck bounds, capped centred towers with bottleneck bounds
+  from height-map pairs between different domains, essential counts and domain maps.
+  Two vertex-height functions on one finite graph give Mapper–Reeb reconstruction bounds
+  with convergence along vanishing resolutions and exact vertical translation.
+
 ## Use in a Lean project
 
 Use the Lean toolchain pinned in this repository's `lean-toolchain` (currently
@@ -186,9 +252,10 @@ The [API guide](docs/api.md) gives the precise assumptions, theorem names and
 limits of these results. General geometric or infinite-dimensional persistence
 and an executable arbitrary-field reduction are outside the current scope.
 
-Further directions include all-Radon boundary-transport identification, general
-infinite or q-tame persistence, metric stability with diagrams of infinite
-point sets, higher-dimensional Mapper–Reeb approximation, and constructibility of
+Further directions include identification of boundary transport with an ordinary
+Wasserstein coupling API, birth-at-minus-infinity strata and finite-diagram compatibility
+of arbitrary q-tame modules, the multiparameter `2n−2` bound and signed-barcode stability,
+higher-dimensional Mapper–Reeb approximation, and constructibility of
 the product thickening of a general constructible real space beyond graph input as
 in de Silva, Munch and Patel, *Categorified Reeb Graphs*, Theorem 4.27.
 [Issue #227](https://github.com/uda-lab/tda-lib/issues/227) records their scope and

@@ -117,7 +117,10 @@ projectivity, the chain laws, surjectivity and exactness at every index. Repeate
 generator values remain distinct occurrences; the empty-family boundary is stated
 separately. `term_isZero_of_degree_ge` shows that the degree-`r` term vanishes for
 `m ≤ r`; when `m ≥ 1`, the resolution therefore gives projective dimension at most
-`m−1`. See [join-indexed upset resolutions](math/generated-upset-resolution.md).
+`m−1`. `termEvaluationEquiv` identifies the evaluated terms at an index with the simplicial
+chains of the active-occurrence simplex, sending the differential to the signed simplicial
+boundary; `generatedSupport_fin_zero_module_isZero` and `term_fin_zero_eq_zero` state the
+empty-family case. See [join-indexed upset resolutions](math/generated-upset-resolution.md).
 `RectangleHall.card_le_neighbors` derives the Hall neighbor cardinality bound
 from an actual ε-interleaving of finite rectangle sums: a selected family
 whose `(4n−2)ε` transitions are nonzero has at least as many neighbors at radius
@@ -146,7 +149,15 @@ An actual matching may pair short intervals whose endpoint cost exceeds the
 radius; the bridge removes those pairs and proves both ends deletable.
 Empty occurrence families are included. Empty half-open supports are zero in
 the raw barcode constructor and are excluded by the positive-length bridge;
-other endpoint decorations are not identified with half-open modules. Zero
+other endpoint decorations are not identified with half-open modules.
+`RectangleHall.significant_iff_transition_ne_zero` identifies δ-significance of a rectangle
+(some `p` and `p + δ·1` both lie in its support) with nonvanishing of its actual δ transition,
+and `Rectangle.hom_ext` shows that a morphism of rectangle modules is determined by its scalar
+at one point of a nonempty overlap. `RectangleFamily.module` is the finite biproduct of interval
+modules with indices labelling occurrences, and `RectangleFamily.component_ext` lifts
+componentwise equations to the family. The two Hall injections are combined by a
+relation-preserving Schröder–Bernstein argument whose auxiliary labels allow deletion only of
+non-significant occurrences and are discarded. Zero
 distance implies a natural isomorphism on this common subclass.
 `RectangleSharpExample.interleaving` constructs Bjerkevik's Example 5.2 over
 any field, using two Fin 3-indexed families of open rectangles and the source's
@@ -168,6 +179,19 @@ proves every fiber of a finitely presented module finite-dimensional. Its proof
 uses the actual finite free cover and its componentwise surjectivity; finite
 generators suffice, so this consequence needs neither finite relations nor a
 finite indexing poset.
+The free module on a disjoint union of graded families has the sum universal property
+(`GradedFree.sumDesc`, `GradedFree.sumDesc_unique`). `Presentation.adjoinRedundant` adjoins an
+arbitrary graded family of redundant generators by adding the relations `new_v − chosenLift_v`,
+and `Presentation.adjoinRedundantIso` proves the enlarged quotient naturally isomorphic to the
+original one; finite families remain finite. For any morphism between two presented modules,
+`Presentation.exists_chainMap_lift` supplies maps between their generator and relation free
+modules making both presentation squares commute. These statements work over any ring and
+preorder without finiteness assumptions. For real coordinate grades, `W(σ)` has generator grades
+`gr(w) − σ`; `GradedFree.shiftIso` identifies `F(W(ε))` with `F(W)[ε]`, `GradedFree.delayedInclusion`
+embeds `F(W(−ε))` in `F(W)`, `Presentation.cover_presentedShiftIso` records the free-cover
+compatibility of `Presentation.presentedShiftIso`, and `GradedFree.finitelyPresented_shift` gives
+closure of finite presentation under shifts. See
+[the constructions and their scope](math/multiparameter-foundations.md#graded-free-modules-and-finite-presentations).
 For a ring and any coordinate dimension, `finitelyPresented_exists_finiteGridKan`
 constructs a finite product grid, its order embedding and an actual natural
 isomorphism from the chosen Mathlib left Kan extension to the original module.
@@ -204,6 +228,19 @@ not assert exactness for arbitrary order embeddings. The focused
 `CoordinateGridKanExamples` module exercises nonzero finite-death lifts, actual
 within-cell and death transitions, characteristic two, empty and zero inputs,
 grades below the grid and a principal-upset tail.
+
+Naturally split pointwise short exact sequences with pointwise finite-dimensional middle fibers
+are rank exact (`IsPointwiseShortExact.rankExact_of_section`), and restriction along a monotone
+map preserves rank exactness (`IsRankExact.reindex`). For `i < j` in a partial order, the hook has
+support `{a | i ≤ a and j ≰ a}`, and `Hook.homEquivKernel` identifies maps from it to `N` with
+vectors of `N(i)` killed at `j`. Over a field, `Hook.end_eq_smul_id` and
+`HookInfinity.end_eq_smul_id` show that every endomorphism acts by one scalar throughout the
+support, and `Hook.indecomposable` and `HookInfinity.indecomposable` prove indecomposability in
+mathlib's categorical sense, with neither a finite grade set nor bounded support.
+`RankDeflationExamples.epi_not_rankDeflation` verifies that the principal upset born at zero on
+the two-grade chain surjects onto the hook dying at grade one without being a rank-exact
+deflation. See
+[rank exactness and hook lifting](math/multiparameter-foundations.md#rank-exactness-and-hook-lifting).
 
 At each pair of comparable indices, `IsPointwiseShortExact.rank_add_iff_lift_kernel`
 equates rank additivity with lifting dying vectors when the middle source fiber
@@ -361,6 +398,18 @@ This is the finite-family matching consequence of
 It does not assert countable-family stability or the signed-barcode stability
 of a full resolution.
 
+For a field and any preorder, `FiniteRankExactResolution.rank_eq_alternating_sum` proves, for a
+supplied finite family of rank-exact rows `0 → K_(i+1) → Q_i → K_i → 0` (`i : Fin m`) with
+`K_0 ≅ M` and `K_m ≅ 0`, that `r_M(a,b) = ∑ i, (-1)^i r_(Q_i)(a,b)` in the integers for every
+`a ≤ b`, where `r` is the rank of the structure map; when `m = 0` the endpoint isomorphisms
+identify `M` with zero. `FiniteRankProjectiveResolution.rank_eq_alternating_sum` gives the same
+formula for the projective-resolution package, stated for partial-order index types in universe
+zero; the telescope does not use projectivity. The statement concerns a supplied family of rows:
+by itself it asserts no existence, minimality, uniqueness or length bound, and no stability.
+`FiniteRankProjectiveResolutionExamples` covers the zero-length boundary, a nonzero
+principal-upset hook and a two-term contractible resolution whose ranks cancel. See
+[the Euler formula for finite rank-exact resolutions](math/finite-rank-projective-resolution.md).
+
 The signed-multiset results do not select a canonical hook decomposition or a
 unique comparison isomorphism. Choice independence of the signed multisets is
 not a stability theorem: these declarations do not establish signed-barcode
@@ -421,7 +470,7 @@ Botnan–Oppermann–Oudot–Scoccola](https://arxiv.org/html/2208.00300v3).
 minimal-resolution interfaces on a nonzero principal-upset free module; the
 earlier resolution examples retain the zero and contractible-row boundary cases.
 
-For any field and any partially ordered index type, two
+For any field and any partially ordered index type in universe zero, two
 `MinimalFiniteRankProjectiveResolution`s of the same module have isomorphic
 terms in each degree after padding the shorter resolution by zero:
 `MinimalFiniteRankProjectiveResolution.termAt_nonempty_iso` returns the
@@ -524,6 +573,42 @@ equivalent to natural isomorphism, over any ring and including dimension zero.
 with an `EMetricSpace` whose extended distance agrees with the module distance.
 See [attainment and separation](math/multiparameter-closure.md) and
 [the constructions and their scope](math/multiparameter-foundations.md).
+
+For a ring and `n : ℕ`, `CoordinateShift.shift` evaluates a module on `Fin n → ℝ` at `a + ε·1` for a
+finite nonnegative parameter. A `CoordinateInterleaving ε M N` consists of natural maps `M → N[ε]`
+and `N → M[ε]` whose two composites are the structure maps to `M[2ε]` and `N[2ε]`, and
+`CoordinateInterleaving.zeroEquivIso` identifies zero interleavings with natural isomorphisms.
+`coordinateInterleavingDistance` is the extended infimum of the admissible finite parameters; an
+empty parameter set has distance infinity. `coordinateInterleavingDistance_eq_zero_of_iso`,
+`coordinateInterleavingDistance_comm` and `coordinateInterleavingDistance_triangle` give invariance
+under natural isomorphism, symmetry and the extended triangle inequality. For a finitely presented
+source, `GradedFree.finitelyPresented_exists_finite_postcomp_tests` gives a finite set of generator
+and relation grades at which bijectivity of a natural map induces a bijection on maps out of the
+module, and `GradedFree.finitelyPresented_exists_pos_postcomp_shiftLE_bijective` combines this test
+set with the target's finite critical coordinates so that `Hom(M,N[ε]) → Hom(M,N[ε+δ])` is bijective
+for all sufficiently small `δ ≥ 0`. `CoordinateInterleaving.of_postcomp_lifting` is the algebraic
+lowering step, taking the two surjections and the two injections as hypotheses; the
+finite-presentation proof establishes all four. `FinitePresentationClosure` also proves
+`finitelyPresented_interleaving_at_distance`, `finitelyPresented_distance_eq_zero_iff_iso`,
+`finitelyPresented_interleaving_parameters_eq_Ici` and
+`finitelyPresented_isClosed_interleaving_parameters`, and `FinitePresentationIsoClasses.edist_classOf`
+identifies the descended distance on representatives. These statements include the zero ring, empty
+presentations and `n = 0`.
+
+`CoordinateRealBridge.interleavingEquiv` identifies the real-indexed and one-coordinate interleaving
+witness types, and `CoordinateRealBridge.distance_eq` identifies their distances. Some hypothesis is
+needed for attainment and separation: over a field, `RealRay.distance_eq_zero` shows that
+`k_[0,∞)` and `k_(0,∞)` have interleaving distance zero, `RealRay.not_nonempty_iso` that they are not
+naturally isomorphic, and `RealRay.not_nonempty_zero_interleaving` that the zero distance is not
+attained; the closed ray has a finite presentation and the open ray cannot have one. For
+right-continuous real modules on finite critical grids with zero left tails and finite-dimensional
+critical fibers, over a field, `FiniteConstructible.distance_le_iff_interleaving`,
+`FiniteConstructible.interleaving_at_distance`, `FiniteConstructible.isClosed_interleaving_parameters`
+and `FiniteConstructible.distance_eq_zero_iff_iso` give the one-dimensional attainment, closedness
+and separation from the barcode isometry and an optimal finite matching; they do not prove the
+multidimensional finite-presentation theorem. See
+[finite-constructible closure](math/constructible-isometry.md#attainment-and-separation) and
+[why the finite-presentation hypothesis matters](math/multiparameter-closure.md).
 
 ## Persistent homology results and computational boundary
 
@@ -661,7 +746,8 @@ occurrences of lifetime greater than `2ε` and essential occurrences on both sid
 Every selected token is covered and every edge has cost at most `ε`. The
 `FiniteSaturatingMatching` predicate states the injectivity, cost, and coverage
 conditions explicitly. This finite saturation result does not assert a matching of
-the full diagrams. `Rips.exists_finite_saturating_matching_of_hausdorff_lt` applies
+the full diagrams; `qTame_bottleneck_le_of_realInterleaving` supplies the global matching of the
+full extracted diagrams (see the q-tame rectangle-measure section below). `Rips.exists_finite_saturating_matching_of_hausdorff_lt` applies
 it to totally bounded Rips spaces embedded isometrically in a common metric space,
 when `2 * hausdorffDist < ε`. See [Rips metric stability](math/rips-metric-stability.md)
 for this consumer and the scope of the result.
@@ -1158,7 +1244,10 @@ row and column sums at most one. Residual unit mass goes to or comes from the bo
 optimization with the existing matching minimum, using cost-preserving boundary
 augmentation and the pinned mathlib Birkhoff decomposition. An incidence plan attains
 the minimum; fractional optima can coexist with it. Empty formulas and reindexing are
-included. Equality with all Borel/Radon couplings remains outside the API.
+included. For unit masses, `BoundaryTransport.boundaryTransportPowerValue_ofIndexed_unit`
+identifies the infimum over all Borel boundary plans between the atomic measures with this
+matching minimum for `p ≥ 0`; an identification with an ordinary Wasserstein coupling API
+remains outside the API.
 See [finite boundary transport](math/finite-boundary-transport.md).
 
 ## Finite real-exponent matching and transport costs
@@ -1175,8 +1264,10 @@ real-p matching and boundary transport by N^(1/p) times a finite full bottleneck
 where N counts both finite occurrence sets. Explicit radius and cardinality-budget forms
 are included. `FinitePFilterStability` applies these bounds to sublevel diagrams
 using face-value perturbations, without a fixed pairing; essential bars remain outside
-the finite-part transport cost. All-Radon-coupling equality and quotient/metric
-instances remain outside this API. `FinitePBottleneckLimit` proves the reverse
+the finite-part transport cost. For unit masses,
+`BoundaryTransport.boundaryTransportDistance_ofIndexed_unit` identifies the rooted all-Borel
+boundary-plan value with `finitePMatchingCost` for `p ≥ 1`; quotient/metric instances and an
+ordinary-coupling identification remain outside this API. `FinitePBottleneckLimit` proves the reverse
 bottleneck comparison and convergence of both optimized costs as the real exponent
 tends to infinity, for fixed diagrams with empty essential parts. It includes the
 empty-input case and both real and extended nonnegative real limits.
@@ -1539,8 +1630,9 @@ claims concern finite graph-PL inputs, not arbitrary higher-dimensional Reeb spa
 Finite GH–Rips stability and sampling compare full diagrams of finite metric spaces;
 the possibly infinite sampling target has no diagram in these results. Finite
 weighted boundary transport permits real masses, and its canonical atomic
-measures have the same optima over all Borel boundary plans. Attainment for
-general finite Radon inputs remains open. Finite-line adapters construct modules
+measures have the same optima over all Borel boundary plans, and minimizing Borel plans exist
+for arbitrary finite Borel inputs and `p ≥ 1` (`BoundaryTransport.exists_minimizing_boundaryPlan`),
+with no moment or support hypothesis. Finite-line adapters construct modules
 over a ring; rectangular matrix-sequence adapters require a commutative ring. Over a field, both reuse
 finite interval classification without computing barcodes over arbitrary fields. Gaussian
 C₀ universality and signed-measure separation concern the full birth–death plane;
@@ -1838,8 +1930,9 @@ finiteness on every rectangle separated from the diagonal.
 `TDA.Persistence.PersistenceMeasureEssential` constructs essential-boundary
 strip counts as the eventual dimensions of image quotients and proves
 birth-coordinate additivity. It includes no assumed interval decomposition.
-The decorated multiplicity representation is constructed below; its
-bottleneck stability remains open. See
+The decorated multiplicity representation is constructed below; for q-tame modules over a
+field, `qTame_bottleneck_le_of_realInterleaving` bounds the bottleneck distance of the extracted
+diagrams by the parameter of any actual interleaving. See
 [persistence rectangle measures](math/persistence-rectangle-measure.md).
 
 `TDA.Persistence.PersistenceMeasureBox` derives a rectangle box inequality
@@ -1861,7 +1954,14 @@ matching from two-sided positive-square count inequalities. Source lifetimes
 must exceed 4ε and distinct source values must be separated by more than 2ε.
 Its Hall argument retains multiplicities and bounds unmatched target costs.
 See [local matching from finite box counts](math/persistence-measure-matching.md)
-for the precise hypotheses and the remaining algebraic-stability bridge.
+for the precise hypotheses. The global algebraic-stability bridge,
+`qTame_bottleneck_le_of_realInterleaving`, is proved by finite window matching and saturation
+rather than through this separated local step:
+`PersistenceMeasureWindowMatching.exists_finite_window_matching_of_center_counts` is the
+finite-window step, which for `δ ≥ 0`, source point values separated by more than `2δ` and
+closed-ball count comparisons at the source values injects every source occurrence within
+distance `δ` and covers every target occurrence whose exit value exceeds `δ`; repeated values
+remain separate tokens and target values need no separation.
 
 `TDA.Persistence.DecoratedMeasureCuts` identifies the existing persistence cuts with
 mathlib lower sets, retaining boundary decorations and compact open coordinate cells.
@@ -1872,7 +1972,10 @@ contents, finite atomic representations on compact cells, and finite local posit
 support with exact cell counts. The construction permits infinite global support.
 `PersistenceMeasureBoxContent` proves arbitrary finite box-partition additivity from the
 actual module quotient split identities; `PersistenceMeasureContent` constructs the
-module's actual `AddContent`. `PersistenceMeasureDiagram.moduleDiagramMultiplicity`
+module's actual `AddContent`. `DecoratedRectangleBox` turns decorated rectangle covers into
+ordinary half-open box partitions by taking preimages along pairs of minus cuts, and
+`IntegerContentTransport` transports additive contents along such preimages and converts a
+cellwise nonnegative integer content to a natural-valued one. `PersistenceMeasureDiagram.moduleDiagramMultiplicity`
 extracts finite-death decorated point counts, with finite local support and exact rectangle
 counts. `DecoratedCutEndpoints` supplies finite numeric endpoints.
 `PersistenceMeasureEssentialContent` and `PersistenceMeasureEssentialDiagram`
@@ -1882,8 +1985,22 @@ infinity, with exact finite rectangle, essential strip and full tail-rectangle c
 finite positive support on every separated tail rectangle.
 `PersistenceMeasureDiagramCountability` proves countable global support;
 `PersistenceMeasureLowerBound` transfers a module zero tail to a birth lower bound.
-Finite diagram compatibility and algebraic stability remain separate obligations.
-See [integer contents on decorated cells](math/persistence-measure-atoms.md).
+`TDA.Persistence.LocallyFiniteDiagramBottleneck` packages these extended multiplicities of a
+q-tame module as `LocallyFiniteDecoratedDiagram.ofQModule`, with countable support and finite
+positive support on every separated and tail rectangle; its `bottleneck` is the extended infimum
+of global occurrence-matching costs. For an actual ε-interleaving of q-tame modules over a field,
+`RealInterleaving.exists_finite_saturating_matching` covers any prescribed finite sets of
+finite-death occurrences longer than `2ε` and of essential occurrences on both sides by injective
+edge sets of cost at most ε, and `qTame_bottleneck_le_of_realInterleaving` in
+`LocallyFiniteMatchingCompactness` passes to one global matching through a coherent section of
+the finite inverse system, bounding the bottleneck distance of the two extracted diagrams by ε.
+No interval decomposition is assumed. The extracted diagrams have finite births;
+birth-at-minus-infinity strata of unrestricted q-tame modules are not represented. Positive
+finite diagrams embed isometrically (`Diagram.toLocallyFinite`, `bottleneck_toLocallyFinite`), and
+for finite metric spaces `Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` identifies the
+extracted Rips diagram with the finite one; compatibility for arbitrary q-tame modules remains
+open. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
+[decorated diagrams of infinite Rips spaces](math/rips-metric-stability.md#decorated-diagrams-of-infinite-rips-spaces).
 
 
 ### Greedy sparse Rips geometry and deletion maps
