@@ -746,6 +746,246 @@ noncomputable instance vertexFunctor_faithful :
     Functor.Faithful (vertexFunctor (k := k) (S := S)) :=
   (vertexFunctorFullyFaithful (k := k) (S := S)).faithful
 
+
+@[simp] theorem vertexFunctor_map_app_hom
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))} (f : M ⟶ N)
+    (p : PairPoset S) :
+    (((vertexFunctor (k := k) (S := S)).map f).app p).hom =
+      mapOnVertexFiber (k := k) (S := S) f p := rfl
+
+/-- Projectors commute with every actual module map. -/
+theorem projectToVertexFiber_map
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))} (f : M ⟶ N)
+    (p : PairPoset S) (m : restrictedKModule (k := k) (S := S) M) :
+    projectToVertexFiber (k := k) (S := S) N p (f.hom m) =
+      mapOnVertexFiber (k := k) (S := S) f p
+        (projectToVertexFiber (k := k) (S := S) M p m) := by
+  apply Subtype.ext
+  change IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+      p p le_rfl • f.hom m = f.hom
+        (IncidenceQuotientBaseChange.rightIncidenceMatrixUnit (k := k) (S := S)
+          p p le_rfl • m)
+  rw [← f.hom.map_smul]
+
+/-- Injectivity of an actual module map is detected on all fixed vertex fibers. -/
+theorem rightIncidenceMap_injective_iff_vertexFibers
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))} (f : M ⟶ N) :
+    Function.Injective f.hom ↔
+      ∀ p : PairPoset S, Function.Injective (mapOnVertexFiber (k := k) (S := S) f p) := by
+  constructor
+  · intro hf p x y hxy
+    apply Subtype.ext
+    apply hf
+    exact congrArg (fun z : vertexFiber (k := k) (S := S) N p => (z : N)) hxy
+  · intro hf x y hxy
+    have hproj : ∀ p : PairPoset S,
+        projectToVertexFiber (k := k) (S := S) M p x =
+          projectToVertexFiber (k := k) (S := S) M p y := by
+      intro p
+      apply hf p
+      rw [← projectToVertexFiber_map, ← projectToVertexFiber_map, hxy]
+    calc
+      x = ∑ p : PairPoset S,
+          (projectToVertexFiber (k := k) (S := S) M p x : M) :=
+            (diagonalProjector_sum (k := k) (S := S) M x).symm
+      _ = ∑ p : PairPoset S,
+          (projectToVertexFiber (k := k) (S := S) M p y : M) := by
+            apply Finset.sum_congr rfl
+            intro p hp
+            exact congrArg Subtype.val (hproj p)
+      _ = y := diagonalProjector_sum (k := k) (S := S) M y
+
+/-- Surjectivity of an actual module map is detected on all fixed vertex fibers. -/
+theorem rightIncidenceMap_surjective_iff_vertexFibers
+    {M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))} (f : M ⟶ N) :
+    Function.Surjective f.hom ↔
+      ∀ p : PairPoset S, Function.Surjective (mapOnVertexFiber (k := k) (S := S) f p) := by
+  classical
+  constructor
+  · intro hf p y
+    obtain ⟨x, hx⟩ := hf (y : N)
+    refine ⟨projectToVertexFiber (k := k) (S := S) M p x, ?_⟩
+    calc
+      mapOnVertexFiber (k := k) (S := S) f p
+          (projectToVertexFiber (k := k) (S := S) M p x) =
+        projectToVertexFiber (k := k) (S := S) N p (f.hom x) :=
+          (projectToVertexFiber_map (k := k) (S := S) f p x).symm
+      _ = projectToVertexFiber (k := k) (S := S) N p y :=
+        congrArg (projectToVertexFiber (k := k) (S := S) N p) hx
+      _ = y := by
+        apply Subtype.ext
+        exact (mem_vertexFiber_iff (k := k) (S := S) N p y).1 y.property
+  · intro hf y
+    choose x hx using fun p : PairPoset S => hf p
+      (projectToVertexFiber (k := k) (S := S) N p y)
+    refine ⟨∑ p : PairPoset S, (x p : M), ?_⟩
+    calc
+      f.hom (∑ p : PairPoset S, (x p : M)) =
+          ∑ p : PairPoset S, f.hom (x p : M) := map_sum f.hom _ _
+      _ = ∑ p : PairPoset S,
+          (projectToVertexFiber (k := k) (S := S) N p y : N) := by
+            apply Finset.sum_congr rfl
+            intro p hp
+            exact congrArg Subtype.val (hx p)
+      _ = y := diagonalProjector_sum (k := k) (S := S) N y
+
+
+/-- The image-kernel equality of an actual module pair is detected on its fixed fibers. -/
+theorem rightIncidenceRange_eq_ker_iff_vertexFibers
+    {L M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (f : L ⟶ M) (g : M ⟶ N) (hfg : f ≫ g = 0) :
+    LinearMap.range f.hom = LinearMap.ker g.hom ↔
+      ∀ p : PairPoset S,
+        LinearMap.range (mapOnVertexFiber (k := k) (S := S) f p) =
+          LinearMap.ker (mapOnVertexFiber (k := k) (S := S) g p) := by
+  classical
+  have hcomp (x : L) : g.hom (f.hom x) = 0 := by
+    have hx := congrArg (fun h : L ⟶ N => h.hom x) hfg
+    simpa using hx
+  constructor
+  · intro h p
+    apply le_antisymm
+    · intro z hz
+      rcases LinearMap.mem_range.mp hz with ⟨x, hx⟩
+      have hker : (mapOnVertexFiber (k := k) (S := S) g p)
+          (mapOnVertexFiber (k := k) (S := S) f p x) = 0 := by
+        apply Subtype.ext
+        change g.hom (f.hom (x : L)) = 0
+        exact hcomp (x : L)
+      rw [← hx]
+      exact LinearMap.mem_ker.mpr hker
+    · intro z hz
+      have hmem := LinearMap.mem_ker.mp hz
+      have hval := congrArg Subtype.val hmem
+      have hzker : g.hom (z : M) = 0 := by
+        rw [mapOnVertexFiber_val] at hval
+        exact hval
+      have hzrange : (z : M) ∈ LinearMap.range f.hom := by
+        rw [h]
+        exact LinearMap.mem_ker.mpr hzker
+      rcases LinearMap.mem_range.mp hzrange with ⟨x, hx⟩
+      refine LinearMap.mem_range.mpr ⟨projectToVertexFiber (k := k) (S := S) L p x, ?_⟩
+      apply Subtype.ext
+      calc
+        (mapOnVertexFiber (k := k) (S := S) f p
+            (projectToVertexFiber (k := k) (S := S) L p x) : M) =
+            (projectToVertexFiber (k := k) (S := S) M p (f.hom x) : M) :=
+          congrArg Subtype.val (projectToVertexFiber_map (k := k) (S := S) f p x).symm
+        _ = (projectToVertexFiber (k := k) (S := S) M p z : M) := by rw [hx]
+        _ = (z : M) := by
+          rw [projectToVertexFiber_val]
+          exact (mem_vertexFiber_iff (k := k) (S := S) M p z).1 z.property
+  · intro h
+    apply le_antisymm
+    · intro y hy
+      rcases LinearMap.mem_range.mp hy with ⟨x, rfl⟩
+      exact LinearMap.mem_ker.mpr (hcomp x)
+    · intro y hy
+      have hyker : g.hom y = 0 := LinearMap.mem_ker.mp hy
+      have hprojker (p : PairPoset S) :
+          projectToVertexFiber (k := k) (S := S) M p y ∈
+            LinearMap.ker (mapOnVertexFiber (k := k) (S := S) g p) := by
+        apply LinearMap.mem_ker.mpr
+        apply Subtype.ext
+        calc
+          (mapOnVertexFiber (k := k) (S := S) g p
+              (projectToVertexFiber (k := k) (S := S) M p y) : N) =
+              (projectToVertexFiber (k := k) (S := S) N p (g.hom y) : N) :=
+            congrArg Subtype.val (projectToVertexFiber_map (k := k) (S := S) g p y).symm
+          _ = 0 := by rw [hyker]; simp
+      have hprojrange (p : PairPoset S) :
+          projectToVertexFiber (k := k) (S := S) M p y ∈
+            LinearMap.range (mapOnVertexFiber (k := k) (S := S) f p) := by
+        rw [h p]
+        exact hprojker p
+      let x : (p : PairPoset S) → vertexFiber (k := k) (S := S) L p :=
+        fun p => Classical.choose (LinearMap.mem_range.mp (hprojrange p))
+      have hx (p : PairPoset S) :
+          mapOnVertexFiber (k := k) (S := S) f p (x p) =
+            projectToVertexFiber (k := k) (S := S) M p y :=
+        Classical.choose_spec (LinearMap.mem_range.mp (hprojrange p))
+      refine LinearMap.mem_range.mpr ⟨∑ p : PairPoset S, (x p : L), ?_⟩
+      calc
+        f.hom (∑ p : PairPoset S, (x p : L)) =
+            ∑ p : PairPoset S, f.hom (x p : L) := map_sum f.hom _ _
+        _ = ∑ p : PairPoset S,
+            (projectToVertexFiber (k := k) (S := S) M p y : M) := by
+              apply Finset.sum_congr rfl
+              intro p hp
+              exact congrArg Subtype.val (hx p)
+        _ = y := diagonalProjector_sum (k := k) (S := S) M y
+
+/-- An actual module short complex is short exact exactly when every fixed-fiber row is. -/
+theorem rightIncidenceShortExact_iff_vertexPointwise
+    {L M N : ModuleCat.{u} (RightIncidence (k := k) (S := S))}
+    (f : L ⟶ M) (g : M ⟶ N) (hfg : f ≫ g = 0) :
+    (ShortComplex.mk f g hfg).ShortExact ↔
+      IsPointwiseShortExact
+        ((vertexFunctor (k := k) (S := S)).map f)
+        ((vertexFunctor (k := k) (S := S)).map g) := by
+  constructor
+  · intro h
+    refine ⟨?_, ?_, ?_⟩
+    · intro p
+      change Function.Injective (mapOnVertexFiber (k := k) (S := S) f p)
+      exact (rightIncidenceMap_injective_iff_vertexFibers (k := k) (S := S) f).mp
+          h.moduleCat_injective_f p
+    · intro p
+      change Function.Surjective (mapOnVertexFiber (k := k) (S := S) g p)
+      exact (rightIncidenceMap_surjective_iff_vertexFibers (k := k) (S := S) g).mp
+          h.moduleCat_surjective_g p
+    · intro p
+      change LinearMap.range (mapOnVertexFiber (k := k) (S := S) f p) =
+        LinearMap.ker (mapOnVertexFiber (k := k) (S := S) g p)
+      exact (rightIncidenceRange_eq_ker_iff_vertexFibers (k := k) (S := S) f g hfg).mp
+          h.exact.moduleCat_range_eq_ker p
+  · intro h
+    have hinj : Function.Injective f.hom :=
+      (rightIncidenceMap_injective_iff_vertexFibers (k := k) (S := S) f).mpr
+        (fun p => by
+          have hp := h.injective p
+          change Function.Injective (mapOnVertexFiber (k := k) (S := S) f p) at hp
+          exact hp)
+    have hsurj : Function.Surjective g.hom :=
+      (rightIncidenceMap_surjective_iff_vertexFibers (k := k) (S := S) g).mpr
+        (fun p => by
+          have hp := h.surjective p
+          change Function.Surjective (mapOnVertexFiber (k := k) (S := S) g p) at hp
+          exact hp)
+    have hrange : LinearMap.range f.hom = LinearMap.ker g.hom :=
+      (rightIncidenceRange_eq_ker_iff_vertexFibers (k := k) (S := S) f g hfg).2
+        (fun p => by
+          have hp := h.range_eq_ker p
+          change LinearMap.range (mapOnVertexFiber (k := k) (S := S) f p) =
+            LinearMap.ker (mapOnVertexFiber (k := k) (S := S) g p) at hp
+          exact hp)
+    let C : ShortComplex (ModuleCat.{u} (RightIncidence (k := k) (S := S))) :=
+      ShortComplex.mk f g hfg
+    have hexact : C.Exact := (ShortComplex.moduleCat_exact_iff_range_eq_ker C).2 hrange
+    letI : Mono C.f := (ModuleCat.mono_iff_injective f).2 hinj
+    letI : Epi C.g := (ModuleCat.epi_iff_surjective g).2 hsurj
+    exact ⟨hexact⟩
+
+
+/-- Finite dimensionality over the coefficient field is detected on every vertex fiber. -/
+theorem finiteDimensional_iff_vertexFibers
+    (M : ModuleCat.{u} (RightIncidence (k := k) (S := S))) :
+    FiniteDimensional k (restrictedKModule (k := k) (S := S) M) ↔
+      ∀ p : PairPoset S, FiniteDimensional k (vertexFiber (k := k) (S := S) M p) := by
+  constructor
+  · intro h p
+    letI := h
+    infer_instance
+  · intro h
+    letI : ∀ p : PairPoset S,
+        FiniteDimensional k (vertexFiber (k := k) (S := S) M p) := h
+    haveI : FiniteDimensional k
+        ((p : PairPoset S) → vertexFiber (k := k) (S := S) M p) := by
+      infer_instance
+    exact FiniteDimensional.of_injective
+      (vertexDecomposition (k := k) (S := S) M).toLinearMap
+      (vertexDecomposition (k := k) (S := S) M).injective
+
 end
 
 end TDA.Persistence.IncidenceVertexRepresentation
