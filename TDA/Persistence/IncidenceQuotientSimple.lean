@@ -157,6 +157,11 @@ abbrev RightVertexModule (v : StrictVertex S) : ModuleCat (RightQuotient (k := k
       (rightMatrixUnit (k := k) (S := S) p q hpq) • t = _
   simp [rightMatrixUnit, rightVertexCharacter, vertexQuotientCharacter_mk]
 
+@[simp] theorem rightVertexModule_smul (v : StrictVertex S)
+    (c : RightQuotient (k := k) (S := S))
+    (t : RightVertexModule (k := k) (S := S) v) :
+    c • t = rightVertexCharacter (k := k) (S := S) v c • t := rfl
+
 theorem rightVertexCharacter_matrixScalar (v : StrictVertex S)
     (p q : PairPoset S) (hpq : p ≤ q) (a : k) :
     rightVertexCharacter (k := k) (S := S) v
@@ -248,6 +253,122 @@ private theorem rightMatrixUnit_smul_on_maximal_active
   · have hpr : p ≠ r := Ne.symm hr
     simp [hr, hpr]
 
+private theorem rightMatrixUnit_scalar_mul (p q : PairPoset S) (hpq : p ≤ q)
+    (a : k) :
+    MulOpposite.op (Ideal.Quotient.mk (DiagonalIdeal (k := k) (S := S))
+      (a • delta (k := k) (S := S) p q hpq)) =
+      rightMatrixUnit (k := k) (S := S) p q hpq *
+        algebraMap k (RightQuotient (k := k) (S := S)) a := by
+  rw [Algebra.smul_def]
+  change MulOpposite.op (Ideal.Quotient.mk (DiagonalIdeal (k := k) (S := S))
+      (algebraMap k (Incidence (k := k) (S := S)) a *
+        delta (k := k) (S := S) p q hpq)) = _
+  rw [map_mul]
+  simp [rightMatrixUnit]
+
+private theorem rightQuotient_mk_eq_matrixUnit_sum
+    (a : Incidence (k := k) (S := S)) :
+    MulOpposite.op (Ideal.Quotient.mk (DiagonalIdeal (k := k) (S := S)) a) =
+      ∑ cp : ComparablePair S,
+        rightMatrixUnit (k := k) (S := S) cp.1.1 cp.1.2 cp.2 *
+          algebraMap k (RightQuotient (k := k) (S := S)) (a cp.1.1 cp.1.2) := by
+  classical
+  conv_lhs => rw [incidence_eq_deltaExpansion (k := k) (S := S) a]
+  rw [FiniteRankProjectiveEndAlgebra.deltaExpansion]
+  rw [map_sum (Ideal.Quotient.mk (DiagonalIdeal (k := k) (S := S)))]
+  rw [Finset.op_sum]
+  apply Finset.sum_congr rfl
+  intro cp hcp
+  exact rightMatrixUnit_scalar_mul (k := k) (S := S)
+    cp.1.1 cp.1.2 cp.2 (a cp.1.1 cp.1.2)
+
+private theorem rightMatrixUnit_scalar_smul_on_maximal_active
+    (M : ModuleCat (RightQuotient (k := k) (S := S)))
+    (p : PairPoset S)
+    (hmax : Maximal (fun t : PairPoset S => t ∈ activeVertices (k := k) (S := S) M) p)
+    (m : M) (r s : PairPoset S) (hrs : r ≤ s) (a : k) :
+    (rightMatrixUnit (k := k) (S := S) r s hrs *
+      algebraMap k (RightQuotient (k := k) (S := S)) a) •
+        (rightMatrixUnit (k := k) (S := S) p p le_rfl • m) =
+      if r = p ∧ s = p then
+        a • (rightMatrixUnit (k := k) (S := S) p p le_rfl • m) else 0 := by
+  calc
+    _ = rightMatrixUnit (k := k) (S := S) r s hrs •
+          (algebraMap k (RightQuotient (k := k) (S := S)) a •
+            (rightMatrixUnit (k := k) (S := S) p p le_rfl • m)) := by
+          rw [mul_smul]
+    _ = rightMatrixUnit (k := k) (S := S) r s hrs •
+          (a • (rightMatrixUnit (k := k) (S := S) p p le_rfl • m)) := by
+          rw [algebraMap_smul]
+    _ = a • (rightMatrixUnit (k := k) (S := S) r s hrs •
+          (rightMatrixUnit (k := k) (S := S) p p le_rfl • m)) := by
+          exact (smul_comm a (rightMatrixUnit (k := k) (S := S) r s hrs)
+            (rightMatrixUnit (k := k) (S := S) p p le_rfl • m)).symm
+    _ = if r = p ∧ s = p then
+          a • (rightMatrixUnit (k := k) (S := S) p p le_rfl • m) else 0 := by
+          rw [rightMatrixUnit_smul_on_maximal_active M p hmax m r s hrs]
+          by_cases h : r = p ∧ s = p <;> simp [h]
+
+private theorem rightVertexCharacter_eigen_on_maximal_active
+    (M : ModuleCat (RightQuotient (k := k) (S := S)))
+    (v : StrictVertex S) (hmax : Maximal
+      (fun t : PairPoset S => t ∈ activeVertices (k := k) (S := S) M) v.1)
+    (m : M) (hmActive :
+      rightMatrixUnit (k := k) (S := S) v.1 v.1 le_rfl • m ≠ 0)
+    (c : RightQuotient (k := k) (S := S)) :
+    c • (rightMatrixUnit (k := k) (S := S) v.1 v.1 le_rfl • m) =
+      algebraMap k (RightQuotient (k := k) (S := S))
+        (rightVertexCharacter (k := k) (S := S) v c) •
+          (rightMatrixUnit (k := k) (S := S) v.1 v.1 le_rfl • m) := by
+  classical
+  obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (MulOpposite.unop c)
+  let c' : RightQuotient (k := k) (S := S) :=
+    MulOpposite.op (Ideal.Quotient.mk (DiagonalIdeal (k := k) (S := S)) a)
+  have hc : c' = c := by
+    simpa [c'] using congrArg MulOpposite.op ha
+  have hchar : rightVertexCharacter (k := k) (S := S) v c = a v.1 v.1 := by
+    rw [← hc]
+    simp [c', rightVertexCharacter_apply, vertexQuotientCharacter_mk,
+      TDA.Persistence.IncidenceVertexTensor.vertexCharacter_apply]
+  let x := rightMatrixUnit (k := k) (S := S) v.1 v.1 le_rfl • m
+  have hsum : (∑ cp : ComparablePair S,
+      (rightMatrixUnit (k := k) (S := S) cp.1.1 cp.1.2 cp.2 *
+        algebraMap k (RightQuotient (k := k) (S := S)) (a cp.1.1 cp.1.2)) • x) =
+      algebraMap k (RightQuotient (k := k) (S := S)) (a v.1 v.1) • x := by
+    rw [Finset.sum_eq_single_of_mem
+      (⟨(v.1, v.1), le_rfl⟩ : ComparablePair S) (Finset.mem_univ _)]
+    · rw [rightMatrixUnit_scalar_smul_on_maximal_active
+        (k := k) (S := S) M v.1 hmax m v.1 v.1 le_rfl
+        (a v.1 v.1)]
+      rw [if_pos ⟨rfl, rfl⟩]
+      exact (IsScalarTower.algebraMap_smul (R := k)
+        (A := RightQuotient (k := k) (S := S)) (r := a v.1 v.1) (x := x)).symm
+    · intro cp hcp hcpNe
+      have hnot : ¬(cp.1.1 = v.1 ∧ cp.1.2 = v.1) := by
+        intro h
+        apply hcpNe
+        apply Subtype.ext
+        exact Prod.ext h.1 h.2
+      rw [rightMatrixUnit_scalar_smul_on_maximal_active
+        (k := k) (S := S) M v.1 hmax m cp.1.1 cp.1.2 cp.2
+        (a cp.1.1 cp.1.2)]
+      simp [x, hnot]
+  calc
+    c • x = c' • x := by rw [hc]
+    _ = (∑ cp : ComparablePair S,
+        rightMatrixUnit (k := k) (S := S) cp.1.1 cp.1.2 cp.2 *
+          algebraMap k (RightQuotient (k := k) (S := S)) (a cp.1.1 cp.1.2)) • x := by
+        change MulOpposite.op (Ideal.Quotient.mk
+          (DiagonalIdeal (k := k) (S := S)) a) • x = _
+        rw [rightQuotient_mk_eq_matrixUnit_sum]
+    _ = ∑ cp : ComparablePair S,
+        (rightMatrixUnit (k := k) (S := S) cp.1.1 cp.1.2 cp.2 *
+          algebraMap k (RightQuotient (k := k) (S := S)) (a cp.1.1 cp.1.2)) • x :=
+        by rw [Finset.sum_smul]
+    _ = algebraMap k (RightQuotient (k := k) (S := S)) (a v.1 v.1) • x := hsum
+    _ = algebraMap k (RightQuotient (k := k) (S := S))
+          (rightVertexCharacter (k := k) (S := S) v c) • x := by rw [hchar]
+
 /-- Two right vertex modules are isomorphic exactly when their strict vertices agree. -/
 theorem rightVertexModule_iso_iff (v w : StrictVertex S) :
     Nonempty (RightVertexModule (k := k) (S := S) v ≅
@@ -265,16 +386,17 @@ theorem rightVertexModule_iso_iff (v w : StrictVertex S) :
         (↑(RightVertexModule (k := k) (S := S) w)) :=
       (RightVertexModule (k := k) (S := S) w).isModule
     have hsource : e • (1 : k) = 1 := by
-      change rightVertexCharacter (k := k) (S := S) v e * 1 = 1
-      rw [show rightVertexCharacter (k := k) (S := S) v e = 1 from by
-        simpa [e] using rightVertexCharacter_rightMatrixUnit
-          (k := k) (S := S) v v.1 v.1 le_rfl]
+      change rightVertexCharacter (k := k) (S := S) v
+        (rightMatrixUnit (k := k) (S := S) v.1 v.1 le_rfl) * 1 = 1
+      rw [rightVertexCharacter_rightMatrixUnit]
       simp
     let m : k := 1
     have hχ : rightVertexCharacter (k := k) (S := S) w e = 0 := by
       have hvertices' : w.1 ≠ v.1 := Ne.symm hvertices
-      simpa [e, hvertices'] using rightVertexCharacter_rightMatrixUnit
-        (k := k) (S := S) w v.1 v.1 le_rfl
+      change rightVertexCharacter (k := k) (S := S) w
+        (rightMatrixUnit (k := k) (S := S) v.1 v.1 le_rfl) = 0
+      rw [rightVertexCharacter_rightMatrixUnit]
+      simp [hvertices']
     have hmap : i.hom.hom m = 0 := by
       calc
         i.hom.hom m = i.hom.hom (e • m) := by
@@ -299,6 +421,132 @@ theorem rightVertexModule_iso_iff (v w : StrictVertex S) :
   · intro h
     subst w
     exact ⟨Iso.refl _⟩
+
+
+theorem simpleModule_existsUnique_vertex
+    (M : ModuleCat (RightQuotient (k := k) (S := S)))
+    [IsSimpleModule (RightQuotient (k := k) (S := S)) M] :
+    ∃! v : StrictVertex S,
+      Nonempty (M ≅ RightVertexModule (k := k) (S := S) v) := by
+  classical
+  letI : Nontrivial M := IsSimpleModule.nontrivial
+    (RightQuotient (k := k) (S := S)) M
+  obtain ⟨m, hm⟩ := exists_ne (0 : M)
+  have hm0 : m ≠ 0 := hm
+  have hsum : (∑ p : PairPoset S,
+      rightMatrixUnit (k := k) (S := S) p p le_rfl • m) = m := by
+    calc
+      (∑ p : PairPoset S,
+          rightMatrixUnit (k := k) (S := S) p p le_rfl • m) =
+          (∑ p : PairPoset S,
+            rightMatrixUnit (k := k) (S := S) p p le_rfl) • m := by
+              rw [Finset.sum_smul]
+      _ = m := by
+        rw [rightMatrixUnit_diagonal_sum]
+        exact one_smul (RightQuotient (k := k) (S := S)) m
+  have hactive : (activeVertices (k := k) (S := S) M).Nonempty := by
+    by_contra hnone
+    have hz : ∀ p : PairPoset S,
+        rightMatrixUnit (k := k) (S := S) p p le_rfl • m = 0 := by
+      intro p
+      by_contra hp
+      apply hnone
+      refine ⟨p, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩⟩
+      exact ⟨m, hp⟩
+    have hmEq : m = 0 := by
+      calc
+        m = ∑ p : PairPoset S,
+            rightMatrixUnit (k := k) (S := S) p p le_rfl • m := hsum.symm
+        _ = ∑ p : PairPoset S, 0 := by
+              apply Finset.sum_congr rfl
+              intro p hp
+              exact hz p
+        _ = 0 := by simp
+    exact hm0 hmEq
+  obtain ⟨p, hmax⟩ := (activeVertices (k := k) (S := S) M).exists_maximal hactive
+  have hpActive : p ∈ activeVertices (k := k) (S := S) M := hmax.1
+  obtain ⟨m₀, hmActive⟩ := (Finset.mem_filter.mp hpActive).2
+  have hpNotDiagonal : ¬ IsDiagonal (S := S) p := by
+    intro hpDiagonal
+    have hz := rightMatrixUnit_eq_zero_of_isDiagonal (k := k) (S := S) p hpDiagonal
+    rw [hz, zero_smul] at hmActive
+    exact hmActive rfl
+  have hneq : p.val.1 ≠ p.val.2 := by
+    intro h
+    exact hpNotDiagonal h
+  let v : StrictVertex S := ⟨p, lt_of_le_of_ne p.property hneq⟩
+  let x : M := rightMatrixUnit (k := k) (S := S) p p le_rfl • m₀
+  have hx : x ≠ 0 := hmActive
+  have heigen (c : RightQuotient (k := k) (S := S)) :
+      c • x = algebraMap k (RightQuotient (k := k) (S := S))
+        (rightVertexCharacter (k := k) (S := S) v c) • x := by
+    simpa [x, v] using rightVertexCharacter_eigen_on_maximal_active
+      (k := k) (S := S) M v hmax m₀ hmActive c
+  letI : Module (RightQuotient (k := k) (S := S)) k :=
+    Module.compHom k (rightVertexCharacter (k := k) (S := S) v)
+  have hV : RightVertexModule (k := k) (S := S) v =
+      ModuleCat.of (RightQuotient (k := k) (S := S)) k := rfl
+  letI : IsSimpleModule (RightQuotient (k := k) (S := S)) k := by
+    let χ := rightVertexCharacter (k := k) (S := S) v
+    letI : RingHomSurjective χ :=
+      ⟨rightVertexCharacter_surjective (k := k) (S := S) v⟩
+    let g : k →ₛₗ[χ] k :=
+      { toFun := id
+        map_add' := by intro a b; rfl
+        map_smul' := by intro a b; rfl }
+    have hg : Function.Bijective g := by
+      constructor <;> intro a <;> simp [g]
+    exact (LinearMap.isSimpleModule_iff_of_bijective g hg).2 inferInstance
+  let f : k →ₗ[RightQuotient (k := k) (S := S)] M :=
+    { toFun := fun t => algebraMap k (RightQuotient (k := k) (S := S)) t • x
+      map_add' := by
+        intro a b
+        change algebraMap k (RightQuotient (k := k) (S := S)) (a + b) • x =
+          algebraMap k (RightQuotient (k := k) (S := S)) a • x +
+            algebraMap k (RightQuotient (k := k) (S := S)) b • x
+        rw [map_add, add_smul]
+      map_smul' := by
+        intro c t
+        change algebraMap k (RightQuotient (k := k) (S := S))
+            (rightVertexCharacter (k := k) (S := S) v c • t) • x =
+          c • (algebraMap k (RightQuotient (k := k) (S := S)) t • x)
+        rw [smul_eq_mul, map_mul, mul_smul]
+        calc
+          algebraMap k (RightQuotient (k := k) (S := S))
+              (rightVertexCharacter (k := k) (S := S) v c) •
+                (algebraMap k (RightQuotient (k := k) (S := S)) t • x) =
+              rightVertexCharacter (k := k) (S := S) v c •
+                (algebraMap k (RightQuotient (k := k) (S := S)) t • x) :=
+                  IsScalarTower.algebraMap_smul (R := k)
+                    (A := RightQuotient (k := k) (S := S)) _ _
+          _ = t • (rightVertexCharacter (k := k) (S := S) v c • x) :=
+                smul_comm _ _ _
+          _ = t • (algebraMap k (RightQuotient (k := k) (S := S))
+                (rightVertexCharacter (k := k) (S := S) v c) • x) :=
+                congrArg (fun y : M => t • y)
+                  (IsScalarTower.algebraMap_smul (R := k)
+                    (A := RightQuotient (k := k) (S := S)) _ _).symm
+          _ = t • (c • x) := by rw [← heigen]
+          _ = c • (t • x) := (smul_comm _ _ _).symm
+          _ = c • (algebraMap k (RightQuotient (k := k) (S := S)) t • x) := by
+                rw [← IsScalarTower.algebraMap_smul (R := k)
+                  (A := RightQuotient (k := k) (S := S))] }
+  have hf : f ≠ 0 := by
+    intro hzero
+    have hxzero : f (1 : k) = 0 := by rw [hzero]; simp
+    apply hx
+    change algebraMap k (RightQuotient (k := k) (S := S)) 1 • x = 0 at hxzero
+    simpa using hxzero
+  let e : k ≃ₗ[RightQuotient (k := k) (S := S)] M :=
+    LinearEquiv.ofBijective f (LinearMap.bijective_of_ne_zero hf)
+  have i₀ : RightVertexModule (k := k) (S := S) v ≅ M := by
+    simpa [hV] using e.toModuleIso
+  refine ⟨v, ⟨i₀.symm⟩, ?_⟩
+  intro w ⟨i⟩
+  have hIso : Nonempty (RightVertexModule (k := k) (S := S) v ≅
+      RightVertexModule (k := k) (S := S) w) := ⟨i₀ ≪≫ i⟩
+  exact ((rightVertexModule_iso_iff (k := k) (S := S) v w).mp hIso).symm
+
 
 end
 
