@@ -2,6 +2,15 @@ import TDA.Persistence.IncidenceQuotientSimple
 import Mathlib.CategoryTheory.Abelian.Projective.Dimension
 import Mathlib.RingTheory.FiniteLength
 
+/-
+The finite-length extension argument adapts the quotient-specific part of
+`ModuleCat.hasProjectiveDimensionLT_of_isFiniteLength` in TauCeti's
+`TauCeti/Algebra/Category/ModuleCat/Projective/Dimension.lean`, revision
+7b0d106bf79dbea38ba8819985bd029989181287. Copyright (c) 2026 The Tau Ceti
+contributors; Apache-2.0. This file specializes that proof pattern to the actual
+diagonal quotient and its #699 simple-module classification; it adds no dependency.
+-/
+
 /-!
 # Projective dimensions of finite-length quotient modules
 
@@ -133,7 +142,7 @@ theorem projectiveDimension_le_iSup_vertex
   change projectiveDimension M ≤ D
   unfold CategoryTheory.projectiveDimension
   apply sInf_le
-  simp only [Set.mem_setOf_eq]
+  simp only [Set.mem_ofPred_eq]
   intro i hi
   apply hasProjectiveDimensionLT_of_vertex_bound (k := k) (S := S) i _ M hM
   intro v

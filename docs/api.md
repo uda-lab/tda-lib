@@ -805,6 +805,15 @@ focused consumers in `TDA.Persistence.IncidenceQuotientSimpleExamples`. This is 
 classification step used in BOOS24-v3 Lemma 5.7, specialized to the interval-pair quotient; it
 does not assert the global-dimension conclusion of that lemma.
 
+`TDA.Persistence.IncidenceQuotientDimension` proves that the projective dimension of any
+finite-length right quotient module is bounded by the supremum of the dimensions of the actual
+strict-vertex modules. It also gives the natural uniform-bound equivalence and the corresponding
+results for modules finite-dimensional under the existing restricted `k`-action. The proof uses
+the #699 classification in a Mathlib finite-length extension induction. It gives no numerical
+dimension bound and no quotient-versus-incidence global-dimension comparison. See
+[finite-length quotient dimensions](math/incidence-quotient-finite-length-dimension.md) and the
+consumers in `TDA.Persistence.IncidenceQuotientDimensionExamples`.
+
 ## Compatible lifts and algebraic sums over the reals
 
 `TDA.Persistence.CompatibleSections` constructs compatible sections of a persistence
