@@ -195,8 +195,8 @@ theorem homScalarModule_hasProjectiveDimensionLE
     (quotientModuleSemilinearEquiv (k := k) (S := S) N)
     (maxComplementCard (S := PairPoset S))
 
-/-- The canonical field restriction of the actual Hom-scalar module is
-k-linearly equivalent to the natural persistence-morphism space. -/
+/-- The scalar action of the algebra map on the Hom-scalar module agrees with
+the natural scalar action on persistence morphisms. -/
 private theorem homScalar_action_eq (M : PModule.{u,0,u} k S) (c : k)
     (f : HookSum (k := k) (S := S) ⟶ M) :
     (algebraMap k (HomScalars (k := k) (S := S)) c) • f = c • f := by
@@ -209,6 +209,8 @@ private theorem homScalar_action_eq (M : PModule.{u,0,u} k S) (c : k)
   rw [hscalar, CategoryTheory.Linear.smul_comp]
   simp
 
+/-- The canonical field restriction of the actual Hom-scalar module is
+k-linearly equivalent to the natural persistence-morphism space. -/
 noncomputable def homScalarFieldLinearEquiv (M : PModule.{u,0,u} k S) :
     canonicalFieldRestriction (k := k) ((homFunctor (k := k) (S := S)).obj M) ≃ₗ[k]
       (HookSum (k := k) (S := S) ⟶ M) where
