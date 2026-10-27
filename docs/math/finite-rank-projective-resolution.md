@@ -87,4 +87,43 @@ The only module-specific input to the Lean theorem is the original
 finite-presentation predicate; the finite grid and its pointwise
 finite-dimensional module are constructed in the proof.
 
+## The real-coordinate degree bound
+
+For arbitrary `k`, `n ≥ 1`, and an originally finitely presented
+`M : PModule k (Fin n → ℝ)`,
+`FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution_with_bound`
+constructs a certified minimal resolution `R` with
+`IsZero (R.termAt j)` whenever `2*n-2 < j`. The companion
+`finitelyPresented_minimalFiniteRankProjectiveResolution_termAt_isZero`
+proves the same vanishing for every supplied certified minimal resolution of
+`M`. The hypotheses remain the original
+`GradedFree.FinitelyPresented.{u,0,0}` predicate; no grid, pointwise
+finite-dimensionality of `M`, chosen resolution, or numerical bound is an
+input.
+
+The construction uses
+`GradedFree.finitelyPresented_exists_pfd_nonempty_finiteGridKan`, which keeps
+the actual presentation grid and reconstruction isomorphism while exposing
+the zero inserted in each coordinate factor. The finite-grid certificate is
+`FiniteRankProjectiveHomQuotientDimension.coordinateGrid_minimalResolution_termAt_isZero`.
+`CoordinateGrid.lanMinimalFiniteRankProjectiveResolutionObj_termAtIso`
+identifies every zero-padded term of the actual Lan-transferred resolution
+with the Lan image of the grid term; recorded terms are the actual Kan images,
+and outside the recorded range both terms are zero objects by preservation of
+zero morphisms. The existing `FiniteRankProjectiveResolution.ofIso` transports
+the row certificates to `M`, and
+`MinimalFiniteRankProjectiveResolution.termAt_nonempty_iso` transfers
+vanishing to every other certified minimal resolution.
+
+The degree convention is strict: `n = 1` gives zero terms for `j > 0`, and
+`n = 2` gives zero terms for `j > 2`. The statement concerns the highest
+nonzero degree, not the raw stored `resolution.length`; terminal zero padding
+is allowed. It proves only the upper-bound part of Theorem 5.18 and Proposition
+5.17 of [BOOS24-v3](references.md#BOOS24-v3), together with Theorem 2.7(2)'s
+real-coordinate reconstruction. It does not prove a lower witness, equality,
+or the remaining signed-barcode stability theorem. The focused consumers in
+`FiniteRankProjectiveResolutionDimensionExamples` cover a nonzero one-coordinate
+free module, a nonzero two-coordinate finite presentation with repeated births,
+and the zero module.
+
 [§1.2 and §2.14 of the paper]: https://arxiv.org/html/2208.00300v3

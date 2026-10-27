@@ -470,6 +470,27 @@ Botnan–Oppermann–Oudot–Scoccola](https://arxiv.org/html/2208.00300v3).
 minimal-resolution interfaces on a nonzero principal-upset free module; the
 earlier resolution examples retain the zero and contractible-row boundary cases.
 
+For arbitrary `k`, `n ≥ 1`, and only the original
+`GradedFree.FinitelyPresented.{u,0,0}` hypothesis on `M`,
+`FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution_with_bound`
+constructs a certified minimal resolution whose `termAt j` is zero whenever
+`2*n-2 < j`. The companion
+`finitelyPresented_minimalFiniteRankProjectiveResolution_termAt_isZero` proves
+the same strict bound for every supplied certified minimal resolution. Its
+proof reuses the finite-grid theorem
+`FiniteRankProjectiveHomQuotientDimension.coordinateGrid_minimalResolution_termAt_isZero`,
+the actual left Kan transfer, and
+`MinimalFiniteRankProjectiveResolution.termAt_nonempty_iso`; it assumes no
+grid, pfd condition on `M`, or bound on the input resolution. The all-degree
+comparison `CoordinateGrid.lanMinimalFiniteRankProjectiveResolutionObj_termAtIso`
+exposes the correspondence of the actual transferred terms and zero padding.
+This is a highest-nonzero-degree result, not a bound on the raw stored
+`resolution.length`. Examples cover nonzero originally presented modules in
+dimensions one and two, repeated birth occurrences, the zero module, and
+arbitrary supplied resolutions. The proof follows the upper-bound portion of
+BOOS Theorem 5.18 and Proposition 5.17; it proves no lower witness, equality,
+or final signed-stability theorem. See [the mathematical argument](math/finite-rank-projective-resolution.md#the-real-coordinate-degree-bound).
+
 For any field and any partially ordered index type in universe zero, two
 `MinimalFiniteRankProjectiveResolution`s of the same module have isomorphic
 terms in each degree after padding the shorter resolution by zero:
@@ -506,8 +527,9 @@ works over any ring. `kernelSumIso` gives the static specialization for
 two deflations onto the same quotient. Consumers include redundant covers
 with nonzero kernels, positive width, width zero, characteristic two, zero
 modules and zero coordinate directions. This one-step result supplies the
-first row in the finite-resolution comparison below; the uniform
-resolution-length bound and signed-barcode stability require further results.
+first row in the finite-resolution comparison below. The real-coordinate
+minimal-resolution degree bound is proved separately; the final signed-barcode
+stability theorem still requires further results.
 
 For a field `k`, finite coordinate dimension `n`, actual finite
 rank-projective resolutions `R` of `M` and `S` of `N`, and an actual
@@ -526,7 +548,9 @@ minimality, grid, or additional finiteness assumption on the given finite
 resolutions. `RankSchanuelResolutionExamples` exercises the zero-length,
 one-term, nonzero two-term-tail, unequal-length, and `ε = 0` cases. The result
 retains the degree shifts; by itself it does not establish a shift-free signed
-barcode inequality or a uniform bound on the resolution length.
+barcode inequality or the final signed-barcode stability theorem. The
+real-coordinate minimal-resolution degree bound is documented above; it does
+not bound raw stored resolution lengths.
 
 ### Pushouts of rank-exact sequences
 
@@ -1033,8 +1057,8 @@ ordinary projective dimension at most `2*n`, while `H(M)` has ordinary projectiv
 most `2*n-2`. Every supplied certified
 minimal finite-rank-projective resolution of such an `M` has zero `termAt j` for `j > 2*n-2`.
 This concerns the highest nonzero degree and is insensitive to terminal zero padding; it is not a
-bound on the raw stored length. The coefficient field remains arbitrary. The result does not
-establish a real-coordinate transfer or a stability theorem. See
+bound on the raw stored length. The coefficient field remains arbitrary. Its real-coordinate
+transfer is documented above; neither conclusion proves the final signed-stability theorem. See
 [finite-grid Hom-module and Hom-cokernel dimensions](math/finite-rank-projective-hom-quotient-dimension.md)
 and the rational and grid consumers in
 `TDA.Persistence.FiniteRankProjectiveHomQuotientDimensionExamples`.
