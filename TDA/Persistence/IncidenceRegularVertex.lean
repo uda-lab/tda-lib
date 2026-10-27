@@ -93,6 +93,22 @@ private theorem regularCoefficients_injective : Function.Injective
   intro a b hab
   exact congrFun (congrFun h a) b
 
+/-- Embed an incidence algebra element into its finite table of coefficients. -/
+def incidenceToFunctions :
+    FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := S) →ₗ[k]
+      (FiniteRankProjectiveEndAlgebra.PairPoset S) →
+        (FiniteRankProjectiveEndAlgebra.PairPoset S) → k where
+  toFun f a b := f a b
+  map_add' f g := by ext a b; rfl
+  map_smul' c f := by ext a b; rfl
+
+/-- Incidence coefficients determine the full finite function table. -/
+theorem incidenceToFunctions_injective : Function.Injective
+    (incidenceToFunctions (k := k) (S := S)) := by
+  intro f g h
+  ext a b
+  exact congrFun (congrFun h a) b
+
 /-- The actual regular right-incidence module is finite-dimensional over the
 canonical restricted field scalars. -/
 theorem regular_finiteDimensional :

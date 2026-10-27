@@ -350,7 +350,9 @@ import TDA.Persistence.IncidenceQuotientColumnAction
 import TDA.Persistence.IncidenceQuotientDerived
 import TDA.Persistence.IncidenceQuotientProjectiveResolution
 import TDA.Persistence.IncidenceVertexRepresentation
+import TDA.Persistence.IncidenceRegularVertex
 import TDA.Persistence.FiniteLatticeComplementCardinality
 import TDA.Persistence.OrdinaryFiniteLatticeDimension
+import TDA.Persistence.IncidenceVertexProjectiveDimension
 import TDA.Persistence.FiniteGridInjectiveRankDimension
 import TDA.Persistence.IncidenceQuotientBaseChangeExamples

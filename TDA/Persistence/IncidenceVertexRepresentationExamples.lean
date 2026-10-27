@@ -1,4 +1,5 @@
 import TDA.Persistence.IncidenceVertexRepresentation
+import TDA.Persistence.IncidenceRegularVertex
 
 /-!
 # Examples for actual incidence-module vertex representations
@@ -105,28 +106,17 @@ theorem boolZero_fibers_subsingleton {k : Type} [Field k] :
   apply Subtype.ext
   exact Subsingleton.elim _ _
 
-private def incidenceToFunctions (k : Type) [Field k] :
-    FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := Bool) →ₗ[k]
-      PairPoset Bool → PairPoset Bool → k where
-  toFun f p q := f p q
-  map_add' f g := by ext p q; rfl
-  map_smul' c f := by ext p q; rfl
-
-private theorem incidenceToFunctions_injective {k : Type} [Field k] :
-    Function.Injective (incidenceToFunctions k) := by
-  intro f g h
-  ext p q
-  exact congrFun (congrFun h p) q
-
 /-- The actual regular module is finite-dimensional by its incidence-function embedding. -/
 theorem boolRegular_finiteDimensional {k : Type} [Field k] :
     FiniteDimensional k (restrictedKModule (k := k) (S := Bool) (boolRegular k)) := by
   change FiniteDimensional k (RightIncidence (k := k) (S := Bool))
   have hfd : FiniteDimensional k
       (FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := Bool)) := by
-    letI : FiniteDimensional k (PairPoset Bool → PairPoset Bool → k) := by infer_instance
-    exact FiniteDimensional.of_injective (incidenceToFunctions k)
-      (incidenceToFunctions_injective (k := k))
+    letI : FiniteDimensional k
+        (PairPoset Bool → PairPoset Bool → k) := by infer_instance
+    exact FiniteDimensional.of_injective
+      (IncidenceRegularVertex.incidenceToFunctions (k := k) (S := Bool))
+      (IncidenceRegularVertex.incidenceToFunctions_injective (k := k) (S := Bool))
   letI := hfd
   exact (MulOpposite.opLinearEquiv k :
     FiniteRankProjectiveEndAlgebra.Incidence (k := k) (S := Bool) ≃ₗ[k]
