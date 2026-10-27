@@ -557,6 +557,17 @@ barcode inequality or the final signed-barcode stability theorem. The
 real-coordinate minimal-resolution degree bound is documented above; it does
 not bound raw stored resolution lengths.
 
+`RankSchanuelUnshifted` now removes those shifts under the original finite-
+presentation hypotheses. For any supplied certified minimal resolutions, the
+actual unshifted alternating biproducts admit an interleaving at radius
+`(2*n-1)*ε`; the existence specialization obtains the resolutions from the
+finite presentations. Its fixed-resolution extended-distance bound uses the
+same coefficient without assuming that either infimum is attained. The
+asymmetric finite-family comparison maps, their two equations, and their
+component computation laws are in `CoordinateInterleavingDelay`. This is the
+module-interleaving step only; the signed matching and final squared
+coefficient remain downstream. See [unshifted Schanuel interleavings](math/unshifted-schanuel-stability.md).
+
 ### Pushouts of rank-exact sequences
 
 Let `0 → L --ι→ M --π→ N → 0` be rank exact over a field, with `P` any

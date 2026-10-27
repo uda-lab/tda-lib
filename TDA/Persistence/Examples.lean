@@ -154,3 +154,4 @@ import TDA.Persistence.IncidenceVertexProjectiveDimensionExamples
 import TDA.Persistence.OrdinaryFiniteLatticeDimensionExamples
 import TDA.Persistence.FiniteRankProjectiveHomQuotientDimensionExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionDimensionExamples
+import TDA.Persistence.RankSchanuelUnshiftedExamples
