@@ -30,7 +30,7 @@ theorem bool_equalEndpointHook_isZero :
     IsZero (Hook.module (k := ℚ) false false : PModule ℚ Bool) :=
   HookCokernel.hook_isZero false
 
-/-- The equal-endpoint hook has ordinary dimension zero. -/
+/-- The equal-endpoint hook has ordinary projective dimension at most zero. -/
 theorem bool_equalEndpointHook_hasProjectiveDimensionLE_zero :
     HasProjectiveDimensionLE (Hook.module (k := ℚ) false false : PModule ℚ Bool) 0 := by
   letI : HasProjectiveDimensionLT
