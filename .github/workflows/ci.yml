@@ -100,6 +100,8 @@ jobs:
       # Textual guards first: they fail in seconds, before any toolchain download.
       - name: Transient-artefact guard
         run: bash scripts/check-transient-artifacts.sh
+      - name: Merge-conflict marker guard
+        run: bash scripts/check-conflict-markers.sh
       - name: No unmarked sorry/admit
         env:
           BASE_REF: ${{ github.base_ref }}
