@@ -34,9 +34,7 @@
 # The ALLOW_ markers are honoured ONLY in the trailing line comment of the violating line
 # (`… := sorry -- ALLOW_SORRY: #12 reason`), never inside a string or a block comment.
 BEGIN { q = "\047"; G = "«"; GC = "»"; LG = length(G); LGC = length(GC)
-  # Byte mode (LG > 1): a multibyte character literal is its lead byte plus continuation bytes;
-  # seqlen maps each UTF-8 lead byte to the length of the sequence. In character mode substr()
-  # already returns a whole character, so the table stays empty and the ASCII rules apply.
+  # Byte mode (LG > 1): seqlen maps UTF-8 lead bytes to sequence lengths; character mode leaves it empty (substr() reads a whole character).
   if (LG > 1) {
     for (b = 192; b < 224; b++) seqlen[sprintf("%c", b)] = 2
     for (b = 224; b < 240; b++) seqlen[sprintf("%c", b)] = 3

@@ -42,8 +42,10 @@ EOF
 case_ char_literal_escape 1 0 <<'EOF'
 def c := '\n'; sorry
 EOF
-case_ char_literal_then_string 0 0 <<'EOF'
-def c := ('«', "sorry")
+case_ char_literal_then_string 2 0 <<'EOF'
+def c := ('«', "sorry"); sorry
+example : True := sorry
+def d := ('«', "sorry")
 EOF
 
 case_ plain_sorry 1 0 <<'EOF'
@@ -336,13 +338,18 @@ done
 d="$tmp/root-missing"; rn=$((rn + 1)); fixture "$d"
 if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then echo "FAIL [root:missing]: not rejected"; rfail=1; fi
 # Portability: every awk found must parse the shared lexer and agree, in a UTF-8 locale.
+# A character-aware awk (gawk) takes the lexer's character-mode path here; a byte-wise awk (mawk) uses the lead-byte table.
 printf 'import Foo.Δ\nimport Foo.«match»\n' > "$tmp/uni.lean"; printf 'import A open B\n' > "$tmp/bad.lean"
+printf "def c := '«'; sorry\n" > "$tmp/charlit.lean"
 for a in gawk mawk nawk; do
   command -v "$a" >/dev/null 2>&1 || continue
   rn=$((rn + 1))
   if ! out="$(LC_ALL=C.UTF-8 "$a" -v mode=root -f scripts/lean-code-scan.awk "$tmp/uni.lean" 2>&1)" || [ -n "$out" ] \
      || [ "$(LC_ALL=C.UTF-8 "$a" -v mode=root -f scripts/lean-code-scan.awk "$tmp/bad.lean" | wc -l)" -ne 1 ]; then
     echo "FAIL [root:awk-$a]: lexer rejected or misjudged under $a: $out"; rfail=1
+  fi
+  if [ "$(LC_ALL=C.UTF-8 "$a" -v mode=sorry -f scripts/lean-code-scan.awk "$tmp/charlit.lean" | wc -l)" -ne 1 ]; then
+    echo "FAIL [root:awk-$a-charlit]: multibyte character literal hid or duplicated a sorry under $a"; rfail=1
   fi
 done
 # The guards must not depend on the caller's locale: multibyte characters before an `r` in code, and a non-UTF-8 line.
