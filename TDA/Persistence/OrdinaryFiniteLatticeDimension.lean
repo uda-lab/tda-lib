@@ -12,7 +12,7 @@ import Mathlib.CategoryTheory.Limits.FunctorCategory.BinaryBiproducts
 This file bounds ordinary Ext-based projective dimension in the actual
 persistence-functor category. The proof first controls hooks and finite rank
 resolution rows, then principal-downset injectives, and finally removes the
-temporary finite bound by the actual two-injective presentation.
+temporary finite bound using the actual injective-presentation row.
 -/
 
 set_option autoImplicit false
