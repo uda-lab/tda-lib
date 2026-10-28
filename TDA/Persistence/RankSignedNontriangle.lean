@@ -7,12 +7,14 @@ import TDA.Persistence.FiniteRankProjectiveResolutionHookBetti
 import Mathlib.Tactic
 
 /-!
-# A signed hook triangle failure from a finite staircase
+# A two-coordinate signed hook triangle failure from a finite staircase
 
-This module constructs the three-step two-coordinate staircase, its actual
-minimal rank-projective resolution, and the signed hook matching witnesses.
-The resulting triangle failure is for the existing cross-sign dissimilarity;
-it makes no assertion about ordinary numerical bottleneck distance.
+This module formalizes the rescaled three-step staircase of
+[Oudot--Scoccola, Example 4.1](https://arxiv.org/html/2112.11901v4), in the
+cross-sign convention of [BOOS v3, §§2.9 and Remark 6.3](https://arxiv.org/html/2208.00300v3#S6.SS2).
+It proves the concrete signed-domain triangle failure and realizes its three
+barcodes by actual originally finitely presented modules. The result makes no
+claim about ordinary numerical bottleneck distance.
 -/
 
 set_option autoImplicit false
@@ -1241,12 +1243,16 @@ private theorem signedStaircasePrincipal_finitelyPresented (a : Fin 2 → ℝ) :
       (HookInfinity.module (R := k) a) := by
   exact GradedFree.free_finitelyPresented (HookInfinity.generators a)
 
+/-- The principal module at the first vertex has its original finite
+presentation. -/
 theorem signedStaircaseLeftModule_finitelyPresented :
     GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin 2 → ℝ)
       (signedStaircaseLeftModule (k := k)) := by
   simpa [signedStaircaseLeftModule] using
     signedStaircasePrincipal_finitelyPresented (k := k) (signedStaircaseVertices 0)
 
+/-- The principal module at the final vertex has its original finite
+presentation. -/
 theorem signedStaircaseRightModule_finitelyPresented :
     GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin 2 → ℝ)
       (signedStaircaseRightModule (k := k)) := by
@@ -1314,6 +1320,8 @@ private theorem signedStaircasePrincipalMinimalResolution_barcode
     rw [hdegrees]
     simp
 
+/-- The existing module-level signed barcode choice of the staircase module is
+the four-positive, three-negative center barcode. -/
 theorem signedStaircaseModule_barcode :
     finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
       (signedStaircaseModule (k := k))
@@ -1325,6 +1333,8 @@ theorem signedStaircaseModule_barcode :
     (signedStaircaseMinimalResolution (k := k))]
   exact signedStaircaseMinimalResolution_barcode (k := k)
 
+/-- The existing module-level signed barcode choice at the first vertex is the
+left endpoint barcode. -/
 theorem signedStaircaseLeftModule_barcode :
     finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
       (signedStaircaseLeftModule (k := k))
@@ -1338,6 +1348,8 @@ theorem signedStaircaseLeftModule_barcode :
     signedStaircasePrincipalMinimalResolution_barcode (k := k)
       (signedStaircaseVertices 0)
 
+/-- The existing module-level signed barcode choice at the final vertex is the
+right endpoint barcode. -/
 theorem signedStaircaseRightModule_barcode :
     finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
       (signedStaircaseRightModule (k := k))
@@ -1350,3 +1362,434 @@ theorem signedStaircaseRightModule_barcode :
   simpa [signedStaircaseRight, signedStaircaseRightModule] using
     signedStaircasePrincipalMinimalResolution_barcode (k := k)
       (signedStaircaseVertices 3)
+
+private def signedStaircaseLeftCenterSourceTags :
+    Fin 4 → RealHookTag (n := 2) :=
+  fun i => match i.val with
+    | 0 => Sum.inr (signedStaircaseVertices 0)
+    | 1 => Sum.inr (signedStaircaseJoins 0)
+    | 2 => Sum.inr (signedStaircaseJoins 1)
+    | _ => Sum.inr (signedStaircaseJoins 2)
+
+private def signedStaircaseLeftCenterTargetTags :
+    Fin 4 → RealHookTag (n := 2) :=
+  fun i => match i.val with
+    | 0 => Sum.inr (signedStaircaseVertices 0)
+    | 1 => Sum.inr (signedStaircaseVertices 1)
+    | 2 => Sum.inr (signedStaircaseVertices 2)
+    | _ => Sum.inr (signedStaircaseVertices 3)
+
+private def signedStaircaseCenterRightSourceTags :
+    Fin 4 → RealHookTag (n := 2) :=
+  fun i => Sum.inr (signedStaircaseVertices i)
+
+private def signedStaircaseCenterRightTargetTags :
+    Fin 4 → RealHookTag (n := 2) :=
+  fun i => match i.val with
+    | 0 => Sum.inr (signedStaircaseJoins 0)
+    | 1 => Sum.inr (signedStaircaseJoins 1)
+    | 2 => Sum.inr (signedStaircaseJoins 2)
+    | _ => Sum.inr (signedStaircaseVertices 3)
+
+private def signedStaircaseIdentityMatching :
+    OccurrenceMatching (Fin 4) (Fin 4) PEmpty.{1} PEmpty.{1} where
+  finite := fun i => some i
+  finite_injective := by
+    intro i i' j hij hij'
+    simp only [Option.some.injEq] at hij hij'
+    exact hij.trans hij'.symm
+  essential := Equiv.refl _
+
+private theorem signedStaircaseLeftCenterSource_multiset :
+    hookTagMultiset signedStaircaseLeftCenterSourceTags =
+      signedStaircaseLeft.positive + signedStaircaseCenter.negative := by
+  simp [signedStaircaseLeftCenterSourceTags, hookTagMultiset,
+    signedStaircaseLeft, signedStaircaseCenter] <;> ac_rfl
+
+private theorem signedStaircaseLeftCenterTarget_multiset :
+    hookTagMultiset signedStaircaseLeftCenterTargetTags =
+      signedStaircaseCenter.positive + signedStaircaseLeft.negative := by
+  simp [signedStaircaseLeftCenterTargetTags, hookTagMultiset,
+    signedStaircaseLeft, signedStaircaseCenter] <;> ac_rfl
+
+private theorem signedStaircaseCenterRightSource_multiset :
+    hookTagMultiset signedStaircaseCenterRightSourceTags =
+      signedStaircaseCenter.positive + signedStaircaseRight.negative := by
+  simp [signedStaircaseCenterRightSourceTags, hookTagMultiset,
+    signedStaircaseRight, signedStaircaseCenter] <;> ac_rfl
+
+private theorem signedStaircaseCenterRightTarget_multiset :
+    hookTagMultiset signedStaircaseCenterRightTargetTags =
+      signedStaircaseRight.positive + signedStaircaseCenter.negative := by
+  simp [signedStaircaseCenterRightTargetTags, hookTagMultiset,
+    signedStaircaseRight, signedStaircaseCenter]
+  ext t
+  simp only [Multiset.count_cons, Multiset.count_singleton,
+    Multiset.count_zero]
+  omega
+
+private theorem signedStaircasePrincipalInterleaving_radius_one
+    {a c : Fin 2 → ℝ}
+    (hac : ∀ r, c r ≤ a r + 1) (hca : ∀ r, a r ≤ c r + 1) :
+    Nonempty (CoordinateInterleaving 1
+      (HookInfinity.module (R := k) a) (HookInfinity.module (R := k) c)) :=
+  ⟨HookMatching.principalHookInterleavingOfBirthClose (k := k) 1 hac hca⟩
+
+private theorem signedStaircaseLeftCenter_family_matching :
+    HookMatching.IsMatching (k := k) 1
+      signedStaircaseLeftCenterSourceTags signedStaircaseLeftCenterTargetTags
+      signedStaircaseIdentityMatching := by
+  classical
+  refine ⟨?_, ?_, ?_⟩
+  · intro i j hij
+    have hji : i = j := by
+      simpa [signedStaircaseIdentityMatching] using hij
+    subst j
+    fin_cases i
+    · simpa [HookMatching.tagModule,
+        FiniteRankProjectiveClassification.rankProjectiveHookModule,
+        signedStaircaseLeftCenterSourceTags,
+        signedStaircaseLeftCenterTargetTags] using
+        signedStaircasePrincipalInterleaving_radius_one
+          (a := signedStaircaseVertices 0) (c := signedStaircaseVertices 0)
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseVertices])
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseVertices])
+    · simpa [HookMatching.tagModule,
+        FiniteRankProjectiveClassification.rankProjectiveHookModule,
+        signedStaircaseLeftCenterSourceTags,
+        signedStaircaseLeftCenterTargetTags] using
+        signedStaircasePrincipalInterleaving_radius_one
+          (a := signedStaircaseJoins 0) (c := signedStaircaseVertices 1)
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+    · simpa [HookMatching.tagModule,
+        FiniteRankProjectiveClassification.rankProjectiveHookModule,
+        signedStaircaseLeftCenterSourceTags,
+        signedStaircaseLeftCenterTargetTags] using
+        signedStaircasePrincipalInterleaving_radius_one
+          (a := signedStaircaseJoins 1) (c := signedStaircaseVertices 2)
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+    · simpa [HookMatching.tagModule,
+        FiniteRankProjectiveClassification.rankProjectiveHookModule,
+        signedStaircaseLeftCenterSourceTags,
+        signedStaircaseLeftCenterTargetTags] using
+        signedStaircasePrincipalInterleaving_radius_one
+          (a := signedStaircaseJoins 2) (c := signedStaircaseVertices 3)
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+  · intro i hi
+    simp [signedStaircaseIdentityMatching] at hi
+  · intro j hj
+    have hnot := hj j
+    simp [signedStaircaseIdentityMatching] at hnot
+
+private theorem signedStaircaseCenterRight_family_matching :
+    HookMatching.IsMatching (k := k) 1
+      signedStaircaseCenterRightSourceTags signedStaircaseCenterRightTargetTags
+      signedStaircaseIdentityMatching := by
+  classical
+  refine ⟨?_, ?_, ?_⟩
+  · intro i j hij
+    have hji : i = j := by
+      simpa [signedStaircaseIdentityMatching] using hij
+    subst j
+    fin_cases i
+    · simpa [HookMatching.tagModule,
+        FiniteRankProjectiveClassification.rankProjectiveHookModule,
+        signedStaircaseCenterRightSourceTags,
+        signedStaircaseCenterRightTargetTags] using
+        signedStaircasePrincipalInterleaving_radius_one
+          (a := signedStaircaseVertices 0) (c := signedStaircaseJoins 0)
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+    · simpa [HookMatching.tagModule,
+        FiniteRankProjectiveClassification.rankProjectiveHookModule,
+        signedStaircaseCenterRightSourceTags,
+        signedStaircaseCenterRightTargetTags] using
+        signedStaircasePrincipalInterleaving_radius_one
+          (a := signedStaircaseVertices 1) (c := signedStaircaseJoins 1)
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+    · simpa [HookMatching.tagModule,
+        FiniteRankProjectiveClassification.rankProjectiveHookModule,
+        signedStaircaseCenterRightSourceTags,
+        signedStaircaseCenterRightTargetTags] using
+        signedStaircasePrincipalInterleaving_radius_one
+          (a := signedStaircaseVertices 2) (c := signedStaircaseJoins 2)
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseJoins, signedStaircaseVertices])
+    · simpa [HookMatching.tagModule,
+        FiniteRankProjectiveClassification.rankProjectiveHookModule,
+        signedStaircaseCenterRightSourceTags,
+        signedStaircaseCenterRightTargetTags] using
+        signedStaircasePrincipalInterleaving_radius_one
+          (a := signedStaircaseVertices 3) (c := signedStaircaseVertices 3)
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseVertices])
+          (by intro r; fin_cases r <;> norm_num [signedStaircaseVertices])
+  · intro i hi
+    simp [signedStaircaseIdentityMatching] at hi
+  · intro j hj
+    have hnot := hj j
+    simp [signedStaircaseIdentityMatching] at hnot
+
+/-- An actual radius-one occurrence matching from the left endpoint to the
+center signed barcode. -/
+theorem signedStaircaseLeftCenter_matching :
+    HasMultisetMatching (k := k) (n := 2) 1
+      (signedStaircaseLeft.positive + signedStaircaseCenter.negative)
+      (signedStaircaseCenter.positive + signedStaircaseLeft.negative) := by
+  exact HasMultisetMatching.intro signedStaircaseLeftCenterSourceTags
+    signedStaircaseLeftCenterTargetTags
+    signedStaircaseLeftCenterSource_multiset
+    signedStaircaseLeftCenterTarget_multiset
+    signedStaircaseIdentityMatching
+    signedStaircaseLeftCenter_family_matching
+
+/-- An actual radius-one occurrence matching from the center to the right
+endpoint signed barcode. -/
+theorem signedStaircaseCenterRight_matching :
+    HasMultisetMatching (k := k) (n := 2) 1
+      (signedStaircaseCenter.positive + signedStaircaseRight.negative)
+      (signedStaircaseRight.positive + signedStaircaseCenter.negative) := by
+  exact HasMultisetMatching.intro signedStaircaseCenterRightSourceTags
+    signedStaircaseCenterRightTargetTags
+    signedStaircaseCenterRightSource_multiset
+    signedStaircaseCenterRightTarget_multiset
+    signedStaircaseIdentityMatching
+    signedStaircaseCenterRight_family_matching
+
+private theorem signedStaircasePrincipalTransition_ne_zero
+    (a : Fin 2 → ℝ) (ρ : NNReal) :
+    CoordinateShift.transition (ρ + ρ) (HookInfinity.module (R := k) a) ≠ 0 := by
+  apply (HookMatching.principalHookCoefficient_ne_zero_iff
+    (k := k) (ε := ρ + ρ)
+    (CoordinateShift.transition (ρ + ρ) (HookInfinity.module (R := k) a))).mp
+  rw [HookMatching.principalHookCoefficient_transition]
+  exact one_ne_zero
+
+private theorem signedStaircasePrincipalInterleaving_maps_nonzero
+    {a c : Fin 2 → ℝ} (ρ : NNReal)
+    (I : CoordinateInterleaving ρ
+      (HookInfinity.module (R := k) a) (HookInfinity.module (R := k) c)) :
+    I.φ ≠ 0 ∧ I.ψ ≠ 0 := by
+  constructor
+  · intro hφ
+    have htrans := signedStaircasePrincipalTransition_ne_zero (k := k) a ρ
+    apply htrans
+    have hzero : (0 : HookInfinity.module (R := k) a ⟶
+        (CoordinateShift.shift (ρ + ρ)).obj (HookInfinity.module (R := k) a)) =
+        CoordinateShift.transition (ρ + ρ) (HookInfinity.module (R := k) a) := by
+      have hcomp := I.φ_ψ
+      rw [hφ] at hcomp
+      simpa only [zero_comp] using hcomp
+    exact hzero.symm
+  · intro hψ
+    have htrans := signedStaircasePrincipalTransition_ne_zero (k := k) c ρ
+    apply htrans
+    have hzero : (0 : HookInfinity.module (R := k) c ⟶
+        (CoordinateShift.shift (ρ + ρ)).obj (HookInfinity.module (R := k) c)) =
+        CoordinateShift.transition (ρ + ρ) (HookInfinity.module (R := k) c) := by
+      have hcomp := I.ψ_φ
+      rw [hψ] at hcomp
+      simpa only [zero_comp] using hcomp
+    exact hzero.symm
+
+private theorem signedStaircasePrincipalInterleaving_zero_impossible
+    {a : Fin 2 → ℝ} (ρ : NNReal)
+    (I : CoordinateInterleaving ρ (HookInfinity.module (R := k) a) 0) :
+    False := by
+  have htrans := signedStaircasePrincipalTransition_ne_zero (k := k) a ρ
+  have hφ : I.φ = 0 := by
+    apply NatTrans.ext
+    funext x
+    exact (Functor.zero_obj (C := Fin 2 → ℝ) (D := ModuleCat.{u} k)
+      (CoordinateShift.translation ρ x)).eq_of_tgt _ _
+  have hzero : (0 : HookInfinity.module (R := k) a ⟶
+      (CoordinateShift.shift (ρ + ρ)).obj (HookInfinity.module (R := k) a)) =
+      CoordinateShift.transition (ρ + ρ) (HookInfinity.module (R := k) a) := by
+    have hcomp := I.φ_ψ
+    rw [hφ] at hcomp
+    simpa only [zero_comp] using hcomp
+  exact htrans hzero.symm
+
+private theorem signedStaircaseLeftRight_long_radius_lower_bound
+    {ρ : NNReal}
+    (h : HasMultisetMatching (k := k) (n := 2) ρ
+      (signedStaircaseLeft.positive + signedStaircaseRight.negative)
+      (signedStaircaseRight.positive + signedStaircaseLeft.negative)) :
+    (3 : ℝ) ≤ (ρ : ℝ) := by
+  obtain ⟨m, ℓ, F, G, hF, hG, M, hM⟩ := h
+  have hm : m = 1 := by
+    simpa [HookMatching.hookTagMultiset_card,
+      signedStaircaseLeft, signedStaircaseRight] using
+      congrArg Multiset.card hF
+  have hℓ : ℓ = 1 := by
+    simpa [HookMatching.hookTagMultiset_card,
+      signedStaircaseLeft, signedStaircaseRight] using
+      congrArg Multiset.card hG
+  subst m
+  subst ℓ
+  have hFtag : F 0 = Sum.inr (signedStaircaseVertices 0) := by
+    have hF' : hookTagMultiset F = {Sum.inr (signedStaircaseVertices 0)} := by
+      simpa [signedStaircaseLeft, signedStaircaseRight] using hF
+    simpa [hookTagMultiset] using hF'
+  have hGtag : G 0 = Sum.inr (signedStaircaseVertices 3) := by
+    have hG' : hookTagMultiset G = {Sum.inr (signedStaircaseVertices 3)} := by
+      simpa [signedStaircaseLeft, signedStaircaseRight] using hG
+    simpa [hookTagMultiset] using hG'
+  cases hp : M.finite 0 with
+  | none =>
+      obtain ⟨I⟩ := hM.source_zero 0 hp
+      have I' : CoordinateInterleaving ρ
+          (HookInfinity.module (R := k) (signedStaircaseVertices 0)) 0 := by
+        simpa [HookMatching.tagModule,
+          FiniteRankProjectiveClassification.rankProjectiveHookModule, hFtag] using I
+      exact False.elim
+        (signedStaircasePrincipalInterleaving_zero_impossible (k := k) ρ I')
+  | some j =>
+      have hj : j = 0 := Fin.ext (by omega)
+      subst j
+      obtain ⟨I⟩ := hM.paired 0 0 hp
+      have I' : CoordinateInterleaving ρ
+          (HookInfinity.module (R := k) (signedStaircaseVertices 0))
+          (HookInfinity.module (R := k) (signedStaircaseVertices 3)) := by
+        simpa [HookMatching.tagModule,
+          FiniteRankProjectiveClassification.rankProjectiveHookModule,
+          hFtag, hGtag] using I
+      have hmaps := signedStaircasePrincipalInterleaving_maps_nonzero
+        (k := k) ρ I'
+      have hbirth := HookMatching.nonzero_principalHook_map_birth_bound
+        (k := k) (ε := ρ) I'.φ hmaps.1
+      have hcoord := hbirth 0
+      norm_num [signedStaircaseVertices] at hcoord
+      exact hcoord
+
+private def signedStaircaseIdentityMatchingOne :
+    OccurrenceMatching (Fin 1) (Fin 1) PEmpty.{1} PEmpty.{1} where
+  finite := fun i => some i
+  finite_injective := by
+    intro i i' j hij hij'
+    simp only [Option.some.injEq] at hij hij'
+    exact hij.trans hij'.symm
+  essential := Equiv.refl _
+
+private theorem signedStaircaseLeftRight_matching_three :
+    HasMultisetMatching (k := k) (n := 2) 3
+      (signedStaircaseLeft.positive + signedStaircaseRight.negative)
+      (signedStaircaseRight.positive + signedStaircaseLeft.negative) := by
+  let F : Fin 1 → RealHookTag (n := 2) := fun _ =>
+    Sum.inr (signedStaircaseVertices 0)
+  let G : Fin 1 → RealHookTag (n := 2) := fun _ =>
+    Sum.inr (signedStaircaseVertices 3)
+  have hF : hookTagMultiset F =
+      signedStaircaseLeft.positive + signedStaircaseRight.negative := by
+    simp [F, signedStaircaseLeft, signedStaircaseRight, hookTagMultiset]
+  have hG : hookTagMultiset G =
+      signedStaircaseRight.positive + signedStaircaseLeft.negative := by
+    simp [G, signedStaircaseLeft, signedStaircaseRight, hookTagMultiset]
+  let M := signedStaircaseIdentityMatchingOne
+  have hM : HookMatching.IsMatching (k := k) 3 F G M := by
+    refine ⟨?_, ?_, ?_⟩
+    · intro i j hij
+      have hji : i = j := by simpa [M, signedStaircaseIdentityMatchingOne] using hij
+      subst j
+      fin_cases i
+      exact ⟨by
+        simpa [HookMatching.tagModule,
+          FiniteRankProjectiveClassification.rankProjectiveHookModule, F, G] using
+          HookMatching.principalHookInterleavingOfBirthClose (k := k) 3
+            (a := signedStaircaseVertices 0)
+            (c := signedStaircaseVertices 3)
+            (by intro r; fin_cases r <;> norm_num [signedStaircaseVertices])
+            (by intro r; fin_cases r <;> norm_num [signedStaircaseVertices])⟩
+    · intro i hi
+      simp [M, signedStaircaseIdentityMatchingOne] at hi
+    · intro j hj
+      have hnot := hj j
+      simp [M, signedStaircaseIdentityMatchingOne] at hnot
+  exact HasMultisetMatching.intro F G hF hG M hM
+
+/-- The signed distance from the left endpoint to the center is at most one. -/
+theorem signedStaircaseLeftCenter_distance_le_one :
+    signedHookBottleneckDissimilarity (k := k)
+      signedStaircaseLeft signedStaircaseCenter ≤ 1 := by
+  unfold signedHookBottleneckDissimilarity
+  exact hookMultisetBottleneckDistance_le_of_matching
+    signedStaircaseLeftCenter_matching
+
+/-- The signed distance from the center to the right endpoint is at most one. -/
+theorem signedStaircaseCenterRight_distance_le_one :
+    signedHookBottleneckDissimilarity (k := k)
+      signedStaircaseCenter signedStaircaseRight ≤ 1 := by
+  unfold signedHookBottleneckDissimilarity
+  exact hookMultisetBottleneckDistance_le_of_matching
+    signedStaircaseCenterRight_matching
+
+/-- The signed distance between the endpoint barcodes is exactly three. -/
+theorem signedStaircaseLeftRight_distance_eq_three :
+    signedHookBottleneckDissimilarity (k := k)
+      signedStaircaseLeft signedStaircaseRight = 3 := by
+  unfold signedHookBottleneckDissimilarity
+  apply le_antisymm
+  · exact (hookMultisetBottleneckDistance_le_of_matching
+      signedStaircaseLeftRight_matching_three).trans (by norm_num)
+  · apply (le_hookMultisetBottleneckDistance_iff _ _ 3).2
+    intro ρ hρ
+    have h := signedStaircaseLeftRight_long_radius_lower_bound (k := k) hρ
+    exact_mod_cast h
+
+/-- The three explicit signed hook barcodes violate the triangle inequality. -/
+theorem signedStaircase_signed_nontriangle :
+    signedHookBottleneckDissimilarity (k := k)
+        signedStaircaseLeft signedStaircaseCenter +
+      signedHookBottleneckDissimilarity (k := k)
+        signedStaircaseCenter signedStaircaseRight <
+      signedHookBottleneckDissimilarity (k := k)
+        signedStaircaseLeft signedStaircaseRight := by
+  rw [signedStaircaseLeftRight_distance_eq_three]
+  exact lt_of_le_of_lt
+    (add_le_add signedStaircaseLeftCenter_distance_le_one
+      signedStaircaseCenterRight_distance_le_one)
+    (by norm_num)
+
+/-- The signed cross-sign dissimilarity does not satisfy a triangle law on all
+two-coordinate signed hook barcodes. The counterexample is the concrete
+staircase above. -/
+theorem not_forall_signedHookBottleneckDissimilarity_triangle :
+    ¬ ∀ B₁ B₂ B₃ : SignedHookBarcode 2,
+      signedHookBottleneckDissimilarity (k := k) B₁ B₃ ≤
+        signedHookBottleneckDissimilarity (k := k) B₁ B₂ +
+          signedHookBottleneckDissimilarity (k := k) B₂ B₃ := by
+  intro htriangle
+  exact not_le_of_gt (signedStaircase_signed_nontriangle (k := k))
+    (htriangle signedStaircaseLeft signedStaircaseCenter signedStaircaseRight)
+
+/-- The actual originally finitely presented endpoint and staircase modules
+violate the triangle inequality for their existing module-level signed barcode
+choices. -/
+theorem signedStaircaseModule_signed_nontriangle :
+    signedHookBottleneckDissimilarity (k := k)
+        (finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+          (signedStaircaseLeftModule (k := k))
+          (signedStaircaseLeftModule_finitelyPresented (k := k)))
+        (finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+          (signedStaircaseModule (k := k))
+          (signedStaircaseModule_finitelyPresented (k := k))) +
+      signedHookBottleneckDissimilarity (k := k)
+        (finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+          (signedStaircaseModule (k := k))
+          (signedStaircaseModule_finitelyPresented (k := k)))
+        (finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+          (signedStaircaseRightModule (k := k))
+          (signedStaircaseRightModule_finitelyPresented (k := k))) <
+      signedHookBottleneckDissimilarity (k := k)
+        (finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+          (signedStaircaseLeftModule (k := k))
+          (signedStaircaseLeftModule_finitelyPresented (k := k)))
+        (finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+          (signedStaircaseRightModule (k := k))
+          (signedStaircaseRightModule_finitelyPresented (k := k))) := by
+  rw [signedStaircaseLeftModule_barcode, signedStaircaseModule_barcode,
+    signedStaircaseRightModule_barcode]
+  exact signedStaircase_signed_nontriangle (k := k)
