@@ -499,8 +499,9 @@ The finite-hypothesis signed hook stability result is proved in
 ordinary one-dimensional barcode connection and its half-open boundary
 conventions are proved in [One-dimensional signed hooks and ordinary
 barcodes](#one-dimensional-signed-hooks-and-ordinary-barcodes). The concrete
-two-coordinate signed triangle failure is proved below; the broader #501
-boundary and acceptance audit remains open.
+two-coordinate signed triangle failure is proved below. Finite-presentation
+closure for categorical colimits, exact extensions and pullbacks, and composite
+kernels is described in the corresponding sections below.
 
 For any field and any partially ordered index type in universe zero, two
 `MinimalFiniteRankProjectiveResolution`s of the same module have isomorphic
@@ -638,8 +639,7 @@ matching argument of [BOOS Theorem 6.1 and §§2.7–2.9, with the finite part o
 Proposition 4.3](https://arxiv.org/html/2208.00300v3); it does not claim the
 source's countable extension or a metric instance. The ordinary one-dimensional
 barcode connection is a separate result documented below; a concrete
-two-coordinate signed triangle failure is proved in the next section, while
-the broader #501 boundary and acceptance audit remains open. Examples apply
+two-coordinate signed triangle failure is proved in the next section. Examples apply
 the capstone in dimensions one and two (coefficients one and nine), at zero interleaving
 parameter, and to nonzero finite-presentation inputs; finite-death,
 principal-upset, empty, and repeated cross-sign tags are also exercised.
@@ -668,8 +668,7 @@ supplied resolutions or matching certificates. This is the concrete signed
 example of [BOOS v3, §2.9 and Remark 6.3](https://arxiv.org/html/2208.00300v3#S6.SS2),
 using the staircase of [Oudot--Scoccola v4, Example 4.1](https://arxiv.org/html/2112.11901v4)
 rescaled by three. It does not show a triangle failure for ordinary numerical
-bottleneck distance or identify `dSigned` with that distance. The wider #501
-boundary and acceptance audit remains open.
+bottleneck distance or identify `dSigned` with that distance.
 
 ### One-dimensional signed hooks and ordinary barcodes
 
