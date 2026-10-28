@@ -6,3 +6,4 @@ import TDA.Persistence
 import TDA.Topology
 import TDA.Reeb
 import TDA.Mapper
+import TDA.Probability

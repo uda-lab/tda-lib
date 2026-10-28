@@ -19,7 +19,6 @@ import TDA.Filtration.SparseRips.Packing
 import TDA.Filtration.SparseRips.Sparsity
 import TDA.Filtration.SparseRips.FaceEntryFilter
 import TDA.Filtration.SparseRips.LogDiagramStability
-import TDA.Filtration.SparseRips.H1Examples
 import TDA.Filtration.CompatibleOrder
 import TDA.Filtration.CriticalValues
 import TDA.Filtration.CompatibleOrderPrefix
