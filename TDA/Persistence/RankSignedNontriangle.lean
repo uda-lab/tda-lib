@@ -737,11 +737,11 @@ private theorem signedStaircaseRankExact :
     · simp
 
 /-- The actual finite presentation with the adjacent-difference relations. -/
-noncomputable def signedStaircasePresentation :
-    GradedFree.Presentation.{u,0,0} (R := k) (P := Fin 2 → ℝ) :=
-  GradedFree.Presentation.ofRelations (R := k)
-    signedStaircaseDegreeZeroGenerators signedStaircaseDegreeOneGenerators
-    (signedStaircaseRelation (k := k))
+noncomputable abbrev signedStaircasePresentation :
+    GradedFree.Presentation.{u,0,0} (R := k) (P := Fin 2 → ℝ) where
+  generators := signedStaircaseDegreeZeroGenerators
+  relations := signedStaircaseDegreeOneGenerators
+  relationMap := signedStaircaseDifferential (k := k)
 
 end TDA.Persistence
 
@@ -857,3 +857,496 @@ private theorem signedStaircaseAugmentation_is_cover :
       exact hbirth
     rw [hf']
     infer_instance
+
+private theorem signedStaircaseSecondRowRankExact :
+    IsRankExact (0 : (0 : PModule.{u,0,u} k (Fin 2 → ℝ)) ⟶
+      signedStaircaseF1 (k := k)) (𝟙 (signedStaircaseF1 (k := k))) := by
+  classical
+  have hshort : IsPointwiseShortExact
+      (0 : (0 : PModule.{u,0,u} k (Fin 2 → ℝ)) ⟶ signedStaircaseF1 (k := k))
+      (𝟙 (signedStaircaseF1 (k := k))) := by
+    refine ⟨?_, ?_, ?_⟩
+    · intro p x y hxy
+      exact (ModuleCat.subsingleton_of_isZero (Functor.zero_obj p)).elim x y
+    · intro p z
+      exact ⟨z, rfl⟩
+    · intro p
+      apply Submodule.ext
+      intro z
+      simp [LinearMap.mem_range, LinearMap.mem_ker]
+  letI (p : Fin 2 → ℝ) :
+      FiniteDimensional k ((signedStaircaseF1 (k := k)).obj p) := by
+    change FiniteDimensional k
+      ((GradedFree.module signedStaircaseDegreeOneGenerators).obj p)
+    exact GradedFree.finiteDimensional_fiber
+      (k := k) signedStaircaseDegreeOneGenerators p
+  exact hshort.rankExact_of_section
+    (𝟙 (signedStaircaseF1 (k := k))) (by simp)
+
+private theorem signedStaircaseSecondQuotient_is_cover :
+    IsRankProjectiveCover (𝟙 (signedStaircaseF1 (k := k))) := by
+  classical
+  haveI (x : Fin 2 → ℝ) :
+      FiniteDimensional k ((signedStaircaseF1 (k := k)).obj x) := by
+    change FiniteDimensional k
+      ((GradedFree.module signedStaircaseDegreeOneGenerators).obj x)
+    exact GradedFree.finiteDimensional_fiber
+      (k := k) signedStaircaseDegreeOneGenerators x
+  refine ⟨?_, ?_, ?_⟩
+  · let e := GradedFree.moduleBiproductIso (R := k)
+      signedStaircaseDegreeOneGenerators
+    exact IsRankProjective.of_iso
+      (IsRankProjective.biproduct
+        (fun i : Fin 3 => HookInfinity.module (R := k)
+          (signedStaircaseJoins i))
+        (by intro i; exact HookInfinity.isRankProjective _)) e.symm
+  · exact RankKernel.rankExact
+      (𝟙 (signedStaircaseF1 (k := k)))
+      (fun p x => ⟨x, rfl⟩)
+      (by
+        intro a b hab z hz
+        exact ⟨z, by simp, hz⟩)
+  · intro f hf
+    have hf' : f = 𝟙 (signedStaircaseF1 (k := k)) := by simpa using hf
+    rw [hf']
+    infer_instance
+
+private noncomputable def signedStaircaseMinimalResolution :
+    MinimalFiniteRankProjectiveResolution (k := k)
+      (M := signedStaircaseModule (k := k)) where
+  resolution := {
+    toFiniteRankExactResolution := {
+      length := 2
+      kernel := Fin.cases (signedStaircaseModule (k := k))
+        (fun i : Fin 2 => Fin.cases (signedStaircaseF1 (k := k))
+          (fun _ : Fin 1 => 0) i)
+      term := Fin.cases (signedStaircaseF0 (k := k))
+        (fun _ : Fin 1 => signedStaircaseF1 (k := k))
+      inclusion := fun i => by
+        refine Fin.cases ?_ ?_ i
+        · exact signedStaircaseDifferential (k := k)
+        · intro j
+          have hj : j = 0 := Subsingleton.elim _ _
+          subst j
+          exact 0
+      quotient := fun i => by
+        refine Fin.cases ?_ ?_ i
+        · exact signedStaircaseAugmentation (k := k)
+        · intro j
+          have hj : j = 0 := Subsingleton.elim _ _
+          subst j
+          exact 𝟙 (signedStaircaseF1 (k := k))
+      row_rank_exact := fun i => by
+        refine Fin.cases ?_ ?_ i
+        · exact signedStaircaseRankExact (k := k)
+        · intro j
+          have hj : j = 0 := Subsingleton.elim _ _
+          subst j
+          exact signedStaircaseSecondRowRankExact (k := k)
+      initial_iso := Iso.refl _
+      terminal_iso := Iso.refl _
+    }
+    term_rank_projective := fun i => by
+      refine Fin.cases ?_ ?_ i
+      · exact (signedStaircaseAugmentation_is_cover (k := k)).term_rank_projective
+      · intro j
+        have hj : j = 0 := Subsingleton.elim _ _
+        subst j
+        let e := GradedFree.moduleBiproductIso (R := k)
+          signedStaircaseDegreeOneGenerators
+        exact IsRankProjective.of_iso
+          (IsRankProjective.biproduct
+            (fun i : Fin 3 => HookInfinity.module (R := k)
+              (signedStaircaseJoins i))
+            (by intro i; exact HookInfinity.isRankProjective _)) e.symm
+  }
+  quotient_is_cover := fun i => by
+    refine Fin.cases ?_ ?_ i
+    · exact signedStaircaseAugmentation_is_cover (k := k)
+    · intro j
+      have hj : j = 0 := Subsingleton.elim _ _
+      subst j
+      exact signedStaircaseSecondQuotient_is_cover (k := k)
+
+private theorem signedStaircasePresentation_relation_killed :
+    (signedStaircasePresentation (k := k)).relationMap ≫
+      signedStaircaseAugmentation (k := k) = 0 := by
+  change signedStaircaseDifferential (k := k) ≫
+      signedStaircaseAugmentation (k := k) = 0
+  exact (signedStaircasePointwiseShortExact (k := k)).comp_eq_zero
+
+private noncomputable def signedStaircasePresentationAugmentation :
+    GradedFree.module (R := k)
+      (signedStaircasePresentation (k := k)).generators ⟶
+        signedStaircaseModule (k := k) := by
+  change signedStaircaseF0 (k := k) ⟶ signedStaircaseModule (k := k)
+  exact signedStaircaseAugmentation (k := k)
+
+private theorem signedStaircasePresentation_relation_killed' :
+    (signedStaircasePresentation (k := k)).relationMap ≫
+      signedStaircasePresentationAugmentation (k := k) = 0 := by
+  change signedStaircaseDifferential (k := k) ≫
+      signedStaircaseAugmentation (k := k) = 0
+  exact (signedStaircasePointwiseShortExact (k := k)).comp_eq_zero
+
+private noncomputable def signedStaircasePresentedMap :
+    (signedStaircasePresentation (k := k)).presented ⟶
+      signedStaircaseModule (k := k) :=
+  (signedStaircasePresentation (k := k)).desc
+    (signedStaircasePresentationAugmentation (k := k))
+    (signedStaircasePresentation_relation_killed' (k := k))
+
+private theorem signedStaircasePresentedMap_surjective (x : Fin 2 → ℝ)
+    : Function.Surjective ((signedStaircasePresentedMap (k := k)).app x).hom := by
+  classical
+  let f := signedStaircasePresentedMap (k := k)
+  intro z
+  obtain ⟨y, hy⟩ := signedStaircaseAugmentation_surjective_at (k := k) x z
+  refine ⟨((signedStaircasePresentation (k := k)).cover.app x).hom y, ?_⟩
+  have hdesc := (signedStaircasePresentation (k := k)).cover_desc
+    (signedStaircasePresentationAugmentation (k := k))
+    (signedStaircasePresentation_relation_killed' (k := k))
+  have h := congrArg (fun g : signedStaircaseF0 (k := k) ⟶
+      signedStaircaseModule (k := k) => (g.app x).hom y) hdesc
+  change (f.app x).hom (((signedStaircasePresentation (k := k)).cover.app x).hom y) =
+    ((signedStaircaseAugmentation (k := k)).app x).hom y at h
+  exact h.trans hy
+
+private theorem signedStaircasePresentedMap_injective (x : Fin 2 → ℝ)
+    : Function.Injective ((signedStaircasePresentedMap (k := k)).app x).hom := by
+  classical
+  let f := signedStaircasePresentedMap (k := k)
+  intro z z' hzz'
+  obtain ⟨y, hy⟩ := (signedStaircasePresentation (k := k)).cover_surjective x (z - z')
+  have hdesc := (signedStaircasePresentation (k := k)).cover_desc
+    (signedStaircasePresentationAugmentation (k := k))
+    (signedStaircasePresentation_relation_killed' (k := k))
+  have hcomp := congrArg (fun g : signedStaircaseF0 (k := k) ⟶
+      signedStaircaseModule (k := k) => (g.app x).hom y) hdesc
+  change (f.app x).hom (((signedStaircasePresentation (k := k)).cover.app x).hom y) =
+      ((signedStaircaseAugmentation (k := k)).app x).hom y at hcomp
+  have hzero : ((signedStaircaseAugmentation (k := k)).app x).hom y = 0 := by
+    calc
+      ((signedStaircaseAugmentation (k := k)).app x).hom y =
+          (f.app x).hom (((signedStaircasePresentation (k := k)).cover.app x).hom y) := hcomp.symm
+      _ = (f.app x).hom (z - z') := by rw [hy]
+      _ = (f.app x).hom z - (f.app x).hom z' := map_sub _ _ _
+      _ = 0 := by rw [hzz']; exact sub_self _
+  have hmem : y ∈ LinearMap.ker
+      ((signedStaircaseAugmentation (k := k)).app x).hom :=
+    (LinearMap.mem_ker
+      (f := ((signedStaircaseAugmentation (k := k)).app x).hom)).mpr hzero
+  rw [← (signedStaircasePointwiseShortExact (k := k)).range_eq_ker x] at hmem
+  obtain ⟨w, hw⟩ := (LinearMap.mem_range
+    (f := ((signedStaircaseDifferential (k := k)).app x).hom)).mp hmem
+  have hkill := congrArg (fun g : signedStaircaseF1 (k := k) ⟶
+      (signedStaircasePresentation (k := k)).presented => (g.app x).hom w)
+    (signedStaircasePresentation (k := k)).relations_vanish
+  change ((signedStaircasePresentation (k := k)).cover.app x).hom
+      ((signedStaircaseDifferential (k := k)).app x |>.hom w) = 0 at hkill
+  have hcoverzero : ((signedStaircasePresentation (k := k)).cover.app x).hom y = 0 := by
+    rw [← hw]
+    exact hkill
+  have hsub : z - z' = 0 := by
+    calc
+      z - z' = ((signedStaircasePresentation (k := k)).cover.app x).hom y := hy.symm
+      _ = 0 := hcoverzero
+  exact sub_eq_zero.mp hsub
+
+/-- The finite presentation by four antichain generators and their three
+adjacent-difference relations presents the actual staircase support module. -/
+noncomputable def signedStaircasePresentedIso :
+    (signedStaircasePresentation (k := k)).presented ≅
+      signedStaircaseModule (k := k) := by
+  classical
+  let D := signedStaircasePresentation (k := k)
+  let f := signedStaircasePresentedMap (k := k)
+  haveI (x : Fin 2 → ℝ) : IsIso (f.app x) :=
+    (ConcreteCategory.isIso_iff_bijective _).mpr
+      ⟨signedStaircasePresentedMap_injective (k := k) x,
+        signedStaircasePresentedMap_surjective (k := k) x⟩
+  haveI : IsIso f := NatIso.isIso_of_isIso_app f
+  exact asIso f
+
+/-- The actual support module has the original finite presentation with
+finite generator and relation carriers. -/
+theorem signedStaircaseModule_finitelyPresented :
+    GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin 2 → ℝ)
+      (signedStaircaseModule (k := k)) := by
+  apply GradedFree.finitelyPresented_of_iso
+    ((signedStaircasePresentation (k := k)).finitelyPresented ?_)
+    (signedStaircasePresentedIso (k := k))
+  change Finite (Fin 4) ∧ Finite (Fin 3)
+  exact ⟨inferInstance, inferInstance⟩
+
+private noncomputable def signedStaircaseF0HookSumPresentation :
+    FiniteHookSumPresentation (k := k) (n := 2)
+      (signedStaircaseF0 (k := k)) := by
+  refine ⟨4, fun i => Sum.inr (signedStaircaseVertices i), ?_⟩
+  change signedStaircaseF0 (k := k) ≅
+    ⨁ fun i : Fin 4 => HookInfinity.module (R := k) (signedStaircaseVertices i)
+  exact GradedFree.moduleBiproductIso (R := k) signedStaircaseDegreeZeroGenerators
+
+private noncomputable def signedStaircaseF1HookSumPresentation :
+    FiniteHookSumPresentation (k := k) (n := 2)
+      (signedStaircaseF1 (k := k)) := by
+  refine ⟨3, fun i => Sum.inr (signedStaircaseJoins i), ?_⟩
+  change signedStaircaseF1 (k := k) ≅
+    ⨁ fun i : Fin 3 => HookInfinity.module (R := k) (signedStaircaseJoins i)
+  exact GradedFree.moduleBiproductIso (R := k) signedStaircaseDegreeOneGenerators
+
+private noncomputable def signedStaircaseTermZeroHookSumPresentation :
+    FiniteHookSumPresentation (k := k) (n := 2)
+      ((signedStaircaseMinimalResolution (k := k)).termAt 0) := by
+  let R := signedStaircaseMinimalResolution (k := k)
+  let P := signedStaircaseF0HookSumPresentation (k := k)
+  have hterm : R.termAt 0 = signedStaircaseF0 (k := k) := by
+    have hlen : 0 < R.resolution.length := by
+      norm_num [R, signedStaircaseMinimalResolution]
+    rw [R.termAt_eq hlen]
+    rfl
+  exact ⟨P.count, P.tag, (eqToIso hterm).trans P.iso⟩
+
+private noncomputable def signedStaircaseTermOneHookSumPresentation :
+    FiniteHookSumPresentation (k := k) (n := 2)
+      ((signedStaircaseMinimalResolution (k := k)).termAt 1) := by
+  let R := signedStaircaseMinimalResolution (k := k)
+  let P := signedStaircaseF1HookSumPresentation (k := k)
+  have hterm : R.termAt 1 = signedStaircaseF1 (k := k) := by
+    have hlen : 1 < R.resolution.length := by
+      norm_num [R, signedStaircaseMinimalResolution]
+    rw [R.termAt_eq hlen]
+    rfl
+  exact ⟨P.count, P.tag, (eqToIso hterm).trans P.iso⟩
+
+private theorem signedStaircaseDegreeZeroHookBetti :
+    (signedStaircaseMinimalResolution (k := k)).hookBettiMultiset
+      (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
+      (GradedFree.finitelyPresented_liftIndexUniverse _
+        (signedStaircaseModule_finitelyPresented (k := k))) 0 =
+      hookTagMultiset (fun i : Fin 4 => Sum.inr (signedStaircaseVertices i)) := by
+  exact MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
+    (hn := by omega) (M := signedStaircaseModule (k := k))
+    (hM := GradedFree.finitelyPresented_liftIndexUniverse _
+      (signedStaircaseModule_finitelyPresented (k := k)))
+    (R := signedStaircaseMinimalResolution (k := k)) (j := 0)
+    (signedStaircaseTermZeroHookSumPresentation (k := k))
+
+private theorem signedStaircaseDegreeOneHookBetti :
+    (signedStaircaseMinimalResolution (k := k)).hookBettiMultiset
+      (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
+      (GradedFree.finitelyPresented_liftIndexUniverse _
+        (signedStaircaseModule_finitelyPresented (k := k))) 1 =
+      hookTagMultiset (fun i : Fin 3 => Sum.inr (signedStaircaseJoins i)) := by
+  exact MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
+    (hn := by omega) (M := signedStaircaseModule (k := k))
+    (hM := GradedFree.finitelyPresented_liftIndexUniverse _
+      (signedStaircaseModule_finitelyPresented (k := k)))
+    (R := signedStaircaseMinimalResolution (k := k)) (j := 1)
+    (signedStaircaseTermOneHookSumPresentation (k := k))
+
+private theorem signedStaircaseMinimalResolution_barcode :
+    (signedStaircaseMinimalResolution (k := k)).signedHookBarcode
+      (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
+      (GradedFree.finitelyPresented_liftIndexUniverse _
+        (signedStaircaseModule_finitelyPresented (k := k))) =
+      signedStaircaseCenter := by
+  classical
+  change (⟨
+      (signedStaircaseMinimalResolution (k := k)).evenHookBetti
+        (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
+        (GradedFree.finitelyPresented_liftIndexUniverse _
+          (signedStaircaseModule_finitelyPresented (k := k))),
+      (signedStaircaseMinimalResolution (k := k)).oddHookBetti
+        (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
+        (GradedFree.finitelyPresented_liftIndexUniverse _
+          (signedStaircaseModule_finitelyPresented (k := k)))⟩ : SignedHookBarcode 2) =
+    signedStaircaseCenter
+  apply congrArg₂ (fun pos neg => (⟨pos, neg⟩ : SignedHookBarcode 2))
+  · simp only [MinimalFiniteRankProjectiveResolution.evenHookBetti]
+    have hlen : (signedStaircaseMinimalResolution (k := k)).resolution.length = 2 := rfl
+    rw [hlen]
+    have hdegrees : evenHookDegrees 2 = {0} := by decide
+    rw [hdegrees]
+    simp [signedStaircaseDegreeZeroHookBetti, signedStaircaseCenter]
+  · simp only [MinimalFiniteRankProjectiveResolution.oddHookBetti]
+    have hlen : (signedStaircaseMinimalResolution (k := k)).resolution.length = 2 := rfl
+    rw [hlen]
+    have hdegrees : oddHookDegrees 2 = {1} := by decide
+    rw [hdegrees]
+    simp [signedStaircaseDegreeOneHookBetti, signedStaircaseCenter]
+
+private theorem signedStaircaseIdentity_is_cover
+    (M : PModule.{u,0,u} k (Fin 2 → ℝ))
+    (hM : IsRankProjective M)
+    (hfd : ∀ x, FiniteDimensional k (M.obj x)) :
+    IsRankProjectiveCover (𝟙 M) := by
+  letI (x : Fin 2 → ℝ) : FiniteDimensional k (M.obj x) := hfd x
+  refine ⟨hM, ?_, ?_⟩
+  · exact RankKernel.rankExact (𝟙 M) (fun _ x => ⟨x, rfl⟩)
+      (by
+        intro a b hab z hz
+        exact ⟨z, by simp, hz⟩)
+  · intro f hf
+    have h : f = 𝟙 M := by simpa using hf
+    rw [h]
+    infer_instance
+
+private noncomputable def signedStaircasePrincipalMinimalResolution
+    (a : Fin 2 → ℝ) :
+    MinimalFiniteRankProjectiveResolution (k := k)
+      (M := HookInfinity.module (R := k) a) := by
+  let M := HookInfinity.module (R := k) a
+  let Z : PModule.{u,0,u} k (Fin 2 → ℝ) := 0
+  have hfd : ∀ x, FiniteDimensional k (M.obj x) := by
+    intro x
+    exact HookInfinity.finiteDimensional a x
+  have hshort : IsPointwiseShortExact (0 : Z ⟶ M) (𝟙 M) := by
+    refine ⟨?_, ?_, ?_⟩
+    · intro p x y _
+      exact (ModuleCat.subsingleton_of_isZero (Functor.zero_obj p)).elim x y
+    · intro p x
+      exact ⟨x, rfl⟩
+    · intro p
+      simp
+  have hrow : IsRankExact (0 : Z ⟶ M) (𝟙 M) :=
+    hshort.rankExact_of_section (𝟙 M) (by simp)
+  exact {
+    resolution := {
+      toFiniteRankExactResolution := {
+        length := 1
+        kernel := fun i => if i.val = 0 then M else Z
+        term := fun _ => M
+        inclusion := Fin.cases (0 : Z ⟶ M) (fun i => Fin.elim0 i)
+        quotient := Fin.cases (𝟙 M) (fun i => Fin.elim0 i)
+        row_rank_exact := Fin.cases hrow (fun i => Fin.elim0 i)
+        initial_iso := by
+          change (if (0 : Fin 2).val = 0 then M else Z) ≅ M
+          exact Iso.refl M
+        terminal_iso := by
+          change (if (Fin.last 1).val = 0 then M else Z) ≅ 0
+          exact Iso.refl 0
+      }
+      term_rank_projective := fun _ =>
+        HookInfinity.isRankProjective (k := k) a
+    }
+    quotient_is_cover := Fin.cases
+      (signedStaircaseIdentity_is_cover M
+        (HookInfinity.isRankProjective (k := k) a) hfd)
+      (fun i => Fin.elim0 i)
+  }
+
+private theorem signedStaircasePrincipal_finitelyPresented (a : Fin 2 → ℝ) :
+    GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin 2 → ℝ)
+      (HookInfinity.module (R := k) a) := by
+  exact GradedFree.free_finitelyPresented (HookInfinity.generators a)
+
+theorem signedStaircaseLeftModule_finitelyPresented :
+    GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin 2 → ℝ)
+      (signedStaircaseLeftModule (k := k)) := by
+  simpa [signedStaircaseLeftModule] using
+    signedStaircasePrincipal_finitelyPresented (k := k) (signedStaircaseVertices 0)
+
+theorem signedStaircaseRightModule_finitelyPresented :
+    GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin 2 → ℝ)
+      (signedStaircaseRightModule (k := k)) := by
+  simpa [signedStaircaseRightModule] using
+    signedStaircasePrincipal_finitelyPresented (k := k) (signedStaircaseVertices 3)
+
+private noncomputable def signedStaircasePrincipalHookSumPresentation
+    (a : Fin 2 → ℝ) :
+    FiniteHookSumPresentation (k := k) (n := 2)
+      (HookInfinity.module (R := k) a) := by
+  refine ⟨1, fun _ => Sum.inr a, ?_⟩
+  change HookInfinity.module (R := k) a ≅
+    ⨁ fun _ : Fin 1 => HookInfinity.module (R := k) a
+  exact (biproductUniqueIso (fun _ : Fin 1 =>
+    HookInfinity.module (R := k) a)).symm
+
+private noncomputable def signedStaircasePrincipalTermZeroHookSumPresentation
+    (a : Fin 2 → ℝ) :
+    FiniteHookSumPresentation (k := k) (n := 2)
+      ((signedStaircasePrincipalMinimalResolution (k := k) a).termAt 0) := by
+  let R := signedStaircasePrincipalMinimalResolution (k := k) a
+  let P := signedStaircasePrincipalHookSumPresentation (k := k) a
+  have hlen : 0 < R.resolution.length := by
+    norm_num [R, signedStaircasePrincipalMinimalResolution]
+  have hterm : R.termAt 0 = HookInfinity.module (R := k) a := by
+    rw [R.termAt_eq hlen]
+    rfl
+  exact ⟨P.count, P.tag, (eqToIso hterm).trans P.iso⟩
+
+private theorem signedStaircasePrincipalDegreeZeroHookBetti
+    (a : Fin 2 → ℝ) :
+    (signedStaircasePrincipalMinimalResolution (k := k) a).hookBettiMultiset
+      (k := k) (n := 2) (by omega) (HookInfinity.module (R := k) a)
+      (GradedFree.finitelyPresented_liftIndexUniverse _
+        (signedStaircasePrincipal_finitelyPresented (k := k) a)) 0 =
+      hookTagMultiset (fun _ : Fin 1 => Sum.inr a) := by
+  exact MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
+    (hn := by omega) (M := HookInfinity.module (R := k) a)
+    (hM := GradedFree.finitelyPresented_liftIndexUniverse _
+      (signedStaircasePrincipal_finitelyPresented (k := k) a))
+    (R := signedStaircasePrincipalMinimalResolution (k := k) a) (j := 0)
+    (signedStaircasePrincipalTermZeroHookSumPresentation (k := k) a)
+
+private theorem signedStaircasePrincipalMinimalResolution_barcode
+    (a : Fin 2 → ℝ) :
+    (signedStaircasePrincipalMinimalResolution (k := k) a).signedHookBarcode
+      (k := k) (n := 2) (by omega) (HookInfinity.module (R := k) a)
+      (GradedFree.finitelyPresented_liftIndexUniverse _
+        (signedStaircasePrincipal_finitelyPresented (k := k) a)) =
+      ⟨{Sum.inr a}, 0⟩ := by
+  classical
+  apply congrArg₂ (fun pos neg => (⟨pos, neg⟩ : SignedHookBarcode 2))
+  · simp only [MinimalFiniteRankProjectiveResolution.evenHookBetti]
+    have hlen : (signedStaircasePrincipalMinimalResolution (k := k) a).resolution.length = 1 := by
+      norm_num [signedStaircasePrincipalMinimalResolution]
+    rw [hlen]
+    have hdegrees : evenHookDegrees 1 = {0} := by decide
+    rw [hdegrees]
+    simp [signedStaircasePrincipalDegreeZeroHookBetti, hookTagMultiset]
+  · simp only [MinimalFiniteRankProjectiveResolution.oddHookBetti]
+    have hlen : (signedStaircasePrincipalMinimalResolution (k := k) a).resolution.length = 1 := by
+      norm_num [signedStaircasePrincipalMinimalResolution]
+    rw [hlen]
+    have hdegrees : oddHookDegrees 1 = ∅ := by decide
+    rw [hdegrees]
+    simp
+
+theorem signedStaircaseModule_barcode :
+    finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+      (signedStaircaseModule (k := k))
+      (signedStaircaseModule_finitelyPresented (k := k)) =
+        signedStaircaseCenter := by
+  rw [finitelyPresentedSignedHookBarcode_eq (k := k) (n := 2) (by omega)
+    (signedStaircaseModule (k := k))
+    (signedStaircaseModule_finitelyPresented (k := k))
+    (signedStaircaseMinimalResolution (k := k))]
+  exact signedStaircaseMinimalResolution_barcode (k := k)
+
+theorem signedStaircaseLeftModule_barcode :
+    finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+      (signedStaircaseLeftModule (k := k))
+      (signedStaircaseLeftModule_finitelyPresented (k := k)) = signedStaircaseLeft := by
+  rw [finitelyPresentedSignedHookBarcode_eq (k := k) (n := 2) (by omega)
+    (signedStaircaseLeftModule (k := k))
+    (signedStaircaseLeftModule_finitelyPresented (k := k))
+    (signedStaircasePrincipalMinimalResolution (k := k)
+      (signedStaircaseVertices 0))]
+  simpa [signedStaircaseLeft, signedStaircaseLeftModule] using
+    signedStaircasePrincipalMinimalResolution_barcode (k := k)
+      (signedStaircaseVertices 0)
+
+theorem signedStaircaseRightModule_barcode :
+    finitelyPresentedSignedHookBarcode (k := k) (n := 2) (by omega)
+      (signedStaircaseRightModule (k := k))
+      (signedStaircaseRightModule_finitelyPresented (k := k)) = signedStaircaseRight := by
+  rw [finitelyPresentedSignedHookBarcode_eq (k := k) (n := 2) (by omega)
+    (signedStaircaseRightModule (k := k))
+    (signedStaircaseRightModule_finitelyPresented (k := k))
+    (signedStaircasePrincipalMinimalResolution (k := k)
+      (signedStaircaseVertices 3))]
+  simpa [signedStaircaseRight, signedStaircaseRightModule] using
+    signedStaircasePrincipalMinimalResolution_barcode (k := k)
+      (signedStaircaseVertices 3)
