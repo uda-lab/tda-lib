@@ -176,15 +176,16 @@ its mathematical notes, which also give the declaration names.
   inequality for the signed dissimilarity, so no metric instance is attached. Finite
   presentation is closed under cokernels, biproducts and pushouts over any ring and
   preorder; over a field and a partial order, the middle term of a short exact row with
-  finitely presented ends, the pullback of such a row's quotient map along a map from a
-  finitely presented module, and the kernel of a composite of two rank-exact deflations
-  whose rows have finitely presented left terms are finitely presented. Supporting results
-  cover support-interval and rectangle modules, Hall bounds and occurrence matchings,
-  graded free modules and presentations, the coordinate interleaving distance, finite-grid
-  Kan reconstruction, rank exactness and hooks, and the interval-pair incidence algebra
-  with its projective-dimension bounds. The countable extension of the hook matching,
-  optimality of the constant and identification of the signed dissimilarity with an
-  ordinary bottleneck distance are not claimed.
+  finitely presented ends, the pullback of a short exact row's quotient map along a map
+  from a finitely presented module when the row's left term is finitely presented, and the
+  kernel of a composite of two rank-exact deflations whose rows have finitely presented
+  left terms are finitely presented. Supporting results cover support-interval and
+  rectangle modules, Hall bounds and occurrence matchings, graded free modules and
+  presentations, the coordinate interleaving distance, finite-grid Kan reconstruction,
+  rank exactness and hooks, and the interval-pair incidence algebra with its
+  projective-dimension bounds. The countable extension of the hook matching, optimality of
+  the constant and identification of the signed dissimilarity with an ordinary bottleneck
+  distance are not claimed.
 - **Metric inputs and sampling.** Greedy sparse Rips filtrations have a natural homology
   isomorphism with the relaxed filtration, a log-scale interleaving with the Rips
   filtration of shift `log((1−2η)⁻¹)`, and explicit skeleton-size bounds under a
