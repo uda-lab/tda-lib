@@ -648,10 +648,12 @@ principal-upset, empty, and repeated cross-sign tags are also exercised.
 
 For any field `k`, `RankSignedNontriangle` defines the two-coordinate
 staircase with positive birth tags at `pᵢ = (i, 3 − i)` for `0 ≤ i ≤ 3` and
-negative tags at the adjacent joins `qⱼ = (j + 1, 2 − j)` for `0 ≤ j ≤ 2`.
-These are principal infinite-death hooks; the center barcode retains all four
-positive and all three negative occurrences. The existing signed cross-sign
-dissimilarity has `dSigned(L,C) ≤ 1`, `dSigned(C,R) ≤ 1`, and
+negative tags at the adjacent joins `qⱼ = (j + 1, 3 − j)` for `0 ≤ j ≤ 2`.
+Each displayed point denotes its principal infinite-death hook tag. Define
+`L = ({p₀}, 0)`, `C = ({p₀,p₁,p₂,p₃}, {q₀,q₁,q₂})`, and
+`R = ({p₃}, 0)` as signed hook barcodes, with the displayed multisets retaining
+all occurrences. The existing signed cross-sign dissimilarity has
+`dSigned(L,C) ≤ 1`, `dSigned(C,R) ≤ 1`, and
 `dSigned(L,R) = 3`, so this is an actual failure of the triangle inequality
 on `SignedHookBarcode 2`. The upper bounds come from occurrence matchings,
 and the long-edge lower bound applies to every matching radius, including
