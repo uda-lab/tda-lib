@@ -742,6 +742,42 @@ composite-deflation kernel and deflation-pullback obligations remain separate.
 pushout, an empty/zero boundary, repeated grades with a genuine relation, a
 redundant relation, and the arbitrary-field rank-exact consumer.
 
+### Finite presentations of exact extensions and pullbacks
+
+Let `k` be a field, `P` a partially ordered type, and
+`0 → L → M → N → 0` a pointwise short exact row of persistence modules. If
+`L` and `N` are finitely presented, `IsPointwiseShortExact.finitelyPresented_middle`
+proves that `M` is finitely presented. The row is assumed pointwise exact in
+each fiber; the result does not require pointwise finite-dimensionality or rank
+exactness of the original row.
+
+The proof chooses a finite presentation of `N` and pulls the quotient map back
+along its free cover. The resulting row onto the finite graded-free module
+splits because the free generators lift through the original quotient. Its
+middle object is therefore finitely presented by closure under biproducts.
+The lifted relation map then has image equal to the kernel of the projection
+to `M`, and that projection is an epimorphism. Exactness identifies `M` with
+the actual categorical cokernel of the lifted relation map. The relation map
+need not be injective.
+
+Given `π : M ⟶ N` in a pointwise short exact row and a map `f : T ⟶ N`, write
+`S := Limits.pullback π f` for the actual categorical pullback.
+`IsPointwiseShortExact.pullbackInclusion` and its projection laws give the
+canonical ordinary short exact row `0 → L → S → T → 0`.
+`IsPointwiseShortExact.finitelyPresented_pullback` proves finite presentation
+of `S` from finite presentation of `L` and `T`.
+For a rank-exact deflation, `IsRankExact.pullback_finitelyPresented` also proves
+that the actual kernel of the pullback projection is finitely presented and
+that its canonical kernel row is rank exact. Its only presentation inputs are
+`L` and `T`; pointwise finite-dimensionality of `T` is derived from its finite
+presentation. Closure for kernels of composites of deflations is not part of
+this result.
+
+`FinitePresentationPullbackExamples` checks the ordinary extension and
+rank-exact pullback on the repeated-grade presentation with a genuine relation,
+over an arbitrary field and with the smallest presentation-index universe. It
+also checks the empty-presentation zero case.
+
 ### Pushouts of rank-exact sequences
 
 Let `0 → L --ι→ M --π→ N → 0` be rank exact over a field, with `P` any
