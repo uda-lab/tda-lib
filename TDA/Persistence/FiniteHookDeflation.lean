@@ -11,8 +11,13 @@ changing its death grade. Its actual kernel sequence is rank exact.
 
 This proves enough rank projectives in the finite-poset part of BOOS,
 arXiv:2208.00300v3, Theorem 2.7. The deflation is generally redundant and
-is not asserted to be a minimal projective cover. Exact-category axioms,
-minimal resolutions and passage to real grids require further results.
+is not asserted to be a minimal projective cover. Minimal resolutions with the
+`2n−2` degree bound are constructed in
+`TDA.Persistence.FiniteRankProjectiveResolutionDimension`
+(`finitelyPresented_exists_minimalFiniteRankProjectiveResolution_with_bound`), using
+the real-coordinate Kan transfer of `TDA.Persistence.FiniteRankProjectiveResolutionKan`;
+the kernel and pushout closure laws are in `TDA.Persistence.RankExactKernel` and
+`TDA.Persistence.RankExactPushout`. No `ExactCategory` instance is asserted.
 -/
 
 set_option autoImplicit false

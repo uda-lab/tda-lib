@@ -41,7 +41,9 @@ apex height lies in `T_ε I = (-ε, b - ε)`, so there is one component
 bound.
 
 The hypothesis `b ≤ 2a` is used only by this obstruction family: for `b > 2a` and `ε` close to
-`b - a`, the interval `(0, b - 2ε)` is empty. The distance for `b > 2a` is not determined here.
+`b - a`, the interval `(0, b - 2ε)` is empty. The exact value `min (b - a) (b / 2)` for every
+`0 < a < b ≤ M`, including `b > 2a`, is `geometricInterleavingDistance_mergeY_eq_min` in
+`TDA.Mapper.GraphPLReebMergeFold`.
 These are library statements; de Silva–Munch–Patel, Definition 4.4 and Theorem 4.6(i), are the
 distance and the upper bound used. See `docs/math/reeb-graph-pl.md`.
 -/

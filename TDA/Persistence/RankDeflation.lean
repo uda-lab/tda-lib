@@ -13,8 +13,11 @@ Composing two deflations lifts a dying vector successively through them.
 The kernel criterion then supplies actual rank-exact kernel sequences.
 
 These are the deflation-side closure laws from BOOS,
-arXiv:2208.00300v3, §2.12, used in Appendix A's Lemma A.1. The remaining
-exact-structure axioms and persistent Schanuel require further results.
+arXiv:2208.00300v3, §2.12, used in Appendix A's Lemma A.1. Persistent Schanuel
+is proved in `TDA.Persistence.RankSchanuelResolution` and, without degree shifts,
+in `TDA.Persistence.RankSchanuelUnshifted`; the kernel and pushout closure laws
+are in `TDA.Persistence.RankExactKernel` and `TDA.Persistence.RankExactPushout`.
+No `ExactCategory` instance is asserted.
 -/
 
 set_option autoImplicit false
