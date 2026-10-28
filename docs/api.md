@@ -6,12 +6,14 @@
 import TDA.Persistence -- one ordinary library area
 ```
 
-Use `import TDA.Library` for the six ordinary areas. `TDA.Probability` is a seventh area with
-its own aggregator and pin file; `TDA.Library` does not import it, and its modules are reached
-through `TDA.Persistence` or `import TDA`. These entry points exclude the
-standalone example and acceptance modules. To use a particular worked example, import
-its module directly, or import `TDA.Persistence.Examples` (and similarly for each area).
-`TDA.Examples` collects all six example aggregators.
+Use `import TDA.Library` for all seven ordinary areas, including `TDA.Probability`, which
+has its own aggregator and pin file. These entry points exclude the standalone example and
+acceptance modules, with one exception: the library modules `EphemeralIntervalIso` and
+`FiniteRankProjectiveHomCover` import the fixtures `CutSubspacesExamples` and
+`FiniteRankProjectiveResolutionKanExamples`, so those fixtures and their imports remain
+reachable from `TDA.Persistence`. To use a particular worked example, import its module
+directly, or import `TDA.Persistence.Examples` (and similarly for each area).
+`TDA.Examples` collects the six example aggregators; `TDA.Probability` has no fixtures.
 
 `import TDA` deliberately loads both `TDA.Library` and `TDA.Examples`. It is the
 comprehensive root used by the build, theorem axiom audits, module-reachability coverage

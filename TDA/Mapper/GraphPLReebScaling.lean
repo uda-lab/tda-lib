@@ -14,7 +14,9 @@ homogeneity law.
 `splitHeights a M` reflects the merge heights `(0, 0, a, M)`. For `0 < a < b ≤ 2a` and `b ≤ M`
 the split-tree distance is `b - a`. For all `0 < a < b ≤ M`, the merge-tree and split-tree
 distances are at least `min (b - a) (b / 2)`. When `2a < b`, they lie between `b / 2` and
-`b - a`; neither endpoint is asserted to be the exact value.
+`b - a`; the exact value `b / 2` in that case, and `min (b - a) (b / 2)` in general, is proved
+in `TDA.Mapper.GraphPLReebMergeFold` (`geometricInterleavingDistance_mergeY_eq_min`,
+`geometricInterleavingDistance_mergeY_eq_half`, `geometricInterleavingDistance_splitY_eq_min`).
 
 These are library specializations of interval-precosheaf scaling and the component-count
 obstruction. De Silva–Munch–Patel, Definition 4.4 and Theorem 4.6(i), supply the distance and
