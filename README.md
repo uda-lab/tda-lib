@@ -3,8 +3,8 @@
 `tda-lib` is a Lean 4 library for topological data analysis. It formalizes finite
 persistent homology, a certified computation of persistence over the two-element
 field, distances and stability bounds for persistence diagrams, Rips and Čech
-filtrations of finite metric spaces, persistence images and kernels, and selected
-Reeb and Mapper constructions. The current release is
+filtrations of finite metric spaces, persistence images and kernels, signed barcodes
+of finitely presented multiparameter modules, and selected Reeb and Mapper constructions. The current release is
 [v0.2.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.2.0);
 [v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) was the first
 release with mathematical results.
@@ -138,8 +138,7 @@ metric-space input.
 ## Results added since v0.2.0
 
 Each result below holds under the hypotheses stated in the [API guide](docs/api.md) and
-its mathematical notes, which also give the declaration names. Multiparameter material is
-listed with its present scope only.
+its mathematical notes, which also give the declaration names.
 
 - **Borel boundary transport.** The strict birth–death half-plane with one collapsed
   boundary point is a complete separable metric space. For atomic inputs and p ≥ 0, the
@@ -161,13 +160,28 @@ listed with its present scope only.
   spaces, and they are stable under Hausdorff and Gromov–Hausdorff perturbation, with
   convergence of finite samples to a totally bounded target. Birth-at-minus-infinity
   strata and finite-diagram compatibility for arbitrary q-tame modules are not claimed.
-- **Multiparameter persistence (in progress).** Present modules cover support-interval
-  and rectangle modules, Hall bounds and occurrence matchings, graded free modules and
-  finite presentations, the coordinate interleaving distance on finitely presented
-  modules, finite-grid Kan reconstruction, rank exactness and hooks, finite
-  rank-projective resolutions and the Euler rank formula, and the interval-pair incidence
-  algebra. Their exact scope is in the API guide and the multiparameter notes; the
-  `2n−2` bound and signed-barcode stability are not claimed.
+- **Multiparameter persistence.** Over any field and for `n ≥ 1`, a finitely presented
+  persistence module indexed by `ℝⁿ` has a minimal finite rank-projective resolution whose
+  terms vanish in degrees above `2n−2`; the hook multisets of its terms are independent of
+  the chosen minimal resolution, so its signed hook barcode is well defined and finite, and
+  its rank invariant is the alternating sum of the term ranks. An `ε`-interleaving of two
+  such modules gives an unshifted `(2n−1)ε`-interleaving of the parity sums of their
+  resolutions and a matching of the cross-sign hook multisets at radius `(2n−1)²ε`, so the
+  signed bottleneck dissimilarity is at most `(2n−1)²` times the interleaving distance,
+  without assuming finite distance or an attained infimum. In one coordinate the signed
+  barcode has positive hooks only, their endpoints form the ordinary barcode, and the
+  ordinary bottleneck distance of two such barcodes equals the interleaving distance. A
+  two-coordinate example realized by finitely presented modules violates the triangle
+  inequality for the signed dissimilarity, so no metric instance is attached. Finite
+  presentation is closed under cokernels, biproducts and pushouts over any ring and
+  preorder, and over a field and a partial order under extensions, pullbacks and kernels of
+  composites of rank-exact deflations. Supporting results cover support-interval and
+  rectangle modules, Hall bounds and occurrence matchings, graded free modules and
+  presentations, the coordinate interleaving distance, finite-grid Kan reconstruction, rank
+  exactness and hooks, and the interval-pair incidence algebra with its projective-dimension
+  bounds. The countable extension of the hook matching, optimality of the constant and
+  identification of the signed dissimilarity with an ordinary bottleneck distance are not
+  claimed.
 - **Metric inputs and sampling.** Greedy sparse Rips filtrations have a natural homology
   isomorphism with the relaxed filtration, a log-scale interleaving with the Rips
   filtration of shift `log((1−2η)⁻¹)`, and explicit skeleton-size bounds under a
@@ -216,13 +230,13 @@ and run `lake build TDA`. Then import the area you need:
 
 ```lean
 import TDA.Persistence
--- Or import TDA.Library for the six ordinary library areas.
+-- Or import TDA.Library for the seven ordinary library areas.
 ```
 
 The library areas are `TDA.Simplicial`, `TDA.Filtration`, `TDA.Persistence`, `TDA.Topology`,
-`TDA.Reeb`, `TDA.Mapper` and `TDA.Probability`; `TDA.Library` loads the first six, and
-`TDA.Probability` is reached through `TDA.Persistence` or `import TDA`. The area imports and `TDA.Library` omit the standalone
-example modules; `import TDA` also loads them. The
+`TDA.Reeb`, `TDA.Mapper` and `TDA.Probability`; `TDA.Library` loads all seven. The area
+imports and `TDA.Library` omit the standalone example modules, except for the fixtures that
+two Persistence library modules import directly; `import TDA` also loads them. The
 [import guide](docs/api.md#entry-points) lists the areas and their requirements.
 
 ## Build and documentation
@@ -253,8 +267,8 @@ scope.
 
 Further directions include identification of boundary transport with an ordinary
 Wasserstein coupling API, birth-at-minus-infinity strata and compatibility with the finite
-`Diagram` API for other finite-type q-tame modules, the multiparameter `2n−2` bound and signed-barcode stability,
-higher-dimensional Mapper–Reeb approximation, and constructibility of
+`Diagram` API for other finite-type q-tame modules, the countable-sum extension of
+signed-barcode stability, higher-dimensional Mapper–Reeb approximation, and constructibility of
 the product thickening of a general constructible real space beyond graph input as
 in de Silva, Munch and Patel, *Categorified Reeb Graphs*, Theorem 4.27.
 [Issue #227](https://github.com/uda-lab/tda-lib/issues/227) records the roadmap and its
