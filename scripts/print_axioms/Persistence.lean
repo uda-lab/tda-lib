@@ -6294,3 +6294,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.GradedFree.pushoutCokernelComparison_inl_assoc
 #print axioms TDA.Persistence.GradedFree.pushoutCokernelComparison_inr_assoc
 #print axioms TDA.Persistence.GradedFree.pushoutCokernelComparison_π_assoc
+
+-- Ordinary finite-presentation extensions and actual pullbacks (Issue #745).
+#print axioms TDA.Persistence.IsPointwiseShortExact.pullbackInclusion
+#print axioms TDA.Persistence.IsPointwiseShortExact.pullbackInclusion_fst
+#print axioms TDA.Persistence.IsPointwiseShortExact.pullbackInclusion_fst_assoc
+#print axioms TDA.Persistence.IsPointwiseShortExact.pullbackInclusion_snd
+#print axioms TDA.Persistence.IsPointwiseShortExact.pullbackInclusion_snd_assoc
+#print axioms TDA.Persistence.IsPointwiseShortExact.pullback_pointwise
+#print axioms TDA.Persistence.IsPointwiseShortExact.finitelyPresented_middle
+#print axioms TDA.Persistence.IsPointwiseShortExact.finitelyPresented_pullback
+#print axioms TDA.Persistence.IsRankExact.pullback_finitelyPresented
+#print axioms TDA.Persistence.FinitePresentationPullbackExamples.arbitrary_field_repeated_extension_and_pullback
+#print axioms TDA.Persistence.FinitePresentationPullbackExamples.empty_zero_pullback_finitelyPresented

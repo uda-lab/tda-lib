@@ -371,3 +371,5 @@ import TDA.Persistence.RankSignedBarcodeOneDimensionalExamples
 import TDA.Persistence.FinitePresentationColimits
 import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationColimitsExamples
+import TDA.Persistence.FinitePresentationExtensions
+import TDA.Persistence.FinitePresentationPullback
