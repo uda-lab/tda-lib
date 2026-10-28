@@ -4,7 +4,8 @@
 persistent homology, a certified computation of persistence over the two-element
 field, distances and stability bounds for persistence diagrams, Rips and Čech
 filtrations of finite metric spaces, persistence images and kernels, signed barcodes
-of finitely presented multiparameter modules, and selected Reeb and Mapper constructions. The current release is
+of finitely presented multiparameter modules, and selected Reeb and Mapper
+constructions. The current release is
 [v0.2.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.2.0);
 [v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) was the first
 release with mathematical results.
@@ -163,9 +164,9 @@ its mathematical notes, which also give the declaration names.
 - **Multiparameter persistence.** Over any field and for `n ≥ 1`, a finitely presented
   persistence module indexed by `ℝⁿ` has a minimal finite rank-projective resolution whose
   terms vanish in degrees above `2n−2`; the hook multisets of its terms are independent of
-  the chosen minimal resolution, so its signed hook barcode is well defined and finite, and
-  its rank invariant is the alternating sum of the term ranks. An `ε`-interleaving of two
-  such modules gives an unshifted `(2n−1)ε`-interleaving of the parity sums of their
+  the chosen minimal resolution, so its signed hook barcode is well defined and finite,
+  and its rank invariant is the alternating sum of the term ranks. An `ε`-interleaving of
+  two such modules gives an unshifted `(2n−1)ε`-interleaving of the parity sums of their
   resolutions and a matching of the cross-sign hook multisets at radius `(2n−1)²ε`, so the
   signed bottleneck dissimilarity is at most `(2n−1)²` times the interleaving distance,
   without assuming finite distance or an attained infimum. In one coordinate the signed
@@ -178,12 +179,12 @@ its mathematical notes, which also give the declaration names.
   finitely presented ends, the pullback of such a row's quotient map along a map from a
   finitely presented module, and the kernel of a composite of two rank-exact deflations
   whose rows have finitely presented left terms are finitely presented. Supporting results
-  cover support-interval and rectangle modules, Hall bounds and occurrence matchings, graded free modules and
-  presentations, the coordinate interleaving distance, finite-grid Kan reconstruction, rank
-  exactness and hooks, and the interval-pair incidence algebra with its projective-dimension
-  bounds. The countable extension of the hook matching, optimality of the constant and
-  identification of the signed dissimilarity with an ordinary bottleneck distance are not
-  claimed.
+  cover support-interval and rectangle modules, Hall bounds and occurrence matchings,
+  graded free modules and presentations, the coordinate interleaving distance, finite-grid
+  Kan reconstruction, rank exactness and hooks, and the interval-pair incidence algebra
+  with its projective-dimension bounds. The countable extension of the hook matching,
+  optimality of the constant and identification of the signed dissimilarity with an
+  ordinary bottleneck distance are not claimed.
 - **Metric inputs and sampling.** Greedy sparse Rips filtrations have a natural homology
   isomorphism with the relaxed filtration, a log-scale interleaving with the Rips
   filtration of shift `log((1−2η)⁻¹)`, and explicit skeleton-size bounds under a
