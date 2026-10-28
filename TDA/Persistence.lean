@@ -373,3 +373,4 @@ import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationColimitsExamples
 import TDA.Persistence.FinitePresentationExtensions
 import TDA.Persistence.FinitePresentationPullback
+import TDA.Persistence.FinitePresentationCompositeKernel

@@ -157,3 +157,4 @@ import TDA.Persistence.FiniteRankProjectiveResolutionDimensionExamples
 import TDA.Persistence.RankSchanuelUnshiftedExamples
 import TDA.Persistence.FinitePresentationColimitsExamples
 import TDA.Persistence.FinitePresentationPullbackExamples
+import TDA.Persistence.FinitePresentationCompositeKernelExamples

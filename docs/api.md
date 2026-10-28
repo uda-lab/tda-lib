@@ -778,6 +778,34 @@ rank-exact pullback on the repeated-grade presentation with a genuine relation,
 over an arbitrary field and with the smallest presentation-index universe. It
 also checks the empty-presentation zero case.
 
+### Finite presentations of composite kernels
+
+Over a field and a partially ordered index type, for any composable maps
+`π : M ⟶ N` and `σ : N ⟶ O`, `kernelCompIsoPullback` identifies the actual
+categorical kernel of `π ≫ σ` with the actual pullback of `π` along
+`kernel.ι σ`. Its first and second projection laws and its inverse inclusion
+law expose the comparison without unfolding its construction. The comparison
+itself needs no exactness, finite-presentation, or epimorphism hypotheses.
+
+Now suppose the maps occur in rank-exact rows
+`0 → L → M --π→ N → 0` and `0 → K → N --σ→ O → 0`. If the original left
+terms `L` and `K` are finitely presented, `IsRankExact.comp_finitelyPresented`
+proves finite presentation of the actual categorical kernel of the composite
+and rank exactness of its canonical kernel row. The proof transfers `K` to the
+actual kernel of `σ`, applies finite presentation of actual pullbacks, and
+transports the result along `kernelCompIsoPullback`. The unchanged middle and
+right objects retain their presentation witnesses for callers working in the
+original finite-presentation subcategory; the theorem itself takes only the
+two original left-term presentations. It does not require finite presentation
+of the new composite kernel as an input. This result covers kernels of
+composites of rank-exact deflations, not kernels of arbitrary maps. The actual
+pullback closure is exposed separately by
+`IsRankExact.pullback_finitelyPresented`.
+
+`FinitePresentationCompositeKernelExamples` checks the result over an arbitrary
+field using the repeated-grade presentation with a genuine relation, including
+a nonzero fiber of the actual composite kernel, and the empty/zero case.
+
 ### Pushouts of rank-exact sequences
 
 Let `0 → L --ι→ M --π→ N → 0` be rank exact over a field, with `P` any

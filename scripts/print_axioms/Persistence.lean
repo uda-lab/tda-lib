@@ -6307,3 +6307,15 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IsRankExact.pullback_finitelyPresented
 #print axioms TDA.Persistence.FinitePresentationPullbackExamples.arbitrary_field_repeated_extension_and_pullback
 #print axioms TDA.Persistence.FinitePresentationPullbackExamples.empty_zero_pullback_finitelyPresented
+
+-- Composite-deflation kernel finite presentation and actual comparison (Issue #747).
+#print axioms TDA.Persistence.kernelCompIsoPullback
+#print axioms TDA.Persistence.kernelCompIsoPullback_hom_fst
+#print axioms TDA.Persistence.kernelCompIsoPullback_hom_fst_assoc
+#print axioms TDA.Persistence.kernelCompIsoPullback_hom_snd
+#print axioms TDA.Persistence.kernelCompIsoPullback_hom_snd_assoc
+#print axioms TDA.Persistence.kernelCompIsoPullback_inv_ι
+#print axioms TDA.Persistence.kernelCompIsoPullback_inv_ι_assoc
+#print axioms TDA.Persistence.IsRankExact.comp_finitelyPresented
+#print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.arbitrary_field_nonzero_composite_kernel
+#print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.empty_zero_composite_kernel_finitelyPresented
