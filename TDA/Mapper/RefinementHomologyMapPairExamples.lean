@@ -15,9 +15,10 @@ import TDA.Simplicial.H0Augmentation
 The fixed-space perturbation bound is recovered by the map-pair theorem. On the single edge of
 heights `0` and `1`, a map pair to a point at height `1/2` gives distance at most `1/2`, although
 the degree-zero modules are not isomorphic at radius `1/2`. The constant height maps from discrete
-`Bool` to `Unit` preserve heights but admit no `HeightMapPair` at any parameter; their centred
-Mapper modules over `ℚ` have distance at least `1/2` in degree zero. For the constant full-cover
-tower, the corresponding distance is `⊤`.
+`Bool` to `Unit` preserve heights but admit no `HeightMapPair` at any parameter. For their
+degree-zero Mapper modules over `ℚ`, this file proves the lower bound `1/2` on the centred tower
+of spacing `1` (the value itself is not determined here) and the exact value `⊤` on the constant
+full-cover tower.
 -/
 
 namespace TDA.Mapper.RefinementHomologyMapPairExamples
@@ -609,9 +610,10 @@ private theorem boolToUnit_centred_distance_ge_half :
   simpa [hconvert] using hbound
 
 /-- The constant maps from discrete `Bool` to `Unit` preserve heights but admit no height-map pair
-at any parameter, since the reverse composite would require a path from `true` to `false`. Their
-degree-zero Mapper modules over `ℚ` on the centred tower of spacing `1` have distance at least
-`1/2`; on the constant full-cover tower their distance is `⊤`. -/
+at any parameter, since the reverse composite would require a path from `true` to `false`. For
+their degree-zero Mapper modules over `ℚ`, the fourth conjunct is the lower bound `1/2` on the
+centred tower of spacing `1` (only this bound is proved here) and the fifth is the exact value
+`⊤` on the constant full-cover tower. -/
 theorem boolToUnit_pathCondition_needed :
     (∀ b, unitZeroHeight (boolToUnit b) = boolZeroHeight b) ∧
       (∀ u, boolZeroHeight (unitToBool u) = unitZeroHeight u) ∧

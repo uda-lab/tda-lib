@@ -146,8 +146,9 @@ argument. At `⊤`, every interleaving gives `F(⊤) ≃ G(⊤)` (`Interleaving.
 
 `Nat.card` of an infinite type is `0`, so these bounds assume finiteness of the target value where
 they use it, and the `⊤` form gives nothing when both top values are infinite. The injectivity
-hypothesis cannot be dropped from the injective form; `reeb-graph-pl.md` § Vertex-height
-perturbations has a graph-PL pair with the counts `2` and `1` and an interleaving.
+hypothesis cannot be dropped from the injective form; the **Merge-height change** paragraph of
+`reeb-graph-pl.md` § Source correspondence has a graph-PL pair with the counts `2` and `1` and an
+interleaving (`mergeY_injective_needed` in `TDA/Mapper/GraphPLReebMergeHeightExamples.lean`).
 
 The fixtures in `TDA/Reeb/InterleavingCardinalityExamples.lean` recover the distance `1` of the
 point precosheaves at `0` and `1` from the counts `1` and `0` (`point_distance_eq_one_of_card`),
