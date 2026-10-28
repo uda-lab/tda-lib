@@ -16,8 +16,8 @@ is not asserted to be a minimal projective cover. Minimal resolutions with the
 `TDA.Persistence.FiniteRankProjectiveResolutionDimension`
 (`finitelyPresented_exists_minimalFiniteRankProjectiveResolution_with_bound`), using
 the real-coordinate Kan transfer of `TDA.Persistence.FiniteRankProjectiveResolutionKan`;
-the kernel and pushout closure laws are in `TDA.Persistence.RankExactKernel` and
-`TDA.Persistence.RankExactPushout`. No `ExactCategory` instance is asserted.
+the kernel comparisons and the pushout closure law are in `TDA.Persistence.RankExactKernel`
+and `TDA.Persistence.RankExactPushout`. No `ExactCategory` instance is asserted.
 -/
 
 set_option autoImplicit false

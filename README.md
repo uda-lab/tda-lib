@@ -174,9 +174,11 @@ its mathematical notes, which also give the declaration names.
   two-coordinate example realized by finitely presented modules violates the triangle
   inequality for the signed dissimilarity, so no metric instance is attached. Finite
   presentation is closed under cokernels, biproducts and pushouts over any ring and
-  preorder, and over a field and a partial order under extensions, pullbacks and kernels of
-  composites of rank-exact deflations. Supporting results cover support-interval and
-  rectangle modules, Hall bounds and occurrence matchings, graded free modules and
+  preorder; over a field and a partial order, the middle term of a short exact row with
+  finitely presented ends, the pullback of such a row's quotient map along a map from a
+  finitely presented module, and the kernel of a composite of two rank-exact deflations
+  whose rows have finitely presented left terms are finitely presented. Supporting results
+  cover support-interval and rectangle modules, Hall bounds and occurrence matchings, graded free modules and
   presentations, the coordinate interleaving distance, finite-grid Kan reconstruction, rank
   exactness and hooks, and the interval-pair incidence algebra with its projective-dimension
   bounds. The countable extension of the hook matching, optimality of the constant and

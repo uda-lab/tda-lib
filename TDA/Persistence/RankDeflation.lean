@@ -15,9 +15,9 @@ The kernel criterion then supplies actual rank-exact kernel sequences.
 These are the deflation-side closure laws from BOOS,
 arXiv:2208.00300v3, §2.12, used in Appendix A's Lemma A.1. Persistent Schanuel
 is proved in `TDA.Persistence.RankSchanuelResolution` and, without degree shifts,
-in `TDA.Persistence.RankSchanuelUnshifted`; the kernel and pushout closure laws
-are in `TDA.Persistence.RankExactKernel` and `TDA.Persistence.RankExactPushout`.
-No `ExactCategory` instance is asserted.
+in `TDA.Persistence.RankSchanuelUnshifted`; the kernel comparisons and the pushout
+closure law are in `TDA.Persistence.RankExactKernel` and
+`TDA.Persistence.RankExactPushout`. No `ExactCategory` instance is asserted.
 -/
 
 set_option autoImplicit false
