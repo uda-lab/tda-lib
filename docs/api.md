@@ -718,9 +718,10 @@ context.
 generators/relations presentation. `Presentation.cokernelPresentation` adjoins
 the lifted source generators to the target relation occurrences, and
 `Presentation.biprodPresentation` takes disjoint unions of both original
-occurrence families. Their comparison isomorphisms target the actual
-categorical cokernel and binary biproduct; cover, quotient, and inclusion laws
-expose how the canonical maps act on the chosen presentations. Consequently,
+occurrence families. Their comparison isomorphisms identify these constructed
+presentations with the actual categorical cokernel and binary biproduct; cover,
+quotient, and inclusion laws expose how the canonical maps act on the chosen
+presentations. Consequently,
 `finitelyPresented_cokernel` and `finitelyPresented_biprod` prove closure for
 actual categorical objects over any ring and preorder in the compatible
 presentation universes. Repeated grades remain distinct occurrences, and empty

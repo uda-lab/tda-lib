@@ -7,7 +7,8 @@ import Mathlib.CategoryTheory.Abelian.Basic
 # Finite presentations of categorical pushouts
 
 In the category of persistence modules, a pushout is the cokernel of the map
-from the binary biproduct induced by the two input maps with opposite signs.
+from the common source into the binary biproduct induced by the two input maps
+with opposite signs.
 This comparison transfers the explicit cokernel and biproduct presentations
 to the actual categorical pushout.
 -/
