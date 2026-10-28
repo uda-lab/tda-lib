@@ -712,6 +712,36 @@ and the `n = 1` consequence of [Theorem 5.18](https://arxiv.org/html/2208.00300v
 [Theorem 6.1](https://arxiv.org/html/2208.00300v3#S6.SS1) gives signed-stability
 context.
 
+### Finite presentations of categorical colimits
+
+`GradedFree.FinitelyPresented` remains the existence of a finite graded-free
+generators/relations presentation. `Presentation.cokernelPresentation` adjoins
+the lifted source generators to the target relation occurrences, and
+`Presentation.biprodPresentation` takes disjoint unions of both original
+occurrence families. Their comparison isomorphisms identify these constructed
+presentations with the actual categorical cokernel and binary biproduct; cover,
+quotient, and inclusion laws expose how the canonical maps act on the chosen
+presentations. Consequently,
+`finitelyPresented_cokernel` and `finitelyPresented_biprod` prove closure for
+actual categorical objects over any ring and preorder in the compatible
+presentation universes. Repeated grades remain distinct occurrences, and empty
+families or redundant relations are allowed.
+
+`pushoutCokernelComparison` identifies the actual pushout with the cokernel of
+`biprod.lift f (-g)`, using Mathlib's cokernel characterization of a pushout in
+an abelian category. `finitelyPresented_pushout` therefore proves finite
+presentation of actual pushouts from finite presentation of the three input
+objects, with no closure certificate supplied by the caller. For a
+rank-exact sequence over a field, `IsRankExact.pushout_finitelyPresented`
+reuses `IsRankExact.pushout` and derives pointwise finite-dimensionality of the
+new left object from its finite presentation. This supplies the
+finite-presentation restriction for the inflation-pushout law in #501; the
+composite-deflation kernel and deflation-pullback obligations remain separate.
+
+`FinitePresentationColimitsExamples` checks a nonzero quotient and actual
+pushout, an empty/zero boundary, repeated grades with a genuine relation, a
+redundant relation, and the arbitrary-field rank-exact consumer.
+
 ### Pushouts of rank-exact sequences
 
 Let `0 → L --ι→ M --π→ N → 0` be rank exact over a field, with `P` any

@@ -368,3 +368,6 @@ import TDA.Persistence.RankSignedNontriangle
 import TDA.Persistence.RankSignedBarcodeOneDimensional
 import TDA.Persistence.RankSignedStabilityExamples
 import TDA.Persistence.RankSignedBarcodeOneDimensionalExamples
+import TDA.Persistence.FinitePresentationColimits
+import TDA.Persistence.FinitePresentationPushout
+import TDA.Persistence.FinitePresentationColimitsExamples
