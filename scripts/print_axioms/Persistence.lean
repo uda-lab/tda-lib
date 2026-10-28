@@ -6218,3 +6218,37 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.finite_death_deletion_boundary_roundtrip
 #print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.finite_death_deletion_boundary
 #print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.nonzero_original_fp_barcode_self_distance
+
+-- Concrete two-coordinate signed hook triangle failure and original-FP realization (Issue #741).
+#print axioms TDA.Persistence.signedStaircaseVertices
+#print axioms TDA.Persistence.signedStaircaseJoins
+#print axioms TDA.Persistence.signedStaircaseLeft
+#print axioms TDA.Persistence.signedStaircaseCenter
+#print axioms TDA.Persistence.signedStaircaseRight
+#print axioms TDA.Persistence.signedStaircaseSupport
+#print axioms TDA.Persistence.signedStaircaseModule
+#print axioms TDA.Persistence.signedStaircaseLeftModule
+#print axioms TDA.Persistence.signedStaircaseRightModule
+#print axioms TDA.Persistence.signedStaircaseDegreeZeroGenerators
+#print axioms TDA.Persistence.signedStaircaseDegreeOneGenerators
+#print axioms TDA.Persistence.signedStaircaseF0
+#print axioms TDA.Persistence.signedStaircaseF1
+#print axioms TDA.Persistence.signedStaircaseRelation
+#print axioms TDA.Persistence.signedStaircaseDifferential
+#print axioms TDA.Persistence.signedStaircaseAugmentation
+#print axioms TDA.Persistence.signedStaircasePresentation
+#print axioms TDA.Persistence.signedStaircasePresentedIso
+#print axioms TDA.Persistence.signedStaircaseModule_finitelyPresented
+#print axioms TDA.Persistence.signedStaircaseLeftModule_finitelyPresented
+#print axioms TDA.Persistence.signedStaircaseRightModule_finitelyPresented
+#print axioms TDA.Persistence.signedStaircaseModule_barcode
+#print axioms TDA.Persistence.signedStaircaseLeftModule_barcode
+#print axioms TDA.Persistence.signedStaircaseRightModule_barcode
+#print axioms TDA.Persistence.signedStaircaseLeftCenter_matching
+#print axioms TDA.Persistence.signedStaircaseCenterRight_matching
+#print axioms TDA.Persistence.signedStaircaseLeftCenter_distance_le_one
+#print axioms TDA.Persistence.signedStaircaseCenterRight_distance_le_one
+#print axioms TDA.Persistence.signedStaircaseLeftRight_distance_eq_three
+#print axioms TDA.Persistence.signedStaircase_signed_nontriangle
+#print axioms TDA.Persistence.not_forall_signedHookBottleneckDissimilarity_triangle
+#print axioms TDA.Persistence.signedStaircaseModule_signed_nontriangle
