@@ -190,3 +190,4 @@ import TDA.Persistence.TwoInjectiveHomDimensionExamples
 import TDA.Persistence.IncidenceQuotientSimpleExamples
 import TDA.Persistence.RankSignedStabilityExamples
 import TDA.Persistence.RankSignedBarcodeOneDimensionalExamples
+import TDA.Persistence.RipsSamplingEmpiricalExamples

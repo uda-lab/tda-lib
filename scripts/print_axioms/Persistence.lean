@@ -6410,3 +6410,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.ConfidenceExamples.repeatedDraws_qTameSampleDiagram
 #print axioms TDA.Persistence.Rips.ConfidenceExamples.singleton_finiteCoverMass_eq_one
 #print axioms TDA.Persistence.Rips.ConfidenceExamples.singleton_confidence_zero
+
+-- Atomic all-degree sampled-Rips law and finite-TV empirical consumer.
+#print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_le_gromovWasserstein_allDegrees
+#print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_le_finiteTotalVariation
+#print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_empiricalPMF_le
+
+-- Repeated-training, zero-weight, and zero-diameter empirical fixtures.
+#print axioms TDA.Persistence.RipsSamplingEmpiricalExamples.repeatedTraining
+#print axioms TDA.Persistence.RipsSamplingEmpiricalExamples.repeatedTraining_masses
+#print axioms TDA.Persistence.RipsSamplingEmpiricalExamples.repeatedTraining_totalVariation
+#print axioms TDA.Persistence.RipsSamplingEmpiricalExamples.repeatedTraining_fullH0_bound
+#print axioms TDA.Persistence.RipsSamplingEmpiricalExamples.zeroWeight_repeatedTraining_bound
+#print axioms TDA.Persistence.RipsSamplingEmpiricalExamples.singleton_zeroDiameter_bound
