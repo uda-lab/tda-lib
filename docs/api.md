@@ -1515,6 +1515,23 @@ This uses essential suprema directly, with the factor `2` from the half-distorti
 GW convention; it assumes no optimal coupling or finite-`p` limit. See
 [sampled Rips diagram laws](math/sampled-rips-laws.md).
 
+For a finite metric population, `FiniteTotalVariation` constructs the common-mass
+coupling of two atomic input laws and measures its exact mismatch probability
+(`maximalCoupling_mismatch`); `finiteTotalVariation_eq_half_sum_abs` identifies
+the normalization with the usual finite total variation.
+`FiniteGromovWassersteinTV` bounds half-normalized distortion GW by a diameter
+bound `D` and finite total variation `δ`:
+`2 GW_p ≤ D (2δ)^(1/p)` for `p > 0`
+(`two_mul_gromovWasserstein_le_finiteTotalVariation`). `RipsSamplingEmpirical`
+combines this with the atomic sampled-law bound to give
+`W_p ≤ D * choose(s,2)^(1/p) * (2δ)^(1/p)` for `p ≥ 1`, resample size
+`s ≥ 2`, and every degree, including full H₀
+(`Rips.wasserstein_sampleLaw_le_finiteTotalVariation`). Its empirical PMF counts repeated
+training observations among `m ≥ 1` indices; `m` is independent of `s`.
+This estimates a law of future sampled diagrams from the finite input law;
+it supplies no random-training confidence level or bound on one observed
+diagram. See [finite-population total variation](math/sampled-rips-laws.md#finite-population-total-variation).
+
 `RipsSamplingConfidence` bounds the probability that an iid sample's canonical
 q-tame diagram differs from the diagram of its compact support. For a finite
 open `r/2`-net with `N` centers and minimum ball probability `β > 0`, the bound
@@ -2374,6 +2391,11 @@ for the real-valued input law. This does not give an arbitrary-`n` atom formula.
 The compact Borel law and its finite-PMF agreement are described with the
 `Rips.sampleLawMeasure` API above. The finite-PMF transport cost has not yet been
 identified with the infimum over all Borel couplings on finite support.
+For finite input laws, `RipsSamplingEmpirical` instead works directly with the
+atomic `sampleLaw` and its full-degree Wasserstein bound. It uses a proved
+common-mass coupling and a uniform-index empirical PMF, with no full-support
+assumption. Its bound is deterministic in the empirical law; random training
+concentration is separate.
 `RipsReducedH0` defines reduced sublevel H₀ as the categorical kernel of the
 augmentation induced by collapsing each Rips sublevel to a point. For a finite
 nonempty metric space, `reducedSublevelH0Diagram_points_eq_finitePart` identifies

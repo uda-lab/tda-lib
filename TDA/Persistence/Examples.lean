@@ -191,6 +191,7 @@ import TDA.Persistence.TwoInjectiveHomDimensionExamples
 import TDA.Persistence.IncidenceQuotientSimpleExamples
 import TDA.Persistence.RankSignedStabilityExamples
 import TDA.Persistence.RankSignedBarcodeOneDimensionalExamples
+import TDA.Persistence.RipsSamplingEmpiricalExamples
 import TDA.Persistence.AffineSliceExamples
 import TDA.Persistence.AffineSliceSignedBarcodeExamples
 import TDA.Persistence.AffineSliceMatchingExamples
