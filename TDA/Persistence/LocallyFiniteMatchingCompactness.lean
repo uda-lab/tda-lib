@@ -1060,6 +1060,19 @@ private theorem occurrenceMatchingOfSection_cost_le
 q-tame modules is bounded by every actual real interleaving parameter. The proof obtains
 one occurrence matching from finite saturation on all finite index sets; no decomposition
 or global-matching hypothesis is assumed. -/
+theorem exists_occurrenceMatching_cost_le_of_realInterleaving
+    {k : Type u} [Field k] {ε : ℝ≥0} {M N : PModule.{u,0,w} k ℝ}
+    (i : RealInterleaving ε M N) (hM : M.QTame) (hN : N.QTame) :
+    ∃ m : OccurrenceMatching
+        (LocallyFiniteDecoratedDiagram.ofQModule hM).finiteOccurrences
+        (LocallyFiniteDecoratedDiagram.ofQModule hN).finiteOccurrences
+        (LocallyFiniteDecoratedDiagram.ofQModule hM).essentialOccurrences
+        (LocallyFiniteDecoratedDiagram.ofQModule hN).essentialOccurrences,
+      LocallyFiniteDecoratedDiagram.matchingCost m ≤ ENNReal.ofReal (ε : ℝ) := by
+  classical
+  obtain ⟨u⟩ := exists_qModule_coherent_matchingStates i hM hN
+  exact ⟨occurrenceMatchingOfSection _ _ ε u, occurrenceMatchingOfSection_cost_le _ _ ε u⟩
+
 theorem qTame_bottleneck_le_of_realInterleaving
     {k : Type u} [Field k] {ε : ℝ≥0} {M N : PModule.{u,0,w} k ℝ}
     (i : RealInterleaving ε M N) (hM : M.QTame) (hN : N.QTame) :
@@ -1067,9 +1080,8 @@ theorem qTame_bottleneck_le_of_realInterleaving
       (LocallyFiniteDecoratedDiagram.ofQModule hM)
       (LocallyFiniteDecoratedDiagram.ofQModule hN) ≤ ENNReal.ofReal (ε : ℝ) := by
   classical
-  obtain ⟨u⟩ := exists_qModule_coherent_matchingStates i hM hN
-  exact (iInf_le _ (occurrenceMatchingOfSection _ _ ε u)).trans
-    (occurrenceMatchingOfSection_cost_le _ _ ε u)
+  obtain ⟨m, hm⟩ := exists_occurrenceMatching_cost_le_of_realInterleaving i hM hN
+  exact (iInf_le _ m).trans hm
 
 end
 end TDA.Persistence

@@ -49,6 +49,21 @@ theorem weighted_twoPoint_sampleLaw_bound (ε : ℝ≥0) (hε : ε ≤ 1)
   wasserstein_sampleLaw_le_gromovWasserstein (ZMod 2)
     (twoPointLaw ε hε) (PMF.pure (() : Unit)) hp n degree hn
 
+/-- The all-degree law theorem applies to the same weighted input and one-point
+target at degree zero, where the diagrams are the full H₀ diagrams. For two
+draws, the source law then has the full-H₀ atom of exact mass `2ε(1-ε)`
+(`epsilonTwoPoint_realSampleLaw_nontrivial_mass`). -/
+theorem weighted_twoPoint_sampleLaw_bound_degreeZero (ε : ℝ≥0) (hε : ε ≤ 1)
+    {p : ℝ} (hp : 1 ≤ p) (n : ℕ) (hn : 2 ≤ n) :
+    wasserstein p bottleneck
+      (sampleLaw (ZMod 2) (twoPointLaw ε hε) n 0)
+      (sampleLaw (ZMod 2) (PMF.pure (() : Unit)) n 0) ≤
+      (n.choose 2 : ℝ≥0∞) ^ p⁻¹ *
+        (2 * gromovWasserstein p (twoPointLaw ε hε)
+          (PMF.pure (() : Unit))) :=
+  wasserstein_sampleLaw_le_gromovWasserstein_allDegrees (ZMod 2)
+    (twoPointLaw ε hε) (PMF.pure (() : Unit)) hp n 0 hn
+
 section EpsilonRegression
 
 open TDA.Filtration.Cech.Examples
@@ -612,6 +627,31 @@ theorem epsilonTwoPoint_sampleLaw_nontrivial_mass_tendsto_zero :
       f ε = ((2 : ℝ≥0∞) * (ε : ℝ≥0∞)) * ((1 - ε : ℝ≥0) : ℝ≥0∞) := rfl
       _ ≤ ((2 : ℝ≥0∞) * (ε : ℝ≥0∞)) * 1 := by gcongr
       _ = (2 : ℝ≥0∞) * (ε : ℝ≥0∞) := by simp
+
+/-- The all-degree law theorem compares two weighted two-point inputs on `ℝ` at
+degree zero with two draws. Each H₀ sample law has the full-H₀ atom of exact
+mass `2ε(1-ε)` for its own weight, so the two sample laws differ whenever these
+masses differ. -/
+theorem twoPoint_pair_sampleLaw_bound_degreeZero (ε ε' : ℝ≥0) (hε : ε ≤ 1)
+    (hε' : ε' ≤ 1) {p : ℝ} (hp : 1 ≤ p) :
+    wasserstein p bottleneck
+        (sampleLaw (ZMod 2) (twoPointLaw ε hε) 2 0)
+        (sampleLaw (ZMod 2) (twoPointLaw ε' hε') 2 0) ≤
+        2 * gromovWasserstein p (twoPointLaw ε hε) (twoPointLaw ε' hε') ∧
+      (sampleLaw (ZMod 2) (twoPointLaw ε hε) 2 0) (diagram (ZMod 2) Bool 0) =
+        (2 : ℝ≥0∞) * (ε : ℝ≥0∞) * ((1 - ε : ℝ≥0) : ℝ≥0∞) ∧
+      (sampleLaw (ZMod 2) (twoPointLaw ε' hε') 2 0) (diagram (ZMod 2) Bool 0) =
+        (2 : ℝ≥0∞) * (ε' : ℝ≥0∞) * ((1 - ε' : ℝ≥0) : ℝ≥0∞) ∧
+      ((2 : ℝ≥0∞) * (ε : ℝ≥0∞) * ((1 - ε : ℝ≥0) : ℝ≥0∞) ≠
+          (2 : ℝ≥0∞) * (ε' : ℝ≥0∞) * ((1 - ε' : ℝ≥0) : ℝ≥0∞) →
+        sampleLaw (ZMod 2) (twoPointLaw ε hε) 2 0 ≠
+          sampleLaw (ZMod 2) (twoPointLaw ε' hε') 2 0) := by
+  have h₁ := epsilonTwoPoint_realSampleLaw_nontrivial_mass ε hε
+  have h₂ := epsilonTwoPoint_realSampleLaw_nontrivial_mass ε' hε'
+  refine ⟨?_, h₁, h₂, fun hne hlaw => hne ?_⟩
+  · simpa using wasserstein_sampleLaw_le_gromovWasserstein_allDegrees (ZMod 2)
+      (twoPointLaw ε hε) (twoPointLaw ε' hε') hp 2 0 le_rfl
+  · rw [← h₁, ← h₂, hlaw]
 
 end EpsilonSampleLaw
 

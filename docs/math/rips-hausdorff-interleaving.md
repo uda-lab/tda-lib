@@ -68,4 +68,6 @@ The result concerns persistence modules and their actual interleavings.
 To compare diagrams of infinite spaces, one also needs a persistence-measure
 construction of locally finite diagrams, including essential bars, and
 algebraic stability for those diagrams. Those conclusions are separate
-from the module bound proved here.
+from the module bound proved here; they are proved in
+[Rips metric stability](rips-metric-stability.md#exact-metric-stability-for-the-q-tame-diagrams),
+which composes this interleaving with `qTame_bottleneck_le_of_realInterleaving`.

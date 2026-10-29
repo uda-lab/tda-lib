@@ -36,8 +36,8 @@ These are ordinary projective resolutions for arbitrary lattices and finite inde
 no finiteness or decidability condition on the order is needed. This statement does not assert
 that the resolution is shortest or minimal, nor does it claim a global-dimension bound. For
 `m ≥ 1`, `term_isZero_of_degree_ge` shows that the degree-`r` term is zero whenever `m ≤ r`:
-there are no faces with `r+1` occurrences. Thus the resolution truncates after degree `m−1`,
-giving projective dimension at most `m−1` for this generated-upset module.
+there are no faces with `r+1` occurrences. Thus the resolution truncates after degree `m−1`; the
+corresponding projective-dimension bound `m−1` follows but is not stated as a Lean theorem.
 
 The construction formalizes Botnan, Oppermann, Oudot and Scoccola,
 [*On the bottleneck stability of rank decompositions of multi-parameter persistence modules*,

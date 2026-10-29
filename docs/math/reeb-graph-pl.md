@@ -623,8 +623,10 @@ merge formula gives `ENNReal.ofReal (min (b-a) (b/2))`
 The modules are `TDA/Reeb/IntervalScaling.lean` and `TDA/Mapper/GraphPLReebScaling.lean`, with
 fixtures in `TDA/Mapper/GraphPLReebScalingExamples.lean`: a point realizes the factor `|s|`;
 scaling the numeric merge tree by `1/2` agrees with the direct distance `1/2`; the reflected
-numeric tree has distance `1` with both extremal displacements zero; apex heights `1`, `3`
-below top height `4` give `[3/2,2]`. Two disjoint edges and one edge stay at distance `⊤` under
+numeric tree has distance `1` with both extremal displacements zero; for apex heights `1`, `3`
+below top height `4` the two-sided bound gives `[3/2,2]`, and the exact value `3/2` is
+`mergeY_beyond_twice_exact` in `TDA/Mapper/GraphPLReebMergeFoldExamples.lean`. Two disjoint
+edges and one edge stay at distance `⊤` under
 zero scaling, whereas `0 * ⊤ = 0`, so the nonzero hypothesis is necessary. The empty-interval
 fixture records the limit of this obstruction family. The scaling and branch-height statements
 are library results; no numbered theorem of de Silva–Munch–Patel states scaling homogeneity.
@@ -640,8 +642,9 @@ distance of height ranges for disconnected graphs beyond the extremal bounds; ma
 objects in `RGraphCat` or maps of Reeb quotients; Mapper cover or reconstruction
 consequences of `HeightMapPair` (its Mapper homology consequences are in [the Mapper digest](mapper.md)); constructible thickening; any distance or interleaving comparison of
 realizations beyond the vertex-height bounds above; Definition 4.36 of de Silva, Munch and Patel;
-trees or simple connectivity; naturality across changes of graph or heights; general finite CW
-complexes; another realization; algorithms.
+naturality across changes of graph or heights; general finite CW complexes; another realization;
+algorithms. Trees and simple connectivity of realizations are proved in
+[reeb-graph-tree-contraction.md](reeb-graph-tree-contraction.md).
 
 Sources: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.3 Notation 2.7, §3.1 Example 3.3 and Theorem 4.6](https://arxiv.org/html/1501.04147v1);
 [pinned mathlib darts](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Combinatorics/SimpleGraph/Dart.lean#L61-L103),

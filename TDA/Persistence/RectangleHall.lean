@@ -16,8 +16,8 @@ maps have a scalar constant on their overlap. Common-grade geometry proves
 the scalar composition law for ordered significant endpoints. The actual
 interleaving equations and path pruning then give a scalar matrix product
 that is triangular with unit diagonal, so Mathlib's rank bounds imply Hall's
-inequality. A two-sided matching and the barcode distance bounds require
-further arguments.
+inequality. `RectangleMatching` turns these inequalities into a two-sided matching;
+`RectangleMatchingDistance` and `RectangleBarcodeBridge` derive the distance bounds.
 -/
 
 set_option autoImplicit false

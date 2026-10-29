@@ -8,7 +8,9 @@ import Mathlib.Tactic
 These examples retain negative births and repeated occurrences, keep finite
 deaths separate from essential tails, check empty output, and exercise the
 exact diagonal-deletion threshold.  A nonzero interval with an actual original
-finite presentation also consumes the module-level barcode stability theorem.
+finite presentation also consumes the module-level barcode stability theorem,
+both against itself and, for two distinct essential intervals born at `0` and
+`1`, through an explicit radius-one interleaving.
 -/
 
 set_option autoImplicit false
@@ -194,5 +196,59 @@ theorem nonzero_original_fp_barcode_self_distance :
       (k := ℚ) negativeInterval negativeInterval
       negativeInterval_original_finitePresentation negativeInterval_original_finitePresentation]
     exact realInterleavingDistance_self _
+
+/-- The essential half-open interval born at `b`. -/
+private noncomputable def essentialInterval (b : ℝ) : PModule.{0,0,0} ℚ ℝ :=
+  RealBarcode.intervalModule (k := ℚ) (b, (⊤ : WithTop ℝ))
+
+private theorem essentialInterval_original_finitePresentation (b : ℝ) :
+    FinitelyPresented.{0,0,0} (R := ℚ) (P := Fin 1 → ℝ)
+      (CoordinateRealBridge.fromReal (essentialInterval b)) :=
+  GradedFree.finitelyPresented_of_iso
+    (GradedFree.free_finitelyPresented (R := ℚ) (P := Fin 1 → ℝ)
+      (HookInfinity.generators (P := Fin 1 → ℝ) (fun _ : Fin 1 => b)))
+    (principalHook_intervalIso (k := ℚ) (fun _ : Fin 1 => b))
+
+/-- The explicit radius-one interleaving of the essential intervals born at `0`
+and `1`, transported from the principal hooks. -/
+private noncomputable def essentialIntervalInterleaving :
+    CoordinateInterleaving 1 (CoordinateRealBridge.fromReal (essentialInterval 0))
+      (CoordinateRealBridge.fromReal (essentialInterval 1)) :=
+  (HookMatching.principalHookInterleavingOfBirthClose (k := ℚ)
+    (a := fun _ : Fin 1 => (0 : ℝ)) (c := fun _ : Fin 1 => (1 : ℝ)) 1
+    (fun _ => by norm_num) (fun _ => by norm_num)).congr
+    (principalHook_intervalIso (k := ℚ) (fun _ : Fin 1 => (0 : ℝ)))
+    (principalHook_intervalIso (k := ℚ) (fun _ : Fin 1 => (1 : ℝ)))
+
+/-- The module-level isometry compares two distinct essential intervals, born
+at `0` and `1`: the first has a nonzero fiber at `0`, where the second
+vanishes, and their barcode bottleneck distance is at most the radius of the
+explicit interleaving. -/
+theorem distinct_essential_intervals_bottleneck_le_one :
+    (∃ x : (essentialInterval 0).obj 0, x ≠ 0) ∧
+    (∀ y : (essentialInterval 1).obj 0, y = 0) ∧
+    bottleneck
+        (finitelyPresentedOneDimensionalBarcodeDiagram (essentialInterval 0)
+          (essentialInterval_original_finitePresentation 0))
+        (finitelyPresentedOneDimensionalBarcodeDiagram (essentialInterval 1)
+          (essentialInterval_original_finitePresentation 1)) ≤ 1 := by
+  refine ⟨?_, ?_, ?_⟩
+  · let x : (essentialInterval 0).obj 0 := ⟨1, by
+      have ha : RealBarcode.alive (0, (⊤ : WithTop ℝ)) 0 :=
+        ⟨le_rfl, WithTop.coe_lt_top 0⟩
+      simp only [RealBarcode.fiber, if_pos ha, Submodule.mem_top]⟩
+    refine ⟨x, ?_⟩
+    intro hx
+    have hval := congrArg Subtype.val hx
+    change (1 : ℚ) = 0 at hval
+    norm_num at hval
+  · intro y
+    have hna : ¬ RealBarcode.alive (1, (⊤ : WithTop ℝ)) 0 := fun h =>
+      absurd h.1 (by norm_num)
+    have hy : y.val ∈ RealBarcode.fiber (k := ℚ) (1, (⊤ : WithTop ℝ)) 0 := y.property
+    simp only [RealBarcode.fiber, if_neg hna, Submodule.mem_bot] at hy
+    exact Subtype.ext hy
+  · rw [finitelyPresentedOneDimensionalBarcode_bottleneck_eq_coordinateDistance (k := ℚ)]
+    simpa using essentialIntervalInterleaving.distance_le
 
 end TDA.Persistence.RankSignedBarcodeOneDimensionalExamples

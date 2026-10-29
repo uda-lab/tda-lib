@@ -7,8 +7,9 @@ import TDA.Mapper.GraphPLReebStabilityExamples
 
 A point realizes the absolute scaling factor. Scaling the numeric merge tree by `1/2` and
 applying the merge-height theorem directly give the same distance `1/2`. Reflection gives a
-split-tree distance of `1` with zero extremal displacements. Beyond the exact range, branch
-heights `1` and `3` below top height `4` give the bracket `[3/2, 2]`.
+split-tree distance of `1` with zero extremal displacements. For branch heights `1` and `3`
+below top height `4` the two-sided bound gives the bracket `[3/2, 2]`; the exact value `3/2` is
+`TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_beyond_twice_exact`.
 
 Zero scaling preserves the infinite distance between two disjoint edges and a single edge,
 so exact homogeneity requires a nonzero scalar. The obstruction interval `(0, b - 2ε)` is
@@ -94,7 +95,8 @@ theorem splitY_numeric :
   · rw [inf'_splitHeights (by norm_num), inf'_splitHeights (by norm_num)]
     simp
 
-/-- Apex heights `1` and `3`: distance in `[3/2,2]`; neither end is claimed to be the value. -/
+/-- Apex heights `1` and `3`: the two-sided bound gives `[3/2,2]`; the exact value `3/2` is
+`TDA.Mapper.GraphPLReebMergeFoldExamples.mergeY_beyond_twice_exact`. -/
 theorem mergeY_beyond_twice :
     ENNReal.ofReal (3 / 2) ≤
         geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights 1 4))

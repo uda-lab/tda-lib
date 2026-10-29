@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Local push gate (enable once per clone: scripts/bootstrap.sh, or
 # `git config core.hooksPath scripts/hooks`). Fails fast:
-#   1. every pushed commit's tree is free of transient/prohibited artefacts and of
-#      merge-conflict markers;
+#   1. the tip commit of every pushed ref has a tree free of transient/prohibited artefacts
+#      and of merge-conflict markers;
 #   2. no unmarked sorry/admit, no custom axiom/opaque/unsafe in the working tree, and the
 #      root and area aggregators are imports-only;
 #   3. if Lean sources or build config changed, the full gate (scripts/check.sh:

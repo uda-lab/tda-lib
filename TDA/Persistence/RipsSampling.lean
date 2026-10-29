@@ -168,11 +168,13 @@ theorem transportCost_sampleLaw_le (k : Type w) [Field k]
     (bottleneck_sampleDiagram_le_pairMaximum k t degree) hp.le)).trans
   exact expectation_pairMaximum_rpow_le π.joint distortion distortion_self distortion_comm hp n
 
-/-- Finite-p stability of the actual iid Rips diagram laws, with diameter time
-and the standard one-half convention for distortion GW. No minimizer is used. -/
-theorem wasserstein_sampleLaw_le_gromovWasserstein (k : Type w) [Field k]
-    (μ : PMF X) (ν : PMF Y) {p : ℝ} (hp : 1 ≤ p) (n degree : ℕ) (hn : 2 ≤ n) :
-    wasserstein p bottleneck (sampleLaw k μ n (degree + 1)) (sampleLaw k ν n (degree + 1)) ≤
+/-- Finite-p stability of the actual iid Rips diagram laws in every homological
+degree, including degree zero, with diameter time and the standard one-half
+convention for distortion GW. At degree zero, the diagrams are the full ordinary
+H₀ diagrams. No minimizer is used. -/
+theorem wasserstein_sampleLaw_le_gromovWasserstein_allDegrees (k : Type w) [Field k]
+    (μ : PMF X) (ν : PMF Y) {p : ℝ} (hp : 1 ≤ p) (n q : ℕ) (hn : 2 ≤ n) :
+    wasserstein p bottleneck (sampleLaw k μ n q) (sampleLaw k ν n q) ≤
       (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * (2 * gromovWasserstein p μ ν) := by
   have hp0 : 0 < p := lt_of_lt_of_le zero_lt_one hp
   have hC0 : (n.choose 2 : ℝ≥0∞) ^ p⁻¹ ≠ 0 := by
@@ -189,15 +191,25 @@ theorem wasserstein_sampleLaw_le_gromovWasserstein (k : Type w) [Field k]
   rw [hGW, ENNReal.mul_iInf_of_ne hC0 hCtop]
   apply le_iInf
   intro π
-  exact (ENNReal.rpow_le_rpow (transportCost_sampleLaw_le k π hp0 n (degree + 1))
+  exact (ENNReal.rpow_le_rpow (transportCost_sampleLaw_le k π hp0 n q)
     (inv_nonneg.mpr hp0.le)).trans_eq
       (ENNReal.mul_rpow_of_nonneg _ _ (inv_nonneg.mpr hp0.le))
 
-/-- Infinity stability is independent of the tuple length; zero-mass points
-are excluded by essential suprema on both sides. -/
-theorem wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity
-    (k : Type w) [Field k] (μ : PMF X) (ν : PMF Y) (n degree : ℕ) :
-    wassersteinInfinity bottleneck (sampleLaw k μ n (degree + 1)) (sampleLaw k ν n (degree + 1)) ≤
+/-- Positive-degree specialization of
+`wasserstein_sampleLaw_le_gromovWasserstein_allDegrees`. -/
+theorem wasserstein_sampleLaw_le_gromovWasserstein (k : Type w) [Field k]
+    (μ : PMF X) (ν : PMF Y) {p : ℝ} (hp : 1 ≤ p) (n degree : ℕ) (hn : 2 ≤ n) :
+    wasserstein p bottleneck (sampleLaw k μ n (degree + 1)) (sampleLaw k ν n (degree + 1)) ≤
+      (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * (2 * gromovWasserstein p μ ν) :=
+  wasserstein_sampleLaw_le_gromovWasserstein_allDegrees k μ ν hp n (degree + 1) hn
+
+/-- Infinity stability in every homological degree, including degree zero, is
+independent of the tuple length; zero-mass points are excluded by essential
+suprema on both sides. At degree zero, the diagrams are the full ordinary H₀
+diagrams. -/
+theorem wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees
+    (k : Type w) [Field k] (μ : PMF X) (ν : PMF Y) (n q : ℕ) :
+    wassersteinInfinity bottleneck (sampleLaw k μ n q) (sampleLaw k ν n q) ≤
       2 * gromovWassersteinInfinity μ ν := by
   have hGW : 2 * gromovWassersteinInfinity μ ν =
       ⨅ π : Coupling μ ν, π.distortionInfinity := by
@@ -206,10 +218,9 @@ theorem wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity
   rw [hGW]
   apply le_iInf
   intro π
-  apply (iInf_le _ (sampleLawCoupling k π n (degree + 1))).trans
+  apply (iInf_le _ (sampleLawCoupling k π n q)).trans
   change essentialSup ((π.tuples n).joint.map
-      (fun ts => (sampleDiagram k ts.1 (degree + 1),
-        sampleDiagram k ts.2 (degree + 1))))
+      (fun ts => (sampleDiagram k ts.1 q, sampleDiagram k ts.2 q)))
     (fun de => bottleneck de.1 de.2) ≤ _
   rw [essentialSup_map]
   change essentialSup ((iid π.joint n).map
@@ -220,7 +231,15 @@ theorem wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity
   intro t
   apply iSup_le
   intro ht
-  exact (bottleneck_sampleDiagram_le_pairMaximum k t (degree + 1)).trans
+  exact (bottleneck_sampleDiagram_le_pairMaximum k t q).trans
     (le_iSup_of_le t (le_iSup_of_le ht le_rfl))
+
+/-- Positive-degree specialization of
+`wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees`. -/
+theorem wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity
+    (k : Type w) [Field k] (μ : PMF X) (ν : PMF Y) (n degree : ℕ) :
+    wassersteinInfinity bottleneck (sampleLaw k μ n (degree + 1)) (sampleLaw k ν n (degree + 1)) ≤
+      2 * gromovWassersteinInfinity μ ν :=
+  wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees k μ ν n (degree + 1)
 
 end TDA.Persistence.Rips
