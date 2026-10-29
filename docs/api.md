@@ -653,7 +653,10 @@ barcode connection is a separate result documented below; a concrete
 two-coordinate signed triangle failure is proved in the next section. Examples apply
 the capstone in dimensions one and two (coefficients one and nine), at zero interleaving
 parameter, and to nonzero finite-presentation inputs; finite-death,
-principal-upset, empty, and repeated cross-sign tags are also exercised.
+principal-upset, empty, and repeated cross-sign tags are also exercised. In
+dimension one the capstone also compares two distinct principal upsets, born at
+`0` and at `1`, through an explicit radius-one interleaving, giving signed
+distance at most one.
 
 ### Two-coordinate signed hook triangle failure
 
@@ -711,7 +714,9 @@ example above proves that `dSigned` is not triangular in general, without
 affecting the ordinary metric result. The examples cover negative births,
 repeated finite bars, finite and essential bars together, the empty diagram, the exact
 finite-death deletion boundary, and a nonzero interval with an actual original
-finite presentation. The endpoint conventions follow
+finite presentation. They apply the isometry both to that interval against
+itself and to two distinct essential intervals, born at `0` and `1`, whose
+bottleneck distance is bounded by an explicit radius-one interleaving. The endpoint conventions follow
 [Bauer--Lesnick, §§2.1--2.3](https://arxiv.org/abs/1311.3681). This library's
 critical-grade argument derives finite constructibility from the actual
 presentation using its critical coordinates, free cover, and
@@ -752,7 +757,9 @@ does not consume them.
 
 `FinitePresentationColimitsExamples` checks a nonzero quotient and actual
 pushout, an empty/zero boundary, repeated grades with a genuine relation, a
-redundant relation, and the arbitrary-field rank-exact consumer.
+redundant relation, and the arbitrary-field rank-exact consumer. It also
+applies the cokernel theorem to the nonzero relation map between free modules
+born at distinct grades.
 
 ### Finite presentations of exact extensions and pullbacks
 
@@ -794,7 +801,10 @@ this result.
 `FinitePresentationPullbackExamples` checks the ordinary extension and
 rank-exact pullback on the repeated-grade presentation with a genuine relation,
 over an arbitrary field and with the smallest presentation-index universe. It
-also checks the empty-presentation zero case.
+also checks the empty-presentation zero case. On the non-split row given by
+the genuine relation, with both outer terms nonzero, it applies the extension
+theorem and the pullback of the quotient map along itself, which contains a
+pair with distinct coordinates.
 
 ### Finite presentations of composite kernels
 
@@ -823,7 +833,10 @@ pullback closure is exposed separately by
 
 `FinitePresentationCompositeKernelExamples` checks the result over an arbitrary
 field using the repeated-grade presentation with a genuine relation, including
-a nonzero fiber of the actual composite kernel, and the empty/zero case.
+a nonzero fiber of the actual composite kernel, and the empty/zero case. A
+second consumer composes two split deflations whose rows have nonzero outer
+terms and exhibits a composite-kernel vector outside the kernel of the first
+deflation.
 
 ### Pushouts of rank-exact sequences
 
@@ -840,7 +853,10 @@ row is rank exact. Each middle fiber is finite dimensional because the actual
 For rank additivity, the proof lifts a quotient vector killed by a structure
 map through the original rank-exact row with a lift killed at the same grade,
 then maps that lift into the pushout. `RankExactPushoutExamples` checks the
-theorem on a nonzero pushout of a split sequence. This closure result supplies
+theorem on a nonzero pushout of a split sequence with zero left term. It also
+pushes the nonzero left term of a split row out along a nonzero truncation map,
+and exhibits a pushout vector that dies at a later grade while its quotient
+image is nonzero. This closure result supplies
 the pushout part of the rank-exact theory; the remaining exact-structure laws
 are separate results.
 
@@ -1318,7 +1334,9 @@ vertex representation or finite projective dimension for arbitrary incidence mod
 does not establish the real-coordinate transfer or final stability result. See
 [ordinary projective dimensions of actual incidence modules](math/incidence-projective-dimension.md)
 and the focused consumers in
-`TDA.Persistence.IncidenceVertexProjectiveDimensionExamples`.
+`TDA.Persistence.IncidenceVertexProjectiveDimensionExamples`, which apply the
+complement-count bound and the incidence grid bound to zero modules and to the
+nonzero regular module.
 
 ### Actual Hom modules and their cokernels
 

@@ -7,8 +7,10 @@ import TDA.Persistence.FinitePresentationKanExamples
 
 These examples use the existing repeated-grade presentation with a genuine
 relation, add a redundant generator and relation, and apply the colimit
-theorems to actual categorical objects. The rank-exact consumer works over
-an arbitrary field with finite presentation-index universes.
+theorems to actual categorical objects. The cokernel theorem is applied to the
+nonzero relation map between free modules on distinct grades, and also to zero
+sources. The rank-exact consumer works over an arbitrary field with finite
+presentation-index universes.
 -/
 
 set_option autoImplicit false
@@ -73,6 +75,24 @@ theorem repeated_nonzero_quotient_cokernel_finitelyPresented
   have hzero : FinitePresentationKanExamples.secondValue k n = 0 := by
     simpa using hv
   exact FinitePresentationKanExamples.surviving_generator n hzero
+
+/-- The actual cokernel of the nonzero relation map, from the free module on
+the relation born at grade two to the free module on two generators born at
+grade zero, is finitely presented and keeps a nonzero vector at grade zero. -/
+theorem relation_cokernel_finitelyPresented {k : Type u} [Field k] {n : ℕ} :
+    (FinitePresentationKanExamples.presentation k n).relationMap ≠ 0 ∧
+      FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ)
+        (Limits.cokernel (FinitePresentationKanExamples.presentation k n).relationMap) ∧
+      ∃ x : (Limits.cokernel (FinitePresentationKanExamples.presentation k n).relationMap).obj
+          ((FinitePresentationKanExamples.generators n).grade (0 : Fin 2)),
+        x ≠ 0 :=
+  ⟨FinitePresentationKanExamples.relation_nonzero k n,
+    GradedFree.finitelyPresented_cokernel
+      (FinitePresentationKanExamples.presentation k n).relationMap
+      (GradedFree.free_finitelyPresented (FinitePresentationKanExamples.relations n))
+      (GradedFree.free_finitelyPresented (FinitePresentationKanExamples.generators n)),
+    ⟨FinitePresentationKanExamples.secondValue k n,
+      FinitePresentationKanExamples.surviving_generator n⟩⟩
 
 private abbrev redundantGenerators (n : ℕ) : GradedGenerators (Fin n → ℝ) where
   Carrier := Unit

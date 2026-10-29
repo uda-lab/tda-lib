@@ -6,7 +6,9 @@ import TDA.Persistence.RankSchanuelUnshiftedExamples
 
 These examples apply the original-finite-presentation capstone in dimensions
 one and two, including zero input distance, and exercise finite-death,
-principal-upset, empty, and repeated cross-sign occurrences.
+principal-upset, empty, and repeated cross-sign occurrences. In dimension one
+the capstone also compares two distinct principal upsets, born at `0` and at
+`1`, through an explicit radius-one interleaving.
 -/
 
 set_option autoImplicit false
@@ -282,5 +284,83 @@ theorem principalOccurrence_zeroMatching :
     (k := ℚ) F F hI
   exact HasMultisetMatching.intro F F (by simp [F, hookTagMultiset])
     (by simp [F, hookTagMultiset]) M hM
+
+/-- The principal upset born at coordinate one, a second module distinct from
+the hook born at the origin. -/
+private noncomputable abbrev shiftedHook : PModule.{0,0,0} ℚ (Fin 1 → ℝ) :=
+  HookInfinity.module (R := ℚ) (fun _ : Fin 1 => (1 : ℝ))
+
+private theorem shiftedHook_finitelyPresented :
+    GradedFree.FinitelyPresented (R := ℚ) (P := Fin 1 → ℝ) shiftedHook :=
+  GradedFree.free_finitelyPresented (R := ℚ) (P := Fin 1 → ℝ)
+    (HookInfinity.generators (P := Fin 1 → ℝ) (fun _ : Fin 1 => (1 : ℝ)))
+
+private noncomputable def shiftedHookMinimalResolution :
+    MinimalFiniteRankProjectiveResolution (k := ℚ) (M := shiftedHook) :=
+  Classical.choice
+    (FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution
+      (by norm_num) shiftedHook shiftedHook_finitelyPresented)
+
+/-- The explicit radius-one interleaving between the principal upsets born at
+`0` and at `1`. -/
+private noncomputable def shiftedHookInterleaving :
+    CoordinateInterleaving 1 RankSchanuelUnshiftedExamples.oneCoordinateHook shiftedHook :=
+  HookMatching.principalHookInterleavingOfBirthClose (k := ℚ) 1
+    (fun _ => by norm_num) (fun _ => by norm_num)
+
+/-- The two compared modules are distinct: the origin hook has a nonzero fiber
+at the origin, where the shifted hook vanishes. -/
+theorem shiftedHooks_distinct :
+    (∃ x : RankSchanuelUnshiftedExamples.oneCoordinateHook.obj (0 : Fin 1 → ℝ), x ≠ 0) ∧
+      ∀ y : shiftedHook.obj (0 : Fin 1 → ℝ), y = 0 := by
+  refine ⟨RankSchanuelUnshiftedExamples.oneCoordinateHook_nonzero_fiber, ?_⟩
+  intro y
+  apply HookInfinity.fiber_eq_zero_of_not_le
+  intro h
+  have h0 := h 0
+  norm_num at h0
+
+/-- The resolution-level capstone applied to two distinct principal upsets and
+the explicit radius-one interleaving between them. -/
+theorem shiftedHooks_signedMatching :
+    HasMultisetMatching (k := ℚ) (n := 1) 1
+      ((oneCoordinateHookMinimalResolution.signedHookBarcode
+        (k := ℚ) (n := 1)
+        RankSchanuelUnshiftedExamples.oneCoordinateHook
+        oneCoordinateHook_finitelyPresented).positive +
+       (shiftedHookMinimalResolution.signedHookBarcode
+        (k := ℚ) (n := 1) shiftedHook shiftedHook_finitelyPresented).negative)
+      ((shiftedHookMinimalResolution.signedHookBarcode
+        (k := ℚ) (n := 1) shiftedHook shiftedHook_finitelyPresented).positive +
+       (oneCoordinateHookMinimalResolution.signedHookBarcode
+        (k := ℚ) (n := 1)
+        RankSchanuelUnshiftedExamples.oneCoordinateHook
+        oneCoordinateHook_finitelyPresented).negative) := by
+  have h := finitelyPresented_exists_signedHookMultisetMatching
+    (k := ℚ) (n := 1) (by norm_num)
+    RankSchanuelUnshiftedExamples.oneCoordinateHook shiftedHook
+    oneCoordinateHook_finitelyPresented shiftedHook_finitelyPresented
+    oneCoordinateHookMinimalResolution shiftedHookMinimalResolution 1
+    shiftedHookInterleaving
+  simpa using h
+
+/-- The module-level signed stability capstone bounds the signed distance
+between the two distinct principal upsets by their explicit interleaving
+radius one. -/
+theorem shiftedHooks_signedDistance_le_one :
+    signedHookBottleneckDissimilarity (k := ℚ)
+      (finitelyPresentedSignedHookBarcode (k := ℚ) (n := 1) (by norm_num)
+        RankSchanuelUnshiftedExamples.oneCoordinateHook
+        oneCoordinateHook_finitelyPresented)
+      (finitelyPresentedSignedHookBarcode (k := ℚ) (n := 1) (by norm_num)
+        shiftedHook shiftedHook_finitelyPresented) ≤ 1 := by
+  have h := finitelyPresented_moduleSignedHookBottleneckDistance_le
+    (k := ℚ) (n := 1) (by norm_num)
+    RankSchanuelUnshiftedExamples.oneCoordinateHook shiftedHook
+    oneCoordinateHook_finitelyPresented shiftedHook_finitelyPresented
+  have hd := shiftedHookInterleaving.distance_le
+  have hcoef : (((2 * 1 - 1 : ℕ) : ℝ≥0∞) ^ 2) = 1 := by norm_num
+  rw [hcoef, one_mul] at h
+  exact h.trans (by simpa using hd)
 
 end TDA.Persistence.RankSignedStabilityExamples
