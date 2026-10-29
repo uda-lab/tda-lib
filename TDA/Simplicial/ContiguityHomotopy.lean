@@ -437,7 +437,9 @@ private theorem face_union_mem (h : Contiguous f g) {n : ℕ} (s : Face K n) :
   ext w
   simp only [Finset.mem_union]
 
-private theorem prismAdmissible_of_contiguous (h : Contiguous f g) :
+/-- Contiguous maps are prism admissible: every mixed prism tuple over a source face lies in a
+target face. -/
+theorem prismAdmissible (h : Contiguous f g) :
     PrismAdmissible f g := by
   intro n s i
   exact prismTuple_mem L _ _ (face_union_mem h s) i
@@ -451,7 +453,7 @@ theorem boundary_prismMap_zero (h : Contiguous f g) :
   change boundary L R 0 (prismMap R h 0 (Finsupp.single s 1)) =
     vertexChainMap R g 0 (Finsupp.single s 1) - vertexChainMap R f 0 (Finsupp.single s 1)
   simp only [prismMap_single_tuple, vertexChainMap_single, one_smul]
-  exact tuplePrism_boundary_zero L R _ _ (fun i => prismAdmissible_of_contiguous h s i)
+  exact tuplePrism_boundary_zero L R _ _ (fun i => h.prismAdmissible s i)
 
 /-- In every positive degree the prism satisfies the signed chain-homotopy equation. -/
 theorem boundary_prismMap_succ (h : Contiguous f g) (n : ℕ) :
@@ -483,7 +485,7 @@ theorem boundary_prismMap_succ (h : Contiguous f g) (n : ℕ) :
     rw [hs, Int.cast_smul_eq_zsmul]
     rfl
   rw [hd]
-  exact tuplePrism_boundary L R _ _ (fun i => prismAdmissible_of_contiguous h s i)
+  exact tuplePrism_boundary L R _ _ (fun i => h.prismAdmissible s i)
 
 private def homotopyComponent (h : Contiguous f g) (i j : ℕ) :
     (simplicialChainComplex K R).X i ⟶ (simplicialChainComplex L R).X j :=
@@ -541,7 +543,7 @@ theorem chainHomotopy_hom_eq_zero (h : Contiguous f g) (i j : ℕ) (hij : i + 1 
 /-- Contiguous arbitrary vertex maps induce equal maps on the existing homology. -/
 theorem simplicialHomologyMap_eq (h : Contiguous f g) (n : ℕ) :
     TDA.Simplicial.simplicialHomologyMap R f n = TDA.Simplicial.simplicialHomologyMap R g n :=
-  simplicialHomologyMap_eq_of_prismAdmissible R (prismAdmissible_of_contiguous h) n
+  simplicialHomologyMap_eq_of_prismAdmissible R (h.prismAdmissible) n
 
 end Contiguous
 

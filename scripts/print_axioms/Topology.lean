@@ -297,3 +297,4 @@ import TDA
 #print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.homologyInterleaving_right
 #print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist
 #print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleaving_of_isometric_embedding
+#print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleavingDistance_le_of_interleaving

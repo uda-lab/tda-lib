@@ -333,3 +333,4 @@ import TDA
 #print axioms TDA.Simplicial.barycentricHomologyIso_naturality
 #print axioms TDA.Simplicial.simplicialHomologyMap_eq_of_prismAdmissible
 #print axioms TDA.Simplicial.arbitraryApexConeFill_zero
+#print axioms TDA.Simplicial.Contiguous.prismAdmissible

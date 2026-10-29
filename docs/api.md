@@ -329,7 +329,7 @@ and zero-dimensional zero-module boundaries. Its fixture
 (an example, not loaded by `import TDA.Persistence`) applies the finite-dimensional fiber theorem
 to the actual constructed kernel using only the original module's finite-presentation hypothesis.
 
-For a field `k`, `n ≥ 1`, and `M : PModule k (Fin n → ℝ)`,
+For a field `k` and `M : PModule k (Fin n → ℝ)` (no positivity of `n` is needed),
 `GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum` gives the
 following classification under only the original
 `GradedFree.FinitelyPresented M` predicate: `M` is rank projective exactly
@@ -2286,9 +2286,11 @@ sampled-law bounds above concern full H₀ diagrams.
 ### Barycentric subdivision and prism homotopies
 
 `PrismAdmissible f g` weakens contiguity: every mixed prism tuple over a source face is a
-target face, although `f(s) ∪ g(s)` need not be one. `PrismAdmissible.chainHomotopy` is the
-same signed prism homotopy, and `simplicialHomologyMap_eq_of_prismAdmissible` gives equal
-homology maps in every degree over any ring. `TDA.Simplicial.ArbitraryApexCone` inserts a
+target face, although `f(s) ∪ g(s)` need not be one; `Contiguous.prismAdmissible` derives it from
+contiguity (no fixture shows the weakening is strict). `PrismAdmissible.chainHomotopy` is the
+signed prism homotopy, of the same shape as the separately constructed `Contiguous.chainHomotopy`,
+and `simplicialHomologyMap_eq_of_prismAdmissible` gives equal homology maps in every degree over
+any ring. `TDA.Simplicial.ArbitraryApexCone` inserts a
 chosen apex into each oriented tuple at its position in the ambient order; when the apex can
 be inserted into every face (`ApexInsertionClosed`), `boundary_arbitraryApexConeFill_add`
 contracts positive-degree chains and `boundary_arbitraryApexConeFill_zero` subtracts the
@@ -2340,7 +2342,10 @@ isomorphisms transport that interleaving to the subdivision-Rips modules.
 `subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist` bounds their restricted
 homology interleaving distance by the finite-uniform GP distance, for finite nonempty metric
 inputs in one universe; `subdivisionRipsHomologyInterleaving_of_isometric_embedding` gives the
-outlier consumer. No comparison with the homology of the multicover space, homotopy
+outlier consumer. The distance is the infimum over the public predicate
+`SubdivisionRipsHomologyInterleavingExistsAt`, and
+`subdivisionRipsHomologyInterleavingDistance_le_of_interleaving` bounds it by the scale of any
+supplied restricted-index interleaving. No comparison with the homology of the multicover space, homotopy
 interleaving or bound for non-uniform measures is stated. See
 [normalized subdivision-Rips and measure stability](math/subdivision-rips.md).
 

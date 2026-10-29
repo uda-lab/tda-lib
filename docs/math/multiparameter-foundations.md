@@ -659,8 +659,8 @@ finite presentations over `ℚ` and `ZMod 2`.
 
 ## Rank-projectives among finitely presented real modules
 
-Fix a field `k` and `n ≥ 1`. For a module `M` on `Fin n → ℝ` satisfying the
-original `GradedFree.FinitelyPresented M` predicate,
+Fix a field `k` and `n : ℕ` (no positivity is needed). For a module `M` on `Fin n → ℝ` satisfying
+the original `GradedFree.FinitelyPresented M` predicate,
 `GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum` proves
 
 ```text
