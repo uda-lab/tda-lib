@@ -156,13 +156,18 @@ give the declaration names.
   field are defined by image-and-kernel quotients with the four-rank formula, finite on
   rectangles separated from the diagonal for q-tame modules; essential strips, box
   inequalities along interleavings, additive contents and decorated multiplicities with
-  death at infinity follow, with countable support. The locally finite decorated diagram
-  of a q-tame module is bottleneck-stable: an actual ε-interleaving of q-tame modules
-  bounds the distance of the extracted diagrams by ε. Rips sublevel modules of totally
-  bounded spaces are q-tame, their diagrams agree with the finite diagrams on finite
-  spaces, and they are stable under Hausdorff and Gromov–Hausdorff perturbation, with
-  convergence of finite samples to a totally bounded target. Birth-at-minus-infinity
-  strata and finite-diagram compatibility for arbitrary q-tame modules are not claimed.
+  death at infinity follow, with countable support. Every pointwise finite-dimensional
+  real-indexed module over a field is naturally isomorphic to an algebraic direct sum of
+  scalar interval modules with order-convex supports (open or closed endpoints,
+  singletons, tails and the whole line allowed), and the rank barcode of every strict
+  finite observation list is the multiset of nonempty sampled intersections of these
+  summands. The locally finite decorated diagram of a q-tame module is bottleneck-stable:
+  an actual ε-interleaving of q-tame modules bounds the distance of the extracted diagrams
+  by ε. Rips sublevel modules of totally bounded spaces are q-tame, their diagrams agree
+  with the finite diagrams on finite spaces, and they are stable under Hausdorff and
+  Gromov–Hausdorff perturbation, with convergence of finite samples to a totally bounded
+  target. Birth-at-minus-infinity strata and finite-diagram compatibility for arbitrary
+  q-tame modules are not claimed.
 - **Multiparameter persistence.** Over any field and for `n ≥ 1`, a finitely presented
   persistence module indexed by `ℝⁿ` has a minimal finite rank-projective resolution whose
   terms vanish in degrees above `2n−2`; the hook multisets of its terms are independent of

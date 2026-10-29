@@ -166,8 +166,10 @@ deletion and insertion cost families used here. The library proves a finite
 real-weight reservoir adaptation with maximum ground norm. Finite-product
 compactness and the extreme value theorem are taken from the pinned mathlib.
 The atomic bridge compares every Borel boundary plan for native finite
-diagrams. Ordinary Wasserstein API integration, minimizing plans for general
-finite Radon inputs and infinite-diagram theory remain outside this result.
+diagrams. Minimizing plans for general finite Borel inputs and `p ≥ 1` are proved separately
+(`BoundaryTransport.exists_minimizing_boundaryPlan`, see
+[the OT dependency map](boundary-transport-ot-dependency.md)); ordinary Wasserstein API
+integration and infinite-diagram theory remain outside this result.
 
 The existing unit-occurrence exponent limits remain unchanged. The weighted
 extension here proves neither an exponent limit nor uniformity over arbitrary

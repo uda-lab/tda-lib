@@ -60,8 +60,10 @@ additivity. An existing essential interval `[0,∞)` contributes one on
 `[-1,0]` at this boundary.
 
 These modules construct rectangle and essential-boundary measures. The
-representation of these measures by a decorated locally finite diagram,
-bottleneck stability for those diagrams, and compatibility with the full
-finite diagram API remain outside these results. In particular the
-finite `Diagram ℝ`, whose occurrences form a `Multiset`, does not represent
-the general q-tame diagram.
+representation of these measures by a decorated locally finite diagram and its
+bottleneck stability are proved separately (`LocallyFiniteDecoratedDiagram.ofQModule`,
+`qTame_bottleneck_le_of_realInterleaving` in `LocallyFiniteDiagramBottleneck` and
+`LocallyFiniteMatchingCompactness`; see [Rips metric stability](rips-metric-stability.md)).
+Compatibility with the finite `Diagram ℝ`, whose occurrences form a `Multiset`, is proved for
+positive finite diagrams and for Rips modules of finite spaces; birth-at-`−∞` strata and
+compatibility for other finite-type q-tame modules are not claimed.

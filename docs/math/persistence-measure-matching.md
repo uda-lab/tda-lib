@@ -52,6 +52,8 @@ Theorem 4.25, Part 2(ii), §4.7. Example 4.26 shows why one pair of box
 inequalities does not imply a general matching theorem without these local
 hypotheses. The one-parameter family used in Theorem 4.25, the passage from
 [module rectangle measures](persistence-measure-box.md) to these closed-square
-occurrence counts, essential points, and the locally finite extension remain
-separate proof obligations. This theorem therefore does not assert full
-algebraic stability or a Rips bottleneck bound.
+occurrence counts, essential points, and the locally finite extension are not part of
+this local theorem. The global result, `qTame_bottleneck_le_of_realInterleaving`, is proved by a
+different route through `PersistenceMeasureWindowMatching` and finite saturation (see
+[Rips metric stability](rips-metric-stability.md)); this local theorem by itself asserts
+neither full algebraic stability nor a Rips bottleneck bound.

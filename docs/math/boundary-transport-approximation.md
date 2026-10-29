@@ -84,6 +84,7 @@ separate AI-input/reuse condition remains unresolved, and no article-body
 comparison is claimed.
 
 This is same-original-mass approximation by the canonical native atomic
-constructor. Ordinary Wasserstein API identification and sharp native
-triangle/separation remain the other open endpoints in the
-[dependency map](boundary-transport-ot-dependency.md).
+constructor. Ordinary Wasserstein API identification remains the other open endpoint in the
+[dependency map](boundary-transport-ot-dependency.md); the sharp native triangle inequality and
+separation are proved in [the metric laws](boundary-transport-metric.md)
+(`boundaryTransportDistance_triangle`, `boundaryTransportDistance_eq_zero_iff`).

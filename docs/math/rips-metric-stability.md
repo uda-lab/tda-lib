@@ -274,8 +274,9 @@ map is definitionally the existing Rips occurrence map, including the true
 
 The finite results above are joined by a global compactness theorem. For
 the finite-birth diagrams extracted from arbitrary q-tame modules,
-`qTame_bottleneck_le_of_realInterleaving` constructs, for each actual
-interleaving, an occurrence matching with cost at most its parameter.
+`qTame_bottleneck_le_of_realInterleaving` bounds the bottleneck distance by the
+parameter of each actual interleaving; its proof builds one global occurrence
+matching with cost at most that parameter.
 It uses finite saturation on each finite set of required vertices and a
 coherent section of the resulting finite inverse system; no decomposition or
 global-matching hypothesis is assumed. The generic diagram representation does

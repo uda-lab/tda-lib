@@ -179,7 +179,8 @@ private theorem repeatedFiniteHook_finitelyPresented :
         (biproduct.mapIso (fun _ : Fin 2 => grid.hookLanIso gridOrigin gridTop))
   exact GradedFree.finitelyPresented_of_iso hLan e
 
-/-- Two repeated nonzero hooks remain two occurrences in the classified sum. -/
+/-- The repeated nonzero hook sum is classified as a finite hook sum; the multiplicity itself is
+not stated here (see `rankProjectiveHookSum_multiplicity_unique_of_iso`). -/
 theorem repeated_finite_hook_classifies :
     IsRankProjective (⨁ fun _ : Fin 2 => rankProjectiveHookModule (k := ℚ) finiteTag) ∧
       ∃ m : ℕ, ∃ t : Fin m → RankProjectiveHookTag P,

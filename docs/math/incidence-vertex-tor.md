@@ -40,7 +40,9 @@ This specializes the projectivity-and-short-exact-row mechanism of
 [BOOS24-v3, Lemma 5.6](references.md#BOOS24-v3) to the interval-pair incidence algebra and its
 diagonal ideal. The result concerns the strict-vertex calculation at `B`; it does not classify
 all simple `A`-modules or prove a global-dimension comparison between `A/I` and `A`, or bound the
-global dimension of `A`. The separate `#691` Hom-cokernel estimate and numerical, grid, or real
-`2n−2` persistence bound for the final `#501` stability claim remain downstream. The Bool and
+global dimension of `A`. The Hom-cokernel estimate and the grid and real-coordinate `2n−2` bounds
+are proved separately (see
+[finite-grid Hom-module and Hom-cokernel dimensions](finite-rank-projective-hom-quotient-dimension.md)
+and the API guide's real-coordinate degree bound). The Bool and
 singleton strict-vertex consumers work over arbitrary fields; `rationalField_infinite` supplies a
 concrete infinite-field example.

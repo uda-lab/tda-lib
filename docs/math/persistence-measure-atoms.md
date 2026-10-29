@@ -86,5 +86,7 @@ from the existing q-tame module with infinite-dimensional ephemeral fibers.
 
 The construction covers finite births, finite deaths and essential deaths. Its module
 lower-bound theorem supplies the relevant birth-support bound for lower-bounded modules.
-Compatibility with the existing finite diagram type and algebraic stability remain
-separate obligations.
+Algebraic stability of the extracted diagram is proved by `qTame_bottleneck_le_of_realInterleaving`
+(see [Rips metric stability](rips-metric-stability.md)); compatibility with the existing finite
+diagram type is proved for positive finite diagrams and finite Rips spaces, not for arbitrary
+q-tame modules.

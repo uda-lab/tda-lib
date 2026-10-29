@@ -86,8 +86,9 @@ positive parameter. Their distance is zero, while their fibers at zero have
 different dimensions, so they are not naturally isomorphic. The declarations
 `RealRay.distance_eq_zero` and `RealRay.not_nonempty_iso` prove these facts.
 Thus distance zero does not separate arbitrary real-indexed modules.
-For the closed ray, the usual generator at zero gives a finite presentation;
-the open ray cannot have one under the convention above.
+Informally, the usual generator at zero gives the closed ray a finite presentation while the open
+ray cannot have one under the convention above; this remark is not formalized (the library's
+`FinitelyPresented` is stated for `Fin n → ℝ`).
 
 The one-dimensional finite-constructible theorem also obtains attainment
 from barcode isometry and an optimal finite matching; see
