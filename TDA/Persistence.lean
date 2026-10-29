@@ -1,5 +1,7 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
+import TDA.Persistence.EndpointCostSign
+import TDA.Persistence.AffineSwitchArrangement
 import TDA.Persistence.DecoratedMeasureCuts
 import TDA.Persistence.DecoratedCutEndpoints
 import TDA.Persistence.DecoratedRectangleCells
@@ -367,3 +369,7 @@ import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationExtensions
 import TDA.Persistence.FinitePresentationPullback
 import TDA.Persistence.FinitePresentationCompositeKernel
+import TDA.Persistence.FiniteSimplicial
+import TDA.Persistence.FiniteSimplicialPresentation
+import TDA.Persistence.FiniteSimplicialInterleaving
+import TDA.Persistence.FiniteSimplicialStability

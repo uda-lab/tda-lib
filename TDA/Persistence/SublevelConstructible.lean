@@ -37,19 +37,13 @@ variable (R : Type v) [Ring R]
 
 /-- The empty complex has zero homology in every degree, over every ring. -/
 theorem isZero_simplicialHomology_bot (n : ℕ) :
-    IsZero (simplicialHomology (⊥ : PreAbstractSimplicialComplex V) R n) := by
-  have hX : IsZero ((simplicialChainComplex (⊥ : PreAbstractSimplicialComplex V) R).X n) := by
-    rw [simplicialChainComplex_X]
-    exact ModuleCat.isZero_of_subsingleton _
-  exact ShortComplex.isZero_homology_of_isZero_X₂ _ hX
+    IsZero (simplicialHomology (⊥ : PreAbstractSimplicialComplex V) R n) :=
+  TDA.Simplicial.isZero_simplicialHomology_bot R n
 
 /-- The homology inclusion between equal complexes is an isomorphism. -/
 theorem isIso_simplicialHomologyIncl_of_eq {A B : PreAbstractSimplicialComplex V}
-    (hAB : A = B) (h : A ≤ B) (n : ℕ) : IsIso (simplicialHomologyIncl R h n) := by
-  subst hAB
-  change IsIso (simplicialHomologyIncl R (le_refl A) n)
-  rw [simplicialHomologyIncl_id]
-  infer_instance
+    (hAB : A = B) (h : A ≤ B) (n : ℕ) : IsIso (simplicialHomologyIncl R h n) :=
+  simplicialHomologyIncl_isIso_of_eq R h hAB n
 
 end Homology
 
