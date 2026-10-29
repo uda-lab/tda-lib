@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Local push gate (enable once per clone: scripts/bootstrap.sh, or
 # `git config core.hooksPath scripts/hooks`). Fails fast:
-#   1. every pushed commit's tree is free of transient/prohibited artefacts;
+#   1. the tip commit of every pushed ref has a tree free of transient/prohibited artefacts
+#      and of merge-conflict markers;
 #   2. no unmarked sorry/admit, no custom axiom/opaque/unsafe in the working tree, and the
 #      root and area aggregators are imports-only;
 #   3. if Lean sources or build config changed, the full gate (scripts/check.sh:
@@ -45,10 +46,12 @@ if [ "$had_input" = "0" ]; then
   changed="$(git diff --name-only "${base:-HEAD}" HEAD 2>/dev/null || true)"
 fi
 
-echo "[pre-push] transient-artefact guard on pushed commits…"
+echo "[pre-push] transient-artefact and conflict-marker guards on pushed commits…"
 for oid in $oids; do
   bash scripts/check-transient-artifacts.sh "$oid" \
     || { echo "[pre-push] BLOCK: check-transient-artifacts failed for $oid"; exit 1; }
+  bash scripts/check-conflict-markers.sh "$oid" \
+    || { echo "[pre-push] BLOCK: check-conflict-markers failed for $oid"; exit 1; }
 done
 
 echo "[pre-push] textual guards…"

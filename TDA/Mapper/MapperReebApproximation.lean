@@ -58,6 +58,12 @@ def coverResolution (a b : ι → ℝ) : ℝ≥0 :=
   letI := Fintype.ofFinite ι
   Finset.univ.sup (fun i => Real.toNNReal (b i - a i))
 
+/-- Translating a cover by `c` preserves its resolution. -/
+theorem coverResolution_add_const (a b : ι → ℝ) (c : ℝ) :
+    coverResolution (fun i => a i + c) (fun i => b i + c) = coverResolution a b := by
+  unfold coverResolution
+  simp
+
 /-- The distinct attained-range resolution. This clips each interval to the height
 range; it is not the resolution in the categorical reconstruction bound. -/
 def clippedCoverResolution (f : C(X, ℝ)) (a b : ι → ℝ) : ℝ≥0 :=

@@ -327,8 +327,8 @@ face lies in every target member selected by either refinement, so it witnesses
 the union face. Applying this result to the component-cover refinements shows
 that any two selected target-cover refinements induce contiguous ordinary
 Mapper maps. The maps can differ on vertices; contiguity, rather than equality,
-is the choice-independence statement at this level. No homology-map equality or
-chain homotopy is inferred.
+is the choice-independence statement at the vertex level. The homology-map
+equality it yields on the ordered chain model is stated below.
 
 A coherent cover tower over a preorder consists of a possibly varying index
 type and indexed family at every parameter, together with a selected
@@ -339,7 +339,668 @@ not inferred from unrelated selector choices. Ordinary Mapper assigns a
 complex to every parameter and a simplicial vertex map to every comparison,
 and the existing strict refinement laws prove identity and composition for
 these maps. This direct interface makes no fixed-ambient inclusion claim and
-adds no categorical, diagram, stability, or persistence conclusion.
+adds no categorical, diagram or stability conclusion; the persistence module
+below does not need the strict equations.
+
+## Refinement-induced homology maps and Mapper persistence modules
+
+Fix a continuous map `f : X → Y`, a ring `R` and a degree `n`. For families
+`U : I → Set Y` and `V : J → Set Y` with `I` and `J` in one universe, and
+linear orders on the component-index types of `mapper f U` and `mapper f V`,
+a selected refinement `r : Refinement U V` induces the map
+`mapperHomologyMap R f r n = simplicialHomologyMap R (mapperMap f r) n` on
+the ordered-chain homology. The identity refinement induces the identity map
+and composition of refinements induces composition. No openness, coverage,
+multiplicity, finiteness, field or local path-connectedness hypothesis
+enters. The linear orders are chain-model data; nothing is claimed about
+replacing them by other orders.
+
+Two selected refinements `r, s : Refinement U V` induce contiguous Mapper
+maps, so the signed prism of the contiguity bridge is a chain homotopy
+`mapperChainHomotopy R f r s` between their chain maps and
+`mapperHomologyMap R f r n = mapperHomologyMap R f s n`. Consequently every
+refinement of a family into itself induces the identity on homology, and the
+composite of the maps induced by `r : Refinement U V` and `s : Refinement V W`
+is the map induced by any `t : Refinement U W`. The vertex maps and the chain
+maps may still differ; the equality is a statement about homology. This is a
+library consequence of the contiguity statement above and of the signed prism
+homotopy of the [simplicial vertex-map bridge](simplicial-vertex-maps.md); it
+adds no source claim beyond those already recorded for them.
+
+Along a preorder `P`, cover families `U p` with index types in one universe,
+linear orders on their component-index types, and a selected refinement
+`r h : Refinement (U p) (U q)` for every `h : p ≤ q` form the persistence
+module `mapperHomologyPModule R f U r n : PModule R P`. Its value at `p` is
+`simplicialHomology (mapper f (U p)) R n` and its structure map at `h` is
+`mapperHomologyMap R f (r h) n`. The functor laws follow from the homology
+equalities above, so no identity or composition equation on the selectors is
+required, and replacing the whole family `r` by another choice of refinements
+between the same families gives the same module. A `CoherentCoverTower`
+supplies such a family; the homology maps of its strict Mapper maps are
+exactly the structure maps of this module, and the strict tower interface is
+unchanged.
+
+Fixtures: over a one-point domain, the two selections of a duplicated target
+member give different Mapper vertex maps and the same nonzero `H₀` map over
+`ℚ`; a three-stage family whose direct first-to-last selector differs from
+the composite of the adjacent selectors gives a persistence module equal to
+the module of the strictly coherent three-stage tower; its first transition
+collapses an edge, killing the edge generator in degree one over every ring
+while, over `ℚ`, sending both endpoint classes in `H₀` to the nonzero
+middle-vertex class; an empty domain over a nonempty index type gives an
+empty Mapper, zero chain maps and equal homology maps in every degree over
+every ring. As a negative
+control, the two simplicial maps from a point to two isolated vertices are
+not contiguous and have different `H₀` maps over `ZMod 2`; they are not the
+Mapper maps of two refinements between one pair of families, and over the
+zero ring `ZMod 1` their homology maps coincide, so the nontriviality of the
+coefficient ring is necessary for this control.
+
+No multinerve chain complex or multinerve selector independence, Nerve Lemma,
+categorical reconstruction, barcode algorithm or q-tame theory is included. The
+stability statement for interleaved cover towers is in the next section.
+
+## Height-preserving maps
+
+Let `f : X → Y` and `f' : X' → Y` be continuous and let `φ : X → X'` be continuous with
+`f' (φ x) = f x` for all `x`. For every family `U : I → Set Y`, the restriction of `φ`
+to the inverse images over the members `U i` is a continuous map
+`pullbackRestrict φ hφ U i`, and acts on path components. The map
+`domainIndexMap φ hφ U` sends the class over `i` of a point `x` to the class over `i` of
+`φ x`. It is a selected refinement of `componentCover f U` into the pullback along `φ` of
+`componentCover f' U` (`componentDomainRefinement`), and therefore a vertex map
+`mapperDomainMap φ hφ U : mapper f U → mapper f' U`. The identity of `X` induces the
+identity, a composite induces the composite, and for every selected refinement
+`R : Refinement U V` of target families
+`mapperMap f R` followed by `mapperDomainMap` over `V` equals `mapperDomainMap` over `U`
+followed by `mapperMap f' R`, as an equality of vertex maps. The two domains may lie in
+different universes at this level; `φ` need not be injective, surjective or open, and no
+ordering of component indices is involved. This is the Mapper counterpart of the natural
+transformation `componentNatTrans` of the Reeb component cosheaf, which
+[DMP15-v1](references.md#DMP15-v1) §3.4 induces from a map over the codomain; no numbered
+statement of either source is claimed.
+
+With the two domains in one universe, linear orders on `ComponentIndex f U` and
+`ComponentIndex f' U` supplied independently on the two sides, and any ring `R`,
+the vertex map induces `mapperHomologyDomainMap R φ hφ U n`
+on the ordered-chain homology. It preserves identities and composition, and its square with
+`mapperHomologyMap R f r n` and `mapperHomologyMap R f' r n` commutes for every selected
+refinement `r`. Along a preorder of cover families with selected refinements `r`, the maps
+`mapperHomologyDomainMap` therefore form a morphism of persistence modules
+`mapperHomologyPModuleMap R φ hφ U r n : mapperHomologyPModule R f U r n ⟶
+mapperHomologyPModule R f' U r n`, again compatible with identities and composition. The
+vertex orders are not assumed monotone for `φ`.
+
+For a homeomorphism `e : X ≃ₜ X'` with `f' (e x) = f x`, the inverse homeomorphism satisfies the
+same hypothesis, and the composites of the two induced morphisms are the identities by the
+composition and identity laws. This gives an isomorphism `mapperHomologyPModuleIso` of the
+Mapper homology modules. Consequently, over `ℝ`, the real interleaving distance of the two
+modules is `0`. For step data with an empty initial family and finitely many faces of the
+given degree on both sides, the step diagrams of `f` and `f'` are at bottleneck distance
+`0`; the same holds for the capped centred diagrams of `f` and `f'` for maps to `ℝ`. Here the
+bottleneck distance is obtained from the isometry theorem for finite-constructible modules
+applied separately to the two domains. For a graph isomorphism `e : G ≃g G'` of finite
+graphs and vertex heights with `g' (e v) = h v`, the realization map of `e` is a homeomorphism
+over the piecewise-linear heights (`realizationHomeomorph`, `plHeight_realizationHomeomorph`),
+so every capped centred diagram of `plHeight G h` is at bottleneck distance `0` from that of
+`plHeight G' g'`. Invariance of the diagrams is stated as distance `0`, not as equality of the
+diagrams, which would require an isomorphism-invariance lemma for `moduleDiagram`.
+
+Fixtures. On the single edge, the vertex swap is a graph isomorphism from the heights `(0, 1)`
+to `(1, 0)`; with the labels `0, 1, 2`, base `0`, spacing `1` and the uniform grid of spacing
+`1/4` from `0` to `2`, the capped centred diagrams of the two piecewise-linear heights are at
+bottleneck distance `0` in every degree, while the vertex heights are at distance `1`. The
+identity law is instantiated on the unit interval. The composition law is instantiated by
+`Unit → Bool → unitInterval`: the point selects `false` at height `0`, and the second map
+includes the two endpoints at heights `0` and `1`. Both factors are non-identity maps.
+For the two endpoints of the unit interval at heights `0` and `1` and the single member `ℝ`,
+the inclusion into the interval over the height `x ↦ x` induces an `H₀` map over `ℚ` from a
+space of dimension `2` to a space of dimension `1`, which is not injective, so the domain map
+exists without being an isomorphism. Swapping the labels `0` and `1` sends the 4-cycle with
+heights `0, 1, 2, 1` to a different graph on `Fin 4` with heights `1, 0, 2, 1`; the capped
+centred diagrams of these two heights are at distance `0`. Separately, the reflection of the
+original 4-cycle fixing `0` and `2` preserves its height, and over the level `1` its domain map
+sends the class of the vertex `1` to the class of the vertex `3`, a different component index.
+The identity of the realization of the single edge between the heights `(0, 1)` and `(0, 3/2)`
+does not commute with the heights; no domain map is defined, and the capped fixture bounds the diagrams only by `1/2`.
+
+For a `HeightMapPair` between `f : C(X, ℝ)` and `g : C(X', ℝ)`, the maps in both
+directions have height error at most `δ`, and paths from each double composite to the
+identity have height deviation at most `2δ`. For every spacing `s`, ring `R`, degree `n`,
+and supplied linear orders on both component-index types, the pair induces natural
+transformations between the centred Mapper homology modules and their `δ`-shifts. Their
+composites equal the tower maps through radius `t + 2δ`, so the modules are `δ`-interleaved
+and their real interleaving distance is at most `δ`. No finiteness, coverage or nonemptiness
+hypothesis is used. The same-space pointwise bound follows as a specialization, and finite
+graph-PL maps inherit the bound. This is a library specialization in the setting of
+DMW16-v2 §4.1 ([reference](references.md#DMW16-v2)); the pair hypotheses and no numbered
+source result are attributed to that paper. The maps are induced by the pair, not by cover
+refinements. This section concerns the centred-tower modules; capped centred step-diagram bounds
+from a height-map pair are given in the later capped-tower section. A converse, multinerve Mapper,
+independence of component orders, and executable extraction are not provided.
+
+The path condition cannot be omitted: the constant height maps from discrete `Bool` to `Unit`
+preserve heights, but no `HeightMapPair` exists between them for any parameter, and their
+degree-zero Mapper modules over `ℚ` on the centred tower of spacing `1` have real interleaving
+distance at least `1/2`. For the constant full-cover tower, the distance is `⊤`.
+
+Not included: equality of the diagrams themselves for homeomorphic heights; compatibility of the
+domain maps with the interleavings `mapperHomologyInterleaving` or with the multinerve maps;
+functoriality in the codomain beyond the pullback identity; homotopy invariance; independence of the
+component orders; executable extraction.
+
+## Interleaved cover towers and Mapper homology stability
+
+A real cover tower on `Y` is a family `U t : IndexU t → Set Y` for every
+`t : ℝ` with a selected refinement `rU h : Refinement (U s) (U t)` for every
+`h : s ≤ t`; no identity or composition equation is required. Fix
+`f : C(X, Y)`, a ring `R`, a degree `n` and linear orders on the component-index
+types. For `η : ℝ≥0`, two towers `U` and `V` (index types in one universe) are
+related by selected cover maps `ζ t : Refinement (U t) (V (t + η))` and
+`ξ t : Refinement (V t) (U (t + η))` for every `t`. This is a library form of
+Definition 5 of [DMW16-v2](references.md#DMW16-v2): the families need not be
+finite or cover `Y`, the tower refinements need not satisfy identity or
+composition equations, and the parameter has no resolution lower bound. As in
+the source, no commutation between the cover maps and the tower maps is
+assumed.
+
+`mapperHomologyInterleaving R f rU rV ζ ξ n` is a real `η`-interleaving of
+`mapperHomologyPModule R f U rU n` and `mapperHomologyPModule R f V rV n`. The
+component of its first map at `t` is `mapperHomologyMap R f (ζ t) n` and that of
+its second map is `mapperHomologyMap R f (ξ t) n`. Naturality at `s ≤ t`
+compares two refinements `U s → V (t + η)`, the composite through `U t` and the
+composite through `V (s + η)`. The double-shift identity at `t` compares the
+composite of `ζ t`, `ξ (t + η)` and the parameter transport with the tower
+refinement `U t → U (t + 2η)`. In each case both sides are induced by
+refinements between the same families, so they agree on homology by the
+selector independence of the previous section. The components, and for fixed
+tower refinements the whole interleaving, do not depend on which cover maps or
+tower refinements were selected. Hence
+`realInterleavingDistance_mapperHomologyPModule_le` bounds the real interleaving
+distance of the two modules by `η`, and composing an `η₁`-pair of cover maps
+with an `η₂`-pair bounds the distance between the outer modules by `η₁ + η₂`.
+This is the homology-module form of DMW16-v2 Proposition 4.2 and Corollary 4.3,
+with Proposition 4.1(i) at the level of modules. The source states the
+conclusion for nerve towers up to contiguity (Definition 6) and for persistence
+diagrams of finite towers. The nerve-tower form is not formalised; the diagram
+form is obtained for step towers in
+[a later section](#diagrams-of-mapper-homology-along-step-towers).
+
+The Mapper complex of `f` along `U t` is definitionally the Mapper complex of the
+identity of `X` along `pullback f (U t)`, with `pullbackRefinement f` applied to
+the tower refinements and the same component orders, so
+`mapperHomologyPModule_pullback` is an equality of persistence modules. This is
+the module form of the source definition `MM(𝔘, f) := N(f*(𝔘))`; together with
+the pulled-back cover maps it plays the role of Proposition 4.1(ii) in the
+perturbation result below.
+
+For `s t : ℝ`, `centredCover s t k` is the open interval of radius `t` about
+`k * s`, indexed by `k : ℤ`; it is empty for `t ≤ 0`, increasing the radius gives
+the identity-selector refinement `centredCoverRefinement s`, and for `s ≠ 0` and
+`|s| / 2 < t` the family covers `ℝ`. Let `f g : C(X, ℝ)` satisfy
+`|f x - g x| ≤ δ` for every `x`. Then `f x` in the member of label `k` and radius
+`t` puts `g x` in the member of label `k` and radius `t + δ`, so identity
+selectors are cover maps between the pulled-back centred towers on `X` in both
+directions. By the pullback identification, the interleaving theorem for the
+identity of `X` gives `centredMapperHomologyInterleaving`, a `δ`-interleaving
+of the Mapper homology modules of `f` and `g` along the centred tower, and
+`realInterleavingDistance_centredMapperHomology_le` bounds their distance by
+`δ`, for every spacing, degree, ring and supplied component orders. This
+specialisation is a library result; it is not the function-perturbation
+statement of DMW16-v2 Proposition 4.5 and Corollary 4.6, which use
+`(c, s)`-good towers, logarithmic reindexing and truncation.
+
+No finiteness, openness, coverage, field, nonemptiness or local
+path-connectedness hypothesis enters. A source tower with resolution `r` is
+represented by any extension of it to all of `ℝ`, for example by empty families
+below `r`; the library does not identify the two conventions.
+
+Fixtures: interleaving a tower with itself at `η = 0`, with tower refinements as
+cover maps, gives the identity isomorphism of its module. Over a one-point
+domain, cover maps whose composite selector differs from the tower selector
+still give an interleaving. The centred tower is interleaved with its own
+`η`-shift, and its Mapper complexes have no faces at nonpositive radius, with no
+inhabitedness assumption on the domain. On the unit interval, the constant map
+`0` and the map `x ↦ 4x` are at pointwise distance `4`; along the centred tower
+of spacing `1`, their `H₀` over `ℚ` at radius `1/2` has dimensions `1` and `5`,
+so their modules are not isomorphic, while the distance between them is at
+most `4`. For the identity map, the pullback form agrees with the direct form.
+As a control, refinements between one family pair induce one homology map,
+while the two simplicial maps from a point to two isolated vertices of the
+previous section, which are not induced by refinements, have different `H₀`
+maps over `ZMod 2`.
+
+Rank obstructions give lower bounds. Let `k` be a field and `i` a real
+`ε`-interleaving of persistence modules `M` and `N` over `k`. The double-shift
+identity writes the structure map `M(t → t + 2ε)` as `i.φ` at `t`, followed by
+`i.ψ` at `t + ε` and the parameter transport, so it factors through `N (t + ε)`.
+If `N (t + ε)` is finite-dimensional, then
+`finrank_range_structureMapLinear_le_of_realInterleaving` bounds the rank of
+`M(t → t + 2ε)` by `dim N (t + ε)`; the primed form exchanges `M` and `N`, and
+`structureMap_eq_zero_of_realInterleaving` gives `M(t → t + 2ε) = 0` when
+`N (t + ε)` is zero. No other value of `M` or `N` need be finite-dimensional.
+`le_realInterleavingDistance_of_finrank_lt` concludes `r ≤ d(M, N)` when every
+finite `ε < r` admits some `t` with `dim N (t + ε)` finite and smaller than the
+rank of `M(t → t + 2ε)`; `le_realInterleavingDistance_of_structureMap_ne_zero`
+is the zero-fibre form. This is the elementary factorisation step behind
+algebraic stability, not a theorem of a cited source. The statements are kept
+in the Mapper module and are generic in the modules.
+
+For a map `f` with a real tower `U` and a map `g` with a real tower `V`, the
+structure maps of `mapperHomologyPModule k f U rU n` are the homology maps of
+the selected refinements, so
+`isEmpty_realInterleaving_mapperHomologyPModule_of_finrank_lt` excludes an
+`ε`-interleaving when the homology map of `U t → U (t + 2ε)` has rank larger than
+`dim Hₙ(mapper g (V (t + ε)))`. The zero-fibre form requires
+`mapper g (V (t + ε))` to have no `n`-faces, which holds when it has no vertices
+(`isEmpty_face_mapper`), and a nonzero homology map; both have distance forms.
+With `g = f` these compare two towers of one map; with `U = V` the centred tower
+they restate as `isEmpty_realInterleaving_centredMapperHomology_of_finrank_lt`
+and `le_realInterleavingDistance_centredMapperHomology_of_finrank_lt`, which
+combine with the perturbation bound above.
+
+Fixtures: over the one-point domain, let the single member be the whole space
+from radius `1` on in the tower `lateTower` and from radius `0` on in
+`earlyTower`, with identity selectors. Cover maps shifting by `1` exist in both
+directions. For `ε < 1`, the early tower's `H₀` map from `1 - ε` to `1 + ε` sends
+the nonzero class of its unique vertex to the class of the unique vertex, while
+the late tower's Mapper complex at radius `1` has no vertices. Hence
+`realInterleavingDistance_late_early` states that the two degree-zero modules
+are at distance exactly `1`, over every field. For the flat and steep maps,
+the Mapper complexes along the centred tower of spacing `1` have no edges at
+every radius in `(0, 1/2]`, with `H₀` of dimension `1` and `5` respectively, and
+the steep refinement maps between such radii are bijective on `H₀`, so they have
+rank `5`. At `t = 1/4` and `ε < 1/8` this excludes an `ε`-interleaving, and
+`flat_steep_distance_bounds` places the distance in `[1/8, 4]`. For a module and
+itself, the identity `0`-interleaving satisfies every rank inequality and the
+hypothesis of the distance lower bound fails at `ε = 0`. As a negative control,
+for the constant map from discrete `ℕ` with one full member every value of the
+degree-zero module is infinite-dimensional, so the rank bound does not apply;
+`Module.finrank` is `0` there by convention and no inequality is asserted.
+
+Not included: the simplicial-tower interleaving up to contiguity as a separate
+structure; `(c, s)`-good towers, reindexing or truncation (DMW16-v2 Propositions
+4.4–4.5, Corollary 4.6, Theorems 4.7–4.8); persistence diagrams or bottleneck
+bounds other than those for step towers; the bar-length lower bound
+`(death − birth)/2` or any lower bound through decompositions, induced matchings or the
+isometry theorem, except the step-tower isometry below; tightness of the rank
+obstruction in general and the exact flat/steep distance; lower bounds for
+graph-PL Reeb distances; independence of the component orders; multinerve
+homology; any Nerve Lemma.
+
+## Finite Mapper barcodes
+
+Keep the setting of the previous section and fix a degree `n`. If every Mapper
+complex `mapper f (U p)` has finitely many `n`-faces, then over a field `k`
+every value of `mapperHomologyPModule k f U r n` is finite-dimensional, because
+its chain module in degree `n` is.
+
+Now let the preorder be the finite chain `Fin N` and let the field, the domain
+`X` and the index types lie in one universe, as the
+[finite interval decomposition](finite-interval-decomposition.md) requires of
+its carriers. The Mapper barcode `mapperBarcode k f U r n` is the canonical rank
+barcode of `mapperHomologyPModule k f U r n`: a multiset of half-open intervals
+`[b, d)` with `b < d ≤ N`. A bar with `d = N` records a class that survives to
+the last observed stage; it does not assert an infinite lifetime. Because the
+module does not depend on the selected refinements, neither does its barcode.
+The finite interval decomposition gives a natural isomorphism from the module to
+the realization of its barcode; the isomorphism is chosen and not canonical. For
+stages `q ≤ t`, the rank of `mapperHomologyMap k f (r h) n` is the number of
+bars with `b ≤ q` and `t < d`, and a multiset is the barcode exactly when it
+satisfies all of these rank equations. Two such modules, with possibly different
+maps, covers and degrees, are naturally isomorphic exactly when their barcodes
+agree. For a `CoherentCoverTower` on `Fin N`, the same counts are the ranks of
+the homology maps of the tower's strict Mapper maps. These statements specialize
+the finite interval decomposition to the Mapper module of the
+[DMW16-v2](references.md#DMW16-v2) towers above and add no source claim.
+
+For the piecewise-linear height of a finite graph and finitely many open
+interval labels at a stage, the finiteness of the Mapper faces recorded above
+holds in every degree, so the barcode is available without further hypotheses.
+Coverage of the height range is not needed.
+
+Fixtures: on `Fin 0` and on the empty domain every barcode is empty, without a
+nonemptiness hypothesis. On the single edge with heights `0` and `1`, the
+members `(-1, 1/3)` and `(2/3, 2)` refine by a constant selector to `(-1, 2)`;
+over `ℚ` the degree-zero barcode is `{[0, 2), [0, 1)}` and the degree-one
+barcode is empty. On `Fin 3`, the three-stage family over a point whose direct
+selector differs from the composite of its adjacent selectors has the barcode
+`{[0, 3)}` of the strictly coherent tower. On the 4-cycle with heights
+`0, 1, 2, 1`, the members `(-1, 3/2)` and `(1/2, 3)` meet in two components, yet
+ordinary Mapper is a single edge with no degree-one homology; only the
+multinerve retains the second intersection component. The three members
+`(-1, 3/4)`, `(1/2, 3/2)` and `(5/4, 3)` give a Mapper 4-cycle with degree-one
+homology of rank one, and after a constant refinement to `(-1, 3)` the
+degree-one barcode over `ℚ` is the single bar `[0, 1)`. As a negative control,
+the constant map from discrete `ℕ` with one full member has infinitely many
+Mapper vertices, and for every component order its degree-zero homology is not
+finite-dimensional, so no degree-zero barcode is defined; the complex has no
+edges, so degree one still satisfies the finiteness hypothesis.
+
+Real diagrams and their bottleneck stability are given for step towers in the
+next section; q-tame Mapper barcodes, independence of the barcode from the
+supplied component orders, multinerve barcodes and executable barcode
+extraction are not provided.
+
+## Diagrams of Mapper homology along step towers
+
+Keep the setting of the previous two sections. A grid is a strictly increasing
+`c : Fin m ↪o ℝ`, and `cellIndex c t ∈ Fin (m + 1)` counts the grid values at or
+below `t` ([finite-constructible modules](constructible-modules.md)): cell `0` is
+the left ray below `c 0`, cell `i + 1` is `[c i, c (i + 1))`, and the last cell
+is unbounded on the right. Step data on the grid are cover families
+`cover i : Index i → Set Y` for `i : Fin (m + 1)` with a selected refinement for
+every `i ≤ j` and supplied component orders; no identity or composition
+equation is required. The step tower `stepTower c cover` is the real tower whose
+family at radius `t` is `cover (cellIndex c t)`, with refinements
+`stepRefinement c cover r` taken from the cells. Its Mapper homology module is
+definitionally the finite-chain module `mapperHomologyPModule R f cover r n`
+reindexed along `cellIndex c`, over every ring and in every degree.
+
+A family with an empty index type, or more generally without component
+indices, has the empty Mapper complex, and its homology vanishes in every
+degree. If `Index 0` is empty, the step module is therefore zero on the left ray
+and its structure maps within a cell are identities, so it is finite-constructible
+on `c`. If moreover every stage has finitely many `n`-faces and the field, `X`
+and the index types lie in one universe, the step module is finite-dimensional
+at the grid values and `stepMapperDiagram k f c cover r n` is its real endpoint
+diagram. Because `cellIndex c (c j) = j + 1`, the diagram is the image under
+`ofIndexBars c` of the finite Mapper barcode of the stages `1, …, m`: a bar
+`[b, d)` of that barcode becomes the real bar `[c b, c d)`, or the essential bar
+`[c b, ∞)` when `d = m`. Equivalently, it is the image of the barcode of all
+`m + 1` stages restricted along `Fin.succ`; the empty stage `0` contributes no
+bar. The diagram has positive bars and does not depend on the selected
+refinements.
+
+Let `(c, cover, r)` and `(d, cover', r')` be step data, possibly on grids of
+different sizes, both with an empty initial family and finitely many faces in
+degree `n`. For `η : ℝ≥0`, selected cover maps between the two step towers
+shifting the radius by `η` in both directions bound the bottleneck distance of
+the two step diagrams by `η`. Through any intermediate real tower, cover maps
+shifting by `η₁` and `η₂` bound the bottleneck distance of the outer step
+diagrams by `η₁ + η₂`. The [finite-constructible isometry](constructible-isometry.md)
+identifies this bottleneck distance with the real interleaving distance of the
+two step modules; at every finite parameter, an interleaving exists exactly
+when an occurrence matching of that cost exists; and the distance is infinite
+exactly when the two diagrams have different numbers of essential bars. The
+number of essential bars equals the degree-`n` homology dimension of the last
+stage (`card_essentialPart_stepMapperDiagram`), including zero for an empty
+grid. Consequently, two step diagrams of maps on possibly different spaces are
+at finite bottleneck distance exactly when these dimensions agree
+(`bottleneck_stepMapperDiagram_lt_top_iff`). For the piecewise-linear height
+of a finite graph and finitely many open-interval labels at every stage, the
+face-finiteness hypothesis holds by instance.
+
+The empty initial family is the zero left tail of the finite-constructible
+convention and not a restriction on the Mapper data: a tower that starts with a
+nonempty family is placed on the grid after an empty stage. The diagram
+consequence that [DMW16-v2](references.md#DMW16-v2) draws for finite towers is
+obtained here only for step towers on finite grids, as a library specialisation
+of the module interleaving of the previous section through the BL15-v4
+isometry; no theorem of DMW16-v2 is formalised in this form.
+
+Fixtures: with no grid values and one empty stage, the module vanishes at every
+radius, the diagram is empty and its bottleneck distance to itself is `0`. The
+two-stage merge of the previous section, placed after an empty stage at the
+radii `0` and `1`, has the degree-zero diagram over `ℚ` with finite part
+`{(0, 1)}` and essential part `{0}`. The same stages at `1/2` and `3/2` are
+related to it by selected stage refinements shifting the radius by `1/2` in
+both directions: identities from the first copy, whose stage at `t` is the
+stage of the copy at `t + 1/2`, and the merge refinements back, whose selector
+to the coarse stage is constant; the bottleneck distance is at most `1/2` and equals the interleaving
+distance, while the essential bars are born at `0` and at `1/2`, so the diagrams
+differ. The skew three-stage family over a point, after an empty stage, has the
+same diagram `{[c 0, ∞)}` for its skew and its coherent selections. The loop on
+the 4-cycle at the radii `0` and `1` has the degree-one diagram `{(0, 1)}` with
+no essential bar, with all finiteness instances synthesized. As negative
+controls, the constant tower of the one full member over a point has nonzero
+`H₀` below every grid, so it is not finite-constructible on any grid, for every
+field and component order. Along the centred tower of spacing `1`, the constant
+map `0` on the unit interval has zero Mapper homology at radius `0` and nonzero
+`H₀` at every positive radius; every grid has a positive radius in the cell of
+`0`, so this module is not finite-constructible on any grid. Radius-indexed
+towers of open members are left-open at their first nonempty radius and lie
+outside the zero-left, right-continuous convention; no diagram is defined for
+them.
+
+Not included: diagrams or bottleneck bounds for towers that are not step towers,
+in particular the centred tower, or for q-tame modules (capped centred step
+towers are treated in [a later section](#capped-centred-step-towers)); exact
+bottleneck values for pairs of grids that are not translates and tightness of
+the bound `η` beyond translations; DMW16-v2 `(c, s)`-good towers, reindexing and
+truncation;
+independence of the component orders; multinerve diagrams; executable
+extraction.
+
+### Tightness of the step bounds
+
+Let both step data have an empty initial family and finitely many faces in
+degree `n`. The rank obstructions of the previous section apply to the two step
+modules and, through the identification of the bottleneck distance with the real
+interleaving distance, bound the bottleneck distance of the two diagrams below:
+if for every `ε < ρ` there is a radius `t` such that the homology map of the
+selected refinement of the first tower from `t` to `t + 2ε` has rank larger than
+the dimension of the homology of the second tower's family at `t + ε`, or that
+family has no `n`-faces and the map is nonzero, then `ρ` is a lower bound. At
+one parameter, a nonzero map across `2ε` with no `n`-faces in the second tower's
+family at `t + ε` excludes an `ε`-interleaving.
+
+The step tower on `shiftGrid ε c`, whose grid values are `c j - ε`, has at the
+radius `t` the family of the step tower on `c` at `t + ε`, because
+`cellIndex (shiftGrid ε c) t = cellIndex c (t + ε)`. The selected refinements
+between the two stage families are cover maps shifting by `ε` in both directions:
+from the tower on `c` at `t` to the tower on `shiftGrid ε c` at `t + ε`, which
+passes to a later stage, and back, where the stages coincide. Hence the
+bottleneck distance of the two diagrams is at most `ε` for all step data.
+
+Suppose moreover that the grid has at least one value and that the homology map
+in degree `n` of the selected refinement from the first nonempty stage `1` to the
+last stage is nonzero (`SurvivesToLast`). Then the bottleneck distance of the
+diagrams on `c` and on `shiftGrid ε c`, and the real interleaving distance of
+their modules, equal `ε`. For `δ < ε` and `t = c 0 - ε`, the module on
+`shiftGrid ε c` has at `t` its stage `1` and at `t + 2δ` a stage `j ≥ 1`; its
+structure map is the selected refinement from stage `1` to stage `j`, nonzero
+because its composite with the refinement from stage `j` to the last stage is the
+nonzero map from stage `1` to the last stage. The module on `c` is zero at
+`t + δ < c 0`, where its stage is the empty initial one. The rank obstruction then
+gives the lower bound `ε`.
+
+In degree `0` the hypothesis holds whenever the first nonempty stage has a
+component index: the class of the corresponding vertex is nonzero over a field
+and is sent by the homology map of any refinement to the class of a vertex. The
+diagrams of a degree-`0` step tower and of its translate by `ε` are then at
+bottleneck distance exactly `ε`. The bottleneck distance of two step diagrams
+is infinite exactly when their numbers of essential bars differ.
+
+Fixtures: the two-stage merge at the radii `0, 1` and `1/2, 3/2`, whose
+first nonempty stage has two vertices and whose grids differ by the translate
+`1/2`, has diagrams at bottleneck distance exactly `1/2`, not only at most `1/2`.
+Over a point, the stages given by the empty family and the
+full space on the grid `{1}` and on its translate `{0}` by `1` have degree-zero
+diagrams at bottleneck distance exactly `1`; their members are right-continuous
+steps. The zero translate is the grid, and the merge diagram is at distance `0`
+from itself. As a negative control for the hypothesis, the stages empty,
+three-member cover and one-member cover of the 4-cycle at the radii `0, 1` have
+the degree-one diagram `{(0, 1)}`, and its translate by `1` has `{(-1, 0)}`; every
+structure map across `1` of either module is zero, because its source or its
+target is zero, so the zero maps form a `1/2`-interleaving and the bottleneck
+distance is at most `1/2 < 1`; the homology map from the three-member stage to the
+last stage is zero. As a negative control for the infinite distance, the diagram
+of the empty grid has no essential bar and the merge diagram has one.
+
+The hypothesis is stated through the nonzero map and not through the diagram;
+that it holds exactly when an essential bar is born at `c 0` is a statement
+about the rank barcode that is not formalised here.
+
+## Capped centred step towers
+
+Fix a label window `W`, integer labels `ℓ : W → ℤ` (repetitions allowed), a
+base `a` and a spacing `s`; no sign or coverage condition is imposed. The
+centred interval `centredInterval a s ℓ r w` is the open interval of radius `r`
+about `a + ℓ w * s`. It is empty for `r ≤ 0`, and for `a = 0` its carrier is the
+member of label `ℓ w` of the centred family `centredCover s r` of
+[the stability section](#interleaved-cover-towers-and-mapper-homology-stability).
+
+For a grid `c : Fin m ↪o ℝ`, the capped centred stages
+`cappedCentredCover a s ℓ c` on `Fin (m + 1)` are indexed by `cappedIndex W`,
+which is empty at stage `0` and `W` at every later stage. Stage `j + 1` with
+`j + 1 < m` consists of the centred intervals of radius `c j`, and the last
+stage assigns `ℝ` to every label. The stage radius `stageRadius c` in `EReal` is
+`⊥` at stage `0`, `c j` at stage `j + 1 < m` and `⊤` at the last stage; a point
+lies in the member of label `w` at a positive stage exactly when its distance to
+`a + ℓ w * s` is less than the stage radius. The stage refinements
+`cappedCentredRefinement` select the same label. For `f : C(X, ℝ)` with supplied
+component orders and finitely many `n`-faces at every stage,
+`cappedCentredDiagram k f a s ℓ c n` is the step diagram of these data. It is
+definitionally the step diagram of the identity of `X` along the pulled-back
+stages. Stage `0` is the zero left tail of the step-diagram convention, and the
+last stage is the cap.
+
+Let `f g : C(X, ℝ)` satisfy `|f x − g x| ≤ δ` for every `x`, and let `d` be a
+second grid. Suppose that the stage radius of `c` at `t` plus `δ` is at most the
+stage radius of `d` at `t + η` for every `t`. By the triangle inequality
+`|g x − y| ≤ |g x − f x| + |f x − y|`, each pulled-back member of `f` at `t` then
+lies in the pulled-back member of `g` with the same label at `t + η`; an empty
+source stage and a full target stage are included. Domination in both
+directions bounds the bottleneck distance of the capped centred diagrams of `f`
+on `c` and of `g` on `d` by `η`, and this distance is the real interleaving
+distance of the two step modules.
+
+Three domination checks give the main bounds.
+
+* **Perturbation.** Let consecutive radii of `c` differ by at most `μ`. A radius
+  `t` in the cell `[c i, c (i + 1))` has stage radius `c i ≤ t`. The stage at
+  `t + δ + μ` is the last one, or it lies in a cell `[c j, c (j + 1))` with
+  `t + δ + μ < c (j + 1) ≤ c j + μ`, so its radius `c j` exceeds `t + δ`. A
+  radius in the last cell stays in it. Hence the capped centred diagrams of `f`
+  and `g` on `c` are at bottleneck distance at most `δ + μ`.
+* **Uniform grids.** On the grid `uniformGrid x₀ h hh m` of radii `x₀ + i h`,
+  with `δ = p h` for a natural number `p`, the shift by `δ` moves the grid value
+  `c i` to `c (i + p)` or past the last grid value, so the bound is `δ`.
+* **Mesh comparison.** For one map and two nonempty grids `c` and `d`, each of
+  mesh at most `η`, whose first radii differ by at most `η` and whose last radii
+  differ by at most `η`, domination holds with `δ = 0` in both directions. The
+  first-radius condition keeps the target stage nonempty, and the last-radius
+  condition sends the last cell to the last cell. The diagrams are at bottleneck
+  distance at most `η`.
+
+By the triangle inequality for the bottleneck distance, the diagram of `f` on
+`c` and the diagram of `g` on `d` are at distance at most `(δ + μ) + η` under the
+hypotheses of the perturbation bound for `c` and the mesh comparison of `c` and
+`d`. For the piecewise-linear heights of two vertex-height functions on a finite
+graph within `ε` at every vertex, the heights are within `ε` at every point of
+the realization
+([vertex-height perturbations](reeb-graph-pl.md#vertex-height-perturbations-of-a-fixed-graph)).
+With a finite label window every face-finiteness hypothesis holds by instance,
+and the capped centred diagrams are at bottleneck distance at most `ε + μ`, or
+at most `ε` on a uniform grid with `ε = p h`.
+
+These statements are a library specialisation of §4.1 of
+[DMW16-v2](references.md#DMW16-v2) in the step-diagram form of the previous
+section. The capped tower is not a `(c, s)`-good tower of the source, and the
+bounds are not its Proposition 4.5, Corollary 4.6 or Theorems 4.7 and 4.8.
+
+Fixtures use the constants `0` and `1/2` on the one-point space, one label of
+integer label `0`, base `0` and spacing `1`, in degree `0` over any field; the
+stage of radius `r` is `(−r, r)`. On the grid `0, 1/4, 1/2, 3/4, 1` the two
+capped centred diagrams are at bottleneck distance exactly `1/2`: the uniform
+bound gives `≤ 1/2`, and for `ε < 1/2` the map of `0` from radius `1/4` to
+`1/4 + 2ε` is nonzero on `H₀` while the stage of `1/2` at radius `1/4 + ε` has
+no component. The perturbation bound `δ + μ = 3/4` is not attained there. One
+map on that grid has bottleneck distance `0` to itself by the uniform bound with
+`p = 0`. For the constant `0`, the diagrams on the grids `0, 1/2, 1` and
+`0, 1/4, 1/2, 3/4, 1` are at distance at most `1/2`. On the single edge with
+vertex heights `(0, 1)` and `(0, 3/2)`, the labels `0, 1, 2`, base `0`, spacing
+`1` and the uniform grid of spacing `1/4` from `0` to `2`, the diagrams in every
+degree are at distance at most `1/2`, with every finiteness instance
+synthesized. Two negative controls show that neither the cap nor the mesh term
+can be dropped. On the grid `0, 1/4` with the stages `∅`, radius `0` and radius
+`1/4` and no full stage, the step module of `1/2` vanishes at every radius while
+that of `0` has a nonzero map from radius `1/4` to every larger radius; the
+bottleneck distance is `⊤` and the numbers of essential bars differ, although the
+maps differ by `1/2`. On the grid `0, 1/4, 1` of mesh `3/4`, the capped centred
+diagrams of `0` and `1/2` are at distance at least `3/4 > 1/2`, while the
+perturbation bound gives at most `5/4`.
+
+Capped centred diagrams of two heights on homeomorphic domains over `ℝ` are at bottleneck
+distance `0`, in particular for isomorphic finite graphs with corresponding vertex heights
+([height-preserving maps](#height-preserving-maps)).
+
+For maps `f : C(X, ℝ)` and `g : C(X', ℝ)` on possibly different domains, a
+`HeightMapPair f g δ` gives direct vertex maps between any two capped stages whose radii satisfy
+the pair's domination inequality. They are natural in both stage indices. The composites are
+homotopic through the pair's paths to the corresponding tower maps, so the two step modules are
+directly `η`-interleaved whenever the stage radii dominate in both directions after shift `η`.
+The `bottleneck_eq_distance` theorem for the two finite-constructible step modules then gives
+`bottleneck_cappedCentredDiagram_le_of_heightMapPair`. The statement requires supplied component
+orders and finite Mapper faces in the chosen degree on both sides; it requires no coverage or
+nonempty-domain assumption. `bottleneck_cappedCentredDiagram_pair_le` gives `δ + μ` on a grid of
+mesh at most `μ`, while `bottleneck_cappedCentredDiagram_pair_uniformGrid_le` gives `δ` on a
+uniform grid when `δ = p * h`. `bottleneck_cappedCentredDiagram_pair_le_ofUniformBound` recovers
+the same-domain perturbation result, and the graph-PL corollaries supply face finiteness for finite
+graphs. The edge-to-point fixture on `edgeGrid` proves a bottleneck bracket `[1/4, 1/2]` in
+degree zero and the upper bound `1/2` in every degree;
+the Bool-to-Unit fixture shows that height-preserving maps alone do not suffice, because the
+composite-path condition fails and the full-stage essential counts differ. These are bounds, not
+exact-value claims for the edge-to-point pair.
+
+Not included: coverage of the attained range by a capped stage; diagrams or
+bounds for the `ℤ`-labelled centred tower itself, q-tame or real-decomposition
+statements, or the limit of vanishing mesh; sharpness of `δ + μ` in general and
+exact values beyond the first fixture; identification of capped step diagrams
+with the multiscale Mapper diagrams of `(c, s)`-good towers and DMW16-v2
+Propositions 4.4 and 4.5, Corollary 4.6 and Theorems 4.7 and 4.8; perturbation
+bounds for step towers whose stages are not centred intervals; independence of
+the component orders; mesh comparison across different grids for one map pair;
+multinerve diagrams; executable extraction.
+
+### Essential bars of the full cap
+
+For a continuous map `f : C(X, Y)`, the full family `fun _ : I => univ`
+has component indices in bijection with `I × ZerothHomotopy X`
+(`fullComponentIndexEquiv`). If `X` is path-connected, projection to `I` is a
+bijection (`componentIndexFullEquiv`) and every nonempty finite set of vertices
+is a Mapper face (`mapper_full_eq_top`). The induced vertex maps give
+`fullMapperHomologyIso` with the full simplex on `I`. For finite `I`, the cone
+computation therefore gives one degree-zero class when `I` is nonempty and
+zero homology in every positive degree, over any ring in the latter case.
+For a single label on any space with finitely many path components, the Mapper
+complex has no edges and its degree-zero homology dimension is
+`Nat.card (ZerothHomotopy X)`
+(`finrank_simplicialHomology_mapper_full_zero_of_unique`).
+
+The last-stage count now applies to `cappedCentredDiagram` on a nonempty grid.
+For a path-connected domain and a finite nonempty label window, it has exactly
+one essential bar in degree zero
+(`card_essentialPart_cappedCentredDiagram_zero`) and none in positive degree
+(`card_essentialPart_cappedCentredDiagram_succ`). Thus two such diagrams, even
+for different maps, spaces, windows and grids, are always at finite bottleneck
+distance in every degree (`bottleneck_cappedCentredDiagram_lt_top`). Component
+orders and face finiteness are supplied as for the step diagram. On a finite
+connected graph all finiteness instances are synthesized
+(`card_essentialPart_cappedCentredDiagram_plHeight`); with a single label the
+degree-zero count is the number of graph components
+(`card_essentialPart_cappedCentredDiagram_plHeight_zero_of_unique`).
+
+Fixtures include the triangle with arbitrary heights and one label: its
+realization is not simply connected, but its capped diagram has no essential
+loop. Capped centred diagrams record cycles only as finite bars, if at all.
+The two constant diagrams of the exact-distance fixture each have one essential
+bar by the cap computation, as does the single edge with heights `(0, 1)`, two
+labels and a uniform grid. Truncating the 4-cycle tower after its three-member
+stage leaves one essential degree-one bar, whereas the full two-stage tower
+has none. Two disjoint edges with one label have two essential degree-zero
+bars, so their diagram is at infinite bottleneck distance from that of a single
+edge. With an empty grid, every essential count is zero: the only stage is the
+empty initial family, so the full-cap conclusions require at least one grid
+value.
+
+These are library specialisations of the finite step-diagram convention, not
+additional numbered results of [DMW16-v2](references.md#DMW16-v2) §3. Birth
+values of essential bars, degree-zero essential counts with several labels on
+disconnected domains, finite bars, and bottleneck values or matchings beyond
+finiteness are outside these results. No q-tame or non-step tower statement,
+multinerve diagram, order independence or executable extraction is claimed.
 
 ## Uniform interval covers and edge cells
 

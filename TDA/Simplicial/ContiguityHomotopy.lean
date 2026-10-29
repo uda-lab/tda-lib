@@ -196,7 +196,8 @@ private theorem prismTuple_mem (L : PreAbstractSimplicialComplex W) {n : ℕ}
 
 private theorem tuplePrism_boundary (L : PreAbstractSimplicialComplex W)
     (R : Type v) [Ring R] {n : ℕ} (a b : Fin (n + 2) → W)
-    (hk : Finset.univ.image a ∪ Finset.univ.image b ∈ L) :
+    (hprism : ∀ i : Fin (n + 2),
+      Finset.univ.image (prismTuple a b i) ∈ L) :
     boundary L R (n + 1) (tuplePrism L R a b) +
         (∑ j : Fin (n + 2), (-1 : ℤ) ^ (j : ℕ) •
           tuplePrism L R (a ∘ j.succAbove) (b ∘ j.succAbove)) =
@@ -240,7 +241,7 @@ private theorem tuplePrism_boundary (L : PreAbstractSimplicialComplex W)
     unfold tuplePrism
     rw [map_sum]
     simp only [map_zsmul]
-    simp_rw [boundary_orientedTuple L R _ (prismTuple_mem L a b hk _)]
+    simp_rw [boundary_orientedTuple L R _ (hprism _)]
     simp only [tupleBoundarySum, Finset.smul_sum, smul_smul, ← pow_add]
     rw [Fintype.sum_prod_type, Finset.sum_comm]
     apply Finset.sum_congr rfl
@@ -262,13 +263,13 @@ private theorem tuplePrism_boundary (L : PreAbstractSimplicialComplex W)
 
 private theorem tuplePrism_boundary_zero (L : PreAbstractSimplicialComplex W)
     (R : Type v) [Ring R] (a b : Fin 1 → W)
-    (hk : Finset.univ.image a ∪ Finset.univ.image b ∈ L) :
+    (hprism : ∀ i : Fin 1, Finset.univ.image (prismTuple a b i) ∈ L) :
     boundary L R 0 (tuplePrism L R a b) = orientedTuple L R b - orientedTuple L R a := by
   change boundary L R 0 (∑ i : Fin 1, (-1 : ℤ) ^ (i : ℕ) •
     orientedTuple L R (prismTuple a b i)) = _
   rw [Fin.sum_univ_one]
   simp only [Fin.val_zero, pow_zero, one_smul]
-  rw [boundary_orientedTuple L R _ (prismTuple_mem L a b hk 0)]
+  rw [boundary_orientedTuple L R _ (hprism 0)]
   unfold tupleBoundarySum
   rw [Fin.sum_univ_two]
   have hf := prism_delete_first a b
@@ -281,6 +282,124 @@ variable {V : Type u} [LinearOrder V]
 variable {K : PreAbstractSimplicialComplex V} {L : PreAbstractSimplicialComplex W}
 variable (R : Type v) [Ring R]
 variable {f g : VertexMap K L}
+
+/-- Every mixed prism tuple over each source face is a target face.  This
+weaker, cut-by-cut condition suffices for the signed prism homotopy; it does
+not require the union of the two endpoint images to be a face. -/
+def PrismAdmissible (f g : VertexMap K L) : Prop :=
+  ∀ {n : ℕ} (s : Face K n) (i : Fin (n + 1)),
+    Finset.univ.image
+      (prismTuple (f ∘ s.1.orderEmbOfFin s.2.2)
+        (g ∘ s.1.orderEmbOfFin s.2.2) i) ∈ L
+
+namespace PrismAdmissible
+
+private def prismMap (h : PrismAdmissible f g) (n : ℕ) :
+    Chain K R n →ₗ[R] Chain L R (n + 1) :=
+  Finsupp.linearCombination R (fun s : Face K n =>
+    tuplePrism L R (f ∘ s.1.orderEmbOfFin s.2.2) (g ∘ s.1.orderEmbOfFin s.2.2))
+
+private theorem prismMap_single_tuple (h : PrismAdmissible f g) (n : ℕ)
+    (s : Face K n) (a : R) :
+    prismMap R h n (Finsupp.single s a) =
+      a • tuplePrism L R (f ∘ s.1.orderEmbOfFin s.2.2)
+        (g ∘ s.1.orderEmbOfFin s.2.2) := by
+  simp [prismMap]
+
+private theorem boundary_prismMap_zero (h : PrismAdmissible f g) :
+    (boundary L R 0).comp (prismMap R h 0) =
+      vertexChainMap R g 0 - vertexChainMap R f 0 := by
+  apply Finsupp.lhom_ext'
+  intro s
+  apply LinearMap.ext_ring
+  change boundary L R 0 (prismMap R h 0 (Finsupp.single s 1)) =
+    vertexChainMap R g 0 (Finsupp.single s 1) -
+      vertexChainMap R f 0 (Finsupp.single s 1)
+  simp only [prismMap_single_tuple, vertexChainMap_single, one_smul]
+  exact tuplePrism_boundary_zero L R _ _ (fun i => h s i)
+
+private theorem boundary_prismMap_succ (h : PrismAdmissible f g) (n : ℕ) :
+    (boundary L R (n + 1)).comp (prismMap R h (n + 1)) +
+      (prismMap R h n).comp (boundary K R n) =
+        vertexChainMap R g (n + 1) - vertexChainMap R f (n + 1) := by
+  apply Finsupp.lhom_ext'
+  intro s
+  apply LinearMap.ext_ring
+  change boundary L R (n + 1) (prismMap R h (n + 1) (Finsupp.single s 1)) +
+      prismMap R h n (boundary K R n (Finsupp.single s 1)) =
+    vertexChainMap R g (n + 1) (Finsupp.single s 1) -
+      vertexChainMap R f (n + 1) (Finsupp.single s 1)
+  simp only [prismMap_single_tuple, vertexChainMap_single, one_smul]
+  have hd : prismMap R h n (boundary K R n (Finsupp.single s 1)) =
+      ∑ j : Fin (n + 2), (-1 : ℤ) ^ (j : ℕ) • tuplePrism L R
+        ((f ∘ s.1.orderEmbOfFin s.2.2) ∘ j.succAbove)
+        ((g ∘ s.1.orderEmbOfFin s.2.2) ∘ j.succAbove) := by
+    rw [boundary_single, one_smul, map_sum]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [prismMap_single_tuple]
+    have he : ⇑((deletedFace K n s j).1.orderEmbOfFin (deletedFace K n s j).2.2) =
+        s.1.orderEmbOfFin s.2.2 ∘ j.succAbove := by
+      funext k
+      exact enumerationAfterDeletion K n s j _ k
+    rw [he]
+    have hs : (-1 : R) ^ (j : ℕ) = (((-1 : ℤ) ^ (j : ℕ) : ℤ) : R) := by norm_cast
+    rw [hs, Int.cast_smul_eq_zsmul]
+    rfl
+  rw [hd]
+  exact tuplePrism_boundary L R _ _ (fun i => h s i)
+
+private def homotopyComponent (h : PrismAdmissible f g) (i j : ℕ) :
+    (simplicialChainComplex K R).X i ⟶ (simplicialChainComplex L R).X j :=
+  if hij : i + 1 = j then
+    ModuleCat.ofHom (-prismMap R h i) ≫
+      eqToHom (congrArg (fun k => (simplicialChainComplex L R).X k) hij)
+  else 0
+
+private theorem homotopyComponent_succ (h : PrismAdmissible f g) (i : ℕ) :
+    homotopyComponent R h i (i + 1) = ModuleCat.ofHom (-prismMap R h i) := by
+  simp [homotopyComponent]
+
+/-- The chain homotopy constructed from the mixed prism tuples. -/
+def chainHomotopy (h : PrismAdmissible f g) :
+    Homotopy (simplicialChainMap R f) (simplicialChainMap R g) where
+  hom := homotopyComponent R h
+  zero i j hij := dif_neg hij
+  comm i := by
+    cases i with
+    | zero =>
+      rw [prevD_eq (j' := 1) (w := by simp), dNext_eq_zero _ _ (by simp), zero_add]
+      simp only [homotopyComponent_succ, simplicialChainMap_f, simplicialChainComplex_d]
+      apply ModuleCat.hom_ext
+      change vertexChainMap R f 0 =
+        (boundary L R 0).comp (-prismMap R h 0) + vertexChainMap R g 0
+      rw [LinearMap.comp_neg, boundary_prismMap_zero]
+      abel
+    | succ n =>
+      rw [dNext_eq (i' := n) (w := by simp), prevD_eq (j' := n + 2) (w := by simp)]
+      simp only [homotopyComponent_succ, simplicialChainMap_f, simplicialChainComplex_d]
+      apply ModuleCat.hom_ext
+      change vertexChainMap R f (n + 1) =
+        (-prismMap R h n).comp (boundary K R n) +
+          (boundary L R (n + 1)).comp (-prismMap R h (n + 1)) +
+          vertexChainMap R g (n + 1)
+      rw [LinearMap.neg_comp, LinearMap.comp_neg]
+      calc
+        _ = -(vertexChainMap R g (n + 1) - vertexChainMap R f (n + 1)) +
+            vertexChainMap R g (n + 1) := by abel
+        _ = -((boundary L R (n + 1)).comp (prismMap R h (n + 1)) +
+            (prismMap R h n).comp (boundary K R n)) +
+            vertexChainMap R g (n + 1) := by rw [boundary_prismMap_succ]
+        _ = _ := by abel
+
+end PrismAdmissible
+
+/-- Vertex maps with every mixed prism tuple a target face induce equal maps
+on simplicial homology. -/
+theorem simplicialHomologyMap_eq_of_prismAdmissible (h : PrismAdmissible f g) (n : ℕ) :
+    TDA.Simplicial.simplicialHomologyMap R f n =
+      TDA.Simplicial.simplicialHomologyMap R g n :=
+  (PrismAdmissible.chainHomotopy R h).homologyMap_eq n
 
 namespace Contiguous
 
@@ -318,6 +437,13 @@ private theorem face_union_mem (h : Contiguous f g) {n : ℕ} (s : Face K n) :
   ext w
   simp only [Finset.mem_union]
 
+/-- Contiguous maps are prism admissible: every mixed prism tuple over a source face lies in a
+target face. -/
+theorem prismAdmissible (h : Contiguous f g) :
+    PrismAdmissible f g := by
+  intro n s i
+  exact prismTuple_mem L _ _ (face_union_mem h s) i
+
 /-- In degree zero the prism has boundary equal to the difference of the endpoint maps. -/
 theorem boundary_prismMap_zero (h : Contiguous f g) :
     (boundary L R 0).comp (prismMap R h 0) = vertexChainMap R g 0 - vertexChainMap R f 0 := by
@@ -327,7 +453,7 @@ theorem boundary_prismMap_zero (h : Contiguous f g) :
   change boundary L R 0 (prismMap R h 0 (Finsupp.single s 1)) =
     vertexChainMap R g 0 (Finsupp.single s 1) - vertexChainMap R f 0 (Finsupp.single s 1)
   simp only [prismMap_single_tuple, vertexChainMap_single, one_smul]
-  exact tuplePrism_boundary_zero L R _ _ (face_union_mem h s)
+  exact tuplePrism_boundary_zero L R _ _ (fun i => h.prismAdmissible s i)
 
 /-- In every positive degree the prism satisfies the signed chain-homotopy equation. -/
 theorem boundary_prismMap_succ (h : Contiguous f g) (n : ℕ) :
@@ -359,7 +485,7 @@ theorem boundary_prismMap_succ (h : Contiguous f g) (n : ℕ) :
     rw [hs, Int.cast_smul_eq_zsmul]
     rfl
   rw [hd]
-  exact tuplePrism_boundary L R _ _ (face_union_mem h s)
+  exact tuplePrism_boundary L R _ _ (fun i => h.prismAdmissible s i)
 
 private def homotopyComponent (h : Contiguous f g) (i j : ℕ) :
     (simplicialChainComplex K R).X i ⟶ (simplicialChainComplex L R).X j :=
@@ -417,7 +543,7 @@ theorem chainHomotopy_hom_eq_zero (h : Contiguous f g) (i j : ℕ) (hij : i + 1 
 /-- Contiguous arbitrary vertex maps induce equal maps on the existing homology. -/
 theorem simplicialHomologyMap_eq (h : Contiguous f g) (n : ℕ) :
     TDA.Simplicial.simplicialHomologyMap R f n = TDA.Simplicial.simplicialHomologyMap R g n :=
-  (chainHomotopy R h).homologyMap_eq n
+  simplicialHomologyMap_eq_of_prismAdmissible R (h.prismAdmissible) n
 
 end Contiguous
 

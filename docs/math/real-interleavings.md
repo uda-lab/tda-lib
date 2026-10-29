@@ -58,6 +58,39 @@ from `(t+ε)+ε` to `t+2ε`; it equals `M[t≤t+2ε]`. The other composite has t
 same condition for `N`. `equations_iff` proves equivalence of the natural-
 transformation equations and these component equations. `ofApp` accepts natural maps and proofs of the component equations.
 
+## Q-tame algebraic interpolation
+
+Let `M` and `N` be q-tame real persistence modules over a field, and let
+`i : RealInterleaving ε M N` be an actual finite-parameter witness. For each
+`s ∈ [0, ε]`, the public definition `RealInterleaving.interpolatingModule i s`
+constructs `F_s` as a cokernel in the category of real persistence modules.
+`RealInterleaving.interpolatingModule_qTame_interpolation` states the properties
+below for this family, and `RealInterleaving.exists_qTame_interpolating_family`
+is their existential form. Write `φ` and `ψ` for
+the witness's maps from `M` to shifted `N` and from `N` to shifted `M`.
+At time `t`, the numerator is `M(t-s) × N(t-ε+s)`. The relation map has source
+`M(t-2ε+s) × N(t-ε-s)` and is
+
+\[
+(m,n)\longmapsto
+\bigl(M[t-2\varepsilon+s\le t-s]m-\psi_{t-\varepsilon-s}n,
+      -\phi_{t-2\varepsilon+s}m+N[t-\varepsilon-s\le t-\varepsilon+s]n\bigr).
+\]
+
+Naturality of the witness maps makes the relation compatible with the module
+structure maps. The two interleaving composite identities identify the endpoint
+quotients with `M` at `s=0` and `N` at `s=ε` by the natural isomorphisms
+`interpolatingModuleStartIso` and `interpolatingModuleEndIso`; every `F_s`
+is q-tame. Every pair `s,r` in the interval has the actual
+`interpolatingModuleInterleaving i s r : RealInterleaving (nndist s r) F_s F_r`.
+The proof descends the two cross maps to the cokernels and checks both
+double-shift identities. It covers `ε=0` as
+well.
+
+This theorem proves an algebraic interpolation of the actual input modules. It
+does not itself decompose the intermediate modules into interval summands or
+prove a bottleneck-distance bound; those require a separate matching theorem.
+
 ## Enlargement, composition and isomorphism transport
 
 For `ε ≤ δ`, `RealShift.shiftLE` has components `M[t+ε≤t+δ]`.

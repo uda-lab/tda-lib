@@ -206,6 +206,32 @@ theorem diagram_eq_of_isometryEquiv (k : Type z) [Field k]
   exact dgm_eq_of_isometryEquiv k
     (((labelsIsometryEquiv X).trans e).trans (labelsIsometryEquiv Y).symm) n
 
+/-- A total bounded-distortion relation controls order-free finite Rips diagrams.
+The two carriers and the coefficient field may have unrelated universes. -/
+theorem bottleneck_diagram_le_of_relation (k : Type z) [Field k]
+    {X : Type u} {Y : Type v} [Fintype X] [Fintype Y]
+    [MetricSpace X] [MetricSpace Y] {C : SetRel X Y} {ε : ℝ≥0}
+    (hC : Relator.LeftTotal (fun x y => (x, y) ∈ C))
+    (hI : Relator.LeftTotal (fun y x => (y, x) ∈ C.inv))
+    (h : ∀ x x' y y', (x, y) ∈ C → (x', y') ∈ C →
+      |dist x x' - dist y y'| ≤ (ε : ℝ)) (n : ℕ) :
+    bottleneck (diagram k X n) (diagram k Y n) ≤ (ε : ℝ≥0∞) := by
+  let : MetricSpace (FiniteLabels.{u, z} X) := labelsMetric (inferInstance : MetricSpace X)
+  let : MetricSpace (FiniteLabels.{v, z} Y) := labelsMetric (inferInstance : MetricSpace Y)
+  let D : SetRel (FiniteLabels.{u, z} X) (FiniteLabels.{v, z} Y) :=
+    {p | (labelsEquiv X p.1, labelsEquiv Y p.2) ∈ C}
+  apply bottleneck_dgm_le_of_relation (C := D) (ε := ε)
+    (inferInstance : MetricSpace (FiniteLabels.{u, z} X))
+    (inferInstance : MetricSpace (FiniteLabels.{v, z} Y)) _ _ _ k n
+  · intro x
+    obtain ⟨y, hy⟩ := hC (labelsEquiv X x)
+    exact ⟨(labelsEquiv Y).symm y, by simpa [D] using hy⟩
+  · intro y
+    obtain ⟨x, hx⟩ := hI (labelsEquiv Y y)
+    exact ⟨(labelsEquiv X).symm x, by simpa [D] using hx⟩
+  · intro x x' y y' hxy hx'y'
+    exact h _ _ _ _ hxy hx'y'
+
 /-- A supplied sampling-error bound gives the diameter-scale factor two. -/
 theorem bottleneck_diagram_le_two_mul_of_hausdorffDist_le (k : Type z) [Field k]
     {X : Type u} {Y : Type v} {Z : Type w}

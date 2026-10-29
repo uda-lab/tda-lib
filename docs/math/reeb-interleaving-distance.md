@@ -119,6 +119,45 @@ All fixtures are at `C := Type`.
   `thicken ε (-r, r) = (-r - ε, r + ε)`, which does not contain `1` because
   `r + ε = (1 + ε) / 2 < 1`.
 
+## Cardinality obstructions
+
+For `F G : OpenInterval ⥤ Type v`, an `ε`-interleaving `i` and an interval `I`, the restriction
+`F(I) → F(T_ε T_ε I)` equals `ψ_(T_ε I) ∘ φ_I`. Its range therefore lies in the range of
+`ψ_(T_ε I)` (`Interleaving.range_map_subset_range_ψ`), and
+
+```lean
+Nat.card (range (F.map (I ⟶ T_ε T_ε I))) ≤ Nat.card (G.obj (T_ε I))
+```
+
+when `G(T_ε I)` is finite (`Interleaving.card_range_map_le`; `card_range_map_add_le` for the
+restriction to `T_(ε+ε) I`). If the restriction is injective, then `φ_I` is injective
+(`Interleaving.φ_app_injective`), `F(I)` is finite and `Nat.card (F I) ≤ Nat.card (G (T_ε I))`
+(`Interleaving.finite_of_injective`, `Interleaving.card_le_of_injective`).
+
+A strict reverse inequality excludes every `ε`-interleaving: in the range form
+(`Interleaving.isEmpty_of_card_lt_card_range`) and in the injective form
+(`Interleaving.isEmpty_of_injective_of_card_lt`). If for every `ε` with `ε < r` some `I` has an
+injective restriction, a finite value `G(T_ε I)` and `Nat.card (G (T_ε I)) < Nat.card (F I)`, then
+`r ≤ interleavingDistance F G` (`le_interleavingDistance_of_forall_exists_card_lt`);
+`le_interleavingDistance_of_forall_exists_card_lt_symm` places the obstruction on the second
+argument. At `⊤`, every interleaving gives `F(⊤) ≃ G(⊤)` (`Interleaving.topEquiv`), so
+`Nat.card (F ⊤) ≠ Nat.card (G ⊤)` gives distance `⊤` (`interleavingDistance_eq_top_of_card_ne`;
+`RGraph.geometricInterleavingDistance_eq_top_of_card_ne` for graph objects).
+
+`Nat.card` of an infinite type is `0`, so these bounds assume finiteness of the target value where
+they use it, and the `⊤` form gives nothing when both top values are infinite. The injectivity
+hypothesis cannot be dropped from the injective form; the **Merge-height change** paragraph of
+`reeb-graph-pl.md` § Source correspondence has a graph-PL pair with the counts `2` and `1` and an
+interleaving (`mergeY_injective_needed` in `TDA/Mapper/GraphPLReebMergeHeightExamples.lean`).
+
+The fixtures in `TDA/Reeb/InterleavingCardinalityExamples.lean` recover the distance `1` of the
+point precosheaves at `0` and `1` from the counts `1` and `0` (`point_distance_eq_one_of_card`),
+the nonempty-against-empty obstruction for finite `F(I)` from the range form
+(`isEmpty_of_nonempty_of_isEmpty_of_finite`), and the distance `⊤` between an empty and a
+nonempty graph object with finitely many top components
+(`geometricInterleavingDistance_eq_top_of_isEmpty_of_nonempty_of_card`). These are library
+statements; no numbered result of de Silva, Munch and Patel states them.
+
 ## Source correspondence
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, Definition 4.4, define the interleaving

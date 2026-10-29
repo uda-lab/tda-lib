@@ -3,11 +3,13 @@
 `tda-lib` is a Lean 4 library for topological data analysis. It formalizes finite
 persistent homology, a certified computation of persistence over the two-element
 field, distances and stability bounds for persistence diagrams, Rips and Čech
-filtrations of finite metric spaces, persistence images and kernels, and selected
-Reeb and Mapper constructions. The current release is
-[v0.2.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.2.0);
-[v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) was the first
-release with mathematical results.
+filtrations of finite metric spaces, persistence images and kernels, signed barcodes
+of finitely presented multiparameter modules, and selected Reeb and Mapper
+constructions. The current release is
+[v0.3.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0);
+[v0.2.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.2.0) and
+[v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) are the earlier
+releases with mathematical results.
 
 ## Results in v0.1.0
 
@@ -135,6 +137,94 @@ metric-space input.
   families with varying finite cover index types. This is abstract categorical
   reconstruction, not an executable Mapper algorithm.
 
+## Results added in v0.3.0
+
+The v0.3.0 release adds the following results to those above; each holds under the
+hypotheses stated in the [API guide](docs/api.md) and its mathematical notes, which also
+give the declaration names.
+
+- **Borel boundary transport.** The strict birth–death half-plane with one collapsed
+  boundary point is a complete separable metric space. For atomic inputs and p ≥ 0, the
+  all-Borel powered optimum is the native finite weighted optimum; for unit masses it is
+  the powered finite matching minimum. For p ≥ 1 it equals the reservoir optimum for any
+  finite capacity dominating the total masses. Also for p ≥ 1, a minimizing plan exists
+  for arbitrary finite Borel inputs, and the rooted distance is a literal infimum of
+  mathlib `eLpNorm`s over reservoir couplings, satisfies the sharp triangle inequality and
+  separates measures. Under finite diagonal p-persistence, same-mass quantizations
+  converge. Identification with an ordinary Wasserstein coupling API, including the
+  library's own `TDA.Probability.measureWasserstein`, is not claimed.
+- **Q-tame modules and decorated diagrams.** Rectangle measures of real modules over a
+  field are defined by image-and-kernel quotients with the four-rank formula, finite on
+  rectangles separated from the diagonal for q-tame modules; essential strips, box
+  inequalities along interleavings, additive contents and decorated multiplicities with
+  death at infinity follow, with countable support. Every pointwise finite-dimensional
+  real-indexed module over a field is naturally isomorphic to an algebraic direct sum of
+  scalar interval modules with order-convex supports (open or closed endpoints,
+  singletons, tails and the whole line allowed), and the rank barcode of every strict
+  finite observation list is the multiset of nonempty sampled intersections of these
+  summands. The locally finite decorated diagram of a q-tame module is bottleneck-stable:
+  an actual ε-interleaving of q-tame modules bounds the distance of the extracted diagrams
+  by ε. Rips sublevel modules of totally bounded spaces are q-tame, their diagrams agree
+  with the finite diagrams on finite spaces, and they are stable under Hausdorff and
+  Gromov–Hausdorff perturbation, with convergence of finite samples to a totally bounded
+  target. Birth-at-minus-infinity strata and finite-diagram compatibility for arbitrary
+  q-tame modules are not claimed.
+- **Multiparameter persistence.** Over any field and for `n ≥ 1`, a finitely presented
+  persistence module indexed by `ℝⁿ` has a minimal finite rank-projective resolution whose
+  terms vanish in degrees above `2n−2`; the hook multisets of its terms are independent of
+  the chosen minimal resolution, so its signed hook barcode is well defined and finite,
+  and its rank invariant is the alternating sum of the term ranks. An `ε`-interleaving of
+  two such modules gives an unshifted `(2n−1)ε`-interleaving of the parity sums of their
+  resolutions and a matching of the cross-sign hook multisets at radius `(2n−1)²ε`, so the
+  signed bottleneck dissimilarity is at most `(2n−1)²` times the interleaving distance,
+  without assuming finite distance or an attained infimum. In one coordinate the signed
+  barcode has positive hooks only, their endpoints form the ordinary barcode, and the
+  ordinary bottleneck distance of two such barcodes equals the interleaving distance. A
+  two-coordinate example realized by finitely presented modules violates the triangle
+  inequality for the signed dissimilarity, so no metric instance is attached. Finite
+  presentation is closed under cokernels, biproducts and pushouts over any ring and
+  preorder; over a field and a partial order, the middle term of a short exact row with
+  finitely presented ends, the pullback of a short exact row's quotient map along a map
+  from a finitely presented module when the row's left term is finitely presented, and the
+  kernel of a composite of two rank-exact deflations whose rows have finitely presented
+  left terms are finitely presented. Supporting results cover support-interval and
+  rectangle modules, Hall bounds and occurrence matchings, graded free modules and
+  presentations, the coordinate interleaving distance, finite-grid Kan reconstruction,
+  rank exactness and hooks, and the interval-pair incidence algebra with its
+  projective-dimension bounds. The countable extension of the hook matching, optimality of
+  the constant and identification of the signed dissimilarity with an ordinary bottleneck
+  distance are not claimed.
+- **Metric inputs and sampling.** Greedy sparse Rips filtrations have a natural homology
+  isomorphism with the relaxed filtration, a log-scale interleaving with the Rips
+  filtration of shift `log((1−2η)⁻¹)`, and explicit skeleton-size bounds under a
+  doubling hypothesis. Normalized subdivision-Rips bifiltrations have a natural homology
+  isomorphism with the large-face cover nerve, and the finite-uniform Gromov–Prokhorov
+  distance bounds their restricted homology interleaving distance. Ambient Čech diagrams
+  of finite samples are stable under the Hausdorff distance, Rips homology of totally
+  bounded subsets is interleaved within twice the Hausdorff distance, and the laws of
+  iid Rips sample diagrams satisfy Wasserstein and `W_∞` bounds by the Gromov–Wasserstein
+  distance in every degree. The new area `TDA.Probability` holds the couplings and
+  moment bounds.
+- **Simplicial and topological tools.** Prism-admissible vertex maps induce equal
+  homology maps, barycentric subdivision is a homology isomorphism natural for inclusions,
+  arbitrary-apex cones contract chains, and measure bifiltrations with finite-uniform
+  Gromov–Prokhorov witnesses support the subdivision-Rips results.
+- **Reeb.** Height-map pairs between spaces over ℝ bound the interleaving distance of
+  interval-component cosheaves and of graph-PL Reeb quotients; vertex-height
+  perturbations, extremal lower bounds, exact vertical translation, scaling by the
+  absolute slope, exact merge- and split-tree values and cardinality obstructions are
+  proved. Translation is a functor on finite real graphs compatible with quotients,
+  thickening and smoothing. Realizations of finite trees are contractible and simply
+  connected, and conversely; the general quotient comparison is not injective on the
+  topologist's sine curve.
+- **Mapper.** Refinements induce selector-independent homology maps and persistence
+  modules, with finite barcodes under face finiteness; cover maps between real towers
+  give interleavings; step-diagram bottleneck bounds are exact for grid translations;
+  capped centred towers have bottleneck bounds, including from height-map pairs between
+  different domains; essential counts and domain maps are included.
+  Two vertex-height functions on one finite graph give Mapper–Reeb reconstruction bounds
+  with convergence along vanishing resolutions and exact vertical translation.
+
 ## Use in a Lean project
 
 Use the Lean toolchain pinned in this repository's `lean-toolchain` (currently
@@ -144,7 +234,7 @@ Use the Lean toolchain pinned in this repository's `lean-toolchain` (currently
 [[require]]
 name = "TDA"
 git = "https://github.com/uda-lab/tda-lib.git"
-rev = "v0.2.0"
+rev = "v0.3.0"
 ```
 
 Run `lake update TDA`, fetch the prebuilt mathlib dependencies with `lake exe cache get`,
@@ -152,12 +242,13 @@ and run `lake build TDA`. Then import the area you need:
 
 ```lean
 import TDA.Persistence
--- Or import TDA.Library for all six library areas.
+-- Or import TDA.Library for the seven ordinary library areas.
 ```
 
-The six areas are `TDA.Simplicial`, `TDA.Filtration`, `TDA.Persistence`, `TDA.Topology`,
-`TDA.Reeb` and `TDA.Mapper`. The area imports and `TDA.Library` omit the standalone
-example modules; `import TDA` also loads them. The
+The library areas are `TDA.Simplicial`, `TDA.Filtration`, `TDA.Persistence`, `TDA.Topology`,
+`TDA.Reeb`, `TDA.Mapper` and `TDA.Probability`; `TDA.Library` loads all seven. The area
+imports and `TDA.Library` omit the standalone example modules, except for the fixtures that
+two Persistence library modules import directly; `import TDA` also loads them. The
 [import guide](docs/api.md#entry-points) lists the areas and their requirements.
 
 ## Build and documentation
@@ -182,15 +273,17 @@ records consulted papers and the limits of source comparison.
 ## Scope and limitations
 
 The [API guide](docs/api.md) gives the precise assumptions, theorem names and
-limits of these results. General geometric or infinite-dimensional persistence
-and an executable arbitrary-field reduction are outside the current scope.
+limits of these results. General geometric persistence, infinite-dimensional persistence
+beyond q-tame modules and an executable arbitrary-field reduction are outside the current
+scope.
 
-Further directions include all-Radon boundary-transport identification, general
-infinite or q-tame persistence, metric stability with diagrams of infinite
-point sets, higher-dimensional Mapper–Reeb approximation, and constructibility of
+Further directions include identification of boundary transport with an ordinary
+Wasserstein coupling API, birth-at-minus-infinity strata and compatibility with the finite
+`Diagram` API for other finite-type q-tame modules, the countable-sum extension of
+signed-barcode stability, higher-dimensional Mapper–Reeb approximation, and constructibility of
 the product thickening of a general constructible real space beyond graph input as
 in de Silva, Munch and Patel, *Categorified Reeb Graphs*, Theorem 4.27.
-[Issue #227](https://github.com/uda-lab/tda-lib/issues/227) records their scope and
+[Issue #227](https://github.com/uda-lab/tda-lib/issues/227) records the roadmap and its
 source links.
 
 ## License

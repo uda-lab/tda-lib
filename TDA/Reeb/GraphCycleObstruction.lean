@@ -44,7 +44,7 @@ return walk avoiding it: every edge is a bridge and the graph is acyclic
 connected by `connected_iff_pathConnectedSpace`, including nonemptiness, and is a tree
 (`isTree_of_simplyConnectedSpace`, contrapositive `not_simplyConnectedSpace_of_not_isTree`). No
 finiteness, local finiteness, decidable adjacency, vertex topology or nonemptiness hypothesis is
-used. The converse, that the realization of a tree is simply connected, is not proved here.
+used. The converse for finite vertex types is proved in `TDA.Reeb.GraphTreeContraction`.
 
 ## Source
 

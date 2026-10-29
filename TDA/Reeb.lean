@@ -51,3 +51,10 @@ import TDA.Reeb.Stability
 import TDA.Reeb.ConstructibleGeometricInterleaving
 
 import TDA.Reeb.ConstructiblePerturbation
+import TDA.Reeb.GraphPLVertexPerturbation
+import TDA.Reeb.GraphTreeContraction
+import TDA.Reeb.IntervalTranslation
+import TDA.Reeb.RGraphTranslation
+import TDA.Reeb.InterleavingCardinality
+import TDA.Reeb.IntervalScaling
+import TDA.Reeb.HeightMapPair

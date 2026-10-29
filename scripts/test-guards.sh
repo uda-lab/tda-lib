@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Self-test for the textual guards' shared lexer (scripts/lean-code-scan.awk), the
-# root-aggregator guard, the exposition note check, the live axiom audit's record parsing and
-# the build lock.
+# root-aggregator guard, the merge-conflict marker guard, the exposition note check, the live
+# axiom audit's record parsing, the embedded cloud-setup pins and the build lock.
 # Each case is a Lean snippet plus the expected number of violating lines per mode.
 # Run after every edit of the lexer:  bash scripts/test-guards.sh
 set -euo pipefail
@@ -10,17 +10,43 @@ cd "$ROOT"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 fail=0; n=0
 
+# Lexer calls here run in C, as in the guard scripts; the root:locale fixtures cover UTF-8 callers.
 # case <name> <expected-sorry-hits> <expected-axiom-hits> <<'EOF' ... EOF
 case_() {
   local name="$1" want_s="$2" want_a="$3" f="$tmp/$1.lean" got_s got_a
   cat > "$f"
   n=$((n + 1))
-  got_s="$(awk -v mode=sorry -f scripts/lean-code-scan.awk "$f" | wc -l)"
-  got_a="$(awk -v mode=axiom -f scripts/lean-code-scan.awk "$f" | wc -l)"
+  got_s="$(LC_ALL=C awk -v mode=sorry -f scripts/lean-code-scan.awk "$f" | wc -l)"
+  got_a="$(LC_ALL=C awk -v mode=axiom -f scripts/lean-code-scan.awk "$f" | wc -l)"
   if [ "$got_s" -ne "$want_s" ] || [ "$got_a" -ne "$want_a" ]; then
     echo "FAIL [$name]: sorry want $want_s got $got_s; axiom want $want_a got $got_a"; fail=1
   fi
 }
+
+# Multibyte text and non-UTF-8 bytes are scanned byte-wise (case_ forces C; see root:locale).
+case_ multibyte_bytes 1 0 < <(printf '%b\n' 'example : True := \xe2\x9f\xa8rfl\xe2\x9f\xa9' 'def x := \xff -- sorry' 'example : True := sorry')
+
+# Character literals with a multibyte character (2-, 3- and 4-byte) close at their own quote.
+case_ char_literal_guillemet 1 0 <<'EOF'
+example : Char × True := ('«', sorry)
+EOF
+case_ char_literal_guillemet_admit 1 0 <<'EOF'
+def c := '«'; admit
+EOF
+case_ char_literal_3byte 1 0 <<'EOF'
+def c := 'ℝ'; sorry
+EOF
+case_ char_literal_4byte 1 0 <<'EOF'
+def c := '😀'; sorry
+EOF
+case_ char_literal_escape 1 0 <<'EOF'
+def c := '\n'; sorry
+EOF
+case_ char_literal_then_string 2 0 <<'EOF'
+def c := ('«', "sorry"); sorry
+example : True := sorry
+def d := ('«', "sorry")
+EOF
 
 case_ plain_sorry 1 0 <<'EOF'
 theorem t : True := by sorry
@@ -148,16 +174,16 @@ EOF
 
 # Stable releases reject Issue-authorized holes too; comments remain harmless.
 for fixture in marked_sorry plain_sorry; do
-  hits="$(awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
+  hits="$(LC_ALL=C awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
   if [ "$hits" -ne 1 ]; then echo "FAIL [stable:$fixture]: expected one hole"; fail=1; fi
 done
 for fixture in sorry_in_comments sorry_in_string; do
-  hits="$(awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
+  hits="$(LC_ALL=C awk -v mode=stable -f scripts/lean-code-scan.awk "$tmp/$fixture.lean" | wc -l)"
   if [ "$hits" -ne 0 ]; then echo "FAIL [stable:$fixture]: comment/string counted"; fail=1; fi
 done
 
 printf 'private axiom staging : True -- ALLOW_AXIOM: #1 staging\n' > "$tmp/stable-axiom.lean"
-hits="$(awk -v mode=stable_axiom -f scripts/lean-code-scan.awk "$tmp/stable-axiom.lean" | wc -l)"
+hits="$(LC_ALL=C awk -v mode=stable_axiom -f scripts/lean-code-scan.awk "$tmp/stable-axiom.lean" | wc -l)"
 if [ "$hits" -ne 1 ]; then echo "FAIL [stable:marked_axiom]: expected one declaration"; fail=1; fi
 
 if [ "$fail" -eq 0 ]; then echo "guard lexer self-test OK ($n cases)"; else exit 1; fi
@@ -312,7 +338,9 @@ done
 d="$tmp/root-missing"; rn=$((rn + 1)); fixture "$d"
 if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then echo "FAIL [root:missing]: not rejected"; rfail=1; fi
 # Portability: every awk found must parse the shared lexer and agree, in a UTF-8 locale.
+# A character-aware awk (gawk) takes the lexer's character-mode path here; a byte-wise awk (mawk) uses the lead-byte table.
 printf 'import Foo.Δ\nimport Foo.«match»\n' > "$tmp/uni.lean"; printf 'import A open B\n' > "$tmp/bad.lean"
+printf "def c := '«'; sorry\n" > "$tmp/charlit.lean"
 for a in gawk mawk nawk; do
   command -v "$a" >/dev/null 2>&1 || continue
   rn=$((rn + 1))
@@ -320,8 +348,82 @@ for a in gawk mawk nawk; do
      || [ "$(LC_ALL=C.UTF-8 "$a" -v mode=root -f scripts/lean-code-scan.awk "$tmp/bad.lean" | wc -l)" -ne 1 ]; then
     echo "FAIL [root:awk-$a]: lexer rejected or misjudged under $a: $out"; rfail=1
   fi
+  if [ "$(LC_ALL=C.UTF-8 "$a" -v mode=sorry -f scripts/lean-code-scan.awk "$tmp/charlit.lean" | wc -l)" -ne 1 ]; then
+    echo "FAIL [root:awk-$a-charlit]: multibyte character literal hid or duplicated a sorry under $a"; rfail=1
+  fi
+done
+# The guards must not depend on the caller's locale: multibyte characters before an `r` in code, and a non-UTF-8 line.
+for loc in en_US.UTF-8 C; do
+  rn=$((rn + 1)); d="$tmp/root-locale-$rn"; fixture "$d"
+  printf '%b\n' "import $root_lib.Basic" "import $root_lib.\xe2\x84\x9dr" > "$d/$root_lib.lean"
+  printf '%b\n' 'example : True := \xe2\x9f\xa8rfl\xe2\x9f\xa9' '-- caf\xe9 \xff' > "$d/$root_lib/Multibyte.lean"
+  cp scripts/check-no-sorry.sh scripts/check-no-custom-axiom.sh "$d/scripts/"
+  for g in check-root-aggregator check-no-sorry check-no-custom-axiom; do
+    if ! out="$(LC_ALL=$loc bash "$d/scripts/$g.sh" 2>&1)"; then
+      echo "FAIL [root:locale $loc $g]: $out"; rfail=1
+    fi
+  done
 done
 if [ "$rfail" -eq 0 ]; then echo "root-aggregator guard self-test OK ($rn cases)"; else exit 1; fi
+
+# --- merge-conflict marker guard (scripts/check-conflict-markers.sh) -----------------------
+# The real guard runs inside a fixture git repository. Marker lines are built with printf so this
+# file never contains one at the start of a line (the guard scans this file too).
+cfail=0; cn=0
+m7() { printf "$1%.0s" 1 2 3 4 5 6 7; }   # m7 '<' → <<<<<<<
+# Fixture git runs without the caller's GIT_DIR/worktree variables and without user or system
+# configuration (signing, hooks), so the fixture never touches the real repository.
+fenv() { env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@"; }
+fgit() { fenv git "$@"; }
+marker_case() {  # marker_case <name> <want: 0 pass | 1 fail> <<'EOF' tracked file content EOF
+  local name="$1" want="$2" d="$tmp/marker-$1" got
+  cn=$((cn + 1)); mkdir -p "$d/scripts"
+  cp scripts/check-conflict-markers.sh "$d/scripts/"
+  fgit -C "$d" init -q && fgit -C "$d" config user.email t@example.invalid && fgit -C "$d" config user.name t
+  cat > "$d/doc.md"
+  fgit -C "$d" add -A && fgit -C "$d" commit -q -m fixture
+  got=0; fenv bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1 || got=$?
+  if [ "$got" -ne "$want" ]; then echo "FAIL [marker:$name index]: want exit $want got $got"; cfail=1; fi
+  got=0; fenv bash "$d/scripts/check-conflict-markers.sh" HEAD >/dev/null 2>&1 || got=$?
+  if [ "$got" -ne "$want" ]; then echo "FAIL [marker:$name HEAD]: want exit $want got $got"; cfail=1; fi
+}
+marker_case clean 0 <<EOF
+# Title
+Prose with <<< and === and >>> inside a line, six- and eight-character rules:
+======
+$(m7 '=')=
+$(m7 '=')x
+$(m7 '>')x
+ $(m7 '<') indented is not a marker
+EOF
+marker_case conflict 1 <<EOF
+# Title
+$(m7 '<') HEAD
+ours
+$(m7 '=')
+theirs
+$(m7 '>') origin/develop
+EOF
+marker_case bare_separator 1 <<EOF
+text
+$(m7 '=')
+text
+EOF
+# Only tracked content counts: an untracked file with markers passes, a staged one fails.
+d="$tmp/marker-untracked"; cn=$((cn + 1)); mkdir -p "$d/scripts"; cp scripts/check-conflict-markers.sh "$d/scripts/"
+fgit -C "$d" init -q && fgit -C "$d" config user.email t@example.invalid && fgit -C "$d" config user.name t
+printf 'clean\n' > "$d/a.md"; fgit -C "$d" add -A && fgit -C "$d" commit -q -m fixture
+printf '%s HEAD\nx\n%s\ny\n%s theirs\n' "$(m7 '<')" "$(m7 '=')" "$(m7 '>')" > "$d/b.md"
+if ! fenv bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1; then echo 'FAIL [marker:untracked]: untracked file rejected'; cfail=1; fi
+fgit -C "$d" add b.md
+if fenv bash "$d/scripts/check-conflict-markers.sh" >/dev/null 2>&1; then echo 'FAIL [marker:staged]: staged markers accepted'; cfail=1; fi
+if fenv bash "$d/scripts/check-conflict-markers.sh" HEAD >/dev/null 2>&1; then :; else echo 'FAIL [marker:staged HEAD]: clean HEAD rejected'; cfail=1; fi
+# The guard reports the offending path and line.
+out="$(fenv bash "$tmp/marker-conflict/scripts/check-conflict-markers.sh" HEAD 2>&1)" || true
+if [[ "$out" != *'doc.md:2:'* ]]; then echo "FAIL [marker:report]: missing path:line in: $out"; cfail=1; fi
+# The repository itself is clean.
+cn=$((cn + 1)); bash scripts/check-conflict-markers.sh >/dev/null || { echo 'FAIL [marker:self]: repository index rejected'; cfail=1; }
+if [ "$cfail" -eq 0 ]; then echo "merge-conflict marker guard self-test OK ($cn fixtures)"; else exit 1; fi
 
 # --- exposition note check (scripts/check-note.sh) ----------------------------------------
 # Fixture repositories with a fake latexmk (deterministic) and, when TeX is installed, one real
@@ -541,6 +643,61 @@ out="$(PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" && {
 if [[ "$out" != *'TDA.X is pinned 2 times in scripts/print_axioms'* ]]; then
   echo 'FAIL [audit:cross-area-duplicate]: missing duplicate diagnostic'; afail=1; fi
 if [ "$afail" -eq 0 ]; then echo "axiom-audit parser self-test OK ($an cases)"; else exit 1; fi
+
+# --- embedded cloud-setup pins (scripts/claude-cloud-setup.sh) ----------------------------
+# The setup script writes its own copies of lean-toolchain, lakefile.toml (including the package
+# `version`) and lake-manifest.json from quoted heredocs. Each copy must stay byte-for-byte equal
+# to the tracked file. This is the static part of scripts/test-claude-cloud-setup.py, run here
+# because that test needs Linux and is not part of check.sh or CI.
+pfail=0; pn=0
+embedded_pin() {  # embedded_pin <setup-script> <file> <marker>: print the heredoc body, or fail
+  LC_ALL=C awk -v start="cat > \"\$PROJECT_DIR/$2\" <<'$3'" -v end="$3" '
+    !inside && !done && $0 == start { inside = 1; next }
+    inside && $0 == end { inside = 0; done = 1; next }
+    inside { print }
+    END { exit (done ? 0 : 1) }
+  ' "$1"
+}
+pin_drift() {  # pin_drift <setup-script> <dir>: print each pinned file whose embedded copy differs
+  local file marker
+  for file in lean-toolchain:TDA_LEAN_TOOLCHAIN lakefile.toml:TDA_LAKEFILE \
+              lake-manifest.json:TDA_LAKE_MANIFEST; do
+    marker="${file#*:}"; file="${file%%:*}"
+    if ! embedded_pin "$1" "$file" "$marker" > "$tmp/pin-embedded"; then
+      echo "$file (no '$marker' heredoc block)"
+    elif ! cmp -s "$tmp/pin-embedded" "$2/$file"; then
+      echo "$file"
+    fi
+  done
+}
+# The real setup script matches the tracked pins.
+pn=$((pn + 1)); out="$(pin_drift scripts/claude-cloud-setup.sh .)"
+if [ -n "$out" ]; then
+  while IFS= read -r f; do
+    echo "FAIL [pins:current]: scripts/claude-cloud-setup.sh embeds a stale copy of $f; copy the tracked file into its heredoc"
+  done <<< "$out"
+  pfail=1
+fi
+# Fixtures take their pins from the script's own blocks, so they do not depend on the case above:
+# a one-byte change to one pin is reported by name, and so is an unterminated block.
+d="$tmp/pins"; mkdir -p "$d"; cp scripts/claude-cloud-setup.sh "$d/"
+pin_fixture() {
+  embedded_pin "$d/claude-cloud-setup.sh" lean-toolchain TDA_LEAN_TOOLCHAIN > "$d/lean-toolchain" || :
+  embedded_pin "$d/claude-cloud-setup.sh" lakefile.toml TDA_LAKEFILE > "$d/lakefile.toml" || :
+  embedded_pin "$d/claude-cloud-setup.sh" lake-manifest.json TDA_LAKE_MANIFEST > "$d/lake-manifest.json" || :
+}
+pin_fixture
+pn=$((pn + 1)); out="$(pin_drift "$d/claude-cloud-setup.sh" "$d")"
+[ -z "$out" ] || { echo "FAIL [pins:fixture]: self-consistent fixture reported '$out'"; pfail=1; }
+pn=$((pn + 1)); printf ' ' >> "$d/lakefile.toml"
+out="$(pin_drift "$d/claude-cloud-setup.sh" "$d")"
+[ "$out" = lakefile.toml ] || { echo "FAIL [pins:drift]: want 'lakefile.toml' got '$out'"; pfail=1; }
+pin_fixture
+pn=$((pn + 1)); sed 's/^TDA_LAKE_MANIFEST$/TDA_LAKE_MANIFEST_RENAMED/' scripts/claude-cloud-setup.sh > "$d/claude-cloud-setup.sh"
+out="$(pin_drift "$d/claude-cloud-setup.sh" "$d")"
+[[ "$out" == "lake-manifest.json (no 'TDA_LAKE_MANIFEST' heredoc block)" ]] \
+  || { echo "FAIL [pins:missing-block]: unterminated block not reported: '$out'"; pfail=1; }
+if [ "$pfail" -eq 0 ]; then echo "embedded cloud-setup pin check OK ($pn cases)"; else exit 1; fi
 
 # Resource locking is tested in isolated fake workspaces, without the host's active locks.
 bash scripts/agent/test-build-resources.sh

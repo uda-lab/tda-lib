@@ -9,3 +9,10 @@ import TDA.Topology.NerveMap
 import TDA.Topology.NerveContiguity
 import TDA.Topology.MultiNerveMap
 import TDA.Topology.C0MeasureRepresentation
+
+import TDA.Topology.MeasureBifiltration
+import TDA.Topology.FiniteUniformProkhorov
+import TDA.Topology.FiniteUniformTransport
+import TDA.Topology.FiniteGromovProkhorov
+import TDA.Topology.MulticoverCover
+import TDA.Topology.FiniteGromovProkhorovWitness

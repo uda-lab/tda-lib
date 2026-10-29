@@ -21,10 +21,16 @@ plHeight G h (edgePoint G d t) = dartHeight h d t
 ```
 
 both by `rfl`, and `plHeight G h` is the only continuous map with these values
-(`plHeight_unique`). Equal endpoint heights are allowed; a horizontal dart has constant height
+(`plHeight_unique`). By uniqueness, translating every vertex height by `c` translates the
+piecewise-linear height: `plHeight G (fun v => h v + c) = plHeight G h + ContinuousMap.const _ c`
+(`plHeight_add_const`, pointwise `plHeight_add_const_apply`). Equal endpoint heights are allowed; a horizontal dart has constant height
 (`dartHeight_of_eq`). For an order-convex set `s ⊆ ℝ`, the real parameters `r` with
 `(1 - r) h d.fst + r h d.snd ∈ s` form an order-convex set, also when the dart is horizontal
 (`ordConnected_preimage_lineHeight`); intersected with `[0, 1]` it is convex.
+
+For any `s t r : unitInterval`, `plHeight_edgeSegment_bounds` bounds the height at
+`edgeSegment G d s t r` between its values at `edgePoint G d s` and `edgePoint G d t`. It needs no
+ordering or distinctness assumption on the endpoint parameters or heights.
 
 ## Unoriented edges and support
 
@@ -309,6 +315,143 @@ The single edge is `⊤ : SimpleGraph Bool` with the dart `d₀ : false → true
   `c4_vertexOnly_ne`), and on the ray; the single edge above is the counterexample to the
   unconditional version.
 
+## Vertex-height perturbations of a fixed graph
+
+Fix `G : SimpleGraph V` and two vertex-height functions `h g : V → ℝ` on the same graph. On a dart
+`d` at parameter `t`,
+
+```lean
+dartHeight h d t - dartHeight g d t = (1 - t) * (h d.fst - g d.fst) + t * (h d.snd - g d.snd)
+```
+
+is a convex combination of the two endpoint displacements. Hence `|h v - g v| ≤ ε` for every
+vertex gives `|dartHeight h d t - dartHeight g d t| ≤ ε` (`abs_dartHeight_sub_le`) and, by
+quotient induction over vertices and edge points,
+
+```lean
+∀ x : Realization G, |plHeight G h x - plHeight G g x| ≤ ε
+```
+
+(`abs_plHeight_sub_le`). These statements hold for `V` in any universe and for every simple graph,
+with `ε : ℝ` arbitrary; no finiteness, connectivity, nonemptiness or injectivity of heights is
+assumed. Nothing relates the orders of the two height functions: vertex heights may cross, coincide
+or separate, so the number of distinct heights and the set of horizontal edges may change.
+
+Vertex evaluation gives the converse inequality. In mathlib's uniform extended distance on
+`α →ᵤ ℝ` (`UniformFun`, `edist f g = ⨆ x, edist (f x) (g x)`),
+
+```lean
+edist (ofFun (plHeight G h)) (ofFun (plHeight G g)) = edist (ofFun h) (ofFun g)
+```
+
+for every `V` (`edist_ofFun_plHeight`). For `[Fintype V]` the right side is the product extended
+distance `edist h g = Finset.univ.sup fun v => edist (h v) (g v)`, a finite maximum seeded at `0`
+(`edist_ofFun_plHeight_eq_edist`); for empty `V` both sides are `0`. This equality concerns the
+two piecewise-linear heights. The Reeb quotients below satisfy only an inequality.
+
+Applying the general uniform-perturbation interleaving `perturbationInterleaving` to the
+pointwise bound gives `vertexHeightInterleaving G hhg`, an `ε`-interleaving of
+`intervalComponents (plHeight G h)` and `intervalComponents (plHeight G g)` for `ε : ℝ≥0`
+(`vertexHeightInterleaving_eq`). Its forward map at `I` sends the path component of
+`x ∈ plHeight G h ⁻¹' I` to the path component of the same point in `plHeight G g ⁻¹' T_ε I`, and
+its backward map is the same construction with `h` and `g` exchanged
+(`vertexHeightInterleaving_φ_app_mk`, `vertexHeightInterleaving_ψ_app_mk`). Consequently
+`interleavingDistance_intervalComponents_plHeight_le` bounds the interleaving distance of the two
+precosheaves by `ε`. Composing `edist_ofFun_plHeight` with the sup-distance stability theorem
+`interleavingDistance_intervalComponents_le_edist` of `TDA/Reeb/Stability.lean` bounds it by the
+uniform distance of the vertex heights
+(`interleavingDistance_intervalComponents_plHeight_le_edist_ofFun`), and by `edist h g` for
+`[Fintype V]` (`interleavingDistance_intervalComponents_plHeight_le_edist`).
+
+For `V : Type` and `[Finite V]`, the geometric interleaving distance of `graphPLReebGraph G h` and
+`graphPLReebGraph G g` is that precosheaf distance (`geometricInterleavingDistance_graphPLReebGraph`
+in `TDA/Mapper/GraphPLReebQuotient.lean`). Therefore
+
+```lean
+geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G g) ≤ ε
+geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G g) ≤
+  edist (ofFun h) (ofFun g)
+geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G g) ≤ edist h g
+```
+
+(`geometricInterleavingDistance_graphPLReebGraph_le` under the vertex budget `ε : ℝ≥0`,
+`geometricInterleavingDistance_graphPLReebGraph_le_edist_ofFun`, and
+`geometricInterleavingDistance_graphPLReebGraph_le_edist` for `[Fintype V]`). None of them takes
+a critical-value list, an order condition on the heights, a fixed number of distinct heights or a
+constructibility proof. The height range of `graphPLReebGraph G h` is the range of `plHeight G h`
+(`heightRange_graphPLReebGraph`), which supplies the lower bounds in the fixtures. The universe-zero
+restriction comes from the real-graph category; the pointwise and uniform statements have none.
+
+Vertical translation is exact already for interval components: for continuous `f` on a nonempty
+space with range bounded below, `intervalComponents (f + c)` is the translate
+`translatePre c (intervalComponents f)` and
+`interleavingDistance (intervalComponents f) (intervalComponents (f + c)) = ‖c‖₊`
+(`interleavingDistance_intervalComponents_add_const` in `TDA/Reeb/IntervalTranslation.lean`;
+the upper bound is `translationInterleaving`, the lower bound the obstruction at a short interval
+around the infimum of the range, and the identity height of `ℝ` shows that `BddBelow` is needed). With
+`plHeight_add_const` this rederives `geometricInterleavingDistance_graphPLReebGraph_add_const`.
+
+The estimate controls the piecewise-linear extension only. A continuous function on the
+realization with the same vertex values as `plHeight G h` can differ from it by any amount inside
+an edge.
+
+The production modules are `TDA/Reeb/GraphPLVertexPerturbation.lean` (namespace
+`TDA.Reeb.GraphPL`) and `TDA/Mapper/GraphPLReebStability.lean` (namespace `TDA.Mapper.GraphPL`).
+The fixtures are `TDA/Reeb/GraphPLVertexPerturbationExamples.lean` and
+`TDA/Mapper/GraphPLReebStabilityExamples.lean`:
+
+- **Empty vertex type and equal heights.** Any two heights on `Empty` give uniform distance `0`
+  between their piecewise-linear heights and geometric distance `0` between their Reeb quotients
+  (`empty_edist_ofFun_plHeight`, `empty_geometricInterleavingDistance`). On the single edge, equal
+  heights give the same two zeros through the vertex-height bound
+  (`tilted_self_geometricInterleavingDistance`).
+- **One vertex.** At heights `a` and `b` the Reeb quotients are at distance exactly `|a - b|`; the
+  lower bound is the Hausdorff distance `{a}` to `{b}` of the height ranges
+  (`point_geometricInterleavingDistance`).
+- **Single edge from `(0, 0)` to `(0, 1)`.** The vertex-height set `{0}` becomes `{0, 1}` and the
+  horizontal edge becomes nonhorizontal. The vertex heights are at product distance `1`
+  (`edist_flat_tilted`), the piecewise-linear heights are at uniform distance exactly `1`
+  (`flat_tilted_edist_ofFun_plHeight`), and the Reeb quotients are at geometric distance exactly
+  `1`; the lower bound compares the suprema `0` and `1` of the height ranges
+  (`flat_tilted_geometricInterleavingDistance`).
+- **Reversal and collision.** On the single edge, `(0, 1)` to `(1, 0)` reverses the endpoint
+  order. The vertex swap `swapHomeomorph` carries one height to the other, so the Reeb quotients
+  are isomorphic and at distance `0`, strictly below `edist h g = 1`
+  (`reversal_geometricInterleavingDistance`). The heights `(0, 1)` to `(1/2, 1/2)` make the edge
+  horizontal and give distance at most `1/2` (`collision_geometricInterleavingDistance_le`).
+- **Disconnected graph.** On two disjoint edges, which do not form a connected graph, raising one
+  edge by `1` gives distance at most `1` (`twoEdges_geometricInterleavingDistance_le`).
+- **Interior bump.** On the single edge, the continuous function `bump` has vertex values `0` and
+  value `4t(1 - t)` on either dart. Its vertex displacement from the zero height is `0`, but it
+  differs from `plHeight edgeGraph 0` by `1` at the midpoint, so their uniform distance is at
+  least `1` (`bump_not_controlled`).
+
+## Height-controlled maps between graph-PL spaces
+
+For continuous heights `f : C(X, ℝ)` and `g : C(X', ℝ)`, a `HeightMapPair f g ε` consists of
+continuous maps in both directions with height error at most `ε`. Each composite must be joined
+to the identity by paths whose height remains within `2ε` of its starting value. The pair induces
+an `ε`-interleaving of `intervalComponents f` and `intervalComponents g`, hence bounds their
+interleaving distance. Identity maps and constant paths recover `perturbationInterleaving` from a
+pointwise perturbation bound.
+
+For finite graph vertex types, applying the same criterion to the piecewise-linear heights bounds
+the geometric interleaving distance of their Reeb quotients
+(`geometricInterleavingDistance_graphPLReebGraph_le_of_heightMapPair`). The fixtures include a
+zero-distance collapse from the zero-height interval to the zero-height point, the exact distance
+`1/2` from an edge of height range `[0, 1]` to a point at height `1/2`, recovery of the fixed-graph
+perturbation interleaving, and a discrete two-point-to-one-point negative control whose distance
+is `⊤`.
+
+This sufficient criterion has no converse or functional-distortion identity. No optimality claim
+is made for the `2ε` path-deviation allowance. No comparison morphism in `RGraphCat`, map of Reeb
+quotients, or consequence for Mapper covers or reconstructions is established; the Mapper
+homology consequences of a height-map pair (`realInterleavingDistance_centredMapperPair_graphPL_le`,
+`bottleneck_cappedCentredDiagram_pair_plHeight_le`) are recorded in [the Mapper digest](mapper.md). The
+criterion is a library result;
+its fixed-space specialization recovers the perturbation result attributed above to de Silva, Munch
+and Patel.
+
 ## Source correspondence
 
 This is a library formulation of the standard combinatorial description of path components of
@@ -352,12 +495,158 @@ component; and its `SimpleGraph` files lie under `TauCeti/Combinatorics/SimpleGr
 path and module docstring, not a content-level inspection of every file, so it does not establish
 that TauCeti has no such comparison. Nothing from TauCeti is used, and TauCeti is not a dependency.
 
-Not claimed here: stability under perturbation of the heights; any distance or interleaving
-comparison of realizations; Definition 4.36 of de Silva, Munch and Patel; trees or simple
-connectivity; naturality across changes of graph or heights; general finite CW complexes; another
-realization; algorithms.
+**Vertex-height perturbations.** The general step, that a uniform bound `|f x - g x| ≤ ε` gives an
+`ε`-interleaving of the interval-component precosheaves, is de Silva, Munch and Patel,
+arXiv:1501.04147v1, Theorem 4.6(i), already formalised as `perturbationInterleaving`. The
+vertex-to-edge estimate, the uniform-distance equality and the graph-PL Reeb-quotient bound are
+library results and are not attributed to the paper.
 
-Sources: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.3 Notation 2.7 and §3.1 Example 3.3](https://arxiv.org/abs/1501.04147);
+**Extremal vertex heights.** For finite nonempty `V`, vertices attain the extremes of the
+piecewise-linear height, and `plHeight_mem_Icc_of_forall` bounds every point, so
+`sSup (range (plHeight G h)) = Finset.univ.sup' _ h` and `sInf (range (plHeight G h)) =
+Finset.univ.inf' _ h` (`sSup_range_plHeight`, `sInf_range_plHeight`). The Hausdorff
+edistance of the height ranges is at most the geometric interleaving distance, and on the real line
+`ENNReal.ofReal |sInf s - sInf t| ≤ Metric.hausdorffEDist s t` for nonempty sets bounded below
+(`ofReal_abs_sInf_sub_le_hausdorffEDist`, the twin of the supremum bound). Hence
+
+```lean
+ENNReal.ofReal |sup' h - sup' g| ≤ geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G g)
+ENNReal.ofReal |inf' h - inf' g| ≤ geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G g)
+```
+
+(`ofReal_abs_sup'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, the `inf'` form and the
+`max` form), for arbitrary `G`, `h`, `g`. If `edist h g` equals one of the two displacements, the
+distance equals `edist h g` (`geometricInterleavingDistance_graphPLReebGraph_eq_edist_of_sup'`
+and `_of_inf'`). For every `c : ℝ`, the distance between `h` and the translate
+`fun v => h v + c` is `ENNReal.ofReal |c|`, because `edist h (fun v => h v + c)` is
+`ENNReal.ofReal |c|` and both extremes move by `c`
+(`geometricInterleavingDistance_graphPLReebGraph_add_const`); the graph may be disconnected or
+contain cycles. For empty `V` the distance is `0`
+(`geometricInterleavingDistance_graphPLReebGraph_of_isEmpty`). The reversal `(0, 1)` to `(1, 0)` on a
+single edge has equal maxima and equal minima, distance `0` and `edist h g = 1`: the lower bounds
+are attained there, and the upper bound `edist h g` is not. Minimal displacement alone is detected only by the `inf'` bound:
+on a single edge, `(0, 1)` against `(-1, 1)` has equal maxima and distance exactly `1`. These
+statements are library results.
+
+**Component counts.** If no vertex height lies in `I`, the incidence graph over `I` has no edges,
+and its components are the active edges (`cellComponentsEquivActiveEdges`,
+`card_cellComponents_eq_card_activeEdges`). If `h w ∈ I`, `EndpointCoverage G h I` holds and every
+vertex with height in `I` is `w` or adjacent to `w`, the incidence graph over `I` is connected
+(`card_cellComponents_eq_one`). At `⊤` the interval components of `plHeight G h` are as many as
+the connected components of `G` (`card_intervalComponents_plHeight_top`). With the cardinality
+obstruction of `reeb-interleaving-distance.md`, finite graphs `G` on `V` and `G'` on `V'` with
+different numbers of connected components give
+`geometricInterleavingDistance (graphPLReebGraph G h) (graphPLReebGraph G' h') = ⊤` for all
+heights (`geometricInterleavingDistance_graphPLReebGraph_eq_top_of_card_ne`). This is a statement
+about the distance only; no map between the two graphs is involved.
+
+**Merge-height change.** Let `mergeY` be the tree on `Fin 4` with edges `0 — 2`, `1 — 2`, `2 — 3`,
+and `mergeHeights a M = (0, 0, a, M)`: two leaves at `0` merge at the apex `2` at height `a`, below
+the top vertex `3` at `M`. For `0 < a < b ≤ 2a` and `b ≤ M`,
+
+```lean
+geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights a M))
+  (graphPLReebGraph mergeY (mergeHeights b M)) = ENNReal.ofReal (b - a)
+```
+
+(`geometricInterleavingDistance_mergeY`). The value is `edist (mergeHeights a M)
+(mergeHeights b M)` (`edist_mergeHeights`), while both extremal displacements are `0`
+(`max_ofReal_abs_sub_mergeHeights_eq_zero`). The upper bound is the vertex budget `b - a`. For the lower bound fix `ε < b - a` and `I = (0, b - 2ε)`, nonempty because
+`ε < b - a ≤ b/2`. Then `T_ε I = (-ε, b - ε)` and `T_ε T_ε I = (-2ε, b)`.
+
+- With the apex at `b`, no vertex height lies in `I`, the two leaf edges are active and the top
+  edge is not, so there are two components over `I` (`card_cellComponents_mergeHeights_ioo`).
+  Over `(-2ε, b)` the apex and the top vertex are still absent, and the two leaf edges stay in
+  different components; for `ε > 0` each leaf vertex joins the component of its edge. The
+  restriction from `I` is injective (`injective_cellComponentFunctor_mergeHeights_map`).
+- With the apex at `a`, `-ε < a < b - ε`, every edge contains the apex and every other vertex is
+  adjacent to it, so there is one component over `(-ε, b - ε)`
+  (`card_cellComponents_mergeHeights_eq_one`).
+
+The obstruction `1 < 2` holds for every `ε < b - a`, so `ENNReal.ofReal (b - a)` is a lower bound.
+For every `0 < a < b ≤ M`, the exact distance is
+`ENNReal.ofReal (min (b - a) (b / 2))` (`geometricInterleavingDistance_mergeY_eq_min`). The
+continuous section `mergeSection c M` selects the point at each clamped height on the path
+`0 — 2 — 3`; `plHeight_mergeSection` proves height preservation on `[0, M]`. Every point joins
+the section point at its height by a path whose heights stay between that height and `c`, or are
+constant when the input height exceeds `c` (`exists_mergeSection_path`). If `c = M`, a point on
+the horizontal edge `2 — 3` joins vertex `2` along that edge at constant height `M`.
+`mergeFoldHeightMapPair` supplies a map pair with error `b / 2`; together with the identity-map
+budget `b - a`, it proves the upper bound by their minimum. For `b ≤ 2a` the formula gives `b-a`,
+recovering `geometricInterleavingDistance_mergeY`; for `2a < b` it gives `b/2 < b-a`. Reflection
+proves the exact split-tree formula `geometricInterleavingDistance_splitY_eq_min`. The new
+exactness theorem is a library result; the cited source supplies the distance and perturbation
+context, not this formula. The injectivity hypothesis of the
+obstruction cannot be dropped: for `(0, 0, a, M)` against `(0, 0, 0, M)` with `ε = a` and
+`I = (0, a/2)`, the counts are again `2` and `1`, but the apex height `a` lies in
+`T_ε T_ε I = (-2a, 5a/2)`, both leaf edges reach one component there, and the vertex budget `a`
+gives an `a`-interleaving (`mergeY_injective_needed`). The production module is
+`TDA/Mapper/GraphPLReebMergeHeight.lean` (namespace `TDA.Mapper.GraphPL`), with fixtures in
+`TDA/Mapper/GraphPLReebMergeHeightExamples.lean`: the numeric instance `a = 2`, `b = 3`, `M = 4` at
+distance `1` with extremal and height-range bounds `0` (`mergeY_numeric`), the negative control
+above, and two disjoint edges against a single edge at distance `⊤`
+(`twoEdges_edge_geometricInterleavingDistance`). These are library results.
+
+## Scaling heights
+
+For a real scalar `s`, `OpenInterval.scale s I = {x | s * x ∈ I}` is an open interval,
+including when `s ≤ 0`, and `scalePre s F = scaleFunctor s ⋙ F`. The endpoint formulas
+`scale_ioo_of_pos` and `scale_ioo_of_neg` divide the endpoints by `s`, reversing their order
+in the negative case. At zero the interval is `⊤` if `0 ∈ I` and `⊥` otherwise (`scale_zero`).
+The thickening identity
+
+```lean
+thicken ε (scale s I) = scale s (thicken (‖s‖₊ * ε) I)
+```
+
+(`thicken_scale`) transports an `ε`-interleaving to a `‖s‖₊ * ε`-interleaving
+(`Interleaving.scalePre`). For precosheaves into any category and `s ≠ 0`, scaling back by
+`s⁻¹` proves `interleavingDistance_scalePre`: the distance is multiplied by
+`(‖s‖₊ : ℝ≥0∞)`, including infinite distances. Reflection preserves distance
+(`interleavingDistance_scalePre_neg_one`). The height identity
+`intervalComponents (s • f) = scalePre s (intervalComponents f)` is definitional
+(`intervalComponents_smul`); `interleavingDistance_intervalComponents_smul` applies to heights
+on different topological spaces in the same universe.
+
+For vertex types in any universe, `plHeight_smul` identifies the PL height of `fun v => s * h v`
+with `s • plHeight G h`. For finite `V V' : Type`, arbitrary graphs `G`, `G'` and heights `h`,
+`h'`, a common nonzero scale multiplies the geometric Reeb-quotient distance by
+`ENNReal.ofReal |s|` (`geometricInterleavingDistance_graphPLReebGraph_smul`). The `_neg` form is
+reflection invariance; `_affine` allows a common added constant after scaling.
+
+The split tree has heights `splitHeights a M v = -mergeHeights a M v`. Reflection gives the
+exact split-tree distance `b-a` for `0 < a < b ≤ 2a` and `b ≤ M`
+(`geometricInterleavingDistance_splitY`), and for all `0 < a < b ≤ M` reflection of the exact
+merge formula gives `ENNReal.ofReal (min (b-a) (b/2))`
+(`geometricInterleavingDistance_splitY_eq_min`).
+
+The modules are `TDA/Reeb/IntervalScaling.lean` and `TDA/Mapper/GraphPLReebScaling.lean`, with
+fixtures in `TDA/Mapper/GraphPLReebScalingExamples.lean`: a point realizes the factor `|s|`;
+scaling the numeric merge tree by `1/2` agrees with the direct distance `1/2`; the reflected
+numeric tree has distance `1` with both extremal displacements zero; for apex heights `1`, `3`
+below top height `4` the two-sided bound gives `[3/2,2]`, and the exact value `3/2` is
+`mergeY_beyond_twice_exact` in `TDA/Mapper/GraphPLReebMergeFoldExamples.lean`. Two disjoint
+edges and one edge stay at distance `⊤` under
+zero scaling, whereas `0 * ⊤ = 0`, so the nonzero hypothesis is necessary. The empty-interval
+fixture records the limit of this obstruction family. The scaling and branch-height statements
+are library results; no numbered theorem of de Silva–Munch–Patel states scaling homogeneity.
+Their Definition 4.4 and Theorem 4.6(i) supply the distance and perturbation-bound context.
+Scaling on `RGraphCat`, commutation with the Reeb quotient or geometric smoothing, nonlinear
+height changes, scaling Mapper covers or Mapper persistence modules, maps between graph objects in `RGraphCat` or maps of Reeb quotients are outside these
+scaling results.
+
+Not claimed here: equality of the Reeb-quotient distance with `edist h g` beyond the exactness
+criterion and the merge/split values above; exact distances for other
+perturbations and other tree shapes; the Hausdorff
+distance of height ranges for disconnected graphs beyond the extremal bounds; maps between graph
+objects in `RGraphCat` or maps of Reeb quotients; Mapper cover or reconstruction
+consequences of `HeightMapPair` (its Mapper homology consequences are in [the Mapper digest](mapper.md)); constructible thickening; any distance or interleaving comparison of
+realizations beyond the vertex-height bounds above; Definition 4.36 of de Silva, Munch and Patel;
+naturality across changes of graph or heights; general finite CW complexes; another realization;
+algorithms. Trees and simple connectivity of realizations are proved in
+[reeb-graph-tree-contraction.md](reeb-graph-tree-contraction.md).
+
+Sources: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.3 Notation 2.7, §3.1 Example 3.3 and Theorem 4.6](https://arxiv.org/html/1501.04147v1);
 [pinned mathlib darts](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Combinatorics/SimpleGraph/Dart.lean#L61-L103),
 [graph components](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean#L390-L493)
 and [restricted quotient maps](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Topology/Constructions.lean#L645-L650).

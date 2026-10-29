@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Canonical local/CI integrity gate, in this order:
-#   textual guards (sorry/admit, custom axioms, transient artefacts, imports-only root/area
-#   aggregator) → lake build →
+#   textual guards (sorry/admit, custom axioms, transient artefacts, merge-conflict markers,
+#   imports-only root/area aggregator) → lake build →
 #   live axiom audit → axiom-coverage guard (every public theorem is pinned in
 #   scripts/print_axioms/*.lean; uncovered private theorem roots obey the same allowlist).
 # The whole gate holds canonical build/dependency path locks across its nested wrappers.
@@ -30,6 +30,7 @@ else
   bash scripts/check-no-custom-axiom.sh
 fi
 step "no transient artefacts tracked"; bash scripts/check-transient-artifacts.sh
+step "no merge-conflict markers tracked"; bash scripts/check-conflict-markers.sh
 step "root/area aggregators imports-only"; bash scripts/check-root-aggregator.sh
 
 # From here only lake runs. Inside a linked git worktree the caller's GIT_DIR & co. would make

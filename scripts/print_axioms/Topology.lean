@@ -219,3 +219,82 @@ import TDA
 -- Bounded C₀ functionals and compact-support approximation.
 #print axioms TDA.Topology.C0MeasureRepresentation.denseRange_compactlySupported
 #print axioms TDA.Topology.C0MeasureRepresentation.exists_finite_regular_measure_sub
+
+-- Normalized subdivision-Rips and restricted measure bifiltrations.
+#print axioms TDA.Topology.MeasureBifiltration.cross_le_iff
+#print axioms TDA.Topology.MeasureBifiltration.stage_mono
+#print axioms TDA.Topology.MeasureBifiltration.ball_mass_le
+#print axioms TDA.Topology.MeasureBifiltration.stage_cross
+#print axioms TDA.Topology.MeasureBifiltration.interleavingDiagram_left
+#print axioms TDA.Topology.MeasureBifiltration.interleavingDiagram_right
+#print axioms TDA.Topology.MeasureBifiltration.uniformMeasure_apply
+#print axioms TDA.Topology.MeasureBifiltration.uniformMeasure_real
+#print axioms TDA.Topology.MeasureBifiltration.topologicalInterleaving_left
+#print axioms TDA.Topology.MeasureBifiltration.topologicalInterleaving_right
+#print axioms TDA.Topology.MeasureBifiltration.interleavingDiagram
+#print axioms TDA.Topology.MeasureBifiltration.topologicalInterleaving
+#print axioms TDA.Topology.MeasureBifiltration.uniformInterleavingDiagram
+#print axioms TDA.Topology.MeasureBifiltration.uniformMeasure_probability
+#print axioms TDA.Topology.MeasureBifiltration.interleavingIndex_le_iff
+
+-- Finite uniform GP, outliers and concrete multicover comparisons.
+#print axioms TDA.Topology.MeasureBifiltration.labelCount_le_card
+#print axioms TDA.Topology.MeasureBifiltration.labelCount_comp_embedding_le
+#print axioms TDA.Topology.MeasureBifiltration.uniformMeasure_real_comp_embedding_le
+#print axioms TDA.Topology.MeasureBifiltration.levyProkhorovDist_uniform_embedding_le
+#print axioms TDA.Topology.MeasureBifiltration.levyProkhorovEDist_uniform_embedding_le
+#print axioms TDA.Topology.MeasureBifiltration.uniformOutlierInterleaving
+#print axioms TDA.Topology.MeasureBifiltration.uniformOutlierInterleaving_left
+#print axioms TDA.Topology.MeasureBifiltration.uniformOutlierInterleaving_right
+#print axioms TDA.Topology.MeasureBifiltration.uniformMeasure_apply_le_of_label_mem
+#print axioms TDA.Topology.MeasureBifiltration.levyProkhorovDist_uniform_le_of_cross_dist_le
+#print axioms TDA.Topology.MeasureBifiltration.levyProkhorovEDist_uniform_le_of_cross_dist_le
+#print axioms TDA.Topology.MeasureBifiltration.levyProkhorovEDist_uniform_eq_of_cross_dist_eq
+#print axioms TDA.Topology.FiniteGromovProkhorov.CommonAmbient.isometry_left
+#print axioms TDA.Topology.FiniteGromovProkhorov.CommonAmbient.isometry_right
+#print axioms TDA.Topology.FiniteGromovProkhorov.CommonAmbient.symm
+#print axioms TDA.Topology.FiniteGromovProkhorov.disjointAmbient
+#print axioms TDA.Topology.FiniteGromovProkhorov.landmarkCoordinates
+#print axioms TDA.Topology.FiniteGromovProkhorov.landmarkCoordinates_dist
+#print axioms TDA.Topology.FiniteGromovProkhorov.coordinatesAmbient
+#print axioms TDA.Topology.FiniteGromovProkhorov.CommonAmbient.cost
+#print axioms TDA.Topology.FiniteGromovProkhorov.gromovProkhorovEDist
+#print axioms TDA.Topology.FiniteGromovProkhorov.gromovProkhorovEDist_le_cost
+#print axioms TDA.Topology.FiniteGromovProkhorov.gromovProkhorovEDist_lt_iff
+#print axioms TDA.Topology.FiniteGromovProkhorov.CommonAmbient.cost_symm
+#print axioms TDA.Topology.FiniteGromovProkhorov.gromovProkhorovEDist_comm
+#print axioms TDA.Topology.FiniteGromovProkhorov.coordinatesAmbient_cost
+#print axioms TDA.Topology.FiniteGromovProkhorov.gromovProkhorovEDist_le_ambient
+#print axioms TDA.Topology.FiniteGromovProkhorov.CommonAmbient.cost_le_one
+#print axioms TDA.Topology.FiniteGromovProkhorov.gromovProkhorovEDist_le_one
+#print axioms TDA.Topology.FiniteGromovProkhorov.inclusionAmbient
+#print axioms TDA.Topology.FiniteGromovProkhorov.gromovProkhorovEDist_embedding_le
+#print axioms TDA.Topology.FiniteGromovProkhorov.gromovProkhorovEDist_self
+#print axioms TDA.Topology.MeasureBifiltration.faceRegion
+#print axioms TDA.Topology.MeasureBifiltration.mem_stage_uniform_iff_large_face
+#print axioms TDA.Topology.MeasureBifiltration.stage_uniform_eq_iUnion_large_face
+#print axioms TDA.Topology.MeasureBifiltration.isOpen_faceRegion
+#print axioms TDA.Topology.MeasureBifiltration.largeFaceCover
+#print axioms TDA.Topology.MeasureBifiltration.largeFaceCover_mono
+#print axioms TDA.Topology.MeasureBifiltration.subdivision_openCech_le_largeFaceNerve
+#print axioms TDA.Topology.MeasureBifiltration.stage_uniform_eq_iUnion_largeFaceCover
+#print axioms TDA.Topology.MeasureBifiltration.mem_largeFaceNerve_iff
+#print axioms TDA.Topology.MeasureBifiltration.largeFaceNerveBifiltration
+#print axioms TDA.Topology.MeasureBifiltration.isOpen_largeFaceCover
+#print axioms TDA.Topology.MeasureBifiltration.convex_faceRegion
+#print axioms TDA.Topology.MeasureBifiltration.convex_largeFaceCover
+#print axioms TDA.Topology.MeasureBifiltration.contractibleSpace_largeFaceCover_intersection
+#print axioms TDA.Topology.MeasureBifiltration.levyProkhorovDist_uniform_le_of_isClosed
+#print axioms TDA.Topology.FiniteGromovProkhorov.supNormWitness
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.interleaving
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.interleaving_left
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.interleaving_right
+
+-- Finite GP stability of the normalized subdivision-Rips homology consumer (Issue #504).
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.largeFaceNerveHomologyInterleaving_left
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.largeFaceNerveHomologyInterleaving_right
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.homologyInterleaving_left
+#print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.homologyInterleaving_right
+#print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist
+#print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleaving_of_isometric_embedding
+#print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleavingDistance_le_of_interleaving

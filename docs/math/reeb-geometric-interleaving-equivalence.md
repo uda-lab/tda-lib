@@ -122,7 +122,10 @@ band-inclusion isomorphism `geometricSmoothingEqIso`; the resulting formula is r
 
 The triangle inequality for `d_geo` and invariance under isomorphism of graph objects, in both
 arguments, follow from the equality and the precosheaf results. The distance stays a plain
-function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installed.
+function; no `EDist`, `PseudoEMetricSpace` or `MetricSpace` instance is installed. Vertical
+translation of graph objects is an isometry of `d_geo`
+(`geometricInterleavingDistance_translateRGraph`, see
+[reeb-rgraph-translation.md](reeb-rgraph-translation.md)).
 
 ## Fixtures
 
@@ -439,11 +442,14 @@ The acceptance fixtures in `TDA.Reeb.ConstructiblePerturbationExamples` cover:
   thickened pinch.
 
 This API changes only the level list of a fixed presentation with the same `n`. It does not
-compare different presentations or level counts. Arbitrary continuous perturbations, such
-as a bump on a cylinder, need not preserve constructibility and are outside this API. The
-homeomorphism, constructibility transfer, stability compositions, supremum lower bound and
-exact translation value are library derivations from the cylinder-presentation and sup-norm
-stability APIs; no new numbered source result is attributed to them.
+compare different presentations or level counts; for piecewise-linear heights on a fixed
+finite graph, where vertex heights may cross and the number of levels may change, see
+[vertex-height perturbations](reeb-graph-pl.md#vertex-height-perturbations-of-a-fixed-graph).
+Arbitrary continuous perturbations, such as a bump on a cylinder, need not preserve
+constructibility and are outside this API. The homeomorphism, constructibility transfer,
+stability compositions, supremum lower bound and exact translation value are library
+derivations from the cylinder-presentation and sup-norm stability APIs; no new numbered
+source result is attributed to them.
 
 ## Source correspondence
 

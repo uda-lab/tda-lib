@@ -165,10 +165,173 @@ The correspondence argument specializes the mechanism of CDSO13-v3 §4.2 and
 Lemma 4.3 to finite metric spaces, using mathlib's GH coupling and the library's
 sublevel-diagram theorem. It retains the library's empty negative tail; it makes no
 whole-real H₀ identification with the source's nonpositive-time vertex convention.
-Theorem 5.2's totally bounded extension would also require q-tameness and a possibly infinite diagram construction. Neither follows from the finite sampling
-comparison above, which compares only finite diagrams.
+The finite sampling comparison above compares only finite diagrams. The
+sections below construct the q-tame diagram of a possibly infinite target and
+prove its exact Hausdorff and compact Gromov–Hausdorff stability.
 
 These results are abstract existence and correctness statements. Finite labels can
 support executable consumers when exact distance comparisons are available; no
 algorithm for optimizing GH distance over arbitrary real data or for computing
 homology over an arbitrary abstract field is asserted.
+
+## Totally bounded spaces
+
+For a field k, a real persistence module M is **q-tame** if the image of
+M(a) → M(b) is finite-dimensional whenever a < b. The fibers M(a) need not be
+finite-dimensional. In Lean, `PModule.QTame` uses
+`FiniteDimensional k (LinearMap.range (structureMapLinear M hab.le))`.
+
+Let X be any totally bounded metric space. Its closed diameter Rips homology
+module is q-tame over every field and in every degree. Fix a < b and put
+ε = (b−a)/2 > 0. Total boundedness supplies a finite ε/2-net F ⊆ X. The relation
+
+C = {(x,f) ∈ X × F | dist(x,f) < ε/2}
+
+is total on both sides, since the net covers X and every f is related to itself.
+The triangle inequality bounds its pairwise distortion by ε. The canonical
+relation interleaving gives a composite
+
+M_X(a) → M_F(a+ε) → M_X((a+ε)+ε) = M_X(b).
+
+The interleaving law identifies this composite with the structure map, and the
+middle homology is finite-dimensional because F is finite. The range is
+therefore finite-dimensional. This proof works for the empty space and all
+real source times; no vertex is added to the negative tail.
+
+`Rips.exists_finite_net_relation` proves the finite-net geometry and
+`Rips.qTame_of_totallyBounded` gives the module theorem. The reusable
+`finiteDimensional_range_of_factorization` and
+`RealInterleaving.finiteDimensional_range_structureMap` expose the linear and
+interleaving steps. Vertex and coefficient universes are independent; the
+auxiliary vertex order may be chosen arbitrarily.
+`Rips.sublevelModuleIsoOfIsometryEquiv` compares the modules under any
+isometric relabelling, using the graph relation and its zero-interleaving,
+without requiring order preservation or finiteness.
+
+At time zero a genuine metric admits only singleton faces, so an infinite
+vertex type gives infinite-dimensional unreduced H₀.
+`Rips.not_finiteDimensional_zero_homology` proves this fact.
+`RipsQTameExamples` applies both results to the infinite compact interval
+[0,1] ⊆ ℝ. It witnesses finite-dimensional images across every strict gap
+and an infinite-dimensional fiber at zero in the same example.
+
+The finite-net argument formalizes the Rips part of CDSO13-v3 Proposition 5.1
+through Lemma 4.3. The library retains closed thresholds and its empty negative
+tail. The finite-net argument supplies q-tameness; the next construction
+consumes that fact to obtain actual decorated diagram counts.
+
+
+## Decorated diagrams of infinite Rips spaces
+
+For every totally bounded X, field k and homological degree n,
+`Rips.qTameDiagramMultiplicity` specializes the q-tame module's canonical
+finite-death and essential multiplicities to the existing closed-diameter Rips
+homology. The construction takes no finite sample or finite-dimensional fiber.
+For each separated finite rectangle, the sum of positive decorated
+multiplicities equals the Rips module's image-and-kernel quotient dimension.
+On a birth strip at death infinity, it equals the stabilized essential quotient
+count. On each separated tail rectangle, including finite deaths surviving the
+tail threshold and the infinite-death boundary, it equals the actual finite-target
+image quotient dimension. The tail has finite positive support; the full diagram
+has countable positive support.
+
+`RipsQTameDiagramExamples.unitInterval_infinite_fiber_with_diagram` combines
+these conclusions for the compact interval [0,1] with its infinite-dimensional
+unreduced H₀ fiber at time zero. This tests the intended q-tame infinite-space
+case rather than a finite-only barcode. The result uses the finite-net
+factorization of Chazal–de Silva–Oudot, Proposition 5.1, and the integer-content
+extraction of Chazal–de Silva–Glisse–Oudot, Theorem 2.8 and §2.6, under the
+library's closed-threshold and empty-negative-tail conventions.
+
+For finite metric spaces, `Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount`
+identifies each canonical q-tame multiplicity with the occurrence count in the
+existing finite Rips diagram. A finite occurrence `(b,d)` maps to
+`(minusCut b, minusCut d)`; an essential occurrence `(b,⊤)` maps to
+`(minusCut b, infinityCut)`. Thus the existing finite barcode's half-open
+endpoint decorations and essential bars are preserved. The Lean theorem uses
+`k : Type u` when the vertex type is `X : Type u`, matching the universe
+restriction of the current rank-to-diagram API; no q-tameness or finite-fiber
+assumption is passed by the caller. The mathematical compatibility statement
+holds over every coefficient field.
+
+`LocallyFiniteDiagramBottleneck` builds the canonical decorated occurrence
+diagram of any q-tame real module directly from its persistence-measure
+multiplicity. It retains countable support, finite separated rectangles and
+finite tail rectangles, and defines an extended bottleneck matching-cost
+infimum on finite and essential occurrence tokens. Decorations remain part of
+the multiplicity; the cost forgets them only through their real endpoints.
+
+For the existing full finite `Diagram ℝ` type, `Diagram.toLocallyFinite` takes
+an explicit `Diagram.IsPositive` proof and preserves point multiplicities.
+`bottleneck_toLocallyFinite` proves an isometry for positive finite diagrams.
+Positivity is required because the legacy `Diagram` type also permits reverse
+bars, while q-tame finite-death multiplicity is supported only on the positive
+half of the decorated endpoint plane. For finite metric spaces,
+`Rips.qTameLocallyFiniteDiagram_bottleneck_eq_finite` combines this result with
+`Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount`; the generic endpoint
+map is definitionally the existing Rips occurrence map, including the true
+`infinityCut` for essential deaths.
+
+The finite results above are joined by a global compactness theorem. For
+the finite-birth diagrams extracted from arbitrary q-tame modules,
+`qTame_bottleneck_le_of_realInterleaving` bounds the bottleneck distance by the
+parameter of each actual interleaving; `exists_occurrenceMatching_cost_le_of_realInterleaving`
+exposes the global occurrence matching with cost at most that parameter that the proof builds.
+It uses finite saturation on each finite set of required vertices and a
+coherent section of the resulting finite inverse system; no decomposition or
+global-matching hypothesis is assumed. The generic diagram representation does
+not include birth-at-minus-infinity strata.
+
+For those finite-birth diagrams, `RealInterleaving.exists_finite_saturating_matching`
+proves finite saturation from an actual interleaving: given finite prescribed
+sets of finite bars longer than `2ε` and essential occurrences on each side, it
+constructs finite injective edge sets that cover those tokens with pair costs at
+most `ε`. The proof uses local finite-window counts and a coefficient-one
+continuation argument, and does not assume a matching or interval decomposition.
+As a metric consumer, `Rips.qTameLocallyFiniteDiagram_bottleneck_le_of_hausdorff_lt`
+combines global algebraic stability with the existing actual Rips Hausdorff
+interleaving for totally bounded spaces embedded isometrically in a common
+ambient space. Under strict slack `2 * hausdorffDist < ε`, it bounds the
+bottleneck distance of the complete locally finite q-tame diagrams by `ε`.
+The Rips modules vanish at negative times, so their finite-birth diagrams have
+no omitted birth-at-minus-infinity occurrences.
+
+## Exact metric stability for the q-tame diagrams
+
+If `X` and `Y` are nonempty totally bounded metric spaces with isometric
+embeddings `f : X → Z` and `g : Y → Z` into a common metric space, then
+
+`bottleneck(D_X, D_Y) ≤ ENNReal.ofReal (2 * hausdorffDist (range f) (range g))`.
+
+Here `D_X` and `D_Y` include every finite-death and essential occurrence of the
+q-tame Rips homology modules. The image sets need not be closed and no nearest
+point is assumed to exist. The proof first uses each positive slack above twice
+the Hausdorff distance in the strict interleaving theorem, then takes the
+infimum of the slack in `ℝ≥0∞`. Total boundedness makes the real Hausdorff
+distance finite. The vertex types `X` and `Y` currently share a Lean universe,
+as required by the Rips relation-interleaving construction; the coefficient
+field and ambient space may use independent universes. The public theorem
+requires an auxiliary linear order on each vertex type, but the diagram itself
+is order-independent: a module isomorphism preserves both separated-rectangle
+and essential birth-strip contents, hence their actual multiplicities.
+
+For nonempty compact metric spaces, mathlib's optimal compact Gromov–Hausdorff
+coupling specializes the ambient theorem to
+`bottleneck(D_X,D_Y) ≤ ENNReal.ofReal (2 * ghDist X Y)`. The isometries in the
+optimal coupling need not preserve either auxiliary order. On finite spaces,
+the exact compatibility theorem identifies these complete diagrams with the
+existing full finite Rips diagrams.
+
+There is also a convergence statement with varying finite sample types and
+cardinalities. If nonempty finite Rips spaces embed isometrically in one ambient
+space and their Hausdorff distances to a fixed nonempty totally bounded target
+tend to zero, then the bottleneck distances of their q-tame diagrams to the
+target diagram tend to zero. The target need not be finite or compact. The
+checked fixture `RipsQTameInfiniteMetricStabilityExamples` uses increasing
+initial samples of the genuinely infinite compact space
+`{0} ∪ {1/(n+1) : n ∈ ℕ}`.
+
+These Rips consumers use finite-net q-tameness and algebraic stability for
+q-tame modules. They do not claim a theorem for arbitrary q-tame modules with
+birth-at-minus-infinity strata, which are outside the current locally finite
+diagram representation.

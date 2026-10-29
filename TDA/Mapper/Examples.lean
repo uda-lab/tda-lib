@@ -17,3 +17,24 @@ import TDA.Mapper.GraphPLReebQuotientExamples
 import TDA.Mapper.GraphPLConstructibleExamples
 
 import TDA.Mapper.MapperReebApproximationExamples
+import TDA.Mapper.GraphPLReebStabilityExamples
+import TDA.Mapper.GraphPLReebExtremalExamples
+import TDA.Mapper.RefinementHomologyExamples
+import TDA.Mapper.RefinementHomologyInterleavingExamples
+import TDA.Mapper.RefinementHomologyBarcodeExamples
+import TDA.Mapper.MapperReebPerturbationExamples
+import TDA.Mapper.RefinementHomologyLowerBoundExamples
+import TDA.Mapper.RefinementHomologyDiagramExamples
+import TDA.Mapper.RefinementHomologyDiagramTightnessExamples
+import TDA.Mapper.MapperReebTranslationExamples
+import TDA.Mapper.RefinementHomologyCappedTowerExamples
+import TDA.Mapper.RefinementHomologyCappedMapPairExamples
+import TDA.Mapper.GraphPLReebTranslationExamples
+import TDA.Mapper.GraphPLReebMergeHeightExamples
+
+import TDA.Mapper.RefinementHomologyEssentialExamples
+import TDA.Mapper.RefinementHomologyDomainMapExamples
+import TDA.Mapper.GraphPLReebScalingExamples
+import TDA.Mapper.GraphPLReebMapPairExamples
+import TDA.Mapper.GraphPLReebMergeFoldExamples
+import TDA.Mapper.RefinementHomologyMapPairExamples

@@ -150,6 +150,14 @@ theorem geometricInterleavingDistance_eq_top_of_isEmpty_of_nonempty
   rw [hzero] at hle
   exact top_unique hle
 
+/-- Two graph objects with empty total spaces are isomorphic, hence at geometric interleaving
+distance `0`. -/
+theorem geometricInterleavingDistance_eq_zero_of_isEmpty {A B : RGraphCat}
+    (hA : IsEmpty A.obj.left) (hB : IsEmpty B.obj.left) :
+    geometricInterleavingDistance A B = 0 :=
+  geometricInterleavingDistance_eq_zero_of_iso <| ObjectProperty.isoMk _ <|
+    Over.isoMk (TopCat.isoOfHomeo Homeomorph.empty) (by ext x; exact hA.elim x)
+
 /-! ### Suprema of height ranges -/
 
 /-- On the real line, the supremum difference of two nonempty bounded sets is bounded by their
@@ -190,6 +198,24 @@ theorem ofReal_abs_sSup_sub_le_hausdorffEDist {s t : Set ℝ} (hs : s.Nonempty) 
   rcases le_total 0 (sSup s - sSup t) with h | h
   · simpa only [abs_of_nonneg h] using hst
   · simpa only [abs_of_nonpos h, neg_sub] using hts'
+
+/-- On the real line, the infimum difference of two nonempty bounded sets is bounded by their
+Hausdorff edistance. -/
+theorem ofReal_abs_sInf_sub_le_hausdorffEDist {s t : Set ℝ} (hs : s.Nonempty) (ht : t.Nonempty)
+    (hs' : BddBelow s) (ht' : BddBelow t) :
+    ENNReal.ofReal |sInf s - sInf t| ≤ Metric.hausdorffEDist s t := by
+  have h := ofReal_abs_sSup_sub_le_hausdorffEDist (s := -s) (t := -t) hs.neg ht.neg
+    (bddAbove_neg.2 hs') (bddAbove_neg.2 ht')
+  have hH : Metric.hausdorffEDist (-s) (-t) = Metric.hausdorffEDist s t := by
+    rw [← Set.image_neg_eq_neg, ← Set.image_neg_eq_neg]
+    exact Metric.hausdorffEDist_image
+      (Isometry.of_dist_eq fun x y => by
+        rw [Real.dist_eq, Real.dist_eq, neg_sub_neg, abs_sub_comm])
+  have habs : |sInf s - sInf t| = |sSup (-s) - sSup (-t)| := by
+    rw [Real.sInf_def, Real.sInf_def, ← abs_neg]
+    congr 1
+    ring
+  rwa [habs, ← hH]
 
 /-- The geometric interleaving distance from a graph object to its smoothing is exactly the
 smoothing parameter. -/
