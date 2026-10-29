@@ -111,6 +111,9 @@ import TDA.Persistence.FiniteMonoCounts
 import TDA.Persistence.FiniteMonoMatching
 import TDA.Persistence.Interval
 import TDA.Persistence.RankInvariant
+import TDA.Persistence.RankErosion
+import TDA.Persistence.RankErosionInterleaving
+import TDA.Persistence.RankErosionWitness
 import TDA.Persistence.RankReconstruction
 import TDA.Persistence.RankBarcode
 import TDA.Persistence.RankReindex
