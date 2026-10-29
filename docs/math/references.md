@@ -46,6 +46,13 @@ article text/figures, not citation of bibliographic facts or original mathematic
 
 ## Sources already used
 
+<a id="BOO24-v3"></a>
+### BOO24-v3 — signed rank decompositions and restriction to lines
+
+- **Identity/version:** Magnus Bakke Botnan; Steffen Oppermann; Steve Oudot. *Signed Barcodes for Multi-Parameter Persistence via Rank Decompositions and Rank-Exact Resolutions*. [arXiv:2107.06800v3](https://arxiv.org/html/2107.06800v3), revised 2024-08-22; §5.3, Corollaries 5.8–5.9.
+- **Use/classification:** The source describes restriction and cancellation of signed rank decompositions; Corollary 5.8 is stated for rectangles. `PositiveAffineSlice`, `FinitePresentationReindex`, `AffineSlicePresentation` and `AffineSliceHooks` give direct library derivations of the entrance-time adjunction, original finite presentations of positive affine restrictions, and the actual finite/principal hook comparisons. Finite hook birth and death both use the maximum normalized coordinate difference. The current mapping covers these individual restrictions and multiplicities; see [positive affine slices](positive-affine-slices.md).
+- **Rights/evidence:** **AR**, exact-version page license link inspected 2026-10-29. The repository provides original proofs and summaries; no source prose or figures are reproduced. The comparison is limited to the identified section and theorem statements.
+
 <a id="BOOS24-v3"></a>
 ### BOOS24-v3 — generated-upset projective resolutions
 
