@@ -28,21 +28,13 @@ fi
 
 current_rev="$(git rev-parse HEAD)"
 source_rev_file="$ROOT/docbuild/.lake/docs-source-rev"
-previous_rev="$(cat "$source_rev_file" 2>/dev/null || true)"
-if [ "$previous_rev" != "$current_rev" ]; then
-  check_stop
-  echo "Refreshing TDA documentation source links for $current_rev."
-  doc_data="$ROOT/docbuild/.lake/build/doc-data"
-  doc_root="$ROOT/docbuild/.lake/build/doc"
-  rm -f "$doc_data"/TDA*.doc* "$doc_data"/TDA--library.docs_built* \
-    "$doc_data"/TDA--library.docsHeader_built* \
-    "$doc_data"/declaration-data-TDA*.bmp "$doc_data"/backrefs-TDA*.json
-  rm -rf "$doc_root/TDA"
-  rm -f "$doc_root/TDA.html" "$doc_root/declarations/declaration-data.bmp"
-fi
+echo "API documentation: +TDA.Library:docs at $current_rev (Lean threads: ${LEAN_NUM_THREADS:-1})."
+python3 "$ROOT/scripts/lib/docs-cache.py" prepare "$current_rev"
 
 cd "$ROOT/docbuild"
-../scripts/lean.sh lake build TDA:docs
+generation_start=$SECONDS
+../scripts/lean.sh lake build +TDA.Library:docs
+echo "API documentation generation: $((SECONDS - generation_start))s."
 check_stop
 ../scripts/check-doc-lock.sh
 check_stop
