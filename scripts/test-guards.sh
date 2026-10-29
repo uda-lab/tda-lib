@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Self-test for the textual guards' shared lexer (scripts/lean-code-scan.awk), the
 # root-aggregator guard, the merge-conflict marker guard, the exposition note check, the live
-# axiom audit's record parsing and the build lock.
+# axiom audit's record parsing, the embedded cloud-setup pins and the build lock.
 # Each case is a Lean snippet plus the expected number of violating lines per mode.
 # Run after every edit of the lexer:  bash scripts/test-guards.sh
 set -euo pipefail
@@ -643,6 +643,61 @@ out="$(PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" && {
 if [[ "$out" != *'TDA.X is pinned 2 times in scripts/print_axioms'* ]]; then
   echo 'FAIL [audit:cross-area-duplicate]: missing duplicate diagnostic'; afail=1; fi
 if [ "$afail" -eq 0 ]; then echo "axiom-audit parser self-test OK ($an cases)"; else exit 1; fi
+
+# --- embedded cloud-setup pins (scripts/claude-cloud-setup.sh) ----------------------------
+# The setup script writes its own copies of lean-toolchain, lakefile.toml (including the package
+# `version`) and lake-manifest.json from quoted heredocs. Each copy must stay byte-for-byte equal
+# to the tracked file. This is the static part of scripts/test-claude-cloud-setup.py, run here
+# because that test needs Linux and is not part of check.sh or CI.
+pfail=0; pn=0
+embedded_pin() {  # embedded_pin <setup-script> <file> <marker>: print the heredoc body, or fail
+  LC_ALL=C awk -v start="cat > \"\$PROJECT_DIR/$2\" <<'$3'" -v end="$3" '
+    !inside && !done && $0 == start { inside = 1; next }
+    inside && $0 == end { inside = 0; done = 1; next }
+    inside { print }
+    END { exit (done ? 0 : 1) }
+  ' "$1"
+}
+pin_drift() {  # pin_drift <setup-script> <dir>: print each pinned file whose embedded copy differs
+  local file marker
+  for file in lean-toolchain:TDA_LEAN_TOOLCHAIN lakefile.toml:TDA_LAKEFILE \
+              lake-manifest.json:TDA_LAKE_MANIFEST; do
+    marker="${file#*:}"; file="${file%%:*}"
+    if ! embedded_pin "$1" "$file" "$marker" > "$tmp/pin-embedded"; then
+      echo "$file (no '$marker' heredoc block)"
+    elif ! cmp -s "$tmp/pin-embedded" "$2/$file"; then
+      echo "$file"
+    fi
+  done
+}
+# The real setup script matches the tracked pins.
+pn=$((pn + 1)); out="$(pin_drift scripts/claude-cloud-setup.sh .)"
+if [ -n "$out" ]; then
+  while IFS= read -r f; do
+    echo "FAIL [pins:current]: scripts/claude-cloud-setup.sh embeds a stale copy of $f; copy the tracked file into its heredoc"
+  done <<< "$out"
+  pfail=1
+fi
+# Fixtures take their pins from the script's own blocks, so they do not depend on the case above:
+# a one-byte change to one pin is reported by name, and so is an unterminated block.
+d="$tmp/pins"; mkdir -p "$d"; cp scripts/claude-cloud-setup.sh "$d/"
+pin_fixture() {
+  embedded_pin "$d/claude-cloud-setup.sh" lean-toolchain TDA_LEAN_TOOLCHAIN > "$d/lean-toolchain" || :
+  embedded_pin "$d/claude-cloud-setup.sh" lakefile.toml TDA_LAKEFILE > "$d/lakefile.toml" || :
+  embedded_pin "$d/claude-cloud-setup.sh" lake-manifest.json TDA_LAKE_MANIFEST > "$d/lake-manifest.json" || :
+}
+pin_fixture
+pn=$((pn + 1)); out="$(pin_drift "$d/claude-cloud-setup.sh" "$d")"
+[ -z "$out" ] || { echo "FAIL [pins:fixture]: self-consistent fixture reported '$out'"; pfail=1; }
+pn=$((pn + 1)); printf ' ' >> "$d/lakefile.toml"
+out="$(pin_drift "$d/claude-cloud-setup.sh" "$d")"
+[ "$out" = lakefile.toml ] || { echo "FAIL [pins:drift]: want 'lakefile.toml' got '$out'"; pfail=1; }
+pin_fixture
+pn=$((pn + 1)); sed 's/^TDA_LAKE_MANIFEST$/TDA_LAKE_MANIFEST_RENAMED/' scripts/claude-cloud-setup.sh > "$d/claude-cloud-setup.sh"
+out="$(pin_drift "$d/claude-cloud-setup.sh" "$d")"
+[[ "$out" == "lake-manifest.json (no 'TDA_LAKE_MANIFEST' heredoc block)" ]] \
+  || { echo "FAIL [pins:missing-block]: unterminated block not reported: '$out'"; pfail=1; }
+if [ "$pfail" -eq 0 ]; then echo "embedded cloud-setup pin check OK ($pn cases)"; else exit 1; fi
 
 # Resource locking is tested in isolated fake workspaces, without the host's active locks.
 bash scripts/agent/test-build-resources.sh
