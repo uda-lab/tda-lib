@@ -6320,3 +6320,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.arbitrary_field_nonzero_composite_kernel
 #print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.empty_zero_composite_kernel_finitelyPresented
 #print axioms TDA.Persistence.exists_occurrenceMatching_cost_le_of_realInterleaving
+#print axioms TDA.Persistence.RealInterleaving.interpolatingModule_qTame_interpolation

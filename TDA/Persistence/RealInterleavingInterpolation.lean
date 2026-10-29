@@ -1186,10 +1186,12 @@ private theorem interpolationRelation_reverse_naturality
           linarith)
 
 
-private abbrev startTime (ε : ℝ≥0) : InterpolationTime ε :=
+/-- The left endpoint `s = 0` of the interpolation interval `[0, ε]`. -/
+abbrev startTime (ε : ℝ≥0) : InterpolationTime ε :=
   ⟨0, le_rfl, ε.coe_nonneg⟩
 
-private abbrev endTime (ε : ℝ≥0) : InterpolationTime ε :=
+/-- The right endpoint `s = ε` of the interpolation interval `[0, ε]`. -/
+abbrev endTime (ε : ℝ≥0) : InterpolationTime ε :=
   ⟨ε, ε.coe_nonneg, le_rfl⟩
 
 private def translateZeroIso (P : PModule.{u,0,w} k ℝ) (a : ℝ) (ha : a = 0) :
@@ -1546,14 +1548,18 @@ private theorem endDesc_comp_endInclude (i : RealInterleaving ε M N) :
   rw [endCompare_comp_endInclude]
   simp
 
-private noncomputable def startIso (i : RealInterleaving ε M N) :
+/-- The natural isomorphism identifying the quotient interpolation module at
+`s = 0` with `M`. -/
+noncomputable def interpolatingModuleStartIso (i : RealInterleaving ε M N) :
     interpolatingModule i (startTime ε) ≅ M where
   hom := startDesc i
   inv := startInclude i
   hom_inv_id := startDesc_comp_startInclude i
   inv_hom_id := startInclude_comp_startDesc i
 
-private noncomputable def endIso (i : RealInterleaving ε M N) :
+/-- The natural isomorphism identifying the quotient interpolation module at
+`s = ε` with `N`. -/
+noncomputable def interpolatingModuleEndIso (i : RealInterleaving ε M N) :
     interpolatingModule i (endTime ε) ≅ N where
   hom := endDesc i
   inv := endInclude i
@@ -1847,7 +1853,9 @@ private def reparamInterleaving {d e : ℝ≥0}
   cases h
   exact j
 
-private noncomputable def interpolatingModules_interleaved
+/-- An actual interleaving between two members of the quotient interpolation
+family, at the nonnegative distance `nndist s.1 r.1` between their parameters. -/
+noncomputable def interpolatingModuleInterleaving
     (i : RealInterleaving ε M N) (s r : InterpolationTime ε) :
     RealInterleaving (nndist s.1 r.1) (interpolatingModule i s)
       (interpolatingModule i r) := by
@@ -1869,20 +1877,33 @@ private noncomputable def interpolatingModules_interleaved
       rw [interpolationDelta_eq_nndist r s hrs, nndist_comm]
     exact reparamInterleaving hd j.symm
 
+/-- The quotient family `interpolatingModule i` is a q-tame algebraic
+interpolation between q-tame `M` and `N`: its endpoint modules are naturally
+isomorphic to the inputs, every member is q-tame, and every pair of members is
+actually interleaved by their nonnegative real parameter distance. -/
+theorem interpolatingModule_qTame_interpolation
+    (i : RealInterleaving ε M N) (hM : M.QTame) (hN : N.QTame) :
+    Nonempty (interpolatingModule i (startTime ε) ≅ M) ∧
+      Nonempty (interpolatingModule i (endTime ε) ≅ N) ∧
+      (∀ s, (interpolatingModule i s).QTame) ∧
+      (∀ s r, Nonempty (RealInterleaving (nndist s.1 r.1)
+        (interpolatingModule i s) (interpolatingModule i r))) :=
+  ⟨⟨interpolatingModuleStartIso i⟩, ⟨interpolatingModuleEndIso i⟩,
+    interpolatingModule_qTame i hM hN,
+    fun s r => ⟨interpolatingModuleInterleaving i s r⟩⟩
+
 /-- An actual ε-interleaving of q-tame real modules produces an algebraic
 q-tame interpolation on the closed parameter interval.  The endpoint modules
 are naturally isomorphic to the inputs, and every pair of family members is
-actually interleaved by their nonnegative real parameter distance. -/
+actually interleaved by their nonnegative real parameter distance.  The
+witness is `interpolatingModule i`; see
+`interpolatingModule_qTame_interpolation`. -/
 theorem exists_qTame_interpolating_family
     (i : RealInterleaving ε M N) (hM : M.QTame) (hN : N.QTame) :
     ∃ F : InterpolationTime ε → PModule.{u,0,w} k ℝ,
       Nonempty (F (startTime ε) ≅ M) ∧ Nonempty (F (endTime ε) ≅ N) ∧
       (∀ s, (F s).QTame) ∧
-      (∀ s r, Nonempty (RealInterleaving (nndist s.1 r.1) (F s) (F r))) := by
-  refine ⟨interpolatingModule i, ⟨startIso i⟩, ⟨endIso i⟩, ?_, ?_⟩
-  · intro s
-    exact interpolatingModule_qTame i hM hN s
-  · intro s r
-    exact ⟨interpolatingModules_interleaved i s r⟩
+      (∀ s r, Nonempty (RealInterleaving (nndist s.1 r.1) (F s) (F r))) :=
+  ⟨interpolatingModule i, interpolatingModule_qTame_interpolation i hM hN⟩
 
 end TDA.Persistence.RealInterleaving

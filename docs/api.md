@@ -1021,12 +1021,17 @@ with zero is equivalent to a zero double-shift structure map. Its interval examp
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
 for the finite nonnegative parameters and witness equations.
 
-For q-tame real modules over a field, an actual `ε`-interleaving gives the
-quotient family `RealInterleaving.exists_qTame_interpolating_family` on the closed
-interval `[0, ε]`. Its endpoints are naturally isomorphic to the input modules,
-each member is q-tame, and every pair has an actual interleaving witness at the
-nonnegative distance between its parameters. This algebraic interpolation result
-does not assert a bottleneck or metric stability theorem. See the
+For q-tame real modules over a field, an actual `ε`-interleaving `i` gives the
+public quotient family `RealInterleaving.interpolatingModule i` on the closed
+interval `[0, ε]`, with endpoints `startTime ε` and `endTime ε`.
+`interpolatingModuleStartIso` and `interpolatingModuleEndIso` identify its
+endpoint members with the input modules, `interpolatingModule_qTame` shows each
+member is q-tame, and `interpolatingModuleInterleaving` gives every pair an actual
+interleaving witness at the nonnegative distance between its parameters.
+`interpolatingModule_qTame_interpolation` collects these facts for this family, and
+`RealInterleaving.exists_qTame_interpolating_family` states the existential form.
+This algebraic interpolation result does not assert a bottleneck or metric
+stability theorem. See the
 [real interleaving interpolation](math/real-interleavings.md#q-tame-algebraic-interpolation)
 section for the quotient and the precise scope.
 
