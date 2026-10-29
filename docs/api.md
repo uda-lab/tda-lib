@@ -737,6 +737,23 @@ and the `n = 1` consequence of [Theorem 5.18](https://arxiv.org/html/2208.00300v
 [Theorem 6.1](https://arxiv.org/html/2208.00300v3#S6.SS1) gives signed-stability
 context.
 
+### Signed-hook cancellation along affine slices
+
+`AffineSliceSignedBarcode` recovers the ordinary barcode of an actual
+positive affine restriction from the canonical signed hook barcode of an
+originally finitely presented module. Its main theorem proves
+`B(slice M).points + slice(odd hooks) = slice(even hooks)` over every field.
+Collapsed hooks are omitted, repeated endpoints retain their multiplicities,
+and principal deaths remain infinite. Domination is proved before the
+equivalent multiset-subtraction formula.
+
+`RealBarcodeRankUniqueness` compares finite positive endpoint multisets
+through all their rank counts. `RankExactBarcodeCancellation` telescopes
+actual rank-exact rows, and `AffineSliceRank` converts the actual hook-sum
+presentations into these counts. The capstone derives the needed resolution
+and ordinary barcode realization from the original presentation. See
+[affine slice cancellation](math/affine-slice-cancellation.md).
+
 ### Positive affine slices
 
 For `n ≥ 1`, `PositiveAffineLine` parameterizes a line `L(t) = b + t*a`
@@ -755,6 +772,23 @@ multiset removes these collapsed intervals and preserves all multiplicities,
 including collisions between distinct hooks. See
 [positive affine slices](math/positive-affine-slices.md) for the construction,
 coefficient scope and endpoint conventions.
+
+### Matching distance of ordinary affine slices
+
+`AffineSliceInterleaving` sends an actual coordinate `ε`-interleaving to a
+real `ε/minSlope`-interleaving along any positive affine line. Its components
+include the actual structure-map padding needed for unequal slopes. The
+extended-distance bound works over arbitrary rings, without finite-distance
+or attainment assumptions.
+
+Over an arbitrary field, `AffineSliceMatching` derives ordinary slice
+barcodes from original finite presentations. It bounds their weighted
+bottleneck distance by coordinate interleaving distance and defines
+`sliceMatchingDistance` as the supremum over lines with maximum slope one
+and offset sum zero. The normalized family contains the diagonal line.
+The resulting extended pseudometric is invariant under natural isomorphism
+and is bounded by coordinate interleaving distance. See
+[affine slice matching distance](math/affine-slice-matching.md).
 
 ### Finite presentations of categorical colimits
 

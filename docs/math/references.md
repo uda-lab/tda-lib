@@ -46,11 +46,18 @@ article text/figures, not citation of bibliographic facts or original mathematic
 
 ## Sources already used
 
+<a id="Landi14-v1"></a>
+### Landi14-v1 — matching distance bounded by interleaving distance
+
+- **Identity/version:** Claudia Landi. *The Rank Invariant Stability via Interleavings*. [arXiv:1412.3374v1](https://arxiv.org/pdf/1412.3374v1), posted 2014-12-10; Lemma 1 and Theorem 1.
+- **Use/classification:** `AffineSliceInterleaving` constructs the positive-line interleaving of radius `epsilon/minSlope`, as in Lemma 1, and proves the extended-distance bound over arbitrary rings. `AffineSliceMatching` specializes Theorem 1 to original finitely presented modules over arbitrary fields, deriving the ordinary slice barcodes internally and using the same normalization `max slope = 1`, `sum offset = 0`. It proves extended pseudometric laws without separation, completeness or finite attainment claims. See [affine slice matching distance](affine-slice-matching.md).
+- **Rights/evidence:** **U** for third-party reuse; the exact primary version was read for mathematical comparison. The repository supplies original proofs and summaries, without source prose or figures.
+
 <a id="BOO24-v3"></a>
 ### BOO24-v3 — signed rank decompositions and restriction to lines
 
 - **Identity/version:** Magnus Bakke Botnan; Steffen Oppermann; Steve Oudot. *Signed Barcodes for Multi-Parameter Persistence via Rank Decompositions and Rank-Exact Resolutions*. [arXiv:2107.06800v3](https://arxiv.org/html/2107.06800v3), revised 2024-08-22; §5.3, Corollaries 5.8–5.9.
-- **Use/classification:** The source describes restriction and cancellation of signed rank decompositions; Corollary 5.8 is stated for rectangles. `PositiveAffineSlice`, `FinitePresentationReindex`, `AffineSlicePresentation` and `AffineSliceHooks` give direct library derivations of the entrance-time adjunction, original finite presentations of positive affine restrictions, and the actual finite/principal hook comparisons. Finite hook birth and death both use the maximum normalized coordinate difference. The current mapping covers these individual restrictions and multiplicities; see [positive affine slices](positive-affine-slices.md).
+- **Use/classification:** The source describes restriction and cancellation of signed rank decompositions; Corollary 5.8 is stated for rectangles. `PositiveAffineSlice`, `FinitePresentationReindex`, `AffineSlicePresentation` and `AffineSliceHooks` give direct library derivations of the entrance-time adjunction, original finite presentations of positive affine restrictions, and the actual finite/principal hook comparisons. Finite hook birth and death both use the maximum normalized coordinate difference. `AffineSliceSignedBarcode` proves the corresponding ordinary-barcode cancellation by telescoping actual rank-exact rows and comparing positive endpoint rank counts. See [positive affine slices](positive-affine-slices.md) and [affine slice cancellation](affine-slice-cancellation.md).
 - **Rights/evidence:** **AR**, exact-version page license link inspected 2026-10-29. The repository provides original proofs and summaries; no source prose or figures are reproduced. The comparison is limited to the identified section and theorem statements.
 
 <a id="BOOS24-v3"></a>
