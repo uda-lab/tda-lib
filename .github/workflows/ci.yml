@@ -22,6 +22,9 @@ jobs:
     name: docs
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    env:
+      # Bound each Lean process on the hosted runner; Lake still schedules jobs.
+      LEAN_NUM_THREADS: '2'
     if: ${{ (github.event_name == 'workflow_dispatch' && !inputs.release_check) || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
     steps:
       - uses: actions/checkout@v4
@@ -42,8 +45,73 @@ jobs:
       - name: Bootstrap parent mathlib cache with resource guard
         run: bash scripts/bootstrap.sh
 
+      - name: Documentation cache compatibility
+        id: docs-key
+        run: echo "key=$(python3 scripts/lib/docs-cache.py key)" >> "$GITHUB_OUTPUT"
+
+      # Clone locked sources before restoring their build subdirectories: a cache
+      # must not create a nonempty package directory in place of a Git checkout.
+      - name: Materialize pinned documentation dependencies
+        working-directory: docbuild
+        run: ../scripts/lean.sh lake env lean --version
+
+      # One archive preserves the SQLite database, doc-data markers and traces,
+      # generated HTML, TDA artifacts and the pinned generator's compiled outputs.
+      # Mathlib's much larger compiled cache remains bootstrap's responsibility.
+      - name: Restore API documentation cache
+        id: docs-cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+        continue-on-error: true
+        with:
+          path: |
+            .lake/build
+            docbuild/.lake
+            .lake/packages/doc-gen4/.lake/build
+            .lake/packages/leansqlite/.lake/build
+            .lake/packages/UnicodeBasic/.lake/build
+            .lake/packages/BibtexQuery/.lake/build
+            .lake/packages/MD4Lean/.lake/build
+            .lake/packages/Cli/.lake/build
+          key: tda-docs-${{ runner.os }}-${{ runner.arch }}-${{ steps.docs-key.outputs.key }}-${{ github.sha }}
+          restore-keys: |
+            tda-docs-${{ runner.os }}-${{ runner.arch }}-${{ steps.docs-key.outputs.key }}-
+
+      # The cache toolkit can warn and return no key after extraction errors.
+      # Only a matched key proves a complete restore; treat an empty key as cold.
+      - name: Discard incomplete documentation cache restore
+        if: steps.docs-cache.outcome == 'failure' || steps.docs-cache.outputs.cache-matched-key == ''
+        run: |
+          rm -rf .lake/build docbuild/.lake
+          for pkg in doc-gen4 leansqlite UnicodeBasic BibtexQuery MD4Lean Cli; do
+            rm -rf ".lake/packages/$pkg/.lake/build"
+          done
+
       - name: Generate API documentation
         run: scripts/build-docs.sh
+
+      - name: Measure documentation cache
+        id: docs-size
+        run: |
+          bytes=$(du -sb .lake/build docbuild/.lake .lake/packages/{doc-gen4,leansqlite,UnicodeBasic,BibtexQuery,MD4Lean,Cli}/.lake/build | awk '{n += $1} END {print n}')
+          echo "Documentation cache: $bytes bytes before compression"
+          # Bound one upload below the default 10 GB repository cache quota.
+          if [ "$bytes" -lt 8589934592 ]; then echo 'save=true' >> "$GITHUB_OUTPUT"; fi
+
+      - name: Save API documentation cache
+        if: ${{ success() && steps.docs-cache.outputs.cache-hit != 'true' && steps.docs-size.outputs.save == 'true' }}
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
+        continue-on-error: true
+        with:
+          path: |
+            .lake/build
+            docbuild/.lake
+            .lake/packages/doc-gen4/.lake/build
+            .lake/packages/leansqlite/.lake/build
+            .lake/packages/UnicodeBasic/.lake/build
+            .lake/packages/BibtexQuery/.lake/build
+            .lake/packages/MD4Lean/.lake/build
+            .lake/packages/Cli/.lake/build
+          key: tda-docs-${{ runner.os }}-${{ runner.arch }}-${{ steps.docs-key.outputs.key }}-${{ github.sha }}
 
       - name: Retain private API documentation
         uses: actions/upload-artifact@v4
