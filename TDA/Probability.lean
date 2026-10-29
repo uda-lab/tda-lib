@@ -4,3 +4,4 @@ import TDA.Probability.GromovWasserstein
 import TDA.Probability.MeasureCoupling
 import TDA.Probability.MeasureGromovWasserstein
 import TDA.Probability.MeasureSampling
+import TDA.Probability.SamplingCoverage
