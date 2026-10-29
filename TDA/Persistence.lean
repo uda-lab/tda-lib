@@ -31,6 +31,7 @@ import TDA.Persistence.CrossPresentation
 import TDA.Persistence.GradedFreeDelay
 import TDA.Persistence.CrossPresentationConverse
 import TDA.Persistence.FinitePresentationShift
+import TDA.Persistence.FinitePresentationReindex
 import TDA.Persistence.FinitePresentationRedundant
 import TDA.Persistence.FinitePresentationComparison
 import TDA.Persistence.FinitePresentationClosure
@@ -343,6 +344,9 @@ import TDA.Persistence.RankSchanuelUnshifted
 import TDA.Persistence.RankSignedStability
 import TDA.Persistence.RankSignedNontriangle
 import TDA.Persistence.RankSignedBarcodeOneDimensional
+import TDA.Persistence.PositiveAffineSlice
+import TDA.Persistence.AffineSlicePresentation
+import TDA.Persistence.AffineSliceHooks
 import TDA.Persistence.FinitePresentationColimits
 import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationExtensions

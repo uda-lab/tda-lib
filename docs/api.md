@@ -713,6 +713,25 @@ and the `n = 1` consequence of [Theorem 5.18](https://arxiv.org/html/2208.00300v
 [Theorem 6.1](https://arxiv.org/html/2208.00300v3#S6.SS1) gives signed-stability
 context.
 
+### Positive affine slices
+
+For `n ≥ 1`, `PositiveAffineLine` parameterizes a line `L(t) = b + t*a`
+with every slope positive. Its entrance time is the maximum of
+`(p i - b i) / a i`, characterized by `entrance p ≤ t ↔ p ≤ L(t)`.
+`FinitePresentationReindex` uses this adjunction to regrade the actual
+generators and relations while preserving their cokernel.
+`AffineSlicePresentation` derives the original finite-presentation predicate
+for the actual real restriction and its one-coordinate identification,
+over arbitrary coefficient rings.
+
+`AffineSliceHooks` identifies finite hook restrictions with
+`[entrance p, entrance q)` and principal restrictions with
+`[entrance p, ∞)`. Equal endpoints give the zero module. Its endpoint
+multiset removes these collapsed intervals and preserves all multiplicities,
+including collisions between distinct hooks. See
+[positive affine slices](math/positive-affine-slices.md) for the construction,
+coefficient scope and endpoint conventions.
+
 ### Finite presentations of categorical colimits
 
 `GradedFree.FinitelyPresented` remains the existence of a finite graded-free
