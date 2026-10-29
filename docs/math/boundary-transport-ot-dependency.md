@@ -119,9 +119,11 @@ consequence. `exists_minimizing_boundaryPlan_rooted` gives one plan realizing
 both powered and rooted values. Neither compact support nor a Euclidean
 moment along the diagonal is required.
 
-This is a fixed-space bridge to the native infimum. It needs no generic
-coupling class, ordinary Wasserstein definition or gluing library under TDA
-names. The closed/tight-plan argument can be adapted from
+This is a fixed-space bridge to the native infimum. The boundary-transport lane adds no
+generic coupling class, ordinary Wasserstein definition or gluing library. (The separate area
+`TDA.Probability` defines `MeasureCoupling`, `measureTransportCost` and `measureWasserstein` on
+`ProbabilityMeasure` with exact probability marginals for the sampled Rips laws; the
+boundary-transport value is not identified with them.) The closed/tight-plan argument can be adapted from
 [TauCeti `Compactness`](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Compactness.lean);
 the specific continuous-cost truncation avoids importing its more general
 lower-semicontinuous approximation layer. Compactness and a minimizing
@@ -144,8 +146,9 @@ triangle estimate at a common full sum-capacity for all three pairs. A
 zero-cost actual optimizer has equal endpoints almost everywhere, which
 proves separation by equality of interior restrictions. The norm bridge
 expresses both the unnormalized reservoir value and its probability scaling
-as literal infima of mathlib `eLpNorm` over all marginal equations. No generic
-coupling class, Wasserstein definition or general gluing API is added.
+as literal infima of mathlib `eLpNorm` over all marginal equations. This lane adds no generic
+coupling class, Wasserstein definition or general gluing API, and no identification with
+`TDA.Probability.measureWasserstein` is claimed.
 Native [same-mass finite atomic approximation](boundary-transport-approximation.md)
 is proved directly using the current-pin metric `SimpleFunc.approxOn` and
 dominated convergence. Every target is chosen in the interior image;

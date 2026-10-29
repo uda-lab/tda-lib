@@ -151,7 +151,8 @@ give the declaration names.
   for arbitrary finite Borel inputs, and the rooted distance is a literal infimum of
   mathlib `eLpNorm`s over reservoir couplings, satisfies the sharp triangle inequality and
   separates measures. Under finite diagonal p-persistence, same-mass quantizations
-  converge. Identification with an ordinary Wasserstein coupling API is not claimed.
+  converge. Identification with an ordinary Wasserstein coupling API, including the
+  library's own `TDA.Probability.measureWasserstein`, is not claimed.
 - **Q-tame modules and decorated diagrams.** Rectangle measures of real modules over a
   field are defined by image-and-kernel quotients with the four-rank formula, finite on
   rectangles separated from the diagonal for q-tame modules; essential strips, box
