@@ -647,3 +647,4 @@ if [ "$afail" -eq 0 ]; then echo "axiom-audit parser self-test OK ($an cases)"; 
 # Resource locking is tested in isolated fake workspaces, without the host's active locks.
 bash scripts/agent/test-build-resources.sh
 bash scripts/agent/test-build-docs-lock.sh
+python3 scripts/agent/test-docs-cache.py

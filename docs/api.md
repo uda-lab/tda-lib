@@ -11,17 +11,18 @@ has its own aggregator and pin file. These entry points exclude the standalone e
 acceptance modules, with one exception: the library modules `EphemeralIntervalIso` and
 `FiniteRankProjectiveHomCover` import the fixtures `CutSubspacesExamples` and
 `FiniteRankProjectiveResolutionKanExamples`, so those fixtures and their imports remain
-reachable from `TDA.Persistence`. To use a particular worked example, import its module
+reachable from `TDA.Persistence`, including the transitive fixture
+`FiniteHookDeflationExamples`. To use a particular worked example, import its module
 directly, or import `TDA.Persistence.Examples` (and similarly for each area).
 `TDA.Examples` collects the six example aggregators; `TDA.Probability` has no fixtures.
 
 `import TDA` deliberately loads both `TDA.Library` and `TDA.Examples`. It is the
-comprehensive root used by the build, theorem axiom audits, module-reachability coverage
-and generated documentation. The default `lake build` therefore still builds every
-module, even though ordinary consumer imports are smaller. Generated pages intentionally
-include examples; generating them remains the separate local `scripts/build-docs.sh`
-workflow. The documentation target is the comprehensive root, independently of the
-consumer entry points.
+comprehensive root used by the build, theorem axiom audits and module-reachability
+coverage. The default `lake build` therefore still builds every module, even though
+ordinary consumer imports are smaller. `scripts/build-docs.sh` generates API pages
+from `TDA.Library` and its transitive imports, including the fixture dependencies
+identified above. Standalone examples remain available through their source modules
+and example aggregators; they are outside the normal documentation target.
 
 This is a module boundary, not an export whitelist: Lean imports expose the declarations
 of their dependencies, including existing small examples embedded in implementation
@@ -1461,6 +1462,20 @@ This uses essential suprema directly, with the factor `2` from the half-distorti
 GW convention; it assumes no optimal coupling or finite-`p` limit. See
 [sampled Rips diagram laws](math/sampled-rips-laws.md).
 
+`RipsSamplingConfidence` bounds the probability that an iid sample's canonical
+q-tame diagram differs from the diagram of its compact support. For a finite
+open `r/2`-net with `N` centers and minimum ball probability `β > 0`, the bound
+is `P[dB(D(sample), D(support)) > 2r] ≤ N * (1 - β)^n`, for `n ≥ 1`, every
+coefficient field and every degree. `qTameSampleDiagram` uses the existing
+`Rips.Sample` range, identifying repeated draws while retaining essential bars.
+The actual distance event is measurable by two-Lipschitz stability and the
+extended pseudometric on `LocallyFiniteDecoratedDiagram`.
+`Probability.SamplingCoverage` supplies exact avoidance probabilities, the
+finite union bound and probability restriction to the support. The ambient
+compact-support formulation uses a separable metric Borel probability space.
+See [finite-sample Rips confidence](math/rips-sampling-confidence.md) for the
+cover hypotheses and the distinction from offset-diagram confidence results.
+
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
 `a < b` has finite-dimensional image over the coefficient field.
 `TDA.Persistence.RipsQTame` proves `Rips.qTame_of_totallyBounded` for the
@@ -2455,9 +2470,28 @@ the finite inverse system, bounding the bottleneck distance of the two extracted
 No interval decomposition is assumed. The extracted diagrams have finite births;
 birth-at-minus-infinity strata of unrestricted q-tame modules are not represented. Positive
 finite diagrams embed isometrically (`Diagram.toLocallyFinite`, `bottleneck_toLocallyFinite`), and
-for finite metric spaces `Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` identifies the
-extracted Rips diagram with the finite one; compatibility with the finite `Diagram` API for
-other finite-type q-tame modules remains open. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
+`TDA.Persistence.ConstructibleQTameCompatibility` identifies the canonical diagram with the
+finite barcode for a real module over any field satisfying `FiniteConstructible.IsConstructible`
+on a finite critical grid and having finite-dimensional critical fibers. This is the
+right-continuous convention: the module is zero before the first critical value, constant
+up to isomorphism on cells `[cᵢ,cᵢ₊₁)`, and may have a nonzero final tail. Pointwise
+finite-dimensionality follows from `finiteDimensional_of_isConstructible`, and
+`FiniteConstructible.qTame_of_isConstructible` derives q-tameness.
+`FiniteConstructible.moduleExtendedDiagramMultiplicity_eq_count` says that at every decorated
+point the canonical multiplicity counts the occurrences in `moduleDiagram`, including
+repeated and essential bars. The decoration map sends a finite bar `(b,d)` to
+`(minusCut b,minusCut d)` and an essential bar `(b,∞)` to `(minusCut b,infinityCut)`.
+`FiniteConstructible.ofQModule_eq_toLocallyFinite` identifies the resulting diagrams.
+`FiniteConstructible.ofQModuleMatchingEquiv` transports finite occurrence matchings to
+the canonical diagram with their costs preserved, using
+`Diagram.toLocallyFiniteMatchingEquiv` and its cost theorem.
+`FiniteConstructible.ofQModule_bottleneck_eq_finite` then gives equality of their locally
+finite and finite bottleneck values through `bottleneck_toLocallyFinite`, including different
+or empty grids and infinite distances.
+The theorem concerns these half-open bars and finite births; arbitrary endpoint decorations
+and singleton summands of general pointwise finite-dimensional modules are outside its scope.
+`Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` retains the finite-metric-space
+specialization. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
 [decorated diagrams of infinite Rips spaces](math/rips-metric-stability.md#decorated-diagrams-of-infinite-rips-spaces).
 
 

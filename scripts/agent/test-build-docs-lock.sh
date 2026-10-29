@@ -64,6 +64,10 @@ chmod +x "$tmp/bin/flock"
 export PATH="$tmp/bin:$PATH"
 cp "$SOURCE_ROOT/scripts/build-docs.sh" "$fixture/scripts/build-docs.sh"
 cp "$SOURCE_ROOT/scripts/lib/"build-{lock.sh,resources.py} "$fixture/scripts/lib/"
+cp "$SOURCE_ROOT/scripts/lib/docs-cache.py" "$fixture/scripts/lib/"
+for file in lean-toolchain lakefile.toml lake-manifest.json docbuild/lean-toolchain docbuild/lake-manifest.json; do
+  cp "$SOURCE_ROOT/$file" "$fixture/$file"
+done
 LOCK=$(python3 "$fixture/scripts/lib/build-resources.py" --root-lock "$fixture")
 export LOCK
 chmod +x "$fixture/scripts/build-docs.sh"
@@ -84,7 +88,7 @@ set -euo pipefail
 ROOT="$TEST_ROOT"
 . "$TEST_ROOT/scripts/lib/build-lock.sh"
 [[ "$PWD" == "$TEST_ROOT/docbuild" ]]
-[[ "$#" -eq 3 && "$1" == lake && "$2" == build && "$3" == TDA:docs ]]
+[[ "$#" -eq 3 && "$1" == lake && "$2" == build && "$3" == +TDA.Library:docs ]]
 run_index="$(grep -c '^lean-start ' "$TEST_EVENTS" || true)"
 run_index=$((run_index + 1))
 doc_root="$TEST_ROOT/docbuild/.lake/build/doc"
@@ -103,6 +107,7 @@ fi
 printf 'lean-start %s\n' "$run_index" >> "$TEST_EVENTS"
 sleep 0.25
 mkdir -p "$doc_root/TDA"
+touch "$doc_root/index.html"
 printf 'generated-%s\n' "$run_index" > "$doc_root/TDA/generated"
 printf 'lean-end %s\n' "$run_index" >> "$TEST_EVENTS"
 EOF
@@ -126,7 +131,7 @@ sleep 0.25
 printf 'check-end %s\n' "$run_index" >> "$TEST_EVENTS"
 EOF
 chmod +x "$fixture/scripts/check-doc-lock.sh"
-git -C "$fixture" add .gitignore docbuild/lakefile.toml scripts
+git -C "$fixture" add .gitignore lean-toolchain lakefile.toml lake-manifest.json docbuild scripts
 git -C "$fixture" commit -qm "fixture"
 
 printf 'stale-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"

@@ -6320,6 +6320,28 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.arbitrary_field_nonzero_composite_kernel
 #print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.empty_zero_composite_kernel_finitelyPresented
 
+-- Finite-constructible barcodes and canonical q-tame decorated diagrams (Issue #724).
+#print axioms TDA.Persistence.finrank_range_piMap
+#print axioms TDA.Persistence.list_get_sum_countP
+#print axioms TDA.Persistence.RealBarcode.intervalImage_rank
+#print axioms TDA.Persistence.RealBarcode.realize_image_rank
+#print axioms TDA.Persistence.persistenceImage_finrank_eq_of_iso
+#print axioms TDA.Persistence.FiniteConstructible.qTame_of_isConstructible
+#print axioms TDA.Persistence.FiniteConstructible.moduleDiagram_rank
+#print axioms TDA.Persistence.FiniteDiagramQTame.diagramOccurrence_finite
+#print axioms TDA.Persistence.FiniteDiagramQTame.diagramOccurrence_essential
+#print axioms TDA.Persistence.FiniteDiagramQTame.moduleExtendedDiagramMultiplicity_eq_count
+#print axioms TDA.Persistence.FiniteDiagramQTame.ofQModule_eq_toLocallyFinite
+#print axioms TDA.Persistence.Diagram.toLocallyFiniteMatchingEquiv
+#print axioms TDA.Persistence.Diagram.toLocallyFiniteMatchingEquiv_cost
+#print axioms TDA.Persistence.FiniteConstructible.moduleExtendedDiagramMultiplicity_eq_count
+#print axioms TDA.Persistence.FiniteConstructible.ofQModule_eq_toLocallyFinite
+#print axioms TDA.Persistence.FiniteConstructible.ofQModuleMatchingEquiv
+#print axioms TDA.Persistence.FiniteConstructible.ofQModule_bottleneck_eq_finite
+#print axioms TDA.Persistence.ConstructibleBarcodeExamples.canonical_decorated_counts
+#print axioms TDA.Persistence.ConstructibleBarcodeExamples.empty_canonical_decorated_count
+#print axioms TDA.Persistence.FiniteConstructibleExamples.twisted_canonical_identification
+
 -- Weighted Gaussian stability under native boundary transport.
 #print axioms TDA.Persistence.WeightedKernel.interiorUpperPointEquiv_apply
 #print axioms TDA.Persistence.WeightedKernel.map_interiorUpperPointEquiv
@@ -6347,6 +6369,47 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.WeightedKernel.weightedPersistenceEmbedding_ofIndexed
 #print axioms TDA.Persistence.WeightedKernel.norm_weightedPersistenceEmbedding_atomicMeasure_sub_le
 #print axioms TDA.Persistence.WeightedKernel.weightedPersistenceEmbedding_quantizedDiagram_tendsto
+
+-- Extended pseudometric laws for locally finite decorated diagrams.
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.reverseMatching_finite_some_iff
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.reverseMatching_reverseMatching
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.matchingCost_reverse
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.matchingCost_compose_le
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.bottleneck_self
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.bottleneck_comm
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.bottleneck_triangle
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.edist_eq_bottleneck
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.instPseudoEMetricSpace
+
+-- Actual finite iid q-tame Rips confidence bounds.
+#print axioms TDA.Persistence.Rips.qTameSampleDiagram_eq_of_range_eq
+#print axioms TDA.Persistence.Rips.hausdorffDist_range_le_dist
+#print axioms TDA.Persistence.Rips.bottleneck_qTameSampleDiagram_le
+#print axioms TDA.Persistence.Rips.lipschitzWith_qTameSampleDiagram
+#print axioms TDA.Persistence.Rips.continuous_bottleneck_qTameSampleDiagram
+#print axioms TDA.Persistence.Rips.measurable_bottleneck_qTameSampleDiagram
+#print axioms TDA.Persistence.Rips.measurableSet_bottleneck_qTameSampleDiagram_gt
+#print axioms TDA.Persistence.Rips.hausdorffDist_range_univ_le_of_hits_net
+#print axioms TDA.Persistence.Rips.bottleneck_qTameSampleDiagram_le_of_hits_net
+#print axioms TDA.Persistence.Rips.finiteCoverMass_ball_pos
+#print axioms TDA.Persistence.Rips.measure_bottleneck_qTameSampleDiagram_gt_le
+#print axioms TDA.Persistence.Rips.bottleneck_qTameSampleDiagram_carrier_le_of_hits_net
+#print axioms TDA.Persistence.Rips.measure_bottleneck_qTameSampleDiagram_carrier_gt_le
+#print axioms TDA.Persistence.Rips.measure_bottleneck_qTameSampleDiagram_support_gt_le
+#print axioms TDA.Persistence.Rips.measurableSet_bottleneck_qTameSampleDiagram_support_gt
+#print axioms TDA.Persistence.Rips.finiteCoverMass_support_ball_pos
+
+-- Infinite compact and boundary examples for iid confidence.
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitIntervalLaw_isOpenPosMeasure
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitIntervalLaw_support
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitInterval_infinite
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.intervalGridMass_pos
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.intervalGridMass_le_one
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitInterval_confidence
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitInterval_one_draw_confidence
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.repeatedDraws_qTameSampleDiagram
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.singleton_finiteCoverMass_eq_one
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.singleton_confidence_zero
 
 #print axioms TDA.Persistence.finiteSimplicialHomology
 #print axioms TDA.Persistence.finiteSimplicialHomology_obj
