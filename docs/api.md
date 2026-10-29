@@ -2241,6 +2241,26 @@ The results provide abstract noncomputable integration and approximation existen
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
 
+### Gaussian stability under native boundary transport
+
+`WeightedBoundaryTransportFeature` identifies the native strict half-plane with
+`UpperPoint` and proves bounded-feature integrability for every finite original
+measure. In `WeightedBoundaryTransportStability`,
+`enorm_weightedPersistenceEmbedding_sub_le_boundaryTransportDistance` bounds the
+actual full-plane RKHS embedding difference by
+`(2*A + √2*B/|σ|) * BT₁(μ,ν)` in extended nonnegative values. The birth–persistence
+weight is nonnegative, bounded by B, A-Lipschitz and zero at persistence zero,
+with A,B ≥ 0. Inputs may have unequal masses and nonatomic or noncompact support;
+the estimate requires no moment. Its real-valued companion proves transport
+finiteness from finite first diagonal moments before taking `.toReal`.
+
+`WeightedBoundaryTransportApproximation` gives real-mass atomic sum formulas,
+the native finite weighted-diagram bound, and
+`weightedPersistenceEmbedding_quantizedDiagram_tendsto`: the existing
+same-original-mass quantizations converge in RKHS norm under finite first
+diagonal moment. Zero weights and coincident fractional atoms are included.
+See [the statement, direct-plan proof and source boundaries](math/weighted-boundary-transport.md).
+
 ### Sampled Rips laws
 
 `Probability.FiniteSampling`, `SamplingMoments`, and `GromovWasserstein` provide
