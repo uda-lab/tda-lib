@@ -103,6 +103,7 @@ import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramBottleneckTopology
 import TDA.Persistence.RipsSamplingMeasure
 import TDA.Persistence.RipsSamplingMeasureStability
+import TDA.Persistence.RipsSamplingEmpirical
 import TDA.Persistence.RipsSamplingConfidence
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.SublevelLossDerivative
