@@ -360,6 +360,8 @@ import TDA.Persistence.RealBarcodeRankUniqueness
 import TDA.Persistence.RankExactBarcodeCancellation
 import TDA.Persistence.AffineSliceRank
 import TDA.Persistence.AffineSliceSignedBarcode
+import TDA.Persistence.AffineSliceInterleaving
+import TDA.Persistence.AffineSliceMatching
 import TDA.Persistence.FinitePresentationColimits
 import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationExtensions

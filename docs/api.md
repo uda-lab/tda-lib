@@ -750,6 +750,23 @@ including collisions between distinct hooks. See
 [positive affine slices](math/positive-affine-slices.md) for the construction,
 coefficient scope and endpoint conventions.
 
+### Matching distance of ordinary affine slices
+
+`AffineSliceInterleaving` sends an actual coordinate `ε`-interleaving to a
+real `ε/minSlope`-interleaving along any positive affine line. Its components
+include the actual structure-map padding needed for unequal slopes. The
+extended-distance bound works over arbitrary rings, without finite-distance
+or attainment assumptions.
+
+Over an arbitrary field, `AffineSliceMatching` derives ordinary slice
+barcodes from original finite presentations. It bounds their weighted
+bottleneck distance by coordinate interleaving distance and defines
+`sliceMatchingDistance` as the supremum over lines with maximum slope one
+and offset sum zero. The normalized family contains the diagonal line.
+The resulting extended pseudometric is invariant under natural isomorphism
+and is bounded by coordinate interleaving distance. See
+[affine slice matching distance](math/affine-slice-matching.md).
+
 ### Finite presentations of categorical colimits
 
 `GradedFree.FinitelyPresented` remains the existence of a finite graded-free
