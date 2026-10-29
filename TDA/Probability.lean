@@ -1,6 +1,9 @@
 import TDA.Probability.FiniteSampling
 import TDA.Probability.SamplingMoments
 import TDA.Probability.GromovWasserstein
+import TDA.Probability.FiniteTotalVariation
+import TDA.Probability.FiniteEmpiricalPMF
+import TDA.Probability.FiniteGromovWassersteinTV
 import TDA.Probability.MeasureCoupling
 import TDA.Probability.MeasureGromovWasserstein
 import TDA.Probability.MeasureSampling

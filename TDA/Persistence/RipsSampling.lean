@@ -168,11 +168,12 @@ theorem transportCost_sampleLaw_le (k : Type w) [Field k]
     (bottleneck_sampleDiagram_le_pairMaximum k t degree) hp.le)).trans
   exact expectation_pairMaximum_rpow_le π.joint distortion distortion_self distortion_comm hp n
 
-/-- Finite-p stability of the actual iid Rips diagram laws, with diameter time
-and the standard one-half convention for distortion GW. No minimizer is used. -/
-theorem wasserstein_sampleLaw_le_gromovWasserstein (k : Type w) [Field k]
-    (μ : PMF X) (ν : PMF Y) {p : ℝ} (hp : 1 ≤ p) (n degree : ℕ) (hn : 2 ≤ n) :
-    wasserstein p bottleneck (sampleLaw k μ n (degree + 1)) (sampleLaw k ν n (degree + 1)) ≤
+/-- Finite-p stability of iid laws of full Rips diagrams in every degree,
+including ordinary H₀ and its essential bar. Uses diameter time and the
+standard half-distortion GW convention, without assuming a minimizer. -/
+theorem wasserstein_sampleLaw_le_gromovWasserstein_allDegrees (k : Type w) [Field k]
+    (μ : PMF X) (ν : PMF Y) {p : ℝ} (hp : 1 ≤ p) (n q : ℕ) (hn : 2 ≤ n) :
+    wasserstein p bottleneck (sampleLaw k μ n q) (sampleLaw k ν n q) ≤
       (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * (2 * gromovWasserstein p μ ν) := by
   have hp0 : 0 < p := lt_of_lt_of_le zero_lt_one hp
   have hC0 : (n.choose 2 : ℝ≥0∞) ^ p⁻¹ ≠ 0 := by
@@ -189,9 +190,16 @@ theorem wasserstein_sampleLaw_le_gromovWasserstein (k : Type w) [Field k]
   rw [hGW, ENNReal.mul_iInf_of_ne hC0 hCtop]
   apply le_iInf
   intro π
-  exact (ENNReal.rpow_le_rpow (transportCost_sampleLaw_le k π hp0 n (degree + 1))
+  exact (ENNReal.rpow_le_rpow (transportCost_sampleLaw_le k π hp0 n q)
     (inv_nonneg.mpr hp0.le)).trans_eq
       (ENNReal.mul_rpow_of_nonneg _ _ (inv_nonneg.mpr hp0.le))
+
+/-- Positive-degree specialization of the all-degree finite-p theorem. -/
+theorem wasserstein_sampleLaw_le_gromovWasserstein (k : Type w) [Field k]
+    (μ : PMF X) (ν : PMF Y) {p : ℝ} (hp : 1 ≤ p) (n degree : ℕ) (hn : 2 ≤ n) :
+    wasserstein p bottleneck (sampleLaw k μ n (degree + 1)) (sampleLaw k ν n (degree + 1)) ≤
+      (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * (2 * gromovWasserstein p μ ν) :=
+  wasserstein_sampleLaw_le_gromovWasserstein_allDegrees k μ ν hp n (degree + 1) hn
 
 /-- Infinity stability is independent of the tuple length; zero-mass points
 are excluded by essential suprema on both sides. -/
