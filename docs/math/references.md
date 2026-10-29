@@ -472,3 +472,10 @@ stability. See [local matching from finite box counts](persistence-measure-match
 - **Identity/version:** Brittany Terese Fasy, Fabrizio Lecci, Alessandro Rinaldo, Larry Wasserman, Sivaraman Balakrishnan and Aarti Singh, *Confidence sets for persistence diagrams*, Annals of Statistics 42(6) (2014), 2301–2339, [arXiv:1303.7117v3](https://arxiv.org/html/1303.7117v3), [DOI](https://doi.org/10.1214/14-AOS1252).
 - **Use/classification:** Lemma 4 and its proof motivate the finite-cover iid union bound in `SamplingCoverage` and its actual q-tame Rips consumer in `RipsSamplingConfidence`. The library retains the cover cardinality and minimum ball mass explicitly; it does not formalize the source's manifold covering-number or density estimates. Diameter-scale Rips stability gives factor two, whereas the source's distance-function/offset diagrams use factor one. See [finite-sample Rips confidence](rips-sampling-confidence.md).
 - **Rights/evidence:** **U** for third-party reuse. The primary statement and proof were read for an original formal proof and summary; no article text, figures or source code are redistributed.
+
+<a id="Matching-affine-arrangements"></a>
+### Matching-distance affine arrangements
+
+- **Sources:** Bapat et al., *Computing the Matching Distance of 2-Parameter Persistence Modules from Critical Values*, [arXiv:2210.12868v3](https://arxiv.org/html/2210.12868v3), Lemma 4.2 and Theorems 3.1/4.4; Kerber–Lesnick–Oudot, *Exact Computation of the Matching Distance on 2-Parameter Persistence Modules*, [arXiv:1812.09085v2](https://arxiv.org/html/1812.09085v2), §4.
+- **Use/classification:** Context for the independently derived [finite affine endpoint-cost arrangement](affine-switch-arrangement.md). The library proves both signed factors, finite cuts and sign-cell cost-order invariance. The regression addresses only the fixed-push single-pencil claim; neither source's main matching-distance theorem is claimed formalized or refuted.
+- **Rights/evidence:** **U**; versioned primary HTML used for mathematical reading. No source prose, figures or code are reproduced.
