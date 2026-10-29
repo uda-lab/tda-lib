@@ -8,8 +8,8 @@ import TDA.Persistence.FinitePresentationKanExamples
 These examples use the existing repeated-grade presentation with a genuine
 relation, add a redundant generator and relation, and apply the colimit
 theorems to actual categorical objects. The cokernel theorem is applied to the
-nonzero relation map between free modules on distinct grades, and also to zero
-sources. The rank-exact consumer works over an arbitrary field with finite
+nonzero relation map between free modules born at grades `0` and `2` (distinct for `n > 0`),
+and also to zero sources. The rank-exact consumer works over an arbitrary field with finite
 presentation-index universes.
 -/
 

@@ -759,7 +759,7 @@ does not consume them.
 pushout, an empty/zero boundary, repeated grades with a genuine relation, a
 redundant relation, and the arbitrary-field rank-exact consumer. It also
 applies the cokernel theorem to the nonzero relation map between free modules
-born at distinct grades.
+born at grades `0` and `2` (distinct for `n > 0`).
 
 ### Finite presentations of exact extensions and pullbacks
 
@@ -913,8 +913,8 @@ witness types, and `CoordinateRealBridge.distance_eq` identifies their distances
 needed for attainment and separation: over a field, `RealRay.distance_eq_zero` shows that
 `k_[0,∞)` and `k_(0,∞)` have interleaving distance zero, `RealRay.not_nonempty_iso` that they are not
 naturally isomorphic, and `RealRay.not_nonempty_zero_interleaving` that the zero distance is not
-attained. (Informally, the closed ray is finitely presented and the open ray is not; this remark is
-not formalized, and `FinitelyPresented` is stated for `Fin n → ℝ`, not for real-indexed modules.) For
+attained. (Informally, the closed ray is finitely presented and the open ray is not; this
+ray-presentability remark is not formalized.) For
 right-continuous real modules on finite critical grids with zero left tails and finite-dimensional
 critical fibers, over a field, `FiniteConstructible.distance_le_iff_interleaving`,
 `FiniteConstructible.interleaving_at_distance`, `FiniteConstructible.isClosed_interleaving_parameters`

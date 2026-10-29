@@ -180,7 +180,7 @@ private noncomputable abbrev secondSplitQuotient (k : Type u) [Field k] :
   biprod.snd
 
 /-- The composite-kernel theorem on two split rank-exact rows whose outer terms
-are all the nonzero repeated-grade module `X`. The actual composite kernel is
+are nonzero finite biproducts of the repeated-grade module `X`. The actual composite kernel is
 finitely presented, its kernel row is rank exact, and it contains a vector at
 grade zero whose image under the first deflation is nonzero. -/
 theorem arbitrary_field_split_composite_kernel {k : Type u} [Field k] :
