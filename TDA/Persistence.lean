@@ -102,6 +102,7 @@ import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramBottleneckTopology
 import TDA.Persistence.RipsSamplingMeasure
 import TDA.Persistence.RipsSamplingMeasureStability
+import TDA.Persistence.RipsSamplingConfidence
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.SublevelLossDerivative
 import TDA.Persistence.FiniteBarcode
@@ -224,8 +225,13 @@ import TDA.Persistence.QTame
 import TDA.Persistence.RealInterleavingInterpolation
 import TDA.Persistence.RipsQTame
 import TDA.Persistence.RipsQTameDiagram
+import TDA.Persistence.RealBarcodeRank
+import TDA.Persistence.ConstructibleQTame
+import TDA.Persistence.FiniteDiagramQTame
+import TDA.Persistence.ConstructibleQTameCompatibility
 import TDA.Persistence.RipsQTameFiniteCompatibility
 import TDA.Persistence.LocallyFiniteDiagramBottleneck
+import TDA.Persistence.LocallyFiniteDiagramBottleneckLaws
 import TDA.Persistence.PersistenceMeasureWindowMatching
 import TDA.Persistence.QTameFiniteSaturation
 import TDA.Persistence.LocallyFiniteMatchingCompactness

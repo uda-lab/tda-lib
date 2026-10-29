@@ -134,6 +134,7 @@ import TDA.Persistence.MatrixSequenceExamples
 import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
 import TDA.Persistence.RipsSamplingExamples
+import TDA.Persistence.RipsSamplingConfidenceExamples
 import TDA.Persistence.PersistenceMeasureExamples
 import TDA.Persistence.PersistenceMeasureBoxExamples
 import TDA.Persistence.PersistenceMeasureEssentialBoxExamples

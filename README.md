@@ -255,8 +255,10 @@ scripts/check.sh
 ```
 
 For generated API pages, run `scripts/build-docs.sh` from a checkout with no
-uncommitted changes. It writes the site to `docbuild/.lake/build/doc`; the site is not
-hosted by this repository. The [mathematical notes](docs/math/README.md) explain
+uncommitted changes. It documents `TDA.Library` and its transitive imports, and writes
+the site to `docbuild/.lake/build/doc`; the site is not hosted by this repository.
+Standalone examples are described in the [import guide](docs/api.md#entry-points).
+The [mathematical notes](docs/math/README.md) explain
 individual constructions, and the [source register](docs/math/references.md)
 records consulted papers and the limits of source comparison.
 
