@@ -2245,8 +2245,13 @@ atomic probability couplings, iid sampling with replacement, unordered-pair
 moment bounds with the constant `C(n,2)` (non-strict; optimality is not claimed), and distortion GW with factor one half. Their measure-valued
 counterparts in `MeasureCoupling`, `MeasureSampling`, and `MeasureGromovWasserstein`
 use actual `ProbabilityMeasure` couplings with exact marginals. `RipsSampling`
-applies the atomic estimates to full diagrams of finite tuple ranges, and
-`RipsSamplingMeasureStability` proves finite-p and `W_∞` bounds on whole diagram
+applies the atomic estimates to full diagrams of finite tuple ranges. For `PMF`
+inputs on arbitrary metric spaces, with no compactness assumption,
+`Rips.wasserstein_sampleLaw_le_gromovWasserstein_allDegrees` and
+`Rips.wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees`
+prove the same finite-p and `W_∞` bounds for the atomic laws `Rips.sampleLaw` in
+every natural degree `q`, including full H₀ at degree zero; the names without
+`_allDegrees` retain the positive-degree specializations. `RipsSamplingMeasureStability` proves finite-p and `W_∞` bounds on whole diagram
 laws with bottleneck ground cost in every natural degree `q`, including degree
 zero. The theorems
 `Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees` and
@@ -2276,6 +2281,12 @@ at `1` and lies exactly `1/2` from the singleton diagram. In that chart, the
 as `ε → 0`; `sampleLaw_map_isometry` transports the whole law under isometric
 embeddings, and `epsilonTwoPoint_realSampleLaw_nontrivial_mass` states this atom
 for the real-valued input law. This does not give an arbitrary-`n` atom formula.
+The degree-zero fixture `weighted_twoPoint_sampleLaw_bound_degreeZero` applies
+the atomic all-degree finite-p bound to this input law and a one-point input, and
+`twoPoint_pair_sampleLaw_bound_degreeZero` applies it to the `n = 2` laws of two
+weights `ε` and `ε'`, together with both exact rare-atom masses and the fact that
+the two laws differ whenever those masses differ. The positive-degree fixture
+`weighted_twoPoint_sampleLaw_bound` only instantiates the `q+1` wrapper.
 The compact Borel law and its finite-PMF agreement are described with the
 `Rips.sampleLawMeasure` API above. The finite-PMF transport cost has not yet been
 identified with the infimum over all Borel couplings on finite support.
