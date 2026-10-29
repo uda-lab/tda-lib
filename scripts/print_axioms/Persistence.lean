@@ -6341,3 +6341,31 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.ConstructibleBarcodeExamples.canonical_decorated_counts
 #print axioms TDA.Persistence.ConstructibleBarcodeExamples.empty_canonical_decorated_count
 #print axioms TDA.Persistence.FiniteConstructibleExamples.twisted_canonical_identification
+
+-- Weighted Gaussian stability under native boundary transport.
+#print axioms TDA.Persistence.WeightedKernel.interiorUpperPointEquiv_apply
+#print axioms TDA.Persistence.WeightedKernel.map_interiorUpperPointEquiv
+#print axioms TDA.Persistence.WeightedKernel.measurable_upperWeight
+#print axioms TDA.Persistence.WeightedKernel.continuous_weightedFeature
+#print axioms TDA.Persistence.WeightedKernel.norm_weightedFeature_le
+#print axioms TDA.Persistence.WeightedKernel.integrable_weightedFeature_finite
+#print axioms TDA.Persistence.WeightedKernel.weightedPersistenceEmbedding_eq_integral_native
+#print axioms TDA.Persistence.WeightedKernel.boundaryFeature_boundary
+#print axioms TDA.Persistence.WeightedKernel.boundaryFeature_point
+#print axioms TDA.Persistence.WeightedKernel.boundaryFeature_collapse
+#print axioms TDA.Persistence.WeightedKernel.norm_boundaryFeature_sub_le
+#print axioms TDA.Persistence.WeightedKernel.lipschitz_boundaryFeature
+#print axioms TDA.Persistence.WeightedKernel.norm_boundaryFeature_le
+#print axioms TDA.Persistence.WeightedKernel.integrable_boundaryFeature
+#print axioms TDA.Persistence.WeightedKernel.integrable_planFirst_weightedFeature
+#print axioms TDA.Persistence.WeightedKernel.integrable_planSecond_weightedFeature
+#print axioms TDA.Persistence.WeightedKernel.integral_planFirst_weightedFeature
+#print axioms TDA.Persistence.WeightedKernel.integral_planSecond_weightedFeature
+#print axioms TDA.Persistence.WeightedKernel.enorm_weightedPersistenceEmbedding_sub_le_plan
+#print axioms TDA.Persistence.WeightedKernel.enorm_weightedPersistenceEmbedding_sub_le_boundaryTransportDistance
+#print axioms TDA.Persistence.WeightedKernel.norm_weightedPersistenceEmbedding_sub_le_boundaryTransportDistance
+#print axioms TDA.Persistence.WeightedKernel.weightedPersistenceEmbedding_finite_masses
+#print axioms TDA.Persistence.WeightedKernel.weightedPersistenceEmbedding_atomicMeasure
+#print axioms TDA.Persistence.WeightedKernel.weightedPersistenceEmbedding_ofIndexed
+#print axioms TDA.Persistence.WeightedKernel.norm_weightedPersistenceEmbedding_atomicMeasure_sub_le
+#print axioms TDA.Persistence.WeightedKernel.weightedPersistenceEmbedding_quantizedDiagram_tendsto

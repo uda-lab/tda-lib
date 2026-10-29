@@ -250,6 +250,9 @@ import TDA.Persistence.GaussianSpectralSeparation
 import TDA.Persistence.GaussianMeasureEmbedding
 import TDA.Persistence.GaussianUniversality
 import TDA.Persistence.WeightedPersistenceMeasure
+import TDA.Persistence.WeightedBoundaryTransportFeature
+import TDA.Persistence.WeightedBoundaryTransportStability
+import TDA.Persistence.WeightedBoundaryTransportApproximation
 import TDA.Persistence.RipsSampling
 import TDA.Persistence.RipsSampleQuotient
 
