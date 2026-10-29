@@ -362,3 +362,7 @@ import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationExtensions
 import TDA.Persistence.FinitePresentationPullback
 import TDA.Persistence.FinitePresentationCompositeKernel
+import TDA.Persistence.FiniteSimplicial
+import TDA.Persistence.FiniteSimplicialPresentation
+import TDA.Persistence.FiniteSimplicialInterleaving
+import TDA.Persistence.FiniteSimplicialStability

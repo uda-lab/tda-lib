@@ -6498,3 +6498,24 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.AffineSwitchExamples.vertical_cost_at_slope_one
 #print axioms TDA.Persistence.AffineSwitch.Form.ext
 #print axioms TDA.Persistence.AffineSwitch.Form.ext_iff
+
+#print axioms TDA.Persistence.finiteSimplicialHomology
+#print axioms TDA.Persistence.finiteSimplicialHomology_obj
+#print axioms TDA.Persistence.finiteSimplicialHomology_structureMap
+#print axioms TDA.Persistence.finiteSimplicialSignedHookBarcode
+#print axioms TDA.Persistence.finiteSimplicial_signedHookBottleneckDissimilarity_le
+#print axioms TDA.Persistence.finiteSimplicial_signedHookBottleneckDissimilarity_le_supGradeError
+#print axioms TDA.Persistence.finiteSimplicialGridHomology
+#print axioms TDA.Persistence.finiteSimplicialHomology_gridKanIso
+#print axioms TDA.Persistence.finiteSimplicialHomology_gridKanIso_fac
+#print axioms TDA.Persistence.finiteSimplicialHomology_gridKanIso_kanInclusion
+#print axioms TDA.Persistence.finiteSimplicialHomology_finitelyPresented
+#print axioms TDA.Persistence.coordinateInclusionInterleaving
+#print axioms TDA.Persistence.coordinateInclusionInterleaving_φ_app
+#print axioms TDA.Persistence.coordinateInclusionInterleaving_ψ_app
+#print axioms TDA.Persistence.finiteSimplicialHomology_interleaving
+#print axioms TDA.Persistence.finiteSimplicialHomology_interleaving_φ_app
+#print axioms TDA.Persistence.finiteSimplicialHomology_interleaving_ψ_app
+#print axioms TDA.Persistence.coordinateInterleavingDistance_finiteSimplicialHomology_le
+#print axioms TDA.Persistence.coordinateInterleavingDistance_finiteSimplicialHomology_le_supGradeError
+#print axioms TDA.Persistence.finiteSimplicialHomology_finiteDimensional

@@ -647,6 +647,29 @@ the capstone in dimensions one and two (coefficients one and nine), at zero inte
 parameter, and to nonzero finite-presentation inputs; finite-death,
 principal-upset, empty, and repeated cross-sign tags are also exercised.
 
+### Finite simplicial input and grade perturbations
+
+For `C : Simplicial.FiniteComplex m`, `Filtration.FiniteGraded C n` assigns
+coordinatewise monotone grades in `Fin n → ℝ` to its nonempty faces.
+`finiteSimplicialHomology k g q` is the actual inclusion-induced homology
+module of its sublevels, for any field `k : Type u` and degree `q : ℕ`.
+`finiteSimplicialHomology_finitelyPresented` derives the original
+`GradedFree.FinitelyPresented.{u,0,0}` property from the finite input, using
+finite-dimensional grid fibres and a natural grid Kan comparison.
+
+For grades `g,h` on the same complex, a uniform coordinate error bound
+`δ : ℝ≥0` constructs `finiteSimplicialHomology_interleaving` and bounds the
+coordinate interleaving distance by `δ`. `FiniteGraded.supGradeError` is the
+finite maximum of the face-coordinate errors, with empty maximum zero.
+For `n ≥ 1`, `finiteSimplicialSignedHookBarcode` uses the derived finite
+presentation, and `finiteSimplicial_signedHookBottleneckDissimilarity_le`
+bounds the canonical signed dissimilarity by `(2*n-1)^2 * δ`. The caller
+supplies grades and their error bound, without a presentation or interleaving.
+Repeated grades, empty input and arbitrary homology degrees are included;
+the input, presentation and interleaving APIs also allow `n = 0`.
+See [finite graded simplicial stability](math/finite-simplicial-stability.md)
+for the proof and conventions.
+
 ### Two-coordinate signed hook triangle failure
 
 For any field `k`, `RankSignedNontriangle` defines the two-coordinate
