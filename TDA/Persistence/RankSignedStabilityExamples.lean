@@ -43,25 +43,21 @@ hypotheses and produces the actual squared-coefficient matching. -/
 theorem oneCoordinate_signedMatching (ε : ℝ≥0) :
     HasMultisetMatching (k := ℚ) (n := 1) ε
       ((oneCoordinateHookMinimalResolution.signedHookBarcode
-        (k := ℚ) (n := 1) (by norm_num)
+        (k := ℚ) (n := 1)
         RankSchanuelUnshiftedExamples.oneCoordinateHook
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          oneCoordinateHook_finitelyPresented)).positive +
+        oneCoordinateHook_finitelyPresented).positive +
        (oneCoordinateHookMinimalResolution.signedHookBarcode
-        (k := ℚ) (n := 1) (by norm_num)
+        (k := ℚ) (n := 1)
         RankSchanuelUnshiftedExamples.oneCoordinateHook
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          oneCoordinateHook_finitelyPresented)).negative)
+        oneCoordinateHook_finitelyPresented).negative)
       ((oneCoordinateHookMinimalResolution.signedHookBarcode
-        (k := ℚ) (n := 1) (by norm_num)
+        (k := ℚ) (n := 1)
         RankSchanuelUnshiftedExamples.oneCoordinateHook
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          oneCoordinateHook_finitelyPresented)).positive +
+        oneCoordinateHook_finitelyPresented).positive +
        (oneCoordinateHookMinimalResolution.signedHookBarcode
-        (k := ℚ) (n := 1) (by norm_num)
+        (k := ℚ) (n := 1)
         RankSchanuelUnshiftedExamples.oneCoordinateHook
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          oneCoordinateHook_finitelyPresented)).negative) := by
+        oneCoordinateHook_finitelyPresented).negative) := by
   simpa [RectangleStabilityGeometry.stabilityRadius] using
     finitelyPresented_exists_signedHookMultisetMatching
       (k := ℚ) (n := 1) (by norm_num)
@@ -95,25 +91,21 @@ example : ∃ x : RankSchanuelUnshiftedExamples.oneCoordinateHook.obj
 
 noncomputable example : HasMultisetMatching (k := ℚ) (n := 1) 0
     ((oneCoordinateHookMinimalResolution.signedHookBarcode
-      (k := ℚ) (n := 1) (by norm_num)
+      (k := ℚ) (n := 1)
       RankSchanuelUnshiftedExamples.oneCoordinateHook
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        oneCoordinateHook_finitelyPresented)).positive +
+      oneCoordinateHook_finitelyPresented).positive +
      (oneCoordinateHookMinimalResolution.signedHookBarcode
-      (k := ℚ) (n := 1) (by norm_num)
+      (k := ℚ) (n := 1)
       RankSchanuelUnshiftedExamples.oneCoordinateHook
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        oneCoordinateHook_finitelyPresented)).negative)
+      oneCoordinateHook_finitelyPresented).negative)
     ((oneCoordinateHookMinimalResolution.signedHookBarcode
-      (k := ℚ) (n := 1) (by norm_num)
+      (k := ℚ) (n := 1)
       RankSchanuelUnshiftedExamples.oneCoordinateHook
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        oneCoordinateHook_finitelyPresented)).positive +
+      oneCoordinateHook_finitelyPresented).positive +
      (oneCoordinateHookMinimalResolution.signedHookBarcode
-      (k := ℚ) (n := 1) (by norm_num)
+      (k := ℚ) (n := 1)
       RankSchanuelUnshiftedExamples.oneCoordinateHook
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        oneCoordinateHook_finitelyPresented)).negative) :=
+      oneCoordinateHook_finitelyPresented).negative) :=
   oneCoordinate_signedMatching 0
 
 private theorem twoCoordinateHook_finitelyPresented :
@@ -135,25 +127,21 @@ finitely presented, nonzero module input. -/
 theorem twoCoordinate_signedMatching (ε : ℝ≥0) :
     HasMultisetMatching (k := ℚ) (n := 2) (9 * ε)
       ((twoCoordinateHookMinimalResolution.signedHookBarcode
-        (k := ℚ) (n := 2) (by norm_num)
+        (k := ℚ) (n := 2)
         RankSchanuelUnshiftedExamples.twoCoordinateHook
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          twoCoordinateHook_finitelyPresented)).positive +
+        twoCoordinateHook_finitelyPresented).positive +
        (twoCoordinateHookMinimalResolution.signedHookBarcode
-        (k := ℚ) (n := 2) (by norm_num)
+        (k := ℚ) (n := 2)
         RankSchanuelUnshiftedExamples.twoCoordinateHook
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          twoCoordinateHook_finitelyPresented)).negative)
+        twoCoordinateHook_finitelyPresented).negative)
       ((twoCoordinateHookMinimalResolution.signedHookBarcode
-        (k := ℚ) (n := 2) (by norm_num)
+        (k := ℚ) (n := 2)
         RankSchanuelUnshiftedExamples.twoCoordinateHook
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          twoCoordinateHook_finitelyPresented)).positive +
+        twoCoordinateHook_finitelyPresented).positive +
        (twoCoordinateHookMinimalResolution.signedHookBarcode
-        (k := ℚ) (n := 2) (by norm_num)
+        (k := ℚ) (n := 2)
         RankSchanuelUnshiftedExamples.twoCoordinateHook
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          twoCoordinateHook_finitelyPresented)).negative) := by
+        twoCoordinateHook_finitelyPresented).negative) := by
   have h := finitelyPresented_exists_signedHookMultisetMatching
       (k := ℚ) (n := 2) (by norm_num)
       RankSchanuelUnshiftedExamples.twoCoordinateHook
@@ -189,25 +177,21 @@ example : ∃ x : RankSchanuelUnshiftedExamples.twoCoordinateHook.obj
 noncomputable example (ε : ℝ≥0) : HasMultisetMatching (k := ℚ) (n := 2)
     (9 * ε)
     ((twoCoordinateHookMinimalResolution.signedHookBarcode
-      (k := ℚ) (n := 2) (by norm_num)
+      (k := ℚ) (n := 2)
       RankSchanuelUnshiftedExamples.twoCoordinateHook
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        twoCoordinateHook_finitelyPresented)).positive +
+      twoCoordinateHook_finitelyPresented).positive +
      (twoCoordinateHookMinimalResolution.signedHookBarcode
-      (k := ℚ) (n := 2) (by norm_num)
+      (k := ℚ) (n := 2)
       RankSchanuelUnshiftedExamples.twoCoordinateHook
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        twoCoordinateHook_finitelyPresented)).negative)
+      twoCoordinateHook_finitelyPresented).negative)
     ((twoCoordinateHookMinimalResolution.signedHookBarcode
-      (k := ℚ) (n := 2) (by norm_num)
+      (k := ℚ) (n := 2)
       RankSchanuelUnshiftedExamples.twoCoordinateHook
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        twoCoordinateHook_finitelyPresented)).positive +
+      twoCoordinateHook_finitelyPresented).positive +
      (twoCoordinateHookMinimalResolution.signedHookBarcode
-      (k := ℚ) (n := 2) (by norm_num)
+      (k := ℚ) (n := 2)
       RankSchanuelUnshiftedExamples.twoCoordinateHook
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        twoCoordinateHook_finitelyPresented)).negative) :=
+      twoCoordinateHook_finitelyPresented).negative) :=
   twoCoordinate_signedMatching ε
 
 private def finiteDeathPair : HookMatching.FiniteHookTag (n := 1) :=

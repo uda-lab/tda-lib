@@ -6325,3 +6325,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees
 #print axioms TDA.Persistence.RipsSamplingExamples.weighted_twoPoint_sampleLaw_bound_degreeZero
 #print axioms TDA.Persistence.RipsSamplingExamples.twoPoint_pair_sampleLaw_bound_degreeZero
+#print axioms TDA.Persistence.GradedFree.GradedGenerators.lowerFiniteIndexUniverse
+#print axioms TDA.Persistence.GradedFree.GradedGenerators.lowerFiniteIndexUniverseIso
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_lowerIndexUniverse

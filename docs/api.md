@@ -364,7 +364,7 @@ empty families. Together, these results give choice-independent hook
 multiplicities for finite real-coordinate rank-projective decompositions.
 `FiniteRankProjectiveResolution.finitelyPresented_exists_minimal_resolution_with_hook_sum_terms`
 then constructs a minimal resolution for every finitely presented module on
-`Fin n → ℝ` (`n ≥ 1`), with each zero-padded term represented by an actual
+`Fin n → ℝ`, with each zero-padded term represented by an actual
 finite hook sum. The proof transports the occurrence-indexed terms of a finite
 grid resolution through the genuine left Kan extension, its hook and
 biproduct isomorphisms, and the reconstructed presentation of the original
@@ -381,7 +381,13 @@ raw lengths. `signedHookBarcode_eq` records those two finite multisets
 separately; repeated hooks retain their multiplicity and even and odd degrees
 are not cancelled against one another. The principal-upset example confirms
 that positive-degree terms vanish when the resolved module is already
-projective.
+projective. These hook-Betti and signed-barcode declarations take
+`M : PModule.{u,0,u} k (Fin n → ℝ)` with the finite-presentation hypothesis
+`GradedFree.FinitelyPresented.{u,0,0}` (index carriers in `Type 0`), as the
+existence and `2*n-2` bound theorems do, and assume no positivity of `n`.
+`GradedFree.finitelyPresented_lowerIndexUniverse` converts a finite
+presentation with index carriers in `Type u` to this form, and
+`GradedFree.finitelyPresented_liftIndexUniverse` is the converse.
 
 For a field `k`, `n ≥ 1`, and two finite occurrence-indexed families of these
 finite-death or principal-upset hooks over `Fin n → ℝ`,
@@ -753,8 +759,10 @@ redundant relation, and the arbitrary-field rank-exact consumer.
 The field-side closure results of this and the next subsection, and
 `IsRankExact.pushout_finitelyPresented` above, are stated for `P : Type`, modules in
 `PModule.{u,0,u}` and presentations with index carriers in `Type 0`
-(`GradedFree.FinitelyPresented.{u,0,0}`); no lemma lowers a `FinitelyPresented.{u,0,u}` witness to
-`{u,0,0}`. Let `k` be a field, `P : Type` a partially ordered type, and
+(`GradedFree.FinitelyPresented.{u,0,0}`); a `FinitelyPresented.{u,0,u}`
+witness is lowered to `{u,0,0}` by
+`GradedFree.finitelyPresented_lowerIndexUniverse`. Let `k` be a field,
+`P : Type` a partially ordered type, and
 `0 → L → M → N → 0` a pointwise short exact row of persistence modules. If
 `L` and `N` are finitely presented, `IsPointwiseShortExact.finitelyPresented_middle`
 proves that `M` is finitely presented. The row is assumed pointwise exact in
