@@ -466,6 +466,13 @@ stability. See [local matching from finite box counts](persistence-measure-match
 - **Rights/evidence:** **AP2**, pinned [LICENSE](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/LICENSE) and source header. The adaptation retains the source notice and identifies its revision and modifications; tda-lib distributes Apache-2.0 in its root LICENSE.
 - **Use/classification:** `BoundaryTransportAttainment` specializes the closed/tight probability-plan argument to the already-proved collapsed space and the pinned mathlib map interface. Native continuous-cost truncations, normalization and reverse comparison then prove finite-input attainment. No general coupling, cost or Wasserstein package is imported. The [dependency map](boundary-transport-ot-dependency.md) separates this source adaptation from incompatible ordinary-OT APIs and unresolved article-body use.
 
+<a id="Fasy14"></a>
+### Fasy14 — confidence from finite-cover miss probabilities
+
+- **Identity/version:** Brittany Terese Fasy, Fabrizio Lecci, Alessandro Rinaldo, Larry Wasserman, Sivaraman Balakrishnan and Aarti Singh, *Confidence sets for persistence diagrams*, Annals of Statistics 42(6) (2014), 2301–2339, [arXiv:1303.7117v3](https://arxiv.org/html/1303.7117v3), [DOI](https://doi.org/10.1214/14-AOS1252).
+- **Use/classification:** Lemma 4 and its proof motivate the finite-cover iid union bound in `SamplingCoverage` and its actual q-tame Rips consumer in `RipsSamplingConfidence`. The library retains the cover cardinality and minimum ball mass explicitly; it does not formalize the source's manifold covering-number or density estimates. Diameter-scale Rips stability gives factor two, whereas the source's distance-function/offset diagrams use factor one. See [finite-sample Rips confidence](rips-sampling-confidence.md).
+- **Rights/evidence:** **U** for third-party reuse. The primary statement and proof were read for an original formal proof and summary; no article text, figures or source code are redistributed.
+
 <a id="Matching-affine-arrangements"></a>
 ### Matching-distance affine arrangements
 

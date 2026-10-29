@@ -1438,6 +1438,20 @@ This uses essential suprema directly, with the factor `2` from the half-distorti
 GW convention; it assumes no optimal coupling or finite-`p` limit. See
 [sampled Rips diagram laws](math/sampled-rips-laws.md).
 
+`RipsSamplingConfidence` bounds the probability that an iid sample's canonical
+q-tame diagram differs from the diagram of its compact support. For a finite
+open `r/2`-net with `N` centers and minimum ball probability `β > 0`, the bound
+is `P[dB(D(sample), D(support)) > 2r] ≤ N * (1 - β)^n`, for `n ≥ 1`, every
+coefficient field and every degree. `qTameSampleDiagram` uses the existing
+`Rips.Sample` range, identifying repeated draws while retaining essential bars.
+The actual distance event is measurable by two-Lipschitz stability and the
+extended pseudometric on `LocallyFiniteDecoratedDiagram`.
+`Probability.SamplingCoverage` supplies exact avoidance probabilities, the
+finite union bound and probability restriction to the support. The ambient
+compact-support formulation uses a separable metric Borel probability space.
+See [finite-sample Rips confidence](math/rips-sampling-confidence.md) for the
+cover hypotheses and the distinction from offset-diagram confidence results.
+
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
 `a < b` has finite-dimensional image over the coefficient field.
 `TDA.Persistence.RipsQTame` proves `Rips.qTame_of_totallyBounded` for the
@@ -2432,9 +2446,28 @@ the finite inverse system, bounding the bottleneck distance of the two extracted
 No interval decomposition is assumed. The extracted diagrams have finite births;
 birth-at-minus-infinity strata of unrestricted q-tame modules are not represented. Positive
 finite diagrams embed isometrically (`Diagram.toLocallyFinite`, `bottleneck_toLocallyFinite`), and
-for finite metric spaces `Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` identifies the
-extracted Rips diagram with the finite one; compatibility with the finite `Diagram` API for
-other finite-type q-tame modules remains open. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
+`TDA.Persistence.ConstructibleQTameCompatibility` identifies the canonical diagram with the
+finite barcode for a real module over any field satisfying `FiniteConstructible.IsConstructible`
+on a finite critical grid and having finite-dimensional critical fibers. This is the
+right-continuous convention: the module is zero before the first critical value, constant
+up to isomorphism on cells `[cᵢ,cᵢ₊₁)`, and may have a nonzero final tail. Pointwise
+finite-dimensionality follows from `finiteDimensional_of_isConstructible`, and
+`FiniteConstructible.qTame_of_isConstructible` derives q-tameness.
+`FiniteConstructible.moduleExtendedDiagramMultiplicity_eq_count` says that at every decorated
+point the canonical multiplicity counts the occurrences in `moduleDiagram`, including
+repeated and essential bars. The decoration map sends a finite bar `(b,d)` to
+`(minusCut b,minusCut d)` and an essential bar `(b,∞)` to `(minusCut b,infinityCut)`.
+`FiniteConstructible.ofQModule_eq_toLocallyFinite` identifies the resulting diagrams.
+`FiniteConstructible.ofQModuleMatchingEquiv` transports finite occurrence matchings to
+the canonical diagram with their costs preserved, using
+`Diagram.toLocallyFiniteMatchingEquiv` and its cost theorem.
+`FiniteConstructible.ofQModule_bottleneck_eq_finite` then gives equality of their locally
+finite and finite bottleneck values through `bottleneck_toLocallyFinite`, including different
+or empty grids and infinite distances.
+The theorem concerns these half-open bars and finite births; arbitrary endpoint decorations
+and singleton summands of general pointwise finite-dimensional modules are outside its scope.
+`Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` retains the finite-metric-space
+specialization. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
 [decorated diagrams of infinite Rips spaces](math/rips-metric-stability.md#decorated-diagrams-of-infinite-rips-spaces).
 
 
