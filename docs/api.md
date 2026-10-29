@@ -32,7 +32,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 
 | Import and namespace | Main definitions and theorem families | Requirements and scope |
 |---|---|---|
-| `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers; ambient Čech complexes and relations (`Cech`); greedy sparse Rips (`SparseRips`) and normalized subdivision-Rips (`SubdivisionRips`) bifiltrations | Values belong to nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
+| `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers; ambient Čech complexes and relations (`Cech`); greedy sparse Rips filtrations (`SparseRips`, one-parameter) and normalized subdivision-Rips bifiltrations (`SubdivisionRips`) | Values belong to nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
 | `TDA.Simplicial` / `TDA.Simplicial` | Face `Chain`, signed `boundary`, square-zero chain complex, inclusion maps, `vertexChainMap`, `simplicialChainMap`, `simplicialHomology` / `simplicialHomologyMap`, finite coordinates and `VertexMap` / `Contiguous` | Signed chains use an ambient vertex order and a ring. Finite-dimensional homology additionally uses a field and finite faces. A vertex map may identify vertices; contiguity is reflexive and symmetric, with composition laws, and is not asserted transitive. |
 | `TDA.Persistence` / `TDA.Persistence` | `PModule`, structure maps and reindexing; finite intervals, rank barcodes and decomposition; `Diagram`, `dgm`, reduction, stability and calculus | The functor core needs a ring and a preorder, with independent coefficient/index/carrier universes. Finite decomposition has its narrower field, finite-chain, pointwise finite-dimensional and same carrier/coefficient universe assumptions. Sublevel diagrams and calculus retain their stated vertex-order, finite-face and local-lift hypotheses. |
 | `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces; measure bifiltrations on the restricted two-copy index (`MeasureBifiltration`), finite-uniform Gromov–Prokhorov witnesses (`FiniteGromovProkhorov`, `FiniteGromovProkhorovWitness`) and the large-face multicover cover (`MulticoverCover`) | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has a common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. |
@@ -1701,7 +1701,9 @@ the minimum; fractional optima can coexist with it. Empty formulas and reindexin
 included. For unit masses, `BoundaryTransport.boundaryTransportPowerValue_ofIndexed_unit`
 identifies the infimum over all Borel boundary plans between the atomic measures with the
 powered finite matching minimum `finitePowerMatchingCost p` for `p ≥ 0`. No identification
-with an ordinary Wasserstein coupling API is provided.
+with an ordinary Wasserstein coupling API is provided; in particular the library's own
+`TDA.Probability.measureWasserstein` (exact probability marginals, used for the sampled Rips
+laws) is a separate definition not identified with the boundary-transport value.
 See [finite boundary transport](math/finite-boundary-transport.md).
 
 ## Finite real-exponent matching and transport costs
