@@ -4877,6 +4877,43 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZero_repeated_terms
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZero_differential_is_identity
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionExamples.contractibleZero_rank_cancellation
+
+-- Weak-pair rank erosion and its interleaving obstruction.
+#print axioms TDA.Persistence.erosionLower
+#print axioms TDA.Persistence.erosionUpper
+#print axioms TDA.Persistence.erosionLower_zero
+#print axioms TDA.Persistence.erosionUpper_zero
+#print axioms TDA.Persistence.erosionLower_le
+#print axioms TDA.Persistence.le_erosionUpper
+#print axioms TDA.Persistence.erosionWide_le
+#print axioms TDA.Persistence.erosionLower_add
+#print axioms TDA.Persistence.erosionUpper_add
+#print axioms TDA.Persistence.finrank_range_comp_le
+#print axioms TDA.Persistence.rankOfStructureMap_four_point
+#print axioms TDA.Persistence.RankErosion
+#print axioms TDA.Persistence.rankErosion_zero_iff
+#print axioms TDA.Persistence.RankErosion.symm
+#print axioms TDA.Persistence.RankErosion.refl
+#print axioms TDA.Persistence.RankErosion.mono
+#print axioms TDA.Persistence.RankErosion.trans
+#print axioms TDA.Persistence.rankErosionDistance
+#print axioms TDA.Persistence.rankErosionDistance_le_of_erosion
+#print axioms TDA.Persistence.rankErosionDistance_self
+#print axioms TDA.Persistence.rankErosionDistance_comm
+#print axioms TDA.Persistence.rankErosionDistance_triangle
+#print axioms TDA.Persistence.translation_erosionLower
+#print axioms TDA.Persistence.CoordinateInterleaving.factor_structureMap
+#print axioms TDA.Persistence.CoordinateInterleaving.rank_erosion_le
+#print axioms TDA.Persistence.CoordinateInterleaving.rankErosion
+#print axioms TDA.Persistence.rankErosionDistance_le_coordinateInterleavingDistance
+#print axioms TDA.Persistence.no_coordinateInterleaving_of_rank_violation
+#print axioms TDA.Persistence.radius_le_coordinateInterleavingDistance_of_rank_violation
+#print axioms TDA.Persistence.radius_lt_coordinateInterleavingDistance_of_rank_violation
+#print axioms TDA.Persistence.RankErosionWitness.zeroModule_self
+#print axioms TDA.Persistence.RankErosionWitness.originHook_diagonal_rank
+#print axioms TDA.Persistence.RankErosionWitness.originHook_supported_rank
+#print axioms TDA.Persistence.RankErosionWitness.originHook_no_zero_interleaving
+#print axioms TDA.Persistence.RankErosionWitness.originHook_positive_radius_no_interleaving
 #print axioms TDA.Persistence.Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity
 
 -- Actual row-by-row transfer of finite rank-projective resolutions through grid Kan extension.
