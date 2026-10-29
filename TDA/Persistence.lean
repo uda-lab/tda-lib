@@ -223,6 +223,10 @@ import TDA.Persistence.QTame
 import TDA.Persistence.RealInterleavingInterpolation
 import TDA.Persistence.RipsQTame
 import TDA.Persistence.RipsQTameDiagram
+import TDA.Persistence.RealBarcodeRank
+import TDA.Persistence.ConstructibleQTame
+import TDA.Persistence.FiniteDiagramQTame
+import TDA.Persistence.ConstructibleQTameCompatibility
 import TDA.Persistence.RipsQTameFiniteCompatibility
 import TDA.Persistence.LocallyFiniteDiagramBottleneck
 import TDA.Persistence.PersistenceMeasureWindowMatching
