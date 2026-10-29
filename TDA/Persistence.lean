@@ -356,6 +356,10 @@ import TDA.Persistence.RankSignedBarcodeOneDimensional
 import TDA.Persistence.PositiveAffineSlice
 import TDA.Persistence.AffineSlicePresentation
 import TDA.Persistence.AffineSliceHooks
+import TDA.Persistence.RealBarcodeRankUniqueness
+import TDA.Persistence.RankExactBarcodeCancellation
+import TDA.Persistence.AffineSliceRank
+import TDA.Persistence.AffineSliceSignedBarcode
 import TDA.Persistence.FinitePresentationColimits
 import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationExtensions
