@@ -465,3 +465,10 @@ stability. See [local matching from finite box counts](persistence-measure-match
 - **Identity/version:** The Tau Ceti contributors, [`OptimalTransport/Compactness.lean` at 575dbdfaf4ae0df6e5bb35bb39e16458f028c91f](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/TauCeti/MeasureTheory/OptimalTransport/Compactness.lean).
 - **Rights/evidence:** **AP2**, pinned [LICENSE](https://github.com/TauCetiProject/TauCeti/blob/575dbdfaf4ae0df6e5bb35bb39e16458f028c91f/LICENSE) and source header. The adaptation retains the source notice and identifies its revision and modifications; tda-lib distributes Apache-2.0 in its root LICENSE.
 - **Use/classification:** `BoundaryTransportAttainment` specializes the closed/tight probability-plan argument to the already-proved collapsed space and the pinned mathlib map interface. Native continuous-cost truncations, normalization and reverse comparison then prove finite-input attainment. No general coupling, cost or Wasserstein package is imported. The [dependency map](boundary-transport-ot-dependency.md) separates this source adaptation from incompatible ordinary-OT APIs and unresolved article-body use.
+
+<a id="Matching-affine-arrangements"></a>
+### Matching-distance affine arrangements
+
+- **Sources:** Bapat et al., *Computing the Matching Distance of 2-Parameter Persistence Modules from Critical Values*, [arXiv:2210.12868v3](https://arxiv.org/html/2210.12868v3), Lemma 4.2 and Theorems 3.1/4.4; Kerber–Lesnick–Oudot, *Exact Computation of the Matching Distance on 2-Parameter Persistence Modules*, [arXiv:1812.09085v2](https://arxiv.org/html/1812.09085v2), §4.
+- **Use/classification:** Context for the independently derived [finite affine endpoint-cost arrangement](affine-switch-arrangement.md). The library proves both signed factors, finite cuts and sign-cell cost-order invariance. The regression addresses only the fixed-push single-pencil claim; neither source's main matching-distance theorem is claimed formalized or refuted.
+- **Rights/evidence:** **U**; versioned primary HTML used for mathematical reading. No source prose, figures or code are reproduced.

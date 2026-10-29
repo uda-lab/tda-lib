@@ -2516,3 +2516,15 @@ active. The core inclusion and collapse compose to the identity, so the cycle's
 nonzero `H₁` class survives in the sparse complex and maps nontrivially to the
 relaxed complex. The sparse complex retains faces from earlier scales through its union;
 the deletion claim concerns the closed active complex at scale one.
+
+## Finite affine endpoint-cost arrangement
+
+`TDA.Persistence.EndpointCostSign` proves the two-factor sign identity for
+weighted absolute differences. `TDA.Persistence.AffineSwitchArrangement`
+constructs finite affine cuts from a finite set of coordinate pairs and derives
+`AffineSwitch.SameCell.sign_cost_sub_eq`, `cost_le_iff`, and `cost_eq_iff`.
+Push branches, the slope-one normalization boundary, repeated endpoints, and
+zero forms are retained. This is an endpoint comparison result; barcode
+transport and matching-distance maximum attainment remain separate. See
+[finite affine cuts](math/affine-switch-arrangement.md) for definitions, proof,
+and the two-cut regression.
