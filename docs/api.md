@@ -1438,6 +1438,20 @@ This uses essential suprema directly, with the factor `2` from the half-distorti
 GW convention; it assumes no optimal coupling or finite-`p` limit. See
 [sampled Rips diagram laws](math/sampled-rips-laws.md).
 
+`RipsSamplingConfidence` bounds the probability that an iid sample's canonical
+q-tame diagram differs from the diagram of its compact support. For a finite
+open `r/2`-net with `N` centers and minimum ball probability `β > 0`, the bound
+is `P[dB(D(sample), D(support)) > 2r] ≤ N * (1 - β)^n`, for `n ≥ 1`, every
+coefficient field and every degree. `qTameSampleDiagram` uses the existing
+`Rips.Sample` range, identifying repeated draws while retaining essential bars.
+The actual distance event is measurable by two-Lipschitz stability and the
+extended pseudometric on `LocallyFiniteDecoratedDiagram`.
+`Probability.SamplingCoverage` supplies exact avoidance probabilities, the
+finite union bound and probability restriction to the support. The ambient
+compact-support formulation uses a separable metric Borel probability space.
+See [finite-sample Rips confidence](math/rips-sampling-confidence.md) for the
+cover hypotheses and the distinction from offset-diagram confidence results.
+
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
 `a < b` has finite-dimensional image over the coefficient field.
 `TDA.Persistence.RipsQTame` proves `Rips.qTame_of_totallyBounded` for the
