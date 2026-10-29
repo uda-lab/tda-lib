@@ -6320,6 +6320,28 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.arbitrary_field_nonzero_composite_kernel
 #print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.empty_zero_composite_kernel_finitelyPresented
 
+-- Finite-constructible barcodes and canonical q-tame decorated diagrams (Issue #724).
+#print axioms TDA.Persistence.finrank_range_piMap
+#print axioms TDA.Persistence.list_get_sum_countP
+#print axioms TDA.Persistence.RealBarcode.intervalImage_rank
+#print axioms TDA.Persistence.RealBarcode.realize_image_rank
+#print axioms TDA.Persistence.persistenceImage_finrank_eq_of_iso
+#print axioms TDA.Persistence.FiniteConstructible.qTame_of_isConstructible
+#print axioms TDA.Persistence.FiniteConstructible.moduleDiagram_rank
+#print axioms TDA.Persistence.FiniteDiagramQTame.diagramOccurrence_finite
+#print axioms TDA.Persistence.FiniteDiagramQTame.diagramOccurrence_essential
+#print axioms TDA.Persistence.FiniteDiagramQTame.moduleExtendedDiagramMultiplicity_eq_count
+#print axioms TDA.Persistence.FiniteDiagramQTame.ofQModule_eq_toLocallyFinite
+#print axioms TDA.Persistence.Diagram.toLocallyFiniteMatchingEquiv
+#print axioms TDA.Persistence.Diagram.toLocallyFiniteMatchingEquiv_cost
+#print axioms TDA.Persistence.FiniteConstructible.moduleExtendedDiagramMultiplicity_eq_count
+#print axioms TDA.Persistence.FiniteConstructible.ofQModule_eq_toLocallyFinite
+#print axioms TDA.Persistence.FiniteConstructible.ofQModuleMatchingEquiv
+#print axioms TDA.Persistence.FiniteConstructible.ofQModule_bottleneck_eq_finite
+#print axioms TDA.Persistence.ConstructibleBarcodeExamples.canonical_decorated_counts
+#print axioms TDA.Persistence.ConstructibleBarcodeExamples.empty_canonical_decorated_count
+#print axioms TDA.Persistence.FiniteConstructibleExamples.twisted_canonical_identification
+
 -- Weighted Gaussian stability under native boundary transport.
 #print axioms TDA.Persistence.WeightedKernel.interiorUpperPointEquiv_apply
 #print axioms TDA.Persistence.WeightedKernel.map_interiorUpperPointEquiv
@@ -6348,8 +6370,119 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.WeightedKernel.norm_weightedPersistenceEmbedding_atomicMeasure_sub_le
 #print axioms TDA.Persistence.WeightedKernel.weightedPersistenceEmbedding_quantizedDiagram_tendsto
 
+-- Extended pseudometric laws for locally finite decorated diagrams.
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.reverseMatching_finite_some_iff
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.reverseMatching_reverseMatching
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.matchingCost_reverse
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.matchingCost_compose_le
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.bottleneck_self
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.bottleneck_comm
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.bottleneck_triangle
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.edist_eq_bottleneck
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.instPseudoEMetricSpace
 
--- Positive affine slices and original finite presentations.
+-- Actual finite iid q-tame Rips confidence bounds.
+#print axioms TDA.Persistence.Rips.qTameSampleDiagram_eq_of_range_eq
+#print axioms TDA.Persistence.Rips.hausdorffDist_range_le_dist
+#print axioms TDA.Persistence.Rips.bottleneck_qTameSampleDiagram_le
+#print axioms TDA.Persistence.Rips.lipschitzWith_qTameSampleDiagram
+#print axioms TDA.Persistence.Rips.continuous_bottleneck_qTameSampleDiagram
+#print axioms TDA.Persistence.Rips.measurable_bottleneck_qTameSampleDiagram
+#print axioms TDA.Persistence.Rips.measurableSet_bottleneck_qTameSampleDiagram_gt
+#print axioms TDA.Persistence.Rips.hausdorffDist_range_univ_le_of_hits_net
+#print axioms TDA.Persistence.Rips.bottleneck_qTameSampleDiagram_le_of_hits_net
+#print axioms TDA.Persistence.Rips.finiteCoverMass_ball_pos
+#print axioms TDA.Persistence.Rips.measure_bottleneck_qTameSampleDiagram_gt_le
+#print axioms TDA.Persistence.Rips.bottleneck_qTameSampleDiagram_carrier_le_of_hits_net
+#print axioms TDA.Persistence.Rips.measure_bottleneck_qTameSampleDiagram_carrier_gt_le
+#print axioms TDA.Persistence.Rips.measure_bottleneck_qTameSampleDiagram_support_gt_le
+#print axioms TDA.Persistence.Rips.measurableSet_bottleneck_qTameSampleDiagram_support_gt
+#print axioms TDA.Persistence.Rips.finiteCoverMass_support_ball_pos
+
+-- Infinite compact and boundary examples for iid confidence.
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitIntervalLaw_isOpenPosMeasure
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitIntervalLaw_support
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitInterval_infinite
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.intervalGridMass_pos
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.intervalGridMass_le_one
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitInterval_confidence
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.unitInterval_one_draw_confidence
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.repeatedDraws_qTameSampleDiagram
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.singleton_finiteCoverMass_eq_one
+#print axioms TDA.Persistence.Rips.ConfidenceExamples.singleton_confidence_zero
+
+#print axioms TDA.Persistence.EndpointCost.abs_div_lt_iff_factor_neg
+#print axioms TDA.Persistence.EndpointCost.abs_div_le_iff_factor_nonpos
+#print axioms TDA.Persistence.EndpointCost.sign_abs_div_sub_eq_sign_factors
+#print axioms TDA.Persistence.EndpointCost.abs_div_eq_iff_factor_zero
+#print axioms TDA.Persistence.EndpointCost.sign_abs_div_mul_sub_eq_sign_factors
+#print axioms TDA.Persistence.AffineSwitch.Form.eval_add
+#print axioms TDA.Persistence.AffineSwitch.Form.eval_sub
+#print axioms TDA.Persistence.AffineSwitch.Form.eval_scale
+#print axioms TDA.Persistence.AffineSwitch.Form.eval_zero
+#print axioms TDA.Persistence.AffineSwitch.Form.eval_eq_zero_iff
+#print axioms TDA.Persistence.AffineSwitch.normalization_pos
+#print axioms TDA.Persistence.AffineSwitch.cost_denominator_pos
+#print axioms TDA.Persistence.AffineSwitch.cost_of_slope_le_one
+#print axioms TDA.Persistence.AffineSwitch.cost_of_one_le_slope
+#print axioms TDA.Persistence.AffineSwitch.branch_active
+#print axioms TDA.Persistence.AffineSwitch.denominator_pos
+#print axioms TDA.Persistence.AffineSwitch.denominator_eq_one_or_two
+#print axioms TDA.Persistence.AffineSwitch.exists_denominator_iff
+#print axioms TDA.Persistence.AffineSwitch.eval_switchForm
+#print axioms TDA.Persistence.AffineSwitch.slopeCut_mem
+#print axioms TDA.Persistence.AffineSwitch.pushCut_mem
+#print axioms TDA.Persistence.AffineSwitch.switchForm_mem
+#print axioms TDA.Persistence.AffineSwitch.zero_mem_cuts
+#print axioms TDA.Persistence.AffineSwitch.sameCell_iff
+#print axioms TDA.Persistence.AffineSwitch.finite_signProfiles
+#print axioms TDA.Persistence.AffineSwitch.SameCell.refl
+#print axioms TDA.Persistence.AffineSwitch.SameCell.symm
+#print axioms TDA.Persistence.AffineSwitch.SameCell.trans
+#print axioms TDA.Persistence.AffineSwitch.SameCell.slope_le_one_iff
+#print axioms TDA.Persistence.AffineSwitch.SameCell.active_eq
+#print axioms TDA.Persistence.AffineSwitch.SameCell.sign_cost_sub_eq
+#print axioms TDA.Persistence.AffineSwitch.SameCell.cost_le_iff
+#print axioms TDA.Persistence.AffineSwitch.SameCell.cost_eq_iff
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_pushes
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_cost_difference
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_cost_eq_iff
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_cost_eq_at_neg_third
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_cost_eq_at_one
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_cost_ne_at_zero
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_no_single_affine_zero_set
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_signed_factors
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_signed_factors_zero_iff
+#print axioms TDA.Persistence.AffineSwitchExamples.regression_cost_eq_signed_factors
+#print axioms TDA.Persistence.AffineSwitchExamples.vertical_sameCell
+#print axioms TDA.Persistence.AffineSwitchExamples.vertical_cost_values
+#print axioms TDA.Persistence.AffineSwitchExamples.vertical_comparison_invariance
+#print axioms TDA.Persistence.AffineSwitchExamples.vertical_zero_mem_cuts
+#print axioms TDA.Persistence.AffineSwitchExamples.vertical_cost_at_slope_one
+#print axioms TDA.Persistence.AffineSwitch.Form.ext
+#print axioms TDA.Persistence.AffineSwitch.Form.ext_iff
+
+#print axioms TDA.Persistence.finiteSimplicialHomology
+#print axioms TDA.Persistence.finiteSimplicialHomology_obj
+#print axioms TDA.Persistence.finiteSimplicialHomology_structureMap
+#print axioms TDA.Persistence.finiteSimplicialSignedHookBarcode
+#print axioms TDA.Persistence.finiteSimplicial_signedHookBottleneckDissimilarity_le
+#print axioms TDA.Persistence.finiteSimplicial_signedHookBottleneckDissimilarity_le_supGradeError
+#print axioms TDA.Persistence.finiteSimplicialGridHomology
+#print axioms TDA.Persistence.finiteSimplicialHomology_gridKanIso
+#print axioms TDA.Persistence.finiteSimplicialHomology_gridKanIso_fac
+#print axioms TDA.Persistence.finiteSimplicialHomology_gridKanIso_kanInclusion
+#print axioms TDA.Persistence.finiteSimplicialHomology_finitelyPresented
+#print axioms TDA.Persistence.coordinateInclusionInterleaving
+#print axioms TDA.Persistence.coordinateInclusionInterleaving_φ_app
+#print axioms TDA.Persistence.coordinateInclusionInterleaving_ψ_app
+#print axioms TDA.Persistence.finiteSimplicialHomology_interleaving
+#print axioms TDA.Persistence.finiteSimplicialHomology_interleaving_φ_app
+#print axioms TDA.Persistence.finiteSimplicialHomology_interleaving_ψ_app
+#print axioms TDA.Persistence.coordinateInterleavingDistance_finiteSimplicialHomology_le
+#print axioms TDA.Persistence.coordinateInterleavingDistance_finiteSimplicialHomology_le_supGradeError
+#print axioms TDA.Persistence.finiteSimplicialHomology_finiteDimensional
+
 #print axioms TDA.Persistence.PositiveAffineLine.ext
 #print axioms TDA.Persistence.PositiveAffineLine.orderHom
 #print axioms TDA.Persistence.PositiveAffineLine.orderHom_apply

@@ -1,4 +1,4 @@
-import TDA.Persistence.ConstructibleBarcode
+import TDA.Persistence.ConstructibleQTameCompatibility
 
 /-!
 # Real-barcode reconstruction boundary cases
@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace TDA.Persistence.ConstructibleBarcodeExamples
 
-open CategoryTheory CategoryTheory.Limits FiniteConstructible
+open CategoryTheory CategoryTheory.Limits FiniteConstructible RectangleMeasure
 open scoped ZeroObject
 
 private def grid : Fin 2 ↪o ℝ :=
@@ -96,6 +96,44 @@ private theorem critical_finite (i : Fin 2) : FiniteDimensional ℚ (inputModule
   change FiniteDimensional ℚ ((barcodeModule (k := ℚ) bars).obj (cellIndex grid (grid i)))
   infer_instance
 
+private theorem input_diagram : moduleDiagram grid inputModule critical_finite = diagram := by
+  let s : Fin 2 →o Fin 3 := (cellIndex grid).comp grid.toOrderHom
+  have hs : s = (Fin.succOrderEmb 2).toOrderHom := by
+    apply DFunLike.ext
+    intro i
+    exact cellIndex_critical grid i
+  unfold moduleDiagram diagram
+  change ofIndexBars grid grid.strictMono
+    (rankBarcode (reindex s (barcodeModule (k := ℚ) bars))) = _
+  rw [rankBarcode_reindex, rankBarcode_barcodeModule, hs]
+
+/-- The canonical decorated diagram keeps both negative-birth finite copies and
+the essential tail at its actual infinity boundary. -/
+theorem canonical_decorated_counts :
+    moduleExtendedDiagramMultiplicity inputModule
+        (qTame_of_isConstructible grid inputModule input_constructible critical_finite)
+        (minusCut (-2), minusCut 3) = 2 ∧
+      moduleExtendedDiagramMultiplicity inputModule
+        (qTame_of_isConstructible grid inputModule input_constructible critical_finite)
+        (minusCut 3, infinityCut) = 1 := by
+  classical
+  have hfinite : minusCut (3 : ℝ) ≠ infinityCut := by
+    intro h
+    have hm : minusCut (3 : ℝ) ∈ cutCell 2 3 := by
+      norm_num [cutCell, minusCut]
+    exact infinityCut_not_mem_cutCell 2 3 (h ▸ hm)
+  have hpair : (minusCut (-2 : ℝ), minusCut (3 : ℝ)) ≠
+      (minusCut (3 : ℝ), infinityCut) := by
+    intro h
+    exact hfinite (congrArg Prod.snd h)
+  constructor
+  · rw [moduleExtendedDiagramMultiplicity_eq_count grid inputModule
+      input_constructible critical_finite, input_diagram, diagram_points]
+    simp [diagramDecoratedPoint, hpair]
+  · rw [moduleExtendedDiagramMultiplicity_eq_count grid inputModule
+      input_constructible critical_finite, input_diagram, diagram_points]
+    simp [diagramDecoratedPoint, Ne.symm hpair]
+
 /-- The explicit interval transport gives a natural isomorphism to the expected endpoints. -/
 noncomputable def explicitBarcodeIso : inputModule ≅ RealBarcode.realize (k := ℚ) diagram :=
   RealBarcode.barcodePullbackIso grid bars bars_birth_pos
@@ -110,6 +148,19 @@ private def emptyGrid : Fin 0 ↪o ℝ :=
 
 private noncomputable def zeroModule : PModule.{0,0,0} ℚ ℝ :=
   (Functor.const ℝ).obj (0 : ModuleCat ℚ)
+
+private theorem zero_constructible : IsConstructible emptyGrid zeroModule :=
+  (isConstructible_empty_iff emptyGrid zeroModule).mpr (fun _ => isZero_zero (ModuleCat ℚ))
+
+/-- An empty critical grid produces no canonical decorated occurrences. -/
+theorem empty_canonical_decorated_count (p : Cut ℝ × Cut ℝ) :
+    moduleExtendedDiagramMultiplicity zeroModule
+      (qTame_of_isConstructible emptyGrid zeroModule zero_constructible
+        (fun i => Fin.elim0 i)) p = 0 := by
+  classical
+  rw [moduleExtendedDiagramMultiplicity_eq_count emptyGrid zeroModule
+    zero_constructible (fun i => Fin.elim0 i)]
+  simp [moduleDiagram_empty_grid]
 
 /-- The empty-grid diagram has no endpoints, so no nonexistent critical value is selected. -/
 theorem empty_diagram : (moduleDiagram emptyGrid zeroModule (fun i => Fin.elim0 i)).points = 0 :=

@@ -1,5 +1,7 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
+import TDA.Persistence.EndpointCostSign
+import TDA.Persistence.AffineSwitchArrangement
 import TDA.Persistence.DecoratedMeasureCuts
 import TDA.Persistence.DecoratedCutEndpoints
 import TDA.Persistence.DecoratedRectangleCells
@@ -102,6 +104,7 @@ import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramBottleneckTopology
 import TDA.Persistence.RipsSamplingMeasure
 import TDA.Persistence.RipsSamplingMeasureStability
+import TDA.Persistence.RipsSamplingConfidence
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.SublevelLossDerivative
 import TDA.Persistence.FiniteBarcode
@@ -224,8 +227,13 @@ import TDA.Persistence.QTame
 import TDA.Persistence.RealInterleavingInterpolation
 import TDA.Persistence.RipsQTame
 import TDA.Persistence.RipsQTameDiagram
+import TDA.Persistence.RealBarcodeRank
+import TDA.Persistence.ConstructibleQTame
+import TDA.Persistence.FiniteDiagramQTame
+import TDA.Persistence.ConstructibleQTameCompatibility
 import TDA.Persistence.RipsQTameFiniteCompatibility
 import TDA.Persistence.LocallyFiniteDiagramBottleneck
+import TDA.Persistence.LocallyFiniteDiagramBottleneckLaws
 import TDA.Persistence.PersistenceMeasureWindowMatching
 import TDA.Persistence.QTameFiniteSaturation
 import TDA.Persistence.LocallyFiniteMatchingCompactness
@@ -355,3 +363,7 @@ import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationExtensions
 import TDA.Persistence.FinitePresentationPullback
 import TDA.Persistence.FinitePresentationCompositeKernel
+import TDA.Persistence.FiniteSimplicial
+import TDA.Persistence.FiniteSimplicialPresentation
+import TDA.Persistence.FiniteSimplicialInterleaving
+import TDA.Persistence.FiniteSimplicialStability

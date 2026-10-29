@@ -5,3 +5,4 @@ import TDA.Persistence.Examples
 import TDA.Topology.Examples
 import TDA.Reeb.Examples
 import TDA.Mapper.Examples
+import TDA.Persistence.FiniteSimplicialExamples

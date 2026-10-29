@@ -1,5 +1,6 @@
 -- Persistence examples and acceptance fixtures, included by the comprehensive TDA root.
 import TDA.Persistence.WeightedBoundaryTransportExamples
+import TDA.Persistence.AffineSwitchExamples
 import TDA.Persistence.RectangleHallExamples
 import TDA.Persistence.RectangleMatchingExamples
 import TDA.Persistence.RectangleMatchingDistanceExamples
@@ -134,6 +135,7 @@ import TDA.Persistence.MatrixSequenceExamples
 import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
 import TDA.Persistence.RipsSamplingExamples
+import TDA.Persistence.RipsSamplingConfidenceExamples
 import TDA.Persistence.PersistenceMeasureExamples
 import TDA.Persistence.PersistenceMeasureBoxExamples
 import TDA.Persistence.PersistenceMeasureEssentialBoxExamples
