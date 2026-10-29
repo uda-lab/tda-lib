@@ -140,10 +140,12 @@ Their boundary augmentation and assignment argument is the proof pattern used
 here. Their displayed norm is tied to p; its use here with ground norm ∞ is a
 library adaptation justified by the explicit cost-matrix argument.
 
-Equality of the finite reservoir optimization with all Borel/Radon couplings on the
-closed upper half-plane is not proved. That bridge must aggregate and split
-repeated occurrences and compare arbitrary boundary destinations with the diagonal
-cost. Divol–Lacombe's formula (20) and Proposition 3.7 use a shortened quotient
+Equality of the finite reservoir optimization with all Borel boundary plans on the
+closed upper half-plane is proved separately for the canonical atomic measures of unit-mass
+diagrams (`boundaryTransportPowerValue_ofIndexed_unit`, `boundaryTransportDistance_ofIndexed_unit`;
+see [finite weighted boundary transport](finite-weighted-boundary-transport.md)). That bridge
+aggregates and splits repeated occurrences and compares arbitrary boundary destinations with the
+diagonal cost. Divol–Lacombe's formula (20) and Proposition 3.7 use a shortened quotient
 metric; the raw cost blocks above do not supply an ordinary metric Wasserstein
 interpretation. [Real-exponent powered costs](finite-p-boundary-transport.md) separately
 reuse this assignment argument for finite p≥1 and take roots after optimization.

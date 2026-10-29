@@ -612,8 +612,10 @@ independently in the library. Supporting algebra also permits off-diagonal pairs
 below the diagonal; the source interpretation uses positive lifetimes. No limit
 theorem for infinite diagrams or general persistence measures is claimed.
 
-The proved equality concerns finite real reservoir matrices, not all Borel/Radon
-couplings. Essential or infinite bars, arbitrary weighted inputs, completeness and
+The proved equality here concerns finite real reservoir matrices; the comparison with all Borel
+boundary plans is proved separately for unit-mass atomic measures
+(`boundaryTransportPowerValue_ofIndexed_unit`, see
+[finite weighted boundary transport](finite-weighted-boundary-transport.md)). Essential or infinite bars, arbitrary weighted inputs, completeness and
 barycenters remain outside it. Quotient and metric-space instances are not supplied.
 Existing first-order distance laws remain in
 [the first-order matching module](finite-first-order-matching.md). The raw augmented
