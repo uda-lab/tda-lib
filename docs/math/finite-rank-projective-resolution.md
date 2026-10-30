@@ -55,6 +55,10 @@ says that `Q` is rank-projective, the actual categorical-kernel row
 `u : Q ⟶ Q` satisfying `u ≫ π = π` is an isomorphism. In this API, a
 `MinimalFiniteRankProjectiveResolution` is a finite rank-projective resolution
 for which every actual quotient row carries this certificate.
+For a coefficient field and partially ordered index type `P : Type`, the
+identity of a pointwise finite-dimensional rank-projective module is such a
+cover: the identity lifts each dying vector in its actual categorical-kernel
+row.
 
 For such a resolution `R`, `R.termAt j` is its recorded term when
 `j < R.resolution.length` and the zero module afterward. A degree bound on

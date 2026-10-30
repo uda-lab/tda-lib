@@ -56,27 +56,11 @@ theorem principalUpset_has_minimalFiniteRankProjectiveResolution
     have hone := congrArg e hx
     exact (one_ne_zero : (1 : k) ≠ 0) (by simpa using hone)
 
-private theorem identity_isRankProjectiveCover
-    {k : Type u} [Field k] {P : Type} [PartialOrder P]
-    (M : PModule.{u,0,u} k P) (hfd : ∀ p, FiniteDimensional k (M.obj p))
-    (hprojective : IsRankProjective M) : IsRankProjectiveCover (𝟙 M) := by
-  letI : ∀ p, FiniteDimensional k (M.obj p) := hfd
-  refine ⟨hprojective, ?_, ?_⟩
-  · exact RankKernel.rankExact (𝟙 M)
-      (fun p x => ⟨x, rfl⟩)
-      (by
-        intro a b hab x hx
-        exact ⟨x, by simp, hx⟩)
-  · intro u hu
-    have hu' : u = 𝟙 M := by simpa using hu
-    rw [hu']
-    infer_instance
-
 /-- The zero object satisfies the public cover certificate, including its
 empty-fiber boundary case. -/
 theorem zero_identity_isRankProjectiveCover :
     IsRankProjectiveCover (𝟙 (0 : PModule ℚ (Fin 2))) := by
-  apply identity_isRankProjectiveCover
+  apply IsRankProjectiveCover.of_identity
   · intro p
     infer_instance
   · intro L A B ι π hs α
@@ -109,7 +93,7 @@ for its identity quotient. -/
 theorem principalUpset_identity_isRankProjectiveCover (a : Fin 2) :
     IsRankProjectiveCover
       (𝟙 (HookInfinity.module (R := ℚ) a)) := by
-  apply identity_isRankProjectiveCover
+  apply IsRankProjectiveCover.of_identity
   · intro p
     infer_instance
   · exact HookInfinity.isRankProjective a

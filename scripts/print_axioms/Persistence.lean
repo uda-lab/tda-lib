@@ -6713,3 +6713,5 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples.bottomSimple_terms_vanish_above_one
 #print axioms TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples.bottomSimple_first_term_nonzero
 #print axioms TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples.bottomSimple_exists_minimal_resolution_nonzero_first_term
+
+#print axioms TDA.Persistence.IsRankProjectiveCover.of_identity

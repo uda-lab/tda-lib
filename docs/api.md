@@ -457,6 +457,10 @@ actual kernel rows and both quotient-fixed endomorphism criteria to show that
 any two certified covers of the same target are naturally isomorphic over
 that target. It makes no finiteness or resolution assumption, and does not
 claim uniqueness of the comparison isomorphism or of an entire resolution.
+For a coefficient field and partially ordered index type `P : Type`,
+`IsRankProjectiveCover.of_identity` certifies the identity map of a pointwise
+finite-dimensional rank-projective module, using its actual categorical-kernel
+row.
 On a finite poset, the separate
 `FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset`
 theorem constructs a resolution whose every quotient row has this certificate.
