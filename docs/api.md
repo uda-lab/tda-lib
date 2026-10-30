@@ -622,6 +622,14 @@ occurrence-indexed biproduct construction
 `C.positive + D.negative` and `D.positive + C.negative`, with every repeated
 tag counted.
 
+For any dimension `n` and finite occurrence-indexed family
+`tag : Fin m → RealHookTag (n := n)`, `hookTagMultiset` retains every index,
+including repeated tags. `hookTagMultiset_eq_ofFn` identifies it with the
+`List.ofFn` enumeration, and `hookTagMultiset_eq_map_univ` identifies it with
+the multiset map of `tag` over the value of `Finset.univ`; this maps indices
+without deduplication. `hookTagMultiset_count` counts indices with each tag.
+These enumeration and count statements include `m = 0` and `n = 0`.
+
 `HasMultisetMatching ρ A B` means that exact finite enumerations of `A` and
 `B` carry an existing `HookMatching.IsMatching`: each paired occurrence has
 an actual coordinate interleaving, and every deleted occurrence on either

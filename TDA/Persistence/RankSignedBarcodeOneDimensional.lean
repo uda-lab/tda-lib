@@ -317,14 +317,8 @@ theorem oneDimensionalHookDiagram_isPositive {m : ℕ}
 /-- The recursive hook multiset is exactly the finite list of occurrences. -/
 theorem hookTagMultiset_eq_univ_map {m : ℕ}
     (T : Fin m → RealHookTag (n := 1)) :
-    hookTagMultiset T = (Finset.univ : Finset (Fin m)).val.map T := by
-  classical
-  induction m with
-  | zero => simp [hookTagMultiset]
-  | succ m ih =>
-      rw [hookTagMultiset]
-      rw [ih (fun i : Fin m => T i.succ)]
-      simp
+    hookTagMultiset T = (Finset.univ : Finset (Fin m)).val.map T :=
+  hookTagMultiset_eq_map_univ T
 
 /-- The diagram point multiset is the endpoint image of the exact hook
 occurrence multiset. -/
