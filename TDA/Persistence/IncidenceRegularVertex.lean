@@ -400,7 +400,8 @@ instance finiteFreeModule_projective (n : ℕ) :
     Projective (finiteFreeModule (k := k) (S := S) n) := by
   exact ModuleCat.projective_of_free (Pi.basisFun (RightIncidence (k := k) (S := S)) (Fin n))
 
-private def regularFamily (n : ℕ) : Fin n → ModuleCat.{u} (RightIncidence (k := k) (S := S)) :=
+/-- The constant finite family of actual regular right-incidence modules. -/
+def regularFamily (n : ℕ) : Fin n → ModuleCat.{u} (RightIncidence (k := k) (S := S)) :=
   fun _ => regular (k := k) (S := S)
 
 private abbrev regularULiftFamily (n : ℕ) : ULift.{u} (Fin n) →

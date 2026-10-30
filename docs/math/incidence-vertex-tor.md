@@ -32,9 +32,12 @@ projective resolution identifies this homology with the left-derived functor, pr
 
 In degree zero, the canonical comparison `leftDerived 0 ≅ Fᵥ` followed by the quotient
 coinvariant equivalence gives `((Fᵥ.leftDerived 0).obj B) ≅ k`, and therefore `Fᵥ(B) ≅ k`.
-The actual coinvariant class of `1 : B` maps to `1 : k`, so this value is nonzero. The
-representative laws for the scalar-transport equivalence and this degree-zero comparison are
-exposed as simp theorems.
+The actual coinvariant class of `1 : B` maps to `1 : k`, so this value is nonzero. The public
+scalar-transport equivalence is
+`IncidenceVertexTor.diagonalQuotientVertexCoinvariantsEquiv`; its simp law
+`diagonalQuotientVertexCoinvariantsEquiv_mkQ` sends each represented quotient class to the
+corresponding natural quotient class. The degree-zero comparison's unit simp law
+`diagonalQuotient_leftDerivedZeroIso_hom_unit` sends the quotient-unit class to `1`.
 
 This specializes the projectivity-and-short-exact-row mechanism of
 [BOOS24-v3, Lemma 5.6](references.md#BOOS24-v3) to the interval-pair incidence algebra and its
