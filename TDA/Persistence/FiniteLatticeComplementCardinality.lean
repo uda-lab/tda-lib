@@ -22,26 +22,15 @@ open TDA.Persistence.FiniteRankProjectiveEndAlgebra
 
 noncomputable section
 
-variable {ι : Type} [Fintype ι] {T : ι → Type}
-  [∀ i, LinearOrder (T i)] [∀ i, Finite (T i)] [∀ i, Nonempty (T i)]
+section CallerBottom
 
-private noncomputable instance (i : ι) : Fintype (T i) := Fintype.ofFinite (T i)
+variable {ι : Type} {T : ι → Type}
+  [∀ i, Lattice (T i)] [∀ i, OrderBot (T i)]
 
-private instance (i : ι) : OrderBot (T i) := by
-  exact Fintype.toOrderBot (T i)
-
-private instance (i : ι) : OrderTop (T i) := by
-  exact Fintype.toOrderTop (T i)
-
-private noncomputable instance piFintype : Fintype (∀ i, T i) := by
-  classical
-  letI : ∀ i, Fintype (T i) := fun i => Fintype.ofFinite (T i)
-  exact Pi.instFintype
-
-/-- A minimal complement in a finite product has a unique active coordinate;
-all other coordinates are bottom, and the active value is a minimal
-complement in that factor. -/
-theorem mem_minimalComplement_pi_iff (p x : ∀ i, T i) :
+/-- In a product of lattices with supplied bottoms, a minimal complement has
+one coordinate in the corresponding factor's minimal complement, and every
+other coordinate is the supplied bottom. -/
+theorem mem_minimalComplement_pi_iff_of_orderBot (p x : ∀ i, T i) :
     x ∈ minimalComplement p ↔
       ∃ i, x i ∈ minimalComplement (p i) ∧ ∀ j, j ≠ i → x j = ⊥ := by
   classical
@@ -112,6 +101,34 @@ theorem mem_minimalComplement_pi_iff (p x : ∀ i, T i) :
         exact hiy.symm.le
       · rw [hbottom j hji]
         exact bot_le
+
+end CallerBottom
+
+variable {ι : Type} [Fintype ι] {T : ι → Type}
+  [∀ i, LinearOrder (T i)] [∀ i, Finite (T i)] [∀ i, Nonempty (T i)]
+
+private noncomputable instance (i : ι) : Fintype (T i) := Fintype.ofFinite (T i)
+
+private instance (i : ι) : OrderBot (T i) := by
+  exact Fintype.toOrderBot (T i)
+
+private instance (i : ι) : OrderTop (T i) := by
+  exact Fintype.toOrderTop (T i)
+
+private noncomputable instance piFintype : Fintype (∀ i, T i) := by
+  classical
+  letI : ∀ i, Fintype (T i) := fun i => Fintype.ofFinite (T i)
+  exact Pi.instFintype
+
+set_option linter.unusedSectionVars false in
+/-- For finite nonempty linearly ordered factors, a minimal complement has a
+unique active coordinate; the canonical bottoms come from the factor
+`Fintype` instances. Use `mem_minimalComplement_pi_iff_of_orderBot` when the
+caller-supplied factor bottoms should appear in the conclusion. -/
+theorem mem_minimalComplement_pi_iff (p x : ∀ i, T i) :
+    x ∈ minimalComplement p ↔
+      ∃ i, x i ∈ minimalComplement (p i) ∧ ∀ j, j ≠ i → x j = ⊥ :=
+  mem_minimalComplement_pi_iff_of_orderBot p x
 
 /-- The active coordinate of a minimal complement in a finite product. -/
 noncomputable def minimalComplement_pi_active (p : ∀ i, T i) :
