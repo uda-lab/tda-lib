@@ -66,6 +66,7 @@ import TDA.Persistence.RealRaySeparation
 import TDA.Persistence.ConstructibleClosure
 import TDA.Persistence.HookInfinity
 import TDA.Persistence.GeneratedUpsetResolution
+import TDA.Persistence.GeneratedUpsetProjectiveDimension
 import TDA.Persistence.HookEndomorphisms
 import TDA.Persistence.FiniteRankProjectiveClassification
 import TDA.Persistence.FiniteRankProjectiveHom
