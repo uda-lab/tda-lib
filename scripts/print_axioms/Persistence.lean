@@ -6674,3 +6674,20 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.AffineSliceMatchingExamples.infinite_coordinate_distance
 #print axioms TDA.Persistence.AffineSliceMatchingExamples.nonunit_line_interleaving
 #print axioms TDA.Persistence.AffineSliceMatchingExamples.nonunit_weighted_bottleneck_le_one
+
+-- Canonical generated-upset ordinary projective resolutions and dimensions.
+#print axioms TDA.Persistence.GeneratedUpsetResolution.chainComplex_X
+#print axioms TDA.Persistence.GeneratedUpsetResolution.chainComplex_d
+#print axioms TDA.Persistence.GeneratedUpsetResolution.projectiveResolution_complex
+#print axioms TDA.Persistence.GeneratedUpsetResolution.projectiveResolution_augmentation
+#print axioms TDA.Persistence.GeneratedUpsetResolution.generatedSupport_hasProjectiveDimensionLE
+#print axioms TDA.Persistence.GeneratedUpsetResolution.generatedSupport_projectiveDimension_le
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.empty_hasProjectiveDimensionLE_zero
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.empty_projectiveDimension_eq_bot
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.singleton_projective
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.repeated_hasProjectiveDimensionLE_one
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.repeated_projective
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.two_incomparable_generators
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.two_incomparable_hasProjectiveDimensionLE_one
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.two_incomparable_not_projective
+#print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.two_incomparable_projectiveDimension_eq_one
