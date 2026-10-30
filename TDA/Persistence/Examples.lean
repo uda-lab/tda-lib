@@ -197,3 +197,5 @@ import TDA.Persistence.AffineSliceExamples
 import TDA.Persistence.AffineSliceSignedBarcodeExamples
 import TDA.Persistence.AffineSliceMatchingExamples
 import TDA.Persistence.HookInfinityProjectiveExamples
+import TDA.Persistence.FiniteRankProjectiveHomCoverExamples
+import TDA.Persistence.EphemeralIntervalIso
