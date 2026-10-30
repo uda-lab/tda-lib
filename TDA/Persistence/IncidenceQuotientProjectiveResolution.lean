@@ -59,7 +59,7 @@ private abbrev quotientCounitAt (N : ModuleCat.{u} (C (k := k) (S := S))) :
 canonical quotient counit. -/
 noncomputable def extensionProjectiveResolution
     (N : ModuleCat.{u} (C (k := k) (S := S)))
-    (P : ProjectiveResolution ((Res (k := k) (S := S)).obj N)) :
+    (P : ProjectiveResolution ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)) :
     ProjectiveResolution N where
   complex := extensionMappedResolution (k := k) (S := S) P
   projective n :=
@@ -114,27 +114,27 @@ noncomputable def extensionProjectiveResolution
 
 @[simp] theorem extensionProjectiveResolution_complex_X
     (N : ModuleCat.{u} (C (k := k) (S := S)))
-    (P : ProjectiveResolution ((Res (k := k) (S := S)).obj N)) (n : ℕ) :
+    (P : ProjectiveResolution ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)) (n : ℕ) :
     (extensionProjectiveResolution (k := k) (S := S) N P).complex.X n =
-      (E (k := k) (S := S)).obj (P.complex.X n) := rfl
+      (extensionFunctor (k := k) (S := S)).obj (P.complex.X n) := rfl
 
 @[simp] theorem extensionProjectiveResolution_complex_d
     (N : ModuleCat.{u} (C (k := k) (S := S)))
-    (P : ProjectiveResolution ((Res (k := k) (S := S)).obj N)) (i j : ℕ) :
+    (P : ProjectiveResolution ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)) (i j : ℕ) :
     (extensionProjectiveResolution (k := k) (S := S) N P).complex.d i j =
-      (E (k := k) (S := S)).map (P.complex.d i j) := rfl
+      (extensionFunctor (k := k) (S := S)).map (P.complex.d i j) := rfl
 
 @[simp] theorem extensionProjectiveResolution_augmentation
     (N : ModuleCat.{u} (C (k := k) (S := S)))
-    (P : ProjectiveResolution ((Res (k := k) (S := S)).obj N)) :
+    (P : ProjectiveResolution ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)) :
     (extensionProjectiveResolution (k := k) (S := S) N P).π.f 0 =
-      (E (k := k) (S := S)).map (P.π.f 0) ≫
+      (extensionFunctor (k := k) (S := S)).map (P.π.f 0) ≫
         (extensionRestrictionIso (k := k) (S := S)).hom.app N := by
   exact ChainComplex.toSingle₀Equiv_symm_apply_f_zero _ _
 
 @[simp] theorem extensionProjectiveResolution_augmentation_class
     (N : ModuleCat.{u} (C (k := k) (S := S)))
-    (P : ProjectiveResolution ((Res (k := k) (S := S)).obj N)) (x : P.complex.X 0) :
+    (P : ProjectiveResolution ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)) (x : P.complex.X 0) :
     ((extensionProjectiveResolution (k := k) (S := S) N P).π.f 0).hom
         ((relation (k := k) (S := S) (P.complex.X 0)).mkQ x) =
       (P.π.f 0).hom x := by
@@ -149,7 +149,7 @@ noncomputable def extensionProjectiveResolution
 /-- Extension transports a zero term of an actual restricted-module resolution. -/
 theorem extensionProjectiveResolution_isZero_term
     (N : ModuleCat.{u} (C (k := k) (S := S)))
-    (P : ProjectiveResolution ((Res (k := k) (S := S)).obj N)) (n : ℕ)
+    (P : ProjectiveResolution ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)) (n : ℕ)
     (h : IsZero (P.complex.X n)) :
     IsZero ((extensionProjectiveResolution (k := k) (S := S) N P).complex.X n) := by
   change IsZero ((E (k := k) (S := S)).obj (P.complex.X n))
@@ -158,7 +158,7 @@ theorem extensionProjectiveResolution_isZero_term
 /-- Extension transports any supplied vanishing-above-degree condition on an actual resolution. -/
 theorem extensionProjectiveResolution_isZero_above
     (N : ModuleCat.{u} (C (k := k) (S := S)))
-    (P : ProjectiveResolution ((Res (k := k) (S := S)).obj N)) (d : ℕ)
+    (P : ProjectiveResolution ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)) (d : ℕ)
     (h : ∀ n, d < n → IsZero (P.complex.X n)) :
     ∀ n, d < n →
       IsZero ((extensionProjectiveResolution (k := k) (S := S) N P).complex.X n) := by
@@ -170,7 +170,7 @@ right endpoint is injective. -/
 theorem extension_map_shortExact_of_assemble_injective
     (T : ShortComplex (ModuleCat.{u} (R (k := k) (S := S)))) (hT : T.ShortExact)
     (hτ : Function.Injective (assembleAction (k := k) (S := S) T.X₃)) :
-    (T.map (E (k := k) (S := S))).ShortExact := by
+    (T.map (extensionFunctor (k := k) (S := S))).ShortExact := by
   classical
   let E := E (k := k) (S := S)
   let QX := relation (k := k) (S := S) T.X₁
@@ -274,7 +274,7 @@ theorem extension_hasProjectiveDimensionLE_of_assemble_injective
     (M : ModuleCat.{u} (R (k := k) (S := S))) (d : ℕ) :
     Function.Injective (assembleAction (k := k) (S := S) M) →
       HasProjectiveDimensionLE M d →
-        HasProjectiveDimensionLE ((E (k := k) (S := S)).obj M) d := by
+        HasProjectiveDimensionLE ((extensionFunctor (k := k) (S := S)).obj M) d := by
   induction d generalizing M with
   | zero =>
       intro hτ hM
@@ -306,7 +306,7 @@ theorem extension_hasProjectiveDimensionLE_of_assemble_injective
 theorem assembleAction_restrict_injective
     (N : ModuleCat.{u} (C (k := k) (S := S))) :
     Function.Injective
-      (assembleAction (k := k) (S := S) ((Res (k := k) (S := S)).obj N)) := by
+      (assembleAction (k := k) (S := S) ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N)) := by
   have hzero := columnAction_restrict_isZero (k := k) (S := S) N
   haveI : Subsingleton (ColumnObject (k := k) (S := S)
       ((Res (k := k) (S := S)).obj N)) := by
@@ -319,7 +319,7 @@ theorem assembleAction_restrict_injective
 /-- Quotient extension does not increase finite projective-dimension bounds on restricted modules. -/
 theorem extension_hasProjectiveDimensionLE_restricted
     (N : ModuleCat.{u} (C (k := k) (S := S))) (d : ℕ)
-    (hN : HasProjectiveDimensionLE ((Res (k := k) (S := S)).obj N) d) :
+    (hN : HasProjectiveDimensionLE ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N) d) :
     HasProjectiveDimensionLE N d := by
   have hE := extension_hasProjectiveDimensionLE_of_assemble_injective
     (k := k) (S := S) ((Res (k := k) (S := S)).obj N) d
@@ -334,7 +334,7 @@ theorem extension_hasProjectiveDimensionLT_of_assemble_injective
     (M : ModuleCat.{u} (R (k := k) (S := S))) (n : ℕ)
     (hτ : Function.Injective (assembleAction (k := k) (S := S) M))
     (hM : HasProjectiveDimensionLT M n) :
-    HasProjectiveDimensionLT ((E (k := k) (S := S)).obj M) n := by
+    HasProjectiveDimensionLT ((extensionFunctor (k := k) (S := S)).obj M) n := by
   cases n with
   | zero =>
       have hzero : IsZero M :=
@@ -351,7 +351,7 @@ injective assembly. -/
 theorem extension_projectiveDimension_le_of_assemble_injective
     (M : ModuleCat.{u} (R (k := k) (S := S)))
     (hτ : Function.Injective (assembleAction (k := k) (S := S) M)) :
-    CategoryTheory.projectiveDimension ((E (k := k) (S := S)).obj M) ≤
+    CategoryTheory.projectiveDimension ((extensionFunctor (k := k) (S := S)).obj M) ≤
       CategoryTheory.projectiveDimension M := by
   unfold CategoryTheory.projectiveDimension
   apply sInf_le_sInf_of_subset_insert_top
@@ -367,7 +367,7 @@ objects and infinite projective dimension. -/
 theorem projectiveDimension_le_restriction
     (N : ModuleCat.{u} (C (k := k) (S := S))) :
     CategoryTheory.projectiveDimension N ≤
-      CategoryTheory.projectiveDimension ((Res (k := k) (S := S)).obj N) := by
+      CategoryTheory.projectiveDimension ((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj N) := by
   calc
     CategoryTheory.projectiveDimension N =
         CategoryTheory.projectiveDimension

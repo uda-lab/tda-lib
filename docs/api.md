@@ -1293,6 +1293,16 @@ focused consumers in `TDA.Persistence.IncidenceQuotientSimpleExamples`. This is 
 classification step used in BOOS24-v3 Lemma 5.7, specialized to the interval-pair quotient; it
 does not assert the global-dimension conclusion of that lemma.
 
+The reusable scalar transport from bundled left-module coinvariants to the natural quotient-field
+action is public as `TDA.Persistence.IncidenceVertexTor.diagonalQuotientVertexCoinvariantsEquiv`,
+with its representative law `diagonalQuotientVertexCoinvariantsEquiv_mkQ`. The constant family of
+regular right-incidence modules used by the finite-free vertex biproduct is
+`TDA.Persistence.IncidenceRegularVertex.regularFamily`. The quotient-resolution statements spell
+out `ModuleCat.restrictScalars (quotientHom ...)` and `extensionFunctor` directly where each
+construction occurs. The existing
+`TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset` scope supplies the canonical
+interval-pair instances.
+
 `TDA.Persistence.IncidenceQuotientBaseChange.extensionFunctor` constructs actual right-module
 extension along the quotient projection `A → A/I` by quotienting each incidence module by the
 action of the kernel. The actual universal property is packaged as `extensionAdjunction`; the
