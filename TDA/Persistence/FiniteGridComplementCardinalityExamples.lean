@@ -287,6 +287,128 @@ theorem rationalSingletonInjective_resolution_positive_vanishing
   simpa using termAt_isZero_of_coordinateGrid
     (k := ℚ) singletonGrid rationalSingletonInjective singletonGrid_nonempty R j hj
 
+/-- The caller-bottom classification is available with only factor lattices
+and the supplied factor bottoms. -/
+theorem callerBottom_product_iff {ι : Type} {T : ι → Type}
+    [∀ i, Lattice (T i)] [∀ i, OrderBot (T i)] (p x : ∀ i, T i) :
+    x ∈ minimalComplement p ↔
+      ∃ i, x i ∈ minimalComplement (p i) ∧ ∀ j, j ≠ i → x j = ⊥ :=
+  mem_minimalComplement_pi_iff_of_orderBot p x
+
+/-- Native `Fin (n i + 1)` bottoms are exposed as `0` in the product
+classification. -/
+theorem nativeFin_product_iff {ι : Type} (n : ι → ℕ)
+    (p x : ∀ i, Fin (n i + 1)) :
+    x ∈ minimalComplement p ↔
+      ∃ i, x i ∈ minimalComplement (p i) ∧ ∀ j, j ≠ i → x j = 0 :=
+  mem_minimalComplement_pi_iff_of_orderBot p x
+
+private theorem bool_false_factor_complement :
+    (true : Bool) ∈ minimalComplement (false : Bool) := by
+  change Minimal (fun x : Bool => ¬ x ≤ false) true
+  refine ⟨by decide, ?_⟩
+  intro y hy _
+  cases y <;> simp_all
+
+/-- The first Boolean-square axis is a minimal complement of the all-bottom
+point. -/
+theorem boolSquare_leftAxis_mem :
+    (fun i : Bool => !i) ∈ minimalComplement (fun _ : Bool => false) := by
+  apply (mem_minimalComplement_pi_iff_of_orderBot _ _).mpr
+  refine ⟨false, bool_false_factor_complement, ?_⟩
+  intro j hj
+  cases j <;> simp_all
+
+/-- The second Boolean-square axis is another minimal complement of the same
+all-bottom point. -/
+theorem boolSquare_rightAxis_mem :
+    (fun i : Bool => i) ∈ minimalComplement (fun _ : Bool => false) := by
+  apply (mem_minimalComplement_pi_iff_of_orderBot _ _).mpr
+  refine ⟨true, bool_false_factor_complement, ?_⟩
+  intro j hj
+  cases j <;> simp_all
+
+/-- The two Boolean-square axis witnesses are different product elements. -/
+theorem boolSquare_axes_ne :
+    (fun i : Bool => !i) ≠ (fun i : Bool => i) := by
+  intro h
+  have hfalse := congrFun h false
+  simp at hfalse
+
+/-- The point with both Boolean coordinates active is not minimal. -/
+theorem boolSquare_bothActive_not_mem :
+    (fun _ : Bool => true) ∉ minimalComplement (fun _ : Bool => false) := by
+  intro hx
+  obtain ⟨i, _, hbottom⟩ :=
+    (mem_minimalComplement_pi_iff_of_orderBot _ _).mp hx
+  cases i with
+  | false => exact Bool.noConfusion (hbottom true (by decide))
+  | true => exact Bool.noConfusion (hbottom false (by decide))
+
+/-- The classification extracts a genuine non-bottom value at the active
+Boolean-square coordinate. -/
+theorem boolSquare_leftAxis_active_value :
+    ∃ i : Bool, (fun j : Bool => !j) i = true ∧
+      ∀ j, j ≠ i → (fun k : Bool => !k) j = false := by
+  obtain ⟨i, hi, hbottom⟩ :=
+    (mem_minimalComplement_pi_iff_of_orderBot _ _).mp boolSquare_leftAxis_mem
+  refine ⟨i, ?_, hbottom⟩
+  change Minimal (fun z : Bool => ¬ z ≤ false) ((fun j : Bool => !j) i) at hi
+  cases h : (fun j : Bool => !j) i with
+  | false => exact False.elim (hi.prop (by simp [h]))
+  | true => rfl
+
+private theorem finThree_factor_complement :
+    (1 : Fin 3) ∈ minimalComplement (0 : Fin 3) := by
+  change Minimal (fun x : Fin 3 => ¬ x ≤ 0) 1
+  refine ⟨by decide, ?_⟩
+  intro y hy hyle
+  omega
+
+/-- A native `Fin 3` factor retains its actual bottom in the classified
+axis witness. -/
+theorem finThreeAxis_mem :
+    (fun i : Bool => if i then (0 : Fin 3) else 1) ∈
+      minimalComplement (fun _ : Bool => (0 : Fin 3)) := by
+  apply (mem_minimalComplement_pi_iff_of_orderBot _ _).mpr
+  refine ⟨false, finThree_factor_complement, ?_⟩
+  change ∀ j : Bool, j ≠ false →
+    (if j then (0 : Fin 3) else 1) = (0 : Fin 3)
+  intro j hj
+  cases j <;> simp_all
+
+/-- An empty product has no minimal complement element. -/
+theorem emptyIndex_not_mem (p x : Fin 0 → Bool) :
+    x ∉ minimalComplement p := by
+  intro hx
+  obtain ⟨i, _, _⟩ :=
+    (mem_minimalComplement_pi_iff_of_orderBot _ _).mp hx
+  exact Fin.elim0 i
+
+/-- A singleton factor has no minimal complement values, so its indexed
+product has none either. -/
+theorem singletonFactor_not_mem (p x : Bool → Fin 1) :
+    x ∉ minimalComplement p := by
+  intro hx
+  obtain ⟨i, hi, _⟩ :=
+    (mem_minimalComplement_pi_iff_of_orderBot _ _).mp hx
+  change Minimal (fun z : Fin 1 => ¬ z ≤ p i) (x i) at hi
+  exact hi.prop (by omega)
+
+/-- Natural-number factors require neither finiteness nor a top for the
+caller-bottom classification. -/
+theorem natFactors_axis_mem :
+    (fun i : Bool => if i then (0 : ℕ) else 1) ∈
+      minimalComplement (fun _ : Bool => (0 : ℕ)) := by
+  apply (mem_minimalComplement_pi_iff_of_orderBot _ _).mpr
+  refine ⟨false, ?_, ?_⟩
+  · change Minimal (fun x : ℕ => ¬ x ≤ 0) 1
+    refine ⟨by omega, ?_⟩
+    intro y hy hyle
+    omega
+  · intro j hj
+    cases j <;> simp_all
+
 end
 
 end TDA.Persistence.FiniteLatticeComplementCardinality.Examples

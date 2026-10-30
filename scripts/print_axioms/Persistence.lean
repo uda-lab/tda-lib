@@ -6732,3 +6732,17 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.PairPosetInstancesExamples.finTwoStrictVertex
 #print axioms TDA.Persistence.PairPosetInstancesExamples.finTwoQuotientNonzero
 #print axioms TDA.Persistence.PairPosetInstancesExamples.finTwoQuotientBound
+
+-- Caller-bound product endpoint classification (Issue #788 / #753 finding 58).
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.mem_minimalComplement_pi_iff_of_orderBot
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.callerBottom_product_iff
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.nativeFin_product_iff
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.boolSquare_leftAxis_mem
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.boolSquare_rightAxis_mem
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.boolSquare_axes_ne
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.boolSquare_bothActive_not_mem
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.boolSquare_leftAxis_active_value
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.finThreeAxis_mem
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.emptyIndex_not_mem
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.singletonFactor_not_mem
+#print axioms TDA.Persistence.FiniteLatticeComplementCardinality.Examples.natFactors_axis_mem
