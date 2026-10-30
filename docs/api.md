@@ -8,21 +8,21 @@ import TDA.Persistence -- one ordinary library area
 
 Use `import TDA.Library` for all seven ordinary areas, including `TDA.Probability`, which
 has its own aggregator and pin file. These entry points exclude the standalone example and
-acceptance modules, with one exception: the library modules `EphemeralIntervalIso` and
-`FiniteRankProjectiveHomCover` import the fixtures `CutSubspacesExamples` and
-`FiniteRankProjectiveResolutionKanExamples`, so those fixtures and their imports remain
-reachable from `TDA.Persistence`, including the transitive fixture
-`FiniteHookDeflationExamples`. To use a particular worked example, import its module
-directly, or import `TDA.Persistence.Examples` (and similarly for each area).
+acceptance modules. The standalone `TDA.Persistence.EphemeralIntervalIso` module identifies
+the algebraic sum of all real singleton intervals with the rational ephemeral module. The two
+rational Hom-cover demonstrations are in
+`TDA.Persistence.FiniteRankProjectiveHomCoverExamples`; import either module directly or use
+`TDA.Persistence.Examples` for both and the other Persistence examples.
+For other worked examples, import their module directly or import the area's example
+aggregator.
 `TDA.Examples` collects the six example aggregators; `TDA.Probability` has no fixtures.
 
 `import TDA` deliberately loads both `TDA.Library` and `TDA.Examples`. It is the
 comprehensive root used by the build, theorem axiom audits and module-reachability
 coverage. The default `lake build` therefore still builds every module, even though
 ordinary consumer imports are smaller. `scripts/build-docs.sh` generates API pages
-from `TDA.Library` and its transitive imports, including the fixture dependencies
-identified above. Standalone examples remain available through their source modules
-and example aggregators; they are outside the normal documentation target.
+from `TDA.Library` and its transitive imports. Standalone examples remain available through
+their source modules and example aggregators; they are outside the normal documentation target.
 
 This is a module boundary, not an export whitelist: Lean imports expose the declarations
 of their dependencies, including existing small examples embedded in implementation

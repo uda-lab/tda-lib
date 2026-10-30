@@ -276,7 +276,6 @@ import TDA.Persistence.AlgebraicFamily
 
 import TDA.Persistence.CutDecomposition
 import TDA.Persistence.AlgebraicFamilyIso
-import TDA.Persistence.EphemeralIntervalIso
 import TDA.Persistence.FiniteObservation
 import TDA.Persistence.IntervalCompatibility
 import TDA.Persistence.RealIntervalDecomposition
