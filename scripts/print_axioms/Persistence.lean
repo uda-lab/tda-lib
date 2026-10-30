@@ -6715,3 +6715,20 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples.bottomSimple_exists_minimal_resolution_nonzero_first_term
 
 #print axioms TDA.Persistence.IsRankProjectiveCover.of_identity
+
+-- Canonical PairPoset instances and their public consumer examples.
+#print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetFintype
+#print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetDecidableLE
+#print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetDecidableLT
+#print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetDecidableEq
+#print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetLocallyFiniteOrder
+#print axioms TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdealIsTwoSided
+#print axioms TDA.Persistence.PairPosetInstancesExamples.genericBound
+#print axioms TDA.Persistence.PairPosetInstancesExamples.genericQuotientBound
+#print axioms TDA.Persistence.PairPosetInstancesExamples.regularPDZero
+#print axioms TDA.Persistence.PairPosetInstancesExamples.deltaIdempotent
+#print axioms TDA.Persistence.PairPosetInstancesExamples.deltaNonzero
+#print axioms TDA.Persistence.PairPosetInstancesExamples.regularNonzero
+#print axioms TDA.Persistence.PairPosetInstancesExamples.finTwoStrictVertex
+#print axioms TDA.Persistence.PairPosetInstancesExamples.finTwoQuotientNonzero
+#print axioms TDA.Persistence.PairPosetInstancesExamples.finTwoQuotientBound

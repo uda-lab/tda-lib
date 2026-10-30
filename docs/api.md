@@ -1365,6 +1365,24 @@ the identification on each fiber. Its generic regular-module dimension result is
 canonical restricted field action and transported to the natural incidence action by an explicit
 unop linear equivalence.
 
+### Canonical PairPoset instances
+
+For incidence-algebra clients with `{k : Type u} [Field k]` and
+`{S : Type} [Lattice S] [Finite S]`, use
+`open scoped TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset` to activate the canonical
+`PairPoset S` instances used by the library. The scope provides the existing finite
+enumeration, order decisions, locally finite order, and two-sidedness proof for the diagonal
+ideal. These transparent aliases select the producer's original data, including the filtered
+subtype enumeration; they do not promise definitional equality with arbitrary caller-selected
+noncanonical instances. The enumeration and locally finite order require `[Finite S]`; the
+order decisions require only `[Lattice S]`, and the diagonal-ideal proof retains the field
+assumption.
+
+This scope does not provide endpoint or bounded-order structures. The incidence and quotient
+projective-dimension bounds keep their `[OrderBot S] [OrderTop S]` assumptions and their
+displayed `pairPosetLattice` and `pairPosetBoundedOrder` choices. Native finite instances on
+`Bool` and `Fin 2` remain unchanged.
+
 ### Ordinary projective dimensions of actual incidence modules
 
 For an arbitrary field and finite bounded lattice `S`,
