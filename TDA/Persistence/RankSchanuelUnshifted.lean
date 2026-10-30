@@ -29,15 +29,6 @@ variable {k : Type u} [Field k] {n : ℕ}
 private instance : HasFiniteBiproducts (PModule.{u,0,u} k (Fin n → ℝ)) :=
   HasFiniteBiproducts.of_hasFiniteProducts
 
-/-- The zero-padded term convention for a certified minimal resolution agrees
-with the existing finite-resolution term convention. -/
-@[simp] theorem MinimalFiniteRankProjectiveResolution.termAt_eq_resolution_termAt
-    {M : PModule.{u,0,u} k (Fin n → ℝ)}
-    (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ) :
-    R.termAt j = R.resolution.termAt j := by
-  simp [MinimalFiniteRankProjectiveResolution.termAt,
-    FiniteRankProjectiveResolution.termAt]
-
 /-- Unshifted alternating degree-`j` term on the left side of the Schanuel
 comparison. -/
 noncomputable def unshiftedSchanuelLeftSummand

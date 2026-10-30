@@ -423,6 +423,15 @@ by itself it asserts no existence, minimality, uniqueness or length bound, and n
 principal-upset hook and a two-term contractible resolution whose ranks cancel. See
 [the Euler formula for finite rank-exact resolutions](math/finite-rank-projective-resolution.md).
 
+For real-coordinate modules, `FiniteRankProjectiveResolution.identity` constructs the
+selected length-one resolution from rank projectivity and pointwise finite-dimensional
+fibers. `appendZero` and `appendZeros` preserve the zero-padded terms and add exactly the
+requested number to the stored length; `termAt` reads the recorded term below that length
+and returns zero afterward. These operations live in
+`TDA.Persistence.FiniteRankProjectiveResolution`, so ordinary finite-resolution clients do
+not need a Schanuel import. Open the `TDA.Persistence` scope to select coordinatewise order.
+Padding can increase the stored length while leaving every `termAt` value unchanged.
+
 The signed-multiset results do not select a canonical hook decomposition or a
 unique comparison isomorphism. Choice independence of the signed multisets is
 not a stability theorem: these declarations do not establish signed-barcode
@@ -528,7 +537,9 @@ comparison as a `Nonempty` isomorphism, and `termAt_rank_eq` shows that every
 structure-map rank in corresponding terms is independent of the chosen
 resolution. The theorem uses only the cover certificates carried by the two
 inputs; it neither assumes equal raw lengths nor chooses a canonical
-comparison isomorphism. The example
+comparison isomorphism. The simp lemma
+`MinimalFiniteRankProjectiveResolution.termAt_eq_resolution_termAt` is available from
+`TDA.Persistence.FiniteRankProjectiveResolutionUniqueness`. The example
 `FiniteRankProjectiveResolutionUniquenessExamples.principalHook_positive_terms_are_zero`
 uses a one-term resolution of a principal-upset projective to show that every
 positive-degree term in any minimal resolution of that module is zero.

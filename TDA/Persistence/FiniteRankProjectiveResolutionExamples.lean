@@ -234,4 +234,138 @@ theorem contractibleZero_rank_cancellation :
     (show (0 : Fin 2) ≤ 0 from le_rfl)
   simpa [rankOfStructureMap_zero] using h.symm
 
+section CoordinateIdentityAndPadding
+
+open CategoryTheory.Limits
+open scoped TDA.Persistence
+
+/-- The rational principal upset at zero in one real coordinate. -/
+noncomputable abbrev oneCoordinateHook : PModule.{0,0,0} ℚ (Fin 1 → ℝ) :=
+  HookInfinity.module (R := ℚ) (0 : Fin 1 → ℝ)
+
+private theorem oneCoordinateHook_pointwiseFiniteDimensional :
+    ∀ p, FiniteDimensional ℚ (oneCoordinateHook.obj p) := by
+  intro p
+  exact HookInfinity.finiteDimensional (i := (0 : Fin 1 → ℝ)) p
+
+private theorem oneCoordinateHook_rankProjective : IsRankProjective oneCoordinateHook :=
+  HookInfinity.isRankProjective (i := (0 : Fin 1 → ℝ))
+
+/-- The length-one identity resolution of the one-coordinate principal upset. -/
+noncomputable def oneCoordinateHookIdentity :
+    FiniteRankProjectiveResolution oneCoordinateHook :=
+  FiniteRankProjectiveResolution.identity oneCoordinateHook
+    oneCoordinateHook_rankProjective oneCoordinateHook_pointwiseFiniteDimensional
+
+/-- Two zero terms pad the identity resolution without changing its terms. -/
+noncomputable def oneCoordinateHookPadded :
+    FiniteRankProjectiveResolution oneCoordinateHook :=
+  oneCoordinateHookIdentity.appendZeros 2
+
+/-- The principal-upset module has a nonzero structure map between distinct grades. -/
+theorem oneCoordinateHook_transition_nonzero :
+    structureMapLinear oneCoordinateHook
+        (show (0 : Fin 1 → ℝ) ≤ (fun _ : Fin 1 => (1 : ℝ)) by
+          intro i
+          norm_num) ≠ 0 := by
+  let a : Fin 1 → ℝ := 0
+  let b : Fin 1 → ℝ := fun _ => 1
+  have hab : a ≤ b := by
+    intro i
+    norm_num [a, b]
+  let e₀ := HookInfinity.fiberEquivOfLe (R := ℚ) (i := a) (a := a) le_rfl
+  let e₁ := HookInfinity.fiberEquivOfLe (R := ℚ) (i := a) (a := b) hab
+  let x := e₀.symm 1
+  have hx : e₀ x = 1 := by simp [x]
+  intro hzero
+  have hmap := HookInfinity.fiberEquivOfLe_structureMap
+    (R := ℚ) (i := a) (a := a) (b := b) le_rfl hab x
+  have hvanish : e₁ (structureMapLinear oneCoordinateHook hab x) = 0 := by
+    rw [hzero]
+    exact e₁.map_zero
+  rw [hmap, hx] at hvanish
+  exact (one_ne_zero : (1 : ℚ) ≠ 0) hvanish
+
+/-- The selected identity has length one and records the principal upset in degree zero. -/
+theorem oneCoordinateHookIdentity_selected_data :
+    oneCoordinateHookIdentity.length = 1 ∧
+      oneCoordinateHookIdentity.term (0 : Fin 1) = oneCoordinateHook := by
+  simp [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity]
+
+/-- Padding by two preserves the identity's degree-zero term and all later zero terms. -/
+theorem oneCoordinateHookPadded_termAt (j : ℕ) :
+    oneCoordinateHookPadded.termAt j = if j = 0 then oneCoordinateHook else 0 := by
+  rw [oneCoordinateHookPadded, FiniteRankProjectiveResolution.termAt_appendZeros]
+  simpa [oneCoordinateHookIdentity] using
+    (FiniteRankProjectiveResolution.identity_termAt oneCoordinateHook
+      oneCoordinateHook_rankProjective oneCoordinateHook_pointwiseFiniteDimensional j)
+
+/-- The padded degree-zero term still has its nonzero map between distinct grades. -/
+theorem oneCoordinateHookPadded_transition_nonzero :
+    structureMapLinear (oneCoordinateHookPadded.termAt 0)
+        (show (0 : Fin 1 → ℝ) ≤ (fun _ : Fin 1 => (1 : ℝ)) by
+          intro i
+          norm_num) ≠ 0 := by
+  rw [oneCoordinateHookPadded_termAt 0]
+  simpa using oneCoordinateHook_transition_nonzero
+
+/-- The padded identity has three stored terms, although only degree zero is nonzero. -/
+theorem oneCoordinateHookPadded_length : oneCoordinateHookPadded.length = 3 := by
+  rw [oneCoordinateHookPadded, FiniteRankProjectiveResolution.appendZeros_length]
+  rfl
+
+/-- A genuine length-zero resolution of zero in one real coordinate. -/
+noncomputable def coordinateZeroLengthResolution :
+    FiniteRankProjectiveResolution
+      (0 : PModule.{0,0,0} ℚ (Fin 1 → ℝ)) where
+  toFiniteRankExactResolution := {
+    length := 0
+    kernel := fun _ => 0
+    term := fun i => Fin.elim0 i
+    inclusion := fun i => Fin.elim0 i
+    quotient := fun i => Fin.elim0 i
+    row_rank_exact := fun i => Fin.elim0 i
+    initial_iso := Iso.refl 0
+    terminal_iso := Iso.refl 0
+  }
+  term_rank_projective := fun i => Fin.elim0 i
+
+/-- Positive padding of the zero-length resolution records exactly the added zero terms. -/
+theorem coordinateZeroLengthResolution_padded_length (count : ℕ) :
+    (coordinateZeroLengthResolution.appendZeros count).length = count := by
+  rw [FiniteRankProjectiveResolution.appendZeros_length]
+  simp [coordinateZeroLengthResolution]
+
+/-- Every zero-padded term of a padded zero-length resolution is zero. -/
+theorem coordinateZeroLengthResolution_padded_termAt (count j : ℕ) :
+    (coordinateZeroLengthResolution.appendZeros count).termAt j = 0 := by
+  rw [FiniteRankProjectiveResolution.termAt_appendZeros]
+  simp [FiniteRankProjectiveResolution.termAt, coordinateZeroLengthResolution]
+
+/-- The rational principal upset on the zero-dimensional real grid. -/
+noncomputable abbrev zeroCoordinateHook : PModule.{0,0,0} ℚ (Fin 0 → ℝ) :=
+  HookInfinity.module (R := ℚ) (0 : Fin 0 → ℝ)
+
+private theorem zeroCoordinateHook_pointwiseFiniteDimensional :
+    ∀ p, FiniteDimensional ℚ (zeroCoordinateHook.obj p) := by
+  intro p
+  exact HookInfinity.finiteDimensional (i := (0 : Fin 0 → ℝ)) p
+
+private theorem zeroCoordinateHook_rankProjective : IsRankProjective zeroCoordinateHook :=
+  HookInfinity.isRankProjective (i := (0 : Fin 0 → ℝ))
+
+/-- The identity constructor also applies to principal upsets on the zero-dimensional grid. -/
+noncomputable def zeroCoordinateHookIdentity :
+    FiniteRankProjectiveResolution zeroCoordinateHook :=
+  FiniteRankProjectiveResolution.identity zeroCoordinateHook
+    zeroCoordinateHook_rankProjective zeroCoordinateHook_pointwiseFiniteDimensional
+
+/-- The zero-dimensional identity resolution obeys the public padded-term law. -/
+theorem zeroCoordinateHookIdentity_termAt (j : ℕ) :
+    zeroCoordinateHookIdentity.termAt j = if j = 0 then zeroCoordinateHook else 0 := by
+  exact FiniteRankProjectiveResolution.identity_termAt zeroCoordinateHook
+    zeroCoordinateHook_rankProjective zeroCoordinateHook_pointwiseFiniteDimensional j
+
+end CoordinateIdentityAndPadding
+
 end TDA.Persistence.FiniteRankProjectiveResolutionExamples
