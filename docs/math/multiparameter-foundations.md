@@ -490,10 +490,15 @@ be unbounded. This proves the finite-death hook lifting ingredient of
 [Botnan–Oppermann–Oudot–Scoccola, §2.14 and Appendix A](https://arxiv.org/html/2208.00300v3).
 The principal-upset module, representing a hook with infinite death, is the
 graded free module on one generator. `HookInfinity.homEquivFiber` identifies
-its morphisms with the target's birth fiber. Surjectivity at that single fiber
-therefore suffices to lift any such morphism. This assertion holds over any
-ring and preorder, without finite-dimensionality assumptions, and in particular
-applies to rank-exact quotient maps over a field.
+its morphisms with the target's birth fiber. An epimorphism of persistence
+modules is epi at each grade, and module-category epimorphisms are surjective,
+so the birth value lifts and the lifted map factors the original morphism.
+Thus, for `R : Type u` and `P : Type v` with `[Ring R]` and `[Preorder P]`,
+the principal-upset module is an ordinary projective object of
+`PModule.{u,v,u} R P`, with no finite-dimensionality assumptions. The
+canonical instance is available from
+`TDA.Persistence.HookInfinityProjective`. In particular, rank-exact quotient
+maps over a field are among the categorical epimorphisms covered here.
 
 ## Individual hook endomorphisms and indecomposability
 

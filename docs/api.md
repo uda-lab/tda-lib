@@ -259,6 +259,10 @@ at the same real grade after applying the finite-grid Kan functor, and
 pointwise finite-dimensional domain.
 `HookInfinity.homEquivFiber` identifies principal-upset morphisms with birth-fiber
 vectors; surjectivity at birth suffices to lift them over any ring and preorder.
+Consequently, for `R : Type u` and `P : Type v` with `[Ring R]` and
+`[Preorder P]`, `HookInfinity.module (R := R) i` is an ordinary projective
+object of `PModule.{u,v,u} R P`; its canonical instance is available by
+importing `TDA.Persistence.HookInfinityProjective`.
 
 Over a field and partial order, `Hook.endRingEquiv` and
 `HookInfinity.endRingEquiv` identify the actual endomorphism rings with the

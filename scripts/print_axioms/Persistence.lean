@@ -6691,3 +6691,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.two_incomparable_hasProjectiveDimensionLE_one
 #print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.two_incomparable_not_projective
 #print axioms TDA.Persistence.GeneratedUpsetResolution.Examples.two_incomparable_projectiveDimension_eq_one
+
+#print axioms TDA.Persistence.HookInfinity.projective
+#print axioms TDA.Persistence.HookInfinityProjectiveExamples.gradePreorder
+#print axioms TDA.Persistence.HookInfinityProjectiveExamples.preorder_not_antisymmetric
+#print axioms TDA.Persistence.HookInfinityProjectiveExamples.unit_transport
+#print axioms TDA.Persistence.HookInfinityProjectiveExamples.unit_nonzero
+#print axioms TDA.Persistence.HookInfinityProjectiveExamples.integer_quotient_lift
+#print axioms TDA.Persistence.HookInfinityProjectiveExamples.quotient_noninjective
+#print axioms TDA.Persistence.HookInfinityProjectiveExamples.outside_support_zero
