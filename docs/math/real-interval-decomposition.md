@@ -3,7 +3,9 @@
 Let `k : Type u` be a field and let
 `M : PModule.{u,0,u} k ℝ` have finite-dimensional fibers. The coefficient field
 and every fiber use universe `u`, while the real parameter type is in universe
-zero. The theorem
+zero. `AlgebraicFamily.familyModule` forms the fiberwise algebraic direct sum:
+at each parameter, its vectors are coefficient families with finite support
+across occurrences. The theorem
 `RealIntervalDecomposition.exists_interval_decomposition` gives an occurrence
 type `J : Type`, nonempty order-convex sets `I j ⊆ ℝ`, and a natural
 isomorphism
@@ -94,14 +96,20 @@ of a finite-dimensional fiber.
 
 ## From cut pieces to scalar intervals
 
-The construction considers all nonempty pairs of real cuts, with one anchor
-chosen in each support. The selected complements span every fiber: a proper
-subspace determines birth and death cuts for which the corresponding
-complement contains a vector outside it. They are also independent: in any
-finite relation, choose a nonzero term maximal first in its birth cut and then
-in its death cut. The other terms lie in its lower subspace, while its chosen
-complement is disjoint from that subspace, forcing the selected term to vanish.
-This proves fiberwise directness and spanning.
+The construction considers all pairs of real cuts whose interval support is
+nonempty, with one anchor chosen in each support. The selected complements
+span every fiber: a proper subspace determines birth and death cuts for which
+the corresponding complement contains a vector outside it. They are also
+independent: in any finite zero relation, choose a nonzero term `x` maximal
+first in its birth cut and then, among equal birth cuts, in its death cut.
+Group the earlier-birth terms into `y` and the equal-birth, earlier-death terms
+into `z`. Cut order puts `y` in `imageMinus` and `z` in
+`imagePlus ∩ kernelMinus` for the selected cuts. The selected term and `z` lie
+in `kernelPlus` (because `x` lies in `intervalPlus` and `kernelMinus` is
+contained in `kernelPlus`), so the zero relation puts `y` there too. Thus
+`y + z` lies in `intervalMinus`. The selected complement is disjoint from that
+subspace, forcing `x = 0`, contrary to its choice. This proves fiberwise
+directness and spanning.
 
 `CutDecomposition.sumIso` is the resulting natural isomorphism from the
 algebraic sum of the interval-supported cut subfunctors to `M`. Those
@@ -161,18 +169,18 @@ finite terminal index represents an infinite real tail.
 `IntervalCompatibility` identifies support modules with the existing
 half-open real interval modules, whose support is `{t | birth ≤ t ∧ t < death}`
 and whose death may be `⊤`. The natural isomorphisms preserve occurrences in
-finite endpoint lists and diagram realizations. The existing
-finite-constructible realization is also compatible under its stated
-constructibility predicate and finite-dimensionality at the supplied sample
-levels; this result adds no endpoint or initial-tail convention.
+finite endpoint lists and diagram realizations. The `constructibleIso` result
+additionally assumes the existing constructibility predicate and
+finite-dimensionality at the supplied sample levels; it does not change that
+API's endpoint or tail conventions.
 
 The fixtures include the empty sum as the zero module, whole-line and open or
 closed left tails, singleton supports, and nonidentity transition maps. The
 compatible-lift examples prescribe sections on a left-unbounded open interval,
 a closed interval, and a singleton, and include a rational sign-change map
 sending `1` to `-1`. `IntervalCompatibility.ephemeralIso` is specifically for
-the rational module `PModule.{0,0,0} ℚ ℝ`: it identifies the algebraic sum over all real
-singleton occurrences with that module, whose strict maps are zero. It
+the rational module `PModule.{0,0,0} ℚ ℝ`: it identifies the algebraic sum over
+all real singleton occurrences with that module, whose strict maps are zero. It
 illustrates why the occurrence type need not be countable and why singleton
 summands remain in the isomorphism theorem.
 

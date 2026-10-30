@@ -1434,8 +1434,9 @@ interval multiset, retaining repeated occurrences. Finite samples do not
 determine unsampled support or infinite real lifetimes.
 
 `IntervalCompatibility` gives natural isomorphisms with the existing half-open
-interval modules and finite diagram and constructible realizations, under the
-constructibility and sample-fiber hypotheses of that API.
+interval modules and finite diagram realizations. Its `constructibleIso` result
+additionally assumes the existing constructibility predicate and
+finite-dimensionality at the supplied sample levels.
 `IntervalCompatibility.ephemeralIso` applies specifically to
 `PModule.{0,0,0} ℚ ℝ` and retains all real singleton occurrences. Examples cover
 empty families, endpoints, singleton supports, both
