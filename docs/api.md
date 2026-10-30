@@ -1404,61 +1404,45 @@ and the rational and grid consumers in
 
 ## Compatible lifts and algebraic sums over the reals
 
-`TDA.Persistence.CompatibleSections` constructs compatible sections of a persistence
-module on any real subset when its transition maps are surjective. A section can
-pass through any prescribed fiber vector. The proof uses a decreasing sequence
-with a point below every index, together with the natural-number inverse-limit
-theorem, without assuming finite underlying fibers. Open endpoints, singletons
-and unbounded subsets are allowed.
+The [real interval decomposition note](math/real-interval-decomposition.md)
+explains the cut, compatible-lift and finite-observation constructions in
+prerequisite order. The decomposition endpoints use a field `k : Type u` and
+`M : PModule.{u,0,u} k ℝ` with finite-dimensional fibers. Their occurrence
+indices are in `Type`, with no countability restriction.
 
-`TDA.Persistence.CutSubspaces` uses cuts, which partition the parameter order into
-a lower part and an upper part. Two cuts determine a possibly empty support,
-which is an interval when nonempty; their image/kernel subspaces encode birth
-and death conditions. For a pointwise finite-dimensional
-module, the required surjectivity is derived for these subspaces. The module
-transports their quotients isomorphically and chooses one global section complement
-whose evaluations complement the corresponding lower subspace at every interval
-point. The compatible lift and complement are constructed from finite dimension.
+`CompatibleSections` separately proves evaluation surjectivity for compatible
+sections on real subsets when every transition there is surjective. This result
+is for a ring `R` and `PModule.{u,0,w} R ℝ`, with arbitrary carrier universe
+`w`, and needs no finite-dimensionality assumption. `CutSubspaces` derives the
+required surjectivity and quotient transport from cut subspaces of the
+finite-dimensional fibers in the decomposition endpoint, then uses one global
+compatible-section complement to build an interval-supported subfunctor.
+`CutDecomposition.sumIso` is oriented from the algebraic sum of these
+intermediate, possibly higher-dimensional cut subfunctors to `M`.
+`RealIntervalDecomposition.scalarIso` has the same orientation after choosing
+bases and refining to scalar interval summands; the existence theorem states
+the inverse orientation, from `M` to the scalar sum. Neither endpoint theorem
+has a wider carrier-universe interface than `PModule.{u,0,u} k ℝ`.
 
-`TDA.Persistence.AlgebraicFamily` realizes families by algebraic direct sums. Its
-canonical comparison with the existing `RealBarcode.familyModule` product is a
-natural isomorphism when finitely many fibers are nonzero at each parameter.
-Pointwise finite dimension of a direct-sum representation implies this local
-finiteness, and only finitely many occurrences meet a finite observation list.
-The index family may be uncountable.
+`AlgebraicFamily` compares algebraic sums with the existing product-based
+`RealBarcode.familyModule` when only finitely many summands are nonzero at each
+parameter. The decomposition proves this finite activity from finite-dimensional
+fibers; it is pointwise finite overlap, not topological local finiteness. The
+finite-observation results show that only finitely many occurrences meet a
+strict finite sample list and identify its rank barcode with the sampled
+interval multiset, retaining repeated occurrences. Finite samples do not
+determine unsampled support or infinite real lifetimes.
 
-`TDA.Persistence.CutDecomposition` proves that the chosen interval complements
-span every fiber and that every finite relation among distinct complements is
-trivial. Its `sumIso` is a natural isomorphism from their algebraic direct sum
-to any pointwise finite-dimensional real-indexed module over a field. The construction includes
-singleton supports and assumes no decomposition or global countability. Finite
-activity at each parameter, and finite activity over a finite observation list,
-follow from finite dimension. `CutSubspacesExamples` checks cut endpoints and the
-singleton image/kernel spaces of a module with zero maps at strict inequalities.
-`TDA.Persistence.RealIntervalDecomposition` chooses a basis of each compatible
-section complement and obtains scalar interval summands. Its `scalarIso` is a
-natural isomorphism from their algebraic direct sum to any pointwise
-finite-dimensional real-indexed module; `exists_interval_decomposition` states
-the corresponding existence theorem. The nonempty supports are order-convex,
-with open or closed endpoints, singletons, infinite tails and the whole real
-line allowed. Finite activity is derived at every parameter, with no global
-countability assumption.
-
-`RealIntervalObservation` proves `RealIntervalDecomposition.rankBarcode_eq_sampledBarcode`, identifying the existing
-rank barcode of every strict finite real observation list with the multiset of
-nonempty sampled intersections of these summands, retaining multiplicities.
-Only finitely many occurrences meet the list. `FiniteObservation` supplies the
-rank and visible-occurrence arguments for arbitrary algebraic interval families.
-No finite critical grid or continuity hypothesis is required.
-
-`IntervalCompatibility` identifies the generic support modules with existing
-real half-open interval modules and their finite diagram realizations by natural
-isomorphisms, including the existing finite-constructible decomposition.
-`EphemeralIntervalIso` proves `IntervalCompatibility.ephemeralIso`, realizing the real-indexed ephemeral module as the sum of all real
-singleton intervals. The examples also include an empty family, both left-tail
-conventions, and an infinite locally finite interval module family accumulating
-at zero. These decomposition results require finite-dimensional fibers; the
-q-tame class has a different hypothesis.
+`IntervalCompatibility` gives natural isomorphisms with the existing half-open
+interval modules and finite diagram realizations. Its `constructibleIso` result
+additionally assumes the existing constructibility predicate and
+finite-dimensionality at the supplied sample levels.
+`IntervalCompatibility.ephemeralIso` applies specifically to
+`PModule.{0,0,0} ℚ ℝ` and retains all real singleton occurrences. Examples cover
+empty families, endpoints, singleton supports, both
+left-tail conventions, nonidentity maps and an infinite family with pointwise
+finite activity accumulating at zero. The q-tame class has a different
+hypothesis from finite-dimensional fibers.
 
 ## Metric input and Rips diagrams
 
