@@ -1406,6 +1406,17 @@ bound are proved in [signed hook bottleneck stability](#signed-hook-bottleneck-s
 and the rational and grid consumers in
 `TDA.Persistence.FiniteRankProjectiveHomQuotientDimensionExamples`.
 
+The standalone fixture `TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples` exhibits
+both rank nonprojectivity of a persistence module and ordinary categorical nonprojectivity of
+its actual hook-generator Hom module. For every field, `bottomSimple` is the principal-downset
+module at the bottom of `Square = Bool × Bool`; the actual Hom module has ordinary projective
+dimension exactly one. Every certified minimal finite rank-projective resolution of
+`bottomSimple` has a nonzero `termAt 1` and zero terms for `j > 1`, and a separate existential
+theorem derives a certificate with those properties from the field alone. The exact dimension
+claim is about the Hom module, and this finite-lattice example does not assert sharpness of the
+`2*n-2` coordinate-grid bound. The fixture selects the preorder category with a public scoped
+instance; consumers can use it with `open scoped TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples`.
+
 ## Compatible lifts and algebraic sums over the reals
 
 The [real interval decomposition note](math/real-interval-decomposition.md)
