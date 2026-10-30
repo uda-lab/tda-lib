@@ -98,6 +98,7 @@ import TDA.Persistence.WeightedKernelStabilityExamples
 import TDA.Persistence.FinitePMatchingCostLawsExamples
 import TDA.Persistence.ArctanWeightExamples
 import TDA.Persistence.RipsWeightedKernelExamples
+import TDA.Persistence.PairPosetInstancesExamples
 import TDA.Persistence.FinitePFilterStabilityExamples
 import TDA.Persistence.FinitePMatchingCostComparisonExamples
 import TDA.Persistence.FinitePCostSimilarityExamples

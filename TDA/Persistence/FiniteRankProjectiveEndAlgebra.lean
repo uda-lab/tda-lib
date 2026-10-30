@@ -1497,6 +1497,59 @@ noncomputable def hookEndAlgEquivIncidenceQuotient :
       (delta (k := k) p q hpq)) = _
   exact incidenceToEndQuotientAlgEquiv_mk_delta (k := k) (S := S) p q hpq
 
+/-- The canonical finite enumeration of `PairPoset S` used by the incidence algebra.
+
+Open `TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset` to activate the
+canonical PairPoset instances. This scope preserves the existing filtered-subtype
+enumeration and does not change finite instances on the endpoints. -/
+abbrev pairPosetFintype {S : Type} [Lattice S] [Finite S] :
+    Fintype (PairPoset S) := instFintypePairPoset
+
+/-- The canonical decidable order relation on `PairPoset S`, available by opening
+`TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset`. -/
+abbrev pairPosetDecidableLE {S : Type} [Lattice S] :
+    DecidableLE (PairPoset S) := instDecidableLEPairPoset
+
+/-- The canonical decidable strict-order relation on `PairPoset S`, available by
+opening `TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset`. -/
+abbrev pairPosetDecidableLT {S : Type} [Lattice S] :
+    DecidableLT (PairPoset S) := instDecidableLTPairPoset
+
+/-- The canonical decidable equality on `PairPoset S`, available by opening
+`TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset`. -/
+abbrev pairPosetDecidableEq {S : Type} [Lattice S] :
+    DecidableEq (PairPoset S) := instDecidableEqPairPoset
+
+/-- The canonical locally finite order on `PairPoset S`, available by opening
+`TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset`. -/
+abbrev pairPosetLocallyFiniteOrder {S : Type} [Lattice S] [Finite S] :
+    LocallyFiniteOrder (PairPoset S) := instLocallyFiniteOrderPairPoset
+
+/-- The canonical proof that the diagonal ideal is two-sided. It is available by
+opening `TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset`. -/
+abbrev diagonalIdealIsTwoSided {k : Type u} [Field k]
+    {S : Type} [Lattice S] [Finite S] :
+    (diagonalIdeal (k := k) (S := S)).IsTwoSided := diagonalIdealTwoSided
+
+scoped[TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset]
+  attribute [instance 2000]
+    TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetFintype
+scoped[TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset]
+  attribute [instance 2000]
+    TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetDecidableLE
+scoped[TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset]
+  attribute [instance 2000]
+    TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetDecidableLT
+scoped[TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset]
+  attribute [instance 2000]
+    TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetDecidableEq
+scoped[TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset]
+  attribute [instance 2000]
+    TDA.Persistence.FiniteRankProjectiveEndAlgebra.pairPosetLocallyFiniteOrder
+scoped[TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset]
+  attribute [instance 2000]
+    TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdealIsTwoSided
+
 end
 
 end TDA.Persistence.FiniteRankProjectiveEndAlgebra
