@@ -1,6 +1,5 @@
 import TDA.Persistence.FiniteRankProjectiveHomFullyFaithful
 import TDA.Persistence.FiniteRankProjectiveResolutionKan
-import TDA.Persistence.FiniteRankProjectiveResolutionKanExamples
 
 /-!
 # Minimal rank-projective covers through the hook-generator Hom functor
@@ -149,9 +148,19 @@ theorem zero_identity_homCover :
     (∀ T : End (QF.obj (0 : PModule ℚ (Fin 2))),
       T ≫ QF.map (𝟙 (0 : PModule ℚ (Fin 2))) =
         QF.map (𝟙 (0 : PModule ℚ (Fin 2))) → IsIso T) := by
+  let hfd : ∀ a, FiniteDimensional ℚ ((0 : PModule ℚ (Fin 2)).obj a) := by
+    intro a
+    letI : Subsingleton ((0 : PModule ℚ (Fin 2)).obj a) :=
+      ModuleCat.subsingleton_of_isZero (Functor.zero_obj a)
+    infer_instance
   exact (rankProjectiveCover_iff (k := ℚ) (S := Fin 2)
-    (𝟙 (0 : PModule ℚ (Fin 2))) (by intro a; infer_instance)).mp
-    FiniteRankProjectiveResolutionKanExamples.zero_identity_isRankProjectiveCover
+    (𝟙 (0 : PModule ℚ (Fin 2))) hfd).mp
+    (IsRankProjectiveCover.of_identity (k := ℚ) (P := Fin 2)
+      (M := (0 : PModule ℚ (Fin 2))) hfd
+      (hM := by
+        intro L A B ι π hs α
+        refine ⟨0, ?_⟩
+        exact Subsingleton.elim _ _))
 
 /-- The nonzero principal upset identity cover satisfies the ordinary Hom
 conditions, and its birth fiber has a nonzero vector. -/
@@ -163,11 +172,20 @@ theorem principalUpset_identity_homCover (a : Fin 2) :
       T ≫ QF.map (𝟙 (HookInfinity.module (R := ℚ) a)) =
         QF.map (𝟙 (HookInfinity.module (R := ℚ) a)) → IsIso T)) ∧
     ∃ x : (HookInfinity.module (R := ℚ) a).obj a, x ≠ 0 := by
+  let hfd : ∀ p, FiniteDimensional ℚ ((HookInfinity.module (R := ℚ) a).obj p) := by
+    intro p
+    infer_instance
   constructor
   · exact (rankProjectiveCover_iff (k := ℚ) (S := Fin 2)
-      (𝟙 (HookInfinity.module (R := ℚ) a)) (by intro p; infer_instance)).mp
-      (FiniteRankProjectiveResolutionKanExamples.principalUpset_identity_isRankProjectiveCover a)
-  · exact (FiniteRankProjectiveResolutionKanExamples.principalUpset_identity_iso_minimal_cover a).2
+      (𝟙 (HookInfinity.module (R := ℚ) a)) hfd).mp
+      (IsRankProjectiveCover.of_identity (k := ℚ) (P := Fin 2)
+        (M := HookInfinity.module (R := ℚ) a) hfd
+        (HookInfinity.isRankProjective a))
+  · let e := HookInfinity.fiberEquivOfLe (R := ℚ) (i := a) (a := a) le_rfl
+    refine ⟨e.symm 1, ?_⟩
+    intro hx
+    have hone := congrArg e hx
+    exact (one_ne_zero : (1 : ℚ) ≠ 0) (by simpa using hone)
 
 end Examples
 

@@ -27,24 +27,9 @@ private theorem principalHook_finitelyPresented :
   GradedFree.free_finitelyPresented (R := ℚ) (P := Fin 2 → ℝ)
     (HookInfinity.generators (P := Fin 2 → ℝ) (0 : Fin 2 → ℝ))
 
-private theorem identity_isRankProjectiveCover
-    {k : Type u} [Field k] {P : Type} [PartialOrder P]
-    (M : PModule.{u,0,u} k P) (hfd : ∀ p, FiniteDimensional k (M.obj p))
-    (hprojective : IsRankProjective M) : IsRankProjectiveCover (𝟙 M) := by
-  letI : ∀ p, FiniteDimensional k (M.obj p) := hfd
-  refine ⟨hprojective, ?_, ?_⟩
-  · exact RankKernel.rankExact (𝟙 M) (fun _ x => ⟨x, rfl⟩)
-      (by
-        intro a b hab x hx
-        exact ⟨x, by simp, hx⟩)
-  · intro u hu
-    have hu' : u = 𝟙 M := by simpa using hu
-    rw [hu']
-    infer_instance
-
 private theorem principalHook_identity_isRankProjectiveCover :
     IsRankProjectiveCover (𝟙 principalHook) := by
-  apply identity_isRankProjectiveCover principalHook
+  apply IsRankProjectiveCover.of_identity
   · intro p
     infer_instance
   · exact HookInfinity.isRankProjective (i := (0 : Fin 2 → ℝ))

@@ -44,6 +44,24 @@ structure IsRankProjectiveCover {P : Type} [PartialOrder P]
 
 namespace IsRankProjectiveCover
 
+/-- The identity of a pointwise finite-dimensional rank-projective persistence
+module is a rank-projective cover. Its rank-exactness certificate uses the
+actual categorical-kernel row of the identity map. -/
+theorem of_identity {P : Type} [PartialOrder P]
+    {M : PModule.{u,0,u} k P}
+    (hfd : ∀ p, FiniteDimensional k (M.obj p))
+    (hM : IsRankProjective M) : IsRankProjectiveCover (𝟙 M) := by
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hfd
+  refine ⟨hM, ?_, ?_⟩
+  · exact RankKernel.rankExact (𝟙 M) (fun p x => ⟨x, rfl⟩)
+      (by
+        intro a b hab x hx
+        exact ⟨x, by simp, hx⟩)
+  · intro u hu
+    have hu' : u = 𝟙 M := by simpa using hu
+    rw [hu']
+    infer_instance
+
 /-- Two rank-projective covers of the same target are naturally isomorphic
 through an isomorphism commuting with their quotient maps. -/
 theorem exists_iso_over_quotient {P : Type} [PartialOrder P]
