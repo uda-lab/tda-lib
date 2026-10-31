@@ -85,7 +85,10 @@ private theorem finiteHook_support_eq_alive (a b : Fin 1 → ℝ) :
     Fin.forall_fin_one, not_le]
 
 /-- Each finite hook is naturally the corresponding half-open real interval,
-with the original strict finite death endpoint. -/
+with the original strict finite death endpoint. This entry point follows the
+nonempty finite branch of `RealHookTag`; `oneDimensionalHookEndpoints_positive`
+records the strict ordering of its endpoints. The support identification used
+below is valid without this strictness. -/
 noncomputable def finiteHook_intervalIso (a b : Fin 1 → ℝ) (hab : a < b) :
     Hook.module (k := k) a b ≅
       CoordinateRealBridge.fromReal

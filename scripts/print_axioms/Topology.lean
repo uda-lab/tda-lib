@@ -297,3 +297,24 @@ import TDA
 #print axioms TDA.Topology.FiniteGromovProkhorov.SupNormWitness.homologyInterleaving_right
 #print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist
 #print axioms TDA.Topology.FiniteGromovProkhorov.subdivisionRipsHomologyInterleaving_of_isometric_embedding
+
+-- Quotient maps after products with locally compact or proper factors (Issue #706).
+#print axioms TDA.Topology.isQuotientMap_prodMap_id_left
+#print axioms TDA.Topology.isQuotientMap_prodMap_id_right
+#print axioms TDA.Topology.isQuotientMap_prodMap_id_Icc
+#print axioms TDA.Topology.isQuotientMap_prodMap_id_of_isProperMap
+#print axioms TDA.Topology.isQuotientMap_prodMap_id_of_compactSpace
+
+-- TDA.Topology.QuotientProductExamples: non-Hausdorff and collapsing quotient fixtures.
+#print axioms TDA.Topology.Examples.not_t2Space_Prop
+#print axioms TDA.Topology.Examples.posMap
+#print axioms TDA.Topology.Examples.continuous_posMap
+#print axioms TDA.Topology.Examples.isQuotientMap_posMap
+#print axioms TDA.Topology.Examples.isQuotientMap_posMap_prodMap_Icc
+#print axioms TDA.Topology.Examples.not_t2Space_Prop_prod_Icc
+#print axioms TDA.Topology.Examples.triangle
+#print axioms TDA.Topology.Examples.triangleMap
+#print axioms TDA.Topology.Examples.continuous_triangleMap
+#print axioms TDA.Topology.Examples.triangleMap_surjective
+#print axioms TDA.Topology.Examples.triangleMap_collapse
+#print axioms TDA.Topology.Examples.isQuotientMap_prodMap_triangleMap

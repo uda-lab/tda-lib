@@ -1,4 +1,5 @@
 import TDA.Reeb.RGraphThickening
+import TDA.Topology.QuotientProduct
 
 /-!
 # Scalar slices and polygons of a thickened segment
@@ -58,9 +59,10 @@ closed slab lies inside `[a - ε, d + ε]`, and the closed level slices `levelSe
 polygon; its corner fibre lies in a level slice. The scalar polygon map
 `polygonMap : J(mid k) × [b k, b (k+1)] → polygon k`, `(σ, u) ↦ (fragAff (mid k) u σ, u)`, is a
 continuous surjection (`polygonMap_surjective`) from a compact space to a Hausdorff space, hence
-proper (`isProperMap_polygonMap`). Two parameters have the same image exactly when they have the
-same height and the same transferred parameter (`polygonMap_eq_iff`). At a slab end with a point
-slice the map collapses the whole reference slice.
+proper (`isProperMap_polygonMap`), and stays a quotient map after product with an arbitrary
+space (`isQuotientMap_prodMap_polygonMap`). Two parameters have the same image exactly when they
+have the same height and the same transferred parameter (`polygonMap_eq_iff`). At a slab end with
+a point slice the map collapses the whole reference slice.
 -/
 
 open Set Topology
@@ -334,8 +336,8 @@ theorem ContainsShifted.transferOK_of_mem {n : ℕ} {S : CriticalValues n} {ε :
     have := le_of_mem_K_of_ge (hG i).1 hc hu (by linarith)
     linarith
 
-/-- **Slab facts.** On a grid listing the events, the slice transfer hypotheses hold from a height of
-an open slab to any height of the closed slab. -/
+/-- **Slab facts.** On a grid listing the events, the slice transfer hypotheses hold from a height
+of an open slab to any height of the closed slab. -/
 theorem HasEvents.sliceTransfer_of_mem {a d : ℝ} {ε : ℝ≥0} (hG : G.HasEvents a d ε) {k : Fin m}
     {c u : ℝ} (hc : c ∈ (G.K k : Set ℝ)) (hu : u ∈ Seg G k) : SliceTransfer a d ε c u where
   ne_lo_sub := ne_of_mem_K_of_mem_range hG.1 hc
@@ -491,7 +493,8 @@ def polygonMap (hG : G.HasEvents a d ε) (k : Fin m) :
 
 @[simp] theorem coe_polygonMap (hG : G.HasEvents a d ε) (k : Fin m)
     (p : slice a d ε (G.mid k) × Seg G k) :
-    ((polygonMap a d ε G hG k p : polygon a d ε G k) : ℝ × ℝ) = (fragAff a d ε (G.mid k) p.2 p.1, (p.2 : ℝ)) :=
+    ((polygonMap a d ε G hG k p : polygon a d ε G k) : ℝ × ℝ) =
+      (fragAff a d ε (G.mid k) p.2 p.1, (p.2 : ℝ)) :=
   rfl
 
 variable {a d ε G}
@@ -533,6 +536,14 @@ theorem polygonMap_eq_iff (hG : G.HasEvents a d ε) (k : Fin m)
       (p.2 : ℝ) = p'.2 ∧
         fragAff a d ε (G.mid k) p.2 p.1 = fragAff a d ε (G.mid k) p'.2 p'.1 := by
   rw [← Subtype.coe_inj, coe_polygonMap, coe_polygonMap, Prod.mk.injEq, and_comm]
+
+/-- Issue #706 (2) applied to the scalar polygon map: after product with an arbitrary space `E`,
+with no separation hypothesis on `E`, it is still a quotient map. -/
+theorem isQuotientMap_prodMap_polygonMap (hG : G.HasEvents a d ε) (k : Fin m) (E : Type*)
+    [TopologicalSpace E] :
+    Topology.IsQuotientMap (Prod.map (id : E → E) (polygonMap a d ε G hG k)) :=
+  TDA.Topology.isQuotientMap_prodMap_id_of_compactSpace (polygonMap a d ε G hG k).continuous
+    (polygonMap_surjective hG k)
 
 end Polygon
 

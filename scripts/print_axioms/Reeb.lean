@@ -3319,6 +3319,57 @@ import TDA
 #print axioms TDA.Reeb.GraphRealization.edgeSegment_one
 #print axioms TDA.Reeb.GraphPL.plHeight_edgeSegment_bounds
 
+-- Morphisms of cylinder presentations on a common grid and thickened raw pieces (Issue #706).
+#print axioms TDA.Reeb.CylinderPresentation.Hom
+#print axioms TDA.Reeb.CylinderPresentation.Hom.ext
+#print axioms TDA.Reeb.CylinderPresentation.Hom.ext_iff
+#print axioms TDA.Reeb.CylinderPresentation.Hom.id
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp
+#print axioms TDA.Reeb.CylinderPresentation.Hom.id_vertex
+#print axioms TDA.Reeb.CylinderPresentation.Hom.id_edge
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp_vertex
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp_edge
+#print axioms TDA.Reeb.CylinderPresentation.Hom.id_comp
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp_id
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp_assoc
+#print axioms TDA.Reeb.CylinderPresentation.Hom.compatibleMaps
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_ofVertex
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_ofCylinder
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_ofStrip
+#print axioms TDA.Reeb.CylinderPresentation.Hom.height_realize
+#print axioms TDA.Reeb.CylinderPresentation.Hom.height_comp_realize
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_id
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_comp
+#print axioms TDA.Reeb.CylinderPresentation.Hom.toOverHom
+#print axioms TDA.Reeb.CylinderPresentation.Hom.toOverHom_left
+#print axioms TDA.Reeb.CylinderPresentation.Hom.toOverHom_id
+#print axioms TDA.Reeb.CylinderPresentation.Hom.toOverHom_comp
+#print axioms TDA.Reeb.FiniteReebData.Hom.toPresentationHom
+#print axioms TDA.Reeb.CylinderPresentation.realize_toPresentationHom
+#print axioms TDA.Reeb.CylinderPresentation.isQuotientMap_prodMap_quotMk
+#print axioms TDA.Reeb.CylinderPresentation.prodMap_quotMk_eq_iff
+#print axioms TDA.Reeb.CylinderPresentation.isQuotientMap_rawBandMap
+
+-- TDA.Reeb.ConstructibleHomExamples: collapse, non-Hausdorff and empty-piece morphism fixtures.
+#print axioms TDA.Reeb.Examples.CylinderHom.pointSegData
+#print axioms TDA.Reeb.Examples.CylinderHom.collapseData
+#print axioms TDA.Reeb.Examples.CylinderHom.collapse
+#print axioms TDA.Reeb.Examples.CylinderHom.twoSeg_ofVertex_ne
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_collapse_glues
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_collapse_not_injective
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_collapse_strip
+#print axioms TDA.Reeb.Examples.CylinderHom.sierpSeg
+#print axioms TDA.Reeb.Examples.CylinderHom.not_t2Space_sierpSeg
+#print axioms TDA.Reeb.Examples.CylinderHom.isQuotientMap_rawBandMap_sierpSeg
+#print axioms TDA.Reeb.Examples.CylinderHom.twoSegToSierp
+#print axioms TDA.Reeb.Examples.CylinderHom.sierpToPoint
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_twoSegToPoint
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_twoSegToPoint_ofStrip
+#print axioms TDA.Reeb.Examples.CylinderHom.emptyData_isEmpty_E
+#print axioms TDA.Reeb.Examples.CylinderHom.fromEmpty
+#print axioms TDA.Reeb.Examples.CylinderHom.fromEmpty_unique
+
 -- Constructibility of the geometric thickening: scalar slices and polygons (Issue #707).
 -- TDA.Reeb.ThickeningSlice: slices of a thickened segment with their ends, nonemptiness, boundary compatibility, vertex-strip and ε = 0 forms and local path-connectedness; slice transfer hypotheses with their restriction from graph transfers, slice-to-slice transfer, boundary preservation and degenerate-uniform width, inverse and injectivity; grids listing events or shifted levels with slab facts, grid midpoints, the covering of [a - ε, d + ε] and the two-level grid of a segment; and the parallelogram, slab polygons and level slices with their closedness and covering, and the proper surjective scalar polygon map with its fibres.
 #print axioms TDA.Reeb.Thickening.slice
@@ -3377,6 +3428,7 @@ import TDA
 #print axioms TDA.Reeb.Thickening.polygonMap_surjective
 #print axioms TDA.Reeb.Thickening.isProperMap_polygonMap
 #print axioms TDA.Reeb.Thickening.polygonMap_eq_iff
+#print axioms TDA.Reeb.Thickening.isQuotientMap_prodMap_polygonMap
 -- TDA.Reeb.ThickeningSliceExamples: ε = 0 point slices, constant transfer and diagonal parallelogram; a vertex strip with point and empty slices, fixed transfers and its parallelogram; coincident events of [0, 1] at ε = 1/2 with three shifted levels, the full coincident slice and the covering; and a corner-only slab with empty polygon and midpoint slice and its corner fibre as a level slice.
 #print axioms TDA.Reeb.Examples.ThickeningSlice.slice_zero_eq_singleton
 #print axioms TDA.Reeb.Examples.ThickeningSlice.slice_zero_eq_empty
