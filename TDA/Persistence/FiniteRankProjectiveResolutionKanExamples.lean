@@ -179,4 +179,75 @@ theorem double_canonical_cover_retains_repeated_occurrences :
   · intro i j
     rw [doubleCanonicalHookSumCover_tag, doubleCanonicalHookSumCover_tag]
 
+/-- At zero coordinates, the principal-upset free module is still nonzero:
+the index poset has one point, and its fiber contains the coefficient one. -/
+theorem zeroCoordinatePrincipalUpset_has_finite_minimal_resolution
+    (a : Fin 0 → ℝ) :
+    Nonempty (FiniteRankProjectiveResolution (HookInfinity.module (R := k) a)) ∧
+      ∃ R : MinimalFiniteRankProjectiveResolution (k := k)
+          (M := HookInfinity.module (R := k) a),
+        (∀ i, IsRankProjectiveCover (R.resolution.quotient i)) ∧
+          ∃ x : (HookInfinity.module (R := k) a).obj a,
+            x ≠ 0 ∧ structureMapLinear (HookInfinity.module (R := k) a)
+              (le_rfl : a ≤ a) x = x := by
+  have hM : GradedFree.FinitelyPresented.{u,0,0}
+      (R := k) (P := Fin 0 → ℝ) (HookInfinity.module (R := k) a) :=
+    GradedFree.free_finitelyPresented (R := k) (P := Fin 0 → ℝ)
+      (HookInfinity.generators (P := Fin 0 → ℝ) a)
+  constructor
+  · exact FiniteRankProjectiveResolution.exists_finiteRankProjectiveResolution_of_finitelyPresented
+      hM
+  · obtain ⟨R⟩ :=
+      FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented
+        hM
+    refine ⟨R, R.quotient_is_cover, ?_⟩
+    let e := HookInfinity.fiberEquivOfLe (R := k) (i := a) (a := a) le_rfl
+    refine ⟨e.symm 1, ?_, ?_⟩
+    · intro hx
+      have hone := congrArg e hx
+      exact (one_ne_zero : (1 : k) ≠ 0) (by simpa using hone)
+    · simp [structureMapLinear_self]
+
+/-- An empty-generator original presentation proves both existence statements
+for the zero module on the one-point index poset. No witness length is selected
+by this consequence. -/
+theorem zeroCoordinate_emptyPresentation_has_finite_minimal_resolution :
+    Nonempty (FiniteRankProjectiveResolution
+        (0 : PModule.{u,0,u} k (Fin 0 → ℝ))) ∧
+      Nonempty (MinimalFiniteRankProjectiveResolution (k := k)
+        (M := (0 : PModule.{u,0,u} k (Fin 0 → ℝ)))) := by
+  let W : GradedFree.GradedGenerators.{0,0} (Fin 0 → ℝ) :=
+    ⟨Empty, Empty.elim⟩
+  have hzero : IsZero (GradedFree.module (R := k) W) := by
+    apply (IsZero.iff_id_eq_zero _).mpr
+    apply GradedFree.hom_ext_birth W
+    intro g
+    exact g.elim
+  have hM : GradedFree.FinitelyPresented.{u,0,0}
+      (R := k) (P := Fin 0 → ℝ) (0 : PModule.{u,0,u} k (Fin 0 → ℝ)) :=
+    GradedFree.finitelyPresented_of_iso (GradedFree.free_finitelyPresented W)
+      hzero.isoZero
+  exact ⟨
+    FiniteRankProjectiveResolution.exists_finiteRankProjectiveResolution_of_finitelyPresented
+      hM,
+    FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented
+      hM⟩
+
+/-- The strengthened API also applies directly to an originally finitely
+presented principal upset with one real coordinate. -/
+theorem oneCoordinatePrincipalUpset_uses_dimension_free_existence
+    (a : Fin 1 → ℝ) :
+    Nonempty (FiniteRankProjectiveResolution (HookInfinity.module (R := k) a)) ∧
+      Nonempty (MinimalFiniteRankProjectiveResolution (k := k)
+        (M := HookInfinity.module (R := k) a)) := by
+  have hM : GradedFree.FinitelyPresented.{u,0,0}
+      (R := k) (P := Fin 1 → ℝ) (HookInfinity.module (R := k) a) :=
+    GradedFree.free_finitelyPresented (R := k) (P := Fin 1 → ℝ)
+      (HookInfinity.generators (P := Fin 1 → ℝ) a)
+  exact ⟨
+    FiniteRankProjectiveResolution.exists_finiteRankProjectiveResolution_of_finitelyPresented
+      hM,
+    FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented
+      hM⟩
+
 end TDA.Persistence.FiniteRankProjectiveResolutionKanExamples

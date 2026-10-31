@@ -64,12 +64,16 @@ For such a resolution `R`, `R.termAt j` is its recorded term when
 `j < R.resolution.length` and the zero module afterward. A degree bound on
 `termAt` therefore concerns the highest nonzero degree, not the stored length.
 
-Let `k` be a field, let `n > 0`, and let
+Let `k` be a field, let `n` be any natural number, and let
 `M : PModule k (Fin n → ℝ)` be originally finitely presented in the
 real-coordinate category, in the sense of `GradedFree.FinitelyPresented M`.
 Then
-`FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution`
-proves that an actual `MinimalFiniteRankProjectiveResolution M` exists.
+`FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented`
+proves that an actual `MinimalFiniteRankProjectiveResolution M` exists. This
+includes `n = 0`: `Fin 0 → ℝ` is a one-point poset, and the theorem applies to
+nonzero modules on it as well. The original
+`finitelyPresented_exists_minimalFiniteRankProjectiveResolution` declaration
+remains available as the positive-dimensional specialization.
 
 The proof starts from the finite presentation of `M` and reconstructs an
 isomorphism from the actual left Kan extension of a pointwise
