@@ -3318,3 +3318,54 @@ import TDA
 #print axioms TDA.Reeb.GraphRealization.edgeSegment_zero
 #print axioms TDA.Reeb.GraphRealization.edgeSegment_one
 #print axioms TDA.Reeb.GraphPL.plHeight_edgeSegment_bounds
+
+-- Morphisms of cylinder presentations on a common grid and thickened raw pieces (Issue #706).
+#print axioms TDA.Reeb.CylinderPresentation.Hom
+#print axioms TDA.Reeb.CylinderPresentation.Hom.ext
+#print axioms TDA.Reeb.CylinderPresentation.Hom.ext_iff
+#print axioms TDA.Reeb.CylinderPresentation.Hom.id
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp
+#print axioms TDA.Reeb.CylinderPresentation.Hom.id_vertex
+#print axioms TDA.Reeb.CylinderPresentation.Hom.id_edge
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp_vertex
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp_edge
+#print axioms TDA.Reeb.CylinderPresentation.Hom.id_comp
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp_id
+#print axioms TDA.Reeb.CylinderPresentation.Hom.comp_assoc
+#print axioms TDA.Reeb.CylinderPresentation.Hom.compatibleMaps
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_ofVertex
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_ofCylinder
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_ofStrip
+#print axioms TDA.Reeb.CylinderPresentation.Hom.height_realize
+#print axioms TDA.Reeb.CylinderPresentation.Hom.height_comp_realize
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_id
+#print axioms TDA.Reeb.CylinderPresentation.Hom.realize_comp
+#print axioms TDA.Reeb.CylinderPresentation.Hom.toOverHom
+#print axioms TDA.Reeb.CylinderPresentation.Hom.toOverHom_left
+#print axioms TDA.Reeb.CylinderPresentation.Hom.toOverHom_id
+#print axioms TDA.Reeb.CylinderPresentation.Hom.toOverHom_comp
+#print axioms TDA.Reeb.FiniteReebData.Hom.toPresentationHom
+#print axioms TDA.Reeb.CylinderPresentation.realize_toPresentationHom
+#print axioms TDA.Reeb.CylinderPresentation.isQuotientMap_prodMap_quotMk
+#print axioms TDA.Reeb.CylinderPresentation.prodMap_quotMk_eq_iff
+#print axioms TDA.Reeb.CylinderPresentation.isQuotientMap_rawBandMap
+
+-- TDA.Reeb.ConstructibleHomExamples: collapse, non-Hausdorff and empty-piece morphism fixtures.
+#print axioms TDA.Reeb.Examples.CylinderHom.pointSegData
+#print axioms TDA.Reeb.Examples.CylinderHom.collapseData
+#print axioms TDA.Reeb.Examples.CylinderHom.collapse
+#print axioms TDA.Reeb.Examples.CylinderHom.twoSeg_ofVertex_ne
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_collapse_glues
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_collapse_not_injective
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_collapse_strip
+#print axioms TDA.Reeb.Examples.CylinderHom.sierpSeg
+#print axioms TDA.Reeb.Examples.CylinderHom.not_t2Space_sierpSeg
+#print axioms TDA.Reeb.Examples.CylinderHom.isQuotientMap_rawBandMap_sierpSeg
+#print axioms TDA.Reeb.Examples.CylinderHom.twoSegToSierp
+#print axioms TDA.Reeb.Examples.CylinderHom.sierpToPoint
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_twoSegToPoint
+#print axioms TDA.Reeb.Examples.CylinderHom.realize_twoSegToPoint_ofStrip
+#print axioms TDA.Reeb.Examples.CylinderHom.emptyData_isEmpty_E
+#print axioms TDA.Reeb.Examples.CylinderHom.fromEmpty
+#print axioms TDA.Reeb.Examples.CylinderHom.fromEmpty_unique
