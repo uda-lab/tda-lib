@@ -5,7 +5,7 @@ Let \(C\) be the boundary of the tetrahedron with the actual face grading \(g\) 
 g_v(\sigma,i)=g(\sigma,i)+v_i,
 \qquad H_v=\operatorname{finiteSimplicialHomology}(k,g_v,1).
 \]
-Here \(H_v\) is actual inclusion-induced degree-one homology of the sublevel filtration, over an arbitrary coefficient field \(k\), including characteristic two. A positive coordinate of \(v\) delays the births of faces in that coordinate; a negative coordinate advances them. Each face is still graded on the same original two-coordinate parameter space.
+Here \(H_v\) denotes the full degree-one persistence module (PH₁ module) of this sublevel filtration: its fiber at \(p\in\mathbb R^2\) is \(H_1(C_{g_v\le p};k)\), and for \(p\le q\) its structure map is induced on homology by the inclusion \(C_{g_v\le p}\hookrightarrow C_{g_v\le q}\). The distance below compares these modules together with their structure maps, not isolated \(H_1\) groups or dimension tables. The coefficient field \(k\) is arbitrary, including characteristic two. A positive coordinate of \(v\) delays the births of faces in that coordinate; a negative coordinate advances them. Each face is still graded on the same original two-coordinate parameter space.
 
 For each real parameter \(p\), the translated sublevel is exactly the original sublevel at the coordinate pullback
 \[
