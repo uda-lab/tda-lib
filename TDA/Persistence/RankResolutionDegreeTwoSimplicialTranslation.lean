@@ -237,6 +237,165 @@ private theorem map_ne_zero_of_iso {k : Type u} [Field k]
   intro hz
   exact hne (map_zero_of_iso e.symm hpq hz)
 
+private theorem nonneg_of_hasLowerPoint (p : Fin 2 → ℝ) (hp : grid.HasLowerPoint p)
+    (i : Fin 2) : 0 ≤ p i := by
+  obtain ⟨x, hx⟩ := hp
+  have hxi : (x i).val ≤ p i := hx i
+  rcases coordinate_cases x i with h | h | h
+  · rw [h] at hxi
+    linarith
+  · rw [h] at hxi
+    linarith
+  · rw [h] at hxi
+    linarith
+
+private theorem floor_le_c_of_upper (p : Fin 2 → ℝ) (hp : grid.HasLowerPoint p)
+    (h0 : p 0 < 2) (h1 : p 1 < 2) : grid.floor p hp ≤ c := by
+  intro i
+  change (grid.floor p hp i).val ≤ (c i).val
+  have hc : (c i).val = 1 := by
+    have h := congrFun grid_embedding_c i
+    simpa only [grid.embedding_apply] using h
+  have hle : (grid.floor p hp i).val ≤ p i := grid.floor_le p hp i
+  rcases coordinate_cases (grid.floor p hp) i with h | h | h
+  · rw [h, hc]
+    norm_num
+  · rw [h, hc]
+  · have hpi : p i < 2 := by fin_cases i <;> assumption
+    rw [h] at hle
+    linarith
+
+/-- A structure map of the tetrahedron's PH₁ persistence module is nonzero
+exactly when its source is in the lower support and its target is below both
+cap deaths. -/
+theorem homology_structureMap_ne_zero_iff (k : Type u) [Field k]
+    {p q : Fin 2 → ℝ} (hpq : p ≤ q) :
+    structureMap (finiteSimplicialHomology k boundaryTetrahedronGrading 1) hpq ≠ 0 ↔
+      0 ≤ p 0 ∧ 0 ≤ p 1 ∧ (1 ≤ p 0 ∨ 1 ≤ p 1) ∧ q 0 < 2 ∧ q 1 < 2 := by
+  constructor
+  · intro hne
+    have hreal : structureMap (realModule (k := k)) hpq ≠ 0 :=
+      map_ne_zero_of_iso (realIso k).symm hpq hne
+    have hp : grid.HasLowerPoint p := by
+      by_contra hn
+      exact hreal ((grid.isZero_obj_of_not_hasLowerPoint
+        (finiteModule (k := k)) p hn).eq_of_src _ _)
+    have hq := grid.hasLowerPoint_mono hpq hp
+    have hfinite : structureMap (finiteModule (k := k))
+        (grid.floor_mono hpq hp hq) ≠ 0 := by
+      intro hz
+      exact hreal (lan_map_zero k hpq hp hq hz)
+    have hfp : grid.floor p hp ∈ support := by
+      by_contra hn
+      apply hfinite
+      apply finite_map_zero
+      intro hboth
+      exact hn hboth.1
+    have hfq : grid.floor q hq ∈ support := by
+      by_contra hn
+      apply hfinite
+      apply finite_map_zero
+      intro hboth
+      exact hn hboth.2
+    have hp0 : 0 ≤ p 0 := nonneg_of_hasLowerPoint p hp 0
+    have hp1 : 0 ≤ p 1 := nonneg_of_hasLowerPoint p hp 1
+    have hparm : 1 ≤ p 0 ∨ 1 ≤ p 1 := by
+      rcases hfp.1 with ha | hb
+      · have hle : grid.embedding a ≤ p :=
+          (grid.embedding.monotone ha).trans (grid.floor_le p hp)
+        rw [grid_embedding_a] at hle
+        have h := hle 1
+        norm_num at h
+        exact Or.inr h
+      · have hle : grid.embedding b ≤ p :=
+          (grid.embedding.monotone hb).trans (grid.floor_le p hp)
+        rw [grid_embedding_b] at hle
+        have h := hle 0
+        norm_num at h
+        exact Or.inl h
+    have hq0 : q 0 < 2 := by
+      by_contra hn
+      have htwo : 2 ≤ q 0 := le_of_not_gt hn
+      have heq : grid.embedding e ≤ q := by
+        rw [grid_embedding_e]
+        intro i
+        fin_cases i
+        · exact htwo
+        · exact nonneg_of_hasLowerPoint q hq 1
+      have hec : e ≤ c := (grid.le_floor q hq heq).trans hfq.2
+      have hle := grid.embedding.monotone hec
+      rw [grid_embedding_e, grid_embedding_c] at hle
+      have h := hle 0
+      norm_num at h
+    have hq1 : q 1 < 2 := by
+      by_contra hn
+      have htwo : 2 ≤ q 1 := le_of_not_gt hn
+      have hdq : grid.embedding d ≤ q := by
+        rw [grid_embedding_d]
+        intro i
+        fin_cases i
+        · exact nonneg_of_hasLowerPoint q hq 0
+        · exact htwo
+      have hdc : d ≤ c := (grid.le_floor q hq hdq).trans hfq.2
+      have hle := grid.embedding.monotone hdc
+      rw [grid_embedding_d, grid_embedding_c] at hle
+      have h := hle 1
+      norm_num at h
+    exact ⟨hp0, hp1, hparm, hq0, hq1⟩
+  · rintro ⟨hp0, hp1, hparm, hq0, hq1⟩
+    have hp : grid.HasLowerPoint p := by
+      rcases hparm with h0 | h1
+      · refine ⟨b, ?_⟩
+        rw [grid_embedding_b]
+        intro i
+        fin_cases i
+        · exact h0
+        · exact hp1
+      · refine ⟨a, ?_⟩
+        rw [grid_embedding_a]
+        intro i
+        fin_cases i
+        · exact hp0
+        · exact h1
+    have hq := grid.hasLowerPoint_mono hpq hp
+    have hp0lt : p 0 < 2 := lt_of_le_of_lt (hpq 0) hq0
+    have hp1lt : p 1 < 2 := lt_of_le_of_lt (hpq 1) hq1
+    rcases hparm with h0 | h1
+    · have hArmP : grid.embedding b ≤ p := by
+        rw [grid_embedding_b]
+        intro i
+        fin_cases i
+        · exact h0
+        · exact hp1
+      have hArmQ : grid.embedding b ≤ q := hArmP.trans hpq
+      have hfp : grid.floor p hp ∈ support := by
+        change (a ≤ grid.floor p hp ∨ b ≤ grid.floor p hp) ∧ grid.floor p hp ≤ c
+        exact ⟨Or.inr (grid.le_floor p hp hArmP),
+          floor_le_c_of_upper p hp hp0lt hp1lt⟩
+      have hfq : grid.floor q hq ∈ support := by
+        change (a ≤ grid.floor q hq ∨ b ≤ grid.floor q hq) ∧ grid.floor q hq ≤ c
+        exact ⟨Or.inr (grid.le_floor q hq hArmQ),
+          floor_le_c_of_upper q hq hq0 hq1⟩
+      have hfinite := finite_map_ne_zero k (grid.floor_mono hpq hp hq) hfp hfq
+      exact map_ne_zero_of_iso (realIso k) hpq (lan_map_ne_zero k hpq hp hq hfinite)
+    · have hArmP : grid.embedding a ≤ p := by
+        rw [grid_embedding_a]
+        intro i
+        fin_cases i
+        · exact hp0
+        · exact h1
+      have hArmQ : grid.embedding a ≤ q := hArmP.trans hpq
+      have hfp : grid.floor p hp ∈ support := by
+        change (a ≤ grid.floor p hp ∨ b ≤ grid.floor p hp) ∧ grid.floor p hp ≤ c
+        exact ⟨Or.inl (grid.le_floor p hp hArmP),
+          floor_le_c_of_upper p hp hp0lt hp1lt⟩
+      have hfq : grid.floor q hq ∈ support := by
+        change (a ≤ grid.floor q hq ∨ b ≤ grid.floor q hq) ∧ grid.floor q hq ≤ c
+        exact ⟨Or.inl (grid.le_floor q hq hArmQ),
+          floor_le_c_of_upper q hq hq0 hq1⟩
+      have hfinite := finite_map_ne_zero k (grid.floor_mono hpq hp hq) hfp hfq
+      exact map_ne_zero_of_iso (realIso k) hpq (lan_map_ne_zero k hpq hp hq hfinite)
+
 /-- The actual unshifted H₁ map from the second arm survives every subunit delay. -/
 theorem homology_secondBirth_structureMap_ne_zero (k : Type u) [Field k]
     (r : ℝ) (hr0 : 0 ≤ r) (hr1 : r < 1) :

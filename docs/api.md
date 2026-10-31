@@ -557,6 +557,10 @@ Here the translated object is the full PH₁ persistence module: its fibers are
 degree-one homology groups of the sublevel complexes, and its structure maps
 are induced by their inclusions. The distance compares these modules with
 their maps, not isolated homology groups.
+Strictly positive independent coordinate scaling of the same actual PH₁ module
+has an exact distance-to-zero formula from its two arm lifetimes; its reindexing,
+actual transition maps and ordinary-import consumers are in the
+[simplicial scaling note](math/rank-resolution-simplicial-scaling.md).
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 ordinary one-dimensional barcode connection and its half-open boundary
