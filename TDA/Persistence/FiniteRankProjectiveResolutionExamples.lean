@@ -658,4 +658,334 @@ theorem oneCoordinateHookIdentity_zero_padding_length :
 
 end CoordinateIdentityAndPadding
 
+section BinaryBiproductConsumers
+
+open CategoryTheory.Limits
+
+private def lateHookBirth : Fin 1 → ℝ := fun _ => 1
+
+/-- A second nonzero principal upset, born one unit after `oneCoordinateHook`. -/
+noncomputable abbrev lateCoordinateHook : PModule.{0,0,0} ℚ (Fin 1 → ℝ) :=
+  HookInfinity.module (R := ℚ) lateHookBirth
+
+private theorem hookMap_nonzero_of_birth_le {i a b : Fin 1 → ℝ}
+    (hab : a ≤ b) (hia : i ≤ a) :
+    structureMapLinear (HookInfinity.module (R := ℚ) i) hab ≠ 0 := by
+  let ea := HookInfinity.fiberEquivOfLe (R := ℚ) (i := i) (a := a) hia
+  let eb := HookInfinity.fiberEquivOfLe (R := ℚ) (i := i) (a := b) (hia.trans hab)
+  let x := ea.symm 1
+  have hx : ea x = 1 := by simp [x]
+  intro hzero
+  have hmap := HookInfinity.fiberEquivOfLe_structureMap
+    (R := ℚ) (i := i) (a := a) (b := b) hia hab x
+  have hvanish : eb (structureMapLinear (HookInfinity.module (R := ℚ) i) hab x) = 0 := by
+    rw [hzero]
+    exact eb.map_zero
+  rw [hmap, hx] at hvanish
+  exact (one_ne_zero : (1 : ℚ) ≠ 0) hvanish
+
+private theorem lateCoordinateHook_pointwiseFiniteDimensional :
+    ∀ p, FiniteDimensional ℚ (lateCoordinateHook.obj p) := by
+  intro p
+  exact HookInfinity.finiteDimensional (i := lateHookBirth) p
+
+private theorem lateCoordinateHook_rankProjective : IsRankProjective lateCoordinateHook :=
+  HookInfinity.isRankProjective (i := lateHookBirth)
+
+/-- The second principal upset also has a nonzero map between distinct grades. -/
+theorem lateCoordinateHook_transition_nonzero :
+    structureMapLinear lateCoordinateHook
+      (show (fun _ : Fin 1 => (1 : ℝ)) ≤ (fun _ : Fin 1 => (2 : ℝ)) by
+        intro i
+        norm_num) ≠ 0 := by
+  exact hookMap_nonzero_of_birth_le
+    (i := lateHookBirth) (a := lateHookBirth) (b := fun _ : Fin 1 => 2)
+    (by intro i; norm_num [lateHookBirth]) (by intro i; rfl)
+
+/-- The length-one identity resolution of the later principal upset. -/
+noncomputable def lateCoordinateHookIdentity :
+    FiniteRankProjectiveResolution lateCoordinateHook :=
+  FiniteRankProjectiveResolution.identity lateCoordinateHook
+    lateCoordinateHook_rankProjective lateCoordinateHook_pointwiseFiniteDimensional
+
+private theorem earlyLate_resolutions_same_length :
+    oneCoordinateHookIdentity.length = lateCoordinateHookIdentity.length := by
+  simp [oneCoordinateHookIdentity, lateCoordinateHookIdentity,
+    FiniteRankProjectiveResolution.identity]
+
+/-- A length-one resolution whose selected degree-zero term has two nonzero summands. -/
+noncomputable def earlyLateBiproductResolution :
+    FiniteRankProjectiveResolution (oneCoordinateHook ⊞ lateCoordinateHook) :=
+  FiniteRankProjectiveResolution.biprod oneCoordinateHookIdentity
+    lateCoordinateHookIdentity earlyLate_resolutions_same_length
+
+/-- The chosen zero-padded term lookup for the two-hook resolution. -/
+noncomputable def earlyLateBiproductTermAtLookup :
+    earlyLateBiproductResolution.termAt 0 ≅
+      oneCoordinateHookIdentity.termAt 0 ⊞ lateCoordinateHookIdentity.termAt 0 :=
+  FiniteRankProjectiveResolution.termAt_biprodIso oneCoordinateHookIdentity
+    lateCoordinateHookIdentity earlyLate_resolutions_same_length 0
+
+private theorem selectedBiproductConjugateMap
+    {A B T : PModule.{0,0,0} ℚ (Fin 1 → ℝ)} (e : T ≅ A ⊞ B)
+    {p q : Fin 1 → ℝ} (hpq : p ≤ q) :
+    e.inv.app p ≫ structureMap T hpq ≫ e.hom.app q =
+      structureMap (A ⊞ B) hpq := by
+  change e.inv.app p ≫ T.map (homOfLE hpq) ≫ e.hom.app q =
+    (A ⊞ B).map (homOfLE hpq)
+  have hnat := e.hom.naturality (homOfLE hpq)
+  change T.map (homOfLE hpq) ≫ e.hom.app q =
+    e.hom.app p ≫ (A ⊞ B).map (homOfLE hpq) at hnat
+  have h := congrArg (fun f => e.inv.app p ≫ f) hnat
+  simpa [Category.assoc] using h
+
+private theorem selectedBiproductLeftDirect
+    {A B : PModule.{0,0,0} ℚ (Fin 1 → ℝ)} {p q : Fin 1 → ℝ}
+    (hpq : p ≤ q) :
+    (biprod.inl : A ⟶ A ⊞ B).app p ≫ structureMap (A ⊞ B) hpq ≫
+      (biprod.fst : A ⊞ B ⟶ A).app q = structureMap A hpq := by
+  have hnat := (biprod.inl : A ⟶ A ⊞ B).naturality (homOfLE hpq)
+  change structureMap A hpq ≫ (biprod.inl : A ⟶ A ⊞ B).app q =
+    (biprod.inl : A ⟶ A ⊞ B).app p ≫ structureMap (A ⊞ B) hpq at hnat
+  have hcomp : (biprod.inl : A ⟶ A ⊞ B).app q ≫
+      (biprod.fst : A ⊞ B ⟶ A).app q = 𝟙 _ := by
+    have h := congrArg (fun f : A ⟶ A => f.app q)
+      (biprod.inl_fst : (biprod.inl : A ⟶ A ⊞ B) ≫ biprod.fst = 𝟙 A)
+    simpa only [NatTrans.comp_app, NatTrans.id_app] using h
+  calc
+    (biprod.inl : A ⟶ A ⊞ B).app p ≫ structureMap (A ⊞ B) hpq ≫
+        (biprod.fst : A ⊞ B ⟶ A).app q =
+      (structureMap A hpq ≫ (biprod.inl : A ⟶ A ⊞ B).app q) ≫
+        (biprod.fst : A ⊞ B ⟶ A).app q := by
+      exact congrArg (fun f => f ≫ (biprod.fst : A ⊞ B ⟶ A).app q) hnat.symm
+    _ = structureMap A hpq := by
+      rw [Category.assoc, hcomp, Category.comp_id]
+
+private theorem selectedBiproductRightDirect
+    {A B : PModule.{0,0,0} ℚ (Fin 1 → ℝ)} {p q : Fin 1 → ℝ}
+    (hpq : p ≤ q) :
+    (biprod.inr : B ⟶ A ⊞ B).app p ≫ structureMap (A ⊞ B) hpq ≫
+      (biprod.snd : A ⊞ B ⟶ B).app q = structureMap B hpq := by
+  have hnat := (biprod.inr : B ⟶ A ⊞ B).naturality (homOfLE hpq)
+  change structureMap B hpq ≫ (biprod.inr : B ⟶ A ⊞ B).app q =
+    (biprod.inr : B ⟶ A ⊞ B).app p ≫ structureMap (A ⊞ B) hpq at hnat
+  have hcomp : (biprod.inr : B ⟶ A ⊞ B).app q ≫
+      (biprod.snd : A ⊞ B ⟶ B).app q = 𝟙 _ := by
+    have h := congrArg (fun f : B ⟶ B => f.app q)
+      (biprod.inr_snd : (biprod.inr : B ⟶ A ⊞ B) ≫ biprod.snd = 𝟙 B)
+    simpa only [NatTrans.comp_app, NatTrans.id_app] using h
+  calc
+    (biprod.inr : B ⟶ A ⊞ B).app p ≫ structureMap (A ⊞ B) hpq ≫
+        (biprod.snd : A ⊞ B ⟶ B).app q =
+      (structureMap B hpq ≫ (biprod.inr : B ⟶ A ⊞ B).app q) ≫
+        (biprod.snd : A ⊞ B ⟶ B).app q := by
+      exact congrArg (fun f => f ≫ (biprod.snd : A ⊞ B ⟶ B).app q) hnat.symm
+    _ = structureMap B hpq := by
+      rw [Category.assoc, hcomp, Category.comp_id]
+
+private theorem selectedBiproductLeftMap
+    {A B T : PModule.{0,0,0} ℚ (Fin 1 → ℝ)} (e : T ≅ A ⊞ B)
+    {p q : Fin 1 → ℝ} (hpq : p ≤ q) :
+    (biprod.inl : A ⟶ A ⊞ B).app p ≫ e.inv.app p ≫
+      structureMap T hpq ≫ e.hom.app q ≫ (biprod.fst : A ⊞ B ⟶ A).app q =
+    structureMap A hpq := by
+  calc
+    _ = (biprod.inl : A ⟶ A ⊞ B).app p ≫
+        (e.inv.app p ≫ structureMap T hpq ≫ e.hom.app q) ≫
+        (biprod.fst : A ⊞ B ⟶ A).app q := by
+      simp only [Category.assoc]
+    _ = (biprod.inl : A ⟶ A ⊞ B).app p ≫
+        structureMap (A ⊞ B) hpq ≫ (biprod.fst : A ⊞ B ⟶ A).app q := by
+      rw [selectedBiproductConjugateMap e hpq]
+    _ = structureMap A hpq := selectedBiproductLeftDirect hpq
+
+private theorem selectedBiproductRightMap
+    {A B T : PModule.{0,0,0} ℚ (Fin 1 → ℝ)} (e : T ≅ A ⊞ B)
+    {p q : Fin 1 → ℝ} (hpq : p ≤ q) :
+    (biprod.inr : B ⟶ A ⊞ B).app p ≫ e.inv.app p ≫
+      structureMap T hpq ≫ e.hom.app q ≫ (biprod.snd : A ⊞ B ⟶ B).app q =
+    structureMap B hpq := by
+  calc
+    _ = (biprod.inr : B ⟶ A ⊞ B).app p ≫
+        (e.inv.app p ≫ structureMap T hpq ≫ e.hom.app q) ≫
+        (biprod.snd : A ⊞ B ⟶ B).app q := by
+      simp only [Category.assoc]
+    _ = (biprod.inr : B ⟶ A ⊞ B).app p ≫
+        structureMap (A ⊞ B) hpq ≫ (biprod.snd : A ⊞ B ⟶ B).app q := by
+      rw [selectedBiproductConjugateMap e hpq]
+    _ = structureMap B hpq := selectedBiproductRightDirect hpq
+
+/-- The first actual structure map is selected by inclusion, lookup and projection. -/
+theorem earlyLateBiproduct_left_component_map {p q : Fin 1 → ℝ} (hpq : p ≤ q) :
+    (biprod.inl : oneCoordinateHookIdentity.termAt 0 ⟶
+        oneCoordinateHookIdentity.termAt 0 ⊞ lateCoordinateHookIdentity.termAt 0).app p ≫
+      earlyLateBiproductTermAtLookup.inv.app p ≫
+      structureMap (earlyLateBiproductResolution.termAt 0) hpq ≫
+      earlyLateBiproductTermAtLookup.hom.app q ≫
+      (biprod.fst : oneCoordinateHookIdentity.termAt 0 ⊞
+        lateCoordinateHookIdentity.termAt 0 ⟶ oneCoordinateHookIdentity.termAt 0).app q =
+    structureMap (oneCoordinateHookIdentity.termAt 0) hpq := by
+  exact selectedBiproductLeftMap earlyLateBiproductTermAtLookup hpq
+
+/-- The second actual structure map is selected by inclusion, lookup and projection. -/
+theorem earlyLateBiproduct_right_component_map {p q : Fin 1 → ℝ} (hpq : p ≤ q) :
+    (biprod.inr : lateCoordinateHookIdentity.termAt 0 ⟶
+        oneCoordinateHookIdentity.termAt 0 ⊞ lateCoordinateHookIdentity.termAt 0).app p ≫
+      earlyLateBiproductTermAtLookup.inv.app p ≫
+      structureMap (earlyLateBiproductResolution.termAt 0) hpq ≫
+      earlyLateBiproductTermAtLookup.hom.app q ≫
+      (biprod.snd : oneCoordinateHookIdentity.termAt 0 ⊞
+        lateCoordinateHookIdentity.termAt 0 ⟶ lateCoordinateHookIdentity.termAt 0).app q =
+    structureMap (lateCoordinateHookIdentity.termAt 0) hpq := by
+  exact selectedBiproductRightMap earlyLateBiproductTermAtLookup hpq
+
+/-- The earlier summand survives from grade one to grade two, as does the later one. -/
+theorem earlyCoordinateHook_selected_term_transition_nonzero :
+    structureMapLinear (oneCoordinateHookIdentity.termAt 0)
+      (show (fun _ : Fin 1 => (1 : ℝ)) ≤ (fun _ : Fin 1 => (2 : ℝ)) by
+        intro i
+        norm_num) ≠ 0 := by
+  rw [FiniteRankProjectiveResolution.termAt_eq_term
+    (R := oneCoordinateHookIdentity) (by
+      simp [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity])]
+  change structureMapLinear oneCoordinateHook _ ≠ 0
+  exact hookMap_nonzero_of_birth_le
+    (i := (0 : Fin 1 → ℝ)) (a := fun _ : Fin 1 => 1) (b := fun _ : Fin 1 => 2)
+    (by intro i; norm_num) (by intro i; norm_num)
+
+/-- The later summand survives its transition from grade one to grade two. -/
+theorem lateCoordinateHook_selected_term_transition_nonzero :
+    structureMapLinear (lateCoordinateHookIdentity.termAt 0)
+      (show (fun _ : Fin 1 => (1 : ℝ)) ≤ (fun _ : Fin 1 => (2 : ℝ)) by
+        intro i
+        norm_num) ≠ 0 := by
+  rw [FiniteRankProjectiveResolution.termAt_eq_term
+    (R := lateCoordinateHookIdentity) (by
+      simp [lateCoordinateHookIdentity, FiniteRankProjectiveResolution.identity])]
+  change structureMapLinear lateCoordinateHook _ ≠ 0
+  exact lateCoordinateHook_transition_nonzero
+
+/-- The chosen lookup includes a degree-zero term and its two selected components. -/
+theorem earlyLateBiproduct_in_range_lookup :
+    Nonempty (earlyLateBiproductResolution.termAt 0 ≅
+      oneCoordinateHookIdentity.termAt 0 ⊞ lateCoordinateHookIdentity.termAt 0) :=
+  ⟨earlyLateBiproductTermAtLookup⟩
+
+/-- At the common length boundary, lookup selects both zero-padded terms. -/
+theorem earlyLateBiproduct_boundary_lookup :
+    Nonempty (earlyLateBiproductResolution.termAt 1 ≅
+      oneCoordinateHookIdentity.termAt 1 ⊞ lateCoordinateHookIdentity.termAt 1) :=
+  ⟨FiniteRankProjectiveResolution.termAt_biprodIso oneCoordinateHookIdentity
+    lateCoordinateHookIdentity earlyLate_resolutions_same_length 1⟩
+
+/-- Beyond the common length, the selected lookup still matches the zero-padded terms. -/
+theorem earlyLateBiproduct_out_of_range_lookup :
+    Nonempty (earlyLateBiproductResolution.termAt 2 ≅
+      oneCoordinateHookIdentity.termAt 2 ⊞ lateCoordinateHookIdentity.termAt 2) :=
+  ⟨FiniteRankProjectiveResolution.termAt_biprodIso oneCoordinateHookIdentity
+    lateCoordinateHookIdentity earlyLate_resolutions_same_length 2⟩
+
+/-- Repeating the same nonzero resolution retains two copies in its selected term. -/
+noncomputable def repeatedHookBiproductResolution :
+    FiniteRankProjectiveResolution (oneCoordinateHook ⊞ oneCoordinateHook) :=
+  FiniteRankProjectiveResolution.biprod oneCoordinateHookIdentity
+    oneCoordinateHookIdentity rfl
+
+/-- The repeated input has the chosen two-occurrence degree-zero lookup. -/
+theorem repeatedHookBiproduct_lookup :
+    Nonempty (repeatedHookBiproductResolution.termAt 0 ≅
+      oneCoordinateHookIdentity.termAt 0 ⊞ oneCoordinateHookIdentity.termAt 0) :=
+  ⟨FiniteRankProjectiveResolution.termAt_biprodIso oneCoordinateHookIdentity
+    oneCoordinateHookIdentity rfl 0⟩
+
+/-- An empty resolution remains empty under the equal-length binary operation. -/
+noncomputable def emptyZeroBiproductResolution :
+    FiniteRankProjectiveResolution
+      ((0 : PModule.{0,0,0} ℚ (Fin 1 → ℝ)) ⊞ 0) :=
+  FiniteRankProjectiveResolution.biprod coordinateZeroLengthResolution
+    coordinateZeroLengthResolution rfl
+
+/-- The equal-length operation preserves the genuine length-zero boundary. -/
+theorem emptyZeroBiproductResolution_length : emptyZeroBiproductResolution.length = 0 := rfl
+
+/-- The empty operation's lookup at zero uses the two selected zero terms. -/
+theorem emptyZeroBiproductResolution_boundary_lookup :
+    Nonempty (emptyZeroBiproductResolution.termAt 0 ≅
+      coordinateZeroLengthResolution.termAt 0 ⊞ coordinateZeroLengthResolution.termAt 0) :=
+  ⟨FiniteRankProjectiveResolution.termAt_biprodIso coordinateZeroLengthResolution
+    coordinateZeroLengthResolution rfl 0⟩
+
+/-- Zero coordinate dimensions still support the selected binary resolution API. -/
+noncomputable def zeroCoordinateRepeatedBiproductResolution :
+    FiniteRankProjectiveResolution (zeroCoordinateHook ⊞ zeroCoordinateHook) :=
+  FiniteRankProjectiveResolution.biprod zeroCoordinateHookIdentity
+    zeroCoordinateHookIdentity rfl
+
+/-- The zero-dimensional example retains both selected summands at degree zero. -/
+theorem zeroCoordinateRepeatedBiproduct_lookup :
+    Nonempty (zeroCoordinateRepeatedBiproductResolution.termAt 0 ≅
+      zeroCoordinateHookIdentity.termAt 0 ⊞ zeroCoordinateHookIdentity.termAt 0) :=
+  ⟨FiniteRankProjectiveResolution.termAt_biprodIso zeroCoordinateHookIdentity
+    zeroCoordinateHookIdentity rfl 0⟩
+
+private theorem hookAndZero_same_length :
+    oneCoordinateHookIdentity.length =
+      (coordinateZeroLengthResolution.appendZeros 1).length := by
+  rw [FiniteRankProjectiveResolution.appendZeros_length,
+    oneCoordinateHookIdentity_selected_data.1]
+  simp [coordinateZeroLengthResolution]
+
+/-- A zero summand is explicitly padded to match the nonzero length-one input. -/
+noncomputable def hookWithMatchedZeroBiproductResolution :
+    FiniteRankProjectiveResolution
+      (oneCoordinateHook ⊞ (0 : PModule.{0,0,0} ℚ (Fin 1 → ℝ))) :=
+  FiniteRankProjectiveResolution.biprod oneCoordinateHookIdentity
+    (coordinateZeroLengthResolution.appendZeros 1) hookAndZero_same_length
+
+/-- The matched summand is zero, and its selected lookup is the actual padded term. -/
+theorem hookWithMatchedZero_selected_term_lookup :
+    Nonempty (hookWithMatchedZeroBiproductResolution.termAt 0 ≅
+      oneCoordinateHookIdentity.termAt 0 ⊞
+        (coordinateZeroLengthResolution.appendZeros 1).termAt 0) ∧
+      (coordinateZeroLengthResolution.appendZeros 1).termAt 0 = 0 := by
+  constructor
+  · exact ⟨FiniteRankProjectiveResolution.termAt_biprodIso oneCoordinateHookIdentity
+      (coordinateZeroLengthResolution.appendZeros 1) hookAndZero_same_length 0⟩
+  · exact coordinateZeroLengthResolution_padded_termAt 1 0
+
+/-- The original one-term and two-row resolutions have unequal stored lengths. -/
+theorem oneTerm_twoRow_stored_lengths_unequal :
+    oneCoordinateHookIdentity.length ≠ twoRowZeroResolution.length := by
+  simp [oneCoordinateHookIdentity, twoRowZeroResolution,
+    FiniteRankProjectiveResolution.identity]
+
+private theorem paddedHook_twoRow_same_length :
+    (oneCoordinateHookIdentity.appendZeros 1).length = twoRowZeroResolution.length := by
+  rw [FiniteRankProjectiveResolution.appendZeros_length,
+    oneCoordinateHookIdentity_selected_data.1]
+  rfl
+
+/-- The shorter input is explicitly padded before the unchanged equal-length constructor. -/
+noncomputable def paddedHookTwoRowBiproductResolution :
+    FiniteRankProjectiveResolution (oneCoordinateHook ⊞ realCoordinateZero) :=
+  FiniteRankProjectiveResolution.biprod (oneCoordinateHookIdentity.appendZeros 1)
+    twoRowZeroResolution paddedHook_twoRow_same_length
+
+/-- The padded construction records the common stored length two. -/
+theorem paddedHookTwoRowBiproductResolution_length :
+    paddedHookTwoRowBiproductResolution.length = 2 := by
+  change (oneCoordinateHookIdentity.appendZeros 1).length = 2
+  rw [FiniteRankProjectiveResolution.appendZeros_length,
+    oneCoordinateHookIdentity_selected_data.1]
+
+/-- The padded construction uses the public lookup on its actual degree-zero terms. -/
+theorem paddedHookTwoRowBiproduct_lookup :
+    Nonempty (paddedHookTwoRowBiproductResolution.termAt 0 ≅
+      (oneCoordinateHookIdentity.appendZeros 1).termAt 0 ⊞ twoRowZeroResolution.termAt 0) :=
+  ⟨FiniteRankProjectiveResolution.termAt_biprodIso
+    (oneCoordinateHookIdentity.appendZeros 1) twoRowZeroResolution
+    paddedHook_twoRow_same_length 0⟩
+
+end BinaryBiproductConsumers
+
 end TDA.Persistence.FiniteRankProjectiveResolutionExamples
