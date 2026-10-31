@@ -115,12 +115,14 @@ theorem not_injective_C4_left (E : Type) [TopologicalSpace E] [Nonempty E] :
 
 /-! ### Coincident events -/
 
-/-- **Coincident events.** On the shifted witness of `pair 0 1` at `ε = 1/2`, with three levels and
-two slabs, the thickening presentation realizes `E × [0, 1] × [-1/2, 1/2]`. -/
+/-- **Coincident events.** On the shifted witness of `pair 0 1` at `ε = 1/2`, the events
+`1 - ε = 0 + ε` coincide, so the grid has three levels and two slabs, and the thickening
+presentation still realizes `E × [0, 1] × [-1/2, 1/2]`. -/
 theorem nonempty_homeomorph_coincident (E : Type) [TopologicalSpace E] :
-    Nonempty ((pairThick 0 1 halfNN E one_pos).Realization (P01.shifted halfNN) ≃ₜ
-      E × Icc (0 : ℝ) 1 × Band halfNN) :=
-  ⟨pairThickHomeomorph 0 1 halfNN E one_pos⟩
+    (1 : ℝ) - halfNN = 0 + halfNN ∧ P01.shiftedCount halfNN = 2 ∧
+      Nonempty ((pairThick 0 1 halfNN E one_pos).Realization (P01.shifted halfNN) ≃ₜ
+        E × Icc (0 : ℝ) 1 × Band halfNN) :=
+  ⟨coincident_events, shiftedCount_P01, ⟨pairThickHomeomorph 0 1 halfNN E one_pos⟩⟩
 
 /-! ### `ε = 0` -/
 

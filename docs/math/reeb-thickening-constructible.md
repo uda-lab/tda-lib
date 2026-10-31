@@ -118,9 +118,11 @@ thickening of `E × [a, d]` with the segment coordinate as height, after reassoc
 - Boundary strips. On a common grid listing the events of `[a, d]`, `[a, a]` and `[d, d]`,
   `botIncl` and `topIncl` are presentation morphisms from the strip presentations into the
   cylinder presentation, and `mapSpace f` is the morphism `f × id` for a continuous `f : E → E'`.
-  The homeomorphisms turn them into `(y, t) ↦ (y, a, t)`, `(y, t) ↦ (y, d, t)` and `f × id`, so for
-  an endpoint map `f : E → V` the square of the bottom strip inclusion and `mapSpace f` into the
-  vertex strip of `V` commutes after the homeomorphisms.
+  The homeomorphisms turn them into `(y, t) ↦ (y, a, t)`, `(y, t) ↦ (y, d, t)` and `f × id`. For
+  an endpoint map `f : E → V`, the bottom strip inclusion and `mapSpace f` into the vertex strip
+  of `V` are therefore described by the pair of identities `cylinderThickHomeomorph_realize_botIncl`
+  and `vertexStripHomeomorph_realize_mapSpace`, and `botIncl_comp_mapSpace` records their
+  compatibility with `mapSpace` at the level of presentation morphisms.
 - The grid of one segment. For `a < d`, `pairThick` is the construction on the shifted witness of
   the two-level grid `pair a d`, whose levels are exactly the distinct values among `a ± ε`,
   `d ± ε`, with `pairThickHomeomorph` and the strip inclusions `pairBotIncl`, `pairTopIncl`.
@@ -141,6 +143,7 @@ realizations of compact locally path-connected pieces, and Theorem 4.27 states t
 of a constructible ℝ-space is constructible; its proof builds the thickening from the thickenings
 of the pieces (see `reeb-rgraph-thickening.md` for the graph case formalized here). The tools and
 the one-cylinder presentation above are prerequisites for that argument on the library's
-presentations, whose pieces need not be Hausdorff. They are library statements; Theorem 4.27 itself is not claimed by this note.
+presentations, whose pieces need not be Hausdorff. They are library statements; Theorem 4.27
+itself is not claimed by this note.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.2 and §4.3](https://arxiv.org/html/1501.04147v1).

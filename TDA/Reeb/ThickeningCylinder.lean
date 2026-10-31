@@ -49,8 +49,9 @@ every transfer. A continuous map `f : E → E'` gives `mapSpace f`, functorially
 inclusion `(y, t) ↦ (y, a, t)` or `(y, d, t)` (`cylinderThickHomeomorph_realize_botIncl`,
 `cylinderThickHomeomorph_realize_topIncl`) and `f × id` (`cylinderThickHomeomorph_realize_mapSpace`,
 `vertexStripHomeomorph_realize_mapSpace`). In particular, for an endpoint map `f : E → V`, the
-square formed by the bottom strip inclusion of `E × [a, d]` and `mapSpace f` into the vertex strip
-of `V` commutes after the homeomorphisms.
+bottom strip inclusion of `E × [a, d]` and `mapSpace f` into the vertex strip of `V` both become
+explicit maps on `E × Band ε` after the homeomorphisms, so the attaching span is described
+concretely.
 
 ## The shifted grid of one segment
 
