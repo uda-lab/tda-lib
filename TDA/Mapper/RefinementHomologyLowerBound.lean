@@ -11,7 +11,9 @@ composite `M t → N (t + ε) → M (t + 2ε)`, so its range lies in the range o
 factor. When `N (t + ε)` is finite-dimensional, the rank of `M(t → t + 2ε)` is therefore at
 most `dim N (t + ε)`, and the map is zero when `N (t + ε)` is zero. No finiteness of `M` is
 assumed. Excluding every parameter below `r` in this way bounds the real interleaving
-distance of `M` and `N` below by `r`.
+distance of `M` and `N` below by `r`. Conversely, over any ring, if every double-shift structure
+map of both modules at `ε` is zero, the zero maps form an `ε`-interleaving
+(`nonempty_realInterleaving_of_structureMap_eq_zero`).
 
 For a continuous map `f` with a real cover tower `U`, a continuous map `g` with a real cover
 tower `V`, a field `k` and a degree `n`, the structure maps of
@@ -139,6 +141,27 @@ theorem le_realInterleavingDistance_of_structureMap_ne_zero {r : ℝ≥0∞}
   exact (isEmpty_realInterleaving_of_structureMap_ne_zero t h hne).false i
 
 end Rank
+
+section ZeroMaps
+
+variable {R : Type u} [Ring R] {M N : PModule.{u,0,w} R ℝ}
+
+/-- **Zero maps.** If every double-shift structure map of two real modules at the parameter `ε`
+is zero, the zero maps form an `ε`-interleaving. This is a converse companion of
+`isEmpty_realInterleaving_of_structureMap_ne_zero`. -/
+theorem nonempty_realInterleaving_of_structureMap_eq_zero (ε : ℝ≥0)
+    (hM : ∀ (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)), structureMap M h = 0)
+    (hN : ∀ (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)), structureMap N h = 0) :
+    Nonempty (RealInterleaving ε M N) :=
+  ⟨RealInterleaving.ofApp 0 0
+    (fun t => by
+      rw [NatTrans.app_zero, Limits.zero_comp, transition_app]
+      exact (hM t _).symm)
+    (fun t => by
+      rw [NatTrans.app_zero, Limits.zero_comp, transition_app]
+      exact (hN t _).symm)⟩
+
+end ZeroMaps
 
 section Mapper
 

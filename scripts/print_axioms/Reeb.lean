@@ -3369,3 +3369,8 @@ import TDA
 #print axioms TDA.Reeb.Examples.CylinderHom.emptyData_isEmpty_E
 #print axioms TDA.Reeb.Examples.CylinderHom.fromEmpty
 #print axioms TDA.Reeb.Examples.CylinderHom.fromEmpty_unique
+
+-- Reindexing interleavings along interval functors.
+#print axioms TDA.Reeb.reindexIso_hom_app
+#print axioms TDA.Reeb.Interleaving.reindex_φ_app
+#print axioms TDA.Reeb.Interleaving.reindex_ψ_app

@@ -190,9 +190,6 @@ local instance (q : Fin 2) :
   classical
   exact linearOrderOfSTO WellOrderingRel
 
-private instance (q : Fin 2) : Finite (mergeIndex q) := by
-  fin_cases q <;> dsimp [mergeIndex] <;> infer_instance
-
 /-- The degree-zero step diagram of the merge on the grid `c`. -/
 abbrev mergeDiagram (c : Fin 2 ↪o ℝ) : Diagram ℝ :=
   stepMapperDiagram ℚ (plHeight edgeGraph h01) c (padCover mergeCover)
@@ -267,16 +264,6 @@ section Skew
 local instance (q : Fin 3) : LinearOrder (ComponentIndex threeStageMap (skewCover q)) :=
   componentIndexLinearOrder threeStageMap _
 
-private instance (p : ThreeStage) : Finite (threeStageIndex p) := by
-  cases p <;> dsimp [threeStageIndex] <;> infer_instance
-
-private instance {ι : Type} [Finite ι] (U : ι → Set Unit) :
-    Finite (ComponentIndex threeStageMap U) :=
-  have : ∀ i, Finite (ZerothHomotopy (PullbackSpace threeStageMap U i)) := fun i =>
-    have := subsingleton_zerothHomotopy (Z := PullbackSpace threeStageMap U i)
-    inferInstance
-  inferInstanceAs (Finite (Σ i, ZerothHomotopy (PullbackSpace threeStageMap U i)))
-
 /-- On every grid, the skew three-stage family padded by an empty stage has the same
 degree-zero step diagram over `ℚ` for its skew and its coherent selections: the single
 essential bar born at the first radius. -/
@@ -300,9 +287,6 @@ local instance (q : Fin 2) :
     LinearOrder (ComponentIndex (plHeight C4 h4) (loopCover q)) := by
   classical
   exact linearOrderOfSTO WellOrderingRel
-
-private instance (q : Fin 2) : Finite (loopIndex q) := by
-  fin_cases q <;> dsimp [loopIndex] <;> infer_instance
 
 /-- At the radii `0` and `1`, the three-member cover and then the one-member cover of the
 4-cycle give the degree-one diagram over `ℚ` with the single finite bar `(0, 1)` and no
