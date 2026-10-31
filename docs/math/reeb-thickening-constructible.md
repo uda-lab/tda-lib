@@ -172,14 +172,79 @@ transfer between `1/2` and `1/4` is a homeomorphism; a window of the presentatio
 the Sierpiński space is compact and locally path-connected but not Hausdorff; windows far from the
 levels, and all windows of the presentation with empty pieces, are empty.
 
+## The general presentation
+
+`TDA.Reeb.ThickeningPresentation` builds the thickening presentation `P_ε` of a cylinder
+presentation `P` over levels `S` and proves that it realizes the thickening. Write
+`X = P.Realization S`, `f = P.height S`, and let `G` be any grid listing every shifted level
+`S.value i ± ε` (`S.ContainsShifted ε G`).
+
+- Presentation. `P.thick S ε G hG` has vertex piece `j` the window at the level `b j` and edge
+  piece `k` the window at the midpoint of slab `k`; the endpoint maps are the window transfers to
+  the two slab ends. Its pieces are compact, resp. locally path-connected, when all pieces of `P`
+  are: they are quotients of finite sums of compact (locally path-connected) spaces. Pieces are
+  empty where no piece of `P` reaches, and coincident shifted values are single levels of `G`.
+  On the shifted witness `S.shifted ε`, whose levels are the distinct values of
+  `(S - ε) ∪ (S + ε)`, it is `shiftedThick`.
+- Comparison. `toProd : |P_ε| → X × [-ε, ε]` is the universal map sending a vertex point `ξ` of
+  level `b j` to `(ξ, b j - f ξ)` and a cylinder point `(ξ, u)` to `(transfer ξ, u - f (transfer ξ))`,
+  through the band `{(x, u) | u - ε ≤ f x ≤ u + ε}` (`toBand`, `slabCylinder`) and
+  `GeometricThickening.bandHomeomorph`. It carries the height of `P_ε` to `f x + t`
+  (`height_toProd`).
+- Attachment maps. The per-piece thickening presentations of the one-cylinder construction, built
+  directly on the common grid `G`, map into `P_ε` by presentation morphisms: `edgeIncl e` from
+  `cylinderThick (a e) (a (e+1)) ε (E e) G` and `vertexIncl i` from `cylinderThick (a i) (a i) ε
+  (V i) G`, each sending a slice point to its window class. After the per-piece homeomorphisms they
+  are `(y, s, t) ↦ ([y, s], t)` and `(v, t) ↦ ([v], t)` (`toProd_realize_edgeIncl`,
+  `toProd_realize_vertexIncl`).
+- Inverse. `rawInv` on the thickened raw pieces `Σ V i × [-ε, ε] ⊕ Σ E e × [a e, a (e+1)] × [-ε, ε]`
+  pushes the inverses of the per-piece homeomorphisms into `P_ε` by `Hom.realize`. At a point of
+  height a level it is a vertex point, over an open slab a cylinder point
+  (`rawInv_windowBand_value`, `rawInv_windowBand_of_mem_K`). It respects the endpoint
+  identifications of `P` (`rawInv_segBot`, `rawInv_segTop`): both sides are window points with the
+  same image in `X`. So it depends only on normal forms (`rawInv_nf`) and descends along the
+  quotient map `quotMk × id` (`isQuotientMap_rawBandMap`) to the continuous
+  `ofProd : X × [-ε, ε] → |P_ε|`.
+- Homeomorphism. Both inverse laws are checked on generators with the universal property
+  (`toProd_ofProd`, `ofProd_toProd`), so `thickHomeomorph : |P_ε| ≃ₜ X × [-ε, ε]` is a
+  height-preserving homeomorphism (`height_thickHomeomorph`), with the inverse at generators
+  `thickHomeomorph_symm_quotMk`, `thickHomeomorph_symm_windowToSpace_value` and
+  `thickHomeomorph_symm_windowToSpace_of_mem_K`. It holds for every topological pieces, every
+  `ε ≥ 0` and every such grid; no separation, compactness or positivity hypothesis is used, and
+  continuity of the inverse comes from the quotient map, not from a compact-to-Hausdorff argument.
+  The shifted-witness instance is `shiftedThickHomeomorph`.
+
+Correspondence with the plan of Issue #708. Steps 1–3 (the vertex/cylinder/endpoint attachment
+diagram, its product with the band, and the per-piece thickenings) are the thickened raw pieces,
+`isQuotientMap_rawBandMap`, `cylinderThick` and `cylinderThickHomeomorph`. Steps 4–6 (refinement
+to the common grid, the componentwise colimit and the fixed-grid comparison) are realized as
+follows: the per-piece presentations are built directly on the common grid `G`, so empty pieces
+appear automatically and no refinement operation is defined; the attachment maps are the
+morphisms `edgeIncl e` and `vertexIncl i` into `P_ε`; and the colimit comparison is the descent
+of `rawInv` along `quotMk × id`, which exhibits `X × [-ε, ε]` as the quotient of the thickened
+pieces by the endpoint identifications. Agreement of the original endpoint relations with the
+refined attaching maps is `rawInv_segBot`, `rawInv_segTop` together with
+`toProd_realize_edgeIncl` and `toProd_realize_vertexIncl`. Only this fixed-grid,
+cylinder-compatible attachment diagram is covered, not arbitrary finite colimits of constructible
+ℝ-spaces. `IsConstructibleSpace` is unchanged; constructibility of thickenings of constructible
+ℝ-spaces is not claimed here.
+
+Fixtures (`TDA.Reeb.ThickeningPresentationExamples`), each applying the homeomorphism: one point
+at one level with no edges; the presentation with empty pieces, whose thickening presentation is
+empty, and a grid with an extra far level whose vertex piece is empty; the segment over `pair 0 1`
+at `ε = 1/2`, whose shifted values `0 + ε = 1 - ε` merge; `ε = 0` on the grid `S01`, where a
+cylinder point at height `u` goes to the parameter `u`; and the Sierpiński presentation, whose
+thickening presentation has compact locally path-connected pieces and a non-Hausdorff
+realization.
+
 ## Source correspondence
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.2, define constructible ℝ-spaces as
 realizations of compact locally path-connected pieces, and Theorem 4.27 states that the thickening
 of a constructible ℝ-space is constructible; its proof builds the thickening from the thickenings
-of the pieces (see `reeb-rgraph-thickening.md` for the graph case formalized here). The tools and
-the one-cylinder presentation above are prerequisites for that argument on the library's
-presentations, whose pieces need not be Hausdorff. They are library statements; Theorem 4.27
-itself is not claimed by this note.
+of the pieces (see `reeb-rgraph-thickening.md` for the graph case formalized here). The tools, the
+one-cylinder presentation and the general presentation above are prerequisites for that argument
+on the library's presentations, whose pieces need not be Hausdorff. They are library statements;
+Theorem 4.27 itself is not claimed by this note.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.2 and §4.3](https://arxiv.org/html/1501.04147v1).

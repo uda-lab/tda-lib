@@ -62,3 +62,4 @@ import TDA.Reeb.ConstructibleHom
 import TDA.Reeb.ThickeningSlice
 import TDA.Reeb.ThickeningCylinder
 import TDA.Reeb.ThickeningWindow
+import TDA.Reeb.ThickeningPresentation

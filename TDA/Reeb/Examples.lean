@@ -49,3 +49,4 @@ import TDA.Reeb.ConstructibleHomExamples
 import TDA.Reeb.ThickeningSliceExamples
 import TDA.Reeb.ThickeningCylinderExamples
 import TDA.Reeb.ThickeningWindowExamples
+import TDA.Reeb.ThickeningPresentationExamples
