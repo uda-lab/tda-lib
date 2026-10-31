@@ -17,6 +17,11 @@ For every precosheaf `F : OpenInterval ⥤ C` into an arbitrary category, `I ⊆
 `I - c ⊆ T_ε I` whenever `|c| ≤ ε`, and the images of these inclusions under `F` form the
 `‖c‖₊`-interleaving `translationInterleaving c F` of `F` with its translate.
 
+More generally, an interval functor `Φ` with `T_ε (Φ I) ⊆ Φ (T_ε' I)` carries every
+`ε`-interleaving of `F` and `G` to an `ε'`-interleaving of `Φ ⋙ F` and `Φ ⋙ G`
+(`Interleaving.reindex`), and interval functors with the same values give isomorphic reindexed
+precosheaves (`reindexIso`). Translation and scaling of precosheaves are instances.
+
 For `Type`-valued precosheaves, a nonempty value `F(I)` and an empty value `G(T_ε I)` exclude
 every `ε`-interleaving (`Interleaving.isEmpty_of_nonempty_of_isEmpty`). With the attained range
 of `f` bounded below on a nonempty space, this obstruction at a short interval around the
@@ -96,6 +101,72 @@ end OpenInterval
 
 open OpenInterval
 
+/-! ### Reindexing along interval functors -/
+
+section Reindex
+
+variable {C : Type u} [Category.{v} C]
+
+/-- Precosheaves reindexed along two interval functors with the same values are isomorphic, by
+the images of the equalities of these values. -/
+def reindexIso {Φ Ψ : OpenInterval ⥤ OpenInterval} (h : ∀ I, Φ.obj I = Ψ.obj I)
+    (F : OpenInterval ⥤ C) : Φ ⋙ F ≅ Ψ ⋙ F :=
+  NatIso.ofComponents (fun I => F.mapIso (eqToIso (h I))) fun _ => by
+    dsimp
+    interval_coherence
+
+@[simp] theorem reindexIso_hom_app {Φ Ψ : OpenInterval ⥤ OpenInterval}
+    (h : ∀ I, Φ.obj I = Ψ.obj I) (F : OpenInterval ⥤ C) (I : OpenInterval) :
+    (reindexIso h F).hom.app I = F.map (eqToHom (h I)) := rfl
+
+namespace Interleaving
+
+variable {ε ε' : ℝ≥0} {F G : OpenInterval ⥤ C}
+
+/-- Reindexing along an interval functor `Φ` with `T_ε (Φ I) ⊆ Φ (T_ε' I)` carries an
+`ε`-interleaving of `F` and `G` to an `ε'`-interleaving of `Φ ⋙ F` and `Φ ⋙ G`, with
+components `φ_(Φ I)` and `ψ_(Φ I)` followed by the images of these inclusions. -/
+def reindex (Φ : OpenInterval ⥤ OpenInterval)
+    (hΦ : ∀ I, thicken ε (Φ.obj I) ≤ Φ.obj (thicken ε' I)) (i : Interleaving ε F G) :
+    Interleaving ε' (Φ ⋙ F) (Φ ⋙ G) :=
+  ofApp
+    { app := fun I => i.φ.app (Φ.obj I) ≫ G.map (homOfLE (hΦ I))
+      naturality := fun I J f => by
+        dsimp
+        erw [reassoc_of% (i.φ.naturality (Φ.map f))]
+        refine Eq.trans ?_ (Category.assoc _ _ _).symm
+        congr 1
+        interval_coherence }
+    { app := fun I => i.ψ.app (Φ.obj I) ≫ F.map (homOfLE (hΦ I))
+      naturality := fun I J f => by
+        dsimp
+        erw [reassoc_of% (i.ψ.naturality (Φ.map f))]
+        refine Eq.trans ?_ (Category.assoc _ _ _).symm
+        congr 1
+        interval_coherence }
+    (fun I => by
+      dsimp
+      rw [Category.assoc, i.φ_map_ψ_assoc]
+      interval_coherence)
+    (fun I => by
+      dsimp
+      rw [Category.assoc, i.ψ_map_φ_assoc]
+      interval_coherence)
+
+@[simp] theorem reindex_φ_app (Φ : OpenInterval ⥤ OpenInterval)
+    (hΦ : ∀ I, thicken ε (Φ.obj I) ≤ Φ.obj (thicken ε' I)) (i : Interleaving ε F G)
+    (I : OpenInterval) :
+    (i.reindex Φ hΦ).φ.app I = i.φ.app (Φ.obj I) ≫ G.map (homOfLE (hΦ I)) := rfl
+
+@[simp] theorem reindex_ψ_app (Φ : OpenInterval ⥤ OpenInterval)
+    (hΦ : ∀ I, thicken ε (Φ.obj I) ≤ Φ.obj (thicken ε' I)) (i : Interleaving ε F G)
+    (I : OpenInterval) :
+    (i.reindex Φ hΦ).ψ.app I = i.ψ.app (Φ.obj I) ≫ F.map (homOfLE (hΦ I)) := rfl
+
+end Interleaving
+
+end Reindex
+
 section Translation
 
 variable {C : Type u} [Category.{v} C]
@@ -112,9 +183,7 @@ def translatePre (c : ℝ) (F : OpenInterval ⥤ C) : OpenInterval ⥤ C :=
 
 /-- Translation by `0` is naturally isomorphic to the identity. -/
 def translatePreZeroIso (F : OpenInterval ⥤ C) : translatePre 0 F ≅ F :=
-  NatIso.ofComponents (fun I => F.mapIso (eqToIso (translate_zero I))) fun _ => by
-    dsimp
-    interval_coherence
+  reindexIso (Ψ := 𝟭 _) translate_zero F
 
 private theorem abs_le_nnnorm (c : ℝ) : |c| ≤ ((‖c‖₊ : ℝ≥0) : ℝ) := by
   rw [coe_nnnorm, Real.norm_eq_abs]

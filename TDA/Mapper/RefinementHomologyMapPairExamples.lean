@@ -30,6 +30,9 @@ open TDA.Reeb.Examples.GraphRealization (edgeGraph d₀ half pointGraph edgeHome
 open TDA.Reeb.Examples.GraphPLVertexPerturbation (tilted)
 open TDA.Mapper.RefinementHomologyDomainMapExamples (wholeLine)
 open TDA.Mapper.RefinementHomologyInterleavingExamples
+open TDA.Mapper.GraphPL.Examples.HeightMapPair (edgeHeight pointHeight pointRealization_eq
+  edgePointPair)
+open TDA.Mapper.Examples (boolToUnit)
 open scoped NNReal ENNReal unitInterval
 
 noncomputable section
@@ -62,14 +65,6 @@ theorem flatSteep_mapPair_distance_le :
 
 /-! ## Different domains with nonisomorphic degree-zero modules -/
 
-private theorem edgePathConnected : PathConnectedSpace (Realization edgeGraph) :=
-  edgeHomeomorph.symm.surjective.pathConnectedSpace edgeHomeomorph.symm.continuous
-
-private theorem pointRealization_eq (x : Realization pointGraph) :
-    x = vertex pointGraph () := Subsingleton.elim _ _
-
-private def edgeHeight : C(Realization edgeGraph, ℝ) := plHeight edgeGraph tilted
-
 private def edgeCoordReal : C(Realization edgeGraph, ℝ) :=
   ⟨fun x => (edgeHomeomorph x : ℝ), continuous_subtype_val.comp edgeHomeomorph.continuous⟩
 
@@ -90,66 +85,6 @@ private theorem edgeHeight_eq_edgeCoordReal : edgeHeight = edgeCoordReal := by
         GraphPL.dartHeight tilted d₀.symm t
       rw [edgeHomeomorph_edgePoint_symm]
       simp [GraphPL.dartHeight, tilted, d₀, unitInterval.coe_symm_eq])).symm
-
-private def pointHeight : C(Realization pointGraph, ℝ) :=
-  plHeight pointGraph (fun _ => (1 / 2 : ℝ))
-
-private def edgeToPoint : C(Realization edgeGraph, Realization pointGraph) :=
-  ContinuousMap.const _ (vertex pointGraph ())
-
-private def pointToEdge : C(Realization pointGraph, Realization edgeGraph) :=
-  ContinuousMap.const _ (edgePoint edgeGraph d₀ half)
-
-private theorem edgeHeight_mem_Icc (x : Realization edgeGraph) :
-    edgeHeight x ∈ Set.Icc (0 : ℝ) 1 :=
-  plHeight_mem_Icc_of_forall (m := 0) (M := 1)
-    (fun b => by cases b <;> norm_num [tilted]) x
-
-private theorem edgeMidpoint_height : edgeHeight (edgePoint edgeGraph d₀ half) = 1 / 2 := by
-  simp [edgeHeight, GraphPL.plHeight_edgePoint, GraphPL.dartHeight, tilted, d₀, half]
-
-private theorem pointHeight_apply (x : Realization pointGraph) : pointHeight x = 1 / 2 := by
-  rw [pointRealization_eq x]
-  simp [pointHeight]
-
-private def pointPath (x y : Realization pointGraph) : Path x y := by
-  have hxy : x = y := Subsingleton.elim _ _
-  exact hxy ▸ Path.refl x
-
-private def edgePointPair : HeightMapPair edgeHeight pointHeight (1 / 2 : ℝ≥0) where
-  φ := edgeToPoint
-  ψ := pointToEdge
-  hφ x := by
-    rw [pointHeight_apply]
-    change |(1 / 2 : ℝ) - edgeHeight x| ≤ 1 / 2
-    rw [abs_le]
-    have hx := edgeHeight_mem_Icc x
-    constructor <;> linarith [hx.1, hx.2]
-  hψ x := by
-    change |edgeHeight (edgePoint edgeGraph d₀ half) - pointHeight x| ≤ 1 / 2
-    rw [edgeMidpoint_height, pointHeight_apply]
-    norm_num
-  hψφ x := by
-    let γ : Path x (pointToEdge (edgeToPoint x)) := by
-      simpa [pointToEdge, edgeToPoint] using
-        (PathConnectedSpace.somePath x (edgePoint edgeGraph d₀ half))
-    refine ⟨γ, ?_⟩
-    intro t
-    have h₁ := edgeHeight_mem_Icc (γ t)
-    have h₂ := edgeHeight_mem_Icc x
-    change |edgeHeight (γ t) - edgeHeight x| ≤ _
-    rw [abs_le]
-    have hsum : ((1 / 2 : ℝ≥0) : ℝ) + ((1 / 2 : ℝ≥0) : ℝ) = 1 := by norm_num
-    rw [hsum]
-    constructor <;> linarith [h₁.1, h₁.2, h₂.1, h₂.2]
-  hφψ x := by
-    rw [pointRealization_eq x]
-    let γ := pointPath (vertex pointGraph ())
-      (edgeToPoint (pointToEdge (vertex pointGraph ())))
-    refine ⟨γ, ?_⟩
-    intro t
-    rw [pointHeight_apply (γ t), pointHeight_apply (vertex pointGraph ())]
-    norm_num
 
 private theorem pointMapper_has_no_vertices :
     IsEmpty (ComponentIndex pointHeight (centredCover 1 (1 / 2))) := by
@@ -277,8 +212,6 @@ theorem edgeToPoint_mapper_noniso :
 private def boolZeroHeight : C(Bool, ℝ) := ContinuousMap.const Bool 0
 
 private def unitZeroHeight : C(Unit, ℝ) := ContinuousMap.const Unit 0
-
-private def boolToUnit : C(Bool, Unit) := ContinuousMap.const Bool ()
 
 private def unitToBool : C(Unit, Bool) := ContinuousMap.const Unit false
 

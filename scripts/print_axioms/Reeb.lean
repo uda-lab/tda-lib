@@ -3318,3 +3318,7 @@ import TDA
 #print axioms TDA.Reeb.GraphRealization.edgeSegment_zero
 #print axioms TDA.Reeb.GraphRealization.edgeSegment_one
 #print axioms TDA.Reeb.GraphPL.plHeight_edgeSegment_bounds
+-- Reindexing interleavings along interval functors.
+#print axioms TDA.Reeb.reindexIso_hom_app
+#print axioms TDA.Reeb.Interleaving.reindex_φ_app
+#print axioms TDA.Reeb.Interleaving.reindex_ψ_app
