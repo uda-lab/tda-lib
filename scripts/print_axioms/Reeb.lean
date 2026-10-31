@@ -3370,6 +3370,11 @@ import TDA
 #print axioms TDA.Reeb.Examples.CylinderHom.fromEmpty
 #print axioms TDA.Reeb.Examples.CylinderHom.fromEmpty_unique
 
+-- Reindexing interleavings along interval functors.
+#print axioms TDA.Reeb.reindexIso_hom_app
+#print axioms TDA.Reeb.Interleaving.reindex_φ_app
+#print axioms TDA.Reeb.Interleaving.reindex_ψ_app
+
 -- Constructibility of the geometric thickening: scalar slices and polygons (Issue #707).
 -- TDA.Reeb.ThickeningSlice: slices of a thickened segment with their ends, nonemptiness, boundary compatibility, vertex-strip and ε = 0 forms and local path-connectedness; slice transfer hypotheses with their restriction from graph transfers, slice-to-slice transfer, boundary preservation and degenerate-uniform width, inverse and injectivity; grids listing events or shifted levels with slab facts, grid midpoints, the covering of [a - ε, d + ε] and the two-level grid of a segment; and the parallelogram, slab polygons and level slices with their closedness and covering, and the proper surjective scalar polygon map with its fibres.
 #print axioms TDA.Reeb.Thickening.slice

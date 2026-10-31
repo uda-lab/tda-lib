@@ -45,7 +45,10 @@ by `rfl` (`cosheafFunctor_translateRGraph_obj`), since `f x + c ∈ I` and `f x 
 the same proposition. For precosheaves into any category, an `ε`-interleaving `(φ, ψ)` of `F` and
 `G` gives the `ε`-interleaving `Interleaving.translatePre c` of the translates, with components
 `φ_(I - c)` and `ψ_(I - c)` followed by the identification `T_ε (I - c) = (T_ε I) - c`
-(`translate_thicken`). Translating back by `-c` shows
+(`translate_thicken`). It is the instance `Φ = translateFunctor c` of `Interleaving.reindex`,
+which reindexes an `ε`-interleaving along any interval functor `Φ` with
+`T_ε (Φ I) ⊆ Φ (T_ε' I)` to an `ε'`-interleaving of `Φ ⋙ F` and `Φ ⋙ G`. Translating back by
+`-c` shows
 
 ```lean
 interleavingDistance (translatePre c F) (translatePre c G) = interleavingDistance F G

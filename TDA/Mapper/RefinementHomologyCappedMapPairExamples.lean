@@ -6,6 +6,7 @@ import TDA.Mapper.RefinementHomologyBarcode
 import TDA.Persistence.LogScaleDiagram
 import TDA.Reeb.GraphRealizationExamples
 import TDA.Reeb.GraphPLVertexPerturbationExamples
+import TDA.Mapper.GraphPLReebMapPairExamples
 
 /-!
 # Fixtures for capped centred diagrams from height-map pairs
@@ -23,6 +24,9 @@ open TDA.Reeb.Examples.GraphRealization (edgeGraph d₀ half pointGraph edgeHome
 open TDA.Reeb.Examples.GraphPLVertexPerturbation (tilted)
 open TDA.Mapper.RefinementHomologyCappedTowerExamples (quarterGrid edgeGrid constMap zeroLabel)
 open TDA.Persistence.FiniteConstructible
+open TDA.Mapper.GraphPL.Examples.HeightMapPair (edgeHeight pointHeight pointHeight_apply
+  edgePointPair)
+open TDA.Mapper.Examples (boolToUnit)
 open scoped NNReal ENNReal
 
 noncomputable section
@@ -31,10 +35,6 @@ local instance anyComponentOrder {X Y I : Type} [TopologicalSpace X] [Topologica
     (f : C(X, Y)) (U : I → Set Y) : LinearOrder (ComponentIndex f U) := by
   classical
   exact linearOrderOfSTO WellOrderingRel
-
-private instance unitIntervalPathConnectedSpace : PathConnectedSpace unitInterval := by
-  apply isPathConnected_iff_pathConnectedSpace.mp
-  exact (convex_Icc (𝕜 := ℝ) (0 : ℝ) 1).isPathConnected ⟨0, by norm_num⟩
 
 private instance finiteZerothHomotopyOfFiniteDomain {X : Type} [TopologicalSpace X] [Finite X] :
     Finite (ZerothHomotopy X) :=
@@ -74,17 +74,6 @@ theorem constant_pair_recovery_le_half :
 
 /-! ## Different domains: edge to point -/
 
-private instance edgePathConnected : PathConnectedSpace (Realization edgeGraph) :=
-  edgeHomeomorph.symm.surjective.pathConnectedSpace edgeHomeomorph.symm.continuous
-
-private theorem pointRealization_eq (x : Realization pointGraph) :
-    x = vertex pointGraph () := Subsingleton.elim _ _
-
-private def edgeHeight : C(Realization edgeGraph, ℝ) := plHeight edgeGraph tilted
-
-private def pointHeight : C(Realization pointGraph, ℝ) :=
-  plHeight pointGraph (fun _ => (1 / 2 : ℝ))
-
 private def edgeLabels (w : Fin 3) : ℤ := (w : ℤ)
 
 private theorem edgeLabels_dist_from_half (w : Fin 3) :
@@ -109,59 +98,6 @@ private instance pointCappedFacesFinite (n : ℕ) : ∀ i : Fin 10, Finite (Face
       (cappedCentredCover 0 1 edgeLabels edgeGrid i w : Set ℝ))) n)
   exact TDA.Mapper.GraphPL.finite_mapperFace pointGraph (fun _ => (1 / 2 : ℝ))
     (cappedCentredCover 0 1 edgeLabels edgeGrid i) n
-
-private def edgeToPoint : C(Realization edgeGraph, Realization pointGraph) :=
-  ContinuousMap.const _ (vertex pointGraph ())
-
-private def pointToEdge : C(Realization pointGraph, Realization edgeGraph) :=
-  ContinuousMap.const _ (edgePoint edgeGraph d₀ half)
-
-private theorem edgeHeight_mem_Icc (x : Realization edgeGraph) :
-    edgeHeight x ∈ Set.Icc (0 : ℝ) 1 :=
-  plHeight_mem_Icc_of_forall (m := 0) (M := 1)
-    (fun b => by cases b <;> norm_num [tilted]) x
-
-private theorem edgeMidpoint_height : edgeHeight (edgePoint edgeGraph d₀ half) = 1 / 2 := by
-  simp [edgeHeight, GraphPL.plHeight_edgePoint, GraphPL.dartHeight, tilted, d₀, half]
-
-private theorem pointHeight_apply (x : Realization pointGraph) : pointHeight x = 1 / 2 := by
-  rw [pointRealization_eq x]
-  simp [pointHeight]
-
-private def edgePointPair : HeightMapPair edgeHeight pointHeight (1 / 2 : ℝ≥0) where
-  φ := edgeToPoint
-  ψ := pointToEdge
-  hφ x := by
-    rw [pointHeight_apply]
-    change |(1 / 2 : ℝ) - edgeHeight x| ≤ 1 / 2
-    rw [abs_le]
-    have hx := edgeHeight_mem_Icc x
-    constructor <;> linarith [hx.1, hx.2]
-  hψ x := by
-    change |edgeHeight (edgePoint edgeGraph d₀ half) - pointHeight x| ≤ 1 / 2
-    rw [edgeMidpoint_height, pointHeight_apply]
-    norm_num
-  hψφ x := by
-    let γ : Path x (pointToEdge (edgeToPoint x)) := by
-      simpa [pointToEdge, edgeToPoint] using
-        (PathConnectedSpace.somePath x (edgePoint edgeGraph d₀ half))
-    refine ⟨γ, ?_⟩
-    intro t
-    have h₁ := edgeHeight_mem_Icc (γ t)
-    have h₂ := edgeHeight_mem_Icc x
-    change |edgeHeight (γ t) - edgeHeight x| ≤ _
-    rw [abs_le]
-    have hsum : ((1 / 2 : ℝ≥0) : ℝ) + ((1 / 2 : ℝ≥0) : ℝ) = 1 := by norm_num
-    rw [hsum]
-    constructor <;> linarith [h₁.1, h₁.2, h₂.1, h₂.2]
-  hφψ x := by
-    rw [pointRealization_eq x]
-    refine ⟨Path.refl _, ?_⟩
-    intro t
-    change |pointHeight (vertex pointGraph ()) - pointHeight (vertex pointGraph ())| ≤
-      ((1 / 2 : ℝ≥0) + (1 / 2 : ℝ≥0) : ℝ≥0)
-    rw [sub_self, abs_zero]
-    norm_num
 
 private theorem pointIndexEmpty (i : Fin 10)
     (hi : stageRadius edgeGrid i ≤ ((1 / 2 : ℝ) : EReal)) :
@@ -307,8 +243,6 @@ theorem edge_to_point_bottleneck_bracket :
 private def boolZeroHeight : C(Bool, ℝ) := ContinuousMap.const Bool 0
 
 private def unitZeroHeight : C(Unit, ℝ) := ContinuousMap.const Unit 0
-
-private def boolToUnit : C(Bool, Unit) := ContinuousMap.const Bool ()
 
 private def unitToBool : C(Unit, Bool) := ContinuousMap.const Unit false
 

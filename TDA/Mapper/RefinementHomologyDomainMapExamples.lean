@@ -2,6 +2,7 @@ import TDA.Mapper.RefinementHomologyDomainMap
 import TDA.Mapper.RefinementHomologyCappedTowerExamples
 import TDA.Mapper.GraphPLReebStabilityExamples
 import TDA.Mapper.GraphPLLevelSets
+import TDA.Mapper.GraphPLReebMapPairExamples
 import Mathlib.Analysis.Convex.PathConnected
 import Mathlib.Combinatorics.SimpleGraph.CycleGraph
 import Mathlib.Topology.UnitInterval
@@ -311,15 +312,9 @@ private theorem card_endpoint_components :
   rw [← Nat.card_congr (Equiv.ofBijective q ⟨hinj, hsurj⟩)]
   simp
 
-/-- The unit interval is path-connected, by convexity. -/
-private theorem pathConnectedSpace_unitInterval : PathConnectedSpace unitInterval :=
-  isPathConnected_iff_pathConnectedSpace.1
-    ((convex_Icc (0 : ℝ) 1).isPathConnected ⟨0, unitInterval.zero_mem⟩)
-
 private theorem card_interval_components :
     Nat.card (ZerothHomotopy (PullbackSpace intervalHeight wholeLine ())) = 1 := by
   let e : unitInterval → PullbackSpace intervalHeight wholeLine () := fun x => ⟨x, trivial⟩
-  have := pathConnectedSpace_unitInterval
   have : PathConnectedSpace (PullbackSpace intervalHeight wholeLine ()) :=
     (show Function.Surjective e from fun x => ⟨x.1, rfl⟩).pathConnectedSpace (by fun_prop)
   exact Nat.card_unique
