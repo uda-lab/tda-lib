@@ -553,6 +553,10 @@ Independent signed delays on the two actual face-grade coordinates have exact
 distance `ENNReal.ofReal (min (max |v 0-u 0| |v 1-u 1|) (1/2))`; the actual
 reindexing, witnesses, coordinate obstruction, and ordinary-import consumers
 are documented in the [coordinate translation note](math/rank-resolution-simplicial-coordinate-translation.md).
+Here the translated object is the full PH₁ persistence module: its fibers are
+degree-one homology groups of the sublevel complexes, and its structure maps
+are induced by their inclusions. The distance compares these modules with
+their maps, not isolated homology groups.
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 ordinary one-dimensional barcode connection and its half-open boundary
