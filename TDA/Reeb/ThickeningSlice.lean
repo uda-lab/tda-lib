@@ -63,6 +63,8 @@ proper (`isProperMap_polygonMap`), and stays a quotient map after product with a
 space (`isQuotientMap_prodMap_polygonMap`). Two parameters have the same image exactly when they
 have the same height and the same transferred parameter (`polygonMap_eq_iff`). At a slab end with
 a point slice the map collapses the whole reference slice.
+
+See `docs/math/reeb-thickening-constructible.md`.
 -/
 
 open Set Topology
