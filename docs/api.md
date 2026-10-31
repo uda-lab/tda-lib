@@ -822,6 +822,18 @@ principal hooks to `[b,∞)`, retaining negative births and each occurrence.
 diagram, and `finitelyPresentedOneDimensionalBarcodeRealizationIso` realizes
 the original module by it.
 
+`finiteHook_intervalIso a b hab` deliberately keeps a strict endpoint premise
+to follow the nonempty finite branch of `RealHookTag`;
+`oneDimensionalHookEndpoints_positive` records that endpoint condition. The
+support identification behind the isomorphism itself is valid without strict
+endpoints. For raw endpoints on a positive affine restriction, the existing
+`PositiveAffineLine.finiteHook_reindex_eq` identifies the actual reindexed hook
+with its interval, `PositiveAffineLine.finiteHook_structureMap_val` describes
+its actual map, and `PositiveAffineLine.finiteHook_reindex_isZero_iff` detects
+collapse. Equal or reversed entrance times give a zero module, so they are not
+nonempty finite barcode tags. See [positive affine slices](#positive-affine-slices)
+for this separate reindexing interface.
+
 For every pair of modules with those original finite presentations,
 `finitelyPresentedOneDimensionalBarcode_bottleneck_eq_distance` proves that
 the ordinary bottleneck distance of their diagrams equals their real
