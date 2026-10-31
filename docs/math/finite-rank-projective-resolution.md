@@ -131,14 +131,18 @@ vanishing to every other certified minimal resolution.
 The degree convention is strict: `n = 1` gives zero terms for `j > 0`, and
 `n = 2` gives zero terms for `j > 2`. The statement concerns the highest
 nonzero degree, not the raw stored `resolution.length`; terminal zero padding
-is allowed. It proves only the upper-bound part of Theorem 5.18 and Proposition
-5.17 of [BOOS24-v3](references.md#BOOS24-v3), together with Theorem 2.7(2)'s
-real-coordinate reconstruction. It does not prove a lower witness or equality.
-The finite signed-hook matching and squared stability bound are proved
-separately in [signed hook bottleneck stability](../api.md#signed-hook-bottleneck-stability);
-this resolution-degree result does not include that argument. The focused consumers in
-`FiniteRankProjectiveResolutionDimensionExamples` cover a nonzero one-coordinate
-free module, a nonzero two-coordinate finite presentation with repeated births,
-and the zero module.
+is allowed. The upper-bound theorem here proves only the upper-bound part of
+Theorem 5.18 and Proposition 5.17 of [BOOS24-v3](references.md#BOOS24-v3),
+together with Theorem 2.7(2)'s real-coordinate reconstruction. By itself it
+has no lower-bound conclusion and does not establish equality. A separate
+explicit example attains degree two in two real coordinates; see
+[the degree-two rank-resolution witness](rank-resolution-degree-two.md). This
+example gives no lower witness for every `n`. The finite signed-hook matching
+and squared stability bound are proved separately in
+[signed hook bottleneck stability](../api.md#signed-hook-bottleneck-stability);
+the resolution-degree results do not include that argument. The focused
+consumers in `FiniteRankProjectiveResolutionDimensionExamples` cover a
+nonzero one-coordinate free module, a nonzero two-coordinate finite
+presentation with repeated births, and the zero module.
 
 [§1.2 and §2.14 of the paper]: https://arxiv.org/html/2208.00300v3

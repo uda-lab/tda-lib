@@ -519,7 +519,21 @@ This is a highest-nonzero-degree result, not a bound on the raw stored
 `resolution.length`. Examples cover nonzero originally presented modules in
 dimensions one and two, repeated birth occurrences, the zero module, and
 arbitrary supplied resolutions. The proof follows the upper-bound portion of
-BOOS Theorem 5.18 and Proposition 5.17; it proves no lower witness or equality.
+BOOS Theorem 5.18 and Proposition 5.17; this upper-bound result itself has no
+lower-witness or equality conclusion. In two real coordinates, the explicit
+`RankResolutionDegreeTwo.realModule` is the actual Kan extension of a
+three-point L-shaped finite-grid module. Its original finite-presentation
+predicate is derived from the finite grid, and
+`RankResolutionDegreeTwo.realMinimalResolution_termAt_two_iso` identifies the
+second term of its concrete transferred minimal resolution with the actual
+hook `H((1,1),(2,2))`. Every certified minimal resolution of that real module
+has nonzero degree two and zero terms above degree two. Separately,
+`finite_hookHom_projectiveDimension_eq_two` computes ordinary projective
+dimension two for the finite hook-generator Hom object; it is not the ordinary
+functor-category projective dimension of the module. See
+[the degree-two rank-resolution witness](math/rank-resolution-degree-two.md)
+for the maps, rank-exactness argument and claim boundaries. This concrete
+two-coordinate equality case does not assert lower bounds in every dimension.
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 ordinary one-dimensional barcode connection and its half-open boundary

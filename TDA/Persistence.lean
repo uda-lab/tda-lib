@@ -355,6 +355,8 @@ import TDA.Persistence.OrdinaryFiniteLatticeDimension
 import TDA.Persistence.IncidenceVertexProjectiveDimension
 import TDA.Persistence.FiniteGridInjectiveRankDimension
 import TDA.Persistence.FiniteRankProjectiveResolutionDimension
+import TDA.Persistence.RankResolutionDegreeTwoFinite
+import TDA.Persistence.RankResolutionDegreeTwo
 import TDA.Persistence.CoordinateInterleavingDelay
 import TDA.Persistence.RankSchanuelUnshifted
 import TDA.Persistence.RankSignedStability
