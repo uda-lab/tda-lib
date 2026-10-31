@@ -72,6 +72,7 @@ import TDA.Persistence.HookEndomorphisms
 import TDA.Persistence.RankResolutionDegreeTwoSimplicialFinite
 import TDA.Persistence.RankResolutionDegreeTwoSimplicial
 import TDA.Persistence.RankResolutionDegreeTwoSimplicialTranslation
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialScaling
 import TDA.Persistence.RankResolutionDegreeTwoSimplicialCoordinateTranslation
 import TDA.Persistence.FiniteRankProjectiveClassification
 import TDA.Persistence.FiniteRankProjectiveHom
