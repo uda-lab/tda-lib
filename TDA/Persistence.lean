@@ -69,6 +69,8 @@ import TDA.Persistence.HookInfinityProjective
 import TDA.Persistence.GeneratedUpsetResolution
 import TDA.Persistence.GeneratedUpsetProjectiveDimension
 import TDA.Persistence.HookEndomorphisms
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialFinite
+import TDA.Persistence.RankResolutionDegreeTwoSimplicial
 import TDA.Persistence.FiniteRankProjectiveClassification
 import TDA.Persistence.FiniteRankProjectiveHom
 import TDA.Persistence.FiniteRankProjectiveEndAlgebra
