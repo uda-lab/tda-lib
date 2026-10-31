@@ -47,4 +47,5 @@ import TDA.Reeb.RGraphTranslationExamples
 import TDA.Reeb.InterleavingCardinalityExamples
 import TDA.Reeb.ConstructibleHomExamples
 import TDA.Reeb.ThickeningSliceExamples
+import TDA.Reeb.ThickeningCylinderExamples
 import TDA.Reeb.ThickeningWindowExamples
