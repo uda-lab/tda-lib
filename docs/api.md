@@ -544,6 +544,11 @@ finite-presentation predicate is `homology_finitelyPresented`; the separate
 cap deaths, and between-grid and below-grid behavior. See the [simplicial
 realization note](math/rank-resolution-simplicial-realization.md) for the face
 grades and signed-chain quotient proof.
+Uniformly translating every face grade by a signed real parameter gives the
+actual module `RankResolutionDegreeTwoSimplicial.translatedHomology`. Its exact
+coordinate interleaving distance is `ENNReal.ofReal (min |t-s| (1/2))`; the
+actual magnitude and half-radius witnesses and the subcritical obstruction are
+documented in the [translation-distance note](math/rank-resolution-simplicial-translation.md).
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 ordinary one-dimensional barcode connection and its half-open boundary

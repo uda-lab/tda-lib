@@ -217,6 +217,30 @@ private theorem c_lt_h : c < h := by
   classical
   simp [c, h, lt_iff_le_not_ge, gridPoint_le_iff]
 
+/-- The embedded first arm has real coordinates `(0,1)`. -/
+theorem grid_embedding_a : grid.embedding a = ![(0 : ℝ), 1] := by
+  funext i
+  fin_cases i <;> norm_num [CoordinateGrid.embedding_apply, a, gridPoint,
+    gridCoordinate, grid, gridValues]
+
+/-- The embedded second arm has real coordinates `(1,0)`. -/
+theorem grid_embedding_b : grid.embedding b = ![(1 : ℝ), 0] := by
+  funext i
+  fin_cases i <;> norm_num [CoordinateGrid.embedding_apply, b, gridPoint,
+    gridCoordinate, grid, gridValues]
+
+/-- The first arm's cap has real coordinates `(0,2)`. -/
+theorem grid_embedding_d : grid.embedding d = ![(0 : ℝ), 2] := by
+  funext i
+  fin_cases i <;> norm_num [CoordinateGrid.embedding_apply, d, gridPoint,
+    gridCoordinate, grid, gridValues]
+
+/-- The second arm's cap has real coordinates `(2,0)`. -/
+theorem grid_embedding_e : grid.embedding e = ![(2 : ℝ), 0] := by
+  funext i
+  fin_cases i <;> norm_num [CoordinateGrid.embedding_apply, e, gridPoint,
+    gridCoordinate, grid, gridValues]
+
 /-- The embedded center has real coordinates `(1,1)`. -/
 theorem grid_embedding_c : grid.embedding c = fun _ : Fin 2 => (1 : ℝ) := by
   funext i

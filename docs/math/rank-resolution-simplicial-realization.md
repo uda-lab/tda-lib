@@ -118,3 +118,6 @@ This realizes the existing two-coordinate rank-relative degree-two witness;
 it makes no claim about ordinary functor-category projective dimension of the
 module, arbitrary-module realization, higher-dimensional sharpness, stability,
 or acyclicity of the tetrahedron boundary.
+The exact interleaving distance for signed uniform translations of this actual
+homology module is described in the
+[simplicial translation-distance note](rank-resolution-simplicial-translation.md).
