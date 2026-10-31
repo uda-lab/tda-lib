@@ -534,6 +534,16 @@ functor-category projective dimension of the module. See
 [the degree-two rank-resolution witness](math/rank-resolution-degree-two.md)
 for the maps, rank-exactness argument and claim boundaries. This concrete
 two-coordinate equality case does not assert lower bounds in every dimension.
+The same independently defined module is realized as the actual degree-one
+simplicial homology of a four-vertex tetrahedron boundary filtration.
+`RankResolutionDegreeTwoSimplicial.finiteIso` proves the grid-restricted natural
+isomorphism, while `realIso` globalizes it to every real coordinate grade through
+the canonical finite-simplicial Kan comparison. The actual homology's original
+finite-presentation predicate is `homology_finitelyPresented`; the separate
+`RankResolutionDegreeTwoSimplicialExamples` module proves actual nonzero arm maps,
+cap deaths, and between-grid and below-grid behavior. See the [simplicial
+realization note](math/rank-resolution-simplicial-realization.md) for the face
+grades and signed-chain quotient proof.
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 ordinary one-dimensional barcode connection and its half-open boundary

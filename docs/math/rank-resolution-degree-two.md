@@ -141,3 +141,9 @@ stability or primary-source comparison claim. The reusable theory is in
 consumers are in the separate fixture module
 `TDA.Persistence.RankResolutionDegreeTwoExamples`, under the declaration
 namespace `TDA.Persistence.RankResolutionDegreeTwo.Examples`.
+
+The actual degree-one simplicial homology of a literal four-vertex face
+filtration is naturally isomorphic on the finite grid to this independently
+defined module; its real left Kan extension is naturally isomorphic on all real
+grades. The signed-chain calculation, grid isomorphism, and real Kan comparison
+are documented in the [simplicial realization note](rank-resolution-simplicial-realization.md).
