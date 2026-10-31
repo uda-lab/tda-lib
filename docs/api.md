@@ -439,6 +439,18 @@ grades `-1` to `0` to the original map from `0` to `1`. These operations live in
 not need a Schanuel import. Open the `TDA.Persistence` scope to select coordinatewise order.
 Padding can increase the stored length while leaving every `termAt` value unchanged.
 
+When `R.length = S.length`,
+`FiniteRankProjectiveResolution.biprod R S hlen` resolves the selected categorical sum `M ⊞ N`
+and keeps the common stored length. Each kernel and term uses the `Fin.cast` alignment specified by
+`hlen`; the row maps are the selected `biprod.map` morphisms. The public
+`FiniteRankProjectiveResolution.termAt_biprodIso R S hlen j` identifies the result's
+zero-padded term with the biproduct of the two zero-padded terms, using the chosen zero-biproduct
+isomorphism at and beyond the common boundary. The constructor requires equal stored lengths;
+pad a shorter input with `appendZero` or `appendZeros` before applying it. Repeated inputs remain
+separate summands, and stored length is not a minimality or intrinsic-degree claim. The examples
+include both nonzero component structure maps, repeated summands, zero summands and empty
+resolutions, and the explicit padding of unequal original lengths.
+
 The signed-multiset results do not select a canonical hook decomposition or a
 unique comparison isomorphism. Choice independence of the signed multisets is
 not a stability theorem: these declarations do not establish signed-barcode

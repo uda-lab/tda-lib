@@ -880,6 +880,488 @@ theorem identity_termAt
 
 end FiniteRankProjectiveResolution
 
+private instance : HasBinaryBiproducts (PModule.{u,0,u} k (Fin n → ℝ)) :=
+  HasBinaryBiproducts.of_hasBinaryProducts
+
+private instance : HasFiniteBiproducts (PModule.{u,0,u} k (Fin n → ℝ)) :=
+  HasFiniteBiproducts.of_hasFiniteProducts
+
+private noncomputable def biprodFiberIso
+    (A B : PModule.{u,0,u} k (Fin n → ℝ)) (p : Fin n → ℝ) :
+    (A ⊞ B).obj p ≅ ModuleCat.of k (A.obj p × B.obj p) := by
+  let F := (evaluation (Fin n → ℝ) (ModuleCat.{u} k)).obj p
+  letI := preservesBinaryBiproduct_of_preservesBinaryProduct F (X := A) (Y := B)
+  exact Functor.mapBiprod F A B ≪≫ ModuleCat.biprodIsoProd (A.obj p) (B.obj p)
+
+private theorem biprodFiberIso_fst
+    (A B : PModule.{u,0,u} k (Fin n → ℝ)) (p : Fin n → ℝ) :
+    (biprodFiberIso (k := k) (n := n) A B p).hom ≫
+        ModuleCat.ofHom (LinearMap.fst k (A.obj p) (B.obj p)) =
+      (biprod.fst : A ⊞ B ⟶ A).app p := by
+  let F := (evaluation (Fin n → ℝ) (ModuleCat.{u} k)).obj p
+  letI := preservesBinaryBiproduct_of_preservesBinaryProduct F (X := A) (Y := B)
+  let e := ModuleCat.biprodIsoProd (A.obj p) (B.obj p)
+  have he : e.hom ≫ ModuleCat.ofHom (LinearMap.fst k (A.obj p) (B.obj p)) =
+      biprod.fst := by
+    calc
+      e.hom ≫ ModuleCat.ofHom (LinearMap.fst k (A.obj p) (B.obj p)) =
+          e.hom ≫ e.inv ≫ biprod.fst := by
+            rw [← ModuleCat.biprodIsoProd_inv_comp_fst]
+      _ = biprod.fst := by simp
+  calc
+    (biprodFiberIso (k := k) (n := n) A B p).hom ≫
+        ModuleCat.ofHom (LinearMap.fst k (A.obj p) (B.obj p)) =
+      (Functor.mapBiprod F A B).hom ≫ biprod.fst := by
+        dsimp [biprodFiberIso]
+        rw [Category.assoc, he]
+        rfl
+    _ = F.map biprod.fst := by
+      change biprod.lift (F.map biprod.fst) (F.map biprod.snd) ≫ biprod.fst = _
+      rw [biprod.lift_fst]
+    _ = (biprod.fst : A ⊞ B ⟶ A).app p := rfl
+
+private theorem biprodFiberIso_snd
+    (A B : PModule.{u,0,u} k (Fin n → ℝ)) (p : Fin n → ℝ) :
+    (biprodFiberIso (k := k) (n := n) A B p).hom ≫
+        ModuleCat.ofHom (LinearMap.snd k (A.obj p) (B.obj p)) =
+      (biprod.snd : A ⊞ B ⟶ B).app p := by
+  let F := (evaluation (Fin n → ℝ) (ModuleCat.{u} k)).obj p
+  letI := preservesBinaryBiproduct_of_preservesBinaryProduct F (X := A) (Y := B)
+  let e := ModuleCat.biprodIsoProd (A.obj p) (B.obj p)
+  have he : e.hom ≫ ModuleCat.ofHom (LinearMap.snd k (A.obj p) (B.obj p)) =
+      biprod.snd := by
+    calc
+      e.hom ≫ ModuleCat.ofHom (LinearMap.snd k (A.obj p) (B.obj p)) =
+          e.hom ≫ e.inv ≫ biprod.snd := by
+            rw [← ModuleCat.biprodIsoProd_inv_comp_snd]
+      _ = biprod.snd := by simp
+  calc
+    (biprodFiberIso (k := k) (n := n) A B p).hom ≫
+        ModuleCat.ofHom (LinearMap.snd k (A.obj p) (B.obj p)) =
+      (Functor.mapBiprod F A B).hom ≫ biprod.snd := by
+        dsimp [biprodFiberIso]
+        rw [Category.assoc, he]
+        rfl
+    _ = F.map biprod.snd := by
+      change biprod.lift (F.map biprod.fst) (F.map biprod.snd) ≫ biprod.snd = _
+      rw [biprod.lift_snd]
+    _ = (biprod.snd : A ⊞ B ⟶ B).app p := rfl
+
+private theorem biprodMap_fiber
+    {A B A' B' : PModule.{u,0,u} k (Fin n → ℝ)}
+    (f : A ⟶ A') (g : B ⟶ B') (p : Fin n → ℝ) :
+    (biprodFiberIso (k := k) (n := n) A B p).hom ≫
+        ModuleCat.ofHom ((f.app p).hom.prodMap (g.app p).hom) =
+      (biprod.map f g).app p ≫
+        (biprodFiberIso (k := k) (n := n) A' B' p).hom := by
+  apply ModuleCat.hom_ext
+  apply LinearMap.ext
+  intro x
+  apply Prod.ext
+  · have hsrc : ((biprodFiberIso (k := k) (n := n) A B p).hom.hom x).1 =
+        ((biprod.fst : A ⊞ B ⟶ A).app p).hom x := by
+      have h := congrArg (fun q : (A ⊞ B).obj p ⟶ A.obj p => q.hom x)
+        (biprodFiberIso_fst (k := k) (n := n) A B p)
+      simpa [ModuleCat.comp_apply] using h
+    have htgt :
+        (LinearMap.fst k (A'.obj p) (B'.obj p))
+          ((biprodFiberIso (k := k) (n := n) A' B' p).hom.hom
+            (((biprod.map f g).app p).hom x)) =
+          ((biprod.fst : A' ⊞ B' ⟶ A').app p).hom (((biprod.map f g).app p).hom x) := by
+      have h := congrArg (fun q : (A' ⊞ B').obj p ⟶ A'.obj p =>
+        q.hom (((biprod.map f g).app p).hom x))
+        (biprodFiberIso_fst (k := k) (n := n) A' B' p)
+      simpa [ModuleCat.comp_apply] using h
+    have hnat : ((biprod.fst : A' ⊞ B' ⟶ A').app p).hom (((biprod.map f g).app p).hom x) =
+        (f.app p).hom (((biprod.fst : A ⊞ B ⟶ A).app p).hom x) := by
+      have h := congrArg (fun q : A ⊞ B ⟶ A' => (q.app p).hom x)
+        (biprod.map_fst (f := f) (g := g))
+      exact h
+    calc
+      _ = (f.app p).hom (((biprod.fst : A ⊞ B ⟶ A).app p).hom x) := by
+        change (f.app p).hom ((biprodFiberIso (k := k) (n := n) A B p).hom.hom x).1 = _
+        rw [hsrc]
+      _ = ((biprod.fst : A' ⊞ B' ⟶ A').app p).hom (((biprod.map f g).app p).hom x) := hnat.symm
+      _ = _ := htgt.symm
+
+  · have hsrc : ((biprodFiberIso (k := k) (n := n) A B p).hom.hom x).2 =
+        ((biprod.snd : A ⊞ B ⟶ B).app p).hom x := by
+      have h := congrArg (fun q : (A ⊞ B).obj p ⟶ B.obj p => q.hom x)
+        (biprodFiberIso_snd (k := k) (n := n) A B p)
+      simpa [ModuleCat.comp_apply] using h
+    have htgt :
+        (LinearMap.snd k (A'.obj p) (B'.obj p))
+          ((biprodFiberIso (k := k) (n := n) A' B' p).hom.hom
+            (((biprod.map f g).app p).hom x)) =
+          ((biprod.snd : A' ⊞ B' ⟶ B').app p).hom (((biprod.map f g).app p).hom x) := by
+      have h := congrArg (fun q : (A' ⊞ B').obj p ⟶ B'.obj p =>
+        q.hom (((biprod.map f g).app p).hom x))
+        (biprodFiberIso_snd (k := k) (n := n) A' B' p)
+      simpa [ModuleCat.comp_apply] using h
+    have hnat : ((biprod.snd : A' ⊞ B' ⟶ B').app p).hom (((biprod.map f g).app p).hom x) =
+        (g.app p).hom (((biprod.snd : A ⊞ B ⟶ B).app p).hom x) := by
+      have h := congrArg (fun q : A ⊞ B ⟶ B' => (q.app p).hom x)
+        (biprod.map_snd (f := f) (g := g))
+      exact h
+    calc
+      _ = (g.app p).hom (((biprod.snd : A ⊞ B ⟶ B).app p).hom x) := by
+        change (g.app p).hom ((biprodFiberIso (k := k) (n := n) A B p).hom.hom x).2 = _
+        rw [hsrc]
+      _ = ((biprod.snd : A' ⊞ B' ⟶ B').app p).hom (((biprod.map f g).app p).hom x) := hnat.symm
+      _ = _ := htgt.symm
+
+
+private theorem biprodMap_fiber_apply
+    {A B A' B' : PModule.{u,0,u} k (Fin n → ℝ)}
+    (f : A ⟶ A') (g : B ⟶ B') (p : Fin n → ℝ)
+    (x : (A ⊞ B).obj p) :
+    ((biprodFiberIso (k := k) (n := n) A' B' p).hom.hom
+      (((biprod.map f g).app p).hom x)) =
+      (f.app p).hom.prodMap (g.app p).hom
+        ((biprodFiberIso (k := k) (n := n) A B p).hom.hom x) := by
+  have h := congrArg (fun q : (A ⊞ B).obj p ⟶
+      ModuleCat.of k (A'.obj p × B'.obj p) => q.hom x)
+    (biprodMap_fiber (k := k) (n := n) f g p)
+  simpa [ModuleCat.comp_apply] using h.symm
+
+private theorem biprodStructureMap_fiber
+    (A B : PModule.{u,0,u} k (Fin n → ℝ)) {a b : Fin n → ℝ}
+    (hab : a ≤ b) (x : (A ⊞ B).obj a) :
+    ((biprodFiberIso (k := k) (n := n) A B b).hom.hom
+      (structureMapLinear (A ⊞ B) hab x)) =
+      (structureMapLinear A hab).prodMap (structureMapLinear B hab)
+        ((biprodFiberIso (k := k) (n := n) A B a).hom.hom x) := by
+  let ea := biprodFiberIso (k := k) (n := n) A B a
+  let eb := biprodFiberIso (k := k) (n := n) A B b
+  apply Prod.ext
+  · have hsrc : (ea.hom.hom x).1 =
+        ((biprod.fst : A ⊞ B ⟶ A).app a).hom x := by
+      have h := congrArg (fun q : (A ⊞ B).obj a ⟶ A.obj a => q.hom x)
+        (biprodFiberIso_fst (k := k) (n := n) A B a)
+      simpa [ModuleCat.comp_apply] using h
+    have htgt : (eb.hom.hom (structureMapLinear (A ⊞ B) hab x)).1 =
+        ((biprod.fst : A ⊞ B ⟶ A).app b).hom (structureMapLinear (A ⊞ B) hab x) := by
+      have h := congrArg (fun q : (A ⊞ B).obj b ⟶ A.obj b =>
+        q.hom (structureMapLinear (A ⊞ B) hab x))
+        (biprodFiberIso_fst (k := k) (n := n) A B b)
+      simpa [ModuleCat.comp_apply] using h
+    have hnat := congrArg (fun q : (A ⊞ B).obj a ⟶ A.obj b => q.hom x)
+      ((biprod.fst : A ⊞ B ⟶ A).naturality (homOfLE hab))
+    change ((biprod.fst : A ⊞ B ⟶ A).app b).hom
+        (structureMapLinear (A ⊞ B) hab x) =
+      (structureMapLinear A hab)
+        (((biprod.fst : A ⊞ B ⟶ A).app a).hom x) at hnat
+    calc
+      (eb.hom.hom (structureMapLinear (A ⊞ B) hab x)).1 =
+          ((biprod.fst : A ⊞ B ⟶ A).app b).hom
+            (structureMapLinear (A ⊞ B) hab x) := htgt
+      _ = (structureMapLinear A hab)
+          (((biprod.fst : A ⊞ B ⟶ A).app a).hom x) := hnat
+      _ = (structureMapLinear A hab) ((ea.hom.hom x).1) := by rw [hsrc]
+      _ = ((structureMapLinear A hab).prodMap (structureMapLinear B hab)
+          (ea.hom.hom x)).1 := rfl
+  · have hsrc : (ea.hom.hom x).2 =
+        ((biprod.snd : A ⊞ B ⟶ B).app a).hom x := by
+      have h := congrArg (fun q : (A ⊞ B).obj a ⟶ B.obj a => q.hom x)
+        (biprodFiberIso_snd (k := k) (n := n) A B a)
+      simpa [ModuleCat.comp_apply] using h
+    have htgt : (eb.hom.hom (structureMapLinear (A ⊞ B) hab x)).2 =
+        ((biprod.snd : A ⊞ B ⟶ B).app b).hom (structureMapLinear (A ⊞ B) hab x) := by
+      have h := congrArg (fun q : (A ⊞ B).obj b ⟶ B.obj b =>
+        q.hom (structureMapLinear (A ⊞ B) hab x))
+        (biprodFiberIso_snd (k := k) (n := n) A B b)
+      simpa [ModuleCat.comp_apply] using h
+    have hnat := congrArg (fun q : (A ⊞ B).obj a ⟶ B.obj b => q.hom x)
+      ((biprod.snd : A ⊞ B ⟶ B).naturality (homOfLE hab))
+    change ((biprod.snd : A ⊞ B ⟶ B).app b).hom
+        (structureMapLinear (A ⊞ B) hab x) =
+      (structureMapLinear B hab)
+        (((biprod.snd : A ⊞ B ⟶ B).app a).hom x) at hnat
+    calc
+      (eb.hom.hom (structureMapLinear (A ⊞ B) hab x)).2 =
+          ((biprod.snd : A ⊞ B ⟶ B).app b).hom
+            (structureMapLinear (A ⊞ B) hab x) := htgt
+      _ = (structureMapLinear B hab)
+          (((biprod.snd : A ⊞ B ⟶ B).app a).hom x) := hnat
+      _ = (structureMapLinear B hab) ((ea.hom.hom x).2) := by rw [hsrc]
+      _ = ((structureMapLinear A hab).prodMap (structureMapLinear B hab)
+          (ea.hom.hom x)).2 := rfl
+
+namespace IsPointwiseShortExact
+
+/-- Pointwise short exactness is preserved by binary biproducts.  The proof
+identifies each evaluated biproduct with the product of its two fibers and
+checks exactness in the two coordinates. -/
+private theorem biprod
+    {A A' A'' B B' B'' : PModule.{u,0,u} k (Fin n → ℝ)}
+    {f : A ⟶ A'} {g : A' ⟶ A''} {f' : B ⟶ B'} {g' : B' ⟶ B''}
+    (hA : IsPointwiseShortExact f g) (hB : IsPointwiseShortExact f' g') :
+    IsPointwiseShortExact (biprod.map f f') (biprod.map g g') where
+  injective p := by
+    let e₀ := biprodFiberIso (k := k) (n := n) A B p
+    let e₁ := biprodFiberIso (k := k) (n := n) A' B' p
+    intro x y h
+    apply (ModuleCat.mono_iff_injective e₀.hom).mp inferInstance
+    apply Prod.ext
+    · have hx := biprodMap_fiber_apply (k := k) (n := n) f f' p x
+      have hy := biprodMap_fiber_apply (k := k) (n := n) f f' p y
+      have heq := congrArg e₁.hom.hom h
+      have hc : (f.app p).hom.prodMap (f'.app p).hom (e₀.hom.hom x) =
+          (f.app p).hom.prodMap (f'.app p).hom (e₀.hom.hom y) := by
+        rw [← hx, ← hy]
+        exact heq
+      exact hA.injective p (congrArg Prod.fst hc)
+    · have hx := biprodMap_fiber_apply (k := k) (n := n) f f' p x
+      have hy := biprodMap_fiber_apply (k := k) (n := n) f f' p y
+      have heq := congrArg e₁.hom.hom h
+      have hc : (f.app p).hom.prodMap (f'.app p).hom (e₀.hom.hom x) =
+          (f.app p).hom.prodMap (f'.app p).hom (e₀.hom.hom y) := by
+        rw [← hx, ← hy]
+        exact heq
+      exact hB.injective p (congrArg Prod.snd hc)
+  surjective p := by
+    let e₀ := biprodFiberIso (k := k) (n := n) A B p
+    let e₁ := biprodFiberIso (k := k) (n := n) A' B' p
+    let e₂ := biprodFiberIso (k := k) (n := n) A'' B'' p
+    intro z
+    obtain ⟨x, hx⟩ := hA.surjective p (e₂.hom.hom z).1
+    obtain ⟨y, hy⟩ := hB.surjective p (e₂.hom.hom z).2
+    refine ⟨e₁.inv.hom (x, y), ?_⟩
+    apply (ModuleCat.mono_iff_injective e₂.hom).mp inferInstance
+    calc
+      e₂.hom.hom (((biprod.map g g').app p).hom (e₁.inv.hom (x, y))) =
+          (g.app p).hom.prodMap (g'.app p).hom
+            (e₁.hom.hom (e₁.inv.hom (x, y))) :=
+        biprodMap_fiber_apply (k := k) (n := n) g g' p _
+      _ = e₂.hom.hom z := by simp [hx, hy]
+  range_eq_ker p := by
+    let e₀ := biprodFiberIso (k := k) (n := n) A B p
+    let e₁ := biprodFiberIso (k := k) (n := n) A' B' p
+    let e₂ := biprodFiberIso (k := k) (n := n) A'' B'' p
+    ext z
+    constructor
+    · rintro ⟨x, rfl⟩
+      apply (ModuleCat.mono_iff_injective e₂.hom).mp inferInstance
+      change (e₂.hom.hom (((biprod.map g g').app p).hom
+          (((biprod.map f f').app p).hom x))) = e₂.hom.hom 0
+      calc
+        e₂.hom.hom (((biprod.map g g').app p).hom
+            (((biprod.map f f').app p).hom x)) =
+            (g.app p).hom.prodMap (g'.app p).hom
+              (e₁.hom.hom (((biprod.map f f').app p).hom x)) :=
+          biprodMap_fiber_apply (k := k) (n := n) g g' p _
+        _ = (g.app p).hom.prodMap (g'.app p).hom
+            ((f.app p).hom.prodMap (f'.app p).hom (e₀.hom.hom x)) := by
+          rw [biprodMap_fiber_apply (k := k) (n := n) f f' p x]
+        _ = 0 := by
+          apply Prod.ext
+          · have hmem : (f.app p).hom (e₀.hom.hom x).1 ∈
+                LinearMap.range (f.app p).hom := ⟨(e₀.hom.hom x).1, rfl⟩
+            rw [hA.range_eq_ker p] at hmem
+            exact LinearMap.mem_ker.mp hmem
+          · have hmem : (f'.app p).hom (e₀.hom.hom x).2 ∈
+                LinearMap.range (f'.app p).hom := ⟨(e₀.hom.hom x).2, rfl⟩
+            rw [hB.range_eq_ker p] at hmem
+            exact LinearMap.mem_ker.mp hmem
+        _ = e₂.hom.hom 0 := by simp
+    · intro hz
+      change ((biprod.map g g').app p).hom z = 0 at hz
+      have hz' : (g.app p).hom.prodMap (g'.app p).hom (e₁.hom.hom z) = 0 := by
+        rw [← biprodMap_fiber_apply (k := k) (n := n) g g' p z]
+        simp [hz]
+      have hxker : (e₁.hom.hom z).1 ∈ LinearMap.ker (g.app p).hom :=
+        LinearMap.mem_ker.mpr (by simpa using congrArg Prod.fst hz')
+      have hyker : (e₁.hom.hom z).2 ∈ LinearMap.ker (g'.app p).hom :=
+        LinearMap.mem_ker.mpr (by simpa using congrArg Prod.snd hz')
+      rw [← hA.range_eq_ker p] at hxker
+      rw [← hB.range_eq_ker p] at hyker
+      obtain ⟨x, hx⟩ := hxker
+      obtain ⟨y, hy⟩ := hyker
+      refine ⟨e₀.inv.hom (x, y), ?_⟩
+      apply (ModuleCat.mono_iff_injective e₁.hom).mp inferInstance
+      calc
+        e₁.hom.hom (((biprod.map f f').app p).hom (e₀.inv.hom (x, y))) =
+            (f.app p).hom.prodMap (f'.app p).hom
+              (e₀.hom.hom (e₀.inv.hom (x, y))) :=
+          biprodMap_fiber_apply (k := k) (n := n) f f' p _
+        _ = e₁.hom.hom z := by simp [hx, hy]
+
+end IsPointwiseShortExact
+
+namespace IsRankExact
+
+/-- Binary biproducts preserve rank exactness.  The lifting criterion is
+applied coordinatewise through the evaluated biproduct/product isomorphisms. -/
+private theorem biprod
+    {A A' A'' B B' B'' : PModule.{u,0,u} k (Fin n → ℝ)}
+    {f : A ⟶ A'} {g : A' ⟶ A''} {f' : B ⟶ B'} {g' : B' ⟶ B''}
+    (hA : IsRankExact f g) (hB : IsRankExact f' g') :
+    IsRankExact (biprod.map f f') (biprod.map g g') := by
+  let hshort := hA.toIsPointwiseShortExact.biprod hB.toIsPointwiseShortExact
+  refine {
+    toIsPointwiseShortExact := hshort
+    finiteDimensional := ?_
+    rank_add := ?_
+  }
+  · intro p
+    let e := biprodFiberIso (k := k) (n := n) A' B' p
+    letI : FiniteDimensional k (A'.obj p) := hA.finiteDimensional p
+    letI : FiniteDimensional k (B'.obj p) := hB.finiteDimensional p
+    letI : FiniteDimensional k (A'.obj p × B'.obj p) := inferInstance
+    have hsurj : Function.Surjective e.inv.hom := by
+      intro x
+      exact ⟨e.hom.hom x, by simp⟩
+    exact FiniteDimensional.of_surjective e.inv.hom hsurj
+  · intro a b hab
+    let hmidA := biprodFiberIso (k := k) (n := n) A' B' a
+    let hmidB := biprodFiberIso (k := k) (n := n) A' B' b
+    let hquotA := biprodFiberIso (k := k) (n := n) A'' B'' a
+    letI : FiniteDimensional k (A'.obj a) := hA.finiteDimensional a
+    letI : FiniteDimensional k (B'.obj a) := hB.finiteDimensional a
+    letI : FiniteDimensional k (A'.obj a × B'.obj a) := inferInstance
+    have hsurj : Function.Surjective hmidA.inv.hom := by
+      intro x
+      exact ⟨hmidA.hom.hom x, by simp⟩
+    letI : FiniteDimensional k ((A' ⊞ B').obj a) :=
+      FiniteDimensional.of_surjective hmidA.inv.hom hsurj
+    apply (hshort.rank_add_iff_lift_kernel hab).mpr
+    intro z hz
+    have hzpair : (structureMapLinear A'' hab).prodMap
+        (structureMapLinear B'' hab) (hquotA.hom.hom z) = 0 := by
+      rw [← biprodStructureMap_fiber (k := k) (n := n) A'' B'' hab z]
+      simp [hz]
+    have hza : structureMapLinear A'' hab (hquotA.hom.hom z).1 = 0 := by
+      simpa using congrArg Prod.fst hzpair
+    have hzb : structureMapLinear B'' hab (hquotA.hom.hom z).2 = 0 := by
+      simpa using congrArg Prod.snd hzpair
+    obtain ⟨x, hx, hxdie⟩ := hA.lift_kernel hab (hquotA.hom.hom z).1 hza
+    obtain ⟨y, hy, hydie⟩ := hB.lift_kernel hab (hquotA.hom.hom z).2 hzb
+    let w := hmidA.inv.hom (x, y)
+    refine ⟨w, ?_, ?_⟩
+    · apply (ModuleCat.mono_iff_injective hquotA.hom).mp inferInstance
+      calc
+        hquotA.hom.hom (((biprod.map g g').app a).hom w) =
+            (g.app a).hom.prodMap (g'.app a).hom
+              (hmidA.hom.hom w) :=
+          biprodMap_fiber_apply (k := k) (n := n) g g' a w
+        _ = hquotA.hom.hom z := by simp [w, hx, hy]
+    · apply (ModuleCat.mono_iff_injective hmidB.hom).mp inferInstance
+      rw [biprodStructureMap_fiber (k := k) (n := n) A' B' hab w]
+      have hw : hmidA.hom.hom w = (x, y) := by
+        change hmidA.hom.hom (hmidA.inv.hom (x, y)) = (x, y)
+        have h := congrArg (fun q : ModuleCat.of k (A'.obj a × B'.obj a) ⟶
+            ModuleCat.of k (A'.obj a × B'.obj a) => q.hom (x, y))
+          hmidA.inv_hom_id
+        simpa [ModuleCat.comp_apply] using h
+      rw [hw]
+      have hpair : (structureMapLinear A' hab).prodMap
+          (structureMapLinear B' hab) (x, y) = 0 := Prod.ext hxdie hydie
+      simpa using hpair
+
+end IsRankExact
+
+namespace IsRankProjective
+
+/-- The binary biproduct of two rank-projectives is rank-projective. -/
+private theorem biprod {P Q : PModule.{u,0,u} k (Fin n → ℝ)}
+    (hP : IsRankProjective P) (hQ : IsRankProjective Q) :
+    IsRankProjective (P ⊞ Q) := by
+  intro L M N ι π hs α
+  obtain ⟨βP, hβP⟩ := hP L M N ι π hs (biprod.inl ≫ α)
+  obtain ⟨βQ, hβQ⟩ := hQ L M N ι π hs (biprod.inr ≫ α)
+  refine ⟨biprod.desc βP βQ, ?_⟩
+  apply biprod.hom_ext'
+  · simpa only [← Category.assoc, biprod.inl_desc] using hβP
+  · simpa only [← Category.assoc, biprod.inr_desc] using hβQ
+
+end IsRankProjective
+
+private theorem isZeroZeroBiprod :
+    IsZero ((0 : PModule.{u,0,u} k (Fin n → ℝ)) ⊞ 0) := by
+  refine ⟨?_, ?_⟩
+  · intro Y
+    refine ⟨{ default := (0 : (0 ⊞ 0) ⟶ Y), uniq := ?_ }⟩
+    intro f
+    apply biprod.hom_ext'
+    · exact (isZero_zero _).eq_of_src
+        (biprod.inl ≫ f) 0
+    · exact (isZero_zero _).eq_of_src
+        (biprod.inr ≫ f) 0
+  · intro Y
+    refine ⟨{ default := (0 : Y ⟶ (0 ⊞ 0)), uniq := ?_ }⟩
+    intro f
+    apply biprod.hom_ext
+    · exact (isZero_zero _).eq_of_tgt
+        (f ≫ biprod.fst) (0 ≫ biprod.fst)
+    · exact (isZero_zero _).eq_of_tgt
+        (f ≫ biprod.snd) (0 ≫ biprod.snd)
+
+private noncomputable def zeroBiprodIso :
+    (0 : PModule.{u,0,u} k (Fin n → ℝ)) ⊞ 0 ≅
+      (0 : PModule.{u,0,u} k (Fin n → ℝ)) :=
+  isZeroZeroBiprod.iso (isZero_zero _)
+
+namespace FiniteRankProjectiveResolution
+
+/-- A binary biproduct of two finite rank-projective resolutions of the same
+length is again an actual finite rank-projective resolution. -/
+noncomputable def biprod {M N : PModule.{u,0,u} k (Fin n → ℝ)}
+    (R : FiniteRankProjectiveResolution M) (S : FiniteRankProjectiveResolution N)
+    (hlen : R.length = S.length) :
+    FiniteRankProjectiveResolution (M ⊞ N) where
+  toFiniteRankExactResolution := {
+    length := R.length
+    kernel := fun i => R.kernel i ⊞ S.kernel (Fin.cast (congrArg Nat.succ hlen) i)
+    term := fun i => R.term i ⊞ S.term (Fin.cast hlen i)
+    inclusion := fun i => biprod.map (R.inclusion i)
+      (S.inclusion (Fin.cast hlen i))
+    quotient := fun i => biprod.map (R.quotient i)
+      (S.quotient (Fin.cast hlen i))
+    row_rank_exact := fun i => (R.row_rank_exact i).biprod
+      (S.row_rank_exact (Fin.cast hlen i))
+    initial_iso := biprod.mapIso R.initial_iso S.initial_iso
+    terminal_iso :=
+      (biprod.mapIso R.terminal_iso
+        ((eqToIso (by
+          congr 1
+          apply Fin.ext
+          simp)).trans S.terminal_iso)) ≪≫ zeroBiprodIso
+  }
+  term_rank_projective := fun i =>
+    (R.term_rank_projective i).biprod
+      (S.term_rank_projective (Fin.cast hlen i))
+
+end FiniteRankProjectiveResolution
+
+namespace FiniteRankProjectiveResolution
+
+/-- The selected lookup for a binary biproduct resolution identifies its
+zero-padded term at `j` with the biproduct of the two selected zero-padded
+terms at `j`. At or beyond the common stored length it uses the chosen
+zero-biproduct isomorphism. -/
+noncomputable def termAt_biprodIso
+    {M N : PModule.{u,0,u} k (Fin n → ℝ)}
+    (R : FiniteRankProjectiveResolution M) (S : FiniteRankProjectiveResolution N)
+    (hlen : R.length = S.length) (j : ℕ) :
+    (R.biprod S hlen).termAt j ≅ R.termAt j ⊞ S.termAt j := by
+  by_cases hj : j < R.length
+  · have hjS : j < S.length := by omega
+    rw [termAt_eq_term (R := R.biprod S hlen) hj,
+      termAt_eq_term (R := R) hj, termAt_eq_term (R := S) hjS]
+    change (R.term ⟨j, hj⟩ ⊞ S.term (Fin.cast hlen ⟨j, hj⟩)) ≅
+      R.term ⟨j, hj⟩ ⊞ S.term ⟨j, hjS⟩
+    have hidx : Fin.cast hlen (⟨j, hj⟩ : Fin R.length) = ⟨j, hjS⟩ := by
+      apply Fin.ext
+      rfl
+    exact biprod.mapIso (Iso.refl _) (eqToIso (congrArg S.term hidx))
+  · have hjS : S.length ≤ j := by omega
+    rw [termAt_eq_zero (R := R.biprod S hlen) (by simpa [FiniteRankProjectiveResolution.biprod] using Nat.le_of_not_gt hj),
+      termAt_eq_zero (R := R) (Nat.le_of_not_gt hj),
+      termAt_eq_zero (R := S) hjS]
+    exact (zeroBiprodIso (k := k) (n := n)).symm
+
+end FiniteRankProjectiveResolution
+
 end RealCoordinateOperations
 
 end TDA.Persistence
