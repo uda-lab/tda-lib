@@ -83,6 +83,42 @@ realization, admits morphisms from discrete segments and onto a single segment, 
 raw pieces present its thickening; the presentation with empty pieces maps uniquely to every
 presentation.
 
+## Windows and transfers
+
+`TDA.Reeb.ThickeningWindow` defines the pieces of the thickening presentation. For a height `c`,
+write `J(c) = [max a (c - ε), min d (c + ε)]` for the slice of a segment `[a, d]`
+(`Thickening.slice`); for a vertex strip `[a i, a i]` it is `{a i}` or empty.
+
+- Window. The raw window at `c` is `Σ V i × J_i(c) ⊕ Σ E e × J_e(c)`, with
+  `J_i(c) = slice (a i) (a i) ε c` and `J_e(c) = slice (a e) (a (e+1)) ε c`. The window
+  `P.Window S ε c` is its quotient by "same point of `X`", with the quotient topology. So `windowMk`
+  is a quotient map by definition, also after product with a locally compact space
+  (`isQuotientMap_prodMap_windowMk`), and two raw window points are identified exactly when their
+  normal forms in `P` agree (`windowMk_eq_iff`). `windowToSpace` is a continuous injection into `X`
+  with height in `[c - ε, c + ε]`. The window is compact, resp. locally path-connected, when all
+  pieces are, as a quotient of a finite sum of products of pieces with compact intervals; it is
+  empty when all pieces are. That the window is homeomorphic to the subspace `f⁻¹[c - ε, c + ε]`
+  of `X` is not claimed; without a Hausdorff hypothesis, the quotient topology is the one used.
+- Transfer. Under `RGraph.TransferOK S ε c u`, every slice parameter moves by the affine fragment
+  map `RGraph.fragAff` of its segment (`rawTransfer`); vertex parameters stay at `a i`. Slice ends
+  at segment ends stay there, so glued points stay glued and the map descends to the continuous
+  `transfer : Window c → Window u` (`windowMk_rawTransfer_eq`). In `X` it fixes vertex points and
+  moves an edge point at parameter `σ` to `fragAff … c u σ` (`windowToSpace_transfer_inl`,
+  `windowToSpace_transfer_inr`). At a slab end with a point slice it collapses a whole edge
+  slice, so it need not be injective. Along a locally compact set `U` of target heights the
+  transfers form one jointly continuous map `transferFamily : Window c × U → X`, descended along
+  `windowMk × id_U`.
+- Interior inverse. With transfer hypotheses in both directions, for instance two heights of one
+  open slab of a grid listing the shifted levels, the transfers are mutually inverse
+  (`transfer_transfer`, `transferHomeomorph`). This holds for every `ε ≥ 0`: at a point slice the
+  affine map is the constant lower end, by Lean's division by zero.
+
+Fixtures (`TDA.Reeb.ThickeningWindowExamples`): for the single segment at `ε = 1/4`, the transfer
+of the window at `0` to the slab end `-1/4` identifies two distinct edge points; at `ε = 0` the
+transfer between `1/2` and `1/4` is a homeomorphism; a window of the presentation whose pieces are
+the Sierpiński space is compact and locally path-connected but not Hausdorff; windows far from the
+levels, and all windows of the presentation with empty pieces, are empty.
+
 ## Source correspondence
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.2, define constructible ℝ-spaces as
