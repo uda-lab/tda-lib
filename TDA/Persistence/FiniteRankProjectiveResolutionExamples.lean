@@ -251,6 +251,52 @@ private theorem oneCoordinateHook_pointwiseFiniteDimensional :
 private theorem oneCoordinateHook_rankProjective : IsRankProjective oneCoordinateHook :=
   HookInfinity.isRankProjective (i := (0 : Fin 1 → ℝ))
 
+private theorem oneCoordinateHook_map_nonzero_of_birth_le {a b : Fin 1 → ℝ}
+    (hab : a ≤ b) (hia : (0 : Fin 1 → ℝ) ≤ a) :
+    structureMapLinear oneCoordinateHook hab ≠ 0 := by
+  let ea := HookInfinity.fiberEquivOfLe (R := ℚ) (i := (0 : Fin 1 → ℝ)) hia
+  let eb := HookInfinity.fiberEquivOfLe (R := ℚ) (i := (0 : Fin 1 → ℝ)) (hia.trans hab)
+  let x := ea.symm 1
+  have hx : ea x = 1 := by simp [x]
+  intro hzero
+  have hmap := HookInfinity.fiberEquivOfLe_structureMap
+    (R := ℚ) (i := (0 : Fin 1 → ℝ)) hia hab x
+  have hvanish : eb (structureMapLinear oneCoordinateHook hab x) = 0 := by
+    rw [hzero]
+    exact eb.map_zero
+  rw [hmap, hx] at hvanish
+  exact (one_ne_zero : (1 : ℚ) ≠ 0) hvanish
+
+private noncomputable abbrev realCoordinateZero : PModule.{0,0,0} ℚ (Fin 1 → ℝ) := 0
+
+private theorem zeroIdRankExactReal (Q : PModule.{0,0,0} ℚ (Fin 1 → ℝ))
+    [∀ p, FiniteDimensional ℚ (Q.obj p)] :
+    IsRankExact (0 : realCoordinateZero ⟶ Q) (𝟙 Q) := by
+  have hshort : IsPointwiseShortExact (0 : realCoordinateZero ⟶ Q) (𝟙 Q) := by
+    constructor
+    · intro p x y _
+      exact (ModuleCat.subsingleton_of_isZero (Functor.zero_obj p)).elim x y
+    · intro p x
+      exact ⟨x, rfl⟩
+    · intro p
+      simp
+  exact hshort.rankExact_of_section (𝟙 Q) (by simp)
+
+private theorem idZeroRankExactReal (Q : PModule.{0,0,0} ℚ (Fin 1 → ℝ))
+    [∀ p, FiniteDimensional ℚ (Q.obj p)] :
+    IsRankExact (𝟙 Q) (0 : Q ⟶ realCoordinateZero) := by
+  have hshort : IsPointwiseShortExact (𝟙 Q) (0 : Q ⟶ realCoordinateZero) := by
+    constructor
+    · intro _ x y h
+      exact h
+    · intro p y
+      have hzero : Subsingleton (realCoordinateZero.obj p) :=
+        ModuleCat.subsingleton_of_isZero (Functor.zero_obj p)
+      exact ⟨0, hzero.elim _ _⟩
+    · intro p
+      simp
+  exact hshort.rankExact_of_section (0 : realCoordinateZero ⟶ Q) (by simp)
+
 /-- The length-one identity resolution of the one-coordinate principal upset. -/
 noncomputable def oneCoordinateHookIdentity :
     FiniteRankProjectiveResolution oneCoordinateHook :=
@@ -365,6 +411,250 @@ theorem zeroCoordinateHookIdentity_termAt (j : ℕ) :
     zeroCoordinateHookIdentity.termAt j = if j = 0 then zeroCoordinateHook else 0 := by
   exact FiniteRankProjectiveResolution.identity_termAt zeroCoordinateHook
     zeroCoordinateHook_rankProjective zeroCoordinateHook_pointwiseFiniteDimensional j
+
+/-- In zero coordinate dimensions, a positive shift still exposes the selected lookup iso. -/
+theorem zeroCoordinateHookIdentity_shift_termAtIso :
+    Nonempty ((zeroCoordinateHookIdentity.shift 1).termAt 0 ≅
+      (CoordinateShift.shift 1).obj zeroCoordinateHook) := by
+  exact ⟨FiniteRankProjectiveResolution.termAt_shiftIso zeroCoordinateHookIdentity 1 0⟩
+
+/-- The degree-zero tail boundary holds for the moved operation in dimension zero. -/
+theorem zeroCoordinateHookIdentity_tail_boundary :
+    (zeroCoordinateHookIdentity.tail (by
+      simp [zeroCoordinateHookIdentity, FiniteRankProjectiveResolution.identity])).length = 0 ∧
+      (zeroCoordinateHookIdentity.tail (by
+        simp [zeroCoordinateHookIdentity, FiniteRankProjectiveResolution.identity])).termAt 0 = 0 := by
+  have hlen : zeroCoordinateHookIdentity.length = 1 := by
+    simp [zeroCoordinateHookIdentity, FiniteRankProjectiveResolution.identity]
+  let hpos : 0 < zeroCoordinateHookIdentity.length := by rw [hlen]; omega
+  constructor
+  · change (zeroCoordinateHookIdentity.tail hpos).length = 0
+    rw [FiniteRankProjectiveResolution.length_tail, hlen]
+  · change (zeroCoordinateHookIdentity.tail hpos).termAt 0 = 0
+    rw [FiniteRankProjectiveResolution.termAt_tail zeroCoordinateHookIdentity hpos 0]
+    simp [zeroCoordinateHookIdentity, FiniteRankProjectiveResolution.identity]
+
+private noncomputable def twoRowKernel :
+    Fin 3 → PModule.{0,0,0} ℚ (Fin 1 → ℝ) := fun i =>
+      if i.val = 1 then oneCoordinateHook else realCoordinateZero
+
+private noncomputable def twoRowTerm :
+    Fin 2 → PModule.{0,0,0} ℚ (Fin 1 → ℝ) := fun _ => oneCoordinateHook
+
+private noncomputable def twoRowInclusion :
+    ∀ i : Fin 2, twoRowKernel i.succ ⟶ twoRowTerm i := by
+  intro i
+  refine Fin.cases ?_ ?_ i
+  · change oneCoordinateHook ⟶ oneCoordinateHook
+    exact 𝟙 oneCoordinateHook
+  · intro j
+    have hj : j = 0 := Subsingleton.elim _ _
+    subst j
+    change realCoordinateZero ⟶ oneCoordinateHook
+    exact 0
+
+private noncomputable def twoRowQuotient :
+    ∀ i : Fin 2, twoRowTerm i ⟶ twoRowKernel i.castSucc := by
+  intro i
+  refine Fin.cases ?_ ?_ i
+  · change oneCoordinateHook ⟶ realCoordinateZero
+    exact 0
+  · intro j
+    have hj : j = 0 := Subsingleton.elim _ _
+    subst j
+    change oneCoordinateHook ⟶ oneCoordinateHook
+    exact 𝟙 oneCoordinateHook
+
+private theorem twoRowRows :
+    ∀ i : Fin 2, IsRankExact (twoRowInclusion i) (twoRowQuotient i) := by
+  intro i
+  refine Fin.cases ?_ ?_ i
+  · change IsRankExact (𝟙 oneCoordinateHook) (0 : oneCoordinateHook ⟶ realCoordinateZero)
+    exact idZeroRankExactReal oneCoordinateHook
+  · intro j
+    have hj : j = 0 := Subsingleton.elim _ _
+    subst j
+    change IsRankExact (0 : realCoordinateZero ⟶ oneCoordinateHook) (𝟙 oneCoordinateHook)
+    exact zeroIdRankExactReal oneCoordinateHook
+
+private theorem twoRowProjective : ∀ i : Fin 2, IsRankProjective (twoRowTerm i) := by
+  intro i
+  exact oneCoordinateHook_rankProjective
+
+/-- A two-row nonminimal resolution of zero whose selected tail is the nonzero hook. -/
+noncomputable def twoRowZeroResolution :
+    FiniteRankProjectiveResolution (M := realCoordinateZero) where
+  toFiniteRankExactResolution := {
+    length := 2
+    kernel := twoRowKernel
+    term := twoRowTerm
+    inclusion := twoRowInclusion
+    quotient := twoRowQuotient
+    row_rank_exact := twoRowRows
+    initial_iso := by simpa [twoRowKernel] using (Iso.refl realCoordinateZero)
+    terminal_iso := by simpa [twoRowKernel] using (Iso.refl realCoordinateZero)
+  }
+  term_rank_projective := twoRowProjective
+
+/-- The two selected rows are exactly `(id,0)` and `(0,id)`. -/
+theorem twoRowZeroResolution_selected_rows :
+    twoRowZeroResolution.inclusion (0 : Fin 2) = 𝟙 oneCoordinateHook ∧
+      twoRowZeroResolution.quotient (0 : Fin 2) = 0 ∧
+      twoRowZeroResolution.inclusion (1 : Fin 2) = 0 ∧
+      twoRowZeroResolution.quotient (1 : Fin 2) = 𝟙 oneCoordinateHook := by
+  constructor
+  · change twoRowInclusion (0 : Fin 2) = 𝟙 oneCoordinateHook
+    ext p
+    rfl
+  constructor
+  · change twoRowQuotient (0 : Fin 2) = 0
+    ext p
+    rfl
+  constructor
+  · change twoRowInclusion (1 : Fin 2) = 0
+    change twoRowInclusion (Fin.succ (0 : Fin 1)) = 0
+    rfl
+  · change twoRowQuotient (1 : Fin 2) = 𝟙 oneCoordinateHook
+    change twoRowQuotient (Fin.succ (0 : Fin 1)) = 𝟙 oneCoordinateHook
+    rfl
+
+/-- The selected middle kernel is the actual principal-upset module. -/
+theorem twoRowZeroResolution_middle_kernel :
+    twoRowZeroResolution.kernel (⟨1, by norm_num [twoRowZeroResolution]⟩ : Fin 3) =
+      oneCoordinateHook := by
+  simp [twoRowZeroResolution, twoRowKernel]
+
+/-- The tail selects the actual middle kernel, has length one and records the hook term. -/
+theorem twoRowZeroResolution_tail_data :
+    (twoRowZeroResolution.tail (by simp [twoRowZeroResolution])).length = 1 ∧
+      (twoRowZeroResolution.tail (by simp [twoRowZeroResolution])).termAt 0 =
+        oneCoordinateHook ∧
+      (twoRowZeroResolution.tail (by simp [twoRowZeroResolution])).termAt 1 = 0 := by
+  have hlen : twoRowZeroResolution.length = 2 := rfl
+  let hpos : 0 < twoRowZeroResolution.length := by rw [hlen]; omega
+  constructor
+  · change (twoRowZeroResolution.tail hpos).length = 1
+    rw [FiniteRankProjectiveResolution.length_tail, hlen]
+  constructor
+  · change (twoRowZeroResolution.tail hpos).termAt 0 = oneCoordinateHook
+    rw [FiniteRankProjectiveResolution.termAt_tail twoRowZeroResolution hpos 0]
+    simp [twoRowZeroResolution, twoRowTerm]
+  · change (twoRowZeroResolution.tail hpos).termAt 1 = 0
+    rw [FiniteRankProjectiveResolution.termAt_tail twoRowZeroResolution hpos 1]
+    simp [twoRowZeroResolution]
+
+/-- The tail carries its actual rank-exact row and projective-term certificate. -/
+theorem twoRowZeroResolution_tail_row_data :
+    ∃ i : Fin (twoRowZeroResolution.tail (by simp [twoRowZeroResolution])).length,
+      IsRankExact
+          ((twoRowZeroResolution.tail (by simp [twoRowZeroResolution])).inclusion i)
+          ((twoRowZeroResolution.tail (by simp [twoRowZeroResolution])).quotient i) ∧
+        IsRankProjective
+          ((twoRowZeroResolution.tail (by simp [twoRowZeroResolution])).term i) := by
+  let T := twoRowZeroResolution.tail (by simp [twoRowZeroResolution])
+  have hlen : T.length = 1 := by
+    change twoRowZeroResolution.length - 1 = 1
+    simp [twoRowZeroResolution]
+  let i : Fin T.length := ⟨0, by rw [hlen]; omega⟩
+  exact ⟨i, T.row_rank_exact i, T.term_rank_projective i⟩
+
+/-- The selected tail has a genuine nonzero map between distinct grades. -/
+theorem twoRowZeroResolution_tail_transition_nonzero :
+    structureMapLinear
+      ((twoRowZeroResolution.tail (by simp [twoRowZeroResolution])).termAt 0)
+      (show (0 : Fin 1 → ℝ) ≤ (fun _ : Fin 1 => (1 : ℝ)) by
+        intro i
+        norm_num) ≠ 0 := by
+  rw [twoRowZeroResolution_tail_data.2.1]
+  exact oneCoordinateHook_transition_nonzero
+
+/-- The positive shift carries the grades `-1` and `0` to `0` and `1`. -/
+theorem oneCoordinateHookIdentity_shift_grade_values :
+    CoordinateShift.translation 1 (fun _ : Fin 1 => (-1 : ℝ)) = 0 ∧
+      CoordinateShift.translation 1 (0 : Fin 1 → ℝ) =
+        (fun _ : Fin 1 => (1 : ℝ)) := by
+  constructor <;> funext i <;> simp [CoordinateShift.translation]
+
+/-- A positive coordinate shift turns the term's map from grades `-1` to `0`
+into the original principal-upset map from `0` to `1`. -/
+theorem oneCoordinateHookIdentity_shift_transition_nonzero :
+    structureMapLinear
+      ((FiniteRankProjectiveResolution.shift oneCoordinateHookIdentity 1).termAt 0)
+      (show (fun _ : Fin 1 => (-1 : ℝ)) ≤ 0 by
+        intro i
+        norm_num) ≠ 0 := by
+  let p : Fin 1 → ℝ := fun _ => -1
+  let q : Fin 1 → ℝ := 0
+  have hp : CoordinateShift.translation 1 p = (0 : Fin 1 → ℝ) := by
+    simpa [p] using oneCoordinateHookIdentity_shift_grade_values.1
+  have hlen : (oneCoordinateHookIdentity.shift 1).length = 1 := rfl
+  have hpos : 0 < (oneCoordinateHookIdentity.shift 1).length := by rw [hlen]; omega
+  have hterm :
+      (FiniteRankProjectiveResolution.shift oneCoordinateHookIdentity 1).termAt 0 =
+        (CoordinateShift.shift 1).obj oneCoordinateHook := by
+    rw [FiniteRankProjectiveResolution.termAt_eq_term
+      (R := oneCoordinateHookIdentity.shift 1) hpos]
+    simp [FiniteRankProjectiveResolution.shift, oneCoordinateHookIdentity,
+      FiniteRankProjectiveResolution.identity]
+  rw [hterm]
+  change structureMapLinear
+    (reindex (CoordinateShift.translation 1) oneCoordinateHook)
+    (show p ≤ q by intro i; norm_num [p, q]) ≠ 0
+  rw [structureMapLinear_reindex]
+  exact oneCoordinateHook_map_nonzero_of_birth_le _ (by
+    intro i
+    calc
+      0 ≤ (0 : ℝ) := le_rfl
+      _ = (CoordinateShift.translation 1 p) i := (congrFun hp i).symm)
+
+/-- The selected isomorphism identifies an in-range shifted term with its actual shift. -/
+theorem oneCoordinateHook_shift_termAtIso_in_range :
+    Nonempty ((oneCoordinateHookIdentity.shift 1).termAt 0 ≅
+      (CoordinateShift.shift 1).obj oneCoordinateHook) := by
+  exact ⟨by
+    simpa [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity] using
+      FiniteRankProjectiveResolution.termAt_shiftIso oneCoordinateHookIdentity 1 0⟩
+
+/-- The out-of-range lookup uses the selected isomorphism between the zero terms. -/
+theorem oneCoordinateHook_shift_termAtIso_out_of_range :
+    Nonempty ((oneCoordinateHookIdentity.shift 1).termAt 1 ≅
+      (CoordinateShift.shift 1).obj (oneCoordinateHookIdentity.termAt 1)) := by
+  exact ⟨FiniteRankProjectiveResolution.termAt_shiftIso oneCoordinateHookIdentity 1 1⟩
+
+/-- Zero shift retains the selected identity term through the public lookup isomorphism. -/
+theorem oneCoordinateHook_zero_shift_termAtIso :
+    Nonempty ((oneCoordinateHookIdentity.shift 0).termAt 0 ≅
+      (CoordinateShift.shift 0).obj oneCoordinateHook) := by
+  exact ⟨by
+    simpa [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity] using
+      FiniteRankProjectiveResolution.termAt_shiftIso oneCoordinateHookIdentity 0 0⟩
+
+/-- The genuine empty resolution remains empty under a positive shift. -/
+theorem coordinateZeroLengthResolution_shift_length :
+    (coordinateZeroLengthResolution.shift 1).length = 0 := by
+  rfl
+
+/-- The tail of the one-term identity is empty, so its degree-zero lookup is zero. -/
+theorem oneCoordinateHookIdentity_tail_boundary :
+    (oneCoordinateHookIdentity.tail (by
+      simp [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity])).length = 0 ∧
+      (oneCoordinateHookIdentity.tail (by
+        simp [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity])).termAt 0 = 0 := by
+  have hlen : oneCoordinateHookIdentity.length = 1 := by
+    simp [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity]
+  let hpos : 0 < oneCoordinateHookIdentity.length := by rw [hlen]; omega
+  constructor
+  · change (oneCoordinateHookIdentity.tail hpos).length = 0
+    rw [FiniteRankProjectiveResolution.length_tail, hlen]
+  · change (oneCoordinateHookIdentity.tail hpos).termAt 0 = 0
+    rw [FiniteRankProjectiveResolution.termAt_tail oneCoordinateHookIdentity hpos 0]
+    simp [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity]
+
+/-- No terms are added when the public zero-padding operation receives count zero. -/
+theorem oneCoordinateHookIdentity_zero_padding_length :
+    (oneCoordinateHookIdentity.appendZeros 0).length = 1 := by
+  rw [FiniteRankProjectiveResolution.appendZeros_length]
+  simp [oneCoordinateHookIdentity, FiniteRankProjectiveResolution.identity]
 
 end CoordinateIdentityAndPadding
 

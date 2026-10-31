@@ -427,7 +427,14 @@ For real-coordinate modules, `FiniteRankProjectiveResolution.identity` construct
 selected length-one resolution from rank projectivity and pointwise finite-dimensional
 fibers. `appendZero` and `appendZeros` preserve the zero-padded terms and add exactly the
 requested number to the stored length; `termAt` reads the recorded term below that length
-and returns zero afterward. These operations live in
+and returns zero afterward. When `0 < R.length`, `R.tail hpos` resolves the selected next
+kernel and has stored length `R.length - 1`; no tail is defined at length zero. `R.shift ε`
+transports the selected kernels, terms, rows and endpoint data along the diagonal evaluation
+shift. The selected isomorphism `R.termAt_shiftIso ε j` identifies each zero-padded term
+of the shifted resolution with the shift of the corresponding original zero-padded term.
+The base-only examples include a nonminimal two-row resolution of zero whose tail resolves
+the nonzero principal-upset module, and a positive shift carrying its actual map from
+grades `-1` to `0` to the original map from `0` to `1`. These operations live in
 `TDA.Persistence.FiniteRankProjectiveResolution`, so ordinary finite-resolution clients do
 not need a Schanuel import. Open the `TDA.Persistence` scope to select coordinatewise order.
 Padding can increase the stored length while leaving every `termAt` value unchanged.
