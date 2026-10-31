@@ -561,6 +561,13 @@ Strictly positive independent coordinate scaling of the same actual PH₁ module
 has an exact distance-to-zero formula from its two arm lifetimes; its reindexing,
 actual transition maps and ordinary-import consumers are in the
 [simplicial scaling note](math/rank-resolution-simplicial-scaling.md).
+After fixing such a positive scale, adding a uniform signed delay to every
+actual face grade gives a translated full PH₁ persistence module: its fibers
+are the H₁ groups of the sublevel complexes and its maps are induced by their
+inclusions. `scaledTranslatedHomology` defines this family, whose modules are
+compared together with their maps. Its exact pairwise distance, actual
+witnesses, and signed-delay consumers are documented in the
+[scaled translation note](math/rank-resolution-simplicial-scaled-translation.md).
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 ordinary one-dimensional barcode connection and its half-open boundary
