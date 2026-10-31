@@ -549,6 +549,10 @@ actual module `RankResolutionDegreeTwoSimplicial.translatedHomology`. Its exact
 coordinate interleaving distance is `ENNReal.ofReal (min |t-s| (1/2))`; the
 actual magnitude and half-radius witnesses and the subcritical obstruction are
 documented in the [translation-distance note](math/rank-resolution-simplicial-translation.md).
+Independent signed delays on the two actual face-grade coordinates have exact
+distance `ENNReal.ofReal (min (max |v 0-u 0| |v 1-u 1|) (1/2))`; the actual
+reindexing, witnesses, coordinate obstruction, and ordinary-import consumers
+are documented in the [coordinate translation note](math/rank-resolution-simplicial-coordinate-translation.md).
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 ordinary one-dimensional barcode connection and its half-open boundary

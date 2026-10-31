@@ -117,6 +117,14 @@ private theorem a_mem_support : a ∈ support := by
   intro i
   fin_cases i <;> norm_num
 
+private theorem b_mem_support : b ∈ support := by
+  change (a ≤ b ∨ b ≤ b) ∧ b ≤ c
+  refine ⟨Or.inr le_rfl, ?_⟩
+  change grid.embedding b ≤ grid.embedding c
+  rw [grid_embedding_b, grid_embedding_c]
+  intro i
+  fin_cases i <;> norm_num
+
 private theorem coordinate_cases (p : grid.Point) (i : Fin 2) :
     (p i).val = 0 ∨ (p i).val = 1 ∨ (p i).val = 2 := by
   have hp := (p i).property
@@ -127,6 +135,21 @@ private theorem noLowerPoint_of_first_neg (p : Fin 2 → ℝ) (hp : p 0 < 0) :
   rintro ⟨q, hq⟩
   have hq0 : (q 0).val ≤ p 0 := hq 0
   rcases coordinate_cases q 0 with h | h | h <;> rw [h] at hq0 <;> linarith
+
+private theorem noLowerPoint_of_second_neg (p : Fin 2 → ℝ) (hp : p 1 < 0) :
+    ¬ grid.HasLowerPoint p := by
+  rintro ⟨q, hq⟩
+  have hq1 : (q 1).val ≤ p 1 := hq 1
+  rcases coordinate_cases q 1 with h | h | h <;> rw [h] at hq1 <;> linarith
+
+/-- The actual unshifted H₁ fiber vanishes below the second-coordinate birth. -/
+theorem homology_isZero_of_second_neg (k : Type u) [Field k]
+    (p : Fin 2 → ℝ) (hp : p 1 < 0) :
+    IsZero ((finiteSimplicialHomology k boundaryTetrahedronGrading 1).obj p) := by
+  apply IsZero.of_iso
+    (grid.isZero_obj_of_not_hasLowerPoint (finiteModule (k := k)) p
+      (noLowerPoint_of_second_neg p hp))
+    ((realIso k).app p)
 
 private theorem floor_eq_a_of_bounds (p : Fin 2 → ℝ) (hp : grid.HasLowerPoint p)
     (h0 : 0 ≤ p 0) (h1 : p 0 < 1) (h2 : 1 ≤ p 1) (h3 : p 1 < 2) :
@@ -146,6 +169,26 @@ private theorem floor_eq_a_of_bounds (p : Fin 2 → ℝ) (hp : grid.HasLowerPoin
       rcases coordinate_cases q 0 with h | h | h <;> rw [h] <;> linarith
     · have hq1 : (q 1).val ≤ p 1 := hq 1
       change (q 1).val ≤ 1
+      rcases coordinate_cases q 1 with h | h | h <;> rw [h] <;> linarith
+
+private theorem floor_eq_b_of_bounds (p : Fin 2 → ℝ) (hp : grid.HasLowerPoint p)
+    (h0 : 1 ≤ p 0) (h1 : p 0 < 2) (h2 : 0 ≤ p 1) (h3 : p 1 < 1) :
+    grid.floor p hp = b := by
+  apply (grid.floor_eq_iff p hp b).mpr
+  constructor
+  · rw [grid_embedding_b]
+    intro i
+    fin_cases i <;> simpa using (by assumption : _)
+  · intro q hq
+    change grid.embedding q ≤ grid.embedding b
+    rw [grid_embedding_b]
+    intro i
+    fin_cases i
+    · have hq0 : (q 0).val ≤ p 0 := hq 0
+      change (q 0).val ≤ 1
+      rcases coordinate_cases q 0 with h | h | h <;> rw [h] <;> linarith
+    · have hq1 : (q 1).val ≤ p 1 := hq 1
+      change (q 1).val ≤ 0
       rcases coordinate_cases q 1 with h | h | h <;> rw [h] <;> linarith
 
 private theorem finite_map_zero (k : Type u) [Field k]
@@ -193,6 +236,58 @@ private theorem map_ne_zero_of_iso {k : Type u} [Field k]
     structureMap M hpq ≠ 0 := by
   intro hz
   exact hne (map_zero_of_iso e.symm hpq hz)
+
+/-- The actual unshifted H₁ map from the second arm survives every subunit delay. -/
+theorem homology_secondBirth_structureMap_ne_zero (k : Type u) [Field k]
+    (r : ℝ) (hr0 : 0 ≤ r) (hr1 : r < 1) :
+    structureMap (finiteSimplicialHomology k boundaryTetrahedronGrading 1)
+      (show grid.embedding b ≤ (fun i => grid.embedding b i + r) from
+        fun _ => le_add_of_nonneg_right hr0) ≠ 0 := by
+  apply map_ne_zero_of_iso (realIso k)
+  have hp : grid.HasLowerPoint (grid.embedding b) := by
+    exact ⟨b, fun _ => le_rfl⟩
+  have hq : grid.HasLowerPoint (fun i => grid.embedding b i + r) := by
+    exact ⟨b, fun _ => le_add_of_nonneg_right hr0⟩
+  have hp0 : grid.embedding b 0 = 1 := by
+    rw [grid_embedding_b]
+    norm_num
+  have hp1 : grid.embedding b 1 = 0 := by
+    rw [grid_embedding_b]
+    norm_num
+  have hq0 : (fun i => grid.embedding b i + r) 0 = 1 + r := by
+    rw [grid_embedding_b]
+    norm_num
+  have hq1 : (fun i => grid.embedding b i + r) 1 = r := by
+    rw [grid_embedding_b]
+    norm_num
+  have hfp : grid.floor (grid.embedding b) hp = b := by
+    apply floor_eq_b_of_bounds
+    · rw [hp0]
+    · rw [hp0]
+      norm_num
+    · rw [hp1]
+    · rw [hp1]
+      norm_num
+  have hfq : grid.floor (fun i => grid.embedding b i + r) hq = b := by
+    apply floor_eq_b_of_bounds
+    · change 1 ≤ (fun i => grid.embedding b i + r) 0
+      rw [hq0]
+      linarith
+    · change (fun i => grid.embedding b i + r) 0 < 2
+      rw [hq0]
+      linarith
+    · change 0 ≤ (fun i => grid.embedding b i + r) 1
+      rw [hq1]
+      exact hr0
+    · change (fun i => grid.embedding b i + r) 1 < 1
+      rw [hq1]
+      exact hr1
+  apply lan_map_ne_zero k _ hp hq
+  apply finite_map_ne_zero
+  · rw [hfp]
+    exact b_mem_support
+  · rw [hfq]
+    exact b_mem_support
 
 private theorem lan_diagonal_one_zero (k : Type u) [Field k]
     {p q : Fin 2 → ℝ} (hpq : p ≤ q) (hstep : ∀ i, q i = p i + 1) :
