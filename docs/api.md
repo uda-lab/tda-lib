@@ -459,11 +459,15 @@ stability, the rank-exact structure axioms stated in
 resolution-length bound stated in
 [Theorem 5.18](https://arxiv.org/html/2208.00300v3).
 
-For a field `k`, `n ≥ 1`, and an originally finitely presented module
+For any natural number `n`, field `k`, and originally finitely presented module
 `M : PModule k (Fin n → ℝ)`,
-`FiniteRankProjectiveResolution.finitelyPresented_exists_finiteRankProjectiveResolution`
-constructs an actual finite rank-projective resolution of `M`. It first uses the
-finite presentation to reconstruct `M` as the actual left Kan extension of a
+`FiniteRankProjectiveResolution.exists_finiteRankProjectiveResolution_of_finitelyPresented`
+constructs an actual finite rank-projective resolution of `M`. This includes
+`n = 0`, where `Fin 0 → ℝ` is a one-point poset and the result applies to
+nonzero modules as well. The existing
+`finitelyPresented_exists_finiteRankProjectiveResolution` name remains the
+positive-dimensional specialization. The proof first uses the finite
+presentation to reconstruct `M` as the actual left Kan extension of a
 pointwise finite-dimensional module on a finite coordinate grid. On that finite
 poset it chooses rank-exact hook-sum covers with the fewest summands for each
 successive kernel. A nonzero same-hook component into the preceding kernel
@@ -472,9 +476,9 @@ differential arrow lowers the weight from its source hook to its target hook;
 equivalently, the weights strictly increase as one passes to covers of
 successive kernels. The weight is built from the sizes of the hooks' endpoint
 lower sets, with infinite hooks placed above finite hooks. It is bounded on the
-finite poset, so the iteration ends with zero kernel.
-The existing Kan preservation maps then transport all rows and projective terms
-back to `M`. No pfd, grid, hook decomposition, or resolution is an extra input.
+finite poset, so the iteration ends with zero kernel. The existing Kan
+preservation maps then transport all rows and projective terms back to `M`.
+No pfd, grid, hook decomposition, or resolution is an extra input.
 
 For a quotient `π : Q ⟶ K`, `IsRankProjectiveCover π` certifies that `Q` is
 rank-projective, that the actual categorical-kernel row
@@ -500,20 +504,26 @@ it lifts each quotient-fixed endomorphism to the grid by full faithfulness,
 applies the grid cover certificate, and maps the resulting isomorphism through
 Lan.
 
-For a field `k`, positive `n`, and `M : PModule k (Fin n → ℝ)`, the public
-`GradedFree.FinitelyPresented M` hypothesis therefore proves that an actual
+For any natural number `n`, field `k`, and
+`M : PModule k (Fin n → ℝ)`, the original public
+`GradedFree.FinitelyPresented M` hypothesis proves that an actual
 `MinimalFiniteRankProjectiveResolution` of `M` exists:
-`FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution`.
-The construction reconstructs `M` up to isomorphism as the actual left Kan
-extension of a pointwise finite-dimensional module on a finite coordinate grid,
-applies the finite-poset minimal theorem, transfers every row through Lan, and
-transports the result across the reconstruction isomorphism. Every quotient
-row in the returned resolution carries the public projective-cover certificate.
+`FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented`.
+This includes the one-point index poset at `n = 0`, including nonzero modules.
+The existing
+`finitelyPresented_exists_minimalFiniteRankProjectiveResolution` name remains
+the positive-dimensional specialization. The construction reconstructs `M` up
+to isomorphism as the actual left Kan extension of a pointwise finite-dimensional
+module on a finite coordinate grid, applies the finite-poset minimal theorem,
+transfers every row through Lan, and transports the result across the
+reconstruction isomorphism. Every quotient row in the returned resolution
+carries the public projective-cover certificate.
 This is the finite-grid Kan transfer of [Theorem 2.7(2) and Appendix A of
 Botnan–Oppermann–Oudot–Scoccola](https://arxiv.org/html/2208.00300v3).
 `FiniteRankProjectiveResolutionKanExamples` checks the finite-resolution and
-minimal-resolution interfaces on a nonzero principal-upset free module; the
-earlier resolution examples retain the zero and contractible-row boundary cases.
+minimal-resolution interfaces on nonzero principal-upset free modules in zero
+and one real coordinates. At zero coordinates it also derives both existence
+results from an empty-generator presentation of the zero module.
 
 For a certified minimal resolution `R`, `R.termAt j` is its recorded term when
 `j < R.resolution.length` and the zero module afterward. Degree-vanishing
