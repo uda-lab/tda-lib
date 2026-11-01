@@ -1567,6 +1567,13 @@ nonzero regular module.
 
 ### Actual Hom modules and their cokernels
 
+For any field `k`, finite indexing preorder `S`, and pointwise finite-dimensional
+`X,Y : PModule k S`, `FiniteHomDimension.finiteDimensional_hom` proves that the
+natural-transformation space `(X ⟶ Y)` is finite-dimensional over `k`. This is
+the vector space of morphisms; the hook-generator persistence module
+`H(M) = (homFunctor.obj M)` below is a different object, whose ordinary
+projective dimension is treated separately.
+
 For an arbitrary field and a finite bounded lattice `S`, let `P = PairPoset S` and let
 `D(P) = maxComplementCard (S := P)`. Write `H(M) = (homFunctor.obj M)` and let `K(M)` be the
 actual categorical cokernel of the map induced by `homFunctor` on the two-injective differential.
