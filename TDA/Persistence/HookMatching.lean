@@ -2044,6 +2044,10 @@ private def tagIsFinite (t : RealHookTag (n := n)) : Bool :=
   | .inl _ => true
   | .inr _ => false
 
+/-- For a source index set `A`, the neighbors in `G` at radius `ρ` are the
+target occurrence indices `j` for which some `i ∈ A` has an actual coordinate
+`ρ`-interleaving between the hook modules `tagModule (F i)` and
+`tagModule (G j)`. Repeated tags remain separate occurrences. -/
 noncomputable def tagNeighbors {ι κ : Type*} [Fintype κ]
     (F : ι → RealHookTag (n := n)) (G : κ → RealHookTag (n := n))
     (A : Finset ι) (ρ : ℝ≥0) : Finset κ :=
@@ -2320,6 +2324,14 @@ private theorem tagNeighbor_symm {ρ : ℝ≥0} {t s : RealHookTag (n := n)}
   rcases h with ⟨I⟩
   exact ⟨I.symm⟩
 
+/-- Hall's cardinality bound over a field and for `0 < n` is as follows. Put
+`ρ := RectangleStabilityGeometry.stabilityRadius n ε`. An actual coordinate
+`ε`-interleaving between the finite hook-family modules `familyModule F` and
+`familyModule G` implies
+`A.card ≤ (tagNeighbors F G A ρ).card` whenever every `i ∈ A` satisfies
+`tagSignificant (ρ + ρ) (F i)`. The family interleaving is the hypothesis;
+membership in `tagNeighbors` is still defined by an actual coordinate
+`ρ`-interleaving between individual hook modules. -/
 theorem card_le_neighbors (hn : 0 < n)
     {m ℓ : ℕ} (F : Fin m → RealHookTag (n := n))
     (G : Fin ℓ → RealHookTag (n := n)) (ε : ℝ≥0)

@@ -8,12 +8,25 @@ import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Data.Fintype.EquivFin
 
 /-!
-# Finite-dimensional endomorphisms of persistence modules
+# Finite-poset rank-projective classification
 
-The classification of finite-poset rank-projectives uses the ordinary
-Krull--Schmidt argument in the pointwise finite-dimensional functor category.
-This file develops the Fitting step without assuming a decomposition or
-classification theorem for persistence modules.
+Let \(k\) be a field and \(P\) a finite poset. For a pointwise finite-dimensional
+persistence module on \(P\), each endomorphism admits a uniform Fitting
+decomposition across all grades. For an indecomposable module, this gives the
+invertible-or-nilpotent dichotomy for endomorphisms used by the ordinary
+Krull--Schmidt argument.
+
+`RankProjectiveHookTag` records a finite hook by a strict birth-death pair and
+a principal-upset hook by its birth. `rankProjectiveHookModule` assigns each
+tag its module. The theorem `rankProjective_iff_exists_canonical_subfamily`
+states that a pointwise finite-dimensional module is rank-projective exactly
+when it is isomorphic to a finite biproduct of selected occurrences from its
+canonical finite-hook cover. The selected subfamily may be empty.
+
+When \(P\) has decidable equality, `rankProjectiveHookSum_multiplicity_unique`
+shows that isomorphic finite sums of tagged hooks have the same occurrence
+count at every tag, including repeated tags and empty sums. It determines tag
+multiplicities, not an ordering of summands or a choice of isomorphism.
 -/
 
 set_option autoImplicit false

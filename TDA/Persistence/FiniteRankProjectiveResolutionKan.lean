@@ -44,6 +44,24 @@ structure IsRankProjectiveCover {P : Type} [PartialOrder P]
 
 namespace IsRankProjectiveCover
 
+/-- The identity of a pointwise finite-dimensional rank-projective persistence
+module is a rank-projective cover. Its rank-exactness certificate uses the
+actual categorical-kernel row of the identity map. -/
+theorem of_identity {P : Type} [PartialOrder P]
+    {M : PModule.{u,0,u} k P}
+    (hfd : ∀ p, FiniteDimensional k (M.obj p))
+    (hM : IsRankProjective M) : IsRankProjectiveCover (𝟙 M) := by
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hfd
+  refine ⟨hM, ?_, ?_⟩
+  · exact RankKernel.rankExact (𝟙 M) (fun p x => ⟨x, rfl⟩)
+      (by
+        intro a b hab x hx
+        exact ⟨x, by simp, hx⟩)
+  · intro u hu
+    have hu' : u = 𝟙 M := by simpa using hu
+    rw [hu']
+    infer_instance
+
 /-- Two rank-projective covers of the same target are naturally isomorphic
 through an isomorphism commuting with their quotient maps. -/
 theorem exists_iso_over_quotient {P : Type} [PartialOrder P]
@@ -1341,13 +1359,13 @@ end CoordinateGrid
 
 namespace FiniteRankProjectiveResolution
 
-/-- Every finitely presented module on a positive-dimensional real coordinate
-poset has an actual finite rank-projective resolution. The finite presentation
-is used only to reconstruct the module from a finite grid with pfd fibers;
-resolution existence is then proved on that finite poset and transported by
+/-- Every finitely presented module on a real coordinate poset, in any natural
+dimension including zero, has an actual finite rank-projective resolution.
+The finite presentation reconstructs the module from a finite grid with pfd
+fibers; resolution existence is proved on that finite poset and transported by
 the actual left Kan extension. -/
-theorem finitelyPresented_exists_finiteRankProjectiveResolution
-    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+theorem exists_finiteRankProjectiveResolution_of_finitelyPresented
+    {n : ℕ} {M : PModule.{u,0,u} k (Fin n → ℝ)}
     (hM : GradedFree.FinitelyPresented.{u,0,0}
       (R := k) (P := Fin n → ℝ) M) :
     Nonempty (FiniteRankProjectiveResolution M) := by
@@ -1358,14 +1376,14 @@ theorem finitelyPresented_exists_finiteRankProjectiveResolution
     (exists_finiteRankProjectiveResolution_of_pfd_finitePoset A hA)
   exact ⟨CoordinateGrid.lanFiniteRankProjectiveResolutionOfReconstruction G R e⟩
 
-/-- Every originally finitely presented module on a positive-dimensional real
-coordinate poset has an actual finite rank-projective resolution whose every
-quotient row is certified as a projective cover. The construction reconstructs
-the presentation on a finite grid, transfers its minimal resolution through
-the actual left Kan extension, then transports the rows across the reconstruction
-isomorphism. -/
-theorem finitelyPresented_exists_minimalFiniteRankProjectiveResolution
-    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+/-- Every originally finitely presented module on a real coordinate poset, in
+any natural dimension including zero, has a finite rank-projective resolution
+whose every quotient row is certified as a projective cover. The construction
+reconstructs the presentation on a finite grid, transfers its minimal
+resolution through the actual left Kan extension, then transports the rows
+across the reconstruction isomorphism. -/
+theorem exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented
+    {n : ℕ} {M : PModule.{u,0,u} k (Fin n → ℝ)}
     (hM : GradedFree.FinitelyPresented.{u,0,0}
       (R := k) (P := Fin n → ℝ) M) :
     Nonempty (MinimalFiniteRankProjectiveResolution (k := k) (M := M)) := by
@@ -1382,6 +1400,25 @@ theorem finitelyPresented_exists_minimalFiniteRankProjectiveResolution
       change IsRankProjectiveCover (R'.resolution.quotient i)
       exact R'.quotient_is_cover i
   }⟩
+
+/-- Every finitely presented module on a positive-dimensional real coordinate
+poset has an actual finite rank-projective resolution. -/
+theorem finitelyPresented_exists_finiteRankProjectiveResolution
+    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0}
+      (R := k) (P := Fin n → ℝ) M) :
+    Nonempty (FiniteRankProjectiveResolution M) :=
+  exists_finiteRankProjectiveResolution_of_finitelyPresented hM
+
+/-- Every originally finitely presented module on a positive-dimensional real
+coordinate poset has a finite rank-projective resolution whose every quotient
+row is certified as a projective cover. -/
+theorem finitelyPresented_exists_minimalFiniteRankProjectiveResolution
+    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0}
+      (R := k) (P := Fin n → ℝ) M) :
+    Nonempty (MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :=
+  exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented hM
 
 end FiniteRankProjectiveResolution
 

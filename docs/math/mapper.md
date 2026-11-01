@@ -582,9 +582,12 @@ If `N (t + ε)` is finite-dimensional, then
 `le_realInterleavingDistance_of_finrank_lt` concludes `r ≤ d(M, N)` when every
 finite `ε < r` admits some `t` with `dim N (t + ε)` finite and smaller than the
 rank of `M(t → t + 2ε)`; `le_realInterleavingDistance_of_structureMap_ne_zero`
-is the zero-fibre form. This is the elementary factorisation step behind
-algebraic stability, not a theorem of a cited source. The statements are kept
-in the Mapper module and are generic in the modules.
+is the zero-fibre form. Conversely, over any ring,
+`nonempty_realInterleaving_of_structureMap_eq_zero` builds the zero-map
+`ε`-interleaving when every structure map across `2ε` of both modules is zero.
+This is the elementary factorisation step behind algebraic stability, not a
+theorem of a cited source. The statements are kept in the Mapper module and are
+generic in the modules.
 
 For a map `f` with a real tower `U` and a map `g` with a real tower `V`, the
 structure maps of `mapperHomologyPModule k f U rU n` are the homology maps of

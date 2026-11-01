@@ -58,3 +58,8 @@ import TDA.Reeb.RGraphTranslation
 import TDA.Reeb.InterleavingCardinality
 import TDA.Reeb.IntervalScaling
 import TDA.Reeb.HeightMapPair
+import TDA.Reeb.ConstructibleHom
+import TDA.Reeb.ThickeningSlice
+import TDA.Reeb.ThickeningCylinder
+import TDA.Reeb.ThickeningWindow
+import TDA.Reeb.ThickeningPresentation

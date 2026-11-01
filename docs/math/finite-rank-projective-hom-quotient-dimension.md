@@ -42,9 +42,26 @@ real-coordinate minimal-resolution transfer is proved separately in
 [the finite-presentation resolution result](finite-rank-projective-resolution.md#the-real-coordinate-degree-bound),
 using the actual finite-grid Kan reconstruction and zero-padded uniqueness. Together they prove
 the `2*n-2` upper degree bound for every certified minimal resolution of an originally finitely
-presented real-coordinate module. They do not prove a lower witness, equality, or the final
-signed-stability result, and they do not claim a sharp bound for arbitrary grids. The grid count
-used here is the existing finite-grid complement-cardinality bound.
+presented real-coordinate module. These general upper-bound theorems do not prove a lower witness
+or equality for `2*n-2`, and they do not establish the final signed-stability result or a sharp
+bound for arbitrary grids. The grid count used here is the existing finite-grid
+complement-cardinality bound.
+
+An explicit module on the finite Boolean square has a hook-Hom object of exact projective
+dimension one. Set `Square = Bool × Bool` and let `M` be the principal-downset module supported
+at its bottom. Over every field, `M` is not
+rank projective, while its actual hook-generator Hom module has ordinary categorical projective
+dimension exactly one. The obstruction is the nonsplit rank-exact quotient from the sum of the two
+hooks ending at the incomparable atoms. The existing Hom comparison turns rank nonprojectivity of
+`M` into ordinary nonprojectivity of its Hom module. The finite-lattice Hom bound and the
+minimal-resolution dimension criterion then show that every certified minimal finite
+rank-projective resolution of `M` has a nonzero degree-one term and zero terms above degree one.
+Finite-poset resolution existence derives an actual certificate with these properties from the
+field alone. This is a witness for this Boolean square, not a sharpness result for the general
+coordinate-grid bound or an ordinary dimension claim for `M`. The fixture is
+`TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples`; use `open scoped
+TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples` to select the preorder category on
+`Bool × Bool`. See also the [API guide's actual Hom section](../api.md#actual-hom-modules-and-their-cokernels).
 
 The source context is the upper-bound argument of Theorem 5.16 and the upper-bound consequence of
 Proposition 5.17 and Theorem 5.18 in [BOOS24-v3](references.md#BOOS24-v3), together with Lemma

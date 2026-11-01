@@ -70,9 +70,6 @@ theorem edge_essential_zero (k : Type) [Field k] :
   card_essentialPart_cappedCentredDiagram_plHeight edgeGraph h01 k 0 1 _ edgeGrid
     SimpleGraph.connected_top 0
 
-private instance (q : Fin 2) : Finite (loopIndex q) := by
-  fin_cases q <;> dsimp [loopIndex] <;> infer_instance
-
 /-- The three-member stage of the loop tower, kept as the only observed stage. -/
 private abbrev truncatedCover (_ : Fin 1) := loopCover 0
 
@@ -113,11 +110,6 @@ theorem twoEdges_edge_bottleneck_eq_top (k : Type) [Field k] (h : Bool × Bool �
   have : Nonempty (ZerothHomotopy (Realization edgeGraph)) := ⟨ZerothHomotopy.mk (vertex edgeGraph false)⟩
   rw [Nat.card_eq_one_iff_unique.mpr ⟨inferInstance, inferInstance⟩]
   decide
-
-private instance {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y))
-    (i : Fin 1) (n : ℕ) : Finite (Face (mapper f (emptyStage i)) n) := by
-  rw [mapper_eq_bot_of_isEmpty]
-  infer_instance
 
 /-- With no grid values, the last stage is the empty initial stage in every degree. -/
 theorem emptyGrid_essential_count {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]

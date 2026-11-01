@@ -116,44 +116,19 @@ def scalePre (s : ℝ) (F : OpenInterval ⥤ C) : OpenInterval ⥤ C := scaleFun
 
 /-- Scaling by one gives the original precosheaf. -/
 def scalePreOneIso (F : OpenInterval ⥤ C) : scalePre 1 F ≅ F :=
-  NatIso.ofComponents (fun I => F.mapIso (eqToIso (scale_one I))) fun _ => by
-    dsimp
-    interval_coherence
+  reindexIso (Ψ := 𝟭 _) scale_one F
 
 /-- Composition of scaling operations on precosheaves. -/
 def scalePreScalePreIso (s μ : ℝ) (F : OpenInterval ⥤ C) :
     scalePre s (scalePre μ F) ≅ scalePre (s * μ) F :=
-  NatIso.ofComponents (fun I => F.mapIso (eqToIso (scale_scale μ s I))) fun _ => by
-    simp only [scalePre_map, Functor.mapIso_hom]
-    interval_coherence
+  reindexIso (Φ := scaleFunctor s ⋙ scaleFunctor μ) (Ψ := scaleFunctor (s * μ))
+    (fun I => scale_scale μ s I) F
 
 /-- Scale the interval argument of both interleaving maps and multiply the radius by `|s|`. -/
 def Interleaving.scalePre {ε : ℝ≥0} {F G : OpenInterval ⥤ C} (s : ℝ)
     (i : Interleaving ε F G) :
     Interleaving (‖s‖₊ * ε) (TDA.Reeb.scalePre s F) (TDA.Reeb.scalePre s G) :=
-  Interleaving.ofApp
-    { app := fun I => i.φ.app (scale s I) ≫ G.map (homOfLE (thicken_scale s ε I).le)
-      naturality := fun I J f => by
-        dsimp
-        erw [reassoc_of% (i.φ.naturality ((scaleFunctor s).map f))]
-        refine Eq.trans ?_ (Category.assoc _ _ _).symm
-        congr 1
-        interval_coherence }
-    { app := fun I => i.ψ.app (scale s I) ≫ F.map (homOfLE (thicken_scale s ε I).le)
-      naturality := fun I J f => by
-        dsimp
-        erw [reassoc_of% (i.ψ.naturality ((scaleFunctor s).map f))]
-        refine Eq.trans ?_ (Category.assoc _ _ _).symm
-        congr 1
-        interval_coherence }
-    (fun I => by
-      dsimp
-      rw [Category.assoc, i.φ_map_ψ_assoc]
-      interval_coherence)
-    (fun I => by
-      dsimp
-      rw [Category.assoc, i.ψ_map_φ_assoc]
-      interval_coherence)
+  i.reindex (scaleFunctor s) fun I => (thicken_scale s ε I).le
 
 private theorem distance_scalePre_le {s : ℝ} (hs : s ≠ 0) (F G : OpenInterval ⥤ C) :
     interleavingDistance (scalePre s F) (scalePre s G) ≤

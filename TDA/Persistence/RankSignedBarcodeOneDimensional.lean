@@ -85,7 +85,10 @@ private theorem finiteHook_support_eq_alive (a b : Fin 1 → ℝ) :
     Fin.forall_fin_one, not_le]
 
 /-- Each finite hook is naturally the corresponding half-open real interval,
-with the original strict finite death endpoint. -/
+with the original strict finite death endpoint. This entry point follows the
+nonempty finite branch of `RealHookTag`; `oneDimensionalHookEndpoints_positive`
+records the strict ordering of its endpoints. The support identification used
+below is valid without this strictness. -/
 noncomputable def finiteHook_intervalIso (a b : Fin 1 → ℝ) (hab : a < b) :
     Hook.module (k := k) a b ≅
       CoordinateRealBridge.fromReal
@@ -195,6 +198,21 @@ noncomputable def principalHook_intervalIso (a : Fin 1 → ℝ) :
     subst z
     simp only [ModuleCat.hom_comp, LinearMap.comp_apply, map_zero]
 
+/-- The principal-hook interval comparison reads the original generator
+coefficient, including at the zero fibres outside the principal upset. -/
+theorem principalHook_intervalIso_hom_val (a x : Fin 1 → ℝ)
+    (z : (HookInfinity.module (R := k) a).obj x) :
+    (((principalHook_intervalIso (k := k) a).hom.app x).hom z :
+      RealBarcode.fiber (k := k) (a 0, (⊤ : WithTop ℝ)) (x 0)).val = z.val () := by
+  change (principalHookFiberEquiv (k := k) a x z).val = z.val ()
+  by_cases hax : a ≤ x
+  · exact (principalHookFiberEquiv_val a x hax z).trans
+      (HookInfinity.fiberEquivOfLe_apply hax z)
+  · have hz := HookInfinity.fiber_eq_zero_of_not_le (R := k) hax z
+    subst z
+    simp only [map_zero]
+    rfl
+
 private noncomputable def oneDimensionalTag_intervalIso
     (t : RealHookTag (n := 1)) :
     FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k) t ≅
@@ -302,14 +320,8 @@ theorem oneDimensionalHookDiagram_isPositive {m : ℕ}
 /-- The recursive hook multiset is exactly the finite list of occurrences. -/
 theorem hookTagMultiset_eq_univ_map {m : ℕ}
     (T : Fin m → RealHookTag (n := 1)) :
-    hookTagMultiset T = (Finset.univ : Finset (Fin m)).val.map T := by
-  classical
-  induction m with
-  | zero => simp [hookTagMultiset]
-  | succ m ih =>
-      rw [hookTagMultiset]
-      rw [ih (fun i : Fin m => T i.succ)]
-      simp
+    hookTagMultiset T = (Finset.univ : Finset (Fin m)).val.map T :=
+  hookTagMultiset_eq_map_univ T
 
 /-- The diagram point multiset is the endpoint image of the exact hook
 occurrence multiset. -/

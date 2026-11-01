@@ -168,10 +168,10 @@ theorem transportCost_sampleLaw_le (k : Type w) [Field k]
     (bottleneck_sampleDiagram_le_pairMaximum k t degree) hp.le)).trans
   exact expectation_pairMaximum_rpow_le π.joint distortion distortion_self distortion_comm hp n
 
-/-- Finite-p stability of the actual iid Rips diagram laws in every homological
-degree, including degree zero, with diameter time and the standard one-half
-convention for distortion GW. At degree zero, the diagrams are the full ordinary
-H₀ diagrams. No minimizer is used. -/
+/-- Finite-p stability of iid laws of full Rips diagrams in every natural
+degree, including ordinary H₀ and its essential bar for nonempty samples. The
+bound uses diameter time and the standard half-distortion Gromov--Wasserstein
+convention, without assuming an optimal coupling. -/
 theorem wasserstein_sampleLaw_le_gromovWasserstein_allDegrees (k : Type w) [Field k]
     (μ : PMF X) (ν : PMF Y) {p : ℝ} (hp : 1 ≤ p) (n q : ℕ) (hn : 2 ≤ n) :
     wasserstein p bottleneck (sampleLaw k μ n q) (sampleLaw k ν n q) ≤
@@ -203,10 +203,10 @@ theorem wasserstein_sampleLaw_le_gromovWasserstein (k : Type w) [Field k]
       (n.choose 2 : ℝ≥0∞) ^ p⁻¹ * (2 * gromovWasserstein p μ ν) :=
   wasserstein_sampleLaw_le_gromovWasserstein_allDegrees k μ ν hp n (degree + 1) hn
 
-/-- Infinity stability in every homological degree, including degree zero, is
-independent of the tuple length; zero-mass points are excluded by essential
-suprema on both sides. At degree zero, the diagrams are the full ordinary H₀
-diagrams. -/
+/-- Infinity stability of full Rips diagram laws in every natural degree,
+including ordinary H₀ and its essential bar for nonempty samples, is independent
+of tuple length. Zero-mass points are excluded by essential suprema on both
+sides. -/
 theorem wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees
     (k : Type w) [Field k] (μ : PMF X) (ν : PMF Y) (n q : ℕ) :
     wassersteinInfinity bottleneck (sampleLaw k μ n q) (sampleLaw k ν n q) ≤

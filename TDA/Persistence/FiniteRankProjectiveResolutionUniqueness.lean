@@ -67,17 +67,7 @@ private theorem zero_identity :
   have hzero : IsRankProjective (0 : PModule.{u,0,u} k P) := by
     intro L A B ι π hs α
     exact ⟨0, (isZero_zero _).eq_of_src _ _⟩
-  refine ⟨hzero, ?_, ?_⟩
-  · exact RankKernel.rankExact (𝟙 (0 : PModule.{u,0,u} k P))
-      (fun _ x => ⟨x, rfl⟩)
-      (by
-        intro a b hab x hx
-        exact ⟨x, Subsingleton.elim _ _, hx⟩)
-  · intro u hu
-    have hu' : u = 𝟙 (0 : PModule.{u,0,u} k P) :=
-      (isZero_zero _).eq_of_src _ _
-    rw [hu']
-    infer_instance
+  exact IsRankProjectiveCover.of_identity hfd hzero
 
 private theorem zero_map :
     IsRankProjectiveCover (0 : (0 : PModule.{u,0,u} k P) ⟶ 0) := by
@@ -104,6 +94,20 @@ theorem MinimalFiniteRankProjectiveResolution.termAt_eq
     (h : j < R.resolution.length) :
     R.termAt j = R.resolution.term ⟨j, h⟩ := by
   simp [MinimalFiniteRankProjectiveResolution.termAt, h]
+
+section CoordinateTermAtComparison
+variable {n : ℕ}
+
+/-- The zero-padded term convention for a certified minimal resolution agrees
+with the existing finite-resolution term convention. -/
+@[simp] theorem MinimalFiniteRankProjectiveResolution.termAt_eq_resolution_termAt
+    {M : PModule.{u,0,u} k (Fin n → ℝ)}
+    (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ) :
+    R.termAt j = R.resolution.termAt j := by
+  simp [MinimalFiniteRankProjectiveResolution.termAt,
+    FiniteRankProjectiveResolution.termAt]
+
+end CoordinateTermAtComparison
 
 private noncomputable def MinimalFiniteRankProjectiveResolution.kernelAt
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ) :

@@ -8,20 +8,21 @@ import TDA.Persistence -- one ordinary library area
 
 Use `import TDA.Library` for all seven ordinary areas, including `TDA.Probability`, which
 has its own aggregator and pin file. These entry points exclude the standalone example and
-acceptance modules, with one exception: the library modules `EphemeralIntervalIso` and
-`FiniteRankProjectiveHomCover` import the fixtures `CutSubspacesExamples` and
-`FiniteRankProjectiveResolutionKanExamples`, so those fixtures and their imports remain
-reachable from `TDA.Persistence`. To use a particular worked example, import its module
-directly, or import `TDA.Persistence.Examples` (and similarly for each area).
+acceptance modules. The standalone `TDA.Persistence.EphemeralIntervalIso` module identifies
+the algebraic sum of all real singleton intervals with the rational ephemeral module. The two
+rational Hom-cover demonstrations are in
+`TDA.Persistence.FiniteRankProjectiveHomCoverExamples`; import either module directly or use
+`TDA.Persistence.Examples` for both and the other Persistence examples.
+For other worked examples, import their module directly or import the area's example
+aggregator.
 `TDA.Examples` collects the six example aggregators; `TDA.Probability` has no fixtures.
 
 `import TDA` deliberately loads both `TDA.Library` and `TDA.Examples`. It is the
-comprehensive root used by the build, theorem axiom audits, module-reachability coverage
-and generated documentation. The default `lake build` therefore still builds every
-module, even though ordinary consumer imports are smaller. Generated pages intentionally
-include examples; generating them remains the separate local `scripts/build-docs.sh`
-workflow. The documentation target is the comprehensive root, independently of the
-consumer entry points.
+comprehensive root used by the build, theorem axiom audits and module-reachability
+coverage. The default `lake build` therefore still builds every module, even though
+ordinary consumer imports are smaller. `scripts/build-docs.sh` generates API pages
+from `TDA.Library` and its transitive imports. Standalone examples remain available through
+their source modules and example aggregators; they are outside the normal documentation target.
 
 This is a module boundary, not an export whitelist: Lean imports expose the declarations
 of their dependencies, including existing small examples embedded in implementation
@@ -35,10 +36,10 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers; ambient Čech complexes and relations (`Cech`); greedy sparse Rips filtrations (`SparseRips`, one-parameter) and normalized subdivision-Rips bifiltrations (`SubdivisionRips`) | Values belong to nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
 | `TDA.Simplicial` / `TDA.Simplicial` | Face `Chain`, signed `boundary`, square-zero chain complex, inclusion maps, `vertexChainMap`, `simplicialChainMap`, `simplicialHomology` / `simplicialHomologyMap`, finite coordinates and `VertexMap` / `Contiguous` | Signed chains use an ambient vertex order and a ring. Finite-dimensional homology additionally uses a field and finite faces. A vertex map may identify vertices; contiguity is reflexive and symmetric, with composition laws, and is not asserted transitive. |
 | `TDA.Persistence` / `TDA.Persistence` | `PModule`, structure maps and reindexing; finite intervals, rank barcodes and decomposition; `Diagram`, `dgm`, reduction, stability and calculus | The functor core needs a ring and a preorder, with independent coefficient/index/carrier universes. Finite decomposition has its narrower field, finite-chain, pointwise finite-dimensional and same carrier/coefficient universe assumptions. Sublevel diagrams and calculus retain their stated vertex-order, finite-face and local-lift hypotheses. |
-| `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces; measure bifiltrations on the restricted two-copy index (`MeasureBifiltration`), finite-uniform Gromov–Prokhorov witnesses (`FiniteGromovProkhorov`, `FiniteGromovProkhorovWitness`) and the large-face multicover cover (`MulticoverCover`) | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has a common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. |
+| `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces; measure bifiltrations on the restricted two-copy index (`MeasureBifiltration`), finite-uniform Gromov–Prokhorov witnesses (`FiniteGromovProkhorov`, `FiniteGromovProkhorovWitness`) and the large-face multicover cover (`MulticoverCover`); [quotient maps after products](math/reeb-thickening-constructible.md#point-set-tools) with a locally compact or proper factor (`isQuotientMap_prodMap_id_left`, `isQuotientMap_prodMap_id_right`, `isQuotientMap_prodMap_id_Icc`, `isQuotientMap_prodMap_id_of_isProperMap`, `isQuotientMap_prodMap_id_of_compactSpace`) | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has a common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. The quotient-map product lemmas place no separation hypothesis on the quotient map; product stability is stated only for a locally compact factor or a proper surjection, not for arbitrary quotient maps. |
 | `TDA.Probability` / `TDA.Probability` | Atomic `Coupling`, `iid`, `transportCost`, `wasserstein` and `wassersteinInfinity`; the `pairEnergy` and `pairMaximum` moment bounds; `gromovWasserstein` and `gromovWassersteinInfinity`; the measure forms `MeasureCoupling`, `iidMeasure`, `measureWasserstein`, `measureGromovWasserstein` and their infinity versions | Couplings have exact probability marginals and costs are extended nonnegative infima; no optimizer is assumed. Atomic inputs are `PMF`s, measure inputs `ProbabilityMeasure`s. Gromov–Wasserstein uses the one-half distortion convention. The area contains no diagrams; `TDA.Persistence.RipsSampling` and `RipsSamplingMeasureStability` consume it. |
-| `TDA.Reeb` / `TDA.Reeb` | Inverse-image path components, Reeb quotients and comparison maps; interval cosheaves, smoothing, interleavings and extended distance; finite data, graph realizations with the finite tree criteria `isTree_iff_simplyConnectedSpace_realization` and `isTree_iff_contractibleSpace_realization`, the incidence quiver and `incidenceGraph` of finite data with `card_incidenceGraph_edgeSet_le` and `RGraph.cosheafEquivalence`; `thickeningQuotient`, `thickeningQuotientAbsorptionIso`, `thickeningQuotientCompIso`, and `isRGraph_quotient_thickening_of_isConstructibleSpace`; `rgraphToConstructible`, `quotientRGraphAdjunction`, `RGraph.constructibleSmoothing`, `ConstructibleInterleaving`, `ConstructibleInterleaving.equivGeometric`, `constructibleInterleavingDistance`, `constructibleInterleavingDistance_eq_geometricInterleavingDistance` and `constructibleInterleavingDistance_eq_interleavingDistance`; `CylinderPresentation.levelHomeomorph`, `realizationSpace`, `levelPerturbation`, `CriticalValues.translate`, the [vertex-height perturbation API](math/reeb-graph-pl.md#vertex-height-perturbations-of-a-fixed-graph) of graph-PL heights (`abs_plHeight_sub_le`, `edist_ofFun_plHeight`, `edist_ofFun_plHeight_eq_edist`, `vertexHeightInterleaving`, `interleavingDistance_intervalComponents_plHeight_le`, `interleavingDistance_intervalComponents_plHeight_le_edist_ofFun`), and the [level-change stability, range and exact-distance API](math/reeb-geometric-interleaving-equivalence.md#level-perturbations-of-a-fixed-presentation), and translation of interval precosheaves (`OpenInterval.translate`, `translateFunctor`, `translatePre`, `translationInterleaving`, `Interleaving.isEmpty_of_nonempty_of_isEmpty`, `le_interleavingDistance_of_forall_exists_isEmpty`, `intervalComponents_add_const`, `interleavingDistance_intervalComponents_add_const`) with `GraphPL.plHeight_add_const` and `RGraph.geometricInterleavingDistance_eq_zero_of_isEmpty`, and [vertical translation of graph objects](math/reeb-rgraph-translation.md) (`RGraph.translateOver`, `toOverTranslateIso`, `translateRGraph`, `translateRGraphZeroIso`, `translateRGraphCompIso`, `cosheafFunctor_translateRGraph_obj`, `Interleaving.translatePre`, `interleavingDistance_translatePre`, `geometricInterleavingDistance_translateRGraph`, `geometricInterleavingDistance_translateRGraph_self`, `reebRel_add_const_iff`, `quotientTranslateIso`, `thickeningTranslateIso`, `geometricSmoothingTranslateIso`); interval scaling (`OpenInterval.scale`, `scalePre`, `Interleaving.scalePre`, `interleavingDistance_scalePre`, `intervalComponents_smul`, `interleavingDistance_intervalComponents_smul`), and height-controlled map pairs (`HeightMapPair`, `HeightMapPair.natTrans`, `HeightMapPair.natTransSymm`, `HeightMapPair.natTrans_app_mk`, `HeightMapPair.natTransSymm_app_mk`, `HeightMapPair.interleaving`, `HeightMapPair.symm`, `HeightMapPair.ofUniformBound`, `HeightMapPair.interleavingDistance_le`, `HeightMapPair.interleaving_eq_perturbationInterleaving`) | Components are path components of the inverse-image subspace. The tree criteria assume a finite vertex type; realizations of infinite trees are not claimed. General quotient comparison is a natural transformation. The graph/constructible-cosheaf equivalence is scoped to the declared finite real-graph category and value universe `0`. Smoothing and geometric comparisons have separate contracts; geometric thickening composes laxly, by a height-preserving addition map that is not an isomorphism but becomes one after the Reeb quotient, and geometric smoothing of graph objects composes additively, `U_ε U_δ ≅ U_(ε+δ)`; geometric interleavings of graph objects correspond bijectively to interleavings of their component cosheaves, so the geometric and cosheaf interleaving distances coincide and the geometric one satisfies the triangle inequality. Geometric smoothing enlarges along `ε ≤ δ`, geometric interleavings are monotone in the parameter, and every graph object is within geometric distance `ε` of its `ε`-smoothing. Constructible interleavings correspond bijectively to geometric interleavings of the Reeb graphs; the constructible distance equals the cosheaf distance of the interval components of the spaces themselves; zero distance does not give an isomorphism of spaces. The incidence graph forgets parallel edges; edge counts use `Nat.card`. An interval-local component obstruction excludes geometric interleavings whose double-thickening restriction is injective from a nontrivial to a subsingleton value; the parallel loop and the single edge have geometric distance exactly `1/4`. Absorption `ℛ T_ε ≅ U_ε ℛ` holds on all constructible ℝ-spaces; constructibility of `T_ε X` itself is not claimed. Level-change stability fixes the presentation and number of levels; compact locally path-connected pieces supply constructibility. Exact translation distance requires a nonempty realization. Arbitrary continuous perturbations are outside that API. The vertex-height bound controls the piecewise-linear extension of the vertex heights on a fixed graph, not arbitrary continuous functions with the same vertex values. The exact translation distance of interval components assumes a nonempty space and a range bounded below; the identity height of `ℝ` shows the bound is needed. Translation of graph objects is an isometry of the geometric distance; the exact self-translation distance `|c|` assumes a nonempty total space and is `0` otherwise. Scaling on graph objects, translation of the display locale and of Mapper reconstructions as graph objects are not provided. Nonzero scaling multiplies interval-precosheaf distances by the absolute scalar; reflection is an isometry. A `HeightMapPair` supplies continuous maps with height error at most `ε` and composite paths with height deviation at most `2ε`; it is a sufficient interleaving criterion, with no converse, functional-distortion identity or optimality claim for the `2ε` path-deviation allowance. |
-| `TDA.Mapper` / `TDA.Mapper` | `ComponentIndex`, pullback component covers, `mapper`, its one-skeleton, `multiNerveMapper` and its projection onto `mapper`, refinement maps including `multiNerveMapperMap`, graph-PL comparison, uniform interval covers (`uniformCover`) with attained-range coverage, the label-set cell equivalence `cellsOverLabelsEquiv` with graph-PL edge cells, height-separating uniform covers (`HeightSeparating`, `exists_heightSeparating_uniformCover`, `range_plHeight_eq_Icc`) with the splitting `cellComponentsEquivSum`, vertex cells (`vertexCellsEquiv`) and the cell classification `uniformVertexCellsEquivLevel`, `uniformVertexCellsEquivSpans`, `uniformEdgeCellsEquivSpans` through `EdgeCrosses` and `EdgeSpans`, finite Reeb data of graph-PL input (`CoversVertexHeights`, `vertexHeightLevels`, `LevelVertex`, `SpanEdge`, `levelEnd`, `graphPLReebData`, `uncoveredEdgeEquivCrossesOfLevel`, `induceComponentsEquivOfEq`) with the star and gap bijections `graphPLStarEquiv`, `graphPLGapEquiv`, their incidence laws `graphPLStarEquiv_map_left`, `graphPLStarEquiv_map_right` and the finite-data isomorphism `graphPLExtractHom`, `graphPLExtractIso`, closed level sets of graph-PL height (`ClosedLevel`, `IsLevelWindow`, `closedLevelComponentsEquiv`, `componentMap_levelInclusion_bijective`, `graphPLReebDataVEquivClosedLevel`), constructibility and the cosheaf identification of graph-PL height (`isConstructibleAt_intervalComponents_plHeight`, `cellGraphIsoOfSameLevels`, `graphPLCosheafIsoOfIso`, `graphPLCosheafIso`, `isConstructibleCosheaf_intervalComponents_plHeight`, `cosheafFunctorGraphPLIso`, `geometricInterleavingDistance_graphPL`), the Reeb quotient of graph-PL height (`compactSpace_realization`, `exists_coversVertexHeights`, `graphPLReebMap`, `graphPLReebQuotientHomeomorph`, `graphPLReebQuotientIso`, `graphPLReebQuotientIsoOfIso`, `intervalComponentNatTrans_graphPLReebMap`, `isRGraph_graphPLReebQuotient`, `graphPLReebGraph`, `graphPLReebGraphIso`, `isIso_intervalComponentComparison_plHeight`, `geometricInterleavingDistance_graphPLReebGraph`), vertex-height stability of the graph-PL Reeb quotient (`heightRange_graphPLReebGraph`, `geometricInterleavingDistance_graphPLReebGraph_le`, `geometricInterleavingDistance_graphPLReebGraph_le_edist_ofFun`, `geometricInterleavingDistance_graphPLReebGraph_le_edist`, and `geometricInterleavingDistance_graphPLReebGraph_le_of_heightMapPair`) with extremal vertex-height lower bounds and exact vertical translation (`sSup_range_plHeight`, `sInf_range_plHeight`, `ofReal_abs_sup'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, `ofReal_abs_inf'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, `geometricInterleavingDistance_graphPLReebGraph_add_const`), the graph-PL realization as a constructible ℝ-space (`barycentric`, `t2Space_realization`, `edgePoint_eq_vertex_iff`, `edgePoint_eq_edgePoint_iff`, `locallyPathConnectedSpace_realization`, `realizationMap_injective`, `LevelPiece`, `levelPieceHomeomorph`, `compactSpace_closedLevel`, `locallyPathConnectedSpace_closedLevel`, `graphPLPresentation`, `graphPLPresentationMap`, `graphPLPresentationHomeomorph`, `graphPLComponentDataIso`, `graphPLReebMap_graphPLPresentationMap`, `graphPLPresentationIso`, `isConstructibleSpace_graphPLOver`, `graphPLReebQuotientIsoOfIso_graphPLComponentDataIso`, `graphPLSpace`, `quotientRGraphFunctor_obj_graphPLSpace`, `overBaseMap_graphPLSpace`, `isRGraph_quotient_thickening_graphPLOver`), and `CoherentCoverTower`, member-adapted MultiNerve Mapper comparison (`LevelsAdapted`, `exists_levelsAdapted`, `labelFace`, `uniformMapperData`, `uniformMapperCellsEquiv`, `uniformMapperIso`), refinement of graph-PL finite Reeb data (`graphPLRefineIso`, `graphPLRefineHom_trans_v`, `uniformMapperCanonicalIso`, `graphPLRefineToOverIso`), the ordinary one-skeleton comparison `incidenceGraphUniformMapperIso`, `mapperOneSkeletonGraphPLIso` and `mapperOneSkeleton_connected_iff`, refinement-induced homology maps `mapperHomologyMap` with `mapperHomologyMap_eq`, `mapperChainHomotopy`, and the persistence module `mapperHomologyPModule` of refinements along a preorder with `mapperHomologyPModule_eq` and `CoherentCoverTower.structureMap_mapperHomologyPModule`, interleavings from cover maps between real towers (`mapperHomologyShiftMap`, `mapperHomologyInterleaving`, `mapperHomologyInterleaving_app_eq`, `realInterleavingDistance_mapperHomologyPModule_le`, `realInterleavingDistance_mapperHomologyPModule_le_add`), the pullback identification `mapperHomologyPModule_pullback`, and perturbation stability along the centred tower (`centredCover`, `centredCoverRefinement`, `centredMapperHomologyInterleaving`, `realInterleavingDistance_centredMapperHomology_le`), height-map-pair bounds for centred Mapper modules (`centredMapperPairVertexMap`, `_natural`, `_comp`, `centredMapperPairHomologyMap`, `centredMapperPairHomologyMapSymm`, `centredMapperPairInterleaving`, `realInterleavingDistance_centredMapperPair_le`, `_ofUniformBound`, `_graphPL_le`); these require supplied component orders but no finiteness, coverage or nonemptiness, and provide no diagram or bottleneck bound for the centred tower itself (the capped centred map-pair bounds are below), no converse, multinerve Mapper, order independence or executable extraction; and finite Mapper barcodes `mapperBarcode` with `mapperHomologyPModule_finiteDimensional`, `mapperBarcode_eq`, `nonempty_mapperBarcodeIso`, `finrank_range_mapperHomologyMap`, `mapperBarcode_eq_iff`, `nonempty_iso_iff_mapperBarcode_eq`, `CoherentCoverTower.finrank_range_simplicialHomologyMap` and the graph-PL face-finiteness instance `GraphPL.finite_mapperFace`, and two-input stability of categorical Mapper reconstructions (`interleavingDistance_coverComponents_le_add`, `geometricInterleavingDistance_graphPLMapperReconstruction_eq`, `geometricInterleavingDistance_mapperReeb_le_add_edist`, `geometricInterleavingDistance_graphPLReebGraph_le_mapperReeb_add`, `geometricInterleavingDistance_mapperReeb_le_graphPLReebGraph_add`, `ofReal_abs_sup'_sub_le_geometricInterleavingDistance_mapperReeb_add`, `tendsto_geometricInterleavingDistance_mapperReeb_pair`, `exists_graphPLMapperReconstruction_pair_le`), and rank obstructions to real interleavings (`finrank_range_structureMapLinear_le_of_realInterleaving`, `structureMap_eq_zero_of_realInterleaving`, `isEmpty_realInterleaving_of_finrank_lt`, `le_realInterleavingDistance_of_finrank_lt`, `le_realInterleavingDistance_of_structureMap_ne_zero`) with their Mapper and centred-tower forms (`isEmpty_face_mapper`, `isEmpty_realInterleaving_mapperHomologyPModule_of_finrank_lt`, `le_realInterleavingDistance_mapperHomologyPModule_of_finrank_lt`, `isEmpty_realInterleaving_mapperHomologyPModule_of_isEmpty_face`, `le_realInterleavingDistance_mapperHomologyPModule_of_isEmpty_face`, `le_realInterleavingDistance_centredMapperHomology_of_finrank_lt`), and diagrams of step towers (`mapper_eq_bot_of_isEmpty`, `mapper_eq_bot_of_isEmpty_componentIndex`, `isZero_simplicialHomology_mapper_of_isEmpty`, `stepTower`, `stepRefinement`, `mapperHomologyPModule_stepTower`, `isConstructible_stepTower`, `stepMapperDiagram`, `stepMapperDiagram_eq`, `stepMapperDiagram_isPositive`, `stepMapperDiagram_eq_ofIndexBars_succ`, `stepMapperDiagram_eq_ofIndexBars`, `bottleneck_stepMapperDiagram_le`, `bottleneck_stepMapperDiagram_le_add`, `bottleneck_stepMapperDiagram_eq`, `stepMapperDiagram_interleaving_iff_matching`, `realInterleavingDistance_stepTower_eq_top_iff`), and the tightness of the step bounds (`le_bottleneck_stepMapperDiagram_of_finrank_lt`, `le_bottleneck_stepMapperDiagram_of_isEmpty_face`, `le_bottleneck_stepMapperDiagram_of_structureMap_ne_zero`, `isEmpty_realInterleaving_stepTower_of_isEmpty_face`, `heq_stepTower_shiftGrid`, `stepTowerToShiftGrid`, `stepTowerOfShiftGrid`, `bottleneck_stepMapperDiagram_shiftGrid_le`, `SurvivesToLast`, `le_realInterleavingDistance_stepTower_shiftGrid`, `realInterleavingDistance_stepTower_shiftGrid_eq`, `bottleneck_stepMapperDiagram_shiftGrid_eq`, `mapperHomologyMap_zero_ne_zero`, `survivesToLast_zero`, `bottleneck_stepMapperDiagram_shiftGrid_eq_zero_degree`, `bottleneck_stepMapperDiagram_eq_top_iff`), and exact translation of categorical Mapper reconstructions (`coverResolution_add_const`, `coverComponentsTranslateIso`, `interleavingDistance_coverComponents_add_const`, `geometricInterleavingDistance_graphPLMapperReconstruction_add_const`, `_of_covers`, `isEmpty_graphPLMapperReconstruction_of_isEmpty_cover`, `geometricInterleavingDistance_graphPLMapperReconstruction_of_isEmpty`), and capped centred step towers (`centredInterval`, `cappedIndex`, `cappedCentredCover`, `stageRadius`, `mem_cappedCentredCover_succ_iff`, `cappedCentredRefinement`, `cappedCentredPullbackRefinement`, `cappedCentredDiagram`, `cappedCentredDiagram_eq_pullback`, `bottleneck_cappedCentredDiagram_le_of_stageRadius_le`, `bottleneck_cappedCentredDiagram_eq`, `bottleneck_cappedCentredDiagram_le`, `uniformGrid`, `bottleneck_cappedCentredDiagram_uniformGrid_le`, `bottleneck_cappedCentredDiagram_grid_le`, `bottleneck_cappedCentredDiagram_le_add`, `bottleneck_cappedCentredDiagram_plHeight_le`, `bottleneck_cappedCentredDiagram_plHeight_uniformGrid_le`), and direct different-domain capped centred map-pair results (`cappedCentredPairVertexMap`, `cappedCentredPairVertexMap_mk`, `cappedCentredPairVertexMapSymm`, `cappedCentredPairVertexMapSymm_mk`, `cappedCentredPairVertexMap_natural`, `cappedCentredPairVertexMap_comp`, `cappedCentredPairVertexMapSymm_comp`, `cappedCentredPairHomologyMap`, `cappedCentredPairHomologyMapSymm`, `cappedCentredPairInterleaving`, `bottleneck_cappedCentredDiagram_le_of_heightMapPair`, `bottleneck_cappedCentredDiagram_pair_le`, `bottleneck_cappedCentredDiagram_pair_uniformGrid_le`, `bottleneck_cappedCentredDiagram_pair_le_ofUniformBound`, `bottleneck_cappedCentredDiagram_pair_plHeight_le`, `bottleneck_cappedCentredDiagram_pair_plHeight_uniformGrid_le`), and essential counts (`card_essentialPart_stepMapperDiagram`, `bottleneck_stepMapperDiagram_lt_top_iff`, `fullComponentIndexEquiv`, `componentIndexFullEquiv`, `mapper_full_eq_top`, `fullMapperHomologyIso`, `finrank_simplicialHomology_mapper_full_zero`, `isZero_simplicialHomology_mapper_full_succ`, `isEmpty_mapper_face_one_of_unique`, `finrank_simplicialHomology_mapper_full_zero_of_unique`, `card_essentialPart_cappedCentredDiagram_zero`, `card_essentialPart_cappedCentredDiagram_succ`, `card_essentialPart_cappedCentredDiagram_zero_of_unique`, `bottleneck_cappedCentredDiagram_lt_top`, `card_essentialPart_cappedCentredDiagram_plHeight`, `card_essentialPart_cappedCentredDiagram_plHeight_zero_of_unique`); graph-PL height scaling (`plHeight_smul`, `geometricInterleavingDistance_graphPLReebGraph_smul`, `_neg`, `_affine`), split trees (`splitHeights`, `geometricInterleavingDistance_splitY`) and merge/split bounds (`ofReal_min_le_geometricInterleavingDistance_mergeY`, `_splitY`, `geometricInterleavingDistance_mergeY_bounds`, `_splitY_bounds`) | Input is a continuous map and an indexed target family. Coverage and multiplicity are explicit hypotheses where used. The MultiNerve Mapper is the multinerve of the component cover; its projection onto `mapper` is surjective and is an order isomorphism under `IntersectionsPathSubsingleton (componentCover f U)`. Every real number lies in at most two members of the uniform family exactly when `2g ≤ r` (for at least three members and `g < r`); its union is the window `(a, a + n(r − g) + g)` for `0 < g ≤ r`. The graph-PL finite Reeb data need no covering hypothesis; closed-level components are classified by `LevelVertex` for finite vertex sets, and inclusion into any level window is bijective on components. The star and gap comparison assumes every vertex height is a level of the critical list, while the Mapper comparison is at member-adapted levels. The refinement comparison assumes the coarser list covers the vertex heights. Constructibility at the specified critical list and the corresponding cosheaf identification assume a list covering the vertex heights and `V : Type`; constructibility at a noncovering list can fail (fixture D5). The Reeb quotient identification assumes a covering list, which cannot be dropped (fixture R6); the slice statements use `V : Type`, while the list-free corollaries need no list. The presentation map is injective for every list, while the homeomorphism assumes a covering list (fixture K5). Closed levels are compact and locally path-connected for finite vertex sets. The slice statements use `V : Type`. Finiteness is conditional; tower identity/composition are supplied coherence data. Refinement-induced homology maps use supplied linear orders on component-index types in one universe and any ring; two refinements between the same families induce the same map, and `mapperHomologyPModule` needs no selector identity or composition equations, agrees with the strict tower's maps and is independent of the selected refinements. A finite Mapper barcode is the canonical rank barcode of `mapperHomologyPModule` on `Fin N`; it needs finitely many faces of the given degree at every stage, a field, and the field, domain and index types in one universe. It is independent of the selected refinements and classifies these modules up to natural isomorphism; finite graphs with finitely many interval labels satisfy the finiteness hypothesis without coverage. Diagrams of real-indexed towers other than step towers, q-tame Mapper barcodes, independence of the component orders, multinerve barcodes and executable extraction are not provided. These constructions are noncomputable theory, not an executable Mapper implementation. The one-skeleton isomorphism assumes `2g ≤ r` and fails without it (fixture M5). Vertex-height stability fixes the graph and bounds the Reeb distance by `edist h g` without any order, level-count or constructibility hypothesis; it is not an equality in general, and extremal vertex heights bound it below and make it exact for vertical translations. Selected cover maps shifting by `η` in both directions between two real towers give an `η`-interleaving of their Mapper homology modules with no commutation assumed; maps at pointwise distance `δ` give a `δ`-interleaving along the centred tower. A step tower places finitely many cover families on the cells of a finite grid of radii, with an empty family before the first radius; its Mapper homology module is finite-constructible, and with finitely many faces in the given degree its real diagram `stepMapperDiagram` is the `ofIndexBars` image of the finite Mapper barcode. Cover maps shifting by `η` between two step towers bound the bottleneck distance of their diagrams by `η`, and that distance equals the real interleaving distance of the modules. No diagram or bottleneck statement is made for other towers, such as the centred tower, which is not finite-constructible on any grid; tightness is stated only for translations of the grid, below, and no order-independence statement is made. Capped centred step towers have an empty first stage, centred intervals of the grid radii and a full last stage. For maps at pointwise distance `δ`, their diagrams are at bottleneck distance at most `δ + μ` on a grid of mesh `μ`, and at most `δ` on a uniform grid of spacing `h` when `δ = p h`; for one map, two grids whose meshes, first radii and last radii are within `η` give diagrams within `η`. Fixtures show that neither the full last stage nor the mesh term can be dropped; coverage by a capped stage and sharpness of `δ + μ` are not claimed. Over a field, an `ε`-interleaving bounds the rank of each structure map `M(t → t + 2ε)` by the dimension of `N (t + ε)` when that one value is finite-dimensional; this gives lower bounds on the real interleaving distance, including the exact distance `1` of two shifted one-member towers and the bound `1/8` for the flat and steep maps. Bar-length lower bounds, tightness of the rank obstruction and the exact flat/steep distance are not claimed. Two-input Mapper bounds require each cover to cover its own height's attained range, are inequalities rather than equalities, and compare reconstructions over one fixed graph only. The rank obstructions bound the bottleneck distance of two step diagrams below through the stage of the second tower at `t + ε`. The step tower on `shiftGrid ε c` has at `t` the family of the step tower on `c` at `t + ε`, and the selected stage refinements are cover maps shifting by `ε` in both directions, so the two diagrams are at bottleneck distance at most `ε`. If the homology map of the selected refinement from the first nonempty stage to the last stage is nonzero in degree `n` (`SurvivesToLast`), the bottleneck distance and the real interleaving distance are exactly `ε`; in degree `0` this holds whenever the first nonempty stage has a component index. The bottleneck distance of two step diagrams is infinite exactly when their numbers of essential bars differ. Essential multiplicity equals last-stage homology dimension; finite bottleneck distance is equivalent to equality of these dimensions even for maps on different spaces. A finite nonempty full family on path-connected input is a simplex, so capped centred diagrams on nonempty grids have one essential degree-zero bar and none in positive degree, and any two such diagrams have finite bottleneck distance. With one label, the degree-zero count is the number of path components, or graph components for graph-PL input. Births, several-label disconnected degree-zero counts and finite bars are not computed. The survival hypothesis cannot be dropped (degree-one loop fixture). Exact distances for pairs of grids that are not translates, bar-length lower bounds and tightness of the bound `η` beyond translations are not claimed. Translating the height and a finite bounded cover by `c` moves the reconstruction by exactly `|c|` when some member has nonempty inverse image; over empty covers the distance is `0`. A continuous map `φ` with `f' ∘ φ = f` induces the vertex map `mapperDomainMap φ hφ U : mapper f U → mapper f' U` (`pullbackRestrict`, `domainIndexMap`, `componentDomainRefinement`, `mapperDomainMap_id`, `mapperDomainMap_comp`, `mapperMap_comp_mapperDomainMap`) and, for domains in one universe, homology maps `mapperHomologyDomainMap` and the module morphism `mapperHomologyPModuleMap` with identity and composition laws, commuting with the refinement-induced maps; the component orders of the two domains are independent supplied data and `φ` is arbitrary. A homeomorphism over the codomain gives the isomorphism `mapperHomologyPModuleIso`, real interleaving distance `0` (`realInterleavingDistance_mapperHomologyPModule_homeomorph`) and bottleneck distance `0` of step diagrams with an empty initial family (`bottleneck_stepMapperDiagram_homeomorph`) and of capped centred diagrams (`bottleneck_cappedCentredDiagram_homeomorph`); for a graph isomorphism with corresponding vertex heights, `realizationHomeomorph` and `bottleneck_cappedCentredDiagram_plHeight_iso` give distance `0` of the capped centred diagrams of the piecewise-linear heights. Equality of the diagrams, compatibility with interleavings and multinerve maps, and homotopy invariance are not provided. Common nonzero affine changes scale distances across finite graphs by the absolute slope. A `HeightMapPair` between finite graph-PL spaces bounds the geometric distance of their Reeb quotients; it supplies no map between graph objects and no Mapper cover or reconstruction consequence; its Mapper homology consequences are the centred and capped centred map-pair bounds above. For the three-edge merge tree, `mergeSection` and `exists_mergeSection_path` give height-preserving sections and bounded realization paths, including the horizontal top edge when `c = M`; `mergeFoldHeightMapPair` gives a `b/2` height-map pair. For `0 < a < b ≤ M`, `geometricInterleavingDistance_mergeY_eq_min` proves distance `min (b-a) (b/2)`, recovering `b-a` when `b ≤ 2a` and giving `b/2 < b-a` when `2a < b`. Reflection gives the same exact split-tree value (`geometricInterleavingDistance_splitY_eq_min`). These formulas are specific to this tree and do not give a converse to the height-map-pair bound. |
+| `TDA.Reeb` / `TDA.Reeb` | Inverse-image path components, Reeb quotients and comparison maps; interval cosheaves, smoothing, interleavings and extended distance; finite data, graph realizations with the finite tree criteria `isTree_iff_simplyConnectedSpace_realization` and `isTree_iff_contractibleSpace_realization`, the incidence quiver and `incidenceGraph` of finite data with `card_incidenceGraph_edgeSet_le` and `RGraph.cosheafEquivalence`; `thickeningQuotient`, `thickeningQuotientAbsorptionIso`, `thickeningQuotientCompIso`, and `isRGraph_quotient_thickening_of_isConstructibleSpace`; `rgraphToConstructible`, `quotientRGraphAdjunction`, `RGraph.constructibleSmoothing`, `ConstructibleInterleaving`, `ConstructibleInterleaving.equivGeometric`, `constructibleInterleavingDistance`, `constructibleInterleavingDistance_eq_geometricInterleavingDistance` and `constructibleInterleavingDistance_eq_interleavingDistance`; `CylinderPresentation.levelHomeomorph`, `realizationSpace`, `levelPerturbation`, `CriticalValues.translate`, the [vertex-height perturbation API](math/reeb-graph-pl.md#vertex-height-perturbations-of-a-fixed-graph) of graph-PL heights (`abs_plHeight_sub_le`, `edist_ofFun_plHeight`, `edist_ofFun_plHeight_eq_edist`, `vertexHeightInterleaving`, `interleavingDistance_intervalComponents_plHeight_le`, `interleavingDistance_intervalComponents_plHeight_le_edist_ofFun`), and the [level-change stability, range and exact-distance API](math/reeb-geometric-interleaving-equivalence.md#level-perturbations-of-a-fixed-presentation), and translation of interval precosheaves (`OpenInterval.translate`, `translateFunctor`, `translatePre`, `translationInterleaving`, `Interleaving.isEmpty_of_nonempty_of_isEmpty`, `le_interleavingDistance_of_forall_exists_isEmpty`, `intervalComponents_add_const`, `interleavingDistance_intervalComponents_add_const`) with `GraphPL.plHeight_add_const` and `RGraph.geometricInterleavingDistance_eq_zero_of_isEmpty`, and [vertical translation of graph objects](math/reeb-rgraph-translation.md) (`RGraph.translateOver`, `toOverTranslateIso`, `translateRGraph`, `translateRGraphZeroIso`, `translateRGraphCompIso`, `cosheafFunctor_translateRGraph_obj`, `Interleaving.translatePre`, `interleavingDistance_translatePre`, `geometricInterleavingDistance_translateRGraph`, `geometricInterleavingDistance_translateRGraph_self`, `reebRel_add_const_iff`, `quotientTranslateIso`, `thickeningTranslateIso`, `geometricSmoothingTranslateIso`); reindexing of interleavings along interval functors (`Interleaving.reindex`, `reindexIso`), interval scaling (`OpenInterval.scale`, `scalePre`, `Interleaving.scalePre`, `interleavingDistance_scalePre`, `intervalComponents_smul`, `interleavingDistance_intervalComponents_smul`), and height-controlled map pairs (`HeightMapPair`, `HeightMapPair.natTrans`, `HeightMapPair.natTransSymm`, `HeightMapPair.natTrans_app_mk`, `HeightMapPair.natTransSymm_app_mk`, `HeightMapPair.interleaving`, `HeightMapPair.symm`, `HeightMapPair.ofUniformBound`, `HeightMapPair.interleavingDistance_le`, `HeightMapPair.interleaving_eq_perturbationInterleaving`), and [presentation morphisms on a common grid](math/reeb-thickening-constructible.md#presentation-morphisms) (`CylinderPresentation.Hom`, `Hom.realize`, `Hom.height_realize`, `Hom.realize_id`, `Hom.realize_comp`, `Hom.toOverHom`, `FiniteReebData.Hom.toPresentationHom`, `realize_toPresentationHom`, `isQuotientMap_prodMap_quotMk`, `prodMap_quotMk_eq_iff`, `isQuotientMap_rawBandMap`), and the [thickening of one cylinder](math/reeb-thickening-constructible.md#one-cylinder) (`Thickening.cylinderThick`, `Thickening.cylinderThickHomeomorph`, `Thickening.cylinderHeight_cylinderThickHomeomorph`, `Thickening.vertexStripHomeomorph`, `Thickening.botIncl`, `Thickening.topIncl`, `Thickening.mapSpace`, `Thickening.pairThickHomeomorph`), [windows and transfers of a presentation](math/reeb-thickening-constructible.md#windows-and-transfers) (`CylinderPresentation.Window`, `windowMk_eq_iff`, `windowToSpace`, `transfer`, `transferFamily`, `transferHomeomorph`), and [the thickening presentation of a presentation](math/reeb-thickening-constructible.md#the-general-presentation) (`CylinderPresentation.thick`, `edgeIncl`, `vertexIncl`, `toProd`, `ofProd`, `thickHomeomorph`, `height_thickHomeomorph`, `shiftedThickHomeomorph`) | Components are path components of the inverse-image subspace. The tree criteria assume a finite vertex type; realizations of infinite trees are not claimed. General quotient comparison is a natural transformation. The graph/constructible-cosheaf equivalence is scoped to the declared finite real-graph category and value universe `0`. Smoothing and geometric comparisons have separate contracts; geometric thickening composes laxly, by a height-preserving addition map that is not an isomorphism but becomes one after the Reeb quotient, and geometric smoothing of graph objects composes additively, `U_ε U_δ ≅ U_(ε+δ)`; geometric interleavings of graph objects correspond bijectively to interleavings of their component cosheaves, so the geometric and cosheaf interleaving distances coincide and the geometric one satisfies the triangle inequality. Geometric smoothing enlarges along `ε ≤ δ`, geometric interleavings are monotone in the parameter, and every graph object is within geometric distance `ε` of its `ε`-smoothing. Constructible interleavings correspond bijectively to geometric interleavings of the Reeb graphs; the constructible distance equals the cosheaf distance of the interval components of the spaces themselves; zero distance does not give an isomorphism of spaces. The incidence graph forgets parallel edges; edge counts use `Nat.card`. An interval-local component obstruction excludes geometric interleavings whose double-thickening restriction is injective from a nontrivial to a subsingleton value; the parallel loop and the single edge have geometric distance exactly `1/4`. Absorption `ℛ T_ε ≅ U_ε ℛ` holds on all constructible ℝ-spaces; constructibility of `T_ε X` itself is not claimed. Level-change stability fixes the presentation and number of levels; compact locally path-connected pieces supply constructibility. Exact translation distance requires a nonempty realization. Arbitrary continuous perturbations are outside that API. The vertex-height bound controls the piecewise-linear extension of the vertex heights on a fixed graph, not arbitrary continuous functions with the same vertex values. The exact translation distance of interval components assumes a nonempty space and a range bounded below; the identity height of `ℝ` shows the bound is needed. Translation of graph objects is an isometry of the geometric distance; the exact self-translation distance `|c|` assumes a nonempty total space and is `0` otherwise. Scaling on graph objects, translation of the display locale and of Mapper reconstructions as graph objects are not provided. Nonzero scaling multiplies interval-precosheaf distances by the absolute scalar; reflection is an isometry. A `HeightMapPair` supplies continuous maps with height error at most `ε` and composite paths with height deviation at most `2ε`; it is a sufficient interleaving criterion, with no converse, functional-distortion identity or optimality claim for the `2ε` path-deviation allowance. Presentation morphisms fix the grid and the cylinder parameter and need no Hausdorff, compact or locally path-connected pieces; `isQuotientMap_rawBandMap` presents the thickened realization by its thickened raw pieces, and no colimit theorem for arbitrary constructible spaces is claimed. The realization of `cylinderThick` is homeomorphic to `E × [a, d] × [-ε, ε]`, preserving height, for every topological `E`, `ε ≥ 0` and `a ≤ d` on every grid listing the four events; the thickening of a whole presentation is not claimed. Windows carry the quotient topology of their raw pieces and are not claimed to be height-window subspaces; transfers need not be injective at slab ends. |
+| `TDA.Mapper` / `TDA.Mapper` | `ComponentIndex`, pullback component covers, `mapper`, its one-skeleton, `multiNerveMapper` and its projection onto `mapper`, refinement maps including `multiNerveMapperMap`, graph-PL comparison, uniform interval covers (`uniformCover`) with attained-range coverage, the label-set cell equivalence `cellsOverLabelsEquiv` with graph-PL edge cells, height-separating uniform covers (`HeightSeparating`, `exists_heightSeparating_uniformCover`, `range_plHeight_eq_Icc`) with the splitting `cellComponentsEquivSum`, vertex cells (`vertexCellsEquiv`) and the cell classification `uniformVertexCellsEquivLevel`, `uniformVertexCellsEquivSpans`, `uniformEdgeCellsEquivSpans` through `EdgeCrosses` and `EdgeSpans`, finite Reeb data of graph-PL input (`CoversVertexHeights`, `vertexHeightLevels`, `LevelVertex`, `SpanEdge`, `levelEnd`, `graphPLReebData`, `uncoveredEdgeEquivCrossesOfLevel`, `induceComponentsEquivOfEq`) with the star and gap bijections `graphPLStarEquiv`, `graphPLGapEquiv`, their incidence laws `graphPLStarEquiv_map_left`, `graphPLStarEquiv_map_right` and the finite-data isomorphism `graphPLExtractHom`, `graphPLExtractIso`, closed level sets of graph-PL height (`ClosedLevel`, `IsLevelWindow`, `closedLevelComponentsEquiv`, `componentMap_levelInclusion_bijective`, `graphPLReebDataVEquivClosedLevel`), constructibility and the cosheaf identification of graph-PL height (`isConstructibleAt_intervalComponents_plHeight`, `cellGraphIsoOfSameLevels`, `graphPLCosheafIsoOfIso`, `graphPLCosheafIso`, `isConstructibleCosheaf_intervalComponents_plHeight`, `cosheafFunctorGraphPLIso`, `geometricInterleavingDistance_graphPL`), the Reeb quotient of graph-PL height (`compactSpace_realization`, `exists_coversVertexHeights`, `graphPLReebMap`, `graphPLReebQuotientHomeomorph`, `graphPLReebQuotientIso`, `graphPLReebQuotientIsoOfIso`, `intervalComponentNatTrans_graphPLReebMap`, `isRGraph_graphPLReebQuotient`, `graphPLReebGraph`, `graphPLReebGraphIso`, `isIso_intervalComponentComparison_plHeight`, `geometricInterleavingDistance_graphPLReebGraph`), vertex-height stability of the graph-PL Reeb quotient (`heightRange_graphPLReebGraph`, `geometricInterleavingDistance_graphPLReebGraph_le`, `geometricInterleavingDistance_graphPLReebGraph_le_edist_ofFun`, `geometricInterleavingDistance_graphPLReebGraph_le_edist`, and `geometricInterleavingDistance_graphPLReebGraph_le_of_heightMapPair`) with extremal vertex-height lower bounds and exact vertical translation (`sSup_range_plHeight`, `sInf_range_plHeight`, `ofReal_abs_sup'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, `ofReal_abs_inf'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, `geometricInterleavingDistance_graphPLReebGraph_add_const`), the graph-PL realization as a constructible ℝ-space (`barycentric`, `t2Space_realization`, `edgePoint_eq_vertex_iff`, `edgePoint_eq_edgePoint_iff`, `locallyPathConnectedSpace_realization`, `realizationMap_injective`, `LevelPiece`, `levelPieceHomeomorph`, `compactSpace_closedLevel`, `locallyPathConnectedSpace_closedLevel`, `graphPLPresentation`, `graphPLPresentationMap`, `graphPLPresentationHomeomorph`, `graphPLComponentDataIso`, `graphPLReebMap_graphPLPresentationMap`, `graphPLPresentationIso`, `isConstructibleSpace_graphPLOver`, `graphPLReebQuotientIsoOfIso_graphPLComponentDataIso`, `graphPLSpace`, `quotientRGraphFunctor_obj_graphPLSpace`, `overBaseMap_graphPLSpace`, `isRGraph_quotient_thickening_graphPLOver`), and `CoherentCoverTower`, member-adapted MultiNerve Mapper comparison (`LevelsAdapted`, `exists_levelsAdapted`, `labelFace`, `uniformMapperData`, `uniformMapperCellsEquiv`, `uniformMapperIso`), refinement of graph-PL finite Reeb data (`graphPLRefineIso`, `graphPLRefineHom_trans_v`, `uniformMapperCanonicalIso`, `graphPLRefineToOverIso`), the ordinary one-skeleton comparison `incidenceGraphUniformMapperIso`, `mapperOneSkeletonGraphPLIso` and `mapperOneSkeleton_connected_iff`, refinement-induced homology maps `mapperHomologyMap` with `mapperHomologyMap_eq`, `mapperChainHomotopy`, and the persistence module `mapperHomologyPModule` of refinements along a preorder with `mapperHomologyPModule_eq` and `CoherentCoverTower.structureMap_mapperHomologyPModule`, interleavings from cover maps between real towers (`mapperHomologyShiftMap`, `mapperHomologyInterleaving`, `mapperHomologyInterleaving_app_eq`, `realInterleavingDistance_mapperHomologyPModule_le`, `realInterleavingDistance_mapperHomologyPModule_le_add`), the pullback identification `mapperHomologyPModule_pullback`, and perturbation stability along the centred tower (`centredCover`, `centredCoverRefinement`, `centredMapperHomologyInterleaving`, `realInterleavingDistance_centredMapperHomology_le`), height-map-pair bounds for centred Mapper modules (`centredMapperPairVertexMap`, `_natural`, `_comp`, `centredMapperPairHomologyMap`, `centredMapperPairHomologyMapSymm`, `centredMapperPairInterleaving`, `realInterleavingDistance_centredMapperPair_le`, `_ofUniformBound`, `_graphPL_le`); these require supplied component orders but no finiteness, coverage or nonemptiness, and provide no diagram or bottleneck bound for the centred tower itself (the capped centred map-pair bounds are below), no converse, multinerve Mapper, order independence or executable extraction; and finite Mapper barcodes `mapperBarcode` with `mapperHomologyPModule_finiteDimensional`, `mapperBarcode_eq`, `nonempty_mapperBarcodeIso`, `finrank_range_mapperHomologyMap`, `mapperBarcode_eq_iff`, `nonempty_iso_iff_mapperBarcode_eq`, `CoherentCoverTower.finrank_range_simplicialHomologyMap` and the graph-PL face-finiteness instance `GraphPL.finite_mapperFace`, and two-input stability of categorical Mapper reconstructions (`interleavingDistance_coverComponents_le_add`, `geometricInterleavingDistance_graphPLMapperReconstruction_eq`, `geometricInterleavingDistance_mapperReeb_le_add_edist`, `geometricInterleavingDistance_graphPLReebGraph_le_mapperReeb_add`, `geometricInterleavingDistance_mapperReeb_le_graphPLReebGraph_add`, `ofReal_abs_sup'_sub_le_geometricInterleavingDistance_mapperReeb_add`, `tendsto_geometricInterleavingDistance_mapperReeb_pair`, `exists_graphPLMapperReconstruction_pair_le`), and rank obstructions to real interleavings (`finrank_range_structureMapLinear_le_of_realInterleaving`, `structureMap_eq_zero_of_realInterleaving`, `isEmpty_realInterleaving_of_finrank_lt`, `le_realInterleavingDistance_of_finrank_lt`, `le_realInterleavingDistance_of_structureMap_ne_zero`) and the zero-map interleaving `nonempty_realInterleaving_of_structureMap_eq_zero`, with their Mapper and centred-tower forms (`isEmpty_face_mapper`, `isEmpty_realInterleaving_mapperHomologyPModule_of_finrank_lt`, `le_realInterleavingDistance_mapperHomologyPModule_of_finrank_lt`, `isEmpty_realInterleaving_mapperHomologyPModule_of_isEmpty_face`, `le_realInterleavingDistance_mapperHomologyPModule_of_isEmpty_face`, `le_realInterleavingDistance_centredMapperHomology_of_finrank_lt`), and diagrams of step towers (`mapper_eq_bot_of_isEmpty`, `mapper_eq_bot_of_isEmpty_componentIndex`, `isZero_simplicialHomology_mapper_of_isEmpty`, `stepTower`, `stepRefinement`, `mapperHomologyPModule_stepTower`, `isConstructible_stepTower`, `stepMapperDiagram`, `stepMapperDiagram_eq`, `stepMapperDiagram_isPositive`, `stepMapperDiagram_eq_ofIndexBars_succ`, `stepMapperDiagram_eq_ofIndexBars`, `bottleneck_stepMapperDiagram_le`, `bottleneck_stepMapperDiagram_le_add`, `bottleneck_stepMapperDiagram_eq`, `stepMapperDiagram_interleaving_iff_matching`, `realInterleavingDistance_stepTower_eq_top_iff`), and the tightness of the step bounds (`le_bottleneck_stepMapperDiagram_of_finrank_lt`, `le_bottleneck_stepMapperDiagram_of_isEmpty_face`, `le_bottleneck_stepMapperDiagram_of_structureMap_ne_zero`, `isEmpty_realInterleaving_stepTower_of_isEmpty_face`, `heq_stepTower_shiftGrid`, `stepTowerToShiftGrid`, `stepTowerOfShiftGrid`, `bottleneck_stepMapperDiagram_shiftGrid_le`, `SurvivesToLast`, `le_realInterleavingDistance_stepTower_shiftGrid`, `realInterleavingDistance_stepTower_shiftGrid_eq`, `bottleneck_stepMapperDiagram_shiftGrid_eq`, `mapperHomologyMap_zero_ne_zero`, `survivesToLast_zero`, `bottleneck_stepMapperDiagram_shiftGrid_eq_zero_degree`, `bottleneck_stepMapperDiagram_eq_top_iff`), and exact translation of categorical Mapper reconstructions (`coverResolution_add_const`, `coverComponentsTranslateIso`, `interleavingDistance_coverComponents_add_const`, `geometricInterleavingDistance_graphPLMapperReconstruction_add_const`, `_of_covers`, `isEmpty_graphPLMapperReconstruction_of_isEmpty_cover`, `geometricInterleavingDistance_graphPLMapperReconstruction_of_isEmpty`), and capped centred step towers (`centredInterval`, `cappedIndex`, `cappedCentredCover`, `stageRadius`, `mem_cappedCentredCover_succ_iff`, `cappedCentredRefinement`, `cappedCentredPullbackRefinement`, `cappedCentredDiagram`, `cappedCentredDiagram_eq_pullback`, `bottleneck_cappedCentredDiagram_le_of_stageRadius_le`, `bottleneck_cappedCentredDiagram_eq`, `bottleneck_cappedCentredDiagram_le`, `uniformGrid`, `bottleneck_cappedCentredDiagram_uniformGrid_le`, `bottleneck_cappedCentredDiagram_grid_le`, `bottleneck_cappedCentredDiagram_le_add`, `bottleneck_cappedCentredDiagram_plHeight_le`, `bottleneck_cappedCentredDiagram_plHeight_uniformGrid_le`), and direct different-domain capped centred map-pair results (`cappedCentredPairVertexMap`, `cappedCentredPairVertexMap_mk`, `cappedCentredPairVertexMapSymm`, `cappedCentredPairVertexMapSymm_mk`, `cappedCentredPairVertexMap_natural`, `cappedCentredPairVertexMap_comp`, `cappedCentredPairVertexMapSymm_comp`, `cappedCentredPairHomologyMap`, `cappedCentredPairHomologyMapSymm`, `cappedCentredPairInterleaving`, `bottleneck_cappedCentredDiagram_le_of_heightMapPair`, `bottleneck_cappedCentredDiagram_pair_le`, `bottleneck_cappedCentredDiagram_pair_uniformGrid_le`, `bottleneck_cappedCentredDiagram_pair_le_ofUniformBound`, `bottleneck_cappedCentredDiagram_pair_plHeight_le`, `bottleneck_cappedCentredDiagram_pair_plHeight_uniformGrid_le`), and essential counts (`card_essentialPart_stepMapperDiagram`, `bottleneck_stepMapperDiagram_lt_top_iff`, `fullComponentIndexEquiv`, `componentIndexFullEquiv`, `mapper_full_eq_top`, `fullMapperHomologyIso`, `finrank_simplicialHomology_mapper_full_zero`, `isZero_simplicialHomology_mapper_full_succ`, `isEmpty_mapper_face_one_of_unique`, `finrank_simplicialHomology_mapper_full_zero_of_unique`, `card_essentialPart_cappedCentredDiagram_zero`, `card_essentialPart_cappedCentredDiagram_succ`, `card_essentialPart_cappedCentredDiagram_zero_of_unique`, `bottleneck_cappedCentredDiagram_lt_top`, `card_essentialPart_cappedCentredDiagram_plHeight`, `card_essentialPart_cappedCentredDiagram_plHeight_zero_of_unique`); graph-PL height scaling (`plHeight_smul`, `geometricInterleavingDistance_graphPLReebGraph_smul`, `_neg`, `_affine`), split trees (`splitHeights`, `geometricInterleavingDistance_splitY`) and merge/split bounds (`ofReal_min_le_geometricInterleavingDistance_mergeY`, `_splitY`, `geometricInterleavingDistance_mergeY_bounds`, `_splitY_bounds`) | Input is a continuous map and an indexed target family. Coverage and multiplicity are explicit hypotheses where used. The MultiNerve Mapper is the multinerve of the component cover; its projection onto `mapper` is surjective and is an order isomorphism under `IntersectionsPathSubsingleton (componentCover f U)`. Every real number lies in at most two members of the uniform family exactly when `2g ≤ r` (for at least three members and `g < r`); its union is the window `(a, a + n(r − g) + g)` for `0 < g ≤ r`. The graph-PL finite Reeb data need no covering hypothesis; closed-level components are classified by `LevelVertex` for finite vertex sets, and inclusion into any level window is bijective on components. The star and gap comparison assumes every vertex height is a level of the critical list, while the Mapper comparison is at member-adapted levels. The refinement comparison assumes the coarser list covers the vertex heights. Constructibility at the specified critical list and the corresponding cosheaf identification assume a list covering the vertex heights and `V : Type`; constructibility at a noncovering list can fail (fixture D5). The Reeb quotient identification assumes a covering list, which cannot be dropped (fixture R6); the slice statements use `V : Type`, while the list-free corollaries need no list. The presentation map is injective for every list, while the homeomorphism assumes a covering list (fixture K5). Closed levels are compact and locally path-connected for finite vertex sets. The slice statements use `V : Type`. Finiteness is conditional; tower identity/composition are supplied coherence data. Refinement-induced homology maps use supplied linear orders on component-index types in one universe and any ring; two refinements between the same families induce the same map, and `mapperHomologyPModule` needs no selector identity or composition equations, agrees with the strict tower's maps and is independent of the selected refinements. A finite Mapper barcode is the canonical rank barcode of `mapperHomologyPModule` on `Fin N`; it needs finitely many faces of the given degree at every stage, a field, and the field, domain and index types in one universe. It is independent of the selected refinements and classifies these modules up to natural isomorphism; finite graphs with finitely many interval labels satisfy the finiteness hypothesis without coverage. Diagrams of real-indexed towers other than step towers, q-tame Mapper barcodes, independence of the component orders, multinerve barcodes and executable extraction are not provided. These constructions are noncomputable theory, not an executable Mapper implementation. The one-skeleton isomorphism assumes `2g ≤ r` and fails without it (fixture M5). Vertex-height stability fixes the graph and bounds the Reeb distance by `edist h g` without any order, level-count or constructibility hypothesis; it is not an equality in general, and extremal vertex heights bound it below and make it exact for vertical translations. Selected cover maps shifting by `η` in both directions between two real towers give an `η`-interleaving of their Mapper homology modules with no commutation assumed; maps at pointwise distance `δ` give a `δ`-interleaving along the centred tower. A step tower places finitely many cover families on the cells of a finite grid of radii, with an empty family before the first radius; its Mapper homology module is finite-constructible, and with finitely many faces in the given degree its real diagram `stepMapperDiagram` is the `ofIndexBars` image of the finite Mapper barcode. Cover maps shifting by `η` between two step towers bound the bottleneck distance of their diagrams by `η`, and that distance equals the real interleaving distance of the modules. No diagram or bottleneck statement is made for other towers, such as the centred tower, which is not finite-constructible on any grid; tightness is stated only for translations of the grid, below, and no order-independence statement is made. Capped centred step towers have an empty first stage, centred intervals of the grid radii and a full last stage. For maps at pointwise distance `δ`, their diagrams are at bottleneck distance at most `δ + μ` on a grid of mesh `μ`, and at most `δ` on a uniform grid of spacing `h` when `δ = p h`; for one map, two grids whose meshes, first radii and last radii are within `η` give diagrams within `η`. Fixtures show that neither the full last stage nor the mesh term can be dropped; coverage by a capped stage and sharpness of `δ + μ` are not claimed. Over a field, an `ε`-interleaving bounds the rank of each structure map `M(t → t + 2ε)` by the dimension of `N (t + ε)` when that one value is finite-dimensional; this gives lower bounds on the real interleaving distance, including the exact distance `1` of two shifted one-member towers and the bound `1/8` for the flat and steep maps. Bar-length lower bounds, tightness of the rank obstruction and the exact flat/steep distance are not claimed. Two-input Mapper bounds require each cover to cover its own height's attained range, are inequalities rather than equalities, and compare reconstructions over one fixed graph only. The rank obstructions bound the bottleneck distance of two step diagrams below through the stage of the second tower at `t + ε`. The step tower on `shiftGrid ε c` has at `t` the family of the step tower on `c` at `t + ε`, and the selected stage refinements are cover maps shifting by `ε` in both directions, so the two diagrams are at bottleneck distance at most `ε`. If the homology map of the selected refinement from the first nonempty stage to the last stage is nonzero in degree `n` (`SurvivesToLast`), the bottleneck distance and the real interleaving distance are exactly `ε`; in degree `0` this holds whenever the first nonempty stage has a component index. The bottleneck distance of two step diagrams is infinite exactly when their numbers of essential bars differ. Essential multiplicity equals last-stage homology dimension; finite bottleneck distance is equivalent to equality of these dimensions even for maps on different spaces. A finite nonempty full family on path-connected input is a simplex, so capped centred diagrams on nonempty grids have one essential degree-zero bar and none in positive degree, and any two such diagrams have finite bottleneck distance. With one label, the degree-zero count is the number of path components, or graph components for graph-PL input. Births, several-label disconnected degree-zero counts and finite bars are not computed. The survival hypothesis cannot be dropped (degree-one loop fixture). Exact distances for pairs of grids that are not translates, bar-length lower bounds and tightness of the bound `η` beyond translations are not claimed. Translating the height and a finite bounded cover by `c` moves the reconstruction by exactly `|c|` when some member has nonempty inverse image; over empty covers the distance is `0`. A continuous map `φ` with `f' ∘ φ = f` induces the vertex map `mapperDomainMap φ hφ U : mapper f U → mapper f' U` (`pullbackRestrict`, `domainIndexMap`, `componentDomainRefinement`, `mapperDomainMap_id`, `mapperDomainMap_comp`, `mapperMap_comp_mapperDomainMap`) and, for domains in one universe, homology maps `mapperHomologyDomainMap` and the module morphism `mapperHomologyPModuleMap` with identity and composition laws, commuting with the refinement-induced maps; the component orders of the two domains are independent supplied data and `φ` is arbitrary. A homeomorphism over the codomain gives the isomorphism `mapperHomologyPModuleIso`, real interleaving distance `0` (`realInterleavingDistance_mapperHomologyPModule_homeomorph`) and bottleneck distance `0` of step diagrams with an empty initial family (`bottleneck_stepMapperDiagram_homeomorph`) and of capped centred diagrams (`bottleneck_cappedCentredDiagram_homeomorph`); for a graph isomorphism with corresponding vertex heights, `realizationHomeomorph` and `bottleneck_cappedCentredDiagram_plHeight_iso` give distance `0` of the capped centred diagrams of the piecewise-linear heights. Equality of the diagrams, compatibility with interleavings and multinerve maps, and homotopy invariance are not provided. Common nonzero affine changes scale distances across finite graphs by the absolute slope. A `HeightMapPair` between finite graph-PL spaces bounds the geometric distance of their Reeb quotients; it supplies no map between graph objects and no Mapper cover or reconstruction consequence; its Mapper homology consequences are the centred and capped centred map-pair bounds above. For the three-edge merge tree, `mergeSection` and `exists_mergeSection_path` give height-preserving sections and bounded realization paths, including the horizontal top edge when `c = M`; `mergeFoldHeightMapPair` gives a `b/2` height-map pair. For `0 < a < b ≤ M`, `geometricInterleavingDistance_mergeY_eq_min` proves distance `min (b-a) (b/2)`, recovering `b-a` when `b ≤ 2a` and giving `b/2 < b-a` when `2a < b`. Reflection gives the same exact split-tree value (`geometricInterleavingDistance_splitY_eq_min`). These formulas are specific to this tree and do not give a converse to the height-map-pair bound. |
 
 ### Capped centred height-map pairs
 
@@ -117,12 +118,18 @@ join-indexed projective resolution of its generated-upset support module.
 `differential_comp_augmentation` and `resolution_pointwise_exact_at` establish
 projectivity, the chain laws, surjectivity and exactness at every index. Repeated
 generator values remain distinct occurrences; the empty-family boundary is stated
-separately. `term_isZero_of_degree_ge` shows that the degree-`r` term vanishes for
-`m ≤ r`; when `m ≥ 1`, the resolution therefore gives projective dimension at most
-`m−1`. `termEvaluationEquiv` identifies the evaluated terms at an index with the simplicial
-chains of the active-occurrence simplex, sending the differential to the signed simplicial
-boundary; `generatedSupport_fin_zero_module_isZero` and `term_fin_zero_eq_zero` state the
-empty-family case. See [join-indexed upset resolutions](math/generated-upset-resolution.md).
+separately. `termEvaluationEquiv` identifies the evaluated terms with the simplicial chains
+of the active-occurrence simplex, sending the differential to the signed simplicial boundary.
+`GeneratedUpsetResolution.chainComplex` and `projectiveResolution` package these actual maps
+as a canonical Mathlib projective resolution, with characteristic object, differential and
+augmentation equations. `term_isZero_of_degree_ge` shows that the degree-`r` term vanishes
+for `m ≤ r`. `generatedSupport_hasProjectiveDimensionLE` and
+`generatedSupport_projectiveDimension_le` give the actual ordinary dimension bound `m−1`,
+with truncated natural subtraction. The empty-family module has numerical dimension `⊥`;
+a singleton-generated upset is projective. Repeated labels need not give a shortest resolution.
+The upset generated by the two incomparable atoms of `Bool × Bool` has ordinary dimension
+exactly one over every field. No minimality or global-dimension conclusion is asserted.
+See [join-indexed upset resolutions](math/generated-upset-resolution.md).
 `RectangleHall.card_le_neighbors` derives the Hall neighbor cardinality bound
 from an actual ε-interleaving of finite rectangle sums: a selected family
 whose `(4n−2)ε` transitions are nonzero has at least as many neighbors at radius
@@ -252,6 +259,10 @@ at the same real grade after applying the finite-grid Kan functor, and
 pointwise finite-dimensional domain.
 `HookInfinity.homEquivFiber` identifies principal-upset morphisms with birth-fiber
 vectors; surjectivity at birth suffices to lift them over any ring and preorder.
+Consequently, for `R : Type u` and `P : Type v` with `[Ring R]` and
+`[Preorder P]`, `HookInfinity.module (R := R) i` is an ordinary projective
+object of `PModule.{u,v,u} R P`; its canonical instance is available by
+importing `TDA.Persistence.HookInfinityProjective`.
 
 Over a field and partial order, `Hook.endRingEquiv` and
 `HookInfinity.endRingEquiv` identify the actual endomorphism rings with the
@@ -419,6 +430,34 @@ by itself it asserts no existence, minimality, uniqueness or length bound, and n
 principal-upset hook and a two-term contractible resolution whose ranks cancel. See
 [the Euler formula for finite rank-exact resolutions](math/finite-rank-projective-resolution.md).
 
+For real-coordinate modules, `FiniteRankProjectiveResolution.identity` constructs the
+selected length-one resolution from rank projectivity and pointwise finite-dimensional
+fibers. `appendZero` and `appendZeros` preserve the zero-padded terms and add exactly the
+requested number to the stored length; `termAt` reads the recorded term below that length
+and returns zero afterward. When `0 < R.length`, `R.tail hpos` resolves the selected next
+kernel and has stored length `R.length - 1`; no tail is defined at length zero. `R.shift ε`
+transports the selected kernels, terms, rows and endpoint data along the diagonal evaluation
+shift. The selected isomorphism `R.termAt_shiftIso ε j` identifies each zero-padded term
+of the shifted resolution with the shift of the corresponding original zero-padded term.
+The base-only examples include a nonminimal two-row resolution of zero whose tail resolves
+the nonzero principal-upset module, and a positive shift carrying its actual map from
+grades `-1` to `0` to the original map from `0` to `1`. These operations live in
+`TDA.Persistence.FiniteRankProjectiveResolution`, so ordinary finite-resolution clients do
+not need a Schanuel import. Open the `TDA.Persistence` scope to select coordinatewise order.
+Padding can increase the stored length while leaving every `termAt` value unchanged.
+
+When `R.length = S.length`,
+`FiniteRankProjectiveResolution.biprod R S hlen` resolves the selected categorical sum `M ⊞ N`
+and keeps the common stored length. Each kernel and term uses the `Fin.cast` alignment specified by
+`hlen`; the row maps are the selected `biprod.map` morphisms. The public
+`FiniteRankProjectiveResolution.termAt_biprodIso R S hlen j` identifies the result's
+zero-padded term with the biproduct of the two zero-padded terms, using the chosen zero-biproduct
+isomorphism at and beyond the common boundary. The constructor requires equal stored lengths;
+pad a shorter input with `appendZero` or `appendZeros` before applying it. Repeated inputs remain
+separate summands, and stored length is not a minimality or intrinsic-degree claim. The examples
+include both nonzero component structure maps, repeated summands, zero summands and empty
+resolutions, and the explicit padding of unequal original lengths.
+
 The signed-multiset results do not select a canonical hook decomposition or a
 unique comparison isomorphism. Choice independence of the signed multisets is by itself not a
 stability theorem. Signed-barcode stability and the `2n−2` degree bound on the nonzero terms of
@@ -429,11 +468,15 @@ real-coordinate degree bound below and
 axioms of [Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3) are not packaged as an
 `ExactCategory` instance.
 
-For a field `k`, `n ≥ 1`, and an originally finitely presented module
+For any natural number `n`, field `k`, and originally finitely presented module
 `M : PModule k (Fin n → ℝ)`,
-`FiniteRankProjectiveResolution.finitelyPresented_exists_finiteRankProjectiveResolution`
-constructs an actual finite rank-projective resolution of `M`. It first uses the
-finite presentation to reconstruct `M` as the actual left Kan extension of a
+`FiniteRankProjectiveResolution.exists_finiteRankProjectiveResolution_of_finitelyPresented`
+constructs an actual finite rank-projective resolution of `M`. This includes
+`n = 0`, where `Fin 0 → ℝ` is a one-point poset and the result applies to
+nonzero modules as well. The existing
+`finitelyPresented_exists_finiteRankProjectiveResolution` name remains the
+positive-dimensional specialization. The proof first uses the finite
+presentation to reconstruct `M` as the actual left Kan extension of a
 pointwise finite-dimensional module on a finite coordinate grid. On that finite
 poset it chooses rank-exact hook-sum covers with the fewest summands for each
 successive kernel. A nonzero same-hook component into the preceding kernel
@@ -442,9 +485,9 @@ differential arrow lowers the weight from its source hook to its target hook;
 equivalently, the weights strictly increase as one passes to covers of
 successive kernels. The weight is built from the sizes of the hooks' endpoint
 lower sets, with infinite hooks placed above finite hooks. It is bounded on the
-finite poset, so the iteration ends with zero kernel.
-The existing Kan preservation maps then transport all rows and projective terms
-back to `M`. No pfd, grid, hook decomposition, or resolution is an extra input.
+finite poset, so the iteration ends with zero kernel. The existing Kan
+preservation maps then transport all rows and projective terms back to `M`.
+No pfd, grid, hook decomposition, or resolution is an extra input.
 
 For a quotient `π : Q ⟶ K`, `IsRankProjectiveCover π` certifies that `Q` is
 rank-projective, that the actual categorical-kernel row
@@ -455,6 +498,10 @@ actual kernel rows and both quotient-fixed endomorphism criteria to show that
 any two certified covers of the same target are naturally isomorphic over
 that target. It makes no finiteness or resolution assumption, and does not
 claim uniqueness of the comparison isomorphism or of an entire resolution.
+For a coefficient field and partially ordered index type `P : Type`,
+`IsRankProjectiveCover.of_identity` certifies the identity map of a pointwise
+finite-dimensional rank-projective module, using its actual categorical-kernel
+row.
 On a finite poset, the separate
 `FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_pfd_finitePoset`
 theorem constructs a resolution whose every quotient row has this certificate.
@@ -466,20 +513,26 @@ it lifts each quotient-fixed endomorphism to the grid by full faithfulness,
 applies the grid cover certificate, and maps the resulting isomorphism through
 Lan.
 
-For a field `k`, positive `n`, and `M : PModule k (Fin n → ℝ)`, the public
-`GradedFree.FinitelyPresented M` hypothesis therefore proves that an actual
+For any natural number `n`, field `k`, and
+`M : PModule k (Fin n → ℝ)`, the original public
+`GradedFree.FinitelyPresented M` hypothesis proves that an actual
 `MinimalFiniteRankProjectiveResolution` of `M` exists:
-`FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution`.
-The construction reconstructs `M` up to isomorphism as the actual left Kan
-extension of a pointwise finite-dimensional module on a finite coordinate grid,
-applies the finite-poset minimal theorem, transfers every row through Lan, and
-transports the result across the reconstruction isomorphism. Every quotient
-row in the returned resolution carries the public projective-cover certificate.
+`FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented`.
+This includes the one-point index poset at `n = 0`, including nonzero modules.
+The existing
+`finitelyPresented_exists_minimalFiniteRankProjectiveResolution` name remains
+the positive-dimensional specialization. The construction reconstructs `M` up
+to isomorphism as the actual left Kan extension of a pointwise finite-dimensional
+module on a finite coordinate grid, applies the finite-poset minimal theorem,
+transfers every row through Lan, and transports the result across the
+reconstruction isomorphism. Every quotient row in the returned resolution
+carries the public projective-cover certificate.
 This is the finite-grid Kan transfer of [Theorem 2.7(2) and Appendix A of
 Botnan–Oppermann–Oudot–Scoccola](https://arxiv.org/html/2208.00300v3).
 `FiniteRankProjectiveResolutionKanExamples` checks the finite-resolution and
-minimal-resolution interfaces on a nonzero principal-upset free module; the
-earlier resolution examples retain the zero and contractible-row boundary cases.
+minimal-resolution interfaces on nonzero principal-upset free modules in zero
+and one real coordinates. At zero coordinates it also derives both existence
+results from an empty-generator presentation of the zero module.
 
 For a certified minimal resolution `R`, `R.termAt j` is its recorded term when
 `j < R.resolution.length` and the zero module afterward. Degree-vanishing
@@ -504,7 +557,55 @@ This is a highest-nonzero-degree result, not a bound on the raw stored
 `resolution.length`. Examples cover nonzero originally presented modules in
 dimensions one and two, repeated birth occurrences, the zero module, and
 arbitrary supplied resolutions. The proof follows the upper-bound portion of
-BOOS Theorem 5.18 and Proposition 5.17; it proves no lower witness or equality.
+BOOS Theorem 5.18 and Proposition 5.17; this upper-bound result itself has no
+lower-witness or equality conclusion. In two real coordinates, the explicit
+`RankResolutionDegreeTwo.realModule` is the actual Kan extension of a
+three-point L-shaped finite-grid module. Its original finite-presentation
+predicate is derived from the finite grid, and
+`RankResolutionDegreeTwo.realMinimalResolution_termAt_two_iso` identifies the
+second term of its concrete transferred minimal resolution with the actual
+hook `H((1,1),(2,2))`. Every certified minimal resolution of that real module
+has nonzero degree two and zero terms above degree two. Separately,
+`finite_hookHom_projectiveDimension_eq_two` computes ordinary projective
+dimension two for the finite hook-generator Hom object; it is not the ordinary
+functor-category projective dimension of the module. See
+[the degree-two rank-resolution witness](math/rank-resolution-degree-two.md)
+for the maps, rank-exactness argument and claim boundaries. This concrete
+two-coordinate equality case does not assert lower bounds in every dimension.
+The same independently defined module is realized as the actual degree-one
+simplicial homology of a four-vertex tetrahedron boundary filtration.
+`RankResolutionDegreeTwoSimplicial.finiteIso` proves the grid-restricted natural
+isomorphism, while `realIso` globalizes it to every real coordinate grade through
+the canonical finite-simplicial Kan comparison. The actual homology's original
+finite-presentation predicate is `homology_finitelyPresented`; the separate
+`RankResolutionDegreeTwoSimplicialExamples` module proves actual nonzero arm maps,
+cap deaths, and between-grid and below-grid behavior. See the [simplicial
+realization note](math/rank-resolution-simplicial-realization.md) for the face
+grades and signed-chain quotient proof.
+Uniformly translating every face grade by a signed real parameter gives the
+actual module `RankResolutionDegreeTwoSimplicial.translatedHomology`. Its exact
+coordinate interleaving distance is `ENNReal.ofReal (min |t-s| (1/2))`; the
+actual magnitude and half-radius witnesses and the subcritical obstruction are
+documented in the [translation-distance note](math/rank-resolution-simplicial-translation.md).
+Independent signed delays on the two actual face-grade coordinates have exact
+distance `ENNReal.ofReal (min (max |v 0-u 0| |v 1-u 1|) (1/2))`; the actual
+reindexing, witnesses, coordinate obstruction, and ordinary-import consumers
+are documented in the [coordinate translation note](math/rank-resolution-simplicial-coordinate-translation.md).
+Here the translated object is the full PH₁ persistence module: its fibers are
+degree-one homology groups of the sublevel complexes, and its structure maps
+are induced by their inclusions. The distance compares these modules with
+their maps, not isolated homology groups.
+Strictly positive independent coordinate scaling of the same actual PH₁ module
+has an exact distance-to-zero formula from its two arm lifetimes; its reindexing,
+actual transition maps and ordinary-import consumers are in the
+[simplicial scaling note](math/rank-resolution-simplicial-scaling.md).
+After fixing such a positive scale, adding a uniform signed delay to every
+actual face grade gives a translated full PH₁ persistence module: its fibers
+are the H₁ groups of the sublevel complexes and its maps are induced by their
+inclusions. `scaledTranslatedHomology` defines this family, whose modules are
+compared together with their maps. Its exact pairwise distance, actual
+witnesses, and signed-delay consumers are documented in the
+[scaled translation note](math/rank-resolution-simplicial-scaled-translation.md).
 The finite-hypothesis signed hook stability result is proved in
 [signed hook bottleneck stability](#signed-hook-bottleneck-stability). The
 ordinary one-dimensional barcode connection and its half-open boundary
@@ -522,7 +623,9 @@ comparison as a `Nonempty` isomorphism, and `termAt_rank_eq` shows that every
 structure-map rank in corresponding terms is independent of the chosen
 resolution. The theorem uses only the cover certificates carried by the two
 inputs; it neither assumes equal raw lengths nor chooses a canonical
-comparison isomorphism. The example
+comparison isomorphism. The simp lemma
+`MinimalFiniteRankProjectiveResolution.termAt_eq_resolution_termAt` is available from
+`TDA.Persistence.FiniteRankProjectiveResolutionUniqueness`. The example
 `FiniteRankProjectiveResolutionUniquenessExamples.principalHook_positive_terms_are_zero`
 uses a one-term resolution of a principal-upset projective to show that every
 positive-degree term in any minimal resolution of that module is zero.
@@ -616,6 +719,14 @@ occurrence-indexed biproduct construction
 `C.positive + D.negative` and `D.positive + C.negative`, with every repeated
 tag counted.
 
+For any dimension `n` and finite occurrence-indexed family
+`tag : Fin m → RealHookTag (n := n)`, `hookTagMultiset` retains every index,
+including repeated tags. `hookTagMultiset_eq_ofFn` identifies it with the
+`List.ofFn` enumeration, and `hookTagMultiset_eq_map_univ` identifies it with
+the multiset map of `tag` over the value of `Finset.univ`; this maps indices
+without deduplication. `hookTagMultiset_count` counts indices with each tag.
+These enumeration and count statements include `m = 0` and `n = 0`.
+
 `HasMultisetMatching ρ A B` means that exact finite enumerations of `A` and
 `B` carry an existing `HookMatching.IsMatching`: each paired occurrence has
 an actual coordinate interleaving, and every deleted occurrence on either
@@ -657,6 +768,29 @@ principal-upset, empty, and repeated cross-sign tags are also exercised. In
 dimension one the capstone also compares two distinct principal upsets, born at
 `0` and at `1`, through an explicit radius-one interleaving, giving signed
 distance at most one.
+
+### Finite simplicial input and grade perturbations
+
+For `C : Simplicial.FiniteComplex m`, `Filtration.FiniteGraded C n` assigns
+coordinatewise monotone grades in `Fin n → ℝ` to its nonempty faces.
+`finiteSimplicialHomology k g q` is the actual inclusion-induced homology
+module of its sublevels, for any field `k : Type u` and degree `q : ℕ`.
+`finiteSimplicialHomology_finitelyPresented` derives the original
+`GradedFree.FinitelyPresented.{u,0,0}` property from the finite input, using
+finite-dimensional grid fibres and a natural grid Kan comparison.
+
+For grades `g,h` on the same complex, a uniform coordinate error bound
+`δ : ℝ≥0` constructs `finiteSimplicialHomology_interleaving` and bounds the
+coordinate interleaving distance by `δ`. `FiniteGraded.supGradeError` is the
+finite maximum of the face-coordinate errors, with empty maximum zero.
+For `n ≥ 1`, `finiteSimplicialSignedHookBarcode` uses the derived finite
+presentation, and `finiteSimplicial_signedHookBottleneckDissimilarity_le`
+bounds the canonical signed dissimilarity by `(2*n-1)^2 * δ`. The caller
+supplies grades and their error bound, without a presentation or interleaving.
+Repeated grades, empty input and arbitrary homology degrees are included;
+the input, presentation and interleaving APIs also allow `n = 0`.
+See [finite graded simplicial stability](math/finite-simplicial-stability.md)
+for the proof and conventions.
 
 ### Two-coordinate signed hook triangle failure
 
@@ -700,6 +834,18 @@ principal hooks to `[b,∞)`, retaining negative births and each occurrence.
 diagram, and `finitelyPresentedOneDimensionalBarcodeRealizationIso` realizes
 the original module by it.
 
+`finiteHook_intervalIso a b hab` deliberately keeps a strict endpoint premise
+to follow the nonempty finite branch of `RealHookTag`;
+`oneDimensionalHookEndpoints_positive` records that endpoint condition. The
+support identification behind the isomorphism itself is valid without strict
+endpoints. For raw endpoints on a positive affine restriction, the existing
+`PositiveAffineLine.finiteHook_reindex_eq` identifies the actual reindexed hook
+with its interval, `PositiveAffineLine.finiteHook_structureMap_val` describes
+its actual map, and `PositiveAffineLine.finiteHook_reindex_isZero_iff` detects
+collapse. Equal or reversed entrance times give a zero module, so they are not
+nonempty finite barcode tags. See [positive affine slices](#positive-affine-slices)
+for this separate reindexing interface.
+
 For every pair of modules with those original finite presentations,
 `finitelyPresentedOneDimensionalBarcode_bottleneck_eq_distance` proves that
 the ordinary bottleneck distance of their diagrams equals their real
@@ -726,6 +872,59 @@ ordinary-barcode connection follow the [BOOS v3 introduction after Result D](htt
 and the `n = 1` consequence of [Theorem 5.18](https://arxiv.org/html/2208.00300v3#S5.Thmtheorem18);
 [Theorem 6.1](https://arxiv.org/html/2208.00300v3#S6.SS1) gives signed-stability
 context.
+
+### Signed-hook cancellation along affine slices
+
+`AffineSliceSignedBarcode` recovers the ordinary barcode of an actual
+positive affine restriction from the canonical signed hook barcode of an
+originally finitely presented module. Its main theorem proves
+`B(slice M).points + slice(odd hooks) = slice(even hooks)` over every field.
+Collapsed hooks are omitted, repeated endpoints retain their multiplicities,
+and principal deaths remain infinite. Domination is proved before the
+equivalent multiset-subtraction formula.
+
+`RealBarcodeRankUniqueness` compares finite positive endpoint multisets
+through all their rank counts. `RankExactBarcodeCancellation` telescopes
+actual rank-exact rows, and `AffineSliceRank` converts the actual hook-sum
+presentations into these counts. The capstone derives the needed resolution
+and ordinary barcode realization from the original presentation. See
+[affine slice cancellation](math/affine-slice-cancellation.md).
+
+### Positive affine slices
+
+For `n ≥ 1`, `PositiveAffineLine` parameterizes a line `L(t) = b + t*a`
+with every slope positive. Its entrance time is the maximum of
+`(p i - b i) / a i`, characterized by `entrance p ≤ t ↔ p ≤ L(t)`.
+`FinitePresentationReindex` uses this adjunction to regrade the actual
+generators and relations while preserving their cokernel.
+`AffineSlicePresentation` derives the original finite-presentation predicate
+for the actual real restriction and its one-coordinate identification,
+over arbitrary coefficient rings.
+
+`AffineSliceHooks` identifies finite hook restrictions with
+`[entrance p, entrance q)` and principal restrictions with
+`[entrance p, ∞)`. Equal endpoints give the zero module. Its endpoint
+multiset removes these collapsed intervals and preserves all multiplicities,
+including collisions between distinct hooks. See
+[positive affine slices](math/positive-affine-slices.md) for the construction,
+coefficient scope and endpoint conventions.
+
+### Matching distance of ordinary affine slices
+
+`AffineSliceInterleaving` sends an actual coordinate `ε`-interleaving to a
+real `ε/minSlope`-interleaving along any positive affine line. Its components
+include the actual structure-map padding needed for unequal slopes. The
+extended-distance bound works over arbitrary rings, without finite-distance
+or attainment assumptions.
+
+Over an arbitrary field, `AffineSliceMatching` derives ordinary slice
+barcodes from original finite presentations. It bounds their weighted
+bottleneck distance by coordinate interleaving distance and defines
+`sliceMatchingDistance` as the supremum over lines with maximum slope one
+and offset sum zero. The normalized family contains the diagonal line.
+The resulting extended pseudometric is invariant under natural isomorphism
+and is bounded by coordinate interleaving distance. See
+[affine slice matching distance](math/affine-slice-matching.md).
 
 ### Finite presentations of categorical colimits
 
@@ -1189,9 +1388,9 @@ arbitrary-field decomposition remain noncomputable. See
 
 ### Minimal-complement cardinalities for finite grids
 
-Here `minimalComplement p` means the minimal elements of `{a | ¬ a ≤ p}` in a finite bounded lattice. `PairPoset S` is the actual subtype `{q : WithTop S × WithTop S // q.1 ≤ q.2}` with inherited coordinatewise order. The grid bounds concern an actual `G : CoordinateGrid n` with nonempty coordinate factors.
+Here `minimalComplement p` is the set of minimal elements of `{a | ¬ a ≤ p}` in a lattice; the cardinality and maximum functions add a `Finite` assumption. `PairPoset S` is the actual subtype `{q : WithTop S × WithTop S // q.1 ≤ q.2}` with inherited coordinatewise order. The grid bounds concern an actual `G : CoordinateGrid n` with nonempty coordinate factors.
 
-`TDA.Persistence.FiniteLatticeComplementCardinality` proves the one-active-coordinate classification for minimal complements in finite products, the old-top singleton correction for `WithTop`, and the exact restricted-diagonal plus bottom-axis decomposition for the existing `PairPoset` subtype. It then proves the `n`, `n`, and `2*n` maximum bounds for `G.Point`, `WithTop G.Point`, and `PairPoset G.Point` when the coordinate factors are nonempty (the last two require `n ≥ 1`). The old and new tops are treated as distinct elements.
+`TDA.Persistence.FiniteLatticeComplementCardinality.mem_minimalComplement_pi_iff_of_orderBot` gives the caller-bound classification for products of lattices: membership in the product's minimal complement is equivalent to one coordinate being a minimal complement in its factor and every other coordinate equaling the supplied factor bottom. It needs no finiteness or linearity; each supplied `OrderBot` already provides its factor bottom and inhabitant, so no separate `Nonempty` assumption is needed. The compatibility theorem `mem_minimalComplement_pi_iff` retains its finite index and finite nonempty linear-factor assumptions, with canonical bottoms from the private factor enumeration `Fintype.ofFinite (T i)` and its `Fintype.toOrderBot` instances. The general classification alone does not bound the number of minimal complements by the number of factors, since a lattice factor may have multiple incomparable minimal complement values; the finite-chain product count retains its original hypotheses. The module also proves the old-top singleton correction for `WithTop`, and the exact restricted-diagonal plus bottom-axis decomposition for the existing `PairPoset` subtype. It then proves the `n`, `n`, and `2*n` maximum bounds for `G.Point`, `WithTop G.Point`, and `PairPoset G.Point` when the coordinate factors are nonempty (the last two require `n ≥ 1`). The old and new tops are treated as distinct elements.
 
 `TDA.Persistence.FiniteGridInjectiveRankDimension.hasProjectiveDimensionLE_of_coordinateGrid` derives the actual `n - 1` Hom projective-dimension bound for every pointwise finite-dimensional ordinary injective on such a grid, for an arbitrary field. Its `termAt_isZero_of_coordinateGrid` consumer proves the same high-term vanishing for each supplied certified minimal resolution. The proof uses the proved grid count and the existing finite-injective dimension theorem; no dimension bound is supplied as input. These counts and the ordinary-injective Hom corollary are representation-side ingredients; the actual finite-dimensional incidence and quotient-module bound is stated below. That module result does not give a global-dimension bound for arbitrary modules or the universal `2n−2` persistence estimate. See [minimal-complement cardinalities in finite grids](math/finite-grid-complement-cardinality.md).
 
@@ -1241,6 +1440,16 @@ is the canonical degree-zero field comparison. Positive left-derived vanishing i
 focused consumers in `TDA.Persistence.IncidenceQuotientSimpleExamples`. This is the simple-module
 classification step used in BOOS24-v3 Lemma 5.7, specialized to the interval-pair quotient; it
 does not assert the global-dimension conclusion of that lemma.
+
+The reusable scalar transport from bundled left-module coinvariants to the natural quotient-field
+action is public as `TDA.Persistence.IncidenceVertexTor.diagonalQuotientVertexCoinvariantsEquiv`,
+with its representative law `diagonalQuotientVertexCoinvariantsEquiv_mkQ`. The constant family of
+regular right-incidence modules used by the finite-free vertex biproduct is
+`TDA.Persistence.IncidenceRegularVertex.regularFamily`. The quotient-resolution statements spell
+out `ModuleCat.restrictScalars (quotientHom ...)` and `extensionFunctor` directly where each
+construction occurs. The existing
+`TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset` scope supplies the canonical
+interval-pair instances.
 
 `TDA.Persistence.IncidenceQuotientBaseChange.extensionFunctor` constructs actual right-module
 extension along the quotient projection `A → A/I` by quotienting each incidence module by the
@@ -1314,6 +1523,24 @@ the identification on each fiber. Its generic regular-module dimension result is
 canonical restricted field action and transported to the natural incidence action by an explicit
 unop linear equivalence.
 
+### Canonical PairPoset instances
+
+For incidence-algebra clients with `{k : Type u} [Field k]` and
+`{S : Type} [Lattice S] [Finite S]`, use
+`open scoped TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset` to activate the canonical
+`PairPoset S` instances used by the library. The scope provides the existing finite
+enumeration, order decisions, locally finite order, and two-sidedness proof for the diagonal
+ideal. These transparent aliases select the producer's original data, including the filtered
+subtype enumeration; they do not promise definitional equality with arbitrary caller-selected
+noncanonical instances. The enumeration and locally finite order require `[Finite S]`; the
+order decisions require only `[Lattice S]`, and the diagonal-ideal proof retains the field
+assumption.
+
+This scope does not provide endpoint or bounded-order structures. The incidence and quotient
+projective-dimension bounds keep their `[OrderBot S] [OrderTop S]` assumptions and their
+displayed `pairPosetLattice` and `pairPosetBoundedOrder` choices. Native finite instances on
+`Bool` and `Fin 2` remain unchanged.
+
 ### Ordinary projective dimensions of actual incidence modules
 
 For an arbitrary field and finite bounded lattice `S`,
@@ -1361,63 +1588,58 @@ bound are proved in [signed hook bottleneck stability](#signed-hook-bottleneck-s
 and the rational and grid consumers in
 `TDA.Persistence.FiniteRankProjectiveHomQuotientDimensionExamples`.
 
+The standalone fixture `TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples` exhibits
+both rank nonprojectivity of a persistence module and ordinary categorical nonprojectivity of
+its actual hook-generator Hom module. For every field, `bottomSimple` is the principal-downset
+module at the bottom of `Square = Bool × Bool`; the actual Hom module has ordinary projective
+dimension exactly one. Every certified minimal finite rank-projective resolution of
+`bottomSimple` has a nonzero `termAt 1` and zero terms for `j > 1`, and a separate existential
+theorem derives a certificate with those properties from the field alone. The exact dimension
+claim is about the Hom module, and this finite-lattice example does not assert sharpness of the
+`2*n-2` coordinate-grid bound. The fixture selects the preorder category with a public scoped
+instance; consumers can use it with `open scoped TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples`.
+
 ## Compatible lifts and algebraic sums over the reals
 
-`TDA.Persistence.CompatibleSections` constructs compatible sections of a persistence
-module on any real subset when its transition maps are surjective. A section can
-pass through any prescribed fiber vector. The proof uses a decreasing sequence
-with a point below every index, together with the natural-number inverse-limit
-theorem, without assuming finite underlying fibers. Open endpoints, singletons
-and unbounded subsets are allowed.
+The [real interval decomposition note](math/real-interval-decomposition.md)
+explains the cut, compatible-lift and finite-observation constructions in
+prerequisite order. The decomposition endpoints use a field `k : Type u` and
+`M : PModule.{u,0,u} k ℝ` with finite-dimensional fibers. Their occurrence
+indices are in `Type`, with no countability restriction.
 
-`TDA.Persistence.CutSubspaces` uses cuts, which partition the parameter order into
-a lower part and an upper part. Two cuts determine a possibly empty support,
-which is an interval when nonempty; their image/kernel subspaces encode birth
-and death conditions. For a pointwise finite-dimensional
-module, the required surjectivity is derived for these subspaces. The module
-transports their quotients isomorphically and chooses one global section complement
-whose evaluations complement the corresponding lower subspace at every interval
-point. The compatible lift and complement are constructed from finite dimension.
+`CompatibleSections` separately proves evaluation surjectivity for compatible
+sections on real subsets when every transition there is surjective. This result
+is for a ring `R` and `PModule.{u,0,w} R ℝ`, with arbitrary carrier universe
+`w`, and needs no finite-dimensionality assumption. `CutSubspaces` derives the
+required surjectivity and quotient transport from cut subspaces of the
+finite-dimensional fibers in the decomposition endpoint, then uses one global
+compatible-section complement to build an interval-supported subfunctor.
+`CutDecomposition.sumIso` is oriented from the algebraic sum of these
+intermediate, possibly higher-dimensional cut subfunctors to `M`.
+`RealIntervalDecomposition.scalarIso` has the same orientation after choosing
+bases and refining to scalar interval summands; the existence theorem states
+the inverse orientation, from `M` to the scalar sum. Neither endpoint theorem
+has a wider carrier-universe interface than `PModule.{u,0,u} k ℝ`.
 
-`TDA.Persistence.AlgebraicFamily` realizes families by algebraic direct sums. Its
-canonical comparison with the existing `RealBarcode.familyModule` product is a
-natural isomorphism when finitely many fibers are nonzero at each parameter.
-Pointwise finite dimension of a direct-sum representation implies this local
-finiteness, and only finitely many occurrences meet a finite observation list.
-The index family may be uncountable.
+`AlgebraicFamily` compares algebraic sums with the existing product-based
+`RealBarcode.familyModule` when only finitely many summands are nonzero at each
+parameter. The decomposition proves this finite activity from finite-dimensional
+fibers; it is pointwise finite overlap, not topological local finiteness. The
+finite-observation results show that only finitely many occurrences meet a
+strict finite sample list and identify its rank barcode with the sampled
+interval multiset, retaining repeated occurrences. Finite samples do not
+determine unsampled support or infinite real lifetimes.
 
-`TDA.Persistence.CutDecomposition` proves that the chosen interval complements
-span every fiber and that every finite relation among distinct complements is
-trivial. Its `sumIso` is a natural isomorphism from their algebraic direct sum
-to any pointwise finite-dimensional real-indexed module over a field. The construction includes
-singleton supports and assumes no decomposition or global countability. Finite
-activity at each parameter, and finite activity over a finite observation list,
-follow from finite dimension. `CutSubspacesExamples` checks cut endpoints and the
-singleton image/kernel spaces of a module with zero maps at strict inequalities.
-`TDA.Persistence.RealIntervalDecomposition` chooses a basis of each compatible
-section complement and obtains scalar interval summands. Its `scalarIso` is a
-natural isomorphism from their algebraic direct sum to any pointwise
-finite-dimensional real-indexed module; `exists_interval_decomposition` states
-the corresponding existence theorem. The nonempty supports are order-convex,
-with open or closed endpoints, singletons, infinite tails and the whole real
-line allowed. Finite activity is derived at every parameter, with no global
-countability assumption.
-
-`RealIntervalObservation` proves `RealIntervalDecomposition.rankBarcode_eq_sampledBarcode`, identifying the existing
-rank barcode of every strict finite real observation list with the multiset of
-nonempty sampled intersections of these summands, retaining multiplicities.
-Only finitely many occurrences meet the list. `FiniteObservation` supplies the
-rank and visible-occurrence arguments for arbitrary algebraic interval families.
-No finite critical grid or continuity hypothesis is required.
-
-`IntervalCompatibility` identifies the generic support modules with existing
-real half-open interval modules and their finite diagram realizations by natural
-isomorphisms, including the existing finite-constructible decomposition.
-`EphemeralIntervalIso` proves `IntervalCompatibility.ephemeralIso`, realizing the real-indexed ephemeral module as the sum of all real
-singleton intervals. The examples also include an empty family, both left-tail
-conventions, and an infinite locally finite interval module family accumulating
-at zero. These decomposition results require finite-dimensional fibers; the
-q-tame class has a different hypothesis.
+`IntervalCompatibility` gives natural isomorphisms with the existing half-open
+interval modules and finite diagram realizations. Its `constructibleIso` result
+additionally assumes the existing constructibility predicate and
+finite-dimensionality at the supplied sample levels.
+`IntervalCompatibility.ephemeralIso` applies specifically to
+`PModule.{0,0,0} ℚ ℝ` and retains all real singleton occurrences. Examples cover
+empty families, endpoints, singleton supports, both
+left-tail conventions, nonidentity maps and an infinite family with pointwise
+finite activity accumulating at zero. The q-tame class has a different
+hypothesis from finite-dimensional fibers.
 
 ## Metric input and Rips diagrams
 
@@ -1479,6 +1701,37 @@ for every sample size and degree, the whole-diagram bottleneck
 This uses essential suprema directly, with the factor `2` from the half-distortion
 GW convention; it assumes no optimal coupling or finite-`p` limit. See
 [sampled Rips diagram laws](math/sampled-rips-laws.md).
+
+For a finite metric population, `FiniteTotalVariation` constructs the common-mass
+coupling of two atomic input laws and measures its exact mismatch probability
+(`maximalCoupling_mismatch`); `finiteTotalVariation_eq_half_sum_abs` identifies
+the normalization with the usual finite total variation.
+`FiniteGromovWassersteinTV` bounds half-normalized distortion GW by a diameter
+bound `D` and finite total variation `δ`:
+`2 GW_p ≤ D (2δ)^(1/p)` for `p > 0`
+(`two_mul_gromovWasserstein_le_finiteTotalVariation`). `RipsSamplingEmpirical`
+combines this with the atomic sampled-law bound to give
+`W_p ≤ D * choose(s,2)^(1/p) * (2δ)^(1/p)` for `p ≥ 1`, resample size
+`s ≥ 2`, and every degree, including full H₀
+(`Rips.wasserstein_sampleLaw_le_finiteTotalVariation`). Its empirical PMF counts repeated
+training observations among `m ≥ 1` indices; `m` is independent of `s`.
+This estimates a law of future sampled diagrams from the finite input law;
+it supplies no random-training confidence level or bound on one observed
+diagram. See [finite-population total variation](math/sampled-rips-laws.md#finite-population-total-variation).
+
+`RipsSamplingConfidence` bounds the probability that an iid sample's canonical
+q-tame diagram differs from the diagram of its compact support. For a finite
+open `r/2`-net with `N` centers and minimum ball probability `β > 0`, the bound
+is `P[dB(D(sample), D(support)) > 2r] ≤ N * (1 - β)^n`, for `n ≥ 1`, every
+coefficient field and every degree. `qTameSampleDiagram` uses the existing
+`Rips.Sample` range, identifying repeated draws while retaining essential bars.
+The actual distance event is measurable by two-Lipschitz stability and the
+extended pseudometric on `LocallyFiniteDecoratedDiagram`.
+`Probability.SamplingCoverage` supplies exact avoidance probabilities, the
+finite union bound and probability restriction to the support. The ambient
+compact-support formulation uses a separable metric Borel probability space.
+See [finite-sample Rips confidence](math/rips-sampling-confidence.md) for the
+cover hypotheses and the distinction from offset-diagram confidence results.
 
 `TDA.Persistence.QTame` defines `PModule.QTame`: every structure map across
 `a < b` has finite-dimensional image over the coefficient field.
@@ -2266,6 +2519,26 @@ The results provide abstract noncomputable integration and approximation existen
 atomic correctness bridges. They make no finite-pixel persistence-image characteristic claim
 or second-level Gaussian universality claim. See [Gaussian measure embeddings and C₀ approximation](math/gaussian-measure-universality.md).
 
+### Gaussian stability under native boundary transport
+
+`WeightedBoundaryTransportFeature` identifies the native strict half-plane with
+`UpperPoint` and proves bounded-feature integrability for every finite original
+measure. In `WeightedBoundaryTransportStability`,
+`enorm_weightedPersistenceEmbedding_sub_le_boundaryTransportDistance` bounds the
+actual full-plane RKHS embedding difference by
+`(2*A + √2*B/|σ|) * BT₁(μ,ν)` in extended nonnegative values. The birth–persistence
+weight is nonnegative, bounded by B, A-Lipschitz and zero at persistence zero,
+with A,B ≥ 0. Inputs may have unequal masses and nonatomic or noncompact support;
+the estimate requires no moment. Its real-valued companion proves transport
+finiteness from finite first diagonal moments before taking `.toReal`.
+
+`WeightedBoundaryTransportApproximation` gives real-mass atomic sum formulas,
+the native finite weighted-diagram bound, and
+`weightedPersistenceEmbedding_quantizedDiagram_tendsto`: the existing
+same-original-mass quantizations converge in RKHS norm under finite first
+diagonal moment. Zero weights and coincident fractional atoms are included.
+See [the statement, direct-plan proof and source boundaries](math/weighted-boundary-transport.md).
+
 ### Sampled Rips laws
 
 `Probability.FiniteSampling`, `SamplingMoments`, and `GromovWasserstein` provide
@@ -2318,6 +2591,11 @@ the two laws differ whenever those masses differ. The positive-degree fixture
 The compact Borel law and its finite-PMF agreement are described with the
 `Rips.sampleLawMeasure` API above. The finite-PMF transport cost has not yet been
 identified with the infimum over all Borel couplings on finite support.
+For finite input laws, `RipsSamplingEmpirical` instead works directly with the
+atomic `sampleLaw` and its full-degree Wasserstein bound. It uses a proved
+common-mass coupling and a uniform-index empirical PMF, with no full-support
+assumption. Its bound is deterministic in the empirical law; random training
+concentration is separate.
 `RipsReducedH0` defines reduced sublevel H₀ as the categorical kernel of the
 augmentation induced by collapsing each Rips sublevel to a point. For a finite
 nonempty metric space, `reducedSublevelH0Diagram_points_eq_finitePart` identifies
@@ -2472,9 +2750,28 @@ the finite inverse system, bounding the bottleneck distance of the two extracted
 No interval decomposition is assumed. The extracted diagrams have finite births;
 birth-at-minus-infinity strata of unrestricted q-tame modules are not represented. Positive
 finite diagrams embed isometrically (`Diagram.toLocallyFinite`, `bottleneck_toLocallyFinite`), and
-for finite metric spaces `Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` identifies the
-extracted Rips diagram with the finite one; compatibility with the finite `Diagram` API for
-other finite-type q-tame modules remains open. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
+`TDA.Persistence.ConstructibleQTameCompatibility` identifies the canonical diagram with the
+finite barcode for a real module over any field satisfying `FiniteConstructible.IsConstructible`
+on a finite critical grid and having finite-dimensional critical fibers. This is the
+right-continuous convention: the module is zero before the first critical value, constant
+up to isomorphism on cells `[cᵢ,cᵢ₊₁)`, and may have a nonzero final tail. Pointwise
+finite-dimensionality follows from `finiteDimensional_of_isConstructible`, and
+`FiniteConstructible.qTame_of_isConstructible` derives q-tameness.
+`FiniteConstructible.moduleExtendedDiagramMultiplicity_eq_count` says that at every decorated
+point the canonical multiplicity counts the occurrences in `moduleDiagram`, including
+repeated and essential bars. The decoration map sends a finite bar `(b,d)` to
+`(minusCut b,minusCut d)` and an essential bar `(b,∞)` to `(minusCut b,infinityCut)`.
+`FiniteConstructible.ofQModule_eq_toLocallyFinite` identifies the resulting diagrams.
+`FiniteConstructible.ofQModuleMatchingEquiv` transports finite occurrence matchings to
+the canonical diagram with their costs preserved, using
+`Diagram.toLocallyFiniteMatchingEquiv` and its cost theorem.
+`FiniteConstructible.ofQModule_bottleneck_eq_finite` then gives equality of their locally
+finite and finite bottleneck values through `bottleneck_toLocallyFinite`, including different
+or empty grids and infinite distances.
+The theorem concerns these half-open bars and finite births; arbitrary endpoint decorations
+and singleton summands of general pointwise finite-dimensional modules are outside its scope.
+`Rips.qTameDiagramMultiplicity_eq_diagramOccurrenceCount` retains the finite-metric-space
+specialization. See [integer contents on decorated cells](math/persistence-measure-atoms.md) and
 [decorated diagrams of infinite Rips spaces](math/rips-metric-stability.md#decorated-diagrams-of-infinite-rips-spaces).
 
 
@@ -2556,3 +2853,15 @@ active. The core inclusion and collapse compose to the identity, so the cycle's
 nonzero `H₁` class survives in the sparse complex and maps nontrivially to the
 relaxed complex. The sparse complex retains faces from earlier scales through its union;
 the deletion claim concerns the closed active complex at scale one.
+
+## Finite affine endpoint-cost arrangement
+
+`TDA.Persistence.EndpointCostSign` proves the two-factor sign identity for
+weighted absolute differences. `TDA.Persistence.AffineSwitchArrangement`
+constructs finite affine cuts from a finite set of coordinate pairs and derives
+`AffineSwitch.SameCell.sign_cost_sub_eq`, `cost_le_iff`, and `cost_eq_iff`.
+Push branches, the slope-one normalization boundary, repeated endpoints, and
+zero forms are retained. This is an endpoint comparison result; barcode
+transport and matching-distance maximum attainment remain separate. See
+[finite affine cuts](math/affine-switch-arrangement.md) for definitions, proof,
+and the two-cut regression.

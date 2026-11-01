@@ -28,25 +28,6 @@ namespace TDA.Mapper.GraphPL
 
 noncomputable section
 
-/-- The dart `0 → 2` of `mergeY`. -/
-def mergeFoldD02 : mergeY.Dart :=
-  ⟨(0, 2), (mergeY_adj 0 2).2 (by decide)⟩
-
-/-- The dart `1 → 2` of `mergeY`. -/
-def mergeFoldD12 : mergeY.Dart :=
-  ⟨(1, 2), (mergeY_adj 1 2).2 (by decide)⟩
-
-/-- The dart `2 → 3` of `mergeY`. -/
-def mergeFoldD23 : mergeY.Dart :=
-  ⟨(2, 3), (mergeY_adj 2 3).2 (by decide)⟩
-
-@[simp] private theorem mergeFoldD02_fst : mergeFoldD02.fst = 0 := rfl
-@[simp] private theorem mergeFoldD02_snd : mergeFoldD02.snd = 2 := rfl
-@[simp] private theorem mergeFoldD12_fst : mergeFoldD12.fst = 1 := rfl
-@[simp] private theorem mergeFoldD12_snd : mergeFoldD12.snd = 2 := rfl
-@[simp] private theorem mergeFoldD23_fst : mergeFoldD23.fst = 2 := rfl
-@[simp] private theorem mergeFoldD23_snd : mergeFoldD23.snd = 3 := rfl
-
 private def mergeSectionPoint (c M : ℝ) (h0c : 0 < c) (hcM : c ≤ M) (y : ℝ) :
     Realization mergeY := by
   let clamp := Set.projIcc 0 M (le_trans h0c.le hcM) y
@@ -726,11 +707,12 @@ theorem geometricInterleavingDistance_mergeY_eq_min {a b M : ℝ}
   exact le_antisymm hupper
     (ofReal_min_le_geometricInterleavingDistance_mergeY ha hab hbM)
 
-/-- When `2a ≤ b`, the merge-height distance is `b / 2`. -/
+/-- For `0 < a` and `2a ≤ b ≤ M` (so `a < b`), the merge-height distance is `b / 2`. -/
 theorem geometricInterleavingDistance_mergeY_eq_half {a b M : ℝ}
-    (ha : 0 < a) (hab : a < b) (h2a : 2 * a ≤ b) (hbM : b ≤ M) :
+    (ha : 0 < a) (h2a : 2 * a ≤ b) (hbM : b ≤ M) :
     geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights a M))
       (graphPLReebGraph mergeY (mergeHeights b M)) = ENNReal.ofReal (b / 2) := by
+  have hab : a < b := by linarith
   rw [geometricInterleavingDistance_mergeY_eq_min ha hab hbM,
     min_eq_right (by linarith : b / 2 ≤ b - a)]
 

@@ -5,8 +5,9 @@ import TDA.Mapper.GraphPLReebMergeHeight
 /-!
 # Scaling graph-PL Reeb distances
 
-For any simple graph and real vertex heights, `plHeight_smul` identifies scaling the vertex
-heights with scaling the continuous PL height. For finite graphs, possibly different, a common
+For any simple graph and real vertex heights, `TDA.Reeb.GraphPL.plHeight_smul` (in
+`TDA.Reeb.GraphPLHeight`) identifies scaling the vertex heights with scaling the continuous PL
+height. For finite graphs, possibly different, a common
 nonzero multiplier scales the geometric interleaving distance of their Reeb quotients by its
 absolute value. Reflection preserves this distance, and a common affine change has the same
 homogeneity law.
@@ -27,17 +28,6 @@ or scaling of Mapper covers or persistence modules is constructed.
 open Set SimpleGraph CategoryTheory
 open TDA.Reeb TDA.Reeb.GraphPL TDA.Reeb.RGraph TDA.Reeb.OpenInterval
 open scoped NNReal ENNReal
-
-namespace TDA.Reeb.GraphPL
-
-/-- Scaling all vertex heights scales the continuous piecewise-linear height. -/
-theorem plHeight_smul {V : Type*} (G : SimpleGraph V) (h : V → ℝ) (s : ℝ) :
-    plHeight G (fun v => s * h v) = s • plHeight G h :=
-  (plHeight_unique G _ _ (fun v => by simp) fun d t => by
-    simp only [ContinuousMap.smul_apply, smul_eq_mul, plHeight_edgePoint, dartHeight]
-    ring).symm
-
-end TDA.Reeb.GraphPL
 
 namespace TDA.Mapper.GraphPL
 

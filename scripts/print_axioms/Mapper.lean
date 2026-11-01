@@ -1379,3 +1379,17 @@ import TDA
 #print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.edge_to_point_bottleneck_bracket
 #print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.bool_to_unit_path_condition_needed
 #print axioms TDA.Mapper.RefinementHomologyCappedMapPairExamples.edge_to_point_bottleneck_le_half
+-- Shared merge-tree darts, shared edge-to-point map-pair fixtures and zero-map interleavings.
+#print axioms TDA.Mapper.GraphPL.mergeFoldD02_fst
+#print axioms TDA.Mapper.GraphPL.mergeFoldD02_snd
+#print axioms TDA.Mapper.GraphPL.mergeFoldD12_fst
+#print axioms TDA.Mapper.GraphPL.mergeFoldD12_snd
+#print axioms TDA.Mapper.GraphPL.mergeFoldD23_fst
+#print axioms TDA.Mapper.GraphPL.mergeFoldD23_snd
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.unitIntervalPathConnectedSpace
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.edgeRealizationPathConnectedSpace
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.pointRealization_eq
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.edgeHeight_mem_Icc
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.edgeMidpoint_height
+#print axioms TDA.Mapper.GraphPL.Examples.HeightMapPair.pointHeight_apply
+#print axioms TDA.Mapper.nonempty_realInterleaving_of_structureMap_eq_zero

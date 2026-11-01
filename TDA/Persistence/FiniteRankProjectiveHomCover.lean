@@ -1,6 +1,5 @@
 import TDA.Persistence.FiniteRankProjectiveHomFullyFaithful
 import TDA.Persistence.FiniteRankProjectiveResolutionKan
-import TDA.Persistence.FiniteRankProjectiveResolutionKanExamples
 
 /-!
 # Minimal rank-projective covers through the hook-generator Hom functor
@@ -134,41 +133,5 @@ theorem minimalResolution_row_homCover
     (R.resolution.row_rank_exact i).finiteDimensional).mp (R.quotient_is_cover i)
 
 end
-
-namespace Examples
-
-private noncomputable abbrev QF := F (k := ℚ) (S := Fin 2)
-private abbrev QE := E (k := ℚ) (S := Fin 2)
-private noncomputable abbrev QL := L (k := ℚ) (S := Fin 2)
-
-/-- The zero identity cover satisfies the ordinary Hom cover conditions. -/
-theorem zero_identity_homCover :
-    Module.Projective QE (QL ⟶ (0 : PModule ℚ (Fin 2))) ∧
-    Function.Surjective (postcompose (k := ℚ) (S := Fin 2)
-      (𝟙 (0 : PModule ℚ (Fin 2)))) ∧
-    (∀ T : End (QF.obj (0 : PModule ℚ (Fin 2))),
-      T ≫ QF.map (𝟙 (0 : PModule ℚ (Fin 2))) =
-        QF.map (𝟙 (0 : PModule ℚ (Fin 2))) → IsIso T) := by
-  exact (rankProjectiveCover_iff (k := ℚ) (S := Fin 2)
-    (𝟙 (0 : PModule ℚ (Fin 2))) (by intro a; infer_instance)).mp
-    FiniteRankProjectiveResolutionKanExamples.zero_identity_isRankProjectiveCover
-
-/-- The nonzero principal upset identity cover satisfies the ordinary Hom
-conditions, and its birth fiber has a nonzero vector. -/
-theorem principalUpset_identity_homCover (a : Fin 2) :
-    (Module.Projective QE (QL ⟶ HookInfinity.module (R := ℚ) a) ∧
-    Function.Surjective (postcompose (k := ℚ) (S := Fin 2)
-      (𝟙 (HookInfinity.module (R := ℚ) a))) ∧
-    (∀ T : End (QF.obj (HookInfinity.module (R := ℚ) a)),
-      T ≫ QF.map (𝟙 (HookInfinity.module (R := ℚ) a)) =
-        QF.map (𝟙 (HookInfinity.module (R := ℚ) a)) → IsIso T)) ∧
-    ∃ x : (HookInfinity.module (R := ℚ) a).obj a, x ≠ 0 := by
-  constructor
-  · exact (rankProjectiveCover_iff (k := ℚ) (S := Fin 2)
-      (𝟙 (HookInfinity.module (R := ℚ) a)) (by intro p; infer_instance)).mp
-      (FiniteRankProjectiveResolutionKanExamples.principalUpset_identity_isRankProjectiveCover a)
-  · exact (FiniteRankProjectiveResolutionKanExamples.principalUpset_identity_iso_minimal_cover a).2
-
-end Examples
 
 end TDA.Persistence.FiniteRankProjectiveHomCover

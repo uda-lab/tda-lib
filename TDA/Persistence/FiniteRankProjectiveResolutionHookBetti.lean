@@ -46,6 +46,25 @@ def hookTagMultiset : ∀ {m : ℕ}, (Fin m → RealHookTag (n := n)) →
   | 0, _ => 0
   | m + 1, tag => {tag 0} + hookTagMultiset (fun i => tag i.succ)
 
+/-- The recursive hook multiset is the multiset of the finite list of
+occurrences. -/
+theorem hookTagMultiset_eq_ofFn {m : ℕ}
+    (tag : Fin m → RealHookTag (n := n)) :
+    hookTagMultiset tag =
+      (List.ofFn tag : Multiset (RealHookTag (n := n))) := by
+  induction m with
+  | zero => rfl
+  | succ _ ih =>
+      rw [hookTagMultiset, List.ofFn_succ, ih]
+      rfl
+
+/-- The recursive hook multiset is the image of the finite index multiset. -/
+theorem hookTagMultiset_eq_map_univ {m : ℕ}
+    (tag : Fin m → RealHookTag (n := n)) :
+    hookTagMultiset tag = (Finset.univ : Finset (Fin m)).val.map tag := by
+  rw [hookTagMultiset_eq_ofFn, List.ofFn_eq_map]
+  rfl
+
 @[simp] theorem hookTagMultiset_count {m : ℕ}
     (tag : Fin m → RealHookTag (n := n)) (c : RealHookTag (n := n)) :
     (hookTagMultiset tag).count c = Fintype.card {i : Fin m // tag i = c} := by

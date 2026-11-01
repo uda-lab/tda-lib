@@ -1,4 +1,6 @@
 -- Persistence examples and acceptance fixtures, included by the comprehensive TDA root.
+import TDA.Persistence.WeightedBoundaryTransportExamples
+import TDA.Persistence.AffineSwitchExamples
 import TDA.Persistence.RectangleHallExamples
 import TDA.Persistence.RectangleMatchingExamples
 import TDA.Persistence.RectangleMatchingDistanceExamples
@@ -96,6 +98,7 @@ import TDA.Persistence.WeightedKernelStabilityExamples
 import TDA.Persistence.FinitePMatchingCostLawsExamples
 import TDA.Persistence.ArctanWeightExamples
 import TDA.Persistence.RipsWeightedKernelExamples
+import TDA.Persistence.PairPosetInstancesExamples
 import TDA.Persistence.FinitePFilterStabilityExamples
 import TDA.Persistence.FinitePMatchingCostComparisonExamples
 import TDA.Persistence.FinitePCostSimilarityExamples
@@ -133,6 +136,7 @@ import TDA.Persistence.MatrixSequenceExamples
 import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
 import TDA.Persistence.RipsSamplingExamples
+import TDA.Persistence.RipsSamplingConfidenceExamples
 import TDA.Persistence.PersistenceMeasureExamples
 import TDA.Persistence.PersistenceMeasureBoxExamples
 import TDA.Persistence.PersistenceMeasureEssentialBoxExamples
@@ -153,7 +157,14 @@ import TDA.Persistence.FiniteGridComplementCardinalityExamples
 import TDA.Persistence.IncidenceVertexProjectiveDimensionExamples
 import TDA.Persistence.OrdinaryFiniteLatticeDimensionExamples
 import TDA.Persistence.FiniteRankProjectiveHomQuotientDimensionExamples
+import TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples
 import TDA.Persistence.FiniteRankProjectiveResolutionDimensionExamples
+import TDA.Persistence.RankResolutionDegreeTwoExamples
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialExamples
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialTranslationExamples
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialCoordinateTranslationExamples
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialScalingExamples
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialScaledTranslationExamples
 import TDA.Persistence.RankSchanuelUnshiftedExamples
 import TDA.Persistence.FinitePresentationColimitsExamples
 import TDA.Persistence.FinitePresentationPullbackExamples
@@ -188,3 +199,10 @@ import TDA.Persistence.TwoInjectiveHomDimensionExamples
 import TDA.Persistence.IncidenceQuotientSimpleExamples
 import TDA.Persistence.RankSignedStabilityExamples
 import TDA.Persistence.RankSignedBarcodeOneDimensionalExamples
+import TDA.Persistence.RipsSamplingEmpiricalExamples
+import TDA.Persistence.AffineSliceExamples
+import TDA.Persistence.AffineSliceSignedBarcodeExamples
+import TDA.Persistence.AffineSliceMatchingExamples
+import TDA.Persistence.HookInfinityProjectiveExamples
+import TDA.Persistence.FiniteRankProjectiveHomCoverExamples
+import TDA.Persistence.EphemeralIntervalIso

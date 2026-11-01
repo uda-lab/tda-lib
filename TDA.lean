@@ -1,3 +1,3 @@
--- Comprehensive audit and documentation root: library plus standalone examples.
+-- Comprehensive build and audit root: library plus standalone examples.
 import TDA.Library
 import TDA.Examples

@@ -214,6 +214,22 @@ theorem simplicialHomologyIncl_id (K : PreAbstractSimplicialComplex V) (n : ℕ)
   rw [simplicialChainIncl_id]
   exact HomologicalComplex.homologyMap_id _ n
 
+/-- An inclusion between equal complexes induces an isomorphism on homology. -/
+theorem simplicialHomologyIncl_isIso_of_eq (h : K ≤ L) (he : K = L) (n : ℕ) :
+    IsIso (simplicialHomologyIncl R h n) := by
+  subst L
+  rw [simplicialHomologyIncl_id]
+  infer_instance
+
+/-- The empty complex has zero ordinary simplicial homology in every degree. -/
+theorem isZero_simplicialHomology_bot (n : ℕ) :
+    Limits.IsZero (simplicialHomology (⊥ : PreAbstractSimplicialComplex V) R n) := by
+  have hX : Limits.IsZero
+      ((simplicialChainComplex (⊥ : PreAbstractSimplicialComplex V) R).X n) := by
+    rw [simplicialChainComplex_X]
+    exact ModuleCat.isZero_of_subsingleton _
+  exact ShortComplex.isZero_homology_of_isZero_X₂ _ hX
+
 theorem simplicialHomologyIncl_comp (h : K ≤ L) (g : L ≤ M) (n : ℕ) :
     simplicialHomologyIncl R (h.trans g) n =
       simplicialHomologyIncl R h n ≫ simplicialHomologyIncl R g n := by

@@ -1,15 +1,27 @@
 # Minimal-complement cardinalities in finite grids
 
-For a finite lattice `S` with bottom and top, `minimalComplement p` is the set of
-minimal elements outside the principal downset `↓p`; `complementCard p` counts
-those elements, and `maxComplementCard` takes the maximum over `p`. These are
+For a lattice `S`, `minimalComplement p` is the set of minimal elements outside
+the principal downset `↓p`. For a finite lattice, `complementCard p` counts
+those elements and `maxComplementCard` takes the maximum over `p`. These are
 minimal generators of the complement, not covers above `p`.
 
-In a finite product of nonempty finite linear orders, every minimal complement
-has exactly one active coordinate. At that coordinate its value is a minimal
-complement value, and all other coordinates are bottom. This gives an actual
-injection into the index set and proves the bound by the number of factors,
-including the empty product and singleton factors.
+For an arbitrary product of lattices with an `OrderBot` supplied on each
+factor, `mem_minimalComplement_pi_iff_of_orderBot` classifies membership using
+those caller-supplied bottoms: one coordinate is a minimal complement in its
+factor and every other coordinate is bottom. It requires no finiteness or
+linearity; each supplied `OrderBot` already provides its factor bottom and
+inhabitant, so no separate `Nonempty` assumption is needed. This classification
+does not bound the number of minimal complements by the number of factors,
+since a lattice factor can have multiple incomparable minimal complement
+values.
+
+The compatibility theorem `mem_minimalComplement_pi_iff` retains the original
+finite-index and finite nonempty linear-factor assumptions and canonical
+factor bottoms from the private factor enumeration `Fintype.ofFinite (T i)`
+and its `Fintype.toOrderBot` instances. In a finite product of nonempty finite
+linear orders, the unique active coordinate gives an injection into
+the index set and proves the bound by the number of factors, including the
+empty product and singleton factors.
 
 Adjoining a new top requires a correction: the old top has the singleton
 complement consisting of the new top, while the new top itself has empty
