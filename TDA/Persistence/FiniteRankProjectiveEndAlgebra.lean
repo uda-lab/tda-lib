@@ -125,11 +125,12 @@ noncomputable def tagPointEquiv :
 /-- The finite incidence algebra on the poset of intervals in `WithTop S`. -/
 abbrev Incidence := IncidenceAlgebra k (PairPoset S)
 
-/-- The finite family of all finite and infinite rank-projective hooks. -/
+/-- The type indexing the finite and infinite rank-projective hooks. -/
 abbrev HookTag := FiniteRankProjectiveClassification.RankProjectiveHookTag S
 
 local instance : Fintype (HookTag (S := S)) := Fintype.ofFinite (HookTag (S := S))
 
+/-- The hook module assigned to each finite or infinite rank-projective hook tag. -/
 noncomputable abbrev hookFamily : HookTag (S := S) → PModule.{u,0,u} k S :=
   fun t => hookModule (k := k) t
 
@@ -415,7 +416,7 @@ def delta (p q : PairPoset S) (hpq : p ≤ q) : Incidence (k := k) (S := S) := b
   classical
   rfl
 
-/-- The finite indexing type of comparable pairs in the interval poset. -/
+/-- The type of comparable ordered pairs of vertices in `PairPoset S`. -/
 abbrev ComparablePair (S : Type) [Lattice S] :=
   {pq : PairPoset S × PairPoset S // pq.1 ≤ pq.2}
 
@@ -1446,8 +1447,8 @@ theorem diagonalIdeal_eq_incidenceToEndAlgHom_ker :
   · exact diagonalIdeal_le_incidenceToEndAlgHom_ker (k := k) (S := S)
   · exact incidenceToEndAlgHom_ker_le_diagonalIdeal (k := k) (S := S)
 
-/-- The finite hook generator's endomorphism algebra is the incidence algebra
-modulo the intervals which meet the diagonal. -/
+/-- The quotient of the incidence algebra by its diagonal ideal is isomorphic
+as a `k`-algebra to the endomorphism algebra of the finite hook generator. -/
 private noncomputable def incidenceToEndQuotientAlgEquiv :
     ((Incidence (k := k) (S := S)) ⧸
         (diagonalIdeal (k := k) (S := S))) ≃ₐ[k]
@@ -1459,6 +1460,8 @@ private noncomputable def incidenceToEndQuotientAlgEquiv :
       (f := incidenceToEndAlgHom (k := k) (S := S))
       (incidenceToEndAlgHom_surjective (k := k) (S := S)))
 
+/-- A `k`-algebra isomorphism from the endomorphism algebra of the finite hook
+generator to the incidence algebra modulo the diagonal ideal. -/
 noncomputable def hookEndAlgEquivIncidenceQuotient :
     End (HookSum (k := k) (S := S)) ≃ₐ[k]
       ((Incidence (k := k) (S := S)) ⧸
