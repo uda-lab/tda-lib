@@ -1521,9 +1521,12 @@ and finite-free covers. See
 and the Bool regular-module examples in `TDA.Persistence.IncidenceVertexRepresentationExamples`.
 `IncidenceRegularVertex.regularVertexIso` identifies the regular module's actual vertex image with
 the graded free module on interval-pair vertices; its public coefficient and birth laws compute
-the identification on each fiber. Its generic regular-module dimension result is proved for the
-canonical restricted field action and transported to the natural incidence action by an explicit
-unop linear equivalence.
+the identification on each fiber. `IncidenceRegularVertex.regular_finiteDimensional` proves
+finite-dimensionality over `k` of the actual regular right-incidence module with its canonical
+restricted field action. `IncidenceRegularVertex.incidence_finiteDimensional` proves
+finite-dimensionality over `k` of the incidence algebra via `regularIncidenceLinearEquiv`, the
+explicit `k`-linear equivalence induced by `unop`. These are vector-space dimension results, not
+ordinary projective-dimension bounds.
 
 ### Canonical PairPoset instances
 
