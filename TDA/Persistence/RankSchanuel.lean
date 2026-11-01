@@ -14,8 +14,10 @@ then split their projections. Kernel comparisons identify the resulting
 summands with the original terms of the two rank-exact sequences.
 
 This is the rank-exact specialization of BOOS, arXiv:2208.00300v3,
-Appendix A Lemma A.1. Finite resolutions and their length estimates are
-separate inputs to the later resolution theorem.
+Appendix A Lemma A.1. The finite-resolution comparison takes actual finite
+rank-projective resolutions and an actual interleaving, with no numerical
+length bound. The later unshifted real-coordinate theorem uses a separately
+proved degree bound.
 -/
 
 set_option autoImplicit false

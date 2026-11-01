@@ -62,3 +62,10 @@ remaining conclusions of Theorem 5.16.
 The implementation is in `TDA.Persistence.FiniteLatticeComplementCardinality`
 and `TDA.Persistence.FiniteGridInjectiveRankDimension`; the focused fixtures
 are in `TDA.Persistence.FiniteGridComplementCardinalityExamples`.
+
+For any field and `n ≥ 1`, the `2*n-2` degree bound for certified minimal
+rank-projective resolutions of originally finitely presented real-coordinate
+modules is proved separately in `FiniteRankProjectiveResolutionDimension`; see
+[the real-coordinate degree bound](finite-rank-projective-resolution.md#the-real-coordinate-degree-bound).
+It asserts vanishing of zero-padded terms above that degree, independently of
+the stored length.
