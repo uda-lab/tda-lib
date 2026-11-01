@@ -270,7 +270,10 @@ presentation, with no further geometric argument.
   thickening presentation and the homeomorphism. It is derived from the homeomorphism and is not
   used in the construction, which uses only the quotient topology of the window.
 - Functor. `thickeningFunctor ε : ConstructibleSpaceCat ⥤ ConstructibleSpaceCat` lifts
-  `GeometricThickening.functor ε` on all height-preserving maps (`thickeningFunctor_comp_ι`).
+  `GeometricThickening.functor ε` on all height-preserving maps (`thickeningFunctor_comp_ι`). Its
+  comparison with the smoothing of constructible cosheaves (Theorem 4.24 restricted to
+  constructible ℝ-spaces) and the companion for the Reeb quotient of the thickening are in
+  `reeb-thickening-cosheaf-comparison.md`.
 - Graph input. `isConstructibleSpace_thickening_of_isRGraph` derives the graph statement from the
   general one through `isConstructibleSpace_of_isRGraph`. On graph objects the lift is the graph
   lift: `RGraph.rgraphToConstructible ⋙ thickeningFunctor ε = RGraph.thickeningToConstructible ε`

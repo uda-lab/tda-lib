@@ -64,3 +64,4 @@ import TDA.Reeb.ThickeningCylinder
 import TDA.Reeb.ThickeningWindow
 import TDA.Reeb.ThickeningPresentation
 import TDA.Reeb.ThickeningConstructible
+import TDA.Reeb.ThickeningCosheafComparison
