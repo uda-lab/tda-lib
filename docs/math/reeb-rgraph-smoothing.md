@@ -317,7 +317,9 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3–4.4:
   `C''ℛT_ε ≃ C'T_ε ≃ S_εC''` with Theorems 3.17 and 4.24. `geometricSmoothingComparisonIso` is that
   composite: the inverse of `η` (Theorem 3.17, see `reeb-constructible-comparison.md`) whiskered by
   the thickening, followed by `ρ` (Theorem 4.24, see `reeb-geometric-thickening.md`) lifted to graph
-  objects.
+  objects. The same composite on all constructible ℝ-spaces, `C''ℛT_ε ≅ S_εC'`, and the restriction
+  `C'T_ε ≅ S_εC'` of Theorem 4.24 are in `reeb-thickening-cosheaf-comparison.md`; along the graph
+  inclusion they are `geometricSmoothingComparisonIso` and `thickeningCosheafComparisonIso`.
 - **Observation 4.33**, second bullet, `d_R(U_ε f, U_ε g) ≤ d_R(f, g)`, with
   `d_R(f, g) = d_I(C(f), C(g))` (Definition 4.4), follows from Proposition 4.32 as the source says;
   this is `interleavingDistance_geometricSmoothing_le`. Of the first bullet, `U_0 ≃ 1` is
