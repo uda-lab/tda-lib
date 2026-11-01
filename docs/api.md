@@ -1449,6 +1449,14 @@ focused consumers in `TDA.Persistence.IncidenceQuotientSimpleExamples`. This is 
 classification step used in BOOS24-v3 Lemma 5.7, specialized to the interval-pair quotient; it
 does not assert the global-dimension conclusion of that lemma.
 
+When a caller already has a `C`-linear isomorphism `i : M ≅ RightVertexModule v`,
+`IncidenceQuotientSimple.leftDerivedZeroIso_of_rightVertexIso` constructs the `k`-linear
+degree-zero comparison directly from that selected `i`, without requiring a simplicity instance.
+The compatibility entry point `simpleModule_leftDerivedZeroIso` retains its simplicity-instance
+parameter, and the simple-module classification APIs use that hypothesis. For positive degrees,
+the derived object vanishes at every strict vertex, independently of the classified module; the
+unique-vertex theorem packages this vanishing with its simple-module classification.
+
 The reusable scalar transport from bundled left-module coinvariants to the natural quotient-field
 action is public as `TDA.Persistence.IncidenceVertexTor.diagonalQuotientVertexCoinvariantsEquiv`,
 with its representative law `diagonalQuotientVertexCoinvariantsEquiv_mkQ`. The constant family of

@@ -610,11 +610,12 @@ noncomputable def rightVertexModule_restrictKIso (v : StrictVertex S) :
       (ModuleCat.of k k)).symm ≪≫
     ModuleCat.restrictScalarsId'App (RingHom.id k) rfl (ModuleCat.of k k)
 
-/-- Restricting the classification isomorphism to `k` identifies a simple module with the
-degree-zero left-derived vertex tensor. The target carries its existing `k`-module structure. -/
-noncomputable def simpleModule_leftDerivedZeroIso
+/-- Given an explicit `RightQuotient`-linear isomorphism from `M` to a strict-vertex module, this
+identifies the underlying `k`-module of `M` with the degree-zero left-derived vertex tensor. The
+target carries its existing `k`-module structure. No simplicity assumption is needed once the
+isomorphism `i` is supplied; the selected isomorphism is part of the resulting map. -/
+noncomputable def leftDerivedZeroIso_of_rightVertexIso
     (M : ModuleCat (RightQuotient (k := k) (S := S)))
-    [IsSimpleModule (RightQuotient (k := k) (S := S)) M]
     (v : StrictVertex S) (i : M ≅ RightVertexModule (k := k) (S := S) v) :
     restrictRightQuotientModule (k := k) (S := S) M ≅
       (((TDA.Persistence.IncidenceVertexTensorFunctor.vertexTensor (k := k) (S := S) v).leftDerived 0).obj
@@ -623,6 +624,18 @@ noncomputable def simpleModule_leftDerivedZeroIso
     rightVertexModule_restrictKIso (k := k) (S := S) v ≪≫
     (TDA.Persistence.IncidenceVertexTor.diagonalQuotient_leftDerivedZeroIso
       (k := k) (S := S) v).symm
+
+/-- Compatibility entry point for the classification-selected degree-zero comparison. It retains
+the simplicity-instance parameter; callers with an explicit isomorphism can use
+`leftDerivedZeroIso_of_rightVertexIso` directly. -/
+noncomputable def simpleModule_leftDerivedZeroIso
+    (M : ModuleCat (RightQuotient (k := k) (S := S)))
+    [IsSimpleModule (RightQuotient (k := k) (S := S)) M]
+    (v : StrictVertex S) (i : M ≅ RightVertexModule (k := k) (S := S) v) :
+    restrictRightQuotientModule (k := k) (S := S) M ≅
+      (((TDA.Persistence.IncidenceVertexTensorFunctor.vertexTensor (k := k) (S := S) v).leftDerived 0).obj
+        (TDA.Persistence.IncidenceVertexTor.diagonalQuotientModule (k := k) (S := S))) :=
+  leftDerivedZeroIso_of_rightVertexIso (k := k) (S := S) M v i
 
 /-- Every simple right quotient module has a unique strict vertex; its underlying `k`-module is
 isomorphic to the corresponding degree-zero left-derived vertex tensor. -/
@@ -640,8 +653,10 @@ theorem simpleModule_existsUnique_vertex_and_derivedZero
   intro w hw
   exact hunique w hw.1
 
-/-- The unique vertex of a simple module has the all-positive left-derived vanishing proved in
-`IncidenceVertexTor`. -/
+/-- A simple right quotient module has a unique strict vertex. For every strict vertex `v` and
+`n > 0`, the object `((vertexTensor v).leftDerived n).obj diagonalQuotientModule` vanishes,
+independently of `M`, by `IncidenceVertexTor`; `M` is used only to package this with the
+classification. -/
 theorem simpleModule_existsUnique_vertex_positiveLeftDerived_isZero
     (M : ModuleCat (RightQuotient (k := k) (S := S)))
     [IsSimpleModule (RightQuotient (k := k) (S := S)) M]
