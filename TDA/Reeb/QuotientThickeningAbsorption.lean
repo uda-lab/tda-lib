@@ -94,7 +94,7 @@ theorem isIso_map_functor_map_projNatTrans_app {X : Over (TopCat.of ℝ)}
   exact h
 
 /-- **The comparison at `T_ε X`.** For constructible `X`, `κ` is an isomorphism at the thickening
-`T_ε X`, although `T_ε X` is not claimed constructible: it is surjective at every interval, and
+`T_ε X`, without using constructibility of `T_ε X`: it is surjective at every interval, and
 injective because `κ_(T_ε X) ≫ Φ (ℛ T_ε q_X)` is an isomorphism. -/
 theorem isIso_intervalComponentComparison_thickening {X : Over (TopCat.of ℝ)}
     (hX : IsConstructibleSpace X) (ε : ℝ≥0) :

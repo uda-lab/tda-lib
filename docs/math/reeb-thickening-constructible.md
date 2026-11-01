@@ -227,8 +227,8 @@ pieces by the endpoint identifications. Agreement of the original endpoint relat
 refined attaching maps is `rawInv_segBot`, `rawInv_segTop` together with
 `toProd_realize_edgeIncl` and `toProd_realize_vertexIncl`. Only this fixed-grid,
 cylinder-compatible attachment diagram is covered, not arbitrary finite colimits of constructible
-ℝ-spaces. `IsConstructibleSpace` is unchanged; constructibility of thickenings of constructible
-ℝ-spaces is not claimed here.
+ℝ-spaces. `IsConstructibleSpace` is unchanged; the constructibility consequence is assembled in
+`TDA.Reeb.ThickeningConstructible` (next section).
 
 Fixtures (`TDA.Reeb.ThickeningPresentationExamples`), each applying the homeomorphism: one point
 at one level with no edges; the presentation with empty pieces, whose thickening presentation is
@@ -238,14 +238,87 @@ cylinder point at height `u` goes to the parameter `u`; and the Sierpiński pres
 thickening presentation has compact locally path-connected pieces and a non-Hausdorff
 realization.
 
+## Theorem 4.27
+
+`TDA.Reeb.ThickeningConstructible` assembles the constructibility of thickenings from the general
+presentation, with no further geometric argument.
+
+- Over `ℝ`. For a presentation `P` over levels `S`, `thickOverIso` is the isomorphism over `ℝ`
+  from the thickening of the realization (`GeometricThickening.functor ε` applied to
+  `Over.mk (P.height S)`) to the realization of `P.shiftedThick S ε` over the shifted witness
+  `S.shifted ε`. Its underlying map is the inverse of `shiftedThickHomeomorph`
+  (`thickOverIso_hom_left_apply`), and its height equation is `height_thickHomeomorph_symm`. No
+  hypothesis on the pieces is used. For `A ≅ |P|` over `ℝ`, `thickOverIsoOfIso` composes the
+  thickening of that isomorphism with `thickOverIso`.
+- Presentation level. If the pieces of `P` are compact and locally path-connected, so are the
+  windows of `P.shiftedThick S ε`, and the thickening of `|P|` is constructible, presented on
+  `S.shifted ε` (`isConstructibleSpace_thickening_realization`).
+- General form. `isConstructibleSpace_thickening_of_isConstructibleSpace`: for every
+  `A : Over (TopCat.of ℝ)` with `IsConstructibleSpace A` and every `ε : ℝ≥0`, the thickening
+  `(GeometricThickening.functor ε).obj A` is constructible. The proof takes the presentation and
+  the isomorphism `A ≅ |P|` supplied by `IsConstructibleSpace` and applies `thickOverIsoOfIso`.
+  There is no Hausdorff hypothesis on `A` or on the pieces, no positivity hypothesis on `ε`, and
+  `IsConstructibleSpace` is unchanged. The name is chosen to differ from the graph statement
+  `RGraph.isConstructibleSpace_thickening`.
+- Critical set. If `A` is presented over `S`, its thickening is presented over `S.shifted ε`,
+  whose levels are the distinct values of `(S - ε) ∪ (S + ε)` in increasing order
+  (`CriticalValues.mem_range_shifted_iff`). This is an admissible critical set for the thickened
+  height, not necessarily the minimal one; no candidate value is asserted to be essential.
+- Fibers. The vertex piece of `P.shiftedThick S ε` at a shifted level `b j`, the window at `b j`,
+  is homeomorphic to the fiber of the thickened height over `b j` by `ξ ↦ (ξ, b j - f ξ)`
+  (`windowFiberHomeomorph`, `coe_windowFiberHomeomorph`), through `criticalFiberHomeomorph` of the
+  thickening presentation and the homeomorphism. It is derived from the homeomorphism and is not
+  used in the construction, which uses only the quotient topology of the window.
+- Functor. `thickeningFunctor ε : ConstructibleSpaceCat ⥤ ConstructibleSpaceCat` lifts
+  `GeometricThickening.functor ε` on all height-preserving maps (`thickeningFunctor_comp_ι`).
+- Graph input. `isConstructibleSpace_thickening_of_isRGraph` derives the graph statement from the
+  general one through `isConstructibleSpace_of_isRGraph`. On graph objects the lift is the graph
+  lift: `RGraph.rgraphToConstructible ⋙ thickeningFunctor ε = RGraph.thickeningToConstructible ε`
+  (`rgraphToConstructible_comp_thickeningFunctor`). The existing graph results and their proof
+  (see `reeb-rgraph-thickening.md`) are unchanged; the general route presents a graph thickening
+  by windows, which are compact and locally path-connected but not finite discrete, also at
+  `ε = 0`.
+- Reeb quotient. Followed by the Reeb quotient, the lift is the existing
+  `RGraph.thickeningQuotient ε` (`thickeningFunctor_comp_quotientRGraphFunctor`). The statement
+  that `ℛ T_ε X` is a graph object (`isRGraph_quotient_thickening_of_isConstructibleSpace`, see
+  `reeb-quotient-thickening-absorption.md`) remains a distinct statement with its own proof; the
+  equation only identifies the two functors.
+
+Fixtures (`TDA.Reeb.ThickeningConstructibleExamples`): a compact locally path-connected space at
+constant height `c` is constructible, and so is its thickening, with shifted levels `c - ε` and
+`c + ε`; the indiscrete two-point space at constant height is constructible, its thickening is
+constructible, and neither the thickened space nor any vertex piece of its thickening
+presentation is Hausdorff, so the theorem does not specialize to Hausdorff inputs; `ε = 0` by the
+general theorem and, independently, through `zeroIso`; the empty space, whose thickening is
+constructible and empty; and `S = {0, 2}` at `ε = 1`, whose four shifted values merge to three
+levels (`shiftedCount = 2`), with the theorem applied to the segment over `S`.
+
 ## Source correspondence
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.2, define constructible ℝ-spaces as
 realizations of compact locally path-connected pieces, and Theorem 4.27 states that the thickening
-of a constructible ℝ-space is constructible; its proof builds the thickening from the thickenings
-of the pieces (see `reeb-rgraph-thickening.md` for the graph case formalized here). The tools, the
-one-cylinder presentation and the general presentation above are prerequisites for that argument
-on the library's presentations, whose pieces need not be Hausdorff. They are library statements;
-Theorem 4.27 itself is not claimed by this note.
+of a constructible ℝ-space is constructible; its proof builds the thickening from the windows
+and fibers of the input. With `IsConstructibleSpace` for the source's ℝ-**Top**ᶜ, Theorem 4.27
+is claimed here in general form: `isConstructibleSpace_thickening_of_isConstructibleSpace`, for every
+constructible ℝ-space and every `ε ≥ 0`, with pieces that need not be Hausdorff. The critical set
+of the proof, `(S - ε) ∪ (S + ε)` in increasing order, is `S.shifted ε`; it is used as an
+admissible critical set. Corollary 4.28 states that `f_ε` has critical set `(S - ε) ∪ (S + ε)`
+when `f` has critical set `S`; in the sense of a set over which the thickening is presented,
+this is `isConstructibleSpace_thickening_of_isConstructibleSpace`, through `thickOverIsoOfIso`, and
+on a presentation `isConstructibleSpace_thickening_realization`. Minimality, that
+every value of `S.shifted ε` is essential for `f_ε`, is not claimed. The tools, the one-cylinder
+presentation and the general presentation above are library statements on which the theorem
+rests. The source's proof ends
+with a fiberwise bijection and the compact-to-Hausdorff theorem; for non-Hausdorff pieces the
+inverse is instead shown continuous by the quotient-topology comparison of the general
+presentation. This records a different proof route for the library's broader class, not an error
+in the source. Graph input (Proposition 4.26) is a specialization
+(`isConstructibleSpace_thickening_of_isRGraph`; see `reeb-rgraph-thickening.md` for the graph
+case formalized earlier), and the Reeb-quotient statement of
+`reeb-quotient-thickening-absorption.md` remains distinct.
 
-Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.2 and §4.3](https://arxiv.org/html/1501.04147v1).
+The statements of Theorem 4.27 and Corollary 4.28 and the steps of the proof of Theorem 4.27 were
+compared with the HTML version of arXiv:1501.04147v1.
+
+Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.2 and §4.3, Theorem 4.27 and
+Corollary 4.28](https://arxiv.org/html/1501.04147v1).

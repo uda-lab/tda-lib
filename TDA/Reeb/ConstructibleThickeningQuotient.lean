@@ -11,9 +11,11 @@ the original space.  Later blocks of this file package these facts into point-bi
 `thickeningQuotient`, and the isomorphisms `thickeningQuotientAbsorptionIso` and
 `thickeningQuotientCompIso`.
 
-The route bypasses DMP15-v1 Theorem 4.27, which asserts constructibility of `T_ε X` beyond graph
-input; no such assertion is claimed here.  The statements in this file are library statements,
-not attributions to that source.  See `docs/math/reeb-quotient-thickening-absorption.md`.
+The route does not use DMP15-v1 Theorem 4.27, which asserts constructibility of `T_ε X` beyond
+graph input; that theorem is proved separately, in general form, as
+`isConstructibleSpace_thickening_of_isConstructibleSpace` in `TDA.Reeb.ThickeningConstructible`.
+The statements in this file are library statements, not attributions to that source.
+See `docs/math/reeb-quotient-thickening-absorption.md`.
 -/
 
 open Set Topology CategoryTheory

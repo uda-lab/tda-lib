@@ -282,9 +282,10 @@ scope.
 Further directions include identification of boundary transport with an ordinary
 Wasserstein coupling API, birth-at-minus-infinity strata and compatibility with the finite
 `Diagram` API for other finite-type q-tame modules, the countable-sum extension of
-signed-barcode stability, higher-dimensional Mapper–Reeb approximation, and constructibility of
-the product thickening of a general constructible real space beyond graph input as
-in de Silva, Munch and Patel, *Categorified Reeb Graphs*, Theorem 4.27.
+signed-barcode stability and higher-dimensional Mapper–Reeb approximation. On `develop`, the
+product thickening of every constructible real space is constructible, for every `ε ≥ 0` and
+without a Hausdorff hypothesis (de Silva, Munch and Patel, *Categorified Reeb Graphs*,
+Theorem 4.27; see the [API guide](docs/api.md)); this is not part of v0.3.0.
 [Issue #227](https://github.com/uda-lab/tda-lib/issues/227) records the roadmap and its
 source links.
 
