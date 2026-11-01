@@ -56,9 +56,9 @@ has an actual ambient witness. Distances to the finitely many points in the
 two images embed their joint support into the fixed sup-norm product
 `(X ⊕ Y) → ℝ`. `coordinatesAmbient_cost` proves that this replacement preserves
 the exact Prokhorov cost, using the finite-uniform cross-distance transport
-lemmas. Finite closed subsets of the support suffice to test the cost, as in
-`levyProkhorovDist_uniform_le_of_isClosed`, agreeing with the source
-closed-set convention. Every such ambient cost therefore gives an upper bound on the same GP
+lemmas. Testing closed sets suffices, as in `levyProkhorovDist_uniform_le_of_isClosed`, whose
+hypothesis ranges over all closed sets (its proof reduces to finite label images), agreeing with
+the source closed-set convention. Every such ambient cost therefore gives an upper bound on the same GP
 infimum.
 `supNormWitness` constructs the resulting finite-dimensional witness and its
 actual restricted multicover interleaving.

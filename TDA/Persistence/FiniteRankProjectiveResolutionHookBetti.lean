@@ -10,6 +10,11 @@ sums. The actual grid Kan comparisons transport those occurrences to
 real-coordinate hooks. Zero-padded termwise uniqueness and hook-sum
 multiplicity uniqueness then make the degreewise multisets, and their separate
 even and odd sums, independent of the chosen certified minimal resolution.
+
+As in the existence and `2*n-2` bound theorems, the finite-presentation
+hypothesis takes index carriers in `Type 0`
+(`GradedFree.FinitelyPresented.{u,0,0}`); a finite presentation with carriers
+in `Type u` is converted by `GradedFree.finitelyPresented_lowerIndexUniverse`.
 -/
 
 set_option autoImplicit false
@@ -114,8 +119,8 @@ The witness is obtained from the constructed finite-grid resolution, carried
 through its genuine Lan biproduct and hook isomorphisms, and then through the
 presentation reconstruction. -/
 theorem finitelyPresented_exists_minimal_resolution_with_hook_sum_terms
-    (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M) :
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M) :
     ∃ R : MinimalFiniteRankProjectiveResolution (k := k) (M := M),
       ∀ j, Nonempty (FiniteHookSumPresentation (k := k) (n := n) (R.termAt j)) := by
   classical
@@ -180,13 +185,13 @@ presented real-coordinate module admits an actual finite hook-sum
 presentation. The constructed resolution supplies the decomposition; the
 termwise comparison theorem transports it to the given resolution. -/
 theorem MinimalFiniteRankProjectiveResolution.exists_hook_sum_presentation
-    (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ) :
     Nonempty (FiniteHookSumPresentation (k := k) (n := n) (R.termAt j)) := by
   obtain ⟨R₀, hR₀⟩ :=
     FiniteRankProjectiveResolution.finitelyPresented_exists_minimal_resolution_with_hook_sum_terms
-      (k := k) (n := n) _hn M hM
+      (k := k) (n := n) M hM
   obtain ⟨e⟩ := R.termAt_nonempty_iso R₀ j
   obtain ⟨P⟩ := hR₀ j
   exact ⟨⟨P.count, P.tag, e.trans P.iso⟩⟩
@@ -195,24 +200,24 @@ theorem MinimalFiniteRankProjectiveResolution.exists_hook_sum_presentation
 Its construction uses choice, but the following theorem proves its value
 independent of that choice and of the chosen resolution. -/
 noncomputable def MinimalFiniteRankProjectiveResolution.hookBettiMultiset
-    (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ) :
     Multiset (RealHookTag (n := n)) :=
   hookTagMultiset
-    (Classical.choice (R.exists_hook_sum_presentation (k := k) (n := n) _hn M hM j)).tag
+    (Classical.choice (R.exists_hook_sum_presentation (k := k) (n := n) M hM j)).tag
 
 /-- Relate the chosen degreewise multiset to any supplied actual hook-sum
 presentation, without unfolding the choice-based definition. -/
 theorem MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ)
     (P : FiniteHookSumPresentation (k := k) (n := n) (R.termAt j)) :
-    R.hookBettiMultiset (k := k) (n := n) hn M hM j =
+    R.hookBettiMultiset (k := k) (n := n) M hM j =
       hookTagMultiset P.tag := by
   let Q := Classical.choice
-    (R.exists_hook_sum_presentation (k := k) (n := n) hn M hM j)
+    (R.exists_hook_sum_presentation (k := k) (n := n) M hM j)
   have h := Q.tagMultiset_eq_of_iso P (Iso.refl (R.termAt j))
   simpa [MinimalFiniteRankProjectiveResolution.hookBettiMultiset, Q] using h
 
@@ -220,15 +225,15 @@ theorem MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
 resolution. This combines zero-padded term isomorphism with finite hook-sum
 multiplicity uniqueness. -/
 theorem MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R S : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ) :
-    R.hookBettiMultiset (k := k) (n := n) hn M hM j =
-      S.hookBettiMultiset (k := k) (n := n) hn M hM j := by
+    R.hookBettiMultiset (k := k) (n := n) M hM j =
+      S.hookBettiMultiset (k := k) (n := n) M hM j := by
   let P := Classical.choice
-    (R.exists_hook_sum_presentation (k := k) (n := n) hn M hM j)
+    (R.exists_hook_sum_presentation (k := k) (n := n) M hM j)
   let Q := Classical.choice
-    (S.exists_hook_sum_presentation (k := k) (n := n) hn M hM j)
+    (S.exists_hook_sum_presentation (k := k) (n := n) M hM j)
   obtain ⟨e⟩ := R.termAt_nonempty_iso S j
   simpa [MinimalFiniteRankProjectiveResolution.hookBettiMultiset, P, Q] using
     P.tagMultiset_eq_of_iso Q e
@@ -237,13 +242,13 @@ theorem MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq
 multiset. This makes the finite parity sums independent of raw resolution
 length. -/
 theorem MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_zero_of_length_le
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) {j : ℕ}
     (hj : R.resolution.length ≤ j) :
-    R.hookBettiMultiset (k := k) (n := n) hn M hM j = 0 := by
+    R.hookBettiMultiset (k := k) (n := n) M hM j = 0 := by
   let P := Classical.choice
-    (R.exists_hook_sum_presentation (k := k) (n := n) hn M hM j)
+    (R.exists_hook_sum_presentation (k := k) (n := n) M hM j)
   let emptyTag : Fin 0 → RealHookTag (n := n) := Fin.elim0
   have hEmpty : IsZero
       (⨁ fun i : Fin 0 =>
@@ -265,13 +270,13 @@ theorem MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_zero_of_lengt
 /-- Any is-zero resolution term has no hook occurrences, including terms
 vanishing because the module is already projective. -/
 theorem MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_zero_of_term_isZero
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) {j : ℕ}
     (hj : IsZero (R.termAt j)) :
-    R.hookBettiMultiset (k := k) (n := n) hn M hM j = 0 := by
+    R.hookBettiMultiset (k := k) (n := n) M hM j = 0 := by
   let P := Classical.choice
-    (R.exists_hook_sum_presentation (k := k) (n := n) hn M hM j)
+    (R.exists_hook_sum_presentation (k := k) (n := n) M hM j)
   let emptyTag : Fin 0 → RealHookTag (n := n) := Fin.elim0
   have hEmpty : IsZero
       (⨁ fun i : Fin 0 =>
@@ -300,30 +305,30 @@ def oddHookDegrees (L : ℕ) : Finset ℕ :=
 
 /-- The sum of hook occurrences in even degrees of a zero-padded resolution. -/
 noncomputable def MinimalFiniteRankProjectiveResolution.evenHookBetti
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
     Multiset (RealHookTag (n := n)) :=
   ∑ j ∈ evenHookDegrees R.resolution.length,
-    R.hookBettiMultiset (k := k) (n := n) hn M hM j
+    R.hookBettiMultiset (k := k) (n := n) M hM j
 
 /-- The sum of hook occurrences in odd degrees of a zero-padded resolution. -/
 noncomputable def MinimalFiniteRankProjectiveResolution.oddHookBetti
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
     Multiset (RealHookTag (n := n)) :=
   ∑ j ∈ oddHookDegrees R.resolution.length,
-    R.hookBettiMultiset (k := k) (n := n) hn M hM j
+    R.hookBettiMultiset (k := k) (n := n) M hM j
 
 /-- The even-degree hook sum is independent of the chosen minimal resolution,
 including when their raw lengths differ. -/
 theorem MinimalFiniteRankProjectiveResolution.evenHookBetti_eq
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R S : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
-    R.evenHookBetti (k := k) (n := n) hn M hM =
-      S.evenHookBetti (k := k) (n := n) hn M hM := by
+    R.evenHookBetti (k := k) (n := n) M hM =
+      S.evenHookBetti (k := k) (n := n) M hM := by
   classical
   let L := max R.resolution.length S.resolution.length
   have hR : evenHookDegrees R.resolution.length ⊆ evenHookDegrees L := by
@@ -336,39 +341,39 @@ theorem MinimalFiniteRankProjectiveResolution.evenHookBetti_eq
     exact ⟨lt_of_lt_of_le hj.1 (Nat.le_max_right _ _), hj.2⟩
   have hExtendR :
       (∑ j ∈ evenHookDegrees R.resolution.length,
-        R.hookBettiMultiset (k := k) (n := n) hn M hM j) =
+        R.hookBettiMultiset (k := k) (n := n) M hM j) =
       ∑ j ∈ evenHookDegrees L,
-        R.hookBettiMultiset (k := k) (n := n) hn M hM j := by
+        R.hookBettiMultiset (k := k) (n := n) M hM j := by
     apply Finset.sum_subset hR
     intro j hj hjR
     simp only [evenHookDegrees, Finset.mem_filter, Finset.mem_range] at hj hjR
     have hnot : ¬ j < R.resolution.length := fun hlt => hjR ⟨hlt, hj.2⟩
-    exact R.hookBettiMultiset_eq_zero_of_length_le hn M hM (Nat.le_of_not_gt hnot)
+    exact R.hookBettiMultiset_eq_zero_of_length_le M hM (Nat.le_of_not_gt hnot)
   have hExtendS :
       (∑ j ∈ evenHookDegrees S.resolution.length,
-        S.hookBettiMultiset (k := k) (n := n) hn M hM j) =
+        S.hookBettiMultiset (k := k) (n := n) M hM j) =
       ∑ j ∈ evenHookDegrees L,
-        S.hookBettiMultiset (k := k) (n := n) hn M hM j := by
+        S.hookBettiMultiset (k := k) (n := n) M hM j := by
     apply Finset.sum_subset hS
     intro j hj hjS
     simp only [evenHookDegrees, Finset.mem_filter, Finset.mem_range] at hj hjS
     have hnot : ¬ j < S.resolution.length := fun hlt => hjS ⟨hlt, hj.2⟩
-    exact S.hookBettiMultiset_eq_zero_of_length_le hn M hM (Nat.le_of_not_gt hnot)
+    exact S.hookBettiMultiset_eq_zero_of_length_le M hM (Nat.le_of_not_gt hnot)
   unfold MinimalFiniteRankProjectiveResolution.evenHookBetti
   rw [hExtendR]
   rw [hExtendS]
   apply Finset.sum_congr rfl
   intro j hj
-  exact R.hookBettiMultiset_eq hn M hM S j
+  exact R.hookBettiMultiset_eq M hM S j
 
 /-- The odd-degree hook sum is independent of the chosen minimal resolution,
 including when their raw lengths differ. -/
 theorem MinimalFiniteRankProjectiveResolution.oddHookBetti_eq
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R S : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
-    R.oddHookBetti (k := k) (n := n) hn M hM =
-      S.oddHookBetti (k := k) (n := n) hn M hM := by
+    R.oddHookBetti (k := k) (n := n) M hM =
+      S.oddHookBetti (k := k) (n := n) M hM := by
   classical
   let L := max R.resolution.length S.resolution.length
   have hR : oddHookDegrees R.resolution.length ⊆ oddHookDegrees L := by
@@ -381,30 +386,30 @@ theorem MinimalFiniteRankProjectiveResolution.oddHookBetti_eq
     exact ⟨lt_of_lt_of_le hj.1 (Nat.le_max_right _ _), hj.2⟩
   have hExtendR :
       (∑ j ∈ oddHookDegrees R.resolution.length,
-        R.hookBettiMultiset (k := k) (n := n) hn M hM j) =
+        R.hookBettiMultiset (k := k) (n := n) M hM j) =
       ∑ j ∈ oddHookDegrees L,
-        R.hookBettiMultiset (k := k) (n := n) hn M hM j := by
+        R.hookBettiMultiset (k := k) (n := n) M hM j := by
     apply Finset.sum_subset hR
     intro j hj hjR
     simp only [oddHookDegrees, Finset.mem_filter, Finset.mem_range] at hj hjR
     have hnot : ¬ j < R.resolution.length := fun hlt => hjR ⟨hlt, hj.2⟩
-    exact R.hookBettiMultiset_eq_zero_of_length_le hn M hM (Nat.le_of_not_gt hnot)
+    exact R.hookBettiMultiset_eq_zero_of_length_le M hM (Nat.le_of_not_gt hnot)
   have hExtendS :
       (∑ j ∈ oddHookDegrees S.resolution.length,
-        S.hookBettiMultiset (k := k) (n := n) hn M hM j) =
+        S.hookBettiMultiset (k := k) (n := n) M hM j) =
       ∑ j ∈ oddHookDegrees L,
-        S.hookBettiMultiset (k := k) (n := n) hn M hM j := by
+        S.hookBettiMultiset (k := k) (n := n) M hM j := by
     apply Finset.sum_subset hS
     intro j hj hjS
     simp only [oddHookDegrees, Finset.mem_filter, Finset.mem_range] at hj hjS
     have hnot : ¬ j < S.resolution.length := fun hlt => hjS ⟨hlt, hj.2⟩
-    exact S.hookBettiMultiset_eq_zero_of_length_le hn M hM (Nat.le_of_not_gt hnot)
+    exact S.hookBettiMultiset_eq_zero_of_length_le M hM (Nat.le_of_not_gt hnot)
   unfold MinimalFiniteRankProjectiveResolution.oddHookBetti
   rw [hExtendR]
   rw [hExtendS]
   apply Finset.sum_congr rfl
   intro j hj
-  exact R.hookBettiMultiset_eq hn M hM S j
+  exact R.hookBettiMultiset_eq M hM S j
 
 /-- A parity-separated signed hook barcode stores positive and negative
 occurrences as separate finite multisets. -/
@@ -414,23 +419,23 @@ structure SignedHookBarcode (n : ℕ) where
 
 /-- The signed hook barcode attached to one certified minimal resolution. -/
 noncomputable def MinimalFiniteRankProjectiveResolution.signedHookBarcode
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
     SignedHookBarcode n :=
-  ⟨R.evenHookBetti (k := k) (n := n) hn M hM,
-    R.oddHookBetti (k := k) (n := n) hn M hM⟩
+  ⟨R.evenHookBetti (k := k) (n := n) M hM,
+    R.oddHookBetti (k := k) (n := n) M hM⟩
 
 /-- The signed hook barcode of a finitely presented module is independent of
 the chosen certified minimal finite rank-projective resolution. -/
 theorem MinimalFiniteRankProjectiveResolution.signedHookBarcode_eq
-    (hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0} (R := k) (P := Fin n → ℝ) M)
     (R S : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
-    R.signedHookBarcode (k := k) (n := n) hn M hM =
-      S.signedHookBarcode (k := k) (n := n) hn M hM := by
-  change (⟨R.evenHookBetti hn M hM, R.oddHookBetti hn M hM⟩ : SignedHookBarcode n) = _
+    R.signedHookBarcode (k := k) (n := n) M hM =
+      S.signedHookBarcode (k := k) (n := n) M hM := by
+  change (⟨R.evenHookBetti M hM, R.oddHookBetti M hM⟩ : SignedHookBarcode n) = _
   exact congrArg₂ (fun p q => (⟨p, q⟩ : SignedHookBarcode n))
-    (R.evenHookBetti_eq hn M hM S) (R.oddHookBetti_eq hn M hM S)
+    (R.evenHookBetti_eq M hM S) (R.oddHookBetti_eq M hM S)
 
 end TDA.Persistence

@@ -61,10 +61,10 @@ has zero positive-degree terms and therefore no positive-degree hook tags. -/
 theorem principalHook_positive_degree_terms_have_empty_hook_multiset
     (R : MinimalFiniteRankProjectiveResolution (k := ℚ) (M := principalHook))
     {j : ℕ} (hj : 0 < j) :
-    R.hookBettiMultiset (k := ℚ) (n := 2) (by omega) principalHook
+    R.hookBettiMultiset (k := ℚ) (n := 2) principalHook
       principalHook_finitelyPresented j = 0 := by
   apply R.hookBettiMultiset_eq_zero_of_term_isZero
-    (k := ℚ) (n := 2) (by omega) principalHook principalHook_finitelyPresented
+    (k := ℚ) (n := 2) principalHook principalHook_finitelyPresented
   obtain ⟨e⟩ := R.termAt_nonempty_iso principalHookIdentityMinimalResolution j
   have hzero : principalHookIdentityMinimalResolution.termAt j =
       (0 : PModule.{0,0,0} ℚ (Fin 2 → ℝ)) := by

@@ -7,7 +7,8 @@ import TDA.Simplicial.H0Augmentation
 # Rank-obstruction fixtures for Mapper interleaving distances
 
 * **Exact distance `1`.** Over the one-point space, the towers whose single member is the whole
-  space from radius `1` on, respectively from radius `0` on, have degree-zero Mapper homology
+  space for radii strictly greater than `1`, respectively `0`, and empty at and below that
+  radius, have degree-zero Mapper homology
   modules at real interleaving distance exactly `1` over every field. Cover maps shifting by `1`
   give the upper bound; for `ε < 1` the second module has a nonzero structure map from `1 - ε`
   to `1 + ε`, while the first module is zero at `1`.
@@ -101,10 +102,12 @@ local instance {ι : Type} [LinearOrder ι] (U : ι → Set Unit) :
     LinearOrder (ComponentIndex threeStageMap U) :=
   componentIndexLinearOrder threeStageMap U
 
-/-- The one-point space as the only member from radius `1` on; the member is empty before. -/
+/-- The one-point space as the only member for radii strictly greater than `1`; the member is
+empty at and below `1`. -/
 def lateTower (t : ℝ) : Unit → Set Unit := fun _ => {_x | 1 < t}
 
-/-- The one-point space as the only member from radius `0` on; the member is empty before. -/
+/-- The one-point space as the only member for radii strictly greater than `0`; the member is
+empty at and below `0`. -/
 def earlyTower (t : ℝ) : Unit → Set Unit := fun _ => {_x | 0 < t}
 
 /-- The identity-selector refinements of the late tower. -/

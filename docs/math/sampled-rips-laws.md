@@ -53,7 +53,7 @@ The proof bounds the power of the matrix maximum by the sum over unordered pairs
 of distinct positions. `expectation_pairEnergy` computes this sum's expectation
 exactly as `binom(n,2) A_p(π)`. Taking infima gives
 `wasserstein_sampleLaw_le_gromovWasserstein_allDegrees`, for `p ≥ 1`, `n ≥ 2`,
-and every degree `q`:
+and every natural degree `q`, including degree zero:
 
 \[
  W_p(\operatorname{sampleLaw}(k,μ,n,q),
@@ -66,9 +66,16 @@ degree-`q+1` specialization. At `q = 0`, the theorem compares full ordinary
 H₀ diagram laws; each nonempty sample retains its essential bar.
 
 The separate theorem
-`wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity` proves
-`W_∞ ≤ 2 GW_∞`. It uses supported tuples and essential suprema, without a finite-p
-limit argument or an assumption that an optimal coupling exists.
+`wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees` proves
+`W_∞ ≤ 2 GW_∞` for every sample size and every natural degree. It uses supported
+tuples and essential suprema, without a finite-p limit argument or an assumption
+that an optimal coupling exists. Neither atomic theorem assumes a compact
+ambient space, so both apply, for example, to the real-valued two-point law
+below on the noncompact space `ℝ`. The
+positive-degree wrappers `wasserstein_sampleLaw_le_gromovWasserstein` and
+`wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity` retain the
+specializations to degree `q+1`. At `q = 0` the atomic laws are laws of full
+ordinary H₀ diagrams, not of reduced H₀ diagrams.
 
 ### Finite-population total variation
 
@@ -229,6 +236,20 @@ sample size, but the explicit rare-atom formula here is for `n = 2`; no
 arbitrary-`n` atom formula is asserted. The full-support diagram therefore
 cannot replace the sampled diagram law.
 
+Two degree-zero fixtures apply the atomic all-degree theorem to this input.
+`weighted_twoPoint_sampleLaw_bound_degreeZero` states the finite-p bound between
+the H₀ sample law of `twoPointLaw` and that of a one-point input, for every
+`n ≥ 2`. For `n = 2` the source law has the rare atom of exact mass `2ε(1−ε)`
+above; for `0 < ε < 1` this mass lies strictly between zero and one, so the
+source law is not a Dirac mass.
+`twoPoint_pair_sampleLaw_bound_degreeZero` compares the `n = 2` H₀ sample laws
+of `twoPointLaw` at two weights `ε` and `ε'`. It proves
+`W_p ≤ 2 GW_p` between them, the exact rare-atom mass `2ε(1−ε)` and `2ε'(1−ε')`
+in each law, and that the two laws differ whenever these masses differ. It
+does not compute the GW distance between the two inputs. The positive-degree
+fixture `weighted_twoPoint_sampleLaw_bound` only instantiates the
+`q+1` wrapper.
+
 The singleton distortion identity is exposed as
 `gromovWasserstein_of_subsingleton`. A separate uniform two-point fixture at
 distance two proves that distinct draws have one essential and one finite full
@@ -245,9 +266,9 @@ The source is Gómez and Mémoli, *Curvature Sets Over Persistence Diagrams*,
 [arXiv:2103.04470v5](https://arxiv.org/abs/2103.04470v5), Definitions 2.9–2.10 and
 3.18, Theorems 3.8 and 3.19. The finite-p estimate combines their distance-matrix
 bound with Rips' diameter-scale Lipschitz constant two. The atomic and compact
-Borel probability-law bounds use full finite sample diagrams. The compact Borel
-bounds apply in every degree; at degree zero they are laws of full ordinary H₀
-diagrams. The separate finite Rips reduced-H₀ diagram correspondence is pointwise
+Borel probability-law bounds use full finite sample diagrams. Both the atomic
+and the compact Borel bounds apply in every degree; at degree zero they are laws
+of full ordinary H₀ diagrams. The separate finite Rips reduced-H₀ diagram correspondence is pointwise
 and does not assert compact reduced-law stability.
 
 Pinned mathlib supplies probability mass functions, their monad laws, and

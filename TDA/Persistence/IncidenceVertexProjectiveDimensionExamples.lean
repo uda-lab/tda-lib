@@ -8,9 +8,12 @@ import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 # Examples for actual incidence-module projective dimensions
 
 These fixtures include zero and rank-zero boundaries, the nonzero regular
-vertex image, an actual nonzero quotient vertex module, the canonical quotient
-scalar-restriction identification, and actual incidence and quotient modules
-on one- and two-coordinate grids.
+vertex image, an actual nonzero quotient vertex module, and the canonical
+quotient scalar-restriction identification. The complement-count bound is
+applied to the zero module and to the nonzero regular module over `Bool`. The
+`2*n` grid bounds are applied to zero incidence and quotient modules on one-
+and two-coordinate grids, and to the nonzero regular incidence module on the
+two-coordinate grid.
 -/
 
 set_option autoImplicit false
@@ -145,6 +148,18 @@ theorem bool_regular_vertex_not_isZero :
     (0 : FiniteRankProjectiveEndAlgebra.PairPoset Bool →₀ ℚ) boolBirthGrade at hcoeff
   have hcontradiction : (1 : ℚ) = 0 := by simpa using hcoeff
   norm_num at hcontradiction
+
+/-- The nonzero, finite-dimensional regular module satisfies the unconditional
+complement-count bound of `hasProjectiveDimensionLE`. -/
+theorem bool_regular_complement_bound :
+    letI : Lattice (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := pairPosetLattice (S := Bool)
+    letI : BoundedOrder (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := pairPosetBoundedOrder (S := Bool)
+    HasProjectiveDimensionLE boolRegular
+      (maxComplementCard (S := FiniteRankProjectiveEndAlgebra.PairPoset Bool)) := by
+  letI : Lattice (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := pairPosetLattice (S := Bool)
+  letI : BoundedOrder (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := pairPosetBoundedOrder (S := Bool)
+  exact hasProjectiveDimensionLE (k := ℚ) (S := Bool) boolRegular
+    (regular_finiteDimensional (k := ℚ) (S := Bool))
 
 /-- The rank-zero finite-free incidence module is projective, giving the
 zero-degree base case. -/
@@ -302,6 +317,36 @@ theorem rational_square_grid_zero_rightQuotient_bound :
   exact coordinateGrid_rightQuotient_hasProjectiveDimensionLE (k := ℚ) (n := 2)
     squareGrid (by norm_num) squareGrid_nonempty squareGridZeroC
     squareGridZeroC_finiteDimensional
+
+private abbrev squareGridRegular :=
+  IncidenceQuotientBaseChange.regularRightIncidenceModule (k := ℚ) (S := squareGrid.Point)
+
+/-- The regular right module over the two-coordinate grid incidence ring is
+nonzero: its unit has diagonal coefficient one at the top interval pair. -/
+theorem rational_square_grid_regular_not_isZero : ¬ IsZero squareGridRegular := by
+  intro hz
+  have hsub : Subsingleton
+      (IncidenceQuotientBaseChange.RightIncidence (k := ℚ) (S := squareGrid.Point)) :=
+    ModuleCat.subsingleton_of_isZero hz
+  let t : FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point :=
+    ⟨((⊤ : WithTop squareGrid.Point), (⊤ : WithTop squareGrid.Point)), le_rfl⟩
+  have h := congrArg
+    (fun x : IncidenceQuotientBaseChange.RightIncidence (k := ℚ) (S := squareGrid.Point) =>
+      (MulOpposite.unop x) t t)
+    (hsub.elim 1 0)
+  simp [IncidenceAlgebra.one_apply] at h
+
+/-- The nonzero, finite-dimensional regular incidence module on a
+two-coordinate grid satisfies the `2*n` bound. -/
+theorem rational_square_grid_regular_rightIncidence_bound :
+    letI : BoundedOrder squareGrid.Point :=
+      coordinateGridBoundedOrder squareGrid squareGrid_nonempty
+    HasProjectiveDimensionLE squareGridRegular 4 := by
+  letI : BoundedOrder squareGrid.Point :=
+    coordinateGridBoundedOrder squareGrid squareGrid_nonempty
+  exact coordinateGrid_rightIncidence_hasProjectiveDimensionLE (k := ℚ) (n := 2)
+    squareGrid (by norm_num) squareGrid_nonempty squareGridRegular
+    (regular_finiteDimensional (k := ℚ) (S := squareGrid.Point))
 
 end
 

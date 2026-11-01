@@ -6,8 +6,8 @@ import TDA.Persistence.LogScaleDiagram
 # Closed face entry and the finite sparse filter
 
 The entry of a finite face is the maximum of its attained relaxed pair entries.
-Its faces occur in the sparse carrier exactly when this maximum precedes every
-vertex deletion time. Thus the same entry grades an actual finite filter on the
+Its faces occur in the sparse carrier exactly when this maximum is at most the deletion
+time of each of the face's vertices (ties allowed). Thus the same entry grades an actual finite filter on the
 sparse carrier, including all ties and weighted self-pairs.
 -/
 
@@ -79,7 +79,8 @@ theorem mem_relaxedComplex_iff_faceEntry {η : ℝ} (hη : 0 ≤ η)
 
 variable [Fintype V]
 
-/-- On a sparse face, the first relaxed entry still precedes every deletion. -/
+/-- A face lies in the sparse carrier exactly when its entry is at most the deletion time of
+each of its vertices. -/
 theorem mem_sparseCarrier_iff_faceEntry (seed : V) {η : ℝ}
     (hη : 0 < η) (hη' : η ≤ 1 / 3) (σ : Finset V) :
     σ ∈ sparseCarrier seed η ↔

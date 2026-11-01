@@ -6356,6 +6356,26 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IsRankExact.comp_finitelyPresented
 #print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.arbitrary_field_nonzero_composite_kernel
 #print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.empty_zero_composite_kernel_finitelyPresented
+#print axioms TDA.Persistence.exists_occurrenceMatching_cost_le_of_realInterleaving
+#print axioms TDA.Persistence.RealInterleaving.interpolatingModule_qTame_interpolation
+#print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_le_gromovWasserstein_allDegrees
+#print axioms TDA.Persistence.Rips.wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees
+#print axioms TDA.Persistence.RipsSamplingExamples.weighted_twoPoint_sampleLaw_bound_degreeZero
+#print axioms TDA.Persistence.RipsSamplingExamples.twoPoint_pair_sampleLaw_bound_degreeZero
+#print axioms TDA.Persistence.GradedFree.GradedGenerators.lowerFiniteIndexUniverse
+#print axioms TDA.Persistence.GradedFree.GradedGenerators.lowerFiniteIndexUniverseIso
+#print axioms TDA.Persistence.GradedFree.finitelyPresented_lowerIndexUniverse
+#print axioms TDA.Persistence.FinitePresentationColimitsExamples.relation_cokernel_finitelyPresented
+#print axioms TDA.Persistence.FinitePresentationPullbackExamples.arbitrary_field_relation_row_extension_and_pullback
+#print axioms TDA.Persistence.FinitePresentationCompositeKernelExamples.arbitrary_field_split_composite_kernel
+#print axioms TDA.Persistence.RankExactPushoutExamples.truncation_pushout_rankExact_dying
+#print axioms TDA.Persistence.RankSignedStabilityExamples.shiftedHooks_distinct
+#print axioms TDA.Persistence.RankSignedStabilityExamples.shiftedHooks_signedMatching
+#print axioms TDA.Persistence.RankSignedStabilityExamples.shiftedHooks_signedDistance_le_one
+#print axioms TDA.Persistence.RankSignedBarcodeOneDimensionalExamples.distinct_essential_intervals_bottleneck_le_one
+#print axioms TDA.Persistence.IncidenceVertexProjectiveDimensionExamples.bool_regular_complement_bound
+#print axioms TDA.Persistence.IncidenceVertexProjectiveDimensionExamples.rational_square_grid_regular_not_isZero
+#print axioms TDA.Persistence.IncidenceVertexProjectiveDimensionExamples.rational_square_grid_regular_rightIncidence_bound
 
 -- Finite-constructible barcodes and canonical q-tame decorated diagrams (Issue #724).
 #print axioms TDA.Persistence.finrank_range_piMap
@@ -6449,7 +6469,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Rips.ConfidenceExamples.singleton_confidence_zero
 
 -- Atomic all-degree sampled-Rips law and finite-TV empirical consumer.
-#print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_le_gromovWasserstein_allDegrees
 #print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_le_finiteTotalVariation
 #print axioms TDA.Persistence.Rips.wasserstein_sampleLaw_empiricalPMF_le
 

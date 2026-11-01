@@ -122,17 +122,19 @@ counts of its sliced hook Betti multiset. The term presentation is constructed
 from the proved hook-sum existence theorem. -/
 theorem resolution_term_rank_eq_sliceHookMultiset_countP
     (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (hM : GradedFree.FinitelyPresented.{u,0,u} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M))
     (j : Fin R.resolution.length) (s t : ℝ) (hst : s ≤ t) :
     rankOfStructureMap (R.resolution.term j) (L.orderHom.monotone hst) =
-      (L.sliceHookMultiset (R.hookBettiMultiset (NeZero.pos n) M hM j.val)).countP
+      (L.sliceHookMultiset (R.hookBettiMultiset M
+        (GradedFree.finitelyPresented_lowerIndexUniverse M hM) j.val)).countP
         (fun p => p.1 ≤ s ∧ (t : WithTop ℝ) < p.2) := by
-  let Q0 := Classical.choice (R.exists_hook_sum_presentation (NeZero.pos n) M hM j.val)
+  let hM0 := GradedFree.finitelyPresented_lowerIndexUniverse M hM
+  let Q0 := Classical.choice (R.exists_hook_sum_presentation M hM0 j.val)
   let Q : FiniteHookSumPresentation (R.resolution.term j) :=
     ⟨Q0.count, Q0.tag, (eqToIso (R.termAt_eq j.isLt)).symm ≪≫ Q0.iso⟩
   have h := rankOfStructureMap_hookPresentation_eq_countP L Q s t hst
-  rw [R.hookBettiMultiset_eq_tagMultiset (NeZero.pos n) M hM j.val Q0]
+  rw [R.hookBettiMultiset_eq_tagMultiset M hM0 j.val Q0]
   exact h
 
 private noncomputable def sliceHookMultisetHom :
@@ -145,26 +147,32 @@ private noncomputable def sliceHookMultisetHom :
 every retained occurrence and every collision of sliced endpoints. -/
 theorem sliceHookMultiset_evenHookBetti
     (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (hM : GradedFree.FinitelyPresented.{u,0,u} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
-    L.sliceHookMultiset (R.evenHookBetti (NeZero.pos n) M hM) =
+    L.sliceHookMultiset (R.evenHookBetti M
+        (GradedFree.finitelyPresented_lowerIndexUniverse M hM)) =
       ∑ j : Fin R.resolution.length, if Even j.val then
-        L.sliceHookMultiset (R.hookBettiMultiset (NeZero.pos n) M hM j.val) else 0 := by
+        L.sliceHookMultiset (R.hookBettiMultiset M
+          (GradedFree.finitelyPresented_lowerIndexUniverse M hM) j.val) else 0 := by
+  let hM0 := GradedFree.finitelyPresented_lowerIndexUniverse M hM
   change (sliceHookMultisetHom L) (∑ j ∈ evenHookDegrees R.resolution.length,
-    R.hookBettiMultiset (NeZero.pos n) M hM j) = _
+    R.hookBettiMultiset M hM0 j) = _
   rw [map_sum, evenHookDegrees, Finset.sum_filter, ← Fin.sum_univ_eq_sum_range]
   rfl
 
 /-- Slicing the odd hook multiset preserves the finite parity sum. -/
 theorem sliceHookMultiset_oddHookBetti
     (M : PModule.{u,0,u} k (Fin n → ℝ))
-    (hM : GradedFree.FinitelyPresented (R := k) (P := Fin n → ℝ) M)
+    (hM : GradedFree.FinitelyPresented.{u,0,u} (R := k) (P := Fin n → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
-    L.sliceHookMultiset (R.oddHookBetti (NeZero.pos n) M hM) =
+    L.sliceHookMultiset (R.oddHookBetti M
+        (GradedFree.finitelyPresented_lowerIndexUniverse M hM)) =
       ∑ j : Fin R.resolution.length, if Odd j.val then
-        L.sliceHookMultiset (R.hookBettiMultiset (NeZero.pos n) M hM j.val) else 0 := by
+        L.sliceHookMultiset (R.hookBettiMultiset M
+          (GradedFree.finitelyPresented_lowerIndexUniverse M hM) j.val) else 0 := by
+  let hM0 := GradedFree.finitelyPresented_lowerIndexUniverse M hM
   change (sliceHookMultisetHom L) (∑ j ∈ oddHookDegrees R.resolution.length,
-    R.hookBettiMultiset (NeZero.pos n) M hM j) = _
+    R.hookBettiMultiset M hM0 j) = _
   rw [map_sum, oddHookDegrees, Finset.sum_filter, ← Fin.sum_univ_eq_sum_range]
   rfl
 end TDA.Persistence.PositiveAffineLine

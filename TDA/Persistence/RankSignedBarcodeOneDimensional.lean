@@ -796,27 +796,24 @@ theorem MinimalFiniteRankProjectiveResolution.signedHookBarcode_eq_degreeZero
       (R := k) (P := Fin 1 → ℝ) M)
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M))
     (P : FiniteHookSumPresentation (k := k) (n := 1) (R.termAt 0)) :
-    (R.signedHookBarcode (k := k) (n := 1) (by omega) M
-      (GradedFree.finitelyPresented_liftIndexUniverse M hM)).positive =
+    (R.signedHookBarcode (k := k) (n := 1) M hM).positive =
         hookTagMultiset P.tag ∧
-    (R.signedHookBarcode (k := k) (n := 1) (by omega) M
-      (GradedFree.finitelyPresented_liftIndexUniverse M hM)).negative = 0 := by
-  let hM' := GradedFree.finitelyPresented_liftIndexUniverse M hM
+    (R.signedHookBarcode (k := k) (n := 1) M hM).negative = 0 := by
   have hterm (j : ℕ) (hj : 0 < j) : IsZero (R.termAt j) := by
     exact FiniteRankProjectiveResolution.finitelyPresented_minimalFiniteRankProjectiveResolution_termAt_isZero
       (k := k) (n := 1) (by omega) M hM R j (by omega)
   have hbetti_zero (j : ℕ) (hj : 0 < j) :
-      R.hookBettiMultiset (k := k) (n := 1) (by omega) M hM' j = 0 :=
-    R.hookBettiMultiset_eq_zero_of_term_isZero (by omega) M hM' (hterm j hj)
+      R.hookBettiMultiset (k := k) (n := 1) M hM j = 0 :=
+    R.hookBettiMultiset_eq_zero_of_term_isZero M hM (hterm j hj)
   have hbetti_tag :
-      R.hookBettiMultiset (k := k) (n := 1) (by omega) M hM' 0 =
+      R.hookBettiMultiset (k := k) (n := 1) M hM 0 =
         hookTagMultiset P.tag :=
-    R.hookBettiMultiset_eq_tagMultiset (by omega) M hM' 0 P
+    R.hookBettiMultiset_eq_tagMultiset M hM 0 P
   have heven :
-      R.evenHookBetti (k := k) (n := 1) (by omega) M hM' =
+      R.evenHookBetti (k := k) (n := 1) M hM =
         hookTagMultiset P.tag := by
-    have hsum : R.evenHookBetti (k := k) (n := 1) (by omega) M hM' =
-        R.hookBettiMultiset (k := k) (n := 1) (by omega) M hM' 0 := by
+    have hsum : R.evenHookBetti (k := k) (n := 1) M hM =
+        R.hookBettiMultiset (k := k) (n := 1) M hM 0 := by
       classical
       by_cases hL : 0 < R.resolution.length
       · have h0 : 0 ∈ evenHookDegrees R.resolution.length := by
@@ -830,20 +827,20 @@ theorem MinimalFiniteRankProjectiveResolution.signedHookBarcode_eq_degreeZero
           exact (hnot h0).elim
       · have hL0 : R.resolution.length = 0 := by omega
         have hzero := R.hookBettiMultiset_eq_zero_of_length_le
-          (by omega) M hM' (j := 0) (by omega)
+          M hM (j := 0) (by omega)
         simp [MinimalFiniteRankProjectiveResolution.evenHookBetti,
           evenHookDegrees, hL0, hzero]
     exact hsum.trans hbetti_tag
-  have hodd : R.oddHookBetti (k := k) (n := 1) (by omega) M hM' = 0 := by
+  have hodd : R.oddHookBetti (k := k) (n := 1) M hM = 0 := by
     classical
     unfold MinimalFiniteRankProjectiveResolution.oddHookBetti oddHookDegrees
     apply Finset.sum_eq_zero
     intro j hj
     have hoddj : Odd j := (Finset.mem_filter.mp hj).2
     exact hbetti_zero j hoddj.pos
-  change (R.evenHookBetti (k := k) (n := 1) (by omega) M hM' =
+  change (R.evenHookBetti (k := k) (n := 1) M hM =
         hookTagMultiset P.tag) ∧
-      (R.oddHookBetti (k := k) (n := 1) (by omega) M hM' = 0)
+      (R.oddHookBetti (k := k) (n := 1) M hM = 0)
   exact ⟨heven, hodd⟩
 
 /-- The ordinary positive diagram of a signed hook barcode is the exact
@@ -895,7 +892,6 @@ theorem finitelyPresentedOneDimensionalBarcodeDiagram_eq_resolution
     finitelyPresentedOneDimensionalBarcodeDiagram M hX =
       oneDimensionalHookDiagram P.tag := by
   let X := CoordinateRealBridge.fromReal M
-  let hX' := GradedFree.finitelyPresented_liftIndexUniverse X hX
   have hchoice := TDA.Persistence.finitelyPresentedSignedHookBarcode_eq
     (k := k) (n := 1) (by omega) X hX R
   have hterms := R.signedHookBarcode_eq_degreeZero X hX P
@@ -921,9 +917,8 @@ noncomputable def degreeZeroHookPresentation
     FiniteHookSumPresentation (k := k) (n := 1)
       (CoordinateRealBridge.fromReal M) := by
   let X := CoordinateRealBridge.fromReal M
-  let hX' := GradedFree.finitelyPresented_liftIndexUniverse X hX
   let P := Classical.choice
-    (R.exists_hook_sum_presentation (k := k) (n := 1) (by omega) X hX' 0)
+    (R.exists_hook_sum_presentation (k := k) (n := 1) X hX 0)
   exact ⟨P.count, P.tag,
     (minimalResolution_degreeZeroIso (k := k) X hX R).symm.trans P.iso⟩
 
@@ -939,9 +934,8 @@ noncomputable def finitelyPresentedOneDimensionalBarcodeRealizationIso
     (FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution
       (k := k) (n := 1) (by omega) (CoordinateRealBridge.fromReal M) hX)
   let X := CoordinateRealBridge.fromReal M
-  let hX' := GradedFree.finitelyPresented_liftIndexUniverse X hX
   let P0 := Classical.choice
-    (R.exists_hook_sum_presentation (k := k) (n := 1) (by omega) X hX' 0)
+    (R.exists_hook_sum_presentation (k := k) (n := 1) X hX 0)
   let P : FiniteHookSumPresentation (k := k) (n := 1) X :=
     ⟨P0.count, P0.tag,
       (minimalResolution_degreeZeroIso (k := k) X hX R).symm.trans P0.iso⟩
@@ -1015,12 +1009,11 @@ theorem finitelyPresentedOneDimensionalBarcodeDiagram_eq_moduleDiagram
     finitelyPresentedOneDimensionalBarcodeDiagram M hX =
       FiniteConstructible.moduleDiagram c M hfd := by
   let X := CoordinateRealBridge.fromReal M
-  let hX' := GradedFree.finitelyPresented_liftIndexUniverse X hX
   let R := Classical.choice
     (FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution
       (k := k) (n := 1) (by omega) X hX)
   let P0 := Classical.choice
-    (R.exists_hook_sum_presentation (k := k) (n := 1) (by omega) X hX' 0)
+    (R.exists_hook_sum_presentation (k := k) (n := 1) X hX 0)
   let PX : FiniteHookSumPresentation (k := k) (n := 1) X :=
     ⟨P0.count, P0.tag,
       (minimalResolution_degreeZeroIso (k := k) X hX R).symm.trans P0.iso⟩

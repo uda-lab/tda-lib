@@ -927,19 +927,37 @@ theorem SupNormWitness.homologyInterleaving_right {δ : ℝ≥0}
     _ = (homology R (inferInstance : MetricSpace Y) n).map f := by
       simp [Category.assoc]
 
-private def subdivisionRipsHomologyInterleavingExistsAt (δ : ℝ≥0)
+omit [MetricSpace X] [MetricSpace Y] in
+/-- Some restricted-index interleaving at scale `δ` restricts to the two actual normalized
+subdivision-Rips homology modules. -/
+def SubdivisionRipsHomologyInterleavingExistsAt (δ : ℝ≥0)
     (d : MetricSpace X) (e : MetricSpace Y) (R : Type w) [Ring R] (n : ℕ) : Prop :=
   ∃ M : PModule.{w, 0, max u w} R (InterleavingIndex δ),
     (copy δ false).toFunctor ⋙ M = homology R d n ∧
     (copy δ true).toFunctor ⋙ M = homology R e n
 
+omit [MetricSpace X] [MetricSpace Y] in
 /-- The infimum of all finite nonnegative scales admitting a restricted-index
 interleaving of the actual normalized subdivision-Rips homology modules. -/
 noncomputable def subdivisionRipsHomologyInterleavingDistance
     (d : MetricSpace X) (e : MetricSpace Y) (R : Type w) [Ring R] (n : ℕ) : ℝ≥0∞ := by
   classical
   exact ⨅ δ : ℝ≥0,
-    if subdivisionRipsHomologyInterleavingExistsAt δ d e R n then (δ : ℝ≥0∞) else ∞
+    if SubdivisionRipsHomologyInterleavingExistsAt δ d e R n then (δ : ℝ≥0∞) else ∞
+
+omit [MetricSpace X] [MetricSpace Y] in
+/-- Any actual restricted-index interleaving at scale `δ` of the two normalized subdivision-Rips
+homology modules bounds their interleaving distance by `δ`. -/
+theorem subdivisionRipsHomologyInterleavingDistance_le_of_interleaving
+    (d : MetricSpace X) (e : MetricSpace Y) (R : Type w) [Ring R] (n : ℕ) {δ : ℝ≥0}
+    (M : PModule.{w, 0, max u w} R (InterleavingIndex δ))
+    (hl : (copy δ false).toFunctor ⋙ M = homology R d n)
+    (hr : (copy δ true).toFunctor ⋙ M = homology R e n) :
+    subdivisionRipsHomologyInterleavingDistance d e R n ≤ δ := by
+  classical
+  unfold subdivisionRipsHomologyInterleavingDistance
+  refine (iInf_le _ δ).trans ?_
+  rw [if_pos ⟨M, hl, hr⟩]
 
 /-- Every finite normalized subdivision-Rips homology interleaving scale can be
 chosen arbitrarily above the finite uniform Gromov-Prokhorov distance. -/
@@ -955,7 +973,7 @@ theorem subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist
   by_contra hnot
   have hGP : gromovProkhorovEDist X Y < (r : ℝ≥0∞) := lt_of_not_ge hnot
   obtain ⟨δ, hGPδ, hδr⟩ := ENNReal.lt_iff_exists_nnreal_btwn.mp hGP
-  have hExists : subdivisionRipsHomologyInterleavingExistsAt δ d e R n := by
+  have hExists : SubdivisionRipsHomologyInterleavingExistsAt δ d e R n := by
     let s : SupNormWitness X Y δ := supNormWitness δ hGPδ
     exact ⟨s.homologyInterleaving R n, s.homologyInterleaving_left R n,
       s.homologyInterleaving_right R n⟩
@@ -964,7 +982,7 @@ theorem subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist
     unfold subdivisionRipsHomologyInterleavingDistance
     exact (iInf_le
       (fun ε : ℝ≥0 =>
-        if subdivisionRipsHomologyInterleavingExistsAt ε d e R n then
+        if SubdivisionRipsHomologyInterleavingExistsAt ε d e R n then
           (ε : ℝ≥0∞) else ∞) δ).trans (by simp [hExists])
   exact (not_lt_of_ge hdist) (hδr.trans hr)
 

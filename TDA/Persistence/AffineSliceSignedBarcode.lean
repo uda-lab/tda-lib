@@ -36,17 +36,14 @@ theorem finitelyPresented_sliceSignedHookBarcode_cancel_of_resolution
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :
     (finitelyPresentedOneDimensionalBarcodeDiagram (reindex L.orderHom M)
         (L.finitelyPresented_fromReal_slice hM)).points +
-        L.sliceHookMultiset
-          (R.signedHookBarcode (NeZero.pos n) M
-            (GradedFree.finitelyPresented_liftIndexUniverse M hM)).negative =
+        L.sliceHookMultiset (R.signedHookBarcode M hM).negative =
       L.sliceHookMultiset
-        (R.signedHookBarcode (NeZero.pos n) M
-          (GradedFree.finitelyPresented_liftIndexUniverse M hM)).positive := by
+        (R.signedHookBarcode M hM).positive := by
   let hM' := GradedFree.finitelyPresented_liftIndexUniverse M hM
   let B := finitelyPresentedOneDimensionalBarcodeDiagram (reindex L.orderHom M)
     (L.finitelyPresented_fromReal_slice hM)
   let D := fun j : Fin R.resolution.length =>
-    L.sliceHookMultiset (R.hookBettiMultiset (NeZero.pos n) M hM' j.val)
+    L.sliceHookMultiset (R.hookBettiMultiset M hM j.val)
   have hB : B.IsPositive :=
     finitelyPresentedOneDimensionalBarcodeDiagram_isPositive _ _
   have eB : reindex L.orderHom M ≅ RealBarcode.realize (k := k) B :=
@@ -54,11 +51,12 @@ theorem finitelyPresented_sliceSignedHookBarcode_cancel_of_resolution
   have hcancel := R.resolution.toFiniteRankExactResolution.barcode_points_add_odd_eq_even
     L.orderHom B hB eB D
     (fun j => L.sliceHookDiagram_isPositive
-      (R.hookBettiMultiset (NeZero.pos n) M hM' j.val))
+      (R.hookBettiMultiset M hM j.val))
     (fun j s t hst => L.resolution_term_rank_eq_sliceHookMultiset_countP M hM' R j s t hst)
-  change B.points + L.sliceHookMultiset (R.oddHookBetti (NeZero.pos n) M hM') =
-    L.sliceHookMultiset (R.evenHookBetti (NeZero.pos n) M hM')
-  rw [L.sliceHookMultiset_oddHookBetti, L.sliceHookMultiset_evenHookBetti]
+  change B.points + L.sliceHookMultiset (R.oddHookBetti M hM) =
+    L.sliceHookMultiset (R.evenHookBetti M hM)
+  rw [L.sliceHookMultiset_oddHookBetti M hM' R,
+    L.sliceHookMultiset_evenHookBetti M hM' R]
   exact hcancel
 
 /-- The canonical ordinary slice barcode plus the sliced negative hook

@@ -12,7 +12,8 @@ import TDA.Mapper.GraphPLReebMapPairExamples
 # Fixtures for capped centred diagrams from height-map pairs
 
 These fixtures exercise recovery from a uniform bound, a different-domain edge-to-point pair
-whose bottleneck distance lies in `[1/4, 1/2]`, and a Bool-to-Unit negative control where
+whose bottleneck distance is bracketed in `[1/4, 1/2]` (only the bracket is proved here), and a
+Bool-to-Unit negative control where
 height-preserving maps exist but the required composite path condition does not.
 -/
 
@@ -227,8 +228,8 @@ theorem edge_to_point_bottleneck_le_half (n : ℕ) :
     bottleneck_cappedCentredDiagram_pair_plHeight_uniformGrid_le ℚ 0 1
       edgeLabels n edgePointPair 0 (1 / 4) (by norm_num) 9 2 (by norm_num)
 
-/-- The different-domain edge-to-point bottleneck lies in `[1/4, 1/2]`; this fixture does not
-claim that either endpoint is exact. -/
+/-- The different-domain edge-to-point bottleneck lies in `[1/4, 1/2]`; this fixture proves only
+the bracket and does not determine the value. -/
 theorem edge_to_point_bottleneck_bracket :
     (1 / 4 : ℝ≥0∞) ≤ bottleneck
       (cappedCentredDiagram ℚ edgeHeight 0 1 edgeLabels edgeGrid 0)

@@ -83,7 +83,7 @@ theorem nonzero_finite_hook_classifies :
     simp [SupportInterval.one] at hv
   · exact (GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum
       (k := ℚ) (n := 1) (M := Hook.module (k := ℚ) birth death)
-      (by norm_num) finiteHook_finitelyPresented).mp
+      finiteHook_finitelyPresented).mp
         (Hook.isRankProjective birth_lt_death)
 
 /-- The principal upset has a nonzero fiber above every grade, and the theorem
@@ -110,7 +110,7 @@ theorem unbounded_principal_upset_classifies :
     exact (one_ne_zero : (1 : ℚ) ≠ 0) (by simpa using hone)
   · exact (GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum
       (k := ℚ) (n := 1) (M := HookInfinity.module (R := ℚ) birth)
-      (by norm_num) infinityHook_finitelyPresented).mp
+      infinityHook_finitelyPresented).mp
         (HookInfinity.isRankProjective birth)
 
 private noncomputable def finiteTag : RankProjectiveHookTag P :=
@@ -179,7 +179,8 @@ private theorem repeatedFiniteHook_finitelyPresented :
         (biproduct.mapIso (fun _ : Fin 2 => grid.hookLanIso gridOrigin gridTop))
   exact GradedFree.finitelyPresented_of_iso hLan e
 
-/-- Two repeated nonzero hooks remain two occurrences in the classified sum. -/
+/-- The repeated nonzero hook sum is classified as a finite hook sum; the multiplicity itself is
+not stated here (see `rankProjectiveHookSum_multiplicity_unique_of_iso`). -/
 theorem repeated_finite_hook_classifies :
     IsRankProjective (⨁ fun _ : Fin 2 => rankProjectiveHookModule (k := ℚ) finiteTag) ∧
       ∃ m : ℕ, ∃ t : Fin m → RankProjectiveHookTag P,
@@ -189,7 +190,7 @@ theorem repeated_finite_hook_classifies :
   let M : PModule ℚ P :=
     ⨁ fun _ : Fin 2 => rankProjectiveHookModule (k := ℚ) finiteTag
   let C := GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum
-    (k := ℚ) (n := 1) (M := M) (by norm_num) repeatedFiniteHook_finitelyPresented
+    (k := ℚ) (n := 1) (M := M) repeatedFiniteHook_finitelyPresented
   have hRP := C.mpr ⟨2, fun _ : Fin 2 => finiteTag, ⟨Iso.refl M⟩⟩
   exact ⟨hRP, C.mp hRP⟩
 
@@ -226,7 +227,7 @@ theorem zero_empty_tagged_sum_classifies :
       ⨁ fun i : Fin 0 => rankProjectiveHookModule (k := ℚ) (t i) :=
     ezero.isoZero ≪≫ (emptyTaggedSum_isZero t).isoZero.symm
   have hRP := (GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum
-    (k := ℚ) (n := 1) (M := (0 : PModule ℚ P)) (by norm_num)
+    (k := ℚ) (n := 1) (M := (0 : PModule ℚ P))
     zero_finitelyPresented).mpr ⟨0, Fin.elim0, ⟨e⟩⟩
   exact ⟨hRP, t, ⟨e⟩⟩
 

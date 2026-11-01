@@ -6,9 +6,10 @@ field, distances and stability bounds for persistence diagrams, Rips and Čech
 filtrations of finite metric spaces, persistence images and kernels, signed barcodes
 of finitely presented multiparameter modules, and selected Reeb and Mapper
 constructions. The current release is
-[v0.2.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.2.0);
-[v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) was the first
-release with mathematical results.
+[v0.3.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0);
+[v0.2.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.2.0) and
+[v0.1.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.1.0) are the earlier
+releases with mathematical results.
 
 ## Results in v0.1.0
 
@@ -136,10 +137,11 @@ metric-space input.
   families with varying finite cover index types. This is abstract categorical
   reconstruction, not an executable Mapper algorithm.
 
-## Results added since v0.2.0
+## Results added in v0.3.0
 
-Each result below holds under the hypotheses stated in the [API guide](docs/api.md) and
-its mathematical notes, which also give the declaration names.
+The v0.3.0 release adds the following results to those above; each holds under the
+hypotheses stated in the [API guide](docs/api.md) and its mathematical notes, which also
+give the declaration names.
 
 - **Borel boundary transport.** The strict birth–death half-plane with one collapsed
   boundary point is a complete separable metric space. For atomic inputs and p ≥ 0, the
@@ -149,18 +151,24 @@ its mathematical notes, which also give the declaration names.
   for arbitrary finite Borel inputs, and the rooted distance is a literal infimum of
   mathlib `eLpNorm`s over reservoir couplings, satisfies the sharp triangle inequality and
   separates measures. Under finite diagonal p-persistence, same-mass quantizations
-  converge. Identification with an ordinary Wasserstein coupling API is not claimed.
+  converge. Identification with an ordinary Wasserstein coupling API, including the
+  library's own `TDA.Probability.measureWasserstein`, is not claimed.
 - **Q-tame modules and decorated diagrams.** Rectangle measures of real modules over a
   field are defined by image-and-kernel quotients with the four-rank formula, finite on
   rectangles separated from the diagonal for q-tame modules; essential strips, box
   inequalities along interleavings, additive contents and decorated multiplicities with
-  death at infinity follow, with countable support. The locally finite decorated diagram
-  of a q-tame module is bottleneck-stable: an actual ε-interleaving of q-tame modules
-  bounds the distance of the extracted diagrams by ε. Rips sublevel modules of totally
-  bounded spaces are q-tame, their diagrams agree with the finite diagrams on finite
-  spaces, and they are stable under Hausdorff and Gromov–Hausdorff perturbation, with
-  convergence of finite samples to a totally bounded target. Birth-at-minus-infinity
-  strata and finite-diagram compatibility for arbitrary q-tame modules are not claimed.
+  death at infinity follow, with countable support. Every pointwise finite-dimensional
+  real-indexed module over a field is naturally isomorphic to an algebraic direct sum of
+  scalar interval modules with order-convex supports (open or closed endpoints,
+  singletons, tails and the whole line allowed), and the rank barcode of every strict
+  finite observation list is the multiset of nonempty sampled intersections of these
+  summands. The locally finite decorated diagram of a q-tame module is bottleneck-stable:
+  an actual ε-interleaving of q-tame modules bounds the distance of the extracted diagrams
+  by ε. Rips sublevel modules of totally bounded spaces are q-tame, their diagrams agree
+  with the finite diagrams on finite spaces, and they are stable under Hausdorff and
+  Gromov–Hausdorff perturbation, with convergence of finite samples to a totally bounded
+  target. Birth-at-minus-infinity strata and finite-diagram compatibility for arbitrary
+  q-tame modules are not claimed.
 - **Multiparameter persistence.** Over any field and for `n ≥ 1`, a finitely presented
   persistence module indexed by `ℝⁿ` has a minimal finite rank-projective resolution whose
   terms vanish in degrees above `2n−2`; the hook multisets of its terms are independent of
@@ -226,7 +234,7 @@ Use the Lean toolchain pinned in this repository's `lean-toolchain` (currently
 [[require]]
 name = "TDA"
 git = "https://github.com/uda-lab/tda-lib.git"
-rev = "v0.2.0"
+rev = "v0.3.0"
 ```
 
 Run `lake update TDA`, fetch the prebuilt mathlib dependencies with `lake exe cache get`,

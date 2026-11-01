@@ -298,13 +298,11 @@ finite direct sum of finite-death hooks and principal-upset hooks. The `Fin m`
 family records every occurrence, including repeated isomorphism classes. -/
 theorem finitelyPresented_rankProjective_iff_exists_hook_sum
     {M : PModule.{u,0,u} k (Fin n → ℝ)}
-    (hn : 0 < n)
     (hM : FinitelyPresented (R := k) (P := Fin n → ℝ) M) :
     IsRankProjective M ↔
       ∃ m : ℕ, ∃ t : Fin m → RankProjectiveHookTag (Fin n → ℝ),
         Nonempty (M ≅ ⨁ fun i => rankProjectiveHookModule (k := k) (t i)) := by
   classical
-  let _ := hn
   constructor
   · intro hR
     obtain ⟨G, A, hA, e, hcover, _, _⟩ :=

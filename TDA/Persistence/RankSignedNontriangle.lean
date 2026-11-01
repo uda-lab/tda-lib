@@ -1123,46 +1123,39 @@ private noncomputable def signedStaircaseTermOneHookSumPresentation :
 
 private theorem signedStaircaseDegreeZeroHookBetti :
     (signedStaircaseMinimalResolution (k := k)).hookBettiMultiset
-      (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        (signedStaircaseModule_finitelyPresented (k := k))) 0 =
+      (k := k) (n := 2) (signedStaircaseModule (k := k))
+      (signedStaircaseModule_finitelyPresented (k := k)) 0 =
       hookTagMultiset (fun i : Fin 4 => Sum.inr (signedStaircaseVertices i)) := by
   exact MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
-    (hn := by omega) (M := signedStaircaseModule (k := k))
-    (hM := GradedFree.finitelyPresented_liftIndexUniverse _
-      (signedStaircaseModule_finitelyPresented (k := k)))
+    (M := signedStaircaseModule (k := k))
+    (hM := signedStaircaseModule_finitelyPresented (k := k))
     (R := signedStaircaseMinimalResolution (k := k)) (j := 0)
     (signedStaircaseTermZeroHookSumPresentation (k := k))
 
 private theorem signedStaircaseDegreeOneHookBetti :
     (signedStaircaseMinimalResolution (k := k)).hookBettiMultiset
-      (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        (signedStaircaseModule_finitelyPresented (k := k))) 1 =
+      (k := k) (n := 2) (signedStaircaseModule (k := k))
+      (signedStaircaseModule_finitelyPresented (k := k)) 1 =
       hookTagMultiset (fun i : Fin 3 => Sum.inr (signedStaircaseJoins i)) := by
   exact MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
-    (hn := by omega) (M := signedStaircaseModule (k := k))
-    (hM := GradedFree.finitelyPresented_liftIndexUniverse _
-      (signedStaircaseModule_finitelyPresented (k := k)))
+    (M := signedStaircaseModule (k := k))
+    (hM := signedStaircaseModule_finitelyPresented (k := k))
     (R := signedStaircaseMinimalResolution (k := k)) (j := 1)
     (signedStaircaseTermOneHookSumPresentation (k := k))
 
 private theorem signedStaircaseMinimalResolution_barcode :
     (signedStaircaseMinimalResolution (k := k)).signedHookBarcode
-      (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        (signedStaircaseModule_finitelyPresented (k := k))) =
+      (k := k) (n := 2) (signedStaircaseModule (k := k))
+      (signedStaircaseModule_finitelyPresented (k := k)) =
       signedStaircaseCenter := by
   classical
   change (⟨
       (signedStaircaseMinimalResolution (k := k)).evenHookBetti
-        (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          (signedStaircaseModule_finitelyPresented (k := k))),
+        (k := k) (n := 2) (signedStaircaseModule (k := k))
+        (signedStaircaseModule_finitelyPresented (k := k)),
       (signedStaircaseMinimalResolution (k := k)).oddHookBetti
-        (k := k) (n := 2) (by omega) (signedStaircaseModule (k := k))
-        (GradedFree.finitelyPresented_liftIndexUniverse _
-          (signedStaircaseModule_finitelyPresented (k := k)))⟩ : SignedHookBarcode 2) =
+        (k := k) (n := 2) (signedStaircaseModule (k := k))
+        (signedStaircaseModule_finitelyPresented (k := k))⟩ : SignedHookBarcode 2) =
     signedStaircaseCenter
   apply congrArg₂ (fun pos neg => (⟨pos, neg⟩ : SignedHookBarcode 2))
   · simp only [MinimalFiniteRankProjectiveResolution.evenHookBetti]
@@ -1285,23 +1278,20 @@ private noncomputable def signedStaircasePrincipalTermZeroHookSumPresentation
 private theorem signedStaircasePrincipalDegreeZeroHookBetti
     (a : Fin 2 → ℝ) :
     (signedStaircasePrincipalMinimalResolution (k := k) a).hookBettiMultiset
-      (k := k) (n := 2) (by omega) (HookInfinity.module (R := k) a)
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        (signedStaircasePrincipal_finitelyPresented (k := k) a)) 0 =
+      (k := k) (n := 2) (HookInfinity.module (R := k) a)
+      (signedStaircasePrincipal_finitelyPresented (k := k) a) 0 =
       hookTagMultiset (fun _ : Fin 1 => Sum.inr a) := by
   exact MinimalFiniteRankProjectiveResolution.hookBettiMultiset_eq_tagMultiset
-    (hn := by omega) (M := HookInfinity.module (R := k) a)
-    (hM := GradedFree.finitelyPresented_liftIndexUniverse _
-      (signedStaircasePrincipal_finitelyPresented (k := k) a))
+    (M := HookInfinity.module (R := k) a)
+    (hM := signedStaircasePrincipal_finitelyPresented (k := k) a)
     (R := signedStaircasePrincipalMinimalResolution (k := k) a) (j := 0)
     (signedStaircasePrincipalTermZeroHookSumPresentation (k := k) a)
 
 private theorem signedStaircasePrincipalMinimalResolution_barcode
     (a : Fin 2 → ℝ) :
     (signedStaircasePrincipalMinimalResolution (k := k) a).signedHookBarcode
-      (k := k) (n := 2) (by omega) (HookInfinity.module (R := k) a)
-      (GradedFree.finitelyPresented_liftIndexUniverse _
-        (signedStaircasePrincipal_finitelyPresented (k := k) a)) =
+      (k := k) (n := 2) (HookInfinity.module (R := k) a)
+      (signedStaircasePrincipal_finitelyPresented (k := k) a) =
       ⟨{Sum.inr a}, 0⟩ := by
   classical
   apply congrArg₂ (fun pos neg => (⟨pos, neg⟩ : SignedHookBarcode 2))

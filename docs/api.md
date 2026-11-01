@@ -33,7 +33,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 
 | Import and namespace | Main definitions and theorem families | Requirements and scope |
 |---|---|---|
-| `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers; ambient Čech complexes and relations (`Cech`); greedy sparse Rips (`SparseRips`) and normalized subdivision-Rips (`SubdivisionRips`) bifiltrations | Values belong to nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
+| `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers; ambient Čech complexes and relations (`Cech`); greedy sparse Rips filtrations (`SparseRips`, one-parameter) and normalized subdivision-Rips bifiltrations (`SubdivisionRips`) | Values belong to nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
 | `TDA.Simplicial` / `TDA.Simplicial` | Face `Chain`, signed `boundary`, square-zero chain complex, inclusion maps, `vertexChainMap`, `simplicialChainMap`, `simplicialHomology` / `simplicialHomologyMap`, finite coordinates and `VertexMap` / `Contiguous` | Signed chains use an ambient vertex order and a ring. Finite-dimensional homology additionally uses a field and finite faces. A vertex map may identify vertices; contiguity is reflexive and symmetric, with composition laws, and is not asserted transitive. |
 | `TDA.Persistence` / `TDA.Persistence` | `PModule`, structure maps and reindexing; finite intervals, rank barcodes and decomposition; `Diagram`, `dgm`, reduction, stability and calculus | The functor core needs a ring and a preorder, with independent coefficient/index/carrier universes. Finite decomposition has its narrower field, finite-chain, pointwise finite-dimensional and same carrier/coefficient universe assumptions. Sublevel diagrams and calculus retain their stated vertex-order, finite-face and local-lift hypotheses. |
 | `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces; measure bifiltrations on the restricted two-copy index (`MeasureBifiltration`), finite-uniform Gromov–Prokhorov witnesses (`FiniteGromovProkhorov`, `FiniteGromovProkhorovWitness`) and the large-face multicover cover (`MulticoverCover`); [quotient maps after products](math/reeb-thickening-constructible.md#point-set-tools) with a locally compact or proper factor (`isQuotientMap_prodMap_id_left`, `isQuotientMap_prodMap_id_right`, `isQuotientMap_prodMap_id_Icc`, `isQuotientMap_prodMap_id_of_isProperMap`, `isQuotientMap_prodMap_id_of_compactSpace`) | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has a common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. The quotient-map product lemmas place no separation hypothesis on the quotient map; product stability is stated only for a locally compact factor or a proper surjection, not for arbitrary quotient maps. |
@@ -158,7 +158,8 @@ An actual matching may pair short intervals whose endpoint cost exceeds the
 radius; the bridge removes those pairs and proves both ends deletable.
 Empty occurrence families are included. Empty half-open supports are zero in
 the raw barcode constructor and are excluded by the positive-length bridge;
-other endpoint decorations are not identified with half-open modules.
+other endpoint decorations are not identified with half-open modules. On this positive half-open
+subclass, `real_distance_zero_iff_iso` shows that zero distance implies a natural isomorphism.
 `RectangleHall.significant_iff_transition_ne_zero` identifies δ-significance of a rectangle
 (some `p` and `p + δ·1` both lie in its support) with nonvanishing of its actual δ transition,
 and `Rectangle.hom_ext` shows that a morphism of rectangle modules is determined by its scalar
@@ -166,8 +167,7 @@ at one point of a nonempty overlap. `RectangleFamily.module` is the finite bipro
 modules with indices labelling occurrences, and `RectangleFamily.component_ext` lifts
 componentwise equations to the family. The two Hall injections are combined by a
 relation-preserving Schröder–Bernstein argument whose auxiliary labels allow deletion only of
-non-significant occurrences and are discarded. Zero
-distance implies a natural isomorphism on this common subclass.
+non-significant occurrences and are discarded.
 `RectangleSharpExample.interleaving` constructs Bjerkevik's Example 5.2 over
 any field, using two Fin 3-indexed families of open rectangles and the source's
 integral coefficient matrices. `interleavingDistance_eq_one` and
@@ -180,8 +180,8 @@ and `GradedFree.exists_lift_of_surjective` provide the natural universal propert
 property of graded free modules over a ring; `GradedFree.FinitelyPresented`
 expresses finite presentation by homogeneous cokernels. For finitely presented modules on
 `Fin n → ℝ`, `GradedFree.finitelyPresented_exists_finite_criticalCoordinates`
-gives finite coordinate sets outside which comparable structure maps are
-isomorphisms, and `GradedFree.finitelyPresented_exists_pos_structureMap_isIso`
+gives finite coordinate sets `S` such that `a ≤ b` has an invertible structure map whenever no
+`Sᵢ` meets `(aᵢ, bᵢ]`, and `GradedFree.finitelyPresented_exists_pos_structureMap_isIso`
 gives positive right-diagonal slack at every index.
 Over a field and any preorder, `GradedFree.finitelyPresented_finiteDimensional`
 proves every fiber of a finitely presented module finite-dimensional. Its proof
@@ -274,8 +274,9 @@ principal-upset law retains its birth; finite and infinite death cannot be
 isomorphic. Death at or before birth gives the zero hook. These are results
 about individual hooks. `FiniteRankProjectiveClassification.RankProjectiveHookTag`
 records either a strict finite birth/death pair or the birth of a principal
-upset; `rankProjectiveHookSum_multiplicity_unique` proves that isomorphic finite
-sums of nonzero hooks have the same multiplicity for each tag.
+upset; on a finite poset with decidable equality, `rankProjectiveHookSum_multiplicity_unique`
+proves that isomorphic finite sums of nonzero hooks have the same multiplicity for each tag;
+`rankProjectiveHookSum_multiplicity_unique_of_iso` is the `Fin n → ℝ` form.
 `IsRankProjective` states the relative lifting property against actual rank-exact
 sequences. Finite-death hooks, principal upsets and their finite categorical
 biproducts satisfy it; natural isomorphisms and retracts preserve it. For a pfd
@@ -334,12 +335,12 @@ kernel finitely presented. It does not assert generic finite-presentation
 closure under kernels, minimality, or a resolution-length bound. The focused
 `FinitePresentationHookKernelExamples` module applies the result to the
 nonzero relation presentation over `ℚ` and `ZMod 2`, and checks empty-family
-and zero-dimensional zero-module boundaries.
-`finitelyPresented_actual_cover_kernel_finiteDimensional` applies the
-finite-dimensional fiber theorem to the actual constructed kernel using only
-the original module's finite-presentation hypothesis.
+and zero-dimensional zero-module boundaries. Its fixture
+`FinitePresentationHookKernel.Examples.finitelyPresented_actual_cover_kernel_finiteDimensional`
+(an example, not loaded by `import TDA.Persistence`) applies the finite-dimensional fiber theorem
+to the actual constructed kernel using only the original module's finite-presentation hypothesis.
 
-For a field `k`, `n ≥ 1`, and `M : PModule k (Fin n → ℝ)`,
+For a field `k` and `M : PModule k (Fin n → ℝ)` (no positivity of `n` is needed),
 `GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum` gives the
 following classification under only the original
 `GradedFree.FinitelyPresented M` predicate: `M` is rank projective exactly
@@ -374,7 +375,7 @@ empty families. Together, these results give choice-independent hook
 multiplicities for finite real-coordinate rank-projective decompositions.
 `FiniteRankProjectiveResolution.finitelyPresented_exists_minimal_resolution_with_hook_sum_terms`
 then constructs a minimal resolution for every finitely presented module on
-`Fin n → ℝ` (`n ≥ 1`), with each zero-padded term represented by an actual
+`Fin n → ℝ`, with each zero-padded term represented by an actual
 finite hook sum. The proof transports the occurrence-indexed terms of a finite
 grid resolution through the genuine left Kan extension, its hook and
 biproduct isomorphisms, and the reconstructed presentation of the original
@@ -391,7 +392,13 @@ raw lengths. `signedHookBarcode_eq` records those two finite multisets
 separately; repeated hooks retain their multiplicity and even and odd degrees
 are not cancelled against one another. The principal-upset example confirms
 that positive-degree terms vanish when the resolved module is already
-projective.
+projective. These hook-Betti and signed-barcode declarations take
+`M : PModule.{u,0,u} k (Fin n → ℝ)` with the finite-presentation hypothesis
+`GradedFree.FinitelyPresented.{u,0,0}` (index carriers in `Type 0`), as the
+existence and `2*n-2` bound theorems do, and assume no positivity of `n`.
+`GradedFree.finitelyPresented_lowerIndexUniverse` converts a finite
+presentation with index carriers in `Type u` to this form, and
+`GradedFree.finitelyPresented_liftIndexUniverse` is the converse.
 
 For a field `k`, `n ≥ 1`, and two finite occurrence-indexed families of these
 finite-death or principal-upset hooks over `Fin n → ℝ`,
@@ -452,12 +459,14 @@ include both nonzero component structure maps, repeated summands, zero summands 
 resolutions, and the explicit padding of unequal original lengths.
 
 The signed-multiset results do not select a canonical hook decomposition or a
-unique comparison isomorphism. Choice independence of the signed multisets is
-not a stability theorem: these declarations do not establish signed-barcode
-stability, the rank-exact structure axioms stated in
-[Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3), or the `2n−2`
-resolution-length bound stated in
-[Theorem 5.18](https://arxiv.org/html/2208.00300v3).
+unique comparison isomorphism. Choice independence of the signed multisets is by itself not a
+stability theorem. Signed-barcode stability and the `2n−2` degree bound on the nonzero terms of
+minimal resolutions (a bound on the highest nonzero zero-padded term, not on the stored length;
+[Theorem 5.18](https://arxiv.org/html/2208.00300v3)) are proved separately: see the
+real-coordinate degree bound below and
+[signed hook bottleneck stability](#signed-hook-bottleneck-stability). The rank-exact structure
+axioms of [Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3) are not packaged as an
+`ExactCategory` instance.
 
 For any natural number `n`, field `k`, and originally finitely presented module
 `M : PModule k (Fin n → ℝ)`,
@@ -755,7 +764,10 @@ barcode connection is a separate result documented below; a concrete
 two-coordinate signed triangle failure is proved in the next section. Examples apply
 the capstone in dimensions one and two (coefficients one and nine), at zero interleaving
 parameter, and to nonzero finite-presentation inputs; finite-death,
-principal-upset, empty, and repeated cross-sign tags are also exercised.
+principal-upset, empty, and repeated cross-sign tags are also exercised. In
+dimension one the capstone also compares two distinct principal upsets, born at
+`0` and at `1`, through an explicit radius-one interleaving, giving signed
+distance at most one.
 
 ### Finite simplicial input and grade perturbations
 
@@ -848,7 +860,9 @@ example above proves that `dSigned` is not triangular in general, without
 affecting the ordinary metric result. The examples cover negative births,
 repeated finite bars, finite and essential bars together, the empty diagram, the exact
 finite-death deletion boundary, and a nonzero interval with an actual original
-finite presentation. The endpoint conventions follow
+finite presentation. They apply the isometry both to that interval against
+itself and to two distinct essential intervals, born at `0` and `1`, whose
+bottleneck distance is bounded by an explicit radius-one interleaving. The endpoint conventions follow
 [Bauer--Lesnick, §§2.1--2.3](https://arxiv.org/abs/1311.3681). This library's
 critical-grade argument derives finite constructibility from the actual
 presentation using its critical coordinates, free cover, and
@@ -934,17 +948,27 @@ presentation of actual pushouts from finite presentation of the three input
 objects, with no closure certificate supplied by the caller. For a
 rank-exact sequence over a field, `IsRankExact.pushout_finitelyPresented`
 reuses `IsRankExact.pushout` and derives pointwise finite-dimensionality of the
-new left object from its finite presentation. This supplies the
-finite-presentation restriction for the inflation-pushout law in #501; the
-composite-deflation kernel and deflation-pullback obligations remain separate.
+new left object from its finite presentation. Pullback and composite-kernel closure are
+proved in the next two subsections (`IsRankExact.pullback_finitelyPresented`,
+`IsRankExact.comp_finitelyPresented`). These closure laws are standalone results: the
+signed-stability proof obtains its finite resolutions by finite-grid Kan reconstruction and
+does not consume them.
 
 `FinitePresentationColimitsExamples` checks a nonzero quotient and actual
 pushout, an empty/zero boundary, repeated grades with a genuine relation, a
-redundant relation, and the arbitrary-field rank-exact consumer.
+redundant relation, and the arbitrary-field rank-exact consumer. It also
+applies the cokernel theorem to the nonzero relation map between free modules
+born at grades `0` and `2` (distinct for `n > 0`).
 
 ### Finite presentations of exact extensions and pullbacks
 
-Let `k` be a field, `P` a partially ordered type, and
+The field-side closure results of this and the next subsection, and
+`IsRankExact.pushout_finitelyPresented` above, are stated for `P : Type`, modules in
+`PModule.{u,0,u}` and presentations with index carriers in `Type 0`
+(`GradedFree.FinitelyPresented.{u,0,0}`); a `FinitelyPresented.{u,0,u}`
+witness is lowered to `{u,0,0}` by
+`GradedFree.finitelyPresented_lowerIndexUniverse`. Let `k` be a field,
+`P : Type` a partially ordered type, and
 `0 → L → M → N → 0` a pointwise short exact row of persistence modules. If
 `L` and `N` are finitely presented, `IsPointwiseShortExact.finitelyPresented_middle`
 proves that `M` is finitely presented. The row is assumed pointwise exact in
@@ -976,11 +1000,15 @@ this result.
 `FinitePresentationPullbackExamples` checks the ordinary extension and
 rank-exact pullback on the repeated-grade presentation with a genuine relation,
 over an arbitrary field and with the smallest presentation-index universe. It
-also checks the empty-presentation zero case.
+also checks the empty-presentation zero case. On the non-split row given by
+the genuine relation, with both outer terms nonzero, it applies the extension
+theorem and the pullback of the quotient map along itself, which contains a
+pair with distinct coordinates.
 
 ### Finite presentations of composite kernels
 
-Over a field and a partially ordered index type, for any composable maps
+Over a field and a partially ordered index type `P : Type` (universe scope as in the previous
+subsection), for any composable maps
 `π : M ⟶ N` and `σ : N ⟶ O`, `kernelCompIsoPullback` identifies the actual
 categorical kernel of `π ≫ σ` with the actual pullback of `π` along
 `kernel.ι σ`. Its first and second projection laws and its inverse inclusion
@@ -1004,7 +1032,10 @@ pullback closure is exposed separately by
 
 `FinitePresentationCompositeKernelExamples` checks the result over an arbitrary
 field using the repeated-grade presentation with a genuine relation, including
-a nonzero fiber of the actual composite kernel, and the empty/zero case.
+a nonzero fiber of the actual composite kernel, and the empty/zero case. A
+second consumer composes two split deflations whose rows have nonzero outer
+terms and exhibits a composite-kernel vector outside the kernel of the first
+deflation.
 
 ### Pushouts of rank-exact sequences
 
@@ -1021,7 +1052,10 @@ row is rank exact. Each middle fiber is finite dimensional because the actual
 For rank additivity, the proof lifts a quotient vector killed by a structure
 map through the original rank-exact row with a lift killed at the same grade,
 then maps that lift into the pushout. `RankExactPushoutExamples` checks the
-theorem on a nonzero pushout of a split sequence. This closure result supplies
+theorem on a nonzero pushout of a split sequence with zero left term. It also
+pushes the nonzero left term of a split row out along a nonzero truncation map,
+and exhibits a pushout vector that dies at a later grade while its quotient
+image is nonzero. This closure result supplies
 the pushout part of the rank-exact theory; the remaining exact-structure laws
 are separate results.
 
@@ -1078,7 +1112,8 @@ witness types, and `CoordinateRealBridge.distance_eq` identifies their distances
 needed for attainment and separation: over a field, `RealRay.distance_eq_zero` shows that
 `k_[0,∞)` and `k_(0,∞)` have interleaving distance zero, `RealRay.not_nonempty_iso` that they are not
 naturally isomorphic, and `RealRay.not_nonempty_zero_interleaving` that the zero distance is not
-attained; the closed ray has a finite presentation and the open ray cannot have one. For
+attained. (Informally, the closed ray is finitely presented and the open ray is not; this
+ray-presentability remark is not formalized.) For
 right-continuous real modules on finite critical grids with zero left tails and finite-dimensional
 critical fibers, over a field, `FiniteConstructible.distance_le_iff_interleaving`,
 `FiniteConstructible.interleaving_at_distance`, `FiniteConstructible.isClosed_interleaving_parameters`
@@ -1209,12 +1244,17 @@ with zero is equivalent to a zero double-shift structure map. Its interval examp
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
 for the finite nonnegative parameters and witness equations.
 
-For q-tame real modules over a field, an actual `ε`-interleaving gives the
-quotient family `RealInterleaving.exists_qTame_interpolating_family` on the closed
-interval `[0, ε]`. Its endpoints are naturally isomorphic to the input modules,
-each member is q-tame, and every pair has an actual interleaving witness at the
-nonnegative distance between its parameters. This algebraic interpolation result
-does not assert a bottleneck or metric stability theorem. See the
+For q-tame real modules over a field, an actual `ε`-interleaving `i` gives the
+public quotient family `RealInterleaving.interpolatingModule i` on the closed
+interval `[0, ε]`, with endpoints `startTime ε` and `endTime ε`.
+`interpolatingModuleStartIso` and `interpolatingModuleEndIso` identify its
+endpoint members with the input modules, `interpolatingModule_qTame` shows each
+member is q-tame, and `interpolatingModuleInterleaving` gives every pair an actual
+interleaving witness at the nonnegative distance between its parameters.
+`interpolatingModule_qTame_interpolation` collects these facts for this family, and
+`RealInterleaving.exists_qTame_interpolating_family` states the existential form.
+This algebraic interpolation result does not assert a bottleneck or metric
+stability theorem. See the
 [real interleaving interpolation](math/real-interleavings.md#q-tame-algebraic-interpolation)
 section for the quotient and the precise scope.
 
@@ -1521,7 +1561,9 @@ vertex representation or finite projective dimension for arbitrary incidence mod
 does not establish the real-coordinate transfer or final stability result. See
 [ordinary projective dimensions of actual incidence modules](math/incidence-projective-dimension.md)
 and the focused consumers in
-`TDA.Persistence.IncidenceVertexProjectiveDimensionExamples`.
+`TDA.Persistence.IncidenceVertexProjectiveDimensionExamples`, which apply the
+complement-count bound and the incidence grid bound to zero modules and to the
+nonzero regular module.
 
 ### Actual Hom modules and their cokernels
 
@@ -1912,7 +1954,9 @@ the minimum; fractional optima can coexist with it. Empty formulas and reindexin
 included. For unit masses, `BoundaryTransport.boundaryTransportPowerValue_ofIndexed_unit`
 identifies the infimum over all Borel boundary plans between the atomic measures with the
 powered finite matching minimum `finitePowerMatchingCost p` for `p ≥ 0`. No identification
-with an ordinary Wasserstein coupling API is provided.
+with an ordinary Wasserstein coupling API is provided; in particular the library's own
+`TDA.Probability.measureWasserstein` (exact probability marginals, used for the sampled Rips
+laws) is a separate definition not identified with the boundary-transport value.
 See [finite boundary transport](math/finite-boundary-transport.md).
 
 ## Finite real-exponent matching and transport costs
@@ -2498,12 +2542,17 @@ See [the statement, direct-plan proof and source boundaries](math/weighted-bound
 ### Sampled Rips laws
 
 `Probability.FiniteSampling`, `SamplingMoments`, and `GromovWasserstein` provide
-atomic probability couplings, iid sampling with replacement, sharp unordered-pair
-moment bounds, and distortion GW with factor one half. Their measure-valued
+atomic probability couplings, iid sampling with replacement, unordered-pair
+moment bounds with the constant `C(n,2)` (non-strict; optimality is not claimed), and distortion GW with factor one half. Their measure-valued
 counterparts in `MeasureCoupling`, `MeasureSampling`, and `MeasureGromovWasserstein`
 use actual `ProbabilityMeasure` couplings with exact marginals. `RipsSampling`
-applies the atomic estimates to full diagrams of finite tuple ranges, and
-`RipsSamplingMeasureStability` proves finite-p and `W_∞` bounds on whole diagram
+applies the atomic estimates to full diagrams of finite tuple ranges. For `PMF`
+inputs on arbitrary metric spaces, with no compactness assumption,
+`Rips.wasserstein_sampleLaw_le_gromovWasserstein_allDegrees` and
+`Rips.wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees`
+prove the same finite-p and `W_∞` bounds for the atomic laws `Rips.sampleLaw` in
+every natural degree `q`, including full H₀ at degree zero; the names without
+`_allDegrees` retain the positive-degree specializations. `RipsSamplingMeasureStability` proves finite-p and `W_∞` bounds on whole diagram
 laws with bottleneck ground cost in every natural degree `q`, including degree
 zero. The theorems
 `Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees` and
@@ -2533,6 +2582,12 @@ at `1` and lies exactly `1/2` from the singleton diagram. In that chart, the
 as `ε → 0`; `sampleLaw_map_isometry` transports the whole law under isometric
 embeddings, and `epsilonTwoPoint_realSampleLaw_nontrivial_mass` states this atom
 for the real-valued input law. This does not give an arbitrary-`n` atom formula.
+The degree-zero fixture `weighted_twoPoint_sampleLaw_bound_degreeZero` applies
+the atomic all-degree finite-p bound to this input law and a one-point input, and
+`twoPoint_pair_sampleLaw_bound_degreeZero` applies it to the `n = 2` laws of two
+weights `ε` and `ε'`, together with both exact rare-atom masses and the fact that
+the two laws differ whenever those masses differ. The positive-degree fixture
+`weighted_twoPoint_sampleLaw_bound` only instantiates the `q+1` wrapper.
 The compact Borel law and its finite-PMF agreement are described with the
 `Rips.sampleLawMeasure` API above. The finite-PMF transport cost has not yet been
 identified with the infimum over all Borel couplings on finite support.
@@ -2553,9 +2608,11 @@ sampled-law bounds above concern full H₀ diagrams.
 ### Barycentric subdivision and prism homotopies
 
 `PrismAdmissible f g` weakens contiguity: every mixed prism tuple over a source face is a
-target face, although `f(s) ∪ g(s)` need not be one. `PrismAdmissible.chainHomotopy` is the
-same signed prism homotopy, and `simplicialHomologyMap_eq_of_prismAdmissible` gives equal
-homology maps in every degree over any ring. `TDA.Simplicial.ArbitraryApexCone` inserts a
+target face, although `f(s) ∪ g(s)` need not be one; `Contiguous.prismAdmissible` derives it from
+contiguity (no fixture shows the weakening is strict). `PrismAdmissible.chainHomotopy` is the
+signed prism homotopy, of the same shape as the separately constructed `Contiguous.chainHomotopy`,
+and `simplicialHomologyMap_eq_of_prismAdmissible` gives equal homology maps in every degree over
+any ring. `TDA.Simplicial.ArbitraryApexCone` inserts a
 chosen apex into each oriented tuple at its position in the ambient order; when the apex can
 be inserted into every face (`ApexInsertionClosed`), `boundary_arbitraryApexConeFill_add`
 contracts positive-degree chains and `boundary_arbitraryApexConeFill_zero` subtracts the
@@ -2607,7 +2664,10 @@ isomorphisms transport that interleaving to the subdivision-Rips modules.
 `subdivisionRipsHomologyInterleavingDistance_le_gromovProkhorovEDist` bounds their restricted
 homology interleaving distance by the finite-uniform GP distance, for finite nonempty metric
 inputs in one universe; `subdivisionRipsHomologyInterleaving_of_isometric_embedding` gives the
-outlier consumer. No comparison with the homology of the multicover space, homotopy
+outlier consumer. The distance is the infimum over the public predicate
+`SubdivisionRipsHomologyInterleavingExistsAt`, and
+`subdivisionRipsHomologyInterleavingDistance_le_of_interleaving` bounds it by the scale of any
+supplied restricted-index interleaving. No comparison with the homology of the multicover space, homotopy
 interleaving or bound for non-uniform measures is stated. See
 [normalized subdivision-Rips and measure stability](math/subdivision-rips.md).
 
@@ -2756,8 +2816,8 @@ entry time (`pairEntry_mem`); `finiteWeight_eq_max_min` writes each finite-delet
 threshold closed in the scale. `finiteSparseFiltration` chooses an initial vertex when one exists
 and is bottom on empty input. `faceEntry` takes the maximum over a face's pairs.
 `mem_sparseCarrier_iff_faceEntry` shows that a nonempty candidate face occurs
-precisely when this entry is at most every finite vertex-deletion time, including
-equality. On that actual carrier,
+precisely when this entry is at most the deletion time of each of its vertices (`≤`, so a
+tie at a deletion time is allowed). On that actual carrier,
 `sparseFilter_sublevel_eq` identifies the finite filter's closed sublevels with
 the sparse filtration. For a coefficient field in the vertex universe, an auxiliary linear
 order on the vertices and a degree `n ≥ 1`,

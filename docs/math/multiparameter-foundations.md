@@ -4,7 +4,8 @@ The persistence-module API supports constructions on an arbitrary preorder,
 including coordinatewise ordered real vector spaces. The results below provide
 interval geometry, Hall neighbor bounds, two-sided matchings and distance bounds
 for finite rectangle sums, together with free presentations and lifting lemmas.
-Rank-exact resolutions require further arguments.
+Rank-exact resolutions are not covered here; minimal finite rank-projective resolutions are
+constructed in [finite rank-projective resolutions](finite-rank-projective-resolution.md).
 
 ## Supports and rectangle transitions
 
@@ -593,8 +594,10 @@ nonzero-hook and zero-module consumers verify the theorem at both boundaries;
 the zero module selects the empty occurrence family.
 
 The deflation can have redundant summands; it is not asserted to be a minimal
-projective cover. An exact-category instance, minimal resolutions and signed
-barcode stability remain further results.
+projective cover. An exact-category instance is not claimed; minimal resolutions and signed
+barcode stability are proved elsewhere (see
+[finite rank-projective resolutions](finite-rank-projective-resolution.md) and
+[signed hook bottleneck stability](../api.md#signed-hook-bottleneck-stability)).
 
 ## Finite-hook covers after grid Kan extension
 
@@ -661,8 +664,8 @@ finite presentations over `ℚ` and `ZMod 2`.
 
 ## Rank-projectives among finitely presented real modules
 
-Fix a field `k` and `n ≥ 1`. For a module `M` on `Fin n → ℝ` satisfying the
-original `GradedFree.FinitelyPresented M` predicate,
+Fix a field `k` and `n : ℕ` (no positivity is needed). For a module `M` on `Fin n → ℝ` satisfying
+the original `GradedFree.FinitelyPresented M` predicate,
 `GradedFree.finitelyPresented_rankProjective_iff_exists_hook_sum` proves
 
 ```text
@@ -699,8 +702,10 @@ classification component related to
 The source theorem also asserts exact-structure axioms and finite minimal
 rank-projective resolutions; this result proves neither. It does not cover
 arbitrary pfd real-indexed modules, minimal covers or resolutions, or
-choice-independent decomposition. It also does not establish the associated
-`2n−2` resolution-length bound or signed-bottleneck stability. The focused
+choice-independent decomposition. It also does not by itself establish the `2n−2` degree bound
+on the nonzero terms of minimal resolutions or signed-bottleneck stability, which are proved
+separately (see the API guide's real-coordinate degree bound and
+[signed hook bottleneck stability](../api.md#signed-hook-bottleneck-stability)). The focused
 `FinitePresentationRankProjectiveClassificationExamples` module exercises a
 nonzero finite-death hook, a principal upset with nonzero fibers above every
 grade, repeated hook occurrences and the zero/empty-sum boundary.
