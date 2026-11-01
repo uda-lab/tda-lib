@@ -90,11 +90,13 @@ bijective map; its source is compact because the constructible pieces are compac
 is Hausdorff because it is a graph object, so it is a homeomorphism over `ℝ`
 (`absorptionOverIso`). No Hausdorffness of the pieces is used.
 Transport along this homeomorphism gives (H2) via
-`isRGraph_quotient_thickening_of_isConstructibleSpace`. This route does not use DMP15-v1
-Theorem 4.27, and it needs no Hausdorffness assumption on `X`. The constructibility conclusion of
-that theorem for `T_ε X` is proved separately, in general form, as
-`isConstructibleSpace_thickening_of_isConstructibleSpace` (see `reeb-thickening-constructible.md`);
-followed by the Reeb quotient, its lift `thickeningFunctor ε` is `thickeningQuotient ε`.
+`isRGraph_quotient_thickening_of_isConstructibleSpace`. This absorption argument does not use
+DMP15-v1 Theorem 4.27, and it needs no Hausdorffness assumption on `X`. Separately, the general
+form of that theorem says that `T_ε X` is constructible for every constructible ℝ-space `X` and
+every `ε : ℝ≥0`, with no `T₂` hypothesis. Applying it first at `δ` to a constructible `A` and then
+at `ε` to `T_δ A` shows that `T_ε T_δ A` is constructible; see
+[Theorem 4.27](reeb-thickening-constructible.md#theorem-427). Following the Reeb quotient, its
+lift `thickeningFunctor ε` is `thickeningQuotient ε`.
 
 The result is packaged on the full subcategory of constructible spaces as
 
@@ -220,9 +222,8 @@ The geometric interleavings of Definition 4.36, their distance and the inequalit
 `d_cosheaf ≤ d_geo` are in [reeb-geometric-interleaving.md](reeb-geometric-interleaving.md).
 
 Not claimed here: the reverse inequality `d_geo ≤ d_cosheaf`; absorption on arbitrary objects
-of the real slice; constructibility of `T_ε T_δ A`, or of `T_ε X` for a constructible `X` that
-is not a graph object; a lift of `smoothingCompIso` to constructible cosheaves, so the
-compatibility square is stated on underlying precosheaves.
+of the real slice; a lift of `smoothingCompIso` to constructible cosheaves, so the compatibility
+square is stated on underlying precosheaves.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.4, Definition 4.30 and
 Observation 4.33](https://arxiv.org/html/1501.04147v1).
