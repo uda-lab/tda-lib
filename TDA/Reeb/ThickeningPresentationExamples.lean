@@ -123,13 +123,15 @@ def dupThickHomeomorph :
       seg.Realization P01 × GeometricThickening.Band halfNN :=
   seg.shiftedThickHomeomorph P01 halfNN
 
-/-- **Duplicate shifted values.** The bottom vertex at band coordinate `1/2` comes from height
+/-- **Duplicate shifted values.** The shifts `0 + ε` and `1 - ε` coincide, so the shifted grid has
+two slabs rather than three, and the bottom vertex at band coordinate `1/2` comes from height
 `1/2`, the merged level of the shifted grid. -/
 theorem height_dupThick_symm :
-    (seg.shiftedThick P01 halfNN).height (P01.shifted halfNN)
+    P01.shiftedCount halfNN = 2 ∧
+      (seg.shiftedThick P01 halfNN).height (P01.shifted halfNN)
         (dupThickHomeomorph.symm (seg.ofVertex P01 0 (), ⟨1 / 2, by norm_num⟩)) = 1 / 2 ∧
       (1 / 2 : ℝ) ∈ Set.range (P01.shifted halfNN).value := by
-  refine ⟨?_, by rw [range_shifted_P01]; simp⟩
+  refine ⟨shiftedCount_P01, ?_, by rw [range_shifted_P01]; simp⟩
   rw [show dupThickHomeomorph =
       seg.thickHomeomorph P01 halfNN _ (P01.containsShifted_shifted halfNN) from rfl,
     height_thickHomeomorph_symm, GeometricThickening.height_apply]

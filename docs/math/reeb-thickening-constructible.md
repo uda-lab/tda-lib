@@ -209,8 +209,9 @@ presentation `P` over levels `S` and proves that it realizes the thickening. Wri
   (`toProd_ofProd`, `ofProd_toProd`), so `thickHomeomorph : |P_ε| ≃ₜ X × [-ε, ε]` is a
   height-preserving homeomorphism (`height_thickHomeomorph`), with the inverse at generators
   `thickHomeomorph_symm_quotMk`, `thickHomeomorph_symm_windowToSpace_value` and
-  `thickHomeomorph_symm_windowToSpace_of_mem_K`. It holds for every topological pieces, every
-  `ε ≥ 0` and every such grid; no separation, compactness or positivity hypothesis is used, and
+  `thickHomeomorph_symm_windowToSpace_of_mem_K`. It holds for pieces that are arbitrary
+  topological spaces, every `ε ≥ 0` and every such grid; no separation, compactness or positivity
+  hypothesis is used, and
   continuity of the inverse comes from the quotient map, not from a compact-to-Hausdorff argument.
   The shifted-witness instance is `shiftedThickHomeomorph`.
 
