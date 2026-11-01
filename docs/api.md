@@ -1091,9 +1091,11 @@ finite nonnegative parameter. A `CoordinateInterleaving ε M N` consists of natu
 and `N → M[ε]` whose two composites are the structure maps to `M[2ε]` and `N[2ε]`, and
 `CoordinateInterleaving.zeroEquivIso` identifies zero interleavings with natural isomorphisms.
 `coordinateInterleavingDistance` is the extended infimum of the admissible finite parameters; an
-empty parameter set has distance infinity. `coordinateInterleavingDistance_eq_zero_of_iso`,
-`coordinateInterleavingDistance_comm` and `coordinateInterleavingDistance_triangle` give invariance
-under natural isomorphism, symmetry and the extended triangle inequality. For a finitely presented
+empty parameter set has distance infinity. `coordinateInterleavingDistance_eq_zero_of_iso` shows
+that naturally isomorphic modules have distance zero, while
+`coordinateInterleavingDistance_congr` gives invariance under natural isomorphisms in both
+arguments. `coordinateInterleavingDistance_comm` gives symmetry, and
+`coordinateInterleavingDistance_triangle` gives the extended triangle inequality. For a finitely presented
 source, `GradedFree.finitelyPresented_exists_finite_postcomp_tests` gives a finite set of generator
 and relation grades at which bijectivity of a natural map induces a bijection on maps out of the
 module, and `GradedFree.finitelyPresented_exists_pos_postcomp_shiftLE_bijective` combines this test
