@@ -158,10 +158,7 @@ noncomputable def bool_lower_simple_degree_zero_comparison :
         (RightVertexModule (k := ℚ) (S := Bool) boolLowerStrictVertex) ≅
       (((vertexTensor (k := ℚ) (S := Bool) boolLowerStrictVertex).leftDerived 0).obj
         (diagonalQuotientModule (k := ℚ) (S := Bool))) := by
-  letI : IsSimpleModule (RightQuotient (k := ℚ) (S := Bool))
-      (RightVertexModule (k := ℚ) (S := Bool) boolLowerStrictVertex) :=
-    rightVertexModule_isSimpleModule (k := ℚ) (S := Bool) boolLowerStrictVertex
-  exact simpleModule_leftDerivedZeroIso (k := ℚ) (S := Bool)
+  exact leftDerivedZeroIso_of_rightVertexIso (k := ℚ) (S := Bool)
     (RightVertexModule (k := ℚ) (S := Bool) boolLowerStrictVertex)
     boolLowerStrictVertex (Iso.refl _)
 

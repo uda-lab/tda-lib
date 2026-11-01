@@ -7237,3 +7237,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.zeroCoordinatePrincipalUpset_has_finite_minimal_resolution
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.zeroCoordinate_emptyPresentation_has_finite_minimal_resolution
 #print axioms TDA.Persistence.FiniteRankProjectiveResolutionKanExamples.oneCoordinatePrincipalUpset_uses_dimension_free_existence
+
+-- Selected-isomorphism degree-zero comparison.
+#print axioms TDA.Persistence.IncidenceQuotientSimple.leftDerivedZeroIso_of_rightVertexIso
