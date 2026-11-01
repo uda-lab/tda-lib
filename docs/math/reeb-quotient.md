@@ -16,6 +16,12 @@ Constant, reversed and concatenated paths give reflexivity, symmetry and transit
 surjective and a quotient map. No openness of `q_f` and no Hausdorff property of the quotient is
 claimed.
 
+This repository develops this topological constant-height-path quotient together with constructible
+real spaces and graphs, cosheaf smoothing, and graph and tree topology. Uda's [Definition 3 Reeb
+poset](https://jxiv.jst.go.jp/index.php/jxiv/preprint/view/519) and its ordered-space and Hasse-order
+results are developed in [reeb-ordering](https://github.com/uda-lab/reeb-ordering). That Reeb poset
+is not identified here with the topological quotient `ReebQuotient f`.
+
 ## Universal property
 
 For every topological space `Z` and continuous `k : X → Z` that is constant on Reeb classes,
