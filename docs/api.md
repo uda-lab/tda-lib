@@ -959,6 +959,8 @@ pushout, an empty/zero boundary, repeated grades with a genuine relation, a
 redundant relation, and the arbitrary-field rank-exact consumer. It also
 applies the cokernel theorem to the nonzero relation map between free modules
 born at grades `0` and `2` (distinct for `n > 0`).
+The constructions and their scope are summarized in the
+[finite-presentation closure digest](math/multiparameter-foundations.md#finite-presentation-closure).
 
 ### Finite presentations of exact extensions and pullbacks
 
@@ -1004,6 +1006,8 @@ also checks the empty-presentation zero case. On the non-split row given by
 the genuine relation, with both outer terms nonzero, it applies the extension
 theorem and the pullback of the quotient map along itself, which contains a
 pair with distinct coordinates.
+The split-pullback argument and its hypotheses are summarized in the
+[finite-presentation closure digest](math/multiparameter-foundations.md#finite-presentation-closure).
 
 ### Finite presentations of composite kernels
 
@@ -1036,6 +1040,8 @@ a nonzero fiber of the actual composite kernel, and the empty/zero case. A
 second consumer composes two split deflations whose rows have nonzero outer
 terms and exhibits a composite-kernel vector outside the kernel of the first
 deflation.
+The kernel comparison and its finite-presentation scope are summarized in the
+[finite-presentation closure digest](math/multiparameter-foundations.md#finite-presentation-closure).
 
 ### Pushouts of rank-exact sequences
 
