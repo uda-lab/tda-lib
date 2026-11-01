@@ -45,8 +45,8 @@ therefore detects the isomorphism on interval components and reflects it.
   `Φ g ≫ κ_(T_ε ℛ X) = κ_(T_ε X) ≫ Φ (ℛ g)`. Since `ℛ X` is a graph object, `T_ε ℛ X` is
   constructible and `κ_(T_ε ℛ X)` is an isomorphism, so the left side is one. Hence `κ_(T_ε X)` is
   injective at every interval. It is surjective at every interval for every space (merged), so
-  `κ_(T_ε X)` is an isomorphism (`isIso_intervalComponentComparison_thickening`), although `T_ε X`
-  is not claimed constructible. Cancelling it, `Φ (ℛ g)` is an isomorphism
+  `κ_(T_ε X)` is an isomorphism (`isIso_intervalComponentComparison_thickening`), without using
+  constructibility of `T_ε X`. Cancelling it, `Φ (ℛ g)` is an isomorphism
   (`isIso_map_quotientFunctor_map_functor_map_projNatTrans_app`).
 
 ## Reflection and the hypotheses
@@ -90,9 +90,11 @@ bijective map; its source is compact because the constructible pieces are compac
 is Hausdorff because it is a graph object, so it is a homeomorphism over `ℝ`
 (`absorptionOverIso`). No Hausdorffness of the pieces is used.
 Transport along this homeomorphism gives (H2) via
-`isRGraph_quotient_thickening_of_isConstructibleSpace`. This route bypasses DMP15-v1
-Theorem 4.27, whose constructibility conclusion for `T_ε X` is not proved here, and it needs no
-Hausdorffness assumption on `X`.
+`isRGraph_quotient_thickening_of_isConstructibleSpace`. This route does not use DMP15-v1
+Theorem 4.27, and it needs no Hausdorffness assumption on `X`. The constructibility conclusion of
+that theorem for `T_ε X` is proved separately, in general form, as
+`isConstructibleSpace_thickening_of_isConstructibleSpace` (see `reeb-thickening-constructible.md`);
+followed by the Reeb quotient, its lift `thickeningFunctor ε` is `thickeningQuotient ε`.
 
 The result is packaged on the full subcategory of constructible spaces as
 

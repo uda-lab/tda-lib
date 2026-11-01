@@ -240,7 +240,8 @@ Not claimed here: that the first projection is a map over `ℝ` or a slice morph
 naturality of the homotopy inverse, of the chosen point or of the homotopy in `I` or in maps; Reeb
 graphs of thickenings, or Proposition 4.35 for ℝ-graphs. Constructibility of the thickenings of
 ℝ-graphs (Proposition 4.26), by the rest of the proof of Theorem 4.27 on graph input, is in
-`reeb-rgraph-thickening.md`; the geometric smoothing `U_ε = ℛT_ε` of ℝ-graphs, with Proposition
+`reeb-rgraph-thickening.md`, and Theorem 4.27 for all constructible ℝ-spaces is in
+`reeb-thickening-constructible.md`; the geometric smoothing `U_ε = ℛT_ε` of ℝ-graphs, with Proposition
 4.35 for ℝ-graphs, is in `reeb-rgraph-smoothing.md`. The addition map `T_ε T_δ → T_(ε+δ)`, its lax
 coherence and the failure of `T_ε T_δ ≅ T_(ε+δ)` on a point are in
 `reeb-geometric-thickening-addition.md`.
