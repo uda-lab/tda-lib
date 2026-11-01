@@ -789,6 +789,85 @@ also includes other exact-category axioms and has its stated finite-poset or
 finitely presented real-coordinate scope; those conclusions do not follow from
 this local closure theorem.
 
+## Finite-presentation closure
+
+A finite presentation consists of finite graded-free generator and relation
+families. For a ring `R` and preorder `P`, with compatible universes
+`PModule.{u,v,max u w}` and `FinitelyPresented.{u,v,w}`, these modules are
+closed under actual categorical cokernels and binary biproducts. For a map
+`f : M → N`, lift the source generators through the target's free cover and
+add the lifted generators to the target relations, retaining the target
+generators. A biproduct uses disjoint unions of both occurrence families. The
+comparison isomorphisms identify these presentations with the actual
+categorical objects, and repeated grades remain distinct occurrences. These
+constructions are [`finitelyPresented_cokernel`](../../TDA/Persistence/FinitePresentationColimits.lean)
+and [`finitelyPresented_biprod`](../../TDA/Persistence/FinitePresentationColimits.lean).
+The actual pushout of `f : X → Y` and `g : X → Z` is the cokernel of
+`(f, -g) : X → Y ⊞ Z`; hence
+[`finitelyPresented_pushout`](../../TDA/Persistence/FinitePresentationPushout.lean)
+requires finite presentations of exactly `X`, `Y` and `Z`, without monicity
+or rank hypotheses.
+
+For any field `k` and a partially ordered type `P : Type`, the field-side results
+below use `PModule.{u,0,u}` and the original
+`GradedFree.FinitelyPresented.{u,0,0}` predicate. Given an ordinary pointwise
+short exact row `0 → L → M → N → 0` with quotient `π : M → N`, and with `L`
+and `N` finitely presented,
+[`IsPointwiseShortExact.finitelyPresented_middle`](../../TDA/Persistence/FinitePresentationExtensions.lean)
+proves that `M` is finitely presented. Choose a finite free cover of `N` and
+pull `π` back along it. The free generators lift through `π` and give a
+section of the pullback projection, so the pullback is isomorphic to `L ⊞ F`,
+with `F` the finite free cover. This pulled-back row splits; the original
+extension need not. Let `d : F(A) → F` be the relation map in the chosen
+presentation of `N`, and let `c : F → N` be its free cover. Set
+`B := Limits.pullback π c` and let `q : B → M` be the first projection. The
+relation map `r : F(A) → B` has pullback components `(0,d)`; on each fiber it
+sends `a` to `(0,d(a))`. This is the pullback lift of zero to `M` and `d` to
+`F`; the section used to split `B → F` is separate from `r`. The image of `r`
+is `ker q`, and `q` is an epimorphism, so `M` is identified with the actual
+categorical cokernel of `r`. The relation map need not be injective, and the
+original row needs no
+pointwise finite-dimensionality or rank-exactness hypothesis.
+
+For a pointwise short exact row with quotient `π : M → N` and any `f : T → N`,
+the actual pullback `Limits.pullback π f` fits in an ordinary short exact row
+`0 → L → Limits.pullback π f → T → 0`; thus finite presentation of `L` and
+`T` gives finite presentation of the pullback by
+[`IsPointwiseShortExact.finitelyPresented_pullback`](../../TDA/Persistence/FinitePresentationPullback.lean).
+In the rank-exact case,
+[`IsRankExact.pullback_finitelyPresented`](../../TDA/Persistence/FinitePresentationPullback.lean)
+also proves finite presentation of the actual kernel of the second projection
+and rank exactness of its canonical kernel row. The finite presentation of
+`T` supplies its pointwise finite-dimensionality; no presentation of `M` or
+`N` is required.
+
+For any composable maps `π : M → N` and `σ : N → O`,
+[`kernelCompIsoPullback`](../../TDA/Persistence/FinitePresentationCompositeKernel.lean)
+identifies the actual kernel of `π ≫ σ` with the actual pullback of `π` along
+the kernel inclusion of `σ`. This comparison requires no exactness,
+epimorphism or finite-presentation assumptions. When the maps belong to
+rank-exact rows with finitely presented left terms `L` and `K`,
+the second row gives a canonical isomorphism from `K` to the actual
+`Limits.kernel σ`, transferring its finite presentation before the pullback
+closure is applied.
+[`IsRankExact.comp_finitelyPresented`](../../TDA/Persistence/FinitePresentationCompositeKernel.lean)
+uses pullback closure and this comparison to prove finite presentation of the
+actual composite kernel and rank exactness of its canonical kernel row. This
+result covers kernels of composites of rank-exact deflations, not kernels of
+arbitrary maps.
+
+For a rank-exact row `0 → L → M → N → 0` and a map `f : L → L'`,
+[`IsRankExact.pushout_finitelyPresented`](../../TDA/Persistence/FinitePresentationPushout.lean)
+proves finite presentation of the actual pushout and rank exactness of its
+canonical row, taking finite presentations of `L`, `M` and `L'` as inputs.
+The finite presentation of `L'` supplies its pointwise finite-dimensionality
+needed to apply the existing rank-exact pushout law; `N` need not be finitely
+presented.
+These are standalone closure results: they do not give finite presentation
+for kernels of arbitrary maps or an exact-category structure. Signed stability
+obtains its finite resolutions by finite-grid Kan reconstruction and does not
+use these closure laws.
+
 ## One-step persistent Schanuel
 
 Fix a field k and coordinatewise ordered ℝⁿ. Suppose K→P→M and L→Q→N
