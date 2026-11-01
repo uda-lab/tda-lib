@@ -38,23 +38,14 @@ private instance : HasBinaryBiproducts (PModule.{u,0,u} k P) :=
 
 private theorem pointZero (hs : IsPointwiseShortExact ι π) (p : P) :
     (ι.app p) ≫ (π.app p) = 0 := by
-  ext x
-  have hx : (ι.app p).hom x ∈ LinearMap.range (ι.app p).hom := ⟨x, rfl⟩
-  rw [hs.range_eq_ker p] at hx
-  exact hx
-
-private theorem pointwiseCompZero (hs : IsPointwiseShortExact ι π) : ι ≫ π = 0 := by
-  ext p x
-  have hx : (ι.app p).hom x ∈ LinearMap.range (ι.app p).hom := ⟨x, rfl⟩
-  rw [hs.range_eq_ker p] at hx
-  exact hx
+  simpa using congrArg (fun q : L ⟶ N => q.app p) hs.comp_eq_zero
 
 namespace IsPointwiseShortExact
 
 /-- The quotient of the pushout is induced by the original quotient and zero. -/
 noncomputable def pushoutQuotient (hs : IsPointwiseShortExact ι π) (f : L ⟶ L') :
     Limits.pushout ι f ⟶ N :=
-  Limits.pushout.desc π 0 (by rw [pointwiseCompZero hs]; simp)
+  Limits.pushout.desc π 0 (by rw [hs.comp_eq_zero]; simp)
 
 @[reassoc (attr := simp)]
 theorem pushoutQuotient_inl (hs : IsPointwiseShortExact ι π) (f : L ⟶ L') :

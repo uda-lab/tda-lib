@@ -27,11 +27,8 @@ theorem of_iso {L₀ M₀ N₀ L M N : PModule.{u,v,u} k P}
     IsPointwiseShortExact (eL.inv ≫ ι ≫ eM.hom) (eM.inv ≫ π ≫ eN.hom) := by
   let f : L ⟶ M := eL.inv ≫ ι ≫ eM.hom
   let g : M ⟶ N := eM.inv ≫ π ≫ eN.hom
-  have hzero : ι ≫ π = 0 := by
-    ext a x
-    have hx : (ι.app a).hom x ∈ LinearMap.range (ι.app a).hom := ⟨x, rfl⟩
-    rw [hs.range_eq_ker a] at hx
-    exact hx
+  have hzero := TDA.Persistence.comp_eq_zero_of_pointwise_range_eq_ker
+    ι π hs.range_eq_ker
   have hfg : f ≫ g = 0 := by
     calc
       f ≫ g = eL.inv ≫ (ι ≫ π) ≫ eN.hom := by simp [f, g, Category.assoc]
