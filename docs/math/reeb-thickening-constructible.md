@@ -297,14 +297,15 @@ levels (`shiftedCount = 2`), with the theorem applied to the segment over `S`.
 
 de Silva, Munch and Patel, *Categorified Reeb Graphs*, §2.2, define constructible ℝ-spaces as
 realizations of compact locally path-connected pieces, and Theorem 4.27 states that the thickening
-of a constructible ℝ-space is constructible; its proof builds the thickening from the thickenings
-of the pieces. With `IsConstructibleSpace` for the source's ℝ-**Top**ᶜ, Theorem 4.27 is claimed
-here in general form: `isConstructibleSpace_thickening_of_isConstructibleSpace`, for every
+of a constructible ℝ-space is constructible; its proof builds the thickening from the windows
+and fibers of the input. With `IsConstructibleSpace` for the source's ℝ-**Top**ᶜ, Theorem 4.27
+is claimed here in general form: `isConstructibleSpace_thickening_of_isConstructibleSpace`, for every
 constructible ℝ-space and every `ε ≥ 0`, with pieces that need not be Hausdorff. The critical set
 of the proof, `(S - ε) ∪ (S + ε)` in increasing order, is `S.shifted ε`; it is used as an
 admissible critical set. Corollary 4.28 states that `f_ε` has critical set `(S - ε) ∪ (S + ε)`
 when `f` has critical set `S`; in the sense of a set over which the thickening is presented,
-this is `isConstructibleSpace_thickening_realization` with `thickOverIsoOfIso`. Minimality, that
+this is `isConstructibleSpace_thickening_of_isConstructibleSpace`, through `thickOverIsoOfIso`, and
+on a presentation `isConstructibleSpace_thickening_realization`. Minimality, that
 every value of `S.shifted ε` is essential for `f_ε`, is not claimed. The tools, the one-cylinder
 presentation and the general presentation above are library statements on which the theorem
 rests. The source's proof ends
