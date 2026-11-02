@@ -7244,3 +7244,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.comp_eq_zero_of_pointwise_range_eq_ker
 
 #print axioms TDA.Persistence.FiniteObservation.locallyFinite_family_finiteDimensional
+
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.ofQModule_eq_of_iso
+#print axioms TDA.Persistence.LocallyFiniteDecoratedDiagram.qTame_bottleneck_le_realInterleavingDistance

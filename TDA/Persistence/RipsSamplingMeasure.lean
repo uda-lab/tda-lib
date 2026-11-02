@@ -22,10 +22,6 @@ namespace TDA.Persistence
 open MeasureTheory
 open scoped ENNReal NNReal
 
-/-- The empty diagram is the bottleneck-space base point. -/
-def Diagram.empty : Diagram ℝ :=
-  orderedQ 0 0 ((Fin.elim0 : Fin 0 → ℝ × ℝ), (Fin.elim0 : Fin 0 → ℝ))
-
 namespace Rips
 
 /-- Every positive-degree diagram on a carrier with at most one point is empty.

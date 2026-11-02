@@ -1,3 +1,4 @@
+import TDA.Persistence.QTameDiagramStability
 import TDA.Persistence.RipsQTameBottleneck
 import TDA.Persistence.RipsGromovHausdorff
 import Mathlib.Topology.MetricSpace.GromovHausdorff
@@ -52,84 +53,6 @@ private theorem hausdorffEDist_ne_top_of_isometric_totallyBounded
   exact Metric.hausdorffEDist_ne_top_of_nonempty_of_bounded
     (range_nonempty f) (range_nonempty g) hfb hgb
 
-private theorem contentMultiplicity_eq_of_values_eq
-    {X : Type*} {C : Set (Set X)} {m₁ m₂ : AddContent ℕ C}
-    (hval : ∀ U ∈ C, m₁ U = m₂ U) (x : X) :
-    contentMultiplicity m₁ x = contentMultiplicity m₂ x := by
-  unfold contentMultiplicity
-  congr 1
-  ext n
-  constructor
-  · rintro ⟨U, hU, hxU, hn⟩
-    exact ⟨U, hU, hxU, (hval U hU).symm.trans hn⟩
-  · rintro ⟨U, hU, hxU, hn⟩
-    exact ⟨U, hU, hxU, (hval U hU).trans hn⟩
-
-private theorem persistenceMeasureValue_eq_of_interleavingIso
-    {k : Type*} [Field k] {M N : PModule k ℝ}
-    (e : M ≅ N) (hM : M.QTame) (hN : N.QTame)
-    {a b c d : ℝ} (hab : a ≤ b) (hbc : b < c) (hcd : c ≤ d) :
-    persistenceMeasureValue M hab hbc.le hcd =
-      persistenceMeasureValue N hab hbc.le hcd := by
-  let i := RealInterleaving.ofIso e
-  have hMN := i.persistenceMeasureValue_box_le_of_qTame hN hab hcd
-    (by simpa using (sub_pos.mpr hbc))
-  have hNM := i.symm.persistenceMeasureValue_box_le_of_qTame hM hab hcd
-    (by simpa using (sub_pos.mpr hbc))
-  exact le_antisymm (by simpa using hMN) (by simpa using hNM)
-
-private theorem essentialMeasureValue_eq_of_interleavingIso
-    {k : Type*} [Field k] {M N : PModule k ℝ}
-    (e : M ≅ N) (hM : M.QTame) (hN : N.QTame)
-    {a b : ℝ} (hab : a ≤ b) :
-    essentialMeasureValue M hab = essentialMeasureValue N hab := by
-  let i := RealInterleaving.ofIso e
-  have hMN := i.essentialMeasureValue_box_le_of_qTame hN hab
-  have hNM := i.symm.essentialMeasureValue_box_le_of_qTame hM hab
-  exact le_antisymm (by simpa using hMN) (by simpa using hNM)
-
-private theorem moduleRectangleValue_eq_of_interleavingIso
-    {k : Type*} [Field k] {M N : PModule k ℝ}
-    (e : M ≅ N) (hM : M.QTame) (hN : N.QTame)
-    (U : Set (Cut ℝ × Cut ℝ)) :
-    moduleRectangleValue M U = moduleRectangleValue N U := by
-  by_cases hU : U = ∅
-  · simp [moduleRectangleValue, hU]
-  · simp only [moduleRectangleValue, if_neg hU]
-    let I := rectangleCellBox U
-    by_cases hsep : I.upper 0 < I.lower 1
-    · rw [persistenceBoxValue_of_separated M I hsep,
-        persistenceBoxValue_of_separated N I hsep]
-      have hMN := (RealInterleaving.ofIso e).persistenceMeasureValue_box_le_of_qTame
-        hN (I.lower_lt_upper 0).le (I.lower_lt_upper 1).le
-        (by simpa using (sub_pos.mpr hsep))
-      have hNM := (RealInterleaving.ofIso e).symm.persistenceMeasureValue_box_le_of_qTame
-        hM (I.lower_lt_upper 0).le (I.lower_lt_upper 1).le
-        (by simpa using (sub_pos.mpr hsep))
-      exact le_antisymm (by simpa using hMN) (by simpa using hNM)
-    · simp [persistenceBoxValue, I, hsep]
-
-private theorem moduleDiagramMultiplicity_eq_of_interleavingIso
-    {k : Type*} [Field k] {M N : PModule k ℝ}
-    (e : M ≅ N) (hM : M.QTame) (hN : N.QTame)
-    (p : Cut ℝ × Cut ℝ) :
-    moduleDiagramMultiplicity M hM p = moduleDiagramMultiplicity N hN p := by
-  apply contentMultiplicity_eq_of_values_eq
-  intro U hU
-  change moduleRectangleValue M U = moduleRectangleValue N U
-  exact moduleRectangleValue_eq_of_interleavingIso e hM hN U
-
-private theorem moduleEssentialMultiplicity_eq_of_interleavingIso
-    {k : Type*} [Field k] {M N : PModule k ℝ}
-    (e : M ≅ N) (hM : M.QTame) (hN : N.QTame)
-    (birth : Cut ℝ) :
-    moduleEssentialMultiplicity M hM birth = moduleEssentialMultiplicity N hN birth := by
-  apply contentMultiplicity_eq_of_values_eq
-  intro U hU
-  obtain ⟨a, b, hab, rfl⟩ := hU
-  rw [essentialCutContent_apply M hM hab, essentialCutContent_apply N hN hab]
-  exact essentialMeasureValue_eq_of_interleavingIso e hM hN hab
-
 /-- The represented finite-birth decorated q-tame diagram is invariant under a persistence-module
 isomorphism. Both finite-death rectangle contents and the essential birth boundary are
 preserved by the zero-interleaving inequalities in the two directions.
@@ -139,15 +62,7 @@ theorem ofQModule_eq_of_iso
     (e : M ≅ N) (hM : M.QTame) (hN : N.QTame) :
     LocallyFiniteDecoratedDiagram.ofQModule hM =
       LocallyFiniteDecoratedDiagram.ofQModule hN := by
-  apply LocallyFiniteDecoratedDiagram.ext
-  funext p
-  by_cases hInf : p.2 = infinityCut
-  · have hess := moduleEssentialMultiplicity_eq_of_interleavingIso e hM hN p.1
-    simp [LocallyFiniteDecoratedDiagram.ofQModule, moduleExtendedDiagramMultiplicity,
-      hInf, hess]
-  · have hfin := moduleDiagramMultiplicity_eq_of_interleavingIso e hM hN p
-    simp [LocallyFiniteDecoratedDiagram.ofQModule, moduleExtendedDiagramMultiplicity,
-      hInf, hfin]
+  exact LocallyFiniteDecoratedDiagram.ofQModule_eq_of_iso e hM hN
 
 /-- Isometrically equivalent vertex spaces have identical q-tame Rips diagrams,
 even when their auxiliary linear orders are unrelated.
