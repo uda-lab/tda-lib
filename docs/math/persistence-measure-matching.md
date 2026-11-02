@@ -57,3 +57,7 @@ this local theorem. The global result, `qTame_bottleneck_le_of_realInterleaving`
 different route through `PersistenceMeasureWindowMatching` and finite saturation (see
 [Rips metric stability](rips-metric-stability.md)); this local theorem by itself asserts
 neither full algebraic stability nor a Rips bottleneck bound.
+
+The canonical distance-form theorem,
+`LocallyFiniteDecoratedDiagram.qTame_bottleneck_le_realInterleavingDistance`, takes the
+infimum of these finite-saturation bounds over all actual interleavings.

@@ -249,6 +249,7 @@ import TDA.Persistence.LocallyFiniteDiagramBottleneckLaws
 import TDA.Persistence.PersistenceMeasureWindowMatching
 import TDA.Persistence.QTameFiniteSaturation
 import TDA.Persistence.LocallyFiniteMatchingCompactness
+import TDA.Persistence.QTameDiagramStability
 import TDA.Persistence.RipsQTameBottleneck
 import TDA.Persistence.RipsQTameInfiniteMetricStability
 import TDA.Persistence.RipsHausdorffInterleaving

@@ -2763,6 +2763,16 @@ field, `qTame_bottleneck_le_of_realInterleaving` bounds the bottleneck distance 
 diagrams by the parameter of any actual interleaving. See
 [persistence rectangle measures](math/persistence-rectangle-measure.md).
 
+For a field `k : Type u` and modules `M N : PModule.{u,0,w} k ℝ`,
+`LocallyFiniteDecoratedDiagram.qTame_bottleneck_le_realInterleavingDistance` bounds the
+bottleneck distance of their finite-birth diagrams by the extended real interleaving
+distance, assuming only that both modules are q-tame. The field and carrier universes
+`u` and `w` are independent; finite distance and an attained minimizer are not required.
+`LocallyFiniteDecoratedDiagram.ofQModule_eq_of_iso` identifies the extracted diagrams
+under a natural module isomorphism, including essential `infinityCut` deaths. The finite
+diagram base point `Diagram.empty` is defined alongside the general diagram API in
+`TDA.Persistence.Diagram`.
+
 `TDA.Persistence.PersistenceMeasureBox` derives a rectangle box inequality
 from a real interleaving. Its local theorem needs only a finite-dimensional
 crossing image in the expanded rectangle; q-tameness supplies this when that
