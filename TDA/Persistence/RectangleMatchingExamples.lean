@@ -5,8 +5,9 @@ import TDA.Persistence.RectangleMatching
 
 Repeated long rectangles force coverage of both occurrence sets by the same
 matching. Half-open and closed intervals behave differently at their exact
-double-shift width. Singleton-to-empty interleavings exercise actual unmatched
-module witnesses on both sides; zero parameter and empty families are included.
+double-shift width. At parameter zero, the closed singleton fixture tests
+two-sided coverage; the deletion examples interleave a single half-open bar
+`[0,2)` with the empty family at parameter 1. Empty families are included.
 -/
 
 set_option autoImplicit false
