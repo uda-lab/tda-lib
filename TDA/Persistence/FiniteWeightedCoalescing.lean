@@ -1,5 +1,5 @@
 import TDA.Persistence.FiniteWeightedBoundaryTransport
-import TDA.Persistence.BoundaryTransportGeometry
+import TDA.Persistence.BoundaryTransportGeometryCore
 
 /-!
 # Indexed masses and coalesced finite diagrams

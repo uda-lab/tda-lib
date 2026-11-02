@@ -1,4 +1,4 @@
-import TDA.Persistence.BoundaryTransportGeometry
+import TDA.Persistence.BoundaryTransportGeometryCore
 import Mathlib.MeasureTheory.Measure.FiniteMeasure
 import Mathlib.MeasureTheory.Integral.Lebesgue.Map
 

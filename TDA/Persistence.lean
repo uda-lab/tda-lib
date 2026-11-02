@@ -289,7 +289,7 @@ import TDA.Persistence.IntervalCompatibility
 import TDA.Persistence.RealIntervalDecomposition
 import TDA.Persistence.RealIntervalObservation
 
-import TDA.Persistence.BoundaryTransportGeometry
+import TDA.Persistence.BoundaryTransportGeometryCore
 
 import TDA.Persistence.MulticoverNerve
 import TDA.Persistence.GromovProkhorovMulticover
@@ -297,7 +297,7 @@ import TDA.Persistence.BoundaryPlans
 import TDA.Persistence.BoundaryPlanLaws
 import TDA.Persistence.ReservoirMeasure
 import TDA.Persistence.BoundaryTransportForward
-import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.BoundaryTransportReverseCore
 import TDA.Persistence.BoundaryTransportComparison
 import TDA.Persistence.BoundaryTransportAttainment
 import TDA.Persistence.BoundaryTransportQuantization

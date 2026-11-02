@@ -40,6 +40,25 @@ constructs general finite-input minimizers for that value and the boundary
 value. Identification with a separately implemented ordinary Wasserstein
 distance remains open. See [the exported contracts](../api.md#collapsed-boundary-geometry).
 
+## Imports and compatibility
+
+`BoundaryTransportGeometryCore` and `BoundaryTransportReverseCore` are the canonical
+imports for reusable geometry and the general reverse construction. The former keeps
+the density and small-positive-boundary-distance results; the latter keeps the
+arbitrary-point capacity-two competitor and exports `Reverse.boundaryPlan_add` and
+`Reverse.boundaryPlan_dirac_points_cost`. The Dirac formula gives the cost of the
+selected reverse plan for every real exponent, using the direct leg when distance is
+less than or equal to the sum of boundary depths. It does not assert optimality.
+
+The fixed far-point witnesses are in `BoundaryTransportGeometryExamples` and
+`BoundaryTransportReverseExamples`. The old `BoundaryTransportGeometry` and
+`BoundaryTransportReverse` imports remain available with their old declarations and
+types; the Reverse entrance also retains transitive Geometry access. Ordinary
+`TDA.Persistence` imports the Core modules only. Clients that relied on aggregate
+imports for fixed far-point names should explicitly import the corresponding
+Examples module or compatibility entrance. `TDA.Persistence.Examples` retains both
+example modules and both old entrances.
+
 ## Compatible API boundary
 
 The library uses Lean **4.33.1** and mathlib
