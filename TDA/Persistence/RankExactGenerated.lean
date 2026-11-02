@@ -79,16 +79,6 @@ end GeneratedAtBottom
 
 namespace IsPointwiseShortExact
 
-/-- Exactness at the middle term derives that the composite is zero. -/
-theorem comp_eq_zero_of_range_eq_ker {X Y Z : PModule.{u,0,u} k P}
-    (f : X ⟶ Y) (g : Y ⟶ Z)
-    (h : ∀ p, LinearMap.range (f.app p).hom = LinearMap.ker (g.app p).hom) :
-    f ≫ g = 0 := by
-  ext p x
-  have hx : (f.app p).hom x ∈ LinearMap.range (f.app p).hom := ⟨x, rfl⟩
-  rw [h p] at hx
-  exact hx
-
 /-- If the left maps of a pointwise short exact row are surjective, the row is rank exact.
 The middle term is assumed pointwise finite dimensional, as required by `IsRankExact`. -/
 theorem rankExact_of_surjective_left {ι : A ⟶ B} {π : B ⟶ C}

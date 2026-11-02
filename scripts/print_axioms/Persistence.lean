@@ -7240,3 +7240,5 @@ set_option linter.auxLemma false
 
 -- Selected-isomorphism degree-zero comparison.
 #print axioms TDA.Persistence.IncidenceQuotientSimple.leftDerivedZeroIso_of_rightVertexIso
+
+#print axioms TDA.Persistence.comp_eq_zero_of_pointwise_range_eq_ker

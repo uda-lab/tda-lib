@@ -28,13 +28,6 @@ private instance : HasBinaryBiproducts (PModule.{u,0,u} k P) :=
 
 namespace IsPointwiseShortExact
 
-/-- The composite of the two maps of a pointwise short exact sequence is zero. -/
-theorem comp_eq_zero (hs : IsPointwiseShortExact ι π) : ι ≫ π = 0 := by
-  ext p x
-  have hx : (ι.app p).hom x ∈ LinearMap.range (ι.app p).hom := ⟨x, rfl⟩
-  rw [hs.range_eq_ker p] at hx
-  exact hx
-
 private noncomputable def kernelComparison (hs : IsPointwiseShortExact ι π) :
     L ⟶ kernel π := kernel.lift π ι hs.comp_eq_zero
 
