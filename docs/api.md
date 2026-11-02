@@ -172,8 +172,9 @@ componentwise equations to the family. `FiniteOccurrenceMatching.exists_two_side
 relation-preserving injections on selected occurrences from finite types `α β : Type` (universe 0)
 into one partial matching covering both selected sides; the underlying `OccurrenceMatching`
 structure is universe-polymorphic. The two Hall injections from the actual interleaving and its
-reverse instantiate this combinator. Its Schröder–Bernstein argument uses auxiliary labels to
-allow deletion only of non-significant occurrences, then discards those labels.
+reverse instantiate this combinator. For this rectangle instantiation, the
+Schröder–Bernstein argument uses auxiliary labels to allow deletion only of
+non-significant occurrences, then discards those labels.
 The sharpness fixture is the standalone module
 `TDA.Persistence.RectangleSharpExample`, loaded by
 `TDA.Persistence.Examples` and not by the ordinary `TDA.Persistence`
