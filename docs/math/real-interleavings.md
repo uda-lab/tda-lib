@@ -189,6 +189,39 @@ distance zero from the zero module with no zero-interleaving: this infimum is
 not attained. The distance API is a plain function with extended pseudometric
 laws, without a separation or attainment assertion.
 
+### Rank obstructions and zero-transition witnesses
+
+For a field-valued `ε`-interleaving of `M` and `N`, the first witness equation writes the
+structure map `M(t → t + 2ε)` as a composite through the single middle fibre `N(t + ε)`.
+Consequently, if that fibre is finite-dimensional, its dimension bounds the rank of the
+structure map; if it is zero, the structure map is zero. The symmetric rank bound exchanges
+`M` and `N`. These are `finrank_range_structureMapLinear_le_of_realInterleaving`, its primed
+form, and `structureMap_eq_zero_of_realInterleaving` in
+`TDA.Persistence.RealInterleavingRankObstruction`. They require no finiteness at other fibres.
+
+`isEmpty_realInterleaving_of_finrank_lt` rules out a witness when one such structure-map rank
+exceeds the dimension of the finite-dimensional middle fibre. The zero-fibre obstruction
+`isEmpty_realInterleaving_of_structureMap_ne_zero` applies when the middle fibre is zero and the
+structure map is nonzero. If this obstruction exists for each finite `ε < r`, the corresponding
+`le_realInterleavingDistance_of_finrank_lt` or
+`le_realInterleavingDistance_of_structureMap_ne_zero` proves `r ≤ d_I(M,N)` when the
+corresponding obstruction exists for every finite `ε < r`. The parameter `r` may be zero or
+infinity; the lower bound follows from the actual finite witnesses in the
+definition of the distance and requires no minimizing parameter.
+
+Over a ring, if both modules' structure maps across `2ε` vanish at every real parameter, the
+zero comparison maps satisfy both witness equations. Thus
+`nonempty_realInterleaving_of_structureMap_eq_zero` constructs an `ε`-interleaving between the
+two modules. This is a two-module construction; `RealInterleaving.nonempty_zero_iff` is the
+separate criterion for interleaving one module with the zero module.
+
+For the existing field-valued interval module, `RealBarcode.transition_eq_zero_iff` and
+`RealBarcode.interleaved_zero_iff` give the exact finite-bar threshold: a nonempty half-open
+interval `[b,d)` interleaves with zero exactly when `d - b ≤ 2ε`, including equality. The
+existing `RealBarcode.essential_not_interleaved_zero` rules out every finite parameter for an
+essential interval. These interval criteria illustrate the obstruction API's boundary cases;
+they are established separately from its generic statements.
+
 ## Positive scaling
 
 For `c : ℝ` with `hc : 0 < c`, `PModule.scale c hc M` reindexes `M` along

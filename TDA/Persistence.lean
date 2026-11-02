@@ -85,6 +85,7 @@ import TDA.Persistence.FiniteRankProjectiveHomExact
 import TDA.Persistence.FiniteRankProjectiveHomFullyFaithful
 import TDA.Persistence.FiniteRankProjectiveHomCover
 import TDA.Persistence.RealInterleavingDistance
+import TDA.Persistence.RealInterleavingRankObstruction
 import TDA.Persistence.RealIntervalInterleaving
 import TDA.Persistence.MatchingInterleaving
 import TDA.Persistence.MatchingInterleavingDistance
