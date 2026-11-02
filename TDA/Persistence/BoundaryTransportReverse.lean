@@ -103,15 +103,11 @@ def boundaryPlan (γ : Measure (Space × Space)) : Measure PlanSpace :=
 
 @[simp] theorem interiorIncl_mem_image (x : Interior) (s : Set Interior) :
     interiorIncl x ∈ interiorIncl '' s ↔ x ∈ s := by
-  exact interiorIncl_injective.mem_set_image
+  exact TDA.Persistence.BoundaryTransport.interiorIncl_mem_image x s
 
 @[simp] theorem diagonalProjection_not_mem_image (x : Interior) (s : Set Interior) :
     diagonalProjection x ∉ interiorIncl '' s := by
-  rintro ⟨y, _, h⟩
-  have hy : (diagonalProjection x).1.1 < (diagonalProjection x).1.2 := by
-    rw [← h]
-    exact y.2
-  simp [diagonalProjection] at hy
+  exact TDA.Persistence.BoundaryTransport.diagonalProjection_not_mem_image x s
 
 private def firstCut (s : Set Interior) : Set (Space × Space) :=
   Prod.fst ⁻¹' (Space.point '' s)

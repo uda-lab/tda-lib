@@ -58,7 +58,7 @@ private theorem nonatomic_minimizer :
       (∫⁻ z, planPowerCost 2 z ∂π) = 1 := by
   obtain ⟨π, hπ, hcost⟩ := exists_minimizing_boundaryPlan 2 (by norm_num) bandLaw 0
   refine ⟨π, hπ, hcost.trans ?_⟩
-  rw [boundaryTransportPowerValue_zero_target 2 (by norm_num) bandLaw (measure_lt_top _ _),
+  rw [boundaryTransportPowerValue_zero_target_of_isFiniteMeasure 2 (by norm_num) bandLaw,
     bandLaw_moment]
 
 private def half : unitInterval := ⟨1 / 2, by constructor <;> norm_num⟩
@@ -135,7 +135,7 @@ private theorem unbounded_rooted_minimizer :
       (∫⁻ z, planPowerCost 2 z ∂π) ^ (1 / (2 : ℝ)) = 1 := by
   obtain ⟨π, hπ, _, hroot⟩ := exists_minimizing_boundaryPlan_rooted 2 (by norm_num) rayLaw 0
   refine ⟨π, hπ, hroot.trans ?_⟩
-  rw [boundaryTransportDistance_zero_target 2 (by norm_num) rayLaw (measure_lt_top _ _),
+  rw [boundaryTransportDistance_zero_target_of_isFiniteMeasure 2 (by norm_num) rayLaw,
     rayLaw_moment]
   simp
 
@@ -198,7 +198,7 @@ private theorem finite_optimum_with_infinite_competitor :
   refine ⟨infiniteCostPlan_cost, ?_⟩
   obtain ⟨π, hπ, hcost⟩ := exists_minimizing_boundaryPlan 1 (by norm_num) rayLaw 0
   refine ⟨π, hπ, hcost.trans ?_⟩
-  rw [boundaryTransportPowerValue_zero_target 1 (by norm_num) rayLaw (measure_lt_top _ _),
+  rw [boundaryTransportPowerValue_zero_target_of_isFiniteMeasure 1 (by norm_num) rayLaw,
     rayLaw_moment]
 
 end TDA.Persistence.BoundaryTransport.AttainmentExamples

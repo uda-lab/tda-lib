@@ -25,9 +25,12 @@ powered boundary-plan costs and the infimum of `ρ^p` over **all** measures with
 reservoir marginals `μ_R,ν_R`. This includes infinite competitor costs and
 does not require atomic inputs. The capacity is independent of the chosen
 admissible `R`; positive capacities admit probability normalization with the
-factor `R^(1/p)`. Self, symmetry, finite-distance bounds from finite
-`p`-persistence, the exact zero-target moment, and the native finite atomic
-and indexed/coalesced bridges are also proved. The
+factor `R^(1/p)`. The basic plan-fiber lemmas `interiorIncl_mem_image` and
+`diagonalProjection_not_mem_image` expose membership for the interior inclusion
+and exclude diagonal projections. Self, symmetry, finite-distance bounds from
+finite `p`-persistence, and the exact zero-target moment with its
+`[IsFiniteMeasure μ]` variants (valid even when the moment is infinite) are
+proved, along with the native finite atomic and indexed/coalesced bridges. The
 [metric-law bridge](boundary-transport-metric.md) gives sharp triangle and
 separation for every finite original measure, without a moment premise.
 Finite moments make the extended distance finite.

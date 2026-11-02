@@ -2465,7 +2465,10 @@ boundary marginals are free. Every admissible plan has mass at most the sum of
 the input masses. The explicit deletion/insertion plan sends each bar to its
 nearest diagonal point and has cost equal to the sum of the diagonal persistence
 moments. Finite moments therefore give a finite-cost competitor and a finite
-powered infimum over all admissible plans. `BoundaryPlanLaws` proves self-value
+powered infimum over all admissible plans. The simp lemmas
+`interiorIncl_mem_image` and `diagonalProjection_not_mem_image` support basic
+fiber-membership proofs by identifying interior-inclusion membership and
+excluding diagonal projections. `BoundaryPlanLaws` proves self-value
 zero and symmetry by identity plans and a cost-preserving measurable transposition.
 The optimization and its reciprocal-p root remain extended nonnegative values.
 
@@ -2496,8 +2499,12 @@ probability statement retains the full sum-of-masses capacity bound.
 
 `BoundaryTransportZero` identifies the powered value against zero with the
 diagonal persistence moment, for every finite-mass input and p at least one.
-It gives both the reciprocal-p root formula and the p-th power of distance to
-zero, including when the moment is infinite.
+`boundaryTransportPowerValue_zero_target_of_isFiniteMeasure`,
+`boundaryTransportDistance_zero_target_of_isFiniteMeasure`, and
+`boundaryTransportDistance_zero_target_rpow_of_isFiniteMeasure` expose those
+formulas under `[IsFiniteMeasure μ]`. The reciprocal-p root and
+p-th power formulas hold in the extended nonnegative reals, including when the
+moment is infinite.
 
 `BoundaryTransport.atomicMeasure` assigns each native finite weighted
 diagram its positive atomic measure on the strict half-plane. Its singleton
