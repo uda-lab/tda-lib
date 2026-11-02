@@ -104,4 +104,25 @@ theorem boundaryTransportDistance_zero_target_rpow
   rw [boundaryTransportDistance_zero_target p hp μ hμtop, ← ENNReal.rpow_mul,
     one_div_mul_cancel (ne_of_gt (lt_of_lt_of_le zero_lt_one hp)), ENNReal.rpow_one]
 
+/-- The powered zero-target formula for a measure with finite total mass. -/
+theorem boundaryTransportPowerValue_zero_target_of_isFiniteMeasure
+    (p : ℝ) (hp : 1 ≤ p) (μ : Measure Interior) [IsFiniteMeasure μ] :
+    boundaryTransportPowerValue p μ 0 =
+      ∫⁻ x, ENNReal.ofReal (depth x ^ p) ∂μ := by
+  exact boundaryTransportPowerValue_zero_target p hp μ (measure_lt_top μ Set.univ)
+
+/-- The rooted zero-target formula for a measure with finite total mass. -/
+theorem boundaryTransportDistance_zero_target_of_isFiniteMeasure
+    (p : ℝ) (hp : 1 ≤ p) (μ : Measure Interior) [IsFiniteMeasure μ] :
+    boundaryTransportDistance p μ 0 =
+      (∫⁻ x, ENNReal.ofReal (depth x ^ p) ∂μ) ^ (1 / p) := by
+  exact boundaryTransportDistance_zero_target p hp μ (measure_lt_top μ Set.univ)
+
+/-- The p-th power of the rooted zero-target formula for a measure with finite total mass. -/
+theorem boundaryTransportDistance_zero_target_rpow_of_isFiniteMeasure
+    (p : ℝ) (hp : 1 ≤ p) (μ : Measure Interior) [IsFiniteMeasure μ] :
+    boundaryTransportDistance p μ 0 ^ p =
+      ∫⁻ x, ENNReal.ofReal (depth x ^ p) ∂μ := by
+  exact boundaryTransportDistance_zero_target_rpow p hp μ (measure_lt_top μ Set.univ)
+
 end TDA.Persistence.BoundaryTransport

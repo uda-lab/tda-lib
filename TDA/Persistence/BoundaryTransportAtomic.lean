@@ -40,49 +40,29 @@ def atomicBoundaryPlan (D E : FiniteWeightedDiagram)
     (i : D.supportLabels) (j : E.supportLabels) (s : Set Interior) :
     directLeg i j ∈ firstFiber s ↔ i.1 ∈ s := by
   change interiorIncl i.1 ∈ interiorIncl '' s ↔ i.1 ∈ s
-  constructor
-  · rintro ⟨x, hx, heq⟩
-    exact (interiorIncl_injective heq).symm ▸ hx
-  · exact fun hi => ⟨i.1, hi, rfl⟩
+  exact interiorIncl_mem_image i.1 s
 
 @[simp] theorem directLeg_secondFiber {D E : FiniteWeightedDiagram}
     (i : D.supportLabels) (j : E.supportLabels) (s : Set Interior) :
     directLeg i j ∈ secondFiber s ↔ j.1 ∈ s := by
   change interiorIncl j.1 ∈ interiorIncl '' s ↔ j.1 ∈ s
-  constructor
-  · rintro ⟨x, hx, heq⟩
-    exact (interiorIncl_injective heq).symm ▸ hx
-  · exact fun hj => ⟨j.1, hj, rfl⟩
-
-private theorem diagonalProjection_not_image (x : Interior) (s : Set Interior) :
-    diagonalProjection x ∉ interiorIncl '' s := by
-  rintro ⟨y, _, heq⟩
-  have h : (diagonalProjection x).1.1 < (diagonalProjection x).1.2 := by
-    rw [← heq]
-    exact y.2
-  simp [diagonalProjection] at h
+  exact interiorIncl_mem_image j.1 s
 
 @[simp] theorem deleteLeg_firstFiber (x : Interior) (s : Set Interior) :
     deleteLeg x ∈ firstFiber s ↔ x ∈ s := by
   change interiorIncl x ∈ interiorIncl '' s ↔ x ∈ s
-  constructor
-  · rintro ⟨y, hy, heq⟩
-    exact (interiorIncl_injective heq).symm ▸ hy
-  · exact fun hx => ⟨x, hx, rfl⟩
+  exact interiorIncl_mem_image x s
 
 @[simp] theorem insertLeg_secondFiber (x : Interior) (s : Set Interior) :
     insertLeg x ∈ secondFiber s ↔ x ∈ s := by
   change interiorIncl x ∈ interiorIncl '' s ↔ x ∈ s
-  constructor
-  · rintro ⟨y, hy, heq⟩
-    exact (interiorIncl_injective heq).symm ▸ hy
-  · exact fun hx => ⟨x, hx, rfl⟩
+  exact interiorIncl_mem_image x s
 
 @[simp] theorem insertLeg_not_firstFiber (x : Interior) (s : Set Interior) :
-    insertLeg x ∉ firstFiber s := diagonalProjection_not_image x s
+    insertLeg x ∉ firstFiber s := diagonalProjection_not_mem_image x s
 
 @[simp] theorem deleteLeg_not_secondFiber (x : Interior) (s : Set Interior) :
-    deleteLeg x ∉ secondFiber s := diagonalProjection_not_image x s
+    deleteLeg x ∉ secondFiber s := diagonalProjection_not_mem_image x s
 
 theorem atomicMeasure_apply (D : FiniteWeightedDiagram) (s : Set Interior)
     (hs : MeasurableSet s) :

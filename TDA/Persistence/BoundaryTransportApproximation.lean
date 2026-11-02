@@ -5,8 +5,8 @@ import TDA.Persistence.BoundaryTransportQuantization
 
 Approximation targets lie in the dense range of interior points. Every
 quantizer therefore remains interior-valued, and its finite diagram retains
-the original measure's total mass. The only integrability assumption is the
-collapsed-boundary persistence moment.
+the original measure's total mass. Finite original mass is required. The only
+additional integrability assumption is finiteness of the diagonal persistence moment.
 -/
 
 set_option autoImplicit false
