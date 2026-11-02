@@ -277,13 +277,24 @@ records either a strict finite birth/death pair or the birth of a principal
 upset; on a finite poset with decidable equality, `rankProjectiveHookSum_multiplicity_unique`
 proves that isomorphic finite sums of nonzero hooks have the same multiplicity for each tag;
 `rankProjectiveHookSum_multiplicity_unique_of_iso` is the `Fin n → ℝ` form.
-`IsRankProjective` states the relative lifting property against actual rank-exact
-sequences. Finite-death hooks, principal upsets and their finite categorical
-biproducts satisfy it; natural isomorphisms and retracts preserve it. For a pfd
-module M on a finite poset, `FiniteHookDeflation.π M` is an actual natural
-surjection from a finite occurrence-indexed hook sum. Fiber and structure-map
-kernel bases prove surjectivity and all dying-element lifts. `rankExact` gives
-its actual rank-exact kernel sequence; both source and kernel are pfd.
+Over a field `k : Type u` and a partial order `P : Type`, the field-side
+`IsRankProjective`, `IsRankDeflation`, `FiniteHookDeflation`, and
+`IsRankExact.pushout` APIs use modules `PModule.{u,0,u} k P`. Here `P : Type`
+is a universe-zero restriction, not a finiteness assumption. The generic
+`IsPointwiseShortExact` and `IsRankExact` predicates remain generic over field
+coefficients `k : Type u`, preorders `P : Type v`, and modules
+`PModule.{u,v,w} k P`. The ring/preorder `HookInfinityProjective` and
+`PullbackFiber` results also retain their broader universe-polymorphic scopes.
+`IsRankProjective Q` itself has no pfd hypothesis on `Q` and no `[Fintype P]`
+hypothesis; it states the relative lifting property against actual rank-exact
+sequences. Finite-death hooks, principal
+upsets and their finite categorical biproducts satisfy it; natural isomorphisms
+and retracts preserve it. The finite-hook cover construction additionally
+requires `[Fintype P]` and pfd fibers of its target `M`. For such an `M` on a
+finite poset, `FiniteHookDeflation.π M` is an actual natural surjection from a
+finite occurrence-indexed hook sum. Fiber and structure-map kernel bases prove
+surjectivity and all dying-element lifts. `FiniteHookDeflation.rankExact` gives
+the actual rank-exact kernel sequence; both source and kernel are pfd.
 `isRankProjective_iff_retract` characterizes rank projectivity by splitting this
 constructed map. This proves enough relative projectives on finite posets,
 without claiming minimality or signed stability. For pointwise finite-dimensional
@@ -632,15 +643,20 @@ positive-degree term in any minimal resolution of that module is zero.
 
 `IsRankDeflation` means that a natural map is the quotient of an actual
 rank-exact sequence. Its `rankExact_kernel` law supplies the categorical
-kernel sequence; `id` and `comp` prove identity and composition closure.
-`pullback_snd` proves closure under the actual categorical pullback along a
-map from a pfd module. `PullbackFiber.mk`, its projection laws and
-`element_ext` construct compatible pairs and distinguish their vectors;
-the pullback fibers are pfd. Same-death lifts derive rank additivity without
-an exact-category assumption. A principal upset surjecting onto its
-finite-death truncation shows that an ordinary pointwise epimorphism need
-not be rank admissible. The deflation-side closure laws do not establish the
-full exact structure; inflation-side pushout closure is proved separately below.
+kernel sequence; `IsRankDeflation.id` proves identity closure for pfd modules,
+and `IsRankDeflation.comp` proves composition closure from two actual deflation
+certificates without an extra pfd premise. `IsRankDeflation.pullback_snd`
+proves closure under the actual categorical pullback along a map whose source
+`T` is pfd. `PullbackFiber.mk` constructs compatible pairs; its projection laws
+and `element_ext` characterize them by their two components. These
+pullback-fiber constructions remain available over rings and preorders with
+their broader universe-polymorphic scope.
+In the field case, the pullback fibers are pfd when both source fibers are pfd.
+Same-death lifts derive rank additivity without an exact-category assumption.
+A principal upset surjecting onto its finite-death truncation shows that an
+ordinary pointwise epimorphism need not be rank admissible. The deflation-side
+closure laws do not establish the full exact structure; inflation-side pushout
+closure is proved separately below.
 `IsPointwiseShortExact.kernelIso` identifies a given exact sequence's left
 term with its actual categorical kernel and preserves its inclusion.
 `IsRankDeflation.splitKernelIso` derives a splitting when the quotient is
@@ -946,7 +962,8 @@ families or redundant relations are allowed.
 an abelian category. `finitelyPresented_pushout` therefore proves finite
 presentation of actual pushouts from finite presentation of the three input
 objects, with no closure certificate supplied by the caller. For a
-rank-exact sequence over a field, `IsRankExact.pushout_finitelyPresented`
+rank-exact sequence over a field indexed by a partial order `P : Type` in
+universe zero, `IsRankExact.pushout_finitelyPresented`
 reuses `IsRankExact.pushout` and derives pointwise finite-dimensionality of the
 new left object from its finite presentation. Pullback and composite-kernel closure are
 proved in the next two subsections (`IsRankExact.pullback_finitelyPresented`,
@@ -1045,9 +1062,10 @@ The kernel comparison and its finite-presentation scope are summarized in the
 
 ### Pushouts of rank-exact sequences
 
-Let `0 → L --ι→ M --π→ N → 0` be rank exact over a field, with `P` any
-partially ordered set, and let `f : L ⟶ L'` have pointwise finite-dimensional
-target fibers. `IsPointwiseShortExact.pushoutQuotient` defines the quotient map
+Let `0 → L --ι→ M --π→ N → 0` be rank exact over a field, with partial order
+`P : Type` in universe zero, and let `f : L ⟶ L'` have pointwise
+finite-dimensional fibers in the new left term `L'`. This pushout result has no
+finiteness assumption on `P`. `IsPointwiseShortExact.pushoutQuotient` defines the quotient map
 from the actual categorical pushout by applying `π` on `M` and zero on `L'`.
 `IsPointwiseShortExact.pushout_pointwise` proves that this quotient and the
 canonical map from `L'` form a pointwise short exact row. `IsRankExact.pushout`
