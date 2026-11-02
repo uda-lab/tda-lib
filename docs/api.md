@@ -1679,6 +1679,12 @@ has a wider carrier-universe interface than `PModule.{u,0,u} k ℝ`.
 `RealBarcode.familyModule` when only finitely many summands are nonzero at each
 parameter. The decomposition proves this finite activity from finite-dimensional
 fibers; it is pointwise finite overlap, not topological local finiteness. The
+public `FiniteObservation.locallyFinite_family_finiteDimensional` criterion gives
+the forward implication: for any field `k : Type u` and occurrence type
+`J : Type 0`, convex real supports with only finitely many active occurrences at
+each parameter give finite-dimensional fibers of the algebraic family, with
+fiber universe `u` (`PModule.{u,0,u}`). Infinite occurrence types are allowed;
+the criterion assumes no interval decomposition. The
 finite-observation results show that only finitely many occurrences meet a
 strict finite sample list and identify its rank barcode with the sampled
 interval multiset, retaining repeated occurrences. Finite samples do not

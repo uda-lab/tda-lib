@@ -7242,3 +7242,5 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IncidenceQuotientSimple.leftDerivedZeroIso_of_rightVertexIso
 
 #print axioms TDA.Persistence.comp_eq_zero_of_pointwise_range_eq_ker
+
+#print axioms TDA.Persistence.FiniteObservation.locallyFinite_family_finiteDimensional
