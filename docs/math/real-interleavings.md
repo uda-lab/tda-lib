@@ -202,12 +202,11 @@ form, and `structureMap_eq_zero_of_realInterleaving` in
 `isEmpty_realInterleaving_of_finrank_lt` rules out a witness when one such structure-map rank
 exceeds the dimension of the finite-dimensional middle fibre. The zero-fibre obstruction
 `isEmpty_realInterleaving_of_structureMap_ne_zero` applies when the middle fibre is zero and the
-structure map is nonzero. If this obstruction exists for each finite `ε < r`, the corresponding
+structure map is nonzero. If the appropriate obstruction exists for every finite `ε < r`,
 `le_realInterleavingDistance_of_finrank_lt` or
-`le_realInterleavingDistance_of_structureMap_ne_zero` proves `r ≤ d_I(M,N)` when the
-corresponding obstruction exists for every finite `ε < r`. The parameter `r` may be zero or
-infinity; the lower bound follows from the actual finite witnesses in the
-definition of the distance and requires no minimizing parameter.
+`le_realInterleavingDistance_of_structureMap_ne_zero`, respectively, proves `r ≤ d_I(M,N)`.
+The parameter `r` may be zero or infinity; the lower bound follows from the actual finite
+witnesses in the definition of the distance and requires no minimizing parameter.
 
 Over a ring, if both modules' structure maps across `2ε` vanish at every real parameter, the
 zero comparison maps satisfy both witness equations. Thus
