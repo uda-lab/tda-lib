@@ -1280,6 +1280,22 @@ with zero is equivalent to a zero double-shift structure map. Its interval examp
 use nontrivial field coefficients. See [real interleaving witnesses](math/real-interleavings.md)
 for the finite nonnegative parameters and witness equations.
 
+`TDA.Persistence.RealInterleavingRankObstruction` exposes the generic rank and zero-fibre
+obstructions in `TDA.Persistence.RealInterleaving`. Over a field, an `ε`-interleaving bounds
+the rank of `M(t → t + 2ε)` by `dim N(t + ε)` when this single middle fibre is finite-dimensional,
+as stated by `finrank_range_structureMapLinear_le_of_realInterleaving` and its primed form. A
+zero middle fibre forces the structure map to vanish by
+`structureMap_eq_zero_of_realInterleaving`.
+`isEmpty_realInterleaving_of_finrank_lt` and
+`isEmpty_realInterleaving_of_structureMap_ne_zero` exclude a witness when the rank exceeds that
+dimension or a nonzero map factors through zero. The corresponding
+`le_realInterleavingDistance_of_finrank_lt` and
+`le_realInterleavingDistance_of_structureMap_ne_zero` results turn such obstructions at every
+finite `ε < r` into `r ≤ d(M,N)`. Over any ring,
+`nonempty_realInterleaving_of_structureMap_eq_zero` constructs a witness from the zero maps when
+both modules' double-shift structure maps vanish. The eight generic declarations remain available
+under their original `TDA.Mapper` names as compatibility theorems.
+
 For q-tame real modules over a field, an actual `ε`-interleaving `i` gives the
 public quotient family `RealInterleaving.interpolatingModule i` on the closed
 interval `[0, ε]`, with endpoints `startTime ε` and `endTime ε`.
