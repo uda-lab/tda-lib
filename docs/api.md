@@ -2459,6 +2459,11 @@ and separable. The interior has its usual topology, is open and dense, and its B
 sets determine the Borel structure of the enlarged space. Collapsing the diagonal of
 the closed half-plane defines a measurable Lipschitz map onto this space.
 
+`BoundaryTransportGeometryCore` is the canonical reusable import; it retains the
+arbitrary interior geometry, density and small-positive-boundary-distance results.
+`BoundaryTransportGeometryExamples` contains the fixed far-point witnesses. The old
+`BoundaryTransportGeometry` import continues to expose both modules.
+
 `TDA.Persistence.BoundaryPlans` uses Borel measures on closed-half-plane pairs
 outside the diagonal–diagonal region. Their two interior marginals are prescribed;
 boundary marginals are free. Every admissible plan has mass at most the sum of
@@ -2490,12 +2495,28 @@ identifies the two infima for every finite capacity dominating the sum of the
 original masses; the reservoir value is independent of that capacity. Taking the
 reciprocal-p root gives the corresponding distance-value equality.
 
+
+`BoundaryTransportReverseCore` is the canonical reusable reverse-plan import and
+exports `Reverse.boundaryPlan_add`. Its `Reverse.boundaryPlan_dirac_points_cost`
+states the actual selected plan cost for any real exponent: the `≤` case retains
+the direct leg at a tie. This is not an optimal-cost formula. Fixed far atoms and
+their cost calculations live in `BoundaryTransportReverseExamples`. The old
+`BoundaryTransportReverse` import keeps its prior declarations and types, and
+continues to provide Geometry through its imports.
+
 `ReservoirNormalization` proves the probability scaling law by multiplying every
 competitor measure by the reciprocal capacity and reversing that operation.
 The powered value scales by the capacity; for positive p its root scales by
 the capacity raised to 1/p. Together with the comparison theorem, this identifies
 boundary transport with that scaled capacity-one reservoir value. The paired
 probability statement retains the full sum-of-masses capacity bound.
+
+
+`TDA.Persistence` imports the Geometry and Reverse Core modules, not the fixed
+far-atom examples. A client that previously reached those specific names only
+through `TDA.Persistence` or `TDA.Library` should explicitly import the matching
+Examples module or the corresponding old compatibility entrance.
+`TDA.Persistence.Examples` imports both Examples modules and both old entrances.
 
 `BoundaryTransportZero` identifies the powered value against zero with the
 diagonal persistence moment, for every finite-mass input and p at least one.

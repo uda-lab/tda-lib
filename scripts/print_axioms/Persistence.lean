@@ -7261,3 +7261,6 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportPowerValue_zero_target_of_isFiniteMeasure
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_zero_target_of_isFiniteMeasure
 #print axioms TDA.Persistence.BoundaryTransport.boundaryTransportDistance_zero_target_rpow_of_isFiniteMeasure
+
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.boundaryPlan_add
+#print axioms TDA.Persistence.BoundaryTransport.Reverse.boundaryPlan_dirac_points_cost

@@ -1,3 +1,4 @@
+import TDA.Persistence.BoundaryTransportReverseExamples
 import TDA.Persistence.BoundaryTransportMetric
 import TDA.Persistence.BoundaryTransportIndexed
 import TDA.Persistence.BoundaryTransportApproximation

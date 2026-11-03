@@ -206,3 +206,8 @@ import TDA.Persistence.AffineSliceMatchingExamples
 import TDA.Persistence.HookInfinityProjectiveExamples
 import TDA.Persistence.FiniteRankProjectiveHomCoverExamples
 import TDA.Persistence.EphemeralIntervalIso
+
+import TDA.Persistence.BoundaryTransportGeometryExamples
+import TDA.Persistence.BoundaryTransportGeometry
+import TDA.Persistence.BoundaryTransportReverseExamples
+import TDA.Persistence.BoundaryTransportReverse
