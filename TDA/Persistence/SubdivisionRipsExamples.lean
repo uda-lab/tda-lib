@@ -4,8 +4,9 @@ import TDA.Persistence.SubdivisionRips
 # Normalized flag and restricted-index regression examples
 
 A two-point metric separates the open radius boundary from the normalized
-mass boundary. The final consumer checks the whole homology interleaving,
-including both exact restrictions, for arbitrary finite labelled metrics.
+mass boundary. With coefficients in `ℚ`, the final consumer specializes
+`metricInterleaving_left` to the fixed `Fin 2` metrics with distinct-point
+distances 2 and 4, checking the left restriction for each `n : ℕ`.
 -/
 
 namespace TDA.Persistence.SubdivisionRips.Examples
