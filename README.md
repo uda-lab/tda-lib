@@ -69,9 +69,9 @@ See the [documentation guide](docs/README.md#generated-api-pages) for its scope.
 
 ## Citation
 
-When citing the software, identify the release or commit used and link to its
-[GitHub release](https://github.com/uda-lab/tda-lib/releases). Mathematical sources
-and their use in the library are listed separately in the
+Identify the software release or exact commit used in your work. See the
+[software citation guide](docs/citation.md) for release information and development
+revision links. Mathematical sources are listed separately in the
 [source register](docs/math/references.md).
 
 <a id="results-in-v010"></a>

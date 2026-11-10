@@ -5,6 +5,8 @@ and the mathematical notes for definitions, hypotheses and source comparisons.
 It describes the **current checkout**. The [changelog](../CHANGELOG.md) separates
 unreleased work from published results and links to versioned API guides.
 [Installation and imports](../README.md#use-in-a-lean-project) use v0.3.0.
+See the [software citation guide](citation.md) when referencing a release or
+development commit.
 
 ## Persistent homology and computation
 
