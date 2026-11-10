@@ -1,5 +1,9 @@
 # Public API and import guide
 
+For a short overview, start with the [guide by subject](README.md). This guide
+describes the current checkout; the [changelog](../CHANGELOG.md) links to published
+versions and their migration information.
+
 ## Entry points
 
 ```lean

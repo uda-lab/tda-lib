@@ -1,5 +1,8 @@
 # Mathematical sources and conventions
 
+Find constructions by subject in the [documentation guide](../README.md); use the
+[API guide](../api.md) for declaration names and exact contracts.
+
 This directory holds durable, source-grounded mathematical definitions, statements,
 conventions and bibliographic references as work is undertaken. Primary sources take
 precedence over digests. No mathematical roadmap is prescribed by the scaffold:
