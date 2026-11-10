@@ -62,6 +62,9 @@ for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE"):
     env.pop(key, None)
 env["GIT_CONFIG_GLOBAL"] = "/dev/null"
 env["GIT_CONFIG_NOSYSTEM"] = "1"
+# `git status` may refresh stale index stat data even on a clean worktree. This
+# snapshot must observe repository state without writing optional index locks.
+env["GIT_OPTIONAL_LOCKS"] = "0"
 
 def git(*args):
     return subprocess.check_output(["git", "-C", str(root), *args], env=env)
@@ -119,6 +122,30 @@ record = {
 destination.write_text(json.dumps(record, sort_keys=True, indent=2) + "\n")
 PY
 }
+
+# A newer mtime with unchanged contents makes Git's cached stat data stale. Taking
+# the snapshot must not itself refresh and rewrite the repository index.
+stale_probe="$tmp/stale-index-probe"
+mkdir -p "$stale_probe"
+fgit -C "$stale_probe" init -q
+fgit -C "$stale_probe" config user.name 'Snapshot Fixture'
+fgit -C "$stale_probe" config user.email 'snapshot@example.invalid'
+printf 'unchanged tracked content\n' > "$stale_probe/tracked.txt"
+fgit -C "$stale_probe" add tracked.txt
+fgit -C "$stale_probe" commit -qm 'stale index baseline'
+sleep 1
+touch "$stale_probe/tracked.txt"
+stale_index="$stale_probe/.git/index"
+stale_index_before="$(sha256sum "$stale_index" | cut -d' ' -f1)"
+snapshot "$stale_probe" "$tmp/stale-index.snapshot.json"
+stale_index_after="$(sha256sum "$stale_index" | cut -d' ' -f1)"
+stale_snapshot_index="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["index_sha256"])' "$tmp/stale-index.snapshot.json")"
+stale_status="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["tracked_status_hex"])' "$tmp/stale-index.snapshot.json")"
+if [ "$stale_index_before" != "$stale_index_after" ] || [ "$stale_index_before" != "$stale_snapshot_index" ] || [ -n "$stale_status" ]; then
+  echo 'FAIL snapshot changed a stale index or marked clean content as modified' >&2
+  exit 1
+fi
+echo 'PASS stale-index snapshot leaves repository index unchanged'
 
 snapshot "$foreign" "$tmp/foreign.before.json"
 snapshot "$ROOT" "$tmp/checkout.before.json"
