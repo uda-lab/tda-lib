@@ -2675,8 +2675,9 @@ inputs on arbitrary metric spaces, with no compactness assumption,
 `Rips.wasserstein_sampleLaw_le_gromovWasserstein_allDegrees` and
 `Rips.wassersteinInfinity_sampleLaw_le_gromovWassersteinInfinity_allDegrees`
 prove the same finite-p and `W_∞` bounds for the atomic laws `Rips.sampleLaw` in
-every natural degree `q`, including full H₀ at degree zero; the names without
-`_allDegrees` retain the positive-degree specializations. `RipsSamplingMeasureStability` proves finite-p and `W_∞` bounds on whole diagram
+every natural degree `q`, including full H₀ at degree zero. Positive-degree
+specializations are also available without the `_allDegrees` suffix.
+`RipsSamplingMeasureStability` proves finite-p and `W_∞` bounds on whole diagram
 laws with bottleneck ground cost in every natural degree `q`, including degree
 zero. The theorems
 `Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein_allDegrees` and
@@ -2688,8 +2689,8 @@ state these bounds. Writing `U_{n,q}(μ) = Rips.sampleLawMeasure k μ n q`, they
  \le 2 {n\choose2}^{1/p} GW_p(μ,ν), \qquad p\ge1,\ n\ge2,
 \]
 
-and `W_∞(U_{n,q}(μ),U_{n,q}(ν)) ≤ 2 GW_∞(μ,ν)` for every `n`. The existing
-positive-degree wrappers retain the names
+and `W_∞(U_{n,q}(μ),U_{n,q}(ν)) ≤ 2 GW_∞(μ,ν)` for every `n`. Positive-degree
+specializations are also available as
 `Rips.wasserstein_sampleLawMeasure_le_measureGromovWasserstein` and
 `Rips.wassersteinInfinity_sampleLawMeasure_le_measureGromovWassersteinInfinity`.
 At `q = 0` these are laws of the actual full ordinary H₀ diagrams, including
