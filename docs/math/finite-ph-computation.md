@@ -6,6 +6,11 @@
 are present in the [v0.3.0 release](https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0).
 The output below was checked against the current checkout.
 
+In an existing Lean/Lake project, make TDA available using the
+[project setup instructions](../../README.md#use-in-a-lean-project). From that project's
+root, save the block below as `FinitePHExample.lean` and run
+`lake env lean FinitePHExample.lean`. The `#eval` commands print the results shown below.
+
 This seven-entry list adds vertices at grade `0`, edges at `1`, and the filled
 triangle at `2`:
 
