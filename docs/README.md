@@ -134,6 +134,10 @@ from remaining boundaries.
 
 ## Generated API pages
 
+The [lightweight local site](../docsite/README.md) renders these guides without
+Lean. See [generated API availability](generated-api.md) for the distinction
+between curated guides and revision-specific declaration pages.
+
 The [API guide](api.md) is available without generating HTML. For declaration pages,
 run `scripts/build-docs.sh` from a clean checkout, as described in the
 [build instructions](../README.md#build-and-documentation). The output is

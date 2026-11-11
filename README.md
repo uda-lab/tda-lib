@@ -51,6 +51,8 @@ for that release's module boundaries.
 - [Mathematical notes and source register](docs/math/README.md): constructions,
   conventions, references and source-comparison limits.
 - [Changelog](CHANGELOG.md): published changes, migration information and unreleased work.
+- [Lightweight local site](docsite/README.md): preview these guides without Lean.
+- [Generated API availability](docs/generated-api.md): declaration-page scope and snapshot limits.
 - [Contributing](CONTRIBUTING.md): development and integration policy.
 
 ## Build and documentation

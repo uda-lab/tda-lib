@@ -895,7 +895,7 @@ finite grid or finite presentation is required here. An actual
 P\oplus L[\varepsilon]\quad\longleftrightarrow\quad K[\varepsilon]\oplus Q.
 \]
 
-Here A[ε](a)=A(a+ε). This is the rank-exact specialization of
+Here `A[ε](a)=A(a+ε)`. This is the rank-exact specialization of
 [Botnan–Oppermann–Oudot–Scoccola, Appendix A Lemma A.1](https://arxiv.org/html/2208.00300v3).
 `RankSchanuel.interleavingOfSequences` uses the original K and L; it does
 not require chosen sections or identifications with categorical kernels.
