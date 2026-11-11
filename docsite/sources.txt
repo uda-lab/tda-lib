@@ -90,6 +90,7 @@ docs/math/persistence-measure-matching.md
 docs/math/persistence-rectangle-measure.md
 docs/math/persistence-reduction.md
 docs/math/positive-affine-slices.md
+docs/math/rank-erosion.md
 docs/math/rank-resolution-degree-two.md
 docs/math/rank-resolution-simplicial-coordinate-translation.md
 docs/math/rank-resolution-simplicial-realization.md

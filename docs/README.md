@@ -67,6 +67,12 @@ The API guide also covers finite simplicial witnesses, incidence-algebra tools,
 closure properties and examples. These are theory interfaces; countable hook
 matching and optimality of the signed stability constant are not claimed.
 
+[Weak-pair rank erosion](math/rank-erosion.md) compares actual structure-map ranks,
+including diagonal pairs, for pointwise finite-dimensional field-valued modules.
+Its extended distance is bounded by coordinate interleaving distance. The guide
+separates available rank obstructions from proposed erosion-attainment and finite-test
+extensions; equality of ranks is not a general module classification.
+
 ## Metric inputs and sampling
 
 Finite Rips and ambient Čech filtrations have diagram stability bounds under their
@@ -103,8 +109,8 @@ Current constructible-space results extend beyond graph input: see
 [thickening tools and assembly](math/reeb-thickening-constructible.md),
 [the thickening–cosheaf comparison](math/reeb-thickening-cosheaf-comparison.md) and
 [constructible-input reconstruction](math/mapper-reeb-approximation.md).
-The notes specify the constructibility and cover hypotheses; higher-dimensional
-Mapper–Reeb approximation is outside this contract. Mapper step-diagram stability
+The notes specify the constructibility and cover hypotheses; arbitrary spaces and
+multidimensional-valued Reeb spaces are outside this contract. Mapper step-diagram stability
 and capped centred height-map pairs are described in the
 [area contracts](api.md#areas-and-intended-use).
 
@@ -127,7 +133,7 @@ The software's license does not replace third-party source-specific rights analy
 
 Further directions include ordinary Wasserstein identification of boundary
 transport, birth-at-minus-infinity strata and broader finite-diagram compatibility
-for q-tame modules, countable signed-barcode stability, and higher-dimensional
+for q-tame modules, countable signed-barcode stability, and multidimensional-valued
 Mapper–Reeb approximation. [Issue #227](https://github.com/uda-lab/tda-lib/issues/227)
 records source-linked directions; the current notes distinguish available results
 from remaining boundaries.

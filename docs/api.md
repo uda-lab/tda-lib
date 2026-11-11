@@ -1163,6 +1163,33 @@ multidimensional finite-presentation theorem. See
 [finite-constructible closure](math/constructible-isometry.md#attainment-and-separation) and
 [why the finite-presentation hypothesis matters](math/multiparameter-closure.md).
 
+### Weak-pair rank erosion
+
+For field-valued modules on `Fin n → ℝ` with pointwise finite-dimensional fibers,
+`RankErosion ε M N` compares the ranks of `M(a−ε → b+ε)` with `N(a → b)` and
+vice versa for every weak pair `a ≤ b`. Diagonal ranks are included, also for
+`n = 0`. `rankErosionDistance` is the extended infimum of admissible finite radii;
+it has zero self-distance, symmetry and the extended triangle inequality.
+`CoordinateInterleaving.rankErosion` derives the inequalities from actual
+interleaving maps, and `rankErosionDistance_le_coordinateInterleavingDistance`
+proves `dE ≤ dI` without an attainment assumption.
+
+`no_coordinateInterleaving_of_rank_violation` turns one failed rank comparison
+into an obstruction at that radius.
+`radius_le_coordinateInterleavingDistance_of_rank_violation` gives a non-strict
+lower bound; `radius_lt_coordinateInterleavingDistance_of_rank_violation` makes
+it strict for original finitely presented modules, using interleaving attainment.
+`rankErosion_zero_iff` concerns erosion at radius zero, not the equation that its
+infimum is zero, and makes no module-isomorphism claim. The current rank uses
+`Module.finrank`; its intended scope is finite-dimensional fibers, not arbitrary
+infinite-dimensional modules. No erosion attainment theorem, strict-pair comparison
+or certified finite-test algorithm is supplied by these modules.
+
+The public `TDA.Persistence` aggregator exports `RankErosion`,
+`RankErosionInterleaving` and `RankErosionWitness`; the latter includes nonzero
+principal-upset examples, diagonal and positive-radius off-diagonal tests. See
+[rank erosion and its extension boundaries](math/rank-erosion.md).
+
 ## Persistent homology results and computational boundary
 
 The finite decomposition API takes `M : PModule.{u,0,u} k (Fin N)` with
@@ -2429,8 +2456,10 @@ maps on the ordered chain model; the resulting modules carry interleaving, finit
 step-diagram and capped centred bottleneck bounds, including bounds from height-map pairs
 between different domains, for supplied component orders. No multinerve selector independence,
 independence of the component orders, Nerve Lemma or diagram of the uncapped centred tower is
-claimed. The Mapper–Reeb quotient identification and convergence
-claims concern finite graph-PL inputs, not arbitrary higher-dimensional Reeb spaces.
+claimed. The categorical Mapper–Reeb quotient identification and convergence
+results also cover constructible real-valued inputs under their explicit
+constructibility and cover hypotheses. They do not cover arbitrary spaces or
+multidimensional-valued Reeb spaces.
 
 Finite GH–Rips stability and sampling compare full diagrams of finite metric spaces;
 the possibly infinite sampling target has no diagram in these results; the q-tame Rips
