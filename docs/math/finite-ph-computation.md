@@ -1,5 +1,51 @@
 # Certified finite F₂ persistence from simplex lists
 
+## First run
+
+`FiniteInput` and its matching [`Examples.filled` fixture](../../TDA/Persistence/Reduction/FiniteInputExamples.lean)
+are present in the [v0.3.0 release](https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0).
+The output below was checked against the current checkout.
+
+This seven-entry list adds vertices at grade `0`, edges at `1`, and the filled
+triangle at `2`:
+
+```lean
+import TDA.Persistence.Reduction.FiniteInput
+
+open TDA.Persistence.Reduction.FiniteInput
+
+def filledTriangle : Input :=
+  [({0}, 0), ({1}, 0), ({2}, 0),
+    ({0, 1}, 1), ({1, 2}, 1), ({0, 2}, 1),
+    ({0, 1, 2}, 2)]
+
+#eval validBool filledTriangle
+#eval run filledTriangle
+
+def missingEdge : Input :=
+  [({0}, 0), ({1}, 0), ({2}, 0),
+    ({0, 1}, 1), ({1, 2}, 1),
+    ({0, 1, 2}, 2)]
+
+#eval validBool missingEdge
+#eval run missingEdge
+```
+
+For `filledTriangle`, `validBool` is `true`, and `run` returns `some`
+containing the full four-record list shown here, in order:
+
+| Degree | Birth | Death |
+|---:|---:|---|
+| 0 | 0 | `Death.finite 1` |
+| 0 | 0 | `Death.finite 1` |
+| 1 | 1 | `Death.finite 2` |
+| 0 | 0 | `Death.essential` |
+
+The equal degree-zero rows are separate finite H₀ occurrences. `Death.essential`
+represents unbounded death, not an integer sentinel. `missingEdge` omits the
+`{0, 2}` edge, so `validBool` is `false` and `run` returns `none`; the input is
+not repaired.
+
 ## Contract and representation
 
 `TDA.Persistence.Reduction.FiniteInput.Input` is a list of `(Finset ℕ, ℤ)` pairs. A
@@ -97,12 +143,11 @@ complexes and filters agree have equal interpreted diagrams. The occurrence
 list order and position pairs can differ. `Examples.equal_grade_reordering`
 checks a concrete equal-grade edge swap whose pivot pairs differ.
 
-`FiniteInputExamples.lean` proves evaluations through the public `run` path.
-The filled triangle has zero-based pairs `(1,3), (2,4), (5,6)` and essential
-index `0`, yielding two `(0,1)` finite H₀ occurrences, one essential H₀
-birth at `0`, and a finite H₁ `(1,2)`. Removing the triangle leaves an
-essential H₁ birth at `1`; tying the triangle to grade `1` removes its
-zero-length value interval. Further fixtures cover empty input, a delayed
+`FiniteInputExamples.lean` proves evaluations through the public `run` path,
+including the [filled-triangle first run](#first-run). Its zero-based pivot
+pairs are `(1,3), (2,4), (5,6)` and its essential index is `0`. Removing the
+triangle leaves an essential H₁ birth at `1`; tying the triangle to grade `1`
+removes its zero-length value interval. Further fixtures cover empty input, a delayed
 single vertex, negative grades, duplicate intervals on disjoint edges,
 equal-grade reordering, and sparse vertex labels. Five negative fixtures
 reject an empty simplex, duplicate simplex with different grade, missing
