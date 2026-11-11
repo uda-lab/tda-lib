@@ -90,6 +90,9 @@ snapshots are a separate, lower-frequency process. Add one only after verifying
 its commit, artifact, accessible location, validation scope and retention.
 Label a differing revision explicitly; never invent a hosted URL or call an old
 snapshot current. The lightweight site does not depend on API generation.
+The [API snapshot runbook](../docbuild/README.md) defines the separate provenance,
+measurement and storage process. Its operational metadata and measured archives
+are not included in this site's curated source inventory.
 
 ## Equations and dependency updates
 
