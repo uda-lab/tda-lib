@@ -69,9 +69,10 @@ See the [documentation guide](docs/README.md#generated-api-pages) for its scope.
 
 ## Citation
 
-Identify the software release or exact commit used in your work. See the
-[software citation guide](docs/citation.md) for release information and development
-revision links. Mathematical sources are listed separately in the
+Identify the software release or exact commit used in your work. The root
+[CITATION.cff](CITATION.cff) gives metadata for the current published release; see the
+[software citation guide](docs/citation.md) for release and development revision links.
+Mathematical sources are listed separately in the
 [source register](docs/math/references.md).
 
 <a id="results-in-v010"></a>

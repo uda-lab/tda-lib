@@ -2,7 +2,10 @@
 
 Cite the software version used in your work. The latest published release is
 [tda-lib v0.3.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0), published
-on 2026-10-29 and distributed under [Apache-2.0](../LICENSE).
+on 2026-10-29 and distributed under [Apache-2.0](../LICENSE). The root
+[CITATION.cff](../CITATION.cff) records the verified sole author, Tomoki Uda, and the
+release metadata. Once that file is on the default branch, GitHub can render a suggested
+citation and BibTeX from it.
 The [changelog](../CHANGELOG.md) links to earlier releases and distinguishes their
 contents from unreleased development.
 
@@ -23,7 +26,8 @@ Keep README's release link and dependency example, this guide's release summary,
 and the corresponding changelog entry consistent. Release dates refer to the
 release's publication date, not the current development commit's date.
 
-Keep author attribution unchanged unless its new form is confirmed. Add a DOI or
-ORCID only when its assignment to this software or author has been verified.
+Keep the `authors` entry consistent with the confirmed citation authorship. Add or change
+authors only when their citation attribution is confirmed. Add a DOI or ORCID only when its
+assignment to this software or author has been verified.
 Unreleased commits must not acquire a new published version or publication date
 merely because development continues.
