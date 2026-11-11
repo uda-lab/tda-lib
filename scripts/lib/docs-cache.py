@@ -72,6 +72,12 @@ def prepare(revision):
         for path in markers.glob("*.docs_built*"):
             path.unlink()
 
+    # bibPrepass declares only doc-data/references.json, but also writes the
+    # downloadable bibliography into the rendered site. Force Lake to rerun
+    # that target whenever its undeclared site output is absent.
+    if not (BUILD / "doc/references.bib").is_file():
+        (markers / "references.json").unlink(missing_ok=True)
+
 
 if __name__ == "__main__":
     if sys.argv[1:] == ["key"]:
