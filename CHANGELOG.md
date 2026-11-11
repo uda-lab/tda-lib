@@ -28,6 +28,8 @@ Changes on `develop` after v0.3.0; the next release version is undecided.
 - Separate remaining standalone fixtures from ordinary library imports, including
   boundary-transport far-atom fixtures. Use the current
   [entry-point guide](docs/api.md#entry-points) when selecting example imports.
+- `TDA.Mapper.GraphPL.geometricInterleavingDistance_mergeY_eq_half` no longer
+  takes the redundant explicit `hab : a < b` argument; remove that argument at call sites.
 - Reorganize README, release history and documentation navigation.
 
 [Full changes since v0.3.0](https://github.com/uda-lab/tda-lib/compare/v0.3.0...develop).

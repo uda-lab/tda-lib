@@ -46,6 +46,13 @@ article text/figures, not citation of bibliographic facts or original mathematic
 
 ## Sources already used
 
+<a id="Puuska17-v1"></a>
+### Puuska17-v1 — erosion stability of rank invariants
+
+- **Identity/version:** Ville Puuska. *Erosion distance for generalized persistence modules*. [arXiv:1710.01577v1](https://arxiv.org/html/1710.01577v1), posted 2017-10-04; §2.2, Lemma 16, Corollary 19 and Theorem 22.
+- **Use/classification:** `RankErosionInterleaving` proves rank domination by factoring actual widened structure maps through the other module, then proves the extended-distance bound. The library compares all weak coordinate pairs, including the diagonal, for pointwise finite-dimensional field-valued modules. The source uses strict pairs; equivalence of the conventions and finite-presentation erosion attainment are not claimed by the current API. See [weak-pair rank erosion](rank-erosion.md).
+- **Rights/evidence:** **AR**, exact-version page license link inspected 2026-11-11. The repository supplies original proofs and mathematical summaries; no source prose or figures are reproduced.
+
 <a id="Landi14-v1"></a>
 ### Landi14-v1 — matching distance bounded by interleaving distance
 
