@@ -40,11 +40,34 @@ The existing four-rank multiplicity laws also show that any two decomposition mu
 are equal. No uniqueness of the chosen summands or isomorphisms is asserted.
 
 The explicit examples include an arbitrary nonzero scalar transition, repeated occurrences, delayed
-birth and final-stage survival. The diagrams `k → k² → k` with first map `x ↦ (x,0)` and
-second map respectively `(a,b) ↦ b` or `(a,b) ↦ a` have equal stage dimensions and equal
-adjacent ranks, but composite ranks zero and one. Their barcodes are respectively
-`[0,2) + [1,3)` and `[0,3) + [1,2)`. Thus even diagonal and adjacent ranks together do not
-classify a module.
+birth and final-stage survival.
+
+## Three-stage comparison
+
+Over any field `k`, both `Fin 3` examples have fibers `k`, `k × k`, and `k` at stages
+`0`, `1`, and `2`. Both have stage dimensions `(1, 2, 1)` and adjacent-map ranks `(1, 1)`.
+Their common first map is `x ↦ (x, 0)`. The composite rank still depends on which
+coordinate the second map keeps:
+
+| Module | Second map (`k × k → k`) | Composite rank (`0 → 2`) | Barcode |
+|---|---|---:|---|
+| `compositeZero` | `(a, b) ↦ b` | `0` | `[0,2) + [1,3)` |
+| `compositeIdentity` | `(a, b) ↦ a` | `1` | `[0,3) + [1,2)` |
+
+With the second projection, the first coordinate carried from stage `0` is discarded at
+stage `2`, while the second coordinate born at stage `1` survives. With the first projection,
+the first coordinate survives through stage `2` and the second coordinate is discarded.
+Endpoint `3` records survival through the last observed stage `2`; it does not mean an
+infinite lifetime. Thus the same dimensions and adjacent ranks do not determine the
+composite rank, barcode, or isomorphism class.
+
+The [standalone three-stage fixture](../../TDA/Persistence/FiniteDecompositionThreeStage.lean)
+defines `compositeZero` and `compositeIdentity` in namespace
+`TDA.Persistence.ThreeStageExamples`; import `TDA.Persistence.FiniteDecompositionThreeStage`
+to use them. Its public `dimensions_and_adjacent_ranks_agree`, `composite_ranks`,
+`zero_rankBarcode`, and `identity_rankBarcode` declarations establish the comparison.
+
+## Source scope
 
 [Chazal–Crawley-Boevey–de Silva, §1.1](https://arxiv.org/pdf/1405.5644v1) states finite
 interval decomposition, uniqueness of multiplicities and their four-rank formula. Its
