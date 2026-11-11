@@ -5,6 +5,33 @@ The field and module carriers share the same arbitrary universe. An interval has
 endpoints `b < d ≤ N` and support `b ≤ i < d`. Death `N` means survival through the last
 observed stage; it does not assert an infinite lifetime or a continuation beyond the data.
 
+## Using the existence result
+
+Import [`TDA.Persistence.FiniteDecomposition`](../../TDA/Persistence/FiniteDecomposition.lean) to use the existence theorem:
+
+```lean
+import TDA.Persistence.FiniteDecomposition
+
+open CategoryTheory TDA.Persistence
+
+universe u
+variable (k : Type u) [Field k]
+variable (N : ℕ)
+variable (M : PModule.{u,0,u} k (Fin N))
+variable [∀ i : Fin N, FiniteDimensional k (M.obj i)]
+
+example : Nonempty (M ≅ barcodeModule (k := k) (rankBarcode M)) :=
+  nonempty_rankBarcodeIso M
+```
+
+`Nonempty` states that such a natural isomorphism exists; this example needs no supplied basis
+or interval decomposition. `rankBarcode M` is canonical, while `rankBarcodeIso M` is a chosen,
+generally noncanonical natural isomorphism defined noncomputably. No positive-length assumption
+on `N` is needed, so `N = 0` is included. For the separate fixed-F₂, integer-grade simplex-list
+computation, see the [first-run example](finite-ph-computation.md#first-run).
+
+## Construction
+
 The construction inducts on `totalDimension M = ∑ i, dim M(i)`. When this sum is zero,
 every fiber is zero, and the unique maps give a natural isomorphism to the empty barcode.
 This also covers `N = 0` without selecting an index.
