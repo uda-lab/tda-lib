@@ -2990,6 +2990,14 @@ log-scale diagram to the diameter-scale Rips log diagram by
 `log((1−2η)⁻¹)`. The diagram bound uses the proved module interleaving and
 finite-constructible matching. Degree zero retains the module interleaving;
 zero-born classes do not fit the finite positive-log diagram.
+
+The homology equivalence `sparseRelaxedHomologyIso`, log-scale APIs
+`sparseRipsLogInterleaving` and `sparseRipsLogDistance_le`, and diagram bound
+`sparseLogDiagram_bottleneck_le` take an explicit `seed : V`, using
+`sparseFiltration seed η` or `sparseFilter seed η` as their sparse input.
+Use these seeded constructions when applying the results. The seed-free
+`finiteSparseFiltration` wrapper chooses its seed classically on nonempty input.
+
 `parameterOfTolerance` converts `0 < τ ≤ 1` to `η = τ/(2(1+τ))`, for which the
 multiplicative factor is `1+τ`; at `η=1/3` the factor is `3`. `sparseFilter_positiveOnEdges`
 supplies the positive filter. `TDA.Filtration.SparseRips.Examples` checks both weight
