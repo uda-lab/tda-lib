@@ -38,6 +38,10 @@ class DocumentationCacheTests(unittest.TestCase):
         self.write("doc/declarations/declaration-data-TDA.Removed.bmp", "stale search")
         self.write("doc/navbar.html", "stale navigation")
         self.write("doc/index.html", "index")
+        self.write("doc/references.bib", "@book{example}")
+        self.write("doc-data/references.json", "[]")
+        self.write("doc-data/references.json.trace", "bibliography trace")
+        self.write("doc-data/references.json.hash", "bibliography hash")
         self.write("doc-manifest.json", "stale manifest")
         with sqlite3.connect(self.build / "api-docs.db") as db:
             db.executescript("""
@@ -75,6 +79,18 @@ class DocumentationCacheTests(unittest.TestCase):
             self.assertEqual(db.execute("SELECT * FROM modules").fetchall(), [("Mathlib.Keep",)])
             self.assertEqual(db.execute("SELECT * FROM declarations").fetchall(), [("Mathlib.Keep",)])
         self.assertEqual((self.lake / "docs-source-rev").read_text(), "old-revision\n")
+        self.assertFalse((self.build / "doc-data/references.json").exists())
+        self.assertEqual((self.build / "doc-data/references.json.trace").read_text(), "bibliography trace")
+        self.assertEqual((self.build / "doc-data/references.json.hash").read_text(), "bibliography hash")
+
+    def test_missing_source_stamp_invalidates_bibliography_prepass_output(self):
+        (self.lake / "docs-source-rev").unlink()
+        self.run_helper("prepare", "old-revision")
+        self.assertFalse((self.build / "doc-data/references.json").exists())
+        self.assertTrue((self.build / "api-docs.db").is_file())
+        self.assertTrue((self.build / "doc-data/Mathlib.Keep.doc.trace").is_file())
+        self.assertEqual((self.build / "doc-data/references.json.trace").read_text(), "bibliography trace")
+        self.assertEqual((self.build / "doc-data/references.json.hash").read_text(), "bibliography hash")
 
     def test_missing_database_cannot_reuse_markers(self):
         (self.build / "api-docs.db").unlink()
@@ -91,7 +107,19 @@ class DocumentationCacheTests(unittest.TestCase):
         shutil.rmtree(self.build / "doc")
         self.run_helper("prepare", "old-revision")
         self.assertFalse((self.build / "doc-data/TDA.Library--module.docs_built").exists())
+        self.assertFalse((self.build / "doc-data/references.json").exists())
         self.assertTrue((self.build / "doc-data/Mathlib.Keep.doc.trace").is_file())
+
+    def test_missing_site_bibliography_invalidates_prepass_output(self):
+        (self.build / "doc/references.bib").unlink()
+        self.run_helper("prepare", "old-revision")
+        self.assertTrue((self.build / "doc/index.html").is_file())
+        self.assertFalse((self.build / "doc-data/references.json").exists())
+        self.assertTrue((self.build / "api-docs.db").is_file())
+        self.assertTrue((self.build / "doc-data/Mathlib.Keep.doc.trace").is_file())
+        self.assertTrue((self.build / "doc-data/TDA.Library--module.docs_built").is_file())
+        self.assertEqual((self.build / "doc-data/references.json.trace").read_text(), "bibliography trace")
+        self.assertEqual((self.build / "doc-data/references.json.hash").read_text(), "bibliography hash")
 
     def test_source_mode_and_bibliography_participate_in_key(self):
         original = self.run_helper("key")
