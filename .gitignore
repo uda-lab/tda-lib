@@ -50,3 +50,4 @@ core.*
 
 # Lightweight documentation tooling bytecode (site output stays under /build/)
 /docsite/__pycache__/
+/docbuild/__pycache__/
