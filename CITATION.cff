@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: >-
+  If you use tda-lib, cite the software release or commit that you used.
+type: software
+authors:
+  - family-names: Uda
+    given-names: Tomoki
+title: tda-lib
+repository-code: https://github.com/uda-lab/tda-lib
+url: https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0
+license: Apache-2.0
+version: v0.3.0
+date-released: '2026-10-29'
