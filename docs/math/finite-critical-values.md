@@ -38,6 +38,25 @@ tied faces enter together. If `K = ⊥`, then the grade type is `Fin 0`; its fil
 empty index type and every ambient threshold still has bottom sublevel. The final-stage law
 returns `K`, which can be strictly smaller than the ambient top complex.
 
+### A three-grade example
+
+The private `steppedFilter` fixture in
+[`CriticalValuesExamples.lean`](../../TDA/Filtration/CriticalValuesExamples.lean)
+uses the full complex on `Fin 2`, assigning integer values 0 to `{0}`, 2 to `{1}`,
+and 5 to `{0,1}`. Its critical values are 0, 2 and 5. The private proofs
+`stepped_thresholds` and `stepped_stage_faces` give:
+
+| Threshold | Recovered stage | Nonempty faces |
+| --- | --- | --- |
+| −1 | Bottom, below the first grade | None |
+| 0 or 1 | Stage 0, at critical value 0 | `{0}` |
+| 2 or 4 | Stage 1, at critical value 2 | `{0}`, `{1}` |
+| 5 or 6 | Stage 2, at critical value 5 | `{0}`, `{1}`, `{0,1}` |
+
+Stage 0 already contains the first vertex; it is not an added bottom stage.
+The last row is ambient top because this fixture's input complex is top.
+The general last-grade law returns the input `K`.
+
 ## Assumptions and scope
 
 The general API assumes only a linear order on `α`, the existing complex `K` on `V`, and a
