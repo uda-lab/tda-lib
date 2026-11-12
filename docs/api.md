@@ -1469,6 +1469,13 @@ essential classes have explicit conventions. Proof-derived semantic objects and 
 arbitrary-field decomposition remain noncomputable. See
 [the input contract and correctness route](math/finite-ph-computation.md).
 
+`FiniteInput.runWithRepresentatives` adds original face-index cycle supports and,
+for finite occurrences, bounding supports while preserving that exact ordered
+output. Its correctness API proves actual signed simplicial boundary identities,
+nonzero classes at alive face prefixes and their unit normal-form coordinates.
+It retains the existing equal-grade exclusion; it does not supply a full integer
+sublevel natural basis. See [cycle representatives](math/finite-ph-representatives.md).
+
 ### Minimal-complement cardinalities for finite grids
 
 Here `minimalComplement p` is the set of minimal elements of `{a | ¬ a ≤ p}` in a lattice; the cardinality and maximum functions add a `Finite` assumption. `PairPoset S` is the actual subtype `{q : WithTop S × WithTop S // q.1 ≤ q.2}` with inherited coordinatewise order. The grid bounds concern an actual `G : CoordinateGrid n` with nonempty coordinate factors.

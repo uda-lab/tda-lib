@@ -388,3 +388,10 @@ import TDA.Persistence.FiniteSimplicial
 import TDA.Persistence.FiniteSimplicialPresentation
 import TDA.Persistence.FiniteSimplicialInterleaving
 import TDA.Persistence.FiniteSimplicialStability
+
+import TDA.Persistence.Reduction.FiniteInputRepresentatives
+import TDA.Persistence.Reduction.FiniteInputRepresentativeSemantics
+import TDA.Persistence.Reduction.FiniteInputRepresentativeChains
+import TDA.Persistence.Reduction.FiniteInputRepresentativeHomology
+import TDA.Persistence.Reduction.FiniteInputRepresentativeCorrectness
+import TDA.Persistence.Reduction.FiniteInputRepresentativeExamples
