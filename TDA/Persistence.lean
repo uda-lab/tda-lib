@@ -399,3 +399,7 @@ import TDA.Persistence.Reduction.FiniteInputSublevelQuery
 import TDA.Persistence.Reduction.FiniteInputSublevelCycles
 import TDA.Persistence.Reduction.FiniteInputSublevelHomology
 import TDA.Persistence.Reduction.FiniteInputSublevelExamples
+import TDA.Persistence.Reduction.FiniteInputActiveBasis
+import TDA.Persistence.Reduction.FiniteInputBasisTransition
+import TDA.Persistence.Reduction.FiniteInputSublevelBasis
+import TDA.Persistence.Reduction.FiniteInputSublevelBasisExamples

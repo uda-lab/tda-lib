@@ -142,15 +142,83 @@ remain nonzero along the constant tail.
 The naturality law starts at birth. It does not identify a prebirth zero class
 with a later nonzero generator. A record removed by a later `runAtGrade` query
 still has a defined, zero `sublevelClass` there. These individual class laws do
-not construct a basis of the entire integer-sublevel persistence module.
+not require choosing a new representative at each threshold.
+
+## Complete bases and inclusion coordinates
+
+For a degree `p` and integer threshold `a`, `runDegreeAtGrade xs p a` filters
+`runAtGrade xs a` by degree. It returns the same records in their existing order,
+including different records whose interval values coincide. Invalid input returns
+`none`. For valid input, the output is `activeRepresentatives xs p a`;
+`BasisIndex xs p a` is the finite type of positions in that list, and
+`basisRecord xs p a i` retrieves the record at position `i`.
+
+These positions index a basis of the actual simplicial homology of the sublevel.
+`basisClass xs h p a i` is the existing `sublevelClass` of the exact computed
+cycle at that position, with its degree identified with `p`.
+`sublevelBasis_apply` proves that `sublevelBasis` consists of these classes.
+`basisRecord_birth_bijective` proves completeness and uniqueness: every alive
+normal-form birth coordinate is present exactly once. In particular, the two
+finite H₀ records of the filled triangle give different basis vectors at grade
+zero, despite having equal interval values.
+
+`sublevelCoordinates xs h p a` is a linear equivalence from the entire actual
+homology group to F₂-valued functions on `BasisIndex xs p a`. It reads the
+existing normal-form coordinates in query order. `sublevelCoordinates_basisClass`
+sends the computed class at position `i` to its unit vector.
+`sublevelClass_expansion` expresses any class as the sum of these computed
+classes with its coordinate coefficients; `sublevelClass_unique_expansion`
+proves uniqueness. `sublevelHomology_finrank` identifies the dimension with the
+query length. The empty query therefore gives zero homology, rather than merely
+no selected witnesses.
+
+For `a ≤ b`, `basisTransition xs p a b` has target-query rows and source-query
+columns. Its entry is one exactly when the two records have the same original
+birth index. Positions can change as records disappear, and interval values can
+coincide, so neither is used to match records. The theorem
+`sublevelCoordinates_naturality` states, for every actual homology class `x`,
+
+```text
+coordinates at b (inclusion a→b x) = transition a→b · coordinates at a x.
+```
+
+A dying source record gives a zero column. A later-born target record gives a
+zero row. A surviving record retains its coefficient even if its list position
+changes. For example, the valid input
+`[({0},0), ({1},0), ({0,1},1), ({2},1)]` has H₀ birth-index lists `[1,0]`
+at grade zero and `[0,3]` at grade one. Its inclusion matrix is
+`[[0,1], [0,0]]`: the finite class dies, the first essential class survives,
+and the isolated vertex is born. `basisTransition_self` and
+`basisTransition_comp` give identity and composition laws.
+
+```lean
+import TDA.Persistence.Reduction.FiniteInputSublevelBasisExamples
+
+open TDA.Persistence.Reduction.FiniteInput
+
+#eval (runDegreeAtGrade Examples.filled 0 0).map
+  (List.map (fun r => r.birthIndex.val)) -- some [1, 2, 0]
+#eval (runDegreeAtGrade BasisExamples.mixed 0 1).map
+  (List.map (fun r => r.birthIndex.val)) -- some [0, 3]
+```
+
+The query and matrix use finite computation. The basis and coordinate equivalence
+are proof-side, noncomputable semantic objects; this API does not compute the
+coordinates of an arbitrary input cycle. `FiniteInputSublevelBasisExamples.lean`
+checks complete dimensions, unique expansion, the filled H₁ death map, essential
+H₁, duplicate H₀, negative/tied grades, empty/invalid input and the mixed inclusion
+above. The construction reuses the proved normal-form and actual simplicial
+adapters, without a basis or completeness certificate supplied by the caller.
 
 ## Value intervals and scope
 
 Integer grades are separate from prefix stages. As in `run`, a pivot pair whose
 birth and death grades agree is omitted from the value output. In `Examples.tied`
 the H₁ index class is nonzero at prefix 6, but both its birth and its death have
-grade 1, so no H₁ value interval is returned. The integer-sublevel class laws above do not assert a natural-basis API for the
-entire homology module.
+grade 1, so no H₁ value interval is returned and the H₁ integer-sublevel basis is
+empty. The bases at different thresholds are compatible through the transition
+matrices above; an inclusion need not send every source basis vector to a
+nonzero target basis vector.
 
 The representative depends on the supplied face order and this reduction trace.
 No shortestness, canonicity or order-independence of representatives is claimed.
