@@ -1,4 +1,5 @@
 import TDA.Persistence.Reduction.FiniteInputRepresentativeChains
+import TDA.Simplicial.VertexChainMap
 
 /-!
 # Simplicial homology classes of the chosen representative columns
@@ -68,12 +69,6 @@ private noncomputable abbrev cycleQuotient (K : PreAbstractSimplicialComplex ℕ
 
 attribute [local instance] cycleQuotient
 
-private noncomputable def classOfCycle (K : PreAbstractSimplicialComplex ℕ) (p : ℕ)
-    (z : simplicialCycles K (ZMod 2) p) : simplicialHomology K (ZMod 2) p :=
-  (homologyKernelQuotient.{0,0,0} (ZMod 2) (simplicialChainComplex K (ZMod 2)) p).toLinearEquiv.symm
-    (Submodule.mkQ (R := ZMod 2) (M := simplicialCycles K (ZMod 2) p)
-      (simplicialBoundaries K (ZMod 2) p) z)
-
 /-- The usual homology class of the actual simplicial cycle. -/
 noncomputable def simplicialClass (xs : Input) (h : Valid xs) (p t : ℕ)
     (z : letI := faceFintype xs h
@@ -81,7 +76,7 @@ noncomputable def simplicialClass (xs : Input) (h : Valid xs) (p t : ℕ)
     letI := faceFintype xs h
     simplicialHomology ((compatibleOrder xs h).prefixComplex t) (ZMod 2) p := by
   letI := faceFintype xs h
-  exact classOfCycle ((compatibleOrder xs h).prefixComplex t) p z
+  exact simplicialHomologyClass (ZMod 2) ((compatibleOrder xs h).prefixComplex t) p z
 
 theorem simplicialClass_eq_zero_iff (xs : Input) (h : Valid xs) (p t : ℕ)
     (z : letI := faceFintype xs h
@@ -92,9 +87,13 @@ theorem simplicialClass_eq_zero_iff (xs : Input) (h : Valid xs) (p t : ℕ)
   let := faceFintype xs h
   let E := (homologyKernelQuotient.{0,0,0} (ZMod 2)
     (simplicialChainComplex ((compatibleOrder xs h).prefixComplex t) (ZMod 2)) p).toLinearEquiv
-  change E.symm _ = 0 ↔ _
-  exact (LinearEquiv.map_eq_zero_iff E.symm).trans
-    (Submodule.Quotient.mk_eq_zero _)
+  have hE := simplicialHomologyClass_quotient (ZMod 2)
+    ((compatibleOrder xs h).prefixComplex t) p z
+  change E (simplicialClass xs h p t z) = _ at hE
+  calc
+    simplicialClass xs h p t z = 0 ↔ E (simplicialClass xs h p t z) = 0 :=
+      (LinearEquiv.map_eq_zero_iff E).symm
+    _ ↔ _ := by rw [hE]; exact Submodule.Quotient.mk_eq_zero _
 
 /-- The already proved simplicial-to-matrix and matrix-to-alive isomorphisms. -/
 noncomputable def prefixHomologyToAlive (xs : Input) (h : Valid xs) (p t : ℕ) :
@@ -130,9 +129,11 @@ theorem prefixHomologyToAlive_class (xs : Input) (h : Valid xs) (p t : ℕ)
   let q := Submodule.mkQ (R := ZMod 2)
     (M := simplicialCycles (e.prefixComplex t) (ZMod 2) p)
     (simplicialBoundaries (e.prefixComplex t) (ZMod 2) p) z
-  change A (F (E (E.symm q))) = _
+  have hE : E (simplicialClass xs h p t z) = q :=
+    simplicialHomologyClass_quotient (ZMod 2) (e.prefixComplex t) p z
+  change A (F (E (simplicialClass xs h p t z))) = _
   calc
-    A (F (E (E.symm q))) = A (F q) := congrArg (fun y => A (F y)) (E.apply_symm_apply q)
+    A (F (E (simplicialClass xs h p t z))) = A (F q) := congrArg (fun y => A (F y)) hE
     _ = _ := rfl
 
 theorem columnCycle_not_boundary (xs : Input) (h : Valid xs) (p t : ℕ)

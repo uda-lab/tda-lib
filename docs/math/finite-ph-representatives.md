@@ -106,5 +106,4 @@ The representative depends on the supplied face order and this reduction trace.
 No shortestness, canonicity or order-independence of representatives is claimed.
 The coefficient field and grade type remain F₂ and integers. The contract is a
 library-derived computational extension of the existing Lean definitions and
-proved adapters. It does not assert a new comparison against primary-paper text;
-no such text was used as input for this extension.
+proved adapters. It does not assert a new comparison against primary-paper text.
