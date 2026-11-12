@@ -395,3 +395,7 @@ import TDA.Persistence.Reduction.FiniteInputRepresentativeChains
 import TDA.Persistence.Reduction.FiniteInputRepresentativeHomology
 import TDA.Persistence.Reduction.FiniteInputRepresentativeCorrectness
 import TDA.Persistence.Reduction.FiniteInputRepresentativeExamples
+import TDA.Persistence.Reduction.FiniteInputSublevelQuery
+import TDA.Persistence.Reduction.FiniteInputSublevelCycles
+import TDA.Persistence.Reduction.FiniteInputSublevelHomology
+import TDA.Persistence.Reduction.FiniteInputSublevelExamples

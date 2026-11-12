@@ -1473,8 +1473,11 @@ arbitrary-field decomposition remain noncomputable. See
 for finite occurrences, bounding supports while preserving that exact ordered
 output. Its correctness API proves actual signed simplicial boundary identities,
 nonzero classes at alive face prefixes and their unit normal-form coordinates.
-It retains the existing equal-grade exclusion; it does not supply a full integer
-sublevel natural basis. See [cycle representatives](math/finite-ph-representatives.md).
+`runAtGrade` selects value-alive records; `sublevelClass_naturality` follows their
+actual integer-sublevel classes from birth onward, and `sublevelClass_nonzero_iff`
+identifies finite death and essential survival. The API retains equal-grade
+exclusion and does not supply a full integer-sublevel natural basis. See
+[cycle representatives](math/finite-ph-representatives.md).
 
 ### Minimal-complement cardinalities for finite grids
 

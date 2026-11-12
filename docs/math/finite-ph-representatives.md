@@ -98,13 +98,59 @@ they do not assume a supplied cycle, filling, decomposition or nonzero class.
 semantic consumers for filled and hollow triangles, essential H₀, duplicate
 occurrences, tied grades, empty input and invalid input.
 
+## Integer sublevels and inclusion maps
+
+`runAtGrade xs a` filters the original represented output at an integer grade `a`.
+An occurrence is active when its birth is at most `a` and its finite death is
+strictly greater than `a`; an essential occurrence has no upper endpoint. The
+query preserves order, duplicates, face identities and chain data. Invalid input
+returns `none`; valid input with no active occurrence returns `some []`.
+`runAtGrade_eq_some_iff`, `mem_runAtGrade` and `runAtGrade_forget` give the successful
+output, membership and exact filtered-occurrence projection.
+
+```lean
+import TDA.Persistence.Reduction.FiniteInputSublevelHomology
+import TDA.Persistence.Reduction.FiniteInputExamples
+
+open TDA.Persistence.Reduction.FiniteInput
+
+#eval runAtGrade Examples.filled 0 -- two finite H₀ records and essential H₀
+#eval runAtGrade Examples.filled 1 -- finite H₁ and essential H₀
+#eval runAtGrade Examples.filled 2 -- essential H₀
+```
+
+`sublevelStage xs a` computes the number of admitted faces directly from the
+input. `sublevelStage_eq_count` and `sublevel_eq_prefix` identify the actual integer
+sublevel with that prefix; every face tied at grade `a` is admitted together.
+
+Retain a record `r` from `runWithRepresentatives` when following it through time.
+For every `a` at or above its birth, `sublevelCycle` includes its computed chain
+from the birth prefix into `(gradeFilter xs h).sublevel a`. Its coordinate theorem
+recovers `chainVector r.cycle` in the original face basis. `sublevelClass` is the
+actual simplicial homology class of this chain, defined even after death.
+
+For `birth ≤ a ≤ b`, `sublevelClass_naturality` proves that the actual homology
+inclusion sends the class at `a` to this same chain's class at `b`.
+`sublevelClass_nonzero_iff` identifies nonzeroness exactly with the occurrence's
+half-open value interval. At an active grade, `sublevelClass_coordinate` gives the
+unit vector at the original birth face under the existing prefix/alive equivalence.
+At or above finite death, `sublevel_bounding` places the returned filling in the
+actual sublevel with its original coefficients and signed boundary identity, and
+`sublevelClass_eq_zero_of_death` proves that the class is zero. Essential classes
+remain nonzero along the constant tail.
+
+The naturality law starts at birth. It does not identify a prebirth zero class
+with a later nonzero generator. A record removed by a later `runAtGrade` query
+still has a defined, zero `sublevelClass` there. These individual class laws do
+not construct a basis of the entire integer-sublevel persistence module.
+
 ## Value intervals and scope
 
 Integer grades are separate from prefix stages. As in `run`, a pivot pair whose
 birth and death grades agree is omitted from the value output. In `Examples.tied`
 the H₁ index class is nonzero at prefix 6, but both its birth and its death have
-grade 1, so no H₁ value interval is returned. The theorem does not assert an
-integer-sublevel natural-basis API for these chosen chains.
+grade 1, so no H₁ value interval is returned. The integer-sublevel class laws above do not assert a natural-basis API for the
+entire homology module.
 
 The representative depends on the supplied face order and this reduction trace.
 No shortestness, canonicity or order-independence of representatives is claimed.
