@@ -1492,6 +1492,13 @@ boundary is the supplied cycle; on admitted cycles, success is equivalent to
 actual boundary membership. See
 [cycle representatives](math/finite-ph-representatives.md).
 
+`runHomologyMap` computes a vertex-induced homology map between two finite inputs
+in these source and target bases. It validates every admitted face image, handles
+noninjective vertex functions and proves agreement with the existing actual
+`simplicialHomologyMap` on every class. Its matrix laws include identity,
+composition and the existing sublevel-inclusion transition. See
+[computing finite homology maps](math/finite-ph-maps.md).
+
 ### Minimal-complement cardinalities for finite grids
 
 Here `minimalComplement p` is the set of minimal elements of `{a | ¬ a ≤ p}` in a lattice; the cardinality and maximum functions add a `Finite` assumption. `PairPoset S` is the actual subtype `{q : WithTop S × WithTop S // q.1 ≤ q.2}` with inherited coordinatewise order. The grid bounds concern an actual `G : CoordinateGrid n` with nonempty coordinate factors.
