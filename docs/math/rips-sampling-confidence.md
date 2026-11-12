@@ -67,6 +67,32 @@ an extended pseudometric because endpoint decorations are ignored by the cost.
 The sample-diagram map is two-Lipschitz for the tuple maximum metric, hence
 continuous; distance to the fixed target diagram is consequently measurable.
 
+## Applying the Lean API
+
+Import `TDA.Persistence.RipsSamplingConfidence`; the declarations below are in
+`TDA.Persistence.Rips`. Both probability theorems require a Borel measurable
+structure and second-countable topology on the metric input type, together with
+an auxiliary `LinearOrder`. No compatibility between that order and the metric
+is required.
+
+- For samples whose type `X` is the whole carrier, use
+  `measure_bottleneck_qTameSampleDiagram_gt_le`. Supply nonemptiness of `X` and
+  `TotallyBounded (Set.univ : Set X)`; the centers have type `c : C → X`.
+- For ambient samples compared with their compact support, use
+  `measure_bottleneck_qTameSampleDiagram_support_gt_le`. Supply compactness of
+  `(μ : Measure X).support`; the centers have type
+  `c : C → (μ : Measure X).support`. The theorem supplies the support's
+  full-measure fact internally.
+
+In either route, `C` is a finite nonempty index type. The caller provides
+`0 < n`, the degree, `0 < r`, and the condition that every carrier point is
+at distance strictly less than `r/2` from some center. The minimum ball probability
+in the bound is `TDA.Probability.finiteCoverMass` for those balls.
+See the [theorem headers](../../TDA/Persistence/RipsSamplingConfidence.lean)
+for the complete inputs and the standalone
+[`unitInterval_confidence` fixture](../../TDA/Persistence/RipsSamplingConfidenceExamples.lean)
+for an application on an infinite compact carrier.
+
 ## Source relationship
 
 [Fasy et al., Lemma 4 and its proof](https://arxiv.org/html/1303.7117v3)
