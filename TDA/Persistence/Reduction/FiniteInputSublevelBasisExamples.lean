@@ -179,6 +179,11 @@ private theorem mixed_boundary : boundary mixed = mixedMatrix := by
     norm_num [boundary, mixed, mixedMatrix, Finset.orderEmbOfFin_apply,
       Finset.sort_insert, Finset.sort_singleton] <;> decide +kernel
 
+/-- The mixed birth/death fixture's boundary, available to executable consumers. -/
+theorem mixed_boundary_values : boundary mixed =
+    fun r c => if c.val = 2 ∧ (r.val = 0 ∨ r.val = 1) then 1 else 0 :=
+  mixed_boundary
+
 private theorem mixed_births :
     (activeRepresentatives mixed 0 0).map (fun r => r.birthIndex.val) = [1, 0] ∧
     (activeRepresentatives mixed 0 1).map (fun r => r.birthIndex.val) = [0, 3] := by
