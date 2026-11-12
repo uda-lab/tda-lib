@@ -1485,7 +1485,11 @@ indices across queries. `runCycleCoordinates` accepts arbitrary original-face Fâ
 vectors, checks that they are cycles in the selected degree and sublevel, and
 returns their coefficients in that query order. Its correctness theorem identifies
 the actual homology coordinates; zero and equality tests detect boundaries and
-equal homology classes. See
+equal homology classes. `runCycleFilling` constructs an original-index filling
+for every admitted cycle whose coordinates vanish. Its correctness API preserves
+the returned coefficients in an actual sublevel chain and proves its signed
+boundary is the supplied cycle; on admitted cycles, success is equivalent to
+actual boundary membership. See
 [cycle representatives](math/finite-ph-representatives.md).
 
 ### Minimal-complement cardinalities for finite grids

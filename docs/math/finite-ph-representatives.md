@@ -277,10 +277,69 @@ the finite iteration `Gₖ₊₁ = 1 + Gₖ U` produces `N⁻¹` after `n` steps
 vectors store the intermediate matrix entries. `normalCoordinateVector_apply`
 proves agreement with the existing normal-form inverse. The executed path uses
 neither the proof-only death-index choice nor a noncomputable matrix inverse.
-No optimal complexity or explicit filling extraction for arbitrary cycles is
-claimed. `FiniteInputCycleCoordinatesExamples.lean` checks supplied vertices,
+No optimal complexity is claimed. `FiniteInputCycleCoordinatesExamples.lean` checks supplied vertices,
 homologous distinct cycles, a nonzero boundary, changed query positions and the
 triangle, essential, tied/negative, zero/empty and rejection cases.
+
+## Constructing a filling for a supplied boundary
+
+`runCycleFilling xs p a v` returns a chain whose boundary is the supplied vector
+`v`, using the same input, degree and sublevel checks as `runCycleCoordinates`.
+It succeeds exactly when those checks pass and every homology coefficient is
+zero. Thus a nonempty coefficient list such as `[0]` is accepted. A valid zero
+vector returns `some []` at every degree and threshold, including empty input.
+Invalid input, a vector that fails the cycle checks, or a nonzero homology class
+returns `none`.
+
+Success returns `some b`, where `b` is a duplicate-free list of original face
+indices. Each listed face has coefficient one. The decoded vector
+`chainVector b` has degree `p+1`, is supported in the sublevel at `a`, and has
+signed simplicial boundary exactly `v`.
+
+```lean
+import TDA.Persistence.Reduction.FiniteInputCycleFillingCorrectness
+import TDA.Persistence.Reduction.FiniteInputExamples
+
+open TDA.Persistence.Reduction.FiniteInput
+
+#eval runCycleFilling Examples.filled 1 2
+  (fun i => if i.val ∈ [3, 4, 5] then 1 else 0) -- some [6]
+#eval runCycleFilling Examples.filled 0 1
+  (fun i => if i.val ∈ [0, 2] then 1 else 0) -- some [3, 4]
+#eval runCycleFilling Examples.hollow 1 100
+  (fun i => if i.val ∈ [3, 4, 5] then 1 else 0) -- none
+```
+
+The first result fills the three triangle edges with the triangle. The second
+fills a pair of vertices with two edges selected by the reduction trace, even
+though another edge alone has the same boundary. A selected filling therefore
+need not have the fewest faces. A tied-grade triangle is also filled at its
+common grade: the algorithm uses all reduced pivot pairs, including those
+omitted from the value barcode.
+
+`runCycleFilling_eq_some_iff` supplies validity, cycle admission, the zero-coordinate
+condition and the exact selected output. `runCycleFilling_data` proves the decoded
+support, degree and matrix-boundary laws. `runCycleFilling_correct` constructs an
+actual chain in `(gradeFilter xs h).sublevel a` with those original coefficients
+and proves that its actual signed boundary is `vectorSublevelCycle` of `v`.
+On admitted cycles, `runCycleFilling_exists_iff_boundary` identifies successful
+execution with membership in the actual simplicial boundary submodule. These
+results require no supplied filling or boundary certificate.
+
+To compute the filling, let `x = N⁻¹ v` be the executable normal coordinates.
+For each reduced death column `j` with pivot `i`, select coefficient
+`x i / R i j` when `j` is admitted and `i` has degree `p`, and zero otherwise.
+The change matrix `V` sends this selected vector to the original-face filling.
+`fillingVector_eq` identifies the computation with `expiredPreimage` followed by
+`V`. The normal-cycle decomposition proves its boundary identity; death columns
+are nonpivots, so `N` and `V` agree on this preimage. All choices in execution are
+finite searches and arithmetic. Actual chain objects and matrix inverses occur
+only in the correctness proofs.
+
+`FiniteInputCycleFillingExamples.lean` checks triangle and multiple-edge fillings,
+essential classes, tied and negative grades, nonempty zero coordinates, zero and
+empty inputs, and validation failures. It also consumes the public signed-boundary
+and actual-chain guarantees.
 
 ## Value intervals and scope
 
