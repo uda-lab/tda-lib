@@ -203,12 +203,84 @@ open TDA.Persistence.Reduction.FiniteInput
 ```
 
 The query and matrix use finite computation. The basis and coordinate equivalence
-are proof-side, noncomputable semantic objects; this API does not compute the
-coordinates of an arbitrary input cycle. `FiniteInputSublevelBasisExamples.lean`
+are proof-side, noncomputable semantic objects. `FiniteInputSublevelBasisExamples.lean`
 checks complete dimensions, unique expansion, the filled H₁ death map, essential
 H₁, duplicate H₀, negative/tied grades, empty/invalid input and the mixed inclusion
 above. The construction reuses the proved normal-form and actual simplicial
 adapters, without a basis or completeness certificate supplied by the caller.
+
+## Computing the coordinates of a supplied cycle
+
+Supply a coefficient vector `v : Fin xs.length → ZMod 2` in the original face
+order to `runCycleCoordinates xs p a v`. It validates the simplex input and
+checks that every nonzero entry is a degree-`p` face admitted at grade `a`, and
+that the original signed boundary of `v` is zero. A failed check returns `none`.
+Success returns a coefficient list in exactly the order of
+`runDegreeAtGrade xs p a`. The zero vector is accepted for every degree and
+threshold when the simplex input is valid, including empty input.
+
+For the filled triangle, the degree-zero basis at grade zero consists of the two
+finite cycles and the essential cycle in the first table. Individual vertices,
+which need not be selected representatives, therefore have these coordinates:
+
+| Supplied vector | Grade 0 | Grade 1 |
+|---|---|---|
+| vertex 0 | `[0,0,1]` | `[1]` |
+| vertex 1 | `[1,0,1]` | `[1]` |
+| vertex 2 | `[1,1,1]` | `[1]` |
+| vertices 0 + 1 | `[1,0,0]` | `[0]` |
+
+At grade one the vertices are homologous, and the nonzero chain consisting of
+vertices 0 and 1 is the boundary of an edge. Zero coefficients mean a zero
+homology class, not necessarily a zero chain. Likewise, the three-edge H₁ cycle
+has coefficient `[1]` at grade one and coefficient list `[]` at grade two, where
+the triangle fills it. A hollow triangle retains coefficient `[1]` on its
+essential tail. Equal-grade omission still applies to value-level coordinates.
+
+```lean
+import TDA.Persistence.Reduction.FiniteInputCycleCoordinatesCorrectness
+import TDA.Persistence.Reduction.FiniteInputExamples
+
+open TDA.Persistence.Reduction.FiniteInput
+
+#eval runCycleCoordinates Examples.filled 0 0
+  (fun i => if i.val = 1 then 1 else 0) -- some [1, 0, 1]
+#eval runCycleCoordinates Examples.filled 0 1
+  (fun i => if i.val = 1 then 1 else 0) -- some [1]
+#eval runCycleCoordinates Examples.filled 1 2
+  (fun i => if i.val ∈ [3, 4, 5] then 1 else 0) -- some []
+```
+
+`runCycleCoordinates_eq_some_iff` characterizes the exact validation conditions
+and ordered output; `runCycleCoordinates_length` and `runCycleCoordinates_get`
+give its length and indexed coefficients. `runCycleCoordinates_correct` proves
+that every successful list is the actual `sublevelCoordinates` of the supplied
+cycle's simplicial homology class. `vectorSublevelCycle_coordinates` preserves
+its original face coefficients. No inverse, basis, class or cycle certificate is
+an input to the executed procedure.
+
+The raw linear map `rawCycleCoordinates` also accepts arbitrary vectors, with
+its homological meaning restricted to the predicate `CycleInput`.
+`rawCycleCoordinates_eq_zero_iff_boundary` identifies its kernel on admitted
+cycles with the actual simplicial boundary submodule.
+`rawCycleCoordinates_eq_iff` characterizes equality of their actual classes.
+`rawCycleCoordinates_naturality` computes how a cycle's coefficients change
+under integer-sublevel inclusion using the same `basisTransition` matrix.
+`runCycleCoordinates_basisRecord` is the round-trip law: each selected cycle
+returns its own unit coordinate in query order, including duplicate-valued bars.
+
+The executable inverse uses the same normal matrix `N`, selected by finite
+search through all pivot pairs and the change columns. It includes tied-grade
+pairs in this matrix even when the value query omits them. For `n` faces,
+`U = 1 - N` is strictly upper triangular and `U^n = 0`. Starting with `G₀ = 0`,
+the finite iteration `Gₖ₊₁ = 1 + Gₖ U` produces `N⁻¹` after `n` steps. Fixed-size
+vectors store the intermediate matrix entries. `normalCoordinateVector_apply`
+proves agreement with the existing normal-form inverse. The executed path uses
+neither the proof-only death-index choice nor a noncomputable matrix inverse.
+No optimal complexity or explicit filling extraction for arbitrary cycles is
+claimed. `FiniteInputCycleCoordinatesExamples.lean` checks supplied vertices,
+homologous distinct cycles, a nonzero boundary, changed query positions and the
+triangle, essential, tied/negative, zero/empty and rejection cases.
 
 ## Value intervals and scope
 

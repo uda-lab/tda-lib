@@ -1481,7 +1481,11 @@ exclusion. `runDegreeAtGrade` selects one degree in that same order;
 actual sublevel homology. `sublevelCoordinates` gives each class its unique
 coefficient vector, and `sublevelCoordinates_naturality` represents every
 inclusion by the executable `basisTransition` matrix, matching original birth
-indices across queries. See
+indices across queries. `runCycleCoordinates` accepts arbitrary original-face F₂
+vectors, checks that they are cycles in the selected degree and sublevel, and
+returns their coefficients in that query order. Its correctness theorem identifies
+the actual homology coordinates; zero and equality tests detect boundaries and
+equal homology classes. See
 [cycle representatives](math/finite-ph-representatives.md).
 
 ### Minimal-complement cardinalities for finite grids

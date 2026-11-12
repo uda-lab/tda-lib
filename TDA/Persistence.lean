@@ -403,3 +403,7 @@ import TDA.Persistence.Reduction.FiniteInputActiveBasis
 import TDA.Persistence.Reduction.FiniteInputBasisTransition
 import TDA.Persistence.Reduction.FiniteInputSublevelBasis
 import TDA.Persistence.Reduction.FiniteInputSublevelBasisExamples
+import TDA.Persistence.Reduction.FiniteInputNormalCoordinates
+import TDA.Persistence.Reduction.FiniteInputCycleCoordinates
+import TDA.Persistence.Reduction.FiniteInputCycleCoordinatesCorrectness
+import TDA.Persistence.Reduction.FiniteInputCycleCoordinatesExamples
