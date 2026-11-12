@@ -7,6 +7,10 @@ without repairing it. Import
 `TDA.Persistence.Reduction.FiniteInputRepresentativeCorrectness` for the executable
 API and its simplicial homology guarantees.
 
+This representative API is an unreleased `develop` addition after v0.3.0.
+The [v0.3.0 computation guide](https://github.com/uda-lab/tda-lib/blob/v0.3.0/docs/math/finite-ph-computation.md)
+describes the released occurrence-only `run` API.
+
 ## Read the output
 
 A `Representative xs.length` contains the unchanged `occurrence`, a `birthIndex`,

@@ -52,6 +52,7 @@ docs/math/finite-mono-matching.md
 docs/math/finite-mono-translation.md
 docs/math/finite-p-boundary-transport.md
 docs/math/finite-ph-computation.md
+docs/math/finite-ph-representatives.md
 docs/math/finite-quantitative-induced-matching.md
 docs/math/finite-rank-barcode.md
 docs/math/finite-rank-isomorphism.md
