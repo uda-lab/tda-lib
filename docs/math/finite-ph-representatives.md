@@ -341,6 +341,9 @@ essential classes, tied and negative grades, nonempty zero coordinates, zero and
 empty inputs, and validation failures. It also consumes the public signed-boundary
 and actual-chain guarantees.
 
+To compute maps between different finite inputs, including vertex functions
+that merge vertices, see [computing finite homology maps](finite-ph-maps.md).
+
 ## Value intervals and scope
 
 Integer grades are separate from prefix stages. As in `run`, a pivot pair whose

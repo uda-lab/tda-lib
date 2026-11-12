@@ -410,3 +410,8 @@ import TDA.Persistence.Reduction.FiniteInputCycleCoordinatesExamples
 import TDA.Persistence.Reduction.FiniteInputCycleFillings
 import TDA.Persistence.Reduction.FiniteInputCycleFillingCorrectness
 import TDA.Persistence.Reduction.FiniteInputCycleFillingExamples
+import TDA.Persistence.Reduction.FiniteInputVertexMap
+import TDA.Persistence.Reduction.FiniteInputVertexMapChains
+import TDA.Persistence.Reduction.FiniteInputHomologyMap
+import TDA.Persistence.Reduction.FiniteInputHomologyMapCorrectness
+import TDA.Persistence.Reduction.FiniteInputHomologyMapExamples
