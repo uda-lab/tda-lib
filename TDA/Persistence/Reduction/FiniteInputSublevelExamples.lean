@@ -12,18 +12,18 @@ namespace TDA.Persistence.Reduction.FiniteInput.SublevelExamples
 
 open TDA.Simplicial TDA.Filtration
 
-local instance : NeZero Examples.filled.length := ⟨by decide⟩
-local instance : NeZero Examples.hollow.length := ⟨by decide⟩
-local instance : NeZero Examples.tied.length := ⟨by decide⟩
-local instance : NeZero Examples.delayed.length := ⟨by decide⟩
-local instance : NeZero Examples.negative.length := ⟨by decide⟩
+private local instance : NeZero Examples.filled.length := ⟨by decide⟩
+private local instance : NeZero Examples.hollow.length := ⟨by decide⟩
+private local instance : NeZero Examples.tied.length := ⟨by decide⟩
+private local instance : NeZero Examples.delayed.length := ⟨by decide⟩
+private local instance : NeZero Examples.negative.length := ⟨by decide⟩
 
 /-- The same filled triangle, with two distinct integer thresholds before its death. -/
 def wideFilled : Input :=
   [({0}, 0), ({1}, 0), ({2}, 0), ({0, 1}, 1), ({1, 2}, 1),
     ({0, 2}, 1), ({0, 1, 2}, 3)]
 
-local instance : NeZero wideFilled.length := ⟨by decide⟩
+private local instance : NeZero wideFilled.length := ⟨by decide⟩
 
 theorem wideFilled_valid : Valid wideFilled := (validBool_iff _).mp (by decide +kernel)
 
