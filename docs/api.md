@@ -1476,7 +1476,12 @@ nonzero classes at alive face prefixes and their unit normal-form coordinates.
 `runAtGrade` selects value-alive records; `sublevelClass_naturality` follows their
 actual integer-sublevel classes from birth onward, and `sublevelClass_nonzero_iff`
 identifies finite death and essential survival. The API retains equal-grade
-exclusion and does not supply a full integer-sublevel natural basis. See
+exclusion. `runDegreeAtGrade` selects one degree in that same order;
+`sublevelBasis` proves that its returned cycle classes form a basis of the entire
+actual sublevel homology. `sublevelCoordinates` gives each class its unique
+coefficient vector, and `sublevelCoordinates_naturality` represents every
+inclusion by the executable `basisTransition` matrix, matching original birth
+indices across queries. See
 [cycle representatives](math/finite-ph-representatives.md).
 
 ### Minimal-complement cardinalities for finite grids
