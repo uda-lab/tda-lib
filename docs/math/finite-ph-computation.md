@@ -51,6 +51,10 @@ represents unbounded death, not an integer sentinel. `missingEdge` omits the
 `{0, 2}` edge, so `validBool` is `false` and `run` returns `none`; the input is
 not repaired.
 
+For cycles in the original face-index basis and fillings for finite deaths,
+continue to [cycle representatives](finite-ph-representatives.md).
+That API is an unreleased `develop` addition after v0.3.0.
+
 ## Contract and representation
 
 `TDA.Persistence.Reduction.FiniteInput.Input` is a list of `(Finset ℕ, ℤ)` pairs. A
