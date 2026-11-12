@@ -25,6 +25,23 @@ inequality. The reverse component is defined in the same way. Naturality
 and the original double-shift equations prove both restricted interleaving
 equations. With unequal slopes, the second arrow can be nontrivial.
 
+For example, take $L(t)=(1+2t,-1+t)$, so $w(L)=1$. With
+$\varepsilon=1$, the slice shift is also $\delta=1$. At $t=0$ the three
+grades in the component are
+
+$$L(0)=(1,-1)\le L(0)+\mathbf1=(2,0)\le L(1)=(3,0).$$
+
+Over a field, let $H$ be the hook supported on the points $x$ with
+$(1,-1)\le x$ and $(3,0)\nleq x$. Use its coordinate self-interleaving
+`CoordinateInterleaving.refl 1 H`. The forward map sends the element $1$
+at $L(0)$ to a nonzero element at $(2,0)$. The additional structure map
+sends it to zero at $(3,0)$, which is outside the hook's support.
+The existing
+[`diagonal_transition_survives_but_padded_slice_dies` fixture](../../TDA/Persistence/AffineSliceMatchingExamples.lean)
+checks both conclusions. Its line and endpoints are private fixture data.
+This is a per-line witness example; its slopes are not normalized for the
+supremum below.
+
 `AffineSliceInterleaving` constructs these maps and exposes their component
 equations. It passes from witnesses to the extended infimum defining
 interleaving distance, obtaining
