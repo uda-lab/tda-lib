@@ -33,6 +33,20 @@ extension. It establishes no range-order equivalence, initial-segment theorem, s
 reconstruction, simplexwise reindexing, topological result, homology, reduction, pairing, or
 barcode consequence.
 
+## A tied-edge counterexample
+
+Take the three nonempty faces `{0}`, `{1}`, and `{0,1}`, all with grade 5. The list
+`[{0,1}, {0}, {1}]` is a bijective, grade-monotone enumeration: its values are all equal.
+The `monotone` field accepts this list because all grades are equal, but `face_lt` would require
+the index 1 of `{0}` to be less than the index 0 of `{0,1}`. The two separate conditions are
+defined by [`CompatibleOrder`](../../TDA/Filtration/CompatibleOrder.lean). The private `edge3`
+and `badEnum` definitions, with the `badEnum_grade_mono` and `badEnum_not_compatible` proofs,
+are in [`CompatibleOrderExamples.lean`](../../TDA/Filtration/CompatibleOrderExamples.lean).
+
+When grades tie, the constructor's cardinality key puts both vertices before the edge, and
+colex breaks the tie between the two vertices. Compatibility requires each vertex before its
+proper coface, but it imposes no order between the incomparable vertices.
+
 ## Source and API notes
 
 - [`FiniteComplex.lean`](../../TDA/Simplicial/FiniteComplex.lean) converts the stored finite
