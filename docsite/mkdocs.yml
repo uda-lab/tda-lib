@@ -20,6 +20,8 @@ markdown_extensions:
   - toc
   - pymdownx.arithmatex:
       generic: true
+extra_css:
+  - css/curated.css
 extra_javascript:
   - assets/mathjax-config.js
   - assets/tex-svg.js
