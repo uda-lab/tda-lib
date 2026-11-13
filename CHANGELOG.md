@@ -18,6 +18,14 @@ Changes on `develop` after v0.3.0; the next release version is undecided.
   [finite computation](docs/math/finite-ph-computation.md),
   [induced maps](docs/math/finite-ph-maps.md) and
   [homology lifts](docs/math/finite-ph-lifts.md) guides.
+- Compute ranks and nullities of validated finite F₂ homology maps, and sampled
+  image-persistence barcodes for globally grade-preserving vertex maps on
+  nondecreasing integer observations. Barcode endpoints are observation indices,
+  with repeated intervals retained. Death at the observation count records
+  survival through the last sample, without inferring a lifetime between or
+  beyond observations. Rank evaluation is exponential in source Betti dimension.
+  See [homology-map dimensions](docs/math/finite-ph-map-dimensions.md) and
+  [sampled image barcodes](docs/api.md#persistent-homology-results-and-computational-boundary).
 - Extend constructible-space thickenings, their interval-components cosheaf
   comparison and categorical Mapper reconstruction beyond graph-PL input, under
   the stated constructibility and cover hypotheses. See the
