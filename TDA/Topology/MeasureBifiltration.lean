@@ -191,10 +191,19 @@ section Uniform
 
 variable {V : Type*} [Fintype V] [Nonempty V]
 
+/-- The uniform probability mass function on a nonempty finite type. -/
+noncomputable def uniformPMF : PMF V :=
+  PMF.ofFintype (fun _ : V => (Fintype.card V : ℝ≥0∞)⁻¹)
+    (by
+      have hc : (Fintype.card V : ℝ≥0∞) ≠ 0 := by
+        exact_mod_cast Fintype.card_ne_zero
+      simp [Finset.sum_const, Finset.card_univ, nsmul_eq_mul,
+        ENNReal.mul_inv_cancel hc (ENNReal.natCast_ne_top _)])
+
 /-- Push the finite uniform law into the common ambient metric space. Repeated
 labels retain their multiplicity in this probability measure. -/
 noncomputable def uniformMeasure (p : V → X) : Measure X :=
-  ((PMF.uniformOfFintype V).map p).toMeasure
+  (uniformPMF.map p).toMeasure
 
 instance uniformMeasure_probability (p : V → X) : IsProbabilityMeasure (uniformMeasure p) := by
   unfold uniformMeasure
@@ -212,12 +221,14 @@ theorem uniformMeasure_apply (p : V → X) {A : Set X} (hA : MeasurableSet A) :
       (labelCount p A : ℝ≥0∞) / Fintype.card V := by
   classical
   let : MeasurableSpace V := ⊤
-  rw [uniformMeasure, PMF.toMeasure_map_apply p (PMF.uniformOfFintype V) A
-    (measurable_of_finite p) hA]
-  let : Fintype (p ⁻¹' A) := Fintype.ofFinite _
-  rw [PMF.toMeasure_uniformOfFintype_apply (p ⁻¹' A)
-    ((measurable_of_finite p) hA)]
-  simp only [Fintype.card_subtype, Set.mem_preimage, labelCount]
+  rw [uniformMeasure, PMF.toMeasure_map_apply (hf := measurable_of_finite p) (hs := hA),
+    uniformPMF,
+    PMF.toMeasure_ofFintype_apply (hs := measurableSet_preimage (measurable_of_finite p) hA)]
+  rw [tsum_fintype]
+  simp only [Set.indicator_apply, Set.mem_preimage]
+  rw [Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, labelCount,
+    nsmul_eq_mul, ENNReal.div_eq_inv_mul]
+  ring
 
 omit [MetricSpace X] [OpensMeasurableSpace X] in
 /-- In real-valued form, the mass is the same cardinality ratio as the

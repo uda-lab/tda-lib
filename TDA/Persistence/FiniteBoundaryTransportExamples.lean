@@ -75,8 +75,6 @@ private theorem off_label_dummy_assignment :
   norm_num [boundaryAssignmentCost, boundaryAssignmentEntry, boundarySwap,
     Equiv.swap_apply_def, Fintype.sum_sum_type, Fin.sum_univ_succ,
     source, target, finitePairCost, diagonalCost]
-  simp
-  norm_num
 
 private theorem restricted_assignment_cost :
     (OccurrenceMatching.ofBoundaryAssignment boundarySwap).totalFiniteCost source target = 4 := by
@@ -120,7 +118,6 @@ private theorem repeated_minimum :
       | none =>
         norm_num [OccurrenceMatching.totalFiniteCost, Fin.sum_univ_two,
           Fin.exists_fin_succ, h0, h1, diagonalCost]
-        simp
       | some j => cases j; norm_num [OccurrenceMatching.totalFiniteCost, Fin.sum_univ_two,
           Fin.exists_fin_succ, h0, h1, finitePairCost, diagonalCost]
     | some j =>

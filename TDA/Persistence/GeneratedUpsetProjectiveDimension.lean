@@ -70,7 +70,7 @@ noncomputable def projectiveResolution {m : ℕ} (f : Fin m → P) :
     | zero =>
       rw [ChainComplex.quasiIsoAt₀_iff,
         ShortComplex.quasiIso_iff_of_zeros' _
-          (by simp [chainComplex, ChainComplex.of.d]; rfl) (by rfl) (by rfl)]
+          (by simp [chainComplex, ChainComplex.of.d]) (by rfl) (by rfl)]
       · dsimp
         refine (ShortComplex.exact_and_epi_g_iff_of_iso ?_).2
           ⟨exact_of_pointwise (differential (k := k) f 0) (augmentation f)

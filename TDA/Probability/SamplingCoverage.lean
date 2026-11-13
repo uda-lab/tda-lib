@@ -142,7 +142,7 @@ def carrierProbability (μ : ProbabilityMeasure X) (K : Set X) (hK : MeasurableS
 /-- Inclusion transports the full-measure carrier probability back to its ambient law. -/
 theorem map_carrierProbability_val (μ : ProbabilityMeasure X) (K : Set X)
     (hK : MeasurableSet K) (hfull : (μ : Measure X) K = 1) :
-    (carrierProbability μ K hK hfull).map measurable_subtype_coe.aemeasurable = μ := by
+    (carrierProbability μ K hK hfull).map Subtype.val = μ := by
   apply ProbabilityMeasure.toMeasure_injective
   change Measure.map Subtype.val ((μ : Measure X).comap Subtype.val) = _
   rw [(MeasurableEmbedding.subtype_coe hK).map_comap, Subtype.range_coe]
@@ -184,7 +184,7 @@ def supportProbability (μ : ProbabilityMeasure X) :
 
 /-- Inclusion of the support preserves its probability law. -/
 theorem map_supportProbability_val (μ : ProbabilityMeasure X) :
-    (supportProbability μ).map measurable_subtype_coe.aemeasurable = μ :=
+    (supportProbability μ).map Subtype.val = μ :=
   map_carrierProbability_val μ _ _ _
 
 /-- A ball in the support carrier has the mass of the corresponding ambient ball. -/

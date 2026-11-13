@@ -120,8 +120,8 @@ private theorem diagram_counts :
 private theorem label_distances (v : Fin 3) :
     dist (acute v) (right v) = if v = 2 then 1 else 0 := by
   fin_cases v
-  · norm_num [acute, right]; decide
-  · norm_num [acute, right]; decide
+  · norm_num [acute, right]
+  · norm_num [acute, right]
   · change dist (acute 2) (right 2) = 1
     calc
       dist (acute 2) (right 2) = √(dist (acute 2) (right 2) ^ 2) :=

@@ -47,7 +47,7 @@ namespace OpenInterval
 instance : SetLike OpenInterval ℝ :=
   ⟨OpenInterval.carrier, fun p q h => by cases p; cases q; congr⟩
 
-instance : PartialOrder OpenInterval := .ofSetLike OpenInterval ℝ
+instance : PartialOrder OpenInterval := .ofSetLike OpenInterval
 
 @[ext] theorem ext {I J : OpenInterval} (h : ∀ x, x ∈ I ↔ x ∈ J) : I = J := SetLike.ext h
 

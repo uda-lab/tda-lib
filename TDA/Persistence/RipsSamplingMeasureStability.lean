@@ -36,8 +36,8 @@ def sampleLawMeasureCoupling (k : Type w) [Field k]
     (π : MeasureCoupling μ ν) (n degree : ℕ) :
     MeasureCoupling (sampleLawMeasure k μ n degree) (sampleLawMeasure k ν n degree) := by
   change MeasureCoupling
-    ((iidMeasure μ n).map ((continuous_sampleDiagram (X := X) k degree).measurable.aemeasurable))
-    ((iidMeasure ν n).map ((continuous_sampleDiagram (X := Y) k degree).measurable.aemeasurable))
+    ((iidMeasure μ n).map (fun t : Fin n → X => sampleDiagram k t degree))
+    ((iidMeasure ν n).map (fun s : Fin n → Y => sampleDiagram k s degree))
   exact π.sampleLaw n (fun t => sampleDiagram k t degree) (fun s => sampleDiagram k s degree)
     (continuous_sampleDiagram k degree).measurable
     (continuous_sampleDiagram k degree).measurable

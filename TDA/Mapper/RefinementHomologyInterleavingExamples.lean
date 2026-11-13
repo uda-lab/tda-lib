@@ -129,7 +129,7 @@ theorem scaleMap_zerothHomotopy_subsingleton (c s t : ℝ) (k : ℤ) :
   have hp : (p.1 : ℝ) ∈ T := ⟨p.1.2, p.2⟩
   have hq : (q.1 : ℝ) ∈ T := ⟨q.1.2, q.2⟩
   have hj := ((hT.isPathConnected ⟨_, hp⟩).joinedIn _ hp _ hq).map
-    (continuous_projIcc (a := (0 : ℝ)) (b := 1) (h := zero_le_one))
+    (continuous_projIcc (a := (0 : ℝ)) (b := 1) (h := zero_le_one)).continuousOn
   rw [Set.projIcc_val, Set.projIcc_val] at hj
   refine mk_eq_of_joinedIn (scaleMap c) (centredCover s t k) (hj.mono ?_) p.2 q.2
   rintro _ ⟨r, hr, rfl⟩

@@ -28,8 +28,8 @@ theorem zero_identity_homCover :
     Function.Surjective (postcompose (k := ℚ) (S := Fin 2)
       (𝟙 (0 : PModule ℚ (Fin 2)))) ∧
     (∀ T : End (QF.obj (0 : PModule ℚ (Fin 2))),
-      T ≫ QF.map (𝟙 (0 : PModule ℚ (Fin 2))) =
-        QF.map (𝟙 (0 : PModule ℚ (Fin 2))) → IsIso T) := by
+      T.asHom ≫ QF.map (𝟙 (0 : PModule ℚ (Fin 2))) =
+        QF.map (𝟙 (0 : PModule ℚ (Fin 2))) → IsIso T.asHom) := by
   let hfd : ∀ a, FiniteDimensional ℚ ((0 : PModule ℚ (Fin 2)).obj a) := by
     intro a
     letI : Subsingleton ((0 : PModule ℚ (Fin 2)).obj a) :=
@@ -51,8 +51,8 @@ theorem principalUpset_identity_homCover (a : Fin 2) :
     Function.Surjective (postcompose (k := ℚ) (S := Fin 2)
       (𝟙 (HookInfinity.module (R := ℚ) a))) ∧
     (∀ T : End (QF.obj (HookInfinity.module (R := ℚ) a)),
-      T ≫ QF.map (𝟙 (HookInfinity.module (R := ℚ) a)) =
-        QF.map (𝟙 (HookInfinity.module (R := ℚ) a)) → IsIso T)) ∧
+      T.asHom ≫ QF.map (𝟙 (HookInfinity.module (R := ℚ) a)) =
+        QF.map (𝟙 (HookInfinity.module (R := ℚ) a)) → IsIso T.asHom)) ∧
     ∃ x : (HookInfinity.module (R := ℚ) a).obj a, x ≠ 0 := by
   let hfd : ∀ p, FiniteDimensional ℚ ((HookInfinity.module (R := ℚ) a).obj p) := by
     intro p

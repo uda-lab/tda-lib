@@ -32,7 +32,7 @@ open scoped ENNReal NNReal Topology BoundedContinuousFunction
 namespace TDA.Persistence.BoundaryTransport
 
 private def plans (μ ν : ProbabilityMeasure Space) : Set (ProbabilityMeasure (Space × Space)) :=
-  {γ | γ.map measurable_fst.aemeasurable = μ ∧ γ.map measurable_snd.aemeasurable = ν}
+  {γ | γ.map Prod.fst = μ ∧ γ.map Prod.snd = ν}
 
 private theorem compact_plans (μ ν : ProbabilityMeasure Space) : IsCompact (plans μ ν) := by
   have hclosed : IsClosed (plans μ ν) :=
@@ -110,10 +110,10 @@ private theorem reservoir_minimizer (p : ℝ) (hp : 0 ≤ p)
   have hη₂ : η.toMeasure.map Prod.snd = normalizedReservoirMeasure ν R :=
     congrArg ProbabilityMeasure.toMeasure hη.2
   have hγ₁ : γ.map Prod.fst = reservoirMeasure μ R := by
-    rw [Measure.map_smul, hη₁]
+    rw [Measure.map_smul _ measurable_fst.aemeasurable, hη₁]
     exact scale_back μ
   have hγ₂ : γ.map Prod.snd = reservoirMeasure ν R := by
-    rw [Measure.map_smul, hη₂]
+    rw [Measure.map_smul _ measurable_snd.aemeasurable, hη₂]
     exact scale_back ν
   refine ⟨γ, hγ₁, hγ₂, le_antisymm ?_
     (reservoirPowerValue_le_plan p μ ν R γ hγ₁ hγ₂)⟩
@@ -131,11 +131,11 @@ private theorem reservoir_minimizer (p : ℝ) (hp : 0 ≤ p)
     constructor
     · apply Subtype.ext
       change (R⁻¹ • σ).map Prod.fst = normalizedReservoirMeasure μ R
-      rw [Measure.map_smul, hσ.1]
+      rw [Measure.map_smul _ measurable_fst.aemeasurable, hσ.1]
       rfl
     · apply Subtype.ext
       change (R⁻¹ • σ).map Prod.snd = normalizedReservoirMeasure ν R
-      rw [Measure.map_smul, hσ.2]
+      rw [Measure.map_smul _ measurable_snd.aemeasurable, hσ.2]
       rfl
   have hcost : R * (∫⁻ z, collapsedPowerCost p z ∂η.toMeasure) ≤
       R * (∫⁻ z, collapsedPowerCost p z ∂τ.toMeasure) := by

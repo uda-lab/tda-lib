@@ -1,4 +1,7 @@
 import Mathlib.AlgebraicTopology.SimplicialComplex.Basic
+import Mathlib.Order.Fin.Basic
+import Mathlib.Tactic.FinCases
+import Mathlib.Data.Fintype.Basic
 
 /-!
 # Support-aware simplicial filtrations

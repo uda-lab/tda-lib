@@ -99,7 +99,7 @@ private def isPrivateProjectTheorem (env : Environment) (n : Name) (info : Const
     return true
   | _ => return false
 
-/-- The exact expression/constructor edges of Lean 4.33.1's axiom collector.
+/-- The exact expression/constructor edges of Lean 4.35.0's axiom collector.
 A generic declaration-usage helper also adds recursor-family edges; those extra edges
 must not cause a private proof to be treated as already axiom-audited. Quotient primitives
 have no outgoing collector edges. Theorems and opaque declarations include their bodies. -/

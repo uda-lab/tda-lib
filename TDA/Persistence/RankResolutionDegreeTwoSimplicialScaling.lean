@@ -25,7 +25,7 @@ open scoped TDA.Persistence NNReal ENNReal ZeroObject
 noncomputable def scalingPullback (s : Fin 2 → ℝ) (hs : ∀ i, 0 < s i) :
     (Fin 2 → ℝ) →o (Fin 2 → ℝ) :=
   OrderHom.pi (fun i =>
-    OrderHomClass.toOrderHom (OrderIso.divRight₀ (s i) (hs i)) |>.comp
+    OrderHom.ofClass (OrderIso.divRight₀ (s i) (hs i)) |>.comp
       (Pi.evalOrderHom i))
 
 @[simp] theorem scalingPullback_apply (s : Fin 2 → ℝ) (hs : ∀ i, 0 < s i)

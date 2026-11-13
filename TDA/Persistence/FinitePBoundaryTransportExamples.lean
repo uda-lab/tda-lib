@@ -138,7 +138,6 @@ theorem repeated_minimum :
       | none =>
         norm_num [OccurrenceMatching.totalFinitePowerCost, OccurrenceMatching.totalBoundaryCost,
           Fin.sum_univ_two, Fin.exists_fin_succ, h0, h1, diagonalCost, Real.rpow_two]
-        simp
       | some j =>
         cases j
         norm_num [OccurrenceMatching.totalFinitePowerCost, OccurrenceMatching.totalBoundaryCost,

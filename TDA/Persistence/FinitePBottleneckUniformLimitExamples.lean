@@ -223,7 +223,6 @@ private theorem switch_bottleneck : bottleneck (singleBar 0) (singleBar (3 / 2))
           Fin.elim0 Fin.elim0 := iInf_le _ delete
       _ = 1 := by
         norm_num [delete, OccurrenceMatching.cost, diagonalCost]
-        simp
   · apply le_iInf
     intro M
     have hs := M.source_le_cost (fun _ => (0, 0 + 2))

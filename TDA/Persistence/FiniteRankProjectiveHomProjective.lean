@@ -41,26 +41,28 @@ into its endomorphism ring. -/
 private def hookHomToEnd (t : HookTag (S := S)) :
     (HookSum (k := k) (S := S) ⟶ hookFamily (k := k) (S := S) t) →ₗ[HomScalars (k := k) (S := S)]
       (EndRing (k := k) (S := S)) where
-  toFun f := f ≫ biproduct.ι (hookFamily (k := k) (S := S)) t
+  toFun f := .of (f ≫ biproduct.ι (hookFamily (k := k) (S := S)) t)
   map_add' f g := by
+    apply End.ext
     exact Preadditive.add_comp _ _ _ f g
       (biproduct.ι (hookFamily (k := k) (S := S)) t)
   map_smul' r f := by
-    change (r.unop ≫ f) ≫ biproduct.ι (hookFamily (k := k) (S := S)) t =
-      r.unop ≫ (f ≫ biproduct.ι (hookFamily (k := k) (S := S)) t)
+    apply End.ext
+    change (r.unop.asHom ≫ f) ≫ biproduct.ι (hookFamily (k := k) (S := S)) t =
+      r.unop.asHom ≫ (f ≫ biproduct.ι (hookFamily (k := k) (S := S)) t)
     exact Category.assoc _ _ _
 
 /-- Projection from the endomorphism ring back to maps into a hook summand. -/
 private def endToHookHom (t : HookTag (S := S)) :
     (EndRing (k := k) (S := S)) →ₗ[HomScalars (k := k) (S := S)]
       (HookSum (k := k) (S := S) ⟶ hookFamily (k := k) (S := S) t) where
-  toFun f := f ≫ biproduct.π (hookFamily (k := k) (S := S)) t
+  toFun f := f.asHom ≫ biproduct.π (hookFamily (k := k) (S := S)) t
   map_add' f g := by
-    exact Preadditive.add_comp _ _ _ f g
+    exact Preadditive.add_comp _ _ _ f.asHom g.asHom
       (biproduct.π (hookFamily (k := k) (S := S)) t)
   map_smul' r f := by
-    change (r.unop ≫ f) ≫ biproduct.π (hookFamily (k := k) (S := S)) t =
-      r.unop ≫ (f ≫ biproduct.π (hookFamily (k := k) (S := S)) t)
+    change (r.unop.asHom ≫ f.asHom) ≫ biproduct.π (hookFamily (k := k) (S := S)) t =
+      r.unop.asHom ≫ (f.asHom ≫ biproduct.π (hookFamily (k := k) (S := S)) t)
     exact Category.assoc _ _ _
 
 /-- A map from the hook generator into any one hook is a split summand of its
@@ -109,7 +111,7 @@ private def homPostcomposeLinearEquiv {M N : PModule.{u,0,u} k S}
   right_inv f := by simp [Category.assoc]
   map_add' f g := Preadditive.add_comp _ _ _ f g e.hom
   map_smul' r f := by
-    change (r.unop ≫ f) ≫ e.hom = r.unop ≫ (f ≫ e.hom)
+    change (r.unop.asHom ≫ f) ≫ e.hom = r.unop.asHom ≫ (f ≫ e.hom)
     exact Category.assoc _ _ _
 
 /-- Maps from the hook generator into a finite biproduct are the finite product
@@ -132,8 +134,8 @@ def homBiproductEquivPi {I : Type} [Fintype I]
     exact Preadditive.add_comp _ _ _ f g (biproduct.π F i)
   map_smul' r f := by
     funext i
-    change (r.unop ≫ f) ≫ biproduct.π F i =
-      r.unop ≫ (f ≫ biproduct.π F i)
+    change (r.unop.asHom ≫ f) ≫ biproduct.π F i =
+      r.unop.asHom ≫ (f ≫ biproduct.π F i)
     exact Category.assoc _ _ _
 
 /-- The finite-biproduct comparison reads each coordinate by composing with the

@@ -183,14 +183,15 @@ private theorem sublevelH0Augmentation_surjective [Nonempty V]
     simpa using ht
   let σ : Face K 0 := ⟨{v}, hvertex, by simp⟩
   intro a
-  refine ⟨simplicialHomologyClass k K 0 (a • zeroVertexCycle K k σ), ?_⟩
+  let ha : k := a
+  refine ⟨simplicialHomologyClass k K 0 (ha • zeroVertexCycle K k σ), ?_⟩
   have hcollapse : (sublevelH0Augmentation k d).app t =
       ModuleCat.ofHom (zeroHomologyCoefficientSum k K) := by
     rfl
   rw [hcollapse]
   change zeroHomologyCoefficientSum k K
-    (simplicialHomologyClass k K 0 (a • zeroVertexCycle K k σ)) = a
-  exact zeroHomologyCoefficientSum_vertex k K σ a
+    (simplicialHomologyClass k K 0 (ha • zeroVertexCycle K k σ)) = a
+  exact zeroHomologyCoefficientSum_vertex k K σ ha
 
 private theorem sublevelH0Augmentation_rankExact [Fintype V] [Nonempty V]
     (d : MetricSpace V) :

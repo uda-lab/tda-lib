@@ -17,6 +17,13 @@ open scoped ENNReal NNReal
 
 local instance : MetricSpace Bool := RipsSamplingExamples.epsilonTwoPointMetric
 
+/-- The uniform probability mass function on `Bool`. -/
+private noncomputable def uniformBoolPMF : PMF Bool :=
+  PMF.ofFintype (fun _ : Bool => (Fintype.card Bool : ℝ≥0∞)⁻¹)
+    (by
+      simp only [Finset.sum_const, Finset.card_univ, Fintype.card_bool, nsmul_eq_mul]
+      exact ENNReal.mul_inv_cancel (by norm_num) (by norm_num))
+
 /-- A training tuple with a repeated observation. -/
 def repeatedTraining : Fin 3 → Bool := ![false, false, true]
 
@@ -24,16 +31,24 @@ def repeatedTraining : Fin 3 → Bool := ![false, false, true]
 theorem repeatedTraining_masses :
     empiricalPMF repeatedTraining (by omega) false = (2 : ℝ≥0∞) / 3 ∧
     empiricalPMF repeatedTraining (by omega) true = (1 : ℝ≥0∞) / 3 := by
-  constructor <;>
-    simp [empiricalPMF, PMF.map_apply, tsum_fintype, Fin.sum_univ_succ,
-      repeatedTraining, PMF.uniformOfFintype_apply, div_eq_mul_inv, ← two_mul]
+  refine ⟨?_, ?_⟩
+  · rw [empiricalPMF_apply]
+    congr 1
+    norm_cast
+    rw [Finset.filter_congr_decidable]
+    decide
+  · rw [empiricalPMF_apply]
+    congr 1
+    norm_cast
+    rw [Finset.filter_congr_decidable]
+    decide
 
 /-- The deterministic training error is exactly one sixth. -/
 theorem repeatedTraining_totalVariation :
-    finiteTotalVariation (PMF.uniformOfFintype Bool)
+    finiteTotalVariation uniformBoolPMF
       (empiricalPMF repeatedTraining (by omega)) = (6 : ℝ≥0∞)⁻¹ := by
   rw [finiteTotalVariation_eq_sum_sub, Fintype.sum_bool]
-  simp only [PMF.uniformOfFintype_apply, Fintype.card_bool,
+  simp only [uniformBoolPMF, PMF.ofFintype_apply, Fintype.card_bool,
     repeatedTraining_masses.1, repeatedTraining_masses.2]
   norm_num only [Nat.cast_ofNat]
   have h : (2 : ℝ≥0)⁻¹ - 1 / 3 + ((2 : ℝ≥0)⁻¹ - 2 / 3) = (6 : ℝ≥0)⁻¹ := by
@@ -54,10 +69,10 @@ private theorem twoPoint_diameter : ∀ x y : Bool, dist x y ≤ (1 : ℝ) := by
 `p = 1` and resampling size two. The training tuple has three entries. -/
 theorem repeatedTraining_fullH0_bound (k : Type*) [Field k] :
     wasserstein 1 bottleneck
-      (sampleLaw k (PMF.uniformOfFintype Bool) 2 0)
+      (sampleLaw k uniformBoolPMF 2 0)
       (sampleLaw k (empiricalPMF repeatedTraining (by omega)) 2 0) ≤
         (3 : ℝ≥0∞)⁻¹ := by
-  have h := wasserstein_sampleLaw_empiricalPMF_le k (PMF.uniformOfFintype Bool)
+  have h := wasserstein_sampleLaw_empiricalPMF_le k uniformBoolPMF
     repeatedTraining (by omega) 1 twoPoint_diameter (p := 1) le_rfl 2 0 (by omega)
   have harith : (2 : ℝ≥0∞) * (6 : ℝ≥0∞)⁻¹ = (3 : ℝ≥0∞)⁻¹ := by
     have h : (2 : ℝ≥0) * (6 : ℝ≥0)⁻¹ = (3 : ℝ≥0)⁻¹ := by norm_num

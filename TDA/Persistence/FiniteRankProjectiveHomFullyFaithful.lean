@@ -93,9 +93,10 @@ private theorem encode_smul (M : PModule.{u,0,u} k S) (a : S)
 
 private theorem scalar_as_end_action (M : PModule.{u,0,u} k S)
     (r : k) (g : L (k := k) (S := S) ⟶ M) :
-    (MulOpposite.op (r • (𝟙 (L (k := k) (S := S)))) : E (k := k) (S := S)) • g =
+    (MulOpposite.op (r • (1 : End (L (k := k) (S := S)))) : E (k := k) (S := S)) • g =
       r • g := by
-  change (r • 𝟙 (L (k := k) (S := S))) ≫ g = r • g
+  change (r • (1 : End (L (k := k) (S := S)))).asHom ≫ g = r • g
+  rw [End.smul_asHom, End.one_asHom]
   simp
 
 private theorem map_scalar (M N : PModule.{u,0,u} k S)
@@ -129,24 +130,24 @@ private theorem evaluate (M N : PModule.{u,0,u} k S)
   let u : HookInfinity.module (R := k) a ⟶ L (k := k) (S := S) :=
     HookInfinity.fromBirth a (L (k := k) (S := S)) x
   let e : End (L (k := k) (S := S)) :=
-    projection (k := k) (S := S) a ≫ u
+    .of (projection (k := k) (S := S) a ≫ u)
   have hu : u ≫ g = HookInfinity.fromBirth a M ((g.app a).hom x) := by
     apply HookInfinity.hom_ext
     simp [u]
-  have h1 : e ≫ g = encode M a ((g.app a).hom x) := by
+  have h1 : e.asHom ≫ g = encode M a ((g.app a).hom x) := by
     simpa [e, encode, Category.assoc] using
       congrArg (fun v : HookInfinity.module (R := k) a ⟶ M =>
         projection (k := k) (S := S) a ≫ v) hu
-  have h2 : T (e ≫ g) = e ≫ T g := by
+  have h2 : T (e.asHom ≫ g) = e.asHom ≫ T g := by
     exact T.map_smul (MulOpposite.op e) g
   have h3 := congrArg
     (fun f : L (k := k) (S := S) ⟶ N =>
       (((inclusion (k := k) (S := S) a ≫ f).app a).hom
         (HookInfinity.birth a))) (h1 ▸ h2)
   have heval :
-      (((inclusion (k := k) (S := S) a ≫ e ≫ T g).app a).hom
+      (((inclusion (k := k) (S := S) a ≫ e.asHom ≫ T g).app a).hom
         (HookInfinity.birth a)) = ((T g).app a).hom x := by
-    have hie : inclusion (k := k) (S := S) a ≫ e = u := by
+    have hie : inclusion (k := k) (S := S) a ≫ e.asHom = u := by
       change inclusion (k := k) (S := S) a ≫
         (projection (k := k) (S := S) a ≫ u) = u
       rw [← Category.assoc, inclusion_projection, Category.id_comp]

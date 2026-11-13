@@ -59,7 +59,7 @@ theorem weightedPlaneMeasure_atoms {I : Type*} (w : UpperPoint → ℝ) (x : I �
       Measure.sum fun i => ENNReal.ofReal (w (x i)) • Measure.dirac (x i).1 := by
   rw [weightedPlaneMeasure, withDensity_sum,
     Measure.map_sum measurable_subtype_coe.aemeasurable]
-  simp only [dirac_withDensity, Measure.map_smul,
+  simp only [dirac_withDensity, Measure.map_smul _ measurable_subtype_coe.aemeasurable,
     Measure.map_dirac' measurable_subtype_coe]
 
 /-- The finite weighted positive-measure mean is the occurrence sum.
