@@ -319,6 +319,23 @@ class BuiltSiteTests(unittest.TestCase):
         self.assertFalse(list(build.OUTPUT.rglob("*.md")))
         self.assertFalse(list(build.OUTPUT.rglob("*.lean")))
 
+    def test_responsive_stylesheet_is_local_and_loaded_after_theme(self):
+        css = build.OUTPUT / "css/curated.css"
+        self.assertEqual(css.read_bytes(),
+                         (build.ROOT / "docsite/theme/css/curated.css").read_bytes())
+        for name in self.names:
+            target = (str(Path(name).parent / "index.html") if Path(name).name == "README.md"
+                      else str(Path(name).with_suffix("") / "index.html"))
+            html = (build.OUTPUT / target).read_text()
+            with self.subTest(name=name):
+                styles = re.findall(r'<link[^>]*href="([^"]+)"[^>]*rel="stylesheet"[^>]*>|'
+                                    r'<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>', html)
+                paths = [a or b for a, b in styles]
+                self.assertTrue(paths[-1].endswith("css/curated.css"))
+                self.assertEqual(destination(target, paths[-1])[0], "css/curated.css")
+        # The browser-only probe is a test input, never a published page/asset.
+        self.assertFalse((build.OUTPUT / "test_layout.js").exists())
+
     def test_explicit_and_unicode_anchors(self):
         home = Page((build.OUTPUT / "index.html").read_text())
         self.assertIn("results-in-v010", home.ids)

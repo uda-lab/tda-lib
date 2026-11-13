@@ -36,6 +36,17 @@ GitHub and other sources are ordinary outbound links, not embedded resources.
 Without JavaScript, protected TeX remains readable as source rather than being
 typeset. The HTML/link tests do not substitute for a browser equation/layout check.
 
+For responsive-layout regression checks, open `/tda-lib/docs/api/` at 320, 390
+and 1280 CSS-pixel viewport widths, wait for local fonts and MathJax to render,
+and evaluate the read-only `docsite/test_layout.js` expression in the browser.
+It asserts that the page fits, table identifiers wrap in bounded columns, and
+wide tables and typeset display equations retain their full width in local
+scrollers.
+Also inspect the API table and `#sampled-rips-laws` visually, scroll a wide
+formula to both ends, and check the mobile menu. The local `css/curated.css`
+override preserves full-size equations rather than shrinking their text.
+The probe is not a site asset and adds no browser dependency to the Python build.
+
 Output is generated and ignored under `build/curated-docs/preview/tda-lib/`.
 Each build renders and validates in a fresh directory, then replaces the preview
 by renaming directories. A prior preview (including hidden files and child
