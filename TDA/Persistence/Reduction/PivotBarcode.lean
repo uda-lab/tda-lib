@@ -1,6 +1,6 @@
 import TDA.Persistence.Reduction.FilteredNormalForm.NormalHomology
 
-set_option maxHeartbeats 800000
+set_option maxHeartbeats 3200000
 
 /-! Occurrence-level finite intervals supplied by a reduced filtered boundary. -/
 
