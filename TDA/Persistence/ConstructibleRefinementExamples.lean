@@ -35,7 +35,7 @@ private theorem coarse_fine : Refines coarse fine := by
   rintro x ⟨i, rfl⟩
   fin_cases i
   · exact ⟨1, by norm_num [coarse_apply, fine_apply]⟩
-  · exact ⟨3, by norm_num [coarse_apply, fine_apply]; rfl⟩
+  · exact ⟨3, by norm_num [coarse_apply, fine_apply]⟩
 
 /-- Adding observations is refinement only when every old critical value is retained. -/
 theorem refinement_and_missing_control : Refines coarse fine ∧ ¬ Refines coarse missing := by
