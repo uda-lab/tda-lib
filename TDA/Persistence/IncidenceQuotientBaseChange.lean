@@ -203,10 +203,10 @@ noncomputable def quotientProjection
       apply AddCommGrpCat.ext
       intro m
       change (((ModuleCat.restrictScalars (quotientHom (k := k) (S := S))).obj
-          (quotientModule (k := k) (S := S) M)).smul r).hom
+          (quotientModule (k := k) (S := S) M)).smul r).asHom
             (quotientProjectionHom (k := k) (S := S) M m) =
         quotientProjectionHom (k := k) (S := S) M
-          (((ModuleCat.of (RightIncidence (k := k) (S := S)) M).smul r).hom m)
+          (((ModuleCat.of (RightIncidence (k := k) (S := S)) M).smul r).asHom m)
       change quotientHom (k := k) (S := S) r •
           quotientProjectionHom (k := k) (S := S) M (m : M) =
         quotientProjectionHom (k := k) (S := S) M (r • (m : M))

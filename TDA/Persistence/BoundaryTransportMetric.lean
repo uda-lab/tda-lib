@@ -29,8 +29,6 @@ theorem boundaryTransportDistance_eq_zero_iff (p : ℝ) (hp : 1 ≤ p)
       exact hzero
     have hae : (fun z : Space × Space => dist z.1 z.2) =ᵐ[γ] 0 :=
       (eLpNorm_eq_zero_iff (p := ENNReal.ofReal p)
-        (by fun_prop : AEStronglyMeasurable
-          (fun z : Space × Space => dist z.1 z.2) γ)
         (ENNReal.ofReal_ne_zero_iff.mpr (by linarith))).mp hnorm
     have hcoord : Prod.fst =ᵐ[γ] Prod.snd := by
       filter_upwards [hae] with z hz
@@ -148,7 +146,7 @@ theorem boundaryTransportDistance_triangle (p : ℝ) (hp : 1 ≤ p)
         (fun z : Space × Space => dist z.1 z.2)
         (τ.map (fun a => (a.1.1, a.2))))
       (by fun_prop : AEMeasurable (fun a : (Space × Space) × Space => (a.1.1, a.2)) τ)]
-    exact eLpNorm_mono_ae_real (Filter.Eventually.of_forall fun a => by
+    exact eLpNorm_mono_ae_real (by fun_prop) (Filter.Eventually.of_forall fun a => by
       simpa [dxy, dyz] using dist_triangle a.1.1 a.1.2 a.2)
   have hxy_norm : eLpNorm dxy e τ = reservoirDistance p μ ν R := by
     change eLpNorm ((fun z : Space × Space => dist z.1 z.2) ∘ Prod.fst) e τ = _
@@ -174,8 +172,7 @@ theorem boundaryTransportDistance_triangle (p : ℝ) (hp : 1 ≤ p)
     _ ≤ eLpNorm (fun z : Space × Space => dist z.1 z.2) e γ := hγcost
     _ ≤ eLpNorm (dxy + dyz) e τ := hmono
     _ ≤ eLpNorm dxy e τ + eLpNorm dyz e τ :=
-      eLpNorm_add_le (by fun_prop) (by fun_prop)
-        (by simpa [e] using (ENNReal.ofReal_le_ofReal hp))
+      eLpNorm_add_le (by simpa [e] using (ENNReal.ofReal_le_ofReal hp))
     _ = boundaryTransportDistance p μ ν + boundaryTransportDistance p ν ξ := by
       rw [hxy_norm, hyz_norm,
         ← boundaryTransportDistance_eq_reservoirDistance p hp μ ν R hRtop hμν,

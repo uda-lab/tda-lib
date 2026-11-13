@@ -127,7 +127,8 @@ private theorem edist_add_const (c : ℝ) : edist h (fun v => h v + c) = ENNReal
   have hv (v : V) : edist (h v) (h v + c) = ENNReal.ofReal |c| := by
     rw [edist_dist, Real.dist_eq, show h v - (h v + c) = -c by ring, abs_neg]
   exact le_antisymm (edist_pi_le_iff.2 fun v => (hv v).le)
-    ((hv (Classical.arbitrary V)).ge.trans (edist_le_pi_edist _ _ _))
+    ((hv (Classical.arbitrary V)).ge.trans
+      (edist_le_pi_edist h (fun v => h v + c) (Classical.arbitrary V)))
 
 /-- The geometric interleaving distance of the graph-PL Reeb quotients of a vertex-height
 function and its vertical translate by `c` is `|c|`, on any graph. -/

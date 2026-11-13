@@ -35,7 +35,7 @@ theorem qTameSampleDiagram_eq_of_range_eq (k : Type v) [Field k]
     {m : ℕ} (t : Fin n → X) (s : Fin m → X) (h : Set.range t = Set.range s)
     (degree : ℕ) : qTameSampleDiagram k t degree = qTameSampleDiagram k s degree := by
   let e : Sample t ≃ᵢ Sample s :=
-    { Equiv.setCongr h with isometry_toFun := fun _ _ => rfl }
+    { Set.equivOfEq h with isometry_toFun := fun _ _ => rfl }
   exact qTameLocallyFiniteDiagram_eq_of_isometryEquiv k e _ _ degree
 
 omit [LinearOrder X] in
