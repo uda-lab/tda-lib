@@ -10,6 +10,14 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.3.0; the next release version is undecided.
 
+- Extend certified finite F₂ computation on valid finite graded simplex lists
+  with barcode cycle representatives, complete integer-sublevel homology bases,
+  supplied-cycle coordinates and boundary fillings. Add validated vertex-induced
+  homology matrices and homology preimages with chain certificates; preimage
+  search is exponential in the source Betti dimension. See the
+  [finite computation](docs/math/finite-ph-computation.md),
+  [induced maps](docs/math/finite-ph-maps.md) and
+  [homology lifts](docs/math/finite-ph-lifts.md) guides.
 - Extend constructible-space thickenings, their interval-components cosheaf
   comparison and categorical Mapper reconstruction beyond graph-PL input, under
   the stated constructibility and cover hypotheses. See the
