@@ -74,7 +74,7 @@ private def rayPoint (n : ℕ) : Interior :=
 private def rayLaw : Measure Interior := (ProbabilityTheory.geometricMeasure half).map rayPoint
 
 private instance : IsProbabilityMeasure rayLaw :=
-  Measure.isProbabilityMeasure_map ((measurable_of_countable rayPoint)).aemeasurable
+  inferInstanceAs (IsProbabilityMeasure ((ProbabilityTheory.geometricMeasure half).map rayPoint))
 
 private theorem rayLaw_moment (p : ℝ) :
     (∫⁻ x, ENNReal.ofReal (depth x ^ p) ∂rayLaw) = 1 := by
