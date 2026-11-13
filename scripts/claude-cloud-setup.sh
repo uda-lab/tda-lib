@@ -9,9 +9,9 @@ readonly ELAN_VERSION='4.2.4'
 readonly ELAN_ARCHIVE='elan-x86_64-unknown-linux-gnu.tar.gz'
 readonly ELAN_SHA256='42b94d4244e8353142c456ec0e4ca6528fd898a6c604d4059f494e706e431f63'
 readonly ELAN_URL="https://github.com/leanprover/elan/releases/download/v${ELAN_VERSION}/${ELAN_ARCHIVE}"
-readonly LEAN_TOOLCHAIN='leanprover/lean4:v4.33.1'
-readonly MATHLIB_TAG='v4.33.1'
-readonly MATHLIB_COMMIT='0df444a360eaa60ab8c11dca51a86af692955474'
+readonly LEAN_TOOLCHAIN='leanprover/lean4:v4.35.0'
+readonly MATHLIB_TAG='v4.35.0'
+readonly MATHLIB_COMMIT='56a005855ea17e0b0958f73ec801ae140b0a1679'
 readonly MAX_SETUP_SECONDS=250
 
 # The override exists for isolated smoke tests. Anthropic setup leaves this unset.
@@ -305,13 +305,13 @@ if [[ "$ELAN_STATUS" == 'ready' ]]; then
     if run_bounded 'Lean/Lake version verification' 10 "$LOG_DIR/lean-version.log" \
         bash -c '"$1" run "$2" lean --version && "$1" run "$2" lake --version' \
           _ "$ELAN_HOME/bin/elan" "$LEAN_TOOLCHAIN"; then
-      if grep -Fq 'Lean (version 4.33.1,' "$LOG_DIR/lean-version.log" && \
-         grep -Fq '(Lean version 4.33.1)' "$LOG_DIR/lean-version.log"; then
+      if grep -Fq 'Lean (version 4.35.0,' "$LOG_DIR/lean-version.log" && \
+         grep -Fq '(Lean version 4.35.0)' "$LOG_DIR/lean-version.log"; then
         LEAN_STATUS='ready'
-        LEAN_DETAIL='Lean and Lake binaries both verified as 4.33.1'
+        LEAN_DETAIL='Lean and Lake binaries both verified as 4.35.0'
       else
         LEAN_STATUS='incomplete'
-        LEAN_DETAIL='Lean/Lake version output did not match 4.33.1; see logs/lean-version.log'
+        LEAN_DETAIL='Lean/Lake version output did not match 4.35.0; see logs/lean-version.log'
       fi
     else
       rc=$?
@@ -329,7 +329,7 @@ write_status
 # This exact project copy makes cache downloads independent of checkout paths and
 # repository credentials. Keep the embedded files in sync with the tracked pins.
 cat > "$PROJECT_DIR/lean-toolchain" <<'TDA_LEAN_TOOLCHAIN'
-leanprover/lean4:v4.33.1
+leanprover/lean4:v4.35.0
 TDA_LEAN_TOOLCHAIN
 cat > "$PROJECT_DIR/lakefile.toml" <<'TDA_LAKEFILE'
 name = "TDA"
@@ -347,30 +347,30 @@ autoImplicit = false   # an unbound variable must be an error, never a silent âˆ
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
-rev = "v4.33.1"
+rev = "v4.35.0"
 
 [[lean_lib]]
 name = "TDA"
 TDA_LAKEFILE
 cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
-{"version": "1.2.0",
+{"version": "1.3.0",
  "packagesDir": ".lake/packages",
  "packages":
  [{"url": "https://github.com/leanprover-community/mathlib4.git",
    "type": "git",
    "subDir": null,
    "scope": "",
-   "rev": "0df444a360eaa60ab8c11dca51a86af692955474",
+   "rev": "56a005855ea17e0b0958f73ec801ae140b0a1679",
    "name": "mathlib",
    "manifestFile": "lake-manifest.json",
-   "inputRev": "v4.33.1",
+   "inputRev": "v4.35.0",
    "inherited": false,
    "configFile": "lakefile.lean"},
   {"url": "https://github.com/leanprover-community/plausible",
    "type": "git",
    "subDir": null,
    "scope": "leanprover-community",
-   "rev": "b7eb3304aeae834b12dda98993a37f6a41f6f0bb",
+   "rev": "dfa4f38190d07c37e315953e08b90fe2d95b3c24",
    "name": "plausible",
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
@@ -380,7 +380,7 @@ cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
    "type": "git",
    "subDir": null,
    "scope": "leanprover-community",
-   "rev": "5f4d51b81cbd3f6b32b156bfad9056621a040404",
+   "rev": "d6b4c7be5be75ec4917c873ac50c756dc1436372",
    "name": "LeanSearchClient",
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
@@ -390,7 +390,7 @@ cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
    "type": "git",
    "subDir": null,
    "scope": "leanprover-community",
-   "rev": "16f02aa7642864af59f1ff0e384a015994db9118",
+   "rev": "a41f0e9a4dea23188ea9cc1c41ac9f8bbafe0b93",
    "name": "importGraph",
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
@@ -400,7 +400,7 @@ cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
    "type": "git",
    "subDir": null,
    "scope": "leanprover-community",
-   "rev": "4be2e3d5087eeb272cf5a8853b8f9dd025ef5957",
+   "rev": "df72b022e558978a1c50264cfc4d7fec86fa8e04",
    "name": "proofwidgets",
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
@@ -410,7 +410,7 @@ cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
    "type": "git",
    "subDir": null,
    "scope": "leanprover-community",
-   "rev": "3448c0bcc5ce01b2d1546e483ec3620e32df3d0e",
+   "rev": "4a174c490d8707121c4a9290800489f105d85e07",
    "name": "aesop",
    "manifestFile": "lake-manifest.json",
    "inputRev": "master",
@@ -420,7 +420,7 @@ cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
    "type": "git",
    "subDir": null,
    "scope": "leanprover-community",
-   "rev": "92c15be17b7caf78c2ad767ec40f89052d908d81",
+   "rev": "dce0ad79c486cb1fb504af04f953c3466b0c6db8",
    "name": "Qq",
    "manifestFile": "lake-manifest.json",
    "inputRev": "master",
@@ -430,7 +430,7 @@ cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
    "type": "git",
    "subDir": null,
    "scope": "leanprover-community",
-   "rev": "4488d40d070b9700d4d5a6aa342f0d40c31b2a2d",
+   "rev": "66e469188fe07963e5cf666c7d4433f45b8131c5",
    "name": "batteries",
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
@@ -440,10 +440,10 @@ cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
    "type": "git",
    "subDir": null,
    "scope": "leanprover",
-   "rev": "6130a47896ce867c6a4a55373441e59e565bad0f",
+   "rev": "c24fe6078c630e89b489bffe59b3e20ac30d12c8",
    "name": "Cli",
    "manifestFile": "lake-manifest.json",
-   "inputRev": "v4.33.0",
+   "inputRev": "v4.35.0",
    "inherited": true,
    "configFile": "lakefile.toml"}],
  "name": "TDA",
