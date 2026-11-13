@@ -99,8 +99,9 @@ geometricInterleavingDistance A B < r ↔ ∃ ε : ℝ≥0, ε < r ∧ Nonempty 
 ```
 
 holds directly from the infimum. Zero distance is transported from the precosheaf law: it means
-geometric witnesses at every positive parameter. It is not a statement about `0`-witnesses, and
-zero distance does not give `A ≅ B`.
+geometric witnesses at every positive parameter. This characterization does not prove attainment
+at `0` or separation by graph isomorphism; it does not assert that these conclusions fail for
+finite Reeb graphs.
 
 ## Composition and the triangle inequality
 
@@ -328,7 +329,9 @@ Theorem 3.17. The distance has the self, symmetry, triangle and isomorphism-inva
 `constructibleInterleavingDistance_self`, `constructibleInterleavingDistance_comm`,
 `constructibleInterleavingDistance_triangle` and `constructibleInterleavingDistance_congr`.
 `constructibleInterleavingDistance_eq_zero_iff` specifies zero distance as witnesses at every
-positive parameter, not necessarily a witness at `0`.
+positive parameter. This theorem does not establish a witness at `0`. The witness equivalence
+with the finite Reeb quotient graphs also applies at `0`; isomorphism of those graphs is distinct
+from isomorphism of the original spaces.
 
 `ConstructibleInterleaving.toQuotient` gives a zero-parameter witness from `X` to its Reeb graph,
 and `constructibleInterleavingDistance_quotient` gives distance zero. On graph inputs,
