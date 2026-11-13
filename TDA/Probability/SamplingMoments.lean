@@ -114,7 +114,7 @@ theorem pairMaximum_rpow_le_pairEnergy (c : X → X → ℝ≥0∞)
   apply Finset.sup_le
   intro ij _
   rw [ENNReal.le_rpow_inv_iff hp]
-  exact cost_le_pairEnergy _ (fun x => by simp [hc, hp])
+  exact cost_le_pairEnergy (fun x y => c x y ^ p) (fun x => by simp [hc, hp])
     (fun x y => by rw [hs]) t ij.1 ij.2
 
 /-- Sharp iid bound on the moment of the entire distance-matrix maximum. -/
