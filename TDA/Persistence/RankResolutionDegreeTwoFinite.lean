@@ -1038,25 +1038,27 @@ private theorem offDiagonal1 (i r : Fin 4) (hne : i ≠ r)
 private theorem diagonal_endomorphism_eq_id
     (F : Fin 4 → PModule.{u,0,u} k grid.Point)
     (hoff : ∀ i r, i ≠ r → ∀ α : F i ⟶ F r, α = 0)
-    (hdiag : ∀ i (α : End (F i)), ∃ r : k, α = r • 𝟙 (F i))
+    (hdiag : ∀ i (α : End (F i)), ∃ r : k, α = r • (1 : End (F i)))
     {N : PModule.{u,0,u} k grid.Point} (q : (⨁ F) ⟶ N)
     (hnonzero : ∀ i, biproduct.ι F i ≫ q ≠ 0)
-    (u : End (⨁ F)) (hu : u ≫ q = q) : u = 𝟙 (⨁ F) := by
+    (u : End (⨁ F)) (hu : u.asHom ≫ q = q) : u.asHom = 𝟙 (⨁ F) := by
   apply biproduct.hom_ext'
   intro i
-  obtain ⟨r, hr⟩ := hdiag i (biproduct.ι F i ≫ u ≫ biproduct.π F i)
-  have hi : biproduct.ι F i ≫ u = (r • 𝟙 (F i)) ≫ biproduct.ι F i := by
+  obtain ⟨r, hr⟩ := hdiag i (.of (biproduct.ι F i ≫ u.asHom ≫ biproduct.π F i))
+  have hr' : biproduct.ι F i ≫ u.asHom ≫ biproduct.π F i = r • 𝟙 (F i) := by
+    simpa [End.smul_asHom, End.one_asHom] using congrArg End.asHom hr
+  have hi : biproduct.ι F i ≫ u.asHom = (r • 𝟙 (F i)) ≫ biproduct.ι F i := by
     apply biproduct.hom_ext
     intro t
     by_cases hit : i = t
     · subst t
-      simpa only [Category.assoc, biproduct.ι_π_self, Category.comp_id] using hr
-    · rw [Category.assoc, hoff i t hit (biproduct.ι F i ≫ u ≫ biproduct.π F t)]
+      simpa only [Category.assoc, biproduct.ι_π_self, Category.comp_id] using hr'
+    · rw [Category.assoc, hoff i t hit (biproduct.ι F i ≫ u.asHom ≫ biproduct.π F t)]
       simp [Category.assoc, biproduct.ι_π, hit]
   have he : r • (biproduct.ι F i ≫ q) = biproduct.ι F i ≫ q := by
     calc
       _ = ((r • 𝟙 (F i)) ≫ biproduct.ι F i) ≫ q := by simp
-      _ = (biproduct.ι F i ≫ u) ≫ q := by rw [hi]
+      _ = (biproduct.ι F i ≫ u.asHom) ≫ q := by rw [hi]
       _ = _ := by rw [Category.assoc, hu]
   have hr1 : r = 1 := by
     by_contra hne
@@ -1237,7 +1239,7 @@ theorem finiteMinimalResolution_terms :
 /-- The given second hook has a nonzero supported unit at the center. -/
 theorem secondHook_not_isZero : ¬ IsZero (L (k := k)) := by
   intro hz
-  have he := congrArg (fun α : End (L (k := k)) =>
+  have he := congrArg (fun α : L (k := k) ⟶ L (k := k) =>
     ((α.app c).hom (SupportInterval.one (Hook.support c h) (Hook.birth_mem c_lt_h)) : k))
     (hz.eq_of_src (𝟙 L) 0)
   exact (one_ne_zero : (1 : k) ≠ 0) (by simpa [SupportInterval.one] using he)

@@ -815,7 +815,7 @@ private theorem signedStaircaseAugmentation_is_cover :
           simpa using hz
         exact ⟨0, by simp [hz0], by simp⟩)
   · intro f hf
-    have hf' : f = 𝟙 (signedStaircaseF0 (k := k)) := by
+    have hf' : f.asHom = 𝟙 (signedStaircaseF0 (k := k)) := by
       apply GradedFree.hom_ext_birth (R := k)
         signedStaircaseDegreeZeroGenerators
       intro i
@@ -823,7 +823,7 @@ private theorem signedStaircaseAugmentation_is_cover :
       let b := GradedFree.birth (R := k) signedStaircaseDegreeZeroGenerators i
       have heq : ((signedStaircaseAugmentation (k := k)).app
           (signedStaircaseVertices i)).hom
-          ((f.app (signedStaircaseVertices i)).hom b) =
+          ((f.asHom.app (signedStaircaseVertices i)).hom b) =
             ((signedStaircaseAugmentation (k := k)).app
               (signedStaircaseVertices i)).hom b := by
         have hh := congrArg (fun q : signedStaircaseF0 (k := k) ⟶
@@ -831,18 +831,18 @@ private theorem signedStaircaseAugmentation_is_cover :
               (q.app (signedStaircaseVertices i)).hom b) hf
         change ((signedStaircaseAugmentation (k := k)).app
           (signedStaircaseVertices i)).hom
-          ((f.app (signedStaircaseVertices i)).hom b) =
+          ((f.asHom.app (signedStaircaseVertices i)).hom b) =
             ((signedStaircaseAugmentation (k := k)).app
               (signedStaircaseVertices i)).hom b at hh
         exact hh
       have hbval : b.val = Finsupp.single i (1 : k) := by
         change Finsupp.single i 1 = _
         rfl
-      have hscalar : ((f.app (signedStaircaseVertices i)).hom b).val i = 1 := by
+      have hscalar : ((f.asHom.app (signedStaircaseVertices i)).hom b).val i = 1 := by
         have hv := congrArg Subtype.val heq
         rw [signedStaircaseAugmentation_sum_coeff] at hv
         have hfib := signedStaircaseF0_fiber_at_vertex (k := k) i
-          ((f.app (signedStaircaseVertices i)).hom b)
+          ((f.asHom.app (signedStaircaseVertices i)).hom b)
         have hright := signedStaircaseAugmentation_birth_value
           (k := k) (signedStaircaseVertices i) i le_rfl
         have hright' : (((signedStaircaseAugmentation (k := k)).app
@@ -852,10 +852,10 @@ private theorem signedStaircaseAugmentation_is_cover :
         rw [← signedStaircaseLinearCombination_one] at hv
         rw [hfib, Finsupp.linearCombination_single] at hv
         simpa using hv
-      have hbirth : (f.app (signedStaircaseVertices i)).hom b = b := by
+      have hbirth : (f.asHom.app (signedStaircaseVertices i)).hom b = b := by
         apply Subtype.ext
         rw [signedStaircaseF0_fiber_at_vertex (k := k) i
-          ((f.app (signedStaircaseVertices i)).hom b), hscalar, hbval]
+          ((f.asHom.app (signedStaircaseVertices i)).hom b), hscalar, hbval]
       exact hbirth
     rw [hf']
     infer_instance
@@ -909,7 +909,7 @@ private theorem signedStaircaseSecondQuotient_is_cover :
         intro a b hab z hz
         exact ⟨z, by simp, hz⟩)
   · intro f hf
-    have hf' : f = 𝟙 (signedStaircaseF1 (k := k)) := by simpa using hf
+    have hf' : f.asHom = 𝟙 (signedStaircaseF1 (k := k)) := by simpa using hf
     rw [hf']
     infer_instance
 
@@ -1183,7 +1183,7 @@ private theorem signedStaircaseIdentity_is_cover
         intro a b hab z hz
         exact ⟨z, by simp, hz⟩)
   · intro f hf
-    have h : f = 𝟙 M := by simpa using hf
+    have h : f.asHom = 𝟙 M := by simpa using hf
     rw [h]
     infer_instance
 
