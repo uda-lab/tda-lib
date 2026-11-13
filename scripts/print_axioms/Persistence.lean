@@ -7600,3 +7600,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.rejected_runs
 #print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.repeated_actual
 #print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.later_input
+
+#print axioms TDA.Persistence.FiniteLine.path_length
+#print axioms TDA.Persistence.FiniteLineComputableExamples.path_observations
+#print axioms TDA.Persistence.FiniteLineComputableExamples.integer_actions
+#print axioms TDA.Persistence.FiniteLineComputableExamples.rational_rectangular_actions
+#print axioms TDA.Persistence.FiniteLineComputableExamples.binary_chronology
+#print axioms TDA.Persistence.FiniteLineComputableExamples.binary_rectangular_actions
+#print axioms TDA.Persistence.FiniteLineComputableExamples.zero_intermediate_actions
+#print axioms TDA.Persistence.FiniteLineComputableExamples.empty_and_singleton_actions
