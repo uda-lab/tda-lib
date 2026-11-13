@@ -339,7 +339,7 @@ def refineEEquiv (j : Fin m) (e : Fin n) (h : (basePt T j : ℝ) ∈ (S.K e : Se
 /-- An old level `a i` keeps its vertex set `V i`. -/
 def refineVEquivOld (j : Fin (m + 1)) (i : Fin (n + 1)) (h : T.value j = S.value i) :
     (refineData hST D).V j ≃ D.V i :=
-  (Equiv.setCongr (by rw [h])).trans ((ofFiniteData D).criticalFiberHomeomorph S i).toEquiv.symm
+  (Set.equivOfEq (by rw [h])).trans ((ofFiniteData D).criticalFiberHomeomorph S i).toEquiv.symm
 
 include hST in
 /-- The `T`-gap below a level inside `K e` is based in `K e`. -/
