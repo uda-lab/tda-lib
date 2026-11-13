@@ -79,7 +79,7 @@ theorem simpleFuncReservoirPlan_first (μ : Measure Interior) [IsFiniteMeasure �
   unfold simpleFuncReservoirPlan reservoirMeasure
   have hpair : Measurable (fun x => (Space.point x, Space.point (T x))) :=
     continuous_point.measurable.prodMk (continuous_point.measurable.comp T.measurable)
-  rw [Measure.map_add _ _ measurable_fst, Measure.map_smul,
+  rw [Measure.map_add _ _ measurable_fst, Measure.map_smul _ measurable_fst.aemeasurable,
     Measure.map_map measurable_fst hpair]
   simp only [Function.comp_def, Measure.map_dirac]
 
@@ -91,7 +91,7 @@ theorem simpleFuncReservoirPlan_second (μ : Measure Interior) [IsFiniteMeasure 
   unfold simpleFuncReservoirPlan reservoirMeasure
   have hpair : Measurable (fun x => (Space.point x, Space.point (T x))) :=
     continuous_point.measurable.prodMk (continuous_point.measurable.comp T.measurable)
-  rw [Measure.map_add _ _ measurable_snd, Measure.map_smul,
+  rw [Measure.map_add _ _ measurable_snd, Measure.map_smul _ measurable_snd.aemeasurable,
     Measure.map_map measurable_snd hpair]
   · simp only [Function.comp_def, Measure.map_dirac]
     congr 1
