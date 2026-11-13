@@ -65,22 +65,16 @@ private theorem four_paths :
 private theorem first_total : firstMatching.totalFiniteCost source middle = 4 := by
   norm_num [OccurrenceMatching.totalFiniteCost, firstMatching, source, middle,
     Fin.sum_univ_succ, Fin.exists_fin_succ, finitePairCost, diagonalCost]
-  simp +decide
-  norm_num
 
 private theorem second_total : secondMatching.totalFiniteCost middle target = 4 := by
   norm_num [OccurrenceMatching.totalFiniteCost, secondMatching, middle, target,
     Fin.sum_univ_succ, Fin.exists_fin_succ, finitePairCost, diagonalCost]
-  simp +decide
-  norm_num
 
 private theorem composed_total :
     (firstMatching.compose secondMatching).totalFiniteCost source target = 6 := by
   norm_num [OccurrenceMatching.totalFiniteCost, OccurrenceMatching.compose,
     firstMatching, secondMatching, source, target,
     Fin.sum_univ_succ, Fin.exists_fin_succ, finitePairCost, diagonalCost]
-  simp +decide
-  norm_num
 
 private theorem four_path_budget :
     (firstMatching.compose secondMatching).totalFiniteCost source target ≤
