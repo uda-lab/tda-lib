@@ -33,7 +33,8 @@ theorem weightedPersistenceEmbedding_finite_masses {I : Type*} [Fintype I]
         Measure.dirac (x i).1 := by
     rw [weightedPlaneMeasure, ← Measure.sum_fintype, withDensity_sum,
       Measure.map_sum measurable_subtype_coe.aemeasurable, Measure.sum_fintype]
-    simp only [withDensity_smul_measure, dirac_withDensity, Measure.map_smul,
+    simp only [withDensity_smul_measure, dirac_withDensity,
+      Measure.map_smul _ measurable_subtype_coe.aemeasurable,
       Measure.map_dirac' measurable_subtype_coe, smul_smul]
   rw [weightedPersistenceEmbedding, hplane, positiveEmbedding]
   rw [integral_finsetSum_measure (fun i _ =>
