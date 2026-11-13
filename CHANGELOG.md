@@ -18,6 +18,9 @@ Changes on `develop` after v0.3.0; the next release version is undecided.
   [finite computation](docs/math/finite-ph-computation.md),
   [induced maps](docs/math/finite-ph-maps.md) and
   [homology lifts](docs/math/finite-ph-lifts.md) guides.
+- Compute ranks and nullities of validated finite F₂ homology maps. Rank
+  evaluation is exponential in source Betti dimension. See the
+  [homology-map dimensions](docs/math/finite-ph-map-dimensions.md) guide.
 - Extend constructible-space thickenings, their interval-components cosheaf
   comparison and categorical Mapper reconstruction beyond graph-PL input, under
   the stated constructibility and cover hypotheses. See the
