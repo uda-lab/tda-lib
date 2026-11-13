@@ -75,7 +75,7 @@ theorem sampleDiagram_eq_of_range_eq (k : Type w) [Field k]
     {m : ℕ} (t : Fin n → X) (s : Fin m → X) (h : Set.range t = Set.range s)
     (degree : ℕ) : sampleDiagram k t degree = sampleDiagram k s degree := by
   let e : Sample t ≃ᵢ Sample s :=
-    { Equiv.setCongr h with isometry_toFun := fun _ _ => rfl }
+    { Set.equivOfEq h with isometry_toFun := fun _ _ => rfl }
   exact diagram_eq_of_isometryEquiv k e degree
 
 /-- A tuple that visits every point has exactly the ordinary finite-space diagram.
