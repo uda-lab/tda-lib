@@ -48,7 +48,7 @@ theorem posSemidef_kernelOp (σ : ℝ) : (kernelOp σ).PosSemidef := by
     exact Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => by
       rw [kernel_symm σ q p]
       ring
-  exact (RKHS.posSemidef_tfae.out 2 0).mp h3
+  exact (RKHS.posSemidef_tfae.out 3 1).mp h3
 
 instance fact_posSemidef_kernelOp (σ : ℝ) : Fact (kernelOp σ).PosSemidef :=
   ⟨posSemidef_kernelOp σ⟩
