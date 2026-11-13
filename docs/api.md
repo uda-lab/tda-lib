@@ -1499,6 +1499,14 @@ noninjective vertex functions and proves agreement with the existing actual
 composition and the existing sublevel-inclusion transition. See
 [computing finite homology maps](math/finite-ph-maps.md).
 
+`runHomologyLift` accepts a target cycle and computes a source cycle together
+with a target chain whose boundary is the target minus the source image.
+Success is equivalent to range membership for the actual induced homology map;
+source coefficients round-trip in the existing basis order. The finite F₂ search
+is exponential in source Betti dimension and intended for small groups. See
+[homology preimages with chain certificates](math/finite-ph-lifts.md).
+
+
 ### Minimal-complement cardinalities for finite grids
 
 Here `minimalComplement p` is the set of minimal elements of `{a | ¬ a ≤ p}` in a lattice; the cardinality and maximum functions add a `Finite` assumption. `PairPoset S` is the actual subtype `{q : WithTop S × WithTop S // q.1 ≤ q.2}` with inherited coordinatewise order. The grid bounds concern an actual `G : CoordinateGrid n` with nonempty coordinate factors.
