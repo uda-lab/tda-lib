@@ -44,7 +44,7 @@ noncomputable def postcompose {M N : PModule.{u,0,u} k S} (f : M ⟶ N) :
   toFun g := g ≫ f
   map_add' g h := Preadditive.add_comp _ _ _ g h f
   map_smul' r g := by
-    change (r.unop ≫ g) ≫ f = r.unop ≫ (g ≫ f)
+    change (r.unop.asHom ≫ g) ≫ f = r.unop.asHom ≫ (g ≫ f)
     exact Category.assoc _ _ _
 
 @[simp] theorem postcompose_apply {M N : PModule.{u,0,u} k S} (f : M ⟶ N)
