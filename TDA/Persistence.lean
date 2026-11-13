@@ -419,3 +419,6 @@ import TDA.Persistence.Reduction.FiniteInputCycleSynthesis
 import TDA.Persistence.Reduction.FiniteInputHomologyLifts
 import TDA.Persistence.Reduction.FiniteInputHomologyLiftCorrectness
 import TDA.Persistence.Reduction.FiniteInputHomologyLiftExamples
+import TDA.Persistence.Reduction.FiniteInputHomologyDimensions
+import TDA.Persistence.Reduction.FiniteInputHomologyDimensionsCorrectness
+import TDA.Persistence.Reduction.FiniteInputHomologyDimensionsExamples

@@ -1506,6 +1506,13 @@ source coefficients round-trip in the existing basis order. The finite F₂ sear
 is exponential in source Betti dimension and intended for small groups. See
 [homology preimages with chain certificates](math/finite-ph-lifts.md).
 
+`runHomologyDimensions` computes the rank and nullity of the same finite F₂
+induced map. Its correctness theorem identifies the returned numbers with the
+actual homology map's image and kernel dimensions; public criteria characterize
+injectivity and surjectivity. It validates all admitted face images even for
+zero groups, and uses enumeration exponential in source Betti dimension.
+See [homology-map dimensions](math/finite-ph-map-dimensions.md).
+
 
 ### Minimal-complement cardinalities for finite grids
 
