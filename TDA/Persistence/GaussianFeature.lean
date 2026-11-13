@@ -76,7 +76,7 @@ theorem posSemidef_scalarOp {X : Type*} {k : Matrix X X ℝ} (hk : k.PosSemidef)
     exact Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => by
       rw [hsymm q p]
       ring
-  exact (RKHS.posSemidef_tfae.out 2 0).mp h3
+  exact (RKHS.posSemidef_tfae.out 3 1).mp h3
 
 /-! ## The Gaussian RKHS of a real inner product space -/
 
