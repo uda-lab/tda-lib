@@ -176,6 +176,10 @@ import TDA.Persistence.FiniteImage
 import TDA.Persistence.FiniteImageRank
 import TDA.Persistence.Reduction.FiniteInputImage
 import TDA.Persistence.Reduction.FiniteInputImageExamples
+import TDA.Persistence.Reduction.FiniteInputImageRanks
+import TDA.Persistence.Reduction.FiniteInputImageBarcode
+import TDA.Persistence.Reduction.FiniteInputImageBarcodeCorrectness
+import TDA.Persistence.Reduction.FiniteInputImageBarcodeExamples
 import TDA.Persistence.FiniteInducedMatching
 import TDA.Persistence.FiniteInducedSpecialization
 import TDA.Persistence.FiniteCokernel
