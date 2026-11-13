@@ -7521,3 +7521,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.FiniteInput.DimensionExamples.theta_actual
 #print axioms TDA.Persistence.Reduction.FiniteInput.DimensionExamples.empty_and_identity_runs
 #print axioms TDA.Persistence.Reduction.FiniteInput.DimensionExamples.zero_and_invalid_runs
+#print axioms TDA.Persistence.intervalMap_apply_val
+#print axioms TDA.Persistence.barcodeEnumerationNatIso_hom_apply_val
+#print axioms TDA.Persistence.barcodeEnumerationNatIso_inv_apply_val
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.rational_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.binary_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.rational_structure_laws
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.reorder
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.repeated_coordinate_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.binary_permutation_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.permutation_naturality
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.equalSwap
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.equal_swap_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.empty_and_single_stage

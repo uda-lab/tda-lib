@@ -1192,6 +1192,14 @@ principal-upset examples, diagonal and positive-radius off-diagonal tests. See
 
 ## Persistent homology results and computational boundary
 
+Finite discrete interval constructors and `barcodeModuleOfList` have executable
+data paths using natural endpoint decisions. `barcodeEnumerationNatIso` executes
+the existing nth-occurrence correspondence, preserving distinct coordinates for
+repeated intervals. Public value laws expose forward/inverse coefficients; ℚ and
+F₂ consumers check endpoints, empty modules and naturality. Proof-side classical
+dependencies and arbitrary-multiset/decomposition boundaries are separate; see
+[executing finite interval and list-barcode modules](math/constructive-finite-intervals.md).
+
 The finite decomposition API takes `M : PModule.{u,0,u} k (Fin N)` with
 `k : Type u`, `[Field k]`, and `[∀ i : Fin N, FiniteDimensional k (M.obj i)]`. The index
 universe is `0`, and the field and module-carrier universes are both `u`; this

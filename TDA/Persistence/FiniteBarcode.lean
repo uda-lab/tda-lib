@@ -20,7 +20,7 @@ open CategoryTheory
 abbrev BarcodeOccurrence (N : ℕ) (B : Multiset (FiniteInterval N)) := Fin B.toList.length
 
 /-- The pointwise finite direct sum associated to one list enumeration of a barcode. -/
-noncomputable def barcodeModuleOfList {N : ℕ} {k : Type u} [Field k]
+def barcodeModuleOfList {N : ℕ} {k : Type u} [Field k]
     (xs : List (FiniteInterval N)) : PModule.{u,0,u} k (Fin N) where
   obj i := ModuleCat.of k
     (∀ t : Fin xs.length, (intervalModule (k := k) (xs.get t)).obj i)
@@ -79,10 +79,9 @@ instance barcodeModule_finiteDimensional {N : ℕ} {k : Type u} [Field k]
   unfold barcodeModule
   infer_instance
 
-private noncomputable def barcodeEnumerationIndexEquiv {N : ℕ}
+private def barcodeEnumerationIndexEquiv {N : ℕ}
     {xs ys : List (FiniteInterval N)} (hperm : xs.Perm ys) :
     Fin xs.length ≃ Fin ys.length := by
-  classical
   letI : BEq (FiniteInterval N) := ⟨fun a b => decide (a = b)⟩
   letI : LawfulBEq (FiniteInterval N) := inferInstance
   exact
@@ -95,7 +94,7 @@ private theorem barcodeEnumerationIndexEquiv_apply {N : ℕ}
     {xs ys : List (FiniteInterval N)} (hperm : xs.Perm ys) (t : Fin xs.length) :
     barcodeEnumerationIndexEquiv hperm t = hperm.idxBij t := rfl
 
-private noncomputable def intervalFiberLinearEquiv {N : ℕ} {k : Type u} [Field k]
+private def intervalFiberLinearEquiv {N : ℕ} {k : Type u} [Field k]
     {I J : FiniteInterval N} (h : I = J) (i : Fin N) :
     (intervalModule (k := k) I).obj i ≃ₗ[k] (intervalModule (k := k) J).obj i := by
   change (FiniteInterval.fiber (k := k) I i) ≃ₗ[k]
@@ -111,6 +110,13 @@ private theorem intervalFiberLinearEquiv_apply {N : ℕ} {k : Type u} [Field k]
   cases h
   rfl
 
+private theorem intervalFiberLinearEquiv_val {N : ℕ} {k : Type u} [Field k]
+    {I J : FiniteInterval N} (h : I = J) (i : Fin N)
+    (x : (intervalModule (k := k) I).obj i) :
+    Subtype.val (intervalFiberLinearEquiv (k := k) h i x) = Subtype.val x := by
+  cases h
+  rfl
+
 private theorem intervalFiberLinearEquiv_natural {N : ℕ} {k : Type u} [Field k]
     {I J : FiniteInterval N} (h : I = J) {i j : Fin N} (hij : i ≤ j)
     (x : (intervalModule (k := k) I).obj i) :
@@ -123,11 +129,10 @@ private theorem intervalFiberLinearEquiv_natural {N : ℕ} {k : Type u} [Field k
     structureMapLinear (intervalModule (k := k) I) hij x
   rfl
 
-private noncomputable def barcodeEnumerationLinearEquiv {N : ℕ} {k : Type u} [Field k]
+private def barcodeEnumerationLinearEquiv {N : ℕ} {k : Type u} [Field k]
     {xs ys : List (FiniteInterval N)} (hperm : xs.Perm ys) (i : Fin N) :
     (∀ t : Fin xs.length, (intervalModule (k := k) (xs.get t)).obj i) ≃ₗ[k]
       (∀ t : Fin ys.length, (intervalModule (k := k) (ys.get t)).obj i) := by
-  classical
   let e := barcodeEnumerationIndexEquiv hperm
   have hget (t : Fin xs.length) : ys.get (hperm.idxBij t) = xs.get t := by
     change ys[(hperm.idxBij t : ℕ)] = xs[t]
@@ -166,10 +171,9 @@ private theorem barcodeEnumerationLinearEquiv_apply {N : ℕ} {k : Type u} [Fiel
 
 The component at each index reindexes the finite product along `List.Perm.idxBij`; its naturality
 is the coordinatewise naturality of the interval structure maps. -/
-noncomputable def barcodeEnumerationNatIso {N : ℕ} {k : Type u} [Field k]
+def barcodeEnumerationNatIso {N : ℕ} {k : Type u} [Field k]
     {xs ys : List (FiniteInterval N)} (hperm : xs.Perm ys) :
     barcodeModuleOfList (k := k) xs ≅ barcodeModuleOfList (k := k) ys := by
-  classical
   refine NatIso.ofComponents
     (fun i => by
       dsimp [barcodeModuleOfList]
@@ -203,6 +207,37 @@ noncomputable def barcodeEnumerationNatIso {N : ℕ} {k : Type u} [Field k]
       (x := x) (hvalues := hvalues) (s := s)]
   exact intervalFiberLinearEquiv_natural (k := k) (hvalues s).symm (leOfHom f)
     (x (e.symm s))
+
+/-- Forward reindexing reads the matching occurrence in the source, including repeats. -/
+theorem barcodeEnumerationNatIso_hom_apply_val {N : ℕ} {k : Type u} [Field k]
+    {xs ys : List (FiniteInterval N)} (hperm : xs.Perm ys) (i : Fin N)
+    (x : (barcodeModuleOfList (k := k) xs).obj i) (s : Fin ys.length) :
+    Subtype.val (((barcodeEnumerationNatIso (k := k) hperm).hom.app i).hom x s) =
+      Subtype.val (x (hperm.symm.idxBij s)) := by
+  let e := barcodeEnumerationIndexEquiv hperm
+  have hvalues (s : Fin ys.length) : ys.get s = xs.get (e.symm s) := by
+    have h := hperm.getElem_idxBij_eq_getElem (e.symm s)
+    change ys.get (e (e.symm s)) = xs.get (e.symm s) at h
+    simpa only [Equiv.apply_symm_apply] using h
+  change Subtype.val (barcodeEnumerationLinearEquiv (k := k) hperm i x s) = _
+  have he := barcodeEnumerationLinearEquiv_apply (k := k) (hperm := hperm) (i := i)
+    (x := x) (hvalues := hvalues) (s := s)
+  exact (congrArg Subtype.val he).trans (intervalFiberLinearEquiv_val (hvalues s).symm i _)
+
+/-- Inverse reindexing reads the matching target occurrence using the same `idxBij`. -/
+theorem barcodeEnumerationNatIso_inv_apply_val {N : ℕ} {k : Type u} [Field k]
+    {xs ys : List (FiniteInterval N)} (hperm : xs.Perm ys) (i : Fin N)
+    (x : (barcodeModuleOfList (k := k) ys).obj i) (t : Fin xs.length) :
+    Subtype.val (((barcodeEnumerationNatIso (k := k) hperm).inv.app i).hom x t) =
+      Subtype.val (x (hperm.idxBij t)) := by
+  let E := barcodeEnumerationLinearEquiv (k := k) hperm i
+  change Subtype.val (E.symm x t) = _
+  have h := barcodeEnumerationNatIso_hom_apply_val (k := k) hperm i (E.symm x) (hperm.idxBij t)
+  change Subtype.val (E (E.symm x) (hperm.idxBij t)) = Subtype.val (E.symm x (hperm.symm.idxBij (hperm.idxBij t))) at h
+  have hr := congrArg (fun y => Subtype.val (y (hperm.idxBij t))) (E.apply_symm_apply x)
+  have hi : Subtype.val (E.symm x (hperm.symm.idxBij (hperm.idxBij t))) =
+      Subtype.val (E.symm x t) := by rw [hperm.idxBij_symm_idxBij]
+  exact hi.symm.trans (h.symm.trans hr)
 
 private noncomputable def rangePiMapToPiRange {ι : Type*} {k : Type*} [Field k]
     {A B : ι → Type*} [∀ i, AddCommGroup (A i)] [∀ i, Module k (A i)]
