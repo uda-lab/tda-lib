@@ -332,7 +332,7 @@ theorem joinedIn_edgePoint (d : G.Dart) {s t : unitInterval} (hs : dartHeight h 
     show dartHeight h d (projIcc 0 1 zero_le_one r) ∈ I
     rw [projIcc_of_mem _ hr]
     exact hrI
-  simpa only [projIcc_val] using (hJ.map hc).mono hsub
+  simpa only [projIcc_val] using (hJ.map hc.continuousOn).mono hsub
 
 end support
 
