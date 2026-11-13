@@ -32,36 +32,36 @@ private abbrev L := FiniteRankProjectiveEndAlgebra.HookSum (k := k) (S := S)
 /-- The actual Hom functor preserves and reflects invertibility of persistence
 endomorphisms. -/
 theorem isIso_map_iff {A : PModule.{u,0,u} k S} (t : End A) :
-    IsIso ((F (k := k) (S := S)).map t) ↔ IsIso t := by
+    IsIso ((F (k := k) (S := S)).map t.asHom) ↔ IsIso t.asHom := by
   constructor
   · intro h
-    letI : IsIso ((F (k := k) (S := S)).map t) := h
-    exact isIso_of_fully_faithful (F (k := k) (S := S)) t
+    letI : IsIso ((F (k := k) (S := S)).map t.asHom) := h
+    exact isIso_of_fully_faithful (F (k := k) (S := S)) t.asHom
   · intro h
-    letI : IsIso t := h
-    exact (F (k := k) (S := S)).map_isIso t
+    letI : IsIso t.asHom := h
+    exact (F (k := k) (S := S)).map_isIso t.asHom
 
 /-- The equation fixing a quotient is reflected by the actual Hom functor. -/
 theorem map_comp_eq_map_iff {A B : PModule.{u,0,u} k S}
     (π : A ⟶ B) (t : End A) :
-    ((F (k := k) (S := S)).map t) ≫ ((F (k := k) (S := S)).map π) =
-      (F (k := k) (S := S)).map π ↔ t ≫ π = π := by
+    ((F (k := k) (S := S)).map t.asHom) ≫ ((F (k := k) (S := S)).map π) =
+      (F (k := k) (S := S)).map π ↔ t.asHom ≫ π = π := by
   rw [← (F (k := k) (S := S)).map_comp]
   exact (F (k := k) (S := S)).map_injective.eq_iff
 
 /-- Right minimality of a persistence quotient agrees with right minimality
 of its actual hook-generator Hom map. -/
 theorem rightMinimal_iff {A B : PModule.{u,0,u} k S} (π : A ⟶ B) :
-    (∀ t : End A, t ≫ π = π → IsIso t) ↔
+    (∀ t : End A, t.asHom ≫ π = π → IsIso t.asHom) ↔
       (∀ T : End ((F (k := k) (S := S)).obj A),
-        T ≫ (F (k := k) (S := S)).map π =
-          (F (k := k) (S := S)).map π → IsIso T) := by
+        T.asHom ≫ (F (k := k) (S := S)).map π =
+          (F (k := k) (S := S)).map π → IsIso T.asHom) := by
   constructor
   · intro h T hT
-    let t : End A := (F (k := k) (S := S)).preimage T
-    have htmap : (F (k := k) (S := S)).map t = T :=
-      (F (k := k) (S := S)).map_preimage T
-    have ht : t ≫ π = π :=
+    let t : End A := .of ((F (k := k) (S := S)).preimage T.asHom)
+    have htmap : (F (k := k) (S := S)).map t.asHom = T.asHom :=
+      (F (k := k) (S := S)).map_preimage T.asHom
+    have ht : t.asHom ≫ π = π :=
       (map_comp_eq_map_iff (k := k) (S := S) π t).mp (htmap ▸ hT)
     rw [← htmap]
     exact (isIso_map_iff (k := k) (S := S) t).mpr (h t ht)
@@ -99,8 +99,8 @@ theorem rankProjectiveCover_iff {A B : PModule.{u,0,u} k S}
         (L (k := k) (S := S) ⟶ A) ∧
       Function.Surjective (postcompose (k := k) (S := S) π) ∧
       (∀ T : End ((F (k := k) (S := S)).obj A),
-        T ≫ (F (k := k) (S := S)).map π =
-          (F (k := k) (S := S)).map π → IsIso T) := by
+        T.asHom ≫ (F (k := k) (S := S)).map π =
+          (F (k := k) (S := S)).map π → IsIso T.asHom) := by
   constructor
   · intro h
     refine ⟨(rankProjective_iff_homProjective A hfd).mp h.term_rank_projective,
@@ -127,8 +127,8 @@ theorem minimalResolution_row_homCover
     Function.Surjective (postcompose (k := k) (S := S)
       (R.resolution.quotient i)) ∧
     (∀ T : End ((F (k := k) (S := S)).obj (R.resolution.term i)),
-      T ≫ (F (k := k) (S := S)).map (R.resolution.quotient i) =
-        (F (k := k) (S := S)).map (R.resolution.quotient i) → IsIso T) := by
+      T.asHom ≫ (F (k := k) (S := S)).map (R.resolution.quotient i) =
+        (F (k := k) (S := S)).map (R.resolution.quotient i) → IsIso T.asHom) := by
   exact (rankProjectiveCover_iff (R.resolution.quotient i)
     (R.resolution.row_rank_exact i).finiteDimensional).mp (R.quotient_is_cover i)
 
