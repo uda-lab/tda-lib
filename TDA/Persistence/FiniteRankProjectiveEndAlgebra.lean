@@ -177,16 +177,16 @@ theorem homCondition_iff_pairRel (s t : HookTag (S := S)) :
 /-- The matrix unit representing a normalized map between two summands. -/
 noncomputable def hookMatrixUnit (s t : HookTag (S := S))
     (h : HomCondition (P := S) s t) : End (HookSum (k := k) (S := S)) :=
-  biproduct.π (hookFamily (k := k) (S := S)) s ≫
+  .of (biproduct.π (hookFamily (k := k) (S := S)) s ≫
     normalizedHom (k := k) s t h ≫
-    biproduct.ι (hookFamily (k := k) (S := S)) t
+    biproduct.ι (hookFamily (k := k) (S := S)) t)
 
 theorem hookMatrixUnit_comp (s t u : HookTag (S := S))
     (hst : HomCondition (P := S) s t) (htu : HomCondition (P := S) t u)
     (hsu : HomCondition (P := S) s u) :
-    hookMatrixUnit (k := k) (S := S) s t hst ≫
-      hookMatrixUnit (k := k) (S := S) t u htu =
-      hookMatrixUnit (k := k) (S := S) s u hsu := by
+    (hookMatrixUnit (k := k) (S := S) s t hst).asHom ≫
+      (hookMatrixUnit (k := k) (S := S) t u htu).asHom =
+      (hookMatrixUnit (k := k) (S := S) s u hsu).asHom := by
   dsimp [hookMatrixUnit, HookSum, hookFamily]
   have hcomp := normalizedHom_comp_of_condition (k := k) s t u hst htu hsu
   calc
@@ -213,8 +213,8 @@ theorem hookMatrixUnit_comp (s t u : HookTag (S := S))
 theorem hookMatrixUnit_comp_of_ne (s t r u : HookTag (S := S))
     (hst : HomCondition (P := S) s t) (hru : HomCondition (P := S) r u)
     (htr : t ≠ r) :
-    hookMatrixUnit (k := k) (S := S) s t hst ≫
-      hookMatrixUnit (k := k) (S := S) r u hru = 0 := by
+    (hookMatrixUnit (k := k) (S := S) s t hst).asHom ≫
+      (hookMatrixUnit (k := k) (S := S) r u hru).asHom = 0 := by
   dsimp [hookMatrixUnit, HookSum, hookFamily]
   calc
     _ = biproduct.π (hookFamily (k := k) (S := S)) s ≫
@@ -228,8 +228,8 @@ theorem hookMatrixUnit_comp_of_ne (s t r u : HookTag (S := S))
 theorem hookMatrixUnit_comp_of_not_condition (s t u : HookTag (S := S))
     (hst : HomCondition (P := S) s t) (htu : HomCondition (P := S) t u)
     (hsu : ¬ HomCondition (P := S) s u) :
-    hookMatrixUnit (k := k) (S := S) s t hst ≫
-      hookMatrixUnit (k := k) (S := S) t u htu = 0 := by
+    (hookMatrixUnit (k := k) (S := S) s t hst).asHom ≫
+      (hookMatrixUnit (k := k) (S := S) t u htu).asHom = 0 := by
   dsimp [hookMatrixUnit, HookSum, hookFamily]
   calc
     _ = biproduct.π (hookFamily (k := k) (S := S)) s ≫
@@ -248,9 +248,9 @@ theorem hookMatrixUnit_comp_of_not_condition (s t u : HookTag (S := S))
 theorem hookMatrixUnit_comp_of_middle_eq (s t r u : HookTag (S := S))
     (hst : HomCondition (P := S) s t) (hru : HomCondition (P := S) r u)
     (htr : t = r) (hsu : HomCondition (P := S) s u) :
-    hookMatrixUnit (k := k) (S := S) s t hst ≫
-      hookMatrixUnit (k := k) (S := S) r u hru =
-        hookMatrixUnit (k := k) (S := S) s u hsu := by
+    (hookMatrixUnit (k := k) (S := S) s t hst).asHom ≫
+      (hookMatrixUnit (k := k) (S := S) r u hru).asHom =
+        (hookMatrixUnit (k := k) (S := S) s u hsu).asHom := by
   cases htr
   exact hookMatrixUnit_comp (k := k) (S := S) s t u hst hru hsu
 
@@ -258,14 +258,14 @@ theorem hookMatrixUnit_comp_of_middle_eq_not_condition
     (s t r u : HookTag (S := S))
     (hst : HomCondition (P := S) s t) (hru : HomCondition (P := S) r u)
     (htr : t = r) (hsu : ¬ HomCondition (P := S) s u) :
-    hookMatrixUnit (k := k) (S := S) s t hst ≫
-      hookMatrixUnit (k := k) (S := S) r u hru = 0 := by
+    (hookMatrixUnit (k := k) (S := S) s t hst).asHom ≫
+      (hookMatrixUnit (k := k) (S := S) r u hru).asHom = 0 := by
   cases htr
   exact hookMatrixUnit_comp_of_not_condition (k := k) (S := S) s t u hst hru hsu
 
 @[simp] theorem hookMatrixUnit_diagonal_components (s t : HookTag (S := S))
     (h : HomCondition (P := S) s t) :
-    biproduct.components (hookMatrixUnit (k := k) (S := S) s t h) s t =
+    biproduct.components (hookMatrixUnit (k := k) (S := S) s t h).asHom s t =
       normalizedHom (k := k) s t h := by
   change biproduct.ι (hookFamily (k := k) (S := S)) s ≫
       biproduct.π (hookFamily (k := k) (S := S)) s ≫
@@ -283,7 +283,7 @@ theorem hookMatrixUnit_comp_of_middle_eq_not_condition
 @[simp] theorem hookMatrixUnit_components_zero_of_left_ne
     (s t : HookTag (S := S)) (h : HomCondition (P := S) s t)
     (a b : HookTag (S := S)) (ha : a ≠ s) :
-    biproduct.components (hookMatrixUnit (k := k) (S := S) s t h) a b = 0 := by
+    biproduct.components (hookMatrixUnit (k := k) (S := S) s t h).asHom a b = 0 := by
   change biproduct.ι (hookFamily (k := k) (S := S)) a ≫
       biproduct.π (hookFamily (k := k) (S := S)) s ≫
       normalizedHom (k := k) s t h ≫
@@ -300,7 +300,7 @@ theorem hookMatrixUnit_comp_of_middle_eq_not_condition
 @[simp] theorem hookMatrixUnit_components_zero_of_right_ne
     (s t : HookTag (S := S)) (h : HomCondition (P := S) s t)
     (a b : HookTag (S := S)) (hb : b ≠ t) :
-    biproduct.components (hookMatrixUnit (k := k) (S := S) s t h) a b = 0 := by
+    biproduct.components (hookMatrixUnit (k := k) (S := S) s t h).asHom a b = 0 := by
   change biproduct.ι (hookFamily (k := k) (S := S)) a ≫
       biproduct.π (hookFamily (k := k) (S := S)) s ≫
       normalizedHom (k := k) s t h ≫
@@ -316,32 +316,34 @@ theorem hookMatrixUnit_comp_of_middle_eq_not_condition
 
 private theorem components_add (f g : End (HookSum (k := k) (S := S)))
     (s t : HookTag (S := S)) :
-    biproduct.components (f + g) s t =
-      biproduct.components f s t + biproduct.components g s t := by
-  change (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ (f + g)) ≫
+    biproduct.components (f + g).asHom s t =
+      biproduct.components f.asHom s t + biproduct.components g.asHom s t := by
+  change (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ (f + g).asHom) ≫
       biproduct.π (hookFamily (k := k) (S := S)) t = _
+  rw [End.add_asHom]
   calc
-    _ = (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ f +
-          biproduct.ι (hookFamily (k := k) (S := S)) s ≫ g) ≫
+    _ = (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ f.asHom +
+          biproduct.ι (hookFamily (k := k) (S := S)) s ≫ g.asHom) ≫
           biproduct.π (hookFamily (k := k) (S := S)) t := by
             rw [Preadditive.comp_add]
-    _ = biproduct.ι (hookFamily (k := k) (S := S)) s ≫ f ≫
+    _ = biproduct.ι (hookFamily (k := k) (S := S)) s ≫ f.asHom ≫
           biproduct.π (hookFamily (k := k) (S := S)) t +
-        biproduct.ι (hookFamily (k := k) (S := S)) s ≫ g ≫
+        biproduct.ι (hookFamily (k := k) (S := S)) s ≫ g.asHom ≫
           biproduct.π (hookFamily (k := k) (S := S)) t := by
             rw [Preadditive.add_comp]
             rfl
 
 private theorem components_smul (c : k) (f : End (HookSum (k := k) (S := S)))
     (s t : HookTag (S := S)) :
-    biproduct.components (c • f) s t = c • biproduct.components f s t := by
-  change (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ (c • f)) ≫
+    biproduct.components (c • f).asHom s t = c • biproduct.components f.asHom s t := by
+  change (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ (c • f).asHom) ≫
       biproduct.π (hookFamily (k := k) (S := S)) t = _
+  rw [End.smul_asHom]
   calc
-    _ = (c • (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ f)) ≫
+    _ = (c • (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ f.asHom)) ≫
           biproduct.π (hookFamily (k := k) (S := S)) t := by
             rw [Linear.comp_smul]
-    _ = c • (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ f ≫
+    _ = c • (biproduct.ι (hookFamily (k := k) (S := S)) s ≫ f.asHom ≫
           biproduct.π (hookFamily (k := k) (S := S)) t) := by
             rw [Linear.smul_comp]
             rfl
@@ -350,12 +352,13 @@ private theorem components_smul (c : k) (f : End (HookSum (k := k) (S := S)))
 endomorphisms of the finite hook generator. -/
 noncomputable def incidenceToEndLinear :
     Incidence (k := k) (S := S) →ₗ[k] End (HookSum (k := k) (S := S)) where
-  toFun f := biproduct.matrix fun s t => incidenceComponent (k := k) (S := S) f s t
+  toFun f := .of (biproduct.matrix fun s t => incidenceComponent (k := k) (S := S) f s t)
   map_add' f g := by
+    apply End.ext
     apply (biproduct.matrixEquiv (f := hookFamily (k := k) (S := S))
       (g := hookFamily (k := k) (S := S))).injective
     funext s t
-    change biproduct.components
+    show biproduct.components
         (biproduct.matrix fun s t => incidenceComponent (k := k) (S := S) (f + g) s t)
         s t =
       biproduct.components
@@ -377,12 +380,13 @@ noncomputable def incidenceToEndLinear :
       _ = biproduct.components
           ((biproduct.matrix fun s t => incidenceComponent (k := k) (S := S) f s t) +
            biproduct.matrix fun s t => incidenceComponent (k := k) (S := S) g s t) s t := by
-        exact (components_add _ _ s t).symm
+        exact (components_add (.of _) (.of _) s t).symm
   map_smul' c f := by
+    apply End.ext
     apply (biproduct.matrixEquiv (f := hookFamily (k := k) (S := S))
       (g := hookFamily (k := k) (S := S))).injective
     funext s t
-    change biproduct.components
+    show biproduct.components
         (biproduct.matrix fun s t => incidenceComponent (k := k) (S := S) (c • f) s t)
         s t =
       biproduct.components
@@ -399,7 +403,7 @@ noncomputable def incidenceToEndLinear :
         rw [biproduct.matrix_components]
       _ = biproduct.components
           (c • biproduct.matrix fun s t => incidenceComponent (k := k) (S := S) f s t) s t := by
-        exact (components_smul c _ s t).symm
+        exact (components_smul c (.of _) s t).symm
 
 /-- The incidence-algebra matrix unit supported at one comparable pair. -/
 def delta (p q : PairPoset S) (hpq : p ≤ q) : Incidence (k := k) (S := S) := by
@@ -546,12 +550,13 @@ theorem incidenceToEnd_delta_of_no_cross
       (strictTag (S := S) p)).2
       ⟨by simpa [tagPoint_strictTag] using hpq,
         by simpa [CrossesDiagonal, tagPoint_strictTag] using hcross⟩
+  apply End.ext
   apply (biproduct.matrixEquiv
     (f := hookFamily (k := k) (S := S))
     (g := hookFamily (k := k) (S := S))).injective
   funext s t
   simp only [biproduct.matrixEquiv_apply]
-  change biproduct.components
+  show biproduct.components
       (biproduct.matrix fun s t =>
         incidenceComponent (k := k) (S := S)
           (delta (k := k) p.val q.val hpq) s t) s t = _
@@ -621,15 +626,16 @@ theorem incidenceToEnd_delta_of_cross
     (p q : PairPoset S) (hpq : p ≤ q)
     (hcross : CrossesDiagonal (S := S) p q) :
     incidenceToEndLinear (k := k) (S := S) (delta (k := k) p q hpq) = 0 := by
+  apply End.ext
   apply (biproduct.matrixEquiv
     (f := hookFamily (k := k) (S := S))
     (g := hookFamily (k := k) (S := S))).injective
   funext s t
   simp only [biproduct.matrixEquiv_apply]
-  change biproduct.components
+  show biproduct.components
       (biproduct.matrix fun s t =>
         incidenceComponent (k := k) (S := S) (delta (k := k) p q hpq) s t)
-      s t = biproduct.components 0 s t
+      s t = biproduct.components (0 : End (HookSum (k := k) (S := S))).asHom s t
   rw [biproduct.matrix_components]
   simp only [biproduct.components, comp_zero, zero_comp]
   by_cases hst : HomCondition (P := S) s t
@@ -691,15 +697,16 @@ theorem normalizedHom_self (s : HookTag (S := S))
 theorem incidenceToEndLinear_map_one :
     incidenceToEndLinear (k := k) (S := S) (1 : Incidence (k := k) (S := S)) =
       1 := by
+  apply End.ext
   apply (biproduct.matrixEquiv
     (f := hookFamily (k := k) (S := S))
     (g := hookFamily (k := k) (S := S))).injective
   funext s t
   simp only [biproduct.matrixEquiv_apply]
-  change biproduct.components
+  show biproduct.components
       (biproduct.matrix fun s t =>
         incidenceComponent (k := k) (S := S) (1 : Incidence (k := k) (S := S)) s t)
-      s t = biproduct.components (1 : End (HookSum (k := k) (S := S))) s t
+      s t = biproduct.components (1 : End (HookSum (k := k) (S := S))).asHom s t
   rw [biproduct.matrix_components]
   by_cases hst : s = t
   · subst t
@@ -760,7 +767,8 @@ theorem incidenceToEndLinear_map_mul_delta
           rw [incidenceToEnd_delta_of_cross (k := k) p s (hpq.trans hrs) hpsCross]
           rw [incidenceToEnd_delta_of_no_cross_pair (k := k) p q hpq hpqCross]
           rw [incidenceToEnd_delta_of_no_cross_pair (k := k) q s hrs hqsCross]
-          rw [End.mul_def]
+          apply End.ext
+          rw [End.mul_asHom]
           exact (hookMatrixUnit_comp_of_middle_eq_not_condition (k := k) (S := S)
             (strictTag (S := S) vs) (strictTag (S := S) vq₂)
             (strictTag (S := S) vq₁) (strictTag (S := S) vp)
@@ -786,7 +794,8 @@ theorem incidenceToEndLinear_map_mul_delta
           rw [incidenceToEnd_delta_of_no_cross_pair (k := k) p q hpq hpqCross]
           rw [incidenceToEnd_delta_of_no_cross_pair (k := k) q s hrs hqsCross]
           rw [incidenceToEnd_delta_of_no_cross_pair (k := k) p s (hpq.trans hrs) hpsCross]
-          rw [End.mul_def]
+          apply End.ext
+          rw [End.mul_asHom]
           simpa [hsource, htarget] using
             (hookMatrixUnit_comp_of_middle_eq (k := k) (S := S)
               (strictTag (S := S) vs) (strictTag (S := S) vq₂)
@@ -817,7 +826,8 @@ theorem incidenceToEndLinear_map_mul_delta
           exact hqr (by simpa [vr, vq, noCrossTargetVertex, noCrossSourceVertex] using hval.symm)
         rw [incidenceToEnd_delta_of_no_cross_pair (k := k) p q hpq hpqCross]
         rw [incidenceToEnd_delta_of_no_cross_pair (k := k) r s hrs hrsCross]
-        rw [End.mul_def]
+        apply End.ext
+        rw [End.mul_asHom]
         exact (hookMatrixUnit_comp_of_ne (k := k) (S := S)
           (strictTag (S := S) (noCrossSourceVertex (S := S) r s hrs hrsCross))
           (strictTag (S := S) vr)
@@ -934,21 +944,21 @@ noncomputable def incidenceToEndAlgHom :
 
 @[simp] theorem incidenceToEndLinear_components
     (f : Incidence (k := k) (S := S)) (s t : HookTag (S := S)) :
-    biproduct.components (incidenceToEndLinear (k := k) (S := S) f) s t =
+    biproduct.components (incidenceToEndLinear (k := k) (S := S) f).asHom s t =
       incidenceComponent (k := k) (S := S) f s t := by
   simp [incidenceToEndLinear, biproduct.matrix_components]
 
 private noncomputable def hookComponentScalar (F : End (HookSum (k := k) (S := S)))
     (s t : HookTag (S := S)) (h : HomCondition (P := S) s t) : k :=
   Classical.choose (hom_eq_smul_normalized (k := k) s t h
-    (biproduct.components F s t))
+    (biproduct.components F.asHom s t))
 
 private theorem hookComponentScalar_spec (F : End (HookSum (k := k) (S := S)))
     (s t : HookTag (S := S)) (h : HomCondition (P := S) s t) :
-    biproduct.components F s t =
+    biproduct.components F.asHom s t =
       hookComponentScalar (k := k) (S := S) F s t h • normalizedHom (k := k) s t h :=
   Classical.choose_spec (hom_eq_smul_normalized (k := k) s t h
-    (biproduct.components F s t))
+    (biproduct.components F.asHom s t))
 
 /-- Recover the incidence coefficient from a hook matrix component whenever
 the associated interval avoids the diagonal. -/
@@ -976,14 +986,15 @@ theorem incidenceToEndAlgHom_surjective :
   classical
   intro F
   refine ⟨endToIncidence (k := k) (S := S) F, ?_⟩
+  apply End.ext
   apply (biproduct.matrixEquiv
     (f := hookFamily (k := k) (S := S))
     (g := hookFamily (k := k) (S := S))).injective
   funext s t
-  change biproduct.components
+  show biproduct.components
       (incidenceToEndLinear (k := k) (S := S)
-        (endToIncidence (k := k) (S := S) F)) s t =
-    biproduct.components F s t
+        (endToIncidence (k := k) (S := S) F)).asHom s t =
+    biproduct.components F.asHom s t
   rw [incidenceToEndLinear_components]
   by_cases hst : HomCondition (P := S) s t
   · let p : PairPoset S := tagPoint (S := S) t
@@ -1019,7 +1030,7 @@ theorem incidenceToEndAlgHom_surjective :
     exact (hookComponentScalar_spec (k := k) (S := S) F s t hst).symm
   · simp only [incidenceComponent, hst, zero_smul]
     exact (hom_eq_zero_of_not_condition (k := k) s t hst
-      (biproduct.components F s t)).symm
+      (biproduct.components F.asHom s t)).symm
 
 /-- The sum of the diagonal matrix idempotents indexed by the diagonal subposet. -/
 def diagonalIdempotent : Incidence (k := k) (S := S) := by
@@ -1227,14 +1238,15 @@ local instance diagonalIdealTwoSided :
 theorem incidenceToEndAlgHom_diagonalIdempotent_eq_zero :
     incidenceToEndAlgHom (k := k) (S := S)
         (diagonalIdempotent (k := k) (S := S)) = 0 := by
+  apply End.ext
   apply (biproduct.matrixEquiv
     (f := hookFamily (k := k) (S := S))
     (g := hookFamily (k := k) (S := S))).injective
   funext s t
-  change biproduct.components
+  show biproduct.components
       (incidenceToEndLinear (k := k) (S := S)
-        (diagonalIdempotent (k := k) (S := S))) s t =
-    biproduct.components (0 : End (HookSum (k := k) (S := S))) s t
+        (diagonalIdempotent (k := k) (S := S))).asHom s t =
+    biproduct.components (0 : End (HookSum (k := k) (S := S))).asHom s t
   rw [incidenceToEndLinear_components]
   by_cases hst : HomCondition (P := S) s t
   · have hnot : ¬ (tagPoint (S := S) t = tagPoint (S := S) s ∧
@@ -1268,9 +1280,9 @@ theorem incidenceToEndAlgHom_kernel_coefficient_zero
   let hst : HomCondition (P := S) source target :=
     noCrossHomCondition (S := S) p q hpq hcross
   have hcomponent : biproduct.components
-      (incidenceToEndLinear (k := k) (S := S) f) source target = 0 := by
+      (incidenceToEndLinear (k := k) (S := S) f).asHom source target = 0 := by
     have h := congrArg (fun F : End (HookSum (k := k) (S := S)) =>
-      biproduct.components F source target) hker
+      biproduct.components F.asHom source target) hker
     simpa [incidenceToEndAlgHom, biproduct.components] using h
   rw [incidenceToEndLinear_components] at hcomponent
   have hscalar : f p q • normalizedHom (k := k) source target hst = 0 := by
