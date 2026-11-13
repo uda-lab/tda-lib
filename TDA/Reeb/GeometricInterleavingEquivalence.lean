@@ -196,8 +196,8 @@ theorem geometricInterleavingDistance_lt_iff {r : ℝ≥0∞} :
   simp only [geometricInterleavingDistance, iInf_lt_iff, exists_prop]
   exact exists_congr fun _ => and_comm
 
-/-- Zero distance means geometric witnesses at every positive parameter; it does not give a
-`0`-witness, hence no isomorphism. -/
+/-- Zero distance means geometric witnesses at every positive parameter. This theorem does not
+establish a `0`-witness or separation by graph isomorphism. -/
 theorem geometricInterleavingDistance_eq_zero_iff :
     geometricInterleavingDistance A B = 0 ↔
       ∀ ε : ℝ≥0, 0 < ε → Nonempty (GeometricInterleaving ε A B) := by
