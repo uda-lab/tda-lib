@@ -22,15 +22,17 @@ variable {X : Type u} {m : ℕ}
 multiplicities through uniform sampling of its indices. -/
 def empiricalPMF (u : Fin m → X) (hm : 1 ≤ m) : PMF X := by
   letI : Nonempty (Fin m) := ⟨⟨0, by omega⟩⟩
-  exact (PMF.uniformOfFintype (Fin m)).map u
+  have hm0 : (m : ℝ≥0∞) ≠ 0 := by exact_mod_cast (by omega : m ≠ 0)
+  exact (PMF.ofFintype (fun _ : Fin m => (m : ℝ≥0∞)⁻¹)
+    (by simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul,
+          ENNReal.mul_inv_cancel hm0 (ENNReal.natCast_ne_top m)])).map u
 
 /-- Every atom has its occurrence count divided by the training size. -/
 theorem empiricalPMF_apply (u : Fin m → X) (hm : 1 ≤ m) (x : X) :
     empiricalPMF u hm x =
       ((Finset.univ.filter fun i => u i = x).card : ℝ≥0∞) / m := by
   classical
-  simp only [empiricalPMF, PMF.map_apply, tsum_fintype, PMF.uniformOfFintype_apply,
-    Fintype.card_fin, eq_comm]
+  simp only [empiricalPMF, PMF.map_apply, tsum_fintype, PMF.ofFintype_apply, eq_comm]
   rw [← Finset.sum_filter]
   simp [div_eq_mul_inv]
 
