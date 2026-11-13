@@ -1218,8 +1218,13 @@ adjacent commuting squares to all structure maps. Supplied bases give genuine
 natural coordinate isomorphisms, basis-independent barcodes, and the existing
 finite decomposition. A zero-initial padded sequence can also be extended across
 an explicit real critical grid, retaining its original endpoint values and a
-constant final cell. These are theory adapters, not executable extraction.
-See [finite representations](math/finite-representations.md).
+constant final cell. The finite-line path and explicit matrix composite data
+execute over concrete coefficient operations, including ℚ and F₂; see
+[chronological finite computation](math/finite-line-computation.md) for the
+composition order, empty cases and proof boundaries. Supplied-basis, real-grid
+and decomposition contracts are described in
+[finite representations](math/finite-representations.md); no executable barcode
+extraction is asserted.
 
 `FiniteBarcode.monoEmbedding` takes a natural transformation of these finite modules
 whose components are injective and constructs an embedding of their canonical barcode

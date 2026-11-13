@@ -103,7 +103,9 @@ defines `QuiverRep` by the same functor shape
 are unnecessary for this finite-line adapter. No TauCeti source is copied or
 imported, and its newer toolchain is not adopted.
 
-These theory APIs may be noncomputable. In particular, their natural
+The finite-line path and explicit matrix composites have an
+[executable data path](finite-line-computation.md). Supplied-basis, real-grid and
+decomposition interfaces retain their theory contracts. Their natural
 isomorphisms and canonical rank barcode do not furnish an executable barcode
 extraction algorithm. Arbitrary-field theorems are distinct from the library's
 certified finite F₂ reduction. A future algorithm must specify coefficient

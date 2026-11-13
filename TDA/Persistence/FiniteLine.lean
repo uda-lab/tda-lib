@@ -77,33 +77,46 @@ instance pathSubsingleton (i j : FiniteLine N) : Subsingleton (Quiver.Path i j) 
 instance pathCategorySubsingleton (i j : Paths (FiniteLine N)) : Subsingleton (i ⟶ j) :=
   inferInstanceAs (Subsingleton (Quiver.Path (show FiniteLine N from i) (show FiniteLine N from j)))
 
-private theorem nonempty_path (i j : FiniteLine N) (h : i.index ≤ j.index) :
-    Nonempty (Quiver.Path i j) := by
-  have aux : ∀ n, ∀ j : FiniteLine N, j.index.val = n → i.index ≤ j.index →
-      Nonempty (Quiver.Path i j) := by
-    intro n
-    induction n using Nat.strong_induction_on with
-    | h n ih =>
-      intro j hj hij
-      by_cases heq : i = j
-      · subst j
-        exact ⟨.nil⟩
-      · have hlt : i.index.val < j.index.val := by
-          have hne : i.index.val ≠ j.index.val := by
-            intro he
-            exact heq (FiniteLine.ext (Fin.ext he))
-          change i.index.val ≤ j.index.val at hij
+private def pathToIndex (i : FiniteLine N) : (n : ℕ) → (j : FiniteLine N) →
+    j.index.val = n → i.index ≤ j.index → Quiver.Path i j
+  | 0, j, hj, hij => by
+      have he : i = j := FiniteLine.ext (Fin.ext (by
+        have hi : i.index.val ≤ j.index.val := hij
+        omega))
+      subst j
+      exact .nil
+  | n + 1, j, hj, hij => by
+      by_cases he : i.index.val = j.index.val
+      · have heq : i = j := FiniteLine.ext (Fin.ext he)
+        subst j
+        exact .nil
+      · have hjN := j.index.isLt
+        let k : FiniteLine N := ⟨⟨n, by omega⟩⟩
+        have hik : i.index ≤ k.index := by
+          change i.index.val ≤ n
+          have hi : i.index.val ≤ j.index.val := hij
           omega
-        let k : FiniteLine N := ⟨⟨j.index.val - 1, by omega⟩⟩
-        have hkn : k.index.val < n := by dsimp [k]; omega
-        have hik : i.index ≤ k.index := by change i.index.val ≤ j.index.val - 1; omega
-        obtain ⟨p⟩ := ih k.index.val hkn k rfl hik
-        exact ⟨p.cons ⟨by dsimp [k]; omega⟩⟩
-  exact aux j.index.val j rfl h
+        exact (pathToIndex i n k rfl hik).cons ⟨by dsimp [k]; omega⟩
 
 /-- The unique chronological path associated to an inequality. -/
-noncomputable def path {i j : FiniteLine N} (h : i.index ≤ j.index) : Quiver.Path i j :=
-  Classical.choice (nonempty_path i j h)
+def path {i j : FiniteLine N} (h : i.index ≤ j.index) : Quiver.Path i j :=
+  pathToIndex i j.index.val j rfl h
+
+/-- A chronological path has one edge for each intervening index. -/
+@[simp]
+theorem path_length {i j : FiniteLine N} (h : i.index ≤ j.index) :
+    (path h).length = j.index.val - i.index.val := by
+  have endpoint : ∀ {a b : FiniteLine N} (p : Quiver.Path a b),
+      b.index.val = a.index.val + p.length := by
+    intro a b p
+    induction p with
+    | nil => simp
+    | @cons b c p e ih =>
+      have he := e.down
+      simp only [Quiver.Path.length_cons]
+      omega
+  have hp := endpoint (path h)
+  omega
 
 /-- The canonical self path is the empty path. -/
 @[simp]
@@ -126,14 +139,14 @@ def toFin : Paths (FiniteLine N) ⥤ Fin N where
   map p := homOfLE (le_of_path p)
 
 /-- An inequality expands to its unique chronological path. -/
-noncomputable def fromFin : Fin N ⥤ Paths (FiniteLine N) where
+def fromFin : Fin N ⥤ Paths (FiniteLine N) where
   obj i := ⟨i⟩
   map f := path (leOfHom f)
   map_id _ := (pathSubsingleton _ _).elim _ _
   map_comp _ _ := (pathSubsingleton _ _).elim _ _
 
 /-- The path category of a finite line is the preorder category, including at `N = 0`. -/
-noncomputable def pathEquivalence (N : ℕ) : Paths (FiniteLine N) ≌ Fin N where
+def pathEquivalence (N : ℕ) : Paths (FiniteLine N) ≌ Fin N where
   functor := toFin
   inverse := fromFin
   unitIso := NatIso.ofComponents (fun i => eqToIso (by cases i; rfl))
@@ -145,12 +158,12 @@ variable {R : Type u} [Ring R]
 
 /-- Representations of the finite-line path category are precisely finite persistence modules.
 Objects are precomposed with `fromFin`, and morphisms are whiskered along that functor. -/
-noncomputable def representationEquivalence (R : Type u) [Ring R] (N : ℕ) :
+def representationEquivalence (R : Type u) [Ring R] (N : ℕ) :
     (Paths (FiniteLine N) ⥤ ModuleCat.{w} R) ≌ PModule R (Fin N) :=
   (pathEquivalence N).congrLeft
 
 /-- Extend adjacent linear maps to the unique persistence module on the finite line. -/
-noncomputable def moduleOfAdjacent (V : Fin N → ModuleCat.{w} R)
+def moduleOfAdjacent (V : Fin N → ModuleCat.{w} R)
     (step : ∀ (i j : Fin N), i.val + 1 = j.val → (V i ⟶ V j)) : PModule R (Fin N) :=
   fromFin ⋙ Paths.lift (⟨fun i => V i.index, fun {i j} e => step i.index j.index e.down⟩ :
     FiniteLine N ⥤q ModuleCat.{w} R)
@@ -198,7 +211,7 @@ theorem naturality_of_adjacent {M W : PModule.{u,0,w} R (Fin N)}
   exact hp (path h)
 
 /-- Construct a morphism of arbitrary finite persistence modules using adjacent squares only. -/
-noncomputable def homMk {M W : PModule.{u,0,w} R (Fin N)}
+def homMk {M W : PModule.{u,0,w} R (Fin N)}
     (α : ∀ i, M.obj i ⟶ W.obj i)
     (hα : ∀ (i j : Fin N) (h : i.val + 1 = j.val),
       structureMap M (show i ≤ j by omega) ≫ α j =
@@ -212,7 +225,7 @@ theorem homMk_app {M W : PModule.{u,0,w} R (Fin N)} (α) (hα) (i : Fin N) :
     (homMk (M := M) (W := W) α hα).app i = α i := rfl
 
 /-- Construct a morphism directly from adjacent-map input. -/
-noncomputable def homOfAdjacent (V W : Fin N → ModuleCat.{w} R)
+def homOfAdjacent (V W : Fin N → ModuleCat.{w} R)
     (step : ∀ (i j : Fin N), i.val + 1 = j.val → (V i ⟶ V j))
     (step' : ∀ (i j : Fin N), i.val + 1 = j.val → (W i ⟶ W j))
     (α : ∀ i, V i ⟶ W i)
@@ -231,7 +244,7 @@ theorem homOfAdjacent_app (V W : Fin N → ModuleCat.{w} R) (step step') (α) (h
     (i : Fin N) : (homOfAdjacent V W step step' α hα).app i = α i := rfl
 
 /-- Fiber isomorphisms intertwining adjacent maps give a genuine natural isomorphism. -/
-noncomputable def isoOfAdjacent {M W : PModule.{u,0,w} R (Fin N)}
+def isoOfAdjacent {M W : PModule.{u,0,w} R (Fin N)}
     (e : ∀ i, M.obj i ≅ W.obj i)
     (he : ∀ (i j : Fin N) (h : i.val + 1 = j.val),
       structureMap M (show i ≤ j by omega) ≫ (e j).hom =
@@ -274,7 +287,7 @@ def adjacentMap (M : PModule.{u,0,w} R (Fin N)) (i j : Fin N)
   structureMap M (show i ≤ j by omega)
 
 /-- Reconstructing a module from its adjacent maps gives a genuine natural isomorphism. -/
-noncomputable def adjacentRecovery (M : PModule.{u,0,w} R (Fin N)) :
+def adjacentRecovery (M : PModule.{u,0,w} R (Fin N)) :
     moduleOfAdjacent M.obj (adjacentMap M) ≅ M :=
   isoOfAdjacent (fun _ => Iso.refl _) (by
     intro i j h
