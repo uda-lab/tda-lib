@@ -1521,6 +1521,21 @@ injectivity and surjectivity. It validates all admitted face images even for
 zero groups, and uses enumeration exponential in source Betti dimension.
 See [homology-map dimensions](math/finite-ph-map-dimensions.md).
 
+`validateGlobalVertexMap xs ys f` checks both input lists and requires every
+source face image to occur in the target at no later grade. Its correctness
+lemmas identify this finite condition with preservation of every integer
+sublevel, including cross-threshold maps. For any monotone sampling
+`t : Fin s →o ℤ`, `sampledHomologyMap` constructs the natural transformation
+of actual F₂ sublevel homology modules induced by that fixed vertex function.
+Repeated and negative thresholds and collapsed faces are allowed.
+`sampledHomologyMap_image_rank` identifies each image structure-map rank with
+the range dimension of the actual simplicial map from the earlier source
+sublevel to the later target sublevel. The generic
+`finiteImage_structureMapRank` requires finite-dimensional target fibers,
+with no finite-dimensional-source assumption. Identity specialization
+recovers the ordinary source rank. These are semantic rank identities;
+image-barcode extraction is outside this API.
+
 
 ### Minimal-complement cardinalities for finite grids
 
