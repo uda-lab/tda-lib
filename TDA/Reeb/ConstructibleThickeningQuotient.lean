@@ -169,7 +169,7 @@ theorem joinedIn_Icc_of_isConstructibleSpace {X : Over (TopCat.of ℝ)}
     have e : P.height S (i.hom.left.hom x') = overBaseMap X x' :=
       overBaseMap_comm i.hom x'
     exact e.symm ▸ hx'
-  have hmap := h.map (((ℛ).map i.hom).left.hom.continuous)
+  have hmap := h.map (((ℛ).map i.hom).left.hom.continuous).continuousOn
   have hP : JoinedIn
       (overBaseMap ((ℛ).obj (Over.mk (TopCat.ofHom (P.height S)))) ⁻¹' Icc a b)
       (ReebQuotient.mk (P.height S) (i.hom.left.hom x))
@@ -238,7 +238,7 @@ theorem joinedIn_Icc_of_isConstructibleSpace {X : Over (TopCat.of ℝ)}
       (Quotient.exact hPcomp)
   have hPclosed := CylinderPresentation.joinedIn_Icc_of_joinedIn S P c hlo hhi
     hxP hxP' hJ'
-  have hback := hPclosed.map i.inv.left.hom.continuous
+  have hback := hPclosed.map i.inv.left.hom.continuous.continuousOn
   have hback' : JoinedIn (overBaseMap X ⁻¹' Icc a b)
       (i.inv.left.hom (i.hom.left.hom x))
       (i.inv.left.hom (i.hom.left.hom x')) := by
