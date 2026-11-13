@@ -55,7 +55,7 @@ def tuples (π : MeasureCoupling μ ν) (n : ℕ) :
     MeasureCoupling (iidMeasure μ n) (iidMeasure ν n) where
   joint :=
     (ProbabilityMeasure.pi (fun _ : Fin n => π.joint)).map
-      (measurable_tuplePairMap (X := X) (Y := Y) (n := n)).aemeasurable
+      (tuplePairMap (X := X) (Y := Y) (n := n))
   fst_map := by
     apply ProbabilityMeasure.toMeasure_injective
     change Measure.map Prod.fst
@@ -106,8 +106,8 @@ coupling. -/
 def sampleLaw {μ : ProbabilityMeasure X} {ν : ProbabilityMeasure Y}
     (π : MeasureCoupling μ ν) (n : ℕ) (f : (Fin n → X) → Z) (g : (Fin n → Y) → W)
     [MeasurableSpace Z] [MeasurableSpace W] (hf : Measurable f) (hg : Measurable g) :
-    MeasureCoupling ((iidMeasure μ n).map hf.aemeasurable)
-      ((iidMeasure ν n).map hg.aemeasurable) :=
+    MeasureCoupling ((iidMeasure μ n).map f)
+      ((iidMeasure ν n).map g) :=
   (π.tuples n).map f g hf hg
 
 end MeasureCoupling
