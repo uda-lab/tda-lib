@@ -37,12 +37,12 @@ theorem ofIso {A₀ B₀ A B : PModule.{u,0,u} k P} {π : A₀ ⟶ B₀}
   refine ⟨hπ.term_rank_projective.of_iso eA, ?_, ?_⟩
   · simpa [π', eK] using hπ.row_rank_exact.of_iso eK eA eB
   · intro u hu
-    let u₀ : End A₀ := eA.hom ≫ u ≫ eA.inv
-    have hu₀ : u₀ ≫ π = π := by
+    let u₀ : End A₀ := .of (eA.hom ≫ u.asHom ≫ eA.inv)
+    have hu₀ : u₀.asHom ≫ π = π := by
       apply (cancel_mono eB.hom).1
       simpa [u₀, π', Category.assoc] using congrArg (fun f => eA.hom ≫ f) hu
-    haveI : IsIso u₀ := hπ.endomorphism_isIso u₀ hu₀
-    have hu_eq : u = eA.inv ≫ u₀ ≫ eA.hom := by
+    haveI : IsIso u₀.asHom := hπ.endomorphism_isIso u₀ hu₀
+    have hu_eq : u.asHom = eA.inv ≫ u₀.asHom ≫ eA.hom := by
       simp [u₀, Category.assoc]
     rw [hu_eq]
     infer_instance
