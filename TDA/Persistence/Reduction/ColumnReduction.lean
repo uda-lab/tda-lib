@@ -62,6 +62,43 @@ def columnReductionTrace
     List (EarlierColumnOp m k) :=
   columnReductionTraceAux j (pivotHeight (columnPivot (M.col j))) M
 
+private def columnStore (M : Matrix (Fin m) (Fin m) k) : Vector (Vector k m) m :=
+  Vector.ofFn fun i => Vector.ofFn fun j => M i j
+
+private def columnRead (data : Vector (Vector k m) m) : Matrix (Fin m) (Fin m) k :=
+  fun i j => data[i][j]
+
+private theorem columnRead_store (M : Matrix (Fin m) (Fin m) k) :
+    columnRead (columnStore M) = M := by
+  ext i j
+  simp [columnRead, columnStore, Fin.getElem_fin]
+
+private def cachedColumnAux (j : Fin m) : ℕ → Vector (Vector k m) m → List (EarlierColumnOp m k)
+  | 0, _ => []
+  | fuel + 1, data =>
+      match nextColumnOp (columnRead data) j with
+      | none => []
+      | some op => op :: cachedColumnAux j fuel (columnStore (columnRead data * op.1.toMatrix))
+
+private theorem cachedColumnAux_eq (j : Fin m) (fuel : ℕ) (M : Matrix (Fin m) (Fin m) k) :
+    cachedColumnAux j fuel (columnStore M) = columnReductionTraceAux j fuel M := by
+  induction fuel generalizing M with
+  | zero => rfl
+  | succ fuel ih =>
+    simp only [cachedColumnAux, columnRead_store, columnReductionTraceAux]
+    split
+    · rfl
+    · rw [ih]
+
+private def cachedColumnTrace (M : Matrix (Fin m) (Fin m) k) (j : Fin m) :
+    List (EarlierColumnOp m k) :=
+  let data := columnStore M
+  cachedColumnAux j (pivotHeight (columnPivot ((columnRead data).col j))) data
+
+@[csimp] private theorem columnReductionTrace_eq_cached : @columnReductionTrace = @cachedColumnTrace := by
+  funext m k inst instEq M j
+  simp only [cachedColumnTrace, columnRead_store, cachedColumnAux_eq, columnReductionTrace]
+
 private theorem nextColumnOp_some_spec
     (M : Matrix (Fin m) (Fin m) k) (j : Fin m) (op : EarlierColumnOp m k)
     (hop : nextColumnOp M j = some op) :

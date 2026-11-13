@@ -415,3 +415,7 @@ import TDA.Persistence.Reduction.FiniteInputVertexMapChains
 import TDA.Persistence.Reduction.FiniteInputHomologyMap
 import TDA.Persistence.Reduction.FiniteInputHomologyMapCorrectness
 import TDA.Persistence.Reduction.FiniteInputHomologyMapExamples
+import TDA.Persistence.Reduction.FiniteInputCycleSynthesis
+import TDA.Persistence.Reduction.FiniteInputHomologyLifts
+import TDA.Persistence.Reduction.FiniteInputHomologyLiftCorrectness
+import TDA.Persistence.Reduction.FiniteInputHomologyLiftExamples

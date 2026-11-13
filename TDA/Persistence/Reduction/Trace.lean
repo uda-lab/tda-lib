@@ -27,6 +27,50 @@ def traceChange (ops : List (EarlierColumnOp m k)) :
     Matrix (Fin m) (Fin m) k :=
   (ops.map (fun op => op.1.toMatrix)).prod
 
+/-- Finite storage for compiled replay, retaining every chronological operation. -/
+private def replayStore (M : Matrix (Fin m) (Fin m) k) : Vector (Vector k m) m :=
+  Vector.ofFn fun i => Vector.ofFn fun j => M i j
+
+private def replayRead (data : Vector (Vector k m) m) : Matrix (Fin m) (Fin m) k :=
+  fun i j => data[i][j]
+
+private theorem replayRead_store (M : Matrix (Fin m) (Fin m) k) :
+    replayRead (replayStore M) = M := by
+  ext i j
+  simp [replayRead, replayStore, Fin.getElem_fin]
+
+private def replayStep (data : Vector (Vector k m) m) (op : EarlierColumnOp m k) :
+    Vector (Vector k m) m :=
+  Vector.ofFn fun r => Vector.ofFn fun c =>
+    if c = op.1.j then data[r][c] + op.1.c * data[r][op.1.i] else data[r][c]
+
+private theorem replayRead_step (data : Vector (Vector k m) m) (op : EarlierColumnOp m k) :
+    replayRead (replayStep data op) = replayRead data * op.1.toMatrix := by
+  ext r c
+  by_cases hc : c = op.1.j
+  · subst c
+    simp [replayRead, replayStep, Matrix.TransvectionStruct.toMatrix, Fin.getElem_fin]
+  · simp [replayRead, replayStep, Matrix.TransvectionStruct.toMatrix, Fin.getElem_fin, hc]
+
+private def replayStored : Vector (Vector k m) m → List (EarlierColumnOp m k) → Vector (Vector k m) m
+  | data, [] => data
+  | data, op :: ops => replayStored (replayStep data op) ops
+
+private theorem replayStored_eq (data : Vector (Vector k m) m) (ops : List (EarlierColumnOp m k)) :
+    replayRead (replayStored data ops) = replay (replayRead data) ops := by
+  induction ops generalizing data with
+  | nil => rfl
+  | cons op ops ih =>
+    simp only [replayStored, ih, replayRead_step, replay]
+    rfl
+
+private def cachedReplay (M : Matrix (Fin m) (Fin m) k) (ops : List (EarlierColumnOp m k)) :
+    Matrix (Fin m) (Fin m) k := replayRead (replayStored (replayStore M) ops)
+
+@[csimp] private theorem replay_eq_cachedReplay : @replay = @cachedReplay := by
+  funext m k inst M ops
+  exact (replayStored_eq (replayStore M) ops).trans (congrArg (fun A => replay A ops) (replayRead_store M)) |>.symm
+
 /-- Replaying the empty trace leaves its input unchanged. -/
 theorem replay_nil (M : Matrix (Fin m) (Fin m) k) : replay M [] = M := rfl
 
@@ -51,6 +95,14 @@ theorem replay_eq_mul_traceChange (M : Matrix (Fin m) (Fin m) k)
   | nil => simp [replay, traceChange]
   | cons op ops ih =>
       rw [replay_cons, ih, traceChange_cons, Matrix.mul_assoc]
+
+private def cachedTraceChange (ops : List (EarlierColumnOp m k)) : Matrix (Fin m) (Fin m) k :=
+  replayRead (replayStored (replayStore 1) ops)
+
+@[csimp] private theorem traceChange_eq_cached : @traceChange = @cachedTraceChange := by
+  funext m k inst ops
+  symm
+  simp only [cachedTraceChange, replayStored_eq, replayRead_store, replay_eq_mul_traceChange, one_mul]
 
 /-- Replaying a concatenated trace is replaying the first part and then the second. -/
 theorem replay_append (M : Matrix (Fin m) (Fin m) k)

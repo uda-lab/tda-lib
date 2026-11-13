@@ -29,6 +29,48 @@ def matrixReductionTrace (M : Matrix (Fin m) (Fin m) k) :
     List (EarlierColumnOp m k) :=
   matrixReductionTraceAux M (List.finRange m)
 
+private def matrixStore (M : Matrix (Fin m) (Fin m) k) : Vector (Vector k m) m :=
+  Vector.ofFn fun i => Vector.ofFn fun j => M i j
+
+private def matrixRead (data : Vector (Vector k m) m) : Matrix (Fin m) (Fin m) k :=
+  fun i j => data[i][j]
+
+private theorem matrixRead_store (M : Matrix (Fin m) (Fin m) k) :
+    matrixRead (matrixStore M) = M := by
+  ext i j
+  simp [matrixRead, matrixStore, Fin.getElem_fin]
+
+private def matrixStoredReplay : Vector (Vector k m) m → List (EarlierColumnOp m k) → Vector (Vector k m) m
+  | data, [] => data
+  | data, op :: ops => matrixStoredReplay (matrixStore (matrixRead data * op.1.toMatrix)) ops
+
+private theorem matrixStoredReplay_eq (data : Vector (Vector k m) m) (ops : List (EarlierColumnOp m k)) :
+    matrixRead (matrixStoredReplay data ops) = replay (matrixRead data) ops := by
+  induction ops generalizing data with
+  | nil => rfl
+  | cons op ops ih =>
+    simp only [matrixStoredReplay, ih, matrixRead_store, replay_cons]
+
+private def cachedMatrixAux : Vector (Vector k m) m → List (Fin m) → List (EarlierColumnOp m k)
+  | _, [] => []
+  | data, j :: js =>
+      let ops := columnReductionTrace (matrixRead data) j
+      ops ++ cachedMatrixAux (matrixStoredReplay data ops) js
+
+private theorem cachedMatrixAux_eq (data : Vector (Vector k m) m) (js : List (Fin m)) :
+    cachedMatrixAux data js = matrixReductionTraceAux (matrixRead data) js := by
+  induction js generalizing data with
+  | nil => rfl
+  | cons j js ih =>
+    simp only [cachedMatrixAux, matrixReductionTraceAux, ih, matrixStoredReplay_eq]
+
+private def cachedMatrixTrace (M : Matrix (Fin m) (Fin m) k) : List (EarlierColumnOp m k) :=
+  cachedMatrixAux (matrixStore M) (List.finRange m)
+
+@[csimp] private theorem matrixReductionTrace_eq_cached : @matrixReductionTrace = @cachedMatrixTrace := by
+  funext m k inst instEq M
+  simp only [cachedMatrixTrace, cachedMatrixAux_eq, matrixRead_store, matrixReductionTrace]
+
 private theorem matrixReductionTraceAux_append
     (M : Matrix (Fin m) (Fin m) k) (xs ys : List (Fin m)) :
     matrixReductionTraceAux M (xs ++ ys) =
