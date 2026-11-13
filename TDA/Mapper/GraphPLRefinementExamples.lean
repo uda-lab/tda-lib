@@ -556,9 +556,6 @@ theorem path_S02_E0_empty : IsEmpty ((graphPLReebData path3 h012 S02).E 0) := by
     rw [hz, edgeSpans_dartEdge_iff] at hz'
     rcases hz' with ⟨hz', _⟩
     norm_num [path_d12, h012, S02_castSucc_zero_local] at hz'
-    have htwo : (![0, 1, 2] : Fin 3 → ℝ) 2 = 2 := rfl
-    rw [htwo] at hz'
-    norm_num at hz'
 
 /-- There is no isomorphism for the uncovered-vertex path data. -/
 theorem path_no_refineIso :
