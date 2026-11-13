@@ -87,7 +87,7 @@ theorem realSecondHook_birth_lt_death :
 /-- The real second hook is nonzero at its birth grade. -/
 theorem realSecondHook_not_isZero : ¬ IsZero (realSecondHook (k := k)) := by
   intro hz
-  have he := congrArg (fun α : End (realSecondHook (k := k)) =>
+  have he := congrArg (fun α : realSecondHook (k := k) ⟶ realSecondHook (k := k) =>
       ((α.app realSecondBirth).hom
         (SupportInterval.one (Hook.support realSecondBirth realSecondDeath)
           (Hook.birth_mem realSecondHook_birth_lt_death)) : k))
