@@ -1533,8 +1533,29 @@ the range dimension of the actual simplicial map from the earlier source
 sublevel to the later target sublevel. The generic
 `finiteImage_structureMapRank` requires finite-dimensional target fibers,
 with no finite-dimensional-source assumption. Identity specialization
-recovers the ordinary source rank. These are semantic rank identities;
-image-barcode extraction is outside this API.
+recovers the ordinary source rank.
+
+`runImageBarcode xs ys p f t` extracts a certified image barcode for the supplied
+observations `t : Fin N → ℤ`. It returns `some out` exactly when both geometries,
+global face-grade preservation and monotonicity of `t` validate. Empty, negative
+and repeated observations are allowed; no observations are sorted or removed.
+The executable path materializes every comparable-pair `homologyMapDimensions`
+rank, extends that table by zero outside `0 ≤ i ≤ j < N`, and computes the signed
+integer four-term differences. Their nonnegativity is proved before interpreting
+them as natural multiplicities. Output intervals are ordered by birth, then
+death, and equal intervals remain separate occurrences.
+
+`imageBarcode_multiset` identifies the output multiset with `rankBarcode` of
+the actual sampled image module. The multiplicity and rank laws retain all
+endpoint counts and every forward rank; `imageBarcode_nonempty_iso` gives a
+genuine natural isomorphism to its barcode realization. These are proof-side
+consequences: extraction executes no quotient homology, chosen basis or
+decomposition. Identity input yields the ordinary sampled source barcode.
+Endpoints are observation indices with `birth < death ≤ N`; death `N` means
+survival through the last observation only. It asserts no lifetime beyond or
+between samples. The table uses quadratic storage and at most `N(N+1)/2` rank
+evaluations, each using the existing enumeration exponential in source Betti
+dimension. Output replication also costs the number of interval occurrences.
 
 
 ### Minimal-complement cardinalities for finite grids
