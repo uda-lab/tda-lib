@@ -1743,15 +1743,15 @@ private noncomputable instance edge_cyclesHasQuotient :
   Submodule.hasQuotient (R := ZMod 2)
     (M := simplicialCycles edgeK (ZMod 2) 0)
 
+-- `liftQ` is elaborated without the expected type (`(e :)`): unifying against it
+-- first fails on the `Submodule` instance argument, and the fallback through
+-- `edge_cyclesHasQuotient` whnf-unfolds the concrete quotient (timeout).
 set_option backward.isDefEq.respectTransparency false in
 private noncomputable def edge_quotSum :
     (simplicialCycles edgeK (ZMod 2) 0 ⧸
-      simplicialBoundaries edgeK (ZMod 2) 0) →ₗ[ZMod 2] ZMod 2 := by
-  let p : Submodule (ZMod 2) (simplicialCycles edgeK (ZMod 2) 0) :=
-    simplicialBoundaries edgeK (ZMod 2) 0
-  let f : simplicialCycles edgeK (ZMod 2) 0 →ₗ[ZMod 2] ZMod 2 := edge_cycleSum
-  have h : p ≤ LinearMap.ker f := edge_boundaries_ker_cycleSum
-  exact p.liftQ f h
+      simplicialBoundaries edgeK (ZMod 2) 0) →ₗ[ZMod 2] ZMod 2 :=
+  (Submodule.liftQ (R := ZMod 2) (M := simplicialCycles edgeK (ZMod 2) 0)
+    (simplicialBoundaries edgeK (ZMod 2) 0) edge_cycleSum edge_boundaries_ker_cycleSum :)
 
 private noncomputable def edge_H0_sum :
     simplicialHomology edgeK (ZMod 2) 0 →ₗ[ZMod 2] ZMod 2 :=
