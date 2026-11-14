@@ -8,6 +8,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 export PATH="$HOME/.elan/bin:$PATH"
+. "$ROOT/scripts/lib/lake-artifact-cache.sh"
+lake_artifact_cache_init "$ROOT"
 
 if ! command -v lake >/dev/null 2>&1; then
   echo "ERROR: 'lake' not found. Install elan (https://github.com/leanprover/elan);" >&2

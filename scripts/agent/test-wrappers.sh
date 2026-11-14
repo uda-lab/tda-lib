@@ -6,9 +6,12 @@ test_dir=$(mktemp -d)
 trap 'rm -rf -- "$test_dir"' EXIT
 mkdir -p "$test_dir/bin" "$test_dir/repo/scripts/lib"
 ROOT="$test_dir/repo"
-cp "$SOURCE_ROOT/scripts/"{lean.sh,codex.sh} "$ROOT/scripts/"
-cp "$SOURCE_ROOT/scripts/lib/"{build-lock.sh,build-resources.py,resources.sh} "$ROOT/scripts/lib/"
+cp "$SOURCE_ROOT/scripts/"{lean.sh,codex.sh,bootstrap.sh} "$ROOT/scripts/"
+cp "$SOURCE_ROOT/scripts/lib/"{build-lock.sh,build-resources.py,resources.sh,lake-artifact-cache.sh} "$ROOT/scripts/lib/"
 printf 'name = "wrapper-fixture"\n' > "$ROOT/lakefile.toml"
+mkdir -p "$ROOT/docbuild"
+printf 'name = "wrapper-docbuild-fixture"\n' > "$ROOT/docbuild/lakefile.toml"
+git init -q "$ROOT"
 cd "$ROOT"
 cat > "$test_dir/bin/lake" <<'FAKE'
 #!/usr/bin/env bash
@@ -16,6 +19,9 @@ printf '%s\0' "$@" > "$ARGV_OUT"
 printf '%s' "${LEAN_NUM_THREADS:-unset}" > "$ARGV_OUT.threads"
 printf '%s' "${LEAN_NUM_THREADS_SOURCE:-unset}" > "$ARGV_OUT.source"
 printf '%s' "${LEAN_NUM_THREADS_DETECTED:-unset}" > "$ARGV_OUT.detected"
+printf '%s' "${LAKE_ARTIFACT_CACHE-unset}" > "$ARGV_OUT.artifact-cache"
+printf '%s' "${LAKE_RESTORE_ARTIFACTS-unset}" > "$ARGV_OUT.restore-artifacts"
+printf '%s' "${LAKE_CACHE_DIR-unset}" > "$ARGV_OUT.cache-dir"
 if [ -n "${SERIAL_OUT:-}" ]; then
  printf 'start\n' >> "$SERIAL_OUT"
  sleep .15
@@ -43,10 +49,19 @@ printf 'max 100000\n' > "$test_dir/cg/nested/child/cpu.max"
 export PATH="$test_dir/bin:$PATH" ARGV_OUT="$test_dir/args" LEAN_GUARD_MIN_AVAIL_MIB=0 \
   LEAN_NPROC_CMD="$test_dir/bin/nproc-stub" LEAN_CGROUP_ROOT="$test_dir/cg/unlimited" \
   LEAN_CGROUP_SELF_PATH='' STUB_NPROC=6
+unset LAKE_ARTIFACT_CACHE LAKE_RESTORE_ARTIFACTS LAKE_CACHE_DIR
 "$ROOT/scripts/lean.sh" lake env lean 'space name.lean' '' '*'
 python3 - "$ARGV_OUT" <<'PY'
 import sys
 assert open(sys.argv[1], 'rb').read().split(b'\0')[:-1] == [b'env', b'lean', b'space name.lean', b'', b'*']
+PY
+[ "$(cat "$ARGV_OUT.artifact-cache")" = true ]
+[ "$(cat "$ARGV_OUT.restore-artifacts")" = true ]
+python3 - "$ROOT" "$(cat "$ARGV_OUT.cache-dir")" <<'PY'
+from pathlib import Path
+import sys
+root, cache = Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve()
+assert root not in cache.parents and cache != root
 PY
 if "$ROOT/scripts/lean.sh" lake build -M 4000 >/dev/null 2>&1; then echo 'manual limit accepted'; exit 1; fi
 # Unset LEAN_NUM_THREADS, no cgroup quota ("max"): stays at the single-thread fallback, but the
@@ -60,6 +75,23 @@ LEAN_NUM_THREADS=3 "$ROOT/scripts/lean.sh" lake build
 [ "$(cat "$ARGV_OUT.threads")" = 3 ]
 [ "$(cat "$ARGV_OUT.source")" = explicit ]
 [ "$(cat "$ARGV_OUT.detected")" = 6 ]
+LAKE_ARTIFACT_CACHE=false LAKE_RESTORE_ARTIFACTS=true "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.artifact-cache")" = false ]
+[ "$(cat "$ARGV_OUT.restore-artifacts")" = true ]
+LAKE_ARTIFACT_CACHE=true LAKE_RESTORE_ARTIFACTS=false "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.artifact-cache")" = true ]
+[ "$(cat "$ARGV_OUT.restore-artifacts")" = false ]
+env -u LAKE_ARTIFACT_CACHE -u LAKE_RESTORE_ARTIFACTS -u LAKE_CACHE_DIR "$ROOT/scripts/bootstrap.sh"
+python3 - "$ARGV_OUT" <<'PY'
+import sys
+args = open(sys.argv[1], 'rb').read().split(b'\0')[:-1]
+assert args == [b'exe', b'cache', b'get']
+assert open(sys.argv[1] + '.artifact-cache').read() == 'true'
+assert open(sys.argv[1] + '.restore-artifacts').read() == 'true'
+PY
+LAKE_ARTIFACT_CACHE=false LAKE_RESTORE_ARTIFACTS=false "$ROOT/scripts/bootstrap.sh"
+[ "$(cat "$ARGV_OUT.artifact-cache")" = false ]
+[ "$(cat "$ARGV_OUT.restore-artifacts")" = false ]
 if LEAN_NUM_THREADS=0 "$ROOT/scripts/lean.sh" lake build >/dev/null 2>&1; then
   echo 'invalid thread configuration accepted'; exit 1
 fi
@@ -87,6 +119,22 @@ fi
 if (cd "$test_dir" && "$ROOT/scripts/lean.sh" lake build) >/dev/null 2>&1; then
   echo 'foreign cwd escaped resource exclusion'; exit 1
 fi
+# A parent guard starts at the repository root, then its nested Lake wrapper runs in docbuild.
+# An explicit relative cache path must be normalized once so the nested lock set matches.
+python3 - "$ROOT" "$ARGV_OUT" <<'PY'
+import os, subprocess, sys
+from pathlib import Path
+root, argv_out = Path(sys.argv[1]), sys.argv[2]
+env = os.environ.copy()
+env['LAKE_CACHE_DIR'] = '../shared-cache'
+command = ['bash', '-c',
+    'ROOT="$1"; . "$1/scripts/lib/build-lock.sh"; cd "$1/docbuild"; '
+    '"$1/scripts/lean.sh" lake build', '_', str(root)]
+result = subprocess.run(command, env=env, capture_output=True, text=True)
+assert result.returncode == 0, result.stderr
+actual = Path(open(argv_out + '.cache-dir').read()).resolve()
+assert actual == (root.parent / 'shared-cache').resolve(), actual
+PY
 for tool in lean 'lake env lean'; do
   # Intentional word splitting selects only these fixed tool/subcommand names.
   if "$ROOT/scripts/lean.sh" $tool -o "$test_dir/shared.olean" fixture.lean >/dev/null 2>&1; then

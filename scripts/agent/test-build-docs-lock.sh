@@ -67,7 +67,9 @@ EOF
 chmod +x "$tmp/bin/flock"
 export PATH="$tmp/bin:$PATH"
 cp "$SOURCE_ROOT/scripts/build-docs.sh" "$fixture/scripts/build-docs.sh"
-cp "$SOURCE_ROOT/scripts/lib/"build-{lock.sh,resources.py} "$SOURCE_ROOT/scripts/lib/resources.sh" "$fixture/scripts/lib/"
+cp "$SOURCE_ROOT/scripts/lib/"build-{lock.sh,resources.py} \
+  "$SOURCE_ROOT/scripts/lib/resources.sh" "$SOURCE_ROOT/scripts/lib/lake-artifact-cache.sh" \
+  "$fixture/scripts/lib/"
 cp "$SOURCE_ROOT/scripts/lib/docs-cache.py" "$fixture/scripts/lib/"
 for file in lean-toolchain lakefile.toml lake-manifest.json docbuild/lean-toolchain docbuild/lake-manifest.json; do
   cp "$SOURCE_ROOT/$file" "$fixture/$file"
