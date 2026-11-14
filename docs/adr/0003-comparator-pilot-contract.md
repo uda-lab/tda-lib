@@ -99,6 +99,14 @@ None of the following substitutes for another (precedent: `lean-formalization-sc
   whose raw bytes contain no literal `srcDir`). It also rejects outright if a `lakefile.lean`
   exists, since a Lean build config could set `srcDir` programmatically where no TOML scan
   would see it.
+- **Guarded Lean entry point for a disposable fixture project.** `scripts/check-comparator.sh`
+  now runs `lake comparator` through `scripts/lean.sh`, but
+  `scripts/test-comparator-semantics.sh` builds and compares against a disposable fixture
+  project under `$ROOT/.lake` (never the real repository tree), so it cannot go through
+  `scripts/lean.sh` (which only accepts `$ROOT` or `$ROOT/docbuild` as the Lake project). It
+  applies the same three guards directly instead: the `${CODEX_STOP_FILE:-/tmp/codex-stop}`
+  stop switch, the `LEAN_NUM_THREADS` default, and the memory-headroom check
+  (`scripts/lib/resources.sh`'s `lean_check_headroom`).
 - **Stable-release sorry policy.** `scripts/check-no-sorry.sh --stable` (run for `main`/stable
   checks) ignores the `ALLOW_SORRY` marker everywhere, requiring every staging hole to be
   discharged before a stable release — a policy written before this permanent, by-design

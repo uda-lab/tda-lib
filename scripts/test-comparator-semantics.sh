@@ -54,10 +54,24 @@ command -v jq >/dev/null 2>&1 || die "jq is required to generate fixture Compara
 bwrap_path="$(command -v bwrap 2>/dev/null || true)"
 [ -n "$bwrap_path" ] || die "bubblewrap (bwrap) is unavailable; refusing to run Comparator without its sandbox."
 
+# Every Lake invocation below (plain builds and sandboxed Comparator calls alike) runs against
+# a disposable fixture project under $ROOT/.lake, not $ROOT itself, so it cannot go through
+# scripts/lean.sh (which only accepts $ROOT or $ROOT/docbuild as the Lake project). Apply the
+# same three guards scripts/lean.sh enforces directly here instead of only serializing access:
+# the ${CODEX_STOP_FILE:-/tmp/codex-stop} stop switch, the LEAN_NUM_THREADS default, and the
+# memory-headroom check (AGENTS.md "Commands"/"Execution defaults").
+export LEAN_NUM_THREADS=${LEAN_NUM_THREADS:-1}
+[[ "$LEAN_NUM_THREADS" =~ ^[1-9][0-9]*$ ]] || die "LEAN_NUM_THREADS must be positive"
+[ -e "${CODEX_STOP_FILE:-/tmp/codex-stop}" ] && die "stopped by ${CODEX_STOP_FILE:-/tmp/codex-stop}"
+
 # Serialize with the canonical gate's lock: fixture builds and the sandboxed Comparator below
 # both run the pinned Lean toolchain.
 [ -r "$ROOT/scripts/lib/build-lock.sh" ] || die "scripts/lib/build-lock.sh is missing or unreadable."
 . "$ROOT/scripts/lib/build-lock.sh"
+[ -e "${CODEX_STOP_FILE:-/tmp/codex-stop}" ] && die "stopped by ${CODEX_STOP_FILE:-/tmp/codex-stop}"
+[ -r "$ROOT/scripts/lib/resources.sh" ] || die "scripts/lib/resources.sh is missing or unreadable."
+. "$ROOT/scripts/lib/resources.sh"
+lean_check_headroom || die "insufficient memory headroom to start a Lean build."
 
 # Under $ROOT/.lake (gitignored, never written into the repository tree as a tracked path) so
 # this lands on the same filesystem/device as $ROOT/.lake/packages: a plain `mktemp -d` honours
