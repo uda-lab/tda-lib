@@ -28,15 +28,24 @@ jobs:
   # Builds and validates the curated site. Runs for every trigger, including a
   # pull request restricted to docsite/** and the curated sources above, so the
   # hosted build is exercised before the first real deploy (main only).
+  #
+  # Uses only actions/checkout@v4 and actions/upload-artifact@v4, the repo's
+  # allowed-actions list (plus actions/cache and leanprover/lean-action, unused
+  # here). actions/setup-python and actions/upload-pages-artifact are not on
+  # that list (and a SHA pin of an otherwise-allowed action doesn't match its
+  # allowlisted tag-ref pattern either), so this job uses the runner's system
+  # Python and builds the Pages artifact by hand the same way
+  # actions/upload-pages-artifact@v3 does internally on Linux.
   build:
     name: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # v5.3.0
-        with:
-          python-version: '3.12'
+      - name: Verify runner Python version (docsite pins require 3.12+)
+        run: |
+          set -euo pipefail
+          python3 -c 'import sys; assert sys.version_info >= (3, 12), f"python3 {sys.version.split()[0]} is older than the pinned docsite requirement (3.12+)"; print(f"python3 {sys.version.split()[0]} OK")'
 
       - name: Install docsite dependencies into an isolated venv
         run: |
@@ -59,9 +68,24 @@ jobs:
           test "$revision" = "$GITHUB_SHA"
           test "$modified" = "false"
 
-      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa  # v3.0.1
+      # Same archive step actions/upload-pages-artifact@v3 runs on Linux, by hand.
+      - name: Archive the Pages artifact
+        run: |
+          set -euo pipefail
+          tar \
+            --dereference --hard-dereference \
+            --directory build/curated-docs/preview/tda-lib \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
+            .
+
+      - uses: actions/upload-artifact@v4
         with:
-          path: build/curated-docs/preview/tda-lib
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
 
   # Deploys only from main: a push to main, or a manual dispatch run on main.
   # No Lean, mathlib, doc-gen4 or secret is used anywhere in this workflow.
@@ -77,6 +101,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # actions/deploy-pages requires its own allowlist entry (not yet granted
+      # when this was written); it is not on the allowlist actions/checkout and
+      # actions/upload-artifact above reuse. SHA pinning it is not possible
+      # under the current allowlist (its patterns are exact tag refs), so this
+      # uses the tag ref the same way the repo's other allowlisted actions do.
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e  # v4.0.5
+        uses: actions/deploy-pages@v4
