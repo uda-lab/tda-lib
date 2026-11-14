@@ -61,8 +61,8 @@ example modules and both old entrances.
 
 ## Compatible API boundary
 
-The library uses Lean **4.33.1** and mathlib
-[`0df444a360eaa60ab8c11dca51a86af692955474`](https://github.com/leanprover-community/mathlib4/tree/0df444a360eaa60ab8c11dca51a86af692955474).
+The library uses Lean **4.35.0** and mathlib
+[`56a005855ea17e0b0958f73ec801ae140b0a1679`](https://github.com/leanprover-community/mathlib4/tree/56a005855ea17e0b0958f73ec801ae140b0a1679).
 That source has no `IsCoupling`, `transportCost` or `wassersteinEDist`
 declarations. It does provide the following relevant ingredients:
 
