@@ -8,7 +8,12 @@ cross-version compatibility promise.
 
 ## Unreleased
 
-Changes on `develop` after v0.3.0; the next release version is undecided.
+Changes on `develop` after v0.4.0; the next release version is undecided.
+
+## v0.4.0
+
+Published 2026-11-14. [Release notes](https://github.com/uda-lab/tda-lib/releases/tag/v0.4.0)
+· [Versioned API guide](https://github.com/uda-lab/tda-lib/blob/v0.4.0/docs/api.md).
 
 - Extend certified finite F₂ computation on valid finite graded simplex lists
   with barcode cycle representatives, complete integer-sublevel homology bases,
@@ -42,6 +47,13 @@ Changes on `develop` after v0.3.0; the next release version is undecided.
 - Add software citation metadata: `CITATION.cff` and the
   [citation guide](docs/citation.md).
 - Reorganize README, release history and documentation navigation.
+- Publish the curated documentation site at https://uda-lab.github.io/tda-lib/.
+- Report the Lean build thread count and the detected CPU count in build
+  output, instead of leaving the single-thread default invisible.
+- Add a compatibility CI cache-restore key so a `lakefile.toml`-only change
+  can still restore the build cache instead of forcing a cold rebuild.
+- Share a Lake build-artifact cache across worktrees, so a new worktree
+  restores cached build output instead of rebuilding it.
 
 ### Breaking changes
 
@@ -115,7 +127,10 @@ stated; only defining modules moved. No public declaration was removed or rename
   (use `TDA.Mapper.nonempty_realInterleaving_of_structureMap_eq_zero`,
   [#820](https://github.com/uda-lab/tda-lib/pull/820)).
 
-[Full changes since v0.3.0](https://github.com/uda-lab/tda-lib/compare/v0.3.0...develop).
+Lean: `leanprover/lean4:v4.35.0`; seven library areas. The certified finite F₂
+computation is unchanged except for the extensions listed above. See the
+release notes for exact bounds, source-review limits and unsupported
+extensions.
 
 ## v0.3.0
 

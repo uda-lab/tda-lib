@@ -53,7 +53,7 @@ not repaired.
 
 For cycles in the original face-index basis and fillings for finite deaths,
 continue to [cycle representatives](finite-ph-representatives.md).
-That API is an unreleased `develop` addition after v0.3.0.
+That API was added in v0.4.0.
 
 ## Contract and representation
 
