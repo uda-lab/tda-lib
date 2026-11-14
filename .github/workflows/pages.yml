@@ -20,7 +20,7 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
+    environment:
+      name: github-pages
     steps:
       - run: 'echo ok'
