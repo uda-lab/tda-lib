@@ -1,8 +1,26 @@
 # Comment- and string-aware scanner over Lean sources, shared by scripts/check-no-sorry.sh
-# (mode=sorry), scripts/check-no-custom-axiom.sh (mode=axiom) and
-# scripts/check-root-aggregator.sh (mode=root). Invoke as
+# (mode=sorry), scripts/check-no-custom-axiom.sh (mode=axiom),
+# scripts/check-root-aggregator.sh (mode=root) and the Comparator import boundary
+# (mode=import, mode=imports; scripts/check-comparator.sh). Invoke as
 #     awk -v mode=sorry -f scripts/lean-code-scan.awk FILE...
 # and it prints `file:line:content` for every violating line; no output means clean.
+#
+# mode=import (needs `-v import_target=<Name>`) prints one `file: forbidden import of
+# <Name>` line per file whose import list names a module equal to `<Name>` or dotted under
+# it (`<Name>.Sub`), honouring `module`/`public`/`meta`/`all` import modifiers. mode=imports
+# instead prints every direct imported module name, one per line, for project-local
+# dependency checks (transitive bridge detection). Both may be invoked on multiple files;
+# state resets per file, and the accumulated per-file import list is only resolved once the
+# whole file has been scanned (at the next file's FNR==1, or at END for the last file), so a
+# block comment that falls between `import` and the module name on separate tokens is
+# rejoined the same way the rest of this scanner already treats comments: as a token
+# separator, not as hidden text. Unlike every other mode, mode=import/mode=imports keep each
+# `«…»` escape's literal text in the code stream instead of collapsing it to the opaque `«x»`
+# token the other modes use (below), and then unescape it per dotted component
+# (`normalizeEscapedModule`) before comparing against a plain module name: `import
+# «ComparatorChallenge»` and `import TDA.«Probability».SamplingCoverage` are recognised the
+# same as their unescaped spelling, matching Lean's own treatment of `«…»` as mere syntax for
+# writing an identifier, not a different name.
 #
 # Lexing rules (state is reset per file):
 #   * block comments `/- … -/` nest and may span lines, and leave a space in the code stream (they
@@ -40,8 +58,22 @@ BEGIN { q = "\047"; G = "«"; GC = "»"; LG = length(G); LGC = length(GC)
     for (b = 224; b < 240; b++) seqlen[sprintf("%c", b)] = 3
     for (b = 240; b < 248; b++) seqlen[sprintf("%c", b)] = 4
   }
+  if (mode == "import" && import_target == "") {
+    print "lean-code-scan.awk: mode=import requires import_target" > "/dev/stderr"; exit 2
+  }
 }
-FNR == 1 { depth = 0; inStr = 0; rawHashes = -1; interp = 0; hole = 0; holeStr = 0; holeCmt = 0 }
+FNR == 1 {
+  if ((mode == "import" || mode == "imports") && import_file != "") {
+    if (mode == "import") {
+      if (moduleHasImport(import_code, import_target))
+        printf "%s: forbidden import of %s\n", import_file, import_target
+    } else {
+      emitImports(import_code)
+    }
+  }
+  if (mode == "import" || mode == "imports") { import_file = FILENAME; import_code = "" }
+  depth = 0; inStr = 0; rawHashes = -1; interp = 0; hole = 0; holeStr = 0; holeCmt = 0
+}
 {
   line = $0; code = ""; inLine = 0; trailing = ""
   n = length(line); i = 1
@@ -80,7 +112,11 @@ FNR == 1 { depth = 0; inStr = 0; rawHashes = -1; interp = 0; hole = 0; holeStr =
       i++; continue
     }
     if (inLine) { i++; continue }
-    if (substr(line, i, LG) == G) { i = skipGuillemets(line, i); code = code "«x»"; continue }
+    if (substr(line, i, LG) == G) {
+      j = skipGuillemets(line, i)
+      code = code (((mode == "import" || mode == "imports") ? substr(line, i, j - i) : "«x»"))
+      i = j; continue
+    }
     if (two == "--") { inLine = 1; trailing = substr(line, i); i += 2; continue }
     if (two == "/-") { depth++; code = code " "; i += 2; continue }   # a comment separates tokens
     if (c == "\"") { inStr = 1; rawHashes = -1; interp = (code ~ /[A-Za-z0-9_]![[:space:]]*$/) ? 1 : 0; i++; continue }
@@ -108,9 +144,16 @@ FNR == 1 { depth = 0; inStr = 0; rawHashes = -1; interp = 0; hole = 0; holeStr =
       printf "%s:%d:%s\n", FILENAME, FNR, line
   } else if (mode == "root") {
     if (!rootLineOk(code)) printf "%s:%d:%s\n", FILENAME, FNR, line
+  } else if (mode == "import" || mode == "imports") {
+    import_code = import_code " " code
   } else {
     print "lean-code-scan.awk: unknown mode '" mode "'" > "/dev/stderr"; exit 2
   }
+}
+END {
+  if (mode == "import" && import_file != "" && moduleHasImport(import_code, import_target))
+    printf "%s: forbidden import of %s\n", import_file, import_target
+  if (mode == "imports" && import_file != "") emitImports(import_code)
 }
 function hashes(k,   s) { s = ""; while (k-- > 0) s = s "#"; return s }
 # Index just past the `»` closing the `«` at position i (end of line if unterminated).
@@ -131,4 +174,76 @@ function rootLineOk(s,   toks, nt, k, t) {
   if (t ~ /^[.0-9]/ || t ~ /\.$/ || t ~ /\.\./) return 0
   if (t ~ /[][(){}<>:;,=+*\/\\|&^%$#@~`"-]/) return 0
   return 1
+}
+# True if `s` (an accumulated code stream) imports `target` or a module dotted under it,
+# honouring `module`/`public`/`meta`/`all` import modifiers and a whole-name `«target»` escape.
+# A partially escaped dotted name (`TDA.«Probability».SamplingCoverage`) still matches via the
+# substr prefix check once normalizeEscapedModule below would unescape it — but this function
+# compares raw tokens, so it only recognises `target` escaped as a whole; callers that need the
+# general case use emitImports, whose output is already normalized.
+function moduleHasImport(s, target,   toks, nt, i, k, module, escaped_target) {
+  nt = split(s, toks, /[[:space:]]+/)
+  escaped_target = G target GC
+  for (i = 1; i <= nt; i++) {
+    k = i
+    if (toks[k] == "module") k++
+    if (toks[k] == "public") k++
+    if (toks[k] == "meta") k++
+    if (toks[k] != "import") continue
+    k++
+    if (toks[k] == "all") k++
+    if (k > nt) continue
+    module = toks[k]
+    if (module == target || substr(module, 1, length(target) + 1) == target "." ||
+        module == escaped_target || substr(module, 1, length(escaped_target) + 1) == escaped_target ".")
+      return 1
+  }
+  return 0
+}
+# Prints each direct imported module name in `s` (an accumulated code stream), one per line,
+# with every `«…»` escape unescaped (normalizeEscapedModule) so a caller comparing against
+# plain dotted module names recognises `import «Foo».Bar` and `import Foo.«Bar»` the same as
+# `import Foo.Bar`.
+function emitImports(s,   protected, sentinel, i, n, j, escaped, toks, nt, k, module) {
+  # A `«…»` escape may itself contain whitespace (a legal Lean identifier character); protect
+  # it with a sentinel byte before splitting on whitespace, exactly as Lean's own lexer would
+  # still see one token, then restore the spaces once each import's module token is isolated.
+  sentinel = sprintf("%c", 1); protected = ""; n = length(s); i = 1
+  while (i <= n) {
+    if (substr(s, i, LG) == G) {
+      j = skipGuillemets(s, i)
+      escaped = substr(s, i, j - i); gsub(/[[:space:]]/, sentinel, escaped)
+      protected = protected escaped; i = j
+    } else {
+      protected = protected substr(s, i, 1); i++
+    }
+  }
+  nt = split(protected, toks, /[[:space:]]+/)
+  for (i = 1; i <= nt; i++) {
+    if (toks[i] != "import") continue
+    k = i + 1
+    if (toks[k] == "all") k++
+    if (k > nt || toks[k] == "") continue
+    module = toks[k]
+    # A line comment can separate the components of a dotted module name on consecutive
+    # non-comment tokens; rejoin spaces around a leading/trailing dot.
+    while (k < nt && (module ~ /\.$/ || toks[k + 1] ~ /^\./)) { k++; module = module toks[k] }
+    gsub(sentinel, " ", module)
+    print normalizeEscapedModule(module)
+  }
+}
+# Strips every `«…»` escape in a dotted module name down to its body (`«Foo».«Bar»` ->
+# `Foo.Bar`), matching Lean's own treatment of `«…»` as syntax for writing an identifier that
+# may contain characters an unescaped identifier cannot, not a different identifier.
+function normalizeEscapedModule(s,   start, after_open, close_rel, close_start, close_next, body) {
+  while ((start = index(s, G)) > 0) {
+    after_open = start + LG
+    close_rel = index(substr(s, after_open), GC)
+    if (close_rel == 0) break
+    close_start = after_open + close_rel - 1
+    body = substr(s, after_open, close_start - after_open)
+    close_next = close_start + LGC
+    s = substr(s, 1, start - 1) body substr(s, close_next)
+  }
+  return s
 }

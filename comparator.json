@@ -1,0 +1,7 @@
+{
+  "challenge_module": "ComparatorChallenge.Reference",
+  "solution_module": "TDA.Probability.SamplingCoverage",
+  "theorem_names": ["TDA.Probability.measure_missedCover_le_card_mul"],
+  "definition_names": [],
+  "permitted_axioms": ["propext", "Classical.choice", "Quot.sound"]
+}

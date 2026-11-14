@@ -13,7 +13,8 @@
 ## Commands
 ```sh
 scripts/bootstrap.sh   # cached mathlib + git hooks; never cold-build mathlib
-scripts/check.sh       # guarded build, live axiom audit and coverage
+scripts/check.sh       # guarded build, live axiom audit, coverage and Comparator agreement
+scripts/check-comparator.sh # standalone Comparator run for the frozen bounded-pilot contract
 scripts/lean.sh lake <args> # mandatory for direct Lean/Lake commands
 scripts/lean.sh lean <args> # mandatory for direct Lean invocation
 LOOP_JOB_ID=tda-lib/issue-N/role scripts/codex.sh <args> # child Codex
@@ -27,7 +28,7 @@ separate from concurrent build count. Codex commands must use these entry points
 optional supported Bash adapters; their activation depends on harness support and trust. See `docs/orchestration.md`.
 
 ## Code Conventions
-- No unmarked `sorry`/`admit` or custom axioms; Issue-authorized private staging holes on develop obey inherited guards and cannot enter pinned theorem closures or stable releases.
+- No unmarked `sorry`/`admit` or custom axioms; Issue-authorized private staging holes on develop obey inherited guards and cannot enter pinned theorem closures or stable releases. `ComparatorChallenge/`'s frozen reference (docs/adr/0003-comparator-pilot-contract.md) is fully proved and carries no exemption from either guard mode.
 - Never weaken or trivialize statements to close proofs; statement changes need independent source ↔ Lean review.
 - Apply `.agents/skills/lean-review-routing/SKILL.md` § Semantic and API quality to current work and the pre-release consolidated review; use existing CI evidence for mechanical checks.
 - Pin every public theorem in its area's append-only `scripts/print_axioms/<Area>.lean`; keep `TDA.lean` and each `TDA/<Area>.lean` aggregator imports-only. Add modules to their owning area aggregator.

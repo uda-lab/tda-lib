@@ -158,7 +158,7 @@ jobs:
           fi
           build=true
           if [ "$decided" = true ] \
-             && ! grep -qE '\.lean$|^lakefile|^lean-toolchain$|^lake-manifest\.json$|^scripts/|^\.github/workflows/' "$list"; then
+             && ! grep -qE '\.lean$|^lakefile|^lean-toolchain$|^lake-manifest\.json$|^comparator\.json$|^scripts/|^\.github/workflows/' "$list"; then
             build=false
           fi
           if [ "$BASE_REF" = main ] || [ "${GITHUB_REF_NAME:-}" = main ] || [ "$RELEASE_CHECK" = true ]; then build=true; fi
