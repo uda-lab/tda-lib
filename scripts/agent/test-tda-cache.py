@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test the TDA cache key and its workflow consumer without running Lean."""
+"""Test the TDA cache keys and their workflow consumer without running Lean."""
 
 import json
 import os
@@ -14,14 +14,9 @@ import unittest
 SOURCE = Path(__file__).resolve().parents[2]
 HELPER = SOURCE / "scripts/lib/tda-cache.py"
 WORKFLOW = SOURCE / ".github/workflows/ci.yml"
-LEGACY_PREFIX = (
-    "tda-build-${{ runner.os }}-${{ runner.arch }}-"
-    "${{ hashFiles('lean-toolchain') }}-"
-    "${{ hashFiles('lake-manifest.json', 'lakefile.toml') }}-"
-)
-V2_KEY = (
-    "tda-build-v2-${{ runner.os }}-${{ runner.arch }}-"
-    "${{ steps.tda-key.outputs.key }}-${{ github.sha }}"
+V3_KEY = (
+    "tda-build-v3-${{ runner.os }}-${{ runner.arch }}-"
+    "${{ steps.tda-key.outputs.compat }}-${{ steps.tda-key.outputs.full }}-${{ github.sha }}"
 )
 
 
@@ -124,12 +119,20 @@ class TdaCacheTests(unittest.TestCase):
             check=False,
         )
 
-    def key(self):
+    def keys(self):
+        """Return (compat, full) hex digests from a successful `key` invocation."""
         result = self.run_key("key")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertRegex(result.stdout, r"\A[0-9a-f]{64}\n\Z")
+        self.assertRegex(result.stdout, r"\Acompat=[0-9a-f]{64}\nfull=[0-9a-f]{64}\n\Z")
         self.assertEqual(result.stderr, "")
-        return result.stdout.strip()
+        compat_line, full_line = result.stdout.splitlines()
+        return compat_line.split("=", 1)[1], full_line.split("=", 1)[1]
+
+    def compat(self):
+        return self.keys()[0]
+
+    def full(self):
+        return self.keys()[1]
 
     def assert_no_key(self, result, message=None):
         self.assertNotEqual(result.returncode, 0, message or result.stdout)
@@ -143,17 +146,17 @@ class TdaCacheTests(unittest.TestCase):
         self.write("lakefile.toml", contents)
 
     def test_only_top_level_package_version_is_ignored(self):
-        original = self.key()
+        original = self.keys()
         config = self.config()
         for version in ("0.4.0", "1.0.0-rc.1+build.7"):
             with self.subTest(version=version):
                 self.set_config(config.replace('version = "0.3.0"', f'version = "{version}"'))
-                self.assertEqual(self.key(), original)
+                self.assertEqual(self.keys(), original)
         self.set_config(config.replace('version = "0.3.0"\n', ""))
-        self.assertEqual(self.key(), original)
+        self.assertEqual(self.keys(), original)
 
     def test_toml_formatting_comments_and_table_key_order_normalize(self):
-        original = self.key()
+        original = self.keys()
         config = self.config()
         changed = config.replace(
             'description = "fixture package"\nlicense = "Apache-2.0"',
@@ -163,23 +166,32 @@ class TdaCacheTests(unittest.TestCase):
             'version = "nested-v1"\nrev = "v4.33.1"\ngit = "https://example.invalid/mathlib.git"\nname = "mathlib"',
         )
         self.set_config(changed)
-        self.assertEqual(self.key(), original)
+        self.assertEqual(self.keys(), original)
 
-    def test_raw_manifest_toolchain_and_build_configuration_invalidate(self):
-        original_config = self.config()
-        original_manifest = (self.root / "lake-manifest.json").read_bytes()
+    def test_toolchain_and_manifest_changes_move_both_keys(self):
         original_toolchain = (self.root / "lean-toolchain").read_bytes()
-        base_key = self.key()
+        original_manifest = (self.root / "lake-manifest.json").read_bytes()
+        base_compat, base_full = self.keys()
 
         (self.root / "lean-toolchain").write_bytes(original_toolchain + b"# changed\n")
-        self.assertNotEqual(self.key(), base_key)
+        compat, full = self.keys()
+        self.assertNotEqual(compat, base_compat)
+        self.assertNotEqual(full, base_full)
         (self.root / "lean-toolchain").write_bytes(original_toolchain)
+        self.assertEqual(self.keys(), (base_compat, base_full))
 
         manifest = json.loads(original_manifest)
         manifest["packages"][0]["rev"] = "def456"
         self.write_manifest(manifest)
-        self.assertNotEqual(self.key(), base_key)
+        compat, full = self.keys()
+        self.assertNotEqual(compat, base_compat)
+        self.assertNotEqual(full, base_full)
         (self.root / "lake-manifest.json").write_bytes(original_manifest)
+        self.assertEqual(self.keys(), (base_compat, base_full))
+
+    def test_lakefile_changes_move_only_the_full_key(self):
+        original_config = self.config()
+        base_compat, base_full = self.keys()
 
         variants = (
             ("rev", 'rev = "v4.33.1"', 'rev = "v4.33.2"'),
@@ -201,24 +213,33 @@ class TdaCacheTests(unittest.TestCase):
         for label, old, new in variants:
             with self.subTest(change=label):
                 self.set_config(original_config.replace(old, new, 1))
-                self.assertNotEqual(self.key(), base_key)
+                compat, full = self.keys()
+                self.assertEqual(
+                    compat, base_compat,
+                    "a lakefile-only change must not move the compatibility key",
+                )
+                self.assertNotEqual(full, base_full)
 
         renamed_unknown = original_config.replace(
             'future_flag = "preserve"', 'future_option = "preserve"'
         )
         self.set_config(renamed_unknown)
-        self.assertNotEqual(self.key(), base_key)
+        compat, full = self.keys()
+        self.assertEqual(compat, base_compat)
+        self.assertNotEqual(full, base_full)
 
     def test_tagged_types_nested_values_and_arrays_are_distinct(self):
         config = self.config()
+        base_compat = self.compat()
         keys = set()
         for value in ("true", "1", "true", "1"):
             self.set_config(config + f"\n[typed]\nvalue = {json.dumps(value)}\n")
-            keys.add(self.key())
+            self.assertEqual(self.compat(), base_compat)
+            keys.add(self.full())
         self.set_config(config + "\n[typed]\nvalue = true\n")
-        boolean_key = self.key()
+        boolean_key = self.full()
         self.set_config(config + "\n[typed]\nvalue = 1\n")
-        integer_key = self.key()
+        integer_key = self.full()
         self.assertEqual(len(keys), 2)
         self.assertNotIn(boolean_key, keys)
         self.assertNotIn(integer_key, keys)
@@ -226,9 +247,10 @@ class TdaCacheTests(unittest.TestCase):
 
         nested = config + '\n[typed]\nvalue = { enabled = true, labels = ["a", "b"] }\n'
         self.set_config(nested)
-        ordered = self.key()
+        ordered = self.full()
         self.set_config(nested.replace('["a", "b"]', '["b", "a"]'))
-        self.assertNotEqual(self.key(), ordered)
+        self.assertNotEqual(self.full(), ordered)
+        self.assertEqual(self.compat(), base_compat)
 
     def test_unsupported_values_fail_without_stdout(self):
         original_config = self.config()
@@ -245,9 +267,9 @@ class TdaCacheTests(unittest.TestCase):
                 self.assertIn("unsupported TOML value type", result.stderr)
 
         self.set_config(original_config + '\n[unsupported]\nvalue = "1979-05-27"\n')
-        string_key = self.key()
+        string_key = self.full()
         self.set_config(self.config().replace('value = "1979-05-27"', 'value = "1979-05-28"'))
-        self.assertNotEqual(self.key(), string_key)
+        self.assertNotEqual(self.full(), string_key)
 
     def test_missing_malformed_and_unsupported_inputs_fail_closed(self):
         for name in ("lean-toolchain", "lake-manifest.json", "lakefile.toml"):
@@ -309,18 +331,23 @@ class TdaCacheTests(unittest.TestCase):
         self.assert_no_key(self.run_key("wrong-command"))
 
     def test_helper_bytes_cwd_and_source_edits(self):
-        original = self.key()
-        self.assertEqual(self.run_key("key", cwd=self.other_cwd).stdout.strip(), original)
-        self.assertEqual(self.key(), original)
+        original = self.keys()
+        self.assertEqual(
+            tuple(self.run_key("key", cwd=self.other_cwd).stdout.splitlines()),
+            (f"compat={original[0]}", f"full={original[1]}"),
+        )
+        self.assertEqual(self.keys(), original)
 
         self.write("TDA/Example.lean", "def before := 1\n")
-        self.assertEqual(self.key(), original)
+        self.assertEqual(self.keys(), original)
         self.write("TDA/Example.lean", "def after := 2\n")
-        self.assertEqual(self.key(), original)
+        self.assertEqual(self.keys(), original)
 
         with self.helper.open("ab") as helper:
             helper.write(b"\n# changed helper bytes\n")
-        self.assertNotEqual(self.key(), original)
+        compat, full = self.keys()
+        self.assertNotEqual(compat, original[0])
+        self.assertNotEqual(full, original[1])
 
     def test_shell_sensitive_strings_remain_data(self):
         marker = self.root / "should-not-exist"
@@ -333,7 +360,7 @@ $(touch {marker})"""
         self.set_config(config)
         result = self.run_key("key")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertRegex(result.stdout, r"\A[0-9a-f]{64}\n\Z")
+        self.assertRegex(result.stdout, r"\Acompat=[0-9a-f]{64}\nfull=[0-9a-f]{64}\n\Z")
         self.assertFalse(marker.exists())
 
 
@@ -356,13 +383,19 @@ class WorkflowWiringTests(unittest.TestCase):
         self.assertIn("id: tda-key", self.compatibility)
         self.assertIn("shell: bash", self.compatibility)
         self.assertIn("set -euo pipefail", self.compatibility)
-        self.assertIn('key="$(python3 scripts/lib/tda-cache.py key)"', self.compatibility)
-        self.assertIn('[[ ! "$key" =~ ^[0-9a-f]{64}$ ]]', self.compatibility)
-        self.assertIn("printf 'key=%s\\n' \"$key\" >> \"$GITHUB_OUTPUT\"", self.compatibility)
-        self.assertNotRegex(self.compatibility, r"echo\s+['\"]?key=\$\(")
+        self.assertIn('output="$(python3 scripts/lib/tda-cache.py key)"', self.compatibility)
+        self.assertIn('compat="$(sed -n \'s/^compat=//p\' <<< "$output")"', self.compatibility)
+        self.assertIn('full="$(sed -n \'s/^full=//p\' <<< "$output")"', self.compatibility)
+        self.assertIn(
+            '[[ ! "$compat" =~ ^[0-9a-f]{64}$ ]] || [[ ! "$full" =~ ^[0-9a-f]{64}$ ]]',
+            self.compatibility,
+        )
+        self.assertIn("printf 'compat=%s\\n' \"$compat\" >> \"$GITHUB_OUTPUT\"", self.compatibility)
+        self.assertIn("printf 'full=%s\\n' \"$full\" >> \"$GITHUB_OUTPUT\"", self.compatibility)
+        self.assertNotRegex(self.compatibility, r"echo\s+['\"]?(compat|full)=\$\(")
 
         for block in (self.restore, self.save):
-            self.assertIn(f"key: {V2_KEY}", block)
+            self.assertIn(f"key: {V3_KEY}", block)
             self.assertIn("path: .lake/build", block)
             self.assertIn("continue-on-error: true", block)
         self.assertIn("uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25", self.restore)
@@ -371,10 +404,12 @@ class WorkflowWiringTests(unittest.TestCase):
         self.assertIsNotNone(restore_keys)
         prefixes = [line.strip() for line in restore_keys.group(1).splitlines()]
         self.assertEqual(prefixes, [
-            "tda-build-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.key }}-",
-            LEGACY_PREFIX,
+            "tda-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.compat }}-${{ steps.tda-key.outputs.full }}-",
+            "tda-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.compat }}-",
         ])
-        self.assertEqual(self.workflow.count(LEGACY_PREFIX), 1)
+        self.assertNotIn("tda-build-v2", self.workflow)
+        self.assertNotIn("hashFiles('lean-toolchain')", self.workflow)
+        self.assertNotIn("hashFiles('lake-manifest.json', 'lakefile.toml')", self.workflow)
         self.assertIn("if: steps.changes.outputs.build == 'true'", self.restore)
         self.assertIn("if: steps.tda-cache.outcome == 'failure'", self.cleanup)
         self.assertIn("rm -rf .lake/build", self.cleanup)
@@ -412,7 +447,7 @@ class WorkflowWiringTests(unittest.TestCase):
         (root / "lake-manifest.json").write_text('{"name":"CacheFixture","packages":[]}\n', encoding="utf-8")
         (root / "lakefile.toml").write_text('name = "CacheFixture"\nversion = "0.1.0"\n', encoding="utf-8")
 
-    def test_actual_step_writes_only_a_validated_key(self):
+    def test_actual_step_writes_only_validated_keys(self):
         with tempfile.TemporaryDirectory(prefix="tda-cache-step-") as tmp:
             root = Path(tmp)
             self.make_shell_fixture(root)
@@ -420,7 +455,10 @@ class WorkflowWiringTests(unittest.TestCase):
             success = self.run_actual_step(root, output_file)
             self.assertEqual(success.returncode, 0, success.stderr)
             self.assertEqual(success.stdout, "")
-            self.assertRegex(output_file.read_text(), r"\Akey=[0-9a-f]{64}\n\Z")
+            self.assertRegex(
+                output_file.read_text(),
+                r"\Acompat=[0-9a-f]{64}\nfull=[0-9a-f]{64}\n\Z",
+            )
 
             output_file.unlink()
             (root / "lakefile.toml").write_text("bad = [\n", encoding="utf-8")

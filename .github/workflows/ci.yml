@@ -250,16 +250,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          key="$(python3 scripts/lib/tda-cache.py key)"
-          if [[ ! "$key" =~ ^[0-9a-f]{64}$ ]]; then
+          output="$(python3 scripts/lib/tda-cache.py key)"
+          compat="$(sed -n 's/^compat=//p' <<< "$output")"
+          full="$(sed -n 's/^full=//p' <<< "$output")"
+          if [[ ! "$compat" =~ ^[0-9a-f]{64}$ ]] || [[ ! "$full" =~ ^[0-9a-f]{64}$ ]]; then
             echo 'Invalid TDA cache compatibility key' >&2
             exit 1
           fi
-          printf 'key=%s\n' "$key" >> "$GITHUB_OUTPUT"
+          printf 'compat=%s\n' "$compat" >> "$GITHUB_OUTPUT"
+          printf 'full=%s\n' "$full" >> "$GITHUB_OUTPUT"
 
       # Reuse only this project's compiled outputs; mathlib keeps its own pinned cache.
-      # A PR can read the cache seeded by its base develop branch. Lake still checks
-      # source-content and dependency traces during the full build below.
+      # A PR can read the cache seeded by its base develop branch. The restore falls
+      # back from the full key to the lakefile-independent compatibility key so a
+      # lakefile-only change (e.g. adding a [[lean_lib]]) still finds a usable cache.
+      # Lake still checks source-content and dependency traces during the full build
+      # below, so a restored cache from a different lakefile can never make it skip
+      # rebuilding something that changed.
       - name: Restore TDA build cache
         if: steps.changes.outputs.build == 'true'
         id: tda-cache
@@ -267,10 +274,10 @@ jobs:
         continue-on-error: true
         with:
           path: .lake/build
-          key: tda-build-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.key }}-${{ github.sha }}
+          key: tda-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.compat }}-${{ steps.tda-key.outputs.full }}-${{ github.sha }}
           restore-keys: |
-            tda-build-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.key }}-
-            tda-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json', 'lakefile.toml') }}-
+            tda-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.compat }}-${{ steps.tda-key.outputs.full }}-
+            tda-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.compat }}-
 
       # A failed extraction must not leave partial artifacts for Lake to consume.
       - name: Discard failed TDA cache restore
@@ -294,7 +301,7 @@ jobs:
         continue-on-error: true
         with:
           path: .lake/build
-          key: tda-build-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.key }}-${{ github.sha }}
+          key: tda-build-v3-${{ runner.os }}-${{ runner.arch }}-${{ steps.tda-key.outputs.compat }}-${{ steps.tda-key.outputs.full }}-${{ github.sha }}
 
       - name: Build skipped (no build-relevant changes)
         if: steps.changes.outputs.build != 'true'
