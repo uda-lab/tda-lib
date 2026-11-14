@@ -37,12 +37,12 @@ theorem ofIso {A₀ B₀ A B : PModule.{u,0,u} k P} {π : A₀ ⟶ B₀}
   refine ⟨hπ.term_rank_projective.of_iso eA, ?_, ?_⟩
   · simpa [π', eK] using hπ.row_rank_exact.of_iso eK eA eB
   · intro u hu
-    let u₀ : End A₀ := eA.hom ≫ u ≫ eA.inv
-    have hu₀ : u₀ ≫ π = π := by
+    let u₀ : End A₀ := .of (eA.hom ≫ u.asHom ≫ eA.inv)
+    have hu₀ : u₀.asHom ≫ π = π := by
       apply (cancel_mono eB.hom).1
       simpa [u₀, π', Category.assoc] using congrArg (fun f => eA.hom ≫ f) hu
-    haveI : IsIso u₀ := hπ.endomorphism_isIso u₀ hu₀
-    have hu_eq : u = eA.inv ≫ u₀ ≫ eA.hom := by
+    haveI : IsIso u₀.asHom := hπ.endomorphism_isIso u₀ hu₀
+    have hu_eq : u.asHom = eA.inv ≫ u₀.asHom ≫ eA.hom := by
       simp [u₀, Category.assoc]
     rw [hu_eq]
     infer_instance
@@ -67,17 +67,7 @@ private theorem zero_identity :
   have hzero : IsRankProjective (0 : PModule.{u,0,u} k P) := by
     intro L A B ι π hs α
     exact ⟨0, (isZero_zero _).eq_of_src _ _⟩
-  refine ⟨hzero, ?_, ?_⟩
-  · exact RankKernel.rankExact (𝟙 (0 : PModule.{u,0,u} k P))
-      (fun _ x => ⟨x, rfl⟩)
-      (by
-        intro a b hab x hx
-        exact ⟨x, Subsingleton.elim _ _, hx⟩)
-  · intro u hu
-    have hu' : u = 𝟙 (0 : PModule.{u,0,u} k P) :=
-      (isZero_zero _).eq_of_src _ _
-    rw [hu']
-    infer_instance
+  exact IsRankProjectiveCover.of_identity hfd hzero
 
 private theorem zero_map :
     IsRankProjectiveCover (0 : (0 : PModule.{u,0,u} k P) ⟶ 0) := by
@@ -104,6 +94,20 @@ theorem MinimalFiniteRankProjectiveResolution.termAt_eq
     (h : j < R.resolution.length) :
     R.termAt j = R.resolution.term ⟨j, h⟩ := by
   simp [MinimalFiniteRankProjectiveResolution.termAt, h]
+
+section CoordinateTermAtComparison
+variable {n : ℕ}
+
+/-- The zero-padded term convention for a certified minimal resolution agrees
+with the existing finite-resolution term convention. -/
+@[simp] theorem MinimalFiniteRankProjectiveResolution.termAt_eq_resolution_termAt
+    {M : PModule.{u,0,u} k (Fin n → ℝ)}
+    (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ) :
+    R.termAt j = R.resolution.termAt j := by
+  simp [MinimalFiniteRankProjectiveResolution.termAt,
+    FiniteRankProjectiveResolution.termAt]
+
+end CoordinateTermAtComparison
 
 private noncomputable def MinimalFiniteRankProjectiveResolution.kernelAt
     (R : MinimalFiniteRankProjectiveResolution (k := k) (M := M)) (j : ℕ) :

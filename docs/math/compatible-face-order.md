@@ -33,6 +33,20 @@ extension. It establishes no range-order equivalence, initial-segment theorem, s
 reconstruction, simplexwise reindexing, topological result, homology, reduction, pairing, or
 barcode consequence.
 
+## A tied-edge counterexample
+
+Take the three nonempty faces `{0}`, `{1}`, and `{0,1}`, all with grade 5. The list
+`[{0,1}, {0}, {1}]` is a bijective, grade-monotone enumeration: its values are all equal.
+The `monotone` field accepts this list because all grades are equal, but `face_lt` would require
+the index 1 of `{0}` to be less than the index 0 of `{0,1}`. The two separate conditions are
+defined by [`CompatibleOrder`](../../TDA/Filtration/CompatibleOrder.lean). The private `edge3`
+and `badEnum` definitions, with the `badEnum_grade_mono` and `badEnum_not_compatible` proofs,
+are in [`CompatibleOrderExamples.lean`](../../TDA/Filtration/CompatibleOrderExamples.lean).
+
+When grades tie, the constructor's cardinality key puts both vertices before the edge, and
+colex breaks the tie between the two vertices. Compatibility requires each vertex before its
+proper coface, but it imposes no order between the incomparable vertices.
+
 ## Source and API notes
 
 - [`FiniteComplex.lean`](../../TDA/Simplicial/FiniteComplex.lean) converts the stored finite
@@ -41,7 +55,8 @@ barcode consequence.
 - [`FilterFunction.lean`](../../TDA/Filtration/FilterFunction.lean) supplies values on faces and weak monotonicity under inclusion. No additional filter assumption is introduced.
 - The repository baseline for those modules is develop
   [`fa0cece24f7c00a820981872494092d8a4a3df76`](https://github.com/uda-lab/tda-lib/commit/fa0cece24f7c00a820981872494092d8a4a3df76).
-- Mathlib is pinned at `0df444a360eaa60ab8c11dca51a86af692955474`. The implementation reuses
+- Mathlib was pinned at `0df444a360eaa60ab8c11dca51a86af692955474` when this implementation
+  was written; the current pin is `56a005855ea17e0b0958f73ec801ae140b0a1679` (v4.35.0). It reuses
   [`Finset.Sort`](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Data/Finset/Sort.lean)
   (`Fintype.orderIsoFinOfCardEq`, `Finset.orderIsoOfFin`; the executable path passes through
   `Finset.sort`, `Multiset.sort`, and `List.SortedLT.getIso`),

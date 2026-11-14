@@ -4,6 +4,8 @@
 # No environment marker alone skips acquisition. Do not wrap these scripts in outer locks.
 lean_lock_root=${ROOT:?ROOT must name the repository}
 lean_lock_helper="$lean_lock_root/scripts/lib/build-resources.py"
+. "$lean_lock_root/scripts/lib/lake-artifact-cache.sh"
+lake_artifact_cache_init "$lean_lock_root" || exit 1
 lean_lock_files=$(python3 "$lean_lock_helper" "$lean_lock_root") || exit 1
 lean_had_inherited_locks=${LEAN_RESOURCE_LOCK_FDS:-}
 lean_inherited_locks=$(python3 "$lean_lock_helper" --inherited) || exit 1

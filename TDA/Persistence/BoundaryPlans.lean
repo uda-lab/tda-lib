@@ -1,4 +1,4 @@
-import TDA.Persistence.BoundaryTransportGeometry
+import TDA.Persistence.BoundaryTransportGeometryCore
 import Mathlib.MeasureTheory.Measure.FiniteMeasure
 import Mathlib.MeasureTheory.Integral.Lebesgue.Map
 
@@ -119,6 +119,20 @@ theorem interiorIncl_injective : Function.Injective interiorIncl := by
     simpa only [interiorIncl] using congrArg Subtype.val h
   exact Subtype.ext h'
 
+/-- Membership in the image of `interiorIncl` is exactly membership in its source set. -/
+@[simp] theorem interiorIncl_mem_image (x : Interior) (s : Set Interior) :
+    interiorIncl x ∈ interiorIncl '' s ↔ x ∈ s := by
+  exact interiorIncl_injective.mem_set_image
+
+/-- A diagonal projection never belongs to the image of the strict interior. -/
+@[simp] theorem diagonalProjection_not_mem_image (x : Interior) (s : Set Interior) :
+    diagonalProjection x ∉ interiorIncl '' s := by
+  rintro ⟨y, _, h⟩
+  have hy : (diagonalProjection x).1.1 < (diagonalProjection x).1.2 := by
+    rw [← h]
+    exact y.2
+  simp [diagonalProjection] at hy
+
 theorem measurableEmbedding_interiorIncl : MeasurableEmbedding interiorIncl :=
   continuous_interiorIncl.measurableEmbedding interiorIncl_injective
 
@@ -156,41 +170,19 @@ theorem diagonalBoundaryPlan_admissible (μ ν : Measure Interior) :
   have hfirstDelete (s : Set Interior) : deleteLeg ⁻¹' firstFiber s = s := by
     ext x
     change interiorIncl x ∈ interiorIncl '' s ↔ x ∈ s
-    constructor
-    · rintro ⟨y, hy, hxy⟩
-      exact (interiorIncl_injective hxy).symm ▸ hy
-    · intro hx
-      exact ⟨x, hx, rfl⟩
+    exact interiorIncl_mem_image x s
   have hfirstInsert (s : Set Interior) : insertLeg ⁻¹' firstFiber s = ∅ := by
     ext x
     change diagonalProjection x ∈ interiorIncl '' s ↔ False
-    constructor
-    · rintro ⟨y, _, heq⟩
-      have h : (diagonalProjection x).1.1 < (diagonalProjection x).1.2 := by
-        rw [← heq]
-        exact y.2
-      simp [diagonalProjection] at h
-    · intro h
-      exact False.elim h
+    exact ⟨fun h => diagonalProjection_not_mem_image x s h, False.elim⟩
   have hsecondDelete (s : Set Interior) : deleteLeg ⁻¹' secondFiber s = ∅ := by
     ext x
     change diagonalProjection x ∈ interiorIncl '' s ↔ False
-    constructor
-    · rintro ⟨y, _, heq⟩
-      have h : (diagonalProjection x).1.1 < (diagonalProjection x).1.2 := by
-        rw [← heq]
-        exact y.2
-      simp [diagonalProjection] at h
-    · intro h
-      exact False.elim h
+    exact ⟨fun h => diagonalProjection_not_mem_image x s h, False.elim⟩
   have hsecondInsert (s : Set Interior) : insertLeg ⁻¹' secondFiber s = s := by
     ext x
     change interiorIncl x ∈ interiorIncl '' s ↔ x ∈ s
-    constructor
-    · rintro ⟨y, hy, hxy⟩
-      exact (interiorIncl_injective hxy).symm ▸ hy
-    · intro hx
-      exact ⟨x, hx, rfl⟩
+    exact interiorIncl_mem_image x s
   constructor
   · intro s hs
     rw [diagonalBoundaryPlan, Measure.add_apply,

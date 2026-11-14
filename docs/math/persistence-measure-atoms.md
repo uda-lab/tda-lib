@@ -87,6 +87,24 @@ from the existing q-tame module with infinite-dimensional ephemeral fibers.
 The construction covers finite births, finite deaths and essential deaths. Its module
 lower-bound theorem supplies the relevant birth-support bound for lower-bounded modules.
 Algebraic stability of the extracted diagram is proved by `qTame_bottleneck_le_of_realInterleaving`
-(see [Rips metric stability](rips-metric-stability.md)); compatibility with the existing finite
-diagram type is proved for positive finite diagrams and finite Rips spaces, not for arbitrary
-q-tame modules.
+(see [Rips metric stability](rips-metric-stability.md)).
+
+For a right-continuous finite-constructible module that is zero before its first critical
+value and has finite-dimensional critical fibers, `ConstructibleQTameCompatibility`
+identifies this measure diagram with its finite barcode. The barcode consists of
+`[b,d)` and `[b,∞)` intervals, represented by `(minusCut b,minusCut d)` and
+`(minusCut b,infinityCut)`. Its occurrence counts equal the canonical multiplicity at
+every decorated point, and its finite bottleneck equals the locally finite bottleneck
+of the canonical diagrams. Q-tameness is derived from the constructibility hypotheses.
+
+The correspondence between interval occurrences and persistence measures follows the
+convention of Chazal–de Silva–Glisse–Oudot,
+[§1.6 and §2.1, Corollary 2.2](https://arxiv.org/html/1207.3674v3#S2.SS1), with essential
+deaths treated on the infinite boundary as in
+[§2.6](https://arxiv.org/html/1207.3674v3#S2.SS6).
+[Bauer–Lesnick](https://arxiv.org/html/1311.3681v4) provides the matching and algebraic-stability
+context.
+
+Finite diagram compatibility is established for positive finite diagrams, finite Rips spaces,
+and the stated finite-constructible modules. Compatibility for arbitrary q-tame modules with
+finite barcodes, unrestricted endpoint conventions, and births at minus infinity is not claimed.

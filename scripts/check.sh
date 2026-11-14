@@ -3,7 +3,9 @@
 #   textual guards (sorry/admit, custom axioms, transient artefacts, merge-conflict markers,
 #   imports-only root/area aggregator) → lake build →
 #   live axiom audit → axiom-coverage guard (every public theorem is pinned in
-#   scripts/print_axioms/*.lean; uncovered private theorem roots obey the same allowlist).
+#   scripts/print_axioms/*.lean; uncovered private theorem roots obey the same allowlist) →
+#   Comparator agreement for the frozen bounded-pilot contract
+#   (docs/adr/0003-comparator-pilot-contract.md; measured ≤ 60s on this container).
 # The whole gate holds canonical build/dependency path locks across its nested wrappers.
 # Independent workspaces may proceed when resources permit; shared mutable paths exclude.
 set -euo pipefail
@@ -42,4 +44,5 @@ unset $(git rev-parse --local-env-vars)
 step "lake build";                     "$ROOT/scripts/lean.sh" lake build
 step "live axiom audit";               bash scripts/check-axioms.sh
 step "axiom coverage";                 bash scripts/check-axiom-coverage.sh
+step "Comparator agreement (bounded pilot)"; bash scripts/check-comparator.sh
 echo "CHECK OK"

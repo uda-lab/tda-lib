@@ -33,6 +33,39 @@ structure IsPointwiseShortExact (ι : L ⟶ M) (π : M ⟶ N) : Prop where
   surjective : ∀ p, Function.Surjective (π.app p).hom
   range_eq_ker : ∀ p, LinearMap.range (ι.app p).hom = LinearMap.ker (π.app p).hom
 
+/-- Componentwise range-kernel equality forces the composite of two persistence
+morphisms to vanish. No injectivity or surjectivity assumption is needed. -/
+theorem comp_eq_zero_of_pointwise_range_eq_ker
+    {k₀ : Type u} [Field k₀] {P₀ : Type v} [Preorder P₀]
+    {L₀ M₀ N₀ : PModule.{u,v,w} k₀ P₀}
+    (f : L₀ ⟶ M₀) (g : M₀ ⟶ N₀)
+    (h : ∀ p, LinearMap.range (f.app p).hom = LinearMap.ker (g.app p).hom) :
+    f ≫ g = 0 := by
+  ext p x
+  have hcomp : (g.app p).hom.comp (f.app p).hom = 0 := by
+    apply (LinearMap.range_le_ker_iff).mp
+    rw [h p]
+  exact congrArg (fun q : L₀.obj p →ₗ[k₀] N₀.obj p => q x) hcomp
+
+namespace IsPointwiseShortExact
+
+/-- The composite of the two maps of a pointwise short exact sequence is zero. -/
+theorem comp_eq_zero
+    {k : Type u} [Field k] {P : Type} [PartialOrder P]
+    {L M N : PModule.{u,0,u} k P} {ι : L ⟶ M} {π : M ⟶ N}
+    (hs : IsPointwiseShortExact ι π) : ι ≫ π = 0 :=
+  TDA.Persistence.comp_eq_zero_of_pointwise_range_eq_ker ι π hs.range_eq_ker
+
+/-- Exactness at the middle term derives that the composite is zero. -/
+theorem comp_eq_zero_of_range_eq_ker
+    {k : Type u} [Field k] {P : Type} [PartialOrder P]
+    {X Y Z : PModule.{u,0,u} k P} (f : X ⟶ Y) (g : Y ⟶ Z)
+    (h : ∀ p, LinearMap.range (f.app p).hom = LinearMap.ker (g.app p).hom) :
+    f ≫ g = 0 :=
+  TDA.Persistence.comp_eq_zero_of_pointwise_range_eq_ker f g h
+
+end IsPointwiseShortExact
+
 /-- Rank exactness for pointwise finite-dimensional modules. Short exactness
 derives finite dimensionality of the outer fibers from the middle fibers. -/
 structure IsRankExact (ι : L ⟶ M) (π : M ⟶ N) : Prop extends

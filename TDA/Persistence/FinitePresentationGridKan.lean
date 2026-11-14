@@ -14,12 +14,16 @@ dimensional. Neither minimality nor a decomposition of the original module
 is required.
 
 This proves the reconstruction step in BOOS, arXiv:2208.00300v3,
-Appendix A's proof of Theorem 2.7. Over a field, the actual Kan functor also
-preserves pointwise finite dimensionality and rank-exact sequences on finite
-product grids. The finite-coordinate inclusion also preserves relative hook
-projectivity and transports the finite-grid hook deflation to an actual
-finite-hook rank-exact cover of every finitely presented real-coordinate
-module. Preservation of minimal resolutions remains a separate result.
+Appendix A's proof of Theorem 2.7. Separate field-side results are proved in
+`CoordinateGridRankExact`: `CoordinateGrid.lan_finiteDimensional` gives
+finite-dimensional Lan fibers for pointwise finite-dimensional grid modules, and
+`CoordinateGrid.lan_isRankExact` gives preservation of rank-exact sequences.
+`CoordinateGridProjective` proves `CoordinateGrid.lan_isRankProjective`, which
+gives preservation of relative rank projectivity. `FinitePresentationHookCover`
+proves `GradedFree.finitelyPresented_exists_finiteHookRankExactCover`, giving
+an actual finite-hook rank-exact cover for every finitely presented
+real-coordinate module over a field. Minimal-resolution transfer is a separate
+result in `FiniteRankProjectiveResolutionKan` under its stated hypotheses.
 -/
 
 set_option autoImplicit false

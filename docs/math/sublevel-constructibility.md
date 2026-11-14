@@ -70,6 +70,31 @@ independent of the face-order interpolation proof: its dependency closure does n
 `bottleneck_dgm_le_faceSupDifference`. Since the bound is finite, the interleaving distance
 is finite, and the two diagrams have the same number of essential classes.
 
+## Lean API
+
+The implementation is in [`TDA/Persistence/SublevelConstructible.lean`](../../TDA/Persistence/SublevelConstructible.lean).
+Import `TDA.Persistence.SublevelConstructible`; the declarations are in `TDA.Persistence`.
+The results use a vertex type `V` with `[LinearOrder V]`, a complex `K` with
+`[Fintype (TDA.Simplicial.TotalFace K)]`, and real-valued filters on `K`. The ring theorem
+`sublevelModule_isConstructible` takes coefficients `R : Type v` with `[Ring R]`, independently
+of the universe of `V`. The field results use `k : Type u` with `[Field k]`, in the same
+universe as `V`, and compare filters on the same `K`.
+
+- `sublevelModule_isConstructible` proves finite constructibility over any ring. Over a field,
+  `sublevelModule_finiteDimensional` gives finite-dimensional critical fibers and
+  `moduleDiagram_sublevelModule` identifies the sampled module diagram with `dgm`;
+  the noncomputable `sublevelModuleRealizationIso` identifies the module with the half-open
+  realization of that diagram.
+- For filters on the same complex, `bottleneck_dgm_eq_realInterleavingDistance` equates diagram
+  bottleneck distance with sublevel-module interleaving distance. At each supplied
+  `ε : ℝ≥0`, `nonempty_sublevelInterleaving_iff` equates the existence of an `ε`-interleaving
+  with the existence of an occurrence matching of cost at most `(ε : ℝ≥0∞)`. This
+  finite-parameter equivalence does not assert that a witness attains the distance infimum.
+- `bottleneck_dgm_le_faceSupDifference_algebraic` gives the algebraic finite-filter stability
+  bound. The accompanying [examples](../../TDA/Persistence/SublevelConstructibleExamples.lean)
+  exercise constructibility and diagram identity on two-point and triangle filters, and the
+  bound on a one-vertex filter.
+
 ## Fixtures
 
 - **Two points and the triangle.** The Čech and Rips filters of the points 0 and 2 on the

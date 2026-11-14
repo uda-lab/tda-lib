@@ -1,0 +1,48 @@
+/* Keep full-size equations scrollable within their block, not the whole page.
+   A minimum intrinsic width keeps centered SVGs reachable at the left edge. */
+.rst-content div.arithmatex {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.rst-content div.arithmatex mjx-container[jax="SVG"][display="true"] {
+  min-width: min-content;
+}
+
+/* The bundled theme makes table cells nowrap. Long API names and prose must
+   wrap, including unbroken identifiers, without turning the table into an
+   extremely wide horizontal scroller. Keep the native table semantics. */
+.rst-content .section table.docutils {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.rst-content .section table.docutils th,
+.rst-content .section table.docutils td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.rst-content .section table.docutils th code,
+.rst-content .section table.docutils td code {
+  white-space: normal;
+}
+
+/* A three-column prose table is not readable when every column is squeezed to
+   a few characters. On small screens retain a bounded, local table scroller;
+   wrapping still caps each column instead of allowing the theme's huge rows. */
+@media (max-width: 767px) {
+  .rst-content .section table.docutils {
+    display: block;
+    overflow-x: auto;
+    table-layout: auto;
+  }
+
+  .rst-content .section table.docutils th,
+  .rst-content .section table.docutils td {
+    min-width: 12rem;
+    max-width: 18rem;
+  }
+}

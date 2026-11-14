@@ -292,7 +292,12 @@ private def diagonalIdealVertexCoinvariantsEquiv :=
       exact (Algebra.smul_def c x.val).symm)
     (fun _ _ => rfl)
 
-private noncomputable def diagonalQuotientVertexCoinvariantsEquiv :=
+/-- The actual scalar transport between the bundled left-module coinvariants and the natural
+quotient-field action on the diagonal quotient coinvariants. -/
+noncomputable def diagonalQuotientVertexCoinvariantsEquiv (v : StrictVertex S) :
+    coinvariants (k := k) (S := S) v
+        (diagonalQuotientModule (k := k) (S := S)) ≃ₗ[k]
+      DiagonalQuotientVertexCoinvariants (k := k) (S := S) v :=
   coinvariantsEquiv (k := k) (S := S) v
     (M := diagonalQuotientModule (k := k) (S := S))
     (N := DiagonalQuotient (k := k) (S := S))

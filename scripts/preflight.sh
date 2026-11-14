@@ -41,7 +41,8 @@ say "elan" "$(have elan && elan --version 2>/dev/null | head -1 || echo missing)
 say "lake" "$(have lake && echo present || echo missing)"
 say "mathlib_oleans" "$(find .lake/packages/mathlib/.lake/build/lib -name '*.olean' 2>/dev/null | wc -l)"
 say "mathlib_cache_dir" "${MATHLIB_CACHE_DIR:-unset}"
-say "lean_num_threads" "${LEAN_NUM_THREADS:-unset}"
+lean_resolve_num_threads 2>/dev/null
+say "lean_num_threads" "${LEAN_NUM_THREADS:-unknown} (${LEAN_NUM_THREADS_SOURCE:-unknown}; ${LEAN_NUM_THREADS_DETECTED:-unknown} detected)"
 # Other checkouts on this machine with the same pin can share their package oleans using
 # separate copies or visible directory symlinks; do not hardlink mutable build outputs.
 pin="$(cat lean-toolchain 2>/dev/null)"

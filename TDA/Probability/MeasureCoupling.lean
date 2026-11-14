@@ -24,8 +24,8 @@ variable [MeasurableSpace X] [MeasurableSpace Y]
 /-- A probability coupling with exact first and second marginals. -/
 structure MeasureCoupling (μ : ProbabilityMeasure X) (ν : ProbabilityMeasure Y) where
   joint : ProbabilityMeasure (X × Y)
-  fst_map : joint.map measurable_fst.aemeasurable = μ
-  snd_map : joint.map measurable_snd.aemeasurable = ν
+  fst_map : joint.map Prod.fst = μ
+  snd_map : joint.map Prod.snd = ν
 
 namespace MeasureCoupling
 
@@ -43,8 +43,8 @@ instance : Nonempty (MeasureCoupling μ ν) := ⟨independent μ ν⟩
 /-- Push forward a coupling by measurable maps on both coordinates. -/
 def map (π : MeasureCoupling μ ν) (f : X → Z) (g : Y → W)
     [MeasurableSpace Z] [MeasurableSpace W] (hf : Measurable f) (hg : Measurable g) :
-    MeasureCoupling (μ.map hf.aemeasurable) (ν.map hg.aemeasurable) where
-  joint := π.joint.map (hf.prodMap hg).aemeasurable
+    MeasureCoupling (μ.map f) (ν.map g) where
+  joint := π.joint.map (Prod.map f g)
   fst_map := by
     apply ProbabilityMeasure.toMeasure_injective
     simp only [ProbabilityMeasure.toMeasure_map]

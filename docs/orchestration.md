@@ -137,9 +137,15 @@ Exclusion protects shared files; it is not a host resource scheduler. Coordinate
 builds with the other owners according to CPU, memory/cgroup headroom and expected workloads.
 A free lock or the headroom probe alone does not establish capacity for another build.
 `LEAN_NUM_THREADS` configures each Lean process, separately from the number of concurrent
-builds. Explicit positive values are preserved; an unset value falls back to 1. Choose
-resource-aware overrides in the execution environment, not fixed hardware facts in this
-repository. Cross-account jobs need external coordination; these locks are account-scoped.
+builds. An explicit positive value is preserved exactly; an unset value stays at the
+single-thread default. The CPUs detected as available to the process (affinity, capped by any
+cgroup CPU quota) are still reported for visibility, but are not used to raise the default:
+each concurrent Lean worker maps a large span of oleans, so raising thread count past what a
+host's memory comfortably holds for that many mappings does not shorten a build bound by page
+cache for those mappings (#945 measures the related cold-build cost). Raise it explicitly only
+on a host whose own measurement supports it, and lower it explicitly after a further measured
+OOM (`exit 137`); detection never becomes a fixed hardware fact recorded in this repository.
+Cross-account jobs need external coordination; these locks are account-scoped.
 `LEAN_GUARD_MIN_AVAIL_MIB` defaults to 1536 and remains configurable. Unavailable
 platform metrics are reported as unknown, never as measured spare capacity.
 `scripts/bootstrap.sh`, `scripts/check.sh` and axiom audits use the same guarded wrappers.
@@ -165,3 +171,10 @@ after owned jobs finish. Shared disposable paths are `.agents/scratch/` and
 
 There is no repository-local dot configuration or scheduler, and no financial budget cap.
 Runtime scheduling, available models and autonomous operation remain dot's responsibility.
+
+Lake 4.35 artifact caching and full artifact restoration default on in guarded entry points;
+explicit environment values, including `false`, are preserved. The cache defaults to the
+main checkout's sibling `.cache/<repo>/lake-artifacts`, outside its linked worktrees, and the
+resource plan locks it as a shared writable path. To warm a new worktree, run
+`scripts/bootstrap.sh` followed by `scripts/check.sh`. `scripts/agent/session-brief.sh`
+reports the cache path and runs the guarded `lake build --no-build TDA` freshness probe.

@@ -4,35 +4,43 @@ import TDA.Reeb.GraphRealizationExamples
 import TDA.Reeb.GraphPLVertexPerturbationExamples
 import TDA.Reeb.ComponentsExamples
 import TDA.Reeb.InterleavingCardinality
+import TDA.Mapper.PullbackCoverExamples
 
 /-!
 # Fixtures for height-controlled map pairs
 
 The fixtures include an interval collapsing to a point, the exact distance from an edge of height
 range `[0, 1]` to a point at height `1/2`, recovery of the fixed-space perturbation interleaving,
-and a discrete two-point to one-point negative control. -/
+and a discrete two-point to one-point negative control.
+
+The edge-to-point data are shared with the centred and capped Mapper map-pair fixtures: the
+path-connectedness of `unitInterval` and of the edge realization, the heights `edgeHeight` and
+`pointHeight`, the constant maps `edgeToPoint` and `pointToEdge`, their height lemmas and the
+`1/2` map pair `edgePointPair`. The negative control uses `TDA.Mapper.Examples.boolToUnit`. -/
 
 open Set TDA.Reeb TDA.Reeb.GraphPL TDA.Reeb.GraphRealization TDA.Mapper.GraphPL
 open TDA.Reeb.RGraph
 open TDA.Reeb.Examples.GraphRealization (edgeGraph d₀ half pointGraph edgeHomeomorph)
 open TDA.Reeb.Examples.GraphPLVertexPerturbation (flat tilted)
+open TDA.Mapper.Examples (boolToUnit)
 open scoped NNReal ENNReal
 
 namespace TDA.Mapper.GraphPL.Examples.HeightMapPair
 
 noncomputable section
 
-private theorem pathConnectedSpace_unitInterval : PathConnectedSpace unitInterval := by
+/-- The unit interval is path-connected, by convexity. -/
+instance unitIntervalPathConnectedSpace : PathConnectedSpace unitInterval := by
   apply isPathConnected_iff_pathConnectedSpace.mp
   exact (convex_Icc (𝕜 := ℝ) (0 : ℝ) 1).isPathConnected ⟨0, by norm_num⟩
 
-private instance unitIntervalPathConnectedSpace : PathConnectedSpace unitInterval :=
-  pathConnectedSpace_unitInterval
-
-private instance edgeRealizationPathConnectedSpace : PathConnectedSpace (Realization edgeGraph) :=
+/-- The realization of the single edge is path-connected, through its homeomorphism with the
+unit interval. -/
+instance edgeRealizationPathConnectedSpace : PathConnectedSpace (Realization edgeGraph) :=
   edgeHomeomorph.symm.surjective.pathConnectedSpace edgeHomeomorph.symm.continuous
 
-private theorem pointRealization_eq (x : Realization pointGraph) :
+/-- Every point of the one-point realization is its vertex. -/
+theorem pointRealization_eq (x : Realization pointGraph) :
     x = vertex pointGraph () := Subsingleton.elim _ _
 
 /-! ### Interval to point -/
@@ -69,30 +77,39 @@ theorem interval_to_point_distance_zero :
 
 /-! ### Edge to point -/
 
-private def edgeHeight : C(Realization edgeGraph, ℝ) := plHeight edgeGraph tilted
+/-- The PL height of the single edge with endpoint heights `0` and `1`. -/
+def edgeHeight : C(Realization edgeGraph, ℝ) := plHeight edgeGraph tilted
 
-private def pointHeight : C(Realization pointGraph, ℝ) :=
+/-- The PL height of the point at height `1/2`. -/
+def pointHeight : C(Realization pointGraph, ℝ) :=
   plHeight pointGraph (fun _ => (1 / 2 : ℝ))
 
-private def edgeToPoint : C(Realization edgeGraph, Realization pointGraph) :=
+/-- The constant map from the edge to the point. -/
+def edgeToPoint : C(Realization edgeGraph, Realization pointGraph) :=
   ContinuousMap.const _ (vertex pointGraph ())
 
-private def pointToEdge : C(Realization pointGraph, Realization edgeGraph) :=
+/-- The constant map from the point to the midpoint of the edge. -/
+def pointToEdge : C(Realization pointGraph, Realization edgeGraph) :=
   ContinuousMap.const _ (edgePoint edgeGraph d₀ half)
 
-private theorem edgeHeight_mem_Icc (x : Realization edgeGraph) :
+/-- The edge height takes values in `[0, 1]`. -/
+theorem edgeHeight_mem_Icc (x : Realization edgeGraph) :
     edgeHeight x ∈ Icc (0 : ℝ) 1 :=
   plHeight_mem_Icc_of_forall (m := 0) (M := 1)
     (fun b => by cases b <;> norm_num [tilted]) x
 
-private theorem edgeMidpoint_height : edgeHeight (edgePoint edgeGraph d₀ half) = 1 / 2 := by
+/-- The midpoint of the edge has height `1/2`. -/
+theorem edgeMidpoint_height : edgeHeight (edgePoint edgeGraph d₀ half) = 1 / 2 := by
   simp [edgeHeight, GraphPL.plHeight_edgePoint, GraphPL.dartHeight, tilted, d₀, half]
 
-private theorem pointHeight_apply (x : Realization pointGraph) : pointHeight x = 1 / 2 := by
+/-- The point height is `1/2` everywhere. -/
+theorem pointHeight_apply (x : Realization pointGraph) : pointHeight x = 1 / 2 := by
   rw [pointRealization_eq x]
   simp [pointHeight]
 
-private def edgePointPair : HeightMapPair edgeHeight pointHeight (1 / 2 : ℝ≥0) where
+/-- The constant maps between the edge and the point form a height-map pair with parameter
+`1/2`. -/
+def edgePointPair : HeightMapPair edgeHeight pointHeight (1 / 2 : ℝ≥0) where
   φ := edgeToPoint
   ψ := pointToEdge
   hφ x := by
@@ -188,8 +205,6 @@ theorem edge_pair_recovers_perturbation :
 private def boolZero : C(Bool, ℝ) := ContinuousMap.const Bool 0
 
 private def unitZero : C(Unit, ℝ) := ContinuousMap.const Unit 0
-
-private def boolToUnit : C(Bool, Unit) := ContinuousMap.const Bool ()
 
 private def unitToFalse : C(Unit, Bool) := ContinuousMap.const Unit false
 

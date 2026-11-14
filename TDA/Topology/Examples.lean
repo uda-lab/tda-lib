@@ -5,3 +5,4 @@ import TDA.Topology.MultiNerveExamples
 import TDA.Topology.PathCoverExamples
 import TDA.Topology.NerveMapExamples
 import TDA.Topology.MultiNerveMapExamples
+import TDA.Topology.QuotientProductExamples

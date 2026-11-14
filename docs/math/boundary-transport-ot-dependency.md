@@ -25,9 +25,12 @@ powered boundary-plan costs and the infimum of `ρ^p` over **all** measures with
 reservoir marginals `μ_R,ν_R`. This includes infinite competitor costs and
 does not require atomic inputs. The capacity is independent of the chosen
 admissible `R`; positive capacities admit probability normalization with the
-factor `R^(1/p)`. Self, symmetry, finite-distance bounds from finite
-`p`-persistence, the exact zero-target moment, and the native finite atomic
-and indexed/coalesced bridges are also proved. The
+factor `R^(1/p)`. The basic plan-fiber lemmas `interiorIncl_mem_image` and
+`diagonalProjection_not_mem_image` expose membership for the interior inclusion
+and exclude diagonal projections. Self, symmetry, finite-distance bounds from
+finite `p`-persistence, and the exact zero-target moment with its
+`[IsFiniteMeasure μ]` variants (valid even when the moment is infinite) are
+proved, along with the native finite atomic and indexed/coalesced bridges. The
 [metric-law bridge](boundary-transport-metric.md) gives sharp triangle and
 separation for every finite original measure, without a moment premise.
 Finite moments make the extended distance finite.
@@ -37,10 +40,29 @@ constructs general finite-input minimizers for that value and the boundary
 value. Identification with a separately implemented ordinary Wasserstein
 distance remains open. See [the exported contracts](../api.md#collapsed-boundary-geometry).
 
+## Imports and compatibility
+
+`BoundaryTransportGeometryCore` and `BoundaryTransportReverseCore` are the canonical
+imports for reusable geometry and the general reverse construction. The former keeps
+the density and small-positive-boundary-distance results; the latter keeps the
+arbitrary-point capacity-two competitor and exports `Reverse.boundaryPlan_add` and
+`Reverse.boundaryPlan_dirac_points_cost`. The Dirac formula gives the cost of the
+selected reverse plan for every real exponent, using the direct leg when distance is
+less than or equal to the sum of boundary depths. It does not assert optimality.
+
+The fixed far-point witnesses are in `BoundaryTransportGeometryExamples` and
+`BoundaryTransportReverseExamples`. The old `BoundaryTransportGeometry` and
+`BoundaryTransportReverse` imports remain available with their old declarations and
+types; the Reverse entrance also retains transitive Geometry access. Ordinary
+`TDA.Persistence` imports the Core modules only. Clients that relied on aggregate
+imports for fixed far-point names should explicitly import the corresponding
+Examples module or compatibility entrance. `TDA.Persistence.Examples` retains both
+example modules and both old entrances.
+
 ## Compatible API boundary
 
-The library uses Lean **4.33.1** and mathlib
-[`0df444a360eaa60ab8c11dca51a86af692955474`](https://github.com/leanprover-community/mathlib4/tree/0df444a360eaa60ab8c11dca51a86af692955474).
+The library uses Lean **4.35.0** and mathlib
+[`56a005855ea17e0b0958f73ec801ae140b0a1679`](https://github.com/leanprover-community/mathlib4/tree/56a005855ea17e0b0958f73ec801ae140b0a1679).
 That source has no `IsCoupling`, `transportCost` or `wassersteinEDist`
 declarations. It does provide the following relevant ingredients:
 

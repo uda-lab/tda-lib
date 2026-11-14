@@ -11,9 +11,11 @@ the original space.  Later blocks of this file package these facts into point-bi
 `thickeningQuotient`, and the isomorphisms `thickeningQuotientAbsorptionIso` and
 `thickeningQuotientCompIso`.
 
-The route bypasses DMP15-v1 Theorem 4.27, which asserts constructibility of `T_ε X` beyond graph
-input; no such assertion is claimed here.  The statements in this file are library statements,
-not attributions to that source.  See `docs/math/reeb-quotient-thickening-absorption.md`.
+The route does not use DMP15-v1 Theorem 4.27, which asserts constructibility of `T_ε X` beyond
+graph input; that theorem is proved separately, in general form, as
+`isConstructibleSpace_thickening_of_isConstructibleSpace` in `TDA.Reeb.ThickeningConstructible`.
+The statements in this file are library statements, not attributions to that source.
+See `docs/math/reeb-quotient-thickening-absorption.md`.
 -/
 
 open Set Topology CategoryTheory
@@ -167,7 +169,7 @@ theorem joinedIn_Icc_of_isConstructibleSpace {X : Over (TopCat.of ℝ)}
     have e : P.height S (i.hom.left.hom x') = overBaseMap X x' :=
       overBaseMap_comm i.hom x'
     exact e.symm ▸ hx'
-  have hmap := h.map (((ℛ).map i.hom).left.hom.continuous)
+  have hmap := h.map (((ℛ).map i.hom).left.hom.continuous).continuousOn
   have hP : JoinedIn
       (overBaseMap ((ℛ).obj (Over.mk (TopCat.ofHom (P.height S)))) ⁻¹' Icc a b)
       (ReebQuotient.mk (P.height S) (i.hom.left.hom x))
@@ -236,7 +238,7 @@ theorem joinedIn_Icc_of_isConstructibleSpace {X : Over (TopCat.of ℝ)}
       (Quotient.exact hPcomp)
   have hPclosed := CylinderPresentation.joinedIn_Icc_of_joinedIn S P c hlo hhi
     hxP hxP' hJ'
-  have hback := hPclosed.map i.inv.left.hom.continuous
+  have hback := hPclosed.map i.inv.left.hom.continuous.continuousOn
   have hback' : JoinedIn (overBaseMap X ⁻¹' Icc a b)
       (i.inv.left.hom (i.hom.left.hom x))
       (i.inv.left.hom (i.hom.left.hom x')) := by

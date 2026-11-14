@@ -40,9 +40,27 @@ structure IsRankProjectiveCover {P : Type} [PartialOrder P]
     {A B : PModule.{u,0,u} k P} (π : A ⟶ B) : Prop where
   term_rank_projective : IsRankProjective A
   row_rank_exact : IsRankExact (kernel.ι π) π
-  endomorphism_isIso : ∀ u : End A, u ≫ π = π → IsIso u
+  endomorphism_isIso : ∀ u : End A, u.asHom ≫ π = π → IsIso u.asHom
 
 namespace IsRankProjectiveCover
+
+/-- The identity of a pointwise finite-dimensional rank-projective persistence
+module is a rank-projective cover. Its rank-exactness certificate uses the
+actual categorical-kernel row of the identity map. -/
+theorem of_identity {P : Type} [PartialOrder P]
+    {M : PModule.{u,0,u} k P}
+    (hfd : ∀ p, FiniteDimensional k (M.obj p))
+    (hM : IsRankProjective M) : IsRankProjectiveCover (𝟙 M) := by
+  letI : ∀ p, FiniteDimensional k (M.obj p) := hfd
+  refine ⟨hM, ?_, ?_⟩
+  · exact RankKernel.rankExact (𝟙 M) (fun p x => ⟨x, rfl⟩)
+      (by
+        intro a b hab x hx
+        exact ⟨x, by simp, hx⟩)
+  · intro u hu
+    have hu' : u.asHom = 𝟙 M := by simpa using hu
+    rw [hu']
+    infer_instance
 
 /-- Two rank-projective covers of the same target are naturally isomorphic
 through an isomorphism commuting with their quotient maps. -/
@@ -64,8 +82,8 @@ theorem exists_iso_over_quotient {P : Type} [PartialOrder P]
       (g ≫ f) ≫ ρ = g ≫ (f ≫ ρ) := Category.assoc _ _ _
       _ = g ≫ π := by rw [hf]
       _ = ρ := hg
-  letI : IsIso (f ≫ g) := hπ.endomorphism_isIso (f ≫ g) hfg
-  letI : IsIso (g ≫ f) := hρ.endomorphism_isIso (g ≫ f) hgf
+  letI : IsIso (f ≫ g) := hπ.endomorphism_isIso (.of (f ≫ g)) hfg
+  letI : IsIso (g ≫ f) := hρ.endomorphism_isIso (.of (g ≫ f)) hgf
   let r : B ⟶ A := g ≫ (asIso (f ≫ g)).inv
   let l : B ⟶ A := (asIso (g ≫ f)).inv ≫ g
   have hfr : f ≫ r = 𝟙 A := by
@@ -388,7 +406,7 @@ private theorem rankProjectiveHookEnd_isIso_of_ne_zero
     {P : Type} [PartialOrder P]
     (t : FiniteRankProjectiveClassification.RankProjectiveHookTag P)
     (f : End (FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k) t))
-    (hf : f ≠ 0) : IsIso f := by
+    (hf : f ≠ 0) : IsIso f.asHom := by
   let e := rankProjectiveHookEndRingEquiv (k := k) t
   have he : e f ≠ 0 := by
     intro hz
@@ -414,35 +432,35 @@ theorem MinimalHookSumCover.kernel_diagonal_component_eq_zero
       FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k) (C.cover.tag i) :=
     eqToIso (C.cover.summand_eq_tag i)
   let α : End (C.cover.summand i) :=
-    f ≫ kernel.ι C.cover.quotient ≫ biproduct.π C.cover.summand i
+    .of (f ≫ kernel.ι C.cover.quotient ≫ biproduct.π C.cover.summand i)
   by_contra hα
   let β : End (FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k)
-      (C.cover.tag i)) := e.inv ≫ α ≫ e.hom
+      (C.cover.tag i)) := .of (e.inv ≫ α.asHom ≫ e.hom)
   have hβ : β ≠ 0 := by
     intro hzero
-    have hconj : α = e.hom ≫ β ≫ e.inv := by
+    have hconj : α.asHom = e.hom ≫ β.asHom ≫ e.inv := by
       dsimp [β]
       simp [Category.assoc]
-    have hαzero : α = 0 := by rw [hconj, hzero]; simp
+    have hαzero : α.asHom = 0 := by rw [hconj]; simp [hzero]
     exact hα hαzero
-  letI : IsIso β := rankProjectiveHookEnd_isIso_of_ne_zero (C.cover.tag i) β hβ
-  let αInv : End (C.cover.summand i) := e.hom ≫ inv β ≫ e.inv
-  have hβdef : β = e.inv ≫ α ≫ e.hom := rfl
-  have hαInv : αInv ≫ α = 𝟙 (C.cover.summand i) := by
+  letI : IsIso β.asHom := rankProjectiveHookEnd_isIso_of_ne_zero (C.cover.tag i) β hβ
+  let αInv : C.cover.summand i ⟶ C.cover.summand i := e.hom ≫ inv β.asHom ≫ e.inv
+  have hβdef : β.asHom = e.inv ≫ α.asHom ≫ e.hom := rfl
+  have hαInv : αInv ≫ α.asHom = 𝟙 (C.cover.summand i) := by
     dsimp [αInv]
     calc
-      e.hom ≫ inv β ≫ e.inv ≫ α =
-          e.hom ≫ inv β ≫ (e.inv ≫ α ≫ e.hom) ≫ e.inv := by
+      e.hom ≫ inv β.asHom ≫ e.inv ≫ α.asHom =
+          e.hom ≫ inv β.asHom ≫ (e.inv ≫ α.asHom ≫ e.hom) ≫ e.inv := by
             simp [Category.assoc]
-      _ = e.hom ≫ inv β ≫ β ≫ e.inv := by rw [← hβdef]
+      _ = e.hom ≫ inv β.asHom ≫ β.asHom ≫ e.inv := by rw [← hβdef]
       _ = 𝟙 (C.cover.summand i) := by simp [Category.assoc]
   let s : C.cover.summand i ⟶ ⨁ C.cover.summand :=
     αInv ≫ f ≫ kernel.ι C.cover.quotient
   have hs : s ≫ biproduct.π C.cover.summand i = 𝟙 (C.cover.summand i) := by
-    dsimp [s, α]
+    dsimp [s]
     calc
       αInv ≫ f ≫ kernel.ι C.cover.quotient ≫ biproduct.π C.cover.summand i =
-          αInv ≫ α := rfl
+          αInv ≫ α.asHom := rfl
       _ = 𝟙 (C.cover.summand i) := hαInv
   have hq : s ≫ C.cover.quotient = 0 := by
     dsimp [s]
@@ -702,22 +720,22 @@ theorem MinimalHookSumCover.endomorphism_sub_id_component_weight_strict
     {P : Type} [PartialOrder P] [Fintype P] {M : PModule.{u,0,u} k P}
     (C : MinimalHookSumCover M)
     (u : End (⨁ C.cover.summand))
-    (hu : u ≫ C.cover.quotient = C.cover.quotient)
+    (hu : u.asHom ≫ C.cover.quotient = C.cover.quotient)
     (i j : C.cover.Index)
-    (hcomponent : biproduct.components (u - (1 : End (⨁ C.cover.summand))) i j ≠ 0) :
+    (hcomponent : biproduct.components (u - (1 : End (⨁ C.cover.summand))).asHom i j ≠ 0) :
     rankProjectiveHookTagWeight (C.cover.tag j) <
       rankProjectiveHookTagWeight (C.cover.tag i) := by
   classical
   let δ : End (⨁ C.cover.summand) := u - (1 : End (⨁ C.cover.summand))
-  have hδq : δ ≫ C.cover.quotient = 0 := by
-    dsimp [δ]
-    rw [CategoryTheory.Preadditive.sub_comp, Category.id_comp, hu]
+  have hδq : δ.asHom ≫ C.cover.quotient = 0 := by
+    have hδasHom : δ.asHom = u.asHom - 𝟙 _ := by simp [δ]
+    rw [hδasHom, CategoryTheory.Preadditive.sub_comp, Category.id_comp, hu]
     simp
   let e : (⨁ C.cover.summand) ⟶ kernel C.cover.quotient :=
-    kernel.lift C.cover.quotient δ hδq
-  have he : e ≫ kernel.ι C.cover.quotient = δ :=
-    kernel.lift_ι C.cover.quotient δ hδq
-  have hcomponent' : biproduct.components δ i j =
+    kernel.lift C.cover.quotient δ.asHom hδq
+  have he : e ≫ kernel.ι C.cover.quotient = δ.asHom :=
+    kernel.lift_ι C.cover.quotient δ.asHom hδq
+  have hcomponent' : biproduct.components δ.asHom i j =
       biproduct.ι C.cover.summand i ≫ e ≫ kernel.ι C.cover.quotient ≫
         biproduct.π C.cover.summand j := by
     dsimp [biproduct.components]
@@ -738,7 +756,7 @@ theorem MinimalHookSumCover.endomorphism_sub_id_component_weight_strict
     let eIso := eSource.trans eTag
     have hz := C.kernel_component_eq_zero_of_iso j _ eIso
       (biproduct.ι C.cover.summand i ≫ e)
-    have hzero : biproduct.components δ i j = 0 := by
+    have hzero : biproduct.components δ.asHom i j = 0 := by
       rw [hcomponent']
       exact hz
     apply hcomponent
@@ -755,13 +773,13 @@ theorem MinimalHookSumCover.endomorphism_sub_id_component_weight_strict
       (C.cover.tag i) ⟶
       FiniteRankProjectiveClassification.rankProjectiveHookModule (k := k)
         (C.cover.tag j) :=
-    eSource.inv ≫ biproduct.components δ i j ≫ eTarget.hom
-  have hrecover : eSource.hom ≫ g ≫ eTarget.inv = biproduct.components δ i j := by
+    eSource.inv ≫ biproduct.components δ.asHom i j ≫ eTarget.hom
+  have hrecover : eSource.hom ≫ g ≫ eTarget.inv = biproduct.components δ.asHom i j := by
     dsimp [g]
     simp [Category.assoc]
   have hg : g ≠ 0 := by
     intro hz
-    have hzero : biproduct.components δ i j = 0 := by
+    have hzero : biproduct.components δ.asHom i j = 0 := by
       rw [← hrecover, hz]
       simp
     apply hcomponent
@@ -930,24 +948,24 @@ private theorem biproduct_components_comp
     {P : Type} [PartialOrder P] [Fintype P]
     {I : Type} [Fintype I] (F : I → PModule.{u,0,u} k P)
     (f g : End (⨁ F)) (i j : I) :
-    biproduct.components (f ≫ g) i j =
-      ∑ l : I, biproduct.components f i l ≫ biproduct.components g l j := by
+    biproduct.components (f.asHom ≫ g.asHom) i j =
+      ∑ l : I, biproduct.components f.asHom i l ≫ biproduct.components g.asHom l j := by
   classical
-  change biproduct.ι F i ≫ (f ≫ g) ≫ biproduct.π F j = _
+  change biproduct.ι F i ≫ (f.asHom ≫ g.asHom) ≫ biproduct.π F j = _
   calc
-    biproduct.ι F i ≫ (f ≫ g) ≫ biproduct.π F j =
-        (biproduct.ι F i ≫ f) ≫
+    biproduct.ι F i ≫ (f.asHom ≫ g.asHom) ≫ biproduct.π F j =
+        (biproduct.ι F i ≫ f.asHom) ≫
           (∑ l : I, biproduct.π F l ≫ biproduct.ι F l) ≫
-          (g ≫ biproduct.π F j) := by
+          (g.asHom ≫ biproduct.π F j) := by
             rw [biproduct.total]
             simp [Category.assoc]
     _ = ∑ l : I,
-        ((biproduct.ι F i ≫ f) ≫ biproduct.π F l) ≫
-          (biproduct.ι F l ≫ (g ≫ biproduct.π F j)) := by
+        ((biproduct.ι F i ≫ f.asHom) ≫ biproduct.π F l) ≫
+          (biproduct.ι F l ≫ (g.asHom ≫ biproduct.π F j)) := by
             simp only [CategoryTheory.Preadditive.comp_sum,
               CategoryTheory.Preadditive.sum_comp, Category.assoc]
     _ = ∑ l : I,
-        biproduct.components f i l ≫ biproduct.components g l j := by
+        biproduct.components f.asHom i l ≫ biproduct.components g.asHom l j := by
           apply Finset.sum_congr rfl
           intro l hl
           simp [biproduct.components, Category.assoc]
@@ -960,11 +978,11 @@ private theorem nilpotent_of_strictly_lowering_biproduct_components
     {I : Type} [Fintype I] (F : I → PModule.{u,0,u} k P)
     (weight : I → ℕ) (bound : ℕ) (hbound : ∀ i, weight i ≤ bound)
     (f : End (⨁ F))
-    (hstrict : ∀ i j, biproduct.components f i j ≠ 0 → weight j < weight i) :
+    (hstrict : ∀ i j, biproduct.components f.asHom i j ≠ 0 → weight j < weight i) :
     IsNilpotent f := by
   classical
   have hpower : ∀ r i j,
-      biproduct.components (f ^ r) i j ≠ 0 → r + weight j ≤ weight i := by
+      biproduct.components (f ^ r).asHom i j ≠ 0 → r + weight j ≤ weight i := by
     intro r
     induction r with
     | zero =>
@@ -972,27 +990,29 @@ private theorem nilpotent_of_strictly_lowering_biproduct_components
         by_cases hij : i = j
         · subst j
           simp
-        · have hzero : biproduct.components (1 : End (⨁ F)) i j = 0 := by
+        · have hzero : biproduct.components (1 : End (⨁ F)).asHom i j = 0 := by
             simp [biproduct.components, hij]
-          have hneq : biproduct.components (1 : End (⨁ F)) i j ≠ 0 := by
+          have hneq : biproduct.components (1 : End (⨁ F)).asHom i j ≠ 0 := by
             simpa only [pow_zero] using hcomponent
           exact False.elim (hneq hzero)
     | succ r ihr =>
         intro i j hcomponent
-        have hpower_comp : (f ^ (r + 1) : End (⨁ F)) = f ≫ f ^ r := by
-          rw [pow_succ, End.mul_def]
+        have hpower_comp : (f ^ (r + 1) : End (⨁ F)).asHom = f.asHom ≫ (f ^ r).asHom := by
+          rw [pow_succ, End.mul_asHom]
         have hmatrix := biproduct_components_comp F f (f ^ r) i j
         rw [← hpower_comp] at hmatrix
         have hterm : ∃ l : I,
-            biproduct.components f i l ≫ biproduct.components (f ^ r) l j ≠ 0 := by
+            biproduct.components f.asHom i l ≫
+              biproduct.components (f ^ r).asHom l j ≠ 0 := by
           by_contra hnone
           have hzero (l : I) :
-              biproduct.components f i l ≫ biproduct.components (f ^ r) l j = 0 := by
+              biproduct.components f.asHom i l ≫
+                biproduct.components (f ^ r).asHom l j = 0 := by
             by_contra hne
             exact hnone ⟨l, hne⟩
           have hsum :
-              ∑ l : I, biproduct.components f i l ≫
-                biproduct.components (f ^ r) l j = 0 := by
+              ∑ l : I, biproduct.components f.asHom i l ≫
+                biproduct.components (f ^ r).asHom l j = 0 := by
             apply Finset.sum_eq_zero
             intro l hl
             exact hzero l
@@ -1000,11 +1020,11 @@ private theorem nilpotent_of_strictly_lowering_biproduct_components
           rw [hmatrix]
           exact hsum
         obtain ⟨l, hcomp⟩ := hterm
-        have hleft : biproduct.components f i l ≠ 0 := by
+        have hleft : biproduct.components f.asHom i l ≠ 0 := by
           intro hz
           apply hcomp
           simp [hz]
-        have hright : biproduct.components (f ^ r) l j ≠ 0 := by
+        have hright : biproduct.components (f ^ r).asHom l j ≠ 0 := by
           intro hz
           apply hcomp
           simp [hz]
@@ -1012,12 +1032,13 @@ private theorem nilpotent_of_strictly_lowering_biproduct_components
         have hrightWeight := ihr l j hright
         omega
   have hzero : (f ^ (bound + 1) : End (⨁ F)) = 0 := by
+    apply End.ext
     apply (biproduct.matrixEquiv (f := F) (g := F)).injective
     funext i
     funext j
-    change biproduct.components (f ^ (bound + 1)) i j =
-      biproduct.components (0 : End (⨁ F)) i j
-    have hcomponent : biproduct.components (f ^ (bound + 1)) i j = 0 := by
+    change biproduct.components (f ^ (bound + 1)).asHom i j =
+      biproduct.components (0 : End (⨁ F)).asHom i j
+    have hcomponent : biproduct.components (f ^ (bound + 1)).asHom i j = 0 := by
       by_contra hne
       have hle := hpower (bound + 1) i j hne
       have hle' := hbound i
@@ -1033,14 +1054,14 @@ theorem MinimalHookSumCover.endomorphism_over_quotient_isIso
     {P : Type} [PartialOrder P] [Fintype P] {M : PModule.{u,0,u} k P}
     (C : MinimalHookSumCover M)
     (u : End (⨁ C.cover.summand))
-    (hu : u ≫ C.cover.quotient = C.cover.quotient) : IsIso u := by
+    (hu : u.asHom ≫ C.cover.quotient = C.cover.quotient) : IsIso u.asHom := by
   classical
   let δ : End (⨁ C.cover.summand) := u - (1 : End (⨁ C.cover.summand))
   let weight : C.cover.Index → ℕ := fun i =>
     rankProjectiveHookTagWeight (C.cover.tag i)
   have hbound (i : C.cover.Index) : weight i ≤ 3 * Fintype.card P + 1 :=
     rankProjectiveHookTagWeight_le_card (C.cover.tag i)
-  have hstrict : ∀ i j, biproduct.components δ i j ≠ 0 → weight j < weight i := by
+  have hstrict : ∀ i j, biproduct.components δ.asHom i j ≠ 0 → weight j < weight i := by
     intro i j hcomponent
     apply C.endomorphism_sub_id_component_weight_strict u hu i j
     simpa [δ] using hcomponent
@@ -1305,10 +1326,10 @@ noncomputable def lanMinimalFiniteRankProjectiveResolutionObj (G : CoordinateGri
       (R.resolution.term_rank_projective i)
   · exact (G.lan_isRankExact (R.quotient_is_cover i).row_rank_exact).isRankDeflation.rankExact_kernel
   · intro u hu
-    let u₀ := G.lanMapPreimage u
-    have hmap : G.lan.map u₀ = u := by
+    let u₀ := G.lanMapPreimage u.asHom
+    have hmap : G.lan.map u₀ = u.asHom := by
       dsimp [u₀]
-      exact G.lan_map_preimage u
+      exact G.lan_map_preimage u.asHom
     have hquot :
         (G.lanFiniteRankProjectiveResolution R.resolution).quotient i =
           G.lan.map (R.resolution.quotient i) := rfl
@@ -1316,7 +1337,7 @@ noncomputable def lanMinimalFiniteRankProjectiveResolutionObj (G : CoordinateGri
       apply G.lan_map_injective
       rw [Functor.map_comp, hmap, ← hquot]
       exact hu
-    letI : IsIso u₀ := (R.quotient_is_cover i).endomorphism_isIso u₀ hu₀
+    letI : IsIso u₀ := (R.quotient_is_cover i).endomorphism_isIso (.of u₀) hu₀
     have hLanIso : IsIso (G.lan.map u₀) := Functor.map_isIso _ _
     rw [← hmap]
     exact hLanIso
@@ -1341,13 +1362,13 @@ end CoordinateGrid
 
 namespace FiniteRankProjectiveResolution
 
-/-- Every finitely presented module on a positive-dimensional real coordinate
-poset has an actual finite rank-projective resolution. The finite presentation
-is used only to reconstruct the module from a finite grid with pfd fibers;
-resolution existence is then proved on that finite poset and transported by
+/-- Every finitely presented module on a real coordinate poset, in any natural
+dimension including zero, has an actual finite rank-projective resolution.
+The finite presentation reconstructs the module from a finite grid with pfd
+fibers; resolution existence is proved on that finite poset and transported by
 the actual left Kan extension. -/
-theorem finitelyPresented_exists_finiteRankProjectiveResolution
-    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+theorem exists_finiteRankProjectiveResolution_of_finitelyPresented
+    {n : ℕ} {M : PModule.{u,0,u} k (Fin n → ℝ)}
     (hM : GradedFree.FinitelyPresented.{u,0,0}
       (R := k) (P := Fin n → ℝ) M) :
     Nonempty (FiniteRankProjectiveResolution M) := by
@@ -1358,14 +1379,14 @@ theorem finitelyPresented_exists_finiteRankProjectiveResolution
     (exists_finiteRankProjectiveResolution_of_pfd_finitePoset A hA)
   exact ⟨CoordinateGrid.lanFiniteRankProjectiveResolutionOfReconstruction G R e⟩
 
-/-- Every originally finitely presented module on a positive-dimensional real
-coordinate poset has an actual finite rank-projective resolution whose every
-quotient row is certified as a projective cover. The construction reconstructs
-the presentation on a finite grid, transfers its minimal resolution through
-the actual left Kan extension, then transports the rows across the reconstruction
-isomorphism. -/
-theorem finitelyPresented_exists_minimalFiniteRankProjectiveResolution
-    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+/-- Every originally finitely presented module on a real coordinate poset, in
+any natural dimension including zero, has a finite rank-projective resolution
+whose every quotient row is certified as a projective cover. The construction
+reconstructs the presentation on a finite grid, transfers its minimal
+resolution through the actual left Kan extension, then transports the rows
+across the reconstruction isomorphism. -/
+theorem exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented
+    {n : ℕ} {M : PModule.{u,0,u} k (Fin n → ℝ)}
     (hM : GradedFree.FinitelyPresented.{u,0,0}
       (R := k) (P := Fin n → ℝ) M) :
     Nonempty (MinimalFiniteRankProjectiveResolution (k := k) (M := M)) := by
@@ -1382,6 +1403,25 @@ theorem finitelyPresented_exists_minimalFiniteRankProjectiveResolution
       change IsRankProjectiveCover (R'.resolution.quotient i)
       exact R'.quotient_is_cover i
   }⟩
+
+/-- Every finitely presented module on a positive-dimensional real coordinate
+poset has an actual finite rank-projective resolution. -/
+theorem finitelyPresented_exists_finiteRankProjectiveResolution
+    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0}
+      (R := k) (P := Fin n → ℝ) M) :
+    Nonempty (FiniteRankProjectiveResolution M) :=
+  exists_finiteRankProjectiveResolution_of_finitelyPresented hM
+
+/-- Every originally finitely presented module on a positive-dimensional real
+coordinate poset has a finite rank-projective resolution whose every quotient
+row is certified as a projective cover. -/
+theorem finitelyPresented_exists_minimalFiniteRankProjectiveResolution
+    {n : ℕ} (_hn : 0 < n) (M : PModule.{u,0,u} k (Fin n → ℝ))
+    (hM : GradedFree.FinitelyPresented.{u,0,0}
+      (R := k) (P := Fin n → ℝ) M) :
+    Nonempty (MinimalFiniteRankProjectiveResolution (k := k) (M := M)) :=
+  exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented hM
 
 end FiniteRankProjectiveResolution
 

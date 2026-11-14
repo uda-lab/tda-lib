@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 fixture=$(mktemp -d)
 trap 'rm -rf -- "$fixture"' EXIT
+fenv() { env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@"; }
+fgit() { fenv git "$@"; }
 mkdir -p "$fixture/scripts" "$fixture/TDA"
 for name in check-no-sorry.sh check-no-custom-axiom.sh check-transient-artifacts.sh lean-code-scan.awk; do
   cp "$ROOT/scripts/$name" "$fixture/scripts/$name"
@@ -16,23 +18,26 @@ for harness in .agents .claude; do
 done
 printf 'theorem complete : True := by trivial\n' > "$fixture/TDA/Basic.lean"
 for scanner in check-no-sorry.sh check-no-custom-axiom.sh; do
-  bash "$fixture/scripts/$scanner" >/dev/null
-  bash "$fixture/scripts/$scanner" --stable >/dev/null
+  fenv bash "$fixture/scripts/$scanner" >/dev/null
+  fenv bash "$fixture/scripts/$scanner" --stable >/dev/null
 done
 printf 'theorem unfinished : True := by sorry\naxiom unchecked : False\n' > "$fixture/TDA/Basic.lean"
 for scanner in check-no-sorry.sh check-no-custom-axiom.sh; do
-  if bash "$fixture/scripts/$scanner" >/dev/null 2>&1; then echo "FAIL: $scanner ignored library violation"; exit 1; fi
-  if bash "$fixture/scripts/$scanner" --stable >/dev/null 2>&1; then echo "FAIL: stable $scanner ignored library violation"; exit 1; fi
+  if fenv bash "$fixture/scripts/$scanner" >/dev/null 2>&1; then echo "FAIL: $scanner ignored library violation"; exit 1; fi
+  if fenv bash "$fixture/scripts/$scanner" --stable >/dev/null 2>&1; then echo "FAIL: stable $scanner ignored library violation"; exit 1; fi
 done
 # Marked development debt passes normal mode but never stable mode.
 printf 'theorem unfinished : True := by sorry -- ALLOW_SORRY: #3 fixture\naxiom unchecked : False -- ALLOW_AXIOM: #3 fixture\n' > "$fixture/TDA/Basic.lean"
 for scanner in check-no-sorry.sh check-no-custom-axiom.sh; do
-  bash "$fixture/scripts/$scanner" >/dev/null
-  if bash "$fixture/scripts/$scanner" --stable >/dev/null 2>&1; then echo "FAIL: stable $scanner accepted marked debt"; exit 1; fi
+  fenv bash "$fixture/scripts/$scanner" >/dev/null
+  if fenv bash "$fixture/scripts/$scanner" --stable >/dev/null 2>&1; then echo "FAIL: stable $scanner accepted marked debt"; exit 1; fi
 done
-git -C "$fixture" init -q
-git -C "$fixture" add .agents/worktrees/Test.lean
-if bash "$fixture/scripts/check-transient-artifacts.sh" >/dev/null 2>&1; then echo 'FAIL: tracked .agents worktree accepted'; exit 1; fi
+fgit -C "$fixture" init -q
+if [ "$(fgit -C "$fixture" symbolic-ref --short HEAD)" = system-poisoned ]; then
+  echo 'FAIL: fixture inherited system init.defaultBranch configuration'; exit 1
+fi
+fgit -C "$fixture" add .agents/worktrees/Test.lean
+if fenv bash "$fixture/scripts/check-transient-artifacts.sh" >/dev/null 2>&1; then echo 'FAIL: tracked .agents worktree accepted'; exit 1; fi
 # The actual checkout's shared skill topology must stay canonical.
 for skill in "$ROOT"/.agents/skills/*; do
   [ -d "$skill" ] && [ ! -L "$skill" ]
@@ -41,7 +46,7 @@ for skill in "$ROOT"/.agents/skills/*; do
   [ "$(cd "$skill" && pwd -P)" = "$(cd "$legacy" && pwd -P)" ]
 done
 # Native Codex hook commands resolve from arbitrary project subdirectories.
-python3 - "$ROOT" <<'PY'
+fenv python3 - "$ROOT" <<'PY'
 import json, pathlib, subprocess, sys
 root = pathlib.Path(sys.argv[1])
 hooks = json.loads((root / '.codex/hooks.json').read_text())['hooks']

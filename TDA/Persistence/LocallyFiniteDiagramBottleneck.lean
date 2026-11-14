@@ -533,6 +533,57 @@ private theorem matchingCost_eq_cost
       · intro b hb
         simp
 
+private noncomputable def finiteEmbeddingEquiv (D : Diagram ℝ) (hD : D.IsPositive) :
+    {e : (D.toLocallyFinite hD).finiteOccurrences ≃ D.finiteOccurrences //
+      ∀ i, (e i).1 = (D.toLocallyFinite hD).finitePoint i} := by
+  classical
+  exact presentationEquiv _ (fun p : D.finiteOccurrences => p.1)
+    ((finiteOccurrence_endpoints D hD).trans (Multiset.map_univ_coe _).symm)
+
+private noncomputable def essentialEmbeddingEquiv (D : Diagram ℝ) (hD : D.IsPositive) :
+    {e : (D.toLocallyFinite hD).essentialOccurrences ≃ D.essentialOccurrences //
+      ∀ i, (e i).1 = (D.toLocallyFinite hD).essentialBirth i} := by
+  classical
+  exact presentationEquiv _ (fun p : D.essentialOccurrences => p.1)
+    ((essentialOccurrence_endpoints D hD).trans (Multiset.map_univ_coe _).symm)
+
+/-- Relabel finite barcode matchings as matchings of their decorated embeddings.
+Occurrence labels retain repeated bars and the full essential bijection. -/
+noncomputable def Diagram.toLocallyFiniteMatchingEquiv (D E : Diagram ℝ)
+    (hD : D.IsPositive) (hE : E.IsPositive) :
+    OccurrenceMatching D.finiteOccurrences E.finiteOccurrences
+      D.essentialOccurrences E.essentialOccurrences ≃
+    OccurrenceMatching (D.toLocallyFinite hD).finiteOccurrences
+      (E.toLocallyFinite hE).finiteOccurrences
+      (D.toLocallyFinite hD).essentialOccurrences
+      (E.toLocallyFinite hE).essentialOccurrences :=
+  OccurrenceMatching.relabelEquiv (finiteEmbeddingEquiv D hD).1
+    (finiteEmbeddingEquiv E hE).1 (essentialEmbeddingEquiv D hD).1
+    (essentialEmbeddingEquiv E hE).1
+
+/-- The finite matching cost is preserved by the decorated occurrence relabelling. -/
+theorem Diagram.toLocallyFiniteMatchingEquiv_cost (D E : Diagram ℝ)
+    (hD : D.IsPositive) (hE : E.IsPositive)
+    (A : OccurrenceMatching D.finiteOccurrences E.finiteOccurrences
+      D.essentialOccurrences E.essentialOccurrences) :
+    LocallyFiniteDecoratedDiagram.matchingCost
+      (D.toLocallyFiniteMatchingEquiv E hD hE A) =
+      A.cost (fun p => p.1) (fun p => p.1) (fun b => b.1) (fun b => b.1) := by
+  rw [matchingCost_eq_cost]
+  have hfD : (fun p : D.finiteOccurrences => p.1) ∘ (finiteEmbeddingEquiv D hD).1 =
+      (D.toLocallyFinite hD).finitePoint := funext (finiteEmbeddingEquiv D hD).2
+  have hfE : (fun p : E.finiteOccurrences => p.1) ∘ (finiteEmbeddingEquiv E hE).1 =
+      (E.toLocallyFinite hE).finitePoint := funext (finiteEmbeddingEquiv E hE).2
+  have heD : (fun p : D.essentialOccurrences => p.1) ∘ (essentialEmbeddingEquiv D hD).1 =
+      (D.toLocallyFinite hD).essentialBirth := funext (essentialEmbeddingEquiv D hD).2
+  have heE : (fun p : E.essentialOccurrences => p.1) ∘ (essentialEmbeddingEquiv E hE).1 =
+      (E.toLocallyFinite hE).essentialBirth := funext (essentialEmbeddingEquiv E hE).2
+  simpa only [Diagram.toLocallyFiniteMatchingEquiv, OccurrenceMatching.relabelEquiv,
+    Equiv.coe_fn_mk, hfD, hfE, heD, heE] using
+    A.cost_relabel (finiteEmbeddingEquiv D hD).1 (finiteEmbeddingEquiv E hE).1
+      (essentialEmbeddingEquiv D hD).1 (essentialEmbeddingEquiv E hE).1
+      (fun p => p.1) (fun p => p.1) (fun b => b.1) (fun b => b.1)
+
 /-- The locally finite bottleneck restricts to the existing finite bottleneck on
 positive finite diagrams. Positivity is necessary because the source `Diagram`
 type also permits reverse bars, while q-tame finite deaths are supported only

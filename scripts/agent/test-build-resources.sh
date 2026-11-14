@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Real lock descriptors, fake workloads; no Lean execution or shared caches.
+# Real lock descriptors, fake workloads; no Lean execution or cache writes.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 python3 - "$ROOT" <<'PY'
@@ -17,13 +17,18 @@ with tempfile.TemporaryDirectory(prefix='lean-resources-') as temporary:
     def workspace(name):
         root = base / name
         (root / 'scripts/lib').mkdir(parents=True)
-        for filename in ('build-lock.sh', 'build-resources.py'):
+        for filename in ('build-lock.sh', 'build-resources.py', 'lake-artifact-cache.sh'):
             (root / 'scripts/lib' / filename).write_bytes((source / 'scripts/lib' / filename).read_bytes())
         return root
     a, b = workspace('a space'), workspace('b')
-    def run(root, code, **kwargs):
+    def run(root, code, cache_dir=None, **kwargs):
         env = dict(os.environ, ROOT=str(root))
         env.pop('LEAN_RESOURCE_LOCK_FDS', None)
+        env.pop('LAKE_CACHE_DIR', None)
+        env.pop('LAKE_ARTIFACT_CACHE', None)
+        env.pop('LAKE_RESTORE_ARTIFACTS', None)
+        if cache_dir is not None:
+            env['LAKE_CACHE_DIR'] = str(cache_dir)
         return subprocess.Popen(['bash', '-c', '. "$ROOT/scripts/lib/build-lock.sh"; ' + code], env=env, **kwargs)
     def wait_file(path, process):
         end = time.monotonic() + 5
@@ -31,15 +36,15 @@ with tempfile.TemporaryDirectory(prefix='lean-resources-') as temporary:
             assert process.poll() is None, 'holder failed before ready'
             assert time.monotonic() < end, 'holder did not become ready'
             time.sleep(.01)
-    def pair(shared):
+    def pair(shared, cache_dir=None):
         ready, done, release = [base / name for name in ('ready', 'done', 'release')]
         for p in (ready, done, release):
             p.unlink(missing_ok=True)
-        first = run(a, f'touch "{ready}"; while [ ! -e "{release}" ]; do sleep .02; done')
+        first = run(a, f'touch "{ready}"; while [ ! -e "{release}" ]; do sleep .02; done', cache_dir)
         second = None
         try:
             wait_file(ready, first)
-            second = run(b, f'touch "{done}"')
+            second = run(b, f'touch "{done}"', cache_dir)
             if shared:
                 time.sleep(.2)
                 assert not done.exists(), 'shared resource overlapped'
@@ -52,6 +57,8 @@ with tempfile.TemporaryDirectory(prefix='lean-resources-') as temporary:
             if second is not None:
                 assert second.wait(timeout=5) == 0
     pair(False)
+    # A Lake artifact cache shared by separate worktrees is an exclusive resource too.
+    pair(True, base / 'shared-artifact-cache')
     # Shared build target via two distinct .lake directories.
     shared = base / 'shared-build'
     shared.mkdir()
@@ -107,6 +114,9 @@ with tempfile.TemporaryDirectory(prefix='lean-resources-') as temporary:
     # Same workspace lock reentry; an env marker without descriptors must fail closed.
     assert run(a, 'bash -c \'. "$ROOT/scripts/lib/build-lock.sh"\'').wait(timeout=5) == 0
     forged = dict(os.environ, ROOT=str(a), LEAN_RESOURCE_LOCK_FDS='9:X:/tmp/forged.lock')
+    forged.pop('LAKE_CACHE_DIR', None)
+    forged.pop('LAKE_ARTIFACT_CACHE', None)
+    forged.pop('LAKE_RESTORE_ARTIFACTS', None)
     assert subprocess.run(['bash', '-c', '. "$ROOT/scripts/lib/build-lock.sh"'], env=forged,
                           stderr=subprocess.DEVNULL).returncode != 0
     # Failure and interruption release descriptors; independent process can acquire again.
@@ -117,5 +127,5 @@ with tempfile.TemporaryDirectory(prefix='lean-resources-') as temporary:
     process.terminate()
     process.wait(timeout=5)
     assert run(a, 'true').wait(timeout=5) == 0
-print('resource lock self-tests OK (independent, shared build/dependency symlinks, nested, spoof, failure, termination)')
+print('resource lock self-tests OK (independent, shared artifact cache/build/dependency paths, nested, spoof, failure, termination)')
 PY

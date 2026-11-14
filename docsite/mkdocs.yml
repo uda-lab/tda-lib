@@ -1,0 +1,45 @@
+site_name: tda-lib documentation
+site_description: Curated guides for the recorded tda-lib source revision
+site_url: https://uda-lab.github.io/tda-lib/
+use_directory_urls: true
+theme:
+  name: readthedocs
+  custom_dir: theme
+  highlightjs: false
+plugins: []
+hooks:
+  - hooks.py
+markdown_extensions:
+  - tables
+  - pymdownx.highlight:
+      use_pygments: false
+  - pymdownx.superfences
+  - mdx_truly_sane_lists:
+      nested_indent: 2
+      truly_sane: false
+  - toc
+  - pymdownx.arithmatex:
+      generic: true
+extra_css:
+  - css/curated.css
+extra_javascript:
+  - assets/mathjax-config.js
+  - assets/tex-svg.js
+nav:
+  - Home: README.md
+  - Guide by subject: docs/README.md
+  - API and imports: docs/api.md
+  - Mathematical notes: docs/math/README.md
+  - Source register: docs/math/references.md
+  - Changelog: CHANGELOG.md
+  - Citation: docs/citation.md
+  - Generated API availability: docs/generated-api.md
+validation:
+  nav:
+    not_found: warn
+    omitted_files: ignore  # Every note is linked from the generated notes index.
+  links:
+    not_found: warn
+    anchors: warn
+    absolute_links: warn
+    unrecognized_links: warn

@@ -26,10 +26,10 @@ def normalize(url):
 
 expected = {normalize(pkg["url"]): pkg["rev"] for pkg in parent["packages"]}
 docgen_expected = {
-    "https://github.com/leanprover/doc-gen4": "e2af49a7b7e5e1a9224008c1f15e7aa4f58a4015",
-    "https://github.com/leanprover/leansqlite": "6168b7549738a19bc837a1625c60c5d1e5dd8aeb",
-    "https://github.com/fgdorais/lean4-unicode-basic": "37e7d8cb7316a88cd3e91208385c9ec6ae780019",
-    "https://github.com/dupuisf/BibtexQuery": "852edafa268eb038a7158551fd580ee8433847b0",
+    "https://github.com/leanprover/doc-gen4": "0e1ffe2e4ba5ecfdfaf15c65b8d3805dbb7134ae",
+    "https://github.com/leanprover/leansqlite": "4ed2f27ecf81792abc8ff848670ac4356d0c4794",
+    "https://github.com/fgdorais/lean4-unicode-basic": "6e48acac3a91665fcdc4a20d50b7ce6b7b41711f",
+    "https://github.com/dupuisf/BibtexQuery": "876b844aa52183cbcc0d82fdd4d1fc349f0dac34",
     "https://github.com/acmepjz/md4lean": "31907cc18f48a95384f99cee5582c00fb39e0f67",
 }
 for url, rev in docgen_expected.items():

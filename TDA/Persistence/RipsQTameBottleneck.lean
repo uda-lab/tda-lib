@@ -81,7 +81,7 @@ private theorem qTameLocallyFiniteDiagram_eq_finite (k : Type u) [Field k]
   funext p
   exact qTameLocallyFiniteDiagram_multiplicity_eq k n p
 
-/- Concrete finite consumer: the q-tame Rips bottleneck between finite metric
+/-- Concrete finite consumer: the q-tame Rips bottleneck between finite metric
 spaces is exactly the existing bottleneck between their full finite diagrams. -/
 theorem qTameLocallyFiniteDiagram_bottleneck_eq_finite
     {X Y : Type u} [LinearOrder X] [MetricSpace X] [Fintype X]

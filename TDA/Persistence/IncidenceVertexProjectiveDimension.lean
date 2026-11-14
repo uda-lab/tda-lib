@@ -39,23 +39,14 @@ variable {k : Type u} [Field k] {S : Type} [Lattice S] [Finite S]
 
 noncomputable section
 
-local instance : Fintype S := Fintype.ofFinite S
-local instance : DecidableLE S := Classical.decRel _
-local instance : DecidableLT S := Classical.decRel _
-local instance : DecidableEq S := Classical.decEq _
-local instance : DecidableEq (WithTop S) := Classical.decEq _
-local instance (p : Prop) : Decidable p := Classical.propDecidable p
-local instance : Fintype (PairPoset S) :=
-  Fintype.subtype (Finset.univ.filter fun ab : WithTop S × WithTop S => ab.1 ≤ ab.2)
-    (by intro ab; simp)
-local instance : DecidableLE (PairPoset S) := Classical.decRel _
-local instance : DecidableLT (PairPoset S) := Classical.decRel _
-local instance : LocallyFiniteOrder (PairPoset S) := Fintype.toLocallyFiniteOrder
-local instance : DecidableEq (PairPoset S) := Classical.decEq _
-local instance : Fintype (ComparablePair S) := Fintype.ofFinite _
-local instance diagonalIdealTwoSided :
+open scoped TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset
+
+/-- The canonical two-sidedness proof for the diagonal ideal of the incidence algebra. -/
+abbrev diagonalIdealTwoSided {k : Type u} [Field k]
+    {S : Type} [Lattice S] [Finite S] :
     (IncidenceQuotientSimple.DiagonalIdeal (k := k) (S := S)).IsTwoSided :=
-  diagonalIdeal_isTwoSided (k := k) (S := S)
+  TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdealIsTwoSided
+    (k := k) (S := S)
 
 private abbrev V := vertexFunctor (k := k) (S := S)
 

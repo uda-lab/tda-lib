@@ -22,10 +22,6 @@ namespace TDA.Persistence
 open MeasureTheory
 open scoped ENNReal NNReal
 
-/-- The empty diagram is the bottleneck-space base point. -/
-def Diagram.empty : Diagram ℝ :=
-  orderedQ 0 0 ((Fin.elim0 : Fin 0 → ℝ × ℝ), (Fin.elim0 : Fin 0 → ℝ))
-
 namespace Rips
 
 /-- Every positive-degree diagram on a carrier with at most one point is empty.
@@ -117,7 +113,7 @@ with replacement from a compact metric probability space. -/
 def sampleLawMeasure (k : Type w) [Field k] (μ : ProbabilityMeasure X)
     (n degree : ℕ) : ProbabilityMeasure (Diagram ℝ) :=
   (ProbabilityMeasure.pi (fun _ : Fin n => μ)).map
-    (continuous_sampleDiagram (X := X) k degree).measurable.aemeasurable
+    (fun t : Fin n → X => sampleDiagram k t degree)
 
 omit [MeasurableSpace X] [BorelSpace X] in
 /-- The image of the sample map is compact. -/
@@ -141,16 +137,16 @@ Rips diagram law unchanged. -/
 theorem sampleLawMeasure_map_isometry (k : Type w) [Field k]
     {Y : Type v} [MetricSpace Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y]
     (f : X → Y) (hf : Isometry f) (μ : ProbabilityMeasure X) (n degree : ℕ) :
-    sampleLawMeasure k (μ.map hf.continuous.measurable.aemeasurable) n degree =
+    sampleLawMeasure k (μ.map f) n degree =
       sampleLawMeasure k μ n degree := by
   let g : (Fin n → X) → Fin n → Y := fun t i => f (t i)
   have hprod :
       (ProbabilityMeasure.pi (fun _ : Fin n =>
-        μ.map hf.continuous.measurable.aemeasurable) : Measure (Fin n → Y)) =
+        μ.map f) : Measure (Fin n → Y)) =
         Measure.map g
           (ProbabilityMeasure.pi (fun _ : Fin n => μ) : Measure (Fin n → X)) := by
     change Measure.pi (fun _ : Fin n =>
-        (μ.map hf.continuous.measurable.aemeasurable : Measure Y)) =
+        (μ.map f : Measure Y)) =
       Measure.map (fun t i => f (t i))
         (Measure.pi (fun _ : Fin n => (μ : Measure X)))
     exact (Measure.pi_map_pi
@@ -160,7 +156,7 @@ theorem sampleLawMeasure_map_isometry (k : Type w) [Field k]
   apply Subtype.ext
   change Measure.map (fun s : Fin n → Y => sampleDiagram k s degree)
       (ProbabilityMeasure.pi (fun _ : Fin n =>
-        μ.map hf.continuous.measurable.aemeasurable) : Measure (Fin n → Y)) =
+        μ.map f) : Measure (Fin n → Y)) =
     Measure.map (fun t : Fin n → X => sampleDiagram k t degree)
       (ProbabilityMeasure.pi (fun _ : Fin n => μ) : Measure (Fin n → X))
   rw [hprod]
@@ -352,7 +348,8 @@ theorem sampleLawMeasure_finite_rpow_moment (k : Type w) [Field k]
         ∫⁻ t, (edist (sampleDiagram k t degree) Diagram.empty) ^ p ∂
           (ProbabilityMeasure.pi (fun _ : Fin n => μ) : Measure (Fin n → X)) := by
     rw [sampleLawMeasure, ProbabilityMeasure.toMeasure_map]
-    exact MeasureTheory.lintegral_map_le _ _
+    exact MeasureTheory.lintegral_map_le _
+      (continuous_sampleDiagram (X := X) k degree).measurable.aemeasurable
   have hpoint (t : Fin n → X) :
       (edist (sampleDiagram k t degree) Diagram.empty) ^ p ≤ bound ^ p := by
     change (bottleneck (sampleDiagram k t degree) Diagram.empty) ^ p ≤ bound ^ p

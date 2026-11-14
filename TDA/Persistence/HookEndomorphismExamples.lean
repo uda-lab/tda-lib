@@ -52,16 +52,18 @@ theorem unbounded_hook :
 
 /-- Multiplication in the actual endomorphism ring has the expected nontrivial value. -/
 theorem scalar_composition :
-    (Hook.endRingEquiv (k := ℚ) origin_lt_death).symm 2 ≫
-      (Hook.endRingEquiv (k := ℚ) origin_lt_death).symm 3 =
+    ((Hook.endRingEquiv (k := ℚ) origin_lt_death).symm 2).asHom ≫
+      ((Hook.endRingEquiv (k := ℚ) origin_lt_death).symm 3).asHom =
         (6 : ℚ) • 𝟙 (Hook.module (k := ℚ) origin death) := by
-  rw [← Hook.endRingEquiv_symm_apply origin_lt_death (6 : ℚ)]
   let e := Hook.endRingEquiv (k := ℚ) origin_lt_death
-  apply e.injective
-  change e (e.symm 3 * e.symm 2) = e (e.symm 6)
-  rw [map_mul, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply,
-    RingEquiv.apply_symm_apply]
-  norm_num
+  have h : e.symm 3 * e.symm 2 = e.symm 6 := by
+    apply e.injective
+    rw [map_mul, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply,
+      RingEquiv.apply_symm_apply]
+    norm_num
+  have h' := congrArg End.asHom h
+  rw [End.mul_asHom] at h'
+  rw [h', Hook.endRingEquiv_symm_apply]
 
 /-- Two identical hook occurrences really form a decomposable object. -/
 theorem repeated_hook_not_indecomposable :
@@ -95,8 +97,8 @@ theorem recover_infinite_birth {i : Fin 2 → ℝ}
 theorem characteristic_two :
     Indecomposable (Hook.module (k := ZMod 2) (0 : Fin 2) 1) ∧
       (Hook.endRingEquiv (k := ZMod 2) (by decide : (0 : Fin 2) < 1))
-        ((1 : ZMod 2) • 𝟙 (Hook.module (k := ZMod 2) (0 : Fin 2) 1) +
-          (1 : ZMod 2) • 𝟙 (Hook.module (k := ZMod 2) (0 : Fin 2) 1)) = 0 := by
+        (.of ((1 : ZMod 2) • 𝟙 (Hook.module (k := ZMod 2) (0 : Fin 2) 1) +
+          (1 : ZMod 2) • 𝟙 (Hook.module (k := ZMod 2) (0 : Fin 2) 1))) = 0 := by
   constructor
   · exact Hook.indecomposable (by decide)
   · simp only [one_smul]

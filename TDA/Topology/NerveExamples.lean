@@ -1,4 +1,6 @@
 import TDA.Topology.Nerve
+import Mathlib.Tactic.FinCases
+import Mathlib.Data.Fintype.Basic
 
 /-!
 # Concrete ordinary-nerve fixtures

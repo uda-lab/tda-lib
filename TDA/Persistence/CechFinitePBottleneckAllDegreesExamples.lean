@@ -298,8 +298,6 @@ private theorem two_bottleneck : bottleneck twoDA twoDB = ENNReal.ofReal (3 / 2)
   · apply (presentationBottleneck_le_cost _ _ _ _ M).trans_eq
     norm_num [M, OccurrenceMatching.cost, finitePairCost, diagonalCost, essentialPairCost,
       reduceCtorEq]
-    rw [if_neg (by decide : (none : Option (Fin 1)) ≠ some 0)]
-    exact max_eq_right (ENNReal.ofReal_le_ofReal (by norm_num))
   · apply le_iInf
     intro N
     cases h : N.finite 0 with

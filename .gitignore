@@ -47,3 +47,7 @@ core.*
 *.swp
 
 # lake-manifest.json and lean-toolchain are intentionally tracked for reproducibility.
+
+# Lightweight documentation tooling bytecode (site output stays under /build/)
+/docsite/__pycache__/
+/docbuild/__pycache__/

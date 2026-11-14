@@ -1,5 +1,7 @@
 -- Ordinary Persistence library modules; standalone fixtures are in TDA.Persistence.Examples.
 import TDA.Persistence.Basic
+import TDA.Persistence.EndpointCostSign
+import TDA.Persistence.AffineSwitchArrangement
 import TDA.Persistence.DecoratedMeasureCuts
 import TDA.Persistence.DecoratedCutEndpoints
 import TDA.Persistence.DecoratedRectangleCells
@@ -31,6 +33,7 @@ import TDA.Persistence.CrossPresentation
 import TDA.Persistence.GradedFreeDelay
 import TDA.Persistence.CrossPresentationConverse
 import TDA.Persistence.FinitePresentationShift
+import TDA.Persistence.FinitePresentationReindex
 import TDA.Persistence.FinitePresentationRedundant
 import TDA.Persistence.FinitePresentationComparison
 import TDA.Persistence.FinitePresentationClosure
@@ -62,8 +65,16 @@ import TDA.Persistence.Rectangle
 import TDA.Persistence.RealRaySeparation
 import TDA.Persistence.ConstructibleClosure
 import TDA.Persistence.HookInfinity
+import TDA.Persistence.HookInfinityProjective
 import TDA.Persistence.GeneratedUpsetResolution
+import TDA.Persistence.GeneratedUpsetProjectiveDimension
 import TDA.Persistence.HookEndomorphisms
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialFinite
+import TDA.Persistence.RankResolutionDegreeTwoSimplicial
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialTranslation
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialScaling
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialScaledTranslation
+import TDA.Persistence.RankResolutionDegreeTwoSimplicialCoordinateTranslation
 import TDA.Persistence.FiniteRankProjectiveClassification
 import TDA.Persistence.FiniteRankProjectiveHom
 import TDA.Persistence.FiniteRankProjectiveEndAlgebra
@@ -74,6 +85,7 @@ import TDA.Persistence.FiniteRankProjectiveHomExact
 import TDA.Persistence.FiniteRankProjectiveHomFullyFaithful
 import TDA.Persistence.FiniteRankProjectiveHomCover
 import TDA.Persistence.RealInterleavingDistance
+import TDA.Persistence.RealInterleavingRankObstruction
 import TDA.Persistence.RealIntervalInterleaving
 import TDA.Persistence.MatchingInterleaving
 import TDA.Persistence.MatchingInterleavingDistance
@@ -101,6 +113,8 @@ import TDA.Persistence.DiagramBottleneckLaws
 import TDA.Persistence.DiagramBottleneckTopology
 import TDA.Persistence.RipsSamplingMeasure
 import TDA.Persistence.RipsSamplingMeasureStability
+import TDA.Persistence.RipsSamplingEmpirical
+import TDA.Persistence.RipsSamplingConfidence
 import TDA.Persistence.DiagramCalculus
 import TDA.Persistence.SublevelLossDerivative
 import TDA.Persistence.FiniteBarcode
@@ -108,6 +122,9 @@ import TDA.Persistence.FiniteMonoCounts
 import TDA.Persistence.FiniteMonoMatching
 import TDA.Persistence.Interval
 import TDA.Persistence.RankInvariant
+import TDA.Persistence.RankErosion
+import TDA.Persistence.RankErosionInterleaving
+import TDA.Persistence.RankErosionWitness
 import TDA.Persistence.RankReconstruction
 import TDA.Persistence.RankBarcode
 import TDA.Persistence.RankReindex
@@ -223,11 +240,17 @@ import TDA.Persistence.QTame
 import TDA.Persistence.RealInterleavingInterpolation
 import TDA.Persistence.RipsQTame
 import TDA.Persistence.RipsQTameDiagram
+import TDA.Persistence.RealBarcodeRank
+import TDA.Persistence.ConstructibleQTame
+import TDA.Persistence.FiniteDiagramQTame
+import TDA.Persistence.ConstructibleQTameCompatibility
 import TDA.Persistence.RipsQTameFiniteCompatibility
 import TDA.Persistence.LocallyFiniteDiagramBottleneck
+import TDA.Persistence.LocallyFiniteDiagramBottleneckLaws
 import TDA.Persistence.PersistenceMeasureWindowMatching
 import TDA.Persistence.QTameFiniteSaturation
 import TDA.Persistence.LocallyFiniteMatchingCompactness
+import TDA.Persistence.QTameDiagramStability
 import TDA.Persistence.RipsQTameBottleneck
 import TDA.Persistence.RipsQTameInfiniteMetricStability
 import TDA.Persistence.RipsHausdorffInterleaving
@@ -246,6 +269,9 @@ import TDA.Persistence.GaussianSpectralSeparation
 import TDA.Persistence.GaussianMeasureEmbedding
 import TDA.Persistence.GaussianUniversality
 import TDA.Persistence.WeightedPersistenceMeasure
+import TDA.Persistence.WeightedBoundaryTransportFeature
+import TDA.Persistence.WeightedBoundaryTransportStability
+import TDA.Persistence.WeightedBoundaryTransportApproximation
 import TDA.Persistence.RipsSampling
 import TDA.Persistence.RipsSampleQuotient
 
@@ -258,13 +284,12 @@ import TDA.Persistence.AlgebraicFamily
 
 import TDA.Persistence.CutDecomposition
 import TDA.Persistence.AlgebraicFamilyIso
-import TDA.Persistence.EphemeralIntervalIso
 import TDA.Persistence.FiniteObservation
 import TDA.Persistence.IntervalCompatibility
 import TDA.Persistence.RealIntervalDecomposition
 import TDA.Persistence.RealIntervalObservation
 
-import TDA.Persistence.BoundaryTransportGeometry
+import TDA.Persistence.BoundaryTransportGeometryCore
 
 import TDA.Persistence.MulticoverNerve
 import TDA.Persistence.GromovProkhorovMulticover
@@ -272,7 +297,7 @@ import TDA.Persistence.BoundaryPlans
 import TDA.Persistence.BoundaryPlanLaws
 import TDA.Persistence.ReservoirMeasure
 import TDA.Persistence.BoundaryTransportForward
-import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.BoundaryTransportReverseCore
 import TDA.Persistence.BoundaryTransportComparison
 import TDA.Persistence.BoundaryTransportAttainment
 import TDA.Persistence.BoundaryTransportQuantization
@@ -338,13 +363,62 @@ import TDA.Persistence.OrdinaryFiniteLatticeDimension
 import TDA.Persistence.IncidenceVertexProjectiveDimension
 import TDA.Persistence.FiniteGridInjectiveRankDimension
 import TDA.Persistence.FiniteRankProjectiveResolutionDimension
+import TDA.Persistence.RankResolutionDegreeTwoFinite
+import TDA.Persistence.RankResolutionDegreeTwo
 import TDA.Persistence.CoordinateInterleavingDelay
 import TDA.Persistence.RankSchanuelUnshifted
 import TDA.Persistence.RankSignedStability
 import TDA.Persistence.RankSignedNontriangle
 import TDA.Persistence.RankSignedBarcodeOneDimensional
+import TDA.Persistence.PositiveAffineSlice
+import TDA.Persistence.AffineSlicePresentation
+import TDA.Persistence.AffineSliceHooks
+import TDA.Persistence.RealBarcodeRankUniqueness
+import TDA.Persistence.RankExactBarcodeCancellation
+import TDA.Persistence.AffineSliceRank
+import TDA.Persistence.AffineSliceSignedBarcode
+import TDA.Persistence.AffineSliceInterleaving
+import TDA.Persistence.AffineSliceMatching
 import TDA.Persistence.FinitePresentationColimits
 import TDA.Persistence.FinitePresentationPushout
 import TDA.Persistence.FinitePresentationExtensions
 import TDA.Persistence.FinitePresentationPullback
 import TDA.Persistence.FinitePresentationCompositeKernel
+import TDA.Persistence.FiniteSimplicial
+import TDA.Persistence.FiniteSimplicialPresentation
+import TDA.Persistence.FiniteSimplicialInterleaving
+import TDA.Persistence.FiniteSimplicialStability
+
+import TDA.Persistence.Reduction.FiniteInputRepresentatives
+import TDA.Persistence.Reduction.FiniteInputRepresentativeSemantics
+import TDA.Persistence.Reduction.FiniteInputRepresentativeChains
+import TDA.Persistence.Reduction.FiniteInputRepresentativeHomology
+import TDA.Persistence.Reduction.FiniteInputRepresentativeCorrectness
+import TDA.Persistence.Reduction.FiniteInputRepresentativeExamples
+import TDA.Persistence.Reduction.FiniteInputSublevelQuery
+import TDA.Persistence.Reduction.FiniteInputSublevelCycles
+import TDA.Persistence.Reduction.FiniteInputSublevelHomology
+import TDA.Persistence.Reduction.FiniteInputSublevelExamples
+import TDA.Persistence.Reduction.FiniteInputActiveBasis
+import TDA.Persistence.Reduction.FiniteInputBasisTransition
+import TDA.Persistence.Reduction.FiniteInputSublevelBasis
+import TDA.Persistence.Reduction.FiniteInputSublevelBasisExamples
+import TDA.Persistence.Reduction.FiniteInputNormalCoordinates
+import TDA.Persistence.Reduction.FiniteInputCycleCoordinates
+import TDA.Persistence.Reduction.FiniteInputCycleCoordinatesCorrectness
+import TDA.Persistence.Reduction.FiniteInputCycleCoordinatesExamples
+import TDA.Persistence.Reduction.FiniteInputCycleFillings
+import TDA.Persistence.Reduction.FiniteInputCycleFillingCorrectness
+import TDA.Persistence.Reduction.FiniteInputCycleFillingExamples
+import TDA.Persistence.Reduction.FiniteInputVertexMap
+import TDA.Persistence.Reduction.FiniteInputVertexMapChains
+import TDA.Persistence.Reduction.FiniteInputHomologyMap
+import TDA.Persistence.Reduction.FiniteInputHomologyMapCorrectness
+import TDA.Persistence.Reduction.FiniteInputHomologyMapExamples
+import TDA.Persistence.Reduction.FiniteInputCycleSynthesis
+import TDA.Persistence.Reduction.FiniteInputHomologyLifts
+import TDA.Persistence.Reduction.FiniteInputHomologyLiftCorrectness
+import TDA.Persistence.Reduction.FiniteInputHomologyLiftExamples
+import TDA.Persistence.Reduction.FiniteInputHomologyDimensions
+import TDA.Persistence.Reduction.FiniteInputHomologyDimensionsCorrectness
+import TDA.Persistence.Reduction.FiniteInputHomologyDimensionsExamples

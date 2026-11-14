@@ -6,9 +6,11 @@ import Mathlib.SetTheory.Cardinal.SchroederBernstein
 
 Two injections between selected occurrences can be combined into a partial
 matching that covers both selected sides, provided every padded edge respects
-the matching relation. The auxiliary natural-number labels used by
-Schröder–Bernstein are discarded; only original finite occurrence indices are
-matched.
+the matching relation. The finite combinator below uses occurrence types
+`α` and `β` in universe 0 (`Type`); the underlying `OccurrenceMatching`
+structure remains universe-polymorphic. The auxiliary natural-number labels
+used by Schröder–Bernstein are discarded; only original finite occurrence
+indices are matched.
 -/
 
 set_option autoImplicit false

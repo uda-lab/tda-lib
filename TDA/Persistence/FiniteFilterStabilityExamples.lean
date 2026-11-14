@@ -1322,7 +1322,7 @@ theorem triangle_midpoint_diagram_points :
     convert hp using 1;
       norm_num [triangleCompatible0, triangleOrder0, triangleOrder0Fun,
         triangleIndex, triangleFilter, triangleValue, triangleTimeHalf,
-        triangleVertex2, triangleEdge12]; simp
+        triangleVertex2, triangleEdge12]
 
 set_option linter.unusedSimpArgs false in
 private theorem triangle_time0_no_half_grade (σ : TotalFace triangleBoundary) :

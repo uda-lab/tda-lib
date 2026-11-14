@@ -58,3 +58,47 @@ import TDA
 #print axioms TDA.Probability.measureGromovWasserstein
 #print axioms TDA.Probability.MeasureCoupling.distortionInfinity
 #print axioms TDA.Probability.measureGromovWassersteinInfinity
+
+-- Finite iid coverage and restriction to full-measure carriers.
+#print axioms TDA.Probability.mem_missedCover
+#print axioms TDA.Probability.not_mem_missedCover_iff
+#print axioms TDA.Probability.measurableSet_missedCover
+#print axioms TDA.Probability.measure_iid_no_hit
+#print axioms TDA.Probability.measure_missedCover_le_sum
+#print axioms TDA.Probability.measure_missedCover_le_card_mul
+#print axioms TDA.Probability.finiteCoverMass_le
+#print axioms TDA.Probability.finiteCoverMass_le_one
+#print axioms TDA.Probability.finiteCoverMass_pos
+#print axioms TDA.Probability.measure_missedCover_le_finiteCoverMass
+#print axioms TDA.Probability.map_carrierProbability_val
+#print axioms TDA.Probability.carrierProbability_preimage
+#print axioms TDA.Probability.measure_ball_pos_of_mem_support
+#print axioms TDA.Probability.measure_support_eq_one
+#print axioms TDA.Probability.map_supportProbability_val
+#print axioms TDA.Probability.supportProbability_ball
+#print axioms TDA.Probability.supportProbability_ball_pos
+#print axioms TDA.Probability.supportProbability_isOpenPosMeasure
+
+-- Finite total variation, maximal coupling, and diameter GW control.
+#print axioms TDA.Probability.finiteTotalVariation
+#print axioms TDA.Probability.finiteCommonMass
+#print axioms TDA.Probability.finiteTotalVariation_eq_sum_sub
+#print axioms TDA.Probability.two_mul_finiteTotalVariation_eq_sum_abs
+#print axioms TDA.Probability.finiteTotalVariation_eq_half_sum_abs
+#print axioms TDA.Probability.finiteTotalVariation_add_commonMass
+#print axioms TDA.Probability.finiteTotalVariation_le_one
+#print axioms TDA.Probability.finiteCommonMass_le_one
+#print axioms TDA.Probability.finiteTotalVariation_eq_one_sub_commonMass
+#print axioms TDA.Probability.finiteTotalVariation_comm
+#print axioms TDA.Probability.finiteTotalVariation_eq_zero_iff
+#print axioms TDA.Probability.finiteTotalVariation_self
+#print axioms TDA.Probability.Coupling.diagonal
+#print axioms TDA.Probability.maximalCoupling
+#print axioms TDA.Probability.maximalCoupling_joint_apply
+#print axioms TDA.Probability.maximalCoupling_joint_diagonal
+#print axioms TDA.Probability.maximalCoupling_mismatch
+#print axioms TDA.Probability.maximalCoupling_distortionMoment_le
+#print axioms TDA.Probability.two_mul_gromovWasserstein_le_finiteTotalVariation
+#print axioms TDA.Probability.empiricalPMF
+#print axioms TDA.Probability.empiricalPMF_apply
+#print axioms TDA.Probability.empiricalPMF_const

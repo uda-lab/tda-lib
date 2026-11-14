@@ -28,15 +28,16 @@ noncomputable section
 
 private theorem source_zero_of_rightMinimal
     {C : Type*} [Category* C] [Abelian C] {A B : C} (g : A ⟶ B)
-    (hmin : ∀ t : End A, t ≫ g = g → IsIso t) (hB : IsZero B) : IsZero A := by
-  have h : IsIso (0 : End A) := hmin 0 (by simp [hB.eq_zero_of_tgt g])
+    (hmin : ∀ t : End A, t.asHom ≫ g = g → IsIso t.asHom) (hB : IsZero B) :
+    IsZero A := by
+  have h : IsIso (0 : End A).asHom := hmin 0 (by simp [hB.eq_zero_of_tgt g])
   have := h
-  exact IsZero.of_mono_eq_zero (0 : End A) rfl
+  exact IsZero.of_mono_eq_zero (0 : End A).asHom rfl
 
 private theorem row_projective_iff_kernel_zero
     {C : Type*} [Category* C] [Abelian C] {Q : ShortComplex C}
     (hQ : Q.ShortExact) (hP : Projective Q.X₂)
-    (hmin : ∀ t : End Q.X₂, t ≫ Q.g = Q.g → IsIso t) :
+    (hmin : ∀ t : End Q.X₂, t.asHom ≫ Q.g = Q.g → IsIso t.asHom) :
     HasProjectiveDimensionLT Q.X₃ 1 ↔ IsZero Q.X₁ := by
   have := hQ.mono_f
   have := hQ.epi_g
@@ -60,7 +61,7 @@ private theorem finite_rows_dimension_iff
     (w : ∀ i, f i ≫ g i = 0)
     (hex : ∀ i, (ShortComplex.mk (f i) (g i) (w i)).ShortExact)
     (hproj : ∀ i, Projective (P i))
-    (hmin : ∀ i, ∀ t : End (P i), t ≫ g i = g i → IsIso t)
+    (hmin : ∀ i, ∀ t : End (P i), t.asHom ≫ g i = g i → IsIso t.asHom)
     (hlast : IsZero (K (Fin.last n))) (d : ℕ) :
     HasProjectiveDimensionLT (K 0) d ↔ ∀ j, d ≤ j.val → IsZero (P j) := by
   induction n generalizing d with

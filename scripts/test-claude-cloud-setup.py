@@ -73,7 +73,7 @@ cat > "$HOME/.elan/bin/elan" <<'MOCK_ELAN'
 set -e
 if [[ "$1" == --version ]]; then echo 'elan 4.2.4 (mock)'; exit 0; fi
 if [[ "$1" == toolchain && "$2" == list ]]; then
-  [[ -f "$HOME/.elan/fake-toolchain" ]] && echo 'leanprover/lean4:v4.33.1'
+  [[ -f "$HOME/.elan/fake-toolchain" ]] && echo 'leanprover/lean4:v4.35.0'
   exit 0
 fi
 if [[ "$1" == toolchain && "$2" == install ]]; then
@@ -83,12 +83,12 @@ if [[ "$1" == toolchain && "$2" == install ]]; then
 fi
 if [[ "$1" == run && "$3" == lean && "$4" == --version ]]; then
   [[ "${MOCK_LEAN_VERSION_FAIL:-0}" == 1 ]] && echo 'Lean (version 4.33.0, mock)' && exit 0
-  echo 'Lean (version 4.33.1, mock)'
+  echo 'Lean (version 4.35.0, mock)'
   exit 0
 fi
 if [[ "$1" == run && "$3" == lake && "$4" == --version ]]; then
   [[ "${MOCK_LEAN_VERSION_FAIL:-0}" == 1 ]] && echo 'Lake version 5 (Lean version 4.33.0)' && exit 0
-  echo 'Lake version 5 (Lean version 4.33.1)'
+  echo 'Lake version 5 (Lean version 4.35.0)'
   exit 0
 fi
 exit 64

@@ -21,8 +21,9 @@ with different numbers of connected components have graph-PL Reeb quotients at g
 ## The merge tree
 
 `mergeY` is the tree on `Fin 4` with edges `0 — 2`, `1 — 2`, `2 — 3`, and `mergeHeights a M` puts
-the leaves `0, 1` at height `0`, the apex `2` at `a` and the top vertex `3` at `M`. For
-`0 < a < b ≤ 2a` and `b ≤ M`,
+the leaves `0, 1` at height `0`, the apex `2` at `a` and the top vertex `3` at `M`. Its darts
+`0 → 2`, `1 → 2` and `2 → 3` are `mergeFoldD02`, `mergeFoldD12` and `mergeFoldD23`, with
+`simp` lemmas for their endpoints. For `0 < a < b ≤ 2a` and `b ≤ M`,
 
 `geometricInterleavingDistance (graphPLReebGraph mergeY (mergeHeights a M))
   (graphPLReebGraph mergeY (mergeHeights b M)) = ENNReal.ofReal (b - a)`
@@ -148,14 +149,27 @@ theorem mergeY_adj (u v : Fin 4) :
       (u = 2 ∧ v = 3) ∨ (u = 3 ∧ v = 2) := by
   fin_cases u <;> fin_cases v <;> simp [mergeY, fromEdgeSet_adj]
 
-private def d02 : mergeY.Dart := ⟨(0, 2), (mergeY_adj 0 2).2 (by decide)⟩
+/-- The dart `0 → 2` of `mergeY`. -/
+def mergeFoldD02 : mergeY.Dart :=
+  ⟨(0, 2), (mergeY_adj 0 2).2 (by decide)⟩
 
-private def d12 : mergeY.Dart := ⟨(1, 2), (mergeY_adj 1 2).2 (by decide)⟩
+/-- The dart `1 → 2` of `mergeY`. -/
+def mergeFoldD12 : mergeY.Dart :=
+  ⟨(1, 2), (mergeY_adj 1 2).2 (by decide)⟩
 
-private def d23 : mergeY.Dart := ⟨(2, 3), (mergeY_adj 2 3).2 (by decide)⟩
+/-- The dart `2 → 3` of `mergeY`. -/
+def mergeFoldD23 : mergeY.Dart :=
+  ⟨(2, 3), (mergeY_adj 2 3).2 (by decide)⟩
+
+@[simp] theorem mergeFoldD02_fst : mergeFoldD02.fst = 0 := rfl
+@[simp] theorem mergeFoldD02_snd : mergeFoldD02.snd = 2 := rfl
+@[simp] theorem mergeFoldD12_fst : mergeFoldD12.fst = 1 := rfl
+@[simp] theorem mergeFoldD12_snd : mergeFoldD12.snd = 2 := rfl
+@[simp] theorem mergeFoldD23_fst : mergeFoldD23.fst = 2 := rfl
+@[simp] theorem mergeFoldD23_snd : mergeFoldD23.snd = 3 := rfl
 
 private theorem mergeY_edge_cases (e : mergeY.edgeSet) :
-    e = dartEdge d02 ∨ e = dartEdge d12 ∨ e = dartEdge d23 := by
+    e = dartEdge mergeFoldD02 ∨ e = dartEdge mergeFoldD12 ∨ e = dartEdge mergeFoldD23 := by
   obtain ⟨⟨⟨u, v⟩, huv⟩, rfl⟩ := exists_dartEdge_eq e
   rcases (mergeY_adj u v).1 huv with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
       ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
@@ -194,7 +208,7 @@ private theorem edgeActive_leaf {d : mergeY.Dart} (hd₀ : mergeHeights a M d.fs
 
 /-- The top edge is not active over an interval below the apex height `a ≤ M`. -/
 private theorem not_edgeActive_top {K : OpenInterval} (haM : a ≤ M) (hK : ∀ x ∈ K, x < a) :
-    ¬ EdgeActive mergeY (mergeHeights a M) K (dartEdge d23) := fun hact => by
+    ¬ EdgeActive mergeY (mergeHeights a M) K (dartEdge mergeFoldD23) := fun hact => by
   obtain ⟨t, -, -, ht⟩ := hact.exists_mem rfl
   have hlt := hK _ ht
   have h₀ : (0 : ℝ) ≤ t := t.2.1
@@ -205,7 +219,7 @@ private theorem not_edgeActive_top {K : OpenInterval} (haM : a ≤ M) (hK : ∀ 
 /-- An edge active over an interval below the apex height is a leaf edge. -/
 private theorem leaf_of_edgeActive {K : OpenInterval} (haM : a ≤ M) (hK : ∀ x ∈ K, x < a)
     {e : mergeY.edgeSet} (he : EdgeActive mergeY (mergeHeights a M) K e) :
-    e = dartEdge d02 ∨ e = dartEdge d12 := by
+    e = dartEdge mergeFoldD02 ∨ e = dartEdge mergeFoldD12 := by
   rcases mergeY_edge_cases e with rfl | rfl | rfl
   · exact .inl rfl
   · exact .inr rfl
@@ -219,8 +233,8 @@ theorem card_cellComponents_mergeHeights_ioo {c : ℝ} (hc : 0 < c) (hca : c ≤
     rw [mem_ioo] at hv
     fin_cases v <;> simp at hv <;> linarith [hv.1, hv.2]
   rw [card_cellComponents_eq_card_activeEdges hI]
-  refine Nat.card_eq_two_iff.2 ⟨⟨dartEdge d02, edgeActive_leaf rfl rfl hc hca⟩,
-    ⟨dartEdge d12, edgeActive_leaf rfl rfl hc hca⟩, fun h => ?_, ?_⟩
+  refine Nat.card_eq_two_iff.2 ⟨⟨dartEdge mergeFoldD02, edgeActive_leaf rfl rfl hc hca⟩,
+    ⟨dartEdge mergeFoldD12, edgeActive_leaf rfl rfl hc hca⟩, fun h => ?_, ?_⟩
   · have h' : (s(0, 2) : Sym2 (Fin 4)) = s(1, 2) :=
       congrArg (fun e => ((e.1 : mergeY.edgeSet) : Sym2 (Fin 4))) h
     exact absurd h' (by decide)

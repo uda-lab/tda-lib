@@ -30,6 +30,10 @@ def orderedQ {α : Type u} [LinearOrder α] (m n : ℕ)
     · rcases Multiset.mem_map.mp hp with ⟨b, hb, rfl⟩
       simp
 
+/-- The empty diagram is the bottleneck-space base point. -/
+noncomputable def Diagram.empty : Diagram ℝ :=
+  orderedQ 0 0 ((Fin.elim0 : Fin 0 → ℝ × ℝ), (Fin.elim0 : Fin 0 → ℝ))
+
 
 private theorem ofFn_perm {β : Type*} {k : ℕ} (f : Fin k → β) (σ : Equiv.Perm (Fin k)) :
     (Multiset.ofList (List.ofFn (f ∘ σ))) = Multiset.ofList (List.ofFn f) := by

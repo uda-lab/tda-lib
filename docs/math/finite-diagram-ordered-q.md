@@ -28,6 +28,9 @@ positions, preserving repeated reversed pairs and repeated essential births.
 
 This is a finite multiset construction, not a persistence computation. It
 does not map a terminal finite observation to an essential point or identify
-an arbitrary terminal death with infinity. Such a value-labelled result needs
-an additional eventual-sublevel argument. The order-general definitions here
-make no metric, norm, quotient-topology, or smoothness claim.
+an arbitrary terminal death with infinity. For the available finite-filter
+route, see the [index-bar relabeling guide](finite-index-diagram.md) and the
+[finite-sublevel diagram guide](finite-sublevel-diagram.md), which covers the
+actual sublevel rank bridge. The sublevel bridge concerns finite simplicial
+filters; the order-general definitions here make no metric, norm,
+quotient-topology, or smoothness claim.

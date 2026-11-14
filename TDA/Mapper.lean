@@ -48,3 +48,4 @@ import TDA.Mapper.GraphPLReebScaling
 import TDA.Mapper.GraphPLReebMapPair
 import TDA.Mapper.GraphPLReebMergeFold
 import TDA.Mapper.RefinementHomologyMapPair
+import TDA.Mapper.MapperReebConstructible

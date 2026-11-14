@@ -17,7 +17,8 @@ theorem eLpNorm_dist_eq_collapsedPowerCost (p : ℝ) (hp : 0 < p)
     eLpNorm (fun z : Space × Space => dist z.1 z.2) (ENNReal.ofReal p) γ =
       (∫⁻ z, collapsedPowerCost p z ∂γ) ^ (1 / p) := by
   rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
-    (ENNReal.ofReal_ne_zero_iff.mpr hp) ENNReal.ofReal_ne_top,
+    (ENNReal.ofReal_ne_zero_iff.mpr hp) ENNReal.ofReal_ne_top
+    continuous_dist.aestronglyMeasurable,
     ENNReal.toReal_ofReal hp.le]
   congr 1
   apply lintegral_congr
@@ -35,7 +36,8 @@ coupling `Lᵖ` norm. -/
 theorem eLpNorm_edist_eq_dist (q : ℝ≥0∞) (γ : Measure (Space × Space)) :
     eLpNorm (fun z : Space × Space => edist z.1 z.2) q γ =
       eLpNorm (fun z : Space × Space => dist z.1 z.2) q γ := by
-  apply eLpNorm_congr_enorm_ae
+  apply eLpNorm_congr_enorm_ae continuous_edist.aestronglyMeasurable
+    continuous_dist.aestronglyMeasurable
   exact Filter.Eventually.of_forall fun z => by
     rw [enorm_eq_self, edist_dist, Real.enorm_eq_ofReal dist_nonneg]
 

@@ -50,19 +50,15 @@ universe u w
 
 variable {R : Type u} [Ring R] {M N : PModule.{u,0,w} R ℝ}
 
-/-- If every double-shift structure map of two real modules at the parameter `ε` is zero, the
-zero maps form an `ε`-interleaving. -/
+/-- Deprecated compatibility name for
+`TDA.Mapper.nonempty_realInterleaving_of_structureMap_eq_zero`. -/
+@[deprecated TDA.Mapper.nonempty_realInterleaving_of_structureMap_eq_zero
+  (since := "2026-10-31")]
 theorem nonempty_realInterleaving_of_structureMap_eq_zero (ε : ℝ≥0)
     (hM : ∀ (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)), structureMap M h = 0)
     (hN : ∀ (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)), structureMap N h = 0) :
     Nonempty (RealInterleaving ε M N) :=
-  ⟨RealInterleaving.ofApp 0 0
-    (fun t => by
-      rw [NatTrans.app_zero, zero_comp, transition_app]
-      exact (hM t _).symm)
-    (fun t => by
-      rw [NatTrans.app_zero, zero_comp, transition_app]
-      exact (hN t _).symm)⟩
+  TDA.Mapper.nonempty_realInterleaving_of_structureMap_eq_zero ε hM hN
 
 end Zero
 
@@ -74,9 +70,6 @@ local instance (q : Fin 2) :
     LinearOrder (ComponentIndex (plHeight edgeGraph h01) (mergeCover q)) := by
   classical
   exact linearOrderOfSTO WellOrderingRel
-
-private instance (q : Fin 2) : Finite (mergeIndex q) := by
-  fin_cases q <;> dsimp [mergeIndex] <;> infer_instance
 
 /-- A vertex of the first padded merge stage. -/
 private def mergeVertex :
@@ -109,13 +102,6 @@ section Point
 local instance {ι : Type} [LinearOrder ι] (U : ι → Set Unit) :
     LinearOrder (ComponentIndex threeStageMap U) :=
   componentIndexLinearOrder threeStageMap U
-
-private instance {ι : Type} [Finite ι] (U : ι → Set Unit) :
-    Finite (ComponentIndex threeStageMap U) :=
-  have : ∀ i, Finite (ZerothHomotopy (PullbackSpace threeStageMap U i)) := fun i =>
-    have := subsingleton_zerothHomotopy (Z := PullbackSpace threeStageMap U i)
-    inferInstance
-  inferInstanceAs (Finite (Σ i, ZerothHomotopy (PullbackSpace threeStageMap U i)))
 
 /-- The single stage: the full space as the only member. -/
 def fullStage (_ : Fin 1) : Unit → Set Unit := fun _ => Set.univ
@@ -154,19 +140,6 @@ local instance (q : Fin 2) :
     LinearOrder (ComponentIndex (plHeight C4 h4) (loopCover q)) := by
   classical
   exact linearOrderOfSTO WellOrderingRel
-
-private instance (q : Fin 2) : Finite (loopIndex q) := by
-  fin_cases q <;> dsimp [loopIndex] <;> infer_instance
-
-/-- The one-member stage has no edge: its single member has pairwise disjoint components. -/
-private instance : IsEmpty (Face (mapper (plHeight C4 h4) (loopCover 1)) 1) :=
-  ⟨fun σ => by
-    classical
-    obtain ⟨a, b, hab, hσ⟩ := Finset.card_eq_two.1 σ.2.2
-    have ha : a ∈ σ.1 := by simp [hσ]
-    have hb : b ∈ σ.1 := by simp [hσ]
-    exact hab (eq_of_mem_mapper_face_of_fst_eq _ _ σ.2.1 ha hb
-      (Subsingleton.elim (α := Unit) a.1 b.1))⟩
 
 /-- The degree-one step diagram of the empty, three-member and one-member stages of the
 4-cycle on the grid `c`. -/
@@ -214,7 +187,7 @@ private theorem loopModule_structureMap_eq_zero {c : Fin 2 ↪o ℝ} (hc : c 1 �
 zero maps. -/
 theorem loop_shift_interleaving :
     Nonempty (RealInterleaving (1 / 2) (loopModule grid01) (loopModule (shiftGrid 1 grid01))) :=
-  nonempty_realInterleaving_of_structureMap_eq_zero _
+  TDA.Mapper.nonempty_realInterleaving_of_structureMap_eq_zero _
     (fun _ h => loopModule_structureMap_eq_zero (by simp [grid01]) h)
     (fun _ h => loopModule_structureMap_eq_zero (by simp [grid01]) h)
 
@@ -257,18 +230,10 @@ local instance (i : Fin 1) :
     LinearOrder (ComponentIndex (plHeight edgeGraph h01) (emptyStage i)) :=
   @LinearOrder.lift' _ (Fin 0) _ (fun a => a.1) (fun a => Fin.elim0 a.1)
 
-private instance (i : Fin 1) (n : ℕ) :
-    Finite (Face (mapper (plHeight edgeGraph h01) (emptyStage i)) n) := by
-  rw [mapper_eq_bot_of_isEmpty]
-  infer_instance
-
 local instance (q : Fin 2) :
     LinearOrder (ComponentIndex (plHeight edgeGraph h01) (mergeCover q)) := by
   classical
   exact linearOrderOfSTO WellOrderingRel
-
-private instance (q : Fin 2) : Finite (mergeIndex q) := by
-  fin_cases q <;> dsimp [mergeIndex] <;> infer_instance
 
 /-- The empty-grid diagram has no essential bar, the merge diagram has one, and the bottleneck
 distance between them is infinite. -/

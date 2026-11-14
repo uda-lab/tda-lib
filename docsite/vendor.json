@@ -1,0 +1,10 @@
+{
+  "name": "mathjax",
+  "version": "3.2.2",
+  "source": "https://registry.npmjs.org/mathjax/-/mathjax-3.2.2.tgz",
+  "integrity": "sha512-Bt+SSVU8eBG27zChVewOicYs7Xsdt40qm4+UpHyX7k0/O9NliPc+x77k1/FEsPsjKPZGJvtRZM1vO+geW0OhGw==",
+  "files": {
+    "tex-svg.js": "d4295dc33744836935c1399feece5159577b34c5c8ffb9f1c6324cd82e03a882",
+    "MathJax-LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  }
+}

@@ -5,8 +5,10 @@ import TDA.Persistence.RectangleHall
 
 The examples retain occurrences of the same rectangle separately, test the
 critical closed-endpoint case of composition, and compare it with a half-open
-interval that dies at its width. The empty selection and zero parameter are
-included.
+interval that dies at its width. The `empty_families` and `empty_selection`
+results are instantiation and typechecking boundary checks: each establishes
+only its stated zero lower bound. The repeated-occurrence examples supply the
+nontrivial cardinality checks.
 -/
 
 set_option autoImplicit false

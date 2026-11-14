@@ -1,4 +1,5 @@
 import TDA.Persistence.HookInfinity
+import TDA.Persistence.HookInfinityProjective
 import TDA.Persistence.SupportInterval
 import TDA.Simplicial.Cone
 import Mathlib.Algebra.Category.ModuleCat.Biproducts
@@ -181,14 +182,11 @@ noncomputable def termBiproductIso {m : ℕ} (f : Fin m → P) (r : ℕ) :
         simp [s])
     exact hcomp.trans hid.symm
 
-/-- Principal-upset modules are ordinary projective objects in the persistence-module category. -/
-instance HookInfinity.projective (i : P) : Projective (HookInfinity.module (R := k) i) where
-  factors {E X} α e _ := by
-    have hcomponent : Epi (e.app i) :=
-      (NatTrans.epi_iff_epi_app e).mp inferInstance i
-    have hsurj : Function.Surjective (e.app i).hom :=
-      (ModuleCat.epi_iff_surjective (e.app i)).mp hcomponent
-    exact HookInfinity.exists_lift_of_birth_surjective e hsurj α
+/-- Deprecated compatibility name for principal-upset projectivity. -/
+@[deprecated TDA.Persistence.HookInfinity.projective (since := "2026-10-30")]
+theorem HookInfinity.projective (i : P) :
+    Projective (HookInfinity.module (R := k) i) :=
+  TDA.Persistence.HookInfinity.projective i
 
 /-- Every term in the finite join-indexed sequence is ordinary projective. -/
 theorem term_projective {m : ℕ} (f : Fin m → P) (r : ℕ) : Projective (term (k := k) f r) := by

@@ -35,18 +35,25 @@ private theorem indecomposable_of_scalar_end
     {k : Type*} [Field k] {X : C} (e : End X ≃+* k) : Indecomposable X := by
   have hX : ¬ IsZero X := by
     intro h
-    have hz := congrArg e ((IsZero.iff_id_eq_zero X).mp h)
-    change e (1 : End X) = e 0 at hz
+    have h1 : (1 : End X) = 0 := by
+      apply End.ext
+      simpa using (IsZero.iff_id_eq_zero X).mp h
+    have hz := congrArg e h1
     rw [map_one, map_zero] at hz
     exact one_ne_zero hz
   have hid : ∀ q : X ⟶ X, q ≫ q = q → q = 0 ∨ q = 𝟙 X := by
     intro q hq
-    have h : IsIdempotentElem (e q) := by
-      change e q * e q = e q
-      simpa only [← map_mul, End.mul_def] using congrArg e hq
+    have h : IsIdempotentElem (e (.of q)) := by
+      have hmul : (.of q : End X) * (.of q) = (.of q) := by
+        apply End.ext
+        simpa using hq
+      show e (.of q) * e (.of q) = e (.of q)
+      rw [← map_mul, hmul]
     rcases IsIdempotentElem.iff_eq_zero_or_one.mp h with h0 | h1
-    · exact Or.inl (e.injective (h0.trans (map_zero e).symm))
-    · exact Or.inr (e.injective (h1.trans (map_one e).symm))
+    · have h0' : (.of q : End X) = 0 := e.injective (h0.trans (map_zero e).symm)
+      exact Or.inl (by simpa using congrArg End.asHom h0')
+    · have h1' : (.of q : End X) = 1 := e.injective (h1.trans (map_one e).symm)
+      exact Or.inr (by simpa using congrArg End.asHom h1')
   refine ⟨hX, fun Y Z i => ?_⟩
   rcases hid (i.hom ≫ biprod.fst ≫ biprod.inl ≫ i.inv) (by simp) with h0 | h1
   · refine Or.inl ((IsZero.iff_id_eq_zero Y).mpr ?_)
@@ -73,8 +80,9 @@ theorem isZero_of_le {i j : P} (hji : j ≤ i) : IsZero (module (k := k) i j) :=
 /-- A hook endomorphism is multiplication by its birth coefficient. -/
 theorem end_eq_smul_id {i j : P} (hij : i < j)
     (α : End (module (k := k) i j)) :
-    α = (((α.app i).hom (SupportInterval.one (support i j) (birth_mem hij)) : k)) •
-      𝟙 (module (k := k) i j) := by
+    α = .of ((((α.asHom.app i).hom (SupportInterval.one (support i j) (birth_mem hij)) : k)) •
+      𝟙 (module (k := k) i j)) := by
+  apply End.ext
   apply hom_ext hij
   apply Subtype.ext
   simp [SupportInterval.one]
@@ -84,13 +92,15 @@ private theorem algebraMap_bijective {i j : P} (hij : i < j) :
   constructor
   · intro a b hab
     have h := congrArg (fun f : End (module (k := k) i j) =>
-      (((f.app i).hom (SupportInterval.one (support i j) (birth_mem hij))) : k)) hab
+      (((f.asHom.app i).hom (SupportInterval.one (support i j) (birth_mem hij))) : k)) hab
     simp only [Algebra.algebraMap_eq_smul_one] at h
     change a * (1 : k) = b * 1 at h
     simpa only [mul_one] using h
   · intro α
-    refine ⟨(((α.app i).hom (SupportInterval.one (support i j) (birth_mem hij))) : k), ?_⟩
-    simpa only [Algebra.algebraMap_eq_smul_one, End.one_def] using (end_eq_smul_id hij α).symm
+    refine ⟨(((α.asHom.app i).hom (SupportInterval.one (support i j) (birth_mem hij))) : k), ?_⟩
+    apply End.ext
+    simpa only [Algebra.algebraMap_eq_smul_one, End.smul_asHom, End.one_asHom] using
+      congrArg End.asHom (end_eq_smul_id hij α).symm
 
 /-- Evaluation at birth is an isomorphism of the actual hook endomorphism ring. -/
 noncomputable def endRingEquiv {i j : P} (hij : i < j) :
@@ -100,14 +110,15 @@ noncomputable def endRingEquiv {i j : P} (hij : i < j) :
 
 /-- The inverse endomorphism-ring comparison is the actual scalar identity map. -/
 @[simp] theorem endRingEquiv_symm_apply {i j : P} (hij : i < j) (c : k) :
-    (endRingEquiv (k := k) hij).symm c = c • 𝟙 (module (k := k) i j) := by
+    (endRingEquiv (k := k) hij).symm c = .of (c • 𝟙 (module (k := k) i j)) := by
+  apply End.ext
   simp only [endRingEquiv, RingEquiv.symm_symm, RingEquiv.ofBijective_apply,
-    Algebra.algebraMap_eq_smul_one, End.one_def]
+    Algebra.algebraMap_eq_smul_one, End.smul_asHom, End.one_asHom]
 
 /-- The endomorphism-ring comparison reads the birth coefficient. -/
 theorem endRingEquiv_apply {i j : P} (hij : i < j) (α : End (module (k := k) i j)) :
     endRingEquiv hij α =
-      (((α.app i).hom (SupportInterval.one (support i j) (birth_mem hij))) : k) := by
+      (((α.asHom.app i).hom (SupportInterval.one (support i j) (birth_mem hij))) : k) := by
   apply (endRingEquiv hij).symm.injective
   rw [RingEquiv.symm_apply_apply, endRingEquiv_symm_apply]
   exact end_eq_smul_id hij α
@@ -136,8 +147,9 @@ theorem birth_ne_zero (i : P) : birth (R := k) i ≠ 0 := by
 
 /-- An infinite-death hook endomorphism is multiplication by its birth coefficient. -/
 theorem end_eq_smul_id (i : P) (α : End (module (R := k) i)) :
-    α = fiberEquivOfLe (le_refl i) ((α.app i).hom (birth i)) •
-      𝟙 (module (R := k) i) := by
+    α = .of (fiberEquivOfLe (le_refl i) ((α.asHom.app i).hom (birth i)) •
+      𝟙 (module (R := k) i)) := by
+  apply End.ext
   apply hom_ext
   apply (fiberEquivOfLe (R := k) (le_refl i)).injective
   change _ = _ * ((birth (R := k) i).val ())
@@ -149,14 +161,16 @@ private theorem algebraMap_bijective (i : P) :
   constructor
   · intro a b hab
     have h := congrArg (fun f : End (module (R := k) i) =>
-      fiberEquivOfLe (le_refl i) ((f.app i).hom (birth i))) hab
-    simp only [Algebra.algebraMap_eq_smul_one] at h
+      fiberEquivOfLe (le_refl i) ((f.asHom.app i).hom (birth i))) hab
+    simp only [Algebra.algebraMap_eq_smul_one, End.smul_asHom, End.one_asHom] at h
     change a * ((birth i).val ()) = b * ((birth i).val ()) at h
     rw [show (birth (R := k) i).val () = 1 from fiberEquiv_birth i, mul_one, mul_one] at h
     exact h
   · intro α
-    refine ⟨fiberEquivOfLe (le_refl i) ((α.app i).hom (birth i)), ?_⟩
-    simpa only [Algebra.algebraMap_eq_smul_one, End.one_def] using (end_eq_smul_id i α).symm
+    refine ⟨fiberEquivOfLe (le_refl i) ((α.asHom.app i).hom (birth i)), ?_⟩
+    apply End.ext
+    simpa only [Algebra.algebraMap_eq_smul_one, End.smul_asHom, End.one_asHom] using
+      congrArg End.asHom (end_eq_smul_id i α).symm
 
 /-- Evaluation at birth identifies the principal-upset endomorphism ring with the field. -/
 noncomputable def endRingEquiv (i : P) : End (module (R := k) i) ≃+* k :=
@@ -165,13 +179,14 @@ noncomputable def endRingEquiv (i : P) : End (module (R := k) i) ≃+* k :=
 
 /-- The inverse principal-upset comparison is scalar multiplication by the identity. -/
 @[simp] theorem endRingEquiv_symm_apply (i : P) (c : k) :
-    (endRingEquiv (k := k) i).symm c = c • 𝟙 (module (R := k) i) := by
+    (endRingEquiv (k := k) i).symm c = .of (c • 𝟙 (module (R := k) i)) := by
+  apply End.ext
   simp only [endRingEquiv, RingEquiv.symm_symm, RingEquiv.ofBijective_apply,
-    Algebra.algebraMap_eq_smul_one, End.one_def]
+    Algebra.algebraMap_eq_smul_one, End.smul_asHom, End.one_asHom]
 
 /-- The principal-upset comparison reads the unique coefficient at birth. -/
 theorem endRingEquiv_apply (i : P) (α : End (module (R := k) i)) :
-    endRingEquiv i α = fiberEquivOfLe (le_refl i) ((α.app i).hom (birth i)) := by
+    endRingEquiv i α = fiberEquivOfLe (le_refl i) ((α.asHom.app i).hom (birth i)) := by
   apply (endRingEquiv i).symm.injective
   rw [RingEquiv.symm_apply_apply, endRingEquiv_symm_apply]
   exact end_eq_smul_id i α

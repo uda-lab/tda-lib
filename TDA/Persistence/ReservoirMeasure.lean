@@ -1,4 +1,4 @@
-import TDA.Persistence.BoundaryTransportGeometry
+import TDA.Persistence.BoundaryTransportGeometryCore
 import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
 import Mathlib.MeasureTheory.Measure.RegularityCompacts
 import Mathlib.MeasureTheory.Integral.Lebesgue.Map

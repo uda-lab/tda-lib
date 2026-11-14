@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+fenv() { env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@"; }
+fgit() { fenv git "$@"; }
+frun() { fenv env "$@"; }
+
 SOURCE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 tmp="$(mktemp -d /tmp/tda-build-docs-lock.XXXXXX)"
 first=""
@@ -63,7 +67,13 @@ EOF
 chmod +x "$tmp/bin/flock"
 export PATH="$tmp/bin:$PATH"
 cp "$SOURCE_ROOT/scripts/build-docs.sh" "$fixture/scripts/build-docs.sh"
-cp "$SOURCE_ROOT/scripts/lib/"build-{lock.sh,resources.py} "$fixture/scripts/lib/"
+cp "$SOURCE_ROOT/scripts/lib/"build-{lock.sh,resources.py} \
+  "$SOURCE_ROOT/scripts/lib/resources.sh" "$SOURCE_ROOT/scripts/lib/lake-artifact-cache.sh" \
+  "$fixture/scripts/lib/"
+cp "$SOURCE_ROOT/scripts/lib/docs-cache.py" "$fixture/scripts/lib/"
+for file in lean-toolchain lakefile.toml lake-manifest.json docbuild/lean-toolchain docbuild/lake-manifest.json; do
+  cp "$SOURCE_ROOT/$file" "$fixture/$file"
+done
 LOCK=$(python3 "$fixture/scripts/lib/build-resources.py" --root-lock "$fixture")
 export LOCK
 chmod +x "$fixture/scripts/build-docs.sh"
@@ -73,18 +83,20 @@ EOF
 cat > "$fixture/docbuild/lakefile.toml" <<'EOF'
 name = "lock-test"
 EOF
-git -C "$fixture" init -q
-git -C "$fixture" config user.name "Lock Test"
-git -C "$fixture" config user.email "lock-test@example.invalid"
+fgit -C "$fixture" init -q
+fgit -C "$fixture" config user.name "Lock Test"
+fgit -C "$fixture" config user.email "lock-test@example.invalid"
 export TEST_ROOT="$fixture"
 export TEST_EVENTS="$tmp/events"
 cat > "$fixture/scripts/lean.sh" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
+fenv() { env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@"; }
+fgit() { fenv git "$@"; }
 ROOT="$TEST_ROOT"
 . "$TEST_ROOT/scripts/lib/build-lock.sh"
 [[ "$PWD" == "$TEST_ROOT/docbuild" ]]
-[[ "$#" -eq 3 && "$1" == lake && "$2" == build && "$3" == TDA:docs ]]
+[[ "$#" -eq 3 && "$1" == lake && "$2" == build && "$3" == +TDA.Library:docs ]]
 run_index="$(grep -c '^lean-start ' "$TEST_EVENTS" || true)"
 run_index=$((run_index + 1))
 doc_root="$TEST_ROOT/docbuild/.lake/build/doc"
@@ -96,13 +108,14 @@ fi
 if [ "$run_index" -eq 1 ]; then
   [[ ! -e "$doc_root/TDA/stale" ]]
 elif [ "$run_index" -eq 2 ] && [ "${TEST_FAIL_DOC_LOCK_CHECK:-0}" = 0 ]; then
-  expected_rev="$(git -C "$TEST_ROOT" rev-parse HEAD)"
+  expected_rev="$(fgit -C "$TEST_ROOT" rev-parse HEAD)"
   [[ "$(cat "$source_rev_file")" == "$expected_rev" ]]
   [[ "$(cat "$doc_root/TDA/generated")" == generated-1 ]]
 fi
 printf 'lean-start %s\n' "$run_index" >> "$TEST_EVENTS"
 sleep 0.25
 mkdir -p "$doc_root/TDA"
+touch "$doc_root/index.html"
 printf 'generated-%s\n' "$run_index" > "$doc_root/TDA/generated"
 printf 'lean-end %s\n' "$run_index" >> "$TEST_EVENTS"
 EOF
@@ -126,20 +139,20 @@ sleep 0.25
 printf 'check-end %s\n' "$run_index" >> "$TEST_EVENTS"
 EOF
 chmod +x "$fixture/scripts/check-doc-lock.sh"
-git -C "$fixture" add .gitignore docbuild/lakefile.toml scripts
-git -C "$fixture" commit -qm "fixture"
+fgit -C "$fixture" add .gitignore lean-toolchain lakefile.toml lake-manifest.json docbuild scripts
+fgit -C "$fixture" commit -qm "fixture"
 
 printf 'stale-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"
 touch "$fixture/docbuild/.lake/build/doc-data/TDA.stale" \
   "$fixture/docbuild/.lake/build/doc/TDA/stale" \
   "$fixture/docbuild/.lake/build/doc/TDA.html" \
   "$fixture/docbuild/.lake/build/doc/declarations/declaration-data.bmp"
-if [ -n "$(git -C "$fixture" status --porcelain --untracked-files=all)" ]; then
-  git -C "$fixture" status --short --untracked-files=all >&2
+if [ -n "$(fgit -C "$fixture" status --porcelain --untracked-files=all)" ]; then
+  fgit -C "$fixture" status --short --untracked-files=all >&2
   exit 1
 fi
 # Bound each test-owned builder so cleanup can finish if another process owns the shared lock.
-CODEX_STOP_FILE="$cancel_file" timeout --kill-after=2s 10s \
+frun CODEX_STOP_FILE="$cancel_file" timeout --kill-after=2s 10s \
   "$fixture/scripts/build-docs.sh" > "$tmp/first.log" 2>&1 & first=$!
 for _ in $(seq 1 500); do
   if grep -q '^lean-start ' "$TEST_EVENTS" 2>/dev/null; then break; fi
@@ -148,7 +161,7 @@ for _ in $(seq 1 500); do
 done
 grep -q '^lean-start ' "$TEST_EVENTS" || { echo 'first documentation build did not start' >&2; exit 1; }
 printf 'second-launched\n' >> "$TEST_EVENTS"
-CODEX_STOP_FILE="$cancel_file" timeout --kill-after=2s 10s \
+frun CODEX_STOP_FILE="$cancel_file" timeout --kill-after=2s 10s \
   "$fixture/scripts/build-docs.sh" > "$tmp/second.log" 2>&1 & second=$!
 wait "$first" || { cat "$tmp/first.log" >&2; exit 1; }
 wait "$second" || { cat "$tmp/second.log" >&2; exit 1; }
@@ -162,20 +175,20 @@ expected = [
 if events != expected:
     raise SystemExit(f"documentation transactions overlapped or reordered: {events}")
 PY
-expected_rev="$(git -C "$fixture" rev-parse HEAD)"
+expected_rev="$(fgit -C "$fixture" rev-parse HEAD)"
 [[ "$(cat "$fixture/docbuild/.lake/docs-source-rev")" == "$expected_rev" ]]
 
 # Failed generation or dependency verification must not record the current revision as documented.
 : > "$TEST_EVENTS"
 printf 'pre-failure-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"
-if TEST_FAIL_LEAN=1 "$fixture/scripts/build-docs.sh" > "$tmp/failure.log" 2>&1; then
+if frun TEST_FAIL_LEAN=1 "$fixture/scripts/build-docs.sh" > "$tmp/failure.log" 2>&1; then
   echo 'failed documentation generation returned success' >&2
   exit 1
 fi
 [[ "$(cat "$fixture/docbuild/.lake/docs-source-rev")" == pre-failure-revision ]]
 : > "$TEST_EVENTS"
 printf 'pre-check-failure-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"
-if TEST_FAIL_DOC_LOCK_CHECK=1 "$fixture/scripts/build-docs.sh" > "$tmp/check-failure.log" 2>&1; then
+if frun TEST_FAIL_DOC_LOCK_CHECK=1 "$fixture/scripts/build-docs.sh" > "$tmp/check-failure.log" 2>&1; then
   echo 'failed dependency verification returned success' >&2
   exit 1
 fi
@@ -186,7 +199,7 @@ printf 'stop-before-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"
 mkdir -p "$fixture/docbuild/.lake/build/doc/TDA"
 printf 'keep-me\n' > "$fixture/docbuild/.lake/build/doc/TDA/keep"
 touch "$stop_file"
-if CODEX_STOP_FILE="$stop_file" "$fixture/scripts/build-docs.sh" > "$tmp/stop-before.log" 2>&1; then
+if frun CODEX_STOP_FILE="$stop_file" "$fixture/scripts/build-docs.sh" > "$tmp/stop-before.log" 2>&1; then
   echo 'pre-existing stop request was ignored' >&2
   exit 1
 else
@@ -219,7 +232,7 @@ done
 if [ "${TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT:-0}" = 1 ]; then
   touch "$stop_file"
 fi
-PATH="$tmp/bin:$PATH" WATCH_LOCK_ATTEMPTS="$tmp/lock-attempt" \
+frun PATH="$tmp/bin:$PATH" WATCH_LOCK_ATTEMPTS="$tmp/lock-attempt" \
   CODEX_STOP_FILE="$stop_file" timeout --kill-after=2s 10s \
   "$fixture/scripts/build-docs.sh" > "$tmp/stop-wait.log" 2>&1 & stopped=$!
 if [ "${TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT:-0}" = 1 ]; then
@@ -251,7 +264,7 @@ fi
 if [ "${TEST_CLEANUP_CHILD:-0}" != 1 ]; then
   for mode in TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT TEST_CLEANUP_FAIL_AFTER_LOCK_ATTEMPT; do
     set +e
-    env TEST_CLEANUP_CHILD=1 "$mode=1" timeout 20s bash "$SOURCE_ROOT/scripts/agent/test-build-docs-lock.sh" \
+    frun TEST_CLEANUP_CHILD=1 "${mode}=1" timeout 20s bash "$SOURCE_ROOT/scripts/agent/test-build-docs-lock.sh" \
       > "$tmp/$mode.log" 2>&1
     injected_status=$?
     set -e

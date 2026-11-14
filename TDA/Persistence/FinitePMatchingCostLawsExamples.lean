@@ -51,8 +51,8 @@ private theorem four_path_power_costs :
     norm_num [OccurrenceMatching.totalFinitePowerCost, OccurrenceMatching.totalBoundaryCost,
       OccurrenceMatching.compose, firstMatching, secondMatching, source, middle, target,
       Fin.sum_univ_succ, Fin.exists_fin_succ, finitePairCost, diagonalCost, Real.rpow_two]
-    simp +decide
-    norm_num
+    try simp +decide
+    try norm_num
 
 private theorem four_path_root_budget : Real.sqrt 19 ≤ Real.sqrt 11 + 4 := by
   have h := firstMatching.totalFinitePowerCost_compose_root_le secondMatching

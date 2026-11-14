@@ -1,5 +1,5 @@
 name = "TDA"
-version = "0.3.0"
+version = "0.4.0"
 description = "Lean 4 formalizations of topological data analysis, with verified finite persistent homology computation."
 keywords = ["math", "topology", "topological-data-analysis", "persistent-homology", "software-verification"]
 license = "Apache-2.0"
@@ -13,7 +13,14 @@ autoImplicit = false   # an unbound variable must be an error, never a silent âˆ
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
-rev = "v4.33.1"
+rev = "v4.35.0"
 
 [[lean_lib]]
 name = "TDA"
+
+# Frozen Comparator reference library for the bounded pilot (Issue #855). Not in
+# defaultTargets: it is not part of the ordinary build and imports mathlib only, never TDA
+# (docs/adr/0003-comparator-pilot-contract.md; scripts/check-comparator.sh enforces the
+# import boundary).
+[[lean_lib]]
+name = "ComparatorChallenge"

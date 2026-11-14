@@ -305,8 +305,11 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3–4.4:
   `thickeningToConstructible` (see `reeb-rgraph-thickening.md`).
 - The paragraph after Definition 4.30 identifies the fiber of `U_ε f` over `t` with the set of
   components of `f⁻¹[t - ε, t + ε]` and places the vertices of `U_ε f` over `(S + ε) ∪ (S - ε)`,
-  citing Theorem 4.27 and Corollary 4.28. Neither statement is formalized in general here; the
-  fixtures prove the fiber statements of the loop and the single edge directly.
+  citing Theorem 4.27 and Corollary 4.28. Theorem 4.27 is formalized in general in
+  `reeb-thickening-constructible.md`, and Corollary 4.28 only with `(S - ε) ∪ (S + ε)` as an
+  admissible critical set; the
+  identification of the fibers and vertices of `U_ε f` drawn from them is not formalized here, and
+  the fixtures prove the fiber statements of the loop and the single edge directly.
 - **Example 4.31**, items (1), the line stretched by `ε` in both directions, and (3), the loop with
   height `b - a ≤ 2ε` whose thickening has one component in every levelset, are the single-edge and
   loop fixtures over `[a, b] = [0, 1]`, both for values on intervals and for the fibers.
@@ -314,7 +317,9 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3–4.4:
   `C''ℛT_ε ≃ C'T_ε ≃ S_εC''` with Theorems 3.17 and 4.24. `geometricSmoothingComparisonIso` is that
   composite: the inverse of `η` (Theorem 3.17, see `reeb-constructible-comparison.md`) whiskered by
   the thickening, followed by `ρ` (Theorem 4.24, see `reeb-geometric-thickening.md`) lifted to graph
-  objects.
+  objects. The same composite on all constructible ℝ-spaces, `C''ℛT_ε ≅ S_εC'`, and the restriction
+  `C'T_ε ≅ S_εC'` of Theorem 4.24 are in `reeb-thickening-cosheaf-comparison.md`; along the graph
+  inclusion they are `geometricSmoothingComparisonIso` and `thickeningCosheafComparisonIso`.
 - **Observation 4.33**, second bullet, `d_R(U_ε f, U_ε g) ≤ d_R(f, g)`, with
   `d_R(f, g) = d_I(C(f), C(g))` (Definition 4.4), follows from Proposition 4.32 as the source says;
   this is `interleavingDistance_geometricSmoothing_le`. Of the first bullet, `U_0 ≃ 1` is

@@ -34,8 +34,8 @@ theorem normalizedReservoirMeasure_eq_reservoirMeasure_inv
   apply Measure.ext
   intro s hs
   simp only [normalizedReservoirMeasure, Measure.smul_apply, smul_eq_mul,
-    reservoirMeasure, Measure.add_apply, Measure.map_smul]
-  rw [mul_add]
+    reservoirMeasure, Measure.add_apply]
+  rw [Measure.map_smul _ measurableEmbedding_point.measurable.aemeasurable, mul_add]
   congr 1
   rw [← mul_assoc, hcoef]
 
@@ -80,10 +80,10 @@ private theorem reservoirCompetitor_scale_down (μ ν : Measure Interior) (R : �
     (R⁻¹ • γ).map Prod.fst = reservoirMeasure (R⁻¹ • μ) 1 ∧
       (R⁻¹ • γ).map Prod.snd = reservoirMeasure (R⁻¹ • ν) 1 := by
   constructor
-  · rw [Measure.map_smul, hγ.1]
+  · rw [Measure.map_smul _ measurable_fst.aemeasurable, hγ.1]
     simpa only [normalizedReservoirMeasure] using
       normalizedReservoirMeasure_eq_reservoirMeasure_inv μ R hRtop hRpos
-  · rw [Measure.map_smul, hγ.2]
+  · rw [Measure.map_smul _ measurable_snd.aemeasurable, hγ.2]
     simpa only [normalizedReservoirMeasure] using
       normalizedReservoirMeasure_eq_reservoirMeasure_inv ν R hRtop hRpos
 
@@ -94,9 +94,9 @@ private theorem reservoirCompetitor_scale_up (μ ν : Measure Interior) (R : ℝ
     (R • η).map Prod.fst = reservoirMeasure μ R ∧
       (R • η).map Prod.snd = reservoirMeasure ν R := by
   constructor
-  · rw [Measure.map_smul, hη.1]
+  · rw [Measure.map_smul _ measurable_fst.aemeasurable, hη.1]
     exact reservoirMeasure_scale_back μ R hRtop hRpos
-  · rw [Measure.map_smul, hη.2]
+  · rw [Measure.map_smul _ measurable_snd.aemeasurable, hη.2]
     exact reservoirMeasure_scale_back ν R hRtop hRpos
 
 /-- Scaling every reservoir competitor by `R⁻¹` and back by `R` identifies the two

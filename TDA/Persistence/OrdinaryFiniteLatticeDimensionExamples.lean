@@ -73,8 +73,13 @@ theorem bool_bottomPrincipalDownset_hasProjectiveDimensionLE :
 /-- The zero rational representation is covered by the unconditional lattice theorem. -/
 theorem bool_zero_hasProjectiveDimensionLE_max :
     HasProjectiveDimensionLE (0 : PModule.{0,0,0} ℚ Bool)
-      (maxComplementCard (S := Bool)) :=
-  OrdinaryFiniteLatticeDimension.hasProjectiveDimensionLE (k := ℚ) (S := Bool)
+      (maxComplementCard (S := Bool)) := by
+  letI : ∀ p, FiniteDimensional ℚ ((0 : PModule.{0,0,0} ℚ Bool).obj p) := by
+    intro p
+    letI : Subsingleton ((0 : PModule.{0,0,0} ℚ Bool).obj p) :=
+      ModuleCat.subsingleton_of_isZero (Functor.zero_obj p)
+    infer_instance
+  exact OrdinaryFiniteLatticeDimension.hasProjectiveDimensionLE (k := ℚ) (S := Bool)
     (0 : PModule.{0,0,0} ℚ Bool)
 
 /-- The old supplied two-term resolution of zero only yields the loose bound

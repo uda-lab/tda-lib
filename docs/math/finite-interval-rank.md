@@ -23,5 +23,27 @@ The extension is auxiliary outside valid ordered index pairs; there it is not a 
 rank. The inversion proves uniqueness of the multiset for these constructed realizations. It
 does not prove an interval decomposition for arbitrary persistence modules.
 
+## API map
+
+- **Intervals and realizations:** Import `TDA.Persistence.FiniteBarcode` and open namespace
+  `TDA.Persistence`. `FiniteInterval N` stores natural endpoints `birth < death ≤ N`;
+  `intervalModule` realizes one interval ([`Interval.lean`](../../TDA/Persistence/Interval.lean)).
+  [`barcodeModule`](../../TDA/Persistence/FiniteBarcode.lean) realizes a supplied finite multiset
+  `B` over field `k` with one coordinate per occurrence, so repeated intervals remain distinct.
+  Supply `(k := k)` when the coefficient field cannot be inferred from `B` alone.
+- **Ranks and multiplicities:** For `i j : Fin N` with `i ≤ j`, `rank_barcodeMap` gives the
+  structure-map rank of `barcodeModule (k := k) B` as the count of intervals with
+  `birth ≤ i.val` and `j.val < death`.
+  `barcodeRankInteger (k := k) B` extends this table to integer pairs and is zero unless
+  `0 ≤ i ≤ j < (N : ℤ)`; outside this range it is not a structure-map rank.
+  `barcodeMultiplicity B b d` counts in `ℕ`. For natural endpoints `b < d ≤ N`,
+  `multiplicity_eq_rank_difference` casts that count to `ℤ` and states the four-rank identity in
+  `ℤ`, not truncated natural subtraction.
+- **Inversion and module decomposition:** `barcodeRankInteger_injective` recovers equality of
+  supplied multisets when their extended tables agree at every integer pair. It concerns explicit
+  barcode realizations and does not construct a decomposition of an arbitrary module. For the
+  separate existence theorem for finite-chain modules over a field with pointwise finite-dimensional
+  fibers, see [finite interval decomposition](finite-interval-decomposition.md#using-the-existence-result).
+
 Source: [Chazal–Crawley-Boevey–de Silva, *The observable structure of persistence modules*,
-§1.1, p.1](https://arxiv.org/pdf/1405.5644).
+§1.1, p.1](https://arxiv.org/pdf/1405.5644v1).

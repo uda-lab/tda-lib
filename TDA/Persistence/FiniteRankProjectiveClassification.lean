@@ -8,15 +8,29 @@ import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Data.Fintype.EquivFin
 
 /-!
-# Finite-dimensional endomorphisms of persistence modules
+# Finite-poset rank-projective classification
 
-The classification of finite-poset rank-projectives uses the ordinary
-Krull--Schmidt argument in the pointwise finite-dimensional functor category.
-This file develops the Fitting step without assuming a decomposition or
-classification theorem for persistence modules.
+Let \(k\) be a field and \(P\) a finite poset. For a pointwise finite-dimensional
+persistence module on \(P\), each endomorphism admits a uniform Fitting
+decomposition across all grades. For an indecomposable module, this gives the
+invertible-or-nilpotent dichotomy for endomorphisms used by the ordinary
+Krull--Schmidt argument.
+
+`RankProjectiveHookTag` records a finite hook by a strict birth-death pair and
+a principal-upset hook by its birth. `rankProjectiveHookModule` assigns each
+tag its module. The theorem `rankProjective_iff_exists_canonical_subfamily`
+states that a pointwise finite-dimensional module is rank-projective exactly
+when it is isomorphic to a finite biproduct of selected occurrences from its
+canonical finite-hook cover. The selected subfamily may be empty.
+
+When \(P\) has decidable equality, `rankProjectiveHookSum_multiplicity_unique`
+shows that isomorphic finite sums of tagged hooks have the same occurrence
+count at every tag, including repeated tags and empty sums. It determines tag
+multiplicities, not an ordering of summands or a choice of isomorphism.
 -/
 
 set_option autoImplicit false
+set_option maxHeartbeats 1000000
 
 universe u
 
@@ -34,15 +48,15 @@ private instance : HasFiniteBiproducts (PModule.{u,0,u} k P) :=
 theorem exists_uniform_fitting_complement (X : PModule.{u,0,u} k P)
     (hX : ∀ p, FiniteDimensional k (X.obj p)) (f : End X) :
     ∃ n : ℕ, 0 < n ∧ ∀ p,
-      IsCompl (LinearMap.ker ((f.app p).hom ^ n))
-        (LinearMap.range ((f.app p).hom ^ n)) := by
+      IsCompl (LinearMap.ker ((f.asHom.app p).hom ^ n))
+        (LinearMap.range ((f.asHom.app p).hom ^ n)) := by
   classical
   letI : ∀ p, FiniteDimensional k (X.obj p) := hX
   have hEventually (p : P) :
       ∀ᶠ n : ℕ in Filter.atTop,
-        IsCompl (LinearMap.ker ((f.app p).hom ^ n))
-          (LinearMap.range ((f.app p).hom ^ n)) := by
-    exact ((f.app p).hom).eventually_isCompl_ker_pow_range_pow
+        IsCompl (LinearMap.ker ((f.asHom.app p).hom ^ n))
+          (LinearMap.range ((f.asHom.app p).hom ^ n)) := by
+    exact ((f.asHom.app p).hom).eventually_isCompl_ker_pow_range_pow
   choose b hb using fun p => (Filter.eventually_atTop.mp (hEventually p))
   refine ⟨Finset.univ.sup b + 1, Nat.succ_pos _, ?_⟩
   intro p
@@ -59,13 +73,13 @@ private theorem natTrans_apply {A B : PModule.{u,0,u} k P} (f : A ⟶ B)
 /-- The pointwise kernels of a natural endomorphism form a submodule diagram. -/
 private def kernelSubmoduleDiagram {X : PModule.{u,0,u} k P} (f : End X) :
     PModule.{u,0,u} k P where
-  obj p := ModuleCat.of k (LinearMap.ker (f.app p).hom)
+  obj p := ModuleCat.of k (LinearMap.ker (f.asHom.app p).hom)
   map {p q} hpq := ModuleCat.ofHom <|
-    (((X.map hpq).hom.comp (LinearMap.ker (f.app p).hom).subtype).codRestrict
-      (LinearMap.ker (f.app q).hom) (by
+    (((X.map hpq).hom.comp (LinearMap.ker (f.asHom.app p).hom).subtype).codRestrict
+      (LinearMap.ker (f.asHom.app q).hom) (by
         intro x
-        change (f.app q).hom ((X.map hpq).hom x.val) = 0
-        rw [natTrans_apply f hpq x.val, x.property, map_zero]))
+        change (f.asHom.app q).hom ((X.map hpq).hom x.val) = 0
+        rw [natTrans_apply f.asHom hpq x.val, x.property, map_zero]))
   map_id p := by
     apply ModuleCat.hom_ext
     apply LinearMap.ext
@@ -84,14 +98,14 @@ private def kernelSubmoduleDiagram {X : PModule.{u,0,u} k P} (f : End X) :
 /-- The pointwise ranges of a natural endomorphism form a submodule diagram. -/
 private def rangeSubmoduleDiagram {X : PModule.{u,0,u} k P} (f : End X) :
     PModule.{u,0,u} k P where
-  obj p := ModuleCat.of k (LinearMap.range (f.app p).hom)
+  obj p := ModuleCat.of k (LinearMap.range (f.asHom.app p).hom)
   map {p q} hpq := ModuleCat.ofHom <|
-    (((X.map hpq).hom.comp (LinearMap.range (f.app p).hom).subtype).codRestrict
-      (LinearMap.range (f.app q).hom) (by
+    (((X.map hpq).hom.comp (LinearMap.range (f.asHom.app p).hom).subtype).codRestrict
+      (LinearMap.range (f.asHom.app q).hom) (by
         intro x
         obtain ⟨y, hy⟩ := x.property
         refine ⟨(X.map hpq).hom y, ?_⟩
-        exact (natTrans_apply f hpq y).trans (congrArg (X.map hpq).hom hy)))
+        exact (natTrans_apply f.asHom hpq y).trans (congrArg (X.map hpq).hom hy)))
   map_id p := by
     apply ModuleCat.hom_ext
     apply LinearMap.ext
@@ -111,8 +125,8 @@ private def rangeSubmoduleDiagram {X : PModule.{u,0,u} k P} (f : End X) :
 private def kernelSubmoduleInclusion {X : PModule.{u,0,u} k P} (f : End X) :
     kernelSubmoduleDiagram f ⟶ X where
   app p := by
-    change ModuleCat.of k (LinearMap.ker (f.app p).hom) ⟶ X.obj p
-    exact ModuleCat.ofHom (LinearMap.ker (f.app p).hom).subtype
+    change ModuleCat.of k (LinearMap.ker (f.asHom.app p).hom) ⟶ X.obj p
+    exact ModuleCat.ofHom (LinearMap.ker (f.asHom.app p).hom).subtype
   naturality := by
     intro p q hpq
     apply ModuleCat.hom_ext
@@ -160,8 +174,8 @@ private def splitKernelInclusion {M A : PModule.{u,0,u} k P} (f : M ⟶ A) :
 private def rangeSubmoduleInclusion {X : PModule.{u,0,u} k P} (f : End X) :
     rangeSubmoduleDiagram f ⟶ X where
   app p := by
-    change ModuleCat.of k (LinearMap.range (f.app p).hom) ⟶ X.obj p
-    exact ModuleCat.ofHom (LinearMap.range (f.app p).hom).subtype
+    change ModuleCat.of k (LinearMap.range (f.asHom.app p).hom) ⟶ X.obj p
+    exact ModuleCat.ofHom (LinearMap.range (f.asHom.app p).hom).subtype
   naturality := by
     intro p q hpq
     apply ModuleCat.hom_ext
@@ -240,7 +254,7 @@ private def fittingSumMap {X : PModule.{u,0,u} k P} (f : End X) :
 kernel and image subdiagrams. -/
 private noncomputable def fittingDecompositionIso {X : PModule.{u,0,u} k P}
     (f : End X) (hfit : ∀ p,
-      IsCompl (LinearMap.ker (f.app p).hom) (LinearMap.range (f.app p).hom)) :
+      IsCompl (LinearMap.ker (f.asHom.app p).hom) (LinearMap.range (f.asHom.app p).hom)) :
     X ≅ pointwiseProduct (kernelSubmoduleDiagram f) (rangeSubmoduleDiagram f) := by
   let s := fittingSumMap f
   have hs (p : P) : IsIso (s.app p) := by
@@ -258,7 +272,7 @@ private noncomputable def fittingDecompositionIso {X : PModule.{u,0,u} k P}
 
 private noncomputable def fittingBiproductIso {X : PModule.{u,0,u} k P}
     (f : End X) (hfit : ∀ p,
-      IsCompl (LinearMap.ker (f.app p).hom) (LinearMap.range (f.app p).hom)) :
+      IsCompl (LinearMap.ker (f.asHom.app p).hom) (LinearMap.range (f.asHom.app p).hom)) :
     X ≅ kernelSubmoduleDiagram f ⊞ rangeSubmoduleDiagram f :=
   (fittingDecompositionIso f hfit).trans
     (pointwiseProductIsoBiprod (kernelSubmoduleDiagram f) (rangeSubmoduleDiagram f))
@@ -266,7 +280,7 @@ private noncomputable def fittingBiproductIso {X : PModule.{u,0,u} k P}
 private theorem split_apply {A M : PModule.{u,0,u} k P}
     (inc : A ⟶ M) (ret : M ⟶ A) (h : inc ≫ ret = 𝟙 A) (p : P) (a : A.obj p) :
     (ret.app p).hom ((inc.app p).hom a) = a :=
-  congrArg (fun g : End A => (g.app p).hom a) h
+  congrArg (fun g : A ⟶ A => (g.app p).hom a) h
 
 private noncomputable def splitLinearEquiv {A M : PModule.{u,0,u} k P}
     (inc : A ⟶ M) (ret : M ⟶ A) (h : inc ≫ ret = 𝟙 A) (p : P) :
@@ -317,7 +331,7 @@ private noncomputable def splitBiproductIso {A M : PModule.{u,0,u} k P}
 private theorem isZero_obj_of_isZero {A : PModule.{u,0,u} k P}
     (hA : IsZero A) (p : P) : IsZero (A.obj p) := by
   apply (IsZero.iff_id_eq_zero _).mpr
-  simpa using congrArg (fun g : End A => g.app p)
+  simpa using congrArg (fun g : A ⟶ A => g.app p)
     ((IsZero.iff_id_eq_zero A).mp hA)
 
 private theorem indecomposable_retract_iso {A B : PModule.{u,0,u} k P}
@@ -349,11 +363,11 @@ private theorem indecomposable_retract_iso {A B : PModule.{u,0,u} k P}
 
 private theorem natTrans_app_hom_pow {X : PModule.{u,0,u} k P}
     (f : End X) (n : ℕ) (p : P) :
-    ((f ^ n).app p).hom = ((f.app p).hom ^ n) := by
+    ((f ^ n).asHom.app p).hom = ((f.asHom.app p).hom ^ n) := by
   induction n with
   | zero => simp [Module.End.one_eq_id]
   | succ n ih =>
-      simp [pow_succ, End.mul_def, NatTrans.comp_app, ModuleCat.hom_comp,
+      simp [pow_succ, End.mul_asHom, NatTrans.comp_app, ModuleCat.hom_comp,
         Module.End.mul_eq_comp, ih]
 
 /-- On an indecomposable pointwise finite-dimensional module, every endomorphism
@@ -361,50 +375,52 @@ is either invertible or nilpotent. This is the Fitting dichotomy needed for
 finite cancellation. -/
 theorem indecomposable_endomorphism_dichotomy {X : PModule.{u,0,u} k P}
     (hX : Indecomposable X) (hfd : ∀ p, FiniteDimensional k (X.obj p))
-    (f : End X) : IsIso f ∨ ∃ n : ℕ, f ^ n = 0 := by
+    (f : End X) : IsIso f.asHom ∨ ∃ n : ℕ, f ^ n = 0 := by
   classical
   letI : ∀ p, FiniteDimensional k (X.obj p) := hfd
   obtain ⟨n, hn, hfit⟩ := exists_uniform_fitting_complement X hfd f
   let g : End X := f ^ n
-  have hfitg (p : P) : IsCompl (LinearMap.ker (g.app p).hom)
-      (LinearMap.range (g.app p).hom) := by
+  have hfitg (p : P) : IsCompl (LinearMap.ker (g.asHom.app p).hom)
+      (LinearMap.range (g.asHom.app p).hom) := by
     simpa [g, natTrans_app_hom_pow] using hfit p
   let K := kernelSubmoduleDiagram g
   let I := rangeSubmoduleDiagram g
   have hdec : X ≅ K ⊞ I := fittingBiproductIso g hfitg
   rcases hX.2 K I hdec with hK | hI
   · have hKfiber (p : P) : IsZero (K.obj p) := isZero_obj_of_isZero hK p
-    have hkerbot (p : P) : LinearMap.ker (g.app p).hom = ⊥ := by
-      have hs : Subsingleton (LinearMap.ker (g.app p).hom) := by
+    have hkerbot (p : P) : LinearMap.ker (g.asHom.app p).hom = ⊥ := by
+      have hs : Subsingleton (LinearMap.ker (g.asHom.app p).hom) := by
         simpa [K, kernelSubmoduleDiagram] using
           (ModuleCat.isZero_iff_subsingleton).mp (hKfiber p)
       exact (Submodule.eq_bot_iff _).2 (by
       intro x hx
       exact congrArg Subtype.val (hs.elim ⟨x, hx⟩ 0))
-    have hgInjective (p : P) : Function.Injective (g.app p).hom :=
+    have hgInjective (p : P) : Function.Injective (g.asHom.app p).hom :=
       (LinearMap.ker_eq_bot).mp (by simpa [g, natTrans_app_hom_pow] using hkerbot p)
-    have hInjective (p : P) : Function.Injective (f.app p).hom := by
+    have hInjective (p : P) : Function.Injective (f.asHom.app p).hom := by
       rcases n with _ | n'
       · exact (Nat.not_lt_zero _ hn).elim
       · intro x y hxy
         apply hgInjective p
         simp [g, pow_succ, hxy]
-    have hIso (p : P) : IsIso (f.app p) :=
-      (ConcreteCategory.isIso_iff_bijective (f.app p)).mpr
+    have hIso (p : P) : IsIso (f.asHom.app p) :=
+      (ConcreteCategory.isIso_iff_bijective (f.asHom.app p)).mpr
         ⟨hInjective p, LinearMap.surjective_of_injective (hInjective p)⟩
-    letI (p : P) : IsIso (f.app p) := hIso p
-    letI : IsIso f := NatIso.isIso_of_isIso_app f
+    letI (p : P) : IsIso (f.asHom.app p) := hIso p
+    letI : IsIso f.asHom := NatIso.isIso_of_isIso_app f.asHom
     exact Or.inl inferInstance
   · have hIfiber (p : P) : IsZero (I.obj p) := isZero_obj_of_isZero hI p
-    have hrangebot (p : P) : LinearMap.range (g.app p).hom = ⊥ := by
-      have hs : Subsingleton (LinearMap.range (g.app p).hom) := by
+    have hrangebot (p : P) : LinearMap.range (g.asHom.app p).hom = ⊥ := by
+      have hs : Subsingleton (LinearMap.range (g.asHom.app p).hom) := by
         simpa [I, rangeSubmoduleDiagram] using
           (ModuleCat.isZero_iff_subsingleton).mp (hIfiber p)
       exact (Submodule.eq_bot_iff _).2 fun x hx =>
         congrArg Subtype.val (hs.elim ⟨x, hx⟩ 0)
-    have happ (p : P) : (g.app p).hom = 0 :=
+    have happ (p : P) : (g.asHom.app p).hom = 0 :=
       (LinearMap.range_eq_bot).mp (hrangebot p)
     have hg0 : g = 0 := by
+      apply End.ext
+      show g.asHom = 0
       apply NatTrans.ext
       funext p
       exact ModuleCat.hom_ext (happ p)
@@ -414,7 +430,7 @@ theorem indecomposable_endomorphism_dichotomy {X : PModule.{u,0,u} k P}
 unless at least one summand is invertible. -/
 theorem indecomposable_sum_eq_one_has_isIso {X : PModule.{u,0,u} k P}
     (hX : Indecomposable X) (hfd : ∀ p, FiniteDimensional k (X.obj p))
-    (a b : End X) (hab : a + b = 1) : IsIso a ∨ IsIso b := by
+    (a b : End X) (hab : a + b = 1) : IsIso a.asHom ∨ IsIso b.asHom := by
   rcases indecomposable_endomorphism_dichotomy hX hfd a with ha | ⟨n, hn⟩
   · exact Or.inl ha
   · have hnil : IsNilpotent a := ⟨n, hn⟩
@@ -429,39 +445,43 @@ theorem indecomposable_sum_eq_one_has_isIso {X : PModule.{u,0,u} k P}
 
 private theorem indecomposable_sum_isIso {X : PModule.{u,0,u} k P}
     (hX : Indecomposable X) (hfd : ∀ p, FiniteDimensional k (X.obj p))
-    (a b : End X) (hab : IsIso (a + b)) : IsIso a ∨ IsIso b := by
-  letI : IsIso (a + b) := hab
-  let c : End X := inv (a + b)
-  have hsum : c * a + c * b = 𝟙 X := by
+    (a b : End X) (hab : IsIso (a + b).asHom) : IsIso a.asHom ∨ IsIso b.asHom := by
+  letI : IsIso (a + b).asHom := hab
+  let c : End X := .of (inv (a + b).asHom)
+  have hsum : c * a + c * b = (1 : End X) := by
+    have hca : c * (a + b) = (1 : End X) := by
+      apply End.ext
+      simp [c, End.mul_asHom, End.one_asHom, IsIso.hom_inv_id]
     calc
       c * a + c * b = c * (a + b) := by rw [← mul_add]
-      _ = (a + b) ≫ c := by rw [CategoryTheory.End.mul_def]
-      _ = 𝟙 X := by simp [c]
+      _ = (1 : End X) := hca
   rcases indecomposable_sum_eq_one_has_isIso hX hfd (c * a) (c * b) hsum with hca | hcb
-  · have hc : IsUnit c := (CategoryTheory.isUnit_iff_isIso c).mpr (by dsimp [c]; infer_instance)
+  · have hc : IsUnit c := (CategoryTheory.isUnit_iff_isIso c).mpr (by
+      show IsIso (inv (a + b).asHom); infer_instance)
     have hcaUnit : IsUnit (c * a) := (CategoryTheory.isUnit_iff_isIso (c * a)).mpr hca
     exact Or.inl <| (CategoryTheory.isUnit_iff_isIso a).mp (hc.mul_left_iff.mp hcaUnit)
-  · have hc : IsUnit c := (CategoryTheory.isUnit_iff_isIso c).mpr (by dsimp [c]; infer_instance)
+  · have hc : IsUnit c := (CategoryTheory.isUnit_iff_isIso c).mpr (by
+      show IsIso (inv (a + b).asHom); infer_instance)
     have hcbUnit : IsUnit (c * b) := (CategoryTheory.isUnit_iff_isIso (c * b)).mpr hcb
     exact Or.inr <| (CategoryTheory.isUnit_iff_isIso b).mp (hc.mul_left_iff.mp hcbUnit)
 
 private theorem indecomposable_finset_sum_isIso {X : PModule.{u,0,u} k P}
     (hX : Indecomposable X) (hfd : ∀ p, FiniteDimensional k (X.obj p))
     {ι : Type*} (s : Finset ι) (a : ι → End X)
-    (hsum : IsIso (∑ i ∈ s, a i)) : ∃ i ∈ s, IsIso (a i) := by
+    (hsum : IsIso (∑ i ∈ s, a i).asHom) : ∃ i ∈ s, IsIso (a i).asHom := by
   classical
   induction s using Finset.induction_on with
   | empty =>
-      have hzero : IsIso (0 : End X) := by simpa using hsum
-      letI : IsIso (0 : End X) := hzero
-      have hid : (𝟙 X : End X) = 0 := by
+      have hzero : IsIso (0 : End X).asHom := by simpa using hsum
+      letI : IsIso (0 : End X).asHom := hzero
+      have hid : (𝟙 X) = 0 := by
         calc
-          𝟙 X = (0 : End X) ≫ inv (0 : End X) :=
-            (IsIso.hom_inv_id (0 : End X)).symm
+          (𝟙 X) = (0 : End X).asHom ≫ inv (0 : End X).asHom :=
+            (IsIso.hom_inv_id (0 : End X).asHom).symm
           _ = 0 := zero_comp
       exact (hX.1 ((IsZero.iff_id_eq_zero X).mpr hid)).elim
   | @insert i s hi ih =>
-      have hsum' : IsIso (a i + ∑ j ∈ s, a j) := by
+      have hsum' : IsIso (a i + ∑ j ∈ s, a j).asHom := by
         simpa [Finset.sum_insert, hi] using hsum
       rcases indecomposable_sum_isIso hX hfd (a i) (∑ j ∈ s, a j) hsum' with hiIso | hsIso
       · exact ⟨i, Finset.mem_insert_self _ _, hiIso⟩
@@ -478,12 +498,14 @@ theorem indecomposable_biproduct_summand {X : PModule.{u,0,u} k P}
     ∃ i, Nonempty (X ≅ F i) := by
   classical
   let a (i : ι) : End X :=
-    (inc ≫ biproduct.π F i) ≫ (biproduct.ι F i ≫ ret)
-  have hsum : ∑ i, a i = 𝟙 X := by
+    .of ((inc ≫ biproduct.π F i) ≫ (biproduct.ι F i ≫ ret))
+  have hsum : ∑ i, a i = (1 : End X) := by
+    apply End.ext
+    rw [End.sum_asHom, End.one_asHom]
     calc
-      ∑ i, a i = inc ≫ (∑ i, biproduct.π F i ≫ biproduct.ι F i) ≫ ret := by
+      ∑ i, (a i).asHom = inc ≫ (∑ i, biproduct.π F i ≫ biproduct.ι F i) ≫ ret := by
         calc
-          ∑ i, a i = ∑ i, inc ≫ biproduct.π F i ≫ biproduct.ι F i ≫ ret := by
+          ∑ i, (a i).asHom = ∑ i, inc ≫ biproduct.π F i ≫ biproduct.ι F i ≫ ret := by
             apply Finset.sum_congr rfl
             intro i hi
             simp [a, Category.assoc]
@@ -494,13 +516,13 @@ theorem indecomposable_biproduct_summand {X : PModule.{u,0,u} k P}
       _ = inc ≫ 𝟙 (⨁ F) ≫ ret := by
         have htotal : (∑ i : ι, biproduct.π F i ≫ biproduct.ι F i) =
             𝟙 (⨁ F) := biproduct.total (f := F)
-        exact congrArg (fun t : End (⨁ F) => inc ≫ t ≫ ret) htotal
+        exact congrArg (fun t : End (⨁ F) => inc ≫ t.asHom ≫ ret) (congrArg End.of htotal)
       _ = 𝟙 X := by simpa using hret
-  have hsumIso : IsIso (∑ i, a i) := by rw [hsum]; infer_instance
+  have hsumIso : IsIso (∑ i, a i).asHom := by rw [hsum, End.one_asHom]; infer_instance
   obtain ⟨i, -, hai⟩ := indecomposable_finset_sum_isIso hX hfd Finset.univ a hsumIso
   let α : X ⟶ F i := inc ≫ biproduct.π F i
   let β : F i ⟶ X := biproduct.ι F i ≫ ret
-  have hab : α ≫ β = a i := rfl
+  have hab : α ≫ β = (a i).asHom := rfl
   letI : IsIso (α ≫ β) := by rw [hab]; exact hai
   let retIso : F i ⟶ X := β ≫ inv (α ≫ β)
   have hsplit : α ≫ retIso = 𝟙 X := by
@@ -884,43 +906,47 @@ private theorem hookTag_iso_of_nonzero_composite {c d : HookTag P}
     IsIso α := by
   classical
   let ec : End (hookTagModule (k := k) c) ≃+* k := hookTagEndRingEquiv c
-  have hc : ec (α ≫ β) ≠ 0 := by
+  have hc : ec (.of (α ≫ β)) ≠ 0 := by
     intro hz
     apply h
-    exact ec.injective (by simpa using hz)
-  have hunitScalar : IsUnit (ec (α ≫ β)) := isUnit_iff_ne_zero.mpr hc
-  let ab : End (hookTagModule (k := k) c) := α ≫ β
+    exact congrArg End.asHom (ec.injective (hz.trans (map_zero ec).symm))
+  have hunitScalar : IsUnit (ec (.of (α ≫ β))) := isUnit_iff_ne_zero.mpr hc
+  let ab : End (hookTagModule (k := k) c) := .of (α ≫ β)
   have hunit : IsUnit ab := by
     have hm := IsUnit.map ec.symm.toRingHom hunitScalar
-    simpa [ec] using hm
-  letI : IsIso ab := (CategoryTheory.isUnit_iff_isIso _).mp hunit
-  let r : hookTagModule d ⟶ hookTagModule c := β ≫ inv ab
+    simpa [ec, ab] using hm
+  letI : IsIso ab.asHom := (CategoryTheory.isUnit_iff_isIso _).mp hunit
+  let r : hookTagModule d ⟶ hookTagModule c := β ≫ inv ab.asHom
   have hsection : α ≫ r = 𝟙 (hookTagModule c) := by
     dsimp [r]
     rw [← Category.assoc]
-    exact IsIso.hom_inv_id ab
-  let p : End (hookTagModule d) := r ≫ α
-  have hp : p ≫ p = p := by
+    exact IsIso.hom_inv_id ab.asHom
+  let p : End (hookTagModule d) := .of (r ≫ α)
+  have hp : p * p = p := by
+    apply End.ext
+    rw [End.mul_asHom]
+    show (r ≫ α) ≫ (r ≫ α) = r ≫ α
     calc
-      p ≫ p = r ≫ (α ≫ r) ≫ α := by simp [p, Category.assoc]
+      (r ≫ α) ≫ (r ≫ α) = r ≫ (α ≫ r) ≫ α := by simp [Category.assoc]
       _ = r ≫ 𝟙 _ ≫ α := by rw [hsection]
-      _ = p := by simp [p]
+      _ = r ≫ α := by simp
   let ed : End (hookTagModule (k := k) d) ≃+* k := hookTagEndRingEquiv d
   have hpidem : IsIdempotentElem (ed p) := by
     change ed p * ed p = ed p
-    simpa only [← map_mul, End.mul_def] using congrArg ed hp
+    simpa only [← map_mul, End.mul_asHom] using congrArg ed hp
   rcases IsIdempotentElem.iff_eq_zero_or_one.mp hpidem with hz | ho
   · have hp0 : p = 0 := ed.injective (by simpa using hz)
     have hα0 : α = 0 := by
       calc
-        α = α ≫ p := by
-          dsimp [p]
+        α = α ≫ p.asHom := by
+          show α = α ≫ (r ≫ α)
           rw [← Category.assoc, hsection]
           simp
         _ = 0 := by rw [hp0]; simp
     exact (h (by simp [hα0])).elim
-  · have hp1 : p = 𝟙 (hookTagModule d) := ed.injective (by simpa using ho)
-    exact ⟨⟨r, hsection, hp1⟩⟩
+  · have hp1 : p = (1 : End (hookTagModule d)) := ed.injective (by simpa using ho)
+    have hp1' : r ≫ α = 𝟙 (hookTagModule d) := by simpa using congrArg End.asHom hp1
+    exact ⟨⟨r, hsection, hp1'⟩⟩
 
 private theorem hookTag_indecomposable (c : HookTag P) :
     Indecomposable (hookTagModule (k := k) c) := by
@@ -1042,12 +1068,14 @@ private theorem exists_hookTag_iso_component {n m : ℕ}
         biproduct.π (fun j => hookTagModule (k := k) (G j)) j) := by
   classical
   let a (j : Fin m) : End (hookTagModule (k := k) (F i)) :=
-    (biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom ≫
+    .of ((biproduct.ι (fun i => hookTagModule (k := k) (F i)) i ≫ e.hom ≫
       biproduct.π (fun j => hookTagModule (k := k) (G j)) j) ≫
     (biproduct.ι (fun j => hookTagModule (k := k) (G j)) j ≫ e.inv ≫
-      biproduct.π (fun i => hookTagModule (k := k) (F i)) i)
-  have hsum : ∑ j : Fin m, a j = 𝟙 (hookTagModule (k := k) (F i)) :=
-    hookTag_component_sum F G e i
+      biproduct.π (fun i => hookTagModule (k := k) (F i)) i))
+  have hsum : ∑ j : Fin m, a j = (1 : End (hookTagModule (k := k) (F i))) := by
+    apply End.ext
+    rw [End.sum_asHom, End.one_asHom]
+    exact hookTag_component_sum F G e i
   let ec : End (hookTagModule (k := k) (F i)) ≃+* k :=
     hookTagEndRingEquiv (F i)
   have hscalar : (∑ j : Fin m, ec (a j)) = 1 := by
@@ -1069,16 +1097,16 @@ private theorem exists_hookTag_iso_component {n m : ℕ}
   have hunit : IsUnit (a j) := by
     have hm := IsUnit.map ec.symm.toRingHom hunitScalar
     simpa [ec] using hm
-  letI : IsIso (a j) := (CategoryTheory.isUnit_iff_isIso _).mp hunit
+  letI : IsIso (a j).asHom := (CategoryTheory.isUnit_iff_isIso _).mp hunit
   have hnonzero : a j ≠ 0 := by
     intro hz
     have hid : 𝟙 (hookTagModule (k := k) (F i)) = 0 := by
       calc
-        𝟙 (hookTagModule (k := k) (F i)) = a j ≫ inv (a j) :=
-          (IsIso.hom_inv_id (a j)).symm
+        𝟙 (hookTagModule (k := k) (F i)) = (a j).asHom ≫ inv (a j).asHom :=
+          (IsIso.hom_inv_id (a j).asHom).symm
         _ = 0 := by
           have hcomp := congrArg (fun f : End (hookTagModule (k := k) (F i)) =>
-            f ≫ inv (a j)) hz
+            f.asHom ≫ inv (a j).asHom) hz
           exact hcomp.trans zero_comp
     exact (hookTag_indecomposable (k := k) (F i)).1
       ((IsZero.iff_id_eq_zero _).mpr hid)
@@ -1086,8 +1114,11 @@ private theorem exists_hookTag_iso_component {n m : ℕ}
       biproduct.π (fun j => hookTagModule (k := k) (G j)) j
   let β := biproduct.ι (fun j => hookTagModule (k := k) (G j)) j ≫ e.inv ≫
       biproduct.π (fun i => hookTagModule (k := k) (F i)) i
-  have hcomp : α ≫ β = a j := rfl
-  have hαβ : α ≫ β ≠ 0 := by rw [hcomp]; exact hnonzero
+  have hcomp : α ≫ β = (a j).asHom := rfl
+  have hαβ : α ≫ β ≠ 0 := by
+    rw [hcomp]
+    intro hz
+    exact hnonzero (End.ext hz)
   exact ⟨j, by simpa [α] using hookTag_iso_of_nonzero_composite hαβ⟩
 
 private theorem fin_succ_hookTag_card {n : ℕ}
@@ -1144,7 +1175,7 @@ private theorem hookTag_sum_multiplicity_unique [DecidableEq P] :
       have hfactor (j : Fin m) : IsZero (G0 j) := by
         apply (IsZero.iff_id_eq_zero _).mpr
         have hcoord := congrArg
-          (fun f : End (⨁ G0) => biproduct.ι G0 j ≫ f ≫ biproduct.π G0 j)
+          (fun f : (⨁ G0) ⟶ (⨁ G0) => biproduct.ι G0 j ≫ f ≫ biproduct.π G0 j)
           ((IsZero.iff_id_eq_zero _).mp hzeroTarget)
         simpa [Category.assoc] using hcoord
       have hm : m = 0 := by

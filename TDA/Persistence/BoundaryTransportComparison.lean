@@ -1,6 +1,6 @@
 import TDA.Persistence.BoundaryPlanLaws
 import TDA.Persistence.BoundaryTransportForward
-import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.BoundaryTransportReverseCore
 
 /-!
 # Equality of boundary and reservoir transport infima

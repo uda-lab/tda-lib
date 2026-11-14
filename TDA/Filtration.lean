@@ -38,3 +38,4 @@ import TDA.Filtration.ShiftedSimplicialMap
 import TDA.Filtration.RipsRelation
 
 import TDA.Filtration.SubdivisionRips
+import TDA.Filtration.FiniteGraded

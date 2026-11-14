@@ -200,13 +200,14 @@ the natural scalar action on persistence morphisms. -/
 private theorem homScalar_action_eq (M : PModule.{u,0,u} k S) (c : k)
     (f : HookSum (k := k) (S := S) ⟶ M) :
     (algebraMap k (HomScalars (k := k) (S := S)) c) • f = c • f := by
-  change MulOpposite.unop (algebraMap k (HomScalars (k := k) (S := S)) c) ≫ f = c • f
+  change (MulOpposite.unop (algebraMap k (HomScalars (k := k) (S := S)) c)).asHom ≫ f =
+    c • f
   have hscalar :
       MulOpposite.unop (algebraMap k (HomScalars (k := k) (S := S)) c) =
-        c • (𝟙 (HookSum (k := k) (S := S))) := by
+        c • (1 : End (HookSum (k := k) (S := S))) := by
     change algebraMap k (End (HookSum (k := k) (S := S))) c = _
     simpa [Algebra.algebraMap_eq_smul_one]
-  rw [hscalar, CategoryTheory.Linear.smul_comp]
+  rw [hscalar, End.smul_asHom, End.one_asHom, CategoryTheory.Linear.smul_comp]
   simp
 
 /-- The canonical field restriction of the actual Hom-scalar module is

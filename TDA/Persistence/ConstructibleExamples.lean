@@ -1,4 +1,4 @@
-import TDA.Persistence.Constructible
+import TDA.Persistence.ConstructibleQTameCompatibility
 import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
 
 /-!
@@ -119,6 +119,27 @@ theorem twisted_transition_nonidentity :
     have hx' : x + x = x := by simpa [two_smul] using hx
     exact add_left_cancel (hx'.trans (add_zero x).symm)
   exact ⟨fun x y => (hz x).trans (hz y).symm⟩
+
+private theorem twisted_critical_finite (i : Fin 1) :
+    FiniteDimensional ℚ (twistedStep.obj (oneGrid i)) := by
+  change FiniteDimensional ℚ
+    ((sample oneGrid constantRationals).obj (cellIndex oneGrid (oneGrid i)))
+  exact finiteDimensional_sample oneGrid constantRationals
+    (fun _ => by change FiniteDimensional ℚ ℚ; infer_instance) _
+
+/-- The canonical diagram identification applies to a constructible module whose
+structure map inside the final cell is a genuine coordinate change. -/
+theorem twisted_canonical_identification :
+    structureMap twistedStep (show (0 : ℝ) ≤ 1 by norm_num) ≠
+        structureMap stepModule (show (0 : ℝ) ≤ 1 by norm_num) ∧
+      LocallyFiniteDecoratedDiagram.ofQModule
+          (qTame_of_isConstructible oneGrid twistedStep twisted_constructible
+            twisted_critical_finite) =
+        (moduleDiagram oneGrid twistedStep twisted_critical_finite).toLocallyFinite
+          (moduleDiagram_isPositive oneGrid twistedStep twisted_critical_finite) :=
+  ⟨twisted_transition_nonidentity,
+    ofQModule_eq_toLocallyFinite oneGrid twistedStep twisted_constructible
+      twisted_critical_finite⟩
 
 /-- Equal one-dimensional fibers do not make the zero transition an isomorphism. -/
 theorem zero_transition_not_isIso :

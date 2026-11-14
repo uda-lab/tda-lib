@@ -341,11 +341,15 @@ de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3:
     `thickHomeomorph`. Hausdorffness of the windows and of the band comes from the realization of
     the graph input.
 
-Not claimed here: Theorem 4.27 for the broader class of constructible ℝ-spaces of the library,
-whose pieces need not be Hausdorff; the Corollary after Theorem 4.27, that the critical set of
-`f_ε` is exactly `S_ε`; minimality of the shifted witness; homeomorphy or injectivity of the
-attaching maps; and a cylinder presentation over the shifted witness at `ε = 0`, where the zero
-isomorphism is used instead.
+Theorem 4.27 for the broader class of constructible ℝ-spaces of the library, whose pieces need
+not be Hausdorff, is proved separately, without the compact-to-Hausdorff step, in
+`reeb-thickening-constructible.md` (`isConstructibleSpace_thickening_of_isConstructibleSpace`);
+Proposition 4.26 is also derived there as a specialization
+(`isConstructibleSpace_thickening_of_isRGraph`), and the lift `thickeningToConstructible` is the
+restriction of `thickeningFunctor` to graph objects. Not claimed by this note: minimality of the
+shifted witness, that is, that the critical set of `f_ε` is exactly `S_ε`; homeomorphy or
+injectivity of the attaching maps; and a graph presentation `thickPresentation` over the shifted
+witness at `ε = 0`, where the zero isomorphism is used instead.
 
 Source: [de Silva, Munch and Patel, *Categorified Reeb Graphs*, §4.3, Proposition 4.26 and the proof
 of Theorem 4.27](https://arxiv.org/html/1501.04147v1).

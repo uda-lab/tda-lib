@@ -4,11 +4,51 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
+
+
+def repository_root(root):
+    """Resolve the shared checkout root for linked worktrees, or use a fixture root."""
+    root = Path(root).resolve()
+    try:
+        result = subprocess.run(
+            ['git', '-C', str(root), 'rev-parse', '--path-format=absolute', '--git-common-dir'],
+            check=False, capture_output=True, text=True)
+    except OSError:
+        return root
+    if result.returncode == 0:
+        common_dir = Path(result.stdout.strip()).resolve()
+        if common_dir.name == '.git':
+            return common_dir.parent
+    return root
+
+
+def artifact_cache_dir(root):
+    """Return the shared Lake artifact cache, outside the checkout and its worktrees."""
+    root = Path(root).resolve()
+    repo_root = repository_root(root)
+    configured = os.environ.get('LAKE_CACHE_DIR')
+    if configured is not None:
+        if not configured:  # Lake treats an explicitly empty value as disabled system cache.
+            return None
+        path = Path(configured)
+        if not path.is_absolute():
+            path = Path.cwd() / path
+    else:
+        path = repo_root.parent / '.cache' / repo_root.name / 'lake-artifacts'
+    path = path.resolve()
+    for checkout in {root, repo_root}:
+        if path == checkout or checkout in path.parents:
+            raise ValueError(f'LAKE_CACHE_DIR must be outside the checkout and worktrees: {path}')
+    return path
 
 
 def resources(root):
     paths, seen, scanned = set(), set(), set()
+    cache = artifact_cache_dir(root)
+    if cache is not None:
+        paths.add(str(cache))
 
     def build_links(directory):
         directory = directory.resolve()
@@ -120,6 +160,9 @@ if __name__ == '__main__':
                     print(pair)
         elif sys.argv[1] == '--root-lock':
             print(lock_path(str(Path(sys.argv[2]).resolve())))
+        elif sys.argv[1] == '--artifact-cache-dir':
+            path = artifact_cache_dir(sys.argv[2])
+            print(path or '')
         else:
             for path, mode in lock_plan(sys.argv[1]):
                 print(f'{mode}:{path}')

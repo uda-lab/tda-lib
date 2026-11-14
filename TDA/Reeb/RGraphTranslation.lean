@@ -67,38 +67,9 @@ variable {ε : ℝ≥0} {F G : OpenInterval ⥤ C}
 components `φ_(I - c)` and `ψ_(I - c)` followed by `T_ε (I - c) = T_ε I - c`. -/
 def translatePre (c : ℝ) (i : Interleaving ε F G) :
     Interleaving ε (TDA.Reeb.translatePre c F) (TDA.Reeb.translatePre c G) :=
-  ofApp
-    { app := fun I => i.φ.app (translate c I) ≫ G.map (homOfLE (translate_thicken c ε I).ge)
-      naturality := fun I J f => by
-        dsimp
-        erw [reassoc_of% (i.φ.naturality ((translateFunctor c).map f))]
-        refine Eq.trans ?_ (Category.assoc _ _ _).symm
-        congr 1
-        interval_coherence }
-    { app := fun I => i.ψ.app (translate c I) ≫ F.map (homOfLE (translate_thicken c ε I).ge)
-      naturality := fun I J f => by
-        dsimp
-        erw [reassoc_of% (i.ψ.naturality ((translateFunctor c).map f))]
-        refine Eq.trans ?_ (Category.assoc _ _ _).symm
-        congr 1
-        interval_coherence }
-    (fun I => by
-      dsimp
-      rw [Category.assoc, i.φ_map_ψ_assoc]
-      interval_coherence)
-    (fun I => by
-      dsimp
-      rw [Category.assoc, i.ψ_map_φ_assoc]
-      interval_coherence)
+  i.reindex (translateFunctor c) fun I => (translate_thicken c ε I).ge
 
 end Interleaving
-
-/-- Translating by `c` and then by `d` is translating by `d + c`. -/
-private def translatePreTranslatePreIso (c d : ℝ) (F : OpenInterval ⥤ C) :
-    translatePre c (translatePre d F) ≅ translatePre (d + c) F :=
-  NatIso.ofComponents (fun I => F.mapIso (eqToIso (translate_translate d c I))) fun _ => by
-    simp only [translatePre_map, Functor.mapIso_hom]
-    interval_coherence
 
 /-- Translation preserves the interleaving distance of precosheaves into any category. -/
 theorem interleavingDistance_translatePre (c : ℝ) (F G : OpenInterval ⥤ C) :
@@ -108,8 +79,8 @@ theorem interleavingDistance_translatePre (c : ℝ) (F G : OpenInterval ⥤ C) :
     fun d _ _ => le_iInf₂ fun _ ⟨i⟩ => (i.translatePre d).interleavingDistance_le
   refine le_antisymm (key c F G) ?_
   have e : ∀ H : OpenInterval ⥤ C, translatePre (-c) (translatePre c H) ≅ H := fun H =>
-    translatePreTranslatePreIso (-c) c H ≪≫ eqToIso (by rw [add_neg_cancel]) ≪≫
-      translatePreZeroIso H
+    reindexIso (Φ := translateFunctor (-c) ⋙ translateFunctor c) (Ψ := 𝟭 _)
+      (fun I => by simp [translate_translate]) H
   rw [← interleavingDistance_congr (e F) (e G)]
   exact key (-c) _ _
 

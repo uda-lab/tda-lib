@@ -1,4 +1,5 @@
 import TDA.Mapper.RefinementHomologyInterleaving
+import TDA.Persistence.RealInterleavingRankObstruction
 import TDA.Simplicial.FiniteDimensionalHomology
 import TDA.Simplicial.H0Augmentation
 
@@ -11,7 +12,9 @@ composite `M t → N (t + ε) → M (t + 2ε)`, so its range lies in the range o
 factor. When `N (t + ε)` is finite-dimensional, the rank of `M(t → t + 2ε)` is therefore at
 most `dim N (t + ε)`, and the map is zero when `N (t + ε)` is zero. No finiteness of `M` is
 assumed. Excluding every parameter below `r` in this way bounds the real interleaving
-distance of `M` and `N` below by `r`.
+distance of `M` and `N` below by `r`. Conversely, over any ring, if every double-shift structure
+map of both modules at `ε` is zero, the zero maps form an `ε`-interleaving
+(`nonempty_realInterleaving_of_structureMap_eq_zero`).
 
 For a continuous map `f` with a real cover tower `U`, a continuous map `g` with a real cover
 tower `V`, a field `k` and a degree `n`, the structure maps of
@@ -26,6 +29,8 @@ homology modules of the two towers are not `ε`-interleaved. The zero-fibre form
 Nothing is claimed about bar-length lower bounds, decompositions, matchings or the isometry
 theorem, about tightness of the rank obstruction, about lower bounds for graph-PL Reeb
 distances, about multinerve homology, or about changing the component orders.
+The generic rank and zero-transition results live in
+`TDA.Persistence.RealInterleavingRankObstruction`; this module specializes them to Mapper data.
 -/
 
 namespace TDA.Mapper
@@ -45,34 +50,14 @@ section Rank
 
 variable {k : Type u} [Field k] {M N : PModule.{u,0,w} k ℝ} {ε : ℝ≥0}
 
-/-- The second factor of the double-shift structure map of an `ε`-interleaving: `i.ψ` at
-`t + ε` followed by the shift transport, as a linear map out of `N (t + ε)`. -/
-private def backMap (i : RealInterleaving ε M N) (t : ℝ) :
-    N.obj (t + ε) →ₗ[k] M.obj (t + ((ε + ε : ℝ≥0) : ℝ)) :=
-  (i.ψ.app (t + (ε : ℝ)) ≫ (compIso ε ε M).hom.app t).hom
-
-/-- In an `ε`-interleaving, the structure map of `M` across `2ε` factors through
-`N (t + ε)`. -/
-private theorem structureMapLinear_eq_comp (i : RealInterleaving ε M N) (t : ℝ)
-    (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)) :
-    structureMapLinear M h = (backMap i t).comp (i.φ.app t).hom := by
-  have e := i.φ_ψ_app t
-  rw [transition_app] at e
-  change (structureMap M h).hom = _
-  rw [show structureMap M h = structureMap M (le_add_of_nonneg_right
-    (ε + ε).coe_nonneg) from rfl, ← e]
-  rfl
-
 /-- **Rank bound.** In an `ε`-interleaving of `M` and `N`, the rank of the structure map of `M`
 from `t` to `t + 2ε` is at most the dimension of `N (t + ε)`, provided only that this one value
 of `N` is finite-dimensional. -/
 theorem finrank_range_structureMapLinear_le_of_realInterleaving (i : RealInterleaving ε M N)
     (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)) [FiniteDimensional k (N.obj (t + ε))] :
     Module.finrank k (LinearMap.range (structureMapLinear M h)) ≤
-      Module.finrank k (N.obj (t + ε)) := by
-  rw [structureMapLinear_eq_comp i t h]
-  exact (Submodule.finrank_mono (LinearMap.range_comp_le_range _ _)).trans
-    (LinearMap.finrank_range_le (backMap i t))
+      Module.finrank k (N.obj (t + ε)) :=
+  TDA.Persistence.RealInterleaving.finrank_range_structureMapLinear_le_of_realInterleaving i t h
 
 /-- **Rank bound, symmetric form.** In an `ε`-interleaving of `M` and `N`, the rank of the
 structure map of `N` from `t` to `t + 2ε` is at most the dimension of `M (t + ε)`. -/
@@ -80,19 +65,15 @@ theorem finrank_range_structureMapLinear_le_of_realInterleaving' (i : RealInterl
     (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)) [FiniteDimensional k (M.obj (t + ε))] :
     Module.finrank k (LinearMap.range (structureMapLinear N h)) ≤
       Module.finrank k (M.obj (t + ε)) :=
-  finrank_range_structureMapLinear_le_of_realInterleaving i.symm t h
+  TDA.Persistence.RealInterleaving.finrank_range_structureMapLinear_le_of_realInterleaving'
+    i t h
 
 /-- **Zero fibre.** In an `ε`-interleaving of `M` and `N`, if `N (t + ε)` is zero then the
 structure map of `M` from `t` to `t + 2ε` is zero. -/
 theorem structureMap_eq_zero_of_realInterleaving (i : RealInterleaving ε M N) (t : ℝ)
     (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)) [Subsingleton (N.obj (t + ε))] :
-    structureMap M h = 0 := by
-  apply ModuleCat.hom_ext
-  rw [← structureMapLinear, structureMapLinear_eq_comp i t h]
-  ext x
-  change backMap i t ((i.φ.app t).hom x) = 0
-  rw [Subsingleton.elim (α := N.obj (t + ε)) ((i.φ.app t).hom x) 0]
-  exact (backMap i t).map_zero
+    structureMap M h = 0 :=
+  TDA.Persistence.RealInterleaving.structureMap_eq_zero_of_realInterleaving i t h
 
 /-- If the structure map of `M` from `t` to `t + 2ε` has rank larger than the dimension of a
 finite-dimensional `N (t + ε)`, then `M` and `N` are not `ε`-interleaved. -/
@@ -101,14 +82,14 @@ theorem isEmpty_realInterleaving_of_finrank_lt (t : ℝ) (h : t ≤ t + ((ε + �
     (hlt : Module.finrank k (N.obj (t + ε)) <
       Module.finrank k (LinearMap.range (structureMapLinear M h))) :
     IsEmpty (RealInterleaving ε M N) :=
-  ⟨fun i => (finrank_range_structureMapLinear_le_of_realInterleaving i t h).not_gt hlt⟩
+  TDA.Persistence.RealInterleaving.isEmpty_realInterleaving_of_finrank_lt t h hlt
 
 /-- If the structure map of `M` from `t` to `t + 2ε` is nonzero and `N (t + ε)` is zero, then
 `M` and `N` are not `ε`-interleaved. -/
 theorem isEmpty_realInterleaving_of_structureMap_ne_zero (t : ℝ)
     (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)) [Subsingleton (N.obj (t + ε))]
     (hne : structureMap M h ≠ 0) : IsEmpty (RealInterleaving ε M N) :=
-  ⟨fun i => hne (structureMap_eq_zero_of_realInterleaving i t h)⟩
+  TDA.Persistence.RealInterleaving.isEmpty_realInterleaving_of_structureMap_ne_zero t h hne
 
 /-- **Distance lower bound.** If for every finite parameter `ε < r` some structure map of `M`
 from `t` to `t + 2ε` has rank larger than the dimension of a finite-dimensional `N (t + ε)`,
@@ -118,12 +99,8 @@ theorem le_realInterleavingDistance_of_finrank_lt {r : ℝ≥0∞}
       FiniteDimensional k (N.obj (t + ε)) ∧
         Module.finrank k (N.obj (t + ε)) <
           Module.finrank k (LinearMap.range (structureMapLinear M h))) :
-    r ≤ realInterleavingDistance M N := by
-  rw [le_realInterleavingDistance_iff]
-  intro ε ⟨i⟩
-  by_contra hεr
-  obtain ⟨t, h, _, hlt⟩ := hr ε (not_le.1 hεr)
-  exact (isEmpty_realInterleaving_of_finrank_lt t h hlt).false i
+    r ≤ realInterleavingDistance M N :=
+  TDA.Persistence.RealInterleaving.le_realInterleavingDistance_of_finrank_lt hr
 
 /-- **Distance lower bound, zero-fibre form.** If for every finite parameter `ε < r` some
 structure map of `M` from `t` to `t + 2ε` is nonzero while `N (t + ε)` is zero, then the real
@@ -131,14 +108,26 @@ interleaving distance of `M` and `N` is at least `r`. -/
 theorem le_realInterleavingDistance_of_structureMap_ne_zero {r : ℝ≥0∞}
     (hr : ∀ ε : ℝ≥0, (ε : ℝ≥0∞) < r → ∃ (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)),
       Subsingleton (N.obj (t + ε)) ∧ structureMap M h ≠ 0) :
-    r ≤ realInterleavingDistance M N := by
-  rw [le_realInterleavingDistance_iff]
-  intro ε ⟨i⟩
-  by_contra hεr
-  obtain ⟨t, h, _, hne⟩ := hr ε (not_le.1 hεr)
-  exact (isEmpty_realInterleaving_of_structureMap_ne_zero t h hne).false i
+    r ≤ realInterleavingDistance M N :=
+  TDA.Persistence.RealInterleaving.le_realInterleavingDistance_of_structureMap_ne_zero hr
 
 end Rank
+
+section ZeroMaps
+
+variable {R : Type u} [Ring R] {M N : PModule.{u,0,w} R ℝ}
+
+/-- **Zero maps.** If every double-shift structure map of two real modules at the parameter `ε`
+is zero, the zero maps form an `ε`-interleaving. This is a converse companion of
+`isEmpty_realInterleaving_of_structureMap_ne_zero`. -/
+theorem nonempty_realInterleaving_of_structureMap_eq_zero (ε : ℝ≥0)
+    (hM : ∀ (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)), structureMap M h = 0)
+    (hN : ∀ (t : ℝ) (h : t ≤ t + ((ε + ε : ℝ≥0) : ℝ)), structureMap N h = 0) :
+    Nonempty (RealInterleaving ε M N) :=
+  TDA.Persistence.RealInterleaving.nonempty_realInterleaving_of_structureMap_eq_zero
+    ε hM hN
+
+end ZeroMaps
 
 section Mapper
 

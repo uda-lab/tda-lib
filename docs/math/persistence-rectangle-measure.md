@@ -65,5 +65,15 @@ bottleneck stability are proved separately (`LocallyFiniteDecoratedDiagram.ofQMo
 `qTame_bottleneck_le_of_realInterleaving` in `LocallyFiniteDiagramBottleneck` and
 `LocallyFiniteMatchingCompactness`; see [Rips metric stability](rips-metric-stability.md)).
 Compatibility with the finite `Diagram ℝ`, whose occurrences form a `Multiset`, is proved for
-positive finite diagrams and for Rips modules of finite spaces; birth-at-`−∞` strata and
-compatibility for other finite-type q-tame modules are not claimed.
+positive finite diagrams and for Rips modules of finite spaces; it also holds for a real module
+`M : PModule.{u,0,u} k ℝ` over a field `k : Type u` with a finite critical grid
+`c : Fin n ↪o ℝ`, provided `FiniteConstructible.IsConstructible c M` (zero to the left of `c` and
+with structure-map isomorphisms within each right-continuous stratum) and every critical fiber
+`M.obj (c i)` is finite-dimensional; the final right tail may be nonzero.
+`FiniteConstructible.ofQModule_eq_toLocallyFinite`
+identifies the canonical q-tame diagram with the locally finite embedding of the constructed
+finite barcode, and `FiniteConstructible.ofQModule_bottleneck_eq_finite` equates the corresponding
+bottleneck values (see the [implementation](../../TDA/Persistence/ConstructibleQTameCompatibility.lean)
+and [finite-constructible account](persistence-measure-atoms.md)). Compatibility for arbitrary
+q-tame modules with finite barcodes, arbitrary endpoint decorations, and birth-at-`−∞` strata is
+not claimed.

@@ -14,7 +14,8 @@ reversal equation `dartHeight h d.symm (σ t) = dartHeight h d t` and the start 
 gives the piecewise-linear height `plHeight G h : C(Realization G, ℝ)`, with
 `plHeight G h (vertex G v) = h v` and `plHeight G h (edgePoint G d t) = dartHeight h d t` by `rfl`
 and uniqueness among continuous maps with these values (`plHeight_unique`). Uniqueness gives
-`plHeight G (fun v => h v + c) = plHeight G h + c` (`plHeight_add_const`). Equal endpoint heights
+`plHeight G (fun v => h v + c) = plHeight G h + c` (`plHeight_add_const`) and
+`plHeight G (fun v => s * h v) = s • plHeight G h` (`plHeight_smul`). Equal endpoint heights
 are allowed: a horizontal dart has constant height (`dartHeight_of_eq`), while the height of a
 nonhorizontal dart is injective in the parameter (`dartHeight_injective`). Along the subpath of any
 dart between parameters `s` and `t`, `plHeight_edgeSegment_bounds` bounds the height between the
@@ -177,6 +178,13 @@ theorem plHeight_add_const_apply (c : ℝ) (x : Realization G) :
   rw [plHeight_add_const]
   rfl
 
+/-- Scaling all vertex heights scales the continuous piecewise-linear height. -/
+theorem plHeight_smul (s : ℝ) :
+    plHeight G (fun v => s * h v) = s • plHeight G h :=
+  (plHeight_unique G _ _ (fun v => by simp) fun d t => by
+    simp only [ContinuousMap.smul_apply, smul_eq_mul, plHeight_edgePoint, dartHeight]
+    ring).symm
+
 end plHeight
 
 section edges
@@ -324,7 +332,7 @@ theorem joinedIn_edgePoint (d : G.Dart) {s t : unitInterval} (hs : dartHeight h 
     show dartHeight h d (projIcc 0 1 zero_le_one r) ∈ I
     rw [projIcc_of_mem _ hr]
     exact hrI
-  simpa only [projIcc_val] using (hJ.map hc).mono hsub
+  simpa only [projIcc_val] using (hJ.map hc.continuousOn).mono hsub
 
 end support
 

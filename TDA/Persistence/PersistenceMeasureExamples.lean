@@ -1,5 +1,5 @@
 import TDA.Persistence.PersistenceMeasureEssential
-import TDA.Persistence.RealIntervalInterleaving
+import TDA.Persistence.RealBarcodeRank
 import Mathlib.LinearAlgebra.Finsupp.VectorSpace
 
 /-!
@@ -67,49 +67,6 @@ theorem infinite_ephemeral_rectangle_zero {a b c d : ℝ}
     persistenceMeasureValue (ephemeralModule (k := k)) hab hbc.le hcd = 0 :=
   persistenceMeasureValue_eq_zero_of_crossing_eq_zero _ _ _ _ (ephemeral_strict_map hbc)
 
-private theorem intervalImage_rank (p : ℝ × WithTop ℝ) {s t : ℝ} (hst : s ≤ t) :
-    Module.finrank k (persistenceImage (RealBarcode.intervalModule (k := k) p) hst) =
-      if RealBarcode.alive p s ∧ RealBarcode.alive p t then 1 else 0 := by
-  classical
-  let f := structureMapLinear (RealBarcode.intervalModule (k := k) p) hst
-  by_cases h : RealBarcode.alive p s ∧ RealBarcode.alive p t
-  · rw [if_pos h]
-    have hf : Function.Surjective f := by
-      intro y
-      let x : RealBarcode.fiber (k := k) p s :=
-        ⟨y.val, by simp [RealBarcode.fiber, h.1]⟩
-      refine ⟨x, ?_⟩
-      apply Subtype.ext
-      simpa [f, structureMapLinear, structureMap, h.2] using
-        RealBarcode.map_val p (homOfLE hst) x
-    change Module.finrank k (LinearMap.range f) = 1
-    rw [LinearMap.range_eq_top.mpr hf, finrank_top]
-    change Module.finrank k (RealBarcode.fiber (k := k) p t) = 1
-    rw [show RealBarcode.fiber (k := k) p t = ⊤ by
-      unfold RealBarcode.fiber
-      exact if_pos h.2]
-    rw [finrank_top]
-    exact Module.finrank_self k
-  · rw [if_neg h]
-    have hf : f = 0 := by
-      ext x
-      apply Subtype.ext
-      change (f x).val = 0
-      have hv : (f x).val = if RealBarcode.alive p t then x.val else 0 :=
-        RealBarcode.map_val p (homOfLE hst) x
-      rw [hv]
-      by_cases ht : RealBarcode.alive p t
-      · rw [if_pos ht]
-        have hs : ¬ RealBarcode.alive p s := fun hs => h ⟨hs, ht⟩
-        have hx : (show RealBarcode.fiber (k := k) p s from x).val = 0 := by
-          simpa only [RealBarcode.fiber, if_neg hs, Submodule.mem_bot] using
-            (show RealBarcode.fiber (k := k) p s from x).property
-        exact hx
-      · rw [if_neg ht]
-    change Module.finrank k (LinearMap.range f) = 0
-    rw [hf, LinearMap.range_zero]
-    exact finrank_bot k _
-
 private instance intervalImage_finiteDimensional (p : ℝ × WithTop ℝ)
     {s t : ℝ} (hst : s ≤ t) :
     FiniteDimensional k (persistenceImage (RealBarcode.intervalModule (k := k) p) hst) := by
@@ -127,7 +84,7 @@ theorem upper_edges_count_one :
     (RealBarcode.intervalModule (k := k) (0, (2 : WithTop ℝ)))
     (show (-1 : ℝ) ≤ 0 by norm_num) (show (0 : ℝ) ≤ 1 by norm_num)
     (show (1 : ℝ) ≤ 2 by norm_num)
-  simp only [intervalImage_rank] at h
+  simp only [RealBarcode.intervalImage_rank] at h
   norm_num [RealBarcode.alive] at h
   exact_mod_cast h
 
@@ -140,7 +97,7 @@ theorem lower_birth_edge_count_zero :
     (RealBarcode.intervalModule (k := k) (0, (2 : WithTop ℝ)))
     (show (0 : ℝ) ≤ 1 by norm_num) (show (1 : ℝ) ≤ 3 / 2 by norm_num)
     (show (3 / 2 : ℝ) ≤ 2 by norm_num)
-  simp only [intervalImage_rank] at h
+  simp only [RealBarcode.intervalImage_rank] at h
   norm_num [RealBarcode.alive] at h
   exact_mod_cast h
 
@@ -150,7 +107,7 @@ theorem essential_interval_finite_rectangle_zero {a b c d : ℝ}
     persistenceMeasureValue (RealBarcode.intervalModule (k := k) (0, ⊤)) hab hbc hcd = 0 := by
   have h := persistenceMeasureValue_four_rank
     (RealBarcode.intervalModule (k := k) (0, ⊤)) hab hbc hcd
-  simp only [intervalImage_rank, RealBarcode.alive, WithTop.coe_lt_top, and_true] at h
+  simp only [RealBarcode.intervalImage_rank, RealBarcode.alive, WithTop.coe_lt_top, and_true] at h
   have h₁ : (0 ≤ b ∧ 0 ≤ c) ↔ 0 ≤ b :=
     ⟨And.left, fun hb => ⟨hb, hb.trans hbc⟩⟩
   have h₂ : (0 ≤ a ∧ 0 ≤ c) ↔ 0 ≤ a :=
@@ -171,7 +128,7 @@ theorem essential_interval_count_one :
   have ht := persistenceTailMeasureValue_add_image
     (RealBarcode.intervalModule (k := k) (0, ⊤))
     (show (-1 : ℝ) ≤ 0 by norm_num) hc.le
-  simp only [intervalImage_rank] at ht
+  simp only [RealBarcode.intervalImage_rank] at ht
   norm_num [RealBarcode.alive, hc.le] at ht
   omega
 

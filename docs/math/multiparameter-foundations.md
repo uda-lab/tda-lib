@@ -491,10 +491,15 @@ be unbounded. This proves the finite-death hook lifting ingredient of
 [Botnan–Oppermann–Oudot–Scoccola, §2.14 and Appendix A](https://arxiv.org/html/2208.00300v3).
 The principal-upset module, representing a hook with infinite death, is the
 graded free module on one generator. `HookInfinity.homEquivFiber` identifies
-its morphisms with the target's birth fiber. Surjectivity at that single fiber
-therefore suffices to lift any such morphism. This assertion holds over any
-ring and preorder, without finite-dimensionality assumptions, and in particular
-applies to rank-exact quotient maps over a field.
+its morphisms with the target's birth fiber. An epimorphism of persistence
+modules is epi at each grade, and module-category epimorphisms are surjective,
+so the birth value lifts and the lifted map factors the original morphism.
+Thus, for `R : Type u` and `P : Type v` with `[Ring R]` and `[Preorder P]`,
+the principal-upset module is an ordinary projective object of
+`PModule.{u,v,u} R P`, with no finite-dimensionality assumptions. The
+canonical instance is available from
+`TDA.Persistence.HookInfinityProjective`. In particular, rank-exact quotient
+maps over a field are among the categorical epimorphisms covered here.
 
 ## Individual hook endomorphisms and indecomposability
 
@@ -539,15 +544,19 @@ minimal rank-projective resolutions remain separate.
 
 ## Enough rank projectives on finite posets
 
-Fix a field k and a finite partially ordered set P. `IsRankProjective Q`
-means that every natural map from Q lifts along every rank-exact quotient.
-The hook lifting results above give this property for finite-death hooks and
-principal upsets. It is preserved by finite categorical biproducts, natural
-isomorphisms and retracts. This relative property is distinct from lifting
-along all ordinary epimorphisms.
+For a field `k : Type u` and partial order `P : Type` in universe zero, the
+field-side modules have type `PModule.{u,0,u} k P`. `IsRankProjective Q` means
+that every map from `Q` lifts along each quotient in an actual rank-exact
+sequence. It requires neither pfd fibers of `Q` nor `[Fintype P]`; the
+universe-zero restriction on `P` does not assert that `P` is finite. The hook
+lifting results above give this property for finite-death hooks and principal
+upsets. It is preserved by finite categorical biproducts, natural isomorphisms
+and retracts. This relative property is distinct from ordinary projectivity
+against all epimorphisms.
 
-Let M be a pointwise finite-dimensional P-module. For each grade a, choose a
-basis of M(a); for every a < b, choose a basis of the kernel of M(a→b).
+Now assume `[Fintype P]` and let `M` be a pointwise finite-dimensional
+`P`-module. For each grade `a`, choose a basis of `M(a)`; for every `a < b`,
+choose a basis of the kernel of `M(a→b)`.
 `FiniteHookDeflation.Index M` labels each basis vector separately. A fiber
 basis vector contributes a principal upset born at a; a kernel basis vector
 contributes the hook with birth a and death b. The number of occurrences is
@@ -562,27 +571,29 @@ The corresponding generator maps assemble to the natural transformation
 For any vector killed by M(a→b), its expansion in the kernel basis gives
 a lift in the hook sum also killed at b. At a = b the only such vector is
 zero. Thus `lift_kernel` proves the dying-element criterion at every pair,
-and `rankExact` derives rank additivity for the actual categorical kernel
-sequence. Both the hook sum and its kernel have finite-dimensional fibers.
-No rank equality or already existing deflation is an input.
+and `FiniteHookDeflation.rankExact` derives rank additivity for the actual
+categorical kernel sequence. Both the hook sum and its kernel have
+finite-dimensional fibers. No rank equality or already existing deflation is
+an input.
 
-The hook sum is rank projective. Consequently a pfd module M on P is rank
-projective exactly when its constructed deflation admits a natural section:
-`isRankProjective_iff_retract`. In particular every rank projective is a
-retract of a finite hook sum. This supplies enough relative projectives in
-the finite-poset part of
+The hook sum is rank projective. `isRankProjective_iff_retract` characterizes
+each pfd module `M` on this finite poset: it is rank projective exactly when
+its constructed deflation admits a natural section. Thus every such
+rank-projective `M` is a retract of its finite hook sum. This supplies enough
+relative projectives in the finite-poset part of
 [Botnan–Oppermann–Oudot–Scoccola, Theorem 2.7(1)](https://arxiv.org/html/2208.00300v3).
 The construction retains repeated occurrences and includes zero modules and
 the empty poset. Consumers also give a branching-poset pfd module whose
 rank-exact deflation does not split, and check the construction in
 characteristic two.
 
-The classification theorem `rankProjective_iff_exists_canonical_subfamily`
-strengthens this retract statement: M is rank projective exactly when it is
-isomorphic to a finite selection of the actual occurrences in its canonical
-hook cover. Thus repeated hooks are retained as distinct cover indices. The
-public `RankProjectiveHookTag` distinguishes a finite hook by its strict birth
-and death pair and a principal upset by its birth. The theorem
+For this pfd module on the finite poset, the classification theorem
+`rankProjective_iff_exists_canonical_subfamily` strengthens the retract
+statement: `M` is rank projective exactly when it is isomorphic to a finite
+selection of the actual occurrences in its canonical hook cover. Thus
+repeated hooks are retained as distinct cover indices. The public
+`RankProjectiveHookTag` distinguishes a finite hook by its strict birth and
+death pair and a principal upset by its birth. The theorem
 `rankProjectiveHookSum_multiplicity_unique` proves that any isomorphic finite
 sums of these nonzero hooks have equal multiplicity for every tag. The
 nonzero-hook and zero-module consumers verify the theorem at both boundaries;
@@ -707,11 +718,12 @@ grade, repeated hook occurrences and the zero/empty-sum boundary.
 
 ## Pullbacks and composites of rank-exact deflations
 
-Fix a field k and partially ordered grades. A rank-exact deflation is a
-natural map π:M→N that is the quotient of an actual rank-exact short exact
-sequence; `IsRankDeflation` expresses this condition. Its
-`rankExact_kernel` law identifies the actual categorical kernel sequence as
-rank exact. Ordinary pointwise surjectivity alone is insufficient. For
+For a field `k : Type u` and partial order `P : Type` in universe zero, the
+field-side deflation APIs use modules `PModule.{u,0,u} k P`. A rank-exact
+deflation is a natural map π:M→N that is the quotient of an actual rank-exact
+short exact sequence; `IsRankDeflation` expresses this condition. Its
+`IsRankDeflation.rankExact_kernel` theorem identifies the actual categorical
+kernel sequence as rank exact. Ordinary pointwise surjectivity alone is insufficient. For
 example, the principal upset born at zero on the two-grade chain surjects
 onto the hook dying at grade one. The target's unit dies, but every
 transition of the principal upset preserves its coefficient, so that unit
@@ -725,7 +737,11 @@ pullback universal property, and its value at birth constructs the pair
 in X(p). `PullbackFiber.mk` and its projection laws express this
 construction. Conversely, the two projections distinguish every vector
 in X(p), by the same generator property and categorical extensionality.
-Thus X(p) embeds linearly into M(p)×T(p), proving it finite dimensional.
+`PullbackFiber.mk`, its projection laws and `PullbackFiber.element_ext` are
+defined for a ring `R : Type u` and a preorder `P : Type v`, with modules
+`PModule.{u,v,u} R P`. The finite-dimensionality conclusion here is the
+field result and requires pfd fibers of both `M` and `T`. Thus X(p) embeds
+linearly into M(p)×T(p), proving it finite dimensional.
 
 The projection X→T is surjective: lift fₚ(t) through πₚ and pair that lift
 with t. If t is killed between a≤b, naturality shows that fₐ(t) is killed
@@ -735,13 +751,14 @@ criterion therefore proves rank additivity for the actual kernel of X→T.
 `IsRankDeflation.pullback_snd` establishes this closure without assuming an
 exact-category instance or the desired lifting property.
 
-Identity on any pfd module is a rank-exact deflation. For two composable
-deflations, lift each dying vector through the second and then through
-the first, retaining the same death at both steps. Surjectivity also
-composes, so the kernel criterion proves `IsRankDeflation.comp` for the
-actual composite kernel sequence. Consumers apply these laws to successive
-finite hook deflations and to a nonidentity pullback, with genuinely
-nonzero dying images, zero base change and characteristic two.
+`IsRankDeflation.id` makes identity on any pfd module a rank-exact deflation.
+For two composable deflations, lift each dying vector through the second and
+then through the first, retaining the same death at both steps. Surjectivity
+also composes, so the kernel criterion proves `IsRankDeflation.comp` for the
+actual composite kernel sequence. It takes the two deflation certificates
+directly and has no additional external pfd premise. Consumers apply these
+laws to successive finite hook deflations and to a nonidentity pullback, with
+genuinely nonzero dying images, zero base change and characteristic two.
 
 These prove the deflation-side closure laws in
 [Botnan–Oppermann–Oudot–Scoccola, §2.12](https://arxiv.org/html/2208.00300v3),
@@ -751,10 +768,12 @@ is proved separately below.
 
 ## Pushouts of rank-exact sequences
 
-Let `k` be a field and `P` any partially ordered set. Suppose
-`0 → L --ι→ M --π→ N → 0` is rank exact, and let `f : L → L'` with `L'`
-pointwise finite dimensional. The actual pushout of `ι` along `f` has a
-canonical row
+For a field `k : Type u` and partial order `P : Type` in universe zero, take
+the modules in `PModule.{u,0,u} k P`. Suppose
+`0 → L --ι→ M --π→ N → 0` is an actual rank-exact row, and let
+`f : L → L'` with `L'` pointwise finite dimensional. This result has no
+`[Fintype P]` premise; `P` need not be finite. The actual pushout of `ι` along
+`f` has a canonical row
 
 \[
 0 \longrightarrow L' \longrightarrow L'\amalg_L M \longrightarrow N
@@ -784,6 +803,85 @@ also includes other exact-category axioms and has its stated finite-poset or
 finitely presented real-coordinate scope; those conclusions do not follow from
 this local closure theorem.
 
+## Finite-presentation closure
+
+A finite presentation consists of finite graded-free generator and relation
+families. For a ring `R` and preorder `P`, with compatible universes
+`PModule.{u,v,max u w}` and `FinitelyPresented.{u,v,w}`, these modules are
+closed under actual categorical cokernels and binary biproducts. For a map
+`f : M → N`, lift the source generators through the target's free cover and
+add the lifted generators to the target relations, retaining the target
+generators. A biproduct uses disjoint unions of both occurrence families. The
+comparison isomorphisms identify these presentations with the actual
+categorical objects, and repeated grades remain distinct occurrences. These
+constructions are [`finitelyPresented_cokernel`](../../TDA/Persistence/FinitePresentationColimits.lean)
+and [`finitelyPresented_biprod`](../../TDA/Persistence/FinitePresentationColimits.lean).
+The actual pushout of `f : X → Y` and `g : X → Z` is the cokernel of
+`(f, -g) : X → Y ⊞ Z`; hence
+[`finitelyPresented_pushout`](../../TDA/Persistence/FinitePresentationPushout.lean)
+requires finite presentations of exactly `X`, `Y` and `Z`, without monicity
+or rank hypotheses.
+
+For any field `k` and a partially ordered type `P : Type`, the field-side results
+below use `PModule.{u,0,u}` and the original
+`GradedFree.FinitelyPresented.{u,0,0}` predicate. Given an ordinary pointwise
+short exact row `0 → L → M → N → 0` with quotient `π : M → N`, and with `L`
+and `N` finitely presented,
+[`IsPointwiseShortExact.finitelyPresented_middle`](../../TDA/Persistence/FinitePresentationExtensions.lean)
+proves that `M` is finitely presented. Choose a finite free cover of `N` and
+pull `π` back along it. The free generators lift through `π` and give a
+section of the pullback projection, so the pullback is isomorphic to `L ⊞ F`,
+with `F` the finite free cover. This pulled-back row splits; the original
+extension need not. Let `d : F(A) → F` be the relation map in the chosen
+presentation of `N`, and let `c : F → N` be its free cover. Set
+`B := Limits.pullback π c` and let `q : B → M` be the first projection. The
+relation map `r : F(A) → B` has pullback components `(0,d)`; on each fiber it
+sends `a` to `(0,d(a))`. This is the pullback lift of zero to `M` and `d` to
+`F`; the section used to split `B → F` is separate from `r`. The image of `r`
+is `ker q`, and `q` is an epimorphism, so `M` is identified with the actual
+categorical cokernel of `r`. The relation map need not be injective, and the
+original row needs no
+pointwise finite-dimensionality or rank-exactness hypothesis.
+
+For a pointwise short exact row with quotient `π : M → N` and any `f : T → N`,
+the actual pullback `Limits.pullback π f` fits in an ordinary short exact row
+`0 → L → Limits.pullback π f → T → 0`; thus finite presentation of `L` and
+`T` gives finite presentation of the pullback by
+[`IsPointwiseShortExact.finitelyPresented_pullback`](../../TDA/Persistence/FinitePresentationPullback.lean).
+In the rank-exact case,
+[`IsRankExact.pullback_finitelyPresented`](../../TDA/Persistence/FinitePresentationPullback.lean)
+also proves finite presentation of the actual kernel of the second projection
+and rank exactness of its canonical kernel row. The finite presentation of
+`T` supplies its pointwise finite-dimensionality; no presentation of `M` or
+`N` is required.
+
+For any composable maps `π : M → N` and `σ : N → O`,
+[`kernelCompIsoPullback`](../../TDA/Persistence/FinitePresentationCompositeKernel.lean)
+identifies the actual kernel of `π ≫ σ` with the actual pullback of `π` along
+the kernel inclusion of `σ`. This comparison requires no exactness,
+epimorphism or finite-presentation assumptions. When the maps belong to
+rank-exact rows with finitely presented left terms `L` and `K`,
+the second row gives a canonical isomorphism from `K` to the actual
+`Limits.kernel σ`, transferring its finite presentation before the pullback
+closure is applied.
+[`IsRankExact.comp_finitelyPresented`](../../TDA/Persistence/FinitePresentationCompositeKernel.lean)
+uses pullback closure and this comparison to prove finite presentation of the
+actual composite kernel and rank exactness of its canonical kernel row. This
+result covers kernels of composites of rank-exact deflations, not kernels of
+arbitrary maps.
+
+For a rank-exact row `0 → L → M → N → 0` and a map `f : L → L'`,
+[`IsRankExact.pushout_finitelyPresented`](../../TDA/Persistence/FinitePresentationPushout.lean)
+proves finite presentation of the actual pushout and rank exactness of its
+canonical row, taking finite presentations of `L`, `M` and `L'` as inputs.
+The finite presentation of `L'` supplies its pointwise finite-dimensionality
+needed to apply the existing rank-exact pushout law; `N` need not be finitely
+presented.
+These are standalone closure results: they do not give finite presentation
+for kernels of arbitrary maps or an exact-category structure. Signed stability
+obtains its finite resolutions by finite-grid Kan reconstruction and does not
+use these closure laws.
+
 ## One-step persistent Schanuel
 
 Fix a field k and coordinatewise ordered ℝⁿ. Suppose K→P→M and L→Q→N
@@ -797,7 +895,7 @@ finite grid or finite presentation is required here. An actual
 P\oplus L[\varepsilon]\quad\longleftrightarrow\quad K[\varepsilon]\oplus Q.
 \]
 
-Here A[ε](a)=A(a+ε). This is the rank-exact specialization of
+Here `A[ε](a)=A(a+ε)`. This is the rank-exact specialization of
 [Botnan–Oppermann–Oudot–Scoccola, Appendix A Lemma A.1](https://arxiv.org/html/2208.00300v3).
 `RankSchanuel.interleavingOfSequences` uses the original K and L; it does
 not require chosen sections or identifications with categorical kernels.

@@ -55,17 +55,25 @@ says that `Q` is rank-projective, the actual categorical-kernel row
 `u : Q ⟶ Q` satisfying `u ≫ π = π` is an isomorphism. In this API, a
 `MinimalFiniteRankProjectiveResolution` is a finite rank-projective resolution
 for which every actual quotient row carries this certificate.
+For a coefficient field and partially ordered index type `P : Type`, the
+identity of a pointwise finite-dimensional rank-projective module is such a
+cover: the identity lifts each dying vector in its actual categorical-kernel
+row.
 
 For such a resolution `R`, `R.termAt j` is its recorded term when
 `j < R.resolution.length` and the zero module afterward. A degree bound on
 `termAt` therefore concerns the highest nonzero degree, not the stored length.
 
-Let `k` be a field, let `n > 0`, and let
+Let `k` be a field, let `n` be any natural number, and let
 `M : PModule k (Fin n → ℝ)` be originally finitely presented in the
 real-coordinate category, in the sense of `GradedFree.FinitelyPresented M`.
 Then
-`FiniteRankProjectiveResolution.finitelyPresented_exists_minimalFiniteRankProjectiveResolution`
-proves that an actual `MinimalFiniteRankProjectiveResolution M` exists.
+`FiniteRankProjectiveResolution.exists_minimalFiniteRankProjectiveResolution_of_finitelyPresented`
+proves that an actual `MinimalFiniteRankProjectiveResolution M` exists. This
+includes `n = 0`: `Fin 0 → ℝ` is a one-point poset, and the theorem applies to
+nonzero modules on it as well. The original
+`finitelyPresented_exists_minimalFiniteRankProjectiveResolution` declaration
+remains available as the positive-dimensional specialization.
 
 The proof starts from the finite presentation of `M` and reconstructs an
 isomorphism from the actual left Kan extension of a pointwise
@@ -127,14 +135,18 @@ vanishing to every other certified minimal resolution.
 The degree convention is strict: `n = 1` gives zero terms for `j > 0`, and
 `n = 2` gives zero terms for `j > 2`. The statement concerns the highest
 nonzero degree, not the raw stored `resolution.length`; terminal zero padding
-is allowed. It proves only the upper-bound part of Theorem 5.18 and Proposition
-5.17 of [BOOS24-v3](references.md#BOOS24-v3), together with Theorem 2.7(2)'s
-real-coordinate reconstruction. It does not prove a lower witness or equality.
-The finite signed-hook matching and squared stability bound are proved
-separately in [signed hook bottleneck stability](../api.md#signed-hook-bottleneck-stability);
-this resolution-degree result does not include that argument. The focused consumers in
-`FiniteRankProjectiveResolutionDimensionExamples` cover a nonzero one-coordinate
-free module, a nonzero two-coordinate finite presentation with repeated births,
-and the zero module.
+is allowed. The upper-bound theorem here proves only the upper-bound part of
+Theorem 5.18 and Proposition 5.17 of [BOOS24-v3](references.md#BOOS24-v3),
+together with Theorem 2.7(2)'s real-coordinate reconstruction. By itself it
+has no lower-bound conclusion and does not establish equality. A separate
+explicit example attains degree two in two real coordinates; see
+[the degree-two rank-resolution witness](rank-resolution-degree-two.md). This
+example gives no lower witness for every `n`. The finite signed-hook matching
+and squared stability bound are proved separately in
+[signed hook bottleneck stability](../api.md#signed-hook-bottleneck-stability);
+the resolution-degree results do not include that argument. The focused
+consumers in `FiniteRankProjectiveResolutionDimensionExamples` cover a
+nonzero one-coordinate free module, a nonzero two-coordinate finite
+presentation with repeated births, and the zero module.
 
 [§1.2 and §2.14 of the paper]: https://arxiv.org/html/2208.00300v3

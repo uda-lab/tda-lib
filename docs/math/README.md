@@ -1,5 +1,15 @@
 # Mathematical sources and conventions
 
+These notes explain mathematical definitions, hypotheses, conventions and selected
+comparisons with their sources. Use the [guide by subject](../README.md) to find a note,
+the [API guide](../api.md) for declaration names and exact contracts, and the
+[source register](references.md) for exact source versions, attribution, mappings and
+use-specific rights evidence. This page follows the current checkout and may describe
+unreleased work. For a published release, use the versioned release notes and API guide
+linked from the [changelog](../../CHANGELOG.md).
+
+## Maintaining the notes and sources
+
 This directory holds durable, source-grounded mathematical definitions, statements,
 conventions and bibliographic references as work is undertaken. Primary sources take
 precedence over digests. No mathematical roadmap is prescribed by the scaffold:

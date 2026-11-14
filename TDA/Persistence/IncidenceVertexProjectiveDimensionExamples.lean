@@ -37,30 +37,22 @@ open scoped ModuleCat
 
 noncomputable section
 
-local instance : Fintype Bool := Fintype.ofFinite Bool
-local instance : DecidableLE Bool := Classical.decRel _
-local instance : DecidableLT Bool := Classical.decRel _
-local instance : DecidableEq Bool := Classical.decEq _
-local instance : DecidableEq (WithTop Bool) := Classical.decEq _
-local instance (p : Prop) : Decidable p := Classical.propDecidable p
-local instance : OrderBot Bool := Fintype.toOrderBot Bool
-local instance : OrderTop Bool := Fintype.toOrderTop Bool
-local instance : Fintype (FiniteRankProjectiveEndAlgebra.PairPoset Bool) :=
-  Fintype.subtype (Finset.univ.filter fun ab : WithTop Bool × WithTop Bool => ab.1 ≤ ab.2)
-    (by intro ab; simp)
-local instance : DecidableLE (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := Classical.decRel _
-local instance : DecidableLT (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := Classical.decRel _
-local instance : LocallyFiniteOrder (FiniteRankProjectiveEndAlgebra.PairPoset Bool) :=
-  Fintype.toLocallyFiniteOrder
-local instance : DecidableEq (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := Classical.decEq _
-local instance : Lattice (FiniteRankProjectiveEndAlgebra.PairPoset Bool) :=
-  pairPosetLattice (S := Bool)
-local instance : BoundedOrder (FiniteRankProjectiveEndAlgebra.PairPoset Bool) :=
-  pairPosetBoundedOrder (S := Bool)
-local instance : Fintype (FiniteRankProjectiveEndAlgebra.ComparablePair Bool) := Fintype.ofFinite _
-local instance boolDiagonalIdealTwoSided :
+open scoped TDA.Persistence.FiniteRankProjectiveEndAlgebra.PairPoset
+
+local instance : OrderBot Bool :=
+  letI : Fintype Bool := Fintype.ofFinite Bool
+  Fintype.toOrderBot Bool
+local instance : OrderTop Bool :=
+  letI : Fintype Bool := Fintype.ofFinite Bool
+  Fintype.toOrderTop Bool
+local instance : Lattice (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := pairPosetLattice (S := Bool)
+local instance : BoundedOrder (FiniteRankProjectiveEndAlgebra.PairPoset Bool) := pairPosetBoundedOrder (S := Bool)
+
+/-- The canonical two-sidedness proof for the Bool diagonal ideal. -/
+abbrev boolDiagonalIdealTwoSided :
     (IncidenceQuotientSimple.DiagonalIdeal (k := ℚ) (S := Bool)).IsTwoSided :=
-  diagonalIdeal_isTwoSided (k := ℚ) (S := Bool)
+  TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdealIsTwoSided
+    (k := ℚ) (S := Bool)
 
 private abbrev boolZeroRightIncidence :
     ModuleCat.{0} (IncidenceQuotientBaseChange.RightIncidence (k := ℚ) (S := Bool)) :=
@@ -220,65 +212,25 @@ private theorem squareGrid_nonempty :
   intro i
   simp [squareGrid]
 
-local instance : Fintype squareGrid.Point := Fintype.ofFinite _
-local instance : DecidableLE squareGrid.Point := Classical.decRel _
-local instance : DecidableLT squareGrid.Point := Classical.decRel _
-local instance : DecidableEq squareGrid.Point := Classical.decEq _
-local instance : DecidableEq (WithTop squareGrid.Point) := Classical.decEq _
-local instance (p : Prop) : Decidable p := Classical.propDecidable p
-local instance : BoundedOrder squareGrid.Point :=
-  coordinateGridBoundedOrder squareGrid squareGrid_nonempty
-local instance : Fintype (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) :=
-  Fintype.subtype
-    (Finset.univ.filter fun ab : WithTop squareGrid.Point × WithTop squareGrid.Point =>
-      ab.1 ≤ ab.2) (by intro ab; simp)
-local instance : DecidableLE (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) :=
-  Classical.decRel _
-local instance : DecidableLT (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) :=
-  Classical.decRel _
-local instance : LocallyFiniteOrder (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) :=
-  Fintype.toLocallyFiniteOrder
-local instance : DecidableEq (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) :=
-  Classical.decEq _
-local instance : Lattice (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) :=
-  pairPosetLattice (S := squareGrid.Point)
-local instance : BoundedOrder (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) :=
-  pairPosetBoundedOrder (S := squareGrid.Point)
-local instance : Fintype (FiniteRankProjectiveEndAlgebra.ComparablePair squareGrid.Point) :=
-  Fintype.ofFinite _
-local instance squareGridDiagonalIdealTwoSided :
-    (IncidenceQuotientSimple.DiagonalIdeal (k := ℚ) (S := squareGrid.Point)).IsTwoSided :=
-  diagonalIdeal_isTwoSided (k := ℚ) (S := squareGrid.Point)
+local instance : BoundedOrder squareGrid.Point := coordinateGridBoundedOrder squareGrid squareGrid_nonempty
+local instance : Lattice (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) := pairPosetLattice (S := squareGrid.Point)
+local instance : BoundedOrder (FiniteRankProjectiveEndAlgebra.PairPoset squareGrid.Point) := pairPosetBoundedOrder (S := squareGrid.Point)
 
-local instance : Fintype singletonGrid.Point := Fintype.ofFinite _
-local instance : DecidableLE singletonGrid.Point := Classical.decRel _
-local instance : DecidableLT singletonGrid.Point := Classical.decRel _
-local instance : DecidableEq singletonGrid.Point := Classical.decEq _
-local instance : DecidableEq (WithTop singletonGrid.Point) := Classical.decEq _
-local instance (p : Prop) : Decidable p := Classical.propDecidable p
-local instance : BoundedOrder singletonGrid.Point :=
-  coordinateGridBoundedOrder singletonGrid singletonGrid_nonempty
-local instance : Fintype (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) :=
-  Fintype.subtype
-    (Finset.univ.filter fun ab : WithTop singletonGrid.Point × WithTop singletonGrid.Point =>
-      ab.1 ≤ ab.2) (by intro ab; simp)
-local instance : DecidableLE (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) :=
-  Classical.decRel _
-local instance : DecidableLT (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) :=
-  Classical.decRel _
-local instance : LocallyFiniteOrder (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) :=
-  Fintype.toLocallyFiniteOrder
-local instance : DecidableEq (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) :=
-  Classical.decEq _
-local instance : Lattice (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) :=
-  pairPosetLattice (S := singletonGrid.Point)
-local instance : BoundedOrder (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) :=
-  pairPosetBoundedOrder (S := singletonGrid.Point)
-local instance : Fintype (FiniteRankProjectiveEndAlgebra.ComparablePair singletonGrid.Point) :=
-  Fintype.ofFinite _
-local instance singletonGridDiagonalIdealTwoSided :
+/-- The canonical two-sidedness proof for the square-grid diagonal ideal. -/
+abbrev squareGridDiagonalIdealTwoSided :
+    (IncidenceQuotientSimple.DiagonalIdeal (k := ℚ) (S := squareGrid.Point)).IsTwoSided :=
+  TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdealIsTwoSided
+    (k := ℚ) (S := squareGrid.Point)
+
+local instance : BoundedOrder singletonGrid.Point := coordinateGridBoundedOrder singletonGrid singletonGrid_nonempty
+local instance : Lattice (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) := pairPosetLattice (S := singletonGrid.Point)
+local instance : BoundedOrder (FiniteRankProjectiveEndAlgebra.PairPoset singletonGrid.Point) := pairPosetBoundedOrder (S := singletonGrid.Point)
+
+/-- The canonical two-sidedness proof for the singleton-grid diagonal ideal. -/
+abbrev singletonGridDiagonalIdealTwoSided :
     (IncidenceQuotientSimple.DiagonalIdeal (k := ℚ) (S := singletonGrid.Point)).IsTwoSided :=
-  diagonalIdeal_isTwoSided (k := ℚ) (S := singletonGrid.Point)
+  TDA.Persistence.FiniteRankProjectiveEndAlgebra.diagonalIdealIsTwoSided
+    (k := ℚ) (S := singletonGrid.Point)
 
 private abbrev singletonGridZeroR :
     ModuleCat.{0} (IncidenceQuotientBaseChange.RightIncidence (k := ℚ) (S := singletonGrid.Point)) :=

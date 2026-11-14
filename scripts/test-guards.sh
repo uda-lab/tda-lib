@@ -8,6 +8,10 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+# Test-owned Git repositories and the guards run against them in a private, predictable
+# Git environment. Never let linked-worktree variables redirect fixture Git commands.
+fenv() { env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@"; }
+fgit() { fenv git "$@"; }
 fail=0; n=0
 
 # Lexer calls here run in C, as in the guard scripts; the root:locale fixtures cover UTF-8 callers.
@@ -198,11 +202,35 @@ fixture() {  # fixture <dir>: a minimal repository with the current library layo
   cp lakefile.toml "$1/"
   cp scripts/check-root-aggregator.sh scripts/lean-code-scan.awk scripts/rename-project.sh "$1/scripts/"
   printf 'namespace %s\ntheorem basic_ok : True := trivial\nend %s\n' "$root_lib" "$root_lib" > "$1/$root_lib/Basic.lean"
+  # Every OTHER declared [[lean_lib]] (e.g. ComparatorChallenge) needs its own valid root
+  # aggregator too, or the real guard — which reads every library from the copied
+  # lakefile.toml, not just $root_lib — fails on a fixture that only ever modelled a single
+  # library. $root_lib itself is excluded here: callers create and overwrite its own root
+  # file for the case under test. Local, and named away from a caller's own `lib`: bash locals
+  # are dynamically scoped, so an unqualified loop variable here would clobber root_case's
+  # `lib` for the rest of its body (reproduced directly: it silently redirected the case's own
+  # heredoc into the extra library's root file instead of $root_lib.lean, leaving $root_lib.lean
+  # missing and the guard failing with "root module ... not found" for every case).
+  local extra_lib
+  while IFS= read -r extra_lib; do
+    [ -n "$extra_lib" ] && [ "$extra_lib" != "$root_lib" ] || continue
+    mkdir -p "$1/$extra_lib"
+    printf 'namespace %s\ntheorem basic_ok : True := trivial\nend %s\n' "$extra_lib" "$extra_lib" > "$1/$extra_lib/Basic.lean"
+    printf 'import %s.Basic\n' "$extra_lib" > "$1/$extra_lib.lean"
+  done < <(python3 -c '
+import tomllib
+with open("lakefile.toml", "rb") as f:
+    cfg = tomllib.load(f)
+for entry in cfg.get("lean_lib", []):
+    name = entry.get("name")
+    if isinstance(name, str) and name:
+        print(name)
+')
 }
 root_case() {  # root_case <name> <want: 0 pass | 1 fail> [<lib>] <<'EOF' root module EOF
   local name="$1" want="$2" lib="${3:-$root_lib}" d="$tmp/root-$1" got=0
   rn=$((rn + 1)); fixture "$d"; cat > "$d/$lib.lean"
-  bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1 || got=1
+  fenv bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1 || got=1
   if [ "$got" -ne "$want" ]; then echo "FAIL [root:$name]: want exit $want got $got"; rfail=1; fi
 }
 root_case valid_aggregator 0 <<'EOF'
@@ -273,28 +301,35 @@ d="$tmp/root-area"; rn=$((rn + 1)); fixture "$d"
 printf 'import %s.Basic\nimport %s.Zone\n' "$root_lib" "$root_lib" > "$d/$root_lib.lean"
 mkdir -p "$d/$root_lib/Zone"
 printf 'import %s.Basic\n' "$root_lib" > "$d/$root_lib/Zone.lean"
-if ! bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+if ! fenv bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
   echo 'FAIL [root:valid-area]: rejected imports-only area'; rfail=1; fi
 rn=$((rn + 1))
 printf 'theorem hidden : True := trivial\n' >> "$d/$root_lib/Zone.lean"
-if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+if fenv bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
   echo 'FAIL [root:area-content]: proof in area aggregator not rejected'; rfail=1; fi
 rn=$((rn + 1))
 rm "$d/$root_lib/Zone.lean"
-if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+if fenv bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
   echo 'FAIL [root:missing-area]: missing area aggregator not rejected'; rfail=1; fi
 # Renamed project: rename the fixture with the real script; the guard must check the renamed
 # root and catch content in it, with no trace of the template name left to check.
 d="$tmp/root-renamed"; rn=$((rn + 1)); fixture "$d"
 printf 'import %s.Basic\n' "$root_lib" > "$d/$root_lib.lean"
-if ! (cd "$d" && bash scripts/rename-project.sh RenamedLib >/dev/null 2>&1); then
+if ! (cd "$d" && fenv bash scripts/rename-project.sh RenamedLib >/dev/null 2>&1); then
   echo "FAIL [root:renamed]: rename-project.sh failed in the fixture"; rfail=1
-elif [ -e "$d/$root_lib.lean" ] || ! bash "$d/scripts/check-root-aggregator.sh" 2>/dev/null | grep -q 'RenamedLib.lean'; then
+# Capture the guard's stdout into a variable before grepping it, rather than piping directly
+# into `grep -q`: with two lean_lib entries the guard now prints two "OK:" lines, and `grep -q`
+# exits as soon as it matches the first one, closing its end of a live pipe while the guard
+# (an external `python3`/`awk` process per library) may still be writing its second line —
+# under `set -o pipefail` that SIGPIPE makes the whole pipeline register as failed even though
+# the match was found. Reproduced directly: piping as before failed this case even though the
+# guard printed both "OK:" lines and exited 0.
+elif [ -e "$d/$root_lib.lean" ] || { guard_out="$(fenv bash "$d/scripts/check-root-aggregator.sh" 2>/dev/null)"; ! printf '%s' "$guard_out" | grep -q 'RenamedLib.lean'; }; then
   echo "FAIL [root:renamed]: guard did not check and pass RenamedLib.lean"; rfail=1
 else
   rn=$((rn + 1))
   printf 'def leaked : Nat := 0\n' >> "$d/RenamedLib.lean"
-  if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
+  if fenv bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then
     echo "FAIL [root:renamed-content]: definition in RenamedLib.lean not rejected"; rfail=1
   fi
 fi
@@ -304,7 +339,7 @@ for key in 'roots' '"roots"' "'roots'" '"roots"'; do
   d="$tmp/root-roots-$rn"; rn=$((rn + 1)); fixture "$d"; printf 'import %s.Basic\n' "$root_lib" > "$d/$root_lib.lean"
   printf '%s = ["Other.Top"]\n' "$key" >> "$d/lakefile.toml"
   mkdir -p "$d/Other"; printf 'import A\ntheorem hidden : True := trivial\n' > "$d/Other/Top.lean"
-  out="$(bash "$d/scripts/check-root-aggregator.sh" 2>&1 || true)"
+  out="$(fenv bash "$d/scripts/check-root-aggregator.sh" 2>&1 || true)"
   if [[ "$out" != *'Other/Top.lean is the root aggregator'* ]]; then
     echo "FAIL [root:roots $key]: declared root Other/Top.lean not scanned"; rfail=1; fi
 done
@@ -315,12 +350,12 @@ p = pathlib.Path(sys.argv[1])
 p.write_text('srcDir = "src"\n' + p.read_text())
 PY_FIXTURE
 mkdir -p "$d/src"; printf 'import A\ndef x := 0\n' > "$d/src/$root_lib.lean"
-out="$(bash "$d/scripts/check-root-aggregator.sh" 2>&1 || true)"
+out="$(fenv bash "$d/scripts/check-root-aggregator.sh" 2>&1 || true)"
 if [[ "$out" != *"src/$root_lib.lean is the root aggregator"* ]]; then
   echo "FAIL [root:srcDir]: src/$root_lib.lean not scanned"; rfail=1; fi
 d="$tmp/root-bad-toml"; rn=$((rn + 1)); fixture "$d"; printf 'import %s.Basic\n' "$root_lib" > "$d/$root_lib.lean"
 printf 'roots = [`Other]\n' >> "$d/lakefile.toml"
-if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then echo "FAIL [root:bad-toml]: not rejected"; rfail=1; fi
+if fenv bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then echo "FAIL [root:bad-toml]: not rejected"; rfail=1; fi
 # TOML-permitted header spellings still locate the library (and so still scan its root).
 for hdr in '[[lean_lib]] # primary library' '[[ lean_lib ]]' '[["lean_lib"]]'; do
   d="$tmp/root-header-$rn"; rn=$((rn + 1)); fixture "$d"; printf 'import %s.Basic\ndef x := 0\n' "$root_lib" > "$d/$root_lib.lean"
@@ -329,14 +364,14 @@ import pathlib, sys
 p = pathlib.Path(sys.argv[1])
 p.write_text(p.read_text().replace('[[lean_lib]]', sys.argv[2]))
 PY_FIXTURE
-  out="$(bash "$d/scripts/check-root-aggregator.sh" 2>&1 || true)"
+  out="$(fenv bash "$d/scripts/check-root-aggregator.sh" 2>&1 || true)"
   if ! grep -qF "$hdr" "$d/lakefile.toml" || [[ "$out" != *'is the root aggregator'* ]]; then
     echo "FAIL [root:header '$hdr']: library not found or root content not rejected"; rfail=1
   fi
 done
 # A root file that does not exist fails closed.
 d="$tmp/root-missing"; rn=$((rn + 1)); fixture "$d"
-if bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then echo "FAIL [root:missing]: not rejected"; rfail=1; fi
+if fenv bash "$d/scripts/check-root-aggregator.sh" >/dev/null 2>&1; then echo "FAIL [root:missing]: not rejected"; rfail=1; fi
 # Portability: every awk found must parse the shared lexer and agree, in a UTF-8 locale.
 # A character-aware awk (gawk) takes the lexer's character-mode path here; a byte-wise awk (mawk) uses the lead-byte table.
 printf 'import Foo.Δ\nimport Foo.«match»\n' > "$tmp/uni.lean"; printf 'import A open B\n' > "$tmp/bad.lean"
@@ -359,7 +394,7 @@ for loc in en_US.UTF-8 C; do
   printf '%b\n' 'example : True := \xe2\x9f\xa8rfl\xe2\x9f\xa9' '-- caf\xe9 \xff' > "$d/$root_lib/Multibyte.lean"
   cp scripts/check-no-sorry.sh scripts/check-no-custom-axiom.sh "$d/scripts/"
   for g in check-root-aggregator check-no-sorry check-no-custom-axiom; do
-    if ! out="$(LC_ALL=$loc bash "$d/scripts/$g.sh" 2>&1)"; then
+    if ! out="$(fenv env LC_ALL=$loc bash "$d/scripts/$g.sh" 2>&1)"; then
       echo "FAIL [root:locale $loc $g]: $out"; rfail=1
     fi
   done
@@ -371,10 +406,6 @@ if [ "$rfail" -eq 0 ]; then echo "root-aggregator guard self-test OK ($rn cases)
 # file never contains one at the start of a line (the guard scans this file too).
 cfail=0; cn=0
 m7() { printf "$1%.0s" 1 2 3 4 5 6 7; }   # m7 '<' → <<<<<<<
-# Fixture git runs without the caller's GIT_DIR/worktree variables and without user or system
-# configuration (signing, hooks), so the fixture never touches the real repository.
-fenv() { env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@"; }
-fgit() { fenv git "$@"; }
 marker_case() {  # marker_case <name> <want: 0 pass | 1 fail> <<'EOF' tracked file content EOF
   local name="$1" want="$2" d="$tmp/marker-$1" got
   cn=$((cn + 1)); mkdir -p "$d/scripts"
@@ -422,7 +453,7 @@ if fenv bash "$d/scripts/check-conflict-markers.sh" HEAD >/dev/null 2>&1; then :
 out="$(fenv bash "$tmp/marker-conflict/scripts/check-conflict-markers.sh" HEAD 2>&1)" || true
 if [[ "$out" != *'doc.md:2:'* ]]; then echo "FAIL [marker:report]: missing path:line in: $out"; cfail=1; fi
 # The repository itself is clean.
-cn=$((cn + 1)); bash scripts/check-conflict-markers.sh >/dev/null || { echo 'FAIL [marker:self]: repository index rejected'; cfail=1; }
+cn=$((cn + 1)); fenv bash scripts/check-conflict-markers.sh >/dev/null || { echo 'FAIL [marker:self]: repository index rejected'; cfail=1; }
 if [ "$cfail" -eq 0 ]; then echo "merge-conflict marker guard self-test OK ($cn fixtures)"; else exit 1; fi
 
 # --- exposition note check (scripts/check-note.sh) ----------------------------------------
@@ -448,7 +479,7 @@ note_fixture() {  # note_fixture <dir> [<conf-body>] — no conf body means not 
 note_case() {  # note_case <name> <want-exit> <want-word> <dir> [env…]
   local name="$1" want="$2" word="$3" d="$4" got=0 out; shift 4
   nn=$((nn + 1))
-  out="$(env "$@" bash "$d/scripts/check-note.sh" 2>&1)" || got=$?
+  out="$(fenv env "$@" bash "$d/scripts/check-note.sh" 2>&1)" || got=$?
   if [ "$got" -ne "$want" ] || [[ "$out" != *"$word"* ]]; then
     echo "FAIL [note:$name]: want exit $want with '$word', got $got: $out"; nfail=1; fi
 }
@@ -495,7 +526,7 @@ audit_case() {  # audit_case <name> <want-exit> [=line|+text|-text]... <<'EOF' p
   { printf 'import TDA\n'; printf '%s\n' "$input" | sed '/^---$/,$d' | sed 's/^/#print axioms /'; } > "$d/scripts/print_axioms/Basic.lean"
   printf '%s\n' "$input" | sed '1,/^---$/d' > "$d/lean-output.txt"
   printf '#!/bin/sh\ncat "%s/lean-output.txt"\n' "$d" > "$d/scripts/lean.sh"; chmod +x "$d/scripts/lean.sh"
-  out="$(PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" || got=$?
+  out="$(fenv env PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" || got=$?
   if [ "$got" -ne "$want" ]; then echo "FAIL [audit:$name]: want exit $want got $got: $out"; afail=1; fi
   for check in "$@"; do
     case "$check" in
@@ -637,7 +668,7 @@ printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Reeb.lean"
 printf '%s\n' "'TDA.X' does not depend on any axioms" > "$d/lean-output.txt"
 printf '#!/bin/sh\ncat "%s/lean-output.txt"\n' "$d" > "$d/scripts/lean.sh"
 chmod +x "$d/scripts/lean.sh"
-out="$(PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" && {
+out="$(fenv env PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" && {
   echo 'FAIL [audit:cross-area-duplicate]: duplicate pin accepted'; afail=1;
 }
 if [[ "$out" != *'TDA.X is pinned 2 times in scripts/print_axioms'* ]]; then
@@ -700,5 +731,13 @@ out="$(pin_drift "$d/claude-cloud-setup.sh" "$d")"
 if [ "$pfail" -eq 0 ]; then echo "embedded cloud-setup pin check OK ($pn cases)"; else exit 1; fi
 
 # Resource locking is tested in isolated fake workspaces, without the host's active locks.
-bash scripts/agent/test-build-resources.sh
-bash scripts/agent/test-build-docs-lock.sh
+fenv bash scripts/agent/test-build-resources.sh
+fenv bash scripts/agent/test-build-docs-lock.sh
+fenv python3 scripts/agent/test-tda-cache.py
+fenv python3 scripts/agent/test-docs-cache.py
+
+# Re-run the Git-sensitive suites with GIT_DIR and hostile caller configuration. The runner
+# snapshots both the foreign fixture repository and this real checkout around those invocations.
+if [ "${TDA_GIT_FIXTURE_ISOLATION_CHILD:-0}" != 1 ]; then
+  fenv bash scripts/agent/test-git-fixture-isolation.sh
+fi

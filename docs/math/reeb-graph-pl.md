@@ -600,7 +600,7 @@ thicken ε (scale s I) = scale s (thicken (‖s‖₊ * ε) I)
 ```
 
 (`thicken_scale`) transports an `ε`-interleaving to a `‖s‖₊ * ε`-interleaving
-(`Interleaving.scalePre`). For precosheaves into any category and `s ≠ 0`, scaling back by
+(`Interleaving.scalePre`, the instance `Φ = scaleFunctor s` of `Interleaving.reindex`). For precosheaves into any category and `s ≠ 0`, scaling back by
 `s⁻¹` proves `interleavingDistance_scalePre`: the distance is multiplied by
 `(‖s‖₊ : ℝ≥0∞)`, including infinite distances. Reflection preserves distance
 (`interleavingDistance_scalePre_neg_one`). The height identity
@@ -608,8 +608,8 @@ thicken ε (scale s I) = scale s (thicken (‖s‖₊ * ε) I)
 (`intervalComponents_smul`); `interleavingDistance_intervalComponents_smul` applies to heights
 on different topological spaces in the same universe.
 
-For vertex types in any universe, `plHeight_smul` identifies the PL height of `fun v => s * h v`
-with `s • plHeight G h`. For finite `V V' : Type`, arbitrary graphs `G`, `G'` and heights `h`,
+For vertex types in any universe, `plHeight_smul` (in `TDA/Reeb/GraphPLHeight.lean`, beside
+`plHeight_add_const`) identifies the PL height of `fun v => s * h v` with `s • plHeight G h`. For finite `V V' : Type`, arbitrary graphs `G`, `G'` and heights `h`,
 `h'`, a common nonzero scale multiplies the geometric Reeb-quotient distance by
 `ENNReal.ofReal |s|` (`geometricInterleavingDistance_graphPLReebGraph_smul`). The `_neg` form is
 reflection invariance; `_affine` allows a common added constant after scaling.

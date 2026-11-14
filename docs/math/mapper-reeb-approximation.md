@@ -72,6 +72,58 @@ positive prescribed resolution; finite vertex heights provide range bounds.
 The nonconstant single-edge example exposes a family with vanishing full resolutions, its
 geometric error bounds and convergence.
 
+## Constructible ℝ-spaces
+
+Let `A` be a constructible ℝ-space in universe zero, an object of `ConstructibleSpaceCat`, with
+structure map `f = overBaseMap A.obj`. No Hausdorff property is assumed. Let `ι` be a finite
+label type, possibly empty, and `U_i = (a_i, b_i)`; repeated labels, empty intervals and empty
+pullbacks are allowed. The path-component cosheaf of `A` is constructible
+(de Silva–Munch–Patel, Proposition 3.16), so every value `π₀ f⁻¹(I)` is finite
+(`finite_intervalComponents_constructibleSpace`). This discharges the finiteness hypothesis of
+`categoricalMapperReconstruction` and gives `constructibleMapperReconstruction A a b`, which is
+the reconstruction `D P_K C_K` of `coverComponents f U` for every proof of that hypothesis
+(`constructibleMapperReconstruction_eq`); `constructibleMapperReconstructionIso` is its
+reconstruction counit. Callers supply no finiteness assumption.
+
+The target is the actual Reeb quotient `quotientRGraphFunctor.obj A`. The comparison
+`constructibleCosheafComparisonIso` (de Silva–Munch–Patel, Theorem 3.17) identifies its
+interval components with those of `A`. Together with the counit and the equality of geometric
+and cosheaf interleaving distances, this gives
+
+\[
+d_{\mathrm{geo}}\bigl(DP_KC_K(f),\ \mathcal R(A)\bigr)
+ = d\bigl(C_U f,\ C f\bigr)
+\]
+
+(`geometricInterleavingDistance_constructibleMapperReeb_eq`) with no coverage assumption. If
+every attained height lies in some `U_i`, the existing bound for `coverComponents` and the
+removal isomorphism `coverComponentsRetainedIso` give the error bounds
+`geometricInterleavingDistance_constructibleMapperReeb_le_retained` by the retained resolution
+`retainedCoverResolution f a b` and `geometricInterleavingDistance_constructibleMapperReeb_le` by
+the full resolution `coverResolution a b`; `retainedCoverResolution_le_coverResolution` compares
+the two. Both resolutions use full ambient widths, with value `0` for an empty label type; the
+retained resolution deletes exactly the members with empty pullback and is not the diameter
+clipped to the attained range. Along any filter of finite covers, whose label types may vary,
+each covering the attained heights, vanishing full or retained resolution gives vanishing
+geometric error (`tendsto_geometricInterleavingDistance_constructibleMapperReeb` and its
+`_retained` form), by squeezing nonnegative extended distances.
+
+For finite graph-PL input, `graphPLSpace G h` has structure map `plHeight G h` and Reeb quotient
+`graphPLReebGraph G h` definitionally (`overBaseMap_graphPLSpace`,
+`quotientRGraphFunctor_obj_graphPLSpace`), and its reconstruction is definitionally
+`graphPLMapperReconstruction G h a b` (`constructibleMapperReconstruction_graphPLSpace`). The
+graph-PL identity, bounds and convergence statements above are recovered verbatim from the
+constructible ones; the examples check these specializations.
+
+The constructible examples cover a nonconstant edge through `graphPLSpace`, with convergent
+reconstructions; the non-Hausdorff indiscrete two-point space at constant height, where a far
+member with empty pullback keeps the full resolution at least `95` while the retained
+resolution and the geometric error are at most `2`, and shrinking covers give convergence; the
+empty space with empty labels and with a removed wide member, both with error `0`; and the
+coverage boundary: empty labels cannot cover nonempty input, and on the indiscrete space their
+reconstruction is at geometric distance `⊤` from the Reeb quotient although the full resolution
+is `0`.
+
 ## Two inputs
 
 Let `h, g : V → ℝ` be vertex heights on one finite simple graph `G`, and let `(a, b)` and
@@ -154,8 +206,12 @@ The interval-indexed categorical bound follows the objects and conclusion of Mun
 Theorem 4.1, Lemma 7.1 and Corollary 8.1. The formalization begins with finite graph-PL input
 in universe zero and uses the library's existing quotient and finite reconstruction.
 Its interval arguments use the one-dimensional intersection property of real intervals.
-No higher-dimensional Reeb-space theorem or automatic identification with the ordinary
-Mapper simple graph is asserted.
+The constructible-input results extend this interval-basis proof to constructible ℝ-spaces in
+universe zero, using the constructibility of the path-component cosheaf and
+de Silva–Munch–Patel, Theorem 3.17, for the actual Reeb quotient; they are not the full
+higher-dimensional source theorem. No higher-dimensional Reeb-space theorem or automatic
+identification with the ordinary Mapper simple graph is asserted. Positive-error finite-cover
+existence for arbitrary constructible input is not claimed.
 
 The component functors, colimits and reconstructed graph are abstract mathematical objects.
 Classical finite-witness selection is permitted. This result provides neither an executable
@@ -168,4 +224,4 @@ boundary, and the four-cycle's two categorical intersection components over one 
 Mapper edge. A finer three-member cover has a reconstructed graph with two components
 over its central test interval, established through the reconstruction isomorphism. A coarse
 assembly may merge those components; the categorical input count alone does not prove that
-the reconstructed graph preserves the loop. See the [source register](references.md#MW16-v2) for source and rights scope.
+the reconstructed graph preserves the loop. See the [source register](references.md#MW16-v2) and [DMP15-v1](references.md#DMP15-v1) for source and rights scope.

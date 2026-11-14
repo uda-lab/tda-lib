@@ -47,14 +47,18 @@ namespace HeightMapPair
 variable {X X' : Type u} [TopologicalSpace X] [TopologicalSpace X']
   {f : C(X, ℝ)} {g : C(X', ℝ)} {ε : ℝ≥0}
 
+/-- Swap the spaces and the two maps. -/
+def symm (P : HeightMapPair f g ε) : HeightMapPair g f ε where
+  φ := P.ψ
+  ψ := P.φ
+  hφ := P.hψ
+  hψ := P.hφ
+  hψφ := P.hφψ
+  hφψ := P.hψφ
+
 private def forwardOnInterval (P : HeightMapPair f g ε) (I : OpenInterval) :
     C({x : X // f x ∈ I}, {y : X' // g y ∈ thicken ε I}) where
   toFun x := ⟨P.φ x.1, mem_thicken_of_abs_sub_le x.2 (P.hφ x.1)⟩
-  continuous_toFun := by fun_prop
-
-private def reverseOnInterval (P : HeightMapPair f g ε) (I : OpenInterval) :
-    C({y : X' // g y ∈ I}, {x : X // f x ∈ thicken ε I}) where
-  toFun y := ⟨P.ψ y.1, mem_thicken_of_abs_sub_le y.2 (P.hψ y.1)⟩
   continuous_toFun := by fun_prop
 
 /-- The forward map pair induces a natural transformation on interval path components. -/
@@ -66,14 +70,11 @@ def natTrans (P : HeightMapPair f g ε) :
     induction c using ZerothHomotopy.rec with
     | mk x => rfl
 
-/-- The reverse map pair induces a natural transformation on interval path components. -/
+/-- The reverse map pair induces a natural transformation on interval path components: the
+forward transformation of the swapped pair. -/
 def natTransSymm (P : HeightMapPair f g ε) :
-    intervalComponents g ⟶ (smoothing ε).obj (intervalComponents f) where
-  app I := TypeCat.ofHom (componentMap (reverseOnInterval P I))
-  naturality I J i := by
-    ext c
-    induction c using ZerothHomotopy.rec with
-    | mk y => rfl
+    intervalComponents g ⟶ (smoothing ε).obj (intervalComponents f) :=
+  P.symm.natTrans
 
 @[simp]
 theorem natTrans_app_mk (P : HeightMapPair f g ε) (I : OpenInterval)
@@ -89,7 +90,7 @@ theorem natTransSymm_app_mk (P : HeightMapPair f g ε) (I : OpenInterval)
       ZerothHomotopy.mk (⟨P.ψ y.1, mem_thicken_of_abs_sub_le y.2 (P.hψ y.1)⟩ :
         {x : X // f x ∈ toOpens (thicken ε I)}) := rfl
 
-private theorem joinedIn_doubleThicken_f (P : HeightMapPair f g ε) (I : OpenInterval)
+private theorem joinedIn_doubleThicken (P : HeightMapPair f g ε) (I : OpenInterval)
     (x : {x : X // f x ∈ I}) :
     JoinedIn (f ⁻¹' (thicken ε (thicken ε I) : Set ℝ)) x.1 (P.ψ (P.φ x.1)) := by
   obtain ⟨γ, hγ⟩ := P.hψφ x.1
@@ -98,37 +99,25 @@ private theorem joinedIn_doubleThicken_f (P : HeightMapPair f g ε) (I : OpenInt
   rw [← thicken_thicken ε ε I] at hmem
   exact hmem
 
-private theorem joinedIn_doubleThicken_g (P : HeightMapPair f g ε) (I : OpenInterval)
-    (y : {y : X' // g y ∈ I}) :
-    JoinedIn (g ⁻¹' (thicken ε (thicken ε I) : Set ℝ)) y.1 (P.φ (P.ψ y.1)) := by
-  obtain ⟨γ, hγ⟩ := P.hφψ y.1
-  refine ⟨γ, fun t => ?_⟩
-  have hmem := mem_thicken_of_abs_sub_le (ε := ε + ε) y.2 (hγ t)
-  rw [← thicken_thicken ε ε I] at hmem
-  exact hmem
+/-- The forward and then reverse transformations give the double-thickening inclusion of the
+`f`-components; the `g`-side identity is this one for `P.symm`. -/
+private theorem natTrans_app_natTransSymm_app (P : HeightMapPair f g ε) (I : OpenInterval) :
+    P.natTrans.app I ≫ P.natTransSymm.app (thicken ε I) =
+      (intervalComponents f).map (homOfLE ((le_thicken ε I).trans (le_thicken ε _))) := by
+  ext c
+  induction c using ZerothHomotopy.rec with
+  | mk x =>
+    have hx : f x.1 ∈ thicken ε (thicken ε I) :=
+      ((le_thicken ε I).trans (le_thicken ε _)) x.2
+    exact (mk_eq_of_joinedIn f (thicken ε (thicken ε I))
+      (joinedIn_doubleThicken P I x) hx
+      (joinedIn_doubleThicken P I x).target_mem).symm
 
 /-- The pair maps define an `ε`-interleaving of the two interval path-component precosheaves. -/
 def interleaving (P : HeightMapPair f g ε) :
     Interleaving ε (intervalComponents f) (intervalComponents g) :=
-  Interleaving.ofApp P.natTrans P.natTransSymm
-    (fun I => by
-      ext c
-      induction c using ZerothHomotopy.rec with
-      | mk x =>
-        have hx : f x.1 ∈ thicken ε (thicken ε I) :=
-          ((le_thicken ε I).trans (le_thicken ε _)) x.2
-        exact (mk_eq_of_joinedIn f (thicken ε (thicken ε I))
-          (joinedIn_doubleThicken_f P I x) hx
-          (joinedIn_doubleThicken_f P I x).target_mem).symm)
-    (fun I => by
-      ext c
-      induction c using ZerothHomotopy.rec with
-      | mk y =>
-        have hy : g y.1 ∈ thicken ε (thicken ε I) :=
-          ((le_thicken ε I).trans (le_thicken ε _)) y.2
-        exact (mk_eq_of_joinedIn g (thicken ε (thicken ε I))
-          (joinedIn_doubleThicken_g P I y) hy
-          (joinedIn_doubleThicken_g P I y).target_mem).symm)
+  Interleaving.ofApp P.natTrans P.natTransSymm (natTrans_app_natTransSymm_app P)
+    (natTrans_app_natTransSymm_app P.symm)
 
 @[simp]
 theorem interleaving_φ (P : HeightMapPair f g ε) :
@@ -137,15 +126,6 @@ theorem interleaving_φ (P : HeightMapPair f g ε) :
 @[simp]
 theorem interleaving_ψ (P : HeightMapPair f g ε) :
     P.interleaving.ψ = P.natTransSymm := rfl
-
-/-- Swap the spaces and the two maps. -/
-def symm (P : HeightMapPair f g ε) : HeightMapPair g f ε where
-  φ := P.ψ
-  ψ := P.φ
-  hφ := P.hψ
-  hψ := P.hφ
-  hψφ := P.hφψ
-  hφψ := P.hψφ
 
 /-- An explicit map-pair interleaving bounds the interval-component distance. -/
 theorem interleavingDistance_le (P : HeightMapPair f g ε) :

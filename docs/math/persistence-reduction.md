@@ -2,6 +2,25 @@
 
 Consulted manifestations, attribution and rights: [Bauer21-v2](references.md#Bauer21-v2), [ZC04](references.md#ZC04), [mathlib-0df444a](references.md#mathlib-0df444a).
 
+## Entry points
+
+- **Finite simplex lists over F₂:** Use `TDA.Persistence.Reduction.FiniteInput.run` on an
+  `Input` (`List (Finset ℕ × ℤ)`) with integer grades. Valid inputs return `some` occurrence lists;
+  invalid inputs return `none` without repair. See the [first-run example](finite-ph-computation.md#first-run).
+- **A supplied matrix:** Import `TDA.Persistence.Reduction.MatrixReduction` and call
+  `TDA.Persistence.Reduction.matrixReductionTrace` on a finite square matrix over a field with
+  decidable equality. It returns chronological earlier-column operations; `replay` applies them in
+  order. Its certificate gives an invertible column change and preserves column-prefix spans. This
+  algebraic result does not interpret an arbitrary matrix as homology or a barcode; see
+  [chronological all-column reduction](#chronological-all-column-reduction).
+- **Homology interpretation:** For a finite square boundary over a field with decidable
+  equality, follow the [filtered normal form](#filtered-normal-form-of-a-square-zero-boundary) and
+  [homology and interval realization](#homology-and-interval-realization). The boundary `D` must
+  satisfy `D² = 0`, have strictly upper-triangular support, and lower homological degree by exactly
+  one.
+  `SimplicialAdapter` constructs the signed boundary from faces, while `SimplicialAdapterNaturality`
+  connects prefix-homology maps to simplicial inclusions.
+
 ## Finite column pivots and a cancellation step
 
 For a coefficient vector `c : Fin m → k`, `columnPivot c` is the greatest index with nonzero

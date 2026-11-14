@@ -46,5 +46,7 @@ These laws use the source convention already reviewed for the core diagram
 map and the governing [Issue #151](https://github.com/uda-lab/tda-lib/issues/151)
 contract. They are elementary consequences of that representation; this unit
 does not claim a fresh primary-paper comparison. No law here identifies a
-terminal finite observation with infinite death. Value-labelled persistence,
-`ofIndexBars`, and the eventual-sublevel argument remain separate work.
+terminal finite observation with infinite death. The separate finite-filter
+route is available through the [index-bar relabeling guide](finite-index-diagram.md)
+and the [finite-sublevel diagram guide](finite-sublevel-diagram.md), which explains
+the rank transport for actual simplicial sublevels and their constant full-complex tail.

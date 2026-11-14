@@ -262,7 +262,8 @@ private noncomputable def rangePiMapEquiv {ι : Type*} {k : Type*} [Field k]
     apply Subtype.ext
     simp [rangePiMapToPiRange]
 
-private theorem finrank_range_piMap {ι : Type*} [Fintype ι] {k : Type*} [Field k]
+/-- The rank of a finite coordinatewise map is the sum of the coordinate ranks. -/
+theorem finrank_range_piMap {ι : Type*} [Fintype ι] {k : Type*} [Field k]
     {A B : ι → Type*} [∀ i, AddCommGroup (A i)] [∀ i, Module k (A i)]
     [∀ i, AddCommGroup (B i)] [∀ i, Module k (B i)]
     [∀ i, FiniteDimensional k (A i)]
@@ -272,7 +273,8 @@ private theorem finrank_range_piMap {ι : Type*} [Fintype ι] {k : Type*} [Field
   classical
   rw [(rangePiMapEquiv f).finrank_eq, Module.finrank_pi_fintype]
 
-private theorem list_get_sum_countP {α : Type*} (xs : List α) (p : α → Prop)
+/-- Summing indicators over list positions counts occurrences, including repeats. -/
+theorem list_get_sum_countP {α : Type*} (xs : List α) (p : α → Prop)
     [DecidablePred p] :
     (∑ t : Fin xs.length, if p (xs.get t) then 1 else 0) =
       (xs : Multiset α).countP p := by
