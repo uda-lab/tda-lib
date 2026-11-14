@@ -51,13 +51,14 @@ None of the following substitutes for another (precedent: `lean-formalization-sc
   mathlib only and restates, under the same fully qualified names and the same literal
   universe names (`u` for the sample space, `v` for the cover index type), the target's full
   statement closure: `TDA.Probability.missedCover`, `TDA.Probability.iidMeasure`, and the
-  statement of `TDA.Probability.measure_missedCover_le_card_mul`. The reference proof is
-  independently closed (exact avoidance probability of one measurable set under the iid
-  product law, a finite union bound, then the common-mass bound) using two `private` helper
-  lemmas that never surface as `TDA.Probability.*` names and never enter the target's
-  statement closure; it is not copied from the production module's proof term, and is never
-  imported by production — Comparator judges the solution's proof, not the challenge's.
-  `definition_names` stays `[]`: no definition is a declared hole.
+  statement of `TDA.Probability.measure_missedCover_le_card_mul`. The reference carries its
+  own proof (same argument as the production module: exact avoidance probability of one
+  measurable set under the iid product law, a finite union bound, then the common-mass bound)
+  so that it contains no `sorry`, using two `private` helper lemmas that never surface as
+  `TDA.Probability.*` names and never enter the target's statement closure. What is frozen and
+  independently reviewed is the statement and the two definitions, not the proof; the
+  reference is never imported by production — Comparator judges the solution's proof, not the
+  challenge's. `definition_names` stays `[]`: no definition is a declared hole.
 - **Contract.** `comparator.json`: `challenge_module` `ComparatorChallenge.Reference`,
   `solution_module` `TDA.Probability.SamplingCoverage` (the leaf module, not the root
   aggregator `TDA`), `theorem_names` `["TDA.Probability.measure_missedCover_le_card_mul"]` (a
