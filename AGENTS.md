@@ -13,7 +13,8 @@
 ## Commands
 ```sh
 scripts/bootstrap.sh   # cached mathlib + git hooks; never cold-build mathlib
-scripts/check.sh       # guarded build, live axiom audit and coverage
+scripts/check.sh       # guarded build, live axiom audit, coverage and Comparator agreement
+scripts/check-comparator.sh # standalone Comparator run for the frozen bounded-pilot contract
 scripts/lean.sh lake <args> # mandatory for direct Lean/Lake commands
 scripts/lean.sh lean <args> # mandatory for direct Lean invocation
 LOOP_JOB_ID=tda-lib/issue-N/role scripts/codex.sh <args> # child Codex
