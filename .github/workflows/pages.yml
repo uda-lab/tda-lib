@@ -1,0 +1,28 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docsite/**'
+      - '.github/workflows/pages.yml'
+
+concurrency:
+  group: pages-bisect2
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: 'mkdir -p build-bisect && echo hello > build-bisect/index.html'
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
+        with:
+          path: build-bisect
