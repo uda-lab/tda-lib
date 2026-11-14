@@ -333,7 +333,7 @@ leanprover/lean4:v4.35.0
 TDA_LEAN_TOOLCHAIN
 cat > "$PROJECT_DIR/lakefile.toml" <<'TDA_LAKEFILE'
 name = "TDA"
-version = "0.3.0"
+version = "0.4.0"
 description = "Lean 4 formalizations of topological data analysis, with verified finite persistent homology computation."
 keywords = ["math", "topology", "topological-data-analysis", "persistent-homology", "software-verification"]
 license = "Apache-2.0"

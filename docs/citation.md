@@ -1,8 +1,8 @@
 # Citing tda-lib
 
 Cite the software version used in your work. The latest published release is
-[tda-lib v0.3.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0), published
-on 2026-10-29 and distributed under [Apache-2.0](../LICENSE). The root
+[tda-lib v0.4.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.4.0), published
+on 2026-11-14 and distributed under [Apache-2.0](../LICENSE). The root
 [CITATION.cff](../CITATION.cff) records the verified sole author, Tomoki Uda, and the
 release metadata. Once that file is on the default branch, GitHub can render a suggested
 citation and BibTeX from it.

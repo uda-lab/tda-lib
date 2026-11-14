@@ -4,7 +4,7 @@ Use this guide to choose a subject, then follow the API guide for declaration na
 and the mathematical notes for definitions, hypotheses and source comparisons.
 It describes the **current checkout**. The [changelog](../CHANGELOG.md) separates
 unreleased work from published results and links to versioned API guides.
-[Installation and imports](../README.md#use-in-a-lean-project) use v0.3.0.
+[Installation and imports](../README.md#use-in-a-lean-project) use v0.4.0.
 See the [software citation guide](citation.md) when referencing a release or
 development commit.
 
@@ -140,9 +140,11 @@ from remaining boundaries.
 
 ## Generated API pages
 
-The [lightweight local site](../docsite/README.md) renders these guides without
-Lean. See [generated API availability](generated-api.md) for the distinction
-between curated guides and revision-specific declaration pages.
+These guides are published at the curated
+[documentation site](https://uda-lab.github.io/tda-lib/); the
+[lightweight local site](../docsite/README.md) renders the same guides locally
+without Lean. See [generated API availability](generated-api.md) for the
+distinction between curated guides and revision-specific declaration pages.
 
 The [API guide](api.md) is available without generating HTML. For declaration pages,
 run `scripts/build-docs.sh` from a clean checkout, as described in the

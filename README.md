@@ -4,7 +4,7 @@
 certified finite F₂ persistence computation, diagram distances and representations,
 metric-space filtrations, multiparameter persistence, and Reeb and Mapper theory.
 The current published release is
-[v0.3.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0).
+[v0.4.0](https://github.com/uda-lab/tda-lib/releases/tag/v0.4.0).
 Documentation on `develop` also describes unreleased work; use the versioned guides
 in the [changelog](CHANGELOG.md) when working with a release.
 
@@ -20,14 +20,14 @@ consult the [API guide](docs/api.md) for exact assumptions and declaration names
 
 ## Use in a Lean project
 
-For the published **v0.3.0** release, use `leanprover/lean4:v4.33.1` and add
+For the published **v0.4.0** release, use `leanprover/lean4:v4.35.0` and add
 the dependency to your `lakefile.toml`:
 
 ```toml
 [[require]]
 name = "TDA"
 git = "https://github.com/uda-lab/tda-lib.git"
-rev = "v0.3.0"
+rev = "v0.4.0"
 ```
 
 Run `lake update TDA`, fetch the prebuilt mathlib dependencies with `lake exe cache get`,
@@ -40,7 +40,7 @@ import TDA.Persistence
 
 `TDA.Library` loads the seven library areas; `import TDA` also loads standalone
 examples. See the [import guide](docs/api.md#entry-points) for the current checkout
-and the [v0.3.0 import guide](https://github.com/uda-lab/tda-lib/blob/v0.3.0/docs/api.md#entry-points)
+and the [v0.4.0 import guide](https://github.com/uda-lab/tda-lib/blob/v0.4.0/docs/api.md#entry-points)
 for that release's module boundaries.
 
 ## Documentation
@@ -51,7 +51,9 @@ for that release's module boundaries.
 - [Mathematical notes and source register](docs/math/README.md): constructions,
   conventions, references and source-comparison limits.
 - [Changelog](CHANGELOG.md): published changes, migration information and unreleased work.
-- [Lightweight local site](docsite/README.md): preview these guides without Lean.
+- [Documentation site](https://uda-lab.github.io/tda-lib/): the published curated
+  site. [Lightweight local site](docsite/README.md): preview these guides locally
+  without Lean.
 - [Generated API availability](docs/generated-api.md): declaration-page scope and snapshot limits.
 - [Contributing](CONTRIBUTING.md): development and integration policy.
 
@@ -84,9 +86,10 @@ Mathematical sources are listed separately in the
 ## Release results
 
 See the changelog entries for
-[v0.1.0](CHANGELOG.md#v010), [v0.2.0](CHANGELOG.md#v020) and
-[v0.3.0](CHANGELOG.md#v030), which link to the full published release notes.
-For current features, use the [guide by subject](docs/README.md).
+[v0.1.0](CHANGELOG.md#v010), [v0.2.0](CHANGELOG.md#v020),
+[v0.3.0](CHANGELOG.md#v030) and [v0.4.0](CHANGELOG.md#v040), which link to the
+full published release notes. For current features, use the
+[guide by subject](docs/README.md).
 
 <a id="future-directions"></a>
 

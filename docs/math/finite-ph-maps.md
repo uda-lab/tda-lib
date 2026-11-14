@@ -4,8 +4,7 @@
 function between two validated finite simplex lists. The lists may use different
 vertex labels and face orders, and the function may merge vertices. The output
 is a matrix in the existing [computed sublevel bases](finite-ph-representatives.md#complete-bases-and-inclusion-coordinates).
-Coefficients are F₂ and grades are integers. This map API is an unreleased
-`develop` addition after v0.3.0.
+Coefficients are F₂ and grades are integers. This map API was added in v0.4.0.
 
 ## Inputs and matrix convention
 
