@@ -25,7 +25,7 @@ jobs:
     env:
       # Bound each Lean process on the hosted runner; Lake still schedules jobs.
       LEAN_NUM_THREADS: '2'
-    if: ${{ (github.event_name == 'workflow_dispatch' && !inputs.release_check) || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+    if: ${{ github.event_name == 'workflow_dispatch' && !inputs.release_check }}
     steps:
       - uses: actions/checkout@v4
         with:

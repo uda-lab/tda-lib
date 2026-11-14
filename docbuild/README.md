@@ -15,9 +15,9 @@ The normal local paths are `docbuild/.lake/build/doc/` and
 particular machine still has a site. No artifact found in a bounded search means
 **unavailable in the inspected locations**, not nonexistent everywhere.
 
-The existing [CI workflow](../.github/workflows/ci.yml) runs the docs job on main
-pushes or manual runs with `release_check=false`, not ordinary develop pushes or
-PRs. It requests seven-day retention for `tda-api-docs`. Inspect the actual run's
+The existing [CI workflow](../.github/workflows/ci.yml) runs the docs job only
+on a manual dispatch with `release_check=false`, not on main pushes, develop
+pushes or PRs. It requests seven-day retention for `tda-api-docs`. Inspect the actual run's
 artifact ID, creation/expiry timestamps and expired flag, then verify download
 access; a successful job or a familiar artifact name alone is insufficient.
 The uploaded artifact contains only `docbuild/.lake/build/doc/`: the source

@@ -1,0 +1,82 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docsite/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'docs/README.md'
+      - 'docs/api.md'
+      - 'docs/citation.md'
+      - 'docs/generated-api.md'
+      - 'docs/math/**'
+      - '.github/workflows/pages.yml'
+
+# One deployment at a time; never cancel a deployment that may already be live.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # Builds and validates the curated site. Runs for every trigger, including a
+  # pull request restricted to docsite/** and the curated sources above, so the
+  # hosted build is exercised before the first real deploy (main only).
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Install docsite dependencies into an isolated venv
+        run: |
+          set -euo pipefail
+          python3 -m venv build/curated-docs/venv
+          build/curated-docs/venv/bin/python -m pip install -r docsite/requirements.txt
+
+      - name: Build the curated site (clean checkout required)
+        run: build/curated-docs/venv/bin/python docsite/build.py --require-clean
+
+      - name: Test the built site
+        run: build/curated-docs/venv/bin/python docsite/test_site.py
+
+      - name: Verify build-info.json matches the built commit
+        run: |
+          set -euo pipefail
+          info=build/curated-docs/preview/tda-lib/build-info.json
+          revision=$(jq -r '.source_revision' "$info")
+          modified=$(jq -r '.modified_preview' "$info")
+          test "$revision" = "$GITHUB_SHA"
+          test "$modified" = "false"
+
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa  # v3.0.1
+        with:
+          path: build/curated-docs/preview/tda-lib
+
+  # Deploys only from main: a push to main, or a manual dispatch run on main.
+  # No Lean, mathlib, doc-gen4 or secret is used anywhere in this workflow.
+  deploy:
+    name: deploy
+    needs: build
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e  # v4.0.5

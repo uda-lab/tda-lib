@@ -8,7 +8,9 @@ API snapshot exists for its source revision.
 The [API and import guide](api.md) describes the checkout used for this site.
 For a release, use the versioned guides in the [changelog](../CHANGELOG.md).
 The site banner records the exact checkout commit and identifies modified local
-previews; those previews are not immutable revision snapshots.
+previews; those previews are not immutable revision snapshots. The published
+site at <https://uda-lab.github.io/tda-lib/> is built from `main` at the exact
+commit its banner shows; generated API pages are not hosted there either.
 
 ## Local declaration pages
 
