@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
-"""Compute the compatibility key for the TDA Lake build cache."""
+"""Compute the TDA Lake build cache keys.
+
+Two keys are derived from the same validated inputs:
+
+- the compatibility key, over `lean-toolchain`, `lake-manifest.json` and this
+  helper's own bytes, which a lakefile-only change leaves unchanged; and
+- the full key, over those same inputs plus the canonical `lakefile.toml`.
+
+A restore can fall back from the full key to the compatibility key so a
+lakefile-only change (for example, adding a `[[lean_lib]]`) still finds a
+usable cache: Lake re-verifies source-content and dependency traces during
+the build that follows, so a restored cache from a different lakefile can
+never make it skip rebuilding something that changed.
+"""
 
 import hashlib
 import json
@@ -13,7 +26,8 @@ except ModuleNotFoundError:
 
 
 ROOT = Path(__file__).resolve().parents[2]
-DOMAIN = b"tda-build-v2\0"
+DOMAIN_COMPAT = b"tda-build-v3-compat\0"
+DOMAIN_FULL = b"tda-build-v3-full\0"
 
 
 class CacheKeyError(Exception):
@@ -65,7 +79,8 @@ def framed_update(digest, name, payload):
     digest.update(payload)
 
 
-def compatibility_key():
+def read_inputs():
+    """Read and validate every input, failing closed on anything unsafe to hash."""
     if tomllib is None:
         raise CacheKeyError("Python 3.11 or later with tomllib is required")
 
@@ -97,8 +112,24 @@ def compatibility_key():
     ).encode("utf-8")
     helper_bytes = read_nonempty(Path(__file__).resolve(), "scripts/lib/tda-cache.py")
 
+    return toolchain, manifest, canonical_config, helper_bytes
+
+
+def compat_key(toolchain, manifest, helper_bytes):
     digest = hashlib.sha256()
-    digest.update(DOMAIN)
+    digest.update(DOMAIN_COMPAT)
+    for name, payload in (
+        ("lean-toolchain", toolchain),
+        ("lake-manifest.json", manifest),
+        ("scripts/lib/tda-cache.py", helper_bytes),
+    ):
+        framed_update(digest, name, payload)
+    return digest.hexdigest()
+
+
+def full_key(toolchain, manifest, canonical_config, helper_bytes):
+    digest = hashlib.sha256()
+    digest.update(DOMAIN_FULL)
     for name, payload in (
         ("lean-toolchain", toolchain),
         ("lake-manifest.json", manifest),
@@ -109,16 +140,26 @@ def compatibility_key():
     return digest.hexdigest()
 
 
+def cache_keys():
+    """Return (compat, full) hex digests computed from the same validated inputs."""
+    toolchain, manifest, canonical_config, helper_bytes = read_inputs()
+    return (
+        compat_key(toolchain, manifest, helper_bytes),
+        full_key(toolchain, manifest, canonical_config, helper_bytes),
+    )
+
+
 def main(argv):
     if argv != ["key"]:
         print("usage: tda-cache.py key", file=sys.stderr)
         return 64
     try:
-        key = compatibility_key()
+        compat, full = cache_keys()
     except (CacheKeyError, OSError, UnicodeError, ValueError, TypeError, RecursionError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    sys.stdout.write(key + "\n")
+    sys.stdout.write(f"compat={compat}\n")
+    sys.stdout.write(f"full={full}\n")
     return 0
 
 
