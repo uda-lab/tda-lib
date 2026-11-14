@@ -51,10 +51,13 @@ None of the following substitutes for another (precedent: `lean-formalization-sc
   mathlib only and restates, under the same fully qualified names and the same literal
   universe names (`u` for the sample space, `v` for the cover index type), the target's full
   statement closure: `TDA.Probability.missedCover`, `TDA.Probability.iidMeasure`, and the
-  statement of `TDA.Probability.measure_missedCover_le_card_mul`. The reference proof is a
-  single `sorry -- ALLOW_SORRY: #855`, never imported by production; Comparator judges the
-  solution's proof, not the challenge's. `definition_names` stays `[]`: no definition is a
-  declared hole.
+  statement of `TDA.Probability.measure_missedCover_le_card_mul`. The reference proof is
+  independently closed (exact avoidance probability of one measurable set under the iid
+  product law, a finite union bound, then the common-mass bound) using two `private` helper
+  lemmas that never surface as `TDA.Probability.*` names and never enter the target's
+  statement closure; it is not copied from the production module's proof term, and is never
+  imported by production — Comparator judges the solution's proof, not the challenge's.
+  `definition_names` stays `[]`: no definition is a declared hole.
 - **Contract.** `comparator.json`: `challenge_module` `ComparatorChallenge.Reference`,
   `solution_module` `TDA.Probability.SamplingCoverage` (the leaf module, not the root
   aggregator `TDA`), `theorem_names` `["TDA.Probability.measure_missedCover_le_card_mul"]` (a
@@ -109,14 +112,10 @@ None of the following substitutes for another (precedent: `lean-formalization-sc
   (`scripts/lib/resources.sh`'s `lean_check_headroom`).
 - **Stable-release sorry policy.** `scripts/check-no-sorry.sh --stable` (run for `main`/stable
   checks) ignores the `ALLOW_SORRY` marker everywhere, requiring every staging hole to be
-  discharged before a stable release — a policy written before this permanent, by-design
-  reference library existed. `ComparatorChallenge/Reference.lean`'s `sorry` is not a staging
-  hole: it states no claim a release relies on (Comparator judges the solution's proof, never
-  the challenge's), `ComparatorChallenge` is never a default build target, and it is never
-  importable from `TDA` (enforced by `scripts/check-comparator.sh`). `--stable` therefore
-  prunes `ComparatorChallenge/` from its scan instead of discharging that proof; default mode
-  needs no such exclusion, since the `ALLOW_SORRY: #855` marker already covers it there. No
-  other path is exempted, and `--stable` still rejects an unmarked `sorry` anywhere in `TDA/`.
+  discharged before a stable release. `ComparatorChallenge/Reference.lean` carries no `sorry`
+  in either mode: its proof is fully discharged, so `--stable` needs no exclusion for
+  `ComparatorChallenge/` and the guard runs over it exactly like any other directory, in both
+  modes, unmodified from `develop`.
 - **Guard self-test fixtures.** `scripts/test-guards.sh`'s root-aggregator fixture helper
   (`fixture()`) and `scripts/claude-cloud-setup.sh`'s embedded `lakefile.toml` copy both model
   the full library layout; adding a second `[[lean_lib]]` here means both needed updating

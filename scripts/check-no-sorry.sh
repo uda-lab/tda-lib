@@ -35,20 +35,9 @@ cd "$ROOT"
 # pruned by basename at any depth; agent worktrees under .agents/worktrees/ (or legacy .claude/worktrees/) are
 # scanned by their own CI; .agents/scratch/ is the designated (gitignored) home of
 # proof experiments and is never a source.
-#
-# --stable additionally prunes ComparatorChallenge/: its one `sorry` (the frozen Comparator
-# reference's proof, `-- ALLOW_SORRY: #855`) is permanent by design — the reference states no
-# claim scripts/check-axioms.sh or a stable release relies on; Comparator judges the solution's
-# proof, never the challenge's (docs/adr/0003-comparator-pilot-contract.md), and
-# ComparatorChallenge is never a default build target and never importable from TDA (enforced
-# by scripts/check-comparator.sh). --stable's normal zero-tolerance (ignoring ALLOW_SORRY
-# everywhere else) would otherwise block a stable release forever over a hole no release ever
-# depends on. Default mode needs no such exclusion: the ALLOW_SORRY marker already covers it.
 list="$(mktemp)"
 trap 'rm -f "$list"' EXIT
-prune=( -name '.git' -o -name '.lake' -o -path './.agents/worktrees' -o -path './.agents/scratch' -o -path './.claude/worktrees' -o -path './.claude/scratch' )
-[ "$mode" = stable ] && prune+=( -o -path './ComparatorChallenge' )
-find . \( "${prune[@]}" \) -prune \
+find . \( -name '.git' -o -name '.lake' -o -path './.agents/worktrees' -o -path './.agents/scratch' -o -path './.claude/worktrees' -o -path './.claude/scratch' \) -prune \
      -o -type f -name '*.lean' -print0 > "$list"
 
 if [ ! -s "$list" ]; then
