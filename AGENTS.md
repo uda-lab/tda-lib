@@ -17,9 +17,12 @@ scripts/check.sh       # guarded build, live axiom audit, coverage and Comparato
 scripts/check-comparator.sh # standalone Comparator run for the frozen bounded-pilot contract
 scripts/lean.sh lake <args> # mandatory for direct Lean/Lake commands
 scripts/lean.sh lean <args> # mandatory for direct Lean invocation
+scripts/agent/session-brief.sh # reports Lake cache location and warm-build probe
 LOOP_JOB_ID=tda-lib/issue-N/role scripts/codex.sh <args> # child Codex
 scripts/github-setup.sh # broad labels/settings/ruleset bootstrap; not a targeted repair command
 ```
+
+Lake's shared artifact cache defaults to the main checkout's sibling `.cache/<repo>/lake-artifacts`; warm a new worktree with `scripts/bootstrap.sh` then `scripts/check.sh`.
 
 Shared runtime safeguards live in `scripts/agent/`. Honor `/tmp/codex-stop` and
 exclusion for shared build/dependency paths. An unset `LEAN_NUM_THREADS` stays at the

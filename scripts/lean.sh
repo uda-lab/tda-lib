@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 export PATH="$PATH:$HOME/.elan/bin"
 case "${1:-}" in lake|lean) tool=$1; shift ;; *) echo 'usage: scripts/lean.sh {lake|lean} <arguments...>' >&2; exit 64 ;; esac
+. "$ROOT/scripts/lib/lake-artifact-cache.sh"
+lake_artifact_cache_init "$ROOT"
 # Lake resolves its project from cwd. Do not guard this checkout while building another.
 if [ "$tool" = lake ]; then
   project="$(pwd -P)"

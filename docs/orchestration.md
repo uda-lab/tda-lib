@@ -171,3 +171,10 @@ after owned jobs finish. Shared disposable paths are `.agents/scratch/` and
 
 There is no repository-local dot configuration or scheduler, and no financial budget cap.
 Runtime scheduling, available models and autonomous operation remain dot's responsibility.
+
+Lake 4.35 artifact caching and full artifact restoration default on in guarded entry points;
+explicit environment values, including `false`, are preserved. The cache defaults to the
+main checkout's sibling `.cache/<repo>/lake-artifacts`, outside its linked worktrees, and the
+resource plan locks it as a shared writable path. To warm a new worktree, run
+`scripts/bootstrap.sh` followed by `scripts/check.sh`. `scripts/agent/session-brief.sh`
+reports the cache path and runs the guarded `lake build --no-build TDA` freshness probe.

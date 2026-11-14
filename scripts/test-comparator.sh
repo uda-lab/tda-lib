@@ -12,7 +12,8 @@ trap 'rm -rf "$tmp"' EXIT
 repo="$tmp/repo"
 mkdir -p "$repo/scripts/lib" "$repo/scripts/print_axioms" "$tmp/home/.elan/bin"
 cp scripts/check-comparator.sh scripts/lean.sh "$repo/scripts/"
-cp scripts/lib/build-lock.sh scripts/lib/build-resources.py scripts/lib/resources.sh "$repo/scripts/lib/"
+cp scripts/lib/build-lock.sh scripts/lib/build-resources.py scripts/lib/resources.sh \
+  scripts/lib/lake-artifact-cache.sh "$repo/scripts/lib/"
 cp scripts/lean-code-scan.awk "$repo/scripts/"
 cp scripts/print_axioms/*.lean "$repo/scripts/print_axioms/"
 cp comparator.json lake-manifest.json lakefile.toml lean-toolchain "$repo/"
