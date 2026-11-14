@@ -202,6 +202,30 @@ fixture() {  # fixture <dir>: a minimal repository with the current library layo
   cp lakefile.toml "$1/"
   cp scripts/check-root-aggregator.sh scripts/lean-code-scan.awk scripts/rename-project.sh "$1/scripts/"
   printf 'namespace %s\ntheorem basic_ok : True := trivial\nend %s\n' "$root_lib" "$root_lib" > "$1/$root_lib/Basic.lean"
+  # Every OTHER declared [[lean_lib]] (e.g. ComparatorChallenge) needs its own valid root
+  # aggregator too, or the real guard — which reads every library from the copied
+  # lakefile.toml, not just $root_lib — fails on a fixture that only ever modelled a single
+  # library. $root_lib itself is excluded here: callers create and overwrite its own root
+  # file for the case under test. Local, and named away from a caller's own `lib`: bash locals
+  # are dynamically scoped, so an unqualified loop variable here would clobber root_case's
+  # `lib` for the rest of its body (reproduced directly: it silently redirected the case's own
+  # heredoc into the extra library's root file instead of $root_lib.lean, leaving $root_lib.lean
+  # missing and the guard failing with "root module ... not found" for every case).
+  local extra_lib
+  while IFS= read -r extra_lib; do
+    [ -n "$extra_lib" ] && [ "$extra_lib" != "$root_lib" ] || continue
+    mkdir -p "$1/$extra_lib"
+    printf 'namespace %s\ntheorem basic_ok : True := trivial\nend %s\n' "$extra_lib" "$extra_lib" > "$1/$extra_lib/Basic.lean"
+    printf 'import %s.Basic\n' "$extra_lib" > "$1/$extra_lib.lean"
+  done < <(python3 -c '
+import tomllib
+with open("lakefile.toml", "rb") as f:
+    cfg = tomllib.load(f)
+for entry in cfg.get("lean_lib", []):
+    name = entry.get("name")
+    if isinstance(name, str) and name:
+        print(name)
+')
 }
 root_case() {  # root_case <name> <want: 0 pass | 1 fail> [<lib>] <<'EOF' root module EOF
   local name="$1" want="$2" lib="${3:-$root_lib}" d="$tmp/root-$1" got=0
@@ -293,7 +317,14 @@ d="$tmp/root-renamed"; rn=$((rn + 1)); fixture "$d"
 printf 'import %s.Basic\n' "$root_lib" > "$d/$root_lib.lean"
 if ! (cd "$d" && fenv bash scripts/rename-project.sh RenamedLib >/dev/null 2>&1); then
   echo "FAIL [root:renamed]: rename-project.sh failed in the fixture"; rfail=1
-elif [ -e "$d/$root_lib.lean" ] || ! fenv bash "$d/scripts/check-root-aggregator.sh" 2>/dev/null | grep -q 'RenamedLib.lean'; then
+# Capture the guard's stdout into a variable before grepping it, rather than piping directly
+# into `grep -q`: with two lean_lib entries the guard now prints two "OK:" lines, and `grep -q`
+# exits as soon as it matches the first one, closing its end of a live pipe while the guard
+# (an external `python3`/`awk` process per library) may still be writing its second line —
+# under `set -o pipefail` that SIGPIPE makes the whole pipeline register as failed even though
+# the match was found. Reproduced directly: piping as before failed this case even though the
+# guard printed both "OK:" lines and exited 0.
+elif [ -e "$d/$root_lib.lean" ] || { guard_out="$(fenv bash "$d/scripts/check-root-aggregator.sh" 2>/dev/null)"; ! printf '%s' "$guard_out" | grep -q 'RenamedLib.lean'; }; then
   echo "FAIL [root:renamed]: guard did not check and pass RenamedLib.lean"; rfail=1
 else
   rn=$((rn + 1))

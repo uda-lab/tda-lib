@@ -351,6 +351,13 @@ rev = "v4.35.0"
 
 [[lean_lib]]
 name = "TDA"
+
+# Frozen Comparator reference library for the bounded pilot (Issue #855). Not in
+# defaultTargets: it is not part of the ordinary build and imports mathlib only, never TDA
+# (docs/adr/0003-comparator-pilot-contract.md; scripts/check-comparator.sh enforces the
+# import boundary).
+[[lean_lib]]
+name = "ComparatorChallenge"
 TDA_LAKEFILE
 cat > "$PROJECT_DIR/lake-manifest.json" <<'TDA_LAKE_MANIFEST'
 {"version": "1.3.0",

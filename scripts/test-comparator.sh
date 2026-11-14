@@ -11,8 +11,8 @@ trap 'rm -rf "$tmp"' EXIT
 
 repo="$tmp/repo"
 mkdir -p "$repo/scripts/lib" "$repo/scripts/print_axioms" "$tmp/home/.elan/bin"
-cp scripts/check-comparator.sh "$repo/scripts/"
-cp scripts/lib/build-lock.sh scripts/lib/build-resources.py "$repo/scripts/lib/"
+cp scripts/check-comparator.sh scripts/lean.sh "$repo/scripts/"
+cp scripts/lib/build-lock.sh scripts/lib/build-resources.py scripts/lib/resources.sh "$repo/scripts/lib/"
 cp scripts/lean-code-scan.awk "$repo/scripts/"
 cp scripts/print_axioms/*.lean "$repo/scripts/print_axioms/"
 cp comparator.json lake-manifest.json lakefile.toml lean-toolchain "$repo/"
@@ -24,7 +24,7 @@ cp -R ComparatorChallenge "$repo/"
 make_bin() {
   local dir="$1" have_lake="$2" have_bwrap="$3" tool source
   mkdir -p "$dir"
-  for tool in jq awk find xargs sed dirname readlink flock python3 mktemp cat rm grep perl; do
+  for tool in jq awk find xargs sed dirname readlink flock python3 mktemp cat rm grep perl bash; do
     source="$(command -v "$tool" 2>/dev/null || true)"
     [ -n "$source" ] || { echo "ERROR: test prerequisite '$tool' is unavailable." >&2; exit 1; }
     ln -s "$source" "$dir/$tool"
@@ -237,9 +237,9 @@ mv "$tmp/lake-manifest.json.saved" "$repo/lake-manifest.json"
 mv "$repo/lean-toolchain" "$tmp/lean-toolchain.saved"
 run_case missing_toolchain_pin 2 'lean-toolchain is missing or empty' no "$all_bin"
 mv "$tmp/lean-toolchain.saved" "$repo/lean-toolchain"
-mv "$repo/scripts/lib/build-lock.sh" "$tmp/build-lock.sh.saved"
-run_case missing_build_lock 2 'scripts/lib/build-lock.sh is missing or unreadable' no "$all_bin"
-mv "$tmp/build-lock.sh.saved" "$repo/scripts/lib/build-lock.sh"
+mv "$repo/scripts/lean.sh" "$tmp/lean.sh.saved"
+run_case missing_lean_sh 2 'scripts/lean.sh is missing or not executable' no "$all_bin"
+mv "$tmp/lean.sh.saved" "$repo/scripts/lean.sh"
 mv "$repo/scripts/print_axioms" "$tmp/print_axioms.saved"
 run_case missing_print_axioms_dir 2 'scripts/print_axioms/ is missing or unreadable' no "$all_bin"
 mv "$tmp/print_axioms.saved" "$repo/scripts/print_axioms"

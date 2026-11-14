@@ -99,6 +99,27 @@ None of the following substitutes for another (precedent: `lean-formalization-sc
   whose raw bytes contain no literal `srcDir`). It also rejects outright if a `lakefile.lean`
   exists, since a Lean build config could set `srcDir` programmatically where no TOML scan
   would see it.
+- **Stable-release sorry policy.** `scripts/check-no-sorry.sh --stable` (run for `main`/stable
+  checks) ignores the `ALLOW_SORRY` marker everywhere, requiring every staging hole to be
+  discharged before a stable release — a policy written before this permanent, by-design
+  reference library existed. `ComparatorChallenge/Reference.lean`'s `sorry` is not a staging
+  hole: it states no claim a release relies on (Comparator judges the solution's proof, never
+  the challenge's), `ComparatorChallenge` is never a default build target, and it is never
+  importable from `TDA` (enforced by `scripts/check-comparator.sh`). `--stable` therefore
+  prunes `ComparatorChallenge/` from its scan instead of discharging that proof; default mode
+  needs no such exclusion, since the `ALLOW_SORRY: #855` marker already covers it there. No
+  other path is exempted, and `--stable` still rejects an unmarked `sorry` anywhere in `TDA/`.
+- **Guard self-test fixtures.** `scripts/test-guards.sh`'s root-aggregator fixture helper
+  (`fixture()`) and `scripts/claude-cloud-setup.sh`'s embedded `lakefile.toml` copy both model
+  the full library layout; adding a second `[[lean_lib]]` here means both needed updating
+  (`fixture()` now stubs a valid root for every declared library, not just the one under test)
+  — otherwise `bash scripts/test-guards.sh` fails even though the Comparator contract itself
+  is sound. Fixing the first exposed a latent `grep -q`-on-a-live-pipe/`pipefail` race in the
+  renamed-project fixture test: once the guard has two libraries to report instead of one,
+  `grep -q` can exit after matching the first "OK:" line while the guard process is still
+  writing its second, and under `set -o pipefail` that SIGPIPE failed the whole pipeline even
+  though the match was found; fixed by capturing the guard's output into a variable before
+  grepping it.
 - **Pinned-inventory scale.** `scripts/print_axioms/` is a directory of per-area files
   totalling several thousand `#print axioms` pins, not the single file the scaffold and
   jetedmd precedents assumed. `scripts/check-comparator.sh` reads the union of

@@ -28,7 +28,7 @@ separate from concurrent build count. Codex commands must use these entry points
 optional supported Bash adapters; their activation depends on harness support and trust. See `docs/orchestration.md`.
 
 ## Code Conventions
-- No unmarked `sorry`/`admit` or custom axioms; Issue-authorized private staging holes on develop obey inherited guards and cannot enter pinned theorem closures or stable releases.
+- No unmarked `sorry`/`admit` or custom axioms; Issue-authorized private staging holes on develop obey inherited guards and cannot enter pinned theorem closures or stable releases. `ComparatorChallenge/`'s one permanent reference-proof `sorry` is the sole exception (docs/adr/0003-comparator-pilot-contract.md): it states no claim any release relies on, so `--stable` excludes that directory instead of discharging it.
 - Never weaken or trivialize statements to close proofs; statement changes need independent source ↔ Lean review.
 - Apply `.agents/skills/lean-review-routing/SKILL.md` § Semantic and API quality to current work and the pre-release consolidated review; use existing CI evidence for mechanical checks.
 - Pin every public theorem in its area's append-only `scripts/print_axioms/<Area>.lean`; keep `TDA.lean` and each `TDA/<Area>.lean` aggregator imports-only. Add modules to their owning area aggregator.
