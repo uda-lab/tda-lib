@@ -36,3 +36,71 @@ lean_check_headroom() {
     return 2
   fi
 }
+# Detected CPU availability for an unset/empty LEAN_NUM_THREADS: the CPUs actually available to
+# this process (affinity/cpuset, as `nproc` reports it) capped by a cgroup v2 CPU quota when one
+# is set, at least 1. Never a hard-coded hardware number. This is informational: it tells an
+# operator how many CPUs exist to consider an explicit override, but `lean_resolve_num_threads`
+# does not use it to raise the default thread count by itself — raising concurrent Lean workers
+# past what a host's memory comfortably holds for their mapped oleans does not shorten a build
+# bound by page cache for those mappings. LEAN_NPROC_CMD, LEAN_CGROUP_ROOT and
+# LEAN_CGROUP_SELF_PATH exist only so self-tests can stub detection; no ordinary invocation
+# needs to set any of them.
+lean_detect_num_threads() {
+  local nproc_cmd=${LEAN_NPROC_CMD:-nproc} affinity
+  local cg_root=${LEAN_CGROUP_ROOT:-/sys/fs/cgroup} cg_path cg_dir
+  local quota period step_threads quota_threads detected
+  affinity=$("$nproc_cmd" 2>/dev/null) || affinity=
+  [[ "$affinity" =~ ^[0-9]+$ ]] && [ "$affinity" -ge 1 ] || affinity=1
+
+  if [ -n "${LEAN_CGROUP_SELF_PATH+set}" ]; then
+    cg_path=$LEAN_CGROUP_SELF_PATH
+  else
+    cg_path=$(awk -F: '$1=="0"{print $3}' /proc/self/cgroup 2>/dev/null) || cg_path=
+  fi
+  cg_dir="$cg_root${cg_path:-}"
+  [ -d "$cg_dir" ] || cg_dir=$cg_root
+
+  # Same ancestor walk as lean_available_kib, for cpu.max instead of memory.max: inspect the
+  # process's own cgroup and every exposed ancestor up to the root, taking the MINIMUM
+  # quota-derived thread count seen. Stopping at the first readable cpu.max would let a looser
+  # or unlimited ("max") child quota hide a stricter ancestor quota.
+  quota_threads=
+  while [ -d "$cg_dir" ]; do
+    if [ -r "$cg_dir/cpu.max" ]; then
+      read -r quota period < "$cg_dir/cpu.max" 2>/dev/null || quota=
+      if [[ "${quota:-}" =~ ^[0-9]+$ ]] && [[ "${period:-}" =~ ^[0-9]+$ ]] && [ "$period" -gt 0 ]; then
+        step_threads=$(( (quota + period - 1) / period ))
+        [ "$step_threads" -ge 1 ] || step_threads=1
+        if [ -z "$quota_threads" ] || [ "$step_threads" -lt "$quota_threads" ]; then quota_threads=$step_threads; fi
+      fi
+      # quota="max" (no limit) at this level contributes nothing; an ancestor's quota still can.
+    fi
+    [ "$cg_dir" = "$cg_root" ] && break
+    cg_dir=${cg_dir%/*}
+    case "$cg_dir" in "$cg_root"|"$cg_root"/*) ;; *) break ;; esac
+  done
+
+  detected=$affinity
+  if [ -n "$quota_threads" ] && [ "$quota_threads" -lt "$detected" ]; then detected=$quota_threads; fi
+  printf '%s\n' "$detected"
+}
+# Resolves LEAN_NUM_THREADS, LEAN_NUM_THREADS_SOURCE ("explicit" or "fallback") and
+# LEAN_NUM_THREADS_DETECTED into the caller's shell and exports all three. An explicit positive
+# value is kept exactly as given; an invalid explicit value is rejected (return 64, as before
+# this helper existed). Unset/empty keeps the single-thread default: measurement on this
+# container found no reliable wall-time benefit from more Lean worker threads, and a clear cost
+# (more concurrent olean mappings than its memory comfortably holds) at the full detected count.
+# LEAN_NUM_THREADS_DETECTED still reports what `lean_detect_num_threads` found, so the fallback
+# stays visible and an operator can override it explicitly on a host where more memory makes
+# more workers worthwhile.
+lean_resolve_num_threads() {
+  LEAN_NUM_THREADS_DETECTED=$(lean_detect_num_threads)
+  if [ -n "${LEAN_NUM_THREADS:-}" ]; then
+    [[ "$LEAN_NUM_THREADS" =~ ^[1-9][0-9]*$ ]] || { echo 'ERROR: LEAN_NUM_THREADS must be positive' >&2; return 64; }
+    LEAN_NUM_THREADS_SOURCE=explicit
+  else
+    LEAN_NUM_THREADS=1
+    LEAN_NUM_THREADS_SOURCE=fallback
+  fi
+  export LEAN_NUM_THREADS LEAN_NUM_THREADS_SOURCE LEAN_NUM_THREADS_DETECTED
+}

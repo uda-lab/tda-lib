@@ -14,6 +14,8 @@ cat > "$test_dir/bin/lake" <<'FAKE'
 #!/usr/bin/env bash
 printf '%s\0' "$@" > "$ARGV_OUT"
 printf '%s' "${LEAN_NUM_THREADS:-unset}" > "$ARGV_OUT.threads"
+printf '%s' "${LEAN_NUM_THREADS_SOURCE:-unset}" > "$ARGV_OUT.source"
+printf '%s' "${LEAN_NUM_THREADS_DETECTED:-unset}" > "$ARGV_OUT.detected"
 if [ -n "${SERIAL_OUT:-}" ]; then
  printf 'start\n' >> "$SERIAL_OUT"
  sleep .15
@@ -23,19 +25,62 @@ FAKE
 cp "$test_dir/bin/lake" "$test_dir/bin/codex"
 cp "$test_dir/bin/lake" "$test_dir/bin/lean"
 chmod +x "$test_dir/bin/"*
-export PATH="$test_dir/bin:$PATH" ARGV_OUT="$test_dir/args" LEAN_GUARD_MIN_AVAIL_MIB=0
+# Stub CPU-count detection (scripts/lib/resources.sh's lean_detect_num_threads) so the
+# unset/no-quota/quota-limited cases below are deterministic regardless of the real machine.
+# LEAN_CGROUP_ROOT/LEAN_CGROUP_SELF_PATH replace the real "/sys/fs/cgroup" root and the
+# process's own cgroup subpath (normally read from /proc/self/cgroup) with a fixture tree.
+cat > "$test_dir/bin/nproc-stub" <<'FAKE'
+#!/usr/bin/env bash
+printf '%s\n' "${STUB_NPROC:-4}"
+FAKE
+chmod +x "$test_dir/bin/nproc-stub"
+mkdir -p "$test_dir/cg/unlimited" "$test_dir/cg/limited" "$test_dir/cg/nested/child"
+printf 'max 100000\n' > "$test_dir/cg/unlimited/cpu.max"
+printf '200000 100000\n' > "$test_dir/cg/limited/cpu.max"
+# A nested fixture: the process's own (deepest) cgroup has no limit, but its parent does.
+printf '200000 100000\n' > "$test_dir/cg/nested/cpu.max"
+printf 'max 100000\n' > "$test_dir/cg/nested/child/cpu.max"
+export PATH="$test_dir/bin:$PATH" ARGV_OUT="$test_dir/args" LEAN_GUARD_MIN_AVAIL_MIB=0 \
+  LEAN_NPROC_CMD="$test_dir/bin/nproc-stub" LEAN_CGROUP_ROOT="$test_dir/cg/unlimited" \
+  LEAN_CGROUP_SELF_PATH='' STUB_NPROC=6
 "$ROOT/scripts/lean.sh" lake env lean 'space name.lean' '' '*'
 python3 - "$ARGV_OUT" <<'PY'
 import sys
 assert open(sys.argv[1], 'rb').read().split(b'\0')[:-1] == [b'env', b'lean', b'space name.lean', b'', b'*']
 PY
 if "$ROOT/scripts/lean.sh" lake build -M 4000 >/dev/null 2>&1; then echo 'manual limit accepted'; exit 1; fi
+# Unset LEAN_NUM_THREADS, no cgroup quota ("max"): stays at the single-thread fallback, but the
+# detected affinity count (6) is still reported for visibility.
 [ "$(cat "$ARGV_OUT.threads")" = 1 ]
+[ "$(cat "$ARGV_OUT.source")" = fallback ]
+[ "$(cat "$ARGV_OUT.detected")" = 6 ]
 LEAN_NUM_THREADS=3 "$ROOT/scripts/lean.sh" lake build
+# An explicit value is kept exactly, overriding the fallback; detection still runs and is
+# reported, but does not affect the explicit value.
 [ "$(cat "$ARGV_OUT.threads")" = 3 ]
+[ "$(cat "$ARGV_OUT.source")" = explicit ]
+[ "$(cat "$ARGV_OUT.detected")" = 6 ]
 if LEAN_NUM_THREADS=0 "$ROOT/scripts/lean.sh" lake build >/dev/null 2>&1; then
   echo 'invalid thread configuration accepted'; exit 1
 fi
+# A quota-limited cgroup (ceil(quota/period) below the affinity count) caps the DETECTED value
+# (quota 2, affinity 6 -> 2); the thread count used still stays at the fallback of 1.
+LEAN_CGROUP_ROOT="$test_dir/cg/limited" "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.threads")" = 1 ]
+[ "$(cat "$ARGV_OUT.detected")" = 2 ]
+# A cgroup quota above the affinity count never raises detection past the detected affinity:
+# affinity 1, quota 2 -> detected 1.
+STUB_NPROC=1 LEAN_CGROUP_ROOT="$test_dir/cg/limited" "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.threads")" = 1 ]
+[ "$(cat "$ARGV_OUT.detected")" = 1 ]
+# Ancestor shadowing: the process's own (deepest) cgroup has no limit, but a parent's quota is
+# stricter. The minimum across every exposed ancestor must win, not just the first readable
+# level — a looser/unlimited descendant must not hide a stricter ancestor quota. Affinity 8,
+# ancestor quota 2 -> detected 2; the thread count used still stays at the fallback of 1.
+STUB_NPROC=8 LEAN_CGROUP_ROOT="$test_dir/cg/nested" LEAN_CGROUP_SELF_PATH=/child \
+  "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.threads")" = 1 ]
+[ "$(cat "$ARGV_OUT.detected")" = 2 ]
 if "$ROOT/scripts/lean.sh" lake --dir /tmp build >/dev/null 2>&1; then
   echo 'project redirection escaped resource exclusion'; exit 1
 fi
