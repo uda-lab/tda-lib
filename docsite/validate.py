@@ -8,6 +8,11 @@ from urllib.parse import unquote, urljoin, urlsplit
 
 PREFIX = "/tda-lib/"
 ORIGIN = "http://preview.invalid"
+# Must match docsite/mkdocs.yml's site_url. The readthedocs theme emits exactly
+# one absolute external href per page, <link rel="canonical">, derived from it;
+# every other href/src must resolve under PREFIX, so that one tag is checked
+# against this expected self-reference instead of being treated as a resource.
+SITE_URL = "https://uda-lab.github.io/tda-lib/"
 
 
 class Page(HTMLParser):
@@ -15,6 +20,7 @@ class Page(HTMLParser):
         super().__init__()
         self.ids = set()
         self.links = []
+        self.canonical = None
         self.feed(text)
 
     def handle_starttag(self, tag, attrs):
@@ -23,6 +29,9 @@ class Page(HTMLParser):
             self.ids.add(attrs["id"])
         if tag == "a" and "name" in attrs:
             self.ids.add(attrs["name"])
+        if tag == "link" and attrs.get("rel") == "canonical":
+            self.canonical = attrs.get("href")
+            return
         for key in ("href", "src"):
             if key in attrs:
                 self.links.append((tag, attrs[key]))
@@ -52,6 +61,16 @@ def validate(output: Path, names: list[str]) -> dict[str, int]:
     }
     if set(pages) != expected | {"404.html"}:
         raise ValueError("Rendered pages differ from the explicit source allowlist")
+
+    def expected_canonical(source: str) -> str:
+        return SITE_URL if source == "index.html" else SITE_URL + source[:-len("index.html")]
+
+    for source in expected:
+        if pages[source].canonical != expected_canonical(source):
+            raise ValueError(
+                f"Wrong or missing canonical link in {source}: {pages[source].canonical!r}"
+            )
+
     edges = {name: set() for name in pages}
     count = 0
 

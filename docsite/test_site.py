@@ -282,10 +282,20 @@ class SourcePolicyTests(unittest.TestCase):
     def test_link_auditor_rejects_missing_anchor(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "index.html").write_text('<a href="#missing">Bad</a>')
+            canonical = '<link rel="canonical" href="https://uda-lab.github.io/tda-lib/" />'
+            (root / "index.html").write_text(canonical + '<a href="#missing">Bad</a>')
             (root / "404.html").write_text("")
             with self.assertRaisesRegex(ValueError, "Missing anchor"):
                 validate(root, ["README.md"])
+
+    def test_link_auditor_rejects_wrong_or_missing_canonical(self):
+        for canonical in ["", '<link rel="canonical" href="https://example.invalid/" />']:
+            with tempfile.TemporaryDirectory() as tmp, self.subTest(canonical=canonical):
+                root = Path(tmp)
+                (root / "index.html").write_text(canonical)
+                (root / "404.html").write_text("")
+                with self.assertRaisesRegex(ValueError, "canonical"):
+                    validate(root, ["README.md"])
 
 
 class BuiltSiteTests(unittest.TestCase):
