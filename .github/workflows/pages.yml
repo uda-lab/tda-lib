@@ -17,8 +17,12 @@ on:
       - '.github/workflows/pages.yml'
 
 # One deployment at a time; never cancel a deployment that may already be live.
+# A pull request gets its own per-PR group so a PR build can never replace a
+# queued (not yet started) main push/dispatch deploy sharing the "pages"
+# group — cancel-in-progress: false only protects an already-running run,
+# not a queued one in the same group.
 concurrency:
-  group: pages
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages' }}
   cancel-in-progress: false
 
 permissions:
