@@ -22,4 +22,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "bisect variant 1b: build only, checkout@v4 tag instead of SHA pin"
+      - run: echo "bisect variant one - build job only, no deploy job"
