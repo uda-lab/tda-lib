@@ -25,16 +25,22 @@ cp "$test_dir/bin/lake" "$test_dir/bin/lean"
 chmod +x "$test_dir/bin/"*
 # Stub CPU-count detection (scripts/lib/resources.sh's lean_detect_num_threads) so the
 # unset/no-quota/quota-limited cases below are deterministic regardless of the real machine.
+# LEAN_CGROUP_ROOT/LEAN_CGROUP_SELF_PATH replace the real "/sys/fs/cgroup" root and the
+# process's own cgroup subpath (normally read from /proc/self/cgroup) with a fixture tree.
 cat > "$test_dir/bin/nproc-stub" <<'FAKE'
 #!/usr/bin/env bash
 printf '%s\n' "${STUB_NPROC:-4}"
 FAKE
 chmod +x "$test_dir/bin/nproc-stub"
-printf 'max 100000\n' > "$test_dir/cpu.max.unlimited"
-printf '200000 100000\n' > "$test_dir/cpu.max.limited"
+mkdir -p "$test_dir/cg/unlimited" "$test_dir/cg/limited" "$test_dir/cg/nested/child"
+printf 'max 100000\n' > "$test_dir/cg/unlimited/cpu.max"
+printf '200000 100000\n' > "$test_dir/cg/limited/cpu.max"
+# A nested fixture: the process's own (deepest) cgroup has no limit, but its parent does.
+printf '200000 100000\n' > "$test_dir/cg/nested/cpu.max"
+printf 'max 100000\n' > "$test_dir/cg/nested/child/cpu.max"
 export PATH="$test_dir/bin:$PATH" ARGV_OUT="$test_dir/args" LEAN_GUARD_MIN_AVAIL_MIB=0 \
-  LEAN_NPROC_CMD="$test_dir/bin/nproc-stub" LEAN_CGROUP_CPU_MAX_FILE="$test_dir/cpu.max.unlimited" \
-  STUB_NPROC=4
+  LEAN_NPROC_CMD="$test_dir/bin/nproc-stub" LEAN_CGROUP_ROOT="$test_dir/cg/unlimited" \
+  LEAN_CGROUP_SELF_PATH='' STUB_NPROC=4
 "$ROOT/scripts/lean.sh" lake env lean 'space name.lean' '' '*'
 python3 - "$ARGV_OUT" <<'PY'
 import sys
@@ -50,11 +56,17 @@ if LEAN_NUM_THREADS=0 "$ROOT/scripts/lean.sh" lake build >/dev/null 2>&1; then
   echo 'invalid thread configuration accepted'; exit 1
 fi
 # A quota-limited cgroup (ceil(quota/period) below the affinity count) caps detection.
-LEAN_CGROUP_CPU_MAX_FILE="$test_dir/cpu.max.limited" "$ROOT/scripts/lean.sh" lake build
+LEAN_CGROUP_ROOT="$test_dir/cg/limited" "$ROOT/scripts/lean.sh" lake build
 [ "$(cat "$ARGV_OUT.threads")" = 2 ]
 # A cgroup quota above the affinity count never raises it past the detected affinity.
-STUB_NPROC=1 LEAN_CGROUP_CPU_MAX_FILE="$test_dir/cpu.max.limited" "$ROOT/scripts/lean.sh" lake build
+STUB_NPROC=1 LEAN_CGROUP_ROOT="$test_dir/cg/limited" "$ROOT/scripts/lean.sh" lake build
 [ "$(cat "$ARGV_OUT.threads")" = 1 ]
+# Ancestor shadowing: the process's own (deepest) cgroup has no limit, but a parent's quota is
+# stricter. The minimum across every exposed ancestor must win, not just the first readable
+# level — a looser/unlimited descendant must not hide a stricter ancestor quota.
+STUB_NPROC=8 LEAN_CGROUP_ROOT="$test_dir/cg/nested" LEAN_CGROUP_SELF_PATH=/child \
+  "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.threads")" = 2 ]
 if "$ROOT/scripts/lean.sh" lake --dir /tmp build >/dev/null 2>&1; then
   echo 'project redirection escaped resource exclusion'; exit 1
 fi

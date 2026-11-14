@@ -38,38 +38,43 @@ lean_check_headroom() {
 }
 # Detected thread count for an unset/empty LEAN_NUM_THREADS: the CPUs actually available to
 # this process (affinity/cpuset, as `nproc` reports it) capped by a cgroup v2 CPU quota when
-# one is set, at least 1. Never a hard-coded hardware number. LEAN_NPROC_CMD and
-# LEAN_CGROUP_CPU_MAX_FILE exist only so self-tests can stub detection; no ordinary invocation
-# needs to set either.
+# one is set, at least 1. Never a hard-coded hardware number. LEAN_NPROC_CMD, LEAN_CGROUP_ROOT
+# and LEAN_CGROUP_SELF_PATH exist only so self-tests can stub detection; no ordinary invocation
+# needs to set any of them.
 lean_detect_num_threads() {
-  local nproc_cmd=${LEAN_NPROC_CMD:-nproc} affinity cpu_max_file cg_path cg_dir
-  local quota period quota_threads detected
+  local nproc_cmd=${LEAN_NPROC_CMD:-nproc} affinity
+  local cg_root=${LEAN_CGROUP_ROOT:-/sys/fs/cgroup} cg_path cg_dir
+  local quota period step_threads quota_threads detected
   affinity=$("$nproc_cmd" 2>/dev/null) || affinity=
   [[ "$affinity" =~ ^[0-9]+$ ]] && [ "$affinity" -ge 1 ] || affinity=1
 
-  cpu_max_file=${LEAN_CGROUP_CPU_MAX_FILE:-}
-  if [ -z "$cpu_max_file" ]; then
-    # Same ancestor walk as lean_available_kib, for the cgroup's cpu.max instead of memory.max.
+  if [ -n "${LEAN_CGROUP_SELF_PATH+set}" ]; then
+    cg_path=$LEAN_CGROUP_SELF_PATH
+  else
     cg_path=$(awk -F: '$1=="0"{print $3}' /proc/self/cgroup 2>/dev/null) || cg_path=
-    cg_dir="/sys/fs/cgroup${cg_path:-}"
-    [ -d "$cg_dir" ] || cg_dir=/sys/fs/cgroup
-    while [ -d "$cg_dir" ]; do
-      if [ -r "$cg_dir/cpu.max" ]; then cpu_max_file="$cg_dir/cpu.max"; break; fi
-      [ "$cg_dir" = /sys/fs/cgroup ] && break
-      cg_dir=${cg_dir%/*}
-      case "$cg_dir" in /sys/fs/cgroup|/sys/fs/cgroup/*) ;; *) break ;; esac
-    done
   fi
+  cg_dir="$cg_root${cg_path:-}"
+  [ -d "$cg_dir" ] || cg_dir=$cg_root
 
+  # Same ancestor walk as lean_available_kib, for cpu.max instead of memory.max: inspect the
+  # process's own cgroup and every exposed ancestor up to the root, taking the MINIMUM
+  # quota-derived thread count seen. Stopping at the first readable cpu.max would let a looser
+  # or unlimited ("max") child quota hide a stricter ancestor quota.
   quota_threads=
-  if [ -n "$cpu_max_file" ] && [ -r "$cpu_max_file" ]; then
-    read -r quota period < "$cpu_max_file" 2>/dev/null || quota=
-    if [[ "${quota:-}" =~ ^[0-9]+$ ]] && [[ "${period:-}" =~ ^[0-9]+$ ]] && [ "$period" -gt 0 ]; then
-      quota_threads=$(( (quota + period - 1) / period ))
-      [ "$quota_threads" -ge 1 ] || quota_threads=1
+  while [ -d "$cg_dir" ]; do
+    if [ -r "$cg_dir/cpu.max" ]; then
+      read -r quota period < "$cg_dir/cpu.max" 2>/dev/null || quota=
+      if [[ "${quota:-}" =~ ^[0-9]+$ ]] && [[ "${period:-}" =~ ^[0-9]+$ ]] && [ "$period" -gt 0 ]; then
+        step_threads=$(( (quota + period - 1) / period ))
+        [ "$step_threads" -ge 1 ] || step_threads=1
+        if [ -z "$quota_threads" ] || [ "$step_threads" -lt "$quota_threads" ]; then quota_threads=$step_threads; fi
+      fi
+      # quota="max" (no limit) at this level contributes nothing; an ancestor's quota still can.
     fi
-    # quota="max" (no limit, the common case): leave quota_threads unset so affinity wins.
-  fi
+    [ "$cg_dir" = "$cg_root" ] && break
+    cg_dir=${cg_dir%/*}
+    case "$cg_dir" in "$cg_root"|"$cg_root"/*) ;; *) break ;; esac
+  done
 
   detected=$affinity
   if [ -n "$quota_threads" ] && [ "$quota_threads" -lt "$detected" ]; then detected=$quota_threads; fi
