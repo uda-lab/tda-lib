@@ -122,39 +122,26 @@ block formulas in a browser with no external resource requests. Python upgrades
 likewise need a fresh isolated environment, exact direct/transitive pins, tests
 and a layout check. Do not vendor the whole package or add a CDN fallback.
 
-## Separate publication stage
+## Publication
 
-**Preparation is not publication.** This implementation neither enables Pages
-nor changes workflows, permissions, repository visibility, credentials, runners,
-branch protection or release branches. Existing required CI and review gates
-remain unchanged; this is not a new merge/release gate.
+The curated site is published through
+[`.github/workflows/pages.yml`](../.github/workflows/pages.yml). Its `build`
+job renders and validates the site — `docsite/build.py --require-clean` and
+`docsite/test_site.py` — on every push to `main`, every manual dispatch and
+every pull request that touches `docsite/**` or a curated source, without
+deploying. Its `deploy` job runs only for a push to `main` or a manual
+dispatch on `main`, and publishes to <https://uda-lab.github.io/tda-lib/>
+through the `github-pages` deployment environment. The workflow carries no
+permission beyond top-level `contents: read`; `pages: write` and
+`id-token: write` are scoped to the `deploy` job alone, and no secret is used.
 
-Before a separately authorized deployment:
+The published revision is always the `main` commit recorded in the built
+`build-info.json`'s `source_revision` field and in each page's source banner;
+a deployment never carries `modified_preview: true`. Generated API pages are
+not part of the published site — see
+[Generated API availability](../docs/generated-api.md).
 
-1. Review every `sources.txt` entry and the generated inventory for disclosure,
-   third-party rights and mathematical scope. The source register's rights
-   evidence is not blanket permission to publish copied papers. Review ordinary
-   outbound links too. Do not expose the entire private repository or API cache.
-2. Select the exact reviewed source commit from the authorized branch and run
-   the build with `--require-clean`. Retain its generated metadata with the
-   artifact and record that revision and test evidence in the publication PR.
-3. Confirm the actual permitted audience and host. The proposed repository-site
-   path is `/tda-lib/`; if GitHub Pages is selected, verify the assigned origin
-   before setting `site_url`. No public URL is claimed here. Page/asset URLs are
-   relative and the 404 recovery link uses `/tda-lib/`. A different mount path
-   requires updating the preview layout, validator and 404 template together.
-4. Obtain separate approval for Pages enablement, its audience/source settings
-   and the exact deploy workflow. For a GitHub Actions Pages deployment, the
-   expected minimum split is a read-only build (`contents: read`) plus a deploy
-   job with `pages: write` and `id-token: write` using the `github-pages`
-   environment. Verify current GitHub requirements, repository plan/private-site
-   support and environment protections; do not assume a private repo gives a
-   private website. Do not grant broad write access or create a credential.
-5. Publish only the contents of the approved `preview/tda-lib/` artifact. Check
-   the actual URL, subpath links/assets, navigation, representative equations,
-   revision banner, API-unavailable/older-snapshot label and access controls.
-   Report publication only after the deployed artifact and URL are verified.
-
-An authenticated private preview or shared artifact also needs explicit approval
-of its recipients and hosting location. The default loopback preview shares
-nothing externally.
+An authenticated private preview or shared artifact outside this workflow
+still needs explicit approval of its recipients and hosting location. The
+default loopback preview in "Build and preview" above shares nothing
+externally.

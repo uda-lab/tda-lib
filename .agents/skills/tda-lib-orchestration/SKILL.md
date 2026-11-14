@@ -77,10 +77,12 @@ conflict resolution or source changes invalidate affected evidence; validate and
 actual final head. Merge ordinary develop topics with
 `gh pr merge <n> --squash --match-head-commit <evaluated head>`.
 
-Keep the existing docs-job condition and `scripts/build-docs.sh` revision invalidation and
-exact source-link binding. Optional API docs are not an extra routine develop merge gate;
-the exposition-note lane remains opt-in. Restoring CI authorizes no credential, permission,
-protection, repository-setting, workflow-trigger, release or publication change.
+The docs job runs only on a manual dispatch with `release_check=false`, never on a
+develop or main push or a PR; keep that condition and `scripts/build-docs.sh`'s
+revision invalidation and exact source-link binding. Optional API docs are not an
+extra routine develop merge gate; the exposition-note lane remains opt-in. Restoring
+CI authorizes no credential, permission, protection, repository-setting,
+workflow-trigger, release or publication change.
 
 Source-fidelity completion applies to release-scoped results after a stable promotion. Require source fidelity for claimed results, exclude
 staging holes from stable releases, audit the exact main revision, then tag and describe its

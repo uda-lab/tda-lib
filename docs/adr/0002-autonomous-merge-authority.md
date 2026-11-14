@@ -104,7 +104,7 @@ clauses in existing execution contracts are replaced by applicable local validat
 successful hosted `check` on the evaluated PR head. No mandatory CI-skip marker remains.
 
 Keep the existing workflow's PR, integration-push and manual triggers, build-change detection,
-docs-job condition and opt-in note lane. Prose-only changes may pass its lightweight check
+docs-job manual-dispatch-only condition and opt-in note lane. Prose-only changes may pass its lightweight check
 without a Lean build. Implementation changes retain the guarded local build, live axiom
 audit and coverage, plus applicable hosted build steps. Do not add redundant full builds or
 full doc generation. Independent exact-head review, feedback disposition, branch protections

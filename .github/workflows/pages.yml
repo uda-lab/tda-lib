@@ -1,0 +1,115 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docsite/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'docs/README.md'
+      - 'docs/api.md'
+      - 'docs/citation.md'
+      - 'docs/generated-api.md'
+      - 'docs/math/**'
+      - '.github/workflows/pages.yml'
+
+# One deployment at a time; never cancel a deployment that may already be live.
+# A pull request gets its own per-PR group so a PR build can never replace a
+# queued (not yet started) main push/dispatch deploy sharing the "pages"
+# group — cancel-in-progress: false only protects an already-running run,
+# not a queued one in the same group.
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # Builds and validates the curated site. Runs for every trigger, including a
+  # pull request restricted to docsite/** and the curated sources above, so the
+  # hosted build is exercised before the first real deploy (main only).
+  #
+  # Uses only actions/checkout@v4 and actions/upload-artifact@v4, the repo's
+  # allowed-actions list (plus actions/cache and leanprover/lean-action, unused
+  # here). actions/setup-python and actions/upload-pages-artifact are not on
+  # that list (and a SHA pin of an otherwise-allowed action doesn't match its
+  # allowlisted tag-ref pattern either), so this job uses the runner's system
+  # Python and builds the Pages artifact by hand the same way
+  # actions/upload-pages-artifact@v3 does internally on Linux.
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify runner Python version (docsite pins require 3.12+)
+        run: |
+          set -euo pipefail
+          python3 -c 'import sys; assert sys.version_info >= (3, 12), f"python3 {sys.version.split()[0]} is older than the pinned docsite requirement (3.12+)"; print(f"python3 {sys.version.split()[0]} OK")'
+
+      - name: Install docsite dependencies into an isolated venv
+        run: |
+          set -euo pipefail
+          python3 -m venv build/curated-docs/venv
+          build/curated-docs/venv/bin/python -m pip install -r docsite/requirements.txt
+
+      - name: Build the curated site (clean checkout required)
+        run: build/curated-docs/venv/bin/python docsite/build.py --require-clean
+
+      - name: Test the built site
+        run: build/curated-docs/venv/bin/python docsite/test_site.py
+
+      - name: Verify build-info.json matches the built commit
+        run: |
+          set -euo pipefail
+          info=build/curated-docs/preview/tda-lib/build-info.json
+          revision=$(jq -r '.source_revision' "$info")
+          modified=$(jq -r '.modified_preview' "$info")
+          test "$revision" = "$GITHUB_SHA"
+          test "$modified" = "false"
+
+      # Same archive step actions/upload-pages-artifact@v3 runs on Linux, by hand.
+      - name: Archive the Pages artifact
+        run: |
+          set -euo pipefail
+          tar \
+            --dereference --hard-dereference \
+            --directory build/curated-docs/preview/tda-lib \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
+            .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
+
+  # Deploys only from main: a push to main, or a manual dispatch run on main.
+  # No Lean, mathlib, doc-gen4 or secret is used anywhere in this workflow.
+  deploy:
+    name: deploy
+    needs: build
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # actions/deploy-pages requires its own allowlist entry (not yet granted
+      # when this was written); it is not on the allowlist actions/checkout and
+      # actions/upload-artifact above reuse. SHA pinning it is not possible
+      # under the current allowlist (its patterns are exact tag refs), so this
+      # uses the tag ref the same way the repo's other allowlisted actions do.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,6 +1,6 @@
 site_name: tda-lib documentation
 site_description: Curated guides for the recorded tda-lib source revision
-# No site_url until a publication destination has been authorized and verified.
+site_url: https://uda-lab.github.io/tda-lib/
 use_directory_urls: true
 theme:
   name: readthedocs
