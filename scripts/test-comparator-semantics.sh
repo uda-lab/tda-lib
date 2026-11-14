@@ -63,7 +63,7 @@ bwrap_path="$(command -v bwrap 2>/dev/null || true)"
 [ -r "$ROOT/scripts/lib/resources.sh" ] || die "scripts/lib/resources.sh is missing or unreadable."
 . "$ROOT/scripts/lib/resources.sh"
 lean_resolve_num_threads || die "LEAN_NUM_THREADS must be positive"
-printf 'Lean threads: %s (%s)\n' "$LEAN_NUM_THREADS" "$LEAN_NUM_THREADS_SOURCE" >&2
+printf 'Lean threads: %s (%s; %s detected)\n' "$LEAN_NUM_THREADS" "$LEAN_NUM_THREADS_SOURCE" "$LEAN_NUM_THREADS_DETECTED" >&2
 [ -e "${CODEX_STOP_FILE:-/tmp/codex-stop}" ] && die "stopped by ${CODEX_STOP_FILE:-/tmp/codex-stop}"
 
 # Serialize with the canonical gate's lock: fixture builds and the sandboxed Comparator below

@@ -36,10 +36,14 @@ lean_check_headroom() {
     return 2
   fi
 }
-# Detected thread count for an unset/empty LEAN_NUM_THREADS: the CPUs actually available to
-# this process (affinity/cpuset, as `nproc` reports it) capped by a cgroup v2 CPU quota when
-# one is set, at least 1. Never a hard-coded hardware number. LEAN_NPROC_CMD, LEAN_CGROUP_ROOT
-# and LEAN_CGROUP_SELF_PATH exist only so self-tests can stub detection; no ordinary invocation
+# Detected CPU availability for an unset/empty LEAN_NUM_THREADS: the CPUs actually available to
+# this process (affinity/cpuset, as `nproc` reports it) capped by a cgroup v2 CPU quota when one
+# is set, at least 1. Never a hard-coded hardware number. This is informational: it tells an
+# operator how many CPUs exist to consider an explicit override, but `lean_resolve_num_threads`
+# does not use it to raise the default thread count by itself — raising concurrent Lean workers
+# past what a host's memory comfortably holds for their mapped oleans does not shorten a build
+# bound by page cache for those mappings. LEAN_NPROC_CMD, LEAN_CGROUP_ROOT and
+# LEAN_CGROUP_SELF_PATH exist only so self-tests can stub detection; no ordinary invocation
 # needs to set any of them.
 lean_detect_num_threads() {
   local nproc_cmd=${LEAN_NPROC_CMD:-nproc} affinity
@@ -80,17 +84,23 @@ lean_detect_num_threads() {
   if [ -n "$quota_threads" ] && [ "$quota_threads" -lt "$detected" ]; then detected=$quota_threads; fi
   printf '%s\n' "$detected"
 }
-# Resolves LEAN_NUM_THREADS and LEAN_NUM_THREADS_SOURCE ("explicit" or "detected") into the
-# caller's shell and exports both. An explicit positive value is kept exactly as given; an
-# invalid explicit value is rejected (return 64, as before this helper existed). Unset/empty
-# detects the available CPU count instead of falling back to a fixed 1.
+# Resolves LEAN_NUM_THREADS, LEAN_NUM_THREADS_SOURCE ("explicit" or "fallback") and
+# LEAN_NUM_THREADS_DETECTED into the caller's shell and exports all three. An explicit positive
+# value is kept exactly as given; an invalid explicit value is rejected (return 64, as before
+# this helper existed). Unset/empty keeps the single-thread default: measurement on this
+# container found no reliable wall-time benefit from more Lean worker threads, and a clear cost
+# (more concurrent olean mappings than its memory comfortably holds) at the full detected count.
+# LEAN_NUM_THREADS_DETECTED still reports what `lean_detect_num_threads` found, so the fallback
+# stays visible and an operator can override it explicitly on a host where more memory makes
+# more workers worthwhile.
 lean_resolve_num_threads() {
+  LEAN_NUM_THREADS_DETECTED=$(lean_detect_num_threads)
   if [ -n "${LEAN_NUM_THREADS:-}" ]; then
     [[ "$LEAN_NUM_THREADS" =~ ^[1-9][0-9]*$ ]] || { echo 'ERROR: LEAN_NUM_THREADS must be positive' >&2; return 64; }
     LEAN_NUM_THREADS_SOURCE=explicit
   else
-    LEAN_NUM_THREADS=$(lean_detect_num_threads)
-    LEAN_NUM_THREADS_SOURCE=detected
+    LEAN_NUM_THREADS=1
+    LEAN_NUM_THREADS_SOURCE=fallback
   fi
-  export LEAN_NUM_THREADS LEAN_NUM_THREADS_SOURCE
+  export LEAN_NUM_THREADS LEAN_NUM_THREADS_SOURCE LEAN_NUM_THREADS_DETECTED
 }

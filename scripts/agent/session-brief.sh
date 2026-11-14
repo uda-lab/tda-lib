@@ -8,7 +8,7 @@ if [ -n "$avail" ]; then memory="$((avail / 1024)) MiB"; else memory=unknown; fi
 lean_resolve_num_threads 2>/dev/null
 printf '%s\n' "$(basename "$ROOT") session brief:" \
   "- memory headroom: $memory; required ${LEAN_GUARD_MIN_AVAIL_MIB:-1536} MiB" \
-  "- Lean threads per process: ${LEAN_NUM_THREADS:-unknown} (${LEAN_NUM_THREADS_SOURCE:-unknown}); concurrent builds need separate resource coordination." \
+  "- Lean threads per process: ${LEAN_NUM_THREADS:-unknown} (${LEAN_NUM_THREADS_SOURCE:-unknown}; ${LEAN_NUM_THREADS_DETECTED:-unknown} detected); concurrent builds need separate resource coordination." \
   '- Build exclusion: canonical shared checkout/build/dependency paths, including symlink targets.' \
   '- Lean/Lake: use scripts/lean.sh; check.sh and bootstrap.sh use the same runtime guard.' \
   '- Codex children: use scripts/codex.sh with LOOP_JOB_ID=<library>/<job>/<role>.' \

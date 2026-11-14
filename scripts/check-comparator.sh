@@ -269,8 +269,9 @@ command -v lake >/dev/null 2>&1 || die "lake is unavailable; install/use the rep
 
 # Run through the repository's guarded Lean entry point, never a direct `lake` call: on top of
 # the shared build lock, scripts/lean.sh also honours ${CODEX_STOP_FILE:-/tmp/codex-stop},
-# checks memory headroom before starting, and resolves the LEAN_NUM_THREADS default (detected
-# CPU count, or an explicit override; AGENTS.md "Commands"/"Execution defaults"). Sourcing
+# checks memory headroom before starting, and resolves the LEAN_NUM_THREADS default (1 unless
+# explicitly overridden, with the detected CPU count reported for visibility; AGENTS.md
+# "Commands"/"Execution defaults"). Sourcing
 # scripts/lib/build-lock.sh directly, as a standalone invocation of this wrapper previously
 # did, obtained the lock but skipped those other guards, which only the canonical
 # scripts/check.sh pipeline provided when this step ran as part of it. No sandbox bypass,
