@@ -17,12 +17,10 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: build
+  deploy:
+    name: deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: 'mkdir -p build-bisect && echo hello > build-bisect/index.html'
-      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
-        with:
-          path: build-bisect
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
