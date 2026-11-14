@@ -28,7 +28,9 @@ fi
 
 current_rev="$(git rev-parse HEAD)"
 source_rev_file="$ROOT/docbuild/.lake/docs-source-rev"
-echo "API documentation: +TDA.Library:docs at $current_rev (Lean threads: ${LEAN_NUM_THREADS:-1})."
+. "$ROOT/scripts/lib/resources.sh"
+lean_resolve_num_threads
+echo "API documentation: +TDA.Library:docs at $current_rev (Lean threads: $LEAN_NUM_THREADS ($LEAN_NUM_THREADS_SOURCE))."
 python3 "$ROOT/scripts/lib/docs-cache.py" prepare "$current_rev"
 
 cd "$ROOT/docbuild"

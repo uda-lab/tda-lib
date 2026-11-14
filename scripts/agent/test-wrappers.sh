@@ -23,19 +23,38 @@ FAKE
 cp "$test_dir/bin/lake" "$test_dir/bin/codex"
 cp "$test_dir/bin/lake" "$test_dir/bin/lean"
 chmod +x "$test_dir/bin/"*
-export PATH="$test_dir/bin:$PATH" ARGV_OUT="$test_dir/args" LEAN_GUARD_MIN_AVAIL_MIB=0
+# Stub CPU-count detection (scripts/lib/resources.sh's lean_detect_num_threads) so the
+# unset/no-quota/quota-limited cases below are deterministic regardless of the real machine.
+cat > "$test_dir/bin/nproc-stub" <<'FAKE'
+#!/usr/bin/env bash
+printf '%s\n' "${STUB_NPROC:-4}"
+FAKE
+chmod +x "$test_dir/bin/nproc-stub"
+printf 'max 100000\n' > "$test_dir/cpu.max.unlimited"
+printf '200000 100000\n' > "$test_dir/cpu.max.limited"
+export PATH="$test_dir/bin:$PATH" ARGV_OUT="$test_dir/args" LEAN_GUARD_MIN_AVAIL_MIB=0 \
+  LEAN_NPROC_CMD="$test_dir/bin/nproc-stub" LEAN_CGROUP_CPU_MAX_FILE="$test_dir/cpu.max.unlimited" \
+  STUB_NPROC=4
 "$ROOT/scripts/lean.sh" lake env lean 'space name.lean' '' '*'
 python3 - "$ARGV_OUT" <<'PY'
 import sys
 assert open(sys.argv[1], 'rb').read().split(b'\0')[:-1] == [b'env', b'lean', b'space name.lean', b'', b'*']
 PY
 if "$ROOT/scripts/lean.sh" lake build -M 4000 >/dev/null 2>&1; then echo 'manual limit accepted'; exit 1; fi
-[ "$(cat "$ARGV_OUT.threads")" = 1 ]
+# Unset LEAN_NUM_THREADS, no cgroup quota ("max"): the detected affinity count wins.
+[ "$(cat "$ARGV_OUT.threads")" = 4 ]
 LEAN_NUM_THREADS=3 "$ROOT/scripts/lean.sh" lake build
+# An explicit value is kept exactly, overriding detection.
 [ "$(cat "$ARGV_OUT.threads")" = 3 ]
 if LEAN_NUM_THREADS=0 "$ROOT/scripts/lean.sh" lake build >/dev/null 2>&1; then
   echo 'invalid thread configuration accepted'; exit 1
 fi
+# A quota-limited cgroup (ceil(quota/period) below the affinity count) caps detection.
+LEAN_CGROUP_CPU_MAX_FILE="$test_dir/cpu.max.limited" "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.threads")" = 2 ]
+# A cgroup quota above the affinity count never raises it past the detected affinity.
+STUB_NPROC=1 LEAN_CGROUP_CPU_MAX_FILE="$test_dir/cpu.max.limited" "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.threads")" = 1 ]
 if "$ROOT/scripts/lean.sh" lake --dir /tmp build >/dev/null 2>&1; then
   echo 'project redirection escaped resource exclusion'; exit 1
 fi

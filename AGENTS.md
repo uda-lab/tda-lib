@@ -22,8 +22,10 @@ scripts/github-setup.sh # broad labels/settings/ruleset bootstrap; not a targete
 ```
 
 Shared runtime safeguards live in `scripts/agent/`. Honor `/tmp/codex-stop` and
-exclusion for shared build/dependency paths. Set `LEAN_NUM_THREADS` for the execution
-environment; an unset value falls back conservatively to 1. This per-process setting is
+exclusion for shared build/dependency paths. An unset `LEAN_NUM_THREADS` resolves to the
+CPUs detected as available to the process (affinity, capped by any cgroup CPU quota); an
+explicit positive value is kept exactly. Lower it explicitly only after a measured OOM
+(`exit 137`). This per-process setting is
 separate from concurrent build count. Codex commands must use these entry points regardless of hook activation. Codex and Claude have
 optional supported Bash adapters; their activation depends on harness support and trust. See `docs/orchestration.md`.
 

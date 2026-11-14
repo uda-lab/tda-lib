@@ -269,13 +269,13 @@ command -v lake >/dev/null 2>&1 || die "lake is unavailable; install/use the rep
 
 # Run through the repository's guarded Lean entry point, never a direct `lake` call: on top of
 # the shared build lock, scripts/lean.sh also honours ${CODEX_STOP_FILE:-/tmp/codex-stop},
-# checks memory headroom before starting, and establishes the conservative LEAN_NUM_THREADS
-# default (AGENTS.md "Commands"/"Execution defaults"). Sourcing scripts/lib/build-lock.sh
-# directly, as a standalone invocation of this wrapper previously did, obtained the lock but
-# skipped those other guards, which only the canonical scripts/check.sh pipeline provided when
-# this step ran as part of it. No sandbox bypass, export override, or stale-export input is
-# accepted by this wrapper, and scripts/lean.sh independently rejects -M/-j/--memory/--threads
-# and a redirected Lake project/config.
+# checks memory headroom before starting, and resolves the LEAN_NUM_THREADS default (detected
+# CPU count, or an explicit override; AGENTS.md "Commands"/"Execution defaults"). Sourcing
+# scripts/lib/build-lock.sh directly, as a standalone invocation of this wrapper previously
+# did, obtained the lock but skipped those other guards, which only the canonical
+# scripts/check.sh pipeline provided when this step ran as part of it. No sandbox bypass,
+# export override, or stale-export input is accepted by this wrapper, and scripts/lean.sh
+# independently rejects -M/-j/--memory/--threads and a redirected Lake project/config.
 [ -x "$ROOT/scripts/lean.sh" ] || die "scripts/lean.sh is missing or not executable."
 
 if "$ROOT/scripts/lean.sh" lake comparator --config "$CONFIG"; then

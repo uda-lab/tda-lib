@@ -137,9 +137,10 @@ Exclusion protects shared files; it is not a host resource scheduler. Coordinate
 builds with the other owners according to CPU, memory/cgroup headroom and expected workloads.
 A free lock or the headroom probe alone does not establish capacity for another build.
 `LEAN_NUM_THREADS` configures each Lean process, separately from the number of concurrent
-builds. Explicit positive values are preserved; an unset value falls back to 1. Choose
-resource-aware overrides in the execution environment, not fixed hardware facts in this
-repository. Cross-account jobs need external coordination; these locks are account-scoped.
+builds. An explicit positive value is preserved exactly; an unset value resolves at run time
+to the CPUs detected as available to the process (affinity, capped by any cgroup CPU quota).
+Lower it explicitly only after a measured OOM (`exit 137`); detection never becomes a fixed
+hardware fact recorded in this repository. Cross-account jobs need external coordination; these locks are account-scoped.
 `LEAN_GUARD_MIN_AVAIL_MIB` defaults to 1536 and remains configurable. Unavailable
 platform metrics are reported as unknown, never as measured spare capacity.
 `scripts/bootstrap.sh`, `scripts/check.sh` and axiom audits use the same guarded wrappers.

@@ -58,10 +58,12 @@ bwrap_path="$(command -v bwrap 2>/dev/null || true)"
 # a disposable fixture project under $ROOT/.lake, not $ROOT itself, so it cannot go through
 # scripts/lean.sh (which only accepts $ROOT or $ROOT/docbuild as the Lake project). Apply the
 # same three guards scripts/lean.sh enforces directly here instead of only serializing access:
-# the ${CODEX_STOP_FILE:-/tmp/codex-stop} stop switch, the LEAN_NUM_THREADS default, and the
+# the ${CODEX_STOP_FILE:-/tmp/codex-stop} stop switch, the LEAN_NUM_THREADS resolution, and the
 # memory-headroom check (AGENTS.md "Commands"/"Execution defaults").
-export LEAN_NUM_THREADS=${LEAN_NUM_THREADS:-1}
-[[ "$LEAN_NUM_THREADS" =~ ^[1-9][0-9]*$ ]] || die "LEAN_NUM_THREADS must be positive"
+[ -r "$ROOT/scripts/lib/resources.sh" ] || die "scripts/lib/resources.sh is missing or unreadable."
+. "$ROOT/scripts/lib/resources.sh"
+lean_resolve_num_threads || die "LEAN_NUM_THREADS must be positive"
+printf 'Lean threads: %s (%s)\n' "$LEAN_NUM_THREADS" "$LEAN_NUM_THREADS_SOURCE" >&2
 [ -e "${CODEX_STOP_FILE:-/tmp/codex-stop}" ] && die "stopped by ${CODEX_STOP_FILE:-/tmp/codex-stop}"
 
 # Serialize with the canonical gate's lock: fixture builds and the sandboxed Comparator below
@@ -69,8 +71,6 @@ export LEAN_NUM_THREADS=${LEAN_NUM_THREADS:-1}
 [ -r "$ROOT/scripts/lib/build-lock.sh" ] || die "scripts/lib/build-lock.sh is missing or unreadable."
 . "$ROOT/scripts/lib/build-lock.sh"
 [ -e "${CODEX_STOP_FILE:-/tmp/codex-stop}" ] && die "stopped by ${CODEX_STOP_FILE:-/tmp/codex-stop}"
-[ -r "$ROOT/scripts/lib/resources.sh" ] || die "scripts/lib/resources.sh is missing or unreadable."
-. "$ROOT/scripts/lib/resources.sh"
 lean_check_headroom || die "insufficient memory headroom to start a Lean build."
 
 # Under $ROOT/.lake (gitignored, never written into the repository tree as a tracked path) so

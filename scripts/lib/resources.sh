@@ -36,3 +36,56 @@ lean_check_headroom() {
     return 2
   fi
 }
+# Detected thread count for an unset/empty LEAN_NUM_THREADS: the CPUs actually available to
+# this process (affinity/cpuset, as `nproc` reports it) capped by a cgroup v2 CPU quota when
+# one is set, at least 1. Never a hard-coded hardware number. LEAN_NPROC_CMD and
+# LEAN_CGROUP_CPU_MAX_FILE exist only so self-tests can stub detection; no ordinary invocation
+# needs to set either.
+lean_detect_num_threads() {
+  local nproc_cmd=${LEAN_NPROC_CMD:-nproc} affinity cpu_max_file cg_path cg_dir
+  local quota period quota_threads detected
+  affinity=$("$nproc_cmd" 2>/dev/null) || affinity=
+  [[ "$affinity" =~ ^[0-9]+$ ]] && [ "$affinity" -ge 1 ] || affinity=1
+
+  cpu_max_file=${LEAN_CGROUP_CPU_MAX_FILE:-}
+  if [ -z "$cpu_max_file" ]; then
+    # Same ancestor walk as lean_available_kib, for the cgroup's cpu.max instead of memory.max.
+    cg_path=$(awk -F: '$1=="0"{print $3}' /proc/self/cgroup 2>/dev/null) || cg_path=
+    cg_dir="/sys/fs/cgroup${cg_path:-}"
+    [ -d "$cg_dir" ] || cg_dir=/sys/fs/cgroup
+    while [ -d "$cg_dir" ]; do
+      if [ -r "$cg_dir/cpu.max" ]; then cpu_max_file="$cg_dir/cpu.max"; break; fi
+      [ "$cg_dir" = /sys/fs/cgroup ] && break
+      cg_dir=${cg_dir%/*}
+      case "$cg_dir" in /sys/fs/cgroup|/sys/fs/cgroup/*) ;; *) break ;; esac
+    done
+  fi
+
+  quota_threads=
+  if [ -n "$cpu_max_file" ] && [ -r "$cpu_max_file" ]; then
+    read -r quota period < "$cpu_max_file" 2>/dev/null || quota=
+    if [[ "${quota:-}" =~ ^[0-9]+$ ]] && [[ "${period:-}" =~ ^[0-9]+$ ]] && [ "$period" -gt 0 ]; then
+      quota_threads=$(( (quota + period - 1) / period ))
+      [ "$quota_threads" -ge 1 ] || quota_threads=1
+    fi
+    # quota="max" (no limit, the common case): leave quota_threads unset so affinity wins.
+  fi
+
+  detected=$affinity
+  if [ -n "$quota_threads" ] && [ "$quota_threads" -lt "$detected" ]; then detected=$quota_threads; fi
+  printf '%s\n' "$detected"
+}
+# Resolves LEAN_NUM_THREADS and LEAN_NUM_THREADS_SOURCE ("explicit" or "detected") into the
+# caller's shell and exports both. An explicit positive value is kept exactly as given; an
+# invalid explicit value is rejected (return 64, as before this helper existed). Unset/empty
+# detects the available CPU count instead of falling back to a fixed 1.
+lean_resolve_num_threads() {
+  if [ -n "${LEAN_NUM_THREADS:-}" ]; then
+    [[ "$LEAN_NUM_THREADS" =~ ^[1-9][0-9]*$ ]] || { echo 'ERROR: LEAN_NUM_THREADS must be positive' >&2; return 64; }
+    LEAN_NUM_THREADS_SOURCE=explicit
+  else
+    LEAN_NUM_THREADS=$(lean_detect_num_threads)
+    LEAN_NUM_THREADS_SOURCE=detected
+  fi
+  export LEAN_NUM_THREADS LEAN_NUM_THREADS_SOURCE
+}
