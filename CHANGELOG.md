@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Identify each finite-input image structure-map rank with the range dimension
+  of the induced simplicial map between sampled sublevels, for global vertex
+  maps on monotone integer observations with repeated or negative thresholds
+  and collapsed faces allowed. See the
+  [homology-map dimensions](docs/math/finite-ph-map-dimensions.md) guide.
+
 ## v0.4.0
 
 Published 2026-11-14. [Release notes](https://github.com/uda-lab/tda-lib/releases/tag/v0.4.0)
