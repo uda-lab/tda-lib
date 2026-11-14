@@ -173,6 +173,9 @@ import TDA.Persistence.FiniteDecomposition
 import TDA.Persistence.FiniteEpiCounts
 import TDA.Persistence.FiniteEpiMatching
 import TDA.Persistence.FiniteImage
+import TDA.Persistence.FiniteImageRank
+import TDA.Persistence.Reduction.FiniteInputImage
+import TDA.Persistence.Reduction.FiniteInputImageExamples
 import TDA.Persistence.FiniteInducedMatching
 import TDA.Persistence.FiniteInducedSpecialization
 import TDA.Persistence.FiniteCokernel
