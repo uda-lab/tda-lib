@@ -274,9 +274,10 @@ Revision dates are not publication dates. Preserve the notices of any adapted fi
 <a id="Lean4-4.33.1"></a>
 ### Lean4-4.33.1
 
-[Lean 4, v4.33.1](https://github.com/leanprover/lean4/tree/v4.33.1), as pinned in
-`lean-toolchain`; Lean project contributors, no academic affiliation inferred.
-[LICENSE](https://github.com/leanprover/lean4/blob/v4.33.1/LICENSE): Apache-2.0;
+[Lean 4, v4.33.1](https://github.com/leanprover/lean4/tree/v4.33.1), the revision
+consulted by the digests that cite this entry; it is no longer the installed pin
+(see [Lean4-4.35.0](#Lean4-4.35.0)). Lean project contributors, no academic affiliation
+inferred. [LICENSE](https://github.com/leanprover/lean4/blob/v4.33.1/LICENSE): Apache-2.0;
 individual notices and separately licensed bundled components require their own checks if
 redistributed. Release date/earliest public date not established here. Foundation and
 proof checker, not a paper-derived TDA theorem. **AP2** for the licensed Lean code.
@@ -285,9 +286,11 @@ proof checker, not a paper-derived TDA theorem. **AP2** for the licensed Lean co
 ### mathlib-0df444a
 
 [mathlib4](https://github.com/leanprover-community/mathlib4/tree/0df444a360eaa60ab8c11dca51a86af692955474),
-commit `0df444a360eaa60ab8c11dca51a86af692955474`, pinned installed dependency;
-mathlib community contributors, file-level copyright attribution. [Exact LICENSE](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/LICENSE),
-Apache-2.0, independently checked against the local pinned checkout. **AP2**;
+commit `0df444a360eaa60ab8c11dca51a86af692955474`, the revision consulted by the digests
+that cite this entry; it is no longer the installed pin (see
+[mathlib-56a0058](#mathlib-56a0058)). mathlib community contributors, file-level
+copyright attribution. [Exact LICENSE](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/LICENSE),
+Apache-2.0, independently checked against the pinned checkout at the time. **AP2**;
 source-level consumers and declarations are mapped below. The signed contiguity prism
 adapts the finite-partition cancellation proof from `SimplicialObject/ChainHomotopy.lean`;
 its module preserves Fabian Odermatt's 2025 copyright and Apache-2.0 notice and
@@ -297,6 +300,28 @@ Daniele Bolla's 2025 copyright, the authors (Bolla and Loeffler) and the Apache-
 and identifies the changes. No academic affiliation/current institution or project
 initial-public/release date is inferred from the commit.
 
+<a id="Lean4-4.35.0"></a>
+### Lean4-4.35.0
+
+[Lean 4, v4.35.0](https://github.com/leanprover/lean4/tree/v4.35.0), as pinned in
+`lean-toolchain`; Lean project contributors, no academic affiliation inferred.
+[LICENSE](https://github.com/leanprover/lean4/blob/v4.35.0/LICENSE): Apache-2.0;
+individual notices and separately licensed bundled components require their own checks if
+redistributed. Release date/earliest public date not established here. Foundation and
+proof checker, not a paper-derived TDA theorem. **AP2** for the licensed Lean code.
+
+<a id="mathlib-56a0058"></a>
+### mathlib-56a0058
+
+[mathlib4](https://github.com/leanprover-community/mathlib4/tree/56a005855ea17e0b0958f73ec801ae140b0a1679),
+commit `56a005855ea17e0b0958f73ec801ae140b0a1679`, pinned installed dependency;
+mathlib community contributors, file-level copyright attribution. [Exact LICENSE](https://github.com/leanprover-community/mathlib4/blob/56a005855ea17e0b0958f73ec801ae140b0a1679/LICENSE),
+Apache-2.0, independently checked against the local pinned checkout. **AP2**. No academic
+affiliation/current institution or project initial-public/release date is inferred from
+the commit. Digests written against this pin cite this entry directly; digests written
+against the prior pin keep citing [mathlib-0df444a](#mathlib-0df444a) as the revision they
+consulted.
+
 <a id="TauCeti-5283b03"></a>
 ### TauCeti-5283b03
 
@@ -305,7 +330,8 @@ inspected commit `5283b03c90ba08f975b65098ee412a890b567a6e`, [LICENSE](https://g
 Apache-2.0 (**AP2**). Project contributors/file notices; no author ordering, academic
 affiliation or initial-public/release date inferred. Simplicial-map source comparison only;
 not an installed dependency. Its [toolchain](https://github.com/TauCetiProject/TauCeti/blob/5283b03c90ba08f975b65098ee412a890b567a6e/lean-toolchain)
-is Lean 4.35.0-rc3, not the library's 4.33.1. No TauCeti code is imported by this citation.
+is Lean 4.35.0-rc3, a release candidate distinct from the library's stable 4.35.0.
+No TauCeti code is imported by this citation.
 
 <a id="TauCeti-7b0d106"></a>
 ### TauCeti-7b0d106
@@ -422,7 +448,9 @@ entire article or all its algorithms have been formalized.
 ### TauCeti-b971ef7 — signed C_c functional decomposition
 
 - **Identity/version:** The Tau Ceti contributors, [TauCeti at b971ef7017efd17b28899a41289f2f11cdced2a2](https://github.com/TauCetiProject/TauCeti/tree/b971ef7017efd17b28899a41289f2f11cdced2a2), specifically [signed Riesz representation](https://github.com/TauCetiProject/TauCeti/blob/b971ef7017efd17b28899a41289f2f11cdced2a2/TauCeti/MeasureTheory/Integral/RieszMarkovKakutani/Signed.lean) and the three `toReal` helpers in [compactly supported continuous maps](https://github.com/TauCetiProject/TauCeti/blob/b971ef7017efd17b28899a41289f2f11cdced2a2/TauCeti/Topology/ContinuousMap/CompactlySupported.lean).
-- **Use/classification:** `TDA.Topology.C0MeasureRepresentation` adapts the necessary C_c positive/negative decomposition privately to the pinned mathlib, retaining the copyright, authors, license and change notice. Its public bounded C₀ representation adds finite-mass bounds and uniform cutoff density. The source snapshot pins mathlib `e3e75e86143b43849829fdcd44a39a6b0fe35234`; tda-lib retains `0df444a360eaa60ab8c11dca51a86af692955474`. The adapted source is not a package dependency. Compact-domain kernel universality in that snapshot does not supply the noncompact C₀ theorem.
+- **Use/classification:** `TDA.Topology.C0MeasureRepresentation` adapts the necessary C_c positive/negative decomposition privately to the pinned mathlib, retaining the copyright, authors, license and change notice. Its public bounded C₀ representation adds finite-mass bounds and uniform cutoff density. The source snapshot pins mathlib `e3e75e86143b43849829fdcd44a39a6b0fe35234`; the adaptation
+was made against mathlib `0df444a360eaa60ab8c11dca51a86af692955474`, tda-lib's pin at the
+time (now `56a005855ea17e0b0958f73ec801ae140b0a1679`). The adapted source is not a package dependency. Compact-domain kernel universality in that snapshot does not supply the noncompact C₀ theorem.
 - **Rights/evidence:** **AP2**, inspected 2026-10-20, the pinned repository [LICENSE](https://github.com/TauCetiProject/TauCeti/blob/b971ef7017efd17b28899a41289f2f11cdced2a2/LICENSE) and source headers. The inspected tree has no NOTICE file. The adapted file preserves the source notice and identifies its immutable source and modifications; tda-lib also distributes Apache-2.0 in its root LICENSE.
 
 <a id="CDGO13-v3"></a>

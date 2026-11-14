@@ -55,7 +55,8 @@ proper coface, but it imposes no order between the incomparable vertices.
 - [`FilterFunction.lean`](../../TDA/Filtration/FilterFunction.lean) supplies values on faces and weak monotonicity under inclusion. No additional filter assumption is introduced.
 - The repository baseline for those modules is develop
   [`fa0cece24f7c00a820981872494092d8a4a3df76`](https://github.com/uda-lab/tda-lib/commit/fa0cece24f7c00a820981872494092d8a4a3df76).
-- Mathlib is pinned at `0df444a360eaa60ab8c11dca51a86af692955474`. The implementation reuses
+- Mathlib was pinned at `0df444a360eaa60ab8c11dca51a86af692955474` when this implementation
+  was written; the current pin is `56a005855ea17e0b0958f73ec801ae140b0a1679` (v4.35.0). It reuses
   [`Finset.Sort`](https://github.com/leanprover-community/mathlib4/blob/0df444a360eaa60ab8c11dca51a86af692955474/Mathlib/Data/Finset/Sort.lean)
   (`Fintype.orderIsoFinOfCardEq`, `Finset.orderIsoOfFin`; the executable path passes through
   `Finset.sort`, `Multiset.sort`, and `List.SortedLT.getIso`),

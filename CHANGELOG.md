@@ -36,12 +36,84 @@ Changes on `develop` after v0.3.0; the next release version is undecided.
   [persistence](docs/README.md#persistent-homology-and-computation),
   [transport](docs/README.md#distances-transport-and-representations) and
   [metric input](docs/README.md#metric-inputs-and-sampling) guides.
-- Separate remaining standalone fixtures from ordinary library imports, including
-  boundary-transport far-atom fixtures. Use the current
-  [entry-point guide](docs/api.md#entry-points) when selecting example imports.
-- `TDA.Mapper.GraphPL.geometricInterleavingDistance_mergeY_eq_half` no longer
-  takes the redundant explicit `hab : a < b` argument; remove that argument at call sites.
+- Add a repository-internal Comparator agreement check (`ComparatorChallenge`,
+  `comparator.json`) to `scripts/check.sh`; it checks agreement with a frozen
+  reference, not source fidelity (see `docs/adr/0003-frozen-comparator-contract.md`).
+- Add software citation metadata: `CITATION.cff` and the
+  [citation guide](docs/citation.md).
 - Reorganize README, release history and documentation navigation.
+
+### Breaking changes
+
+- Move the pinned toolchain to `leanprover/lean4:v4.35.0`; mathlib is pinned to
+  the matching `56a005855ea17e0b0958f73ec801ae140b0a1679`. Consumers must use
+  Lean v4.35.0; the build now emits around 520 deprecation-warning lines and new
+  "designed for use with the module system" import warnings. The bump also
+  changed two upstream types, and the statements that use them were restated
+  without changing their mathematical content. Mathlib's `CategoryTheory.End X` is now a
+  one-field structure, so 30 public results on endomorphisms, including the
+  `IsRankProjectiveCover.endomorphism_isIso` field, the `Hook`/`HookInfinity`
+  `endRingEquiv` lemmas and the `hookMatrixUnit` lemmas, state through `End.asHom` and
+  `End.of` (for example `IsIso u.asHom` and `u.asHom ≫ π = π`). `ProbabilityMeasure.map`
+  now takes the function, so `MeasureCoupling` (fields `fst_map`/`snd_map`),
+  `MeasureCoupling.map`, `MeasureCoupling.sampleLaw`, `Rips.sampleLawMeasure_map_isometry`,
+  `map_carrierProbability_val` and `map_supportProbability_val` use `μ.map f`
+  ([#942](https://github.com/uda-lab/tda-lib/pull/942)).
+- `TDA.Mapper.GraphPL.geometricInterleavingDistance_mergeY_eq_half` no longer
+  takes the redundant explicit `hab : a < b` argument; remove that argument at call sites
+  ([#820](https://github.com/uda-lab/tda-lib/pull/820)).
+- `TDA.Persistence.Rips.diagramOccurrence` is now an `abbrev` for
+  `diagramDecoratedPoint`, with the same values
+  ([#759](https://github.com/uda-lab/tda-lib/pull/759)).
+- Standalone fixtures are no longer imported by `TDA.Persistence` or `TDA.Library`:
+  the boundary-transport far-atom fixtures, the two identity Hom-cover examples, and the
+  modules `TDA.Persistence.EphemeralIntervalIso`, `CutSubspacesExamples`,
+  `FiniteRankProjectiveResolutionKanExamples` and `FiniteHookDeflationExamples`. Import
+  the module itself, `TDA.Persistence.Examples` or `TDA`
+  ([#783](https://github.com/uda-lab/tda-lib/pull/783), [#785](https://github.com/uda-lab/tda-lib/pull/785),
+  [#854](https://github.com/uda-lab/tda-lib/pull/854)).
+
+### Renames and module moves
+
+Fully qualified names, statements and hypotheses are unchanged by the following unless
+stated; only defining modules moved. No public declaration was removed or renamed.
+
+- The collapsed half-plane `TDA.Persistence.BoundaryTransport.Space`, its instances,
+  `ClosedHalfPlane`, `Interior`, `collapse`, `depth`, `rho` and their lemmas moved from
+  `TDA.Persistence.BoundaryTransportGeometry` to `BoundaryTransportGeometryCore`;
+  `BoundaryTransport.Reverse.boundaryPlan`, `singlePairReservoirCompetitor` and their
+  lemmas moved from `BoundaryTransportReverse` to `BoundaryTransportReverseCore`. The
+  far-atom fixtures (`far_points_shortcut`, `far_points_squared_shortcut_and_boundary_legs`,
+  `Reverse.farSource`, `Reverse.farTarget` and the `Reverse.far_*` cost results) moved to
+  `BoundaryTransportGeometryExamples` and `BoundaryTransportReverseExamples`. The old modules
+  import both and are no longer part of `TDA.Persistence`
+  ([#854](https://github.com/uda-lab/tda-lib/pull/854)).
+- `FiniteRankProjectiveHomCover.Examples.zero_identity_homCover` and
+  `principalUpset_identity_homCover` moved to `TDA.Persistence.FiniteRankProjectiveHomCoverExamples`;
+  `TDA.Persistence.FiniteRankProjectiveHomCover` no longer provides them
+  ([#785](https://github.com/uda-lab/tda-lib/pull/785)).
+- The finite-resolution helpers `FiniteRankProjectiveResolution.identity`, `shift`, `tail`,
+  `biprod`, `appendZero`, `appendZeros`, `termAt` and their lemmas moved from
+  `TDA.Persistence.RankSchanuelResolution` to `FiniteRankProjectiveResolution`, and
+  `MinimalFiniteRankProjectiveResolution.termAt_eq_resolution_termAt` from
+  `RankSchanuelUnshifted` to `FiniteRankProjectiveResolutionUniqueness`
+  ([#795](https://github.com/uda-lab/tda-lib/pull/795)).
+- `IsPointwiseShortExact.comp_eq_zero` and `comp_eq_zero_of_range_eq_ker` moved from
+  `RankExactKernel` and `RankExactGenerated` to `TDA.Persistence.RankExact`
+  ([#841](https://github.com/uda-lab/tda-lib/pull/841)).
+- `TDA.Persistence.Diagram.empty` moved from `RipsSamplingMeasure` to
+  `TDA.Persistence.Diagram` and is now `noncomputable`
+  ([#846](https://github.com/uda-lab/tda-lib/pull/846)).
+- `TDA.Mapper.GraphPL.mergeFoldD02`, `mergeFoldD12` and `mergeFoldD23` moved from
+  `GraphPLReebMergeFold` to `GraphPLReebMergeHeight`, and `TDA.Reeb.GraphPL.plHeight_smul`
+  from `TDA.Mapper.GraphPLReebScaling` to `TDA.Reeb.GraphPLHeight`
+  ([#820](https://github.com/uda-lab/tda-lib/pull/820)).
+- Deprecated aliases: `TDA.Persistence.GeneratedUpsetResolution.HookInfinity.projective`
+  (now a theorem; the instance is `TDA.Persistence.HookInfinity.projective` in
+  `TDA.Persistence.HookInfinityProjective`, [#779](https://github.com/uda-lab/tda-lib/pull/779)) and
+  `TDA.Mapper.RefinementHomologyDiagramTightnessExamples.nonempty_realInterleaving_of_structureMap_eq_zero`
+  (use `TDA.Mapper.nonempty_realInterleaving_of_structureMap_eq_zero`,
+  [#820](https://github.com/uda-lab/tda-lib/pull/820)).
 
 [Full changes since v0.3.0](https://github.com/uda-lab/tda-lib/compare/v0.3.0...develop).
 
