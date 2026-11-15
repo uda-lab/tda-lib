@@ -64,10 +64,24 @@ if any of them is not among `env.header.moduleNames` — the set this run's `imp
 actually loaded, not a static read of the root aggregator's import list (so a file
 reachable only from a forgotten nested aggregator is caught too).
 
+Additive for Issue #951 (the incremental local gate): this file also writes
+`.agents/scratch/full-gate-module-audit.json`, a per-module breakdown (`public` and
+`declared` theorem-name arrays, plus a `clean` array of every PINNED name belonging to that
+module of any declaration kind — a pin is not always a theorem) of exactly the same
+classification this file already computes, plus membership in `pinned` it already reads — no
+new environment load, no new check, no change to any existing printed line or to the
+pass/fail decision. Only `scripts/check-incremental.sh` reads it, and only after this file
+and `scripts/check-axioms.sh` have both already exited zero in the same run (i.e. only once
+the whole-library guarantee this file and that script already establish is known to hold,
+`clean` membership included: `check-axioms.sh` already ran `#print axioms` on every pin), to
+refresh per-module incremental-audit records without a second environment load. Plain
+`scripts/check.sh` (no flag) and `--stable` never read it.
+
 `scripts/rename-project.sh` rewrites every `TDA` occurrence in this file.
 -/
 import TDA
 import Lean.Util.CollectAxioms
+import Lean.Data.Json
 
 open Lean System
 
@@ -187,6 +201,20 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
   let mut total : Nat := 0
   let mut missing : Array String := #[]
   let mut privateClaims : Array Name := #[]
+  -- §#951 side-car accumulators: populated inline below using each module's own `modIdx`-
+  -- derived name. Never a second `getModuleIdxFor?` lookup per constant — that per-constant
+  -- lookup is exactly what the `ModuleData` restructuring below removed (see its comment);
+  -- reintroducing it here to resolve a module name would silently undo that fix. `clean`
+  -- records every PINNED name (any declaration kind — a pin is not always a theorem: e.g.
+  -- TDA.Topology.Refinement is a structure, TDA.Persistence.dgm._proof_1 is an
+  -- auto-generated auxiliary) found in this module; it needs no fresh axiom check of its
+  -- own here because the live audit (scripts/check-axioms.sh) already ran `#print axioms`
+  -- on every pin, unconditionally, earlier in the same full-gate run that writes this
+  -- side-car — this is pure bookkeeping of what that audit already verified, grouped by
+  -- module for scripts/check-incremental.sh's per-module records.
+  let mut perModulePublic : Std.HashMap String (Array String) := {}
+  let mut perModuleDeclared : Std.HashMap String (Array String) := {}
+  let mut perModuleClean : Std.HashMap String (Array String) := {}
   -- Iterate only the constants declared in TDA's own modules, via each module's own
   -- `ModuleData`, instead of every constant in the environment (Mathlib's ~9000
   -- modules dominate `env.constants`, which made the old per-constant
@@ -195,21 +223,48 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
   -- separate environment lookup is needed per declaration.
   for modIdx in [0:env.header.moduleData.size] do
     if (`TDA).isPrefixOf env.header.moduleNames[modIdx]! then
+      let modStr := env.header.moduleNames[modIdx]!.toString  -- §#951: already known, no lookup
       let data := env.header.moduleData[modIdx]!
       for i in [0:data.constNames.size] do
         let n := data.constNames[i]!
         let info := data.constants[i]!
+        let name := n.toString
+        if pinned.contains name then
+          perModuleClean := perModuleClean.insert modStr
+            ((perModuleClean.getD modStr #[]).push name)
         if let .thmInfo _ := info then
           if (← isPrivateProjectTheorem env n info) then
             privateClaims := privateClaims.push n
+            perModuleDeclared := perModuleDeclared.insert modStr
+              ((perModuleDeclared.getD modStr #[]).push name)
           if (← isPublicProjectTheorem env n info) then
             total := total + 1
-            let name := n.toString
             unless pinned.contains name do
               missing := missing.push name
+            perModuleDeclared := perModuleDeclared.insert modStr
+              ((perModuleDeclared.getD modStr #[]).push name)
+            perModulePublic := perModulePublic.insert modStr
+              ((perModulePublic.getD modStr #[]).push name)
   let t2 ← IO.monoMsNow
   let privateFailures ← auditPrivateTheorems privateClaims
   let t3 ← IO.monoMsNow
+  -- §#951 side-car: a per-module breakdown of the same names already classified above.
+  -- Written unconditionally (before the pass/fail decision below) so a caller can refresh
+  -- incremental-audit records for exactly the modules this run covered, whether or not this
+  -- run's own pass/fail decision ultimately succeeds — a caller only ever reads this file
+  -- after confirming (from this process's own exit code) that the run passed.
+  let moduleNames :=
+    (perModuleDeclared.toList.map Prod.fst ++ perModulePublic.toList.map Prod.fst
+      ++ perModuleClean.toList.map Prod.fst)
+    |>.foldl (fun (s : Std.HashSet String) n => s.insert n) {} |>.toList
+  let modulesJson := Json.mkObj (moduleNames.map fun modStr =>
+    (modStr, Json.mkObj [
+      ("public", Json.arr ((perModulePublic.getD modStr #[]).map Json.str)),
+      ("declared", Json.arr ((perModuleDeclared.getD modStr #[]).map Json.str)),
+      ("clean", Json.arr ((perModuleClean.getD modStr #[]).map Json.str))
+    ]))
+  IO.FS.createDirAll ".agents/scratch"
+  IO.FS.writeFile ".agents/scratch/full-gate-module-audit.json" (Json.mkObj [("modules", modulesJson)]).compress
   IO.println s!"COVERAGE TIMING — setup (unloaded files + pins): {t1 - t0} ms, scan constants: {t2 - t1} ms, private audit: {t3 - t2} ms, total: {t3 - t0} ms"
   IO.println s!"PRIVATE AUDIT — {privateClaims.size} private theorem root(s), each audited directly with collectAxioms"
   for f in unloaded do

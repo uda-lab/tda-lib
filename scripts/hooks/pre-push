@@ -5,9 +5,14 @@
 #      and of merge-conflict markers;
 #   2. no unmarked sorry/admit, no custom axiom/opaque/unsafe in the working tree, and the
 #      root and area aggregators are imports-only;
-#   3. if Lean sources, build config or comparator.json changed, the full gate
-#      (scripts/check.sh: resource-guarded lake build + live axiom audit + Comparator
-#      agreement) must pass.
+#   3. if Lean sources, build config or comparator.json changed, the applicable local gate
+#      must pass: scripts/check.sh --stable (the full gate) in a stable context — pushing
+#      from a `main` checkout, e.g. a release tag, or TDA_STABLE_RELEASE=1 — since check.sh
+#      itself rejects --incremental together with stable mode (exit 64); scripts/check.sh
+#      --incremental otherwise (resource-guarded lake build + selectively re-audited
+#      axioms/coverage/Comparator, falling back to the full gate when eligibility cannot be
+#      established — Issue #951). The incremental gate's own output never reads `CHECK OK`:
+#      it is feedback, not merge evidence. The full gate stays authoritative in hosted CI.
 # The build log stays in a temp file; only its tail is printed on failure, so full
 # Lean logs never enter an agent's context.
 set -uo pipefail
@@ -61,16 +66,39 @@ bash scripts/check-no-custom-axiom.sh || { echo "[pre-push] BLOCK: check-no-cust
 bash scripts/check-root-aggregator.sh || { echo "[pre-push] BLOCK: check-root-aggregator failed"; exit 1; }
 
 if printf '%s\n' "$changed" | grep -qE '\.lean$|lakefile|lean-toolchain|lake-manifest|comparator\.json'; then
-  echo "[pre-push] Lean sources or build config changed — running scripts/check.sh (resource-guarded)…"
-  LOG="$(mktemp)"
-  if ! bash scripts/check.sh >"$LOG" 2>&1; then
-    echo "[pre-push] BLOCK: scripts/check.sh FAILED. Tail:"
-    tail -n 40 "$LOG"
-    rm -f "$LOG"
-    exit 1
+  # scripts/check.sh rejects --incremental together with stable mode (exit 64): stable mode is
+  # implied by TDA_STABLE_RELEASE=1 or pushing from a `main` checkout (e.g. a release tag push),
+  # exactly the conditions check.sh itself auto-detects. An unconditional --incremental call
+  # here would then block every such push outright, including one with an already-passing full
+  # stable check, since the hook never even reaches scripts/check.sh's own logic to notice.
+  # Stable contexts therefore select the full stable gate explicitly; everything else keeps the
+  # incremental gate.
+  stable_push=0
+  if [ "${TDA_STABLE_RELEASE:-0}" = 1 ] || [ "$(git branch --show-current)" = main ]; then
+    stable_push=1
   fi
-  rm -f "$LOG"
-  echo "[pre-push] check.sh green"
+  LOG="$(mktemp)"
+  if [ "$stable_push" = 1 ]; then
+    echo "[pre-push] Lean sources or build config changed, stable context (main or TDA_STABLE_RELEASE=1) — running scripts/check.sh --stable (resource-guarded)…"
+    if ! bash scripts/check.sh --stable >"$LOG" 2>&1; then
+      echo "[pre-push] BLOCK: scripts/check.sh --stable FAILED. Tail:"
+      tail -n 40 "$LOG"
+      rm -f "$LOG"
+      exit 1
+    fi
+    rm -f "$LOG"
+    echo "[pre-push] check.sh --stable green"
+  else
+    echo "[pre-push] Lean sources or build config changed — running scripts/check.sh --incremental (resource-guarded)…"
+    if ! bash scripts/check.sh --incremental >"$LOG" 2>&1; then
+      echo "[pre-push] BLOCK: scripts/check.sh --incremental FAILED. Tail:"
+      tail -n 40 "$LOG"
+      rm -f "$LOG"
+      exit 1
+    fi
+    rm -f "$LOG"
+    echo "[pre-push] check.sh --incremental green"
+  fi
 else
   echo "[pre-push] no Lean/build changes — build skipped"
 fi

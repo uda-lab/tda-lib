@@ -265,6 +265,18 @@ if ! sandbox_probe_output="$(bwrap --unshare-all --ro-bind / / \
   exit 2
 fi
 
+# Issue #951's incremental gate: every static check and the sandbox probe above have already
+# run unconditionally. Skip only the heavyweight sandboxed `lake comparator` invocation itself
+# when the caller (scripts/check-incremental.sh) has already established, from a content-hashed
+# key covering comparator.json, the ComparatorChallenge sources, the solution module's own
+# incremental-audit key and this script, that a prior run already passed with byte-identical
+# inputs. Opt-in and additive: unset (the default, and always the case for the full gate), this
+# changes nothing.
+if [ "${TDA_COMPARATOR_SKIP_SANDBOXED_RUN:-}" = 1 ]; then
+  echo "Comparator sandboxed run skipped: content-hashed inputs have a recorded local pass."
+  exit 0
+fi
+
 command -v lake >/dev/null 2>&1 || die "lake is unavailable; install/use the repository's pinned Lean toolchain."
 
 # Run through the repository's guarded Lean entry point, never a direct `lake` call: on top of

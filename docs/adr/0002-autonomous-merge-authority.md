@@ -122,3 +122,13 @@ zero invoice cost. Organization billing usage and repository Actions-setting rea
 `403 Resource not accessible by integration`; net charges, credits and included minutes
 could not be verified. The restoration follows the Owner's instruction, without assuming
 free future runs or changing access to obtain billing data.
+
+## Addendum — 2026-11-15: validation locus
+
+The full gate runs unchanged in hosted CI on every PR touching build-relevant paths, and its
+success on the evaluated head is the merge requirement. The local incremental gate
+(`scripts/check.sh --incremental`, Issue #951) omits only results that are functions of
+byte-identical build outputs already passed under the same toolchain, manifest and audit
+tool. Every guard of the full gate still runs on every PR. None is removed or weakened; the
+private-root audit is a superset. Scoped local plus full CI is therefore at least what the
+previous process guaranteed.
