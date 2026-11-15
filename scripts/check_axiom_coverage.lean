@@ -32,13 +32,16 @@ a PR is claiming:
 
 The additional private audit selects non-reserved private theorem roots, excluding field
 projections. It conservatively includes non-reserved generated proof helpers, because Lean's
-public classifier also uses lexical heuristics that can match hand-written private names. These roots need no explicit pins:
-their transitive axioms are checked here against `propext`, `Classical.choice`, and `Quot.sound`
-only when they are outside the union of pinned dependency closures. Already reached private
-helpers remain covered by the live audit. Computational `#eval` results are not theorem
-claims and do not become additional audit roots. Generated declarations can still be traversed
-as dependencies; they do not need blanket pins. This checks elaborated theorem trust, not
-computational test correctness or every arbitrary definition/axiom outside theorem closures.
+public classifier also uses lexical heuristics that can match hand-written private names. These
+roots need no explicit pins: every one of them has its own transitive axioms checked here,
+directly, against `propext`, `Classical.choice`, and `Quot.sound` with Lean's own axiom
+collector (`#949`: no pinned-dependency-closure walk is computed first to exclude roots a
+public pin already reaches transitively — auditing every root directly is a strict superset of
+that older check and removes the closure walk's cost). Computational `#eval` results are not
+theorem claims and do not become additional audit roots. Generated declarations can still be
+traversed as dependencies by the live audit on a public pin that reaches them; they do not need
+blanket pins themselves. This checks elaborated theorem trust, not computational test
+correctness or every arbitrary definition/axiom outside theorem closures.
 
 That is the whole list for public pinning. `instance` declarations are deliberately NOT excluded: a
 hand-proved `instance : SomePropClass … := proof` in a project module is a claimed result
@@ -99,54 +102,24 @@ private def isPrivateProjectTheorem (env : Environment) (n : Name) (info : Const
     return true
   | _ => return false
 
-/-- The exact expression/constructor edges of Lean 4.35.0's axiom collector.
-A generic declaration-usage helper also adds recursor-family edges; those extra edges
-must not cause a private proof to be treated as already axiom-audited. Quotient primitives
-have no outgoing collector edges. Theorems and opaque declarations include their bodies. -/
-private def axiomCollectorDependencies (info : ConstantInfo) : Array Name := Id.run do
-  if let .quotInfo _ := info then return #[]
-  let mut deps := info.type.getUsedConstants
-  if let some value := info.value? (allowOpaque := true) then
-    deps := deps ++ value.getUsedConstants
-  if let .inductInfo value := info then
-    deps := deps ++ value.ctors.toArray
-  return deps
-
-/-- Every declaration in the transitive dependency closure of the explicit pins.
-Walk imported dependencies too: no namespace shortcut or assumption about dependency
-ownership is needed. Each declaration's expression is inspected at most once. -/
-private partial def pinnedDependencyClosure (env : Environment) (roots : Array Name) :
-    Std.HashSet Name := Id.run do
-  let mut seen : Std.HashSet Name := {}
-  let mut pending := roots
-  while !pending.isEmpty do
-    let n := pending.back!
-    pending := pending.pop
-    unless seen.contains n do
-      seen := seen.insert n
-      if let some info := env.checked.get.find? n then
-        pending := pending ++ axiomCollectorDependencies info
-  return seen
-
 /-- Keep the existing live audit's exact trust policy. `#eval` computations are not
 claims: only theorem declarations selected above are additional audit roots. -/
 private def allowedAxiom (n : Name) : Bool :=
   n == ``propext || n == ``Classical.choice || n == ``Quot.sound
 
-/-- Audit private claims outside the pinned closure with Lean's own axiom collector.
-Private claims inside it are already checked transitively by `check-axioms.sh`. -/
-private def auditPrivateTheorems (claims : Array Name) (covered : Std.HashSet Name) :
-    CoreM (Nat × Nat) := do
-  let mut additional := 0
+/-- Audit every private claim directly with Lean's own axiom collector (`collectAxioms`,
+the same primitive `#print axioms` uses). No pinned-dependency-closure walk precedes this:
+a root already reachable from a public pin is checked both here and, transitively, by the
+live audit on that pin — redundant but never unsound, and this is what removes the closure
+walk's cost (#949). -/
+private def auditPrivateTheorems (claims : Array Name) : CoreM Nat := do
   let mut failures := 0
   for n in claims.qsort (fun a b => a.toString < b.toString) do
-    unless covered.contains n do
-      additional := additional + 1
-      let forbidden := (← collectAxioms n).filter (!allowedAxiom ·)
-      unless forbidden.isEmpty do
-        failures := failures + 1
-        IO.println s!"PRIVATE AXIOM FAILURE: {privateToUserName n} ({n}) depends on {forbidden}"
-  return (additional, failures)
+    let forbidden := (← collectAxioms n).filter (!allowedAxiom ·)
+    unless forbidden.isEmpty do
+      failures := failures + 1
+      IO.println s!"PRIVATE AXIOM FAILURE: {privateToUserName n} ({n}) depends on {forbidden}"
+  return failures
 
 /-- Every `.lean` file under `dir`, recursively. -/
 private partial def collectLeanFiles (dir : System.FilePath) : IO (Array System.FilePath) := do
@@ -206,28 +179,15 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
     throw <| IO.userError s!"no Lean pin files in {dir}"
   return names
 
-/-- Resolve exact printed pin names without rendering every imported declaration name.
-Unresolvable or non-canonical entries confer no private coverage; the live axiom audit
-separately rejects invalid commands. This preserves the former `n.toString` membership
-rule, including the fact that an alias is not a pin of a differently named declaration. -/
-private def resolvePinnedRoots (env : Environment) (pinned : Std.HashSet String) : Array Name :=
-  Id.run do
-    let mut roots := #[]
-    for text in pinned.toList do
-      if let .ok stx := Parser.runParserCategory env `command s!"#print axioms {text}" then
-        let n := stx[2].getId
-        if n.toString == text && (env.checked.get.find? n).isSome then
-          roots := roots.push n
-    return roots
-
 #eval show CoreM Unit from do
+  let t0 ← IO.monoMsNow
   let env := (← getEnv).setExporting false
   let loadedModules : Std.HashSet String := Std.HashSet.ofList (env.header.moduleNames.toList.map (·.toString))
   let unloaded ← findUnloadedFiles loadedModules
   let pinned ← readAllPinnedNames "scripts/print_axioms"
+  let t1 ← IO.monoMsNow
   let mut total : Nat := 0
   let mut missing : Array String := #[]
-  let roots := resolvePinnedRoots env pinned
   let mut privateClaims : Array Name := #[]
   for (n, info) in env.constants.toList do
     if let .thmInfo _ := info then
@@ -241,10 +201,11 @@ private def resolvePinnedRoots (env : Environment) (pinned : Std.HashSet String)
           let name := n.toString
           unless pinned.contains name do
             missing := missing.push name
-  let covered := pinnedDependencyClosure env roots
-  IO.println s!"PINNED CLOSURE — {roots.size} roots, {covered.size} declarations"
-  let (additional, privateFailures) ← auditPrivateTheorems privateClaims covered
-  IO.println s!"PRIVATE AUDIT — {privateClaims.size} roots, {privateClaims.size - additional} already in pinned closures, {additional} additionally checked"
+  let t2 ← IO.monoMsNow
+  let privateFailures ← auditPrivateTheorems privateClaims
+  let t3 ← IO.monoMsNow
+  IO.println s!"COVERAGE TIMING — setup (unloaded files + pins): {t1 - t0} ms, scan constants: {t2 - t1} ms, private audit: {t3 - t2} ms, total: {t3 - t0} ms"
+  IO.println s!"PRIVATE AUDIT — {privateClaims.size} private theorem root(s), each audited directly with collectAxioms"
   for f in unloaded do
     IO.println s!"UNLOADED: {f} (module {moduleStringOfPath f} is not reachable from 'import TDA' — its declarations were never checked)"
   for name in missing.qsort (· < ·) do

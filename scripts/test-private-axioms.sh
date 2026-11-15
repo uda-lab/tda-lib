@@ -47,7 +47,7 @@ run_case() {
     exit 1
   fi
   echo "PASS [$name]"
-  rg '^PINNED CLOSURE|^PRIVATE AUDIT|^COVERAGE OK|^PRIVATE AXIOM FAILURE:' "$tmp/check.log"
+  rg '^COVERAGE TIMING|^PRIVATE AUDIT|^COVERAGE OK|^PRIVATE AXIOM FAILURE:' "$tmp/check.log"
 }
 
 # The public root reaches one private proof. The others must be independently audited;
@@ -63,9 +63,26 @@ private theorem classicalAllowed (p : Prop) : p ∨ ¬p := Classical.em p
 private instance privatePropInstance : Nonempty Unit := ⟨()⟩
 #eval (2 : Nat) + 2
 LEAN
-if ! rg -F '6 roots, 1 already in pinned closures, 5 additionally checked' "$tmp/check.log" >/dev/null; then
+if ! rg -F '6 private theorem root(s), each audited directly with collectAxioms' "$tmp/check.log" >/dev/null; then
   cat "$tmp/check.log" >&2
-  echo 'FAIL [allowed]: private classification or pinned dependency closure changed' >&2
+  echo 'FAIL [allowed]: private root classification changed' >&2
+  exit 1
+fi
+printf '%s\n' 'import TDA' > "$tmp/scripts/print_axioms/Fixture.lean"
+
+# #949: coverage no longer computes a pinned-dependency closure to skip a private root
+# just because a public pin already reaches it. A `sorryAx` in such a root — one that
+# would have been "inside the pinned closure" under the old design, and so skipped by
+# this checker, relying only on the live audit of the public pin to catch it
+# transitively — must still fail coverage directly, on its own, here.
+printf '%s\n' 'import TDA' '#print axioms AxiomAuditFixture.publicRootOverSorry' > "$tmp/scripts/print_axioms/Fixture.lean"
+run_case forbidden_private_in_closure fail 'PRIVATE AXIOM FAILURE: AxiomAuditFixture.reachedBySorry' <<'LEAN'
+private theorem reachedBySorry : True := by sorry
+theorem publicRootOverSorry : True := reachedBySorry
+LEAN
+if ! rg -F 'sorryAx' "$tmp/check.log" >/dev/null; then
+  cat "$tmp/check.log" >&2
+  echo 'FAIL [forbidden_private_in_closure]: sorryAx not reported for a root reachable from a public pin' >&2
   exit 1
 fi
 printf '%s\n' 'import TDA' > "$tmp/scripts/print_axioms/Fixture.lean"

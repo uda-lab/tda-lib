@@ -673,6 +673,41 @@ out="$(fenv env PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&
 }
 if [[ "$out" != *'TDA.X is pinned 2 times in scripts/print_axioms'* ]]; then
   echo 'FAIL [audit:cross-area-duplicate]: missing duplicate diagnostic'; afail=1; fi
+
+# #949: distinct (non-duplicate) pins from two different area files are both audited,
+# and in a single process — one `lake env lean` invocation, not one per area file.
+d="$tmp/audit-cross-area-ok"; an=$((an + 1)); mkdir -p "$d/scripts/print_axioms"
+cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
+printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Persistence.lean"
+printf 'import TDA\n#print axioms TDA.Y\n' > "$d/scripts/print_axioms/Reeb.lean"
+printf '%s\n' "'TDA.X' does not depend on any axioms" "'TDA.Y' depends on axioms: [propext]" > "$d/lean-output.txt"
+printf '#!/bin/sh\necho called >> "%s/calls.txt"\ncat "%s/lean-output.txt"\n' "$d" "$d" > "$d/scripts/lean.sh"
+chmod +x "$d/scripts/lean.sh"
+out="$(fenv env PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" || {
+  echo "FAIL [audit:cross-area-ok]: expected pass: $out"; afail=1; }
+if [[ "$out" != *"OK: TDA.X — no axioms."* ]] || [[ "$out" != *"OK: TDA.Y — $ALLOWED: [propext]"* ]]; then
+  echo "FAIL [audit:cross-area-ok]: missing OK line for a cross-area pin: $out"; afail=1; fi
+calls="$(wc -l <"$d/calls.txt" 2>/dev/null | tr -d ' ')"; calls="${calls:-0}"
+if [ "$calls" -ne 1 ]; then
+  echo "FAIL [audit:cross-area-ok]: expected exactly one lean invocation (single environment load), got $calls"
+  afail=1
+fi
+
+# A pin declared in one area file with no matching record still fails the audit, even
+# though the other area file's own pin is fine.
+d="$tmp/audit-cross-area-missing"; an=$((an + 1)); mkdir -p "$d/scripts/print_axioms"
+cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
+printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Persistence.lean"
+printf 'import TDA\n#print axioms TDA.Y\n' > "$d/scripts/print_axioms/Reeb.lean"
+printf '%s\n' "'TDA.X' does not depend on any axioms" > "$d/lean-output.txt"
+printf '#!/bin/sh\ncat "%s/lean-output.txt"\n' "$d" > "$d/scripts/lean.sh"
+chmod +x "$d/scripts/lean.sh"
+out="$(fenv env PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" && {
+  echo 'FAIL [audit:cross-area-missing]: missing pin in one area file accepted'; afail=1;
+}
+if [[ "$out" != *"no '#print axioms' output for TDA.Y (declaration missing or renamed?)."* ]]; then
+  echo 'FAIL [audit:cross-area-missing]: missing diagnostic for the area file with the absent record'; afail=1; fi
+
 if [ "$afail" -eq 0 ]; then echo "axiom-audit parser self-test OK ($an cases)"; else exit 1; fi
 
 # --- embedded cloud-setup pins (scripts/claude-cloud-setup.sh) ----------------------------
