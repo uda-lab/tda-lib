@@ -34,6 +34,7 @@ import TDA.Persistence.DiagramCalculusExamples
 import TDA.Persistence.SublevelLossDerivativeExamples
 import TDA.Persistence.DiagramLawsExamples
 import TDA.Persistence.RankInvariantExamples
+import TDA.Persistence.ConstructiveIntervalExamples
 import TDA.Persistence.RankReconstructionExamples
 import TDA.Persistence.RankReindexExamples
 import TDA.Persistence.GradeHomologyBarcodeExamples

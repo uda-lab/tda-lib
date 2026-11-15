@@ -7553,3 +7553,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.FiniteInput.ImageExamples.collapsed_image_rank
 #print axioms TDA.Persistence.Reduction.FiniteInput.sampledHomology_finiteDimensional
 #print axioms TDA.Persistence.Reduction.FiniteInput.ImageExamples.negative_image_ranks
+#print axioms TDA.Persistence.intervalMap_apply_val
+#print axioms TDA.Persistence.barcodeEnumerationNatIso_hom_apply_val
+#print axioms TDA.Persistence.barcodeEnumerationNatIso_inv_apply_val
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.rational_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.binary_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.rational_structure_laws
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.reorder
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.repeated_coordinate_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.binary_permutation_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.permutation_naturality
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.equalSwap
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.equal_swap_actions
+#print axioms TDA.Persistence.ConstructiveIntervalExamples.empty_and_single_stage

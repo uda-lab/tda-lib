@@ -15,6 +15,11 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   maps on monotone integer observations with repeated or negative thresholds
   and collapsed faces allowed. See the
   [homology-map dimensions](docs/math/finite-ph-map-dimensions.md) guide.
+- Make the finite discrete interval constructors and `barcodeModuleOfList`
+  executable with natural-endpoint decidability instead of classical
+  decisions, including in the `List.Perm.idxBij` route that realizes
+  repeated intervals at separate coordinates. See
+  [executing finite interval and list-barcode modules](docs/math/constructive-finite-intervals.md).
 
 ## v0.4.0
 

@@ -31,11 +31,14 @@ namespace FiniteInterval
 def alive {N : ℕ} (I : FiniteInterval N) (i : Fin N) : Prop :=
   I.birth ≤ i.val ∧ i.val < I.death
 
+/-- Finite endpoint arithmetic decides support membership without a proposition oracle. -/
+instance decidableAlive {N : ℕ} (I : FiniteInterval N) (i : Fin N) : Decidable (I.alive i) :=
+  inferInstanceAs (Decidable (I.birth ≤ i.val ∧ i.val < I.death))
+
 /-- The interval fiber is the full field while alive and its zero submodule otherwise. -/
-noncomputable def fiber {N : ℕ} {k : Type u} [Field k] (I : FiniteInterval N) (i : Fin N) :
-    Submodule k k := by
-  classical
-  exact if I.alive i then ⊤ else ⊥
+def fiber {N : ℕ} {k : Type u} [Field k] (I : FiniteInterval N) (i : Fin N) :
+    Submodule k k :=
+  if I.alive i then ⊤ else ⊥
 
 private theorem alive_middle {N : ℕ} (I : FiniteInterval N) {i j ℓ : Fin N}
     (hij : i ≤ j) (hjℓ : j ≤ ℓ) (hi : I.alive i) (hℓ : I.alive ℓ) : I.alive j := by
@@ -47,16 +50,21 @@ end FiniteInterval
 open FiniteInterval
 
 /-- The transition map is the identity on a pair of alive fibers and zero otherwise. -/
-noncomputable def intervalMap {N : ℕ} {k : Type u} [Field k]
+def intervalMap {N : ℕ} {k : Type u} [Field k]
     (I : FiniteInterval N) {i j : Fin N} (_hij : i ≤ j) :
-    FiniteInterval.fiber (k := k) I i →ₗ[k] FiniteInterval.fiber (k := k) I j := by
-  classical
-  exact if h : I.alive i ∧ I.alive j then
+    FiniteInterval.fiber (k := k) I i →ₗ[k] FiniteInterval.fiber (k := k) I j :=
+  if h : I.alive i ∧ I.alive j then
     Submodule.inclusion (by simp [FiniteInterval.fiber, h.1, h.2])
   else 0
 
+/-- Reading a transition in the coefficient field keeps the value on two alive fibers. -/
+theorem intervalMap_apply_val {N : ℕ} {k : Type u} [Field k]
+    (I : FiniteInterval N) {i j : Fin N} (hij : i ≤ j) (x : I.fiber (k := k) i) :
+    (intervalMap (k := k) I hij x : k) = if I.alive i ∧ I.alive j then (x : k) else 0 := by
+  by_cases h : I.alive i ∧ I.alive j <;> simp [intervalMap, h]
+
 /-- The covariant persistence module associated to a finite discrete interval. -/
-noncomputable def intervalModule {N : ℕ} {k : Type u} [Field k]
+def intervalModule {N : ℕ} {k : Type u} [Field k]
     (I : FiniteInterval N) : PModule.{u,0,u} k (Fin N) where
   obj i := ModuleCat.of k (FiniteInterval.fiber (k := k) I i)
   map {i j} f := ModuleCat.ofHom (intervalMap (k := k) I (leOfHom f))
