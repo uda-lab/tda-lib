@@ -1,5 +1,6 @@
 import TDA.Persistence.QTameFiniteSaturation
 import Mathlib.CategoryTheory.CofilteredSystem
+import Mathlib.Combinatorics.Quiver.ReflQuiver
 
 /-!
 # Global matching compactness for locally finite diagrams

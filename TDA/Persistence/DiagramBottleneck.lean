@@ -1,4 +1,19 @@
 import TDA.Persistence.DiagramLaws
+import Mathlib.Basic.ENNReal.Basic
+import Mathlib.Data.Finset.Lattice.Fold
+import Mathlib.Data.Multiset.Fintype
+import Mathlib.Data.Fintype.Card
+import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Data.Fintype.OfMap
+import Mathlib.Data.Fintype.Defs
+import Mathlib.Data.Fintype.Option
+import Mathlib.Data.Fintype.Perm
+import Mathlib.Data.Fintype.Pi
+import Mathlib.Data.Fintype.Prod
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Analysis.Normed.Group.Constructions
+import Mathlib.Analysis.Normed.Group.Real
+import Mathlib.Tactic.FinCases
 
 /-! Bottleneck geometry for finite persistence diagrams. Occurrences, rather than point
 values, are the labels of a matching. In particular equal points remain distinct. -/

@@ -1,4 +1,5 @@
 import TDA.Persistence.FinitePMatchingCostBottleneck
+import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 
 /-!
 # Finite real-p transport converges to bottleneck distance

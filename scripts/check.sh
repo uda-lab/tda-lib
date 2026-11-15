@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Canonical local/CI integrity gate, in this order:
 #   textual guards (sorry/admit, custom axioms, transient artefacts, merge-conflict markers,
-#   imports-only root/area aggregator) → lake build →
+#   imports-only root/area aggregator, no bare `import Mathlib`) → lake build →
 #   live axiom audit → axiom-coverage guard (every public theorem is pinned in
 #   scripts/print_axioms/*.lean; uncovered private theorem roots obey the same allowlist) →
 #   Comparator agreement for the frozen bounded-pilot contract
@@ -48,6 +48,7 @@ else
 fi
 step "no transient artefacts tracked"; bash scripts/check-transient-artifacts.sh
 step "no merge-conflict markers tracked"; bash scripts/check-conflict-markers.sh
+step "no bare 'import Mathlib'"; bash scripts/check-no-bare-mathlib-import.sh
 step "root/area aggregators imports-only"; bash scripts/check-root-aggregator.sh
 
 # From here only lake runs. Inside a linked git worktree the caller's GIT_DIR & co. would make

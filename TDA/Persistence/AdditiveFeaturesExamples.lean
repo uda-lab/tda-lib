@@ -1,4 +1,5 @@
 import TDA.Persistence.AdditiveFeatures
+import Mathlib.Algebra.BigOperators.Fin
 
 /-! A nonzero scalar feature tests matched, unmatched, repeated and empty inputs. -/
 
@@ -23,7 +24,7 @@ private theorem halfPersistence_sub_le (p q : ℝ × ℝ) :
 
 private theorem halfPersistence_norm (p : ℝ × ℝ) :
     ‖halfPersistence p‖ = (diagonalCost p).toReal := by
-  simp [halfPersistence, Real.norm_eq_abs]
+  simp [halfPersistence, Real.norm_eq_abs, abs_div]
 
 private def duplicate : Fin 2 → ℝ × ℝ := fun _ => (0, 2)
 private def target : Fin 2 → ℝ × ℝ := ![(1, 3), (3, 7)]

@@ -192,6 +192,70 @@ if [ "$hits" -ne 1 ]; then echo "FAIL [stable:marked_axiom]: expected one declar
 
 if [ "$fail" -eq 0 ]; then echo "guard lexer self-test OK ($n cases)"; else exit 1; fi
 
+# --- no-bare-Mathlib-import guard (scripts/check-no-bare-mathlib-import.sh) -----------------
+# Runs the real guard against a throwaway TDA/ tree, with the shared lexer it now depends on
+# (scripts/lean-code-scan.awk, mode=imports) copied alongside it.
+bfail=0; bn=0
+bare_case() {  # bare_case <name> <want: 0 pass | 1 fail> <<'EOF' Lean source EOF
+  local name="$1" want="$2" d="$tmp/bare-mathlib-$1" got
+  mkdir -p "$d/TDA" "$d/scripts"
+  cat > "$d/TDA/Fixture.lean"
+  cp scripts/check-no-bare-mathlib-import.sh scripts/lean-code-scan.awk "$d/scripts/"
+  bn=$((bn + 1))
+  if (cd "$d" && bash scripts/check-no-bare-mathlib-import.sh > /dev/null 2>&1); then got=0; else got=1; fi
+  if [ "$got" -ne "$want" ]; then
+    echo "FAIL [bare-mathlib:$name]: want exit $want got $got"; bfail=1
+  fi
+}
+bare_case bare_import 1 <<'EOF'
+import Mathlib
+
+theorem t : True := trivial
+EOF
+bare_case bare_import_trailing_comment 1 <<'EOF'
+import Mathlib -- needed for tactics
+
+theorem t : True := trivial
+EOF
+bare_case bare_import_in_block_comment_boundary 1 <<'EOF'
+import/- -/Mathlib
+
+theorem t : True := trivial
+EOF
+bare_case narrow_import 0 <<'EOF'
+import Mathlib.Order.Basic
+
+theorem t : True := trivial
+EOF
+bare_case narrow_import_with_mathlib_substring 0 <<'EOF'
+import Mathlib.Tactic.MathlibExtras
+
+theorem t : True := trivial
+EOF
+bare_case mathlib_mentioned_in_comment 0 <<'EOF'
+-- import Mathlib would pull in every module; don't.
+import Mathlib.Order.Basic
+
+theorem t : True := trivial
+EOF
+bare_case bare_import_in_block_comment 0 <<'EOF'
+/- import Mathlib -/
+import Mathlib.Order.Basic
+
+theorem t : True := trivial
+EOF
+# A lexer failure (unreadable source) must abort non-zero, not report a clean scan: the
+# guard's fail-closed design relies on nothing swallowing that exit code.
+bn=$((bn + 1))
+d="$tmp/bare-mathlib-unreadable"; mkdir -p "$d/TDA" "$d/scripts"
+printf 'import Mathlib\n' > "$d/TDA/Fixture.lean"
+chmod 000 "$d/TDA/Fixture.lean"
+cp scripts/check-no-bare-mathlib-import.sh scripts/lean-code-scan.awk "$d/scripts/"
+if (cd "$d" && bash scripts/check-no-bare-mathlib-import.sh > /dev/null 2>&1); then got=0; else got=1; fi
+chmod 644 "$d/TDA/Fixture.lean"
+if [ "$got" -ne 1 ]; then echo "FAIL [bare-mathlib:unreadable]: want exit 1 got $got"; bfail=1; fi
+if [ "$bfail" -eq 0 ]; then echo "no-bare-Mathlib-import guard self-test OK ($bn cases)"; else exit 1; fi
+
 # --- root-aggregator guard (scripts/check-root-aggregator.sh) ------------------------------
 # Each case runs the real guard inside a fixture repository: a copy of lakefile.toml, the guard,
 # the lexer and scripts/rename-project.sh, plus the root module under test.
