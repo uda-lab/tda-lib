@@ -1,5 +1,13 @@
 import TDA.Persistence.GaussianGram
 import TDA.Persistence.PersistenceImage
+import Mathlib.Analysis.InnerProductSpace.Reproducing
+import Mathlib.Analysis.InnerProductSpace.Reproducing.Operations
+import Mathlib.Analysis.InnerProductSpace.Adjoint
+import Mathlib.Analysis.SpecialFunctions.Exp
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+import Mathlib.Algebra.BigOperators.Pi
+import Mathlib.Data.Multiset.Fintype
 
 /-!
 # The weighted Gaussian kernel embedding of finite persistence diagrams

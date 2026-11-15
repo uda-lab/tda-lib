@@ -1,6 +1,9 @@
 import TDA.Persistence.RipsGromovHausdorff
 import TDA.Persistence.LogScaleDiagramComparisonExamples
 import TDA.Persistence.TriangleCechRipsExamples
+import Mathlib.Logic.Equiv.Bool
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Algebra.Field.Rat
 
 /-! Finite GH–Rips consumers with unequal cardinalities, essential bars and sampling. -/
 

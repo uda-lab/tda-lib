@@ -64,6 +64,7 @@ echo "[pre-push] textual guards…"
 bash scripts/check-no-sorry.sh        || { echo "[pre-push] BLOCK: check-no-sorry failed";        exit 1; }
 bash scripts/check-no-custom-axiom.sh || { echo "[pre-push] BLOCK: check-no-custom-axiom failed"; exit 1; }
 bash scripts/check-root-aggregator.sh || { echo "[pre-push] BLOCK: check-root-aggregator failed"; exit 1; }
+bash scripts/check-no-bare-mathlib-import.sh || { echo "[pre-push] BLOCK: check-no-bare-mathlib-import failed"; exit 1; }
 
 if printf '%s\n' "$changed" | grep -qE '\.lean$|lakefile|lean-toolchain|lake-manifest|comparator\.json'; then
   # scripts/check.sh rejects --incremental together with stable mode (exit 64): stable mode is

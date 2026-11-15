@@ -1,4 +1,6 @@
 import TDA.Persistence.DiagramLaws
+import Mathlib.Data.Fin.VecNotation
+import Mathlib.Data.Rat.Defs
 
 namespace TDA.Persistence
 

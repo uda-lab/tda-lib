@@ -1,4 +1,5 @@
 import TDA.Persistence.FiniteMatchingCostLaws
+import Mathlib.Algebra.BigOperators.Fin
 
 /-! Relabelling, multiplicity, the positive-lifetime boundary and four composition paths. -/
 

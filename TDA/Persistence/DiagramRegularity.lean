@@ -1,4 +1,5 @@
 import TDA.Persistence.DiagramSecondOrderCalculus
+import Mathlib.Topology.Algebra.Module.FiniteDimension
 
 /-!
 # Regularity through ordered diagram presentations

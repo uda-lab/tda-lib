@@ -6,6 +6,7 @@ import TDA.Mapper.GraphPLReebMapPairExamples
 import Mathlib.Analysis.Convex.PathConnected
 import Mathlib.Combinatorics.SimpleGraph.CycleGraph
 import Mathlib.Topology.UnitInterval
+import Mathlib.Logic.Equiv.Bool
 
 /-!
 # Height-preserving map fixtures
