@@ -32,12 +32,17 @@ fallback_reason=""
 # based trigger below fire for that reason first, masking whichever SPECIFIC trigger a test
 # case means to isolate (an added/corrupted record, one single sensitive file, …). Pointing
 # this at a local ref that equals the test's own HEAD makes the ambient diff empty, so only
-# that test's own probe mutation shows up. Never set outside scripts/test-incremental.sh;
-# unset (the only way any real caller — the pre-push hook, `scripts/check.sh --incremental`,
-# a human — ever invokes this file), behaviour is unchanged from before this variable existed.
-integration="${TDA_INCREMENTAL_INTEGRATION_REF:-origin/develop}"
-if [ -z "${TDA_INCREMENTAL_INTEGRATION_REF:-}" ] && ! git rev-parse --verify "$integration" >/dev/null 2>&1; then
-  integration=origin/main
+# that test's own probe mutation shows up. Gated on TDA_INCREMENTAL_SELF_TEST=1 as well as
+# the ref itself, so the override can never activate outside scripts/test-incremental.sh by
+# accident (an operator exporting TDA_INCREMENTAL_INTEGRATION_REF alone, for some unrelated
+# reason, must not silently change this gate's comparison base). Unset (the only way any real
+# caller — the pre-push hook, `scripts/check.sh --incremental`, a human — ever invokes this
+# file), behaviour is unchanged from before this variable existed.
+if [ "${TDA_INCREMENTAL_SELF_TEST:-0}" = 1 ] && [ -n "${TDA_INCREMENTAL_INTEGRATION_REF:-}" ]; then
+  integration="$TDA_INCREMENTAL_INTEGRATION_REF"
+else
+  integration=origin/develop
+  if ! git rev-parse --verify "$integration" >/dev/null 2>&1; then integration=origin/main; fi
 fi
 merge_base="$(git merge-base HEAD "$integration" 2>/dev/null)"
 if [ -z "$merge_base" ]; then
@@ -118,11 +123,53 @@ pin_names() {
     | xargs -0 awk '/^#print axioms /{print $3}' | sort -u
 }
 
+# ------------------------------------------------------------------------------------------- #
+# Full mode: run the unchanged full-gate steps unconditionally (no caching attempt for
+# Comparator either, in this branch — simplest and always safe), then, only if keys were
+# available, refresh every per-module record plus the Comparator record from this run's own
+# already-passed output, with no second environment load
+# (scripts/check_axiom_coverage.lean's additive side-car; see its header comment). Callable
+# from two places: the early eligibility decision above, and the late pin-coverage check
+# below (Issue #951 step 5: "An unresolvable pin forces the full gate" — a pin can only be
+# known resolvable or not AFTER an audit, cached or fresh, has actually looked for it; a
+# stale/renamed pin that no audit ever finds is discovered only there).
+# ------------------------------------------------------------------------------------------- #
+run_full_mode() {
+  local reason="$1"
+  step "live axiom audit (full mode)"
+  bash scripts/check-axioms.sh || { echo "ERROR: live axiom audit failed." >&2; exit 1; }
+  step "axiom coverage (full mode)"
+  bash scripts/check-axiom-coverage.sh || { echo "ERROR: axiom coverage failed." >&2; exit 1; }
+  step "Comparator agreement (full mode)"
+  bash scripts/check-comparator.sh || { echo "ERROR: Comparator agreement failed." >&2; exit 1; }
+
+  if [ -n "$keys_output" ] && [ -s "$SCRATCH/full-gate-module-audit.json" ]; then
+    step "refreshing incremental-audit records from this full-gate run"
+    while IFS=$'\t' read -r module key; do
+      [ -n "$module" ] || continue
+      record="$(jq -c --arg m "$module" \
+        '.modules[$m] // {"public":[],"declared":[],"clean":[]}
+         | {schema: 1, kind: "audit", module: $m, public: .public, declared: .declared, clean: .clean}' \
+        "$SCRATCH/full-gate-module-audit.json")" \
+        && printf '%s' "$record" | python3 "$CACHE_PY" write-record "$key" audit \
+        || echo "WARNING: could not refresh the incremental-audit record for $module." >&2
+    done <<<"$keys_output"
+    if solution_key="$(module_key "$solution_module")" \
+       && refreshed_comparator_key="$(python3 "$CACHE_PY" comparator-key "$solution_key")"; then
+      printf '{"schema":1,"kind":"comparator"}' | python3 "$CACHE_PY" write-record "$refreshed_comparator_key" comparator \
+        || echo "WARNING: could not refresh the Comparator record." >&2
+    fi
+  fi
+
+  echo "INCREMENTAL CHECK OK (fell back to full: $reason)"
+  exit 0
+}
+
 # --- Step 2 (part 2) / selective read: attempt every record only while still eligible ------
 need_audit=()
 reused_count=0
-reused_declared_file="$WORK/reused.jsonl"
-: >"$reused_declared_file"
+reused_record_file="$WORK/reused.jsonl"
+: >"$reused_record_file"
 comparator_key=""
 comparator_cache_status=""  # "" (not attempted) | hit | miss
 if [ -z "$fallback_reason" ]; then
@@ -131,7 +178,7 @@ if [ -z "$fallback_reason" ]; then
     record_status=0
     record_json="$(python3 "$CACHE_PY" read-record "$key" audit)" || record_status=$?
     case "$record_status" in
-      0) reused_count=$((reused_count + 1)); printf '%s\n' "$record_json" >>"$reused_declared_file" ;;
+      0) reused_count=$((reused_count + 1)); printf '%s\n' "$record_json" >>"$reused_record_file" ;;
       2) need_audit+=("$module") ;;
       *) fallback_reason="corrupt or invalid incremental-audit record for module $module" ;;
     esac
@@ -164,40 +211,8 @@ if [ "${TDA_INCREMENTAL_DRY_RUN:-0}" = 2 ]; then
   exit 0
 fi
 
-# ------------------------------------------------------------------------------------------- #
-# Full mode: run the unchanged full-gate steps unconditionally (no caching attempt for
-# Comparator either, in this branch — simplest and always safe), then, only if keys were
-# available, refresh every per-module record plus the Comparator record from this run's own
-# already-passed output, with no second environment load
-# (scripts/check_axiom_coverage.lean's additive side-car; see its header comment).
-# ------------------------------------------------------------------------------------------- #
 if [ -n "$fallback_reason" ]; then
-  step "live axiom audit (full mode)"
-  bash scripts/check-axioms.sh || { echo "ERROR: live axiom audit failed." >&2; exit 1; }
-  step "axiom coverage (full mode)"
-  bash scripts/check-axiom-coverage.sh || { echo "ERROR: axiom coverage failed." >&2; exit 1; }
-  step "Comparator agreement (full mode)"
-  bash scripts/check-comparator.sh || { echo "ERROR: Comparator agreement failed." >&2; exit 1; }
-
-  if [ -n "$keys_output" ] && [ -s "$SCRATCH/full-gate-module-audit.json" ]; then
-    step "refreshing incremental-audit records from this full-gate run"
-    while IFS=$'\t' read -r module key; do
-      [ -n "$module" ] || continue
-      record="$(jq -c --arg m "$module" \
-        '.modules[$m] // {"public":[],"declared":[]} | {schema: 1, kind: "audit", module: $m, public: .public, declared: .declared}' \
-        "$SCRATCH/full-gate-module-audit.json")" \
-        && printf '%s' "$record" | python3 "$CACHE_PY" write-record "$key" audit \
-        || echo "WARNING: could not refresh the incremental-audit record for $module." >&2
-    done <<<"$keys_output"
-    if solution_key="$(module_key "$solution_module")" \
-       && refreshed_comparator_key="$(python3 "$CACHE_PY" comparator-key "$solution_key")"; then
-      printf '{"schema":1,"kind":"comparator"}' | python3 "$CACHE_PY" write-record "$refreshed_comparator_key" comparator \
-        || echo "WARNING: could not refresh the Comparator record." >&2
-    fi
-  fi
-
-  echo "INCREMENTAL CHECK OK (fell back to full: $fallback_reason)"
-  exit 0
+  run_full_mode "$fallback_reason"
 fi
 
 # ------------------------------------------------------------------------------------------- #
@@ -225,44 +240,61 @@ if [ "${#need_audit[@]}" -gt 0 ]; then
   for m in "${need_audit[@]}"; do
     key="$(module_key "$m")" || { echo "ERROR: no key computed for audited module $m." >&2; exit 1; }
     record="$(jq -c --arg m "$m" \
-      '.modules[$m] // {"public":[],"declared":[]} | {schema: 1, kind: "audit", module: $m, public: .public, declared: .declared}' \
+      '.modules[$m] // {"public":[],"declared":[],"clean":[]}
+       | {schema: 1, kind: "audit", module: $m, public: .public, declared: .declared, clean: .clean}' \
       "$fresh_json")" || { echo "ERROR: could not read fresh audit output for $m." >&2; exit 1; }
     printf '%s' "$record" | python3 "$CACHE_PY" write-record "$key" audit \
       || { echo "ERROR: could not write incremental-audit record for $m." >&2; exit 1; }
   done
 fi
 
-# --- Pin cross-check: union declared/public names over reused + fresh records --------------
-declared_all="$WORK/declared-union.txt"; public_all="$WORK/public-union.txt"
-: >"$declared_all"; : >"$public_all"
-if [ -s "$reused_declared_file" ]; then
-  jq -r '.declared[]' "$reused_declared_file" >>"$declared_all"
-  jq -r '.public[]' "$reused_declared_file" >>"$public_all"
+# --- Pin cross-check -------------------------------------------------------------------------
+# "clean" (every PINNED name a record covers, any declaration kind, verified axiom-clean) is
+# the ONLY sound set to check pins against. "declared" (public/private THEOREM names, used
+# below only for the opposite "every public theorem is pinned" direction) is not: this
+# project pins plenty of non-theorem declarations too (structures, ordinary defs, Lean's own
+# auto-generated `._proof_N` auxiliaries — e.g. TDA.Topology.Refinement, TDA.Persistence.
+# dgm._proof_1), which the theorem-only coverage classification never puts in "declared" at
+# all. Checking pins against "declared" made a freshly-populated, otherwise entirely correct
+# store look exactly like hundreds of missing pins — fail-unsound in the sense that it
+# invalidates, not that it silently passes, but still wrong: #951's acceptance criteria call
+# this scenario out by name ("Changing one leaf module re-audits exactly that module and its
+# reverse dependencies"), which cannot hold if a correct store is mistaken for incomplete.
+declared_all="$WORK/declared-union.txt"; public_all="$WORK/public-union.txt"; clean_all="$WORK/clean-union.txt"
+: >"$declared_all"; : >"$public_all"; : >"$clean_all"
+if [ -s "$reused_record_file" ]; then
+  jq -r '.declared[]' "$reused_record_file" >>"$declared_all"
+  jq -r '.public[]' "$reused_record_file" >>"$public_all"
+  jq -r '.clean[]' "$reused_record_file" >>"$clean_all"
 fi
 if [ -s "$fresh_json" ]; then
   jq -r '.modules[] | .declared[]' "$fresh_json" >>"$declared_all"
   jq -r '.modules[] | .public[]' "$fresh_json" >>"$public_all"
+  jq -r '.modules[] | .clean[]' "$fresh_json" >>"$clean_all"
 fi
 sort -u -o "$declared_all" "$declared_all"
 sort -u -o "$public_all" "$public_all"
+sort -u -o "$clean_all" "$clean_all"
 
 pins_file="$WORK/pins.txt"
 pin_names >"$pins_file"
 
-missing_pins="$(comm -23 "$pins_file" "$declared_all")"
-missing_coverage="$(comm -23 "$public_all" "$pins_file")"
-pin_check_failed=0
+# A pin no record's "clean" set covers (stale/renamed declaration, or a schema-1-but-pre-
+# "clean"-field record somehow left on disk) is NOT itself proof the pin is broken — only the
+# full gate's own `#print axioms` on that exact name proves that. Fall back rather than fail:
+# Issue #951's own fail-closed rule ("An unresolvable pin forces the full gate").
+missing_pins="$(comm -23 "$pins_file" "$clean_all")"
 if [ -n "$missing_pins" ]; then
-  echo "ERROR: pinned declaration(s) not found among any module's audited/declared names (missing or renamed?):" >&2
-  printf '%s\n' "$missing_pins" | sed 's/^/MISSING: /' >&2
-  pin_check_failed=1
+  hit="$(printf '%s\n' "$missing_pins" | head -1)"
+  run_full_mode "a pinned declaration is not covered by any clean incremental-audit record: $hit"
 fi
+
+missing_coverage="$(comm -23 "$public_all" "$pins_file")"
 if [ -n "$missing_coverage" ]; then
   echo "ERROR: public theorem(s) not pinned in scripts/print_axioms/:" >&2
   printf '%s\n' "$missing_coverage" | sed 's/^/MISSING: /' >&2
-  pin_check_failed=1
+  exit 1
 fi
-[ "$pin_check_failed" -eq 0 ] || exit 1
 
 # --- Comparator: already decided hit/miss above; act on it now ----------------------------
 step "Comparator agreement"

@@ -43,15 +43,29 @@ SCAN_AWK = ROOT / "scripts" / "lean-code-scan.awk"
 DOMAIN_AUDIT = b"tda-incremental-audit-v1\0"
 DOMAIN_COMPARATOR = b"tda-incremental-comparator-v1\0"
 
-# Every source that defines *how* the incremental audit computes a result. Changing any of
-# these must change every key, so a behavioural change to the gate itself is never masked by
-# a stale cache hit. Does not include check-axioms.sh / check_axiom_coverage.lean: those are
-# the FULL gate's unchanged files and are never consulted by the selective incremental path.
+# Every source that defines *how* the incremental audit computes a result, directly or by
+# producing the records the store shares across every worktree. Changing any of these must
+# change every key, so a behavioural change to the gate — or to what a full-mode run writes
+# into a cache every worktree reads — is never masked by a stale cache hit. The full gate's
+# own scripts belong here too, not only the selective path's: a branch that weakens
+# check-axioms.sh's allowlist or check_axiom_coverage.lean's classification, while that
+# branch is itself in full mode for an unrelated reason, would otherwise write records whose
+# key says nothing changed, and another worktree running the UNMODIFIED gate would reuse
+# that weakened-gate output as if it were its own strict gate's result — a cross-worktree
+# cache-poisoning path through the one thing every worktree actually shares, the record
+# store. check.sh is included because it decides --incremental vs --stable/full and is the
+# only thing that invokes check-incremental.sh at all; build-lock.sh is included because it
+# gates every lake/lean invocation this gate makes.
 AUDIT_TOOL_SOURCES = (
     "scripts/lib/incremental-cache.py",
     "scripts/lib/incremental-audit-body.lean",
     "scripts/check-incremental.sh",
     "scripts/lean-code-scan.awk",
+    "scripts/lib/build-lock.sh",
+    "scripts/check-axioms.sh",
+    "scripts/check-axiom-coverage.sh",
+    "scripts/check_axiom_coverage.lean",
+    "scripts/check.sh",
 )
 
 ALLOWLIST = ("propext", "Classical.choice", "Quot.sound")
@@ -87,6 +101,26 @@ def module_name_of_path(rel_path: str) -> str:
 
 def olean_path_for_module(module: str) -> Path:
     return ROOT / ".lake" / "build" / "lib" / "lean" / (module.replace(".", "/") + ".olean")
+
+
+def hash_module_artifacts(module: str) -> bytes:
+    """Hash every `<module>.olean*` artifact that exists on disk, sorted for determinism —
+    today that is always exactly `<module>.olean`, but Lean 4.35's module system can split a
+    module compiled with `module ... public section` across `.olean` (public interface),
+    `.olean.private` and `.olean.server`; `collectAxioms`'s result for a declaration in such
+    a module can depend on bytes outside the plain `.olean` file. Hashing only `.olean` would
+    silently stop covering that content the day any TDA source adopts `module` (none does
+    today — the warnings this project's build already prints ("consider adding `module`")
+    are advisory, from Mathlib, not a requirement). Each matching path is framed separately
+    (name + length-prefixed bytes) so two artifacts cannot collide by concatenation."""
+    base = olean_path_for_module(module)
+    matches = sorted(base.parent.glob(base.name + "*")) if base.parent.is_dir() else []
+    if not matches:
+        raise KeyError_(f"no olean artifact for {module} (expected {base})")
+    digest = hashlib.sha256()
+    for path in matches:
+        framed(digest, path.name, read_nonempty(path, f"olean artifact for {module} ({path.name})"))
+    return digest.digest()
 
 
 def direct_tda_imports(lean_file: Path) -> list[str]:
@@ -185,9 +219,7 @@ def module_key(module: str, closure: list[str], common) -> str:
     framed(digest, "audit-tool-sources", tool_sources)
     framed(digest, "allowlist", allowlist)
     for n in closure:  # already sorted by forward_closure
-        olean = olean_path_for_module(n)
-        olean_bytes = read_nonempty(olean, f"olean for {n}")
-        framed(digest, n, hashlib.sha256(olean_bytes).digest())
+        framed(digest, n, hash_module_artifacts(n))
     return digest.hexdigest()
 
 
@@ -386,7 +418,9 @@ def store_dir() -> Path:
     return Path(xdg) / "tda-lib" / "audit-records"
 
 
-AUDIT_SCHEMA_FIELDS = {"schema": int, "kind": str, "module": str, "public": list, "declared": list}
+AUDIT_SCHEMA_FIELDS = {
+    "schema": int, "kind": str, "module": str, "public": list, "declared": list, "clean": list,
+}
 COMPARATOR_SCHEMA_FIELDS = {"schema": int, "kind": str}
 
 
@@ -410,6 +444,13 @@ def validate_record(data, expected_kind: str) -> None:
             raise KeyError_("record field 'declared' must be an array of strings")
         if not set(data["public"]) <= set(data["declared"]):
             raise KeyError_("record field 'public' must be a subset of 'declared'")
+        # 'clean' (every PINNED name this record covers, verified axiom-clean — any
+        # declaration kind, not only theorems) has no subset relationship with 'declared':
+        # most pins in this project are not theorems at all (structures, ordinary defs,
+        # auto-generated `._proof_N` auxiliaries), and 'declared' can equally hold an
+        # unpinned theorem that is in no pin file and so never in 'clean'.
+        if not all(isinstance(x, str) for x in data["clean"]):
+            raise KeyError_("record field 'clean' must be an array of strings")
 
 
 def cmd_store_dir(args: list[str]) -> int:

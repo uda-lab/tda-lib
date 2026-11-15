@@ -8,23 +8,36 @@ with `lake env lean`. Changing this file changes every module's incremental-audi
 (`scripts/lib/incremental-cache.py`'s `AUDIT_TOOL_SOURCES`), so a behavioural change here can
 never be masked by a stale cache hit.
 
-Mirrors `scripts/check_axiom_coverage.lean`'s public/private theorem classification exactly
-(same predicates, same reasons for excluding auto-generated/projection declarations — see
-that file's header comment for the rationale), but:
-  - restricts every classification to a caller-supplied SET of module names (the modules this
-    run was asked to audit), read at run time from a sidecar text file, instead of "any module
-    prefixed `TDA`" — a module reachable only as a TRANSITIVE dependency of an audited module,
-    but itself not in that set, already has its own recorded PASS and must not be re-recorded
-    or re-counted here;
-  - calls `Lean.collectAxioms` directly on every selected declaration, public and private
-    alike (the full gate's `check-axioms.sh` instead parses `#print axioms` text output; this
-    file calls the same underlying Lean API directly, which is simpler to scope per module and
-    avoids a second text round trip — this is sound for the same reason `#print axioms` is:
-    both ultimately call `Lean.collectAxioms`, see `scripts/lib/incremental-cache.py`'s module
-    docstring);
-  - writes a JSON side-car per module (`public` and `declared` name arrays) instead of
-    printing `#print axioms`/`MISSING:` lines, so `scripts/check-incremental.sh` can turn each
-    module's result directly into a content-keyed PASS record.
+Walks each scope module's own `ModuleData.constNames`/`.constants` directly (mirroring
+`scripts/check_axiom_coverage.lean`'s #976 restructuring), rather than iterating every
+constant in the environment and filtering by a per-constant module lookup — the same
+per-constant `getModuleIdxFor?` cost #976 removed from the full gate's coverage scan would
+otherwise dominate THIS file too, defeating the entire purpose of an incremental gate.
+
+Produces three per-module name lists, not two:
+  - `public`/`declared`: the same public/private THEOREM classification
+    `scripts/check_axiom_coverage.lean` uses (same predicates, same reasons for excluding
+    auto-generated/projection declarations — see that file's header comment), used only for
+    the "every public theorem is pinned" direction.
+  - `clean`: every name `scripts/print_axioms/*.lean` PINS that belongs to a scope module,
+    of ANY declaration kind (ordinary `def`, `structure`, a hand-written `theorem`, or one of
+    Lean's own auto-generated `._proof_N` auxiliaries — this project pins all of these, not
+    only theorems, e.g. `TDA.Topology.Refinement` is a structure and
+    `TDA.Persistence.dgm._proof_1` is auto-generated), each audited here directly with
+    `collectAxioms`, mirroring `scripts/check-axioms.sh`'s own unrestricted `#print axioms`
+    audit of whatever is pinned. `clean` is what `scripts/check-incremental.sh`'s pin
+    cross-check verifies against; `declared` is NOT a sound proxy for it (a review of this
+    PR found the earlier, declared-only cross-check failed on every genuinely fresh run,
+    because most of this project's pins are not theorems).
+
+Calls `Lean.collectAxioms` directly on every selected declaration (the full gate's
+`check-axioms.sh` instead parses `#print axioms` text output; this file calls the same
+underlying Lean API directly, which is simpler to scope per module and avoids a second text
+round trip — this is sound for the same reason `#print axioms` is: both ultimately call
+`Lean.collectAxioms`, see `scripts/lib/incremental-cache.py`'s module docstring). Writes a
+JSON side-car per module instead of printing `#print axioms`/`MISSING:` lines, so
+`scripts/check-incremental.sh` can turn each module's result directly into a content-keyed
+PASS record.
 
 A forbidden axiom anywhere, or any scope/import mismatch, still fails the whole process
 (`throwError`, nonzero exit), exactly as the full gate's audit and coverage guards do; this
@@ -35,24 +48,14 @@ import Lean.Data.Json
 
 open Lean System
 
-/-- The module name `n` was declared in, if `n` belongs to a module Lean actually loaded. -/
-private def moduleNameOf (env : Environment) (n : Name) : Option Name :=
-  match env.getModuleIdxFor? n with
-  | some idx => env.header.moduleNames[idx.toNat]?
-  | none => none
-
-private def isInScope (env : Environment) (scope : Std.HashSet String) (n : Name) : Bool :=
-  match moduleNameOf env n with
-  | some m => scope.contains m.toString
-  | none => false
-
 /-- A public theorem of a module in `scope`, by the same rule as
-`scripts/check_axiom_coverage.lean`'s `isPublicProjectTheorem`. -/
-private def isPublicScopedTheorem (env : Environment) (scope : Std.HashSet String) (n : Name)
-    (info : ConstantInfo) : CoreM Bool := do
+`scripts/check_axiom_coverage.lean`'s `isPublicProjectTheorem`. Callers already restrict to a
+scope module's own constants (via `ModuleData`), so no module-membership check is repeated
+here. -/
+private def isPublicScopedTheorem (env : Environment) (n : Name) (info : ConstantInfo) :
+    CoreM Bool := do
   match info with
   | .thmInfo _ =>
-    if !isInScope env scope n then return false
     if (← isAutoDeclOrPrivate_Internal n) then return false
     if env.isProjectionFn n then return false
     return true
@@ -60,11 +63,10 @@ private def isPublicScopedTheorem (env : Environment) (scope : Std.HashSet Strin
 
 /-- A non-reserved private theorem root of a module in `scope`, by the same rule as
 `scripts/check_axiom_coverage.lean`'s `isPrivateProjectTheorem`. -/
-private def isPrivateScopedTheorem (env : Environment) (scope : Std.HashSet String) (n : Name)
-    (info : ConstantInfo) : CoreM Bool := do
+private def isPrivateScopedTheorem (env : Environment) (n : Name) (info : ConstantInfo) :
+    CoreM Bool := do
   match info with
   | .thmInfo _ =>
-    if !isInScope env scope n then return false
     let some _ := privateToUserName? n | return false
     if isReservedName env n then return false
     if env.isProjectionFn n then return false
@@ -78,33 +80,84 @@ private def readScope (path : System.FilePath) : IO (Std.HashSet String) := do
   let text ← IO.FS.readFile path
   return Std.HashSet.ofList ((text.splitOn "\n").filter (· ≠ ""))
 
+/-- The declaration names pinned by `#print axioms <name>` lines in `path` — the exact same
+extraction rule `scripts/check_axiom_coverage.lean`'s `readPinnedNames` and
+`scripts/check-axioms.sh`'s `awk '/^#print axioms /{print $3}'` use. -/
+private def readPinnedNames (path : System.FilePath) : IO (Std.HashSet String) := do
+  let contents ← IO.FS.readFile path
+  let prefix' := "#print axioms "
+  let names := (contents.splitOn "\n").filterMap fun line =>
+    if line.startsWith prefix' then
+      match (line.drop prefix'.length).toString.splitOn " " |>.filter (· ≠ "") with
+      | name :: _ => some name
+      | [] => none
+    else
+      none
+  return Std.HashSet.ofList names
+
+/-- Union the pin names in every area file, including future areas. -/
+private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String) := do
+  let mut names : Std.HashSet String := {}
+  let mut count := 0
+  for entry in (← dir.readDir) do
+    if entry.path.extension == some "lean" && !(← entry.path.isDir) then
+      count := count + 1
+      for name in (← readPinnedNames entry.path).toList do
+        names := names.insert name
+  if count == 0 then
+    throw <| IO.userError s!"no Lean pin files in {dir}"
+  return names
+
 #eval show CoreM Unit from do
   let env := (← getEnv).setExporting false
   let scope ← readScope ".agents/scratch/incremental-audit-scope.txt"
+  let pinned ← readAllPinnedNames "scripts/print_axioms"
   let loadedModules : Std.HashSet String :=
     Std.HashSet.ofList (env.header.moduleNames.toList.map (·.toString))
   let mut perModulePublic : Std.HashMap String (Array String) := {}
   let mut perModuleDeclared : Std.HashMap String (Array String) := {}
+  let mut perModuleClean : Std.HashMap String (Array String) := {}
   let mut failures : Array String := #[]
   let mut auditedCount : Nat := 0
-  for (n, info) in env.constants.toList do
-    if let .thmInfo _ := info then
-      let isPub ← isPublicScopedTheorem env scope n info
-      let isPriv ← isPrivateScopedTheorem env scope n info
-      if isPub || isPriv then
-        let some modName := moduleNameOf env n | continue
-        let modStr := modName.toString
-        auditedCount := auditedCount + 1
-        let forbidden := (← collectAxioms n).filter (!allowedAxiom ·)
-        unless forbidden.isEmpty do
-          let message := s!"{n} depends on forbidden axioms {forbidden}"
-          IO.println s!"INCREMENTAL AXIOM FAILURE: {message}"
-          failures := failures.push message
-        perModuleDeclared := perModuleDeclared.insert modStr
-          ((perModuleDeclared.getD modStr #[]).push n.toString)
-        if isPub then
-          perModulePublic := perModulePublic.insert modStr
-            ((perModulePublic.getD modStr #[]).push n.toString)
+  for modIdx in [0:env.header.moduleData.size] do
+    let modStr := env.header.moduleNames[modIdx]!.toString
+    if scope.contains modStr then
+      let data := env.header.moduleData[modIdx]!
+      for i in [0:data.constNames.size] do
+        let n := data.constNames[i]!
+        let info := data.constants[i]!
+        let name := n.toString
+        -- Every PINNED name belonging to this module is audited directly, whatever its
+        -- declaration kind — mirrors scripts/check-axioms.sh's own unrestricted audit of
+        -- every pin, not only theorems.
+        if pinned.contains name then
+          auditedCount := auditedCount + 1
+          let forbidden := (← collectAxioms n).filter (!allowedAxiom ·)
+          unless forbidden.isEmpty do
+            let message := s!"{n} depends on forbidden axioms {forbidden}"
+            IO.println s!"INCREMENTAL AXIOM FAILURE: {message}"
+            failures := failures.push message
+          perModuleClean := perModuleClean.insert modStr
+            ((perModuleClean.getD modStr #[]).push name)
+        if let .thmInfo _ := info then
+          let isPub ← isPublicScopedTheorem env n info
+          let isPriv ← isPrivateScopedTheorem env n info
+          if isPub || isPriv then
+            -- A pinned theorem was already audited above (and is in `clean`); an unpinned
+            -- theorem still needs its own axiom check here — soundness cannot wait for the
+            -- separate coverage requirement that it eventually gets pinned.
+            unless pinned.contains name do
+              auditedCount := auditedCount + 1
+              let forbidden := (← collectAxioms n).filter (!allowedAxiom ·)
+              unless forbidden.isEmpty do
+                let message := s!"{n} depends on forbidden axioms {forbidden}"
+                IO.println s!"INCREMENTAL AXIOM FAILURE: {message}"
+                failures := failures.push message
+            perModuleDeclared := perModuleDeclared.insert modStr
+              ((perModuleDeclared.getD modStr #[]).push name)
+            if isPub then
+              perModulePublic := perModulePublic.insert modStr
+                ((perModulePublic.getD modStr #[]).push name)
   -- Every scope entry must actually have been reached by the generated import header, or the
   -- scope file and that header disagree with each other — a module with genuinely zero
   -- theorems (e.g. a pure imports-only aggregator) is fine and just gets an empty record;
@@ -118,7 +171,8 @@ private def readScope (path : System.FilePath) : IO (Std.HashSet String) := do
   let modulesJson := Json.mkObj (scope.toList.map fun modStr =>
     (modStr, Json.mkObj [
       ("public", Json.arr ((perModulePublic.getD modStr #[]).map Json.str)),
-      ("declared", Json.arr ((perModuleDeclared.getD modStr #[]).map Json.str))
+      ("declared", Json.arr ((perModuleDeclared.getD modStr #[]).map Json.str)),
+      ("clean", Json.arr ((perModuleClean.getD modStr #[]).map Json.str))
     ]))
   let outcome := Json.mkObj [
     ("modules", modulesJson),

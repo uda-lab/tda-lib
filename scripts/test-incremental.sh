@@ -31,8 +31,27 @@ fail=0
 
 pass() { echo "PASS [$1]"; }
 failcase() { echo "FAIL [$1]: $2" >&2; fail=1; }
+# diagnostic <out>: both ends of a long capture, not just the tail — a `tail`-only capture
+# once hid the actual "ERROR: axiom coverage failed." header line (and the real cause) behind
+# thousands of lines of `lake build` progress, leaving only an unexplained MISSING list.
+diagnostic() {
+  local out="$1" n
+  n="$(printf '%s' "$out" | wc -l | tr -d ' ')"
+  if [ "$n" -le 40 ]; then
+    printf '%s' "$out"
+  else
+    printf 'Head:\n%s\n…\nTail:\n%s' "$(printf '%s' "$out" | head -20)" "$(printf '%s' "$out" | tail -20)"
+  fi
+}
 
-STORE="$(mktemp -d)"
+# A path that does not exist YET (not merely an empty directory `mktemp -d` already created):
+# scripts/check-incremental.sh's own "record store does not exist yet" trigger
+# (fallback-reason text "the incremental-audit record store does not exist yet") tests
+# `[ ! -d "$store_path" ]`, which an already-existing empty directory never satisfies — the
+# `fresh_store_forces_full` case below was passing for an entirely different, unintended
+# reason (a sensitive-path diff) until this was fixed.
+STORE_PARENT="$(mktemp -d)"
+STORE="$STORE_PARENT/store"
 export TDA_AUDIT_RECORDS="$STORE"
 # #951's own branch permanently differs from origin/develop in every "sensitive" path this
 # gate watches (lakefile.toml excepted; it's the gate's own scripts, lib and check.sh that
@@ -41,9 +60,12 @@ export TDA_AUDIT_RECORDS="$STORE"
 # case, masking whichever specific trigger each case means to isolate. A local branch ref
 # pinned at this run's own HEAD gives check-incremental.sh's test-only
 # TDA_INCREMENTAL_INTEGRATION_REF override (see its own comment) a merge-base with zero
-# ambient diff, so only each case's own probe mutation shows up.
+# ambient diff, so only each case's own probe mutation shows up. TDA_INCREMENTAL_SELF_TEST=1
+# is required too, so exporting TDA_INCREMENTAL_INTEGRATION_REF for some unrelated reason can
+# never silently redirect a real invocation's comparison base.
 BASELINE_REF="test-incremental-951-baseline-$$"
 git branch -f "$BASELINE_REF" HEAD >/dev/null || { echo "FAIL [setup]: could not create the baseline ref $BASELINE_REF" >&2; exit 1; }
+export TDA_INCREMENTAL_SELF_TEST=1
 export TDA_INCREMENTAL_INTEGRATION_REF="$BASELINE_REF"
 BACKUP_DIR="$(mktemp -d)"
 declare -A BACKUP_OF
@@ -67,7 +89,7 @@ restore_touched() {
   fi
 }
 cleanup() {
-  rm -rf "$STORE"
+  rm -rf "$STORE_PARENT"
   local f
   for f in "${!BACKUP_OF[@]}"; do
     cp "${BACKUP_OF[$f]}" "$f" 2>/dev/null || true
@@ -187,8 +209,8 @@ out="$(run_incremental 2>&1)"; status=$?
 if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -q 'INCREMENTAL CHECK OK (fell back to full: the incremental-audit record store does not exist yet'; then
   pass fresh_store_forces_full
 else
-  failcase fresh_store_forces_full "expected a successful full-mode fallback citing the missing store; status=$status. Tail:
-$(printf '%s' "$out" | tail -20)"
+  failcase fresh_store_forces_full "expected a successful full-mode fallback citing the missing store; status=$status.
+$(diagnostic "$out")"
 fi
 record_count="$(find "$STORE" -maxdepth 1 -name '*.json' | wc -l | tr -d ' ')"
 if [ "$record_count" -gt 900 ]; then
@@ -247,8 +269,8 @@ else
     if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -qE "INCREMENTAL CHECK OK — audited ${expected_audited}/[0-9]+ modules"; then
       pass leaf_edit_audits_exact_reverse_closure
     else
-      failcase leaf_edit_audits_exact_reverse_closure "expected a selective run auditing exactly $expected_audited module(s); status=$status. Tail:
-$(printf '%s' "$out" | tail -20)"
+      failcase leaf_edit_audits_exact_reverse_closure "expected a selective run auditing exactly $expected_audited module(s); status=$status.
+$(diagnostic "$out")"
     fi
 
     # --- a sorry (behind ALLOW_SORRY, so the textual guard itself still passes) is caught
@@ -260,8 +282,8 @@ $(printf '%s' "$out" | tail -20)"
     if [ "$status" -ne 0 ] && printf '%s' "$out" | grep -q 'sorryAx'; then
       pass sorry_caught_by_selective_audit
     else
-      failcase sorry_caught_by_selective_audit "expected a nonzero exit citing sorryAx; status=$status. Tail:
-$(printf '%s' "$out" | tail -20)"
+      failcase sorry_caught_by_selective_audit "expected a nonzero exit citing sorryAx; status=$status.
+$(diagnostic "$out")"
     fi
 
     # --- a new, unpinned public theorem fails coverage ------------------------------------
@@ -272,8 +294,8 @@ $(printf '%s' "$out" | tail -20)"
     if [ "$status" -ne 0 ] && printf '%s' "$out" | grep -q 'not pinned'; then
       pass new_unpinned_theorem_fails
     else
-      failcase new_unpinned_theorem_fails "expected a nonzero exit citing an unpinned theorem; status=$status. Tail:
-$(printf '%s' "$out" | tail -20)"
+      failcase new_unpinned_theorem_fails "expected a nonzero exit citing an unpinned theorem; status=$status.
+$(diagnostic "$out")"
     fi
   fi
 fi
