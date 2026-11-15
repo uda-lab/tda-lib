@@ -64,11 +64,21 @@ PR head before merge. Do not add CI-skip markers to suppress routine validation 
 local result as a replacement for hosted success. Observe actual checks and branch rules;
 never invent a status.
 
-Run applicable local checks and the mandatory pre-push gate. Implementation changes retain
-the full guarded `scripts/check.sh`, shared-path exclusion, live axiom audit, public coverage and
-Issue acceptance checks. For prose-only changes, use focused patch, link, consistency and
-whitespace checks plus the existing textual guards; let workflow change detection select
-the hosted build steps. Do not add redundant full builds or full doc generation.
+Run applicable local checks and the mandatory pre-push gate.
+
+Before pushing implementation changes run `scripts/check.sh --incremental` (the pre-push
+hook runs it). It re-runs every textual guard and the Lake build, and re-audits axioms,
+coverage and Comparator for every result whose content-hashed inputs have no recorded local
+pass; whenever it cannot establish that, it runs the full gate. It is feedback, not merge
+evidence: its output never reads `CHECK OK`. The full gate (`scripts/check.sh`) runs in
+hosted CI as job `check` on the evaluated PR head, and `check` success on that head remains
+the merge requirement. Record the hosted run (URL, evaluated head, `CHECK OK`, audit and
+coverage summary lines) in the PR. Stable promotions and release audits run the full local
+gate `scripts/check.sh --stable` in addition.
+
+For prose-only changes, use focused patch, link, consistency and whitespace checks plus the
+existing textual guards; let workflow change detection select the hosted build steps. Do not
+add redundant full builds or full doc generation.
 
 Keep independent final-head review, resolved findings and threads, no hard-stop labels and
 no unchecked PR tasks. Record evaluated head/base SHAs, exact commands and exit outcomes,

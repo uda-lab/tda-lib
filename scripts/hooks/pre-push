@@ -5,9 +5,11 @@
 #      and of merge-conflict markers;
 #   2. no unmarked sorry/admit, no custom axiom/opaque/unsafe in the working tree, and the
 #      root and area aggregators are imports-only;
-#   3. if Lean sources, build config or comparator.json changed, the full gate
-#      (scripts/check.sh: resource-guarded lake build + live axiom audit + Comparator
-#      agreement) must pass.
+#   3. if Lean sources, build config or comparator.json changed, the local pre-PR gate
+#      (scripts/check.sh --incremental: resource-guarded lake build + selectively re-audited
+#      axioms/coverage/Comparator, falling back to the full gate when eligibility cannot be
+#      established — Issue #951) must pass. Its own output never reads `CHECK OK`: it is
+#      feedback, not merge evidence. The full gate stays authoritative in hosted CI.
 # The build log stays in a temp file; only its tail is printed on failure, so full
 # Lean logs never enter an agent's context.
 set -uo pipefail
@@ -61,16 +63,16 @@ bash scripts/check-no-custom-axiom.sh || { echo "[pre-push] BLOCK: check-no-cust
 bash scripts/check-root-aggregator.sh || { echo "[pre-push] BLOCK: check-root-aggregator failed"; exit 1; }
 
 if printf '%s\n' "$changed" | grep -qE '\.lean$|lakefile|lean-toolchain|lake-manifest|comparator\.json'; then
-  echo "[pre-push] Lean sources or build config changed — running scripts/check.sh (resource-guarded)…"
+  echo "[pre-push] Lean sources or build config changed — running scripts/check.sh --incremental (resource-guarded)…"
   LOG="$(mktemp)"
-  if ! bash scripts/check.sh >"$LOG" 2>&1; then
-    echo "[pre-push] BLOCK: scripts/check.sh FAILED. Tail:"
+  if ! bash scripts/check.sh --incremental >"$LOG" 2>&1; then
+    echo "[pre-push] BLOCK: scripts/check.sh --incremental FAILED. Tail:"
     tail -n 40 "$LOG"
     rm -f "$LOG"
     exit 1
   fi
   rm -f "$LOG"
-  echo "[pre-push] check.sh green"
+  echo "[pre-push] check.sh --incremental green"
 else
   echo "[pre-push] no Lean/build changes — build skipped"
 fi

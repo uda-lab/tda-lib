@@ -18,11 +18,17 @@ export PATH="$HOME/.elan/bin:$PATH"
 
 step() { echo "==> $*"; }
 
-if [ "$#" -gt 1 ] || { [ "$#" -eq 1 ] && [ "$1" != "--stable" ]; }; then
-  echo "usage: scripts/check.sh [--stable]" >&2; exit 64
+if [ "$#" -gt 1 ] || { [ "$#" -eq 1 ] && [ "$1" != "--stable" ] && [ "$1" != "--incremental" ]; }; then
+  echo "usage: scripts/check.sh [--stable|--incremental]" >&2; exit 64
 fi
+incremental=0
+if [ "${1:-}" = --incremental ]; then incremental=1; fi
 stable=0
 if [ "${1:-}" = --stable ] || [ "${TDA_STABLE_RELEASE:-0}" = 1 ] || [ "$(git branch --show-current)" = main ]; then stable=1; fi
+if [ "$incremental" = 1 ] && [ "$stable" = 1 ]; then
+  echo "ERROR: --incremental and --stable (including TDA_STABLE_RELEASE=1 or the main branch) are mutually exclusive." >&2
+  exit 64
+fi
 step "sorry/admit and custom axiom policy"
 if [ "$stable" = 1 ]; then
   bash scripts/check-no-sorry.sh --stable
@@ -40,6 +46,16 @@ step "root/area aggregators imports-only"; bash scripts/check-root-aggregator.sh
 # clear them now (not earlier: the transient guard above needs the caller's git object access).
 # shellcheck disable=SC2046
 unset $(git rev-parse --local-env-vars)
+
+if [ "$incremental" = 1 ]; then
+  # From here on, scripts/check-incremental.sh (Issue #951) is the local pre-PR gate: it
+  # re-runs `lake build` and selectively re-audits axioms/coverage/Comparator, falling back
+  # to the unchanged full gate below whenever eligibility cannot be established. Its own exit
+  # code is this script's exit code; its final line never reads `CHECK OK`. It runs with the
+  # same cleared git env-vars as the rest of this gate, for the same reason.
+  bash "$ROOT/scripts/check-incremental.sh"
+  exit $?
+fi
 
 step "lake build";                     "$ROOT/scripts/lean.sh" lake build
 step "live axiom audit";               bash scripts/check-axioms.sh

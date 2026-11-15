@@ -97,8 +97,9 @@ the approved fields. Develop needs squash and merge methods for its two integrat
 main uses merge commits. Preserve protections and the existing workflow triggers and
 conditional steps. Ordinary PR and integration pushes run CI; do not suppress them with
 CI-skip markers. Prose-only changes use focused local checks and the workflow's lightweight
-path. Implementation changes retain the full guarded local check and applicable hosted
-build/audit. Optional documentation generation and the note lane retain their own conditions.
+path. Implementation changes run the incremental local gate; the full gate is authoritative
+in hosted CI on the evaluated PR head. Optional documentation generation and the note lane
+retain their own conditions.
 Review acquisition and merge evidence follow `github-driven-workflow`; review disposition
 follows `lean-review-routing`. All review findings are observed and resolved or disposed of.
 No unsolicited notifications; authorized reports and the Issue/PR record are unaffected.
