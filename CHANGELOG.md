@@ -20,6 +20,15 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   decisions, including in the `List.Perm.idxBij` route that realizes
   repeated intervals at separate coordinates. See
   [executing finite interval and list-barcode modules](docs/math/constructive-finite-intervals.md).
+- Compute certified sampled image-persistence barcodes for globally
+  grade-preserving vertex maps on nondecreasing integer observations, with
+  empty, negative and repeated observations allowed. Barcode endpoints are
+  observation indices, with repeated intervals retained; death at the
+  observation count records survival through the last sample, without
+  inferring a lifetime between or beyond observations. Extraction is
+  quadratic in the observation count, using the existing rank evaluation
+  exponential in source Betti dimension. See
+  [sampled image barcodes](docs/api.md#persistent-homology-results-and-computational-boundary).
 
 ## v0.4.0
 
