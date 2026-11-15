@@ -49,13 +49,20 @@ and must be pinned; typeclass resolution at call sites never creates a new named
 declaration in this project's own modules, so there is no auto-derived category to skip.
 Iterate this list, not the caller, if a false positive or negative shows up.
 
+The scan walks only the constants declared in `TDA`-prefixed modules, found via each
+loaded module's own `ModuleData.constNames`/`.constants` (parallel arrays, already
+populated by `import TDA`), not every constant in the environment: that environment also
+holds Mathlib's own ~9000 modules, and the old per-constant `env.getModuleIdxFor?` check
+to filter them out was itself the scan's dominant cost (measured on #949's follow-up).
+Module membership is therefore established once per module, not once per declaration.
+
 A prerequisite the whole walk depends on: `import TDA` must load every
 `TDA/**/*.lean` file, directly or transitively, or that file's declarations never
-reach `(← getEnv).constants` and every check passes vacuously for its content. So this file
-also discovers every `.lean` file on disk under `TDA/` and fails if any of them is
-not among `env.header.moduleNames` — the set this run's `import TDA` actually
-loaded, not a static read of the root aggregator's import list (so a file reachable only
-from a forgotten nested aggregator is caught too).
+reach a `TDA`-prefixed module's `ModuleData` and every check passes vacuously for its
+content. So this file also discovers every `.lean` file on disk under `TDA/` and fails
+if any of them is not among `env.header.moduleNames` — the set this run's `import TDA`
+actually loaded, not a static read of the root aggregator's import list (so a file
+reachable only from a forgotten nested aggregator is caught too).
 
 `scripts/rename-project.sh` rewrites every `TDA` occurrence in this file.
 -/
@@ -64,23 +71,14 @@ import Lean.Util.CollectAxioms
 
 open Lean System
 
-/-- `n` was declared in a module named `TDA`, or a submodule of it
-(`TDA.Foo.Bar`, the root aggregator `TDA`, etc). -/
-private def isProjectModule (env : Environment) (n : Name) : Bool :=
-  match env.getModuleIdxFor? n with
-  | some idx =>
-    match env.header.moduleNames[idx.toNat]? with
-    | some modName => (`TDA).isPrefixOf modName
-    | none => false
-  | none => false
-
 /-- `n`/`info` is a public theorem this repository must pin in
-`scripts/print_axioms/*.lean`. -/
+`scripts/print_axioms/*.lean`. Callers already restrict to names declared in a `TDA`
+module — by iterating that module's own `ModuleData` (see the scan below) rather than
+every constant in the environment — so no module-membership check is repeated here. -/
 private def isPublicProjectTheorem (env : Environment) (n : Name) (info : ConstantInfo) :
     CoreM Bool := do
   match info with
   | .thmInfo _ =>
-    if !isProjectModule env n then return false
     if (← isAutoDeclOrPrivate_Internal n) then return false
     if env.isProjectionFn n then return false
     return true
@@ -90,12 +88,12 @@ private def isPublicProjectTheorem (env : Environment) (n : Name) (info : Consta
 Do not apply `isAutoDeclOrPrivate_Internal` to the unmangled name: its lexical
 `proof_`/`match_` heuristics can also match hand-written claims. We conservatively
 retain non-reserved generated helpers; they need no pins, but cannot hide forbidden
-axioms. Reserved theorem names and field projections are mechanical declarations. -/
+axioms. Reserved theorem names and field projections are mechanical declarations.
+Module membership is the caller's responsibility, as above. -/
 private def isPrivateProjectTheorem (env : Environment) (n : Name) (info : ConstantInfo) :
     CoreM Bool := do
   match info with
   | .thmInfo _ =>
-    if !isProjectModule env n then return false
     let some _ := privateToUserName? n | return false
     if isReservedName env n then return false
     if env.isProjectionFn n then return false
@@ -189,18 +187,26 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
   let mut total : Nat := 0
   let mut missing : Array String := #[]
   let mut privateClaims : Array Name := #[]
-  for (n, info) in env.constants.toList do
-    if let .thmInfo _ := info then
-      -- Imported mathlib declarations dominate this environment. Classify project
-      -- provenance once before invoking either project theorem predicate.
-      if isProjectModule env n then
-        if (← isPrivateProjectTheorem env n info) then
-          privateClaims := privateClaims.push n
-        if (← isPublicProjectTheorem env n info) then
-          total := total + 1
-          let name := n.toString
-          unless pinned.contains name do
-            missing := missing.push name
+  -- Iterate only the constants declared in TDA's own modules, via each module's own
+  -- `ModuleData`, instead of every constant in the environment (Mathlib's ~9000
+  -- modules dominate `env.constants`, which made the old per-constant
+  -- `env.getModuleIdxFor?` check the scan's real cost). `moduleData[i].constNames`
+  -- and `.constants` are parallel arrays already populated by `import TDA`; no
+  -- separate environment lookup is needed per declaration.
+  for modIdx in [0:env.header.moduleData.size] do
+    if (`TDA).isPrefixOf env.header.moduleNames[modIdx]! then
+      let data := env.header.moduleData[modIdx]!
+      for i in [0:data.constNames.size] do
+        let n := data.constNames[i]!
+        let info := data.constants[i]!
+        if let .thmInfo _ := info then
+          if (← isPrivateProjectTheorem env n info) then
+            privateClaims := privateClaims.push n
+          if (← isPublicProjectTheorem env n info) then
+            total := total + 1
+            let name := n.toString
+            unless pinned.contains name do
+              missing := missing.push name
   let t2 ← IO.monoMsNow
   let privateFailures ← auditPrivateTheorems privateClaims
   let t3 ← IO.monoMsNow
