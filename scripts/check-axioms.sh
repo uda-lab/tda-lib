@@ -58,9 +58,13 @@ fi
 expected_file="$(mktemp)"
 records_file="$(mktemp)"
 mkdir -p "$ROOT/.agents/scratch"
-combined_file="$(mktemp "$ROOT/.agents/scratch/axiom-audit.XXXXXX.lean")"
+# A trailing suffix after XXXXXX (e.g. ".lean") needs mkstemps; the system mktemp on
+# macOS only calls mkstemp and silently fails on it. Make a trailing-X-only directory
+# instead and give the file inside it a fixed name.
+combined_dir="$(mktemp -d "$ROOT/.agents/scratch/axiom-audit.XXXXXX")"
+combined_file="$combined_dir/combined.lean"
 stderr_file="$(mktemp)"
-trap 'rm -f "$pin_paths_file" "$expected_file" "$records_file" "$combined_file" "$stderr_file"' EXIT
+trap 'rm -f "$pin_paths_file" "$expected_file" "$records_file" "$stderr_file"; rm -rf "$combined_dir"' EXIT
 if ! awk '/^#print axioms /{print $3}' "${SCRIPTS[@]}" >"$expected_file"; then
   echo "ERROR: failed to read axiom pins; the audit is incomplete." >&2
   exit 1
