@@ -287,8 +287,14 @@ $(diagnostic "$out")"
     fi
 
     # --- a new, unpinned public theorem fails coverage ------------------------------------
+    # No leading underscore: Lean's own `Name.isInternal` (`s.front == '_'`) makes
+    # `isAutoDeclOrPrivate_Internal` treat ANY underscore-prefixed name as auto-generated,
+    # which `isPublicProjectTheorem`/`isPublicScopedTheorem` exclude from "public theorem"
+    # classification entirely — by design, correctly, for every OTHER such name in this
+    # project. An underscore-prefixed probe here would be invisible to the coverage check
+    # it means to test, not merely unpinned; it was never audited for axioms either.
     backup_then_touch "$leaf_path"
-    printf '\ntheorem _selfTestUnpinnedProbe951 : True := trivial\n' >>"$leaf_path"
+    printf '\ntheorem selfTestUnpinnedProbe951 : True := trivial\n' >>"$leaf_path"
     out="$(run_incremental 2>&1)"; status=$?
     restore_touched "$leaf_path"
     if [ "$status" -ne 0 ] && printf '%s' "$out" | grep -q 'not pinned'; then
