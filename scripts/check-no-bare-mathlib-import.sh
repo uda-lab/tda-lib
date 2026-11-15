@@ -10,13 +10,19 @@
 # the fix is always to name the actual imports. Narrowing imports other than `Mathlib`
 # itself (e.g. `Mathlib.Tactic`) is out of scope for this guard.
 #
-# A plain anchored grep is enough: `import Mathlib` followed only by optional trailing
-# whitespace is never meaningful inside a string literal or a block comment opener in
-# practice, and this is exactly the shape `lake`/`lean` parse as the bare root import — so no
-# comment/string-stripping lexer pass is needed here, unlike the sorry/axiom guards.
+# Uses the shared lexer's `mode=imports` (scripts/lean-code-scan.awk), which already strips
+# comments and string literals and handles `module`/`public`/`meta`/`all` modifiers and `«…»`
+# escapes, emitting one resolved module name per import. A plain line-anchored grep was tried
+# first and rejected: `import Mathlib -- needed for tactics` still loads all of Mathlib but
+# does not match a pattern requiring only trailing whitespace after `Mathlib`, so a trailing
+# comment would silently defeat the guard. Checking the lexer's output for an exact `Mathlib`
+# line (not `Mathlib.Sub`, which is a legitimate narrow import) avoids that gap and also
+# avoids the opposite mistake of flagging `import Mathlib` text that only appears inside a
+# comment.
 #
-# FAIL-CLOSED: one `grep` over all files with no error suppression under `set -euo pipefail`;
-# a scanner failure aborts non-zero.
+# FAIL-CLOSED: `set -euo pipefail` with no command run inside a conditional that would
+# swallow a nonzero exit, so a lexer failure (unreadable file, scanner bug) aborts the whole
+# script non-zero instead of silently reporting success.
 set -euo pipefail
 
 if [ "$#" -ne 0 ]; then
@@ -40,10 +46,17 @@ if [ ! -s "$list" ]; then
   exit 0
 fi
 
-violations="$(LC_ALL=C xargs -0 grep -nHE '^import Mathlib[[:space:]]*$' < "$list" || true)"
+violations=""
+while IFS= read -r -d '' file; do
+  modules="$(LC_ALL=C awk -v mode=imports -f "$ROOT/scripts/lean-code-scan.awk" "$file")"
+  if printf '%s\n' "$modules" | grep -qxF 'Mathlib'; then
+    violations="$violations$file: bare 'import Mathlib'
+"
+  fi
+done < "$list"
 
 if [ -n "$violations" ]; then
-  printf '%s\n' "$violations" >&2
+  printf '%s' "$violations" >&2
   echo "ERROR: bare 'import Mathlib' found above in TDA/ or TDA.lean." >&2
   echo "Replace it with the specific Mathlib modules the file actually uses." >&2
   exit 1
