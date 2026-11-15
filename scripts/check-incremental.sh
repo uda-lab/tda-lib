@@ -26,8 +26,19 @@ solution_module="TDA.Probability.SamplingCoverage"
 # --- Step 2 (part 1): static fallback triggers, decided before anything is read -----------
 fallback_reason=""
 
-integration=origin/develop
-if ! git rev-parse --verify "$integration" >/dev/null 2>&1; then integration=origin/main; fi
+# Test-only override (scripts/test-incremental.sh): a PR branch that itself modifies a
+# "sensitive" path (lakefile.toml, this gate's own scripts, etc. — exactly what #951 does)
+# permanently differs from origin/develop in those paths, which would make every git-diff-
+# based trigger below fire for that reason first, masking whichever SPECIFIC trigger a test
+# case means to isolate (an added/corrupted record, one single sensitive file, …). Pointing
+# this at a local ref that equals the test's own HEAD makes the ambient diff empty, so only
+# that test's own probe mutation shows up. Never set outside scripts/test-incremental.sh;
+# unset (the only way any real caller — the pre-push hook, `scripts/check.sh --incremental`,
+# a human — ever invokes this file), behaviour is unchanged from before this variable existed.
+integration="${TDA_INCREMENTAL_INTEGRATION_REF:-origin/develop}"
+if [ -z "${TDA_INCREMENTAL_INTEGRATION_REF:-}" ] && ! git rev-parse --verify "$integration" >/dev/null 2>&1; then
+  integration=origin/main
+fi
 merge_base="$(git merge-base HEAD "$integration" 2>/dev/null)"
 if [ -z "$merge_base" ]; then
   fallback_reason="the merge base with $integration could not be computed"

@@ -136,6 +136,35 @@ def forward_closure(graph: dict[str, list[str]], module: str) -> list[str]:
     return sorted(seen)
 
 
+def build_reverse_graph(graph: dict[str, list[str]]) -> dict[str, list[str]]:
+    """`graph` with every edge reversed: `reverse[N]` lists every module whose direct
+    imports include `N` (every module `graph`'s own keys can appear as a dependency of)."""
+    reverse: dict[str, list[str]] = {m: [] for m in graph}
+    for m, deps in graph.items():
+        for dep in deps:
+            reverse.setdefault(dep, []).append(m)
+    return reverse
+
+
+def reverse_closure(reverse: dict[str, list[str]], module: str) -> list[str]:
+    """{module} union every TDA module that (transitively) imports it — the Issue
+    acceptance test's "that module and its reverse dependencies": changing `module`'s
+    content can only change the incremental-audit key of a module in this set, because
+    `forward_closure` of anything outside it never includes `module`. `reverse` must be
+    `build_reverse_graph(graph)` for the same `graph` `module` was discovered in."""
+    seen: set[str] = set()
+    pending = [module]
+    while pending:
+        n = pending.pop()
+        if n in seen:
+            continue
+        seen.add(n)
+        for parent in reverse.get(n, []):
+            if parent not in seen:
+                pending.append(parent)
+    return sorted(seen)
+
+
 def read_common_inputs():
     toolchain = read_nonempty(ROOT / "lean-toolchain", "lean-toolchain")
     manifest = read_nonempty(ROOT / "lake-manifest.json", "lake-manifest.json")
@@ -164,9 +193,12 @@ def module_key(module: str, closure: list[str], common) -> str:
 
 def cmd_graph(_args: list[str]) -> int:
     """Print `<module>\\t<reverse-dep-count>` for every TDA module, one per line, sorted —
-    diagnostic/test support only (scripts/test-incremental.sh uses it to find a genuine
-    zero-reverse-dependency leaf module for its real end-to-end cases); not used by
-    scripts/check-incremental.sh itself."""
+    diagnostic/test support only; not used by scripts/check-incremental.sh itself. Every
+    module actually reachable from `TDA.lean` (the only kind that passes the `keys`
+    command's reachability check) has a DIRECT reverse-dep count of at least 1 by
+    construction — something in its own import chain reaches it — so "0" never identifies
+    a genuine content leaf here; `smallest-leaf` below is what scripts/test-incremental.sh
+    uses instead."""
     try:
         graph = discover_tda_modules()
     except KeyError_ as error:
@@ -179,6 +211,92 @@ def cmd_graph(_args: list[str]) -> int:
                 reverse_count[dep] += 1
     lines = [f"{m}\t{reverse_count[m]}" for m in sorted(graph)]
     sys.stdout.write("\n".join(lines) + ("\n" if lines else ""))
+    return 0
+
+
+def cmd_reverse_closure(args: list[str]) -> int:
+    """`reverse-closure <module>`: print, one per line, {module} union every TDA module
+    that transitively imports it. Diagnostic/test support only (scripts/test-incremental.sh
+    uses it to predict exactly how many modules a real incremental run must re-audit after
+    editing <module>); not used by scripts/check-incremental.sh itself."""
+    if len(args) != 1:
+        print("usage: incremental-cache.py reverse-closure <module>", file=sys.stderr)
+        return 64
+    try:
+        graph = discover_tda_modules()
+    except KeyError_ as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+    if args[0] not in graph:
+        print(f"ERROR: unknown TDA module {args[0]!r}", file=sys.stderr)
+        return 1
+    for m in reverse_closure(build_reverse_graph(graph), args[0]):
+        print(m)
+    return 0
+
+
+def has_real_content(module: str) -> bool:
+    """`module`'s own `.lean` file has at least one non-import/non-comment/non-blank line
+    — i.e. it is NOT itself a pure aggregator (`scripts/lean-code-scan.awk -v mode=root`,
+    the same lexer `scripts/check-root-aggregator.sh` uses: empty output there means
+    import-only). A path-only check (not itself a directory) is not enough: some `*.lean`
+    files collect a group of sibling `*Examples` files into one import-only name without
+    being a directory `scripts/check-root-aggregator.sh` would ever flag — a nested
+    "Examples" collector, for instance — and editing one of those to add a declaration
+    would (rightly) trip the unrelated root/area-aggregator guard instead of testing this
+    gate."""
+    path = ROOT / (module.replace(".", "/") + ".lean")
+    try:
+        result = subprocess.run(
+            ["awk", "-v", "mode=root", "-f", str(SCAN_AWK), str(path)],
+            cwd=ROOT, capture_output=True, text=True, check=True, env={**os.environ, "LC_ALL": "C"},
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return False
+    return result.stdout.strip() != ""
+
+
+def cmd_smallest_leaf(args: list[str]) -> int:
+    """`smallest-leaf`: print `<module>\\t<reverse-closure-size>` for the TDA content
+    module — at least 3 dotted name components, not itself a directory, and with real
+    content of its own (`has_real_content`) — with the globally smallest reverse closure.
+    Diagnostic/test support only: scripts/test-incremental.sh's real end-to-end cases edit
+    this module specifically, because (a) "zero reverse dependencies" (this project's
+    area/root aggregators always import every real content module, so no non-root module
+    has a direct reverse-dep count of 0 — see `graph`'s own docstring) is unsatisfiable,
+    but a content module reached directly from a top-level `Examples` aggregator, bypassing
+    the deeper area/library chain, can still have a SMALL reverse closure; and (b) a small,
+    deterministic closure keeps these cases fast and keeps their audited-count assertion
+    exact rather than merely "more than zero"."""
+    if args:
+        print("usage: incremental-cache.py smallest-leaf", file=sys.stderr)
+        return 64
+    try:
+        graph = discover_tda_modules()
+    except KeyError_ as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+    reverse = build_reverse_graph(graph)
+    best_module: str | None = None
+    best_size: int | None = None
+    for module in sorted(graph):
+        if len(module.split(".")) < 3:
+            continue
+        if (ROOT / module.replace(".", "/")).is_dir():
+            continue
+        if not has_real_content(module):
+            continue
+        size = len(reverse_closure(reverse, module))
+        if best_size is None or size < best_size:
+            best_module, best_size = module, size
+    if best_module is None:
+        print(
+            "ERROR: no TDA content module (>= 3 dotted components, not an aggregator "
+            "directory, with real content of its own) was found",
+            file=sys.stderr,
+        )
+        return 1
+    print(f"{best_module}\t{best_size}")
     return 0
 
 
@@ -356,7 +474,11 @@ def cmd_write_record(args: list[str]) -> int:
 
 def main(argv: list[str]) -> int:
     if not argv:
-        print("usage: incremental-cache.py {keys|graph|comparator-key|store-dir|read-record|write-record} ...", file=sys.stderr)
+        print(
+            "usage: incremental-cache.py "
+            "{keys|graph|reverse-closure|smallest-leaf|comparator-key|store-dir|read-record|write-record} ...",
+            file=sys.stderr,
+        )
         return 64
     command, rest = argv[0], argv[1:]
     if tomllib is None:
@@ -366,6 +488,10 @@ def main(argv: list[str]) -> int:
         return cmd_keys(rest)
     if command == "graph":
         return cmd_graph(rest)
+    if command == "reverse-closure":
+        return cmd_reverse_closure(rest)
+    if command == "smallest-leaf":
+        return cmd_smallest_leaf(rest)
     if command == "comparator-key":
         return cmd_comparator_key(rest)
     if command == "store-dir":

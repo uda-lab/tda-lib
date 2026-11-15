@@ -51,3 +51,6 @@ core.*
 # Lightweight documentation tooling bytecode (site output stays under /build/)
 /docsite/__pycache__/
 /docbuild/__pycache__/
+
+# scripts/lib/incremental-cache.py (Issue #951) bytecode cache
+/scripts/lib/__pycache__/

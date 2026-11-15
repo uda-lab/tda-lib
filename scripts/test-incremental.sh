@@ -34,6 +34,17 @@ failcase() { echo "FAIL [$1]: $2" >&2; fail=1; }
 
 STORE="$(mktemp -d)"
 export TDA_AUDIT_RECORDS="$STORE"
+# #951's own branch permanently differs from origin/develop in every "sensitive" path this
+# gate watches (lakefile.toml excepted; it's the gate's own scripts, lib and check.sh that
+# differ) — that is the entire content of this PR. Diffing against real origin/develop would
+# therefore make every git-diff-based trigger below fire for THAT reason first, on every
+# case, masking whichever specific trigger each case means to isolate. A local branch ref
+# pinned at this run's own HEAD gives check-incremental.sh's test-only
+# TDA_INCREMENTAL_INTEGRATION_REF override (see its own comment) a merge-base with zero
+# ambient diff, so only each case's own probe mutation shows up.
+BASELINE_REF="test-incremental-951-baseline-$$"
+git branch -f "$BASELINE_REF" HEAD >/dev/null || { echo "FAIL [setup]: could not create the baseline ref $BASELINE_REF" >&2; exit 1; }
+export TDA_INCREMENTAL_INTEGRATION_REF="$BASELINE_REF"
 BACKUP_DIR="$(mktemp -d)"
 declare -A BACKUP_OF
 CREATED=()
@@ -65,6 +76,7 @@ cleanup() {
   if [ "${#CREATED[@]}" -gt 0 ]; then
     rm -f "${CREATED[@]}"
   fi
+  git branch -D "$BASELINE_REF" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
 
@@ -131,7 +143,7 @@ backup_then_touch "$tool_file"
 printf '\n# test-incremental.sh: self-test probe comment, reverted immediately\n' >>"$tool_file"
 out="$(dry_run 1)"; status=$?
 restore_touched "$tool_file"
-if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -q 'build/toolchain/guard input changed'; then
+if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -q "build/toolchain/guard input changed: $tool_file"; then
   pass changed_audit_tool_source_forces_full
 else
   failcase changed_audit_tool_source_forces_full "expected fallback reason mentioning a changed guard input; got: $out"
@@ -172,7 +184,7 @@ fi
 
 echo "==> test-incremental.sh: populating a fresh record store (real full-mode run)"
 out="$(run_incremental 2>&1)"; status=$?
-if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -q 'INCREMENTAL CHECK OK (fell back to full:.*record store does not exist yet'; then
+if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -q 'INCREMENTAL CHECK OK (fell back to full: the incremental-audit record store does not exist yet'; then
   pass fresh_store_forces_full
 else
   failcase fresh_store_forces_full "expected a successful full-mode fallback citing the missing store; status=$status. Tail:
@@ -185,22 +197,25 @@ else
   failcase full_mode_refreshed_records "expected >900 refreshed records after the full-mode run, found $record_count"
 fi
 
-# Pick a genuine zero-reverse-dependency TDA leaf module to edit for the remaining cases.
-# Zero reverse dependencies AND at least 3 dotted components, to exclude the root
-# aggregator "TDA" itself (reverse count 0 by definition — nothing imports the top) and the
-# imports-only area aggregators "TDA.<Area>" (AGENTS.md: real content lives at
-# TDA.<Area>.<File>, two levels under TDA/); an aggregator is textually imports-only and
-# editing it to add a declaration would trip the unrelated root-aggregator guard instead of
-# testing this gate.
-leaf="$(python3 "$CACHE_PY" graph | awk -F'\t' '$2 == 0 { n = split($1, parts, "."); if (n >= 3) { print $1; exit } }')"
-if [ -z "$leaf" ]; then
-  failcase pick_leaf_module "no zero-reverse-dependency TDA content module was found; cannot run the remaining real cases"
+# Pick a TDA content module to edit for the remaining cases, via `smallest-leaf`: this
+# project's area/root aggregators import every real content module, so (per its own
+# docstring and `graph`'s) NO non-root module ever has a direct reverse-dependency count of
+# 0 — editing any one of them necessarily also changes every ancestor aggregator's own key,
+# all the way up to the root. `smallest-leaf` instead picks the content module whose full
+# reverse closure (itself plus every transitive importer — the Issue acceptance test's
+# "that module and its reverse dependencies") is smallest, so the edits below stay fast and
+# the audited-count assertion below can be exact rather than merely "more than zero".
+leaf_line="$(python3 "$CACHE_PY" smallest-leaf)"
+leaf="${leaf_line%%$'\t'*}"
+expected_audited="${leaf_line##*$'\t'}"
+if [ -z "$leaf" ] || [ -z "$expected_audited" ]; then
+  failcase pick_leaf_module "no suitable TDA content module was found; cannot run the remaining real cases"
 else
   leaf_path="$(printf '%s' "$leaf" | sed 's/\./\//g').lean"
   if [ ! -f "$leaf_path" ]; then
     failcase pick_leaf_module "computed path $leaf_path for leaf module $leaf does not exist"
   else
-    echo "==> test-incremental.sh: using $leaf ($leaf_path) as the zero-reverse-dependency leaf"
+    echo "==> test-incremental.sh: using $leaf ($leaf_path), reverse-closure size $expected_audited, as the test leaf"
 
     # --- corrupted record forces the full gate (checked via dry run; restored after) -----
     corrupt_key_line="$(python3 "$CACHE_PY" keys | awk -F'\t' -v m="$leaf" '$1 == m')"
@@ -216,19 +231,23 @@ else
       failcase corrupted_record_forces_full "expected fallback reason mentioning a corrupt record; got: $out"
     fi
 
-    # --- leaf edit re-audits exactly the leaf (zero reverse dependencies) ----------------
+    # --- leaf edit re-audits exactly its reverse closure (Issue acceptance: "that module
+    # and its reverse dependencies") -------------------------------------------------------
     # A real declaration, not just a comment: Lean's olean serialisation may not change a
     # single byte for a comment appended after every existing declaration (no source
     # position shifts), which would make this case pass for the wrong reason (nothing to
-    # re-audit) rather than the right one.
+    # re-audit) rather than the right one. Editing $leaf changes its own key AND, because
+    # its forward closure is now part of every reverse-dependent aggregator's forward
+    # closure too, each of their keys — exactly $expected_audited modules, no more (nothing
+    # outside the reverse closure) and no fewer (every module above the edit is stale).
     backup_then_touch "$leaf_path"
     printf '\nprivate theorem _selfTestLeafEditProbe951 : True := trivial -- #951 self-test probe, reverted immediately\n' >>"$leaf_path"
     out="$(run_incremental 2>&1)"; status=$?
     restore_touched "$leaf_path"
-    if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -qE "INCREMENTAL CHECK OK — audited 1/[0-9]+ modules"; then
-      pass leaf_edit_audits_exactly_one_module
+    if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -qE "INCREMENTAL CHECK OK — audited ${expected_audited}/[0-9]+ modules"; then
+      pass leaf_edit_audits_exact_reverse_closure
     else
-      failcase leaf_edit_audits_exactly_one_module "expected a selective run auditing exactly 1 module; status=$status. Tail:
+      failcase leaf_edit_audits_exact_reverse_closure "expected a selective run auditing exactly $expected_audited module(s); status=$status. Tail:
 $(printf '%s' "$out" | tail -20)"
     fi
 
