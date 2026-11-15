@@ -29,6 +29,13 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   quadratic in the observation count, using the existing rank evaluation
   exponential in source Betti dimension. See
   [sampled image barcodes](docs/api.md#persistent-homology-results-and-computational-boundary).
+- Make the finite-line chronological path construction and its explicit
+  matrix-sequence consumer executable: `FiniteLine.path`, `fromFin`,
+  `pathEquivalence`, `representationEquivalence` and `moduleOfAdjacent` build
+  data directly by finite recursion instead of selecting a path with
+  `Classical.choice`, with no new hypothesis on the existing public
+  interfaces. See
+  [executing chronological finite persistence](docs/math/finite-line-computation.md).
 
 ## v0.4.0
 

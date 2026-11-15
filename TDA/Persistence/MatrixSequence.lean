@@ -27,7 +27,6 @@ structure MatrixSequence (R : Type u) (N : ℕ) where
 
 namespace MatrixSequence
 variable {R : Type u} [CommRing R] {N : ℕ}
-noncomputable section
 
 /-- The coordinate module at a stage. -/
 def stage (A : MatrixSequence R N) (i : Fin N) : ModuleCat.{u} R :=
@@ -187,6 +186,8 @@ def isoOfLinearEquiv (A B : MatrixSequence R N)
       (structureMapLinear B.toPModule _).comp (e i).toLinearMap
     rw [structureMapLinear_adjacent A i j h, structureMapLinear_adjacent B i j h]
     exact he i j h)
+
+noncomputable section
 
 /-- Coordinates in supplied finite bases, with no choice of bases hidden in the input. -/
 def ofBases (M : PModule.{u,0,u} R (Fin N)) (d : Fin N → ℕ)

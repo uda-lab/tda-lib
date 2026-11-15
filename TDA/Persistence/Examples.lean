@@ -134,6 +134,7 @@ import TDA.Persistence.FiniteWeightedBoundaryTransportExamples
 import TDA.Persistence.RipsGromovHausdorffExamples
 
 import TDA.Persistence.MatrixSequenceExamples
+import TDA.Persistence.FiniteLineComputableExamples
 import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
 import TDA.Persistence.RipsSamplingExamples
