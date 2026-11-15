@@ -104,6 +104,11 @@ trap cleanup EXIT
 
 run_incremental() { bash scripts/check.sh --incremental; }
 dry_run() { TDA_INCREMENTAL_DRY_RUN="$1" bash scripts/check-incremental.sh; }
+# dry_run_leaked <n>: the same direct invocation as dry_run, but WITHOUT
+# TDA_INCREMENTAL_SELF_TEST — simulates TDA_INCREMENTAL_DRY_RUN leaking into a real
+# invocation's environment on its own (some unrelated shell state, a misconfigured CI step),
+# which must be ignored.
+dry_run_leaked() { env -u TDA_INCREMENTAL_SELF_TEST TDA_INCREMENTAL_DRY_RUN="$1" bash scripts/check-incremental.sh; }
 
 # =====================================================================================
 # Cheap cases: no build, no lock needed.
@@ -204,12 +209,24 @@ fi
 # suite loop.
 # =====================================================================================
 
+# This run is also the natural place to prove a leaked TDA_COMPARATOR_SKIP_SANDBOXED_RUN is
+# ignored: the store is empty, so the Comparator step below MUST genuinely run (a miss/
+# full-mode case) if the leak is correctly neutralised — exactly the scenario where honouring
+# an ambient leak would otherwise skip the real sandboxed run and still write a Comparator
+# PASS record other worktrees would reuse. Reuses this call rather than paying for a second
+# full gate run just to exercise the leak.
 echo "==> test-incremental.sh: populating a fresh record store (real full-mode run)"
-out="$(run_incremental 2>&1)"; status=$?
+out="$(TDA_COMPARATOR_SKIP_SANDBOXED_RUN=1 run_incremental 2>&1)"; status=$?
 if [ "$status" -eq 0 ] && printf '%s' "$out" | grep -q 'INCREMENTAL CHECK OK (fell back to full: the incremental-audit record store does not exist yet'; then
   pass fresh_store_forces_full
 else
   failcase fresh_store_forces_full "expected a successful full-mode fallback citing the missing store; status=$status.
+$(diagnostic "$out")"
+fi
+if ! printf '%s' "$out" | grep -q 'Comparator sandboxed run skipped'; then
+  pass leaked_comparator_skip_ignored
+else
+  failcase leaked_comparator_skip_ignored "a leaked TDA_COMPARATOR_SKIP_SANDBOXED_RUN=1 must never skip the sandboxed run on a miss/full-mode path; got:
 $(diagnostic "$out")"
 fi
 record_count="$(find "$STORE" -maxdepth 1 -name '*.json' | wc -l | tr -d ' ')"
@@ -217,6 +234,23 @@ if [ "$record_count" -gt 900 ]; then
   pass full_mode_refreshed_records
 else
   failcase full_mode_refreshed_records "expected >900 refreshed records after the full-mode run, found $record_count"
+fi
+
+# A leaked TDA_INCREMENTAL_DRY_RUN (set in some unrelated shell state or a misconfigured CI
+# step, without the self-test marker) must never make a real invocation print "DRY RUN ..."
+# and exit 0 without auditing anything. Dropping TDA_INCREMENTAL_SELF_TEST also disables the
+# TDA_INCREMENTAL_INTEGRATION_REF override for this one call (by the same marker, on purpose
+# — a real leak would not selectively disable one test-only override but not the other), so
+# this call compares against real origin/develop and correctly falls back to full mode for
+# the unrelated reason that #951's own branch differs from it in sensitive paths; either way,
+# the only thing this case needs to prove is the absence of a "DRY RUN" short-circuit.
+out="$(dry_run_leaked 1 2>&1)"; status=$?
+if [ "$status" -eq 0 ] && ! printf '%s' "$out" | grep -q '^DRY RUN' \
+    && printf '%s' "$out" | grep -qE 'INCREMENTAL CHECK OK'; then
+  pass leaked_dry_run_ignored
+else
+  failcase leaked_dry_run_ignored "expected the real gate to run despite a leaked TDA_INCREMENTAL_DRY_RUN=1 (no self-test marker); status=$status.
+$(diagnostic "$out")"
 fi
 
 # Pick a TDA content module to edit for the remaining cases, via `smallest-leaf`: this

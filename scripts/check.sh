@@ -14,6 +14,15 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 export PATH="$HOME/.elan/bin:$PATH"
 
+# scripts/check-comparator.sh honours TDA_COMPARATOR_SKIP_SANDBOXED_RUN unconditionally; it
+# is Issue #951's incremental gate's own opt-in hit-path signal, set inline only on that
+# gate's own hit-path call site. An ambiently leaked value here — the plain/--stable full
+# gate this script runs below — would silently skip the sandboxed Comparator run this gate
+# is supposed to be authoritative for, print "CHECK OK" regardless, and (via the incremental
+# gate's own full-mode record refresh) write a Comparator PASS record every other worktree's
+# incremental gate would then also trust.
+unset TDA_COMPARATOR_SKIP_SANDBOXED_RUN
+
 . "$ROOT/scripts/lib/build-lock.sh"
 
 step() { echo "==> $*"; }

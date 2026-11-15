@@ -13,6 +13,18 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 export PATH="$HOME/.elan/bin:$PATH"
 
+# scripts/check-comparator.sh honours TDA_COMPARATOR_SKIP_SANDBOXED_RUN unconditionally,
+# for every caller — that is deliberate (it is this gate's own opt-in hit-path signal, set
+# inline on the one call site below that legitimately uses it), but it also means an
+# AMBIENTLY leaked value (exported by some unrelated shell state, a misconfigured CI step,
+# or a previous test run) would silently skip the sandboxed Comparator run here too, in the
+# full-mode and cache-miss paths that must never skip it, and then write a Comparator PASS
+# record to the store every other worktree shares — a false pass for every worktree, not
+# just this one. Unsetting it here (and in scripts/check.sh) means only the one inline
+# assignment at this file's own hit-path call site can ever set it for a `check-comparator.sh`
+# invocation this file makes.
+unset TDA_COMPARATOR_SKIP_SANDBOXED_RUN
+
 CACHE_PY="$ROOT/scripts/lib/incremental-cache.py"
 SCRATCH="$ROOT/.agents/scratch"
 mkdir -p "$SCRATCH"
@@ -89,8 +101,12 @@ if [ -z "$fallback_reason" ] && [ ! -d "$store_path" ]; then
 fi
 
 # Test-only early exit (scripts/test-incremental.sh): report the purely git/file-diff-based
-# part of Step 2 without needing a build at all. Never set by any real invocation.
-if [ "${TDA_INCREMENTAL_DRY_RUN:-0}" = 1 ]; then
+# part of Step 2 without needing a build at all. Gated on TDA_INCREMENTAL_SELF_TEST=1 too
+# (see TDA_INCREMENTAL_INTEGRATION_REF's own comment above for why): an ambiently leaked
+# TDA_INCREMENTAL_DRY_RUN alone, with no self-test marker, must never make a real
+# `scripts/check.sh --incremental` or pre-push invocation print this and exit 0 without
+# ever auditing anything.
+if [ "${TDA_INCREMENTAL_SELF_TEST:-0}" = 1 ] && [ "${TDA_INCREMENTAL_DRY_RUN:-0}" = 1 ]; then
   echo "DRY RUN 1: fallback_reason=${fallback_reason:-(none)}"
   exit 0
 fi
@@ -205,8 +221,8 @@ fi
 # Test-only early exit (scripts/test-incremental.sh): report the full Step 2 decision,
 # including key computation and record-corruption detection, after `lake build` (cheap once
 # warm) but before the expensive audit/coverage/comparator steps either mode would run next.
-# Never set by any real invocation.
-if [ "${TDA_INCREMENTAL_DRY_RUN:-0}" = 2 ]; then
+# Gated on TDA_INCREMENTAL_SELF_TEST=1 too, same reasoning as the DRY RUN 1 exit above.
+if [ "${TDA_INCREMENTAL_SELF_TEST:-0}" = 1 ] && [ "${TDA_INCREMENTAL_DRY_RUN:-0}" = 2 ]; then
   echo "DRY RUN 2: fallback_reason=${fallback_reason:-(none)}; need_audit=${need_audit[*]-}; reused=$reused_count; comparator=$comparator_cache_status"
   exit 0
 fi
