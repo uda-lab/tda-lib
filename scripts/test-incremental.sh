@@ -203,40 +203,12 @@ else
   failcase modified_pin_line_forces_full "expected fallback reason mentioning print_axioms/; got: $out"
 fi
 
-# scripts/hooks/pre-push must select the full stable gate (--stable), never --incremental, in
-# a stable context (TDA_STABLE_RELEASE=1, or a `main` checkout): scripts/check.sh itself
-# rejects --incremental together with stable mode (exit 64), so an unconditional
-# --incremental call there would block every such push outright, including a release tag
-# push with an already-passing full stable check (found by review). A real invocation here
-# needs a full build regardless of which flag is chosen (this PR's own .lean changes trigger
-# the hook's build branch), so scripts/check.sh is stubbed to record its argv instead of
-# paying for that build twice.
-check_sh_stub_args="$(mktemp)"
-backup_then_touch "scripts/check.sh"
-cat >scripts/check.sh <<STUBEOF
-#!/usr/bin/env bash
-printf '%s\n' "\$@" >"$check_sh_stub_args"
-exit 0
-STUBEOF
-chmod +x scripts/check.sh
-out="$(TDA_STABLE_RELEASE=1 bash scripts/hooks/pre-push </dev/null 2>&1)"; status=$?
-stable_stub_args="$(cat "$check_sh_stub_args" 2>/dev/null)"
-: >"$check_sh_stub_args"
-ordinary_out="$(bash scripts/hooks/pre-push </dev/null 2>&1)"; ordinary_status=$?
-ordinary_stub_args="$(cat "$check_sh_stub_args" 2>/dev/null)"
-restore_touched "scripts/check.sh"
-rm -f "$check_sh_stub_args"
-if [ "$status" -eq 0 ] && [ "$stable_stub_args" = "--stable" ]; then
-  pass pre_push_selects_stable_gate_in_stable_context
+# Pre-push gate selection and source binding run in real temporary Git repositories.
+# Their scripts/check.sh stubs are tracked inside each fixture, so this checkout stays clean.
+if bash scripts/test-pre-push.sh; then
+  pass pre_push_source_binding_and_gate_selection
 else
-  failcase pre_push_selects_stable_gate_in_stable_context "expected pre-push to invoke scripts/check.sh --stable under TDA_STABLE_RELEASE=1; status=$status, argv='$stable_stub_args'.
-$(diagnostic "$out")"
-fi
-if [ "$ordinary_status" -eq 0 ] && [ "$ordinary_stub_args" = "--incremental" ]; then
-  pass pre_push_selects_incremental_gate_otherwise
-else
-  failcase pre_push_selects_incremental_gate_otherwise "expected pre-push to invoke scripts/check.sh --incremental outside a stable context; status=$ordinary_status, argv='$ordinary_stub_args'.
-$(diagnostic "$ordinary_out")"
+  failcase pre_push_source_binding_and_gate_selection "isolated pre-push fixture suite failed"
 fi
 
 # =====================================================================================

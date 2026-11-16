@@ -90,6 +90,14 @@ dot establishes dependencies and release scope from actual mathematical decision
 
 ## Commands and gates
 
+The pre-push hook binds each update to the current HEAD commit and requires a clean tracked
+index/worktree plus no untracked build-relevant source. Annotated tags are peeled before the
+comparison; tag updates, updates to main, a main checkout and explicit stable mode run the
+full stable gate. Tag deletions and deletion-only pushes skip source validation. Manual hook
+invocation validates HEAD against origin/develop, falling back to origin/main; an unavailable
+base or failed path diff selects the full applicable gate. The hook and hosted CI share the
+same NUL-safe path classifier.
+
 `scripts/bootstrap.sh` prepares caches and hooks; `scripts/check.sh` is the full integrity
 gate. `scripts/github-setup.sh` is the broad labels/settings/protection bootstrap; do not run
 it wholesale for a targeted live setting correction. Read current settings and update only

@@ -1,107 +1,333 @@
 #!/usr/bin/env bash
-# Local push gate (enable once per clone: scripts/bootstrap.sh, or
-# `git config core.hooksPath scripts/hooks`). Fails fast:
-#   1. the tip commit of every pushed ref has a tree free of transient/prohibited artefacts
-#      and of merge-conflict markers;
-#   2. no unmarked sorry/admit, no custom axiom/opaque/unsafe in the working tree, and the
-#      root and area aggregators are imports-only;
-#   3. if Lean sources, build config or comparator.json changed, the applicable local gate
-#      must pass: scripts/check.sh --stable (the full gate) in a stable context — pushing
-#      from a `main` checkout, e.g. a release tag, or TDA_STABLE_RELEASE=1 — since check.sh
-#      itself rejects --incremental together with stable mode (exit 64); scripts/check.sh
-#      --incremental otherwise (resource-guarded lake build + selectively re-audited
-#      axioms/coverage/Comparator, falling back to the full gate when eligibility cannot be
-#      established — Issue #951). The incremental gate's own output never reads `CHECK OK`:
-#      it is feedback, not merge evidence. The full gate stays authoritative in hosted CI.
-# The build log stays in a temp file; only its tail is printed on failure, so full
-# Lean logs never enter an agent's context.
+# Local push gate (enable once per clone with scripts/bootstrap.sh or
+# git config core.hooksPath scripts/hooks).
+#
+# A push may be validated only when every updated ref peels to the current HEAD commit,
+# the tracked index/worktree match that commit, and no build-relevant source is untracked.
+# This keeps the checked source identical to the object Git will push. Annotated tags are
+# peeled before comparison; non-commit targets and different pushed commits are rejected.
+# Ordinary build-relevant updates use the Issue #951 incremental gate. Main, tag and
+# explicitly stable updates use the full stable gate. If a base, diff or classification is
+# unavailable, run the applicable full gate instead of treating the change list as empty.
+# Deletion-only pushes need no source validation. Empty stdin means manually validate HEAD
+# against origin/develop (or origin/main when develop is unavailable).
+#
+# The hosted workflow and this hook share scripts/lib/build-change-classifier.py so their
+# build-relevant path categories stay identical. The build log is temporary; only its tail
+# is printed on failure.
 set -uo pipefail
+
+export GIT_NO_REPLACE_OBJECTS=1
 ROOT="$(git rev-parse --show-toplevel)" || exit 1
 cd "$ROOT" || exit 1
 export PATH="$HOME/.elan/bin:$PATH"
 
-# Collect the pushed commits and the set of changed files from the refs git supplies
-# on stdin (format: <local-ref> <local-oid> <remote-ref> <remote-oid>).
-# Fallback to HEAD-vs-origin/develop when stdin is empty (manual invocation).
-integration=origin/develop
-# Bootstrap before develop exists still compares against the template main revision.
-if ! git rev-parse --verify "$integration" >/dev/null 2>&1; then integration=origin/main; fi
-z40="0000000000000000000000000000000000000000"
-changed=""
-oids=""
-had_input=0
-while read -r local_ref local_oid remote_ref remote_oid; do
-  had_input=1
-  [ -z "${local_oid:-}" ] && continue
-  [ "$local_oid" = "$z40" ] && continue                     # deleting a ref — nothing to check
-  oids+="$local_oid"$'\n'
-  if [ "$remote_oid" = "$z40" ]; then                       # new remote branch
-    rbase="$(git merge-base "$local_oid" "$integration" 2>/dev/null || true)"
-  else
-    rbase="$remote_oid"
+CLASSIFIER="$ROOT/scripts/lib/build-change-classifier.py"
+SCRATCH="$ROOT/.agents/scratch"
+mkdir -p "$SCRATCH" || exit 1
+WORK="$(mktemp -d "$SCRATCH/pre-push.XXXXXX")" || exit 1
+trap 'rm -rf "$WORK"' EXIT
+
+changed_paths="$WORK/changed-paths"
+: > "$changed_paths"
+
+block() {
+  echo "[pre-push] BLOCK: $*" >&2
+}
+
+valid_oid() {
+  case "$1" in
+    ""|*[!0123456789abcdefABCDEF]*) return 1 ;;
+  esac
+  oid_length="$(printf '%s' "$1" | wc -c | tr -d ' ')"
+  case "$oid_length" in
+    40|64) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+is_zero_oid() {
+  case "$1" in
+    ""|*[!0]*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
+
+branch_at_start="$(git symbolic-ref --quiet --short HEAD 2>/dev/null)" || branch_at_start=""
+head_commit=""
+ensure_head_commit() {
+  if [ -z "$head_commit" ]; then
+    head_commit="$(git rev-parse --verify 'HEAD^{commit}' 2>/dev/null)" || head_commit=""
+    if [ -z "$head_commit" ]; then
+      block "HEAD is not a commit"
+      return 1
+    fi
   fi
-  if [ -n "${rbase:-}" ]; then
-    changed+="$(git diff --name-only "$rbase" "$local_oid" 2>/dev/null)"$'\n'
-  else
-    changed+="$(git diff --name-only "$local_oid" 2>/dev/null)"$'\n'
-  fi
-done
-if [ "$had_input" = "0" ]; then
-  oids="$(git rev-parse HEAD)"$'\n'
-  base="$(git merge-base HEAD "$integration" 2>/dev/null || true)"
-  changed="$(git diff --name-only "${base:-HEAD}" HEAD 2>/dev/null || true)"
+  return 0
+}
+stable_push=0
+if [ "$(printenv TDA_STABLE_RELEASE 2>/dev/null)" = 1 ] || [ "$branch_at_start" = main ]; then
+  stable_push=1
 fi
 
-echo "[pre-push] transient-artefact and conflict-marker guards on pushed commits…"
-for oid in $oids; do
-  bash scripts/check-transient-artifacts.sh "$oid" \
-    || { echo "[pre-push] BLOCK: check-transient-artifacts failed for $oid"; exit 1; }
-  bash scripts/check-conflict-markers.sh "$oid" \
-    || { echo "[pre-push] BLOCK: check-conflict-markers failed for $oid"; exit 1; }
+force_full=0
+had_input=0
+updates=0
+pushed_commit=""
+
+append_new_branch_diff() {
+  target_commit="$1"
+  integration=""
+  if git rev-parse --verify 'origin/develop^{commit}' >/dev/null 2>&1; then
+    integration=origin/develop
+  elif git rev-parse --verify 'origin/main^{commit}' >/dev/null 2>&1; then
+    integration=origin/main
+  fi
+  if [ -z "$integration" ]; then
+    echo "[pre-push] no usable origin/develop or origin/main base; selecting the full gate"
+    force_full=1
+    return
+  fi
+  merge_base="$(git merge-base "$target_commit" "$integration" 2>/dev/null)" || merge_base=""
+  if [ -z "$merge_base" ]; then
+    echo "[pre-push] merge base with $integration is unavailable; selecting the full gate"
+    force_full=1
+    return
+  fi
+  if ! git diff --no-renames --name-only -z "$merge_base" "$target_commit" -- >> "$changed_paths"; then
+    echo "[pre-push] diff from merge base $merge_base failed; selecting the full gate"
+    force_full=1
+  fi
+}
+
+append_existing_ref_diff() {
+  target_commit="$1"
+  remote_oid="$2"
+  old_commit="$(git rev-parse --verify "$remote_oid^{commit}" 2>/dev/null)" || old_commit=""
+  if [ -z "$old_commit" ]; then
+    echo "[pre-push] previous remote object $remote_oid is unavailable or is not a commit; selecting the full gate"
+    force_full=1
+    return
+  fi
+  if ! git diff --no-renames --name-only -z "$old_commit" "$target_commit" -- >> "$changed_paths"; then
+    echo "[pre-push] diff from previous remote commit $old_commit failed; selecting the full gate"
+    force_full=1
+  fi
+}
+
+while IFS= read -r line || [ -n "$line" ]; do
+  had_input=1
+  if [ -z "$line" ]; then
+    block "malformed empty ref update line"
+    exit 1
+  fi
+  local_ref=""
+  local_oid=""
+  remote_ref=""
+  remote_oid=""
+  extra=""
+  IFS=' ' read -r local_ref local_oid remote_ref remote_oid extra <<< "$line"
+  if [ -z "$local_ref" ] || [ -z "$local_oid" ] || [ -z "$remote_ref" ] || [ -z "$remote_oid" ] || [ -n "$extra" ]; then
+    block "malformed ref update line"
+    exit 1
+  fi
+  if ! valid_oid "$local_oid" || ! valid_oid "$remote_oid"; then
+    block "invalid object ID in update for $remote_ref"
+    exit 1
+  fi
+
+  if is_zero_oid "$local_oid"; then
+    continue
+  fi
+
+  ensure_head_commit || exit 1
+  updates=$((updates + 1))
+  if [ "$remote_ref" = refs/heads/main ]; then
+    stable_push=1
+  else
+    case "$remote_ref" in
+      refs/tags/*) stable_push=1 ;;
+    esac
+  fi
+
+  target_commit="$(git rev-parse --verify "$local_oid^{commit}" 2>/dev/null)" || target_commit=""
+  if [ -z "$target_commit" ]; then
+    block "updated ref $remote_ref does not resolve to a commit (annotated tags are peeled)"
+    exit 1
+  fi
+  if [ "$target_commit" != "$head_commit" ]; then
+    block "updated ref $remote_ref peels to $target_commit, but the checked HEAD is $head_commit"
+    exit 1
+  fi
+  if [ -z "$pushed_commit" ]; then
+    pushed_commit="$target_commit"
+  elif [ "$target_commit" != "$pushed_commit" ]; then
+    block "multiple updated refs name different commits"
+    exit 1
+  fi
+
+  if is_zero_oid "$remote_oid"; then
+    append_new_branch_diff "$target_commit"
+  else
+    append_existing_ref_diff "$target_commit" "$remote_oid"
+  fi
 done
 
-echo "[pre-push] textual guards…"
-bash scripts/check-no-sorry.sh        || { echo "[pre-push] BLOCK: check-no-sorry failed";        exit 1; }
-bash scripts/check-no-custom-axiom.sh || { echo "[pre-push] BLOCK: check-no-custom-axiom failed"; exit 1; }
-bash scripts/check-root-aggregator.sh || { echo "[pre-push] BLOCK: check-root-aggregator failed"; exit 1; }
-bash scripts/check-no-bare-mathlib-import.sh || { echo "[pre-push] BLOCK: check-no-bare-mathlib-import failed"; exit 1; }
+if [ "$had_input" = 0 ]; then
+  ensure_head_commit || exit 1
+  updates=1
+  pushed_commit="$head_commit"
+  append_new_branch_diff "$head_commit"
+fi
 
-if printf '%s\n' "$changed" | grep -qE '\.lean$|lakefile|lean-toolchain|lake-manifest|comparator\.json'; then
-  # scripts/check.sh rejects --incremental together with stable mode (exit 64): stable mode is
-  # implied by TDA_STABLE_RELEASE=1 or pushing from a `main` checkout (e.g. a release tag push),
-  # exactly the conditions check.sh itself auto-detects. An unconditional --incremental call
-  # here would then block every such push outright, including one with an already-passing full
-  # stable check, since the hook never even reaches scripts/check.sh's own logic to notice.
-  # Stable contexts therefore select the full stable gate explicitly; everything else keeps the
-  # incremental gate.
-  stable_push=0
-  if [ "${TDA_STABLE_RELEASE:-0}" = 1 ] || [ "$(git branch --show-current)" = main ]; then
-    stable_push=1
+if [ "$updates" -eq 0 ]; then
+  echo "[pre-push] deletion-only push — no commit validation required"
+  exit 0
+fi
+
+assert_no_relevant_untracked() {
+  phase="$1"
+  paths="$WORK/untracked-$phase"
+  ignored_paths="$WORK/ignored-untracked-$phase"
+  matches="$WORK/untracked-matches-$phase"
+  if ! git ls-files --others --exclude-standard -z > "$paths"; then
+    block "could not enumerate untracked files $phase"
+    return 1
   fi
-  LOG="$(mktemp)"
+  if ! git ls-files --others --ignored --exclude-standard -z > "$ignored_paths"; then
+    block "could not enumerate ignored files $phase"
+    return 1
+  fi
+  if ! cat "$ignored_paths" >> "$paths"; then
+    block "could not combine untracked file lists $phase"
+    return 1
+  fi
+  status=0
+  python3 "$CLASSIFIER" --untracked < "$paths" > "$matches" || status=$?
+  case "$status" in
+    0)
+      block "build-relevant untracked source exists $phase"
+      cat "$matches" >&2
+      return 1 ;;
+    1) return 0 ;;
+    *)
+      block "build-change classifier failed while checking untracked files $phase"
+      return 1 ;;
+  esac
+}
+
+assert_no_hidden_index_entries() {
+  phase="$1"
+  entries="$WORK/index-flags-$phase"
+  if ! git ls-files -v -z > "$entries"; then
+    block "could not inspect tracked index flags $phase"
+    return 1
+  fi
+  while IFS= read -r -d '' entry; do
+    flag="$(printf '%s' "$entry" | LC_ALL=C cut -c1)"
+    case "$flag" in
+      [a-z]|S)
+        block "tracked index entry has assume-unchanged or skip-worktree set $phase"
+        printf '  %s\n' "$entry" >&2
+        return 1 ;;
+    esac
+  done < "$entries"
+  return 0
+}
+
+assert_source_identity() {
+  phase="$1"
+  current_head="$(git rev-parse --verify 'HEAD^{commit}' 2>/dev/null)" || current_head=""
+  if [ "$current_head" != "$head_commit" ]; then
+    block "HEAD changed $phase (expected $head_commit, got $current_head)"
+    return 1
+  fi
+  current_branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null)" || current_branch=""
+  if [ "$current_branch" != "$branch_at_start" ]; then
+    block "checked-out branch changed $phase"
+    return 1
+  fi
+  assert_no_hidden_index_entries "$phase" || return 1
+  if ! git diff --quiet --cached "$head_commit" --; then
+    block "index differs from pushed commit $phase"
+    return 1
+  fi
+  if ! git diff --quiet "$head_commit" --; then
+    block "tracked worktree differs from pushed commit $phase"
+    return 1
+  fi
+  assert_no_relevant_untracked "$phase" || return 1
+  return 0
+}
+
+assert_source_identity before || exit 1
+
+if [ ! -f "$CLASSIFIER" ]; then
+  block "build-change classifier is missing"
+  exit 1
+fi
+
+need_gate="$force_full"
+if [ "$stable_push" = 1 ]; then
+  need_gate=1
+elif [ "$force_full" = 0 ]; then
+  classification_status=0
+  python3 "$CLASSIFIER" < "$changed_paths" > "$WORK/build-relevant-paths" || classification_status=$?
+  case "$classification_status" in
+    0)
+      need_gate=1 ;;
+    1)
+      need_gate=0 ;;
+    *)
+      echo "[pre-push] change classification failed; selecting the full gate"
+      force_full=1
+      need_gate=1 ;;
+  esac
+fi
+
+echo "[pre-push] transient-artefact and conflict-marker guards on pushed commit $pushed_commit…"
+bash scripts/check-transient-artifacts.sh "$pushed_commit" \
+  || { block "check-transient-artifacts failed for $pushed_commit"; exit 1; }
+bash scripts/check-conflict-markers.sh "$pushed_commit" \
+  || { block "check-conflict-markers failed for $pushed_commit"; exit 1; }
+
+echo "[pre-push] textual guards…"
+bash scripts/check-no-sorry.sh        || { block "check-no-sorry failed"; exit 1; }
+bash scripts/check-no-custom-axiom.sh || { block "check-no-custom-axiom failed"; exit 1; }
+bash scripts/check-root-aggregator.sh || { block "check-root-aggregator failed"; exit 1; }
+bash scripts/check-no-bare-mathlib-import.sh || { block "check-no-bare-mathlib-import failed"; exit 1; }
+
+if [ "$need_gate" = 1 ]; then
+  LOG="$WORK/check.log"
   if [ "$stable_push" = 1 ]; then
-    echo "[pre-push] Lean sources or build config changed, stable context (main or TDA_STABLE_RELEASE=1) — running scripts/check.sh --stable (resource-guarded)…"
-    if ! bash scripts/check.sh --stable >"$LOG" 2>&1; then
-      echo "[pre-push] BLOCK: scripts/check.sh --stable FAILED. Tail:"
+    echo "[pre-push] stable update — running scripts/check.sh --stable (resource-guarded)…"
+    if ! bash scripts/check.sh --stable > "$LOG" 2>&1; then
+      block "scripts/check.sh --stable FAILED. Tail:"
       tail -n 40 "$LOG"
-      rm -f "$LOG"
       exit 1
     fi
-    rm -f "$LOG"
     echo "[pre-push] check.sh --stable green"
-  else
-    echo "[pre-push] Lean sources or build config changed — running scripts/check.sh --incremental (resource-guarded)…"
-    if ! bash scripts/check.sh --incremental >"$LOG" 2>&1; then
-      echo "[pre-push] BLOCK: scripts/check.sh --incremental FAILED. Tail:"
+  elif [ "$force_full" = 1 ]; then
+    echo "[pre-push] change base or classification unavailable — running scripts/check.sh (resource-guarded)…"
+    if ! bash scripts/check.sh > "$LOG" 2>&1; then
+      block "scripts/check.sh FAILED. Tail:"
       tail -n 40 "$LOG"
-      rm -f "$LOG"
       exit 1
     fi
-    rm -f "$LOG"
+    echo "[pre-push] check.sh green"
+  else
+    echo "[pre-push] build-relevant changes — running scripts/check.sh --incremental (resource-guarded)…"
+    if ! bash scripts/check.sh --incremental > "$LOG" 2>&1; then
+      block "scripts/check.sh --incremental FAILED. Tail:"
+      tail -n 40 "$LOG"
+      exit 1
+    fi
     echo "[pre-push] check.sh --incremental green"
   fi
 else
-  echo "[pre-push] no Lean/build changes — build skipped"
+  echo "[pre-push] no build-relevant changes — build skipped"
 fi
+
+assert_source_identity after || exit 1
 echo "[pre-push] gate passed"
 exit 0
