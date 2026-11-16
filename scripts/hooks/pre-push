@@ -235,6 +235,87 @@ assert_no_hidden_index_entries() {
   return 0
 }
 
+assert_no_clean_filter_attributes() {
+  phase="$1"
+  tracked="$WORK/tracked-$phase"
+  attributes="$WORK/filter-attributes-$phase"
+  reserved_drivers="$WORK/reserved-filter-drivers-$phase"
+  config_status=0
+  git config --null --name-only --get-regexp '^filter\.(unset|unspecified)\.(clean|process)$' \
+    > "$reserved_drivers" 2>/dev/null || config_status=$?
+  case "$config_status" in
+    0)
+      if [ -s "$reserved_drivers" ]; then
+        block "reserved clean-filter driver name is configured $phase"
+        return 1
+      fi
+      block "reserved clean-filter driver query returned an empty success $phase"
+      return 1 ;;
+    1)
+      if [ -s "$reserved_drivers" ]; then
+        block "reserved clean-filter driver query returned malformed output $phase"
+        return 1
+      fi ;;
+    *)
+      block "could not inspect reserved clean-filter driver configuration $phase"
+      return 1 ;;
+  esac
+
+  if ! git ls-files -z > "$tracked"; then
+    block "could not enumerate tracked files for clean-filter check $phase"
+    return 1
+  fi
+  if [ ! -s "$tracked" ]; then
+    return 0
+  fi
+  tracked_count=0
+  while IFS= read -r -d '' tracked_path; do
+    tracked_count=$((tracked_count + 1))
+  done < "$tracked"
+  if [ "$tracked_count" -eq 0 ]; then
+    block "tracked file list is not NUL terminated $phase"
+    return 1
+  fi
+  if ! git check-attr -z --stdin filter < "$tracked" > "$attributes"; then
+    block "could not inspect tracked clean-filter attributes $phase"
+    return 1
+  fi
+
+  path=""
+  attribute=""
+  value=""
+  attribute_count=0
+  while IFS= read -r -d '' path && IFS= read -r -d '' attribute && IFS= read -r -d '' value; do
+    if [ "$attribute" != filter ]; then
+      block "unexpected tracked attribute in clean-filter query $phase"
+      return 1
+    fi
+    case "$value" in
+      # `check-attr` uses these same strings to report explicitly unset and
+      # unspecified attributes. The reserved clean/process driver names above
+      # must therefore be absent before either sentinel is accepted.
+      unset|unspecified) ;;
+      *)
+        block "tracked file has a clean filter attribute configured $phase"
+        printf '  path: %q (filter=%q)\n' "$path" "$value" >&2
+        return 1 ;;
+    esac
+    attribute_count=$((attribute_count + 1))
+    path=""
+    attribute=""
+    value=""
+  done < "$attributes"
+  if [ -n "$path" ] || [ -n "$attribute" ] || [ -n "$value" ]; then
+    block "malformed tracked clean-filter attribute output $phase"
+    return 1
+  fi
+  if [ "$attribute_count" -ne "$tracked_count" ]; then
+    block "tracked clean-filter attribute query returned an incomplete path list $phase"
+    return 1
+  fi
+  return 0
+}
+
 assert_source_identity() {
   phase="$1"
   current_head="$(git rev-parse --verify 'HEAD^{commit}' 2>/dev/null)" || current_head=""
@@ -248,6 +329,10 @@ assert_source_identity() {
     return 1
   fi
   assert_no_hidden_index_entries "$phase" || return 1
+  # A worktree diff can invoke a configured clean filter and compare its output
+  # instead of the raw source the textual/build gates will read. Fail closed on
+  # any tracked path with a filter attribute before asking Git to diff the tree.
+  assert_no_clean_filter_attributes "$phase" || return 1
   # Attribute-driven external diff/textconv programs must not redefine whether source bytes
   # match the pushed commit.
   if ! git diff --quiet --no-ext-diff --no-textconv --cached "$head_commit" --; then

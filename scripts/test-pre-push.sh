@@ -140,6 +140,15 @@ assert_no_check() {
   fi
 }
 
+assert_output_contains() {
+  needle="$1"
+  label="$2"
+  case "$hook_output" in
+    *"$needle"*) pass "$label" ;;
+    *) fail "$label" "missing '$needle' in output: $hook_output" ;;
+  esac
+}
+
 zero_oid() {
   length="$(printf '%s' "$1" | wc -c | tr -d ' ')"
   printf '%*s' "$length" '' | tr ' ' 0
@@ -249,6 +258,158 @@ printf 'unstaged change\n' >> "$repo/README.md"
 run_line "refs/heads/topic $base refs/heads/topic $base"
 assert_status 1 dirty_worktree_rejected
 
+make_repo clean_filter_conceal
+# Reproduce the source mismatch that clean filters can hide from Git's worktree diff.
+cp "$ROOT/scripts/check-no-sorry.sh" "$repo/scripts/check-no-sorry.sh"
+cp "$ROOT/scripts/lean-code-scan.awk" "$repo/scripts/lean-code-scan.awk"
+git -C "$repo" add scripts/check-no-sorry.sh scripts/lean-code-scan.awk
+git -C "$repo" commit -qm real_no_sorry_guard
+printf 'def fixtureLean : False := by sorry\n' > "$repo/TDA/Main.lean"
+git -C "$repo" add TDA/Main.lean
+git -C "$repo" commit -qm sorry_blob
+cp "$repo/TDA/Main.lean" "$repo/.git/fixture-lean.blob"
+printf 'def fixtureLean : True := by trivial\n' > "$repo/TDA/Main.lean"
+cat > "$repo/.git/clean-filter" <<'FILTER'
+#!/usr/bin/env bash
+set -euo pipefail
+printf 'called\n' >> "$FILTER_LOG"
+cat "$FILTER_BLOB"
+FILTER
+chmod +x "$repo/.git/clean-filter"
+printf 'TDA/Main.lean filter=conceal\n' > "$repo/.git/info/attributes"
+git -C "$repo" config filter.conceal.clean "$repo/.git/clean-filter"
+filter_log="$TMP/clean-filter.log"
+: > "$filter_log"
+if (cd "$repo" && bash scripts/check-no-sorry.sh); then
+  pass clean_filter_fixture_raw_proof_passes_real_no_sorry_guard
+else
+  fail clean_filter_fixture_raw_proof_passes_real_no_sorry_guard "real no-sorry guard rejected the proved worktree source"
+fi
+if grep -F 'sorry' "$repo/.git/fixture-lean.blob" >/dev/null; then
+  pass clean_filter_fixture_committed_blob_contains_sorry
+else
+  fail clean_filter_fixture_committed_blob_contains_sorry "fixture's committed blob lacks the concealed sorry"
+fi
+: > "$filter_log"
+if (cd "$repo" && FILTER_LOG="$filter_log" FILTER_BLOB="$repo/.git/fixture-lean.blob" git diff --quiet --no-ext-diff --no-textconv HEAD --); then
+  pass clean_filter_fixture_diff_conceals_raw_worktree_change
+else
+  status=$?
+  fail clean_filter_fixture_diff_conceals_raw_worktree_change "expected clean-filtered diff equality, got exit $status"
+fi
+if grep -F 'called' "$filter_log" >/dev/null; then
+  pass clean_filter_fixture_concealment_executes_clean_filter
+else
+  fail clean_filter_fixture_concealment_executes_clean_filter "Git diff did not execute the configured clean filter"
+fi
+: > "$filter_log"
+cp "$repo/TDA/Main.lean" "$TMP/clean-filter-source"
+target="$(git -C "$repo" rev-parse HEAD)"
+run_line "refs/heads/topic $target refs/heads/topic $base" FILTER_LOG="$filter_log" FILTER_BLOB="$repo/.git/fixture-lean.blob"
+assert_status 1 clean_filter_hidden_source_rejected
+case "$hook_output" in
+  *"tracked file has a clean filter attribute configured before"*) pass clean_filter_attribute_rejected_before_identity_diff ;;
+  *) fail clean_filter_attribute_rejected_before_identity_diff "hook did not fail closed on filter attributes: $hook_output" ;;
+esac
+if [ ! -s "$filter_log" ]; then
+  pass clean_filter_not_executed_by_hardened_hook
+else
+  fail clean_filter_not_executed_by_hardened_hook "hook executed the configured clean filter"
+fi
+if cmp -s "$TMP/clean-filter-source" "$repo/TDA/Main.lean"; then
+  pass clean_filter_hardened_hook_preserves_raw_source
+else
+  fail clean_filter_hardened_hook_preserves_raw_source "hook changed the proved worktree source"
+fi
+if [ ! -s "$calls" ]; then
+  pass clean_filter_rejected_before_any_gate
+else
+  fail clean_filter_rejected_before_any_gate "gate calls occurred before filter rejection: $(cat "$calls")"
+fi
+
+make_repo disabled_filter_attribute
+printf 'TDA/Main.lean -filter\n' > "$repo/.git/info/attributes"
+run_line "refs/heads/topic $base refs/heads/topic $base"
+assert_status 0 unset_filter_attribute_allows_clean_source
+assert_no_check unset_filter_attribute_skips_unneeded_build
+
+for reserved_driver in unset unspecified; do
+  make_repo "reserved_filter_$reserved_driver"
+  cp "$repo/TDA/Main.lean" "$repo/.git/reserved-filter-blob"
+  printf 'def fixtureLean : True := by decide\n' > "$repo/TDA/Main.lean"
+  cat > "$repo/.git/reserved-clean-filter" <<'FILTER'
+#!/usr/bin/env bash
+set -euo pipefail
+printf 'called\n' >> "$FILTER_LOG"
+cat "$FILTER_BLOB"
+FILTER
+  chmod +x "$repo/.git/reserved-clean-filter"
+  printf 'TDA/Main.lean filter=%s\n' "$reserved_driver" > "$repo/.git/info/attributes"
+  git -C "$repo" config "filter.$reserved_driver.clean" "$repo/.git/reserved-clean-filter"
+  attr_output="$(git -C "$repo" check-attr filter -- TDA/Main.lean)"
+  case "$attr_output" in
+    *": filter: $reserved_driver") pass "reserved_filter_${reserved_driver}_attribute_reports_sentinel" ;;
+    *) fail "reserved_filter_${reserved_driver}_attribute_reports_sentinel" "unexpected check-attr output: $attr_output" ;;
+  esac
+  filter_log="$TMP/reserved-filter-$reserved_driver.log"
+  : > "$filter_log"
+  if (cd "$repo" && FILTER_LOG="$filter_log" FILTER_BLOB="$repo/.git/reserved-filter-blob" git diff --quiet --no-ext-diff --no-textconv HEAD --); then
+    pass "reserved_filter_${reserved_driver}_diff_conceals_raw_change"
+  else
+    status=$?
+    fail "reserved_filter_${reserved_driver}_diff_conceals_raw_change" "expected concealed diff equality, got exit $status"
+  fi
+  if grep -F 'called' "$filter_log" >/dev/null; then
+    pass "reserved_filter_${reserved_driver}_driver_is_active"
+  else
+    fail "reserved_filter_${reserved_driver}_driver_is_active" "configured clean filter did not run"
+  fi
+  : > "$filter_log"
+  run_line "refs/heads/topic $base refs/heads/topic $base" FILTER_LOG="$filter_log" FILTER_BLOB="$repo/.git/reserved-filter-blob"
+  assert_status 1 "reserved_filter_${reserved_driver}_rejected"
+  assert_output_contains "reserved clean-filter driver name is configured before" "reserved_filter_${reserved_driver}_fails_closed"
+  if [ ! -s "$filter_log" ]; then
+    pass "reserved_filter_${reserved_driver}_not_executed_by_hook"
+  else
+    fail "reserved_filter_${reserved_driver}_not_executed_by_hook" "hook executed the configured clean filter"
+  fi
+done
+
+make_repo failed_filter_query
+target="$base"
+git_bin="$(command -v git)"
+mkdir -p "$TMP/filter-test-bin"
+cat > "$TMP/filter-test-bin/git" <<'WRAPPER'
+#!/usr/bin/env bash
+if [ "$1" = check-attr ]; then exit 42; fi
+exec "$REAL_GIT" "$@"
+WRAPPER
+chmod +x "$TMP/filter-test-bin/git"
+run_line "refs/heads/topic $target refs/heads/topic $base" REAL_GIT="$git_bin" PATH="$TMP/filter-test-bin:$PATH"
+assert_status 1 failed_filter_query_rejected
+case "$hook_output" in
+  *"could not inspect tracked clean-filter attributes before"*) pass failed_filter_query_fails_closed ;;
+  *) fail failed_filter_query_fails_closed "filter query error was not reported: $hook_output" ;;
+esac
+assert_no_check failed_filter_query_never_runs_build_gate
+
+make_repo failed_reserved_filter_config_query
+target="$base"
+cat > "$TMP/filter-test-bin/git" <<'WRAPPER'
+#!/usr/bin/env bash
+if [ "$1" = config ]; then
+  for arg in "$@"; do
+    if [ "$arg" = --get-regexp ]; then exit 42; fi
+  done
+fi
+exec "$REAL_GIT" "$@"
+WRAPPER
+chmod +x "$TMP/filter-test-bin/git"
+run_line "refs/heads/topic $target refs/heads/topic $base" REAL_GIT="$git_bin" PATH="$TMP/filter-test-bin:$PATH"
+assert_status 1 failed_reserved_filter_config_query_rejected
+assert_output_contains "could not inspect reserved clean-filter driver configuration before" failed_reserved_filter_config_query_fails_closed
+assert_no_check failed_reserved_filter_config_query_never_runs_build_gate
+
 make_repo external_diff_conceal
 printf 'TDA/Main.lean diff=conceal\n' > "$repo/.git/info/attributes"
 git -C "$repo" config diff.conceal.command true
@@ -257,7 +418,12 @@ printf 'def concealed : True := by trivial\n' > "$repo/TDA/Main.lean"
 if env -u GIT_NO_REPLACE_OBJECTS git -C "$repo" diff --quiet HEAD --; then
   pass external_diff_fixture_hides_unstaged_change
 else
-  fail external_diff_fixture_hides_unstaged_change "fixture did not reproduce external-diff concealment"
+  status=$?
+  if [ "$status" -eq 1 ]; then
+    echo "SKIP [pre-push:external_diff_fixture_hides_unstaged_change] $(git --version) does not reproduce trusted external-diff concealment"
+  else
+    fail external_diff_fixture_hides_unstaged_change "Git diff failed with exit $status"
+  fi
 fi
 run_line "refs/heads/topic $base refs/heads/topic $base"
 assert_status 1 external_diff_concealed_worktree_rejected
@@ -274,7 +440,12 @@ git -C "$repo" add TDA/Main.lean
 if git -C "$repo" diff --quiet --cached "$base" --; then
   pass textconv_fixture_hides_staged_change
 else
-  fail textconv_fixture_hides_staged_change "fixture did not reproduce textconv concealment"
+  status=$?
+  if [ "$status" -eq 1 ]; then
+    echo "SKIP [pre-push:textconv_fixture_hides_staged_change] $(git --version) does not reproduce textconv concealment"
+  else
+    fail textconv_fixture_hides_staged_change "Git diff failed with exit $status"
+  fi
 fi
 run_line "refs/heads/topic $base refs/heads/topic $base"
 assert_status 1 textconv_concealed_index_rejected
