@@ -94,7 +94,7 @@ append_new_branch_diff() {
     force_full=1
     return
   fi
-  if ! git diff --no-renames --name-only -z "$merge_base" "$target_commit" -- >> "$changed_paths"; then
+  if ! git diff --no-ext-diff --no-textconv --no-renames --name-only -z "$merge_base" "$target_commit" -- >> "$changed_paths"; then
     echo "[pre-push] diff from merge base $merge_base failed; selecting the full gate"
     force_full=1
   fi
@@ -109,7 +109,7 @@ append_existing_ref_diff() {
     force_full=1
     return
   fi
-  if ! git diff --no-renames --name-only -z "$old_commit" "$target_commit" -- >> "$changed_paths"; then
+  if ! git diff --no-ext-diff --no-textconv --no-renames --name-only -z "$old_commit" "$target_commit" -- >> "$changed_paths"; then
     echo "[pre-push] diff from previous remote commit $old_commit failed; selecting the full gate"
     force_full=1
   fi
@@ -248,11 +248,13 @@ assert_source_identity() {
     return 1
   fi
   assert_no_hidden_index_entries "$phase" || return 1
-  if ! git diff --quiet --cached "$head_commit" --; then
+  # Attribute-driven external diff/textconv programs must not redefine whether source bytes
+  # match the pushed commit.
+  if ! git diff --quiet --no-ext-diff --no-textconv --cached "$head_commit" --; then
     block "index differs from pushed commit $phase"
     return 1
   fi
-  if ! git diff --quiet "$head_commit" --; then
+  if ! git diff --quiet --no-ext-diff --no-textconv "$head_commit" --; then
     block "tracked worktree differs from pushed commit $phase"
     return 1
   fi

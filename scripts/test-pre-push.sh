@@ -249,6 +249,40 @@ printf 'unstaged change\n' >> "$repo/README.md"
 run_line "refs/heads/topic $base refs/heads/topic $base"
 assert_status 1 dirty_worktree_rejected
 
+make_repo external_diff_conceal
+printf 'TDA/Main.lean diff=conceal\n' > "$repo/.git/info/attributes"
+git -C "$repo" config diff.conceal.command true
+git -C "$repo" config diff.conceal.trustExitCode true
+printf 'def concealed : True := by trivial\n' > "$repo/TDA/Main.lean"
+if env -u GIT_NO_REPLACE_OBJECTS git -C "$repo" diff --quiet HEAD --; then
+  pass external_diff_fixture_hides_unstaged_change
+else
+  fail external_diff_fixture_hides_unstaged_change "fixture did not reproduce external-diff concealment"
+fi
+run_line "refs/heads/topic $base refs/heads/topic $base"
+assert_status 1 external_diff_concealed_worktree_rejected
+case "$hook_output" in
+  *"tracked worktree differs from pushed commit"*) pass external_diff_disabled_for_worktree_check ;;
+  *) fail external_diff_disabled_for_worktree_check "hook did not detect unstaged source bytes: $hook_output" ;;
+esac
+
+make_repo textconv_conceal
+printf 'TDA/Main.lean diff=conceal\n' > "$repo/.git/info/attributes"
+git -C "$repo" config diff.conceal.textconv "sh -c 'printf constant'"
+printf 'def textconvHidden : True := by trivial\n' > "$repo/TDA/Main.lean"
+git -C "$repo" add TDA/Main.lean
+if git -C "$repo" diff --quiet --cached "$base" --; then
+  pass textconv_fixture_hides_staged_change
+else
+  fail textconv_fixture_hides_staged_change "fixture did not reproduce textconv concealment"
+fi
+run_line "refs/heads/topic $base refs/heads/topic $base"
+assert_status 1 textconv_concealed_index_rejected
+case "$hook_output" in
+  *"index differs from pushed commit"*) pass textconv_disabled_for_index_check ;;
+  *) fail textconv_disabled_for_index_check "hook did not detect staged source bytes: $hook_output" ;;
+esac
+
 make_repo assume_unchanged_source
 git -C "$repo" update-index --assume-unchanged TDA/Main.lean
 printf 'def hidden : True := by trivial\n' > "$repo/TDA/Main.lean"
@@ -395,9 +429,13 @@ git_bin="$(command -v git)"
 mkdir -p "$TMP/test-bin"
 cat > "$TMP/test-bin/git" <<'WRAPPER'
 #!/usr/bin/env bash
-if [ "$1" = diff ] && [ "$2" = --no-renames ] && [ ! -e "$FAIL_DIFF_MARKER" ]; then
-  : > "$FAIL_DIFF_MARKER"
-  exit 42
+if [ "$1" = diff ] && [ ! -e "$FAIL_DIFF_MARKER" ]; then
+  for arg in "$@"; do
+    if [ "$arg" = --name-only ]; then
+      : > "$FAIL_DIFF_MARKER"
+      exit 42
+    fi
+  done
 fi
 exec "$REAL_GIT" "$@"
 WRAPPER
