@@ -146,24 +146,38 @@ jobs:
           RELEASE_CHECK: ${{ github.event_name == 'workflow_dispatch' && inputs.release_check }}
         run: |
           set -euo pipefail
-          # -z: NUL-delimited raw paths (no C-style quoting of non-ASCII names); --no-renames: a
-          # *.lean file renamed away must show as a deletion. The list is written to a file so the
-          # regex test reads a file, not a pipe (grep -q on a pipe under pipefail can fail spuriously).
-          list="$(mktemp)"; decided=false
+          # The shared classifier reads NUL-delimited raw paths, treats renamed-away Lean files
+          # as deletions, and applies exactly the same path rules as the pre-push hook.
+          list="$(mktemp)"; matches="$(mktemp)"; decided=false
+          trap 'rm -f "$list" "$matches"' EXIT
           if [ "$EVENT" = pull_request ]; then
-            git diff --no-renames --name-only -z "origin/${BASE_REF}...HEAD" | tr '\0' '\n' > "$list"; decided=true
+            if ! git diff --no-renames --name-only -z "origin/$BASE_REF...HEAD" > "$list"; then
+              echo "Could not diff the pull request base against HEAD" >&2
+              exit 1
+            fi
+            decided=true
           elif [ "$EVENT" = push ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \
                && git cat-file -e "$BEFORE" 2>/dev/null; then
-            git diff --no-renames --name-only -z "$BEFORE" HEAD | tr '\0' '\n' > "$list"; decided=true
+            if ! git diff --no-renames --name-only -z "$BEFORE" HEAD > "$list"; then
+              echo "Could not diff the pushed commit against its previous revision" >&2
+              exit 1
+            fi
+            decided=true
           fi
           build=true
-          if [ "$decided" = true ] \
-             && ! grep -qE '\.lean$|^lakefile|^lean-toolchain$|^lake-manifest\.json$|^comparator\.json$|^scripts/|^\.github/workflows/' "$list"; then
-            build=false
+          if [ "$decided" = true ]; then
+            classification_status=0
+            python3 scripts/lib/build-change-classifier.py < "$list" > "$matches" || classification_status=$?
+            if [ "$classification_status" -eq 1 ]; then
+              build=false
+            elif [ "$classification_status" -ne 0 ]; then
+              echo "Build-change classification failed" >&2
+              exit "$classification_status"
+            fi
           fi
-          if [ "$BASE_REF" = main ] || [ "${GITHUB_REF_NAME:-}" = main ] || [ "$RELEASE_CHECK" = true ]; then build=true; fi
+          if [ "$BASE_REF" = main ] || [ "$GITHUB_REF_NAME" = main ] || [ "$RELEASE_CHECK" = true ]; then build=true; fi
           echo "build=$build" >> "$GITHUB_OUTPUT"
-          echo "build-relevant changes: $build"; sed 's/^/  /' "$list"
+          echo "build-relevant changes: $build"; cat "$matches"
 
       # Textual guards first: they fail in seconds, before any toolchain download.
       - name: Transient-artefact guard

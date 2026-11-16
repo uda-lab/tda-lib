@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Fixture repositories must not join a caller's real cache or inherited lock set.
+unset LAKE_CACHE_DIR LAKE_ARTIFACT_CACHE LAKE_RESTORE_ARTIFACTS LEAN_RESOURCE_LOCK_FDS
+
 fenv() { env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@"; }
 fgit() { fenv git "$@"; }
 frun() { fenv env "$@"; }
@@ -18,7 +21,8 @@ cleanup() {
   local result=$?
   trap - EXIT
   set +e
-  touch "$release" "$stop_file" "$cancel_file"
+  touch "$stop_file" "$cancel_file"
+  touch "$release"
   for pid in "$holder" "$first" "$second" "$stopped"; do
     [ -n "$pid" ] && wait "$pid" 2>/dev/null
   done
@@ -49,18 +53,24 @@ while args and args[0].startswith('-'):
     elif flag == '-w': deadline = time.monotonic() + float(args.pop(0))
     else: sys.exit(64)
 target = args.pop(0)
+watch = False
 if target.isdigit():
     fd = int(target)
     if os.environ.get('WATCH_LOCK_ATTEMPTS'):
-        open(os.environ['WATCH_LOCK_ATTEMPTS'], 'a').close()
+        held = os.fstat(fd)
+        watched = os.stat(os.environ['WATCH_LOCK_TARGET'])
+        watch = (held.st_dev, held.st_ino) == (watched.st_dev, watched.st_ino)
 else:
     fd = os.open(target, os.O_WRONLY | os.O_CREAT, 0o600)
 while True:
     try:
-        fcntl.flock(fd, (fcntl.LOCK_SH if shared else fcntl.LOCK_EX) | (fcntl.LOCK_NB if nonblock or deadline else 0))
+        fcntl.flock(fd, (fcntl.LOCK_SH if shared else fcntl.LOCK_EX) | (fcntl.LOCK_NB if nonblock or deadline or watch else 0))
         break
     except BlockingIOError:
-        if nonblock or time.monotonic() >= deadline: sys.exit(1)
+        if watch:
+            # Signal only an observed conflict on the lock held by this fixture.
+            open(os.environ['WATCH_LOCK_ATTEMPTS'], 'a').close()
+        if nonblock or (deadline is not None and time.monotonic() >= deadline): sys.exit(1)
         time.sleep(.01)
 if args: sys.exit(subprocess.call(args))
 EOF
@@ -76,6 +86,9 @@ for file in lean-toolchain lakefile.toml lake-manifest.json docbuild/lean-toolch
 done
 LOCK=$(python3 "$fixture/scripts/lib/build-resources.py" --root-lock "$fixture")
 export LOCK
+if [ -n "${TEST_CLEANUP_LOCK_REPORT:-}" ]; then
+  printf '%s\n' "$LOCK" > "$TEST_CLEANUP_LOCK_REPORT"
+fi
 chmod +x "$fixture/scripts/build-docs.sh"
 cat > "$fixture/.gitignore" <<'EOF'
 /docbuild/.lake/
@@ -88,6 +101,7 @@ fgit -C "$fixture" config user.name "Lock Test"
 fgit -C "$fixture" config user.email "lock-test@example.invalid"
 export TEST_ROOT="$fixture"
 export TEST_EVENTS="$tmp/events"
+: > "$TEST_EVENTS"
 cat > "$fixture/scripts/lean.sh" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -151,6 +165,9 @@ if [ -n "$(fgit -C "$fixture" status --porcelain --untracked-files=all)" ]; then
   fgit -C "$fixture" status --short --untracked-files=all >&2
   exit 1
 fi
+# The parent covers every normal transaction. Cleanup children start at the owned-lock
+# scenario below so their 20s deadline measures that scenario, not a repeated full suite.
+if [ "${TEST_CLEANUP_CHILD:-0}" != 1 ]; then
 # Bound each test-owned builder so cleanup can finish if another process owns the shared lock.
 frun CODEX_STOP_FILE="$cancel_file" timeout --kill-after=2s 10s \
   "$fixture/scripts/build-docs.sh" > "$tmp/first.log" 2>&1 & first=$!
@@ -209,6 +226,7 @@ fi
 [[ "$(cat "$fixture/docbuild/.lake/docs-source-rev")" == stop-before-revision ]]
 [[ "$(cat "$fixture/docbuild/.lake/build/doc/TDA/keep")" == keep-me ]]
 rm "$stop_file"
+fi
 
 # If stop is requested while waiting for the shared lock, recheck before invalidation.
 printf 'stop-wait-revision\n' > "$fixture/docbuild/.lake/docs-source-rev"
@@ -232,7 +250,7 @@ done
 if [ "${TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT:-0}" = 1 ]; then
   touch "$stop_file"
 fi
-frun PATH="$tmp/bin:$PATH" WATCH_LOCK_ATTEMPTS="$tmp/lock-attempt" \
+frun PATH="$tmp/bin:$PATH" WATCH_LOCK_ATTEMPTS="$tmp/lock-attempt" WATCH_LOCK_TARGET="$LOCK" \
   CODEX_STOP_FILE="$stop_file" timeout --kill-after=2s 10s \
   "$fixture/scripts/build-docs.sh" > "$tmp/stop-wait.log" 2>&1 & stopped=$!
 if [ "${TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT:-0}" = 1 ]; then
@@ -260,11 +278,13 @@ fi
 [[ "$(cat "$fixture/docbuild/.lake/docs-source-rev")" == stop-wait-revision ]]
 [[ "$(cat "$fixture/docbuild/.lake/build/doc/TDA/keep")" == keep-while-waiting ]]
 
-# Exercise the EXIT trap when the holder is owned and the builder exits before lock attempt.
+# Exercise the EXIT trap both before and during the builder's actual root-lock wait.
 if [ "${TEST_CLEANUP_CHILD:-0}" != 1 ]; then
   for mode in TEST_CLEANUP_FAIL_BEFORE_LOCK_ATTEMPT TEST_CLEANUP_FAIL_AFTER_LOCK_ATTEMPT; do
+    child_lock_report="$tmp/$mode.lock"
     set +e
-    frun TEST_CLEANUP_CHILD=1 "${mode}=1" timeout 20s bash "$SOURCE_ROOT/scripts/agent/test-build-docs-lock.sh" \
+    frun TEST_CLEANUP_CHILD=1 TEST_CLEANUP_LOCK_REPORT="$child_lock_report" "${mode}=1" \
+      timeout 20s bash "$SOURCE_ROOT/scripts/agent/test-build-docs-lock.sh" \
       > "$tmp/$mode.log" 2>&1
     injected_status=$?
     set -e
@@ -273,7 +293,8 @@ if [ "${TEST_CLEANUP_CHILD:-0}" != 1 ]; then
       echo "$mode returned $injected_status, expected 97" >&2
       exit 1
     fi
-    flock -w 5 -n "$LOCK" true || {
+    IFS= read -r child_lock < "$child_lock_report"
+    flock -w 5 -n "$child_lock" true || {
       echo "$mode leaked the shared build lock" >&2
       exit 1
     }

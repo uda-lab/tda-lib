@@ -834,6 +834,7 @@ fenv bash scripts/agent/test-build-resources.sh
 fenv bash scripts/agent/test-build-docs-lock.sh
 fenv python3 scripts/agent/test-tda-cache.py
 fenv python3 scripts/agent/test-docs-cache.py
+fenv bash scripts/test-pre-push.sh
 
 # Re-run the Git-sensitive suites with GIT_DIR and hostile caller configuration. The runner
 # snapshots both the foreign fixture repository and this real checkout around those invocations.
