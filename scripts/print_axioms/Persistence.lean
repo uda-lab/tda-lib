@@ -7609,3 +7609,28 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteLineComputableExamples.binary_rectangular_actions
 #print axioms TDA.Persistence.FiniteLineComputableExamples.zero_intermediate_actions
 #print axioms TDA.Persistence.FiniteLineComputableExamples.empty_and_singleton_actions
+
+#print axioms TDA.Persistence.Reduction.FiniteInput.listEquiv_apply
+#print axioms TDA.Persistence.Reduction.FiniteInput.listEquiv_symm_val
+#print axioms TDA.Persistence.Reduction.FiniteInput.listEquiv_symm_listFace
+#print axioms TDA.Persistence.Reduction.FiniteInput.listFace_listEquiv_symm
+#print axioms TDA.Persistence.Reduction.FiniteInput.listEquiv_eq_ofBijective
+#print axioms TDA.Persistence.Reduction.FiniteInput.listEquiv_symm_valid_irrel
+#print axioms TDA.Persistence.Reduction.FiniteInput.gradeFilter_valid_irrel
+#print axioms TDA.Persistence.Reduction.FiniteInput.sublevelFaceIndex_eq_of_face
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.sparse_valid
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.sparseReordered_valid
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.sparse_adapters
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.sparse_reordered_adapters
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.filled_adapters
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.hollow_adapters
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.tied_adapters
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.empty_valid
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.empty_adapters
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.finite_enumerations
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.sublevels_before_at_between_after
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.reordered_sublevels
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.roundTrips_and_validity_proofs
+#print axioms TDA.Persistence.Reduction.FiniteInput.IndexExamples.former_inverse_agreement
+
+#print axioms TDA.Persistence.Reduction.FiniteInput.sublevelFaceIndex_valid_irrel

@@ -72,11 +72,58 @@ theorem listFace_bijective (xs : Input) (h : Valid xs) :
     apply Subtype.ext
     exact hs
 
-noncomputable def listEquiv (xs : Input) (h : Valid xs) :
-    Fin xs.length ≃ TotalFace (complex xs h) :=
-  Equiv.ofBijective (listFace xs h) (listFace_bijective xs h)
+/-- The noduplicate face list uses `idxOf` for its inverse. -/
+private def faceListEquiv (xs : Input) (h : Valid xs) :
+    Fin xs.length ≃ {s // s ∈ faces xs} :=
+  (finCongr (by simp [faces])).trans (List.Nodup.getEquiv (faces xs) h.2.1)
 
-noncomputable def faceFintype (xs : Input) (h : Valid xs) :
+private theorem faceListEquiv_apply (xs : Input) (h : Valid xs)
+    (i : Fin xs.length) : faceListEquiv xs h i = listFace xs h i := by
+  apply Subtype.ext
+  change (xs.map Prod.fst)[i.val]'(by simpa using i.isLt) = (xs.get i).1
+  exact List.getElem_map Prod.fst
+
+/-- Original list positions and actual faces, with an explicit finite-search inverse. -/
+def listEquiv (xs : Input) (h : Valid xs) :
+    Fin xs.length ≃ TotalFace (complex xs h) where
+  toFun := listFace xs h
+  invFun := (faceListEquiv xs h).symm
+  left_inv i := by
+    rw [← faceListEquiv_apply]
+    exact (faceListEquiv xs h).symm_apply_apply i
+  right_inv s := by
+    rw [← faceListEquiv_apply]
+    exact (faceListEquiv xs h).apply_symm_apply s
+
+@[simp] theorem listEquiv_apply (xs : Input) (h : Valid xs) (i : Fin xs.length) :
+    listEquiv xs h i = listFace xs h i := rfl
+
+/-- The inverse searches only for the face, never for its proof of membership. -/
+theorem listEquiv_symm_val (xs : Input) (h : Valid xs)
+    (s : TotalFace (complex xs h)) :
+    ((listEquiv xs h).symm s).val = (faces xs).idxOf s.val := rfl
+
+@[simp] theorem listEquiv_symm_listFace (xs : Input) (h : Valid xs)
+    (i : Fin xs.length) : (listEquiv xs h).symm (listFace xs h i) = i :=
+  (listEquiv xs h).symm_apply_apply i
+
+@[simp] theorem listFace_listEquiv_symm (xs : Input) (h : Valid xs)
+    (s : TotalFace (complex xs h)) :
+    listFace xs h ((listEquiv xs h).symm s) = s :=
+  (listEquiv xs h).apply_symm_apply s
+
+/-- The new inverse agrees with the former proof-side unique inverse. -/
+theorem listEquiv_eq_ofBijective (xs : Input) (h : Valid xs) :
+    listEquiv xs h = Equiv.ofBijective (listFace xs h) (listFace_bijective xs h) := by
+  ext i
+  rfl
+
+/-- Validity proofs do not influence the computed original position. -/
+theorem listEquiv_symm_valid_irrel (xs : Input) (h h' : Valid xs)
+    (s : TotalFace (complex xs h)) :
+    (listEquiv xs h).symm s = (listEquiv xs h').symm s := rfl
+
+def faceFintype (xs : Input) (h : Valid xs) :
     Fintype (TotalFace (complex xs h)) :=
   Fintype.ofEquiv (Fin xs.length) (listEquiv xs h)
 
@@ -86,7 +133,7 @@ theorem faceCount_eq_length (xs : Input) (h : Valid xs) :
   simpa using Fintype.card_congr (listEquiv xs h).symm
 
 /-- The semantic filter reads the grade at the unique list position of a face. -/
-noncomputable def gradeFilter (xs : Input) (h : Valid xs) :
+def gradeFilter (xs : Input) (h : Valid xs) :
     FilterFunction (complex xs h) ℤ where
   value s := (xs.get ((listEquiv xs h).symm s)).2
   mono := by
@@ -108,14 +155,19 @@ noncomputable def gradeFilter (xs : Input) (h : Valid xs) :
           exact Finset.ssubset_iff_subset_ne.mpr ⟨hst, heq⟩))
     exact h.2.2.2.2 i j hij
 
+/-- Grades depend on the input and the face, not on a validity proof. -/
+theorem gradeFilter_valid_irrel (xs : Input) (h h' : Valid xs)
+    (s : TotalFace (complex xs h)) :
+    (gradeFilter xs h).value s = (gradeFilter xs h').value s := rfl
+
 /-- Cast list positions to the cardinality of the face type. -/
-noncomputable def positionEquiv (xs : Input) (h : Valid xs) :
+def positionEquiv (xs : Input) (h : Valid xs) :
     Fin (@faceCount ℕ (complex xs h) (faceFintype xs h)) ≃
       TotalFace (complex xs h) :=
   (finCongr (faceCount_eq_length xs h)).trans (listEquiv xs h)
 
 /-- The input order is itself a compatible face enumeration. -/
-noncomputable def compatibleOrder (xs : Input) (h : Valid xs) :
+def compatibleOrder (xs : Input) (h : Valid xs) :
     letI := faceFintype xs h
     CompatibleOrder (gradeFilter xs h) := by
   letI := faceFintype xs h
@@ -125,17 +177,17 @@ noncomputable def compatibleOrder (xs : Input) (h : Valid xs) :
     let b := (Fin.cast (faceCount_eq_length xs h)) j
     have ha : (xs.get a).1 = ((positionEquiv xs h) i).val := by
       simp only [a, positionEquiv, Equiv.trans_apply, finCongr_apply,
-        listEquiv, Equiv.ofBijective_apply, listFace]
+        listEquiv_apply, listFace]
     have hb : (xs.get b).1 = ((positionEquiv xs h) j).val := by
       simp only [b, positionEquiv, Equiv.trans_apply, finCongr_apply,
-        listEquiv, Equiv.ofBijective_apply, listFace]
+        listEquiv_apply, listFace]
     have hab : a < b := h.2.2.2.1 a b (by simpa only [ha, hb] using hface)
     exact hab
   · intro i j hij
     have hcast : (Fin.cast (faceCount_eq_length xs h)) i ≤
         (Fin.cast (faceCount_eq_length xs h)) j := hij
     simpa only [Function.comp_apply, gradeFilter, positionEquiv,
-      Equiv.trans_apply, finCongr_apply, listEquiv, Equiv.symm_apply_apply] using
+      Equiv.trans_apply, finCongr_apply, Equiv.symm_apply_apply] using
       h.2.2.2.2 _ _ hcast
 
 /-- Signed canonical deletions, evaluated over F₂ directly from list positions. -/
@@ -154,7 +206,7 @@ theorem positionEquiv_val (xs : Input) (h : Valid xs)
     ((positionEquiv xs h) i).val =
       (xs.get (Fin.cast (faceCount_eq_length xs h) i)).1 := by
   simp only [positionEquiv, Equiv.trans_apply, finCongr_apply,
-    listEquiv, Equiv.ofBijective_apply, listFace]
+    listEquiv_apply, listFace]
 
 /-- The finite deletion computation is the signed simplicial boundary. -/
 theorem boundary_eq_faceBoundaryMatrix (xs : Input) (h : Valid xs) :

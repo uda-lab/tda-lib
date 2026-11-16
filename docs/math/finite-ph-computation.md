@@ -75,12 +75,17 @@ rejection exactly. No input normalization is performed. Negative grades, tied
 grades, and empty input are valid when the five conditions hold.
 
 For a valid list, `complex` has exactly its listed faces (`mem_complex`), and
-`listEquiv` pairs positions bijectively with its total faces. `gradeFilter`
-assigns each face its unique listed integer grade. Face precedence together
-with nondecreasing list grades proves monotonicity. `compatibleOrder` takes
-the given list order as the compatible face enumeration. These semantic
-objects and their proof-derived equivalences may be noncomputable; none occurs
-in the transitive definition path of `run`.
+`listEquiv` pairs original positions bijectively with its total faces. Its inverse
+uses `List.Nodup.getEquiv` and finite `List.idxOf` search on the listed faces;
+it does not select a position by choice. `faceFintype` enumerates these faces,
+`gradeFilter` reads their original integer grades, and `positionEquiv` and
+`compatibleOrder` preserve the given list order. Face precedence together with
+nondecreasing list grades proves monotonicity. `sublevelFaceIndex` computes the
+same original position for an actual sublevel face, with its grade and degree
+laws preserved. Index and grade lookup do not depend on the validity proof.
+These finite adapters are computable; actual quotient-homology constructions
+and the arbitrary-field decomposition retain their proof-side limitations.
+None of the semantic adapters occurs in the transitive definition path of `run`.
 
 ## Computation and indices
 

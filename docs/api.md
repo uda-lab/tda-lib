@@ -1478,8 +1478,12 @@ diagram-level derivatives. See [the calculus-layer guide](math/diagram-calculus.
 from a finite simplex list to occurrence records. It rejects invalid input instead of
 normalizing it; `outputDiagram_eq_dgm` proves semantic correctness for valid lists in
 every degree. Negative and tied grades, duplicate output points, empty input and
-essential classes have explicit conventions. Proof-derived semantic objects and the
-arbitrary-field decomposition remain noncomputable. See
+essential classes have explicit conventions. For a validated finite input,
+`listEquiv` computes the original position of each actual face by finite list search;
+`faceFintype`, `gradeFilter`, `positionEquiv`, `compatibleOrder` and
+`sublevelFaceIndex` preserve that position, its listed grade and the input order.
+Validity proofs do not affect the index or grade. Actual quotient-homology
+constructions and the arbitrary-field decomposition remain noncomputable. See
 [the input contract and correctness route](math/finite-ph-computation.md).
 
 `FiniteInput.runWithRepresentatives` adds original face-index cycle supports and,

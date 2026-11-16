@@ -10,19 +10,35 @@ namespace TDA.Persistence.Reduction.FiniteInput
 open TDA.Simplicial TDA.Filtration
 
 /-- The original list position of an actual sublevel face. -/
-noncomputable def sublevelFaceIndex (xs : Input) (h : Valid xs) {p : ℕ} {a : ℤ}
+def sublevelFaceIndex (xs : Input) (h : Valid xs) {p : ℕ} {a : ℤ}
     (s : Face ((gradeFilter xs h).sublevel a) p) : Fin xs.length :=
-  (listEquiv xs h).symm ⟨s.1, Classical.choose s.2.1⟩
+  (listEquiv xs h).symm ⟨s.1, by
+    obtain ⟨hs, _⟩ := s.2.1
+    exact hs⟩
+
+/-- Validity proofs do not influence a sublevel face's computed original position. -/
+theorem sublevelFaceIndex_valid_irrel (xs : Input) (h h' : Valid xs) {p : ℕ} {a : ℤ}
+    (s : Face ((gradeFilter xs h).sublevel a) p) :
+    sublevelFaceIndex xs h s = sublevelFaceIndex xs h' s := rfl
 
 theorem sublevelFaceIndex_face (xs : Input) (h : Valid xs) {p : ℕ} {a : ℤ}
     (s : Face ((gradeFilter xs h).sublevel a) p) :
     (xs.get (sublevelFaceIndex xs h s)).1 = s.1 :=
   congrArg Subtype.val ((listEquiv xs h).apply_symm_apply _)
 
+/-- A sublevel face keeps its unique original index. -/
+theorem sublevelFaceIndex_eq_of_face (xs : Input) (h : Valid xs) {p : ℕ} {a : ℤ}
+    (s : Face ((gradeFilter xs h).sublevel a) p) (i : Fin xs.length)
+    (hi : (xs.get i).1 = s.1) : sublevelFaceIndex xs h s = i := by
+  apply (listEquiv xs h).injective
+  apply Subtype.ext
+  exact (sublevelFaceIndex_face xs h s).trans hi.symm
+
 theorem sublevelFaceIndex_grade (xs : Input) (h : Valid xs) {p : ℕ} {a : ℤ}
     (s : Face ((gradeFilter xs h).sublevel a) p) :
-    (xs.get (sublevelFaceIndex xs h s)).2 ≤ a :=
-  Classical.choose_spec s.2.1
+    (xs.get (sublevelFaceIndex xs h s)).2 ≤ a := by
+  obtain ⟨hs, ha⟩ := s.2.1
+  exact ha
 
 theorem sublevelFaceIndex_degree (xs : Input) (h : Valid xs) {p : ℕ} {a : ℤ}
     (s : Face ((gradeFilter xs h).sublevel a) p) :
