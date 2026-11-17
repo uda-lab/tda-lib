@@ -14,7 +14,8 @@
 #
 # The hosted workflow and this hook share scripts/lib/build-change-classifier.py so their
 # build-relevant path categories stay identical. The build log is temporary; only its tail
-# is printed on failure.
+# is printed on local failure. Ordinary gates may use only an explicit repository-local
+# adapter; stable gates and pushes without a gate never inspect adapter configuration.
 set -uo pipefail
 
 export GIT_NO_REPLACE_OBJECTS=1
@@ -394,22 +395,45 @@ if [ "$need_gate" = 1 ]; then
       exit 1
     fi
     echo "[pre-push] check.sh --stable green"
-  elif [ "$force_full" = 1 ]; then
-    echo "[pre-push] change base or classification unavailable — running scripts/check.sh (resource-guarded)…"
-    if ! bash scripts/check.sh > "$LOG" 2>&1; then
-      block "scripts/check.sh FAILED. Tail:"
-      tail -n 40 "$LOG"
-      exit 1
-    fi
-    echo "[pre-push] check.sh green"
   else
-    echo "[pre-push] build-relevant changes — running scripts/check.sh --incremental (resource-guarded)…"
-    if ! bash scripts/check.sh --incremental > "$LOG" 2>&1; then
-      block "scripts/check.sh --incremental FAILED. Tail:"
-      tail -n 40 "$LOG"
-      exit 1
+    if [ "$force_full" = 1 ]; then
+      gate_mode=full
+      gate_label='scripts/check.sh'
+    else
+      gate_mode=incremental
+      gate_label='scripts/check.sh --incremental'
     fi
-    echo "[pre-push] check.sh --incremental green"
+    remote_status=0
+    python3 -I scripts/lib/remote-gate.py client --mode "$gate_mode" --commit "$pushed_commit" || remote_status=$?
+    case "$remote_status" in
+      0)
+        ;;
+      3)
+        # An unset repository-local adapter keeps the established local gate unchanged.
+        echo "[pre-push] $gate_label (resource-guarded; no local adapter configured)…"
+        if [ "$gate_mode" = full ]; then
+          if ! bash scripts/check.sh > "$LOG" 2>&1; then
+            block "scripts/check.sh FAILED. Tail:"
+            tail -n 40 "$LOG"
+            exit 1
+          fi
+        else
+          if ! bash scripts/check.sh --incremental > "$LOG" 2>&1; then
+            block "scripts/check.sh --incremental FAILED. Tail:"
+            tail -n 40 "$LOG"
+            exit 1
+          fi
+        fi
+        echo "[pre-push] $gate_label green"
+        ;;
+      *)
+        block "configured remote gate failed (exit $remote_status); refusing local fallback"
+        exit 1
+        ;;
+    esac
+    if [ "$remote_status" -eq 0 ]; then
+      echo "[pre-push] $gate_label remote result accepted"
+    fi
   fi
 else
   echo "[pre-push] no build-relevant changes — build skipped"

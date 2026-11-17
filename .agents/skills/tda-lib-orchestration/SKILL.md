@@ -66,6 +66,10 @@ never invent a status.
 
 Run applicable local checks and the mandatory pre-push gate.
 
+The ordinary pre-push gate may use the opt-in remote executor defined in
+`docs/orchestration.md`; the local gate remains the default, stable/release validation remains
+local, and hosted `check` on the evaluated PR head remains authoritative for merge.
+
 Before pushing implementation changes run `scripts/check.sh --incremental` (the pre-push
 hook runs it). It re-runs every textual guard and the Lake build, and re-audits axioms,
 coverage and Comparator for every result whose content-hashed inputs have no recorded local
