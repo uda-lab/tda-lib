@@ -101,6 +101,9 @@ import TDA.Persistence.ConstructibleIsometry
 import TDA.Persistence.Diagram
 import TDA.Persistence.DiagramLaws
 import TDA.Persistence.DiagramBottleneck
+import TDA.Persistence.IntegerBottleneck
+import TDA.Persistence.IntegerBottleneckCorrectness
+import TDA.Persistence.IntegerBottleneckExamples
 import TDA.Persistence.AdditiveFeatures
 import TDA.Persistence.FiniteMatchingCost
 import TDA.Persistence.FiniteMatchingCostLaws

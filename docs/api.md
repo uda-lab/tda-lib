@@ -1884,6 +1884,14 @@ universe because the rank-to-diagram bridge has that universe restriction; the
 mathematical statement is field-independent. See
 [metric-input stability](math/rips-metric-stability.md).
 
+`TDA.Persistence.IntegerBottleneck.run` computes the exact bottleneck for finite
+ordered integer endpoint lists, with a doubled `WithTop ℕ` value and an optimal
+occurrence witness when finite. Original list positions and multiplicities are
+preserved; essential-count mismatch gives infinity. The exhaustive search is
+connected to the existing real diagram bottleneck by `run_correct` and
+`solve_cost_eq`. See [integer bottleneck computation](math/integer-bottleneck.md)
+for costs, witness extraction and the exhaustive search bound.
+
 `TDA.Persistence.DiagramBottleneckTopology` gives `Diagram ℝ` its extended
 bottleneck metric and Borel topology. `TDA.Persistence.RipsSamplingMeasure`
 defines `Rips.sampleLawMeasure` as the actual Borel probability law of an iid
