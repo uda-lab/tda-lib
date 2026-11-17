@@ -102,6 +102,33 @@ invocation validates HEAD against origin/develop, falling back to origin/main; a
 base or failed path diff selects the full applicable gate. The hook and hosted CI share the
 same NUL-safe path classifier.
 
+Issue #982 adds an opt-in remote executor for ordinary gate-required pushes. The default
+remains local. Enable an adapter only in this clone's Git config with
+`git config --local tda.remoteGate.adapter /absolute/path/to/trusted-adapter`; the resolved
+executable must be outside every worktree and the common Git directory. The hook consults
+this setting only for ordinary pushes that need a gate. Stable/tag/main updates, deletions
+and prose-only pushes keep their existing paths. A configured adapter failure blocks the
+push and never falls back to a local pass.
+
+The adapter receives four argv values in order: request JSON, Git source bundle, result JSON
+and gate log. It must supervise transport and invoke
+`python3 -I <exact-checkout>/scripts/lib/remote-gate.py receive --checkout <dedicated-clean-checkout> --request <request> --bundle <bundle> --result <result> --log <log>`.
+The receiver requires the requested exact commit in that already-prepared checkout and never
+resets it. It verifies raw tracked bytes, index entries/modes/flags, branch identity, bundle
+digest, gate-source identity and a fresh one-use request ID; it holds the canonical resource
+locks through before/after checks and the canonical gate. The result binds the actual gate
+exit and returned log digest. The request timeout defaults to two hours and is capped at two
+hours; `TDA_REMOTE_GATE_TIMEOUT_SECONDS` is an external runtime override for bounded testing
+or a measured executor limit. The receiver honors `/tmp/codex-stop` and `CODEX_STOP_FILE`.
+
+The adapter and executor are trusted transport and execution endpoints, not cryptographic
+attestation. Keep their addresses, credentials and provisioning only in machine-local
+configuration. The adapter must cancel or await its receiver when transport times out; the
+receiver terminates only its own gate process group and never claims to clean detached
+remote descendants. A remote pass is pre-push feedback, not merge evidence: hosted CI's full
+`check` on the evaluated PR head remains authoritative. Protocol fixtures use stub gates and
+do not count as Lean or sandbox validation.
+
 `scripts/bootstrap.sh` prepares caches and hooks; `scripts/check.sh` is the full integrity
 gate. `scripts/github-setup.sh` is the broad labels/settings/protection bootstrap; do not run
 it wholesale for a targeted live setting correction. Read current settings and update only

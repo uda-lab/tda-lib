@@ -34,6 +34,8 @@ make_repo() {
   cp "$ROOT/.gitignore" "$repo/.gitignore"
   cp "$ROOT/scripts/hooks/pre-push" "$repo/scripts/hooks/pre-push"
   cp "$ROOT/scripts/lib/build-change-classifier.py" "$repo/scripts/lib/build-change-classifier.py"
+  cp "$ROOT/scripts/lib/build-resources.py" "$repo/scripts/lib/build-resources.py"
+  cp "$ROOT/scripts/lib/remote-gate.py" "$repo/scripts/lib/remote-gate.py"
   for name in check-transient-artifacts.sh check-conflict-markers.sh check-no-sorry.sh check-no-custom-axiom.sh check-root-aggregator.sh check-no-bare-mathlib-import.sh; do
     cat > "$repo/scripts/$name" <<'STUB'
 #!/usr/bin/env bash
@@ -638,6 +640,12 @@ make_repo explicit_stable
 run_line "refs/heads/topic $base refs/heads/topic $base" TDA_STABLE_RELEASE=1
 assert_status 0 explicit_stable_passes
 assert_call 'check.sh --stable' explicit_stable_uses_stable_gate
+
+if python3 -I "$ROOT/scripts/test-remote-gate.py"; then
+  pass remote_gate_real_git_protocol_suite
+else
+  fail remote_gate_real_git_protocol_suite "real-Git remote-gate protocol fixtures failed"
+fi
 
 if [ "$failed" -ne 0 ]; then
   echo "pre-push fixture suite failed: $failed failure(s), $passed pass(es)" >&2
