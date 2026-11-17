@@ -132,3 +132,7 @@ byte-identical build outputs already passed under the same toolchain, manifest a
 tool. Every guard of the full gate still runs on every PR. None is removed or weakened; the
 private-root audit is a superset. Scoped local plus full CI is therefore at least what the
 previous process guaranteed.
+
+The ordinary pre-push gate may use the opt-in, trusted remote-executor contract in
+`docs/orchestration.md`; local execution remains the default. Stable/release validation stays
+local, and hosted `check` on the evaluated PR head remains the merge authority.
