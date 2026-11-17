@@ -1,12 +1,14 @@
 import TDA.Persistence.RipsSamplingEmpirical
 import TDA.Persistence.RipsSamplingExamples
+import TDA.Topology.MeasureBifiltration
 
 /-!
 # Finite empirical sampled-law fixtures
 
 The two-point training tuple repeats one observation, giving weights `2/3`
-and `1/3`. Its total variation from the uniform population is `1/6`, and the
-one-Wasserstein distance between the two-draw full H₀ laws is at most `1/3`.
+and `1/3`. The public uniform law on `Bool` gives both points mass `1/2`, so
+the total variation is `1/6`; the two-draw full H₀ laws are within `1/3` in
+one-Wasserstein distance.
 -/
 
 noncomputable section
@@ -16,13 +18,6 @@ open TDA.Probability TDA.Persistence.Rips
 open scoped ENNReal NNReal
 
 local instance : MetricSpace Bool := RipsSamplingExamples.epsilonTwoPointMetric
-
-/-- The uniform probability mass function on `Bool`. -/
-private noncomputable def uniformBoolPMF : PMF Bool :=
-  PMF.ofFintype (fun _ : Bool => (Fintype.card Bool : ℝ≥0∞)⁻¹)
-    (by
-      simp only [Finset.sum_const, Finset.card_univ, Fintype.card_bool, nsmul_eq_mul]
-      exact ENNReal.mul_inv_cancel (by norm_num) (by norm_num))
 
 /-- A training tuple with a repeated observation. -/
 def repeatedTraining : Fin 3 → Bool := ![false, false, true]
@@ -45,10 +40,11 @@ theorem repeatedTraining_masses :
 
 /-- The deterministic training error is exactly one sixth. -/
 theorem repeatedTraining_totalVariation :
-    finiteTotalVariation uniformBoolPMF
+    finiteTotalVariation (TDA.Topology.MeasureBifiltration.uniformPMF (V := Bool))
       (empiricalPMF repeatedTraining (by omega)) = (6 : ℝ≥0∞)⁻¹ := by
   rw [finiteTotalVariation_eq_sum_sub, Fintype.sum_bool]
-  simp only [uniformBoolPMF, PMF.ofFintype_apply, Fintype.card_bool,
+  simp only [TDA.Topology.MeasureBifiltration.uniformPMF, PMF.ofFintype_apply,
+    Fintype.card_bool,
     repeatedTraining_masses.1, repeatedTraining_masses.2]
   norm_num only [Nat.cast_ofNat]
   have h : (2 : ℝ≥0)⁻¹ - 1 / 3 + ((2 : ℝ≥0)⁻¹ - 2 / 3) = (6 : ℝ≥0)⁻¹ := by
@@ -69,10 +65,11 @@ private theorem twoPoint_diameter : ∀ x y : Bool, dist x y ≤ (1 : ℝ) := by
 `p = 1` and resampling size two. The training tuple has three entries. -/
 theorem repeatedTraining_fullH0_bound (k : Type*) [Field k] :
     wasserstein 1 bottleneck
-      (sampleLaw k uniformBoolPMF 2 0)
+      (sampleLaw k (TDA.Topology.MeasureBifiltration.uniformPMF (V := Bool)) 2 0)
       (sampleLaw k (empiricalPMF repeatedTraining (by omega)) 2 0) ≤
         (3 : ℝ≥0∞)⁻¹ := by
-  have h := wasserstein_sampleLaw_empiricalPMF_le k uniformBoolPMF
+  have h := wasserstein_sampleLaw_empiricalPMF_le k
+    (TDA.Topology.MeasureBifiltration.uniformPMF (V := Bool))
     repeatedTraining (by omega) 1 twoPoint_diameter (p := 1) le_rfl 2 0 (by omega)
   have harith : (2 : ℝ≥0∞) * (6 : ℝ≥0∞)⁻¹ = (3 : ℝ≥0∞)⁻¹ := by
     have h : (2 : ℝ≥0) * (6 : ℝ≥0)⁻¹ = (3 : ℝ≥0)⁻¹ := by norm_num

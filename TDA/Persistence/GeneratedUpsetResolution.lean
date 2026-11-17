@@ -182,7 +182,10 @@ noncomputable def termBiproductIso {m : ℕ} (f : Fin m → P) (r : ℕ) :
         simp [s])
     exact hcomp.trans hid.symm
 
-/-- Deprecated compatibility name for principal-upset projectivity. -/
+/-- Deprecated compatibility theorem for principal-upset projectivity. This is a theorem,
+not a typeclass instance; the canonical instance is
+`TDA.Persistence.HookInfinity.projective` from
+`TDA.Persistence.HookInfinityProjective`. -/
 @[deprecated TDA.Persistence.HookInfinity.projective (since := "2026-10-30")]
 theorem HookInfinity.projective (i : P) :
     Projective (HookInfinity.module (R := k) i) :=
