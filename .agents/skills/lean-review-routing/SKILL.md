@@ -44,8 +44,10 @@ Frame it as **numbered, falsifiable risks**, never "review this" (a generic prom
 3. the semantic and API risks in § Semantic and API quality, scoped to the changed surface;
 4. any unresolved limitation in the gate evidence (including axiom audit and public theorem
    coverage); use successful mechanical results rather than independently repeating them;
-5. no transient artefact, bookkeeping or chronology added to the tree;
-6. the Issue's own traps.
+5. no transient artefact, bookkeeping, chronology, `WORKER NOTE` or scratch leftover added
+   to the tree;
+6. the Issue's own traps, including mandatory fixtures as stated and proved consumers where
+   the contract requires them.
 
 Give every reviewer and judge the same governing specification as the implementer: the Issue
 body and its authorised decision comments (quoted or linked), not a summary.
@@ -54,7 +56,8 @@ Put `git diff develop...HEAD` inside the prompt file (statements only, and say s
 exceeds the argument limit) and state what the gate already verified so the pass is not spent
 re-running it. Read the result in the same turn.
 
-Use a fresh read-only reviewer session or subagent distinct from the implementer. A child
+Use either a fresh read-only reviewer session or subagent, or the long-lived teammate route
+below. The reviewer must be distinct from every implementer whose work it reviews. A child
 Codex route uses the shared launcher, with a distinct owned job identity:
 
 ```sh
@@ -63,6 +66,38 @@ LOOP_JOB_ID=tda-lib/issue-<n>/review scripts/codex.sh exec -C <worktree> --sandb
 
 Resolve model and effort using dot's runtime. Claude Code may use its available read-only
 reviewer facility under the same identity. No plugin is required.
+
+### Long-lived read-only teammate
+
+A long-lived independent reviewer may serve multiple drivers when local review is required
+above. Reuse its session, but supply the complete specification and current evidence for each
+unit; a previous verdict does not cover a new head. Keep the worktree unchanged during the
+review. Use the existing agent messaging facility with this request and response shape:
+
+```text
+REVIEW REQUEST issue=<n> worktree=<path> head=<full-sha> base=<develop-sha> spec=<path> diff=<path> traps=<path> out=<private-report-path> round=<1|2>
+REVIEW DONE issue=<n> head=<full-sha> out=<private-report-path> verdict=<pass|findings>
+```
+
+`spec` contains the full Issue body and authorised rulings; `diff` contains the diff from the
+merge base of `base` and `head`; `traps` contains the numbered risks above and the Issue's own
+traps. Include the existing gate results and their limitations in the request. Keep these
+inputs and the report outside tracked source.
+
+The reviewer checks `git rev-parse HEAD` against the requested head before reading the diff
+and again before returning a verdict. It reads the supplied specification, diff and traps,
+then the touched library or documentation and relevant consumers. If the head differs, reply
+`STALE HEAD issue=<n> expected=<sha> actual=<sha>` and stop without a verdict; the driver must
+send a request for the current head. Never edit source, run a build or repeat gates; report
+unverified compile risks as advisory. The only output file is the requested private report.
+
+Write the report with `Verdict`, `Reviewer` (identity and reviewed full head SHA),
+`Compiled: no`, numbered substantive/advisory findings, and a risk table stating the evidence
+and disposition for each requested risk. Reply `REVIEW DONE` only after saving that report.
+Allow at most two local rounds per unit. The limit does not clear an unresolved blocking
+finding; stop the dependent PR step and report the blocker if it remains. The private report
+is never posted as PR review evidence. Continue through the PR review route below, including
+its final-head requirement and separate five-request ceiling.
 
 ## Semantic and API quality
 
