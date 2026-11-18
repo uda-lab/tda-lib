@@ -299,6 +299,7 @@ import TDA.Persistence.FiniteObservation
 import TDA.Persistence.IntervalCompatibility
 import TDA.Persistence.RealIntervalDecomposition
 import TDA.Persistence.RealIntervalObservation
+import TDA.Persistence.RealIntervalObservationExamples
 
 import TDA.Persistence.BoundaryTransportGeometryCore
 
