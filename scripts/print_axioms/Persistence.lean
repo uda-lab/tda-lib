@@ -7681,3 +7681,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IntegerBottleneck.Examples.returned_witness_semantics
 #print axioms TDA.Persistence.IntegerBottleneck.run
 #print axioms TDA.Persistence.IntegerBottleneck.twiceCost
+#print axioms TDA.Persistence.WholeLineObstructionExamples.constant_qTame
+#print axioms TDA.Persistence.WholeLineObstructionExamples.constant_structureMapLinear
+#print axioms TDA.Persistence.WholeLineObstructionExamples.zero_qTame
+#print axioms TDA.Persistence.WholeLineObstructionExamples.constant_multiplicity_zero
+#print axioms TDA.Persistence.WholeLineObstructionExamples.zero_multiplicity_zero
+#print axioms TDA.Persistence.WholeLineObstructionExamples.canonical_diagrams_eq
+#print axioms TDA.Persistence.WholeLineObstructionExamples.canonical_bottleneck_zero
+#print axioms TDA.Persistence.WholeLineObstructionExamples.constant_not_interleaved_zero
+#print axioms TDA.Persistence.WholeLineObstructionExamples.constant_distance_top
+#print axioms TDA.Persistence.WholeLineObstructionExamples.constant_no_zero_left_bound
+#print axioms TDA.Persistence.WholeLineObstructionExamples.canonical_zero_but_module_distance_top
