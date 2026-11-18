@@ -1329,6 +1329,7 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FiniteConstructibleExamples.step_nonzero_tail
 #print axioms TDA.Persistence.FiniteConstructibleExamples.twistedReconstruction
 #print axioms TDA.Persistence.FiniteConstructibleExamples.twisted_transition_nonidentity
+#print axioms TDA.Persistence.FiniteConstructibleExamples.twisted_nonidentity_crossing_card_eq
 #print axioms TDA.Persistence.FiniteConstructibleExamples.zero_transition_not_isIso
 
 #print axioms TDA.Persistence.RealBarcode.alive
@@ -3870,6 +3871,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.LocalFiniteExamples.emptyFamily_isZero
 #print axioms TDA.Persistence.RealIntervalDecomposition.finite_observed_scalar
 #print axioms TDA.Persistence.RealIntervalDecomposition.rankBarcode_eq_sampledBarcode
+#print axioms TDA.Persistence.RealIntervalDecomposition.scalar_crossing_finite
+#print axioms TDA.Persistence.RealIntervalDecomposition.persistenceImage_finrank_eq_scalar_crossing
+#print axioms TDA.Persistence.RealIntervalDecomposition.scalar_crossing_card_eq_of_iso
+#print axioms TDA.Persistence.RealIntervalObservationExamples.interval_crossing_card
+#print axioms TDA.Persistence.RealIntervalObservationExamples.zero_crossing_card
+#print axioms TDA.Persistence.RealIntervalObservationExamples.wholeLine_crossing_card
+#print axioms TDA.Persistence.RealIntervalObservationExamples.finiteInterval_inside_crossing_card
+#print axioms TDA.Persistence.RealIntervalObservationExamples.finiteInterval_outside_crossing_card
 #print axioms TDA.Persistence.AlgebraicFamily.familyIso
 #print axioms TDA.Persistence.AlgebraicFamily.sigmaIso
 #print axioms TDA.Persistence.RealIntervalDecomposition.scalarIso

@@ -1,4 +1,5 @@
 import TDA.Persistence.ConstructibleQTameCompatibility
+import TDA.Persistence.RealIntervalObservation
 import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
 
 /-!
@@ -119,6 +120,44 @@ theorem twisted_transition_nonidentity :
     have hx' : x + x = x := by simpa [two_smul] using hx
     exact add_left_cancel (hx'.trans (add_zero x).symm)
   exact ⟨fun x y => (hz x).trans (hz y).symm⟩
+
+private noncomputable def stepTwistedIso : stepModule ≅ twistedStep :=
+  NatIso.ofComponents coordinateChange (by
+    intro s t f
+    change stepModule.map f ≫ (coordinateChange t).hom =
+      (coordinateChange s).hom ≫
+        ((coordinateChange s).inv ≫ stepModule.map f ≫ (coordinateChange t).hom)
+    simp)
+
+private theorem step_pointwiseFiniteDimensional (t : ℝ) :
+    FiniteDimensional ℚ (stepModule.obj t) := by
+  change FiniteDimensional ℚ
+    ((sample oneGrid constantRationals).obj (cellIndex oneGrid t))
+  exact finiteDimensional_sample oneGrid constantRationals
+    (fun _ => by change FiniteDimensional ℚ ℚ; infer_instance) _
+
+private theorem twisted_pointwiseFiniteDimensional (t : ℝ) :
+    FiniteDimensional ℚ (twistedStep.obj t) :=
+  step_pointwiseFiniteDimensional t
+
+/-- A genuine nonidentity coordinate change alters the 0→1 structure map,
+while preserving the number of actual scalar occurrences crossing that pair. -/
+theorem twisted_nonidentity_crossing_card_eq :
+    structureMap twistedStep (show (0 : ℝ) ≤ 1 by norm_num) ≠
+        structureMap stepModule (show (0 : ℝ) ≤ 1 by norm_num) ∧
+    Nat.card {j : RealIntervalDecomposition.ScalarIndex stepModule //
+      (0 : ℝ) ∈ RealIntervalDecomposition.scalarSupport stepModule j ∧
+      (1 : ℝ) ∈ RealIntervalDecomposition.scalarSupport stepModule j} =
+    Nat.card {j : RealIntervalDecomposition.ScalarIndex twistedStep //
+      (0 : ℝ) ∈ RealIntervalDecomposition.scalarSupport twistedStep j ∧
+      (1 : ℝ) ∈ RealIntervalDecomposition.scalarSupport twistedStep j} := by
+  refine ⟨twisted_transition_nonidentity, ?_⟩
+  letI : ∀ t, FiniteDimensional ℚ (stepModule.obj t) :=
+    step_pointwiseFiniteDimensional
+  letI : ∀ t, FiniteDimensional ℚ (twistedStep.obj t) :=
+    twisted_pointwiseFiniteDimensional
+  exact RealIntervalDecomposition.scalar_crossing_card_eq_of_iso
+    stepModule stepTwistedIso 0 1 (by norm_num)
 
 private theorem twisted_critical_finite (i : Fin 1) :
     FiniteDimensional ℚ (twistedStep.obj (oneGrid i)) := by
