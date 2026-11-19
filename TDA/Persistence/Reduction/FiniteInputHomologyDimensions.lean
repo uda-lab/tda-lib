@@ -1,6 +1,5 @@
+import TDA.Persistence.Reduction.F2MatrixRank
 import TDA.Persistence.Reduction.FiniteInputHomologyMapCorrectness
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.Data.Nat.Log
 
 /-!
 # Executable dimensions of finite induced homology maps
@@ -14,26 +13,6 @@ set_option autoImplicit false
 set_option backward.defeqAttrib.useBackward true
 
 namespace TDA.Persistence.Reduction.FiniteInput
-
-private def coordinateImages {m n : ℕ} (M : Matrix (Fin m) (Fin n) (ZMod 2)) :
-    Finset (Fin m → ZMod 2) :=
-  Finset.univ.image M.mulVec
-
-private theorem mem_coordinateImages {m n : ℕ} (M : Matrix (Fin m) (Fin n) (ZMod 2))
-    (v : Fin m → ZMod 2) :
-    v ∈ coordinateImages M ↔ v ∈ LinearMap.range M.mulVecLin := by
-  simp [coordinateImages, LinearMap.mem_range]
-
-private theorem coordinateImages_card {m n : ℕ} (M : Matrix (Fin m) (Fin n) (ZMod 2)) :
-    (coordinateImages M).card = 2 ^ Module.finrank (ZMod 2) (LinearMap.range M.mulVecLin) := by
-  classical
-  let e : ↥(coordinateImages M) ≃ LinearMap.range M.mulVecLin :=
-    Equiv.subtypeEquivRight (mem_coordinateImages M)
-  calc
-    (coordinateImages M).card = Fintype.card (LinearMap.range M.mulVecLin) := by
-      rw [← Fintype.card_coe]
-      exact Fintype.card_congr e
-    _ = _ := by rw [Module.card_eq_pow_finrank (K := ZMod 2), ZMod.card]
 
 /-- Image and kernel dimensions of a finite F₂ homology map. -/
 structure HomologyMapDimensions where
@@ -51,7 +30,7 @@ def homologyMapDimensions (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ → ℕ
     normalCoordinateVector ys (vertexVector xs ys a f (chainVector (sourceRecords.get j).cycle))
   let matrix := Vector.ofFn fun i : Fin targetRecords.length =>
     Vector.ofFn fun j : Fin sourceRecords.length => columns[j][(targetRecords.get i).birthIndex]
-  let rank := Nat.log 2 (coordinateImages (fun i j => matrix[i][j])).card
+  let rank := F2Matrix.rank (fun i j => matrix[i][j])
   ⟨rank, sourceRecords.length - rank⟩
 
 /-- A characteristic formula in terms of the existing induced-map matrix. -/
@@ -59,14 +38,14 @@ theorem homologyMapDimensions_eq (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ 
     homologyMapDimensions xs ys p a b f =
       let rank := Nat.log 2 (Finset.univ.image (homologyMapMatrix xs ys p a b f).mulVec).card
       ⟨rank, (activeRepresentatives xs p a).length - rank⟩ := by
-  simp only [homologyMapDimensions, coordinateImages, homologyMapMatrix,
+  simp only [homologyMapDimensions, F2Matrix.rank, F2Matrix.imageFinset, homologyMapMatrix,
     Fin.getElem_fin, Vector.getElem_ofFn, Fin.eta, basisRecord]
 
 /-- The enumerated image contains exactly `2^rank` distinct vectors, including zero. -/
 theorem homologyMap_image_card (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ → ℕ) :
     (Finset.univ.image (homologyMapMatrix xs ys p a b f).mulVec).card =
       2 ^ Module.finrank (ZMod 2) (LinearMap.range (homologyMapMatrix xs ys p a b f).mulVecLin) :=
-  coordinateImages_card _
+  F2Matrix.card_imageFinset _
 
 theorem homologyMapDimensions_rank (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ → ℕ) :
     (homologyMapDimensions xs ys p a b f).rank =

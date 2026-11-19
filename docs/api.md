@@ -1530,6 +1530,20 @@ injectivity and surjectivity. It validates all admitted face images even for
 zero groups, and uses enumeration exponential in source Betti dimension.
 See [homology-map dimensions](math/finite-ph-map-dimensions.md).
 
+The same enumeration is available for any rectangular F₂ matrix, independently
+of simplex input. For `M : Matrix (Fin m) (Fin n) (ZMod 2)`,
+`F2Matrix.imageFinset M` is the computed set of images of all `2^n` source
+vectors and `F2Matrix.rank M` is the base-two logarithm of its cardinality
+(namespace `TDA.Persistence.Reduction`). `F2Matrix.rank_eq_finrank_range` and
+`F2Matrix.rank_eq_matrixRank` identify the executed number with the dimension
+of the range of `M.mulVecLin` and with Mathlib's noncomputable `Matrix.rank M`;
+`F2Matrix.rank_toMatrix'` states the same for the matrix of a linear map
+between coordinate spaces. `F2Matrix.rank_add_finrank_ker`, `rank_le_width`
+and `rank_le_height` give rank–nullity and the two shape bounds. There is no hypothesis on `m`, `n` or
+`M`: with no rows or no columns the rank is zero. Write `F2Matrix.rank M`,
+since `M.rank` in dot notation is Mathlib's function. The cost is exponential
+in the number of columns; this is not an elimination algorithm.
+
 `validateGlobalVertexMap xs ys f` checks both input lists and requires every
 source face image to occur in the target at no later grade. Its correctness
 lemmas identify this finite condition with preservation of every integer

@@ -49,6 +49,7 @@ import TDA.Persistence.Reduction.TraceExamples
 import TDA.Persistence.Reduction.ColumnReductionExamples
 import TDA.Persistence.Reduction.FilteredNormalFormExamples
 import TDA.Persistence.Reduction.MatrixReductionExamples
+import TDA.Persistence.Reduction.F2MatrixRankExamples
 import TDA.Persistence.Reduction.EmptyComplexReduction
 import TDA.Persistence.Reduction.IsolatedVertexReduction
 import TDA.Persistence.Reduction.FilledTriangleReduction
