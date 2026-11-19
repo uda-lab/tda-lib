@@ -1,4 +1,7 @@
 -- Live axiom audit pins for Topology. Append new pins here; do not remove existing pins.
+-- This file also pins the `TDA.Topology.FiniteGromovProkhorov` theorems declared in the
+-- Persistence-area module `TDA/Persistence/GromovProkhorovMulticover.lean`: they were placed by
+-- declaration namespace, and existing pins are not moved.
 import TDA
 
 

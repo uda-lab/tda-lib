@@ -6,9 +6,9 @@ import Mathlib.Tactic
 /-!
 # Farthest-first nets in a finite metric space
 
-Starting from a chosen vertex, each greedyPrefix grows by a vertex maximizing its distance
-to that greedyPrefix. The construction stabilizes at the whole space. The next insertion
-radius bounds the covering radius of the current greedyPrefix and separates all vertices
+Starting from a chosen vertex, each greedy prefix (`greedyPrefix`) grows by a vertex maximizing
+its distance to that prefix. The construction stabilizes at the whole space. The next insertion
+radius bounds the covering radius of the current prefix and separates all vertices
 already inserted. The initial vertex is supplied separately: it has no finite
 insertion radius.
 -/
@@ -162,7 +162,7 @@ theorem radius_antitone (seed : V) : Antitone (radius seed) := by
   exact (nearestDistance_antitone (prefix_nonempty seed n) (prefix_step seed n) _).trans
     (le_next seed _ _)
 
-/-- Every greedyPrefix has the expected cardinality until all vertices have been inserted. -/
+/-- Every greedy prefix has the expected cardinality until all vertices have been inserted. -/
 theorem card_prefix (seed : V) (n : ℕ) :
     (greedyPrefix seed n).card = min (n + 1) (Fintype.card V) := by
   classical
@@ -210,7 +210,7 @@ def enumeration (seed : V) : Fin (Fintype.card V) ≃ V :=
 @[simp] theorem enumeration_apply (seed : V) (i : Fin (Fintype.card V)) :
     enumeration seed i = vertex seed i.val := rfl
 
-/-- All distinct vertices of a greedyPrefix are separated by the next insertion radius. -/
+/-- All distinct vertices of a greedy prefix are separated by the next insertion radius. -/
 theorem separation (seed : V) (n : ℕ) {x y : V}
     (hx : x ∈ greedyPrefix seed n) (hy : y ∈ greedyPrefix seed n) (hne : x ≠ y) :
     radius seed n ≤ dist x y := by
@@ -227,7 +227,7 @@ theorem separation (seed : V) (n : ℕ) {x y : V}
       exact hrad.trans (nearestDistance_le hx)
     · exact hrad.trans (ih hx hy)
 
-/-- The radius of the last inserted vertex separates the enlarged greedyPrefix. -/
+/-- The radius of the last inserted vertex separates the enlarged greedy prefix. -/
 theorem separation_succ (seed : V) (n : ℕ) {x y : V}
     (hx : x ∈ greedyPrefix seed (n + 1)) (hy : y ∈ greedyPrefix seed (n + 1)) (hne : x ≠ y) :
     radius seed n ≤ dist x y := by
@@ -245,7 +245,7 @@ theorem separation_succ (seed : V) (n : ℕ) {x y : V}
   unfold radius
   exact nearestDistance_of_mem (hn ▸ Finset.mem_univ _)
 
-/-- A finite threshold greedyPrefix exists even at threshold zero. -/
+/-- A finite threshold greedy prefix exists even at threshold zero. -/
 theorem exists_radius_le (seed : V) {δ : ℝ} (hδ : 0 ≤ δ) :
     ∃ n, radius seed n ≤ δ := by
   refine ⟨Fintype.card V, ?_⟩
