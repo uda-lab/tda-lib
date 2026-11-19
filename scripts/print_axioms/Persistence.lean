@@ -7701,3 +7701,24 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.WholeLineObstructionExamples.constant_distance_top
 #print axioms TDA.Persistence.WholeLineObstructionExamples.constant_no_zero_left_bound
 #print axioms TDA.Persistence.WholeLineObstructionExamples.canonical_zero_but_module_distance_top
+
+-- Executable rank of rectangular F₂ matrices by image enumeration (Issue #992).
+#print axioms TDA.Persistence.Reduction.F2Matrix.mem_imageFinset
+#print axioms TDA.Persistence.Reduction.F2Matrix.card_imageFinset
+#print axioms TDA.Persistence.Reduction.F2Matrix.rank_eq_finrank_range
+#print axioms TDA.Persistence.Reduction.F2Matrix.rank_eq_matrixRank
+#print axioms TDA.Persistence.Reduction.F2Matrix.rank_toMatrix'
+#print axioms TDA.Persistence.Reduction.F2Matrix.rank_add_finrank_ker
+#print axioms TDA.Persistence.Reduction.F2Matrix.rank_le_width
+#print axioms TDA.Persistence.Reduction.F2Matrix.rank_le_height
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.zero_rows
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.zero_columns
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.zero_matrix
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.identity
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.wide_rank
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.tall_rank
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.repeated_rank
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.dependent_rank
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.dependent_matrixRank
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.dependent_ker
+#print axioms TDA.Persistence.Reduction.F2Matrix.Examples.tall_injective

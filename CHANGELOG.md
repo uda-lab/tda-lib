@@ -36,6 +36,11 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `Classical.choice`, with no new hypothesis on the existing public
   interfaces. See
   [executing chronological finite persistence](docs/math/finite-line-computation.md).
+- Expose the executable rank of a rectangular F₂ matrix, `F2Matrix.rank`,
+  computed by enumerating the images of all source vectors and proved equal to
+  the range dimension and to Mathlib's `Matrix.rank`, for every shape including
+  no rows or no columns. The cost is exponential in the number of columns. See
+  the [API guide](docs/api.md#persistent-homology-results-and-computational-boundary).
 
 ## v0.4.0
 
