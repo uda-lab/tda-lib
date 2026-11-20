@@ -1182,8 +1182,9 @@ it strict for original finitely presented modules, using interleaving attainment
 `rankErosion_zero_iff` concerns erosion at radius zero, not the equation that its
 infimum is zero, and makes no module-isomorphism claim. The current rank uses
 `Module.finrank`; its intended scope is finite-dimensional fibers, not arbitrary
-infinite-dimensional modules. No erosion attainment theorem, strict-pair comparison
-or certified finite-test algorithm is supplied by these modules.
+infinite-dimensional modules. No erosion attainment theorem or strict-pair comparison
+is supplied; a certified finite test exists for F₂ grid representations only
+(`F2GridRep.runErosion`, below).
 
 For modules on two finite coordinate grids `G`, `H` and their actual Kan
 extensions, the predicate is determined by finitely many grades.
@@ -1224,12 +1225,31 @@ of the grid module between the real grades of `x ≤ y`, and
 Nothing is claimed for an invalid representation. Validation enumerates the
 comparable triples of grid grades and each rank enumerates source vectors, so
 the cost is exponential in the fiber dimension and in the number of
-coordinates. These modules compute ranks; they do not test `RankErosion`.
+coordinates.
+
+`F2GridRep.runErosion R S e` is a certified finite test of `RankErosion` for
+two representations and a rational radius. It returns `invalid` when a
+representation is not valid or `e < 0`; `pass` when both inequalities hold at
+every comparable pair of grades of the rational breakpoint grid
+(`RatGrid.erosionBreakpoints`); and otherwise `fail w`, where
+`w : F2GridRep.ErosionFailure` records the direction of a violated inequality,
+the pair of rational grades and the two ranks. `runErosion_eq_invalid_iff`,
+`runErosion_eq_pass_iff` and `runErosion_eq_fail` characterise the outcomes for
+the actual Kan extensions `R.grid.lan.obj (R.toModule hR)` and
+`S.grid.lan.obj (S.toModule hS)` at the real radius `RatGrid.radius e he`:
+`pass` holds exactly when the input is valid and `RankErosion` holds, and a
+reported failure is a violation by those extensions with `RankErosion` false.
+`erosionFailure?_eq_none_iff` is the underlying equivalence for valid input.
+Which violation is reported depends on the enumeration order. A failure
+refutes the predicate at radius `e` only: it is not a strict lower bound for an
+erosion or interleaving distance. The test is restricted to F₂, minimises no
+radius, and its cost grows exponentially with the number of coordinates and the
+fiber dimensions.
 
 The public `TDA.Persistence` aggregator exports `RankErosion`,
-`RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid` and
-`F2GridRep`; the witness module includes nonzero principal-upset examples,
-diagonal and positive-radius off-diagonal tests. See
+`RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid`, `F2GridRep`
+and `F2GridErosion`; the witness module includes nonzero principal-upset
+examples, diagonal and positive-radius off-diagonal tests. See
 [rank erosion and its extension boundaries](math/rank-erosion.md).
 
 ## Persistent homology results and computational boundary

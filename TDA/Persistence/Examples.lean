@@ -52,6 +52,7 @@ import TDA.Persistence.Reduction.MatrixReductionExamples
 import TDA.Persistence.Reduction.F2MatrixRankExamples
 import TDA.Persistence.RankErosionGridExamples
 import TDA.Persistence.F2GridRepExamples
+import TDA.Persistence.F2GridErosionExamples
 import TDA.Persistence.Reduction.EmptyComplexReduction
 import TDA.Persistence.Reduction.IsolatedVertexReduction
 import TDA.Persistence.Reduction.FilledTriangleReduction

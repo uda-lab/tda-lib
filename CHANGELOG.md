@@ -55,6 +55,12 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   Kan extension. Costs are exponential in the fiber dimension and the number
   of coordinates; no erosion test is included. See
   [rank erosion](docs/math/rank-erosion.md#executable-representations-over-the-two-element-field).
+- Test weak-pair rank erosion of two F₂ grid representations at a rational
+  radius by execution (`F2GridRep.runErosion`): the result is invalid input, a
+  pass, or a failed inequality with its direction, grades and ranks, and it is
+  proved correct for the actual Kan extensions in all three cases. A failure
+  refutes the predicate at that radius; it is not a distance bound. See
+  [rank erosion](docs/math/rank-erosion.md#a-certified-finite-test).
 
 ## v0.4.0
 

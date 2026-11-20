@@ -34,7 +34,10 @@ open scoped TDA.Persistence
 open TDA.Persistence.Reduction
 
 /-- Finitely many rational grid values in each coordinate. A list is used as the finite set of
-its elements: order and repetitions do not matter. -/
+its elements: order and repetitions do not matter.
+
+Dot notation such as `V.points` needs the type of `V` to be written as `RatGrid n`; for a term
+whose type is displayed as `Fin n → List ℚ`, write `RatGrid.points V`. -/
 abbrev RatGrid (n : ℕ) := Fin n → List ℚ
 
 namespace RatGrid
