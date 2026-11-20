@@ -83,6 +83,54 @@ $n=0$. `originHook_positive_radius_no_interleaving` uses the genuinely
 off-diagonal pair $a=1,b=2$ at radius $1$ in one coordinate. These are actual
 hook-module consumers, not an executable finite-test algorithm.
 
+## Finite test grids for grid Kan extensions
+
+Let `G` and `H` be finite coordinate grids, `M` a module on the points of `G`
+and `N` a module on the points of `H`, over a field, and consider their left
+Kan extensions to `Fin n → ℝ`. The fiber of the extension of `M` at a grade
+`a` is the fiber of `M` at the floor of `a`, the coordinatewise greatest grid
+point below `a`, and it is zero when no grid point lies below `a`. Structure
+maps follow the floors. Hence the rank of the extension from `a` to `b` is the
+rank of `M` between the two floors, or zero when `a` has no lower grid point
+(`rankOfStructureMap_lan`, `rankOfStructureMap_lan_eq_zero`). This uses only
+that ranks are preserved by the fiber isomorphisms, so no finite-dimensionality
+is needed.
+
+The two inequalities of `RankErosion ε` at a weak pair `a ≤ b` compare the
+extension of `M` from `a − ε` to `b + ε` with the extension of `N` from `a` to
+`b`, and conversely. By the previous paragraph they depend only on which grid
+values lie below the coordinates of `a − ε`, `b + ε`, `a` and `b`. Since
+`g ≤ aᵢ − ε` means `g + ε ≤ aᵢ`, and `g ≤ bᵢ + ε` means `g − ε ≤ bᵢ`, they
+depend only on which **breakpoints** lie below `aᵢ` and below `bᵢ`: the values
+of both grids in coordinate `i` and their shifts by `±ε`
+(`erosionBreakpoints`).
+
+Let `T` be a finite grid containing the breakpoints. If `a` has a lower point
+of `T`, so has `b`; their floors in `T` are comparable points of `T`, and a
+value of `T` lies below a coordinate of the floor exactly when it lies below
+that coordinate of the grade. Replacing the pair by its floors therefore keeps
+all four ranks. If `a` has no lower point of `T`, then `a − ε` has no lower
+point of `G` or of `H`, because each `g + ε` is a value of `T`; both left-hand
+ranks are zero and the inequalities hold. So `RankErosion ε` holds for the two
+extensions if and only if its inequalities hold at the comparable pairs of
+points of `T` (`rankErosion_lan_iff_of_subset`), including the diagonal pairs.
+
+Testing only the original grid values is not enough. In
+`RankErosionGridExamples`, the interval module `[0, 1)`, extended from the
+grid `{0, 1}`, and the zero module satisfy both inequalities at radius `1/4`
+for every pair of original values `0` and `1`, while the predicate fails at
+the shifted breakpoint `1/4 = 0 + 1/4`, where the interval module has rank one
+from `0` to `1/2` (`interval_original_values_pass`, `not_rankErosion_quarter`).
+The one-parameter modules born at `0` and at `1` behave in the same way at
+radius `1/2` (`original_values_pass`, `not_rankErosion_half`); at radius `1`
+their predicate is obtained from the criterion by checking the four breakpoint
+values (`rankErosion_one`). With no coordinates the predicate is
+equality of one rank, and an empty coordinate set in both grids leaves no test
+point.
+
+The criterion is a mathematical reduction over the real numbers. It supplies
+no executable test, rational arithmetic or matrix computation.
+
 ## Zero radius, zero distance and future extensions
 
 `rankErosion_zero_iff` identifies the **predicate** `RankErosion 0 M N` with
@@ -96,7 +144,8 @@ The [next-release extension proposal](https://github.com/uda-lab/tda-lib/issues/
 separates the following targets: a precise comparison with strict-pair conventions;
 erosion attainment and strict erosion lower certificates for original finite
 presentations; image rank beyond finite-dimensional fibers; and certified finite
-grid tests with actual persistent-homology consumers. Executable tests additionally
+grid tests with actual persistent-homology consumers. The finite criterion above
+is the mathematical part of such a test. Executable tests additionally
 need effective grades, coefficients and a matrix-rank correctness bridge. These
 are proposed extensions, not declarations supplied by this note. The proposal
 also records endpoint and nonseparation counterexamples that a broader API must
@@ -105,9 +154,11 @@ respect, rather than promising to remove necessary hypotheses.
 ## Imports and source convention
 
 Import `TDA.Persistence` for the public area API. Narrow imports are
-`TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving` and
-`TDA.Persistence.RankErosionWitness`. Their declarations are in `TDA.Persistence`;
-the concrete hook witnesses are in its `RankErosionWitness` namespace.
+`TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving`,
+`TDA.Persistence.RankErosionWitness` and `TDA.Persistence.RankErosionGrid`. Their
+declarations are in `TDA.Persistence`; the concrete hook witnesses are in its
+`RankErosionWitness` namespace, and the grid criterion is in
+`TDA.Persistence.CoordinateGrid`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 
 [Puuska, §2.2](https://arxiv.org/html/1710.01577v1) defines the rank invariant
