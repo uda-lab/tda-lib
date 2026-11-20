@@ -1182,9 +1182,32 @@ it strict for original finitely presented modules, using interleaving attainment
 `rankErosion_zero_iff` concerns erosion at radius zero, not the equation that its
 infimum is zero, and makes no module-isomorphism claim. The current rank uses
 `Module.finrank`; its intended scope is finite-dimensional fibers, not arbitrary
-infinite-dimensional modules. No erosion attainment theorem or strict-pair comparison
-is supplied; a certified finite test exists for F₂ grid representations only
+infinite-dimensional modules. No erosion attainment theorem is supplied; a
+certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).
+
+`StrictRankErosion ε M N` requires the same two inequalities only at the strict
+pairs of the product order, `a ≤ b` and `a ≠ b` (`strictRankErosion_iff_lt`
+restates this with `a < b`), and `strictRankErosionDistance` is its extended
+infimum. `RankErosion.strict` gives the strict predicate from the weak one at
+the same radius, for every `n`. For `[NeZero n]` and finite-dimensional fibers,
+`StrictRankErosion.rankErosion_add` and `StrictRankErosion.rankErosion_of_lt`
+give the weak predicate at every larger radius, and
+`strictRankErosionDistance_eq_rankErosionDistance` equates the two distances.
+The strict predicate has `symm`, `mono` (finite-dimensional fibers) and `trans`,
+its distance has zero self-distance, symmetry and the extended triangle
+inequality, and `strictRankErosion_zero_iff` describes radius zero. With no
+coordinates there is no strict pair: `strictRankErosion_fin_zero` and
+`strictRankErosionDistance_fin_zero` state that the strict predicate holds for
+all modules and the strict distance is zero. For finite-dimensional fibers,
+`le_rankErosionDistance_of_not_rankErosion` and
+`le_strictRankErosionDistance_of_not_strictRankErosion` turn a radius at which
+a predicate fails into a non-strict lower bound of its distance. The two
+predicates are not equivalent at a fixed radius: the examples give a module
+supported on a closed box for which the strict predicate holds and the weak one
+fails at the same radius, while both distances equal that radius. No
+coordinatewise-strict predicate, fixed-radius equivalence for finitely
+presented modules or strict lower bound is supplied.
 
 For modules on two finite coordinate grids `G`, `H` and their actual Kan
 extensions, the predicate is determined by finitely many grades.
@@ -1241,14 +1264,17 @@ the actual Kan extensions `R.grid.lan.obj (R.toModule hR)` and
 reported failure is a violation by those extensions with `RankErosion` false.
 `erosionFailure?_eq_none_iff` is the underlying equivalence for valid input.
 Which violation is reported depends on the enumeration order. A failure
-refutes the predicate at radius `e` only: it is not a strict lower bound for an
-erosion or interleaving distance. The test is restricted to F₂, minimises no
+refutes the predicate at radius `e`; with
+`le_rankErosionDistance_of_not_rankErosion` and
+`CoordinateGrid.lan_finiteDimensional` it bounds the erosion distance from
+below by `e`, but it is not a strict lower bound for an erosion or interleaving
+distance. The test is restricted to F₂, minimises no
 radius, and its cost grows exponentially with the number of coordinates and the
 fiber dimensions.
 
 The public `TDA.Persistence` aggregator exports `RankErosion`,
-`RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid`, `F2GridRep`
-and `F2GridErosion`; the witness module includes nonzero principal-upset
+`RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid`, `F2GridRep`,
+`F2GridErosion` and `StrictRankErosion`; the witness module includes nonzero principal-upset
 examples, diagonal and positive-radius off-diagonal tests. See
 [rank erosion and its extension boundaries](math/rank-erosion.md).
 

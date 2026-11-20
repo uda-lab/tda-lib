@@ -222,3 +222,4 @@ import TDA.Persistence.Reduction.RipsInputExamples
 import TDA.Persistence.Reduction.RipsInputDiagramExamples
 import TDA.Persistence.Enclosure.ExpExamples
 import TDA.Persistence.Enclosure.GramExamples
+import TDA.Persistence.StrictRankErosionExamples
