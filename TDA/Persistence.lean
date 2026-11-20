@@ -128,6 +128,7 @@ import TDA.Persistence.RankInvariant
 import TDA.Persistence.RankErosion
 import TDA.Persistence.RankErosionInterleaving
 import TDA.Persistence.RankErosionWitness
+import TDA.Persistence.RankErosionGrid
 import TDA.Persistence.RankReconstruction
 import TDA.Persistence.RankBarcode
 import TDA.Persistence.RankReindex

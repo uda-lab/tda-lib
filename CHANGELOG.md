@@ -41,6 +41,13 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   the range dimension and to Mathlib's `Matrix.rank`, for every shape including
   no rows or no columns. The cost is exponential in the number of columns. See
   the [API guide](docs/api.md#persistent-homology-results-and-computational-boundary).
+- Reduce weak-pair rank erosion of the Kan extensions of modules on two finite
+  coordinate grids to finitely many grades: the predicate holds if and only if
+  its inequalities hold at the comparable pairs of points of any finite grid
+  containing both grids' values and their shifts by the radius, with no
+  finite-dimensionality assumption. This is a criterion over the real numbers,
+  not an executable test. See
+  [rank erosion](docs/math/rank-erosion.md#finite-test-grids-for-grid-kan-extensions).
 
 ## v0.4.0
 

@@ -1185,9 +1185,26 @@ infimum is zero, and makes no module-isomorphism claim. The current rank uses
 infinite-dimensional modules. No erosion attainment theorem, strict-pair comparison
 or certified finite-test algorithm is supplied by these modules.
 
+For modules on two finite coordinate grids `G`, `H` and their actual Kan
+extensions, the predicate is decided by finitely many grades.
+`CoordinateGrid.rankOfStructureMap_lan` and `rankOfStructureMap_lan_eq_zero`
+(combined in `rankOfStructureMap_lan_eq_dite`) read a rank of `G.lan.obj M` as
+the rank of `M` between the two floors, or as zero where the source grade has
+no lower grid point; no finite-dimensionality is assumed.
+`CoordinateGrid.erosionBreakpoints G H ε` collects, per coordinate, the values
+of both grids and their shifts by `±ε`. For every finite grid `T` containing
+these breakpoints, `CoordinateGrid.rankErosion_lan_iff_of_subset` proves that
+`RankErosion ε (G.lan.obj M) (H.lan.obj N)` is equivalent to its two
+inequalities at the comparable pairs `p ≤ q` of points of `T`, diagonal pairs
+included; `rankErosion_lan_iff` is the case `T = erosionBreakpoints G H ε`.
+The original grid values alone are not enough, as the examples show. The test
+grades are real numbers and the statement is not an algorithm: nothing here is
+executable.
+
 The public `TDA.Persistence` aggregator exports `RankErosion`,
-`RankErosionInterleaving` and `RankErosionWitness`; the latter includes nonzero
-principal-upset examples, diagonal and positive-radius off-diagonal tests. See
+`RankErosionInterleaving`, `RankErosionWitness` and `RankErosionGrid`; the
+witness module includes nonzero principal-upset examples, diagonal and
+positive-radius off-diagonal tests. See
 [rank erosion and its extension boundaries](math/rank-erosion.md).
 
 ## Persistent homology results and computational boundary
@@ -1538,9 +1555,10 @@ vectors and `F2Matrix.rank M` is the base-two logarithm of its cardinality
 `F2Matrix.rank_eq_matrixRank` identify the executed number with the dimension
 of the range of `M.mulVecLin` and with Mathlib's noncomputable `Matrix.rank M`;
 `F2Matrix.rank_toMatrix'` states the same for the matrix of a linear map
-between coordinate spaces. `F2Matrix.rank_add_finrank_ker`, `rank_le_width`
-and `rank_le_height` give rank–nullity and the two shape bounds. There is no hypothesis on `m`, `n` or
-`M`: with no rows or no columns the rank is zero. Write `F2Matrix.rank M`,
+between coordinate spaces. `F2Matrix.rank_add_finrank_ker`,
+`F2Matrix.rank_le_width` and `F2Matrix.rank_le_height` give rank–nullity and
+the two shape bounds. There is no hypothesis on `m`, `n` or `M`: with no rows
+or no columns the rank is zero. Write `F2Matrix.rank M`,
 since `M.rank` in dot notation is Mathlib's function. The cost is exponential
 in the number of columns; this is not an elimination algorithm.
 
