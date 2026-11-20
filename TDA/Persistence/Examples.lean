@@ -218,3 +218,4 @@ import TDA.Persistence.BoundaryTransportGeometryExamples
 import TDA.Persistence.BoundaryTransportGeometry
 import TDA.Persistence.BoundaryTransportReverseExamples
 import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.Reduction.RipsInputExamples

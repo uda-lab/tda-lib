@@ -1525,11 +1525,11 @@ The executable definitions use lists, vectors, finite indices and rational
 comparison, with no quotient representative and no real-number comparison.
 Counting an evaluation of the adjacency or the height, a rational comparison
 and an index comparison as one unit, `incidence` costs `O(N³)` units for the
-label propagation and `O(L N²)` for the cells and edges of `L` levels; the bit
-cost of rational arithmetic is separate, and these counts are documented, not
-proved. Validation costs `O(N²)` units. The statement forms `label`,
-`cellList`, `edgeList`, `leftEnd` and `rightEnd` recompute the label vector at
-each call.
+label propagation and `O(L N²)` for the cells and edges of `L` levels.
+Validation costs `O(N²)` units. The bit cost of rational arithmetic is
+separate, and these counts are documented, not proved. The statement forms
+`label`, `cellList`, `edgeList`, `leftEnd` and `rightEnd` recompute the label
+vector at each call.
 
 No Mapper extraction is provided. These are elementary library results, not
 attributed to a source.
@@ -1560,9 +1560,9 @@ entries of the computed value `incidence`.
   (`reebDataIso_hom_v_inl`, `reebDataIso_hom_v_inr`, `reebDataIso_hom_e`);
   these laws determine it. The classical choice of endpoint inside the
   endpoint maps of `graphPLReebData` does not enter the laws.
-* `extractReebDataIso` composes `graphPLExtractIso` with its inverse: the data
-  extracted from the path-component precosheaf of the graph-PL height are the
-  executed lists.
+* `extractReebDataIso` composes `graphPLExtractIso` with the inverse of
+  `reebDataIso`: the data extracted from the path-component precosheaf of the
+  graph-PL height are the executed lists.
 * `reebQuotientIso` applies `graphPLReebQuotientIsoOfIso`: over `ℝ`, the Reeb
   quotient of the graph-PL height is the realization of the executed lists.
   The quotient theorem is not reproved.

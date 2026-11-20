@@ -1548,6 +1548,27 @@ Validity proofs do not affect the index or grade. Actual quotient-homology
 constructions and the arbitrary-field decomposition remain noncomputable. See
 [the input contract and correctness route](math/finite-ph-computation.md).
 
+`TDA.Persistence.Reduction.DistanceTable N` is an integer distance table on the
+labels `Fin N`, and `TDA.Persistence.Reduction.RipsInput` executes the complete Rips
+simplex list of such a table in the `FiniteInput` format. `DistanceTable.Valid`
+(nonnegative entries, symmetry, zero diagonal, positive distance between distinct
+labels, every triangle inequality) is decidable; `ripsInput?` and `ripsRun` return
+`none` for an invalid table, and nothing is repaired. `ripsInput` has one entry
+`(s.map Fin.valEmbedding, diameter s)` for each nonempty set `s` of labels
+(`mem_ripsInput`, `length_ripsInput`), ordered by grade, then cardinality, then
+lexicographically in the increasing label lists (`ripsInput_pairwise`), and it
+satisfies `FiniteInput.Valid` for every table (`ripsInput_valid`). For a valid
+table, `metric` is the metric on the labels, `cast_diameter` identifies the integer
+diameter with `Rips.diameter`, `complex_ripsInput` identifies the represented
+complex with the image of `Rips.fullComplex (Fin N)`, and `gradeFilter_ripsFace`
+identifies the listed grade of each face with the value of `Rips.filter`. `ripsRun`
+returns the occurrence records of the existing reduction on the list
+(`ripsRun_eq_bind_run`). The list has `2 ^ N - 1` entries and costs `O(N² 2 ^ N)`
+label and integer operations; the cost of the existing reduction is separate and
+not bounded. The equality of the resulting diagram with the Rips diagram and the
+comparison of homology are not provided by this module. See
+[Rips input from an integer distance table](math/finite-ph-computation.md#rips-input-from-an-integer-distance-table).
+
 `FiniteInput.runWithRepresentatives` adds original face-index cycle supports and,
 for finite occurrences, bounding supports while preserving that exact ordered
 output. Its correctness API proves actual signed simplicial boundary identities,

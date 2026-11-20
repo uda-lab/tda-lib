@@ -438,3 +438,4 @@ import TDA.Persistence.Reduction.F2MatrixRank
 import TDA.Persistence.Reduction.FiniteInputHomologyDimensions
 import TDA.Persistence.Reduction.FiniteInputHomologyDimensionsCorrectness
 import TDA.Persistence.Reduction.FiniteInputHomologyDimensionsExamples
+import TDA.Persistence.Reduction.RipsInput

@@ -168,6 +168,94 @@ reject an empty simplex, duplicate simplex with different grade, missing
 face, coface-first list, and decreasing grades. The negative runs together
 with `run_eq_none_iff` justify their invalidity.
 
+## Rips input from an integer distance table
+
+`TDA.Persistence.Reduction.RipsInput` computes a simplex list of the format above
+from a finite metric given by integers. A `DistanceTable N` is a function
+`Fin N → Fin N → ℤ`. `DistanceTable.Valid` is the conjunction of nonnegative
+entries, symmetry, zero diagonal, positive distance between distinct labels and
+every triangle inequality. It is decidable by finite quantification over the
+labels. Nonnegativity follows from the other four conditions and is checked all
+the same. An invalid table is rejected, not repaired, and no metric certificate
+is supplied by the caller. The table with no label and the table with one label
+and entry `0` are valid.
+
+`diameter s` is the maximum entry over the ordered pairs of a set `s` of labels,
+with value `0` on the empty set: the same fold as `Rips.diameter`, over the
+integers (`diameter_le_iff`, `dist_le_diameter`, `diameter_mono`). A single label
+of a valid table has diameter `0` (`diameter_singleton`).
+
+`ripsInput` lists every nonempty set of labels once:
+
+* `faceLists N` enumerates the nonempty strictly increasing label lists, by
+  length and then lexicographically (`mem_faceLists`, `nodup_faceLists`).
+* `entry` turns a label list into the pair of its set of labels, mapped into the
+  vertex type `ℕ` by `Fin.valEmbedding`, and its diameter. The labels
+  `0, …, N - 1` are transported into `ℕ`; no metric on `ℕ` is introduced.
+* The distinct grades are sorted, and for each grade in increasing order the
+  entries of that grade are taken in the order of the enumeration.
+
+`mem_ripsInput` states that the entries are exactly the pairs
+`(s.map Fin.valEmbedding, diameter s)` for nonempty `s`, and `mk_mem_ripsInput`
+that the grade listed with a face is its diameter. `ripsInput_pairwise` states
+the order: by grade, then by cardinality, then lexicographically in the
+increasing label lists. Each face occurs once (`nodup_faces_ripsInput`) and the
+list has `2 ^ N - 1` entries (`length_ripsInput`). The tie-break is a property
+of this implementation; by `outputDiagram_eq_of_same_graded_complex` the
+interpreted diagram does not depend on it.
+
+`ripsInput_valid` proves the five conditions of `Valid` for the list. It holds
+for every table, valid or not, because the maximum over pairs is monotone in the
+set; only the metric meaning of the list needs a valid table. `ripsInput?`
+returns the list for a valid table and `none` otherwise. `ripsRun` returns
+`occurrences` of the list for a valid table and `none` otherwise; it does not
+decide `Valid` of the list again, and `ripsRun_eq_bind_run` states that its
+value is that of `run` on the validated list.
+
+For a valid table, `metric` is the metric on `Fin N` whose distances are the
+table entries, passed explicitly to the Rips API and not registered as an
+instance. `cast_diameter` identifies the integer diameter, cast to a real
+number, with `Rips.diameter`. The represented complex `complex` of the list is
+the image of `Rips.fullComplex (Fin N)` under the inclusion of labels
+(`mem_complex_ripsInput`, `complex_ripsInput`), `ripsFace` is the resulting
+bijection of faces (`ripsFace_bijective`), and `gradeFilter_ripsFace` states
+that the grade read by `gradeFilter` at a face, cast to a real number, is the
+value of `Rips.filter` for `metric` at the corresponding face. These are
+statements about the complex and the filter that `outputDiagram_eq_dgm` uses.
+
+This module does not compare diagrams or homology. The equality of
+`outputDiagram` of the list with the diagram of `Rips.filter`, and the
+positive-degree consumer for the four-cycle, are later units.
+
+Write `F = 2 ^ N - 1` for the number of faces and `G` for the number of
+distinct grades; every grade is `0` or a table entry, so
+`G ≤ N (N - 1) / 2 + 1` for a valid table. Counting a table lookup, a comparison
+or maximum of two integers and a comparison of two labels as one unit:
+validation costs `O(N³)` comparisons and additions; forming the sets of labels
+and their diameters costs `O(N² F)`; collecting the distinct grades costs
+`O(F G)`, sorting them `O(G²)` and grouping the entries by grade `O(F G)`. The
+list costs `O(N² F) = O(N² 2 ^ N)` units, which is exponential in `N`, and an
+integer unit costs time proportional to the bit length of the entries. `ripsRun`
+adds the cost of the existing reduction on `F` faces, which is not bounded here;
+it is at least quadratic in `F`, since the boundary matrix is a dense `F × F`
+matrix, and it dominates already for small tables. These counts are documented,
+not proved. The executable definitions use lists, finite sets given by lists and
+integer comparison, with no decision by `Classical` and no real-number
+comparison; `metric` and the statements about `Rips` are semantic adapters.
+
+`RipsInputExamples.lean` states the complete value of `ripsInput?` for no label,
+one label, two labels at distance `3`, three labels at mutual distance `2`
+(four faces of one grade, listed by cardinality and label order), three points
+on a line and the same points with two labels exchanged (`relabelled_dist`,
+`relabelled_grades`), and the shortest-path metric of the four-cycle: vertices
+at `0`, the four edges at `1`, and both diagonals, the triangles and the
+tetrahedron at `2`. `fourCycle_diagonal` transfers the grade `2` of a diagonal
+to the value of the actual `Rips.filter`. `ripsRun` is checked for no label,
+one label and two labels (`pair_ripsRun`: one finite class from `0` to `3` and
+one essential class in degree zero). Tables violating symmetry, separation,
+the triangle inequality, the zero diagonal or nonnegativity return `none` from
+`ripsInput?` and from `ripsRun`.
+
 ## Dependency and source scope
 
 The computational dependencies are pinned Lean/mathlib finite lists and
