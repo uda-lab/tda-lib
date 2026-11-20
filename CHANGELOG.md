@@ -67,8 +67,10 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   per crossing edge, and the spanning edges of each gap with their endpoint
   cells, parallel entries retained. Component labels are proved to decide
   reachability in the actual induced level graphs; invalid adjacency is
-  rejected. The comparison with `graphPLReebData` and the Reeb quotient is not
-  included. See
+  rejected. The executed lists are proved isomorphic, as finite Reeb data, to
+  `graphPLReebData` at the computed levels, and the Reeb quotient of the
+  graph-PL height is identified over `ℝ` with their realization
+  (`HeightGraph.reebDataIso`, `HeightGraph.reebQuotientIso`). See
   [executable incidence extraction](docs/math/mapper.md#executable-incidence-extraction).
 
 ## v0.4.0

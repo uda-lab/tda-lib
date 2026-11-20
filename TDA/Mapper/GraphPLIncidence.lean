@@ -39,8 +39,8 @@ statements `mem_cellList_inl`, `mem_cellList_inr` and `mem_edgeList` describe th
 have no repetition (`nodup_cellList`, `nodup_edgeList`). Which vertex represents a component is a
 property of this implementation; consumers should use the reachability statement.
 
-The identification of these lists with `graphPLReebData` and with the Reeb quotient is not in
-this module.
+The identification of these lists with `graphPLReebData` and with the Reeb quotient is in
+`TDA.Mapper.GraphPLIncidenceReebData`.
 
 ## Cost
 
@@ -196,7 +196,8 @@ def relax (L : Vector (Fin N) N) : Vector (Fin N) N :=
 /-- The component labels: `N` rounds of propagation from the identity labelling. -/
 def labels : Vector (Fin N) N := X.relax^[N] (Vector.ofFn id)
 
-/-- The label of a vertex: the least index in its level component. -/
+/-- The label of a vertex. For valid input it is the least index in its level component
+(`label_eq_label_iff_reachable`, `label_le`). -/
 def label (v : Fin N) : Fin N := X.labels[v]
 
 section fold
