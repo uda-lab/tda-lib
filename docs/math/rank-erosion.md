@@ -163,8 +163,9 @@ with a rank-one map out of a two-dimensional fiber, and two rejected inputs.
 
 For two valid representations, possibly on different rational grids, and a
 rational radius `e ≥ 0`, the rational breakpoint grid lists in each coordinate,
-without repetitions, the values of both grids and their shifts by `±e`. Its real image is exactly
-the breakpoint grid of the two real grids (`RatGrid.grid_erosionBreakpoints`),
+without repetitions, the values of both grids and their shifts by `±e`. Its
+real image is exactly the breakpoint grid of the two real grids
+(`RatGrid.grid_erosionBreakpoints`),
 so the finite criterion applies with it as the test grid, and lowering or
 raising a rational grade by `e` corresponds to the real operations in the
 definition of erosion.
@@ -184,8 +185,8 @@ grid modules. The outcome is `invalid` exactly for invalid input
 failure is a genuine violation: the recorded ranks are the ranks of the widened
 structure map of one extension and of the structure map of the other at a
 comparable pair of grades of the rational breakpoint grid, the first exceeds
-the second, and `RankErosion` fails (`runErosion_eq_fail`). Which violation is reported depends
-on the enumeration order.
+the second, and `RankErosion` fails (`runErosion_eq_fail`). Which violation is
+reported depends on the enumeration order.
 
 In `F2GridErosionExamples`, the interval module `[0, 1)` against the zero
 module fails at radius `1/4` at the shifted breakpoint `1/4`, although the
@@ -213,24 +214,25 @@ that predicate, nor does it classify modules up to natural isomorphism.
 In multiple parameters, ranks do not record how images of maps from incomparable
 grades meet, so rank equality cannot in general recover the module.
 
-The [next-release extension proposal](https://github.com/uda-lab/tda-lib/issues/865)
-separates the following targets: a precise comparison with strict-pair conventions;
-erosion attainment and strict erosion lower certificates for original finite
-presentations; image rank beyond finite-dimensional fibers; and certified finite
-grid tests with actual persistent-homology consumers. The finite criterion above
-is the mathematical part of such a test. Executable tests additionally
-need effective grades, coefficients and a matrix-rank correctness bridge. These
-are proposed extensions, not declarations supplied by this note. The proposal
-also records endpoint and nonseparation counterexamples that a broader API must
-respect, rather than promising to remove necessary hypotheses.
+The [extension proposal](https://github.com/uda-lab/tda-lib/issues/865)
+separates several targets. Of these, the finite criterion, the executable
+representations over the two-element field and the certified finite test of
+the three preceding sections are supplied. The following remain proposed
+extensions, not declarations supplied by this note: a precise comparison with
+strict-pair conventions; erosion attainment and strict erosion lower
+certificates for original finite presentations; image rank beyond
+finite-dimensional fibers; finite tests fed by actual persistent-homology
+input; and execution over other fields. The proposal also records endpoint and
+nonseparation counterexamples that a broader API must respect, rather than
+promising to remove necessary hypotheses.
 
 ## Imports and source convention
 
 Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving`,
 `TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid`,
-`TDA.Persistence.F2GridRep` and `TDA.Persistence.F2GridErosion`. Their declarations are in `TDA.Persistence`; the
-concrete hook witnesses are in its `RankErosionWitness` namespace, the grid
+`TDA.Persistence.F2GridRep` and `TDA.Persistence.F2GridErosion`. Their
+declarations are in `TDA.Persistence`; the concrete hook witnesses are in its `RankErosionWitness` namespace, the grid
 criterion is in `TDA.Persistence.CoordinateGrid`, and the executable
 representations are in `TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.
 Coordinate notation uses `open scoped TDA.Persistence`.

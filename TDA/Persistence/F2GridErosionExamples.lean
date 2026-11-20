@@ -9,7 +9,7 @@ import TDA.Persistence.F2GridRepExamples
   passes; at radius `1/2` it passes. Both outcomes are transferred to `RankErosion` of the actual
   Kan extensions. Swapping the two modules reports the other direction.
 * Two rays born at `0` and `1`: a passing comparison of nonzero modules at radius `1`, and a
-  failure at radius `1/2` in either direction.
+  failure at radius `1/2`, reported with the other direction when the two modules are exchanged.
 * Radius `0`, where the inequalities compare all ranks: a module against a second representation
   of itself on a different list passes, and against the zero module fails on the diagonal.
 * An interval with negative grid values against `[0, 1)`, on different grids.
@@ -167,8 +167,9 @@ theorem plane_flat_zero :
 /-- At radius `1` the same two modules pass. -/
 theorem plane_flat_one : runErosion plane flat 1 = .pass := by decide +kernel
 
-/-- An empty coordinate set leaves no grade to test in that coordinate of the first grid; the
-comparison with the zero module passes. -/
+/-- The first representation has an empty value list, hence no grid grade and a zero Kan
+extension. The breakpoint grid still has the value of the second grid and its shifts, and the
+comparison with the zero module passes there. -/
 theorem emptyGrid_zero : runErosion emptyGrid zero 1 = .pass := by decide +kernel
 
 /-- An invalid representation is reported as invalid input, not as failed erosion. -/

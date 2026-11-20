@@ -53,7 +53,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   condition, the actual grid module of a valid representation, and an
   executable rank at rational grades proved equal to the rank of the actual
   Kan extension. Costs are exponential in the fiber dimension and the number
-  of coordinates; no erosion test is included. See
+  of coordinates. See
   [rank erosion](docs/math/rank-erosion.md#executable-representations-over-the-two-element-field).
 - Test weak-pair rank erosion of two F₂ grid representations at a rational
   radius by execution (`F2GridRep.runErosion`): the result is invalid input, a
