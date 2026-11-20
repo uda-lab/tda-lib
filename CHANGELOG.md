@@ -10,6 +10,17 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Execute the complete Rips simplex list of an integer distance table in the
+  `FiniteInput` format: `DistanceTable`, its decidable `Valid`, `ripsInput`,
+  `ripsInput?` and `ripsRun`, which return `none` for an invalid table. The
+  list is ordered by grade, cardinality and label order, satisfies
+  `FiniteInput.Valid`, and its faces and grades are identified with
+  `Rips.fullComplex` and `Rips.filter` for the table metric. The list costs
+  `O(N² 2 ^ N)` operations; the cost of the existing reduction is separate.
+  The equality of the resulting diagram with the Rips diagram is not part of
+  this change. See
+  [Rips input from an integer distance table](docs/math/finite-ph-computation.md#rips-input-from-an-integer-distance-table).
+
 - Identify each finite-input image structure-map rank with the range dimension
   of the induced simplicial map between sampled sublevels, for global vertex
   maps on monotone integer observations with repeated or negative thresholds
