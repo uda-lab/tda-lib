@@ -137,9 +137,11 @@ A grid module over the field with two elements can be given by finite data: a
 list of rational grid values in each coordinate, a fiber dimension at each grid
 grade, and a matrix for each comparable pair of grid grades. The lists are used
 as finite sets, so order and repetitions do not matter. The data define a
-module on the real image of the grid exactly when the matrices are identities
-on the diagonal and compose along comparable triples of grid grades; this
-finite condition is `F2GridRep.Valid`, and it can be decided by computation.
+module on the real image of the grid when the matrices are identities on the
+diagonal and compose along comparable triples of grid grades; this finite
+condition is `F2GridRep.Valid`, and it can be decided by computation. (The
+condition is also necessary for functoriality; that converse is not
+formalised.)
 For valid data, `F2GridRep.toModule` is the module with fibers
 `Fin (dim a) → ZMod 2` and the stored matrices as structure maps. In Lean the
 dimension and matrix functions are total on rational grades; their values off
@@ -157,8 +159,47 @@ extension. `F2GridRepExamples` executes the interval module `[0, 1)`, the same
 module from an unsorted list with a repeated value, a two-parameter module
 with a rank-one map out of a two-dimensional fiber, and two rejected inputs.
 
-This computes ranks of one module. It is not a test of `RankErosion`, which
-needs a rational form of the breakpoints and a comparison of two modules.
+## A certified finite test
+
+For two valid representations, possibly on different rational grids, and a
+rational radius `e ≥ 0`, the rational breakpoint grid lists in each coordinate
+the values of both grids and their shifts by `±e`. Its real image is exactly
+the breakpoint grid of the two real grids (`RatGrid.grid_erosionBreakpoints`),
+so the finite criterion applies with it as the test grid, and lowering or
+raising a rational grade by `e` corresponds to the real operations in the
+definition of erosion.
+
+`F2GridRep.runErosion` first decides validity of both representations and
+`0 ≤ e`; otherwise it returns `invalid`. It then enumerates the comparable
+pairs `p ≤ q` of breakpoint grades and compares the executed rank of one module
+from `p − e` to `q + e` with the executed rank of the other from `p` to `q`,
+in both directions. It returns `pass` when every comparison holds, and
+otherwise `fail` with one violated inequality: its direction, the pair of
+grades and the two ranks.
+
+The three outcomes are characterised for the actual Kan extensions of the two
+grid modules. The outcome is `invalid` exactly for invalid input
+(`runErosion_eq_invalid_iff`). It is `pass` exactly when the input is valid and
+`RankErosion` holds at radius `e` (`runErosion_eq_pass_iff`). A reported
+failure is a genuine violation: the recorded ranks are the ranks of the widened
+structure map of one extension and of the structure map of the other at a
+comparable pair of rational grades, the first exceeds the second, and
+`RankErosion` fails (`runErosion_eq_fail`). Which violation is reported depends
+on the enumeration order.
+
+In `F2GridErosionExamples`, the interval module `[0, 1)` against the zero
+module fails at radius `1/4` at the shifted breakpoint `1/4`, although the
+pairs of original grid values `0` and `1` show no failure; it passes at radius
+`1/2`. Further fixtures cover both directions of failure, two nonzero modules
+on different grids, radius zero, negative grid values, no coordinates, two
+parameters, and invalid input.
+
+A failure shows that the predicate fails at the tested radius. It is not a
+strict lower bound for an erosion or interleaving distance, which needs an
+attainment theorem that the library does not have; and the test neither
+minimises a radius nor works over other fields. Its cost is the number of
+comparable pairs of breakpoint grades, which grows exponentially with the
+number of coordinates, times four enumeration ranks.
 
 ## Zero radius, zero distance and future extensions
 
@@ -184,8 +225,8 @@ respect, rather than promising to remove necessary hypotheses.
 
 Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving`,
-`TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid` and
-`TDA.Persistence.F2GridRep`. Their declarations are in `TDA.Persistence`; the
+`TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid`,
+`TDA.Persistence.F2GridRep` and `TDA.Persistence.F2GridErosion`. Their declarations are in `TDA.Persistence`; the
 concrete hook witnesses are in its `RankErosionWitness` namespace, the grid
 criterion is in `TDA.Persistence.CoordinateGrid`, and the executable
 representations are in `TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.

@@ -13,7 +13,8 @@ import Mathlib.LinearAlgebra.Matrix.Notation
   non-identity structure map.
 * Two invalid representations, rejected for a composition failure and for a non-identity
   diagonal matrix.
-* Degenerate cases: no coordinates, and an empty value list.
+* Degenerate cases: no coordinates, and an empty value list. A zero-dimensional fiber occurs
+  in `interval` at the grid value `1`.
 -/
 
 set_option autoImplicit false
@@ -103,7 +104,9 @@ theorem plane_rank_origin : plane.rankAt ![0, 0] ![0, 0] = 2 := by decide +kerne
 /-- The map out of the origin is not an identity and has rank one. -/
 theorem plane_rank_out : plane.rankAt ![0, 0] ![1, 0] = 1 := by decide +kernel
 
-/-- A grade between grid values in one coordinate and above them in the other. -/
+/-- The source grade lies between grid values in the first coordinate and has the origin as its
+floor; the target grade also lies above the grid values in the second coordinate and has floor
+`(0, 1)`. The map between the two floors is the rank-one map out of the origin. -/
 theorem plane_rank_between : plane.rankAt ![1 / 2, 0] ![1 / 2, 3] = 1 := by decide +kernel
 
 theorem plane_out_le : (![0, 0] : Fin 2 → ℚ) ≤ ![1, 0] := by decide +kernel
