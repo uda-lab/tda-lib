@@ -7748,3 +7748,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.rankErosion_one
 #print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.rankErosion_zero_coordinates
 #print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.rankErosion_of_empty_coordinate
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.lower_le
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.hasLowerPoint_pair
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.interval_rank_eq_one
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.interval_rank_eq_zero_of_lt
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.interval_rank_eq_zero_of_le
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.zeroExtension_rank
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.interval_original_values_pass
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.quarter_mem_breakpoints
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.quarter_not_mem_grids
+#print axioms TDA.Persistence.CoordinateGrid.RankErosionGridExamples.not_rankErosion_quarter

@@ -116,12 +116,15 @@ extensions if and only if its inequalities hold at the comparable pairs of
 points of `T` (`rankErosion_lan_iff_of_subset`), including the diagonal pairs.
 
 Testing only the original grid values is not enough. In
-`RankErosionGridExamples`, the one-parameter modules born at `0` and at `1`
-satisfy both inequalities at radius `1/2` for every pair of original values
-`0` and `1`, while the predicate fails at the shifted breakpoint
-`1/2 = 0 + 1/2` (`original_values_pass`, `not_rankErosion_half`). At radius
-`1` the predicate is obtained from the criterion by checking the four
-breakpoint values (`rankErosion_one`). With no coordinates the predicate is
+`RankErosionGridExamples`, the interval module `[0, 1)`, extended from the
+grid `{0, 1}`, and the zero module satisfy both inequalities at radius `1/4`
+for every pair of original values `0` and `1`, while the predicate fails at
+the shifted breakpoint `1/4 = 0 + 1/4`, where the interval module has rank one
+from `0` to `1/2` (`interval_original_values_pass`, `not_rankErosion_quarter`).
+The one-parameter modules born at `0` and at `1` behave in the same way at
+radius `1/2` (`original_values_pass`, `not_rankErosion_half`); at radius `1`
+their predicate is obtained from the criterion by checking the four breakpoint
+values (`rankErosion_one`). With no coordinates the predicate is
 equality of one rank, and an empty coordinate set in both grids leaves no test
 point.
 

@@ -1,11 +1,17 @@
 import TDA.Persistence.RankErosionGrid
 import TDA.Persistence.HookInfinity
+import TDA.Persistence.HookProjective
 
 /-!
 # Consumers of the finite rank-erosion criterion
 
-Two one-parameter modules, each the Kan extension of a principal-upset module on a one-point
-grid: one is born at `0`, the other at `1`.
+The interval module `[0, 1)`, the Kan extension of a hook module on the grid `{0, 1}`, is
+compared with the zero module at radius `1/4`: the erosion inequalities hold at every pair of
+original grid values, yet the predicate fails, because the criterion's test point
+`1/4 = 0 + 1/4`, a shifted breakpoint that is not a grid value, violates the first inequality.
+
+Two further one-parameter modules are Kan extensions of principal-upset modules on one-point
+grids: one is born at `0`, the other at `1`.
 
 * At radius `1/2` the erosion inequalities hold at every pair of original grid values, yet
   the predicate fails: the criterion's test point `1/2 = 0 + 1/2`, a shifted breakpoint that
@@ -21,8 +27,8 @@ set_option autoImplicit false
 
 namespace TDA.Persistence.CoordinateGrid.RankErosionGridExamples
 
-open CategoryTheory
-open scoped TDA.Persistence NNReal
+open CategoryTheory CategoryTheory.Limits
+open scoped TDA.Persistence NNReal ZeroObject
 
 /-- The one-coordinate grid with the single value `c`. -/
 def single (c : ℝ) : CoordinateGrid 1 := fun _ => {c}
@@ -194,6 +200,178 @@ theorem rankErosion_one : RankErosion 1 (ray 0) (ray 1) := by
       exact ray_rank_le_one 0 _
     · rw [ray_rank_eq_one 0 _ (by rw [hval, h]; norm_num)]
       exact ray_rank_le_one 1 _
+
+section Interval
+
+/-- The one-coordinate grid with the two values `0` and `1`. -/
+noncomputable def pair : CoordinateGrid 1 := fun _ => {0, 1}
+
+/-- Its point at `0`. -/
+def lower : pair.Point := fun _ => ⟨0, by simp [pair]⟩
+
+/-- Its point at `1`. -/
+def upper : pair.Point := fun _ => ⟨1, by simp [pair]⟩
+
+/-- The hook module on the two-point grid: one copy of `ℚ` at `0`, zero at `1`. -/
+noncomputable abbrev hookOnPair : PModule.{0,0,0} ℚ pair.Point := Hook.module lower upper
+
+/-- The interval module `[0, 1)`: the actual Kan extension of `hookOnPair`. -/
+noncomputable def interval : PModule.{0,0,0} ℚ (Fin 1 → ℝ) := pair.lan.obj hookOnPair
+
+/-- The zero module, as the Kan extension of the zero module on a one-point grid. -/
+noncomputable def zeroExtension : PModule.{0,0,0} ℚ (Fin 1 → ℝ) :=
+  (single 0).lan.obj (0 : PModule.{0,0,0} ℚ (single 0).Point)
+
+theorem lower_le (p : pair.Point) : lower ≤ p := by
+  intro i
+  have h : (p i).val = 0 ∨ (p i).val = 1 := by simpa [pair] using (p i).property
+  change (0 : ℝ) ≤ (p i).val
+  rcases h with h | h <;> norm_num [h]
+
+private theorem hookOnPair_rank_eq_one {p q : pair.Point} (hpq : p ≤ q)
+    (hp : p ∈ Hook.support lower upper) (hq : q ∈ Hook.support lower upper) :
+    rankOfStructureMap hookOnPair hpq = 1 := by
+  unfold rankOfStructureMap
+  have hinj : Function.Injective (structureMapLinear hookOnPair hpq) := by
+    intro x y hxy
+    apply Subtype.ext
+    have hv := congrArg
+      (fun z : SupportInterval.fiber (k := ℚ) (Hook.support lower upper) q => (z : ℚ)) hxy
+    rw [SupportInterval.structureMap_val (Hook.support lower upper)
+        (Hook.support_ordConnected lower upper) hpq x,
+      SupportInterval.structureMap_val (Hook.support lower upper)
+        (Hook.support_ordConnected lower upper) hpq y] at hv
+    simpa [hq] using hv
+  rw [LinearMap.finrank_range_of_inj hinj]
+  change Module.finrank ℚ (SupportInterval.fiber (k := ℚ) (Hook.support lower upper) p) = 1
+  rw [show SupportInterval.fiber (k := ℚ) (Hook.support lower upper) p = ⊤ by
+    simp [SupportInterval.fiber, hp]]
+  simp
+
+private theorem hookOnPair_rank_eq_zero {p q : pair.Point} (hpq : p ≤ q)
+    (hq : q ∉ Hook.support lower upper) : rankOfStructureMap hookOnPair hpq = 0 := by
+  unfold rankOfStructureMap
+  rw [show structureMapLinear hookOnPair hpq = 0 from
+    SupportInterval.structureMap_eq_zero_of_not_mem (Hook.support lower upper)
+      (Hook.support_ordConnected lower upper) hpq fun h => hq h.2,
+    LinearMap.range_zero, finrank_bot]
+
+theorem hasLowerPoint_pair (a : Fin 1 → ℝ) : pair.HasLowerPoint a ↔ 0 ≤ a 0 := by
+  rw [hasLowerPoint_iff]
+  constructor
+  · intro h
+    obtain ⟨g, hg, hle⟩ := h 0
+    have hg' : g = 0 ∨ g = 1 := by simpa [pair] using hg
+    rcases hg' with rfl | rfl
+    · exact hle
+    · exact le_trans zero_le_one hle
+  · intro h i
+    exact ⟨0, by simp [pair], by rwa [Subsingleton.elim i 0]⟩
+
+private theorem floor_mem_support {x : Fin 1 → ℝ} (hx : pair.HasLowerPoint x) (h : x 0 < 1) :
+    pair.floor x hx ∈ Hook.support lower upper :=
+  ⟨lower_le _, fun hu => by
+    have h1 : (1 : ℝ) ≤ (pair.floor x hx 0).val := hu 0
+    have h2 : (pair.floor x hx 0).val ≤ x 0 := pair.floor_le x hx 0
+    linarith⟩
+
+/-- Between `0` and `1` every structure map of the interval module has rank one. -/
+theorem interval_rank_eq_one {a b : Fin 1 → ℝ} (hab : a ≤ b) (ha : 0 ≤ a 0) (hb : b 0 < 1) :
+    rankOfStructureMap interval hab = 1 := by
+  have hla := (hasLowerPoint_pair a).mpr ha
+  rw [interval, rankOfStructureMap_lan _ _ hab hla]
+  exact hookOnPair_rank_eq_one _ (floor_mem_support hla (lt_of_le_of_lt (hab 0) hb))
+    (floor_mem_support _ hb)
+
+/-- Before `0` every structure map of the interval module has rank zero. -/
+theorem interval_rank_eq_zero_of_lt {a b : Fin 1 → ℝ} (hab : a ≤ b) (ha : a 0 < 0) :
+    rankOfStructureMap interval hab = 0 :=
+  rankOfStructureMap_lan_eq_zero _ _ hab fun hl => absurd ((hasLowerPoint_pair a).mp hl)
+    (not_le.mpr ha)
+
+/-- A structure map of the interval module ending at or after `1` has rank zero. -/
+theorem interval_rank_eq_zero_of_le {a b : Fin 1 → ℝ} (hab : a ≤ b) (hb : 1 ≤ b 0) :
+    rankOfStructureMap interval hab = 0 := by
+  by_cases hla : pair.HasLowerPoint a
+  · rw [interval, rankOfStructureMap_lan _ _ hab hla]
+    have hlb := pair.hasLowerPoint_mono hab hla
+    refine hookOnPair_rank_eq_zero _ fun hmem => hmem.2 (pair.le_floor b hlb ?_)
+    intro i
+    change (1 : ℝ) ≤ b i
+    rwa [Subsingleton.elim i 0]
+  · exact rankOfStructureMap_lan_eq_zero _ _ hab hla
+
+/-- Every structure map of the zero extension has rank zero. -/
+theorem zeroExtension_rank {a b : Fin 1 → ℝ} (hab : a ≤ b) :
+    rankOfStructureMap zeroExtension hab = 0 := by
+  by_cases hla : (single 0).HasLowerPoint a
+  · rw [zeroExtension, rankOfStructureMap_lan _ _ hab hla]
+    exact rankOfStructureMap_zero _
+  · exact rankOfStructureMap_lan_eq_zero _ _ hab hla
+
+/-- The radius one quarter. -/
+noncomputable def quarter : ℝ≥0 := ⟨1 / 4, by norm_num⟩
+
+/-- At radius `1/4`, both erosion inequalities between the interval module and zero hold at
+every weak pair whose source is an original grid value. -/
+theorem interval_original_values_pass {a b : Fin 1 → ℝ} (hab : a ≤ b)
+    (ha : a 0 = 0 ∨ a 0 = 1) :
+    rankOfStructureMap interval (erosionWide_le quarter hab) ≤
+        rankOfStructureMap zeroExtension hab ∧
+      rankOfStructureMap zeroExtension (erosionWide_le quarter hab) ≤
+        rankOfStructureMap interval hab := by
+  have hlow : erosionLower quarter a 0 = a 0 - 1 / 4 := rfl
+  have hup : erosionUpper quarter b 0 = b 0 + 1 / 4 := rfl
+  constructor
+  · rcases ha with h | h
+    · rw [interval_rank_eq_zero_of_lt _ (by rw [hlow, h]; norm_num)]
+      exact Nat.zero_le _
+    · rw [interval_rank_eq_zero_of_le _ (by
+        rw [hup]
+        have := hab 0
+        linarith)]
+      exact Nat.zero_le _
+  · rw [zeroExtension_rank]
+    exact Nat.zero_le _
+
+/-- The value `1/4 = 0 + 1/4` is a breakpoint of the two grids at radius `1/4`. -/
+theorem quarter_mem_breakpoints :
+    (1 / 4 : ℝ) ∈ erosionBreakpoints pair (single 0) quarter 0 :=
+  mem_erosionBreakpoints.mpr
+    (Or.inr (Or.inr (Or.inl ⟨0, by simp [pair], by
+      change (0 : ℝ) + 1 / 4 = 1 / 4
+      norm_num⟩)))
+
+/-- It is not an original grid value. -/
+theorem quarter_not_mem_grids : (1 / 4 : ℝ) ∉ pair 0 ∪ single 0 0 := by
+  norm_num [pair, single]
+
+/-- The interval module `[0, 1)` and the zero module do not satisfy erosion at radius `1/4`:
+the criterion's test point `1/4` violates the first inequality, although every pair of
+original grid values passes. -/
+theorem not_rankErosion_quarter : ¬ RankErosion quarter interval zeroExtension := by
+  intro h
+  let p : (erosionBreakpoints pair (single 0) quarter).Point :=
+    fun _ => ⟨1 / 4, by
+      have := quarter_mem_breakpoints
+      rwa [Subsingleton.elim (0 : Fin 1) _] at this⟩
+  have hp : rankOfStructureMap interval
+      (erosionWide_le quarter ((erosionBreakpoints pair (single 0) quarter).embedding.monotone
+        (le_refl p))) ≤ rankOfStructureMap zeroExtension
+      ((erosionBreakpoints pair (single 0) quarter).embedding.monotone (le_refl p)) :=
+    ((rankErosion_lan_iff pair (single 0) hookOnPair
+      (0 : PModule.{0,0,0} ℚ (single 0).Point) quarter).mp h p p le_rfl).1
+  rw [interval_rank_eq_one _
+      (by
+        change (0 : ℝ) ≤ 1 / 4 - 1 / 4
+        norm_num)
+      (by
+        change (1 / 4 : ℝ) + 1 / 4 < 1
+        norm_num),
+    zeroExtension_rank] at hp
+  exact absurd hp (by decide)
+
+end Interval
 
 section Degenerate
 

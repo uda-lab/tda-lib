@@ -1186,11 +1186,12 @@ infinite-dimensional modules. No erosion attainment theorem, strict-pair compari
 or certified finite-test algorithm is supplied by these modules.
 
 For modules on two finite coordinate grids `G`, `H` and their actual Kan
-extensions, the predicate is decided by finitely many grades.
+extensions, the predicate is determined by finitely many grades.
 `CoordinateGrid.rankOfStructureMap_lan` and `rankOfStructureMap_lan_eq_zero`
 (combined in `rankOfStructureMap_lan_eq_dite`) read a rank of `G.lan.obj M` as
 the rank of `M` between the two floors, or as zero where the source grade has
-no lower grid point; no finite-dimensionality is assumed.
+no lower grid point; no finite-dimensionality is assumed (ranks are
+`Module.finrank` values, as elsewhere in this section).
 `CoordinateGrid.erosionBreakpoints G H ε` collects, per coordinate, the values
 of both grids and their shifts by `±ε`. For every finite grid `T` containing
 these breakpoints, `CoordinateGrid.rankErosion_lan_iff_of_subset` proves that
