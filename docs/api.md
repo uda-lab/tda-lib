@@ -2480,9 +2480,37 @@ outward rounding to a dyadic grid; `expHalvings`, `toleranceBits`, `expTerms`,
 `expTaylor`, `roundDown`, `roundUp` and `expSquare` are the public steps of this
 schedule. The width is absolute, not relative: the lower endpoint can be `0`. The cost
 grows with the logarithm of `-x`, the digits of `1/δ` and the denominator of `x`, and is
-documented, not proved. No enclosure of `linearKernel` or of the squared RKHS distance
-is provided yet. `TDA.Persistence.Enclosure.ExpExamples` holds the kernel-checked
+documented, not proved. `TDA.Persistence.Enclosure.ExpExamples` holds the kernel-checked
 fixtures. See [the algorithm, statements and limits](math/kernel-enclosure.md).
+
+`TDA.Persistence.Enclosure.Gram` encloses the Gram sum and the squared RKHS distance of
+two lists `x`, `y` of rational birth–death pairs, for a rational bandwidth `σ`, cap `c`
+and tolerance `δ`. `capWeight c hc` is the weight `min c (max 0 persistence)` in
+`Weight 1 c` for a rational `0 ≤ c`, `realPoints x` is the occurrence family indexed by
+the positions of `x`, and `pointWeight` and `gaussExponent` are the executed rational
+weight and exponent, identified with the library weight and with the exponent of
+`kernel` by `capWeight_realPoint` and `kernel_realPoint`. `gramEnclosure σ c δ x y`
+contains `linearKernel σ (capWeight c hc) (realPoints x) (realPoints y)`
+(`gramEnclosure_mem`, for `0 ≤ c`) and has width at most `δ` (`gramEnclosure_width`, for
+`0 ≤ c` and `0 < δ`). `sqDistEnclosure σ c δ x y` does the same for
+`‖embedding σ w (realPoints x) - embedding σ w (realPoints y)‖ ^ 2`
+(`sqDistEnclosure_mem`, `sqDistEnclosure_width`), through `norm_embedding_sub_sq`.
+`gramEnclosure?` and `sqDistEnclosure?` return the intervals for `0 < σ`, `0 < c` and
+`0 < δ` and `none` otherwise, with `gramEnclosure?_spec` and `sqDistEnclosure?_spec`.
+`gramTerm` and `gramSum` are the public steps: each term is a product of two weights
+times a scalar enclosure at tolerance `δ / max 1 (W x * W y)`, with `W = totalWeight c`,
+and terms of zero weight compute no exponential. The width bounds hold for all lists,
+including empty lists, zero total weight, repeated pairs and pairs with death at most
+birth. `diagramEmbedding_eq_embedding_realPoints` transfers the statements to
+`diagramEmbedding` of a diagram whose finite part is listed by `x`; essential bars play
+no role, and a list containing a pair with death equal to birth is not the finite part
+of a diagram. The widths are absolute, an enclosure decides no equality, and only the
+capped weight is covered. The RKHS distance itself, pixel integrals and the `PiLp 1`
+image norm are not enclosed. The cost, `m n` scalar enclosures for a Gram sum and at
+most `m² + n² + m n` for a squared distance, is documented, not proved.
+`TDA.Persistence.Enclosure.GramExamples` holds the kernel-checked fixtures and consumers
+for `linearKernel`, `embedding` and `diagramEmbedding`. See
+[Gram sums and the squared RKHS distance](math/kernel-enclosure.md#gram-sums-and-the-squared-rkhs-distance).
 
 `TDA.Persistence.ArctanWeight` defines `PersistenceImage.arctanWeight C hC`, the weight
 `arctan (C · max pers 0)` in `Weight C (π / 2)` for `0 ≤ C`. It equals KFH18's
