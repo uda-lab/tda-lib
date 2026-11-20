@@ -204,7 +204,7 @@ list has `2 ^ N - 1` entries (`length_ripsInput`). The tie-break is a property
 of this implementation; by `outputDiagram_eq_of_same_graded_complex` the
 interpreted diagram does not depend on it.
 
-`ripsInput_valid` proves the five conditions of `Valid` for the list. It holds
+`ripsInput_valid` proves `FiniteInput.Valid` for the list. It holds
 for every table, valid or not, because the maximum over pairs is monotone in the
 set; only the metric meaning of the list needs a valid table. `ripsInput?`
 returns the list for a valid table and `none` otherwise. `ripsRun` returns
@@ -224,8 +224,9 @@ value of `Rips.filter` for `metric` at the corresponding face. These are
 statements about the complex and the filter that `outputDiagram_eq_dgm` uses.
 
 This module does not compare diagrams or homology. The equality of
-`outputDiagram` of the list with the diagram of `Rips.filter`, and the
-positive-degree consumer for the four-cycle, are later units.
+`outputDiagram` of the list with the diagram of `Rips.filter`, the comparison of
+homology and the positive-degree consumer for the four-cycle are in
+[Diagram and homology of the Rips input](#diagram-and-homology-of-the-rips-input).
 
 Write `F = 2 ^ N - 1` for the number of faces and `G` for the number of
 distinct grades; every grade is `0` or a table entry, so
@@ -255,6 +256,116 @@ one label and two labels (`pair_ripsRun`: one finite class from `0` to `3` and
 one essential class in degree zero). Tables violating symmetry, separation,
 the triangle inequality, the zero diagonal or nonnegativity return `none` from
 `ripsInput?` and from `ripsRun`.
+
+## Diagram and homology of the Rips input
+
+The list `ripsInput` of a valid table is a filtered complex over the vertex type
+`ℕ` with integer grades. The Rips filtration of the table metric is
+`Rips.filter (D.metric hD)` on `Rips.fullComplex (Fin N)`, with real grades.
+`TDA.Persistence.Reduction.RipsInputDiagram` compares the two; the caller
+supplies no metric, isomorphism or certificate.
+
+The comparison needs a change of vertex type, which
+`TDA.Persistence.SublevelDiagramVertexMap` provides in general. A vertex map
+induces a signed chain map that reads the map only at the vertices of the faces
+of its source, so vertex maps that agree there induce the same map in homology
+(`simplicialHomologyMap_congr`), and a vertex map followed by one that undoes it
+on those vertices induces the identity (`simplicialHomologyMap_comp_eq_id`).
+`dgm_eq_of_vertexMaps` takes real filter functions `f` and `g` on complexes over
+two vertex types and functions `φ`, `ψ` on the vertices in the two directions.
+If `φ` and `ψ` carry every sublevel complex of one filter into the sublevel
+complex of the other at the same threshold, and are mutually inverse on the
+vertices of the faces, then `dgm k f n = dgm k g n` in every degree and over
+every field. The induced maps of sublevel homology are mutually inverse and
+commute with the inclusions, so all inclusion-induced maps have equal ranks;
+`rank_sublevelHomologyMap` turns the ranks into interval counts and
+`RealBarcode.multiset_eq_of_rankCounts_eq` recovers the points. The functions
+are total and constrained on faces only; neither injectivity nor monotonicity is
+assumed. The statement is for real grades, the generality of that uniqueness
+theorem. The existing Rips- and Čech-specific comparisons, such as
+`Rips.dgm_eq_of_isometryEquiv`, relate the complexes of two metric spaces or
+point configurations and do not apply to a list on `ℕ`.
+
+The faces at a threshold are described by the integer diameter.
+`mem_sublevel_gradeFilter_ripsInput` states that the faces of the list at an
+integer threshold `a` are the sets `s.map Fin.valEmbedding` for nonempty `s`
+with `diameter s ≤ a`, for every table. `mem_sublevel_rips_filter` states that
+the faces of the Rips filtration at a real threshold `r` are the nonempty `s`
+with `(diameter s : ℝ) ≤ r`. All values of both filters are integers, so the
+Rips complex at `r` is the one at the floor of `r`.
+
+`ripsLabelMap hD a` is the vertex map with underlying function `Fin.val` from
+the Rips complex at the integer threshold `a` to the sublevel complex of the
+list at `a`. It induces an isomorphism in homology in every degree and over
+every ring (`simplicialHomologyMap_ripsLabelMap_isIso`), and these isomorphisms
+commute with the maps induced by raising the threshold
+(`simplicialHomologyMap_ripsLabelMap_naturality`). For a nonempty set of labels
+the inverse is induced by a left inverse `ℕ → Fin N` of the inclusion; for no
+label both sides are the homology of the empty complex. The comparison of
+homology is stated at integer thresholds.
+
+`outputDiagram_ripsInput` is the diagram equality: for a valid table and every
+degree `p`,
+
+```lean
+(FiniteInput.outputDiagram D.ripsInput p).map intCastOrderEmbedding =
+  dgm (ZMod 2) (Rips.filter (D.metric hD)) p
+```
+
+`intCastOrderEmbedding : ℤ ↪o ℝ` is the inclusion of the integers, and
+`Diagram.map` casts births and finite deaths and keeps the essential death. The
+proof composes `outputDiagram_eq_dgm`, `dgm_map` and `dgm_eq_of_vertexMaps`.
+Multiplicities, the deletion of pairs of equal grades, essential classes and
+unaugmented degree zero are those of `outputDiagram_eq_dgm`. The equality
+covers every pair of real thresholds, since the diagram determines the ranks of
+all inclusion-induced maps.
+
+`ripsRunInDegree p` filters `ripsRun` by degree. It is `none` exactly when the
+table is invalid, whatever `p` (`ripsRunInDegree_eq_none_iff`), and `some` of
+the records of degree `p`, possibly none, for a valid table
+(`ripsRunInDegree_eq_some_iff`). `ripsRunInDegree_correct` states that a
+returned list certifies the table and that its records, read as points with
+real coordinates, are the points of the Rips diagram in degree `p` with
+multiplicity. The order of the records is that of the existing reduction and is
+not part of the comparison. The consumer costs `ripsRun` and one comparison of
+natural numbers for each of the at most `2 ^ N - 1` records. The cost of the
+existing reduction is not bounded; it is at least quadratic in the number of
+faces, and only measurements are recorded.
+
+For a permutation `σ` of the labels and tables with
+`E.dist i j = D.dist (σ i) (σ j)`, `valid_of_relabel` transfers validity and
+`outputDiagram_ripsInput_of_relabel` states that the two executed lists have
+the same diagram in every degree. This is an equality of diagrams, not of
+lists; it passes through the two Rips diagrams and
+`Rips.dgm_eq_of_isometryEquiv`. No relabelling operation on tables is defined.
+
+`RipsInputDiagramExamples.lean` checks the records of each degree and the Rips
+diagram in degree zero for no label, one label (the single point `(0, ⊤)`) and
+two labels at distance `3` (the points `(0, 3)` and `(0, ⊤)`; the empty list of
+records in degree one). For the four-cycle the kernel runs the existing
+reduction on the fifteen faces: `fourCycle_reduced` is the reduced matrix, and
+`fourCycle_ripsRun` lists three classes of degree zero from `0` to `1`, one
+class of degree one from `1` to `2` and one essential class of degree zero; the
+three pairs of equal grade `2` leave no record. The kernel does not evaluate
+`FiniteInput.boundary`, so the examples prove privately that over `ZMod 2` it is
+the indicator `faceIncidence` of the codimension-one faces, which the kernel
+does evaluate. The kernel check of the reduction dominates the build time of the
+examples and is meant for small fixtures only.
+`fourCycle_dgm_one` states that the Rips diagram of the four-cycle metric in
+degree one is the single point `(1, 2)`, `fourCycle_dgm_zero` and
+`fourCycle_dgm_two` give the other degrees, and `fourCycle_finrank_one` and
+`fourCycle_finrank_two` state that the first homology over `ZMod 2` of the Rips
+complex has dimension `1` at threshold `1` and `0` at threshold `2`.
+`fourCycle_listed_finrank_one` obtains the same dimension for the listed
+complex through the isomorphism of `ripsLabelMap`. The five invalid tables
+return `none` in every degree, and the table violating the triangle inequality
+is also executed in degree `5`, where a valid table of three labels has no
+record. `relabelled_outputDiagram` instantiates the relabelling statement for
+the two tables on a line.
+
+Not provided: a bound on the cost of the reduction, representatives or sublevel
+classes of the Rips complex, a statement for invalid tables beyond rejection,
+and a transport of diagrams for grades outside the real numbers.
 
 ## Dependency and source scope
 

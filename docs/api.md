@@ -1549,9 +1549,9 @@ constructions and the arbitrary-field decomposition remain noncomputable. See
 [the input contract and correctness route](math/finite-ph-computation.md).
 
 `TDA.Persistence.Reduction.DistanceTable N` is an integer distance table on the
-labels `Fin N`, and `TDA.Persistence.Reduction.RipsInput` executes the complete Rips
-simplex list of such a table in the `FiniteInput` format. `DistanceTable.Valid`
-(nonnegative entries, symmetry, zero diagonal, positive distance between distinct
+labels `Fin N`, and the module `TDA.Persistence.Reduction.RipsInput` executes the
+complete Rips simplex list of such a table in the `FiniteInput` format.
+`DistanceTable.Valid` (nonnegative entries, symmetry, zero diagonal, positive distance between distinct
 labels, every triangle inequality) is decidable; `ripsInput?` and `ripsRun` return
 `none` for an invalid table, and nothing is repaired. `ripsInput` has one entry
 `(s.map Fin.valEmbedding, diameter s)` for each nonempty set `s` of labels
@@ -1565,9 +1565,43 @@ identifies the listed grade of each face with the value of `Rips.filter`. `ripsR
 returns the occurrence records of the existing reduction on the list
 (`ripsRun_eq_bind_run`). The list has `2 ^ N - 1` entries and costs `O(N² 2 ^ N)`
 label and integer operations; the cost of the existing reduction is separate and
-not bounded. The equality of the resulting diagram with the Rips diagram and the
-comparison of homology are not provided by this module. See
+not bounded. See
 [Rips input from an integer distance table](math/finite-ph-computation.md#rips-input-from-an-integer-distance-table).
+
+The module `TDA.Persistence.Reduction.RipsInputDiagram` compares the executed
+list of a valid table with the Rips filtration of the table metric.
+`DistanceTable.outputDiagram_ripsInput` states that `FiniteInput.outputDiagram`
+of the list, mapped along `TDA.Persistence.intCastOrderEmbedding : ℤ ↪o ℝ`, is
+`dgm (ZMod 2) (Rips.filter (D.metric hD))` in every degree; the caller supplies
+no metric, isomorphism or certificate. `mem_sublevel_gradeFilter_ripsInput` and
+`mem_sublevel_rips_filter` describe the faces of the two filtrations at a
+threshold by the integer diameter. `ripsLabelMap` is the inclusion of the labels
+as a vertex map from the Rips complex at an integer threshold to the sublevel
+complex of the list; it induces an isomorphism in homology in every degree and
+over every ring (`simplicialHomologyMap_ripsLabelMap_isIso`), compatible with
+raising the threshold (`simplicialHomologyMap_ripsLabelMap_naturality`).
+`ripsRunInDegree p` returns the occurrence records of degree `p`; it is `none`
+exactly for an invalid table, whatever the degree
+(`ripsRunInDegree_eq_none_iff`), and `ripsRunInDegree_correct` reads a returned
+list as the point multiset of the Rips diagram. A permutation of the labels of a
+valid table gives a valid table with the same diagram of the executed list
+(`valid_of_relabel`, `outputDiagram_ripsInput_of_relabel`). The homology
+comparison is stated at integer thresholds, and the relabelling statement is an
+equality of diagrams, not of lists. No bound on the cost of the existing
+reduction, no representatives for the Rips complex and no statement for invalid
+tables beyond rejection are provided.
+
+The module `TDA.Persistence.SublevelDiagramVertexMap` holds the general
+statements behind this comparison. `TDA.Simplicial.simplicialHomologyMap_congr`
+states that vertex maps agreeing on the vertices of every face induce the same
+map in homology, and `simplicialHomologyMap_comp_eq_id` that a vertex map
+followed by one undoing it on those vertices induces the identity.
+`TDA.Persistence.dgm_eq_of_vertexMaps` states that real filter functions on
+complexes over two vertex types have the same diagram, in every degree and over
+every field, when functions on the vertices in both directions preserve every
+sublevel complex and are mutually inverse on the vertices of the faces. It is
+stated for real grades only. See
+[Diagram and homology of the Rips input](math/finite-ph-computation.md#diagram-and-homology-of-the-rips-input).
 
 `FiniteInput.runWithRepresentatives` adds original face-index cycle supports and,
 for finite occurrences, bounding supports while preserving that exact ordered
