@@ -69,9 +69,12 @@ matching and optimality of the signed stability constant are not claimed.
 
 [Weak-pair rank erosion](math/rank-erosion.md) compares actual structure-map ranks,
 including diagonal pairs, for pointwise finite-dimensional field-valued modules.
-Its extended distance is bounded by coordinate interleaving distance. The guide
-separates available rank obstructions from proposed erosion-attainment and finite-test
-extensions; equality of ranks is not a general module classification.
+Its extended distance is bounded by coordinate interleaving distance. For modules
+on finite grids the predicate reduces to finitely many grades, and for F₂ grid
+representations a certified executable test decides it at a given rational radius.
+The guide separates these and the available rank obstructions from the proposed
+erosion-attainment extensions; equality of ranks is not a general module
+classification.
 
 ## Metric inputs and sampling
 

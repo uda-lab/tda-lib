@@ -129,7 +129,7 @@ structure ErosionFailure (n : ℕ) where
   wideRank : ℕ
   /-- The rank of the structure map of the other module between the two grades. -/
   narrowRank : ℕ
-  deriving DecidableEq
+  deriving DecidableEq, Repr
 
 /-- The failure of the two inequalities at one pair of rational grades, if any. -/
 def erosionFailureAt (R S : F2GridRep n) (e : ℚ) (p q : Fin n → ℚ) :
@@ -153,7 +153,7 @@ inductive ErosionResult (n : ℕ) where
   | pass
   /-- An inequality fails. -/
   | fail (w : ErosionFailure n)
-  deriving DecidableEq
+  deriving DecidableEq, Repr
 
 /-- Validate both representations and the radius, then test erosion. -/
 def runErosion (R S : F2GridRep n) (e : ℚ) : ErosionResult n :=
