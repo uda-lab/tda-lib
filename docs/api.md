@@ -1202,10 +1202,34 @@ The original grid values alone are not enough, as the examples show. The test
 grades are real numbers and the statement is not an algorithm: nothing here is
 executable.
 
+Grid modules over F₂ can be given by executable data. A `RatGrid n` lists
+finitely many rational values per coordinate, used as a finite set; its real
+image `RatGrid.grid` is a `CoordinateGrid`, `RatGrid.ratPoint` and
+`RatGrid.pointOfRat` identify its points with the rational grid grades
+(`RatGrid.points`), and the executable `RatGrid.floor` of a rational grade is
+the rational grade of the real floor (`RatGrid.ratPoint_floor`). An
+`F2GridRep n` adds a fiber dimension for each rational grade and an F₂ matrix
+for each pair of rational grades; only their values at grid grades and at
+comparable pairs of them are read. `F2GridRep.Valid` is the decidable
+statement that the matrices are identities on the diagonal and compose along
+comparable triples of grid grades, and `F2GridRep.toModule` is the actual
+module on the grid for a valid representation, with fibers
+`Fin (dim a) → ZMod 2` and structure maps the stored matrices
+(`F2GridRep.structureMapLinear_toModule`). `F2GridRep.rankAt x y` computes,
+with `F2Matrix.rank`, the rank of the stored matrix between the floors of two
+rational grades, or zero when `x` has no lower grid value;
+`F2GridRep.rankAt_eq` proves that it is the rank of the actual Kan extension
+of the grid module between the real grades of `x ≤ y`, and
+`F2GridRep.rankAt_eq_of_eq` states the same at real grades given by equations.
+Nothing is claimed for an invalid representation. Validation enumerates the
+comparable triples of grid grades and each rank enumerates source vectors, so
+the cost is exponential in the fiber dimension and in the number of
+coordinates. These modules compute ranks; they do not test `RankErosion`.
+
 The public `TDA.Persistence` aggregator exports `RankErosion`,
-`RankErosionInterleaving`, `RankErosionWitness` and `RankErosionGrid`; the
-witness module includes nonzero principal-upset examples, diagonal and
-positive-radius off-diagonal tests. See
+`RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid` and
+`F2GridRep`; the witness module includes nonzero principal-upset examples,
+diagonal and positive-radius off-diagonal tests. See
 [rank erosion and its extension boundaries](math/rank-erosion.md).
 
 ## Persistent homology results and computational boundary
