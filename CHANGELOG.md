@@ -10,6 +10,21 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Identify the diagram of the executed Rips simplex list with the Rips diagram:
+  for a valid `DistanceTable`, `outputDiagram_ripsInput` states that
+  `FiniteInput.outputDiagram` of the list, with integer grades read as real
+  numbers, is `dgm (ZMod 2)` of `Rips.filter` for the table metric in every
+  degree. `ripsLabelMap` induces an isomorphism from the homology of the Rips
+  complexes to the sublevel homology of the list, `ripsRunInDegree` returns the
+  records of one degree and `none` for an invalid table in every degree, and
+  relabelled tables have equal diagrams. The new module
+  `TDA.Persistence.SublevelDiagramVertexMap` proves `dgm_eq_of_vertexMaps`, the
+  invariance of real sublevel diagrams under mutually inverse vertex maps
+  between complexes on two vertex types. The four-cycle is a kernel-checked
+  fixture with one class of degree one from `1` to `2`. The cost of the
+  existing reduction remains unbounded. See
+  [Diagram and homology of the Rips input](docs/math/finite-ph-computation.md#diagram-and-homology-of-the-rips-input).
+
 - Execute the complete Rips simplex list of an integer distance table in the
   `FiniteInput` format: `DistanceTable`, its decidable `Valid`, `ripsInput`,
   `ripsInput?` and `ripsRun`, which return `none` for an invalid table. The
