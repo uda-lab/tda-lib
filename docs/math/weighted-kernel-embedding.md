@@ -209,7 +209,8 @@ kernel values and a two-point quadratic form. A negative control shows that drop
 minus sign destroys positive semidefiniteness. The remaining examples cover repeated
 occurrences, an RKHS distance, the diagonal and essential-only boundary cases, and a
 Gaussian diagram Gram entry. All definitions are noncomputable; no kernel evaluation
-algorithm is provided.
+algorithm is provided. The separate note on [rational enclosures](kernel-enclosure.md)
+covers the scalar exponential only.
 
 `TDA.Persistence.WeightedKernelInjectivity` contains the character factorization,
 linear-independence, strict-positive-definiteness and finite-support injectivity results,

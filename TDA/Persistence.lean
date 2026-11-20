@@ -441,3 +441,4 @@ import TDA.Persistence.Reduction.FiniteInputHomologyDimensionsExamples
 import TDA.Persistence.Reduction.RipsInput
 import TDA.Persistence.SublevelDiagramVertexMap
 import TDA.Persistence.Reduction.RipsInputDiagram
+import TDA.Persistence.Enclosure.Exp

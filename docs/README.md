@@ -48,7 +48,9 @@ under explicit bandwidth, pixel and weight assumptions. The
 [measure embedding note](math/gaussian-measure-universality.md) distinguishes
 injective measure embeddings from finite-pixel images, which are not characteristic.
 [Native boundary-transport feature bounds](api.md#gaussian-stability-under-native-boundary-transport)
-also have their own weight and moment conditions.
+also have their own weight and moment conditions. The kernel theory is noncomputable;
+[rational enclosures](math/kernel-enclosure.md) of the scalar exponential at nonpositive
+rational arguments are executable, and enclosures of kernel sums are not provided yet.
 
 ## Multiparameter persistence
 
