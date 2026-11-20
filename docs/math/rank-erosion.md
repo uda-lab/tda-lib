@@ -131,6 +131,35 @@ point.
 The criterion is a mathematical reduction over the real numbers. It supplies
 no executable test, rational arithmetic or matrix computation.
 
+## Executable representations over the two-element field
+
+A grid module over the field with two elements can be given by finite data: a
+list of rational grid values in each coordinate, a fiber dimension at each grid
+grade, and a matrix for each comparable pair of grid grades. The lists are used
+as finite sets, so order and repetitions do not matter. The data define a
+module on the real image of the grid exactly when the matrices are identities
+on the diagonal and compose along comparable triples of grid grades; this
+finite condition is `F2GridRep.Valid`, and it can be decided by computation.
+For valid data, `F2GridRep.toModule` is the module with fibers
+`Fin (dim a) → ZMod 2` and the stored matrices as structure maps. In Lean the
+dimension and matrix functions are total on rational grades; their values off
+the grid, and at non-comparable pairs, are never read.
+
+For rational grades `x ≤ y`, the floor of each grade in the rational grid is
+computable, and it is the rational grade of the floor of the corresponding
+real grade in the real grid. By the rank formula of the previous section, the
+rank of the Kan extension between the real grades of `x` and `y` is therefore
+the rank of the stored matrix between the two rational floors, or zero when
+`x` has no lower grid value. `F2GridRep.rankAt` computes this number with the
+enumeration rank of [finite homology-map dimensions](finite-ph-map-dimensions.md),
+and `F2GridRep.rankAt_eq` proves the identification with the actual Kan
+extension. `F2GridRepExamples` executes the interval module `[0, 1)`, the same
+module from an unsorted list with a repeated value, a two-parameter module
+with a rank-one map out of a two-dimensional fiber, and two rejected inputs.
+
+This computes ranks of one module. It is not a test of `RankErosion`, which
+needs a rational form of the breakpoints and a comparison of two modules.
+
 ## Zero radius, zero distance and future extensions
 
 `rankErosion_zero_iff` identifies the **predicate** `RankErosion 0 M N` with
@@ -155,10 +184,11 @@ respect, rather than promising to remove necessary hypotheses.
 
 Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving`,
-`TDA.Persistence.RankErosionWitness` and `TDA.Persistence.RankErosionGrid`. Their
-declarations are in `TDA.Persistence`; the concrete hook witnesses are in its
-`RankErosionWitness` namespace, and the grid criterion is in
-`TDA.Persistence.CoordinateGrid`.
+`TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid` and
+`TDA.Persistence.F2GridRep`. Their declarations are in `TDA.Persistence`; the
+concrete hook witnesses are in its `RankErosionWitness` namespace, the grid
+criterion is in `TDA.Persistence.CoordinateGrid`, and the executable
+representations are in `TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 
 [Puuska, §2.2](https://arxiv.org/html/1710.01577v1) defines the rank invariant
