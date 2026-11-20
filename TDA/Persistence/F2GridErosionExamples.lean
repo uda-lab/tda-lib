@@ -13,8 +13,9 @@ import TDA.Persistence.F2GridRepExamples
 * Radius `0`, where the inequalities compare all ranks: a module against a second representation
   of itself on a different list passes, and against the zero module fails on the diagonal.
 * An interval with negative grid values against `[0, 1)`, on different grids.
-* No coordinates, a two-parameter comparison, and invalid inputs: an invalid representation and
-  a negative radius.
+* No coordinates, two-parameter comparisons of a module with itself and with a different
+  module, an empty value list, and invalid inputs: an invalid representation and a negative
+  radius.
 -/
 
 set_option autoImplicit false
@@ -57,7 +58,7 @@ theorem interval_zero_not_rankErosion :
     ¬ RankErosion (radius (1 / 4) quarter_nonneg)
       (interval.grid.lan.obj (interval.toModule interval_valid))
       (zero.grid.lan.obj (zero.toModule zero_valid)) := by
-  obtain ⟨_, _, _, _, _, _, _, h⟩ := runErosion_eq_fail _ _ _ _ interval_zero_quarter
+  obtain ⟨_, _, _, _, _, _, _, _, _, h⟩ := runErosion_eq_fail _ _ _ _ interval_zero_quarter
   exact h
 
 /-- With the modules swapped the second inequality is the one that fails. -/
@@ -148,6 +149,27 @@ theorem plane_self_zero : runErosion plane plane 0 = .pass := by decide +kernel
 
 /-- A two-parameter module against itself at radius `1/2`. -/
 theorem plane_self_half : runErosion plane plane (1 / 2) = .pass := by decide +kernel
+
+/-- A two-parameter module with one-dimensional fibers and identity maps. -/
+def flat : F2GridRep 2 where
+  values := fun _ => [0, 1]
+  dim := fun _ => 1
+  map := fun _ _ => Matrix.of fun _ _ => 1
+
+theorem flat_valid : flat.Valid := by decide +kernel
+
+/-- At radius `0` two different two-parameter modules fail on the diagonal at the origin, where
+their fibers have dimensions two and one. -/
+theorem plane_flat_zero :
+    runErosion plane flat 0 = .fail ⟨true, ![0, 0], ![0, 0], 2, 1⟩ := by
+  decide +kernel
+
+/-- At radius `1` the same two modules pass. -/
+theorem plane_flat_one : runErosion plane flat 1 = .pass := by decide +kernel
+
+/-- An empty coordinate set leaves no grade to test in that coordinate of the first grid; the
+comparison with the zero module passes. -/
+theorem emptyGrid_zero : runErosion emptyGrid zero 1 = .pass := by decide +kernel
 
 /-- An invalid representation is reported as invalid input, not as failed erosion. -/
 theorem badComposition_invalid : runErosion badComposition interval 1 = .invalid := by

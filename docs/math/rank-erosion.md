@@ -162,8 +162,8 @@ with a rank-one map out of a two-dimensional fiber, and two rejected inputs.
 ## A certified finite test
 
 For two valid representations, possibly on different rational grids, and a
-rational radius `e ≥ 0`, the rational breakpoint grid lists in each coordinate
-the values of both grids and their shifts by `±e`. Its real image is exactly
+rational radius `e ≥ 0`, the rational breakpoint grid lists in each coordinate,
+without repetitions, the values of both grids and their shifts by `±e`. Its real image is exactly
 the breakpoint grid of the two real grids (`RatGrid.grid_erosionBreakpoints`),
 so the finite criterion applies with it as the test grid, and lowering or
 raising a rational grade by `e` corresponds to the real operations in the
@@ -183,8 +183,8 @@ grid modules. The outcome is `invalid` exactly for invalid input
 `RankErosion` holds at radius `e` (`runErosion_eq_pass_iff`). A reported
 failure is a genuine violation: the recorded ranks are the ranks of the widened
 structure map of one extension and of the structure map of the other at a
-comparable pair of rational grades, the first exceeds the second, and
-`RankErosion` fails (`runErosion_eq_fail`). Which violation is reported depends
+comparable pair of grades of the rational breakpoint grid, the first exceeds
+the second, and `RankErosion` fails (`runErosion_eq_fail`). Which violation is reported depends
 on the enumeration order.
 
 In `F2GridErosionExamples`, the interval module `[0, 1)` against the zero
@@ -197,9 +197,12 @@ parameters, and invalid input.
 A failure shows that the predicate fails at the tested radius. It is not a
 strict lower bound for an erosion or interleaving distance, which needs an
 attainment theorem that the library does not have; and the test neither
-minimises a radius nor works over other fields. Its cost is the number of
-comparable pairs of breakpoint grades, which grows exponentially with the
-number of coordinates, times four enumeration ranks.
+minimises a radius nor works over other fields. A coordinate has at most three
+times as many breakpoints as the two grids have values there, and the
+breakpoint grades are the product over the coordinates. The test validates
+both representations, which enumerates the comparable triples of their grid
+grades, and then evaluates four enumeration ranks at each comparable pair of
+breakpoint grades. No polynomial bound is claimed.
 
 ## Zero radius, zero distance and future extensions
 

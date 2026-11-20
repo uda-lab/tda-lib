@@ -16,8 +16,9 @@ reported failure is a violation by those extensions.
 
 A failure proves that the predicate fails at this radius. It gives no strict lower bound for an
 erosion or interleaving distance. Which violation is reported depends on the enumeration order.
-The test evaluates every comparable pair of breakpoint grades, with four enumeration ranks each;
-no polynomial bound is claimed.
+The test evaluates every comparable pair of breakpoint grades, with four enumeration ranks each.
+A coordinate has at most three times as many breakpoints as the two grids have values there,
+and the grades are the product over the coordinates; no polynomial bound is claimed.
 -/
 
 set_option autoImplicit false
@@ -31,7 +32,7 @@ namespace RatGrid
 /-- Explicit enumeration of the rational grid grades. A grade is listed once for each way of
 choosing its coordinates from the lists. -/
 def pointList : {n : ℕ} → RatGrid n → List (Fin n → ℚ)
-  | 0, _ => [![]]
+  | 0, _ => [Fin.elim0]
   | _ + 1, V => (V 0).flatMap fun a => (pointList fun i => V i.succ).map fun f => Fin.cons a f
 
 theorem mem_pointList : ∀ {n : ℕ} {V : RatGrid n} {a : Fin n → ℚ},
@@ -56,9 +57,10 @@ theorem mem_pointList : ∀ {n : ℕ} {V : RatGrid n} {a : Fin n → ℚ},
 variable {n : ℕ}
 
 /-- The rational breakpoints of two grids at a rational radius: per coordinate, the values of
-both grids and their shifts by `±e`. -/
+both grids and their shifts by `±e`, without repetitions. -/
 def erosionBreakpoints (V W : RatGrid n) (e : ℚ) : RatGrid n := fun i =>
-  V i ++ W i ++ (V i).map (· + e) ++ (V i).map (· - e) ++ (W i).map (· + e) ++ (W i).map (· - e)
+  (V i ++ W i ++ (V i).map (· + e) ++ (V i).map (· - e) ++ (W i).map (· + e) ++
+    (W i).map (· - e)).dedup
 
 /-- The real radius of a nonnegative rational radius. -/
 def radius (e : ℚ) (he : 0 ≤ e) : ℝ≥0 := ⟨(e : ℝ), Rat.cast_nonneg.mpr he⟩
@@ -72,7 +74,7 @@ theorem grid_erosionBreakpoints (V W : RatGrid n) (e : ℚ) (he : 0 ≤ e) :
   funext i
   ext c
   simp only [mem_grid, CoordinateGrid.mem_erosionBreakpoints, erosionBreakpoints,
-    List.mem_append, List.mem_map, coe_radius]
+    List.mem_dedup, List.mem_append, List.mem_map, coe_radius]
   constructor
   · rintro ⟨q, (((((hq | hq) | ⟨g, hg, rfl⟩) | ⟨g, hg, rfl⟩) | ⟨g, hg, rfl⟩) | ⟨g, hg, rfl⟩), rfl⟩
     · exact Or.inl ⟨q, hq, rfl⟩
@@ -286,11 +288,13 @@ theorem runErosion_eq_pass_iff (e : ℚ) :
     exact hv ⟨hR, hS, he⟩
 
 /-- A reported failure is a genuine violation by the actual Kan extensions: the input is valid,
-the two grades are comparable, the recorded ranks are the ranks of the widened structure map of
-one extension and of the structure map of the other, the first exceeds the second, and
-`RankErosion` fails. -/
+the two grades are comparable grades of the breakpoint grid, the recorded ranks are the ranks of
+the widened structure map of one extension and of the structure map of the other, the first
+exceeds the second, and `RankErosion` fails. -/
 theorem runErosion_eq_fail (e : ℚ) (w : ErosionFailure n) (h : runErosion R S e = .fail w) :
     ∃ (hR : R.Valid) (hS : S.Valid) (he : 0 ≤ e) (hpq : w.source ≤ w.target),
+      w.source ∈ (erosionBreakpoints R.values S.values e).points ∧
+      w.target ∈ (erosionBreakpoints R.values S.values e).points ∧
       w.narrowRank < w.wideRank ∧
       (w.firstWide = true →
         w.wideRank = rankOfStructureMap (R.grid.lan.obj (R.toModule hR))
@@ -313,10 +317,10 @@ theorem runErosion_eq_fail (e : ℚ) (w : ErosionFailure n) (h : runErosion R S 
     | some w' =>
       simp only [hf, ErosionResult.fail.injEq] at h
       rw [h]
-  obtain ⟨p, _, q, _, hpq, hat⟩ := erosionFailure?_eq_some R S hsome
+  obtain ⟨p, hpm, q, hqm, hpq, hat⟩ := erosionFailure?_eq_some R S hsome
   obtain ⟨rfl, rfl, hlt, h₁, h₂⟩ := erosionFailureAt_eq_some R S hat
   have hab : realGrade w.source ≤ realGrade w.target := realGrade_le_iff.mpr hpq
-  refine ⟨hR, hS, he, hpq, hlt, fun hf => ?_, fun hf => ?_, fun hE => ?_⟩
+  refine ⟨hR, hS, he, hpq, hpm, hqm, hlt, fun hf => ?_, fun hf => ?_, fun hE => ?_⟩
   · rw [← R.rankAt_lower_upper hR e he rfl rfl hab, ← S.rankAt_eq_of_eq hS rfl rfl hab]
     exact h₁ hf
   · rw [← S.rankAt_lower_upper hS e he rfl rfl hab, ← R.rankAt_eq_of_eq hR rfl rfl hab]

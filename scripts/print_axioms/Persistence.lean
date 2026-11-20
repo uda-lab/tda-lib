@@ -7852,5 +7852,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.F2GridErosionExamples.noCoordinates_differ
 #print axioms TDA.Persistence.F2GridErosionExamples.plane_self_zero
 #print axioms TDA.Persistence.F2GridErosionExamples.plane_self_half
+#print axioms TDA.Persistence.F2GridErosionExamples.flat_valid
+#print axioms TDA.Persistence.F2GridErosionExamples.plane_flat_zero
+#print axioms TDA.Persistence.F2GridErosionExamples.plane_flat_one
+#print axioms TDA.Persistence.F2GridErosionExamples.emptyGrid_zero
 #print axioms TDA.Persistence.F2GridErosionExamples.badComposition_invalid
 #print axioms TDA.Persistence.F2GridErosionExamples.negative_radius_invalid
