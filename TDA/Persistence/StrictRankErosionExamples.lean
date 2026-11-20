@@ -20,7 +20,9 @@ import TDA.Persistence.F2GridErosionExamples
   below; a failure reported at a strict pair excludes strict-pair erosion at the tested radius.
   These conclusions are what the executed tests give, not sharp values: for the interval
   `[0, 1)` against zero both distances are `1/2`, and strict-pair erosion fails at every
-  radius below `1/2`.
+  radius below `1/2`. These sharp statements are proved in `RankErosionAttainmentExamples`
+  (`interval_zero_rankErosionDistance`, `interval_zero_strictRankErosionDistance`,
+  `interval_zero_not_strictRankErosion_of_lt`).
 * No coordinates: two modules with fibers of dimensions three and two satisfy strict-pair
   erosion at every radius and have strict-pair distance zero, while weak-pair erosion fails at
   every radius and the weak-pair distance is infinite.
@@ -141,7 +143,9 @@ theorem closedBox_strictRankErosionDistance [NeZero n] (c : ℝ≥0) :
   rw [strictRankErosionDistance_eq_rankErosionDistance, closedBox_rankErosionDistance]
 
 /-- One coordinate and `c = 0`: the module supported at the single grade `0` has the ranks of
-the zero module at every strict pair, and not at every weak pair. -/
+the zero module at every strict pair. Its rank invariant differs from that of the zero module
+on the diagonal, which is proved in `RankErosionAttainmentExamples`
+(`closedBox_zero_distance_zero_and_ranks_differ`). -/
 theorem closedBox_zero_strict_pair_ranks {a b : Fin 1 → ℝ} (hab : a ≤ b) (hne : a ≠ b) :
     rankOfStructureMap (closedBox (n := 1) 0) hab =
       rankOfStructureMap (0 : PModule.{0,0,0} ℚ (Fin 1 → ℝ)) hab :=
@@ -167,7 +171,8 @@ theorem radius_eighth_lt_quarter :
 
 /-- The failing executed test at radius `1/4` excludes strict-pair erosion at radius `1/8`,
 through the implication from strict pairs to weak pairs at a larger radius. The radius `1/8`
-is not sharp: strict-pair erosion of these two modules fails at every radius below `1/2`. -/
+is not sharp: strict-pair erosion of these two modules fails at every radius below `1/2`
+(`RankErosionAttainmentExamples.interval_zero_not_strictRankErosion_of_lt`). -/
 theorem interval_zero_not_strictRankErosion :
     ¬ StrictRankErosion (radius (1 / 8) eighth_nonneg)
       (interval.grid.lan.obj (interval.toModule interval_valid))
@@ -177,8 +182,8 @@ theorem interval_zero_not_strictRankErosion :
   exact fun h => interval_zero_not_rankErosion (h.rankErosion_of_lt radius_eighth_lt_quarter)
 
 /-- The two executed tests enclose the strict-pair distance between `1/4` and `1/2`. The
-enclosure is what these two tests give; the distance itself is `1/2`, which is not proved
-here. -/
+enclosure is what these two tests give; the distance itself is `1/2`
+(`RankErosionAttainmentExamples.interval_zero_strictRankErosionDistance`). -/
 theorem interval_zero_strictRankErosionDistance_bounds :
     ((radius (1 / 4) quarter_nonneg : ℝ≥0) : ℝ≥0∞) ≤
         strictRankErosionDistance (interval.grid.lan.obj (interval.toModule interval_valid))

@@ -180,10 +180,11 @@ theorem rankErosionDistance_le_of_erosion {ε : ℝ≥0}
     (h : RankErosion ε M N) : rankErosionDistance M N ≤ ε :=
   iInf₂_le ε h
 
-theorem rankErosionDistance_self (M : PModule.{u,0,u} k (Fin n → ℝ))
-    [∀ p, FiniteDimensional k (M.obj p)] : rankErosionDistance M M = 0 :=
+theorem rankErosionDistance_self (M : PModule.{u,0,u} k (Fin n → ℝ)) :
+    rankErosionDistance M M = 0 :=
   nonpos_iff_eq_zero.1 (by simpa using
-    (rankErosionDistance_le_of_erosion (RankErosion.refl 0 M)))
+    (rankErosionDistance_le_of_erosion (rankErosion_zero_iff.mpr fun _ _ _ => rfl :
+      RankErosion 0 M M)))
 
 theorem rankErosionDistance_comm (M N : PModule.{u,0,u} k (Fin n → ℝ)) :
     rankErosionDistance M N = rankErosionDistance N M :=

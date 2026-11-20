@@ -444,3 +444,4 @@ import TDA.Persistence.Reduction.RipsInputDiagram
 import TDA.Persistence.Enclosure.Exp
 import TDA.Persistence.Enclosure.Gram
 import TDA.Persistence.StrictRankErosion
+import TDA.Persistence.RankErosionAttainment
