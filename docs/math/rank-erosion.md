@@ -195,15 +195,100 @@ pairs of original grid values `0` and `1` show no failure; it passes at radius
 on different grids, radius zero, negative grid values, no coordinates, two
 parameters, and invalid input.
 
-A failure shows that the predicate fails at the tested radius. It is not a
-strict lower bound for an erosion or interleaving distance, which needs an
-attainment theorem that the library does not have; and the test neither
-minimises a radius nor works over other fields. A coordinate has at most three
+A failure shows that the predicate fails at the tested radius. The Kan
+extensions have finite-dimensional fibers, so the tested radius is then a lower
+bound of the erosion distance (`le_rankErosionDistance_of_not_rankErosion`,
+[below](#strict-pairs)) and hence of the interleaving distance. It is not a
+strict lower bound, which needs an attainment theorem that the library does not
+have; and the test neither minimises a radius nor works over other fields. A coordinate has at most three
 times as many breakpoints as the two grids have values there, and the
 breakpoint grades are the product over the coordinates. The test validates
 both representations, which enumerates the comparable triples of their grid
 grades, and then evaluates four enumeration ranks at each comparable pair of
 breakpoint grades. No polynomial bound is claimed.
+
+## Strict pairs
+
+`StrictRankErosion ε M N` requires the two inequalities of `RankErosion ε M N`
+only at the **strict pairs** of the product order: $a\le b$ and $a\ne b$.
+`strictRankErosion_iff_lt` restates this with $a<b$. A strict pair need not be
+strict in every coordinate; no predicate on coordinatewise strict pairs is
+supplied. `strictRankErosionDistance` is the extended infimum of the radii
+admissible for the strict predicate.
+
+The weak predicate implies the strict one at the same radius
+(`RankErosion.strict`), for every $n$ and without a finiteness hypothesis, so
+the strict distance is at most the weak one
+(`strictRankErosionDistance_le_rankErosionDistance`).
+
+Conversely, let $n\ge1$ and let both modules have finite-dimensional fibers.
+For a weak pair $a\le b$ and $\delta>0$, the pair
+$(a-\delta\mathbf1,b+\delta\mathbf1)$ is strict. The strict test at this pair
+and the fact that widening an interval decreases its rank give
+
+$$r_M(a-(\varepsilon+\delta)\mathbf1,b+(\varepsilon+\delta)\mathbf1)
+\le r_N(a-\delta\mathbf1,b+\delta\mathbf1)\le r_N(a,b).$$
+
+Hence strict erosion at $\varepsilon$ implies weak erosion at every larger
+radius (`StrictRankErosion.rankErosion_add`,
+`StrictRankErosion.rankErosion_of_lt`), and the two distances are equal,
+infinite values included (`strictRankErosionDistance_eq_rankErosionDistance`).
+Finite dimensionality enters through the rank comparison only.
+
+The strict predicate is symmetric, composes with addition of radii without a
+finiteness hypothesis, because widening a strict pair gives a strict pair, and
+is monotone in the radius for finite-dimensional fibers
+(`StrictRankErosion.symm`, `StrictRankErosion.trans`, `StrictRankErosion.mono`).
+Its distance therefore has zero self-distance, symmetry and the extended
+triangle inequality for every $n$. At radius zero the strict predicate is
+equality of the ranks at strict pairs (`strictRankErosion_zero_iff`).
+
+For finite-dimensional fibers, a radius at which one of the two predicates
+fails is a lower bound of its distance
+(`le_rankErosionDistance_of_not_rankErosion`,
+`le_strictRankErosionDistance_of_not_strictRankErosion`). These bounds are not
+strict.
+
+Two boundary cases show that the hypotheses are needed. They are proved in
+`StrictRankErosionExamples`.
+
+- **A fixed radius.** Take the module with one copy of $\mathbb Q$ at each grade
+  of the closed box $[0,2c]^n$ and zero elsewhere, against the zero module, for
+  a radius $c\ge0$. For $a\le b$, the grades $a-c\mathbf1$ and $b+c\mathbf1$
+  both lie in the box only when $a=b=c\mathbf1$. So strict erosion holds at
+  radius $c$, and weak erosion fails there, on the diagonal at the centre of
+  the box (`closedBox_strictRankErosion`, `closedBox_not_rankErosion`). For
+  $n\ge1$, weak erosion holds at every radius above $c$ and both distances
+  equal $c$ (`closedBox_rankErosion_of_lt`, `closedBox_rankErosionDistance`,
+  `closedBox_strictRankErosionDistance`). The two predicates therefore differ
+  at a fixed radius although their distances agree; the weak infimum is not
+  attained; and for modules with finite-dimensional fibers a failed weak test
+  at a radius does not show that the distance exceeds that radius. For $c=0$
+  the module is supported at one grade.
+- **No coordinates.** When $n=0$ there is one grade and no strict pair. The
+  strict predicate holds for all modules at every radius and the strict
+  distance is zero (`strictRankErosion_fin_zero`,
+  `strictRankErosionDistance_fin_zero`). For two modules whose single fibers
+  have dimensions three and two, weak erosion fails at every radius and the
+  weak distance is infinite (`noCoordinates_not_rankErosion`,
+  `noCoordinates_rankErosionDistance`).
+
+The executed tests of the previous section are consumers. A passing test gives
+strict erosion at its radius. For $n\ge1$, a failing test at a radius excludes
+strict erosion at every smaller radius; and a failure reported at a strict pair
+excludes strict erosion at the tested radius itself. For the interval module
+`[0, 1)` against zero, the tests at radii `1/4` and `1/2` exclude strict erosion
+at radius `1/8` and enclose the strict distance between `1/4` and `1/2`
+(`interval_zero_not_strictRankErosion`,
+`interval_zero_strictRankErosionDistance_bounds`); for the modules born at `0`
+and at `1`, the failure at radius `1/2` is reported at the strict pair
+`(1/2, 1)` (`rays_not_strictRankErosion`). These statements record what the
+executed tests give and are not sharp: no theorem here computes the distance of
+the interval module from zero, which is `1/2`, and its strict predicate fails
+at every radius below `1/2`.
+
+Nothing in this section identifies the two predicates at a fixed radius for a
+restricted class of modules, or makes a lower bound strict.
 
 ## Zero radius, zero distance and future extensions
 
@@ -216,31 +301,63 @@ grades meet, so rank equality cannot in general recover the module.
 
 The [extension proposal](https://github.com/uda-lab/tda-lib/issues/865)
 separates several targets. Of these, the finite criterion, the executable
-representations over the two-element field and the certified finite test of
-the three preceding sections are supplied. The following remain proposed
-extensions, not declarations supplied by this note: a precise comparison with
-strict-pair conventions; erosion attainment and strict erosion lower
-certificates for original finite presentations; image rank beyond
-finite-dimensional fibers; finite tests fed by actual persistent-homology
-input; and execution over other fields. The proposal also records endpoint and
-nonseparation counterexamples that a broader API must respect, rather than
-promising to remove necessary hypotheses.
+representations over the two-element field, the certified finite test and the
+comparison of weak and strict pairs of the four preceding sections are
+supplied. Of the proposal's first package, on conventions and exact thresholds,
+the supplied items are the strict-pair predicate, its two comparisons with the
+weak predicate, the equality of the distances, the non-strict lower bounds, and
+the closed-box and no-coordinates boundary cases. Its remaining items are
+proposed extensions, not declarations supplied by this note: erosion attainment
+for original finitely presented modules, that is, admissibility of the
+infimum and the identification of distance zero with equal rank invariants; the
+equivalence of the strict and weak predicates at a fixed radius in that scope;
+the strict certificate $\varepsilon<d_E\le d_I$ from a failed test; and a
+two-parameter example of non-isomorphic modules with equal rank invariants. The
+other packages also remain proposed: image rank beyond finite-dimensional
+fibers; finite tests fed by actual persistent-homology input; and execution
+over other fields. The proposal records endpoint and nonseparation
+counterexamples that a broader API must respect, rather than promising to
+remove necessary hypotheses.
 
 ## Imports and source convention
 
 Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving`,
 `TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid`,
-`TDA.Persistence.F2GridRep` and `TDA.Persistence.F2GridErosion`. Their
+`TDA.Persistence.F2GridRep`, `TDA.Persistence.F2GridErosion` and
+`TDA.Persistence.StrictRankErosion`. Their
 declarations are in `TDA.Persistence`; the concrete hook witnesses are in its `RankErosionWitness` namespace, the grid
 criterion is in `TDA.Persistence.CoordinateGrid`, and the executable
 representations are in `TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.
+The strict-pair examples are in `TDA.Persistence.StrictRankErosionExamples`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 
 [Puuska, §2.2](https://arxiv.org/html/1710.01577v1) defines the rank invariant
 on strict pairs and proves its erosion stability using the interleaving
-factorization (Theorem 22). The current library uses weak pairs and a
-finite-dimensional specialization; it does not yet prove equivalence with that
-strict-pair convention. The proposed convention comparisons and finite-presentation
-erosion attainment are additional library targets, not results attributed to the
-paper. See the [source record](references.md#Puuska17-v1).
+factorization (Theorem 22). The library's `RankErosion` uses weak pairs and a
+finite-dimensional specialization. `StrictRankErosion` uses the strict pairs of
+the product order with the same diagonal shift, and the
+[comparison above](#strict-pairs) relates the two library predicates.
+
+For the pair convention, the exact version arXiv:1710.01577v1 was consulted.
+Its §1 defines the pair set Dgm_P as the pairs (a, b) of P × P with a < b, and
+its footnote 2 fixes a < b to mean a ≤ b and a ≠ b. The introduction defines
+Dgm_{Rⁿ} in the same way and states the erosion conditions as
+f(a − ε, b + ε) ≤ g(a, b) and g(a − ε, b + ε) ≤ f(a, b) for all (a, b) in
+Dgm_{Rⁿ}. Definition 5 defines d_E as the infimum of the ε with ∇Ω_ε f ≤ g and
+∇Ω_ε g ≤ f, or ∞; Definition 17 takes the rank invariant to be the image of
+F(a < b); Definition 23 uses Ω_ε(a) = a + ε·1. The set Dgm′_{Rⁿ} of the pairs
+with aᵢ < bᵢ for each i is separate and is used only for d_T (Definition 29).
+So the strict-pair relation `a ≤ b ∧ a ≠ b` and the diagonal shift of
+`StrictRankErosion` match the paper's convention.
+
+Two points were not verified. The paper does not state explicitly that ≤ on Rⁿ
+is the product order; this is implied by the sublevel sets and by a
+coordinatewise step after Theorem 30. And the paper works with images in a
+preordered abelian category, not with `finrank`, so agreement of the predicates
+beyond the pair convention is not established.
+
+The comparison of the two library predicates, its boundary cases and the
+proposed finite-presentation erosion attainment are library derivations. No
+theorem about strict pairs in this note is attributed to a numbered result of
+the paper. See the [source record](references.md#Puuska17-v1).

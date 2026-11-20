@@ -114,8 +114,18 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   radius by execution (`F2GridRep.runErosion`): the result is invalid input, a
   pass, or a failed inequality with its direction, grades and ranks, and it is
   proved correct for the actual Kan extensions in all three cases. A failure
-  refutes the predicate at that radius; it is not a distance bound. See
+  refutes the predicate at that radius; it is not a strict distance bound. See
   [rank erosion](docs/math/rank-erosion.md#a-certified-finite-test).
+- Add strict-pair rank erosion (`StrictRankErosion`, `strictRankErosionDistance`)
+  on the strict pairs of the product order and compare it with the weak-pair
+  predicate: the weak predicate implies the strict one at the same radius; with
+  at least one coordinate and finite-dimensional fibers the strict predicate
+  implies the weak one at every larger radius and the two distances are equal;
+  and a radius at which a predicate fails is a non-strict lower bound of its
+  distance. The predicates differ at a fixed radius, as a module supported on a
+  closed box shows, and with no coordinates the strict distance is always zero.
+  No erosion attainment or strict lower bound is supplied. See
+  [rank erosion](docs/math/rank-erosion.md#strict-pairs).
 - Compute the incidence lists of graph-PL input by execution
   (`HeightGraph.incidence?`): from a Boolean adjacency function and rational
   vertex heights, the sorted distinct levels, one cell per level component and

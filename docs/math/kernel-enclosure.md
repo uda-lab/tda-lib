@@ -272,8 +272,10 @@ real numeral. In `embedding` the bandwidth is part of the type `Space σ`.
   arctan weight, are not covered.
 - **Shape of the output.** No theorem states that intervals for smaller
   tolerances are nested, that the endpoints are monotone, that the widths are
-  optimal, or that permuted lists give the same interval. One fixture checks
-  nesting and one checks a permuted list, by evaluation.
+  optimal, or that permuted lists give the same interval. Two fixtures check
+  nesting for one pair of tolerances (`gram_cross_refines`,
+  `sqDist_cross_refines`) and two check a permuted list (`gram_permuted`,
+  `sqDist_identical`), by evaluation.
 
 ### Cost
 
@@ -350,6 +352,9 @@ value of a transcendental number:
 
 ## Source scope
 
-These are elementary library results derived from the pinned
-[mathlib](references.md#mathlib-56a0058) remainder bound for the exponential
-series. They are not attributed to a paper, and no source comparison is claimed.
+These are elementary library results. The scalar enclosure is derived from the
+pinned [mathlib](references.md#mathlib-56a0058) remainder bound for the
+exponential series. The Gram and distance parts rest in addition on the library
+definitions of the weight, the kernel, `linearKernel` and the embedding, and on
+the library identity `norm_embedding_sub_sq`. They are not attributed to a
+paper, and no source comparison is claimed.
