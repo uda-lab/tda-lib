@@ -10,6 +10,19 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Enclose the exponential at nonpositive rational arguments by rational
+  arithmetic: for rational `x ≤ 0` and `δ > 0`, `expEnclosure x δ` in
+  `TDA.Persistence.Enclosure.Exp` is a rational interval containing
+  `Real.exp x` (`expEnclosure_mem`) of width at most `δ` (`expEnclosure_width`).
+  `expEnclosure?` rejects positive arguments and nonpositive tolerances. The
+  argument is halved into `[-1, 0]`, a Taylor polynomial is bounded by mathlib's
+  remainder estimate and the result is squared back with outward dyadic
+  rounding. The width is absolute, not a relative error, and the lower endpoint
+  can be `0`. The cost is documented, not proved. This is the scalar step
+  towards Gaussian kernel enclosures; no enclosure of the Gram sums or of the
+  squared RKHS distance is provided yet. See
+  [Rational enclosures for Gaussian kernel values](docs/math/kernel-enclosure.md).
+
 - Identify the diagram of the executed Rips simplex list with the Rips diagram:
   for a valid `DistanceTable`, `outputDiagram_ripsInput` states that
   `FiniteInput.outputDiagram` of the list, with integer grades read as real

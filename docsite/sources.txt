@@ -73,6 +73,7 @@ docs/math/incidence-quotient-finite-length-dimension.md
 docs/math/incidence-quotient-simple-modules.md
 docs/math/incidence-vertex-representation.md
 docs/math/incidence-vertex-tor.md
+docs/math/kernel-enclosure.md
 docs/math/log-scale-diagrams.md
 docs/math/mapper-reeb-approximation.md
 docs/math/mapper.md

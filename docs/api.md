@@ -2468,6 +2468,22 @@ with matching-cost and count-times-bottleneck corollaries. No bandwidth hypothes
 assumed. See
 [the conventions, proof route and source mapping](math/weighted-kernel-embedding.md).
 
+`TDA.Persistence.Enclosure.Exp` computes rational enclosures of the scalar exponential
+that the kernel needs. For a rational `x ≤ 0` and a rational `δ > 0`, `expEnclosure x δ`
+is a pair of rational numbers, computed by rational arithmetic, with
+`lo ≤ Real.exp x ≤ hi` (`expEnclosure_mem`) and `hi - lo ≤ δ` (`expEnclosure_width`).
+`expEnclosure?` returns it for such a request and `none` for a positive argument or a
+nonpositive tolerance; `expEnclosure?_spec` states containment and width for every
+returned interval. The argument is halved until it lies in `[-1, 0]`, a Taylor
+polynomial is bounded by mathlib's `Real.exp_bound`, and the result is squared back with
+outward rounding to a dyadic grid; `expHalvings`, `toleranceBits`, `expTerms`,
+`expTaylor`, `roundDown`, `roundUp` and `expSquare` are the public steps of this
+schedule. The width is absolute, not relative: the lower endpoint can be `0`. The cost
+grows with the logarithm of `-x`, the digits of `1/δ` and the denominator of `x`, and is
+documented, not proved. No enclosure of `linearKernel` or of the squared RKHS distance
+is provided yet. `TDA.Persistence.Enclosure.ExpExamples` holds the kernel-checked
+fixtures. See [the algorithm, statements and limits](math/kernel-enclosure.md).
+
 `TDA.Persistence.ArctanWeight` defines `PersistenceImage.arctanWeight C hC`, the weight
 `arctan (C · max pers 0)` in `Weight C (π / 2)` for `0 ≤ C`. It equals KFH18's
 `arctan (C · pers)` when birth ≤ death. `WeightedKernel.stabilityConstant_arctan` evaluates

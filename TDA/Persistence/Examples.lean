@@ -220,3 +220,4 @@ import TDA.Persistence.BoundaryTransportReverseExamples
 import TDA.Persistence.BoundaryTransportReverse
 import TDA.Persistence.Reduction.RipsInputExamples
 import TDA.Persistence.Reduction.RipsInputDiagramExamples
+import TDA.Persistence.Enclosure.ExpExamples
