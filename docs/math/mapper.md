@@ -1482,6 +1482,67 @@ quotient although its realization endpoints differ. R5 is
 `c4_isIso_intervalComponentComparison`. R6 is the negative control
 `path3_reebQuotient_not_iso_S02`: the covering hypothesis cannot be dropped.
 
+### Executable incidence extraction
+
+`TDA.Mapper.GraphPLIncidence` computes the lists underlying the finite Reeb data
+from finite input. A `HeightGraph N` is a Boolean adjacency function on `Fin N`
+with rational vertex heights. `HeightGraph.Valid` asks for symmetry and an empty
+diagonal; it is decidable, and invalid input is rejected, not repaired
+(`incidence?` returns `none`). For valid input `graph` is the simple graph and
+`realHeight` the real-valued height.
+
+* `levels` lists the distinct heights in increasing order (`levels_pairwise`,
+  `mem_levels`); with no vertex it is the single dummy level `0`.
+  `criticalValues` is this list as a `CriticalValues`, and it covers the vertex
+  heights (`coversVertexHeights`).
+* `label v` is the least vertex index in the component of `v` in the graph
+  induced on the vertices of the height of `v`. It is computed by `N` rounds of
+  minimum-label propagation along horizontal edges, which suffice because a
+  path in a graph on `N` vertices has fewer than `N` edges.
+  `label_eq_label_iff_reachable` states that two vertices of height `c` have
+  equal labels exactly when they are joined in the graph induced on
+  `{v | realHeight v = c}`, the vertex set of the level components above, and
+  `componentEquiv` is the bijection between the label fixed points of height
+  `c` and those components.
+* `cellList c` lists the label fixed points of height `c` and, as ordered pairs
+  (lower endpoint, upper endpoint), the edges crossing `c` (`mem_cellList_inl`,
+  `mem_cellList_inr`, `nodup_cellList`).
+* `edgeList p q` lists, as ordered pairs, the edges whose height interval
+  contains `[p, q]`, each once and each with its two endpoint cells: the label
+  of the endpoint when the endpoint lies on the level, and the edge itself as a
+  crossing cell otherwise (`mem_edgeList`, `nodup_edgeList`). Two edges with
+  the same endpoint cells are two entries. For `p < q` both endpoint cells are
+  listed cells of the two levels (`leftEnd_mem_cellList`,
+  `rightEnd_mem_cellList`).
+
+`incidence` collects the cell lists over all levels and the edge lists over all
+gaps between consecutive levels (`incidence_cells_getElem?`,
+`incidence_edges_getElem?`). The representative of a component is the least
+index by construction of this implementation; statements about components
+should go through reachability.
+
+The executable definitions use lists, vectors, finite indices and rational
+comparison, with no quotient representative and no real-number comparison.
+Counting an evaluation of the adjacency or the height, a rational comparison
+and an index comparison as one unit, `incidence` costs `O(N³)` units for the
+label propagation and `O(L N²)` for the cells and edges of `L` levels; the bit
+cost of rational arithmetic is separate, and these counts are documented, not
+proved. The statement forms `label`, `cellList` and `edgeList` recompute the
+label vector at each call.
+
+This module does not build `FiniteReebData` from the lists and does not compare
+them with `graphPLReebData` or with the Reeb quotient; no Mapper extraction is
+provided. These are elementary library results, not attributed to a source.
+
+The fixtures state the complete value of `incidence?` for no vertex, one
+vertex, two isolated vertices, a horizontal edge, two unjoined vertices of one
+height, an edge crossing a level that carries an isolated vertex, and a
+four-cycle. `triangle_edgeList` and `triangle_parallel` show two edges over one
+gap with the same endpoint cells, both listed. In `bent` one propagation round
+leaves a wrong label (`bent_one_round`, `bent_labels`), and `bent_reachable`
+transfers the label equality to the actual induced level graph. An asymmetric
+adjacency and a loop return `none`.
+
 ### The graph-PL realization as a constructible ℝ-space
 
 Let `V : Type u`, let `G : SimpleGraph V`, and let `h : V → ℝ`. For (A),

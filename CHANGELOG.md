@@ -61,6 +61,15 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   proved correct for the actual Kan extensions in all three cases. A failure
   refutes the predicate at that radius; it is not a distance bound. See
   [rank erosion](docs/math/rank-erosion.md#a-certified-finite-test).
+- Compute the incidence lists of graph-PL input by execution
+  (`HeightGraph.incidence?`): from a Boolean adjacency function and rational
+  vertex heights, the sorted distinct levels, one cell per level component and
+  per crossing edge, and the spanning edges of each gap with their endpoint
+  cells, parallel entries retained. Component labels are proved to decide
+  reachability in the actual induced level graphs; invalid adjacency is
+  rejected. The comparison with `graphPLReebData` and the Reeb quotient is not
+  included. See
+  [executable incidence extraction](docs/math/mapper.md#executable-incidence-extraction).
 
 ## v0.4.0
 
