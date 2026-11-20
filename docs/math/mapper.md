@@ -1501,9 +1501,9 @@ diagonal; it is decidable, and invalid input is rejected, not repaired
   path in a graph on `N` vertices has fewer than `N` edges.
   `label_eq_label_iff_reachable` states that two vertices of height `c` have
   equal labels exactly when they are joined in the graph induced on
-  `{v | realHeight v = c}`, the vertex set of the level components above, and
-  `componentEquiv` is the bijection between the label fixed points of height
-  `c` and those components.
+  `{v | realHeight v = c}`, the vertex set of the level components of
+  `LevelVertex`, and `componentEquiv` is the bijection between the label fixed
+  points of height `c` and those components.
 * `cellList c` lists the label fixed points of height `c` and, as ordered pairs
   (lower endpoint, upper endpoint), the edges crossing `c` (`mem_cellList_inl`,
   `mem_cellList_inr`, `nodup_cellList`).
@@ -1527,12 +1527,12 @@ Counting an evaluation of the adjacency or the height, a rational comparison
 and an index comparison as one unit, `incidence` costs `O(N³)` units for the
 label propagation and `O(L N²)` for the cells and edges of `L` levels; the bit
 cost of rational arithmetic is separate, and these counts are documented, not
-proved. The statement forms `label`, `cellList` and `edgeList` recompute the
-label vector at each call.
+proved. Validation costs `O(N²)` units. The statement forms `label`,
+`cellList`, `edgeList`, `leftEnd` and `rightEnd` recompute the label vector at
+each call.
 
-This module does not build `FiniteReebData` from the lists and does not compare
-them with `graphPLReebData` or with the Reeb quotient; no Mapper extraction is
-provided. These are elementary library results, not attributed to a source.
+No Mapper extraction is provided. These are elementary library results, not
+attributed to a source.
 
 The fixtures state the complete value of `incidence?` for no vertex, one
 vertex, two isolated vertices, a horizontal edge, two unjoined vertices of one
@@ -1542,6 +1542,42 @@ gap with the same endpoint cells, both listed. In `bent` one propagation round
 leaves a wrong label (`bent_one_round`, `bent_labels`), and `bent_reachable`
 transfers the label equality to the actual induced level graph. An asymmetric
 adjacency and a loop return `none`.
+
+`TDA.Mapper.GraphPLIncidenceReebData` identifies the executed lists with the
+finite Reeb data above. For valid input, `reebData` reads the lists as finite
+data over `criticalValues` without renumbering: the vertices at a level are the
+listed cells, the edges over a gap are the listed entries, and the endpoint
+maps read the two endpoint cells stored in an entry (`reebData_left_coe`,
+`reebData_right_coe`, `reebData_left_eq_leftEnd`, `reebData_right_eq_rightEnd`).
+By `incidence_cells_getElem?` and `incidence_edges_getElem?` these are the
+entries of the computed value `incidence`.
+
+* `reebDataIso` is an isomorphism of finite data from `reebData` to
+  `graphPLReebData (graph hX) realHeight criticalValues`. Its forward map
+  sends a component cell to the connected component of its representative in
+  the actual induced level graph, a crossing cell to its edge as a crossing
+  edge, and a listed edge to its edge as a spanning edge
+  (`reebDataIso_hom_v_inl`, `reebDataIso_hom_v_inr`, `reebDataIso_hom_e`);
+  these laws determine it. The classical choice of endpoint inside the
+  endpoint maps of `graphPLReebData` does not enter the laws.
+* `extractReebDataIso` composes `graphPLExtractIso` with its inverse: the data
+  extracted from the path-component precosheaf of the graph-PL height are the
+  executed lists.
+* `reebQuotientIso` applies `graphPLReebQuotientIsoOfIso`: over `ℝ`, the Reeb
+  quotient of the graph-PL height is the realization of the executed lists.
+  The quotient theorem is not reproved.
+* With no vertex the realization is empty (`isEmpty_realization`).
+
+The comparison maps are noncomputable. Not provided: a renumbering of the
+cells by positions, a computable inverse of the comparison, the simplified
+simple graph, and any algorithm on the realization. The fixtures:
+`triangle_parallel_edges` exhibits two different edges of the executed data
+with the same two endpoints, and `triangle_incidenceEdgeSet_not_injective`
+shows that the simple incidence graph has only one edge for them;
+`crossing_upper_ends` and `crossing_hom_v_inr` check the endpoint cells of an
+entry and the image of a crossing cell in the actual graph;
+`diamond_reebQuotientIso` instantiates the quotient comparison for the
+four-cycle; `empty_isEmpty_realization` is the case of no vertex.
 
 ### The graph-PL realization as a constructible ℝ-space
 
