@@ -50,7 +50,9 @@ injective measure embeddings from finite-pixel images, which are not characteris
 [Native boundary-transport feature bounds](api.md#gaussian-stability-under-native-boundary-transport)
 also have their own weight and moment conditions. The kernel theory is noncomputable;
 [rational enclosures](math/kernel-enclosure.md) of the scalar exponential at nonpositive
-rational arguments are executable, and enclosures of kernel sums are not provided yet.
+rational arguments, of the Gaussian Gram sum of two finite rational lists and of the
+squared RKHS distance of their embeddings are executable, for the capped persistence
+weight only.
 
 ## Multiparameter persistence
 

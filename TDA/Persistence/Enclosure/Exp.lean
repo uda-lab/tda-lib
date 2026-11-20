@@ -69,10 +69,10 @@ open Nat
 
 /-! ## Outward rounding to a dyadic grid -/
 
-/-- The largest multiple of `1 / 2 ^ p` below `q`. -/
+/-- The largest multiple of `1 / 2 ^ p` that is at most `q`. -/
 def roundDown (p : ℕ) (q : ℚ) : ℚ := ⌊q * 2 ^ p⌋ / 2 ^ p
 
-/-- The least multiple of `1 / 2 ^ p` above `q`. -/
+/-- The least multiple of `1 / 2 ^ p` that is at least `q`. -/
 def roundUp (p : ℕ) (q : ℚ) : ℚ := ⌈q * 2 ^ p⌉ / 2 ^ p
 
 theorem roundDown_le (p : ℕ) (q : ℚ) : roundDown p q ≤ q := by
