@@ -10,6 +10,17 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Add weak-pair erosion on the extended image rank (`ERankErosion`) and its
+  distance `eRankErosionDistance`. Monotonicity in the radius, reflexivity,
+  symmetry, the triangle law and the bound by the coordinate interleaving
+  distance hold for every module, without finite-dimensional fibers; on
+  pointwise finite-dimensional modules the predicate and distance are
+  `RankErosion` and `rankErosionDistance`. Examples show that without finite
+  dimensionality neither predicate implies the other, and include an
+  infinite-dimensional ephemeral module at extended distance `0` (not attained)
+  or `⊤` (no coordinate) from zero. The statements are restricted to
+  `PModule.{u,0,u}`. See
+  [rank erosion](docs/math/rank-erosion.md#erosion-on-extended-ranks).
 - Add the extended-natural image rank of a structure map
   (`eRankOfStructureMap`), the `Cardinal.toENat` of the cardinal rank: the
   dimension of the image when finite and `⊤` otherwise, so every infinite
@@ -17,9 +28,8 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   the zero, diagonal and isomorphism laws hold without finite-dimensional
   fibers. The `ℕ`-valued `rankOfStructureMap` is its truncation sending `⊤` to
   `0`, and the two agree on finite-dimensional images. Examples show that an
-  infinite-dimensional constant module has the `ℕ`-valued ranks of zero but
-  extended rank `⊤`. No erosion predicate or distance on the extended rank is
-  supplied yet. See
+  infinite-dimensional constant module has the same `ℕ`-valued ranks as the
+  zero module but extended rank `⊤`. See
   [rank erosion](docs/math/rank-erosion.md#extended-image-rank).
 - Enclose Gaussian Gram sums and squared RKHS distances by rational arithmetic:
   for two lists of rational birth–death pairs, a rational bandwidth `σ`, a

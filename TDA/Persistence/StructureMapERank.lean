@@ -33,6 +33,8 @@ noncomputable def eRankOfStructureMap (M : PModule.{u,v,w} k P) {a b : P} (hab :
     ℕ∞ :=
   (structureMapLinear M hab).rank.toENat
 
+/-- The extended rank is `Cardinal.toENat` of the dimension of the image of the structure
+map. -/
 theorem eRankOfStructureMap_eq_toENat_rank (M : PModule.{u,v,w} k P) {a b : P}
     (hab : a ≤ b) :
     eRankOfStructureMap M hab =
@@ -71,6 +73,7 @@ theorem eRankOfStructureMap_four_point (M : PModule.{u,v,w} k P)
   (eRankOfStructureMap_trans_le_left M ha (hab.trans hb)).trans
     (eRankOfStructureMap_trans_le_right M hab hb)
 
+/-- Every structure map of the zero module has extended rank `0`. -/
 @[simp] theorem eRankOfStructureMap_zero {a b : P} (hab : a ≤ b) :
     eRankOfStructureMap (0 : PModule.{u,v,w} k P) hab = 0 := by
   have htarget : Subsingleton ((0 : PModule.{u,v,w} k P).obj b) :=

@@ -447,3 +447,4 @@ import TDA.Persistence.StrictRankErosion
 import TDA.Persistence.RankErosionAttainment
 import TDA.Persistence.RankErosionCertificate
 import TDA.Persistence.StructureMapERank
+import TDA.Persistence.ERankErosion

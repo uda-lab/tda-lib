@@ -70,8 +70,71 @@ when both source fibers are finite-dimensional. The examples
 countably-infinite-dimensional constant module has the `ℕ`-valued ranks of the
 zero module, so `RankErosion 0` holds between them
 (`rankErosion_zero_infinite`), while its extended ranks are $\top$
-(`infinite_vs_zero`). No erosion predicate or distance on the extended rank is
-supplied yet.
+(`infinite_vs_zero`). Erosion on the extended rank is in
+[the next section](#erosion-on-extended-ranks).
+
+## Erosion on extended ranks
+
+`ERankErosion ε M N` (`TDA.Persistence.ERankErosion`) is `RankErosion ε M N`
+with `rankOfStructureMap` replaced by `eRankOfStructureMap`: the same weak
+pairs $a\le b$, the same widened pair from $a-\varepsilon$ to $b+\varepsilon$
+and both directions. `eRankErosionDistance` is the infimum in
+$[0,\infty]$ of its admissible radii. For every number of parameters, every
+field and every module, with no finiteness hypothesis:
+
+- `ERankErosion.mono` (larger radii), `ERankErosion.refl`, `ERankErosion.symm`
+  and `ERankErosion.trans` (radii add); `eRankErosion_zero_iff` (radius zero is
+  equality of all weak-pair extended ranks, diagonal included);
+- `eRankErosionDistance_self`, `eRankErosionDistance_comm` and
+  `eRankErosionDistance_triangle`, so the distance is an extended pseudometric;
+  `eRankErosionDistance_le_of_erosion`,
+  `le_eRankErosionDistance_of_not_eRankErosion` and
+  `eRankErosionDistance_eq_top_iff`;
+- `CoordinateInterleaving.eRankErosion` and
+  `eRankErosionDistance_le_coordinateInterleavingDistance`: the extended
+  distance is at most the coordinate interleaving distance. The proof reuses the
+  factorization `CoordinateInterleaving.factor_structureMap` of the next section
+  and Mathlib's `LinearMap.rank_comp_le_left/right`.
+
+`RankErosion.refl`, `RankErosion.mono` and
+`le_rankErosionDistance_of_not_rankErosion` assume finite-dimensional fibers;
+their extended analogues do not. On pointwise finite-dimensional modules
+`eRankErosion_iff_rankErosion` and
+`eRankErosionDistance_eq_rankErosionDistance` identify the predicate and the
+distance with `RankErosion` and `rankErosionDistance`.
+
+Without finite dimensionality the predicates are incomparable. The examples
+(`TDA.Persistence.ERankErosionExamples`) show both failures.
+`ephemeralInfinite` has fiber `ℕ →₀ ℚ` at every grade and zero maps between
+distinct grades; `RankErosion 0` holds between it and zero
+(`ephemeralInfinite_rankErosion_zero`), while `ERankErosion 0` fails on the
+diagonal. With at least one coordinate, `ERankErosion` holds against zero at
+every positive radius, so the extended distance is $0$ and is not attained
+(`ephemeralInfinite_eRankErosionDistance`). With no coordinate it fails at every
+radius, and the extended distance is $\top$
+(`ephemeralInfinite_eRankErosionDistance_fin_zero`). The infinite constant
+module against zero has extended distance $\top$ and `ℕ`-valued distance $0$
+(`infinite_vs_zero_distance`). Conversely, `split`, with fiber
+$\mathbb Q\times(\mathbb N\to_0\mathbb Q)$, the identity on the diagonal and
+`inl ∘ fst` between distinct grades, satisfies `ERankErosion` against the
+one-dimensional constant module at every positive radius, while `RankErosion`
+fails, because its `ℕ`-valued diagonal rank is $0$
+(`split_line_eRankErosion_not_rankErosion`). On pointwise finite-dimensional
+inputs the distances agree: `line_vs_zero_distance` (both $\top$) and
+`closedBox_eRankErosionDistance` (the finite value $c$ for the closed box).
+
+Distance $0$ does not imply erosion at radius $0$, nor an isomorphism. Since
+every infinite cardinal is collapsed to $\top$, constant modules of different
+infinite dimensions are at extended distance $0$ although no interleaving
+exists; this is not formalized. No strict-pair extended predicate is supplied.
+
+The predicate and distance are stated for `PModule.{u,0,u}`, as `RankErosion`
+and `CoordinateInterleaving.factor_structureMap` are. This deliberately departs
+from the remark in the
+[rank-codomain decision](https://github.com/uda-lab/tda-lib/issues/865#issuecomment-7056569407)
+that the general laws need not be universe-restricted, so that the existing
+factorization is reused unchanged. Lifting it later only generalizes the
+signature of `factor_structureMap`.
 
 ## Stability from actual interleavings
 
@@ -601,11 +664,12 @@ field; and the record above of the implications between the zero-radius
 assertions. A predicate on coordinatewise strict pairs, which the proposal
 leaves optional, is not supplied. Of
 the proposal's second package, the [extended image rank](#extended-image-rank)
-is supplied, while erosion on it, its distance comparison and the q-tame
-consumers remain proposed. The other packages remain proposed: finite tests fed by actual persistent-homology input; and execution
-over other fields. The proposal records endpoint and nonseparation
-counterexamples that a broader API must respect, rather than promising to
-remove necessary hypotheses.
+and [erosion on it](#erosion-on-extended-ranks), with its interleaving bound,
+are supplied; the finite-image interleaving bound and the q-tame consumers
+remain proposed. So do the other packages: finite tests fed by actual
+persistent-homology input; and execution over other fields. The proposal
+records endpoint and nonseparation counterexamples that a broader API must
+respect, rather than promising to remove necessary hypotheses.
 
 ## Imports and source convention
 
@@ -615,15 +679,18 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.F2GridRep`, `TDA.Persistence.F2GridErosion`,
 `TDA.Persistence.StrictRankErosion`,
 `TDA.Persistence.RankErosionAttainment`,
-`TDA.Persistence.RankErosionCertificate` and
-`TDA.Persistence.StructureMapERank`. Their
-declarations are in `TDA.Persistence`; the concrete hook witnesses are in its `RankErosionWitness` namespace, the grid
-criterion is in `TDA.Persistence.CoordinateGrid`, and the executable
-representations are in `TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.
+`TDA.Persistence.RankErosionCertificate`,
+`TDA.Persistence.StructureMapERank` and `TDA.Persistence.ERankErosion`. Their
+declarations are in `TDA.Persistence`; the concrete hook witnesses are in its
+`RankErosionWitness` namespace, the grid criterion is in
+`TDA.Persistence.CoordinateGrid`, and the executable representations are in
+`TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.
 The strict-pair examples are in `TDA.Persistence.StrictRankErosionExamples`
 the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples` and
-the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`
-and the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`;
+the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`,
+the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`,
+and the extended-rank erosion examples in
+`TDA.Persistence.ERankErosionExamples`;
 the attainment and certificate theorems are in `TDA.Persistence.GradedFree`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 
