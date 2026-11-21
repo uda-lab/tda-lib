@@ -5,6 +5,26 @@ finite-dimensional fibers. The current API permits every $n\in\mathbb N$,
 including $n=0$. Write $r_M(a,b)$ for the dimension of the image of the actual
 structure map $M(a)\to M(b)$, where $a\le b$ coordinatewise.
 
+## Choosing a result
+
+This note is the reference for the rank-erosion API. The table routes a task to the
+declarations that settle it; the sections that follow state the exact hypotheses.
+
+| Task | Use | Scope |
+|---|---|---|
+| Compare ranks at a radius | `RankErosion`, `rankErosionDistance` | field-valued `PModule.{u,0,u}` on `Fin n → ℝ`; weak pairs, diagonal included; `Module.finrank` ranks, so finite-dimensional fibers are the intended scope |
+| Use only product-strict pairs | `StrictRankErosion`, `strictRankErosionDistance`, `RankErosion.strict`, `StrictRankErosion.rankErosion_add`, `strictRankErosionDistance_eq_rankErosionDistance` | equal distances for $n>0$ and finite-dimensional fibers; with $n=0$ the strict distance is $0$ (`strictRankErosionDistance_fin_zero`) |
+| Bound erosion by interleaving | `CoordinateInterleaving.rankErosion`, `rankErosionDistance_le_coordinateInterleavingDistance` | finite-dimensional fibers of both modules (`∀ p, FiniteDimensional k (M.obj p)` and the same for `N`); no attainment assumption |
+| Turn a failed test into a lower bound | `le_rankErosionDistance_of_not_rankErosion` (non-strict); `GradedFree.finitelyPresented_lt_rankErosionDistance_of_not_rankErosion`, `GradedFree.finitelyPresented_rankErosion_failure_certificate` (strict, $\varepsilon<d_E\le d_I$) | non-strict: finite-dimensional fibers of both modules; strict: `GradedFree.FinitelyPresented.{u,0,0}` presentations of both modules |
+| Attainment, closed radii, distance zero | `GradedFree.finitelyPresented_rankErosionDistance_le_iff_rankErosion`, `GradedFree.finitelyPresented_rankErosion_at_distance`, `GradedFree.finitelyPresented_rankErosion_parameters_eq_Ici`, `GradedFree.finitelyPresented_isClosed_rankErosion_parameters`, `GradedFree.finitelyPresented_rankErosionDistance_eq_zero_iff` | `GradedFree.FinitelyPresented.{u,0,0}`; distance zero is equality of weak-pair ranks, not isomorphism |
+| Fixed-radius strict and weak agreement | `GradedFree.finitelyPresented_strictRankErosion_iff_rankErosion` | finitely presented, `[NeZero n]` |
+| Infinite-dimensional images | `eRankOfStructureMap`, `ERankErosion`, `eRankErosionDistance`, `eRankErosionDistance_le_coordinateInterleavingDistance` | no finiteness; every infinite cardinal becomes $\top$; `eRankOfStructureMap` is universe-polymorphic, `ERankErosion` takes `PModule.{u,0,u}` |
+| q-tame inputs | `PModule.QTame` (one parameter), `PModule.CoordQTame` (several) | strictness in every coordinate; erosion test domains unchanged |
+| Decide erosion for concrete data | `F2GridRep.runErosion`, `F2GridRep.runErosion_eq_pass_certificate`, `F2GridRep.runErosion_eq_fail_certificate` | valid F₂ grid representations and a rational radius; certifies their grid Kan extensions |
+| Persistent homology of finite graded complexes | `finiteSimplicialHomology_rankErosion`, `rankErosionDistance_finiteSimplicialHomology_le_supGradeError`, `finiteSimplicialHomology_rankErosion_failure_certificate` | grade-error bounds; exact values for four tetrahedron-boundary comparisons |
+
+[What is not provided](#what-is-not-provided) lists what is not supplied.
+
 ## The predicate and distance
 
 For a finite nonnegative radius $\varepsilon$, `RankErosion ε M N` means
@@ -72,6 +92,19 @@ zero module, so `RankErosion 0` holds between them
 (`rankErosion_zero_infinite`), while its extended ranks are $\top$
 (`infinite_vs_zero`). Erosion on the extended rank is in
 [the next section](#erosion-on-extended-ranks).
+
+When to use it. `rankOfStructureMap` is `Module.finrank`, which sends an
+infinite-dimensional image to $0$: an infinite constant module against zero passes
+the `ℕ`-valued test at radius zero, as above. That example illustrates the
+`finrank` truncation, not the collapse to $\top$. The extended rank keeps the
+infinite image, and the same comparison has extended distance $\top$
+(`ERankErosionExamples.infinite_vs_zero_distance`). The collapse is that distinct
+infinite dimensions become equal: constant modules of dimensions $\aleph_0$ and
+$\mathfrak c$ have equal extended ranks (`continuumConst_collapse`). The two
+theories agree on pointwise finite-dimensional modules
+(`eRankErosion_iff_rankErosion`, `eRankErosionDistance_eq_rankErosionDistance`);
+without that hypothesis they can differ, as in the comparison just described and in
+`ERankErosionExamples.split_line_eRankErosion_not_rankErosion`.
 
 ## Erosion on extended ranks
 
@@ -270,6 +303,19 @@ The convention choice is the ruling's. The ruling states that it agrees with
 verified in the library. Everything in this subsection is a library derivation
 attributed to no numbered result.
 
+Two pair sets occur. `RankErosion` and `ERankErosion` test weak pairs $a\le b$, and
+`StrictRankErosion` tests product-strict pairs $a\le b$, $a\ne b$. Both sets contain
+axis-parallel pairs, such as the pair from $(0,0)$ to $(1,0)$. `PModule.CoordQTame`
+constrains only pairs with $a_i<b_i$ in every coordinate, equivalently positive
+diagonal shifts (`PModule.coordQTame_iff_eRankOfStructureMap_translation_ne_top`),
+so it does not constrain axis-parallel pairs. In
+`TDA.Persistence.CoordinateQTameExamples`, `axisEphemeral` is coordinatewise q-tame
+(`axisEphemeral_coordQTame`), its axis-parallel map has extended rank $\top$
+(`eRank_axisEphemeral_axis`), and its extended erosion distance to zero is $0$
+without being attained (`axisEphemeral_eRankErosionDistance`). For one parameter see
+`PModule.qTame_iff_coordQTame_fromReal`; with no coordinate,
+`PModule.coordQTame_fin_zero_iff`.
+
 ## Stability from actual interleavings
 
 An actual coordinate $\varepsilon$-interleaving factors the widened structure
@@ -452,6 +498,28 @@ breakpoint grades are the product over the coordinates. The test validates
 both representations, which enumerates the comparable triples of their grid
 grades, and then evaluates four enumeration ranks at each comparable pair of
 breakpoint grades. No polynomial bound is claimed.
+
+Reading the outcome. `invalid` means a representation is not valid or the radius
+is negative (`runErosion_eq_invalid_iff`). `pass` gives `RankErosion` and
+`StrictRankErosion` of the grid Kan extensions `R.grid.lan.obj (R.toModule hR)`
+and `S.grid.lan.obj (S.toModule hS)` at the radius, and both distances at most it
+(`runErosion_eq_pass_certificate`); nothing follows for the interleaving distance.
+`fail w` gives `¬ RankErosion`, the strict lower bound $e<d_E$ and $d_E\le d_I$
+for the same Kan extensions (`runErosion_eq_fail_certificate`), and with at least
+one coordinate the strict-pair version (`runErosion_eq_fail_strict_certificate`);
+`w` records the direction, the pair of grades and the two ranks. The certificates
+concern the modules the representations define, not a persistent-homology module.
+In `F2GridErosionExamples`, `interval_zero_quarter` fails at radius $1/4$, giving
+$1/4<d_E\le d_I$ for the interval module $[0,1)$ against zero, and
+`interval_zero_half` passes at radius $1/2$:
+
+```lean
+open TDA.Persistence TDA.Persistence.RatGrid TDA.Persistence.F2GridRep
+  TDA.Persistence.F2GridRepExamples TDA.Persistence.F2GridErosionExamples
+
+example : runErosion interval zero (1 / 4) = .fail ⟨true, ![1 / 4], ![1 / 4], 1, 0⟩ := by
+  decide +kernel
+```
 
 ## Strict pairs
 
@@ -912,40 +980,38 @@ isomorphism are related as follows.
 - For finitely presented modules, $d_I=0$ is isomorphism
   (`GradedFree.finitelyPresented_distance_eq_zero_iff_iso`).
 
-The [extension proposal](https://github.com/uda-lab/tda-lib/issues/865)
-separates several targets. Of these, the finite criterion, the executable
-representations over the two-element field, the certified finite test, the
-comparison of weak and strict pairs, the attainment theorem and the
-certificates of the six preceding sections are supplied. The proposal's first
-package, on conventions and exact thresholds, is supplied: the strict-pair
-predicate, its two comparisons with the weak predicate and the equality of the
-distances; erosion attainment for original finitely presented modules, with
-the right-local isomorphisms taken from the presentation; the equivalence of
-the two predicates at a fixed radius for finitely presented modules with at
-least one coordinate; the certificate $\varepsilon<d_E\le d_I$ from a failed
-test; and the boundary cases. The boundary cases are supplied in these forms:
-the closed box $[0,2c]^n$ over $\mathbb Q$ against zero, for erosion and for
-interleavings; with no coordinates, two modules with fibers of dimensions
-three and two, not one copy of the field against zero; the two-parameter
-nonseparation example over the two-element field, not over an arbitrary
-field; and the record above of the implications between the zero-radius
-assertions. A predicate on coordinatewise strict pairs, which the proposal
-leaves optional, is not supplied. Of
-the proposal's second package, the [extended image rank](#extended-image-rank)
-and [erosion on it](#erosion-on-extended-ranks), with its interleaving bound,
-are supplied, and so are the one-parameter q-tame consumer and
-[local finite-image bound](#one-parameter-q-tame-modules-and-real-interleavings)
-and, under the owner ruling, the multiparameter finite-image condition as
-[coordinatewise q-tameness](#several-parameters-coordinatewise-q-tameness).
-Of the fourth package, erosion bounds and failed-test
-certificates for [finite graded simplicial homology](#finite-graded-simplicial-homology)
-are supplied, and so are the exact erosion distances of the uniformly,
-coordinate- and scaled-translated families and of the scaled module against
-zero. The other targets remain proposed:
-finite tests fed by actual persistent-homology input; and execution over other
-fields. The proposal
-records endpoint and nonseparation counterexamples that a broader API must
-respect, rather than promising to remove necessary hypotheses.
+The supplied results of the [extension proposal](https://github.com/uda-lab/tda-lib/issues/865)
+are routed in [choosing a result](#choosing-a-result); the remaining limits are
+listed in [what is not provided](#what-is-not-provided).
+
+## What is not provided
+
+- **Further exact-distance families.** Exact erosion distances, with lower
+  witnesses from actual structure maps and their caps, are proved for four
+  tetrahedron-boundary PH₁ comparisons:
+  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_translatedHomology`,
+  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_coordinateTranslatedHomology`,
+  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledTranslatedHomology` and
+  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_zero`.
+  Further families (two-scale comparisons, sharp tests between two nonzero ranks)
+  with their own cap or critical-radius behaviour are not supplied
+  ([#1048](https://github.com/uda-lab/tda-lib/issues/1048)).
+- **Persistent-homology input to the runner** is not supplied ([#1049](https://github.com/uda-lab/tda-lib/issues/1049)).
+- **Other fields, radius minimisation and complexity bounds.** The runner works
+  over F₂ at one given rational radius.
+- **A coordinatewise-strict erosion predicate**, and a strict-pair predicate on the
+  extended rank: `StrictRankErosion` uses `rankOfStructureMap` only.
+- **Universe generality.** `RankErosion`, `StrictRankErosion`, `ERankErosion` and
+  their distances take `PModule.{u,0,u}`; attainment and certificates take
+  `GradedFree.FinitelyPresented.{u,0,0}`. `eRankOfStructureMap` and
+  `PModule.CoordQTame` are polymorphic in the fibre universe.
+- **Classification by ranks.** Equal rank invariants do not determine the module.
+  The library exhibits this for two parameters:
+  `RankErosionCertificateExamples.arms_nonseparation` gives
+  two finitely presented two-parameter modules over `ZMod 2` with erosion distance
+  $0$ and nonzero interleaving distance, and
+  `RankErosionCertificateExamples.arms_not_iso` shows that they are not isomorphic. No example with more than two parameters is
+  formalised.
 
 ## Imports and source convention
 
