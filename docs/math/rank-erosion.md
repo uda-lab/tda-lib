@@ -181,11 +181,94 @@ dropped. It is interleaved with zero at every positive radius
 through the zero middle fibre although every fibre of `realEphemeral` is
 infinite-dimensional.
 
-No finite-image condition is stated for two or more parameters. There
-"strict" can mean the strict product order ($a\le b$, $a\ne b$) or
-strictness in every coordinate, and these differ: $(0,0)$ and $(1,0)$ form a
-strict pair of the first kind but not of the second. Choosing between them is
-left to a later decision.
+For two or more parameters "strict" can mean the strict product order
+($a\le b$, $a\ne b$) or strictness in every coordinate, and these differ:
+$(0,0)$ and $(1,0)$ form a strict pair of the first kind but not of the second.
+The next subsection records the owner's choice for q-tameness.
+
+### Several parameters: coordinatewise q-tameness
+
+The owner ruling on the proposal
+([#865, comment 7057836908](https://github.com/uda-lab/tda-lib/issues/865#issuecomment-7057836908))
+fixes two different strictness conventions for two different purposes:
+
+- **q-tameness uses strictness in every coordinate.** A module is
+  coordinatewise q-tame when every structure map from $a$ to $b$ with
+  $a_i<b_i$ for every $i$ has finite-dimensional image.
+- **Erosion test domains are unchanged.** `RankErosion` and `ERankErosion`
+  test every weak pair; `StrictRankErosion` tests the strict pairs of the
+  product order.
+
+So an axis-parallel pair such as $(0,0)\le(1,0)$ is still a test pair of strict
+erosion, but q-tameness need not make its image finite.
+
+`TDA.Persistence.CoordinateQTame` defines `PModule.CoordQTame` on
+`Fin n → ℝ` with the hypothesis `∀ i, a i < b i`, not the Pi order `a < b`,
+which is product-strict. It is equivalent to finite extended rank on those pairs
+(`PModule.coordQTame_iff_eRankOfStructureMap_ne_top`) and to finite image, or
+finite extended rank, of every positive diagonal shift from $a$ to
+$a+\delta\cdot\mathbf 1$, $\delta>0$
+(`PModule.coordQTame_iff_finiteDimensional_translation`,
+`PModule.coordQTame_iff_eRankOfStructureMap_translation_ne_top`): every
+coordinatewise-strict pair lies above such a shift
+(`CoordinateShift.exists_pos_translation_le`). The consumers are
+`PModule.CoordQTame.eRankOfStructureMap_ne_top` and
+`PModule.CoordQTame.eRankOfStructureMap_translation_ne_top`; pointwise
+finite-dimensional modules qualify (`PModule.coordQTame_of_finiteDimensional`).
+With one coordinate the notion is `PModule.QTame` of the real module
+(`PModule.qTame_iff_coordQTame_fromReal`).
+
+With no coordinate, `Fin 0 → ℝ` has one point and the condition `∀ i, a i < b i`
+holds vacuously, so the diagonal pair is tested and every diagonal shift is the
+identity: `PModule.coordQTame_fin_zero_iff` identifies coordinatewise
+q-tameness with pointwise finite dimensionality. The strict product order is
+empty there, so a product-strict condition would instead be vacuous. The ruling
+decides the case of at least one coordinate; the definition is kept for every
+`n`, with this reduction recorded rather than excluded.
+
+For a coordinate `ε`-interleaving of `M` and `N`,
+`CoordinateInterleaving.eRankOfStructureMap_le_toENat_rank` bounds the extended
+rank of the doubled-shift map of `M` (at `CoordinateInterleaving.twice_le ε a`)
+by the extended dimension of the middle fibre `N.obj (translation ε a)`, and
+`CoordinateInterleaving.eRankOfStructureMap_ne_top` is the local finite-image
+bound when that fibre is finite-dimensional. Both are at `PModule.{u,0,w}`.
+`CoordinateInterleaving.eRankOfStructureMap_le_of_translation_le` is the
+extended-rank form of `CoordinateInterleaving.factor_structureMap`, and
+`CoordinateInterleaving.eRankOfStructureMap_ne_top_of_coordQTame` deduces: if
+`N` is coordinatewise q-tame, every structure map of `M` whose gap exceeds
+$2\varepsilon$ in every coordinate has finite extended rank. The gap must be
+strict, since the map factors through the map of `N` from $a+\varepsilon$ to
+$b-\varepsilon$, which must be coordinatewise strict; an example in
+`CoordinateQTameExamples` (radius `0`, `fromReal realEphemeral` interleaved
+with itself, the diagonal pair) shows that the non-strict version is false.
+These two are at `PModule.{u,0,u}`, as `factor_structureMap` is. Nothing is
+claimed about coordinatewise q-tameness of an interleaved module itself.
+
+The examples (`TDA.Persistence.CoordinateQTameExamples`) use `axisEphemeral`,
+`realEphemeral` pulled back along the second coordinate of `Fin 2 → ℝ`: fibre
+`ℕ →₀ ℚ` everywhere, the identity when the second coordinates agree, zero when
+the second coordinate increases. Every coordinatewise-strict pair increases the
+second coordinate, so it is coordinatewise q-tame
+(`axisEphemeral_coordQTame`), while no fibre is finite-dimensional. The pair
+from the origin to the first unit vector is product-strict
+(`axisLow_lt_axisHigh`) but not coordinatewise strict
+(`not_forall_axisLow_lt_axisHigh`), and its map is the identity of `ℕ →₀ ℚ`,
+of extended rank $\top$ (`eRank_axisEphemeral_axis`), so the product-strict
+finiteness condition fails (`axisEphemeral_not_forall_lt_eRank_ne_top`). The
+pair is a test pair of `StrictRankErosion`, but that predicate uses the
+`ℕ`-valued `finrank`, where this pair's rank collapses to `0`; only
+`ERankErosion` sees $\top$. Against zero, the extended test at radius `0` fails
+at this pair (`axisEphemeral_axis_not_eRank_le_zero`; the diagonal fails as
+well), and extended-rank erosion holds at every positive radius, so the
+extended distance is `0` and not attained
+(`axisEphemeral_eRankErosionDistance`). With one coordinate
+`fromReal realEphemeral` is coordinatewise q-tame; with no coordinate the
+infinite ephemeral module is not (`ephemeralInfinite_fin_zero_not_coordQTame`).
+
+The convention choice is the ruling's. The ruling states that it agrees with
+[Bauer–Gusel–Scoccola, §2](references.md#BGS26-v1); that agreement was not
+verified in the library. Everything in this subsection is a library derivation
+attributed to no numbered result.
 
 ## Stability from actual interleavings
 
@@ -851,9 +934,10 @@ leaves optional, is not supplied. Of
 the proposal's second package, the [extended image rank](#extended-image-rank)
 and [erosion on it](#erosion-on-extended-ranks), with its interleaving bound,
 are supplied, and so are the one-parameter q-tame consumer and
-[local finite-image bound](#one-parameter-q-tame-modules-and-real-interleavings);
-a multiparameter finite-image condition remains proposed, pending a choice of
-strictness convention. Of the fourth package, erosion bounds and failed-test
+[local finite-image bound](#one-parameter-q-tame-modules-and-real-interleavings)
+and, under the owner ruling, the multiparameter finite-image condition as
+[coordinatewise q-tameness](#several-parameters-coordinatewise-q-tameness).
+Of the fourth package, erosion bounds and failed-test
 certificates for [finite graded simplicial homology](#finite-graded-simplicial-homology)
 are supplied, and so are the exact erosion distances of the uniformly,
 coordinate- and scaled-translated families and of the scaled module against
@@ -873,7 +957,8 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosionAttainment`,
 `TDA.Persistence.RankErosionCertificate`,
 `TDA.Persistence.StructureMapERank`, `TDA.Persistence.ERankErosion`,
-`TDA.Persistence.ERankQTame`, `TDA.Persistence.FiniteSimplicialErosion`,
+`TDA.Persistence.ERankQTame`, `TDA.Persistence.CoordinateQTame`,
+`TDA.Persistence.FiniteSimplicialErosion`,
 `TDA.Persistence.FiniteSimplicialErosionTranslation`,
 `TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`,
 `TDA.Persistence.FiniteSimplicialErosionScaledTranslation` and
@@ -889,7 +974,8 @@ the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`,
 the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`,
 the extended-rank erosion examples in
 `TDA.Persistence.ERankErosionExamples`, the q-tame examples in
-`TDA.Persistence.ERankQTameExamples` and the simplicial examples in
+`TDA.Persistence.ERankQTameExamples`, the coordinatewise q-tame examples in
+`TDA.Persistence.CoordinateQTameExamples` and the simplicial examples in
 `TDA.Persistence.FiniteSimplicialErosionExamples`;
 the attainment and certificate theorems are in `TDA.Persistence.GradedFree`.
 Coordinate notation uses `open scoped TDA.Persistence`.

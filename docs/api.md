@@ -1205,6 +1205,15 @@ is the local finite-image bound through a finite-dimensional middle fibre, and
 `RealInterleaving.eRankErosion` and
 `eRankErosionDistance_fromReal_le_realInterleavingDistance` transport the
 interleaving bound across `CoordinateRealBridge.fromReal`.
+For several parameters (`TDA.Persistence.CoordinateQTame`), `PModule.CoordQTame`
+is q-tameness with strictness in every coordinate (`∀ i, a i < b i`, not the
+product-strict `a < b`), equivalent to finite extended rank of every positive
+diagonal shift (`PModule.coordQTame_iff_eRankOfStructureMap_translation_ne_top`)
+and to `PModule.QTame` for one coordinate (`PModule.qTame_iff_coordQTame_fromReal`);
+`CoordinateInterleaving.eRankOfStructureMap_ne_top` is the local finite-image bound,
+and `CoordinateInterleaving.eRankOfStructureMap_ne_top_of_coordQTame` gives finite
+extended rank across gaps above `2ε` when the other module is coordinatewise q-tame.
+Erosion test domains are unchanged.
 For finite graded simplicial homology (`TDA.Persistence.FiniteSimplicialErosion`),
 `finiteSimplicialHomology_rankErosion`,
 `rankErosionDistance_finiteSimplicialHomology_le_supGradeError` and
