@@ -1211,6 +1211,13 @@ For finite graded simplicial homology (`TDA.Persistence.FiniteSimplicialErosion`
 `eRankErosionDistance_finiteSimplicialHomology_le_supGradeError` bound erosion by
 the grade error, and `finiteSimplicialHomology_rankErosion_failure_certificate`
 turns a failed test into `ε < dE ≤ dI ≤ supGradeError`.
+For the uniform translates of the tetrahedron-boundary witness
+(`TDA.Persistence.FiniteSimplicialErosionTranslation`),
+`RankResolutionDegreeTwoSimplicial.translatedHomology_not_rankErosion` exhibits
+failed tests below `min |t-s| (1/2)` from actual structure maps, and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_translatedHomology` and
+`eRankErosionDistance_translatedHomology` give both erosion distances exactly
+`ENNReal.ofReal (min |t-s| (1/2))`, equal to the interleaving distance.
 Erosion attainment is supplied for finitely presented modules only (below); a
 certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).

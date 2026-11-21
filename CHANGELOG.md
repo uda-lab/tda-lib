@@ -15,9 +15,14 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `δ`, in particular `FiniteGraded.supGradeError`, is an admissible radius for
   `RankErosion` and `ERankErosion` and bounds both erosion distances; a failed
   erosion test at `ε` gives `ε < dE ≤ dI ≤ supGradeError`, with no
-  caller-supplied presentation. Examples on the translated tetrahedron-boundary
-  family give upper bounds only. See
+  caller-supplied presentation. See
   [rank erosion](docs/math/rank-erosion.md#finite-graded-simplicial-homology).
+- Add the exact erosion distance of the uniformly translated tetrahedron-boundary
+  family (`TDA.Persistence.FiniteSimplicialErosionTranslation`): erosion fails
+  below `min |t-s| (1/2)` by actual surviving maps against zero fibers, so both
+  erosion distances equal `min |t-s| (1/2)`, the interleaving distance; the
+  radius `1/8` between the translates by `0` and `1/4` instantiates the
+  failure certificate.
 - Add one-parameter consumers of the extended image rank
   (`TDA.Persistence.ERankQTame`): a real module is q-tame exactly when its
   strict structure maps, or those of its one-coordinate module, have finite

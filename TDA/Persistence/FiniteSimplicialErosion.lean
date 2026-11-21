@@ -14,8 +14,9 @@ most the grade error, in particular at most `FiniteGraded.supGradeError`.
 
 The homology modules are finitely presented (`finiteSimplicialHomology_finitelyPresented`).
 A failed erosion test at a radius is therefore a strict lower bound of the erosion distance,
-which is at most the interleaving distance and the maximal grade error. Hence every grade
-error, and the maximal one, is strictly above a radius at which erosion fails.
+which is at most the interleaving distance and the maximal grade error. Hence every
+grade-error bound, and the maximal grade error, is strictly above a radius at which erosion
+fails.
 -/
 
 set_option autoImplicit false

@@ -1,4 +1,5 @@
 import TDA.Persistence.FiniteSimplicialErosion
+import TDA.Persistence.FiniteSimplicialErosionTranslation
 import TDA.Persistence.RankResolutionDegreeTwoSimplicialTranslation
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.ZMod.Basic
@@ -6,11 +7,13 @@ import Mathlib.Data.ZMod.Basic
 /-!
 # Rank erosion of the translated tetrahedron-boundary homology
 
-Uniform translates of the tetrahedron-boundary grading have coordinatewise grade error the
-translation gap, so their actual degree-one homology modules satisfy rank erosion at that gap.
-Through the exact interleaving distance `min |t - s| (1/2)` the erosion distances are at most
-the same value. Only upper bounds are claimed: the exact erosion distance of this family is
-not computed here.
+Uniform translates of the tetrahedron-boundary grading have coordinatewise grade error at
+most the translation gap (with equality for the maximal error,
+`supGradeError_translatedGrading`), so their actual degree-one homology modules satisfy rank
+erosion at that gap. Through the exact interleaving distance `min |t - s| (1/2)` the erosion
+distances are at most the same value; `FiniteSimplicialErosionTranslation` proves the matching
+lower bound from failed erosion tests. The radius `1/8` between the translates by `0` and
+`1/4` is a concrete failing radius for the failure certificate.
 -/
 
 set_option autoImplicit false
@@ -102,5 +105,47 @@ example (s t : ℝ) :
     rw [← ENNReal.ofReal_coe_nnreal]
     exact ENNReal.ofReal_le_ofReal (by simp)
   exact (h.trans_le h2).false
+
+/-- A concrete failing radius: the translates by `0` and `1/4` fail erosion at `1/8`. -/
+theorem translatedHomology_not_rankErosion_eighth (k : Type u) [Field k] :
+    ¬ RankErosion (1 / 8) (translatedHomology k 0) (translatedHomology k (1 / 4)) := by
+  apply translatedHomology_not_rankErosion
+  norm_num [abs_of_pos]
+
+/-- The failure certificate at the concrete failing radius `1/8` between the translates by
+`0` and `1/4`; here every quantity after the radius equals `1/4`
+(`rankErosionDistance_translatedHomology`, `coordinateInterleavingDistance_translatedHomology`,
+`supGradeError_translatedGrading`). -/
+theorem translatedHomology_rankErosion_failure_certificate_eighth (k : Type u) [Field k] :
+    ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
+        rankErosionDistance (translatedHomology k 0) (translatedHomology k (1 / 4)) ∧
+      rankErosionDistance (translatedHomology k 0) (translatedHomology k (1 / 4)) ≤
+        coordinateInterleavingDistance (translatedHomology k 0)
+          (translatedHomology k (1 / 4)) ∧
+      coordinateInterleavingDistance (translatedHomology k 0)
+          (translatedHomology k (1 / 4)) ≤
+        (translatedGrading 0).supGradeError (translatedGrading (1 / 4)) :=
+  finiteSimplicialHomology_rankErosion_failure_certificate k _ _ 1
+    (translatedHomology_not_rankErosion_eighth k)
+
+/-- Rational coefficients: the erosion distance of the translates by `0` and `1/4` is
+exactly `1/4`. -/
+example : rankErosionDistance (translatedHomology ℚ 0) (translatedHomology ℚ (1 / 4)) =
+    ENNReal.ofReal (1 / 4) := by
+  rw [rankErosionDistance_translatedHomology]
+  norm_num [abs_of_pos]
+
+/-- Characteristic two: the extended erosion distance of translates at least `1/2` apart is
+exactly `1/2`. -/
+example (s t : ℝ) (h : 1 / 2 ≤ |t - s|) :
+    eRankErosionDistance (translatedHomology (ZMod 2) s) (translatedHomology (ZMod 2) t) =
+      ENNReal.ofReal (1 / 2) := by
+  rw [eRankErosionDistance_translatedHomology, min_eq_right h]
+
+/-- Characteristic two: by the certificate, the concrete failing radius `1/8` is strictly
+below the erosion distance. -/
+example : ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
+    rankErosionDistance (translatedHomology (ZMod 2) 0) (translatedHomology (ZMod 2) (1 / 4)) :=
+  (translatedHomology_rankErosion_failure_certificate_eighth (ZMod 2)).1
 
 end TDA.Persistence.FiniteSimplicialErosionExamples
