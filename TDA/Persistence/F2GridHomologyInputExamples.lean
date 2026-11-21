@@ -6,8 +6,8 @@ import Mathlib.LinearAlgebra.Matrix.Notation
 
 * `triangle`: vertices and edges at the origin, the 2-face at `(2, 2)`; `shiftedTriangle`: the
   same grading translated by `(1/2, 0)`. Both are valid, and their grid values are computed.
-* Slices of `triangle`: hollow below the 2-face grade and at an incomparable grade, filled at
-  `(2, 2)`, empty below every grade. Slices of `shiftedTriangle`: empty at the origin, hollow at
+* Slices of `triangle`: hollow at the origin, below the 2-face grade and at an incomparable
+  grade, filled at `(2, 2)`, empty below every grade. Slices of `shiftedTriangle`: empty at the origin, hollow at
   `(1/2, 0)`, filled at `(5/2, 2)`. The 2-face is absent from the actual sublevel at `(1, 1)` and
   present at `(2, 2)`.
 * The generated representations are valid, with no computation of their matrices.
@@ -68,7 +68,13 @@ theorem triangle_slice_incomparable : slice triangle (![5, 1] : Fin 2 → ℚ) =
 /-- Below every grade the slice is empty. -/
 theorem triangle_slice_below : slice triangle (![-1, 5] : Fin 2 → ℚ) = [] := by decide +kernel
 
-/-- At the origin the translated slice is empty, while that of `triangle` is hollow. -/
+/-- At the origin the slice of `triangle` is already the hollow triangle. -/
+theorem triangle_slice_origin : slice triangle (![0, 0] : Fin 2 → ℚ) =
+    [({0}, 0), ({1}, 0), ({2}, 0), ({0, 1}, 0), ({0, 2}, 0), ({1, 2}, 0)] := by
+  decide +kernel
+
+/-- At the origin the translated slice is empty, while that of `triangle` is hollow
+(`triangle_slice_origin`). -/
 theorem shiftedTriangle_slice_origin : slice shiftedTriangle (![0, 0] : Fin 2 → ℚ) = [] := by
   decide +kernel
 

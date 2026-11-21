@@ -72,53 +72,71 @@ open scoped TDA.Persistence
 variable {n : ℕ} (G : CoordinateGrid n) {R : Type u} [Ring R]
   (M : PModule.{u,0,u} R (Fin n → ℝ))
 
-private noncomputable def gridComparison :
+namespace CoordinateGrid
+
+/-- The canonical comparison from the Kan extension of the grid restriction of a module back
+to the module. -/
+noncomputable def kanComparison :
     G.lan.obj (G.embedding.monotone.functor ⋙ M) ⟶ M :=
   (G.embedding.monotone.functor.leftKanExtension
     (G.embedding.monotone.functor ⋙ M)).descOfIsLeftKanExtension
     (G.embedding.monotone.functor.leftKanExtensionUnit
       (G.embedding.monotone.functor ⋙ M)) M (𝟙 _)
 
-private theorem gridComparison_fac :
+/-- The comparison extends the identity on the grid restriction. -/
+theorem kanComparison_fac :
     G.embedding.monotone.functor.leftKanExtensionUnit (G.embedding.monotone.functor ⋙ M) ≫
-      G.embedding.monotone.functor.whiskerLeft (gridComparison G M) = 𝟙 _ := by
+      G.embedding.monotone.functor.whiskerLeft (G.kanComparison M) = 𝟙 _ := by
   exact Functor.descOfIsLeftKanExtension_fac _ _ _ _
 
-private theorem kanInclusion_gridComparison (a : Fin n → ℝ) (ha : G.HasLowerPoint a) :
+/-- Under the comparison, inclusion from the grid floor is the structure map from the floor. -/
+theorem kanInclusion_kanComparison (a : Fin n → ℝ) (ha : G.HasLowerPoint a) :
     G.kanInclusion (G.embedding.monotone.functor ⋙ M) a ha ≫
-      (gridComparison G M).app a = structureMap M (G.floor_le a ha) := by
-  have hf := NatTrans.congr_app (gridComparison_fac G M) (G.floor a ha)
-  have hn := (gridComparison G M).naturality (homOfLE (G.floor_le a ha))
+      (G.kanComparison M).app a = structureMap M (G.floor_le a ha) := by
+  have hf := NatTrans.congr_app (G.kanComparison_fac M) (G.floor a ha)
+  have hn := (G.kanComparison M).naturality (homOfLE (G.floor_le a ha))
   change (G.embedding.monotone.functor.leftKanExtensionUnit
       (G.embedding.monotone.functor ⋙ M)).app (G.floor a ha) ≫
-        (gridComparison G M).app (G.embedding (G.floor a ha)) =
+        (G.kanComparison M).app (G.embedding (G.floor a ha)) =
           𝟙 (M.obj (G.embedding (G.floor a ha))) at hf
   change structureMap (G.lan.obj (G.embedding.monotone.functor ⋙ M))
-      (G.floor_le a ha) ≫ (gridComparison G M).app a =
-    (gridComparison G M).app (G.embedding (G.floor a ha)) ≫
+      (G.floor_le a ha) ≫ (G.kanComparison M).app a =
+    (G.kanComparison M).app (G.embedding (G.floor a ha)) ≫
       structureMap M (G.floor_le a ha) at hn
   dsimp [CoordinateGrid.kanInclusion]
   rw [Category.assoc, hn, ← Category.assoc, hf, Category.id_comp]
 
-private noncomputable def gridIso
+/-- A module whose structure maps from grid floors are isomorphisms and whose fibres without a
+lower grid point vanish is the Kan extension of its grid restriction, by the canonical
+comparison. -/
+noncomputable def kanComparisonIso
     (hfloor : ∀ (a : Fin n → ℝ) (ha : G.HasLowerPoint a),
       IsIso (structureMap M (G.floor_le a ha)))
     (hzero : ∀ a, ¬ G.HasLowerPoint a → IsZero (M.obj a)) :
     G.lan.obj (G.embedding.monotone.functor ⋙ M) ≅ M := by
-  haveI (a : Fin n → ℝ) : IsIso ((gridComparison G M).app a) := by
+  haveI (a : Fin n → ℝ) : IsIso ((G.kanComparison M).app a) := by
     by_cases ha : G.HasLowerPoint a
     · let j := G.kanInclusion (G.embedding.monotone.functor ⋙ M) a ha
       have : IsIso j := by
         change IsIso (G.appIso (G.embedding.monotone.functor ⋙ M) a ha).inv
         infer_instance
-      have : IsIso (j ≫ (gridComparison G M).app a) := by
+      have : IsIso (j ≫ (G.kanComparison M).app a) := by
         dsimp [j]
-        rw [kanInclusion_gridComparison]
+        rw [kanInclusion_kanComparison]
         exact hfloor a ha
-      exact IsIso.of_isIso_comp_left j ((gridComparison G M).app a)
+      exact IsIso.of_isIso_comp_left j ((G.kanComparison M).app a)
     · exact IsZero.isIso (G.isZero_obj_of_not_hasLowerPoint _ a ha) (hzero a ha) _
-  letI : IsIso (gridComparison G M) := NatIso.isIso_of_isIso_app _
-  exact asIso (gridComparison G M)
+  letI : IsIso (G.kanComparison M) := NatIso.isIso_of_isIso_app _
+  exact asIso (G.kanComparison M)
+
+/-- The isomorphism is the canonical comparison. -/
+theorem kanComparisonIso_hom
+    (hfloor : ∀ (a : Fin n → ℝ) (ha : G.HasLowerPoint a),
+      IsIso (structureMap M (G.floor_le a ha)))
+    (hzero : ∀ a, ¬ G.HasLowerPoint a → IsZero (M.obj a)) :
+    (G.kanComparisonIso M hfloor hzero).hom = G.kanComparison M := rfl
+
+end CoordinateGrid
 
 section FiniteSimplicial
 
@@ -137,7 +155,7 @@ structure maps from the finite grid, using the actual Mathlib left Kan extension
 noncomputable def finiteSimplicialHomology_gridKanIso :
     g.gridCoordinates.lan.obj (finiteSimplicialGridHomology k g q) ≅
       finiteSimplicialHomology k g q := by
-  apply gridIso
+  apply CoordinateGrid.kanComparisonIso
   · intro a ha
     rw [finiteSimplicialHomology_structureMap]
     exact simplicialHomologyIncl_isIso_of_eq k _ (g.sublevel_floor a ha) q
@@ -151,7 +169,7 @@ theorem finiteSimplicialHomology_gridKanIso_fac :
       (finiteSimplicialGridHomology k g q) ≫
         g.gridCoordinates.embedding.monotone.functor.whiskerLeft
           (finiteSimplicialHomology_gridKanIso k g q).hom = 𝟙 _ :=
-  gridComparison_fac _ _
+  CoordinateGrid.kanComparison_fac _ _
 
 /-- Under the comparison, inclusion from the floor is the actual homology
 structure morphism from that sublevel. -/
@@ -160,7 +178,7 @@ theorem finiteSimplicialHomology_gridKanIso_kanInclusion
     g.gridCoordinates.kanInclusion (finiteSimplicialGridHomology k g q) a ha ≫
       (finiteSimplicialHomology_gridKanIso k g q).hom.app a =
         structureMap (finiteSimplicialHomology k g q) (g.gridCoordinates.floor_le a ha) :=
-  kanInclusion_gridComparison _ _ a ha
+  CoordinateGrid.kanInclusion_kanComparison _ _ a ha
 
 /-- Finite graded simplicial input has a finite graded-free presentation in
 all degrees over any coefficient field. No reconstruction or finiteness witness

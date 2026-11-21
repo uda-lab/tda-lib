@@ -8475,3 +8475,29 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.F2GridHomologyInputExamples.duplicateFace_not_valid
 #print axioms TDA.Persistence.F2GridHomologyInputExamples.emptyFace
 #print axioms TDA.Persistence.F2GridHomologyInputExamples.emptyFace_not_valid
+
+-- Generated F₂ grid representation computes homology (Issue #1054).
+#print axioms TDA.Persistence.CoordinateGrid.kanComparison
+#print axioms TDA.Persistence.CoordinateGrid.kanComparison_fac
+#print axioms TDA.Persistence.CoordinateGrid.kanInclusion_kanComparison
+#print axioms TDA.Persistence.CoordinateGrid.kanComparisonIso
+#print axioms TDA.Persistence.CoordinateGrid.kanComparisonIso_hom
+#print axioms TDA.Persistence.rankErosion_iff_of_iso
+#print axioms TDA.Persistence.rankErosionDistance_eq_of_iso
+#print axioms TDA.Persistence.RatGradedInput.sliceVertexMap
+#print axioms TDA.Persistence.RatGradedInput.isIso_sliceVertexMap
+#print axioms TDA.Persistence.RatGradedInput.sliceCoordinates
+#print axioms TDA.Persistence.RatGradedInput.sliceCoordinates_structureMap
+#print axioms TDA.Persistence.RatGradedInput.gridPointEquiv
+#print axioms TDA.Persistence.RatGradedInput.gridModuleIso
+#print axioms TDA.Persistence.RatGradedInput.toF2GridRep_lanIso
+#print axioms TDA.Persistence.RatGradedInput.kanInclusion_toF2GridRep_lanIso
+#print axioms TDA.Persistence.RatGradedInput.toF2GridRep_dim
+#print axioms TDA.Persistence.RatGradedInput.toF2GridRep_rankAt
+#print axioms TDA.Persistence.RatGradedInput.rankErosion_lan_toF2GridRep_iff
+#print axioms TDA.Persistence.RatGradedInput.rankErosionDistance_lan_toF2GridRep
+#print axioms TDA.Persistence.F2GridHomologyInputExamples.triangle_slice_origin
+#print axioms TDA.Persistence.F2GridHomologyIsoExamples.triangle_lanIso
+#print axioms TDA.Persistence.F2GridHomologyIsoExamples.triangle_rankErosion_iff
+#print axioms TDA.Persistence.F2GridHomologyIsoExamples.empty_lanIso
+#print axioms TDA.Persistence.F2GridHomologyIsoExamples.triangle_dim_hollow

@@ -13,8 +13,17 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
 - Add rationally graded simplicial input and its generated F₂ grid
   representation (`TDA.Persistence.F2GridHomologyInput`): decidable validation,
   sublevel slices in the reduction input format, and a generated `F2GridRep`
-  proved valid for every valid input; its identification with actual homology
-  is not yet supplied. See
+  proved valid for every valid input. See
+  [rank erosion](docs/math/rank-erosion.md#executable-representations-over-the-two-element-field).
+- Prove that the generated F₂ grid representation computes the homology
+  (`TDA.Persistence.F2GridHomologyIso`): its Kan extension is canonically
+  isomorphic to the actual homology, so generated dimensions, executable ranks
+  and rank erosion between two generated representations are those of the actual
+  modules; the end-to-end test of two inputs is not yet supplied. The private
+  Kan-comparison helpers of `FiniteSimplicialPresentation` are now public as
+  `CoordinateGrid.kanComparison`, `kanComparison_fac`,
+  `kanInclusion_kanComparison` and `kanComparisonIso`, and `RankErosion` gains
+  `rankErosion_iff_of_iso` and `rankErosionDistance_eq_of_iso`. See
   [rank erosion](docs/math/rank-erosion.md#executable-representations-over-the-two-element-field).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
