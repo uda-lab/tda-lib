@@ -59,6 +59,17 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   real interleaving distance. An example is q-tame but not pointwise
   finite-dimensional. No multiparameter finite-image condition is stated. See
   [rank erosion](docs/math/rank-erosion.md#one-parameter-q-tame-modules-and-real-interleavings).
+- Add coordinatewise q-tameness (`TDA.Persistence.CoordinateQTame`), under the
+  owner ruling on strictness: `PModule.CoordQTame` asks for finite-dimensional
+  images of the structure maps that are strict in every coordinate, equivalently
+  of every positive diagonal shift, and agrees with `PModule.QTame` for one
+  coordinate; with no coordinate it is pointwise finite dimensionality. A
+  coordinate interleaving bounds the extended rank of a doubled-shift map by the
+  middle fibre, and maps with a gap above `2ε` in every coordinate have finite
+  extended rank when the other module is coordinatewise q-tame. Erosion test
+  domains are unchanged; an example is coordinatewise q-tame with an
+  axis-parallel map of extended rank `⊤`. See
+  [rank erosion](docs/math/rank-erosion.md#several-parameters-coordinatewise-q-tameness).
 - Add weak-pair erosion on the extended image rank (`ERankErosion`) and its
   distance `eRankErosionDistance`. Monotonicity in the radius, reflexivity,
   symmetry, the triangle law and the bound by the coordinate interleaving

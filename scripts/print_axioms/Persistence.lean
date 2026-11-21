@@ -8385,3 +8385,36 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankResolutionDegreeTwoSimplicial.eRankErosionDistance_scaledHomology_zero_eq_coordinateInterleavingDistance
 #print axioms TDA.Persistence.FiniteSimplicialErosionExamples.scaledHomology_not_rankErosion_zero_eighth
 #print axioms TDA.Persistence.FiniteSimplicialErosionExamples.scaledHomology_rankErosion_failure_certificate_zero_eighth
+
+-- Coordinatewise q-tameness (Issue #1046).
+#print axioms TDA.Persistence.CoordinateShift.le_translation
+#print axioms TDA.Persistence.CoordinateShift.exists_pos_translation_le
+#print axioms TDA.Persistence.PModule.CoordQTame
+#print axioms TDA.Persistence.PModule.coordQTame_iff_eRankOfStructureMap_ne_top
+#print axioms TDA.Persistence.PModule.coordQTame_iff_eRankOfStructureMap_translation_ne_top
+#print axioms TDA.Persistence.PModule.coordQTame_iff_finiteDimensional_translation
+#print axioms TDA.Persistence.PModule.CoordQTame.eRankOfStructureMap_ne_top
+#print axioms TDA.Persistence.PModule.CoordQTame.eRankOfStructureMap_translation_ne_top
+#print axioms TDA.Persistence.PModule.coordQTame_of_finiteDimensional
+#print axioms TDA.Persistence.PModule.qTame_iff_coordQTame_fromReal
+#print axioms TDA.Persistence.PModule.coordQTame_fin_zero_iff
+#print axioms TDA.Persistence.CoordinateInterleaving.eRankOfStructureMap_le_toENat_rank
+#print axioms TDA.Persistence.CoordinateInterleaving.eRankOfStructureMap_ne_top
+#print axioms TDA.Persistence.CoordinateInterleaving.eRankOfStructureMap_le_of_translation_le
+#print axioms TDA.Persistence.CoordinateInterleaving.eRankOfStructureMap_ne_top_of_coordQTame
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisEphemeral
+#print axioms TDA.Persistence.CoordinateQTameExamples.eRank_axisEphemeral_of_lt
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisEphemeral_coordQTame
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisEphemeral_not_finiteDimensional
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisLow
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisHigh
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisLow_lt_axisHigh
+#print axioms TDA.Persistence.CoordinateQTameExamples.not_forall_axisLow_lt_axisHigh
+#print axioms TDA.Persistence.CoordinateQTameExamples.eRank_axisEphemeral_axis
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisEphemeral_not_forall_lt_eRank_ne_top
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisEphemeral_axis_not_eRank_le_zero
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisEphemeral_not_eRankErosion_zero
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisEphemeral_eRankErosion
+#print axioms TDA.Persistence.CoordinateQTameExamples.axisEphemeral_eRankErosionDistance
+#print axioms TDA.Persistence.CoordinateQTameExamples.fromReal_realEphemeral_coordQTame
+#print axioms TDA.Persistence.CoordinateQTameExamples.ephemeralInfinite_fin_zero_not_coordQTame
