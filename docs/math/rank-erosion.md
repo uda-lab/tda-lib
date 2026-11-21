@@ -779,6 +779,27 @@ only the longer arm witnesses the failure, and the certificate reads
 $1/8<1/4=1/4\le1/2$, with the maximal grade error strictly above the distance
 (`scaledTranslatedHomology_rankErosion_failure_certificate_eighth`).
 
+The scaled module `scaledHomology k s hs` itself, compared with the zero
+module (`TDA.Persistence.FiniteSimplicialErosionScaling`), has interleaving
+distance $T/2$ to zero (`coordinateInterleavingDistance_scaledHomology_zero`).
+If $2\varepsilon<T$, test the diagonal pair at the birth of the longer arm plus
+$\varepsilon$ in every coordinate: the widened map is that arm's map over the
+displacement $2\varepsilon<T$, which survives, while every rank of the zero
+module vanishes. So erosion against zero fails at every radius below $T/2$,
+for both ranks (`scaledHomology_not_rankErosion_zero`,
+`scaledHomology_not_eRankErosion_zero`), and both erosion distances to zero
+equal $T/2$, which is the interleaving distance
+(`rankErosionDistance_scaledHomology_zero`,
+`eRankErosionDistance_scaledHomology_zero`). The lower bound uses neither the
+interleaving distance nor attainment. Under the scale with coordinates $1$ and
+$1/4$, $T=1/2$ and the radius $1/8$ is a failing radius at which only the longer
+arm witnesses the failure. The fixture uses the general finitely presented
+certificate, which needs no realization of the zero module as a finite
+simplicial homology; the finite simplicial certificate would first require
+exhibiting zero as such (for instance by a constant grading), which is not
+attempted here. It gives $1/8<1/4=1/4$
+(`scaledHomology_rankErosion_failure_certificate_zero_eighth`).
+
 ## Zero radius, zero distance and future extensions
 
 `rankErosion_zero_iff` identifies the **predicate** `RankErosion 0 M N` with
@@ -835,7 +856,8 @@ a multiparameter finite-image condition remains proposed, pending a choice of
 strictness convention. Of the fourth package, erosion bounds and failed-test
 certificates for [finite graded simplicial homology](#finite-graded-simplicial-homology)
 are supplied, and so are the exact erosion distances of the uniformly,
-coordinate- and scaled-translated families. The other targets remain proposed:
+coordinate- and scaled-translated families and of the scaled module against
+zero. The other targets remain proposed:
 finite tests fed by actual persistent-homology input; and execution over other
 fields. The proposal
 records endpoint and nonseparation counterexamples that a broader API must
@@ -853,9 +875,10 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.StructureMapERank`, `TDA.Persistence.ERankErosion`,
 `TDA.Persistence.ERankQTame`, `TDA.Persistence.FiniteSimplicialErosion`,
 `TDA.Persistence.FiniteSimplicialErosionTranslation`,
-`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation` and
-`TDA.Persistence.FiniteSimplicialErosionScaledTranslation`. Their declarations are in
-`TDA.Persistence`, except that the translated-family results are in its
+`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`,
+`TDA.Persistence.FiniteSimplicialErosionScaledTranslation` and
+`TDA.Persistence.FiniteSimplicialErosionScaling`. Their declarations are in
+`TDA.Persistence`, except that the translated- and scaled-family results are in its
 `RankResolutionDegreeTwoSimplicial` namespace; the concrete hook witnesses are in its
 `RankErosionWitness` namespace, the grid criterion is in
 `TDA.Persistence.CoordinateGrid`, and the executable representations are in
