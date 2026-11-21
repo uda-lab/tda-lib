@@ -1408,6 +1408,13 @@ is strictly below the strict distance; with no coordinates a failure says
 nothing about the strict predicate. The test is restricted to F₂, minimises no
 radius, and its cost grows exponentially with the number of coordinates and the
 fiber dimensions.
+`RatGradedInput.toF2GridRep` generates such a representation from a validated
+rationally graded finite simplicial complex (`RatGradedInput.Valid`), using the
+computed slice bases of `RatGradedInput.slice` and computed inclusion matrices,
+and `RatGradedInput.toF2GridRep_valid` proves it valid (for an invalid input
+the generated representation carries no meaning); its identification with
+the actual homology `RatGradedInput.homology` is not yet proved, so `runErosion`
+on generated representations is not yet a statement about homology (#1049).
 
 The public `TDA.Persistence` aggregator exports `RankErosion`,
 `RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid`, `F2GridRep`,

@@ -446,6 +446,35 @@ extension. `F2GridRepExamples` executes the interval module `[0, 1)`, the same
 module from an unsorted list with a repeated value, a two-parameter module
 with a rank-one map out of a two-dimensional fiber, and two rejected inputs.
 
+Such data can also be generated from a finite simplicial complex with rational
+grades. A `RatGradedInput m n` lists faces on the vertices `Fin m`, each with a
+grade in `Fin n → ℚ`. `RatGradedInput.Valid` decides that the faces are nonempty
+and distinct, closed under nonempty subfaces, listed after their proper faces,
+and graded monotonically under inclusion. A valid input defines the actual
+module `RatGradedInput.homology`, the existing `finiteSimplicialHomology` over
+F₂ in a chosen degree. `RatGradedInput.slice` writes the sublevel at a rational
+grade in the one-parameter input format of the reduction pipeline
+(`RatGradedInput.mem_sublevel_slice_iff` identifies the two complexes).
+`RatGradedInput.toF2GridRep` takes as grid values the distinct listed grades in
+each coordinate, as fiber dimensions the lengths of the computed homology bases
+of the slices, and as matrices the computed matrices of the identity vertex
+map between slices. The caller supplies no matrix, rank or basis.
+`RatGradedInput.toF2GridRep_valid` proves the result valid for every valid
+input, from the identity and composition laws of the computed matrices,
+without evaluating them. This is validity and functoriality only: that the
+generated representation computes the homology, i.e. that its Kan extension is
+isomorphic to `RatGradedInput.homology`, is not yet proved
+([#1049](https://github.com/uda-lab/tda-lib/issues/1049)). For an invalid input
+`toF2GridRep` is still defined but carries no meaning, so the later end-to-end
+run must check `RatGradedInput.Valid` itself. The parameter count `n` is
+arbitrary only because no proof needs `n = 2`; this is a free generalisation,
+not a delivered feature for `n > 2`. `F2GridHomologyInputExamples` validates a
+triangle whose 2-face enters at `(2, 2)` and its translate by `(1/2, 0)`,
+computes the grid values and several slices of each (at the origin the first is
+hollow and the second empty), and rejects five malformed lists: a non-monotone
+grading, a face listed before a proper face, a missing vertex, a repeated face
+and the empty face.
+
 ## A certified finite test
 
 For two valid representations, possibly on different rational grids, and a
@@ -996,7 +1025,10 @@ listed in [what is not provided](#what-is-not-provided).
   Further families (two-scale comparisons, sharp tests between two nonzero ranks)
   with their own cap or critical-radius behaviour are not supplied
   ([#1048](https://github.com/uda-lab/tda-lib/issues/1048)).
-- **Persistent-homology input to the runner** is not supplied ([#1049](https://github.com/uda-lab/tda-lib/issues/1049)).
+- **Persistent-homology input to the runner.** `RatGradedInput.toF2GridRep`
+  generates a valid F₂ grid representation from a rationally graded complex, but
+  its relation to the actual homology and the end-to-end test of two complexes
+  are not yet proved ([#1049](https://github.com/uda-lab/tda-lib/issues/1049)).
 - **Other fields, radius minimisation and complexity bounds.** The runner works
   over F₂ at one given rational radius.
 - **A coordinatewise-strict erosion predicate**, and a strict-pair predicate on the
@@ -1019,6 +1051,7 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving`,
 `TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid`,
 `TDA.Persistence.F2GridRep`, `TDA.Persistence.F2GridErosion`,
+`TDA.Persistence.F2GridHomologyInput`,
 `TDA.Persistence.StrictRankErosion`,
 `TDA.Persistence.RankErosionAttainment`,
 `TDA.Persistence.RankErosionCertificate`,
@@ -1033,10 +1066,12 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `RankResolutionDegreeTwoSimplicial` namespace; the concrete hook witnesses are in its
 `RankErosionWitness` namespace, the grid criterion is in
 `TDA.Persistence.CoordinateGrid`, and the executable representations are in
-`TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.
+`TDA.Persistence.RatGrid`, `TDA.Persistence.F2GridRep` and
+`TDA.Persistence.RatGradedInput`.
 The strict-pair examples are in `TDA.Persistence.StrictRankErosionExamples`
 the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples` and
 the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`,
+the generated-input examples in `TDA.Persistence.F2GridHomologyInputExamples`,
 the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`,
 the extended-rank erosion examples in
 `TDA.Persistence.ERankErosionExamples`, the q-tame examples in

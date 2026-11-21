@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Add rationally graded simplicial input and its generated F₂ grid
+  representation (`TDA.Persistence.F2GridHomologyInput`): decidable validation,
+  sublevel slices in the reduction input format, and a generated `F2GridRep`
+  proved valid for every valid input; its identification with actual homology
+  is not yet supplied. See
+  [rank erosion](docs/math/rank-erosion.md#executable-representations-over-the-two-element-field).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
