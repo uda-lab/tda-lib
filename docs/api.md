@@ -1188,8 +1188,15 @@ is the `ℕ∞`-valued image rank, `⊤` on an infinite-dimensional image; its c
 and four-point laws (`eRankOfStructureMap_trans_le_left`, `_trans_le_right`,
 `_four_point`) need no finiteness, `rankOfStructureMap_eq_toNat_eRankOfStructureMap`
 relates the two ranks for every module, and
-`eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional` and `_source`
-identify them on finite-dimensional images. No erosion is defined on it yet.
+`eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional` and
+`eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional_source` identify
+them on finite-dimensional images and source fibers. `ERankErosion` and
+`eRankErosionDistance` (`TDA.Persistence.ERankErosion`) are erosion and its
+distance on the extended rank; their laws and
+`eRankErosionDistance_le_coordinateInterleavingDistance` need no finiteness, and
+`eRankErosion_iff_rankErosion` and `eRankErosionDistance_eq_rankErosionDistance`
+identify them with `RankErosion` and `rankErosionDistance` on pointwise
+finite-dimensional modules.
 Erosion attainment is supplied for finitely presented modules only (below); a
 certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).

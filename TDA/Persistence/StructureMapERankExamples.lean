@@ -9,8 +9,9 @@ import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 An infinite-dimensional constant module has extended rank `⊤` at every pair, while its
 `ℕ`-valued `rankOfStructureMap` is `0`, the same as that of the zero module. A
 one-dimensional constant module has both ranks equal to `1`. Constant modules of
-dimensions `ℵ₀` and `𝔠` have the same extended rank `⊤` though their cardinal ranks differ. The extended ranks of modules
-whose carriers live in different universes are compared without `Cardinal.lift`.
+dimensions `ℵ₀` and `𝔠` have the same extended rank `⊤` though their cardinal ranks differ.
+The extended ranks of modules whose carriers live in different universes are compared without
+`Cardinal.lift`.
 -/
 
 set_option autoImplicit false
