@@ -1206,9 +1206,10 @@ all modules and the strict distance is zero. For finite-dimensional fibers,
 a predicate fails into a non-strict lower bound of its distance. The two
 predicates are not equivalent at a fixed radius: the examples give a module
 supported on a closed box for which the strict predicate holds and the weak one
-fails at the same radius, while both distances equal that radius. No
-coordinatewise-strict predicate or fixed-radius equivalence for finitely
-presented modules is supplied.
+fails at the same radius, while both distances equal that radius. For finitely
+presented modules with at least one coordinate the two predicates are
+equivalent at every fixed radius, as stated below. No coordinatewise-strict
+predicate is supplied.
 
 For modules `M`, `N` with original finite presentations
 (`GradedFree.FinitelyPresented.{u,0,0}`), the infimum is attained.
