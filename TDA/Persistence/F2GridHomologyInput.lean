@@ -15,8 +15,8 @@ inclusion-induced degree-`p` homology module over F₂ (`RatGradedInput.homology
 
 At a rational grade `u`, `RatGradedInput.slice` is the sublevel complex in the existing
 one-parameter finite input format: the admitted faces, relabelled into `ℕ`, in the original
-order, all at grade zero. Every slice of a valid input is valid, and its single sublevel is the actual sublevel
-at the real grade of `u`, relabelled.
+order, all at grade zero. Every slice of a valid input is valid, and its single sublevel is the
+actual sublevel at the real grade of `u`, relabelled.
 
 `RatGradedInput.toF2GridRep` is the generated F₂ grid representation in a degree `p`: the grid
 values are the distinct listed grade values in each coordinate, the fiber dimension at a grade is
@@ -31,7 +31,8 @@ For an invalid input `toF2GridRep` is still defined but carries no meaning; cons
 needs `n = 2`; this is a free generalisation, and only `n = 2` is exercised by examples.
 
 This module does not identify the grid module of the generated representation with the actual
-homology module; that comparison, and the erosion test for two inputs, are separate.
+homology module; `F2GridHomologyIso` proves that comparison. The erosion test for two inputs is
+separate.
 -/
 
 set_option autoImplicit false

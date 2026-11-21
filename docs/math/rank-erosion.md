@@ -461,9 +461,22 @@ of the slices, and as matrices the computed matrices of the identity vertex
 map between slices. The caller supplies no matrix, rank or basis.
 `RatGradedInput.toF2GridRep_valid` proves the result valid for every valid
 input, from the identity and composition laws of the computed matrices,
-without evaluating them. This is validity and functoriality only: that the
-generated representation computes the homology, i.e. that its Kan extension is
-isomorphic to `RatGradedInput.homology`, is not yet proved
+without evaluating them. The generated representation computes the homology:
+`RatGradedInput.toF2GridRep_lanIso` is an isomorphism of persistence modules,
+fibres and structure maps at every real grade, from the Kan extension of its
+grid module to `RatGradedInput.homology`. The isomorphism is canonical
+(`RatGradedInput.kanInclusion_toF2GridRep_lanIso`): below a grade with a lower
+grid point it reads the generated fibre at the grid floor in the computed
+coordinates of its slice and maps it by the actual inclusion from the floor. In
+those coordinates the generated matrices are the matrices of the actual
+inclusion-induced maps (`RatGradedInput.sliceCoordinates_structureMap`). So
+generated dimensions are actual Betti numbers (`RatGradedInput.toF2GridRep_dim`),
+`rankAt` is the rank of the actual structure map
+(`RatGradedInput.toF2GridRep_rankAt`), and erosion and its distance between two
+generated Kan extensions are those of the actual homology modules
+(`RatGradedInput.rankErosion_lan_toF2GridRep_iff`,
+`RatGradedInput.rankErosionDistance_lan_toF2GridRep`). The composed end-to-end
+test of two complexes is not yet provided
 ([#1049](https://github.com/uda-lab/tda-lib/issues/1049)). For an invalid input
 `toF2GridRep` is still defined but carries no meaning, so the later end-to-end
 run must check `RatGradedInput.Valid` itself. The parameter count `n` is
@@ -471,7 +484,8 @@ arbitrary only because no proof needs `n = 2`; this is a free generalisation,
 not a delivered feature for `n > 2`. `F2GridHomologyInputExamples` validates a
 triangle whose 2-face enters at `(2, 2)` and its translate by `(1/2, 0)`,
 computes the grid values and several slices of each (at the origin the first is
-hollow and the second empty), and rejects five malformed lists: a non-monotone
+hollow and the second empty, `triangle_slice_origin`,
+`shiftedTriangle_slice_origin`), and rejects five malformed lists: a non-monotone
 grading, a face listed before a proper face, a missing vertex, a repeated face
 and the empty face.
 
@@ -1026,9 +1040,11 @@ listed in [what is not provided](#what-is-not-provided).
   with their own cap or critical-radius behaviour are not supplied
   ([#1048](https://github.com/uda-lab/tda-lib/issues/1048)).
 - **Persistent-homology input to the runner.** `RatGradedInput.toF2GridRep`
-  generates a valid F₂ grid representation from a rationally graded complex, but
-  its relation to the actual homology and the end-to-end test of two complexes
-  are not yet proved ([#1049](https://github.com/uda-lab/tda-lib/issues/1049)).
+  generates a valid F₂ grid representation from a rationally graded complex, and
+  its Kan extension is proved canonically isomorphic to the actual homology
+  (`RatGradedInput.toF2GridRep_lanIso`). The end-to-end pass/fail run for two
+  complexes, with its theorems for the actual modules, and its worked example are
+  not yet provided ([#1049](https://github.com/uda-lab/tda-lib/issues/1049)).
 - **Other fields, radius minimisation and complexity bounds.** The runner works
   over F₂ at one given rational radius.
 - **A coordinatewise-strict erosion predicate**, and a strict-pair predicate on the
@@ -1051,7 +1067,7 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving`,
 `TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid`,
 `TDA.Persistence.F2GridRep`, `TDA.Persistence.F2GridErosion`,
-`TDA.Persistence.F2GridHomologyInput`,
+`TDA.Persistence.F2GridHomologyInput`, `TDA.Persistence.F2GridHomologyIso`,
 `TDA.Persistence.StrictRankErosion`,
 `TDA.Persistence.RankErosionAttainment`,
 `TDA.Persistence.RankErosionCertificate`,
@@ -1071,7 +1087,8 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 The strict-pair examples are in `TDA.Persistence.StrictRankErosionExamples`
 the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples` and
 the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`,
-the generated-input examples in `TDA.Persistence.F2GridHomologyInputExamples`,
+the generated-input examples in `TDA.Persistence.F2GridHomologyInputExamples`
+and `TDA.Persistence.F2GridHomologyIsoExamples`,
 the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`,
 the extended-rank erosion examples in
 `TDA.Persistence.ERankErosionExamples`, the q-tame examples in

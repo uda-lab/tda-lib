@@ -226,6 +226,7 @@ import TDA.Persistence.StrictRankErosionExamples
 import TDA.Persistence.RankErosionAttainmentExamples
 import TDA.Persistence.RankErosionCertificateExamples
 import TDA.Persistence.F2GridHomologyInputExamples
+import TDA.Persistence.F2GridHomologyIsoExamples
 import TDA.Persistence.StructureMapERankExamples
 import TDA.Persistence.ERankErosionExamples
 import TDA.Persistence.ERankQTameExamples

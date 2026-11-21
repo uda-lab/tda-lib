@@ -1412,9 +1412,14 @@ fiber dimensions.
 rationally graded finite simplicial complex (`RatGradedInput.Valid`), using the
 computed slice bases of `RatGradedInput.slice` and computed inclusion matrices,
 and `RatGradedInput.toF2GridRep_valid` proves it valid (for an invalid input
-the generated representation carries no meaning); its identification with
-the actual homology `RatGradedInput.homology` is not yet proved, so `runErosion`
-on generated representations is not yet a statement about homology (#1049).
+the generated representation carries no meaning).
+`RatGradedInput.toF2GridRep_lanIso` proves its Kan extension canonically
+isomorphic, as a persistence module, to the actual homology
+`RatGradedInput.homology`. The end-to-end run on two inputs is not yet provided
+(#1049); `runErosion` applied by hand to two generated representations
+certifies the actual homologies through `RatGradedInput.rankErosion_lan_toF2GridRep_iff`,
+`RatGradedInput.rankErosionDistance_lan_toF2GridRep` and
+`RatGradedInput.toF2GridRep_rankAt`.
 
 The public `TDA.Persistence` aggregator exports `RankErosion`,
 `RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid`, `F2GridRep`,
