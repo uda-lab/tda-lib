@@ -28,8 +28,8 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   (`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`): erosion
   fails below `min (max |v 0 - u 0| |v 1 - u 1|) (1 / 2)` by actual surviving
   maps against zero fibers in one coordinate, so both erosion distances equal
-  that value, the interleaving distance; the maximal grade error equals the
-  coordinate gap, and a failing radius `1/8` with the gap attained in a
+  that value, which is the interleaving distance; the maximal grade error
+  equals the coordinate gap, and a failing radius `1/8` with the gap attained in a
   negative coordinate instantiates the failure certificate. The rank helpers
   `one_le_rankOfStructureMap_of_ne_zero` and
   `rankOfStructureMap_eq_zero_of_isZero` are now public in
@@ -38,9 +38,16 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   family (`TDA.Persistence.FiniteSimplicialErosionScaledTranslation`): erosion
   fails below `min |t - u| (scaledLifetime s / 2)` by the actual surviving
   longer-arm map against a zero fiber, so both erosion distances equal that
-  value, the interleaving distance; the maximal grade error equals the delay
-  gap, and a failing radius `1/8` under an anisotropic scale, where the shorter
+  value, which is the interleaving distance; the maximal grade error equals
+  the delay gap, and a failing radius `1/8` under an anisotropic scale, where the shorter
   arm does not witness the failure, instantiates the failure certificate.
+- Add the exact erosion distance of the scaled tetrahedron-boundary module
+  against zero (`TDA.Persistence.FiniteSimplicialErosionScaling`): erosion
+  against the zero module fails below `scaledLifetime s / 2` by the actual
+  surviving longer-arm map, so both erosion distances to zero equal
+  `scaledLifetime s / 2`, which is the interleaving distance; a failing radius
+  `1/8` under an anisotropic scale instantiates the finitely presented failure
+  certificate.
 - Add one-parameter consumers of the extended image rank
   (`TDA.Persistence.ERankQTame`): a real module is q-tame exactly when its
   strict structure maps, or those of its one-coordinate module, have finite

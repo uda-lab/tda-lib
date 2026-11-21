@@ -2,6 +2,7 @@ import TDA.Persistence.FiniteSimplicialErosion
 import TDA.Persistence.FiniteSimplicialErosionTranslation
 import TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation
 import TDA.Persistence.FiniteSimplicialErosionScaledTranslation
+import TDA.Persistence.FiniteSimplicialErosionScaling
 import TDA.Persistence.RankResolutionDegreeTwoSimplicialTranslation
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.ZMod.Basic
@@ -22,7 +23,10 @@ radius `1/8` between the translates by `0` and by the vector with coordinates `1
 is a concrete failing radius. Delays of a common positive scaling satisfy erosion at the delay
 gap; `FiniteSimplicialErosionScaledTranslation` gives their exact erosion distance, and the
 radius `1/8` between the delays `0` and `1/2` under the scale with coordinates `1` and `1/4` is
-a concrete failing radius at which the longer arm witnesses the failure.
+a concrete failing radius at which the longer arm witnesses the failure. A positive scaling has
+erosion distance to the zero module exactly half its scaled lifetime
+(`FiniteSimplicialErosionScaling`); under the scale with coordinates `1` and `1/4` the radius
+`1/8` is a concrete failing radius, consumed by the finitely presented certificate.
 -/
 
 set_option autoImplicit false
@@ -408,5 +412,80 @@ example : ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
       (scaledTranslatedHomology (ZMod 2) (![1, 1 / 4] : Fin 2 → ℝ)
         (fun i => by fin_cases i <;> norm_num) (1 / 2)) :=
   (scaledTranslatedHomology_rankErosion_failure_certificate_eighth (ZMod 2)).1
+
+/-! ### Scaled family against zero -/
+
+section ScaledZero
+
+open scoped ZeroObject
+
+/-- A concrete failing radius against zero: under the scale with coordinates `1` and `1/4`,
+the scaled module fails erosion against the zero module at `1/8`. The witness is the diagonal
+test at the B-arm birth plus `1/8`; the A-arm test at the same radius sees a zero widened
+map. -/
+theorem scaledHomology_not_rankErosion_zero_eighth (k : Type u) [Field k] :
+    ¬ RankErosion (1 / 8)
+      (scaledHomology k (![1, 1 / 4] : Fin 2 → ℝ) (fun i => by fin_cases i <;> norm_num))
+      (0 : PModule.{u,0,u} k (Fin 2 → ℝ)) := by
+  apply scaledHomology_not_rankErosion_zero
+  norm_num [scaledLifetime, scaledArmLifetimeA, scaledArmLifetimeB]
+
+/-- At the fixture radius `1/8` the widened A-arm map of the scaled module, across
+`2 · (1/8) = 1/4`, is zero, so the A-arm diagonal test would not witness the failure. -/
+example (k : Type u) [Field k] :
+    structureMap
+      (scaledHomology k (![1, 1 / 4] : Fin 2 → ℝ) (fun i => by fin_cases i <;> norm_num))
+      (show scaledBirthA (![1, 1 / 4] : Fin 2 → ℝ) ≤
+        (fun i => scaledBirthA (![1, 1 / 4] : Fin 2 → ℝ) i + 1 / 4) from
+          fun _ => le_add_of_nonneg_right (by norm_num)) = 0 :=
+  scaledHomology_armA_structureMap_zero_of_ge k _ _ (1 / 4) (by norm_num)
+    (by norm_num [scaledArmLifetimeA])
+
+/-- The failure certificate at the concrete failing radius `1/8` against zero. The zero module
+is not the homology of a grading of the same complex in the same degree, so the general
+finitely presented certificate is the consumer, with no grade-error term. Both distances equal
+`1/4` (`rankErosionDistance_scaledHomology_zero`,
+`coordinateInterleavingDistance_scaledHomology_zero`). -/
+theorem scaledHomology_rankErosion_failure_certificate_zero_eighth (k : Type u) [Field k] :
+    ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
+        rankErosionDistance
+          (scaledHomology k (![1, 1 / 4] : Fin 2 → ℝ) (fun i => by fin_cases i <;> norm_num))
+          (0 : PModule.{u,0,u} k (Fin 2 → ℝ)) ∧
+      rankErosionDistance
+          (scaledHomology k (![1, 1 / 4] : Fin 2 → ℝ) (fun i => by fin_cases i <;> norm_num))
+          (0 : PModule.{u,0,u} k (Fin 2 → ℝ)) ≤
+        coordinateInterleavingDistance
+          (scaledHomology k (![1, 1 / 4] : Fin 2 → ℝ) (fun i => by fin_cases i <;> norm_num))
+          (0 : PModule.{u,0,u} k (Fin 2 → ℝ)) :=
+  GradedFree.finitelyPresented_rankErosion_failure_certificate
+    (finiteSimplicialHomology_finitelyPresented k _ 1) GradedFree.finitelyPresented_zero
+    (scaledHomology_not_rankErosion_zero_eighth k)
+
+/-- Rational coefficients: the erosion distance of the fixture to zero is exactly `1/4`. -/
+example :
+    rankErosionDistance
+      (scaledHomology ℚ (![1, 1 / 4] : Fin 2 → ℝ) (fun i => by fin_cases i <;> norm_num))
+      (0 : PModule.{0,0,0} ℚ (Fin 2 → ℝ)) = ENNReal.ofReal (1 / 4) := by
+  rw [rankErosionDistance_scaledHomology_zero]
+  norm_num [scaledLifetime, scaledArmLifetimeA, scaledArmLifetimeB]
+
+/-- Characteristic two: the extended erosion distance of the fixture to zero is exactly
+`1/4`. -/
+example :
+    eRankErosionDistance
+      (scaledHomology (ZMod 2) (![1, 1 / 4] : Fin 2 → ℝ) (fun i => by fin_cases i <;> norm_num))
+      (0 : PModule.{0,0,0} (ZMod 2) (Fin 2 → ℝ)) = ENNReal.ofReal (1 / 4) := by
+  rw [eRankErosionDistance_scaledHomology_zero]
+  norm_num [scaledLifetime, scaledArmLifetimeA, scaledArmLifetimeB]
+
+/-- Characteristic two: by the certificate, the concrete failing radius `1/8` is strictly
+below the erosion distance to zero. -/
+example : ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
+    rankErosionDistance
+      (scaledHomology (ZMod 2) (![1, 1 / 4] : Fin 2 → ℝ) (fun i => by fin_cases i <;> norm_num))
+      (0 : PModule.{0,0,0} (ZMod 2) (Fin 2 → ℝ)) :=
+  (scaledHomology_rankErosion_failure_certificate_zero_eighth (ZMod 2)).1
+
+end ScaledZero
 
 end TDA.Persistence.FiniteSimplicialErosionExamples
