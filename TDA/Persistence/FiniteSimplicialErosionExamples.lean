@@ -441,10 +441,11 @@ example (k : Type u) [Field k] :
   scaledHomology_armA_structureMap_zero_of_ge k _ _ (1 / 4) (by norm_num)
     (by norm_num [scaledArmLifetimeA])
 
-/-- The failure certificate at the concrete failing radius `1/8` against zero. The zero module
-is not the homology of a grading of the same complex in the same degree, so the general
-finitely presented certificate is the consumer, with no grade-error term. Both distances equal
-`1/4` (`rankErosionDistance_scaledHomology_zero`,
+/-- The failure certificate at the concrete failing radius `1/8` against zero. It uses the
+general finitely presented certificate, which needs no realization of the zero module as a
+finite simplicial homology; the simplicial certificate would first require exhibiting zero as
+such (for instance by a constant grading), which is not attempted here. There is no
+grade-error term. Both distances equal `1/4` (`rankErosionDistance_scaledHomology_zero`,
 `coordinateInterleavingDistance_scaledHomology_zero`). -/
 theorem scaledHomology_rankErosion_failure_certificate_zero_eighth (k : Type u) [Field k] :
     ((1 / 8 : ℝ≥0) : ℝ≥0∞) <

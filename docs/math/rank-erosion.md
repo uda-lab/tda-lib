@@ -793,9 +793,11 @@ equal $T/2$, which is the interleaving distance
 `eRankErosionDistance_scaledHomology_zero`). The lower bound uses neither the
 interleaving distance nor attainment. Under the scale with coordinates $1$ and
 $1/4$, $T=1/2$ and the radius $1/8$ is a failing radius at which only the longer
-arm witnesses the failure. The zero module is not the homology of a grading of
-the same complex, so the finite simplicial certificate does not apply; the
-general finitely presented certificate gives $1/8<1/4=1/4$
+arm witnesses the failure. The fixture uses the general finitely presented
+certificate, which needs no realization of the zero module as a finite
+simplicial homology; the finite simplicial certificate would first require
+exhibiting zero as such (for instance by a constant grading), which is not
+attempted here. It gives $1/8<1/4=1/4$
 (`scaledHomology_rankErosion_failure_certificate_zero_eighth`).
 
 ## Zero radius, zero distance and future extensions
