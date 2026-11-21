@@ -21,6 +21,7 @@ declarations that settle it; the sections that follow state the exact hypotheses
 | Infinite-dimensional images | `eRankOfStructureMap`, `ERankErosion`, `eRankErosionDistance`, `eRankErosionDistance_le_coordinateInterleavingDistance` | no finiteness; every infinite cardinal becomes $\top$; `eRankOfStructureMap` is universe-polymorphic, `ERankErosion` takes `PModule.{u,0,u}` |
 | q-tame inputs | `PModule.QTame` (one parameter), `PModule.CoordQTame` (several) | strictness in every coordinate; erosion test domains unchanged |
 | Decide erosion for concrete data | `F2GridRep.runErosion`, `F2GridRep.runErosion_eq_pass_certificate`, `F2GridRep.runErosion_eq_fail_certificate` | valid F₂ grid representations and a rational radius; certifies their grid Kan extensions |
+| Decide erosion for two rationally graded complexes | `RatGradedInput.runErosion`, `RatGradedInput.runErosion_eq_pass_certificate`, `RatGradedInput.runErosion_eq_fail`, `RatGradedInput.runErosion_eq_fail_certificate` | valid inputs, one degree, F₂, a rational radius; certifies the actual homology modules |
 | Persistent homology of finite graded complexes | `finiteSimplicialHomology_rankErosion`, `rankErosionDistance_finiteSimplicialHomology_le_supGradeError`, `finiteSimplicialHomology_rankErosion_failure_certificate` | grade-error bounds; exact values for four tetrahedron-boundary comparisons |
 
 [What is not provided](#what-is-not-provided) lists what is not supplied.
@@ -475,11 +476,11 @@ generated dimensions are actual Betti numbers (`RatGradedInput.toF2GridRep_dim`)
 (`RatGradedInput.toF2GridRep_rankAt`), and erosion and its distance between two
 generated Kan extensions are those of the actual homology modules
 (`RatGradedInput.rankErosion_lan_toF2GridRep_iff`,
-`RatGradedInput.rankErosionDistance_lan_toF2GridRep`). The composed end-to-end
-test of two complexes is not yet provided
-([#1049](https://github.com/uda-lab/tda-lib/issues/1049)). For an invalid input
-`toF2GridRep` is still defined but carries no meaning, so the later end-to-end
-run must check `RatGradedInput.Valid` itself. The parameter count `n` is
+`RatGradedInput.rankErosionDistance_lan_toF2GridRep`). The end-to-end test of
+two complexes is described in
+[testing two rationally graded complexes](#testing-two-rationally-graded-complexes).
+For an invalid input `toF2GridRep` is still defined but carries no meaning; the
+end-to-end run checks `RatGradedInput.Valid` itself. The parameter count `n` is
 arbitrary only because no proof needs `n = 2`; this is a free generalisation,
 not a delivered feature for `n > 2`. `F2GridHomologyInputExamples` validates a
 triangle whose 2-face enters at `(2, 2)` and its translate by `(1/2, 0)`,
@@ -563,6 +564,100 @@ open TDA.Persistence TDA.Persistence.RatGrid TDA.Persistence.F2GridRep
 example : runErosion interval zero (1 / 4) = .fail ⟨true, ![1 / 4], ![1 / 4], 1, 0⟩ := by
   decide +kernel
 ```
+
+## Testing two rationally graded complexes
+
+`RatGradedInput.runErosion xs ys p e` runs the certified test on two rationally
+graded complexes. The inputs are two face lists `xs : RatGradedInput m n` and
+`ys : RatGradedInput m' n`, each face listed after its proper faces with a grade
+in `Fin n → ℚ`. The other arguments are a homological degree `p` and a rational
+radius `e`. The run checks `RatGradedInput.Valid xs`, then
+`RatGradedInput.Valid ys`, then `0 ≤ e`. It then generates both F₂ grid
+representations in degree `p` (`RatGradedInput.toF2GridRep`) and applies the
+search of the previous section, `F2GridRep.erosionFailure?`, to them. On valid
+input with `0 ≤ e` this is `F2GridRep.runErosion` of the two generated
+representations (`RatGradedInput.runErosion_eq_of_valid`).
+
+The result `RatGradedInput.ErosionResult n` has five outcomes. Through the
+isomorphism `RatGradedInput.toF2GridRep_lanIso`, each outcome is a statement
+about the actual homology modules `RatGradedInput.homology xs hx p` and
+`RatGradedInput.homology ys hy p`, not only about the generated representations.
+
+- `invalidFirst`: `xs` is not valid, whatever `ys` and `e` are
+  (`runErosion_eq_invalidFirst_iff`).
+- `invalidSecond`: `xs` is valid and `ys` is not
+  (`runErosion_eq_invalidSecond_iff`).
+- Together, these two outcomes occur exactly when one of the inputs fails
+  validation (`runErosion_eq_invalid_iff`). Nothing is said about any module.
+- `negativeRadius`: both inputs are valid and `e < 0`
+  (`runErosion_eq_negativeRadius_iff`).
+- `pass`: both inputs are valid, `0 ≤ e`, and `RankErosion` holds at radius `e`
+  between the actual homology modules (`runErosion_eq_pass_iff`). The converse
+  also holds. A pass also gives `StrictRankErosion` and bounds both erosion
+  distances by `e` (`runErosion_eq_pass_certificate`). For valid input, a pass
+  means exactly that the erosion distance is at most `e`
+  (`runErosion_eq_pass_iff_rankErosionDistance_le`). Nothing follows for the
+  interleaving distance.
+- `fail w`: `w` records a direction `w.firstWide` and a pair
+  `w.source ≤ w.target` of grades of the rational breakpoint grid. Its
+  `w.wideRank` and `w.narrowRank` are the ranks of the actual structure maps:
+  - if `w.firstWide`, the widened map of the first homology module from
+    `source − e` to `target + e`, and the map of the second from `source` to
+    `target`;
+  - otherwise, the same with the two modules exchanged.
+
+  The wide rank exceeds the narrow rank, so `RankErosion` fails between the
+  actual modules (`runErosion_eq_fail`). The actual modules are finitely
+  presented (`finiteSimplicialHomology_finitelyPresented`), so
+  $e<d_E\le d_I$ (`runErosion_eq_fail_certificate`). With at least one
+  coordinate, strict-pair erosion fails too and $e$ is below the strict-pair
+  distance (`runErosion_eq_fail_strict_certificate`). Which violation is
+  reported depends on the enumeration order.
+
+For two valid inputs with the same face list whose grades of each face differ
+by at most a rational $d\ge0$ in every coordinate, the grade-error bound of
+[finite graded simplicial homology](#finite-graded-simplicial-homology) gives
+erosion at $d$ in every degree (`rankErosion_homology_of_faces_eq`), so the run
+passes at $d$ (`runErosion_eq_pass_of_faces_eq`).
+
+**The worked outcomes below are established by proof, not by evaluation. No
+runtime bound is claimed.** A failing run can be quick, because the search stops
+at the first violating pair. A passing run must examine every comparable pair
+of breakpoint grades, and it was not practical to evaluate on the worked
+example.
+
+`F2GridHomologyErosionExamples` compares degree-one homology of `triangle`
+against `shiftedTriangle`. In `triangle`, the vertices and edges enter at the
+origin and the 2-face at $(2,2)$. `shiftedTriangle` is the same grading
+translated by $(1/2,0)$.
+
+- At the origin the first complex is the hollow triangle and the second is
+  empty. Their first Betti numbers are $1$ and $0$
+  (`triangle_finrank_origin`, `shiftedTriangle_finrank_origin`). So at radius
+  $0$ the diagonal pair at the origin violates erosion with ranks $1$ and $0$
+  (`triangle_violation_zero`, `triangle_not_rankErosion_zero`).
+- The breakpoint enumeration at radius $0$ begins with that pair. The run
+  therefore reports exactly this failure, first input wide
+  (`triangle_runErosion_zero`):
+
+  ```lean
+  open TDA.Persistence TDA.Persistence.F2GridHomologyInputExamples
+    TDA.Persistence.F2GridHomologyErosionExamples
+
+  example : RatGradedInput.runErosion triangle shiftedTriangle 1 0 =
+      .fail ⟨true, ![0, 0], ![0, 0], 1, 0⟩ :=
+    triangle_runErosion_zero
+  ```
+
+- The face lists agree and the grades differ by at most $1/2$
+  (`triangle_grade_error`). So the run passes at radius $1/2$
+  (`triangle_runErosion_half_pass`, `triangle_rankErosion_half`).
+- Together these give $0<d_E\le 1/2$ and $d_E\le d_I$ for the actual modules
+  (`triangle_rankErosionDistance_bounds`). The exact erosion distance is not
+  formalised.
+- Fixtures also report an invalid first input, an invalid second input and a
+  negative radius (`nonMonotone_runErosion`,
+  `triangle_nonMonotone_runErosion`, `triangle_runErosion_negative`).
 
 ## Strict pairs
 
@@ -1039,12 +1134,19 @@ listed in [what is not provided](#what-is-not-provided).
   Further families (two-scale comparisons, sharp tests between two nonzero ranks)
   with their own cap or critical-radius behaviour are not supplied
   ([#1048](https://github.com/uda-lab/tda-lib/issues/1048)).
-- **Persistent-homology input to the runner.** `RatGradedInput.toF2GridRep`
-  generates a valid F₂ grid representation from a rationally graded complex, and
-  its Kan extension is proved canonically isomorphic to the actual homology
-  (`RatGradedInput.toF2GridRep_lanIso`). The end-to-end pass/fail run for two
-  complexes, with its theorems for the actual modules, and its worked example are
-  not yet provided ([#1049](https://github.com/uda-lab/tda-lib/issues/1049)).
+- **Limits of the test on rationally graded complexes.**
+  `RatGradedInput.runErosion` certifies pass and failure for the actual homology
+  modules, with a worked example
+  ([testing two rationally graded complexes](#testing-two-rationally-graded-complexes)).
+  Its remaining limits:
+  - it tests one selected degree per run;
+  - its coefficients are `ZMod 2` only;
+  - faces must be listed after their proper faces, and the input is not sorted
+    internally;
+  - the parameter count `n` is a free generalisation, untested for `n > 2`;
+  - it performs no exact radius minimisation, and the exact erosion distance of
+    the worked example is not formalised;
+  - no runtime bound is claimed.
 - **Other fields, radius minimisation and complexity bounds.** The runner works
   over F₂ at one given rational radius.
 - **A coordinatewise-strict erosion predicate**, and a strict-pair predicate on the
@@ -1068,6 +1170,7 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid`,
 `TDA.Persistence.F2GridRep`, `TDA.Persistence.F2GridErosion`,
 `TDA.Persistence.F2GridHomologyInput`, `TDA.Persistence.F2GridHomologyIso`,
+`TDA.Persistence.F2GridHomologyErosion`,
 `TDA.Persistence.StrictRankErosion`,
 `TDA.Persistence.RankErosionAttainment`,
 `TDA.Persistence.RankErosionCertificate`,
@@ -1087,8 +1190,9 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 The strict-pair examples are in `TDA.Persistence.StrictRankErosionExamples`
 the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples` and
 the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`,
-the generated-input examples in `TDA.Persistence.F2GridHomologyInputExamples`
-and `TDA.Persistence.F2GridHomologyIsoExamples`,
+the generated-input examples in `TDA.Persistence.F2GridHomologyInputExamples`,
+`TDA.Persistence.F2GridHomologyIsoExamples` and
+`TDA.Persistence.F2GridHomologyErosionExamples`,
 the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`,
 the extended-rank erosion examples in
 `TDA.Persistence.ERankErosionExamples`, the q-tame examples in

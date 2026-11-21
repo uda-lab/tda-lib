@@ -448,6 +448,7 @@ import TDA.Persistence.RankErosionAttainment
 import TDA.Persistence.RankErosionCertificate
 import TDA.Persistence.F2GridHomologyInput
 import TDA.Persistence.F2GridHomologyIso
+import TDA.Persistence.F2GridHomologyErosion
 import TDA.Persistence.StructureMapERank
 import TDA.Persistence.ERankErosion
 import TDA.Persistence.ERankQTame
