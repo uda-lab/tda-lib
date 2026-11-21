@@ -8285,3 +8285,22 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.ERankErosionExamples.eRank_split_of_ne
 #print axioms TDA.Persistence.ERankErosionExamples.eRank_split_self
 #print axioms TDA.Persistence.ERankErosionExamples.split_line_eRankErosion_not_rankErosion
+
+-- Extended ranks of q-tame modules (Issue #1027).
+#print axioms TDA.Persistence.eRankOfStructureMap_ne_top_iff
+#print axioms TDA.Persistence.PModule.qTame_iff_eRankOfStructureMap_ne_top
+#print axioms TDA.Persistence.PModule.QTame.eRankOfStructureMap_ne_top
+#print axioms TDA.Persistence.PModule.qTame_iff_eRankOfStructureMap_fromReal_ne_top
+#print axioms TDA.Persistence.PModule.QTame.eRankOfStructureMap_fromReal_ne_top
+#print axioms TDA.Persistence.RealInterleaving.eRankOfStructureMap_le_toENat_rank
+#print axioms TDA.Persistence.RealInterleaving.eRankOfStructureMap_ne_top
+#print axioms TDA.Persistence.RealInterleaving.eRankErosion
+#print axioms TDA.Persistence.eRankErosionDistance_fromReal_le_realInterleavingDistance
+#print axioms TDA.Persistence.ERankQTameExamples.realEphemeral
+#print axioms TDA.Persistence.ERankQTameExamples.eRank_realEphemeral_of_lt
+#print axioms TDA.Persistence.ERankQTameExamples.realEphemeral_qTame
+#print axioms TDA.Persistence.ERankQTameExamples.realEphemeral_not_finiteDimensional
+#print axioms TDA.Persistence.ERankQTameExamples.realEphemeral_qTame_not_pfd
+#print axioms TDA.Persistence.ERankQTameExamples.eRank_fromReal_realEphemeral_self
+#print axioms TDA.Persistence.ERankQTameExamples.structureMap_realEphemeral_of_lt
+#print axioms TDA.Persistence.ERankQTameExamples.nonempty_realInterleaving_realEphemeral_zero

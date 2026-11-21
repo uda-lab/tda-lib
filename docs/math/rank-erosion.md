@@ -136,6 +136,55 @@ that the general laws need not be universe-restricted, so that the existing
 factorization is reused unchanged. Lifting it later only generalizes the
 signature of `factor_structureMap`.
 
+### One parameter: q-tame modules and real interleavings
+
+`TDA.Persistence.ERankQTame` connects the one-parameter `PModule.QTame` and
+real interleavings with the extended rank. `eRankOfStructureMap_ne_top_iff`
+(in `StructureMapERank`) says that the extended rank is finite exactly when the
+image is finite-dimensional. A real module is q-tame exactly when every
+structure map across a strict inequality has finite extended rank
+(`PModule.qTame_iff_eRankOfStructureMap_ne_top`), and exactly when its
+one-coordinate module `CoordinateRealBridge.fromReal M` has finite extended
+rank on every strict pair of the product order on `Fin 1 → ℝ`
+(`PModule.qTame_iff_eRankOfStructureMap_fromReal_ne_top`, with the consumers
+`PModule.QTame.eRankOfStructureMap_ne_top` and
+`PModule.QTame.eRankOfStructureMap_fromReal_ne_top`). With one coordinate,
+strictness in the product order and in every coordinate coincide.
+
+For a real `ε`-interleaving `i` of `M` and `N`,
+`RealInterleaving.eRankOfStructureMap_le_toENat_rank` bounds the extended rank
+of the structure map of `M` from $a$ to $(a+\varepsilon)+\varepsilon$ by the
+extended dimension of the middle fibre `N.obj (a + ε)`, with no finiteness
+hypothesis, and `RealInterleaving.eRankOfStructureMap_ne_top` is the local
+finite-image bound: that rank is finite when the middle fibre is
+finite-dimensional. Its `finrank` sibling
+`finrank_range_structureMapLinear_le_of_realInterleaving`
+(`RealInterleavingRankObstruction`) states the grade inequality as
+`t ≤ t + ((ε + ε : ℝ≥0) : ℝ)`, while the extended statements use
+`a ≤ (a + ε) + ε`, as `RealInterleaving.finiteDimensional_range_structureMap`
+does. Through `CoordinateRealBridge.toCoordinate`, a real interleaving gives
+extended-rank erosion of the one-coordinate modules
+(`RealInterleaving.eRankErosion`), and
+`eRankErosionDistance_fromReal_le_realInterleavingDistance` bounds their
+extended erosion distance by `realInterleavingDistance`.
+
+The examples (`TDA.Persistence.ERankQTameExamples`) use `realEphemeral`, the
+one-coordinate `ephemeralInfinite` read on the real line: fibre
+`ℕ →₀ ℚ` at every grade and zero maps across strict inequalities. It is q-tame
+and not pointwise finite-dimensional (`realEphemeral_qTame_not_pfd`). Its
+one-coordinate module has extended rank $\top$ on the diagonal
+(`eRank_fromReal_realEphemeral_self`), so the strictness hypothesis cannot be
+dropped. It is interleaved with zero at every positive radius
+(`nonempty_realInterleaving_realEphemeral_zero`), so the local bound applies
+through the zero middle fibre although every fibre of `realEphemeral` is
+infinite-dimensional.
+
+No finite-image condition is stated for two or more parameters. There
+"strict" can mean the strict product order ($a\le b$, $a\ne b$) or
+strictness in every coordinate, and these differ: $(0,0)$ and $(1,0)$ form a
+strict pair of the first kind but not of the second. Choosing between them is
+left to a later decision.
+
 ## Stability from actual interleavings
 
 An actual coordinate $\varepsilon$-interleaving factors the widened structure
@@ -665,8 +714,10 @@ assertions. A predicate on coordinatewise strict pairs, which the proposal
 leaves optional, is not supplied. Of
 the proposal's second package, the [extended image rank](#extended-image-rank)
 and [erosion on it](#erosion-on-extended-ranks), with its interleaving bound,
-are supplied; the finite-image interleaving bound and the q-tame consumers
-remain proposed. So do the other packages: finite tests fed by actual
+are supplied, and so are the one-parameter q-tame consumer and
+[local finite-image bound](#one-parameter-q-tame-modules-and-real-interleavings);
+a multiparameter finite-image condition remains proposed, pending a choice of
+strictness convention. So do the other packages: finite tests fed by actual
 persistent-homology input; and execution over other fields. The proposal
 records endpoint and nonseparation counterexamples that a broader API must
 respect, rather than promising to remove necessary hypotheses.
@@ -680,7 +731,8 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.StrictRankErosion`,
 `TDA.Persistence.RankErosionAttainment`,
 `TDA.Persistence.RankErosionCertificate`,
-`TDA.Persistence.StructureMapERank` and `TDA.Persistence.ERankErosion`. Their
+`TDA.Persistence.StructureMapERank`, `TDA.Persistence.ERankErosion` and
+`TDA.Persistence.ERankQTame`. Their
 declarations are in `TDA.Persistence`; the concrete hook witnesses are in its
 `RankErosionWitness` namespace, the grid criterion is in
 `TDA.Persistence.CoordinateGrid`, and the executable representations are in
@@ -689,8 +741,9 @@ The strict-pair examples are in `TDA.Persistence.StrictRankErosionExamples`
 the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples` and
 the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`,
 the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`,
-and the extended-rank erosion examples in
-`TDA.Persistence.ERankErosionExamples`;
+the extended-rank erosion examples in
+`TDA.Persistence.ERankErosionExamples` and the q-tame examples in
+`TDA.Persistence.ERankQTameExamples`;
 the attainment and certificate theorems are in `TDA.Persistence.GradedFree`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 

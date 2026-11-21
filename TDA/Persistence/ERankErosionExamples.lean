@@ -94,20 +94,24 @@ theorem ephemeralInfinite_not_eRankErosion_zero :
   rw [eRank_ephemeralInfinite_self, eRankOfStructureMap_zero] at h₀
   exact ENat.top_ne_zero h₀
 
+/-- At a positive radius, with at least one coordinate, the widened pair of every weak pair
+consists of distinct grades. -/
+private theorem erosionLower_ne_erosionUpper_of_pos [NeZero n] {ε : ℝ≥0} (hε : 0 < ε)
+    {a b : Fin n → ℝ} (hab : a ≤ b) : erosionLower ε a ≠ erosionUpper ε b := by
+  intro h
+  have h0 := congrFun h 0
+  have := hab 0
+  change a 0 - (ε : ℝ) = b 0 + (ε : ℝ) at h0
+  have hε' : (0 : ℝ) < ε := hε
+  linarith
+
 /-- At a positive radius, with at least one coordinate, every widened pair is a pair of
 distinct grades, so erosion against zero holds. -/
 theorem ephemeralInfinite_eRankErosion [NeZero n] {ε : ℝ≥0} (hε : 0 < ε) :
     ERankErosion ε (ephemeralInfinite (n := n)) 0 := by
   constructor
   · intro a b hab
-    have hne : erosionLower ε a ≠ erosionUpper ε b := by
-      intro h
-      have h0 := congrFun h 0
-      have := hab 0
-      change a 0 - (ε : ℝ) = b 0 + (ε : ℝ) at h0
-      have hε' : (0 : ℝ) < ε := hε
-      linarith
-    rw [eRankOfStructureMap_ephemeral_of_ne _ _ hne]
+    rw [eRankOfStructureMap_ephemeral_of_ne _ _ (erosionLower_ne_erosionUpper_of_pos hε hab)]
     exact zero_le
   · intro a b hab
     rw [eRankOfStructureMap_zero]
@@ -119,7 +123,7 @@ theorem ephemeralInfinite_eRankErosionDistance [NeZero n] :
     eRankErosionDistance (ephemeralInfinite (n := n)) 0 = 0 ∧
       ¬ ERankErosion 0 (ephemeralInfinite (n := n)) 0 := by
   refine ⟨?_, ephemeralInfinite_not_eRankErosion_zero⟩
-  refine le_antisymm (ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_) (zero_le)
+  refine le_antisymm (ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_) zero_le
   rw [zero_add]
   exact eRankErosionDistance_le_of_erosion (ephemeralInfinite_eRankErosion hε)
 
@@ -136,13 +140,12 @@ theorem ephemeralInfinite_eRankErosionDistance_fin_zero :
     rw [← eRank_ephemeralInfinite_self (erosionUpper ε (0 : Fin 0 → ℝ))]
     congr 1
   rw [hdiag, eRankOfStructureMap_zero] at h₀
-  exact ENat.top_ne_zero (le_antisymm h₀ (zero_le))
+  exact ENat.top_ne_zero (le_antisymm h₀ zero_le)
 
 /-- The `ℕ`-valued ranks of the ephemeral module are all `0`, so its `ℕ`-valued erosion
 distance from zero is `0` for every number of parameters, attained at radius `0`. -/
 theorem ephemeralInfinite_rankErosion_zero :
     RankErosion 0 (ephemeralInfinite (n := n)) 0 := by
-  classical
   refine rankErosion_zero_iff.mpr fun a b hab => ?_
   rw [rankOfStructureMap_zero, rankOfStructureMap_eq_toNat_eRankOfStructureMap]
   by_cases h : a = b
@@ -162,7 +165,7 @@ theorem infinite_vs_zero_distance :
     intro ε h
     have h₀ := h.1 0 0 le_rfl
     rw [StructureMapERankExamples.eRank_infinite, eRankOfStructureMap_zero] at h₀
-    exact ENat.top_ne_zero (le_antisymm h₀ (zero_le))
+    exact ENat.top_ne_zero (le_antisymm h₀ zero_le)
   · exact nonpos_iff_eq_zero.1 (by simpa using (rankErosionDistance_le_of_erosion
       StructureMapERankExamples.rankErosion_zero_infinite))
 
@@ -182,7 +185,7 @@ theorem line_vs_zero_distance :
   intro ε h
   have h₀ := h.1 0 0 le_rfl
   rw [(StructureMapERankExamples.eRank_line _).1, eRankOfStructureMap_zero] at h₀
-  exact one_ne_zero (le_antisymm h₀ (zero_le))
+  exact one_ne_zero (le_antisymm h₀ zero_le)
 
 /-- On the pointwise finite-dimensional closed box `[0, 2c]ⁿ`, with at least one coordinate,
 the extended distance from zero is the finite value `c` of the `ℕ`-valued distance. -/
@@ -231,14 +234,6 @@ positive radius `split` and `line` satisfy extended-rank erosion, while `RankEro
 because the `ℕ`-valued rank of `split` on the diagonal is `0`. -/
 theorem split_line_eRankErosion_not_rankErosion {ε : ℝ≥0} (hε : 0 < ε) :
     ERankErosion ε split line ∧ ¬ RankErosion ε split line := by
-  classical
-  have hne {a b : Fin 1 → ℝ} (hab : a ≤ b) : erosionLower ε a ≠ erosionUpper ε b := by
-    intro h
-    have h0 := congrFun h 0
-    have := hab 0
-    change a 0 - (ε : ℝ) = b 0 + (ε : ℝ) at h0
-    have hε' : (0 : ℝ) < ε := hε
-    linarith
   have hsplit_ge {a b : Fin 1 → ℝ} (hab : a ≤ b) : 1 ≤ eRankOfStructureMap split hab := by
     by_cases h : a = b
     · subst h
@@ -246,7 +241,8 @@ theorem split_line_eRankErosion_not_rankErosion {ε : ℝ≥0} (hε : 0 < ε) :
       exact le_top
     · rw [eRank_split_of_ne hab h]
   refine ⟨⟨fun a b hab => ?_, fun a b hab => ?_⟩, fun h => ?_⟩
-  · rw [eRank_split_of_ne _ (hne hab), (StructureMapERankExamples.eRank_line hab).1]
+  · rw [eRank_split_of_ne _ (erosionLower_ne_erosionUpper_of_pos hε hab),
+      (StructureMapERankExamples.eRank_line hab).1]
   · rw [(StructureMapERankExamples.eRank_line _).1]
     exact hsplit_ge hab
   · have h₀ := h.2 0 0 le_rfl
