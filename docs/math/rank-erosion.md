@@ -14,8 +14,8 @@ declarations that settle it; the sections that follow state the exact hypotheses
 |---|---|---|
 | Compare ranks at a radius | `RankErosion`, `rankErosionDistance` | field-valued `PModule.{u,0,u}` on `Fin n → ℝ`; weak pairs, diagonal included; `Module.finrank` ranks, so finite-dimensional fibers are the intended scope |
 | Use only product-strict pairs | `StrictRankErosion`, `strictRankErosionDistance`, `RankErosion.strict`, `StrictRankErosion.rankErosion_add`, `strictRankErosionDistance_eq_rankErosionDistance` | equal distances for $n>0$ and finite-dimensional fibers; with $n=0$ the strict distance is $0$ (`strictRankErosionDistance_fin_zero`) |
-| Bound erosion by interleaving | `CoordinateInterleaving.rankErosion`, `rankErosionDistance_le_coordinateInterleavingDistance` | no attainment assumption |
-| Turn a failed test into a lower bound | `le_rankErosionDistance_of_not_rankErosion` (non-strict); `GradedFree.finitelyPresented_lt_rankErosionDistance_of_not_rankErosion`, `GradedFree.finitelyPresented_rankErosion_failure_certificate` (strict, $\varepsilon<d_E\le d_I$) | strict only for `GradedFree.FinitelyPresented.{u,0,0}` |
+| Bound erosion by interleaving | `CoordinateInterleaving.rankErosion`, `rankErosionDistance_le_coordinateInterleavingDistance` | finite-dimensional fibers of both modules (`∀ p, FiniteDimensional k (M.obj p)` and the same for `N`); no attainment assumption |
+| Turn a failed test into a lower bound | `le_rankErosionDistance_of_not_rankErosion` (non-strict); `GradedFree.finitelyPresented_lt_rankErosionDistance_of_not_rankErosion`, `GradedFree.finitelyPresented_rankErosion_failure_certificate` (strict, $\varepsilon<d_E\le d_I$) | non-strict: finite-dimensional fibers of both modules; strict: `GradedFree.FinitelyPresented.{u,0,0}` presentations of both modules |
 | Attainment, closed radii, distance zero | `GradedFree.finitelyPresented_rankErosionDistance_le_iff_rankErosion`, `GradedFree.finitelyPresented_rankErosion_at_distance`, `GradedFree.finitelyPresented_rankErosion_parameters_eq_Ici`, `GradedFree.finitelyPresented_isClosed_rankErosion_parameters`, `GradedFree.finitelyPresented_rankErosionDistance_eq_zero_iff` | `GradedFree.FinitelyPresented.{u,0,0}`; distance zero is equality of weak-pair ranks, not isomorphism |
 | Fixed-radius strict and weak agreement | `GradedFree.finitelyPresented_strictRankErosion_iff_rankErosion` | finitely presented, `[NeZero n]` |
 | Infinite-dimensional images | `eRankOfStructureMap`, `ERankErosion`, `eRankErosionDistance`, `eRankErosionDistance_le_coordinateInterleavingDistance` | no finiteness; every infinite cardinal becomes $\top$; `eRankOfStructureMap` is universe-polymorphic, `ERankErosion` takes `PModule.{u,0,u}` |
@@ -23,7 +23,7 @@ declarations that settle it; the sections that follow state the exact hypotheses
 | Decide erosion for concrete data | `F2GridRep.runErosion`, `F2GridRep.runErosion_eq_pass_certificate`, `F2GridRep.runErosion_eq_fail_certificate` | valid F₂ grid representations and a rational radius; certifies their grid Kan extensions |
 | Persistent homology of finite graded complexes | `finiteSimplicialHomology_rankErosion`, `rankErosionDistance_finiteSimplicialHomology_le_supGradeError`, `finiteSimplicialHomology_rankErosion_failure_certificate` | grade-error bounds; exact values for four tetrahedron-boundary comparisons |
 
-The [last section before the imports](#what-is-not-provided) lists what is not supplied.
+[What is not provided](#what-is-not-provided) lists what is not supplied.
 
 ## The predicate and distance
 
@@ -95,17 +95,16 @@ zero module, so `RankErosion 0` holds between them
 
 When to use it. `rankOfStructureMap` is `Module.finrank`, which sends an
 infinite-dimensional image to $0$: an infinite constant module against zero passes
-the `ℕ`-valued test at radius zero (`rankErosion_zero_infinite`). That example
-illustrates the `finrank` truncation, not the collapse to $\top$. The extended rank
-keeps the infinite image, and the same comparison has extended distance $\top$
+the `ℕ`-valued test at radius zero, as above. That example illustrates the
+`finrank` truncation, not the collapse to $\top$. The extended rank keeps the
+infinite image, and the same comparison has extended distance $\top$
 (`ERankErosionExamples.infinite_vs_zero_distance`). The collapse is that distinct
 infinite dimensions become equal: constant modules of dimensions $\aleph_0$ and
 $\mathfrak c$ have equal extended ranks (`continuumConst_collapse`). The two
 theories agree on pointwise finite-dimensional modules
 (`eRankErosion_iff_rankErosion`, `eRankErosionDistance_eq_rankErosionDistance`);
-without that hypothesis they can differ
-(`ERankErosionExamples.infinite_vs_zero_distance`,
-`ERankErosionExamples.split_line_eRankErosion_not_rankErosion`).
+without that hypothesis they can differ, as in the comparison just described and in
+`ERankErosionExamples.split_line_eRankErosion_not_rankErosion`.
 
 ## Erosion on extended ranks
 
@@ -1006,11 +1005,13 @@ listed in [what is not provided](#what-is-not-provided).
   their distances take `PModule.{u,0,u}`; attainment and certificates take
   `GradedFree.FinitelyPresented.{u,0,0}`. `eRankOfStructureMap` and
   `PModule.CoordQTame` are polymorphic in the fibre universe.
-- **Classification in two or more parameters.** Equal rank invariants do not
-  determine the module: `RankErosionCertificateExamples.arms_nonseparation` gives
+- **Classification by ranks.** Equal rank invariants do not determine the module.
+  The library exhibits this for two parameters:
+  `RankErosionCertificateExamples.arms_nonseparation` gives
   two finitely presented two-parameter modules over `ZMod 2` with erosion distance
   $0$ and nonzero interleaving distance, and
-  `RankErosionCertificateExamples.arms_not_iso` shows that they are not isomorphic.
+  `RankErosionCertificateExamples.arms_not_iso` shows that they are not isomorphic. No example with more than two parameters is
+  formalised.
 
 ## Imports and source convention
 

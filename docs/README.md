@@ -74,13 +74,14 @@ matching and optimality of the signed stability constant are not claimed.
 [Weak-pair rank erosion](math/rank-erosion.md) compares actual structure-map ranks,
 diagonal pairs included, under weak and strict pair conventions; its distance is
 bounded by coordinate interleaving distance. For finitely presented modules,
-attainment, failed-test certificates and the equivalence of the strict and weak
-predicates are supplied. An extended rank handles modules without pointwise finite
+attainment and failed-test certificates are supplied, and with at least one parameter
+the equivalence of the strict and weak predicates. An extended rank handles modules without pointwise finite
 dimensionality, and coordinatewise q-tameness covers several parameters. Finite
 simplicial homology has grade-error bounds, and four tetrahedron-boundary comparisons
 have exact erosion distances. For F₂ grid representations a certified test decides
 erosion at a rational radius; persistent-homology input to it is pending (#1049).
-In two or more parameters equal ranks do not classify modules; see
+Equal ranks do not classify modules: the library exhibits this for two parameters
+(`arms_nonseparation`, `arms_not_iso`); see
 [what is not provided](math/rank-erosion.md#what-is-not-provided).
 
 ## Metric inputs and sampling
