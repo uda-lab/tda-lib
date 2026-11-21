@@ -38,27 +38,6 @@ theorem supGradeError_translatedGrading (s t : ℝ) :
   rw [← NNReal.coe_le_coe, coe_nnnorm, Real.norm_eq_abs]
   exact h
 
-/-- A nonzero structure map with a finite-dimensional target has rank at least one. -/
-private theorem one_le_rankOfStructureMap_of_ne_zero {k : Type u} [Field k] {n : ℕ}
-    (M : PModule.{u,0,u} k (Fin n → ℝ)) {p q : Fin n → ℝ} (hpq : p ≤ q)
-    [FiniteDimensional k (M.obj q)] (h : structureMap M hpq ≠ 0) :
-    1 ≤ rankOfStructureMap M hpq := by
-  unfold rankOfStructureMap
-  rw [Nat.one_le_iff_ne_zero]
-  intro h0
-  rw [Submodule.finrank_eq_zero, LinearMap.range_eq_bot] at h0
-  exact h (ModuleCat.hom_ext (by simpa [structureMapLinear] using h0))
-
-/-- A structure map into a zero fiber has rank zero. -/
-private theorem rankOfStructureMap_eq_zero_of_isZero {k : Type u} [Field k] {n : ℕ}
-    (M : PModule.{u,0,u} k (Fin n → ℝ)) {p q : Fin n → ℝ} (hpq : p ≤ q)
-    (hq : CategoryTheory.Limits.IsZero (M.obj q)) : rankOfStructureMap M hpq = 0 := by
-  unfold rankOfStructureMap
-  have htarget : Subsingleton (M.obj q) := ModuleCat.subsingleton_of_isZero hq
-  have hrange : Subsingleton (LinearMap.range (structureMapLinear M hpq)) :=
-    ⟨fun x y => Subtype.ext (htarget.elim x.val y.val)⟩
-  exact @Module.finrank_zero_of_subsingleton k _ _ _ _ _ hrange
-
 /-- Below the signed gap and half the diagonal lifetime, erosion fails at the diagonal pair
 based at the earlier birth plus the radius: the widened map of the earlier translate survives
 while the later translate has a zero fiber there. -/

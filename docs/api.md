@@ -1216,8 +1216,16 @@ For the uniform translates of the tetrahedron-boundary witness
 `RankResolutionDegreeTwoSimplicial.translatedHomology_not_rankErosion` exhibits
 failed tests below `min |t-s| (1/2)` from actual structure maps, and
 `RankResolutionDegreeTwoSimplicial.rankErosionDistance_translatedHomology` and
-`eRankErosionDistance_translatedHomology` give both erosion distances exactly
-`ENNReal.ofReal (min |t-s| (1/2))`, equal to the interleaving distance.
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_translatedHomology` give both
+erosion distances exactly `ENNReal.ofReal (min |t-s| (1/2))`, equal to the interleaving
+distance.
+For independent signed coordinate translates
+(`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`),
+`RankResolutionDegreeTwoSimplicial.coordinateTranslatedHomology_not_rankErosion` exhibits
+failed tests below `min (max |v 0 - u 0| |v 1 - u 1|) (1 / 2)`, and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_coordinateTranslatedHomology` and
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_coordinateTranslatedHomology` give
+both erosion distances exactly that value, equal to the interleaving distance.
 Erosion attainment is supplied for finitely presented modules only (below); a
 certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).
