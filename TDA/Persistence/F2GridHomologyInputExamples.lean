@@ -7,9 +7,9 @@ import Mathlib.LinearAlgebra.Matrix.Notation
 * `triangle`: vertices and edges at the origin, the 2-face at `(2, 2)`; `shiftedTriangle`: the
   same grading translated by `(1/2, 0)`. Both are valid, and their grid values are computed.
 * Slices of `triangle`: hollow at the origin, below the 2-face grade and at an incomparable
-  grade, filled at `(2, 2)`, empty below every grade. Slices of `shiftedTriangle`: empty at the origin, hollow at
-  `(1/2, 0)`, filled at `(5/2, 2)`. The 2-face is absent from the actual sublevel at `(1, 1)` and
-  present at `(2, 2)`.
+  grade, filled at `(2, 2)`, empty below every grade. Slices of `shiftedTriangle`: empty at the
+  origin, hollow at `(1/2, 0)`, filled at `(5/2, 2)`. The 2-face is absent from the actual
+  sublevel at `(1, 1)` and present at `(2, 2)`.
 * The generated representations are valid, with no computation of their matrices.
 * Rejected inputs: a non-monotone grading, an edge listed before a vertex, a missing vertex, a
   repeated face and the empty face.

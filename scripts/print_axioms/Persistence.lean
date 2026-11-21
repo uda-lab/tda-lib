@@ -8501,3 +8501,34 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.F2GridHomologyIsoExamples.triangle_rankErosion_iff
 #print axioms TDA.Persistence.F2GridHomologyIsoExamples.empty_lanIso
 #print axioms TDA.Persistence.F2GridHomologyIsoExamples.triangle_dim_hollow
+
+-- End-to-end erosion test of two rationally graded complexes (Issue #1056).
+#print axioms TDA.Persistence.RatGradedInput.ErosionResult
+#print axioms TDA.Persistence.RatGradedInput.runErosion
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_of_valid
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_invalidFirst_iff
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_invalidSecond_iff
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_invalid_iff
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_negativeRadius_iff
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_pass_iff
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_fail_iff
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_fail
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_pass_iff_rankErosionDistance_le
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_pass_iff_strictRankErosion
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_pass_certificate
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_fail_certificate
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_fail_strict_certificate
+#print axioms TDA.Persistence.RatGradedInput.rankErosion_homology_of_faces_eq
+#print axioms TDA.Persistence.RatGradedInput.runErosion_eq_pass_of_faces_eq
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_finrank_origin
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.shiftedTriangle_finrank_origin
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_violation_zero
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_not_rankErosion_zero
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_runErosion_zero
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_grade_error
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_rankErosion_half
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_runErosion_half_pass
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_rankErosionDistance_bounds
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.nonMonotone_runErosion
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_nonMonotone_runErosion
+#print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_runErosion_negative

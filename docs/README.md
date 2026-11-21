@@ -79,7 +79,9 @@ the equivalence of the strict and weak predicates. An extended rank handles modu
 dimensionality, and coordinatewise q-tameness covers several parameters. Finite
 simplicial homology has grade-error bounds, and four tetrahedron-boundary comparisons
 have exact erosion distances. For F₂ grid representations a certified test decides
-erosion at a rational radius; persistent-homology input to it is pending (#1049).
+erosion at a rational radius, and two rationally graded finite complexes can be compared
+end to end in one degree over F₂, with pass and failure certified for their actual
+homology modules.
 Equal ranks do not classify modules: the library exhibits this for two parameters
 (`arms_nonseparation`, `arms_not_iso`); see
 [what is not provided](math/rank-erosion.md#what-is-not-provided).

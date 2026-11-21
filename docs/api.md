@@ -1415,11 +1415,18 @@ and `RatGradedInput.toF2GridRep_valid` proves it valid (for an invalid input
 the generated representation carries no meaning).
 `RatGradedInput.toF2GridRep_lanIso` proves its Kan extension canonically
 isomorphic, as a persistence module, to the actual homology
-`RatGradedInput.homology`. The end-to-end run on two inputs is not yet provided
-(#1049); `runErosion` applied by hand to two generated representations
-certifies the actual homologies through `RatGradedInput.rankErosion_lan_toF2GridRep_iff`,
-`RatGradedInput.rankErosionDistance_lan_toF2GridRep` and
-`RatGradedInput.toF2GridRep_rankAt`.
+`RatGradedInput.homology`. `RatGradedInput.runErosion xs ys p e` validates
+two inputs and the radius, reporting `invalidFirst`, `invalidSecond` or
+`negativeRadius` separately (`RatGradedInput.runErosion_eq_invalid_iff`,
+`RatGradedInput.runErosion_eq_negativeRadius_iff`). Otherwise it runs the test
+on the two generated representations in degree `p`, and certifies the actual
+homologies. `RatGradedInput.runErosion_eq_pass_iff`: `pass` exactly when both
+inputs are valid, `0 ≤ e` and `RankErosion` holds between the actual modules.
+`RatGradedInput.runErosion_eq_fail`: `fail w` records a direction, a
+comparable pair of breakpoint grades and ranks equal to those of the actual
+structure maps. `RatGradedInput.runErosion_eq_pass_certificate` and
+`RatGradedInput.runErosion_eq_fail_certificate` give the distance consequences.
+No runtime bound is claimed.
 
 The public `TDA.Persistence` aggregator exports `RankErosion`,
 `RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid`, `F2GridRep`,

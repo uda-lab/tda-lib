@@ -19,12 +19,20 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   (`TDA.Persistence.F2GridHomologyIso`): its Kan extension is canonically
   isomorphic to the actual homology, so generated dimensions, executable ranks
   and rank erosion between two generated representations are those of the actual
-  modules; the end-to-end test of two inputs is not yet supplied. The private
-  Kan-comparison helpers of `FiniteSimplicialPresentation` are now public as
-  `CoordinateGrid.kanComparison`, `kanComparison_fac`,
-  `kanInclusion_kanComparison` and `kanComparisonIso`, and `RankErosion` gains
-  `rankErosion_iff_of_iso` and `rankErosionDistance_eq_of_iso`. See
+  modules. The private Kan-comparison helpers of `FiniteSimplicialPresentation`
+  are now public as `CoordinateGrid.kanComparison`, `kanComparison_fac`,
+  `kanInclusion_kanComparison`, `kanComparisonIso` and `kanComparisonIso_hom`,
+  and `RankErosion` gains `rankErosion_iff_of_iso` and
+  `rankErosionDistance_eq_of_iso`. See
   [rank erosion](docs/math/rank-erosion.md#executable-representations-over-the-two-element-field).
+- Add the end-to-end erosion test of two rationally graded complexes
+  (`TDA.Persistence.F2GridHomologyErosion`): `RatGradedInput.runErosion` reports
+  an invalid first or second input or a negative radius separately, and its pass
+  and failure are certified for the actual homology modules, including the
+  failure's direction, grade pair and exact ranks. Worked example: a triangle
+  against its translate by `(1/2, 0)` fails at radius 0 and passes at radius
+  1/2, proved rather than evaluated. See
+  [testing two rationally graded complexes](docs/math/rank-erosion.md#testing-two-rationally-graded-complexes).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
