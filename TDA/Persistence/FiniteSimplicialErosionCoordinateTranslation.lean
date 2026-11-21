@@ -45,10 +45,10 @@ theorem supGradeError_coordinateTranslatedGrading (u v : Fin 2 → ℝ) :
   rw [← NNReal.coe_le_coe, coordinateTranslationGap_coe]
   exact max_le (h 0) (h 1)
 
-/-- Below the signed gap in one coordinate and half the diagonal lifetime, erosion fails at the
-diagonal pair based at that coordinate's birth of the earlier translate plus the radius: the
-widened map of the earlier translate survives while the later translate has a zero fiber
-there. -/
+/-- Below the signed gap `v i - u i` in one coordinate `i` and half the diagonal lifetime,
+erosion fails at the diagonal pair based at the `i`-th birth of the `u`-translate plus the
+radius: the widened map of the `u`-translate survives while the `v`-translate, which is later
+in coordinate `i`, has a zero fiber there. -/
 theorem coordinateTranslatedHomology_not_rankErosion_of_lt_sub (k : Type u) [Field k]
     (u v : Fin 2 → ℝ) (i : Fin 2) (ε : ℝ≥0) (hgap : (ε : ℝ) < v i - u i)
     (hlife : 2 * (ε : ℝ) < 1) :

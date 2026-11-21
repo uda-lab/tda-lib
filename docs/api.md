@@ -1226,6 +1226,13 @@ failed tests below `min (max |v 0 - u 0| |v 1 - u 1|) (1 / 2)`, and
 `RankResolutionDegreeTwoSimplicial.rankErosionDistance_coordinateTranslatedHomology` and
 `RankResolutionDegreeTwoSimplicial.eRankErosionDistance_coordinateTranslatedHomology` give
 both erosion distances exactly that value, equal to the interleaving distance.
+For signed delays of one positive scaling
+(`TDA.Persistence.FiniteSimplicialErosionScaledTranslation`),
+`RankResolutionDegreeTwoSimplicial.scaledTranslatedHomology_not_rankErosion` exhibits
+failed tests below `min |t - u| (scaledLifetime s / 2)` at the longer arm, and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledTranslatedHomology` and
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_scaledTranslatedHomology` give
+both erosion distances exactly that value, equal to the interleaving distance.
 Erosion attainment is supplied for finitely presented modules only (below); a
 certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).

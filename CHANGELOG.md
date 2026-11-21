@@ -34,6 +34,13 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `one_le_rankOfStructureMap_of_ne_zero` and
   `rankOfStructureMap_eq_zero_of_isZero` are now public in
   `TDA.Persistence.FiniteSimplicialErosion`.
+- Add the exact erosion distance of the scaled-translated tetrahedron-boundary
+  family (`TDA.Persistence.FiniteSimplicialErosionScaledTranslation`): erosion
+  fails below `min |t - u| (scaledLifetime s / 2)` by the actual surviving
+  longer-arm map against a zero fiber, so both erosion distances equal that
+  value, the interleaving distance; the maximal grade error equals the delay
+  gap, and a failing radius `1/8` under an anisotropic scale, where the shorter
+  arm does not witness the failure, instantiates the failure certificate.
 - Add one-parameter consumers of the extended image rank
   (`TDA.Persistence.ERankQTame`): a real module is q-tame exactly when its
   strict structure maps, or those of its one-coordinate module, have finite
