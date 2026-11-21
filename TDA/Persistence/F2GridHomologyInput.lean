@@ -15,7 +15,7 @@ inclusion-induced degree-`p` homology module over F₂ (`RatGradedInput.homology
 
 At a rational grade `u`, `RatGradedInput.slice` is the sublevel complex in the existing
 one-parameter finite input format: the admitted faces, relabelled into `ℕ`, in the original
-order, all at grade zero. Every slice is valid, and its single sublevel is the actual sublevel
+order, all at grade zero. Every slice of a valid input is valid, and its single sublevel is the actual sublevel
 at the real grade of `u`, relabelled.
 
 `RatGradedInput.toF2GridRep` is the generated F₂ grid representation in a degree `p`: the grid
@@ -259,7 +259,8 @@ theorem sublevel_floor {xs : RatGradedInput m n} (h : Valid xs) (a : Fin n → �
   rw [hg] at hs ⊢
   exact (gridValues xs).grid.embedding.monotone ((gridValues xs).grid.le_floor a ha hs)
 
-/-- Without a lower grid point no listed face is present; this covers empty input. -/
+/-- Without a lower grid point no listed face is present; when `n ≥ 1` this covers empty
+input. -/
 theorem sublevel_eq_bot_of_not_hasLowerPoint {xs : RatGradedInput m n} (h : Valid xs)
     (a : Fin n → ℝ) (ha : ¬ (gridValues xs).grid.HasLowerPoint a) :
     (toGraded xs h).sublevel a = ⊥ := by

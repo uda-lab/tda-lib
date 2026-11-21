@@ -1411,7 +1411,8 @@ fiber dimensions.
 `RatGradedInput.toF2GridRep` generates such a representation from a validated
 rationally graded finite simplicial complex (`RatGradedInput.Valid`), using the
 computed slice bases of `RatGradedInput.slice` and computed inclusion matrices,
-and `RatGradedInput.toF2GridRep_valid` proves it valid; its identification with
+and `RatGradedInput.toF2GridRep_valid` proves it valid (for an invalid input
+the generated representation carries no meaning); its identification with
 the actual homology `RatGradedInput.homology` is not yet proved, so `runErosion`
 on generated representations is not yet a statement about homology (#1049).
 

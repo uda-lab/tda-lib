@@ -7,10 +7,12 @@ import Mathlib.LinearAlgebra.Matrix.Notation
 * `triangle`: vertices and edges at the origin, the 2-face at `(2, 2)`; `shiftedTriangle`: the
   same grading translated by `(1/2, 0)`. Both are valid, and their grid values are computed.
 * Slices of `triangle`: hollow below the 2-face grade and at an incomparable grade, filled at
-  `(2, 2)`, empty below every grade. The 2-face is absent from the actual sublevel at `(1, 1)` and
+  `(2, 2)`, empty below every grade. Slices of `shiftedTriangle`: empty at the origin, hollow at
+  `(1/2, 0)`, filled at `(5/2, 2)`. The 2-face is absent from the actual sublevel at `(1, 1)` and
   present at `(2, 2)`.
 * The generated representations are valid, with no computation of their matrices.
-* Rejected inputs: a non-monotone grading, an edge listed before a vertex, a missing vertex.
+* Rejected inputs: a non-monotone grading, an edge listed before a vertex, a missing vertex, a
+  repeated face and the empty face.
 * The empty input is valid and has no grid grades.
 -/
 
@@ -66,6 +68,20 @@ theorem triangle_slice_incomparable : slice triangle (![5, 1] : Fin 2 → ℚ) =
 /-- Below every grade the slice is empty. -/
 theorem triangle_slice_below : slice triangle (![-1, 5] : Fin 2 → ℚ) = [] := by decide +kernel
 
+/-- At the origin the translated slice is empty, while that of `triangle` is hollow. -/
+theorem shiftedTriangle_slice_origin : slice shiftedTriangle (![0, 0] : Fin 2 → ℚ) = [] := by
+  decide +kernel
+
+/-- At `(1/2, 0)` the translated slice is the hollow triangle. -/
+theorem shiftedTriangle_slice_hollow : slice shiftedTriangle (![1 / 2, 0] : Fin 2 → ℚ) =
+    [({0}, 0), ({1}, 0), ({2}, 0), ({0, 1}, 0), ({0, 2}, 0), ({1, 2}, 0)] := by
+  decide +kernel
+
+/-- At `(5/2, 2)` the translated slice is the filled triangle. -/
+theorem shiftedTriangle_slice_filled : slice shiftedTriangle (![5 / 2, 2] : Fin 2 → ℚ) =
+    [({0}, 0), ({1}, 0), ({2}, 0), ({0, 1}, 0), ({0, 2}, 0), ({1, 2}, 0), ({0, 1, 2}, 0)] := by
+  decide +kernel
+
 /-- The generated representations are valid, with no computation of their matrices. -/
 theorem triangle_toF2GridRep_valid (p : ℕ) : (toF2GridRep triangle p).Valid :=
   toF2GridRep_valid triangle_valid p
@@ -103,6 +119,18 @@ def missingVertex : RatGradedInput 2 1 := [({0, 1}, ![1])]
 
 /-- The list with a missing vertex fails validation. -/
 theorem missingVertex_not_valid : ¬ Valid missingVertex := by decide +kernel
+
+/-- A face listed twice is rejected. -/
+def duplicateFace : RatGradedInput 1 1 := [({0}, ![0]), ({0}, ![0])]
+
+/-- The list with a repeated face fails validation. -/
+theorem duplicateFace_not_valid : ¬ Valid duplicateFace := by decide +kernel
+
+/-- The empty face is rejected. -/
+def emptyFace : RatGradedInput 1 1 := [(∅, ![0])]
+
+/-- The list with the empty face fails validation. -/
+theorem emptyFace_not_valid : ¬ Valid emptyFace := by decide +kernel
 
 /-- The empty input is valid. -/
 theorem empty_valid : Valid ([] : RatGradedInput 0 2) := by decide +kernel

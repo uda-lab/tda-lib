@@ -470,7 +470,10 @@ run must check `RatGradedInput.Valid` itself. The parameter count `n` is
 arbitrary only because no proof needs `n = 2`; this is a free generalisation,
 not a delivered feature for `n > 2`. `F2GridHomologyInputExamples` validates a
 triangle whose 2-face enters at `(2, 2)` and its translate by `(1/2, 0)`,
-computes their grid values and slices, and rejects three malformed lists.
+computes the grid values and several slices of each (at the origin the first is
+hollow and the second empty), and rejects five malformed lists: a non-monotone
+grading, a face listed before a proper face, a missing vertex, a repeated face
+and the empty face.
 
 ## A certified finite test
 

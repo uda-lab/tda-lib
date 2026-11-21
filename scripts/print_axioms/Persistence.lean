@@ -8468,3 +8468,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.F2GridHomologyInputExamples.missingVertex_not_valid
 #print axioms TDA.Persistence.F2GridHomologyInputExamples.empty_valid
 #print axioms TDA.Persistence.F2GridHomologyInputExamples.empty_points
+#print axioms TDA.Persistence.F2GridHomologyInputExamples.shiftedTriangle_slice_origin
+#print axioms TDA.Persistence.F2GridHomologyInputExamples.shiftedTriangle_slice_hollow
+#print axioms TDA.Persistence.F2GridHomologyInputExamples.shiftedTriangle_slice_filled
+#print axioms TDA.Persistence.F2GridHomologyInputExamples.duplicateFace
+#print axioms TDA.Persistence.F2GridHomologyInputExamples.duplicateFace_not_valid
+#print axioms TDA.Persistence.F2GridHomologyInputExamples.emptyFace
+#print axioms TDA.Persistence.F2GridHomologyInputExamples.emptyFace_not_valid
