@@ -140,9 +140,28 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   the interval `[0, 1)` from zero and show that the module of a closed box is
   not finitely presented. `rankErosionDistance_self` and
   `strictRankErosionDistance_self` no longer assume finite-dimensional fibers.
-  No fixed-radius statement about the strict predicate and no certificate for
-  the interleaving distance is supplied. See
+  See
   [rank erosion](docs/math/rank-erosion.md#attainment-for-finitely-presented-modules).
+- Compare the two erosion predicates at a fixed radius and certify failed
+  tests for finitely presented modules: with at least one coordinate
+  `StrictRankErosion ε M N ↔ RankErosion ε M N`
+  (`GradedFree.finitelyPresented_strictRankErosion_iff_rankErosion`); the
+  strict distance is at most a radius exactly when the strict predicate holds
+  there; and a radius at which erosion fails is strictly below the erosion
+  distance, which is at most the interleaving distance
+  (`GradedFree.finitelyPresented_rankErosion_failure_certificate`,
+  `GradedFree.finitelyPresented_lt_coordinateInterleavingDistance_of_not_rankErosion`).
+  For valid `F2GridRep` input, `F2GridRep.runErosion` passes exactly when the
+  erosion distance of the actual Kan extensions is at most the tested radius,
+  and general statements give what a pass and a failure imply for both
+  predicates and for the erosion and interleaving distances. Examples show
+  that the closed box and zero are interleaved at every radius above their
+  interleaving distance and not at it, that the fixed-radius equivalence fails with no
+  coordinates, and that two finitely presented two-parameter modules over the
+  two-element field have equal rank invariants, erosion distance zero and
+  nonzero interleaving distance. `GradedFree.finitelyPresented_zero` now
+  allows an index type in any universe. See
+  [rank erosion](docs/math/rank-erosion.md#fixed-radius-certificates-and-nonseparation).
 - Compute the incidence lists of graph-PL input by execution
   (`HeightGraph.incidence?`): from a Boolean adjacency function and rational
   vertex heights, the sorted distinct levels, one cell per level component and

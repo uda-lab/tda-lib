@@ -76,7 +76,11 @@ Interchange $M,N$ for a violation in the other direction. A failed test alone
 does not justify a strict lower bound for arbitrary pointwise finite-dimensional
 inputs: an infimum need not be attained. For finitely presented modules a
 failed test does give a strict lower bound of the erosion distance
-([below](#attainment-for-finitely-presented-modules)).
+([below](#attainment-for-finitely-presented-modules)), and a second strict
+bound of the interleaving distance passes through the erosion distance:
+`GradedFree.finitelyPresented_lt_coordinateInterleavingDistance_of_not_rankErosion`
+([certificates](#fixed-radius-certificates-and-nonseparation), where the two
+strict bounds are compared).
 
 `RankErosionWitness.originHook_diagonal_rank` computes a nonzero diagonal rank
 for the principal upset over $\mathbb Q$.
@@ -204,8 +208,10 @@ bound of the erosion distance (`le_rankErosionDistance_of_not_rankErosion`,
 (`rankErosionDistance_le_coordinateInterleavingDistance`). The Kan extensions
 are also finitely presented, so the erosion distance is strictly larger than
 the tested radius
-([attainment](#attainment-for-finitely-presented-modules)). The test neither
-minimises a radius nor works over other fields. A coordinate has at most three
+([attainment](#attainment-for-finitely-presented-modules)). What a passing or
+a failing test implies for both predicates and for the distances is stated for
+arbitrary valid input [below](#fixed-radius-certificates-and-nonseparation).
+The test neither minimises a radius nor works over other fields. A coordinate has at most three
 times as many breakpoints as the two grids have values there, and the
 breakpoint grades are the product over the coordinates. The test validates
 both representations, which enumerates the comparable triples of their grid
@@ -298,7 +304,8 @@ zero is `1/2`, and its strict predicate fails at every radius below `1/2`
 [below](#attainment-for-finitely-presented-modules)).
 
 Nothing in this section identifies the two predicates at a fixed radius for a
-restricted class of modules, or makes a lower bound strict.
+restricted class of modules, or makes a lower bound strict. Both are done for
+finitely presented modules in the next two sections.
 
 ## Attainment for finitely presented modules
 
@@ -381,39 +388,181 @@ smaller radius (`interval_zero_not_strictRankErosion_of_lt`), and by attainment
 erosion holds exactly at the radii from `1/2` on
 (`interval_zero_rankErosion_iff`).
 
-This section makes no statement about the strict predicate at a fixed radius
-for finitely presented modules and none about the interleaving distance.
+The strict predicate at a fixed radius and the interleaving distance are
+treated in the next section.
+
+## Fixed radius, certificates and nonseparation
+
+Let $M$ and $N$ again have original finite graded-free presentations. The
+statements of this section are in `TDA.Persistence.RankErosionCertificate`.
+
+**The two predicates at a fixed radius.** Let $n\ge1$. Strict erosion at
+$\varepsilon$ bounds the strict distance by $\varepsilon$; the strict distance
+equals the weak one ([strict pairs](#strict-pairs)); and by
+[attainment](#attainment-for-finitely-presented-modules) the weak predicate
+holds at $\varepsilon$. With `RankErosion.strict` this gives
+
+$$\operatorname{StrictRankErosion}(\varepsilon,M,N)\iff
+\operatorname{RankErosion}(\varepsilon,M,N)$$
+
+(`GradedFree.finitelyPresented_strictRankErosion_iff_rankErosion`). For every
+$n$, the strict distance is at most $\varepsilon$ exactly when strict erosion
+holds at $\varepsilon$, and a radius at which strict erosion fails is strictly
+below the strict distance
+(`GradedFree.finitelyPresented_strictRankErosionDistance_le_iff_strictRankErosion`,
+`GradedFree.finitelyPresented_lt_strictRankErosionDistance_of_not_strictRankErosion`);
+with no coordinates the strict predicate always holds and the strict distance
+is zero. Both hypotheses of the equivalence are needed. The closed box of the
+[strict-pair section](#strict-pairs) has finite-dimensional fibers and
+separates the two predicates at the radius $c$. With no coordinates, the two
+modules with fibers of dimensions three and two are finitely presented,
+satisfy strict erosion and violate weak erosion at every radius
+(`noCoordinates_finitelyPresented_not_iff` in
+`RankErosionCertificateExamples`). For the interval module `[0, 1)` and zero,
+strict erosion holds exactly at the radii from `1/2` on
+(`interval_zero_strictRankErosion_iff`).
+
+**The certificate of a failed test.** If erosion fails at $\varepsilon$, then
+
+$$\varepsilon<d_E(M,N)\le d_I(M,N)$$
+
+(`GradedFree.finitelyPresented_rankErosion_failure_certificate`), and in
+particular $\varepsilon<d_I(M,N)$
+(`GradedFree.finitelyPresented_lt_coordinateInterleavingDistance_of_not_rankErosion`).
+The first inequality is the strict bound of the previous section. The second
+is `rankErosionDistance_le_coordinateInterleavingDistance`, with the
+finite-dimensional fibers taken from the presentations; it does not depend on
+the failed test.
+
+`radius_lt_coordinateInterleavingDistance_of_rank_violation`
+([above](#using-a-failed-rank-test)) also concludes $\varepsilon<d_I(M,N)$. It
+starts from one violated inequality at a named weak pair, asks for
+presentations whose generators and relations are indexed in the universe of
+the coefficients and for finite-dimensionality instances, and uses attainment
+of the interleaving distance. The certificate starts from the failure of
+either inequality, asks for presentations indexed in `Type` and for no
+instance, and places the erosion distance between the radius and the
+interleaving distance. The two universe choices are exchanged by
+`GradedFree.finitelyPresented_liftIndexUniverse` and
+`GradedFree.finitelyPresented_lowerIndexUniverse`, and
+`certificate_of_rank_violation` derives the certificate from the hypotheses of
+the older theorem.
+
+**Executed tests.** The Kan extensions of two valid representations over the
+two-element field are finitely presented. For valid input and a rational
+radius $e\ge0$:
+
+- the test passes exactly when the erosion distance of the two Kan extensions
+  is at most $e$ (`F2GridRep.runErosion_eq_pass_iff_rankErosionDistance_le`),
+  and, for $n\ge1$, exactly when strict erosion holds at $e$
+  (`F2GridRep.runErosion_eq_pass_iff_strictRankErosion`);
+- a passing test gives both predicates at $e$ and bounds both erosion
+  distances by $e$ (`F2GridRep.runErosion_eq_pass_certificate`); it gives no
+  bound of the interleaving distance, as the nonseparation example below
+  shows;
+- a failing test gives $e<d_E\le d_I$ (`F2GridRep.runErosion_eq_fail_certificate`),
+  and for $n\ge1$ it refutes strict erosion at $e$ and shows that $e$ is
+  strictly below the strict distance
+  (`F2GridRep.runErosion_eq_fail_strict_certificate`). With no coordinates a
+  failing test says nothing about the strict predicate.
+
+The three certificate statements take only the equation for the executed
+result; validity of the input is part of their conclusion. In
+`RankErosionCertificateExamples` the failing test of the interval module
+`[0, 1)` against zero at radius `1/4` gives the chain and refutes strict
+erosion at `1/4` itself (`interval_zero_quarter_certificate`,
+`interval_zero_quarter_strict_certificate`); the failing test of the modules
+born at `0` and at `1` bounds their interleaving distance strictly from below
+by `1/2` (`rays_half_lt_coordinateInterleavingDistance`); the failing test of
+two two-parameter modules at radius `0` shows that they are not isomorphic
+(`plane_flat_not_iso`); the failing test with no coordinates still bounds the
+interleaving distance (`noCoordinates_lt_coordinateInterleavingDistance`); and
+the test of the interval module against zero passes exactly at the rational
+radii from `1/2` on (`interval_zero_runErosion_eq_pass_iff`).
+
+**The closed box and interleavings.** For the module of the closed box
+$[0,2c]^n$ and the zero module there is no interleaving at radius $c$, for
+every $n$, because an interleaving gives weak erosion at its radius
+(`closedBox_not_interleaving`). For $n\ge1$ and $c'>c$, the structure map of
+the closed box from a grade $a$ to $a+2c'\mathbf1$ leaves the box and is zero,
+so the two zero maps form an interleaving at radius $c'$
+(`closedBox_interleaving_of_lt`). Hence the interleaving distance is $c$ and is
+not attained (`closedBox_coordinateInterleavingDistance`). For modules that
+have only finite-dimensional fibers, neither the erosion distance nor the
+interleaving distance need be attained, and erosion can fail at a radius
+equal to both distances.
+
+**Nonseparation.** Take the grid $\{0,1\}^2$ and two modules over the field
+with two elements, with fiber zero at $(0,0)$, one-dimensional fibers at
+$(1,0)$ and $(0,1)$, and a two-dimensional fiber at $(1,1)$. In the first
+module both arm maps into the top fiber send the generator to the same basis
+vector; in the second they send it to the two basis vectors
+(`armsCoincident`, `armsIndependent`). Their Kan extensions are finitely
+presented. The executed test passes at radius `0`, so the two extensions have
+the same rank at every weak pair and erosion distance zero (`arms_zero`,
+`arms_rank_eq`, `arms_rankErosionDistance`); the test passes at every
+nonnegative rational radius (`arms_runErosion_eq_pass_iff`). They are not
+isomorphic: the images of the two structure maps into the fiber at $(1,1)$
+have a nonzero common vector in the first extension and none in the second,
+and this property is preserved by isomorphisms (`ImagesMeet`,
+`armsCoincident_imagesMeet`, `armsIndependent_not_imagesMeet`,
+`arms_not_iso`). For finitely presented modules interleaving distance zero is
+isomorphism, so their interleaving distance is not zero
+(`arms_nonseparation`); its value is not computed. Thus the rank invariant
+does not determine a finitely presented two-parameter module, $d_E\le d_I$
+can be strict with $d_E=0$, and a passing rank test gives no bound of the
+interleaving distance. The example is over the two-element field, the field
+of the executable representations.
 
 ## Zero radius, zero distance and future extensions
 
 `rankErosion_zero_iff` identifies the **predicate** `RankErosion 0 M N` with
 equality of all weak-pair ranks. Consequently equal rank invariants give distance
 zero. This theorem does not identify the infimum equation $d_E(M,N)=0$ with
-that predicate, nor does it classify modules up to natural isomorphism. For
-finitely presented modules distance zero is equality of the rank invariants
-([above](#attainment-for-finitely-presented-modules)); the module supported at
-one grade shows that this fails for finite-dimensional fibers in general.
-In multiple parameters, ranks do not record how images of maps from incomparable
-grades meet, so rank equality cannot in general recover the module.
+that predicate, nor does it classify modules up to natural isomorphism. The
+four assertions `RankErosion 0`, $d_E=0$, equal rank invariants and
+isomorphism are related as follows.
+
+- For all modules, `RankErosion 0` is equality of the ranks at all weak pairs
+  (`rankErosion_zero_iff`), and it gives $d_E=0$
+  (`rankErosionDistance_le_of_erosion`).
+- For finite-dimensional fibers, isomorphic modules have $d_I=0$ and hence
+  $d_E=0$ (`coordinateInterleavingDistance_eq_zero_of_iso`,
+  `rankErosionDistance_le_coordinateInterleavingDistance`); the isomorphism is
+  an interleaving at radius zero and gives `RankErosion 0`
+  (`CoordinateInterleaving.ofIso`, `CoordinateInterleaving.rankErosion`).
+- $d_E=0$ gives equal rank invariants for finitely presented modules
+  (`GradedFree.finitelyPresented_rankErosionDistance_eq_zero_iff`). It does
+  not for finite-dimensional fibers in general: the module supported at one
+  grade has distance zero from the zero module
+  (`closedBox_zero_distance_zero_and_ranks_differ`).
+- Equal rank invariants do not give an isomorphism, also for finitely
+  presented modules: in two parameters, ranks do not record how the images of
+  maps from incomparable grades meet
+  ([nonseparation](#fixed-radius-certificates-and-nonseparation)).
+- For finitely presented modules, $d_I=0$ is isomorphism
+  (`GradedFree.finitelyPresented_distance_eq_zero_iff_iso`).
 
 The [extension proposal](https://github.com/uda-lab/tda-lib/issues/865)
 separates several targets. Of these, the finite criterion, the executable
 representations over the two-element field, the certified finite test, the
-comparison of weak and strict pairs and the attainment theorem of the five
-preceding sections are supplied. Of the proposal's first package, on
-conventions and exact thresholds, the supplied items are the strict-pair
-predicate, its two comparisons with the weak predicate, the equality of the
-distances, the non-strict lower bounds, the closed-box and no-coordinates
-boundary cases, and erosion attainment for original finitely presented
-modules: admissibility of the infimum, the strict lower bound from a failed
-predicate, and the identification of distance zero with equal rank invariants,
-with the right-local isomorphisms taken from the presentation. Its remaining
-items are proposed extensions, not declarations supplied by this note: the
-equivalence of the strict and weak predicates at a fixed radius for finitely
-presented modules; the certificate $\varepsilon<d_E\le d_I$ from a failed
-test; and a two-parameter example of non-isomorphic modules with equal rank
-invariants. The
-other packages also remain proposed: image rank beyond finite-dimensional
+comparison of weak and strict pairs, the attainment theorem and the
+certificates of the six preceding sections are supplied. The proposal's first
+package, on conventions and exact thresholds, is supplied: the strict-pair
+predicate, its two comparisons with the weak predicate and the equality of the
+distances; erosion attainment for original finitely presented modules, with
+the right-local isomorphisms taken from the presentation; the equivalence of
+the two predicates at a fixed radius for finitely presented modules with at
+least one coordinate; the certificate $\varepsilon<d_E\le d_I$ from a failed
+test; and the boundary cases. The boundary cases are supplied in these forms:
+the closed box $[0,2c]^n$ over $\mathbb Q$ against zero, for erosion and for
+interleavings; with no coordinates, two modules with fibers of dimensions
+three and two, not one copy of the field against zero; the two-parameter
+nonseparation example over the two-element field, not over an arbitrary
+field; and the record above of the implications between the zero-radius
+assertions. A predicate on coordinatewise strict pairs, which the proposal
+leaves optional, is not supplied. The
+other packages remain proposed: image rank beyond finite-dimensional
 fibers; finite tests fed by actual persistent-homology input; and execution
 over other fields. The proposal records endpoint and nonseparation
 counterexamples that a broader API must respect, rather than promising to
@@ -425,14 +574,16 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosion`, `TDA.Persistence.RankErosionInterleaving`,
 `TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid`,
 `TDA.Persistence.F2GridRep`, `TDA.Persistence.F2GridErosion`,
-`TDA.Persistence.StrictRankErosion` and
-`TDA.Persistence.RankErosionAttainment`. Their
+`TDA.Persistence.StrictRankErosion`,
+`TDA.Persistence.RankErosionAttainment` and
+`TDA.Persistence.RankErosionCertificate`. Their
 declarations are in `TDA.Persistence`; the concrete hook witnesses are in its `RankErosionWitness` namespace, the grid
 criterion is in `TDA.Persistence.CoordinateGrid`, and the executable
 representations are in `TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.
 The strict-pair examples are in `TDA.Persistence.StrictRankErosionExamples`
-and the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples`;
-the attainment theorems are in `TDA.Persistence.GradedFree`.
+the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples` and
+the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`;
+the attainment and certificate theorems are in `TDA.Persistence.GradedFree`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 
 [Puuska, §2.2](https://arxiv.org/html/1710.01577v1) defines the rank invariant
@@ -460,7 +611,8 @@ coordinatewise step after Theorem 30. And the paper works with images in a
 preordered abelian category, not with `finrank`, so agreement of the predicates
 beyond the pair convention is not established.
 
-The comparison of the two library predicates, its boundary cases and the
-finite-presentation erosion attainment are library derivations. No
+The comparison of the two library predicates, its boundary cases, the
+finite-presentation erosion attainment, the fixed-radius equivalence, the
+certificate and the nonseparation example are library derivations. No
 theorem about strict pairs in this note is attributed to a numbered result of
 the paper. See the [source record](references.md#Puuska17-v1).

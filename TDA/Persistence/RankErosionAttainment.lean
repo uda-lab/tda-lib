@@ -26,7 +26,7 @@ modules; no rank or isomorphism condition is asked of the caller. The Kan extens
 
 set_option autoImplicit false
 
-universe u
+universe u v
 
 namespace TDA.Persistence
 
@@ -74,9 +74,9 @@ namespace GradedFree
 
 /-- The zero module on any preordered index type is finitely presented, with no generators and
 no relations. -/
-theorem finitelyPresented_zero {P : Type} [Preorder P] :
-    FinitelyPresented.{u,0,0} (R := k) (P := P) (0 : PModule.{u,0,u} k P) := by
-  let W : GradedGenerators.{0,0} P := ⟨Empty, Empty.elim⟩
+theorem finitelyPresented_zero {P : Type v} [Preorder P] :
+    FinitelyPresented.{u,v,0} (R := k) (P := P) (0 : PModule.{u,v,u} k P) := by
+  let W : GradedGenerators.{v,0} P := ⟨Empty, Empty.elim⟩
   have : Finite W.Carrier := inferInstanceAs (Finite Empty)
   have hzero : Limits.IsZero (module (R := k) W) := by
     apply (Limits.IsZero.iff_id_eq_zero _).mpr
