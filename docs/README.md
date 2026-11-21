@@ -72,13 +72,16 @@ closure properties and examples. These are theory interfaces; countable hook
 matching and optimality of the signed stability constant are not claimed.
 
 [Weak-pair rank erosion](math/rank-erosion.md) compares actual structure-map ranks,
-including diagonal pairs, for pointwise finite-dimensional field-valued modules.
-Its extended distance is bounded by coordinate interleaving distance. For modules
-on finite grids the predicate reduces to finitely many grades, and for F₂ grid
-representations a certified executable test decides it at a given rational radius.
-The guide separates these and the available rank obstructions from the proposed
-erosion-attainment extensions; equality of ranks is not a general module
-classification.
+diagonal pairs included, under weak and strict pair conventions; its distance is
+bounded by coordinate interleaving distance. For finitely presented modules,
+attainment, failed-test certificates and the equivalence of the strict and weak
+predicates are supplied. An extended rank handles modules without pointwise finite
+dimensionality, and coordinatewise q-tameness covers several parameters. Finite
+simplicial homology has grade-error bounds, and four tetrahedron-boundary comparisons
+have exact erosion distances. For F₂ grid representations a certified test decides
+erosion at a rational radius; persistent-homology input to it is pending (#1049).
+In two or more parameters equal ranks do not classify modules; see
+[what is not provided](math/rank-erosion.md#what-is-not-provided).
 
 ## Metric inputs and sampling
 

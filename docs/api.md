@@ -1167,6 +1167,9 @@ multidimensional finite-presentation theorem. See
 
 ### Weak-pair rank erosion
 
+For a task-oriented route through these results see
+[choosing a result](math/rank-erosion.md#choosing-a-result).
+
 For field-valued modules on `Fin n → ℝ` with pointwise finite-dimensional fibers,
 `RankErosion ε M N` compares the ranks of `M(a−ε → b+ε)` with `N(a → b)` and
 vice versa for every weak pair `a ≤ b`. Diagonal ranks are included, also for

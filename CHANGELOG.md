@@ -10,6 +10,9 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Add a task-oriented route through the rank-erosion guide and a list of what is
+  not provided. See
+  [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
 - Add erosion bounds for finite graded simplicial homology
   (`TDA.Persistence.FiniteSimplicialErosion`): a coordinatewise grade error
   `δ`, in particular `FiniteGraded.supGradeError`, is an admissible radius for
@@ -65,7 +68,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   of every positive diagonal shift, and agrees with `PModule.QTame` for one
   coordinate; with no coordinate it is pointwise finite dimensionality. A
   coordinate interleaving bounds the extended rank of a doubled-shift map by the
-  middle fibre, and maps with a gap above `2ε` in every coordinate have finite
+  middle fibre's extended dimension, and maps with a gap above `2ε` in every coordinate have finite
   extended rank when the other module is coordinatewise q-tame. Erosion test
   domains are unchanged; an example is coordinatewise q-tame with an
   axis-parallel map of extended rank `⊤`. See

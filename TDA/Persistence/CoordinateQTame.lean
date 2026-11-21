@@ -12,9 +12,9 @@ nothing of it.
 
 Equivalently every positive diagonal shift `M a → M (translation δ a)`, `δ > 0`, has
 finite-dimensional image, or finite extended rank. For one coordinate the notion is
-`PModule.QTame` through `CoordinateRealBridge.fromReal`. With no coordinate the
-coordinatewise-strict condition is vacuous, so the only pair is the diagonal one and the
-notion is pointwise finite dimensionality.
+`PModule.QTame` through `CoordinateRealBridge.fromReal`. With no coordinate `Fin 0 → ℝ` has
+one point, so the only pair is the diagonal one; the coordinatewise-strict condition holds
+vacuously there, and the notion is pointwise finite dimensionality.
 
 A coordinate `ε`-interleaving bounds the extended rank of the doubled-shift structure map by
 the extended dimension of the middle fibre of the other module. If the other module is
@@ -121,7 +121,8 @@ theorem qTame_iff_coordQTame_fromReal (M : PModule.{u,0,w} k ℝ) :
     exact h (diagonal a) (diagonal b) fun _ => hab
 
 /-- With no coordinate, coordinatewise q-tameness is pointwise finite dimensionality: the
-coordinatewise-strict condition is vacuous, so the diagonal pair is tested. -/
+index type has one point and the coordinatewise-strict condition holds vacuously, so the
+diagonal pair is tested. -/
 theorem coordQTame_fin_zero_iff (M : PModule.{u,0,w} k (Fin 0 → ℝ)) :
     M.CoordQTame ↔ ∀ a, FiniteDimensional k (M.obj a) := by
   refine ⟨fun h a => ?_, coordQTame_of_finiteDimensional M⟩
