@@ -446,3 +446,4 @@ import TDA.Persistence.Enclosure.Gram
 import TDA.Persistence.StrictRankErosion
 import TDA.Persistence.RankErosionAttainment
 import TDA.Persistence.RankErosionCertificate
+import TDA.Persistence.StructureMapERank

@@ -225,3 +225,4 @@ import TDA.Persistence.Enclosure.GramExamples
 import TDA.Persistence.StrictRankErosionExamples
 import TDA.Persistence.RankErosionAttainmentExamples
 import TDA.Persistence.RankErosionCertificateExamples
+import TDA.Persistence.StructureMapERankExamples
