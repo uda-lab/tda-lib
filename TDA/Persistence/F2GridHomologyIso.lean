@@ -163,10 +163,9 @@ noncomputable def gridPointEquiv {xs : RatGradedInput m n} (h : Valid xs) (p : �
     ((homology xs h p).mapIso
       (eqToIso (RatGrid.realGrade_ratPoint (gridValues xs) q))).toLinearEquiv
 
--- The rewrites at the grid fibres need the relaxed transparency check. Without it,
--- `rw [LinearEquiv.apply_symm_apply]` finds no occurrence: the coercions of the generated fibre,
--- a `ModuleCat` carrier, agree with those in `sliceCoordinates_structureMap` only after unfolding
--- beyond the transparency that the default check allows.
+-- The rewrites at the grid fibres need the relaxed transparency check: without this option,
+-- `rw [LinearEquiv.apply_symm_apply] at hc` finds no occurrence of its pattern (observed; the
+-- cause has not been isolated).
 set_option backward.isDefEq.respectTransparency false in
 /-- The grid module of the generated representation is the grid restriction of the actual
 homology, as persistence modules. -/
@@ -210,10 +209,9 @@ noncomputable def toF2GridRep_lanIso {xs : RatGradedInput m n} (h : Valid xs) (p
         rw [finiteSimplicialHomology_obj, sublevel_eq_bot_of_not_hasLowerPoint h a ha]
         exact isZero_simplicialHomology_bot (ZMod 2) p)
 
--- The rewrite with `kanInclusion_naturality` needs the relaxed transparency check. Without it,
--- the preceding `rw [← Category.assoc]` finds no occurrence: the composites of the left Kan
--- extension and of the persistence-module category agree only after unfolding beyond the
--- transparency that the default check allows.
+-- The rewrite with `kanInclusion_naturality` needs the relaxed transparency check: without this
+-- option, the `rw [← Category.assoc, …]` that starts it finds no occurrence of its pattern
+-- (observed; the cause has not been isolated).
 set_option backward.isDefEq.respectTransparency false in
 /-- Below a real grade with a lower grid point, the isomorphism reads the generated fibre at the
 grid floor in its slice coordinates and maps it into the actual homology by the inclusion from

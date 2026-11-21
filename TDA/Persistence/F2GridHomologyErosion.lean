@@ -12,10 +12,12 @@ runs the existing fixed-radius test `F2GridRep.erosionFailure?` on them. Its out
 negative radius apart from `pass` and `fail w`; the witness `w` is the existing
 `F2GridRep.ErosionFailure`.
 
-Through the isomorphism `RatGradedInput.toF2GridRep_lanIso` every outcome is a statement about
-the actual homology modules `RatGradedInput.homology`: `pass` holds exactly when `RankErosion`
-holds at the radius, and a failure records a direction, a comparable pair of breakpoint grades
-and the ranks of the actual widened and narrow structure maps, which violate the inequality.
+Through the isomorphism `RatGradedInput.toF2GridRep_lanIso` the outcomes `pass` and `fail w`
+are statements about the actual homology modules `RatGradedInput.homology`: `pass` holds exactly
+when `RankErosion` holds at the radius, and a failure records a direction, a comparable pair of
+breakpoint grades and the ranks of the actual widened and narrow structure maps, which violate
+the inequality. The other three outcomes report a rejected input or radius and say nothing
+about any module.
 The actual modules are finitely presented (`finiteSimplicialHomology_finitelyPresented`), so a
 pass bounds both erosion distances by the radius, and a failure puts the radius strictly below
 the erosion distance, which is at most the interleaving distance.
@@ -143,8 +145,8 @@ theorem runErosion_eq_pass_iff (xs : RatGradedInput m n) (ys : RatGradedInput m'
         ⟨toF2GridRep_valid hx p, toF2GridRep_valid hy p, he,
           (rankErosion_lan_toF2GridRep_iff hx hy p _).mpr hE⟩]
 
-/-- A reported failure of the end-to-end run is a reported failure of the existing test on the
-generated representations. -/
+/-- The end-to-end run reports a failure `w` exactly when both inputs are valid and the existing
+test on the generated representations reports the same failure `w`. -/
 theorem runErosion_eq_fail_iff {xs : RatGradedInput m n} {ys : RatGradedInput m' n}
     {p : ℕ} {e : ℚ} {w : F2GridRep.ErosionFailure n} :
     runErosion xs ys p e = .fail w ↔ ∃ (_ : Valid xs) (_ : Valid ys),

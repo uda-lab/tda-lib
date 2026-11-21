@@ -573,15 +573,18 @@ graded complexes. The inputs are two face lists `xs : RatGradedInput m n` and
 in `Fin n → ℚ`. The other arguments are a homological degree `p` and a rational
 radius `e`. The run checks `RatGradedInput.Valid xs`, then
 `RatGradedInput.Valid ys`, then `0 ≤ e`. It then generates both F₂ grid
-representations in degree `p` (`RatGradedInput.toF2GridRep`) and applies the
-search of the previous section, `F2GridRep.erosionFailure?`, to them. On valid
+representations in degree `p` (`RatGradedInput.toF2GridRep`) and applies to
+them `F2GridRep.erosionFailure?`, the search that the previous section describes
+for `F2GridRep.runErosion`. On valid
 input with `0 ≤ e` this is `F2GridRep.runErosion` of the two generated
 representations (`RatGradedInput.runErosion_eq_of_valid`).
 
 The result `RatGradedInput.ErosionResult n` has five outcomes. Through the
-isomorphism `RatGradedInput.toF2GridRep_lanIso`, each outcome is a statement
-about the actual homology modules `RatGradedInput.homology xs hx p` and
-`RatGradedInput.homology ys hy p`, not only about the generated representations.
+isomorphism `RatGradedInput.toF2GridRep_lanIso`, the outcomes `pass` and `fail w`
+are statements about the actual homology modules `RatGradedInput.homology xs hx p`
+and `RatGradedInput.homology ys hy p`, not only about the generated
+representations. The other three outcomes report a rejected input or radius and
+say nothing about any module.
 
 - `invalidFirst`: `xs` is not valid, whatever `ys` and `e` are
   (`runErosion_eq_invalidFirst_iff`).

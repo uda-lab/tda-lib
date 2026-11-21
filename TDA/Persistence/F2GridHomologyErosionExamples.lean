@@ -18,9 +18,13 @@ against `shiftedTriangle` (the same grading translated by `(1/2, 0)`):
 * an invalid first input, an invalid second input and a negative radius are reported
   separately.
 
-The kernel evaluates only the reduction of the hollow slice at the origin, the breakpoint
-enumeration at radius zero, the face lists and the grade differences; every other conclusion
-follows from the theorems of `F2GridHomologyErosion`.
+In this file the kernel evaluates (`decide +kernel`) the reduction of the hollow slice at the
+origin, the start of the breakpoint enumeration at radius zero, the face lists and the grade
+differences, and `rfl` closes the reduction of the empty slice and the rank comparison at the
+origin. The slices at the origin and the validity of the inputs are the kernel-checked facts of
+`F2GridHomologyInputExamples`. The Betti numbers and executable ranks follow from
+`toF2GridRep_dim` and `toF2GridRep_rankAt` of `F2GridHomologyIso`, and the remaining
+conclusions from the theorems of `F2GridHomologyErosion`.
 -/
 
 set_option autoImplicit false
@@ -83,14 +87,6 @@ private theorem rankOfStructureMap_eq_finrank {M : PModule.{0,0,0} (ZMod 2) (Fin
   unfold rankOfStructureMap
   rw [structureMapLinear_self, LinearMap.range_id, finrank_top]
 
-private theorem erosionLower_zero (a : Fin 2 → ℝ) : erosionLower (radius 0 le_rfl) a = a := by
-  funext i
-  simp [erosionLower]
-
-private theorem erosionUpper_zero (a : Fin 2 → ℝ) : erosionUpper (radius 0 le_rfl) a = a := by
-  funext i
-  simp [erosionUpper]
-
 /-- **The named violation at radius zero.** At the origin, the widened rank of the actual
 first homology of `triangle` is one and the rank of that of `shiftedTriangle` is zero. -/
 theorem triangle_violation_zero :
@@ -99,7 +95,9 @@ theorem triangle_violation_zero :
       rankOfStructureMap (homology shiftedTriangle shiftedTriangle_valid 1)
         (le_refl (realGrade (![0, 0] : Fin 2 → ℚ))) = 0 := by
   constructor
-  · rw [rankOfStructureMap_eq_finrank (erosionLower_zero _) (erosionUpper_zero _),
+  · have h0 : radius 0 le_rfl = 0 := NNReal.eq (by simp)
+    rw [rankOfStructureMap_eq_finrank (by rw [h0, erosionLower_zero])
+      (by rw [h0, erosionUpper_zero]),
       triangle_finrank_origin]
   · rw [rankOfStructureMap_eq_finrank rfl rfl, shiftedTriangle_finrank_origin]
 
