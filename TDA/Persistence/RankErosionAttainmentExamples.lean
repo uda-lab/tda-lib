@@ -70,6 +70,7 @@ end Executed
 
 section IntervalDistance
 
+/-- The executed rank of the zero representation on the diagonal at the grade `1/2` is zero. -/
 theorem zero_rank_half : zero.rankAt ![1 / 2] ![1 / 2] = 0 := by decide +kernel
 
 /-- Below radius `1/2` the diagonal pair at `1/2` is a failed test: the widened structure map

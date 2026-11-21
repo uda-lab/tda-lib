@@ -14,8 +14,10 @@ the finite criterion `CoordinateGrid.rankErosion_lan_iff_of_subset` applies: the
 and only if `RankErosion` holds for the actual Kan extensions of the two grid modules, and a
 reported failure is a violation by those extensions.
 
-A failure proves that the predicate fails at this radius. It gives no strict lower bound for an
-erosion or interleaving distance. Which violation is reported depends on the enumeration order.
+A failure proves that the predicate fails at this radius. This module states no distance bound.
+The Kan extensions of valid representations are finitely presented, and `RankErosionCertificate`
+derives from a failure that the tested radius is strictly below the erosion distance, which is
+at most the interleaving distance. Which violation is reported depends on the enumeration order.
 The test evaluates every comparable pair of breakpoint grades, with four enumeration ranks each.
 A coordinate has at most three times as many breakpoints as the two grids have values there,
 and the grades are the product over the coordinates; no polynomial bound is claimed.
