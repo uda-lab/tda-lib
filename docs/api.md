@@ -813,6 +813,8 @@ For grades `g,h` on the same complex, a uniform coordinate error bound
 `δ : ℝ≥0` constructs `finiteSimplicialHomology_interleaving` and bounds the
 coordinate interleaving distance by `δ`. `FiniteGraded.supGradeError` is the
 finite maximum of the face-coordinate errors, with empty maximum zero.
+The same bounds hold for rank erosion; see
+[weak-pair rank erosion](#weak-pair-rank-erosion).
 For `n ≥ 1`, `finiteSimplicialSignedHookBarcode` uses the derived finite
 presentation, and `finiteSimplicial_signedHookBottleneckDissimilarity_le`
 bounds the canonical signed dissimilarity by `(2*n-1)^2 * δ`. The caller
@@ -1203,6 +1205,12 @@ is the local finite-image bound through a finite-dimensional middle fibre, and
 `RealInterleaving.eRankErosion` and
 `eRankErosionDistance_fromReal_le_realInterleavingDistance` transport the
 interleaving bound across `CoordinateRealBridge.fromReal`.
+For finite graded simplicial homology (`TDA.Persistence.FiniteSimplicialErosion`),
+`finiteSimplicialHomology_rankErosion`,
+`rankErosionDistance_finiteSimplicialHomology_le_supGradeError` and
+`eRankErosionDistance_finiteSimplicialHomology_le_supGradeError` bound erosion by
+the grade error, and `finiteSimplicialHomology_rankErosion_failure_certificate`
+turns a failed test into `ε < dE ≤ dI ≤ supGradeError`.
 Erosion attainment is supplied for finitely presented modules only (below); a
 certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).

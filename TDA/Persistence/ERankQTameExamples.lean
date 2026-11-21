@@ -104,8 +104,9 @@ example {ε : ℝ≥0} (hε : 0 < ε) (a : ℝ) :
 
 /-- A real interleaving gives extended-rank erosion of the one-coordinate modules. -/
 example {ε : ℝ≥0} (hε : 0 < ε) :
-    ERankErosion ε (fromReal realEphemeral) (fromReal (0 : PModule.{0,0,0} ℚ ℝ)) :=
-  (nonempty_realInterleaving_realEphemeral_zero hε).some.eRankErosion
+    ERankErosion ε (fromReal realEphemeral) (fromReal (0 : PModule.{0,0,0} ℚ ℝ)) := by
+  obtain ⟨i⟩ := nonempty_realInterleaving_realEphemeral_zero hε
+  exact i.eRankErosion
 
 /-- The extended erosion distance is bounded by the real interleaving distance. -/
 example : eRankErosionDistance (fromReal realEphemeral) (fromReal (0 : PModule.{0,0,0} ℚ ℝ)) ≤

@@ -10,6 +10,14 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Add erosion bounds for finite graded simplicial homology
+  (`TDA.Persistence.FiniteSimplicialErosion`): a coordinatewise grade error
+  `δ`, in particular `FiniteGraded.supGradeError`, is an admissible radius for
+  `RankErosion` and `ERankErosion` and bounds both erosion distances; a failed
+  erosion test at `ε` gives `ε < dE ≤ dI ≤ supGradeError`, with no
+  caller-supplied presentation. Examples on the translated tetrahedron-boundary
+  family give upper bounds only. See
+  [rank erosion](docs/math/rank-erosion.md#finite-graded-simplicial-homology).
 - Add one-parameter consumers of the extended image rank
   (`TDA.Persistence.ERankQTame`): a real module is q-tame exactly when its
   strict structure maps, or those of its one-coordinate module, have finite

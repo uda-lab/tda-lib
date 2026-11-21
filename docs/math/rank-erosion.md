@@ -166,7 +166,9 @@ does. Through `CoordinateRealBridge.toCoordinate`, a real interleaving gives
 extended-rank erosion of the one-coordinate modules
 (`RealInterleaving.eRankErosion`), and
 `eRankErosionDistance_fromReal_le_realInterleavingDistance` bounds their
-extended erosion distance by `realInterleavingDistance`.
+extended erosion distance by `realInterleavingDistance`. These two are stated
+at `PModule.{u,0,u}`, as `ERankErosion` is, while the q-tame and local-bound
+statements are at `PModule.{u,0,w}`.
 
 The examples (`TDA.Persistence.ERankQTameExamples`) use `realEphemeral`, the
 one-coordinate `ephemeralInfinite` read on the real line: fibre
@@ -664,6 +666,51 @@ can be strict with $d_E=0$, and a passing rank test gives no bound of the
 interleaving distance. The example is over the two-element field, the field
 of the executable representations.
 
+## Finite graded simplicial homology
+
+Let $g,h$ be monotone grade assignments on one finite simplicial complex and
+let $\delta\ge0$ bound every face-coordinate error $|g(s)_i-h(s)_i|$. The
+statements of this section are in `TDA.Persistence.FiniteSimplicialErosion`;
+they hold for every coefficient field, homology degree and number of
+coordinates, including $n=0$, empty complexes and repeated grades.
+
+The existing interleaving `finiteSimplicialHomology_interleaving` and the
+finite-dimensional fibers of finite input give erosion at $\delta$
+(`finiteSimplicialHomology_rankErosion`) and
+$d_E(M_g,M_h)\le\delta$ (`rankErosionDistance_finiteSimplicialHomology_le`).
+The `_supGradeError` forms take for $\delta$ the maximal error
+`FiniteGraded.supGradeError`. The extended-rank forms
+(`finiteSimplicialHomology_eRankErosion`,
+`eRankErosionDistance_finiteSimplicialHomology_le` and their `_supGradeError`
+forms) need no fiber finiteness, and on this input the two erosion distances
+agree (`eRankErosionDistance_finiteSimplicialHomology_eq_rankErosionDistance`).
+
+The homology modules are finitely presented
+(`finiteSimplicialHomology_finitelyPresented`), so no caller-supplied
+presentation is needed for the [certificate](#fixed-radius-certificates-and-nonseparation).
+If erosion fails at $\varepsilon$, then
+
+$$\varepsilon<d_E(M_g,M_h)\le d_I(M_g,M_h)\le\operatorname{supGradeError}(g,h)$$
+
+(`finiteSimplicialHomology_rankErosion_failure_certificate`, and
+`finiteSimplicialHomology_eRankErosion_failure_certificate` for the extended
+rank). Hence $\varepsilon<\delta$ for every error bound $\delta$
+(`lt_of_not_rankErosion_finiteSimplicialHomology`,
+`lt_of_not_eRankErosion_finiteSimplicialHomology`) and
+$\varepsilon<\operatorname{supGradeError}(g,h)$. These grade-error
+corollaries do not need attainment: they also follow from erosion at
+$\delta$ and monotonicity in the radius. The strict bound
+$\varepsilon<d_E$ does use attainment.
+
+The examples (`TDA.Persistence.FiniteSimplicialErosionExamples`) use the
+uniform translates of the tetrahedron-boundary grading
+(`RankResolutionDegreeTwoSimplicial.translatedHomology`). Erosion holds at the
+translation gap $|t-s|$, and both erosion distances are at most the exact
+interleaving distance $\min(|t-s|,1/2)$, over every field and in particular
+over $\mathbb Q$ and the two-element field. These are upper bounds only: this
+unit exhibits no failing radius in Lean, and the exact erosion distance of the
+family, with lower erosion witnesses, is not computed here.
+
 ## Zero radius, zero distance and future extensions
 
 `rankErosion_zero_iff` identifies the **predicate** `RankErosion 0 M N` with
@@ -717,7 +764,10 @@ and [erosion on it](#erosion-on-extended-ranks), with its interleaving bound,
 are supplied, and so are the one-parameter q-tame consumer and
 [local finite-image bound](#one-parameter-q-tame-modules-and-real-interleavings);
 a multiparameter finite-image condition remains proposed, pending a choice of
-strictness convention. So do the other packages: finite tests fed by actual
+strictness convention. Of the fourth package, erosion bounds and failed-test
+certificates for [finite graded simplicial homology](#finite-graded-simplicial-homology)
+are supplied; the exact erosion distances of the translated families remain
+proposed. So do the other targets: finite tests fed by actual
 persistent-homology input; and execution over other fields. The proposal
 records endpoint and nonseparation counterexamples that a broader API must
 respect, rather than promising to remove necessary hypotheses.
@@ -731,8 +781,8 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.StrictRankErosion`,
 `TDA.Persistence.RankErosionAttainment`,
 `TDA.Persistence.RankErosionCertificate`,
-`TDA.Persistence.StructureMapERank`, `TDA.Persistence.ERankErosion` and
-`TDA.Persistence.ERankQTame`. Their
+`TDA.Persistence.StructureMapERank`, `TDA.Persistence.ERankErosion`,
+`TDA.Persistence.ERankQTame` and `TDA.Persistence.FiniteSimplicialErosion`. Their
 declarations are in `TDA.Persistence`; the concrete hook witnesses are in its
 `RankErosionWitness` namespace, the grid criterion is in
 `TDA.Persistence.CoordinateGrid`, and the executable representations are in
@@ -742,8 +792,9 @@ the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples` and
 the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`,
 the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`,
 the extended-rank erosion examples in
-`TDA.Persistence.ERankErosionExamples` and the q-tame examples in
-`TDA.Persistence.ERankQTameExamples`;
+`TDA.Persistence.ERankErosionExamples`, the q-tame examples in
+`TDA.Persistence.ERankQTameExamples` and the simplicial examples in
+`TDA.Persistence.FiniteSimplicialErosionExamples`;
 the attainment and certificate theorems are in `TDA.Persistence.GradedFree`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 

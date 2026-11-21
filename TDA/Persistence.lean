@@ -449,3 +449,4 @@ import TDA.Persistence.RankErosionCertificate
 import TDA.Persistence.StructureMapERank
 import TDA.Persistence.ERankErosion
 import TDA.Persistence.ERankQTame
+import TDA.Persistence.FiniteSimplicialErosion
