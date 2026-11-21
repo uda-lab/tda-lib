@@ -191,10 +191,11 @@ theorem strictRankErosionDistance_fin_zero (M N : PModule.{u,0,u} k (Fin 0 → �
   nonpos_iff_eq_zero.1 (by simpa using
     (strictRankErosionDistance_le_of_erosion (strictRankErosion_fin_zero 0 M N)))
 
-theorem strictRankErosionDistance_self (M : PModule.{u,0,u} k (Fin n → ℝ))
-    [∀ p, FiniteDimensional k (M.obj p)] : strictRankErosionDistance M M = 0 :=
+theorem strictRankErosionDistance_self (M : PModule.{u,0,u} k (Fin n → ℝ)) :
+    strictRankErosionDistance M M = 0 :=
   nonpos_iff_eq_zero.1 (by simpa using
-    (strictRankErosionDistance_le_of_erosion (RankErosion.refl 0 M).strict))
+    (strictRankErosionDistance_le_of_erosion
+      (rankErosion_zero_iff.mpr fun _ _ _ => rfl : RankErosion 0 M M).strict))
 
 theorem strictRankErosionDistance_comm (M N : PModule.{u,0,u} k (Fin n → ℝ)) :
     strictRankErosionDistance M N = strictRankErosionDistance N M :=

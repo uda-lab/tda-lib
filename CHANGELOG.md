@@ -124,8 +124,25 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   and a radius at which a predicate fails is a non-strict lower bound of its
   distance. The predicates differ at a fixed radius, as a module supported on a
   closed box shows, and with no coordinates the strict distance is always zero.
-  No erosion attainment or strict lower bound is supplied. See
-  [rank erosion](docs/math/rank-erosion.md#strict-pairs).
+  No erosion attainment or strict lower bound is supplied by these
+  declarations. See [rank erosion](docs/math/rank-erosion.md#strict-pairs).
+- Prove erosion attainment for modules with original finite presentations
+  (`GradedFree.FinitelyPresented`): the rank invariant is locally constant
+  under small diagonal moves to the right, a radius at which `RankErosion`
+  fails is a strict lower bound of `rankErosionDistance`
+  (`GradedFree.finitelyPresented_lt_rankErosionDistance_of_not_rankErosion`),
+  the distance is at most a radius exactly when the predicate holds there
+  (`GradedFree.finitelyPresented_rankErosionDistance_le_iff_rankErosion`), the
+  admissible radii form a closed set, and distance zero is equality of all
+  weak-pair ranks. The zero module and the Kan extension of a valid
+  `F2GridRep` are finitely presented, so a failing executed test gives a strict
+  lower bound of the erosion distance. Examples compute the distance `1/2` of
+  the interval `[0, 1)` from zero and show that the module of a closed box is
+  not finitely presented. `rankErosionDistance_self` and
+  `strictRankErosionDistance_self` no longer assume finite-dimensional fibers.
+  No fixed-radius statement about the strict predicate and no certificate for
+  the interleaving distance is supplied. See
+  [rank erosion](docs/math/rank-erosion.md#attainment-for-finitely-presented-modules).
 - Compute the incidence lists of graph-PL input by execution
   (`HeightGraph.incidence?`): from a Boolean adjacency function and rational
   vertex heights, the sorted distinct levels, one cell per level component and
