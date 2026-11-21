@@ -84,6 +84,10 @@ lifetime witnesses are **scaledTranslatedHomologyMagnitudeInterleaving** and
 is **coordinateInterleavingDistance_scaledTranslatedHomology**. Ordinary
 clients, including explicit rational and characteristic-two map obstructions,
 are in **TDA.Persistence.RankResolutionDegreeTwoSimplicialScaledTranslationExamples**.
+Both erosion distances of this family equal the same value, with lower witnesses from
+the same longer-arm maps and zero fibers
+(TDA.Persistence.FiniteSimplicialErosionScaledTranslation; see
+[rank erosion](rank-erosion.md#finite-graded-simplicial-homology)).
 
 This result concerns pairs with the same fixed strictly positive coordinate
 scale and differing uniform signed delays. It does not compare different

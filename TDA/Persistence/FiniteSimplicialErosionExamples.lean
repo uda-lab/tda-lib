@@ -1,6 +1,7 @@
 import TDA.Persistence.FiniteSimplicialErosion
 import TDA.Persistence.FiniteSimplicialErosionTranslation
 import TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation
+import TDA.Persistence.FiniteSimplicialErosionScaledTranslation
 import TDA.Persistence.RankResolutionDegreeTwoSimplicialTranslation
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.ZMod.Basic
@@ -18,7 +19,10 @@ lower bound from failed erosion tests. The radius `1/8` between the translates b
 independent signed vectors satisfy erosion at the coordinate gap `coordinateTranslationGap`;
 `FiniteSimplicialErosionCoordinateTranslation` gives their exact erosion distance, and the
 radius `1/8` between the translates by `0` and by the vector with coordinates `1/8` and `-1/4`
-is a concrete failing radius.
+is a concrete failing radius. Delays of a common positive scaling satisfy erosion at the delay
+gap; `FiniteSimplicialErosionScaledTranslation` gives their exact erosion distance, and the
+radius `1/8` between the delays `0` and `1/2` under the scale with coordinates `1` and `1/4` is
+a concrete failing radius at which the longer arm witnesses the failure.
 -/
 
 set_option autoImplicit false
@@ -255,5 +259,154 @@ example : ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
     rankErosionDistance (coordinateTranslatedHomology (ZMod 2) 0)
       (coordinateTranslatedHomology (ZMod 2) (![1 / 8, -1 / 4] : Fin 2 → ℝ)) :=
   (coordinateTranslatedHomology_rankErosion_failure_certificate_eighth (ZMod 2)).1
+
+/-! ### Scaled translates -/
+
+/-- Two delays of the same positive scaling satisfy weak-pair rank erosion at the delay gap. -/
+theorem scaledTranslatedHomology_rankErosion (k : Type u) [Field k] (s : Fin 2 → ℝ)
+    (hs : ∀ i, 0 < s i) (t u : ℝ) :
+    RankErosion (Real.toNNReal |t - u|) (scaledTranslatedHomology k s hs t)
+      (scaledTranslatedHomology k s hs u) :=
+  finiteSimplicialHomology_rankErosion k _ _ 1 (scaledTranslatedGrading_grade_error s hs t u)
+
+/-- Two delays of the same positive scaling satisfy extended-rank erosion at the delay gap. -/
+theorem scaledTranslatedHomology_eRankErosion (k : Type u) [Field k] (s : Fin 2 → ℝ)
+    (hs : ∀ i, 0 < s i) (t u : ℝ) :
+    ERankErosion (Real.toNNReal |t - u|) (scaledTranslatedHomology k s hs t)
+      (scaledTranslatedHomology k s hs u) :=
+  finiteSimplicialHomology_eRankErosion k _ _ 1 (scaledTranslatedGrading_grade_error s hs t u)
+
+/-- The erosion distance of two delays of the same positive scaling is at most the delay gap.
+It follows from `rankErosionDistance_scaledTranslatedHomology` and is kept to exercise the
+grade-error route. -/
+theorem rankErosionDistance_scaledTranslatedHomology_le_gap (k : Type u) [Field k]
+    (s : Fin 2 → ℝ) (hs : ∀ i, 0 < s i) (t u : ℝ) :
+    rankErosionDistance (scaledTranslatedHomology k s hs t)
+      (scaledTranslatedHomology k s hs u) ≤ Real.toNNReal |t - u| :=
+  rankErosionDistance_finiteSimplicialHomology_le k _ _ 1
+    (scaledTranslatedGrading_grade_error s hs t u)
+
+/-- A failed erosion test between two delays of the same positive scaling forces the delay gap
+above the tested radius. It follows from `rankErosionDistance_scaledTranslatedHomology` and is
+kept to exercise the grade-error route. -/
+theorem lt_gap_of_not_rankErosion_scaledTranslatedHomology (k : Type u) [Field k]
+    (s : Fin 2 → ℝ) (hs : ∀ i, 0 < s i) (t u : ℝ) {ε : ℝ≥0}
+    (hfail : ¬ RankErosion ε (scaledTranslatedHomology k s hs t)
+      (scaledTranslatedHomology k s hs u)) :
+    ε < Real.toNNReal |t - u| :=
+  lt_of_not_rankErosion_finiteSimplicialHomology k _ _ 1
+    (scaledTranslatedGrading_grade_error s hs t u) hfail
+
+/-- The anisotropic fixture scale with coordinates `1` and `1/4` has scaled lifetime `1/2`,
+the lifetime of its B-arm; its A-arm lives only for `1/4`. -/
+example : scaledLifetime (![1, 1 / 4] : Fin 2 → ℝ) = 1 / 2 ∧
+    scaledArmLifetimeA (![1, 1 / 4] : Fin 2 → ℝ) = 1 / 4 := by
+  norm_num [scaledLifetime, scaledArmLifetimeA, scaledArmLifetimeB]
+
+/-- A concrete failing radius: under the scale with coordinates `1` and `1/4`, the delays `0`
+and `1/2` fail erosion at `1/8`. The witness is the diagonal test at the B-arm birth of the
+`0`-delayed module plus `1/8`; the A-arm test at the same radius sees a zero widened map. -/
+theorem scaledTranslatedHomology_not_rankErosion_eighth (k : Type u) [Field k] :
+    ¬ RankErosion (1 / 8)
+      (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) 0)
+      (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) (1 / 2)) := by
+  apply scaledTranslatedHomology_not_rankErosion
+  norm_num [abs_of_pos, scaledLifetime, scaledArmLifetimeA, scaledArmLifetimeB]
+
+/-- At the fixture radius `1/8` the widened A-arm map of the `0`-delayed module, across
+`2 · (1/8) = 1/4`, is zero, so the A-arm diagonal test would not witness the failure. -/
+example (k : Type u) [Field k] :
+    structureMap
+      (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) 0)
+      (show scaledTranslatedBirthA (![1, 1 / 4] : Fin 2 → ℝ) 0 ≤
+        (fun i => scaledTranslatedBirthA (![1, 1 / 4] : Fin 2 → ℝ) 0 i + 1 / 4) from
+          fun _ => le_add_of_nonneg_right (by norm_num)) = 0 := by
+  by_contra h
+  have h' := (scaledTranslatedHomology_armA_structureMap_ne_zero_iff k _ _ 0 (1 / 4)
+    (by norm_num)).1 h
+  norm_num [scaledArmLifetimeA] at h'
+
+/-- The failure certificate at the concrete failing radius `1/8` between the delays `0` and
+`1/2` under the scale with coordinates `1` and `1/4`. Here the erosion and interleaving
+distances equal `1/4` (`rankErosionDistance_scaledTranslatedHomology`,
+`coordinateInterleavingDistance_scaledTranslatedHomology`), while the maximal grade error is
+`1/2` (`supGradeError_scaledTranslatedGrading`), so the last inequality is strict. -/
+theorem scaledTranslatedHomology_rankErosion_failure_certificate_eighth
+    (k : Type u) [Field k] :
+    ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
+        rankErosionDistance
+          (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) 0)
+          (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) (1 / 2)) ∧
+      rankErosionDistance
+          (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) 0)
+          (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) (1 / 2)) ≤
+        coordinateInterleavingDistance
+          (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) 0)
+          (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) (1 / 2)) ∧
+      coordinateInterleavingDistance
+          (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) 0)
+          (scaledTranslatedHomology k (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) (1 / 2)) ≤
+        (scaledTranslatedGrading (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) 0).supGradeError
+          (scaledTranslatedGrading (![1, 1 / 4] : Fin 2 → ℝ)
+            (fun i => by fin_cases i <;> norm_num) (1 / 2)) :=
+  finiteSimplicialHomology_rankErosion_failure_certificate k _ _ 1
+    (scaledTranslatedHomology_not_rankErosion_eighth k)
+
+/-- The maximal grade error of the fixture pair is `1/2`. -/
+example :
+    (scaledTranslatedGrading (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) 0).supGradeError
+      (scaledTranslatedGrading (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) (1 / 2)) = 1 / 2 := by
+  rw [supGradeError_scaledTranslatedGrading]
+  ext
+  norm_num [abs_of_pos]
+
+/-- Rational coefficients: the erosion distance of the fixture pair is exactly `1/4`, strictly
+below its maximal grade error `1/2`. -/
+example :
+    rankErosionDistance
+      (scaledTranslatedHomology ℚ (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) 0)
+      (scaledTranslatedHomology ℚ (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) (1 / 2)) =
+      ENNReal.ofReal (1 / 4) := by
+  rw [rankErosionDistance_scaledTranslatedHomology]
+  norm_num [abs_of_pos, scaledLifetime, scaledArmLifetimeA, scaledArmLifetimeB]
+
+/-- Characteristic two: under the fixture scale, delays at most `1/4` apart have extended
+erosion distance exactly their gap. -/
+example (t u : ℝ) (h : |t - u| ≤ 1 / 4) :
+    eRankErosionDistance
+      (scaledTranslatedHomology (ZMod 2) (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) t)
+      (scaledTranslatedHomology (ZMod 2) (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) u) =
+      ENNReal.ofReal |t - u| := by
+  rw [eRankErosionDistance_scaledTranslatedHomology, min_eq_left]
+  norm_num [scaledLifetime, scaledArmLifetimeA, scaledArmLifetimeB]
+  exact h
+
+/-- Characteristic two: by the certificate, the concrete failing radius `1/8` is strictly
+below the erosion distance. -/
+example : ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
+    rankErosionDistance
+      (scaledTranslatedHomology (ZMod 2) (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) 0)
+      (scaledTranslatedHomology (ZMod 2) (![1, 1 / 4] : Fin 2 → ℝ)
+        (fun i => by fin_cases i <;> norm_num) (1 / 2)) :=
+  (scaledTranslatedHomology_rankErosion_failure_certificate_eighth (ZMod 2)).1
 
 end TDA.Persistence.FiniteSimplicialErosionExamples

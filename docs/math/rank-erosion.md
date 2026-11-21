@@ -753,6 +753,32 @@ attained in the negative second coordinate, the radius $1/8$ is a failing
 radius, and the certificate reads $1/8<1/4=1/4\le1/4$
 (`coordinateTranslatedHomology_rankErosion_failure_certificate_eighth`).
 
+For one positive scale $s$ and two signed common delays $t,u$, the
+scaled-translated modules `scaledTranslatedHomology k s hs t` and
+`scaledTranslatedHomology k s hs u`
+(`TDA.Persistence.FiniteSimplicialErosionScaledTranslation`) have maximal grade
+error exactly the delay gap $|t-u|$ (`supGradeError_scaledTranslatedGrading`).
+Write $T=\operatorname{scaledLifetime}(s)$, the larger of the two arm
+lifetimes. If $\varepsilon<u-t$ and $2\varepsilon<T$, test the diagonal pair at
+the birth of the longer arm of the $t$-delayed module plus $\varepsilon$ in
+every coordinate: the widened map is that arm's map over the displacement
+$2\varepsilon<T$, which survives, while the $u$-delayed module has a zero fiber
+there, because the tested grade is below $u$ in the coordinate where the arm
+is born at the delay. The shorter arm does not suffice in general: its widened
+map can already be zero. When $u<t$ the roles are exchanged by symmetry. So
+erosion fails at every radius below $\min(|t-u|,T/2)$, for both ranks
+(`scaledTranslatedHomology_not_rankErosion`,
+`scaledTranslatedHomology_not_eRankErosion`), and both erosion distances equal
+$\min(|t-u|,T/2)$, which is the interleaving distance
+(`rankErosionDistance_scaledTranslatedHomology`,
+`eRankErosionDistance_scaledTranslatedHomology`). Again the lower bound uses
+neither the interleaving distance nor attainment. Under the scale with
+coordinates $1$ and $1/4$ the arm lifetimes are $1/4$ and $1/2$, so $T=1/2$;
+between the delays $0$ and $1/2$ the radius $1/8$ is a failing radius at which
+only the longer arm witnesses the failure, and the certificate reads
+$1/8<1/4=1/4\le1/2$, with the maximal grade error strictly above the distance
+(`scaledTranslatedHomology_rankErosion_failure_certificate_eighth`).
+
 ## Zero radius, zero distance and future extensions
 
 `rankErosion_zero_iff` identifies the **predicate** `RankErosion 0 M N` with
@@ -808,10 +834,10 @@ are supplied, and so are the one-parameter q-tame consumer and
 a multiparameter finite-image condition remains proposed, pending a choice of
 strictness convention. Of the fourth package, erosion bounds and failed-test
 certificates for [finite graded simplicial homology](#finite-graded-simplicial-homology)
-are supplied, and so are the exact erosion distances of the uniformly and the
-coordinate-translated families; the erosion distance of the scaled-translated
-family remains proposed. So do the other targets: finite tests fed by actual
-persistent-homology input; and execution over other fields. The proposal
+are supplied, and so are the exact erosion distances of the uniformly,
+coordinate- and scaled-translated families. The other targets remain proposed:
+finite tests fed by actual persistent-homology input; and execution over other
+fields. The proposal
 records endpoint and nonseparation counterexamples that a broader API must
 respect, rather than promising to remove necessary hypotheses.
 
@@ -826,9 +852,10 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosionCertificate`,
 `TDA.Persistence.StructureMapERank`, `TDA.Persistence.ERankErosion`,
 `TDA.Persistence.ERankQTame`, `TDA.Persistence.FiniteSimplicialErosion`,
-`TDA.Persistence.FiniteSimplicialErosionTranslation` and
-`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`. Their declarations are in
-`TDA.Persistence`, except that the translated-family distances are in its
+`TDA.Persistence.FiniteSimplicialErosionTranslation`,
+`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation` and
+`TDA.Persistence.FiniteSimplicialErosionScaledTranslation`. Their declarations are in
+`TDA.Persistence`, except that the translated-family results are in its
 `RankResolutionDegreeTwoSimplicial` namespace; the concrete hook witnesses are in its
 `RankErosionWitness` namespace, the grid criterion is in
 `TDA.Persistence.CoordinateGrid`, and the executable representations are in

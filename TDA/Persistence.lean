@@ -452,3 +452,4 @@ import TDA.Persistence.ERankQTame
 import TDA.Persistence.FiniteSimplicialErosion
 import TDA.Persistence.FiniteSimplicialErosionTranslation
 import TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation
+import TDA.Persistence.FiniteSimplicialErosionScaledTranslation
