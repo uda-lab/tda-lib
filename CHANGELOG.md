@@ -10,6 +10,16 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Add one-parameter consumers of the extended image rank
+  (`TDA.Persistence.ERankQTame`): a real module is q-tame exactly when its
+  strict structure maps, or those of its one-coordinate module, have finite
+  extended rank; a real interleaving bounds the extended rank of a doubled-shift
+  map by the middle fibre's extended dimension, so it is finite when that fibre
+  is finite-dimensional; and a real interleaving gives extended-rank erosion of
+  the one-coordinate modules, with the extended erosion distance at most the
+  real interleaving distance. An example is q-tame but not pointwise
+  finite-dimensional. No multiparameter finite-image condition is stated. See
+  [rank erosion](docs/math/rank-erosion.md#one-parameter-q-tame-modules-and-real-interleavings).
 - Add weak-pair erosion on the extended image rank (`ERankErosion`) and its
   distance `eRankErosionDistance`. Monotonicity in the radius, reflexivity,
   symmetry, the triangle law and the bound by the coordinate interleaving

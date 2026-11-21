@@ -227,3 +227,4 @@ import TDA.Persistence.RankErosionAttainmentExamples
 import TDA.Persistence.RankErosionCertificateExamples
 import TDA.Persistence.StructureMapERankExamples
 import TDA.Persistence.ERankErosionExamples
+import TDA.Persistence.ERankQTameExamples

@@ -92,6 +92,13 @@ theorem eRankOfStructureMap_eq_top_iff (M : PModule.{u,v,w} k P) {a b : P}
   rw [eRankOfStructureMap_eq_toENat_rank, Cardinal.toENat_eq_top,
     FiniteDimensional, ← Module.rank_lt_aleph0_iff, not_lt]
 
+/-- The extended rank is finite exactly when the image of the structure map is
+finite-dimensional. -/
+theorem eRankOfStructureMap_ne_top_iff (M : PModule.{u,v,w} k P) {a b : P} (hab : a ≤ b) :
+    eRankOfStructureMap M hab ≠ ⊤ ↔
+      FiniteDimensional k (LinearMap.range (structureMapLinear M hab)) := by
+  rw [ne_eq, eRankOfStructureMap_eq_top_iff, not_not]
+
 /-- The `ℕ`-valued rank is the truncation of the extended rank, with `⊤` sent to `0`; this
 holds for every module. -/
 theorem rankOfStructureMap_eq_toNat_eRankOfStructureMap

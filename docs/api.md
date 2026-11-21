@@ -1196,7 +1196,13 @@ distance on the extended rank; their laws and
 `eRankErosionDistance_le_coordinateInterleavingDistance` need no finiteness, and
 `eRankErosion_iff_rankErosion` and `eRankErosionDistance_eq_rankErosionDistance`
 identify them with `RankErosion` and `rankErosionDistance` on pointwise
-finite-dimensional modules.
+finite-dimensional modules. For one parameter only (`TDA.Persistence.ERankQTame`),
+`PModule.qTame_iff_eRankOfStructureMap_fromReal_ne_top` characterizes q-tame real
+modules by finite extended ranks on strict pairs, `RealInterleaving.eRankOfStructureMap_ne_top`
+is the local finite-image bound through a finite-dimensional middle fibre, and
+`RealInterleaving.eRankErosion` and
+`eRankErosionDistance_fromReal_le_realInterleavingDistance` transport the
+interleaving bound across `CoordinateRealBridge.fromReal`.
 Erosion attainment is supplied for finitely presented modules only (below); a
 certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).
