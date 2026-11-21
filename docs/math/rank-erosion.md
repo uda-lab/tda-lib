@@ -704,10 +704,11 @@ $\varepsilon<d_E$ does use attainment.
 
 The uniform translates of the tetrahedron-boundary grading
 (`RankResolutionDegreeTwoSimplicial.translatedHomology`) have maximal grade
-error exactly the translation gap $|t-s|$ (`supGradeError_translatedGrading`),
-erosion holds at that gap, and both erosion distances are at most the exact
-interleaving distance $\min(|t-s|,1/2)$
-(`TDA.Persistence.FiniteSimplicialErosionExamples`). The matching lower bound
+error exactly the translation gap $|t-s|$ (`supGradeError_translatedGrading`,
+in `TDA.Persistence.FiniteSimplicialErosionTranslation`); erosion holds at that
+gap, and both erosion distances are at most the exact interleaving distance
+$\min(|t-s|,1/2)$ (`TDA.Persistence.FiniteSimplicialErosionExamples`). The
+matching lower bound
 is proved from actual structure maps in
 `TDA.Persistence.FiniteSimplicialErosionTranslation`. For $s<t$,
 $\varepsilon<t-s$ and $2\varepsilon<1$, test the diagonal pair at the earlier
@@ -726,6 +727,31 @@ between the translates by $0$ and $1/4$ is a concrete failing radius, and the
 certificate reads $1/8<1/4=1/4\le1/4$
 (`translatedHomology_rankErosion_failure_certificate_eighth`); the examples
 instantiate $\mathbb Q$ and the two-element field.
+
+The same argument gives the exact erosion distance of the independent signed
+coordinate translates `coordinateTranslatedHomology k u` and
+`coordinateTranslatedHomology k v`
+(`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`). Their maximal
+grade error is the coordinate gap $\max(|v_0-u_0|,|v_1-u_1|)$
+(`supGradeError_coordinateTranslatedGrading`, valued in
+`coordinateTranslationGap`). If $\varepsilon<v_i-u_i$ in one coordinate $i$
+and $2\varepsilon<1$, test the diagonal pair at the $i$-th birth of the
+$u$-translate plus $\varepsilon$ in every coordinate: the widened map of the
+$u$-translate is its $i$-th birth map over the displacement $2\varepsilon$,
+which survives, while the $v$-translate has a zero fiber there, because only
+the $i$-th coordinate of the tested grade is below $v_i$. When the larger gap
+is negative the roles are exchanged by symmetry. So erosion fails at every
+radius below $\min(\max(|v_0-u_0|,|v_1-u_1|),1/2)$, for both ranks
+(`coordinateTranslatedHomology_not_rankErosion`,
+`coordinateTranslatedHomology_not_eRankErosion`), and both erosion distances
+equal that value, which is the interleaving distance
+(`rankErosionDistance_coordinateTranslatedHomology`,
+`eRankErosionDistance_coordinateTranslatedHomology`). Again the lower bound
+uses neither the interleaving distance nor attainment. Between the translates
+by $0$ and by the vector with coordinates $1/8$ and $-1/4$ the gap $1/4$ is
+attained in the negative second coordinate, the radius $1/8$ is a failing
+radius, and the certificate reads $1/8<1/4=1/4\le1/4$
+(`coordinateTranslatedHomology_rankErosion_failure_certificate_eighth`).
 
 ## Zero radius, zero distance and future extensions
 
@@ -782,9 +808,9 @@ are supplied, and so are the one-parameter q-tame consumer and
 a multiparameter finite-image condition remains proposed, pending a choice of
 strictness convention. Of the fourth package, erosion bounds and failed-test
 certificates for [finite graded simplicial homology](#finite-graded-simplicial-homology)
-are supplied, and so is the exact erosion distance of the uniformly
-translated family; the erosion distances of the broader translated families
-remain proposed. So do the other targets: finite tests fed by actual
+are supplied, and so are the exact erosion distances of the uniformly and the
+coordinate-translated families; the erosion distance of the scaled-translated
+family remains proposed. So do the other targets: finite tests fed by actual
 persistent-homology input; and execution over other fields. The proposal
 records endpoint and nonseparation counterexamples that a broader API must
 respect, rather than promising to remove necessary hypotheses.
@@ -799,8 +825,9 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosionAttainment`,
 `TDA.Persistence.RankErosionCertificate`,
 `TDA.Persistence.StructureMapERank`, `TDA.Persistence.ERankErosion`,
-`TDA.Persistence.ERankQTame`, `TDA.Persistence.FiniteSimplicialErosion` and
-`TDA.Persistence.FiniteSimplicialErosionTranslation`. Their declarations are in
+`TDA.Persistence.ERankQTame`, `TDA.Persistence.FiniteSimplicialErosion`,
+`TDA.Persistence.FiniteSimplicialErosionTranslation` and
+`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`. Their declarations are in
 `TDA.Persistence`, except that the translated-family distances are in its
 `RankResolutionDegreeTwoSimplicial` namespace; the concrete hook witnesses are in its
 `RankErosionWitness` namespace, the grid criterion is in

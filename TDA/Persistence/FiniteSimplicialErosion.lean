@@ -28,6 +28,27 @@ namespace TDA.Persistence
 open CategoryTheory TDA.Simplicial TDA.Filtration
 open scoped TDA.Persistence NNReal ENNReal
 
+/-- A nonzero structure map with a finite-dimensional target has rank at least one. -/
+theorem one_le_rankOfStructureMap_of_ne_zero {k : Type u} [Field k] {n : ℕ}
+    (M : PModule.{u,0,u} k (Fin n → ℝ)) {p q : Fin n → ℝ} (hpq : p ≤ q)
+    [FiniteDimensional k (M.obj q)] (h : structureMap M hpq ≠ 0) :
+    1 ≤ rankOfStructureMap M hpq := by
+  unfold rankOfStructureMap
+  rw [Nat.one_le_iff_ne_zero]
+  intro h0
+  rw [Submodule.finrank_eq_zero, LinearMap.range_eq_bot] at h0
+  exact h (ModuleCat.hom_ext (by simpa [structureMapLinear] using h0))
+
+/-- A structure map into a zero fiber has rank zero. -/
+theorem rankOfStructureMap_eq_zero_of_isZero {k : Type u} [Field k] {n : ℕ}
+    (M : PModule.{u,0,u} k (Fin n → ℝ)) {p q : Fin n → ℝ} (hpq : p ≤ q)
+    (hq : CategoryTheory.Limits.IsZero (M.obj q)) : rankOfStructureMap M hpq = 0 := by
+  unfold rankOfStructureMap
+  have htarget : Subsingleton (M.obj q) := ModuleCat.subsingleton_of_isZero hq
+  have hrange : Subsingleton (LinearMap.range (structureMapLinear M hpq)) :=
+    ⟨fun x y => Subtype.ext (htarget.elim x.val y.val)⟩
+  exact @Module.finrank_zero_of_subsingleton k _ _ _ _ _ hrange
+
 variable {m n : ℕ} {C : FiniteComplex m}
 variable (k : Type u) [Field k]
 

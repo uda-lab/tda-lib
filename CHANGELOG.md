@@ -23,6 +23,17 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   erosion distances equal `min |t-s| (1/2)`, the interleaving distance; the
   radius `1/8` between the translates by `0` and `1/4` instantiates the
   failure certificate.
+- Add the exact erosion distance of the coordinate-translated
+  tetrahedron-boundary family
+  (`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`): erosion
+  fails below `min (max |v 0 - u 0| |v 1 - u 1|) (1 / 2)` by actual surviving
+  maps against zero fibers in one coordinate, so both erosion distances equal
+  that value, the interleaving distance; the maximal grade error equals the
+  coordinate gap, and a failing radius `1/8` with the gap attained in a
+  negative coordinate instantiates the failure certificate. The rank helpers
+  `one_le_rankOfStructureMap_of_ne_zero` and
+  `rankOfStructureMap_eq_zero_of_isZero` are now public in
+  `TDA.Persistence.FiniteSimplicialErosion`.
 - Add one-parameter consumers of the extended image rank
   (`TDA.Persistence.ERankQTame`): a real module is q-tame exactly when its
   strict structure maps, or those of its one-coordinate module, have finite
