@@ -33,7 +33,45 @@ An empty admissible set gives infinity. `rankErosionDistance_self`,
 pseudometric laws; these three statements need no finiteness hypothesis. A supplied predicate
 witness gives an upper bound through `rankErosionDistance_le_of_erosion`.
 The definition uses `Module.finrank`, which is zero on infinite-dimensional
-spaces; it must not be read as a cardinal-rank theory without finiteness.
+spaces; it must not be read as a cardinal-rank theory without finiteness. The
+[extended image rank](#extended-image-rank) below is the rank that does not
+collapse an infinite image to zero.
+
+## Extended image rank
+
+`eRankOfStructureMap M hab` is `Cardinal.toENat` of the cardinal rank of the
+structure map at $a\le b$: the dimension of its image when that is finite, and
+$\top$ when the image is infinite-dimensional. Every infinite cardinal is
+collapsed to $\top$, so distinct infinite dimensions are not distinguished
+(`continuumConst_collapse`: constant modules of dimensions $\aleph_0$ and
+$\mathfrak c$). The choice of $\mathbb N_\infty$ over cardinals is recorded on
+[the extension proposal](https://github.com/uda-lab/tda-lib/issues/865); it
+follows Mathlib's `Matrix.eRank`. The definition and its laws are stated for an
+arbitrary index preorder and carrier universe; extended ranks of modules in
+different universes are compared without lifting (`eRank_infiniteLarge`).
+
+For every module, with no finiteness hypothesis:
+
+- `eRankOfStructureMap_trans_le_left`, `eRankOfStructureMap_trans_le_right`
+  and `eRankOfStructureMap_four_point`: composing or widening does not increase
+  the rank;
+- `eRankOfStructureMap_self` (fiber dimension on the diagonal),
+  `eRankOfStructureMap_zero`, `eRankOfStructureMap_eq_top_iff` and
+  `eRankOfStructureMap_iso`.
+
+`rankOfStructureMap_eq_toNat_eRankOfStructureMap` states that the `ℕ`-valued
+rank is the truncation sending $\top$ to $0$.
+`eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional` (finite-dimensional
+image) and `eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional_source`
+(finite-dimensional source fiber) identify the two ranks, and
+`eRankOfStructureMap_le_eRankOfStructureMap_iff` identifies their comparisons
+when both source fibers are finite-dimensional. The examples
+(`TDA.Persistence.StructureMapERankExamples`) show that a
+countably-infinite-dimensional constant module has the `ℕ`-valued ranks of the
+zero module, so `RankErosion 0` holds between them
+(`rankErosion_zero_infinite`), while its extended ranks are $\top$
+(`infinite_vs_zero`). No erosion predicate or distance on the extended rank is
+supplied yet.
 
 ## Stability from actual interleavings
 
@@ -561,9 +599,10 @@ three and two, not one copy of the field against zero; the two-parameter
 nonseparation example over the two-element field, not over an arbitrary
 field; and the record above of the implications between the zero-radius
 assertions. A predicate on coordinatewise strict pairs, which the proposal
-leaves optional, is not supplied. The
-other packages remain proposed: image rank beyond finite-dimensional
-fibers; finite tests fed by actual persistent-homology input; and execution
+leaves optional, is not supplied. Of
+the proposal's second package, the [extended image rank](#extended-image-rank)
+is supplied, while erosion on it, its distance comparison and the q-tame
+consumers remain proposed. The other packages remain proposed: finite tests fed by actual persistent-homology input; and execution
 over other fields. The proposal records endpoint and nonseparation
 counterexamples that a broader API must respect, rather than promising to
 remove necessary hypotheses.
@@ -575,14 +614,16 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosionWitness`, `TDA.Persistence.RankErosionGrid`,
 `TDA.Persistence.F2GridRep`, `TDA.Persistence.F2GridErosion`,
 `TDA.Persistence.StrictRankErosion`,
-`TDA.Persistence.RankErosionAttainment` and
-`TDA.Persistence.RankErosionCertificate`. Their
+`TDA.Persistence.RankErosionAttainment`,
+`TDA.Persistence.RankErosionCertificate` and
+`TDA.Persistence.StructureMapERank`. Their
 declarations are in `TDA.Persistence`; the concrete hook witnesses are in its `RankErosionWitness` namespace, the grid
 criterion is in `TDA.Persistence.CoordinateGrid`, and the executable
 representations are in `TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.
 The strict-pair examples are in `TDA.Persistence.StrictRankErosionExamples`
 the attainment examples in `TDA.Persistence.RankErosionAttainmentExamples` and
-the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`;
+the certificate examples in `TDA.Persistence.RankErosionCertificateExamples`
+and the extended-rank examples in `TDA.Persistence.StructureMapERankExamples`;
 the attainment and certificate theorems are in `TDA.Persistence.GradedFree`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 
@@ -613,6 +654,7 @@ beyond the pair convention is not established.
 
 The comparison of the two library predicates, its boundary cases, the
 finite-presentation erosion attainment, the fixed-radius equivalence, the
-certificate and the nonseparation example are library derivations. No
+certificate, the nonseparation example and the extended image rank are
+library derivations. No
 theorem about strict pairs in this note is attributed to a numbered result of
 the paper. See the [source record](references.md#Puuska17-v1).

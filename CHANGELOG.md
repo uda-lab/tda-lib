@@ -10,6 +10,17 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.4.0; the next release version is undecided.
 
+- Add the extended-natural image rank of a structure map
+  (`eRankOfStructureMap`), the `Cardinal.toENat` of the cardinal rank: the
+  dimension of the image when finite and `⊤` otherwise, so every infinite
+  cardinal is collapsed to `⊤`. The composition and four-point inequalities,
+  the zero, diagonal and isomorphism laws hold without finite-dimensional
+  fibers. The `ℕ`-valued `rankOfStructureMap` is its truncation sending `⊤` to
+  `0`, and the two agree on finite-dimensional images. Examples show that an
+  infinite-dimensional constant module has the `ℕ`-valued ranks of zero but
+  extended rank `⊤`. No erosion predicate or distance on the extended rank is
+  supplied yet. See
+  [rank erosion](docs/math/rank-erosion.md#extended-image-rank).
 - Enclose Gaussian Gram sums and squared RKHS distances by rational arithmetic:
   for two lists of rational birth–death pairs, a rational bandwidth `σ`, a
   rational cap `0 ≤ c` and a rational tolerance `δ > 0`, `gramEnclosure` in
@@ -155,9 +166,10 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   erosion distance of the actual Kan extensions is at most the tested radius,
   and general statements give what a pass and a failure imply for both
   predicates and for the erosion and interleaving distances. Examples show
-  that the closed box and zero are interleaved at every radius above their
-  interleaving distance and not at it, that the fixed-radius equivalence fails with no
-  coordinates, and that two finitely presented two-parameter modules over the
+  that, with at least one coordinate, the closed box and zero are interleaved
+  at every radius above their interleaving distance and not at it, that the
+  fixed-radius equivalence fails with no coordinates, and that two finitely
+  presented two-parameter modules over the
   two-element field have equal rank invariants, erosion distance zero and
   nonzero interleaving distance. `GradedFree.finitelyPresented_zero` now
   allows an index type in any universe. See
