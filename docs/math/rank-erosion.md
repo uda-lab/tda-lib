@@ -702,14 +702,30 @@ corollaries do not need attainment: they also follow from erosion at
 $\delta$ and monotonicity in the radius. The strict bound
 $\varepsilon<d_E$ does use attainment.
 
-The examples (`TDA.Persistence.FiniteSimplicialErosionExamples`) use the
-uniform translates of the tetrahedron-boundary grading
-(`RankResolutionDegreeTwoSimplicial.translatedHomology`). Erosion holds at the
-translation gap $|t-s|$, and both erosion distances are at most the exact
-interleaving distance $\min(|t-s|,1/2)$, over every field and in particular
-over $\mathbb Q$ and the two-element field. These are upper bounds only: this
-unit exhibits no failing radius in Lean, and the exact erosion distance of the
-family, with lower erosion witnesses, is not computed here.
+The uniform translates of the tetrahedron-boundary grading
+(`RankResolutionDegreeTwoSimplicial.translatedHomology`) have maximal grade
+error exactly the translation gap $|t-s|$ (`supGradeError_translatedGrading`),
+erosion holds at that gap, and both erosion distances are at most the exact
+interleaving distance $\min(|t-s|,1/2)$
+(`TDA.Persistence.FiniteSimplicialErosionExamples`). The matching lower bound
+is proved from actual structure maps in
+`TDA.Persistence.FiniteSimplicialErosionTranslation`. For $s<t$,
+$\varepsilon<t-s$ and $2\varepsilon<1$, test the diagonal pair at the earlier
+birth plus $\varepsilon$ in every coordinate: the widened map of the earlier
+translate is its birth map over the displacement $2\varepsilon<1$, which
+survives, while the later translate has a zero fiber there. So erosion fails
+at every radius below $\min(|t-s|,1/2)$, for both ranks
+(`translatedHomology_not_rankErosion`, `translatedHomology_not_eRankErosion`),
+and both erosion distances equal $\min(|t-s|,1/2)$, which is the
+interleaving distance (`rankErosionDistance_translatedHomology`,
+`eRankErosionDistance_translatedHomology`,
+`rankErosionDistance_translatedHomology_eq_coordinateInterleavingDistance`).
+The lower bound uses neither the interleaving distance nor attainment. These
+hold over every field and every two real translations. The radius $1/8$
+between the translates by $0$ and $1/4$ is a concrete failing radius, and the
+certificate reads $1/8<1/4=1/4\le1/4$
+(`translatedHomology_rankErosion_failure_certificate_eighth`); the examples
+instantiate $\mathbb Q$ and the two-element field.
 
 ## Zero radius, zero distance and future extensions
 
@@ -766,8 +782,9 @@ are supplied, and so are the one-parameter q-tame consumer and
 a multiparameter finite-image condition remains proposed, pending a choice of
 strictness convention. Of the fourth package, erosion bounds and failed-test
 certificates for [finite graded simplicial homology](#finite-graded-simplicial-homology)
-are supplied; the exact erosion distances of the translated families remain
-proposed. So do the other targets: finite tests fed by actual
+are supplied, and so is the exact erosion distance of the uniformly
+translated family; the erosion distances of the broader translated families
+remain proposed. So do the other targets: finite tests fed by actual
 persistent-homology input; and execution over other fields. The proposal
 records endpoint and nonseparation counterexamples that a broader API must
 respect, rather than promising to remove necessary hypotheses.
@@ -782,8 +799,10 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.RankErosionAttainment`,
 `TDA.Persistence.RankErosionCertificate`,
 `TDA.Persistence.StructureMapERank`, `TDA.Persistence.ERankErosion`,
-`TDA.Persistence.ERankQTame` and `TDA.Persistence.FiniteSimplicialErosion`. Their
-declarations are in `TDA.Persistence`; the concrete hook witnesses are in its
+`TDA.Persistence.ERankQTame`, `TDA.Persistence.FiniteSimplicialErosion` and
+`TDA.Persistence.FiniteSimplicialErosionTranslation`. Their declarations are in
+`TDA.Persistence`, except that the translated-family distances are in its
+`RankResolutionDegreeTwoSimplicial` namespace; the concrete hook witnesses are in its
 `RankErosionWitness` namespace, the grid criterion is in
 `TDA.Persistence.CoordinateGrid`, and the executable representations are in
 `TDA.Persistence.RatGrid` and `TDA.Persistence.F2GridRep`.

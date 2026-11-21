@@ -450,3 +450,4 @@ import TDA.Persistence.StructureMapERank
 import TDA.Persistence.ERankErosion
 import TDA.Persistence.ERankQTame
 import TDA.Persistence.FiniteSimplicialErosion
+import TDA.Persistence.FiniteSimplicialErosionTranslation
