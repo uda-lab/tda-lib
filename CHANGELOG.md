@@ -47,6 +47,14 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `CertifiedMatching` reports the critical faces with their dimension and
   original grade. See
   [checking a supplied matching](docs/math/discrete-morse-matchings.md#checking-a-supplied-matching).
+- Generate certified same-grade matchings on finite inputs greedily
+  (`TDA.Persistence.Morse.FiniteInputMatchingGeneration`): `MatchingInput.generate`
+  is a total `CertifiedMatching` built by one pass over the same-grade cover pairs
+  in lexicographic order, so the checker accepts its output and, for a valid
+  input, it is a filtered acyclic matching; reduction fixtures cover a tree, a
+  filtration barrier, the hollow and the filled triangle and a multi-grade square. No
+  maximality or optimality is claimed. See
+  [generating a matching greedily](docs/math/discrete-morse-matchings.md#generating-a-matching-greedily).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

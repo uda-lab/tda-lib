@@ -289,7 +289,8 @@ theorem exists_check_iff (xs : Input) (h : Valid xs) (pairs : Pairs xs) :
   · rintro ⟨hN, ⟨hM, hA⟩, hG⟩
     exact ⟨⟨hN, hM, hG⟩, hA⟩
 
-/-- The same characterization, with MN Def. 4.1 for the sublevels of the input grade. -/
+/-- The same characterization, with the sublevel specialization of MN Def. 4.1 for the input
+grade. -/
 theorem exists_check_iff_isFilteredAcyclicMatching (xs : Input) (h : Valid xs)
     (pairs : Pairs xs) :
     (∃ rank : Fin xs.length → ℕ, check xs pairs rank = true) ↔

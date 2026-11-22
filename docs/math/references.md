@@ -225,10 +225,10 @@ The following manifestations each have at least one Lean consumer named in their
 <a id="MN13"></a>
 ### MN13 — acyclic matchings and filtered Morse complexes
 
-- **Identity/version:** Konstantin Mischaikow; Vidit Nanda. *Morse Theory for Filtrations and Efficient Computation of Persistent Homology*. Discrete & Computational Geometry 50, 330–353 (2013), DOI 10.1007/s00454-013-9529-6; received 2011-12-21, revised 2013-03-11, accepted 2013-06-27, published online 2013-07-27. Consulted manifestation: the [author-hosted PDF](https://people.maths.ox.ac.uk/nanda/source/DMPers-Final.pdf), which carries the journal running heads and DOI; Def. 2.1 (p. 332), the generating relation ≺ of the face order (p. 333), Def. 2.2 (p. 334), Def. 4.1 (p. 339) and Thm. 4.3 with the grade function b (p. 340).
+- **Identity/version:** Konstantin Mischaikow; Vidit Nanda. *Morse Theory for Filtrations and Efficient Computation of Persistent Homology*. Discrete & Computational Geometry 50, 330–353 (2013), DOI 10.1007/s00454-013-9529-6; received 2011-12-21, revised 2013-03-11, accepted 2013-06-27, published online 2013-07-27. Consulted manifestation: the [author-hosted PDF](https://people.maths.ox.ac.uk/nanda/source/DMPers-Final.pdf), which carries the journal running heads and DOI; Def. 2.1 (p. 332), the generating relation ≺ of the face order (p. 333), Def. 2.2 (p. 334), Def. 4.1 (p. 339), Thm. 4.3 with the grade function b (p. 340) and §5.1 and §5.2 through the proof of Thm. 5.1 (pp. 341–345).
 - **Printed affiliations:** Mischaikow: Department of Mathematics and BioMaPS, Rutgers, The State University of New Jersey; Nanda: Department of Mathematics, The University of Pennsylvania (PDF p. 1). No current affiliations inferred.
 - **Use/classification:** `TDA.Persistence.Morse.AcyclicMatching` specializes Def. 2.2 and Def. 4.1 to simplicial complexes with the standard incidence and to the sublevel frames of one filter function; the mappings are recorded under [existing declaration and proof mappings](#existing-declaration-and-proof-mappings). Thm. 4.3 is background for later units only. See [acyclic matchings for discrete Morse reduction](discrete-morse-matchings.md).
-- **Rights/evidence:** **U**. The PDF is marked © Springer Science+Business Media New York 2013, and no CC grant was established. The generic Springer terms paragraph above applies; author hosting alone does not resolve AI input, quotation or redistribution. The consulted PDF was re-inspected on 2026-11-22 for the identity, dates, affiliations and the definitions and theorem listed above. The repository supplies original proofs and mathematical summaries; no source prose or figures are reproduced.
+- **Rights/evidence:** **U**. The PDF is marked © Springer Science+Business Media New York 2013, and no CC grant was established. The generic Springer terms paragraph above applies; author hosting alone does not resolve AI input, quotation or redistribution. The consulted PDF was re-inspected on 2026-11-22 for the identity, dates, affiliations and the definitions and theorems listed above. The repository supplies original proofs and mathematical summaries; no source prose or figures are reproduced.
 
 ## Sources for the next directions and historical comparisons
 
@@ -457,6 +457,7 @@ entire article or all its algorithms have been formalized.
   - Thm. 4.3 ↦ no declaration; comparison mode **background** for #1041 only;
   - `IsTopologicalRank` / `isAcyclic_iff_exists_rank` are a library derivation (**extension**) attributed to no numbered result.
   - `TDA.Persistence.Morse.FiniteInputMatching` (the executable checker `MatchingInput.check` on finite inputs, `CertifiedMatching` and its critical report) is a library derivation (**extension**) attributed to no numbered result.
+  - `TDA.Persistence.Morse.FiniteInputMatchingGeneration` (the greedy generator `MatchingInput.generate` of certified same-grade matchings on finite inputs) is a library derivation (**extension**) attributed to no numbered result; MN13 §5.1 `MorseReduce` (a different, coreduction-based algorithm) and its verification Thm. 5.1 are **background**.
 
 
 <a id="SFL11"></a>
