@@ -454,7 +454,7 @@ entire article or all its algorithms have been formalized.
 - [MN13](#MN13) — [Mischaikow–Nanda, *Morse Theory for Filtrations and Efficient Computation of Persistent Homology*](https://people.maths.ox.ac.uk/nanda/source/DMPers-Final.pdf), `TDA.Persistence.Morse.AcyclicMatching`:
   - Def. 2.2 ↦ `IsMatching` + `IsMNAcyclic`, comparison mode **specialization** (simplicial complexes with the standard ±1 incidence, where MN's ≺ and unit-incidence condition both become `⋖`; the Lean predicates do not assume finiteness), with the whole-diagram form `IsAcyclic` proved equivalent to `IsMNAcyclic` (`isAcyclic_iff_isMNAcyclic`, `isMNAcyclic_iff_irrefl`);
   - Def. 4.1 for sublevel frames ↦ `IsFilteredAcyclicMatching`, comparison mode **specialization** (sublevel frames of one filter function, simplicial complexes), with the nested-family reduction argued in [the note](discrete-morse-matchings.md#filtered-acyclic-matchings) and the equal-grade equivalence proved (`isFilteredAcyclicMatching_iff`);
-  - Thm. 4.3 is **background** for #1041 only;
+  - Thm. 4.3 ↦ no declaration; comparison mode **background** for #1041 only;
   - `IsTopologicalRank` / `isAcyclic_iff_exists_rank` are a library derivation (**extension**) attributed to no numbered result.
 
 
