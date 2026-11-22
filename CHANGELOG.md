@@ -100,6 +100,18 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   multi-grade square, including a tie in the rank, by `decide +kernel`. No bridge to
   simplicial persistent homology. See
   [the pivot schedule of a certified matching](docs/math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching).
+- Bridge the Morse complex of a certified matching to simplicial persistence
+  (`TDA.Persistence.Morse.SimplicialBridge`): for a valid finite input,
+  `SimplicialBridge.boundaryHomologyIso` is a natural isomorphism from the grade-sublevel
+  homology persistence module of its boundary complex to its simplicial sublevel persistence
+  module `sublevelModule (ZMod 2) (gradeFilter xs h) p`, and for a certified matching
+  `CertifiedMatching.morseSublevelModuleIso` is the natural isomorphism from that simplicial
+  module to the persistence module of the Morse complex, with equal dimensions and
+  structure-map ranks. Fixtures on the multi-grade square prove the sublevel homology
+  dimensions of its Morse complex and of its simplicial sublevels, and that its degree-1
+  diagram `dgm` is `{(1, 2)}`. No interval decomposition and no barcode agreement with the
+  reducer. See
+  [the simplicial bridge and the Morse persistence theorem](docs/math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

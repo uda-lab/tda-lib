@@ -2359,6 +2359,8 @@ the grade `cGrade` over `ZMod 2`, and transports them to the triangle through th
 These modules provide no bridge from `sublevelHomologyPModule` to `sublevelModule` or
 `simplicialHomologyPModule`; see
 [sublevel homology and the induced isomorphism](math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
+For the boundary complex of a valid `FiniteInput`, the bridge is in
+[the simplicial bridge and the Morse persistence theorem](#the-simplicial-bridge-and-the-morse-persistence-theorem).
 
 ## Pivot schedules of certified matchings
 
@@ -2402,6 +2404,55 @@ of #1041, no gradient-path formula for `morseDifferential`, no independence of i
 rank or the tie order, no reducer adapter, ordering of the critical generators or `Equiv` to
 `Fin`, and no homology computation by evaluation; see
 [the pivot schedule of a certified matching](math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching).
+The bridge and the main theorem of #1041 are in
+[the simplicial bridge and the Morse persistence theorem](#the-simplicial-bridge-and-the-morse-persistence-theorem).
+
+## The simplicial bridge and the Morse persistence theorem
+
+`TDA.Persistence.Morse.SimplicialBridge` (imported by `TDA.Persistence`) works over `ZMod 2`
+on a finite input `xs` with `h : Valid xs`. In namespace
+`TDA.Persistence.Morse.SimplicialBridge`, `sublevelSupported_iff_prefixSupported` identifies
+grade-sublevel support with support before `sublevelStage xs a`, and
+`cycleInput_iff_mem_sublevelCycles` identifies `FiniteInput.CycleInput` with the sublevel cycles
+of the boundary complex `(degree xs, fun i => (xs.get i).2, FiniteInput.boundary xs)`.
+`boundaryCycleCoordinates` is the computable restriction of `rawCycleCoordinates` to these
+cycles; `boundaryCycleCoordinates_eq_zero_iff` and `ker_boundaryCycleCoordinates` identify its
+kernel with the sublevel boundaries among the cycles, and `boundaryCycleCoordinates_surjective`
+proves it surjective. The `noncomputable` `boundaryHomologyEquiv h p a` is a `LinearEquiv` from
+`sublevelHomology` of the boundary complex to
+`simplicialHomology ((gradeFilter xs h).sublevel a) (ZMod 2) p`; `boundaryHomologyEquiv_mk`
+sends the class of a sublevel cycle to its `vectorSublevelClass`, and
+`boundaryHomologyEquiv_naturality` gives naturality in the grade. `boundaryHomologyIso h p` is
+the natural isomorphism
+`sublevelHomologyPModule (degree xs) (fun i => (xs.get i).2) (FiniteInput.boundary xs) p ≅ sublevelModule (ZMod 2) (gradeFilter xs h) p`,
+with components `boundaryHomologyIso_hom_app` and `boundaryHomologyIso_inv_app`, and
+`finrank_sublevelHomology_boundary` equates dimensions.
+
+In namespace `TDA.Persistence.Morse.MatchingInput.CertifiedMatching`, for
+`c : CertifiedMatching xs`, `c.morseSublevelModuleIso h p` is
+`(boundaryHomologyIso h p).symm ≪≫ c.morseHomologyIso h p`, a natural isomorphism from
+`sublevelModule (ZMod 2) (gradeFilter xs h) p` to the grade-sublevel homology persistence
+module of `c.morseDifferential` on the critical generators. `morseSublevelModuleIso_hom_app`
+and `morseSublevelModuleIso_inv_app` identify its components,
+`morseSublevelModuleIso_hom_vectorSublevelClass` sends the class of a sublevel cycle vector `v`
+to the class of `proj v`, and `finrank_simplicialHomology_eq` and
+`rankOfStructureMap_sublevelModule_eq` equate dimensions and structure-map ranks. The bridge
+and the isomorphisms are `noncomputable`.
+
+`TDA.Persistence.Morse.SimplicialBridgeExamples` (imported by `TDA.Persistence.Examples`) has
+fixtures M1–M7 on the multi-grade square. M1 evaluates the critical generators A, AD, ACD of
+`sqCert` and its Morse differential `d ACD = AD` by `decide +kernel`; M2 proves the Morse
+sublevel homology dimensions, and M3 transports them to the simplicial sublevel complexes
+through `finrank_simplicialHomology_eq`; M4 proves the rank invariants of `[1,2)` in degree 1
+and `[0,∞)` in degree 0; M5 shows that the loop AB + BC + CD + AD has a nonzero class at grade
+1 that is filled at grade 2; M6 reads off the Morse complex of `genCert` through the main
+theorem; and M7 proves that the square's diagram `dgm` is `{(1, 2)}` in degree 1 and
+`{(0, ⊤)}` in degree 0, by `rank_sublevelHomologyMap`, not from the reducer. These modules
+provide no interval decomposition over `ℤ`, no barcode statement other than M7, no agreement
+with the reducer's barcode (#1061), no chain-level isomorphism with `simplicialChainComplex`,
+no independence of the Morse complex from the certificate, no gradient-path formula and no
+coefficient ring other than `ZMod 2`; see
+[the simplicial bridge and the Morse persistence theorem](math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem).
 
 ## Compatible lifts and algebraic sums over the reals
 

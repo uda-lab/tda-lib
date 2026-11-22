@@ -315,10 +315,13 @@ library procedure, and no result of §5 is claimed.
   rejected candidate reuses a face or closes a cycle; MN13 §5.1 notes that constructing an
   optimal acyclic matching is NP-hard in general. No runtime bound is stated for `check` or
   `generate`.
-- The modules of this note provide no chain contraction or Morse complex; for a certified
-  matching on a valid input, they are in `TDA.Persistence.Morse.MatchingSchedule`, together
-  with an isomorphism of grade-sublevel homology persistence modules of based complexes. No
-  bridge to the persistence of the represented complex (`sublevelModule` of `gradeFilter`) is
-  provided yet (#1041), so MN Thm. 4.3 is only background here.
+- The checker and generator modules of this note provide no chain contraction or Morse
+  complex; for a certified matching on a valid input, they are in
+  `TDA.Persistence.Morse.MatchingSchedule`, together with an isomorphism of grade-sublevel
+  homology persistence modules of based complexes. For such a matching,
+  `TDA.Persistence.Morse.SimplicialBridge` identifies the simplicial sublevel persistence
+  module of `gradeFilter` with the persistence module of the Morse complex
+  (`CertifiedMatching.morseSublevelModuleIso`); MN Thm. 4.3 remains background, since no
+  source comparison is recorded.
 - No general cell complexes `(X, κ)` with arbitrary incidence functions, and no Lean
   statement of MN's nested family form of Def. 4.1.

@@ -240,3 +240,4 @@ import TDA.Persistence.Morse.FilteredContractionExamples
 import TDA.Persistence.Morse.FilteredHomologyExamples
 import TDA.Persistence.Morse.IteratedCancellationExamples
 import TDA.Persistence.Morse.MatchingScheduleExamples
+import TDA.Persistence.Morse.SimplicialBridgeExamples
