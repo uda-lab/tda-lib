@@ -25,6 +25,8 @@ Start with the [PH contracts](api.md#persistent-homology-results-and-computation
 [Acyclic matchings](math/discrete-morse-matchings.md) state the semantic layer of discrete
 Morse reduction: matchings, acyclicity, topological ranks and filtered matchings for
 sublevels, without a contraction or executable checker.
+[Unit cancellation](math/discrete-morse-cancellation.md) cancels one equal-grade unit pair
+of a filtered based complex with an executable reduced differential and a filtered contraction.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).

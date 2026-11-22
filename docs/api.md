@@ -2196,6 +2196,48 @@ or runtime bound is claimed.
 `TDA.Persistence.Examples`) evaluates the pass on the checker inputs; see
 [generating a matching greedily](math/discrete-morse-matchings.md#generating-a-matching-greedily).
 
+## Unit cancellation of filtered based complexes
+
+`TDA.Persistence.Morse.UnitCancellation` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.Cancellation`) cancels one unit pair of a finite based complex. The
+carrier is a finite type `ι` with `D : Matrix ι ι k` over a commutative ring `k`, in the column
+convention of `FiniteInput.boundary`: `D r c` is the coefficient of `r` in `d c`, and matrix
+product is composition. `Cancellation.IsBasedDifferential degree D` asks for `D * D = 0` and
+`D r c ≠ 0 → degree c = degree r + 1`; `Cancellation.IsFilteredDifferential degree grade D`
+adds `GradeNonincreasing grade grade D` (`D r c ≠ 0 → grade r ≤ grade c`) for an integer grade.
+No basis order, triangularity or free-face condition is assumed. `isFilteredDifferential_boundary`
+proves that the boundary of every valid `FiniteInput` is a filtered differential for
+`FiniteInput.degree` and the list grades.
+
+`IsUnitPair D a b` is `a ≠ b ∧ D a b = 1`. The survivors `PairSurvivor a b` are the subtype
+of generators other than `a` and `b`, with their original IDs. `reducedDifferential D a b`,
+`projection D a b`, `inclusion D a b` and `homotopy a b` (`H a = b`, zero elsewhere) are
+computable entry formulas, for instance `reducedDifferential D a b r s = D r s - D r b * D a s`;
+`reducedDifferential_eq`, `projection_eq` and `inclusion_eq` identify them with
+`Q (D - D H D) J`, `Q (1 - D H)` and `(1 - H D) J` for every `D`. Under `D * D = 0` and
+`IsUnitPair D a b`, the five contraction identities are `reducedDifferential_sq_zero`
+(`d' d' = 0`), `projection_mul` (`p D = d' p`), `mul_inclusion` (`D i = i d'`),
+`projection_mul_inclusion` (`p i = 1`, which needs only `a ≠ b`) and
+`one_sub_inclusion_mul_projection` (`1 - i p = D H + H D`). `homotopy_mul_homotopy`,
+`projection_mul_homotopy` and `homotopy_mul_inclusion` give `H H = 0`, `p H = 0` and `H i = 0`
+from `a ≠ b` alone.
+
+For a based differential and a unit pair, the degree theorems relate the degrees on the
+supports of the four maps, and `isBasedDifferential_reduced` makes `d'` a based differential
+for the inherited degree. If `D`
+is grade-nonincreasing and `grade a = grade b`, then `d'`, `p`, `i` and `H` are
+grade-nonincreasing (`reducedDifferential_gradeNonincreasing`, `projection_gradeNonincreasing`,
+`inclusion_gradeNonincreasing`, `homotopy_gradeNonincreasing`), and
+`GradeNonincreasing.mulVec_sublevelSupported` shows that such matrices preserve vectors
+supported in grades `≤ t`. `isFilteredDifferential_reduced` proves that `d'` is a filtered
+differential for a filtered differential, a unit pair and equal grades.
+`TDA.Persistence.Morse.UnitCancellationExamples` (imported by `TDA.Persistence.Examples`)
+evaluates the filled triangle, a pure unit pair, an unequal-grade pair with no
+grade-nonincreasing contracting homotopy, and a tie-order example over `ZMod 2`. No iteration,
+homology or persistence isomorphism, reindexing, rescaling by a general unit or runtime bound is
+provided; see
+[unit cancellation of a filtered chain complex](math/discrete-morse-cancellation.md).
+
 ## Compatible lifts and algebraic sums over the reals
 
 The [real interval decomposition note](math/real-interval-decomposition.md)
