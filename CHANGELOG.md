@@ -58,9 +58,9 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
 - Cancel one equal-grade unit pair of a filtered based complex
   (`TDA.Persistence.Morse.UnitCancellation`): an executable reduced differential,
   projection, inclusion and homotopy over any commutative ring, with `d'² = 0`,
-  both chain-map equations, `p i = 1` and `1 - i p = D H + H D` for a unit pair
-  (`a ≠ b`, `D a b = 1`) of a square-zero `D`, and all four maps
-  grade-nonincreasing for equal grades; no iteration or persistence isomorphism. See
+  both chain-map equations and `1 - i p = D H + H D` for a unit pair
+  (`a ≠ b`, `D a b = 1`) of a square-zero `D`, `p i = 1` from `a ≠ b` alone, and all
+  four maps grade-nonincreasing for equal grades; no iteration or persistence isomorphism. See
   [unit cancellation](docs/math/discrete-morse-cancellation.md).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See

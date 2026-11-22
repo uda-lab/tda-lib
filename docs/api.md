@@ -2209,10 +2209,11 @@ No basis order, triangularity or free-face condition is assumed. `isFilteredDiff
 proves that the boundary of every valid `FiniteInput` is a filtered differential for
 `FiniteInput.degree` and the list grades.
 
-`IsUnitPair D a b` is `a ≠ b ∧ D a b = 1`. The survivors `PairSurvivor a b` are the subtype
-of generators other than `a` and `b`, with their original IDs. `reducedDifferential D a b`,
-`projection D a b`, `inclusion D a b` and `homotopy a b` (`H a = b`, zero elsewhere) are
-computable entry formulas, for instance `reducedDifferential D a b r s = D r s - D r b * D a s`;
+`IsUnitPair D a b` is a structure with fields `ne : a ≠ b` and `coeff : D a b = 1`. The
+survivors `PairSurvivor a b` are the subtype of generators other than `a` and `b`, with their
+original IDs. `reducedDifferential D a b`, `projection D a b`, `inclusion D a b` and
+`homotopy a b` (`H a = b`, zero elsewhere) are computable entry formulas, for instance
+`reducedDifferential D a b r s = D r s - D r b * D a s`;
 `reducedDifferential_eq`, `projection_eq` and `inclusion_eq` identify them with
 `Q (D - D H D) J`, `Q (1 - D H)` and `(1 - H D) J` for every `D`. Under `D * D = 0` and
 `IsUnitPair D a b`, the five contraction identities are `reducedDifferential_sq_zero`
@@ -2224,10 +2225,10 @@ from `a ≠ b` alone.
 
 For a based differential and a unit pair, the degree theorems relate the degrees on the
 supports of the four maps, and `isBasedDifferential_reduced` makes `d'` a based differential
-for the inherited degree. If `D`
-is grade-nonincreasing and `grade a = grade b`, then `d'`, `p`, `i` and `H` are
-grade-nonincreasing (`reducedDifferential_gradeNonincreasing`, `projection_gradeNonincreasing`,
-`inclusion_gradeNonincreasing`, `homotopy_gradeNonincreasing`), and
+for the inherited degree. If `D` is grade-nonincreasing and `grade a = grade b`, then `d'`,
+`p`, `i` and `H` are grade-nonincreasing (`reducedDifferential_gradeNonincreasing`,
+`projection_gradeNonincreasing`, `inclusion_gradeNonincreasing`,
+`homotopy_gradeNonincreasing`), and
 `GradeNonincreasing.mulVec_sublevelSupported` shows that such matrices preserve vectors
 supported in grades `≤ t`. `isFilteredDifferential_reduced` proves that `d'` is a filtered
 differential for a filtered differential, a unit pair and equal grades.

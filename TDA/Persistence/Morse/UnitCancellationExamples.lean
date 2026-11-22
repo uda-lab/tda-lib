@@ -12,8 +12,9 @@ Evaluations of `TDA.Persistence.Morse.Cancellation` over `ZMod 2`.
 * The pure unit pair `d b = a` on `Fin 2`, where `H` is a contracting homotopy of the whole
   complex and no generator survives.
 * The same complex with `a` at grade 0 and `b` at grade 1. Its grade-0 sublevel is the cycle
-  `a`, which is not a boundary there, and `a` becomes the boundary of `b` at grade 1; the
-  barcode has the bar `[0, 1)`. `H` raises grade, and no grade-nonincreasing `H` satisfies
+  `a`, which is not a boundary there, and `a` becomes the boundary of `b` at grade 1, so the
+  barcode has the bar `[0, 1)`; this is an explanation only, since no homology or barcode is
+  formalised here. `H` raises grade, and no grade-nonincreasing `H` satisfies
   `1 - i p = D H + H D` for any `p` and `i` onto the empty survivor complex.
 * A tie-order example on `Fin 4` at a single grade, where the reduced differential has a
   nonzero entry `d' s = r` with `s` listed before `r`, so the inherited order is not
