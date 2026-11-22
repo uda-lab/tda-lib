@@ -62,6 +62,15 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   (`a ≠ b`, `D a b = 1`) of a square-zero `D`, `p i = 1` from `a ≠ b` alone, and all
   four maps grade-nonincreasing for equal grades; no iteration or persistence isomorphism. See
   [unit cancellation](docs/math/discrete-morse-cancellation.md).
+- Bundle filtered contractions of based complexes
+  (`TDA.Persistence.Morse.FilteredContraction`): computable projection, inclusion and homotopy
+  matrices with chain-map, homotopy, side-condition, degree and grade fields, composition
+  (`trans`), transport of the small complex along a carrier equivalence (`reindex`),
+  restatement along equalities (`copy`) and the unit-pair instance (`ofUnitPair`);
+  `D' * D' = 0` follows from `D * D = 0`, and the based and filtered differential properties
+  transfer to the small complex. Fixtures compose two cancellations on the filled triangle by
+  `decide +kernel`. No iteration or persistence isomorphism. See
+  [filtered contractions](docs/math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

@@ -162,6 +162,119 @@ The tie-order fixture `wD` on `Fin 4` has all generators at grade 0, in the orde
 `r`. A valid cancellation therefore does not preserve triangularity in the inherited order.
 This is the regression data for a later reducer adapter (#1061); this unit sorts nothing.
 
+## Filtered contractions and their composition
+
+`TDA.Persistence.Morse.FilteredContraction` (namespace `TDA.Persistence.Morse.Cancellation`)
+bundles the maps of a contraction as data, so that contractions can be composed and
+transported. For finite carriers `ι` and `κ` with decidable equality and a commutative ring
+`k`, a
+`FilteredContraction degree grade D degree' grade' D'` of the based complex
+`(ι, degree, grade, D)` onto `(κ, degree', grade', D')` is a structure with three matrices,
+`proj : Matrix κ ι k`, `incl : Matrix ι κ k` and `htpy : Matrix ι ι k`, written `p`, `i` and
+`h`, and thirteen Prop fields:
+
+- the chain-map equations `proj_mul` (`p D = D' p`) and `mul_incl` (`D i = i D'`);
+- `proj_mul_incl` (`p i = 1`) and `one_sub_incl_mul_proj` (`1 - i p = D h + h D`), with the
+  sign convention of `one_sub_inclusion_mul_projection`;
+- the side conditions `htpy_mul_htpy` (`h h = 0`), `proj_mul_htpy` (`p h = 0`) and
+  `htpy_mul_incl` (`h i = 0`);
+- degree support: `proj_degree` and `incl_degree` say that `p` and `i` preserve degree on
+  their supports, and `htpy_degree` that `h x y ≠ 0` implies `degree x = degree y + 1`;
+- grade bounds: `proj_grade`, `incl_grade` and `htpy_grade` say that all three matrices are
+  `GradeNonincreasing`.
+
+The differentials `D` and `D'`, the degrees and the grades are parameters, not fields. So
+`trans` typechecks only when the middle complex of the two contractions agrees, and
+`ofUnitPair` names its target exactly. `D * D = 0` and the filtration of `D` are not fields
+either: they enter only as hypotheses of `ofUnitPair` and of the three `*_target` theorems
+below, and `refl`, `copy`, `trans` and `reindex` need no hypothesis beyond their inputs. The
+Prop fields are proof-irrelevant, so two contractions with the same matrices are
+interchangeable for every statement about the matrices.
+
+`refl degree grade D` is the identity contraction, with `p = i = 1` and `h = 0`.
+`c₁.trans c₂` composes a contraction of the large complex onto a middle one with a contraction
+of the middle complex onto a small one, in diagrammatic order; the three carriers may be
+different types. Its projection is `p₂ p₁`, its inclusion `i₁ i₂` and its homotopy
+`h = h₁ + i₁ h₂ p₁`. The chain-map equations and `p i = 1` compose directly. For the rest:
+
+- `h h = h₁ h₁ + h₁ i₁ h₂ p₁ + i₁ h₂ p₁ h₁ + i₁ h₂ (p₁ i₁) h₂ p₁`. The first three terms
+  vanish by `h₁ h₁ = 0`, `h₁ i₁ = 0` and `p₁ h₁ = 0`, and the last is `i₁ h₂ h₂ p₁ = 0`;
+- `p h = p₂ p₁ h₁ + p₂ (p₁ i₁) h₂ p₁ = p₂ h₂ p₁ = 0`;
+- `h i = h₁ i₁ i₂ + i₁ h₂ (p₁ i₁) i₂ = i₁ h₂ i₂ = 0`;
+- `1 - i₁ i₂ p₂ p₁ = (1 - i₁ p₁) + i₁ (1 - i₂ p₂) p₁ = D h₁ + h₁ D + i₁ (D' h₂ + h₂ D') p₁`,
+  and `i₁ D' = D i₁` and `D' p₁ = p₁ D` turn the last term into
+  `D (i₁ h₂ p₁) + (i₁ h₂ p₁) D`.
+
+The degree fields of the composite follow from those of the factors on the supports of the
+products, and the grade fields from `GradeNonincreasing.mul` and the new
+`GradeNonincreasing.add`. `trans_proj`, `trans_incl` and `trans_htpy` state the three matrices
+of the composite by `rfl`, as `refl_*`, `copy_*`, `reindex_*` and `ofUnitPair_*` do for the
+other constructions.
+
+`c.reindex e` transports the small complex along `e : κ ≃ μ`: the target becomes
+`(degree' ∘ e.symm, grade' ∘ e.symm, D'.submatrix e.symm e.symm)`, the projection
+`proj.submatrix e.symm id`, the inclusion `incl.submatrix id e.symm`, and the homotopy is
+unchanged. Only the small side is transported. `c.copy hdeg hgr hD` keeps the three matrices
+and rewrites the small complex's degree, grade and differential along equalities. Together they
+move a contraction onto nested survivor subtypes to a flat carrier, such as a subtype of the
+original positions, and restate it there with the flat degree, grade and differential without
+casts; fixture G2 below does this once.
+
+`ofUnitPair hD hp hg` packages the single cancellation of the earlier sections: for
+`hD : IsFilteredDifferential degree grade D`, a unit pair `hp : IsUnitPair D a b` and
+`hg : grade a = grade b`, it is the contraction onto
+`(degree ∘ Subtype.val, grade ∘ Subtype.val, reducedDifferential D a b)` with matrices
+`projection D a b`, `inclusion D a b` and `homotopy a b`, whose fields are the theorems of the
+earlier sections.
+
+For every filtered contraction `c`:
+
+- `differential_eq`: `D' = p D i`;
+- `sq_zero_target`: `D * D = 0` implies `D' * D' = 0`, since
+  `p D i p D i = p (D D) i - p D (1 - i p) D i = -p D (D h + h D) D i = 0`;
+- `isBasedDifferential_target` and `isFilteredDifferential_target`: if `D` is a based,
+  respectively filtered, differential, so is `D'`;
+- `proj_mulVec_incl_mulVec`: `p (i y) = y`;
+- `sub_incl_mulVec_proj_mulVec`: `x - i (p x) = D (h x) + h (D x)`.
+
+Sublevel restriction is not restated. Each of `p`, `i` and `h` is grade-nonincreasing, so by
+`GradeNonincreasing.mulVec_sublevelSupported` each maps vectors supported in grades `≤ t` to
+such vectors, and the identities above restrict to each grade sublevel. These restricted
+identities are not stated as separate theorems.
+
+The fixtures are in `TDA.Persistence.Morse.FilteredContractionExamples`, over `ZMod 2`, with
+every closed computation a kernel `decide`. They reuse the filled triangle `tD` with the grade
+`cGrade`: A, B, C, AB and BC at grade 0, CA at grade 1 and ABC at grade 2. The regrading is
+needed: with the list grades of `triangle`, no equal-grade unit pair remains after cancelling
+(B, AB), since every remaining incidence joins a grade-0 vertex to a grade-1 edge or a grade-1
+edge to the grade-2 face.
+
+- G1. `step1` cancels (B, AB) by `ofUnitPair`. `step2` cancels (C, BC) on the survivors
+  `PairSurvivor tB tAB`, from `isFilteredDifferential_reduced`, with pivot `d' BC` having
+  coefficient 1 on C; its survivors form the nested subtype `TS2`. The composite
+  `twoStep = step1.trans step2` has the single differential entry `d'' ABC = CA`
+  (`twoStep_differential`). Its projection sends A, B, C to A, CA to CA, ABC to ABC and AB, BC
+  to 0 (`twoStep_proj`); its inclusion sends A to A, CA to AB + BC + CA and ABC to ABC
+  (`twoStep_incl`); its homotopy sends B to AB, C to AB + BC and every other generator to 0
+  (`twoStep_htpy`). The homotopy on C comes entirely from the correction term `i₁ h₂ p₁`:
+  `p₁ C = C`, `h₂ C = BC` and `i₁ BC = AB + BC`, while `h₁ C = 0`. The lift AB + BC + CA of
+  the critical edge is the boundary cycle of the triangle. `twoStep_values_homotopy` checks
+  `1 - i p = D h + h D` on the written-out matrices directly, independently of the general
+  proof.
+- G2. `critEquiv : TS2 ≃ Crit` identifies the nested survivors with the flat subtype `Crit` of
+  the positions A, CA and ABC, keeping the original IDs, and
+  `critContraction = twoStep.reindex critEquiv`. `crit_differential` (`d ABC = CA` on `Crit`),
+  `crit_proj`, `crit_incl` and `crit_htpy` state the values of G1 with the small side on
+  `Crit`, and `crit_grade` states that the transported grades are the original grades.
+  `critFlat` restates `critContraction` by `copy` with the flat degree `tDegree ∘ Subtype.val`,
+  grade `cGrade ∘ Subtype.val` and differential `critD`, and `critFlat_proj` and
+  `critFlat_incl` evaluate it.
+
+G2 is the contraction part of the transport the #1065 forward note asked for, on one
+instance; `submatrix` lemmas for `reducedDifferential`, `projection` and `inclusion` are not
+provided. The general equivalence from a schedule's nested survivors to a Finset of critical
+cells is #1041's. No homology is formalised here.
+
 ## Comparison with MN13
 
 MN13 define the reduction step in the outline of the proof of Thm. 2.4 (pp. 335–336), for a
@@ -202,11 +315,19 @@ The grade theorems for `κ_Q` and `Θ` (`reducedDifferential_gradeNonincreasing`
 the unequal-grade fixture are library derivations attributed to no numbered result. See the
 [MN13 source mapping](references.md#MN13).
 
+`FilteredContraction`, its operations, the `*_target` theorems, the vector identities and the
+G1/G2 fixtures are library derivations attributed to no numbered result; `ofUnitPair`
+repackages the reduction step above and adds no source claim. `TauCeti.LinearSpecialContraction`,
+recorded on #1074 against TauCeti commit `25bd01c`, is the closest notion to
+`FilteredContraction`; TauCeti is not a dependency, and if it became one the comparison would
+go through `Matrix.toLin'`.
+
 ## What is not provided
 
-- No iteration of cancellations, pair schedule, admissible-pivot invariant, composition of
-  contractions, Morse complex, homology or persistence isomorphism; these are #1041.
-- No reducer adapter, reindexing of survivors to `Fin`, or grading-compatible ordering; these
-  are #1061.
+- No iteration of cancellations, pair schedule, admissible-pivot invariant, Morse complex,
+  homology or persistence isomorphism; these are #1041.
+- No reducer adapter, no chosen ordering or Equiv of survivors to `Fin`, and no
+  grading-compatible ordering; these are #1061. `FilteredContraction.reindex` transports a
+  contraction along such an Equiv once one is given.
 - No matching check or search, no bridge to Mathlib `HomologicalComplex` or `Homotopy`, and
   no runtime bound or speedup claim.

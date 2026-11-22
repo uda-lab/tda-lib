@@ -236,3 +236,4 @@ import TDA.Persistence.FiniteSimplicialErosionExamples
 import TDA.Persistence.Morse.FiniteInputMatchingExamples
 import TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples
 import TDA.Persistence.Morse.UnitCancellationExamples
+import TDA.Persistence.Morse.FilteredContractionExamples
