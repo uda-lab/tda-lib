@@ -234,3 +234,4 @@ import TDA.Persistence.ERankQTameExamples
 import TDA.Persistence.CoordinateQTameExamples
 import TDA.Persistence.FiniteSimplicialErosionExamples
 import TDA.Persistence.Morse.FiniteInputMatchingExamples
+import TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples

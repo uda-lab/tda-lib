@@ -7,7 +7,9 @@ filtered form for the sublevels of a `FilterFunction`. The source is Mischaikow�
 ([MN13](references.md#MN13)). That layer consists of predicates and theorems about
 predicates; no chain map or homology is involved. `TDA.Persistence.Morse.FiniteInputMatching`
 adds an executable checker for matchings supplied on finite integer-graded inputs, described in
-[checking a supplied matching](#checking-a-supplied-matching).
+[checking a supplied matching](#checking-a-supplied-matching), and
+`TDA.Persistence.Morse.FiniteInputMatchingGeneration` builds such a certified matching, described
+in [generating a matching greedily](#generating-a-matching-greedily).
 
 ## Matchings and the modified Hasse diagram
 
@@ -196,7 +198,8 @@ restate the certificate on actual faces.
 
 `TDA.Persistence.Morse.FiniteInputMatchingExamples` evaluates its fixtures by kernel
 `decide`. Fixtures that quantify over all ranks or state a semantic fact combine such
-`decide` steps with the general theorems above or with a short arithmetic argument. Vertices `{0}`, `{1}`, … are written A, B, …. The accepted fixtures cover the
+`decide` steps with the general theorems above or with a short arithmetic argument.
+Vertices `{0}`, `{1}`, … are written A, B, …. The accepted fixtures cover the
 empty input, the path A–B–C, the hollow and the filled triangle, the empty matching on the
 filled triangle (all seven faces critical), and the square with A, B, C, D, AB, BC, CD at
 grade 0, AD at grade 1 and AC, ABC, ACD at grade 2. On the square, the pairs (B, AB),
@@ -224,12 +227,87 @@ arrow. A rank would give `rank A < rank A`, so no certificate exists
 (`cyclic_no_certificate`), and the semantic relation is not acyclic
 (`cyclic_not_isAcyclic`).
 
+## Generating a matching greedily
+
+`TDA.Persistence.Morse.FiniteInputMatchingGeneration` (namespace
+`TDA.Persistence.Morse.MatchingInput`) builds a certified matching `generate xs :
+CertifiedMatching xs` for every finite input `xs`, with no validity hypothesis.
+`candidates xs` lists the same-grade cover pairs `(i, j)` of positions, that is the pairs with
+`IsCover xs i j` and equal grades (`mem_candidates_iff`), in lexicographic (lower, upper)
+order and without repetition (`candidates_nodup`). The pass starts from the empty certificate
+`emptyCertified xs` (`emptyCertified_pairs`) and visits the candidates in this order. At a
+candidate `p` with current certificate `c`, `greedyStep` calls `certify?` on the extended list
+`c.pairs ++ [p]` with the rank `candidateRank xs (c.pairs ++ [p])`. If the checker accepts,
+the returned certificate becomes the new state; otherwise `c` is kept. So `p` is accepted only
+if both of its faces are still unmatched, the grades are equal, and the extended list has a
+topological rank. The generated pairs are therefore a sublist of the candidates, in candidate
+order (`greedyStep_pairs`, `generate_pairs_sublist`).
+
+The state of the pass is a `CertifiedMatching` at every step, so the output needs no separate
+correctness proof: it carries its pairs, its rank and proofs of both list-level predicates.
+`generate_check` restates this as `check xs (generate xs).pairs (generate xs).rank = true`.
+For `h : Valid xs`, `generate_isFilteredAcyclicMatching` gives
+`IsFilteredAcyclicMatching (gradeFilter xs h) (toRel xs h (generate xs).pairs)`, and the
+critical positions and report of the previous section apply to `generate xs`.
+
+`candidateRank` computes, for every position, the length of a longest chain of at most
+`xs.length` consecutive arrows ending there, by relaxation over the cover pairs on a memoized
+list. Soundness does not depend on it, since `certify?` re-checks every rank it returns. It is
+not claimed to find a rank whenever the extended list is acyclic, so in general a rejected
+candidate is not proved to close a cycle. The output depends on the list order of `xs`, and
+no invariance under reordering is claimed.
+
+`TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples` evaluates the pass by kernel
+`decide` on the inputs of the checker fixtures, which it imports: `empty`, the path `path`,
+the same path `pathStep` with BC at grade 1, the hollow triangle `circle`, the filled triangle
+`filled` and the square `square`. For each input `X`, `X_generate_pairs` and
+`X_generate_report` state the generated pairs and the critical report; `empty_generate`
+combines both for the empty input.
+
+| Input | Generated pairs | Critical faces (dimension, grade) |
+|---|---|---|
+| `empty` | none | none |
+| `path` | (A, AB), (B, BC) | C (0, 0) |
+| `pathStep` | (A, AB) | B (0, 0), C (0, 0), BC (1, 1) |
+| `circle` | (A, AB), (B, BC) | C (0, 0), AC (1, 0) |
+| `filled` | (A, AB), (B, BC), (AC, ABC) | C (0, 0) |
+| `square` | (A, AB), (B, BC), (C, CD), (AC, ABC) | D (0, 0), AD (1, 1), ACD (2, 2) |
+
+The tree and the filled triangle reduce to one critical vertex, the hollow triangle keeps
+exactly one critical vertex and one critical edge, and the square keeps one critical face per
+grade. The square result differs from the hand-chosen matching of the checker fixtures, which
+leaves A, AD and ACD critical; the dimensions and grades agree.
+
+On the filled triangle the candidates are, in order, (A, AB), (A, AC), (B, AB), (B, BC),
+(C, BC), (C, AC), (AB, ABC), (BC, ABC) and (AC, ABC). The pass accepts (A, AB) and (B, BC).
+It rejects (A, AC), (B, AB), (C, BC), (AB, ABC) and (BC, ABC) because one of their faces is
+already matched; these extensions fail (N), so no rank is accepted for them. When the pass
+reaches (C, AC), its state is (A, AB), (B, BC): these are the generated pairs before (C, AC)
+in candidate order, because a step only appends (`filled_generate_pairs`, `greedyStep_pairs`).
+The extension closes
+the cycle C → AC → A → AB → B → BC → C and admits no rank
+(`filled_rejected_no_certificate`), so (C, AC) is rejected and (AC, ABC) is accepted last.
+The candidate list and the reuse rejections of this trace are read off by hand; that the
+extension at (C, AC) admits no rank is the Lean theorem.
+
+`pathStep_barrier` shows the filtration barrier: (B, BC) is a cover pair matched on the
+constant-grade path, but on `pathStep` its grades are 0 and 1, it is not a candidate, and B
+and BC stay critical (`pathStep_generate_report`). On the hollow triangle, the rejection of (C, AC) is necessary: it is a
+candidate, the extended list is a list-level matching (`circle_rejected_conditions`), and no
+rank is accepted for the extension (`circle_rejected_no_certificate`), which is the cyclic
+circle above. These fixtures concern specific rejections only.
+
+MN13 §5.1 builds its matching with the coreduction-based `MorseReduce`; the proof of Thm. 5.1
+(§5.2) derives its acyclicity from the order of pair excision. This greedy pass is a different,
+library procedure, and no result of §5 is claimed.
+
 ## What is not provided
 
-- No generation or search of a matching or rank (#1045); `check` only verifies a supplied rank,
-  and no runtime bound is stated.
+- Generation exists only as the greedy pass above. No maximality (by inclusion or by
+  cardinality), optimality or minimal number of critical faces is claimed, nor that every
+  rejected candidate closes a cycle; MN13 §5.1 notes that constructing an optimal acyclic
+  matching is NP-hard in general. No runtime bound is stated for `check` or `generate`.
 - No chain contraction, Morse complex or persistence invariance (#1041; a single
   cancellation is #1065), so MN Thm. 4.3 is only background here.
-- No maximality or optimality of matchings.
 - No general cell complexes `(X, κ)` with arbitrary incidence functions, and no Lean
   statement of MN's nested family form of Def. 4.1.

@@ -2179,6 +2179,22 @@ square with critical faces A, AD and ACD. `check` does not search for a matching
 no runtime bound is stated; see
 [checking a supplied matching](math/discrete-morse-matchings.md#checking-a-supplied-matching).
 
+`TDA.Persistence.Morse.FiniteInputMatchingGeneration` (imported by `TDA.Persistence`, same
+namespace) generates a certified matching. `MatchingInput.candidates xs` lists the same-grade
+cover pairs of positions in the frozen lexicographic (lower, upper) order, and `generate xs :
+CertifiedMatching xs` is one greedy pass over them from the empty matching: a candidate is
+appended exactly when `certify?` accepts the extended list with the rank `candidateRank`
+computes for it. `generate` is total and needs no `Valid` hypothesis.
+`generate_pairs_sublist` proves that the generated pairs are a sublist of the candidates,
+`generate_check` that `check` accepts them with the generated rank, and, for `h : Valid xs`,
+`generate_isFilteredAcyclicMatching` that they form a filtered acyclic matching for
+`gradeFilter xs h`. The result depends on the list order of `xs`. No maximality, optimality,
+completeness of `candidateRank` (that every rejected candidate closes a cycle), invariance
+under reordering or runtime bound is claimed.
+`TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples` (imported by
+`TDA.Persistence.Examples`) evaluates the pass on the checker inputs; see
+[generating a matching greedily](math/discrete-morse-matchings.md#generating-a-matching-greedily).
+
 ## Compatible lifts and algebraic sums over the reals
 
 The [real interval decomposition note](math/real-interval-decomposition.md)
