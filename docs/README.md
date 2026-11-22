@@ -24,14 +24,19 @@ Start with the [PH contracts](api.md#persistent-homology-results-and-computation
 [certified computation](math/finite-ph-computation.md).
 [Acyclic matchings](math/discrete-morse-matchings.md) state the semantic layer of discrete
 Morse reduction: matchings, acyclicity, topological ranks and filtered matchings for
-sublevels, with an executable checker and a greedy generator for matchings on finite inputs,
-but no iterated Morse contraction or persistence isomorphism.
+sublevels, with an executable checker and a greedy generator for matchings on finite inputs.
 [Unit cancellation](math/discrete-morse-cancellation.md) cancels one equal-grade unit pair
 of a filtered based complex with an executable reduced differential and a filtered contraction;
 [such contractions](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition)
 compose, their small complex can be transported along carrier equivalences, and
 [a filtered contraction induces](api.md#sublevel-homology-of-filtered-based-complexes) an
-isomorphism of the grade-sublevel homology persistence modules of the two based complexes.
+isomorphism of the grade-sublevel homology persistence modules of the two based complexes;
+along a supplied
+[schedule satisfying a pivot invariant](math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule),
+such cancellations iterate to an executable reduced differential on the critical generators
+with a composed filtered contraction. Deriving such a schedule from a certified matching, the
+Morse complex of a matching and a bridge from this sublevel homology to simplicial persistent
+homology are not yet provided.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).
