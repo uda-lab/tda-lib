@@ -282,8 +282,8 @@ instance; `submatrix` lemmas for `reducedDifferential`, `projection` and `inclus
 provided. No general equivalence from nested survivor subtypes to a Finset of critical cells
 is provided either; the schedule recursion of
 [iterated cancellation along a pivot schedule](#iterated-cancellation-along-a-pivot-schedule)
-avoids nested survivors by running each step on a Finset-indexed carrier. `TDA.Persistence.Morse.FilteredContraction` formalises no homology; the
-section
+avoids nested survivors by running each step on a Finset-indexed carrier.
+`TDA.Persistence.Morse.FilteredContraction` formalises no homology; the section
 [sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism)
 adds it in a separate module.
 
@@ -298,9 +298,10 @@ schedule is supplied; this module does not derive it from a matching.
 
 A schedule is a list `l : List (ι × ι)` of (lower, upper) pairs of generators of a based
 complex `(ι, degree, grade, D)`, in the column convention of
-[based complexes and the column convention](#based-complexes-and-the-column-convention): `D r c` is the coefficient of
-`r` in `d c`. `scheduleEndpoints l` lists the `2·|l|` endpoints in order; its body is that of
-`MatchingInput.endpoints`. `IsPivotSchedule grade D l` is the conjunction of three conditions:
+[based complexes and the column convention](#based-complexes-and-the-column-convention):
+`D r c` is the coefficient of `r` in `d c`. `scheduleEndpoints l` lists the `2·|l|` endpoints
+in order; its body is that of `MatchingInput.endpoints`. `IsPivotSchedule grade D l` is the
+conjunction of three conditions:
 
 - the endpoints are distinct (`(scheduleEndpoints l).Nodup`);
 - every pair `(a, b)` of `l` has `D a b = 1` and `grade a = grade b`;
@@ -316,12 +317,13 @@ triangular in schedule order.
 The direction is the one that a topological rank of a matching provides. In
 `MatchingInput.arrow`, an unmatched cover points from coface to face, a matched pair from face
 to coface, and `IsTopologicalRank` asks the rank to increase strictly along every arrow. For
-`FiniteInput.boundary`, suppose `D (a i) (b j) ≠ 0` with `i ≠ j`. If `a i` is a
-codimension-one face of `b j`, the cover `(a i, b j)` is not a matched pair, since the
-endpoints are distinct, so the arrows `a j → b j → a i` give `rank (a j) < rank (a i)`. Listing
-the pairs in increasing rank of the lower face therefore gives a pivot schedule. This
-derivation is not formalized here: that nonzero boundary entries are covers, and the sorting
-itself, are left to unit 3 of #1041. Here the order is supplied, and fixture H1 in
+`FiniteInput.boundary`, suppose `D (a i) (b j) ≠ 0` with `i ≠ j`. If `a i` is a codimension-one
+face of `b j`, the cover `(a i, b j)` is not a matched pair, since the endpoints are distinct,
+so the arrows `a j → b j → a i` give `rank (a j) < rank (a i)`. Listing the pairs in increasing
+rank of the lower face therefore gives the third condition of `IsPivotSchedule`; the distinct
+endpoints, the unit coefficients and the equal grades have to come from the certified pairs.
+This derivation is not formalized here: that nonzero boundary entries are covers, and the
+sorting itself, are left to unit 3 of #1041. Here the order is supplied, and fixture H1 in
 [schedule fixtures](#schedule-fixtures) checks one such order on the square.
 
 ### One cancellation step
@@ -437,10 +439,11 @@ instance of it.
 ### Schedule fixtures
 
 The fixtures are in `TDA.Persistence.Morse.IteratedCancellationExamples`, over `ZMod 2`. Every
-closed computation is `decide +kernel`. `square_boundary` and `circle_boundary` first unfold
-the boundary with `norm_num`, as `triangle_boundary` of `TDA.Persistence.Morse.UnitCancellationExamples` does,
-because `FiniteInput.boundary`
-does not reduce in the kernel.
+fixture theorem is closed by `decide +kernel`; only the index bounds of the position names
+`qA` … `qACD` and `oA` … `oAC` use a plain `decide`. `square_boundary` and `circle_boundary`
+first unfold the boundary with `norm_num`, as `triangle_boundary` of
+`TDA.Persistence.Morse.UnitCancellationExamples` does, because `FiniteInput.boundary` does not
+reduce in the kernel.
 
 - H1. The square `square` of `TDA.Persistence.Morse.FiniteInputMatchingExamples`, with A, B,
   C, D, AB, BC and CD at grade 0, AD at grade 1 and AC, ABC and ACD at grade 2, on
@@ -467,11 +470,11 @@ does not reduce in the kernel.
   two pairs; this is one instance, not a theorem about order independence.
 - N. The hollow triangle `circle` of `TDA.Persistence.Morse.FiniteInputMatchingExamples`, with
   A, B, C, AB, BC and AC all at grade 0, and the cyclic pairs (A, AB), (B, BC), (C, AC) of
-  `cyclicPairs`, for which the checker of #1039 accepts no rank (`cyclic_no_certificate`). `cyclicOrders`
-  lists six distinct permutations of `cyclicPairs` (`cyclicOrders_perm`), and none of them is
-  a pivot schedule (`cyclic_not_isPivotSchedule`). `D C AC = 1`, but after cancelling (A, AB)
-  and then (B, BC) head first, the entry at (C, AC) is 0 (`cyclic_pivot_destroyed`), so the
-  third pair can no longer be cancelled.
+  `cyclicPairs`, for which the checker of #1039 accepts no rank (`cyclic_no_certificate`).
+  `cyclicOrders` lists six distinct permutations of `cyclicPairs` (`cyclicOrders_perm`), and
+  none of them is a pivot schedule (`cyclic_not_isPivotSchedule`). `D C AC = 1`, but after
+  cancelling (A, AB) and then (B, BC) head first, the entry at (C, AC) is 0
+  (`cyclic_pivot_destroyed`), so the third pair can no longer be cancelled.
 
 ## Sublevel homology and the induced isomorphism
 
@@ -650,10 +653,11 @@ one grade. It is stated for a single endomorphism `dM` of a module with the hypo
 `dM ∘ₗ dM = 0`, and it runs in the opposite direction, induced by the inclusion. TauCeti is not
 a dependency.
 
-Each step of `FilteredContraction.ofSchedule` is `ofUnitPair`, transported and restated by
-`cancelOn`, hence the reduction step mapped above, and adds no source claim. The schedule, the pivot invariant `IsPivotSchedule` and its
-preservation, the Finset-carrier recursion, the composed contraction `ofSchedule`, its
-characterizing facts and the H1, H2 and N fixtures of
+Each cancellation step of `FilteredContraction.ofSchedule` is `ofUnitPair`, transported and
+restated by `cancelOn`, hence the reduction step mapped above, and adds no source claim; the
+initial `toUniv` is only a restatement of the original complex. The schedule, the pivot
+invariant `IsPivotSchedule` and its preservation, the Finset-carrier recursion, the composed
+contraction `ofSchedule`, its characterizing facts and the H1, H2 and N fixtures of
 `TDA.Persistence.Morse.IteratedCancellationExamples` are library derivations attributed to no
 numbered result. No claim is made about how MN13 iterate the step in the proof of Thm. 2.4 or
 in Thm. 4.3.
