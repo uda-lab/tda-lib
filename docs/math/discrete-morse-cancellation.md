@@ -279,11 +279,208 @@ edge to the grade-2 face.
 
 G2 is the contraction part of the transport the #1065 forward note asked for, on one
 instance; `submatrix` lemmas for `reducedDifferential`, `projection` and `inclusion` are not
-provided. The general equivalence from a schedule's nested survivors to a Finset of critical
-cells is #1041's. `TDA.Persistence.Morse.FilteredContraction` formalises no homology; the
-section
+provided. No general equivalence from nested survivor subtypes to a Finset of critical cells
+is provided either; the schedule recursion of
+[iterated cancellation along a pivot schedule](#iterated-cancellation-along-a-pivot-schedule)
+avoids nested survivors by running each step on a Finset-indexed carrier.
+`TDA.Persistence.Morse.FilteredContraction` formalises no homology; the section
 [sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism)
 adds it in a separate module.
+
+## Iterated cancellation along a pivot schedule
+
+`TDA.Persistence.Morse.IteratedCancellation` (namespace `TDA.Persistence.Morse.Cancellation`)
+cancels a list of unit pairs one after the other and composes the single cancellations of
+`ofUnitPair` into one filtered contraction onto the generators that are not cancelled. The
+schedule is supplied; this module does not derive it from a matching.
+
+### Schedules and the pivot invariant
+
+A schedule is a list `l : List (ι × ι)` of (lower, upper) pairs of generators of a based
+complex `(ι, degree, grade, D)`, in the column convention of
+[based complexes and the column convention](#based-complexes-and-the-column-convention):
+`D r c` is the coefficient of `r` in `d c`. `scheduleEndpoints l` lists the `2·|l|` endpoints
+in order; its body is that of `MatchingInput.endpoints`. `IsPivotSchedule grade D l` is the
+conjunction of three conditions:
+
+- the endpoints are distinct (`(scheduleEndpoints l).Nodup`);
+- every pair `(a, b)` of `l` has `D a b = 1` and `grade a = grade b`;
+- `l.Pairwise fun p q => D p.1 q.2 = 0`: the lower generator of a pair is never a face of the
+  upper generator of a later pair.
+
+The instance `IsPivotSchedule.decidable` decides it when equality of generators and of
+coefficients is decidable. `isPivotSchedule_iff_get` restates the third condition in indexed
+form: write `(a i, b i)` for the pairs in schedule order; then `D (a i) (b j) ≠ 0` with
+`i ≠ j` forces `j < i`. So the matched block, with rows `a i` and columns `b j`, is unit lower
+triangular in schedule order.
+
+The direction is the one that a topological rank of a matching provides. In
+`MatchingInput.arrow`, an unmatched cover points from coface to face, a matched pair from face
+to coface, and `IsTopologicalRank` asks the rank to increase strictly along every arrow. For
+`FiniteInput.boundary`, suppose `D (a i) (b j) ≠ 0` with `i ≠ j`. If `a i` is a codimension-one
+face of `b j`, the cover `(a i, b j)` is not a matched pair, since the endpoints are distinct,
+so the arrows `a j → b j → a i` give `rank (a j) < rank (a i)`. Listing the pairs in increasing
+rank of the lower face therefore gives the third condition of `IsPivotSchedule`; the distinct
+endpoints, the unit coefficients and the equal grades have to come from the certified pairs.
+This derivation is not formalized in `TDA.Persistence.Morse.IteratedCancellation`;
+`TDA.Persistence.Morse.MatchingSchedule` proves it (`isCover_of_boundary_ne_zero`,
+`rank_lt_of_boundary_ne_zero`, `isPivotSchedule_schedule`), see
+[the pivot schedule of a certified matching](#the-pivot-schedule-of-a-certified-matching).
+Here the order is supplied, and fixture H1 in
+[schedule fixtures](#schedule-fixtures) checks one such order on the square.
+
+### One cancellation step
+
+`cancelStep D a b r s = D r s - D r b * D a s` is the entry formula of
+`reducedDifferential D a b`, on all of `ι` rather than on the survivors.
+`scheduleMatrix l D` applies it along `l`, head first:
+`scheduleMatrix ((a, b) :: l) D = scheduleMatrix l (cancelStep D a b)`.
+
+- `cancelStep_apply_of_eq_zero`: a column `s` with `D a s = 0` is unchanged.
+- `IsPivotSchedule.cancelStep_apply_snd`: in a pivot schedule `p :: l`, the head condition of
+  `Pairwise` gives `D p.1 q.2 = 0` for every `q ∈ l`, so the column of every upper generator
+  of `l` is unchanged, on every row.
+- `IsPivotSchedule.cancelStep`: the tail `l` is a pivot schedule for `cancelStep D p.1 p.2`.
+- `IsPivotSchedule.head_not_mem`: the two generators of the head pair are distinct and are not
+  endpoints of the tail.
+- `IsPivotSchedule.isUnitPair_reducedDifferential`: every later pair is an `IsUnitPair` of
+  `reducedDifferential D a b` on the survivors `PairSurvivor a b`.
+
+The proof of `IsPivotSchedule.cancelStep` is short. For pairs `q` and `q'` of the tail, the
+entries `D q.1 q.2 = 1` and, for `q` before `q'`, `D q.1 q'.2 = 0` lie in the columns `q.2` and
+`q'.2`, which `cancelStep_apply_snd` leaves unchanged. The endpoints of the tail are a part of
+the distinct endpoints of `p :: l`, and the grade condition does not involve `D`.
+
+The recursion cancels the head of the schedule. With the invariant, the head's lower generator
+is a face of no later upper generator, so cancelling it leaves every later upper column
+unchanged, and this is the whole proof above. The following remarks are argued by hand only
+and are not formalized:
+
+- In a unit lower triangular matched block, cancelling any pair `k` changes the entry at
+  `(a i, b j)` by `−D (a i) (b k) * D (a k) (b j)`, which can be nonzero only for `j < k < i`.
+  So the diagonal stays 1 and triangularity persists, whichever pair is cancelled next.
+- The transposed condition `l.Pairwise fun p q => D q.1 p.2 = 0` is also preserved head first,
+  because cancelling the head leaves the rows of all later lower generators unchanged.
+
+The invariant is sufficient for the recursion, not necessary: fixture G1 of
+[filtered contractions and their composition](#filtered-contractions-and-their-composition)
+cancels (B, AB) and then (C, BC), and fixture H2 in [schedule fixtures](#schedule-fixtures)
+checks that this order is not a pivot schedule. The module keeps the single direction that a
+rank of the lower face provides. Fixture N there records cyclic pairs none of whose six
+orders is a pivot schedule.
+
+### Critical generators and the composed contraction
+
+`scheduleSurvivors l S` removes the endpoints of `l` from a Finset `S` pair by pair, by the
+same recursion as `scheduleMatrix`; `mem_scheduleSurvivors` states that its members are the
+elements of `S` that are not endpoints. `criticalSet l = scheduleSurvivors l Finset.univ`, so
+`x ∈ criticalSet l ↔ x ∉ scheduleEndpoints l` (`mem_criticalSet`). `Critical l` is the
+subtype `{x : ι // x ∈ criticalSet l}`, so the critical generators keep their original IDs as
+`Subtype.val`, and `card_critical` gives `Fintype.card (Critical l) = Fintype.card ι - 2·|l|`
+for distinct endpoints. `criticalDifferential D l` is `scheduleMatrix l D` restricted to
+`Critical l`. It takes no hypothesis, so it can be evaluated without building the
+contraction.
+
+For `hD : IsFilteredDifferential degree grade D` and `hl : IsPivotSchedule grade D l`,
+`FilteredContraction.ofSchedule hD hl` is a filtered contraction of `(ι, degree, grade, D)`
+onto `(Critical l, degree ∘ Subtype.val, grade ∘ Subtype.val, criticalDifferential D l)`. The
+target is named exactly, on the flat carrier `Critical l`. It is built in four layers:
+
+- `survivorEquiv ha hb` is the concrete equivalence from `PairSurvivor ⟨a, ha⟩ ⟨b, hb⟩`, the
+  survivors inside the carrier `{x // x ∈ S}`, to `{x // x ∈ (S.erase a).erase b}`; both
+  directions keep `x.val`.
+- `cancelOn` is `ofUnitPair` on `{x // x ∈ S}`, transported by `reindex` along
+  `survivorEquiv` and restated by `copy rfl rfl rfl` with the flat degree and grade and the
+  differential `(cancelStep M a b).submatrix Subtype.val Subtype.val`.
+- `ofScheduleOn l S M` composes these steps with `trans`. Its hypotheses are that `M`
+  restricted to `S` is a filtered differential, that `l` is a pivot schedule for `M`, and that
+  every endpoint of `l` lies in `S`. After the head step, the filtered differential property
+  comes from `isFilteredDifferential_target` and the pivot invariant from
+  `IsPivotSchedule.cancelStep`.
+- `toUniv` restates the original complex on `{x // x ∈ Finset.univ}` by `refl`, `reindex` and
+  `copy`, and `ofSchedule` is `toUniv` followed by `ofScheduleOn l Finset.univ D`.
+
+No cast is needed. After `reindex`, the transported degree is
+`((degree ∘ val) ∘ val) ∘ e.symm`, which is definitionally `degree ∘ val` because `e` is the
+concretely defined `survivorEquiv`, so `rfl` closes all three `copy` equalities. Because
+`scheduleSurvivors` and `scheduleMatrix` follow the recursion of `ofScheduleOn`, the carrier
+and the differential reached after each step are, definitionally, those the next step starts
+from. All data are computable, and the recursion is structural on `l`, so no data body matches
+on a proof.
+
+The characterizing facts are:
+
+- `criticalDifferential_eq`: `criticalDifferential D l = proj * D * incl`, from
+  `differential_eq`;
+- `isFilteredDifferential_criticalDifferential`: `criticalDifferential D l` is a filtered
+  differential for the inherited degree and grade, from `isFilteredDifferential_target`, so it
+  squares to zero, lowers degree by one and does not increase grade;
+- `ofSchedule_congr`: the projection, inclusion and homotopy of `ofSchedule` depend on `D`
+  only through its value. The fixtures use it to move between `FiniteInput.boundary` and a
+  written-out matrix.
+
+Sublevel restriction is not restated; it is `GradeNonincreasing.mulVec_sublevelSupported`
+applied to the grade fields of the contraction. The isomorphism `sublevelHomologyIso` of
+[sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism)
+applies to every filtered contraction, so also to `ofSchedule`, but this module states no
+instance of it.
+
+### What is not proved
+
+`TDA.Persistence.Morse.IteratedCancellation` provides none of the following:
+
+- an explicit formula for the reduced differential, the projection, the inclusion or the
+  homotopy, such as a sum over gradient paths; the matrices are defined only by the recursion;
+- independence of the result from the schedule order; fixture H2 checks agreement with G1 in
+  one instance only;
+- preservation of the invariant when a pair other than the head is cancelled;
+- any derivation of a schedule from an acyclic matching or a #1039 `CertifiedMatching`;
+  `TDA.Persistence.Morse.MatchingSchedule` derives one from a certified matching, a pivot
+  schedule for `FiniteInput.boundary` on a valid input, see
+  [the pivot schedule of a certified matching](#the-pivot-schedule-of-a-certified-matching);
+- any homology or persistence statement; the simplicial bridge and the main theorem of #1041
+  are unit 5 of #1041.
+
+### Schedule fixtures
+
+The fixtures are in `TDA.Persistence.Morse.IteratedCancellationExamples`, over `ZMod 2`. Every
+closed computation is checked by `decide +kernel`; the index bounds of the position names
+`qA` … `qACD` and `oA` … `oAC` use a plain `decide`, and `square_isFilteredDifferential` and
+`sqD_isFilteredDifferential` are term proofs from `isFilteredDifferential_boundary` and
+`square_boundary`. `square_boundary` and `circle_boundary` first unfold the boundary with
+`norm_num`, as `triangle_boundary` of `TDA.Persistence.Morse.UnitCancellationExamples` does,
+because `FiniteInput.boundary` does not reduce in the kernel.
+
+- H1. The square `square` of `TDA.Persistence.Morse.FiniteInputMatchingExamples`, with A, B,
+  C, D, AB, BC and CD at grade 0, AD at grade 1 and AC, ABC and ACD at grade 2, on
+  `FiniteInput.boundary square`. `sqSchedule` is (AC, ABC), (D, CD), (C, BC), (B, AB): the
+  pairs of `squarePairs` (`sqSchedule_perm`) in increasing rank of the lower face, which is 2,
+  4, 6 and 8 for the rank of `square_check`. It is a pivot schedule
+  (`sqSchedule_isPivotSchedule`); the list order of `squarePairs` is not, since B is a face of
+  BC (`squarePairs_not_isPivotSchedule`). The critical set is {A, AD, ACD}
+  (`sq_criticalSet`), and the reduced differential has the single entry `d ACD = AD`
+  (`sq_criticalDifferential`). The projection sends A, B, C and D to A, AD to AD, ACD to ACD
+  and every other generator to 0 (`sq_proj`); the inclusion sends A to A, AD to
+  AB + BC + CD + AD and ACD to ABC + ACD (`sq_incl`); the homotopy sends B to AB, C to
+  AB + BC, D to AB + BC + CD, AC to ABC and every other generator to 0 (`sq_htpy`). As a hand
+  check of the chain-map equation on ACD: `D (i ACD) = ∂ABC + ∂ACD = AB + BC + CD + AD`, which
+  is `i (d ACD)`.
+- H2. The filled triangle `tD` with the grade `cGrade` of the G1 and G2 fixtures (A, B, C, AB and
+  BC at grade 0, CA at 1, ABC at 2). `triSchedule` is (C, BC), (B, AB), and it is a pivot
+  schedule (`triSchedule_isPivotSchedule`); G1's order (B, AB), (C, BC) is not, since B is a
+  face of BC (`g1Order_not_isPivotSchedule`). The critical set is G2's `critSet`
+  (`tri_mem_criticalSet`), and the reduced differential, the projection and the inclusion are
+  G2's `critD`, `critProj` and `critIncl`, read through `toCrit`
+  (`tri_criticalDifferential`, `tri_proj`, `tri_incl`); the homotopy is G1's `twoStepHtpy`
+  (`tri_htpy`). The same values as G1 and G2 arise here from the opposite order of the same
+  two pairs; this is one instance, not a theorem about order independence.
+- N. The hollow triangle `circle` of `TDA.Persistence.Morse.FiniteInputMatchingExamples`, with
+  A, B, C, AB, BC and AC all at grade 0, and the cyclic pairs (A, AB), (B, BC), (C, AC) of
+  `cyclicPairs`, for which the checker of #1039 accepts no rank (`cyclic_no_certificate`).
+  `cyclicOrders` lists six distinct permutations of `cyclicPairs` (`cyclicOrders_perm`), and
+  none of them is a pivot schedule (`cyclic_not_isPivotSchedule`). `D C AC = 1`, but after
+  cancelling (A, AB) and then (B, BC) head first, the entry at (C, AC) is 0
+  (`cyclic_pivot_destroyed`), so the third pair can no longer be cancelled.
 
 ## Sublevel homology and the induced isomorphism
 
@@ -405,6 +602,191 @@ closes the cycle AB + BC + CA, which is not a boundary since ABC is not yet pres
 The `*_of_lt` values check that the grade sublevel, not only the degree, enters the
 definitions.
 
+## The pivot schedule of a certified matching
+
+`TDA.Persistence.Morse.MatchingSchedule` (namespace `TDA.Persistence.Morse.MatchingInput`)
+starts from a #1039 `CertifiedMatching xs` `c` on a finite integer-graded input
+`xs : FiniteInput.Input`, described in
+[checking a supplied matching](discrete-morse-matchings.md#checking-a-supplied-matching). It
+sorts the certified pairs into a schedule, proves that on a valid input this schedule is a
+pivot schedule for `FiniteInput.boundary xs` in the sense of
+[iterated cancellation along a pivot schedule](#iterated-cancellation-along-a-pivot-schedule),
+and names the resulting Morse complex on the critical positions, its filtered contraction and
+the isomorphism of
+[sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism).
+
+### Boundary entries and covers
+
+`IsCover xs i j` says that the face at position `i` is contained in the face at position `j`
+and has one vertex fewer. Over `ZMod 2`, `coverIncidence xs i j` is `1` when `IsCover xs i j`
+holds and the face at position `i` is nonempty, and `0` otherwise.
+`boundary_eq_coverIncidence` proves `FiniteInput.boundary xs = coverIncidence xs` for every
+input, with no validity hypothesis. The nonemptiness condition is needed: if the face at `i`
+is empty and the face at `j` is a singleton, `IsCover xs i j` holds, but the boundary entry is
+`0`: in the definition of `FiniteInput.boundary`, with `s` the face at `i` and `t` the face at
+`j`, the size test `t.card = s.card - 1 + 2` reads `1 = 2` in `ℕ`. Three lemmas follow:
+
+- `isCover_of_boundary_ne_zero`: on every input, a nonzero boundary entry is a cover;
+- `boundary_eq_one_of_isCover`: on a valid input, every cover has coefficient `1`;
+- `boundary_ne_zero_iff`: on a valid input, the nonzero entries are exactly the covers.
+
+The proofs of the last two use only the first condition of `Valid xs`, that every listed face
+is nonempty. `coverIncidence` reduces in the kernel, while `FiniteInput.boundary` does not
+(`Finset.orderEmbOfFin`), so every kernel `decide` of the fixtures on a goal that contains
+`FiniteInput.boundary` runs after rewriting with `boundary_eq_coverIncidence`.
+
+### The schedule
+
+`c.schedule` is `c.pairs.insertionSort fun p q => c.rank p.1 ≤ c.rank q.1`: the certified pairs
+sorted by non-decreasing rank of the lower face. `List.insertionSort` is a `foldr` of
+`List.orderedInsert`, so `schedule` recurses structurally and is computable. Insertion sort is
+stable: Mathlib's `List.sublist_insertionSort` keeps every sublist of `c.pairs` that is
+`Pairwise` for the relation, and `List.pair_sublist_insertionSort` specializes it to two pairs
+`a` before `b` with `c.rank a.1 ≤ c.rank b.1`. So pairs of equal lower-face rank keep their
+order in `c.pairs`. The module does not restate stability as a theorem; fixture S3 in
+[certificate fixtures](#certificate-fixtures) shows one tie.
+
+- `schedule_perm`: the schedule is a permutation of `c.pairs`, by `List.perm_insertionSort`.
+- `schedule_pairwise_rank_le`: it is `Pairwise` for `c.rank p.1 ≤ c.rank q.1`, by
+  `List.pairwise_insertionSort`, whose `Std.Total` and `IsTrans` instances for this relation
+  the proof supplies.
+- `scheduleEndpoints_perm`: `scheduleEndpoints c.schedule` is a permutation of
+  `endpoints c.pairs`.
+
+Merge sort is not used. Core's `List.mergeSort` is defined by well-founded recursion and is
+`@[irreducible]`, and `decide +kernel` fails to reduce even
+`[3, 1, 2].mergeSort = [1, 2, 3]`. The relation `c.rank p.1 ≤ c.rank q.1` is total, so
+non-strict sortedness needs no tie rule; stability only fixes which schedule is chosen.
+
+### The arrow chain and the pivot theorem
+
+`rank_lt_of_boundary_ne_zero`: for certified pairs `p ≠ q` with
+`FiniteInput.boundary xs p.1 q.2 ≠ 0`, `c.rank q.1 < c.rank p.1`. It takes no validity
+hypothesis. The entry makes `(p.1, q.2)` a cover, by `isCover_of_boundary_ne_zero`. This cover
+is not a certified pair: it would share `p.1` with `p` and `q.2` with `q`, and since the
+certified pairs have distinct endpoints, it would equal both, forcing `p = q`. So
+`MatchingInput.arrow` has the matched arrow `q.1 → q.2` and the unmatched arrow `q.2 → p.1`,
+and `IsTopologicalRank` gives `c.rank q.1 < c.rank q.2 < c.rank p.1`. With `p = (a i, b i)`
+and `q = (a j, b j)`, this is the path `a_j → b_j → a_i` of #1041, also described in
+[topological ranks](discrete-morse-matchings.md#topological-ranks), so
+`rank a_j < rank a_i`.
+
+`isPivotSchedule_schedule`: for `h : Valid xs`,
+`IsPivotSchedule (fun i => (xs.get i).2) (FiniteInput.boundary xs) c.schedule`. The grade is
+the list grade of `isFilteredDifferential_boundary`, written as that theorem writes it, so
+`ofSchedule` applies with no rewriting. The three conditions come from the certificate:
+
+- the endpoints of the schedule are distinct, by `scheduleEndpoints_perm` and the distinct
+  endpoints of `c.isMatching`;
+- each pair is a cover with equal grades, by `c.isMatching`, so its coefficient is `1` by
+  `boundary_eq_one_of_isCover`;
+- for `p` before `q` in the schedule, `p ≠ q`, since the schedule has no duplicate, and
+  `c.rank p.1 ≤ c.rank q.1`; a nonzero `FiniteInput.boundary xs p.1 q.2` would give
+  `c.rank q.1 < c.rank p.1` by the arrow chain, so the entry is `0`.
+
+Ties are harmless, because the arrow-chain inequality is strict and only non-strict
+sortedness is used. By the same argument, any order of tied pairs is a pivot schedule; the
+module states the theorem for `schedule` only.
+
+By hand, and not formalized: the hypothesis of `rank_lt_of_boundary_ne_zero` is a list-level
+instance of `mnRel` of `TDA.Persistence.Morse.AcyclicMatching`, read through `listFace`. For
+`p ≠ q`, `p.1` is a matched lower cell other than `q.1`, and it is a cover of `q.2`, the
+partner of `q.1`. The schedule is derived from the rank certificate, not from `mnRel` or
+`IsMNAcyclic`, and no Lean statement links them.
+
+### The Morse complex of a certificate
+
+`mem_criticalSet_schedule` states `i ∈ criticalSet c.schedule ↔ i ∈ c.critical`, and
+`card_critical_schedule` states `Fintype.card (Critical c.schedule) = c.critical.length`, from
+`card_critical` and `critical_length_add`. So the critical generators of the schedule are the
+critical positions of the certificate, kept as `Subtype.val`.
+
+`c.morseDifferential` is `criticalDifferential (FiniteInput.boundary xs) c.schedule`, a matrix
+on `Critical c.schedule`. It takes no validity hypothesis and is computable. For
+`h : Valid xs`:
+
+- `c.morseContraction h` is
+  `FilteredContraction.ofSchedule (isFilteredDifferential_boundary xs h) (c.isPivotSchedule_schedule h)`,
+  a `FilteredContraction` from `(degree xs, fun i => (xs.get i).2, FiniteInput.boundary xs)`
+  onto `(degree xs ∘ Subtype.val, (fun i => (xs.get i).2) ∘ Subtype.val, c.morseDifferential)`;
+- `isFilteredDifferential_morseDifferential` states that the Morse differential is a filtered
+  differential for these inherited degrees and grades, by `isFilteredDifferential_target`;
+- `c.morseHomologyIso h p` is `(c.morseContraction h).sublevelHomologyIso p`: in every degree
+  `p`, an isomorphism from `sublevelHomologyPModule` of the boundary complex to
+  `sublevelHomologyPModule` of the Morse complex. `sublevelHomologyIso` takes both carriers in
+  one universe, and `Fin xs.length` and `Critical c.schedule` both lie in `Type`.
+
+`morseHomologyIso` is `noncomputable`, as `sublevelHomologyIso` is.
+
+### What is not proved here
+
+`TDA.Persistence.Morse.MatchingSchedule` provides none of the following:
+
+- a bridge from
+  `sublevelHomologyPModule (degree xs) (fun i => (xs.get i).2) (FiniteInput.boundary xs) p` to
+  `sublevelModule (ZMod 2) (FiniteInput.gradeFilter xs h) p` or `simplicialHomologyPModule`,
+  and the main theorem of #1041; these are unit 5 of #1041;
+- an explicit gradient-path formula for `morseDifferential`;
+- independence of the Morse differential from the rank of the certificate or from the tie
+  order; fixtures S1 and S3 agree in one instance only, and S2 is a different matching;
+- a reducer adapter, an ordering of the critical generators or an `Equiv` to `Fin`; these are
+  #1061;
+- a homology computation by evaluation: `morseHomologyIso` is `noncomputable`.
+
+### Certificate fixtures
+
+The fixtures are in `TDA.Persistence.Morse.MatchingScheduleExamples`, over `ZMod 2`, on the
+multi-grade square `square` of `TDA.Persistence.Morse.FiniteInputMatchingExamples`, with
+positions 0–10 for A, B, C, D, AB, BC, CD, AD, AC, ABC, ACD. They reuse the position names
+`qA` … `qACD`, the grade `sqGrade`, the schedule `sqSchedule` and the matrix `sqCritD` of
+fixture H1 in [schedule fixtures](#schedule-fixtures). `sqMorseD l` is the matrix on
+`Critical l` with the single entry `d ACD = AD`, and `sqMorseD_sqSchedule` states that it is
+`sqCritD` on `sqSchedule`.
+
+- S1. `sqCert` has the pairs of `squarePairs`, (B, AB), (C, BC), (D, CD), (AC, ABC), and the
+  rank `sqRank` of `square_check`: 10, 8, 6, 4, 9, 7, 5, 1, 2, 3, 0 for A … ACD. Because
+  `square_check` builds its rank with a private helper, `sqCert` restates it as a literal. The
+  lower faces AC, D, C, B have ranks 2, 4, 6, 8 (`sqCert_lowerRanks`), so the schedule is
+  `sqSchedule`, (AC, ABC), (D, CD), (C, BC), (B, AB) (`sqCert_schedule`). `squarePairs` in its
+  own order is not a pivot schedule (`sqCert_pairs_not_isPivotSchedule`). The critical
+  positions are A, AD, ACD (`sqCert_critical`, `sqCert_criticalSet`), and the Morse
+  differential is `sqMorseD sqCert.schedule` (`sqCert_morseDifferential`).
+- S2. `genCert` is the greedy certificate `generate square`, with the pairs (A, AB), (B, BC),
+  (C, CD), (AC, ABC). Its schedule is (AC, ABC), (A, AB), (B, BC), (C, CD)
+  (`genCert_schedule`); the generated rank, which no fixture states, gives the lower faces AC,
+  A, B, C the distinct ranks 1, 2, 4, 6. The critical positions are D, AD, ACD
+  (`genCert_critical`, `genCert_criticalSet`), as in the table of
+  [generating a matching greedily](discrete-morse-matchings.md#generating-a-matching-greedily),
+  and the Morse differential again has the single entry `d ACD = AD`
+  (`genCert_morseDifferential`).
+- S3. `tieCert` has the pairs of `squarePairs` and the rank `tieRank`
+  8, 6, 4, 2, 7, 5, 3, 1, 2, 3, 0, so the lower faces D and AC both have rank 2
+  (`tieCert_rank_eq`). The stable sort keeps D, listed before AC in `squarePairs`, first: the
+  schedule is (D, CD), (AC, ABC), (C, BC), (B, AB) (`tieCert_schedule`). It is a pivot
+  schedule, both by `isPivotSchedule_schedule` and by direct evaluation
+  (`tieCert_isPivotSchedule`), as is `sqSchedule`, which has the tied pairs in the other order.
+  The critical positions are A, AD, ACD (`tieCert_critical`), and the Morse differential has
+  the single entry `d ACD = AD` (`tieCert_morseDifferential`).
+
+The fixture file has 16 theorems. `sqMorseD_sqSchedule` is `rfl`. Ten are a single
+`decide +kernel`: `sqCert_lowerRanks`, `sqCert_schedule`, `sqCert_critical`,
+`sqCert_criticalSet`, `genCert_schedule`, `genCert_critical`, `genCert_criticalSet`,
+`tieCert_rank_eq`, `tieCert_schedule` and `tieCert_critical`. Four rewrite with
+`boundary_eq_coverIncidence` and then run `decide +kernel`:
+`sqCert_pairs_not_isPivotSchedule` and the three `*_morseDifferential` theorems, which first
+unfold `CertifiedMatching.morseDifferential`. `tieCert_isPivotSchedule` proves its first
+conjunct by `isPivotSchedule_schedule square_valid` and its second by the same rewrite and
+`decide +kernel`. The `isMatching` and `isTopologicalRank` fields of `sqCert` and `tieCert`
+are `decide +kernel`. No fixture uses `norm_num`, `fin_cases`, `ofSchedule_congr` or
+`square_boundary`, and none computes homology.
+
+By hand, for S2 in schedule order: cancelling (AC, ABC) turns `d ACD = CD + AD + AC` into
+`AB + BC + CD + AD`, and the three later steps leave that column unchanged, since its
+coefficients at A, B and C are 0; on the critical rows it is AD. The column of AD changes from
+`A + D` to `B + D`, `C + D` and then 0, after (A, AB), (B, BC) and (C, CD). S1 and S3 give the
+same Morse differential from two orders of the same pairs; this is one instance, not a theorem
+about order independence.
+
 ## Comparison with MN13
 
 MN13 define the reduction step in the outline of the proof of Thm. 2.4 (pp. 335–336), for a
@@ -462,11 +844,37 @@ one grade. It is stated for a single endomorphism `dM` of a module with the hypo
 `dM ∘ₗ dM = 0`, and it runs in the opposite direction, induced by the inclusion. TauCeti is not
 a dependency.
 
+Each cancellation step of `FilteredContraction.ofSchedule` is `ofUnitPair`, transported and
+restated by `cancelOn`, hence the reduction step mapped above, and adds no source claim; the
+initial `toUniv` is only a restatement of the original complex. The schedule, the pivot
+invariant `IsPivotSchedule` and its preservation, the Finset-carrier recursion, the composed
+contraction `ofSchedule`, its characterizing facts and the H1, H2 and N fixtures of
+`TDA.Persistence.Morse.IteratedCancellationExamples` are library derivations attributed to no
+numbered result. No claim is made about how MN13 iterate the step in the proof of Thm. 2.4 or
+in Thm. 4.3.
+
+The cover lemmas, `schedule` and its lemmas, the arrow chain `rank_lt_of_boundary_ne_zero`,
+the pivot theorem `isPivotSchedule_schedule`, the Morse complex of a certificate
+(`mem_criticalSet_schedule`, `card_critical_schedule`, `morseDifferential`,
+`isFilteredDifferential_morseDifferential`), its contraction `morseContraction`, its homology
+isomorphism `morseHomologyIso` and the S1–S3 fixtures of
+`TDA.Persistence.Morse.MatchingScheduleExamples` are library derivations attributed to no
+numbered result. The order is derived from the rank certificate of #1039; MN's Def. 2.2
+relation ◁ (`mnRel`) is related to it only by the unformalized remark in
+[the pivot schedule of a certified matching](#the-pivot-schedule-of-a-certified-matching), and
+no mapping to Def. 2.2 is added. `morseHomologyIso` is an isomorphism of grade-sublevel
+homology of based complexes, not a statement about the persistent homology of the represented
+complex; Thm. 4.3 remains background for #1041.
+
 ## What is not provided
 
-- No iteration of cancellations, pair schedule, admissible-pivot invariant, Morse complex of
-  a matching, or simplicial bridge from `sublevelHomologyPModule` to `sublevelModule` or
-  `simplicialHomologyPModule`; these are #1041.
+- No simplicial bridge from `sublevelHomologyPModule` to `sublevelModule` or
+  `simplicialHomologyPModule`, and no main theorem of #1041; these are #1041. The Morse complex
+  of a certified matching and the derivation of its schedule are in
+  [the pivot schedule of a certified matching](#the-pivot-schedule-of-a-certified-matching).
+  The Morse differential is defined only by the recursion of
+  `TDA.Persistence.Morse.IteratedCancellation`, and no gradient-path formula for it is
+  provided.
 - No reducer adapter, no chosen ordering or Equiv of survivors to `Fin`, and no
   grading-compatible ordering; these are #1061. `FilteredContraction.reindex` transports a
   contraction along such an Equiv once one is given.

@@ -80,6 +80,26 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   regraded filled triangle to the triangle. No bridge from `sublevelHomologyPModule` to
   simplicial homology. See
   [sublevel homology](docs/math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
+- Iterate unit cancellation along a supplied pivot schedule
+  (`TDA.Persistence.Morse.IteratedCancellation`): `IsPivotSchedule` asks for distinct
+  endpoints, unit equal-grade pairs and that no lower generator is a face of a later upper
+  generator, and is preserved by cancelling the head pair; `criticalDifferential` is an
+  executable reduced differential on the critical generators, and `FilteredContraction.ofSchedule`
+  is the composed filtered contraction onto it. Fixtures evaluate the multi-grade square and
+  the regraded filled triangle by `decide +kernel`. No derivation of the schedule from a
+  matching. See
+  [iterated cancellation](docs/math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule).
+- Derive the pivot schedule of a certified matching on a valid input
+  (`TDA.Persistence.Morse.MatchingSchedule`): over `ZMod 2` the finite-input boundary is the
+  cover incidence, `CertifiedMatching.schedule` sorts the certified pairs stably by the rank of
+  the lower face, and `isPivotSchedule_schedule` proves that it is a pivot schedule for the
+  boundary. `CertifiedMatching.morseDifferential` is the executable Morse differential on the
+  critical positions, `CertifiedMatching.morseContraction` the filtered contraction of the
+  boundary complex onto it, and `CertifiedMatching.morseHomologyIso` the induced isomorphism of
+  grade-sublevel homology persistence modules. Fixtures evaluate three certificates on the
+  multi-grade square, including a tie in the rank, by `decide +kernel`. No bridge to
+  simplicial persistent homology. See
+  [the pivot schedule of a certified matching](docs/math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
