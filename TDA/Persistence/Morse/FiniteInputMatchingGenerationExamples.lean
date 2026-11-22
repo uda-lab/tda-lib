@@ -10,12 +10,11 @@ Outputs of `TDA.Persistence.Morse.MatchingInput.generate` on the inputs `empty`,
 rejection fixtures that quantify over all ranks reuse `cyclic_no_certificate` or combine six
 `decide` steps with `omega`.
 
-Inside `TDA.Persistence.Morse`, the bare names `IsMatching` and `IsTopologicalRank` denote the
-semantic predicates, so the list-level ones are written `MatchingInput.IsMatching` and
-`MatchingInput.IsTopologicalRank`.
+Inside `TDA.Persistence.Morse`, the bare name `IsMatching` denotes the semantic predicate, so
+the list-level one is written `MatchingInput.IsMatching`.
 
 The rejection fixtures concern specific candidates only; no general claim that a rejected
-candidate closes a cycle is made.
+candidate reuses a face or closes a cycle is made.
 -/
 
 set_option autoImplicit false

@@ -2181,7 +2181,7 @@ no runtime bound is stated; see
 
 `TDA.Persistence.Morse.FiniteInputMatchingGeneration` (imported by `TDA.Persistence`, same
 namespace) generates a certified matching. `MatchingInput.candidates xs` lists the same-grade
-cover pairs of positions in the frozen lexicographic (lower, upper) order, and `generate xs :
+cover pairs of positions in the fixed lexicographic (lower, upper) order, and `generate xs :
 CertifiedMatching xs` is one greedy pass over them from the empty matching: a candidate is
 appended exactly when `certify?` accepts the extended list with the rank `candidateRank`
 computes for it. `generate` is total and needs no `Valid` hypothesis.
@@ -2189,8 +2189,9 @@ computes for it. `generate` is total and needs no `Valid` hypothesis.
 `generate_check` that `check` accepts them with the generated rank, and, for `h : Valid xs`,
 `generate_isFilteredAcyclicMatching` that they form a filtered acyclic matching for
 `gradeFilter xs h`. The result depends on the list order of `xs`. No maximality, optimality,
-completeness of `candidateRank` (that every rejected candidate closes a cycle), invariance
-under reordering or runtime bound is claimed.
+completeness of `candidateRank` (that it finds a rank whenever the extended list is acyclic,
+so that every rejected candidate reuses a face or closes a cycle), invariance under reordering
+or runtime bound is claimed.
 `TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples` (imported by
 `TDA.Persistence.Examples`) evaluates the pass on the checker inputs; see
 [generating a matching greedily](math/discrete-morse-matchings.md#generating-a-matching-greedily).

@@ -25,8 +25,8 @@ Their `MorseReduce` (§5.1) is a different, coreduction-based algorithm and is b
 
 `candidateRank` is not trusted: every rank it returns is re-checked by `certify?`. It is not
 claimed to find a rank whenever the extended list is acyclic, so a rejected candidate is not
-proved to close a cycle. No maximality, optimality, invariance under reordering the input or
-runtime bound is stated.
+proved to reuse a face or close a cycle. No maximality, optimality, invariance under reordering
+the input or runtime bound is stated.
 -/
 
 set_option autoImplicit false
@@ -61,8 +61,8 @@ theorem candidates_nodup (xs : Input) : (candidates xs).Nodup := by
 /-- A bound strictly above every face size of the input. -/
 private def sizeBound (xs : Input) : ℕ := (xs.map fun e => e.1.card).sum + 1
 
-/-- The empty matching, certified by the rank `sizeBound xs - #face`, which decreases with the
-face size. -/
+/-- The empty matching, certified by the rank `N - #face` for a constant `N` above every face
+size, which decreases with the face size. -/
 def emptyCertified (xs : Input) : CertifiedMatching xs where
   pairs := []
   rank i := sizeBound xs - (xs.get i).1.card

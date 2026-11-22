@@ -250,11 +250,13 @@ For `h : Valid xs`, `generate_isFilteredAcyclicMatching` gives
 `IsFilteredAcyclicMatching (gradeFilter xs h) (toRel xs h (generate xs).pairs)`, and the
 critical positions and report of the previous section apply to `generate xs`.
 
-`candidateRank` computes, for every position, the length of a longest chain of at most
-`xs.length` consecutive arrows ending there, by relaxation over the cover pairs on a memoized
-list. Soundness does not depend on it, since `certify?` re-checks every rank it returns. It is
-not claimed to find a rank whenever the extended list is acyclic, so in general a rejected
-candidate is not proved to close a cycle. The output depends on the list order of `xs`, and
+`candidateRank xs pairs` orients every cover pair, face to coface if it is listed and coface
+to face otherwise; for a list of cover pairs, such as every extension the pass tries, these are
+the arrows of its diagram. It gives every position the length of a longest chain of at most
+`xs.length` consecutive such arrows ending there, by relaxation on a memoized list. Soundness
+does not depend on it, since `certify?` re-checks every rank it returns. It is not claimed to
+find a rank whenever the extended list is acyclic, so in general a rejected candidate is not
+proved to reuse a face or close a cycle. The output depends on the list order of `xs`, and
 no invariance under reordering is claimed.
 
 `TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples` evaluates the pass by kernel
@@ -284,18 +286,18 @@ It rejects (A, AC), (B, AB), (C, BC), (AB, ABC) and (BC, ABC) because one of the
 already matched; these extensions fail (N), so no rank is accepted for them. When the pass
 reaches (C, AC), its state is (A, AB), (B, BC): these are the generated pairs before (C, AC)
 in candidate order, because a step only appends (`filled_generate_pairs`, `greedyStep_pairs`).
-The extension closes
-the cycle C → AC → A → AB → B → BC → C and admits no rank
+The extension closes the cycle C → AC → A → AB → B → BC → C and admits no rank
 (`filled_rejected_no_certificate`), so (C, AC) is rejected and (AC, ABC) is accepted last.
 The candidate list and the reuse rejections of this trace are read off by hand; that the
 extension at (C, AC) admits no rank is the Lean theorem.
 
 `pathStep_barrier` shows the filtration barrier: (B, BC) is a cover pair matched on the
 constant-grade path, but on `pathStep` its grades are 0 and 1, it is not a candidate, and B
-and BC stay critical (`pathStep_generate_report`). On the hollow triangle, the rejection of (C, AC) is necessary: it is a
-candidate, the extended list is a list-level matching (`circle_rejected_conditions`), and no
-rank is accepted for the extension (`circle_rejected_no_certificate`), which is the cyclic
-circle above. These fixtures concern specific rejections only.
+and BC stay critical (`pathStep_generate_report`). On the hollow triangle, the rejection of
+(C, AC) is necessary: it is a candidate, the extended list is a list-level matching
+(`circle_rejected_conditions`), and no rank is accepted for the extension
+(`circle_rejected_no_certificate`), which is the cyclic circle above. These fixtures concern
+specific rejections only.
 
 MN13 §5.1 builds its matching with the coreduction-based `MorseReduce`; the proof of Thm. 5.1
 (§5.2) derives its acyclicity from the order of pair excision. This greedy pass is a different,
@@ -305,8 +307,9 @@ library procedure, and no result of §5 is claimed.
 
 - Generation exists only as the greedy pass above. No maximality (by inclusion or by
   cardinality), optimality or minimal number of critical faces is claimed, nor that every
-  rejected candidate closes a cycle; MN13 §5.1 notes that constructing an optimal acyclic
-  matching is NP-hard in general. No runtime bound is stated for `check` or `generate`.
+  rejected candidate reuses a face or closes a cycle; MN13 §5.1 notes that constructing an
+  optimal acyclic matching is NP-hard in general. No runtime bound is stated for `check` or
+  `generate`.
 - No chain contraction, Morse complex or persistence invariance (#1041; a single
   cancellation is #1065), so MN Thm. 4.3 is only background here.
 - No general cell complexes `(X, κ)` with arbitrary incidence functions, and no Lean
