@@ -152,7 +152,7 @@ that is not a boundary. At grade 1 it is the boundary of `b`, so the barcode has
 `[0, 1)` between the two grades. A filtered contraction onto the survivor complex would
 restrict to every sublevel. The survivor complex is empty, so the grade-0 sublevel would be
 contractible, contradicting the bar. This explanation is not a Lean theorem: the library
-states no homology or barcode of these complexes. For an unequal-grade pair in a larger
+states no homology value or barcode of these complexes. For an unequal-grade pair in a larger
 complex, `p`, `i` and `d'` can also raise grade, and no general impossibility theorem is
 claimed beyond this fixture.
 
@@ -243,7 +243,10 @@ Sublevel restriction is not restated. Each of `p`, `i` and `h` is grade-nonincre
 such vectors. If `D` is also grade-nonincreasing, as under
 `IsFilteredDifferential degree grade D` (and then `D'` is too, by
 `isFilteredDifferential_target`), the identities above restrict to each grade sublevel. These
-restricted identities are not stated as separate theorems.
+restricted identities are not stated as separate theorems. The section
+[sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism)
+states the support facts that homology needs, such as `htpy_mem_sublevelChains`; those need no
+hypothesis on `D`.
 
 The fixtures are in `TDA.Persistence.Morse.FilteredContractionExamples`, over `ZMod 2`, with
 every closed computation a kernel `decide`. They reuse the filled triangle `tD` with the grade
@@ -277,7 +280,130 @@ edge to the grade-2 face.
 G2 is the contraction part of the transport the #1065 forward note asked for, on one
 instance; `submatrix` lemmas for `reducedDifferential`, `projection` and `inclusion` are not
 provided. The general equivalence from a schedule's nested survivors to a Finset of critical
-cells is #1041's. No homology is formalised here.
+cells is #1041's. `TDA.Persistence.Morse.FilteredContraction` formalises no homology; the
+section
+[sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism)
+adds it in a separate module.
+
+## Sublevel homology and the induced isomorphism
+
+`TDA.Persistence.Morse.FilteredHomology` (namespace `TDA.Persistence.Morse.Cancellation`)
+forms the homology of every grade sublevel of a based complex, packages it as a persistence
+module over `ℤ`, and proves that a filtered contraction induces an isomorphism of these
+persistence modules. The submodules have Prop-valued carriers, and the maps, the persistence
+module and the isomorphisms are `noncomputable` definitions; this module computes no homology
+by evaluation.
+
+For a finite carrier `ι`, `degree : ι → ℕ`, `grade : ι → ℤ` and `D : Matrix ι ι k` over a
+commutative ring `k`, in the column convention above:
+
+- `DegreeSupported degree p x` says that `x` vanishes on every generator whose degree is not
+  `p`;
+- `sublevelChains degree grade p t` is the submodule of vectors `x : ι → k` with
+  `DegreeSupported degree p x` and `SublevelSupported grade t x`;
+- `sublevelCycles degree grade D p t` is its intersection with the kernel of `D`, so its
+  members are the sublevel chains with `D.mulVec x = 0` (`mem_sublevelCycles`);
+- `sublevelBoundaries degree grade D p t` is the image under `D` of
+  `sublevelChains degree grade (p + 1) t` (`mem_sublevelBoundaries`): the boundaries of
+  degree-`p + 1` chains in grades `≤ t`;
+- `sublevelHomology degree grade D p t` is
+  `cycles ⧸ boundaries.comap cycles.subtype`, the cycles modulo the boundaries that lie among
+  them.
+
+No hypothesis on `D` enters these definitions. `sublevelBoundaries_le_sublevelCycles` proves
+that, for `IsFilteredDifferential degree grade D`, every sublevel boundary is a sublevel cycle;
+its proof uses all three parts of the hypothesis: the degree condition for degree `p`, the
+grade bound for grades `≤ t`, and `D * D = 0` for `D (D y) = 0`. For such a `D`, the submodule
+divided out is therefore all of `sublevelBoundaries`, viewed inside the cycles, and
+`sublevelHomology` is the usual degree-`p` homology of the subcomplex spanned by the
+generators of grade `≤ t`.
+
+Chains, cycles and boundaries grow with the grade (`sublevelChains_mono`,
+`sublevelCycles_mono`, `sublevelBoundaries_mono`). For `h : t ≤ t'`,
+`sublevelHomologyMap degree grade D p h` is the linear map induced by the inclusion of cycles;
+`sublevelHomologyMap_mk` states that it sends the class of a cycle to the class of the same
+vector, and `sublevelHomologyMap_id` and `sublevelHomologyMap_comp` state identity and
+composition. `sublevelHomologyPModule degree grade D p` is a `PModule.{v, 0, max u v} k ℤ` for
+`ι : Type u` and `k : Type v`, with value `ModuleCat.of k (sublevelHomology degree grade D p t)`
+at `t` (`sublevelHomologyPModule_obj`) and structure maps `sublevelHomologyMap`
+(`structureMapLinear_sublevelHomologyPModule`). It is defined for every matrix `D`.
+
+Let `c : FilteredContraction degree grade D degree' grade' D'`. The declarations about `c`
+take both carriers in one universe, `ι κ : Type u`, so that the two persistence modules are
+objects of the same functor category.
+
+- `proj_mem_sublevelChains` and `incl_mem_sublevelChains`: `proj` and `incl` map degree-`p`
+  chains in grades `≤ t` of one complex to degree-`p` chains in grades `≤ t` of the other, by
+  the degree fields `proj_degree`, `incl_degree` and the grade fields `proj_grade`,
+  `incl_grade`.
+- `htpy_mem_sublevelChains`: `htpy` maps degree-`p` chains in grades `≤ t` to degree-`p + 1`
+  chains in grades `≤ t`, by `htpy_degree` and `htpy_grade`.
+- `proj_mulVec_mul` and `incl_mulVec_mul` are the vector forms of the chain-map equations, and
+  with them `proj` and `incl` map sublevel cycles to sublevel cycles and sublevel boundaries to
+  sublevel boundaries (`proj_mem_sublevelCycles`, `incl_mem_sublevelCycles`,
+  `proj_mem_sublevelBoundaries`, `incl_mem_sublevelBoundaries`).
+- `c.homologyProj p t` and `c.homologyIncl p t` are the induced linear maps of sublevel
+  homology, with `homologyProj_mk` and `homologyIncl_mk` on represented classes.
+
+The two maps are mutually inverse. For a sublevel cycle `y` of the small complex,
+`proj (incl y) = y` by `proj_mulVec_incl_mulVec`, so `homologyProj` undoes `homologyIncl` on
+representatives. For a sublevel cycle `x` of the large complex, `sub_incl_mulVec_proj_mulVec`
+gives `x - incl (proj x) = D (htpy x) + htpy (D x)`, and `D x = 0` leaves
+`x - incl (proj x) = D (htpy x)`. Since `htpy x` is a degree-`p + 1` chain in grades `≤ t`,
+the difference is a sublevel boundary (`sub_incl_proj_mem_sublevelBoundaries`), so `x` and
+`incl (proj x)` have the same class. `c.sublevelHomologyEquiv p t` is the resulting
+`LinearEquiv`, with forward map `homologyProj` and inverse `homologyIncl`
+(`sublevelHomologyEquiv_apply`, `sublevelHomologyEquiv_symm_apply`).
+
+`homologyProj_comp_sublevelHomologyMap` is naturality in the grade: for `t ≤ t'`, both
+composites send the class of a cycle `x` at grade `t` to the class of `proj x` at grade `t'`.
+`c.sublevelHomologyIso p` is the isomorphism
+`sublevelHomologyPModule degree grade D p ≅ sublevelHomologyPModule degree' grade' D' p` in the
+functor category, built with `NatIso.ofComponents` from the components
+`(c.sublevelHomologyEquiv p t).toModuleIso`. It runs from the large complex to the small one;
+`sublevelHomologyIso_hom_app` and `sublevelHomologyIso_inv_app` identify its components with
+`homologyProj` and `homologyIncl`. `c.finrank_sublevelHomology_eq p t` states that the two
+sublevel homologies have equal `Module.finrank` at every degree and grade.
+
+None of these results about `c` has `D * D = 0`, `IsBasedDifferential` or
+`IsFilteredDifferential` as a hypothesis. Their proofs use the degree and grade fields of `c`,
+the chain-map fields `proj_mul` and `mul_incl`, and `proj_mul_incl` and
+`one_sub_incl_mul_proj` through the two vector identities; no proof in the module refers to
+the side conditions `htpy * htpy = 0`, `proj * htpy = 0` and `htpy * incl = 0`.
+
+The fixtures are in `TDA.Persistence.Morse.FilteredHomologyExamples`, over `ZMod 2`. They
+reuse the triangle `tD`, the grade `cGrade` and the contraction `critFlat` onto the critical
+complex `critD` on `Crit` from the fixtures above. On `Crit`,
+`critDegree` and `critGrade` are the inherited degree and grade: A in degree 0 at grade 0, CA
+in degree 1 at grade 1 and ABC in degree 2 at grade 2, with the single differential entry
+`d ABC = CA`.
+
+- H1. The critical complex, computed directly. `H₀` has dimension 1 for `t ≥ 0`
+  (`crit_finrank_zero`) and 0 for `t < 0` (`crit_finrank_zero_of_lt`). `H₁` has dimension 0
+  for `t < 1` (`crit_finrank_one_of_lt`), 1 at `t = 1` (`crit_finrank_one_one`) and 0 for
+  `t ≥ 2` (`crit_finrank_one`, from `crit_subsingleton_one`). `H₂` is 0 at every grade
+  (`crit_finrank_two`), and so is `H_p` for `p ≥ 3` (`crit_finrank_of_three_le`). The vector
+  `Pi.single cCA 1` is a sublevel cycle at degree 1 and grade 1 (`crit_single_cCA_mem`), and
+  its class there is not zero (`crit_class_cCA_ne_zero`).
+- H2. The triangle with the grade `cGrade`: the same table of dimensions
+  (`triangle_finrank_zero`, `triangle_finrank_zero_of_lt`, `triangle_finrank_one_of_lt`,
+  `triangle_finrank_one_one`, `triangle_finrank_one`, `triangle_finrank_two`,
+  `triangle_finrank_of_three_le`). Each value is the H1 value transported by
+  `critFlat.finrank_sublevelHomology_eq`; no triangle quotient is computed directly.
+- H3. `triangleCycle` is AB + BC + CA, and `critFlat_incl_mulVec_cCA` states that `incl`
+  sends CA to it, by a kernel `decide` after rewriting with `critFlat_incl`.
+  `triangleCycle_mem` states that it is a degree-1 cycle in grades `≤ 1`, and
+  `triangle_class_ne_zero` that its class at grade 1 is not zero, as the image of the class of
+  CA under `(critFlat.sublevelHomologyEquiv 1 1).symm`. `triangle_structureMap_one_two` states
+  that the degree-1 structure map of `sublevelHomologyPModule tDegree cGrade tD 1` from grade 1
+  to grade 2 is zero; it holds because the degree-1 sublevel homology at grade 2 is trivial.
+
+By hand, independently of the contraction: at grade 0 the triangle's sublevel is the path
+A–B–C with edges AB and BC, which is connected and has no 1-cycle. At grade 1 the edge CA
+closes the cycle AB + BC + CA, which is not a boundary since ABC is not yet present. At grade 2,
+`d ABC = AB + BC + CA` fills it, and ABC is not a cycle. This agrees with the values above.
+The `*_of_lt` values check that the grade sublevel, not only the degree, enters the
+definitions.
 
 ## Comparison with MN13
 
@@ -327,12 +453,24 @@ recorded on #1074 against TauCeti commit `25bd01c`, is the closest notion to
 `FilteredContraction`; TauCeti is not a dependency, and if it became one the comparison would
 go through `Matrix.toLin'`.
 
+The sublevel homology modules, `sublevelHomologyPModule`, the induced maps,
+`sublevelHomologyEquiv`, `sublevelHomologyIso`, `finrank_sublevelHomology_eq` and the H1–H3
+fixtures are library derivations attributed to no numbered result; MN13 Thm. 4.3 remains
+background. `TauCeti.LinearContraction.homologyEquiv`, recorded on #1076 against TauCeti
+commit `25bd01c`, is the closest ungraded, unfiltered analogue of `sublevelHomologyEquiv` at
+one grade. It is stated for a single endomorphism `dM` of a module with the hypothesis
+`dM ∘ₗ dM = 0`, and it runs in the opposite direction, induced by the inclusion. TauCeti is not
+a dependency.
+
 ## What is not provided
 
-- No iteration of cancellations, pair schedule, admissible-pivot invariant, Morse complex,
-  homology or persistence isomorphism; these are #1041.
+- No iteration of cancellations, pair schedule, admissible-pivot invariant, Morse complex of
+  a matching, or simplicial bridge from `sublevelHomologyPModule` to `sublevelModule` or
+  `simplicialHomologyPModule`; these are #1041.
 - No reducer adapter, no chosen ordering or Equiv of survivors to `Fin`, and no
   grading-compatible ordering; these are #1061. `FilteredContraction.reindex` transports a
   contraction along such an Equiv once one is given.
-- No matching check or search, no bridge to Mathlib `HomologicalComplex` or `Homotopy`, and
-  no runtime bound or speedup claim.
+- No matching check or search, no executable computation of `sublevelHomology`, and no
+  runtime bound or speedup claim in these modules; no bridge from these based complexes or
+  their sublevel homology to Mathlib `HomologicalComplex`, `Homotopy` or `HomotopyEquiv`, and
+  no barcode or interval decomposition of `sublevelHomologyPModule`.

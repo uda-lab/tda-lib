@@ -71,6 +71,15 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   transfer to the small complex. Fixtures compose two cancellations on the filled triangle by
   `decide +kernel`. No iteration or persistence isomorphism. See
   [filtered contractions](docs/math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition).
+- Form grade-sublevel homology of filtered based complexes as persistence modules over `ℤ`
+  (`TDA.Persistence.Morse.FilteredHomology`): degree-`p` cycles in grades `≤ t` modulo the
+  boundaries of degree-`p + 1` chains in grades `≤ t`, with no hypothesis on the matrix, and
+  the natural isomorphism `sublevelHomologyIso` of these persistence modules induced by the
+  projection of a filtered contraction, with equal `Module.finrank`, without assuming
+  `D * D = 0`. Fixtures over `ZMod 2` transport the dimensions of the critical complex of the
+  regraded filled triangle to the triangle. No bridge from `sublevelHomologyPModule` to
+  simplicial homology. See
+  [sublevel homology](docs/math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
