@@ -36,9 +36,11 @@ along a supplied
 such cancellations iterate to an executable reduced differential on the critical generators
 with a composed filtered contraction. A certified matching on a valid input gives
 [such a schedule](math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching),
-a Morse complex on its critical positions with a filtered contraction, and an isomorphism of
-grade-sublevel homology persistence modules; a bridge from this sublevel homology to
-simplicial persistent homology is not yet provided.
+a Morse complex on its critical positions with a filtered contraction, an isomorphism of
+grade-sublevel homology persistence modules, and
+[a natural isomorphism](math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem)
+from the simplicial sublevel persistence module of the input to the persistence module of the
+Morse complex.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).
