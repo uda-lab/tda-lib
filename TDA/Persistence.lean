@@ -465,3 +465,4 @@ import TDA.Persistence.Morse.UnitCancellation
 import TDA.Persistence.Morse.FilteredContraction
 import TDA.Persistence.Morse.FilteredHomology
 import TDA.Persistence.Morse.IteratedCancellation
+import TDA.Persistence.Morse.MatchingSchedule

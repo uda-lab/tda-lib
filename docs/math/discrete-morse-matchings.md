@@ -10,6 +10,10 @@ adds an executable checker for matchings supplied on finite integer-graded input
 [checking a supplied matching](#checking-a-supplied-matching), and
 `TDA.Persistence.Morse.FiniteInputMatchingGeneration` builds such a certified matching, described
 in [generating a matching greedily](#generating-a-matching-greedily).
+`TDA.Persistence.Morse.MatchingSchedule` turns a certified matching on a valid input into a
+pivot schedule for the boundary and the Morse complex on its critical positions, described in
+the section "The pivot schedule of a certified matching" of
+[unit cancellation of a filtered chain complex](discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching).
 
 ## Matchings and the modified Hasse diagram
 
@@ -47,8 +51,9 @@ For a matched pair `(a_j, b_j)` and another matched lower cell `a_i` that is a f
 `a_j → b_j → a_i` and every topological rank satisfies `rank a_j < rank b_j < rank a_i`.
 Thus, listing the pairs by the rank of their lower cells, a nonzero boundary entry
 `D[a_i, b_j]` with `i ≠ j` only occurs when `a_j` is listed before `a_i`. This is the pivot
-order that the later contraction work (#1041) relies on; this module proves only the rank
-statements, not that matrix consequence.
+order of #1078; this module proves only the rank statements, and
+`TDA.Persistence.Morse.MatchingSchedule` proves the matrix consequence for finite inputs
+(`rank_lt_of_boundary_ne_zero`, `isPivotSchedule_schedule`).
 
 ## Comparison with MN Def. 2.2
 
@@ -310,7 +315,10 @@ library procedure, and no result of §5 is claimed.
   rejected candidate reuses a face or closes a cycle; MN13 §5.1 notes that constructing an
   optimal acyclic matching is NP-hard in general. No runtime bound is stated for `check` or
   `generate`.
-- No chain contraction, Morse complex or persistence invariance (#1041; a single
-  cancellation is #1065), so MN Thm. 4.3 is only background here.
+- The modules of this note provide no chain contraction or Morse complex; for a certified
+  matching on a valid input, they are in `TDA.Persistence.Morse.MatchingSchedule`, together
+  with an isomorphism of grade-sublevel homology persistence modules of based complexes. No
+  bridge to the persistence of the represented complex (`sublevelModule` of `gradeFilter`) is
+  provided yet (#1041), so MN Thm. 4.3 is only background here.
 - No general cell complexes `(X, κ)` with arbitrary incidence functions, and no Lean
   statement of MN's nested family form of Def. 4.1.
