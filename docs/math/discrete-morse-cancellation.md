@@ -152,7 +152,7 @@ that is not a boundary. At grade 1 it is the boundary of `b`, so the barcode has
 `[0, 1)` between the two grades. A filtered contraction onto the survivor complex would
 restrict to every sublevel. The survivor complex is empty, so the grade-0 sublevel would be
 contractible, contradicting the bar. This explanation is not a Lean theorem: the library
-states no homology or barcode of these complexes. For an unequal-grade pair in a larger
+states no homology value or barcode of these complexes. For an unequal-grade pair in a larger
 complex, `p`, `i` and `d'` can also raise grade, and no general impossibility theorem is
 claimed beyond this fixture.
 
@@ -243,9 +243,10 @@ Sublevel restriction is not restated. Each of `p`, `i` and `h` is grade-nonincre
 such vectors. If `D` is also grade-nonincreasing, as under
 `IsFilteredDifferential degree grade D` (and then `D'` is too, by
 `isFilteredDifferential_target`), the identities above restrict to each grade sublevel. These
-restricted identities are not stated as separate theorems. The
-[next section](#sublevel-homology-and-the-induced-isomorphism) states the support facts that
-homology needs, such as `htpy_mem_sublevelChains`; those need no hypothesis on `D`.
+restricted identities are not stated as separate theorems. The section
+[sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism)
+states the support facts that homology needs, such as `htpy_mem_sublevelChains`; those need no
+hypothesis on `D`.
 
 The fixtures are in `TDA.Persistence.Morse.FilteredContractionExamples`, over `ZMod 2`, with
 every closed computation a kernel `decide`. They reuse the filled triangle `tD` with the grade
@@ -280,7 +281,9 @@ G2 is the contraction part of the transport the #1065 forward note asked for, on
 instance; `submatrix` lemmas for `reducedDifferential`, `projection` and `inclusion` are not
 provided. The general equivalence from a schedule's nested survivors to a Finset of critical
 cells is #1041's. `TDA.Persistence.Morse.FilteredContraction` formalises no homology; the
-[next section](#sublevel-homology-and-the-induced-isomorphism) adds it in a separate module.
+section
+[sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism)
+adds it in a separate module.
 
 ## Sublevel homology and the induced isomorphism
 
@@ -288,8 +291,8 @@ cells is #1041's. `TDA.Persistence.Morse.FilteredContraction` formalises no homo
 forms the homology of every grade sublevel of a based complex, packages it as a persistence
 module over `ℤ`, and proves that a filtered contraction induces an isomorphism of these
 persistence modules. The submodules have Prop-valued carriers, and the maps, the persistence
-module and the isomorphisms are `noncomputable` definitions; nothing here computes homology by
-evaluation.
+module and the isomorphisms are `noncomputable` definitions; this module computes no homology
+by evaluation.
 
 For a finite carrier `ι`, `degree : ι → ℕ`, `grade : ι → ℤ` and `D : Matrix ι ι k` over a
 commutative ring `k`, in the column convention above:
@@ -467,7 +470,7 @@ a dependency.
 - No reducer adapter, no chosen ordering or Equiv of survivors to `Fin`, and no
   grading-compatible ordering; these are #1061. `FilteredContraction.reindex` transports a
   contraction along such an Equiv once one is given.
-- No matching check or search in these modules, no bridge from these based complexes or their
-  sublevel homology to Mathlib `HomologicalComplex`, `Homotopy` or `HomotopyEquiv`, no barcode
-  or interval decomposition of `sublevelHomologyPModule`, no executable computation of
-  sublevel homology, and no runtime bound or speedup claim.
+- No matching check or search, no executable computation of `sublevelHomology`, and no
+  runtime bound or speedup claim in these modules; no bridge from these based complexes or
+  their sublevel homology to Mathlib `HomologicalComplex`, `Homotopy` or `HomotopyEquiv`, and
+  no barcode or interval decomposition of `sublevelHomologyPModule`.

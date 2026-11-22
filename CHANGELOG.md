@@ -77,7 +77,8 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   the natural isomorphism `sublevelHomologyIso` of these persistence modules induced by the
   projection of a filtered contraction, with equal `Module.finrank`, without assuming
   `D * D = 0`. Fixtures over `ZMod 2` transport the dimensions of the critical complex of the
-  regraded filled triangle to the triangle. No simplicial bridge. See
+  regraded filled triangle to the triangle. No bridge from `sublevelHomologyPModule` to
+  simplicial homology. See
   [sublevel homology](docs/math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See

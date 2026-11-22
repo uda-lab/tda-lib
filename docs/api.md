@@ -2270,7 +2270,9 @@ under sums. `TDA.Persistence.Morse.FilteredContractionExamples` (imported by
 `TDA.Persistence.Examples`) composes two cancellations on the filled triangle and transports
 the result to a flat subtype of critical cells, over `ZMod 2`. This module provides no
 iteration, homology or persistence isomorphism; homology and the isomorphism induced by a
-contraction are in [the next section](#sublevel-homology-of-filtered-based-complexes). See
+contraction are in
+[sublevel homology of filtered based complexes](#sublevel-homology-of-filtered-based-complexes).
+See
 [filtered contractions and their composition](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition).
 
 ## Sublevel homology of filtered based complexes
@@ -2300,8 +2302,9 @@ the large complex to the small one, whose `hom` components are `homologyProj`
 `D * D = 0`. The maps, the persistence module and the isomorphisms are `noncomputable`.
 `TDA.Persistence.Morse.FilteredHomologyExamples` (imported by `TDA.Persistence.Examples`)
 computes the sublevel homology dimensions of the critical complex of the filled triangle with
-the grade `cGrade` over `ZMod 2`, and transports them to the triangle through the contraction. No simplicial bridge to
-`sublevelModule` or `simplicialHomologyPModule` is provided; see
+the grade `cGrade` over `ZMod 2`, and transports them to the triangle through the contraction.
+These modules provide no bridge from `sublevelHomologyPModule` to `sublevelModule` or
+`simplicialHomologyPModule`; see
 [sublevel homology and the induced isomorphism](math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
 
 ## Compatible lifts and algebraic sums over the reals
