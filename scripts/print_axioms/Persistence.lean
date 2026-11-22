@@ -9083,3 +9083,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Morse.SimplicialBridgeExamples.genCert_rankOfStructureMap_one
 #print axioms TDA.Persistence.Morse.SimplicialBridgeExamples.square_dgm_one
 #print axioms TDA.Persistence.Morse.SimplicialBridgeExamples.square_dgm_zero
+
+#print axioms TDA.Persistence.Reduction.replayEntries_get
+#print axioms TDA.Persistence.finrank_range_eq_of_iso_square
+#print axioms TDA.Persistence.Reduction.AlphaInput.simplexInput_valid
+#print axioms TDA.Persistence.Reduction.AlphaInput.mem_sublevel
+#print axioms TDA.Persistence.Reduction.AlphaInput.labelMap_isIso
+#print axioms TDA.Persistence.Reduction.AlphaInput.labelMap_naturality
+#print axioms TDA.Persistence.Reduction.AlphaInput.run_eq_none_iff
+#print axioms TDA.Persistence.Reduction.AlphaInput.run_correct

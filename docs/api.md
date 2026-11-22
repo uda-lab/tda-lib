@@ -1775,6 +1775,15 @@ equality of diagrams, not of lists. No bound on the cost of the existing
 reduction, no representatives for the Rips complex and no statement for invalid
 tables beyond rejection are provided.
 
+For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`
+computes an F₂ barcode with exact rational squared-radius endpoints. It accepts
+the empty family and rejects precisely families with repeated coordinates.
+`AlphaInput.run_correct` identifies the degreewise point multiset with the
+diagram of actual closed α persistence. The label map identifies the sublevel
+homology at any real threshold with the integer reducer sublevel, and commutes
+with inclusion maps. Essential deaths and repeated occurrences are retained.
+[Exact planar α barcodes](math/finite-ph-computation.md#exact-planar-α-barcodes).
+
 The module `TDA.Persistence.SublevelDiagramVertexMap` holds the general
 statements behind this comparison. `TDA.Simplicial.simplicialHomologyMap_congr`
 states that vertex maps agreeing on the vertices of every face induce the same

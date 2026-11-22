@@ -552,6 +552,33 @@ def essentialOccurrences (xs : Input) : List Occurrence :=
 def occurrences (xs : Input) : List Occurrence :=
   finiteOccurrences xs ++ essentialOccurrences xs
 
+private def storedPivots (xs : Input) : Vector (Option (Fin xs.length)) xs.length :=
+  let rows := replayEntries (boundary xs) (trace xs)
+  Vector.ofFn fun j => columnPivot fun i => rows[i][j]
+
+private theorem storedPivots_get (xs : Input) (j : Fin xs.length) :
+    (storedPivots xs)[j] = columnPivot ((reduced xs).col j) := by
+  rw [storedPivots, Fin.getElem_fin, Vector.getElem_ofFn]
+  congr 1
+  funext i
+  exact replayEntries_get (boundary xs) (trace xs) i j
+
+-- Store the entries and pivots before scanning for finite and essential classes.
+-- Querying a reduced matrix as a function can repeat the entire reduction per entry.
+private def storedOccurrences (xs : Input) : List Occurrence :=
+  let pivots := storedPivots xs
+  let indices := List.finRange xs.length
+  let pairs := indices.filterMap fun j => pivots[j].map fun i => (i, j)
+  let essentials := indices.filter fun i =>
+    pivots[i].isNone && !pairs.any (fun q => q.1 == i)
+  pairs.filterMap (pairOccurrence xs) ++ essentials.map fun i =>
+    ⟨(xs.get i).1.card - 1, (xs.get i).2, .essential⟩
+
+@[csimp] private theorem occurrences_eq_stored : @occurrences = @storedOccurrences := by
+  funext xs
+  simp only [occurrences, finiteOccurrences, essentialOccurrences, pivotPairs,
+    essentialIndices, storedOccurrences, storedPivots_get]
+
 def Occurrence.point (o : Occurrence) : ℤ × WithTop ℤ :=
   (o.birth, match o.death with
     | .finite d => d

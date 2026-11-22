@@ -81,7 +81,8 @@ open TDA.Simplicial TDA.Filtration CategoryTheory
 variable {V W : Type u} [LinearOrder V] [LinearOrder W]
 variable {K : PreAbstractSimplicialComplex V} {L : PreAbstractSimplicialComplex W}
 
-private theorem finrank_range_eq_of_iso_square {k : Type*} [Field k] {A B C E : ModuleCat k}
+/-- Isomorphisms on the vertical sides of a commuting square preserve the image rank. -/
+theorem finrank_range_eq_of_iso_square {k : Type*} [Field k] {A B C E : ModuleCat k}
     (F : A ⟶ B) (G : C ⟶ E) (e₁ : A ≅ C) (e₂ : B ≅ E) (h : F ≫ e₂.hom = e₁.hom ≫ G) :
     Module.finrank k (LinearMap.range F.hom) = Module.finrank k (LinearMap.range G.hom) := by
   have hG : G.hom ∘ₗ e₁.hom.hom = e₂.hom.hom ∘ₗ F.hom := by
