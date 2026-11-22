@@ -439,11 +439,12 @@ instance of it.
 ### Schedule fixtures
 
 The fixtures are in `TDA.Persistence.Morse.IteratedCancellationExamples`, over `ZMod 2`. Every
-fixture theorem is closed by `decide +kernel`; only the index bounds of the position names
-`qA` … `qACD` and `oA` … `oAC` use a plain `decide`. `square_boundary` and `circle_boundary`
-first unfold the boundary with `norm_num`, as `triangle_boundary` of
-`TDA.Persistence.Morse.UnitCancellationExamples` does, because `FiniteInput.boundary` does not
-reduce in the kernel.
+closed computation is checked by `decide +kernel`; the index bounds of the position names
+`qA` … `qACD` and `oA` … `oAC` use a plain `decide`, and `square_isFilteredDifferential` and
+`sqD_isFilteredDifferential` are term proofs from `isFilteredDifferential_boundary` and
+`square_boundary`. `square_boundary` and `circle_boundary` first unfold the boundary with
+`norm_num`, as `triangle_boundary` of `TDA.Persistence.Morse.UnitCancellationExamples` does,
+because `FiniteInput.boundary` does not reduce in the kernel.
 
 - H1. The square `square` of `TDA.Persistence.Morse.FiniteInputMatchingExamples`, with A, B,
   C, D, AB, BC and CD at grade 0, AD at grade 1 and AC, ABC and ACD at grade 2, on
