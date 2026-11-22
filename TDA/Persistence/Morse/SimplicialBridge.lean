@@ -23,9 +23,9 @@ the persistence module of the Morse complex `c.morseDifferential`, with equal di
 (`finrank_simplicialHomology_eq`) and structure-map ranks
 (`rankOfStructureMap_sublevelModule_eq`).
 
-This is a library derivation, on sublevel homology only: no chain-level isomorphism with
-`simplicialChainComplex`, no barcode or interval decomposition, no comparison with the reducer's
-barcode and no gradient-path formula are provided.
+This is a library derivation, on sublevel homology only: this module provides no chain-level
+isomorphism with `simplicialChainComplex`, no barcode or interval decomposition, no comparison
+with the reducer's barcode and no gradient-path formula.
 -/
 
 set_option autoImplicit false

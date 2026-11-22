@@ -318,7 +318,7 @@ library procedure, and no result of §5 is claimed.
 - The checker and generator modules of this note provide no chain contraction or Morse
   complex; for a certified matching on a valid input, they are in
   `TDA.Persistence.Morse.MatchingSchedule`, together with an isomorphism of grade-sublevel
-  homology persistence modules of based complexes. For a certified matching on a valid input,
+  homology persistence modules of based complexes. For such a matching,
   `TDA.Persistence.Morse.SimplicialBridge` identifies the simplicial sublevel persistence
   module of `gradeFilter` with the persistence module of the Morse complex
   (`CertifiedMatching.morseSublevelModuleIso`); MN Thm. 4.3 remains background, since no

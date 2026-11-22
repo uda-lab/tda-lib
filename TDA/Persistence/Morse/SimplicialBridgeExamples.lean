@@ -18,8 +18,12 @@ the certificate `sqCert` of `TDA.Persistence.Morse.MatchingScheduleExamples`, ov
 * M7. The degree-1 diagram `dgm` of the square is `{(1, 2)}`, and the degree-0 one is
   `{(0, ⊤)}`.
 
-Closed computations are kernel `decide`s, after `boundary_eq_coverIncidence`; the homology
-values are proved, not evaluated.
+Closed computations are `decide +kernel`: in `mA`, `mAD`, `mACD`, `mc_cases` (after `revert`),
+`morseDifferential_eq` (after rewriting with `sqCert_morseDifferential`), `sqLoop_cycleInput`
+and `boundary_mulVec_sqFill` (after rewriting with `boundary_eq_coverIncidence`), the private
+degree, grade and distinctness lemmas, and side goals of the two M5 class proofs; three plain
+`decide`s close order facts on `ℤ` and `WithTop ℤ`. The homology values are proved, not
+evaluated.
 -/
 
 set_option autoImplicit false
