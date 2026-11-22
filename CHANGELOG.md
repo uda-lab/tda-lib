@@ -40,6 +40,13 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   matchings for sublevels proved equivalent to acyclic matchings with equal
   grades. See
   [acyclic matchings](docs/math/discrete-morse-matchings.md).
+- Check supplied acyclic matchings on finite inputs
+  (`TDA.Persistence.Morse.FiniteInputMatching`): `MatchingInput.check` accepts
+  exactly an equal-grade list-level matching with a topological rank, some rank
+  is accepted exactly for a duplicate-free filtered acyclic matching, and
+  `CertifiedMatching` reports the critical faces with their dimension and
+  original grade. See
+  [checking a supplied matching](docs/math/discrete-morse-matchings.md#checking-a-supplied-matching).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

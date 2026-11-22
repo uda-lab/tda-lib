@@ -456,6 +456,7 @@ entire article or all its algorithms have been formalized.
   - Def. 4.1 for sublevel frames ↦ `IsFilteredAcyclicMatching`, comparison mode **specialization** (sublevel frames of one filter function, simplicial complexes), with the nested-family reduction argued in [the note](discrete-morse-matchings.md#filtered-acyclic-matchings) and the equal-grade equivalence proved (`isFilteredAcyclicMatching_iff`);
   - Thm. 4.3 ↦ no declaration; comparison mode **background** for #1041 only;
   - `IsTopologicalRank` / `isAcyclic_iff_exists_rank` are a library derivation (**extension**) attributed to no numbered result.
+  - `TDA.Persistence.Morse.FiniteInputMatching` (the executable checker `MatchingInput.check` on finite inputs, `CertifiedMatching` and its critical report) is a library derivation (**extension**) attributed to no numbered result.
 
 
 <a id="SFL11"></a>

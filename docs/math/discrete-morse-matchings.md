@@ -4,8 +4,10 @@
 reduction for a preabstract simplicial complex `K` on any vertex type: matchings of faces,
 their modified Hasse diagram, acyclicity in two equivalent forms, topological ranks, and the
 filtered form for the sublevels of a `FilterFunction`. The source is Mischaikow–Nanda
-([MN13](references.md#MN13)). Everything here is a predicate or a theorem about predicates;
-no chain map, homology or executable check is involved.
+([MN13](references.md#MN13)). That layer consists of predicates and theorems about
+predicates; no chain map or homology is involved. `TDA.Persistence.Morse.FiniteInputMatching`
+adds an executable checker for matchings supplied on finite integer-graded inputs, described in
+[checking a supplied matching](#checking-a-supplied-matching).
 
 ## Matchings and the modified Hasse diagram
 
@@ -117,11 +119,117 @@ of `f` gives `f σ ≤ f τ`. With equal grades no arrow raises the grade, so a 
 stays in the sublevel at `f x` and would be a cycle of the restricted matching. The backward
 direction combines the two sublevel results above.
 
+## Checking a supplied matching
+
+`TDA.Persistence.Morse.FiniteInputMatching` (namespace `TDA.Persistence.Morse.MatchingInput`)
+checks a matching supplied on a finite input `xs : FiniteInput.Input`. Faces are list
+positions `Fin xs.length`. For a valid input (`h : Valid xs`), `listEquiv xs h` identifies
+positions with the faces `TotalFace (complex xs h)` of the represented complex, and the grade
+`(xs.get i).2` of position `i` is the value of `gradeFilter xs h` at that face
+(`gradeFilter_listFace`). The executable predicates need no validity proof; only the transfer
+theorems take `h`. This module is a library derivation over the semantic layer, attributed to
+no numbered result of MN13.
+
+### Encoding and certificate
+
+A matching is a list `pairs : Pairs xs` of ordered (lower, upper) position pairs.
+`IsMatching xs pairs` asks for three conditions:
+
+- (N) the `2·|pairs|` endpoints `endpoints pairs` are pairwise distinct;
+- (C) every pair `(i, j)` is a cover, `IsCover xs i j`: the face at `i` is a subset of the
+  face at `j` with exactly one vertex fewer;
+- (G) the two positions of every pair have the same grade.
+
+A reversed pair `(upper, lower)` fails (C) and is rejected, not normalised. A pair listed twice
+repeats its endpoints and fails (N), so it counts as reuse.
+
+The certificate is a function `rank : Fin xs.length → ℕ`. The list-level diagram
+`arrow xs pairs u v` has the direction of the semantic `Morse.arrow`: an unmatched cover pair
+points from coface to face, and a listed pair `(u, v)` from face to coface.
+`IsTopologicalRank xs pairs rank` asks for `rank u < rank v` along every such arrow between
+positions. `check xs pairs rank` is the Boolean conjunction of the decisions of both
+predicates, and `check_eq_true_iff` states that `check xs pairs rank = true` holds exactly when
+`IsMatching xs pairs ∧ IsTopologicalRank xs pairs rank` holds. The caller supplies the rank;
+`check` does not search for one.
+
+### Semantic transfer
+
+`toRel xs h pairs` is the relation on actual faces that holds when the positions of the two
+faces form a listed pair (`toRel_listFace`). `isCover_iff_covBy` and `arrow_iff` identify the
+list-level cover test and arrows with `⋖` and `Morse.arrow` on the listed faces.
+`isMatching_iff` shows that `IsMatching xs pairs` is equivalent to `pairs.Nodup`, the semantic
+`Morse.IsMatching (toRel xs h pairs)` and `IsGradePreserving (gradeFilter xs h) (toRel xs h
+pairs)`. The condition `pairs.Nodup` appears because `toRel` forgets multiplicity: the lists
+`[(B, AB), (B, AB)]` and `[(B, AB)]` give the same relation, but the first is rejected by
+design. `isTopologicalRank_iff` reads a position rank as the face rank
+`rank ∘ (listEquiv xs h).symm`.
+
+`exists_check_iff` proves that some rank is accepted exactly when `pairs.Nodup` holds and
+`toRel xs h pairs` is an acyclic matching with equal grades.
+`exists_check_iff_isFilteredAcyclicMatching` states the same with
+`IsFilteredAcyclicMatching (gradeFilter xs h) (toRel xs h pairs)`, through
+`isFilteredAcyclicMatching_iff`. The direction from acyclicity to an accepted rank uses
+`isAcyclic_iff_exists_rank` for the finitely many faces of the complex; it is an existence
+statement, not a procedure.
+
+### Certified matchings and critical faces
+
+`CertifiedMatching xs` bundles `pairs`, `rank` and proofs of both list-level predicates.
+`certify? xs pairs rank` returns such a bundle exactly when `check xs pairs rank = true`
+(`certify?_isSome_iff`), and the bundle carries the supplied pairs and rank
+(`certify?_eq_some`).
+
+For a certified matching `c`, `c.partner i` is the other end of the pair containing `i`, if any
+(`partner_eq_some_iff`, `partner_partner`). `c.critical` lists the positions without a partner
+in increasing order (`critical_pairwise_lt`, `critical_nodup`), and `mem_critical_iff` shows
+that they are exactly the positions in no pair. `trichotomy` states that every position is
+exactly one of a matched lower cell, a matched upper cell or a critical position, and
+`critical_length_add` counts `c.critical.length + 2 * c.pairs.length = xs.length`.
+
+`c.criticalReport` lists `(i, d, g)` for each critical position `i` in the same order, with
+dimension `d = (xs.get i).1.card - 1` (`FiniteInput.degree`) and original grade
+`g = (xs.get i).2` (`criticalReport_map_fst`, `mem_criticalReport_iff`). For a valid input,
+`isFilteredAcyclicMatching`, `isTopologicalRank_semantic` and `mem_critical_iff_listFace`
+restate the certificate on actual faces.
+
+### Fixtures
+
+`TDA.Persistence.Morse.FiniteInputMatchingExamples` evaluates its fixtures by kernel
+`decide`. Fixtures that quantify over all ranks or state a semantic fact combine such
+`decide` steps with the general theorems above or with a short arithmetic argument. Vertices `{0}`, `{1}`, … are written A, B, …. The accepted fixtures cover the
+empty input, the path A–B–C, the hollow and the filled triangle, the empty matching on the
+filled triangle (all seven faces critical), and the square with A, B, C, D, AB, BC, CD at
+grade 0, AD at grade 1 and AC, ABC, ACD at grade 2. On the square, the pairs (B, AB),
+(C, BC), (D, CD) and (AC, ABC) are accepted with the rank 10, 8, 6, 4, 9, 7, 5, 1, 2, 3, 0 by
+position. The critical faces are A, AD and ACD, at dimensions 0, 1, 2 and grades 0, 1, 2
+(`square_report`), and the pairs form a filtered acyclic matching of the represented complex
+(`square_isFilteredAcyclicMatching`).
+
+The rejected fixtures violate exactly one of (N), (C) and (G), each proved by `decide` together
+with the other two, and no rank is accepted for them: a face used in two pairs, an identical
+pair listed twice, a non-subset pair (C, AB), a codimension-two pair (A, ABC), the reversed
+pair (AB, B), and the unequal-grade pair (C, BC) with grades 0 and 1.
+
+The codimension-two pair (A, ABC) on the filled triangle also admits no rank
+(`codimTwo_no_rank`): the arrows ABC → AB → A → ABC form a cycle. The same happens for every
+codimension-two pair whenever (N) holds. For a pair `(σ, ρ)` with `σ ⊆ ρ` and two more
+vertices in `ρ`, a valid input lists a face `e` strictly between them. Under (N) neither
+`(e, ρ)` nor `(σ, e)` is a listed pair, so `ρ → e → σ` are unmatched arrows and `σ → ρ` closes
+the cycle. Only the fixture case is a Lean theorem; this general argument is prose.
+
+The cyclic circle pairs (A, AB), (B, BC) and (C, AC) on the hollow triangle satisfy (N), (C)
+and (G) (`cyclic_isMatching`). Their diagram has the cycle A → AB → B → BC → C → AC → A: each
+listed pair points up, and each step from an edge to its other vertex is an unmatched cover
+arrow. A rank would give `rank A < rank A`, so no certificate exists
+(`cyclic_no_certificate`), and the semantic relation is not acyclic
+(`cyclic_not_isAcyclic`).
+
 ## What is not provided
 
-- No executable checker or list encoding of matchings; that is a separate unit of #1039.
+- No generation or search of a matching or rank (#1045); `check` only verifies a supplied rank,
+  and no runtime bound is stated.
 - No chain contraction, Morse complex or persistence invariance (#1041; a single
   cancellation is #1065), so MN Thm. 4.3 is only background here.
-- No generation or search of matchings, and no maximality or optimality (#1045).
+- No maximality or optimality of matchings.
 - No general cell complexes `(X, κ)` with arbitrary incidence functions, and no Lean
   statement of MN's nested family form of Def. 4.1.
