@@ -8532,3 +8532,25 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.F2GridHomologyErosionExamples.nonMonotone_runErosion
 #print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_nonMonotone_runErosion
 #print axioms TDA.Persistence.F2GridHomologyErosionExamples.triangle_runErosion_negative
+-- Semantic acyclic matchings for discrete Morse theory (Issue #1039, unit 1).
+#print axioms TDA.Simplicial.covBy_iff_subset_card
+#print axioms TDA.Persistence.Morse.IsMatching
+#print axioms TDA.Persistence.Morse.arrow
+#print axioms TDA.Persistence.Morse.IsAcyclic
+#print axioms TDA.Persistence.Morse.IsAcyclicMatching
+#print axioms TDA.Persistence.Morse.isAcyclicMatching_empty
+#print axioms TDA.Persistence.Morse.mnRel
+#print axioms TDA.Persistence.Morse.IsMNAcyclic
+#print axioms TDA.Persistence.Morse.isMNAcyclic_iff_irrefl
+#print axioms TDA.Persistence.Morse.isAcyclic_iff_isMNAcyclic
+#print axioms TDA.Persistence.Morse.IsTopologicalRank
+#print axioms TDA.Persistence.Morse.IsTopologicalRank.isAcyclic
+#print axioms TDA.Persistence.Morse.isAcyclic_iff_exists_rank
+#print axioms TDA.Persistence.Morse.IsGradePreserving
+#print axioms TDA.Persistence.Morse.sublevelIncl
+#print axioms TDA.Persistence.Morse.sublevelIncl_injective
+#print axioms TDA.Persistence.Morse.restrictSublevel
+#print axioms TDA.Persistence.Morse.IsGradePreserving.mem_sublevel_iff
+#print axioms TDA.Persistence.Morse.IsAcyclicMatching.restrictSublevel
+#print axioms TDA.Persistence.Morse.IsFilteredAcyclicMatching
+#print axioms TDA.Persistence.Morse.isFilteredAcyclicMatching_iff

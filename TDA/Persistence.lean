@@ -458,3 +458,4 @@ import TDA.Persistence.FiniteSimplicialErosionTranslation
 import TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation
 import TDA.Persistence.FiniteSimplicialErosionScaledTranslation
 import TDA.Persistence.FiniteSimplicialErosionScaling
+import TDA.Persistence.Morse.AcyclicMatching

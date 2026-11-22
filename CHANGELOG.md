@@ -33,6 +33,13 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   against its translate by `(1/2, 0)` fails at radius 0 and passes at radius
   1/2, proved rather than evaluated. See
   [testing two rationally graded complexes](docs/math/rank-erosion.md#testing-two-rationally-graded-complexes).
+- Add the semantic layer of acyclic matchings for discrete Morse reduction
+  (`TDA.Persistence.Morse.AcyclicMatching`): matchings and the modified Hasse
+  diagram on all faces, acyclicity proved equivalent to the Mischaikow–Nanda
+  Def. 2.2 form, topological ranks for finitely many faces, and filtered acyclic
+  matchings for sublevels proved equivalent to acyclic matchings with equal
+  grades. See
+  [acyclic matchings](docs/math/discrete-morse-matchings.md).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
