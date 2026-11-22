@@ -31,7 +31,12 @@ of a filtered based complex with an executable reduced differential and a filter
 [such contractions](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition)
 compose, their small complex can be transported along carrier equivalences, and
 [a filtered contraction induces](api.md#sublevel-homology-of-filtered-based-complexes) an
-isomorphism of the grade-sublevel homology persistence modules of the two based complexes.
+isomorphism of the grade-sublevel homology persistence modules of the two based complexes;
+along a supplied
+[schedule satisfying a pivot invariant](math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule),
+such cancellations iterate to an executable reduced differential on the critical generators
+with a composed filtered contraction, but deriving the schedule from a matching is not yet
+provided.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).

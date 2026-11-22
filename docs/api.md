@@ -2275,6 +2275,57 @@ contraction are in
 See
 [filtered contractions and their composition](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition).
 
+## Iterated cancellation along pivot schedules
+
+`TDA.Persistence.Morse.IteratedCancellation` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.Cancellation`) cancels a supplied list of unit pairs head first and
+composes the single cancellations into one filtered contraction onto the generators that are
+not cancelled. A schedule is a list `l : List (ι × ι)` of (lower, upper) pairs, and
+`scheduleEndpoints l` lists its `2·|l|` endpoints in order. `IsPivotSchedule grade D l` asks
+that the endpoints are distinct, that every pair `(a, b)` has `D a b = 1` and
+`grade a = grade b`, and that `l.Pairwise fun p q => D p.1 q.2 = 0`: the lower generator of a
+pair is never a face of the upper generator of a later pair. The instance
+`IsPivotSchedule.decidable` decides it when equality of generators and of coefficients is
+decidable, and `isPivotSchedule_iff_get` gives the indexed form: `D (a i) (b j) ≠ 0` with
+`i ≠ j` forces `j < i`, so the matched block is unit lower triangular in schedule order.
+
+`cancelStep D a b r s = D r s - D r b * D a s` is the entry formula of
+`reducedDifferential D a b` on all of `ι`, and `scheduleMatrix l D` applies it along `l`,
+head first. `cancelStep_apply_of_eq_zero` leaves every column `s` with `D a s = 0` unchanged,
+and `IsPivotSchedule.cancelStep_apply_snd` applies this to the upper generators of the tail of
+a pivot schedule. `IsPivotSchedule.cancelStep` proves that the tail is a pivot schedule for
+`cancelStep D p.1 p.2`, `IsPivotSchedule.head_not_mem` that the two generators of the head
+pair are distinct and are not endpoints of the tail, and `IsPivotSchedule.isUnitPair_reducedDifferential`
+that every later pair is an `IsUnitPair` of `reducedDifferential D a b`.
+
+`scheduleSurvivors l S` removes the endpoints from a Finset pair by pair
+(`mem_scheduleSurvivors`), `criticalSet l = scheduleSurvivors l Finset.univ` consists of the
+generators that are not endpoints (`mem_criticalSet`), and `Critical l` is the subtype of
+original generators in `criticalSet l`, with
+`Fintype.card (Critical l) = Fintype.card ι - 2 * l.length` for distinct endpoints
+(`card_critical`). `criticalDifferential D l` is `scheduleMatrix l D` restricted to
+`Critical l`; it takes no hypothesis.
+
+For `hD : IsFilteredDifferential degree grade D` and `hl : IsPivotSchedule grade D l`,
+`FilteredContraction.ofSchedule hD hl` is a `FilteredContraction` of `(degree, grade, D)` onto
+`(degree ∘ Subtype.val, grade ∘ Subtype.val, criticalDifferential D l)` on `Critical l`. It is
+`FilteredContraction.toUniv`, which restates the complex on `{x // x ∈ Finset.univ}`, followed
+by `FilteredContraction.ofScheduleOn`, which composes with `trans` the steps
+`FilteredContraction.cancelOn`: `ofUnitPair` on a Finset-indexed carrier, transported by
+`reindex` along the concrete `FilteredContraction.survivorEquiv` and restated by `copy`.
+`criticalDifferential_eq` proves `criticalDifferential D l = proj * D * incl`,
+`isFilteredDifferential_criticalDifferential` that `criticalDifferential D l` is a filtered
+differential for the inherited degree and grade, and `ofSchedule_congr` that the three
+matrices depend on `D` only through its value. All data are computable.
+`TDA.Persistence.Morse.IteratedCancellationExamples` (imported by `TDA.Persistence.Examples`)
+evaluates the schedule contraction of the multi-grade square of
+`TDA.Persistence.Morse.FiniteInputMatchingExamples` and of the regraded filled triangle, and
+records that no order of the cyclic pairs on the hollow triangle is a pivot schedule, over
+`ZMod 2` by `decide +kernel`. This module provides no derivation of a schedule from a
+matching, no explicit path formula for the matrices, no order independence and no homology
+statement for `ofSchedule`; see
+[iterated cancellation along a pivot schedule](math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule).
+
 ## Sublevel homology of filtered based complexes
 
 `TDA.Persistence.Morse.FilteredHomology` (imported by `TDA.Persistence`, namespace

@@ -80,6 +80,15 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   regraded filled triangle to the triangle. No bridge from `sublevelHomologyPModule` to
   simplicial homology. See
   [sublevel homology](docs/math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
+- Iterate unit cancellation along a supplied pivot schedule
+  (`TDA.Persistence.Morse.IteratedCancellation`): `IsPivotSchedule` asks for distinct
+  endpoints, unit equal-grade pairs and that no lower generator is a face of a later upper
+  generator, and is preserved by cancelling the head pair; `criticalDifferential` is an
+  executable reduced differential on the critical generators, and `FilteredContraction.ofSchedule`
+  is the composed filtered contraction onto it. Fixtures evaluate the multi-grade square and
+  the regraded filled triangle by `decide +kernel`. No derivation of the schedule from a
+  matching. See
+  [iterated cancellation](docs/math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
