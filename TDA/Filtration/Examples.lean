@@ -10,6 +10,7 @@ import TDA.Filtration.CompatibleOrderExistenceExamples
 import TDA.Filtration.CompatibleOrderClosedExamples
 import TDA.Filtration.CechExamples
 import TDA.Filtration.AlphaExamples
+import TDA.Filtration.RationalAlphaExamples
 import TDA.Filtration.CechDisplacementExamples
 import TDA.Filtration.CechWitnessExamples
 import TDA.Filtration.CechSupNormExamples
