@@ -2325,6 +2325,8 @@ records that no order of the cyclic pairs on the hollow triangle is a pivot sche
 matching, no explicit path formula for the matrices, no order independence and no homology
 statement for `ofSchedule`; see
 [iterated cancellation along a pivot schedule](math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule).
+A schedule derived from a certified matching is in
+[pivot schedules of certified matchings](#pivot-schedules-of-certified-matchings).
 
 ## Sublevel homology of filtered based complexes
 
@@ -2357,6 +2359,49 @@ the grade `cGrade` over `ZMod 2`, and transports them to the triangle through th
 These modules provide no bridge from `sublevelHomologyPModule` to `sublevelModule` or
 `simplicialHomologyPModule`; see
 [sublevel homology and the induced isomorphism](math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
+
+## Pivot schedules of certified matchings
+
+`TDA.Persistence.Morse.MatchingSchedule` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.MatchingInput`) connects a certified matching `c : CertifiedMatching xs`
+on a finite integer-graded input to
+[iterated cancellation along pivot schedules](#iterated-cancellation-along-pivot-schedules).
+Over `ZMod 2`,
+`coverIncidence xs i j` is `1` exactly when `IsCover xs i j` holds and the face at position
+`i` is nonempty; `boundary_eq_coverIncidence` proves `FiniteInput.boundary xs = coverIncidence xs`
+for every input. `isCover_of_boundary_ne_zero` shows that a nonzero boundary entry is a cover,
+and, on a valid input, `boundary_eq_one_of_isCover` gives every cover the coefficient `1` and
+`boundary_ne_zero_iff` identifies the nonzero entries with the covers.
+
+`CertifiedMatching.schedule` is `c.pairs.insertionSort fun p q => c.rank p.1 ≤ c.rank q.1`,
+the certified pairs sorted stably by non-decreasing rank of the lower face. `schedule_perm`
+proves that it is a permutation of `c.pairs`, `schedule_pairwise_rank_le` that it is sorted,
+and `scheduleEndpoints_perm` that its endpoints are those of `c.pairs`, reordered.
+`rank_lt_of_boundary_ne_zero` proves `c.rank q.1 < c.rank p.1` for certified pairs `p ≠ q`
+with `FiniteInput.boundary xs p.1 q.2 ≠ 0`, through the arrows `q.1 → q.2 → p.1`, and
+`isPivotSchedule_schedule` that, for `h : Valid xs`, `c.schedule` is an `IsPivotSchedule` for
+`FiniteInput.boundary xs` with the list grade `fun i => (xs.get i).2`.
+
+`mem_criticalSet_schedule` identifies `criticalSet c.schedule` with the critical positions
+`c.critical`, and `card_critical_schedule` counts `Critical c.schedule` as
+`c.critical.length`. `CertifiedMatching.morseDifferential` is
+`criticalDifferential (FiniteInput.boundary xs) c.schedule`; it takes no validity hypothesis
+and is computable. For `h : Valid xs`, `CertifiedMatching.morseContraction` is
+`FilteredContraction.ofSchedule` of the boundary complex `(degree xs, list grade, boundary)`
+onto `(degree xs ∘ Subtype.val, list grade ∘ Subtype.val, morseDifferential)`,
+`isFilteredDifferential_morseDifferential` proves that the Morse differential is a filtered
+differential for these inherited degrees and grades, and `CertifiedMatching.morseHomologyIso`
+is the `noncomputable` isomorphism `sublevelHomologyIso` of the contraction in each degree `p`.
+`TDA.Persistence.Morse.MatchingScheduleExamples` (imported by `TDA.Persistence.Examples`)
+evaluates the schedules, critical positions and Morse differentials of three certificates on
+the multi-grade square, including a tie in the rank, by `decide +kernel`; each such `decide`
+on a goal that mentions `FiniteInput.boundary` runs after rewriting with
+`boundary_eq_coverIncidence`. This module provides no bridge from
+`sublevelHomologyPModule` to `sublevelModule` or `simplicialHomologyPModule`, no main theorem
+of #1041, no gradient-path formula for `morseDifferential`, no independence of it from the
+rank or the tie order, no reducer adapter, ordering of the critical generators or `Equiv` to
+`Fin`, and no homology computation by evaluation; see
+[the pivot schedule of a certified matching](math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching).
 
 ## Compatible lifts and algebraic sums over the reals
 

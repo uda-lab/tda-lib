@@ -239,3 +239,4 @@ import TDA.Persistence.Morse.UnitCancellationExamples
 import TDA.Persistence.Morse.FilteredContractionExamples
 import TDA.Persistence.Morse.FilteredHomologyExamples
 import TDA.Persistence.Morse.IteratedCancellationExamples
+import TDA.Persistence.Morse.MatchingScheduleExamples
