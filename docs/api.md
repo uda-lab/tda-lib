@@ -2151,6 +2151,34 @@ contraction, Morse complex, persistence isomorphism, matching generation or runt
 See [acyclic matchings for discrete Morse reduction](math/discrete-morse-matchings.md) and
 the [MN13 source mapping](math/references.md#MN13).
 
+`TDA.Persistence.Morse.FiniteInputMatching` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.MatchingInput`) checks a matching supplied on a finite input
+`xs : FiniteInput.Input`. Faces are list positions `Fin xs.length`, and a matching is a list
+`pairs : Pairs xs` of ordered (lower, upper) position pairs. `IsMatching xs pairs` requires
+pairwise distinct endpoints (`endpoints pairs`), a cover `IsCover xs i j` (subset with exactly
+one more vertex) for every pair and equal grades. A reversed pair is rejected, not normalised,
+and a pair listed twice counts as reuse. The certificate is `rank : Fin xs.length → ℕ`, and
+`IsTopologicalRank xs pairs rank` asks for `rank u < rank v` along every list-level arrow
+(unmatched cover pairs coface to face, listed pairs face to coface). `MatchingInput.check xs
+pairs rank : Bool` decides both, and `check_eq_true_iff` proves that it returns `true` exactly
+when `IsMatching xs pairs ∧ IsTopologicalRank xs pairs rank` holds. The executable predicates
+need no validity proof.
+
+For `h : Valid xs`, `toRel xs h pairs` is the induced relation on the faces of
+`complex xs h`. `exists_check_iff` proves that some rank is accepted exactly when
+`pairs.Nodup` holds and `toRel xs h pairs` is an acyclic matching with equal grades for
+`gradeFilter xs h`, and `exists_check_iff_isFilteredAcyclicMatching` states the same with
+`IsFilteredAcyclicMatching`. `pairs.Nodup` is needed because `toRel` forgets repeated pairs.
+`certify? xs pairs rank` returns a `CertifiedMatching xs` (the pairs, the rank and both
+proofs) exactly when `check` accepts. Its `critical` list holds the unmatched positions in
+increasing order, and `criticalReport` lists each with its dimension `(xs.get i).1.card - 1`
+and original grade `(xs.get i).2`; `trichotomy` and `critical_length_add` classify and count
+the positions. `TDA.Persistence.Morse.FiniteInputMatchingExamples` (imported by
+`TDA.Persistence.Examples`) holds accepted and rejected fixtures, including the multi-grade
+square with critical faces A, AD and ACD. `check` does not search for a matching or rank, and
+no runtime bound is stated; see
+[checking a supplied matching](math/discrete-morse-matchings.md#checking-a-supplied-matching).
+
 ## Compatible lifts and algebraic sums over the reals
 
 The [real interval decomposition note](math/real-interval-decomposition.md)
