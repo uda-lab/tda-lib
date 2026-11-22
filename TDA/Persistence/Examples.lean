@@ -220,6 +220,7 @@ import TDA.Persistence.BoundaryTransportReverseExamples
 import TDA.Persistence.BoundaryTransportReverse
 import TDA.Persistence.Reduction.RipsInputExamples
 import TDA.Persistence.Reduction.RipsInputDiagramExamples
+import TDA.Persistence.Reduction.AlphaInputExamples
 import TDA.Persistence.Enclosure.ExpExamples
 import TDA.Persistence.Enclosure.GramExamples
 import TDA.Persistence.StrictRankErosionExamples

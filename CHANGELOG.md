@@ -361,6 +361,12 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   (`HeightGraph.reebDataIso`, `HeightGraph.reebQuotientIso`). See
   [executable incidence extraction](docs/math/mapper.md#executable-incidence-extraction).
 
+- Compute certified F₂ barcodes of finite rational planar α filtrations.
+  `AlphaInput.run` reuses the finite reducer, returns exact squared-radius
+  endpoints, and rejects repeated sites. Its degreewise result agrees with
+  actual closed α persistence. See
+  [exact planar α barcodes](docs/math/finite-ph-computation.md#exact-planar-α-barcodes).
+
 ## v0.4.0
 
 Published 2026-11-14. [Release notes](https://github.com/uda-lab/tda-lib/releases/tag/v0.4.0)

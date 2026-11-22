@@ -64,6 +64,17 @@ private theorem replayStored_eq (data : Vector (Vector k m) m) (ops : List (Earl
     simp only [replayStored, ih, replayRead_step, replay]
     rfl
 
+/-- Materialize replay as rows so a consumer can reuse its entries across queries. -/
+def replayEntries (M : Matrix (Fin m) (Fin m) k)
+    (ops : List (EarlierColumnOp m k)) : Vector (Vector k m) m :=
+  replayStored (replayStore M) ops
+
+theorem replayEntries_get (M : Matrix (Fin m) (Fin m) k)
+    (ops : List (EarlierColumnOp m k)) (i j : Fin m) :
+    (replayEntries M ops)[i][j] = replay M ops i j := by
+  change replayRead (replayStored (replayStore M) ops) i j = _
+  rw [replayStored_eq, replayRead_store]
+
 private def cachedReplay (M : Matrix (Fin m) (Fin m) k) (ops : List (EarlierColumnOp m k)) :
     Matrix (Fin m) (Fin m) k := replayRead (replayStored (replayStore M) ops)
 

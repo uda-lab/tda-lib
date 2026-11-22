@@ -383,3 +383,29 @@ convention is in [finite-sublevel-diagram.md](finite-sublevel-diagram.md).
 This unit specializes those results to finite F₂ input with integer grades.
 It adds no sparse-matrix optimization, file parser, real-grade computation,
 or performance bound.
+
+## Exact planar α barcodes
+
+`AlphaInput.run` takes `Fin n → ℚ × ℚ`. The finite injectivity check rejects
+a repeated point. For distinct points, `RationalAlpha.gradedFaces` supplies
+the feasible nonempty faces and their exact rational squared entrance grades.
+The consumer orders faces by grade, then cardinality and vertex labels. It
+sends zero-based ranks of the distinct grades to `FiniteInput.run` and reads
+births and finite deaths back from the sorted rational grade table.
+
+For a real threshold $t$, the corresponding integer stage is the number of
+distinct grades at most $t$, cast to $\mathbb Z$, minus one. It is $-1$
+below the first cut and on the empty family. Between cuts the stage stays
+constant, and at and above the last cut it represents the full feasible
+carrier. `AlphaInput.mem_sublevel` establishes the face correspondence.
+`labelMap_isIso` and `labelMap_naturality` identify the homology and the maps
+for every ordered pair of thresholds. Consequently, `run_correct` identifies
+the returned occurrence multiset with the actual closed α diagram in each
+degree.
+
+A finite occurrence with equal birth and death grades is discarded by the
+integer reducer. Essential deaths have their own constructor. The executed
+side-2 square fixture has one degree-one interval $[1,2)$, and the obtuse
+triangle has no degree-one occurrence. The closed α carrier can include a
+face on four or more sites at a full tie. The procedure is a finite reference
+implementation for exact input.
