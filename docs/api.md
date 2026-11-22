@@ -2235,8 +2235,8 @@ differential for a filtered differential, a unit pair and equal grades.
 `TDA.Persistence.Morse.UnitCancellationExamples` (imported by `TDA.Persistence.Examples`)
 evaluates the filled triangle, a pure unit pair, an unequal-grade pair with no
 grade-nonincreasing contracting homotopy, and a tie-order example over `ZMod 2`. No iteration,
-homology or persistence isomorphism, reindexing, rescaling by a general unit or runtime bound is
-provided; see
+homology or persistence isomorphism, chosen ordering of survivors to `Fin`, rescaling by a
+general unit or runtime bound is provided; see
 [unit cancellation of a filtered chain complex](math/discrete-morse-cancellation.md).
 
 ## Filtered contractions of based complexes

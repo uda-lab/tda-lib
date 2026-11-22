@@ -78,7 +78,8 @@ both sides, so no separate assumption `D a a = D b b = 0` is needed. The followi
 - `homotopy_mul_inclusion`: `H i = 0`.
 
 Under `D * D = 0` and `IsUnitPair D a b`, these eight identities make `(p, i, H)` a strong
-deformation retraction of `D` onto `d'`, with the sign convention `1 - i p = D H + H D`.
+deformation retraction of `D` onto `d'`, with the sign convention `1 - i p = D H + H D`;
+`FilteredContraction.ofUnitPair` bundles them as a `FilteredContraction`.
 
 For a based differential (`IsBasedDifferential degree D`) and a unit pair, the four maps
 respect degrees on their supports. `reducedDifferential_lowersDegree` lowers the inherited
@@ -239,8 +240,10 @@ For every filtered contraction `c`:
 
 Sublevel restriction is not restated. Each of `p`, `i` and `h` is grade-nonincreasing, so by
 `GradeNonincreasing.mulVec_sublevelSupported` each maps vectors supported in grades `≤ t` to
-such vectors, and the identities above restrict to each grade sublevel. These restricted
-identities are not stated as separate theorems.
+such vectors. If `D` is also grade-nonincreasing, as under
+`IsFilteredDifferential degree grade D` (and then `D'` is too, by
+`isFilteredDifferential_target`), the identities above restrict to each grade sublevel. These
+restricted identities are not stated as separate theorems.
 
 The fixtures are in `TDA.Persistence.Morse.FilteredContractionExamples`, over `ZMod 2`, with
 every closed computation a kernel `decide`. They reuse the filled triangle `tD` with the grade
@@ -265,7 +268,8 @@ edge to the grade-2 face.
   the positions A, CA and ABC, keeping the original IDs, and
   `critContraction = twoStep.reindex critEquiv`. `crit_differential` (`d ABC = CA` on `Crit`),
   `crit_proj`, `crit_incl` and `crit_htpy` state the values of G1 with the small side on
-  `Crit`, and `crit_grade` states that the transported grades are the original grades.
+  `Crit`, and `crit_grade` states that the transported grades are the grades `cGrade` of the
+  original positions.
   `critFlat` restates `critContraction` by `copy` with the flat degree `tDegree ∘ Subtype.val`,
   grade `cGrade ∘ Subtype.val` and differential `critD`, and `critFlat_proj` and
   `critFlat_incl` evaluate it.
@@ -315,8 +319,9 @@ The grade theorems for `κ_Q` and `Θ` (`reducedDifferential_gradeNonincreasing`
 the unequal-grade fixture are library derivations attributed to no numbered result. See the
 [MN13 source mapping](references.md#MN13).
 
-`FilteredContraction`, its operations, the `*_target` theorems, the vector identities and the
-G1/G2 fixtures are library derivations attributed to no numbered result; `ofUnitPair`
+`FilteredContraction`, its other operations, the `*_target` theorems, the vector identities,
+`GradeNonincreasing.add` and the G1/G2 fixtures are library derivations attributed to no
+numbered result; `ofUnitPair`
 repackages the reduction step above and adds no source claim. `TauCeti.LinearSpecialContraction`,
 recorded on #1074 against TauCeti commit `25bd01c`, is the closest notion to
 `FilteredContraction`; TauCeti is not a dependency, and if it became one the comparison would

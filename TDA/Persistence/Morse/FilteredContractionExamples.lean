@@ -19,8 +19,8 @@ C, AB, BC, CA, ABC, with boundary `tD`).
   `1 - i p = D h + h D` on the written-out matrices directly.
 * G2. `critEquiv` identifies `TS2` with the flat subtype `Crit` of the critical cells A, CA,
   ABC, and `critContraction = twoStep.reindex critEquiv` carries the same values, with the
-  original grades. `critFlat` restates it by `copy` with the flat degree, grade and the
-  differential `critD`.
+  grades `cGrade` of the original positions. `critFlat` restates it by `copy` with the flat
+  degree, grade and the differential `critD`.
 
 Every closed computation is a kernel `decide`.
 -/
@@ -172,7 +172,7 @@ theorem crit_incl : critContraction.incl = critIncl := by decide +kernel
 /-- Transport keeps the composed homotopy. -/
 theorem crit_htpy : critContraction.htpy = twoStepHtpy := by decide +kernel
 
-/-- The transported grades are the original grades. -/
+/-- The transported grades are the grades `cGrade` of the original positions. -/
 theorem crit_grade :
     ∀ r : Crit, ((cGrade ∘ Subtype.val) ∘ Subtype.val) (critEquiv.symm r) = cGrade r.val := by
   decide +kernel
