@@ -605,3 +605,34 @@ import TDA
 #print axioms TDA.Filtration.FiniteGraded.supGradeError_of_isEmpty
 #print axioms TDA.Filtration.FiniteGraded.supGradeError_zero_coordinates
 #print axioms TDA.Filtration.FiniteGraded.ext_iff
+
+-- Closed Voronoi alpha filtration and its boundary fixtures.
+#print axioms TDA.Filtration.Alpha.voronoiFamily
+#print axioms TDA.Filtration.Alpha.commonCells
+#print axioms TDA.Filtration.Alpha.dist_eq_of_mem_commonCells
+#print axioms TDA.Filtration.Alpha.complex
+#print axioms TDA.Filtration.Alpha.complex_eq_nerve_closedBall
+#print axioms TDA.Filtration.Alpha.mem_complex_iff
+#print axioms TDA.Filtration.Alpha.complex_mono
+#print axioms TDA.Filtration.Alpha.complexFiltration
+#print axioms TDA.Filtration.Alpha.complex_eq_bot_of_neg
+#print axioms TDA.Filtration.Alpha.singleton_mem_complex_iff
+#print axioms TDA.Filtration.Alpha.mem_support_iff
+#print axioms TDA.Filtration.Alpha.radius
+#print axioms TDA.Filtration.Alpha.filtration_le_cech
+#print axioms TDA.Filtration.Alpha.inclusion_natural
+#print axioms TDA.Filtration.Alpha.carrier
+#print axioms TDA.Filtration.Alpha.finite_carrier_faces
+#print axioms TDA.Filtration.Alpha.exists_mem_complex_iff
+#print axioms TDA.Filtration.Alpha.filter
+#print axioms TDA.Filtration.Alpha.isLeast_grade
+#print axioms TDA.Filtration.Alpha.isLeast_sq_dist
+#print axioms TDA.Filtration.Alpha.sublevel_eq_complex
+#print axioms TDA.Filtration.Alpha.sublevelFiltration_eq
+#print axioms TDA.Filtration.Alpha.eventually_eq_carrier
+#print axioms TDA.Filtration.Alpha.Examples.singleton_stage
+#print axioms TDA.Filtration.Alpha.Examples.two_site_edge_iff
+#print axioms TDA.Filtration.Alpha.Examples.collinear_outer_pair_not_mem
+#print axioms TDA.Filtration.Alpha.Examples.collinear_midpoint_edge
+#print axioms TDA.Filtration.Alpha.Examples.squareSites
+#print axioms TDA.Filtration.Alpha.Examples.square_four_vertex_simplex
