@@ -29,7 +29,9 @@ but no iterated Morse contraction or persistence isomorphism.
 [Unit cancellation](math/discrete-morse-cancellation.md) cancels one equal-grade unit pair
 of a filtered based complex with an executable reduced differential and a filtered contraction;
 [such contractions](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition)
-compose, and their small complex can be transported along carrier equivalences.
+compose, their small complex can be transported along carrier equivalences, and
+[a filtered contraction induces](api.md#sublevel-homology-of-filtered-based-complexes) an
+isomorphism of the grade-sublevel homology persistence modules of the two based complexes.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).

@@ -2234,9 +2234,9 @@ supported in grades `≤ t`. `isFilteredDifferential_reduced` proves that `d'` i
 differential for a filtered differential, a unit pair and equal grades.
 `TDA.Persistence.Morse.UnitCancellationExamples` (imported by `TDA.Persistence.Examples`)
 evaluates the filled triangle, a pure unit pair, an unequal-grade pair with no
-grade-nonincreasing contracting homotopy, and a tie-order example over `ZMod 2`. No iteration,
-homology or persistence isomorphism, chosen ordering of survivors to `Fin`, rescaling by a
-general unit or runtime bound is provided; see
+grade-nonincreasing contracting homotopy, and a tie-order example over `ZMod 2`. These modules
+provide no iteration, homology or persistence isomorphism, chosen ordering of survivors to
+`Fin`, rescaling by a general unit or runtime bound; see
 [unit cancellation of a filtered chain complex](math/discrete-morse-cancellation.md).
 
 ## Filtered contractions of based complexes
@@ -2268,9 +2268,41 @@ filtered differential properties to `D'`. `proj_mulVec_incl_mulVec` and
 `x - incl (proj x) = D (htpy x) + htpy (D x)`. `GradeNonincreasing.add` closes grade bounds
 under sums. `TDA.Persistence.Morse.FilteredContractionExamples` (imported by
 `TDA.Persistence.Examples`) composes two cancellations on the filled triangle and transports
-the result to a flat subtype of critical cells, over `ZMod 2`. No iteration, homology or
-persistence isomorphism is provided; see
+the result to a flat subtype of critical cells, over `ZMod 2`. This module provides no
+iteration, homology or persistence isomorphism; homology and the isomorphism induced by a
+contraction are in [the next section](#sublevel-homology-of-filtered-based-complexes). See
 [filtered contractions and their composition](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition).
+
+## Sublevel homology of filtered based complexes
+
+`TDA.Persistence.Morse.FilteredHomology` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.Cancellation`) forms the homology of the grade sublevels of a based
+complex `(degree, grade, D)` on a finite carrier `ι : Type u` over a commutative ring
+`k : Type v`, with `degree : ι → ℕ` and `grade : ι → ℤ`. `DegreeSupported degree p x` says that
+`x` vanishes outside degree `p`. `sublevelChains degree grade p t` is the submodule of vectors
+with `DegreeSupported degree p x` and `SublevelSupported grade t x`, `sublevelCycles` adds
+`D.mulVec x = 0`, `sublevelBoundaries` is the image under `D` of the degree-`p + 1` sublevel
+chains, and `sublevelHomology degree grade D p t` is the quotient of the cycles by the
+boundaries that lie among them. The definitions take no hypothesis on `D`;
+`sublevelBoundaries_le_sublevelCycles` proves that every sublevel boundary is a sublevel cycle
+when `IsFilteredDifferential degree grade D` holds. `sublevelHomologyMap` is induced by the
+inclusion of cycles for `t ≤ t'`, and `sublevelHomologyPModule degree grade D p` is the
+persistence module `PModule.{v, 0, max u v} k ℤ` with these structure maps.
+
+For `c : FilteredContraction degree grade D degree' grade' D'` with carriers `ι κ : Type u`,
+`c.homologyProj p t` and `c.homologyIncl p t` are induced by `proj` and `incl`.
+`c.sublevelHomologyEquiv p t` is a `LinearEquiv` with forward map `homologyProj` and inverse
+`homologyIncl`, and `c.sublevelHomologyIso p` is the natural isomorphism
+`sublevelHomologyPModule degree grade D p ≅ sublevelHomologyPModule degree' grade' D' p` from
+the large complex to the small one, whose `hom` components are `homologyProj`
+(`sublevelHomologyIso_hom_app`). `c.finrank_sublevelHomology_eq p t` equates the
+`Module.finrank` of the two sublevel homologies. None of these results about `c` assumes
+`D * D = 0`. The maps, the persistence module and the isomorphisms are `noncomputable`.
+`TDA.Persistence.Morse.FilteredHomologyExamples` (imported by `TDA.Persistence.Examples`)
+computes the sublevel homology dimensions of the critical complex of the filled triangle with
+the grade `cGrade` over `ZMod 2`, and transports them to the triangle through the contraction. No simplicial bridge to
+`sublevelModule` or `simplicialHomologyPModule` is provided; see
+[sublevel homology and the induced isomorphism](math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
 
 ## Compatible lifts and algebraic sums over the reals
 
