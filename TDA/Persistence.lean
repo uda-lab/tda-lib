@@ -462,3 +462,4 @@ import TDA.Persistence.Morse.AcyclicMatching
 import TDA.Persistence.Morse.FiniteInputMatching
 import TDA.Persistence.Morse.FiniteInputMatchingGeneration
 import TDA.Persistence.Morse.UnitCancellation
+import TDA.Persistence.Morse.FilteredContraction

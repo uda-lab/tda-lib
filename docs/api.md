@@ -2235,9 +2235,42 @@ differential for a filtered differential, a unit pair and equal grades.
 `TDA.Persistence.Morse.UnitCancellationExamples` (imported by `TDA.Persistence.Examples`)
 evaluates the filled triangle, a pure unit pair, an unequal-grade pair with no
 grade-nonincreasing contracting homotopy, and a tie-order example over `ZMod 2`. No iteration,
-homology or persistence isomorphism, reindexing, rescaling by a general unit or runtime bound is
-provided; see
+homology or persistence isomorphism, chosen ordering of survivors to `Fin`, rescaling by a
+general unit or runtime bound is provided; see
 [unit cancellation of a filtered chain complex](math/discrete-morse-cancellation.md).
+
+## Filtered contractions of based complexes
+
+`TDA.Persistence.Morse.FilteredContraction` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.Cancellation`) bundles a contraction of based complexes as data.
+`FilteredContraction degree grade D degree' grade' D'` takes finite carriers `ι` and `κ` with
+decidable equality, a commutative ring `k`, the large complex `(degree, grade, D)` on `ι` and
+the small complex `(degree', grade', D')` on `κ`, all as parameters. Its data are
+`proj : Matrix κ ι k`, `incl : Matrix ι κ k` and `htpy : Matrix ι ι k`; its fields are the
+chain-map equations `proj * D = D' * proj` and `D * incl = incl * D'`, `proj * incl = 1`,
+`1 - incl * proj = D * htpy + htpy * D`, the side conditions `htpy * htpy = 0`,
+`proj * htpy = 0` and `htpy * incl = 0`, degree support (`proj` and `incl` preserve degree and
+`htpy` raises it by one on their supports) and `GradeNonincreasing` for all three matrices.
+`D * D = 0` is not a field.
+
+`FilteredContraction.refl` is the identity contraction. `c₁.trans c₂` composes in
+diagrammatic order, with projection `c₂.proj * c₁.proj`, inclusion `c₁.incl * c₂.incl` and
+homotopy `c₁.htpy + c₁.incl * c₂.htpy * c₁.proj`. `c.reindex e` transports the small complex
+along `e : κ ≃ μ` by `submatrix`, and `c.copy hdeg hgr hD` keeps the matrices while rewriting
+the small complex's degree, grade and differential along equalities. `ofUnitPair hD hp hg`
+packages the cancellation of an equal-grade unit pair of a filtered differential as a
+contraction onto `(degree ∘ Subtype.val, grade ∘ Subtype.val, reducedDifferential D a b)`.
+Each construction has `@[simp]` `rfl` lemmas for its three matrices. `differential_eq` proves
+`D' = proj * D * incl`; `sq_zero_target` derives `D' * D' = 0` from `D * D = 0`; and
+`isBasedDifferential_target` and `isFilteredDifferential_target` transfer the based and
+filtered differential properties to `D'`. `proj_mulVec_incl_mulVec` and
+`sub_incl_mulVec_proj_mulVec` are the vector forms `proj (incl y) = y` and
+`x - incl (proj x) = D (htpy x) + htpy (D x)`. `GradeNonincreasing.add` closes grade bounds
+under sums. `TDA.Persistence.Morse.FilteredContractionExamples` (imported by
+`TDA.Persistence.Examples`) composes two cancellations on the filled triangle and transports
+the result to a flat subtype of critical cells, over `ZMod 2`. No iteration, homology or
+persistence isomorphism is provided; see
+[filtered contractions and their composition](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition).
 
 ## Compatible lifts and algebraic sums over the reals
 
