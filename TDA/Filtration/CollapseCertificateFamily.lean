@@ -21,7 +21,7 @@ three kinds of regime:
   `c` (`stages_eq_stageTable_of_mem_Ico`);
 - on the unbounded tail `[c, ∞)` from the greatest critical grade `c`, both stages are those
   at `c` (`stages_eq_stageTable_of_le_of_forall_le`).
-These are cases of `stages_eq_stageTable`, and the stages are constant on each regime
+The last two are cases of `stages_eq_stageTable`, and on each of them the stages are those at `c`
 (`stages_eq_of_regime`).
 
 A certificate family assigns a list of steps to every rational grade. `checkCertificates` checks,

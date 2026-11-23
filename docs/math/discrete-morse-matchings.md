@@ -438,7 +438,7 @@ order, a wrong endpoint, the empty certificate to a different table, and a repea
 `TDA.Filtration.AlphaCollapseCertificateExamples` reads the faces of the actual Čech and α
 stages of the obtuse triangle at grade 4 off `cechGrades` and `gradedFaces obtuse`, and obtains
 `CollapsesTo` there through the checker (`collapsesTo_four`). Only grade 4 is checked there.
-A Delaunay–Čech stage, a producer of certificates and any general-position result are not
+A Delaunay–Čech stage, a producer of collapse certificates and any general-position result are not
 provided, and no runtime bound is stated; certificates across the critical grades of a supplied
 filtered pair are in [certificates across critical grades](#certificates-across-critical-grades).
 
@@ -476,8 +476,8 @@ accepted, by `decide +kernel` (`checkCertificates_obtuse`). The empty family is 
 the stage tables differ at grade 4 (`checkCertificates_nil`). The family that removes the long
 edge at every grade from 4 on is rejected (`checkCertificates_removal_from_four`): at grade 5 the
 long edge is still free in the Čech table, but the run ends at `alphaTable`, not at the α table
-of grade 5. The three regimes are checked on the actual stages (`stages_of_neg`,
-`stages_of_mem_Ico_four`, `stages_of_five_le`). These are in
+of grade 5. One regime of each kind is checked on the actual stages: below 0 (`stages_of_neg`),
+`[4, 5)` (`stages_of_mem_Ico_four`) and the tail `[5, ∞)` (`stages_of_five_le`). These are in
 `TDA.Filtration.AlphaCollapseFamilyExamples`. Through the verifier, `alphaCechCertificateIso` in
 `TDA.Persistence.CollapseCertificatePersistenceExamples` is the natural isomorphism from α to
 squared-Čech persistence, and it is `alphaCechIso` (`alphaCechCertificateIso_eq`). The

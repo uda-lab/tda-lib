@@ -15,8 +15,8 @@ and is empty at every other grade. It is accepted (`checkCertificates_obtuse`), 
 stage collapses to the α stage at every real grade through the generic verifier
 (`collapsesTo_of_certificate`).
 
-The fixtures exercise every regime on the actual stages: below the least critical grade both
-are empty (`stages_of_neg`); on `[4, 5)` they have the face tables `triangle` and `alphaTable`,
+The fixtures exercise one regime of each of the three kinds on the actual stages: below the
+least critical grade both are empty (`stages_of_neg`); on `[4, 5)` they have the face tables `triangle` and `alphaTable`,
 and the removal is needed (`stages_of_mem_Ico_four`, `checkCertificates_nil`); on the
 unbounded tail `[5, ∞)` both are the full triangle, and the pair must be retained
 (`stages_of_five_le`). Keeping the removal at grade `5` is rejected: the long edge is still free

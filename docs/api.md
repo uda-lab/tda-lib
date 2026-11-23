@@ -2770,8 +2770,11 @@ stage `triangle`), `stages_of_five_le` (on `[5, ∞)` both have the face table `
 `CollapsePersistenceExamples.alphaCechIso`). See
 [certificates across critical grades](math/discrete-morse-matchings.md#certificates-across-critical-grades).
 
-No general-position theorem, Delaunay–Čech stage, certificate producer or source result is
-provided; see
+The collapse modules `TDA.Simplicial.Collapse`, `TDA.Simplicial.CollapseHomology`,
+`TDA.Simplicial.CollapseCertificate`, `TDA.Filtration.CollapseCertificateFamily`,
+`TDA.Persistence.CollapsePersistence`, `TDA.Persistence.CollapseCertificatePersistence` and their
+example modules provide no general-position theorem, Delaunay–Čech stage, producer of collapse
+certificates or source result; see
 [elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle),
 [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses),
 [checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences)
