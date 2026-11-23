@@ -161,6 +161,15 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   stage from the Čech stage at the same grade. No general-position or persistence statement.
   See
   [elementary collapses and the obtuse triangle](docs/math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle).
+- Prove that collapses induce homology isomorphisms (`TDA.Simplicial.CollapseHomology`):
+  deleting a free face is a chain homotopy equivalence whose forward map is the inclusion, so the
+  inclusion of the end of a finite collapse sequence is an isomorphism of ordinary homology in
+  every degree over every ring. Levelwise collapses between two filtrations make the inclusion
+  morphism of their homology persistence modules a natural isomorphism
+  (`TDA.Persistence.CollapsePersistence`). On the obtuse triangle this gives the α-to-Čech
+  persistence isomorphism in every degree (`TDA.Persistence.CollapsePersistenceExamples`). No
+  certificate checker, critical-grade sequence or general-position statement. See
+  [homology of collapses](docs/math/discrete-morse-matchings.md#homology-of-collapses).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
