@@ -9254,3 +9254,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_dual_essential
 #print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_dual_reducerOccurrences
 #print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_dual_perm
+
+-- Degree-zero α–Čech comparison.
+#print axioms TDA.Persistence.alphaH0Comparison
+#print axioms TDA.Persistence.alphaH0Comparison_app
+#print axioms TDA.Persistence.alphaH0Comparison_isIso_app
+#print axioms TDA.Persistence.alphaH0Iso
+#print axioms TDA.Persistence.alphaH0Iso_hom
