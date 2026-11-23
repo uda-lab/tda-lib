@@ -342,16 +342,24 @@ stage into the α stage at the same grade, so this collapse family is not of tha
 statements identify the α stage itself, not only its homology.
 
 At mathlib commit `56a0058`, `Mathlib/AlgebraicTopology` has no free face, deletion or collapse
-of simplicial complexes. At TauCeti commit `25bd01c`, as recorded on #1044,
-`PreAbstractSimplicialComplex.IsFreePair`, `deletion`, `ElementaryCollapsesTo` and
-`CollapsesTo` have the same names; TauCeti's `IsFreePair` is equivalent to the one here, its
-`deletion` has the same faces, and the other two have the same bodies. TauCeti is not a
-dependency. At tda-lib commit `3581b4a`, `TDA/` defines no other free face or collapse of a
-complex. The private theorems `collapse_prism`, `collapse_edge` and `collapse_boundary_prism` in
-`TDA.Simplicial.ContiguityHomotopyExamples` are chain-level identities for a constant edge map,
-and the `deletion*` declarations in namespace `TDA.Filtration.SparseRips` and its `Examples`
-(`deletionTime`, `deletionMap`, `deletionGrid`, `deletionVertexMap` and related lemmas) concern
-vertex deletion times and the vertex maps of sparse Rips; neither is related to
+of simplicial complexes. At TauCeti commit `25bd01c`, the namespace
+`PreAbstractSimplicialComplex` has `IsFreePair` and `ElementaryCollapsesTo`
+(`TauCeti/AlgebraicTopology/SimplicialComplex/ElementaryCollapse.lean`), `deletion`
+(`LinkStar.lean` in the same directory) and `CollapsesTo` (`Collapse/Basic.lean` there), with
+the same last name components as here. TauCeti's `IsFreePair` requires `σ ⊂ τ` and that every
+face of `K` containing `σ` is `σ` or `τ`, and derives `σ ⋖ τ` (`IsFreePair.covBy`); it is
+equivalent to the one here. Its `deletion` has the same faces, and its `ElementaryCollapsesTo`
+and `CollapsesTo` have the same bodies. TauCeti is not a dependency. At tda-lib commit
+`3581b4a`, `TDA/` defines no other free-face predicate, face deletion or collapse relation on
+simplicial complexes. Declarations there whose names contain `collapse` are not collapses in
+this sense: for example, the private theorems `collapse_prism`, `collapse_edge` and
+`collapse_boundary_prism` in `TDA.Simplicial.ContiguityHomotopyExamples` are chain-level
+identities for a constant edge map; `TDA.Persistence.Rips.pointCollapseVertexMap` and the
+private `pendantCollapse` in `TDA.Filtration.SparseRips.H1Examples` are vertex maps; and
+`TDA.Reeb.GraphTreeContraction.leafCollapse` is a continuous map of graph realizations. The
+`deletion*` declarations in namespace `TDA.Filtration.SparseRips` and its `Examples`
+(`deletionTime`, `deletionMap`, `deletionGrid`, `deletionVertexMap` and related declarations)
+concern vertex deletion times and the vertex maps of sparse Rips. None of these is related to
 `TDA.Simplicial.deletion`.
 
 Only this triangle is treated. A general Čech → Delaunay–Čech → α collapse under general

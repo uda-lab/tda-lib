@@ -2638,8 +2638,9 @@ No homotopy or homology statement is made.
 `RationalAlpha.Examples.obtuse`, the sites `(0,0)`, `(4,0)` and `(1,1)` with labels `0, 1, 2`,
 and on the two stages `Alpha.squaredCechFiltration (realSites obtuse) t` and
 `Alpha.labelledComplexFiltration (realSites obtuse) t` under the same labels, for `t : ℝ` a
-squared grade, written `cech t` and `alpha t` below (local notation in the module). `cechGrades` is the squared Čech grade table: the vertices 0, `{0,2}` 1/2,
-`{1,2}` 5/2, `{0,1}` and `{0,1,2}` 4. `mem_cech_iff` states that a face is in the Čech stage
+squared grade, written `cech t` and `alpha t` below (local notation in the module).
+`cechGrades` is the squared Čech grade table: the vertices 0, `{0,2}` 1/2, `{1,2}` 5/2,
+`{0,1}` and `{0,1,2}` 4. `mem_cech_iff` states that a face is in the Čech stage
 exactly when its grade in `cechGrades` is at most `t`, and `mem_alpha_iff` reads the α stage off
 `gradedFaces obtuse`, where `{0,1}` and `{0,1,2}` have grade 5. `cechGrades_sdiff` states that
 the two tables differ exactly in `({0,1}, 4)`, `({0,1,2}, 4)` against `({0,1}, 5)`,
