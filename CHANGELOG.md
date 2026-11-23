@@ -170,6 +170,16 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   persistence isomorphism in every degree (`TDA.Persistence.CollapsePersistenceExamples`). No
   certificate checker, critical-grade sequence or general-position statement. See
   [homology of collapses](docs/math/discrete-morse-matchings.md#homology-of-collapses).
+- Add a checker for supplied collapse sequences on finite face tables
+  (`TDA.Simplicial.CollapseCertificate`): a certificate is a list of pairs `(σ, τ)`,
+  `checkSteps` accepts it exactly when each pair is free in the current table and the final table
+  is the supplied target, and acceptance is equivalent to `CollapsesTo` between complexes with
+  those face tables (`collapsesTo_iff_exists_checkSteps`). Accepted and rejected certificates are
+  evaluated by `decide +kernel` (`TDA.Simplicial.CollapseCertificateExamples`), and the actual
+  Čech stage of the obtuse triangle at grade 4 collapses to its α stage through the checker
+  (`TDA.Filtration.AlphaCollapseCertificateExamples`). No critical-grade sequence, certificate
+  producer or general-position statement. See
+  [checking supplied collapse sequences](docs/math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

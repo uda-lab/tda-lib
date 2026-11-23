@@ -58,6 +58,9 @@ deletes one free pair at each grade of `[4, 5)` and nothing at the other grades.
 [Collapses induce homology isomorphisms](math/discrete-morse-matchings.md#homology-of-collapses),
 so there the labelled inclusions give a natural isomorphism from α to squared-grade Čech
 persistence in every degree over every ring.
+[A checker for supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences)
+accepts a certificate exactly when its pairs are free in turn and it ends at the supplied table,
+and acceptance gives the collapse.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).

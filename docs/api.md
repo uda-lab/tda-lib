@@ -2690,10 +2690,47 @@ natural isomorphism from α persistence to squared-grade Čech persistence, with
 `alphaCechIso_zero_hom` states `(alphaCechIso k 0).hom = alphaH0Comparison (realSites obtuse) k`.
 See [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
 
-No general-position theorem, certificate checker for supplied collapse sequences, collapse
-sequence across several critical grades or source result is provided; see
-[elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle)
-and [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
+`TDA.Simplicial.CollapseCertificate` (imported by `TDA.Simplicial`) has, in namespace
+`TDA.Simplicial`, for `[DecidableEq V]`, face tables `F T : Finset (Finset V)` and certificates
+`steps : List (Finset V × Finset V)`: `IsFreePairTable F σ τ` (`σ ∈ F`, `τ ∈ F`, `σ ⊆ τ`,
+`(τ \ σ).card = 1`, and every `ω ∈ F` with `σ ⊂ ω` is `τ`) with the decidability instance
+`instDecidableIsFreePairTable`; `collapseTable F σ τ`, which erases `σ` and `τ`;
+`runSteps F steps : Option (Finset (Finset V))`, which applies the steps in order and is `none`
+at the first step that is not free; and `checkSteps F steps T : Bool`, which accepts exactly when
+the run ends at `T` itself (`checkSteps_eq_true_iff`, `eq_of_checkSteps`, `checkSteps_nil`,
+`checkSteps_cons`). For complexes `K`, `L` with `∀ s, s ∈ K ↔ s ∈ F` and
+`∀ s, s ∈ L ↔ s ∈ T`, `isFreePair_iff_isFreePairTable` identifies the table test with
+`IsFreePair`, `mem_deletion_iff_mem_collapseTable` identifies `collapseTable` with the deletion
+on a free pair, `collapsesTo_of_checkSteps` (soundness) gives `CollapsesTo K L` from an accepted
+certificate, `exists_checkSteps_of_collapsesTo` (completeness) gives an accepted certificate from
+`CollapsesTo K L`, and `collapsesTo_iff_exists_checkSteps` combines the two.
+`FiniteComplex.collapsesTo_of_checkSteps` is soundness for `C D : FiniteComplex m`, with face
+tables `C.faces` and `D.faces`. No check is made that `F` is the face set of a complex.
+`TDA.Simplicial.CollapseCertificateExamples` (imported by `TDA.Simplicial.Examples`) has the
+tables `triangle`, `alphaTable`, `tetrahedron`, `simplex4` and `twoTriangles` and fourteen
+fixtures, each decided by `decide +kernel` except `top_collapsesTo_vertex`. Accepted:
+`checkSteps_triangle_alphaTable` (the obtuse step, ending exactly at `alphaTable`),
+`checkSteps_triangle_vertex`, `checkSteps_tetrahedron_vertex`, `checkSteps_simplex4_vertex` (to
+the vertex `{0}`) and `checkSteps_triangle_spine` (onto an edge and onto the spine). Rejected,
+each with a conjunct stating its reason: `checkSteps_twoTriangles_extra_coface` (an extra coface
+`{0,1,3}`), `checkSteps_alphaTable_not_mem` (`{0,1,2} ∉ alphaTable`),
+`checkSteps_triangle_reversed` (reversed pair), `checkSteps_triangle_codim_two` (not a cover),
+`checkSteps_triangle_wrong_order` (`{1}` is not free while `{1,2}` is present),
+`checkSteps_triangle_wrong_endpoint` (the run ends at `alphaTable`, which is none of three
+targets) and `checkSteps_triangle_repeated` (the faces of the repeated step have been erased).
+`checkSteps_triangle_nil` accepts the empty certificate to `triangle` and rejects it to
+`alphaTable`. `top_collapsesTo_vertex` is soundness on the actual full tetrahedron `⊤`.
+`TDA.Filtration.AlphaCollapseCertificateExamples` (imported by `TDA.Filtration.Examples`) has, at
+grade 4 only, `mem_cech_four_iff` (the faces of `cech 4` are `triangle`), `mem_alpha_four_iff`
+(the faces of `alpha 4` are `alphaTable`) and `collapsesTo_four`
+(`CollapsesTo (cech 4) (alpha 4)` through the checker). See
+[checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
+
+No general-position theorem, collapse sequence across several critical grades or source result
+is provided; see
+[elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle),
+[homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses) and
+[checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
 
 ## Compatible lifts and algebraic sums over the reals
 

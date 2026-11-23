@@ -402,9 +402,42 @@ On the obtuse triangle, `collapsesTo` gives such a collapse at every squared gra
 `alphaCechIso` in `TDA.Persistence.CollapsePersistenceExamples` is then the natural isomorphism
 from α persistence to squared-Čech persistence induced by the labelled inclusions, in every
 degree over every ring. In degree zero over a field its forward map is `alphaH0Comparison`
-(`alphaCechIso_zero_hom`). The collapses here are proved by hand for one triangle. A checker for
-supplied collapse sequences, sequences across the critical grades of a supplied filtered pair, a
-Delaunay–Čech stage and any general-position result are not provided.
+(`alphaCechIso_zero_hom`). The collapses here are proved by hand for one triangle. Sequences
+across the critical grades of a supplied filtered pair, a Delaunay–Čech stage and any
+general-position result are not provided; a checker for supplied collapse sequences is in
+[checking supplied collapse sequences](#checking-supplied-collapse-sequences).
+
+## Checking supplied collapse sequences
+
+A face table is a finite set of faces, and a certificate is a list of pairs `(σ, τ)`, each read
+as "delete the free face `σ` with its coface `τ`". `IsFreePairTable F σ τ` tests that both faces
+are listed, that `σ ⊆ τ` with `τ \ σ` a single vertex, and that `τ` is the only listed face
+strictly containing `σ`. `collapseTable` erases the two faces. `runSteps` applies the steps in
+order and fails at the first step that is not free; `checkSteps F steps T` accepts exactly when
+the run ends at the table `T` itself, so a certificate whose steps are all free but whose
+endpoint differs from `T` is rejected. These are in `TDA.Simplicial.CollapseCertificate`.
+
+If `K` and `L` are complexes whose faces are exactly those listed in `F` and `T`, the table test
+is `IsFreePair` (`isFreePair_iff_isFreePairTable`), and erasing the two faces of a free pair
+lists the faces of `deletion K σ` (`mem_deletion_iff_mem_collapseTable`). So an accepted
+certificate gives `CollapsesTo K L` (`collapsesTo_of_checkSteps`). Conversely, every collapse of
+`K` onto `L` has an accepted certificate (`exists_checkSteps_of_collapsesTo`), so acceptance of
+some certificate characterizes `CollapsesTo` for complexes with finite face tables
+(`collapsesTo_iff_exists_checkSteps`). The checker does not test that `F` is the face set of a
+complex (nonempty faces, closed under nonempty subsets); that is supplied by `K`, and
+`FiniteComplex` carries it (`FiniteComplex.collapsesTo_of_checkSteps`).
+
+`TDA.Simplicial.CollapseCertificateExamples` evaluates accepted and rejected certificates by
+`decide +kernel`. The full triangle collapses to the α table of the obtuse triangle in one step,
+and the full triangle, tetrahedron and 4-simplex collapse to a vertex. The rejections are an
+extra coface, a pair that is not present, a reversed pair, a pair that is not a cover, a wrong
+order, a wrong endpoint, the empty certificate to a different table, and a repeated step.
+`TDA.Filtration.AlphaCollapseCertificateExamples` reads the faces of the actual Čech and α
+stages of the obtuse triangle at grade 4 off `cechGrades` and `gradedFaces obtuse`, and obtains
+`CollapsesTo` there through the checker (`collapsesTo_four`). Only grade 4 is checked there.
+Certificates across the critical grades of a supplied filtered pair, a Delaunay–Čech stage, a
+producer of certificates and any general-position result are not provided, and no runtime bound
+is stated.
 
 ## What is not provided
 
