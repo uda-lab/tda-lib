@@ -52,6 +52,9 @@ For a certified matching on a valid input,
 [the reducer run on its Morse complex](math/discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate)
 gives the sublevel diagram `dgm` of the input over `ZMod 2`, which is also the diagram of the
 ordinary run on the boundary matrix.
+On the exact obtuse triangle,
+[a Čech-to-α collapse](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle)
+deletes one free pair at each grade of `[4, 5)` and nothing at the other grades.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).

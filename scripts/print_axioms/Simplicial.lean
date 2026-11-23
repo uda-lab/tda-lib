@@ -339,3 +339,15 @@ import TDA
 
 -- Degree-zero α–Čech comparison.
 #print axioms TDA.Simplicial.simplicialHomologyIncl_zero_isIso_of_edge_reachable
+
+-- Elementary collapses of simplicial complexes (Issue #1044).
+#print axioms TDA.Simplicial.IsFreePair
+#print axioms TDA.Simplicial.deletion
+#print axioms TDA.Simplicial.mem_deletion
+#print axioms TDA.Simplicial.deletion_le
+#print axioms TDA.Simplicial.IsFreePair.mem_deletion_iff
+#print axioms TDA.Simplicial.ElementaryCollapsesTo
+#print axioms TDA.Simplicial.IsFreePair.elementaryCollapsesTo
+#print axioms TDA.Simplicial.ElementaryCollapsesTo.lt
+#print axioms TDA.Simplicial.CollapsesTo
+#print axioms TDA.Simplicial.CollapsesTo.le

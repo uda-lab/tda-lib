@@ -20,3 +20,4 @@ import TDA.Simplicial.VertexChainMap
 import TDA.Simplicial.ContiguityHomotopy
 import TDA.Simplicial.ArbitraryApexCone
 import TDA.Simplicial.BarycentricHomology
+import TDA.Simplicial.Collapse
