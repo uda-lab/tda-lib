@@ -709,3 +709,29 @@ import TDA
 #print axioms TDA.Filtration.Alpha.labelledComplexFiltration_eq_complexFiltration
 #print axioms TDA.Filtration.Alpha.labelledComplexFiltration_le_squaredCech
 #print axioms TDA.Filtration.Alpha.cech_edge_reachable
+
+-- Exact rational planar orientation and incircle.
+#print axioms TDA.Filtration.RationalAlpha.orient
+#print axioms TDA.Filtration.RationalAlpha.incircle
+#print axioms TDA.Filtration.RationalAlpha.incircle_eq_radius_gap
+#print axioms TDA.Filtration.RationalAlpha.incircle_pos_iff_sqDist_lt
+#print axioms TDA.Filtration.RationalAlpha.orient_swaps
+#print axioms TDA.Filtration.RationalAlpha.incircle_swaps
+#print axioms TDA.Filtration.RationalAlpha.orient_eq_areaForm
+#print axioms TDA.Filtration.RationalAlpha.orient_eq_left_normal
+#print axioms TDA.Filtration.RationalAlpha.orient_eq_twice_signed_area
+#print axioms TDA.Filtration.RationalAlpha.orient_zero_iff_collinear
+#print axioms TDA.Filtration.RationalAlpha.circumcenter_exists_eq_sqDist
+#print axioms TDA.Filtration.RationalAlpha.incircle_geometry_of_noncollinear
+#print axioms TDA.Filtration.RationalAlpha.incircle_geometry_ccw
+#print axioms TDA.Filtration.RationalAlpha.incircle_circumsphere_signs
+#print axioms TDA.Filtration.RationalAlpha.planeOrientation
+#print axioms TDA.Filtration.RationalAlpha.realTriangle
+#print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.A
+#print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.B
+#print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.C
+#print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.D
+#print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.quad_predicates
+#print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.swapped_predicates
+#print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.collinear_orientation
+#print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.cocircular_incircle
