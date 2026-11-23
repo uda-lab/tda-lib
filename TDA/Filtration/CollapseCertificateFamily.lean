@@ -25,7 +25,7 @@ These are cases of `stages_eq_stageTable`, and the stages are constant on each r
 (`stages_eq_of_regime`).
 
 A certificate family assigns a list of steps to every rational grade. `checkCertificates` checks,
-by unit 2's `checkSteps`, that at every critical grade `c` the steps collapse the stage table of
+by `Simplicial.checkSteps`, that at every critical grade `c` the steps collapse the stage table of
 `gG` at `c` exactly onto the stage table of `gF` at `c`; below the least critical grade nothing is
 checked, since both stages are empty there. Acceptance gives `CollapsesTo (G t) (F t)` at every
 real grade `t` (`collapsesTo_of_checkCertificates`), and conversely every such pair of
