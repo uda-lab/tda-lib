@@ -161,6 +161,25 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   stage from the Čech stage at the same grade. No general-position or persistence statement.
   See
   [elementary collapses and the obtuse triangle](docs/math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle).
+- Prove that collapses induce homology isomorphisms (`TDA.Simplicial.CollapseHomology`):
+  deleting a free face is a chain homotopy equivalence whose forward map is the inclusion, so the
+  inclusion of the end of a finite collapse sequence is an isomorphism of ordinary homology in
+  every degree over every ring. Levelwise collapses between two filtrations make the inclusion
+  morphism of their homology persistence modules a natural isomorphism
+  (`TDA.Persistence.CollapsePersistence`). On the obtuse triangle this gives the α-to-Čech
+  persistence isomorphism in every degree (`TDA.Persistence.CollapsePersistenceExamples`). No
+  certificate checker, critical-grade sequence or general-position statement. See
+  [homology of collapses](docs/math/discrete-morse-matchings.md#homology-of-collapses).
+- Add a checker for supplied collapse sequences on finite face tables
+  (`TDA.Simplicial.CollapseCertificate`): a certificate is a list of pairs `(σ, τ)`,
+  `checkSteps` accepts it exactly when each pair is free in the current table and the final table
+  is the supplied target, and acceptance is equivalent to `CollapsesTo` between complexes with
+  those face tables (`collapsesTo_iff_exists_checkSteps`). Accepted and rejected certificates are
+  evaluated by `decide +kernel` (`TDA.Simplicial.CollapseCertificateExamples`), and the actual
+  Čech stage of the obtuse triangle at grade 4 collapses to its α stage through the checker
+  (`TDA.Filtration.AlphaCollapseCertificateExamples`). No critical-grade sequence, certificate
+  producer or general-position statement. See
+  [checking supplied collapse sequences](docs/math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

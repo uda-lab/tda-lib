@@ -349,11 +349,15 @@ of simplicial complexes. At TauCeti commit `25bd01c`, the namespace
 the same last name components as here. TauCeti's `IsFreePair` requires `σ ⊂ τ` and that every
 face of `K` containing `σ` is `σ` or `τ`, and derives `σ ⋖ τ` (`IsFreePair.covBy`); it is
 equivalent to the one here. Its `deletion` has the same faces, and its `ElementaryCollapsesTo`
-and `CollapsesTo` have the same bodies. TauCeti is not a dependency. At tda-lib commit
-`3581b4a`, `TDA/` defines no other free-face predicate, face deletion or collapse relation on
-simplicial complexes. Declarations there whose names contain `collapse` are not collapses in
-this sense: for example, the private theorems `collapse_prism`, `collapse_edge` and
-`collapse_boundary_prism` in `TDA.Simplicial.ContiguityHomotopyExamples` are chain-level
+and `CollapsesTo` have the same bodies. At the same TauCeti commit, its ordered simplicial chain
+complex (`ChainComplex.lean`, `InducedChainMap.lean` and `Subdivision/Chain.lean` in the same
+directory) has no free pair, no deletion of a face from a complex and no collapse of complexes;
+there, deleting a vertex or a tuple entry gives a boundary term, and a simplex collapses when a
+simplicial map is not injective on it. TauCeti is not a dependency.
+At tda-lib commit `3581b4a`, `TDA/` defines no other free-face predicate, face deletion or
+collapse relation on simplicial complexes. Declarations there whose names contain `collapse` are
+not collapses in this sense: for example, the private theorems `collapse_prism`, `collapse_edge`
+and `collapse_boundary_prism` in `TDA.Simplicial.ContiguityHomotopyExamples` are chain-level
 identities for a constant edge map; `TDA.Persistence.Rips.pointCollapseVertexMap` and the
 private `pendantCollapse` in `TDA.Filtration.SparseRips.H1Examples` are vertex maps; and
 `TDA.Reeb.GraphTreeContraction.leafCollapse` is a continuous map of graph realizations. The
@@ -364,8 +368,76 @@ concern vertex deletion times and the vertex maps of sparse Rips. None of these 
 
 Only this triangle is treated. A general Čech → Delaunay–Čech → α collapse under general
 position, the collapsing theorem recorded as [BE-1312.1231](references.md#BE-1312.1231)
-(background), collapse sequences across several critical grades, and the induced persistence
-isomorphism are not provided.
+(background), and collapse sequences across several critical grades are not provided; the
+homology and persistence isomorphisms induced by the collapse are in
+[homology of collapses](#homology-of-collapses).
+
+## Homology of collapses
+
+Let `(σ, τ)` be a free pair of `K` and `L = deletion K σ`. Exactly one deletion of a vertex of
+`τ` gives `σ`, so the coefficient `ε` of `σ` in the boundary of `τ` is a sign and `ε * ε = 1`.
+Let `h` send the face `σ` to `ε τ` and every other face to zero. The map `g = 1 − ∂h − h∂`
+commutes with the boundary. It fixes every face of `L`, because no face of `L` has `σ` in its
+boundary. It sends `τ` to zero and `σ` to `σ − ε∂τ`, whose `σ`-coefficient is `1 − ε * ε = 0`
+and whose other faces do not contain `σ`. So `g` takes values in the chains of `L`. Its
+corestriction `IsFreePair.collapseRetraction` is a chain map `r` with `r ∘ i = 1` for the
+inclusion `i`, and `1 − i ∘ r = ∂h + h∂`. Hence `IsFreePair.collapseHomotopyEquiv` is a chain
+homotopy equivalence whose forward map is the inclusion chain map.
+
+The homology inclusion of a free-face deletion, of an elementary collapse and of a finite
+collapse sequence is therefore an isomorphism in every degree, over every ring
+(`IsFreePair.isIso_simplicialHomologyIncl`, `ElementaryCollapsesTo.isIso_simplicialHomologyIncl`,
+`CollapsesTo.isIso_simplicialHomologyIncl`). This is ordinary unaugmented homology, the homology
+of `simplicialChainComplex`, and the ring need not be commutative. These are in
+`TDA.Simplicial.CollapseHomology`.
+
+For simplicial filtrations `F ≤ G` over a preorder such that `G p` collapses to `F p` at every
+index, `isIso_inclusionHom_of_collapsesTo` states that the inclusion morphism `inclusionHom` of
+their homology persistence modules is an isomorphism. `collapseInclusionIso` is that natural
+isomorphism. Its components are the homology maps of the actual inclusions, so naturality is the
+functoriality of inclusions. The retraction at one index is never compared with the retraction
+at another. These are in `TDA.Persistence.CollapsePersistence`.
+
+On the obtuse triangle, `collapsesTo` gives such a collapse at every squared grade.
+`alphaCechIso` in `TDA.Persistence.CollapsePersistenceExamples` is then the natural isomorphism
+from α persistence to squared-Čech persistence induced by the labelled inclusions, in every
+degree over every ring. In degree zero over a field its forward map is `alphaH0Comparison`
+(`alphaCechIso_zero_hom`). The collapses here are proved by hand for one triangle. Sequences
+across the critical grades of a supplied filtered pair, a Delaunay–Čech stage and any
+general-position result are not provided; a checker for supplied collapse sequences is in
+[checking supplied collapse sequences](#checking-supplied-collapse-sequences).
+
+## Checking supplied collapse sequences
+
+A face table is a finite set of faces, and a certificate is a list of pairs `(σ, τ)`, each read
+as "delete the free face `σ` with its coface `τ`". `IsFreePairTable F σ τ` tests that both faces
+are listed, that `σ ⊆ τ` with `τ \ σ` a single vertex, and that `τ` is the only listed face
+strictly containing `σ`. `collapseTable` erases the two faces. `runSteps` applies the steps in
+order and fails at the first step that is not free; `checkSteps F steps T` accepts exactly when
+the run ends at the table `T` itself, so a certificate whose steps are all free but whose
+endpoint differs from `T` is rejected. These are in `TDA.Simplicial.CollapseCertificate`.
+
+If `K` and `L` are complexes whose faces are exactly those listed in `F` and `T`, the table test
+is `IsFreePair` (`isFreePair_iff_isFreePairTable`), and erasing the two faces of a free pair
+lists the faces of `deletion K σ` (`mem_deletion_iff_mem_collapseTable`). So an accepted
+certificate gives `CollapsesTo K L` (`collapsesTo_of_checkSteps`). Conversely, every collapse of
+`K` onto `L` has an accepted certificate (`exists_checkSteps_of_collapsesTo`), so acceptance of
+some certificate characterizes `CollapsesTo` for complexes with finite face tables
+(`collapsesTo_iff_exists_checkSteps`). The checker does not test that `F` is the face set of a
+complex (nonempty faces, closed under nonempty subsets); that is supplied by `K`, and
+`FiniteComplex` carries it (`FiniteComplex.collapsesTo_of_checkSteps`).
+
+`TDA.Simplicial.CollapseCertificateExamples` evaluates accepted and rejected certificates by
+`decide +kernel`. The full triangle collapses to the α table of the obtuse triangle in one step,
+and the full triangle, tetrahedron and 4-simplex collapse to a vertex. The rejections are an
+extra coface, a pair that is not present, a reversed pair, a pair that is not a cover, a wrong
+order, a wrong endpoint, the empty certificate to a different table, and a repeated step.
+`TDA.Filtration.AlphaCollapseCertificateExamples` reads the faces of the actual Čech and α
+stages of the obtuse triangle at grade 4 off `cechGrades` and `gradedFaces obtuse`, and obtains
+`CollapsesTo` there through the checker (`collapsesTo_four`). Only grade 4 is checked there.
+Certificates across the critical grades of a supplied filtered pair, a Delaunay–Čech stage, a
+producer of certificates and any general-position result are not provided, and no runtime bound
+is stated.
 
 ## What is not provided
 

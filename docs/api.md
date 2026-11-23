@@ -1791,6 +1791,9 @@ zero over any field. Its forward map is `alphaH0Comparison`, induced by the
 identity on labels at each grade. Signed edge boundaries telescope along
 replacement paths, giving the same degree-zero boundary subspace under
 the common vertex basis.
+On the obtuse triangle, `CollapsePersistenceExamples.alphaCechIso` extends it to every degree
+over every ring, through collapses; see
+[homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
 
 For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`
 computes an F₂ barcode with exact rational squared-radius endpoints. It accepts
@@ -2632,7 +2635,8 @@ exactly `σ` and `τ`. `ElementaryCollapsesTo K L` states that `L` is the deleti
 of a free pair of `K`; `IsFreePair.elementaryCollapsesTo` gives it from a free pair, and
 `ElementaryCollapsesTo.lt` states `L < K`. `CollapsesTo` is its reflexive transitive closure, a
 finite, possibly empty, sequence of elementary collapses, and `CollapsesTo.le` states `L ≤ K`.
-No homotopy or homology statement is made.
+This module makes no homotopy or homology statement; the homology isomorphism of a collapse is
+in `TDA.Simplicial.CollapseHomology`.
 
 `TDA.Filtration.AlphaCollapseExamples` (imported by `TDA.Filtration.Examples`) works on
 `RationalAlpha.Examples.obtuse`, the sites `(0,0)`, `(4,0)` and `(1,1)` with labels `0, 1, 2`,
@@ -2657,9 +2661,76 @@ no fixed set `C` of faces has `s ∈ alpha t ↔ s ∈ cech t ∧ s ∈ C` for a
 labelled inclusion of the α stage into the Čech stage is the existing
 `Alpha.labelledComplexFiltration_le_squaredCech`.
 
-No general-position theorem, collapse sequence across several critical grades, persistence
-comparison or source result is provided; see
-[elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle).
+`TDA.Simplicial.CollapseHomology` (imported by `TDA.Simplicial`) has, in the same namespace,
+`IsFreePair.card_upper` (`τ.card = σ.card + 1`), the retraction chain map
+`IsFreePair.collapseRetraction R hp` onto the chain complex of `deletion K σ` with
+`IsFreePair.simplicialChainIncl_comp_collapseRetraction` (inclusion, then retraction, is the
+identity), and the chain homotopy equivalence `IsFreePair.collapseHomotopyEquiv R hp`, whose
+forward map is `simplicialChainIncl R (deletion_le K σ)` (`_hom`) and whose inverse is the
+retraction (`_inv`). `IsFreePair.isIso_simplicialHomologyIncl`,
+`ElementaryCollapsesTo.isIso_simplicialHomologyIncl` and
+`CollapsesTo.isIso_simplicialHomologyIncl` state that the homology inclusion of a free-face
+deletion, of an elementary collapse and of a finite collapse sequence is an isomorphism, in every
+degree `n : ℕ` and over every ring `R` (`[Ring R]`, not necessarily commutative), for ordinary
+unaugmented homology; the last two take any inclusion proof `hle : L ≤ K`.
+`CollapsesTo.simplicialHomologyIso` is the isomorphism, with forward map
+`simplicialHomologyIncl R h.le n` (`_hom`). `TDA.Persistence.CollapsePersistence` (imported by
+`TDA.Persistence`) has, for simplicial filtrations `F G` over a preorder with
+`hle : ∀ p, F p ≤ G p` and `h : ∀ p, CollapsesTo (G p) (F p)`,
+`isIso_inclusionHom_of_collapsesTo` (`IsIso (inclusionHom R n hle)`) and
+`collapseInclusionIso R n hle h`, whose forward map is `inclusionHom R n hle`
+(`collapseInclusionIso_hom`). Naturality is that of the inclusions; no compatibility of the
+retractions at different indices is used. `TDA.Persistence.CollapsePersistenceExamples`
+(imported by `TDA.Persistence.Examples`) applies these on the obtuse triangle, in every degree
+and over every ring: `isIso_deletion_long_edge` (deleting `{0,1}` from the Čech stage at grade
+4), `isIso_alpha_cech_four` (the labelled inclusion at grade 4), `isIso_inclusionHom` (the
+inclusion morphism over all real grades, negative grades included), and `alphaCechIso`, the
+natural isomorphism from α persistence to squared-grade Čech persistence, with forward map the
+`inclusionHom` of the labelled inclusions (`alphaCechIso_hom`). Over a field `k`,
+`alphaCechIso_zero_hom` states `(alphaCechIso k 0).hom = alphaH0Comparison (realSites obtuse) k`.
+See [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
+
+`TDA.Simplicial.CollapseCertificate` (imported by `TDA.Simplicial`) has, in namespace
+`TDA.Simplicial`, for `[DecidableEq V]`, face tables `F T : Finset (Finset V)` and certificates
+`steps : List (Finset V × Finset V)`: `IsFreePairTable F σ τ` (`σ ∈ F`, `τ ∈ F`, `σ ⊆ τ`,
+`(τ \ σ).card = 1`, and every `ω ∈ F` with `σ ⊂ ω` is `τ`) with the decidability instance
+`instDecidableIsFreePairTable`; `collapseTable F σ τ`, which erases `σ` and `τ`;
+`runSteps F steps : Option (Finset (Finset V))`, which applies the steps in order and is `none`
+at the first step that is not free; and `checkSteps F steps T : Bool`, which accepts exactly when
+the run ends at `T` itself (`checkSteps_eq_true_iff`, `eq_of_checkSteps`, `checkSteps_nil`,
+`checkSteps_cons`). For complexes `K`, `L` with `∀ s, s ∈ K ↔ s ∈ F` and
+`∀ s, s ∈ L ↔ s ∈ T`, `isFreePair_iff_isFreePairTable` identifies the table test with
+`IsFreePair`, `mem_deletion_iff_mem_collapseTable` identifies `collapseTable` with the deletion
+on a free pair, `collapsesTo_of_checkSteps` (soundness) gives `CollapsesTo K L` from an accepted
+certificate, `exists_checkSteps_of_collapsesTo` (completeness) gives an accepted certificate from
+`CollapsesTo K L`, and `collapsesTo_iff_exists_checkSteps` combines the two.
+`FiniteComplex.collapsesTo_of_checkSteps` is soundness for `C D : FiniteComplex m`, with face
+tables `C.faces` and `D.faces`. No check is made that `F` is the face set of a complex.
+`TDA.Simplicial.CollapseCertificateExamples` (imported by `TDA.Simplicial.Examples`) has the
+tables `triangle`, `alphaTable`, `tetrahedron`, `simplex4` and `twoTriangles` and fourteen
+fixtures, each decided by `decide +kernel` except `top_collapsesTo_vertex`. Accepted:
+`checkSteps_triangle_alphaTable` (the obtuse step, ending exactly at `alphaTable`),
+`checkSteps_triangle_vertex`, `checkSteps_tetrahedron_vertex`, `checkSteps_simplex4_vertex` (to
+the vertex `{0}`) and `checkSteps_triangle_spine` (onto an edge and onto the spine). Rejected,
+each with a conjunct stating its reason: `checkSteps_twoTriangles_extra_coface` (an extra coface
+`{0,1,3}`), `checkSteps_alphaTable_not_mem` (`{0,1,2} ∉ alphaTable`),
+`checkSteps_triangle_reversed` (reversed pair), `checkSteps_triangle_codim_two` (not a cover),
+`checkSteps_triangle_wrong_order` (`{1}` is not free while `{1,2}` is present),
+`checkSteps_triangle_wrong_endpoint` (the run ends at `alphaTable`, which is none of three
+targets) and `checkSteps_triangle_repeated` (the faces of the repeated step have been erased).
+`checkSteps_triangle_nil` accepts the empty certificate to `triangle` and rejects it to
+`alphaTable`. `top_collapsesTo_vertex` is soundness on the actual full tetrahedron `⊤`.
+`TDA.Filtration.AlphaCollapseCertificateExamples` (imported by `TDA.Filtration.Examples`) has, at
+grade 4 only, `mem_cech_four_iff` (the faces of `cech 4` are `triangle`), `mem_alpha_four_iff`
+(the faces of `alpha 4` are `alphaTable`) and `collapsesTo_four`
+(`CollapsesTo (cech 4) (alpha 4)` through the checker). See
+[checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
+
+No general-position theorem, collapse sequence across several critical grades or source result
+is provided; see
+[elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle),
+[homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses) and
+[checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
 
 ## Compatible lifts and algebraic sums over the reals
 
