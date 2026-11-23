@@ -751,6 +751,11 @@ import TDA
 #print axioms TDA.Filtration.AlphaCollapseExamples.alpha_eq_cech_iff
 #print axioms TDA.Filtration.AlphaCollapseExamples.not_exists_fixed_faces
 
+-- The collapse checker on the obtuse triangle (Issue #1060, unit 2).
+#print axioms TDA.Filtration.AlphaCollapseCertificateExamples.mem_cech_four_iff
+#print axioms TDA.Filtration.AlphaCollapseCertificateExamples.mem_alpha_four_iff
+#print axioms TDA.Filtration.AlphaCollapseCertificateExamples.collapsesTo_four
+
 -- Signed boundary coverage and exact rational fixtures (Issue #1104).
 #print axioms TDA.Filtration.RationalAlpha.SignedBoundary.rayHits
 #print axioms TDA.Filtration.RationalAlpha.SignedBoundary.sideSlope

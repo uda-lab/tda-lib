@@ -351,3 +351,52 @@ import TDA
 #print axioms TDA.Simplicial.ElementaryCollapsesTo.lt
 #print axioms TDA.Simplicial.CollapsesTo
 #print axioms TDA.Simplicial.CollapsesTo.le
+
+-- Homology of collapses (Issue #1060, unit 1).
+#print axioms TDA.Simplicial.IsFreePair.card_upper
+#print axioms TDA.Simplicial.IsFreePair.collapseRetraction
+#print axioms TDA.Simplicial.IsFreePair.simplicialChainIncl_comp_collapseRetraction
+#print axioms TDA.Simplicial.IsFreePair.collapseHomotopyEquiv
+#print axioms TDA.Simplicial.IsFreePair.collapseHomotopyEquiv_hom
+#print axioms TDA.Simplicial.IsFreePair.collapseHomotopyEquiv_inv
+#print axioms TDA.Simplicial.IsFreePair.isIso_simplicialHomologyIncl
+#print axioms TDA.Simplicial.ElementaryCollapsesTo.isIso_simplicialHomologyIncl
+#print axioms TDA.Simplicial.CollapsesTo.isIso_simplicialHomologyIncl
+#print axioms TDA.Simplicial.CollapsesTo.simplicialHomologyIso
+#print axioms TDA.Simplicial.CollapsesTo.simplicialHomologyIso_hom
+
+-- Collapse certificates on face tables (Issue #1060, unit 2).
+#print axioms TDA.Simplicial.IsFreePairTable
+#print axioms TDA.Simplicial.instDecidableIsFreePairTable
+#print axioms TDA.Simplicial.collapseTable
+#print axioms TDA.Simplicial.runSteps
+#print axioms TDA.Simplicial.checkSteps
+#print axioms TDA.Simplicial.checkSteps_eq_true_iff
+#print axioms TDA.Simplicial.eq_of_checkSteps
+#print axioms TDA.Simplicial.checkSteps_nil
+#print axioms TDA.Simplicial.checkSteps_cons
+#print axioms TDA.Simplicial.isFreePair_iff_isFreePairTable
+#print axioms TDA.Simplicial.mem_deletion_iff_mem_collapseTable
+#print axioms TDA.Simplicial.collapsesTo_of_checkSteps
+#print axioms TDA.Simplicial.exists_checkSteps_of_collapsesTo
+#print axioms TDA.Simplicial.collapsesTo_iff_exists_checkSteps
+#print axioms TDA.Simplicial.FiniteComplex.collapsesTo_of_checkSteps
+#print axioms TDA.Simplicial.CollapseCertificateExamples.triangle
+#print axioms TDA.Simplicial.CollapseCertificateExamples.alphaTable
+#print axioms TDA.Simplicial.CollapseCertificateExamples.tetrahedron
+#print axioms TDA.Simplicial.CollapseCertificateExamples.simplex4
+#print axioms TDA.Simplicial.CollapseCertificateExamples.twoTriangles
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_alphaTable
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_vertex
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_tetrahedron_vertex
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_simplex4_vertex
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_spine
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_twoTriangles_extra_coface
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_alphaTable_not_mem
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_reversed
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_codim_two
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_wrong_order
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_wrong_endpoint
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_nil
+#print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_repeated
+#print axioms TDA.Simplicial.CollapseCertificateExamples.top_collapsesTo_vertex

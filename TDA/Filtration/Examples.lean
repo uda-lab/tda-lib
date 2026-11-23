@@ -14,6 +14,7 @@ import TDA.Filtration.RationalAlphaExamples
 import TDA.Filtration.RationalAlpha.PredicatesExamples
 import TDA.Filtration.RationalAlpha.SignedBoundaryExamples
 import TDA.Filtration.AlphaCollapseExamples
+import TDA.Filtration.AlphaCollapseCertificateExamples
 import TDA.Filtration.CechDisplacementExamples
 import TDA.Filtration.CechWitnessExamples
 import TDA.Filtration.CechSupNormExamples
