@@ -2726,11 +2726,57 @@ grade 4 only, `mem_cech_four_iff` (the faces of `cech 4` are `triangle`), `mem_a
 (`CollapsesTo (cech 4) (alpha 4)` through the checker). See
 [checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
 
-No general-position theorem, collapse sequence across several critical grades or source result
-is provided; see
+`TDA.Filtration.CollapseCertificateFamily` (imported by `TDA.Filtration`) works in namespace
+`TDA.Filtration` with real-indexed filtrations `F G : SimplicialFiltration ℝ V` and rational
+grade tables `g : Finset (Finset V × ℚ)`. `HasGradeTable K g` is
+`∀ s t, s ∈ K t ↔ ∃ q, (s, q) ∈ g ∧ (q : ℝ) ≤ t`, so grades are closed. `stageTable g c` is the
+face table of the rows of grade at most `c` (`mem_stageTable`), and at a rational grade it is the
+face table of the stage (`HasGradeTable.mem_cast_iff`). `criticalGrades gF gG : Finset ℚ` is the
+set of all grades of both tables (`mem_criticalGrades`). The regime lemmas are
+`HasGradeTable.notMem_of_lt` and `HasGradeTable.mem_iff_mem_stageTable` for one table, and
+`stages_of_lt_criticalGrades` (below the least critical grade both stages are empty),
+`stages_eq_stageTable` (if `c ≤ t` and no critical grade lies in `(c, t]`, the stages at `t`
+have the stage tables at `c`), its cases `stages_eq_stageTable_of_mem_Ico` (on `[c, d)` with no
+critical grade in `(c, d)`) and `stages_eq_stageTable_of_le_of_forall_le` (on the tail `[c, ∞)`
+with `c` at least every critical grade), and `stages_eq_of_regime` (`F t = F c ∧ G t = G c`).
+For a supplied family `cert : ℚ → List (Finset V × Finset V)`, the Boolean
+`checkCertificates gF gG cert` accepts exactly when `checkSteps (stageTable gG c) (cert c) (stageTable gF c) = true` at
+every critical grade `c` (`checkCertificates_eq_true_iff`). For filtrations with these tables,
+`collapsesTo_of_checkCertificates` (soundness) gives `CollapsesTo (G t) (F t)` at every real `t`,
+`le_of_checkCertificates` gives `F t ≤ G t`, `exists_checkCertificates_of_collapsesTo`
+(completeness) gives an accepted family from levelwise collapses, and
+`collapsesTo_iff_exists_checkCertificates` combines the two. No filtration is constructed from a
+table, and no closure check of a table is made. `TDA.Persistence.CollapseCertificatePersistence`
+(imported by `TDA.Persistence`) has, for `[LinearOrder V]`, any `hle : ∀ t, F t ≤ G t`, every
+ring `R` and every degree `n`, `isIso_inclusionHom_of_checkCertificates`
+(`IsIso (inclusionHom R n hle)` after acceptance), `certificateInclusionIso` (the natural
+isomorphism) and `certificateInclusionIso_hom` (its forward map is `inclusionHom R n hle`).
+`TDA.Filtration.AlphaCollapseFamilyExamples` (imported by `TDA.Filtration.Examples`) has 12
+declarations on the obtuse triangle: `hasGradeTable_cech` and `hasGradeTable_alpha` (the actual
+squared-grade Čech and α filtrations have the tables `cechGrades` and `gradedFaces obtuse`),
+`criticalGrades_obtuse` (`{0, 1/2, 5/2, 4, 5}`), `stageTable_four_five` (at 4 the stage tables
+are `triangle` and `alphaTable`, at 5 both are `triangle`), the family `obtuseCertificate`
+(`[({0,1}, {0,1,2})]` at 4, empty elsewhere), `checkCertificates_obtuse` (accepted),
+`checkCertificates_nil` (the empty family is rejected; the stage tables at 4 differ),
+`checkCertificates_removal_from_four` (the family removing the long edge at every grade from 4
+on is rejected; at 5 the pair is still free in the Čech table, the run ends at `alphaTable`, and
+`alphaTable` is not the α table at 5), `stages_of_neg` (no faces for `t < 0`),
+`stages_of_mem_Ico_four` (on `[4, 5)` the α stage has the face table `alphaTable` and the Čech
+stage `triangle`), `stages_of_five_le` (on `[5, ∞)` both have the face table `triangle`) and `collapsesTo_of_certificate`
+(`CollapsesTo (cech t) (alpha t)` at every real `t` through the verifier).
+`TDA.Persistence.CollapseCertificatePersistenceExamples` (imported by
+`TDA.Persistence.Examples`) has `isIso_inclusionHom_of_certificate`, `alphaCechCertificateIso`,
+`alphaCechCertificateIso_hom` and `alphaCechCertificateIso_eq` (the isomorphism is
+`CollapsePersistenceExamples.alphaCechIso`). See
+[certificates across critical grades](math/discrete-morse-matchings.md#certificates-across-critical-grades).
+
+No general-position theorem, Delaunay–Čech stage, certificate producer or source result is
+provided; see
 [elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle),
-[homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses) and
-[checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
+[homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses),
+[checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences)
+and
+[certificates across critical grades](math/discrete-morse-matchings.md#certificates-across-critical-grades).
 
 ## Compatible lifts and algebraic sums over the reals
 

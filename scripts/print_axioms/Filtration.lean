@@ -755,3 +755,36 @@ import TDA
 #print axioms TDA.Filtration.AlphaCollapseCertificateExamples.mem_cech_four_iff
 #print axioms TDA.Filtration.AlphaCollapseCertificateExamples.mem_alpha_four_iff
 #print axioms TDA.Filtration.AlphaCollapseCertificateExamples.collapsesTo_four
+
+-- Collapse certificates across critical grades (Issue #1060, unit 3).
+#print axioms TDA.Filtration.HasGradeTable
+#print axioms TDA.Filtration.criticalGrades
+#print axioms TDA.Filtration.stageTable
+#print axioms TDA.Filtration.checkCertificates
+#print axioms TDA.Filtration.mem_criticalGrades
+#print axioms TDA.Filtration.mem_stageTable
+#print axioms TDA.Filtration.HasGradeTable.notMem_of_lt
+#print axioms TDA.Filtration.HasGradeTable.mem_cast_iff
+#print axioms TDA.Filtration.HasGradeTable.mem_iff_mem_stageTable
+#print axioms TDA.Filtration.stages_of_lt_criticalGrades
+#print axioms TDA.Filtration.stages_eq_stageTable
+#print axioms TDA.Filtration.stages_eq_stageTable_of_mem_Ico
+#print axioms TDA.Filtration.stages_eq_stageTable_of_le_of_forall_le
+#print axioms TDA.Filtration.stages_eq_of_regime
+#print axioms TDA.Filtration.checkCertificates_eq_true_iff
+#print axioms TDA.Filtration.collapsesTo_of_checkCertificates
+#print axioms TDA.Filtration.le_of_checkCertificates
+#print axioms TDA.Filtration.exists_checkCertificates_of_collapsesTo
+#print axioms TDA.Filtration.collapsesTo_iff_exists_checkCertificates
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.obtuseCertificate
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.hasGradeTable_cech
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.hasGradeTable_alpha
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.criticalGrades_obtuse
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.stageTable_four_five
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.checkCertificates_obtuse
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.checkCertificates_nil
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.checkCertificates_removal_from_four
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.stages_of_neg
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.stages_of_mem_Ico_four
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.stages_of_five_le
+#print axioms TDA.Filtration.AlphaCollapseFamilyExamples.collapsesTo_of_certificate

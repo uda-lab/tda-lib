@@ -61,6 +61,9 @@ persistence in every degree over every ring.
 [A checker for supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences)
 accepts a certificate exactly when its pairs are free in turn and it ends at the supplied table,
 and acceptance gives the collapse.
+[Certificate families across critical grades](math/discrete-morse-matchings.md#certificates-across-critical-grades)
+check one supplied sequence at every grade of the rational grade tables of a filtered pair, and
+acceptance gives the natural persistence isomorphism induced by the inclusions.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).

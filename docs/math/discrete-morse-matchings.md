@@ -366,11 +366,12 @@ private `pendantCollapse` in `TDA.Filtration.SparseRips.H1Examples` are vertex m
 concern vertex deletion times and the vertex maps of sparse Rips. None of these is related to
 `TDA.Simplicial.deletion`.
 
-Only this triangle is treated. A general Čech → Delaunay–Čech → α collapse under general
-position, the collapsing theorem recorded as [BE-1312.1231](references.md#BE-1312.1231)
-(background), and collapse sequences across several critical grades are not provided; the
-homology and persistence isomorphisms induced by the collapse are in
-[homology of collapses](#homology-of-collapses).
+Only this triangle is treated here. A general Čech → Delaunay–Čech → α collapse under general
+position and the collapsing theorem recorded as [BE-1312.1231](references.md#BE-1312.1231)
+(background) are not provided; the homology and persistence isomorphisms induced by the collapse
+are in [homology of collapses](#homology-of-collapses), and supplied certificates across the
+critical grades of a filtered pair are in
+[certificates across critical grades](#certificates-across-critical-grades).
 
 ## Homology of collapses
 
@@ -402,10 +403,12 @@ On the obtuse triangle, `collapsesTo` gives such a collapse at every squared gra
 `alphaCechIso` in `TDA.Persistence.CollapsePersistenceExamples` is then the natural isomorphism
 from α persistence to squared-Čech persistence induced by the labelled inclusions, in every
 degree over every ring. In degree zero over a field its forward map is `alphaH0Comparison`
-(`alphaCechIso_zero_hom`). The collapses here are proved by hand for one triangle. Sequences
-across the critical grades of a supplied filtered pair, a Delaunay–Čech stage and any
-general-position result are not provided; a checker for supplied collapse sequences is in
-[checking supplied collapse sequences](#checking-supplied-collapse-sequences).
+(`alphaCechIso_zero_hom`). The collapses here are proved by hand for one triangle. A
+Delaunay–Čech stage and any general-position result are not provided; a checker for supplied
+collapse sequences is in
+[checking supplied collapse sequences](#checking-supplied-collapse-sequences), and certificate
+families across the critical grades of a supplied filtered pair are in
+[certificates across critical grades](#certificates-across-critical-grades).
 
 ## Checking supplied collapse sequences
 
@@ -435,9 +438,52 @@ order, a wrong endpoint, the empty certificate to a different table, and a repea
 `TDA.Filtration.AlphaCollapseCertificateExamples` reads the faces of the actual Čech and α
 stages of the obtuse triangle at grade 4 off `cechGrades` and `gradedFaces obtuse`, and obtains
 `CollapsesTo` there through the checker (`collapsesTo_four`). Only grade 4 is checked there.
-Certificates across the critical grades of a supplied filtered pair, a Delaunay–Čech stage, a
-producer of certificates and any general-position result are not provided, and no runtime bound
-is stated.
+A Delaunay–Čech stage, a producer of certificates and any general-position result are not
+provided, and no runtime bound is stated; certificates across the critical grades of a supplied
+filtered pair are in [certificates across critical grades](#certificates-across-critical-grades).
+
+## Certificates across critical grades
+
+A real-indexed filtration `K` has the rational grade table `g : Finset (Finset V × ℚ)` when a
+face is in `K t` exactly when it has a row of grade at most `t` (`HasGradeTable`). The grades are
+closed: a row of grade `c` is present from `t = c` on. `stageTable g c` lists the faces with a
+row of grade at most `c`; at a rational grade it is the face table of the stage
+(`HasGradeTable.mem_cast_iff`). For filtrations `F`, `G` with tables `gF`, `gG`,
+`criticalGrades gF gG` is the finite set of all grades of both tables; it contains every grade
+at which either stage changes, and possibly more. Below its least element both stages are empty
+(`stages_of_lt_criticalGrades`). On `[c, d)`, for a critical grade `c` and the next critical
+grade `d`, and on the unbounded tail `[c, ∞)` from the greatest critical grade, both stages are
+those at `c` (`stages_eq_stageTable_of_mem_Ico`, `stages_eq_stageTable_of_le_of_forall_le`,
+`stages_eq_of_regime`). These are in `TDA.Filtration.CollapseCertificateFamily`.
+
+A certificate family `cert : ℚ → List (Finset V × Finset V)` assigns a sequence of steps to every
+grade. `checkCertificates gF gG cert` accepts exactly when, at every critical grade `c`,
+`checkSteps` accepts `cert c` from the stage table of `gG` at `c` with endpoint exactly the stage
+table of `gF` at `c`; nothing is checked below the least critical grade. Acceptance gives
+`CollapsesTo (G t) (F t)` at every real grade `t` (`collapsesTo_of_checkCertificates`), and if
+the stages collapse at every grade, some family is accepted
+(`exists_checkCertificates_of_collapsesTo`). For a linearly ordered vertex type and any
+`hle : ∀ t, F t ≤ G t`, acceptance makes the inclusion morphism `inclusionHom R n hle` an
+isomorphism in every degree over every ring (`isIso_inclusionHom_of_checkCertificates`), and
+`certificateInclusionIso` is that natural isomorphism
+(`TDA.Persistence.CollapseCertificatePersistence`). Naturality is that of the actual inclusions;
+the collapses at different grades are never compared.
+
+On the obtuse triangle, the actual Čech and α filtrations have the tables `cechGrades` and
+`gradedFaces obtuse`, with critical grades `0, 1/2, 5/2, 4, 5`. The family `obtuseCertificate`
+removes the long edge through the triangle at grade 4 and is empty at the other grades; it is
+accepted, by `decide +kernel` (`checkCertificates_obtuse`). The empty family is rejected, because
+the stage tables differ at grade 4 (`checkCertificates_nil`). The family that removes the long
+edge at every grade from 4 on is rejected (`checkCertificates_removal_from_four`): at grade 5 the
+long edge is still free in the Čech table, but the run ends at `alphaTable`, not at the α table
+of grade 5. The three regimes are checked on the actual stages (`stages_of_neg`,
+`stages_of_mem_Ico_four`, `stages_of_five_le`). These are in
+`TDA.Filtration.AlphaCollapseFamilyExamples`. Through the verifier, `alphaCechCertificateIso` in
+`TDA.Persistence.CollapseCertificatePersistenceExamples` is the natural isomorphism from α to
+squared-Čech persistence, and it is `alphaCechIso` (`alphaCechCertificateIso_eq`). The
+certificates are supplied: these four modules provide no producer, no general-position result,
+no existence of certificates for other point sets and no Delaunay–Čech stage, and state no
+runtime bound.
 
 ## What is not provided
 

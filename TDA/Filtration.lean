@@ -43,3 +43,4 @@ import TDA.Filtration.RipsRelation
 
 import TDA.Filtration.SubdivisionRips
 import TDA.Filtration.FiniteGraded
+import TDA.Filtration.CollapseCertificateFamily
