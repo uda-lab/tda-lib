@@ -16,6 +16,7 @@ import TDA.Filtration.RationalAlpha.SignedBoundaryExamples
 import TDA.Filtration.RationalAlpha.TriangleIncidenceExamples
 import TDA.Filtration.RationalAlpha.DirectedEdgeIncidenceExamples
 import TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples
+import TDA.Filtration.RationalAlpha.IncircleGradeExamples
 import TDA.Filtration.AlphaCollapseExamples
 import TDA.Filtration.AlphaCollapseCertificateExamples
 import TDA.Filtration.AlphaCollapseFamilyExamples

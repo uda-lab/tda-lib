@@ -939,3 +939,24 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples.trapezoid_lower_faces_AB_AD
 #print axioms TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples.omittedComplex
 #print axioms TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples.omitted_interior_site_has_no_singleton
+
+-- Incircle admission and exact alpha grades of supplied triangles (Issue #1124).
+#print axioms TDA.Filtration.RationalAlpha.castSites
+#print axioms TDA.Filtration.RationalAlpha.castSites_apply
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.checkIncircle
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.checkIncircle_eq_true_iff
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.all_nonpos_iff_empty_open_disk
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.all_orient_mul_incircle_nonpos_iff_empty_open_disk
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.empty_open_disk_iff_center_commonCells
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.commonCells_triangle_point_eq
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.checkIncircle_eq_true_iff_commonCells_nonempty
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.triangle_mem_actual_stage_iff
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.triangle_actual_carrier_iff
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.triangle_actual_grade
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.supplied_facet_mem_actual_stage_iff
+#print axioms TDA.Filtration.RationalAlpha.IncircleGrade.triangle_self_incircles_eq_zero
+#print axioms TDA.Filtration.RationalAlpha.IncircleGradeExamples.trapezoid_ABC_exact_stage
+#print axioms TDA.Filtration.RationalAlpha.IncircleGradeExamples.trapezoid_ACD_exact_stage
+#print axioms TDA.Filtration.RationalAlpha.IncircleGradeExamples.trapezoid_wrong_ABD_absent
+#print axioms TDA.Filtration.RationalAlpha.IncircleGradeExamples.trapezoid_wrong_BCD_absent
+#print axioms TDA.Filtration.RationalAlpha.IncircleGradeExamples.square_boundary_tie_admitted
