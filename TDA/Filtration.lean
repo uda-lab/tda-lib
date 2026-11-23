@@ -37,6 +37,7 @@ import TDA.Filtration.RationalAlpha.Predicates
 import TDA.Filtration.RationalAlpha.SignedBoundaryCoverage
 import TDA.Filtration.RationalAlpha.TriangleIncidence
 import TDA.Filtration.RationalAlpha.DirectedEdgeIncidence
+import TDA.Filtration.RationalAlpha.TriangulationAssembly
 import TDA.Filtration.CechDisplacement
 import TDA.Filtration.CechWitness
 import TDA.Filtration.CechSupNorm

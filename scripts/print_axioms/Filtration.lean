@@ -906,3 +906,36 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidenceExamples.trapezoid_actual_counts
 #print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidenceExamples.trapezoid_open_AC_interior
 #print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidenceExamples.overlap_repeated_BC
+
+-- Assembly of certified rational planar triangles (Issue #1122).
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.labelComplex
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.faceFinset
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.faces_eq_finset
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.singleton_mem_iff_used
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.full_label_support_iff
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.embedSite
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.pointVertices
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.maximalFaces
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.maximal_label_faces
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.maximal_label_faces_card_three
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.geometricComplex
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.geometric_space_eq_union
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.certifiedComplex
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.certified_space_eq_siteHull
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.geometric_faces_finite
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.geometric_full_support_iff
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.geometric_facets_exact
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.geometric_facets_card_three
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.label_face_hulls_inter
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.pair_mem_iff_occurrence
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.siteHull_eq_full_site_hull
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.certified_space_eq_full_site_hull
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.certified_facets_pure_two
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.certified_hull_pair_face
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.certified_hull_face_incidence
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssembly.certified_nonhull_face_incidence
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples.trapezoidComplex
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples.trapezoid_space_eq_full_site_hull
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples.trapezoid_lower_faces_AB_AD
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples.omittedComplex
+#print axioms TDA.Filtration.RationalAlpha.TriangulationAssemblyExamples.omitted_interior_site_has_no_singleton
