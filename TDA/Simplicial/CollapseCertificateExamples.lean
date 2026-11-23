@@ -9,7 +9,7 @@ The tables are small complexes on `Fin 3`, `Fin 4` and `Fin 5`. `triangle` lists
 of the full triangle, which is also the squared-grade Čech stage of the obtuse triangle on
 `[4, 5)`, and `alphaTable` lists the α stage there: the triangle without the long edge `{0,1}` and
 the triangle itself. Every acceptance and rejection is evaluated by `decide +kernel`. Each
-rejection also records, by `decide`, the fact about the tables that makes it fail.
+rejection also records, by `decide +kernel`, the fact about the tables that makes it fail.
 -/
 
 namespace TDA.Simplicial.CollapseCertificateExamples
@@ -93,14 +93,14 @@ theorem checkSteps_triangle_reversed :
       ¬ ({0,1,2} : Finset (Fin 3)) ⊆ {0,1} := by
   decide +kernel
 
-/-- Codimension two: `({0}, {0,1,2})` adds two vertices. On a complex, a pair that is not a cover
-also has an intermediate coface; here `{0,1}` is one. -/
+/-- Codimension two: `({0}, {0,1,2})` adds two vertices. On a complex, if `σ ⊂ τ` are faces and
+`τ \ σ` has at least two vertices, some face lies strictly between them; here `{0,1}` is one. -/
 theorem checkSteps_triangle_codim_two :
     checkSteps triangle [({0}, {0,1,2})] {{1}, {2}, {0,1}, {0,2}, {1,2}} = false ∧
       (({0,1,2} : Finset (Fin 3)) \ {0}).card = 2 := by
   decide +kernel
 
-/-- Wrong order: the steps of `checkSteps_triangle_vertex` in another order are rejected,
+/-- Wrong order: the steps of `checkSteps_triangle_vertex` with the first two swapped are rejected,
 because the vertex `{1}` is not free while the edge `{1,2}` is present. -/
 theorem checkSteps_triangle_wrong_order :
     checkSteps triangle [({1}, {0,1}), ({1,2}, {0,1,2}), ({2}, {0,2})] {{0}} = false ∧
