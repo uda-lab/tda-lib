@@ -388,6 +388,7 @@ import TDA.Persistence.RankSignedBarcodeOneDimensional
 import TDA.Persistence.PositiveAffineSlice
 import TDA.Persistence.AffineSlicePresentation
 import TDA.Persistence.AffineSliceHooks
+import TDA.Persistence.DiagramRankUniqueness
 import TDA.Persistence.RealBarcodeRankUniqueness
 import TDA.Persistence.RankExactBarcodeCancellation
 import TDA.Persistence.AffineSliceRank
@@ -469,3 +470,4 @@ import TDA.Persistence.Morse.IteratedCancellation
 import TDA.Persistence.Morse.MatchingSchedule
 import TDA.Persistence.Morse.SimplicialBridge
 import TDA.Persistence.Morse.ReducerOrder
+import TDA.Persistence.Morse.ReducerDiagram
