@@ -34,6 +34,7 @@ import TDA.Filtration.Alpha
 import TDA.Filtration.AlphaLabelled
 import TDA.Filtration.RationalAlpha
 import TDA.Filtration.RationalAlpha.Predicates
+import TDA.Filtration.RationalAlpha.SignedBoundaryCoverage
 import TDA.Filtration.CechDisplacement
 import TDA.Filtration.CechWitness
 import TDA.Filtration.CechSupNorm
