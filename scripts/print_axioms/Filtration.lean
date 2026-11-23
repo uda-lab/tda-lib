@@ -891,3 +891,18 @@ import TDA
 #print axioms TDA.Filtration.Alpha.iUnion_restrictedBall
 #print axioms TDA.Filtration.Alpha.isCompact_restrictedBall
 #print axioms TDA.Filtration.Alpha.convex_restrictedBall
+
+-- Directed edge incidence of certified rational triangles (Issue #1119).
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.occurrenceEdge
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.occurrenceEdge_injective_of_disjoint_interiors
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.directedMultiplicity
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.chain_coefficient_eq_directed_counts
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.opposite_edges_different_triangles
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.edge_counts_of_signed_boundary
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.rational_edge_counts
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.open_site_edge_mem_frontier_iff
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.closed_site_edge_subset_frontier_of_hull_pair
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.nonhull_open_site_edge_subset_interior
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidenceExamples.trapezoid_actual_counts
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidenceExamples.trapezoid_open_AC_interior
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidenceExamples.overlap_repeated_BC
