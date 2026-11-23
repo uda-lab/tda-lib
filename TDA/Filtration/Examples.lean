@@ -13,6 +13,7 @@ import TDA.Filtration.AlphaExamples
 import TDA.Filtration.RationalAlphaExamples
 import TDA.Filtration.RationalAlpha.PredicatesExamples
 import TDA.Filtration.RationalAlpha.SignedBoundaryExamples
+import TDA.Filtration.RationalAlpha.TriangleIncidenceExamples
 import TDA.Filtration.AlphaCollapseExamples
 import TDA.Filtration.AlphaCollapseCertificateExamples
 import TDA.Filtration.AlphaCollapseFamilyExamples
