@@ -40,17 +40,6 @@ private theorem pair_mem_subdivision {X : Type*} [Fintype X] [DecidableEq X] (N 
 private theorem cornerEdgeFlag_mem : cornerEdgeFlag ∈ complex triangleBoundary 1 :=
   pair_mem_subdivision triangleBoundary firstCorner firstEdge firstCorner_mem firstEdge_mem (by decide)
 
-private theorem singleton_mem_subdivision {X : Type*} [Fintype X] (N : PreAbstractSimplicialComplex X) (s : Finset X)
-    (h : s ∈ N) : ({s} : Finset _) ∈ barycentricSubdivision N := by
-  refine ⟨Finset.singleton_nonempty _, ?_, ?_⟩
-  · intro A hA
-    obtain rfl := Finset.mem_singleton.mp hA
-    exact ⟨h, by positivity⟩
-  · intro A hA B hB
-    obtain rfl := Finset.mem_singleton.mp hA
-    obtain rfl := Finset.mem_singleton.mp hB
-    exact Or.inl (Finset.Subset.refl _)
-
 private theorem edge_position (i : Label) :
     vertexPosition unitVertex 1 firstEdge i = if i = 0 ∨ i = 1 then 1 / 2 else 0 := by
   fin_cases i <;>

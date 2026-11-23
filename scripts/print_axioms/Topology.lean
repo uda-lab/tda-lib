@@ -400,3 +400,4 @@ import TDA
 #print axioms TDA.Topology.SubdivisionMeshExamples.triangle_edge_coordinates
 #print axioms TDA.Topology.SubdivisionMeshExamples.triangle_flag_coordinates
 #print axioms TDA.Topology.SubdivisionMeshExamples.triangle_flag_closedStar
+#print axioms TDA.Topology.SubdivisionRealization.singleton_mem_subdivision

@@ -2,6 +2,8 @@ import TDA.Topology.Realization
 import TDA.Simplicial.BarycentricHomology
 import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Data.Fintype.Powerset
+import Mathlib.LinearAlgebra.AffineSpace.Centroid
+import Mathlib.Order.Preorder.Finite
 
 /-!
 # Realization of iterated barycentric subdivision
@@ -74,61 +76,69 @@ theorem realize_vertexPoint {X : Type*} [Fintype X]
   change (∑ w, (StdSimplex.single (R := ℝ) v).weights w • vertexPosition p n w) = _
   simp [StdSimplex.weights_single, Finsupp.single_apply, ite_smul]
 
-section OneStep
-variable {I : Type u} [Fintype I] [DecidableEq I] {K : PreAbstractSimplicialComplex I}
+/-- Each active face supplies a vertex of its barycentric subdivision. -/
+theorem singleton_mem_subdivision {X : Type*} [Fintype X] (N : PreAbstractSimplicialComplex X) (s : Finset X)
+    (h : s ∈ N) : ({s} : Finset _) ∈ barycentricSubdivision N := by
+  refine ⟨Finset.singleton_nonempty _, ?_, ?_⟩
+  · intro A hA
+    obtain rfl := Finset.mem_singleton.mp hA
+    exact ⟨h, by positivity⟩
+  · intro A hA B hB
+    obtain rfl := Finset.mem_singleton.mp hA
+    obtain rfl := Finset.mem_singleton.mp hB
+    exact Or.inl (Finset.Subset.refl _)
 
-private def barycenterWeight (A : Finset I) (i : I) : ℝ := if i ∈ A then (A.card : ℝ)⁻¹ else 0
+section OneStep
+variable {I : Type u} [Fintype I] {K : PreAbstractSimplicialComplex I}
 
 omit [Fintype I] in
-private theorem barycenterWeight_nonneg (A : Finset I) (i : I) : 0 ≤ barycenterWeight A i := by
-  unfold barycenterWeight
+open Classical in
+private theorem centroidWeight_apply (A : Finset I) (i : I) :
+    A.centroidWeightsIndicator ℝ i = if i ∈ A then (A.card : ℝ)⁻¹ else 0 := by
+  simp [Finset.centroidWeightsIndicator, Set.indicator_apply]
+
+omit [Fintype I] in
+private theorem centroidWeight_nonneg (A : Finset I) (i : I) : 0 ≤ A.centroidWeightsIndicator ℝ i := by
+  rw [centroidWeight_apply]
   split <;> positivity
 
-private theorem sum_barycenterWeight {A : Finset I} (hA : A.Nonempty) : ∑ i, barycenterWeight A i = 1 := by
-  classical
-  simp [barycenterWeight, hA.card_ne_zero]
-
 private def projectedWeight (x : Realization (barycentricSubdivision K)) (i : I) : ℝ :=
-  ∑ A, x.val.weights A * barycenterWeight A i
+  ∑ A, x.val.weights A * A.centroidWeightsIndicator ℝ i
 
 private theorem weight_pos_iff (x : Realization (barycentricSubdivision K)) (i : I) :
     0 < projectedWeight x i ↔ ∃ A ∈ x.val.weights.support, i ∈ A := by
-  rw [projectedWeight, Finset.sum_pos_iff_of_nonneg (fun A _ => mul_nonneg (x.val.weights_nonneg A) (barycenterWeight_nonneg A i))]
+  rw [projectedWeight, Finset.sum_pos_iff_of_nonneg (fun A _ => mul_nonneg (x.val.weights_nonneg A) (centroidWeight_nonneg A i))]
   simp only [Finset.mem_univ, true_and]
   constructor
   · rintro ⟨A, h⟩
     have hA : x.val.weights A ≠ 0 := by intro he; simp [he] at h
     refine ⟨A, Finsupp.mem_support_iff.mpr hA, ?_⟩
     by_contra hi
-    simp [barycenterWeight, hi] at h
+    simp [centroidWeight_apply, hi] at h
   · rintro ⟨A, hA, hi⟩
     have hp := lt_of_le_of_ne (x.val.weights_nonneg A) (Finsupp.mem_support_iff.mp hA).symm
     have hn : (0 : ℝ) < A.card := by exact_mod_cast Finset.card_pos.mpr ⟨i, hi⟩
-    exact ⟨A, mul_pos hp (by simpa [barycenterWeight, hi] using inv_pos.mpr hn)⟩
+    exact ⟨A, mul_pos hp (by simpa [centroidWeight_apply, hi] using inv_pos.mpr hn)⟩
 
 private def projectedSimplex (x : Realization (barycentricSubdivision K)) : StdSimplex ℝ I where
   weights := Finsupp.equivFunOnFinite.symm (projectedWeight x)
-  nonneg := fun i => Finset.sum_nonneg (fun A _ => mul_nonneg (x.val.weights_nonneg A) (barycenterWeight_nonneg A i))
+  nonneg := fun i => Finset.sum_nonneg (fun A _ => mul_nonneg (x.val.weights_nonneg A) (centroidWeight_nonneg A i))
   total := by
     rw [Finsupp.sum_fintype _ _ (by simp)]
-    change ∑ i, ∑ A, x.val.weights A * barycenterWeight A i = 1
+    change ∑ i, ∑ A, x.val.weights A * A.centroidWeightsIndicator ℝ i = 1
     rw [Finset.sum_comm]
     simp_rw [← Finset.mul_sum]
     convert (Finsupp.sum_fintype x.val.weights (fun _ z => z) (by simp)).symm.trans x.val.total using 1
     apply Finset.sum_congr rfl
     intro A _
     by_cases ha : A ∈ x.val.weights.support
-    · rw [sum_barycenterWeight (K.isRelLowerSet_faces (x.property.2.1 A ha).1).1, mul_one]
+    · rw [A.sum_centroidWeightsIndicator_eq_one_of_nonempty ℝ (K.isRelLowerSet_faces (x.property.2.1 A ha).1).1, mul_one]
     · simp [Finsupp.notMem_support_iff.mp ha]
 
-omit [DecidableEq I] in
 private theorem exists_greatest_face {F : Finset (Finset I)} (hf : F ∈ barycentricSubdivision K) :
     ∃ T ∈ F, ∀ A ∈ F, A ⊆ T := by
-  obtain ⟨T, hT, hm⟩ := Finset.exists_max_image F Finset.card hf.1
-  refine ⟨T, hT, fun A hA => ?_⟩
-  rcases hf.2.2 A hA T hT with h | h
-  · exact h
-  · exact (Finset.eq_of_subset_of_card_le h (hm A hA)).ge
+  obtain ⟨T, hT, hmax⟩ := Finset.exists_maximal hf.1
+  exact ⟨T, hT, fun A hA => (hf.2.2 A hA T hT).elim id (hmax hA)⟩
 
 private theorem support_eq_greatest (x : Realization (barycentricSubdivision K)) {T : Finset I}
     (ht : T ∈ x.val.weights.support) (hm : ∀ A ∈ x.val.weights.support, A ⊆ T) :
@@ -150,24 +160,25 @@ def projectStep (K : PreAbstractSimplicialComplex I) :
   apply (StdSimplex.isEmbedding_toFun_comp_weights ℝ I).continuous_iff.mpr
   apply continuous_pi
   intro i
-  change Continuous fun x : Realization (barycentricSubdivision K) => ∑ A, x.val.weights A * barycenterWeight A i
+  change Continuous fun x : Realization (barycentricSubdivision K) => ∑ A, x.val.weights A * A.centroidWeightsIndicator ℝ i
   fun_prop
 
 /-- Each active face vertex projects to its barycenter in the original realization. -/
-theorem projectStep_vertexPoint {A : Finset I} (hA : A ∈ K)
-    (hv : ({A} : Finset _) ∈ barycentricSubdivision K) :
-    projectStep K (vertexPoint _ A hv) = (Realization.faceBarycenter hA).val := by
+theorem projectStep_vertexPoint {A : Finset I} (hA : A ∈ K) :
+    projectStep K (vertexPoint _ A (singleton_mem_subdivision K A hA)) =
+      (Realization.faceBarycenter hA).val := by
+  classical
   apply Subtype.ext
   apply StdSimplex.ext
   ext i
-  change (∑ B, (StdSimplex.single (R := ℝ) A).weights B * barycenterWeight B i) = _
+  change (∑ B, (StdSimplex.single (R := ℝ) A).weights B * B.centroidWeightsIndicator ℝ i) = _
   simp only [StdSimplex.weights_single, Finsupp.single_apply, ite_mul, one_mul, zero_mul,
     Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   by_cases hi : i ∈ A
-  · simp [barycenterWeight, hi, Realization.faceBarycenter_weights_of_mem hA hi]
+  · simp [centroidWeight_apply, hi, Realization.faceBarycenter_weights_of_mem hA hi]
   · have hzero : i ∉ (Realization.faceBarycenter hA).val.val.weights.support := by
       rwa [Realization.faceBarycenter_support]
-    simp [barycenterWeight, hi, Finsupp.notMem_support_iff.mp hzero]
+    simp [centroidWeight_apply, hi, Finsupp.notMem_support_iff.mp hzero]
 
 end OneStep
 
@@ -217,21 +228,21 @@ theorem projection_incl {K L : PreAbstractSimplicialComplex V} (h : K ≤ L) :
     ext1 x
     exact ContinuousMap.congr_fun ih (projectStep (complex K n) x)
 
-private theorem sum_barycenterWeight_smul (p : V → E) (A : Finset V) :
-    (∑ i, barycenterWeight A i • p i) = barycenter p A := by
-  simp [barycenterWeight, ite_smul, barycenter, Finset.smul_sum]
+private theorem sum_centroidWeightsIndicator_smul (p : V → E) (A : Finset V) :
+    (∑ i, A.centroidWeightsIndicator ℝ i • p i) = barycenter p A := by
+  simp [centroidWeight_apply, ite_smul, barycenter, Finset.smul_sum]
 
 private theorem realize_succ (K : PreAbstractSimplicialComplex V) (p : V → E) (n : ℕ)
     (x : Realization (complex K (n + 1))) :
     realize p K (n + 1) x = realize p K n (projectStep (complex K n) x) := by
   let q := vertexPosition p n
   change (∑ A, x.val.weights A • barycenter q A) =
-    ∑ i, (∑ A, x.val.weights A * barycenterWeight A i) • q i
+    ∑ i, (∑ A, x.val.weights A * A.centroidWeightsIndicator ℝ i) • q i
   simp_rw [Finset.sum_smul]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro A _
-  simp_rw [mul_smul, ← Finset.smul_sum, sum_barycenterWeight_smul]
+  simp_rw [mul_smul, ← Finset.smul_sum, sum_centroidWeightsIndicator_smul]
 
 /-- Affine interpolation at depth `n` factors through the original realization. -/
 theorem realize_eq_comp_projection (K : PreAbstractSimplicialComplex V) (p : V → E) :

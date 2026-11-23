@@ -7,8 +7,8 @@ import Mathlib.Analysis.SpecificLimits.Basic
 # Mesh of realized barycentric subdivisions
 
 With at most `d + 1` vertices per original face, each subdivision multiplies the
-vertex vertex_mesh bound by `d / (d + 1)`. Convexity extends it to whole closed faces;
-measuring through a shared vertex bounds the diameter of a closed closedStarImage.
+vertex-distance bound by `d / (d + 1)`. Convexity extends it to whole closed faces;
+measuring through a shared vertex bounds the diameter of a closed star.
 -/
 
 namespace TDA.Topology.SubdivisionRealization
