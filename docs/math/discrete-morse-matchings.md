@@ -323,5 +323,7 @@ library procedure, and no result of §5 is claimed.
   module of `gradeFilter` with the persistence module of the Morse complex
   (`CertifiedMatching.morseSublevelModuleIso`); MN Thm. 4.3 remains background, since no
   source comparison is recorded.
+- The reducer run on the Morse complex of such a matching, and its agreement with `dgm`, are in
+  [the reducer run on the Morse complex of a certificate](discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate).
 - No general cell complexes `(X, κ)` with arbitrary incidence functions, and no Lean
   statement of MN's nested family form of Def. 4.1.

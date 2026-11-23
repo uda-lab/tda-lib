@@ -48,6 +48,10 @@ On that order,
 [the reducer's output](math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics)
 is a diagram over `ℤ` whose slice counts are the ranks of the grade-sublevel homology
 persistence module of the complex.
+For a certified matching on a valid input,
+[the reducer run on its Morse complex](math/discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate)
+gives the sublevel diagram `dgm` of the input over `ZMod 2`, which is also the diagram of the
+ordinary run on the boundary matrix.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).
