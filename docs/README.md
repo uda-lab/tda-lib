@@ -44,6 +44,10 @@ Morse complex.
 A filtered based complex over a field, in particular such a Morse complex over `ZMod 2`, has
 [an order of its generators](math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex)
 in which its differential satisfies the input conditions of the column reducer.
+On that order,
+[the reducer's output](math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics)
+is a diagram over `ℤ` whose slice counts are the ranks of the grade-sublevel homology
+persistence module of the complex.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).

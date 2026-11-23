@@ -122,6 +122,22 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   certified matching whose inherited order fails strict triangularity) evaluate the reducer
   orders by `decide +kernel`. No reduction run and no barcode agreement. See
   [the reducer order of a filtered based complex](docs/math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex).
+- Read the column reducer's output as a graded diagram and prove its rank semantics
+  (`TDA.Persistence.Morse.ReducerDiagram`): over a field, for a square matrix on `Fin m` with
+  degrees and integer grades, the builders `pivotPairs`, `essentialIndices`, `occurrences` and
+  `diagram` are computable, and on a boundary matrix `occurrences` and `diagram` agree by `rfl`
+  with `FiniteInput.occurrences` and `FiniteInput.outputDiagram`. `rankOfStructureMap_eq_countP`
+  states that, for a square-zero, strictly upper triangular, degree-lowering matrix with
+  monotone grades, the ranks of the grade-sublevel homology persistence module are the slice
+  counts of `diagram`. For a filtered
+  differential, `reducerDiagram` is the output on `reducerMatrix`, and
+  `eq_reducerDiagram_of_rankCounts` states that it is the positive diagram whose slice counts
+  are the ranks of the original complex. The uniqueness `Diagram.eq_of_sliceCounts_eq` holds
+  over any linear order (`TDA.Persistence.DiagramRankUniqueness`) and now also proves
+  `RealBarcode.multiset_eq_of_rankCounts_eq`. Fixtures P1–P3 (a hollow triangle and the
+  reducer matrices of the path R2 and the square R3) evaluate the output by `decide +kernel`. No
+  certificate run and no agreement with `dgm`. See
+  [the graded reducer output and its rank semantics](docs/math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

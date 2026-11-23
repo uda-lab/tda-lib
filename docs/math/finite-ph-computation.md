@@ -282,7 +282,10 @@ commute with the inclusions, so all inclusion-induced maps have equal ranks;
 `RealBarcode.multiset_eq_of_rankCounts_eq` recovers the points. The functions
 are total and constrained on faces only; neither injectivity nor monotonicity is
 assumed. The statement is for real grades, the generality of that uniqueness
-theorem. The existing Rips- and Čech-specific comparisons, such as
+theorem. The uniqueness itself holds over any linear order
+(`multiset_eq_of_sliceCounts_eq` in `TDA.Persistence.DiagramRankUniqueness`, of
+which the real theorem is the instance), and `dgm_eq_of_vertexMaps` is not
+restated with it. The existing Rips- and Čech-specific comparisons, such as
 `Rips.dgm_eq_of_isometryEquiv`, relate the complexes of two metric spaces or
 point configurations and do not apply to a list on `ℕ`.
 
