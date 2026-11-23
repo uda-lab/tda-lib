@@ -197,6 +197,9 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   natural persistence isomorphism in every degree over any ring (`TDA.Persistence.alphaCechIso`).
   The five-point fixture tracks a nonzero F₂ cycle through a strict inclusion at squared grade 4
   and the structure maps to grade 5.
+- Bound the bottleneck distance of radius-indexed α diagrams by the maximum matched-site
+  displacement in every degree over any field. For squares with half-sides 7 and 8, the
+  exact H₁ distance is √2 on radii and 30 on squared grades.
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

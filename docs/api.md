@@ -1801,6 +1801,19 @@ Coincident labels and nearest-site ties are allowed. The five-point example
 `AlphaCechExamples.fivePointH1Square` follows a nonzero F₂ class across squared grades
 4 and 5, including the strict α-to-Čech inclusion at grade 4.
 
+For matched finite labelled clouds in the same Euclidean space,
+`TDA.Persistence.bottleneck_alphaRadiusDiagram_le_displacement` bounds the degree-`n`
+α diagram distance by the largest matched-site displacement over any field. At radius
+`r ≥ 0`, `alphaRadiusModule` uses the original squared grade `r²`. Its diagram
+`alphaRadiusDiagram` agrees with the ambient Čech diagram, and
+`alphaRadiusDiagramRealizationIso` recovers the entire module, including essential bars.
+With embedded sites, `alphaRadiusDiagram_eq_map` takes the square root of each finite endpoint.
+
+Squaring endpoints in `[0,R]` multiplies an endpoint error by at most `2R`
+(`abs_sq_sub_sq_le_of_radius_le`). For the squares with corners at `(±7,±7)` and
+`(±8,±8)`, the displacement and radius H₁ bottleneck over F₂ both equal `√2`, while
+the squared-grade bottleneck equals `30` (`AlphaRadiusStabilityExamples.square_bottlenecks`).
+
 On the obtuse triangle, `CollapsePersistenceExamples.alphaCechIso` also gives the comparison
 over every ring, through collapses; see
 [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
