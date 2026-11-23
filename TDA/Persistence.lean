@@ -475,3 +475,4 @@ import TDA.Persistence.Morse.SimplicialBridge
 import TDA.Persistence.Morse.ReducerOrder
 import TDA.Persistence.Morse.ReducerDiagram
 import TDA.Persistence.Morse.MorseDiagram
+import TDA.Persistence.AlphaCech

@@ -876,3 +876,8 @@ import TDA
 #print axioms TDA.Filtration.AlphaCollapseFamilyExamples.stages_of_mem_Ico_four
 #print axioms TDA.Filtration.AlphaCollapseFamilyExamples.stages_of_five_le
 #print axioms TDA.Filtration.AlphaCollapseFamilyExamples.collapsesTo_of_certificate
+#print axioms TDA.Filtration.Alpha.restrictedBall
+#print axioms TDA.Filtration.Alpha.restrictedBall_subset_closedBall
+#print axioms TDA.Filtration.Alpha.iUnion_restrictedBall
+#print axioms TDA.Filtration.Alpha.isCompact_restrictedBall
+#print axioms TDA.Filtration.Alpha.convex_restrictedBall

@@ -193,6 +193,10 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `TDA.Persistence.CollapseCertificatePersistenceExamples`). No certificate producer,
   Delaunay–Čech stage or general-position statement. See
   [certificates across critical grades](docs/math/discrete-morse-matchings.md#certificates-across-critical-grades).
+- Prove that the same-label α-to-Čech inclusion for finite Euclidean point clouds induces a
+  natural persistence isomorphism in every degree over any ring (`TDA.Persistence.alphaCechIso`).
+  The five-point fixture tracks a nonzero F₂ cycle through a strict inclusion at squared grade 4
+  and the structure maps to grade 5.
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

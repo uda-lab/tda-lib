@@ -446,3 +446,4 @@ import TDA
 #print axioms TDA.Topology.ConvexNerveInclusionExamples.intervals_iUnion_eq
 #print axioms TDA.Topology.ConvexNerveInclusionExamples.triple_face_difference
 #print axioms TDA.Topology.ConvexNerveInclusionExamples.strict_inclusion_isIso
+#print axioms TDA.Topology.ConvexNerve.isIso_simplicialHomologyIncl_of_compact
