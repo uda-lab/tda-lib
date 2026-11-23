@@ -9261,3 +9261,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.alphaH0Comparison_isIso_app
 #print axioms TDA.Persistence.alphaH0Iso
 #print axioms TDA.Persistence.alphaH0Iso_hom
+
+-- Persistence of collapses (Issue #1060, unit 1).
+#print axioms TDA.Persistence.isIso_inclusionHom_of_collapsesTo
+#print axioms TDA.Persistence.collapseInclusionIso
+#print axioms TDA.Persistence.collapseInclusionIso_hom
+#print axioms TDA.Persistence.CollapsePersistenceExamples.isIso_deletion_long_edge
+#print axioms TDA.Persistence.CollapsePersistenceExamples.isIso_alpha_cech_four
+#print axioms TDA.Persistence.CollapsePersistenceExamples.isIso_inclusionHom
+#print axioms TDA.Persistence.CollapsePersistenceExamples.alphaCechIso
+#print axioms TDA.Persistence.CollapsePersistenceExamples.alphaCechIso_hom
+#print axioms TDA.Persistence.CollapsePersistenceExamples.alphaCechIso_zero_hom

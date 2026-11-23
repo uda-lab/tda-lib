@@ -351,3 +351,16 @@ import TDA
 #print axioms TDA.Simplicial.ElementaryCollapsesTo.lt
 #print axioms TDA.Simplicial.CollapsesTo
 #print axioms TDA.Simplicial.CollapsesTo.le
+
+-- Homology of collapses (Issue #1060, unit 1).
+#print axioms TDA.Simplicial.IsFreePair.card_upper
+#print axioms TDA.Simplicial.IsFreePair.collapseRetraction
+#print axioms TDA.Simplicial.IsFreePair.simplicialChainIncl_comp_collapseRetraction
+#print axioms TDA.Simplicial.IsFreePair.collapseHomotopyEquiv
+#print axioms TDA.Simplicial.IsFreePair.collapseHomotopyEquiv_hom
+#print axioms TDA.Simplicial.IsFreePair.collapseHomotopyEquiv_inv
+#print axioms TDA.Simplicial.IsFreePair.isIso_simplicialHomologyIncl
+#print axioms TDA.Simplicial.ElementaryCollapsesTo.isIso_simplicialHomologyIncl
+#print axioms TDA.Simplicial.CollapsesTo.isIso_simplicialHomologyIncl
+#print axioms TDA.Simplicial.CollapsesTo.simplicialHomologyIso
+#print axioms TDA.Simplicial.CollapsesTo.simplicialHomologyIso_hom

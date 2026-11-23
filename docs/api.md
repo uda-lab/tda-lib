@@ -1791,6 +1791,9 @@ zero over any field. Its forward map is `alphaH0Comparison`, induced by the
 identity on labels at each grade. Signed edge boundaries telescope along
 replacement paths, giving the same degree-zero boundary subspace under
 the common vertex basis.
+On the obtuse triangle, `CollapsePersistenceExamples.alphaCechIso` extends it to every degree
+over every ring, through collapses; see
+[homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
 
 For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`
 computes an F₂ barcode with exact rational squared-radius endpoints. It accepts
@@ -2632,7 +2635,8 @@ exactly `σ` and `τ`. `ElementaryCollapsesTo K L` states that `L` is the deleti
 of a free pair of `K`; `IsFreePair.elementaryCollapsesTo` gives it from a free pair, and
 `ElementaryCollapsesTo.lt` states `L < K`. `CollapsesTo` is its reflexive transitive closure, a
 finite, possibly empty, sequence of elementary collapses, and `CollapsesTo.le` states `L ≤ K`.
-No homotopy or homology statement is made.
+This module makes no homotopy or homology statement; the homology isomorphism of a collapse is
+in `TDA.Simplicial.CollapseHomology`.
 
 `TDA.Filtration.AlphaCollapseExamples` (imported by `TDA.Filtration.Examples`) works on
 `RationalAlpha.Examples.obtuse`, the sites `(0,0)`, `(4,0)` and `(1,1)` with labels `0, 1, 2`,
@@ -2657,9 +2661,39 @@ no fixed set `C` of faces has `s ∈ alpha t ↔ s ∈ cech t ∧ s ∈ C` for a
 labelled inclusion of the α stage into the Čech stage is the existing
 `Alpha.labelledComplexFiltration_le_squaredCech`.
 
-No general-position theorem, collapse sequence across several critical grades, persistence
-comparison or source result is provided; see
-[elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle).
+`TDA.Simplicial.CollapseHomology` (imported by `TDA.Simplicial`) has, in the same namespace,
+`IsFreePair.card_upper` (`τ.card = σ.card + 1`), the retraction chain map
+`IsFreePair.collapseRetraction R hp` onto the chain complex of `deletion K σ` with
+`IsFreePair.simplicialChainIncl_comp_collapseRetraction` (inclusion, then retraction, is the
+identity), and the chain homotopy equivalence `IsFreePair.collapseHomotopyEquiv R hp`, whose
+forward map is `simplicialChainIncl R (deletion_le K σ)` (`_hom`) and whose inverse is the
+retraction (`_inv`). `IsFreePair.isIso_simplicialHomologyIncl`,
+`ElementaryCollapsesTo.isIso_simplicialHomologyIncl` and
+`CollapsesTo.isIso_simplicialHomologyIncl` state that the homology inclusion of a free-face
+deletion, of an elementary collapse and of a finite collapse sequence is an isomorphism, in every
+degree `n : ℕ` and over every ring `R` (`[Ring R]`, not necessarily commutative), for ordinary
+unaugmented homology; the last two take any inclusion proof `hle : L ≤ K`.
+`CollapsesTo.simplicialHomologyIso` is the isomorphism, with forward map
+`simplicialHomologyIncl R h.le n` (`_hom`). `TDA.Persistence.CollapsePersistence` (imported by
+`TDA.Persistence`) has, for simplicial filtrations `F G` over a preorder with
+`hle : ∀ p, F p ≤ G p` and `h : ∀ p, CollapsesTo (G p) (F p)`,
+`isIso_inclusionHom_of_collapsesTo` (`IsIso (inclusionHom R n hle)`) and
+`collapseInclusionIso R n hle h`, whose forward map is `inclusionHom R n hle`
+(`collapseInclusionIso_hom`). Naturality is that of the inclusions; no compatibility of the
+retractions at different indices is used. `TDA.Persistence.CollapsePersistenceExamples`
+(imported by `TDA.Persistence.Examples`) applies these on the obtuse triangle, in every degree
+and over every ring: `isIso_deletion_long_edge` (deleting `{0,1}` from the Čech stage at grade
+4), `isIso_alpha_cech_four` (the labelled inclusion at grade 4), `isIso_inclusionHom` (the
+inclusion morphism over all real grades, negative grades included), and `alphaCechIso`, the
+natural isomorphism from α persistence to squared-grade Čech persistence, with forward map the
+`inclusionHom` of the labelled inclusions (`alphaCechIso_hom`). Over a field `k`,
+`alphaCechIso_zero_hom` states `(alphaCechIso k 0).hom = alphaH0Comparison (realSites obtuse) k`.
+See [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
+
+No general-position theorem, certificate checker for supplied collapse sequences, collapse
+sequence across several critical grades or source result is provided; see
+[elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle)
+and [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
 
 ## Compatible lifts and algebraic sums over the reals
 

@@ -21,3 +21,4 @@ import TDA.Simplicial.ContiguityHomotopy
 import TDA.Simplicial.ArbitraryApexCone
 import TDA.Simplicial.BarycentricHomology
 import TDA.Simplicial.Collapse
+import TDA.Simplicial.CollapseHomology
