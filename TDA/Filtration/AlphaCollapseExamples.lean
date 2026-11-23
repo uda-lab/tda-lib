@@ -36,10 +36,10 @@ namespace TDA.Filtration.AlphaCollapseExamples
 
 open TDA.Simplicial TDA.Filtration.RationalAlpha TDA.Filtration.RationalAlpha.Examples
 
-/-- The squared-grade Čech stage of the obtuse triangle. -/
+/-- The squared-grade Čech filtration of the obtuse triangle. -/
 local notation "cech" => Alpha.squaredCechFiltration (realSites obtuse)
 
-/-- The squared-grade α stage of the obtuse triangle. -/
+/-- The squared-grade α filtration of the obtuse triangle. -/
 local notation "alpha" => Alpha.labelledComplexFiltration (realSites obtuse)
 
 /-- The squared Čech grades of the faces of the obtuse triangle. -/

@@ -9272,3 +9272,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CollapsePersistenceExamples.alphaCechIso
 #print axioms TDA.Persistence.CollapsePersistenceExamples.alphaCechIso_hom
 #print axioms TDA.Persistence.CollapsePersistenceExamples.alphaCechIso_zero_hom
+
+-- Persistence isomorphisms from certificate families (Issue #1060, unit 3).
+#print axioms TDA.Persistence.isIso_inclusionHom_of_checkCertificates
+#print axioms TDA.Persistence.certificateInclusionIso
+#print axioms TDA.Persistence.certificateInclusionIso_hom
+#print axioms TDA.Persistence.CollapseCertificatePersistenceExamples.isIso_inclusionHom_of_certificate
+#print axioms TDA.Persistence.CollapseCertificatePersistenceExamples.alphaCechCertificateIso
+#print axioms TDA.Persistence.CollapseCertificatePersistenceExamples.alphaCechCertificateIso_hom
+#print axioms TDA.Persistence.CollapseCertificatePersistenceExamples.alphaCechCertificateIso_eq

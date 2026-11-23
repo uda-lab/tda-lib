@@ -180,6 +180,19 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   (`TDA.Filtration.AlphaCollapseCertificateExamples`). No critical-grade sequence, certificate
   producer or general-position statement. See
   [checking supplied collapse sequences](docs/math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
+- Check supplied collapse certificates across the critical grades of a filtered pair
+  (`TDA.Filtration.CollapseCertificateFamily`): for real-indexed filtrations with rational grade
+  tables, `checkCertificates` checks one supplied sequence at every grade of either table, with
+  exact endpoints, and acceptance gives a collapse at every real grade, including below the first
+  grade and on the unbounded tail; conversely levelwise collapses have an accepted family.
+  Acceptance makes the inclusion morphism of homology persistence modules a natural isomorphism
+  in every degree over every ring (`TDA.Persistence.CollapseCertificatePersistence`). On the
+  obtuse triangle the family removing the long edge at grade 4 is accepted, keeping the removal
+  at grade 5 is rejected, and the resulting isomorphism is the α-to-Čech one
+  (`TDA.Filtration.AlphaCollapseFamilyExamples`,
+  `TDA.Persistence.CollapseCertificatePersistenceExamples`). No certificate producer,
+  Delaunay–Čech stage or general-position statement. See
+  [certificates across critical grades](docs/math/discrete-morse-matchings.md#certificates-across-critical-grades).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
