@@ -16,7 +16,7 @@ hull interior. All-site usage is expressed separately by `SignedBoundary.allSite
 
 open Set Filter
 open scoped Classical
-open TDA.Filtration.RationalAlpha (Plane Point castPoint orient)
+open TDA.Filtration.RationalAlpha (Plane Point castPoint castPoint_injective orient)
 open TDA.Filtration.RationalAlpha.SignedBoundary
 open TDA.Filtration.RationalAlpha.TriangleIncidence
 
@@ -124,6 +124,14 @@ private theorem edges_cast {L : Type*} (site : L → Point) (a b c : L) (i : Fin
 abbrev occurrenceEdge {L I : Type*} (tri : I → Fin 3 → L) (p : I × Fin 3) : L × L :=
   triangleEdges (tri p.1 0) (tri p.1 1) (tri p.1 2) p.2
 
+private theorem occurrence_polygonCertificate {L I : Type*} (site : L → Point)
+    (tri : I → Fin 3 → L) (i : I)
+    (hccw : 0 < orient (site (tri i 0)) (site (tri i 1)) (site (tri i 2))) :
+    PolygonCertificate (siteTriangle site (tri i))
+      (fun k => realEdge site (occurrenceEdge tri (i, k))) := by
+  simp only [occurrenceEdge, edges_cast, siteTriangle]
+  exact rational_triangle_polygonCertificate _ _ _ hccw
+
 private theorem occurrenceEdge_left {L I : Type*} (site : L → Point) (tri : I → Fin 3 → L)
     (i : I) (hccw : 0 < orient (site (tri i 0)) (site (tri i 1)) (site (tri i 2)))
     (k : Fin 3) : ∃ z, 0 < edgeSide (realEdge site (occurrenceEdge tri (i, k))) z := by
@@ -169,14 +177,11 @@ theorem occurrenceEdge_injective_of_disjoint_interiors {L I : Type*}
   intro ⟨i, k⟩ ⟨j, l⟩ he
   have hij : i = j := by
     by_contra h
-    have cert (u : I) : PolygonCertificate (siteTriangle site (tri u))
-        (fun k => realEdge site (occurrenceEdge tri (u,k))) := by
-      simp only [occurrenceEdge, edges_cast, siteTriangle]
-      apply rational_triangle_polygonCertificate
-      exact hccw u
     obtain ⟨z, hz⟩ := occurrenceEdge_left site tri i (hccw i) k
     exact (hd i j h).le_bot
-      (shared_directed_side_overlap (cert i) (cert j)
+      (shared_directed_side_overlap
+        (occurrence_polygonCertificate site tri i (hccw i))
+        (occurrence_polygonCertificate site tri j (hccw j))
         (occurrenceEdge_ne site tri i (hccw i)) (occurrenceEdge_ne site tri j (hccw j))
         (congrArg (realEdge site) he) hz).choose_spec
   subst j
@@ -297,12 +302,12 @@ theorem edge_counts_of_signed_boundary {I L : Type*} [Fintype I] [DecidableEq L]
 
 /-- A signed-boundary certificate gives one forward occurrence per hull side and one occurrence
 in each direction at every occurring non-hull edge. The latter two occurrences have distinct
-triangle indices. -/
+triangle indices. The off-edge multiplicity identity uses only the supplied triangle and hull
+certificates. -/
 theorem rational_edge_counts {L I : Type*} [DecidableEq L] [Fintype I] {n : ℕ}
     (site : L → Point) (hs : Function.Injective site) (v : Fin (n + 3) → L)
     (hv : Function.Injective v) (tri : I → Fin 3 → L)
     (P : PolygonCertificate (siteHull site v) (fun j => realEdge site (cycleEdges v j)))
-    (hsite : ∀ a, castPoint (site a) ∈ siteHull site v)
     (hccw : ∀ i, 0 < orient (site (tri i 0)) (site (tri i 1)) (site (tri i 2)))
     (hchain : (∑ i, ∑ j, signedEdge (occurrenceEdge tri (i,j))) =
       ∑ j, signedEdge (cycleEdges v j)) :
@@ -315,11 +320,20 @@ theorem rational_edge_counts {L I : Type*} [DecidableEq L] [Fintype I] {n : ℕ}
       directedMultiplicity (occurrenceEdge tri) e.swap = 1 ∧
       ∃ p q : I × Fin 3, occurrenceEdge tri p = e ∧
         occurrenceEdge tri q = e.swap ∧ p.1 ≠ q.1) := by
-  have hc := (rational_cover_from_signed_boundary site hs v hv tri P hsite hccw hchain).1
+  let edges (i : I) (j : Fin 3) := occurrenceEdge tri (i, j)
+  have hne (j : Sum (I × Fin 3) (Fin (n + 3))) :
+      (listedEdges site edges (cycleEdges v) j).1 ≠ (listedEdges site edges (cycleEdges v) j).2 := by
+    rcases j with ⟨i, k⟩ | j
+    · exact occurrenceEdge_ne site tri i (hccw i) k
+    · intro he
+      have hlabels : v j = v (j + 1) := hs (castPoint_injective he)
+      exact cycle_no_reverse v hv j j (by simp [cycleEdges, hlabels])
+  have hc := off_edge_count_from_signed_boundary site edges (cycleEdges v)
+    (fun i => siteTriangle site (tri i)) (siteHull site v)
+    (fun i => occurrence_polygonCertificate site tri i (hccw i)) P hne hchain
   have hd (i j : I) (h : i ≠ j) :
       Disjoint (interior (siteTriangle site (tri i))) (interior (siteTriangle site (tri j))) := by
-    apply disjoint_interiors_of_off_edge_bound
-      (listedEdges site (fun i j => occurrenceEdge tri (i,j)) (cycleEdges v)) _ _ h
+    apply disjoint_interiors_of_off_edge_bound (listedEdges site edges (cycleEdges v)) _ _ h
     intro x hx
     rw [hc x hx]
     unfold interiorIndicator

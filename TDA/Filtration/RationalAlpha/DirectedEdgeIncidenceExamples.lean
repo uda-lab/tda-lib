@@ -38,7 +38,7 @@ theorem trapezoid_actual_counts :
   have hccw : ∀ i, 0 < orient (quad (good i 0)) (quad (good i 1)) (quad (good i 2)) := by
     decide +kernel
   obtain ⟨hu, hb, hi⟩ := rational_edge_counts quad quad_inj cycle (fun _ _ h => h) good
-    trapezoid_certificate quad_mem hccw good_boundary
+    trapezoid_certificate hccw good_boundary
   refine ⟨hu, hb, hi (0, 2) (by decide +kernel) ?_⟩
   exact ⟨(1, 0), Or.inl rfl⟩
 
