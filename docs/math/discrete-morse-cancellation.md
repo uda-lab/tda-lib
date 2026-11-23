@@ -1168,8 +1168,9 @@ Over a field `k` with decidable equality, for `D : Matrix (Fin m) (Fin m) k`,
 - `pairOccurrence degree grade (i, j)` is `none` when `grade i = grade j`, and otherwise the
   `FiniteInput.Occurrence` with degree `degree i`, birth `grade i` and finite death `grade j`.
 - `occurrences degree grade D` lists the `pairOccurrence` values of the pivot pairs that are
-  not `none`, followed by the essential indices with essential death, and `diagram degree grade D p : Diagram ℤ` collects
-  the points `Occurrence.point` of the degree-`p` occurrences, with multiplicity.
+  not `none`, followed by the essential indices with essential death, and
+  `diagram degree grade D p : Diagram ℤ` collects the points `Occurrence.point` of the
+  degree-`p` occurrences, with multiplicity.
 
 These follow `FiniteInput.reduced`, `pivotPairs`, `essentialIndices`, `pairOccurrence`,
 `occurrences` and `outputDiagram`, with the finite input replaced by `(degree, grade, D)`. On
@@ -1200,7 +1201,8 @@ The reducer's `originalHomology` at a prefix is the prefix cycle space modulo th
 `originalLiveMap`, and `originalHomology_kernel_eq_boundaries` identifies that kernel with the
 prefix boundaries. For any normal-form data `R`, `V`, `W` of `D` with the hypotheses of
 `originalHomology`, `prefixHomologyEquiv` is the resulting linear equivalence from
-`sublevelHomology degree grade D p a` to `originalHomology … p (stage grade a)`, built from `Submodule.Quotient.equiv` and `LinearEquiv.ofEq`. It keeps the representing cycle
+`sublevelHomology degree grade D p a` to `originalHomology … p (stage grade a)`, built from
+`Submodule.Quotient.equiv` and `LinearEquiv.ofEq`. It keeps the representing cycle
 (`prefixHomologyEquiv_mk`, `rfl`), and `prefixHomologyEquiv_naturality` carries the sublevel
 structure map `a ≤ b` to the reducer's `originalHomologyMap` from `stage grade a` to
 `stage grade b`; it is checked on representatives with `originalHomologyMap_mk`. So the two
@@ -1270,9 +1272,10 @@ and the grade `grade ∘ reducerEquiv degree grade`. For `IsFilteredDifferential
 Computable: `reduced`, `pivotPairs`, `essentialIndices`, `pairOccurrence`, `occurrences`,
 `diagram`, `stage`, `reducerOccurrences`, `reducerDiagram` and the two instances. The fixtures
 evaluate `pivotPairs`, `essentialIndices`, `occurrences` and `diagram` by `decide +kernel`, and
-decide `StrictBoundary` and `LowersDegree` through the two instances. `FiniteInput.occurrences` has a stored-pivot `@[csimp]`
-implementation; the generic `occurrences` has none, so its compiled evaluation may repeat the
-reduction for each entry. Kernel `decide` is unaffected, and no runtime claim is made.
+decide `StrictBoundary` and `LowersDegree` through the two instances.
+`FiniteInput.occurrences` has a stored-pivot `@[csimp]` implementation; the generic
+`occurrences` has none, so its compiled evaluation may repeat the reduction for each entry.
+Kernel `decide` is unaffected, and no runtime claim is made.
 Semantic: `prefixHomologyEquiv` is `noncomputable`, and the other statements are propositions.
 
 ### Scope of the reducer output
@@ -1286,7 +1289,8 @@ file provide none of the following:
 - a change to the statement of `RealBarcode.multiset_eq_of_rankCounts_eq` or to
   `dgm_eq_of_vertexMaps`;
 - an interval module or an interval decomposition over `ℤ`;
-- independence of the output from the tie order of the reducer order;
+- independence of the occurrence list `reducerOccurrences` from the tie order of the reducer
+  order, and a declaration stating that `reducerDiagram` does not depend on it;
 - reducer statements over a ring other than a field, or a runtime bound or speedup claim;
 - a source attribution; see [comparison with MN13](#comparison-with-mn13).
 

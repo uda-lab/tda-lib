@@ -916,12 +916,14 @@ and principal deaths remain infinite. Domination is proved before the
 equivalent multiset-subtraction formula.
 
 `RealBarcodeRankUniqueness` compares finite positive endpoint multisets
-through all their rank counts. It is the real instance of
+through all their rank counts. Its theorem
+`RealBarcode.multiset_eq_of_rankCounts_eq` is the real instance of
 `multiset_eq_of_sliceCounts_eq` of `TDA.Persistence.DiagramRankUniqueness`,
-which holds over any linear order (with `Diagram.eq_of_sliceCounts_eq`). `RankExactBarcodeCancellation` telescopes
-actual rank-exact rows, and `AffineSliceRank` converts the actual hook-sum
-presentations into these counts. The capstone derives the needed resolution
-and ordinary barcode realization from the original presentation. See
+which holds over any linear order (with `Diagram.eq_of_sliceCounts_eq`).
+`RankExactBarcodeCancellation` telescopes actual rank-exact rows, and
+`AffineSliceRank` converts the actual hook-sum presentations into these
+counts. The capstone derives the needed resolution and ordinary barcode
+realization from the original presentation. See
 [affine slice cancellation](math/affine-slice-cancellation.md).
 
 ### Positive affine slices

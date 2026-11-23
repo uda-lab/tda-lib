@@ -124,11 +124,12 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   [the reducer order of a filtered based complex](docs/math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex).
 - Read the column reducer's output as a graded diagram and prove its rank semantics
   (`TDA.Persistence.Morse.ReducerDiagram`): over a field, for a square matrix on `Fin m` with
-  degrees and integer grades, the computable `pivotPairs`, `essentialIndices`, `occurrences`
-  and `diagram` agree by `rfl` with `FiniteInput.occurrences` and `FiniteInput.outputDiagram`
-  on a boundary matrix, and `rankOfStructureMap_eq_countP` states that, for a square-zero,
-  strictly upper triangular, degree-lowering matrix with monotone grades, the ranks of the
-  grade-sublevel homology persistence module are the slice counts of `diagram`. For a filtered
+  degrees and integer grades, the builders `pivotPairs`, `essentialIndices`, `occurrences` and
+  `diagram` are computable, and on a boundary matrix `occurrences` and `diagram` agree by `rfl`
+  with `FiniteInput.occurrences` and `FiniteInput.outputDiagram`. `rankOfStructureMap_eq_countP`
+  states that, for a square-zero, strictly upper triangular, degree-lowering matrix with
+  monotone grades, the ranks of the grade-sublevel homology persistence module are the slice
+  counts of `diagram`. For a filtered
   differential, `reducerDiagram` is the output on `reducerMatrix`, and
   `eq_reducerDiagram_of_rankCounts` states that it is the positive diagram whose slice counts
   are the ranks of the original complex. The uniqueness `Diagram.eq_of_sliceCounts_eq` holds

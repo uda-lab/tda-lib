@@ -19,8 +19,9 @@ Evaluations of `TDA.Persistence.Morse.ReducerDiagram` over `ZMod 2`, on written-
   `0, 1, 2`: the matrix with the single entry in row 1 and column 2. The degree-1 diagram is
   `{(1, 2)}` and the degree-0 diagram `{(0, ⊤)}`.
 
-The pivot pairs, essential indices, occurrences, diagrams and the hypotheses of the rank
-theorem are evaluated by kernel `decide`. The rank statements rewrite with
+The pivot pairs, essential indices, occurrences, diagrams and the matrix hypotheses
+`D * D = 0`, `StrictBoundary` and `LowersDegree` are evaluated by kernel `decide`; the
+monotonicity of the grades is proved directly. The rank statements rewrite with
 `rankOfStructureMap_eq_countP` and evaluate the slice count by kernel `decide`.
 -/
 

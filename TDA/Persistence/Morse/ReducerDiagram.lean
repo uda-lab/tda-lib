@@ -12,8 +12,9 @@ For a square matrix `D` over `Fin m`, `reduced D` is the reduced matrix
 pivot pairs `(i, j)` and its essential indices, `occurrences degree grade D` records them as
 `FiniteInput.Occurrence`s at their grades, dropping the pairs with `grade i = grade j`, and
 `diagram degree grade D p : Diagram ℤ` collects the points of degree `p`. These are computable,
-and on the boundary matrix of a finite input they are `FiniteInput.occurrences` and
-`FiniteInput.outputDiagram` by definition (`occurrences_boundary`, `diagram_boundary`).
+and on the boundary matrix of a finite input `occurrences` and `diagram` are
+`FiniteInput.occurrences` and `FiniteInput.outputDiagram` by definition (`occurrences_boundary`,
+`diagram_boundary`).
 
 Assume `D * D = 0`, `StrictBoundary D`, `LowersDegree degree D` and `Monotone grade`. The
 indices of grade at most `a` are the first `stage grade a` indices, so the grade sublevel cycles

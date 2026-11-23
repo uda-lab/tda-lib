@@ -13,8 +13,8 @@ finite multisets of positive points (`b' < d`, essential deaths `⊤` allowed) w
 counts at all `a ≤ b` are equal, and `Diagram.eq_of_sliceCounts_eq` says the same for positive
 diagrams.
 
-The proof is the one of `RealBarcode.multiset_eq_of_rankCounts_eq` for an arbitrary linear
-order. The births and finite deaths of both multisets lie on one finite grid
+`RealBarcode.multiset_eq_of_rankCounts_eq` is derived from this theorem as its real case. The
+births and finite deaths of both multisets lie on one finite grid
 `Finset.orderEmbOfFin`; on it each multiset is `ofIndexBars` of a finite index barcode, the slice
 counts become the interval counts of those barcodes (`ofIndexBars_countP_grades`), and
 finite-barcode uniqueness (`rankBarcode_barcodeModule`, `rank_barcodeMap`) recovers them. Only
