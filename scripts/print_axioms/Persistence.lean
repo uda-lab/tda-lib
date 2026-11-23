@@ -9162,3 +9162,10 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Morse.ReducerOrderExamples.genCert_sortedGenerators
 #print axioms TDA.Persistence.Morse.ReducerOrderExamples.sqCert_reducerMatrix
 #print axioms TDA.Persistence.Morse.ReducerOrderExamples.genCert_reducerMatrix
+
+-- Degree-zero α–Čech comparison.
+#print axioms TDA.Persistence.alphaH0Comparison
+#print axioms TDA.Persistence.alphaH0Comparison_app
+#print axioms TDA.Persistence.alphaH0Comparison_isIso_app
+#print axioms TDA.Persistence.alphaH0Iso
+#print axioms TDA.Persistence.alphaH0Iso_hom

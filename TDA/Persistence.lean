@@ -207,6 +207,7 @@ import TDA.Persistence.BoundaryCost
 import TDA.Persistence.FinitePMatchingCost
 import TDA.Persistence.FinitePBoundaryTransport
 import TDA.Persistence.SublevelInterleaving
+import TDA.Persistence.AlphaH0
 import TDA.Persistence.CechRipsInterleaving
 import TDA.Persistence.SublevelConstructible
 import TDA.Persistence.LogScaleDiagram

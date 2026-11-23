@@ -1,0 +1,182 @@
+import TDA.Filtration.Alpha
+import Mathlib.Analysis.Normed.Affine.Convex
+import Mathlib.Analysis.Normed.Module.Connected
+import Mathlib.Topology.Connected.Clopen
+
+set_option autoImplicit false
+
+/-!
+# The α and Čech filtrations on labelled sites
+
+The closed Voronoi nerve accepts a site function, with the embedding-based α filtration as
+a special case. The Čech filtration uses squared grades and both filtrations start at zero.
+Every Čech edge at a nonnegative grade can be replaced by a path in the α complex at that grade.
+-/
+
+namespace TDA.Filtration.Alpha
+
+open TDA.Topology
+open scoped Convex
+
+variable {V E : Type*} [NormedAddCommGroup E] (sites : V → E)
+
+private def restrictedBall (t : ℝ) (v : V) : Set E :=
+  {x | ∀ w, dist x (sites v) ≤ dist x (sites w)} ∩ {x | dist x (sites v) ^ 2 ≤ t}
+
+/-- The squared-grade α complex of a labelled site function. Closed nearest-site
+inequalities keep all tied labels, including distinct labels at the same site. -/
+def labelledComplex (t : ℝ) : PreAbstractSimplicialComplex V := nerve (restrictedBall sites t)
+
+theorem labelledComplex_eq_complex (p : V ↪ E) (t : ℝ) :
+    labelledComplex p t = Alpha.complex p t := rfl
+
+/-- A labelled α face has a common closed Voronoi witness within the squared cutoff. -/
+theorem mem_labelledComplex_iff (t : ℝ) (s : Finset V) :
+    s ∈ labelledComplex sites t ↔ s.Nonempty ∧ ∃ x : E, ∀ v ∈ s,
+      (∀ w, dist x (sites v) ≤ dist x (sites w)) ∧ dist x (sites v) ^ 2 ≤ t :=
+  Iff.rfl
+
+/-- The ambient Čech radius for the squared-grade convention with empty negative stages. -/
+noncomputable def squaredCechRadius : ℝ →o ℝ where
+  toFun t := if t < 0 then t else Real.sqrt t
+  monotone' := by
+    intro s t hst
+    change (if s < 0 then s else Real.sqrt s) ≤ (if t < 0 then t else Real.sqrt t)
+    split_ifs with hs ht ht
+    · exact hst
+    · exact hs.le.trans (Real.sqrt_nonneg _)
+    · exact (hs (hst.trans_lt ht)).elim
+    · exact Real.sqrt_monotone hst
+
+/-- Ambient Čech on squared grades, with no nonempty faces below zero. -/
+noncomputable def squaredCechFiltration : SimplicialFiltration ℝ V :=
+  reindex squaredCechRadius (Cech.complexFiltration sites)
+
+theorem squaredCechFiltration_apply_of_nonneg {t : ℝ} (ht : 0 ≤ t) :
+    squaredCechFiltration sites t = Cech.complex sites (Real.sqrt t) := by
+  change Cech.complex sites (if t < 0 then t else Real.sqrt t) = _
+  simp [not_lt_of_ge ht]
+
+theorem squaredCechFiltration_apply_of_neg {t : ℝ} (ht : t < 0) :
+    squaredCechFiltration sites t = ⊥ := by
+  change Cech.complex sites (if t < 0 then t else Real.sqrt t) = _
+  simp [ht, Cech.complex_eq_bot_of_neg sites ht]
+
+theorem labelledComplex_eq_bot_of_neg {t : ℝ} (ht : t < 0) : labelledComplex sites t = ⊥ := by
+  apply le_antisymm _ bot_le
+  rintro s ⟨⟨v, hv⟩, x, hx⟩
+  exact absurd ((sq_nonneg _).trans (hx v hv).2) ht.not_ge
+
+theorem singleton_mem_labelledComplex [DecidableEq V] (v : V) {t : ℝ} (ht : 0 ≤ t) :
+    ({v} : Finset V) ∈ labelledComplex sites t := by
+  apply (mem_nerve_singleton_iff _ _).2
+  exact ⟨sites v, by simp [restrictedBall, ht]⟩
+
+/-- The closed α filtration of a labelled site function on squared grades. -/
+def labelledComplexFiltration : SimplicialFiltration ℝ V :=
+  ⟨labelledComplex sites, fun _ _ h => nerve_mono fun _ _ hx => ⟨hx.1, hx.2.trans h⟩⟩
+
+theorem labelledComplexFiltration_eq_complexFiltration (p : V ↪ E) :
+    labelledComplexFiltration p = Alpha.complexFiltration p := rfl
+
+/-- Forgetting the nearest-site inequalities gives the inclusion on the same labels. -/
+theorem labelledComplexFiltration_le_squaredCech (t : ℝ) :
+    labelledComplexFiltration sites t ≤ squaredCechFiltration sites t := by
+  change labelledComplex sites t ≤ squaredCechFiltration sites t
+  by_cases ht : t < 0
+  · rw [labelledComplex_eq_bot_of_neg sites ht]
+    exact bot_le
+  · rw [squaredCechFiltration_apply_of_nonneg sites (le_of_not_gt ht)]
+    exact nerve_mono fun _ _ hx => Real.le_sqrt_of_sq_le hx.2
+
+private theorem isClosed_restrictedBall (t : ℝ) (v : V) : IsClosed (restrictedBall sites t v) := by
+  apply IsClosed.inter
+  · simp only [Set.ofPred_forall]
+    exact isClosed_iInter fun _ => isClosed_le (continuous_id.dist continuous_const)
+      (continuous_id.dist continuous_const)
+  · exact isClosed_le ((continuous_id.dist continuous_const).pow 2) continuous_const
+
+private theorem exists_restricted_of_ball [Finite V] {x : E} {t : ℝ} {v : V}
+    (hv : dist x (sites v) ≤ Real.sqrt t) (ht : 0 ≤ t) :
+    ∃ w, x ∈ restrictedBall sites t w := by
+  classical
+  let := Fintype.ofFinite V
+  obtain ⟨w, -, hw⟩ := Finset.exists_min_image Finset.univ
+    (fun j => dist x (sites j)) ⟨v, Finset.mem_univ v⟩
+  refine ⟨w, fun j => hw j (Finset.mem_univ j), ?_⟩
+  exact (Real.le_sqrt dist_nonneg ht).mp ((hw v (Finset.mem_univ v)).trans hv)
+
+private def overlapOn (S : Set E) (P : V → Set E) (u v : V) : Prop :=
+  ∃ x ∈ S, x ∈ P u ∧ x ∈ P v
+
+private theorem finite_closed_cover_reachable [Finite V] {S : Set E} {P : V → Set E}
+    (hS : IsPreconnected S) (hclosed : ∀ j, IsClosed (P j))
+    (hcover : ∀ x ∈ S, ∃ j, x ∈ P j)
+    {u v : V} (hu : (S ∩ P u).Nonempty) (hv : (S ∩ P v).Nonempty) :
+    Relation.EqvGen (overlapOn S P) u v := by
+  classical
+  let reach := Relation.EqvGen (overlapOn S P) u
+  let A : Set E := ⋃ j : {j // reach j}, P j
+  let B : Set E := ⋃ j : {j // ¬ reach j}, P j
+  have hA : IsClosed A := isClosed_iUnion_of_finite fun j => hclosed j
+  have hB : IsClosed B := isClosed_iUnion_of_finite fun j => hclosed j
+  have cover : S ⊆ A ∪ B := by
+    intro x hx
+    obtain ⟨j, hj⟩ := hcover x hx
+    by_cases hr : reach j
+    · exact Or.inl (Set.mem_iUnion.mpr ⟨⟨j, hr⟩, hj⟩)
+    · exact Or.inr (Set.mem_iUnion.mpr ⟨⟨j, hr⟩, hj⟩)
+  have noCross {x : E} (hx : x ∈ S) (hxA : x ∈ A) (hxB : x ∈ B) : False := by
+    obtain ⟨a, ha⟩ := Set.mem_iUnion.mp hxA
+    obtain ⟨b, hb⟩ := Set.mem_iUnion.mp hxB
+    exact b.property (Relation.EqvGen.trans _ _ _ a.property
+      (Relation.EqvGen.rel _ _ ⟨x, hx, ha, hb⟩))
+  have disjoint : S ∩ (A ∩ B) = ∅ := by
+    apply Set.eq_empty_iff_forall_notMem.mpr
+    rintro x ⟨hx, ha, hb⟩
+    exact noCross hx ha hb
+  have intoA : S ⊆ A := by
+    rcases (isPreconnected_iff_subset_of_disjoint_closed.mp hS) A B hA hB cover disjoint with h | h
+    · exact h
+    · obtain ⟨x, hx, hxu⟩ := hu
+      exact (noCross hx (Set.mem_iUnion.mpr ⟨⟨u, Relation.EqvGen.refl u⟩, hxu⟩)
+        (h hx)).elim
+  by_contra h
+  obtain ⟨x, hx, hxv⟩ := hv
+  exact noCross hx (intoA hx) (Set.mem_iUnion.mpr ⟨⟨v, h⟩, hxv⟩)
+
+/-- The endpoints of a Čech edge can be joined by α edges at the same squared grade. -/
+theorem cech_edge_reachable [DecidableEq V] [Finite V] [NormedSpace ℝ E] {t : ℝ} (ht : 0 ≤ t)
+    {u v : V}
+    (h : ({u, v} : Finset V) ∈ Cech.complex sites (Real.sqrt t)) :
+    Relation.EqvGen (fun a b => ({a, b} : Finset V) ∈ labelledComplex sites t) u v := by
+  let S := segment ℝ (sites u) (sites v)
+  have hS : IsPreconnected S := (convex_segment _ _).isPreconnected
+  have hdist := Cech.dist_le_two_mul_of_mem_complex sites h
+    (Finset.mem_insert_self _ _) (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))
+  have hcover (x : E) (hx : x ∈ S) : ∃ j, x ∈ restrictedBall sites t j := by
+    have hadd := dist_add_dist_of_mem_segment hx
+    rw [dist_comm (sites u) x] at hadd
+    by_cases hu : dist x (sites u) ≤ Real.sqrt t
+    · exact exists_restricted_of_ball sites hu ht
+    · apply exists_restricted_of_ball sites (v := v) _ ht
+      linarith
+  have endpoint (j : V) (hj : sites j ∈ S) :
+      (S ∩ restrictedBall sites t j).Nonempty := by
+    refine ⟨sites j, hj, ?_, ?_⟩
+    · intro a
+      simp
+    · simp [ht]
+  have reach := finite_closed_cover_reachable hS (isClosed_restrictedBall sites t) hcover
+    (endpoint u (left_mem_segment ℝ _ _)) (endpoint v (right_mem_segment ℝ _ _))
+  refine Relation.EqvGen.mono ?_ u v reach
+  intro a b hab
+  obtain ⟨x, -, ha, hb⟩ := hab
+  exact ⟨⟨a, Finset.mem_insert_self _ _⟩, x, by
+    intro j hj
+    rcases Finset.mem_insert.mp hj with rfl | hj
+    · exact ha
+    · obtain rfl := Finset.mem_singleton.mp hj
+      exact hb⟩
+
+end TDA.Filtration.Alpha

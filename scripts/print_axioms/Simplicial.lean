@@ -336,3 +336,6 @@ import TDA
 #print axioms TDA.Simplicial.Contiguous.prismAdmissible
 #print axioms TDA.Simplicial.simplicialHomologyIncl_isIso_of_eq
 #print axioms TDA.Simplicial.isZero_simplicialHomology_bot
+
+-- Degree-zero α–Čech comparison.
+#print axioms TDA.Simplicial.simplicialHomologyIncl_zero_isIso_of_edge_reachable

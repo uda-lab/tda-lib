@@ -694,3 +694,18 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.Examples.square_full_tie
 #print axioms TDA.Filtration.RationalAlpha.Examples.obtuse_alpha_long_edge
 #print axioms TDA.Filtration.RationalAlpha.Examples.obtuse_cech_long_edge
+
+-- Degree-zero α–Čech comparison.
+#print axioms TDA.Filtration.Alpha.labelledComplex
+#print axioms TDA.Filtration.Alpha.labelledComplex_eq_complex
+#print axioms TDA.Filtration.Alpha.mem_labelledComplex_iff
+#print axioms TDA.Filtration.Alpha.squaredCechRadius
+#print axioms TDA.Filtration.Alpha.squaredCechFiltration
+#print axioms TDA.Filtration.Alpha.squaredCechFiltration_apply_of_nonneg
+#print axioms TDA.Filtration.Alpha.squaredCechFiltration_apply_of_neg
+#print axioms TDA.Filtration.Alpha.labelledComplex_eq_bot_of_neg
+#print axioms TDA.Filtration.Alpha.singleton_mem_labelledComplex
+#print axioms TDA.Filtration.Alpha.labelledComplexFiltration
+#print axioms TDA.Filtration.Alpha.labelledComplexFiltration_eq_complexFiltration
+#print axioms TDA.Filtration.Alpha.labelledComplexFiltration_le_squaredCech
+#print axioms TDA.Filtration.Alpha.cech_edge_reachable

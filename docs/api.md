@@ -1775,6 +1775,19 @@ equality of diagrams, not of lists. No bound on the cost of the existing
 reduction, no representatives for the Rips complex and no statement for invalid
 tables beyond rejection are provided.
 
+For finite labelled sites, `Alpha.labelledComplexFiltration` is the closed
+Voronoi-ball nerve on squared grades. It allows coincident sites and agrees
+with `Alpha.complexFiltration` on embeddings. `Alpha.squaredCechFiltration`
+uses the closed ambient Čech complex at radius √t for t ≥ 0. Both filtrations
+have empty stages at t < 0. Each Čech edge at a nonnegative grade admits an
+α path at the same grade (`Alpha.cech_edge_reachable`).
+
+`TDA.Persistence.alphaH0Iso` is the natural isomorphism in ordinary degree
+zero over any field. Its forward map is `alphaH0Comparison`, induced by the
+identity on labels at each grade. Signed edge boundaries telescope along
+replacement paths, giving the same degree-zero boundary subspace under
+the common vertex basis.
+
 For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`
 computes an F₂ barcode with exact rational squared-radius endpoints. It accepts
 the empty family and rejects precisely families with repeated coordinates.
