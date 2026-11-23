@@ -1391,19 +1391,22 @@ of the free module `ι →₀ R` with `d ∘ₗ d = 0`, and generators `x ≠ y`
 differential `LinearMap.gaussianElimination` on the free module over `{x, y}ᶜ`, with homotopy
 `z ↦ ⟨z, y⟩ u⁻¹ x`. With `x = b`, `y = a` and `u = D a b = 1`, its reduced differential,
 inclusion, projection and homotopy have the entries of `reducedDifferential`, `inclusion`,
-`projection` and `homotopy` here. The contraction's fields give `reducedDifferential_sq_zero`
-(as `LinearMap.gaussianElimination_comp_self`), the chain-map equations,
+`projection` and `homotopy` here. The contraction's fields give the chain-map equations,
 `projection_mul_inclusion`, `one_sub_inclusion_mul_projection` and the three annihilation
-identities. `TauCeti.LinearContraction.homologyEquiv` then gives the isomorphism of homologies,
-which `UnitCancellation` does not state. These TauCeti constructions are `noncomputable`, and
-their data are linear maps.
+identities. `LinearMap.gaussianElimination_comp_self`, derived from the contraction and
+`d ∘ₗ d = 0` by `TauCeti.LinearContraction.dN_comp_dN_eq_zero`, gives
+`reducedDifferential_sq_zero`. `TauCeti.LinearContraction.homologyEquiv` then gives the
+isomorphism of homologies, which `UnitCancellation` does not state. These TauCeti
+constructions are `noncomputable`, and their data are linear maps.
 
 `UnitCancellation` works over a commutative ring with a finite basis and `Matrix` data. Its
-entry formulas are computable, and its finite fixtures are decided by kernel evaluation. It
-states `projection_mul_inclusion` and the annihilation identities from `a ≠ b` alone. It proves
-degree statements for the projection, inclusion and homotopy as well as the reduced
-differential, and it proves the grade statements. In that TauCeti file, the only degree
-statement is `LinearMap.eq_add_of_gaussianElimination_single_apply_ne_zero`. It concerns the
+entry formulas are computable, and the closed computations of its fixtures in
+`TDA.Persistence.Morse.UnitCancellationExamples` are kernel `decide` evaluations,
+`triangle_boundary` after a `norm_num` unfolding. It states `projection_mul_inclusion` and
+the annihilation identities from `a ≠ b` alone. It proves degree statements for the
+projection, inclusion and homotopy as well as the reduced differential, and it proves the
+grade statements. In `GaussianElimination.lean`, the only degree statement is
+`LinearMap.eq_add_of_gaussianElimination_single_apply_ne_zero`. It concerns the
 reduced differential, for a fixed shift in any type with addition and a nonzero pivot
 coefficient. The file has no grade or filtration statement. TauCeti is not a dependency.
 
