@@ -328,3 +328,33 @@ import TDA
 #print axioms TDA.Topology.exists_pos_common_convex_thickening
 #print axioms TDA.Topology.NerveThickeningExamples.path_and_triangle_preserved
 #print axioms TDA.Topology.NerveThickeningExamples.duplicate_edge_and_empty_label
+
+-- Realizations, coordinate-star covers, and the triangle boundary inclusion.
+#print axioms TDA.Topology.Realization.incl
+#print axioms TDA.Topology.Realization.incl_weights
+#print axioms TDA.Topology.Realization.incl_id
+#print axioms TDA.Topology.Realization.incl_comp
+#print axioms TDA.Topology.Realization.isEmbedding_weights
+#print axioms TDA.Topology.Realization.coordinateStar
+#print axioms TDA.Topology.Realization.isOpen_coordinateStar
+#print axioms TDA.Topology.Realization.mem_coordinateStar_iff
+#print axioms TDA.Topology.Realization.covers_coordinateStar
+#print axioms TDA.Topology.Realization.isEmpty_bot
+#print axioms TDA.Topology.Realization.isEmpty_of_isEmpty
+#print axioms TDA.Topology.Realization.coordinateStar_eq_empty
+#print axioms TDA.Topology.Realization.faceBarycenter
+#print axioms TDA.Topology.Realization.faceBarycenter_weights_of_mem
+#print axioms TDA.Topology.Realization.faceBarycenter_support
+#print axioms TDA.Topology.Realization.interMember_nonempty_iff
+#print axioms TDA.Topology.Realization.nerve_coordinateStar
+#print axioms TDA.Topology.Realization.contraction
+#print axioms TDA.Topology.Realization.contraction_weights
+#print axioms TDA.Topology.Realization.contraction_support_subset
+#print axioms TDA.Topology.Realization.contractibleSpace_starIntersection
+#print axioms TDA.Topology.Realization.pullback_coordinateStar
+#print axioms TDA.Topology.Realization.preimage_interMember
+#print axioms TDA.Topology.Realization.starNerveInclusion
+#print axioms TDA.Topology.Realization.starNerveInclusion_naturality
+#print axioms TDA.Topology.RealizationExamples.triangle_star_intersections
+#print axioms TDA.Topology.RealizationExamples.triangle_nerve_square
+#print axioms TDA.Topology.RealizationExamples.triangle_incl_not_surjective
