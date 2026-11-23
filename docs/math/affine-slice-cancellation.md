@@ -41,7 +41,9 @@ in a common finite ordered grid. Each occurrence becomes a finite index bar,
 with essential deaths represented by the terminal index. Finite-barcode
 uniqueness then gives equality of the index bars, and mapping back gives
 equality of the original real endpoints. This preserves repeated endpoints
-and also covers the empty grid.
+and also covers the empty grid. The argument is `multiset_eq_of_sliceCounts_eq`
+of `TDA.Persistence.DiagramRankUniqueness`, for any linear order, and
+`RealBarcodeRankUniqueness` applies it over `ℝ`.
 
 ## Applying a rank-exact resolution
 

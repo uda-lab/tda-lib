@@ -916,10 +916,14 @@ and principal deaths remain infinite. Domination is proved before the
 equivalent multiset-subtraction formula.
 
 `RealBarcodeRankUniqueness` compares finite positive endpoint multisets
-through all their rank counts. `RankExactBarcodeCancellation` telescopes
-actual rank-exact rows, and `AffineSliceRank` converts the actual hook-sum
-presentations into these counts. The capstone derives the needed resolution
-and ordinary barcode realization from the original presentation. See
+through all their rank counts. Its theorem
+`RealBarcode.multiset_eq_of_rankCounts_eq` is the real instance of
+`multiset_eq_of_sliceCounts_eq` of `TDA.Persistence.DiagramRankUniqueness`,
+which holds over any linear order (with `Diagram.eq_of_sliceCounts_eq`).
+`RankExactBarcodeCancellation` telescopes actual rank-exact rows, and
+`AffineSliceRank` converts the actual hook-sum presentations into these
+counts. The capstone derives the needed resolution and ordinary barcode
+realization from the original presentation. See
 [affine slice cancellation](math/affine-slice-cancellation.md).
 
 ### Positive affine slices
@@ -2517,6 +2521,58 @@ certificates `sqCert` and `genCert` on the multi-grade square. The sorts and the
 matrices are evaluated by `decide +kernel`. These modules run no reduction and state no barcode
 or diagram agreement with the reducer; see
 [the reducer order of a filtered based complex](math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex).
+The reducer output on that order and its rank semantics are in
+[the graded reducer output of filtered based complexes](#the-graded-reducer-output-of-filtered-based-complexes).
+
+## The graded reducer output of filtered based complexes
+
+`TDA.Persistence.DiagramRankUniqueness` (imported by `TDA.Persistence`) proves, over any
+`LinearOrder α`, that two finite multisets of positive points in `α × WithTop α` with equal
+slice counts are equal (`multiset_eq_of_sliceCounts_eq`), and the same for positive diagrams
+(`Diagram.eq_of_sliceCounts_eq`). The slice count at `a ≤ b` counts the points `(b', d)` with
+`b' ≤ a` and `b < d`, the predicate of `rank_sublevelHomologyMap`.
+
+`TDA.Persistence.Morse.ReducerDiagram` (imported by `TDA.Persistence`) reads the output of the
+column reducer of `TDA.Persistence.Reduction` on `D : Matrix (Fin m) (Fin m) k` over a field
+with decidable equality, with `degree : Fin m → ℕ` and `grade : Fin m → ℤ`. `reduced` is
+`replay D (matrixReductionTrace D)`; `pivotPairs` and `essentialIndices` list its pivot pairs
+and essential indices (`mem_pivotPairs`, `mem_essentialIndices`); `pairOccurrence` gives
+`none` for an equal-grade pair; `occurrences` lists `FiniteInput.Occurrence`s and
+`diagram … p : Diagram ℤ` collects the degree-`p` points. On `FiniteInput.boundary xs` they
+are `FiniteInput.occurrences` and `FiniteInput.outputDiagram` by `rfl` (`occurrences_boundary`,
+`diagram_boundary`). The instances `decidableStrictBoundary` and `decidableLowersDegree` decide
+the reducer's input conditions entrywise.
+
+`stage grade a` counts the indices of grade `≤ a` (`stage_le`, `stage_mono`); for monotone
+grades, `grade_le_iff_lt_stage`, `sublevelSupported_iff_prefixSupported`,
+`sublevelCycles_eq_originalCycleSpace` and `mem_sublevelBoundaries_iff_originalBoundary`
+identify grade sublevels with the reducer's prefixes. `prefixHomologyEquiv` identifies
+`sublevelHomology … a` with the reducer's `originalHomology` at `stage grade a`
+(`prefixHomologyEquiv_mk`, `prefixHomologyEquiv_naturality`,
+`finrank_range_sublevelHomologyMap_eq`). For monotone grades, `countP_diagram` equates the slice
+count of `diagram` with the right side of `matrixReductionTrace_originalHomologyMap_rank_formula`
+at the stages. Under `D * D = 0`, `StrictBoundary D`, `LowersDegree degree D` and
+`Monotone grade`, `rankOfStructureMap_eq_countP` states that the rank of the structure map
+`a ≤ b` of `sublevelHomologyPModule degree grade D p` is that slice count,
+`diagram_isPositive` holds, and `eq_diagram_of_rankCounts` states that `diagram` is the only
+positive diagram with these slice counts.
+
+For a finite linearly ordered carrier `ι : Type`, `reducerOccurrences` and `reducerDiagram` are
+the output on `reducerMatrix` with the transported degree and grade. For a filtered
+differential over a field, `rankOfStructureMap_eq_countP_reducerDiagram` gives the ranks of the
+original complex's `sublevelHomologyPModule` as slice counts of `reducerDiagram`, through
+`reducerHomologyIso`; `reducerDiagram_isPositive` and `eq_reducerDiagram_of_rankCounts`
+follow. The builders, `stage`, `reducerOccurrences`, `reducerDiagram` and the two instances are
+computable; `prefixHomologyEquiv` is `noncomputable`.
+
+`TDA.Persistence.Morse.ReducerDiagramExamples` (imported by `TDA.Persistence.Examples`) has
+fixtures P1–P3 over `ZMod 2` on written-out matrices: P1, a hollow triangle with staggered
+edge grades, with its pivot pairs, essential indices, occurrences, diagrams and four ranks; P2,
+the reducer matrix of the path R2, whose only pivot pair has equal grades and is dropped; and
+P3, the reducer matrix of the square R3, with degree-1 diagram `{(1, 2)}` and two ranks.
+These modules run no reducer on the Morse complex of a certificate and state no agreement with
+`dgm`; see
+[the graded reducer output and its rank semantics](math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics).
 
 ## Compatible lifts and algebraic sums over the reals
 

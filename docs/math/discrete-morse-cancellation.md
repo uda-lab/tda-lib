@@ -1073,7 +1073,11 @@ statements are propositions.
 `TDA.Persistence.Morse.ReducerOrder` and its fixture file provide none of the following:
 
 - a reducer run on Morse chain data, its pivot pairs, occurrences or diagrams, or an agreement
-  with `dgm` or with `FiniteInput.outputDiagram`; these remain for #1061;
+  with `dgm` or with `FiniteInput.outputDiagram`; the reducer output of a filtered based
+  complex and its rank semantics are in
+  [the graded reducer output and its rank semantics](#the-graded-reducer-output-and-its-rank-semantics),
+  and the run on the Morse complex of a certificate and the agreement with `dgm` remain for
+  #1061;
 - independence of the reducer's output from the tie order beyond what `sortList_eq_of_perm`
   gives, namely independence of the enumeration that is sorted;
 - a gradient-path formula, reducer statements over a ring other than a field, or a runtime
@@ -1135,6 +1139,208 @@ the memberships in `cA`, `cAB` and `cC` are `decide +kernel`, and the bounds in 
 The two negative fixtures exhibit the offending entry rather than decide `StrictBoundary`; the
 matrix equalities are stated against `Matrix.of`, which `decide +kernel` evaluates. No fixture
 runs the reducer or computes homology.
+
+## The graded reducer output and its rank semantics
+
+`TDA.Persistence.Morse.ReducerDiagram` (namespace `TDA.Persistence.Morse.ReducerDiagram`)
+reads the output of the column reducer of `TDA.Persistence.Reduction` on a square matrix over
+`Fin m` as occurrences and diagrams over integer grades, and proves that, under the reducer's
+input conditions and monotone grades, their slice counts are the ranks of the grade-sublevel
+homology persistence module of
+[sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism).
+On the reducer order of
+[the reducer order of a filtered based complex](#the-reducer-order-of-a-filtered-based-complex),
+this gives a diagram over `ℤ` for every filtered differential over a field.
+`TDA.Persistence.DiagramRankUniqueness` (namespace `TDA.Persistence`) proves that a positive
+diagram is determined by its slice counts.
+
+### The reducer output
+
+Over a field `k` with decidable equality, for `D : Matrix (Fin m) (Fin m) k`,
+`degree : Fin m → ℕ` and `grade : Fin m → ℤ`:
+
+- `reduced D` is `replay D (matrixReductionTrace D)`, the reduced matrix of the reducer.
+- `pivotPairs D` lists, over the columns `j` in increasing order, the pairs `(i, j)` whose
+  reduced column `j` has pivot row `i` (`columnPivot`, its greatest nonzero row);
+  `mem_pivotPairs` states this membership.
+- `essentialIndices D` lists the indices whose reduced column is zero and which are no pivot
+  row; `mem_essentialIndices` identifies them with `IsEssential (reduced D)`.
+- `pairOccurrence degree grade (i, j)` is `none` when `grade i = grade j`, and otherwise the
+  `FiniteInput.Occurrence` with degree `degree i`, birth `grade i` and finite death `grade j`.
+- `occurrences degree grade D` lists the `pairOccurrence` values of the pivot pairs that are
+  not `none`, followed by the essential indices with essential death, and
+  `diagram degree grade D p : Diagram ℤ` collects the points `Occurrence.point` of the
+  degree-`p` occurrences, with multiplicity.
+
+These follow `FiniteInput.reduced`, `pivotPairs`, `essentialIndices`, `pairOccurrence`,
+`occurrences` and `outputDiagram`, with the finite input replaced by `(degree, grade, D)`. On
+the boundary matrix `FiniteInput.boundary xs`, with `FiniteInput.degree xs` and the grades of
+`xs`, `occurrences_boundary` and `diagram_boundary` state by `rfl` that `occurrences` is
+`FiniteInput.occurrences xs` and `diagram` is `FiniteInput.outputDiagram xs p`. `FiniteInput`
+and the reducer are unchanged.
+
+`decidableStrictBoundary` and `decidableLowersDegree` decide `StrictBoundary D` and
+`LowersDegree degree D` entry by entry over `Fin m`.
+
+### Prefixes and sublevel homology
+
+`stage grade a` is the number of indices `i` with `grade i ≤ a`; `stage_le` bounds it by `m`
+and `stage_mono` states that it is monotone in `a`. For monotone `grade`,
+`grade_le_iff_lt_stage` states that `grade i ≤ a` exactly when `i.val < stage grade a`: the
+indices of grade at most `a` are the first `stage grade a` indices. Hence, for monotone
+`grade`:
+
+- `sublevelSupported_iff_prefixSupported`: support in grades `≤ a` is support in the prefix
+  `stage grade a`;
+- `sublevelCycles_eq_originalCycleSpace`: `sublevelCycles degree grade D p a` is the reducer's
+  prefix cycle space `originalCycleSpace degree D p (stage grade a)`;
+- `mem_sublevelBoundaries_iff_originalBoundary`: the sublevel boundaries in grades `≤ a` are
+  the reducer's prefix boundaries `OriginalBoundary` at `stage grade a`.
+
+The reducer's `originalHomology` at a prefix is the prefix cycle space modulo the kernel of
+`originalLiveMap`, and `originalHomology_kernel_eq_boundaries` identifies that kernel with the
+prefix boundaries. For any normal-form data `R`, `V`, `W` of `D` with the hypotheses of
+`originalHomology`, `prefixHomologyEquiv` is the resulting linear equivalence from
+`sublevelHomology degree grade D p a` to `originalHomology … p (stage grade a)`, built from
+`Submodule.Quotient.equiv` and `LinearEquiv.ofEq`. It keeps the representing cycle
+(`prefixHomologyEquiv_mk`, `rfl`), and `prefixHomologyEquiv_naturality` carries the sublevel
+structure map `a ≤ b` to the reducer's `originalHomologyMap` from `stage grade a` to
+`stage grade b`; it is checked on representatives with `originalHomologyMap_mk`. So the two
+maps have ranges of equal dimension (`finrank_range_sublevelHomologyMap_eq`).
+
+### The rank theorem
+
+The slice count of a diagram at `a ≤ b` is the number of its points `(b', d)`, with
+multiplicity, such that `b' ≤ a` and `b < d`: inclusive birth and strict death, the predicate
+of `rank_sublevelHomologyMap` and of `RealBarcode.multiset_eq_of_rankCounts_eq`.
+
+- `countP_diagram`: for monotone `grade` and `a ≤ b`, the slice count of
+  `diagram degree grade D p` is the cardinality of
+  `deathSurvivorFinset degree (reduced D) p (stage grade a) (stage grade b)` plus that of
+  `essentialSurvivorFinset degree (reduced D) p (stage grade a)`, the right side of the
+  reducer's rank formula `matrixReductionTrace_originalHomologyMap_rank_formula` at the stages
+  of `a` and `b`. A pivot pair `(i, j)` counts there when `degree i = p`,
+  `i.val < stage grade a` and `stage grade b ≤ j.val`, that is, `grade i ≤ a` and
+  `b < grade j`. An equal-grade pair would need `grade i ≤ a ≤ b < grade j = grade i`, so it
+  counts for no `a ≤ b`; this is why `pairOccurrence` may drop it.
+- `rankOfStructureMap_eq_countP`: under `D * D = 0`, `StrictBoundary D`,
+  `LowersDegree degree D` and `Monotone grade`, the rank of the structure map `a ≤ b` of
+  `sublevelHomologyPModule degree grade D p` is the slice count of `diagram degree grade D p`
+  at `a ≤ b`. The proof takes the normal-form data of
+  `matrixReductionTrace_normalForm_input`, applies `finrank_range_sublevelHomologyMap_eq` and
+  `countP_diagram`, and closes with the rank formula.
+- `diagram_isPositive`: under the same hypotheses, every point has birth strictly below death.
+  A pivot pair `(i, j)` has `i < j` because the reduced matrix is `StrictBoundary`, so
+  `grade i ≤ grade j` by monotonicity, and the kept pairs have `grade i ≠ grade j`; essential
+  points have death `⊤`.
+- `eq_diagram_of_rankCounts`: under the same hypotheses, a positive diagram whose slice counts
+  are the ranks of `sublevelHomologyPModule degree grade D p` is `diagram degree grade D p`.
+
+### Uniqueness from slice counts
+
+In `TDA.Persistence.DiagramRankUniqueness`, over any `LinearOrder α`,
+`multiset_eq_of_sliceCounts_eq` states that two finite multisets of points in
+`α × WithTop α`, each point with birth strictly below death (`⊤` allowed as death), with equal
+slice counts at all `a ≤ b`, are equal; `Diagram.eq_of_sliceCounts_eq` states the same for
+positive diagrams. The births and finite deaths of both multisets lie on one finite grid
+`Finset.orderEmbOfFin`. On it each multiset is `ofIndexBars` of a finite index barcode, the slice
+counts become interval counts of those barcodes (`ofIndexBars_countP_grades`), and
+finite-barcode uniqueness (`rankBarcode_barcodeModule`, `rank_barcodeMap`, with a barcode
+module over `ℚ`) recovers them. `RealBarcode.multiset_eq_of_rankCounts_eq` of
+`TDA.Persistence.RealBarcodeRankUniqueness` is proved as its instance over `ℝ`; its statement
+is unchanged.
+
+### Filtered based complexes
+
+For `ι : Type` with `[LinearOrder ι] [Fintype ι]`, over a field with decidable equality,
+`reducerOccurrences degree grade D` and `reducerDiagram degree grade D p` are `occurrences` and
+`diagram` of `reducerMatrix degree grade D`, with the degree `degree ∘ reducerEquiv degree grade`
+and the grade `grade ∘ reducerEquiv degree grade`. For `IsFilteredDifferential degree grade D`:
+
+- `rankOfStructureMap_eq_countP_reducerDiagram`: the rank of the structure map `a ≤ b` of
+  `sublevelHomologyPModule degree grade D p`, the module of the original complex, is the slice
+  count of `reducerDiagram degree grade D p` at `a ≤ b`. It transports the rank theorem along
+  `reducerHomologyIso` (`rankOfStructureMap_iso`), with the hypotheses
+  `reducerMatrix_sq_zero`, `strictBoundary_reducerMatrix`, `lowersDegree_reducerMatrix` and
+  `monotone_grade`.
+- `reducerDiagram_isPositive`: `reducerDiagram degree grade D p` is positive.
+- `eq_reducerDiagram_of_rankCounts`: a positive diagram whose slice counts are the ranks of
+  `sublevelHomologyPModule degree grade D p` is `reducerDiagram degree grade D p`.
+
+### Executable and semantic parts of the output
+
+Computable: `reduced`, `pivotPairs`, `essentialIndices`, `pairOccurrence`, `occurrences`,
+`diagram`, `stage`, `reducerOccurrences`, `reducerDiagram` and the two instances. The fixtures
+evaluate `pivotPairs`, `essentialIndices`, `occurrences` and `diagram` by `decide +kernel`, and
+decide `StrictBoundary` and `LowersDegree` through the two instances.
+`FiniteInput.occurrences` has a stored-pivot `@[csimp]` implementation; the generic
+`occurrences` has none, so its compiled evaluation may repeat the reduction for each entry.
+Kernel `decide` is unaffected, and no runtime claim is made.
+Semantic: `prefixHomologyEquiv` is `noncomputable`, and the other statements are propositions.
+
+### Scope of the reducer output
+
+`TDA.Persistence.Morse.ReducerDiagram`, `TDA.Persistence.DiagramRankUniqueness` and the fixture
+file provide none of the following:
+
+- a certificate-level run of the reducer on the Morse complex of a certified matching, or an
+  agreement of such a run with `dgm` or with `FiniteInput.outputDiagram`; these remain for
+  #1061;
+- a change to the statement of `RealBarcode.multiset_eq_of_rankCounts_eq` or to
+  `dgm_eq_of_vertexMaps`;
+- an interval module or an interval decomposition over `ℤ`;
+- independence of the occurrence list `reducerOccurrences` from the tie order of the reducer
+  order, and a declaration stating that `reducerDiagram` does not depend on it;
+- reducer statements over a ring other than a field, or a runtime bound or speedup claim;
+- a source attribution; see [comparison with MN13](#comparison-with-mn13).
+
+### Reducer output fixtures
+
+The fixtures are in `TDA.Persistence.Morse.ReducerDiagramExamples`, over `ZMod 2`, on
+written-out matrices.
+
+- P1. `triD` is the boundary matrix of a hollow triangle on `Fin 6`: vertices `0, 1, 2` at
+  grade 0, edges `3 = 01` and `4 = 12` at grade 1 and `5 = 02` at grade 2 (`triDegree`,
+  `triGrade`). The four hypotheses of the rank theorem hold (`tri_sq_zero`,
+  `tri_strictBoundary`, `tri_lowersDegree`, `tri_monotone`). Columns 3 and 4 keep their pivots
+  1 and 2; column 5 has pivot 2, becomes `0 + 1` after adding column 4 and zero after adding
+  column 3. So the pivot pairs are `(1, 3)` and `(2, 4)` (`tri_pivotPairs`), the essential
+  indices `0` and `5` (`tri_essentialIndices`), and the occurrences are
+  `[⟨0, 0, .finite 1⟩, ⟨0, 0, .finite 1⟩, ⟨0, 0, .essential⟩, ⟨1, 2, .essential⟩]`
+  (`tri_occurrences`). The degree-0 diagram is `{(0, 1), (0, 1), (0, ⊤)}` and the degree-1
+  diagram `{(2, ⊤)}` (`tri_diagram_zero`, `tri_diagram_one`). In degree 0 the structure maps
+  `0 ≤ 0` and `0 ≤ 1` have ranks 3 and 1 (`tri_rank_zero`); in degree 1 the structure maps
+  `1 ≤ 2` and `2 ≤ 5` have ranks 0 and 1 (`tri_rank_one`).
+- P2. `pathD` is the right-hand side of `path_reducerMatrix` of fixture R2 of
+  [reducer order fixtures](#reducer-order-fixtures): the matrix with entries in rows 0 and 1 of
+  column 2, for the reducer order A, C, AB with degrees 0, 0, 1 (`pathDegree`) and all grades 0
+  (`pathGrade`). The pivot pair `(1, 2)` (`path_pivotPairs`) has equal grades and is dropped, so
+  the only occurrence is the essential `⟨0, 0, .essential⟩` (`path_occurrences`); the degree-0
+  diagram is `{(0, ⊤)}` and the degree-1 diagram is empty (`path_diagram`).
+- P3. `sqD` is the right-hand side of `sqCert_reducerMatrix` of fixture R3: the matrix with the
+  single entry in row 1 and column 2, with degrees and grades `0, 1, 2` (`sqDegree`,
+  `sqGrade`). The occurrences are `[⟨1, 1, .finite 2⟩, ⟨0, 0, .essential⟩]`
+  (`sq_occurrences`); the degree-1 diagram is `{(1, 2)}` and the degree-0 diagram `{(0, ⊤)}`
+  (`sq_diagram`); in degree 1 the structure maps `1 ≤ 1` and `1 ≤ 2` have ranks 1 and 0
+  (`sq_rank_one`).
+
+The fixture file has 9 public definitions, all `def`s written out (`triD`, `triDegree`,
+`triGrade`, `pathD`, `pathDegree`, `pathGrade`, `sqD`, `sqDegree`, `sqGrade`), and 17 public
+theorems. Of the theorems:
+
+- thirteen are a single `decide +kernel`: `tri_sq_zero`, `tri_strictBoundary`,
+  `tri_lowersDegree`, `tri_pivotPairs`, `tri_essentialIndices`, `tri_occurrences`,
+  `tri_diagram_zero`, `tri_diagram_one`, `path_pivotPairs`, `path_occurrences`,
+  `path_diagram`, `sq_occurrences` and `sq_diagram`;
+- `tri_monotone` unfolds `triGrade` by `simp only` and closes by `split_ifs <;> omega`;
+- two rewrite twice with `rankOfStructureMap_eq_countP`, from `tri_sq_zero`,
+  `tri_strictBoundary`, `tri_lowersDegree` and `tri_monotone`, and end in `decide +kernel`:
+  `tri_rank_zero` and `tri_rank_one`;
+- `sq_rank_one` proves three local hypotheses by `decide +kernel` and monotonicity by the term
+  `Int.ofNat_le.mpr`, rewrites twice with `rankOfStructureMap_eq_countP` and ends in
+  `decide +kernel`.
+
+No fixture runs a certificate, evaluates `reducerDiagram` or mentions `dgm`.
 
 ## Comparison with MN13
 
@@ -1227,12 +1433,18 @@ Thm. 4.3 is recorded or made here.
 `reducerHomologyIso` and the R1–R3 fixtures of `TDA.Persistence.Morse.ReducerOrderExamples` are
 library derivations attributed to no numbered result; no source text is consulted.
 
+The builders `reduced`, `pivotPairs`, `essentialIndices`, `pairOccurrence`, `occurrences` and
+`diagram`, `stage` and its lemmas, `prefixHomologyEquiv` and its lemmas, the rank and
+uniqueness theorems, the two instances, `TDA.Persistence.DiagramRankUniqueness` and the P1–P3
+fixtures of `TDA.Persistence.Morse.ReducerDiagramExamples` are library derivations attributed
+to no numbered result; no source text is consulted.
+
 ## What is not provided
 
 - The simplicial bridge to `sublevelModule` and the main theorem of #1041 are in
   [the simplicial bridge and the Morse persistence theorem](#the-simplicial-bridge-and-the-morse-persistence-theorem);
-  there is no interval decomposition of these persistence modules, and no barcode agreement
-  with the reducer (#1061). The Morse complex
+  there is no interval decomposition of these persistence modules, and no agreement of a
+  reducer run on the Morse complex of a certificate with `dgm` (#1061). The Morse complex
   of a certified matching and the derivation of its schedule are in
   [the pivot schedule of a certified matching](#the-pivot-schedule-of-a-certified-matching).
   The Morse differential is defined only by the recursion of
@@ -1242,9 +1454,14 @@ library derivations attributed to no numbered result; no source text is consulte
   generators to `Fin` along which a filtered differential over a field satisfies the reducer's
   input conditions, is in
   [the reducer order of a filtered based complex](#the-reducer-order-of-a-filtered-based-complex);
-  no reducer run on Morse chain data and no agreement of its output with `dgm` are provided
-  (#1061).
+  the reducer output of a filtered based complex, its rank semantics and the uniqueness of a
+  positive diagram with given slice counts are in
+  [the graded reducer output and its rank semantics](#the-graded-reducer-output-and-its-rank-semantics);
+  no certificate-level run on the Morse complex of a certified matching and no agreement of its
+  output with `dgm` are provided (#1061).
 - No matching check or search, no executable computation of `sublevelHomology`, and no
   runtime bound or speedup claim in these modules; no bridge from these based complexes or
   their sublevel homology to Mathlib `HomologicalComplex`, `Homotopy` or `HomotopyEquiv`, and
-  no barcode or interval decomposition of `sublevelHomologyPModule`.
+  no interval decomposition of `sublevelHomologyPModule`; for a filtered differential over a
+  field, the positive diagram over `ℤ` with its ranks as slice counts is `reducerDiagram`, see
+  [the graded reducer output and its rank semantics](#the-graded-reducer-output-and-its-rank-semantics).
