@@ -181,8 +181,8 @@ section Compact
 
 variable {I E : Type*} [LinearOrder I] [Finite I] [NormedAddCommGroup E] [NormedSpace ℝ E]
 
-/-- A common small open thickening preserves both nerves and the union of a nested
-pair of finite compact convex families. The original inclusion induces an isomorphism. -/
+/-- A common small open thickening preserves both nerves of a nested pair of finite compact
+convex families. The offsets have equal unions, so the original inclusion induces an isomorphism. -/
 theorem isIso_simplicialHomologyIncl_of_compact {C D : I → Set E}
     (hC : ∀ i, IsCompact (C i)) (hD : ∀ i, IsCompact (D i))
     (hcC : ∀ i, Convex ℝ (C i)) (hcD : ∀ i, Convex ℝ (D i))
