@@ -112,6 +112,16 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   diagram `dgm` is `{(1, 2)}`. No interval decomposition and no barcode agreement with the
   reducer. See
   [the simplicial bridge and the Morse persistence theorem](docs/math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem).
+- Order the generators of a filtered based complex for the column reducer
+  (`TDA.Persistence.Morse.ReducerOrder`): the key (grade, degree, generator) is injective and
+  increases along every nonzero entry of a filtered differential, `sortedGenerators` sorts the
+  carrier by it with a computable insertion sort, `reducerEquiv` is the resulting enumeration
+  by `Fin`, and over a field `reducerMatrix` is strictly upper triangular and lowers the
+  transported degree, so `matrixReductionTrace_normalForm_input` applies to it
+  (`reducerMatrix_normalForm_input`). Fixtures R1 (the tie-order cancellation F4) and R2 (a
+  certified matching whose inherited order fails strict triangularity) evaluate the reducer
+  orders by `decide +kernel`. No reduction run and no barcode agreement. See
+  [the reducer order of a filtered based complex](docs/math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
