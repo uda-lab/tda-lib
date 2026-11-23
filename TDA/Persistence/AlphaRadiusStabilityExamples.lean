@@ -162,7 +162,7 @@ private theorem radiusCost {D F : Diagram ℝ}
     linarith
   exact (singletonCost (x := (8, 8 * s)) (y := (7, 7 * s)) hD hF hdiag).trans hpair
 
-/-- The squared-grade H₁ diagram of an four embedded rational sites over F₂. -/
+/-- The squared-grade H₁ diagram of four embedded rational sites over F₂. -/
 abbrev squaredH1Diagram (p : Fin 4 ↪ RationalAlpha.Point) :=
   letI := Fintype.ofFinite (TotalFace (Alpha.carrier (realSites p)))
   dgm (ZMod 2) (Alpha.filter (realSites p)) 1
