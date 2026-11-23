@@ -161,7 +161,10 @@ The tie-order fixture `wD` on `Fin 4` has all generators at grade 0, in the orde
 `d s = a` and `d b = a + r`. Cancelling (a, b) gives the single entry `d' s = r`
 (`tie_reduced`). `tie_not_triangular` records that this entry is new and that `s` precedes
 `r`. A valid cancellation therefore does not preserve triangularity in the inherited order.
-This is the regression data for a later reducer adapter (#1061); this unit sorts nothing.
+Fixture R1 of
+[the reducer order of a filtered based complex](#the-reducer-order-of-a-filtered-based-complex)
+sorts the survivors into the order `r, s`, in which `d'` is strictly upper triangular;
+`TDA.Persistence.Morse.UnitCancellation` itself sorts nothing.
 
 ## Filtered contractions and their composition
 
@@ -731,8 +734,10 @@ on `Critical c.schedule`. It takes no validity hypothesis and is computable. For
 - an explicit gradient-path formula for `morseDifferential`;
 - independence of the Morse differential from the rank of the certificate or from the tie
   order; fixtures S1 and S3 agree in one instance only, and S2 is a different matching;
-- a reducer adapter, an ordering of the critical generators or an `Equiv` to `Fin`; these are
-  #1061;
+- a reducer adapter, an ordering of the critical generators or an `Equiv` to `Fin`; the
+  reducer order is in
+  [the reducer order of a filtered based complex](#the-reducer-order-of-a-filtered-based-complex),
+  and the reducer run on the Morse complex is #1061;
 - a homology computation by evaluation: `morseHomologyIso` is `noncomputable`.
 
 ### Certificate fixtures
@@ -968,6 +973,169 @@ sublevel homology, is `{(1, 2)}`, and M5 exhibits the class born at grade 1 and 
 grade 2. These modules formalize no interval module over `ℤ` and no interval decomposition,
 and state no agreement with the reducer's output (#1061).
 
+## The reducer order of a filtered based complex
+
+`TDA.Persistence.Morse.ReducerOrder` (namespace `TDA.Persistence.Morse.ReducerOrder`) orders
+the generators of a filtered based complex `(ι, degree, grade, D)` so that, over a field, its
+differential satisfies the input conditions of the column reducer of
+`TDA.Persistence.Reduction`. The module runs no reduction.
+
+### What the reducer needs
+
+The reducer's `matrixReductionTrace` runs on a square matrix over `Fin m`. Its normal-form
+theorem `matrixReductionTrace_normalForm_input degree D hD2 hstrict hdegree`
+(`FilteredNormalForm/NormalMatrix.lean`), which
+`matrixReductionTrace_originalHomologyMap_rank_formula`
+(`FilteredNormalForm/OriginalHomology.lean`) consumes, needs three hypotheses: `D * D = 0`,
+`StrictBoundary D` (a nonzero entry in row `r` and column `c` has `r < c`) and
+`LowersDegree degree D` (such an entry has `degree c = degree r + 1`). `StrictBoundary` and
+`LowersDegree` are stated under `[Field k]`. The carrier `ι` of a filtered based complex is not
+`Fin m`, and its inherited order need not be triangular: fixture F4 of [fixtures](#fixtures)
+shows that a valid cancellation breaks it, and fixture R2 of
+[reducer order fixtures](#reducer-order-fixtures) shows the same for the Morse complex of a
+certified matching on a valid input.
+
+### The key and the sort
+
+For a carrier with `[LinearOrder ι]`, which serves as the stable identity of the generators,
+`key degree grade x` is `toLex (grade x, toLex (degree x, x))` in `ℤ ×ₗ ℕ ×ₗ ι`: grade first,
+then degree, then the generator itself.
+
+- `key_injective`: the key determines the generator.
+- `key_lt`: `grade x ≤ grade y` and `degree y = degree x + 1` give `key x < key y`.
+- `key_lt_of_ne_zero`: over a commutative ring, a nonzero entry `D r c` of a filtered
+  differential has `key r < key c`, from `grade r ≤ grade c` and `degree c = degree r + 1`.
+
+Grade first makes the grades monotone along the order. Degree second separates a nonzero entry
+at equal grades, the case of F4 and R2. The generator third makes the key injective. On the
+Morse carrier `Critical c.schedule` of a certificate `c`, a subtype of `Fin xs.length`, the
+order of the generators is the list position.
+
+`sortList degree grade L` is `List.insertionSort` of `L` by `key`. `sortList_perm` states that
+it is a permutation of `L`, `pairwise_sortList_le` that it is sorted by non-decreasing key,
+`pairwise_sortList` that it is strictly increasing in key when `L` has no duplicates, and
+`sortList_eq_of_perm` that it depends on `L` only up to permutation. On a finite carrier,
+`sortedGenerators degree grade` is `Quotient.liftOn` of `sortList` over the multiset
+`Finset.univ.val`, well defined by `sortList_eq_of_perm`; it chooses no enumeration of the
+carrier. `sortedGenerators_eq` states that it is `sortList` of any duplicate-free list of all
+generators, and `mem_sortedGenerators`, `pairwise_sortedGenerators`, `nodup_sortedGenerators`
+and `length_sortedGenerators` (`= Fintype.card ι`) follow.
+
+Insertion sort is used because `decide +kernel` reduces it; merge sort does not reduce there,
+as [the schedule](#the-schedule) records. Mathlib's `Finset.sort` is built on merge sort.
+
+### The reducer order and the reducer matrix
+
+`reducerEquiv degree grade : Fin (sortedGenerators degree grade).length ≃ ι` is
+`List.Nodup.getEquivOfForallMemList` of the sorted list: position `i` goes to the `i`-th sorted
+generator (`reducerEquiv_apply`, `rfl`), and the inverse is computed by `List.idxOf`.
+
+- `key_strictMono`: the key is strictly increasing along `reducerEquiv`.
+- `lt_iff_key_lt`: `i < j` exactly when `key (reducerEquiv … i) < key (reducerEquiv … j)`.
+- `monotone_grade`: `grade ∘ reducerEquiv degree grade` is monotone.
+
+`reducerMatrix degree grade D` is `D.submatrix e e` with `e = reducerEquiv degree grade`, a
+matrix over `Fin (sortedGenerators degree grade).length`. For a filtered differential `D`:
+
+- over a commutative ring, `reducerMatrix_sq_zero` gives `M * M = 0` and
+  `isFilteredDifferential_reducerMatrix` states that `M` is a filtered differential for the
+  transported degree `degree ∘ e` and grade `grade ∘ e`;
+- over a field, `strictBoundary_reducerMatrix` gives `StrictBoundary M`, from the general
+  `strictBoundary_submatrix` for any `e : Fin m ≃ ι` along which `key` is strictly increasing,
+  and `lowersDegree_reducerMatrix` gives `LowersDegree (degree ∘ e) M`;
+- over a field with decidable equality, `reducerMatrix_normalForm_input` is
+  `matrixReductionTrace_normalForm_input` applied to `M` with these three hypotheses, so the
+  existing reducer's normal-form conclusions hold for it. No reducer declaration is changed.
+
+### Identities of the generators
+
+`reducerEquiv` is an equivalence onto the original carrier, so the generators keep their
+identities; on the Morse carrier of a certificate these are the original list positions. `reducerContraction` is the
+identity filtered contraction `FilteredContraction.refl degree grade D` transported by
+`reindex` along `(reducerEquiv degree grade).symm` and restated by `copy`, a filtered
+contraction from `(degree, grade, D)` onto `(degree ∘ e, grade ∘ e, reducerMatrix degree grade D)`.
+Its projection and inclusion are the identity matrix read in the reducer order, and its
+homotopy is zero (`reducerContraction_proj`, `reducerContraction_incl`,
+`reducerContraction_htpy`, all `rfl`). For `ι : Type`, `reducerHomologyIso degree grade D p` is
+its `sublevelHomologyIso p`, an isomorphism of the grade-sublevel homology persistence modules
+of [sublevel homology and the induced isomorphism](#sublevel-homology-and-the-induced-isomorphism)
+of the complex and of its reducer order, in every degree `p`.
+
+### Executable and semantic parts of the order
+
+Computable: `key`, `sortList`, `sortedGenerators`, `reducerEquiv`, `reducerMatrix` and
+`reducerContraction`. The fixtures evaluate sorts and reordered matrices by `decide +kernel`.
+Semantic: `reducerHomologyIso` is `noncomputable`, as `sublevelHomologyIso` is, and the other
+statements are propositions.
+
+### Scope of the reducer order
+
+`TDA.Persistence.Morse.ReducerOrder` and its fixture file provide none of the following:
+
+- a reducer run on Morse chain data, its pivot pairs, occurrences or diagrams, or an agreement
+  with `dgm` or with `FiniteInput.outputDiagram`; these remain for #1061;
+- independence of the reducer's output from the tie order beyond what `sortList_eq_of_perm`
+  gives, namely independence of the enumeration that is sorted;
+- a gradient-path formula, reducer statements over a ring other than a field, or a runtime
+  bound or speedup claim;
+- a source attribution; see [comparison with MN13](#comparison-with-mn13).
+
+### Reducer order fixtures
+
+The fixtures are in `TDA.Persistence.Morse.ReducerOrderExamples`, over `ZMod 2`.
+
+- R1. On the survivors `W` of the F4 cancellation of `(a, b)` in `wD`, with the inherited
+  degrees `rDegree` and grades `rGrade`, the reduced differential `reducedDifferential wD 0 3`
+  is a filtered differential (`tie_isFilteredDifferential_reduced`) with the single entry
+  `d' s = r`. In the inherited survivor order `s, r` (`[wS, wR].get`) its entry in row 1 and
+  column 0 is nonzero, so it is not `StrictBoundary` (`tie_inherited_not_strictBoundary`).
+  `sortedGenerators` is `[wR, wS]` (`tie_sortedGenerators`); the reducer matrix has the single
+  nonzero entry in row 0 and column 1 (`tie_reducerMatrix`) and is `StrictBoundary`
+  (`tie_strictBoundary`).
+- R2. `path` is the path A–B–C at grade 0, listed A, B, AB, C, BC, and is valid
+  (`path_valid`). `pathCert` certifies the single pair (B, BC), with critical positions A, AB, C
+  (`pathCert_critical`). By hand, `d AB = (A + B) + (B + C) = A + C` over `ZMod 2`, and
+  `pathCert_morseDifferential` states that the Morse differential is the written-out `pDiff`,
+  whose nonzero entries are exactly `d AB = A + C`. C occurs in `d AB` but is listed after AB:
+  in the inherited position order A, AB, C the entry in row 2 and column 1 is nonzero
+  (`path_inherited_not_strictBoundary`). The keys of A, C, AB are (0, 0, A), (0, 0, C),
+  (0, 1, AB), so `sortedGenerators` is A, C, AB (`path_sortedGenerators`), and `sortList` of the
+  enumeration AB, C, A gives the same list (`path_sortList`). The reducer matrix has exactly the
+  nonzero entries in rows 0 and 1 of column 2 (`path_reducerMatrix`) and is `StrictBoundary`
+  (`path_strictBoundary`).
+- R3. On the multi-grade square of [certificate fixtures](#certificate-fixtures), with the
+  inherited degrees `sDegree` and grades `sGrade`, the reducer order of `sqCert` is A, AD, ACD
+  and that of `genCert` is D, AD, ACD, both with grades 0, 1, 2
+  (`sqCert_sortedGenerators`, `genCert_sortedGenerators`), so it is the position order. For
+  both, the reducer matrix of the Morse differential has the single nonzero entry in row 1 and
+  column 2, `d ACD = AD` (`sqCert_reducerMatrix`, `genCert_reducerMatrix`).
+
+The fixture file has 20 public definitions (3 `abbrev`, 17 `def`) and 17 public theorems. The
+definitions are written out; the `isMatching` and `isTopologicalRank` fields of `pathCert` and
+the memberships in `cA`, `cAB` and `cC` are `decide +kernel`, and the bounds in `pA`–`pBC` are
+`decide`. Of the theorems:
+
+- seven are a single `decide +kernel`: `tie_sortedGenerators`, `tie_reducerMatrix`,
+  `pathCert_critical`, `path_sortedGenerators`, `path_sortList`, `sqCert_sortedGenerators` and
+  `genCert_sortedGenerators`;
+- `path_valid` is `FiniteInput.validBool_iff` applied to a `decide +kernel`;
+- four end in `decide +kernel` after a rewrite: `pathCert_morseDifferential` after
+  `CertifiedMatching.morseDifferential` and `boundary_eq_coverIncidence`, `path_reducerMatrix`
+  after `pathCert_morseDifferential`, and `sqCert_reducerMatrix` and `genCert_reducerMatrix`
+  after `sqCert_morseDifferential` and `genCert_morseDifferential` of
+  `TDA.Persistence.Morse.MatchingScheduleExamples`;
+- two exhibit the nonzero entry below the diagonal, with side goals closed by `decide +kernel`
+  and `decide`: `tie_inherited_not_strictBoundary`, and `path_inherited_not_strictBoundary`
+  after rewriting with `pathCert_morseDifferential`;
+- three are term proofs: `tie_isFilteredDifferential_reduced` by
+  `isFilteredDifferential_reduced`, and `tie_strictBoundary` and `path_strictBoundary` by
+  `strictBoundary_reducerMatrix`, the latter with
+  `isFilteredDifferential_morseDifferential path_valid`.
+
+The two negative fixtures exhibit the offending entry rather than decide `StrictBoundary`; the
+matrix equalities are stated against `Matrix.of`, which `decide +kernel` evaluates. No fixture
+runs the reducer or computes homology.
+
 ## Comparison with MN13
 
 MN13 define the reduction step in the outline of the proof of Thm. 2.4 (pp. 335–336), for a
@@ -1055,6 +1223,10 @@ numbered result. Thm. 4.3 remains background: the source was not re-read for
 `TDA.Persistence.Morse.SimplicialBridge`, and no comparison of `morseSublevelModuleIso` with
 Thm. 4.3 is recorded or made here.
 
+`key`, the sort, `reducerEquiv`, `reducerMatrix` and its lemmas, `reducerContraction`,
+`reducerHomologyIso` and the R1–R3 fixtures of `TDA.Persistence.Morse.ReducerOrderExamples` are
+library derivations attributed to no numbered result; no source text is consulted.
+
 ## What is not provided
 
 - The simplicial bridge to `sublevelModule` and the main theorem of #1041 are in
@@ -1066,9 +1238,12 @@ Thm. 4.3 is recorded or made here.
   The Morse differential is defined only by the recursion of
   `TDA.Persistence.Morse.IteratedCancellation`, and no gradient-path formula for it is
   provided.
-- No reducer adapter, no chosen ordering or Equiv of survivors to `Fin`, and no
-  grading-compatible ordering; these are #1061. `FilteredContraction.reindex` transports a
-  contraction along such an Equiv once one is given.
+- The reducer order of a filtered based complex, a grading-compatible `Equiv` of its
+  generators to `Fin` along which a filtered differential over a field satisfies the reducer's
+  input conditions, is in
+  [the reducer order of a filtered based complex](#the-reducer-order-of-a-filtered-based-complex);
+  no reducer run on Morse chain data and no agreement of its output with `dgm` are provided
+  (#1061).
 - No matching check or search, no executable computation of `sublevelHomology`, and no
   runtime bound or speedup claim in these modules; no bridge from these based complexes or
   their sublevel homology to Mathlib `HomologicalComplex`, `Homotopy` or `HomotopyEquiv`, and

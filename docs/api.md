@@ -2415,6 +2415,9 @@ rank or the tie order, no reducer adapter, ordering of the critical generators o
 [the pivot schedule of a certified matching](math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching).
 The bridge and the main theorem of #1041 are in
 [the simplicial bridge and the Morse persistence theorem](#the-simplicial-bridge-and-the-morse-persistence-theorem).
+An order of the critical generators in which the Morse differential satisfies the input
+conditions of the column reducer is in
+[the reducer order of filtered based complexes](#the-reducer-order-of-filtered-based-complexes).
 
 ## The simplicial bridge and the Morse persistence theorem
 
@@ -2462,6 +2465,45 @@ with the reducer's barcode (#1061), no chain-level isomorphism with `simplicialC
 no independence of the Morse complex from the certificate, no gradient-path formula and no
 coefficient ring other than `ZMod 2`; see
 [the simplicial bridge and the Morse persistence theorem](math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem).
+
+## The reducer order of filtered based complexes
+
+`TDA.Persistence.Morse.ReducerOrder` (imported by `TDA.Persistence`) orders the generators of
+a filtered based complex `(ι, degree, grade, D)` whose finite carrier has a `LinearOrder`, for
+the column reducer of `TDA.Persistence.Reduction`. `key degree grade x` is
+`toLex (grade x, toLex (degree x, x))`; `key_injective` and `key_lt` hold, and
+`key_lt_of_ne_zero` gives `key r < key c` for a nonzero entry `D r c` of a filtered
+differential. `sortList` is `List.insertionSort` by `key`, with `sortList_perm`,
+`pairwise_sortList_le`, `pairwise_sortList` and `sortList_eq_of_perm`. `sortedGenerators` sorts
+`Finset.univ` through `Quotient.liftOn`; `sortedGenerators_eq` equates it with `sortList` of
+any duplicate-free complete enumeration, and `mem_sortedGenerators`,
+`pairwise_sortedGenerators`, `nodup_sortedGenerators` and `length_sortedGenerators` follow.
+`reducerEquiv : Fin (sortedGenerators degree grade).length ≃ ι` is
+`List.Nodup.getEquivOfForallMemList` of the sorted list (`reducerEquiv_apply`), with
+`key_strictMono`, `lt_iff_key_lt` and `monotone_grade`.
+
+`reducerMatrix degree grade D` is `D.submatrix (reducerEquiv …) (reducerEquiv …)`. For a
+filtered differential, `reducerMatrix_sq_zero` and `isFilteredDifferential_reducerMatrix` hold
+over a commutative ring; over a field, `strictBoundary_submatrix` (for any `e : Fin m ≃ ι`
+along which `key` is strictly increasing), `strictBoundary_reducerMatrix` and
+`lowersDegree_reducerMatrix` give the reducer's input conditions, and
+`reducerMatrix_normalForm_input` is the existing `matrixReductionTrace_normalForm_input`
+applied to the reducer matrix. `reducerContraction` is the identity filtered contraction
+reindexed along the reducer order (`reducerContraction_proj`, `reducerContraction_incl`,
+`reducerContraction_htpy`), and `reducerHomologyIso` (for `ι : Type`) is its
+`sublevelHomologyIso`. `key`, `sortList`, `sortedGenerators`, `reducerEquiv`, `reducerMatrix`
+and `reducerContraction` are computable; `reducerHomologyIso` is `noncomputable`.
+
+`TDA.Persistence.Morse.ReducerOrderExamples` (imported by `TDA.Persistence.Examples`) has
+fixtures R1–R3 over `ZMod 2`: R1, the survivors of the tie-order cancellation F4, on which the
+reduced differential is not strictly upper triangular in the inherited order and the reducer
+order is `r, s`; R2, a path
+with a certified matching whose Morse differential `d AB = A + C` fails strict triangularity in
+the inherited order A, AB, C and has reducer order A, C, AB; and R3, the reducer orders of the
+certificates `sqCert` and `genCert` on the multi-grade square. The sorts and the reordered
+matrices are evaluated by `decide +kernel`. These modules run no reduction and state no barcode
+or diagram agreement with the reducer; see
+[the reducer order of a filtered based complex](math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex).
 
 ## Compatible lifts and algebraic sums over the reals
 

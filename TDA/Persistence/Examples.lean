@@ -242,3 +242,4 @@ import TDA.Persistence.Morse.FilteredHomologyExamples
 import TDA.Persistence.Morse.IteratedCancellationExamples
 import TDA.Persistence.Morse.MatchingScheduleExamples
 import TDA.Persistence.Morse.SimplicialBridgeExamples
+import TDA.Persistence.Morse.ReducerOrderExamples
