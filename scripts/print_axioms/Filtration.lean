@@ -876,3 +876,13 @@ import TDA
 #print axioms TDA.Filtration.AlphaCollapseFamilyExamples.stages_of_mem_Ico_four
 #print axioms TDA.Filtration.AlphaCollapseFamilyExamples.stages_of_five_le
 #print axioms TDA.Filtration.AlphaCollapseFamilyExamples.collapsesTo_of_certificate
+
+-- Pairwise incidence of certified rational triangles (Issue #1116).
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.disjoint_interiors_of_off_edge_bound
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.labelVertices
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.mem_labelVertices
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.triangle_inter_eq_shared_labels
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.siteTriangle_injective_of_off_edge_bound
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.triangle_inter_eq_empty_of_disjoint_labels
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.triangle_inter_eq_shared_labels_of_signed_boundary
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidenceExamples.trapezoid_pair_meets_along_AC
