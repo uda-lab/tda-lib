@@ -18,3 +18,4 @@ import TDA.Topology.FiniteGromovProkhorov
 import TDA.Topology.MulticoverCover
 import TDA.Topology.FiniteGromovProkhorovWitness
 import TDA.Topology.QuotientProduct
+import TDA.Topology.Realization
