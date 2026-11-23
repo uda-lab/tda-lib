@@ -153,6 +153,14 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   the path, the tie-order complex F4 and a reversed tie order by `decide +kernel`. No interval
   decomposition over `ℤ` and no runtime claim. See
   [the reducer run on the Morse complex of a certificate](docs/math/discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate).
+- Add elementary collapses of simplicial complexes (`TDA.Simplicial.Collapse`: `IsFreePair`,
+  `deletion`, `ElementaryCollapsesTo`, `CollapsesTo`) and verify a Čech-to-α collapse on the
+  exact obtuse triangle (`TDA.Filtration.AlphaCollapseExamples`): for `4 ≤ t < 5` the long edge
+  is a free face of the triangle in the squared-grade Čech stage and its deletion is the α
+  stage; at every other grade the stages are equal, and no fixed set of faces gives every α
+  stage from the Čech stage at the same grade. No general-position or persistence statement.
+  See
+  [elementary collapses and the obtuse triangle](docs/math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

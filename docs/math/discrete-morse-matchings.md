@@ -308,6 +308,65 @@ MN13 §5.1 builds its matching with the coreduction-based `MorseReduce`; the pro
 (§5.2) derives its acyclicity from the order of pair excision. This greedy pass is a different,
 library procedure, and no result of §5 is claimed.
 
+## Elementary collapses and the obtuse triangle
+
+A pair `(σ, τ)` of faces of a preabstract simplicial complex `K` is free when `σ ⋖ τ` and `τ` is
+the only face of `K` strictly containing `σ` (`TDA.Simplicial.IsFreePair`). Then `τ` is a
+maximal face, and the faces of `K` that do not contain `σ` are exactly the faces other than `σ`
+and `τ`; they form the subcomplex `deletion K σ`, since a face of a face not containing `σ` does
+not contain `σ` either. Passing from `K` to `deletion K σ` is an elementary collapse
+(`ElementaryCollapsesTo`), and `CollapsesTo` allows a finite, possibly empty, sequence of them.
+A free pair is a cover pair, as a matched pair of `IsMatching` is; no relation between collapses
+and acyclic matchings is proved here.
+
+The exact obtuse triangle `RationalAlpha.Examples.obtuse` has the sites A = (0,0), B = (4,0)
+and C = (1,1), with labels 0, 1, 2. On squared grades, a face enters the closed Čech filtration
+at the square of its smallest enclosing radius, and the α filtration at its exact rational grade
+in `gradedFaces`. The vertices enter both at 0, AC at 1/2 and BC at 5/2. The midpoint (2,0) of
+AB has squared distance 4 to A and B and 2 to C, so AB and ABC enter Čech at 4, and no smaller
+radius works for AB. In α both enter at 5, witnessed by (2,−1), which is at squared distance 5
+from all three sites. So on `[4, 5)` the Čech stage contains AB and ABC and the α stage does
+not. ABC is the only face strictly containing AB, so (AB, ABC) is free in the Čech stage
+(`isFreePair_long_edge`), and deleting it leaves the α stage (`alpha_eq_deletion`). At every
+other grade the two stages are equal and the collapse sequence is empty (`collapsesTo`). The
+collapse ends in the α stage on the same labels, so the inclusion
+`Alpha.labelledComplexFiltration_le_squaredCech` is unchanged. These statements are in
+`TDA.Filtration.AlphaCollapseExamples`.
+
+The collapses form a family indexed by the grade. At `t = 5` the pair (AB, ABC) is still free in
+the Čech stage, but both faces belong to the α stage, so the deletion no longer gives it
+(`alpha_eq_deletion_iff`). AB and ABC have the same Čech grade 4, so they could be a matched
+pair of an equal-grade matching of the Čech filtration; such a matching keeps the same critical
+faces at every grade. `not_exists_fixed_faces` shows that no fixed set of faces turns every Čech
+stage into the α stage at the same grade, so this collapse family is not of that form. The
+statements identify the α stage itself, not only its homology.
+
+At mathlib commit `56a0058`, `Mathlib/AlgebraicTopology` has no free face, deletion or collapse
+of simplicial complexes. At TauCeti commit `25bd01c`, the namespace
+`PreAbstractSimplicialComplex` has `IsFreePair` and `ElementaryCollapsesTo`
+(`TauCeti/AlgebraicTopology/SimplicialComplex/ElementaryCollapse.lean`), `deletion`
+(`LinkStar.lean` in the same directory) and `CollapsesTo` (`Collapse/Basic.lean` there), with
+the same last name components as here. TauCeti's `IsFreePair` requires `σ ⊂ τ` and that every
+face of `K` containing `σ` is `σ` or `τ`, and derives `σ ⋖ τ` (`IsFreePair.covBy`); it is
+equivalent to the one here. Its `deletion` has the same faces, and its `ElementaryCollapsesTo`
+and `CollapsesTo` have the same bodies. TauCeti is not a dependency. At tda-lib commit
+`3581b4a`, `TDA/` defines no other free-face predicate, face deletion or collapse relation on
+simplicial complexes. Declarations there whose names contain `collapse` are not collapses in
+this sense: for example, the private theorems `collapse_prism`, `collapse_edge` and
+`collapse_boundary_prism` in `TDA.Simplicial.ContiguityHomotopyExamples` are chain-level
+identities for a constant edge map; `TDA.Persistence.Rips.pointCollapseVertexMap` and the
+private `pendantCollapse` in `TDA.Filtration.SparseRips.H1Examples` are vertex maps; and
+`TDA.Reeb.GraphTreeContraction.leafCollapse` is a continuous map of graph realizations. The
+`deletion*` declarations in namespace `TDA.Filtration.SparseRips` and its `Examples`
+(`deletionTime`, `deletionMap`, `deletionGrid`, `deletionVertexMap` and related declarations)
+concern vertex deletion times and the vertex maps of sparse Rips. None of these is related to
+`TDA.Simplicial.deletion`.
+
+Only this triangle is treated. A general Čech → Delaunay–Čech → α collapse under general
+position, the collapsing theorem recorded as [BE-1312.1231](references.md#BE-1312.1231)
+(background), collapse sequences across several critical grades, and the induced persistence
+isomorphism are not provided.
+
 ## What is not provided
 
 - Generation exists only as the greedy pass above. No maximality (by inclusion or by

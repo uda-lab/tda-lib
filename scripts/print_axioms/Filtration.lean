@@ -735,3 +735,18 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.swapped_predicates
 #print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.collinear_orientation
 #print axioms TDA.Filtration.RationalAlpha.PredicatesExamples.cocircular_incircle
+
+-- A Čech-to-α collapse on the obtuse triangle (Issue #1044).
+#print axioms TDA.Filtration.AlphaCollapseExamples.cechGrades
+#print axioms TDA.Filtration.AlphaCollapseExamples.cechGrades_sdiff
+#print axioms TDA.Filtration.AlphaCollapseExamples.mem_cech_iff
+#print axioms TDA.Filtration.AlphaCollapseExamples.mem_alpha_iff
+#print axioms TDA.Filtration.AlphaCollapseExamples.alpha_eq_cech
+#print axioms TDA.Filtration.AlphaCollapseExamples.isFreePair_long_edge
+#print axioms TDA.Filtration.AlphaCollapseExamples.mem_alpha_iff_of_lt_five
+#print axioms TDA.Filtration.AlphaCollapseExamples.alpha_eq_deletion
+#print axioms TDA.Filtration.AlphaCollapseExamples.alpha_eq_deletion_iff
+#print axioms TDA.Filtration.AlphaCollapseExamples.elementaryCollapsesTo_iff
+#print axioms TDA.Filtration.AlphaCollapseExamples.collapsesTo
+#print axioms TDA.Filtration.AlphaCollapseExamples.alpha_eq_cech_iff
+#print axioms TDA.Filtration.AlphaCollapseExamples.not_exists_fixed_faces

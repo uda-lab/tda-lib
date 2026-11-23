@@ -2621,6 +2621,46 @@ list-order independence of `reducerOccurrences` or `morseOccurrences` from the t
 certificate, no lifting of representatives to the input and no runtime claim; see
 [the reducer run on the Morse complex of a certificate](math/discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate).
 
+## Elementary collapses and a Čech-to-α collapse
+
+`TDA.Simplicial.Collapse` (imported by `TDA.Simplicial`) defines, in namespace
+`TDA.Simplicial`, for `K : PreAbstractSimplicialComplex V` and `σ τ : Finset V`, the predicate
+`IsFreePair K σ τ` (both faces in `K`, `σ ⋖ τ`, and `τ` the only face of `K` strictly containing
+`σ`) and the subcomplex `deletion K σ` of the faces of `K` not containing `σ` (`mem_deletion`,
+`deletion_le`). `IsFreePair.mem_deletion_iff` states that on a free pair the deletion removes
+exactly `σ` and `τ`. `ElementaryCollapsesTo K L` states that `L` is the deletion of the free face
+of a free pair of `K`; `IsFreePair.elementaryCollapsesTo` gives it from a free pair, and
+`ElementaryCollapsesTo.lt` states `L < K`. `CollapsesTo` is its reflexive transitive closure, a
+finite, possibly empty, sequence of elementary collapses, and `CollapsesTo.le` states `L ≤ K`.
+No homotopy or homology statement is made.
+
+`TDA.Filtration.AlphaCollapseExamples` (imported by `TDA.Filtration.Examples`) works on
+`RationalAlpha.Examples.obtuse`, the sites `(0,0)`, `(4,0)` and `(1,1)` with labels `0, 1, 2`,
+and on the two stages `Alpha.squaredCechFiltration (realSites obtuse) t` and
+`Alpha.labelledComplexFiltration (realSites obtuse) t` under the same labels, for `t : ℝ` a
+squared grade, written `cech t` and `alpha t` below (local notation in the module).
+`cechGrades` is the squared Čech grade table: the vertices 0, `{0,2}` 1/2, `{1,2}` 5/2,
+`{0,1}` and `{0,1,2}` 4. `mem_cech_iff` states that a face is in the Čech stage
+exactly when its grade in `cechGrades` is at most `t`, and `mem_alpha_iff` reads the α stage off
+`gradedFaces obtuse`, where `{0,1}` and `{0,1,2}` have grade 5. `cechGrades_sdiff` states that
+the two tables differ exactly in `({0,1}, 4)`, `({0,1,2}, 4)` against `({0,1}, 5)`,
+`({0,1,2}, 5)`. For `4 ≤ t`, `isFreePair_long_edge` states that `({0,1}, {0,1,2})` is a free
+pair of the Čech stage. For `t < 5`, `mem_alpha_iff_of_lt_five` states that the α stage is the
+Čech stage without `{0,1}` and `{0,1,2}`, and `alpha_eq_deletion` that it is
+`deletion (cech t) {0,1}`; `alpha_eq_deletion_iff` states that this equality holds exactly for
+`t < 5`. `alpha_eq_cech` states that the two stages are equal for `t < 4 ∨ 5 ≤ t`, including the
+empty stages below 0, and `alpha_eq_cech_iff` that they are equal exactly then.
+`elementaryCollapsesTo_iff` states that the Čech stage collapses to the α stage in one
+elementary collapse exactly for `4 ≤ t ∧ t < 5`, and `collapsesTo` that it collapses to the α
+stage at every `t`, by the empty sequence outside `[4, 5)`. `not_exists_fixed_faces` states that
+no fixed set `C` of faces has `s ∈ alpha t ↔ s ∈ cech t ∧ s ∈ C` for all `t` and `s`. The
+labelled inclusion of the α stage into the Čech stage is the existing
+`Alpha.labelledComplexFiltration_le_squaredCech`.
+
+No general-position theorem, collapse sequence across several critical grades, persistence
+comparison or source result is provided; see
+[elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle).
+
 ## Compatible lifts and algebraic sums over the reals
 
 The [real interval decomposition note](math/real-interval-decomposition.md)
