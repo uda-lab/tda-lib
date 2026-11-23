@@ -322,3 +322,9 @@ import TDA
 #print axioms TDA.Topology.Examples.triangleMap_surjective
 #print axioms TDA.Topology.Examples.triangleMap_collapse
 #print axioms TDA.Topology.Examples.isQuotientMap_prodMap_triangleMap
+
+-- Finite compact nerves under open thickening.
+#print axioms TDA.Topology.exists_pos_nerve_thickening_eq
+#print axioms TDA.Topology.exists_pos_common_convex_thickening
+#print axioms TDA.Topology.NerveThickeningExamples.path_and_triangle_preserved
+#print axioms TDA.Topology.NerveThickeningExamples.duplicate_edge_and_empty_label
