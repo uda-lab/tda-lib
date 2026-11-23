@@ -138,6 +138,21 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   reducer matrices of the path R2 and the square R3) evaluate the output by `decide +kernel`. No
   certificate run and no agreement with `dgm`. See
   [the graded reducer output and its rank semantics](docs/math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics).
+- Run the reducer on the Morse complex of a certified matching
+  (`TDA.Persistence.Morse.MorseDiagram`): `morseOccurrences` and `morseDiagram` are the
+  computable reducer output on `morseDifferential`. On a valid input, over `ZMod 2`,
+  `morseDiagram_eq_dgm` states that the diagram is the sublevel diagram `dgm` of the input,
+  `morseDiagram_eq_outputDiagram` that it is the diagram of the ordinary run on the boundary
+  matrix, and `morseDiagram_eq_morseDiagram` that two certificates give the same diagrams;
+  `morseOccurrences_perm` and `morseOccurrences_perm_of_run_eq_some` state that the occurrence
+  list is a permutation of the output of `FiniteInput.run`. For a filtered differential over a
+  field, `reducerDiagram_eq_of_linearOrder` and `reducerOccurrences_perm_of_linearOrder` state
+  that the reducer output does not depend on the tie order of the reducer order, the occurrence
+  list up to permutation. Fixtures Q1–Q6 run the square with `sqCert` and `genCert` (degree-1
+  diagram `{(1, 2)}`, degree-0 diagram `{(0, ⊤)}`, occurrences equal to `FiniteInput.run square`),
+  the path, the tie-order complex F4 and a reversed tie order by `decide +kernel`. No interval
+  decomposition over `ℤ` and no runtime claim. See
+  [the reducer run on the Morse complex of a certificate](docs/math/discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).

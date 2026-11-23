@@ -2478,7 +2478,9 @@ and `[0,∞)` in degree 0; M5 shows that the loop AB + BC + CD + AD has a nonzer
 theorem; and M7 proves that the square's diagram `dgm` is `{(1, 2)}` in degree 1 and
 `{(0, ⊤)}` in degree 0, by `rank_sublevelHomologyMap`, not from the reducer. These modules
 provide no interval decomposition over `ℤ`, no barcode statement other than M7, no agreement
-with the reducer's barcode (#1061), no chain-level isomorphism with `simplicialChainComplex`,
+with the reducer's barcode (it is in
+[the reducer run on the Morse complex of a certificate](#the-reducer-run-on-the-morse-complex-of-a-certificate)),
+no chain-level isomorphism with `simplicialChainComplex`,
 no independence of the Morse complex from the certificate, no gradient-path formula and no
 coefficient ring other than `ZMod 2`; see
 [the simplicial bridge and the Morse persistence theorem](math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem).
@@ -2573,6 +2575,51 @@ P3, the reducer matrix of the square R3, with degree-1 diagram `{(1, 2)}` and tw
 These modules run no reducer on the Morse complex of a certificate and state no agreement with
 `dgm`; see
 [the graded reducer output and its rank semantics](math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics).
+That run and its agreement with `dgm` are in
+[the reducer run on the Morse complex of a certificate](#the-reducer-run-on-the-morse-complex-of-a-certificate).
+
+## The reducer run on the Morse complex of a certificate
+
+`TDA.Persistence.Morse.MorseDiagram` (imported by `TDA.Persistence`) runs the reducer output on
+the Morse complex of a certified matching. In namespace
+`TDA.Persistence.Morse.MatchingInput.CertifiedMatching`, for a finite input `xs` and
+`c : CertifiedMatching xs`, `c.morseOccurrences : List FiniteInput.Occurrence` and
+`c.morseDiagram p : Diagram ℤ` are `reducerOccurrences` and `reducerDiagram` of
+`c.morseDifferential`, with the degrees and list grades inherited by the critical positions;
+they take no validity hypothesis and are computable. On a valid input (`h : Valid xs`), over
+`ZMod 2`, `rankOfStructureMap_sublevelModule_eq_countP` states that the ranks of
+`sublevelModule (ZMod 2) (gradeFilter xs h) p` are the slice counts of `c.morseDiagram p`,
+`morseDiagram_isPositive` holds, `morseDiagram_eq_dgm` states
+`c.morseDiagram p = dgm (ZMod 2) (gradeFilter xs h) p` under `letI := faceFintype xs h`,
+`morseDiagram_eq_outputDiagram` states `c.morseDiagram p = FiniteInput.outputDiagram xs p`,
+the diagram of the ordinary run on the boundary matrix, and `morseDiagram_eq_morseDiagram`
+states that two certified matchings give the same diagrams. `morseOccurrences_perm` and
+`morseOccurrences_perm_of_run_eq_some` state that `c.morseOccurrences` is a permutation of
+`FiniteInput.occurrences xs` and of the `L` in `FiniteInput.run xs = some L`.
+
+In namespace `TDA.Persistence.Morse.ReducerDiagram`, `perm_of_degreePoints_eq` states that
+occurrence lists with the same degree-`p` points in every degree `p` are permutations of each
+other. For `ι : Type` with `[Fintype ι]`, two linear orders `o` and `o'` of `ι` and a filtered
+differential over a field, `reducerDiagram_eq_of_linearOrder` states that `reducerDiagram` is
+the same for `o` and `o'`, and `reducerOccurrences_perm_of_linearOrder` that the two occurrence
+lists are permutations of each other: the reducer output is independent of the tie order of the
+reducer order, the lists up to permutation.
+
+`TDA.Persistence.Morse.MorseDiagramExamples` (imported by `TDA.Persistence.Examples`) has
+fixtures Q1–Q6 over `ZMod 2`: Q1 and Q2, the Morse runs of `sqCert` and `genCert` on the
+multi-grade square, with occurrences `[⟨1, 1, .finite 2⟩, ⟨0, 0, .essential⟩]`, degree-1 diagram
+`{(1, 2)}` and degree-0 diagram `{(0, ⊤)}`; Q3, the ordinary run `FiniteInput.run square`, equal
+to `some` of both Morse runs, and the square's `dgm` read off Q1 through `morseDiagram_eq_dgm`;
+Q4, the path R2 with `pathCert`, whose Morse run is `[⟨0, 0, .essential⟩]` and whose ordinary
+run `FiniteInput.run path` is `some` of it; Q5, the reducer runs on the tie-order complex F4
+and its cancellation, both empty; and Q6, the path in the reversed order `dualOrder` of its
+critical positions, with another essential generator and the same occurrence list. `morseOccurrences` and `morseDiagram` are computable;
+the fixtures evaluate them by `decide +kernel` after rewriting the Morse differential to its
+written-out form, and evaluate the ordinary run only after rewriting the boundary matrix with
+`boundary_eq_coverIncidence`. These modules provide no interval decomposition over `ℤ`, no
+list-order independence of `reducerOccurrences` or `morseOccurrences` from the tie order or the
+certificate, no lifting of representatives to the input and no runtime claim; see
+[the reducer run on the Morse complex of a certificate](math/discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate).
 
 ## Compatible lifts and algebraic sums over the reals
 

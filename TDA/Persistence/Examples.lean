@@ -245,3 +245,4 @@ import TDA.Persistence.Morse.MatchingScheduleExamples
 import TDA.Persistence.Morse.SimplicialBridgeExamples
 import TDA.Persistence.Morse.ReducerOrderExamples
 import TDA.Persistence.Morse.ReducerDiagramExamples
+import TDA.Persistence.Morse.MorseDiagramExamples

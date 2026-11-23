@@ -9223,6 +9223,37 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Morse.ReducerDiagramExamples.sq_occurrences
 #print axioms TDA.Persistence.Morse.ReducerDiagramExamples.sq_diagram
 #print axioms TDA.Persistence.Morse.ReducerDiagramExamples.sq_rank_one
+-- The reducer run on the Morse complex of a certified matching (Issue #1061, unit 3).
+#print axioms TDA.Persistence.Morse.ReducerDiagram.perm_of_degreePoints_eq
+#print axioms TDA.Persistence.Morse.ReducerDiagram.reducerDiagram_eq_of_linearOrder
+#print axioms TDA.Persistence.Morse.ReducerDiagram.reducerOccurrences_perm_of_linearOrder
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseOccurrences
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseDiagram
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.rankOfStructureMap_sublevelModule_eq_countP
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseDiagram_isPositive
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseDiagram_eq_dgm
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseDiagram_eq_outputDiagram
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseDiagram_eq_morseDiagram
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseOccurrences_perm
+#print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseOccurrences_perm_of_run_eq_some
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.sqCert_morseOccurrences
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.sqCert_morseDiagram
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.genCert_morseOccurrences
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.genCert_morseDiagram
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.square_occurrences
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.square_run
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.square_run_eq_sqCert
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.square_run_eq_genCert
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.square_dgm_of_morseDiagram
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.pathCert_morseOccurrences
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_run
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_run_eq_pathCert
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.tie_reducerOccurrences
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.dualOrder
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_dual_sortedGenerators
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_dual_essential
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_dual_reducerOccurrences
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.path_dual_perm
 
 -- Degree-zero α–Čech comparison.
 #print axioms TDA.Persistence.alphaH0Comparison
