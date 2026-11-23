@@ -1791,7 +1791,17 @@ zero over any field. Its forward map is `alphaH0Comparison`, induced by the
 identity on labels at each grade. Signed edge boundaries telescope along
 replacement paths, giving the same degree-zero boundary subspace under
 the common vertex basis.
-On the obtuse triangle, `CollapsePersistenceExamples.alphaCechIso` extends it to every degree
+
+For finite labelled sites in a finite-dimensional real inner-product space,
+`TDA.Persistence.alphaCechIso sites R n` gives the inclusion-induced natural isomorphism
+in every degree over any ring. Its components are the ordinary simplicial homology
+inclusions (`alphaCechIso_hom_app`) and commute with every structure map
+(`alphaCechIso_naturality`). Over a field, `alphaCechIso_zero` recovers `alphaH0Iso`.
+Coincident labels and nearest-site ties are allowed. The five-point example
+`AlphaCechExamples.fivePointH1Square` follows a nonzero F₂ class across squared grades
+4 and 5, including the strict α-to-Čech inclusion at grade 4.
+
+On the obtuse triangle, `CollapsePersistenceExamples.alphaCechIso` also gives the comparison
 over every ring, through collapses; see
 [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
 

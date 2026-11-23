@@ -21,7 +21,8 @@ open scoped Convex
 
 variable {V E : Type*} [NormedAddCommGroup E] (sites : V → E)
 
-private def restrictedBall (t : ℝ) (v : V) : Set E :=
+/-- The closed Voronoi cell of a label, cut off at squared distance `t`. -/
+def restrictedBall (t : ℝ) (v : V) : Set E :=
   {x | ∀ w, dist x (sites v) ≤ dist x (sites w)} ∩ {x | dist x (sites v) ^ 2 ≤ t}
 
 /-- The squared-grade α complex of a labelled site function. Closed nearest-site
@@ -106,6 +107,57 @@ private theorem exists_restricted_of_ball [Finite V] {x : E} {t : ℝ} {v : V}
     (fun j => dist x (sites j)) ⟨v, Finset.mem_univ v⟩
   refine ⟨w, fun j => hw j (Finset.mem_univ j), ?_⟩
   exact (Real.le_sqrt dist_nonneg ht).mp ((hw v (Finset.mem_univ v)).trans hv)
+
+/-- Forget the nearest-site constraints at a restricted ball. -/
+theorem restrictedBall_subset_closedBall (t : ℝ) (v : V) :
+    restrictedBall sites t v ⊆ Metric.closedBall (sites v) (Real.sqrt t) :=
+  fun _ hx => Real.le_sqrt_of_sq_le hx.2
+
+/-- At a nonnegative squared grade, choosing a nearest site covers the same union
+with restricted balls as with the full ambient balls. -/
+theorem iUnion_restrictedBall [Finite V] {t : ℝ} (ht : 0 ≤ t) :
+    (⋃ v, restrictedBall sites t v) = ⋃ v, Metric.closedBall (sites v) (Real.sqrt t) := by
+  refine Set.Subset.antisymm (Set.iUnion_mono (restrictedBall_subset_closedBall sites t)) ?_
+  intro x hx
+  obtain ⟨v, hv⟩ := Set.mem_iUnion.mp hx
+  exact Set.mem_iUnion.mpr (exists_restricted_of_ball sites (v := v) hv ht)
+
+/-- Restricted balls are compact in a proper ambient space. -/
+theorem isCompact_restrictedBall [ProperSpace E] (t : ℝ) (v : V) :
+    IsCompact (restrictedBall sites t v) :=
+  (isCompact_closedBall _ _).of_isClosed_subset (isClosed_restrictedBall sites t v)
+    (restrictedBall_subset_closedBall sites t v)
+
+section Euclidean
+
+variable [InnerProductSpace ℝ E]
+open scoped RealInnerProductSpace
+
+private theorem dist_le_dist_iff_halfspace (x p q : E) :
+    dist x p ≤ dist x q ↔ ‖p‖ ^ 2 - ‖q‖ ^ 2 ≤ 2 * (⟪x, p⟫ - ⟪x, q⟫) := by
+  rw [← sq_le_sq₀ dist_nonneg dist_nonneg, dist_eq_norm, dist_eq_norm,
+    norm_sub_sq_real, norm_sub_sq_real]
+  constructor <;> intro h <;> linarith
+
+/-- Each nearest-site inequality cuts out a closed half-space. Intersecting these
+half-spaces with the radius ball gives a convex restricted ball, including tied sites. -/
+theorem convex_restrictedBall {t : ℝ} (ht : 0 ≤ t) (v : V) :
+    Convex ℝ (restrictedBall sites t v) := by
+  have hball : {x | dist x (sites v) ^ 2 ≤ t} = Metric.closedBall (sites v) (Real.sqrt t) := by
+    ext x
+    exact (Real.le_sqrt dist_nonneg ht).symm
+  rw [restrictedBall, hball]
+  apply Convex.inter _ (convex_closedBall _ _)
+  intro x hx y hy a b ha hb hab j
+  apply (dist_le_dist_iff_halfspace _ _ _).2
+  simp only [inner_add_left, real_inner_smul_left]
+  have h₁ := mul_le_mul_of_nonneg_left ((dist_le_dist_iff_halfspace _ _ _).1 (hx j)) ha
+  have h₂ := mul_le_mul_of_nonneg_left ((dist_le_dist_iff_halfspace _ _ _).1 (hy j)) hb
+  calc
+    _ = (a + b) * (‖sites v‖ ^ 2 - ‖sites j‖ ^ 2) := by rw [hab, one_mul]
+    _ ≤ _ := by linarith only [h₁, h₂]
+
+end Euclidean
 
 private def overlapOn (S : Set E) (P : V → Set E) (u v : V) : Prop :=
   ∃ x ∈ S, x ∈ P u ∧ x ∈ P v

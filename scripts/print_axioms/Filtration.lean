@@ -886,3 +886,8 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.triangle_inter_eq_empty_of_disjoint_labels
 #print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.triangle_inter_eq_shared_labels_of_signed_boundary
 #print axioms TDA.Filtration.RationalAlpha.TriangleIncidenceExamples.trapezoid_pair_meets_along_AC
+#print axioms TDA.Filtration.Alpha.restrictedBall
+#print axioms TDA.Filtration.Alpha.restrictedBall_subset_closedBall
+#print axioms TDA.Filtration.Alpha.iUnion_restrictedBall
+#print axioms TDA.Filtration.Alpha.isCompact_restrictedBall
+#print axioms TDA.Filtration.Alpha.convex_restrictedBall

@@ -1,3 +1,4 @@
+import TDA.Topology.NerveThickening
 import TDA.Topology.NerveStarLabeling
 import TDA.Topology.ConeCarrierComparison
 
@@ -175,4 +176,29 @@ theorem isIso_simplicialHomologyIncl {C D : I → Set E} (ho : ∀ i, IsOpen (C 
     exact isIso_inhabited ho hC hD h hu R k
 
 end
+
+section Compact
+
+variable {I E : Type*} [LinearOrder I] [Finite I] [NormedAddCommGroup E] [NormedSpace ℝ E]
+
+/-- A common small open thickening preserves both nerves of a nested pair of finite compact
+convex families. The offsets have equal unions, so the original inclusion induces an isomorphism. -/
+theorem isIso_simplicialHomologyIncl_of_compact {C D : I → Set E}
+    (hC : ∀ i, IsCompact (C i)) (hD : ∀ i, IsCompact (D i))
+    (hcC : ∀ i, Convex ℝ (C i)) (hcD : ∀ i, Convex ℝ (D i))
+    (h : ∀ i, C i ⊆ D i) (hu : (⋃ i, C i) = ⋃ i, D i) (R : Type*) [Ring R] (n : ℕ) :
+    IsIso (simplicialHomologyIncl R (nerve_mono h) n) := by
+  let := Fintype.ofFinite I
+  obtain ⟨δ, hδ, bound⟩ := exists_pos_common_convex_thickening C D hC hD hcC hcD h hu
+  obtain ⟨eC, eD, uC, uD, hδCD, openC, openD⟩ := bound δ hδ le_rfl
+  -- Quantifying over the inclusion proof lets us rewrite both endpoint complexes.
+  have hiso : ∀ i : nerve (fun v => Metric.thickening δ (C v)) ≤
+      nerve (fun v => Metric.thickening δ (D v)), IsIso (simplicialHomologyIncl R i n) :=
+    fun _ => isIso_simplicialHomologyIncl (fun v => (openC v).1) (fun v => (openC v).2)
+      (fun v => (openD v).2) hδCD (uC.trans uD.symm) R n
+  rw [eC, eD] at hiso
+  exact hiso _
+
+end Compact
+
 end TDA.Topology.ConvexNerve
