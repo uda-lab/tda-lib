@@ -47,10 +47,17 @@ theorem castPoint_injective : Function.Injective castPoint := by
     simp [castPoint, point] at hc
     exact_mod_cast hc
 
+/-- Cast a labelled rational site embedding into the real plane. -/
+def castSites {V : Type*} (p : V ↪ Point) : V ↪ Plane :=
+  p.trans ⟨castPoint, castPoint_injective⟩
+
+@[simp] theorem castSites_apply {V : Type*} (p : V ↪ Point) (v : V) :
+    castSites p v = castPoint (p v) := rfl
+
 variable {n : ℕ}
 
 def realSites (p : Fin n ↪ Point) : Fin n ↪ Plane :=
-  p.trans ⟨castPoint, castPoint_injective⟩
+  castSites p
 
 /-- Evaluation of a rational linear form on the real plane. -/
 def linearForm (u : Point) (x : Plane) : ℝ := u.1 * x 0 + u.2 * x 1
