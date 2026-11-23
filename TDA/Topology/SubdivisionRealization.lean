@@ -182,10 +182,12 @@ theorem projectStep_vertexPoint {A : Finset I} (hA : A ∈ K) :
 
 end OneStep
 
-private def flagUnion {X : Type*} (F : Finset (Finset X)) : Finset X := by
+/-- Union of the faces in a flag. -/
+def flagUnion {X : Type*} (F : Finset (Finset X)) : Finset X := by
   classical exact F.biUnion id
 
-private theorem flagUnion_mem {X : Type*} [Fintype X] {K : PreAbstractSimplicialComplex X}
+/-- The union of a nonempty flag belongs to the flag. -/
+theorem flagUnion_mem {X : Type*} [Fintype X] {K : PreAbstractSimplicialComplex X}
     {F : Finset (Finset X)} (hf : F ∈ barycentricSubdivision K) : flagUnion F ∈ F := by
   classical
   obtain ⟨T, hT, hmax⟩ := exists_greatest_face hf
@@ -194,7 +196,8 @@ private theorem flagUnion_mem {X : Type*} [Fintype X] {K : PreAbstractSimplicial
   simp only [flagUnion, Finset.mem_biUnion, id_eq]
   exact ⟨fun ⟨A, hA, hv⟩ => hmax A hA hv, fun hv => ⟨T, hT, hv⟩⟩
 
-private theorem subset_flagUnion {X : Type*} {F : Finset (Finset X)} {A : Finset X} (ha : A ∈ F) : A ⊆ flagUnion F := by
+/-- Each flag member is contained in its union. -/
+theorem subset_flagUnion {X : Type*} {F : Finset (Finset X)} {A : Finset X} (ha : A ∈ F) : A ⊆ flagUnion F := by
   classical
   exact fun v hv => Finset.mem_biUnion.mpr ⟨A, ha, hv⟩
 /-- The original face supporting a fine face, obtained by taking successive unions. -/
@@ -202,7 +205,8 @@ def originalFace : (n : ℕ) → Finset (Vertex V n) → Finset V
   | 0 => id
   | n + 1 => fun F => originalFace n (flagUnion F)
 
-private theorem originalFace_mem (K : PreAbstractSimplicialComplex V) :
+/-- An iterated face is supported by an original face. -/
+theorem originalFace_mem (K : PreAbstractSimplicialComplex V) :
     ∀ n (F : Finset (Vertex V n)), F ∈ complex K n → originalFace n F ∈ K := by
   intro n
   induction n with

@@ -9,3 +9,4 @@ import TDA.Topology.MultiNerveMapExamples
 import TDA.Topology.QuotientProductExamples
 import TDA.Topology.RealizationExamples
 import TDA.Topology.SubdivisionMeshExamples
+import TDA.Topology.ConvexNerveInclusionExamples
