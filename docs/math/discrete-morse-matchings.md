@@ -351,7 +351,9 @@ face of `K` containing `σ` is `σ` or `τ`, and derives `σ ⋖ τ` (`IsFreePai
 equivalent to the one here. Its `deletion` has the same faces, and its `ElementaryCollapsesTo`
 and `CollapsesTo` have the same bodies. At the same TauCeti commit, its ordered simplicial chain
 complex (`ChainComplex.lean`, `InducedChainMap.lean` and `Subdivision/Chain.lean` in the same
-directory) has no free-pair, deletion or collapse statement. TauCeti is not a dependency.
+directory) has no free pair, no deletion of a face from a complex and no collapse of complexes;
+there, deleting a vertex or a tuple entry gives a boundary term, and a simplex collapses when a
+simplicial map is not injective on it. TauCeti is not a dependency.
 At tda-lib commit `3581b4a`, `TDA/` defines no other free-face predicate, face deletion or
 collapse relation on simplicial complexes. Declarations there whose names contain `collapse` are
 not collapses in this sense: for example, the private theorems `collapse_prism`, `collapse_edge`
