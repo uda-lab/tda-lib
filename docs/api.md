@@ -1775,8 +1775,8 @@ equality of diagrams, not of lists. No bound on the cost of the existing
 reduction, no representatives for the Rips complex and no statement for invalid
 tables beyond rejection are provided.
 
-For finite labelled sites, `Alpha.labelledComplexFiltration` is the closed
-Voronoi-ball nerve on squared grades. It allows coincident sites and agrees
+For finitely many labelled sites in a real normed vector space,
+`Alpha.labelledComplexFiltration` is the closed Voronoi-ball nerve on squared grades. It allows coincident sites and agrees
 with `Alpha.complexFiltration` on embeddings. `Alpha.squaredCechFiltration`
 uses the closed ambient Čech complex at radius √t for t ≥ 0. Both filtrations
 have empty stages at t < 0. Each Čech edge at a nonnegative grade admits an

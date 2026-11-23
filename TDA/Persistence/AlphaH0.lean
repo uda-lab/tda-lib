@@ -7,8 +7,9 @@ set_option autoImplicit false
 /-!
 # Degree-zero α–Čech persistence comparison
 
-On finite labelled sites, the same-label inclusion from closed α to ambient Čech on
-squared grades induces a natural isomorphism in ordinary degree zero over a field.
+For finitely many labelled sites in a real normed vector space, the same-label inclusion
+from closed α to ambient Čech on squared grades induces a natural isomorphism in ordinary
+degree zero over a field.
 Both complexes are empty at negative grades.
 -/
 
