@@ -1422,8 +1422,8 @@ slice counts of both diagrams are the ranks of the same persistence module
 `sublevelHomologyPModule degree grade D p`, which involves no order on the carrier, so
 `eq_reducerDiagram_of_rankCounts` gives the first theorem and `perm_of_degreePoints_eq` the
 second. The lists themselves need not be equal: `pivotPairs` lists the pairs in column order,
-so two columns tied in grade and degree whose pivot rows have different grades exchange their
-finite occurrences when the tie order is reversed. Fixture Q6 reverses the order on the path:
+and the tie order decides the order of columns tied in grade and degree, so reversing it can
+change the order of their finite occurrences. Fixture Q6 reverses the order on the path:
 the essential generator changes from A to C, and the occurrence list stays the same.
 
 ### Executable and semantic parts of the run
@@ -1434,7 +1434,9 @@ run on the square and on the path is evaluated by `decide +kernel` only after re
 `FiniteInput.occurrences` with `occurrences_boundary` and the boundary matrix with
 `boundary_eq_coverIncidence`; `FiniteInput.run` itself is then obtained through
 `run_eq_some_iff`. Kernel evaluation is evidence for the fixture values only; no runtime bound,
-comparison or speedup is stated. The other declarations are propositions.
+comparison or speedup is stated. The other declarations of `TDA.Persistence.Morse.MorseDiagram`
+are propositions, and so are those of `TDA.Persistence.Morse.MorseDiagramExamples` except the
+definition `dualOrder`.
 
 ### Scope of the run
 
@@ -1480,8 +1482,9 @@ and ACD at grade 2.
   degree 1 and `{(0, ⊤)}` in degree 0 (`square_dgm_of_morseDiagram`).
 - Q4. On the path of fixture R2 of [reducer order fixtures](#reducer-order-fixtures), all at
   grade 0, the Morse run of `pathCert` has the pivot pair (C, AB), whose grades are equal, so
-  it is dropped. The run gives `[⟨0, 0, .essential⟩]` (`pathCert_morseOccurrences`), and so
-  does `run path` (`path_run`, `path_run_eq_pathCert`).
+  it is dropped. The run gives `[⟨0, 0, .essential⟩]` (`pathCert_morseOccurrences`), and
+  `run path` is `some [⟨0, 0, .essential⟩]` (`path_run`), that is,
+  `some pathCert.morseOccurrences` (`path_run_eq_pathCert`).
 - Q5. The tie-order complex F4 of [fixtures](#fixtures) and its cancellation of `(a, b)` of
   fixture R1 give no occurrence (`tie_reducerOccurrences`). In reducer order a, r, s, b, F4 has
   the pivot pairs (a, s) and (r, b), and its cancellation the pair (r, s), so no index is

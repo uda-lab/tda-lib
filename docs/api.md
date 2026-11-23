@@ -2597,10 +2597,10 @@ fixtures Q1–Q6 over `ZMod 2`: Q1 and Q2, the Morse runs of `sqCert` and `genCe
 multi-grade square, with occurrences `[⟨1, 1, .finite 2⟩, ⟨0, 0, .essential⟩]`, degree-1 diagram
 `{(1, 2)}` and degree-0 diagram `{(0, ⊤)}`; Q3, the ordinary run `FiniteInput.run square`, equal
 to `some` of both Morse runs, and the square's `dgm` read off Q1 through `morseDiagram_eq_dgm`;
-Q4, the path R2 with `pathCert`, whose Morse run and ordinary run are `[⟨0, 0, .essential⟩]`;
-Q5, the reducer runs on the tie-order complex F4 and its cancellation, both empty; and Q6, the
-path in the reversed order `dualOrder` of its critical positions, with another essential
-generator and the same occurrence list. `morseOccurrences` and `morseDiagram` are computable;
+Q4, the path R2 with `pathCert`, whose Morse run is `[⟨0, 0, .essential⟩]` and whose ordinary
+run `FiniteInput.run path` is `some` of it; Q5, the reducer runs on the tie-order complex F4
+and its cancellation, both empty; and Q6, the path in the reversed order `dualOrder` of its
+critical positions, with another essential generator and the same occurrence list. `morseOccurrences` and `morseDiagram` are computable;
 the fixtures evaluate them by `decide +kernel` after rewriting the Morse differential to its
 written-out form, and evaluate the ordinary run only after rewriting the boundary matrix with
 `boundary_eq_coverIncidence`. These modules provide no interval decomposition over `ℤ`, no
