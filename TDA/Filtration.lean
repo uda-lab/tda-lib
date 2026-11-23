@@ -33,6 +33,7 @@ import TDA.Filtration.CechRelation
 import TDA.Filtration.Alpha
 import TDA.Filtration.AlphaLabelled
 import TDA.Filtration.RationalAlpha
+import TDA.Filtration.RationalAlpha.Predicates
 import TDA.Filtration.CechDisplacement
 import TDA.Filtration.CechWitness
 import TDA.Filtration.CechSupNorm
