@@ -51,6 +51,23 @@ theorem disjoint_interiors_of_off_edge_bound {I E : Type*} [Fintype I] [Finite E
   unfold interiorMultiplicity at high
   omega
 
+/-- Distinct certified pieces have disjoint interiors when their signed boundary sum
+equals that of the certified hull. The listed segments are nondegenerate. -/
+theorem disjoint_interiors_of_signed_boundary {L I E F : Type*}
+    [Fintype I] [Fintype E] [Fintype F]
+    (site : L → Point) (tri : I → E → L × L) (hull : F → L × L)
+    (T : I → Set Plane) (H : Set Plane)
+    (pT : ∀ i, PolygonCertificate (T i) (fun e => realEdge site (tri i e)))
+    (pH : PolygonCertificate H (fun e => realEdge site (hull e)))
+    (hne : ∀ j, (listedEdges site tri hull j).1 ≠ (listedEdges site tri hull j).2)
+    (hchain : (∑ i, ∑ e, signedEdge (tri i e)) = ∑ e, signedEdge (hull e))
+    {i j : I} (hij : i ≠ j) : Disjoint (interior (T i)) (interior (T j)) := by
+  apply disjoint_interiors_of_off_edge_bound (listedEdges site tri hull) T _ hij
+  intro x hx
+  rw [off_edge_count_from_signed_boundary site tri hull T H pT pH hne hchain x hx]
+  unfold interiorIndicator
+  split <;> omega
+
 private theorem weak_separation_of_disjoint_interiors {A B : Set Plane}
     (hA : Convex ℝ A) (hB : Convex ℝ B)
     (hneA : (interior A).Nonempty) (hneB : (interior B).Nonempty)
