@@ -130,6 +130,36 @@ noncollinearity for triples of distinct hull positions and the real interior,
 frontier and left-support hypotheses.
 [SignedBoundaryCoverage.lean](../../TDA/Filtration/RationalAlpha/SignedBoundaryCoverage.lean)
 
+For rational sites, use a supplied strict coarse corner cycle.
+[`StrictCornerCycle` and `HullSitesLeft`](../../TDA/Filtration/RationalAlpha/SignedBoundaryCoverage.lean)
+require, respectively, every nonincident corner to lie strictly left of each
+directed side and every site to lie weakly left of each side.
+[`cornerHullCheck`](../../TDA/Filtration/RationalAlpha/SignedBoundaryCoverage.lean)
+checks both conditions by exact rational orientation, and
+[`cornerHullCheck_true_iff`](../../TDA/Filtration/RationalAlpha/SignedBoundaryCoverage.lean)
+identifies the weak test with all-site containment. The
+[`cornerHullCheck_sound`](../../TDA/Filtration/RationalAlpha/SignedBoundaryCoverage.lean)
+theorem supplies the strict coarse `PolygonCertificate` and identifies its
+corner hull with the convex hull of all sites. A site in the relative interior
+of a straight side remains a site in this route. A cycle that lists it as a
+corner cannot itself carry a `PolygonCertificate`: the two distinct side
+occurrences on that support line cannot satisfy
+[`PolygonCertificate.strict_endpoint`](../../TDA/Filtration/RationalAlpha/SignedBoundaryCoverage.lean).
+[`midpoint_accepted` and `subdivided_cycle_rejected`](../../TDA/Filtration/RationalAlpha/HullCertificateExamples.lean)
+record both cases.
+
+[`rational_cover_from_subdivided_signed_boundary`](../../TDA/Filtration/RationalAlpha/SubdividedBoundaryCoverage.lean)
+uses that strict certificate for the coarse cycle while comparing the triangle
+chain with its ordered, labelled refinements. It separately requires
+`OrderedEdgeCuts` on each coarse side, containment of every triangle vertex in
+the coarse hull, strict counterclockwise orientation of each ordered triangle,
+and equality of the summed triangle signed-edge chain with the chain of the
+refined labelled boundary. It proves closed coverage and off-edge multiplicity
+for the triangles; its coverage conclusion makes no assertion of a weak-corner
+`PolygonCertificate` for the subdivided cycle.
+[`coverage_and_multiplicity`](../../TDA/Filtration/RationalAlpha/SubdividedBoundaryExamples.lean)
+exhibits the side split through an ordered cut and the refined-chain equality.
+
 `rational_cover_from_signed_boundary` takes the following data and hypotheses.
 
 - An injective rational site map from a label type and an injective hull cycle
