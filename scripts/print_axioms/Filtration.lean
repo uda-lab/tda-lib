@@ -1097,3 +1097,18 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.fan_signed_boundary
 #print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.fan_coverage_and_multiplicity
 #print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.fan_sample_multiplicity_one
+
+-- Signed coverage of rational hulls with ordered side subdivisions.
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.OrderedEdgeCuts
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.subdivisionEdges
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.SubdivisionIndex
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.subdividedEdge
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.subdividedListedEdges
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.rational_cover_from_subdivided_signed_boundary
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.splitSites
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.coarseCycle
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.cuts
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.splitTriangles
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.signed_boundary
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.coverage_and_multiplicity
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.sample_multiplicity_one
