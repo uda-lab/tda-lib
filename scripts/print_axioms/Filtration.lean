@@ -1024,3 +1024,19 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.InteriorDual.centers_ne
 #print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGradeExamples.exact_trapezoid_ac
 #print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGradeExamples.exact_trapezoid_ab
+
+-- All-scales Alpha carrier of a certified supplied triangulation (Issue #1135).
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.labelComplex_le_alphaCarrier_of_commonCells
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.labelComplex_le_alphaCarrier
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.alphaCarrier_le_labelComplex_of_signed_boundary
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.carrier_eq_of_signed_boundary
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.allSitesUsed_of_carrier_eq
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.empty_excluded
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.hull_requires_three
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.singleton_carrier
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.two_site_pair
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.no_zero_site_face
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.trapezoid_carrier
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.trapezoid_diagonals
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.square_four_face_regression
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.square_passing_split_carrier_mismatch
