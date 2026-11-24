@@ -1,4 +1,5 @@
 import TDA.Persistence.Reduction.FiniteInput
+import TDA.Persistence.Morse.MatchingSchedule
 
 /-! End-to-end executions of the public finite-input pipeline. -/
 
@@ -336,5 +337,56 @@ theorem tied_one_points : (outputDiagram tied 1).points = 0 := by
         ⟨0, 0, .essential⟩] :=
     ((run_eq_some_iff _ _).mp tied_run).2.symm
   simp [outputDiagram, ho, Occurrence.point]
+
+/-! ## The tetrahedral boundary and its filling -/
+
+open TDA.Persistence.Morse.MatchingInput
+
+/-- All proper nonempty faces of the tetrahedron, graded by dimension. -/
+def sphere : Input :=
+  [({0}, 0), ({1}, 0), ({2}, 0), ({3}, 0),
+   ({0, 1}, 1), ({0, 2}, 1), ({0, 3}, 1), ({1, 2}, 1), ({1, 3}, 1), ({2, 3}, 1),
+   ({0, 1, 2}, 2), ({0, 1, 3}, 2), ({0, 2, 3}, 2), ({1, 2, 3}, 2)]
+
+/-- The four triangles acquire a common filling at grade five. -/
+def ball : Input := sphere ++ [({0, 1, 2, 3}, 5)]
+
+theorem sphere_valid : Valid sphere := by decide +kernel
+theorem ball_valid : Valid ball := by decide +kernel
+
+/-- Bit i of column j records whether face i is a facet of face j in the input order. -/
+def tetrahedralBoundary {n : ℕ} (i j : Fin n) : ZMod 2 :=
+  let columns := #v[0, 0, 0, 0, 3, 5, 9, 6, 10, 12, 176, 336, 608, 896, 15360]
+  if (columns[j.val]?.getD (0 : ℕ)).testBit i.val then 1 else 0
+
+private theorem tetrahedralBoundary_eq (xs : Input)
+    (h : (Vector.ofFn fun i : Fin xs.length => Vector.ofFn fun j : Fin xs.length =>
+        coverIncidence xs i j) = (Vector.ofFn fun i : Fin xs.length =>
+        Vector.ofFn fun j : Fin xs.length => tetrahedralBoundary i j)) :
+    boundary xs = @tetrahedralBoundary xs.length := by
+  rw [boundary_eq_coverIncidence]
+  funext i j
+  simpa only [Fin.getElem_fin, Vector.getElem_ofFn, Fin.eta] using
+    congrArg (fun rows : Vector (Vector (ZMod 2) xs.length) xs.length => rows[i][j]) h
+
+theorem sphere_boundary : boundary sphere = @tetrahedralBoundary sphere.length :=
+  tetrahedralBoundary_eq sphere (by decide +kernel)
+
+theorem ball_boundary : boundary ball = @tetrahedralBoundary ball.length :=
+  tetrahedralBoundary_eq ball (by decide +kernel)
+
+theorem sphere_H2_run : (run sphere).map (List.filter fun r => r.degree == 2) =
+    some [⟨2, 2, .essential⟩] := by
+  simp only [run, (validBool_iff _).mpr sphere_valid, ↓reduceIte, Option.map_some]
+  unfold occurrences finiteOccurrences essentialOccurrences essentialIndices pivotPairs reduced trace
+  rw [sphere_boundary]
+  decide +kernel
+
+theorem ball_H2_run : (run ball).map (List.filter fun r => r.degree == 2) =
+    some [⟨2, 2, .finite 5⟩] := by
+  simp only [run, (validBool_iff _).mpr ball_valid, ↓reduceIte, Option.map_some]
+  unfold occurrences finiteOccurrences essentialOccurrences essentialIndices pivotPairs reduced trace
+  rw [ball_boundary]
+  decide +kernel
 
 end TDA.Persistence.Reduction.FiniteInput.Examples

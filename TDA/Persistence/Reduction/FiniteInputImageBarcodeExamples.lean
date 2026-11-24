@@ -341,4 +341,136 @@ theorem repeated_actual :
   obtain ⟨h, _, _, he⟩ := runImageBarcode_correct _ _ _ _ _ _ repeated_runs.1
   exact he
 
+/-! ## A component merger with a new target component
+
+The source vertices remain isolated. Their images merge when the edge appears at grade five,
+and the third target vertex generates a component outside the image.
+-/
+
+namespace ComponentMerger
+
+open TDA.Persistence.Morse.MatchingInput
+
+def source : Input := [({10}, 0), ({11}, 0)]
+
+def target : Input := [({0}, 0), ({1}, 0), ({2}, 5), ({0, 1}, 5)]
+
+def relabel (v : ℕ) : ℕ := v - 10
+
+/-- Index 1 samples grade 5. Exclusive endpoint 2 records survival through the last sample. -/
+def observations (j : Fin 2) : ℤ := if j = 0 then 0 else 5
+
+def sourceBars : List (FiniteInterval 2) :=
+  [⟨0, 2, by decide, by decide⟩, ⟨0, 2, by decide, by decide⟩]
+
+def targetBars : List (FiniteInterval 2) :=
+  [⟨0, 1, by decide, by decide⟩, ⟨0, 2, by decide, by decide⟩, ⟨1, 2, by decide, by decide⟩]
+
+def imageBars : List (FiniteInterval 2) :=
+  [⟨0, 1, by decide, by decide⟩, ⟨0, 2, by decide, by decide⟩]
+
+private theorem table (xs ys : Input) (f : ℕ → ℕ) (a b c : ℕ)
+    (haa : (homologyMapDimensions xs ys 0 0 0 f).rank = a)
+    (hab : (homologyMapDimensions xs ys 0 0 5 f).rank = b)
+    (hbb : (homologyMapDimensions xs ys 0 5 5 f).rank = c) :
+    imageRankTable xs ys 0 f observations = #v[#v[a, b], #v[0, c]] := by
+  apply Vector.ext
+  intro i hi
+  apply Vector.ext
+  intro j hj
+  interval_cases i <;> interval_cases j
+  · exact haa
+  · exact hab
+  · rfl
+  · exact hbb
+
+/-- The edge at position 3 joins the first two target vertices. -/
+private def edgeMat (i j : Fin target.length) : ZMod 2 := if j.val = 3 ∧ i.val < 2 then 1 else 0
+
+private theorem edge_boundary : boundary target = edgeMat := by
+  rw [boundary_eq_coverIncidence]
+  funext i j
+  have h : (Vector.ofFn fun a : Fin target.length => Vector.ofFn fun b : Fin target.length =>
+      coverIncidence target a b) =
+      (Vector.ofFn fun a : Fin target.length => Vector.ofFn fun b : Fin target.length => edgeMat a b) := by
+    decide +kernel
+  simpa only [Fin.getElem_fin, Vector.getElem_ofFn, Fin.eta] using congrArg
+    (fun A : Vector (Vector (ZMod 2) target.length) target.length => A[i][j]) h
+
+private theorem target_trace : trace target = [] := by
+  rw [trace, edge_boundary]
+  decide +kernel
+
+private theorem target_reduced : reduced target = edgeMat := by
+  rw [reduced, target_trace, replay_nil, edge_boundary]
+
+private theorem target_change : change target = 1 := by rw [change, target_trace, traceChange_nil]
+
+private instance : NeZero target.length := ⟨by decide⟩
+
+private theorem target_pairs : pivotPairs target = [(1, 3)] := by
+  rw [pivotPairs, target_reduced]
+  decide +kernel
+
+private def survivor : Representative target.length := ⟨⟨0, 0, .essential⟩, 0, none, [0], none⟩
+
+private def merged : Representative target.length := ⟨⟨0, 0, .finite 5⟩, 1, some 3, [0, 1], some [3]⟩
+
+private def newComponent : Representative target.length := ⟨⟨0, 5, .essential⟩, 2, none, [2], none⟩
+
+private theorem target_records : representedOccurrences target = [merged, survivor, newComponent] := by
+  unfold representedOccurrences pairedRepresentative essentialRepresentative pairedVector
+    essentialVector essentialIndices
+  rw [target_reduced, target_change, target_pairs]
+  decide +kernel
+
+/-- Keep the list arguments explicit so that rewriting target records also rewrites
+the row and column indices of the coordinate matrix. -/
+private def rankFromRecords {m n : ℕ} (sources : List (Representative m))
+    (targets : List (Representative n)) (coordinates : Representative m → Vector (ZMod 2) n) : ℕ :=
+  let columns := Vector.ofFn fun j : Fin sources.length => coordinates (sources.get j)
+  let matrix := Vector.ofFn fun i : Fin targets.length => Vector.ofFn fun j : Fin sources.length =>
+    columns[j][(targets.get i).birthIndex]
+  F2Matrix.rank (fun i j => matrix[i][j])
+
+private theorem rank_by_records (xs ys : Input) (a b : ℤ) (f : ℕ → ℕ) :
+    (homologyMapDimensions xs ys 0 a b f).rank =
+      rankFromRecords (activeRepresentatives xs 0 a) (activeRepresentatives ys 0 b)
+        (fun r => normalCoordinateVector ys (vertexVector xs ys a f (chainVector r.cycle))) := rfl
+
+local macro "small_rank" : tactic => `(tactic|
+  (rw [rank_by_records]
+   simp only [activeRepresentatives, target_records, normalCoordinateVector,
+     target_reduced, target_change, target_pairs]
+   decide +kernel))
+
+theorem source_run : runImageBarcode source source 0 id observations = some sourceBars := by
+  apply (runImageBarcode_eq_some_iff _ _ _ _ _ _).mpr
+  refine ⟨by decide +kernel, ?_⟩
+  unfold imageBarcode
+  rw [table source source id 2 2 2 (by decide +kernel) (by decide +kernel) (by decide +kernel)]
+  decide +kernel
+
+theorem target_run : runImageBarcode target target 0 id observations = some targetBars := by
+  apply (runImageBarcode_eq_some_iff _ _ _ _ _ _).mpr
+  refine ⟨by decide +kernel, ?_⟩
+  unfold imageBarcode
+  rw [table target target id 2 1 2 (by small_rank) (by small_rank) (by small_rank)]
+  decide +kernel
+
+theorem image_run : runImageBarcode source target 0 relabel observations = some imageBars := by
+  apply (runImageBarcode_eq_some_iff _ _ _ _ _ _).mpr
+  refine ⟨by decide +kernel, ?_⟩
+  unfold imageBarcode
+  rw [table source target relabel 2 1 1 (by small_rank) (by small_rank) (by small_rank)]
+  decide +kernel
+
+theorem separated_multisets :
+    relabel 10 ≠ id 10 ∧
+    (imageBars : Multiset (FiniteInterval 2)) ≠ (sourceBars : Multiset _) ∧
+    (imageBars : Multiset (FiniteInterval 2)) ≠ (targetBars : Multiset _) ∧
+    (sourceBars : Multiset (FiniteInterval 2)) ≠ (targetBars : Multiset _) := by decide +kernel
+
+end ComponentMerger
+
 end TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples
