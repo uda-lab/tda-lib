@@ -180,8 +180,9 @@ also implies use of every label. The polygon cycle needs at least three sites.
 [SuppliedCarrier.lean](../../TDA/Filtration/RationalAlpha/SuppliedCarrier.lean) ·
 [No-four conditions](../../TDA/Filtration/RationalAlpha/SuppliedEdgeGrade.lean)
 
-Under the same certificate hypotheses, `suppliedGrades_eq_reference`
-identifies the finite rational row sets. `supplied_realStage_iff` identifies
+For supplied triangles `tri : Fin m → Fin 3 → Fin n`, the same certificate
+hypotheses give `suppliedGrades_eq_reference`, which identifies the finite
+rational row sets. `supplied_realStage_iff` identifies
 the faces of the closed cutoff on those rows with actual α at every real
 squared grade. For a rational cutoff, `realStageTable_cast` gives the
 executable rational `stageTable`. This interface consumes supplied triangles

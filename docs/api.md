@@ -1841,8 +1841,8 @@ hypotheses of their respective circle comparisons.
 `TDA.Filtration.RationalAlpha.SignedBoundaryCoverage` supplies
 `PolygonCertificate` and `rational_cover_from_signed_boundary`. The latter
 gives off-edge interior multiplicity and closed hull coverage for injective
-rational sites, an injective certified hull cycle containing them, and
-finitely many CCW triangles with the hull's signed boundary. The closed
+rational sites, an injective cycle whose certified convex hull contains
+every site, and finitely many CCW triangles with the hull's signed boundary. The closed
 cover is used by `SuppliedCarrier.alphaCarrier_le_labelComplex_of_signed_boundary`.
 With the passing incircle tests and no-four condition, the carrier equality
 leads to exact supplied grade rows and actual stage membership at every real
