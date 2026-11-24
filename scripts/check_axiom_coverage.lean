@@ -170,7 +170,7 @@ private def pinnedNames (contents : String) : List String :=
   let prefix' := "#print axioms "
   (contents.splitOn "\n").filterMap fun line =>
     if line.startsWith prefix' then
-      match (line.drop prefix'.length).toString.splitOn " " |>.filter (· ≠ "") with
+      match ((line.drop prefix'.length).toString.replace "\t" " ").splitOn " " |>.filter (· ≠ "") with
       | name :: _ => some name
       | [] => none
     else
