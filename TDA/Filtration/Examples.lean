@@ -20,6 +20,7 @@ import TDA.Filtration.RationalAlpha.IncircleGradeExamples
 import TDA.Filtration.RationalAlpha.EdgeGradeExamples
 import TDA.Filtration.RationalAlpha.SuppliedEdgeGradeExamples
 import TDA.Filtration.RationalAlpha.SuppliedCarrierExamples
+import TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples
 import TDA.Filtration.AlphaCollapseExamples
 import TDA.Filtration.AlphaCollapseCertificateExamples
 import TDA.Filtration.AlphaCollapseFamilyExamples
