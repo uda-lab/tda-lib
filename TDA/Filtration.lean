@@ -42,6 +42,7 @@ import TDA.Filtration.RationalAlpha.IncircleGrade
 import TDA.Filtration.RationalAlpha.EdgeGrade
 import TDA.Filtration.RationalAlpha.SuppliedEdgeGrade
 import TDA.Filtration.RationalAlpha.SuppliedCarrier
+import TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration
 import TDA.Filtration.CechDisplacement
 import TDA.Filtration.CechWitness
 import TDA.Filtration.CechSupNorm
