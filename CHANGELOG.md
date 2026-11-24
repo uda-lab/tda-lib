@@ -42,10 +42,9 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   [acyclic matchings](docs/math/discrete-morse-matchings.md).
 - Check supplied acyclic matchings on finite inputs
   (`TDA.Persistence.Morse.FiniteInputMatching`): `MatchingInput.check` accepts
-  exactly an equal-grade list-level matching with a topological rank, some rank
-  is accepted exactly for a duplicate-free filtered acyclic matching, and
-  `CertifiedMatching` reports the critical faces with their dimension and
-  original grade. See
+  exactly an equal-grade list-level matching with a topological rank. For a valid input,
+  some rank is accepted exactly for a duplicate-free filtered acyclic matching.
+  `CertifiedMatching` reports the critical faces with their dimension and original grade. See
   [checking a supplied matching](docs/math/discrete-morse-matchings.md#checking-a-supplied-matching).
 - Generate certified same-grade matchings on finite inputs greedily
   (`TDA.Persistence.Morse.FiniteInputMatchingGeneration`): `MatchingInput.generate`
@@ -60,7 +59,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   projection, inclusion and homotopy over any commutative ring, with `d'² = 0`,
   both chain-map equations and `1 - i p = D H + H D` for a unit pair
   (`a ≠ b`, `D a b = 1`) of a square-zero `D`, `p i = 1` from `a ≠ b` alone, and all
-  four maps grade-nonincreasing for equal grades; no iteration or persistence isomorphism. See
+  four maps grade-nonincreasing for equal grades. See
   [unit cancellation](docs/math/discrete-morse-cancellation.md).
 - Bundle filtered contractions of based complexes
   (`TDA.Persistence.Morse.FilteredContraction`): computable projection, inclusion and homotopy
@@ -69,7 +68,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   restatement along equalities (`copy`) and the unit-pair instance (`ofUnitPair`);
   `D' * D' = 0` follows from `D * D = 0`, and the based and filtered differential properties
   transfer to the small complex. Fixtures compose two cancellations on the filled triangle by
-  `decide +kernel`. No iteration or persistence isomorphism. See
+  `decide +kernel`. See
   [filtered contractions](docs/math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition).
 - Form grade-sublevel homology of filtered based complexes as persistence modules over `ℤ`
   (`TDA.Persistence.Morse.FilteredHomology`): degree-`p` cycles in grades `≤ t` modulo the
@@ -77,8 +76,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   the natural isomorphism `sublevelHomologyIso` of these persistence modules induced by the
   projection of a filtered contraction, with equal `Module.finrank`, without assuming
   `D * D = 0`. Fixtures over `ZMod 2` transport the dimensions of the critical complex of the
-  regraded filled triangle to the triangle. No bridge from `sublevelHomologyPModule` to
-  simplicial homology. See
+  regraded filled triangle to the triangle. See
   [sublevel homology](docs/math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
 - Iterate unit cancellation along a supplied pivot schedule
   (`TDA.Persistence.Morse.IteratedCancellation`): `IsPivotSchedule` asks for distinct
@@ -86,8 +84,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   generator, and is preserved by cancelling the head pair; `criticalDifferential` is an
   executable reduced differential on the critical generators, and `FilteredContraction.ofSchedule`
   is the composed filtered contraction onto it. Fixtures evaluate the multi-grade square and
-  the regraded filled triangle by `decide +kernel`. No derivation of the schedule from a
-  matching. See
+  the regraded filled triangle by `decide +kernel`. See
   [iterated cancellation](docs/math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule).
 - Derive the pivot schedule of a certified matching on a valid input
   (`TDA.Persistence.Morse.MatchingSchedule`): over `ZMod 2` the finite-input boundary is the
@@ -97,8 +94,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   critical positions, `CertifiedMatching.morseContraction` the filtered contraction of the
   boundary complex onto it, and `CertifiedMatching.morseHomologyIso` the induced isomorphism of
   grade-sublevel homology persistence modules. Fixtures evaluate three certificates on the
-  multi-grade square, including a tie in the rank, by `decide +kernel`. No bridge to
-  simplicial persistent homology. See
+  multi-grade square, including a tie in the rank, by `decide +kernel`. See
   [the pivot schedule of a certified matching](docs/math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching).
 - Bridge the Morse complex of a certified matching to simplicial persistence
   (`TDA.Persistence.Morse.SimplicialBridge`): for a valid finite input,
@@ -109,8 +105,8 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   module to the persistence module of the Morse complex, with equal dimensions and
   structure-map ranks. Fixtures on the multi-grade square prove the sublevel homology
   dimensions of its Morse complex and of its simplicial sublevels, and that its degree-1
-  diagram `dgm` is `{(1, 2)}`. No interval decomposition and no barcode agreement with the
-  reducer. See
+  diagram `dgm` is `{(1, 2)}`. The bridge does not construct an interval decomposition of these
+  integer-indexed persistence modules. See
   [the simplicial bridge and the Morse persistence theorem](docs/math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem).
 - Order the generators of a filtered based complex for the column reducer
   (`TDA.Persistence.Morse.ReducerOrder`): the key (grade, degree, generator) is injective and
@@ -120,7 +116,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   transported degree, so `matrixReductionTrace_normalForm_input` applies to it
   (`reducerMatrix_normalForm_input`). Fixtures R1 (the tie-order cancellation F4) and R2 (a
   certified matching whose inherited order fails strict triangularity) evaluate the reducer
-  orders by `decide +kernel`. No reduction run and no barcode agreement. See
+  orders by `decide +kernel`. See
   [the reducer order of a filtered based complex](docs/math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex).
 - Read the column reducer's output as a graded diagram and prove its rank semantics
   (`TDA.Persistence.Morse.ReducerDiagram`): over a field, for a square matrix on `Fin m` with
@@ -135,8 +131,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   are the ranks of the original complex. The uniqueness `Diagram.eq_of_sliceCounts_eq` holds
   over any linear order (`TDA.Persistence.DiagramRankUniqueness`) and now also proves
   `RealBarcode.multiset_eq_of_rankCounts_eq`. Fixtures P1–P3 (a hollow triangle and the
-  reducer matrices of the path R2 and the square R3) evaluate the output by `decide +kernel`. No
-  certificate run and no agreement with `dgm`. See
+  reducer matrices of the path R2 and the square R3) evaluate the output by `decide +kernel`. See
   [the graded reducer output and its rank semantics](docs/math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics).
 - Run the reducer on the Morse complex of a certified matching
   (`TDA.Persistence.Morse.MorseDiagram`): `morseOccurrences` and `morseDiagram` are the
@@ -158,8 +153,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   exact obtuse triangle (`TDA.Filtration.AlphaCollapseExamples`): for `4 ≤ t < 5` the long edge
   is a free face of the triangle in the squared-grade Čech stage and its deletion is the α
   stage; at every other grade the stages are equal, and no fixed set of faces gives every α
-  stage from the Čech stage at the same grade. No general-position or persistence statement.
-  See
+  stage from the Čech stage at the same grade. See
   [elementary collapses and the obtuse triangle](docs/math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle).
 - Prove that collapses induce homology isomorphisms (`TDA.Simplicial.CollapseHomology`):
   deleting a free face is a chain homotopy equivalence whose forward map is the inclusion, so the
@@ -167,8 +161,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   every degree over every ring. Levelwise collapses between two filtrations make the inclusion
   morphism of their homology persistence modules a natural isomorphism
   (`TDA.Persistence.CollapsePersistence`). On the obtuse triangle this gives the α-to-Čech
-  persistence isomorphism in every degree (`TDA.Persistence.CollapsePersistenceExamples`). No
-  certificate checker, critical-grade sequence or general-position statement. See
+  persistence isomorphism in every degree (`TDA.Persistence.CollapsePersistenceExamples`). See
   [homology of collapses](docs/math/discrete-morse-matchings.md#homology-of-collapses).
 - Add a checker for supplied collapse sequences on finite face tables
   (`TDA.Simplicial.CollapseCertificate`): a certificate is a list of pairs `(σ, τ)`,
@@ -177,8 +170,8 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   those face tables (`collapsesTo_iff_exists_checkSteps`). Accepted and rejected certificates are
   evaluated by `decide +kernel` (`TDA.Simplicial.CollapseCertificateExamples`), and the actual
   Čech stage of the obtuse triangle at grade 4 collapses to its α stage through the checker
-  (`TDA.Filtration.AlphaCollapseCertificateExamples`). No critical-grade sequence, certificate
-  producer or general-position statement. See
+  (`TDA.Filtration.AlphaCollapseCertificateExamples`). The checker requires a supplied
+  certificate. See
   [checking supplied collapse sequences](docs/math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
 - Check supplied collapse certificates across the critical grades of a filtered pair
   (`TDA.Filtration.CollapseCertificateFamily`): for real-indexed filtrations with rational grade
@@ -250,7 +243,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   is finite-dimensional; and a real interleaving gives extended-rank erosion of
   the one-coordinate modules, with the extended erosion distance at most the
   real interleaving distance. An example is q-tame but not pointwise
-  finite-dimensional. No multiparameter finite-image condition is stated. See
+  finite-dimensional. See
   [rank erosion](docs/math/rank-erosion.md#one-parameter-q-tame-modules-and-real-interleavings).
 - Add coordinatewise q-tameness (`TDA.Persistence.CoordinateQTame`), under the
   owner ruling on strictness: `PModule.CoordQTame` asks for finite-dimensional
@@ -297,8 +290,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   exponent, and `diagramEmbedding_eq_embedding_realPoints` transfers the
   statements to diagrams whose finite part is the list. The widths are
   absolute, an enclosure decides no equality, only the capped weight is covered
-  and the cost is documented, not proved. The docstrings of `roundDown` and
-  `roundUp` now say "at most" and "at least". See
+  and the cost is documented, not proved. See
   [Gram sums and the squared RKHS distance](docs/math/kernel-enclosure.md#gram-sums-and-the-squared-rkhs-distance).
 
 - Enclose the exponential at nonpositive rational arguments by rational
@@ -317,9 +309,9 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   for a valid `DistanceTable`, `outputDiagram_ripsInput` states that
   `FiniteInput.outputDiagram` of the list, with integer grades read as real
   numbers, is `dgm (ZMod 2)` of `Rips.filter` for the table metric in every
-  degree. `ripsLabelMap` induces an isomorphism from the homology of the Rips
-  complexes to the sublevel homology of the list, `ripsRunInDegree` returns the
-  records of one degree and `none` for an invalid table in every degree, and
+  degree. At integer thresholds, `ripsLabelMap` induces an isomorphism from the
+  homology of the Rips complexes to the sublevel homology of the list. `ripsRunInDegree`
+  returns the records of one degree and `none` for an invalid table in every degree, and
   relabelled tables have equal diagrams. The new module
   `TDA.Persistence.SublevelDiagramVertexMap` proves `dgm_eq_of_vertexMaps`, the
   invariance of real sublevel diagrams under mutually inverse vertex maps
@@ -334,16 +326,14 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   list is ordered by grade, cardinality and label order, satisfies
   `FiniteInput.Valid`, and its faces and grades are identified with
   `Rips.fullComplex` and `Rips.filter` for the table metric. The list costs
-  `O(N² 2 ^ N)` operations; the cost of the existing reduction is separate.
-  The equality of the resulting diagram with the Rips diagram is not part of
-  this change. See
+  `O(N² 2 ^ N)` operations; the cost of the existing reduction is separate. See
   [Rips input from an integer distance table](docs/math/finite-ph-computation.md#rips-input-from-an-integer-distance-table).
 
 - Identify each finite-input image structure-map rank with the range dimension
   of the induced simplicial map between sampled sublevels, for global vertex
   maps on monotone integer observations with repeated or negative thresholds
-  and collapsed faces allowed. See the
-  [homology-map dimensions](docs/math/finite-ph-map-dimensions.md) guide.
+  and collapsed faces allowed. See
+  [sampled image persistence](docs/api.md#persistent-homology-results-and-computational-boundary).
 - Make the finite discrete interval constructors and `barcodeModuleOfList`
   executable with natural-endpoint decidability instead of classical
   decisions, including in the `List.Perm.idxBij` route that realizes
@@ -385,10 +375,11 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   of coordinates. See
   [rank erosion](docs/math/rank-erosion.md#executable-representations-over-the-two-element-field).
 - Test weak-pair rank erosion of two F₂ grid representations at a rational
-  radius by execution (`F2GridRep.runErosion`): the result is invalid input, a
-  pass, or a failed inequality with its direction, grades and ranks, and it is
-  proved correct for the actual Kan extensions in all three cases. A failure
-  refutes the predicate at that radius; it is not a strict distance bound. See
+  radius by execution (`F2GridRep.runErosion`). The test rejects an invalid
+  representation or a negative radius. Otherwise it certifies weak-pair erosion
+  of the actual Kan extensions at that radius or returns a failed inequality
+  with its direction, grades and ranks. In the latter case the tested radius
+  is strictly below their erosion distance. See
   [rank erosion](docs/math/rank-erosion.md#a-certified-finite-test).
 - Add strict-pair rank erosion (`StrictRankErosion`, `strictRankErosionDistance`)
   on the strict pairs of the product order and compare it with the weak-pair
@@ -398,8 +389,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   and a radius at which a predicate fails is a non-strict lower bound of its
   distance. The predicates differ at a fixed radius, as a module supported on a
   closed box shows, and with no coordinates the strict distance is always zero.
-  No erosion attainment or strict lower bound is supplied by these
-  declarations. See [rank erosion](docs/math/rank-erosion.md#strict-pairs).
+  See [rank erosion](docs/math/rank-erosion.md#strict-pairs).
 - Prove erosion attainment for modules with original finite presentations
   (`GradedFree.FinitelyPresented`): the rank invariant is locally constant
   under small diagonal moves to the right, a radius at which `RankErosion`
@@ -441,8 +431,8 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   (`HeightGraph.incidence?`): from a Boolean adjacency function and rational
   vertex heights, the sorted distinct levels, one cell per level component and
   per crossing edge, and the spanning edges of each gap with their endpoint
-  cells, parallel entries retained. Component labels are proved to decide
-  reachability in the actual induced level graphs; invalid adjacency is
+  cells, retaining distinct edges with the same endpoint cells. Component labels
+  are proved to decide reachability in the actual induced level graphs; invalid adjacency is
   rejected. The executed lists are proved isomorphic, as finite Reeb data, to
   `graphPLReebData` at the computed levels, and the Reeb quotient of the
   graph-PL height is identified over `ℝ` with their realization
