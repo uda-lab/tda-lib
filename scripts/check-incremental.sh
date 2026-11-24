@@ -76,8 +76,15 @@ fi
 # name by itself without importing an a-priori-unknown module (see the PR for the full
 # reasoning). The coarser trigger stays sound; it only gives up some incremental benefit on
 # PRs that also add pins.
-if [ -z "$fallback_reason" ] && printf '%s\n' "$changed_files" | grep -qE '^scripts/print_axioms/'; then
-  fallback_reason="scripts/print_axioms/ changed relative to the merge base"
+if [ -z "$fallback_reason" ]; then
+  # Ask Git about the directory directly. Its displayed filenames may be quoted.
+  pin_diff=0
+  git diff --quiet --no-ext-diff --no-textconv "$merge_base" -- scripts/print_axioms/ || pin_diff=$?
+  case "$pin_diff" in
+    0) ;;
+    1) fallback_reason="scripts/print_axioms/ changed relative to the merge base" ;;
+    *) fallback_reason="could not compare scripts/print_axioms/ with the merge base" ;;
+  esac
 fi
 
 # Any build/toolchain/guard input this gate's own soundness, or the full gate's behaviour,
@@ -155,7 +162,7 @@ run_full_mode() {
   step "live axiom audit (full mode)"
   bash scripts/check-axioms.sh || { echo "ERROR: live axiom audit failed." >&2; exit 1; }
   step "axiom coverage (full mode)"
-  bash scripts/check-axiom-coverage.sh || { echo "ERROR: axiom coverage failed." >&2; exit 1; }
+  TDA_PIN_ADVISORY_BASE="$merge_base" bash scripts/check-axiom-coverage.sh || { echo "ERROR: axiom coverage failed." >&2; exit 1; }
   step "Comparator agreement (full mode)"
   bash scripts/check-comparator.sh || { echo "ERROR: Comparator agreement failed." >&2; exit 1; }
 

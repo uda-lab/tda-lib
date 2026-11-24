@@ -163,6 +163,22 @@ else
   failcase print_axioms_addition_forces_full "expected fallback reason mentioning print_axioms/; got: $out"
 fi
 
+# Git quotes this name in its default human-readable diff. Stage the fixture only
+# in a disposable index so the user's staged changes are preserved.
+quoted_pin="$(mktemp scripts/print_axioms/Éxamples.XXXXXX.lean)" || exit 1
+CREATED+=("$quoted_pin")
+printf 'import TDA\n' > "$quoted_pin"
+out="$(
+  export GIT_INDEX_FILE="$BACKUP_DIR/quoted-pin.index"
+  git read-tree HEAD && git add -- "$quoted_pin" && dry_run 1
+)"; status=$?
+rm -f "$quoted_pin"
+if [ "$status" -eq 0 ] && [[ "$out" == *'print_axioms/ changed'* ]]; then
+  pass quoted_pin_path_forces_full
+else
+  failcase quoted_pin_path_forces_full "unexpected fallback decision: $out"
+fi
+
 # A build/toolchain/guard input changing (this incremental gate's own helper) forces the
 # full gate: "a changed audit-tool source forces the full gate."
 tool_file="scripts/lib/incremental-cache.py"

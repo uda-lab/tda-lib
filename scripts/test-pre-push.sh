@@ -48,6 +48,7 @@ printf 'check.sh %s\n' "$*" >> "$CALL_LOG"
 if [ "$MUTATE_DURING_GATE" = 1 ]; then
   printf '\n-- changed during validation\n' >> "$MUTATE_PATH"
 fi
+if [ -n "${PIN_ADVISORY_FIXTURE:-}" ]; then echo "$PIN_ADVISORY_FIXTURE"; fi
 if [ "$GATE_FAIL" = 1 ]; then exit 9; fi
 STUB
   git -C "$repo" init -q
@@ -208,7 +209,13 @@ assert_no_check prose_only_push_skips_build
 make_repo script_only
 commit_path scripts/tool.txt changed
 target="$(git -C "$repo" rev-parse HEAD)"
-run_line "refs/heads/topic $target refs/heads/topic $base"
+pin_advisory="PIN TYPE ADVISORY: fixture mentions private helper"
+run_line "refs/heads/topic $target refs/heads/topic $base" PIN_ADVISORY_FIXTURE="$pin_advisory"
+if grep -Fxq "$pin_advisory" <<< "$hook_output"; then
+  pass visible_pin_advisory
+else
+  fail visible_pin_advisory "$hook_output"
+fi
 assert_status 0 script_only_push_passes
 assert_call 'check.sh --incremental' script_only_uses_incremental_gate
 

@@ -76,14 +76,17 @@ had_input=0
 updates=0
 pushed_commit=""
 
+integration_ref() {
+  if git rev-parse --verify 'origin/develop^{commit}' >/dev/null 2>&1; then
+    echo origin/develop
+  elif git rev-parse --verify 'origin/main^{commit}' >/dev/null 2>&1; then
+    echo origin/main
+  fi
+}
+
 append_new_branch_diff() {
   target_commit="$1"
-  integration=""
-  if git rev-parse --verify 'origin/develop^{commit}' >/dev/null 2>&1; then
-    integration=origin/develop
-  elif git rev-parse --verify 'origin/main^{commit}' >/dev/null 2>&1; then
-    integration=origin/main
-  fi
+  integration="$(integration_ref)"
   if [ -z "$integration" ]; then
     echo "[pre-push] no usable origin/develop or origin/main base; selecting the full gate"
     force_full=1
@@ -412,7 +415,8 @@ if [ "$need_gate" = 1 ]; then
         # An unset repository-local adapter keeps the established local gate unchanged.
         echo "[pre-push] $gate_label (resource-guarded; no local adapter configured)…"
         if [ "$gate_mode" = full ]; then
-          if ! bash scripts/check.sh > "$LOG" 2>&1; then
+          advisory_base="$(git merge-base HEAD "$(integration_ref)" 2>/dev/null)" || advisory_base=""
+          if ! TDA_PIN_ADVISORY_BASE="$advisory_base" bash scripts/check.sh > "$LOG" 2>&1; then
             block "scripts/check.sh FAILED. Tail:"
             tail -n 40 "$LOG"
             exit 1
@@ -424,6 +428,8 @@ if [ "$need_gate" = 1 ]; then
             exit 1
           fi
         fi
+        # The successful gate log is disposable. Relay worker-facing pin diagnostics.
+        grep '^PIN TYPE ADVISORY:' "$LOG" || true
         echo "[pre-push] $gate_label green"
         ;;
       *)
