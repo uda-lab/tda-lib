@@ -1001,3 +1001,26 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.EdgeGradeExamples.obtuse_hull_parameters_ray
 #print axioms TDA.Filtration.RationalAlpha.EdgeGradeExamples.two_site_parameters_univ
 #print axioms TDA.Filtration.RationalAlpha.EdgeGradeExamples.two_site_exact_stage
+
+-- Supplied-edge Voronoi regions and exact alpha grades (Issue #1128).
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.outward
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.edgeSide_outward
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.closedRay
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.active_parameter_of_center
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.IncidentCenter
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.original_occurrence_center
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.NoFourIncircleZeros
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.GeometricNoFourCocircular
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.HullDual
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.InteriorDual
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.supplied_hull_dual
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.supplied_interior_dual
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.HullDual.carrier
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.InteriorDual.carrier
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.HullDual.grade
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.InteriorDual.grade
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.InteriorDual.strict
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.InteriorDual.strict_geometric
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGrade.InteriorDual.centers_ne
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGradeExamples.exact_trapezoid_ac
+#print axioms TDA.Filtration.RationalAlpha.SuppliedEdgeGradeExamples.exact_trapezoid_ab

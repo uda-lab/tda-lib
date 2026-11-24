@@ -40,6 +40,7 @@ import TDA.Filtration.RationalAlpha.DirectedEdgeIncidence
 import TDA.Filtration.RationalAlpha.TriangulationAssembly
 import TDA.Filtration.RationalAlpha.IncircleGrade
 import TDA.Filtration.RationalAlpha.EdgeGrade
+import TDA.Filtration.RationalAlpha.SuppliedEdgeGrade
 import TDA.Filtration.CechDisplacement
 import TDA.Filtration.CechWitness
 import TDA.Filtration.CechSupNorm
