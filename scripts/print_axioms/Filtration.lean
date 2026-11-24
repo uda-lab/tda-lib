@@ -1087,3 +1087,13 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.trapezoid_exact_stages
 #print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.trapezoid_shared_cutoff
 #print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.square_stage_obstruction
+
+-- Hull-position certificates, signed interior disjointness, and an interior fan.
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.hull_polygonCertificate_hullOnly
+#print axioms TDA.Filtration.RationalAlpha.TriangleIncidence.disjoint_interiors_of_signed_boundary
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.interiorFan
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.fan_uses_interior_site
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.fan_ccw
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.fan_signed_boundary
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.fan_coverage_and_multiplicity
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundaryExamples.fan_sample_multiplicity_one

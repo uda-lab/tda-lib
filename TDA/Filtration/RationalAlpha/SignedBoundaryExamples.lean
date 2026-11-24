@@ -607,4 +607,102 @@ theorem omitted_label_fixture :
     exact hi
   · exact fun hx => mem_iUnion.2 ⟨0,hx⟩
 
+/-- Three CCW triangles joining the interior site to the sides of the triangular hull. -/
+def interiorFan : Fin 3 → Fin 3 → Label := ![![0,1,3],![1,2,3],![2,0,3]]
+
+private abbrev fanEdges (i : Fin 3) := triangleBoundaryEdges (interiorFan i)
+
+private theorem inner_edges_eq (i : Fin 3) :
+    realEdge inner (cycleEdges innerCycle i) =
+      triangleEdges (castPoint (inner 0)) (castPoint (inner 1)) (castPoint (inner 2)) i := by
+  fin_cases i <;> rfl
+
+/-- The outer triangle's orientation supplies the hull certificate used by the fan. -/
+private theorem fan_hull_certificate :
+    PolygonCertificate (siteHull inner innerCycle) (fun i => realEdge inner (cycleEdges innerCycle i)) := by
+  rw [← triangle_is_inner_hull]
+  simp only [siteTriangle, inner_edges_eq]
+  exact rational_triangle_polygonCertificate _ _ _ (by decide +kernel)
+
+private theorem fan_sites_contained (i : Label) : castPoint (inner i) ∈ siteHull inner innerCycle := by
+  fin_cases i
+  · exact subset_convexHull ℝ _ ⟨0,rfl⟩
+  · exact subset_convexHull ℝ _ ⟨1,rfl⟩
+  · exact subset_convexHull ℝ _ ⟨2,rfl⟩
+  · exact interior_subset inner_site_strict
+
+/-- The center lies in the hull interior, and the fan uses every site label. -/
+theorem fan_uses_interior_site :
+    castPoint (inner 3) ∈ interior (siteHull inner innerCycle) ∧ allSitesUsed interiorFan :=
+  ⟨inner_site_strict, by unfold allSitesUsed; decide +kernel⟩
+
+/-- The three fan triangles are counterclockwise. -/
+theorem fan_ccw :
+    ∀ i, 0 < orient (inner (interiorFan i 0)) (inner (interiorFan i 1)) (inner (interiorFan i 2)) := by
+  decide +kernel
+
+/-- The spoke contributions cancel and the signed boundary is the outer cycle. -/
+theorem fan_signed_boundary : suppliedBoundary interiorFan = hullBoundary innerCycle := by
+  ext e
+  rw [supplied_boundary_coeff, hull_boundary_coeff]
+  have h : ∀ e : Label × Label,
+      listCoeff (suppliedEdges interiorFan) e = listCoeff (hullEdges innerCycle) e := by decide +kernel
+  exact h e
+
+/-- The signed-boundary theorem gives the closed hull coverage and the off-edge count. -/
+theorem fan_coverage_and_multiplicity :
+    (∀ x ∈ offEdges (listedEdges inner (fun i => triangleBoundaryEdges (interiorFan i))
+        (cycleEdges innerCycle)),
+      interiorMultiplicity (fun i => siteTriangle inner (interiorFan i)) x =
+        interiorIndicator (siteHull inner innerCycle) x) ∧
+    (⋃ i, siteTriangle inner (interiorFan i)) = siteHull inner innerCycle :=
+  rational_cover_from_signed_boundary inner (by decide +kernel)
+    innerCycle (by decide +kernel) interiorFan fan_hull_certificate fan_sites_contained
+    fan_ccw fan_signed_boundary
+
+private def fanSample : Point := (2,1/2)
+
+private theorem sample_off_edges :
+    castPoint fanSample ∈ offEdges (listedEdges inner fanEdges (cycleEdges innerCycle)) := by
+  intro hx
+  obtain ⟨j,hj⟩ := mem_iUnion.1 hx
+  have hzero := edgeSide_eq_zero_on_segment _ hj
+  rcases j with ⟨i,e⟩ | e
+  · change edgeSide (castPoint (inner (fanEdges i e).1), castPoint (inner (fanEdges i e).2))
+        (castPoint fanSample) = 0 at hzero
+    rw [side_of_rational_sites] at hzero
+    have hs : ∀ i e, orient (inner (fanEdges i e).1) (inner (fanEdges i e).2) fanSample ≠ 0 :=
+      by decide +kernel
+    exact hs i e (by exact_mod_cast hzero)
+  · change edgeSide (castPoint (inner (cycleEdges innerCycle e).1),
+        castPoint (inner (cycleEdges innerCycle e).2)) (castPoint fanSample) = 0 at hzero
+    rw [side_of_rational_sites] at hzero
+    have hs : ∀ e, orient (inner (cycleEdges innerCycle e).1)
+        (inner (cycleEdges innerCycle e).2) fanSample ≠ 0 := by decide +kernel
+    exact hs e (by exact_mod_cast hzero)
+
+private theorem sample_interior : castPoint fanSample ∈ interior (siteHull inner innerCycle) := by
+  rw [← triangle_is_inner_hull]
+  have hccw : 0 < edgeSide (castPoint (inner 0), castPoint (inner 1)) (castPoint (inner 2)) := by
+    rw [side_of_rational_sites]
+    exact_mod_cast (by decide +kernel : 0 < orient (inner 0) (inner 1) (inner 2))
+  apply strict_left_mem_interior
+    (triangleEdges (castPoint (inner 0)) (castPoint (inner 1)) (castPoint (inner 2)))
+    (fun x hx => (triangle_mem_iff _ _ _ x hccw).2 hx)
+  intro i
+  rw [← inner_edges_eq]
+  change 0 < edgeSide (castPoint (inner (cycleEdges innerCycle i).1),
+    castPoint (inner (cycleEdges innerCycle i).2)) (castPoint fanSample)
+  rw [side_of_rational_sites]
+  have hs : ∀ i, 0 < orient (inner (cycleEdges innerCycle i).1)
+      (inner (cycleEdges innerCycle i).2) fanSample := by decide +kernel
+  exact_mod_cast hs i
+
+/-- The signed-boundary theorem gives multiplicity one at the off-edge point `(2, 1/2)`. -/
+theorem fan_sample_multiplicity_one :
+    interiorMultiplicity (fun i => siteTriangle inner (interiorFan i)) (castPoint (2, 1/2)) = 1 := by
+  change interiorMultiplicity (fun i => siteTriangle inner (interiorFan i)) (castPoint fanSample) = 1
+  rw [fan_coverage_and_multiplicity.1 _ sample_off_edges]
+  simp [interiorIndicator, sample_interior]
+
 end TDA.Filtration.RationalAlpha.SignedBoundaryExamples

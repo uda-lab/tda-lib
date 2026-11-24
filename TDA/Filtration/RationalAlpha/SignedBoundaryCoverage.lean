@@ -921,6 +921,19 @@ theorem hull_polygonCertificate {L : Type*} {n : ℕ}
     · exact fun hn => hij (add_right_cancel hn)
   · exact Or.inl (hs j i hij he)
 
+/-- Noncollinearity of distinct hull positions suffices for the supplied polygon certificate.
+The real interior, frontier, and left support of the hull are supplied as hypotheses. -/
+theorem hull_polygonCertificate_hullOnly {L : Type*} {n : ℕ}
+    (site : L → Point) (hull : Fin (n + 3) → L)
+    (hgen : ∀ a b c : Fin (n + 3), a ≠ b → a ≠ c → b ≠ c →
+      orient (site (hull a)) (site (hull b)) (site (hull c)) ≠ 0)
+    (hfull : (interior (siteHull site hull)).Nonempty)
+    (hfront : frontier (siteHull site hull) =
+      ⋃ i, segment ℝ (realEdge site (cycleEdges hull i)).1 (realEdge site (cycleEdges hull i)).2)
+    (hleft : ∀ i y, y ∈ siteHull site hull → 0 ≤ edgeSide (realEdge site (cycleEdges hull i)) y) :
+    PolygonCertificate (siteHull site hull) (fun i => realEdge site (cycleEdges hull i)) :=
+  hull_polygonCertificate (site ∘ hull) id Function.injective_id hgen hfull hfront hleft
+
 /-- Each site label occurs at some vertex position of a supplied piece. -/
 def allSitesUsed {L I E : Type*} (vertices : I → E → L) : Prop :=
   ∀ label, ∃ piece vertex, vertices piece vertex = label
