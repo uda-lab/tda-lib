@@ -186,6 +186,25 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `TDA.Persistence.CollapseCertificatePersistenceExamples`). No certificate producer,
   Delaunay–Čech stage or general-position statement. See
   [certificates across critical grades](docs/math/discrete-morse-matchings.md#certificates-across-critical-grades).
+- Define the closed squared-grade α filtration for embedded sites
+  (`Alpha.complexFiltration`, #1077). In finite-dimensional real inner-product spaces
+  `Alpha.isLeast_grade` gives the attained entrance grade and `Alpha.sublevel_eq_complex`
+  identifies the closed stages. See [closed α stages](docs/math/alpha-filtration-and-signed-coverage.md#closed-cells-and-squared-entrance-grades).
+- Compute the exact rational squared grades of feasible nonempty labelled faces for finite
+  distinct rational planar sites (`RationalAlpha.gradedFaces`, #1082). The cast grade and
+  sublevel theorems identify the reference with closed α at every real squared grade.
+  See [exact rational grades](docs/math/alpha-filtration-and-signed-coverage.md#exact-grades-on-rational-planar-sites).
+- Prove the same-label comparison `alphaH0Iso` in ordinary degree zero over a field for
+  finite linearly ordered labels in a real normed vector space (#1091). Its α and squared
+  Čech stages are empty below zero. See [degree zero](docs/math/alpha-filtration-and-signed-coverage.md#degree-zero-comparison-with-čech).
+- Verify the exact rational planar `orient` and `incircle` predicates (#1102).
+  `orient_zero_iff_collinear` characterizes zero orientation, and
+  `incircle_circumsphere_signs` identifies the orientation-adjusted signs for a
+  noncollinear triple. See [signed planar geometry](docs/math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
+- For injective rational sites contained in a certified strict hull with an injective
+  cycle, `rational_cover_from_signed_boundary` takes a finite CCW triangle family
+  with the same signed edge chain as the hull (#1110). It gives closed hull coverage
+  and the exact off-edge multiplicity. See [signed coverage](docs/math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
 - Prove that the same-label α-to-Čech inclusion for finite Euclidean point clouds induces a
   natural persistence isomorphism in every degree over any ring (`TDA.Persistence.alphaCechIso`).
   The five-point fixture tracks a nonzero F₂ cycle through a strict inclusion at squared grade 4

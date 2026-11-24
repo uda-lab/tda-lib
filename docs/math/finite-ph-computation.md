@@ -396,6 +396,15 @@ The consumer orders faces by grade, then cardinality and vertex labels. It
 sends zero-based ranks of the distinct grades to `FiniteInput.run` and reads
 births and finite deaths back from the sorted rational grade table.
 
+For $n$ sites, each evaluation of `gradedFaces` considers all $2^n$ label
+subsets. Let $g$ be the number of distinct grades in that table.
+`AlphaInput.simplexInput` scans the $2^n - 1$ nonempty label subsets at
+each of those $g$ grades. This gives $g(2^n - 1)$ candidate face/grade tests
+to construct the reducer input. The count concerns subset enumeration.
+Candidate generation, exact arithmetic, sorting, endpoint decoding, and
+reduction contribute their own costs. See
+[exact grades on rational planar sites](alpha-filtration-and-signed-coverage.md#exact-grades-on-rational-planar-sites).
+
 For a real threshold $t$, the corresponding integer stage is the number of
 distinct grades at most $t$, cast to $\mathbb Z$, minus one. It is $-1$
 below the first cut and on the empty family. Between cuts the stage stays
