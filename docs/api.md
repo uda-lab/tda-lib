@@ -1779,18 +1779,29 @@ equality of diagrams, not of lists. No bound on the cost of the existing
 reduction, no representatives for the Rips complex and no statement for invalid
 tables beyond rejection are provided.
 
-For finitely many labelled sites in a real normed vector space,
-`Alpha.labelledComplexFiltration` is the closed Voronoi-ball nerve on squared grades. It allows coincident sites and agrees
-with `Alpha.complexFiltration` on embeddings. `Alpha.squaredCechFiltration`
-uses the closed ambient Čech complex at radius √t for t ≥ 0. Both filtrations
-have empty stages at t < 0. Each Čech edge at a nonnegative grade admits an
-α path at the same grade (`Alpha.cech_edge_reachable`).
+`TDA.Filtration.Alpha` gives the closed squared-grade Voronoi nerve for a
+site embedding into a normed additive commutative group. `Alpha.carrier`
+is the full nerve of the closed cells. In a finite-dimensional real
+inner-product space, `Alpha.isLeast_grade` and `Alpha.isLeast_sq_dist`
+give the attained grade, and `Alpha.sublevel_eq_complex` identifies
+the actual stages.
 
-`TDA.Persistence.alphaH0Iso` is the natural isomorphism in ordinary degree
-zero over any field. Its forward map is `alphaH0Comparison`, induced by the
-identity on labels at each grade. Signed edge boundaries telescope along
-replacement paths, giving the same degree-zero boundary subspace under
-the common vertex basis.
+`TDA.Filtration.AlphaLabelled` gives `Alpha.labelledComplexFiltration` for
+a site function, allowing coincident sites and retaining all nearest-site
+ties at a common witness. It agrees with `Alpha.complexFiltration` on
+embeddings. The squared-grade `Alpha.squaredCechFiltration` uses radius
+`√t` at nonnegative grades, and both it and labelled α are empty below zero.
+The square-root reindexing of `Alpha.filtration_le_cech` uses radius zero
+below zero.
+
+For finite linearly ordered labels in a real normed vector space,
+`TDA.Persistence.AlphaH0` gives `alphaH0Iso` in ordinary degree zero
+over a field. Its forward map `alphaH0Comparison` is the inclusion on
+the same labels at every real squared grade. `Alpha.cech_edge_reachable`
+gives α paths for Čech edges at nonnegative grades, and
+`TDA.Simplicial.H0EdgePaths` turns the path condition into a degree-zero
+homology isomorphism. See
+[closed α and the degree-zero comparison](math/alpha-filtration-and-signed-coverage.md).
 
 For finite labelled sites in a finite-dimensional real inner-product space,
 `TDA.Persistence.alphaCechIso sites R n` gives the inclusion-induced natural isomorphism
@@ -1817,6 +1828,26 @@ the squared-grade bottleneck equals `30` (`AlphaRadiusStabilityExamples.square_b
 On the obtuse triangle, `CollapsePersistenceExamples.alphaCechIso` also gives the comparison
 over every ring, through collapses; see
 [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
+
+For finite distinct rational planar sites, `TDA.Filtration.RationalAlpha`
+supplies exact face entry grades through `entry?`, `gradedFaces`,
+`cast_grade`, and `sublevel_eq_complex`. Its `Candidates` module enumerates
+the sites, midpoints and circumcenters while preserving full nearest-site
+ties. Its `Geometry` module proves `minimizer_mem_centers`. The `Predicates`
+module gives `orient_zero_iff_collinear`, `incircle_geometry_ccw` and
+`incircle_circumsphere_signs`, with the orientation and noncollinearity
+hypotheses of their respective circle comparisons.
+
+`TDA.Filtration.RationalAlpha.SignedBoundaryCoverage` supplies
+`PolygonCertificate` and `rational_cover_from_signed_boundary`. The latter
+gives off-edge interior multiplicity and closed hull coverage for injective
+rational sites, an injective cycle whose certified convex hull contains
+every site, and finitely many CCW triangles with the hull's signed boundary. The closed
+cover is used by `SuppliedCarrier.alphaCarrier_le_labelComplex_of_signed_boundary`.
+With the passing incircle tests and no-four condition, the carrier equality
+leads to exact supplied grade rows and actual stage membership at every real
+cutoff. See
+[signed coverage and supplied stages](math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
 
 For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`
 computes an F₂ barcode with exact rational squared-radius endpoints. It accepts
