@@ -447,3 +447,15 @@ import TDA
 #print axioms TDA.Topology.ConvexNerveInclusionExamples.triple_face_difference
 #print axioms TDA.Topology.ConvexNerveInclusionExamples.strict_inclusion_isIso
 #print axioms TDA.Topology.ConvexNerve.isIso_simplicialHomologyIncl_of_compact
+#print axioms TDA.Topology.exists_pos_common_nerve_thickening_eq
+#print axioms TDA.Topology.convex_thickening_of_iUnion_eq
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.boxes
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.enlargedBoxes
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.boxes_subset
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.iUnion_boxes_eq
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.nerve_boxes_lt
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.isIso_simplicialHomologyIncl
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.not_isZero_homology_one
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.planeCover
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.boxes_subset_plane
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.unequal_union_not_isIso
