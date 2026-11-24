@@ -102,6 +102,12 @@ invocation validates HEAD against origin/develop, falling back to origin/main; a
 base or failed path diff selects the full applicable gate. The hook and hosted CI share the
 same NUL-safe path classifier.
 
+The local pre-push coverage pass reports `PIN TYPE ADVISORY` for a newly pinned
+public declaration whose elaborated type directly mentions a private constant. It
+compares pin names across all area files at the integration merge base. Try restating
+the declaration from its area import to assess the client impact. Scoped instances
+can also require a client test. These diagnostics leave the gate status unchanged.
+
 Issue #982 adds an opt-in remote executor for ordinary gate-required pushes. The default
 remains local. Enable an adapter only in this clone's Git config with
 `git config --local tda.remoteGate.adapter /absolute/path/to/trusted-adapter`; the resolved

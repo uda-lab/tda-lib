@@ -155,7 +155,7 @@ run_full_mode() {
   step "live axiom audit (full mode)"
   bash scripts/check-axioms.sh || { echo "ERROR: live axiom audit failed." >&2; exit 1; }
   step "axiom coverage (full mode)"
-  bash scripts/check-axiom-coverage.sh || { echo "ERROR: axiom coverage failed." >&2; exit 1; }
+  TDA_PIN_ADVISORY_BASE="$merge_base" bash scripts/check-axiom-coverage.sh || { echo "ERROR: axiom coverage failed." >&2; exit 1; }
   step "Comparator agreement (full mode)"
   bash scripts/check-comparator.sh || { echo "ERROR: Comparator agreement failed." >&2; exit 1; }
 

@@ -159,24 +159,22 @@ private def findUnloadedFiles (loadedModules : Std.HashSet String) :
   let files ← collectLeanFiles "TDA"
   return files.filter fun f => !loadedModules.contains (moduleStringOfPath f)
 
-/-- The declaration names pinned by `#print axioms <name>` lines in `path`, under the exact
+/-- The declaration names pinned by `#print axioms <name>` lines, under the exact
 same extraction rule `scripts/check-axioms.sh` uses (`awk '/^#print axioms /{print $3}'`):
 the line must start with the literal, unindented text `#print axioms ` — not merely contain it
 after trimming. A line inside a block comment, or indented, is never a real `#print axioms`
 command as far as Lean or that audit are concerned, so this walk must not treat it as pinned
 either; doing so would let the coverage guard pass while the live audit never actually checks
 the name. -/
-private def readPinnedNames (path : System.FilePath) : IO (Std.HashSet String) := do
-  let contents ← IO.FS.readFile path
+private def pinnedNames (contents : String) : List String :=
   let prefix' := "#print axioms "
-  let names := (contents.splitOn "\n").filterMap fun line =>
+  (contents.splitOn "\n").filterMap fun line =>
     if line.startsWith prefix' then
       match (line.drop prefix'.length).toString.splitOn " " |>.filter (· ≠ "") with
       | name :: _ => some name
       | [] => none
     else
       none
-  return Std.HashSet.ofList names
 
 /-- Union the pin names in every area file, including future areas. -/
 private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String) := do
@@ -185,11 +183,41 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
   for entry in (← dir.readDir) do
     if entry.path.extension == some "lean" && !(← entry.path.isDir) then
       count := count + 1
-      for name in (← readPinnedNames entry.path).toList do
+      for name in pinnedNames (← IO.FS.readFile entry.path) do
         names := names.insert name
   if count == 0 then
     throw <| IO.userError s!"no Lean pin files in {dir}"
   return names
+
+/-- Compare the union of the working pins with the integration merge base in the already
+loaded environment. Advisory output is plain text so warning-as-error cannot fail the audit. -/
+private def reportPrivatePinTypes (env : Environment) (pinned : Std.HashSet String)
+    (base : String) : IO Unit := do
+  let label := "PIN TYPE ADVISORY"
+  if base.isEmpty then
+    IO.println s!"{label}: skipped (integration merge base unavailable)"
+    return
+  try
+    let dir := s!"{base}:scripts/print_axioms"
+    let files ← IO.Process.run { cmd := "git", args := #["ls-tree", "-z", "--name-only", dir] }
+    let areas := (files.splitOn "\x00").filter (·.endsWith ".lean")
+    if areas.isEmpty then
+      throw <| IO.userError "no area pin files"
+    let mut previous : Std.HashSet String := {}
+    for area in areas do
+      let contents ← IO.Process.run { cmd := "git", args := #["show", s!"{dir}/{area}"] }
+      for name in pinnedNames contents do
+        previous := previous.insert name
+    for name in (pinned.toList.filter (!previous.contains ·)).mergeSort do
+      let some info := env.find? name.toName | do
+        IO.println s!"{label}: incomplete (cannot resolve new pin {name})"
+        continue
+      unless isPrivateName info.name do
+        let refs := (info.type.getUsedConstants.filter isPrivateName).toList.map Name.toString
+        unless refs.isEmpty do
+          IO.println s!"{label}: {name} mentions private {String.intercalate ", " refs.mergeSort}; try restating it from the area import."
+  catch _ =>
+    IO.println s!"{label}: skipped (cannot read comparison pin files at {base})"
 
 #eval show CoreM Unit from do
   let t0 ← IO.monoMsNow
@@ -197,6 +225,8 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
   let loadedModules : Std.HashSet String := Std.HashSet.ofList (env.header.moduleNames.toList.map (·.toString))
   let unloaded ← findUnloadedFiles loadedModules
   let pinned ← readAllPinnedNames "scripts/print_axioms"
+  if let some base ← IO.getEnv "TDA_PIN_ADVISORY_BASE" then
+    reportPrivatePinTypes env pinned base
   let t1 ← IO.monoMsNow
   let mut total : Nat := 0
   let mut missing : Array String := #[]
