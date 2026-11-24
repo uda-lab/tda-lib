@@ -1072,3 +1072,18 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.obtuse_exact_edge
 #print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.interior_nonGabriel_exact_edge
 #print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.square_not_reference
+
+-- Actual Alpha stages from certified supplied grade rows.
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.realStageTable
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.mem_realStageTable_iff
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.realStageTable_cast
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.reference_hasGradeTable
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.supplied_hasGradeTable
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.supplied_realStage_iff
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.supplied_realStage_faces
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.supplied_realStage_neg
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.supplied_row_cutoff
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStages.empty_never_emitted
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.trapezoid_exact_stages
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.trapezoid_shared_cutoff
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.square_stage_obstruction
