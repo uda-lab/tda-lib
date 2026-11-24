@@ -90,15 +90,43 @@ theorem exists_pos_nerve_thickening_eq [Finite I] (C : CoverFamily X I)
   have hδs : δ ≤ r s := Finset.inf'_le _ (Finset.mem_univ s)
   exact ⟨x, fun i hi => thickening_mono (hεδ.trans hδs) _ (hx i hi)⟩
 
+/-- For two finite families of compact sets, a single positive bound preserves both
+labelled nerves at every smaller positive radius. -/
+theorem exists_pos_common_nerve_thickening_eq [Finite I] (C D : CoverFamily X I)
+    (hC : ∀ i, IsCompact (C i)) (hD : ∀ i, IsCompact (D i)) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ ε : ℝ, 0 < ε → ε ≤ δ →
+      nerve (fun i => thickening ε (C i)) = nerve C ∧
+      nerve (fun i => thickening ε (D i)) = nerve D := by
+  obtain ⟨r, hr, h₁⟩ := exists_pos_nerve_thickening_eq C hC
+  obtain ⟨s, hs, h₂⟩ := exists_pos_nerve_thickening_eq D hD
+  exact ⟨min r s, lt_min hr hs, fun ε hε h => ⟨h₁ ε hε (h.trans (min_le_left _ _)),
+    h₂ ε hε (h.trans (min_le_right _ _))⟩⟩
+
 end Metric
 
 section Normed
 
-variable {E I : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Finite I]
+variable {E I : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
-/-- For nested finite labelled compact convex families with the same union, one positive
-radius bound preserves both labelled nerves. At every positive radius up to that bound
-the open convex offsets are still nested and cover the same thickening of the union. -/
+/-- At every real radius, the open thickenings of nested convex families with equal unions
+are nested open convex families covering the same thickened union. -/
+theorem convex_thickening_of_iUnion_eq (C D : CoverFamily E I)
+    (hcC : ∀ i, Convex ℝ (C i)) (hcD : ∀ i, Convex ℝ (D i))
+    (hCD : ∀ i, C i ⊆ D i) (hU : (⋃ i, C i) = ⋃ i, D i) (ε : ℝ) :
+      (⋃ i, thickening ε (C i)) = thickening ε (⋃ i, C i) ∧
+      (⋃ i, thickening ε (D i)) = thickening ε (⋃ i, C i) ∧
+      (∀ i, thickening ε (C i) ⊆ thickening ε (D i)) ∧
+      (∀ i, IsOpen (thickening ε (C i)) ∧ Convex ℝ (thickening ε (C i))) ∧
+      (∀ i, IsOpen (thickening ε (D i)) ∧ Convex ℝ (thickening ε (D i))) :=
+  ⟨(thickening_iUnion ε C).symm, by rw [hU, thickening_iUnion],
+    fun i => thickening_subset_of_subset ε (hCD i),
+    fun i => ⟨isOpen_thickening, (hcC i).thickening ε⟩,
+    fun i => ⟨isOpen_thickening, (hcD i).thickening ε⟩⟩
+
+variable [Finite I]
+
+/-- Finiteness and compactness give a common small radius preserving both nerves.
+Convexity, nesting and equality of unions give the offset properties at every radius. -/
 theorem exists_pos_common_convex_thickening (C D : CoverFamily E I)
     (hC : ∀ i, IsCompact (C i)) (hD : ∀ i, IsCompact (D i))
     (hcC : ∀ i, Convex ℝ (C i)) (hcD : ∀ i, Convex ℝ (D i))
@@ -111,14 +139,10 @@ theorem exists_pos_common_convex_thickening (C D : CoverFamily E I)
       (∀ i, thickening ε (C i) ⊆ thickening ε (D i)) ∧
       (∀ i, IsOpen (thickening ε (C i)) ∧ Convex ℝ (thickening ε (C i))) ∧
       (∀ i, IsOpen (thickening ε (D i)) ∧ Convex ℝ (thickening ε (D i))) := by
-  obtain ⟨r, hr, h₁⟩ := exists_pos_nerve_thickening_eq C hC
-  obtain ⟨s, hs, h₂⟩ := exists_pos_nerve_thickening_eq D hD
-  refine ⟨min r s, lt_min hr hs, fun ε hε hεrs => ?_⟩
-  refine ⟨h₁ ε hε (hεrs.trans (min_le_left _ _)), h₂ ε hε (hεrs.trans (min_le_right _ _)),
-    (thickening_iUnion ε C).symm, ?_, fun i => thickening_subset_of_subset ε (hCD i),
-    fun i => ⟨isOpen_thickening, (hcC i).thickening ε⟩,
-    fun i => ⟨isOpen_thickening, (hcD i).thickening ε⟩⟩
-  rw [hU, thickening_iUnion]
+  obtain ⟨δ, hδ, bound⟩ := exists_pos_common_nerve_thickening_eq C D hC hD
+  refine ⟨δ, hδ, fun ε hε hεδ => ?_⟩
+  obtain ⟨hCε, hDε⟩ := bound ε hε hεδ
+  exact ⟨hCε, hDε, convex_thickening_of_iUnion_eq C D hcC hcD hCD hU ε⟩
 
 end Normed
 
