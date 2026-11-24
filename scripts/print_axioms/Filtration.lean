@@ -1112,3 +1112,23 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.signed_boundary
 #print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.coverage_and_multiplicity
 #print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.sample_multiplicity_one
+
+-- A rational checker and soundness for supplied strict hull corners.
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.StrictCornerCycle
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.HullSitesLeft
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.rational_corner_certificate
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.rational_sites_left_iff
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.siteHull_eq_all_sites
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.cornerHullCheck
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.cornerHullCheck_true_iff
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.cornerHullCheck_sound
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.sampleSites
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.sampleCorners
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.splitCycle
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.outsideSites
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.midpoint_accepted
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.midpoint_active
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.midpoint_in_open_side
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.sample_certificate
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.subdivided_cycle_rejected
+#print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.outside_site_rejected

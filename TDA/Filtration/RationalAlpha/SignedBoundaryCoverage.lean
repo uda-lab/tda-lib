@@ -1,4 +1,5 @@
 import TDA.Filtration.RationalAlpha.Predicates
+import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Analysis.Normed.Affine.AddTorsorBases
 import Mathlib.Topology.GDelta.Basic
 import Mathlib.LinearAlgebra.Finsupp.LinearCombination
@@ -15,7 +16,8 @@ and entrances of the polygon sum to its interior indicator.
 Evaluating equality of integer edge chains on one such ray transfers the sum of triangle
 indicators to the hull. Density away from the finitely many segments then gives equality
 of the closed union with the hull. Vertex usage is a separate property of the supplied
-triangle occurrences.
+triangle occurrences. Strict rational corner tests produce a hull certificate, and weak site
+tests identify the corner hull with the hull of all sites.
 -/
 
 namespace TDA.Filtration.RationalAlpha.SignedBoundary
@@ -937,5 +939,252 @@ theorem hull_polygonCertificate_hullOnly {L : Type*} {n : ℕ}
 /-- Each site label occurs at some vertex position of a supplied piece. -/
 def allSitesUsed {L I E : Type*} (vertices : I → E → L) : Prop :=
   ∀ label, ∃ piece vertex, vertices piece vertex = label
+
+
+private theorem corner_next_ne_self {n : ℕ} (i : Fin (n + 3)) : i + 1 ≠ i := by
+  intro h
+  have he : (1 : Fin (n + 3)) = 0 := add_left_cancel (h.trans (add_zero i).symm)
+  have hv := congrArg Fin.val he
+  simp at hv
+
+private theorem corner_next_next_ne_self {n : ℕ} (i : Fin (n + 3)) : i + 1 + 1 ≠ i := by
+  intro h
+  have he : (1 : Fin (n + 3)) + 1 = 0 :=
+    add_left_cancel (by simpa only [← add_assoc, add_zero] using h)
+  have hv := congrArg Fin.val he
+  simp only [Fin.val_add, Fin.val_one, Fin.val_zero, Nat.reduceAdd] at hv
+  rw [Nat.mod_eq_of_lt (show 2 < n + 3 by omega)] at hv
+  contradiction
+
+private theorem corner_coordinates (p a b x : Plane) (hd : edgeSide (p, a) b ≠ 0) :
+    x = a + (edgeSide (a, b) x / edgeSide (p, a) b) • (p - a) +
+      (edgeSide (p, a) x / edgeSide (p, a) b) • (b - a) := by
+  obtain ⟨hsum, hpoint⟩ := triangle_combination p a b x hd
+  let u := edgeSide (a, b) x / edgeSide (p, a) b
+  let w := edgeSide (b, p) x / edgeSide (p, a) b
+  let t := edgeSide (p, a) x / edgeSide (p, a) b
+  change u + w + t = 1 at hsum
+  change u • p + w • a + t • b = x at hpoint
+  change x = a + u • (p - a) + t • (b - a)
+  rw [← hpoint, show w = 1 - u - t by linarith only [hsum]]
+  module
+
+private abbrev StrictInwardCycle {n : ℕ} (v : Fin (n + 3) → Plane) : Prop :=
+  ∀ i j, j ≠ i → j ≠ i + 1 → 0 < edgeSide (cycleEdges v i) (v j)
+
+private abbrev cycleHalfplanes {n : ℕ} (v : Fin (n + 3) → Plane) : Set Plane :=
+  {x | ∀ i, 0 ≤ edgeSide (cycleEdges v i) x}
+
+private theorem left_at_corner {n : ℕ} (v : Fin (n + 3) → Plane) (hv : StrictInwardCycle v) (i j : Fin (n + 3)) :
+    0 ≤ edgeSide (cycleEdges v i) (v j) := by
+  by_cases hj : j = i
+  · exact le_of_eq (by rw [hj]; exact (edgeSide_first _ _).symm)
+  by_cases hj' : j = i + 1
+  · exact le_of_eq (by rw [hj']; exact (edgeSide_second _ _).symm)
+  exact (hv i j hj hj').le
+
+private theorem turn_pos {n : ℕ} (v : Fin (n + 3) → Plane) (hv : StrictInwardCycle v) (i : Fin (n + 3)) :
+    0 < edgeSide (v i, v (i + 1)) (v (i + 1 + 1)) :=
+  hv i _ (corner_next_next_ne_self i) (corner_next_ne_self (i + 1))
+
+/-- A strictly supporting cyclic presentation cuts out the convex hull of its corners. -/
+private theorem cornerHull_eq_halfplanes {n : ℕ} (v : Fin (n + 3) → Plane) (hv : StrictInwardCycle v) :
+    convexHull ℝ (range v) = cycleHalfplanes v := by
+  have hclosed : IsClosed (convexHull ℝ (range v)) := (finite_range v).isClosed_convexHull ℝ
+  apply Subset.antisymm
+  · apply convexHull_min
+    · rintro x ⟨j, rfl⟩ i
+      exact left_at_corner v hv i j
+    · intro x hx y hy r s hr hs hrs i
+      rw [edgeSide_combination _ _ _ _ _ hrs]
+      exact add_nonneg (mul_nonneg hr (hx i)) (mul_nonneg hs (hy i))
+  · intro x hx
+    by_contra h
+    obtain ⟨f, c, hc, hxc⟩ := geometric_hahn_banach_closed_point (convex_convexHull ℝ _) hclosed h
+    obtain ⟨j, _, hmax⟩ := Finset.exists_max_image Finset.univ (fun i => f (v i)) Finset.univ_nonempty
+    let i := j - 1
+    have hij : i + 1 = j := sub_add_cancel j 1
+    have hd := turn_pos v hv i
+    have hp := hmax i (Finset.mem_univ i)
+    have hb := hmax (i + 1 + 1) (Finset.mem_univ _)
+    have hf1 : f (v i) - f (v (i + 1)) ≤ 0 := by rw [hij]; linarith
+    have hf2 : f (v (i + 1 + 1)) - f (v (i + 1)) ≤ 0 := by rw [hij] at ⊢; simpa only [hij] using sub_nonpos.mpr hb
+    have h1 := div_nonneg (hx (i + 1)) hd.le
+    have h2 := div_nonneg (hx i) hd.le
+    have he := congrArg f (corner_coordinates (v i) (v (i + 1)) (v (i + 1 + 1)) x hd.ne')
+    simp only [map_add, map_smul, map_sub, smul_eq_mul] at he
+    have hle : f x ≤ f (v (i + 1)) := by
+      have h1' := mul_nonpos_of_nonneg_of_nonpos h1 hf1
+      have h2' := mul_nonpos_of_nonneg_of_nonpos h2 hf2
+      simp only [cycleEdges] at h1' h2'
+      linarith only [he, h1', h2']
+    exact (not_lt_of_ge hle) ((hc _ (subset_convexHull ℝ _ ⟨i + 1, rfl⟩)).trans hxc)
+
+private theorem active_side_mem_segment {n : ℕ} (v : Fin (n + 3) → Plane) (hv : StrictInwardCycle v)
+    (i : Fin (n + 3)) (x : Plane) (hx : x ∈ cycleHalfplanes v) (hzero : edgeSide (cycleEdges v i) x = 0) :
+    x ∈ segment ℝ (v i) (v (i + 1)) := by
+  let j := i - 1
+  have hj : j + 1 = i := sub_add_cancel i 1
+  have hd : 0 < edgeSide (v j, v i) (v (i + 1)) := by
+    simpa only [hj] using turn_pos v hv j
+  let t := edgeSide (v j, v i) x / edgeSide (v j, v i) (v (i + 1))
+  have ht0 : 0 ≤ t := div_nonneg (by simpa only [cycleEdges, hj] using hx j) hd.le
+  have hform : x = (1 - t) • v i + t • v (i + 1) := by
+    have he := corner_coordinates (v j) (v i) (v (i + 1)) x hd.ne'
+    change edgeSide (v i, v (i + 1)) x = 0 at hzero
+    rw [hzero, zero_div, zero_smul, add_zero] at he
+    rw [he]
+    ext k
+    simp only [PiLp.add_apply, PiLp.sub_apply, PiLp.smul_apply, smul_eq_mul]
+    change v i k + t * (v (i + 1) k - v i k) =
+      (1-t) * v i k + t * v (i + 1) k
+    ring
+  have hside : 0 ≤ edgeSide (cycleEdges v (i + 1)) x := hx (i + 1)
+  rw [hform, edgeSide_combination _ _ _ _ _ (by ring)] at hside
+  change 0 ≤ (1 - t) * edgeSide (v (i + 1), v (i + 1 + 1)) (v i) +
+    t * edgeSide (v (i + 1), v (i + 1 + 1)) (v (i + 1)) at hside
+  rw [edgeSide_first, mul_zero, add_zero, edgeSide_cyclic] at hside
+  have ht1 : t ≤ 1 := sub_nonneg.mp (nonneg_of_mul_nonneg_left hside (turn_pos v hv i))
+  exact ⟨1 - t, t, sub_nonneg.mpr ht1, ht0, by ring, hform.symm⟩
+
+private theorem corners_mem {n : ℕ} (v : Fin (n + 3) → Plane) (i : Fin (n + 3)) :
+    v i ∈ convexHull ℝ (range v) := subset_convexHull ℝ _ ⟨i, rfl⟩
+
+private theorem edge_ne {n : ℕ} (v : Fin (n + 3) → Plane) (hv : StrictInwardCycle v) (i : Fin (n + 3)) :
+    (cycleEdges v i).1 ≠ (cycleEdges v i).2 := by
+  change v i ≠ v (i + 1)
+  intro he
+  have hd := turn_pos v hv i
+  rw [← he] at hd
+  simp [edgeSide] at hd
+
+/-- A supplied strict cycle produces all fields of the existing real polygon certificate. -/
+private theorem cornerHull_certificate {n : ℕ} (v : Fin (n + 3) → Plane) (hv : StrictInwardCycle v) :
+    PolygonCertificate (convexHull ℝ (range v)) (cycleEdges v) := by
+  let H := convexHull ℝ (range v)
+  have hcompact : IsCompact H := (finite_range v).isCompact_convexHull ℝ
+  have hconv : Convex ℝ H := convex_convexHull ℝ _
+  have hHp : H = cycleHalfplanes v := cornerHull_eq_halfplanes v hv
+  have hleft (i : Fin (n + 3)) (x : Plane) (hx : x ∈ H) :
+      0 ≤ edgeSide (cycleEdges v i) x := (hHp ▸ hx : x ∈ cycleHalfplanes v) i
+  have hfull : (interior H).Nonempty := by
+    have ht := triangle_polygonCertificate (v 0) (v (0 + 1)) (v (0 + 1 + 1)) (turn_pos v hv 0)
+    apply ht.full.mono (interior_mono _)
+    apply convexHull_mono
+    intro x hx
+    simp only [mem_insert_iff, mem_singleton_iff] at hx
+    rcases hx with rfl | rfl | rfl <;> exact mem_range_self _
+  have ⟨z, hz⟩ := (dense_off_edges (cycleEdges v)).nonempty
+  obtain ⟨m, hm, _⟩ := exists_generic_slope (cycleEdges v) z (edge_ne v hv) hz
+  refine ⟨hcompact, hconv, hfull, ?_, hleft, ?_⟩
+  · let U : Set Plane := ⋂ i, {x | 0 < edgeSide (cycleEdges v i) x}
+    have hUopen : IsOpen U :=
+      isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (continuous_edgeSide _)
+    have hUH : U ⊆ H := by
+      intro x hx
+      rw [hHp]
+      exact fun i => (show 0 < edgeSide (cycleEdges v i) x from mem_iInter.1 hx i).le
+    have hUi : U ⊆ interior H := interior_maximal hUH hUopen
+    ext x
+    rw [frontier, hcompact.isClosed.closure_eq]
+    constructor
+    · rintro ⟨hx, hn⟩
+      have hex : ∃ i, edgeSide (cycleEdges v i) x = 0 := by
+        by_contra h
+        exact hn (hUi (mem_iInter.2 fun i =>
+          lt_of_le_of_ne (hleft i x hx) (fun he => h ⟨i, he.symm⟩)))
+      obtain ⟨i, hi⟩ := hex
+      exact mem_iUnion.2 ⟨i, active_side_mem_segment v hv i x (hHp ▸ hx) hi⟩
+    · intro hx
+      obtain ⟨i, hi⟩ := mem_iUnion.1 hx
+      refine ⟨hconv.segment_subset (corners_mem v i) (corners_mem v (i + 1)) hi, fun hxI => ?_⟩
+      exact (interior_side_pos_of_support (cycleEdges v i) (hleft i) m (hm i) hxI).ne'
+        (edgeSide_eq_zero_on_segment _ hi)
+  · intro i j hij
+    by_cases h : i = j + 1
+    · subst i
+      exact Or.inr (turn_pos v hv j)
+    · exact Or.inl (hv j i hij h)
+
+/-- Every nonincident corner position is strictly left of each directed side of the supplied
+cycle. The cycle has at least three positions, and successive positions are taken cyclically. -/
+abbrev StrictCornerCycle {L : Type*} {n : ℕ} (site : L → Point) (hull : Fin (n + 3) → L) : Prop :=
+  ∀ i j, j ≠ i → j ≠ i + 1 →
+    0 < orient (site (cycleEdges hull i).1) (site (cycleEdges hull i).2) (site (hull j))
+
+/-- Every site lies weakly left of each directed side of the supplied cycle. A site on a side
+may satisfy this predicate without occurring as a strict corner. -/
+abbrev HullSitesLeft {L : Type*} {n : ℕ} (site : L → Point) (hull : Fin (n + 3) → L) : Prop :=
+  ∀ i l, 0 ≤ orient (site (cycleEdges hull i).1) (site (cycleEdges hull i).2) (site l)
+
+private theorem strict_cast {L : Type*} {n : ℕ} (site : L → Point) (hull : Fin (n + 3) → L)
+    (hs : StrictCornerCycle site hull) : StrictInwardCycle (fun i => castPoint (site (hull i))) := by
+  intro i j hji hjs
+  change 0 < edgeSide (realEdge site (cycleEdges hull i)) (castPoint (site (hull j)))
+  rw [realEdge, side_of_rational_sites]
+  exact_mod_cast hs i j hji hjs
+
+/-- Strict rational corner tests certify the closed convex hull of a supplied cycle, including its
+frontier and inward supports. The certificate only concerns the supplied corners. -/
+theorem rational_corner_certificate {L : Type*} {n : ℕ}
+    (site : L → Point) (hull : Fin (n + 3) → L) (hs : StrictCornerCycle site hull) :
+    PolygonCertificate (siteHull site hull) (fun e => realEdge site (cycleEdges hull e)) :=
+  cornerHull_certificate _ (strict_cast site hull hs)
+
+/-- The weak rational side tests are equivalent to all-site containment for a strict corner cycle. -/
+theorem rational_sites_left_iff {L : Type*} {n : ℕ}
+    (site : L → Point) (hull : Fin (n + 3) → L) (hs : StrictCornerCycle site hull) :
+    HullSitesLeft site hull ↔ ∀ l, castPoint (site l) ∈ siteHull site hull := by
+  have hh : siteHull site hull = cycleHalfplanes (fun i => castPoint (site (hull i))) :=
+    cornerHull_eq_halfplanes _ (strict_cast site hull hs)
+  rw [hh]
+  constructor
+  · intro hw l i
+    change 0 ≤ edgeSide (realEdge site (cycleEdges hull i)) (castPoint (site l))
+    rw [realEdge, side_of_rational_sites]
+    exact_mod_cast hw i l
+  · intro hw i l
+    have h := hw l i
+    change 0 ≤ edgeSide (realEdge site (cycleEdges hull i)) (castPoint (site l)) at h
+    rw [realEdge, side_of_rational_sites] at h
+    exact_mod_cast h
+
+/-- The corner hull is exactly the convex hull of all cast sites under the weak side tests. -/
+theorem siteHull_eq_all_sites {L : Type*} {n : ℕ}
+    (site : L → Point) (hull : Fin (n + 3) → L) (hs : StrictCornerCycle site hull)
+    (hw : HullSitesLeft site hull) :
+    siteHull site hull = convexHull ℝ (range fun l => castPoint (site l)) := by
+  apply Subset.antisymm
+  · apply convexHull_mono
+    rintro _ ⟨i, rfl⟩
+    exact ⟨hull i, rfl⟩
+  · apply convexHull_min _ (convex_convexHull ℝ _)
+    rintro _ ⟨l, rfl⟩
+    exact (rational_sites_left_iff site hull hs).1 hw l
+
+/-- Check a supplied strict corner cycle and weak containment of all sites using exact rational
+orientation. The finite label enumeration covers corner, side-interior and other site labels. -/
+def cornerHullCheck {L : Type*} [Fintype L] {n : ℕ}
+    (site : L → Point) (hull : Fin (n + 3) → L) : Bool :=
+  decide (StrictCornerCycle site hull ∧ HullSitesLeft site hull)
+
+/-- The finite check succeeds exactly for strict corner cycles containing every cast site. -/
+theorem cornerHullCheck_true_iff {L : Type*} [Fintype L] {n : ℕ}
+    (site : L → Point) (hull : Fin (n + 3) → L) :
+    cornerHullCheck site hull = true ↔
+      StrictCornerCycle site hull ∧ (∀ l, castPoint (site l) ∈ siteHull site hull) := by
+  simp only [cornerHullCheck, decide_eq_true_eq]
+  constructor <;> rintro ⟨hs, h⟩
+  · exact ⟨hs, (rational_sites_left_iff site hull hs).1 h⟩
+  · exact ⟨hs, (rational_sites_left_iff site hull hs).2 h⟩
+
+/-- A true exact finite check produces the existing certificate and proves equality with the full
+site hull. -/
+theorem cornerHullCheck_sound {L : Type*} [Fintype L] {n : ℕ}
+    (site : L → Point) (hull : Fin (n + 3) → L) (h : cornerHullCheck site hull = true) :
+    PolygonCertificate (siteHull site hull) (fun e => realEdge site (cycleEdges hull e)) ∧
+      siteHull site hull = convexHull ℝ (range fun l => castPoint (site l)) := by
+  have hc : StrictCornerCycle site hull ∧ HullSitesLeft site hull := of_decide_eq_true h
+  exact ⟨rational_corner_certificate site hull hc.1, siteHull_eq_all_sites site hull hc.1 hc.2⟩
 
 end TDA.Filtration.RationalAlpha.SignedBoundary
