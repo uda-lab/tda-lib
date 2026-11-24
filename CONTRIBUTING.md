@@ -55,6 +55,25 @@ refactoring is part of the current release preparation; it adds no routine appro
 or library-wide merge hold. The release Issue links outstanding review/fix PRs that affect
 the selected scope before the release head is validated.
 
+Alongside the API pass, check the seams that per-PR review does not see, across everything
+merged since the last release:
+
+- check each sentence of the changelog's "Unreleased" section against the library at the
+  release base, including later entries that contradict it;
+- check that every declaration newly pinned in `scripts/print_axioms/` appears in
+  `docs/api.md` and the changelog;
+- match author names and numbered results in `TDA/` docstrings to `docs/math/references.md`;
+- elaborate each new public statement in an untracked scratch module that imports only its
+  area aggregator, so that scoped or file-local instances surface;
+- check that each `*Examples` module exercises the headline theorem it is named for;
+- list merged PRs whose final head has no independent review.
+
+Read an area's mathematics in depth when its PRs lack an independent final-head review,
+introduce foundational definitions, form a long theorem chain or map statements to a source.
+Run a full mathematical review of everything since the last release before the first stable
+release, or after a statement-level error is found on `develop`; #1115 holds its error-class
+catalog and procedure.
+
 1. Record the release scope, version and selected `develop` base in the governing Issue.
    Cut `release/<version>` at that base. Stabilization, release metadata and bounded fixes
    belong there; unrelated new work continues on `develop`.
