@@ -1040,3 +1040,35 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.trapezoid_diagonals
 #print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.square_four_face_regression
 #print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.square_passing_split_carrier_mismatch
+
+-- Executable supplied triangulation grades and exact regression fixtures.
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.parameter
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.squaredRadius
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.hullParam
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.interiorParam
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.occurrenceList
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.occurrence?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.centerAt?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.directedCenter?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.edgeGrade?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.facet?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.triangleGrade?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.grade?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.suppliedGrades
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.cast_parameter_of_center
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.cast_squaredRadius
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.occurrence_found
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.occurrence_absent
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.edge_hull_correct
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.edge_interior_correct
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.triangle_grade_correct
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.singleton_grade_correct
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.mem_suppliedGrades
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.edge_grade_on_supplied
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.grade_on_supplied_face
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.suppliedGrades_eq_reference
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.trapezoid_reference
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.trapezoid_exact_rows
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.obtuse_exact_edge
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.interior_nonGabriel_exact_edge
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.square_not_reference
