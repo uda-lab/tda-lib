@@ -857,6 +857,18 @@ sstatus=0; sout="$(TDA_SIG_CHANGELOG="$sg/empty-changelog.md" bash scripts/check
   || { echo "FAIL [sig:empty-changelog]: an empty Unreleased section shifted the inputs: $sout"; sfail=1; }
 if [ "$sfail" -eq 0 ]; then echo "released-signature advisory OK ($sn cases)"; else exit 1; fi
 
+# #1207: the public-theorem inventory is an advisory audit aid. No Lean runs here; this only
+# keeps it out of the gate and its documented column list equal to the header it prints.
+inv=scripts/public_theorem_inventory.lean
+if grep -Rqs 'public_theorem_inventory' scripts/check.sh scripts/check-incremental.sh .github/workflows 2>/dev/null; then
+  echo "FAIL [inventory:gate]: the advisory inventory is referenced from a gate"; exit 1
+fi
+cols="$(grep -o 'IO.println "name\\t[^"]*"' "$inv" | sed -e 's/^IO.println "//' -e 's/"$//')"
+doc="$(awk '/^Columns/{on=1;next} on && /^  [a-z_]+ /{printf "%s%s", (n++ ? "\\t" : ""), $1} /^`scripts\/rename/{on=0}' "$inv")"
+[ -n "$cols" ] && [ "$cols" = "$doc" ] \
+  || { echo "FAIL [inventory:columns]: header '$cols' differs from documented '$doc'"; exit 1; }
+echo "public-theorem inventory columns OK"
+
 # Resource locking is tested in isolated fake workspaces, without the host's active locks.
 fenv bash scripts/agent/test-build-resources.sh
 fenv bash scripts/agent/test-build-docs-lock.sh
