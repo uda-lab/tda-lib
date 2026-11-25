@@ -151,7 +151,7 @@ def splitRank (st : IO.Ref Stats) (id : Nat) (R : F2GridRep 2) (x y : Fin 2 → 
                tRank := s.tRank + (t3 - t0), tFloor := s.tFloor + (t1 - t0),
                tMap := s.tMap + (tm - t1), tMatrixRank := s.tMatrixRank + (t3 - t2),
                maxDim := max s.maxDim d,
-               tDimSrc := s.tDimSrc + (t2 - tm), tDimTgt := s.tDimTgt + (t4 - t3 - entryNs),
+               tDimSrc := s.tDimSrc + (t2 - tm), tDimTgt := s.tDimTgt + (t4 - t3),
                tEntry := s.tEntry + entryNs, entries := s.entries + entryCount,
                keys := s.keys.insert key }
     let _ := t5
