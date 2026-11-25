@@ -163,6 +163,9 @@ fi
 while IFS= read -r link; do
   [ -n "$link" ] || continue
   if [[ "$link" == *.lean ]] || [ -d "$link" ]; then
+    if [[ "$link" == "$ROOT/build/"* ]]; then
+      die "project Lean sources must not be hidden behind symlinks: $link (this path is under ignored build output; remove the directory, e.g. rm -rf \"$ROOT/build\", and keep any Python virtual environment, such as the docsite one, outside the checkout)"
+    fi
     die "project Lean sources must not be hidden behind symlinks: $link"
   fi
 done <<< "$project_symlinks"
