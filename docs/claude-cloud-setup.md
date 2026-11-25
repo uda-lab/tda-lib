@@ -15,6 +15,8 @@ bash scripts/bootstrap.sh
 
 The activation helper compares `lean-toolchain`, `lakefile.toml`, and `lake-manifest.json` byte-for-byte before linking cached dependency sources. It also checks every package revision, tracked and untracked source cleanliness, and the saved `.ltar` checksums. It leaves an existing `.lake/packages` path untouched. `scripts/bootstrap.sh` uses the repository's guarded Lean wrapper and mathlib's hash-checked cache to materialize oleans at this checkout's path. If the helper reports a pin/path mismatch, or bootstrap fails, stop before a full build and report the status and relevant log. Do not attempt a cold mathlib source build as a fallback.
 
+A hosted session has no review broker (`REVIEW_ACQUIRE_SCRIPT` is unset) and no installed companion skills. Request the PR review there by the comment route of [lean-review-routing](../.agents/skills/lean-review-routing/SKILL.md#pr-review-evidence-for-github-driven-workflow-8): post `@codex please review this PR` on the PR with the session's GitHub tool.
+
 Suggested first prompt:
 
 > Read `/root/.cache/tda-lib-claude-setup/STATUS.txt` and `INSTRUCTIONS.txt`, then run `bash scripts/claude-cloud-activate.sh`. If it exits 2 or 4, stop and report. If it exits 3, run `bash scripts/bootstrap.sh` only if Lean 4.35.0 is ready and the repository pins match. On exit 0, run `bash scripts/bootstrap.sh`. Stop before any full build if bootstrap fails.
