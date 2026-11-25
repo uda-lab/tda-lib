@@ -42,6 +42,7 @@ private theorem cornerEdgeFlag_mem : cornerEdgeFlag ∈ complex triangleBoundary
 
 private theorem edge_position (i : Label) :
     vertexPosition unitVertex 1 firstEdge i = if i = 0 ∨ i = 1 then 1 / 2 else 0 := by
+  change barycenter unitVertex firstEdge i = _
   fin_cases i <;>
     norm_num [vertexPosition, barycenter, unitVertex, firstEdge, Finset.sum_insert, Pi.smul_apply, Pi.add_apply]
 
@@ -49,12 +50,13 @@ private theorem flag_position (i : Label) :
     vertexPosition unitVertex 2 cornerEdgeFlag i = if i = 0 then 3 / 4 else if i = 1 then 1 / 4 else 0 := by
   have hneq : firstCorner ≠ firstEdge := by decide
   have hc : cornerEdgeFlag.card = 2 := by decide
-  change ((cornerEdgeFlag.card : ℝ)⁻¹ • ∑ u ∈ cornerEdgeFlag, vertexPosition unitVertex 1 u) i = _
-  have hs : (∑ u ∈ cornerEdgeFlag, vertexPosition unitVertex 1 u) =
-      vertexPosition unitVertex 1 firstCorner + vertexPosition unitVertex 1 firstEdge := by
+  change ((cornerEdgeFlag.card : ℝ)⁻¹ • ∑ u ∈ cornerEdgeFlag, barycenter unitVertex u) i = _
+  have hs : (∑ u ∈ cornerEdgeFlag, barycenter unitVertex u) =
+      barycenter unitVertex firstCorner + vertexPosition unitVertex 1 firstEdge := by
     simp [cornerEdgeFlag, hneq]
+    rfl
   rw [hc, hs, Pi.smul_apply, Pi.add_apply, edge_position]
-  fin_cases i <;> norm_num [vertexPosition, barycenter, unitVertex, firstCorner, Pi.smul_apply]
+  fin_cases i <;> norm_num [barycenter, unitVertex, firstCorner, Pi.smul_apply]
 
 /-- The shared edge as a depth-one realization point on the boundary. -/
 def edgePoint : Realization (complex triangleBoundary 1) :=

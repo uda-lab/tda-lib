@@ -28,6 +28,14 @@ private def point (x y : ℝ) : Plane := !₂[x, y]
 
 def castPoint (p : Point) : Plane := point p.1 p.2
 
+/-- The first real coordinate of a cast rational point. -/
+theorem castPoint_apply_zero (p : Point) : castPoint p 0 = (p.1 : ℝ) := by
+  simp [castPoint, point]
+
+/-- The second real coordinate of a cast rational point. -/
+theorem castPoint_apply_one (p : Point) : castPoint p 1 = (p.2 : ℝ) := by
+  simp [castPoint, point]
+
 theorem distSq_coordinates (c p : Plane) :
     dist c p ^ 2 = (c 0 - p 0)^2 + (c 1 - p 1)^2 := by
   rw [EuclideanSpace.dist_sq_eq, Fin.sum_univ_two]

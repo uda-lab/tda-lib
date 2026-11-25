@@ -42,7 +42,6 @@ theorem coneCarrier_apex [LinearOrder I] {J : Finset I} (hJ : J ∈ K) {i : I} (
     simpa only [Finset.insert_union, Finset.insert_eq_of_mem (Finset.mem_union_right S hi)] using hS.2
 
 section Prism
-local instance (X : Type*) : DecidableEq X := Classical.decEq X
 variable {V I : Type u} [LinearOrder V] [Fintype V] [Nonempty V]
 
 variable {Q : PreAbstractSimplicialComplex V} {N : PreAbstractSimplicialComplex I}
@@ -61,7 +60,7 @@ private theorem exists_flag_extrema {F : Finset (Finset V)} (hF : F ∈ barycent
     · exact (Finset.eq_of_subset_of_card_le h (hmax A hA)).ge
 
 /-- A common apex map on subdivided flags compares two maps carried by nested face cones. -/
-theorem exists_contiguous_apexMap (f g : VertexMap Q N) (J : Finset V → Finset I)
+theorem exists_contiguous_apexMap [DecidableEq I] (f g : VertexMap Q N) (J : Finset V → Finset I)
     (j : Finset V → I) (hj : ∀ S ∈ Q, j S ∈ J S)
     (hanti : ∀ S ∈ Q, ∀ T ∈ Q, S ⊆ T → J T ⊆ J S)
     (hf : ∀ S ∈ Q, ∀ T ∈ Q, S ⊆ T → T.image f ∈ coneCarrier N (J S))
@@ -69,6 +68,8 @@ theorem exists_contiguous_apexMap (f g : VertexMap Q N) (J : Finset V → Finset
     ∃ b : VertexMap (barycentricSubdivision Q) N,
       Contiguous (VertexMap.comp (lastVertexMap Q) f) b ∧
       Contiguous (VertexMap.comp (lastVertexMap Q) g) b := by
+  -- Vertex maps take images with `Classical.decEq`; decidable equality is a subsingleton.
+  obtain rfl : ‹DecidableEq I› = Classical.decEq I := Subsingleton.elim _ _
   classical
   have bounds (F : Finset (Finset V)) (hF : F ∈ barycentricSubdivision Q) :
       (F.image (fun A => f (lastVertex A)) ∪ F.image j ∈ N) ∧

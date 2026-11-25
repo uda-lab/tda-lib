@@ -21,8 +21,10 @@ noncomputable section
 universe u
 variable {V : Type u} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
-/-- Ambient labels at subdivision depth `n`, shared by every subcomplex on `V`. -/
-abbrev Vertex (V : Type u) : ℕ → Type u
+/-- Ambient labels at subdivision depth `n`, shared by every subcomplex on `V`. Not reducible:
+`Vertex V (n + 1)` is `Finset (Vertex V n)` by definition, but instances on finsets do not
+apply to it, so the label orders of `SubdivisionLastVertex` stay on these labels. -/
+def Vertex (V : Type u) : ℕ → Type u
   | 0 => V
   | n + 1 => Finset (Vertex V n)
 
@@ -246,7 +248,8 @@ private theorem realize_succ (K : PreAbstractSimplicialComplex V) (p : V → E) 
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro A _
-  simp_rw [mul_smul, ← Finset.smul_sum, sum_centroidWeightsIndicator_smul]
+  simp_rw [mul_smul, ← Finset.smul_sum]
+  exact congrArg (x.val.weights A • ·) (sum_centroidWeightsIndicator_smul q A).symm
 
 /-- Affine interpolation at depth `n` factors through the original realization. -/
 theorem realize_eq_comp_projection (K : PreAbstractSimplicialComplex V) (p : V → E) :
