@@ -3015,7 +3015,8 @@ decomposition by strict structure-map ranks. For `s < t`,
 structure map from `s` to `t` is the number of occurrences whose `scalarSupport` contains
 both `s` and `t`. `scalar_crossing_finite` states that this set of occurrences is finite, and
 `scalar_crossing_card_eq_of_iso` that naturally isomorphic modules have the same count,
-although their chosen index types may differ.
+although their chosen index types may differ. See
+[crossing counts from strict ranks](math/real-interval-decomposition.md#crossing-counts-from-strict-ranks).
 
 `IntervalCompatibility` gives natural isomorphisms with the existing half-open
 interval modules and finite diagram realizations. Its `constructibleIso` result
@@ -4186,6 +4187,7 @@ eight open boxes around a square hole where enlarging one box gives a strict inc
 with nonzero first homology over F₂ (`Annulus.not_isZero_homology_one`), and the
 enlargement of every box to the plane, where the unions differ and the inclusion is not an
 isomorphism in degree one over F₂ (`Annulus.unequal_union_not_isIso`).
+See [nerves of nested convex families](math/convex-nerve-inclusion.md).
 The source register records these Topology modules as library derivations attributed to no
 source; see its [declaration mappings](math/references.md#existing-declaration-and-proof-mappings).
 
@@ -4262,8 +4264,9 @@ under a natural module isomorphism, including essential `infinityCut` deaths. Th
 does not reverse for arbitrary q-tame modules: in `TDA.Persistence.WholeLineObstructionExamples`,
 `canonical_zero_but_module_distance_top` states that, over a field, the constant scalar module
 on `ℝ` and the zero module have the same diagram `LocallyFiniteDecoratedDiagram.ofQModule`,
-hence bottleneck distance `0`, while their real interleaving distance is `⊤`. The finite
-diagram base point `Diagram.empty` is defined alongside the general diagram API in
+hence bottleneck distance `0`, while their real interleaving distance is `⊤`; see
+[a whole-line module](math/real-interval-decomposition.md#a-whole-line-module-and-the-finite-birth-diagram).
+The finite diagram base point `Diagram.empty` is defined alongside the general diagram API in
 `TDA.Persistence.Diagram`.
 
 `TDA.Persistence.PersistenceMeasureBox` derives a rectangle box inequality
