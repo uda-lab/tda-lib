@@ -1592,9 +1592,33 @@ coefficient. The file has no grade or filtration statement. TauCeti is not a dep
 `GradeNonincreasing.add` and the G1/G2 fixtures are library derivations attributed to no
 numbered result; `ofUnitPair`
 repackages the reduction step above and adds no source claim. `TauCeti.LinearSpecialContraction`,
-recorded on #1074 against TauCeti commit `25bd01c`, is the closest notion to
+recorded on #1074 against TauCeti commit `25bd01c`, is the closest unfiltered notion to
 `FilteredContraction`; TauCeti is not a dependency, and if it became one the comparison would
 go through `Matrix.toLin'`.
+
+At the same commit, outside `GaussianElimination.lean`, TauCeti has filtered statements, as
+found in the review of #1115 (F-B15-1, F-X4-1); the paths are under `TauCeti/`. The closest
+filtered notion is `LinearMap.FilteredHomotopyEquiv` in
+`Algebra/Homology/SquareZero/Filtered.lean`, which concerns filtered homotopy equivalences of
+square-zero endomorphisms and comes with `refl`, `symm`, `trans` and restriction to each level;
+its `homologyEquiv` in the same file is the homology isomorphism of such an equivalence. It has
+`symm` and restriction to levels, which `FilteredContraction` does not have; the latter has
+`refl`, `copy`, `trans` and `reindex`, and its homology statements are the isomorphisms of
+the grade sublevels, `sublevelHomologyEquiv` at one grade. It filters by submodules, where
+`FilteredContraction` uses the sublevels of an integer grade; its data are linear maps, not
+matrices; and it is `noncomputable`, where `FilteredContraction` carries matrix data with
+`degree` and `grade` statements for the projection, inclusion and homotopy and a
+construction from a pivot schedule (`ofSchedule`). The review does not record whether the
+TauCeti file has a counterpart of `ofSchedule` or of the degree statements. The file
+`Algebra/Homology/Contraction/Perturbation/Filtered.lean` has a filtered perturbation lemma
+in the complete filtered regime. The modules under `TDA/Persistence/Morse/` have no
+perturbation lemma, and no statement of that file is compared with a declaration here.
+`LinearMap.ker_le_range_of_matching` (`Algebra/Homology/SquareZero/Contraction.lean`) gives
+exactness from a perfect matching of generators with unit coefficients and a well-founded
+weight, and its docstring calls it algebraic discrete Morse theory in its simplest form. The
+review records exactness as its conclusion and no reduced differential or contraction data
+for it, whereas `FilteredContraction` carries the projection, inclusion and homotopy and
+assumes no perfect matching.
 
 The sublevel homology modules, `sublevelHomologyPModule`, the induced maps,
 `sublevelHomologyEquiv`, `sublevelHomologyIso`, `finrank_sublevelHomology_eq` and the H1–H3

@@ -353,7 +353,22 @@ and `CollapsesTo` have the same bodies. At the same TauCeti commit, its ordered 
 complex (`ChainComplex.lean`, `InducedChainMap.lean` and `Subdivision/Chain.lean` in the same
 directory) has no free pair, no deletion of a face from a complex and no collapse of complexes;
 there, deleting a vertex or a tuple entry gives a boundary term, and a simplex collapses when a
-simplicial map is not injective on it. TauCeti is not a dependency.
+simplicial map is not injective on it. At the same commit, as found in the review of #1115
+(F-B18-6), TauCeti has more collapse declarations than the four above, under
+`TauCeti/AlgebraicTopology/SimplicialComplex/Collapse/`. `Certificate.lean` has a checker
+that works with masks of generating faces, `checkMaskSteps`, with the soundness theorem
+`collapsesTo_ofMasks_of_checkMaskSteps`; the review records soundness only, where the
+checker `checkSteps` here works on a table of all faces and has soundness
+(`collapsesTo_of_checkSteps`) and completeness (`exists_checkSteps_of_collapsesTo`,
+`collapsesTo_iff_exists_checkSteps`) in `TDA.Simplicial.CollapseCertificate`.
+`Deformation.lean` has `IsFreePair.exists_strong_deformation_retraction` and
+`ElementaryCollapsesTo.exists_strong_deformation_retraction`, and `Sequence.lean` has
+`CollapsesTo.exists_strong_deformation_retraction` and
+`CollapsesTo.contractibleSpace_realization`, which are statements about the topological
+realizations. `TDA.Simplicial.Collapse`, `TDA.Simplicial.CollapseCertificate` and
+`TDA.Simplicial.CollapseHomology` state nothing about realizations; their homology results
+are chain-level (see [homology of collapses](#homology-of-collapses)). TauCeti is not a
+dependency.
 At tda-lib commit `3581b4a`, `TDA/` defines no other free-face predicate, face deletion or
 collapse relation on simplicial complexes. Declarations there whose names contain `collapse` are
 not collapses in this sense: for example, the private theorems `collapse_prism`, `collapse_edge`

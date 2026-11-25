@@ -1212,9 +1212,11 @@ the extended-rank erosion examples in
 the attainment and certificate theorems are in `TDA.Persistence.GradedFree`.
 Coordinate notation uses `open scoped TDA.Persistence`.
 
-[Puuska, §2.2](https://arxiv.org/html/1710.01577v1) defines the rank invariant
-on strict pairs and proves its erosion stability using the interleaving
-factorization (Theorem 22). The library's `RankErosion` uses weak pairs and a
+[Puuska](https://arxiv.org/html/1710.01577v1) takes the rank invariant to be the
+image of F(a < b) (Definition 17) on strict pairs a < b, and defines the erosion
+distance d_E (Definition 5); the
+[source record](references.md#Puuska17-v1) limits the comparison to this pair
+convention. The library's `RankErosion` uses weak pairs and a
 finite-dimensional specialization. `StrictRankErosion` uses the strict pairs of
 the product order with the same diagonal shift, and the
 [comparison above](#strict-pairs) relates the two library predicates.
