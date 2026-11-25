@@ -176,6 +176,18 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   On the recorded host the native fixture at radius `1/2` took about 5 s instead of 333 s
   (`docs/math/rank-erosion.md` § Measured native run); the `phases` and `split` replays of the
   fixture stay uncached and a `memo` replay was added. No runtime bound is claimed.
+- New area `TDA.Sheaf` (#1167): for a preorder `X` with its upper Alexandrov topology and a
+  complete category `C`, `TDA.Sheaf.Alexandrov.equivalence : X.Sheaf C ≌ (X ⥤ C)` has functor
+  `principalSections` (sections over the principal opens `↑p`, with restriction along
+  `↑q ⊆ ↑p` for `p ≤ q`) and inverse `kanSheaf` (the pointwise right Kan extension along
+  `Alexandrov.principals X`). `counitIso` is the limit projection at `(p, 𝟙)`; `unitIso`
+  compares sections over any open with the limit over the principal opens it contains, and
+  `restrictionConeIsLimit` and `isPointwiseRightKanExtension` state this for every sheaf.
+  `upperSetEquivalence` specializes to `P ⥤ C` for an unbundled preorder `P` through
+  `Topology.WithUpperSet P`, with `upperSetSectionsIso` and its restriction and morphism
+  naturality. Fixtures in `TDA.Sheaf.AlexandrovExamples` cover the chain `0 ⟶ ℚ` on `Fin 2`,
+  the empty open, the non-principal whole antichain `Unit ⊕ Unit` (a binary product) and
+  real-indexed `PModule`s over `ℚ` and `ZMod 2`.
 
 ## v0.5.0
 
