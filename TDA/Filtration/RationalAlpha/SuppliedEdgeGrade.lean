@@ -332,6 +332,72 @@ structure InteriorDual {n : ℕ} {I : Type*} (p : Fin n ↪ Point)
   stage (t : ℝ) : ({a,b} : Finset (Fin n)) ∈ Alpha.complex (realSites p) t ↔
     directionSq (p a) (p b) / 4 + directionSq (p a) (p b) * (max lower (min upper 0))^2 ≤ t
 
+/-- A directed triangle edge with a unique occurrence and every site on its closed left side
+has the closed outward Voronoi ray of `HullDual`. No hull cycle is involved. -/
+theorem hull_dual_of_supporting_side {n : ℕ} {I : Type*} (p : Fin n ↪ Point)
+    (tri : I → Fin 3 → Fin n) {a b : Fin n} {i : I × Fin 3}
+    (hi : occurrenceEdge tri i = (a, b))
+    (huniq : ∀ j, occurrenceEdge tri j = (a, b) → j = i)
+    (hccw : 0 < orient (p (tri i.1 0)) (p (tri i.1 1)) (p (tri i.1 2)))
+    (hpass : checkIncircle p (tri i.1 0) (tri i.1 1) (tri i.1 2) = true)
+    (hside : ∀ x, 0 ≤ orient (p a) (p b) (p x)) :
+    Nonempty (HullDual p tri a b) := by
+  obtain ⟨H⟩ := original_occurrence_center p tri i hi hccw hpass
+  have hab : a ≠ b := fun he => (orient_pos_distinct H.ccw).1 (congrArg p he)
+  obtain ⟨u, hu, hcenter, hactive⟩ := active_parameter_of_center p hab H.feasible
+  have hparam : edgeParameters p a b = Iic u :=
+    parameters_ray p (active_positive p hu H.ccw hactive) hside
+  refine ⟨⟨i, H, huniq, u, hcenter, hactive, hparam, ?_, ?_⟩⟩
+  · rw [edge_commonCells_eq_image p hab, hparam, image_Iic_eq_closedRay, hcenter]
+  · intro t
+    apply edge_stage_of_parameter_min p hab
+    · rw [hparam]
+      exact zero_or_upper_projection.1
+    · intro s hs
+      rw [hparam] at hs
+      exact zero_or_upper_projection.2 s hs
+
+/-- Opposite occurrences of an edge in passing CCW triangles give its closed Voronoi segment.
+No hull cycle is involved. -/
+theorem interior_dual_of_opposite_occurrences {n : ℕ} {I : Type*} (p : Fin n ↪ Point)
+    (tri : I → Fin 3 → Fin n)
+    (hccw : ∀ i, 0 < orient (p (tri i 0)) (p (tri i 1)) (p (tri i 2)))
+    (hpasses : ∀ i, checkIncircle p (tri i 0) (tri i 1) (tri i 2) = true)
+    {a b : Fin n} {f r : I × Fin 3}
+    (hf : occurrenceEdge tri f = (a, b)) (hr : occurrenceEdge tri r = (b, a)) :
+    Nonempty (InteriorDual p tri a b) := by
+  obtain ⟨F⟩ := original_occurrence_center p tri f hf (hccw f.1) (hpasses f.1)
+  obtain ⟨R⟩ := original_occurrence_center p tri r hr (hccw r.1) (hpasses r.1)
+  have hab : a ≠ b := fun he => (orient_pos_distinct F.ccw).1 (congrArg p he)
+  have hdistinct : f.1 ≠ r.1 :=
+    opposite_edges_different_triangles p tri hccw (by rw [hf, hr]; rfl)
+  have hd : orient (p a) (p b) (p R.third) < 0 := by
+    have h := R.ccw
+    rw [(orient_swaps (p a) (p b) (p R.third)).1] at h
+    exact neg_pos.mp h
+  have hswap : ({a, b, R.third} : Finset (Fin n)) = {b, a, R.third} := by
+    ext i
+    simp only [Finset.mem_insert, Finset.mem_singleton, or_left_comm]
+  have hfeas : castPoint R.center ∈
+      Alpha.commonCells (realSites p) ({a, b, R.third} : Finset (Fin n)) := hswap ▸ R.feasible
+  obtain ⟨l, hl, hlc, hla⟩ := active_parameter_of_center p hab hfeas
+  obtain ⟨u, hu, huc, hua⟩ := active_parameter_of_center p hab F.feasible
+  have hL := active_negative p hl hd hla
+  have hU := active_positive p hu F.ccw hua
+  have hlu : l ≤ u := hL.2 hu
+  have hparam := parameters_interval p hL hU
+  refine ⟨⟨f, r, hdistinct, F, R, l, u, hlu, hlc, huc, hla, hua, hparam, ?_, ?_⟩⟩
+  · rw [edge_commonCells_eq_image p hab, hparam, image_Icc_eq_segment _ _ hlu, hlc, huc]
+  · intro t
+    let z : ℝ := Set.projIcc l u hlu 0
+    have hz : z ∈ edgeParameters p a b := by
+      rw [hparam]
+      exact (Set.projIcc l u hlu 0).property
+    have hm (s : ℝ) (hs : s ∈ edgeParameters p a b) : z ^ 2 ≤ s ^ 2 := by
+      rw [hparam] at hs
+      exact (interval_projection hlu).2 ⟨s, hs, rfl⟩
+    simpa only [z, Set.coe_projIcc] using edge_stage_of_parameter_min p hab hz hm t
+
 section Supplied
 variable {n k : ℕ} {I : Type*} [Fintype I]
     (p : Fin n ↪ Point) (hull : Fin (k+3) → Fin n) (hv : Function.Injective hull)
@@ -347,30 +413,16 @@ include hv hh hccw hchain hpasses in
 theorem supplied_hull_dual
     (hsite : ∀ i, castPoint (p i) ∈ siteHull p hull) (j : Fin (k+3)) :
     Nonempty (HullDual p tri (cycleEdges hull j).1 (cycleEdges hull j).2) := by
-  let a := (cycleEdges hull j).1
-  let b := (cycleEdges hull j).2
-  have de : (a,b) = cycleEdges hull j := Prod.eta _
+  have de : ((cycleEdges hull j).1,(cycleEdges hull j).2) = cycleEdges hull j := Prod.eta _
   have hcounts := rational_edge_counts p p.injective hull hv tri hh hccw hchain
   have hcount := (certified_hull_face_incidence p p.injective hull hv tri hh hccw hchain j).2.1
-  have hex : ∃ i, occurrenceEdge tri i = (a,b) := by
+  have hex : ∃ i, occurrenceEdge tri i = ((cycleEdges hull j).1,(cycleEdges hull j).2) := by
     by_contra! hn
     rw [← de] at hcount
     simp [directedMultiplicity, hn] at hcount
   obtain ⟨i,hi⟩ := hex
-  obtain ⟨H⟩ := original_occurrence_center p tri i hi (hccw i.1) (hpasses i.1)
-  have hab : a ≠ b := fun he => (orient_pos_distinct H.ccw).1 (congrArg p he)
-  obtain ⟨u,hu,hcenter,hactive⟩ := active_parameter_of_center p hab H.feasible
-  have hparam : edgeParameters p a b = Iic u :=
-    parameters_ray p (active_positive p hu H.ccw hactive) (supporting_hull_side p hull hh hsite j)
-  refine ⟨⟨i,H,fun j hj => hcounts.1 (hj.trans hi.symm),u,hcenter,hactive,hparam,?_,?_⟩⟩
-  · rw [edge_commonCells_eq_image p hab, hparam, image_Iic_eq_closedRay, hcenter]
-  · intro t
-    apply edge_stage_of_parameter_min p hab
-    · rw [hparam]
-      exact zero_or_upper_projection.1
-    · intro s hs
-      rw [hparam] at hs
-      exact zero_or_upper_projection.2 s hs
+  exact hull_dual_of_supporting_side p tri hi (fun l hl => hcounts.1 (hl.trans hi.symm))
+    (hccw i.1) (hpasses i.1) (supporting_hull_side p hull hh hsite j)
 
 include hv hh hccw hchain hpasses in
 /-- For a supplied non-hull pair, the reverse and forward centers bound its common cells. -/
@@ -379,36 +431,10 @@ theorem supplied_interior_dual {a b : Fin n} (hab : a ≠ b)
     (hnothull : ∀ j, cycleEdges hull j ≠ (a,b) ∧ cycleEdges hull j ≠ (b,a)) :
     Nonempty (InteriorDual p tri a b) := by
   have hor := (pair_mem_iff_occurrence tri hab).1 hface
-  obtain ⟨_,_,f,r,hf,hr,hdistinct⟩ :=
+  obtain ⟨_,_,f,r,hf,hr,_⟩ :=
     (rational_edge_counts p p.injective hull hv tri hh hccw hchain).2.2 (a,b) hnothull hor
-  obtain ⟨F⟩ := original_occurrence_center p tri f hf (hccw f.1) (hpasses f.1)
-  obtain ⟨R⟩ := original_occurrence_center p tri r hr (hccw r.1) (hpasses r.1)
-  have hd : orient (p a) (p b) (p R.third) < 0 := by
-    have h := R.ccw
-    rw [(orient_swaps (p a) (p b) (p R.third)).1] at h
-    exact neg_pos.mp h
-  have hswap : ({a,b,R.third} : Finset (Fin n)) = {b,a,R.third} := by
-    ext i
-    simp only [Finset.mem_insert, Finset.mem_singleton, or_left_comm]
-  have hfeas : castPoint R.center ∈ Alpha.commonCells (realSites p) ({a,b,R.third} : Finset (Fin n)) :=
-    hswap ▸ R.feasible
-  obtain ⟨l,hl,hlc,hla⟩ := active_parameter_of_center p hab hfeas
-  obtain ⟨u,hu,huc,hua⟩ := active_parameter_of_center p hab F.feasible
-  have hL := active_negative p hl hd hla
-  have hU := active_positive p hu F.ccw hua
-  have hlu : l ≤ u := hL.2 hu
-  have hparam := parameters_interval p hL hU
-  refine ⟨⟨f,r,hdistinct,F,R,l,u,hlu,hlc,huc,hla,hua,hparam,?_,?_⟩⟩
-  · rw [edge_commonCells_eq_image p hab, hparam, image_Icc_eq_segment _ _ hlu, hlc, huc]
-  · intro t
-    let z : ℝ := Set.projIcc l u hlu 0
-    have hz : z ∈ edgeParameters p a b := by
-      rw [hparam]
-      exact (Set.projIcc l u hlu 0).property
-    have hm (s : ℝ) (hs : s ∈ edgeParameters p a b) : z^2 ≤ s^2 := by
-      rw [hparam] at hs
-      exact (interval_projection hlu).2 ⟨s,hs,rfl⟩
-    simpa only [z,Set.coe_projIcc] using edge_stage_of_parameter_min p hab hz hm t
+  exact interior_dual_of_opposite_occurrences p tri hccw hpasses hf hr
+
 end Supplied
 
 private theorem actual_grade_of_stage {n : ℕ} (p : Fin n ↪ Point)

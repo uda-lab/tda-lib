@@ -2037,8 +2037,25 @@ injective. `alphaCarrier_le_labelComplex_of_subdivided_boundary` is the inclusio
 for clients with their own convex cover. `SuppliedCarrierExamples.split_carrier` (sites `splitEmb`) applies it to
 a triangle whose bottom side is split at its midpoint, using `SubdividedBoundaryExamples`'s
 `coarse_certificate`, `ordered_cuts` and `sites_contained`, and `split_side_faces` shows both
-subedges are carrier faces and the coarse side is not. Grade rows and stages for a
-subdivided hull are not covered (#1214). See
+subedges are carrier faces and the coarse side is not.
+`SubdividedStages` gives the grade rows and stages for the same inputs, with the same
+hypotheses (the no-four-cocircular hypothesis only on rows and stages) and no injectivity of
+the hull labels: `subdivided_hull_dual` (a `HullDual` for every refined side),
+`subdivided_edge_counts` (each refined side occurs once forward and never backward),
+`edge_grade_on_subdivided`, `suppliedGrades_eq_reference_of_subdivided_boundary`,
+`supplied_hasGradeTable_of_subdivided_boundary` and
+`supplied_realStage_iff_of_subdivided_boundary`, with `supplied_realStage_faces_of_subdivided_boundary`
+and `supplied_realStage_neg_of_subdivided_boundary`. The coarse dual, row and stage theorems keep their
+statements and call the hull-free cores `hull_dual_of_supporting_side`,
+`interior_dual_of_opposite_occurrences`, `grade_on_face_of_edge_grades` and
+`suppliedGrades_eq_reference_of_face_grades`; `subdivisionEdges_side` and the multiplicity
+lemmas `multiplicity_absent`, `multiplicity_at_most_one` and `multiplicity_listed` are public.
+`SubdividedStagesExamples.split_checked_stages` gives all real stages of the split triangle, with
+`split_bc_cutoff` (the non-Gabriel edge BC enters at `5/2`) and `split_am_cutoff` (the refined
+piece AM enters at `1/4`). The inputs of the split fixture are checked, not proved by hand:
+`checkOrderedEdgeCuts` is an executable rational test with `orderedEdgeCuts_of_check`, and
+`DirectedEdgeIncidence.chain_eq_of_directed_counts` reduces the chain equality to equal net
+directed counts, a finite check. See
 [supplied carrier and stages](math/alpha-filtration-and-signed-coverage.md#supplied-carrier-and-stages).
 
 For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`

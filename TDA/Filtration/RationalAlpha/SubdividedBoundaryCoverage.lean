@@ -123,6 +123,61 @@ def OrderedEdgeCuts {L : Type*} (site : L → Point) (b : L) : L → List L → 
       castPoint (site c) = AffineMap.lineMap (castPoint (site a)) (castPoint (site b)) u) ∧
       OrderedEdgeCuts site b c cuts
 
+/-- Rational test that `c` lies strictly between `a` and `b` on their line: it is collinear with
+them and its projection onto `b - a` lies strictly inside the segment. -/
+def strictlyBetween (a c b : Point) : Bool :=
+  decide ((b.1 - a.1) * (c.2 - a.2) - (b.2 - a.2) * (c.1 - a.1) = 0 ∧
+    0 < (c.1 - a.1) * (b.1 - a.1) + (c.2 - a.2) * (b.2 - a.2) ∧
+    (c.1 - a.1) * (b.1 - a.1) + (c.2 - a.2) * (b.2 - a.2) <
+      (b.1 - a.1) ^ 2 + (b.2 - a.2) ^ 2)
+
+/-- Executable check of `OrderedEdgeCuts` from rational data. -/
+def checkOrderedEdgeCuts {L : Type*} (site : L → Point) (b : L) : L → List L → Bool
+  | _, [] => true
+  | a, c :: cuts => strictlyBetween (site a) (site c) (site b) && checkOrderedEdgeCuts site b c cuts
+
+/-- A passing `strictlyBetween` test gives the real parameter of the point on the segment. -/
+theorem strictlyBetween_sound {a c b : Point} (h : strictlyBetween a c b = true) :
+    ∃ u ∈ Ioo (0 : ℝ) 1,
+      castPoint c = AffineMap.lineMap (castPoint a) (castPoint b) u := by
+  simp only [strictlyBetween, decide_eq_true_eq] at h
+  obtain ⟨hcol, h0, h1⟩ := h
+  set N : ℚ := (c.1 - a.1) * (b.1 - a.1) + (c.2 - a.2) * (b.2 - a.2) with hN
+  set D : ℚ := (b.1 - a.1) ^ 2 + (b.2 - a.2) ^ 2 with hD
+  have hDpos : 0 < D := h0.trans h1
+  have e1 : c.1 = N / D * (b.1 - a.1) + a.1 := by
+    field_simp
+    rw [hN, hD]
+    linear_combination (-(b.2 - a.2)) * hcol
+  have e2 : c.2 = N / D * (b.2 - a.2) + a.2 := by
+    field_simp
+    rw [hN, hD]
+    linear_combination (b.1 - a.1) * hcol
+  refine ⟨((N / D : ℚ) : ℝ), ⟨?_, ?_⟩, ?_⟩
+  · exact_mod_cast div_pos h0 hDpos
+  · exact_mod_cast (div_lt_one hDpos).2 h1
+  · ext i
+    simp only [AffineMap.lineMap_apply_module', PiLp.add_apply, PiLp.sub_apply, PiLp.smul_apply,
+      smul_eq_mul]
+    fin_cases i
+    · change ((c.1 : ℚ) : ℝ) = ((N / D : ℚ) : ℝ) * (((b.1 : ℚ) : ℝ) - (a.1 : ℚ)) + (a.1 : ℚ)
+      rw [e1]
+      push_cast
+      ring
+    · change ((c.2 : ℚ) : ℝ) = ((N / D : ℚ) : ℝ) * (((b.2 : ℚ) : ℝ) - (a.2 : ℚ)) + (a.2 : ℚ)
+      rw [e2]
+      push_cast
+      ring
+
+/-- A passing executable check gives `OrderedEdgeCuts`. -/
+theorem orderedEdgeCuts_of_check {L : Type*} (site : L → Point) (b : L) :
+    ∀ (a : L) (cuts : List L), checkOrderedEdgeCuts site b a cuts = true →
+      OrderedEdgeCuts site b a cuts
+  | _, [], _ => trivial
+  | a, c :: cuts, h => by
+    rw [checkOrderedEdgeCuts, Bool.and_eq_true] at h
+    exact ⟨strictlyBetween_sound h.1, orderedEdgeCuts_of_check site b c cuts h.2⟩
+
 /-- The consecutive directed label edges from `a` through the cuts to `b`. -/
 def subdivisionEdges {L : Type*} (b : L) : L → List L → List (L × L)
   | a, [] => [(a, b)]
@@ -142,6 +197,48 @@ def subdividedListedEdges {L I E F : Type*} (site : L → Point) (tri : I → E 
     (coarse : F → L × L) (cuts : F → List L) :
     Sum (Sum (I × E) F) (SubdivisionIndex coarse cuts) → Plane × Plane :=
   Sum.elim (listedEdges site tri coarse) (fun j => realEdge site (subdividedEdge coarse cuts j))
+
+private theorem edgeSide_lineMap_left (a b y : Plane) (u : ℝ) :
+    edgeSide (a, AffineMap.lineMap a b u) y = u * edgeSide (a, b) y := by
+  simp only [edgeSide, AffineMap.lineMap_apply_module', PiLp.add_apply, PiLp.sub_apply,
+    PiLp.smul_apply, smul_eq_mul]
+  ring
+
+private theorem edgeSide_lineMap_right (a b y : Plane) (u : ℝ) :
+    edgeSide (AffineMap.lineMap a b u, b) y = (1 - u) * edgeSide (a, b) y := by
+  simp only [edgeSide, AffineMap.lineMap_apply_module', PiLp.add_apply, PiLp.sub_apply,
+    PiLp.smul_apply, smul_eq_mul]
+  ring
+
+/-- Each directed piece of an ordered subdivision has the side form of the whole side, scaled by
+a positive factor. -/
+theorem subdivisionEdges_side {L : Type*} (site : L → Point) (b : L) (a : L) (cuts : List L)
+    (hcuts : OrderedEdgeCuts site b a cuts) :
+    ∀ e ∈ subdivisionEdges b a cuts, ∃ c : ℝ, 0 < c ∧ ∀ y : Plane,
+      edgeSide (realEdge site e) y = c * edgeSide (realEdge site (a, b)) y := by
+  induction cuts generalizing a with
+  | nil =>
+    intro e he
+    simp only [subdivisionEdges, List.mem_singleton] at he
+    subst he
+    exact ⟨1, one_pos, fun y => (one_mul _).symm⟩
+  | cons c cuts ih =>
+    rcases hcuts with ⟨⟨u, hu, hc⟩, hrest⟩
+    intro e he
+    simp only [subdivisionEdges, List.mem_cons] at he
+    rcases he with rfl | he
+    · refine ⟨u, hu.1, fun y => ?_⟩
+      change edgeSide (castPoint (site a), castPoint (site c)) y =
+        u * edgeSide (castPoint (site a), castPoint (site b)) y
+      rw [hc, edgeSide_lineMap_left]
+    · obtain ⟨d, hd, hside⟩ := ih c hrest e he
+      refine ⟨d * (1 - u), mul_pos hd (sub_pos.mpr hu.2), fun y => ?_⟩
+      rw [hside y, mul_assoc]
+      congr 1
+      change edgeSide (castPoint (site c), castPoint (site b)) y =
+        (1 - u) * edgeSide (castPoint (site a), castPoint (site b)) y
+      rw [hc, edgeSide_lineMap_right]
+
 
 private theorem subdivisionEdges_nondegenerate {L : Type*} (site : L → Point)
     (a b : L) (cuts : List L) (hcuts : OrderedEdgeCuts site b a cuts)

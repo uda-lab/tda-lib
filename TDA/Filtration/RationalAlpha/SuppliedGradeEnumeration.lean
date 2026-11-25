@@ -282,6 +282,87 @@ theorem kernelGrade?_eq_grade? {m n : ℕ} (p : Fin n → Point) (tri : Fin m �
     (s : Finset (Fin n)) : kernelGrade? p tri s = grade? p tri s := by
   rw [kernelGrade?, grade?, sortedLabels_eq_sort]
 
+/-- Correct edge rows on every supplied carrier edge give correct rows on every supplied
+carrier face. Body: `grade_on_supplied_face` with its edge branch replaced by `hedge`. -/
+theorem grade_on_face_of_edge_grades {m n : ℕ} (p : Fin n ↪ Point)
+    (tri : Fin m → Fin 3 → Fin n)
+    (hccw : ∀ i, 0 < orient (p (tri i 0)) (p (tri i 1)) (p (tri i 2)))
+    (hedge : ∀ {a b : Fin n}, a ≠ b → ({a, b} : Finset (Fin n)) ∈ (labelComplex tri).faces →
+      ∀ hf : ({a, b} : Finset (Fin n)) ∈ Alpha.carrier (realSites p),
+        ∃ q : ℚ, edgeGrade? p tri a b = some q ∧
+          (q : ℝ) = (Alpha.filter (realSites p)).value ⟨{a, b}, hf⟩)
+    {s : Finset (Fin n)} (hs : s ∈ labelComplex tri) (hf : s ∈ Alpha.carrier (realSites p)) :
+    ∃ q : ℚ, grade? p tri s = some q ∧
+      (q : ℝ) = (Alpha.filter (realSites p)).value ⟨s, hf⟩ := by
+  have hFace := hs
+  obtain ⟨hn,i,hsub⟩ := hs
+  have hcard := (Finset.card_le_card hsub).trans (label_card_le_three (tri i))
+  have hsort := Finset.sort_toFinset s (· ≤ ·)
+  have hlen := Finset.length_sort (s := s) (· ≤ ·)
+  have hnod := Finset.sort_nodup s (· ≤ ·)
+  cases he : s.sort with
+  | nil =>
+    rw [he,List.toFinset_nil] at hsort
+    exact False.elim (Finset.not_nonempty_empty (hsort.symm ▸ hn))
+  | cons a ls =>
+    cases ls with
+    | nil =>
+      have hEq : ({a} : Finset (Fin n)) = s := by simpa [he] using hsort
+      have h1 : ({a} : Finset (Fin n)) ∈ Alpha.carrier (realSites p) := hEq ▸ hf
+      refine ⟨0,by simp [grade?,he],?_⟩
+      simpa using (singleton_grade_correct p a h1).symm.trans (grade_congr hEq)
+    | cons b ls =>
+      cases ls with
+      | nil =>
+        have hEq : ({a,b} : Finset (Fin n)) = s := by simpa [he] using hsort
+        have hab : a ≠ b := by simpa [he] using hnod
+        have hpair : ({a,b} : Finset (Fin n)) ∈ (labelComplex tri).faces := hEq ▸ hFace
+        have hpairAlpha : ({a,b} : Finset (Fin n)) ∈ Alpha.carrier (realSites p) := hEq ▸ hf
+        obtain ⟨q,hq,hg⟩ := hedge hab hpair hpairAlpha
+        exact ⟨q,by simp [grade?,he,hq],hg.trans (grade_congr hEq)⟩
+      | cons c ls =>
+        cases ls with
+        | nil =>
+          have h3 : s.card = 3 := by simpa [he] using hlen.symm
+          have hEq : labelVertices (tri i) = s :=
+            (Finset.eq_of_subset_of_card_le hsub
+              ((label_card_le_three (tri i)).trans_eq h3.symm)).symm
+          obtain ⟨j,hj,hEqj⟩ := facet_found tri ⟨i,hEq⟩
+          have hjAlpha : labelVertices (tri j) ∈ Alpha.carrier (realSites p) := hEqj ▸ hf
+          obtain ⟨q,hq,hg⟩ := triangle_grade_correct p tri j (hccw j) hjAlpha
+          exact ⟨q,by simp [grade?,he,hj,hq],hg.trans (grade_congr hEqj)⟩
+        | cons d ls =>
+          rw [he] at hlen
+          simp only [List.length_cons] at hlen
+          omega
+
+/-- Carrier equality and correct rows on every supplied carrier face identify the supplied rows
+with the reference rows. Body: `suppliedGrades_eq_reference`. -/
+theorem suppliedGrades_eq_reference_of_face_grades {m n : ℕ} (p : Fin n ↪ Point)
+    (tri : Fin m → Fin 3 → Fin n)
+    (he : Alpha.carrier (realSites p) = labelComplex tri)
+    (hgrade : ∀ {s : Finset (Fin n)}, s ∈ labelComplex tri →
+      ∀ hf : s ∈ Alpha.carrier (realSites p), ∃ q : ℚ, grade? p tri s = some q ∧
+        (q : ℝ) = (Alpha.filter (realSites p)).value ⟨s, hf⟩) :
+    suppliedGrades p tri = gradedFaces p := by
+  ext row
+  rcases row with ⟨s, q⟩
+  rw [mem_suppliedGrades, mem_gradedFaces_iff]
+  constructor
+  · rintro ⟨hs, hq⟩
+    have hf : s ∈ Alpha.carrier (realSites p) := he ▸ hs
+    obtain ⟨r, hr⟩ := (exists_entry_iff p).2 hf
+    obtain ⟨u, hu, hg⟩ := hgrade hs hf
+    have hqu := Option.some.inj (hq.symm.trans hu)
+    have hg' := cast_grade p hf hr
+    exact ⟨r, hr, Rat.cast_injective (hg'.trans (hqu ▸ hg).symm)⟩
+  · rintro ⟨r, hr, rfl⟩
+    have hf := (exists_entry_iff p).1 ⟨r, hr⟩
+    have hs : s ∈ labelComplex tri := he ▸ hf
+    obtain ⟨u, hu, hg⟩ := hgrade hs hf
+    have hue : u = r.grade := Rat.cast_injective (hg.trans (cast_grade p hf hr).symm)
+    exact ⟨hs, hue ▸ hu⟩
+
 section Certified
 
 variable {m n k : ℕ} (p : Fin n ↪ Point) (hull : Fin (k+3) → Fin n)
@@ -327,47 +408,9 @@ theorem grade_on_supplied_face {s : Finset (Fin n)}
     (hs : s ∈ labelComplex tri) (hf : s ∈ Alpha.carrier (realSites p)) :
     ∃ q : ℚ, grade? p tri s = some q ∧
       (q : ℝ) = (Alpha.filter (realSites p)).value ⟨s,hf⟩ := by
-  have hFace := hs
-  obtain ⟨hn,i,hsub⟩ := hs
-  have hcard := (Finset.card_le_card hsub).trans (label_card_le_three (tri i))
-  have hsort := Finset.sort_toFinset s (· ≤ ·)
-  have hlen := Finset.length_sort (s := s) (· ≤ ·)
-  have hnod := Finset.sort_nodup s (· ≤ ·)
-  cases he : s.sort with
-  | nil =>
-    rw [he,List.toFinset_nil] at hsort
-    exact False.elim (Finset.not_nonempty_empty (hsort.symm ▸ hn))
-  | cons a ls =>
-    cases ls with
-    | nil =>
-      have hEq : ({a} : Finset (Fin n)) = s := by simpa [he] using hsort
-      have h1 : ({a} : Finset (Fin n)) ∈ Alpha.carrier (realSites p) := hEq ▸ hf
-      refine ⟨0,by simp [grade?,he],?_⟩
-      simpa using (singleton_grade_correct p a h1).symm.trans (grade_congr hEq)
-    | cons b ls =>
-      cases ls with
-      | nil =>
-        have hEq : ({a,b} : Finset (Fin n)) = s := by simpa [he] using hsort
-        have hab : a ≠ b := by simpa [he] using hnod
-        have hpair : ({a,b} : Finset (Fin n)) ∈ (labelComplex tri).faces := hEq ▸ hFace
-        have hpairAlpha : ({a,b} : Finset (Fin n)) ∈ Alpha.carrier (realSites p) := hEq ▸ hf
-        obtain ⟨q,hq,hg⟩ := edge_grade_on_supplied p hull hv tri hh hsite hccw hchain hpass
-          hab hpair hpairAlpha
-        exact ⟨q,by simp [grade?,he,hq],hg.trans (grade_congr hEq)⟩
-      | cons c ls =>
-        cases ls with
-        | nil =>
-          have h3 : s.card = 3 := by simpa [he] using hlen.symm
-          have hEq : labelVertices (tri i) = s :=
-            (Finset.eq_of_subset_of_card_le hsub ((label_card_le_three (tri i)).trans_eq h3.symm)).symm
-          obtain ⟨j,hj,hEqj⟩ := facet_found tri ⟨i,hEq⟩
-          have hjAlpha : labelVertices (tri j) ∈ Alpha.carrier (realSites p) := hEqj ▸ hf
-          obtain ⟨q,hq,hg⟩ := triangle_grade_correct p tri j (hccw j) hjAlpha
-          exact ⟨q,by simp [grade?,he,hj,hq],hg.trans (grade_congr hEqj)⟩
-        | cons d ls =>
-          rw [he] at hlen
-          simp only [List.length_cons] at hlen
-          omega
+  refine grade_on_face_of_edge_grades p tri hccw ?_ hs hf
+  intro a b hab hpair hpairAlpha
+  exact edge_grade_on_supplied p hull hv tri hh hsite hccw hchain hpass hab hpair hpairAlpha
 
 include hv hh hsite hccw hchain hpass in
 /-- The executable rows equal the full rational reference rows under the supplied certificate.
@@ -376,24 +419,10 @@ The certificate gives site containment. The carrier equality also implies
 theorem suppliedGrades_eq_reference
     (hno : GeometricNoFourCocircular p ∨ NoFourIncircleZeros p) :
     suppliedGrades p tri = gradedFaces p := by
-  have he := carrier_eq_of_signed_boundary p hull hv tri hh hsite hccw hchain hpass hno
-  ext row
-  rcases row with ⟨s,q⟩
-  rw [mem_suppliedGrades, mem_gradedFaces_iff]
-  constructor
-  · rintro ⟨hs,hq⟩
-    have hf : s ∈ Alpha.carrier (realSites p) := he ▸ hs
-    obtain ⟨r,hr⟩ := (exists_entry_iff p).2 hf
-    obtain ⟨u,hu,hg⟩ := grade_on_supplied_face p hull hv tri hh hsite hccw hchain hpass hs hf
-    have hqu := Option.some.inj (hq.symm.trans hu)
-    have hg' := cast_grade p hf hr
-    exact ⟨r,hr,Rat.cast_injective (hg'.trans (hqu ▸ hg).symm)⟩
-  · rintro ⟨r,hr,rfl⟩
-    have hf := (exists_entry_iff p).1 ⟨r,hr⟩
-    have hs : s ∈ labelComplex tri := he ▸ hf
-    obtain ⟨u,hu,hg⟩ := grade_on_supplied_face p hull hv tri hh hsite hccw hchain hpass hs hf
-    have hue : u = r.grade := Rat.cast_injective (hg.trans (cast_grade p hf hr).symm)
-    exact ⟨hs,hue ▸ hu⟩
+  refine suppliedGrades_eq_reference_of_face_grades p tri
+    (carrier_eq_of_signed_boundary p hull hv tri hh hsite hccw hchain hpass hno) ?_
+  intro s hs hf
+  exact grade_on_supplied_face p hull hv tri hh hsite hccw hchain hpass hs hf
 
 end Certified
 
