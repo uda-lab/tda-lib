@@ -1132,3 +1132,15 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.sample_certificate
 #print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.subdivided_cycle_rejected
 #print axioms TDA.Filtration.RationalAlpha.HullCertificateExamples.outside_site_rejected
+
+-- Rational α follow-ups: coarse cover from triangle-site membership, kernel grade lookup,
+-- and fixtures that use the certified stage theorem (#1208).
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.rational_cover_from_signed_boundary_of_triangle_sites
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.sortedLabels
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.sortedLabels_eq_sort
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.kernelGrade?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration.kernelGrade?_eq_grade?
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.interior_nonGabriel_grade
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.trapezoid_checked_stages
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.inner_checked_stages
+#print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.inner_nonGabriel_cutoff

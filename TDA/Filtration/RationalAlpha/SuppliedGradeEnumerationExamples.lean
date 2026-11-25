@@ -8,7 +8,8 @@ set_option autoImplicit false
 
 The certified trapezoid gives the full reference row set. The two edge
 fixtures check both query orders on a non-Gabriel hull ray and an interior
-segment. A cocircular square gives a reference row on all four labels.
+segment. The face lookup of the interior edge reduces in the kernel through
+`kernelGrade?`. A cocircular square gives a reference row on all four labels.
 -/
 
 namespace TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples
@@ -93,6 +94,16 @@ theorem interior_nonGabriel_exact_edge :
     change centerAt? innerSites innerSplit 1 = some (0,-21/10)
     decide +kernel
   constructor <;> simp only [edgeGrade?,hf,hb] <;> decide +kernel
+
+/-- The face lookup returns the interior edge grade, and the enumerator emits its row. -/
+theorem interior_nonGabriel_grade :
+    grade? innerSites innerSplit {0,1} = some (25/4) ∧
+    (({0,1} : Finset (Fin 4)), (25/4 : ℚ)) ∈ suppliedGrades innerSites innerSplit := by
+  have hg : grade? innerSites innerSplit {0,1} = some (25/4) := by
+    rw [← kernelGrade?_eq_grade?]
+    decide +kernel
+  refine ⟨hg, (mem_suppliedGrades innerSites innerSplit).2 ⟨?_, hg⟩⟩
+  exact ⟨⟨0, by decide⟩, 0, by decide +kernel⟩
 
 private def squareSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,3],![0,3,2]]
 

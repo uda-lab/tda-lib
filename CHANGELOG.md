@@ -22,6 +22,14 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   erosion at the exact distance for the scaled families
   (`scaledTranslatedHomology_rankErosion_min`, `scaledTranslatedHomology_eRankErosion_min`,
   `scaledHomology_rankErosion_zero`, `scaledHomology_eRankErosion_zero`).
+- Rational α follow-ups (#1208): `rational_cover_from_signed_boundary_of_triangle_sites`
+  gives the conclusions of `rational_cover_from_signed_boundary` without injectivity of the
+  sites and the hull cycle and with hull membership only for triangle labels; `kernelGrade?`
+  (`kernelGrade?_eq_grade?`) is a kernel-reducible form of `grade?`. New fixtures obtain the
+  certificate of `supplied_realStage_iff` from `cornerHullCheck` (`trapezoid_checked_stages`,
+  `inner_checked_stages`), give the exact α entry `25/4` of an interior edge that is not
+  Gabriel (`inner_nonGabriel_cutoff`, `interior_nonGabriel_grade`), and show that the radius
+  stability bound is attained (`square_stability_attained`).
 
 ## v0.5.0
 

@@ -9368,3 +9368,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RankResolutionDegreeTwoSimplicial.scaledHomology_eRankErosion_zero
 #print axioms TDA.Persistence.RankResolutionDegreeTwoSimplicial.scaledTranslatedHomology_rankErosion_min
 #print axioms TDA.Persistence.RankResolutionDegreeTwoSimplicial.scaledTranslatedHomology_eRankErosion_min
+#print axioms TDA.Persistence.AlphaRadiusStabilityExamples.square_stability_attained
