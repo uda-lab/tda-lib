@@ -459,3 +459,15 @@ import TDA
 #print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.planeCover
 #print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.boxes_subset_plane
 #print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.unequal_union_not_isIso
+
+-- Client-statable last-vertex comparisons (#1148): flag label order and client fixtures.
+#print axioms TDA.Topology.SubdivisionRealization.flagVertexLinearOrder
+#print axioms TDA.Topology.LastVertexClientExamples.iteratedLastVertex_isIso
+#print axioms TDA.Topology.LastVertexClientExamples.iteratedLastVertex_one_isIso
+#print axioms TDA.Topology.LastVertexClientExamples.flagLastVertex_isIso
+#print axioms TDA.Topology.LastVertexClientExamples.flagLastVertex_one_isIso
+#print axioms TDA.Topology.LastVertexClientExamples.triangle_lastVertex_one_isIso
+#print axioms TDA.Topology.LastVertexClientExamples.labeling_lastVertex_one
+#print axioms TDA.Topology.LastVertexClientExamples.common_chain_comparisons
+#print axioms TDA.Topology.LastVertexClientExamples.contiguous_apexMap
+#print axioms TDA.Topology.LastVertexClientExamples.contiguous_apexMap_flags_one

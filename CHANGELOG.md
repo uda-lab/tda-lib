@@ -47,6 +47,24 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   the hollow triangle as a complex with no free pair that does not collapse to a point. Two
   `rfl` comparisons of the obtuse-triangle persistence examples are documented as definitional.
   No statement changed.
+- Topology (#1148, first stage): `isIso_iteratedLastVertex`, `isIso_flagLastVertex`,
+  `chainHomotopy_labeling_lastVertex`, `exists_common_chain_comparisons` and
+  `exists_contiguous_apexMap` can be stated and applied from a client file with no scope and
+  no local instance, at a literal depth such as `1`; `LastVertexClientExamples` checks this.
+  The file-local orders on `Finset I` and the file-local classical `DecidableEq` that their
+  statements mentioned are removed. `RationalAlpha.castPoint_apply_zero` and
+  `castPoint_apply_one` give the coordinates of `castPoint`.
+- Migration (#1148): `SubdivisionRealization.Vertex` is a plain `def`, no longer reducible,
+  so instances on `Finset` no longer apply to `Vertex V (n + 1)`; ascribe `Finset (Vertex V n)`
+  or `change` where a proof needs them. `vertexLinearOrder` and `vertexNonempty` are global
+  instances instead of scoped ones (`open scoped TDA.Topology.SubdivisionRealization` is no
+  longer needed). The new instance `flagVertexLinearOrder` orders `Vertex (Finset X) n`.
+  Elaborated types: in `isIso_flagLastVertex`, `chainHomotopy_labeling_lastVertex` and
+  `exists_common_chain_comparisons` the order on `Vertex (Finset I) n` is
+  `flagVertexLinearOrder I n` instead of `vertexLinearOrder` over the removed file-local
+  instance `instLinearOrderFinset_tDA` (the same order, `faceLinearOrder I` at depth `0`);
+  `exists_contiguous_apexMap` takes `[DecidableEq I]` after `{N}` instead of using the
+  removed `ConvexNerve.instDecidableEq_tDA`. Explicit arguments are unchanged.
 
 ## v0.5.0
 

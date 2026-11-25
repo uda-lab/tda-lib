@@ -15,11 +15,8 @@ open CategoryTheory TDA.Simplicial TDA.Topology.SubdivisionRealization
 noncomputable section
 universe u
 
-open scoped TDA.Topology.SubdivisionRealization
-
 variable {I : Type u} [Fintype I] [LinearOrder I] [Nonempty I]
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-local instance : LinearOrder (Finset I) := faceLinearOrder I
 
 /-- Intersect the faces of a flag to obtain its least face when the flag is nonempty. -/
 def leastFlagFace (F : Finset (Finset I)) := Finset.univ.filter (fun i => ∀ A ∈ F, i ∈ A)
@@ -65,6 +62,7 @@ theorem chainHomotopy_labeling_lastVertex (U : I → Set E) (hc : ∀ i, Convex 
     vertexPosition_mem_convex (barycentricSubdivision N) p (U i) (hc i) n S hs
       (fun G hG => hp G ((anc S hs).2.1 G hG).1 i ((leastFlagFace_spec (anc S hs)).2 G hG hi)) w hw
   have top (T) (hT : T ∈ Q) (v) (hv : v ∈ T) : flagLastVertex N n v ∈ B T := by
+    letI := faceLinearOrder I
     have h := lastVertexLabel_mem (barycentricSubdivision N) n T hT v hv
     have hn := (N.isRelLowerSet_faces ((anc T hT).2.1 _ h).1).1
     change lastVertex (iteratedLastVertex (barycentricSubdivision N) n v) ∈ B T
@@ -74,7 +72,6 @@ theorem chainHomotopy_labeling_lastVertex (U : I → Set E) (hc : ∀ i, Convex 
   -- Last vertices and J S lie in the greatest face B T.
   obtain ⟨b, hf, hg⟩ := exists_contiguous_apexMap a (flagLastVertex N n) J j jmem anti
     (fun S hs T ht hst => by
-      let : DecidableEq I := Classical.decEq I
       obtain ⟨w, hw⟩ := (Q.isRelLowerSet_faces hs).1
       have hne := (Q.isRelLowerSet_faces ht).1.image a
       refine ⟨hne, hne.mono Finset.subset_union_left, vertexPosition p n w, ?_⟩
@@ -84,7 +81,6 @@ theorem chainHomotopy_labeling_lastVertex (U : I → Set E) (hc : ∀ i, Convex 
         exact ha T ht v hv w (hst hw)
       · exact geom S hs w hw i hi)
     (fun S hs T ht hst => by
-      let : DecidableEq I := Classical.decEq I
       have hn := (Q.isRelLowerSet_faces ht).1.image (flagLastVertex N n)
       refine ⟨hn, (N.isRelLowerSet_faces (hB T ht)).2 (Finset.union_subset ?_ (subB S hs T ht hst))
         (hn.mono Finset.subset_union_left)⟩

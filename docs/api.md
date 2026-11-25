@@ -1926,7 +1926,8 @@ circumcenter `circumcenter?` returns as `o`. `checkIncircle site a b c` decides
 `incircle ≤ 0` at every label of a finite label type (`checkIncircle_eq_true_iff`). These
 inequalities hold exactly when the three labels have a common point of their closed cells
 (`checkIncircle_eq_true_iff_commonCells_nonempty`), and every such point is `castPoint o`
-(`commonCells_triangle_point_eq`). `triangle_mem_actual_stage_iff` states that `{a, b, c}`
+(`commonCells_triangle_point_eq`); `castPoint_apply_zero` and `castPoint_apply_one` give the
+two real coordinates of `castPoint o`. `triangle_mem_actual_stage_iff` states that `{a, b, c}`
 is a face of `Alpha.complex (castSites site) t` exactly when the inequalities hold and
 `sqDist o (site a) ≤ t`; `triangle_actual_carrier_iff` and `triangle_actual_grade` are the
 carrier and grade forms. `EdgeGrade` treats two distinct labels of `p : Fin n ↪ ℚ × ℚ`.
@@ -4195,8 +4196,20 @@ convex, by `exists_pos_common_convex_thickening`. The supporting modules are
 iterated subdivision of `nerve D` to `nerve C` whose closed-star images lie in the members
 of `C` that label them) and `TDA.Topology.ConeCarrierComparison`
 (`coneCarrier`, `exists_contiguous_apexMap` and
-`chainHomotopy_of_contiguous_after_lastVertex`). The linear orders
-`SubdivisionRealization.vertexLinearOrder` on the labels `Vertex V n` are scoped instances.
+`chainHomotopy_of_contiguous_after_lastVertex`). `Vertex V n` is not reducible, so its
+linear order `SubdivisionRealization.vertexLinearOrder` (the order of `V` at depth `0`, the
+fixed face order `faceLinearOrder` at positive depths) is a global instance on these labels
+only, and does not apply to an unrelated `Finset`. The labels `Vertex (Finset I) n` of
+`subdividedFlags K n` take `flagVertexLinearOrder`, which starts from `faceLinearOrder I` on
+the flags and has priority over any other order on `Finset I` in context; a complex whose
+original labels are finsets with a different order therefore needs that order passed
+explicitly to `vertexLinearOrder`. A client states and applies `isIso_iteratedLastVertex`,
+`isIso_flagLastVertex`, `chainHomotopy_labeling_lastVertex`,
+`exists_common_chain_comparisons` and `exists_contiguous_apexMap` without opening a scope or
+declaring an instance, at a variable or a literal depth; `exists_contiguous_apexMap` takes
+`[DecidableEq I]`. `TDA.Topology.LastVertexClientExamples` (imported by
+`TDA.Topology.Examples`) states each of them this way, at depth `1` where a depth occurs, and
+applies the flag statement with another order on `Finset I` in context.
 `TDA.Topology.ConvexNerveInclusionExamples` (imported by `TDA.Topology.Examples`) has three
 intervals whose nerve inclusion is strict and an isomorphism (`strict_inclusion_isIso`),
 eight open boxes around a square hole where enlarging one box gives a strict inclusion

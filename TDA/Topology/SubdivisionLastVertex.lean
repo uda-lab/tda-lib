@@ -19,13 +19,22 @@ variable {V : Type u}
 noncomputable abbrev faceLinearOrder (X : Type*) [Fintype X] : LinearOrder (Finset X) :=
   LinearOrder.lift' (Fintype.equivFin _) (Fintype.equivFin _).injective
 
-/-- The original order at depth zero and a common face order at positive depths. -/
-scoped instance vertexLinearOrder [Fintype V] [LinearOrder V] : (n : ℕ) → LinearOrder (Vertex V n)
+/-- The original order at depth zero and a common face order at positive depths. Since
+`Vertex` is not reducible, this instance applies only to the labels `Vertex V n`, at a
+variable or a literal depth, and never to an unrelated `Finset`. -/
+instance vertexLinearOrder [Fintype V] [LinearOrder V] : (n : ℕ) → LinearOrder (Vertex V n)
   | 0 => ‹LinearOrder V›
   | n + 1 => faceLinearOrder (Vertex V n)
 
+/-- The labels `Vertex (Finset X) n` of subdivided flags start from the face order on
+`Finset X`. This takes precedence over `vertexLinearOrder` with any other order on `Finset X`
+in context, so statements about subdivided flags elaborate to one instance everywhere. -/
+instance (priority := high) flagVertexLinearOrder (X : Type*) [Fintype X] [LinearOrder X] (n : ℕ) :
+    LinearOrder (Vertex (Finset X) n) :=
+  @vertexLinearOrder (Finset X) _ (faceLinearOrder X) n
+
 /-- An inhabited original label type supplies labels at every depth. -/
-scoped instance vertexNonempty [Nonempty V] : (n : ℕ) → Nonempty (Vertex V n)
+instance vertexNonempty [Nonempty V] : (n : ℕ) → Nonempty (Vertex V n)
   | 0 => ‹Nonempty V›
   | n + 1 => ⟨(∅ : Finset (Vertex V n))⟩
 
@@ -104,18 +113,20 @@ theorem subdivision_mono {X : Type*} [Fintype X] {K L : PreAbstractSimplicialCom
   TDA.Filtration.SubdivisionRips.subdivision_mono h le_rfl
 
 variable {I : Type u} [Fintype I] [LinearOrder I] [Nonempty I]
-local instance : LinearOrder (Finset I) := faceLinearOrder I
 
 /-- Subdivide the flag complex another `n` times, using the same labels for every subcomplex. -/
 abbrev subdividedFlags (K : PreAbstractSimplicialComplex I) (n : ℕ) := complex (barycentricSubdivision K) n
 
-/-- Return from a refined flag to an original vertex. -/
+/-- Return from a refined flag to an original vertex. The flags `Finset I` are ordered by
+`faceLinearOrder I`, the order that `flagVertexLinearOrder` starts from. -/
 def flagLastVertex (K : PreAbstractSimplicialComplex I) (n : ℕ) : VertexMap (subdividedFlags K n) K :=
+  letI := faceLinearOrder I
   VertexMap.comp (iteratedLastVertex (barycentricSubdivision K) n) (lastVertexMap K)
 
 /-- The map from refined flags to the original complex induces a homology isomorphism. -/
 theorem isIso_flagLastVertex (K : PreAbstractSimplicialComplex I) (R : Type*) [Ring R] (k n : ℕ) :
     IsIso (simplicialHomologyMap R (flagLastVertex K n) k) := by
+  letI := faceLinearOrder I
   let := isIso_iteratedLastVertex (barycentricSubdivision K) R k n
   let : IsIso (simplicialHomologyMap R (lastVertexMap K) k) :=
     inferInstanceAs (IsIso (barycentricHomologyIso R K k).hom)
@@ -126,6 +137,7 @@ theorem isIso_flagLastVertex (K : PreAbstractSimplicialComplex I) (R : Type*) [R
 theorem flagLastVertex_naturality {K L : PreAbstractSimplicialComplex I} (h : K ≤ L) (n : ℕ) :
     VertexMap.comp (inclusionVertexMap (complex_mono (subdivision_mono h) n)) (flagLastVertex L n) =
       VertexMap.comp (flagLastVertex K n) (inclusionVertexMap h) := by
+  letI := faceLinearOrder I
   ext v
   change lastVertex (iteratedLastVertex (barycentricSubdivision L) n v) = lastVertex (iteratedLastVertex (barycentricSubdivision K) n v)
   rw [iteratedLastVertex_apply, iteratedLastVertex_apply]

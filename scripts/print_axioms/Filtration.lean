@@ -1144,3 +1144,6 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.trapezoid_checked_stages
 #print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.inner_checked_stages
 #print axioms TDA.Filtration.RationalAlpha.SuppliedStagesExamples.inner_nonGabriel_cutoff
+-- Coordinates of a cast rational point (#1148).
+#print axioms TDA.Filtration.RationalAlpha.castPoint_apply_zero
+#print axioms TDA.Filtration.RationalAlpha.castPoint_apply_one

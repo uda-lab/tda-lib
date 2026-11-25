@@ -122,9 +122,12 @@ four steps.
    here.
 4. `isIso_flagLastVertex` (from `isIso_iteratedLastVertex`) makes the last-vertex
    maps homology isomorphisms over every ring, and `flagLastVertex_naturality` makes
-   them commute with the inclusions; both use the scoped orders
-   `SubdivisionRealization.vertexLinearOrder`. The labeling then supplies a two-sided
-   inverse of the inclusion in homology.
+   them commute with the inclusions. The chain complexes on the refined labels
+   `Vertex V n` are oriented by the instance `SubdivisionRealization.vertexLinearOrder`:
+   the order of `V` at depth `0` and the fixed face order `faceLinearOrder` at positive
+   depths. On the subdivided flags `Vertex (Finset I) n` the instance
+   `flagVertexLinearOrder` starts from `faceLinearOrder I`. The labeling then supplies a
+   two-sided inverse of the inclusion in homology.
 
 ## Fixtures
 
@@ -150,6 +153,12 @@ that is an isomorphism (`Annulus.isIso_simplicialHomologyIncl`), and
 F₂ is nonzero. `Annulus.unequal_union_not_isIso` enlarges every box to the plane:
 the members stay open and convex, the unions differ, and the inclusion is not an
 isomorphism in degree one over F₂.
+
+`LastVertexClientExamples` restates `isIso_iteratedLastVertex`, `isIso_flagLastVertex`,
+`chainHomotopy_labeling_lastVertex`, `exists_common_chain_comparisons` and
+`exists_contiguous_apexMap` in a file that opens no scope and declares no instance, at
+depth `1` where a depth occurs, for the filled triangle on `Fin 3`, and with the client's own
+decidable equality.
 
 ## Scope and limits
 
