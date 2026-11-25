@@ -1150,6 +1150,51 @@ exhibiting zero as such (for instance by a constant grading), which is not
 attempted here. It gives $1/8<1/4=1/4$
 (`scaledHomology_rankErosion_failure_certificate_zero_eighth`).
 
+Two uniform scalings compare two nonzero modules
+(`TDA.Persistence.FiniteSimplicialErosionTwoScales`). For $c,c'>0$ over any
+field let $M_c$ be `scaledHomology k (fun _ => c) _`, with scaled lifetime
+$c$ (`scaledLifetime_const`). Both erosion distances between $M_c$ and $M_{c'}$
+equal
+$$\min\bigl(2|c-c'|,\ \max(c,c')/2\bigr)$$
+(`rankErosionDistance_scaledHomology_const`,
+`eRankErosionDistance_scaledHomology_const`). There are two independent upper
+bounds. Every literal face grade lies in $[0,2]$
+(`boundaryTetrahedronGrading_grade_mem_Icc`), so the grade error of the two
+scalings is at most $2|c-c'|$ and in fact equals it
+(`scaledGrading_const_grade_error`, `supGradeError_scaledGrading_const`); the
+grade-error bound on erosion then gives $2|c-c'|$. Once $2\varepsilon$ reaches
+both scaled lifetimes, every widened rank of either module vanishes by the
+four-point rank inequality, so erosion holds
+(`scaledHomology_rankErosion_of_scaledLifetime_le`,
+`scaledHomology_eRankErosion_of_scaledLifetime_le`); this cap lemma is stated
+for arbitrary positive scales, but only the uniform case has a closed formula.
+For the lower bound take $c<c'$ and $\varepsilon<2(c'-c)$ with
+$2\varepsilon<c'$, and test the diagonal pair $a=b$ with first coordinate
+$\max(2c,\,c'+\varepsilon)$ and second coordinate $\varepsilon$. The widened
+map of $M_{c'}$ at this pair is the nonzero map of its second arm, so its rank
+is at least one, while the fibre of $M_c$ at the pair is zero because the first
+coordinate is at least $2c$. Both terms of the maximum are needed: neither
+alone keeps the widened map of $M_{c'}$ alive and the fibre of $M_c$ zero.
+Erosion therefore fails below the minimum, for both ranks
+(`scaledHomology_const_not_rankErosion_of_lt`,
+`scaledHomology_const_not_rankErosion`,
+`scaledHomology_const_not_eRankErosion`), and the lower bound uses only the
+failed tests, neither the interleaving distance nor attainment. For $c<c'$ the
+formula has two regimes, separated by the critical ratio $c'/c=4/3$: up to it
+the distance is $2(c'-c)$ and equals the maximal grade error; beyond it the
+distance is $c'/2$, strictly below the maximal grade error; the two values agree
+at $c'/c=4/3$, and the distance is $0$ for $c=c'$. The failing tests compare a
+nonzero rank of the larger module with the zero fibre of the smaller one. No
+equality of the erosion distance with an interleaving distance is claimed for
+this family. The fixtures use the scales $1$ and $2$ (lifetime-cap regime): the
+radius $3/4$ is a failing radius
+(`scaledHomology_const_not_rankErosion_threeQuarters`), the certificate reads
+$3/4<d_E\le d_I\le 2$
+(`scaledHomology_const_rankErosion_failure_certificate_threeQuarters`), the
+erosion distance is $1$ over the rationals while the maximal grade error is
+$2$, and, over `ZMod 2`, the scales $1$ and $5/4$ (grade-error regime) have
+extended erosion distance $1/2$.
+
 ## Zero radius, zero distance and future extensions
 
 `rankErosion_zero_iff` identifies the **predicate** `RankErosion 0 M N` with
@@ -1186,14 +1231,18 @@ listed in [what is not provided](#what-is-not-provided).
 ## What is not provided
 
 - **Further exact-distance families.** Exact erosion distances, with lower
-  witnesses from actual structure maps and their caps, are proved for four
+  witnesses from actual structure maps and their caps, are proved for five
   tetrahedron-boundary PH₁ comparisons:
   `RankResolutionDegreeTwoSimplicial.rankErosionDistance_translatedHomology`,
   `RankResolutionDegreeTwoSimplicial.rankErosionDistance_coordinateTranslatedHomology`,
-  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledTranslatedHomology` and
-  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_zero`.
-  Further families (two-scale comparisons, sharp tests between two nonzero ranks)
-  with their own cap or critical-radius behaviour are not supplied
+  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledTranslatedHomology`,
+  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_zero` and
+  `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_const`
+  (two uniform scalings). Further families with their own cap or critical-radius
+  behaviour are not supplied: anisotropic or translated two-scale comparisons
+  (for anisotropic scales only the upper bounds are proved, and no closed
+  formula is claimed), and sharp tests between two nonzero ranks, since every
+  failing test of the two-scale family compares a nonzero rank with a zero fibre
   ([#1048](https://github.com/uda-lab/tda-lib/issues/1048)).
 - **Limits of the test on rationally graded complexes.**
   `RatGradedInput.runErosion` certifies pass and failure for the actual homology
@@ -1240,8 +1289,9 @@ Import `TDA.Persistence` for the public area API. Narrow imports are
 `TDA.Persistence.FiniteSimplicialErosion`,
 `TDA.Persistence.FiniteSimplicialErosionTranslation`,
 `TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`,
-`TDA.Persistence.FiniteSimplicialErosionScaledTranslation` and
-`TDA.Persistence.FiniteSimplicialErosionScaling`. Their declarations are in
+`TDA.Persistence.FiniteSimplicialErosionScaledTranslation`,
+`TDA.Persistence.FiniteSimplicialErosionScaling` and
+`TDA.Persistence.FiniteSimplicialErosionTwoScales`. Their declarations are in
 `TDA.Persistence`, except that the translated- and scaled-family results are in its
 `RankResolutionDegreeTwoSimplicial` namespace; the concrete hook witnesses are in its
 `RankErosionWitness` namespace, the grid criterion is in

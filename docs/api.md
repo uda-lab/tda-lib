@@ -1256,6 +1256,31 @@ tests below `scaledLifetime s / 2` at the longer arm, and
 `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_zero` and
 `RankResolutionDegreeTwoSimplicial.eRankErosionDistance_scaledHomology_zero` give both
 erosion distances to zero exactly that value, equal to the interleaving distance.
+For two uniform scalings of the tetrahedron-boundary witness
+(`TDA.Persistence.FiniteSimplicialErosionTwoScales`), with `0 < c` and `0 < c'` over any
+field, `RankResolutionDegreeTwoSimplicial.scaledHomology_const_not_rankErosion` and
+`RankResolutionDegreeTwoSimplicial.scaledHomology_const_not_eRankErosion` exhibit failed tests
+below `min (2 * |c - c'|) (max c c' / 2)` (the witness
+`RankResolutionDegreeTwoSimplicial.scaledHomology_const_not_rankErosion_of_lt` takes the
+separate strict hypotheses `ε < 2 * (c' - c)` and `2 * ε < c'`), and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_const` and
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_scaledHomology_const` give both erosion
+distances exactly `ENNReal.ofReal (min (2 * |c - c'|) (max c c' / 2))`. The first term comes
+from the grade error (`RankResolutionDegreeTwoSimplicial.supGradeError_scaledGrading_const`
+equals `Real.toNNReal (2 * |c - c'|)`); the second from the lifetime cap
+`RankResolutionDegreeTwoSimplicial.scaledHomology_rankErosion_of_scaledLifetime_le` (with its
+`eRankErosion` version), which holds for anisotropic scales although no distance formula is
+claimed for them. For `c < c'`, the cap term is the smaller one exactly beyond the critical ratio `c'/c = 4/3`.
+`RankResolutionDegreeTwoSimplicial.boundaryTetrahedronGrading_grade_mem_Icc` places every literal
+face grade in `[0, 2]`, `RankResolutionDegreeTwoSimplicial.scaledGrading_grade_error` and
+`RankResolutionDegreeTwoSimplicial.scaledGrading_const_grade_error` bound the grade error, and
+`RankResolutionDegreeTwoSimplicial.scaledLifetime_const` gives the lifetime `c` of the uniform
+scaling; `RankResolutionDegreeTwoSimplicial.scaledHomology_eRankErosion_of_scaledLifetime_le`
+is the extended-rank cap.
+`FiniteSimplicialErosionExamples.scaledHomology_const_not_rankErosion_threeQuarters` and
+`FiniteSimplicialErosionExamples.scaledHomology_const_rankErosion_failure_certificate_threeQuarters`
+record the failing radius `3/4` between the scales `1` and `2` with its failure certificate.
+No equality with the interleaving distance is claimed.
 Erosion attainment is supplied for finitely presented modules only (below); a
 certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).
@@ -3199,7 +3224,34 @@ bound to the exact factor-two bound for the complete locally finite diagrams of
 nonempty totally bounded spaces. The carrier types share a universe, while the
 coefficient and ambient spaces may use independent universes. The compact
 Gromov–Hausdorff consumer has the same carrier-universe restriction and needs no
-order-preserving optimal-coupling isometries. Variable finite samples converge
+order-preserving optimal-coupling isometries. The restriction exists because Rips homology of
+a carrier in `Type u` lives in `ModuleCat.{max u v}`; no cross-universe isometry invariance is
+stated, so a client puts both carriers in one universe from the start (for a finite sample
+`ULift.{u} (Fin m)`) rather than lifting afterwards. Client-facing forms (#1206) need no sign
+condition on the threshold and, in the order-free forms, no auxiliary order.
+`half_lt_ghDist_of_ofReal_lt_qTameLocallyFiniteDiagram_bottleneck` turns
+`ENNReal.ofReal ε < bottleneck` into `ε / 2 < ghDist X Y`, and
+`qTameLocallyFiniteDiagram_bottleneck_le_ofReal_of_ghDist_le_half` is its contrapositive.
+`qTameLocallyFiniteDiagram_congr_linearOrder` shows the diagram is independent of the vertex
+order. `qTameLocallyFiniteDiagramOrderFree X k hX n` takes the space explicitly and chooses the
+order classically; `qTameLocallyFiniteDiagramOrderFree_eq` identifies it with every ordered
+diagram and `qTameLocallyFiniteDiagramOrderFree_eq_of_isometryEquiv` gives isometry invariance.
+`qTameLocallyFiniteDiagramOrderFree_bottleneck_le_two_mul_ghDist` and
+`half_lt_ghDist_of_ofReal_lt_qTameLocallyFiniteDiagramOrderFree_bottleneck` are the bound and the
+threshold form for compact nonempty spaces with no `LinearOrder` instance. The event inclusions
+`setOf_ofReal_lt_bottleneck_subset_setOf_half_lt_ghDist` (a family `X : Ω → Type u` of compact
+spaces) and `setOf_ofReal_lt_bottleneck_subset_setOf_half_lt_ghDist_of_finite` (one finite
+nonempty carrier with outcome-dependent metrics `d : Ω → MetricSpace S`, installed with `letI`)
+need no measurability, so `measure_mono` transfers a Gromov–Hausdorff tail estimate to the
+diagrams. `RipsGHClientExamples` is a downstream regression fixture that opens no scope and
+declares no instance. It replays these inferences in `orderFree_bottleneck_le`,
+`half_lt_ghDist_of_lt_bottleneck`, `half_lt_ghDist_of_lt_bottleneck_ordered`,
+`bottleneck_le_of_ghDist_le_half`, `unitInterval_diagram_reversed_order`,
+`orderFree_eq_unitInterval_diagram`, `diagramErrorEvent_subset`,
+`diagram_tail_le_of_gh_tail_le`, `one_sub_le_measure_compl_diagramErrorEvent`,
+`fin_diagram_tail_le_of_gh_tail_le` and `ulift_fin_diagram_tail_le_of_gh_tail_le`, with the
+event definitions `diagramErrorEvent` and `ghErrorEvent`.
+Variable finite samples converge
 to any nonempty totally bounded target when their ambient Hausdorff distances tend
 to zero. `RipsQTameInfiniteMetricStabilityExamples` checks this with increasing
 finite samples of the genuinely infinite compact set `{0} ∪ {1/(n+1) | n ∈ ℕ}`.
