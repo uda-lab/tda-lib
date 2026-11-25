@@ -8,8 +8,8 @@ import TDA.Simplicial.VertexChainMap
 # Realization and coordinate stars of a labelled simplicial complex
 
 A barycentric point belongs to the realization when its positive support is a face. The
-coordinate stars recover the labelled complex as their nerve. Each inhabited intersection
-indexed by a nonempty set of labels contracts to the barycenter of that face.
+coordinate stars recover the labelled complex as their nerve. For finite labels, each inhabited
+intersection indexed by a nonempty set of labels contracts to the barycenter of that face.
 -/
 
 namespace TDA.Topology
@@ -175,7 +175,8 @@ private theorem continuous_motion [Finite V] (hJ : J ∈ K) :
   simp only [mix_coord]
   fun_prop
 
-/-- Straight-line contraction of a face’s star intersection to its barycenter. -/
+/-- For finite labels, the straight-line contraction of a face’s star intersection to its
+barycenter. -/
 def contraction [Finite V] (hJ : J ∈ K) : (ContinuousMap.id (StarIntersection K J)).Homotopy
     (ContinuousMap.const _ (faceBarycenter hJ)) where
   toFun z := motion hJ z.1 z.2

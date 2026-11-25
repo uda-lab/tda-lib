@@ -433,7 +433,7 @@ formalised.)
 For valid data, `F2GridRep.toModule` is the module with fibers
 `Fin (dim a) → ZMod 2` and the stored matrices as structure maps. In Lean the
 dimension and matrix functions are total on rational grades; their values off
-the grid, and at non-comparable pairs, are never read.
+the grid, and at non-comparable pairs, are not read by `Valid` or `toModule`.
 
 For rational grades `x ≤ y`, the floor of each grade in the rational grid is
 computable, and it is the rational grade of the floor of the corresponding
@@ -443,7 +443,11 @@ the rank of the stored matrix between the two rational floors, or zero when
 `x` has no lower grid value. `F2GridRep.rankAt` computes this number with the
 enumeration rank of [finite homology-map dimensions](finite-ph-map-dimensions.md),
 and `F2GridRep.rankAt_eq` proves the identification with the actual Kan
-extension. `F2GridRepExamples` executes the interval module `[0, 1)`, the same
+extension. `rankAt` is defined for every pair of rational grades. For `x ≤ y`
+it reads the stored matrices at comparable grid grades only, and this is the
+case that `rankAt_eq` and the executed tests use; for other pairs it can read
+a value off the grid, and no statement is made.
+`F2GridRepExamples` executes the interval module `[0, 1)`, the same
 module from an unsorted list with a repeated value, a two-parameter module
 with a rank-one map out of a two-dimensional fiber, and two rejected inputs.
 
@@ -547,7 +551,8 @@ Reading the outcome. `invalid` means a representation is not valid or the radius
 is negative (`runErosion_eq_invalid_iff`). `pass` gives `RankErosion` and
 `StrictRankErosion` of the grid Kan extensions `R.grid.lan.obj (R.toModule hR)`
 and `S.grid.lan.obj (S.toModule hS)` at the radius, and both distances at most it
-(`runErosion_eq_pass_certificate`); nothing follows for the interleaving distance.
+(`runErosion_eq_pass_certificate`); the certificate contains no bound of the
+interleaving distance.
 `fail w` gives `¬ RankErosion`, the strict lower bound $e<d_E$ and $d_E\le d_I$
 for the same Kan extensions (`runErosion_eq_fail_certificate`), and with at least
 one coordinate the strict-pair version (`runErosion_eq_fail_strict_certificate`);
@@ -599,8 +604,8 @@ say nothing about any module.
   also holds. A pass also gives `StrictRankErosion` and bounds both erosion
   distances by `e` (`runErosion_eq_pass_certificate`). For valid input, a pass
   means exactly that the erosion distance is at most `e`
-  (`runErosion_eq_pass_iff_rankErosionDistance_le`). Nothing follows for the
-  interleaving distance.
+  (`runErosion_eq_pass_iff_rankErosionDistance_le`). These statements contain
+  no bound of the interleaving distance.
 - `fail w`: `w` records a direction `w.firstWide` and a pair
   `w.source ≤ w.target` of grades of the rational breakpoint grid. Its
   `w.wideRank` and `w.narrowRank` are the ranks of the actual structure maps:
@@ -804,11 +809,13 @@ also when the distance is infinite. Consequently:
   (`GradedFree.finitelyPresented_rankErosionDistance_eq_zero_iff`). This does
   not make the modules isomorphic.
 
-Both presentations are needed. The closed box $[0,2c]^n$ of the previous
-section has finite-dimensional fibers, and the zero module is finitely
-presented (`GradedFree.finitelyPresented_zero`). For $n\ge1$ their distance is
-$c$ while erosion fails at radius $c$, so the module of the closed box is not
-finitely presented (`closedBox_not_finitelyPresented`); and for $c=0$ the
+A presentation of one of the two modules is not enough. The closed box
+$[0,2c]^n$ of the previous section has finite-dimensional fibers, and the zero
+module is finitely presented (`GradedFree.finitelyPresented_zero`). For
+$n\ge1$ their distance is $c$ while erosion fails at radius $c$
+(`closedBox_rankErosionDistance`, `closedBox_not_rankErosion`), so the distance
+is not attained and the module of the closed box is not finitely presented
+(`closedBox_not_finitelyPresented`); and for $c=0$ the
 distance is zero while the rank invariants differ on the diagonal at the
 origin (`closedBox_zero_distance_zero_and_ranks_differ`).
 
@@ -901,9 +908,9 @@ radius $e\ge0$:
   and, for $n\ge1$, exactly when strict erosion holds at $e$
   (`F2GridRep.runErosion_eq_pass_iff_strictRankErosion`);
 - a passing test gives both predicates at $e$ and bounds both erosion
-  distances by $e$ (`F2GridRep.runErosion_eq_pass_certificate`); it gives no
-  bound of the interleaving distance, as the nonseparation example below
-  shows;
+  distances by $e$ (`F2GridRep.runErosion_eq_pass_certificate`); it does not
+  bound the interleaving distance by $e$: in the nonseparation example below
+  the test passes at radius $0$ and the interleaving distance is not zero;
 - a failing test gives $e<d_E\le d_I$ (`F2GridRep.runErosion_eq_fail_certificate`),
   and for $n\ge1$ it refutes strict erosion at $e$ and shows that $e$ is
   strictly below the strict distance
@@ -954,9 +961,9 @@ and this property is preserved by isomorphisms (`ImagesMeet`,
 isomorphism, so their interleaving distance is not zero
 (`arms_nonseparation`); its value is not computed. Thus the rank invariant
 does not determine a finitely presented two-parameter module, $d_E\le d_I$
-can be strict with $d_E=0$, and a passing rank test gives no bound of the
-interleaving distance. The example is over the two-element field, the field
-of the executable representations.
+can be strict with $d_E=0$, and a rank test that passes at radius $0$ does
+not make the interleaving distance zero. The example is over the two-element
+field, the field of the executable representations.
 
 ## Finite graded simplicial homology
 
@@ -1030,8 +1037,8 @@ grade error is the coordinate gap $\max(|v_0-u_0|,|v_1-u_1|)$
 and $2\varepsilon<1$, test the diagonal pair at the $i$-th birth of the
 $u$-translate plus $\varepsilon$ in every coordinate: the widened map of the
 $u$-translate is its $i$-th birth map over the displacement $2\varepsilon$,
-which survives, while the $v$-translate has a zero fiber there, because only
-the $i$-th coordinate of the tested grade is below $v_i$. When the larger gap
+which survives, while the $v$-translate has a zero fiber there, because the
+$i$-th coordinate of the tested grade is below $v_i$. When the larger gap
 is negative the roles are exchanged by symmetry. So erosion fails at every
 radius below $\min(\max(|v_0-u_0|,|v_1-u_1|),1/2)$, for both ranks
 (`coordinateTranslatedHomology_not_rankErosion`,

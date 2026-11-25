@@ -10,7 +10,8 @@ The labelled faces are the nonempty subfaces of the supplied triangles. Their im
 a geometric simplicial complex. Positive orientation gives affine independence in each
 triangle, and the parent intersection identity then yields intersection on all subfaces.
 
-The signed boundary certificate gives the parent intersections and the closed hull carrier.
+The signed boundary certificate gives the closed hull carrier. When no three sites with distinct
+labels are collinear, it also gives the parent intersections.
 Full vertex support is equivalent to the separate `SignedBoundary.allSitesUsed` check.
 -/
 
@@ -221,7 +222,9 @@ theorem geometric_space_eq_union {L I : Type*} [DecidableEq L] (site : L → Poi
     · exact ⟨⟨tri i 0, (mem_labelVertices).2 ⟨0, rfl⟩⟩, i, Finset.Subset.rfl⟩
     · rwa [← triangle_eq_convexHull]
 
-/-- Assemble the geometric complex using the certified pairwise triangle intersections. -/
+/-- Assemble the geometric complex using the certified pairwise triangle intersections. These
+require that every site lies in the hull and that no three sites with distinct labels are
+collinear. -/
 noncomputable def certifiedComplex {L I : Type*} [DecidableEq L] [Fintype I] {n : ℕ}
     (site : L → Point) (hs : Function.Injective site) (hull : Fin (n + 3) → L)
     (hv : Function.Injective hull) (tri : I → Fin 3 → L)
@@ -469,7 +472,8 @@ theorem certified_hull_face_incidence (j : Fin (n + 3)) :
   exact closed_site_edge_subset_frontier_of_hull_pair site hull hh ⟨j, Or.inl rfl⟩
 
 include hs hv hh hccw hchain in
-/-- An assembled non-hull edge has two opposite incidences and its open segment lies inside the hull. -/
+/-- An assembled non-hull edge has two opposite incidences. When every site lies in the hull and
+no three sites with distinct labels are collinear, its open segment lies in the hull interior. -/
 theorem certified_nonhull_face_incidence
     (hsite : ∀ a, castPoint (site a) ∈ siteHull site hull)
     (hgen : ∀ a b c : L, a ≠ b → a ≠ c → b ≠ c → orient (site a) (site b) (site c) ≠ 0)

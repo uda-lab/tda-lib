@@ -22,7 +22,7 @@ homology, with forward map induced by `proj` and inverse induced by `incl`; the 
 are `proj * incl = 1` and the homotopy identity, which writes `x - incl (proj x)` as the
 boundary `D (htpy x)` of a degree-`p + 1` sublevel chain when `x` is a sublevel cycle.
 `c.sublevelHomologyIso p` assembles these into a natural isomorphism of persistence modules,
-and `c.finrank_sublevelHomology_eq` equates the dimensions. None of these statements needs
+and `c.finrank_sublevelHomology_eq` equates the ranks `Module.finrank`. None of these statements needs
 `D * D = 0`.
 
 No simplicial bridge, Morse complex of a matching, or barcode statement is provided here.
@@ -356,7 +356,9 @@ noncomputable def sublevelHomologyIso (p : ℕ) :
   rfl
 
 include c in
-/-- The two complexes have equal sublevel homology dimensions. -/
+/-- The two complexes have equal sublevel homology ranks `Module.finrank`. Over a field this is
+the dimension; over other commutative rings the rank does not determine the module, and
+`sublevelHomologyEquiv` is the full statement. -/
 theorem finrank_sublevelHomology_eq (p : ℕ) (t : ℤ) :
     Module.finrank k (sublevelHomology degree grade D p t) =
       Module.finrank k (sublevelHomology degree' grade' D' p t) :=

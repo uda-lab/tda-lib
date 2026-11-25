@@ -110,8 +110,8 @@ theorem roundUp_le_one (p : ℕ) {q : ℚ} (hq : q ≤ 1) : roundUp p q ≤ 1 :=
 /-- The Taylor polynomial `∑ i < n, x ^ i / i !` of the exponential. -/
 def expTaylor (n : ℕ) (x : ℚ) : ℚ := ∑ i ∈ Finset.range n, x ^ i / (i ! : ℚ)
 
-/-- The number of Taylor terms used at `p` bits: the first `n` with `2 ^ (p + 1) ≤ n !`, searched
-from `0` up to `p + 2`. -/
+/-- The number of Taylor terms used at `p` bits: the first `n ≤ p + 1` with
+`2 ^ (p + 1) ≤ n !`, and `p + 2` when there is none. -/
 def expTerms (p : ℕ) : ℕ :=
   ((List.range (p + 2)).find? fun n => 2 ^ (p + 1) ≤ n !).getD (p + 2)
 

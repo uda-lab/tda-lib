@@ -367,8 +367,9 @@ private theorem supports_have_only_ends {L : Type*} (site : L → Point)
   rw [side_of_rational_sites] at hz
   exact_mod_cast hz
 
-/-- A point in the open segment of two distinct sites lies on the frontier exactly
-when the pair is a certified hull side, in either orientation. -/
+/-- Suppose every site lies in the certified hull and no three sites with distinct labels are
+collinear. A point in the open segment of two sites with distinct labels lies on the hull
+frontier exactly when the pair is a certified hull side, in either orientation. -/
 theorem open_site_edge_mem_frontier_iff {L : Type*} {n : ℕ}
     (site : L → Point) (v : Fin (n + 3) → L) (hv : Function.Injective v)
     (P : PolygonCertificate (siteHull site v) (fun j => realEdge site (cycleEdges v j)))
@@ -431,8 +432,9 @@ theorem closed_site_edge_subset_frontier_of_hull_pair {L : Type*} {n : ℕ}
   · exact mem_iUnion.2 ⟨j, by
       simpa [hj, realEdge, segment_symm ℝ (castPoint (site b)) (castPoint (site a))] using hx⟩
 
-/-- The open segment of a pair of distinct labels is inside the hull when the pair is unlisted
-in both orientations. -/
+/-- Suppose every site lies in the certified hull and no three sites with distinct labels are
+collinear. The open segment of a pair of distinct labels is in the hull interior when the pair
+is unlisted in both orientations. -/
 theorem nonhull_open_site_edge_subset_interior {L : Type*} {n : ℕ}
     (site : L → Point) (v : Fin (n + 3) → L) (hv : Function.Injective v)
     (P : PolygonCertificate (siteHull site v) (fun j => realEdge site (cycleEdges v j)))

@@ -18,7 +18,7 @@ failed test.
 For the Kan extensions of two valid `F2GridRep`s, which are finitely presented, the executed
 test `F2GridRep.runErosion` therefore decides whether the erosion distance is at most the
 tested radius. A passing test gives both predicates and upper bounds of both erosion
-distances; it gives no bound of the interleaving distance. A failing test gives the
+distances; it does not bound the interleaving distance by that radius. A failing test gives the
 certificate, and with at least one coordinate it refutes the strict-pair predicate as well.
 -/
 
@@ -137,8 +137,10 @@ theorem runErosion_eq_pass_iff_strictRankErosion [NeZero n] (hR : R.Valid) (hS :
   exact ⟨fun ⟨_, _, _, h⟩ => h, fun h => ⟨hR, hS, he, h⟩⟩
 
 /-- A passing test: the input is valid, both erosion predicates hold for the actual Kan
-extensions at the tested radius, and both erosion distances are at most that radius. Nothing
-follows for the interleaving distance. -/
+extensions at the tested radius, and both erosion distances are at most that radius. The
+interleaving distance need not be at most that radius: in `RankErosionCertificateExamples` the
+test `arms_zero` passes at radius `0` and `arms_nonseparation` gives a nonzero interleaving
+distance. -/
 theorem runErosion_eq_pass_certificate (e : ℚ) (h : runErosion R S e = .pass) :
     ∃ (hR : R.Valid) (hS : S.Valid) (he : 0 ≤ e),
       RankErosion (radius e he) (R.grid.lan.obj (R.toModule hR))

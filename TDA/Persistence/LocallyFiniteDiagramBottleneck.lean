@@ -99,8 +99,9 @@ noncomputable def bottleneck (D E : LocallyFiniteDecoratedDiagram) : ℝ≥0∞ 
       LocallyFiniteDecoratedDiagram.matchingCost M
 
 /-- The canonical finite-birth decorated diagram extracted from an actual q-tame real
-persistence module. It records finite-death and death-at-infinity multiplicities; a zero
-negative tail excludes birth-at-minus-infinity strata. -/
+persistence module. It records finite-death and death-at-infinity multiplicities at finite
+births. A birth at minus infinity has multiplicity zero for every q-tame module, whether or not
+the negative tail of the module is zero. -/
 noncomputable def ofQModule {k : Type u} [Field k] {M : PModule.{u,0,w} k ℝ}
     (hM : M.QTame) : LocallyFiniteDecoratedDiagram where
   multiplicity := moduleExtendedDiagramMultiplicity M hM

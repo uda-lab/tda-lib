@@ -114,8 +114,9 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   carrier by it with a computable insertion sort, `reducerEquiv` is the resulting enumeration
   by `Fin`, and over a field `reducerMatrix` is strictly upper triangular and lowers the
   transported degree, so `matrixReductionTrace_normalForm_input` applies to it
-  (`reducerMatrix_normalForm_input`). Fixtures R1 (the tie-order cancellation F4) and R2 (a
-  certified matching whose inherited order fails strict triangularity) evaluate the reducer
+  (`reducerMatrix_normalForm_input`). Fixtures R1 (the tie-order cancellation F4), R2 (a path
+  with a certified matching whose inherited order fails strict triangularity) and R3 (the
+  multi-grade square with the certificates `sqCert` and `genCert`) evaluate the reducer
   orders by `decide +kernel`. See
   [the reducer order of a filtered based complex](docs/math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex).
 - Read the column reducer's output as a graded diagram and prove its rank semantics
@@ -183,8 +184,7 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   obtuse triangle the family removing the long edge at grade 4 is accepted, keeping the removal
   at grade 5 is rejected, and the resulting isomorphism is the α-to-Čech one
   (`TDA.Filtration.AlphaCollapseFamilyExamples`,
-  `TDA.Persistence.CollapseCertificatePersistenceExamples`). No certificate producer,
-  Delaunay–Čech stage or general-position statement. See
+  `TDA.Persistence.CollapseCertificatePersistenceExamples`). See
   [certificates across critical grades](docs/math/discrete-morse-matchings.md#certificates-across-critical-grades).
 - Define the closed squared-grade α filtration for embedded sites
   (`Alpha.complexFiltration`, #1077). In finite-dimensional real inner-product spaces
@@ -205,13 +205,132 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   cycle, `rational_cover_from_signed_boundary` takes a finite CCW triangle family
   with the same signed edge chain as the hull (#1110). It gives closed hull coverage
   and the exact off-edge multiplicity. See [signed coverage](docs/math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
-- Prove that the same-label α-to-Čech inclusion for finite Euclidean point clouds induces a
-  natural persistence isomorphism in every degree over any ring (`TDA.Persistence.alphaCechIso`).
-  The five-point fixture tracks a nonzero F₂ cycle through a strict inclusion at squared grade 4
-  and the structure maps to grade 5.
+- Produce the hull certificate from rational orientations and cover a hull whose sides are
+  subdivided (#1157, #1162, #1164). `hull_polygonCertificate_hullOnly` gives the
+  `PolygonCertificate` of a hull cycle from noncollinearity of triples of distinct hull
+  positions and the real interior, frontier and left-support hypotheses. For a finite label
+  type, `cornerHullCheck` decides `StrictCornerCycle` (every nonincident corner strictly left
+  of each directed side) and `HullSitesLeft` (every site weakly left of each side);
+  `cornerHullCheck_true_iff` identifies acceptance with a strict corner cycle whose hull
+  contains every site, and `cornerHullCheck_sound` gives the certificate
+  (`rational_corner_certificate`) and the equality of the corner hull with the convex hull of
+  all sites (`siteHull_eq_all_sites`). The weak test accepts a site on a hull side that is not
+  a corner (`HullCertificateExamples.midpoint_accepted`).
+  `rational_cover_from_subdivided_signed_boundary`
+  (`TDA.Filtration.RationalAlpha.SubdividedBoundaryCoverage`) takes the certificate of the
+  coarse cycle, cuts on each side satisfying `OrderedEdgeCuts`, CCW triangles with vertices in
+  the hull, and equality of the triangle chain with the chain of the subdivided boundary; it
+  gives closed hull coverage and the off-edge multiplicity. See
+  [signed coverage](docs/math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
+- Describe the incidences of a signed-boundary triangle family
+  (`TDA.Filtration.RationalAlpha.TriangleIncidence`, `DirectedEdgeIncidence` and
+  `TriangulationAssembly`; #1117, #1120, #1123). For injective rational sites, an injective
+  certified hull cycle and CCW triangles with the hull's signed edge chain,
+  `rational_edge_counts` gives each hull side one forward and no reverse triangle occurrence,
+  and each other occurring pair one occurrence in each direction, in two different triangles.
+  With every site in the hull and no three distinct sites collinear,
+  `triangle_inter_eq_shared_labels_of_signed_boundary` identifies the intersection of two
+  distinct closed triangles with the convex hull of their shared sites, and `certifiedComplex`
+  assembles the nonempty subfaces `labelComplex` of the triangles into a mathlib
+  `Geometry.SimplicialComplex` whose space is the hull (`certified_space_eq_siteHull`). See
+  [signed coverage](docs/math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
+- Compute the exact α grades of supplied triangles and edges (`IncircleGrade`, `EdgeGrade` and
+  `SuppliedEdgeGrade` under `TDA.Filtration.RationalAlpha`; #1125, #1127, #1129). For an
+  embedding of rational planar sites and a CCW triangle, `checkIncircle` decides `incircle ≤ 0`
+  at every site of a finite label type; `triangle_mem_actual_stage_iff` states that the
+  triangle is in the closed α stage at `t` exactly when these inequalities hold and its
+  squared circumradius is at most `t`, and `triangle_actual_grade` that the grade of a
+  triangle of the α carrier is its squared circumradius. For two distinct sites,
+  `edge_actual_grade_projection` gives the grade of a carrier edge as `D / 4 + D * z ^ 2`,
+  with `D` the squared length and `z` a feasible parameter on the perpendicular bisector
+  closest to the midpoint, and `edge_stage_of_parameter_min` the closed stage threshold.
+  For an injective certified hull cycle and CCW triangles with the hull's signed edge chain
+  and passing tests, `supplied_hull_dual` gives a `HullDual` for each hull side when every
+  site is in the hull (its common cells are the closed outward ray from the circumcenter of
+  the incident triangle) and `supplied_interior_dual` an `InteriorDual` for every other
+  supplied edge (the segment between the two incident circumcenters), each with its exact
+  stage threshold.
+  `NoFourIncircleZeros` asks that the incircle determinant of every four distinct sites is
+  nonzero, and `GeometricNoFourCocircular` that no point of the plane is equidistant from four
+  distinct sites. See
+  [signed coverage](docs/math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
+- Identify the α carrier, grades and stages of a certified supplied triangulation
+  (`SuppliedCarrier`, `SuppliedGradeEnumeration` and `SuppliedStages` under
+  `TDA.Filtration.RationalAlpha`; #1141, #1144, #1146). For sites `p : Fin n ↪ ℚ × ℚ`, the
+  hypotheses are an injective hull cycle with a `PolygonCertificate`, every site in the hull,
+  CCW triangles whose signed edge chain equals that of the hull cycle, a passing
+  `checkIncircle` test for every triangle, and
+  `GeometricNoFourCocircular p ∨ NoFourIncircleZeros p`; they do not include noncollinearity
+  of distinct site triples. `carrier_eq_of_signed_boundary` states
+  `Alpha.carrier (realSites p) = labelComplex tri`,
+  `suppliedGrades_eq_reference` that the executable rows `suppliedGrades p tri` equal
+  `gradedFaces p`, and `supplied_hasGradeTable` and `supplied_realStage_iff` that the faces of
+  the rows of grade at most `t` are those of `Alpha.complex (realSites p) t` at every real `t`.
+  The triangle chain is compared with the chain of the hull cycle itself, so every hull side is
+  an edge of a supplied triangle. See
+  [supplied carrier and stages](docs/math/alpha-filtration-and-signed-coverage.md#supplied-carrier-and-stages).
+- Prove that small open thickenings keep the nerve of a finite compact family
+  (`TDA.Topology.NerveThickening`). For finitely many compact sets in a metric space,
+  `exists_pos_nerve_thickening_eq` gives `δ > 0` such that the open `ε`-thickenings have the
+  nerve of the family for every `0 < ε ≤ δ`, and `exists_pos_common_nerve_thickening_eq` one
+  such `δ` for two families. In a real normed space, `convex_thickening_of_iUnion_eq` states
+  that the thickenings of two convex families with `C i ⊆ D i` and equal unions are open,
+  convex and nested and have equal unions at every radius;
+  `exists_pos_common_convex_thickening` combines both statements for finite compact convex
+  families. See
+  [realizations, subdivision mesh and convex nerves](docs/api.md#realizations-subdivision-mesh-and-nerves-of-nested-convex-families).
+- Add the realization of a labelled simplicial complex and its coordinate stars
+  (`TDA.Topology.Realization`): `Realization K` consists of the barycentric weights whose
+  support is a face, and `coordinateStar K v` of the points with positive weight at `v`. The
+  stars are open and cover the realization, and their nerve is `K` (`nerve_coordinateStar`).
+  For a finite vertex type, the intersection of the stars of a face contracts to the
+  barycenter of the face (`contraction`, `contractibleSpace_starIntersection`). An inclusion
+  `K ≤ L` induces `Realization.incl`, which pulls stars back to stars
+  (`pullback_coordinateStar`) and induces the inclusion on their nerves
+  (`starNerveInclusion_naturality`). See
+  [realizations, subdivision mesh and convex nerves](docs/api.md#realizations-subdivision-mesh-and-nerves-of-nested-convex-families).
+- Realize iterated barycentric subdivisions and bound their mesh
+  (`TDA.Topology.SubdivisionRealization`, `TDA.Topology.SubdivisionMesh`). For a finite vertex
+  type, `complex K n` is the `n`-fold subdivision on labels that depend only on the vertex
+  type, `realize p K n` interpolates the iterated barycenters of a placement `p` in a real
+  normed space, and it factors through `barycentricProjection K n`
+  (`realize_eq_comp_projection`), compatibly with inclusions of complexes
+  (`projection_incl`). If every face of `K` has at most `d + 1` vertices and its placed
+  vertices are pairwise within `M ≥ 0`, `diam_le` bounds the diameter of every realized face at
+  depth `n` by `(d / (d + 1)) ^ n * M` and of every closed star by twice that, and
+  `eventually_diam_lt` makes both smaller than a given `ε > 0` from some depth on. See
+  [realizations, subdivision mesh and convex nerves](docs/api.md#realizations-subdivision-mesh-and-nerves-of-nested-convex-families).
+- Prove that the nerve inclusion of nested convex families with equal unions induces a
+  homology isomorphism (`TDA.Topology.ConvexNerveInclusion`). For a finite linearly ordered
+  index type and families `C`, `D` of subsets of a real normed space with every `C i` open and
+  convex, every `D i` convex, `C i ⊆ D i` and `⋃ i, C i = ⋃ i, D i`,
+  `ConvexNerve.isIso_simplicialHomologyIncl` states that `nerve C ≤ nerve D` induces an
+  isomorphism of simplicial homology in every degree over every ring.
+  `ConvexNerve.isIso_simplicialHomologyIncl_of_compact` has the same conclusion when every
+  `C i` and `D i` is compact and convex. The proof uses `TDA.Topology.SubdivisionLastVertex`
+  (`isIso_iteratedLastVertex`), `TDA.Topology.NerveStarLabeling` (`exists_common_labeling`)
+  and `TDA.Topology.ConeCarrierComparison` (`chainHomotopy_of_contiguous_after_lastVertex`).
+  In `ConvexNerveInclusionExamples`, enlarging one of eight open boxes around a square hole
+  gives a strict nerve inclusion that induces an isomorphism, with nonzero first homology over
+  F₂; enlarging every box to the plane changes the union, and the inclusion is then not an
+  isomorphism in degree one over F₂. See
+  [realizations, subdivision mesh and convex nerves](docs/api.md#realizations-subdivision-mesh-and-nerves-of-nested-convex-families).
+- Prove that the same-label α-to-Čech inclusion induces a natural persistence isomorphism in
+  every degree over any ring (`TDA.Persistence.alphaCechIso`, module
+  `TDA.Persistence.AlphaCech`), for a site function on a finite linearly ordered label type
+  into a finite-dimensional real inner-product space. The five-point fixture
+  `AlphaCechExamples.fivePointH1Square` tracks a nonzero F₂ cycle through a strict inclusion
+  at squared grade 4 and the structure maps to grade 5. See
+  [comparison with Čech](docs/math/alpha-filtration-and-signed-coverage.md#degree-zero-comparison-with-čech).
 - Bound the bottleneck distance of radius-indexed α diagrams by the maximum matched-site
-  displacement in every degree over any field. For squares with half-sides 7 and 8, the
-  exact H₁ distance is √2 on radii and 30 on squared grades.
+  displacement in every degree over a field
+  (`TDA.Persistence.bottleneck_alphaRadiusDiagram_le_displacement`, module
+  `TDA.Persistence.AlphaRadiusStability`), for two site functions on one finite linearly
+  ordered label type into one finite-dimensional real inner-product space; the field lies in
+  the universe of the label type. For squares with half-sides 7 and 8, the
+  exact H₁ distance over F₂ is √2 on radii and 30 on squared grades
+  (`AlphaRadiusStabilityExamples.square_bottlenecks`). See
+  [radius displacement](docs/math/alpha-filtration-and-signed-coverage.md#exact-grades-on-rational-planar-sites).
 - Add a task-oriented route through the rank-erosion guide and a list of what is
   not provided. See
   [choosing a result](docs/math/rank-erosion.md#choosing-a-result).
@@ -335,13 +454,17 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `TDA.Persistence.SublevelDiagramVertexMap` proves `dgm_eq_of_vertexMaps`, the
   invariance of real sublevel diagrams under mutually inverse vertex maps
   between complexes on two vertex types. The four-cycle is a kernel-checked
-  fixture with one class of degree one from `1` to `2`. The cost of the
-  existing reduction remains unbounded. See
+  fixture with one class of degree one from `1` to `2`. This change proves
+  no bound on the cost of the existing reduction. See
   [Diagram and homology of the Rips input](docs/math/finite-ph-computation.md#diagram-and-homology-of-the-rips-input).
 
 - Execute the complete Rips simplex list of an integer distance table in the
   `FiniteInput` format: `DistanceTable`, its decidable `Valid`, `ripsInput`,
-  `ripsInput?` and `ripsRun`, which return `none` for an invalid table. The
+  `ripsInput?` and `ripsRun`. `Valid` asks for an integer metric with distinct
+  points: nonnegative entries, symmetry, zero diagonal, positive distance
+  between distinct labels and every triangle inequality. `ripsInput?` and
+  `ripsRun` return `none` for every other table, including tables with
+  repeated points or a failed triangle inequality. The
   list is ordered by grade, cardinality and label order, satisfies
   `FiniteInput.Valid`, and its faces and grades are identified with
   `Rips.fullComplex` and `Rips.filter` for the table metric. The list costs
@@ -463,6 +586,46 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   endpoints, and rejects repeated sites. Its degreewise result agrees with
   actual closed α persistence. See
   [exact planar α barcodes](docs/math/finite-ph-computation.md#exact-planar-α-barcodes).
+- Compute the exact bottleneck distance of two finite integer diagram presentations
+  (`TDA.Persistence.IntegerBottleneck`, `TDA.Persistence.IntegerBottleneckCorrectness`). A
+  `Presentation` lists integer finite pairs and essential births. `run` returns twice the
+  distance in `WithTop ℕ` and, when the essential counts agree, an optimal occurrence
+  matching on the original list positions; otherwise the value is `⊤`. `run_correct`
+  identifies the value with twice the existing real diagram `bottleneck`, and `solve_cost_eq`
+  and `solve_optimal` state that the returned matching attains it. The search is exhaustive.
+  See [integer bottleneck computation](docs/math/integer-bottleneck.md).
+- Add a whole-line example for the finite-birth decorated diagram of q-tame modules
+  (`TDA.Persistence.WholeLineObstructionExamples`). Over a field, the constant scalar module on
+  `ℝ` and the zero module are q-tame and have the same diagram
+  `LocallyFiniteDecoratedDiagram.ofQModule`, so their diagram bottleneck distance is `0`,
+  while their real interleaving distance is `⊤`
+  (`canonical_zero_but_module_distance_top`). The constant module is nonzero below every
+  threshold (`constant_no_zero_left_bound`).
+- Count the occurrences of the scalar interval decomposition of a real pointwise
+  finite-dimensional module by strict structure-map ranks
+  (`TDA.Persistence.RealIntervalObservation`). For `s < t`,
+  `persistenceImage_finrank_eq_scalar_crossing` states that the rank of the structure map
+  from `s` to `t` is the number of occurrences whose support contains `s` and `t`; this set of
+  occurrences is finite (`scalar_crossing_finite`), and isomorphic modules have equal counts
+  (`scalar_crossing_card_eq_of_iso`). `RealIntervalObservationExamples` evaluates the count for
+  interval modules, the zero module and a whole-line module.
+- Migration from v0.4.0: the following released declarations changed in definition or
+  computability, and their types are unchanged. `FiniteInput.listEquiv` has a new body whose
+  inverse is a finite list search (`listEquiv_symm_val`), and `listEquiv_eq_ofBijective` proves
+  it equal to the v0.4.0 body. `listEquiv`, `faceFintype`, `gradeFilter`, `positionEquiv`,
+  `compatibleOrder` and `sublevelFaceIndex` are no longer `noncomputable`.
+  `homologyMapDimensions` computes its rank with `F2Matrix.rank`, the same number as before;
+  `homologyMapDimensions_eq` is unchanged. The `noncomputable` marker was also removed from
+  `barcodeEnumerationNatIso` and from `FiniteLine.homMk`, `homOfAdjacent`, `isoOfAdjacent` and
+  `adjacentRecovery`, in addition to the declarations named in the two entries above on
+  executable interval and finite-line constructions. `FiniteInterval.fiber`, `intervalMap` and
+  `intervalModule` decide `FiniteInterval.alive` with the new instance
+  `FiniteInterval.decidableAlive` in place of a classical decision. Each equals its v0.4.0 body
+  propositionally, so a downstream proof by `rfl` against the old body may need a rewrite.
+  In `TDA.Persistence.RipsSamplingEmpiricalExamples`, `repeatedTraining_totalVariation` and
+  `repeatedTraining_fullH0_bound` state their bounds with the public
+  `TDA.Topology.MeasureBifiltration.uniformPMF (V := Bool)` in place of a private copy of the
+  uniform law on `Bool`; the law and the bounds are unchanged (#981).
 
 ## v0.4.0
 
