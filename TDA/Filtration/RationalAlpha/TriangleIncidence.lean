@@ -331,9 +331,9 @@ theorem triangle_inter_eq_empty_of_disjoint_labels {L I E : Type*}
     Finset.disjoint_iff_inter_eq_empty.mp hlabels]
   simp
 
-/-- For a certified hull and its signed-boundary triangle family, when no three sites with
-distinct labels are collinear, each distinct pair of closed triangle carriers meets in exactly
-the convex hull of the shared cast labels. -/
+/-- For a certified hull containing every site and its signed-boundary triangle family, when no
+three sites with distinct labels are collinear, each distinct pair of closed triangle carriers
+meets in exactly the convex hull of the shared cast labels. -/
 theorem triangle_inter_eq_shared_labels_of_signed_boundary {L I : Type*}
     [DecidableEq L] [Fintype I] {n : ℕ}
     (site : L → Point) (hs : Function.Injective site) (hull : Fin (n + 3) → L)

@@ -233,10 +233,11 @@ distinct rational sites, including degenerate configurations.
 cycle itself, so every hull side is an edge of a supplied triangle
 (`certified_hull_pair_face`). A site in the relative interior of a hull side
 is treated by `rational_cover_from_subdivided_signed_boundary`, for coverage
-and off-edge multiplicity, and is outside these three theorems. The three
-theorems do not assume noncollinearity of site triples; that hypothesis
-belongs to the pairwise-intersection theorem and to the assembly
-`certifiedComplex`.
+and off-edge multiplicity, and is outside these three theorems: it lies in the
+open circumdisk of the supplied triangle on that side, so the incircle test of
+that triangle fails. The three theorems do not assume noncollinearity of site
+triples; that hypothesis belongs to the pairwise-intersection, frontier and
+non-hull-edge statements and to the assembly `certifiedComplex`.
 [TriangulationAssembly.lean](../../TDA/Filtration/RationalAlpha/TriangulationAssembly.lean) ·
 [SubdividedBoundaryCoverage.lean](../../TDA/Filtration/RationalAlpha/SubdividedBoundaryCoverage.lean)
 

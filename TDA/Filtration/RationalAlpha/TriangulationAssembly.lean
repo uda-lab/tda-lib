@@ -223,7 +223,8 @@ theorem geometric_space_eq_union {L I : Type*} [DecidableEq L] (site : L → Poi
     · rwa [← triangle_eq_convexHull]
 
 /-- Assemble the geometric complex using the certified pairwise triangle intersections. These
-require that no three sites with distinct labels are collinear. -/
+require that every site lies in the hull and that no three sites with distinct labels are
+collinear. -/
 noncomputable def certifiedComplex {L I : Type*} [DecidableEq L] [Fintype I] {n : ℕ}
     (site : L → Point) (hs : Function.Injective site) (hull : Fin (n + 3) → L)
     (hv : Function.Injective hull) (tri : I → Fin 3 → L)

@@ -622,6 +622,10 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `intervalModule` decide `FiniteInterval.alive` with the new instance
   `FiniteInterval.decidableAlive` in place of a classical decision. Each equals its v0.4.0 body
   propositionally, so a downstream proof by `rfl` against the old body may need a rewrite.
+  In `TDA.Persistence.RipsSamplingEmpiricalExamples`, `repeatedTraining_totalVariation` and
+  `repeatedTraining_fullH0_bound` state their bounds with the public
+  `TDA.Topology.MeasureBifiltration.uniformPMF (V := Bool)` in place of a private copy of the
+  uniform law on `Bool`; the law and the bounds are unchanged (#981).
 
 ## v0.4.0
 
