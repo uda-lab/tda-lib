@@ -47,7 +47,8 @@ theorem no_zero_site_face (p : Fin 0 ↪ Point) (s : Finset (Fin 0)) :
 
 open TDA.Filtration.RationalAlpha.SignedBoundaryExamples
 
-private def quadSites : Fin 4 ↪ Point := ⟨quad, by
+/-- The trapezoid sites `quad` of `SignedBoundaryExamples` as a labelled embedding. -/
+def quadSites : Fin 4 ↪ Point := ⟨quad, by
   change ∀ a b : Fin 4, quad a = quad b → a = b
   decide +kernel⟩
 
@@ -77,7 +78,8 @@ theorem trapezoid_diagonals :
     rw [pair_mem_iff_occurrence good (show (1 : Fin 4) ≠ 3 by decide)]
     decide +kernel
 
-private def squareSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,3],![0,3,2]]
+/-- The split of the square into triangles `0 1 3` and `0 3 2`. -/
+def squareSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,3],![0,3,2]]
 
 /-- The full four-label tied face cannot belong to any downward closure of triangle label sets. -/
 theorem square_four_face_regression {I : Type*} (tri : I → Fin 3 → Fin 4) :

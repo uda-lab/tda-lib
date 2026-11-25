@@ -86,7 +86,7 @@ theorem labelledComplex_eq_bot_of_neg {t : ℝ} (ht : t < 0) : labelledComplex s
   rintro s ⟨⟨v, hv⟩, x, hx⟩
   exact absurd ((sq_nonneg _).trans (hx v hv).2) ht.not_ge
 
-theorem singleton_mem_labelledComplex [DecidableEq V] (v : V) {t : ℝ} (ht : 0 ≤ t) :
+theorem singleton_mem_labelledComplex (v : V) {t : ℝ} (ht : 0 ≤ t) :
     ({v} : Finset V) ∈ labelledComplex sites t := by
   apply (mem_nerve_singleton_iff _ _).2
   exact ⟨sites v, by simp [restrictedBall, ht]⟩

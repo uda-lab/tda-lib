@@ -73,6 +73,26 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   instance `instLinearOrderFinset_tDA` (the same order, `faceLinearOrder I` at depth `0`);
   `exists_contiguous_apexMap` takes `[DecidableEq I]` after `{N}` instead of using the
   removed `ConvexNerve.instDecidableEq_tDA`. Explicit arguments are unchanged.
+- Interface follow-ups (#1148, second stage): the classification statements of
+  `IncidenceQuotientSimple` can be stated from a client file with no scope, since
+  `diagonalIdealTwoSided` is now a global instance (`IncidenceQuotientSimpleClientExamples`
+  checks this). The example data of the integer bottleneck, finite constructible, incidence
+  quotient, supplied rational α and finite-input matching fixtures are public, so a client can
+  state those fixtures; copies duplicated across the rational α and matching fixture files are
+  merged into one public definition each. One common lemma replaces repeated proofs:
+  `TDA.Simplicial.exists_flag_extrema` (least and greatest member of a flag) and
+  `Cancellation.sublevelSupported_iff_prefixSupported_of_iff`, from which both
+  `sublevelSupported_iff_prefixSupported` now follow. `FiniteInterval.fiber_eq_classical`,
+  `intervalMap_eq_classical` and `intervalModule_obj_eq_classical` relate the executable
+  interval definitions to their v0.4.0 classical bodies. The file-local classical
+  `DecidableEq` of `SubdivisionRealization` is removed; no statement mentioned it.
+- Migration (#1148, second stage): `Alpha.singleton_mem_labelledComplex` no longer takes the
+  unused `[DecidableEq V]`; only a call through `@` with that argument changes. Elaborated
+  types of fixtures: the supplied rational α fixtures name `SuppliedCarrierExamples.quadSites`,
+  `SuppliedCarrierExamples.squareSplit`, `SuppliedGradeEnumerationExamples.innerSites` and
+  `SuppliedGradeEnumerationExamples.innerSplit` instead of file-private copies with the same
+  bodies, and the generation fixtures name `FiniteInputMatchingExamples.pr`; in the other
+  fixture files the private definitions became public under the same names.
 
 ## v0.5.0
 

@@ -139,8 +139,8 @@ private def projectedSimplex (x : Realization (barycentricSubdivision K)) : StdS
 
 private theorem exists_greatest_face {F : Finset (Finset I)} (hf : F ∈ barycentricSubdivision K) :
     ∃ T ∈ F, ∀ A ∈ F, A ⊆ T := by
-  obtain ⟨T, hT, hmax⟩ := Finset.exists_maximal hf.1
-  exact ⟨T, hT, fun A hA => (hf.2.2 A hA T hT).elim id (hmax hA)⟩
+  obtain ⟨_, _, T, hT, h⟩ := exists_flag_extrema hf
+  exact ⟨T, hT, fun A hA => (h A hA).2⟩
 
 private theorem support_eq_greatest (x : Realization (barycentricSubdivision K)) {T : Finset I}
     (ht : T ∈ x.val.weights.support) (hm : ∀ A ∈ x.val.weights.support, A ⊆ T) :
@@ -214,8 +214,6 @@ theorem originalFace_mem (K : PreAbstractSimplicialComplex V) :
   induction n with
   | zero => exact fun _ h => h
   | succ n ih => intro F hf; exact ih _ (hf.2.1 _ (flagUnion_mem hf)).1
-
-local instance (X : Type*) : DecidableEq X := Classical.decEq X
 
 /-- Continuous barycenter projection from depth `n` to the original realization. -/
 def barycentricProjection (K : PreAbstractSimplicialComplex V) :

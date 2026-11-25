@@ -5,33 +5,34 @@ import TDA.Persistence.IntegerBottleneckCorrectness
 
 The finite computations below are reduced by the kernel, then consumed through
 the general correctness theorem for the existing real diagram bottleneck.
+The example presentations are public, so a client can state each fixture.
 -/
 
 namespace TDA.Persistence.IntegerBottleneck.Examples
 
 open scoped ENNReal
 
-private def empty : Presentation := ⟨[], []⟩
-private def halfBar : Presentation := ⟨[(0, 1)], []⟩
-private def twoCopies : Presentation := ⟨[(0, 4), (0, 4)], []⟩
-private def oneCopy : Presentation := ⟨[(0, 4)], []⟩
-private def farLeft : Presentation := ⟨[(0, 10)], []⟩
-private def farRight : Presentation := ⟨[(100, 110)], []⟩
-private def essentialLeft : Presentation := ⟨[], [0, 3]⟩
-private def essentialRight : Presentation := ⟨[], [4, 1]⟩
-private def mixedLeft : Presentation := ⟨[(0, 6)], [0]⟩
-private def mixedRight : Presentation := ⟨[(100, 104)], [2]⟩
-private def essentialDominant : Presentation := ⟨[], [5]⟩
-private def finiteShort : Presentation := ⟨[(0, 2)], [0]⟩
-private def reversed : Presentation := ⟨[(3, 1)], []⟩
-private def negative : Presentation := ⟨[(-5, -2)], []⟩
-private def diagonals : Presentation := ⟨[(0, 0), (-3, -3)], []⟩
-private def repeatedEssential : Presentation := ⟨[], [2, 2]⟩
-private def permutedLeft : Presentation := ⟨[(0, 4), (-5, -2)], [0, 3, 3]⟩
-private def permutedRight : Presentation := ⟨[(-5, -2), (0, 4)], [3, 0, 3]⟩
-private def labelledLeft : Presentation := ⟨[(7, 7), (0, 4), (5, 5)], []⟩
-private def labelledRight : Presentation := ⟨[(1, 1), (2, 2), (0, 4)], []⟩
-private def rectangularLeft : Presentation := ⟨[(0, 4), (10, 12)], []⟩
+def empty : Presentation := ⟨[], []⟩
+def halfBar : Presentation := ⟨[(0, 1)], []⟩
+def twoCopies : Presentation := ⟨[(0, 4), (0, 4)], []⟩
+def oneCopy : Presentation := ⟨[(0, 4)], []⟩
+def farLeft : Presentation := ⟨[(0, 10)], []⟩
+def farRight : Presentation := ⟨[(100, 110)], []⟩
+def essentialLeft : Presentation := ⟨[], [0, 3]⟩
+def essentialRight : Presentation := ⟨[], [4, 1]⟩
+def mixedLeft : Presentation := ⟨[(0, 6)], [0]⟩
+def mixedRight : Presentation := ⟨[(100, 104)], [2]⟩
+def essentialDominant : Presentation := ⟨[], [5]⟩
+def finiteShort : Presentation := ⟨[(0, 2)], [0]⟩
+def reversed : Presentation := ⟨[(3, 1)], []⟩
+def negative : Presentation := ⟨[(-5, -2)], []⟩
+def diagonals : Presentation := ⟨[(0, 0), (-3, -3)], []⟩
+def repeatedEssential : Presentation := ⟨[], [2, 2]⟩
+def permutedLeft : Presentation := ⟨[(0, 4), (-5, -2)], [0, 3, 3]⟩
+def permutedRight : Presentation := ⟨[(-5, -2), (0, 4)], [3, 0, 3]⟩
+def labelledLeft : Presentation := ⟨[(7, 7), (0, 4), (5, 5)], []⟩
+def labelledRight : Presentation := ⟨[(1, 1), (2, 2), (0, 4)], []⟩
+def rectangularLeft : Presentation := ⟨[(0, 4), (10, 12)], []⟩
 
 /-- Half-integral distance is represented exactly by the odd doubled value. -/
 theorem half_bar : (run halfBar empty).twiceDistance = 1 ∧

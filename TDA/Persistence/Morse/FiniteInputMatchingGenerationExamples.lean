@@ -27,11 +27,7 @@ namespace TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples
 
 open TDA.Simplicial TDA.Filtration TDA.Persistence.Reduction FiniteInput
 open TDA.Persistence.Morse.MatchingInput
-open TDA.Persistence.Morse.FiniteInputMatchingExamples (empty path pathStep circle filled square)
-
-/-- A position pair whose bounds are discharged by `decide`. -/
-private def pr {xs : Input} (i j : ℕ) (hi : i < xs.length := by decide)
-    (hj : j < xs.length := by decide) : Fin xs.length × Fin xs.length := (⟨i, hi⟩, ⟨j, hj⟩)
+open TDA.Persistence.Morse.FiniteInputMatchingExamples (empty path pathStep circle filled square pr)
 
 /-! ## Generated matchings and their critical reports -/
 

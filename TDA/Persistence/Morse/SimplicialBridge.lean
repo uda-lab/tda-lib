@@ -41,16 +41,8 @@ variable {xs : Input}
 `sublevelStage xs a`. -/
 theorem sublevelSupported_iff_prefixSupported (h : Valid xs) (a : ℤ)
     (v : Fin xs.length → ZMod 2) :
-    SublevelSupported (fun i => (xs.get i).2) a v ↔ PrefixSupported (sublevelStage xs a) v := by
-  constructor
-  · intro hv i hi
-    refine hv i (lt_of_not_ge fun hg => ?_)
-    have := (grade_le_iff_index_lt_stage xs h a i).mp hg
-    omega
-  · intro hv i hi
-    refine hv i ?_
-    by_contra hn
-    exact absurd hi (not_lt.mpr ((grade_le_iff_index_lt_stage xs h a i).mpr (by omega)))
+    SublevelSupported (fun i => (xs.get i).2) a v ↔ PrefixSupported (sublevelStage xs a) v :=
+  sublevelSupported_iff_prefixSupported_of_iff (grade_le_iff_index_lt_stage xs h a) v
 
 variable (xs) in
 /-- `FiniteInput.CycleInput` is membership in the sublevel cycles of the boundary complex. -/

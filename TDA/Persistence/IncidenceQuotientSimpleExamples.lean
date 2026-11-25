@@ -39,10 +39,12 @@ local instance diagonalIdealTwoSidedBool {k : Type} [Field k] :
       (k := k) (S := Bool)).IsTwoSided :=
   diagonalIdeal_isTwoSided (k := k) (S := Bool)
 
-private def boolLowerStrictVertex : StrictVertex Bool :=
+/-- The strict vertex `(false, true)` of `PairPoset Bool`. -/
+def boolLowerStrictVertex : StrictVertex Bool :=
   ⟨⟨((false : WithTop Bool), (true : WithTop Bool)), by simp⟩, by simp⟩
 
-private def boolUpperStrictVertex : StrictVertex Bool :=
+/-- The strict vertex `(true, ⊤)` of `PairPoset Bool`. -/
+def boolUpperStrictVertex : StrictVertex Bool :=
   ⟨⟨((true : WithTop Bool), ⊤), le_top⟩, by simp⟩
 
 theorem bool_strict_vertices_distinct : boolLowerStrictVertex ≠ boolUpperStrictVertex := by
@@ -90,7 +92,8 @@ local instance diagonalIdealTwoSidedUnit {k : Type} [Field k] :
       (k := k) (S := Unit)).IsTwoSided :=
   diagonalIdeal_isTwoSided (k := k) (S := Unit)
 
-private def singletonStrictVertex : StrictVertex Unit :=
+/-- The unique strict vertex `((), ⊤)` of `PairPoset Unit`. -/
+def singletonStrictVertex : StrictVertex Unit :=
   ⟨⟨((), ⊤), le_top⟩, by simp⟩
 
 theorem singleton_strictVertex_unique (v : StrictVertex Unit) :

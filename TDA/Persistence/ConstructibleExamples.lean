@@ -17,15 +17,18 @@ namespace TDA.Persistence.FiniteConstructibleExamples
 open CategoryTheory CategoryTheory.Limits FiniteConstructible
 open scoped ZeroObject
 
-private def emptyGrid : Fin 0 ↪o ℝ :=
+/-- The grid with no critical values. -/
+def emptyGrid : Fin 0 ↪o ℝ :=
   ⟨⟨Fin.elim0, fun i => Fin.elim0 i⟩, fun {i} => Fin.elim0 i⟩
 
-private def oneGrid : Fin 1 ↪o ℝ where
+/-- The grid with the single critical value `0`. -/
+def oneGrid : Fin 1 ↪o ℝ where
   toFun _ := 0
   inj' _ _ _ := Subsingleton.elim _ _
   map_rel_iff' := by intro i j; simp [Subsingleton.elim i j]
 
-private noncomputable def zeroModule : PModule.{0,0,0} ℤ ℝ :=
+/-- The zero integer persistence module on `ℝ`. -/
+noncomputable def zeroModule : PModule.{0,0,0} ℤ ℝ :=
   (Functor.const ℝ).obj (0 : ModuleCat.{0} ℤ)
 
 /-- No critical values give a natural isomorphism to the zero module. -/
@@ -35,10 +38,12 @@ noncomputable def emptyReconstruction :
     ((isConstructible_empty_iff emptyGrid zeroModule).mpr
       (fun _ => isZero_zero (ModuleCat ℤ)))
 
-private noncomputable def constantRationals : PModule.{0,0,0} ℚ ℝ :=
+/-- The constant rational persistence module on `ℝ`. -/
+noncomputable def constantRationals : PModule.{0,0,0} ℚ ℝ :=
   (Functor.const ℝ).obj (ModuleCat.of ℚ ℚ)
 
-private noncomputable def stepModule : PModule ℚ ℝ :=
+/-- The reconstruction of `constantRationals` on `oneGrid`: zero before `0`, `ℚ` from `0`. -/
+noncomputable def stepModule : PModule ℚ ℝ :=
   reindex (cellIndex oneGrid) (sample oneGrid constantRationals)
 
 private theorem step_constructible : IsConstructible oneGrid stepModule :=
@@ -74,8 +79,9 @@ private noncomputable def coordinateChange (t : ℝ) : stepModule.obj t ≅ step
   (LinearEquiv.smulOfNeZero ℚ (stepModule.obj t) (if t < 1 then 1 else 2)
     (by split_ifs <;> norm_num)).toModuleIso
 
--- Conjugation changes maps while keeping the fibers and zero left tail.
-private noncomputable def twistedStep : PModule ℚ ℝ where
+/-- `stepModule` with its structure maps conjugated by the scalar coordinate change that is `1`
+below `1` and `2` from `1`; the fibers and the zero left tail are unchanged. -/
+noncomputable def twistedStep : PModule ℚ ℝ where
   obj := stepModule.obj
   map {s t} f := (coordinateChange s).inv ≫ stepModule.map f ≫ (coordinateChange t).hom
   map_id s := by simp

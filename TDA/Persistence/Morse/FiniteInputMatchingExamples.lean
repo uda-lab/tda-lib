@@ -26,11 +26,11 @@ open TDA.Simplicial TDA.Filtration TDA.Persistence.Reduction FiniteInput
 open TDA.Persistence.Morse.MatchingInput
 
 /-- A position pair whose bounds are discharged by `decide`. -/
-private def pr {xs : Input} (i j : ℕ) (hi : i < xs.length := by decide)
+def pr {xs : Input} (i j : ℕ) (hi : i < xs.length := by decide)
     (hj : j < xs.length := by decide) : Fin xs.length × Fin xs.length := (⟨i, hi⟩, ⟨j, hj⟩)
 
 /-- A rank given by a list of naturals, indexed by position. -/
-private def rankOf {n : ℕ} (l : List ℕ) : Fin n → ℕ := fun i => l.getD i.val 0
+def rankOf {n : ℕ} (l : List ℕ) : Fin n → ℕ := fun i => l.getD i.val 0
 
 /-! ## Inputs -/
 

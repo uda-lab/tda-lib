@@ -103,6 +103,31 @@ def intervalModule {N : ℕ} {k : Type u} [Field k]
       apply Subtype.ext
       simp [intervalMap, hi]
 
+/-- `FiniteInterval.fiber` agrees with its `v0.4.0` body, which decided `I.alive i` by
+`Classical.propDecidable`. -/
+theorem FiniteInterval.fiber_eq_classical {N : ℕ} {k : Type u} [Field k]
+    (I : FiniteInterval N) (i : Fin N) :
+    I.fiber (k := k) i = @ite _ (I.alive i) (Classical.propDecidable _) ⊤ ⊥ := by
+  by_cases h : I.alive i <;> simp [FiniteInterval.fiber, h]
+
+/-- `intervalMap` agrees with its `v0.4.0` body, which decided `I.alive i ∧ I.alive j` by
+`Classical.propDecidable`. -/
+theorem intervalMap_eq_classical {N : ℕ} {k : Type u} [Field k]
+    (I : FiniteInterval N) {i j : Fin N} (hij : i ≤ j) :
+    intervalMap (k := k) I hij =
+      @dite _ (I.alive i ∧ I.alive j) (Classical.propDecidable _)
+        (fun h => Submodule.inclusion (by simp [FiniteInterval.fiber, h.1, h.2])) (fun _ => 0) := by
+  by_cases h : I.alive i ∧ I.alive j <;> simp [intervalMap, h]
+
+/-- The objects of `intervalModule` agree with its `v0.4.0` body, whose fibers decided
+`I.alive i` by `Classical.propDecidable`; its maps are `intervalMap` (`intervalMap_eq_classical`). -/
+theorem intervalModule_obj_eq_classical {N : ℕ} {k : Type u} [Field k]
+    (I : FiniteInterval N) (i : Fin N) :
+    (intervalModule (k := k) I).obj i =
+      ModuleCat.of k (@ite (Submodule k k) (I.alive i) (Classical.propDecidable _) ⊤ ⊥) := by
+  rw [show (intervalModule (k := k) I).obj i = ModuleCat.of k (I.fiber (k := k) i) from rfl,
+    FiniteInterval.fiber_eq_classical]
+
 private theorem structureMapLinear_intervalModule {N : ℕ} {k : Type u} [Field k]
     (I : FiniteInterval N) {i j : Fin N} (hij : i ≤ j) :
     structureMapLinear (intervalModule (k := k) I) hij = intervalMap (k := k) I hij := rfl
