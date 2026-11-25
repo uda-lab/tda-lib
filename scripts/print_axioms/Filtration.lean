@@ -1153,3 +1153,8 @@ import TDA
 #print axioms TDA.Filtration.Alpha.squaredCechFiltration_le_reindex_radius
 #print axioms TDA.Filtration.Alpha.filtration_le_squaredCech
 #print axioms TDA.Filtration.Alpha.inclusion_natural_squaredCech
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.quadSites
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.squareSplit
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.oneTriangle
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.innerSites
+#print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.innerSplit

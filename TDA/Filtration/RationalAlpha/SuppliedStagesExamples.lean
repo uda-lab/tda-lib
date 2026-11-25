@@ -29,10 +29,6 @@ open TDA.Filtration.RationalAlpha.SuppliedEdgeGrade
 open TDA.Filtration.RationalAlpha.SuppliedStages
 open scoped Matrix
 
-private def quadSites : Fin 4 ↪ Point := ⟨quad, by
-  change ∀ a b : Fin 4, quad a = quad b → a = b
-  decide +kernel⟩
-
 /-- Exact closed stages below zero, at zero, before AC, at the AC/ACD tie, and at ABC. -/
 theorem trapezoid_exact_stages :
     stageTable (suppliedGrades quadSites good) (-1) = ∅ ∧
@@ -78,12 +74,6 @@ theorem trapezoid_checked_stages (s : Finset (Fin 4)) (t : ℝ) :
     ((cornerHullCheck_true_iff _ _).1 trapezoid_hull_check).2
     (by decide +kernel) good_boundary (by decide +kernel)
     (Or.inr (by unfold NoFourIncircleZeros; decide +kernel)) s t
-
-/-- Sites A = (-2,0), B = (2,0), C = (0,1), D = (0,-5). -/
-private def innerSites : Fin 4 ↪ Point := ⟨![(-2,0),(2,0),(0,1),(0,-5)], by decide +kernel⟩
-
-/-- Triangles ABC and BAD share the interior edge AB. -/
-private def innerSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,2],![1,0,3]]
 
 /-- The strict hull corners A, D, B, C. -/
 private def innerHull : Fin 4 → Fin 4 := ![0,3,1,2]
@@ -145,8 +135,6 @@ theorem inner_nonGabriel_cutoff (t : ℝ) :
     supplied_row_cutoff innerSites innerSplit inner_ab_row t
   rw [← inner_checked_stages, hcut]
   norm_num
-
-private def squareSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,3],![0,3,2]]
 
 /-- The square has an actual four-label face at grade 2 and the supplied split omits it. -/
 theorem square_stage_obstruction :

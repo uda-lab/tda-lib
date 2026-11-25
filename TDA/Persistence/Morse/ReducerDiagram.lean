@@ -243,9 +243,8 @@ variable {m : ℕ} {k : Type*} [Field k] [DecidableEq k] (degree : Fin m → ℕ
 omit [DecidableEq k] in
 /-- For monotone grades, support in grades `≤ a` is support in the prefix `stage grade a`. -/
 theorem sublevelSupported_iff_prefixSupported (hgrade : Monotone grade) (a : ℤ)
-    (x : Fin m → k) : SublevelSupported grade a x ↔ PrefixSupported (stage grade a) x := by
-  refine forall_congr' fun i => imp_congr_left ?_
-  rw [← not_le, grade_le_iff_lt_stage hgrade, not_lt]
+    (x : Fin m → k) : SublevelSupported grade a x ↔ PrefixSupported (stage grade a) x :=
+  sublevelSupported_iff_prefixSupported_of_iff (grade_le_iff_lt_stage hgrade a) x
 
 omit [DecidableEq k] in
 /-- For monotone grades, the sublevel cycles in grades `≤ a` are the reducer's prefix cycles

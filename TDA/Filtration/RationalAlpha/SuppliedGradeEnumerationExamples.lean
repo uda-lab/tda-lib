@@ -28,10 +28,7 @@ open TDA.Filtration.RationalAlpha.SuppliedCarrier
 
 open TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration
 open TDA.Filtration.RationalAlpha.SignedBoundaryExamples
-
-private def quadSites : Fin 4 ↪ Point := ⟨quad, by
-  change ∀ a b : Fin 4, quad a = quad b → a = b
-  decide +kernel⟩
+open TDA.Filtration.RationalAlpha.SuppliedCarrierExamples (quadSites squareSplit)
 
 theorem trapezoid_reference : suppliedGrades quadSites good = gradedFaces quadSites := by
   apply suppliedGrades_eq_reference (k := 1) quadSites cycle (fun _ _ h => h)
@@ -52,7 +49,8 @@ theorem trapezoid_exact_rows :
   rw [trapezoid_reference]
   decide +kernel
 
-private def oneTriangle : Fin 1 → Fin 3 → Fin 3 := ![![0,1,2]]
+/-- The single triangle `0 1 2` on three labels. -/
+def oneTriangle : Fin 1 → Fin 3 → Fin 3 := ![![0,1,2]]
 
 theorem obtuse_exact_edge :
     edgeGrade? Examples.obtuse oneTriangle 0 1 = some 5 ∧
@@ -71,10 +69,12 @@ theorem obtuse_exact_edge :
     rfl
   constructor <;> simp only [edgeGrade?,hf,hb] <;> decide +kernel
 
-private def innerSites : Fin 4 ↪ Point :=
+/-- Sites A = (-2,0), B = (2,0), C = (0,1), D = (0,-5). -/
+def innerSites : Fin 4 ↪ Point :=
   ⟨![(-2,0),(2,0),(0,1),(0,-5)],by decide +kernel⟩
 
-private def innerSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,2],![1,0,3]]
+/-- Triangles ABC and BAD share the interior edge AB. -/
+def innerSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,2],![1,0,3]]
 
 theorem interior_nonGabriel_exact_edge :
     edgeGrade? innerSites innerSplit 0 1 = some (25/4) ∧
@@ -104,8 +104,6 @@ theorem interior_nonGabriel_grade :
     decide +kernel
   refine ⟨hg, (mem_suppliedGrades innerSites innerSplit).2 ⟨?_, hg⟩⟩
   exact ⟨⟨0, by decide⟩, 0, by decide +kernel⟩
-
-private def squareSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,3],![0,3,2]]
 
 private theorem not_reference_of_missing_face {m n : ℕ} (p : Fin n ↪ Point)
     (tri : Fin m → Fin 3 → Fin n) {s : Finset (Fin n)} {q : ℚ}

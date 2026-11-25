@@ -46,19 +46,6 @@ variable {V I : Type u} [LinearOrder V] [Fintype V] [Nonempty V]
 
 variable {Q : PreAbstractSimplicialComplex V} {N : PreAbstractSimplicialComplex I}
 
-omit [LinearOrder V] [Nonempty V] in
-private theorem exists_flag_extrema {F : Finset (Finset V)} (hF : F ∈ barycentricSubdivision Q) :
-    ∃ S ∈ F, ∃ T ∈ F, ∀ A ∈ F, S ⊆ A ∧ A ⊆ T := by
-  obtain ⟨S, hS, hmin⟩ := Finset.exists_min_image F Finset.card hF.1
-  obtain ⟨T, hT, hmax⟩ := Finset.exists_max_image F Finset.card hF.1
-  refine ⟨S, hS, T, hT, fun A hA => ⟨?_, ?_⟩⟩
-  · rcases hF.2.2 S hS A hA with h | h
-    · exact h
-    · exact (Finset.eq_of_subset_of_card_le h (hmin A hA)).ge
-  · rcases hF.2.2 A hA T hT with h | h
-    · exact h
-    · exact (Finset.eq_of_subset_of_card_le h (hmax A hA)).ge
-
 /-- A common apex map on subdivided flags compares two maps carried by nested face cones. -/
 theorem exists_contiguous_apexMap [DecidableEq I] (f g : VertexMap Q N) (J : Finset V → Finset I)
     (j : Finset V → I) (hj : ∀ S ∈ Q, j S ∈ J S)

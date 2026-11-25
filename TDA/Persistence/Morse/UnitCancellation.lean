@@ -97,6 +97,14 @@ theorem GradeNonincreasing.mul [CommRing k] [Fintype μ] {gr : κ → ℤ} {gm :
   obtain ⟨m, -, hm⟩ := Finset.exists_ne_zero_of_sum_ne_zero h
   exact (hM r m (left_ne_zero_of_mul hm)).trans (hN m c (right_ne_zero_of_mul hm))
 
+/-- When the indices of grade at most `t` are exactly those before `n`, support in grades `≤ t`
+is support in the coordinate prefix of length `n`. -/
+theorem sublevelSupported_iff_prefixSupported_of_iff [Field k] {m n : ℕ} {g : Fin m → ℤ}
+    {t : ℤ} (hn : ∀ i, g i ≤ t ↔ i.val < n) (x : Fin m → k) :
+    SublevelSupported g t x ↔ PrefixSupported n x := by
+  refine forall_congr' fun i => imp_congr_left ?_
+  rw [← not_le, hn, not_lt]
+
 end Grades
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {k : Type*} [CommRing k]

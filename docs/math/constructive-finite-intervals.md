@@ -43,7 +43,10 @@ open TDA.Persistence.ConstructiveIntervalExamples
 
 `intervalMap_apply_val` describes these actions directly in the coefficient
 field. The existing rank characteristic theorem retains its explicit
-`[decAlive : Decidable (I.alive i ∧ I.alive j)]` argument.
+`[decAlive : Decidable (I.alive i ∧ I.alive j)]` argument. Up to v0.4.0 the three
+definitions decided aliveness by `Classical.propDecidable`; `FiniteInterval.fiber_eq_classical`,
+`intervalMap_eq_classical` and `intervalModule_obj_eq_classical` state that the current
+definitions equal those bodies, propositionally.
 
 ## Reordering lists with repeated intervals
 

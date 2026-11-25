@@ -407,3 +407,4 @@ import TDA
 #print axioms TDA.Simplicial.CollapseCertificateExamples.hollowTriangle_no_free_pair
 #print axioms TDA.Simplicial.CollapseCertificateExamples.hollowComplex_no_free_pair
 #print axioms TDA.Simplicial.CollapseCertificateExamples.hollowComplex_not_collapsesTo_point
+#print axioms TDA.Simplicial.exists_flag_extrema

@@ -61,7 +61,9 @@ abbrev DiagonalQuotient := Incidence (k := k) (S := S) ⧸ DiagonalIdeal (k := k
 /-- The opposite of `DiagonalQuotient`, used to represent right modules over the quotient. -/
 abbrev RightQuotient := (DiagonalQuotient (k := k) (S := S))ᵐᵒᵖ
 
-local instance diagonalIdealTwoSided :
+/-- The diagonal ideal of this file is two-sided, so `DiagonalQuotient` and `RightQuotient` are
+rings in a client file without opening a scope. -/
+instance diagonalIdealTwoSided :
     (DiagonalIdeal (k := k) (S := S)).IsTwoSided :=
   diagonalIdeal_isTwoSided (k := k) (S := S)
 

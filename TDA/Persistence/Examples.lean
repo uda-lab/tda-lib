@@ -207,6 +207,7 @@ import TDA.Persistence.PrincipalDownsetRankDimensionExamples
 import TDA.Persistence.FiniteInjectiveRankDimensionExamples
 import TDA.Persistence.TwoInjectiveHomDimensionExamples
 import TDA.Persistence.IncidenceQuotientSimpleExamples
+import TDA.Persistence.IncidenceQuotientSimpleClientExamples
 import TDA.Persistence.RankSignedStabilityExamples
 import TDA.Persistence.RankSignedBarcodeOneDimensionalExamples
 import TDA.Persistence.RipsSamplingEmpiricalExamples

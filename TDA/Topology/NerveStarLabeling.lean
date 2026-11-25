@@ -24,11 +24,8 @@ variable {K L : PreAbstractSimplicialComplex I}
 /-- A nonempty flag has a least face. -/
 theorem exists_least_face [Fintype I] {F : Finset (Finset I)} (hF : F ∈ barycentricSubdivision K) :
     ∃ J ∈ F, ∀ A ∈ F, J ⊆ A := by
-  obtain ⟨J, hJ, hmin⟩ := Finset.exists_min_image F Finset.card hF.1
-  refine ⟨J, hJ, fun A hA => ?_⟩
-  rcases hF.2.2 J hJ A hA with h | h
-  · exact h
-  · exact (Finset.eq_of_subset_of_card_le h (hmin A hA)).ge
+  obtain ⟨J, hJ, _, _, h⟩ := exists_flag_extrema hF
+  exact ⟨J, hJ, fun A hA => (h A hA).1⟩
 
 /-- Use the smaller intersection witness on every face of the smaller nerve. -/
 theorem exists_compatibleWitnesses [Zero E] (C D : I → Set E) (h : ∀ i, C i ⊆ D i) :

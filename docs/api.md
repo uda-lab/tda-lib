@@ -2173,7 +2173,11 @@ depends on the classification choice, while `IncidenceVertexTor.diagonalQuotient
 is the canonical degree-zero field comparison. Positive left-derived vanishing is supplied by
 `IncidenceVertexTor.diagonalQuotient_leftDerived_pos_isZero`. See
 [simple right modules over the quotient](math/incidence-quotient-simple-modules.md) and the
-focused consumers in `TDA.Persistence.IncidenceQuotientSimpleExamples`. This is the simple-module
+focused consumers in `TDA.Persistence.IncidenceQuotientSimpleExamples`. Its statements need no
+scope or local instance in a client: the two-sidedness of the diagonal ideal that makes
+`RightQuotient` a ring is the global instance `IncidenceQuotientSimple.diagonalIdealTwoSided`,
+and `IncidenceQuotientSimpleClientExamples` states each classification theorem as a client
+does. This is the simple-module
 classification step used in BOOS24-v3 Lemma 5.7, specialized to the interval-pair quotient; it
 does not assert the global-dimension conclusion of that lemma.
 
@@ -2654,7 +2658,9 @@ conditions of the column reducer is in
 `TDA.Persistence.Morse.SimplicialBridge` (imported by `TDA.Persistence`) works over `ZMod 2`
 on a finite input `xs` with `h : Valid xs`. In namespace
 `TDA.Persistence.Morse.SimplicialBridge`, `sublevelSupported_iff_prefixSupported` identifies
-grade-sublevel support with support before `sublevelStage xs a`, and
+grade-sublevel support with support before `sublevelStage xs a`; it and the reducer version in
+`ReducerDiagram` are instances of `Cancellation.sublevelSupported_iff_prefixSupported_of_iff`,
+which needs only that the grades `≤ a` are the indices before the prefix length.
 `cycleInput_iff_mem_sublevelCycles` identifies `FiniteInput.CycleInput` with the sublevel cycles
 of the boundary complex `(degree xs, fun i => (xs.get i).2, FiniteInput.boundary xs)`.
 `boundaryCycleCoordinates` is the computable restriction of `rawCycleCoordinates` to these

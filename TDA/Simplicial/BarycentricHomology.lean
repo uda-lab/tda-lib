@@ -36,16 +36,25 @@ def lastVertex [Nonempty V] (s : Finset V) : V :=
     (hs : s.Nonempty) : lastVertex s = s.max' hs := by
   simp [lastVertex, hs]
 
+omit [LinearOrder V] in
+/-- A flag of the barycentric subdivision has a least and a greatest member under inclusion. -/
+theorem exists_flag_extrema {F : Finset (Finset V)} (hF : F ∈ barycentricSubdivision K) :
+    ∃ S ∈ F, ∃ T ∈ F, ∀ A ∈ F, S ⊆ A ∧ A ⊆ T := by
+  obtain ⟨S, hS, hmin⟩ := Finset.exists_min_image F Finset.card hF.1
+  obtain ⟨T, hT, hmax⟩ := Finset.exists_max_image F Finset.card hF.1
+  refine ⟨S, hS, T, hT, fun A hA => ⟨?_, ?_⟩⟩
+  · rcases hF.2.2 S hS A hA with h | h
+    · exact h
+    · exact (Finset.eq_of_subset_of_card_le h (hmin A hA)).ge
+  · rcases hF.2.2 A hA T hT with h | h
+    · exact h
+    · exact (Finset.eq_of_subset_of_card_le h (hmax A hA)).ge
+
 private theorem flag_maximum_subset (K : PreAbstractSimplicialComplex V)
     (S : Finset (Finset V)) (hS : S ∈ barycentricSubdivision K) :
     ∃ t ∈ S, ∀ s ∈ S, s ⊆ t := by
-  obtain ⟨t, ht, hmax⟩ := Finset.exists_max_image S Finset.card hS.1
-  refine ⟨t, ht, ?_⟩
-  intro s hs
-  rcases hS.2.2 s hs t ht with hst | hts
-  · exact hst
-  · have heq : t = s := Finset.eq_of_subset_of_card_le hts (hmax s hs)
-    simpa [heq]
+  obtain ⟨_, _, t, ht, h⟩ := exists_flag_extrema hS
+  exact ⟨t, ht, fun s hs => (h s hs).2⟩
 
 /-- Send each nonempty face of the original complex to its greatest vertex. -/
 def lastVertexMap [Nonempty V] (K : PreAbstractSimplicialComplex V) :
