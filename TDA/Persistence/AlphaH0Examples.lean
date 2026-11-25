@@ -105,6 +105,22 @@ private theorem singleton_stages :
     unitComplex_eq_singleton _ vertex,
     unitComplex_eq_singleton _ (labelledComplexFiltration_le_squaredCech singleSite 0 vertex)⟩
 
+example :
+    ({()} : Finset Unit) ∈ TDA.Filtration.reindex Alpha.radius
+      (Cech.complexFiltration singleSite) (-1) ∧
+      ({()} : Finset Unit) ∉ squaredCechFiltration singleSite (-1) := by
+  have hradius :
+      TDA.Filtration.reindex Alpha.radius (Cech.complexFiltration singleSite) (-1) =
+        Cech.complex singleSite 0 := by
+    rw [TDA.Filtration.reindex_apply, Cech.complexFiltration_apply]
+    congr 1
+    exact Real.sqrt_eq_zero'.2 (by norm_num)
+  constructor
+  · rw [hradius]
+    exact (Cech.singleton_mem_complex_iff _ _ _).2 (by norm_num)
+  · rw [squaredCechFiltration_apply_of_neg singleSite (by norm_num)]
+    simp
+
 private theorem singleton_h0_negative (k : Type*) [Field k] :
     Limits.IsZero (simplicialHomology (labelledComplex singleSite (-1)) k 0) ∧
       Limits.IsZero (simplicialHomology (squaredCechFiltration singleSite (-1)) k 0) := by

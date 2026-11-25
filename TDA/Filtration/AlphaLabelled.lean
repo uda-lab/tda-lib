@@ -10,6 +10,10 @@ set_option autoImplicit false
 
 The closed Voronoi nerve accepts a site function, with the embedding-based α filtration as
 a special case. The Čech filtration uses squared grades and both filtrations start at zero.
+The closed nerve retains all nearest-site ties, including in degenerate configurations.
+Both the α filtration and its comparison target `squaredCechFiltration` have empty stages
+below zero. The existing comparison `filtration_le_cech` retains compatibility reindexing
+by `Alpha.radius`, whose negative grades give the radius-zero Čech complex.
 For finitely many sites in a real normed vector space, each Čech edge at a nonnegative
 grade can be replaced by a path in the α complex at that grade.
 -/
