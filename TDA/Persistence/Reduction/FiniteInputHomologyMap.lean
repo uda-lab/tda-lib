@@ -7,7 +7,9 @@ set_option backward.defeqAttrib.useBackward true
 
 namespace TDA.Persistence.Reduction.FiniteInput
 
-/-- Target-query rows and source-query columns, with finite-vector storage for normal-coordinate columns. -/
+/-- Target-query rows and source-query columns, with finite-vector storage for normal-coordinate columns.
+Total; meaningful only under the validity of both inputs and of the vertex map `f`; use
+`runHomologyMap`. -/
 def homologyMapMatrix (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ → ℕ) :
     Matrix (BasisIndex ys p b) (BasisIndex xs p a) (ZMod 2) :=
   let columns := Vector.ofFn fun j : BasisIndex xs p a =>
@@ -21,7 +23,9 @@ theorem homologyMapMatrix_apply (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ �
   simp only [homologyMapMatrix, Fin.getElem_fin, Vector.getElem_ofFn]
   rfl
 
-/-- Nested rows for execution and display; the source query specifies the width when there are no rows. -/
+/-- Nested rows for execution and display; the source query specifies the width when there are no rows.
+Total; meaningful only under the validity of both inputs and of the vertex map `f`; use
+`runHomologyMap`. -/
 def homologyMapRows (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ → ℕ) : List (List (ZMod 2)) :=
   List.ofFn fun i => List.ofFn fun j => homologyMapMatrix xs ys p a b f i j
 

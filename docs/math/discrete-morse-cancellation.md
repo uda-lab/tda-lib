@@ -1450,8 +1450,8 @@ definition `dualOrder`.
 - independence of the list `reducerOccurrences` or `morseOccurrences`, as a list, from the tie
   order or from the certificate; only a permutation is stated;
 - independence of the Morse differential or of the Morse complex from the certificate;
-- a lifting of representatives back to the input, or an `Option`-valued run wrapper for
-  certificates;
+- a lifting of representatives back to the input, or a guarded run wrapper beyond
+  `morseOccurrences?` and `morseDiagram?`, which return `none` exactly when `¬ Valid xs`;
 - a change to any merged declaration, or a certificate statement over a ring other than
   `ZMod 2`;
 - a runtime bound, comparison or speedup claim;

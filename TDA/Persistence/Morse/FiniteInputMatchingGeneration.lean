@@ -12,7 +12,17 @@ If the checker accepts, the extended certificate becomes the new state; otherwis
 kept (`greedyStep`).
 
 Since the state is a `CertifiedMatching` at every step, `generate` is total and needs no validity
-hypothesis. `generate_check` restates its certificate through `check`, and, for a valid input,
+hypothesis. Totality is not meaning: on an invalid input (`¬ Valid xs`) the result is a list-level
+object only. The guarded entry point is `generate?`, which is `none` exactly when `¬ Valid xs`
+(`generate?_eq_none_iff`) and `some (generate xs)` otherwise (`generate?_eq_some_iff`).
+Evaluated, with all grades `0` and positions counted from `0`: the empty face listed
+(`[(∅, 0), ({0}, 0)]`) gives the pair `(0, 1)` and no critical position; a list that is not
+downward closed (`[({0, 1}, 0)]`) gives no pair and reports the edge as critical of dimension `0`;
+a repeated face (`[({0}, 0), ({0}, 0), ({0, 1}, 0)]`) gives the pair `(0, 2)`, pairing one copy
+of the vertex with the edge, and leaves the other copy critical; a coface listed first
+(`[({0, 1}, 0), ({0}, 0), ({1}, 0)]`) gives the pair `(1, 0)`, pairing the vertex with the edge
+listed before it. These values are collected in `docs/math/discrete-morse-matchings.md`, section
+"Behaviour on invalid input". `generate_check` restates its certificate through `check`, and, for a valid input,
 `generate_isFilteredAcyclicMatching` gives a filtered acyclic matching of the represented complex.
 `greedyStep_pairs` and `generate_pairs_sublist` show that the generated pairs are a sublist of the
 candidates, in candidate order.
@@ -106,7 +116,7 @@ def greedyStep (xs : Input) (c : CertifiedMatching xs) (p : Fin xs.length × Fin
   (certify? xs (c.pairs ++ [p]) (candidateRank xs (c.pairs ++ [p]))).getD c
 
 /-- The generated certified matching: the greedy pass over `candidates xs`, starting from
-`emptyCertified xs`. -/
+`emptyCertified xs`. Total; meaningful only under `Valid xs`; use `generate?`. -/
 def generate (xs : Input) : CertifiedMatching xs :=
   (candidates xs).foldl (greedyStep xs) (emptyCertified xs)
 
@@ -135,6 +145,24 @@ theorem generate_pairs_sublist (xs : Input) : (generate xs).pairs.Sublist (candi
       · exact hc.trans (List.sublist_append_left _ _)
   simpa [generate] using
     key (candidates xs) [] (emptyCertified xs) (by simp [emptyCertified_pairs])
+
+/-- The guarded generator: `some (generate xs)` on a valid input, and `none` otherwise. -/
+def generate? (xs : Input) : Option (CertifiedMatching xs) :=
+  if Valid xs then some (generate xs) else none
+
+/-- The guarded generator returns `none` exactly when the input is not valid. -/
+theorem generate?_eq_none_iff (xs : Input) : generate? xs = none ↔ ¬ Valid xs := by
+  unfold generate?
+  split_ifs with h <;> simp [h]
+
+/-- The guarded generator returns `some c` exactly when the input is valid and `c` is
+`generate xs`. -/
+theorem generate?_eq_some_iff (xs : Input) (c : CertifiedMatching xs) :
+    generate? xs = some c ↔ Valid xs ∧ c = generate xs := by
+  unfold generate?
+  split_ifs with h
+  · simp [h, eq_comm]
+  · simp [h]
 
 /-- The checker accepts the generated pairs with the generated rank. -/
 theorem generate_check (xs : Input) :

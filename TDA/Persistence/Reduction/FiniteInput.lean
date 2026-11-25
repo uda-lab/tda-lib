@@ -549,6 +549,8 @@ def essentialOccurrences (xs : Input) : List Occurrence :=
   (essentialIndices xs).map fun i =>
     ⟨(xs.get i).1.card - 1, (xs.get i).2, .essential⟩
 
+/-- All output records. Total; meaningful only under `Valid xs`; use `run`. On an invalid input
+it still returns a list, for example counting a listed empty face as a degree-`0` class. -/
 def occurrences (xs : Input) : List Occurrence :=
   finiteOccurrences xs ++ essentialOccurrences xs
 
@@ -643,7 +645,8 @@ private theorem essentialPointsList (xs : Input) (p : ℕ)
       · simp [List.filter_cons, List.map_cons, hp, Occurrence.point, ih]
         exact ih
 
-/-- Degreewise interpretation of all output records, retaining multiplicity. -/
+/-- Degreewise interpretation of all output records, retaining multiplicity. Total; meaningful
+only under `Valid xs`; use `run`. -/
 def outputDiagram (xs : Input) (p : ℕ) : Diagram ℤ where
   points := (((occurrences xs).filter (fun o => o.degree = p) : List Occurrence) :
     Multiset Occurrence).map Occurrence.point

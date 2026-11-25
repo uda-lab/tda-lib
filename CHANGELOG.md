@@ -30,6 +30,14 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `inner_checked_stages`), give the exact α entry `25/4` of an interior edge that is not
   Gabriel (`inner_nonGabriel_cutoff`, `interior_nonGabriel_grade`), and show that the radius
   stability bound is attained (`square_stability_attained`).
+- Documentation of behaviour on invalid input (#1149): the unguarded executable entry points of
+  the Morse lane, the finite-input outputs, `imageBarcode`, `GraphPLIncidence.label`,
+  `incircle` and the collapse-certificate checkers now say in their docstrings that they are
+  total and meaningful only under their validity hypothesis, and name the guarded entry point.
+  The matchings note records the four invalid Morse inputs and their results. New guarded
+  `Option`-valued entry points in the Morse lane return `none` exactly when the input is not
+  valid: `check?`, `criticalReport?`, `generate?`, `morseOccurrences?`, `morseDiagram?`, each
+  with theorems characterising `none` and `some`. No existing statement changed.
 
 ## v0.5.0
 

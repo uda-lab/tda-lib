@@ -31,6 +31,13 @@ is computable. On a valid input, `c.morseContraction h` is the filtered contract
 the induced isomorphism `FilteredContraction.sublevelHomologyIso` of grade-sublevel homology
 persistence modules in degree `p`.
 
+`schedule` and `morseDifferential` are total and computable on every certificate, but their
+meaning is stated only under `Valid xs`. For an input that lists the empty face (`¬ Valid xs`), the
+generated schedule need not be a pivot schedule, and the Morse differential and everything
+computed from it (`morseOccurrences`, `morseDiagram`) have no meaning for a complex. No
+`Option`-valued wrapper of the schedule or of the differential itself exists; the guarded run on
+the differential is `morseOccurrences?`, and `generate?` guards generation.
+
 This module is a library derivation. It provides no simplicial bridge to `sublevelModule` and no
 explicit gradient-path formula for the Morse differential.
 -/
@@ -144,7 +151,9 @@ variable {xs : Input}
 /-! ## The schedule -/
 
 /-- The certified pairs sorted by non-decreasing rank of the lower face, by a stable insertion
-sort: pairs of equal lower-face rank keep their order in `c.pairs`. -/
+sort: pairs of equal lower-face rank keep their order in `c.pairs`. Total; it is a pivot schedule
+only under `Valid xs` (`isPivotSchedule_schedule`), for example not when the input lists the
+empty face. -/
 def schedule (c : CertifiedMatching xs) : Pairs xs :=
   c.pairs.insertionSort fun p q => c.rank p.1 ≤ c.rank q.1
 
@@ -242,7 +251,8 @@ theorem card_critical_schedule (c : CertifiedMatching xs) :
 /-! ## The Morse complex of a certificate -/
 
 /-- The Morse differential of the certificate: the reduced boundary on the critical generators
-of its schedule. It takes no validity hypothesis and is computable. -/
+of its schedule. It takes no validity hypothesis and is computable; total, but meaningful only
+under `Valid xs`; the guarded run built on it is `morseOccurrences?`. -/
 def morseDifferential (c : CertifiedMatching xs) :
     Matrix (Critical c.schedule) (Critical c.schedule) (ZMod 2) :=
   criticalDifferential (boundary xs) c.schedule

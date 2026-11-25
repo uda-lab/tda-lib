@@ -70,7 +70,8 @@ theorem basisRecord_cycleInput (xs : Input) (h : Valid xs) (p : ℕ) (a : ℤ)
     ⟨fun j hj => hc.1 j (by omega), hc.2⟩
   simpa only [hp] using hz
 
-/-- A linear coordinate map, executable even before checking cycle conditions. -/
+/-- A linear coordinate map, executable even before checking cycle conditions. Total; meaningful
+only under `Valid xs` and for a cycle of the sublevel stage; use `runCycleCoordinates`. -/
 def rawCycleCoordinates (xs : Input) (p : ℕ) (a : ℤ) :
     (Fin xs.length → ZMod 2) →ₗ[ZMod 2] (BasisIndex xs p a → ZMod 2) where
   toFun v i := (normalCoordinateVector xs v)[(basisRecord xs p a i).birthIndex]
