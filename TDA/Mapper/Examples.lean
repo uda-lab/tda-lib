@@ -39,3 +39,5 @@ import TDA.Mapper.GraphPLReebMapPairExamples
 import TDA.Mapper.GraphPLReebMergeFoldExamples
 import TDA.Mapper.RefinementHomologyMapPairExamples
 import TDA.Mapper.MapperReebConstructibleExamples
+import TDA.Mapper.GraphPLIncidenceExamples
+import TDA.Mapper.GraphPLIncidenceReebDataExamples

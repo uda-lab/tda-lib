@@ -64,7 +64,9 @@ image has cardinality one, and its base-two natural logarithm is zero.
 Subtracting the rank from the source Betti dimension gives the nullity.
 
 `homologyMap_image_card` proves the cardinality identity using Mathlib's
-finite-module cardinality theorem. `homologyMapMatrix_range` transports the
+finite-module cardinality theorem. The counting argument itself is stated for
+an arbitrary rectangular F₂ matrix by `F2Matrix.card_imageFinset` and
+`F2Matrix.rank_eq_finrank_range`. `homologyMapMatrix_range` transports the
 actual image through the existing target coordinate equivalence.
 `homologyMapDimensions_rank_actual` and
 `homologyMapDimensions_nullity_actual` identify the computed fields with the

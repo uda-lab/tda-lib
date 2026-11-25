@@ -1,5 +1,6 @@
 import TDA.Persistence.Reduction.FiniteInputHomologyDimensionsCorrectness
 import TDA.Persistence.Reduction.FiniteInputHomologyLiftExamples
+import TDA.Persistence.Reduction.FiniteInputSublevelBasisExamples
 
 /-! Rectangular maps, a disappearing H₁ image and validation at zero-dimensional queries. -/
 
@@ -182,5 +183,67 @@ theorem zero_and_invalid_runs :
     runHomologyDimensions [({0, 1}, 0)] [] 7 0 0 id = none ∧
     runHomologyDimensions MapExamples.sourceEdge MapExamples.components 7 0 0 id = none := by
   decide +kernel
+
+open Examples (sphere ball sphere_valid ball_valid)
+open BasisExamples (ball_H2_length)
+open CategoryTheory
+
+private theorem mem_sublevel_iff_entry (xs : Input) (h : Valid xs) (t : ℤ) (s : Finset ℕ) :
+    s ∈ (gradeFilter xs h).sublevel t ↔ ∃ e ∈ xs, e.1 = s ∧ e.2 ≤ t := by
+  rw [mem_sublevel_iff_list]
+  constructor
+  · rintro ⟨i, hi⟩
+    exact ⟨_, List.get_mem _ i, hi⟩
+  · rintro ⟨e, he, hi⟩
+    obtain ⟨i, rfl⟩ := List.mem_iff_get.mp he
+    exact ⟨i, hi⟩
+
+private theorem sphereToBallIncl (t : ℤ) :
+    (gradeFilter sphere sphere_valid).sublevel t ≤ (gradeFilter ball ball_valid).sublevel t := by
+  intro s hs
+  obtain ⟨e, he, hi⟩ := (mem_sublevel_iff_entry _ _ _ _).mp hs
+  exact (mem_sublevel_iff_entry _ _ _ _).mpr ⟨e, List.mem_append_left _ he, hi⟩
+
+private theorem sublevels_eq_before_filling (t : ℤ) (ht : t < 5) :
+    (gradeFilter sphere sphere_valid).sublevel t = (gradeFilter ball ball_valid).sublevel t := by
+  apply le_antisymm (sphereToBallIncl t)
+  intro s hs
+  obtain ⟨e, he, hs, ha⟩ := (mem_sublevel_iff_entry _ _ _ _).mp hs
+  rcases List.mem_append.mp he with h | h
+  · exact (mem_sublevel_iff_entry _ _ _ _).mpr ⟨e, h, hs, ha⟩
+  · obtain rfl := List.mem_singleton.mp h
+    exact False.elim (ht.not_ge ha)
+
+private theorem sphereToBallCondition (t : ℤ) : VertexMapCondition sphere ball t t id :=
+  (vertexMapCondition_iff _ _ sphere_valid ball_valid _ _ _).mpr fun s hs => by
+    rw [Finset.image_id]
+    exact sphereToBallIncl t hs
+
+private theorem sphere_to_ball_H2_rank (t : ℤ) : (homologyMapDimensions sphere ball 2 t t id).rank =
+    if 2 ≤ t ∧ t < 5 then 1 else 0 := by
+  rw [← ball_H2_length]
+  apply (homologyMapDimensions_surjective_iff sphere ball sphere_valid ball_valid 2 t t id
+    (sphereToBallCondition t)).mpr
+  change Function.Surjective
+    (simplicialHomologyMap (ZMod 2) (inclusionVertexMap (sphereToBallIncl t)) 2).hom
+  rw [simplicialHomologyMap_inclusion]
+  by_cases ht : t < 5
+  · let := simplicialHomologyIncl_isIso_of_eq (ZMod 2) (sphereToBallIncl t)
+      (sublevels_eq_before_filling t ht) 2
+    exact (ModuleCat.epi_iff_surjective _).mp inferInstance
+  · let := (sublevelCoordinates ball ball_valid 2 t).symm.finiteDimensional
+    have hz : Module.finrank (ZMod 2)
+        (simplicialHomology ((gradeFilter ball ball_valid).sublevel t) (ZMod 2) 2) = 0 := by
+      simp [sublevelHomology_finrank, ball_H2_length, ht]
+    let := Module.finrank_zero_iff.mp hz
+    intro y
+    exact ⟨0, Subsingleton.elim _ _⟩
+
+/-- Before grade five the sublevels coincide. From grade five the target has zero H₂. -/
+theorem sphere_to_ball_H2_run (t : ℤ) :
+    (runHomologyDimensions sphere ball 2 t t id).map HomologyMapDimensions.rank =
+      some (if 2 ≤ t ∧ t < 5 then 1 else 0) := by
+  have h : VertexMapInput sphere ball t t id := ⟨sphere_valid, ball_valid, sphereToBallCondition t⟩
+  simp [runHomologyDimensions, h, sphere_to_ball_H2_rank]
 
 end TDA.Persistence.Reduction.FiniteInput.DimensionExamples

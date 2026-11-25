@@ -2,6 +2,7 @@
 import TDA.Topology.Cosheaf
 import TDA.Topology.IndexedCover
 import TDA.Topology.Nerve
+import TDA.Topology.NerveThickening
 import TDA.Topology.MultiNerve
 import TDA.Topology.PathCover
 import TDA.Topology.PathComponents
@@ -17,3 +18,6 @@ import TDA.Topology.FiniteGromovProkhorov
 import TDA.Topology.MulticoverCover
 import TDA.Topology.FiniteGromovProkhorovWitness
 import TDA.Topology.QuotientProduct
+import TDA.Topology.Realization
+import TDA.Topology.SubdivisionMesh
+import TDA.Topology.ConvexNerveInclusion

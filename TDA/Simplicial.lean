@@ -11,6 +11,7 @@ import TDA.Simplicial.Attachment
 import TDA.Simplicial.Inclusion
 import TDA.Simplicial.Homology
 import TDA.Simplicial.H0Augmentation
+import TDA.Simplicial.H0EdgePaths
 import TDA.Simplicial.Cone
 import TDA.Simplicial.VertexMap
 import TDA.Simplicial.Contiguity
@@ -19,3 +20,6 @@ import TDA.Simplicial.VertexChainMap
 import TDA.Simplicial.ContiguityHomotopy
 import TDA.Simplicial.ArbitraryApexCone
 import TDA.Simplicial.BarycentricHomology
+import TDA.Simplicial.Collapse
+import TDA.Simplicial.CollapseHomology
+import TDA.Simplicial.CollapseCertificate

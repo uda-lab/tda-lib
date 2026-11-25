@@ -83,6 +83,13 @@ $$
 d_I(M_g,M_h)\le\delta.
 $$
 
+The same error bounds the rank erosion distance
+(`rankErosionDistance_finiteSimplicialHomology_le_supGradeError`), and a
+failed erosion test at $\varepsilon$ gives
+$\varepsilon<d_E\le d_I\le\delta$
+(`finiteSimplicialHomology_rankErosion_failure_certificate`); see
+[finite graded simplicial homology](rank-erosion.md#finite-graded-simplicial-homology).
+
 For $n\ge1$, the derived finite presentations define the canonical signed
 hook barcodes $B_g,B_h$. Applying the existing
 [signed hook stability theorem](../api.md#signed-hook-bottleneck-stability)

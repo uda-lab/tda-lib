@@ -1,4 +1,12 @@
-import Mathlib
+import Mathlib.LinearAlgebra.Matrix.PosDef
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.InnerProductSpace.ProdL2
+import Mathlib.Analysis.Normed.Ring.InfiniteSum
+import Mathlib.Analysis.SpecialFunctions.Exponential
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Data.Finsupp.Basic
+import Mathlib.Tactic.Positivity
 
 /-!
 # Positive semidefinite Gaussian Gram matrices over arbitrary index types

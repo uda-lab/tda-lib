@@ -180,10 +180,11 @@ theorem rankErosionDistance_le_of_erosion {ε : ℝ≥0}
     (h : RankErosion ε M N) : rankErosionDistance M N ≤ ε :=
   iInf₂_le ε h
 
-theorem rankErosionDistance_self (M : PModule.{u,0,u} k (Fin n → ℝ))
-    [∀ p, FiniteDimensional k (M.obj p)] : rankErosionDistance M M = 0 :=
+theorem rankErosionDistance_self (M : PModule.{u,0,u} k (Fin n → ℝ)) :
+    rankErosionDistance M M = 0 :=
   nonpos_iff_eq_zero.1 (by simpa using
-    (rankErosionDistance_le_of_erosion (RankErosion.refl 0 M)))
+    (rankErosionDistance_le_of_erosion (rankErosion_zero_iff.mpr fun _ _ _ => rfl :
+      RankErosion 0 M M)))
 
 theorem rankErosionDistance_comm (M N : PModule.{u,0,u} k (Fin n → ℝ)) :
     rankErosionDistance M N = rankErosionDistance N M :=
@@ -196,5 +197,19 @@ theorem rankErosionDistance_triangle (M N P : PModule.{u,0,u} k (Fin n → ℝ))
   intro ε h δ j
   simpa only [ENNReal.coe_add] using
     (rankErosionDistance_le_of_erosion (h.trans j))
+
+open CategoryTheory in
+/-- Rank erosion depends only on the isomorphism classes of the two modules. -/
+theorem rankErosion_iff_of_iso {ε : ℝ≥0} {M M' N N' : PModule.{u,0,u} k (Fin n → ℝ)}
+    (e : M ≅ M') (f : N ≅ N') : RankErosion ε M N ↔ RankErosion ε M' N' := by
+  unfold RankErosion
+  simp only [rankOfStructureMap_iso _ e, rankOfStructureMap_iso _ f]
+
+open CategoryTheory in
+/-- The erosion distance depends only on the isomorphism classes of the two modules. -/
+theorem rankErosionDistance_eq_of_iso {M M' N N' : PModule.{u,0,u} k (Fin n → ℝ)}
+    (e : M ≅ M') (f : N ≅ N') : rankErosionDistance M N = rankErosionDistance M' N' := by
+  unfold rankErosionDistance
+  simp only [rankErosion_iff_of_iso e f]
 
 end TDA.Persistence

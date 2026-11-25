@@ -74,7 +74,10 @@ private def paddedRelation {α β : Type} (P : α → Prop) (Q : β → Prop)
 
 /-- Two relation-preserving injections on the selected occurrences determine
 one partial occurrence matching that covers every selected occurrence on
-both sides. -/
+both sides.
+
+The occurrence types `α` and `β` are taken in `Type` (universe zero), although
+`OccurrenceMatching` is universe-polymorphic: the proof pads both sides with `ℕ`. -/
 theorem exists_two_sided {α β : Type} [Fintype α] [Fintype β]
     (P : α → Prop) (Q : β → Prop) (r : α → β → Prop)
     (f : {a // P a} → β) (hf : Injective f) (hfr : ∀ a, r a.val (f a))

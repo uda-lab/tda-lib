@@ -1,4 +1,19 @@
 import TDA.Persistence.AdditiveFeatures
+import Mathlib.Probability.Distributions.Gaussian.Real
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Analysis.Complex.Exponential
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
+import Mathlib.MeasureTheory.Group.Integral
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.Prod
+import Mathlib.Algebra.Notation.Indicator
+import Mathlib.Order.Interval.Set.Defs
+import Mathlib.Algebra.Group.Defs
+import Mathlib.Algebra.Order.Group.Unbundled.Abs
 
 /-!
 # Gaussian densities for persistence images

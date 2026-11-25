@@ -32,13 +32,16 @@ a PR is claiming:
 
 The additional private audit selects non-reserved private theorem roots, excluding field
 projections. It conservatively includes non-reserved generated proof helpers, because Lean's
-public classifier also uses lexical heuristics that can match hand-written private names. These roots need no explicit pins:
-their transitive axioms are checked here against `propext`, `Classical.choice`, and `Quot.sound`
-only when they are outside the union of pinned dependency closures. Already reached private
-helpers remain covered by the live audit. Computational `#eval` results are not theorem
-claims and do not become additional audit roots. Generated declarations can still be traversed
-as dependencies; they do not need blanket pins. This checks elaborated theorem trust, not
-computational test correctness or every arbitrary definition/axiom outside theorem closures.
+public classifier also uses lexical heuristics that can match hand-written private names. These
+roots need no explicit pins: every one of them has its own transitive axioms checked here,
+directly, against `propext`, `Classical.choice`, and `Quot.sound` with Lean's own axiom
+collector (`#949`: no pinned-dependency-closure walk is computed first to exclude roots a
+public pin already reaches transitively — auditing every root directly is a strict superset of
+that older check and removes the closure walk's cost). Computational `#eval` results are not
+theorem claims and do not become additional audit roots. Generated declarations can still be
+traversed as dependencies by the live audit on a public pin that reaches them; they do not need
+blanket pins themselves. This checks elaborated theorem trust, not computational test
+correctness or every arbitrary definition/axiom outside theorem closures.
 
 That is the whole list for public pinning. `instance` declarations are deliberately NOT excluded: a
 hand-proved `instance : SomePropClass … := proof` in a project module is a claimed result
@@ -46,38 +49,50 @@ and must be pinned; typeclass resolution at call sites never creates a new named
 declaration in this project's own modules, so there is no auto-derived category to skip.
 Iterate this list, not the caller, if a false positive or negative shows up.
 
+The scan walks only the constants declared in `TDA`-prefixed modules, found via each
+loaded module's own `ModuleData.constNames`/`.constants` (parallel arrays, already
+populated by `import TDA`), not every constant in the environment: that environment also
+holds Mathlib's own ~9000 modules, and the old per-constant `env.getModuleIdxFor?` check
+to filter them out was itself the scan's dominant cost (measured on #949's follow-up).
+Module membership is therefore established once per module, not once per declaration.
+
 A prerequisite the whole walk depends on: `import TDA` must load every
 `TDA/**/*.lean` file, directly or transitively, or that file's declarations never
-reach `(← getEnv).constants` and every check passes vacuously for its content. So this file
-also discovers every `.lean` file on disk under `TDA/` and fails if any of them is
-not among `env.header.moduleNames` — the set this run's `import TDA` actually
-loaded, not a static read of the root aggregator's import list (so a file reachable only
-from a forgotten nested aggregator is caught too).
+reach a `TDA`-prefixed module's `ModuleData` and every check passes vacuously for its
+content. So this file also discovers every `.lean` file on disk under `TDA/` and fails
+if any of them is not among `env.header.moduleNames` — the set this run's `import TDA`
+actually loaded, not a static read of the root aggregator's import list (so a file
+reachable only from a forgotten nested aggregator is caught too).
+
+Additive for Issue #951 (the incremental local gate): this file also writes
+`.agents/scratch/full-gate-module-audit.json`, a per-module breakdown (`public` and
+`declared` theorem-name arrays, plus a `clean` array of every PINNED name belonging to that
+module of any declaration kind — a pin is not always a theorem) of exactly the same
+classification this file already computes, plus membership in `pinned` it already reads — no
+new environment load, no new check, no change to any existing printed line or to the
+pass/fail decision. Only `scripts/check-incremental.sh` reads it, and only after this file
+and `scripts/check-axioms.sh` have both already exited zero in the same run (i.e. only once
+the whole-library guarantee this file and that script already establish is known to hold,
+`clean` membership included: `check-axioms.sh` already ran `#print axioms` on every pin), to
+refresh per-module incremental-audit records without a second environment load. Plain
+`scripts/check.sh` (no flag) and `--stable` never read it.
 
 `scripts/rename-project.sh` rewrites every `TDA` occurrence in this file.
 -/
 import TDA
 import Lean.Util.CollectAxioms
+import Lean.Data.Json
 
 open Lean System
 
-/-- `n` was declared in a module named `TDA`, or a submodule of it
-(`TDA.Foo.Bar`, the root aggregator `TDA`, etc). -/
-private def isProjectModule (env : Environment) (n : Name) : Bool :=
-  match env.getModuleIdxFor? n with
-  | some idx =>
-    match env.header.moduleNames[idx.toNat]? with
-    | some modName => (`TDA).isPrefixOf modName
-    | none => false
-  | none => false
-
 /-- `n`/`info` is a public theorem this repository must pin in
-`scripts/print_axioms/*.lean`. -/
+`scripts/print_axioms/*.lean`. Callers already restrict to names declared in a `TDA`
+module — by iterating that module's own `ModuleData` (see the scan below) rather than
+every constant in the environment — so no module-membership check is repeated here. -/
 private def isPublicProjectTheorem (env : Environment) (n : Name) (info : ConstantInfo) :
     CoreM Bool := do
   match info with
   | .thmInfo _ =>
-    if !isProjectModule env n then return false
     if (← isAutoDeclOrPrivate_Internal n) then return false
     if env.isProjectionFn n then return false
     return true
@@ -87,66 +102,36 @@ private def isPublicProjectTheorem (env : Environment) (n : Name) (info : Consta
 Do not apply `isAutoDeclOrPrivate_Internal` to the unmangled name: its lexical
 `proof_`/`match_` heuristics can also match hand-written claims. We conservatively
 retain non-reserved generated helpers; they need no pins, but cannot hide forbidden
-axioms. Reserved theorem names and field projections are mechanical declarations. -/
+axioms. Reserved theorem names and field projections are mechanical declarations.
+Module membership is the caller's responsibility, as above. -/
 private def isPrivateProjectTheorem (env : Environment) (n : Name) (info : ConstantInfo) :
     CoreM Bool := do
   match info with
   | .thmInfo _ =>
-    if !isProjectModule env n then return false
     let some _ := privateToUserName? n | return false
     if isReservedName env n then return false
     if env.isProjectionFn n then return false
     return true
   | _ => return false
 
-/-- The exact expression/constructor edges of Lean 4.35.0's axiom collector.
-A generic declaration-usage helper also adds recursor-family edges; those extra edges
-must not cause a private proof to be treated as already axiom-audited. Quotient primitives
-have no outgoing collector edges. Theorems and opaque declarations include their bodies. -/
-private def axiomCollectorDependencies (info : ConstantInfo) : Array Name := Id.run do
-  if let .quotInfo _ := info then return #[]
-  let mut deps := info.type.getUsedConstants
-  if let some value := info.value? (allowOpaque := true) then
-    deps := deps ++ value.getUsedConstants
-  if let .inductInfo value := info then
-    deps := deps ++ value.ctors.toArray
-  return deps
-
-/-- Every declaration in the transitive dependency closure of the explicit pins.
-Walk imported dependencies too: no namespace shortcut or assumption about dependency
-ownership is needed. Each declaration's expression is inspected at most once. -/
-private partial def pinnedDependencyClosure (env : Environment) (roots : Array Name) :
-    Std.HashSet Name := Id.run do
-  let mut seen : Std.HashSet Name := {}
-  let mut pending := roots
-  while !pending.isEmpty do
-    let n := pending.back!
-    pending := pending.pop
-    unless seen.contains n do
-      seen := seen.insert n
-      if let some info := env.checked.get.find? n then
-        pending := pending ++ axiomCollectorDependencies info
-  return seen
-
 /-- Keep the existing live audit's exact trust policy. `#eval` computations are not
 claims: only theorem declarations selected above are additional audit roots. -/
 private def allowedAxiom (n : Name) : Bool :=
   n == ``propext || n == ``Classical.choice || n == ``Quot.sound
 
-/-- Audit private claims outside the pinned closure with Lean's own axiom collector.
-Private claims inside it are already checked transitively by `check-axioms.sh`. -/
-private def auditPrivateTheorems (claims : Array Name) (covered : Std.HashSet Name) :
-    CoreM (Nat × Nat) := do
-  let mut additional := 0
+/-- Audit every private claim directly with Lean's own axiom collector (`collectAxioms`,
+the same primitive `#print axioms` uses). No pinned-dependency-closure walk precedes this:
+a root already reachable from a public pin is checked both here and, transitively, by the
+live audit on that pin — redundant but never unsound, and this is what removes the closure
+walk's cost (#949). -/
+private def auditPrivateTheorems (claims : Array Name) : CoreM Nat := do
   let mut failures := 0
   for n in claims.qsort (fun a b => a.toString < b.toString) do
-    unless covered.contains n do
-      additional := additional + 1
-      let forbidden := (← collectAxioms n).filter (!allowedAxiom ·)
-      unless forbidden.isEmpty do
-        failures := failures + 1
-        IO.println s!"PRIVATE AXIOM FAILURE: {privateToUserName n} ({n}) depends on {forbidden}"
-  return (additional, failures)
+    let forbidden := (← collectAxioms n).filter (!allowedAxiom ·)
+    unless forbidden.isEmpty do
+      failures := failures + 1
+      IO.println s!"PRIVATE AXIOM FAILURE: {privateToUserName n} ({n}) depends on {forbidden}"
+  return failures
 
 /-- Every `.lean` file under `dir`, recursively. -/
 private partial def collectLeanFiles (dir : System.FilePath) : IO (Array System.FilePath) := do
@@ -174,24 +159,22 @@ private def findUnloadedFiles (loadedModules : Std.HashSet String) :
   let files ← collectLeanFiles "TDA"
   return files.filter fun f => !loadedModules.contains (moduleStringOfPath f)
 
-/-- The declaration names pinned by `#print axioms <name>` lines in `path`, under the exact
+/-- The declaration names pinned by `#print axioms <name>` lines, under the exact
 same extraction rule `scripts/check-axioms.sh` uses (`awk '/^#print axioms /{print $3}'`):
 the line must start with the literal, unindented text `#print axioms ` — not merely contain it
 after trimming. A line inside a block comment, or indented, is never a real `#print axioms`
 command as far as Lean or that audit are concerned, so this walk must not treat it as pinned
 either; doing so would let the coverage guard pass while the live audit never actually checks
 the name. -/
-private def readPinnedNames (path : System.FilePath) : IO (Std.HashSet String) := do
-  let contents ← IO.FS.readFile path
+private def pinnedNames (contents : String) : List String :=
   let prefix' := "#print axioms "
-  let names := (contents.splitOn "\n").filterMap fun line =>
+  (contents.splitOn "\n").filterMap fun line =>
     if line.startsWith prefix' then
-      match (line.drop prefix'.length).toString.splitOn " " |>.filter (· ≠ "") with
+      match ((line.drop prefix'.length).toString.replace "\t" " ").splitOn " " |>.filter (· ≠ "") with
       | name :: _ => some name
       | [] => none
     else
       none
-  return Std.HashSet.ofList names
 
 /-- Union the pin names in every area file, including future areas. -/
 private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String) := do
@@ -200,51 +183,120 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
   for entry in (← dir.readDir) do
     if entry.path.extension == some "lean" && !(← entry.path.isDir) then
       count := count + 1
-      for name in (← readPinnedNames entry.path).toList do
+      for name in pinnedNames (← IO.FS.readFile entry.path) do
         names := names.insert name
   if count == 0 then
     throw <| IO.userError s!"no Lean pin files in {dir}"
   return names
 
-/-- Resolve exact printed pin names without rendering every imported declaration name.
-Unresolvable or non-canonical entries confer no private coverage; the live axiom audit
-separately rejects invalid commands. This preserves the former `n.toString` membership
-rule, including the fact that an alias is not a pin of a differently named declaration. -/
-private def resolvePinnedRoots (env : Environment) (pinned : Std.HashSet String) : Array Name :=
-  Id.run do
-    let mut roots := #[]
-    for text in pinned.toList do
-      if let .ok stx := Parser.runParserCategory env `command s!"#print axioms {text}" then
-        let n := stx[2].getId
-        if n.toString == text && (env.checked.get.find? n).isSome then
-          roots := roots.push n
-    return roots
+/-- Compare the union of the working pins with the integration merge base in the already
+loaded environment. Advisory output is plain text so warning-as-error cannot fail the audit. -/
+private def reportPrivatePinTypes (env : Environment) (pinned : Std.HashSet String)
+    (base : String) : IO Unit := do
+  let label := "PIN TYPE ADVISORY"
+  if base.isEmpty then
+    IO.println s!"{label}: skipped (integration merge base unavailable)"
+    return
+  try
+    let dir := s!"{base}:scripts/print_axioms"
+    let files ← IO.Process.run { cmd := "git", args := #["ls-tree", "-z", "--name-only", dir] }
+    let areas := (files.splitOn "\x00").filter (·.endsWith ".lean")
+    if areas.isEmpty then
+      throw <| IO.userError "no area pin files"
+    let mut previous : Std.HashSet String := {}
+    for area in areas do
+      let contents ← IO.Process.run { cmd := "git", args := #["show", s!"{dir}/{area}"] }
+      for name in pinnedNames contents do
+        previous := previous.insert name
+    for name in (pinned.toList.filter (!previous.contains ·)).mergeSort do
+      let some info := env.find? name.toName | do
+        IO.println s!"{label}: incomplete (cannot resolve new pin {name})"
+        continue
+      unless isPrivateName info.name do
+        let refs := (info.type.getUsedConstants.filter isPrivateName).toList.map Name.toString
+        unless refs.isEmpty do
+          IO.println s!"{label}: {name} mentions private {String.intercalate ", " refs.mergeSort}; try restating it from the area import."
+  catch _ =>
+    IO.println s!"{label}: skipped (cannot read comparison pin files at {base})"
 
 #eval show CoreM Unit from do
+  let t0 ← IO.monoMsNow
   let env := (← getEnv).setExporting false
   let loadedModules : Std.HashSet String := Std.HashSet.ofList (env.header.moduleNames.toList.map (·.toString))
   let unloaded ← findUnloadedFiles loadedModules
   let pinned ← readAllPinnedNames "scripts/print_axioms"
+  if let some base ← IO.getEnv "TDA_PIN_ADVISORY_BASE" then
+    reportPrivatePinTypes env pinned base
+  let t1 ← IO.monoMsNow
   let mut total : Nat := 0
   let mut missing : Array String := #[]
-  let roots := resolvePinnedRoots env pinned
   let mut privateClaims : Array Name := #[]
-  for (n, info) in env.constants.toList do
-    if let .thmInfo _ := info then
-      -- Imported mathlib declarations dominate this environment. Classify project
-      -- provenance once before invoking either project theorem predicate.
-      if isProjectModule env n then
-        if (← isPrivateProjectTheorem env n info) then
-          privateClaims := privateClaims.push n
-        if (← isPublicProjectTheorem env n info) then
-          total := total + 1
-          let name := n.toString
-          unless pinned.contains name do
-            missing := missing.push name
-  let covered := pinnedDependencyClosure env roots
-  IO.println s!"PINNED CLOSURE — {roots.size} roots, {covered.size} declarations"
-  let (additional, privateFailures) ← auditPrivateTheorems privateClaims covered
-  IO.println s!"PRIVATE AUDIT — {privateClaims.size} roots, {privateClaims.size - additional} already in pinned closures, {additional} additionally checked"
+  -- §#951 side-car accumulators: populated inline below using each module's own `modIdx`-
+  -- derived name. Never a second `getModuleIdxFor?` lookup per constant — that per-constant
+  -- lookup is exactly what the `ModuleData` restructuring below removed (see its comment);
+  -- reintroducing it here to resolve a module name would silently undo that fix. `clean`
+  -- records every PINNED name (any declaration kind — a pin is not always a theorem: e.g.
+  -- TDA.Topology.Refinement is a structure, TDA.Persistence.dgm._proof_1 is an
+  -- auto-generated auxiliary) found in this module; it needs no fresh axiom check of its
+  -- own here because the live audit (scripts/check-axioms.sh) already ran `#print axioms`
+  -- on every pin, unconditionally, earlier in the same full-gate run that writes this
+  -- side-car — this is pure bookkeeping of what that audit already verified, grouped by
+  -- module for scripts/check-incremental.sh's per-module records.
+  let mut perModulePublic : Std.HashMap String (Array String) := {}
+  let mut perModuleDeclared : Std.HashMap String (Array String) := {}
+  let mut perModuleClean : Std.HashMap String (Array String) := {}
+  -- Iterate only the constants declared in TDA's own modules, via each module's own
+  -- `ModuleData`, instead of every constant in the environment (Mathlib's ~9000
+  -- modules dominate `env.constants`, which made the old per-constant
+  -- `env.getModuleIdxFor?` check the scan's real cost). `moduleData[i].constNames`
+  -- and `.constants` are parallel arrays already populated by `import TDA`; no
+  -- separate environment lookup is needed per declaration.
+  for modIdx in [0:env.header.moduleData.size] do
+    if (`TDA).isPrefixOf env.header.moduleNames[modIdx]! then
+      let modStr := env.header.moduleNames[modIdx]!.toString  -- §#951: already known, no lookup
+      let data := env.header.moduleData[modIdx]!
+      for i in [0:data.constNames.size] do
+        let n := data.constNames[i]!
+        let info := data.constants[i]!
+        let name := n.toString
+        if pinned.contains name then
+          perModuleClean := perModuleClean.insert modStr
+            ((perModuleClean.getD modStr #[]).push name)
+        if let .thmInfo _ := info then
+          if (← isPrivateProjectTheorem env n info) then
+            privateClaims := privateClaims.push n
+            perModuleDeclared := perModuleDeclared.insert modStr
+              ((perModuleDeclared.getD modStr #[]).push name)
+          if (← isPublicProjectTheorem env n info) then
+            total := total + 1
+            unless pinned.contains name do
+              missing := missing.push name
+            perModuleDeclared := perModuleDeclared.insert modStr
+              ((perModuleDeclared.getD modStr #[]).push name)
+            perModulePublic := perModulePublic.insert modStr
+              ((perModulePublic.getD modStr #[]).push name)
+  let t2 ← IO.monoMsNow
+  let privateFailures ← auditPrivateTheorems privateClaims
+  let t3 ← IO.monoMsNow
+  -- §#951 side-car: a per-module breakdown of the same names already classified above.
+  -- Written unconditionally (before the pass/fail decision below) so a caller can refresh
+  -- incremental-audit records for exactly the modules this run covered, whether or not this
+  -- run's own pass/fail decision ultimately succeeds — a caller only ever reads this file
+  -- after confirming (from this process's own exit code) that the run passed.
+  let moduleNames :=
+    (perModuleDeclared.toList.map Prod.fst ++ perModulePublic.toList.map Prod.fst
+      ++ perModuleClean.toList.map Prod.fst)
+    |>.foldl (fun (s : Std.HashSet String) n => s.insert n) {} |>.toList
+  let modulesJson := Json.mkObj (moduleNames.map fun modStr =>
+    (modStr, Json.mkObj [
+      ("public", Json.arr ((perModulePublic.getD modStr #[]).map Json.str)),
+      ("declared", Json.arr ((perModuleDeclared.getD modStr #[]).map Json.str)),
+      ("clean", Json.arr ((perModuleClean.getD modStr #[]).map Json.str))
+    ]))
+  IO.FS.createDirAll ".agents/scratch"
+  IO.FS.writeFile ".agents/scratch/full-gate-module-audit.json" (Json.mkObj [("modules", modulesJson)]).compress
+  IO.println s!"COVERAGE TIMING — setup (unloaded files + pins): {t1 - t0} ms, scan constants: {t2 - t1} ms, private audit: {t3 - t2} ms, total: {t3 - t0} ms"
+  IO.println s!"PRIVATE AUDIT — {privateClaims.size} private theorem root(s), each audited directly with collectAxioms"
   for f in unloaded do
     IO.println s!"UNLOADED: {f} (module {moduleStringOfPath f} is not reachable from 'import TDA' — its declarations were never checked)"
   for name in missing.qsort (· < ·) do

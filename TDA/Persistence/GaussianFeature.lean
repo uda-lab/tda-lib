@@ -1,4 +1,9 @@
 import TDA.Persistence.GaussianGram
+import Mathlib.Analysis.InnerProductSpace.Reproducing
+import Mathlib.Analysis.InnerProductSpace.Reproducing.Operations
+import Mathlib.Analysis.InnerProductSpace.Adjoint
+import Mathlib.Analysis.SpecialFunctions.Exp
+import Mathlib.Algebra.Order.Ring.Abs
 
 /-!
 # Gaussian kernel functions and their distance bound

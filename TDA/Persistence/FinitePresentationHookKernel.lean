@@ -228,12 +228,6 @@ def embeddedGenerators (G : CoordinateGrid n)
 
 end CoordinateGrid
 
-namespace GradedFree
-
-set_option maxHeartbeats 400000
-
-end GradedFree
-
 namespace CoordinateGrid
 
 open CategoryTheory.Limits

@@ -38,7 +38,7 @@ run_case() {
   fi
   # The production checker runs unchanged, including disk/import reachability and pin
   # discovery, against genuine imported module metadata and kernel declarations.
-  fixture_lean scripts/check_axiom_coverage.lean > "$tmp/check.log" 2>&1 || status=$?
+  fixture_lean -DwarningAsError=true scripts/check_axiom_coverage.lean > "$tmp/check.log" 2>&1 || status=$?
   if { [ "$expected" = pass ] && [ "$status" -ne 0 ]; } || \
      { [ "$expected" = fail ] && [ "$status" -eq 0 ]; } || \
      ! rg -F -- "$pattern" "$tmp/check.log" >/dev/null; then
@@ -47,7 +47,7 @@ run_case() {
     exit 1
   fi
   echo "PASS [$name]"
-  rg '^PINNED CLOSURE|^PRIVATE AUDIT|^COVERAGE OK|^PRIVATE AXIOM FAILURE:' "$tmp/check.log"
+  rg '^COVERAGE TIMING|^PRIVATE AUDIT|^COVERAGE OK|^PRIVATE AXIOM FAILURE:' "$tmp/check.log"
 }
 
 # The public root reaches one private proof. The others must be independently audited;
@@ -63,9 +63,48 @@ private theorem classicalAllowed (p : Prop) : p ∨ ¬p := Classical.em p
 private instance privatePropInstance : Nonempty Unit := ⟨()⟩
 #eval (2 : Nat) + 2
 LEAN
-if ! rg -F '6 roots, 1 already in pinned closures, 5 additionally checked' "$tmp/check.log" >/dev/null; then
+if ! rg -F '6 private theorem root(s), each audited directly with collectAxioms' "$tmp/check.log" >/dev/null; then
   cat "$tmp/check.log" >&2
-  echo 'FAIL [allowed]: private classification or pinned dependency closure changed' >&2
+  echo 'FAIL [allowed]: private root classification changed' >&2
+  exit 1
+fi
+printf '%s\n' 'import TDA' > "$tmp/scripts/print_axioms/Fixture.lean"
+
+# The same private helper appears in both theorem types. Only the globally new pin
+# should produce a single worker-facing line, including when warnings are errors.
+git -C "$tmp" init -q
+printf '%s\n' '#print axioms AxiomAuditFixture.existing' > "$tmp/scripts/print_axioms/Former.lean"
+git -C "$tmp" add -f scripts/print_axioms/Former.lean
+pin_base="$(git -C "$tmp" write-tree)"
+rm "$tmp/scripts/print_axioms/Former.lean"
+printf 'import TDA\n#print axioms AxiomAuditFixture.existing\n#print axioms \tAxiomAuditFixture.fresh\t-- new\n' \
+  > "$tmp/scripts/print_axioms/Éxamples.lean"
+TDA_PIN_ADVISORY_BASE="$pin_base" run_case pin_type_advisory pass 'COVERAGE OK — 2 public theorems, all pinned' <<'LEAN'
+private def hidden : Nat := 1
+theorem existing : hidden = 1 := rfl
+theorem fresh : hidden = 1 := rfl
+LEAN
+if [ "$(grep -c '^PIN TYPE ADVISORY:' "$tmp/check.log")" != 1 ] || \
+   ! grep -Eq '^PIN TYPE ADVISORY: AxiomAuditFixture.fresh mentions private .*AxiomAuditFixture.hidden;' "$tmp/check.log"; then
+  cat "$tmp/check.log" >&2
+  echo 'FAIL [pin_type_advisory]: expected one direct-reference advisory for the new pin' >&2
+  exit 1
+fi
+rm "$tmp/scripts/print_axioms/Éxamples.lean"
+
+# #949: coverage no longer computes a pinned-dependency closure to skip a private root
+# just because a public pin already reaches it. A `sorryAx` in such a root — one that
+# would have been "inside the pinned closure" under the old design, and so skipped by
+# this checker, relying only on the live audit of the public pin to catch it
+# transitively — must still fail coverage directly, on its own, here.
+printf '%s\n' 'import TDA' '#print axioms AxiomAuditFixture.publicRootOverSorry' > "$tmp/scripts/print_axioms/Fixture.lean"
+run_case forbidden_private_in_closure fail 'PRIVATE AXIOM FAILURE: AxiomAuditFixture.reachedBySorry' <<'LEAN'
+private theorem reachedBySorry : True := by sorry
+theorem publicRootOverSorry : True := reachedBySorry
+LEAN
+if ! rg -F 'sorryAx' "$tmp/check.log" >/dev/null; then
+  cat "$tmp/check.log" >&2
+  echo 'FAIL [forbidden_private_in_closure]: sorryAx not reported for a root reachable from a public pin' >&2
   exit 1
 fi
 printf '%s\n' 'import TDA' > "$tmp/scripts/print_axioms/Fixture.lean"

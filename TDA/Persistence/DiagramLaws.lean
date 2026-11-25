@@ -1,4 +1,8 @@
 import TDA.Persistence.Diagram
+import Mathlib.Algebra.Order.Group.Multiset
+import Mathlib.Data.Fin.Tuple.Basic
+import Mathlib.Data.Finset.Insert
+import Mathlib.Data.Finset.Image
 
 universe u
 namespace TDA.Persistence

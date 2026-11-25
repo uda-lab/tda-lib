@@ -88,7 +88,63 @@ independent consumer, not a completion condition. The first stable release need 
 all Project milestones. Do not invent dates or infer serial execution from milestone order;
 dot establishes dependencies and release scope from actual mathematical decisions.
 
+## Prerequisites
+
+The repository vendors four skills under `.agents/skills/`, with compatibility links under
+`.claude/skills/`. The companion skills `github-loop-engineering`, `github-driven-workflow`
+and `lean-formalization-discipline` come from `t-uda/skills` and are installed per host;
+`scripts/preflight.sh` reports which are present. A host without them reads them from that
+source. `REVIEW_ACQUIRE_SCRIPT` and the `codex` and `gh` CLIs are host properties as well.
+[lean-review-routing](../.agents/skills/lean-review-routing/SKILL.md) gives the review route
+for a host that lacks one of them, and [Claude Code cloud setup](claude-cloud-setup.md)
+covers hosted sessions.
+
 ## Commands and gates
+
+The pre-push hook binds each update to the current HEAD commit and requires a clean tracked
+index/worktree plus no untracked build-relevant source. Before diffing, it rejects tracked
+paths with a set or named Git `filter` attribute, and blocks if `filter.unset` or
+`filter.unspecified` clean/process drivers make the attribute result ambiguous. Clean filters
+can hide raw worktree changes. Annotated tags are peeled before comparison; tag updates,
+updates to main, a main
+checkout and explicit stable mode run the full stable gate. Tag deletions and deletion-only
+pushes skip source validation. Manual hook
+invocation validates HEAD against origin/develop, falling back to origin/main; an unavailable
+base or failed path diff selects the full applicable gate. The hook and hosted CI share the
+same NUL-safe path classifier.
+
+The local pre-push coverage pass reports `PIN TYPE ADVISORY` for a newly pinned
+public declaration whose elaborated type directly mentions a private constant. It
+compares pin names across all area files at the integration merge base. Try restating
+the declaration from its area import to assess the client impact. Scoped instances
+can also require a client test. These diagnostics leave the gate status unchanged.
+
+Issue #982 adds an opt-in remote executor for ordinary gate-required pushes. The default
+remains local. Enable an adapter only in this clone's Git config with
+`git config --local tda.remoteGate.adapter /absolute/path/to/trusted-adapter`; the resolved
+executable must be outside every worktree and the common Git directory. The hook consults
+this setting only for ordinary pushes that need a gate. Stable/tag/main updates, deletions
+and prose-only pushes keep their existing paths. A configured adapter failure blocks the
+push and never falls back to a local pass.
+
+The adapter receives four argv values in order: request JSON, Git source bundle, result JSON
+and gate log. It must supervise transport and invoke
+`python3 -I <exact-checkout>/scripts/lib/remote-gate.py receive --checkout <dedicated-clean-checkout> --request <request> --bundle <bundle> --result <result> --log <log>`.
+The receiver requires the requested exact commit in that already-prepared checkout and never
+resets it. It verifies raw tracked bytes, index entries/modes/flags, branch identity, bundle
+digest, gate-source identity and a fresh one-use request ID; it holds the canonical resource
+locks through before/after checks and the canonical gate. The result binds the actual gate
+exit and returned log digest. The request timeout defaults to two hours and is capped at two
+hours; `TDA_REMOTE_GATE_TIMEOUT_SECONDS` is an external runtime override for bounded testing
+or a measured executor limit. The receiver honors `/tmp/codex-stop` and `CODEX_STOP_FILE`.
+
+The adapter and executor are trusted transport and execution endpoints, not cryptographic
+attestation. Keep their addresses, credentials and provisioning only in machine-local
+configuration. The adapter must cancel or await its receiver when transport times out; the
+receiver terminates only its own gate process group and never claims to clean detached
+remote descendants. A remote pass is pre-push feedback, not merge evidence: hosted CI's full
+`check` on the evaluated PR head remains authoritative. Protocol fixtures use stub gates and
+do not count as Lean or sandbox validation.
 
 `scripts/bootstrap.sh` prepares caches and hooks; `scripts/check.sh` is the full integrity
 gate. `scripts/github-setup.sh` is the broad labels/settings/protection bootstrap; do not run
@@ -97,8 +153,9 @@ the approved fields. Develop needs squash and merge methods for its two integrat
 main uses merge commits. Preserve protections and the existing workflow triggers and
 conditional steps. Ordinary PR and integration pushes run CI; do not suppress them with
 CI-skip markers. Prose-only changes use focused local checks and the workflow's lightweight
-path. Implementation changes retain the full guarded local check and applicable hosted
-build/audit. Optional documentation generation and the note lane retain their own conditions.
+path. Implementation changes run the incremental local gate; the full gate is authoritative
+in hosted CI on the evaluated PR head. Optional documentation generation and the note lane
+retain their own conditions.
 Review acquisition and merge evidence follow `github-driven-workflow`; review disposition
 follows `lean-review-routing`. All review findings are observed and resolved or disposed of.
 No unsolicited notifications; authorized reports and the Issue/PR record are unaffected.

@@ -192,6 +192,70 @@ if [ "$hits" -ne 1 ]; then echo "FAIL [stable:marked_axiom]: expected one declar
 
 if [ "$fail" -eq 0 ]; then echo "guard lexer self-test OK ($n cases)"; else exit 1; fi
 
+# --- no-bare-Mathlib-import guard (scripts/check-no-bare-mathlib-import.sh) -----------------
+# Runs the real guard against a throwaway TDA/ tree, with the shared lexer it now depends on
+# (scripts/lean-code-scan.awk, mode=imports) copied alongside it.
+bfail=0; bn=0
+bare_case() {  # bare_case <name> <want: 0 pass | 1 fail> <<'EOF' Lean source EOF
+  local name="$1" want="$2" d="$tmp/bare-mathlib-$1" got
+  mkdir -p "$d/TDA" "$d/scripts"
+  cat > "$d/TDA/Fixture.lean"
+  cp scripts/check-no-bare-mathlib-import.sh scripts/lean-code-scan.awk "$d/scripts/"
+  bn=$((bn + 1))
+  if (cd "$d" && bash scripts/check-no-bare-mathlib-import.sh > /dev/null 2>&1); then got=0; else got=1; fi
+  if [ "$got" -ne "$want" ]; then
+    echo "FAIL [bare-mathlib:$name]: want exit $want got $got"; bfail=1
+  fi
+}
+bare_case bare_import 1 <<'EOF'
+import Mathlib
+
+theorem t : True := trivial
+EOF
+bare_case bare_import_trailing_comment 1 <<'EOF'
+import Mathlib -- needed for tactics
+
+theorem t : True := trivial
+EOF
+bare_case bare_import_in_block_comment_boundary 1 <<'EOF'
+import/- -/Mathlib
+
+theorem t : True := trivial
+EOF
+bare_case narrow_import 0 <<'EOF'
+import Mathlib.Order.Basic
+
+theorem t : True := trivial
+EOF
+bare_case narrow_import_with_mathlib_substring 0 <<'EOF'
+import Mathlib.Tactic.MathlibExtras
+
+theorem t : True := trivial
+EOF
+bare_case mathlib_mentioned_in_comment 0 <<'EOF'
+-- import Mathlib would pull in every module; don't.
+import Mathlib.Order.Basic
+
+theorem t : True := trivial
+EOF
+bare_case bare_import_in_block_comment 0 <<'EOF'
+/- import Mathlib -/
+import Mathlib.Order.Basic
+
+theorem t : True := trivial
+EOF
+# A lexer failure (unreadable source) must abort non-zero, not report a clean scan: the
+# guard's fail-closed design relies on nothing swallowing that exit code.
+bn=$((bn + 1))
+d="$tmp/bare-mathlib-unreadable"; mkdir -p "$d/TDA" "$d/scripts"
+printf 'import Mathlib\n' > "$d/TDA/Fixture.lean"
+chmod 000 "$d/TDA/Fixture.lean"
+cp scripts/check-no-bare-mathlib-import.sh scripts/lean-code-scan.awk "$d/scripts/"
+if (cd "$d" && bash scripts/check-no-bare-mathlib-import.sh > /dev/null 2>&1); then got=0; else got=1; fi
+chmod 644 "$d/TDA/Fixture.lean"
+if [ "$got" -ne 1 ]; then echo "FAIL [bare-mathlib:unreadable]: want exit 1 got $got"; bfail=1; fi
+if [ "$bfail" -eq 0 ]; then echo "no-bare-Mathlib-import guard self-test OK ($bn cases)"; else exit 1; fi
+
 # --- root-aggregator guard (scripts/check-root-aggregator.sh) ------------------------------
 # Each case runs the real guard inside a fixture repository: a copy of lakefile.toml, the guard,
 # the lexer and scripts/rename-project.sh, plus the root module under test.
@@ -673,6 +737,41 @@ out="$(fenv env PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&
 }
 if [[ "$out" != *'TDA.X is pinned 2 times in scripts/print_axioms'* ]]; then
   echo 'FAIL [audit:cross-area-duplicate]: missing duplicate diagnostic'; afail=1; fi
+
+# #949: distinct (non-duplicate) pins from two different area files are both audited,
+# and in a single process — one `lake env lean` invocation, not one per area file.
+d="$tmp/audit-cross-area-ok"; an=$((an + 1)); mkdir -p "$d/scripts/print_axioms"
+cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
+printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Persistence.lean"
+printf 'import TDA\n#print axioms TDA.Y\n' > "$d/scripts/print_axioms/Reeb.lean"
+printf '%s\n' "'TDA.X' does not depend on any axioms" "'TDA.Y' depends on axioms: [propext]" > "$d/lean-output.txt"
+printf '#!/bin/sh\necho called >> "%s/calls.txt"\ncat "%s/lean-output.txt"\n' "$d" "$d" > "$d/scripts/lean.sh"
+chmod +x "$d/scripts/lean.sh"
+out="$(fenv env PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" || {
+  echo "FAIL [audit:cross-area-ok]: expected pass: $out"; afail=1; }
+if [[ "$out" != *"OK: TDA.X — no axioms."* ]] || [[ "$out" != *"OK: TDA.Y — $ALLOWED: [propext]"* ]]; then
+  echo "FAIL [audit:cross-area-ok]: missing OK line for a cross-area pin: $out"; afail=1; fi
+calls="$(wc -l <"$d/calls.txt" 2>/dev/null | tr -d ' ')"; calls="${calls:-0}"
+if [ "$calls" -ne 1 ]; then
+  echo "FAIL [audit:cross-area-ok]: expected exactly one lean invocation (single environment load), got $calls"
+  afail=1
+fi
+
+# A pin declared in one area file with no matching record still fails the audit, even
+# though the other area file's own pin is fine.
+d="$tmp/audit-cross-area-missing"; an=$((an + 1)); mkdir -p "$d/scripts/print_axioms"
+cp lakefile.toml "$d/"; cp scripts/check-axioms.sh "$d/scripts/"
+printf 'import TDA\n#print axioms TDA.X\n' > "$d/scripts/print_axioms/Persistence.lean"
+printf 'import TDA\n#print axioms TDA.Y\n' > "$d/scripts/print_axioms/Reeb.lean"
+printf '%s\n' "'TDA.X' does not depend on any axioms" > "$d/lean-output.txt"
+printf '#!/bin/sh\ncat "%s/lean-output.txt"\n' "$d" > "$d/scripts/lean.sh"
+chmod +x "$d/scripts/lean.sh"
+out="$(fenv env PATH="$tmp/auditbin:$PATH" bash "$d/scripts/check-axioms.sh" 2>&1)" && {
+  echo 'FAIL [audit:cross-area-missing]: missing pin in one area file accepted'; afail=1;
+}
+if [[ "$out" != *"no '#print axioms' output for TDA.Y (declaration missing or renamed?)."* ]]; then
+  echo 'FAIL [audit:cross-area-missing]: missing diagnostic for the area file with the absent record'; afail=1; fi
+
 if [ "$afail" -eq 0 ]; then echo "axiom-audit parser self-test OK ($an cases)"; else exit 1; fi
 
 # --- embedded cloud-setup pins (scripts/claude-cloud-setup.sh) ----------------------------
@@ -735,6 +834,7 @@ fenv bash scripts/agent/test-build-resources.sh
 fenv bash scripts/agent/test-build-docs-lock.sh
 fenv python3 scripts/agent/test-tda-cache.py
 fenv python3 scripts/agent/test-docs-cache.py
+fenv bash scripts/test-pre-push.sh
 
 # Re-run the Git-sensitive suites with GIT_DIR and hostile caller configuration. The runner
 # snapshots both the foreign fixture repository and this real checkout around those invocations.

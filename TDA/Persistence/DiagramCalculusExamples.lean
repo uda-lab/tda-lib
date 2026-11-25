@@ -1,4 +1,6 @@
 import TDA.Persistence.DiagramCalculus
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Calculus.Deriv.Abs
 
 namespace TDA.Persistence
 

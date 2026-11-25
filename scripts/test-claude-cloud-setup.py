@@ -150,11 +150,39 @@ exec /usr/bin/git "$@"
         path.chmod(0o755)
 
 
+def write_sandbox_bin(directory: Path, *, bwrap: bool = False, apt: str | None = None) -> Path:
+    """Tools visible to the sandbox stage: an optional bwrap and an optional mocked apt-get.
+
+    `apt="install"` creates bwrap beside itself on `install`; `apt="fail"` exits nonzero.
+    """
+    directory.mkdir(parents=True)
+    if bwrap:
+        path = directory / "bwrap"
+        path.write_text("#!/usr/bin/env bash\nexit 0\n")
+        path.chmod(0o755)
+    if apt is not None:
+        path = directory / "apt-get"
+        path.write_text(r'''#!/usr/bin/env bash
+set -e
+here="$(cd "$(dirname "$0")" && pwd)"
+printf '%s|%s\n' "${DEBIAN_FRONTEND:-unset}" "$*" >> "$here/apt-calls.txt"
+[[ "${MOCK_APT_FAIL:-0}" == 1 ]] && exit 100
+if [[ "$1" == install ]]; then
+  printf '#!/usr/bin/env bash\nexit 0\n' > "$here/bwrap"
+  chmod +x "$here/bwrap"
+fi
+''')
+        path.chmod(0o755)
+    return directory
+
+
 def environment(mock_bin: Path, home: Path, setup_root: Path, calls: Path, **extra: str) -> dict[str, str]:
     env = os.environ.copy()
     env.update(
         HOME=str(home),
         PATH=f"{mock_bin}:/usr/bin:/bin",
+        # Never let the sandbox stage see the host's bwrap or run its real apt-get.
+        TDA_CLAUDE_SETUP_SANDBOX_PATH=str(mock_bin.parent / "sandbox-present"),
         TDA_CLAUDE_SETUP_ROOT=str(setup_root),
         MOCK_PROJECT=str(setup_root / "project"),
         MOCK_LAKE_CALLS=str(calls),
@@ -206,6 +234,7 @@ def main() -> None:
         base = Path(temp)
         mock_bin = base / "mock-bin"
         write_mock_bin(mock_bin)
+        write_sandbox_bin(base / "sandbox-present", bwrap=True)
 
         # An unavailable cache path does not fail the cloud session setup hook.
         blocked_parent = base / "not-a-directory"
@@ -236,6 +265,12 @@ def main() -> None:
             raise AssertionError("setup ran a command beyond the pinned cache fetch")
         if not (setup_root / "downloads/elan-x86_64-unknown-linux-gnu.tar.gz").exists():
             raise AssertionError("verified Elan download was not retained in the setup cache")
+        if status["sandbox_status"] != "ready" or "sandbox=ready" not in result.stdout:
+            raise AssertionError(f"an installed bwrap was not reported ready:\n{result.stdout}\n{status}")
+        if (setup_root / "logs/bubblewrap-install.log").exists():
+            raise AssertionError("setup ran an install although bwrap was already present")
+        if "sandbox_status" not in (setup_root / "INSTRUCTIONS.txt").read_text():
+            raise AssertionError("instructions do not say where the sandbox status is recorded")
 
         checkout = base / "checkout"
         make_checkout(checkout)
@@ -324,6 +359,8 @@ def main() -> None:
         partial = status_map(partial_root / "STATUS.txt")
         if partial["state"] != "partial" or partial["mathlib_cache_status"] != "incomplete":
             raise AssertionError(f"failed cache was mislabeled as warm:\n{result.stdout}\n{partial}")
+        if partial["sandbox_status"] != "ready":
+            raise AssertionError(f"sandbox stage did not run after a failed cache:\n{result.stdout}\n{partial}")
         partial_checkout = base / "checkout-partial"
         make_checkout(partial_checkout)
         partial_helper_env = partial_env | {"CLAUDE_CODE_REMOTE": "true"}
@@ -347,6 +384,43 @@ def main() -> None:
         bad = status_map(bad_root / "STATUS.txt")
         if bad["state"] != "partial" or bad["elan_status"] == "ready":
             raise AssertionError(f"bad checksum was not treated as incomplete:\n{result.stdout}\n{bad}")
+
+        # The sandbox stage never changes the cache state. A missing bwrap is installed through
+        # apt-get when that works, and is otherwise reported without failing the setup.
+        sandbox_cases = [
+            ("install", write_sandbox_bin(base / "sandbox-install", apt="install"), {}, "ready"),
+            ("apt failure", write_sandbox_bin(base / "sandbox-apt-fail", apt="fail"),
+             {"MOCK_APT_FAIL": "1"}, "incomplete"),
+            ("no apt", write_sandbox_bin(base / "sandbox-empty"), {}, "unavailable"),
+        ]
+        for label, sandbox_bin, extra, expected in sandbox_cases:
+            case_home = base / f"home sandbox {label}"
+            case_home.mkdir()
+            case_root = base / f"setup sandbox {label}"
+            case_env = environment(
+                mock_bin, case_home, case_root, base / f"lake-calls-sandbox-{label}.txt",
+                TDA_CLAUDE_SETUP_SANDBOX_PATH=str(sandbox_bin), **extra,
+            )
+            result = run(["bash", str(SETUP)], case_env)
+            case_status = status_map(case_root / "STATUS.txt")
+            if case_status["state"] != "warm" or case_status["sandbox_status"] != expected:
+                raise AssertionError(
+                    f"sandbox case {label!r}: expected warm/{expected}:\n{result.stdout}\n{case_status}"
+                )
+            apt_calls = sandbox_bin / "apt-calls.txt"
+            if label == "install":
+                if apt_calls.read_text().splitlines() != [
+                    "noninteractive|update",
+                    "noninteractive|install -y --no-install-recommends bubblewrap",
+                ]:
+                    raise AssertionError(f"unexpected apt-get calls:\n{apt_calls.read_text()}")
+            elif label == "apt failure":
+                if apt_calls.read_text().splitlines() != ["noninteractive|update"]:
+                    raise AssertionError(f"install continued after a failed update:\n{apt_calls.read_text()}")
+                if "exit 100" not in case_status["sandbox_detail"]:
+                    raise AssertionError(f"apt-get failure was not recorded: {case_status}")
+            elif apt_calls.exists():
+                raise AssertionError("apt-get ran although none was available")
 
     print("Claude cloud setup smoke tests passed (all network, install, Lake, and Git calls mocked).")
 

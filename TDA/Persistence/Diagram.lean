@@ -1,4 +1,10 @@
-import Mathlib
+import Mathlib.Order.WithBot
+import Mathlib.Data.List.FinRange
+import Mathlib.Data.Multiset.Filter
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Data.Finset.Filter
+import Mathlib.Data.Finset.Card
+import Mathlib.Basic.Real.Basic
 
 universe u
 namespace TDA.Persistence

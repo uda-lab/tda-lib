@@ -1,5 +1,6 @@
 import TDA.Persistence.Reduction.FiniteInputSublevelBasis
 import TDA.Persistence.Reduction.FiniteInputExamples
+import TDA.Persistence.Reduction.FiniteInputRepresentativeExamples
 
 /-! Executable queries and complete actual-homology consumers. -/
 
@@ -258,5 +259,33 @@ private theorem mixed_actual_inclusion
   dsimp only
   rw [sublevelCoordinates_naturality mixed mixed_valid 0 0 1 (by decide)]
   exact mixed_mulVec _
+
+open Examples (ball ball_valid)
+open RepresentativeExamples (ballClass ball_H2_records)
+
+theorem ball_H2_active (t : ℤ) : activeRepresentatives ball 2 t =
+    if 2 ≤ t ∧ t < 5 then [ballClass] else [] := by
+  unfold activeRepresentatives
+  rw [List.filter_comm, ball_H2_records]
+  change [ballClass].filter (fun r => decide (r.occurrence.AliveAt t)) =
+    if ballClass.occurrence.AliveAt t then [ballClass] else []
+  by_cases h : ballClass.occurrence.AliveAt t <;> simp [h]
+
+theorem ball_H2_query (t : ℤ) : runDegreeAtGrade ball 2 t =
+    some (if 2 ≤ t ∧ t < 5 then [ballClass] else []) :=
+  (runDegreeAtGrade_eq_some_iff _ _ _ _).mpr ⟨ball_valid, (ball_H2_active t).symm⟩
+
+theorem ball_H2_length (t : ℤ) : (activeRepresentatives ball 2 t).length =
+    if 2 ≤ t ∧ t < 5 then 1 else 0 := by
+  rw [ball_H2_active]
+  split <;> rfl
+
+/-- The query has one basis position immediately before the filling. -/
+def ballH2BasisIndex : BasisIndex ball 2 4 := ⟨0, by rw [ball_H2_length]; decide⟩
+
+theorem ball_H2_basis_coordinate :
+    sublevelCoordinates ball ball_valid 2 4 (sublevelBasis ball ball_valid 2 4 ballH2BasisIndex)
+      ballH2BasisIndex = 1 := by
+  rw [sublevelBasis_apply, sublevelCoordinates_basisClass, Pi.single_eq_same]
 
 end TDA.Persistence.Reduction.FiniteInput.BasisExamples

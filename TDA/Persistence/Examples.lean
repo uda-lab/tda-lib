@@ -34,6 +34,7 @@ import TDA.Persistence.DiagramCalculusExamples
 import TDA.Persistence.SublevelLossDerivativeExamples
 import TDA.Persistence.DiagramLawsExamples
 import TDA.Persistence.RankInvariantExamples
+import TDA.Persistence.ConstructiveIntervalExamples
 import TDA.Persistence.RankReconstructionExamples
 import TDA.Persistence.RankReindexExamples
 import TDA.Persistence.GradeHomologyBarcodeExamples
@@ -48,6 +49,10 @@ import TDA.Persistence.Reduction.TraceExamples
 import TDA.Persistence.Reduction.ColumnReductionExamples
 import TDA.Persistence.Reduction.FilteredNormalFormExamples
 import TDA.Persistence.Reduction.MatrixReductionExamples
+import TDA.Persistence.Reduction.F2MatrixRankExamples
+import TDA.Persistence.RankErosionGridExamples
+import TDA.Persistence.F2GridRepExamples
+import TDA.Persistence.F2GridErosionExamples
 import TDA.Persistence.Reduction.EmptyComplexReduction
 import TDA.Persistence.Reduction.IsolatedVertexReduction
 import TDA.Persistence.Reduction.FilledTriangleReduction
@@ -68,6 +73,7 @@ import TDA.Persistence.SublevelLossHessianExamples
 import TDA.Persistence.SublevelLossHessianSingletonExample
 import TDA.Persistence.SublevelLossHessianEdgeExample
 import TDA.Persistence.Reduction.FiniteInputExamples
+import TDA.Persistence.Reduction.FiniteInputIndexExamples
 import TDA.Persistence.FiniteDecompositionExamples
 import TDA.Persistence.FiniteDecompositionThreeStage
 import TDA.Persistence.AdditiveFeaturesExamples
@@ -82,6 +88,9 @@ import TDA.Persistence.FiniteMonoTranslationExamples
 import TDA.Persistence.FiniteInducedTranslationExamples
 import TDA.Persistence.CechStabilityExamples
 import TDA.Persistence.CechRelationExamples
+import TDA.Persistence.AlphaH0Examples
+import TDA.Persistence.CollapsePersistenceExamples
+import TDA.Persistence.CollapseCertificatePersistenceExamples
 import TDA.Persistence.DiagramBottleneckScalingExamples
 import TDA.Persistence.CechSupNormDiagramExamples
 import TDA.Persistence.ConstructibleShiftBarcodeExamples
@@ -133,6 +142,7 @@ import TDA.Persistence.FiniteWeightedBoundaryTransportExamples
 import TDA.Persistence.RipsGromovHausdorffExamples
 
 import TDA.Persistence.MatrixSequenceExamples
+import TDA.Persistence.FiniteLineComputableExamples
 import TDA.Persistence.FiniteRepresentationRealExamples
 import TDA.Persistence.GaussianUniversalityExamples
 import TDA.Persistence.RipsSamplingExamples
@@ -211,3 +221,32 @@ import TDA.Persistence.BoundaryTransportGeometryExamples
 import TDA.Persistence.BoundaryTransportGeometry
 import TDA.Persistence.BoundaryTransportReverseExamples
 import TDA.Persistence.BoundaryTransportReverse
+import TDA.Persistence.Reduction.RipsInputExamples
+import TDA.Persistence.Reduction.RipsInputDiagramExamples
+import TDA.Persistence.Reduction.AlphaInputExamples
+import TDA.Persistence.Enclosure.ExpExamples
+import TDA.Persistence.Enclosure.GramExamples
+import TDA.Persistence.StrictRankErosionExamples
+import TDA.Persistence.RankErosionAttainmentExamples
+import TDA.Persistence.RankErosionCertificateExamples
+import TDA.Persistence.F2GridHomologyInputExamples
+import TDA.Persistence.F2GridHomologyIsoExamples
+import TDA.Persistence.F2GridHomologyErosionExamples
+import TDA.Persistence.StructureMapERankExamples
+import TDA.Persistence.ERankErosionExamples
+import TDA.Persistence.ERankQTameExamples
+import TDA.Persistence.CoordinateQTameExamples
+import TDA.Persistence.FiniteSimplicialErosionExamples
+import TDA.Persistence.Morse.FiniteInputMatchingExamples
+import TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples
+import TDA.Persistence.Morse.UnitCancellationExamples
+import TDA.Persistence.Morse.FilteredContractionExamples
+import TDA.Persistence.Morse.FilteredHomologyExamples
+import TDA.Persistence.Morse.IteratedCancellationExamples
+import TDA.Persistence.Morse.MatchingScheduleExamples
+import TDA.Persistence.Morse.SimplicialBridgeExamples
+import TDA.Persistence.Morse.ReducerOrderExamples
+import TDA.Persistence.Morse.ReducerDiagramExamples
+import TDA.Persistence.Morse.MorseDiagramExamples
+import TDA.Persistence.AlphaCechExamples
+import TDA.Persistence.AlphaRadiusStabilityExamples

@@ -1,6 +1,7 @@
 import TDA.Persistence.SupportInterval
 import TDA.Persistence.RankBarcodeIso
 import TDA.Persistence.AlgebraicFamily
+import Mathlib.LinearAlgebra.DirectSum.Finite
 
 /-!
 # Finite observations of arbitrary interval decompositions

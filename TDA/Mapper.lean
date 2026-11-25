@@ -49,3 +49,5 @@ import TDA.Mapper.GraphPLReebMapPair
 import TDA.Mapper.GraphPLReebMergeFold
 import TDA.Mapper.RefinementHomologyMapPair
 import TDA.Mapper.MapperReebConstructible
+import TDA.Mapper.GraphPLIncidence
+import TDA.Mapper.GraphPLIncidenceReebData

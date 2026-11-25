@@ -49,7 +49,9 @@ containing the full four-record list shown here, in order:
 The equal degree-zero rows are separate finite H₀ occurrences. `Death.essential`
 represents unbounded death, not an integer sentinel. `missingEdge` omits the
 `{0, 2}` edge, so `validBool` is `false` and `run` returns `none`; the input is
-not repaired.
+not repaired. The output of `#eval` is not checked by the kernel.
+`Examples.filled_run` in the fixture file proves the value of `run` on the
+first list as a theorem.
 
 For cycles in the original face-index basis and fillings for finite deaths,
 continue to [cycle representatives](finite-ph-representatives.md).
@@ -75,12 +77,17 @@ rejection exactly. No input normalization is performed. Negative grades, tied
 grades, and empty input are valid when the five conditions hold.
 
 For a valid list, `complex` has exactly its listed faces (`mem_complex`), and
-`listEquiv` pairs positions bijectively with its total faces. `gradeFilter`
-assigns each face its unique listed integer grade. Face precedence together
-with nondecreasing list grades proves monotonicity. `compatibleOrder` takes
-the given list order as the compatible face enumeration. These semantic
-objects and their proof-derived equivalences may be noncomputable; none occurs
-in the transitive definition path of `run`.
+`listEquiv` pairs original positions bijectively with its total faces. Its inverse
+uses `List.Nodup.getEquiv` and finite `List.idxOf` search on the listed faces;
+it does not select a position by choice. `faceFintype` enumerates these faces,
+`gradeFilter` reads their original integer grades, and `positionEquiv` and
+`compatibleOrder` preserve the given list order. Face precedence together with
+nondecreasing list grades proves monotonicity. `sublevelFaceIndex` computes the
+same original position for an actual sublevel face, with its grade and degree
+laws preserved. Index and grade lookup do not depend on the validity proof.
+These finite adapters are computable; actual quotient-homology constructions
+and the arbitrary-field decomposition retain their proof-side limitations.
+None of the semantic adapters occurs in the transitive definition path of `run`.
 
 ## Computation and indices
 
@@ -103,7 +110,7 @@ one.
 
 `trace` invokes the existing chronological `matrixReductionTrace` on that
 computed matrix, and `reduced` invokes `replay`. `reduced_reindex` shows that
-this is the `reducedFaceBoundary` used by the semantic certificate.
+this is the `reducedFaceBoundary` of the semantic correctness theorems.
 `pivotPairs` produces one pair `(i,j)` for each nonzero reduced column `j`,
 where `i = columnPivot (reduced.col j)`. A pivot at row zero is `some 0`;
 `none` means a zero column. `essentialIndices` selects zero columns outside
@@ -145,6 +152,9 @@ genuine natural interval isomorphism of that prefix module. Thus, for every vali
 the interpreted records equal `dgm (ZMod 2) (gradeFilter xs h) p` as a
 `Diagram ℤ`. This is a statement about the integer sublevel filtration,
 not a declared pairing or a separately assumed barcode decomposition.
+"Certified" in the title has this meaning: the reducer is proved correct for
+every valid input. `run` takes the simplex list alone and checks no reduction
+trace supplied by a caller.
 
 `outputDiagram_eq_of_same_graded_complex` states the order-independence
 consequence at the diagram level: valid presentations whose represented
@@ -161,7 +171,211 @@ single vertex, negative grades, duplicate intervals on disjoint edges,
 equal-grade reordering, and sparse vertex labels. Five negative fixtures
 reject an empty simplex, duplicate simplex with different grade, missing
 face, coface-first list, and decreasing grades. The negative runs together
-with `run_eq_none_iff` justify their invalidity.
+with `run_eq_none_iff` justify their invalidity. In the proofs for the valid
+nonempty lists, `boundary` is first rewritten to a matrix stated in the file,
+and the kernel then evaluates the reduction of that matrix.
+
+## Rips input from an integer distance table
+
+`TDA.Persistence.Reduction.RipsInput` computes a simplex list of the format above
+from a finite metric given by integers. A `DistanceTable N` is a function
+`Fin N → Fin N → ℤ`. `DistanceTable.Valid` is the conjunction of nonnegative
+entries, symmetry, zero diagonal, positive distance between distinct labels and
+every triangle inequality. It is decidable by finite quantification over the
+labels. Nonnegativity follows from the other four conditions and is checked all
+the same. An invalid table is rejected, not repaired, and no metric certificate
+is supplied by the caller. The table with no label and the table with one label
+and entry `0` are valid.
+
+`diameter s` is the maximum entry over the ordered pairs of a set `s` of labels,
+with value `0` on the empty set: the same fold as `Rips.diameter`, over the
+integers (`diameter_le_iff`, `dist_le_diameter`, `diameter_mono`). A single label
+of a valid table has diameter `0` (`diameter_singleton`).
+
+`ripsInput` lists every nonempty set of labels once:
+
+* `faceLists N` enumerates the nonempty strictly increasing label lists, by
+  length and then lexicographically (`mem_faceLists`, `nodup_faceLists`).
+* `entry` turns a label list into the pair of its set of labels, mapped into the
+  vertex type `ℕ` by `Fin.valEmbedding`, and its diameter. The labels
+  `0, …, N - 1` are transported into `ℕ`; no metric on `ℕ` is introduced.
+* The distinct grades are sorted, and for each grade in increasing order the
+  entries of that grade are taken in the order of the enumeration.
+
+`mem_ripsInput` states that the entries are exactly the pairs
+`(s.map Fin.valEmbedding, diameter s)` for nonempty `s`, and `mk_mem_ripsInput`
+that the grade listed with a face is its diameter. `ripsInput_pairwise` states
+the order: by grade, then by cardinality, then lexicographically in the
+increasing label lists. Each face occurs once (`nodup_faces_ripsInput`) and the
+list has `2 ^ N - 1` entries (`length_ripsInput`). The tie-break is a property
+of this implementation; by `outputDiagram_eq_of_same_graded_complex` the
+interpreted diagram does not depend on it.
+
+`ripsInput_valid` proves `FiniteInput.Valid` for the list. It holds
+for every table, valid or not, because the maximum over pairs is monotone in the
+set; only the metric meaning of the list needs a valid table. `ripsInput?`
+returns the list for a valid table and `none` otherwise. `ripsRun` returns
+`occurrences` of the list for a valid table and `none` otherwise; it does not
+decide `Valid` of the list again, and `ripsRun_eq_bind_run` states that its
+value is that of `run` on the validated list.
+
+For a valid table, `metric` is the metric on `Fin N` whose distances are the
+table entries, passed explicitly to the Rips API and not registered as an
+instance. `cast_diameter` identifies the integer diameter, cast to a real
+number, with `Rips.diameter`. The represented complex `complex` of the list is
+the image of `Rips.fullComplex (Fin N)` under the inclusion of labels
+(`mem_complex_ripsInput`, `complex_ripsInput`), `ripsFace` is the resulting
+bijection of faces (`ripsFace_bijective`), and `gradeFilter_ripsFace` states
+that the grade read by `gradeFilter` at a face, cast to a real number, is the
+value of `Rips.filter` for `metric` at the corresponding face. These are
+statements about the complex and the filter that `outputDiagram_eq_dgm` uses.
+
+This module does not compare diagrams or homology. The equality of
+`outputDiagram` of the list with the diagram of `Rips.filter`, the comparison of
+homology and the positive-degree consumer for the four-cycle are in
+[Diagram and homology of the Rips input](#diagram-and-homology-of-the-rips-input).
+
+Write `F = 2 ^ N - 1` for the number of faces and `G` for the number of
+distinct grades; every grade is `0` or a table entry, so
+`G ≤ N (N - 1) / 2 + 1` for a valid table. Counting a table lookup, a comparison
+or maximum of two integers and a comparison of two labels as one unit:
+validation costs `O(N³)` comparisons and additions; forming the sets of labels
+and their diameters costs `O(N² F)`; collecting the distinct grades costs
+`O(F G)`, sorting them `O(G²)` and grouping the entries by grade `O(F G)`. The
+list costs `O(N² F) = O(N² 2 ^ N)` units, which is exponential in `N`, and an
+integer unit costs time proportional to the bit length of the entries. `ripsRun`
+adds the cost of the existing reduction on `F` faces, which is not bounded here;
+it is at least quadratic in `F`, since the boundary matrix is a dense `F × F`
+matrix, and it dominates already for small tables. These counts are documented,
+not proved. The executable definitions use lists, finite sets given by lists and
+integer comparison, with no decision by `Classical` and no real-number
+comparison; `metric` and the statements about `Rips` are semantic adapters.
+
+`RipsInputExamples.lean` states the complete value of `ripsInput?` for no label,
+one label, two labels at distance `3`, three labels at mutual distance `2`
+(four faces of one grade, listed by cardinality and label order), three points
+on a line and the same points with two labels exchanged (`relabelled_dist`,
+`relabelled_grades`), and the shortest-path metric of the four-cycle: vertices
+at `0`, the four edges at `1`, and both diagonals, the triangles and the
+tetrahedron at `2`. `fourCycle_diagonal` transfers the grade `2` of a diagonal
+to the value of the actual `Rips.filter`. `ripsRun` is checked for no label,
+one label and two labels (`pair_ripsRun`: one finite class from `0` to `3` and
+one essential class in degree zero). Tables violating symmetry, separation,
+the triangle inequality, the zero diagonal or nonnegativity return `none` from
+`ripsInput?` and from `ripsRun`.
+
+## Diagram and homology of the Rips input
+
+The list `ripsInput` of a valid table is a filtered complex over the vertex type
+`ℕ` with integer grades. The Rips filtration of the table metric is
+`Rips.filter (D.metric hD)` on `Rips.fullComplex (Fin N)`, with real grades.
+`TDA.Persistence.Reduction.RipsInputDiagram` compares the two; the caller
+supplies no metric, isomorphism or certificate.
+
+The comparison needs a change of vertex type, which
+`TDA.Persistence.SublevelDiagramVertexMap` provides in general. A vertex map
+induces a signed chain map that reads the map only at the vertices of the faces
+of its source, so vertex maps that agree there induce the same map in homology
+(`simplicialHomologyMap_congr`), and a vertex map followed by one that undoes it
+on those vertices induces the identity (`simplicialHomologyMap_comp_eq_id`).
+`dgm_eq_of_vertexMaps` takes real filter functions `f` and `g` on complexes over
+two vertex types and functions `φ`, `ψ` on the vertices in the two directions.
+If `φ` and `ψ` carry every sublevel complex of one filter into the sublevel
+complex of the other at the same threshold, and are mutually inverse on the
+vertices of the faces, then `dgm k f n = dgm k g n` in every degree and over
+every field. The induced maps of sublevel homology are mutually inverse and
+commute with the inclusions, so all inclusion-induced maps have equal ranks;
+`rank_sublevelHomologyMap` turns the ranks into interval counts and
+`RealBarcode.multiset_eq_of_rankCounts_eq` recovers the points. The functions
+are total and constrained on faces only; neither injectivity nor monotonicity is
+assumed. The statement is for real grades, the generality of that uniqueness
+theorem. The uniqueness itself holds over any linear order
+(`multiset_eq_of_sliceCounts_eq` in `TDA.Persistence.DiagramRankUniqueness`, of
+which the real theorem is the instance), and `dgm_eq_of_vertexMaps` is not
+restated with it. The existing Rips- and Čech-specific comparisons, such as
+`Rips.dgm_eq_of_isometryEquiv`, relate the complexes of two metric spaces or
+point configurations and do not apply to a list on `ℕ`.
+
+The faces at a threshold are described by the integer diameter.
+`mem_sublevel_gradeFilter_ripsInput` states that the faces of the list at an
+integer threshold `a` are the sets `s.map Fin.valEmbedding` for nonempty `s`
+with `diameter s ≤ a`, for every table. `mem_sublevel_rips_filter` states that
+the faces of the Rips filtration at a real threshold `r` are the nonempty `s`
+with `(diameter s : ℝ) ≤ r`. All values of both filters are integers, so the
+Rips complex at `r` is the one at the floor of `r`.
+
+`ripsLabelMap hD a` is the vertex map with underlying function `Fin.val` from
+the Rips complex at the integer threshold `a` to the sublevel complex of the
+list at `a`. It induces an isomorphism in homology in every degree and over
+every ring (`simplicialHomologyMap_ripsLabelMap_isIso`), and these isomorphisms
+commute with the maps induced by raising the threshold
+(`simplicialHomologyMap_ripsLabelMap_naturality`). For a nonempty set of labels
+the inverse is induced by a left inverse `ℕ → Fin N` of the inclusion; for no
+label both sides are the homology of the empty complex. The comparison of
+homology is stated at integer thresholds.
+
+`outputDiagram_ripsInput` is the diagram equality: for a valid table and every
+degree `p`,
+
+```lean
+(FiniteInput.outputDiagram D.ripsInput p).map intCastOrderEmbedding =
+  dgm (ZMod 2) (Rips.filter (D.metric hD)) p
+```
+
+`intCastOrderEmbedding : ℤ ↪o ℝ` is the inclusion of the integers, and
+`Diagram.map` casts births and finite deaths and keeps the essential death. The
+proof composes `outputDiagram_eq_dgm`, `dgm_map` and `dgm_eq_of_vertexMaps`.
+Multiplicities, the deletion of pairs of equal grades, essential classes and
+unaugmented degree zero are those of `outputDiagram_eq_dgm`. The equality
+covers every pair of real thresholds, since the diagram determines the ranks of
+all inclusion-induced maps.
+
+`ripsRunInDegree p` filters `ripsRun` by degree. It is `none` exactly when the
+table is invalid, whatever `p` (`ripsRunInDegree_eq_none_iff`), and `some` of
+the records of degree `p`, possibly none, for a valid table
+(`ripsRunInDegree_eq_some_iff`). `ripsRunInDegree_correct` states that a
+returned list certifies the table and that its records, read as points with
+real coordinates, are the points of the Rips diagram in degree `p` with
+multiplicity. The order of the records is that of the existing reduction and is
+not part of the comparison. The consumer costs `ripsRun` and one comparison of
+natural numbers for each of the at most `2 ^ N - 1` records. The cost of the
+existing reduction is not bounded; it is at least quadratic in the number of
+faces, and only measurements are recorded.
+
+For a permutation `σ` of the labels and tables with
+`E.dist i j = D.dist (σ i) (σ j)`, `valid_of_relabel` transfers validity and
+`outputDiagram_ripsInput_of_relabel` states that the two executed lists have
+the same diagram in every degree. This is an equality of diagrams, not of
+lists; it passes through the two Rips diagrams and
+`Rips.dgm_eq_of_isometryEquiv`. No relabelling operation on tables is defined.
+
+`RipsInputDiagramExamples.lean` checks the records of each degree and the Rips
+diagram in degree zero for no label, one label (the single point `(0, ⊤)`) and
+two labels at distance `3` (the points `(0, 3)` and `(0, ⊤)`; the empty list of
+records in degree one). For the four-cycle the kernel runs the existing
+reduction on the fifteen faces: `fourCycle_reduced` is the reduced matrix, and
+`fourCycle_ripsRun` lists three classes of degree zero from `0` to `1`, one
+class of degree one from `1` to `2` and one essential class of degree zero; the
+three pairs of equal grade `2` leave no record. The kernel does not evaluate
+`FiniteInput.boundary`, so the examples prove privately that over `ZMod 2` it is
+the indicator `faceIncidence` of the codimension-one faces, which the kernel
+does evaluate. The kernel check of the reduction dominates the build time of the
+examples and is meant for small fixtures only.
+`fourCycle_dgm_one` states that the Rips diagram of the four-cycle metric in
+degree one is the single point `(1, 2)`, `fourCycle_dgm_zero` and
+`fourCycle_dgm_two` give the other degrees, and `fourCycle_finrank_one` and
+`fourCycle_finrank_two` state that the first homology over `ZMod 2` of the Rips
+complex has dimension `1` at threshold `1` and `0` at threshold `2`.
+`fourCycle_listed_finrank_one` obtains the same dimension for the listed
+complex through the isomorphism of `ripsLabelMap`. The five invalid tables
+return `none` in every degree, and the table violating the triangle inequality
+is also executed in degree `5`, where a valid table of three labels has no
+record. `relabelled_outputDiagram` instantiates the relabelling statement for
+the two tables on a line.
+
+Not provided: a bound on the cost of the reduction, representatives or sublevel
+classes of the Rips complex, a statement for invalid tables beyond rejection,
+and a transport of diagrams for grades outside the real numbers.
 
 ## Dependency and source scope
 
@@ -179,3 +393,38 @@ convention is in [finite-sublevel-diagram.md](finite-sublevel-diagram.md).
 This unit specializes those results to finite F₂ input with integer grades.
 It adds no sparse-matrix optimization, file parser, real-grade computation,
 or performance bound.
+
+## Exact planar α barcodes
+
+`AlphaInput.run` takes `Fin n → ℚ × ℚ`. The finite injectivity check rejects
+a repeated point. For distinct points, `RationalAlpha.gradedFaces` supplies
+the feasible nonempty faces and their exact rational squared entrance grades.
+The consumer orders faces by grade, then cardinality and vertex labels. It
+sends zero-based ranks of the distinct grades to `FiniteInput.run` and reads
+births and finite deaths back from the sorted rational grade table.
+
+For $n$ sites, each evaluation of `gradedFaces` considers all $2^n$ label
+subsets. Let $g$ be the number of distinct grades in that table.
+`AlphaInput.simplexInput` scans the $2^n - 1$ nonempty label subsets at
+each of those $g$ grades. This gives $g(2^n - 1)$ candidate face/grade tests
+to construct the reducer input. The count concerns subset enumeration.
+Candidate generation, exact arithmetic, sorting, endpoint decoding, and
+reduction contribute their own costs. See
+[exact grades on rational planar sites](alpha-filtration-and-signed-coverage.md#exact-grades-on-rational-planar-sites).
+
+For a real threshold $t$, the corresponding integer stage is the number of
+distinct grades at most $t$, cast to $\mathbb Z$, minus one. It is $-1$
+below the first cut and on the empty family. Between cuts the stage stays
+constant, and at and above the last cut it represents the full feasible
+carrier. `AlphaInput.mem_sublevel` establishes the face correspondence.
+`labelMap_isIso` and `labelMap_naturality` identify the homology and the maps
+for every ordered pair of thresholds. Consequently, `run_correct` identifies
+the returned occurrence multiset with the actual closed α diagram in each
+degree.
+
+A finite occurrence with equal birth and death grades is discarded by the
+integer reducer. Essential deaths have their own constructor. The executed
+side-2 square fixture has one degree-one interval $[1,2)$, and the obtuse
+triangle has no degree-one occurrence. The closed α carrier can include a
+face on four or more sites at a full tie. The procedure is a finite reference
+implementation for exact input.

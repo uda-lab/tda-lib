@@ -23,21 +23,26 @@ readonly INSTRUCTIONS_FILE="$CACHE_ROOT/INSTRUCTIONS.txt"
 readonly CACHE_CHECKSUM_FILE="$CACHE_ROOT/mathlib-cache.sha256"
 readonly ELAN_HOME="$HOME/.elan"
 readonly MATHLIB_CACHE_DIR="$HOME/.cache/mathlib"
+# Where bwrap and apt-get are looked up. The override exists for isolated smoke tests.
+readonly SANDBOX_SEARCH_PATH="${TDA_CLAUDE_SETUP_SANDBOX_PATH:-$PATH}"
 readonly START_EPOCH="$(date +%s)"
 
 ELAN_STATUS='not-attempted'
 LEAN_STATUS='not-attempted'
 PACKAGES_STATUS='not-attempted'
 CACHE_STATUS='not-attempted'
+SANDBOX_STATUS='not-attempted'
 ELAN_VERSION_FOUND='unknown'
 ELAN_SECONDS=0
 LEAN_SECONDS=0
 CACHE_SECONDS=0
 CACHE_HASH_SECONDS=0
+SANDBOX_SECONDS=0
 ELAN_DETAIL='not attempted'
 LEAN_DETAIL='not attempted'
 PACKAGES_DETAIL='not attempted'
 CACHE_DETAIL='not attempted'
+SANDBOX_DETAIL='not attempted'
 CACHE_ARCHIVE_COUNT=0
 CACHE_OLEAN_COUNT=0
 
@@ -73,6 +78,9 @@ mathlib_cache_hash_seconds=$CACHE_HASH_SECONDS
 mathlib_cache_detail=$CACHE_DETAIL
 mathlib_ltar_count=$CACHE_ARCHIVE_COUNT
 prepared_olean_count=$CACHE_OLEAN_COUNT
+sandbox_status=$SANDBOX_STATUS
+sandbox_seconds=$SANDBOX_SECONDS
+sandbox_detail=$SANDBOX_DETAIL
 setup_elapsed_seconds=$elapsed
 setup_work_budget_seconds=$MAX_SETUP_SECONDS
 project_dir=$PROJECT_DIR
@@ -101,6 +109,12 @@ conflict. Exit 3 means inspect STATUS.txt: if Lean is ready, bootstrap may
 complete the pin-checked cache; if bootstrap fails, stop before a full Lake
 build that could cold-build mathlib. Report the failed stage and its log under
 logs/.
+
+The full gate scripts/check.sh ends with the Comparator step, which refuses to
+run without the bubblewrap sandbox (bwrap). STATUS.txt records it separately as
+sandbox_status; it does not affect state. If sandbox_status is not ready and
+bwrap is not on PATH, install the bubblewrap package before a full
+scripts/check.sh. Do not skip or bypass the Comparator step.
 EOF
   mv -f "$INSTRUCTIONS_FILE.tmp" "$INSTRUCTIONS_FILE"
 }
@@ -170,6 +184,10 @@ if bad:
 PY
 }
 
+find_sandbox_tool() {
+  PATH="$SANDBOX_SEARCH_PATH" command -v "$1" 2>/dev/null
+}
+
 handle_unexpected_error() {
   local rc=$?
   trap - ERR
@@ -178,6 +196,10 @@ handle_unexpected_error() {
   if [[ "$PACKAGES_STATUS" == 'not-attempted' ]]; then PACKAGES_STATUS='blocked'; fi
   CACHE_STATUS='incomplete'
   CACHE_DETAIL="setup stopped on an unexpected command failure (exit $rc)"
+  if [[ "$SANDBOX_STATUS" != 'ready' ]]; then
+    SANDBOX_STATUS='incomplete'
+    SANDBOX_DETAIL='setup stopped before the sandbox stage finished'
+  fi
   write_status 2>/dev/null || true
   write_instructions 2>/dev/null || true
   printf 'Claude cloud setup stopped unexpectedly (exit %s); see %s if it was saved.\n' \
@@ -207,6 +229,8 @@ if ((${#missing_tools[@]})); then
   LEAN_DETAIL='blocked by missing utilities'
   PACKAGES_DETAIL='blocked by missing utilities'
   CACHE_DETAIL='blocked by missing utilities'
+  SANDBOX_STATUS='blocked'
+  SANDBOX_DETAIL='blocked by missing utilities'
   write_status
   printf 'Claude cloud setup is partial (%s). See %s\n' \
     "$ELAN_DETAIL" "$STATUS_FILE"
@@ -333,7 +357,7 @@ leanprover/lean4:v4.35.0
 TDA_LEAN_TOOLCHAIN
 cat > "$PROJECT_DIR/lakefile.toml" <<'TDA_LAKEFILE'
 name = "TDA"
-version = "0.4.0"
+version = "0.5.0"
 description = "Lean 4 formalizations of topological data analysis, with verified finite persistent homology computation."
 keywords = ["math", "topology", "topological-data-analysis", "persistent-homology", "software-verification"]
 license = "Apache-2.0"
@@ -523,12 +547,42 @@ else
   CACHE_DETAIL='blocked because the exact Lean toolchain is unavailable'
 fi
 
+# scripts/check.sh ends with the Comparator step, which refuses to run without the
+# bubblewrap sandbox. This stage comes last so that it never takes time from the cache,
+# and its result does not enter the cache state.
+SANDBOX_STAGE_STARTED="$(date +%s)"
+if find_sandbox_tool bwrap >/dev/null; then
+  SANDBOX_STATUS='ready'
+  SANDBOX_DETAIL='bubblewrap (bwrap) was already installed'
+elif apt_get="$(find_sandbox_tool apt-get)"; then
+  if run_bounded 'bubblewrap install' 45 "$LOG_DIR/bubblewrap-install.log" \
+      env DEBIAN_FRONTEND=noninteractive bash -c \
+        '"$1" update && "$1" install -y --no-install-recommends bubblewrap' _ "$apt_get"; then
+    if find_sandbox_tool bwrap >/dev/null; then
+      SANDBOX_STATUS='ready'
+      SANDBOX_DETAIL='installed the bubblewrap package with apt-get'
+    else
+      SANDBOX_STATUS='incomplete'
+      SANDBOX_DETAIL='apt-get succeeded but bwrap is not on PATH; see logs/bubblewrap-install.log'
+    fi
+  else
+    rc=$?
+    SANDBOX_STATUS='incomplete'
+    SANDBOX_DETAIL="bubblewrap install failed, was skipped or timed out (exit $rc)"
+    SANDBOX_DETAIL="$SANDBOX_DETAIL; see logs/bubblewrap-install.log"
+  fi
+else
+  SANDBOX_STATUS='unavailable'
+  SANDBOX_DETAIL='bwrap is not installed and apt-get is unavailable'
+fi
+SANDBOX_SECONDS=$(( $(date +%s) - SANDBOX_STAGE_STARTED ))
+
 write_status
 write_instructions
 printf 'Claude cloud setup state: %s\n' \
   "$(sed -n 's/^state=//p' "$STATUS_FILE")"
 printf 'Status: %s\nInstructions: %s\nLogs: %s\n' \
   "$STATUS_FILE" "$INSTRUCTIONS_FILE" "$LOG_DIR"
-printf 'Stages: elan=%s lean=%s packages=%s mathlib-cache=%s\n' \
-  "$ELAN_STATUS" "$LEAN_STATUS" "$PACKAGES_STATUS" "$CACHE_STATUS"
+printf 'Stages: elan=%s lean=%s packages=%s mathlib-cache=%s sandbox=%s\n' \
+  "$ELAN_STATUS" "$LEAN_STATUS" "$PACKAGES_STATUS" "$CACHE_STATUS" "$SANDBOX_STATUS"
 exit 0

@@ -208,8 +208,11 @@ evaluation, inner-product, distance and Gram statements. The examples cover conc
 kernel values and a two-point quadratic form. A negative control shows that dropping the
 minus sign destroys positive semidefiniteness. The remaining examples cover repeated
 occurrences, an RKHS distance, the diagonal and essential-only boundary cases, and a
-Gaussian diagram Gram entry. All definitions are noncomputable; no kernel evaluation
-algorithm is provided.
+Gaussian diagram Gram entry. All definitions are noncomputable; no exact kernel
+evaluation algorithm is provided. The separate note on
+[rational enclosures](kernel-enclosure.md) covers executable rational intervals for the
+scalar exponential, for `linearKernel` of two finite rational lists and for the squared
+RKHS distance of their embeddings, with the capped persistence weight.
 
 `TDA.Persistence.WeightedKernelInjectivity` contains the character factorization,
 linear-independence, strict-positive-definiteness and finite-support injectivity results,

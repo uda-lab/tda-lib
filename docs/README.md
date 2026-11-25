@@ -4,7 +4,7 @@ Use this guide to choose a subject, then follow the API guide for declaration na
 and the mathematical notes for definitions, hypotheses and source comparisons.
 It describes the **current checkout**. The [changelog](../CHANGELOG.md) separates
 unreleased work from published results and links to versioned API guides.
-[Installation and imports](../README.md#use-in-a-lean-project) use v0.4.0.
+[Installation and imports](../README.md#use-in-a-lean-project) use v0.5.0.
 See the [software citation guide](citation.md) when referencing a release or
 development commit.
 
@@ -22,6 +22,48 @@ Start with the [PH contracts](api.md#persistent-homology-results-and-computation
 [finite interval decomposition](math/finite-interval-decomposition.md),
 [sublevel diagrams](math/finite-sublevel-diagram.md) and
 [certified computation](math/finite-ph-computation.md).
+[Acyclic matchings](math/discrete-morse-matchings.md) state the semantic layer of discrete
+Morse reduction: matchings, acyclicity, topological ranks and filtered matchings for
+sublevels, with an executable checker and a greedy generator for matchings on finite inputs.
+[Unit cancellation](math/discrete-morse-cancellation.md) cancels one equal-grade unit pair
+of a filtered based complex with an executable reduced differential and a filtered contraction;
+[such contractions](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition)
+compose, their small complex can be transported along carrier equivalences, and
+[a filtered contraction induces](api.md#sublevel-homology-of-filtered-based-complexes) an
+isomorphism of the grade-sublevel homology persistence modules of the two based complexes;
+along a supplied
+[schedule satisfying a pivot invariant](math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule),
+such cancellations iterate to an executable reduced differential on the critical generators
+with a composed filtered contraction. A certified matching on a valid input gives
+[such a schedule](math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching),
+a Morse complex on its critical positions with a filtered contraction, an isomorphism of
+grade-sublevel homology persistence modules, and
+[a natural isomorphism](math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem)
+from the simplicial sublevel persistence module of the input to the persistence module of the
+Morse complex.
+A filtered based complex over a field, in particular such a Morse complex over `ZMod 2`, has
+[an order of its generators](math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex)
+in which its differential satisfies the input conditions of the column reducer.
+On that order,
+[the reducer's output](math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics)
+is a diagram over `ℤ` whose slice counts are the ranks of the grade-sublevel homology
+persistence module of the complex.
+For a certified matching on a valid input,
+[the reducer run on its Morse complex](math/discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate)
+gives the sublevel diagram `dgm` of the input over `ZMod 2`, which is also the diagram of the
+ordinary run on the boundary matrix.
+On the exact obtuse triangle,
+[a Čech-to-α collapse](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle)
+deletes one free pair at each grade of `[4, 5)` and nothing at the other grades.
+[Collapses induce homology isomorphisms](math/discrete-morse-matchings.md#homology-of-collapses),
+so there the labelled inclusions give a natural isomorphism from α to squared-grade Čech
+persistence in every degree over every ring.
+[A checker for supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences)
+accepts a certificate exactly when its pairs are free in turn and it ends at the supplied table,
+and acceptance gives the collapse.
+[Certificate families across critical grades](math/discrete-morse-matchings.md#certificates-across-critical-grades)
+check one supplied sequence at every grade of the rational grade tables of a filtered pair, and
+acceptance gives the natural persistence isomorphism induced by the inclusions.
 For real-indexed modules, use the [finite-constructible isometry](math/constructible-isometry.md),
 [real interval decomposition](math/real-interval-decomposition.md) and
 [q-tame diagram guide](api.md#q-tame-persistence-rectangle-measures).
@@ -48,7 +90,11 @@ under explicit bandwidth, pixel and weight assumptions. The
 [measure embedding note](math/gaussian-measure-universality.md) distinguishes
 injective measure embeddings from finite-pixel images, which are not characteristic.
 [Native boundary-transport feature bounds](api.md#gaussian-stability-under-native-boundary-transport)
-also have their own weight and moment conditions.
+also have their own weight and moment conditions. The kernel theory is noncomputable;
+[rational enclosures](math/kernel-enclosure.md) of the scalar exponential at nonpositive
+rational arguments, of the Gaussian Gram sum of two finite rational lists and of the
+squared RKHS distance of their embeddings are executable, for the capped persistence
+weight only.
 
 ## Multiparameter persistence
 
@@ -68,10 +114,19 @@ closure properties and examples. These are theory interfaces; countable hook
 matching and optimality of the signed stability constant are not claimed.
 
 [Weak-pair rank erosion](math/rank-erosion.md) compares actual structure-map ranks,
-including diagonal pairs, for pointwise finite-dimensional field-valued modules.
-Its extended distance is bounded by coordinate interleaving distance. The guide
-separates available rank obstructions from proposed erosion-attainment and finite-test
-extensions; equality of ranks is not a general module classification.
+diagonal pairs included, under weak and strict pair conventions; its distance is
+bounded by coordinate interleaving distance. For finitely presented modules,
+attainment and failed-test certificates are supplied, and with at least one parameter
+the equivalence of the strict and weak predicates. An extended rank handles modules without pointwise finite
+dimensionality, and coordinatewise q-tameness covers several parameters. Finite
+simplicial homology has grade-error bounds, and four tetrahedron-boundary comparisons
+have exact erosion distances. For F₂ grid representations a certified test decides
+erosion at a rational radius, and two rationally graded finite complexes can be compared
+end to end in one degree over F₂, with pass and failure certified for their actual
+homology modules.
+Equal ranks do not classify modules: the library exhibits this for two parameters
+(`arms_nonseparation`, `arms_not_iso`); see
+[what is not provided](math/rank-erosion.md#what-is-not-provided).
 
 ## Metric inputs and sampling
 

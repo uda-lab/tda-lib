@@ -1,5 +1,6 @@
 import TDA.Persistence.RectangleSharpExample
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Algebra.Field.ZMod
 
 /-!
 # Consumers of the sharp rectangle example

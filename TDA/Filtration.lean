@@ -30,6 +30,21 @@ import TDA.Filtration.CompatibleOrderExistence
 import TDA.Filtration.CompatibleOrderClosed
 import TDA.Filtration.Cech
 import TDA.Filtration.CechRelation
+import TDA.Filtration.Alpha
+import TDA.Filtration.AlphaLabelled
+import TDA.Filtration.RationalAlpha
+import TDA.Filtration.RationalAlpha.Predicates
+import TDA.Filtration.RationalAlpha.SignedBoundaryCoverage
+import TDA.Filtration.RationalAlpha.SubdividedBoundaryCoverage
+import TDA.Filtration.RationalAlpha.TriangleIncidence
+import TDA.Filtration.RationalAlpha.DirectedEdgeIncidence
+import TDA.Filtration.RationalAlpha.TriangulationAssembly
+import TDA.Filtration.RationalAlpha.IncircleGrade
+import TDA.Filtration.RationalAlpha.EdgeGrade
+import TDA.Filtration.RationalAlpha.SuppliedEdgeGrade
+import TDA.Filtration.RationalAlpha.SuppliedCarrier
+import TDA.Filtration.RationalAlpha.SuppliedGradeEnumeration
+import TDA.Filtration.RationalAlpha.SuppliedStages
 import TDA.Filtration.CechDisplacement
 import TDA.Filtration.CechWitness
 import TDA.Filtration.CechSupNorm
@@ -39,3 +54,4 @@ import TDA.Filtration.RipsRelation
 
 import TDA.Filtration.SubdivisionRips
 import TDA.Filtration.FiniteGraded
+import TDA.Filtration.CollapseCertificateFamily

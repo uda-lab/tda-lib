@@ -1,4 +1,7 @@
 -- Live axiom audit pins for Topology. Append new pins here; do not remove existing pins.
+-- This file also pins the `TDA.Topology.FiniteGromovProkhorov` theorems declared in the
+-- Persistence-area module `TDA/Persistence/GromovProkhorovMulticover.lean`: they were placed by
+-- declaration namespace, and existing pins are not moved.
 import TDA
 
 
@@ -319,3 +322,140 @@ import TDA
 #print axioms TDA.Topology.Examples.triangleMap_surjective
 #print axioms TDA.Topology.Examples.triangleMap_collapse
 #print axioms TDA.Topology.Examples.isQuotientMap_prodMap_triangleMap
+
+-- Finite compact nerves under open thickening.
+#print axioms TDA.Topology.exists_pos_nerve_thickening_eq
+#print axioms TDA.Topology.exists_pos_common_convex_thickening
+#print axioms TDA.Topology.NerveThickeningExamples.path_and_triangle_preserved
+#print axioms TDA.Topology.NerveThickeningExamples.duplicate_edge_and_empty_label
+
+-- Realizations, coordinate-star covers, and the triangle boundary inclusion.
+#print axioms TDA.Topology.Realization.incl
+#print axioms TDA.Topology.Realization.incl_weights
+#print axioms TDA.Topology.Realization.incl_id
+#print axioms TDA.Topology.Realization.incl_comp
+#print axioms TDA.Topology.Realization.isEmbedding_weights
+#print axioms TDA.Topology.Realization.coordinateStar
+#print axioms TDA.Topology.Realization.isOpen_coordinateStar
+#print axioms TDA.Topology.Realization.mem_coordinateStar_iff
+#print axioms TDA.Topology.Realization.covers_coordinateStar
+#print axioms TDA.Topology.Realization.isEmpty_bot
+#print axioms TDA.Topology.Realization.isEmpty_of_isEmpty
+#print axioms TDA.Topology.Realization.coordinateStar_eq_empty
+#print axioms TDA.Topology.Realization.faceBarycenter
+#print axioms TDA.Topology.Realization.faceBarycenter_weights_of_mem
+#print axioms TDA.Topology.Realization.faceBarycenter_support
+#print axioms TDA.Topology.Realization.interMember_nonempty_iff
+#print axioms TDA.Topology.Realization.nerve_coordinateStar
+#print axioms TDA.Topology.Realization.contraction
+#print axioms TDA.Topology.Realization.contraction_weights
+#print axioms TDA.Topology.Realization.contraction_support_subset
+#print axioms TDA.Topology.Realization.contractibleSpace_starIntersection
+#print axioms TDA.Topology.Realization.pullback_coordinateStar
+#print axioms TDA.Topology.Realization.preimage_interMember
+#print axioms TDA.Topology.Realization.starNerveInclusion
+#print axioms TDA.Topology.Realization.starNerveInclusion_naturality
+#print axioms TDA.Topology.RealizationExamples.triangle_star_intersections
+#print axioms TDA.Topology.RealizationExamples.triangle_nerve_square
+#print axioms TDA.Topology.RealizationExamples.triangle_incl_not_surjective
+
+-- Barycentric realization, mesh bounds and the triangle boundary.
+#print axioms TDA.Topology.SubdivisionRealization.Vertex
+#print axioms TDA.Topology.SubdivisionRealization.barycenter
+#print axioms TDA.Topology.SubdivisionRealization.complex
+#print axioms TDA.Topology.SubdivisionRealization.complex_mono
+#print axioms TDA.Topology.SubdivisionRealization.vertexPosition
+#print axioms TDA.Topology.SubdivisionRealization.realize
+#print axioms TDA.Topology.SubdivisionRealization.realize_incl
+#print axioms TDA.Topology.SubdivisionRealization.vertexPoint
+#print axioms TDA.Topology.SubdivisionRealization.realize_vertexPoint
+#print axioms TDA.Topology.SubdivisionRealization.projectStep
+#print axioms TDA.Topology.SubdivisionRealization.projectStep_vertexPoint
+#print axioms TDA.Topology.SubdivisionRealization.originalFace
+#print axioms TDA.Topology.SubdivisionRealization.barycentricProjection
+#print axioms TDA.Topology.SubdivisionRealization.projection_incl
+#print axioms TDA.Topology.SubdivisionRealization.realize_eq_comp_projection
+#print axioms TDA.Topology.SubdivisionRealization.mem_iff_originalFace_mem
+#print axioms TDA.Topology.SubdivisionRealization.projection_support
+#print axioms TDA.Topology.SubdivisionRealization.projection_support_mem_iff
+#print axioms TDA.Topology.SubdivisionRealization.realize_incl_of_agree
+#print axioms TDA.Topology.SubdivisionRealization.faceImage
+#print axioms TDA.Topology.SubdivisionRealization.closedStarImage
+#print axioms TDA.Topology.SubdivisionRealization.isBounded_faceImage
+#print axioms TDA.Topology.SubdivisionRealization.isBounded_closedStarImage
+#print axioms TDA.Topology.SubdivisionRealization.diam_le
+#print axioms TDA.Topology.SubdivisionRealization.eventually_diam_lt
+#print axioms TDA.Topology.SubdivisionRealization.diam_eq_zero_of_card_le_one
+#print axioms TDA.Topology.SubdivisionRealization.faceImage_eq_of_mem
+#print axioms TDA.Topology.SubdivisionRealization.closedStarImage_mono
+#print axioms TDA.Topology.SubdivisionRealization.closedStarImage_subset_of_labels
+#print axioms TDA.Topology.SubdivisionRealization.unitVertex
+#print axioms TDA.Topology.SubdivisionRealization.dist_unitVertex_le_one
+#print axioms TDA.Topology.SubdivisionRealization.realize_unitVertex_apply
+#print axioms TDA.Topology.SubdivisionMeshExamples.firstCorner
+#print axioms TDA.Topology.SubdivisionMeshExamples.firstEdge
+#print axioms TDA.Topology.SubdivisionMeshExamples.cornerEdgeFlag
+#print axioms TDA.Topology.SubdivisionMeshExamples.edgePoint
+#print axioms TDA.Topology.SubdivisionMeshExamples.flagPoint
+#print axioms TDA.Topology.SubdivisionMeshExamples.triangle_edge_coordinates
+#print axioms TDA.Topology.SubdivisionMeshExamples.triangle_flag_coordinates
+#print axioms TDA.Topology.SubdivisionMeshExamples.triangle_flag_closedStar
+#print axioms TDA.Topology.SubdivisionRealization.singleton_mem_subdivision
+#print axioms TDA.Topology.SubdivisionRealization.flagUnion
+#print axioms TDA.Topology.SubdivisionRealization.flagUnion_mem
+#print axioms TDA.Topology.SubdivisionRealization.subset_flagUnion
+#print axioms TDA.Topology.SubdivisionRealization.originalFace_mem
+#print axioms TDA.Topology.SubdivisionRealization.faceLinearOrder
+#print axioms TDA.Topology.SubdivisionRealization.vertexLinearOrder
+#print axioms TDA.Topology.SubdivisionRealization.vertexNonempty
+#print axioms TDA.Topology.SubdivisionRealization.flagUnion_mono
+#print axioms TDA.Topology.SubdivisionRealization.originalFace_mono
+#print axioms TDA.Topology.SubdivisionRealization.lastVertexLabel
+#print axioms TDA.Topology.SubdivisionRealization.iteratedLastVertex
+#print axioms TDA.Topology.SubdivisionRealization.iteratedLastVertex_apply
+#print axioms TDA.Topology.SubdivisionRealization.lastVertexLabel_mem
+#print axioms TDA.Topology.SubdivisionRealization.iteratedLastVertex_naturality
+#print axioms TDA.Topology.SubdivisionRealization.isIso_iteratedLastVertex
+#print axioms TDA.Topology.SubdivisionRealization.subdivision_mono
+#print axioms TDA.Topology.SubdivisionRealization.subdividedFlags
+#print axioms TDA.Topology.SubdivisionRealization.flagLastVertex
+#print axioms TDA.Topology.SubdivisionRealization.isIso_flagLastVertex
+#print axioms TDA.Topology.SubdivisionRealization.flagLastVertex_naturality
+#print axioms TDA.Topology.ConvexNerve.coneCarrier
+#print axioms TDA.Topology.ConvexNerve.coneCarrier_mono
+#print axioms TDA.Topology.ConvexNerve.coneCarrier_apex
+#print axioms TDA.Topology.ConvexNerve.exists_contiguous_apexMap
+#print axioms TDA.Topology.ConvexNerve.chainHomotopy_of_contiguous_after_lastVertex
+#print axioms TDA.Topology.ConvexNerve.exists_least_face
+#print axioms TDA.Topology.ConvexNerve.exists_compatibleWitnesses
+#print axioms TDA.Topology.ConvexNerve.exists_vertexMap_of_subordinate
+#print axioms TDA.Topology.ConvexNerve.exists_compact_witness_patch
+#print axioms TDA.Topology.ConvexNerve.vertexPosition_mem_convex
+#print axioms TDA.Topology.ConvexNerve.vertexPosition_mem_convexHull
+#print axioms TDA.Topology.ConvexNerve.vertexPosition_mem_closedStarImage
+#print axioms TDA.Topology.ConvexNerve.exists_subordinate_closedStars
+#print axioms TDA.Topology.ConvexNerve.exists_common_labeling
+#print axioms TDA.Topology.ConvexNerve.leastFlagFace
+#print axioms TDA.Topology.ConvexNerve.leastFlagFace_spec
+#print axioms TDA.Topology.ConvexNerve.chainHomotopy_labeling_lastVertex
+#print axioms TDA.Topology.ConvexNerve.exists_common_chain_comparisons
+#print axioms TDA.Topology.ConvexNerve.isIso_simplicialHomologyIncl
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.pathIntervals
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.triangleIntervals
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.intervals_subset
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.intervals_iUnion_eq
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.triple_face_difference
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.strict_inclusion_isIso
+#print axioms TDA.Topology.ConvexNerve.isIso_simplicialHomologyIncl_of_compact
+#print axioms TDA.Topology.exists_pos_common_nerve_thickening_eq
+#print axioms TDA.Topology.convex_thickening_of_iUnion_eq
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.boxes
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.enlargedBoxes
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.boxes_subset
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.iUnion_boxes_eq
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.nerve_boxes_lt
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.isIso_simplicialHomologyIncl
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.not_isZero_homology_one
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.planeCover
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.boxes_subset_plane
+#print axioms TDA.Topology.ConvexNerveInclusionExamples.Annulus.unequal_union_not_isIso

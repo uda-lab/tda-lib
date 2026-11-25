@@ -230,4 +230,41 @@ private theorem tied_index_class_nonzero :
       (columnCycle Examples.tied Examples.tied_valid 1 6 5 tied_index_alive) ≠ 0 :=
   columnClass_nonzero Examples.tied Examples.tied_valid 1 6 5 tied_index_alive
 
+open Examples (sphere ball)
+
+private local instance : NeZero sphere.length := ⟨by decide⟩
+private local instance : NeZero ball.length := ⟨by decide⟩
+
+/-- The fundamental cycle is the sum of the four triangular faces. -/
+def sphereClass : Representative sphere.length :=
+  ⟨⟨2, 2, .essential⟩, 13, none, [10, 11, 12, 13], none⟩
+
+/-- The tetrahedron at position 14 bounds the same cycle in the ball. -/
+def ballClass : Representative ball.length :=
+  ⟨⟨2, 2, .finite 5⟩, 13, some 14, [10, 11, 12, 13], some [14]⟩
+
+theorem sphere_H2_records :
+    (representedOccurrences sphere).filter (fun r => r.occurrence.degree == 2) = [sphereClass] := by
+  unfold representedOccurrences pairedRepresentative essentialRepresentative pairedVector
+    essentialVector change essentialIndices pivotPairs reduced trace
+  rw [Examples.sphere_boundary]
+  decide +kernel
+
+theorem sphere_H2_representatives :
+    (runWithRepresentatives sphere).map (List.filter fun r => r.occurrence.degree == 2) =
+      some [sphereClass] := by
+  simp [runWithRepresentatives, (validBool_iff _).mpr Examples.sphere_valid, sphere_H2_records]
+
+theorem ball_H2_records :
+    (representedOccurrences ball).filter (fun r => r.occurrence.degree == 2) = [ballClass] := by
+  unfold representedOccurrences pairedRepresentative essentialRepresentative pairedVector
+    essentialVector change essentialIndices pivotPairs reduced trace
+  rw [Examples.ball_boundary]
+  decide +kernel
+
+theorem ball_H2_representatives :
+    (runWithRepresentatives ball).map (List.filter fun r => r.occurrence.degree == 2) =
+      some [ballClass] := by
+  simp [runWithRepresentatives, (validBool_iff _).mpr Examples.ball_valid, ball_H2_records]
+
 end TDA.Persistence.Reduction.FiniteInput.RepresentativeExamples

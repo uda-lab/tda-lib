@@ -38,12 +38,12 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | Import and namespace | Main definitions and theorem families | Requirements and scope |
 |---|---|---|
 | `TDA.Filtration` / `TDA.Filtration` | `SimplicialFiltration`, support, `FilterFunction`, sublevels, `CompatibleOrder`, `OrderingEquivalent` and order chambers; ambient Čech complexes and relations (`Cech`); greedy sparse Rips filtrations (`SparseRips`, one-parameter) and normalized subdivision-Rips bifiltrations (`SubdivisionRips`) | Values belong to nonempty faces. Ordered values are separate from the ambient vertices; compatible enumerations require finite total faces. Support can grow with the index. |
-| `TDA.Simplicial` / `TDA.Simplicial` | Face `Chain`, signed `boundary`, square-zero chain complex, inclusion maps, `vertexChainMap`, `simplicialChainMap`, `simplicialHomology` / `simplicialHomologyMap`, finite coordinates, `VertexMap` / `Contiguous` / `PrismAdmissible`, arbitrary-apex cones (`ApexInsertionClosed`) and `barycentricHomologyIso` ([barycentric subdivision and prism homotopies](#barycentric-subdivision-and-prism-homotopies)) | Signed chains use an ambient vertex order and a ring. Finite-dimensional homology additionally uses a field and finite faces. A vertex map may identify vertices; contiguity is reflexive and symmetric, with composition laws, and is not asserted transitive. Cone contractions assume the chosen apex is a face and can be inserted into every face (`ApexInsertionClosed`). For barycentric homology, the vertex type is finite and nonempty, and its finite subsets have an auxiliary `LinearOrder (Finset V)`; naturality is for same-carrier inclusions. |
-| `TDA.Persistence` / `TDA.Persistence` | `PModule`, structure maps and reindexing; finite intervals, rank barcodes and decomposition; `Diagram`, `dgm`, reduction, stability and calculus | The functor core needs a ring and a preorder, with independent coefficient/index/carrier universes. Finite decomposition has its narrower field, finite-chain, pointwise finite-dimensional and same carrier/coefficient universe assumptions. Sublevel diagrams and calculus retain their stated vertex-order, finite-face and local-lift hypotheses. |
-| `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces; measure bifiltrations on the restricted two-copy index (`MeasureBifiltration`), finite-uniform Gromov–Prokhorov witnesses (`FiniteGromovProkhorov`, `FiniteGromovProkhorovWitness`) and the large-face multicover cover (`MulticoverCover`); [quotient maps after products](math/reeb-thickening-constructible.md#point-set-tools) with a locally compact or proper factor (`isQuotientMap_prodMap_id_left`, `isQuotientMap_prodMap_id_right`, `isQuotientMap_prodMap_id_Icc`, `isQuotientMap_prodMap_id_of_isProperMap`, `isQuotientMap_prodMap_id_of_compactSpace`) | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has a common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. The quotient-map product lemmas place no separation hypothesis on the quotient map; product stability is stated only for a locally compact factor or a proper surjection, not for arbitrary quotient maps. |
+| `TDA.Simplicial` / `TDA.Simplicial` | Face `Chain`, signed `boundary`, square-zero chain complex, inclusion maps, `vertexChainMap`, `simplicialChainMap`, `simplicialHomology` / `simplicialHomologyMap`, finite coordinates, `VertexMap` / `Contiguous` / `PrismAdmissible`, arbitrary-apex cones (`ApexInsertionClosed`) and `barycentricHomologyIso` ([barycentric subdivision and prism homotopies](#barycentric-subdivision-and-prism-homotopies)) | Signed chains use an ambient vertex order and a ring. `simplicialHomologyMap` takes its source and target vertex types in one universe, with the ring in an independent universe. Finite-dimensional homology additionally uses a field and finite faces. A vertex map may identify vertices; contiguity is reflexive and symmetric, with composition laws, and is not asserted transitive. Cone contractions assume the chosen apex is a face and can be inserted into every face (`ApexInsertionClosed`). For barycentric homology, the vertex type is finite and nonempty, and its finite subsets have an auxiliary `LinearOrder (Finset V)`; naturality is for same-carrier inclusions. |
+| `TDA.Persistence` / `TDA.Persistence` | `PModule`, structure maps and reindexing; finite intervals, rank barcodes and decomposition; `Diagram`, `dgm`, reduction, stability and calculus | The functor core needs a ring and a preorder, with independent coefficient/index/carrier universes. Finite decomposition has its narrower field, finite-chain, pointwise finite-dimensional and same carrier/coefficient universe assumptions. Sublevel diagrams and calculus retain their stated vertex-order, finite-face and local-lift hypotheses. `dgm` takes its coefficient field in the universe of the vertex type (`V : Type u`, `k : Type u`). |
+| `TDA.Topology` / `TDA.Topology` | `CoverFamily`, `Covers`, `Refinement`, `nerve`, `nerveMap`, `nerveMap_contiguous`, `MultiNerveCell`, its `projection` and `multiNerveMap`, path-cover and cosheaf interfaces; measure bifiltrations on the restricted two-copy index (`MeasureBifiltration`), finite-uniform Gromov–Prokhorov witnesses (`FiniteGromovProkhorov`, `FiniteGromovProkhorovWitness`) and the large-face multicover cover (`MulticoverCover`); [quotient maps after products](math/reeb-thickening-constructible.md#point-set-tools) with a locally compact or proper factor (`isQuotientMap_prodMap_id_left`, `isQuotientMap_prodMap_id_right`, `isQuotientMap_prodMap_id_Icc`, `isQuotientMap_prodMap_id_of_isProperMap`, `isQuotientMap_prodMap_id_of_compactSpace`); [realizations, subdivision mesh and nerves of nested convex families](#realizations-subdivision-mesh-and-nerves-of-nested-convex-families): `Realization`, `Realization.coordinateStar` and `Realization.nerve_coordinateStar`, iterated barycentric subdivision (`SubdivisionRealization.complex`, `realize`, `barycentricProjection`) with the mesh bound `SubdivisionRealization.diam_le`, nerve-preserving thickenings (`exists_pos_nerve_thickening_eq`, `exists_pos_common_convex_thickening`) and the nerve inclusion theorems `ConvexNerve.isIso_simplicialHomologyIncl` and `ConvexNerve.isIso_simplicialHomologyIncl_of_compact` | An indexed set family need not cover anything; `Covers` states coverage separately. Labels may repeat and members may be empty. A nerve face is nonempty and has a common witness. Refinement selectors need not be injective. A multinerve cell is a path component of a nonempty finite intersection; the projection to the nerve is an order isomorphism only under `IntersectionsPathSubsingleton`. The quotient-map product lemmas place no separation hypothesis on the quotient map; product stability is stated only for a locally compact factor or a proper surjection, not for arbitrary quotient maps. The convex nerve inclusion theorems take a finite linearly ordered index type and families of subsets of a real normed space; the subdivision, mesh and star-intersection contractibility statements take a finite vertex type. |
 | `TDA.Probability` / `TDA.Probability` | Atomic `Coupling`, `iid`, `transportCost`, `wasserstein` and `wassersteinInfinity`; the `pairEnergy` and `pairMaximum` moment bounds; `gromovWasserstein` and `gromovWassersteinInfinity`; the measure forms `MeasureCoupling`, `iidMeasure`, `measureWasserstein`, `measureGromovWasserstein` and their infinity versions | Couplings have exact probability marginals and costs are extended nonnegative infima; no optimizer is assumed. Atomic inputs are `PMF`s, measure inputs `ProbabilityMeasure`s. Gromov–Wasserstein uses the one-half distortion convention. The area contains no diagrams; `TDA.Persistence.RipsSampling` and `RipsSamplingMeasureStability` consume it. |
 | `TDA.Reeb` / `TDA.Reeb` | Inverse-image path components, Reeb quotients and comparison maps; interval cosheaves, smoothing, interleavings and extended distance; finite data, graph realizations with the finite tree criteria `isTree_iff_simplyConnectedSpace_realization` and `isTree_iff_contractibleSpace_realization`, the incidence quiver and `incidenceGraph` of finite data with `card_incidenceGraph_edgeSet_le` and `RGraph.cosheafEquivalence`; `thickeningQuotient`, `thickeningQuotientAbsorptionIso`, `thickeningQuotientCompIso`, and `isRGraph_quotient_thickening_of_isConstructibleSpace`; `rgraphToConstructible`, `quotientRGraphAdjunction`, `RGraph.constructibleSmoothing`, `ConstructibleInterleaving`, `ConstructibleInterleaving.equivGeometric`, `constructibleInterleavingDistance`, `constructibleInterleavingDistance_eq_geometricInterleavingDistance` and `constructibleInterleavingDistance_eq_interleavingDistance`; `CylinderPresentation.levelHomeomorph`, `realizationSpace`, `levelPerturbation`, `CriticalValues.translate`, the [vertex-height perturbation API](math/reeb-graph-pl.md#vertex-height-perturbations-of-a-fixed-graph) of graph-PL heights (`abs_plHeight_sub_le`, `edist_ofFun_plHeight`, `edist_ofFun_plHeight_eq_edist`, `vertexHeightInterleaving`, `interleavingDistance_intervalComponents_plHeight_le`, `interleavingDistance_intervalComponents_plHeight_le_edist_ofFun`), and the [level-change stability, range and exact-distance API](math/reeb-geometric-interleaving-equivalence.md#level-perturbations-of-a-fixed-presentation), and translation of interval precosheaves (`OpenInterval.translate`, `translateFunctor`, `translatePre`, `translationInterleaving`, `Interleaving.isEmpty_of_nonempty_of_isEmpty`, `le_interleavingDistance_of_forall_exists_isEmpty`, `intervalComponents_add_const`, `interleavingDistance_intervalComponents_add_const`) with `GraphPL.plHeight_add_const` and `RGraph.geometricInterleavingDistance_eq_zero_of_isEmpty`, and [vertical translation of graph objects](math/reeb-rgraph-translation.md) (`RGraph.translateOver`, `toOverTranslateIso`, `translateRGraph`, `translateRGraphZeroIso`, `translateRGraphCompIso`, `cosheafFunctor_translateRGraph_obj`, `Interleaving.translatePre`, `interleavingDistance_translatePre`, `geometricInterleavingDistance_translateRGraph`, `geometricInterleavingDistance_translateRGraph_self`, `reebRel_add_const_iff`, `quotientTranslateIso`, `thickeningTranslateIso`, `geometricSmoothingTranslateIso`); reindexing of interleavings along interval functors (`Interleaving.reindex`, `reindexIso`), interval scaling (`OpenInterval.scale`, `scalePre`, `Interleaving.scalePre`, `interleavingDistance_scalePre`, `intervalComponents_smul`, `interleavingDistance_intervalComponents_smul`), and height-controlled map pairs (`HeightMapPair`, `HeightMapPair.natTrans`, `HeightMapPair.natTransSymm`, `HeightMapPair.natTrans_app_mk`, `HeightMapPair.natTransSymm_app_mk`, `HeightMapPair.interleaving`, `HeightMapPair.symm`, `HeightMapPair.ofUniformBound`, `HeightMapPair.interleavingDistance_le`, `HeightMapPair.interleaving_eq_perturbationInterleaving`), and [presentation morphisms on a common grid](math/reeb-thickening-constructible.md#presentation-morphisms) (`CylinderPresentation.Hom`, `Hom.realize`, `Hom.height_realize`, `Hom.realize_id`, `Hom.realize_comp`, `Hom.toOverHom`, `FiniteReebData.Hom.toPresentationHom`, `realize_toPresentationHom`, `isQuotientMap_prodMap_quotMk`, `prodMap_quotMk_eq_iff`, `isQuotientMap_rawBandMap`), and the [thickening of one cylinder](math/reeb-thickening-constructible.md#one-cylinder) (`Thickening.cylinderThick`, `Thickening.cylinderThickHomeomorph`, `Thickening.cylinderHeight_cylinderThickHomeomorph`, `Thickening.vertexStripHomeomorph`, `Thickening.botIncl`, `Thickening.topIncl`, `Thickening.mapSpace`, `Thickening.pairThickHomeomorph`), [windows and transfers of a presentation](math/reeb-thickening-constructible.md#windows-and-transfers) (`CylinderPresentation.Window`, `windowMk_eq_iff`, `windowToSpace`, `transfer`, `transferFamily`, `transferHomeomorph`), and [the thickening presentation of a presentation](math/reeb-thickening-constructible.md#the-general-presentation) (`CylinderPresentation.thick`, `edgeIncl`, `vertexIncl`, `toProd`, `ofProd`, `thickHomeomorph`, `height_thickHomeomorph`, `shiftedThickHomeomorph`), and [constructibility of thickenings](math/reeb-thickening-constructible.md#theorem-427) (`CylinderPresentation.thickOverIso`, `isConstructibleSpace_thickening_of_isConstructibleSpace`, `thickeningFunctor`, `isConstructibleSpace_thickening_of_isRGraph`, `CylinderPresentation.windowFiberHomeomorph`), and the [thickening–cosheaf comparison on constructible ℝ-spaces](math/reeb-thickening-cosheaf-comparison.md) (`constructibleThickeningComparisonIso`, `constructibleThickeningQuotientComparisonIso`, `thickeningFunctorZeroSection`, `thickeningFunctorZeroIso`, `constructibleThickeningValueEquiv`, `constructibleThickeningQuotientValueEquiv`) | Components are path components of the inverse-image subspace. The tree criteria assume a finite vertex type; realizations of infinite trees are not claimed. General quotient comparison is a natural transformation. The graph/constructible-cosheaf equivalence is scoped to the declared finite real-graph category and value universe `0`. Smoothing and geometric comparisons have separate contracts; geometric thickening composes laxly, by a height-preserving addition map that is not an isomorphism but becomes one after the Reeb quotient, and geometric smoothing of graph objects composes additively, `U_ε U_δ ≅ U_(ε+δ)`; geometric interleavings of graph objects correspond bijectively to interleavings of their component cosheaves, so the geometric and cosheaf interleaving distances coincide and the geometric one satisfies the triangle inequality. Geometric smoothing enlarges along `ε ≤ δ`, geometric interleavings are monotone in the parameter, and every graph object is within geometric distance `ε` of its `ε`-smoothing. Constructible interleavings correspond bijectively to geometric interleavings of the Reeb graphs; the constructible distance equals the cosheaf distance of the interval components of the spaces themselves; zero distance does not give an isomorphism of spaces. The incidence graph forgets parallel edges; edge counts use `Nat.card`. An interval-local component obstruction excludes geometric interleavings whose double-thickening restriction is injective from a nontrivial to a subsingleton value; the parallel loop and the single edge have geometric distance exactly `1/4`. Absorption `ℛ T_ε ≅ U_ε ℛ` holds on all constructible ℝ-spaces; constructibility of `T_ε X` itself is the separate `isConstructibleSpace_thickening_of_isConstructibleSpace`. Level-change stability fixes the presentation and number of levels; compact locally path-connected pieces supply constructibility. Exact translation distance requires a nonempty realization. Arbitrary continuous perturbations are outside that API. The vertex-height bound controls the piecewise-linear extension of the vertex heights on a fixed graph, not arbitrary continuous functions with the same vertex values. The exact translation distance of interval components assumes a nonempty space and a range bounded below; the identity height of `ℝ` shows the bound is needed. Translation of graph objects is an isometry of the geometric distance; the exact self-translation distance `|c|` assumes a nonempty total space and is `0` otherwise. Scaling on graph objects, translation of the display locale and of Mapper reconstructions as graph objects are not provided. Nonzero scaling multiplies interval-precosheaf distances by the absolute scalar; reflection is an isometry. A `HeightMapPair` supplies continuous maps with height error at most `ε` and composite paths with height deviation at most `2ε`; it is a sufficient interleaving criterion, with no converse, functional-distortion identity or optimality claim for the `2ε` path-deviation allowance. Presentation morphisms fix the grid and the cylinder parameter and need no Hausdorff, compact or locally path-connected pieces; `isQuotientMap_rawBandMap` presents the thickened realization by its thickened raw pieces, and no colimit theorem for arbitrary constructible spaces is claimed. The realization of `cylinderThick` is homeomorphic to `E × [a, d] × [-ε, ε]`, preserving height, for every topological `E`, `ε ≥ 0` and `a ≤ d` on every grid listing the four events; for a whole presentation, `thickHomeomorph` is the corresponding homeomorphism on every grid listing the shifted levels. Windows carry the quotient topology of their raw pieces and are not claimed to be height-window subspaces; transfers need not be injective at slab ends. The thickening of every constructible ℝ-space is constructible for every `ε ≥ 0`, with no Hausdorff hypothesis, presented on the shifted witness `S.shifted ε`; this is an admissible critical set, and its minimality is not claimed. The identification of the vertex pieces with height fibers (`windowFiberHomeomorph`) follows from the theorem and is not used in its proof. On constructible ℝ-spaces, in universe `0`, `C' T_ε ≅ S_ε C'` (Theorem 4.24 restricted) and the companion `C'' ℛ T_ε ≅ S_ε C'` are natural in all height-preserving maps, with `S_ε` the smoothing of constructible cosheaves; the companion identifies components, not points of the Reeb quotient with points of the space, and on graph objects both are the existing graph comparisons. |
-| `TDA.Mapper` / `TDA.Mapper` | `ComponentIndex`, pullback component covers, `mapper`, its one-skeleton, `multiNerveMapper` and its projection onto `mapper`, refinement maps including `multiNerveMapperMap`, graph-PL comparison, uniform interval covers (`uniformCover`) with attained-range coverage, the label-set cell equivalence `cellsOverLabelsEquiv` with graph-PL edge cells, height-separating uniform covers (`HeightSeparating`, `exists_heightSeparating_uniformCover`, `range_plHeight_eq_Icc`) with the splitting `cellComponentsEquivSum`, vertex cells (`vertexCellsEquiv`) and the cell classification `uniformVertexCellsEquivLevel`, `uniformVertexCellsEquivSpans`, `uniformEdgeCellsEquivSpans` through `EdgeCrosses` and `EdgeSpans`, finite Reeb data of graph-PL input (`CoversVertexHeights`, `vertexHeightLevels`, `LevelVertex`, `SpanEdge`, `levelEnd`, `graphPLReebData`, `uncoveredEdgeEquivCrossesOfLevel`, `induceComponentsEquivOfEq`) with the star and gap bijections `graphPLStarEquiv`, `graphPLGapEquiv`, their incidence laws `graphPLStarEquiv_map_left`, `graphPLStarEquiv_map_right` and the finite-data isomorphism `graphPLExtractHom`, `graphPLExtractIso`, closed level sets of graph-PL height (`ClosedLevel`, `IsLevelWindow`, `closedLevelComponentsEquiv`, `componentMap_levelInclusion_bijective`, `graphPLReebDataVEquivClosedLevel`), constructibility and the cosheaf identification of graph-PL height (`isConstructibleAt_intervalComponents_plHeight`, `cellGraphIsoOfSameLevels`, `graphPLCosheafIsoOfIso`, `graphPLCosheafIso`, `isConstructibleCosheaf_intervalComponents_plHeight`, `cosheafFunctorGraphPLIso`, `geometricInterleavingDistance_graphPL`), the Reeb quotient of graph-PL height (`compactSpace_realization`, `exists_coversVertexHeights`, `graphPLReebMap`, `graphPLReebQuotientHomeomorph`, `graphPLReebQuotientIso`, `graphPLReebQuotientIsoOfIso`, `intervalComponentNatTrans_graphPLReebMap`, `isRGraph_graphPLReebQuotient`, `graphPLReebGraph`, `graphPLReebGraphIso`, `isIso_intervalComponentComparison_plHeight`, `geometricInterleavingDistance_graphPLReebGraph`), vertex-height stability of the graph-PL Reeb quotient (`heightRange_graphPLReebGraph`, `geometricInterleavingDistance_graphPLReebGraph_le`, `geometricInterleavingDistance_graphPLReebGraph_le_edist_ofFun`, `geometricInterleavingDistance_graphPLReebGraph_le_edist`, and `geometricInterleavingDistance_graphPLReebGraph_le_of_heightMapPair`) with extremal vertex-height lower bounds and exact vertical translation (`sSup_range_plHeight`, `sInf_range_plHeight`, `ofReal_abs_sup'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, `ofReal_abs_inf'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, `geometricInterleavingDistance_graphPLReebGraph_add_const`), the graph-PL realization as a constructible ℝ-space (`barycentric`, `t2Space_realization`, `edgePoint_eq_vertex_iff`, `edgePoint_eq_edgePoint_iff`, `locallyPathConnectedSpace_realization`, `realizationMap_injective`, `LevelPiece`, `levelPieceHomeomorph`, `compactSpace_closedLevel`, `locallyPathConnectedSpace_closedLevel`, `graphPLPresentation`, `graphPLPresentationMap`, `graphPLPresentationHomeomorph`, `graphPLComponentDataIso`, `graphPLReebMap_graphPLPresentationMap`, `graphPLPresentationIso`, `isConstructibleSpace_graphPLOver`, `graphPLReebQuotientIsoOfIso_graphPLComponentDataIso`, `graphPLSpace`, `quotientRGraphFunctor_obj_graphPLSpace`, `overBaseMap_graphPLSpace`, `isRGraph_quotient_thickening_graphPLOver`), and `CoherentCoverTower`, member-adapted MultiNerve Mapper comparison (`LevelsAdapted`, `exists_levelsAdapted`, `labelFace`, `uniformMapperData`, `uniformMapperCellsEquiv`, `uniformMapperIso`), refinement of graph-PL finite Reeb data (`graphPLRefineIso`, `graphPLRefineHom_trans_v`, `uniformMapperCanonicalIso`, `graphPLRefineToOverIso`), the ordinary one-skeleton comparison `incidenceGraphUniformMapperIso`, `mapperOneSkeletonGraphPLIso` and `mapperOneSkeleton_connected_iff`, refinement-induced homology maps `mapperHomologyMap` with `mapperHomologyMap_eq`, `mapperChainHomotopy`, and the persistence module `mapperHomologyPModule` of refinements along a preorder with `mapperHomologyPModule_eq` and `CoherentCoverTower.structureMap_mapperHomologyPModule`, interleavings from cover maps between real towers (`mapperHomologyShiftMap`, `mapperHomologyInterleaving`, `mapperHomologyInterleaving_app_eq`, `realInterleavingDistance_mapperHomologyPModule_le`, `realInterleavingDistance_mapperHomologyPModule_le_add`), the pullback identification `mapperHomologyPModule_pullback`, and perturbation stability along the centred tower (`centredCover`, `centredCoverRefinement`, `centredMapperHomologyInterleaving`, `realInterleavingDistance_centredMapperHomology_le`), height-map-pair bounds for centred Mapper modules (`centredMapperPairVertexMap`, `_natural`, `_comp`, `centredMapperPairHomologyMap`, `centredMapperPairHomologyMapSymm`, `centredMapperPairInterleaving`, `realInterleavingDistance_centredMapperPair_le`, `_ofUniformBound`, `_graphPL_le`); these require supplied component orders but no finiteness, coverage or nonemptiness, and provide no diagram or bottleneck bound for the centred tower itself (the capped centred map-pair bounds are below), no converse, multinerve Mapper, order independence or executable extraction; and finite Mapper barcodes `mapperBarcode` with `mapperHomologyPModule_finiteDimensional`, `mapperBarcode_eq`, `nonempty_mapperBarcodeIso`, `finrank_range_mapperHomologyMap`, `mapperBarcode_eq_iff`, `nonempty_iso_iff_mapperBarcode_eq`, `CoherentCoverTower.finrank_range_simplicialHomologyMap` and the graph-PL face-finiteness instance `GraphPL.finite_mapperFace`, and two-input stability of categorical Mapper reconstructions (`interleavingDistance_coverComponents_le_add`, `geometricInterleavingDistance_graphPLMapperReconstruction_eq`, `geometricInterleavingDistance_mapperReeb_le_add_edist`, `geometricInterleavingDistance_graphPLReebGraph_le_mapperReeb_add`, `geometricInterleavingDistance_mapperReeb_le_graphPLReebGraph_add`, `ofReal_abs_sup'_sub_le_geometricInterleavingDistance_mapperReeb_add`, `tendsto_geometricInterleavingDistance_mapperReeb_pair`, `exists_graphPLMapperReconstruction_pair_le`), and categorical Mapper reconstruction of constructible ℝ-spaces (`finite_intervalComponents_constructibleSpace`, `constructibleMapperReconstruction`, `geometricInterleavingDistance_constructibleMapperReeb_eq`, `_le`, `_le_retained`, `tendsto_geometricInterleavingDistance_constructibleMapperReeb`, `retainedCoverResolution_le_coverResolution`), and rank obstructions to real interleavings (`finrank_range_structureMapLinear_le_of_realInterleaving`, `structureMap_eq_zero_of_realInterleaving`, `isEmpty_realInterleaving_of_finrank_lt`, `le_realInterleavingDistance_of_finrank_lt`, `le_realInterleavingDistance_of_structureMap_ne_zero`) and the zero-map interleaving `nonempty_realInterleaving_of_structureMap_eq_zero`, with their Mapper and centred-tower forms (`isEmpty_face_mapper`, `isEmpty_realInterleaving_mapperHomologyPModule_of_finrank_lt`, `le_realInterleavingDistance_mapperHomologyPModule_of_finrank_lt`, `isEmpty_realInterleaving_mapperHomologyPModule_of_isEmpty_face`, `le_realInterleavingDistance_mapperHomologyPModule_of_isEmpty_face`, `le_realInterleavingDistance_centredMapperHomology_of_finrank_lt`), and diagrams of step towers (`mapper_eq_bot_of_isEmpty`, `mapper_eq_bot_of_isEmpty_componentIndex`, `isZero_simplicialHomology_mapper_of_isEmpty`, `stepTower`, `stepRefinement`, `mapperHomologyPModule_stepTower`, `isConstructible_stepTower`, `stepMapperDiagram`, `stepMapperDiagram_eq`, `stepMapperDiagram_isPositive`, `stepMapperDiagram_eq_ofIndexBars_succ`, `stepMapperDiagram_eq_ofIndexBars`, `bottleneck_stepMapperDiagram_le`, `bottleneck_stepMapperDiagram_le_add`, `bottleneck_stepMapperDiagram_eq`, `stepMapperDiagram_interleaving_iff_matching`, `realInterleavingDistance_stepTower_eq_top_iff`), and the tightness of the step bounds (`le_bottleneck_stepMapperDiagram_of_finrank_lt`, `le_bottleneck_stepMapperDiagram_of_isEmpty_face`, `le_bottleneck_stepMapperDiagram_of_structureMap_ne_zero`, `isEmpty_realInterleaving_stepTower_of_isEmpty_face`, `heq_stepTower_shiftGrid`, `stepTowerToShiftGrid`, `stepTowerOfShiftGrid`, `bottleneck_stepMapperDiagram_shiftGrid_le`, `SurvivesToLast`, `le_realInterleavingDistance_stepTower_shiftGrid`, `realInterleavingDistance_stepTower_shiftGrid_eq`, `bottleneck_stepMapperDiagram_shiftGrid_eq`, `mapperHomologyMap_zero_ne_zero`, `survivesToLast_zero`, `bottleneck_stepMapperDiagram_shiftGrid_eq_zero_degree`, `bottleneck_stepMapperDiagram_eq_top_iff`), and exact translation of categorical Mapper reconstructions (`coverResolution_add_const`, `coverComponentsTranslateIso`, `interleavingDistance_coverComponents_add_const`, `geometricInterleavingDistance_graphPLMapperReconstruction_add_const`, `_of_covers`, `isEmpty_graphPLMapperReconstruction_of_isEmpty_cover`, `geometricInterleavingDistance_graphPLMapperReconstruction_of_isEmpty`), and capped centred step towers (`centredInterval`, `cappedIndex`, `cappedCentredCover`, `stageRadius`, `mem_cappedCentredCover_succ_iff`, `cappedCentredRefinement`, `cappedCentredPullbackRefinement`, `cappedCentredDiagram`, `cappedCentredDiagram_eq_pullback`, `bottleneck_cappedCentredDiagram_le_of_stageRadius_le`, `bottleneck_cappedCentredDiagram_eq`, `bottleneck_cappedCentredDiagram_le`, `uniformGrid`, `bottleneck_cappedCentredDiagram_uniformGrid_le`, `bottleneck_cappedCentredDiagram_grid_le`, `bottleneck_cappedCentredDiagram_le_add`, `bottleneck_cappedCentredDiagram_plHeight_le`, `bottleneck_cappedCentredDiagram_plHeight_uniformGrid_le`), and direct different-domain capped centred map-pair results (`cappedCentredPairVertexMap`, `cappedCentredPairVertexMap_mk`, `cappedCentredPairVertexMapSymm`, `cappedCentredPairVertexMapSymm_mk`, `cappedCentredPairVertexMap_natural`, `cappedCentredPairVertexMap_comp`, `cappedCentredPairVertexMapSymm_comp`, `cappedCentredPairHomologyMap`, `cappedCentredPairHomologyMapSymm`, `cappedCentredPairInterleaving`, `bottleneck_cappedCentredDiagram_le_of_heightMapPair`, `bottleneck_cappedCentredDiagram_pair_le`, `bottleneck_cappedCentredDiagram_pair_uniformGrid_le`, `bottleneck_cappedCentredDiagram_pair_le_ofUniformBound`, `bottleneck_cappedCentredDiagram_pair_plHeight_le`, `bottleneck_cappedCentredDiagram_pair_plHeight_uniformGrid_le`), and essential counts (`card_essentialPart_stepMapperDiagram`, `bottleneck_stepMapperDiagram_lt_top_iff`, `fullComponentIndexEquiv`, `componentIndexFullEquiv`, `mapper_full_eq_top`, `fullMapperHomologyIso`, `finrank_simplicialHomology_mapper_full_zero`, `isZero_simplicialHomology_mapper_full_succ`, `isEmpty_mapper_face_one_of_unique`, `finrank_simplicialHomology_mapper_full_zero_of_unique`, `card_essentialPart_cappedCentredDiagram_zero`, `card_essentialPart_cappedCentredDiagram_succ`, `card_essentialPart_cappedCentredDiagram_zero_of_unique`, `bottleneck_cappedCentredDiagram_lt_top`, `card_essentialPart_cappedCentredDiagram_plHeight`, `card_essentialPart_cappedCentredDiagram_plHeight_zero_of_unique`); graph-PL height scaling (`plHeight_smul`, `geometricInterleavingDistance_graphPLReebGraph_smul`, `_neg`, `_affine`), split trees (`splitHeights`, `geometricInterleavingDistance_splitY`) and merge/split bounds (`ofReal_min_le_geometricInterleavingDistance_mergeY`, `_splitY`, `geometricInterleavingDistance_mergeY_bounds`, `_splitY_bounds`) | Input is a continuous map and an indexed target family. Coverage and multiplicity are explicit hypotheses where used. The MultiNerve Mapper is the multinerve of the component cover; its projection onto `mapper` is surjective and is an order isomorphism under `IntersectionsPathSubsingleton (componentCover f U)`. Every real number lies in at most two members of the uniform family exactly when `2g ≤ r` (for at least three members and `g < r`); its union is the window `(a, a + n(r − g) + g)` for `0 < g ≤ r`. The graph-PL finite Reeb data need no covering hypothesis; closed-level components are classified by `LevelVertex` for finite vertex sets, and inclusion into any level window is bijective on components. The star and gap comparison assumes every vertex height is a level of the critical list, while the Mapper comparison is at member-adapted levels. The refinement comparison assumes the coarser list covers the vertex heights. Constructibility at the specified critical list and the corresponding cosheaf identification assume a list covering the vertex heights and `V : Type`; constructibility at a noncovering list can fail (fixture D5). The Reeb quotient identification assumes a covering list, which cannot be dropped (fixture R6); the slice statements use `V : Type`, while the list-free corollaries need no list. The presentation map is injective for every list, while the homeomorphism assumes a covering list (fixture K5). Closed levels are compact and locally path-connected for finite vertex sets. The slice statements use `V : Type`. Finiteness is conditional; tower identity/composition are supplied coherence data. Refinement-induced homology maps use supplied linear orders on component-index types in one universe and any ring; two refinements between the same families induce the same map, and `mapperHomologyPModule` needs no selector identity or composition equations, agrees with the strict tower's maps and is independent of the selected refinements. A finite Mapper barcode is the canonical rank barcode of `mapperHomologyPModule` on `Fin N`; it needs finitely many faces of the given degree at every stage, a field, and the field, domain and index types in one universe. It is independent of the selected refinements and classifies these modules up to natural isomorphism; finite graphs with finitely many interval labels satisfy the finiteness hypothesis without coverage. Diagrams of real-indexed towers other than step towers, q-tame Mapper barcodes, independence of the component orders, multinerve barcodes and executable extraction are not provided. These constructions are noncomputable theory, not an executable Mapper implementation. The one-skeleton isomorphism assumes `2g ≤ r` and fails without it (fixture M5). Vertex-height stability fixes the graph and bounds the Reeb distance by `edist h g` without any order, level-count or constructibility hypothesis; it is not an equality in general, and extremal vertex heights bound it below and make it exact for vertical translations. Selected cover maps shifting by `η` in both directions between two real towers give an `η`-interleaving of their Mapper homology modules with no commutation assumed; maps at pointwise distance `δ` give a `δ`-interleaving along the centred tower. A step tower places finitely many cover families on the cells of a finite grid of radii, with an empty family before the first radius; its Mapper homology module is finite-constructible, and with finitely many faces in the given degree its real diagram `stepMapperDiagram` is the `ofIndexBars` image of the finite Mapper barcode. Cover maps shifting by `η` between two step towers bound the bottleneck distance of their diagrams by `η`, and that distance equals the real interleaving distance of the modules. No diagram or bottleneck statement is made for other towers, such as the centred tower, which is not finite-constructible on any grid; tightness is stated only for translations of the grid, below, and no order-independence statement is made. Capped centred step towers have an empty first stage, centred intervals of the grid radii and a full last stage. For maps at pointwise distance `δ`, their diagrams are at bottleneck distance at most `δ + μ` on a grid of mesh `μ`, and at most `δ` on a uniform grid of spacing `h` when `δ = p h`; for one map, two grids whose meshes, first radii and last radii are within `η` give diagrams within `η`. Fixtures show that neither the full last stage nor the mesh term can be dropped; coverage by a capped stage and sharpness of `δ + μ` are not claimed. Over a field, an `ε`-interleaving bounds the rank of each structure map `M(t → t + 2ε)` by the dimension of `N (t + ε)` when that one value is finite-dimensional; this gives lower bounds on the real interleaving distance, including the exact distance `1` of two shifted one-member towers and the bound `1/8` for the flat and steep maps. Bar-length lower bounds, tightness of the rank obstruction and the exact flat/steep distance are not claimed. Constructible-input reconstruction needs no Hausdorff, graph-PL or nonempty-input hypothesis and no supplied finiteness; its distance identity needs no coverage, while its error bounds and convergence need coverage of the attained heights. Two-input Mapper bounds require each cover to cover its own height's attained range, are inequalities rather than equalities, and compare reconstructions over one fixed graph only. The rank obstructions bound the bottleneck distance of two step diagrams below through the stage of the second tower at `t + ε`. The step tower on `shiftGrid ε c` has at `t` the family of the step tower on `c` at `t + ε`, and the selected stage refinements are cover maps shifting by `ε` in both directions, so the two diagrams are at bottleneck distance at most `ε`. If the homology map of the selected refinement from the first nonempty stage to the last stage is nonzero in degree `n` (`SurvivesToLast`), the bottleneck distance and the real interleaving distance are exactly `ε`; in degree `0` this holds whenever the first nonempty stage has a component index. The bottleneck distance of two step diagrams is infinite exactly when their numbers of essential bars differ. Essential multiplicity equals last-stage homology dimension; finite bottleneck distance is equivalent to equality of these dimensions even for maps on different spaces. A finite nonempty full family on path-connected input is a simplex, so capped centred diagrams on nonempty grids have one essential degree-zero bar and none in positive degree, and any two such diagrams have finite bottleneck distance. With one label, the degree-zero count is the number of path components, or graph components for graph-PL input. Births, several-label disconnected degree-zero counts and finite bars are not computed. The survival hypothesis cannot be dropped (degree-one loop fixture). Exact distances for pairs of grids that are not translates, bar-length lower bounds and tightness of the bound `η` beyond translations are not claimed. Translating the height and a finite bounded cover by `c` moves the reconstruction by exactly `|c|` when some member has nonempty inverse image; over empty covers the distance is `0`. A continuous map `φ` with `f' ∘ φ = f` induces the vertex map `mapperDomainMap φ hφ U : mapper f U → mapper f' U` (`pullbackRestrict`, `domainIndexMap`, `componentDomainRefinement`, `mapperDomainMap_id`, `mapperDomainMap_comp`, `mapperMap_comp_mapperDomainMap`) and, for domains in one universe, homology maps `mapperHomologyDomainMap` and the module morphism `mapperHomologyPModuleMap` with identity and composition laws, commuting with the refinement-induced maps; the component orders of the two domains are independent supplied data and `φ` is arbitrary. A homeomorphism over the codomain gives the isomorphism `mapperHomologyPModuleIso`, real interleaving distance `0` (`realInterleavingDistance_mapperHomologyPModule_homeomorph`) and bottleneck distance `0` of step diagrams with an empty initial family (`bottleneck_stepMapperDiagram_homeomorph`) and of capped centred diagrams (`bottleneck_cappedCentredDiagram_homeomorph`); for a graph isomorphism with corresponding vertex heights, `realizationHomeomorph` and `bottleneck_cappedCentredDiagram_plHeight_iso` give distance `0` of the capped centred diagrams of the piecewise-linear heights. Equality of the diagrams, compatibility with interleavings and multinerve maps, and homotopy invariance are not provided. Common nonzero affine changes scale distances across finite graphs by the absolute slope. A `HeightMapPair` between finite graph-PL spaces bounds the geometric distance of their Reeb quotients; it supplies no map between graph objects and no Mapper cover or reconstruction consequence; its Mapper homology consequences are the centred and capped centred map-pair bounds above. For the three-edge merge tree, `mergeSection` and `exists_mergeSection_path` give height-preserving sections and bounded realization paths, including the horizontal top edge when `c = M`; `mergeFoldHeightMapPair` gives a `b/2` height-map pair. For `0 < a < b ≤ M`, `geometricInterleavingDistance_mergeY_eq_min` proves distance `min (b-a) (b/2)`, recovering `b-a` when `b ≤ 2a` and giving `b/2 < b-a` when `2a < b`. Reflection gives the same exact split-tree value (`geometricInterleavingDistance_splitY_eq_min`). These formulas are specific to this tree and do not give a converse to the height-map-pair bound. |
+| `TDA.Mapper` / `TDA.Mapper` | `ComponentIndex`, pullback component covers, `mapper`, its one-skeleton, `multiNerveMapper` and its projection onto `mapper`, refinement maps including `multiNerveMapperMap`, graph-PL comparison, uniform interval covers (`uniformCover`) with attained-range coverage, the label-set cell equivalence `cellsOverLabelsEquiv` with graph-PL edge cells, height-separating uniform covers (`HeightSeparating`, `exists_heightSeparating_uniformCover`, `range_plHeight_eq_Icc`) with the splitting `cellComponentsEquivSum`, vertex cells (`vertexCellsEquiv`) and the cell classification `uniformVertexCellsEquivLevel`, `uniformVertexCellsEquivSpans`, `uniformEdgeCellsEquivSpans` through `EdgeCrosses` and `EdgeSpans`, finite Reeb data of graph-PL input (`CoversVertexHeights`, `vertexHeightLevels`, `LevelVertex`, `SpanEdge`, `levelEnd`, `graphPLReebData`, `uncoveredEdgeEquivCrossesOfLevel`, `induceComponentsEquivOfEq`) with the star and gap bijections `graphPLStarEquiv`, `graphPLGapEquiv`, their incidence laws `graphPLStarEquiv_map_left`, `graphPLStarEquiv_map_right` and the finite-data isomorphism `graphPLExtractHom`, `graphPLExtractIso`, closed level sets of graph-PL height (`ClosedLevel`, `IsLevelWindow`, `closedLevelComponentsEquiv`, `componentMap_levelInclusion_bijective`, `graphPLReebDataVEquivClosedLevel`), constructibility and the cosheaf identification of graph-PL height (`isConstructibleAt_intervalComponents_plHeight`, `cellGraphIsoOfSameLevels`, `graphPLCosheafIsoOfIso`, `graphPLCosheafIso`, `isConstructibleCosheaf_intervalComponents_plHeight`, `cosheafFunctorGraphPLIso`, `geometricInterleavingDistance_graphPL`), the Reeb quotient of graph-PL height (`compactSpace_realization`, `exists_coversVertexHeights`, `graphPLReebMap`, `graphPLReebQuotientHomeomorph`, `graphPLReebQuotientIso`, `graphPLReebQuotientIsoOfIso`, `intervalComponentNatTrans_graphPLReebMap`, `isRGraph_graphPLReebQuotient`, `graphPLReebGraph`, `graphPLReebGraphIso`, `isIso_intervalComponentComparison_plHeight`, `geometricInterleavingDistance_graphPLReebGraph`), [executable incidence extraction](math/mapper.md#executable-incidence-extraction) from a Boolean adjacency function and rational heights (`HeightGraph`, `HeightGraph.Valid`, `HeightGraph.levels`, `HeightGraph.criticalValues`, `HeightGraph.coversVertexHeights`, `HeightGraph.label`, `HeightGraph.label_eq_label_iff_reachable`, `HeightGraph.componentEquiv`, `HeightGraph.cellList`, `HeightGraph.edgeList`, `HeightGraph.incidence`, `HeightGraph.incidence?`) and its identification with the finite Reeb data and the Reeb quotient (`HeightGraph.reebData`, `HeightGraph.reebDataIso`, `HeightGraph.reebDataIso_hom_v_inl`, `HeightGraph.reebDataIso_hom_v_inr`, `HeightGraph.reebDataIso_hom_e`, `HeightGraph.extractReebDataIso`, `HeightGraph.reebQuotientIso`, `HeightGraph.isEmpty_realization`), vertex-height stability of the graph-PL Reeb quotient (`heightRange_graphPLReebGraph`, `geometricInterleavingDistance_graphPLReebGraph_le`, `geometricInterleavingDistance_graphPLReebGraph_le_edist_ofFun`, `geometricInterleavingDistance_graphPLReebGraph_le_edist`, and `geometricInterleavingDistance_graphPLReebGraph_le_of_heightMapPair`) with extremal vertex-height lower bounds and exact vertical translation (`sSup_range_plHeight`, `sInf_range_plHeight`, `ofReal_abs_sup'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, `ofReal_abs_inf'_sub_le_geometricInterleavingDistance_graphPLReebGraph`, `geometricInterleavingDistance_graphPLReebGraph_add_const`), the graph-PL realization as a constructible ℝ-space (`barycentric`, `t2Space_realization`, `edgePoint_eq_vertex_iff`, `edgePoint_eq_edgePoint_iff`, `locallyPathConnectedSpace_realization`, `realizationMap_injective`, `LevelPiece`, `levelPieceHomeomorph`, `compactSpace_closedLevel`, `locallyPathConnectedSpace_closedLevel`, `graphPLPresentation`, `graphPLPresentationMap`, `graphPLPresentationHomeomorph`, `graphPLComponentDataIso`, `graphPLReebMap_graphPLPresentationMap`, `graphPLPresentationIso`, `isConstructibleSpace_graphPLOver`, `graphPLReebQuotientIsoOfIso_graphPLComponentDataIso`, `graphPLSpace`, `quotientRGraphFunctor_obj_graphPLSpace`, `overBaseMap_graphPLSpace`, `isRGraph_quotient_thickening_graphPLOver`), and `CoherentCoverTower`, member-adapted MultiNerve Mapper comparison (`LevelsAdapted`, `exists_levelsAdapted`, `labelFace`, `uniformMapperData`, `uniformMapperCellsEquiv`, `uniformMapperIso`), refinement of graph-PL finite Reeb data (`graphPLRefineIso`, `graphPLRefineHom_trans_v`, `uniformMapperCanonicalIso`, `graphPLRefineToOverIso`), the ordinary one-skeleton comparison `incidenceGraphUniformMapperIso`, `mapperOneSkeletonGraphPLIso` and `mapperOneSkeleton_connected_iff`, refinement-induced homology maps `mapperHomologyMap` with `mapperHomologyMap_eq`, `mapperChainHomotopy`, and the persistence module `mapperHomologyPModule` of refinements along a preorder with `mapperHomologyPModule_eq` and `CoherentCoverTower.structureMap_mapperHomologyPModule`, interleavings from cover maps between real towers (`mapperHomologyShiftMap`, `mapperHomologyInterleaving`, `mapperHomologyInterleaving_app_eq`, `realInterleavingDistance_mapperHomologyPModule_le`, `realInterleavingDistance_mapperHomologyPModule_le_add`), the pullback identification `mapperHomologyPModule_pullback`, and perturbation stability along the centred tower (`centredCover`, `centredCoverRefinement`, `centredMapperHomologyInterleaving`, `realInterleavingDistance_centredMapperHomology_le`), height-map-pair bounds for centred Mapper modules (`centredMapperPairVertexMap`, `_natural`, `_comp`, `centredMapperPairHomologyMap`, `centredMapperPairHomologyMapSymm`, `centredMapperPairInterleaving`, `realInterleavingDistance_centredMapperPair_le`, `_ofUniformBound`, `_graphPL_le`); these require supplied component orders but no finiteness, coverage or nonemptiness, and provide no diagram or bottleneck bound for the centred tower itself (the capped centred map-pair bounds are below), no converse, multinerve Mapper, order independence or executable Mapper extraction; and finite Mapper barcodes `mapperBarcode` with `mapperHomologyPModule_finiteDimensional`, `mapperBarcode_eq`, `nonempty_mapperBarcodeIso`, `finrank_range_mapperHomologyMap`, `mapperBarcode_eq_iff`, `nonempty_iso_iff_mapperBarcode_eq`, `CoherentCoverTower.finrank_range_simplicialHomologyMap` and the graph-PL face-finiteness instance `GraphPL.finite_mapperFace`, and two-input stability of categorical Mapper reconstructions (`interleavingDistance_coverComponents_le_add`, `geometricInterleavingDistance_graphPLMapperReconstruction_eq`, `geometricInterleavingDistance_mapperReeb_le_add_edist`, `geometricInterleavingDistance_graphPLReebGraph_le_mapperReeb_add`, `geometricInterleavingDistance_mapperReeb_le_graphPLReebGraph_add`, `ofReal_abs_sup'_sub_le_geometricInterleavingDistance_mapperReeb_add`, `tendsto_geometricInterleavingDistance_mapperReeb_pair`, `exists_graphPLMapperReconstruction_pair_le`), and categorical Mapper reconstruction of constructible ℝ-spaces (`finite_intervalComponents_constructibleSpace`, `constructibleMapperReconstruction`, `geometricInterleavingDistance_constructibleMapperReeb_eq`, `_le`, `_le_retained`, `tendsto_geometricInterleavingDistance_constructibleMapperReeb`, `retainedCoverResolution_le_coverResolution`), and rank obstructions to real interleavings (`finrank_range_structureMapLinear_le_of_realInterleaving`, `structureMap_eq_zero_of_realInterleaving`, `isEmpty_realInterleaving_of_finrank_lt`, `le_realInterleavingDistance_of_finrank_lt`, `le_realInterleavingDistance_of_structureMap_ne_zero`) and the zero-map interleaving `nonempty_realInterleaving_of_structureMap_eq_zero`, with their Mapper and centred-tower forms (`isEmpty_face_mapper`, `isEmpty_realInterleaving_mapperHomologyPModule_of_finrank_lt`, `le_realInterleavingDistance_mapperHomologyPModule_of_finrank_lt`, `isEmpty_realInterleaving_mapperHomologyPModule_of_isEmpty_face`, `le_realInterleavingDistance_mapperHomologyPModule_of_isEmpty_face`, `le_realInterleavingDistance_centredMapperHomology_of_finrank_lt`), and diagrams of step towers (`mapper_eq_bot_of_isEmpty`, `mapper_eq_bot_of_isEmpty_componentIndex`, `isZero_simplicialHomology_mapper_of_isEmpty`, `stepTower`, `stepRefinement`, `mapperHomologyPModule_stepTower`, `isConstructible_stepTower`, `stepMapperDiagram`, `stepMapperDiagram_eq`, `stepMapperDiagram_isPositive`, `stepMapperDiagram_eq_ofIndexBars_succ`, `stepMapperDiagram_eq_ofIndexBars`, `bottleneck_stepMapperDiagram_le`, `bottleneck_stepMapperDiagram_le_add`, `bottleneck_stepMapperDiagram_eq`, `stepMapperDiagram_interleaving_iff_matching`, `realInterleavingDistance_stepTower_eq_top_iff`), and the tightness of the step bounds (`le_bottleneck_stepMapperDiagram_of_finrank_lt`, `le_bottleneck_stepMapperDiagram_of_isEmpty_face`, `le_bottleneck_stepMapperDiagram_of_structureMap_ne_zero`, `isEmpty_realInterleaving_stepTower_of_isEmpty_face`, `heq_stepTower_shiftGrid`, `stepTowerToShiftGrid`, `stepTowerOfShiftGrid`, `bottleneck_stepMapperDiagram_shiftGrid_le`, `SurvivesToLast`, `le_realInterleavingDistance_stepTower_shiftGrid`, `realInterleavingDistance_stepTower_shiftGrid_eq`, `bottleneck_stepMapperDiagram_shiftGrid_eq`, `mapperHomologyMap_zero_ne_zero`, `survivesToLast_zero`, `bottleneck_stepMapperDiagram_shiftGrid_eq_zero_degree`, `bottleneck_stepMapperDiagram_eq_top_iff`), and exact translation of categorical Mapper reconstructions (`coverResolution_add_const`, `coverComponentsTranslateIso`, `interleavingDistance_coverComponents_add_const`, `geometricInterleavingDistance_graphPLMapperReconstruction_add_const`, `_of_covers`, `isEmpty_graphPLMapperReconstruction_of_isEmpty_cover`, `geometricInterleavingDistance_graphPLMapperReconstruction_of_isEmpty`), and capped centred step towers (`centredInterval`, `cappedIndex`, `cappedCentredCover`, `stageRadius`, `mem_cappedCentredCover_succ_iff`, `cappedCentredRefinement`, `cappedCentredPullbackRefinement`, `cappedCentredDiagram`, `cappedCentredDiagram_eq_pullback`, `bottleneck_cappedCentredDiagram_le_of_stageRadius_le`, `bottleneck_cappedCentredDiagram_eq`, `bottleneck_cappedCentredDiagram_le`, `uniformGrid`, `bottleneck_cappedCentredDiagram_uniformGrid_le`, `bottleneck_cappedCentredDiagram_grid_le`, `bottleneck_cappedCentredDiagram_le_add`, `bottleneck_cappedCentredDiagram_plHeight_le`, `bottleneck_cappedCentredDiagram_plHeight_uniformGrid_le`), and direct different-domain capped centred map-pair results (`cappedCentredPairVertexMap`, `cappedCentredPairVertexMap_mk`, `cappedCentredPairVertexMapSymm`, `cappedCentredPairVertexMapSymm_mk`, `cappedCentredPairVertexMap_natural`, `cappedCentredPairVertexMap_comp`, `cappedCentredPairVertexMapSymm_comp`, `cappedCentredPairHomologyMap`, `cappedCentredPairHomologyMapSymm`, `cappedCentredPairInterleaving`, `bottleneck_cappedCentredDiagram_le_of_heightMapPair`, `bottleneck_cappedCentredDiagram_pair_le`, `bottleneck_cappedCentredDiagram_pair_uniformGrid_le`, `bottleneck_cappedCentredDiagram_pair_le_ofUniformBound`, `bottleneck_cappedCentredDiagram_pair_plHeight_le`, `bottleneck_cappedCentredDiagram_pair_plHeight_uniformGrid_le`), and essential counts (`card_essentialPart_stepMapperDiagram`, `bottleneck_stepMapperDiagram_lt_top_iff`, `fullComponentIndexEquiv`, `componentIndexFullEquiv`, `mapper_full_eq_top`, `fullMapperHomologyIso`, `finrank_simplicialHomology_mapper_full_zero`, `isZero_simplicialHomology_mapper_full_succ`, `isEmpty_mapper_face_one_of_unique`, `finrank_simplicialHomology_mapper_full_zero_of_unique`, `card_essentialPart_cappedCentredDiagram_zero`, `card_essentialPart_cappedCentredDiagram_succ`, `card_essentialPart_cappedCentredDiagram_zero_of_unique`, `bottleneck_cappedCentredDiagram_lt_top`, `card_essentialPart_cappedCentredDiagram_plHeight`, `card_essentialPart_cappedCentredDiagram_plHeight_zero_of_unique`); graph-PL height scaling (`plHeight_smul`, `geometricInterleavingDistance_graphPLReebGraph_smul`, `_neg`, `_affine`), split trees (`splitHeights`, `geometricInterleavingDistance_splitY`) and merge/split bounds (`ofReal_min_le_geometricInterleavingDistance_mergeY`, `_splitY`, `geometricInterleavingDistance_mergeY_bounds`, `_splitY_bounds`) | Input is a continuous map and an indexed target family. Coverage and multiplicity are explicit hypotheses where used. The MultiNerve Mapper is the multinerve of the component cover; its projection onto `mapper` is surjective and is an order isomorphism under `IntersectionsPathSubsingleton (componentCover f U)`. Every real number lies in at most two members of the uniform family exactly when `2g ≤ r` (for at least three members and `g < r`); its union is the window `(a, a + n(r − g) + g)` for `0 < g ≤ r`. The graph-PL finite Reeb data need no covering hypothesis; closed-level components are classified by `LevelVertex` for finite vertex sets, and inclusion into any level window is bijective on components. The star and gap comparison assumes every vertex height is a level of the critical list, while the Mapper comparison is at member-adapted levels. The refinement comparison assumes the coarser list covers the vertex heights. Constructibility at the specified critical list and the corresponding cosheaf identification assume a list covering the vertex heights and `V : Type`; constructibility at a noncovering list can fail (fixture D5). The Reeb quotient identification assumes a covering list, which cannot be dropped (fixture R6); the slice statements use `V : Type`, while the list-free corollaries need no list. The presentation map is injective for every list, while the homeomorphism assumes a covering list (fixture K5). Closed levels are compact and locally path-connected for finite vertex sets. The slice statements use `V : Type`. Finiteness is conditional; tower identity/composition are supplied coherence data. Refinement-induced homology maps use supplied linear orders on component-index types in one universe and any ring; two refinements between the same families induce the same map, and `mapperHomologyPModule` needs no selector identity or composition equations, agrees with the strict tower's maps and is independent of the selected refinements. A finite Mapper barcode is the canonical rank barcode of `mapperHomologyPModule` on `Fin N`; it needs finitely many faces of the given degree at every stage, a field, and the field, domain and index types in one universe. It is independent of the selected refinements and classifies these modules up to natural isomorphism; finite graphs with finitely many interval labels satisfy the finiteness hypothesis without coverage. Diagrams of real-indexed towers other than step towers, q-tame Mapper barcodes, independence of the component orders, multinerve barcodes and executable Mapper extraction are not provided. These constructions are noncomputable theory, not an executable Mapper implementation. The one-skeleton isomorphism assumes `2g ≤ r` and fails without it (fixture M5). Vertex-height stability fixes the graph and bounds the Reeb distance by `edist h g` without any order, level-count or constructibility hypothesis; it is not an equality in general, and extremal vertex heights bound it below and make it exact for vertical translations. Selected cover maps shifting by `η` in both directions between two real towers give an `η`-interleaving of their Mapper homology modules with no commutation assumed; maps at pointwise distance `δ` give a `δ`-interleaving along the centred tower. A step tower places finitely many cover families on the cells of a finite grid of radii, with an empty family before the first radius; its Mapper homology module is finite-constructible, and with finitely many faces in the given degree its real diagram `stepMapperDiagram` is the `ofIndexBars` image of the finite Mapper barcode. Cover maps shifting by `η` between two step towers bound the bottleneck distance of their diagrams by `η`, and that distance equals the real interleaving distance of the modules. No diagram or bottleneck statement is made for other towers, such as the centred tower, which is not finite-constructible on any grid; tightness is stated only for translations of the grid, below, and no order-independence statement is made. Capped centred step towers have an empty first stage, centred intervals of the grid radii and a full last stage. For maps at pointwise distance `δ`, their diagrams are at bottleneck distance at most `δ + μ` on a grid of mesh `μ`, and at most `δ` on a uniform grid of spacing `h` when `δ = p h`; for one map, two grids whose meshes, first radii and last radii are within `η` give diagrams within `η`. Fixtures show that neither the full last stage nor the mesh term can be dropped; coverage by a capped stage and sharpness of `δ + μ` are not claimed. Over a field, an `ε`-interleaving bounds the rank of each structure map `M(t → t + 2ε)` by the dimension of `N (t + ε)` when that one value is finite-dimensional; this gives lower bounds on the real interleaving distance, including the exact distance `1` of two shifted one-member towers and the bound `1/8` for the flat and steep maps. Bar-length lower bounds, tightness of the rank obstruction and the exact flat/steep distance are not claimed. Constructible-input reconstruction needs no Hausdorff, graph-PL or nonempty-input hypothesis and no supplied finiteness; its distance identity needs no coverage, while its error bounds and convergence need coverage of the attained heights. Two-input Mapper bounds require each cover to cover its own height's attained range, are inequalities rather than equalities, and compare reconstructions over one fixed graph only. The rank obstructions bound the bottleneck distance of two step diagrams below through the stage of the second tower at `t + ε`. The step tower on `shiftGrid ε c` has at `t` the family of the step tower on `c` at `t + ε`, and the selected stage refinements are cover maps shifting by `ε` in both directions, so the two diagrams are at bottleneck distance at most `ε`. If the homology map of the selected refinement from the first nonempty stage to the last stage is nonzero in degree `n` (`SurvivesToLast`), the bottleneck distance and the real interleaving distance are exactly `ε`; in degree `0` this holds whenever the first nonempty stage has a component index. The bottleneck distance of two step diagrams is infinite exactly when their numbers of essential bars differ. Essential multiplicity equals last-stage homology dimension; finite bottleneck distance is equivalent to equality of these dimensions even for maps on different spaces. A finite nonempty full family on path-connected input is a simplex, so capped centred diagrams on nonempty grids have one essential degree-zero bar and none in positive degree, and any two such diagrams have finite bottleneck distance. With one label, the degree-zero count is the number of path components, or graph components for graph-PL input. Births, several-label disconnected degree-zero counts and finite bars are not computed. The survival hypothesis cannot be dropped (degree-one loop fixture). Exact distances for pairs of grids that are not translates, bar-length lower bounds and tightness of the bound `η` beyond translations are not claimed. Translating the height and a finite bounded cover by `c` moves the reconstruction by exactly `|c|` when some member has nonempty inverse image; over empty covers the distance is `0`. A continuous map `φ` with `f' ∘ φ = f` induces the vertex map `mapperDomainMap φ hφ U : mapper f U → mapper f' U` (`pullbackRestrict`, `domainIndexMap`, `componentDomainRefinement`, `mapperDomainMap_id`, `mapperDomainMap_comp`, `mapperMap_comp_mapperDomainMap`) and, for domains in one universe, homology maps `mapperHomologyDomainMap` and the module morphism `mapperHomologyPModuleMap` with identity and composition laws, commuting with the refinement-induced maps; the component orders of the two domains are independent supplied data and `φ` is arbitrary. A homeomorphism over the codomain gives the isomorphism `mapperHomologyPModuleIso`, real interleaving distance `0` (`realInterleavingDistance_mapperHomologyPModule_homeomorph`) and bottleneck distance `0` of step diagrams with an empty initial family (`bottleneck_stepMapperDiagram_homeomorph`) and of capped centred diagrams (`bottleneck_cappedCentredDiagram_homeomorph`); for a graph isomorphism with corresponding vertex heights, `realizationHomeomorph` and `bottleneck_cappedCentredDiagram_plHeight_iso` give distance `0` of the capped centred diagrams of the piecewise-linear heights. Equality of the diagrams, compatibility with interleavings and multinerve maps, and homotopy invariance are not provided. Common nonzero affine changes scale distances across finite graphs by the absolute slope. A `HeightMapPair` between finite graph-PL spaces bounds the geometric distance of their Reeb quotients; it supplies no map between graph objects and no Mapper cover or reconstruction consequence; its Mapper homology consequences are the centred and capped centred map-pair bounds above. For the three-edge merge tree, `mergeSection` and `exists_mergeSection_path` give height-preserving sections and bounded realization paths, including the horizontal top edge when `c = M`; `mergeFoldHeightMapPair` gives a `b/2` height-map pair. For `0 < a < b ≤ M`, `geometricInterleavingDistance_mergeY_eq_min` proves distance `min (b-a) (b/2)`, recovering `b-a` when `b ≤ 2a` and giving `b/2 < b-a` when `2a < b`. Reflection gives the same exact split-tree value (`geometricInterleavingDistance_splitY_eq_min`). These formulas are specific to this tree and do not give a converse to the height-map-pair bound. |
 
 ### Capped centred height-map pairs
 
@@ -813,6 +813,8 @@ For grades `g,h` on the same complex, a uniform coordinate error bound
 `δ : ℝ≥0` constructs `finiteSimplicialHomology_interleaving` and bounds the
 coordinate interleaving distance by `δ`. `FiniteGraded.supGradeError` is the
 finite maximum of the face-coordinate errors, with empty maximum zero.
+The same bounds hold for rank erosion; see
+[weak-pair rank erosion](#weak-pair-rank-erosion).
 For `n ≥ 1`, `finiteSimplicialSignedHookBarcode` uses the derived finite
 presentation, and `finiteSimplicial_signedHookBottleneckDissimilarity_le`
 bounds the canonical signed dissimilarity by `(2*n-1)^2 * δ`. The caller
@@ -914,10 +916,14 @@ and principal deaths remain infinite. Domination is proved before the
 equivalent multiset-subtraction formula.
 
 `RealBarcodeRankUniqueness` compares finite positive endpoint multisets
-through all their rank counts. `RankExactBarcodeCancellation` telescopes
-actual rank-exact rows, and `AffineSliceRank` converts the actual hook-sum
-presentations into these counts. The capstone derives the needed resolution
-and ordinary barcode realization from the original presentation. See
+through all their rank counts. Its theorem
+`RealBarcode.multiset_eq_of_rankCounts_eq` is the real instance of
+`multiset_eq_of_sliceCounts_eq` of `TDA.Persistence.DiagramRankUniqueness`,
+which holds over any linear order (with `Diagram.eq_of_sliceCounts_eq`).
+`RankExactBarcodeCancellation` telescopes actual rank-exact rows, and
+`AffineSliceRank` converts the actual hook-sum presentations into these
+counts. The capstone derives the needed resolution and ordinary barcode
+realization from the original presentation. See
 [affine slice cancellation](math/affine-slice-cancellation.md).
 
 ### Positive affine slices
@@ -1165,11 +1171,15 @@ multidimensional finite-presentation theorem. See
 
 ### Weak-pair rank erosion
 
+For a task-oriented route through these results see
+[choosing a result](math/rank-erosion.md#choosing-a-result).
+
 For field-valued modules on `Fin n → ℝ` with pointwise finite-dimensional fibers,
 `RankErosion ε M N` compares the ranks of `M(a−ε → b+ε)` with `N(a → b)` and
 vice versa for every weak pair `a ≤ b`. Diagonal ranks are included, also for
 `n = 0`. `rankErosionDistance` is the extended infimum of admissible finite radii;
-it has zero self-distance, symmetry and the extended triangle inequality.
+it has zero self-distance, symmetry and the extended triangle inequality, none
+of which needs a finiteness hypothesis.
 `CoordinateInterleaving.rankErosion` derives the inequalities from actual
 interleaving maps, and `rankErosionDistance_le_coordinateInterleavingDistance`
 proves `dE ≤ dI` without an attainment assumption.
@@ -1182,15 +1192,271 @@ it strict for original finitely presented modules, using interleaving attainment
 `rankErosion_zero_iff` concerns erosion at radius zero, not the equation that its
 infimum is zero, and makes no module-isomorphism claim. The current rank uses
 `Module.finrank`; its intended scope is finite-dimensional fibers, not arbitrary
-infinite-dimensional modules. No erosion attainment theorem, strict-pair comparison
-or certified finite-test algorithm is supplied by these modules.
+infinite-dimensional modules. `eRankOfStructureMap` (`TDA.Persistence.StructureMapERank`)
+is the `ℕ∞`-valued image rank, `⊤` on an infinite-dimensional image; its composition
+and four-point laws (`eRankOfStructureMap_trans_le_left`, `_trans_le_right`,
+`_four_point`) need no finiteness, `rankOfStructureMap_eq_toNat_eRankOfStructureMap`
+relates the two ranks for every module, and
+`eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional` and
+`eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional_source` identify
+them on finite-dimensional images and source fibers. `ERankErosion` and
+`eRankErosionDistance` (`TDA.Persistence.ERankErosion`) are erosion and its
+distance on the extended rank; their laws and
+`eRankErosionDistance_le_coordinateInterleavingDistance` need no finiteness, and
+`eRankErosion_iff_rankErosion` and `eRankErosionDistance_eq_rankErosionDistance`
+identify them with `RankErosion` and `rankErosionDistance` on pointwise
+finite-dimensional modules. For one parameter only (`TDA.Persistence.ERankQTame`),
+`PModule.qTame_iff_eRankOfStructureMap_fromReal_ne_top` characterizes q-tame real
+modules by finite extended ranks on strict pairs, `RealInterleaving.eRankOfStructureMap_ne_top`
+is the local finite-image bound through a finite-dimensional middle fibre, and
+`RealInterleaving.eRankErosion` and
+`eRankErosionDistance_fromReal_le_realInterleavingDistance` transport the
+interleaving bound across `CoordinateRealBridge.fromReal`.
+For several parameters (`TDA.Persistence.CoordinateQTame`), `PModule.CoordQTame`
+is q-tameness with strictness in every coordinate (`∀ i, a i < b i`, not the
+product-strict `a < b`), equivalent to finite extended rank of every positive
+diagonal shift (`PModule.coordQTame_iff_eRankOfStructureMap_translation_ne_top`)
+and to `PModule.QTame` for one coordinate (`PModule.qTame_iff_coordQTame_fromReal`);
+`CoordinateInterleaving.eRankOfStructureMap_ne_top` is the local finite-image bound,
+and `CoordinateInterleaving.eRankOfStructureMap_ne_top_of_coordQTame` gives finite
+extended rank across gaps above `2ε` when the other module is coordinatewise q-tame.
+Erosion test domains are unchanged.
+For finite graded simplicial homology (`TDA.Persistence.FiniteSimplicialErosion`),
+`finiteSimplicialHomology_rankErosion`,
+`rankErosionDistance_finiteSimplicialHomology_le_supGradeError` and
+`eRankErosionDistance_finiteSimplicialHomology_le_supGradeError` bound erosion by
+the grade error, and `finiteSimplicialHomology_rankErosion_failure_certificate`
+turns a failed test into `ε < dE ≤ dI ≤ supGradeError`.
+For the uniform translates of the tetrahedron-boundary witness
+(`TDA.Persistence.FiniteSimplicialErosionTranslation`),
+`RankResolutionDegreeTwoSimplicial.translatedHomology_not_rankErosion` exhibits
+failed tests below `min |t-s| (1/2)` from actual structure maps, and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_translatedHomology` and
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_translatedHomology` give both
+erosion distances exactly `ENNReal.ofReal (min |t-s| (1/2))`, equal to the interleaving
+distance.
+For independent signed coordinate translates
+(`TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation`),
+`RankResolutionDegreeTwoSimplicial.coordinateTranslatedHomology_not_rankErosion` exhibits
+failed tests below `min (max |v 0 - u 0| |v 1 - u 1|) (1 / 2)`, and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_coordinateTranslatedHomology` and
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_coordinateTranslatedHomology` give
+both erosion distances exactly that value, equal to the interleaving distance.
+For signed delays of one positive scaling
+(`TDA.Persistence.FiniteSimplicialErosionScaledTranslation`),
+`RankResolutionDegreeTwoSimplicial.scaledTranslatedHomology_not_rankErosion` exhibits
+failed tests below `min |t - u| (scaledLifetime s / 2)` at the longer arm, and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledTranslatedHomology` and
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_scaledTranslatedHomology` give
+both erosion distances exactly that value, equal to the interleaving distance.
+For one positive scaling against the zero module
+(`TDA.Persistence.FiniteSimplicialErosionScaling`),
+`RankResolutionDegreeTwoSimplicial.scaledHomology_not_rankErosion_zero` exhibits failed
+tests below `scaledLifetime s / 2` at the longer arm, and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_zero` and
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_scaledHomology_zero` give both
+erosion distances to zero exactly that value, equal to the interleaving distance.
+Erosion attainment is supplied for finitely presented modules only (below); a
+certified finite test exists for F₂ grid representations only
+(`F2GridRep.runErosion`, below).
+
+`StrictRankErosion ε M N` requires the same two inequalities only at the strict
+pairs of the product order, `a ≤ b` and `a ≠ b` (`strictRankErosion_iff_lt`
+restates this with `a < b`), and `strictRankErosionDistance` is its extended
+infimum. `RankErosion.strict` gives the strict predicate from the weak one at
+the same radius, for every `n`. For `[NeZero n]` and finite-dimensional fibers,
+`StrictRankErosion.rankErosion_add` and `StrictRankErosion.rankErosion_of_lt`
+give the weak predicate at every larger radius, and
+`strictRankErosionDistance_eq_rankErosionDistance` equates the two distances.
+The strict predicate has `symm`, `mono` (finite-dimensional fibers) and `trans`,
+its distance has zero self-distance, symmetry and the extended triangle
+inequality, and `strictRankErosion_zero_iff` describes radius zero. With no
+coordinates there is no strict pair: `strictRankErosion_fin_zero` and
+`strictRankErosionDistance_fin_zero` state that the strict predicate holds for
+all modules and the strict distance is zero. For finite-dimensional fibers,
+`le_rankErosionDistance_of_not_rankErosion` and
+`le_strictRankErosionDistance_of_not_strictRankErosion` turn a radius at which
+a predicate fails into a non-strict lower bound of its distance. The two
+predicates are not equivalent at a fixed radius: the examples give a module
+supported on a closed box for which the strict predicate holds and the weak one
+fails at the same radius, while both distances equal that radius. For finitely
+presented modules with at least one coordinate the two predicates are
+equivalent at every fixed radius, as stated below. No coordinatewise-strict
+predicate is supplied.
+
+For modules `M`, `N` with original finite presentations
+(`GradedFree.FinitelyPresented.{u,0,0}`), the infimum is attained.
+`GradedFree.finitelyPresented_exists_pos_rankOfStructureMap_erosionUpper`
+derives from the presentation that, at every weak pair, raising the target or
+both grades by a small radius keeps the rank
+(`erosionUpper_le_erosionUpper` supplies the comparison of the raised grades);
+`GradedFree.finitelyPresented_exists_pos_not_rankErosion_add` shows that a
+radius at which erosion fails is followed by an interval of such radii; and
+`GradedFree.finitelyPresented_lt_rankErosionDistance_of_not_rankErosion` makes
+a failed predicate a strict lower bound of the distance.
+`GradedFree.finitelyPresented_rankErosionDistance_le_iff_rankErosion` states
+`rankErosionDistance M N ≤ ε ↔ RankErosion ε M N`,
+`GradedFree.finitelyPresented_rankErosion_at_distance` the admissibility of a
+finite distance, `GradedFree.finitelyPresented_rankErosion_parameters_eq_Ici`
+and `GradedFree.finitelyPresented_isClosed_rankErosion_parameters` the shape
+of the admissible set, and
+`GradedFree.finitelyPresented_rankErosionDistance_eq_zero_iff` identifies
+distance zero with equality of all weak-pair ranks; it makes no
+module-isomorphism claim. `GradedFree.finitelyPresented_zero` (the zero module
+on a preordered index type) and `F2GridRep.finitelyPresented_lan_toModule` (the
+Kan extension of a valid representation) supply the hypothesis for comparisons
+with zero and for executed tests. Attainment fails for modules that have only
+finite-dimensional fibers: with at least one coordinate, the module of the
+closed box `[0, 2c]ⁿ` over `ℚ` has erosion distance `c` from zero
+(`StrictRankErosionExamples.closedBox_rankErosionDistance`) while erosion fails
+at radius `c` (`StrictRankErosionExamples.closedBox_not_rankErosion`). It is
+therefore not finitely presented
+(`RankErosionAttainmentExamples.closedBox_not_finitelyPresented`).
+
+For finitely presented modules with at least one coordinate the two predicates
+agree at every fixed radius:
+`GradedFree.finitelyPresented_strictRankErosion_iff_rankErosion` (with
+`[NeZero n]`). For every `n`,
+`GradedFree.finitelyPresented_strictRankErosionDistance_le_iff_strictRankErosion`
+states `strictRankErosionDistance M N ≤ ε ↔ StrictRankErosion ε M N` and
+`GradedFree.finitelyPresented_lt_strictRankErosionDistance_of_not_strictRankErosion`
+its strict lower bound. A failed predicate gives the certificate
+`ε < rankErosionDistance M N ∧ rankErosionDistance M N ≤
+coordinateInterleavingDistance M N`
+(`GradedFree.finitelyPresented_rankErosion_failure_certificate`), hence
+`ε < coordinateInterleavingDistance M N`
+(`GradedFree.finitelyPresented_lt_coordinateInterleavingDistance_of_not_rankErosion`).
+These take presentations in `GradedFree.FinitelyPresented.{u,0,0}` and no
+finite-dimensionality instance.
+`radius_lt_coordinateInterleavingDistance_of_rank_violation` reaches the last
+bound from one violated inequality, for presentations in
+`FinitelyPresented.{u,0,u}`, through interleaving attainment; the two universe
+choices are exchanged by `GradedFree.finitelyPresented_liftIndexUniverse` and
+`GradedFree.finitelyPresented_lowerIndexUniverse`. The examples show that the
+equivalence fails with no coordinates and for the closed box, that with at
+least one coordinate the closed box and zero are interleaved at every radius
+above their interleaving distance and not at that distance, and that two
+finitely presented two-parameter modules can have equal rank invariants,
+erosion distance zero and nonzero interleaving distance.
+
+For modules on two finite coordinate grids `G`, `H` and their actual Kan
+extensions, the predicate is determined by finitely many grades.
+`CoordinateGrid.rankOfStructureMap_lan` and `rankOfStructureMap_lan_eq_zero`
+(combined in `rankOfStructureMap_lan_eq_dite`) read a rank of `G.lan.obj M` as
+the rank of `M` between the two floors, or as zero where the source grade has
+no lower grid point; no finite-dimensionality is assumed (ranks are
+`Module.finrank` values, as elsewhere in this section).
+`CoordinateGrid.erosionBreakpoints G H ε` collects, per coordinate, the values
+of both grids and their shifts by `±ε`. For every finite grid `T` containing
+these breakpoints, `CoordinateGrid.rankErosion_lan_iff_of_subset` proves that
+`RankErosion ε (G.lan.obj M) (H.lan.obj N)` is equivalent to its two
+inequalities at the comparable pairs `p ≤ q` of points of `T`, diagonal pairs
+included; `rankErosion_lan_iff` is the case `T = erosionBreakpoints G H ε`.
+The original grid values alone are not enough, as the examples show. The test
+grades are real numbers and the statement is not an algorithm: nothing here is
+executable.
+
+Grid modules over F₂ can be given by executable data. A `RatGrid n` lists
+finitely many rational values per coordinate, used as a finite set; its real
+image `RatGrid.grid` is a `CoordinateGrid`, `RatGrid.ratPoint` and
+`RatGrid.pointOfRat` identify its points with the rational grid grades
+(`RatGrid.points`), and the executable `RatGrid.floor` of a rational grade is
+the rational grade of the real floor (`RatGrid.ratPoint_floor`). An
+`F2GridRep n` adds a fiber dimension for each rational grade and an F₂ matrix
+for each pair of rational grades; only their values at grid grades and at
+comparable pairs of them are read. `F2GridRep.Valid` is the decidable
+statement that the matrices are identities on the diagonal and compose along
+comparable triples of grid grades, and `F2GridRep.toModule` is the actual
+module on the grid for a valid representation, with fibers
+`Fin (dim a) → ZMod 2` and structure maps the stored matrices
+(`F2GridRep.structureMapLinear_toModule`). `F2GridRep.rankAt x y` computes,
+with `F2Matrix.rank`, the rank of the stored matrix between the floors of two
+rational grades, or zero when `x` has no lower grid value;
+`F2GridRep.rankAt_eq` proves that it is the rank of the actual Kan extension
+of the grid module between the real grades of `x ≤ y`, and
+`F2GridRep.rankAt_eq_of_eq` states the same at real grades given by equations.
+Nothing is claimed for an invalid representation. Validation enumerates the
+comparable triples of grid grades and each rank enumerates source vectors, so
+the cost is exponential in the fiber dimension and in the number of
+coordinates.
+
+`F2GridRep.runErosion R S e` is a certified finite test of `RankErosion` for
+two representations and a rational radius. It returns `invalid` when a
+representation is not valid or `e < 0`; `pass` when both inequalities hold at
+every comparable pair of grades of the rational breakpoint grid
+(`RatGrid.erosionBreakpoints`); and otherwise `fail w`, where
+`w : F2GridRep.ErosionFailure` records the direction of a violated inequality,
+the pair of rational grades and the two ranks. `runErosion_eq_invalid_iff`,
+`runErosion_eq_pass_iff` and `runErosion_eq_fail` characterise the outcomes for
+the actual Kan extensions `R.grid.lan.obj (R.toModule hR)` and
+`S.grid.lan.obj (S.toModule hS)` at the real radius `RatGrid.radius e he`:
+`pass` holds exactly when the input is valid and `RankErosion` holds, and a
+reported failure is a violation by those extensions with `RankErosion` false.
+`erosionFailure?_eq_none_iff` is the underlying equivalence for valid input.
+Which violation is reported depends on the enumeration order.
+
+The Kan extensions of valid representations are finitely presented
+(`F2GridRep.finitelyPresented_lan_toModule`), so an executed result decides
+more than the predicate. For valid input and `0 ≤ e`,
+`F2GridRep.runErosion_eq_pass_iff_rankErosionDistance_le` states that the test
+passes exactly when the erosion distance of the two Kan extensions is at most
+`e`, and `F2GridRep.runErosion_eq_pass_iff_strictRankErosion` (with
+`[NeZero n]`) that it passes exactly when `StrictRankErosion` holds at `e`.
+Three statements take only the executed equation and include validity in
+their conclusion. `F2GridRep.runErosion_eq_pass_certificate`: after `pass`,
+`RankErosion` and `StrictRankErosion` hold at `e` and both
+`rankErosionDistance` and `strictRankErosionDistance` are at most `e`. The
+interleaving distance need not be at most `e`: the test
+`RankErosionCertificateExamples.arms_zero` passes at radius `0`, and
+`RankErosionCertificateExamples.arms_nonseparation` gives the same two modules a
+nonzero interleaving distance.
+`F2GridRep.runErosion_eq_fail_certificate`: after `fail w`, `RankErosion`
+fails at `e`, `e` is strictly below the erosion distance, and the erosion
+distance is at most the interleaving distance, so `e` is strictly below the
+interleaving distance. `F2GridRep.runErosion_eq_fail_strict_certificate`
+(with `[NeZero n]`): after `fail w`, `StrictRankErosion` fails at `e` and `e`
+is strictly below the strict distance; with no coordinates a failure says
+nothing about the strict predicate. The test is restricted to F₂, minimises no
+radius, and its cost grows exponentially with the number of coordinates and the
+fiber dimensions.
+`RatGradedInput.toF2GridRep` generates such a representation from a validated
+rationally graded finite simplicial complex (`RatGradedInput.Valid`), using the
+computed slice bases of `RatGradedInput.slice` and computed inclusion matrices,
+and `RatGradedInput.toF2GridRep_valid` proves it valid (for an invalid input
+the generated representation carries no meaning).
+`RatGradedInput.toF2GridRep_lanIso` proves its Kan extension canonically
+isomorphic, as a persistence module, to the actual homology
+`RatGradedInput.homology`. `RatGradedInput.runErosion xs ys p e` validates
+two inputs and the radius, reporting `invalidFirst`, `invalidSecond` or
+`negativeRadius` separately (`RatGradedInput.runErosion_eq_invalid_iff`,
+`RatGradedInput.runErosion_eq_negativeRadius_iff`). Otherwise it runs the test
+on the two generated representations in degree `p`, and certifies the actual
+homologies. `RatGradedInput.runErosion_eq_pass_iff`: `pass` exactly when both
+inputs are valid, `0 ≤ e` and `RankErosion` holds between the actual modules.
+`RatGradedInput.runErosion_eq_fail`: `fail w` records a direction, a
+comparable pair of breakpoint grades and ranks equal to those of the actual
+structure maps. `RatGradedInput.runErosion_eq_pass_certificate` and
+`RatGradedInput.runErosion_eq_fail_certificate` give the distance consequences.
+No runtime bound is claimed.
 
 The public `TDA.Persistence` aggregator exports `RankErosion`,
-`RankErosionInterleaving` and `RankErosionWitness`; the latter includes nonzero
-principal-upset examples, diagonal and positive-radius off-diagonal tests. See
+`RankErosionInterleaving`, `RankErosionWitness`, `RankErosionGrid`, `F2GridRep`,
+`F2GridErosion`, `StrictRankErosion`, `RankErosionAttainment`, `RankErosionCertificate`,
+`F2GridHomologyInput`, `F2GridHomologyIso` and `F2GridHomologyErosion`; the
+witness module includes
+nonzero principal-upset
+examples, diagonal and positive-radius off-diagonal tests. See
 [rank erosion and its extension boundaries](math/rank-erosion.md).
 
 ## Persistent homology results and computational boundary
+
+Finite discrete interval constructors and `barcodeModuleOfList` have executable
+data paths using natural endpoint decisions. `barcodeEnumerationNatIso` executes
+the existing nth-occurrence correspondence, preserving distinct coordinates for
+repeated intervals. Public value laws expose forward/inverse coefficients; ℚ and
+F₂ consumers check endpoints, empty modules and naturality. Proof-side classical
+dependencies and arbitrary-multiset/decomposition boundaries are separate; see
+[executing finite interval and list-barcode modules](math/constructive-finite-intervals.md).
 
 The finite decomposition API takes `M : PModule.{u,0,u} k (Fin N)` with
 `k : Type u`, `[Field k]`, and `[∀ i : Fin N, FiniteDimensional k (M.obj i)]`. The index
@@ -1210,8 +1476,13 @@ adjacent commuting squares to all structure maps. Supplied bases give genuine
 natural coordinate isomorphisms, basis-independent barcodes, and the existing
 finite decomposition. A zero-initial padded sequence can also be extended across
 an explicit real critical grid, retaining its original endpoint values and a
-constant final cell. These are theory adapters, not executable extraction.
-See [finite representations](math/finite-representations.md).
+constant final cell. The finite-line path and explicit matrix composite data
+execute over concrete coefficient operations, including ℚ and F₂; see
+[chronological finite computation](math/finite-line-computation.md) for the
+composition order, empty cases and proof boundaries. Supplied-basis, real-grid
+and decomposition contracts are described in
+[finite representations](math/finite-representations.md); no executable barcode
+extraction is asserted.
 
 `FiniteBarcode.monoEmbedding` takes a natural transformation of these finite modules
 whose components are injective and constructs an embedding of their canonical barcode
@@ -1464,10 +1735,269 @@ diagram-level derivatives. See [the calculus-layer guide](math/diagram-calculus.
 `TDA.Persistence.Reduction.FiniteInput.run` is an executable certified F₂/integer path
 from a finite simplex list to occurrence records. It rejects invalid input instead of
 normalizing it; `outputDiagram_eq_dgm` proves semantic correctness for valid lists in
-every degree. Negative and tied grades, duplicate output points, empty input and
-essential classes have explicit conventions. Proof-derived semantic objects and the
-arbitrary-field decomposition remain noncomputable. See
+every degree. Certified here means that the reducer is formally verified: `run` takes the
+list alone and computes the reduction, and it does not check a reduction trace or
+certificate supplied by the caller.
+Negative and tied grades, duplicate output points, empty input and
+essential classes have explicit conventions. For a validated finite input,
+`listEquiv` computes the original position of each actual face by finite list search;
+`faceFintype`, `gradeFilter`, `positionEquiv`, `compatibleOrder` and
+`sublevelFaceIndex` preserve that position, its listed grade and the input order.
+Validity proofs do not affect the index or grade. Actual quotient-homology
+constructions and the arbitrary-field decomposition remain noncomputable. See
 [the input contract and correctness route](math/finite-ph-computation.md).
+
+`TDA.Persistence.Reduction.DistanceTable N` is an integer distance table on the
+labels `Fin N`, and the module `TDA.Persistence.Reduction.RipsInput` executes the
+complete Rips simplex list of such a table in the `FiniteInput` format.
+`DistanceTable.Valid` (nonnegative entries, symmetry, zero diagonal, positive distance between distinct
+labels, every triangle inequality) is decidable; `ripsInput?` and `ripsRun` return
+`none` for an invalid table, and nothing is repaired. `ripsInput` has one entry
+`(s.map Fin.valEmbedding, diameter s)` for each nonempty set `s` of labels
+(`mem_ripsInput`, `length_ripsInput`), ordered by grade, then cardinality, then
+lexicographically in the increasing label lists (`ripsInput_pairwise`), and it
+satisfies `FiniteInput.Valid` for every table (`ripsInput_valid`). For a valid
+table, `metric` is the metric on the labels, `cast_diameter` identifies the integer
+diameter with `Rips.diameter`, `complex_ripsInput` identifies the represented
+complex with the image of `Rips.fullComplex (Fin N)`, and `gradeFilter_ripsFace`
+identifies the listed grade of each face with the value of `Rips.filter`. `ripsRun`
+returns the occurrence records of the existing reduction on the list
+(`ripsRun_eq_bind_run`). The list has `2 ^ N - 1` entries and costs `O(N² 2 ^ N)`
+label and integer operations; the cost of the existing reduction is separate and
+not bounded. See
+[Rips input from an integer distance table](math/finite-ph-computation.md#rips-input-from-an-integer-distance-table).
+
+The module `TDA.Persistence.Reduction.RipsInputDiagram` compares the executed
+list of a valid table with the Rips filtration of the table metric.
+`DistanceTable.outputDiagram_ripsInput` states that `FiniteInput.outputDiagram`
+of the list, mapped along `TDA.Persistence.intCastOrderEmbedding : ℤ ↪o ℝ`, is
+`dgm (ZMod 2) (Rips.filter (D.metric hD))` in every degree; the caller supplies
+no metric, isomorphism or certificate. `mem_sublevel_gradeFilter_ripsInput` and
+`mem_sublevel_rips_filter` describe the faces of the two filtrations at a
+threshold by the integer diameter. `ripsLabelMap` is the inclusion of the labels
+as a vertex map from the Rips complex at an integer threshold to the sublevel
+complex of the list; it induces an isomorphism in homology in every degree and
+over every ring (`simplicialHomologyMap_ripsLabelMap_isIso`), compatible with
+raising the threshold (`simplicialHomologyMap_ripsLabelMap_naturality`).
+`ripsRunInDegree p` returns the occurrence records of degree `p`; it is `none`
+exactly for an invalid table, whatever the degree
+(`ripsRunInDegree_eq_none_iff`), and `ripsRunInDegree_correct` reads a returned
+list as the point multiset of the Rips diagram. A permutation of the labels of a
+valid table gives a valid table with the same diagram of the executed list
+(`valid_of_relabel`, `outputDiagram_ripsInput_of_relabel`). The homology
+comparison is stated at integer thresholds, and the relabelling statement is an
+equality of diagrams, not of lists. No bound on the cost of the existing
+reduction, no representatives for the Rips complex and no statement for invalid
+tables beyond rejection are provided.
+
+`TDA.Filtration.Alpha` gives the closed squared-grade Voronoi nerve for a
+site embedding into a normed additive commutative group. `Alpha.carrier`
+is the full nerve of the closed cells. In a finite-dimensional real
+inner-product space, `Alpha.isLeast_grade` and `Alpha.isLeast_sq_dist`
+give the attained grade, and `Alpha.sublevel_eq_complex` identifies
+the actual stages.
+
+`TDA.Filtration.AlphaLabelled` gives `Alpha.labelledComplexFiltration` for
+a site function, allowing coincident sites and retaining all nearest-site
+ties at a common witness. It agrees with `Alpha.complexFiltration` on
+embeddings. The squared-grade `Alpha.squaredCechFiltration` uses radius
+`√t` at nonnegative grades, and both it and labelled α are empty below zero.
+The square-root reindexing of `Alpha.filtration_le_cech` uses radius zero
+below zero.
+
+For finite linearly ordered labels in a real normed vector space,
+`TDA.Persistence.AlphaH0` gives `alphaH0Iso` in ordinary degree zero
+over a field. Its forward map `alphaH0Comparison` is the inclusion on
+the same labels at every real squared grade. `Alpha.cech_edge_reachable`
+gives α paths for Čech edges at nonnegative grades, and
+`TDA.Simplicial.H0EdgePaths` turns the path condition into a degree-zero
+homology isomorphism. See
+[closed α and the degree-zero comparison](math/alpha-filtration-and-signed-coverage.md).
+
+For a site function `sites : V → E` on a finite linearly ordered label type
+(`[LinearOrder V] [Finite V]`) into a finite-dimensional real inner-product space,
+`TDA.Persistence.alphaCechIso sites R n` (module `TDA.Persistence.AlphaCech`) gives the
+inclusion-induced natural isomorphism
+from the homology of `Alpha.labelledComplexFiltration sites` to that of
+`Alpha.squaredCechFiltration sites`, in every degree over any ring. Its components are the
+ordinary simplicial homology inclusions (`alphaCechIso_hom_app`) and commute with every
+structure map (`alphaCechIso_naturality`). `isIso_alphaCechComparison_app` states that each
+component is an isomorphism, at negative grades too, and `isIso_alphaIncl_cech` is the
+statement at one grade `t ≥ 0` for the inclusion into `Cech.complex sites (Real.sqrt t)`.
+For embedded sites, `isIso_alpha_filtration_le_cech` is that statement for
+`Alpha.filtration_le_cech` at `t ≥ 0`. Over a field, `alphaCechIso_zero` recovers
+`alphaH0Iso`. Distinct labels may have the same site, and nearest-site ties are allowed.
+The proof applies `ConvexNerve.isIso_simplicialHomologyIncl_of_compact`
+([nerves of nested convex families](#realizations-subdivision-mesh-and-nerves-of-nested-convex-families))
+to the restricted balls `Alpha.restrictedBall`, which are compact and, at `t ≥ 0`, convex
+with the same union as the closed balls of radius `Real.sqrt t`
+(`Alpha.isCompact_restrictedBall`, `Alpha.convex_restrictedBall`,
+`Alpha.iUnion_restrictedBall`). The five-point example
+`AlphaCechExamples.fivePointH1Square` follows a nonzero F₂ class across squared grades
+4 and 5, including the strict α-to-Čech inclusion at grade 4.
+
+For two site functions `p q : V → E` on one finite linearly ordered label type
+(`[LinearOrder V] [Fintype V]`) into one finite-dimensional real inner-product space,
+`TDA.Persistence.bottleneck_alphaRadiusDiagram_le_displacement` (module
+`TDA.Persistence.AlphaRadiusStability`) bounds the degree-`n`
+radius α diagram distance by the largest matched-site displacement `Cech.displacement p q`.
+The coefficient field lies in the universe of the label type (`V : Type u`, `k : Type u`).
+`alphaRadiusGrade` sends a radius `r ≥ 0` to the squared grade `r²` and fixes `r < 0`;
+`alphaSquaredGradeToRadius` is the order isomorphism of `ℝ` with this inverse.
+`alphaRadiusModule` is α homology reindexed along `alphaRadiusGrade`, and
+`alphaRadiusCechIso` identifies it with the sublevel module of `Cech.filter p`. Its diagram
+`alphaRadiusDiagram` equals the ambient Čech diagram (`alphaRadiusDiagram_eq_cech`), and
+`alphaRadiusDiagramRealizationIso` recovers the entire module, including essential bars.
+With embedded sites, `alphaRadiusDiagram_eq_map` takes the square root of each finite endpoint.
+
+Squaring endpoints in `[0,R]` multiplies an endpoint error by at most `2R`
+(`abs_sq_sub_sq_le_of_radius_le`). For the squares with corners at `(±7,±7)` and
+`(±8,±8)`, the displacement and radius H₁ bottleneck over F₂ both equal `√2`, while
+the squared-grade bottleneck equals `30` (`AlphaRadiusStabilityExamples.square_bottlenecks`).
+
+On the obtuse triangle, `CollapsePersistenceExamples.alphaCechIso` also gives the comparison
+over every ring, through collapses; see
+[homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
+
+For finite distinct rational planar sites, `TDA.Filtration.RationalAlpha`
+supplies exact face entry grades through `entry?`, `gradedFaces`,
+`cast_grade`, and `sublevel_eq_complex`. Its `Candidates` module enumerates
+the sites, midpoints and circumcenters while preserving full nearest-site
+ties. Its `Geometry` module proves `minimizer_mem_centers`. The `Predicates`
+module gives `orient_zero_iff_collinear`, `incircle_geometry_ccw` and
+`incircle_circumsphere_signs`, with the orientation and noncollinearity
+hypotheses of their respective circle comparisons.
+
+`TDA.Filtration.RationalAlpha.SignedBoundaryCoverage` supplies
+`PolygonCertificate` and `rational_cover_from_signed_boundary`. The latter
+gives off-edge interior multiplicity and closed hull coverage for injective
+rational sites, an injective cycle whose certified convex hull contains
+every site, and finitely many CCW triangles with the hull's signed boundary.
+The same module also derives the certificate of a hull cycle.
+`hull_polygonCertificate_hullOnly` takes noncollinearity of triples of distinct hull
+positions and the real interior, frontier and left-support hypotheses. For a finite label
+type, `cornerHullCheck` decides `StrictCornerCycle` (every nonincident corner strictly left
+of each directed side) and `HullSitesLeft` (every site weakly left of each side) by rational
+orientation. `cornerHullCheck_true_iff` identifies acceptance with a strict corner cycle
+whose hull contains every site (`rational_sites_left_iff`), and `cornerHullCheck_sound`
+gives the certificate (`rational_corner_certificate`) and the equality of the corner hull
+with the convex hull of all sites (`siteHull_eq_all_sites`). A site on a hull side that is
+not a corner passes the weak test (`HullCertificateExamples.midpoint_accepted`).
+The module `TDA.Filtration.RationalAlpha.SubdividedBoundaryCoverage` proves
+`rational_cover_from_subdivided_signed_boundary`. It takes the certificate of the coarse
+cycle, a cut list on each side satisfying `OrderedEdgeCuts`, CCW triangles with vertices in
+the hull, and equality of the triangle chain with the chain of the subdivided boundary
+(`subdividedEdge`). It gives the hull coverage and the multiplicity off the segments of
+`subdividedListedEdges`, so it applies to a triangle family with a vertex in the relative
+interior of a hull side (`SubdividedBoundaryExamples.coverage_and_multiplicity`). See
+[signed coverage](math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
+
+The modules `TriangleIncidence`, `DirectedEdgeIncidence` and `TriangulationAssembly` under
+`TDA.Filtration.RationalAlpha` describe the incidences of the triangle family of
+`rational_cover_from_signed_boundary`. `disjoint_interiors_of_signed_boundary` states that
+distinct certified pieces whose signed boundaries sum to that of a certified hull have
+disjoint interiors. `rational_edge_counts` takes injective sites, an injective certified
+cycle, CCW triangles and the chain equality. It states that
+`occurrenceEdge tri` is injective, that each hull side has `directedMultiplicity` one and
+its reverse zero, and that every other occurring ordered pair has multiplicity one in both
+directions, in two different triangles. `TriangulationAssembly.labelComplex tri` has the
+nonempty subfaces of the triangles as faces, and `certified_hull_face_incidence` adds that
+each hull side is one of them, with its closed segment on the hull frontier. The
+remaining statements also assume every site in the hull and `hgen`, the noncollinearity
+of every triple of distinct sites. `triangle_inter_eq_shared_labels_of_signed_boundary`
+identifies the intersection of two distinct closed triangles with the convex hull of the
+sites of their shared labels (`labelVertices`). `open_site_edge_mem_frontier_iff` states
+that a point of the open segment of two distinct sites is on the hull frontier exactly when
+the pair is a hull side. `certifiedComplex` is a mathlib
+`Geometry.SimplicialComplex ℝ Plane` on the images of the faces of `labelComplex tri`; its
+space is the hull (`certified_space_eq_siteHull`), it has a facet and every facet has three
+vertices (`certified_facets_pure_two`), and
+`certified_nonhull_face_incidence` gives the two opposite occurrences of an edge that is
+not a hull side, with its open segment in the hull interior.
+
+`IncircleGrade` works with an embedding `site : V ↪ ℚ × ℚ` and a CCW triple whose
+circumcenter `circumcenter?` returns as `o`. `checkIncircle site a b c` decides
+`incircle ≤ 0` at every label of a finite label type (`checkIncircle_eq_true_iff`). These
+inequalities hold exactly when the three labels have a common point of their closed cells
+(`checkIncircle_eq_true_iff_commonCells_nonempty`), and every such point is `castPoint o`
+(`commonCells_triangle_point_eq`). `triangle_mem_actual_stage_iff` states that `{a, b, c}`
+is a face of `Alpha.complex (castSites site) t` exactly when the inequalities hold and
+`sqDist o (site a) ≤ t`; `triangle_actual_carrier_iff` and `triangle_actual_grade` are the
+carrier and grade forms. `EdgeGrade` treats two distinct labels of `p : Fin n ↪ ℚ × ℚ`.
+`bisectorPoint` parametrizes the perpendicular bisector from the midpoint,
+`edgeParameters p a b` is the set of parameters whose points lie in the common cells
+(`bisector_mem_commonCells_iff`, `edge_commonCells_eq_image`), and
+`squared_radius_on_bisector` gives the squared radius
+`D / 4 + D * t ^ 2` with `D = directionSq (p a) (p b)`. `edge_actual_grade_projection`
+gives the grade of a carrier edge at a feasible parameter `z` of least square, and
+`edge_stage_of_parameter_min` states that the edge is in the stage at `t` exactly when
+`D / 4 + D * z ^ 2 ≤ t`; `edge_carrier_iff_parameters_nonempty` and
+`edge_actual_grade_eq_midpoint_iff` are the carrier and midpoint criteria.
+`SuppliedEdgeGrade` defines `IncidentCenter`, `HullDual` and `InteriorDual`. For an injective
+certified cycle, CCW triangles with the hull's chain and passing `checkIncircle` tests,
+`supplied_hull_dual` gives a `HullDual` for each hull side when every site is in the hull:
+`edgeParameters` is `Iic upper`, the common cells are the closed ray from the incident
+circumcenter in the direction `outward`, and the stage threshold is
+`D / 4 + D * (min 0 upper) ^ 2` (`HullDual.grade`). `supplied_interior_dual` gives an
+`InteriorDual` for a supplied edge that is not a hull side: `edgeParameters` is
+`Icc lower upper`, the common cells are the segment between the two incident circumcenters,
+and the threshold is `D / 4 + D * (max lower (min upper 0)) ^ 2` (`InteriorDual.grade`).
+`NoFourIncircleZeros p` asks for a nonzero incircle determinant on every four distinct
+labels, and `GeometricNoFourCocircular p` that no point of the plane is equidistant from
+four distinct sites; either gives `lower < upper` (`InteriorDual.strict`,
+`InteriorDual.strict_geometric`).
+
+`SuppliedCarrier.carrier_eq_of_signed_boundary` states
+`Alpha.carrier (realSites p) = labelComplex tri` for `p : Fin n ↪ ℚ × ℚ`. Its hypotheses
+are an injective hull cycle, its `PolygonCertificate`, every site in the hull, CCW
+triangles, equality of the triangle chain with the chain of the hull cycle, a passing
+`checkIncircle` test for every triangle, and
+`GeometricNoFourCocircular p ∨ NoFourIncircleZeros p`; `hgen` is not among them. The two
+inclusions are `labelComplex_le_alphaCarrier`, from the CCW triangles and passing tests
+alone, and `alphaCarrier_le_labelComplex_of_signed_boundary`, which uses the closed cover;
+`allSitesUsed_of_carrier_eq` derives that every label is used. Under the same hypotheses
+and for `tri : Fin m → Fin 3 → Fin n`, `SuppliedGradeEnumeration.suppliedGrades p tri` is an
+executable finite set of rows of a face and a rational grade (`grade?`, `edgeGrade?`,
+`triangleGrade?`; `mem_suppliedGrades` states that `(s, q)` is a row exactly when `s` is a
+face of `labelComplex tri` and `grade? p tri s = some q`), `grade_on_supplied_face`
+identifies each computed grade with the value of `Alpha.filter`, and
+`suppliedGrades_eq_reference` states
+`suppliedGrades p tri = gradedFaces p`. `SuppliedStages.realStageTable rows t` is the set of
+faces with a row of grade at most the real `t` (`mem_realStageTable_iff`), and it is
+`stageTable` at a rational cutoff (`realStageTable_cast`). `supplied_hasGradeTable` gives
+`HasGradeTable (Alpha.complexFiltration (realSites p)) (suppliedGrades p tri)`, and
+`supplied_realStage_iff` states
+`s ∈ realStageTable (suppliedGrades p tri) t ↔ s ∈ Alpha.complex (realSites p) t` for every
+real `t`, with `supplied_realStage_faces` the equality of the face sets and
+`supplied_realStage_neg` the empty table for `t < 0`. `reference_hasGradeTable` is the table
+statement for `gradedFaces p`, for every embedding `p`. These carrier, grade-row and stage
+theorems compare the triangle chain with the chain of the hull cycle itself, so every hull
+side is an edge of a supplied triangle (`TriangulationAssembly.certified_hull_pair_face`).
+The chain of a subdivided boundary is the hypothesis of
+`rational_cover_from_subdivided_signed_boundary`, whose conclusions are the multiplicity and
+the coverage. See
+[supplied carrier and stages](math/alpha-filtration-and-signed-coverage.md#supplied-carrier-and-stages).
+
+For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`
+computes an F₂ barcode with exact rational squared-radius endpoints. It accepts
+the empty family and rejects precisely families with repeated coordinates.
+`AlphaInput.run_correct` identifies the degreewise point multiset with the
+diagram of actual closed α persistence. The label map identifies the sublevel
+homology at any real threshold with the integer reducer sublevel, and commutes
+with inclusion maps. Essential deaths and repeated occurrences are retained.
+[Exact planar α barcodes](math/finite-ph-computation.md#exact-planar-α-barcodes).
+
+The module `TDA.Persistence.SublevelDiagramVertexMap` holds the general
+statements behind this comparison. `TDA.Simplicial.simplicialHomologyMap_congr`
+states that vertex maps agreeing on the vertices of every face induce the same
+map in homology, and `simplicialHomologyMap_comp_eq_id` that a vertex map
+followed by one undoing it on those vertices induces the identity.
+`TDA.Persistence.dgm_eq_of_vertexMaps` states that real filter functions on
+complexes over two vertex types have the same diagram, in every degree and over
+every field, when functions on the vertices in both directions preserve every
+sublevel complex and are mutually inverse on the vertices of the faces. It is
+stated for real grades only. See
+[Diagram and homology of the Rips input](math/finite-ph-computation.md#diagram-and-homology-of-the-rips-input).
 
 `FiniteInput.runWithRepresentatives` adds original face-index cycle supports and,
 for finite occurrences, bounding supports while preserving that exact ordered
@@ -1512,6 +2042,57 @@ actual homology map's image and kernel dimensions; public criteria characterize
 injectivity and surjectivity. It validates all admitted face images even for
 zero groups, and uses enumeration exponential in source Betti dimension.
 See [homology-map dimensions](math/finite-ph-map-dimensions.md).
+
+The same enumeration is available for any rectangular F₂ matrix, independently
+of simplex input. For `M : Matrix (Fin m) (Fin n) (ZMod 2)`,
+`F2Matrix.imageFinset M` is the computed set of images of all `2^n` source
+vectors and `F2Matrix.rank M` is the base-two logarithm of its cardinality
+(namespace `TDA.Persistence.Reduction`). `F2Matrix.rank_eq_finrank_range` and
+`F2Matrix.rank_eq_matrixRank` identify the executed number with the dimension
+of the range of `M.mulVecLin` and with Mathlib's noncomputable `Matrix.rank M`;
+`F2Matrix.rank_toMatrix'` states the same for the matrix of a linear map
+between coordinate spaces. `F2Matrix.rank_add_finrank_ker`,
+`F2Matrix.rank_le_width` and `F2Matrix.rank_le_height` give rank–nullity and
+the two shape bounds. There is no hypothesis on `m`, `n` or `M`: with no rows
+or no columns the rank is zero. Write `F2Matrix.rank M`,
+since `M.rank` in dot notation is Mathlib's function. The cost is exponential
+in the number of columns; this is not an elimination algorithm.
+
+`validateGlobalVertexMap xs ys f` checks both input lists and requires every
+source face image to occur in the target at no later grade. Its correctness
+lemmas identify this finite condition with preservation of every integer
+sublevel, including cross-threshold maps. For any monotone sampling
+`t : Fin s →o ℤ`, `sampledHomologyMap` constructs the natural transformation
+of actual F₂ sublevel homology modules induced by that fixed vertex function.
+Repeated and negative thresholds and collapsed faces are allowed.
+`sampledHomologyMap_image_rank` identifies each image structure-map rank with
+the range dimension of the actual simplicial map from the earlier source
+sublevel to the later target sublevel. The generic
+`finiteImage_structureMapRank` requires finite-dimensional target fibers,
+with no finite-dimensional-source assumption. Identity specialization
+recovers the ordinary source rank.
+
+`runImageBarcode xs ys p f t` extracts a certified image barcode for the supplied
+observations `t : Fin N → ℤ`. It returns `some out` exactly when both geometries,
+global face-grade preservation and monotonicity of `t` validate. Empty, negative
+and repeated observations are allowed; no observations are sorted or removed.
+The executable path materializes every comparable-pair `homologyMapDimensions`
+rank, extends that table by zero outside `0 ≤ i ≤ j < N`, and computes the signed
+integer four-term differences. Their nonnegativity is proved before interpreting
+them as natural multiplicities. Output intervals are ordered by birth, then
+death, and equal intervals remain separate occurrences.
+
+`imageBarcode_multiset` identifies the output multiset with `rankBarcode` of
+the actual sampled image module. The multiplicity and rank laws retain all
+endpoint counts and every forward rank; `imageBarcode_nonempty_iso` gives a
+genuine natural isomorphism to its barcode realization. These are proof-side
+consequences: extraction executes no quotient homology, chosen basis or
+decomposition. Identity input yields the ordinary sampled source barcode.
+Endpoints are observation indices with `birth < death ≤ N`; death `N` means
+survival through the last observation only. It asserts no lifetime beyond or
+between samples. The table uses quadratic storage and at most `N(N+1)/2` rank
+evaluations, each using the existing enumeration exponential in source Betti
+dimension. Output replication also costs the number of interval occurrences.
 
 
 ### Minimal-complement cardinalities for finite grids
@@ -1745,6 +2326,651 @@ claim is about the Hom module, and this finite-lattice example does not assert s
 `2*n-2` coordinate-grid bound. The fixture selects the preorder category with a public scoped
 instance; consumers can use it with `open scoped TDA.Persistence.FiniteRankProjectiveHomNonprojectiveExamples`.
 
+## Acyclic matchings for discrete Morse reduction
+
+`TDA.Persistence.Morse.AcyclicMatching` (imported by `TDA.Persistence`) states matchings
+on the faces `TotalFace K` of a preabstract simplicial complex `K` on any vertex type, as
+relations `M σ τ` ("`σ` is matched with its codimension-one coface `τ`"). `IsMatching M`
+requires `σ ⋖ τ` for every pair, at most one pair per lower cell and per upper cell, and no
+upper cell that is also a lower cell; `TDA.Simplicial.covBy_iff_subset_card` reads `σ ⋖ τ`
+as `σ ⊆ τ ∧ #τ = #σ + 1`.
+
+`arrow M` is the modified Hasse diagram on all faces, including unmatched and isolated ones:
+an unmatched cover pair `σ ⋖ τ` gives the arrow `τ → σ` (coface to face) and a matched pair
+gives `σ → τ` (face to coface). `IsAcyclic M` forbids directed cycles of `arrow M`, and
+`IsAcyclicMatching M` is `IsMatching M ∧ IsAcyclic M`; the empty matching satisfies it.
+For a matching, `isAcyclic_iff_isMNAcyclic` proves acyclicity equivalent to the
+Mischaikow–Nanda Def. 2.2 form `IsMNAcyclic` (the order generated by `mnRel` on matched
+lower cells is a partial order; `isMNAcyclic_iff_irrefl` restates it as the absence of an
+`mnRel` cycle).
+
+`IsTopologicalRank M rank` asks for `rank : TotalFace K → ℕ` with `rank u < rank v` for every
+arrow `u → v`; faces with no arrow between them may tie. Such a rank implies acyclicity, and
+`isAcyclic_iff_exists_rank` proves the converse with finitely many faces
+(`[Finite (TotalFace K)]`); that direction is a classical existence proof.
+
+For `f : FilterFunction K α` over a linear order, `IsGradePreserving f M` requires equal
+grades on every pair, and `restrictSublevel f r M` keeps the pairs inside `f.sublevel r`.
+The restriction of an acyclic matching to every sublevel is an acyclic matching, and an
+equal-grade pair never straddles a sublevel. `IsFilteredAcyclicMatching f M`, the
+Mischaikow–Nanda Def. 4.1 form for sublevel frames, is a matching whose pairs never straddle
+a sublevel and whose restriction to every sublevel is acyclic;
+`isFilteredAcyclicMatching_iff` proves it equivalent to
+`IsAcyclicMatching M ∧ IsGradePreserving f M`.
+
+These are semantic predicates only. The module provides no executable checker, chain
+contraction, Morse complex, persistence isomorphism, matching generation or runtime bound.
+See [acyclic matchings for discrete Morse reduction](math/discrete-morse-matchings.md) and
+the [MN13 source mapping](math/references.md#MN13).
+
+`TDA.Persistence.Morse.FiniteInputMatching` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.MatchingInput`) checks a matching supplied on a finite input
+`xs : FiniteInput.Input`. Faces are list positions `Fin xs.length`, and a matching is a list
+`pairs : Pairs xs` of ordered (lower, upper) position pairs. `IsMatching xs pairs` requires
+pairwise distinct endpoints (`endpoints pairs`), a cover `IsCover xs i j` (subset with exactly
+one more vertex) for every pair and equal grades. A reversed pair is rejected, not normalised,
+and a pair listed twice counts as reuse. The certificate is `rank : Fin xs.length → ℕ`, and
+`IsTopologicalRank xs pairs rank` asks for `rank u < rank v` along every list-level arrow
+(unmatched cover pairs coface to face, listed pairs face to coface). `MatchingInput.check xs
+pairs rank : Bool` decides both, and `check_eq_true_iff` proves that it returns `true` exactly
+when `IsMatching xs pairs ∧ IsTopologicalRank xs pairs rank` holds. The executable predicates
+need no validity proof.
+
+For `h : Valid xs`, `toRel xs h pairs` is the induced relation on the faces of
+`complex xs h`. `exists_check_iff` proves that some rank is accepted exactly when
+`pairs.Nodup` holds and `toRel xs h pairs` is an acyclic matching with equal grades for
+`gradeFilter xs h`, and `exists_check_iff_isFilteredAcyclicMatching` states the same with
+`IsFilteredAcyclicMatching`. `pairs.Nodup` is needed because `toRel` forgets repeated pairs.
+`certify? xs pairs rank` returns a `CertifiedMatching xs` (the pairs, the rank and both
+proofs) exactly when `check` accepts. Its `critical` list holds the unmatched positions in
+increasing order, and `criticalReport` lists each with its dimension `(xs.get i).1.card - 1`
+and original grade `(xs.get i).2`; `trichotomy` and `critical_length_add` classify and count
+the positions. `TDA.Persistence.Morse.FiniteInputMatchingExamples` (imported by
+`TDA.Persistence.Examples`) holds accepted and rejected fixtures, including the multi-grade
+square with critical faces A, AD and ACD. `check` does not search for a matching or rank, and
+no runtime bound is stated; see
+[checking a supplied matching](math/discrete-morse-matchings.md#checking-a-supplied-matching).
+
+`TDA.Persistence.Morse.FiniteInputMatchingGeneration` (imported by `TDA.Persistence`, same
+namespace) generates a certified matching. `MatchingInput.candidates xs` lists the same-grade
+cover pairs of positions in the fixed lexicographic (lower, upper) order, and `generate xs :
+CertifiedMatching xs` is one greedy pass over them from the empty matching: a candidate is
+appended exactly when `certify?` accepts the extended list with the rank `candidateRank`
+computes for it. `generate` is total and needs no `Valid` hypothesis.
+`generate_pairs_sublist` proves that the generated pairs are a sublist of the candidates,
+`generate_check` that `check` accepts them with the generated rank, and, for `h : Valid xs`,
+`generate_isFilteredAcyclicMatching` that they form a filtered acyclic matching for
+`gradeFilter xs h`. The result depends on the list order of `xs`. No maximality, optimality,
+completeness of `candidateRank` (that it finds a rank whenever the extended list is acyclic,
+so that every rejected candidate reuses a face or closes a cycle), invariance under reordering
+or runtime bound is claimed.
+`TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples` (imported by
+`TDA.Persistence.Examples`) evaluates the pass on the checker inputs; see
+[generating a matching greedily](math/discrete-morse-matchings.md#generating-a-matching-greedily).
+
+## Unit cancellation of filtered based complexes
+
+`TDA.Persistence.Morse.UnitCancellation` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.Cancellation`) cancels one unit pair of a finite based complex. The
+carrier is a finite type `ι` with `D : Matrix ι ι k` over a commutative ring `k`, in the column
+convention of `FiniteInput.boundary`: `D r c` is the coefficient of `r` in `d c`, and matrix
+product is composition. `Cancellation.IsBasedDifferential degree D` asks for `D * D = 0` and
+`D r c ≠ 0 → degree c = degree r + 1`; `Cancellation.IsFilteredDifferential degree grade D`
+adds `GradeNonincreasing grade grade D` (`D r c ≠ 0 → grade r ≤ grade c`) for an integer grade.
+No basis order, triangularity or free-face condition is assumed. `isFilteredDifferential_boundary`
+proves that the boundary of every valid `FiniteInput` is a filtered differential for
+`FiniteInput.degree` and the list grades.
+
+`IsUnitPair D a b` is a structure with fields `ne : a ≠ b` and `coeff : D a b = 1`. The
+survivors `PairSurvivor a b` are the subtype of generators other than `a` and `b`, with their
+original IDs. `reducedDifferential D a b`, `projection D a b`, `inclusion D a b` and
+`homotopy a b` (`H a = b`, zero elsewhere) are computable entry formulas, for instance
+`reducedDifferential D a b r s = D r s - D r b * D a s`;
+`reducedDifferential_eq`, `projection_eq` and `inclusion_eq` identify them with
+`Q (D - D H D) J`, `Q (1 - D H)` and `(1 - H D) J` for every `D`. Under `D * D = 0` and
+`IsUnitPair D a b`, the five contraction identities are `reducedDifferential_sq_zero`
+(`d' d' = 0`), `projection_mul` (`p D = d' p`), `mul_inclusion` (`D i = i d'`),
+`projection_mul_inclusion` (`p i = 1`, which needs only `a ≠ b`) and
+`one_sub_inclusion_mul_projection` (`1 - i p = D H + H D`). `homotopy_mul_homotopy`,
+`projection_mul_homotopy` and `homotopy_mul_inclusion` give `H H = 0`, `p H = 0` and `H i = 0`
+from `a ≠ b` alone.
+
+For a based differential and a unit pair, the degree theorems relate the degrees on the
+supports of the four maps, and `isBasedDifferential_reduced` makes `d'` a based differential
+for the inherited degree. If `D` is grade-nonincreasing and `grade a = grade b`, then `d'`,
+`p`, `i` and `H` are grade-nonincreasing (`reducedDifferential_gradeNonincreasing`,
+`projection_gradeNonincreasing`, `inclusion_gradeNonincreasing`,
+`homotopy_gradeNonincreasing`), and
+`GradeNonincreasing.mulVec_sublevelSupported` shows that such matrices preserve vectors
+supported in grades `≤ t`. `isFilteredDifferential_reduced` proves that `d'` is a filtered
+differential for a filtered differential, a unit pair and equal grades.
+`TDA.Persistence.Morse.UnitCancellationExamples` (imported by `TDA.Persistence.Examples`)
+evaluates the filled triangle, a pure unit pair, an unequal-grade pair with no
+grade-nonincreasing contracting homotopy, and a tie-order example over `ZMod 2`. These modules
+provide no iteration, homology or persistence isomorphism, chosen ordering of survivors to
+`Fin`, rescaling by a general unit or runtime bound; see
+[unit cancellation of a filtered chain complex](math/discrete-morse-cancellation.md).
+
+## Filtered contractions of based complexes
+
+`TDA.Persistence.Morse.FilteredContraction` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.Cancellation`) bundles a contraction of based complexes as data.
+`FilteredContraction degree grade D degree' grade' D'` takes finite carriers `ι` and `κ` with
+decidable equality, a commutative ring `k`, the large complex `(degree, grade, D)` on `ι` and
+the small complex `(degree', grade', D')` on `κ`, all as parameters. Its data are
+`proj : Matrix κ ι k`, `incl : Matrix ι κ k` and `htpy : Matrix ι ι k`; its fields are the
+chain-map equations `proj * D = D' * proj` and `D * incl = incl * D'`, `proj * incl = 1`,
+`1 - incl * proj = D * htpy + htpy * D`, the side conditions `htpy * htpy = 0`,
+`proj * htpy = 0` and `htpy * incl = 0`, degree support (`proj` and `incl` preserve degree and
+`htpy` raises it by one on their supports) and `GradeNonincreasing` for all three matrices.
+`D * D = 0` is not a field.
+
+`FilteredContraction.refl` is the identity contraction. `c₁.trans c₂` composes in
+diagrammatic order, with projection `c₂.proj * c₁.proj`, inclusion `c₁.incl * c₂.incl` and
+homotopy `c₁.htpy + c₁.incl * c₂.htpy * c₁.proj`. `c.reindex e` transports the small complex
+along `e : κ ≃ μ` by `submatrix`, and `c.copy hdeg hgr hD` keeps the matrices while rewriting
+the small complex's degree, grade and differential along equalities. `ofUnitPair hD hp hg`
+packages the cancellation of an equal-grade unit pair of a filtered differential as a
+contraction onto `(degree ∘ Subtype.val, grade ∘ Subtype.val, reducedDifferential D a b)`.
+Each construction has `@[simp]` `rfl` lemmas for its three matrices. `differential_eq` proves
+`D' = proj * D * incl`; `sq_zero_target` derives `D' * D' = 0` from `D * D = 0`; and
+`isBasedDifferential_target` and `isFilteredDifferential_target` transfer the based and
+filtered differential properties to `D'`. `proj_mulVec_incl_mulVec` and
+`sub_incl_mulVec_proj_mulVec` are the vector forms `proj (incl y) = y` and
+`x - incl (proj x) = D (htpy x) + htpy (D x)`. `GradeNonincreasing.add` closes grade bounds
+under sums. `TDA.Persistence.Morse.FilteredContractionExamples` (imported by
+`TDA.Persistence.Examples`) composes two cancellations on the filled triangle and transports
+the result to a flat subtype of critical cells, over `ZMod 2`. This module provides no
+iteration, homology or persistence isomorphism; homology and the isomorphism induced by a
+contraction are in
+[sublevel homology of filtered based complexes](#sublevel-homology-of-filtered-based-complexes).
+See
+[filtered contractions and their composition](math/discrete-morse-cancellation.md#filtered-contractions-and-their-composition).
+
+## Iterated cancellation along pivot schedules
+
+`TDA.Persistence.Morse.IteratedCancellation` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.Cancellation`) cancels a supplied list of unit pairs head first and
+composes the single cancellations into one filtered contraction onto the generators that are
+not cancelled. A schedule is a list `l : List (ι × ι)` of (lower, upper) pairs, and
+`scheduleEndpoints l` lists its `2·|l|` endpoints in order. `IsPivotSchedule grade D l` asks
+that the endpoints are distinct, that every pair `(a, b)` has `D a b = 1` and
+`grade a = grade b`, and that `l.Pairwise fun p q => D p.1 q.2 = 0`: the lower generator of a
+pair is never a face of the upper generator of a later pair. The instance
+`IsPivotSchedule.decidable` decides it when equality of generators and of coefficients is
+decidable, and `isPivotSchedule_iff_get` gives the indexed form: `D (a i) (b j) ≠ 0` with
+`i ≠ j` forces `j < i`, so the matched block is unit lower triangular in schedule order.
+
+`cancelStep D a b r s = D r s - D r b * D a s` is the entry formula of
+`reducedDifferential D a b` on all of `ι`, and `scheduleMatrix l D` applies it along `l`,
+head first. `cancelStep_apply_of_eq_zero` leaves every column `s` with `D a s = 0` unchanged,
+and `IsPivotSchedule.cancelStep_apply_snd` applies this to the upper generators of the tail of
+a pivot schedule. `IsPivotSchedule.cancelStep` proves that the tail is a pivot schedule for
+`cancelStep D p.1 p.2`, `IsPivotSchedule.head_not_mem` that the two generators of the head
+pair are distinct and are not endpoints of the tail, and `IsPivotSchedule.isUnitPair_reducedDifferential`
+that every later pair is an `IsUnitPair` of `reducedDifferential D a b`.
+
+`scheduleSurvivors l S` removes the endpoints from a Finset pair by pair
+(`mem_scheduleSurvivors`), `criticalSet l = scheduleSurvivors l Finset.univ` consists of the
+generators that are not endpoints (`mem_criticalSet`), and `Critical l` is the subtype of
+original generators in `criticalSet l`, with
+`Fintype.card (Critical l) = Fintype.card ι - 2 * l.length` for distinct endpoints
+(`card_critical`). `criticalDifferential D l` is `scheduleMatrix l D` restricted to
+`Critical l`; it takes no hypothesis.
+
+For `hD : IsFilteredDifferential degree grade D` and `hl : IsPivotSchedule grade D l`,
+`FilteredContraction.ofSchedule hD hl` is a `FilteredContraction` of `(degree, grade, D)` onto
+`(degree ∘ Subtype.val, grade ∘ Subtype.val, criticalDifferential D l)` on `Critical l`. It is
+`FilteredContraction.toUniv`, which restates the complex on `{x // x ∈ Finset.univ}`, followed
+by `FilteredContraction.ofScheduleOn`, which composes with `trans` the steps
+`FilteredContraction.cancelOn`: `ofUnitPair` on a Finset-indexed carrier, transported by
+`reindex` along the concrete `FilteredContraction.survivorEquiv` and restated by `copy`.
+`criticalDifferential_eq` proves `criticalDifferential D l = proj * D * incl`,
+`isFilteredDifferential_criticalDifferential` that `criticalDifferential D l` is a filtered
+differential for the inherited degree and grade, and `ofSchedule_congr` that the three
+matrices depend on `D` only through its value. All data are computable.
+`TDA.Persistence.Morse.IteratedCancellationExamples` (imported by `TDA.Persistence.Examples`)
+evaluates the schedule contraction of the multi-grade square of
+`TDA.Persistence.Morse.FiniteInputMatchingExamples` and of the regraded filled triangle, and
+records that no order of the cyclic pairs on the hollow triangle is a pivot schedule, over
+`ZMod 2` by `decide +kernel`. This module provides no derivation of a schedule from a
+matching, no explicit path formula for the matrices, no order independence and no homology
+statement for `ofSchedule`; see
+[iterated cancellation along a pivot schedule](math/discrete-morse-cancellation.md#iterated-cancellation-along-a-pivot-schedule).
+A schedule derived from a certified matching is in
+[pivot schedules of certified matchings](#pivot-schedules-of-certified-matchings).
+
+## Sublevel homology of filtered based complexes
+
+`TDA.Persistence.Morse.FilteredHomology` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.Cancellation`) forms the homology of the grade sublevels of a based
+complex `(degree, grade, D)` on a finite carrier `ι : Type u` over a commutative ring
+`k : Type v`, with `degree : ι → ℕ` and `grade : ι → ℤ`. `DegreeSupported degree p x` says that
+`x` vanishes outside degree `p`. `sublevelChains degree grade p t` is the submodule of vectors
+with `DegreeSupported degree p x` and `SublevelSupported grade t x`, `sublevelCycles` adds
+`D.mulVec x = 0`, `sublevelBoundaries` is the image under `D` of the degree-`p + 1` sublevel
+chains, and `sublevelHomology degree grade D p t` is the quotient of the cycles by the
+boundaries that lie among them. The definitions take no hypothesis on `D`;
+`sublevelBoundaries_le_sublevelCycles` proves that every sublevel boundary is a sublevel cycle
+when `IsFilteredDifferential degree grade D` holds. `sublevelHomologyMap` is induced by the
+inclusion of cycles for `t ≤ t'`, and `sublevelHomologyPModule degree grade D p` is the
+persistence module `PModule.{v, 0, max u v} k ℤ` with these structure maps.
+
+For `c : FilteredContraction degree grade D degree' grade' D'` with carriers `ι κ : Type u`,
+`c.homologyProj p t` and `c.homologyIncl p t` are induced by `proj` and `incl`.
+`c.sublevelHomologyEquiv p t` is a `LinearEquiv` with forward map `homologyProj` and inverse
+`homologyIncl`, and `c.sublevelHomologyIso p` is the natural isomorphism
+`sublevelHomologyPModule degree grade D p ≅ sublevelHomologyPModule degree' grade' D' p` from
+the large complex to the small one, whose `hom` components are `homologyProj`
+(`sublevelHomologyIso_hom_app`). `c.finrank_sublevelHomology_eq p t` equates the
+`Module.finrank` of the two sublevel homologies. None of these results about `c` assumes
+`D * D = 0`. The maps, the persistence module and the isomorphisms are `noncomputable`.
+`TDA.Persistence.Morse.FilteredHomologyExamples` (imported by `TDA.Persistence.Examples`)
+computes the sublevel homology dimensions of the critical complex of the filled triangle with
+the grade `cGrade` over `ZMod 2`, and transports them to the triangle through the contraction.
+These modules provide no bridge from `sublevelHomologyPModule` to `sublevelModule` or
+`simplicialHomologyPModule`; see
+[sublevel homology and the induced isomorphism](math/discrete-morse-cancellation.md#sublevel-homology-and-the-induced-isomorphism).
+For the boundary complex of a valid `FiniteInput`, the bridge is in
+[the simplicial bridge and the Morse persistence theorem](#the-simplicial-bridge-and-the-morse-persistence-theorem).
+
+## Pivot schedules of certified matchings
+
+`TDA.Persistence.Morse.MatchingSchedule` (imported by `TDA.Persistence`, namespace
+`TDA.Persistence.Morse.MatchingInput`) connects a certified matching `c : CertifiedMatching xs`
+on a finite integer-graded input to
+[iterated cancellation along pivot schedules](#iterated-cancellation-along-pivot-schedules).
+Over `ZMod 2`,
+`coverIncidence xs i j` is `1` exactly when `IsCover xs i j` holds and the face at position
+`i` is nonempty; `boundary_eq_coverIncidence` proves `FiniteInput.boundary xs = coverIncidence xs`
+for every input. `isCover_of_boundary_ne_zero` shows that a nonzero boundary entry is a cover,
+and, on a valid input, `boundary_eq_one_of_isCover` gives every cover the coefficient `1` and
+`boundary_ne_zero_iff` identifies the nonzero entries with the covers.
+
+`CertifiedMatching.schedule` is `c.pairs.insertionSort fun p q => c.rank p.1 ≤ c.rank q.1`,
+the certified pairs sorted stably by non-decreasing rank of the lower face. `schedule_perm`
+proves that it is a permutation of `c.pairs`, `schedule_pairwise_rank_le` that it is sorted,
+and `scheduleEndpoints_perm` that its endpoints are those of `c.pairs`, reordered.
+`rank_lt_of_boundary_ne_zero` proves `c.rank q.1 < c.rank p.1` for certified pairs `p ≠ q`
+with `FiniteInput.boundary xs p.1 q.2 ≠ 0`, through the arrows `q.1 → q.2 → p.1`, and
+`isPivotSchedule_schedule` that, for `h : Valid xs`, `c.schedule` is an `IsPivotSchedule` for
+`FiniteInput.boundary xs` with the list grade `fun i => (xs.get i).2`.
+
+`mem_criticalSet_schedule` identifies `criticalSet c.schedule` with the critical positions
+`c.critical`, and `card_critical_schedule` counts `Critical c.schedule` as
+`c.critical.length`. `CertifiedMatching.morseDifferential` is
+`criticalDifferential (FiniteInput.boundary xs) c.schedule`; it takes no validity hypothesis
+and is computable. For `h : Valid xs`, `CertifiedMatching.morseContraction` is
+`FilteredContraction.ofSchedule` of the boundary complex `(degree xs, list grade, boundary)`
+onto `(degree xs ∘ Subtype.val, list grade ∘ Subtype.val, morseDifferential)`,
+`isFilteredDifferential_morseDifferential` proves that the Morse differential is a filtered
+differential for these inherited degrees and grades, and `CertifiedMatching.morseHomologyIso`
+is the `noncomputable` isomorphism `sublevelHomologyIso` of the contraction in each degree `p`.
+`TDA.Persistence.Morse.MatchingScheduleExamples` (imported by `TDA.Persistence.Examples`)
+evaluates the schedules, critical positions and Morse differentials of three certificates on
+the multi-grade square, including a tie in the rank, by `decide +kernel`; each such `decide`
+on a goal that mentions `FiniteInput.boundary` runs after rewriting with
+`boundary_eq_coverIncidence`. This module provides no bridge from
+`sublevelHomologyPModule` to `sublevelModule` or `simplicialHomologyPModule`, no main theorem
+of #1041, no gradient-path formula for `morseDifferential`, no independence of it from the
+rank or the tie order, no reducer adapter, ordering of the critical generators or `Equiv` to
+`Fin`, and no homology computation by evaluation; see
+[the pivot schedule of a certified matching](math/discrete-morse-cancellation.md#the-pivot-schedule-of-a-certified-matching).
+The bridge and the main theorem of #1041 are in
+[the simplicial bridge and the Morse persistence theorem](#the-simplicial-bridge-and-the-morse-persistence-theorem).
+An order of the critical generators in which the Morse differential satisfies the input
+conditions of the column reducer is in
+[the reducer order of filtered based complexes](#the-reducer-order-of-filtered-based-complexes).
+
+## The simplicial bridge and the Morse persistence theorem
+
+`TDA.Persistence.Morse.SimplicialBridge` (imported by `TDA.Persistence`) works over `ZMod 2`
+on a finite input `xs` with `h : Valid xs`. In namespace
+`TDA.Persistence.Morse.SimplicialBridge`, `sublevelSupported_iff_prefixSupported` identifies
+grade-sublevel support with support before `sublevelStage xs a`, and
+`cycleInput_iff_mem_sublevelCycles` identifies `FiniteInput.CycleInput` with the sublevel cycles
+of the boundary complex `(degree xs, fun i => (xs.get i).2, FiniteInput.boundary xs)`.
+`boundaryCycleCoordinates` is the computable restriction of `rawCycleCoordinates` to these
+cycles; `boundaryCycleCoordinates_eq_zero_iff` and `ker_boundaryCycleCoordinates` identify its
+kernel with the sublevel boundaries among the cycles, and `boundaryCycleCoordinates_surjective`
+proves it surjective. The `noncomputable` `boundaryHomologyEquiv h p a` is a `LinearEquiv` from
+`sublevelHomology` of the boundary complex to
+`simplicialHomology ((gradeFilter xs h).sublevel a) (ZMod 2) p`; `boundaryHomologyEquiv_mk`
+sends the class of a sublevel cycle to its `vectorSublevelClass`, and
+`boundaryHomologyEquiv_naturality` gives naturality in the grade. `boundaryHomologyIso h p` is
+the natural isomorphism
+`sublevelHomologyPModule (degree xs) (fun i => (xs.get i).2) (FiniteInput.boundary xs) p ≅ sublevelModule (ZMod 2) (gradeFilter xs h) p`,
+with components `boundaryHomologyIso_hom_app` and `boundaryHomologyIso_inv_app`, and
+`finrank_sublevelHomology_boundary` equates dimensions.
+
+In namespace `TDA.Persistence.Morse.MatchingInput.CertifiedMatching`, for
+`c : CertifiedMatching xs`, `c.morseSublevelModuleIso h p` is
+`(boundaryHomologyIso h p).symm ≪≫ c.morseHomologyIso h p`, a natural isomorphism from
+`sublevelModule (ZMod 2) (gradeFilter xs h) p` to the grade-sublevel homology persistence
+module of `c.morseDifferential` on the critical generators. This differential is
+`scheduleMatrix c.schedule (FiniteInput.boundary xs)` restricted to the critical generators:
+the iterated Schur complement of the boundary matrix at the unit entries of the schedule,
+one `cancelStep` per pair. `morseSublevelModuleIso_hom_app`
+and `morseSublevelModuleIso_inv_app` identify its components,
+`morseSublevelModuleIso_hom_vectorSublevelClass` sends the class of a sublevel cycle vector `v`
+to the class of `proj v`, and `finrank_simplicialHomology_eq` and
+`rankOfStructureMap_sublevelModule_eq` equate dimensions and structure-map ranks. The bridge
+and the isomorphisms are `noncomputable`.
+
+`TDA.Persistence.Morse.SimplicialBridgeExamples` (imported by `TDA.Persistence.Examples`) has
+fixtures M1–M7 on the multi-grade square. M1 evaluates the critical generators A, AD, ACD of
+`sqCert` and its Morse differential `d ACD = AD` by `decide +kernel`; M2 proves the Morse
+sublevel homology dimensions, and M3 transports them to the simplicial sublevel complexes
+through `finrank_simplicialHomology_eq`; M4 proves the rank invariants of `[1,2)` in degree 1
+and `[0,∞)` in degree 0; M5 shows that the loop AB + BC + CD + AD has a nonzero class at grade
+1 that is filled at grade 2; M6 reads off the Morse complex of `genCert` through the main
+theorem; and M7 proves that the square's diagram `dgm` is `{(1, 2)}` in degree 1 and
+`{(0, ⊤)}` in degree 0, by `rank_sublevelHomologyMap`, not from the reducer. These modules
+provide no interval decomposition over `ℤ`, no barcode statement other than M7, no agreement
+with the reducer's barcode (it is in
+[the reducer run on the Morse complex of a certificate](#the-reducer-run-on-the-morse-complex-of-a-certificate)),
+no chain-level isomorphism with `simplicialChainComplex`,
+no independence of the Morse complex from the certificate, no gradient-path formula and no
+coefficient ring other than `ZMod 2`; see
+[the simplicial bridge and the Morse persistence theorem](math/discrete-morse-cancellation.md#the-simplicial-bridge-and-the-morse-persistence-theorem).
+
+## The reducer order of filtered based complexes
+
+`TDA.Persistence.Morse.ReducerOrder` (imported by `TDA.Persistence`) orders the generators of
+a filtered based complex `(ι, degree, grade, D)` whose finite carrier has a `LinearOrder`, for
+the column reducer of `TDA.Persistence.Reduction`. `key degree grade x` is
+`toLex (grade x, toLex (degree x, x))`; `key_injective` and `key_lt` hold, and
+`key_lt_of_ne_zero` gives `key r < key c` for a nonzero entry `D r c` of a filtered
+differential. `sortList` is `List.insertionSort` by `key`, with `sortList_perm`,
+`pairwise_sortList_le`, `pairwise_sortList` and `sortList_eq_of_perm`. `sortedGenerators` sorts
+`Finset.univ` through `Quotient.liftOn`; `sortedGenerators_eq` equates it with `sortList` of
+any duplicate-free complete enumeration, and `mem_sortedGenerators`,
+`pairwise_sortedGenerators`, `nodup_sortedGenerators` and `length_sortedGenerators` follow.
+`reducerEquiv : Fin (sortedGenerators degree grade).length ≃ ι` is
+`List.Nodup.getEquivOfForallMemList` of the sorted list (`reducerEquiv_apply`), with
+`key_strictMono`, `lt_iff_key_lt` and `monotone_grade`.
+
+`reducerMatrix degree grade D` is `D.submatrix (reducerEquiv …) (reducerEquiv …)`. For a
+filtered differential, `reducerMatrix_sq_zero` and `isFilteredDifferential_reducerMatrix` hold
+over a commutative ring; over a field, `strictBoundary_submatrix` (for any `e : Fin m ≃ ι`
+along which `key` is strictly increasing), `strictBoundary_reducerMatrix` and
+`lowersDegree_reducerMatrix` give the reducer's input conditions, and
+`reducerMatrix_normalForm_input` is the existing `matrixReductionTrace_normalForm_input`
+applied to the reducer matrix. `reducerContraction` is the identity filtered contraction
+reindexed along the reducer order (`reducerContraction_proj`, `reducerContraction_incl`,
+`reducerContraction_htpy`), and `reducerHomologyIso` (for `ι : Type`) is its
+`sublevelHomologyIso`. `key`, `sortList`, `sortedGenerators`, `reducerEquiv`, `reducerMatrix`
+and `reducerContraction` are computable; `reducerHomologyIso` is `noncomputable`.
+
+`TDA.Persistence.Morse.ReducerOrderExamples` (imported by `TDA.Persistence.Examples`) has
+fixtures R1–R3 over `ZMod 2`: R1, the survivors of the tie-order cancellation F4, on which the
+reduced differential is not strictly upper triangular in the inherited order and the reducer
+order is `r, s`; R2, a path
+with a certified matching whose Morse differential `d AB = A + C` fails strict triangularity in
+the inherited order A, AB, C and has reducer order A, C, AB; and R3, the reducer orders of the
+certificates `sqCert` and `genCert` on the multi-grade square. The sorts and the reordered
+matrices are evaluated by `decide +kernel`. These modules run no reduction and state no barcode
+or diagram agreement with the reducer; see
+[the reducer order of a filtered based complex](math/discrete-morse-cancellation.md#the-reducer-order-of-a-filtered-based-complex).
+The reducer output on that order and its rank semantics are in
+[the graded reducer output of filtered based complexes](#the-graded-reducer-output-of-filtered-based-complexes).
+
+## The graded reducer output of filtered based complexes
+
+`TDA.Persistence.DiagramRankUniqueness` (imported by `TDA.Persistence`) proves, over any
+`LinearOrder α`, that two finite multisets of positive points in `α × WithTop α` with equal
+slice counts are equal (`multiset_eq_of_sliceCounts_eq`), and the same for positive diagrams
+(`Diagram.eq_of_sliceCounts_eq`). The slice count at `a ≤ b` counts the points `(b', d)` with
+`b' ≤ a` and `b < d`, the predicate of `rank_sublevelHomologyMap`.
+
+`TDA.Persistence.Morse.ReducerDiagram` (imported by `TDA.Persistence`) reads the output of the
+column reducer of `TDA.Persistence.Reduction` on `D : Matrix (Fin m) (Fin m) k` over a field
+with decidable equality, with `degree : Fin m → ℕ` and `grade : Fin m → ℤ`. `reduced` is
+`replay D (matrixReductionTrace D)`; `pivotPairs` and `essentialIndices` list its pivot pairs
+and essential indices (`mem_pivotPairs`, `mem_essentialIndices`); `pairOccurrence` gives
+`none` for an equal-grade pair; `occurrences` lists `FiniteInput.Occurrence`s and
+`diagram … p : Diagram ℤ` collects the degree-`p` points. On `FiniteInput.boundary xs` they
+are `FiniteInput.occurrences` and `FiniteInput.outputDiagram` by `rfl` (`occurrences_boundary`,
+`diagram_boundary`). The instances `decidableStrictBoundary` and `decidableLowersDegree` decide
+the reducer's input conditions entrywise.
+
+`stage grade a` counts the indices of grade `≤ a` (`stage_le`, `stage_mono`); for monotone
+grades, `grade_le_iff_lt_stage`, `sublevelSupported_iff_prefixSupported`,
+`sublevelCycles_eq_originalCycleSpace` and `mem_sublevelBoundaries_iff_originalBoundary`
+identify grade sublevels with the reducer's prefixes. `prefixHomologyEquiv` identifies
+`sublevelHomology … a` with the reducer's `originalHomology` at `stage grade a`
+(`prefixHomologyEquiv_mk`, `prefixHomologyEquiv_naturality`,
+`finrank_range_sublevelHomologyMap_eq`). For monotone grades, `countP_diagram` equates the slice
+count of `diagram` with the right side of `matrixReductionTrace_originalHomologyMap_rank_formula`
+at the stages. Under `D * D = 0`, `StrictBoundary D`, `LowersDegree degree D` and
+`Monotone grade`, `rankOfStructureMap_eq_countP` states that the rank of the structure map
+`a ≤ b` of `sublevelHomologyPModule degree grade D p` is that slice count,
+`diagram_isPositive` holds, and `eq_diagram_of_rankCounts` states that `diagram` is the only
+positive diagram with these slice counts.
+
+For a finite linearly ordered carrier `ι : Type`, `reducerOccurrences` and `reducerDiagram` are
+the output on `reducerMatrix` with the transported degree and grade. For a filtered
+differential over a field, `rankOfStructureMap_eq_countP_reducerDiagram` gives the ranks of the
+original complex's `sublevelHomologyPModule` as slice counts of `reducerDiagram`, through
+`reducerHomologyIso`; `reducerDiagram_isPositive` and `eq_reducerDiagram_of_rankCounts`
+follow. The builders, `stage`, `reducerOccurrences`, `reducerDiagram` and the two instances are
+computable; `prefixHomologyEquiv` is `noncomputable`.
+
+`TDA.Persistence.Morse.ReducerDiagramExamples` (imported by `TDA.Persistence.Examples`) has
+fixtures P1–P3 over `ZMod 2` on written-out matrices: P1, a hollow triangle with staggered
+edge grades, with its pivot pairs, essential indices, occurrences, diagrams and four ranks; P2,
+the reducer matrix of the path R2, whose only pivot pair has equal grades and is dropped; and
+P3, the reducer matrix of the square R3, with degree-1 diagram `{(1, 2)}` and two ranks.
+These modules run no reducer on the Morse complex of a certificate and state no agreement with
+`dgm`; see
+[the graded reducer output and its rank semantics](math/discrete-morse-cancellation.md#the-graded-reducer-output-and-its-rank-semantics).
+That run and its agreement with `dgm` are in
+[the reducer run on the Morse complex of a certificate](#the-reducer-run-on-the-morse-complex-of-a-certificate).
+
+## The reducer run on the Morse complex of a certificate
+
+`TDA.Persistence.Morse.MorseDiagram` (imported by `TDA.Persistence`) runs the reducer output on
+the Morse complex of a certified matching. In namespace
+`TDA.Persistence.Morse.MatchingInput.CertifiedMatching`, for a finite input `xs` and
+`c : CertifiedMatching xs`, `c.morseOccurrences : List FiniteInput.Occurrence` and
+`c.morseDiagram p : Diagram ℤ` are `reducerOccurrences` and `reducerDiagram` of
+`c.morseDifferential`, with the degrees and list grades inherited by the critical positions;
+they take no validity hypothesis and are computable. On a valid input (`h : Valid xs`), over
+`ZMod 2`, `rankOfStructureMap_sublevelModule_eq_countP` states that the ranks of
+`sublevelModule (ZMod 2) (gradeFilter xs h) p` are the slice counts of `c.morseDiagram p`,
+`morseDiagram_isPositive` holds, `morseDiagram_eq_dgm` states
+`c.morseDiagram p = dgm (ZMod 2) (gradeFilter xs h) p` under `letI := faceFintype xs h`,
+`morseDiagram_eq_outputDiagram` states `c.morseDiagram p = FiniteInput.outputDiagram xs p`,
+the diagram of the ordinary run on the boundary matrix, and `morseDiagram_eq_morseDiagram`
+states that two certified matchings give the same diagrams. `morseOccurrences_perm` and
+`morseOccurrences_perm_of_run_eq_some` state that `c.morseOccurrences` is a permutation of
+`FiniteInput.occurrences xs` and of the `L` in `FiniteInput.run xs = some L`.
+
+In namespace `TDA.Persistence.Morse.ReducerDiagram`, `perm_of_degreePoints_eq` states that
+occurrence lists with the same degree-`p` points in every degree `p` are permutations of each
+other. For `ι : Type` with `[Fintype ι]`, two linear orders `o` and `o'` of `ι` and a filtered
+differential over a field, `reducerDiagram_eq_of_linearOrder` states that `reducerDiagram` is
+the same for `o` and `o'`, and `reducerOccurrences_perm_of_linearOrder` that the two occurrence
+lists are permutations of each other: the reducer output is independent of the tie order of the
+reducer order, the lists up to permutation.
+
+`TDA.Persistence.Morse.MorseDiagramExamples` (imported by `TDA.Persistence.Examples`) has
+fixtures Q1–Q6 over `ZMod 2`: Q1 and Q2, the Morse runs of `sqCert` and `genCert` on the
+multi-grade square, with occurrences `[⟨1, 1, .finite 2⟩, ⟨0, 0, .essential⟩]`, degree-1 diagram
+`{(1, 2)}` and degree-0 diagram `{(0, ⊤)}`; Q3, the ordinary run `FiniteInput.run square`, equal
+to `some` of both Morse runs, and the square's `dgm` read off Q1 through `morseDiagram_eq_dgm`;
+Q4, the path R2 with `pathCert`, whose Morse run is `[⟨0, 0, .essential⟩]` and whose ordinary
+run `FiniteInput.run path` is `some` of it; Q5, the reducer runs on the tie-order complex F4
+and its cancellation, both empty; and Q6, the path in the reversed order `dualOrder` of its
+critical positions, with another essential generator and the same occurrence list. `morseOccurrences` and `morseDiagram` are computable;
+the fixtures evaluate them by `decide +kernel` after rewriting the Morse differential to its
+written-out form, and evaluate the ordinary run only after rewriting the boundary matrix with
+`boundary_eq_coverIncidence`. These modules provide no interval decomposition over `ℤ`, no
+list-order independence of `reducerOccurrences` or `morseOccurrences` from the tie order or the
+certificate, no lifting of representatives to the input and no runtime claim; see
+[the reducer run on the Morse complex of a certificate](math/discrete-morse-cancellation.md#the-reducer-run-on-the-morse-complex-of-a-certificate).
+
+## Elementary collapses and a Čech-to-α collapse
+
+`TDA.Simplicial.Collapse` (imported by `TDA.Simplicial`) defines, in namespace
+`TDA.Simplicial`, for `K : PreAbstractSimplicialComplex V` and `σ τ : Finset V`, the predicate
+`IsFreePair K σ τ` (both faces in `K`, `σ ⋖ τ`, and `τ` the only face of `K` strictly containing
+`σ`) and the subcomplex `deletion K σ` of the faces of `K` not containing `σ` (`mem_deletion`,
+`deletion_le`). `IsFreePair.mem_deletion_iff` states that on a free pair the deletion removes
+exactly `σ` and `τ`. `ElementaryCollapsesTo K L` states that `L` is the deletion of the free face
+of a free pair of `K`; `IsFreePair.elementaryCollapsesTo` gives it from a free pair, and
+`ElementaryCollapsesTo.lt` states `L < K`. `CollapsesTo` is its reflexive transitive closure, a
+finite, possibly empty, sequence of elementary collapses, and `CollapsesTo.le` states `L ≤ K`.
+This module makes no homotopy or homology statement; the homology isomorphism of a collapse is
+in `TDA.Simplicial.CollapseHomology`.
+
+`TDA.Filtration.AlphaCollapseExamples` (imported by `TDA.Filtration.Examples`) works on
+`RationalAlpha.Examples.obtuse`, the sites `(0,0)`, `(4,0)` and `(1,1)` with labels `0, 1, 2`,
+and on the two stages `Alpha.squaredCechFiltration (realSites obtuse) t` and
+`Alpha.labelledComplexFiltration (realSites obtuse) t` under the same labels, for `t : ℝ` a
+squared grade, written `cech t` and `alpha t` below (local notation in the module).
+`cechGrades` is the squared Čech grade table: the vertices 0, `{0,2}` 1/2, `{1,2}` 5/2,
+`{0,1}` and `{0,1,2}` 4. `mem_cech_iff` states that a face is in the Čech stage
+exactly when its grade in `cechGrades` is at most `t`, and `mem_alpha_iff` reads the α stage off
+`gradedFaces obtuse`, where `{0,1}` and `{0,1,2}` have grade 5. `cechGrades_sdiff` states that
+the two tables differ exactly in `({0,1}, 4)`, `({0,1,2}, 4)` against `({0,1}, 5)`,
+`({0,1,2}, 5)`. For `4 ≤ t`, `isFreePair_long_edge` states that `({0,1}, {0,1,2})` is a free
+pair of the Čech stage. For `t < 5`, `mem_alpha_iff_of_lt_five` states that the α stage is the
+Čech stage without `{0,1}` and `{0,1,2}`, and `alpha_eq_deletion` that it is
+`deletion (cech t) {0,1}`; `alpha_eq_deletion_iff` states that this equality holds exactly for
+`t < 5`. `alpha_eq_cech` states that the two stages are equal for `t < 4 ∨ 5 ≤ t`, including the
+empty stages below 0, and `alpha_eq_cech_iff` that they are equal exactly then.
+`elementaryCollapsesTo_iff` states that the Čech stage collapses to the α stage in one
+elementary collapse exactly for `4 ≤ t ∧ t < 5`, and `collapsesTo` that it collapses to the α
+stage at every `t`, by the empty sequence outside `[4, 5)`. `not_exists_fixed_faces` states that
+no fixed set `C` of faces has `s ∈ alpha t ↔ s ∈ cech t ∧ s ∈ C` for all `t` and `s`. The
+labelled inclusion of the α stage into the Čech stage is the existing
+`Alpha.labelledComplexFiltration_le_squaredCech`.
+
+`TDA.Simplicial.CollapseHomology` (imported by `TDA.Simplicial`) has, in the same namespace,
+`IsFreePair.card_upper` (`τ.card = σ.card + 1`), the retraction chain map
+`IsFreePair.collapseRetraction R hp` onto the chain complex of `deletion K σ` with
+`IsFreePair.simplicialChainIncl_comp_collapseRetraction` (inclusion, then retraction, is the
+identity), and the chain homotopy equivalence `IsFreePair.collapseHomotopyEquiv R hp`, whose
+forward map is `simplicialChainIncl R (deletion_le K σ)` (`_hom`) and whose inverse is the
+retraction (`_inv`). `IsFreePair.isIso_simplicialHomologyIncl`,
+`ElementaryCollapsesTo.isIso_simplicialHomologyIncl` and
+`CollapsesTo.isIso_simplicialHomologyIncl` state that the homology inclusion of a free-face
+deletion, of an elementary collapse and of a finite collapse sequence is an isomorphism, in every
+degree `n : ℕ` and over every ring `R` (`[Ring R]`, not necessarily commutative), for ordinary
+unaugmented homology; the last two take any inclusion proof `hle : L ≤ K`.
+`CollapsesTo.simplicialHomologyIso` is the isomorphism, with forward map
+`simplicialHomologyIncl R h.le n` (`_hom`). `TDA.Persistence.CollapsePersistence` (imported by
+`TDA.Persistence`) has, for simplicial filtrations `F G` over a preorder with
+`hle : ∀ p, F p ≤ G p` and `h : ∀ p, CollapsesTo (G p) (F p)`,
+`isIso_inclusionHom_of_collapsesTo` (`IsIso (inclusionHom R n hle)`) and
+`collapseInclusionIso R n hle h`, whose forward map is `inclusionHom R n hle`
+(`collapseInclusionIso_hom`). Naturality is that of the inclusions; no compatibility of the
+retractions at different indices is used. `TDA.Persistence.CollapsePersistenceExamples`
+(imported by `TDA.Persistence.Examples`) applies these on the obtuse triangle, in every degree
+and over every ring: `isIso_deletion_long_edge` (deleting `{0,1}` from the Čech stage at grade
+4), `isIso_alpha_cech_four` (the labelled inclusion at grade 4), `isIso_inclusionHom` (the
+inclusion morphism over all real grades, negative grades included), and
+`CollapsePersistenceExamples.alphaCechIso`, the
+natural isomorphism from α persistence to squared-grade Čech persistence of the obtuse
+triangle, with forward map the `inclusionHom` of the labelled inclusions
+(`CollapsePersistenceExamples.alphaCechIso_hom`). It is a different declaration from the
+general `TDA.Persistence.alphaCechIso`. Over a field `k`,
+`CollapsePersistenceExamples.alphaCechIso_zero_hom` states
+`(CollapsePersistenceExamples.alphaCechIso k 0).hom = alphaH0Comparison (realSites obtuse) k`.
+See [homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses).
+
+`TDA.Simplicial.CollapseCertificate` (imported by `TDA.Simplicial`) has, in namespace
+`TDA.Simplicial`, for `[DecidableEq V]`, face tables `F T : Finset (Finset V)` and certificates
+`steps : List (Finset V × Finset V)`: `IsFreePairTable F σ τ` (`σ ∈ F`, `τ ∈ F`, `σ ⊆ τ`,
+`(τ \ σ).card = 1`, and every `ω ∈ F` with `σ ⊂ ω` is `τ`) with the decidability instance
+`instDecidableIsFreePairTable`; `collapseTable F σ τ`, which erases `σ` and `τ`;
+`runSteps F steps : Option (Finset (Finset V))`, which applies the steps in order and is `none`
+at the first step that is not free; and `checkSteps F steps T : Bool`, which accepts exactly when
+the run ends at `T` itself (`checkSteps_eq_true_iff`, `eq_of_checkSteps`, `checkSteps_nil`,
+`checkSteps_cons`). For complexes `K`, `L` with `∀ s, s ∈ K ↔ s ∈ F` and
+`∀ s, s ∈ L ↔ s ∈ T`, `isFreePair_iff_isFreePairTable` identifies the table test with
+`IsFreePair`, `mem_deletion_iff_mem_collapseTable` identifies `collapseTable` with the deletion
+on a free pair, `collapsesTo_of_checkSteps` (soundness) gives `CollapsesTo K L` from an accepted
+certificate, `exists_checkSteps_of_collapsesTo` (completeness) gives an accepted certificate from
+`CollapsesTo K L`, and `collapsesTo_iff_exists_checkSteps` combines the two.
+`FiniteComplex.collapsesTo_of_checkSteps` is soundness for `C D : FiniteComplex m`, with face
+tables `C.faces` and `D.faces`. No check is made that `F` is the face set of a complex.
+`TDA.Simplicial.CollapseCertificateExamples` (imported by `TDA.Simplicial.Examples`) has the
+tables `triangle`, `alphaTable`, `tetrahedron`, `simplex4` and `twoTriangles` and fourteen
+fixtures, each decided by `decide +kernel` except `top_collapsesTo_vertex`. Accepted:
+`checkSteps_triangle_alphaTable` (the obtuse step, ending exactly at `alphaTable`),
+`checkSteps_triangle_vertex`, `checkSteps_tetrahedron_vertex`, `checkSteps_simplex4_vertex` (to
+the vertex `{0}`) and `checkSteps_triangle_spine` (onto an edge and onto the spine). Rejected,
+each with a conjunct stating its reason: `checkSteps_twoTriangles_extra_coface` (an extra coface
+`{0,1,3}`), `checkSteps_alphaTable_not_mem` (`{0,1,2} ∉ alphaTable`),
+`checkSteps_triangle_reversed` (reversed pair), `checkSteps_triangle_codim_two` (not a cover),
+`checkSteps_triangle_wrong_order` (`{1}` is not free while `{1,2}` is present),
+`checkSteps_triangle_wrong_endpoint` (the run ends at `alphaTable`, which is none of three
+targets) and `checkSteps_triangle_repeated` (the faces of the repeated step have been erased).
+`checkSteps_triangle_nil` accepts the empty certificate to `triangle` and rejects it to
+`alphaTable`. `top_collapsesTo_vertex` is soundness on the actual full tetrahedron `⊤`.
+`TDA.Filtration.AlphaCollapseCertificateExamples` (imported by `TDA.Filtration.Examples`) has, at
+grade 4 only, `mem_cech_four_iff` (the faces of `cech 4` are `triangle`), `mem_alpha_four_iff`
+(the faces of `alpha 4` are `alphaTable`) and `collapsesTo_four`
+(`CollapsesTo (cech 4) (alpha 4)` through the checker). See
+[checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
+
+`TDA.Filtration.CollapseCertificateFamily` (imported by `TDA.Filtration`) works in namespace
+`TDA.Filtration` with real-indexed filtrations `F G : SimplicialFiltration ℝ V` and rational
+grade tables `g : Finset (Finset V × ℚ)`. `HasGradeTable K g` is
+`∀ s t, s ∈ K t ↔ ∃ q, (s, q) ∈ g ∧ (q : ℝ) ≤ t`, so grades are closed. `stageTable g c` is the
+face table of the rows of grade at most `c` (`mem_stageTable`), and at a rational grade it is the
+face table of the stage (`HasGradeTable.mem_cast_iff`). `criticalGrades gF gG : Finset ℚ` is the
+set of all grades of both tables (`mem_criticalGrades`). The regime lemmas are
+`HasGradeTable.notMem_of_lt` and `HasGradeTable.mem_iff_mem_stageTable` for one table, and
+`stages_of_lt_criticalGrades` (below the least critical grade both stages are empty),
+`stages_eq_stageTable` (if `c ≤ t` and no critical grade lies in `(c, t]`, the stages at `t`
+have the stage tables at `c`), its cases `stages_eq_stageTable_of_mem_Ico` (on `[c, d)` with no
+critical grade in `(c, d)`) and `stages_eq_stageTable_of_le_of_forall_le` (on the tail `[c, ∞)`
+with `c` at least every critical grade), and `stages_eq_of_regime` (`F t = F c ∧ G t = G c`).
+For a supplied family `cert : ℚ → List (Finset V × Finset V)`, the Boolean
+`checkCertificates gF gG cert` accepts exactly when `checkSteps (stageTable gG c) (cert c) (stageTable gF c) = true` at
+every critical grade `c` (`checkCertificates_eq_true_iff`). For filtrations with these tables,
+`collapsesTo_of_checkCertificates` (soundness) gives `CollapsesTo (G t) (F t)` at every real `t`,
+`le_of_checkCertificates` gives `F t ≤ G t`, `exists_checkCertificates_of_collapsesTo`
+(completeness) gives an accepted family from levelwise collapses, and
+`collapsesTo_iff_exists_checkCertificates` combines the two. No filtration is constructed from a
+table, and no closure check of a table is made. `TDA.Persistence.CollapseCertificatePersistence`
+(imported by `TDA.Persistence`) has, for `[LinearOrder V]`, any `hle : ∀ t, F t ≤ G t`, every
+ring `R` and every degree `n`, `isIso_inclusionHom_of_checkCertificates`
+(`IsIso (inclusionHom R n hle)` after acceptance), `certificateInclusionIso` (the natural
+isomorphism) and `certificateInclusionIso_hom` (its forward map is `inclusionHom R n hle`).
+`TDA.Filtration.AlphaCollapseFamilyExamples` (imported by `TDA.Filtration.Examples`) has 12
+declarations on the obtuse triangle: `hasGradeTable_cech` and `hasGradeTable_alpha` (the actual
+squared-grade Čech and α filtrations have the tables `cechGrades` and `gradedFaces obtuse`),
+`criticalGrades_obtuse` (`{0, 1/2, 5/2, 4, 5}`), `stageTable_four_five` (at 4 the stage tables
+are `triangle` and `alphaTable`, at 5 both are `triangle`), the family `obtuseCertificate`
+(`[({0,1}, {0,1,2})]` at 4, empty elsewhere), `checkCertificates_obtuse` (accepted),
+`checkCertificates_nil` (the empty family is rejected; the stage tables at 4 differ),
+`checkCertificates_removal_from_four` (the family removing the long edge at every grade from 4
+on is rejected; at 5 the pair is still free in the Čech table, the run ends at `alphaTable`, and
+`alphaTable` is not the α table at 5), `stages_of_neg` (no faces for `t < 0`),
+`stages_of_mem_Ico_four` (on `[4, 5)` the α stage has the face table `alphaTable` and the Čech
+stage `triangle`), `stages_of_five_le` (on `[5, ∞)` both have the face table `triangle`) and `collapsesTo_of_certificate`
+(`CollapsesTo (cech t) (alpha t)` at every real `t` through the verifier).
+`TDA.Persistence.CollapseCertificatePersistenceExamples` (imported by
+`TDA.Persistence.Examples`) has `isIso_inclusionHom_of_certificate`, `alphaCechCertificateIso`,
+`alphaCechCertificateIso_hom` and `alphaCechCertificateIso_eq` (the isomorphism is
+`CollapsePersistenceExamples.alphaCechIso`). See
+[certificates across critical grades](math/discrete-morse-matchings.md#certificates-across-critical-grades).
+
+The collapse modules `TDA.Simplicial.Collapse`, `TDA.Simplicial.CollapseHomology`,
+`TDA.Simplicial.CollapseCertificate`, `TDA.Filtration.CollapseCertificateFamily`,
+`TDA.Persistence.CollapsePersistence`, `TDA.Persistence.CollapseCertificatePersistence` and their
+example modules provide no general-position theorem, Delaunay–Čech stage, producer of collapse
+certificates or source result; see
+[elementary collapses and the obtuse triangle](math/discrete-morse-matchings.md#elementary-collapses-and-the-obtuse-triangle),
+[homology of collapses](math/discrete-morse-matchings.md#homology-of-collapses),
+[checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences)
+and
+[certificates across critical grades](math/discrete-morse-matchings.md#certificates-across-critical-grades).
+
 ## Compatible lifts and algebraic sums over the reals
 
 The [real interval decomposition note](math/real-interval-decomposition.md)
@@ -1781,6 +3007,16 @@ finite-observation results show that only finitely many occurrences meet a
 strict finite sample list and identify its rank barcode with the sampled
 interval multiset, retaining repeated occurrences. Finite samples do not
 determine unsampled support or infinite real lifetimes.
+
+`TDA.Persistence.RealIntervalObservation` (namespace
+`TDA.Persistence.RealIntervalDecomposition`) counts the occurrences of the scalar
+decomposition by strict structure-map ranks. For `s < t`,
+`persistenceImage_finrank_eq_scalar_crossing` states that the `finrank` of the image of the
+structure map from `s` to `t` is the number of occurrences whose `scalarSupport` contains
+both `s` and `t`. `scalar_crossing_finite` states that this set of occurrences is finite, and
+`scalar_crossing_card_eq_of_iso` that naturally isomorphic modules have the same count,
+although their chosen index types may differ. See
+[crossing counts from strict ranks](math/real-interval-decomposition.md#crossing-counts-from-strict-ranks).
 
 `IntervalCompatibility` gives natural isomorphisms with the existing half-open
 interval modules and finite diagram realizations. Its `constructibleIso` result
@@ -1830,6 +3066,14 @@ theorem currently requires the coefficient field and vertex type in the same
 universe because the rank-to-diagram bridge has that universe restriction; the
 mathematical statement is field-independent. See
 [metric-input stability](math/rips-metric-stability.md).
+
+`TDA.Persistence.IntegerBottleneck.run` computes the exact bottleneck for finite
+ordered integer endpoint lists, with a doubled `WithTop ℕ` value and an optimal
+occurrence witness when finite. Original list positions and multiplicities are
+preserved; essential-count mismatch gives infinity. The exhaustive search is
+connected to the existing real diagram bottleneck by `run_correct` and
+`solve_cost_eq`. See [integer bottleneck computation](math/integer-bottleneck.md)
+for costs, witness extraction and the exhaustive search bound.
 
 `TDA.Persistence.DiagramBottleneckTopology` gives `Diagram ℝ` its extended
 bottleneck metric and Borel topology. `TDA.Persistence.RipsSamplingMeasure`
@@ -2274,6 +3518,50 @@ distance. `gaussianDiagramKernel` is the `(k,w)`-Gaussian kernel. Its feature ma
 with matching-cost and count-times-bottleneck corollaries. No bandwidth hypothesis is
 assumed. See
 [the conventions, proof route and source mapping](math/weighted-kernel-embedding.md).
+
+`TDA.Persistence.Enclosure.Exp` computes rational enclosures of the scalar exponential
+that the kernel needs. For a rational `x ≤ 0` and a rational `δ > 0`, `expEnclosure x δ`
+is a pair of rational numbers, computed by rational arithmetic, with
+`lo ≤ Real.exp x ≤ hi` (`expEnclosure_mem`) and `hi - lo ≤ δ` (`expEnclosure_width`).
+`expEnclosure?` returns it for such a request and `none` for a positive argument or a
+nonpositive tolerance; `expEnclosure?_spec` states containment and width for every
+returned interval. The argument is halved until it lies in `[-1, 0]`, a Taylor
+polynomial is bounded by mathlib's `Real.exp_bound`, and the result is squared back with
+outward rounding to a dyadic grid; `expHalvings`, `toleranceBits`, `expTerms`,
+`expTaylor`, `roundDown`, `roundUp` and `expSquare` are the public steps of this
+schedule. The width is absolute, not relative: the lower endpoint can be `0`. The cost
+grows with the logarithm of `-x`, the digits of `1/δ` and the denominator of `x`, and is
+documented, not proved. `TDA.Persistence.Enclosure.ExpExamples` holds the kernel-checked
+fixtures. See [the algorithm, statements and limits](math/kernel-enclosure.md).
+
+`TDA.Persistence.Enclosure.Gram` encloses the Gram sum and the squared RKHS distance of
+two lists `x`, `y` of rational birth–death pairs, for a rational bandwidth `σ`, cap `c`
+and tolerance `δ`. `capWeight c hc` is the weight `min c (max 0 persistence)` in
+`Weight 1 c` for a rational `0 ≤ c`, `realPoints x` is the occurrence family indexed by
+the positions of `x`, and `pointWeight` and `gaussExponent` are the executed rational
+weight and exponent, identified with the library weight and with the exponent of
+`kernel` by `capWeight_realPoint` and `kernel_realPoint`. `gramEnclosure σ c δ x y`
+contains `linearKernel σ (capWeight c hc) (realPoints x) (realPoints y)`
+(`gramEnclosure_mem`, for `0 ≤ c`) and has width at most `δ` (`gramEnclosure_width`, for
+`0 ≤ c` and `0 < δ`). `sqDistEnclosure σ c δ x y` does the same for
+`‖embedding σ w (realPoints x) - embedding σ w (realPoints y)‖ ^ 2`
+(`sqDistEnclosure_mem`, `sqDistEnclosure_width`), through `norm_embedding_sub_sq`.
+`gramEnclosure?` and `sqDistEnclosure?` return the intervals for `0 < σ`, `0 < c` and
+`0 < δ` and `none` otherwise, with `gramEnclosure?_spec` and `sqDistEnclosure?_spec`.
+`gramTerm` and `gramSum` are the public steps: each term is a product of two weights
+times a scalar enclosure at tolerance `δ / max 1 (W x * W y)`, with `W = totalWeight c`,
+and terms of zero weight compute no exponential. The width bounds hold for all lists,
+including empty lists, zero total weight, repeated pairs and pairs with death at most
+birth. `diagramEmbedding_eq_embedding_realPoints` transfers the statements to
+`diagramEmbedding` of a diagram whose finite part is listed by `x`; essential bars play
+no role, and a list containing a pair with death equal to birth is not the finite part
+of a diagram. The widths are absolute, an enclosure decides no equality, and only the
+capped weight is covered. The RKHS distance itself, pixel integrals and the `PiLp 1`
+image norm are not enclosed. The cost, `m n` scalar enclosures for a Gram sum and at
+most `m² + n² + m n` for a squared distance, is documented, not proved.
+`TDA.Persistence.Enclosure.GramExamples` holds the kernel-checked fixtures and consumers
+for `linearKernel`, `embedding` and `diagramEmbedding`. See
+[Gram sums and the squared RKHS distance](math/kernel-enclosure.md#gram-sums-and-the-squared-rkhs-distance).
 
 `TDA.Persistence.ArctanWeight` defines `PersistenceImage.arctanWeight C hC`, the weight
 `arctan (C · max pers 0)` in `Weight C (π / 2)` for `0 ≤ C`. It equals KFH18's
@@ -2823,6 +4111,86 @@ complexes. Over a field, `simplicialHomologyClass_zeroVertexCycle_ne_zero` shows
 vertex has a nonzero `H₀` class. These results are stated for the ordered chain model only;
 no comparison with singular homology is made.
 
+### Realizations, subdivision mesh and nerves of nested convex families
+
+`TDA.Topology.NerveThickening` (imported by `TDA.Topology`, namespace `TDA.Topology`) treats
+open thickenings of a `CoverFamily X I` in a metric space. For a finite index type and
+compact members, `exists_pos_nerve_thickening_eq` gives `δ > 0` with
+`nerve (fun i => thickening ε (C i)) = nerve C` for every `0 < ε ≤ δ`, and
+`exists_pos_common_nerve_thickening_eq` gives one such `δ` for two families. In a real
+normed space, `convex_thickening_of_iUnion_eq` takes convex families with `C i ⊆ D i` and
+`⋃ i, C i = ⋃ i, D i`, with any index type, and states at every real `ε` that both families
+of thickenings have union `thickening ε (⋃ i, C i)`, that they are nested and that their
+members are open and convex. `exists_pos_common_convex_thickening` assumes in addition a
+finite index type and compact members and gives one `δ > 0` with all these properties and
+both nerve equalities for `0 < ε ≤ δ`.
+
+`TDA.Topology.Realization` defines `Realization K`, for
+`K : PreAbstractSimplicialComplex V`, as the points of mathlib's `StdSimplex ℝ V` whose
+weight support is a face of `K`, and the continuous `Realization.incl` for `K ≤ L`. In
+namespace `TDA.Topology.Realization`, `coordinateStar K v` is the set of points with
+positive weight at `v`. For every vertex type the stars are open (`isOpen_coordinateStar`)
+and cover the realization (`covers_coordinateStar`), a nonempty finite set of labels has a
+common star point exactly when it is a face (`interMember_nonempty_iff`), and
+`nerve_coordinateStar` states `nerve (coordinateStar K) = K`. Under `[Finite V]`,
+`isEmbedding_weights` embeds the realization in `V → ℝ` by its coordinates, and for a face
+`J` the homotopy `contraction` joins the identity of `StarIntersection K J` to the constant
+map at `faceBarycenter` along straight lines, which gives
+`contractibleSpace_starIntersection`. `pullback_coordinateStar` states that `incl` pulls
+stars back to stars, and `starNerveInclusion_naturality` that the induced map of star nerves
+is the inclusion `K ≤ L` under `nerve_coordinateStar`.
+
+`TDA.Topology.SubdivisionRealization` (namespace of the same name) iterates barycentric
+subdivision for a finite vertex type `V`. The labels `Vertex V n` depend only on `V` and
+`n`, `complex K n` is the `n`-fold `barycentricSubdivision` of `K`, and `complex_mono`
+carries `K ≤ L` to every depth. For a placement `p : V → E` in a real normed space,
+`vertexPosition p n` places a label at its iterated barycenter and
+`realize p K n : C(Realization (complex K n), E)` interpolates these positions.
+`barycentricProjection K n : C(Realization (complex K n), Realization K)` composes the
+one-step maps `projectStep`; `realize_eq_comp_projection` states
+`realize p K n = (realize p K 0).comp (barycentricProjection K n)`, and `projection_incl`
+and `realize_incl` state compatibility with `Realization.incl`. `originalFace n F` is the
+face of `K` that supports a face `F` of `complex K n` (`originalFace_mem`), and
+`projection_support` states that the support of a projected point is the original face of
+the support of the point.
+`TDA.Topology.SubdivisionMesh`, in the same namespace, defines `faceImage K p n F`, the
+image under `realize` of the points supported in `F`, and `closedStarImage K p n v`, the
+union of the images of the faces containing `v`. `diam_le` assumes that every face of `K`
+has at most `d + 1` vertices and that the placed vertices of each face are pairwise within
+`M ≥ 0`; then every face image at depth `n` has diameter at most `(d / (d + 1)) ^ n * M`
+and every closed-star image at most twice that. `eventually_diam_lt` gives a depth from
+which both are smaller than a given `ε > 0`, and `diam_eq_zero_of_card_le_one` is the case
+of faces with at most one vertex.
+
+`TDA.Topology.ConvexNerveInclusion` (namespace `TDA.Topology.ConvexNerve`) proves
+`ConvexNerve.isIso_simplicialHomologyIncl`. Its hypotheses are an index type `I` with
+`[Fintype I] [LinearOrder I]`, a real normed space `E` and families `C D : I → Set E` with
+every `C i` open and convex, every `D i` convex, `C i ⊆ D i` and `⋃ i, C i = ⋃ i, D i`. Its
+conclusion is `IsIso (simplicialHomologyIncl R (nerve_mono h) k)` for every ring `R` and
+every degree `k`: the inclusion `nerve C ≤ nerve D` on the same labels induces an
+isomorphism of simplicial homology. `ConvexNerve.isIso_simplicialHomologyIncl_of_compact` has the same
+conclusion for `[LinearOrder I] [Finite I]` when every `C i` and `D i` is compact and
+convex, by `exists_pos_common_convex_thickening`. The supporting modules are
+`TDA.Topology.SubdivisionLastVertex` (`iteratedLastVertex`, its naturality
+`iteratedLastVertex_naturality` and `isIso_iteratedLastVertex`, and the flag versions
+`flagLastVertex`, `isIso_flagLastVertex`), `TDA.Topology.NerveStarLabeling`
+(`exists_subordinate_closedStars` and `exists_common_labeling`, a vertex map from an
+iterated subdivision of `nerve D` to `nerve C` whose closed-star images lie in the members
+of `C` that label them) and `TDA.Topology.ConeCarrierComparison`
+(`coneCarrier`, `exists_contiguous_apexMap` and
+`chainHomotopy_of_contiguous_after_lastVertex`). The linear orders
+`SubdivisionRealization.vertexLinearOrder` on the labels `Vertex V n` are scoped instances.
+`TDA.Topology.ConvexNerveInclusionExamples` (imported by `TDA.Topology.Examples`) has three
+intervals whose nerve inclusion is strict and an isomorphism (`strict_inclusion_isIso`),
+eight open boxes around a square hole where enlarging one box gives a strict inclusion
+(`Annulus.nerve_boxes_lt`) that is an isomorphism (`Annulus.isIso_simplicialHomologyIncl`)
+with nonzero first homology over F₂ (`Annulus.not_isZero_homology_one`), and the
+enlargement of every box to the plane, where the unions differ and the inclusion is not an
+isomorphism in degree one over F₂ (`Annulus.unequal_union_not_isIso`).
+See [nerves of nested convex families](math/convex-nerve-inclusion.md).
+The source register records these Topology modules as library derivations attributed to no
+source; see its [declaration mappings](math/references.md#existing-declaration-and-proof-mappings).
+
 ### Finite-tree realizations and quotient comparison
 
 For a leaf `ℓ` of `G : SimpleGraph V` with neighbour `m`, `leafHomotopyEquiv` is a homotopy
@@ -2892,8 +4260,13 @@ bottleneck distance of their finite-birth diagrams by the extended real interlea
 distance, assuming only that both modules are q-tame. The field and carrier universes
 `u` and `w` are independent; finite distance and an attained minimizer are not required.
 `LocallyFiniteDecoratedDiagram.ofQModule_eq_of_iso` identifies the extracted diagrams
-under a natural module isomorphism, including essential `infinityCut` deaths. The finite
-diagram base point `Diagram.empty` is defined alongside the general diagram API in
+under a natural module isomorphism, including essential `infinityCut` deaths. The bottleneck bound
+does not reverse for arbitrary q-tame modules: in `TDA.Persistence.WholeLineObstructionExamples`,
+`canonical_zero_but_module_distance_top` states that, over a field, the constant scalar module
+on `ℝ` and the zero module have the same diagram `LocallyFiniteDecoratedDiagram.ofQModule`,
+hence bottleneck distance `0`, while their real interleaving distance is `⊤`; see
+[a whole-line module](math/real-interval-decomposition.md#a-whole-line-module-and-the-finite-birth-diagram).
+The finite diagram base point `Diagram.empty` is defined alongside the general diagram API in
 `TDA.Persistence.Diagram`.
 
 `TDA.Persistence.PersistenceMeasureBox` derives a rectangle box inequality

@@ -10,3 +10,4 @@ import TDA.Simplicial.VertexMapExamples
 import TDA.Simplicial.ConeExamples
 import TDA.Simplicial.VertexChainMapExamples
 import TDA.Simplicial.ContiguityHomotopyExamples
+import TDA.Simplicial.CollapseCertificateExamples

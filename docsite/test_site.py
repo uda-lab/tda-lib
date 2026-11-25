@@ -379,7 +379,7 @@ class BuiltSiteTests(unittest.TestCase):
                 # Exact language, line breaks, relative indentation and list ownership.
                 self.assertEqual(article.blocks, fences)
             totals["code_blocks"] += len(fences)
-            # The full corpus uses 12 two-space nested bullets. Deeper '+' lines
+            # The full corpus uses 37 two-space nested bullets. Deeper '+' lines
             # elsewhere are math or multiline code spans, not Markdown lists.
             nested = re.findall(r"^  - (.*)$", source, re.M)
             with self.subTest(name=name, content="nested lists"):

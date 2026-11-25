@@ -1,11 +1,11 @@
 ---
 name: lean-review-routing
-description: Review order, reviewer routes per vendor, observation and disposition of review feedback, contract-aware source ↔ Lean comparison and round ceiling for PRs in a Lean formalisation loop — conditional local adversarial review before the PR, broker review evidence on the PR, evidence placement, substantive-versus-not classification, the merge decision delegated to github-driven-workflow's evidence/disposition/authority checks, judge records, five-round ceiling. Use by drivers before opening a PR and after every review round, and by orchestrators when observing PRs, merging or changing routes.
+description: Review order, reviewer routes per vendor, observation and disposition of review feedback, contract-aware source ↔ Lean comparison and round ceiling for PRs in a Lean formalisation loop — conditional local adversarial review before the PR, review evidence on the PR, evidence placement, substantive-versus-not classification, the merge decision delegated to github-driven-workflow's evidence/disposition/authority checks, judge records, five-round ceiling. Use by drivers before opening a PR and after every review round, and by orchestrators when observing PRs, merging or changing routes.
 ---
 
 # lean-review-routing
 
-Order: **gate → (conditional local review) → open the PR → broker review rounds → merge.**
+Order: **gate → (conditional local review) → open the PR → PR review rounds → merge.**
 Never run a local and an external review concurrently: the external one gets spent on defects
 the local pass would have caught.
 
@@ -29,7 +29,7 @@ the evidence; do not restate them in prose.
 Run one local read-only adversarial pass only when the governing Issue requires it, when the
 PR adds or changes public statements against a frozen source interface, or when the diff is
 large enough that the external round would be spent on mechanical defects. Otherwise skip
-it: the broker review is the review. When run, its findings are fixed before the PR and its
+it: the PR review is the review. When run, its findings are fixed before the PR and its
 report is not posted anywhere.
 
 Frame it as **numbered, falsifiable risks**, never "review this" (a generic prompt returns
@@ -44,8 +44,10 @@ Frame it as **numbered, falsifiable risks**, never "review this" (a generic prom
 3. the semantic and API risks in § Semantic and API quality, scoped to the changed surface;
 4. any unresolved limitation in the gate evidence (including axiom audit and public theorem
    coverage); use successful mechanical results rather than independently repeating them;
-5. no transient artefact, bookkeeping or chronology added to the tree;
-6. the Issue's own traps.
+5. no transient artefact, bookkeeping, chronology, `WORKER NOTE` or scratch leftover added
+   to the tree;
+6. the Issue's own traps, including mandatory fixtures as stated and proved consumers where
+   the contract requires them.
 
 Give every reviewer and judge the same governing specification as the implementer: the Issue
 body and its authorised decision comments (quoted or linked), not a summary.
@@ -54,7 +56,8 @@ Put `git diff develop...HEAD` inside the prompt file (statements only, and say s
 exceeds the argument limit) and state what the gate already verified so the pass is not spent
 re-running it. Read the result in the same turn.
 
-Use a fresh read-only reviewer session or subagent distinct from the implementer. A child
+Use either a fresh read-only reviewer session or subagent, or the long-lived teammate route
+below. The reviewer must be distinct from every implementer whose work it reviews. A child
 Codex route uses the shared launcher, with a distinct owned job identity:
 
 ```sh
@@ -63,6 +66,38 @@ LOOP_JOB_ID=tda-lib/issue-<n>/review scripts/codex.sh exec -C <worktree> --sandb
 
 Resolve model and effort using dot's runtime. Claude Code may use its available read-only
 reviewer facility under the same identity. No plugin is required.
+
+### Long-lived read-only teammate
+
+A long-lived independent reviewer may serve multiple drivers when local review is required
+above. Reuse its session, but supply the complete specification and current evidence for each
+unit; a previous verdict does not cover a new head. Keep the worktree unchanged during the
+review. Use the existing agent messaging facility with this request and response shape:
+
+```text
+REVIEW REQUEST issue=<n> worktree=<path> head=<full-sha> base=<develop-sha> spec=<path> diff=<path> traps=<path> out=<private-report-path> round=<1|2>
+REVIEW DONE issue=<n> head=<full-sha> out=<private-report-path> verdict=<pass|findings>
+```
+
+`spec` contains the full Issue body and authorised rulings; `diff` contains the diff from the
+merge base of `base` and `head`; `traps` contains the numbered risks above and the Issue's own
+traps. Include the existing gate results and their limitations in the request. Keep these
+inputs and the report outside tracked source.
+
+The reviewer checks `git rev-parse HEAD` against the requested head before reading the diff
+and again before returning a verdict. It reads the supplied specification, diff and traps,
+then the touched library or documentation and relevant consumers. If the head differs, reply
+`STALE HEAD issue=<n> expected=<sha> actual=<sha>` and stop without a verdict; the driver must
+send a request for the current head. Never edit source, run a build or repeat gates; report
+unverified compile risks as advisory. The only output file is the requested private report.
+
+Write the report with `Verdict`, `Reviewer` (identity and reviewed full head SHA),
+`Compiled: no`, numbered substantive/advisory findings, and a risk table stating the evidence
+and disposition for each requested risk. Reply `REVIEW DONE` only after saving that report.
+Allow at most two local rounds per unit. The limit does not clear an unresolved blocking
+finding; stop the dependent PR step and report the blocker if it remains. The private report
+is never posted as PR review evidence. Continue through the PR review route below, including
+its final-head requirement and separate five-request ceiling.
 
 ## Semantic and API quality
 
@@ -118,7 +153,10 @@ and compatibility policies do not govern tda-lib.
 ## PR review (evidence for `github-driven-workflow` §8)
 
 Include § Semantic and API quality in the review scope and give the reviewer the relevant
-consumer paths and existing gate evidence. Use the route below; this adds no review stage.
+consumer paths and existing gate evidence. Use the first route below that the session can
+run; this adds no review stage. The PR review does not depend on the broker. An unset
+`REVIEW_ACQUIRE_SCRIPT`, an absent `github-driven-workflow` skill directory or an absent `gh`
+CLI describes the host; none of them is evidence that no bot review will be delivered.
 
 - **Broker route** (when `REVIEW_ACQUIRE_SCRIPT` is set): `python3 "$REVIEW_ACQUIRE_SCRIPT"
   <owner>/<repo> <PR> <kind>` verbatim — never copy, relocate, unset or self-point it. Kind
@@ -126,7 +164,15 @@ consumer paths and existing gate evidence. Use the route below; this adds no rev
   lasts). A cooldown between requests on one PR is not an error. A
   `chatgpt-codex-connector[bot]` reply telling you to create a Codex account is a canned
   response to an unauthorised mention, not a failure: keep waiting for the real review.
-- **Bundled route**: `github-driven-workflow`'s `scripts/acquire-review.py` when no broker.
+- **Bundled route** (no broker): `scripts/acquire-review.py <owner>/<repo> <PR> [kind]`,
+  resolved from the `github-driven-workflow` skill directory. That skill is not vendored in
+  this repository; its source is `t-uda/skills` (`skills/github-driven-workflow/`). The script
+  dispatches one request through `gh`; its `codex` kind posts the PR comment
+  `@codex please review this PR`.
+- **Comment route** (the session cannot run that script, for example a hosted session whose
+  GitHub writes go through a connector and not through `gh`): post the same comment,
+  `@codex please review this PR`, on the PR with the session's own GitHub tool. The bot review
+  it produces is the same evidence as on the bundled route.
 - **Reviewed-by route** (no bot reviewer available, affirmative broker failure, a judge the
   governing Issue mandates, or any push that invalidates final-head evidence once the
   five-request ceiling is reached): a read-only
@@ -211,7 +257,7 @@ follow-up Issue.
 ## Judge records
 
 A judge review runs only when the governing Issue requires one for a PR; it is not a
-routine round and is never added after the broker review as a parent approval step. Its verdict is an ordinary review record under the
+routine round and is never added after the PR review as a parent approval step. Its verdict is an ordinary review record under the
 reviewer-identity contract above (a `Reviewed-by:` comment on the PR) — no second
 `Judged-by` format, no duplicate judge and review posts, no separate status ledger, and no
 per-theorem table required for formatting. It states the reviewed
@@ -228,7 +274,7 @@ tracked as outstanding work (the source-fidelity policy of `loop-orchestration-s
 
 Any PR that adds or changes a public statement carries a short source ↔ Lean correspondence
 section in its body, and its reviewer checks literal Lean vs source, hidden assumptions,
-boundary cases and quantifier/domain mistakes. The broker review covers this by default;
+boundary cases and quantifier/domain mistakes. The PR review covers this by default;
 the governing Issue may additionally require a judge (reasoning tier, read-only,
 `lean-formalization-discipline`, `math-semantic-preservation`) for results whose source
 comparison is contested or release-scoped, stated in the contract before dispatch. Every such review applies the next section.

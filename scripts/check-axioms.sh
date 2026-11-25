@@ -5,6 +5,14 @@
 # other trust escapes (e.g. `Lean.ofReduceBool` from `native_decide`) — including
 # transitive ones that the textual guards cannot see.
 #
+# All pins are checked in a single `lake env lean` process: a generated file with
+# `import TDA` followed by every area file's `#print axioms` lines (the same
+# extraction rule used below to build the expected-name list) runs once, so the
+# whole audit costs one environment load instead of one per area file (#949). The
+# record parser and its decoy/duplicate/missing/malformed diagnostics and the
+# allowlist below are unchanged; only how the Lean input is assembled, and how many
+# processes produce records, changed.
+#
 # Requires a completed `lake build` (scripts/check.sh orders this correctly).
 # Changing ALLOW is a `needs-decision` change.
 set -euo pipefail
@@ -49,7 +57,14 @@ if [ "${#SCRIPTS[@]}" -eq 0 ]; then
 fi
 expected_file="$(mktemp)"
 records_file="$(mktemp)"
-trap 'rm -f "$pin_paths_file" "$expected_file" "$records_file"' EXIT
+mkdir -p "$ROOT/.agents/scratch"
+# A trailing suffix after XXXXXX (e.g. ".lean") needs mkstemps; the system mktemp on
+# macOS only calls mkstemp and silently fails on it. Make a trailing-X-only directory
+# instead and give the file inside it a fixed name.
+combined_dir="$(mktemp -d "$ROOT/.agents/scratch/axiom-audit.XXXXXX")"
+combined_file="$combined_dir/combined.lean"
+stderr_file="$(mktemp)"
+trap 'rm -f "$pin_paths_file" "$expected_file" "$records_file" "$stderr_file"; rm -rf "$combined_dir"' EXIT
 if ! awk '/^#print axioms /{print $3}' "${SCRIPTS[@]}" >"$expected_file"; then
   echo "ERROR: failed to read axiom pins; the audit is incomplete." >&2
   exit 1
@@ -59,27 +74,52 @@ if [ ! -s "$expected_file" ]; then
   exit 1
 fi
 
+# Build the single combined input: one `import TDA`, then every area file's
+# `#print axioms` lines in the same order used to build $expected_file above, so a
+# pin appears in the environment exactly where it appeared in its own area file.
+#
+# A handful of area files intentionally pin an auto-generated `._proof_1` auxiliary
+# (e.g. `TDA.Persistence.dgm._proof_1`), already accepted project convention. Printing
+# thousands of such names together in one file surfaces Lean's `auxLemma` linter, whose
+# warning text has no record terminator of its own and gets appended as a continuation
+# line onto the preceding record by the parser below, corrupting it ("malformed"). The
+# lint is about source-code naming stability, not about the axioms being audited here,
+# so it is disabled for this generated file only; nothing it would have flagged affects
+# which axioms a declaration depends on.
+gen_start=$(date +%s.%N)
+{
+  printf 'import TDA\n'
+  printf 'set_option linter.auxLemma false\n'
+  awk '/^#print axioms /' "${SCRIPTS[@]}"
+} >"$combined_file"
+gen_end=$(date +%s.%N)
+
+pin_count="$(wc -l <"$expected_file" | tr -d ' ')"
+echo "==> lake env lean $combined_file (single environment load; $pin_count pin(s) across ${#SCRIPTS[@]} area file(s))"
 # Capture with errexit disabled so a failing lean run is diagnosed loudly instead of
 # aborting before its output is shown.
-stderr_file="$(mktemp)"
-trap 'rm -f "$pin_paths_file" "$expected_file" "$records_file" "$stderr_file"' EXIT
-for SCRIPT in "${SCRIPTS[@]}"; do
-  echo "==> lake env lean $SCRIPT"
-  set +e
-  result="$("$ROOT/scripts/lean.sh" lake env lean "$SCRIPT" 2>"$stderr_file")"
-  STATUS=$?
-  set -e
-  printf '%s\n' "$result"
-  cat "$stderr_file" >&2
-  if [ "$STATUS" -ne 0 ]; then
-    echo "ERROR: 'lake env lean $SCRIPT' failed with exit $STATUS." >&2
-    echo "  Run 'lake build' first; a pinned declaration that no longer exists also fails here." >&2
-    exit 1
-  fi
-  # Only Lean's stdout contains `#print axioms` records. Resource-guard notices and
-  # other stderr diagnostics are still shown above, but cannot corrupt a record.
-  printf '%s\n' "$result" >>"$records_file"
-done
+load_start=$(date +%s.%N)
+set +e
+result="$("$ROOT/scripts/lean.sh" lake env lean "$combined_file" 2>"$stderr_file")"
+STATUS=$?
+set -e
+load_end=$(date +%s.%N)
+printf '%s\n' "$result"
+cat "$stderr_file" >&2
+if [ "$STATUS" -ne 0 ]; then
+  echo "ERROR: 'lake env lean $combined_file' failed with exit $STATUS." >&2
+  echo "  Run 'lake build' first; a pinned declaration that no longer exists also fails here." >&2
+  exit 1
+fi
+# Only Lean's stdout contains `#print axioms` records. Resource-guard notices and
+# other stderr diagnostics are still shown above, but cannot corrupt a record.
+printf '%s\n' "$result" >>"$records_file"
+
+# Phase timings (#949): file generation is pure disk I/O over area files already
+# read above; the environment load is the one `lake env lean` process, which both
+# maps the Mathlib/TDA closure and prints every pinned declaration's axioms.
+awk -v a="$gen_start" -v b="$gen_end" -v c="$load_start" -v d="$load_end" \
+  'BEGIN { printf "AXIOM AUDIT TIMING — generate combined file: %.3fs, environment load + print: %.3fs\n", (b - a), (d - c) }' >&2
 
 # `#print axioms` output is one record per declaration, possibly wrapped over
 # several lines:  'X' depends on axioms: [a, b, c]   or   'X' does not depend on any axioms
