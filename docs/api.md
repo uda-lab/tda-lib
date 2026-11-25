@@ -2052,7 +2052,10 @@ statements and call the hull-free cores `hull_dual_of_supporting_side`,
 lemmas `multiplicity_absent`, `multiplicity_at_most_one` and `multiplicity_listed` are public.
 `SubdividedStagesExamples.split_checked_stages` gives all real stages of the split triangle, with
 `split_bc_cutoff` (the non-Gabriel edge BC enters at `5/2`) and `split_am_cutoff` (the refined
-piece AM enters at `1/4`). See
+piece AM enters at `1/4`). The inputs of the split fixture are checked, not proved by hand:
+`checkOrderedEdgeCuts` is an executable rational test with `orderedEdgeCuts_of_check`, and
+`DirectedEdgeIncidence.chain_eq_of_directed_counts` reduces the chain equality to equal net
+directed counts, a finite check. See
 [supplied carrier and stages](math/alpha-filtration-and-signed-coverage.md#supplied-carrier-and-stages).
 
 For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`

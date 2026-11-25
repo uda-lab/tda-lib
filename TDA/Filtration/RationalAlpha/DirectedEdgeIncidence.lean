@@ -206,6 +206,17 @@ theorem chain_coefficient_eq_directed_counts {I L : Type*} [Fintype I] [Decidabl
   simp only [Finsupp.coe_finsetSum, Finset.sum_apply, signedEdge, Finsupp.sub_apply,
     Finsupp.single_apply, hs, Finset.sum_sub_distrib, directedMultiplicity]
 
+/-- Equal net directed counts at every ordered pair give equal signed chains. This reduces a
+chain equality between finite label families to a finite decidable check. -/
+theorem chain_eq_of_directed_counts {I J L : Type*} [Fintype I] [Fintype J] [DecidableEq L]
+    (a : I → L × L) (b : J → L × L)
+    (h : ∀ e, directedMultiplicity a e - directedMultiplicity a e.swap =
+      directedMultiplicity b e - directedMultiplicity b e.swap) :
+    (∑ i, signedEdge (a i)) = ∑ j, signedEdge (b j) := by
+  ext e
+  rw [chain_coefficient_eq_directed_counts, chain_coefficient_eq_directed_counts]
+  exact h e
+
 /-- A pair listed by no edge has multiplicity zero. -/
 theorem multiplicity_absent {I L : Type*} [Fintype I] [DecidableEq L] (es : I → L × L)
     (e : L × L) (h : ∀ i, es i ≠ e) : directedMultiplicity es e = 0 := by

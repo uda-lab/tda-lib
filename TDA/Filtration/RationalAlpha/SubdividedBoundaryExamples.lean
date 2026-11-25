@@ -1,4 +1,5 @@
 import TDA.Filtration.RationalAlpha.SubdividedBoundaryCoverage
+import TDA.Filtration.RationalAlpha.DirectedEdgeIncidence
 
 set_option autoImplicit false
 
@@ -74,13 +75,21 @@ private theorem midpoint_eq :
   · change ((0 : ℚ) : ℝ) = 1 / 2 * (((0 : ℚ) : ℝ) - (0 : ℚ)) + (0 : ℚ)
     norm_num
 
-/-- The midpoint `M` is an ordered cut of the bottom side, and the other sides have none. -/
+/-- The midpoint `M` is an ordered cut of the bottom side, and the other sides have none. The
+rational check `checkOrderedEdgeCuts` produces the real parameters. -/
 theorem ordered_cuts (i : Fin 3) :
-    OrderedEdgeCuts splitSites (cycleEdges coarseCycle i).2 (cycleEdges coarseCycle i).1 (cuts i) := by
-  fin_cases i
-  · exact ⟨⟨1 / 2, ⟨by norm_num, by norm_num⟩, midpoint_eq⟩, trivial⟩
-  · trivial
-  · trivial
+    OrderedEdgeCuts splitSites (cycleEdges coarseCycle i).2 (cycleEdges coarseCycle i).1 (cuts i) :=
+  orderedEdgeCuts_of_check splitSites _ _ _
+    ((by decide +kernel : ∀ i : Fin 3, checkOrderedEdgeCuts splitSites
+      (cycleEdges coarseCycle i).2 (cycleEdges coarseCycle i).1 (cuts i) = true) i)
+
+/-- The executable check rejects a label off the line of the side (`C` on `AB`), an endpoint as
+a cut (`B` on `AB`) and a label off the line of another side (`M` on `BC`). -/
+theorem check_rejects_bad_cuts :
+    checkOrderedEdgeCuts splitSites 1 0 [2] = false ∧
+    checkOrderedEdgeCuts splitSites 1 0 [1] = false ∧
+    checkOrderedEdgeCuts splitSites 2 1 [3] = false := by
+  decide +kernel
 
 /-- Every one of the four sites lies in the coarse hull. -/
 theorem sites_contained (j : Fin 4) : castPoint (splitSites j) ∈ siteHull splitSites coarseCycle := by
@@ -93,23 +102,15 @@ theorem sites_contained (j : Fin 4) : castPoint (splitSites j) ∈ siteHull spli
     exact coarse_certificate.edge_subset 0
       (lineMap_mem_segment ℝ _ _ ⟨by norm_num, by norm_num⟩)
 
-/-- Cancellation of the shared edge gives the refined cycle `A → M → B → C → A`. -/
+/-- Cancellation of the shared edge gives the refined cycle `A → M → B → C → A`. The net directed
+counts of the two label families agree at every ordered pair, which is a finite check. -/
 theorem signed_boundary :
     (∑ i, ∑ e, signedEdge (pieceEdges i e)) =
       ∑ j, signedEdge (subdividedEdge (cycleEdges coarseCycle) cuts j) := by
-  rw [Fintype.sum_sigma, Fin.sum_univ_two, Fin.sum_univ_three, Fin.sum_univ_three,
-    Fin.sum_univ_three]
-  change (signedEdge (0, 3) + signedEdge (3, 2) + signedEdge ((2 : Fin 4), 0)) +
-    (signedEdge (3, 1) + signedEdge (1, 2) + signedEdge (2, 3)) =
-      (∑ j : Fin 2, signedEdge (subdividedEdge (cycleEdges coarseCycle) cuts ⟨0, j⟩)) +
-      (∑ j : Fin 1, signedEdge (subdividedEdge (cycleEdges coarseCycle) cuts ⟨1, j⟩)) +
-      ∑ j : Fin 1, signedEdge (subdividedEdge (cycleEdges coarseCycle) cuts ⟨2, j⟩)
-  rw [Fin.sum_univ_two, Fin.sum_univ_one, Fin.sum_univ_one]
-  change (signedEdge (0, 3) + signedEdge (3, 2) + signedEdge ((2 : Fin 4), 0)) +
-    (signedEdge (3, 1) + signedEdge (1, 2) + signedEdge (2, 3)) =
-      signedEdge (0, 3) + signedEdge (3, 1) + signedEdge (1, 2) + signedEdge (2, 0)
-  simp only [signedEdge, Prod.swap_prod_mk]
-  abel
+  have h := DirectedEdgeIncidence.chain_eq_of_directed_counts
+    (fun q : Fin 2 × Fin 3 => pieceEdges q.1 q.2) (subdividedEdge (cycleEdges coarseCycle) cuts)
+    (by decide +kernel)
+  rwa [Fintype.sum_prod_type] at h
 
 /-- The signed refined chain gives coverage of the original closed hull and off-edge multiplicity. -/
 theorem coverage_and_multiplicity :

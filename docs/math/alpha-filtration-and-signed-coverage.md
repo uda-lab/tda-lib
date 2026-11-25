@@ -322,6 +322,10 @@ enters the actual filtration at the circumradius `5/2` of `MBC`
 (`split_bc_row`, `split_bc_cutoff`: membership at `t` iff `5/2 ≤ t`). The refined piece `AM` has
 `bisectorPoint A M t = (1/2, t)` and upper parameter `1`, so it enters at its Gabriel value
 `1/4` (`split_am_row`, `split_am_cutoff`).
+The inputs of this fixture are checked rather than proved by hand: `checkOrderedEdgeCuts`
+tests rationally that each cut lies strictly inside its side and `orderedEdgeCuts_of_check`
+turns a pass into `OrderedEdgeCuts`, and `chain_eq_of_directed_counts` reduces the chain
+equality to equal net directed counts, a finite check.
 [SubdividedStagesExamples.lean](../../TDA/Filtration/RationalAlpha/SubdividedStagesExamples.lean)
 
 ## Source correspondence

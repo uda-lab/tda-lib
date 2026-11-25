@@ -112,9 +112,9 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   both erosion distances equal `ENNReal.ofReal` of that value
   (`rankErosionDistance_scaledHomology_const`, `eRankErosionDistance_scaledHomology_const`);
   the maximal grade error is `2 * |c - c'|` exactly, and a lifetime-cap lemma holds for
-  anisotropic scales. No equality with the interleaving distance is claimed. Fixtures: failing radius `3/4` between the scales `1`
-  and `2` with its failure certificate, and both regimes (`1` and `2` over `ℚ`, `1` and `5/4`
-  over `ZMod 2`).
+  anisotropic scales. No equality with the interleaving distance is claimed. Fixtures:
+  failing radius `3/4` between the scales `1` and `2` with its failure certificate, and both
+  regimes (`1` and `2` over `ℚ`, `1` and `5/4` over `ZMod 2`).
 - Rips Gromov–Hausdorff stability, client-facing forms (#1206):
   `half_lt_ghDist_of_ofReal_lt_qTameLocallyFiniteDiagram_bottleneck` (threshold form, no sign
   condition) and `qTameLocallyFiniteDiagram_bottleneck_le_ofReal_of_ghDist_le_half`;
@@ -159,6 +159,11 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `multiplicity_listed` are now public with their statements unchanged.
   `SubdividedStagesExamples` gives all real stages of the split triangle, with `BC` entering at
   `5/2` and the refined piece `AM` at `1/4`.
+  The executable rational test `SignedBoundary.checkOrderedEdgeCuts` with
+  `orderedEdgeCuts_of_check` produces `OrderedEdgeCuts` from rational data, and
+  `DirectedEdgeIncidence.chain_eq_of_directed_counts` reduces a chain equality to a finite check
+  of net directed counts; the split fixture's `ordered_cuts` and `signed_boundary` use them in
+  place of hand proofs (statements unchanged).
 
 ## v0.5.0
 

@@ -1197,3 +1197,9 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SubdividedStagesExamples.split_am_row
 #print axioms TDA.Filtration.RationalAlpha.SubdividedStagesExamples.split_bc_cutoff
 #print axioms TDA.Filtration.RationalAlpha.SubdividedStagesExamples.split_am_cutoff
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.strictlyBetween
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.checkOrderedEdgeCuts
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.strictlyBetween_sound
+#print axioms TDA.Filtration.RationalAlpha.SignedBoundary.orderedEdgeCuts_of_check
+#print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.chain_eq_of_directed_counts
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.check_rejects_bad_cuts
