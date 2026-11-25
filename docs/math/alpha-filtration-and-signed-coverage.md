@@ -244,10 +244,31 @@ non-hull-edge statements and to the assembly `certifiedComplex`.
 ## Source correspondence
 
 The rational grading, degree-zero comparison, planar predicate proofs, signed
-coverage and supplied applications above are library derivations. For the
-geometric α definition and least-grade result, [Alpha.lean](../../TDA/Filtration/Alpha.lean)
-records an equation and lemma correspondence. The
-[source register entry](references.md#BE-1312.1231) records the collapsing
-theorem as background and its manifestation and rights fields as unresolved.
-The Alpha attribution correspondence is tracked in
-[#1132](https://github.com/uda-lab/tda-lib/issues/1132).
+coverage and supplied applications above are library derivations. The geometric
+α definition and least-grade results of [Alpha.lean](../../TDA/Filtration/Alpha.lean)
+are stated in their own terms, and no numbered result of a source is attributed to
+them. Bauer–Edelsbrunner is background: its
+[source register entry](references.md#BE-1312.1231) records the comparison with its
+arXiv v3 that the review of #1077 reported, with an unverified basis for that
+automated processing, separately from the collapse work, which did not consult it.
+The Edelsbrunner–Ölsböck PDF inspected in the same review is recorded as background
+in [its entry](references.md#EO-2018-J-06).
+
+The all-degree comparison `alphaCechIso`, its compact-convex input
+`ConvexNerve.isIso_simplicialHomologyIncl_of_compact` and the radius stability
+theorem `bottleneck_alphaRadiusDiagram_le_displacement` are library derivations
+as well. At each nonnegative squared grade the restricted balls and the closed
+balls are compact convex families on the same labels with equal unions.
+`exists_pos_common_convex_thickening` gives one small open thickening that
+preserves both labelled nerves, and the nerve-inclusion theorem for open convex
+families with equal unions, `ConvexNerve.isIso_simplicialHomologyIncl`, applies
+to the thickenings. The stability theorem reindexes `alphaCechIso` by the squared
+radius and transports the existing Čech displacement bound along it. The Topology
+modules behind these results, from the nerve thickening to the convex nerve
+inclusion, are library derivations attributed to no source. The work cited as
+BKRR in #1118 is recorded as prior work, with its version and comparison mode
+unknown, in [its register entry](references.md#BKRR-2203.03571).
+[AlphaCech.lean](../../TDA/Persistence/AlphaCech.lean) ·
+[AlphaRadiusStability.lean](../../TDA/Persistence/AlphaRadiusStability.lean) ·
+[ConvexNerveInclusion.lean](../../TDA/Topology/ConvexNerveInclusion.lean) ·
+[NerveThickening.lean](../../TDA/Topology/NerveThickening.lean)

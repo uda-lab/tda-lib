@@ -3008,6 +3008,15 @@ strict finite sample list and identify its rank barcode with the sampled
 interval multiset, retaining repeated occurrences. Finite samples do not
 determine unsampled support or infinite real lifetimes.
 
+`TDA.Persistence.RealIntervalObservation` (namespace
+`TDA.Persistence.RealIntervalDecomposition`) counts the occurrences of the scalar
+decomposition by strict structure-map ranks. For `s < t`,
+`persistenceImage_finrank_eq_scalar_crossing` states that the `finrank` of the image of the
+structure map from `s` to `t` is the number of occurrences whose `scalarSupport` contains
+both `s` and `t`. `scalar_crossing_finite` states that this set of occurrences is finite, and
+`scalar_crossing_card_eq_of_iso` that naturally isomorphic modules have the same count,
+although their chosen index types may differ.
+
 `IntervalCompatibility` gives natural isomorphisms with the existing half-open
 interval modules and finite diagram realizations. Its `constructibleIso` result
 additionally assumes the existing constructibility predicate and
@@ -4177,6 +4186,8 @@ eight open boxes around a square hole where enlarging one box gives a strict inc
 with nonzero first homology over F₂ (`Annulus.not_isZero_homology_one`), and the
 enlargement of every box to the plane, where the unions differ and the inclusion is not an
 isomorphism in degree one over F₂ (`Annulus.unequal_union_not_isIso`).
+The source register records these Topology modules as library derivations attributed to no
+source; see its [declaration mappings](math/references.md#existing-declaration-and-proof-mappings).
 
 ### Finite-tree realizations and quotient comparison
 
@@ -4247,7 +4258,11 @@ bottleneck distance of their finite-birth diagrams by the extended real interlea
 distance, assuming only that both modules are q-tame. The field and carrier universes
 `u` and `w` are independent; finite distance and an attained minimizer are not required.
 `LocallyFiniteDecoratedDiagram.ofQModule_eq_of_iso` identifies the extracted diagrams
-under a natural module isomorphism, including essential `infinityCut` deaths. The finite
+under a natural module isomorphism, including essential `infinityCut` deaths. The bottleneck bound
+does not reverse for arbitrary q-tame modules: in `TDA.Persistence.WholeLineObstructionExamples`,
+`canonical_zero_but_module_distance_top` states that, over a field, the constant scalar module
+on `ℝ` and the zero module have the same diagram `LocallyFiniteDecoratedDiagram.ofQModule`,
+hence bottleneck distance `0`, while their real interleaving distance is `⊤`. The finite
 diagram base point `Diagram.empty` is defined alongside the general diagram API in
 `TDA.Persistence.Diagram`.
 

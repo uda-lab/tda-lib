@@ -15,11 +15,13 @@ comparison `filtration_le_cech` reindexes radius-indexed Čech by `Alpha.radius`
 negative grades this gives radius zero and hence the radius-zero Čech complex. The
 labelled comparison instead uses `squaredCechFiltration`, which is empty below zero.
 
-For a Euclidean site configuration, Bauer–Edelsbrunner, *The Morse Theory of Čech and
-Delaunay Complexes*, §3, equations (3)–(5), take the nerve of the closed Voronoi cells
-restricted to balls of radius `r`. We index the nerve by the squared radius. The
-radius function of equation (8) and Lemma 3.1 with all sites excluded from the open
-circumsphere is defined on the nonempty faces of the full closed-cell nerve.
+In a finite-dimensional real inner-product space, `filter` assigns each nonempty face of
+the full closed-cell nerve `carrier` its least entrance grade; `isLeast_sq_dist` identifies
+this grade with the least squared distance from any vertex of the face over the common
+closed cells, and `sublevel_eq_complex` identifies the sublevels of `filter` with the
+stages `complex sites t`. These results are stated and proved in the library's own terms.
+Bauer–Edelsbrunner (arXiv:1312.1231) is background; no numbered result of it is attributed
+here. See the source register entry `BE-1312.1231` in `docs/math/references.md`.
 -/
 
 namespace TDA.Filtration.Alpha
@@ -179,7 +181,8 @@ theorem isLeast_sq_dist (s : TotalFace (carrier sites)) {v : V} (hv : v ∈ s.va
   rintro _ ⟨x, hx, rfl⟩
   exact lower x hx
 
-/-- Lemma 3.1 at squared grade `t`: the radius sublevel is exactly the closed alpha complex. -/
+/-- At every squared grade `t`, the sublevel of the squared-radius filter is exactly the closed
+alpha complex. -/
 theorem sublevel_eq_complex (t : ℝ) : (filter sites).sublevel t = complex sites t := by
   apply le_antisymm
   · intro s hs

@@ -749,6 +749,26 @@ computation is unchanged except for the extensions listed above. See the
 release notes for exact bounds, source-review limits and unsupported
 extensions.
 
+### Note added after the release
+
+Added on 2026-11-25; the tag and the GitHub Release are unchanged. Between v0.3.0 and
+v0.4.0, [#820](https://github.com/uda-lab/tda-lib/pull/820),
+[#840](https://github.com/uda-lab/tda-lib/pull/840) and
+[#841](https://github.com/uda-lab/tda-lib/pull/841) rewrote the bodies of ten released
+definitions without changing their values: `HeightMapPair.natTransSymm`,
+`HeightMapPair.interleaving`, `Interleaving.scalePre`, `Interleaving.translatePre`,
+`scalePreOneIso`, `scalePreScalePreIso`, `translatePreZeroIso`,
+`simpleModule_leftDerivedZeroIso`, `bool_lower_simple_degree_zero_comparison` and
+`IsPointwiseShortExact.pushoutQuotient`. The count and the list are those of the
+pre-release review recorded in [#1115](https://github.com/uda-lab/tda-lib/issues/1115#issuecomment-7119370760),
+which checked each new body against the old one by compiled equalities. These pull requests also added the public
+helpers `Interleaving.reindex`, `reindex_φ_app`, `reindex_ψ_app`, `reindexIso` and
+`reindexIso_hom_app` (`TDA.Reeb.IntervalTranslation`) and
+`leftDerivedZeroIso_of_rightVertexIso` (`TDA.Persistence.IncidenceQuotientSimple`), which
+v0.4.0 contains. In the same interval, [#787](https://github.com/uda-lab/tda-lib/pull/787)
+changed `diagonalIdealTwoSided` in `TDA.Persistence.IncidenceVertexProjectiveDimension`
+from a local instance to an `abbrev`. No migration is needed for these changes.
+
 ## v0.3.0
 
 Published 2026-10-29. [Release notes](https://github.com/uda-lab/tda-lib/releases/tag/v0.3.0)
