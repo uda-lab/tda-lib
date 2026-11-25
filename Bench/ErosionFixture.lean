@@ -1,6 +1,7 @@
 import TDA.Persistence.F2GridHomologyErosion
 import TDA.Persistence.F2GridHomologyInputExamples
 import Std.Data.HashSet
+import Std.Data.HashMap
 
 /-!
 # Native end-to-end erosion fixture (Issue #1063)
@@ -14,12 +15,19 @@ erosion-fixture MODE NUM DEN [EXPECT]
 ```
 
 * `MODE = lib`: run the library `RatGradedInput.runErosion` end to end at the radius
-  `NUM/DEN` and print the outcome and its wall time.
+  `NUM/DEN` and print the outcome and its wall time. Since Issue #1218 the compiled library
+  scan is `erosionFailureCached?`, selected by `@[csimp]`, which evaluates each distinct rank
+  once.
 * `MODE = phases`: replay the scan of `F2GridRep.erosionFailure?` in the same enumeration
   order with a timer around every `rankAt` call, and report the time and the counts of each
-  phase. After `both`, the replayed outcome must equal the library outcome.
-* `MODE = split`: like `phases`, but split each `rankAt` into its floor, matrix-construction,
-  fiber-dimension and rank parts, with two extra diagnostic queries per matrix.
+  phase. This replay is uncached: every `rankAt` call is evaluated, as in the library before
+  #1218. After `both`, the replayed outcome must equal the library outcome.
+* `MODE = split`: like `phases` (uncached), but split each `rankAt` into its floor,
+  matrix-construction, fiber-dimension and rank parts, with two extra diagnostic queries per
+  matrix.
+* `MODE = memo`: like `phases`, but with a diagnostic memo table in an `IO.Ref` keyed by module,
+  floored source and floored target, so each distinct key is evaluated once (the check of the
+  recomputation hypothesis of #1218). It is not the library cache.
 * `MODE = both`: `lib` followed by `phases`.
 * `MODE = noop`: exit at once, to time the process start and module initialisation.
 
@@ -107,6 +115,31 @@ def timedRank (st : IO.Ref Stats) (id : Nat) (R : F2GridRep 2) (x y : Fin 2 → 
   let t1 ← IO.monoNanosNow
   let low := R.values.hasLower x
   let key := if low then s!"{id}|{gradeStr (R.values.floor x)}|{gradeStr (R.values.floor y)}" else ""
+  st.modify fun s =>
+    { s with rankCalls := s.rankCalls + 1, tRank := s.tRank + (t1 - t0),
+             matrixCalls := s.matrixCalls + (if low then 1 else 0),
+             keys := if low then s.keys.insert key else s.keys }
+  return r
+
+/-- One `rankAt` call with a diagnostic memo table keyed by module, floored source and floored
+target (Issue #1218, step 0). The table lives in an `IO.Ref`; it is not the library cache. A hit
+returns the stored `R.rankAt x y`, which is the same value because `rankAt` depends on its
+arguments only through `hasLower x` and the two floors. -/
+def memoRank (st : IO.Ref Stats) (memo : IO.Ref (Std.HashMap String Nat)) (id : Nat)
+    (R : F2GridRep 2) (x y : Fin 2 → ℚ) : IO Nat := do
+  let t0 ← IO.monoNanosNow
+  let low := R.values.hasLower x
+  let key := if low then s!"{id}|{gradeStr (R.values.floor x)}|{gradeStr (R.values.floor y)}" else ""
+  let table ← memo.get
+  let hit := if low then table.get? key else none
+  let r ← match hit with
+    | some v => pure v
+    | none => do
+      let v := R.rankAt x y
+      if v > 1000000000 then throw (IO.userError "impossible rank")
+      if low then memo.modify fun m => m.insert key v
+      pure v
+  let t1 ← IO.monoNanosNow
   st.modify fun s =>
     { s with rankCalls := s.rankCalls + 1, tRank := s.tRank + (t1 - t0),
              matrixCalls := s.matrixCalls + (if low then 1 else 0),
@@ -207,7 +240,7 @@ def runLib (xs ys : RatGradedInput 3 2) (p : ℕ) (e : ℚ) : IO (Res) := do
   IO.println s!"lib.result {resultStr r}"
   return r
 
-def runPhases (split : Bool) (xs ys : RatGradedInput 3 2) (p : ℕ) (e : ℚ)
+def runPhases (split memoized : Bool) (xs ys : RatGradedInput 3 2) (p : ℕ) (e : ℚ)
     (libResult : Option (Res)) : IO Bool := do
   let (v1, tv1) ← timedPure (fun _ => decide (Valid xs)) fun b => !b
   let (v2, tv2) ← timedPure (fun _ => decide (Valid ys)) fun b => !b
@@ -225,7 +258,8 @@ def runPhases (split : Bool) (xs ys : RatGradedInput 3 2) (p : ℕ) (e : ℚ)
   report "phase.breakpoint_grid" tT
   IO.println s!"count.breakpointPoints {T.length}"
   let st ← IO.mkRef ({} : Stats)
-  let rk := if split then splitRank st else timedRank st
+  let memo ← IO.mkRef ({} : Std.HashMap String Nat)
+  let rk := if split then splitRank st else if memoized then memoRank st memo else timedRank st
   let (res, tScan) ← timed (scanIO st rk R S e T)
   let s ← st.get
   report "phase.scan_total" tScan
@@ -259,7 +293,7 @@ def parseRat (n d : String) : Option ℚ := do
   if d == 0 then none else some (Rat.divInt n d)
 
 def usage : IO UInt32 := do
-  IO.eprintln "usage: erosion-fixture (lib|phases|split|both) NUM DEN [pass|fail|witness0] | noop"
+  IO.eprintln "usage: erosion-fixture (lib|phases|split|memo|both) NUM DEN [pass|fail|witness0] | noop"
   return 64
 
 def check (expect : String) (r : Res) : IO UInt32 := do
@@ -292,10 +326,10 @@ def main (args : List String) : IO UInt32 := do
       let r ← runLib xs ys p e
       libRes := some r
       if expect != "" then code ← check expect r
-    if mode == "phases" || mode == "both" || mode == "split" then
-      let ok ← runPhases (mode == "split") xs ys p e libRes
+    if mode == "phases" || mode == "both" || mode == "split" || mode == "memo" then
+      let ok ← runPhases (mode == "split") (mode == "memo") xs ys p e libRes
       if !ok then code := 1
-    if !(mode == "lib" || mode == "both" || mode == "phases" || mode == "split") then
+    if !(mode == "lib" || mode == "both" || mode == "phases" || mode == "split" || mode == "memo") then
       return (← usage)
     return code
   | _ => usage

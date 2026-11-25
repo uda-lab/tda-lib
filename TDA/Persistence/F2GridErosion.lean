@@ -21,6 +21,11 @@ at most the interleaving distance. Which violation is reported depends on the en
 The test evaluates every comparable pair of breakpoint grades, with four enumeration ranks each.
 A coordinate has at most three times as many breakpoints as the two grids have values there,
 and the grades are the product over the coordinates; no polynomial bound is claimed.
+
+Compiled code runs the scan as `erosionFailureCached?`, which reads each rank through a table
+of thunks keyed by the floored pair, so each distinct pair is evaluated at most once and only
+when reached. `erosionFailure?_eq_cached`, registered with `@[csimp]`, states that the two
+functions are equal; kernel evaluation is unaffected.
 -/
 
 set_option autoImplicit false
@@ -112,6 +117,20 @@ theorem realGrade_upper (e : ℚ) (he : 0 ≤ e) (x : Fin n → ℚ) :
 
 end RatGrid
 
+/-- If every entry of an association list satisfies `P` and the fallback does, the looked-up
+value with that fallback satisfies `P`. -/
+theorem lookup_getD_of_forall {α β : Type*} [BEq α] [LawfulBEq α] (P : α → β → Prop)
+    (l : List (α × β)) (k : α) (d : β) (hl : ∀ p ∈ l, P p.1 p.2) (hd : P k d) :
+    P k ((l.lookup k).getD d) := by
+  induction l with
+  | nil => simpa using hd
+  | cons p l ih =>
+    obtain ⟨a, b⟩ := p
+    by_cases h : k == a
+    · obtain rfl : k = a := eq_of_beq h
+      simpa [List.lookup] using hl (k, b) (List.mem_cons_self ..)
+    · simpa [List.lookup, h] using ih fun q hq => hl q (List.mem_cons_of_mem _ hq)
+
 namespace F2GridRep
 
 open RatGrid
@@ -146,6 +165,87 @@ def erosionFailureAt (R S : F2GridRep n) (e : ℚ) (p q : Fin n → ℚ) :
 def erosionFailure? (R S : F2GridRep n) (e : ℚ) : Option (ErosionFailure n) :=
   let T := (erosionBreakpoints R.values S.values e).pointList
   T.findSome? fun p => T.findSome? fun q => if p ≤ q then erosionFailureAt R S e p q else none
+
+/-- `erosionFailureAt` with the four rank uses replaced by the given rank functions. -/
+def erosionFailureAtBy (rR rS : (Fin n → ℚ) → (Fin n → ℚ) → ℕ) (e : ℚ) (p q : Fin n → ℚ) :
+    Option (ErosionFailure n) :=
+  if rS p q < rR (lower e p) (upper e q) then
+    some ⟨true, p, q, rR (lower e p) (upper e q), rS p q⟩
+  else if rR p q < rS (lower e p) (upper e q) then
+    some ⟨false, p, q, rS (lower e p) (upper e q), rR p q⟩
+  else none
+
+theorem erosionFailureAt_eq_erosionFailureAtBy (R S : F2GridRep n) (e : ℚ) (p q : Fin n → ℚ) :
+    erosionFailureAt R S e p q = erosionFailureAtBy R.rankAt S.rankAt e p q := rfl
+
+/-- The ranks of the stored matrices, as a two-level association list of thunks: for each listed
+source grade `a`, a thunk of the row of target grades `b`, each with a thunk of the rank of
+`R.map a b`. Building the outer list costs one entry per listed source; a row is built when it is
+first read, and a rank is computed when it is first read, then kept. Equal keys share the first
+matching entry, so the lists need no deduplication. -/
+def rankTable (R : F2GridRep n) (xs ys : List (Fin n → ℚ)) :
+    List ((Fin n → ℚ) × Thunk (List ((Fin n → ℚ) × Thunk ℕ))) :=
+  xs.map fun a => (a, Thunk.mk fun _ =>
+    ys.map fun b => (b, Thunk.mk fun _ => Reduction.F2Matrix.rank (R.map a b)))
+
+/-- `rankAt` read through a two-level table of rank thunks of floored grades. A source or target
+missing from the table is computed as `rankAt` does. -/
+def rankAtWith (R : F2GridRep n) (tbl : List ((Fin n → ℚ) × Thunk (List ((Fin n → ℚ) × Thunk ℕ))))
+    (x y : Fin n → ℚ) : ℕ :=
+  if R.values.hasLower x then
+    Thunk.get
+      ((((tbl.lookup (R.values.floor x)).getD (Thunk.mk fun _ => [])).get.lookup
+          (R.values.floor y)).getD
+        (Thunk.mk fun _ => Reduction.F2Matrix.rank (R.map (R.values.floor x) (R.values.floor y))))
+  else 0
+
+/-- Reading through a table built by `rankTable`, whatever its listed grades, is `rankAt`. -/
+theorem rankAtWith_rankTable (R : F2GridRep n) (xs ys : List (Fin n → ℚ)) :
+    R.rankAtWith (R.rankTable xs ys) = R.rankAt := by
+  funext x y
+  unfold rankAtWith rankAt
+  split_ifs
+  · have hrow := lookup_getD_of_forall
+      (fun (a : Fin n → ℚ) (row : Thunk (List ((Fin n → ℚ) × Thunk ℕ))) =>
+        ∀ q ∈ row.get, q.2.get = Reduction.F2Matrix.rank (R.map a q.1))
+      (R.rankTable xs ys) (R.values.floor x) (Thunk.mk fun _ => [])
+      (by
+        intro p hp
+        obtain ⟨a, -, rfl⟩ := List.mem_map.mp hp
+        intro q hq
+        obtain ⟨b, -, rfl⟩ := List.mem_map.mp hq
+        rfl)
+      (by
+        intro q hq
+        exact nomatch (show q ∈ ([] : List ((Fin n → ℚ) × Thunk ℕ)) from hq))
+    exact lookup_getD_of_forall
+      (fun (b : Fin n → ℚ) (t : Thunk ℕ) =>
+        t.get = Reduction.F2Matrix.rank (R.map (R.values.floor x) b))
+      _ (R.values.floor y) _ hrow rfl
+  · rfl
+
+/-- The scan of `erosionFailure?` with each rank of a stored matrix computed at most once per
+module and read through a two-level table of thunks. Only the outer list, one entry per listed
+source grade, is built before the scan; rows and ranks are built when first read, so a scan that
+stops early builds little. The enumeration order and the reported fields are those of
+`erosionFailure?`, to which it is equal (`erosionFailure?_eq_cached`). -/
+def erosionFailureCached? (R S : F2GridRep n) (e : ℚ) : Option (ErosionFailure n) :=
+  let T := (erosionBreakpoints R.values S.values e).pointList
+  let xs := T ++ T.map (lower e)
+  let ys := T ++ T.map (upper e)
+  let rR := R.rankAtWith (R.rankTable (xs.map R.values.floor) (ys.map R.values.floor))
+  let rS := S.rankAtWith (S.rankTable (xs.map S.values.floor) (ys.map S.values.floor))
+  T.findSome? fun p => T.findSome? fun q =>
+    if p ≤ q then erosionFailureAtBy rR rS e p q else none
+
+/-- The cached scan is the scan. Registered with `@[csimp]`, so that compiled code, among it
+`runErosion`, evaluates each distinct matrix rank once; the definition of `erosionFailure?`
+and every statement about it are unchanged. -/
+@[csimp] theorem erosionFailure?_eq_cached :
+    @erosionFailure? = @erosionFailureCached? := by
+  funext n R S e
+  simp only [erosionFailureCached?, erosionFailure?, rankAtWith_rankTable]
+  rfl
 
 /-- Outcome of the executable erosion test. -/
 inductive ErosionResult (n : ℕ) where

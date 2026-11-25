@@ -164,6 +164,18 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `DirectedEdgeIncidence.chain_eq_of_directed_counts` reduces a chain equality to a finite check
   of net directed counts; the split fixture's `ordered_cuts` and `signed_boundary` use them in
   place of hand proofs (statements unchanged).
+  `split_side_faces` and `splitEmb` give a split-side fixture. Grade rows and stages for a subdivided hull
+  are not part of this change.
+- Shared rank lookups in the erosion scan (#1218): `F2GridRep.erosionFailureCached?` reads each
+  matrix rank through a lazily built two-level table of thunks (an outer list linear in the
+  breakpoint grades, rows and ranks built when first read), so each distinct floored pair is
+  evaluated at most once and only if reached; the enumeration of `erosionFailure?` is
+  unchanged. `F2GridRep.erosionFailure?_eq_cached`, registered with `@[csimp]`, makes the
+  compiled `runErosion` use it; `F2GridRep.rankAtWith_rankTable` and `lookup_getD_of_forall`
+  show that the lookup is `rankAt`. No definition and no statement changed.
+  On the recorded host the native fixture at radius `1/2` took about 5 s instead of 333 s
+  (`docs/math/rank-erosion.md` § Measured native run); the `phases` and `split` replays of the
+  fixture stay uncached and a `memo` replay was added. No runtime bound is claimed.
 
 ## v0.5.0
 
