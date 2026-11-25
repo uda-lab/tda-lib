@@ -18,13 +18,17 @@ The supported setup is Python 3.12 on Linux or macOS.
 
 ## Build and preview
 
-From the repository root:
+From the repository root. The virtual environment lives outside the checkout
+(`DOCSITE_VENV` below is any directory outside it): a venv contains the directory
+symlink `lib64 -> lib`, which `scripts/check-comparator.sh` rejects anywhere in the
+checkout, including under ignored `build/`.
 
 ```sh
-python3 -m venv build/curated-docs/venv
-build/curated-docs/venv/bin/python -m pip install -r docsite/requirements.txt
-build/curated-docs/venv/bin/python docsite/build.py
-build/curated-docs/venv/bin/python docsite/test_site.py
+DOCSITE_VENV="${TMPDIR:-/tmp}/tda-lib-docsite-venv"
+python3 -m venv "$DOCSITE_VENV"
+"$DOCSITE_VENV/bin/python" -m pip install -r docsite/requirements.txt
+"$DOCSITE_VENV/bin/python" docsite/build.py
+"$DOCSITE_VENV/bin/python" docsite/test_site.py
 python3 -m http.server 8000 --bind 127.0.0.1 --directory build/curated-docs/preview
 ```
 
@@ -57,6 +61,9 @@ A failed render or validation leaves the prior preview in place. If installation
 fails after moving the old tree, the builder attempts to restore that tree and
 reports the failure. Retained previews are not automatically deleted, so repeated
 builds consume disk space; only the newest `preview/tda-lib/` is served.
+Generated previews contain no symlinks, so they do not trip the Comparator symlink
+guard. If you place a directory symlink or a symlinked `*.lean` file under `build/`
+(or keep a venv there), run `rm -rf build` before `scripts/check.sh`.
 Do not run concurrent builders for the same preview.
 The build stages only named source files in a temporary directory; do not point
 MkDocs at the repository root or copy `docs/` recursively. Use this wrapper,

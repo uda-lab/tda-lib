@@ -214,6 +214,12 @@ printf 'public meta import all ComparatorChallenge.Reference\n' > "$tmp/symlink-
 ln -s "$tmp/symlink-source.lean" "$repo/TDA/Linked.lean"
 run_case production_module_symlink_rejected 2 'hidden behind symlinks' no "$all_bin"
 rm "$repo/TDA/Linked.lean"
+# A venv-style directory symlink under ignored build output is still rejected, and the message
+# names the remedy.
+mkdir -p "$repo/build/curated-docs/venv/lib"
+ln -s lib "$repo/build/curated-docs/venv/lib64"
+run_case build_output_directory_symlink_rejected 2 'keep any Python virtual environment, such as the docsite one, outside the checkout' no "$all_bin"
+rm -rf "$repo/build"
 mv "$repo/TDA.lean" "$tmp/TDA.lean.saved"
 ln -s "$tmp/symlink-source.lean" "$repo/TDA.lean"
 run_case production_root_symlink_rejected 2 'roots must not be symlinks' no "$all_bin"

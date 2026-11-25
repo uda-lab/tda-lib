@@ -54,14 +54,14 @@ jobs:
       - name: Install docsite dependencies into an isolated venv
         run: |
           set -euo pipefail
-          python3 -m venv build/curated-docs/venv
-          build/curated-docs/venv/bin/python -m pip install -r docsite/requirements.txt
+          python3 -m venv "$RUNNER_TEMP/docsite-venv"
+          "$RUNNER_TEMP/docsite-venv/bin/python" -m pip install -r docsite/requirements.txt
 
       - name: Build the curated site (clean checkout required)
-        run: build/curated-docs/venv/bin/python docsite/build.py --require-clean
+        run: ${{ runner.temp }}/docsite-venv/bin/python docsite/build.py --require-clean
 
       - name: Test the built site
-        run: build/curated-docs/venv/bin/python docsite/test_site.py
+        run: ${{ runner.temp }}/docsite-venv/bin/python docsite/test_site.py
 
       - name: Verify build-info.json matches the built commit
         run: |
