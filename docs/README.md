@@ -175,6 +175,10 @@ Signed chains, homology, vertex maps and prism homotopies support the persistenc
 and Mapper developments. Follow [signed vertex maps](math/simplicial-vertex-maps.md),
 [finite homology](math/simplicial-finite-homology.md) and
 [subdivision and prisms](api.md#barycentric-subdivision-and-prism-homotopies).
+Covariant diagrams on a preorder, such as persistence modules on `ℝ`, are equivalent to
+sheaves on its upper Alexandrov topology, with sections over principal opens; see
+[Alexandrov sheaves](math/alexandrov-sheaves.md) and the
+[API section](api.md#alexandrov-sheaves-of-persistence-modules).
 The [area and import guide](api.md#entry-points) helps select a narrower dependency
 footprint and locate separately imported examples.
 
