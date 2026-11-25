@@ -69,6 +69,14 @@ fi
 
 step "lake build";                     "$ROOT/scripts/lean.sh" lake build
 step "live axiom audit";               bash scripts/check-axioms.sh
+# Advisory pin diagnostics (PIN TYPE/DOC ADVISORY) compare against the integration merge base;
+# never fatal. An explicit TDA_PIN_ADVISORY_BASE (also empty, as the pre-push hook may pass) wins.
+if [ -z "${TDA_PIN_ADVISORY_BASE+x}" ]; then
+  integration=origin/develop
+  git rev-parse --verify --quiet "$integration" >/dev/null || integration=origin/main
+  TDA_PIN_ADVISORY_BASE="$(git merge-base HEAD "$integration" 2>/dev/null || true)"
+  export TDA_PIN_ADVISORY_BASE
+fi
 step "axiom coverage";                 bash scripts/check-axiom-coverage.sh
 step "Comparator agreement (bounded pilot)"; bash scripts/check-comparator.sh
 echo "CHECK OK"

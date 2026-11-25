@@ -189,6 +189,60 @@ private def readAllPinnedNames (dir : System.FilePath) : IO (Std.HashSet String)
     throw <| IO.userError s!"no Lean pin files in {dir}"
   return names
 
+/-- Characters of a Lean identifier occurring in prose (dots join namespace components). -/
+private def isIdentChar (c : Char) : Bool :=
+  (c.isAlphanum && c.toNat < 128) || c == '_' || c == '\'' || c == '!' || c == '?' || c == '.'
+    || isLetterLike c || isSubScriptAlnum c
+
+/-- The last component of every maximal identifier-like run of `text`, so that
+`Alpha.foo.` and `foo` both yield `foo` while `foo.bar` yields only `bar`. -/
+private def lastComponentsOf (text : String) : Std.HashSet String := Id.run do
+  let addRun (set : Std.HashSet String) (rev : List Char) : Std.HashSet String :=
+    let run := (String.ofList rev.reverse).trimAsciiEnd.toString
+    let run := (run.dropEndWhile (· == '.')).toString
+    match run.splitOn "." |>.getLast? with
+    | some last => if last.isEmpty then set else set.insert last
+    | none => set
+  let mut set : Std.HashSet String := {}
+  let mut cur : List Char := []
+  for c in text.toList do
+    if isIdentChar c then
+      cur := c :: cur
+    else
+      set := addRun set cur
+      cur := []
+  return addRun set cur
+
+/-- Advisory only (#1154 check 2): new pins whose last name component is absent from
+`docs/api.md` or from the "Unreleased" section of `CHANGELOG.md`. Compares sets of
+identifiers, interprets no prose, and shows presence of a name, not that its description is
+right; the output lists candidates for the working agent to inspect. -/
+private def reportPinDocs (newPins : List String) : IO Unit := do
+  let label := "PIN DOC ADVISORY"
+  let names := newPins.filter fun n => !n.toName.isInternal
+  if names.isEmpty then return
+  let report (where_ : String) (text : String) : IO Unit := do
+    let present := lastComponentsOf text
+    let missing := names.filter fun n =>
+      match n.toName.components.getLast? with
+      | some c => !present.contains c.toString
+      | none => false
+    unless missing.isEmpty do
+      let shown := String.intercalate ", " (missing.take 20)
+      let more := if missing.length > 20 then s!" (and {missing.length - 20} more)" else ""
+      IO.println s!"{label}: {missing.length} of {names.length} new pin(s) not named in {where_}: {shown}{more}; candidates to inspect, not a failure."
+  try
+    report "docs/api.md" (← IO.FS.readFile "docs/api.md")
+  catch _ =>
+    IO.println s!"{label}: skipped (cannot read docs/api.md)"
+  try
+    let changelog ← IO.FS.readFile "CHANGELOG.md"
+    match (changelog.splitOn "\n## ").find? (·.startsWith "Unreleased") with
+    | some unreleased => report "the CHANGELOG.md \"Unreleased\" section" unreleased
+    | none => IO.println s!"{label}: skipped (no \"Unreleased\" section in CHANGELOG.md)"
+  catch _ =>
+    IO.println s!"{label}: skipped (cannot read CHANGELOG.md)"
+
 /-- Compare the union of the working pins with the integration merge base in the already
 loaded environment. Advisory output is plain text so warning-as-error cannot fail the audit. -/
 private def reportPrivatePinTypes (env : Environment) (pinned : Std.HashSet String)
@@ -197,6 +251,7 @@ private def reportPrivatePinTypes (env : Environment) (pinned : Std.HashSet Stri
   if base.isEmpty then
     IO.println s!"{label}: skipped (integration merge base unavailable)"
     return
+  let mut docPins : List String := []
   try
     let dir := s!"{base}:scripts/print_axioms"
     let files ← IO.Process.run { cmd := "git", args := #["ls-tree", "-z", "--name-only", dir] }
@@ -208,7 +263,9 @@ private def reportPrivatePinTypes (env : Environment) (pinned : Std.HashSet Stri
       let contents ← IO.Process.run { cmd := "git", args := #["show", s!"{dir}/{area}"] }
       for name in pinnedNames contents do
         previous := previous.insert name
-    for name in (pinned.toList.filter (!previous.contains ·)).mergeSort do
+    let newPins := (pinned.toList.filter (!previous.contains ·)).mergeSort
+    docPins := newPins
+    for name in newPins do
       let some info := env.find? name.toName | do
         IO.println s!"{label}: incomplete (cannot resolve new pin {name})"
         continue
@@ -218,6 +275,7 @@ private def reportPrivatePinTypes (env : Environment) (pinned : Std.HashSet Stri
           IO.println s!"{label}: {name} mentions private {String.intercalate ", " refs.mergeSort}; try restating it from the area import."
   catch _ =>
     IO.println s!"{label}: skipped (cannot read comparison pin files at {base})"
+  reportPinDocs docPins
 
 #eval show CoreM Unit from do
   let t0 ← IO.monoMsNow

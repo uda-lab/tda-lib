@@ -58,10 +58,15 @@ the selected scope before the release head is validated.
 Alongside the API pass, check the seams that per-PR review does not see, across everything
 merged since the last release:
 
-- check each sentence of the changelog's "Unreleased" section against the library at the
-  release base, including later entries that contradict it;
+- read the changelog's "Unreleased" section as a whole against the library at the release
+  commit, with one question: does a sentence say that something is absent which exists
+  there? Check each such claim against the code, not its wording, and include later entries
+  that contradict it. `CHANGELOG.md` and `docs/api.md` do not state what is absent, so
+  every negative sentence found is a candidate to delete;
 - check that every declaration newly pinned in `scripts/print_axioms/` appears in
-  `docs/api.md` and the changelog;
+  `docs/api.md` and the changelog (the coverage pass prints `PIN DOC ADVISORY` candidates);
+- run `scripts/check-released-signatures.sh` and decide, for each pinned declaration whose
+  type changed since the last tag, whether the changelog names the change;
 - match author names and numbered results in `TDA/` docstrings to `docs/math/references.md`;
 - elaborate each new public statement in an untracked scratch module that imports only its
   area aggregator, so that scoped or file-local instances surface;

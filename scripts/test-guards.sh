@@ -829,6 +829,34 @@ out="$(pin_drift "$d/claude-cloud-setup.sh" "$d")"
   || { echo "FAIL [pins:missing-block]: unterminated block not reported: '$out'"; pfail=1; }
 if [ "$pfail" -eq 0 ]; then echo "embedded cloud-setup pin check OK ($pn cases)"; else exit 1; fi
 
+# #1154 check 3: the released-signature comparison is advisory. Both a triggering and a clean
+# comparison must exit 0; the dumps are `name<TAB>type hash<TAB>type` lines (no Lean needed).
+sg="$tmp/sig"; mkdir -p "$sg"
+printf 'A.kept\t1\tNat\nA.changed\t2\tNat\nA.gone\t3\tNat\nB.listed\t4\tNat\n' > "$sg/base.tsv"
+printf 'A.kept\t1\tNat\nA.changed\t9\tInt\nB.listed\t5\tInt\nC.added\t6\tNat\n' > "$sg/head.tsv"
+printf '# Changelog\n\n## Unreleased\n\n- `B.listed` is stated over `Int`.\n\n## v1\n\n- A.changed.\n' > "$sg/CHANGELOG.md"
+sn=0; sfail=0
+sig_run() { TDA_SIG_CHANGELOG="$sg/CHANGELOG.md" bash scripts/check-released-signatures.sh --compare "$@"; }
+sn=$((sn + 1)); sstatus=0; sout="$(sig_run "$sg/base.tsv" "$sg/head.tsv" v1)" || sstatus=$?
+[ "$sstatus" -eq 0 ] || { echo "FAIL [sig:exit]: advisory exited $sstatus"; sfail=1; }
+sn=$((sn + 1)); grep -Fq 'SIGNATURE ADVISORY: A.changed since v1: type changed; not named in the CHANGELOG.md "Unreleased" section.' <<<"$sout" \
+  || { echo "FAIL [sig:changed]: missing advisory: $sout"; sfail=1; }
+sn=$((sn + 1)); grep -Fq 'SIGNATURE ADVISORY: A.gone since v1: no longer pinned (removed or renamed); not named' <<<"$sout" \
+  || { echo "FAIL [sig:removed]: missing advisory: $sout"; sfail=1; }
+sn=$((sn + 1)); grep -Fq 'SIGNATURE ADVISORY: B.listed since v1: type changed; named in the CHANGELOG.md "Unreleased" section.' <<<"$sout" \
+  || { echo "FAIL [sig:named]: missing advisory: $sout"; sfail=1; }
+sn=$((sn + 1)); ! grep -Eq 'A\.kept|C\.added' <<<"$sout" \
+  || { echo "FAIL [sig:quiet]: unchanged or added pin reported: $sout"; sfail=1; }
+sn=$((sn + 1)); sstatus=0; sout="$(sig_run "$sg/head.tsv" "$sg/head.tsv" v1)" || sstatus=$?
+[ "$sstatus" -eq 0 ] && grep -Fq 'SIGNATURE ADVISORY: 0 pin(s) differ from v1' <<<"$sout" \
+  || { echo "FAIL [sig:clean]: identical dumps exit $sstatus: $sout"; sfail=1; }
+sn=$((sn + 1)); : > "$sg/empty-changelog.md"
+sstatus=0; sout="$(TDA_SIG_CHANGELOG="$sg/empty-changelog.md" bash scripts/check-released-signatures.sh --compare "$sg/base.tsv" "$sg/head.tsv" v1)" || sstatus=$?
+[ "$sstatus" -eq 0 ] && grep -Fq 'A.gone since v1: no longer pinned' <<<"$sout" && grep -Fq 'A.changed since v1: type changed' <<<"$sout" \
+  && ! grep -Eq 'A\.kept|C\.added' <<<"$sout" \
+  || { echo "FAIL [sig:empty-changelog]: an empty Unreleased section shifted the inputs: $sout"; sfail=1; }
+if [ "$sfail" -eq 0 ]; then echo "released-signature advisory OK ($sn cases)"; else exit 1; fi
+
 # Resource locking is tested in isolated fake workspaces, without the host's active locks.
 fenv bash scripts/agent/test-build-resources.sh
 fenv bash scripts/agent/test-build-docs-lock.sh
