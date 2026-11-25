@@ -15,6 +15,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SETUP = ROOT / "scripts/claude-cloud-setup.sh"
 ACTIVATE = ROOT / "scripts/claude-cloud-activate.sh"
 PIN_FILES = ("lean-toolchain", "lakefile.toml", "lake-manifest.json")
+SKILL_NAMES = ("github-driven-workflow", "github-loop-engineering", "lean-formalization-discipline")
+# Filled in by main() with the offline fixture repository standing in for t-uda/skills.
+SKILLS_ENV: dict[str, str] = {}
 
 
 def embedded_pin(script: str, filename: str, marker: str) -> str:
@@ -121,7 +124,11 @@ chmod +x "$dest/elan-init"
 ''',
         "git": r'''#!/usr/bin/env bash
 set -e
-if [[ "$1" == -C && "$3" == rev-parse && "$4" == HEAD ]]; then
+if [[ "$1" == -C && "$3" == rev-parse && "$4" == HEAD && "$2" == */skills-src && -n "${MOCK_SKILLS_HEAD:-}" ]]; then
+  echo "$MOCK_SKILLS_HEAD"
+  exit 0
+fi
+if [[ "$1" == -C && "$3" == rev-parse && "$4" == HEAD && "$2" == */.lake/packages/* ]]; then
   [[ -d "$2" ]] || exit 128
   python3 - "$MOCK_PROJECT/lake-manifest.json" "$(basename "$2")" <<'PY'
 import json, sys
@@ -187,6 +194,7 @@ def environment(mock_bin: Path, home: Path, setup_root: Path, calls: Path, **ext
         MOCK_PROJECT=str(setup_root / "project"),
         MOCK_LAKE_CALLS=str(calls),
     )
+    env.update(SKILLS_ENV)
     env.update(extra)
     return env
 
@@ -199,6 +207,43 @@ def run(command: list[str], env: dict[str, str], *, expect: int = 0) -> subproce
             f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
         )
     return result
+
+
+def make_skills_fixture(directory: Path) -> str:
+    """A local stand-in for t-uda/skills with the three skills and an install-skill.sh.
+
+    The fixture installer follows the real interface (`<skill> claude <root> --copy`,
+    exit 2 on an existing target); no test reaches the network. Returns the commit id.
+    """
+    (directory / "scripts").mkdir(parents=True)
+    for name in SKILL_NAMES:
+        (directory / "skills" / name / "references").mkdir(parents=True)
+        (directory / "skills" / name / "SKILL.md").write_text(f"---\nname: {name}\n---\nfixture\n")
+        (directory / "skills" / name / "references/notes.md").write_text("notes\n")
+    installer = directory / "scripts/install-skill.sh"
+    installer.write_text(r'''#!/usr/bin/env sh
+set -eu
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+skill=$1; target=$2; root=$3; mode=$4
+[ "$target" = claude ] && [ "$mode" = --copy ]
+dest="$root/.claude/skills/$skill"
+if [ -e "$dest" ] || [ -L "$dest" ]; then echo "warning: refusing to replace $dest" >&2; exit 2; fi
+mkdir -p "$root/.claude/skills"
+cp -R "$here/../skills/$skill" "$dest"
+echo "Copied $skill -> $dest"
+''')
+    installer.chmod(0o755)
+    git_env = os.environ | {
+        "GIT_AUTHOR_NAME": "fixture", "GIT_AUTHOR_EMAIL": "fixture@example.invalid",
+        "GIT_COMMITTER_NAME": "fixture", "GIT_COMMITTER_EMAIL": "fixture@example.invalid",
+    }
+    for args in (["init", "--quiet"], ["add", "."], ["commit", "--quiet", "-m", "fixture"]):
+        subprocess.run(["/usr/bin/git", "-C", str(directory), *args], env=git_env, check=True,
+                       capture_output=True)
+    return subprocess.run(
+        ["/usr/bin/git", "-C", str(directory), "rev-parse", "HEAD"],
+        env=git_env, check=True, capture_output=True, text=True,
+    ).stdout.strip()
 
 
 def make_checkout(directory: Path) -> None:
@@ -235,6 +280,12 @@ def main() -> None:
         mock_bin = base / "mock-bin"
         write_mock_bin(mock_bin)
         write_sandbox_bin(base / "sandbox-present", bwrap=True)
+        skills_repo = base / "skills-fixture"
+        skills_commit = make_skills_fixture(skills_repo)
+        SKILLS_ENV.update(
+            TDA_CLAUDE_SETUP_SKILLS_URL=str(skills_repo),
+            TDA_CLAUDE_SETUP_SKILLS_COMMIT=skills_commit,
+        )
 
         # An unavailable cache path does not fail the cloud session setup hook.
         blocked_parent = base / "not-a-directory"
@@ -271,6 +322,24 @@ def main() -> None:
             raise AssertionError("setup ran an install although bwrap was already present")
         if "sandbox_status" not in (setup_root / "INSTRUCTIONS.txt").read_text():
             raise AssertionError("instructions do not say where the sandbox status is recorded")
+        instructions = (setup_root / "INSTRUCTIONS.txt").read_text()
+        if "skills_status" not in instructions or "GIT_OPTIONAL_LOCKS=0" not in instructions:
+            raise AssertionError("instructions do not cover the skills status and GIT_OPTIONAL_LOCKS=0")
+
+        # The companion skills are copied at the pinned commit, recorded separately and bounded.
+        if (status["skills_status"], status["skills_commit_requested"], status["skills_commit_found"]) != (
+                "ready", skills_commit, skills_commit) or "skills=ready" not in result.stdout:
+            raise AssertionError(f"skills stage was not recorded as ready at the pin:\n{result.stdout}\n{status}")
+        if not status["skills_seconds"].isdigit() or not status["skills_detail"]:
+            raise AssertionError(f"skills stage has no elapsed-time or detail record: {status}")
+        installed_skills = home / ".claude/skills"
+        for name in SKILL_NAMES:
+            skill_dir = installed_skills / name
+            if status[f"skill_{name}"] != "installed" or skill_dir.is_symlink() or \
+                    not (skill_dir / "SKILL.md").is_file() or not (skill_dir / "references/notes.md").is_file():
+                raise AssertionError(f"skill {name} was not copied as a real directory: {status}")
+        if (setup_root / "tmp/skills-src").exists():
+            raise AssertionError("the temporary skills clone was left behind")
 
         checkout = base / "checkout"
         make_checkout(checkout)
@@ -286,6 +355,9 @@ def main() -> None:
         rerun_status = status_map(setup_root / "STATUS.txt")
         if rerun_status["state"] != "warm" or len(calls.read_text().splitlines()) != 2:
             raise AssertionError(f"setup rerun was not idempotent:\n{rerun.stdout}\n{rerun_status}")
+        if rerun_status["skills_status"] != "ready" or any(
+                rerun_status[f"skill_{name}"] != "present" for name in SKILL_NAMES):
+            raise AssertionError(f"skills rerun did not recognise its own copies:\n{rerun_status}")
 
         # A pin mismatch is rejected without creating .lake or touching files.
         mismatch = base / "checkout-mismatch"
@@ -421,6 +493,73 @@ def main() -> None:
                     raise AssertionError(f"apt-get failure was not recorded: {case_status}")
             elif apt_calls.exists():
                 raise AssertionError("apt-get ran although none was available")
+
+        # Skills cases. Each starts from an empty home; the skills result never changes the
+        # cache state, in either direction.
+        def skills_case(label: str, *, expect_state: str, extra: dict[str, str] | None = None,
+                        prepare=None) -> tuple[dict[str, str], Path]:
+            case_home = base / f"home skills {label}"
+            case_home.mkdir()
+            if prepare is not None:
+                prepare(case_home)
+            case_root = base / f"setup skills {label}"
+            case_env = environment(
+                mock_bin, case_home, case_root, base / f"lake-calls-skills-{label}.txt", **(extra or {})
+            )
+            run(["bash", str(SETUP)], case_env)
+            case_status = status_map(case_root / "STATUS.txt")
+            if case_status["state"] != expect_state:
+                raise AssertionError(f"skills case {label!r}: state {case_status['state']}: {case_status}")
+            return case_status, case_home
+
+        # A checked-out commit that differs from the pin copies nothing.
+        mismatch_status, mismatch_home = skills_case(
+            "pin mismatch", expect_state="warm", extra={"MOCK_SKILLS_HEAD": "0" * 40}
+        )
+        if mismatch_status["skills_status"] != "incomplete" or "does not match the pin" not in mismatch_status["skills_detail"]:
+            raise AssertionError(f"pin mismatch was not recorded: {mismatch_status}")
+        if mismatch_status["skills_commit_found"] != "0" * 40 or (mismatch_home / ".claude").exists():
+            raise AssertionError(f"pin mismatch still copied skills: {mismatch_status}")
+
+        # An unreachable source (offline) and an absent pinned commit are recorded, not fatal.
+        offline_status, offline_home = skills_case(
+            "offline", expect_state="warm",
+            extra={"TDA_CLAUDE_SETUP_SKILLS_URL": str(base / "no-such-skills-repo")},
+        )
+        if offline_status["skills_status"] != "incomplete" or "clone or checkout" not in offline_status["skills_detail"]:
+            raise AssertionError(f"offline skills clone was not recorded: {offline_status}")
+        if (offline_home / ".claude").exists() or offline_status["skill_github-driven-workflow"] != "not-attempted":
+            raise AssertionError(f"offline skills stage left residue: {offline_status}")
+        absent_status, _ = skills_case(
+            "absent pin", expect_state="warm", extra={"TDA_CLAUDE_SETUP_SKILLS_COMMIT": "1" * 40}
+        )
+        if absent_status["skills_status"] != "incomplete":
+            raise AssertionError(f"absent pinned commit was not recorded: {absent_status}")
+        branch_status, _ = skills_case(
+            "branch pin", expect_state="warm", extra={"TDA_CLAUDE_SETUP_SKILLS_COMMIT": "main"}
+        )
+        if branch_status["skills_status"] != "blocked":
+            raise AssertionError(f"a non-commit pin was accepted: {branch_status}")
+
+        # A different existing skill directory is never replaced; the others are still copied.
+        def prepare_conflict(case_home: Path) -> None:
+            existing = case_home / ".claude/skills/github-loop-engineering"
+            existing.mkdir(parents=True)
+            (existing / "SKILL.md").write_text("local edit\n")
+
+        conflict_status, conflict_home = skills_case(
+            "conflict", expect_state="warm", prepare=prepare_conflict
+        )
+        kept = conflict_home / ".claude/skills/github-loop-engineering/SKILL.md"
+        if conflict_status["skills_status"] != "conflict" or conflict_status["skill_github-loop-engineering"] != "conflict":
+            raise AssertionError(f"skill conflict was not recorded: {conflict_status}")
+        if kept.read_text() != "local edit\n" or conflict_status["skill_github-driven-workflow"] != "installed":
+            raise AssertionError(f"conflict handling replaced or skipped the wrong skill: {conflict_status}")
+
+        # A failed cache with healthy skills is partial while the skills stay ready.
+        cold_status, _ = skills_case("cold cache", expect_state="partial", extra={"MOCK_LAKE_FAIL": "1"})
+        if cold_status["skills_status"] != "ready":
+            raise AssertionError(f"a failed cache changed the skills result: {cold_status}")
 
     print("Claude cloud setup smoke tests passed (all network, install, Lake, and Git calls mocked).")
 

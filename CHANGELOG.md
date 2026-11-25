@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Claude cloud setup snapshot: `scripts/claude-cloud-setup.sh` also copies the companion skills
+  `github-driven-workflow`, `github-loop-engineering` and `lean-formalization-discipline` from
+  `t-uda/skills` at a pinned commit into `~/.claude/skills`, so that `scripts/preflight.sh` finds
+  them in a hosted session. `STATUS.txt` records the commit and a per-skill result separately from
+  the cache `state` (#683); `docs/claude-cloud-setup.md` adds `GIT_OPTIONAL_LOCKS=0` guidance for
+  readers of the shared packages.
 - Canonical squared-grade α–Čech comparison (#1138): `Alpha.filtration_le_squaredCech`,
   `Alpha.inclusion_natural_squaredCech` and `isIso_alpha_filtration_le_squaredCech` (every
   grade) target `Alpha.squaredCechFiltration`, which is empty below zero. The legacy
