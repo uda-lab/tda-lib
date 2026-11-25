@@ -202,3 +202,76 @@ been checked anew against the article text. The [CB14-v3 register entry](referen
 records the metadata and evidence. Fresh primary-text comparison remains
 pending in #506. This is a code/contract-based account, not a new source match
 or full-proof certification.
+
+## Crossing counts from strict ranks
+
+`TDA.Persistence.RealIntervalObservation` (namespace
+`TDA.Persistence.RealIntervalDecomposition`) keeps the setting above: a field
+`k : Type u` and `M : PModule.{u,0,u} k ℝ` with
+`[∀ t, FiniteDimensional k (M.obj t)]`.
+`ScalarIndex M` is the occurrence type of the selected scalar decomposition
+`scalarIso`, and `scalarSupport M j` is the support of occurrence `j`.
+
+For all reals `s` and `t`, `scalar_crossing_finite` states that the set of
+occurrences whose support contains both `s` and `t` is finite; it is a subset of the
+occurrences active at `s`. For `s < t`, `persistenceImage_finrank_eq_scalar_crossing`
+states
+
+`Module.finrank k (persistenceImage M hst.le) =
+  Nat.card {j : ScalarIndex M // s ∈ scalarSupport M j ∧ t ∈ scalarSupport M j}`,
+
+so the rank of the structure map from `s` to `t` counts the occurrences alive at both
+parameters. The proof reindexes `M` along the two-point list `s < t`, transports the
+rank along `scalarIso` to the finitely many occurrences visible at `s` or `t`, and
+uses that a scalar module with order-convex support has rank one on that pair when
+its support contains both points and rank zero otherwise. For a second module `N`
+with the same field and finite-dimensional fibers, and a natural isomorphism
+`e : M ≅ N`, `scalar_crossing_card_eq_of_iso` gives equal counts for every `s < t`,
+although the two selected index types may differ. The case `s = t` is not stated.
+
+`RealIntervalObservationExamples` evaluates the count through this theorem.
+`interval_crossing_card` gives `1` or `0` for `SupportInterval.module S hS` with
+order-convex `S`, according as `s` and `t` both lie in `S`; `zero_crossing_card`
+gives `0` for the zero module; `wholeLine_crossing_card` gives `1` for the rational
+whole-line module
+`RealIntervalExamples.wholeLine`; and the rational module
+`RealBarcode.intervalModule (0, 2)`, supported on `[0, 2)`, has count `1` from `0` to
+`1` and `0` from `0` to `3`.
+`ConstructibleExamples.twisted_nonidentity_crossing_card_eq` changes coordinates in a
+rational step module: the structure map from `0` to `1` changes, and the count does
+not.
+
+## A whole-line module and the finite-birth diagram
+
+`TDA.Persistence.WholeLineObstructionExamples` works over a field `k : Type u`. The
+module `constant k : PModule.{u,0,u} k ℝ` has fiber `k` at every parameter and
+identity maps (`constant_structureMapLinear`). It and the zero module are q-tame
+(`constant_qTame`, `zero_qTame`). For every decorated cut pair `p`, including deaths
+at `infinityCut`, `constant_multiplicity_zero` and `zero_multiplicity_zero` state
+that `moduleExtendedDiagramMultiplicity` vanishes: every image of the constant
+module is the whole fiber, so its rectangle and essential strip counts are zero. The
+diagram `LocallyFiniteDecoratedDiagram.ofQModule` records finite births only; its
+documentation states that a birth at minus infinity has multiplicity zero for every
+q-tame module. Hence `canonical_diagrams_eq` identifies the two diagrams, and
+`canonical_bottleneck_zero` gives bottleneck distance `0`. An `ε`-interleaving with
+the zero module would make the identity of `k` zero, so
+`constant_not_interleaved_zero` excludes every `ε : ℝ≥0` and `constant_distance_top`
+gives `realInterleavingDistance (constant k) 0 = ⊤`.
+`canonical_zero_but_module_distance_top` collects the diagram equality and both
+distances.
+
+`LocallyFiniteDecoratedDiagram.qTame_bottleneck_le_realInterleavingDistance` bounds
+the bottleneck distance of these diagrams by the real interleaving distance for all
+q-tame modules over a field. For this pair the reverse inequality would read
+`⊤ ≤ 0`, so it fails for q-tame modules in general. `constant_no_zero_left_bound`
+states that for every `a` some `t < a` has a nonzero fiber, so the example does not
+concern modules whose fibers vanish below a threshold. The fixture does not compare
+`constant k` with the scalar decomposition above.
+
+## Scope and status of the last two sections
+
+These sections describe declarations added for #986 and #987 (pull requests #988 and
+#989) in the library's own terms; the source account in the previous section does
+not cover them, and the source register records no source mapping for these modules.
+They state no comparison of crossing counts with the multiplicities of `ofQModule`,
+no isometry, and no diagram that records births at minus infinity.
