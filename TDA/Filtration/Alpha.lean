@@ -8,6 +8,13 @@ set_option autoImplicit false
 /-!
 # The closed Voronoi alpha filtration
 
+The α complex is the nerve of the closed Voronoi cells cut off by squared-distance
+bounds. Nearest-site ties are retained, including in degenerate configurations, so
+the full closed-cell nerve is used. Its negative grades are empty. The compatibility
+comparison `filtration_le_cech` reindexes radius-indexed Čech by `Alpha.radius`; at
+negative grades this gives radius zero and hence the radius-zero Čech complex. The
+labelled comparison instead uses `squaredCechFiltration`, which is empty below zero.
+
 For a Euclidean site configuration, Bauer–Edelsbrunner, *The Morse Theory of Čech and
 Delaunay Complexes*, §3, equations (3)–(5), take the nerve of the closed Voronoi cells
 restricted to balls of radius `r`. We index the nerve by the squared radius. The
