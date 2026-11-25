@@ -1450,7 +1450,8 @@ slice counts of both diagrams are the ranks of the same persistence module
 second. The lists themselves need not be equal: `pivotPairs` lists the pairs in column order,
 and the tie order decides the order of columns tied in grade and degree, so reversing it can
 change the order of their finite occurrences. Fixture Q6 reverses the order on the path:
-the essential generator changes from A to C, and the occurrence list stays the same.
+the essential generator changes from A to C, and the occurrence list stays the same. Fixture Q7
+below is a complex in which the occurrence list itself changes.
 
 ### Executable and semantic parts of the run
 
@@ -1462,7 +1463,7 @@ run on the square and on the path is evaluated by `decide +kernel` only after re
 `run_eq_some_iff`. Kernel evaluation is evidence for the fixture values only; no runtime bound,
 comparison or speedup is stated. The other declarations of `TDA.Persistence.Morse.MorseDiagram`
 are propositions, and so are those of `TDA.Persistence.Morse.MorseDiagramExamples` except the
-definition `dualOrder`.
+definitions `dualOrder`, `xD`, `xDegree`, `xGrade` and `xDual`.
 
 ### Scope of the run
 
@@ -1522,8 +1523,17 @@ and ACD at grade 2.
   (`path_dual_essential`), while the occurrence list is still `[⟨0, 0, .essential⟩]`
   (`path_dual_reducerOccurrences`). `path_dual_perm` states the permutation given by
   `reducerOccurrences_perm_of_linearOrder`.
+- Q7. The complex `xD` on `Fin 4` has `d e = a` and `d f = b`, with `a`, `b` in degree 0 at
+  grades 0 and 1 and `e`, `f` in degree 1 at grade 2 (`xD_isFilteredDifferential`). The
+  generators `e` and `f` are tied. In the natural order the pivot pairs are (a, e) and (b, f),
+  so the occurrence list is `[⟨0, 0, .finite 2⟩, ⟨0, 1, .finite 2⟩]`
+  (`tie_occurrences_natural`); in the reversed order `xDual` they are (b, f) and (a, e), and
+  the list is `[⟨0, 1, .finite 2⟩, ⟨0, 0, .finite 2⟩]` (`tie_occurrences_dual`). The lists
+  differ, they are permutations of each other, and the diagrams are equal in every degree
+  (`tie_occurrences_ne_diagram_eq`).
 
-The fixture file has 1 public definition, the `abbrev` `dualOrder`, and 17 public theorems.
+The fixture file has 4 public definitions beyond `dualOrder`, namely `xD`, `xDegree`, `xGrade`
+and the `abbrev` `xDual`, the `abbrev` `dualOrder` itself, and 21 public theorems.
 Of the theorems:
 
 - seven rewrite a Morse differential to its written-out form and end in `decide +kernel`:

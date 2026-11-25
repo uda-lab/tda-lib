@@ -285,6 +285,16 @@ exactly one critical vertex and one critical edge, and the square keeps one crit
 grade. The square result differs from the hand-chosen matching of the checker fixtures, which
 leaves A, AD and ACD critical; the dimensions and grades agree.
 
+The greedy pass need not give a matching of maximum cardinality. The input `disc` is two
+triangles glued along an edge, with the vertices `0`–`3` at positions 0–3, the edges `{0,2}`,
+`{0,1}`, `{1,2}`, `{2,3}` and `{1,3}` at positions 4–8 and the triangles `{1,2,3}` and
+`{0,1,2}` at positions 9 and 10, all at grade 0. The pass generates the four pairs (0, 4),
+(1, 5), (2, 7) and (6, 9) (`disc_generate_pairs`), leaving the vertex 3, the edge `{1,3}` and
+the triangle `{0,1,2}` critical (`disc_generate_report`). It matches the edge `{1,2}` with
+`{1,2,3}` first, so `(6, 10)` is no longer available. The checker accepts the five pairs
+(0, 4), (1, 5), (2, 7), (6, 10) and (8, 9) with a written-out rank, which leave only the vertex
+at position 3 unmatched (`disc_not_maximum`). So no maximum cardinality is claimed.
+
 On the filled triangle the candidates are, in order, (A, AB), (A, AC), (B, AB), (B, BC),
 (C, BC), (C, AC), (AB, ABC), (BC, ABC) and (AC, ABC). The pass accepts (A, AB) and (B, BC).
 It rejects (A, AC), (B, AB), (C, BC), (AB, ABC) and (BC, ABC) because one of their faces is
@@ -455,6 +465,10 @@ complex (nonempty faces, closed under nonempty subsets); that is supplied by `K`
 and the full triangle, tetrahedron and 4-simplex collapse to a vertex. The rejections are an
 extra coface, a pair that is not present, a reversed pair, a pair that is not a cover, a wrong
 order, a wrong endpoint, the empty certificate to a different table, and a repeated step.
+The hollow triangle, with three vertices and three edges, is a negative control: no pair is free
+in it, at the level of tables and of complexes (`hollowTriangle_no_free_pair`,
+`hollowComplex_no_free_pair`), and it does not collapse to a point
+(`hollowComplex_not_collapsesTo_point`).
 `TDA.Filtration.AlphaCollapseCertificateExamples` reads the faces of the actual Čech and α
 stages of the obtuse triangle at grade 4 off `cechGrades` and `gradedFaces obtuse`, and obtains
 `CollapsesTo` there through the checker (`collapsesTo_four`). Only grade 4 is checked there.

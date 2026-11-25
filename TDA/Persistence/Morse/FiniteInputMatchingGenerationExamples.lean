@@ -13,6 +13,10 @@ rejection fixtures that quantify over all ranks reuse `cyclic_no_certificate` or
 Inside `TDA.Persistence.Morse`, the bare name `IsMatching` denotes the semantic predicate, so
 the list-level one is written `MatchingInput.IsMatching`.
 
+The input `disc`, two triangles glued along an edge, shows that the greedy pass need not give a
+matching of maximum cardinality: it generates four pairs, while the checker accepts five
+(`disc_not_maximum`).
+
 The rejection fixtures concern specific candidates only; no general claim that a rejected
 candidate reuses a face or closes a cycle is made.
 -/
@@ -115,6 +119,44 @@ theorem square_generate_pairs :
 theorem square_generate_report :
     (generate square).criticalReport =
       [(⟨3, by decide⟩, 0, 0), (⟨7, by decide⟩, 1, 1), (⟨10, by decide⟩, 2, 2)] := by
+  decide +kernel
+
+/-! ## A greedy matching that is not of maximum cardinality -/
+
+/-- Two triangles glued along the edge `{1, 2}`, a disc, listed as the vertices `0`–`3`, the
+edges `{0,2}`, `{0,1}`, `{1,2}`, `{2,3}`, `{1,3}` at positions 4–8, and the triangles `{1,2,3}`
+and `{0,1,2}` at positions 9 and 10, all at grade `0`. -/
+def disc : Input :=
+  [({0}, 0), ({1}, 0), ({2}, 0), ({3}, 0), ({0, 2}, 0), ({0, 1}, 0), ({1, 2}, 0), ({2, 3}, 0),
+    ({1, 3}, 0), ({1, 2, 3}, 0), ({0, 1, 2}, 0)]
+
+/-- On the disc, the pass accepts four pairs; it takes `(6, 9)`, the edge `{1,2}` with the
+triangle `{1,2,3}`, before `(6, 10)` is tried. -/
+theorem disc_generate_pairs :
+    (generate disc).pairs = [pr 0 4, pr 1 5, pr 2 7, pr 6 9] := by
+  decide +kernel
+
+/-- On the disc, three faces remain critical: the vertex `3`, the edge `{1,3}` and the triangle
+`{0,1,2}`, in dimensions 0, 1 and 2. -/
+theorem disc_generate_report :
+    (generate disc).criticalReport =
+      [(⟨3, by decide⟩, 0, 0), (⟨8, by decide⟩, 1, 0), (⟨10, by decide⟩, 2, 0)] := by
+  decide +kernel
+
+/-- The five pairs `(0, 4)`, `(1, 5)`, `(2, 7)`, `(6, 10)` and `(8, 9)` of the disc. -/
+def discPairs : Pairs disc := [pr 0 4, pr 1 5, pr 2 7, pr 6 10, pr 8 9]
+
+/-- A rank for `discPairs`, written out. -/
+def discRank : Fin disc.length → ℕ := fun i => [5, 3, 7, 9, 6, 4, 2, 8, 0, 1, 3].getD i 0
+
+/-- The checker accepts the five pairs of `discPairs` with the rank `discRank`, which match every
+position but the vertex `3`, so a certified matching of larger cardinality than the generated one
+exists; the greedy pass is not maximum. -/
+theorem disc_not_maximum :
+    check disc discPairs discRank = true ∧ discPairs.length = 5 ∧
+      (generate disc).pairs.length = 4 ∧
+      (List.finRange disc.length).filter (fun i => decide (i ∉ endpoints discPairs)) =
+        [⟨3, by decide⟩] := by
   decide +kernel
 
 end TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples

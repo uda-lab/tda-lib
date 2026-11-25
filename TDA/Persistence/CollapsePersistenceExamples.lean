@@ -17,7 +17,8 @@ At grade `4` the deletion of the long edge, and the labelled inclusion of the α
 (`isIso_deletion_long_edge`, `isIso_alpha_cech_four`). Over all grades, the labelled inclusions
 induce a natural isomorphism of the homology persistence modules in every degree and over every
 ring (`isIso_inclusionHom`, `alphaCechIso`). In degree zero over a field its forward map is the
-existing `alphaH0Comparison` (`alphaCechIso_zero_hom`).
+existing `alphaH0Comparison` (`alphaCechIso_zero_hom`, a definitional equality by `rfl`, not an
+independent comparison).
 -/
 
 namespace TDA.Persistence.CollapsePersistenceExamples
@@ -59,7 +60,9 @@ theorem alphaCechIso_hom (R : Type*) [Ring R] (n : ℕ) :
       inclusionHom R n (Alpha.labelledComplexFiltration_le_squaredCech (realSites obtuse)) :=
   rfl
 
-/-- In degree zero over a field, the forward map of `alphaCechIso` is `alphaH0Comparison`. -/
+/-- In degree zero over a field, the forward map of `alphaCechIso` is `alphaH0Comparison`.
+The proof is `rfl`: both sides are defined as the same inclusion morphism, so this records that
+the two definitions agree and is not an independent comparison. -/
 theorem alphaCechIso_zero_hom (k : Type*) [Field k] :
     (alphaCechIso k 0).hom = alphaH0Comparison (realSites obtuse) k :=
   rfl

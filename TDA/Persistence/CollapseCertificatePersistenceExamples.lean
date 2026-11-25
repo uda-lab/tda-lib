@@ -13,7 +13,8 @@ natural isomorphism from α persistence to squared-grade Čech persistence induc
 inclusions, in every degree and over every ring (`isIso_inclusionHom_of_certificate`,
 `alphaCechCertificateIso`). It is the isomorphism `CollapsePersistenceExamples.alphaCechIso`
 obtained from the hand proof of the collapses (`alphaCechCertificateIso_eq`): both have forward
-map the inclusion morphism, and only the proof of the collapses differs.
+map the inclusion morphism, and only the proof of the collapses differs. This equality is
+definitional (`Iso.ext rfl`), not an independent comparison.
 -/
 
 namespace TDA.Persistence.CollapseCertificatePersistenceExamples
@@ -42,7 +43,10 @@ theorem alphaCechCertificateIso_hom (R : Type*) [Ring R] (n : ℕ) :
       inclusionHom R n (Alpha.labelledComplexFiltration_le_squaredCech (realSites obtuse)) :=
   rfl
 
-/-- The isomorphism obtained through the verifier is `CollapsePersistenceExamples.alphaCechIso`. -/
+/-- The isomorphism obtained through the verifier is `CollapsePersistenceExamples.alphaCechIso`.
+The proof is `Iso.ext rfl`: both isomorphisms are defined with the same inclusion morphism as
+forward map, so the equality is definitional and is not an independent comparison; only the proofs
+that the collapses exist differ. -/
 theorem alphaCechCertificateIso_eq (R : Type*) [Ring R] (n : ℕ) :
     alphaCechCertificateIso R n = CollapsePersistenceExamples.alphaCechIso R n :=
   Iso.ext rfl

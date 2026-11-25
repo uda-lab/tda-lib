@@ -10,6 +10,10 @@ of the full triangle, which is also the squared-grade Čech stage of the obtuse 
 `[4, 5)`, and `alphaTable` lists the α stage there: the triangle without the long edge `{0,1}` and
 the triangle itself. Every acceptance and rejection is evaluated by `decide +kernel`. Each
 rejection also records, by `decide +kernel`, the fact about the tables that makes it fail.
+
+The hollow triangle `hollowTriangle` has no free pair, at the level of tables and of complexes,
+and does not collapse to a point (`hollowComplex_not_collapsesTo_point`): it is a negative control
+for the free-pair test.
 -/
 
 namespace TDA.Simplicial.CollapseCertificateExamples
@@ -140,5 +144,49 @@ theorem top_collapsesTo_vertex :
   change s.Nonempty ↔ s ∈ tetrahedron
   rw [tetrahedron, Finset.mem_erase, Finset.nonempty_iff_ne_empty]
   simp
+
+/-- The hollow triangle: three vertices and three edges, with no 2-face. -/
+def hollowTriangle : Finset (Finset (Fin 3)) :=
+  {{0}, {1}, {2}, {0,1}, {0,2}, {1,2}}
+
+/-- The hollow triangle as a stored finite complex. -/
+def hollowComplex : FiniteComplex 3 :=
+  ⟨hollowTriangle, by decide, by decide⟩
+
+/-- The complex with the single face `{0}`. -/
+def pointComplex : FiniteComplex 3 :=
+  ⟨{{0}}, by decide, by decide⟩
+
+/-- No pair of faces is free in the hollow triangle: every vertex lies in two edges and every
+edge lies in no 2-face, so no face is the only strict coface of another. -/
+theorem hollowTriangle_no_free_pair :
+    ∀ σ τ : Finset (Fin 3), ¬ IsFreePairTable hollowTriangle σ τ := by
+  decide +kernel
+
+/-- Negative control at the level of complexes: the hollow triangle has no free pair, so no
+elementary collapse starts there. -/
+theorem hollowComplex_no_free_pair (σ τ : Finset (Fin 3)) :
+    ¬ IsFreePair hollowComplex.toPre σ τ :=
+  fun h => hollowTriangle_no_free_pair σ τ
+    ((isFreePair_iff_isFreePairTable hollowComplex.mem_toPre).1 h)
+
+/-- The hollow triangle does not collapse to a point: it has no free pair, so the only complex it
+collapses to is itself, and it is not the point `{0}`. No certificate is accepted either. -/
+theorem hollowComplex_not_collapsesTo_point :
+    ¬ CollapsesTo hollowComplex.toPre pointComplex.toPre ∧
+      ∀ steps, checkSteps hollowTriangle steps {{0}} = false := by
+  have h : ∀ steps, checkSteps hollowTriangle steps {{0}} = false := by
+    intro steps
+    cases steps with
+    | nil => decide +kernel
+    | cons step steps =>
+      obtain ⟨σ, τ⟩ := step
+      rw [Bool.eq_false_iff]
+      intro hc
+      exact hollowTriangle_no_free_pair σ τ (checkSteps_cons.1 hc).1
+  refine ⟨fun hcol => ?_, h⟩
+  obtain ⟨steps, hsteps⟩ := (collapsesTo_iff_exists_checkSteps hollowComplex.mem_toPre
+    pointComplex.mem_toPre).1 hcol
+  exact Bool.false_ne_true ((h steps).symm.trans hsteps)
 
 end TDA.Simplicial.CollapseCertificateExamples

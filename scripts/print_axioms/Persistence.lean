@@ -9398,3 +9398,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_not_unitPair_A_AB
 #print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_negative_reduced_sq_ne_zero
 #print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_negative_homotopy_identity_fails
+#print axioms TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples.disc
+#print axioms TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples.disc_generate_pairs
+#print axioms TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples.disc_generate_report
+#print axioms TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples.discPairs
+#print axioms TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples.discRank
+#print axioms TDA.Persistence.Morse.FiniteInputMatchingGenerationExamples.disc_not_maximum
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.xD
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.xDegree
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.xGrade
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.xD_isFilteredDifferential
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.tie_occurrences_natural
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.tie_occurrences_dual
+#print axioms TDA.Persistence.Morse.MorseDiagramExamples.tie_occurrences_ne_diagram_eq

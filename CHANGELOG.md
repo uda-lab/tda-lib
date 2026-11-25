@@ -42,6 +42,11 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   the usual boundary) with negative entries of the reduced differential, projection and
   inclusion written by hand, a direct evaluation of the homotopy identity, and a negative
   control for incidence `-1`. No statement changed.
+- Discrete Morse fixtures with negative controls (#1151): a disc on which the greedy matching is
+  not of maximum cardinality; two tie orders with different occurrence lists and equal diagrams;
+  the hollow triangle as a complex with no free pair that does not collapse to a point. Two
+  `rfl` comparisons of the obtuse-triangle persistence examples are documented as definitional.
+  No statement changed.
 
 ## v0.5.0
 
