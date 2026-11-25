@@ -10,6 +10,14 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Canonical squared-grade α–Čech comparison (#1138): `Alpha.filtration_le_squaredCech`,
+  `Alpha.inclusion_natural_squaredCech` and `isIso_alpha_filtration_le_squaredCech` (every
+  grade) target `Alpha.squaredCechFiltration`, which is empty below zero. The legacy
+  `Alpha.filtration_le_cech` and `Alpha.inclusion_natural` keep their statements and their
+  radius-zero Čech target below zero (not deprecated yet). Migration: replace them by the
+  canonical counterparts; the targets agree at `t ≥ 0`
+  (`Alpha.reindex_radius_cech_eq_squaredCech_of_nonneg`), and the module docstrings now state the
+  negative-grade and nerve-form conventions.
 - `RealIntervalObservation`: the scalar crossing count holds for `s ≤ t`
   (`persistenceImage_finrank_eq_scalar_crossing_of_le`,
   `scalar_crossing_card_eq_of_iso_of_le`); at `s = t` it counts the occurrences active at

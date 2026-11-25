@@ -10,17 +10,30 @@ set_option autoImplicit false
 
 The closed Voronoi nerve accepts a site function, with the embedding-based α filtration as
 a special case. The Čech filtration uses squared grades and both filtrations start at zero.
-The closed nerve retains all nearest-site ties, including in degenerate configurations.
-Both the α filtration and its comparison target `squaredCechFiltration` have empty stages
-below zero. The existing comparison `filtration_le_cech` retains compatibility reindexing
-by `Alpha.radius`, whose negative grades give the radius-zero Čech complex.
+
+Nerve form. `labelledComplex sites t` is the nerve of the closed Voronoi cells of the labels,
+each cut off at squared distance `t` from its own site. The closed nearest-site inequalities
+retain all ties, including in degenerate configurations: for cocircular sites the simplex
+spanned by all of them is a face at the squared circumradius, so the complex is the nerve and
+not a Delaunay subcomplex.
+
+Negative grades. The canonical comparison target `squaredCechFiltration` is the ambient
+Čech filtration on squared grades and is empty below zero, as is the α filtration. The
+canonical inclusion for embedded sites is `filtration_le_squaredCech` (the labelled version is
+`labelledComplexFiltration_le_squaredCech`), with naturality `inclusion_natural_squaredCech`.
+The legacy comparison `filtration_le_cech` of `Alpha.lean` reindexes by `Alpha.radius`, whose
+negative grades give radius zero and hence the radius-zero Čech complex. The two targets agree
+at `t ≥ 0` (`reindex_radius_cech_eq_squaredCech_of_nonneg`) and the empty target lies below the
+legacy one everywhere (`squaredCechFiltration_le_reindex_radius`). The legacy statements are
+kept unchanged for the migration period.
+
 For finitely many sites in a real normed vector space, each Čech edge at a nonnegative
 grade can be replaced by a path in the α complex at that grade.
 -/
 
 namespace TDA.Filtration.Alpha
 
-open TDA.Topology
+open TDA.Topology TDA.Simplicial
 open scoped Convex
 
 variable {V E : Type*} [NormedAddCommGroup E] (sites : V → E)
@@ -94,6 +107,47 @@ theorem labelledComplexFiltration_le_squaredCech (t : ℝ) :
     exact bot_le
   · rw [squaredCechFiltration_apply_of_nonneg sites (le_of_not_gt ht)]
     exact nerve_mono fun _ _ hx => Real.le_sqrt_of_sq_le hx.2
+
+/-- The legacy radius reindexing agrees with the canonical squared-grade Čech filtration at
+every nonnegative grade. -/
+theorem reindex_radius_cech_eq_squaredCech_of_nonneg {t : ℝ} (ht : 0 ≤ t) :
+    reindex radius (Cech.complexFiltration sites) t = squaredCechFiltration sites t := by
+  rw [squaredCechFiltration_apply_of_nonneg sites ht, reindex_apply, Cech.complexFiltration_apply]
+  rfl
+
+/-- At a negative grade the legacy radius reindexing is the radius-zero Čech complex. -/
+theorem reindex_radius_cech_apply_of_neg {t : ℝ} (ht : t < 0) :
+    reindex radius (Cech.complexFiltration sites) t = Cech.complex sites 0 := by
+  rw [reindex_apply, Cech.complexFiltration_apply]
+  congr 1
+  exact Real.sqrt_eq_zero'.2 ht.le
+
+/-- The canonical (empty below zero) target is contained in the legacy radius reindexing at
+every grade. -/
+theorem squaredCechFiltration_le_reindex_radius :
+    squaredCechFiltration sites ≤ reindex radius (Cech.complexFiltration sites) := by
+  intro t
+  by_cases ht : t < 0
+  · rw [squaredCechFiltration_apply_of_neg sites ht]
+    exact bot_le
+  · exact (reindex_radius_cech_eq_squaredCech_of_nonneg sites (le_of_not_gt ht)).ge
+
+/-- Canonical inclusion of the α filtration of embedded sites into the Čech filtration on
+squared grades, with empty negative stages. This is the labelled inclusion
+`labelledComplexFiltration_le_squaredCech` at an embedding; the legacy counterpart with the
+radius-zero-below-zero target is `filtration_le_cech`. -/
+theorem filtration_le_squaredCech (p : V ↪ E) :
+    complexFiltration p ≤ squaredCechFiltration p :=
+  labelledComplexFiltration_le_squaredCech p
+
+/-- The identity on labels commutes with the structure maps of the α filtration and of the
+canonical squared-grade Čech filtration. Canonical counterpart of `inclusion_natural`. -/
+theorem inclusion_natural_squaredCech (p : V ↪ E) {s t : ℝ} (hst : s ≤ t) :
+    VertexMap.comp (inclusionVertexMap ((complexFiltration p).monotone hst))
+        (inclusionVertexMap (filtration_le_squaredCech p t)) =
+      VertexMap.comp (inclusionVertexMap (filtration_le_squaredCech p s))
+        (inclusionVertexMap ((squaredCechFiltration p).monotone hst)) :=
+  VertexMap.ext fun _ => rfl
 
 private theorem isClosed_restrictedBall (t : ℝ) (v : V) : IsClosed (restrictedBall sites t v) := by
   apply IsClosed.inter

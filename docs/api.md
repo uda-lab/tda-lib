@@ -1805,6 +1805,16 @@ embeddings. The squared-grade `Alpha.squaredCechFiltration` uses radius
 The square-root reindexing of `Alpha.filtration_le_cech` uses radius zero
 below zero.
 
+Migration (#1138): new squared-grade α–Čech results should target the canonical
+`Alpha.squaredCechFiltration` (empty below zero). `Alpha.filtration_le_squaredCech` and
+`Alpha.inclusion_natural_squaredCech` are the canonical counterparts of the legacy
+`Alpha.filtration_le_cech` and `Alpha.inclusion_natural`, which keep their statements and
+radius-zero behaviour below zero and are not yet deprecated. The two targets agree at every
+`t ≥ 0` (`Alpha.reindex_radius_cech_eq_squaredCech_of_nonneg`); below zero the legacy one is
+`Cech.complex sites 0` (`Alpha.reindex_radius_cech_apply_of_neg`) and contains the canonical
+one (`Alpha.squaredCechFiltration_le_reindex_radius`). The α complex is the nerve of the closed
+Voronoi cells cut off by closed balls, so cocircular sites give the full cocircular simplex.
+
 For finite linearly ordered labels in a real normed vector space,
 `TDA.Persistence.AlphaH0` gives `alphaH0Iso` in ordinary degree zero
 over a field. Its forward map `alphaH0Comparison` is the inclusion on
@@ -1826,7 +1836,8 @@ structure map (`alphaCechIso_naturality`). `isIso_alphaCechComparison_app` state
 component is an isomorphism, at negative grades too, and `isIso_alphaIncl_cech` is the
 statement at one grade `t ≥ 0` for the inclusion into `Cech.complex sites (Real.sqrt t)`.
 For embedded sites, `isIso_alpha_filtration_le_cech` is that statement for
-`Alpha.filtration_le_cech` at `t ≥ 0`. Over a field, `alphaCechIso_zero` recovers
+`Alpha.filtration_le_cech` at `t ≥ 0`, and `isIso_alpha_filtration_le_squaredCech` is the
+canonical counterpart for `Alpha.filtration_le_squaredCech` at every grade. Over a field, `alphaCechIso_zero` recovers
 `alphaH0Iso`. Distinct labels may have the same site, and nearest-site ties are allowed.
 The proof applies `ConvexNerve.isIso_simplicialHomologyIncl_of_compact`
 ([nerves of nested convex families](#realizations-subdivision-mesh-and-nerves-of-nested-convex-families))
