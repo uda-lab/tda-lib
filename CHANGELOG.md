@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Claude cloud setup snapshot: `scripts/claude-cloud-setup.sh` also copies the companion skills
+  `github-driven-workflow`, `github-loop-engineering` and `lean-formalization-discipline` from
+  `t-uda/skills` at a pinned commit into `~/.claude/skills`, so that `scripts/preflight.sh` finds
+  them in a hosted session. `STATUS.txt` records the commit and a per-skill result separately from
+  the cache `state` (#683); `docs/claude-cloud-setup.md` adds `GIT_OPTIONAL_LOCKS=0` guidance for
+  readers of the shared packages.
 - Canonical squared-grade α–Čech comparison (#1138): `Alpha.filtration_le_squaredCech`,
   `Alpha.inclusion_natural_squaredCech` and `isIso_alpha_filtration_le_squaredCech` (every
   grade) target `Alpha.squaredCechFiltration`, which is empty below zero. The legacy
@@ -93,6 +99,12 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `SuppliedGradeEnumerationExamples.innerSplit` instead of file-private copies with the same
   bodies, and the generation fixtures name `FiniteInputMatchingExamples.pr`; in the other
   fixture files the private definitions became public under the same names.
+- Native erosion fixture (#1063): the non-default Lake target `erosion-fixture` and
+  `scripts/run-erosion-fixture.sh` run `RatGradedInput.runErosion` on `triangle` against
+  `shiftedTriangle` in degree one as a compiled executable. Radius 0 reports the witness of
+  `triangle_runErosion_zero`, radius 49/100 fails and radius 1/2 passes, in about 303 to 324 s on
+  the measured host, with the time in `rankAt`; `docs/math/rank-erosion.md` records the host,
+  the counts and the phase breakdown. No runtime bound is claimed.
 
 ## v0.5.0
 

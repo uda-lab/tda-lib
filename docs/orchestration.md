@@ -93,8 +93,8 @@ dot establishes dependencies and release scope from actual mathematical decision
 The repository vendors four skills under `.agents/skills/`, with compatibility links under
 `.claude/skills/`. The companion skills `github-loop-engineering`, `github-driven-workflow`
 and `lean-formalization-discipline` come from `t-uda/skills` and are installed per host;
-`scripts/preflight.sh` reports which are present. A host without them reads them from that
-source. `REVIEW_ACQUIRE_SCRIPT` and the `codex` and `gh` CLIs are host properties as well.
+`scripts/preflight.sh` reports which are present; the Claude cloud setup snapshot carries them
+at a pinned commit. A host without them reads them from that source. `REVIEW_ACQUIRE_SCRIPT` and the `codex` and `gh` CLIs are host properties as well.
 [lean-review-routing](../.agents/skills/lean-review-routing/SKILL.md) gives the review route
 for a host that lacks one of them, and [Claude Code cloud setup](claude-cloud-setup.md)
 covers hosted sessions.

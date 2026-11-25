@@ -13,6 +13,12 @@ readonly LEAN_TOOLCHAIN='leanprover/lean4:v4.35.0'
 readonly MATHLIB_TAG='v4.35.0'
 readonly MATHLIB_COMMIT='56a005855ea17e0b0958f73ec801ae140b0a1679'
 readonly MAX_SETUP_SECONDS=250
+# Companion skills that scripts/preflight.sh expects under ~/.claude/skills. The commit is a
+# reviewed pin, never a branch; the overrides exist for isolated smoke tests only.
+readonly SKILLS_REPO_URL="${TDA_CLAUDE_SETUP_SKILLS_URL:-https://github.com/t-uda/skills.git}"
+readonly SKILLS_COMMIT="${TDA_CLAUDE_SETUP_SKILLS_COMMIT:-f3bc1c250d2a47871c6527db2d7be779d72bef79}"
+readonly SKILLS_NAMES=(github-driven-workflow github-loop-engineering lean-formalization-discipline)
+readonly SKILLS_STAGE_LIMIT=40
 
 # The override exists for isolated smoke tests. Anthropic setup leaves this unset.
 readonly CACHE_ROOT="${TDA_CLAUDE_SETUP_ROOT:-${HOME:?HOME must be set}/.cache/tda-lib-claude-setup}"
@@ -23,6 +29,8 @@ readonly INSTRUCTIONS_FILE="$CACHE_ROOT/INSTRUCTIONS.txt"
 readonly CACHE_CHECKSUM_FILE="$CACHE_ROOT/mathlib-cache.sha256"
 readonly ELAN_HOME="$HOME/.elan"
 readonly MATHLIB_CACHE_DIR="$HOME/.cache/mathlib"
+readonly SKILLS_DIR="$HOME/.claude/skills"
+readonly SKILLS_SRC_DIR="$CACHE_ROOT/tmp/skills-src"
 # Where bwrap and apt-get are looked up. The override exists for isolated smoke tests.
 readonly SANDBOX_SEARCH_PATH="${TDA_CLAUDE_SETUP_SANDBOX_PATH:-$PATH}"
 readonly START_EPOCH="$(date +%s)"
@@ -32,19 +40,31 @@ LEAN_STATUS='not-attempted'
 PACKAGES_STATUS='not-attempted'
 CACHE_STATUS='not-attempted'
 SANDBOX_STATUS='not-attempted'
+SKILLS_STATUS='not-attempted'
+SKILLS_COMMIT_FOUND='unknown'
+SKILL_RESULTS=('not-attempted' 'not-attempted' 'not-attempted')
 ELAN_VERSION_FOUND='unknown'
 ELAN_SECONDS=0
 LEAN_SECONDS=0
 CACHE_SECONDS=0
 CACHE_HASH_SECONDS=0
 SANDBOX_SECONDS=0
+SKILLS_SECONDS=0
 ELAN_DETAIL='not attempted'
 LEAN_DETAIL='not attempted'
 PACKAGES_DETAIL='not attempted'
 CACHE_DETAIL='not attempted'
 SANDBOX_DETAIL='not attempted'
+SKILLS_DETAIL='not attempted'
 CACHE_ARCHIVE_COUNT=0
 CACHE_OLEAN_COUNT=0
+
+skills_status_lines() {
+  local i
+  for i in "${!SKILLS_NAMES[@]}"; do
+    printf 'skill_%s=%s\n' "${SKILLS_NAMES[$i]}" "${SKILL_RESULTS[$i]}"
+  done
+}
 
 write_status() {
   local tmp="$STATUS_FILE.tmp"
@@ -81,6 +101,14 @@ prepared_olean_count=$CACHE_OLEAN_COUNT
 sandbox_status=$SANDBOX_STATUS
 sandbox_seconds=$SANDBOX_SECONDS
 sandbox_detail=$SANDBOX_DETAIL
+skills_status=$SKILLS_STATUS
+skills_seconds=$SKILLS_SECONDS
+skills_detail=$SKILLS_DETAIL
+skills_repo=$SKILLS_REPO_URL
+skills_commit_requested=$SKILLS_COMMIT
+skills_commit_found=$SKILLS_COMMIT_FOUND
+skills_dir=$SKILLS_DIR
+$(skills_status_lines)
 setup_elapsed_seconds=$elapsed
 setup_work_budget_seconds=$MAX_SETUP_SECONDS
 project_dir=$PROJECT_DIR
@@ -115,6 +143,18 @@ run without the bubblewrap sandbox (bwrap). STATUS.txt records it separately as
 sandbox_status; it does not affect state. If sandbox_status is not ready and
 bwrap is not on PATH, install the bubblewrap package before a full
 scripts/check.sh. Do not skip or bypass the Comparator step.
+
+The workflow skills github-driven-workflow, github-loop-engineering and
+lean-formalization-discipline are copied from t-uda/skills at the commit named by
+skills_commit_requested into ~/.claude/skills. STATUS.txt records them separately
+(skills_status and one skill_<name> line per skill); they do not affect state. A
+skill recorded as conflict was left untouched because a different directory already
+existed; report it instead of replacing it. When skills_status is not ready and
+scripts/preflight.sh reports a skill MISSING, install it from that commit.
+
+Readers of the shared prepared packages should run git as
+GIT_OPTIONAL_LOCKS=0 git ... (for example status), so that reading does not refresh
+the index of a snapshot shared between sessions.
 EOF
   mv -f "$INSTRUCTIONS_FILE.tmp" "$INSTRUCTIONS_FILE"
 }
@@ -200,6 +240,10 @@ handle_unexpected_error() {
     SANDBOX_STATUS='incomplete'
     SANDBOX_DETAIL='setup stopped before the sandbox stage finished'
   fi
+  if [[ "$SKILLS_STATUS" == 'not-attempted' ]]; then
+    SKILLS_STATUS='incomplete'
+    SKILLS_DETAIL='setup stopped before the skills stage finished'
+  fi
   write_status 2>/dev/null || true
   write_instructions 2>/dev/null || true
   printf 'Claude cloud setup stopped unexpectedly (exit %s); see %s if it was saved.\n' \
@@ -231,6 +275,8 @@ if ((${#missing_tools[@]})); then
   CACHE_DETAIL='blocked by missing utilities'
   SANDBOX_STATUS='blocked'
   SANDBOX_DETAIL='blocked by missing utilities'
+  SKILLS_STATUS='blocked'
+  SKILLS_DETAIL='blocked by missing utilities'
   write_status
   printf 'Claude cloud setup is partial (%s). See %s\n' \
     "$ELAN_DETAIL" "$STATUS_FILE"
@@ -375,6 +421,12 @@ rev = "v4.35.0"
 
 [[lean_lib]]
 name = "TDA"
+
+# Native erosion fixture (Issue #1063). Not in defaultTargets: the ordinary build and the
+# hosted `check` do not build it; `scripts/run-erosion-fixture.sh` builds and runs it.
+[[lean_exe]]
+name = "erosion-fixture"
+root = "Bench.ErosionFixture"
 
 # Frozen Comparator reference library for the bounded pilot (Issue #855). Not in
 # defaultTargets: it is not part of the ordinary build and imports mathlib only, never TDA
@@ -547,6 +599,139 @@ else
   CACHE_DETAIL='blocked because the exact Lean toolchain is unavailable'
 fi
 
+# The companion skills stage comes after the cache stages so that it never takes time from
+# them, and before the sandbox stage. Its result never enters the cache state: a failure here
+# leaves a warm snapshot warm, and a cold cache is not hidden by installed skills.
+skills_step() {
+  local name="$1" sub_limit="$2" log_file="$3" spent allowance
+  shift 3
+  spent=$(( $(date +%s) - SKILLS_STAGE_STARTED ))
+  allowance=$((SKILLS_STAGE_LIMIT - spent))
+  if (( sub_limit < allowance )); then allowance="$sub_limit"; fi
+  if (( allowance <= 0 )); then
+    printf '%s: skipped; skills stage time limit reached\n' "$name" > "$log_file"
+    printf '%s: skipped (skills stage time limit reached)\n' "$name"
+    return 124
+  fi
+  run_bounded "$name" "$allowance" "$log_file" "$@"
+}
+
+# Exit 0 only when both directory trees hold the same entries, file contents and link targets.
+skill_trees_equal() {
+  python3 -I - "$1" "$2" <<'PY'
+import hashlib
+import os
+import sys
+
+
+def tree(root):
+    entries = {}
+    for base, dirs, files in os.walk(root):
+        for name in dirs + files:
+            path = os.path.join(base, name)
+            rel = os.path.relpath(path, root)
+            if os.path.islink(path):
+                entries[rel] = ("link", os.readlink(path))
+            elif os.path.isdir(path):
+                entries[rel] = ("dir", "")
+            else:
+                with open(path, "rb") as handle:
+                    entries[rel] = ("file", hashlib.sha256(handle.read()).hexdigest())
+    return entries
+
+
+try:
+    same = tree(sys.argv[1]) == tree(sys.argv[2])
+except OSError:
+    same = False
+raise SystemExit(0 if same else 1)
+PY
+}
+
+install_companion_skills() {
+  local i name source target rc found
+  local failed=0 conflicts=0 installed=0 present=0
+  rm -rf "$SKILLS_SRC_DIR"
+  if [[ ! "$SKILLS_COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+    SKILLS_STATUS='blocked'
+    SKILLS_DETAIL='the skills pin is not a full 40-character commit id'
+    return 0
+  fi
+  mkdir -p "$(dirname "$SKILLS_SRC_DIR")"
+  if skills_step 'skills clone and checkout' 25 "$LOG_DIR/skills-clone.log" \
+      env GIT_TERMINAL_PROMPT=0 bash -c \
+        'git clone --quiet --no-checkout -- "$1" "$2" && git -C "$2" checkout --quiet --detach "$3"' \
+        _ "$SKILLS_REPO_URL" "$SKILLS_SRC_DIR" "$SKILLS_COMMIT"; then
+    :
+  else
+    rc=$?
+    SKILLS_STATUS='incomplete'
+    SKILLS_DETAIL="skills clone or checkout of the pinned commit failed or timed out (exit $rc); see logs/skills-clone.log"
+    rm -rf "$SKILLS_SRC_DIR"
+    return 0
+  fi
+  if found="$(git -C "$SKILLS_SRC_DIR" rev-parse HEAD 2>/dev/null)"; then
+    SKILLS_COMMIT_FOUND="$found"
+  fi
+  if [[ "$SKILLS_COMMIT_FOUND" != "$SKILLS_COMMIT" ]]; then
+    SKILLS_STATUS='incomplete'
+    SKILLS_DETAIL="checked-out commit $SKILLS_COMMIT_FOUND does not match the pin; nothing was copied"
+    rm -rf "$SKILLS_SRC_DIR"
+    return 0
+  fi
+  for i in "${!SKILLS_NAMES[@]}"; do
+    name="${SKILLS_NAMES[$i]}"
+    source="$SKILLS_SRC_DIR/skills/$name"
+    target="$SKILLS_DIR/$name"
+    if [[ -L "$source" || ! -f "$source/SKILL.md" ]]; then
+      SKILL_RESULTS[$i]='missing-in-source'
+      failed=$((failed + 1))
+    elif [[ -e "$target" || -L "$target" ]]; then
+      # Never replace an existing skill; an identical copy from an earlier run is fine.
+      if skill_trees_equal "$source" "$target"; then
+        SKILL_RESULTS[$i]='present'
+        present=$((present + 1))
+      else
+        SKILL_RESULTS[$i]='conflict'
+        conflicts=$((conflicts + 1))
+      fi
+    elif skills_step "skill install $name" 10 "$LOG_DIR/skill-install-$name.log" \
+        sh "$SKILLS_SRC_DIR/scripts/install-skill.sh" "$name" claude "$HOME" --copy; then
+      if [[ -f "$target/SKILL.md" ]] && skill_trees_equal "$source" "$target"; then
+        SKILL_RESULTS[$i]='installed'
+        installed=$((installed + 1))
+      else
+        SKILL_RESULTS[$i]='failed'
+        failed=$((failed + 1))
+      fi
+    else
+      rc=$?
+      if (( rc == 2 )); then
+        SKILL_RESULTS[$i]='conflict'
+        conflicts=$((conflicts + 1))
+      else
+        SKILL_RESULTS[$i]='failed'
+        failed=$((failed + 1))
+      fi
+    fi
+  done
+  rm -rf "$SKILLS_SRC_DIR"
+  SKILLS_DETAIL="installed=$installed present=$present conflict=$conflicts failed=$failed at the pinned commit; see logs/skill-install-*.log"
+  if (( failed > 0 )); then
+    SKILLS_STATUS='incomplete'
+  elif (( conflicts > 0 )); then
+    SKILLS_STATUS='conflict'
+  else
+    SKILLS_STATUS='ready'
+  fi
+  return 0
+}
+
+SKILLS_STAGE_STARTED="$(date +%s)"
+install_companion_skills
+SKILLS_SECONDS=$(( $(date +%s) - SKILLS_STAGE_STARTED ))
+write_status
+
 # scripts/check.sh ends with the Comparator step, which refuses to run without the
 # bubblewrap sandbox. This stage comes last so that it never takes time from the cache,
 # and its result does not enter the cache state.
@@ -583,6 +768,6 @@ printf 'Claude cloud setup state: %s\n' \
   "$(sed -n 's/^state=//p' "$STATUS_FILE")"
 printf 'Status: %s\nInstructions: %s\nLogs: %s\n' \
   "$STATUS_FILE" "$INSTRUCTIONS_FILE" "$LOG_DIR"
-printf 'Stages: elan=%s lean=%s packages=%s mathlib-cache=%s sandbox=%s\n' \
-  "$ELAN_STATUS" "$LEAN_STATUS" "$PACKAGES_STATUS" "$CACHE_STATUS" "$SANDBOX_STATUS"
+printf 'Stages: elan=%s lean=%s packages=%s mathlib-cache=%s skills=%s sandbox=%s\n' \
+  "$ELAN_STATUS" "$LEAN_STATUS" "$PACKAGES_STATUS" "$CACHE_STATUS" "$SKILLS_STATUS" "$SANDBOX_STATUS"
 exit 0
