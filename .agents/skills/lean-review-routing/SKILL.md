@@ -119,7 +119,9 @@ reviewers spend their effort on the mathematical meaning and use of the API.
   when useful). Separate exact reuse from a bridge requiring different hypotheses, semantics
   or toolchain. A similarly named object is not evidence of duplication; unavailable search
   is not evidence of absence. Do not introduce a dependency or change a pin merely to satisfy
-  a reuse suggestion.
+  a reuse suggestion. Within this library, check new helpers against existing ones, private
+  copies in other files included, and name the common lemma to use or extract when the
+  import direction permits.
 - **Usable interface.** Try representative downstream uses through public lemmas, without
   unfolding implementation definitions. Supply the useful characteristic, introduction,
   elimination, membership, extensionality and operation lemmas for the object's intended

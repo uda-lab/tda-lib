@@ -128,6 +128,11 @@ milestones. Do not invent dates or impose a serial milestone order.
 
 Research existing mathlib and TauCeti APIs before duplicating foundations; TauCeti becomes
 an actual dependency only through a justified infrastructure Issue and reviewed pin.
+Before adding a helper lemma, search `develop` for an equivalent statement, private ones in
+other files included. At genuine cross-file reuse, prefer one reviewed common lemma in its
+natural home when the import direction permits; a second use does not by itself promote a
+helper to public API, and no broad refactor is implied. A public theorem in an internal
+namespace is still pinned in its area's `scripts/print_axioms/<Area>.lean`.
 Theory APIs may be noncomputable; executable verified algorithms have their own contracts.
 The repository stays private until roadmap preparation is complete, then dot may publish it
 under the owner's standing authorization. English is used for tracked artifacts.
