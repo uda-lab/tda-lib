@@ -203,7 +203,7 @@ records the metadata and evidence. Fresh primary-text comparison remains
 pending in #506. This is a code/contract-based account, not a new source match
 or full-proof certification.
 
-## Crossing counts from strict ranks
+## Crossing counts from structure-map ranks
 
 `TDA.Persistence.RealIntervalObservation` (namespace
 `TDA.Persistence.RealIntervalDecomposition`) keeps the setting above: a field
@@ -214,20 +214,23 @@ or full-proof certification.
 
 For all reals `s` and `t`, `scalar_crossing_finite` states that the set of
 occurrences whose support contains both `s` and `t` is finite; it is a subset of the
-occurrences active at `s`. For `s < t`, `persistenceImage_finrank_eq_scalar_crossing`
-states
+occurrences active at `s`. For `s ≤ t`,
+`persistenceImage_finrank_eq_scalar_crossing_of_le` states
 
-`Module.finrank k (persistenceImage M hst.le) =
+`Module.finrank k (persistenceImage M hst) =
   Nat.card {j : ScalarIndex M // s ∈ scalarSupport M j ∧ t ∈ scalarSupport M j}`,
 
 so the rank of the structure map from `s` to `t` counts the occurrences alive at both
-parameters. The proof reindexes `M` along the two-point list `s < t`, transports the
-rank along `scalarIso` to the finitely many occurrences visible at `s` or `t`, and
-uses that a scalar module with order-convex support has rank one on that pair when
-its support contains both points and rank zero otherwise. For a second module `N`
+parameters; at `s = t` it counts the occurrences active at `s`. The proof reindexes
+`M` along the two-point list `s < t`, or the one-point list `s` when `s = t`,
+transports the rank along `scalarIso` to the finitely many occurrences visible at the
+sample, and uses that a scalar module with order-convex support has rank one on that
+pair when its support contains both points and rank zero otherwise. The strict form
+`persistenceImage_finrank_eq_scalar_crossing` (hypothesis `s < t`) is its corollary. For a second module `N`
 with the same field and finite-dimensional fibers, and a natural isomorphism
-`e : M ≅ N`, `scalar_crossing_card_eq_of_iso` gives equal counts for every `s < t`,
-although the two selected index types may differ. The case `s = t` is not stated.
+`e : M ≅ N`, `scalar_crossing_card_eq_of_iso_of_le` gives equal counts for every
+`s ≤ t`, although the two selected index types may differ; `scalar_crossing_card_eq_of_iso`
+is its strict case `s < t`.
 
 `RealIntervalObservationExamples` evaluates the count through this theorem.
 `interval_crossing_card` gives `1` or `0` for `SupportInterval.module S hS` with

@@ -125,4 +125,20 @@ theorem eRankErosionDistance_scaledHomology_zero_eq_coordinateInterleavingDistan
   rw [eRankErosionDistance_scaledHomology_zero,
     coordinateInterleavingDistance_scaledHomology_zero]
 
+/-- Erosion against the zero module holds at the exact distance `scaledLifetime s / 2`: the
+explicit optimal interleaving supplies both rank inequalities. -/
+theorem scaledHomology_rankErosion_zero (k : Type u) [Field k]
+    (s : Fin 2 → ℝ) (hs : ∀ i, 0 < s i) :
+    RankErosion (Real.toNNReal (scaledLifetime s / 2)) (scaledHomology k s hs)
+      (0 : PModule.{u,0,u} k (Fin 2 → ℝ)) :=
+  (scaledHomologyZeroInterleaving k s hs).rankErosion
+
+/-- Extended-rank erosion against the zero module holds at the exact distance
+`scaledLifetime s / 2`. -/
+theorem scaledHomology_eRankErosion_zero (k : Type u) [Field k]
+    (s : Fin 2 → ℝ) (hs : ∀ i, 0 < s i) :
+    ERankErosion (Real.toNNReal (scaledLifetime s / 2)) (scaledHomology k s hs)
+      (0 : PModule.{u,0,u} k (Fin 2 → ℝ)) :=
+  (scaledHomologyZeroInterleaving k s hs).eRankErosion
+
 end TDA.Persistence.RankResolutionDegreeTwoSimplicial

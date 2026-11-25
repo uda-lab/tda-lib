@@ -534,4 +534,23 @@ theorem run_correct {sites : Fin n → Point} {out : List Occurrence}
   obtain ⟨h', rfl⟩ := (run_eq_some_iff sites out).1 hr
   exact points_eq_dgm ⟨sites,h⟩ k
 
+/-- The runner succeeds only on injective site lists. -/
+theorem injective_of_run_eq_some {sites : Fin n → Point} {out : List Occurrence}
+    (hr : run sites = some out) : Function.Injective sites :=
+  ((run_eq_some_iff sites out).1 hr).1
+
+/-- `run_correct` with the injectivity of the sites obtained from `run sites = some out`
+and with any `Fintype` instance on the faces of the closed α carrier: the executable
+barcode agrees in every degree with actual closed α persistence. -/
+theorem run_correct_of_fintype {sites : Fin n → Point} {out : List Occurrence}
+    (hr : run sites = some out)
+    [inst : Fintype (TotalFace (Alpha.carrier
+      (RationalAlpha.realSites ⟨sites, injective_of_run_eq_some hr⟩)))]
+    (k : ℕ) :
+    points out k =
+      (dgm (ZMod 2) (Alpha.filter
+        (RationalAlpha.realSites ⟨sites, injective_of_run_eq_some hr⟩)) k).points := by
+  obtain rfl : inst = Fintype.ofFinite _ := Subsingleton.elim _ _
+  exact run_correct hr (injective_of_run_eq_some hr) k
+
 end TDA.Persistence.Reduction.AlphaInput

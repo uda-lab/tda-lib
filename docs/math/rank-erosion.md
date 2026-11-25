@@ -86,7 +86,9 @@ rank is the truncation sending $\top$ to $0$.
 image) and `eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional_source`
 (finite-dimensional source fiber) identify the two ranks, and
 `eRankOfStructureMap_le_eRankOfStructureMap_iff` identifies their comparisons
-when both source fibers are finite-dimensional. The examples
+when both source fibers are finite-dimensional, and
+`eRankOfStructureMap_le_eRankOfStructureMap_iff_of_finiteDimensional` when both
+images are. The examples
 (`TDA.Persistence.StructureMapERankExamples`) show that a
 countably-infinite-dimensional constant module has the `ℕ`-valued ranks of the
 zero module, so `RankErosion 0` holds between them
@@ -1071,7 +1073,10 @@ erosion fails at every radius below $\min(|t-u|,T/2)$, for both ranks
 $\min(|t-u|,T/2)$, which is the interleaving distance
 (`rankErosionDistance_scaledTranslatedHomology`,
 `eRankErosionDistance_scaledTranslatedHomology`). Again the lower bound uses
-neither the interleaving distance nor attainment. Under the scale with
+neither the interleaving distance nor attainment. Erosion holds at the distance
+itself, since the explicit optimal interleaving exists there
+(`scaledTranslatedHomology_rankErosion_min`,
+`scaledTranslatedHomology_eRankErosion_min`). Under the scale with
 coordinates $1$ and $1/4$ the arm lifetimes are $1/4$ and $1/2$, so $T=1/2$;
 between the delays $0$ and $1/2$ the radius $1/8$ is a failing radius at which
 only the longer arm witnesses the failure, and the certificate reads
@@ -1090,7 +1095,9 @@ for both ranks (`scaledHomology_not_rankErosion_zero`,
 equal $T/2$, which is the interleaving distance
 (`rankErosionDistance_scaledHomology_zero`,
 `eRankErosionDistance_scaledHomology_zero`). The lower bound uses neither the
-interleaving distance nor attainment. Under the scale with coordinates $1$ and
+interleaving distance nor attainment. Erosion against zero holds at $T/2$
+itself, by the explicit optimal interleaving
+(`scaledHomology_rankErosion_zero`, `scaledHomology_eRankErosion_zero`). Under the scale with coordinates $1$ and
 $1/4$, $T=1/2$ and the radius $1/8$ is a failing radius at which only the longer
 arm witnesses the failure. The fixture uses the general finitely presented
 certificate, which needs no realization of the zero module as a finite
