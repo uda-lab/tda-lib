@@ -117,7 +117,8 @@ tie-refined prefixes of a same-grade order.
 
 ## Fixtures
 
-All fixtures are over `ZMod 2`. Every closed computation is a kernel `decide`.
+All fixtures except the signed instance over `ℤ` at the end of this section are over `ZMod 2`.
+Every closed computation is a kernel `decide`.
 
 The filled triangle `triangle` has positions 0 to 6 for A, B, C, AB, BC, CA, ABC. A, B, C and
 AB have grade 0, BC and CA grade 1, and ABC grade 2. `triangle_boundary` proves that its
@@ -167,6 +168,29 @@ Fixture R1 of
 [the reducer order of a filtered based complex](#the-reducer-order-of-a-filtered-based-complex)
 sorts the survivors into the order `r, s`, in which `d'` is strictly upper triangular;
 `TDA.Persistence.Morse.UnitCancellation` itself sorts nothing.
+
+A minus sign is invisible over `ZMod 2`, so a wrong sign in `projection`, `inclusion` or
+`reducedDifferential` would pass every fixture above. The signed instance `zD` over `ℤ` is the
+filled triangle with the usual boundary on positions 0 to 6 for A, B, C, AB, BC, AC, ABC:
+`∂AB = B - A`, `∂BC = C - B`, `∂AC = C - A` and `∂ABC = BC - AC + AB` (`zD_sq`). Its expected
+values are written by hand and checked by kernel `decide`:
+
+- (B, AB) is a unit pair (`zD_unitPair`) and the reduced differential has `d' BC = C - A`, with
+  the entry `-1` at A, and `d' ABC = BC - AC` (`zD_reduced_values`);
+- (BC, ABC) is a unit pair (`zD_unitPair_BC_ABC`) and its projection has the entries `-1` at AB
+  and `+1` at AC in the column BC (`zD_projection_values`);
+- (C, AC) is a unit pair (`zD_unitPair_C_AC`) and its inclusion has the entry `-1` from the
+  survivor BC to AC (`zD_inclusion_values`);
+- the homotopy identity `1 - i p = D H + H D` is evaluated directly over `ℤ` for (B, AB) and
+  (C, AC) (`zD_homotopy_identity`, `zD_homotopy_identity_C_AC`), independently of the general
+  proof.
+
+The negative control is the pair (A, AB), whose incidence is `-1`: a unit of `ℤ`, but not `1`,
+so `zD_not_unitPair_A_AB` shows that it is not an `IsUnitPair`. The entry formulas are still
+defined for it, and they fail: the reduced differential is not square-zero
+(`zD_negative_reduced_sq_ne_zero`) and the homotopy identity does not hold
+(`zD_negative_homotopy_identity_fails`). So over `ℤ` only pairs with incidence exactly `+1` are
+unit pairs; extending cancellation to a general unit coefficient is not provided.
 
 ## Filtered contractions and their composition
 

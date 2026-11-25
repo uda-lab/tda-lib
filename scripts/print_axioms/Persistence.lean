@@ -9385,3 +9385,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseDiagram?
 #print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseDiagram?_eq_none_iff
 #print axioms TDA.Persistence.Morse.MatchingInput.CertifiedMatching.morseDiagram?_eq_some_iff
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_sq
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_unitPair
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_reduced_values
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_unitPair_BC_ABC
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_projection_values
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_unitPair_C_AC
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_inclusion_values
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_homotopy_identity
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_homotopy_identity_C_AC
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_not_unitPair_A_AB
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_negative_reduced_sq_ne_zero
+#print axioms TDA.Persistence.Morse.UnitCancellationExamples.zD_negative_homotopy_identity_fails

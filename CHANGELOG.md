@@ -38,6 +38,10 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `Option`-valued entry points in the Morse lane return `none` exactly when the input is not
   valid: `check?`, `criticalReport?`, `generate?`, `morseOccurrences?`, `morseDiagram?`, each
   with theorems characterising `none` and `some`. No existing statement changed.
+- Signed fixtures for unit cancellation (#1151): an instance over `ℤ` (the filled triangle with
+  the usual boundary) with negative entries of the reduced differential, projection and
+  inclusion written by hand, a direct evaluation of the homotopy identity, and a negative
+  control for incidence `-1`. No statement changed.
 
 ## v0.5.0
 
