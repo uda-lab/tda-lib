@@ -8,7 +8,12 @@ cross-version compatibility promise.
 
 ## Unreleased
 
-Changes on `develop` after v0.4.0; the next release version is undecided.
+Changes on `develop` after v0.5.0; the next release version is undecided.
+
+## v0.5.0
+
+Published 2026-11-25. [Release notes](https://github.com/uda-lab/tda-lib/releases/tag/v0.5.0)
+· [Versioned API guide](https://github.com/uda-lab/tda-lib/blob/v0.5.0/docs/api.md).
 
 - Add rationally graded simplicial input and its generated F₂ grid
   representation (`TDA.Persistence.F2GridHomologyInput`): decidable validation,
@@ -626,6 +631,11 @@ Changes on `develop` after v0.4.0; the next release version is undecided.
   `repeatedTraining_fullH0_bound` state their bounds with the public
   `TDA.Topology.MeasureBifiltration.uniformPMF (V := Bool)` in place of a private copy of the
   uniform law on `Bool`; the law and the bounds are unchanged (#981).
+
+Lean: `leanprover/lean4:v4.35.0`, unchanged from v0.4.0; seven library areas. No module
+of v0.4.0 was removed or renamed, and every theorem pinned at v0.4.0 is still pinned under
+the same name. See the release notes for exact hypotheses, source-review limits and
+unsupported extensions.
 
 ## v0.4.0
 
