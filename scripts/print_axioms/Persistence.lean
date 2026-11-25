@@ -9495,3 +9495,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RipsGHClientExamples.one_sub_le_measure_compl_diagramErrorEvent
 #print axioms TDA.Persistence.RipsGHClientExamples.fin_diagram_tail_le_of_gh_tail_le
 #print axioms TDA.Persistence.RipsGHClientExamples.ulift_fin_diagram_tail_le_of_gh_tail_le
+
+-- Consumer fixtures linking executable reduction fixtures to correctness (#1195 D-9).
+#print axioms TDA.Persistence.Reduction.FiniteInput.Examples.sphere_H2_dgm
+#print axioms TDA.Persistence.Reduction.FiniteInput.Examples.ball_H2_dgm
+#print axioms TDA.Persistence.Reduction.FiniteInput.Examples.sphere_H2_homology_finrank
+#print axioms TDA.Persistence.Reduction.FiniteInput.Examples.ball_H2_homology_finrank
+#print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.ComponentMerger.image_actual
+#print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.ComponentMerger.source_actual
+#print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.ComponentMerger.target_actual
+#print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.ComponentMerger.actual_barcodes_separated

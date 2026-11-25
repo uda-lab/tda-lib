@@ -472,6 +472,63 @@ theorem separated_multisets :
     (imageBars : Multiset (FiniteInterval 2)) ≠ (targetBars : Multiset _) ∧
     (sourceBars : Multiset (FiniteInterval 2)) ≠ (targetBars : Multiset _) := by decide +kernel
 
+/-! ### Consumer fixtures: the computed lists describe the actual image modules
+
+Each successful run is fed to `runImageBarcode_correct`, so that the stated list is the
+rank barcode of the actual sampled image module and that module is isomorphic to the barcode
+module of the list. The statements mention only the public inputs, the map and the sampling. -/
+
+/-- The relabelled map has an actual image module whose rank barcode is `imageBars`. -/
+theorem image_actual :
+    ∃ h : ImageBarcodeInput source target relabel observations,
+      rankBarcode (sampledImage source target 0 relabel observations h) =
+        (imageBars : Multiset (FiniteInterval 2)) ∧
+      Nonempty (sampledImage source target 0 relabel observations h ≅
+        barcodeModule (k := ZMod 2) (imageBars : Multiset (FiniteInterval 2))) := by
+  obtain ⟨h, _, hm, hi⟩ := runImageBarcode_correct _ _ _ _ _ _ image_run
+  exact ⟨h, hm.symm, hi⟩
+
+/-- The identity image of the source is the source module, with rank barcode `sourceBars`. -/
+theorem source_actual :
+    ∃ h : ImageBarcodeInput source source id observations,
+      rankBarcode (sampledImage source source 0 id observations h) =
+        (sourceBars : Multiset (FiniteInterval 2)) ∧
+      Nonempty (sampledImage source source 0 id observations h ≅
+        barcodeModule (k := ZMod 2) (sourceBars : Multiset (FiniteInterval 2))) := by
+  obtain ⟨h, _, hm, hi⟩ := runImageBarcode_correct _ _ _ _ _ _ source_run
+  exact ⟨h, hm.symm, hi⟩
+
+/-- The identity image of the target is the target module, with rank barcode `targetBars`. -/
+theorem target_actual :
+    ∃ h : ImageBarcodeInput target target id observations,
+      rankBarcode (sampledImage target target 0 id observations h) =
+        (targetBars : Multiset (FiniteInterval 2)) ∧
+      Nonempty (sampledImage target target 0 id observations h ≅
+        barcodeModule (k := ZMod 2) (targetBars : Multiset (FiniteInterval 2))) := by
+  obtain ⟨h, _, hm, hi⟩ := runImageBarcode_correct _ _ _ _ _ _ target_run
+  exact ⟨h, hm.symm, hi⟩
+
+/-- The actual image barcode differs from the actual source barcode and from the actual target
+barcode, and those two differ from each other: the separation is a statement about the modules,
+not about the lists. -/
+theorem actual_barcodes_separated :
+    ∃ (hs : ImageBarcodeInput source source id observations)
+      (ht : ImageBarcodeInput target target id observations)
+      (hi : ImageBarcodeInput source target relabel observations),
+      rankBarcode (sampledImage source target 0 relabel observations hi) ≠
+        rankBarcode (sampledImage source source 0 id observations hs) ∧
+      rankBarcode (sampledImage source target 0 relabel observations hi) ≠
+        rankBarcode (sampledImage target target 0 id observations ht) ∧
+      rankBarcode (sampledImage source source 0 id observations hs) ≠
+        rankBarcode (sampledImage target target 0 id observations ht) := by
+  obtain ⟨hs, hsm, -⟩ := source_actual
+  obtain ⟨ht, htm, -⟩ := target_actual
+  obtain ⟨hi, him, -⟩ := image_actual
+  refine ⟨hs, ht, hi, ?_, ?_, ?_⟩ <;> simp only [hsm, htm, him]
+  · exact separated_multisets.2.1
+  · exact separated_multisets.2.2.1
+  · exact separated_multisets.2.2.2
+
 end ComponentMerger
 
 end TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples

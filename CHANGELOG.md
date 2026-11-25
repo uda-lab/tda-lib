@@ -138,6 +138,13 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `ordered_cuts` and `sites_contained`. `SuppliedCarrierExamples.split_carrier`,
   `split_side_faces` and `splitEmb` give a split-side fixture. Grade rows and stages for a subdivided hull
   are not part of this change.
+- Consumer fixtures for the executable finite-input fixtures (#1195 D-9, residual of #1150): the
+  tetrahedral `sphere` and `ball` inputs now state their degree-two bar about the actual diagram
+  and homology (`Examples.sphere_H2_dgm`, `Examples.ball_H2_dgm` through `outputDiagram_eq_dgm`;
+  `Examples.sphere_H2_homology_finrank`, `Examples.ball_H2_homology_finrank` through
+  `card_essentialPart_dgm_eq_finrank`), and `ImageBarcodeExamples.ComponentMerger` applies
+  `runImageBarcode_correct` to its three runs (`image_actual`, `source_actual`, `target_actual`,
+  `actual_barcodes_separated`). Fixtures only: no library statement changes.
 
 ## v0.5.0
 

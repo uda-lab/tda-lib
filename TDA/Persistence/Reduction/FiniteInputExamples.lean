@@ -1,5 +1,6 @@
 import TDA.Persistence.Reduction.FiniteInput
 import TDA.Persistence.Morse.MatchingSchedule
+import TDA.Persistence.EssentialVanishing
 
 /-! End-to-end executions of the public finite-input pipeline. -/
 
@@ -387,6 +388,61 @@ theorem ball_H2_run : (run ball).map (List.filter fun r => r.degree == 2) =
   simp only [run, (validBool_iff _).mpr ball_valid, ↓reduceIte, Option.map_some]
   unfold occurrences finiteOccurrences essentialOccurrences essentialIndices pivotPairs reduced trace
   rw [ball_boundary]
+  decide +kernel
+
+open TDA.Simplicial
+
+/-! ## Consumer fixtures: the degree-two records describe the actual diagram and homology
+
+`outputDiagram_eq_dgm` turns the evaluated records into the sublevel diagram of the grade
+filter, and `card_essentialPart_dgm_eq_finrank` turns the essential count into the dimension of
+the simplicial homology of the whole complex. The statements mention only the public inputs. -/
+
+/-- Records of one degree determine the points of the output diagram. -/
+private theorem outputDiagram_points_of_run (xs : Input) (p : ℕ) (out : List Occurrence)
+    (h : (run xs).map (List.filter fun r => r.degree == p) = some out) :
+    (outputDiagram xs p).points = (out : Multiset Occurrence).map Occurrence.point := by
+  obtain ⟨o, ho, rfl⟩ := Option.map_eq_some_iff.mp h
+  obtain ⟨-, rfl⟩ := (run_eq_some_iff xs o).mp ho
+  have e : ∀ o : Occurrence, decide (o.degree = p) = (o.degree == p) := fun o => (beq_eq_decide _ _).symm
+  simp only [outputDiagram, e]
+
+/-- The hollow tetrahedron has exactly one actual degree-two bar, and it never dies. -/
+theorem sphere_H2_dgm :
+    let := faceFintype sphere sphere_valid
+    (dgm (ZMod 2) (gradeFilter sphere sphere_valid) 2).points =
+      {((2 : ℤ), (⊤ : WithTop ℤ))} := by
+  dsimp only
+  rw [← outputDiagram_eq_dgm sphere sphere_valid 2,
+    outputDiagram_points_of_run sphere 2 _ sphere_H2_run]
+  simp [Occurrence.point]
+
+/-- Filling the tetrahedron at grade five turns the actual degree-two bar into `[2, 5)`. -/
+theorem ball_H2_dgm :
+    let := faceFintype ball ball_valid
+    (dgm (ZMod 2) (gradeFilter ball ball_valid) 2).points =
+      {((2 : ℤ), ((5 : ℤ) : WithTop ℤ))} := by
+  dsimp only
+  rw [← outputDiagram_eq_dgm ball ball_valid 2,
+    outputDiagram_points_of_run ball 2 _ ball_H2_run]
+  simp [Occurrence.point]
+
+/-- The actual `ℤ/2` second homology of the whole hollow tetrahedron is one-dimensional. -/
+theorem sphere_H2_homology_finrank :
+    Module.finrank (ZMod 2) (simplicialHomology (complex sphere sphere_valid) (ZMod 2) 2) = 1 := by
+  let := faceFintype sphere sphere_valid
+  have hle : ∀ i : Fin sphere.length, (sphere.get i).2 ≤ 2 := by decide +kernel
+  rw [← card_essentialPart_dgm_eq_finrank (ZMod 2) (gradeFilter sphere sphere_valid) 2 2
+    fun s => hle _, sphere_H2_dgm]
+  decide +kernel
+
+/-- The actual `ℤ/2` second homology of the whole filled tetrahedron vanishes. -/
+theorem ball_H2_homology_finrank :
+    Module.finrank (ZMod 2) (simplicialHomology (complex ball ball_valid) (ZMod 2) 2) = 0 := by
+  let := faceFintype ball ball_valid
+  have hle : ∀ i : Fin ball.length, (ball.get i).2 ≤ 5 := by decide +kernel
+  rw [← card_essentialPart_dgm_eq_finrank (ZMod 2) (gradeFilter ball ball_valid) 2 5
+    fun s => hle _, ball_H2_dgm]
   decide +kernel
 
 end TDA.Persistence.Reduction.FiniteInput.Examples
