@@ -49,7 +49,9 @@ containing the full four-record list shown here, in order:
 The equal degree-zero rows are separate finite H₀ occurrences. `Death.essential`
 represents unbounded death, not an integer sentinel. `missingEdge` omits the
 `{0, 2}` edge, so `validBool` is `false` and `run` returns `none`; the input is
-not repaired.
+not repaired. The output of `#eval` is not checked by the kernel.
+`Examples.filled_run` in the fixture file proves the value of `run` on the
+first list as a theorem.
 
 For cycles in the original face-index basis and fillings for finite deaths,
 continue to [cycle representatives](finite-ph-representatives.md).
@@ -108,7 +110,7 @@ one.
 
 `trace` invokes the existing chronological `matrixReductionTrace` on that
 computed matrix, and `reduced` invokes `replay`. `reduced_reindex` shows that
-this is the `reducedFaceBoundary` used by the semantic certificate.
+this is the `reducedFaceBoundary` of the semantic correctness theorems.
 `pivotPairs` produces one pair `(i,j)` for each nonzero reduced column `j`,
 where `i = columnPivot (reduced.col j)`. A pivot at row zero is `some 0`;
 `none` means a zero column. `essentialIndices` selects zero columns outside
@@ -150,6 +152,9 @@ genuine natural interval isomorphism of that prefix module. Thus, for every vali
 the interpreted records equal `dgm (ZMod 2) (gradeFilter xs h) p` as a
 `Diagram ℤ`. This is a statement about the integer sublevel filtration,
 not a declared pairing or a separately assumed barcode decomposition.
+"Certified" in the title has this meaning: the reducer is proved correct for
+every valid input. `run` takes the simplex list alone and checks no reduction
+trace supplied by a caller.
 
 `outputDiagram_eq_of_same_graded_complex` states the order-independence
 consequence at the diagram level: valid presentations whose represented
@@ -166,7 +171,9 @@ single vertex, negative grades, duplicate intervals on disjoint edges,
 equal-grade reordering, and sparse vertex labels. Five negative fixtures
 reject an empty simplex, duplicate simplex with different grade, missing
 face, coface-first list, and decreasing grades. The negative runs together
-with `run_eq_none_iff` justify their invalidity.
+with `run_eq_none_iff` justify their invalidity. In the proofs for the valid
+nonempty lists, `boundary` is first rewritten to a matrix stated in the file,
+and the kernel then evaluates the reduction of that matrix.
 
 ## Rips input from an integer distance table
 

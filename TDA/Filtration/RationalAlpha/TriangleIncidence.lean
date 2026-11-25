@@ -275,7 +275,8 @@ private theorem siteTriangle_eq_hull_points {L : Type*} [DecidableEq L] (site : 
     · exact Or.inr (Or.inr rfl)
 
 /-- The closed carriers of distinct CCW occurrences intersect in the convex hull of their shared
-cast labels when off-edge ambient-interior multiplicity is at most one. -/
+cast labels when no three sites with distinct labels are collinear and off-edge
+ambient-interior multiplicity is at most one. -/
 theorem triangle_inter_eq_shared_labels {L I E : Type*} [DecidableEq L] [Fintype I] [Finite E]
     (site : L → Point) (hsite : Function.Injective site)
     (hgen : ∀ a b c : L, a ≠ b → a ≠ c → b ≠ c →
@@ -314,7 +315,8 @@ theorem siteTriangle_injective_of_off_edge_bound {L I E : Type*} [Fintype I] [Fi
   change x ∈ interior (siteTriangle site (tri i)) at hx
   exact Set.disjoint_left.1 hd hx (by simpa only [he] using hx)
 
-/-- Under the off-edge bound, two CCW occurrences without a common label have disjoint carriers. -/
+/-- Under the off-edge bound, and when no three sites with distinct labels are collinear, two CCW
+occurrences without a common label have disjoint carriers. -/
 theorem triangle_inter_eq_empty_of_disjoint_labels {L I E : Type*}
     [DecidableEq L] [Fintype I] [Finite E]
     (site : L → Point) (hsite : Function.Injective site)
@@ -329,8 +331,9 @@ theorem triangle_inter_eq_empty_of_disjoint_labels {L I E : Type*}
     Finset.disjoint_iff_inter_eq_empty.mp hlabels]
   simp
 
-/-- For a certified hull and its signed-boundary triangle family, each distinct pair of closed
-triangle carriers meets in exactly the convex hull of the shared cast labels. -/
+/-- For a certified hull and its signed-boundary triangle family, when no three sites with
+distinct labels are collinear, each distinct pair of closed triangle carriers meets in exactly
+the convex hull of the shared cast labels. -/
 theorem triangle_inter_eq_shared_labels_of_signed_boundary {L I : Type*}
     [DecidableEq L] [Fintype I] {n : ℕ}
     (site : L → Point) (hs : Function.Injective site) (hull : Fin (n + 3) → L)

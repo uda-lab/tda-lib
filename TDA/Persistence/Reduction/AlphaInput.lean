@@ -414,7 +414,7 @@ private def decoded (p : Fin n ↪ Point) : List Occurrence :=
   (FiniteInput.occurrences (simplexInput p)).map (decode (grades p))
 
 /-- Compute the F₂ barcode of a finite family of exact rational planar sites.
-Repeated coordinates are rejected. -/
+Repeated sites are rejected. -/
 def run (sites : Fin n → Point) : Option (List Occurrence) :=
   if h : Function.Injective sites then
     (FiniteInput.run (simplexInput ⟨sites,h⟩)).map (List.map (decode (grades ⟨sites,h⟩)))

@@ -35,9 +35,11 @@ def alphaRadiusGrade : ℝ →o ℝ where
     · exact (ha (hab.trans_lt hb)).elim
     · exact pow_le_pow_left₀ (le_of_not_gt ha) hab 2
 
+/-- At a nonnegative radius the grade is the squared radius. -/
 theorem alphaRadiusGrade_of_nonneg {r : ℝ} (hr : 0 ≤ r) : alphaRadiusGrade r = r ^ 2 :=
   ite_eq_right (not_lt_of_ge hr)
 
+/-- At a negative radius the grade is the radius itself. -/
 theorem alphaRadiusGrade_of_neg {r : ℝ} (hr : r < 0) : alphaRadiusGrade r = r := ite_eq_left hr
 
 private theorem cechRadius_radiusGrade (r : ℝ) : Alpha.squaredCechRadius (alphaRadiusGrade r) = r := by
@@ -61,6 +63,7 @@ def alphaSquaredGradeToRadius : ℝ ≃o ℝ :=
       · change alphaRadiusGrade (if t < 0 then t else Real.sqrt t) = t
         simp [ht, alphaRadiusGrade_of_nonneg (Real.sqrt_nonneg t), Real.sq_sqrt (le_of_not_gt ht)])
 
+/-- At a nonnegative squared grade the radius is the square root. -/
 theorem alphaSquaredGradeToRadius_of_nonneg {t : ℝ} (ht : 0 ≤ t) :
     alphaSquaredGradeToRadius t = Real.sqrt t := ite_eq_right (not_lt_of_ge ht)
 
@@ -119,7 +122,8 @@ def alphaRadiusDiagramRealizationIso :
     eqToIso (congrArg (RealBarcode.realize (k := k)) (alphaRadiusDiagram_eq_cech k p n).symm)
 
 /-- Moving matched labels in a common Euclidean space changes the radius α diagrams by
-at most the largest site displacement, in every degree over any field. -/
+at most the largest site displacement, in every degree over any field in the universe of the
+label type. -/
 theorem bottleneck_alphaRadiusDiagram_le_displacement :
     bottleneck (alphaRadiusDiagram k p n) (alphaRadiusDiagram k q n) ≤
       ENNReal.ofReal (TDA.Filtration.Cech.displacement p q) := by

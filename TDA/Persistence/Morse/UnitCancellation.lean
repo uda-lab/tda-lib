@@ -111,7 +111,8 @@ structure IsFilteredDifferential (degree : ι → ℕ) (grade : ι → ℤ) (D :
     extends IsBasedDifferential degree D where
   grade_le : GradeNonincreasing grade grade D
 
-/-- `a` is a face of `b` with coefficient one. -/
+/-- `a` is a face of `b` with coefficient one. A pair with coefficient `-1` is not a unit pair
+unless `-1 = 1` in `k`. -/
 structure IsUnitPair (D : Matrix ι ι k) (a b : ι) : Prop where
   ne : a ≠ b
   coeff : D a b = 1

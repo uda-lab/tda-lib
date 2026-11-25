@@ -56,9 +56,9 @@ The search explicitly enumerates finite partial assignments and essential
 functions with Mathlib's `List.pi`, filters for partial injectivity and essential
 bijectivity, and selects the first minimum with `List.argmin`. When there are
 `m,n` retained finite occurrences and `e` essential occurrences on each side,
-it inspects `(n+1)^m * e^e` raw assignments (`0^0 = 1`). It enumerates essential
-functions before filtering, rather than directly enumerating the `e!`
-bijections. This exhaustive algorithm is intended for small diagrams.
+it inspects `(n+1)^m * e^e` raw assignments (`0^0 = 1`); the count is documented,
+not proved. It enumerates essential functions before filtering, rather than
+directly enumerating the `e!` bijections. This exhaustive algorithm is intended for small diagrams.
 
 The chosen matching can depend on input order and ties. Only the value is
 invariant under permutations and diagonal insertion or removal. No efficient

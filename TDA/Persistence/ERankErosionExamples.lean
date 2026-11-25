@@ -14,8 +14,9 @@ distance `⊤`, while the `ℕ`-valued distance is `0` in both cases. On the poi
 finite-dimensional one-dimensional constant module and closed box the two distances agree, the
 latter with the finite value `c`. The module `split`, with fiber `ℚ × (ℕ →₀ ℚ)` and the
 idempotent `inl ∘ fst` between distinct grades, satisfies extended-rank erosion against the
-one-dimensional constant module at every positive radius while `RankErosion` fails, so neither
-predicate implies the other without finite dimensionality.
+one-dimensional constant module at every positive radius while `RankErosion` fails. Conversely
+the ephemeral module satisfies `RankErosion` against zero at radius `0`, where its extended-rank
+erosion fails. So neither predicate implies the other without finite dimensionality.
 -/
 
 set_option autoImplicit false

@@ -229,8 +229,8 @@ theorem runErosion_eq_pass_iff_strictRankErosion [NeZero n] {xs : RatGradedInput
   exact ⟨fun ⟨_, _, _, h⟩ => h, fun h => ⟨hx, hy, he, h⟩⟩
 
 /-- A passing run: both inputs are valid, both erosion predicates hold between the actual
-homology modules at the radius, and both erosion distances are at most the radius. Nothing
-follows for the interleaving distance. -/
+homology modules at the radius, and both erosion distances are at most the radius. The
+conclusion contains no bound of the interleaving distance. -/
 theorem runErosion_eq_pass_certificate {xs : RatGradedInput m n} {ys : RatGradedInput m' n}
     {p : ℕ} {e : ℚ} (h : runErosion xs ys p e = .pass) :
     ∃ (hx : Valid xs) (hy : Valid ys) (he : 0 ≤ e),

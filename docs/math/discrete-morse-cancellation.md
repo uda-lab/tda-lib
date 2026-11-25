@@ -35,7 +35,9 @@ and the list grades `fun i => (xs.get i).2`.
 ## The reduction step
 
 `IsUnitPair D a b` is `a ≠ b` together with `D a b = 1`: `a` is a face of `b` with
-coefficient one. The survivors are the subtype `PairSurvivor a b` of generators other than
+coefficient one. A pair with `D a b = -1`, as occurs in a signed simplicial boundary over a ring
+with `-1 ≠ 1`, is not a unit pair, and the theorems that assume `IsUnitPair` do not cover it.
+The survivors are the subtype `PairSurvivor a b` of generators other than
 `a` and `b`, with the inherited degree `degree ∘ Subtype.val` and grade
 `grade ∘ Subtype.val`. Survivors keep their original IDs as `Subtype.val`; nothing is
 renumbered, and `card_pairSurvivor` counts `card ι - 2` of them when `a ≠ b`.

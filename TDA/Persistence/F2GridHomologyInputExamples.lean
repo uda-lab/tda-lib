@@ -13,7 +13,7 @@ import Mathlib.LinearAlgebra.Matrix.Notation
 * The generated representations are valid, with no computation of their matrices.
 * Rejected inputs: a non-monotone grading, an edge listed before a vertex, a missing vertex, a
   repeated face and the empty face.
-* The empty input is valid and has no grid grades.
+* The empty input with two coordinates is valid and has no grid grades.
 -/
 
 set_option autoImplicit false
@@ -141,7 +141,7 @@ theorem emptyFace_not_valid : ¬ Valid emptyFace := by decide +kernel
 /-- The empty input is valid. -/
 theorem empty_valid : Valid ([] : RatGradedInput 0 2) := by decide +kernel
 
-/-- The empty input has no grid grades. -/
+/-- The empty input with two coordinates has no grid grades. -/
 theorem empty_points : (gridValues ([] : RatGradedInput 0 2)).points = ∅ := by decide +kernel
 
 end TDA.Persistence.F2GridHomologyInputExamples

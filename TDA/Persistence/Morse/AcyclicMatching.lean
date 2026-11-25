@@ -75,7 +75,9 @@ structure IsMatching (M : TotalFace K → TotalFace K → Prop) : Prop where
 def arrow (M : TotalFace K → TotalFace K → Prop) (u v : TotalFace K) : Prop :=
   (v.val ⋖ u.val ∧ ¬ M v u) ∨ M u v
 
-/-- No directed cycle in the modified Hasse diagram of all faces. -/
+/-- No directed cycle in the modified Hasse diagram of all faces. For an infinite `K` this still
+allows an infinite directed path; the Morse reduction modules apply the predicate to the finite
+complex of a simplex list. -/
 def IsAcyclic (M : TotalFace K → TotalFace K → Prop) : Prop :=
   ∀ x : TotalFace K, ¬ Relation.TransGen (arrow M) x x
 

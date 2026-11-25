@@ -60,9 +60,10 @@ grade, using finiteness and decidable equality of labels. The abstract
 `simplicialHomologyIncl_zero_isIso_of_edge_reachable` uses linearly ordered
 labels, a field, an inclusion with every source singleton, and a source path
 between the endpoints of each target edge. Signed boundaries telescope along
-such paths. These are library arguments. For finite-dimensional real
-inner-product spaces, the separate `alphaCechIso` gives the comparison over a
-ring in every degree and specializes to `alphaH0Iso` in degree zero over a field.
+such paths. These are library arguments. For a finite linearly ordered label
+type and sites in a finite-dimensional real inner-product space, the separate
+`alphaCechIso` gives the comparison over a ring in every degree and specializes
+to `alphaH0Iso` in degree zero over a field.
 [AlphaH0.lean](../../TDA/Persistence/AlphaH0.lean) ·
 [H0EdgePaths.lean](../../TDA/Simplicial/H0EdgePaths.lean) ·
 [AlphaCech.lean](../../TDA/Persistence/AlphaCech.lean)
@@ -145,8 +146,14 @@ of a straight side remains a site in this route. A cycle that lists it as a
 corner cannot itself carry a `PolygonCertificate`: the two distinct side
 occurrences on that support line cannot satisfy
 [`PolygonCertificate.strict_endpoint`](../../TDA/Filtration/RationalAlpha/SignedBoundaryCoverage.lean).
-[`midpoint_accepted` and `subdivided_cycle_rejected`](../../TDA/Filtration/RationalAlpha/HullCertificateExamples.lean)
-record both cases.
+The fixtures record the behaviour of the checker.
+[`midpoint_accepted`](../../TDA/Filtration/RationalAlpha/HullCertificateExamples.lean)
+shows that `cornerHullCheck` accepts the strict coarse cycle with the midpoint
+of a side among the sites.
+[`subdivided_cycle_rejected`](../../TDA/Filtration/RationalAlpha/HullCertificateExamples.lean)
+shows that the cycle listing that midpoint as a corner satisfies
+`HullSitesLeft`, fails `StrictCornerCycle` and is rejected by
+`cornerHullCheck`.
 
 [`rational_cover_from_subdivided_signed_boundary`](../../TDA/Filtration/RationalAlpha/SubdividedBoundaryCoverage.lean)
 uses that strict certificate for the coarse cycle while comparing the triangle
@@ -220,6 +227,18 @@ and their stated certificate. The exact reference table applies to finite
 distinct rational sites, including degenerate configurations.
 [SuppliedGradeEnumeration.lean](../../TDA/Filtration/RationalAlpha/SuppliedGradeEnumeration.lean) ·
 [SuppliedStages.lean](../../TDA/Filtration/RationalAlpha/SuppliedStages.lean)
+
+`carrier_eq_of_signed_boundary`, `suppliedGrades_eq_reference` and
+`supplied_realStage_iff` compare the triangle chain with the chain of the hull
+cycle itself, so every hull side is an edge of a supplied triangle
+(`certified_hull_pair_face`). A site in the relative interior of a hull side
+is treated by `rational_cover_from_subdivided_signed_boundary`, for coverage
+and off-edge multiplicity, and is outside these three theorems. The three
+theorems do not assume noncollinearity of site triples; that hypothesis
+belongs to the pairwise-intersection theorem and to the assembly
+`certifiedComplex`.
+[TriangulationAssembly.lean](../../TDA/Filtration/RationalAlpha/TriangulationAssembly.lean) ·
+[SubdividedBoundaryCoverage.lean](../../TDA/Filtration/RationalAlpha/SubdividedBoundaryCoverage.lean)
 
 ## Source correspondence
 

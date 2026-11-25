@@ -92,7 +92,8 @@ def Candidate.essentialPairs {D E : Presentation} (a : Candidate D E) : List (â„
 
 /-- Enumerate all finite assignments and all essential functions, then filter.
 For `m,n` retained finite indices and `e,f` essential indices this inspects
-`(n+1)^m * f^e` raw candidates, rather than enumerating permutations directly. -/
+`(n+1)^m * f^e` raw candidates, rather than enumerating permutations directly. The count is
+documented, not proved. -/
 def candidates (D E : Presentation) : List (Candidate D E) :=
   let fs := maps (finiteIndices D) (none :: (finiteIndices E).map some)
     (mem_finiteIndices D)

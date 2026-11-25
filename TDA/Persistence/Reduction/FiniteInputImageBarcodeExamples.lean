@@ -287,7 +287,8 @@ theorem later_born_actual :
       (fun i : Fin 2 => (i.val : ℤ)) later_input 1 1 le_rfl, later_table]
     decide +kernel
 
-/-- Negative repeated observations preserve both equal interval occurrences. -/
+/-- A repeated observation at grade `0` and a single observation at the negative grade `-4`
+each preserve both equal interval occurrences. -/
 theorem repeated_runs :
     runImageBarcode MapExamples.components MapExamples.components 0 id (fun _ : Fin 2 => 0) =
       some [⟨0, 2, by decide, by decide⟩, ⟨0, 2, by decide, by decide⟩] ∧
