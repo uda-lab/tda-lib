@@ -117,18 +117,19 @@ theorem realGrade_upper (e : ℚ) (he : 0 ≤ e) (x : Fin n → ℚ) :
 
 end RatGrid
 
-/-- Looking up `k` in a table built by mapping `f` over a list of keys, with the fallback `f k`,
-returns `f k`: a hit is the stored `f k`, because equal keys have equal values, and a miss
-falls back to `f k`. -/
-theorem lookup_map_getD {α β : Type*} [BEq α] [LawfulBEq α] (f : α → β) (ks : List α) (k : α) :
-    ((ks.map fun a => (a, f a)).lookup k).getD (f k) = f k := by
-  induction ks with
-  | nil => rfl
-  | cons a ks ih =>
+/-- If every entry of an association list satisfies `P` and the fallback does, the looked-up
+value with that fallback satisfies `P`. -/
+theorem lookup_getD_of_forall {α β : Type*} [BEq α] [LawfulBEq α] (P : α → β → Prop)
+    (l : List (α × β)) (k : α) (d : β) (hl : ∀ p ∈ l, P p.1 p.2) (hd : P k d) :
+    P k ((l.lookup k).getD d) := by
+  induction l with
+  | nil => simpa using hd
+  | cons p l ih =>
+    obtain ⟨a, b⟩ := p
     by_cases h : k == a
     · obtain rfl : k = a := eq_of_beq h
-      simp
-    · simpa [List.lookup, h] using ih
+      simpa [List.lookup] using hl (k, b) (List.mem_cons_self ..)
+    · simpa [List.lookup, h] using ih fun q hq => hl q (List.mem_cons_of_mem _ hq)
 
 namespace F2GridRep
 
@@ -177,50 +178,63 @@ def erosionFailureAtBy (rR rS : (Fin n → ℚ) → (Fin n → ℚ) → ℕ) (e 
 theorem erosionFailureAt_eq_erosionFailureAtBy (R S : F2GridRep n) (e : ℚ) (p q : Fin n → ℚ) :
     erosionFailureAt R S e p q = erosionFailureAtBy R.rankAt S.rankAt e p q := rfl
 
-/-- The ranks of the stored matrices between the listed pairs of grades, as an association list
-of thunks. A thunk is evaluated at most once, when first read, so each listed rank is computed
-only if the scan reads it, and then once. -/
-def rankTable (R : F2GridRep n) (ks : List ((Fin n → ℚ) × (Fin n → ℚ))) :
-    List (((Fin n → ℚ) × (Fin n → ℚ)) × Thunk ℕ) :=
-  ks.map fun k => (k, Thunk.mk fun _ => Reduction.F2Matrix.rank (R.map k.1 k.2))
+/-- The ranks of the stored matrices, as a two-level association list of thunks: for each listed
+source grade `a`, a thunk of the row of target grades `b`, each with a thunk of the rank of
+`R.map a b`. Building the outer list costs one entry per listed source; a row is built when it is
+first read, and a rank is computed when it is first read, then kept. Equal keys share the first
+matching entry, so the lists need no deduplication. -/
+def rankTable (R : F2GridRep n) (xs ys : List (Fin n → ℚ)) :
+    List ((Fin n → ℚ) × Thunk (List ((Fin n → ℚ) × Thunk ℕ))) :=
+  xs.map fun a => (a, Thunk.mk fun _ =>
+    ys.map fun b => (b, Thunk.mk fun _ => Reduction.F2Matrix.rank (R.map a b)))
 
-/-- `rankAt` read through a table of rank thunks of floored pairs. A pair missing from the table
-is computed as `rankAt` does. -/
-def rankAtWith (R : F2GridRep n) (tbl : List (((Fin n → ℚ) × (Fin n → ℚ)) × Thunk ℕ))
+/-- `rankAt` read through a two-level table of rank thunks of floored grades. A source or target
+missing from the table is computed as `rankAt` does. -/
+def rankAtWith (R : F2GridRep n) (tbl : List ((Fin n → ℚ) × Thunk (List ((Fin n → ℚ) × Thunk ℕ))))
     (x y : Fin n → ℚ) : ℕ :=
   if R.values.hasLower x then
-    ((tbl.lookup (R.values.floor x, R.values.floor y)).getD
-      (Thunk.mk fun _ => Reduction.F2Matrix.rank (R.map (R.values.floor x) (R.values.floor y)))).get
+    Thunk.get
+      ((((tbl.lookup (R.values.floor x)).getD (Thunk.mk fun _ => [])).get.lookup
+          (R.values.floor y)).getD
+        (Thunk.mk fun _ => Reduction.F2Matrix.rank (R.map (R.values.floor x) (R.values.floor y))))
   else 0
 
-/-- Reading through a table built by `rankTable`, whatever its keys, is `rankAt`. -/
-theorem rankAtWith_rankTable (R : F2GridRep n) (ks : List ((Fin n → ℚ) × (Fin n → ℚ))) :
-    R.rankAtWith (R.rankTable ks) = R.rankAt := by
+/-- Reading through a table built by `rankTable`, whatever its listed grades, is `rankAt`. -/
+theorem rankAtWith_rankTable (R : F2GridRep n) (xs ys : List (Fin n → ℚ)) :
+    R.rankAtWith (R.rankTable xs ys) = R.rankAt := by
   funext x y
-  unfold rankAtWith rankAt rankTable
+  unfold rankAtWith rankAt
   split_ifs
-  · exact congrArg Thunk.get (lookup_map_getD (fun k : (Fin n → ℚ) × (Fin n → ℚ) =>
-      Thunk.mk fun _ => Reduction.F2Matrix.rank (R.map k.1 k.2)) ks
-        (R.values.floor x, R.values.floor y))
+  · have hrow := lookup_getD_of_forall
+      (fun (a : Fin n → ℚ) (row : Thunk (List ((Fin n → ℚ) × Thunk ℕ))) =>
+        ∀ q ∈ row.get, q.2.get = Reduction.F2Matrix.rank (R.map a q.1))
+      (R.rankTable xs ys) (R.values.floor x) (Thunk.mk fun _ => [])
+      (by
+        intro p hp
+        obtain ⟨a, -, rfl⟩ := List.mem_map.mp hp
+        intro q hq
+        obtain ⟨b, -, rfl⟩ := List.mem_map.mp hq
+        rfl)
+      (by
+        intro q hq
+        exact nomatch (show q ∈ ([] : List ((Fin n → ℚ) × Thunk ℕ)) from hq))
+    exact lookup_getD_of_forall
+      (fun (b : Fin n → ℚ) (t : Thunk ℕ) =>
+        t.get = Reduction.F2Matrix.rank (R.map (R.values.floor x) b))
+      _ (R.values.floor y) _ hrow rfl
   · rfl
 
-/-- The distinct floored pairs that the scan over `T` reads from `R`: for every comparable pair
-`p ≤ q` of `T`, the floors of `(p, q)` and of the widened pair, where the source has a lower
-grid value. -/
-def erosionKeys (R : F2GridRep n) (e : ℚ) (T : List (Fin n → ℚ)) :
-    List ((Fin n → ℚ) × (Fin n → ℚ)) :=
-  ((T.flatMap fun p => T.flatMap fun q =>
-      if p ≤ q then [(p, q), (lower e p, upper e q)] else []).filter
-    fun k => R.values.hasLower k.1).map
-    (fun k => (R.values.floor k.1, R.values.floor k.2)) |>.dedup
-
 /-- The scan of `erosionFailure?` with each rank of a stored matrix computed at most once per
-module and read through a table of thunks, built once before the scan. The enumeration order and the reported
-fields are those of `erosionFailure?`, to which it is equal (`erosionFailure?_eq_cached`). -/
+module and read through a two-level table of thunks. Only the outer list, one entry per listed
+source grade, is built before the scan; rows and ranks are built when first read, so a scan that
+stops early builds little. The enumeration order and the reported fields are those of
+`erosionFailure?`, to which it is equal (`erosionFailure?_eq_cached`). -/
 def erosionFailureCached? (R S : F2GridRep n) (e : ℚ) : Option (ErosionFailure n) :=
   let T := (erosionBreakpoints R.values S.values e).pointList
-  let rR := R.rankAtWith (R.rankTable (R.erosionKeys e T))
-  let rS := S.rankAtWith (S.rankTable (S.erosionKeys e T))
+  let xs := T ++ T.map (lower e)
+  let ys := T ++ T.map (upper e)
+  let rR := R.rankAtWith (R.rankTable (xs.map R.values.floor) (ys.map R.values.floor))
+  let rS := S.rankAtWith (S.rankTable (xs.map S.values.floor) (ys.map S.values.floor))
   T.findSome? fun p => T.findSome? fun q =>
     if p ≤ q then erosionFailureAtBy rR rS e p q else none
 

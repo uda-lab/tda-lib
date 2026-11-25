@@ -728,30 +728,33 @@ and the replay takes 5.9 s instead of about 300 s, with the pair scan outside
 18 homology maps, and not the rank algorithm.
 
 The library computes each of these ranks at most once (Issue #1218). `erosionFailureCached?`
-first lists the floored pairs that the scan over the breakpoint grid reads from each
-module, without repetitions, and builds a table that holds, for each pair, a thunk of the
-rank of the stored matrix. It then runs the enumeration of `erosionFailure?` in the same
-order with the same reported fields, reading each rank from that table. A thunk is
-evaluated when first read and then kept, so a rank that the scan never reaches is never
-computed. A pair that is not in the table is evaluated as `rankAt` does. The table is a
-`let` of the scan, shared by all pairs. The theorem `erosionFailure?_eq_cached` states
+reads the ranks of each module through a two-level table of thunks: one entry for each source
+grade that the scan can read (the breakpoint grades and their shifts by $-e$, floored), each
+holding a thunk of a row with one entry for each target grade (the breakpoint grades and their
+shifts by $+e$, floored), each holding a thunk of the rank of the stored matrix. It then runs
+the enumeration of `erosionFailure?` in the same order with the same reported fields, reading
+each rank from that table. Only the outer list is built before the scan, so its size is linear
+in the number of breakpoint grades; a row is built and a rank computed when first read, and then
+kept, so a scan that stops at an early pair builds little. Equal grades share the first matching
+entry. A grade that is not in the table is evaluated as `rankAt` does. The table is a `let` of
+the scan, shared by all pairs. The theorem `erosionFailure?_eq_cached` states
 that the two functions are equal, and `rankAtWith_rankTable` that the lookup through such
-a table equals `rankAt` at every pair, whatever the listed keys. The theorem is
+a table equals `rankAt` at every pair, whatever the listed grades. The theorem is
 registered with `@[csimp]`, so compiled code, `runErosion` among it, runs the cached
 scan; no definition and no other theorem changed. Kernel evaluations, such as
 `decide +kernel` on the fixtures, ignore `@[csimp]`.
 
 Measured on 2026-11-25 on the same host as above (Lean v4.35.0, one process, four
 vCPUs of an Intel Xeon at 2.10 GHz, 16 GiB), wall times of the `runErosion` call
-in the `lib` mode after module initialisation, two runs after the change (one direct, one
-from `scripts/run-erosion-fixture.sh`), and, for the 333 s entry, one run of the library
-before it:
+in the `lib` mode after module initialisation, runs of the cached scan (at $0$ and $1/2$ one
+direct and one from `scripts/run-erosion-fixture.sh`, at $49/100$ the latter), and, for the 333 s entry, one run of the library
+before the change:
 
 | radius | outcome | before, uncached scan | after, cached scan |
 |---|---|---|---|
-| $0$ | fail, the pinned witness | 0.45 s | 0.48 s, 0.47 s |
-| $49/100$ | fail | 78 s | 4.8 s, 5.3 s |
-| $1/2$ | pass | 303 s, 324 s, 333 s | 6.0 s, 6.6 s |
+| $0$ | fail, the pinned witness | 0.45 s | 0.42 s, 0.45 s |
+| $49/100$ | fail | 78 s | 4.5 s |
+| $1/2$ | pass | 303 s, 324 s, 333 s | 5.4 s, 5.4 s |
 
 The "before" entries at $0$ and $49/100$ are from the first measurement above, and
 that at $1/2$ includes one more run (333 s) of the library before the change.
