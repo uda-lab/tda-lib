@@ -88,6 +88,17 @@ independent consumer, not a completion condition. The first stable release need 
 all Project milestones. Do not invent dates or infer serial execution from milestone order;
 dot establishes dependencies and release scope from actual mathematical decisions.
 
+## Prerequisites
+
+The repository vendors four skills under `.agents/skills/`, with compatibility links under
+`.claude/skills/`. The companion skills `github-loop-engineering`, `github-driven-workflow`
+and `lean-formalization-discipline` come from `t-uda/skills` and are installed per host;
+`scripts/preflight.sh` reports which are present. A host without them reads them from that
+source. `REVIEW_ACQUIRE_SCRIPT` and the `codex` and `gh` CLIs are host properties as well.
+[lean-review-routing](../.agents/skills/lean-review-routing/SKILL.md) gives the review route
+for a host that lacks one of them, and [Claude Code cloud setup](claude-cloud-setup.md)
+covers hosted sessions.
+
 ## Commands and gates
 
 The pre-push hook binds each update to the current HEAD commit and requires a clean tracked

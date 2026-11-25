@@ -8,6 +8,9 @@ description: Project entry policy for continuing Codex-driven TDA library develo
 Load this skill first. Apply `loop-orchestration-scaffold`, `github-loop-engineering`,
 `github-driven-workflow`, `lean-formalization-discipline` and `lean-review-routing` with
 this project specialization taking precedence over their template defaults.
+`github-loop-engineering`, `github-driven-workflow` and `lean-formalization-discipline` are not
+vendored in this repository; their source is `t-uda/skills`. On a host that has not installed
+them, read them from that source. Their absence removes no gate and no review.
 
 ## Continuing library contract
 

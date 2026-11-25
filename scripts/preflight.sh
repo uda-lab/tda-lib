@@ -67,7 +67,7 @@ else
 fi
 
 echo "== review"
-say "REVIEW_ACQUIRE_SCRIPT" "${REVIEW_ACQUIRE_SCRIPT:-unset (bundled github-driven-workflow acquire-review.py or a Reviewed-by artifact route applies)}"
+say "REVIEW_ACQUIRE_SCRIPT" "${REVIEW_ACQUIRE_SCRIPT:-unset (bundled github-driven-workflow acquire-review.py, the PR comment route or a Reviewed-by artifact route applies)}"
 [ -n "${REVIEW_ACQUIRE_SCRIPT:-}" ] && say "review_script_executable" "$( [ -x "$REVIEW_ACQUIRE_SCRIPT" ] && echo yes || echo no )"
 
 echo "== harnesses"
