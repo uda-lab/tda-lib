@@ -20,9 +20,8 @@ the full closed-cell nerve `carrier` its least entrance grade; `isLeast_sq_dist`
 this grade with the least squared distance from any vertex of the face over the common
 closed cells, and `sublevel_eq_complex` identifies the sublevels of `filter` with the
 stages `complex sites t`. These results are stated and proved in the library's own terms.
-Bauer–Edelsbrunner, *The Morse Theory of Čech and Delaunay Complexes*, is background; no
-numbered result of it is attributed here. See the source register entry `BE-1312.1231` in
-`docs/math/references.md`.
+Bauer–Edelsbrunner (arXiv:1312.1231) is background; no numbered result of it is attributed
+here. See the source register entry `BE-1312.1231` in `docs/math/references.md`.
 -/
 
 namespace TDA.Filtration.Alpha
