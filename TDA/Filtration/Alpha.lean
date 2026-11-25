@@ -8,12 +8,26 @@ set_option autoImplicit false
 /-!
 # The closed Voronoi alpha filtration
 
-The α complex is the nerve of the closed Voronoi cells cut off by squared-distance
-bounds. Nearest-site ties are retained, including in degenerate configurations, so
-the full closed-cell nerve is used. Its negative grades are empty. The compatibility
-comparison `filtration_le_cech` reindexes radius-indexed Čech by `Alpha.radius`; at
-negative grades this gives radius zero and hence the radius-zero Čech complex. The
-labelled comparison instead uses `squaredCechFiltration`, which is empty below zero.
+The α complex `complex sites t` is, by definition, the nerve of the closed Voronoi cells of
+the sites, each intersected with the closed ball of squared radius `t` about its own site
+(for `t ≥ 0`; see `complex_eq_nerve_closedBall`). This is the *nerve form* of the α complex.
+Nearest-site ties are retained, so in degenerate configurations the full closed-cell nerve is
+used: for cocircular sites, such as the four corners of a square, a common witness at the
+circumcenter makes the simplex spanned by all cocircular sites a face once the grade reaches
+the squared circumradius, whereas a Delaunay triangulation contains only a triangulated
+subcomplex. For sites in general position the two coincide.
+
+Conventions at negative squared grades. The α complex is empty below zero
+(`complex_eq_bot_of_neg`). The canonical Čech target for squared-grade comparisons is
+`Alpha.squaredCechFiltration` (module `TDA.Filtration.AlphaLabelled`), which is also empty
+below zero; the canonical inclusion is `Alpha.filtration_le_squaredCech` and its naturality is
+`Alpha.inclusion_natural_squaredCech`. The legacy comparison `filtration_le_cech` reindexes the
+radius-indexed Čech filtration by `radius`, which sends every negative grade to radius zero, so
+its target at `t < 0` is the radius-zero Čech complex (nonempty on a nonempty label type) and
+not the empty complex. The two targets agree at every `t ≥ 0`
+(`reindex_radius_cech_eq_squaredCech_of_nonneg`) and differ at every `t < 0` on a nonempty label
+type. `filtration_le_cech` and `inclusion_natural` keep their statements and behaviour for the
+migration period; new squared-grade results should use the canonical counterparts.
 
 In a finite-dimensional real inner-product space, `filter` assigns each nonempty face of
 the full closed-cell nerve `carrier` its least entrance grade; `isLeast_sq_dist` identifies
@@ -100,13 +114,21 @@ theorem mem_support_iff (v : V) (t : ℝ) :
 /-- Conversion from alpha grades to the ambient Čech radius parameter. -/
 noncomputable def radius : ℝ →o ℝ := ⟨Real.sqrt, Real.sqrt_monotone⟩
 
-/-- Forgetting the Voronoi inequalities includes each stage into Čech at radius `√t`. -/
+/-- Forgetting the Voronoi inequalities includes each stage into Čech at radius `√t`.
+
+Legacy statement: the target `reindex radius (Cech.complexFiltration sites)` is the radius-zero
+Čech complex at every negative grade. The canonical counterpart with the empty-below-zero
+target is `Alpha.filtration_le_squaredCech`; the two targets agree for `0 ≤ t`
+(`reindex_radius_cech_eq_squaredCech_of_nonneg`). -/
 theorem filtration_le_cech :
     complexFiltration sites ≤ reindex radius (Cech.complexFiltration sites) := by
   intro t
   exact nerve_mono fun _ _ hx => Real.le_sqrt_of_sq_le hx.2
 
-/-- The identity on labels commutes with both filtrations' structure maps. -/
+/-- The identity on labels commutes with both filtrations' structure maps.
+
+Legacy statement against the radius-zero-below-zero target; the canonical counterpart is
+`Alpha.inclusion_natural_squaredCech`. -/
 theorem inclusion_natural {s t : ℝ} (hst : s ≤ t) :
     VertexMap.comp (inclusionVertexMap ((complexFiltration sites).monotone hst))
         (inclusionVertexMap (filtration_le_cech sites t)) =

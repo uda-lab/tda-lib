@@ -121,6 +121,23 @@ example :
   · rw [squaredCechFiltration_apply_of_neg singleSite (by norm_num)]
     simp
 
+/-- The canonical target is empty below zero while the legacy reindexing is not, and the two
+agree at grade zero. -/
+example :
+    squaredCechFiltration singleSite (-1) = ⊥ ∧
+      TDA.Filtration.reindex Alpha.radius (Cech.complexFiltration singleSite) (-1) =
+        Cech.complex singleSite 0 ∧
+      ({()} : Finset Unit) ∈ TDA.Filtration.reindex Alpha.radius
+        (Cech.complexFiltration singleSite) (-1) ∧
+      TDA.Filtration.reindex Alpha.radius (Cech.complexFiltration singleSite) 0 =
+        squaredCechFiltration singleSite 0 := by
+  have neg : (-1 : ℝ) < 0 := by norm_num
+  have hrad := reindex_radius_cech_apply_of_neg singleSite neg
+  refine ⟨squaredCechFiltration_apply_of_neg singleSite neg, hrad, ?_,
+    reindex_radius_cech_eq_squaredCech_of_nonneg singleSite le_rfl⟩
+  rw [hrad]
+  exact (Cech.singleton_mem_complex_iff _ _ _).2 (by norm_num)
+
 private theorem singleton_h0_negative (k : Type*) [Field k] :
     Limits.IsZero (simplicialHomology (labelledComplex singleSite (-1)) k 0) ∧
       Limits.IsZero (simplicialHomology (squaredCechFiltration singleSite (-1)) k 0) := by

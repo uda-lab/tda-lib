@@ -9411,3 +9411,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Morse.MorseDiagramExamples.tie_occurrences_natural
 #print axioms TDA.Persistence.Morse.MorseDiagramExamples.tie_occurrences_dual
 #print axioms TDA.Persistence.Morse.MorseDiagramExamples.tie_occurrences_ne_diagram_eq
+#print axioms TDA.Persistence.isIso_alpha_filtration_le_squaredCech

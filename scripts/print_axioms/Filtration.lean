@@ -1147,3 +1147,9 @@ import TDA
 -- Coordinates of a cast rational point (#1148).
 #print axioms TDA.Filtration.RationalAlpha.castPoint_apply_zero
 #print axioms TDA.Filtration.RationalAlpha.castPoint_apply_one
+-- Canonical squared-grade Čech target for the α comparison (#1138).
+#print axioms TDA.Filtration.Alpha.reindex_radius_cech_eq_squaredCech_of_nonneg
+#print axioms TDA.Filtration.Alpha.reindex_radius_cech_apply_of_neg
+#print axioms TDA.Filtration.Alpha.squaredCechFiltration_le_reindex_radius
+#print axioms TDA.Filtration.Alpha.filtration_le_squaredCech
+#print axioms TDA.Filtration.Alpha.inclusion_natural_squaredCech

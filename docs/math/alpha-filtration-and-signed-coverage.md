@@ -43,6 +43,11 @@ zero below grade zero and contains every singleton label there. On an empty
 label type both targets are empty. `Alpha.filtration_le_cech` and
 `Alpha.inclusion_natural` use the square-root reindexing. The Euclidean
 `isIso_alpha_filtration_le_cech` uses that inclusion at nonnegative grades.
+The canonical target is `Alpha.squaredCechFiltration`; the counterparts
+`Alpha.filtration_le_squaredCech`, `Alpha.inclusion_natural_squaredCech` and
+`isIso_alpha_filtration_le_squaredCech` (valid at every grade) are the upgrade path, and
+`Alpha.reindex_radius_cech_eq_squaredCech_of_nonneg` states that both targets agree for
+$t \ge 0$. The legacy statements stay unchanged and are not yet deprecated.
 The all-real comparisons `alphaH0Iso` and `alphaCechIso` use
 `Alpha.squaredCechFiltration`.
 [Alpha.lean](../../TDA/Filtration/Alpha.lean) ·

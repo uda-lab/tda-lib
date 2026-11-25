@@ -30,7 +30,9 @@ theorem isIso_alphaIncl_cech {t : ℝ} (ht : 0 ≤ t) :
     (Alpha.convex_restrictedBall sites ht) (fun _ => convex_closedBall _ _)
     (Alpha.restrictedBall_subset_closedBall sites t) (Alpha.iUnion_restrictedBall sites ht) R n
 
-/-- For embedded sites the same result applies to the original α-to-Čech filtration map. -/
+/-- For embedded sites the same result applies to the original α-to-Čech filtration map.
+Legacy statement at `t ≥ 0` only; the canonical statement at every grade is
+`isIso_alpha_filtration_le_squaredCech`. -/
 theorem isIso_alpha_filtration_le_cech (p : V ↪ E) {t : ℝ} (ht : 0 ≤ t) :
     IsIso (simplicialHomologyIncl R (Alpha.filtration_le_cech p t) n) :=
   isIso_alphaIncl_cech p R n ht
@@ -47,6 +49,13 @@ theorem isIso_alphaCechComparison_app (t : ℝ) :
       IsIso (simplicialHomologyIncl R i n) from this _
   rw [Alpha.squaredCechFiltration_apply_of_nonneg sites hnonneg]
   exact fun _ => isIso_alphaIncl_cech sites R n hnonneg
+
+/-- Canonical counterpart of `isIso_alpha_filtration_le_cech`: for embedded sites the inclusion
+`Alpha.filtration_le_squaredCech` induces an isomorphism at every grade, negative grades
+included, because both stages are empty there. -/
+theorem isIso_alpha_filtration_le_squaredCech (p : V ↪ E) (t : ℝ) :
+    IsIso (simplicialHomologyIncl R (Alpha.filtration_le_squaredCech p t) n) :=
+  isIso_alphaCechComparison_app p R n t
 
 /-- The inclusion-induced natural isomorphism of squared-grade α and Čech persistence. -/
 noncomputable def alphaCechIso :
