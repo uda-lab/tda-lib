@@ -188,6 +188,17 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   naturality. Fixtures in `TDA.Sheaf.AlexandrovExamples` cover the chain `0 ⟶ ℚ` on `Fin 2`,
   the empty open, the non-principal whole antichain `Unit ⊕ Unit` (a binary product) and
   real-indexed `PModule`s over `ℚ` and `ZMod 2`.
+- Finite alternating diagrams in `TDA.Sheaf` (#1182): diagrams of vector spaces on a path with
+  arbitrary orientation `o : Fin n → Bool`, as functors `Paths (Vertex o) ⥤ ModuleCat k`.
+  `TDA.Sheaf.AlternatingDiagram.exists_decomposition` makes every finite-dimensional diagram a
+  biproduct of interval diagrams, `multiset_eq_of_iso` makes the multiset of intervals an
+  isomorphism invariant, and `barcode`, `barcodeIso`, `nonempty_iso_iff_barcode_eq` and
+  `intervalMultiplicity` package the classification. The proof uses the sink reflection
+  `reflectSink` (an additive functor, computed on intervals by `reflectInterval`), the source
+  reflection `reflectSource` with `reflectSourceUnitIso`, singleton splitting at a source, and
+  the existing chain decomposition and uniqueness through `chainToDiagram`. Fixtures on the fork
+  `0 → 1 ← 2` show equal dimensions and arrow ranks with different barcodes, a repeated summand
+  and the zero diagram.
 
 ## v0.5.0
 
