@@ -23,7 +23,8 @@ structure HomologyMapDimensions where
 /-- Compute dimensions from the existing ordered homology-coordinate matrix.
 The matrix is materialized before enumerating source coordinates. Total; meaningful only under
 the validity of both inputs and of the vertex map `f`; use `runHomologyDimensions`. On a vertex
-map that is not simplicial it returns `{rank := 1, nullity := 0}`. -/
+map that is not simplicial the result carries no correctness guarantee; it is still computed
+from the supplied coordinate matrix, so its value depends on the input. -/
 def homologyMapDimensions (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ → ℕ) :
     HomologyMapDimensions :=
   let sourceRecords := activeRepresentatives xs p a

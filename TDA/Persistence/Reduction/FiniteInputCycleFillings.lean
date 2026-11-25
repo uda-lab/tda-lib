@@ -128,7 +128,8 @@ theorem fillingVector_boundary (xs : Input) (h : Valid xs) (p : ℕ) (a : ℤ)
 
 /-- The selected, duplicate-free original-index filling support. Total; meaningful only under
 `Valid xs` and for a cycle `v` that is a boundary in the sublevel stage; use `runCycleFilling`.
-For a cycle that is not a boundary it is `[]`. -/
+For a cycle that is not a boundary nothing is guaranteed: the support can be nonempty, so
+an empty support is not a boundary test (only `runCycleFilling` rejects non-boundaries). -/
 def fillingSupport (xs : Input) (p : ℕ) (a : ℤ) (v : Fin xs.length → ZMod 2) :
     List (Fin xs.length) := supportChain (fun i => (fillingVector xs p a v)[i])
 
