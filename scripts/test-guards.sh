@@ -850,6 +850,11 @@ sn=$((sn + 1)); ! grep -Eq 'A\.kept|C\.added' <<<"$sout" \
 sn=$((sn + 1)); sstatus=0; sout="$(sig_run "$sg/head.tsv" "$sg/head.tsv" v1)" || sstatus=$?
 [ "$sstatus" -eq 0 ] && grep -Fq 'SIGNATURE ADVISORY: 0 pin(s) differ from v1' <<<"$sout" \
   || { echo "FAIL [sig:clean]: identical dumps exit $sstatus: $sout"; sfail=1; }
+sn=$((sn + 1)); : > "$sg/empty-changelog.md"
+sstatus=0; sout="$(TDA_SIG_CHANGELOG="$sg/empty-changelog.md" bash scripts/check-released-signatures.sh --compare "$sg/base.tsv" "$sg/head.tsv" v1)" || sstatus=$?
+[ "$sstatus" -eq 0 ] && grep -Fq 'A.gone since v1: no longer pinned' <<<"$sout" && grep -Fq 'A.changed since v1: type changed' <<<"$sout" \
+  && ! grep -Eq 'A\.kept|C\.added' <<<"$sout" \
+  || { echo "FAIL [sig:empty-changelog]: an empty Unreleased section shifted the inputs: $sout"; sfail=1; }
 if [ "$sfail" -eq 0 ]; then echo "released-signature advisory OK ($sn cases)"; else exit 1; fi
 
 # Resource locking is tested in isolated fake workspaces, without the host's active locks.

@@ -23,20 +23,23 @@ export PATH="$HOME/.elan/bin:$PATH"
 
 # compare <base.tsv> <head.tsv> <label>: dump files are `name<TAB>hash<TAB>type` lines.
 compare_dumps() {
-  local base="$1" head="$2" label="$3" changelog="${TDA_SIG_CHANGELOG:-$ROOT/CHANGELOG.md}" sect
-  sect="$(mktemp)"
-  awk '/^## /{on = ($0 ~ /^## Unreleased/)} on' "$changelog" > "$sect" 2>/dev/null || : > "$sect"
-  LC_ALL=C awk -F'\t' -v label="$label" '
+  local base="$1" head="$2" label="$3" changelog="${TDA_SIG_CHANGELOG:-$ROOT/CHANGELOG.md}" work
+  # Three distinct copies, selected by file name below: an empty input (for instance a missing
+  # "Unreleased" section) then cannot shift the roles of the others, and BASE may equal HEAD.
+  work="$(mktemp -d)"
+  awk '/^## /{on = ($0 ~ /^## Unreleased/)} on' "$changelog" > "$work/sect" 2>/dev/null || : > "$work/sect"
+  cp "$base" "$work/base"
+  cp "$head" "$work/head"
+  LC_ALL=C awk -F'\t' -v label="$label" -v sectf="$work/sect" -v basef="$work/base" '
     function lastcomp(n,   k, parts) { k = split(n, parts, "."); return parts[k] }
-    FNR == 1 { file++ }
-    file == 1 {  # words of the Unreleased section: last component of each identifier-like run
+    FILENAME == sectf {  # words of the Unreleased section: last component of each identifier-like run
       s = $0
       gsub(/[^A-Za-z0-9_\047!?.\200-\377]/, " ", s)
       nt = split(s, tok, " ")
       for (i = 1; i <= nt; i++) { t = tok[i]; sub(/\.+$/, "", t); if (t != "") named[lastcomp(t)] = 1 }
       next
     }
-    file == 2 { bh[$1] = $2; bt[$1] = $3; next }
+    FILENAME == basef { bh[$1] = $2; bt[$1] = $3; next }
     { hh[$1] = $2; ht[$1] = $3 }
     END {
       m = 0
@@ -53,8 +56,8 @@ compare_dumps() {
         if (kind[n] == "type changed") { printf "  was: %s\n  now: %s\n", bt[n], ht[n] }
       }
       printf "SIGNATURE ADVISORY: %d pin(s) differ from %s; candidates to inspect, not a failure.\n", m, label
-    }' "$sect" "$base" "$head"
-  rm -f "$sect"
+    }' "$work/sect" "$work/base" "$work/head"
+  rm -rf "$work"
 }
 
 if [ "${1:-}" = --compare ]; then
