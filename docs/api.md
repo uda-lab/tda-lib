@@ -2023,9 +2023,22 @@ statement for `gradedFaces p`, for every embedding `p`. In `SuppliedStagesExampl
 Gabriel value `4` (`inner_nonGabriel_cutoff`). These carrier, grade-row and stage
 theorems compare the triangle chain with the chain of the hull cycle itself, so every hull
 side is an edge of a supplied triangle (`TriangulationAssembly.certified_hull_pair_face`).
-The chain of a subdivided boundary is the hypothesis of
-`rational_cover_from_subdivided_signed_boundary`, whose conclusions are the multiplicity and
-the coverage. See
+When a hull side carries site labels in its interior, the coarse triangle on that side fails
+`checkIncircle`; supply the pieces that split the side instead. The chain of the ordered
+subdivided hull sides is the hypothesis of `rational_cover_from_subdivided_signed_boundary`,
+whose conclusions are the multiplicity and the coverage, and of
+`SuppliedCarrier.carrier_eq_of_subdivided_boundary`, which states
+`Alpha.carrier (realSites p) = labelComplex tri` from the strict `PolygonCertificate` of the
+coarse hull, `OrderedEdgeCuts` for each side, every site in the coarse hull, CCW triangles,
+the chain equality against `subdividedEdge (cycleEdges hull) cuts`, passing `checkIncircle`
+tests and `GeometricNoFourCocircular p ∨ NoFourIncircleZeros p`; the hull labels need not be
+injective. `alphaCarrier_le_labelComplex_of_subdivided_boundary` is the inclusion, and
+`alphaCarrier_le_labelComplex_of_closed_cover` and `admitted_triangle_contact` are public
+for clients with their own convex cover. `SuppliedCarrierExamples.split_carrier` (sites `splitEmb`) applies it to
+a triangle whose bottom side is split at its midpoint, using `SubdividedBoundaryExamples`'s
+`coarse_certificate`, `ordered_cuts` and `sites_contained`, and `split_side_faces` shows both
+subedges are carrier faces and the coarse side is not. Grade rows and stages for a
+subdivided hull are not covered (#1214). See
 [supplied carrier and stages](math/alpha-filtration-and-signed-coverage.md#supplied-carrier-and-stages).
 
 For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.run`

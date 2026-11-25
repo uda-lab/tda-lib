@@ -128,6 +128,16 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   and the downstream regression fixture `RipsGHClientExamples`. Existing statements are
   unchanged. The same-universe restriction on the two carriers remains, with its reason
   documented.
+- Supplied α carrier for subdivided hull sides (#1213):
+  `SuppliedCarrier.alphaCarrier_le_labelComplex_of_subdivided_boundary` and
+  `carrier_eq_of_subdivided_boundary` state the carrier equality for a coarse strict hull whose
+  sides carry ordered cut labels and for triangles whose chain equals the subdivided hull
+  chain, without injectivity of the hull labels. The closed-cover inclusion
+  `alphaCarrier_le_labelComplex_of_closed_cover` and `admitted_triangle_contact` are now public
+  with their statements unchanged, as are `SubdividedBoundaryExamples.coarse_certificate`,
+  `ordered_cuts` and `sites_contained`. `SuppliedCarrierExamples.split_carrier`,
+  `split_side_faces` and `splitEmb` give a split-side fixture. Grade rows and stages for a subdivided hull
+  are not part of this change.
 
 ## v0.5.0
 

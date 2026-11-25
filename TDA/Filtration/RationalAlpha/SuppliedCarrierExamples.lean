@@ -1,5 +1,6 @@
 import TDA.Filtration.RationalAlpha.SuppliedCarrier
 import TDA.Filtration.RationalAlpha.EdgeGradeExamples
+import TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples
 
 set_option autoImplicit false
 
@@ -8,7 +9,9 @@ set_option autoImplicit false
 
 The certified trapezoid gives literal carrier equality. The cocircular
 square has a four-label face in the actual carrier, while its supplied
-triangles still give valid Alpha faces.
+triangles still give valid Alpha faces. The triangle with a split side has
+carrier equality through the subdivided boundary theorem, including the
+two subedges of the split side.
 -/
 
 namespace TDA.Filtration.RationalAlpha.SuppliedCarrierExamples
@@ -80,6 +83,44 @@ theorem trapezoid_diagonals :
 
 /-- The split of the square into triangles `0 1 3` and `0 3 2`. -/
 def squareSplit : Fin 2 → Fin 3 → Fin 4 := ![![0,1,3],![0,3,2]]
+
+open TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples
+
+/-- The sites `A = (0, 0)`, `B = (2, 0)`, `C = (0, 2)` and `M = (1, 0)` of
+`SubdividedBoundaryExamples` as a labelled embedding. -/
+def splitEmb : Fin 4 ↪ Point := ⟨splitSites, by
+  change ∀ a b : Fin 4, splitSites a = splitSites b → a = b
+  decide +kernel⟩
+
+/-- The two pieces of a triangle with a split side have exactly the actual all-scales
+carrier. The side label `M` lies in the interior of a coarse hull side, so the signed
+polygon theorem for injective hulls does not apply; the subdivided boundary theorem does. -/
+theorem split_carrier :
+    Alpha.carrier (realSites splitEmb) = labelComplex splitTriangles := by
+  apply carrier_eq_of_subdivided_boundary (k := 0) splitEmb coarseCycle cuts splitTriangles
+    coarse_certificate ordered_cuts sites_contained
+  · decide +kernel
+  · exact signed_boundary
+  · decide +kernel
+  · right
+    unfold NoFourIncircleZeros
+    decide +kernel
+
+/-- The split side carries both subedges `{A, M}` and `{M, B}`, while the coarse side `{A, B}`
+is not a face of the carrier. -/
+theorem split_side_faces :
+    ({0,3} : Finset (Fin 4)) ∈ Alpha.carrier (realSites splitEmb) ∧
+    ({3,1} : Finset (Fin 4)) ∈ Alpha.carrier (realSites splitEmb) ∧
+    ({0,1} : Finset (Fin 4)) ∉ Alpha.carrier (realSites splitEmb) := by
+  rw [split_carrier]
+  refine ⟨?_, ?_, ?_⟩
+  · exact (pair_mem_iff_occurrence splitTriangles (show (0 : Fin 4) ≠ 3 by decide)).2
+      ⟨(0,0),Or.inl rfl⟩
+  · exact (pair_mem_iff_occurrence splitTriangles (show (3 : Fin 4) ≠ 1 by decide)).2
+      ⟨(1,0),Or.inl rfl⟩
+  · change ({0,1} : Finset (Fin 4)) ∉ (labelComplex splitTriangles).faces
+    rw [pair_mem_iff_occurrence splitTriangles (show (0 : Fin 4) ≠ 1 by decide)]
+    decide +kernel
 
 /-- The full four-label tied face cannot belong to any downward closure of triangle label sets. -/
 theorem square_four_face_regression {I : Type*} (tri : I → Fin 3 → Fin 4) :

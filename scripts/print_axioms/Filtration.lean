@@ -1158,3 +1158,14 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.oneTriangle
 #print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.innerSites
 #print axioms TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples.innerSplit
+-- Supplied carrier for subdivided hull sides (#1213).
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.admitted_triangle_contact
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.alphaCarrier_le_labelComplex_of_closed_cover
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.alphaCarrier_le_labelComplex_of_subdivided_boundary
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrier.carrier_eq_of_subdivided_boundary
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.coarse_certificate
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.ordered_cuts
+#print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.sites_contained
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.splitEmb
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.split_carrier
+#print axioms TDA.Filtration.RationalAlpha.SuppliedCarrierExamples.split_side_faces

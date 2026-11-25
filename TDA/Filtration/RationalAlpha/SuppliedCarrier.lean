@@ -1,4 +1,5 @@
 import TDA.Filtration.RationalAlpha.SuppliedEdgeGrade
+import TDA.Filtration.RationalAlpha.SubdividedBoundaryCoverage
 import Mathlib.Analysis.Convex.Combination
 
 set_option autoImplicit false
@@ -208,8 +209,9 @@ private theorem admitted_triangle_center {n : ℕ} (p : Fin n ↪ Point) (v : Fi
   exact ⟨o,hob,hoc,hx⟩
 
 /-- The original CCW finite test gives a center whose contacts are exactly the three labels
-when either no-four condition holds. -/
-private theorem admitted_triangle_contact {n : ℕ} (p : Fin n ↪ Point) (v : Fin 3 → Fin n)
+when either no-four condition holds. This is the `hcontact` input of
+`alphaCarrier_le_labelComplex_of_closed_cover` for a client with its own closed cover. -/
+theorem admitted_triangle_contact {n : ℕ} (p : Fin n ↪ Point) (v : Fin 3 → Fin n)
     (hccw : 0 < orient (p (v 0)) (p (v 1)) (p (v 2)))
     (hpass : checkIncircle p (v 0) (v 1) (v 2) = true)
     (hno : GeometricNoFourCocircular p ∨ NoFourIncircleZeros p) :
@@ -256,7 +258,14 @@ theorem labelComplex_le_alphaCarrier {n : ℕ} {I : Type*} (p : Fin n ↪ Point)
   obtain ⟨o, _, _, ho⟩ := admitted_triangle_center p (tri i) (hccw i) (hpass i)
   exact ⟨castPoint o, ho⟩
 
-private theorem alphaCarrier_le_labelComplex_of_closed_cover {n : ℕ} {I : Type*} (p : Fin n ↪ Point) (tri : I → Fin 3 → Fin n)
+/-- Every actual Alpha face lies in one supplied triangle when the triangles cover a convex
+region `H` that contains every site and each triangle has a circle contact center whose only
+contacts are its three labels. The hypotheses are `hc` (convexity of `H`), `hsite` (all sites
+lie in `H`), `hcover` (the closed triangles cover `H`) and `hcontact` (the exact contact
+condition of `admitted_triangle_contact`). The hull-specific carrier theorems use this with
+`H` a site hull, and a client with another certified cover may use it directly. -/
+theorem alphaCarrier_le_labelComplex_of_closed_cover {n : ℕ} {I : Type*}
+    (p : Fin n ↪ Point) (tri : I → Fin 3 → Fin n)
     {H : Set Plane} (hc : Convex ℝ H) (hsite : ∀ i, realSites p i ∈ H)
     (hcover : (⋃ i, siteTriangle p (tri i)) = H)
     (hcontact : ∀ i, ∃ y ∈ Alpha.commonCells (realSites p) (labelVertices (tri i)),
@@ -307,6 +316,50 @@ theorem carrier_eq_of_signed_boundary {n k : ℕ} {I : Type*} [Fintype I]
     Alpha.carrier (realSites p) = labelComplex tri :=
   le_antisymm
     (alphaCarrier_le_labelComplex_of_signed_boundary p hull hv tri hh hsite hccw hchain hpass hno)
+    (labelComplex_le_alphaCarrier p tri hccw hpass)
+
+/-- Closed subdivided-boundary coverage and exact triangle contacts put every actual Alpha
+face into one supplied triangle. The coarse hull has a strict polygon certificate, and the
+triangle chain equals the chain of the ordered subdivided hull sides, so a hull side may carry
+site labels in its interior. Hull labels need not be injective. Geometric no-four-cocircularity
+or nonvanishing four-site determinants suffice for the contact condition. -/
+theorem alphaCarrier_le_labelComplex_of_subdivided_boundary {n k : ℕ} {I : Type*} [Fintype I]
+    (p : Fin n ↪ Point) (hull : Fin (k+3) → Fin n) (cuts : Fin (k+3) → List (Fin n))
+    (tri : I → Fin 3 → Fin n)
+    (hh : PolygonCertificate (siteHull p hull) (fun j => realEdge p (cycleEdges hull j)))
+    (hcuts : ∀ e, OrderedEdgeCuts p (cycleEdges hull e).2 (cycleEdges hull e).1 (cuts e))
+    (hsite : ∀ i, castPoint (p i) ∈ siteHull p hull)
+    (hccw : ∀ i, 0 < orient (p (tri i 0)) (p (tri i 1)) (p (tri i 2)))
+    (hchain : (∑ i, ∑ j, signedEdge (triangleEdges (tri i 0) (tri i 1) (tri i 2) j)) =
+      ∑ j, signedEdge (subdividedEdge (cycleEdges hull) cuts j))
+    (hpass : ∀ i, checkIncircle p (tri i 0) (tri i 1) (tri i 2) = true)
+    (hno : GeometricNoFourCocircular p ∨ NoFourIncircleZeros p) :
+    Alpha.carrier (realSites p) ≤ labelComplex tri := by
+  apply alphaCarrier_le_labelComplex_of_closed_cover p tri hh.convex hsite
+    (rational_cover_from_subdivided_signed_boundary p hull cuts tri hh hcuts
+      (fun i j => hsite (tri i j)) hccw hchain).2
+  intro i
+  exact admitted_triangle_contact p (tri i) (hccw i) (hpass i) hno
+
+/-- The actual all-scales Alpha carrier equals the nonempty labelled downward closure of the
+certified supplied triangles when a hull side of the coarse strict polygon carries subdivision
+labels. See `alphaCarrier_le_labelComplex_of_subdivided_boundary`. Grades and stages are not
+part of this carrier statement. -/
+theorem carrier_eq_of_subdivided_boundary {n k : ℕ} {I : Type*} [Fintype I]
+    (p : Fin n ↪ Point) (hull : Fin (k+3) → Fin n) (cuts : Fin (k+3) → List (Fin n))
+    (tri : I → Fin 3 → Fin n)
+    (hh : PolygonCertificate (siteHull p hull) (fun j => realEdge p (cycleEdges hull j)))
+    (hcuts : ∀ e, OrderedEdgeCuts p (cycleEdges hull e).2 (cycleEdges hull e).1 (cuts e))
+    (hsite : ∀ i, castPoint (p i) ∈ siteHull p hull)
+    (hccw : ∀ i, 0 < orient (p (tri i 0)) (p (tri i 1)) (p (tri i 2)))
+    (hchain : (∑ i, ∑ j, signedEdge (triangleEdges (tri i 0) (tri i 1) (tri i 2) j)) =
+      ∑ j, signedEdge (subdividedEdge (cycleEdges hull) cuts j))
+    (hpass : ∀ i, checkIncircle p (tri i 0) (tri i 1) (tri i 2) = true)
+    (hno : GeometricNoFourCocircular p ∨ NoFourIncircleZeros p) :
+    Alpha.carrier (realSites p) = labelComplex tri :=
+  le_antisymm
+    (alphaCarrier_le_labelComplex_of_subdivided_boundary p hull cuts tri hh hcuts hsite hccw
+      hchain hpass hno)
     (labelComplex_le_alphaCarrier p tri hccw hpass)
 
 /-- All-site usage is a consequence of this carrier equality, using the actual singletons. -/
