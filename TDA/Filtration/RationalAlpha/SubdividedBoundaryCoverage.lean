@@ -143,6 +143,48 @@ def subdividedListedEdges {L I E F : Type*} (site : L → Point) (tri : I → E 
     Sum (Sum (I × E) F) (SubdivisionIndex coarse cuts) → Plane × Plane :=
   Sum.elim (listedEdges site tri coarse) (fun j => realEdge site (subdividedEdge coarse cuts j))
 
+private theorem edgeSide_lineMap_left (a b y : Plane) (u : ℝ) :
+    edgeSide (a, AffineMap.lineMap a b u) y = u * edgeSide (a, b) y := by
+  simp only [edgeSide, AffineMap.lineMap_apply_module', PiLp.add_apply, PiLp.sub_apply,
+    PiLp.smul_apply, smul_eq_mul]
+  ring
+
+private theorem edgeSide_lineMap_right (a b y : Plane) (u : ℝ) :
+    edgeSide (AffineMap.lineMap a b u, b) y = (1 - u) * edgeSide (a, b) y := by
+  simp only [edgeSide, AffineMap.lineMap_apply_module', PiLp.add_apply, PiLp.sub_apply,
+    PiLp.smul_apply, smul_eq_mul]
+  ring
+
+/-- Each directed piece of an ordered subdivision has the side form of the whole side, scaled by
+a positive factor. -/
+theorem subdivisionEdges_side {L : Type*} (site : L → Point) (b : L) (a : L) (cuts : List L)
+    (hcuts : OrderedEdgeCuts site b a cuts) :
+    ∀ e ∈ subdivisionEdges b a cuts, ∃ c : ℝ, 0 < c ∧ ∀ y : Plane,
+      edgeSide (realEdge site e) y = c * edgeSide (realEdge site (a, b)) y := by
+  induction cuts generalizing a with
+  | nil =>
+    intro e he
+    simp only [subdivisionEdges, List.mem_singleton] at he
+    subst he
+    exact ⟨1, one_pos, fun y => (one_mul _).symm⟩
+  | cons c cuts ih =>
+    rcases hcuts with ⟨⟨u, hu, hc⟩, hrest⟩
+    intro e he
+    simp only [subdivisionEdges, List.mem_cons] at he
+    rcases he with rfl | he
+    · refine ⟨u, hu.1, fun y => ?_⟩
+      change edgeSide (castPoint (site a), castPoint (site c)) y =
+        u * edgeSide (castPoint (site a), castPoint (site b)) y
+      rw [hc, edgeSide_lineMap_left]
+    · obtain ⟨d, hd, hside⟩ := ih c hrest e he
+      refine ⟨d * (1 - u), mul_pos hd (sub_pos.mpr hu.2), fun y => ?_⟩
+      rw [hside y, mul_assoc]
+      congr 1
+      change edgeSide (castPoint (site c), castPoint (site b)) y =
+        (1 - u) * edgeSide (castPoint (site a), castPoint (site b)) y
+      rw [hc, edgeSide_lineMap_right]
+
+
 private theorem subdivisionEdges_nondegenerate {L : Type*} (site : L → Point)
     (a b : L) (cuts : List L) (hcuts : OrderedEdgeCuts site b a cuts)
     (hab : castPoint (site a) ≠ castPoint (site b)) :

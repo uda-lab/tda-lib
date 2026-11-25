@@ -343,8 +343,8 @@ theorem alphaCarrier_le_labelComplex_of_subdivided_boundary {n k : ℕ} {I : Typ
 
 /-- The actual all-scales Alpha carrier equals the nonempty labelled downward closure of the
 certified supplied triangles when a hull side of the coarse strict polygon carries subdivision
-labels. See `alphaCarrier_le_labelComplex_of_subdivided_boundary`. Grades and stages are not
-part of this carrier statement. -/
+labels. See `alphaCarrier_le_labelComplex_of_subdivided_boundary`. Grades and stages are in
+`SubdividedStages`. -/
 theorem carrier_eq_of_subdivided_boundary {n k : ℕ} {I : Type*} [Fintype I]
     (p : Fin n ↪ Point) (hull : Fin (k+3) → Fin n) (cuts : Fin (k+3) → List (Fin n))
     (tri : I → Fin 3 → Fin n)

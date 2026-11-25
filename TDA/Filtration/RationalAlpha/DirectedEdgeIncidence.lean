@@ -206,7 +206,8 @@ theorem chain_coefficient_eq_directed_counts {I L : Type*} [Fintype I] [Decidabl
   simp only [Finsupp.coe_finsetSum, Finset.sum_apply, signedEdge, Finsupp.sub_apply,
     Finsupp.single_apply, hs, Finset.sum_sub_distrib, directedMultiplicity]
 
-private theorem multiplicity_absent {I L : Type*} [Fintype I] [DecidableEq L] (es : I → L × L)
+/-- A pair listed by no edge has multiplicity zero. -/
+theorem multiplicity_absent {I L : Type*} [Fintype I] [DecidableEq L] (es : I → L × L)
     (e : L × L) (h : ∀ i, es i ≠ e) : directedMultiplicity es e = 0 := by
   simp [directedMultiplicity, h]
 
@@ -218,7 +219,8 @@ private theorem exists_of_multiplicity_eq_one {I L : Type*} [Fintype I] [Decidab
   rw [multiplicity_absent es e he] at h
   omega
 
-private theorem multiplicity_at_most_one {I L : Type*} [Fintype I] [DecidableEq L]
+/-- An injective edge family lists each pair at most once. -/
+theorem multiplicity_at_most_one {I L : Type*} [Fintype I] [DecidableEq L]
     (es : I → L × L) (hi : Function.Injective es) (e : L × L) :
     0 ≤ directedMultiplicity es e ∧ directedMultiplicity es e ≤ 1 := by
   rw [directedMultiplicity, Finset.sum_boole]
@@ -230,7 +232,8 @@ private theorem multiplicity_at_most_one {I L : Type*} [Fintype I] [DecidableEq 
       exact hi ((Finset.mem_filter.1 ha).2.trans (Finset.mem_filter.1 hb).2.symm)
     exact_mod_cast hc
 
-private theorem multiplicity_listed {I L : Type*} [Fintype I] [DecidableEq L]
+/-- An injective edge family lists each of its own edges exactly once. -/
+theorem multiplicity_listed {I L : Type*} [Fintype I] [DecidableEq L]
     (es : I → L × L) (hi : Function.Injective es) (i : I) :
     directedMultiplicity es (es i) = 1 := by
   classical

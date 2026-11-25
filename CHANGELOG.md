@@ -111,8 +111,8 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   below `min (2 * |c - c'|) (max c c' / 2)` by an actual surviving map against a zero fibre, and
   both erosion distances equal `ENNReal.ofReal` of that value
   (`rankErosionDistance_scaledHomology_const`, `eRankErosionDistance_scaledHomology_const`);
-  the maximal grade error is `2 * |c - c'|` exactly, and a lifetime-cap lemma holds for anisotropic scales. No equality with
-  the interleaving distance is claimed. Fixtures: failing radius `3/4` between the scales `1`
+  the maximal grade error is `2 * |c - c'|` exactly, and a lifetime-cap lemma holds for
+  anisotropic scales. No equality with the interleaving distance is claimed. Fixtures: failing radius `3/4` between the scales `1`
   and `2` with its failure certificate, and both regimes (`1` and `2` over `ℚ`, `1` and `5/4`
   over `ZMod 2`).
 - Rips Gromov–Hausdorff stability, client-facing forms (#1206):
@@ -136,8 +136,7 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `alphaCarrier_le_labelComplex_of_closed_cover` and `admitted_triangle_contact` are now public
   with their statements unchanged, as are `SubdividedBoundaryExamples.coarse_certificate`,
   `ordered_cuts` and `sites_contained`. `SuppliedCarrierExamples.split_carrier`,
-  `split_side_faces` and `splitEmb` give a split-side fixture. Grade rows and stages for a subdivided hull
-  are not part of this change.
+  `split_side_faces` and `splitEmb` give a split-side fixture.
 - Consumer fixtures for the executable finite-input fixtures (#1195 D-9, residual of #1150): the
   tetrahedral `sphere` and `ball` inputs now state their degree-two bar about the actual diagram
   and homology (`Examples.sphere_H2_dgm`, `Examples.ball_H2_dgm` through `outputDiagram_eq_dgm`;
@@ -145,6 +144,21 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `card_essentialPart_dgm_eq_finrank`), and `ImageBarcodeExamples.ComponentMerger` applies
   `runImageBarcode_correct` to its three runs (`image_actual`, `source_actual`, `target_actual`,
   `actual_barcodes_separated`). Fixtures only: no library statement changes.
+- Grades and stages for supplied triangulations with subdivided hull sides (#1214): the new
+  module `SubdividedStages` gives `subdivided_hull_dual` (a `HullDual` for every refined side),
+  `subdivided_edge_counts`, `edge_grade_on_subdivided`,
+  `suppliedGrades_eq_reference_of_subdivided_boundary`,
+  `supplied_hasGradeTable_of_subdivided_boundary`,
+  `supplied_realStage_iff_of_subdivided_boundary` and its `_faces` and `_neg` forms, under the
+  hypotheses of `carrier_eq_of_subdivided_boundary` and without injectivity of the hull labels.
+  The coarse `supplied_hull_dual`, `supplied_interior_dual`, `grade_on_supplied_face` and
+  `suppliedGrades_eq_reference` keep their statements; their proofs now call the new public
+  hull-free cores `hull_dual_of_supporting_side`, `interior_dual_of_opposite_occurrences`,
+  `grade_on_face_of_edge_grades` and `suppliedGrades_eq_reference_of_face_grades`. The lemmas
+  `subdivisionEdges_side`, `multiplicity_absent`, `multiplicity_at_most_one` and
+  `multiplicity_listed` are now public with their statements unchanged.
+  `SubdividedStagesExamples` gives all real stages of the split triangle, with `BC` entering at
+  `5/2` and the refined piece `AM` at `1/4`.
 
 ## v0.5.0
 

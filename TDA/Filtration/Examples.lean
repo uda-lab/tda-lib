@@ -24,6 +24,7 @@ import TDA.Filtration.RationalAlpha.SuppliedEdgeGradeExamples
 import TDA.Filtration.RationalAlpha.SuppliedCarrierExamples
 import TDA.Filtration.RationalAlpha.SuppliedGradeEnumerationExamples
 import TDA.Filtration.RationalAlpha.SuppliedStagesExamples
+import TDA.Filtration.RationalAlpha.SubdividedStagesExamples
 import TDA.Filtration.AlphaCollapseExamples
 import TDA.Filtration.AlphaCollapseCertificateExamples
 import TDA.Filtration.AlphaCollapseFamilyExamples

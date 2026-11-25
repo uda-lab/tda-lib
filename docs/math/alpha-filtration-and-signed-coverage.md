@@ -275,13 +275,54 @@ common-cell inclusion `labelComplex_le_alphaCarrier`, and the closed-cover
 inclusion, now public as `alphaCarrier_le_labelComplex_of_closed_cover` for a
 convex region `H` containing all sites, with
 `admitted_triangle_contact` supplying the contact hypothesis. The grade rows
-(`suppliedGrades_eq_reference`) and stages (`supplied_realStage_iff`) for a
-subdivided hull stay outside these theorems; they are the subject of #1214. The
-carrier, grade and stage theorems do not assume noncollinearity of site
+(`suppliedGrades_eq_reference`) and stages (`supplied_realStage_iff`) have
+analogues for the same inputs in
+[SubdividedStages.lean](../../TDA/Filtration/RationalAlpha/SubdividedStages.lean),
+described next. The carrier, grade and stage theorems do not assume noncollinearity of site
 triples; that hypothesis belongs to the pairwise-intersection, frontier and
 non-hull-edge statements and to the assembly `certifiedComplex`.
 [TriangulationAssembly.lean](../../TDA/Filtration/RationalAlpha/TriangulationAssembly.lean) ·
 [SubdividedBoundaryCoverage.lean](../../TDA/Filtration/RationalAlpha/SubdividedBoundaryCoverage.lean)
+
+`HullDual p tri a b` describes one directed edge: a unique incident occurrence, the closed ray
+`edgeParameters = Iic upper`, the common cells as that ray, and the stage threshold
+`D/4 + D·(min 0 upper)²`. None of its fields mentions the hull cycle. Only its coarse
+constructor `supplied_hull_dual` reads the coarse cycle, through `rational_edge_counts`, and the
+supporting half-plane of the edge. The refined boundary dual keeps the structure and adds a
+constructor for each refined side `subdividedEdge (cycleEdges hull) cuts j`
+(`subdivided_hull_dual`), beside the coarse one, which is unchanged. A subdivided hull side is
+treated as the chain of its pieces, each piece a triangle edge. Every piece lies on the line of
+its coarse side, so its side form is a positive multiple of the coarse one
+(`subdivisionEdges_side`) and every site lies on its closed left side. Signed coverage of the
+subdivided chain gives disjoint triangle interiors, so each directed triangle edge occurs at most
+once. The chain coefficient shows that an edge occurring in one direction only is a refined
+side, and the strict coarse certificate excludes a refined side together with its reverse, so
+each refined side occurs exactly once, forward (`subdivided_edge_counts`). A supplied edge is
+then classified by its occurrences: an edge with both directions gets an `InteriorDual`, an edge
+with one direction gets a `HullDual`, and there is no third case (`edge_grade_on_subdivided`).
+The coarse cycle is never consulted. With `carrier_eq_of_subdivided_boundary`, the supplied
+rows equal the reference rows (`suppliedGrades_eq_reference_of_subdivided_boundary`), which
+gives the grade table and every real stage
+(`supplied_hasGradeTable_of_subdivided_boundary`,
+`supplied_realStage_iff_of_subdivided_boundary`, and the face-set and negative-grade forms
+`supplied_realStage_faces_of_subdivided_boundary` and
+`supplied_realStage_neg_of_subdivided_boundary`). The hypotheses are those of
+`carrier_eq_of_subdivided_boundary`, with the no-four-cocircular hypothesis only on the rows and
+stages; the hull labels need not be injective. The domain proved is a coarse strict hull
+polygon with ordered cuts, not every triangulation with collinear sites. The four coarse
+theorems keep their statements; their proofs call hull-free cores
+(`hull_dual_of_supporting_side`, `interior_dual_of_opposite_occurrences`,
+`grade_on_face_of_edge_grades`, `suppliedGrades_eq_reference_of_face_grades`) that the refined
+results share.
+
+On the split triangle `A = (0,0)`, `M = (1,0)`, `B = (2,0)`, `C = (0,2)` with supplied triangles
+`AMC` and `MBC`, `SubdividedStagesExamples.split_checked_stages` gives all real stages from the
+supplied rows. The edge `BC` has Gabriel value 2, but `M` lies in its diametral disk, and `BC`
+enters the actual filtration at the circumradius `5/2` of `MBC`
+(`split_bc_row`, `split_bc_cutoff`: membership at `t` iff `5/2 ≤ t`). The refined piece `AM` has
+`bisectorPoint A M t = (1/2, t)` and upper parameter `1`, so it enters at its Gabriel value
+`1/4` (`split_am_row`, `split_am_cutoff`).
+[SubdividedStagesExamples.lean](../../TDA/Filtration/RationalAlpha/SubdividedStagesExamples.lean)
 
 ## Source correspondence
 
