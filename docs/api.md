@@ -1256,6 +1256,31 @@ tests below `scaledLifetime s / 2` at the longer arm, and
 `RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_zero` and
 `RankResolutionDegreeTwoSimplicial.eRankErosionDistance_scaledHomology_zero` give both
 erosion distances to zero exactly that value, equal to the interleaving distance.
+For two uniform scalings of the tetrahedron-boundary witness
+(`TDA.Persistence.FiniteSimplicialErosionTwoScales`), with `0 < c` and `0 < c'` over any
+field, `RankResolutionDegreeTwoSimplicial.scaledHomology_const_not_rankErosion` and
+`RankResolutionDegreeTwoSimplicial.scaledHomology_const_not_eRankErosion` exhibit failed tests
+below `min (2 * |c - c'|) (max c c' / 2)` (the witness
+`RankResolutionDegreeTwoSimplicial.scaledHomology_const_not_rankErosion_of_lt` takes the
+separate strict hypotheses `ε < 2 * (c' - c)` and `2 * ε < c'`), and
+`RankResolutionDegreeTwoSimplicial.rankErosionDistance_scaledHomology_const` and
+`RankResolutionDegreeTwoSimplicial.eRankErosionDistance_scaledHomology_const` give both erosion
+distances exactly `ENNReal.ofReal (min (2 * |c - c'|) (max c c' / 2))`. The first term comes
+from the grade error (`RankResolutionDegreeTwoSimplicial.supGradeError_scaledGrading_const`
+equals `Real.toNNReal (2 * |c - c'|)`); the second from the lifetime cap
+`RankResolutionDegreeTwoSimplicial.scaledHomology_rankErosion_of_scaledLifetime_le` (with its
+`eRankErosion` version), which holds for anisotropic scales although no distance formula is
+claimed for them. For `c < c'`, the cap term is the smaller one exactly beyond the critical ratio `c'/c = 4/3`.
+`RankResolutionDegreeTwoSimplicial.boundaryTetrahedronGrading_grade_mem_Icc` places every literal
+face grade in `[0, 2]`, `RankResolutionDegreeTwoSimplicial.scaledGrading_grade_error` and
+`RankResolutionDegreeTwoSimplicial.scaledGrading_const_grade_error` bound the grade error, and
+`RankResolutionDegreeTwoSimplicial.scaledLifetime_const` gives the lifetime `c` of the uniform
+scaling; `RankResolutionDegreeTwoSimplicial.scaledHomology_eRankErosion_of_scaledLifetime_le`
+is the extended-rank cap.
+`FiniteSimplicialErosionExamples.scaledHomology_const_not_rankErosion_threeQuarters` and
+`FiniteSimplicialErosionExamples.scaledHomology_const_rankErosion_failure_certificate_threeQuarters`
+record the failing radius `3/4` between the scales `1` and `2` with its failure certificate.
+No equality with the interleaving distance is claimed.
 Erosion attainment is supplied for finitely presented modules only (below); a
 certified finite test exists for F₂ grid representations only
 (`F2GridRep.runErosion`, below).

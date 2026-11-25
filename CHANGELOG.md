@@ -105,6 +105,16 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `triangle_runErosion_zero`, radius 49/100 fails and radius 1/2 passes, in about 303 to 324 s on
   the measured host, with the time in `rankAt`; `docs/math/rank-erosion.md` records the host,
   the counts and the phase breakdown. No runtime bound is claimed.
+- Exact erosion distance of two uniformly scaled tetrahedron-boundary PH₁ modules (#1048,
+  `TDA.Persistence.FiniteSimplicialErosionTwoScales`): for `0 < c` and `0 < c'` over any field,
+  erosion between `scaledHomology k (fun _ => c) _` and `scaledHomology k (fun _ => c') _` fails
+  below `min (2 * |c - c'|) (max c c' / 2)` by an actual surviving map against a zero fibre, and
+  both erosion distances equal `ENNReal.ofReal` of that value
+  (`rankErosionDistance_scaledHomology_const`, `eRankErosionDistance_scaledHomology_const`);
+  the maximal grade error is `2 * |c - c'|` exactly, and a lifetime-cap lemma holds for anisotropic scales. No equality with
+  the interleaving distance is claimed. Fixtures: failing radius `3/4` between the scales `1`
+  and `2` with its failure certificate, and both regimes (`1` and `2` over `ℚ`, `1` and `5/4`
+  over `ZMod 2`).
 
 ## v0.5.0
 

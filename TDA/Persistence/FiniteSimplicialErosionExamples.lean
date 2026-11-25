@@ -3,6 +3,7 @@ import TDA.Persistence.FiniteSimplicialErosionTranslation
 import TDA.Persistence.FiniteSimplicialErosionCoordinateTranslation
 import TDA.Persistence.FiniteSimplicialErosionScaledTranslation
 import TDA.Persistence.FiniteSimplicialErosionScaling
+import TDA.Persistence.FiniteSimplicialErosionTwoScales
 import TDA.Persistence.RankResolutionDegreeTwoSimplicialTranslation
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.ZMod.Basic
@@ -26,7 +27,12 @@ radius `1/8` between the delays `0` and `1/2` under the scale with coordinates `
 a concrete failing radius at which the longer arm witnesses the failure. A positive scaling has
 erosion distance to the zero module exactly half its scaled lifetime
 (`FiniteSimplicialErosionScaling`); under the scale with coordinates `1` and `1/4` the radius
-`1/8` is a concrete failing radius, consumed by the finitely presented certificate.
+`1/8` is a concrete failing radius, consumed by the finitely presented certificate. Two
+uniform scalings compare two nonzero modules (`FiniteSimplicialErosionTwoScales`): the radius
+`3/4` is a concrete failing radius between the scales `1` and `2`, where the lifetime cap makes
+the erosion distance `1` strictly smaller than the maximal grade error `2`; between the scales
+`1` and `5/4`, below the critical ratio `4/3`, the extended erosion distance `1/2` equals the
+maximal grade error.
 -/
 
 set_option autoImplicit false
@@ -488,5 +494,73 @@ example : ((1 / 8 : ℝ≥0) : ℝ≥0∞) <
   (scaledHomology_rankErosion_failure_certificate_zero_eighth (ZMod 2)).1
 
 end ScaledZero
+
+/-! ### Two uniform scalings -/
+
+section TwoScales
+
+/-- A concrete failing radius between two nonzero modules: the uniform scalings by `1` and `2`
+fail erosion at `3/4`, which exceeds the distance `1/2` of the smaller module to zero. The
+witness is the diagonal test at `(max 2 (2 + 3/4), 3/4)`: the widened map of the larger module
+survives on its second arm while the smaller module's fibre there is zero. -/
+theorem scaledHomology_const_not_rankErosion_threeQuarters (k : Type u) [Field k] :
+    ¬ RankErosion (3 / 4)
+      (scaledHomology k (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos))
+      (scaledHomology k (fun _ : Fin 2 => (2 : ℝ)) (fun _ => two_pos)) := by
+  apply scaledHomology_const_not_rankErosion
+  norm_num
+
+/-- The failure certificate at the concrete failing radius `3/4` between the uniform scalings
+by `1` and `2`: the radius is strictly below the erosion distance, which is at most the
+interleaving distance, which is at most the maximal grade error. -/
+theorem scaledHomology_const_rankErosion_failure_certificate_threeQuarters
+    (k : Type u) [Field k] :
+    ((3 / 4 : ℝ≥0) : ℝ≥0∞) <
+        rankErosionDistance
+          (scaledHomology k (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos))
+          (scaledHomology k (fun _ : Fin 2 => (2 : ℝ)) (fun _ => two_pos)) ∧
+      rankErosionDistance
+          (scaledHomology k (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos))
+          (scaledHomology k (fun _ : Fin 2 => (2 : ℝ)) (fun _ => two_pos)) ≤
+        coordinateInterleavingDistance
+          (scaledHomology k (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos))
+          (scaledHomology k (fun _ : Fin 2 => (2 : ℝ)) (fun _ => two_pos)) ∧
+      coordinateInterleavingDistance
+          (scaledHomology k (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos))
+          (scaledHomology k (fun _ : Fin 2 => (2 : ℝ)) (fun _ => two_pos)) ≤
+        (scaledGrading (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos)).supGradeError
+          (scaledGrading (fun _ : Fin 2 => (2 : ℝ)) (fun _ => two_pos)) :=
+  finiteSimplicialHomology_rankErosion_failure_certificate k _ _ 1
+    (scaledHomology_const_not_rankErosion_threeQuarters k)
+
+/-- Rational coefficients, lifetime-cap regime: the erosion distance between the scalings by
+`1` and `2` is exactly the cap `1`, half of the larger lifetime. -/
+example :
+    rankErosionDistance
+      (scaledHomology ℚ (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos))
+      (scaledHomology ℚ (fun _ : Fin 2 => (2 : ℝ)) (fun _ => two_pos)) = 1 := by
+  rw [rankErosionDistance_scaledHomology_const]
+  norm_num
+
+/-- The maximal grade error between the scalings by `1` and `2` is `2`, strictly above their
+erosion distance `1`. -/
+example :
+    (scaledGrading (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos)).supGradeError
+      (scaledGrading (fun _ : Fin 2 => (2 : ℝ)) (fun _ => two_pos)) = 2 := by
+  rw [supGradeError_scaledGrading_const]
+  norm_num
+
+/-- Characteristic two, grade-error regime: the scale ratio `5/4` is below the critical ratio
+`4/3`, so the extended erosion distance between the scalings by `1` and `5/4` is exactly the
+maximal grade error `2 * (5/4 - 1) = 1/2`, which is below the lifetime cap `5/8`. -/
+example :
+    eRankErosionDistance
+      (scaledHomology (ZMod 2) (fun _ : Fin 2 => (1 : ℝ)) (fun _ => one_pos))
+      (scaledHomology (ZMod 2) (fun _ : Fin 2 => (5 / 4 : ℝ)) (fun _ => by norm_num)) =
+      ENNReal.ofReal (1 / 2) := by
+  rw [eRankErosionDistance_scaledHomology_const]
+  norm_num [abs_of_neg]
+
+end TwoScales
 
 end TDA.Persistence.FiniteSimplicialErosionExamples
