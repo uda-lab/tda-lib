@@ -400,3 +400,4 @@ import TDA
 #print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_nil
 #print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_repeated
 #print axioms TDA.Simplicial.CollapseCertificateExamples.top_collapsesTo_vertex
+#print axioms TDA.Simplicial.simplicialHomologyIncl_zero_isIso_of_edge_reachable_of_ring

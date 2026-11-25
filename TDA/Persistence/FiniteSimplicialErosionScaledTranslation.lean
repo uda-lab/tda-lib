@@ -161,4 +161,21 @@ theorem eRankErosionDistance_scaledTranslatedHomology_eq_coordinateInterleavingD
   rw [eRankErosionDistance_scaledTranslatedHomology,
     coordinateInterleavingDistance_scaledTranslatedHomology]
 
+/-- Erosion between two delays of the same positive scaling holds at the exact distance
+`min |t - u| (scaledLifetime s / 2)`: the explicit optimal interleaving supplies both rank
+inequalities. -/
+theorem scaledTranslatedHomology_rankErosion_min (k : Type u) [Field k]
+    (s : Fin 2 → ℝ) (hs : ∀ i, 0 < s i) (t u : ℝ) :
+    RankErosion (Real.toNNReal (min |t - u| (scaledLifetime s / 2)))
+      (scaledTranslatedHomology k s hs t) (scaledTranslatedHomology k s hs u) :=
+  (scaledTranslatedHomologyOptimalInterleaving k s hs t u).rankErosion
+
+/-- Extended-rank erosion between two delays of the same positive scaling holds at the exact
+distance `min |t - u| (scaledLifetime s / 2)`. -/
+theorem scaledTranslatedHomology_eRankErosion_min (k : Type u) [Field k]
+    (s : Fin 2 → ℝ) (hs : ∀ i, 0 < s i) (t u : ℝ) :
+    ERankErosion (Real.toNNReal (min |t - u| (scaledLifetime s / 2)))
+      (scaledTranslatedHomology k s hs t) (scaledTranslatedHomology k s hs u) :=
+  (scaledTranslatedHomologyOptimalInterleaving k s hs t u).eRankErosion
+
 end TDA.Persistence.RankResolutionDegreeTwoSimplicial

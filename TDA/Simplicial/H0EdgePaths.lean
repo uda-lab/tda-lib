@@ -19,7 +19,7 @@ universe u w
 
 noncomputable section
 
-variable {V : Type u} [LinearOrder V] (R : Type w) [Field R]
+variable {V : Type u} [LinearOrder V] (R : Type w) [Ring R]
 variable {K L : PreAbstractSimplicialComplex V}
 
 local instance h0CyclesHasQuotient (K : PreAbstractSimplicialComplex V) :
@@ -199,8 +199,9 @@ private theorem simplicialQuotientIncl_zero_bijective
 
 set_option backward.isDefEq.respectTransparency false in
 /-- An inclusion with all singleton faces induces an isomorphism in ordinary degree zero
-if the endpoints of every target edge can be joined by source edges. -/
-theorem simplicialHomologyIncl_zero_isIso_of_edge_reachable (h : K ≤ L) (hK : ∀ v : V, ({v} : Finset V) ∈ K)
+over every ring if the endpoints of every target edge can be joined by source edges. -/
+theorem simplicialHomologyIncl_zero_isIso_of_edge_reachable_of_ring (h : K ≤ L)
+    (hK : ∀ v : V, ({v} : Finset V) ∈ K)
     (paths : ∀ u v, ({u,v} : Finset V) ∈ L →
       Relation.EqvGen (fun a b => ({a,b} : Finset V) ∈ K) u v) :
     IsIso (simplicialHomologyIncl R h 0) := by
@@ -213,5 +214,18 @@ theorem simplicialHomologyIncl_zero_isIso_of_edge_reachable (h : K ≤ L) (hK : 
   exact IsIso.of_isIso_comp_right _ (homologyKernelQuotient.{w,u,w} R (simplicialChainComplex L R) 0).hom
 
 end
+
+variable {V : Type u} [LinearOrder V] (R : Type w) [Field R]
+variable {K L : PreAbstractSimplicialComplex V}
+
+/-- An inclusion with all singleton faces induces an isomorphism in ordinary degree zero
+if the endpoints of every target edge can be joined by source edges. Over an arbitrary ring
+this is `simplicialHomologyIncl_zero_isIso_of_edge_reachable_of_ring`. -/
+theorem simplicialHomologyIncl_zero_isIso_of_edge_reachable (h : K ≤ L)
+    (hK : ∀ v : V, ({v} : Finset V) ∈ K)
+    (paths : ∀ u v, ({u,v} : Finset V) ∈ L →
+      Relation.EqvGen (fun a b => ({a,b} : Finset V) ∈ K) u v) :
+    IsIso (simplicialHomologyIncl R h 0) :=
+  simplicialHomologyIncl_zero_isIso_of_edge_reachable_of_ring R h hK paths
 
 end TDA.Simplicial

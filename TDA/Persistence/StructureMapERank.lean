@@ -133,6 +133,17 @@ theorem eRankOfStructureMap_le_eRankOfStructureMap_iff
   rw [eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional_source,
     eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional_source, Nat.cast_le]
 
+/-- Comparisons of extended ranks are comparisons of `ℕ`-valued ranks when the images of the
+two structure maps are finite-dimensional; the source fibers may be infinite-dimensional. -/
+theorem eRankOfStructureMap_le_eRankOfStructureMap_iff_of_finiteDimensional
+    {M N : PModule.{u,v,u} k P} {a b c d : P} (hab : a ≤ b) (hcd : c ≤ d)
+    [FiniteDimensional k (LinearMap.range (structureMapLinear M hab))]
+    [FiniteDimensional k (LinearMap.range (structureMapLinear N hcd))] :
+    eRankOfStructureMap M hab ≤ eRankOfStructureMap N hcd ↔
+      rankOfStructureMap M hab ≤ rankOfStructureMap N hcd := by
+  rw [eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional,
+    eRankOfStructureMap_eq_rankOfStructureMap_of_finiteDimensional, Nat.cast_le]
+
 /-- Natural isomorphisms preserve extended ranks. -/
 theorem eRankOfStructureMap_iso {M N : PModule.{u,v,w} k P} {a b : P}
     (hab : a ≤ b) (e : M ≅ N) :

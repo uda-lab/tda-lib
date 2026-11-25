@@ -1811,7 +1811,8 @@ over a field. Its forward map `alphaH0Comparison` is the inclusion on
 the same labels at every real squared grade. `Alpha.cech_edge_reachable`
 gives α paths for Čech edges at nonnegative grades, and
 `TDA.Simplicial.H0EdgePaths` turns the path condition into a degree-zero
-homology isomorphism. See
+homology isomorphism, over a field and, as
+`simplicialHomologyIncl_zero_isIso_of_edge_reachable_of_ring`, over any ring. See
 [closed α and the degree-zero comparison](math/alpha-filtration-and-signed-coverage.md).
 
 For a site function `sites : V → E` on a finite linearly ordered label type
@@ -1982,7 +1983,9 @@ For finite rational planar point clouds, `TDA.Persistence.Reduction.AlphaInput.r
 computes an F₂ barcode with exact rational squared-radius endpoints. It accepts
 the empty family and rejects precisely families with repeated coordinates.
 `AlphaInput.run_correct` identifies the degreewise point multiset with the
-diagram of actual closed α persistence. The label map identifies the sublevel
+diagram of actual closed α persistence; `run_correct_of_fintype` states the same
+with injectivity taken from the successful run (`injective_of_run_eq_some`) and with
+any `Fintype` instance on the faces. The label map identifies the sublevel
 homology at any real threshold with the integer reducer sublevel, and commutes
 with inclusion maps. Essential deaths and repeated occurrences are retained.
 [Exact planar α barcodes](math/finite-ph-computation.md#exact-planar-α-barcodes).
@@ -3010,13 +3013,15 @@ determine unsampled support or infinite real lifetimes.
 
 `TDA.Persistence.RealIntervalObservation` (namespace
 `TDA.Persistence.RealIntervalDecomposition`) counts the occurrences of the scalar
-decomposition by strict structure-map ranks. For `s < t`,
-`persistenceImage_finrank_eq_scalar_crossing` states that the `finrank` of the image of the
-structure map from `s` to `t` is the number of occurrences whose `scalarSupport` contains
-both `s` and `t`. `scalar_crossing_finite` states that this set of occurrences is finite, and
-`scalar_crossing_card_eq_of_iso` that naturally isomorphic modules have the same count,
-although their chosen index types may differ. See
-[crossing counts from strict ranks](math/real-interval-decomposition.md#crossing-counts-from-strict-ranks).
+decomposition by structure-map ranks. For `s ≤ t`,
+`persistenceImage_finrank_eq_scalar_crossing_of_le` states that the `finrank` of the image of
+the structure map from `s` to `t` is the number of occurrences whose `scalarSupport` contains
+both `s` and `t`; `persistenceImage_finrank_eq_scalar_crossing` is its strict case `s < t`.
+`scalar_crossing_finite` states that this set of occurrences is finite, and
+`scalar_crossing_card_eq_of_iso_of_le` (strict case `scalar_crossing_card_eq_of_iso`) that
+naturally isomorphic modules have the same count, although their chosen index types may
+differ. See
+[crossing counts from structure-map ranks](math/real-interval-decomposition.md#crossing-counts-from-structure-map-ranks).
 
 `IntervalCompatibility` gives natural isomorphisms with the existing half-open
 interval modules and finite diagram realizations. Its `constructibleIso` result

@@ -59,7 +59,8 @@ same labels. Below zero both complexes are empty. At a nonnegative grade,
 grade, using finiteness and decidable equality of labels. The abstract
 `simplicialHomologyIncl_zero_isIso_of_edge_reachable` uses linearly ordered
 labels, a field, an inclusion with every source singleton, and a source path
-between the endpoints of each target edge. Signed boundaries telescope along
+between the endpoints of each target edge;
+`simplicialHomologyIncl_zero_isIso_of_edge_reachable_of_ring` states it over any ring. Signed boundaries telescope along
 such paths. These are library arguments. For a finite linearly ordered label
 type and sites in a finite-dimensional real inner-product space, the separate
 `alphaCechIso` gives the comparison over a ring in every degree and specializes

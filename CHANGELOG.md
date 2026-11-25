@@ -10,6 +10,19 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- `RealIntervalObservation`: the scalar crossing count holds for `s ≤ t`
+  (`persistenceImage_finrank_eq_scalar_crossing_of_le`,
+  `scalar_crossing_card_eq_of_iso_of_le`); at `s = t` it counts the occurrences active at
+  `s`. The strict theorems keep their statements and are now corollaries.
+- Weaker-hypothesis and attainment variants beside existing statements (#1147):
+  `eRankOfStructureMap_le_eRankOfStructureMap_iff_of_finiteDimensional` (finite-dimensional
+  images instead of source fibers); `AlphaInput.injective_of_run_eq_some` and
+  `AlphaInput.run_correct_of_fintype` (no separate injectivity hypothesis, any `Fintype`
+  instance); `simplicialHomologyIncl_zero_isIso_of_edge_reachable_of_ring` (any ring);
+  erosion at the exact distance for the scaled families
+  (`scaledTranslatedHomology_rankErosion_min`, `scaledTranslatedHomology_eRankErosion_min`,
+  `scaledHomology_rankErosion_zero`, `scaledHomology_eRankErosion_zero`).
+
 ## v0.5.0
 
 Published 2026-11-25. [Release notes](https://github.com/uda-lab/tda-lib/releases/tag/v0.5.0)
