@@ -115,6 +115,19 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   the interleaving distance is claimed. Fixtures: failing radius `3/4` between the scales `1`
   and `2` with its failure certificate, and both regimes (`1` and `2` over `ℚ`, `1` and `5/4`
   over `ZMod 2`).
+- Rips Gromov–Hausdorff stability, client-facing forms (#1206):
+  `half_lt_ghDist_of_ofReal_lt_qTameLocallyFiniteDiagram_bottleneck` (threshold form, no sign
+  condition) and `qTameLocallyFiniteDiagram_bottleneck_le_ofReal_of_ghDist_le_half`;
+  `qTameLocallyFiniteDiagram_congr_linearOrder` (the diagram does not depend on the vertex
+  order); the order-free diagram `qTameLocallyFiniteDiagramOrderFree` with
+  `qTameLocallyFiniteDiagramOrderFree_eq`, `qTameLocallyFiniteDiagramOrderFree_eq_of_isometryEquiv`,
+  `qTameLocallyFiniteDiagramOrderFree_bottleneck_le_two_mul_ghDist` and
+  `half_lt_ghDist_of_ofReal_lt_qTameLocallyFiniteDiagramOrderFree_bottleneck` (no `LinearOrder`
+  instance); event inclusions `setOf_ofReal_lt_bottleneck_subset_setOf_half_lt_ghDist` and
+  `setOf_ofReal_lt_bottleneck_subset_setOf_half_lt_ghDist_of_finite` for random sample metrics;
+  and the downstream regression fixture `RipsGHClientExamples`. Existing statements are
+  unchanged. The same-universe restriction on the two carriers remains, with its reason
+  documented.
 
 ## v0.5.0
 

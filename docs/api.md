@@ -3224,7 +3224,34 @@ bound to the exact factor-two bound for the complete locally finite diagrams of
 nonempty totally bounded spaces. The carrier types share a universe, while the
 coefficient and ambient spaces may use independent universes. The compact
 Gromov–Hausdorff consumer has the same carrier-universe restriction and needs no
-order-preserving optimal-coupling isometries. Variable finite samples converge
+order-preserving optimal-coupling isometries. The restriction exists because Rips homology of
+a carrier in `Type u` lives in `ModuleCat.{max u v}`; no cross-universe isometry invariance is
+stated, so a client puts both carriers in one universe from the start (for a finite sample
+`ULift.{u} (Fin m)`) rather than lifting afterwards. Client-facing forms (#1206) need no sign
+condition on the threshold and, in the order-free forms, no auxiliary order.
+`half_lt_ghDist_of_ofReal_lt_qTameLocallyFiniteDiagram_bottleneck` turns
+`ENNReal.ofReal ε < bottleneck` into `ε / 2 < ghDist X Y`, and
+`qTameLocallyFiniteDiagram_bottleneck_le_ofReal_of_ghDist_le_half` is its contrapositive.
+`qTameLocallyFiniteDiagram_congr_linearOrder` shows the diagram is independent of the vertex
+order. `qTameLocallyFiniteDiagramOrderFree X k hX n` takes the space explicitly and chooses the
+order classically; `qTameLocallyFiniteDiagramOrderFree_eq` identifies it with every ordered
+diagram and `qTameLocallyFiniteDiagramOrderFree_eq_of_isometryEquiv` gives isometry invariance.
+`qTameLocallyFiniteDiagramOrderFree_bottleneck_le_two_mul_ghDist` and
+`half_lt_ghDist_of_ofReal_lt_qTameLocallyFiniteDiagramOrderFree_bottleneck` are the bound and the
+threshold form for compact nonempty spaces with no `LinearOrder` instance. The event inclusions
+`setOf_ofReal_lt_bottleneck_subset_setOf_half_lt_ghDist` (a family `X : Ω → Type u` of compact
+spaces) and `setOf_ofReal_lt_bottleneck_subset_setOf_half_lt_ghDist_of_finite` (one finite
+nonempty carrier with outcome-dependent metrics `d : Ω → MetricSpace S`, installed with `letI`)
+need no measurability, so `measure_mono` transfers a Gromov–Hausdorff tail estimate to the
+diagrams. `RipsGHClientExamples` is a downstream regression fixture that opens no scope and
+declares no instance. It replays these inferences in `orderFree_bottleneck_le`,
+`half_lt_ghDist_of_lt_bottleneck`, `half_lt_ghDist_of_lt_bottleneck_ordered`,
+`bottleneck_le_of_ghDist_le_half`, `unitInterval_diagram_reversed_order`,
+`orderFree_eq_unitInterval_diagram`, `diagramErrorEvent_subset`,
+`diagram_tail_le_of_gh_tail_le`, `one_sub_le_measure_compl_diagramErrorEvent`,
+`fin_diagram_tail_le_of_gh_tail_le` and `ulift_fin_diagram_tail_le_of_gh_tail_le`, with the
+event definitions `diagramErrorEvent` and `ghErrorEvent`.
+Variable finite samples converge
 to any nonempty totally bounded target when their ambient Hausdorff distances tend
 to zero. `RipsQTameInfiniteMetricStabilityExamples` checks this with increasing
 finite samples of the genuinely infinite compact set `{0} ∪ {1/(n+1) | n ∈ ℕ}`.
