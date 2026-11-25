@@ -9505,3 +9505,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.ComponentMerger.source_actual
 #print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.ComponentMerger.target_actual
 #print axioms TDA.Persistence.Reduction.FiniteInput.ImageBarcodeExamples.ComponentMerger.actual_barcodes_separated
+
+-- Shared rank lookups in the erosion scan (#1218).
+#print axioms TDA.Persistence.lookup_map_getD
+#print axioms TDA.Persistence.F2GridRep.erosionFailureAt_eq_erosionFailureAtBy
+#print axioms TDA.Persistence.F2GridRep.rankAtWith_rankTable
+#print axioms TDA.Persistence.F2GridRep.erosionFailure?_eq_cached

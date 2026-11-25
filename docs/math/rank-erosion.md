@@ -677,8 +677,14 @@ native executable. `scripts/run-erosion-fixture.sh` builds it and runs radii
 $0$, $49/100$ and $1/2$ with a time budget; the first must report the witness of
 `triangle_runErosion_zero`, the second a failure, the third a pass. No pair is
 pinned for the second. `.lake/build/bin/erosion-fixture phases 1 2` replays the
-scan phase by phase, and `split` additionally splits each `rankAt`. This
+uncached scan phase by phase, and `split` additionally splits each `rankAt`.
+`memo 1 2` replays the scan with a diagnostic memo table kept in an `IO.Ref`. This
 measurement is not a theorem and says nothing beyond this fixture and host.
+
+The times in the table below, and the breakdown after it, are those of the library
+before Issue #1218, whose scan evaluated every `rankAt` call. The `phases` and
+`split` replays still evaluate every call, so they still measure that uncached path.
+The scan compiled today is described in [After sharing the ranks](#after-sharing-the-ranks).
 
 Measured on 2026-11-25 (Lean v4.35.0, one process, four vCPUs of an Intel Xeon
 at 2.10 GHz, 16 GiB, load average about one from the measured process). The times
@@ -712,6 +718,49 @@ calls. No library change tested this explanation.
 Building the executable compiles object code for the 3,369 modules of the
 import closure, 253 s on four threads from a state with all `.olean` files
 present; the executable is 149 MB.
+
+#### After sharing the ranks
+
+On the same host, `memo 1 2` replays the scan with a memo table keyed by module, floored source
+and floored target: the 3,024 `rankAt` calls and the 18 distinct keys are the same,
+and the replay takes 5.9 s instead of about 300 s, with the pair scan outside
+`rankAt` still taking about 1 ms. So the time was the repeated evaluation of the same
+18 homology maps, and not the rank algorithm.
+
+The library computes each of these ranks at most once (Issue #1218). `erosionFailureCached?`
+first lists the floored pairs that the scan over the breakpoint grid reads from each
+module, without repetitions, and builds a table that holds, for each pair, a thunk of the
+rank of the stored matrix. It then runs the enumeration of `erosionFailure?` in the same
+order with the same reported fields, reading each rank from that table. A thunk is
+evaluated when first read and then kept, so a rank that the scan never reaches is never
+computed. A pair that is not in the table is evaluated as `rankAt` does. The table is a
+`let` of the scan, shared by all pairs. The theorem `erosionFailure?_eq_cached` states
+that the two functions are equal, and `rankAtWith_rankTable` that the lookup through such
+a table equals `rankAt` at every pair, whatever the listed keys. The theorem is
+registered with `@[csimp]`, so compiled code, `runErosion` among it, runs the cached
+scan; no definition and no other theorem changed. Kernel evaluations, such as
+`decide +kernel` on the fixtures, ignore `@[csimp]`.
+
+Measured on 2026-11-25 on the same host as above (Lean v4.35.0, one process, four
+vCPUs of an Intel Xeon at 2.10 GHz, 16 GiB), wall times of the `runErosion` call
+in the `lib` mode after module initialisation, two runs after the change (one direct, one
+from `scripts/run-erosion-fixture.sh`), and, for the 333 s entry, one run of the library
+before it:
+
+| radius | outcome | before, uncached scan | after, cached scan |
+|---|---|---|---|
+| $0$ | fail, the pinned witness | 0.45 s | 0.48 s, 0.47 s |
+| $49/100$ | fail | 78 s | 4.8 s, 5.3 s |
+| $1/2$ | pass | 303 s, 324 s, 333 s | 6.0 s, 6.6 s |
+
+The "before" entries at $0$ and $49/100$ are from the first measurement above, and
+that at $1/2$ includes one more run (333 s) of the library before the change.
+
+The three outcomes of the fixture are unchanged: the pinned witness at radius $0$, a
+failure at $49/100$ and a pass at $1/2$. This is one measurement of this fixture on
+this host. It is no runtime bound and no claim for other inputs, radii or hosts. The
+cache needs a rank evaluation for every distinct floored pair that the scan reads, so a
+run whose scan reads many distinct pairs is not made cheap by it.
 
 ## Strict pairs
 
