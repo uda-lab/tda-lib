@@ -54,7 +54,8 @@ private theorem coarse_edge (i : Fin 3) :
         (castPoint (splitSites 2)) i := by
   fin_cases i <;> rfl
 
-private theorem coarse_certificate :
+/-- The coarse triangle `ABC` of the split side has a strict polygon certificate. -/
+theorem coarse_certificate :
     PolygonCertificate (siteHull splitSites coarseCycle)
       (fun i => realEdge splitSites (cycleEdges coarseCycle i)) := by
   rw [coarse_hull_eq]
@@ -73,14 +74,16 @@ private theorem midpoint_eq :
   · change ((0 : ℚ) : ℝ) = 1 / 2 * (((0 : ℚ) : ℝ) - (0 : ℚ)) + (0 : ℚ)
     norm_num
 
-private theorem ordered_cuts (i : Fin 3) :
+/-- The midpoint `M` is an ordered cut of the bottom side, and the other sides have none. -/
+theorem ordered_cuts (i : Fin 3) :
     OrderedEdgeCuts splitSites (cycleEdges coarseCycle i).2 (cycleEdges coarseCycle i).1 (cuts i) := by
   fin_cases i
   · exact ⟨⟨1 / 2, ⟨by norm_num, by norm_num⟩, midpoint_eq⟩, trivial⟩
   · trivial
   · trivial
 
-private theorem sites_contained (j : Fin 4) : castPoint (splitSites j) ∈ siteHull splitSites coarseCycle := by
+/-- Every one of the four sites lies in the coarse hull. -/
+theorem sites_contained (j : Fin 4) : castPoint (splitSites j) ∈ siteHull splitSites coarseCycle := by
   fin_cases j
   · exact subset_convexHull ℝ _ ⟨0, rfl⟩
   · exact subset_convexHull ℝ _ ⟨1, rfl⟩

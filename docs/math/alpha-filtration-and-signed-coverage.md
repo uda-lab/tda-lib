@@ -262,10 +262,22 @@ distinct rational sites, including degenerate configurations.
 `supplied_realStage_iff` compare the triangle chain with the chain of the hull
 cycle itself, so every hull side is an edge of a supplied triangle
 (`certified_hull_pair_face`). A site in the relative interior of a hull side
-is treated by `rational_cover_from_subdivided_signed_boundary`, for coverage
-and off-edge multiplicity, and is outside these three theorems: it lies in the
-open circumdisk of the supplied triangle on that side, so the incircle test of
-that triangle fails. The three theorems do not assume noncollinearity of site
+lies in the open circumdisk of the coarse triangle on that side, so that
+triangle fails the incircle test and cannot be supplied. Supplying the pieces
+that split the side avoids this: each piece passes `checkIncircle`, and
+`rational_cover_from_subdivided_signed_boundary` gives coverage and off-edge
+multiplicity for the chain of the ordered subdivided hull sides. The carrier
+statement for such inputs is `carrier_eq_of_subdivided_boundary`, with the same
+CCW, `checkIncircle` and no-four hypotheses as `carrier_eq_of_signed_boundary`,
+the strict certificate of the coarse hull, the ordered cuts of each side, and
+no injectivity of the hull labels. Its inclusions use the same two inputs: the
+common-cell inclusion `labelComplex_le_alphaCarrier`, and the closed-cover
+inclusion, now public as `alphaCarrier_le_labelComplex_of_closed_cover` for a
+convex region `H` containing all sites, with
+`admitted_triangle_contact` supplying the contact hypothesis. The grade rows
+(`suppliedGrades_eq_reference`) and stages (`supplied_realStage_iff`) for a
+subdivided hull stay outside these theorems; they are the subject of #1214. The
+carrier, grade and stage theorems do not assume noncollinearity of site
 triples; that hypothesis belongs to the pairwise-intersection, frontier and
 non-hull-edge statements and to the assembly `certifiedComplex`.
 [TriangulationAssembly.lean](../../TDA/Filtration/RationalAlpha/TriangulationAssembly.lean) ·
