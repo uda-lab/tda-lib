@@ -92,6 +92,40 @@ if [ "$(grep -c '^PIN TYPE ADVISORY:' "$tmp/check.log")" != 1 ] || \
 fi
 rm "$tmp/scripts/print_axioms/Éxamples.lean"
 
+# #1154 check 2: PIN DOC ADVISORY lists new pins whose last name component is absent from
+# docs/api.md or the CHANGELOG.md "Unreleased" section; it never changes the exit status.
+# `fresh` is named in the guide and only in an older changelog section; `fresh2` nowhere.
+mkdir -p "$tmp/docs"
+printf '%s\n' '# API' 'See `AxiomAuditFixture.fresh`.' > "$tmp/docs/api.md"
+printf '%s\n' '# Changelog' '' '## Unreleased' '' '- Nothing new.' '' '## v1' '' '- fresh and fresh2.' > "$tmp/CHANGELOG.md"
+printf 'import TDA\n#print axioms AxiomAuditFixture.existing\n#print axioms AxiomAuditFixture.fresh\n#print axioms AxiomAuditFixture.fresh2\n' \
+  > "$tmp/scripts/print_axioms/Éxamples.lean"
+TDA_PIN_ADVISORY_BASE="$pin_base" run_case pin_doc_advisory pass 'COVERAGE OK — 3 public theorems, all pinned' <<'LEAN'
+theorem existing : True := trivial
+theorem fresh : True := trivial
+theorem fresh2 : True := trivial
+LEAN
+if [ "$(grep -c '^PIN DOC ADVISORY:' "$tmp/check.log")" != 2 ] || \
+   ! grep -Fq 'PIN DOC ADVISORY: 1 of 2 new pin(s) not named in docs/api.md: AxiomAuditFixture.fresh2;' "$tmp/check.log" || \
+   ! grep -Fq 'not named in the CHANGELOG.md "Unreleased" section: AxiomAuditFixture.fresh, AxiomAuditFixture.fresh2;' "$tmp/check.log"; then
+  cat "$tmp/check.log" >&2
+  echo 'FAIL [pin_doc_advisory]: expected one api.md and one changelog advisory' >&2
+  exit 1
+fi
+printf '%s\n' '# API' 'See `AxiomAuditFixture.fresh`, and fresh2.' > "$tmp/docs/api.md"
+printf '%s\n' '# Changelog' '' '## Unreleased' '' '- `fresh`, `Foo.fresh2.`' '' '## v1' > "$tmp/CHANGELOG.md"
+TDA_PIN_ADVISORY_BASE="$pin_base" run_case pin_doc_covered pass 'COVERAGE OK — 3 public theorems, all pinned' <<'LEAN'
+theorem existing : True := trivial
+theorem fresh : True := trivial
+theorem fresh2 : True := trivial
+LEAN
+if grep -q '^PIN DOC ADVISORY:' "$tmp/check.log"; then
+  cat "$tmp/check.log" >&2
+  echo 'FAIL [pin_doc_covered]: documented pins produced an advisory' >&2
+  exit 1
+fi
+rm "$tmp/scripts/print_axioms/Éxamples.lean"
+
 # #949: coverage no longer computes a pinned-dependency closure to skip a private root
 # just because a public pin already reaches it. A `sorryAx` in such a root — one that
 # would have been "inside the pinned closure" under the old design, and so skipped by

@@ -140,6 +140,16 @@ reviewers spend their effort on the mathematical meaning and use of the API.
   to its mathematical specification. Do not turn this into a library-wide constructive
   rewrite. Public mathematical documentation explains objects, hypotheses, results and
   limitations in prerequisite order, without maintenance history or unsupported overclaims.
+  `CHANGELOG.md` and `docs/api.md` state what exists, not what is absent: a negative
+  sentence ("no …", "not provided") becomes false when a later PR adds the result, and no
+  check at writing time can catch that. CONTRIBUTING.md's release reading checks them.
+- **Reviewer aids (no expectation of completeness).** Attribution: an author name or numbered
+  result in a `TDA/` docstring has a `docs/math/references.md` key not marked "not consulted"
+  and the file occurs in a mapping section. Fixtures: which fixture fails if the theorem is
+  wrong or a sign is flipped? Beware a fixture proved by `rfl`, an example file that never
+  mentions its module's headline theorem, and fixtures only over `ZMod 2` for a statement
+  over any commutative ring. Executable entry points: each public executable function is
+  `Option`-valued or its docstring states its domain.
 
 Record the specific declarations and consumers examined, evidence for each concrete finding,
 and checks performed, failed or not run. A green review summary does not establish source

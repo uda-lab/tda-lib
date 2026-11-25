@@ -429,7 +429,7 @@ if [ "$need_gate" = 1 ]; then
           fi
         fi
         # The successful gate log is disposable. Relay worker-facing pin diagnostics.
-        grep '^PIN TYPE ADVISORY:' "$LOG" || true
+        grep '^PIN [A-Z]* ADVISORY:' "$LOG" || true
         echo "[pre-push] $gate_label green"
         ;;
       *)

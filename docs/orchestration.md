@@ -119,6 +119,19 @@ compares pin names across all area files at the integration merge base. Try rest
 the declaration from its area import to assess the client impact. Scoped instances
 can also require a client test. These diagnostics leave the gate status unchanged.
 
+The same pass reports `PIN DOC ADVISORY` for new pins whose last name component does not
+occur in `docs/api.md` or in the "Unreleased" section of `CHANGELOG.md`. It compares sets of
+identifiers and interprets no prose, so it shows a candidate to inspect, not that
+documentation is missing or wrong: the result may be covered under another name. It prints
+only when the integration merge base is known (`scripts/check.sh` computes it when
+`TDA_PIN_ADVISORY_BASE` is unset; an explicitly empty value skips it). No advisory fails a
+gate. `scripts/check-released-signatures.sh [<tag>]` (manual, before a release, not part of
+any gate; it builds the tag in a temporary worktree from the shared Lake cache) lists pinned
+declarations whose elaborated type changed since the last tag, or that disappeared, and says
+whether the changelog "Unreleased" section names them. It always exits 0 after a comparison.
+There is no automated check of review on the final head: review authority and the SHA-bound
+merge procedure are unchanged (owner decision of 2026-11-24 on #1154).
+
 Issue #982 adds an opt-in remote executor for ordinary gate-required pushes. The default
 remains local. Enable an adapter only in this clone's Git config with
 `git config --local tda.remoteGate.adapter /absolute/path/to/trusted-adapter`; the resolved
