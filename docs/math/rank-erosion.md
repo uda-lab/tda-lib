@@ -630,11 +630,11 @@ by at most a rational $d\ge0$ in every coordinate, the grade-error bound of
 erosion at $d$ in every degree (`rankErosion_homology_of_faces_eq`), so the run
 passes at $d$ (`runErosion_eq_pass_of_faces_eq`).
 
-**The worked outcomes below are established by proof, not by evaluation. No
-runtime bound is claimed.** A failing run can be quick, because the search stops
-at the first violating pair. A passing run must examine every comparable pair
-of breakpoint grades, and it was not practical to evaluate on the worked
-example.
+**The worked outcomes below are established by proof. No runtime bound is
+claimed.** A failing run can be quick, because the search stops at the first
+violating pair. A passing run must examine every comparable pair of breakpoint
+grades. For the worked example, a passing run of a compiled executable is
+recorded in [Measured native run](#measured-native-run).
 
 `F2GridHomologyErosionExamples` compares degree-one homology of `triangle`
 against `shiftedTriangle`. In `triangle`, the vertices and edges enter at the
@@ -668,6 +668,50 @@ translated by $(1/2,0)$.
 - Fixtures also report an invalid first input, an invalid second input and a
   negative radius (`nonMonotone_runErosion`,
   `triangle_nonMonotone_runErosion`, `triangle_runErosion_negative`).
+
+### Measured native run
+
+The Lake target `erosion-fixture` (`Bench/ErosionFixture.lean`, not a default
+target) compiles `RatGradedInput.runErosion` with the fixture above into a
+native executable. `scripts/run-erosion-fixture.sh` builds it and runs radii
+$0$, $49/100$ and $1/2$ with a time budget; the first must report the witness of
+`triangle_runErosion_zero`, the second a failure, the third a pass. No pair is
+pinned for the second. `.lake/build/bin/erosion-fixture phases 1 2` replays the
+scan phase by phase, and `split` additionally splits each `rankAt`. This
+measurement is not a theorem and says nothing beyond this fixture and host.
+
+Measured on 2026-11-25 (Lean v4.35.0, one process, four vCPUs of an Intel Xeon
+at 2.10 GHz, 16 GiB, load average about one from the measured process). The times
+are wall times of the `runErosion` call after module initialisation, which takes
+about 0.05 s:
+
+| radius | outcome | time |
+|---|---|---|
+| $0$ | fail, the pinned witness | 0.45 s |
+| $49/100$ | fail | 78 s |
+| $1/2$ | pass | 303 s, 324 s in a second run |
+
+At radius $1/2$ the scan visits 48 breakpoint grades, 2,304 ordered and 756
+comparable pairs and makes 3,024 `rankAt` calls. Of these 1,095 reach a
+matrix and refer to 18 distinct triples of module, floored source and floored
+target. These counts agree with an independent enumeration of the source scan.
+
+The time is in `rankAt`. In a replayed scan the pair scan itself, the
+validation and the breakpoint grid take together under 0.1 s. The generated grid
+representation is lazy, so its slices and bases are built inside its `dim` and
+`map` callbacks, that is inside `rankAt`; `toF2GridRep` itself takes no
+measurable time. Of the 299 s in `rankAt` in a split run, 252 s are the rank of
+the matrices and 48 s the fiber dimension queries. All fibers have dimension at
+most one, so the enumeration of images is tiny. Evaluating a single matrix
+entry costs about 0.16 s (mean over 564 sampled entries), and constructing the
+matrix costs nothing measurable. This is consistent with the homology-map
+computation being redone at every access to an entry and at every dimension
+query, without sharing, and with the same 18 maps being recomputed among 1,095
+calls. No library change tested this explanation.
+
+Building the executable compiles object code for the 3,369 modules of the
+import closure, 253 s on four threads from a state with all `.olean` files
+present; the executable is 149 MB.
 
 ## Strict pairs
 

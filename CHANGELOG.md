@@ -93,6 +93,12 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `SuppliedGradeEnumerationExamples.innerSplit` instead of file-private copies with the same
   bodies, and the generation fixtures name `FiniteInputMatchingExamples.pr`; in the other
   fixture files the private definitions became public under the same names.
+- Native erosion fixture (#1063): the non-default Lake target `erosion-fixture` and
+  `scripts/run-erosion-fixture.sh` run `RatGradedInput.runErosion` on `triangle` against
+  `shiftedTriangle` in degree one as a compiled executable. Radius 0 reports the witness of
+  `triangle_runErosion_zero`, radius 49/100 fails and radius 1/2 passes, in about 303 to 324 s on
+  the measured host, with the time in `rankAt`; `docs/math/rank-erosion.md` records the host,
+  the counts and the phase breakdown. No runtime bound is claimed.
 
 ## v0.5.0
 
