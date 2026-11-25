@@ -844,7 +844,9 @@ private theorem triangleEdges_cast {L : Type*} (site : L → Point) (a b c : L) 
   fin_cases i <;> rfl
 
 /-- For a certified hull and a finite family of rational CCW triangles, equality of signed label
-boundaries gives the off-edge multiplicity and equality of closed carriers. -/
+boundaries gives the off-edge multiplicity and equality of closed carriers. The hypotheses `hs`
+and `hv` and the membership `hsite` of non-triangle labels are redundant:
+`rational_cover_from_signed_boundary_of_triangle_sites` gives the same conclusions without them. -/
 theorem rational_cover_from_signed_boundary {L I : Type*} [Fintype I] {n : ℕ}
     (site : L → Point) (hs : Function.Injective site) (hull : Fin (n + 3) → L)
     (hv : Function.Injective hull) (tri : I → Fin 3 → L)

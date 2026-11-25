@@ -197,7 +197,9 @@ def relax (L : Vector (Fin N) N) : Vector (Fin N) N :=
 def labels : Vector (Fin N) N := X.relax^[N] (Vector.ofFn id)
 
 /-- The label of a vertex. For valid input it is the least index in its level component
-(`label_eq_label_iff_reachable`, `label_le`). -/
+(`label_eq_label_iff_reachable`, `label_le`). Total; meaningful only under `X.Valid`; use
+`incidence?`. On an asymmetric adjacency it is the least vertex reachable by a directed walk
+along horizontal edges. -/
 def label (v : Fin N) : Fin N := X.labels[v]
 
 section fold

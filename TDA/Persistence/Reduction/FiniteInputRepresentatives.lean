@@ -67,6 +67,8 @@ def essentialRepresentative (xs : Input) (i : Fin xs.length) :
   ⟨⟨degree xs i, (xs.get i).2, .essential⟩, i, none,
     supportChain (essentialVector xs i), none⟩
 
+/-- The representatives of all output records. Total; meaningful only under `Valid xs`; use
+`runWithRepresentatives`. -/
 def representedOccurrences (xs : Input) : List (Representative xs.length) :=
   (pivotPairs xs).filterMap (pairedRepresentative xs) ++
     (essentialIndices xs).map (essentialRepresentative xs)

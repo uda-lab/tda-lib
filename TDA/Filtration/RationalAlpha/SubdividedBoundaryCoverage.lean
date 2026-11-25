@@ -295,4 +295,35 @@ theorem rational_cover_from_subdivided_signed_boundary {L I : Type*} [Fintype I]
   rw [hcount x hx]
   simp [interiorIndicator, hxH]
 
+/-- The conclusions of `rational_cover_from_signed_boundary` without injectivity of the sites or
+of the hull labels, and with the hull membership required only for triangle labels. The
+hypotheses are a strict polygon certificate for the coarse hull, hull membership of every
+triangle site, rational CCW orientation of every triangle, and equality of the triangle chain
+with the coarse hull chain. -/
+theorem rational_cover_from_signed_boundary_of_triangle_sites {L I : Type*} [Fintype I] {n : ℕ}
+    (site : L → Point) (hull : Fin (n + 3) → L) (tri : I → Fin 3 → L)
+    (hh : PolygonCertificate (siteHull site hull) (fun e => realEdge site (cycleEdges hull e)))
+    (hsite : ∀ i j, castPoint (site (tri i j)) ∈ siteHull site hull)
+    (hccw : ∀ i, 0 < TDA.Filtration.RationalAlpha.orient
+      (site (tri i 0)) (site (tri i 1)) (site (tri i 2)))
+    (hchain : (∑ i, ∑ e, signedEdge (triangleEdges (tri i 0) (tri i 1) (tri i 2) e)) =
+        ∑ e, signedEdge (cycleEdges hull e)) :
+    (∀ x ∈ offEdges (listedEdges site (fun i => triangleEdges (tri i 0) (tri i 1) (tri i 2))
+      (cycleEdges hull)), interiorMultiplicity (fun i => siteTriangle site (tri i)) x =
+        interiorIndicator (siteHull site hull) x) ∧
+    (⋃ i, siteTriangle site (tri i)) = siteHull site hull := by
+  have h := rational_cover_from_subdivided_signed_boundary site hull (fun _ => []) tri hh
+    (fun _ => trivial) hsite hccw (hchain.trans ?_)
+  · refine ⟨fun x hx => h.1 x ?_, h.2⟩
+    simp only [offEdges, mem_compl_iff, mem_iUnion, not_exists] at hx ⊢
+    rintro (j | ⟨e, j⟩)
+    · exact hx j
+    · rcases j with ⟨_ | k, hk⟩
+      · exact hx (Sum.inr e)
+      · simp [subdivisionEdges] at hk
+  · rw [Fintype.sum_sigma]
+    refine Fintype.sum_congr _ _ (fun e => ?_)
+    exact (Fin.sum_univ_one
+      (fun j : Fin 1 => signedEdge (subdividedEdge (cycleEdges hull) (fun _ => []) ⟨e, j⟩))).symm
+
 end TDA.Filtration.RationalAlpha.SignedBoundary

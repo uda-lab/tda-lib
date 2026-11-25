@@ -117,7 +117,8 @@ tie-refined prefixes of a same-grade order.
 
 ## Fixtures
 
-All fixtures are over `ZMod 2`. Every closed computation is a kernel `decide`.
+All fixtures except the signed instance over `ℤ` at the end of this section are over `ZMod 2`.
+Every closed computation is a kernel `decide`.
 
 The filled triangle `triangle` has positions 0 to 6 for A, B, C, AB, BC, CA, ABC. A, B, C and
 AB have grade 0, BC and CA grade 1, and ABC grade 2. `triangle_boundary` proves that its
@@ -167,6 +168,29 @@ Fixture R1 of
 [the reducer order of a filtered based complex](#the-reducer-order-of-a-filtered-based-complex)
 sorts the survivors into the order `r, s`, in which `d'` is strictly upper triangular;
 `TDA.Persistence.Morse.UnitCancellation` itself sorts nothing.
+
+A minus sign is invisible over `ZMod 2`, so a wrong sign in `projection`, `inclusion` or
+`reducedDifferential` would pass every fixture above. The signed instance `zD` over `ℤ` is the
+filled triangle with the usual boundary on positions 0 to 6 for A, B, C, AB, BC, AC, ABC:
+`∂AB = B - A`, `∂BC = C - B`, `∂AC = C - A` and `∂ABC = BC - AC + AB` (`zD_sq`). Its expected
+values are written by hand and checked by kernel `decide`:
+
+- (B, AB) is a unit pair (`zD_unitPair`) and the reduced differential has `d' BC = C - A`, with
+  the entry `-1` at A, and `d' ABC = BC - AC` (`zD_reduced_values`);
+- (BC, ABC) is a unit pair (`zD_unitPair_BC_ABC`) and its projection has the entries `-1` at AB
+  and `+1` at AC in the column BC (`zD_projection_values`);
+- (C, AC) is a unit pair (`zD_unitPair_C_AC`) and its inclusion has the entry `-1` from the
+  survivor BC to AC (`zD_inclusion_values`);
+- the homotopy identity `1 - i p = D H + H D` is evaluated directly over `ℤ` for (B, AB) and
+  (C, AC) (`zD_homotopy_identity`, `zD_homotopy_identity_C_AC`), independently of the general
+  proof.
+
+The negative control is the pair (A, AB), whose incidence is `-1`: a unit of `ℤ`, but not `1`,
+so `zD_not_unitPair_A_AB` shows that it is not an `IsUnitPair`. The entry formulas are still
+defined for it, and they fail: the reduced differential is not square-zero
+(`zD_negative_reduced_sq_ne_zero`) and the homotopy identity does not hold
+(`zD_negative_homotopy_identity_fails`). So over `ℤ` only pairs with incidence exactly `+1` are
+unit pairs; extending cancellation to a general unit coefficient is not provided.
 
 ## Filtered contractions and their composition
 
@@ -1426,7 +1450,8 @@ slice counts of both diagrams are the ranks of the same persistence module
 second. The lists themselves need not be equal: `pivotPairs` lists the pairs in column order,
 and the tie order decides the order of columns tied in grade and degree, so reversing it can
 change the order of their finite occurrences. Fixture Q6 reverses the order on the path:
-the essential generator changes from A to C, and the occurrence list stays the same.
+the essential generator changes from A to C, and the occurrence list stays the same. Fixture Q7
+below is a complex in which the occurrence list itself changes.
 
 ### Executable and semantic parts of the run
 
@@ -1438,7 +1463,7 @@ run on the square and on the path is evaluated by `decide +kernel` only after re
 `run_eq_some_iff`. Kernel evaluation is evidence for the fixture values only; no runtime bound,
 comparison or speedup is stated. The other declarations of `TDA.Persistence.Morse.MorseDiagram`
 are propositions, and so are those of `TDA.Persistence.Morse.MorseDiagramExamples` except the
-definition `dualOrder`.
+definitions `dualOrder`, `xD`, `xDegree`, `xGrade` and `xDual`.
 
 ### Scope of the run
 
@@ -1450,8 +1475,8 @@ definition `dualOrder`.
 - independence of the list `reducerOccurrences` or `morseOccurrences`, as a list, from the tie
   order or from the certificate; only a permutation is stated;
 - independence of the Morse differential or of the Morse complex from the certificate;
-- a lifting of representatives back to the input, or an `Option`-valued run wrapper for
-  certificates;
+- a lifting of representatives back to the input, or a guarded run wrapper beyond
+  `morseOccurrences?` and `morseDiagram?`, which return `none` exactly when `¬ Valid xs`;
 - a change to any merged declaration, or a certificate statement over a ring other than
   `ZMod 2`;
 - a runtime bound, comparison or speedup claim;
@@ -1498,8 +1523,17 @@ and ACD at grade 2.
   (`path_dual_essential`), while the occurrence list is still `[⟨0, 0, .essential⟩]`
   (`path_dual_reducerOccurrences`). `path_dual_perm` states the permutation given by
   `reducerOccurrences_perm_of_linearOrder`.
+- Q7. The complex `xD` on `Fin 4` has `d e = a` and `d f = b`, with `a`, `b` in degree 0 at
+  grades 0 and 1 and `e`, `f` in degree 1 at grade 2 (`xD_isFilteredDifferential`). The
+  generators `e` and `f` are tied. In the natural order the pivot pairs are (a, e) and (b, f),
+  so the occurrence list is `[⟨0, 0, .finite 2⟩, ⟨0, 1, .finite 2⟩]`
+  (`tie_occurrences_natural`); in the reversed order `xDual` they are (b, f) and (a, e), and
+  the list is `[⟨0, 1, .finite 2⟩, ⟨0, 0, .finite 2⟩]` (`tie_occurrences_dual`). The lists
+  differ, they are permutations of each other, and the diagrams are equal in every degree
+  (`tie_occurrences_ne_diagram_eq`).
 
-The fixture file has 1 public definition, the `abbrev` `dualOrder`, and 17 public theorems.
+The fixture file has 4 public definitions beyond `dualOrder`, namely `xD`, `xDegree`, `xGrade`
+and the `abbrev` `xDual`, the `abbrev` `dualOrder` itself, and 21 public theorems.
 Of the theorems:
 
 - seven rewrite a Morse differential to its written-out form and end in `decide +kernel`:

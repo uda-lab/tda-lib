@@ -34,6 +34,10 @@ consequence is in `TDA.Persistence.CollapseCertificatePersistence`.
 
 The certificates are supplied: nothing here produces them, and no general-position hypothesis
 is used.
+
+`checkCertificates` and `Simplicial.checkSteps` do not verify that a table is the face set of a
+complex: they accept tables that no complex has, for example one that contains `∅` or lacks a
+vertex of a listed face. The face-set hypotheses are carried by the theorems about acceptance.
 -/
 
 namespace TDA.Filtration

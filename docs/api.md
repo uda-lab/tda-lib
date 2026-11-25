@@ -1855,6 +1855,8 @@ Squaring endpoints in `[0,R]` multiplies an endpoint error by at most `2R`
 (`abs_sq_sub_sq_le_of_radius_le`). For the squares with corners at `(±7,±7)` and
 `(±8,±8)`, the displacement and radius H₁ bottleneck over F₂ both equal `√2`, while
 the squared-grade bottleneck equals `30` (`AlphaRadiusStabilityExamples.square_bottlenecks`).
+`square_stability_attained` applies the stability theorem to these squares: the bound `√2`
+holds in every degree over every field in `Type`, and over F₂ in degree one it is attained.
 
 On the obtuse triangle, `CollapsePersistenceExamples.alphaCechIso` also gives the comparison
 over every ring, through collapses; see
@@ -1890,7 +1892,10 @@ cycle, a cut list on each side satisfying `OrderedEdgeCuts`, CCW triangles with 
 the hull, and equality of the triangle chain with the chain of the subdivided boundary
 (`subdividedEdge`). It gives the hull coverage and the multiplicity off the segments of
 `subdividedListedEdges`, so it applies to a triangle family with a vertex in the relative
-interior of a hull side (`SubdividedBoundaryExamples.coverage_and_multiplicity`). See
+interior of a hull side (`SubdividedBoundaryExamples.coverage_and_multiplicity`). With
+empty cuts it gives `rational_cover_from_signed_boundary_of_triangle_sites`, the conclusions
+of `rational_cover_from_signed_boundary` without injectivity of the sites or of the hull
+labels and with hull membership required only for triangle labels. See
 [signed coverage](math/alpha-filtration-and-signed-coverage.md#signed-coverage-of-a-certified-planar-hull).
 
 The modules `TriangleIncidence`, `DirectedEdgeIncidence` and `TriangulationAssembly` under
@@ -1960,7 +1965,10 @@ alone, and `alphaCarrier_le_labelComplex_of_signed_boundary`, which uses the clo
 and for `tri : Fin m → Fin 3 → Fin n`, `SuppliedGradeEnumeration.suppliedGrades p tri` is an
 executable finite set of rows of a face and a rational grade (`grade?`, `edgeGrade?`,
 `triangleGrade?`; `mem_suppliedGrades` states that `(s, q)` is a row exactly when `s` is a
-face of `labelComplex tri` and `grade? p tri s = some q`), `grade_on_supplied_face`
+face of `labelComplex tri` and `grade? p tri s = some q`). `grade?` reads the face labels
+through `Finset.sort` and does not reduce under `decide +kernel`; `kernelGrade?` reads them
+through `sortedLabels` (`sortedLabels_eq_sort`) and does, and `kernelGrade?_eq_grade?` states
+that the two lookups agree. `grade_on_supplied_face`
 identifies each computed grade with the value of `Alpha.filter`, and
 `suppliedGrades_eq_reference` states
 `suppliedGrades p tri = gradedFaces p`. `SuppliedStages.realStageTable rows t` is the set of
@@ -1971,7 +1979,11 @@ faces with a row of grade at most the real `t` (`mem_realStageTable_iff`), and i
 `s ∈ realStageTable (suppliedGrades p tri) t ↔ s ∈ Alpha.complex (realSites p) t` for every
 real `t`, with `supplied_realStage_faces` the equality of the face sets and
 `supplied_realStage_neg` the empty table for `t < 0`. `reference_hasGradeTable` is the table
-statement for `gradedFaces p`, for every embedding `p`. These carrier, grade-row and stage
+statement for `gradedFaces p`, for every embedding `p`. In `SuppliedStagesExamples`,
+`cornerHullCheck` supplies the certificate of `supplied_realStage_iff` for the trapezoid
+(`trapezoid_checked_stages`) and for an input whose interior edge `{0,1}` is not Gabriel
+(`inner_checked_stages`); that edge enters actual α at the squared grade `25/4`, above its
+Gabriel value `4` (`inner_nonGabriel_cutoff`). These carrier, grade-row and stage
 theorems compare the triangle chain with the chain of the hull cycle itself, so every hull
 side is an edge of a supplied triangle (`TriangulationAssembly.certified_hull_pair_face`).
 The chain of a subdivided boundary is the hypothesis of

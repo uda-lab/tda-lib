@@ -16,7 +16,9 @@ namespace TDA.Persistence.Reduction.FiniteInput
 variable {N : ℕ}
 
 /-- Enumerate endpoint pairs from a stored table. On validated tables the integer
-differences are nonnegative; this lower-level operation itself performs no validation. -/
+differences are nonnegative; this lower-level operation itself performs no validation. Total;
+meaningful only for a table of validated input; use `runImageBarcode`. A negative difference
+is cut to zero by `toNat` and its occurrences are dropped silently. -/
 def imageBarcodeOfTable (R : ImageRankTable N) : List (FiniteInterval N) :=
   (List.ofFn fun b : Fin N =>
     (List.ofFn fun d : Fin (N + 1) =>
@@ -25,7 +27,9 @@ def imageBarcodeOfTable (R : ImageRankTable N) : List (FiniteInterval N) :=
           ⟨b.val, d.val, h, by omega⟩
       else []).flatten).flatten
 
-/-- Compute the table once and reuse it for every endpoint multiplicity. -/
+/-- Compute the table once and reuse it for every endpoint multiplicity. Total; meaningful only
+under `ImageBarcodeInput xs ys f t`; use `runImageBarcode`. On an unvalidated input a negative
+four-term difference is cut to zero by `toNat` and its occurrences are dropped silently. -/
 def imageBarcode (xs ys : Input) (p : ℕ) (f : ℕ → ℕ) (t : Fin N → ℤ) :
     List (FiniteInterval N) :=
   let R := imageRankTable xs ys p f t

@@ -26,7 +26,8 @@ private theorem finiteExpired_eq {n : ℕ} (d : Fin n → ℕ)
   unfold finiteExpired expiredPreimage
   cases columnPivot (R.col j) <;> rfl
 
-/-- The selected filling coefficients, stored in the original face order. -/
+/-- The selected filling coefficients, stored in the original face order. Total; meaningful only
+under `Valid xs` and for a cycle `v` of the sublevel stage; use `runCycleFilling`. -/
 def fillingVector (xs : Input) (p : ℕ) (a : ℤ) (v : Fin xs.length → ZMod 2) :
     Vector (ZMod 2) xs.length :=
   let R := Vector.ofFn fun r => Vector.ofFn fun j => reduced xs r j
@@ -125,7 +126,10 @@ theorem fillingVector_boundary (xs : Input) (h : Valid xs) (p : ℕ) (a : ℤ)
   rw [preimage_normal_eq_change xs h p (sublevelStage xs a) x, ← hd, hxback] at he
   exact he
 
-/-- The selected, duplicate-free original-index filling support. -/
+/-- The selected, duplicate-free original-index filling support. Total; meaningful only under
+`Valid xs` and for a cycle `v` that is a boundary in the sublevel stage; use `runCycleFilling`.
+For a cycle that is not a boundary nothing is guaranteed: the support can be nonempty, so
+an empty support is not a boundary test (only `runCycleFilling` rejects non-boundaries). -/
 def fillingSupport (xs : Input) (p : ℕ) (a : ℤ) (v : Fin xs.length → ZMod 2) :
     List (Fin xs.length) := supportChain (fun i => (fillingVector xs p a v)[i])
 

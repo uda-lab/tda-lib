@@ -127,7 +127,12 @@ jobs:
   check:
     name: check
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    # The TDA build cache is saved only on develop pushes, and GitHub lets a run restore
+    # caches of its own ref, its PR base and the default branch (main) only. Runs for
+    # develop and PRs into develop restore it; every other run (release and hotfix PRs into
+    # main, main pushes, dispatches on other branches) builds cold, which took 42 to more
+    # than 89 minutes for v0.5.0 (#1203). Those runs get a longer limit.
+    timeout-minutes: ${{ (github.ref == 'refs/heads/develop' || github.base_ref == 'develop') && 90 || 150 }}
     # Draft events create a skipped check without allocating a runner. Marking the PR ready
     # triggers a fresh, real check; develop/main pushes and manual runs remain unchanged.
     if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}

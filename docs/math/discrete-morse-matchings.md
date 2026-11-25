@@ -285,6 +285,16 @@ exactly one critical vertex and one critical edge, and the square keeps one crit
 grade. The square result differs from the hand-chosen matching of the checker fixtures, which
 leaves A, AD and ACD critical; the dimensions and grades agree.
 
+The greedy pass need not give a matching of maximum cardinality. The input `disc` is two
+triangles glued along an edge, with the vertices `0`–`3` at positions 0–3, the edges `{0,2}`,
+`{0,1}`, `{1,2}`, `{2,3}` and `{1,3}` at positions 4–8 and the triangles `{1,2,3}` and
+`{0,1,2}` at positions 9 and 10, all at grade 0. The pass generates the four pairs (0, 4),
+(1, 5), (2, 7) and (6, 9) (`disc_generate_pairs`), leaving the vertex 3, the edge `{1,3}` and
+the triangle `{0,1,2}` critical (`disc_generate_report`). It matches the edge `{1,2}` with
+`{1,2,3}` first, so `(6, 10)` is no longer available. The checker accepts the five pairs
+(0, 4), (1, 5), (2, 7), (6, 10) and (8, 9) with a written-out rank, which leave only the vertex
+at position 3 unmatched (`disc_not_maximum`). So no maximum cardinality is claimed.
+
 On the filled triangle the candidates are, in order, (A, AB), (A, AC), (B, AB), (B, BC),
 (C, BC), (C, AC), (AB, ABC), (BC, ABC) and (AC, ABC). The pass accepts (A, AB) and (B, BC).
 It rejects (A, AC), (B, AB), (C, BC), (AB, ABC) and (BC, ABC) because one of their faces is
@@ -455,6 +465,10 @@ complex (nonempty faces, closed under nonempty subsets); that is supplied by `K`
 and the full triangle, tetrahedron and 4-simplex collapse to a vertex. The rejections are an
 extra coface, a pair that is not present, a reversed pair, a pair that is not a cover, a wrong
 order, a wrong endpoint, the empty certificate to a different table, and a repeated step.
+The hollow triangle, with three vertices and three edges, is a negative control: no pair is free
+in it, at the level of tables and of complexes (`hollowTriangle_no_free_pair`,
+`hollowComplex_no_free_pair`), and it does not collapse to a point
+(`hollowComplex_not_collapsesTo_point`).
 `TDA.Filtration.AlphaCollapseCertificateExamples` reads the faces of the actual Čech and α
 stages of the obtuse triangle at grade 4 off `cechGrades` and `gradedFaces obtuse`, and obtains
 `CollapsesTo` there through the checker (`collapsesTo_four`). Only grade 4 is checked there.
@@ -506,13 +520,42 @@ certificates are supplied: these four modules provide no producer, no general-po
 no existence of certificates for other point sets and no Delaunay–Čech stage, and state no
 runtime bound.
 
+## Behaviour on invalid input
+
+The executable entry points of this note, `check`, `criticalReport` and `generate`, and the
+declarations built on a certificate (`schedule`, `morseDifferential`, `morseOccurrences`,
+`morseDiagram`), work on the list `xs` alone. They are total, and every theorem about faces
+carries `h : Valid xs`. On an input with `¬ Valid xs` they still return ordinary-looking values,
+a certificate, a list or a diagram, which have no meaning for a complex. The guarded
+entry points are `check?`, `criticalReport?`, `generate?`, `morseOccurrences?` and
+`morseDiagram?`: each returns `none` exactly when `¬ Valid xs` (`check?_eq_none_iff`,
+`criticalReport?_eq_none_iff`, `generate?_eq_none_iff`, `morseOccurrences?_eq_none_iff`,
+`morseDiagram?_eq_none_iff`) and otherwise `some` of the raw value (the `_eq_some_iff`
+theorems), and `morseOccurrences?` is `none` exactly when `FiniteInput.run` is
+(`morseOccurrences?_eq_none_iff_run_eq_none`). `schedule` and `morseDifferential` have no
+wrapper of their own. The following inputs were evaluated, with `Input := List (Finset ℕ × ℤ)`, all grades `0` and positions
+counted from `0`.
+
+| Input | Why `Valid xs` fails | Result |
+|---|---|---|
+| `[(∅, 0), ({0}, 0)]` | lists the empty face | `check` accepts the pair `(0, 1)`; `generate` produces it; no critical face is reported, the empty face having dimension `0` by subtraction in `ℕ` |
+| `[({0, 1}, 0)]` | not downward closed | `generate` returns no pair and reports the edge as critical of dimension `0` |
+| `[({0}, 0), ({0}, 0), ({0, 1}, 0)]` | repeated face | `generate` pairs a copy of the vertex with the edge, giving the pair `(0, 2)`, and returns a `CertifiedMatching` |
+| `[({0, 1}, 0), ({0}, 0), ({1}, 0)]` | coface listed first | `generate` pairs the vertex at position `1` with the edge at position `0`, giving the pair `(1, 0)`, and returns a `CertifiedMatching` |
+
+`morseDifferential` and `morseDiagram` inherit these values. For an input that lists the empty
+face, the generated schedule need not be a pivot schedule. The Morse run returns a list on these
+inputs where `FiniteInput.run` returns `none`; on the second input `morseOccurrences` is the
+single occurrence of degree `1` and grade `0`.
+
 ## What is not provided
 
 - Generation exists only as the greedy pass above. No maximality (by inclusion or by
   cardinality), optimality or minimal number of critical faces is claimed, nor that every
   rejected candidate reuses a face or closes a cycle; MN13 §5.1 notes that constructing an
   optimal acyclic matching is NP-hard in general. No runtime bound is stated for `check` or
-  `generate`.
+  `generate`. Guarded `Option`-valued wrappers `check?`, `generate?` and the Morse run are provided;
+  see [behaviour on invalid input](#behaviour-on-invalid-input).
 - The checker and generator modules of this note provide no chain contraction or Morse
   complex; for a certified matching on a valid input, they are in
   `TDA.Persistence.Morse.MatchingSchedule`, together with an isomorphism of grade-sublevel

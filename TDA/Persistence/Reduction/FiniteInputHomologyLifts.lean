@@ -65,7 +65,9 @@ private theorem coordinateLift_exists_iff {m n : ℕ} (M : Matrix (Fin m) (Fin n
       refine ⟨Vector.ofFn coefficients, binaryVectors_complete coefficients, ?_⟩
       simpa using hc
 
-/-- Executable selected source coordinates, searching in source Betti dimension. -/
+/-- Executable selected source coordinates, searching in source Betti dimension. Total;
+meaningful only under the validity of both inputs and of the vertex map `f`; use
+`runHomologyLift`. -/
 def homologyLiftCoefficients (xs ys : Input) (p : ℕ) (a b : ℤ) (f : ℕ → ℕ)
     (w : Fin ys.length → ZMod 2) :
     Option (Vector (ZMod 2) (activeRepresentatives xs p a).length) :=

@@ -97,7 +97,10 @@ by at most $\varepsilon$ increases the Čech witness radius by at most $\varepsi
 by the triangle inequality. The radius-indexed α diagram bound uses this
 Čech estimate after identifying the persistence modules. For the squares with
 corners at $(\pm 7,\pm 7)$ and $(\pm 8,\pm 8)$, the degree-one bottleneck over
-$\mathbb F_2$ is $\sqrt{2}$ on radii and $30$ on squared grades. The rational
+$\mathbb F_2$ is $\sqrt{2}$ on radii and $30$ on squared grades. The matched
+displacement is also $\sqrt{2}$, so the radius bound is attained there
+(`square_stability_attained`, which also applies the bound in every degree over
+every field in `Type`). The rational
 F₂ barcode wrapper uses the squared grade table through the existing finite
 reducer.
 [Čech displacement](cech-displacement-stability.md) ·
@@ -167,6 +170,12 @@ for the triangles; its coverage conclusion makes no assertion of a weak-corner
 `PolygonCertificate` for the subdivided cycle.
 [`coverage_and_multiplicity`](../../TDA/Filtration/RationalAlpha/SubdividedBoundaryExamples.lean)
 exhibits the side split through an ordered cut and the refined-chain equality.
+With an empty cut list on every side, the refined chain is the coarse chain, and
+[`rational_cover_from_signed_boundary_of_triangle_sites`](../../TDA/Filtration/RationalAlpha/SubdividedBoundaryCoverage.lean)
+gives both conclusions of `rational_cover_from_signed_boundary` below without
+its injectivity hypotheses on the sites and the hull cycle, and with hull
+membership required only for the triangle labels. Injectivity is not needed
+because the polygon certificate already makes each hull side nondegenerate.
 
 `rational_cover_from_signed_boundary` takes the following data and hypotheses.
 
@@ -224,7 +233,22 @@ rational row sets. `supplied_realStage_iff` identifies
 the faces of the closed cutoff on those rows with actual α at every real
 squared grade. For a rational cutoff, `realStageTable_cast` gives the
 executable rational `stageTable`. This interface consumes supplied triangles
-and their stated certificate. The exact reference table applies to finite
+and their stated certificate.
+[`trapezoid_checked_stages`](../../TDA/Filtration/RationalAlpha/SuppliedStagesExamples.lean)
+and
+[`inner_checked_stages`](../../TDA/Filtration/RationalAlpha/SuppliedStagesExamples.lean)
+obtain the certificate from `cornerHullCheck` and apply `supplied_realStage_iff`.
+The second input has sites $A=(-2,0)$, $B=(2,0)$, $C=(0,1)$, $D=(0,-5)$ and
+triangles $ABC$ and $BAD$. The interior edge $AB$ has squared length 16, so its
+Gabriel value is 4. The circumcenters of the two triangles are $(0,-3/2)$ and
+$(0,-21/10)$; the feasible bisector point nearest the midpoint is $(0,-3/2)$, so
+$AB$ enters at $4 + 9/4 = 25/4$
+([`inner_nonGabriel_cutoff`](../../TDA/Filtration/RationalAlpha/SuppliedStagesExamples.lean)).
+`grade?` reads face labels through `Finset.sort`, which `decide +kernel` does
+not reduce. The certified fixtures therefore evaluate `kernelGrade?`,
+which scans the labels in order and equals `grade?` on every face
+(`kernelGrade?_eq_grade?`), or the reference table `gradedFaces`. The exact
+reference table applies to finite
 distinct rational sites, including degenerate configurations.
 [SuppliedGradeEnumeration.lean](../../TDA/Filtration/RationalAlpha/SuppliedGradeEnumeration.lean) ·
 [SuppliedStages.lean](../../TDA/Filtration/RationalAlpha/SuppliedStages.lean)

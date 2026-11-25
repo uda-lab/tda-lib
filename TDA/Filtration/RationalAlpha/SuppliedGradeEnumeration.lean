@@ -80,7 +80,9 @@ def triangleGrade? {m n : ℕ} (p : Fin n → Point) (tri : Fin m → Fin 3 → 
     Option ℚ :=
   (centerAt? p tri i).map fun o => sqDist o (p (tri i 0))
 
-/-- Compute the grade for one face. The enumerator restricts queries to supplied faces. -/
+/-- Compute the grade for one face. The enumerator restricts queries to supplied faces.
+`decide +kernel` does not reduce the `Finset.sort` in this lookup; `kernelGrade?` computes the
+same value in the kernel (`kernelGrade?_eq_grade?`). -/
 def grade? {m n : ℕ} (p : Fin n → Point) (tri : Fin m → Fin 3 → Fin n) (s : Finset (Fin n)) :
     Option ℚ :=
   match s.sort with
@@ -254,6 +256,31 @@ theorem mem_suppliedGrades {m n : ℕ} (p : Fin n → Point) (tri : Fin m → Fi
     {s : Finset (Fin n)} {q : ℚ} :
     (s,q) ∈ suppliedGrades p tri ↔ s ∈ labelComplex tri ∧ grade? p tri s = some q := by
   simp [suppliedGrades, Option.mem_def, Option.map_eq_some_iff, mem_faceFinset_iff]
+
+/-- The labels of a face in increasing order, found by scanning every label. -/
+def sortedLabels {n : ℕ} (s : Finset (Fin n)) : List (Fin n) :=
+  (List.finRange n).filter (· ∈ s)
+
+/-- The label scan lists the same labels as `Finset.sort`, in the same order. -/
+theorem sortedLabels_eq_sort {n : ℕ} (s : Finset (Fin n)) : sortedLabels s = s.sort :=
+  List.SortedLT.eq_of_mem_iff
+    (((List.sortedLT_finRange n).pairwise.filter _).sortedLT) (Finset.sortedLT_sort s)
+    (fun a => by simp [sortedLabels])
+
+/-- The grade lookup of `grade?` with the face labels read off by `sortedLabels`. It reduces
+under `decide +kernel`. -/
+def kernelGrade? {m n : ℕ} (p : Fin n → Point) (tri : Fin m → Fin 3 → Fin n)
+    (s : Finset (Fin n)) : Option ℚ :=
+  match sortedLabels s with
+  | [_] => some 0
+  | [a,b] => edgeGrade? p tri a b
+  | [_,_,_] => (facet? tri s).bind (triangleGrade? p tri)
+  | _ => none
+
+/-- The kernel-reducible lookup returns the grade of `grade?` on every face. -/
+theorem kernelGrade?_eq_grade? {m n : ℕ} (p : Fin n → Point) (tri : Fin m → Fin 3 → Fin n)
+    (s : Finset (Fin n)) : kernelGrade? p tri s = grade? p tri s := by
+  rw [kernelGrade?, grade?, sortedLabels_eq_sort]
 
 section Certified
 

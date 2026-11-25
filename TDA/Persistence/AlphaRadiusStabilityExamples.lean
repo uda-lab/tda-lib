@@ -11,6 +11,8 @@ set_option autoImplicit false
 Move each corner of the square with coordinates `(±7, ±7)` to the matching corner at
 `(±8, ±8)`. The α reducer gives one finite H₁ bar over F₂ in each cloud. Its squared
 endpoints are `(49, 98)` and `(64, 128)`; taking square roots gives the radius endpoints.
+The radius bottleneck distance `√2` equals the matched displacement, so the stability bound
+is attained.
 -/
 
 namespace TDA.Persistence.AlphaRadiusStabilityExamples
@@ -212,6 +214,21 @@ theorem square_bottlenecks :
   rw [h.2, displacement]
   have hr : Real.sqrt 2 < 30 := by nlinarith [Real.sq_sqrt (by norm_num : 0 ≤ (2 : ℝ))]
   exact_mod_cast (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by norm_num : (0 : ℝ) ≤ Real.sqrt 2)).2 hr
+
+/-- The stability theorem bounds the radius diagram distance of the two squares by `√2` in every
+degree over every field in `Type`. Over F₂ in degree one the distance equals the matched
+displacement, so the bound is attained. -/
+theorem square_stability_attained :
+    (∀ (k : Type) [Field k] (n : ℕ),
+      bottleneck (alphaRadiusDiagram k (realSites smallSquare) n)
+        (alphaRadiusDiagram k (realSites largeSquare) n) ≤ ENNReal.ofReal (Real.sqrt 2)) ∧
+    bottleneck (alphaRadiusDiagram (ZMod 2) (realSites smallSquare) 1)
+        (alphaRadiusDiagram (ZMod 2) (realSites largeSquare) 1) =
+      ENNReal.ofReal (Cech.displacement (realSites smallSquare) (realSites largeSquare)) := by
+  obtain ⟨hd, hb, -⟩ := square_bottlenecks
+  refine ⟨fun k _ n => ?_, by rw [hb, hd]⟩
+  rw [← hd]
+  exact bottleneck_alphaRadiusDiagram_le_displacement k _ _ n
 
 /-- Empty clouds have radius diagram distance zero in every degree. -/
 theorem empty_radius_bottleneck (k : Type) [Field k] (p q : Fin 0 → ℝ) (n : ℕ) :

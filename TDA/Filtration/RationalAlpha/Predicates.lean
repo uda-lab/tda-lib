@@ -21,7 +21,9 @@ def orient (a b c : Point) : ℚ := det (normal a b) (normal a c)
 
 /-- The oriented incircle determinant with query `d`, evaluated after translating `d`
 to the origin. For a counterclockwise triangle a positive value means strictly inside
-its circumcircle. -/
+its circumcircle. Total; meaningful as a circle test only for a non-degenerate triangle
+(`orient a b c ≠ 0`). On collinear triples it is a side-of-line test, and it is `0` on repeated
+vertices. -/
 def incircle (a b c d : Point) : ℚ :=
   sqDist d a * det (normal d b) (normal d c) -
     sqDist d b * det (normal d a) (normal d c) +

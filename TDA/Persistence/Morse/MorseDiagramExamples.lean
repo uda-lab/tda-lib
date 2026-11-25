@@ -29,6 +29,11 @@ Evaluations of `TDA.Persistence.Morse.MorseDiagram` over `ZMod 2`.
   list is unchanged, which is consistent with `reducerOccurrences_perm_of_linearOrder` (a
   permutation).
 
+* Q7. The complex `xD` on `Fin 4` with `d e = a` and `d f = b`, with `e`, `f` tied at grade 2 and
+  degree 1: the natural order gives the occurrence list `[(0, 0, 2), (0, 1, 2)]` as (degree, birth,
+  death) and the reversed order gives the same two occurrences in the other order, so the lists
+  differ, they are permutations of each other, and the diagrams are equal in every degree.
+
 Occurrence lists, diagram points, sorts and essential indices are evaluated by kernel `decide`,
 after rewriting a Morse differential to its written-out form (`sqCert_morseDifferential`,
 `genCert_morseDifferential`, `pathCert_morseDifferential`) or a boundary matrix with
@@ -166,5 +171,53 @@ theorem path_dual_perm :
       pathCert.morseOccurrences :=
   reducerOccurrences_perm_of_linearOrder dualOrder inferInstance
     (pathCert.isFilteredDifferential_morseDifferential path_valid)
+
+/-! ## Q7. Two tie orders with different occurrence lists and equal diagrams -/
+
+/-- Generators `a, b, e, f = 0, 1, 2, 3` with `d e = a` and `d f = b`. -/
+def xD : Matrix (Fin 4) (Fin 4) (ZMod 2) := fun r c =>
+  if (r = 0 ∧ c = 2) ∨ (r = 1 ∧ c = 3) then 1 else 0
+
+/-- `a`, `b` in degree 0 and `e`, `f` in degree 1. -/
+def xDegree : Fin 4 → ℕ := fun i => i.val / 2
+
+/-- `a` at grade 0, `b` at grade 1, and `e`, `f` at grade 2. -/
+def xGrade : Fin 4 → ℤ := fun i => if i.val < 2 then (i.val : ℤ) else 2
+
+/-- `xD` is a filtered differential for `xDegree` and `xGrade`. -/
+theorem xD_isFilteredDifferential : IsFilteredDifferential xDegree xGrade xD :=
+  ⟨⟨by decide +kernel, fun r c => by fin_cases r <;> fin_cases c <;> decide +kernel⟩,
+    by decide +kernel⟩
+
+/-- The reversed linear order of the four generators; `e` and `f` have equal grade and degree, so
+their order is a tie, broken by the linear order. -/
+abbrev xDual : LinearOrder (Fin 4) := inferInstanceAs (LinearOrder (Fin 4)ᵒᵈ)
+
+/-- In the natural order the pivot pairs are `(a, e)` then `(b, f)`: the occurrence list is
+`[(0, 0, 2), (0, 1, 2)]` as (degree, birth, death). -/
+theorem tie_occurrences_natural :
+    reducerOccurrences xDegree xGrade xD = [⟨0, 0, .finite 2⟩, ⟨0, 1, .finite 2⟩] := by
+  decide +kernel
+
+/-- In the reversed order the pivot pairs are `(b, f)` then `(a, e)`: the same two occurrences in
+the other order. -/
+theorem tie_occurrences_dual :
+    @reducerOccurrences (Fin 4) xDual _ _ _ _ xDegree xGrade xD =
+      [⟨0, 1, .finite 2⟩, ⟨0, 0, .finite 2⟩] := by
+  decide +kernel
+
+/-- The two occurrence lists differ as lists, though they are permutations of each other, and the
+diagrams are equal in every degree. -/
+theorem tie_occurrences_ne_diagram_eq :
+    reducerOccurrences xDegree xGrade xD ≠
+        @reducerOccurrences (Fin 4) xDual _ _ _ _ xDegree xGrade xD ∧
+      (@reducerOccurrences (Fin 4) xDual _ _ _ _ xDegree xGrade xD).Perm
+        (reducerOccurrences xDegree xGrade xD) ∧
+      ∀ p, @reducerDiagram (Fin 4) xDual _ _ _ _ xDegree xGrade xD p =
+        reducerDiagram xDegree xGrade xD p := by
+  refine ⟨?_, ?_, fun p => reducerDiagram_eq_of_linearOrder xDual inferInstance
+    xD_isFilteredDifferential p⟩
+  · rw [tie_occurrences_natural, tie_occurrences_dual]; decide +kernel
+  · exact reducerOccurrences_perm_of_linearOrder xDual inferInstance xD_isFilteredDifferential
 
 end TDA.Persistence.Morse.MorseDiagramExamples

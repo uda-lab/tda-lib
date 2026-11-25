@@ -10,6 +10,14 @@ For a certified matching `c` of a finite input `xs`, `c.morseOccurrences` and
 `TDA.Persistence.Morse.MatchingSchedule`, with the degrees and list grades inherited by its
 critical positions. They are computable and take no validity hypothesis.
 
+They are meaningful only under `Valid xs`. On an invalid input they still return a list, where the
+ordinary run `FiniteInput.run xs` returns `none`, and the list has no meaning for a complex (for
+instance, on the list `[({0, 1}, 0)]`, which is not downward closed, `morseOccurrences` is the
+single essential occurrence of degree `1` and grade `0`, and on `[(∅, 0), ({0}, 0)]` it is empty).
+The guarded entry points are
+`morseOccurrences?` and `morseDiagram?`, which return `none` exactly when `¬ Valid xs`, that is
+exactly when `FiniteInput.run xs` does (`morseOccurrences?_eq_none_iff_run_eq_none`).
+
 On a valid input the Morse differential is a filtered differential
 (`isFilteredDifferential_morseDifferential`), so the slice counts of `c.morseDiagram p` are the
 ranks of the Morse persistence module (`rankOfStructureMap_eq_countP_reducerDiagram`). These
@@ -109,16 +117,59 @@ open TDA.Persistence.Morse.SimplicialBridge
 variable {xs : Input}
 
 /-- The occurrences of the reducer run on the Morse complex of the certificate, in the reducer
-order of its critical positions. It takes no validity hypothesis and is computable. -/
+order of its critical positions. It takes no validity hypothesis and is computable. Total;
+meaningful only under `Valid xs`; on an invalid input it returns a list where `FiniteInput.run`
+returns `none`; use `morseOccurrences?`. -/
 def morseOccurrences (c : CertifiedMatching xs) : List Occurrence :=
   reducerOccurrences (degree xs ∘ Subtype.val) ((fun i => (xs.get i).2) ∘ Subtype.val)
     c.morseDifferential
 
 /-- The degree-`p` diagram of the reducer run on the Morse complex of the certificate. It takes
-no validity hypothesis and is computable. -/
+no validity hypothesis and is computable. Total; meaningful only under `Valid xs`; on an invalid
+input it is not the diagram of any complex; use `morseDiagram?`. -/
 def morseDiagram (c : CertifiedMatching xs) (p : ℕ) : Diagram ℤ :=
   reducerDiagram (degree xs ∘ Subtype.val) ((fun i => (xs.get i).2) ∘ Subtype.val)
     c.morseDifferential p
+
+/-- The guarded Morse run: `c.morseOccurrences` on a valid input, and `none` otherwise, as
+`FiniteInput.run xs` is `none` exactly then. -/
+def morseOccurrences? (c : CertifiedMatching xs) : Option (List Occurrence) :=
+  if Valid xs then some c.morseOccurrences else none
+
+/-- The guarded Morse run is `none` exactly when the input is not valid. -/
+theorem morseOccurrences?_eq_none_iff (c : CertifiedMatching xs) :
+    c.morseOccurrences? = none ↔ ¬ Valid xs := by
+  unfold morseOccurrences?
+  split_ifs with h <;> simp [h]
+
+/-- The guarded Morse run is `some o` exactly when the input is valid and `o` is
+`c.morseOccurrences`. -/
+theorem morseOccurrences?_eq_some_iff (c : CertifiedMatching xs) (o : List Occurrence) :
+    c.morseOccurrences? = some o ↔ Valid xs ∧ c.morseOccurrences = o := by
+  unfold morseOccurrences?
+  split_ifs with h <;> simp [h]
+
+/-- The guarded Morse run and the ordinary run `FiniteInput.run` are `none` together. -/
+theorem morseOccurrences?_eq_none_iff_run_eq_none (c : CertifiedMatching xs) :
+    c.morseOccurrences? = none ↔ run xs = none :=
+  (c.morseOccurrences?_eq_none_iff).trans (run_eq_none_iff xs).symm
+
+/-- The guarded degree-`p` diagram: `c.morseDiagram p` on a valid input, and `none` otherwise. -/
+def morseDiagram? (c : CertifiedMatching xs) (p : ℕ) : Option (Diagram ℤ) :=
+  if Valid xs then some (c.morseDiagram p) else none
+
+/-- The guarded diagram is `none` exactly when the input is not valid. -/
+theorem morseDiagram?_eq_none_iff (c : CertifiedMatching xs) (p : ℕ) :
+    c.morseDiagram? p = none ↔ ¬ Valid xs := by
+  unfold morseDiagram?
+  split_ifs with h <;> simp [h]
+
+/-- The guarded diagram is `some D` exactly when the input is valid and `D` is
+`c.morseDiagram p`. -/
+theorem morseDiagram?_eq_some_iff (c : CertifiedMatching xs) (p : ℕ) (D : Diagram ℤ) :
+    c.morseDiagram? p = some D ↔ Valid xs ∧ c.morseDiagram p = D := by
+  unfold morseDiagram?
+  split_ifs with h <;> simp [h]
 
 /-- On a valid input, the rank of the structure map `a ≤ b` of the simplicial sublevel
 persistence module in degree `p` is the slice count of `c.morseDiagram p` at `a ≤ b`. -/

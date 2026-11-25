@@ -401,3 +401,9 @@ import TDA
 #print axioms TDA.Simplicial.CollapseCertificateExamples.checkSteps_triangle_repeated
 #print axioms TDA.Simplicial.CollapseCertificateExamples.top_collapsesTo_vertex
 #print axioms TDA.Simplicial.simplicialHomologyIncl_zero_isIso_of_edge_reachable_of_ring
+#print axioms TDA.Simplicial.CollapseCertificateExamples.hollowTriangle
+#print axioms TDA.Simplicial.CollapseCertificateExamples.hollowComplex
+#print axioms TDA.Simplicial.CollapseCertificateExamples.pointComplex
+#print axioms TDA.Simplicial.CollapseCertificateExamples.hollowTriangle_no_free_pair
+#print axioms TDA.Simplicial.CollapseCertificateExamples.hollowComplex_no_free_pair
+#print axioms TDA.Simplicial.CollapseCertificateExamples.hollowComplex_not_collapsesTo_point

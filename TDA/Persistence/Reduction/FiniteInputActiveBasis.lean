@@ -14,7 +14,8 @@ namespace TDA.Persistence.Reduction.FiniteInput
 
 open TDA.Simplicial TDA.Filtration
 
-/-- The existing representative list, filtered at a grade and then by degree. -/
+/-- The existing representative list, filtered at a grade and then by degree. Total; meaningful
+only under `Valid xs`; use `runDegreeAtGrade`. -/
 def activeRepresentatives (xs : Input) (p : ℕ) (a : ℤ) :
     List (Representative xs.length) :=
   ((representedOccurrences xs).filter (fun r => decide (r.occurrence.AliveAt a))).filter

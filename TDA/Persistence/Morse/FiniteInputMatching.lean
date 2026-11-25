@@ -22,6 +22,17 @@ equivalently a filtered acyclic matching for the sublevels of `gradeFilter xs h`
 `CertifiedMatching` bundles accepted pairs with their rank and exposes the unmatched
 (critical) positions in increasing order, with their dimension and original grade.
 
+`check`, `IsMatching`, `IsTopologicalRank` and `criticalReport` work on the list alone and take
+no validity hypothesis; their meaning for faces is stated only under `Valid xs`. On an invalid
+input they return ordinary-looking values with no meaning for a complex. The guarded entry
+points are `check?` and `criticalReport?`, which return `none` exactly when `¬ Valid xs`
+(`check?_eq_none_iff`, `criticalReport?_eq_none_iff`) and otherwise the raw value
+(`check?_eq_some_iff`, `criticalReport?_eq_some_iff`); `generate?` and `morseOccurrences?`
+are their counterparts for generation and for the Morse run. For example, with `xs = [(∅, 0), ({0}, 0)]`, which lists the empty face, `check`
+accepts the pair `(0, 1)` with a suitable rank and `criticalReport` lists no critical position, the empty face
+having dimension `0` by subtraction in `ℕ`. See `docs/math/discrete-morse-matchings.md`,
+section "Behaviour on invalid input".
+
 ## Source and convention digest
 
 This module is a library derivation over the semantic layer, whose source is Mischaikow and
@@ -89,7 +100,8 @@ instance (xs : Input) (pairs : Pairs xs) (rank : Fin xs.length → ℕ) :
   infer_instance
 
 /-- The executable checker: the pairs form a list-level matching and `rank` is a
-topological rank of the modified Hasse diagram on positions. -/
+topological rank of the modified Hasse diagram on positions. Total; meaningful for faces only
+under `Valid xs`; use `check?`. -/
 def check (xs : Input) (pairs : Pairs xs) (rank : Fin xs.length → ℕ) : Bool :=
   decide (IsMatching xs pairs) && decide (IsTopologicalRank xs pairs rank)
 
@@ -97,6 +109,22 @@ def check (xs : Input) (pairs : Pairs xs) (rank : Fin xs.length → ℕ) : Bool 
 theorem check_eq_true_iff (xs : Input) (pairs : Pairs xs) (rank : Fin xs.length → ℕ) :
     check xs pairs rank = true ↔ IsMatching xs pairs ∧ IsTopologicalRank xs pairs rank := by
   simp [check]
+
+/-- The guarded checker: `check xs pairs rank` on a valid input, and `none` otherwise. -/
+def check? (xs : Input) (pairs : Pairs xs) (rank : Fin xs.length → ℕ) : Option Bool :=
+  if Valid xs then some (check xs pairs rank) else none
+
+/-- The guarded checker returns `none` exactly when the input is not valid. -/
+theorem check?_eq_none_iff (xs : Input) (pairs : Pairs xs) (rank : Fin xs.length → ℕ) :
+    check? xs pairs rank = none ↔ ¬ Valid xs := by
+  unfold check?
+  split_ifs with h <;> simp [h]
+
+/-- The guarded checker returns `some b` exactly when the input is valid and `check` returns `b`. -/
+theorem check?_eq_some_iff (xs : Input) (pairs : Pairs xs) (rank : Fin xs.length → ℕ)
+    (b : Bool) : check? xs pairs rank = some b ↔ Valid xs ∧ check xs pairs rank = b := by
+  unfold check?
+  split_ifs with h <;> simp [h]
 
 /-- The semantic matching on the actual faces. -/
 def toRel (xs : Input) (h : Valid xs) (pairs : Pairs xs) :
@@ -489,9 +517,28 @@ theorem critical_length_add (c : CertifiedMatching xs) :
   rw [hcr]
   omega
 
-/-- (position, dimension, original grade) of each critical face. -/
+/-- (position, dimension, original grade) of each critical face. Total; meaningful only under
+`Valid xs`; use `criticalReport?`. The dimension of a listed empty face is `0` by subtraction
+in `ℕ`. -/
 def criticalReport (c : CertifiedMatching xs) : List (Fin xs.length × ℕ × ℤ) :=
   c.critical.map fun i => (i, degree xs i, (xs.get i).2)
+
+/-- The guarded report: `c.criticalReport` on a valid input, and `none` otherwise. -/
+def criticalReport? (c : CertifiedMatching xs) : Option (List (Fin xs.length × ℕ × ℤ)) :=
+  if Valid xs then some c.criticalReport else none
+
+/-- The guarded report is `none` exactly when the input is not valid. -/
+theorem criticalReport?_eq_none_iff (c : CertifiedMatching xs) :
+    c.criticalReport? = none ↔ ¬ Valid xs := by
+  unfold criticalReport?
+  split_ifs with h <;> simp [h]
+
+/-- The guarded report is `some r` exactly when the input is valid and `r` is `criticalReport`. -/
+theorem criticalReport?_eq_some_iff (c : CertifiedMatching xs)
+    (r : List (Fin xs.length × ℕ × ℤ)) :
+    c.criticalReport? = some r ↔ Valid xs ∧ c.criticalReport = r := by
+  unfold criticalReport?
+  split_ifs with h <;> simp [h]
 
 /-- The report lists the critical positions in order. -/
 theorem criticalReport_map_fst (c : CertifiedMatching xs) :
