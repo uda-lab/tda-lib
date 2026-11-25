@@ -2,6 +2,20 @@
 
 `scripts/claude-cloud-setup.sh` is a standalone Bash script for the Setup Script field in an Anthropic-hosted Claude Code environment. Paste the file contents into that field. It does not require a checked-out repository or GitHub credentials: it creates an isolated project from the checked-in Lean and Lake pins, installs the pinned Elan/Lean toolchain when possible, and runs only `lake exe cache get`. It never runs `lake update` or a library build.
 
+Instead of pasting, the Setup Script field can run the script from the fresh clone, so that the pins follow the checked-out branch and the field need not be updated when they change. The environment's setup script starts in the directory that holds the repository checkouts:
+
+```sh
+#!/usr/bin/env bash
+set -u
+if [ -f tda-lib/scripts/claude-cloud-setup.sh ]; then
+  bash tda-lib/scripts/claude-cloud-setup.sh || echo "tda-lib setup incomplete; see STATUS.txt"
+else
+  echo "tda-lib checkout not found; Lean setup skipped"
+fi
+```
+
+The result is recorded in the same `STATUS.txt`. The pasted form remains the one to use when the environment may start without this repository checked out.
+
 The script stores the prepared project, logs, status, checksum manifest, and next-step instructions under `/root/.cache/tda-lib-claude-setup`; mathlib `.ltar` artifacts go to `/root/.cache/mathlib` so the repository's normal `scripts/bootstrap.sh` can reuse them. Its status is `warm` only when Elan, Lean 4.35.0, all manifest-pinned and clean package sources, and a complete mathlib cache with per-archive checksums are verified. A timeout, missing cache artifact, network failure, or Elan version mismatch is recorded as partial; partial state is never reported as a warm cache. A checkout pin mismatch is instead reported by `scripts/claude-cloud-activate.sh` with exit 2; that helper leaves `STATUS.txt` unchanged. Each download/install/cache stage has a time limit and an elapsed-time record, with a 250-second overall work budget to leave time for status writing. This budget is an implementation target, not a measurement of Anthropic-hosted runtime.
 
 The last stage puts `bwrap`, the bubblewrap sandbox executable, on `PATH` when it can, because the full gate `scripts/check.sh` ends with the Comparator step and `scripts/check-comparator.sh` refuses to run without `bwrap`. If `bwrap` is not installed and `apt-get` is, the script runs `apt-get update` and `apt-get install -y --no-install-recommends bubblewrap` within the same work budget. `STATUS.txt` records the result as `sandbox_status` (`ready`, `incomplete`, `unavailable` or `blocked`; the initial value `not-attempted` remains if the setup is stopped before this stage runs) with `sandbox_seconds` and `sandbox_detail`. `ready` means that `bwrap` is on `PATH`; it does not mean that the Comparator's own sandbox start-up probe passes in the session. It is reported separately from `state`: a snapshot is `warm` or `partial` by the cache stages alone. When `sandbox_status` is not `ready` and `bwrap` is not on `PATH`, install the `bubblewrap` package before a full `scripts/check.sh`; do not skip or bypass the Comparator step.
