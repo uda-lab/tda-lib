@@ -60,6 +60,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_Icc`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for all `u`, `v`; the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.FlasqueAcyclic` | `sections_exact_of_left_exact`, `epi_of_shortExact`, `isFlasque_of_shortExact`, `isFlasque_biprod`, `pushforward_shortExact_of_isFlasque`, `acyclic_pushforward_of_isFlasque`, `quasiIso_pushforward_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` | Sheaves of `k`-modules over a ring `k : Type` on `X : TopCat.{0}`, continuous `f : X ⟶ Y`; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibre` | `comp_toPt`, `H_iso_of_homeo`, `isIso_derivedUnit_toPt_app_of_homeo`, `isIso_toPt_Icc_self`, `isIso_derivedUnit_toPt_Icc_self`; `BandConvolution.fibre`, `fibreHomeo`, `coe_fibreHomeo_apply`, `fibreIso`, `fibreIso_toPt`, `isZero_H_fibre`, `isIso_derivedUnit_toPt_fibre` | Homeomorphisms `h : X ⟶ Y` in `TopCat.{0}` (`[IsIso h]`), `k : Type` a ring; fibres of the band projection `BandConvolution.q a`. The fibre statements take a derived category structure on `[y - a, y + a]` as an instance argument; the unit statement needs `0 ≤ a`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.BaseChange` | `isRightDerivedFunctor_rightDerivedFunctorPlus_comp`, `pullbackPushforwardAdjunctionPlus`, `isLeftDerivedFunctor_pullbackPlus`, `derivedCounit`, `derivedCounit_fac_app`, `derivedAdjunction`, `isIso_derivedCounit`, `pullbackPlusSquare`, `baseChange`, `baseChange_eq`, `baseChange_app`, `derivedUnit_baseChange`, `baseChange_naturality`, `isIso_baseChange_of_isIso` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; a commutative square `w : g' ≫ f = f' ≫ g`; derived categories as instance arguments. See [Derived base change](#derived-base-change). |
 
 ### Capped centred height-map pairs
 
@@ -4824,6 +4825,41 @@ embedding into `Injective.under sky`, the cokernel sequence `embSc` is short exa
 keep `embSc` short exact (`shortExact_pushforward_embSc`). For `skyPlus = singlePlus 0 sky`, the
 comparison is an isomorphism along the inclusion `ι : [0, 1] ⟶ ℝ` (`isIso_unit_skyPlus_ι`) and
 for global sections (`isIso_unit_skyPlus_toPt`).
+
+## Derived base change
+
+`TDA.Sheaf.BaseChange` completes the derived inverse and direct images of
+`TDA.Sheaf.DerivedPlus` to an adjunction on `D⁺` and builds the base-change morphism of a
+commutative square as a mate. Sheaves are sheaves of `k`-modules over a ring `k : Type` on spaces
+in `TopCat.{0}`; each derived category is an instance argument
+`[HasDerivedCategory (X.Sheaf (ModuleCat k))]`.
+
+- `isRightDerivedFunctor_rightDerivedFunctorPlus_comp` (instance): for an additive `F` out of an
+  abelian category with enough injectives and any functor `H` on `D⁺`, `RF ⋙ H` is the right
+  derived functor of `F ⋙ Q ⋙ H` (an absolute derived functor).
+- `pullbackPushforwardAdjunctionPlus`: the sheaf adjunction `f⁻¹ ⊣ f_*` on bounded below
+  complexes, termwise. `isLeftDerivedFunctor_pullbackPlus` (instance): `f⁻¹` on `D⁺` is also the
+  left derived functor of the termwise inverse image.
+- `derivedCounit k f : Rf_* ⋙ f⁻¹ ⟶ 𝟭`, characterised on `Q K` by `derivedCounit_fac_app`, and
+  `derivedAdjunction k f : f⁻¹ ⊣ Rf_*`, whose unit is `derivedUnit k f` and whose counit is
+  `derivedCounit k f` (Mathlib's `Adjunction.derived'`; `derivedAdjunction_unit`,
+  `derivedAdjunction_counit`). `isIso_derivedCounit` (instance): the counit is invertible along
+  a homeomorphism. `pullbackPushforwardAdjunctionPlus_unit` and
+  `pullbackPushforwardAdjunctionPlus_counit_app_hom_f` describe the termwise adjunction.
+- For `w : g' ≫ f = f' ≫ g` (`f : X ⟶ Y`, `g : Y' ⟶ Y`, `f' : X' ⟶ Y'`, `g' : X' ⟶ X`),
+  `pullbackPlusSquare k w : g⁻¹ ⋙ f'⁻¹ ⟶ f⁻¹ ⋙ g'⁻¹` is the isomorphism of inverse images
+  (`pullbackPlusCompIso` and `w`), and `baseChange k w : Rf_* ⋙ g⁻¹ ⟶ g'⁻¹ ⋙ Rf'_*` (that is,
+  `g⁻¹ ∘ Rf_* ⟶ Rf'_* ∘ g'⁻¹`) is its mate (`mateEquiv`) for the derived adjunctions of `f` and
+  `f'` (`baseChange_eq`; `isIso_pullbackPlusSquare`). `baseChange_app` gives its components (unit of `f'`, `pullbackPlusSquare`, counit of
+  `f`), `derivedUnit_baseChange` the mate characterisation, `baseChange_naturality` its
+  naturality, and `isIso_baseChange_of_isIso` its invertibility when `f` and `f'` are
+  homeomorphisms. The `@[reassoc]` forms `derivedCounit_fac_app_assoc`,
+  `derivedUnit_baseChange_assoc` and `baseChange_naturality_assoc` are generated.
+
+`TDA.Sheaf.BaseChangeExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
+instance: the base change of the identity square on `ℝ` is an isomorphism
+(`isIso_baseChange_id`), and so is that of the square `ι_square : ι ≫ 𝟙 = 𝟙 ≫ ι` for the
+inclusion `ι : [0, 1] ⟶ ℝ` (`isIso_baseChange_ι`).
 
 ## Review and extension boundaries
 
