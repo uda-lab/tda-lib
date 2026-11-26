@@ -603,6 +603,27 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `derivedAdjunction_counit`, `isIso_pullbackPlusSquare`, `baseChange_eq`, and the reassociated
   forms `derivedCounit_fac_app_assoc`, `derivedUnit_baseChange_assoc`,
   `baseChange_naturality_assoc`.
+- Ray sheaves as the localization of persistence modules at ephemeral modules (#1178):
+  `TDA.Sheaf.RayLocalization` proves `rayAdjunction : rayQ C ⊣ rayB C` with unit `rayUnit` and
+  counit `rayCounitIso.hom` (`rayAdjunction_unit`, `rayAdjunction_counit`,
+  `rayAdjunction_homEquiv_apply`, `rayAdjunction_homEquiv_symm_apply`), `rayBFullyFaithful`
+  and `rayB_full`, `rayQ_isLocalization` by `Adjunction.isLocalization`, and exactness of `Q`
+  (`rayQ_preservesLimits`, `rayQ_preservesColimits`), for `[Category.{0} C] [HasLimits C]`.
+  `rayEphemeral C` (vanishing strict maps) is the kernel of `Q` (`rayEphemeral_iff`,
+  `rayEphemeral_eq_kernel`, `isZero_rayB_iff`). For `[Abelian C]`, `raySheafAbelian` is the
+  abelian structure on ray sheaves from `abelianOfAdjunction`, `rayEphemeral_isSerreClass`
+  makes the ephemeral diagrams a Serre class, `rayEphemeral_isoModSerre` and
+  `isIso_rayQ_map_iff` identify the morphisms inverted by `Q` as those with ephemeral kernel and
+  cokernel, and `rayQ_isLocalization_isoModSerre`, `rayLocalizationEquivalence` and
+  `rayLocalizationEquivalenceCompIso` compare Mathlib's localization at
+  `(rayEphemeral C).isoModSerre` with `raySpace.Sheaf C`. Fixtures in
+  `TDA.Sheaf.RayLocalizationExamples` (`setFiber`, `setMap`, `setModule`,
+  `setModule_map_eq_zero`, `setModule_map_apply`, `setFiber_mono`, `setInclusion`,
+  `mono_setInclusion`, `epi_setInclusion_app`): the endpoint alteration `alteration` is not an
+  isomorphism (`not_isIso_alteration`) and becomes one under `Q`
+  (`rayEphemeral_cokernel_alteration`, `isIso_rayQ_map_alteration`), `Q` of the positive
+  interval `[0, 1)` is nonzero (`not_isZero_rayQ_setModule_Ico`), and the singleton module is
+  ephemeral (`rayEphemeral_pointModule`).
 
 ## v0.5.0
 
