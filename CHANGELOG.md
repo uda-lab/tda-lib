@@ -856,6 +856,23 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `isProperMap_wπ`, `wedgeEmb`, `intervalFibration_wπ`, `not_isZero_H0_stalk_wedge_zero`,
   `isZero_H2_stalk_wedge`, `shift`, `shiftD`, `shift_square`, `swapShift`, `shiftCoordinate`,
   `isFibreParam_shift`, `isIso_baseChange_shift`.
+- The extension functor induces bijections on `Ext`; `Ext` vanishes in degrees at least two for
+  constructible sheaves on the real line (#1183, part U3). `TDA.Sheaf.StalkPullback`:
+  `pullbackSectionsIso` (sections of the inverse image along an open embedding over `V` are the
+  sections over the image of `V`, naturally) and `pullbackOpenSectionsIso` (`Γ(ι⁻¹ F) ≅ F(U)` for
+  the inclusion of an open `U`). `TDA.Sheaf.IntervalAcyclic`: `germ_pullback_surjective`, of
+  which `germSurjective_pullback` is the case `W = X`. New module
+  `TDA.Sheaf.RealConstructibleExt`: `germ_extension_surjective` (`Φ N` is germ-surjective on the
+  opens without breakpoints), `exists_forall_mem_star_breakpoints_eq`,
+  `germ_pullback_extension_star_surjective`, `sections_exact_star` (sections over a star of an
+  injective resolution of `Φ N` are exact in positive degrees),
+  `ext_representable_extension_eq_zero`, `ext_sumTensor_extension_eq_zero`,
+  `mapExt_bijective_extension` (`Ext^n(M, N) → Ext^n(Φ M, Φ N)` is bijective for all diagrams
+  and all `n`), `extensionExtEquiv`, `extensionExtEquiv_apply`,
+  `ext_extension_eq_zero_of_two_le`, `ext_constructible_eq_zero_of_two_le`. Fixtures in
+  `TDA.Sheaf.RealConstructibleExtExamples` over `ℚ`: `rightCell`, `rightOpen`,
+  `nontrivial_ext_one_point_rightCell`, `nontrivial_ext_one_pointSheaf_rightOpen` (a nonzero
+  `Ext¹` from the field at `0` to the field on `(0, ∞)`), `ext_two_sky_rightClosed_eq_zero`.
 
 ## v0.5.0
 

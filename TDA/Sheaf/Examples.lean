@@ -15,6 +15,7 @@ import TDA.Sheaf.IntervalCohomologyExamples
 import TDA.Sheaf.FlasqueAcyclicExamples
 import TDA.Sheaf.RealConstructibleExamples
 import TDA.Sheaf.RealConstructibleAdjunctionExamples
+import TDA.Sheaf.RealConstructibleExtExamples
 import TDA.Sheaf.IntervalFibreExamples
 import TDA.Sheaf.DerivedStalksExamples
 import TDA.Sheaf.BaseChangeExamples
