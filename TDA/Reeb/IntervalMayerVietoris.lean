@@ -23,6 +23,10 @@ with connecting map `intervalMVδ`, the map `intervalMVInterMap = (inc, -inc)` a
 `intervalMVSumMap`. It is exact at the three places (`intervalMV_exact_inter`,
 `intervalMV_exact_sum`, `intervalMV_exact_ne`).
 
+**Exchanging the pieces.** `IntervalMVSquare.swap` exchanges `left` and `right` and keeps `sw` and
+`ne`; its connecting map is minus the original one (`intervalMVδ_swap`, from
+`mayerVietorisδ_flip`).
+
 **Naturality.** For two functions `f, g` and squares `Q, Q'` with `f x ∈ Q.left → g x ∈ Q'.left`
 and `f x ∈ Q.right → g x ∈ Q'.right`, the identity of `X` maps every corner preimage of `(f, Q)`
 into the corresponding one of `(g, Q')` (`intervalPreimageMap`), and the three maps of the
@@ -170,6 +174,22 @@ theorem thickenEndpoints_eq (a b a' b' : ℝ) (hab : 0 < a + b) (ha : a ≤ a') 
   rw [mk.injEq, thicken_intervalAB hab, thicken_intervalAB (by linarith),
     thicken_intervalAB (by linarith), thicken_intervalAB (by linarith)]
   exact ⟨rfl, rfl, rfl, rfl⟩
+
+/-- The square with the two pieces exchanged: `left` and `right` swap, `sw` and `ne` stay. It is
+reducible, so that `Q.swap.sw` and `Q.swap.ne` are reducibly `Q.sw` and `Q.ne` and the connecting
+maps of `Q` and `Q.swap` can be compared and rewritten in one another. -/
+abbrev swap : IntervalMVSquare where
+  sw := Q.sw
+  left := Q.right
+  right := Q.left
+  ne := Q.ne
+  inter_eq := (Set.inter_comm _ _).trans Q.inter_eq
+  union_eq := (Set.union_comm _ _).trans Q.union_eq
+
+/-- The corners of the swapped square. -/
+theorem swap_corners :
+    Q.swap.sw = Q.sw ∧ Q.swap.left = Q.right ∧ Q.swap.right = Q.left ∧ Q.swap.ne = Q.ne :=
+  ⟨rfl, rfl, rfl, rfl⟩
 
 /-- A morphism of squares: componentwise inclusions. -/
 structure Hom (Q Q' : IntervalMVSquare) : Prop where
@@ -426,6 +446,22 @@ theorem intervalMV_exact_ne :
     (((singularHomologyFunctor (ModuleCat.{u} k) n).obj (ModuleCat.of k k)).mapIso (Q.swIso f))
     ((Category.comp_id _).trans (mayerVietorisSumMap_eq_biprod_map_comp f Q k (n + 1))).symm
     (Category.id_comp _)
+
+/-- **Exchanging the two pieces negates the connecting map.** The swapped square has the same
+corners `sw` and `ne`, so both connecting maps are maps `H_{n+1}(f ⁻¹ NE) ⟶ H_n(f ⁻¹ SW)`; the one
+of the swapped square is minus the original one. Derived from `mayerVietorisδ_flip`. -/
+theorem intervalMVδ_swap : intervalMVδ f Q.swap k n = -intervalMVδ f Q k n := by
+  have F := mayerVietorisδ_flip (Q.coverSet f Q.left) (Q.coverSet f Q.right) (ModuleCat.of k k)
+    (Q.interior_coverSet_union f) n
+  have e : TopCat.ofHom (ContinuousMap.inclusion
+        (Set.inter_comm (Q.coverSet f Q.left) (Q.coverSet f Q.right)).subset) ≫
+        (Q.swap.swIso f).hom = (Q.swIso f).hom :=
+    rfl
+  change mayerVietorisδ (Q.coverSet f Q.right) (Q.coverSet f Q.left) (ModuleCat.of k k) _ n ≫
+    _ = _
+  rw [F, intervalMVδ, ← e]
+  exact (Preadditive.neg_comp _ _).trans (congrArg Neg.neg ((Category.assoc _ _ _).trans
+    (congrArg (_ ≫ ·) (Functor.map_comp _ _ _).symm)))
 
 end Sequence
 

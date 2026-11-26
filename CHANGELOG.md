@@ -575,6 +575,18 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `exampleSquare_corners`, `exampleSquare_exact`, `exampleSquare_hom`,
   `exampleSquare_intervalMVδ_naturality`, `shiftHalf`, `abs_sub_shiftHalf_le`,
   `exampleSquare_thickenEndpoints`, `exampleSquare_intervalMVδ_comp_interleaving_φ`.
+- Circle test for the interval Mayer–Vietoris connecting map (#1190, part E3c):
+  `TDA.Reeb.SingularHomologyZero` adds, next to E1's point classes `singularHomology₀Class`,
+  `singularHomology₀Class_eq_of_path` (endpoints of a path have the same class in `H₀`) and the
+  functional of a locally constant function (`singularHomology₀Desc`,
+  `singularHomology₀Class_comp_singularHomology₀Desc`,
+  `singularHomology₀Class_comp_singularHomology₀Desc_assoc`).
+  `TDA.Reeb.IntervalMayerVietoris` adds `IntervalMVSquare.swap` (`IntervalMVSquare.swap_corners`)
+  and `intervalMVδ_swap`. Fixtures in `TDA.Reeb.Examples.CircleMayerVietoris`: `circleHeight`,
+  `circleHeight_apply`, `circleSquare`, `circleSquare_corners`, `circleHeight_mem_ne`, `Overlap`,
+  `re_ne_zero_of_mem_overlap`, `overlapPos`, `overlapNeg`, `pointPos`, `pointNeg`,
+  `circle_overlap_two_components`, `overlapClassDiff`, `overlapClassDiff_comp_intervalMVInterMap`,
+  `overlapClassDiff_ne_zero`, `circle_intervalMVδ_ne_zero`, `circle_intervalMVδ_swap_ne`.
 
 ## v0.5.0
 

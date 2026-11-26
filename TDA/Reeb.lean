@@ -37,6 +37,7 @@ import TDA.Reeb.IntervalCosheaf
 import TDA.Reeb.IntervalSingularHomology
 import TDA.Reeb.IntervalSingularHomologyStability
 import TDA.Reeb.IntervalMayerVietoris
+import TDA.Reeb.SingularHomologyZero
 import TDA.Reeb.Perturbation
 import TDA.Reeb.PerturbationDistance
 import TDA.Reeb.Quotient
