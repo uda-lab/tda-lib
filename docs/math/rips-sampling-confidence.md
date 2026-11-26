@@ -71,9 +71,15 @@ continuous; distance to the fixed target diagram is consequently measurable.
 
 Import `TDA.Persistence.RipsSamplingConfidence`; the declarations below are in
 `TDA.Persistence.Rips`. Both probability theorems require a Borel measurable
-structure and second-countable topology on the metric input type, together with
-an auxiliary `LinearOrder`. No compatibility between that order and the metric
-is required.
+structure and second-countable topology on the metric input type. The statements
+named below take an auxiliary `LinearOrder` on that type, with any relation to the
+metric. On a type with no order, such as a Euclidean space, use
+`measure_bottleneck_qTameSampleDiagramOrderFree_gt_le`,
+`measure_bottleneck_qTameSampleDiagramOrderFree_carrier_gt_le` and
+`measure_bottleneck_qTameSampleDiagramOrderFree_support_gt_le`: they state the same
+bounds for `qTameSampleDiagramOrderFree` and `qTameCompactCarrierDiagramOrderFree`,
+which equal the ordered diagrams for every supplied order
+(`qTameSampleDiagramOrderFree_eq`, `qTameCompactCarrierDiagramOrderFree_eq`).
 
 - For samples whose type `X` is the whole carrier, use
   `measure_bottleneck_qTameSampleDiagram_gt_le`. Supply nonemptiness of `X` and
