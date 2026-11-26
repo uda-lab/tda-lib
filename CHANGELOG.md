@@ -10,6 +10,15 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 11 (#1281, #1207): nerve relabelling lemmas with arbitrary
+  decidable equality. `mem_nerve_relabel_iff`, `interMember_image_subset` and
+  `MeasureBifiltration.mem_largeFaceNerve_iff` take the decidable equality of the index type as
+  an instance argument (`[DecidableEq J]`, `[DecidableEq V]`), so their finite images and unions
+  are stated with the instance of the client's index type. `TDA.Topology.MultiNerveMap` proves
+  `support_multiNerveMap_eq_image`, `multiNerveMap_face_image` and
+  `projection_multiNerveMap_eq_image`, the forms of `support_multiNerveMap`,
+  `multiNerveMap_face` and `projection_multiNerveMap` for any `[DecidableEq J]`; the downstream
+  regression fixture `NerveRelabelClientExamples`.
 - Downstream-use audit, family 10 (#1277, #1207): deleted faces of an attached simplex on
   explicit vertices. `TDA.Simplicial.DeletedFaceValues` proves `deletedFace_val` and
   `SimplexAttachment.oldDeletedFace_val` (the underlying finsets), the edge case `{a, b}` with

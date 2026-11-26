@@ -5463,6 +5463,22 @@ See [nerves of nested convex families](math/convex-nerve-inclusion.md).
 The source register records these Topology modules as library derivations attributed to no
 source; see its [declaration mappings](math/references.md#existing-declaration-and-proof-mappings).
 
+Finite images of index sets in the nerve statements take a decidable equality on the target
+index type as an instance argument. `TDA.Topology.mem_nerve_relabel_iff`
+(`s ∈ nerve (fun i => U (e i)) ↔ s.image e ∈ nerve U` for `e : I ≃ J`) and
+`TDA.Topology.interMember_image_subset`
+(`interMember U σ ⊆ interMember V (σ.image R.selector)`) take `[DecidableEq J]`, and
+`TDA.Topology.MeasureBifiltration.mem_largeFaceNerve_iff` (with `S.biUnion id`) takes
+`[DecidableEq V]`. `multiNerveMap` and `refinementFaceMap` are defined with a classical
+decidable equality on the target index type, and `support_multiNerveMap`, `multiNerveMap_face`
+and `projection_multiNerveMap` state their images with it. Their forms for any `[DecidableEq J]`
+are `support_multiNerveMap_eq_image`, `multiNerveMap_face_image` (the face of the image cell
+over `τ.image R.selector`, with the containment in the support proved from
+`support_multiNerveMap_eq_image`) and `projection_multiNerveMap_eq_image`.
+`TDA.Topology.NerveRelabelClientExamples` (imported by `TDA.Topology.Examples`) is a downstream
+regression fixture (#1281): it states these results on `Fin 3`, `Bool` and `Fin 4` with the
+decidable equality of the index type and proves each by direct application.
+
 ### Affine chains and the subdivision diameter bound
 
 `TDA.Topology.AffineChains` (imported by `TDA.Topology`, namespace

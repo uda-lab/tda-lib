@@ -74,14 +74,12 @@ theorem nerve_eq_bot_of_isEmpty (U : CoverFamily X I) [IsEmpty X] :
 
 section Relabel
 
-noncomputable section
-
-local instance : DecidableEq J := Classical.decEq J
+variable [DecidableEq J]
 
 /-- Faces are transported through a bijective relabelling of indices.
 
 The reindexed family is `fun i => U (e i)`, and finite faces are transported
-by `Finset.image e`.
+by `Finset.image e`, for any decidable equality on the target index type.
 -/
 theorem mem_nerve_relabel_iff (e : I ≃ J) (U : CoverFamily X J) (s : Finset I) :
     s ∈ nerve (fun i => U (e i)) ↔ s.image e ∈ nerve U := by
@@ -97,8 +95,6 @@ theorem mem_nerve_relabel_iff (e : I ≃ J) (U : CoverFamily X J) (s : Finset I)
     refine (mem_nerve_iff _ s).2 ⟨Finset.image_nonempty.mp hs, x, ?_⟩
     intro i hi
     exact hx (e i) (mem_image.mpr ⟨i, hi, rfl⟩)
-
-end
 
 end Relabel
 

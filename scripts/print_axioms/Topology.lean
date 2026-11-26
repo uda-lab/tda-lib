@@ -723,3 +723,13 @@ import TDA
 #print axioms TDA.Topology.MayerVietorisSequenceExamples.halfMap_mapsTo_lowerRay
 #print axioms TDA.Topology.MayerVietorisSequenceExamples.halfMap_mapsTo_upperRay
 #print axioms TDA.Topology.MayerVietorisSequenceExamples.mayerVietoris_naturality_halfMap
+#print axioms TDA.Topology.support_multiNerveMap_eq_image
+#print axioms TDA.Topology.multiNerveMap_face_image
+#print axioms TDA.Topology.projection_multiNerveMap_eq_image
+#print axioms TDA.Topology.NerveRelabelClientExamples.fin_three_mem_nerve_relabel
+#print axioms TDA.Topology.NerveRelabelClientExamples.bool_mem_nerve_relabel
+#print axioms TDA.Topology.NerveRelabelClientExamples.fin_three_interMember_image_subset
+#print axioms TDA.Topology.NerveRelabelClientExamples.fin_three_support_multiNerveMap
+#print axioms TDA.Topology.NerveRelabelClientExamples.fin_three_multiNerveMap_face
+#print axioms TDA.Topology.NerveRelabelClientExamples.fin_three_projection_multiNerveMap
+#print axioms TDA.Topology.NerveRelabelClientExamples.fin_four_mem_largeFaceNerve
