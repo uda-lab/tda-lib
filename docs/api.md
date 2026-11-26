@@ -52,12 +52,13 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.RealStratification` | `orient`, `paths_hom_subsingleton`; `IsBasicOpen`, `isBasis_basicOpen`, `IsBasicOpen.inf`, `BasicCat`, `basicIncl`, `basicTopology`; `star`, `tau`, `tau_eq_iff`, `exists_star_tau`, `tauFunctor`; `isSheaf_basic_of_isIso_sameStratum`, `isSheaf_tauFunctor_comp`; `basisEquiv` | Breakpoints `p : Fin m → ℝ` strictly increasing; the basis sheaf condition holds for presheaves in any category; `basisEquiv` uses `ModuleCat.{0} k` for `k : Type`. See [Stratifications of the real line](#stratifications-of-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.LocalSystem` | `IsLocallyConstantOn`, `IsLocallyConstantOn.mono`, `restrict_isIso_of_isLocallyConstantOn`, `isIso_map_of_le_sup`; `transportIso`, `map_comp_transportIso_hom`, `transportIso_hom_eq_map`, `transportIso_trans`; `isIso_germ_of_isIso_map`, `isIso_germ_of_isLocallyConstantOn` | Sheaves of `ModuleCat.{0} k` on `realLine` for a ring `k : Type`; convex means `Set.OrdConnected`. The intended equivalence of `IsLocallyConstantOn` with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). See [Interval-local constancy on the real line](#interval-local-constancy-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructible` | `IsConstructible`, `isIso_res_sameStratum`, `isConstructible_iff`; `starFunctor`, `sections`, `sections_obj_obj`, `sections_map_gen`; `basisSheaf`, `extension`, `extensionBasicIso`, `extensionStarIso`, `isConstructible_extension`, `finiteDimensional_sections`; `extensionSectionsIso`, `extensionSectionsIso_app_app`, `sectionsExtensionIso`; `Constructible`, `FinDiagram`, `sectionsFin`, `extensionFin`, `equivalence`, `equivalence_functor_obj_obj`, `equivalence_functor_obj_map_gen`, `equivalence_inverse_obj_obj` | Strictly increasing breakpoints `p : Fin m → ℝ`; `k : Type`, a ring for `isIso_res_sameStratum`, a division ring for `IsConstructible`, a field for the diagram side. Local constancy is the interval-local `IsLocallyConstantOn`; its intended equivalence with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). The derived comparison is #1183. See [Constructible sheaves on the real line](#constructible-sheaves-on-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleAdjunction` | `starBasic`, `starTauAdjunction`, `extensionAdjunction`, `extensionAdjunction_unit`, `toBasis`, `toBasis_app_hom_app`, `extensionAdjunction_counit_app_eq`, `extensionAdjunction_counit_app`, `equivalence_counitIso_inv_app_hom`, `equivalence_unitIso_inv_app_hom`, `extensionFullyFaithful`, `extension_full`, `extension_faithful`, `preservesFiniteColimits_extension`, `preservesFiniteLimits_extension`, `sections_additive`, `extension_additive`, `starGenerator`, `homExtensionRepresentableEquiv`, `homExtensionRepresentableEquiv_apply`, `homExtensionRepresentableEquiv_comp`, `homExtensionRepresentableEquiv_add`, `homExtensionRepresentableEquiv_zero`, `homExtensionPathTensorEquiv`, `homExtensionPathTensorEquiv_apply`, `homExtensionPathTensorEquiv_comp`, `hasExt_sheaf_realLine`, `hasExt_diagram`, `ext_extension_eq_zero_of_lift`, `ext_extension_representable_eq_zero`, `ext_extension_sumTensor_eq_zero`, `starCocycles`, `starCoboundaries`, `starCohomology`, `homExtensionRepresentableEquiv_symm_comp_d`, `extOfStarCocycle`, `extOfStarCocycle_apply`, `extOfStarCocycle_surjective`, `extOfStarCocycle_eq_zero_iff`, `extStarEquiv`, `extStarEquiv_mk` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field; the adjunction and the universal property hold for every sheaf of `k`-modules on `ℝ`; the `Ext` statements take an instance `HasExt.{0}` and an injective resolution `R`. See [The extension–sections adjunction](#the-extensionsections-adjunction). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_section_lift_extend`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`; the extension step needs `S` order-connected, the global statements are for compact intervals `[u, v]` (all `u`, `v`). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_glue_monotone`, `exists_section_lift_extend_right`, `exists_section_lift_extend`, `exists_section_lift_extend_left`, `exists_section_lift_ordConnected`, `sections_exact_ordConnected`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`, order-connected for the lifting statements (open, half-open, closed and unbounded intervals and `ℝ`); germ-surjectivity of the first term on the opens above or below `a'` (extension steps) or avoiding a point `c` (global lifting). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`, `stalkPullbackSheafIso_hom_naturality` (and `stalkPullbackSheafIso_hom_naturality_assoc`), `stalkPullbackSheafNatIso`, `stalkPullbackSheafNatIso_app`; `pt`, `toPt`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ`, `rightDerivedFunctorPlusSingleIso` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.DerivedStalks` | `isIso_iff_isIso_stalk_homology` | `X : TopCat.{0}`, sheaves of `ModuleCat.{0} k` over a ring `k : Type`, `[HasDerivedCategory (X.Sheaf (ModuleCat k))]`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_Icc`, `isZero_H_Icc_of_germSurjective`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for all `u`, `v`; the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_ordConnected`, `isZero_H_of_germSurjective`, `isZero_H_constSh_ordConnected`, `isZero_H_Icc`, `isZero_H_Icc_of_germSurjective`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | Order-connected `S ⊆ ℝ` as `TopCat.of S`, `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for every order-connected `S` (all `u`, `v` for `[u, v]`); the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.AcyclicClass` | `AcyclicClass`, `acyclic_map_of_acyclicClass`, `quasiIso_map_of_acyclicClass`, `isIso_rightDerivedFunctorPlusUnit_app_of_acyclicClass` | Additive left exact `F : A ⥤ B` between abelian categories, `A` with enough injectives for the derived statement; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.FlasqueAcyclic` | `sections_exact_of_left_exact`, `epi_of_shortExact`, `isFlasque_of_shortExact`, `isFlasque_biprod`, `preservesFiniteLimits_pushforward`, `pushforward_shortExact_of_isFlasque`, `acyclicClass_isFlasque`, `acyclic_pushforward_of_isFlasque`, `quasiIso_pushforward_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` | Sheaves of `k`-modules over a ring `k : Type` on `X : TopCat.{0}`, continuous `f : X ⟶ Y`; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibre` | `comp_toPt`, `H_iso_of_homeo`, `isIso_derivedUnit_toPt_app_of_homeo`, `isIso_toPt_Icc_self`, `isIso_derivedUnit_toPt_Icc_self`; `BandConvolution.fibre`, `fibreHomeo`, `coe_fibreHomeo_apply`, `fibreIso`, `fibreIso_toPt`, `isZero_H_fibre`, `isIso_derivedUnit_toPt_fibre` | Homeomorphisms `h : X ⟶ Y` in `TopCat.{0}` (`[IsIso h]`), `k : Type` a ring; fibres of the band projection `BandConvolution.q a`. The fibre statements take a derived category structure on `[y - a, y + a]` as an instance argument; the unit statement needs `0 ≤ a`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
@@ -4871,7 +4872,9 @@ strata, stars and basic opens of `TDA.Sheaf.RealStratification`, with `S = break
   `equivalence_inverse_obj_obj` identify its functors with `Γ` and `Φ`, and
   `equivalence_functor_obj_map_gen` gives the map equation through the equivalence.
 
-The comparison with derived categories is not covered here; it is #1183.
+The adjunction `Φ ⊣ Γ` on all sheaves, of which `equivalence k hp` is the restriction, and `Ext`
+out of `Φ` of projectives are in
+[The extension–sections adjunction](#the-extensionsections-adjunction).
 
 `TDA.Sheaf.RealConstructibleExamples` covers three cases. The one-breakpoint sheaves are built
 with `Φ` from interval diagrams; only the zero-breakpoint constant sheaf and Mathlib's skyscraper
@@ -4900,6 +4903,59 @@ are sheaves defined independently of `Φ`.
   (`sectionsSkyIso`), and hence it is isomorphic to `pointSheaf` as a constructible sheaf
   (`skyIsoPointSheaf`).
 
+## The extension–sections adjunction
+
+`TDA.Sheaf.RealConstructibleAdjunction` works with strictly increasing breakpoints
+`p : Fin m → ℝ` (`hp : StrictMono p`), a field `k : Type`, `Φ = extension k hp` and
+`Γ = sections k p`, for **all** sheaves `F : TopCat.Sheaf (ModuleCat.{0} k) realLine`.
+
+- `starBasic hp` is `starFunctor p` factored through the basic opens, and
+  `starTauAdjunction hp : starBasic hp ⊣ tauFunctor hp` (both categories are thin; the unit is
+  `tau_star`, the counit is `le_star_tau`).
+- `extensionAdjunction k hp : Φ ⊣ Γ`: precomposition with `tauFunctor hp` is left adjoint to
+  precomposition with the stars (`Adjunction.whiskerLeft`), and `basisEquiv` transports this to
+  sheaves on `ℝ`. Its unit is the inverse of `extensionSectionsIso` (`extensionAdjunction_unit`).
+  Its counit at `F` is `basisEquiv` applied to the restrictions `toBasis` from the stars of the
+  strata (`toBasis_app_hom_app`), followed by the counit of `basisEquiv`
+  (`extensionAdjunction_counit_app_eq`); on a constructible `F` it is the inverse of
+  `sectionsExtensionIso` (`extensionAdjunction_counit_app`).
+- `equivalence k hp` is the restriction of `extensionAdjunction`: the inverse of its counit at a
+  finite diagram is the unit (`equivalence_counitIso_inv_app_hom`), and the inverse of its unit at
+  a constructible sheaf is the counit (`equivalence_unitIso_inv_app_hom`).
+- `Φ` is fully faithful (`extensionFullyFaithful`, `extension_full`, `extension_faithful`),
+  preserves finite colimits and finite limits (`preservesFiniteColimits_extension`,
+  `preservesFiniteLimits_extension`) and is additive (`extension_additive`, from
+  `sections_additive`).
+- The universal property of `Φ P_v` on the open star `star p v`:
+  `homExtensionRepresentableEquiv k hp v F : (Φ P_v ⟶ F) ≃ F(star p v)` evaluates at the
+  generator `starGenerator k hp v` (`homExtensionRepresentableEquiv_apply`), natural in `F`
+  (`homExtensionRepresentableEquiv_comp`) and additive (`homExtensionRepresentableEquiv_add`,
+  `homExtensionRepresentableEquiv_zero`); `homExtensionPathTensorEquiv k hp v V F :
+  (Φ (P_v ⊗ V) ⟶ F) ≃ (V ⟶ F(star p v))` (`homExtensionPathTensorEquiv_apply`,
+  `homExtensionPathTensorEquiv_comp`). Here `P_v = representable k (orient m) v` and
+  `P_v ⊗ V = (pathTensor k (orient m) v).obj V` are D2's projectives.
+- `hasExt_sheaf_realLine` and `hasExt_diagram`: `HasExt.{0}` for sheaves of `k`-modules on `ℝ`
+  and for `Diagram k o`, the instances `Abelian.Ext` takes.
+- For an injective resolution `R` of a sheaf `Y`: `ext_extension_eq_zero_of_lift`,
+  `Ext^{q+1}(Φ M, Y) = 0` when every `M ⟶ Γ(R^{q+1})` killed by `Γ(d)` factors through
+  `Γ(d) : Γ(R^q) ⟶ Γ(R^{q+1})`; `ext_extension_representable_eq_zero` (for `P_v`) and
+  `ext_extension_sumTensor_eq_zero` (for `⊕_j P_(σ j) ⊗ V_j`, the terms of D2's `resolution`)
+  read this off exactness in degree `q + 1` of the sections of `R` over the stars.
+- `extStarEquiv k hp v R q : starCohomology k p v R q ≃+ Ext^{q+1}(Φ P_v, Y)`, where
+  `starCohomology` is the cocycles `starCocycles` modulo the coboundaries `starCoboundaries` of
+  the complex of sections of `R` over `star p v`. The map is `extOfStarCocycle`
+  (`extOfStarCocycle_apply`, `homExtensionRepresentableEquiv_symm_comp_d`), built from Mathlib's
+  `InjectiveResolution.extMk`; `extOfStarCocycle_surjective` and `extOfStarCocycle_eq_zero_iff`
+  give the bijection, and `extStarEquiv_mk` its value on a class.
+
+`TDA.Sheaf.RealConstructibleAdjunctionExamples` uses one breakpoint `p₁ = 0` and Mathlib's
+skyscraper `skyOne k` at `1` with value `k` (sections `k` over opens containing `1`,
+`skyOneObjIso`, zero elsewhere, `isZero_skyOne_obj`). It is not constructible for `{0}`
+(`not_isConstructible_skyOne`): the restriction from `(1/2, 2)` to `(1/2, 3/4)` goes from `k` to
+`0`. Through the universal property, `Hom(Φ P_2, skyOne k)` is nontrivial
+(`nontrivial_hom_extension_skyOne`) and `Hom(Φ P_0, skyOne k)` is trivial
+(`subsingleton_hom_extension_skyOne`).
+
 ## Flasque sheaves and section lifting on intervals
 
 `TDA.Sheaf.SheafFlasque` treats sheaves of modules `X.Sheaf (ModuleCat k)` over a ring
@@ -4923,17 +4979,28 @@ are epimorphisms).
 
 `TDA.Sheaf.IntervalSections` works on a subspace `S ⊆ ℝ`, as `TopCat.of S`, with the opens
 `openIoo S p q = S ∩ (p, q)` (`mem_openIoo`, `openIoo_le_openIoo`, `exists_openIoo_le`). Let
-`X₁ ⟶ X₂ ⟶ X₃` be exact with `X₁` germ-surjective, and let `s` be a global section of `X₃` that
-lifts to `X₂` near every point.
+`X₁ ⟶ X₂ ⟶ X₃` be exact and let `s` be a global section of `X₃` that lifts to `X₂` near every
+point.
 
-- `exists_section_lift_extend` (order-connected `S`): for `l < a' < a` with `a' ∈ S` and
-  `b ∈ S`, a lift of `s` over `openIoo S l a` extends to a lift over `openIoo S l t` for some
-  `t > b`, unchanged over `openIoo S l a'`. Open and half-open intervals are not treated; the
-  agreement clause is what a countable gluing of this step needs.
-- `exists_section_lift_Icc`: on `[u, v]`, `s` lifts to a global section of `X₂`, for all `u`
-  and `v` (the empty interval included).
-- `sections_exact_Icc`: for `L₀ ⟶ L₁ ⟶ L₂ ⟶ L₃` on `[u, v]`, exact at `L₁` and `L₂` with `L₀`
-  germ-surjective, global sections are exact at `Γ(L₂)`.
+- `exists_glue_monotone` (any `X : TopCat.{0}`): compatible sections over an increasing sequence
+  of opens glue to a section over their union.
+- `exists_section_lift_extend_right` (order-connected `S`, `X₁` germ-surjective on the opens whose
+  points lie above `a'`): for `l < a' < a` with `a' ∈ S` and `b ∈ S`, a lift of `s` over
+  `openIoo S l a` extends to a lift over `openIoo S l t` for some `t > b`, unchanged over
+  `openIoo S l a'`. `exists_section_lift_extend` is the case of a germ-surjective `X₁`.
+- `exists_section_lift_extend_left` (order-connected `S`, `X₁` germ-surjective on the opens whose
+  points lie below `a'`): for `a < a' < r` with `a' ∈ S` and `b ∈ S`, a lift over
+  `openIoo S a r` extends to a lift over `openIoo S t r` for some `t < b`, unchanged over
+  `openIoo S a' r`. Both directions are one proof, for a coordinate `x` or `-x`.
+- `exists_section_lift_ordConnected` (order-connected `S`, `X₁` germ-surjective on the opens
+  avoiding a point `c`): `s` lifts to a global section of `X₂`. It covers open, half-open,
+  closed and unbounded intervals and `ℝ`; the lift is swept to both sides of a base point (`c`
+  when `c ∈ S`) along cofinal increasing sequences and glued near the base point.
+- `sections_exact_ordConnected`: for `L₀ ⟶ L₁ ⟶ L₂ ⟶ L₃` on an order-connected `S`, exact at `L₁`
+  and `L₂` with `L₀` germ-surjective on the opens avoiding `c`, global sections are exact at
+  `Γ(L₂)`.
+- `exists_section_lift_Icc` and `sections_exact_Icc`: the cases `S = [u, v]` with a
+  germ-surjective first term, for all `u` and `v` (the empty interval included).
 
 `TDA.Sheaf.IntervalSectionsExamples` works over `ℚ` on `I01 = [0, 1]`: the skyscraper `sky` at
 `mid = 1/2` is flasque and germ-surjective (`sky_isFlasque`, `germSurjective_sky`); an
@@ -4941,7 +5008,13 @@ injective sheaf `Injective.under F` is flasque (`isFlasque_under`) and the coker
 `Injective.ι F` is germ-surjective (`germSurjective_cokernel_ι`); for the constant sheaf `K`,
 every global section lifts along `sky ⊞ K ⟶ K` (`constant_section_lift` from
 `sections_exact_Icc`, `constant_section_lift_of_local` from `exists_section_lift_Icc`); and the
-lifting statement holds on the empty interval `[1, 0]` (`empty_section_lift`).
+lifting statement holds on the empty interval `[1, 0]` (`empty_section_lift`). On an
+order-connected `S`, with the skyscraper `skyAt x` (germ-surjective, `germSurjective_skyAt`) and
+the constant sheaf `KS S`, every global section of `KS S` lifts along `skyAt x ⊞ KS S ⟶ KS S`
+from its local lifts (`section_lift_of_local`, through `exists_section_lift_ordConnected`) and
+by exactness (`section_lift_of_exact`, through `sections_exact_ordConnected`); the open interval
+`(0, 1)` with `midIoo = 1/2` (`section_lift_Ioo`, `section_lift_exact_Ioo`) and the half-line
+`[0, ∞)` with `zeroIci = 0` (`section_lift_Ici`, `section_lift_exact_Ici`) are instances.
 
 ## Cohomology of compact intervals
 
@@ -4998,7 +5071,13 @@ isomorphisms (`isIso_stalk_homology_derivedUnit_shift`).
 - `singlePlus n X`, the object `X` in degree `n` as a bounded below complex, and
   `singleFunctorIsoQ n X` comparing it with `DerivedCategory.Plus.singleFunctor _ n`.
 
-`TDA.Sheaf.IntervalCohomology`, on `[u, v]` as `TopCat.of (Set.Icc u v)`:
+`TDA.Sheaf.IntervalCohomology`, on an order-connected `S ⊆ ℝ` as `TopCat.of S`:
+
+- `isZero_H_ordConnected`: `Hⁱ(S; G) = 0` for `2 ≤ i` and every sheaf `G`.
+- `isZero_H_of_germSurjective`: `Hⁱ(S; G) = 0` for `1 ≤ i` and `G` germ-surjective.
+- `isZero_H_constSh_ordConnected`: `Hⁱ(S; constSh k _ N) = 0` for `1 ≤ i`.
+
+On `[u, v]` as `TopCat.of (Set.Icc u v)`:
 
 - `isZero_H_Icc`: `Hⁱ([u, v]; G) = 0` for `2 ≤ i`, every sheaf `G` and all `u`, `v`.
 - `isZero_H_constSh_Icc`: `Hⁱ([u, v]; constSh k _ N) = 0` for `1 ≤ i`, all `u`, `v`.
@@ -5007,7 +5086,7 @@ isomorphisms (`isIso_stalk_homology_derivedUnit_shift`).
 - `isIso_derivedUnit_toPt_Icc` (`u ≤ v`): the derived unit `derivedUnit k (toPt _)` is an
   isomorphism at `N` in degree `0`, for every sheaf `N` of `k`-modules on `pt`.
 
-The proofs read `Hⁱ` off an injective resolution, and use `sections_exact_Icc` with
+The proofs read `Hⁱ` off an injective resolution, and use `sections_exact_ordConnected` with
 `germSurjective_of_injective` in degrees `≥ 2` and `germSurjective_constSh` in degree `1`; `H⁰`
 of a constant sheaf follows from the connectedness of `[u, v]`.
 
