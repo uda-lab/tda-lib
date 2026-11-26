@@ -20,6 +20,11 @@ the unit interval `I01 = [0, 1]`.
   (`constant_section_lift`); `exists_section_lift_Icc` does the same from the local lifts
   (`constant_section_lift_of_local`).
 * On the empty interval `[1, 0]` the lifting statement holds as well (`empty_section_lift`).
+* On the open interval `(0, 1)` and on the half-line `[0, ∞)`, with the skyscraper `skyAt` at a
+  point and the constant sheaf `KS`, the complex `skyAt ⟶ skyAt ⊞ KS ⟶ KS` lifts every global
+  section of `KS` from its local lifts (`exists_section_lift_ordConnected`:
+  `section_lift_Ioo`, `section_lift_Ici`), and `sections_exact_ordConnected` gives the same
+  lift from exactness (`section_lift_exact_Ioo`, `section_lift_exact_Ici`).
 -/
 
 noncomputable section
@@ -85,5 +90,83 @@ theorem empty_section_lift
     ∃ t : Sc.X₂.presheaf.obj (op ⊤), Sc.g.hom.app _ t = s :=
   exists_section_lift_Icc ℚ Sc hSc (fun _ x => absurd (x.2.1.trans x.2.2) (by norm_num)) s
     (fun x => absurd (x.2.1.trans x.2.2) (by norm_num))
+
+/-! ### Open intervals and half-lines -/
+
+section OrdConnected
+
+variable {S : Set ℝ}
+
+/-- The skyscraper sheaf at a point `x` of `S` with value `ℚ`. -/
+abbrev skyAt (x : TopCat.of S) : (TopCat.of S).Sheaf (ModuleCat.{0} ℚ) :=
+  skyscraperSheaf x (ModuleCat.of ℚ ℚ)
+
+variable (S) in
+/-- The constant sheaf on `S` with value `ℚ`. -/
+abbrev KS : (TopCat.of S).Sheaf (ModuleCat.{0} ℚ) :=
+  (constantSheaf (Opens.grothendieckTopology (TopCat.of S)) (ModuleCat.{0} ℚ)).obj
+    (ModuleCat.of ℚ ℚ)
+
+theorem germSurjective_skyAt (x : TopCat.of S) : GermSurjective ℚ (skyAt x) :=
+  @germSurjective_of_isFlasque ℚ _ _ (skyAt x) (isFlasque_skyscraperSheaf_of_hasZeroObject x _)
+
+/-- On an order-connected `S`, every global section of `KS S` lifts to `skyAt x ⊞ KS S` from its
+local lifts along `biprod.inr` (section lifting with `c = x`). -/
+theorem section_lift_of_local (hS : S.OrdConnected) (x : TopCat.of S)
+    (s : (KS S).presheaf.obj (op ⊤)) :
+    ∃ t : (skyAt x ⊞ KS S).presheaf.obj (op ⊤),
+      (biprod.snd : skyAt x ⊞ KS S ⟶ KS S).hom.app _ t = s := by
+  refine exists_section_lift_ordConnected ℚ hS (x : ℝ) _
+    (ShortComplex.Splitting.ofHasBinaryBiproduct (skyAt x) (KS S)).exact
+    (fun V _ => germSurjective_skyAt x V) s
+    (fun y => ⟨⊤, trivial, (biprod.inr : KS S ⟶ skyAt x ⊞ KS S).hom.app _ s, ?_⟩)
+  have h := congrArg (fun φ : KS S ⟶ KS S => φ.hom.app (op ⊤) s)
+    (biprod.inr_snd (X := skyAt x) (Y := KS S))
+  simp only at h
+  rw [← ConcreteCategory.comp_apply, ← NatTrans.comp_app]
+  exact h.trans (by rw [presheaf_map_eq _ _ (𝟙 _), CategoryTheory.Functor.map_id]; rfl)
+
+/-- On an order-connected `S`, every global section of `KS S` lifts to `skyAt x ⊞ KS S`, by
+exactness of global sections. -/
+theorem section_lift_of_exact (hS : S.OrdConnected) (x : TopCat.of S)
+    (s : (KS S).presheaf.obj (op ⊤)) :
+    ∃ t : (skyAt x ⊞ KS S).presheaf.obj (op ⊤),
+      (biprod.snd : skyAt x ⊞ KS S ⟶ KS S).hom.app _ t = s :=
+  sections_exact_ordConnected ℚ hS (x : ℝ) biprod.inl biprod.snd (0 : KS S ⟶ KS S) biprod.inl_snd
+    (by simp) (ShortComplex.Splitting.ofHasBinaryBiproduct (skyAt x) (KS S)).exact
+    ((ShortComplex.exact_iff_epi _ rfl).2 inferInstance) (fun V _ => germSurjective_skyAt x V) s
+    rfl
+
+end OrdConnected
+
+/-- The midpoint `1/2` of the open interval `(0, 1)`. -/
+def midIoo : TopCat.of (Set.Ioo (0 : ℝ) 1) := ⟨1 / 2, by norm_num, by norm_num⟩
+
+/-- The end point `0` of the half-line `[0, ∞)`. -/
+def zeroIci : TopCat.of (Set.Ici (0 : ℝ)) := ⟨0, Set.mem_Ici.2 (le_refl (0 : ℝ))⟩
+
+/-- **Section lifting on the open interval `(0, 1)`.** -/
+theorem section_lift_Ioo (s : (KS (Set.Ioo (0 : ℝ) 1)).presheaf.obj (op ⊤)) :
+    ∃ t : (skyAt midIoo ⊞ KS (Set.Ioo (0 : ℝ) 1)).presheaf.obj (op ⊤),
+      (biprod.snd : skyAt midIoo ⊞ KS _ ⟶ KS _).hom.app _ t = s :=
+  section_lift_of_local Set.ordConnected_Ioo midIoo s
+
+/-- **Section lifting on the half-line `[0, ∞)`.** -/
+theorem section_lift_Ici (s : (KS (Set.Ici (0 : ℝ))).presheaf.obj (op ⊤)) :
+    ∃ t : (skyAt zeroIci ⊞ KS (Set.Ici (0 : ℝ))).presheaf.obj (op ⊤),
+      (biprod.snd : skyAt zeroIci ⊞ KS _ ⟶ KS _).hom.app _ t = s :=
+  section_lift_of_local Set.ordConnected_Ici zeroIci s
+
+/-- **Exactness of global sections on the open interval `(0, 1)`.** -/
+theorem section_lift_exact_Ioo (s : (KS (Set.Ioo (0 : ℝ) 1)).presheaf.obj (op ⊤)) :
+    ∃ t : (skyAt midIoo ⊞ KS (Set.Ioo (0 : ℝ) 1)).presheaf.obj (op ⊤),
+      (biprod.snd : skyAt midIoo ⊞ KS _ ⟶ KS _).hom.app _ t = s :=
+  section_lift_of_exact Set.ordConnected_Ioo midIoo s
+
+/-- **Exactness of global sections on the half-line `[0, ∞)`.** -/
+theorem section_lift_exact_Ici (s : (KS (Set.Ici (0 : ℝ))).presheaf.obj (op ⊤)) :
+    ∃ t : (skyAt zeroIci ⊞ KS (Set.Ici (0 : ℝ))).presheaf.obj (op ⊤),
+      (biprod.snd : skyAt zeroIci ⊞ KS _ ⟶ KS _).hom.app _ t = s :=
+  section_lift_of_exact Set.ordConnected_Ici zeroIci s
 
 end TDA.Sheaf.IntervalSectionsExamples

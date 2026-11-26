@@ -820,6 +820,20 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   public. Fixtures in `TDA.Sheaf.RealConstructibleAdjunctionExamples`: `skyOne`, `skyOneObjIso`,
   `isZero_skyOne_obj`, `not_isConstructible_skyOne`, `nontrivial_hom_extension_skyOne`,
   `subsingleton_hom_extension_skyOne`.
+- Section lifting on order-connected subsets of the real line (#1183, part U2).
+  `TDA.Sheaf.IntervalSections`: `exists_glue_monotone`; `exists_section_lift_extend_right` (the
+  extension step with germ-surjectivity on the opens above `a'`; `exists_section_lift_extend`
+  is its case of a germ-surjective first term) and `exists_section_lift_extend_left` (the
+  leftward step, one proof with the rightward one); `exists_section_lift_ordConnected` (every
+  locally liftable global section lifts on an order-connected `S`, with the first term
+  germ-surjective on the opens avoiding a point `c`: open, half-open, closed and unbounded
+  intervals and `ℝ`) and `sections_exact_ordConnected`, of which `exists_section_lift_Icc` and
+  `sections_exact_Icc` are the cases `S = [u, v]`. `TDA.Sheaf.IntervalCohomology`:
+  `isZero_H_of_germSurjective`, `isZero_H_ordConnected`, `isZero_H_constSh_ordConnected` on every
+  order-connected `S`, of which the `[u, v]` statements are cases. Fixtures in
+  `TDA.Sheaf.IntervalSectionsExamples`: `skyAt`, `KS`, `germSurjective_skyAt`,
+  `section_lift_of_local`, `section_lift_of_exact`, `midIoo`, `zeroIci`, `section_lift_Ioo`,
+  `section_lift_Ici`, `section_lift_exact_Ioo`, `section_lift_exact_Ici`.
 
 ## v0.5.0
 
