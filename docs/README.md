@@ -160,6 +160,8 @@ Start with [Reeb perturbations](math/reeb-perturbation.md),
 [geometric/cosheaf interleavings](math/reeb-geometric-interleaving-equivalence.md),
 [Mapper constructions](math/mapper.md) and
 [categorical Mapper–Reeb approximation](api.md#categorical-mapper-and-reeb-approximation).
+Degree-zero singular homology of the preimages of open intervals is naturally the free module on
+the path-component cosheaf: see [interval singular homology](math/reeb-interval-singular-homology.md).
 Current constructible-space results extend beyond graph input: see
 [thickening tools and assembly](math/reeb-thickening-constructible.md),
 [the thickening–cosheaf comparison](math/reeb-thickening-cosheaf-comparison.md) and

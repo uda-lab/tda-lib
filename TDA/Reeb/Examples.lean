@@ -27,6 +27,7 @@ import TDA.Reeb.GraphRealizationExamples
 import TDA.Reeb.InterleavingDistanceExamples
 import TDA.Reeb.IntervalCosheafExamples
 import TDA.Reeb.IntervalExamples
+import TDA.Reeb.IntervalSingularHomologyExamples
 import TDA.Reeb.PerturbationExamples
 import TDA.Reeb.QuotientComparisonExamples
 import TDA.Reeb.QuotientThickeningAbsorptionExamples

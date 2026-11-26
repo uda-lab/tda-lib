@@ -199,6 +199,18 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   the existing chain decomposition and uniqueness through `chainToDiagram`. Fixtures on the fork
   `0 → 1 ← 2` show equal dimensions and arrow ranks with different barcodes, a repeated summand
   and the zero diagram.
+- Degree-zero singular homology of interval preimages (#1171): for `f : C(X, ℝ)` and a ring `k`,
+  `TDA.Reeb.intervalPreimageTopCat f : OpenInterval ⥤ TopCat` sends `I` to `f ⁻¹ I` and an
+  inclusion to the actual `preimageInclusion`; `intervalSingularHomology k n f` composes it with
+  singular homology with coefficients `ModuleCat.of k k`, and `linearizedIntervalComponents k f`
+  is `intervalComponents f ⋙ sigmaConst.obj (ModuleCat.of k k)`. `intervalSingularHomologyIso₀` is a
+  natural isomorphism between them with components `TopCat.singularHomology₀Iso`, proved from
+  `singularHomology₀Iso_hom_naturality` (any continuous map, on point representatives) with no
+  compactness or tameness assumption. The map rule `intervalClass_comp_map_comp_intervalSingularHomologyIso₀_hom_app`
+  and its linearized form send the class of `x` to the injection indexed by
+  `ZerothHomotopy.mk` of the included point. Fixtures in `TDA.Reeb.IntervalSingularHomologyExamples`:
+  the empty interval, an empty source, the identity of `ℝ`, and `f t = t²`, where the band
+  `(1, 4)` into `(-1, 4)` induces the fold `k ⊕ k ⟶ k`. Degree zero only; not a derived equivalence.
 
 ## v0.5.0
 
