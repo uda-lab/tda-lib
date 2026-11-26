@@ -300,6 +300,22 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   distances; `isZero_rayQ_iff` characterises `Q M = 0` by vanishing strict maps. Fixtures in
   `TDA.Sheaf.RaySheafExamples`: the empty open, a singleton module at distance zero from
   `BQ` without a radius-zero witness, and the constant module.
+- Stratifications of the real line in `TDA.Sheaf.RealStratification` (#1181, foundation): for
+  strictly increasing `p : Fin m → ℝ`, `orient m` points every arrow of the path on `2m + 1`
+  strata from a point to an adjacent cell, and its free category is thin
+  (`paths_hom_subsingleton`). `IsBasicOpen S U` (nonempty, order-connected, open, meeting `S` in
+  at most one point) gives a basis (`isBasis_basicOpen`, `isBasis_range_basicOpen`) closed under
+  nonempty intersections (`IsBasicOpen.inf`), with `BasicCat`, `basicIncl` and
+  `basicTopology`. Stars `star p v` and strata `tau p U` (`tau_eq_iff`) satisfy the laws of
+  `exists_star_tau` and give the functor
+  `tauFunctor hp : (BasicCat (breakpoints p))ᵒᵖ ⥤ Paths (Vertex (orient m))`
+  (`isIso_tauFunctor_map`). `isSheaf_basic_of_isIso_sameStratum`: a presheaf on basic opens, in
+  any category, that inverts every inclusion with the same breakpoints is a sheaf for
+  `basicTopology S`; so is `tauFunctor hp ⋙ M` (`isSheaf_tauFunctor_comp`). `basisEquiv S k` is
+  Mathlib's comparison equivalence for this basis with `ModuleCat.{0} k`. Fixtures in
+  `TDA.Sheaf.RealStratificationExamples`: zero breakpoints, the stars and strata of
+  `0 ← 1 → 2`, the constant presheaf, and the point diagram extended to the real line with
+  sections of dimension one over `(-1, 1)` and zero over `(1, 2)`.
 
 ## v0.5.0
 

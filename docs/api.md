@@ -49,6 +49,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.Alexandrov` | `equivalence : X.Sheaf C ≌ (X ⥤ C)` with functor `principalSections` and inverse `kanSheaf`, `counitIso`, `unitIso`, `restrictionConeIsLimit`, `isPointwiseRightKanExtension`; `upperSetEquivalence`, `upperSetSectionsIso` for an unbundled preorder; `TDA.Sheaf.AlexandrovTranslation`: `sheafShift`, `shiftComparison`, `SheafInterleaving.equivRealInterleaving`, `sheafInterleavingDistance_eq` on `upperSpace ℝ`; `TDA.Sheaf.RaySheaf`: `rayQ`, `rayB`, `rayLimitIso`, `rayCounitIso`, `unitInterleaving`, `raySheafInterleavingDistance_rayQ`, `isZero_rayQ_iff` on `raySpace` | `X : TopCat.{v}` with `[Preorder X] [Topology.IsUpperSet X]`, `C : Type u` with `[Category.{v} C] [HasLimits C]`. Sheaves for the upper Alexandrov topology only; see [Alexandrov sheaves](#alexandrov-sheaves-of-persistence-modules). |
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingDecomposition` | `exists_decomposition`, `multiset_eq_of_iso`, `barcode`, `barcodeIso : M ≅ barcodeDiagram o (barcode M)`, `nonempty_iso_iff_barcode_eq`, `intervalMultiplicity`; `reflectSink` (additive functor), `reflectSinkIntervalSumIso`, `reflectSource`, `reflectSourceUnitIso`; `chainToDiagram` | `o : Fin n → Bool` orients the path on `Fin (n + 1)`; `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field with `[∀ X, FiniteDimensional k (M.obj X)]`. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingHeredity` | `pathTensor`, `pathTensorAdjunction`, `projective_pathTensor`, `representable`, `pathTensorObjEquiv`; `resolution`, `resolutionSplitting`, `resolution_shortExact`, `enoughProjectives_diagram`, `hasProjectiveDimensionLT_two`, `ext_eq_zero` | Same diagrams `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field, with no finiteness assumption; `Ext` in any `HasExt` universe. See [Finite alternating diagrams](#finite-alternating-diagrams). |
+| `TDA.Sheaf` / `TDA.Sheaf.RealStratification` | `orient`, `paths_hom_subsingleton`; `IsBasicOpen`, `isBasis_basicOpen`, `IsBasicOpen.inf`, `BasicCat`, `basicIncl`, `basicTopology`; `star`, `tau`, `tau_eq_iff`, `exists_star_tau`, `tauFunctor`; `isSheaf_basic_of_isIso_sameStratum`, `isSheaf_tauFunctor_comp`; `basisEquiv` | Breakpoints `p : Fin m → ℝ` strictly increasing; the basis sheaf condition holds for presheaves in any category; `basisEquiv` uses `ModuleCat.{0} k` for `k : Type`. See [Stratifications of the real line](#stratifications-of-the-real-line). |
 
 ### Capped centred height-map pairs
 
@@ -4282,6 +4283,54 @@ categories of the real line and of every band are instance arguments.
 `TDA.Sheaf.BandConvolutionExamples` checks `a = 0` (`T0Iso`, `aug_zero`) and `a = b`
 (`restr_refl`) over `ℚ` and `ZMod 2`, the chain `0 ≤ 1 ≤ 2` for `restr_trans` and
 `restr_comp_aug`, and that `q 1` identifies `(0, 0)` with `(1, 0)`, so it is not an isomorphism.
+
+## Stratifications of the real line
+
+`TDA.Sheaf.RealStratification` works on `realLine := TopCat.of ℝ` with strictly increasing
+breakpoints `p : Fin m → ℝ` and their set `breakpoints p`. The strata are numbered by the
+vertices of `Vertex (orient m)` from `TDA.Sheaf.AlternatingDiagram`: the even vertex `2j` is the
+open cell `(p_{j-1}, p_j)` (with `p_{-1} = -∞` and `p_m = +∞`) and the odd vertex `2i+1` is the
+point `p_i`.
+
+- `orient m` points every arrow from a point to an adjacent cell (`arrow_orient_iff`), so the
+  free category is thin: the instance `paths_hom_subsingleton`.
+- `IsBasicOpen S U` for a finite `S : Finset ℝ`: `U` is a nonempty order-connected open set and
+  `U ∩ S` is a subsingleton. These opens form a basis (`isBasis_basicOpen`,
+  `isBasis_range_basicOpen`) closed under nonempty intersections (`IsBasicOpen.inf`).
+  `Basic S` is their type, `BasicCat S` the full subcategory of `Opens realLine`
+  (`basicCat_hom_subsingleton`), `basicIncl S` the inclusion, cover-dense by
+  `basicIncl_isCoverDense`, and `basicTopology S` the induced Grothendieck topology.
+- `star p v` is the cell `2j` itself or the open star `(p_{i-1}, p_{i+1})` of the point `2i+1`
+  (`mem_star`, `apply_mem_star_iff`, `apply_mem_star`); every star is basic
+  (`isBasicOpen_star`), and an arrow `v → w` gives `star p w ≤ star p v`
+  (`star_le_star_of_arrow`). Membership in the breakpoints: `mem_breakpoints`,
+  `apply_mem_breakpoints`.
+- `tau p U` is the stratum of a basic open `U`, characterised by `tau_eq_iff`: `U ≤ star p v`
+  and `star p v ∩ breakpoints p = U ∩ breakpoints p`. Its laws are `le_star_tau`,
+  `star_tau_inter`, `tau_star`, `tau_eq_of_le_of_inter_eq` and `tau_eq_or_arrow` (an inclusion
+  keeps the stratum or follows one arrow from a point to a cell); `exists_star_tau` collects
+  them. `tauFunctor hp : (BasicCat (breakpoints p))ᵒᵖ ⥤ Paths (Vertex (orient m))` has
+  `tauFunctor_obj` and sends inclusions with the same breakpoints to isomorphisms
+  (`isIso_tauFunctor_map`).
+- `isSheaf_basic_of_isIso_sameStratum`: a presheaf `P : (BasicCat S)ᵒᵖ ⥤ A`, in any category
+  `A`, that inverts every inclusion `U ⊆ V` with `U ∩ S = V ∩ S` satisfies
+  `Presheaf.IsSheaf (basicTopology S) P`. Hence `isSheaf_tauFunctor_comp`: `tauFunctor hp ⋙ M`
+  is a sheaf for every `M : Paths (Vertex (orient m)) ⥤ A`.
+- `basisEquiv S k : Sheaf (basicTopology S) (ModuleCat.{0} k) ≌
+  Sheaf (Opens.grothendieckTopology realLine) (ModuleCat.{0} k)` for a ring `k : Type` is
+  Mathlib's `Functor.sheafInducedTopologyEquivOfIsCoverDense` for this basis; its functor is
+  the right Kan extension along `basicIncl S`.
+
+`TDA.Sheaf.RealStratificationExamples` checks zero breakpoints (`star_fin_zero`,
+`isBasicOpen_top_fin_zero`, `tau_fin_zero`) and the breakpoint `p₁ = 0` with strata
+`0 ← 1 → 2`: the stars `(-∞, 0)`, `ℝ`, `(0, ∞)` (`coe_star_p₁_zero`, `coe_star_p₁_one`,
+`coe_star_p₁_two`) and the strata of `(-2, -1)`, `(-1, 1)`, `(-1, 3)` and `(1, 2)` (`tau_left`,
+`tau_center`, `tau_wide`, `tau_right`, via `tau_ioo_eq`). The constant presheaf is a sheaf on
+the basis (`isSheaf_const`) and extends to `constLineSheaf` with the field as sections over
+every basic open (`constLineSheafSectionsIso`). The point diagram `pointDiagram`, the field on
+`pointSegment = {1}`, read through `tauFunctor` is a sheaf (`isSheaf_point`); its extension
+`pointLineSheaf` has sections `pointLineSheafSectionsIso` of dimension one over `(-1, 1)`
+(`finrank_pointLineSheaf_center`) and zero over `(1, 2)` (`finrank_pointLineSheaf_right`).
 
 ## Review and extension boundaries
 
