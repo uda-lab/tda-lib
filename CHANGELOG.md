@@ -10,6 +10,13 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 9 (#1272, #1207): capped centred Mapper diagrams without
+  supplied component orders. `TDA.Mapper.RefinementHomologyOrderFree` proves
+  `stepMapperDiagram_eq_of_homeomorph` and `cappedCentredDiagram_eq_of_homeomorph` (equal
+  diagrams for homeomorphic domains with independent component orders, hence for any two
+  families of orders on one domain), defines `cappedCentredDiagramOrderFree` with
+  `cappedCentredDiagramOrderFree_eq`, and states the perturbation bound and its two graph-PL
+  forms for it; the downstream regression fixture `CappedMapperClientExamples`.
 - Downstream-use audit, family 8 (#1270, #1207): total persistence as a differentiable
   diagram loss. `TDA.Persistence.TotalPersistenceRegularity` proves `totalPersistence_orderedQ`
   (the value on an ordered presentation, for a nonzero exponent) and

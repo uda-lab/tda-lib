@@ -1549,3 +1549,13 @@ import TDA
 #print axioms TDA.Mapper.GraphPL.GraphPLIncidenceReebDataExamples.crossing_hom_v_inr
 #print axioms TDA.Mapper.GraphPL.GraphPLIncidenceReebDataExamples.diamond_valid
 #print axioms TDA.Mapper.GraphPL.GraphPLIncidenceReebDataExamples.diamond_reebQuotientIso
+#print axioms TDA.Mapper.stepMapperDiagram_eq_of_homeomorph
+#print axioms TDA.Mapper.cappedCentredDiagram_eq_of_homeomorph
+#print axioms TDA.Mapper.cappedCentredDiagram_congr
+#print axioms TDA.Mapper.cappedCentredDiagramOrderFree_eq
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagramOrderFree_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagramOrderFree_plHeight_le
+#print axioms TDA.Mapper.bottleneck_cappedCentredDiagramOrderFree_plHeight_uniformGrid_le
+#print axioms TDA.Mapper.CappedMapperClientExamples.fin_four_bottleneck_le
+#print axioms TDA.Mapper.CappedMapperClientExamples.fin_four_uniformGrid_bottleneck_le
+#print axioms TDA.Mapper.CappedMapperClientExamples.fin_four_bottleneck_le_of_orders

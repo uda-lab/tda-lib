@@ -21,9 +21,8 @@ the piecewise-linear heights of two isomorphic finite-vertex graphs with matchin
 heights, `realizationMap` of the isomorphism is such a homeomorphism.
 
 Component orders of the two domains are independent supplied data, and no vertex map is assumed
-monotone.  Equality of the diagrams themselves, compatibility of the domain maps with the
-interleavings of cover maps, homotopy invariance and independence of the component orders are not
-stated.
+monotone.  Equality of the diagrams and their independence of the component orders are in
+`TDA.Mapper.RefinementHomologyOrderFree`.
 -/
 
 namespace TDA.Mapper
