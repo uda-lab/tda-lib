@@ -52,6 +52,9 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.RealStratification` | `orient`, `paths_hom_subsingleton`; `IsBasicOpen`, `isBasis_basicOpen`, `IsBasicOpen.inf`, `BasicCat`, `basicIncl`, `basicTopology`; `star`, `tau`, `tau_eq_iff`, `exists_star_tau`, `tauFunctor`; `isSheaf_basic_of_isIso_sameStratum`, `isSheaf_tauFunctor_comp`; `basisEquiv` | Breakpoints `p : Fin m → ℝ` strictly increasing; the basis sheaf condition holds for presheaves in any category; `basisEquiv` uses `ModuleCat.{0} k` for `k : Type`. See [Stratifications of the real line](#stratifications-of-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_section_lift_extend`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`; the extension step needs `S` order-connected, the global statements are for compact intervals `[u, v]` (all `u`, `v`). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom`, `pullbackPushforwardAdjunction_unit_app_hom`; `pt`, `toPt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `singlePlus`, `singleFunctorIsoQ` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_Icc`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for all `u`, `v`; the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 
 ### Capped centred height-map pairs
 
@@ -4431,6 +4434,60 @@ injective sheaf `Injective.under F` is flasque (`isFlasque_under`) and the coker
 every global section lifts along `sky ⊞ K ⟶ K` (`constant_section_lift` from
 `sections_exact_Icc`, `constant_section_lift_of_local` from `exists_section_lift_Icc`); and the
 lifting statement holds on the empty interval `[1, 0]` (`empty_section_lift`).
+
+## Cohomology of compact intervals
+
+Let `k : Type` be a ring. `pt` is the one-point space in `TopCat.{0}` and `toPt X : X ⟶ pt`
+the unique map. For `X : TopCat.{0}` and a sheaf `G` of `k`-modules on `X`, `Hⁱ(X; G)` is
+`(DerivedCategory.Plus.homologyFunctor _ i).obj ((pushforwardPlus k (toPt X)).obj
+((DerivedCategory.Plus.singleFunctor _ 0).obj G))`, a sheaf of `k`-modules on `pt`. Derived
+categories are instance arguments.
+
+`TDA.Sheaf.StalkPullback`, for a continuous `f : X ⟶ Y` and a sheaf `F` of `k`-modules on `Y`:
+
+- `stalkPullbackSheafIso k f F x : F_{f x} ≅ (f⁻¹ F)_x`, the stalk of the sheaf inverse image
+  `TopCat.Sheaf.pullback (ModuleCat k) f`.
+- `stalkPullbackSheafIso_unit` (elementwise) and `germ_stalkPullbackSheafIso_hom`: the germ at
+  `f x` of a section over `V` goes to the germ at `x` of its image under the adjunction unit
+  `F ⟶ f_* f⁻¹ F`. `pullbackPushforwardAdjunction_unit_app_hom` describes that unit through the
+  presheaf adjunction and sheafification.
+
+`TDA.Sheaf.PointSheaf`:
+
+- `germ_top_bijective`: for a sheaf on `pt`, the germ map from global sections is bijective.
+  Hence `exact_of_sections_top` (a complex on `pt` is exact when its global sections are) and
+  `isIso_of_bijective_app_top` (a morphism bijective on global sections is an isomorphism).
+- `constSh k X N := (toPt X)⁻¹ N` for `N : pt.Sheaf (ModuleCat k)`; `germSurjective_constSh`:
+  every germ is the germ of a global section.
+
+`TDA.Sheaf.RightDerivedHomology`, for an additive `F : C ⥤ D`, `C` with enough injectives:
+
+- `homologyRightDerivedIsoOfInjective F K i : Hⁱ(RF(K)) ≅ Hⁱ(F K)` for a bounded below complex
+  `K` of injective objects, and `homologyRightDerivedIsoOfQuasiIso F j i` through a
+  quasi-isomorphism `j : K₀ ⟶ K` to such a complex.
+- `singlePlus n X`, the object `X` in degree `n` as a bounded below complex, and
+  `singleFunctorIsoQ n X` comparing it with `DerivedCategory.Plus.singleFunctor _ n`.
+
+`TDA.Sheaf.IntervalCohomology`, on `[u, v]` as `TopCat.of (Set.Icc u v)`:
+
+- `isZero_H_Icc`: `Hⁱ([u, v]; G) = 0` for `2 ≤ i`, every sheaf `G` and all `u`, `v`.
+- `isZero_H_constSh_Icc`: `Hⁱ([u, v]; constSh k _ N) = 0` for `1 ≤ i`, all `u`, `v`.
+- `isIso_unit_constSh_Icc` (`u ≤ v`): the adjunction unit `N ⟶ (toPt _)_* constSh k _ N` is an
+  isomorphism.
+- `isIso_derivedUnit_toPt_Icc` (`u ≤ v`): the derived unit `derivedUnit k (toPt _)` is an
+  isomorphism at `N` in degree `0`, for every sheaf `N` of `k`-modules on `pt`.
+
+The proofs read `Hⁱ` off an injective resolution, and use `sections_exact_Icc` with
+`germSurjective_of_injective` in degrees `≥ 2` and `germSurjective_constSh` in degree `1`; `H⁰`
+of a constant sheaf follows from the connectedness of `[u, v]`.
+
+`TDA.Sheaf.IntervalCohomologyExamples` works over `ℚ` with `HasDerivedCategory.standard` as a
+local instance. With `kpt`, the sheaf on `pt` with value `ℚ`, the derived unit on `I01 = [0, 1]`
+is an isomorphism (`isIso_derivedUnit_kpt`), giving `H⁰([0, 1]; constSh kpt) ≅ kpt`
+(`H0_constSh_kpt`) and `H¹ = 0` (`isZero_H1_constSh_kpt`); the same unit statement holds on
+`[1, 1]` (`isIso_derivedUnit_kpt_singleton`). `H²` vanishes for the skyscraper `sky` at `1/2`
+(`isZero_H2_sky`) and for every sheaf on the empty interval `[1, 0]` (`isZero_H2_empty`). The
+stalk of `constSh kpt` at `1/2` is `ℚ` (`stalk_constSh_kpt`).
 
 ## Review and extension boundaries
 

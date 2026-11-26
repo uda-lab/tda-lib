@@ -385,6 +385,17 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `(TopCat.toSSet.obj Y).chainComplex R`. Fixtures in
   `TDA.Topology.SingularSubdivisionExamples`: the two signed half-segments of a singular segment,
   its boundary and a naturality instance.
+- Cohomology of compact intervals (#1226, parts U3 and U4): `TDA.Sheaf.StalkPullback` gives the
+  stalk of a sheaf inverse image (`stalkPullbackSheafIso`) and its compatibility with the
+  adjunction unit (`stalkPullbackSheafIso_unit`); `TDA.Sheaf.PointSheaf` introduces `pt`, `toPt`,
+  the constant sheaf `constSh` and `germSurjective_constSh`, with sheaves on the point read on
+  global sections; `TDA.Sheaf.RightDerivedHomology` reads right derived homology off injective
+  complexes (`homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`).
+  `TDA.Sheaf.IntervalCohomology` proves `Hⁱ([u, v]; G) = 0` for `2 ≤ i` and every sheaf `G`
+  (`isZero_H_Icc`), `Hⁱ([u, v]; constSh N) = 0` for `1 ≤ i` (`isZero_H_constSh_Icc`) and, for
+  `u ≤ v`, that the underived and derived units at `N` are isomorphisms
+  (`isIso_unit_constSh_Icc`, `isIso_derivedUnit_toPt_Icc`). Fixtures in
+  `TDA.Sheaf.IntervalCohomologyExamples`.
 
 ## v0.5.0
 
