@@ -39,20 +39,22 @@ theorem deletionMap_fixes_later (seed : V) {η r s : ℝ}
   | none => trivial
   | some t => exact hrs.trans_le (show s ≤ t by simpa [ht, ClosedActive] using hx)
 
-theorem deletionMap_image_later (seed : V) {η r s : ℝ}
+theorem deletionMap_image_later [DecidableEq V] (seed : V) {η r s : ℝ}
     (hη : 0 ≤ η) (hr : 0 ≤ r) (hrs : r < s) {σ : Finset V}
     (hσ : σ ∈ closedActiveComplex seed η s) :
     σ.image (deletionMap seed η r hη hr) = σ := by
+  obtain rfl : ‹DecidableEq V› = unionDeletionDecidableEq := Subsingleton.elim _ _
   have heq : σ.image (deletionMap seed η r hη hr) = σ.image id :=
     Finset.image_congr (fun x hx => deletionMap_fixes_later seed hη hr hrs (hσ.2 x hx))
   simpa only [Finset.image_id] using heq
 
 /-- The earlier projection maps each earlier active face into the next active complex. -/
-theorem image_mem_later_of_noDeletion (seed : V) {η r s : ℝ}
+theorem image_mem_later_of_noDeletion [DecidableEq V] (seed : V) {η r s : ℝ}
     (hη : 0 < η) (hη' : η ≤ 1 / 3) (hr : 0 ≤ r) (hrs : r ≤ s)
     (hgap : NoDeletionBetween seed η r s) {σ : Finset V}
     (hσ : σ ∈ closedActiveComplex seed η r) :
     σ.image (deletionMap seed η r hη.le hr) ∈ closedActiveComplex seed η s := by
+  obtain rfl : ‹DecidableEq V› = unionDeletionDecidableEq := Subsingleton.elim _ _
   have hproject := (deletionVertexMap seed hη hη' hr).map_face σ hσ.1
   refine ⟨relaxedComplex_mono hη.le (by linarith) (deletionTime seed η)
     (deletionTime_nonneg seed hη hη') hrs hproject.1, ?_⟩

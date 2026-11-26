@@ -10,6 +10,22 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 12 (#1286, #1207): statements with arbitrary decidable equality in
+  Simplicial, Mapper, Filtration and Persistence. `map_le_iff`, `VertexMap.map_le_iff`,
+  `mapperOneSkeleton_adj_iff`, `mem_mapper_iff_supported_singleton_or_adjacent_pair`, the two
+  graph-PL relabelling statements `GraphPL.mem_mapper_iff_incidenceMapper_image` and
+  `GraphPL.mem_incidenceMapper_iff_mapper_image_symm`, `componentCover_interMember_subset_preimage`,
+  `support_multiNerveMapperMap`, `multiNerveMapper_projection_multiNerveMapperMap`, the eight
+  sparse Rips statements `image_union_mem_relaxedComplex`, `GreedyNet.prefix_succ`,
+  `exists_assigned_vertex`, `mem_laterNeighbors`, `mem_orientedEdges`,
+  `pair_mem_carrier_iff_oriented`, `deletionMap_image_later` and `image_mem_later_of_noDeletion`,
+  and `Rips.mem_tupleFilter_iff` take a decidable equality on their vertex or index type as an
+  instance argument. `VertexMap.map_face_image` is the form of the field `VertexMap.map_face`, and
+  `OccurrenceMatching.target_le_cost_decidable` and `OccurrenceMatching.cost_le_of_decidable` are
+  the forms of `target_le_cost` and `cost_le_of`, for any decidability of the matched-target
+  condition. The downstream regression fixtures
+  `VertexMapClientExamples`, `ComponentIndexClientExamples`, `DecidableEqClientExamples` and
+  `OccurrenceMatchingClientExamples`.
 - Downstream-use audit, family 11 (#1281, #1207): nerve relabelling lemmas with arbitrary
   decidable equality. `mem_nerve_relabel_iff`, `interMember_image_subset` and
   `MeasureBifiltration.mem_largeFaceNerve_iff` take the decidable equality of the index type as

@@ -12,3 +12,4 @@ import TDA.Simplicial.VertexChainMapExamples
 import TDA.Simplicial.ContiguityHomotopyExamples
 import TDA.Simplicial.CollapseCertificateExamples
 import TDA.Simplicial.SimplexAttachmentClientExamples
+import TDA.Simplicial.VertexMapClientExamples

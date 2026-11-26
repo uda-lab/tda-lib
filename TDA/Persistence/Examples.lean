@@ -260,3 +260,4 @@ import TDA.Persistence.Morse.ReducerDiagramExamples
 import TDA.Persistence.Morse.MorseDiagramExamples
 import TDA.Persistence.AlphaCechExamples
 import TDA.Persistence.AlphaRadiusStabilityExamples
+import TDA.Persistence.OccurrenceMatchingClientExamples

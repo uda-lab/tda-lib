@@ -9583,3 +9583,8 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.totalPersistence_c2ThroughAllRepresentatives
 #print axioms TDA.Persistence.TotalPersistenceLossClientExamples.squaredTotalPersistence_c1_near
 #print axioms TDA.Persistence.TotalPersistenceLossClientExamples.squaredTotalPersistence_orderedQ
+#print axioms TDA.Persistence.OccurrenceMatching.target_le_cost_decidable
+#print axioms TDA.Persistence.OccurrenceMatching.cost_le_of_decidable
+#print axioms TDA.Persistence.OccurrenceMatchingClientExamples.fin_two_target_le_cost
+#print axioms TDA.Persistence.OccurrenceMatchingClientExamples.fin_two_cost_le_of
+#print axioms TDA.Persistence.OccurrenceMatchingClientExamples.mem_tupleFilter_iff

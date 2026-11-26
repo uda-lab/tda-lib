@@ -63,9 +63,10 @@ def laterNeighbors (seed : V) (η : ℝ) (p : V) : Finset V := by
   exact Finset.univ.filter fun q => insertionIndex seed q < insertionIndex seed p ∧
     ({p, q} : Finset V) ∈ sparseCarrier seed η
 
-@[simp] theorem mem_laterNeighbors (seed : V) (η : ℝ) (p q : V) :
+@[simp] theorem mem_laterNeighbors [DecidableEq V] (seed : V) (η : ℝ) (p q : V) :
     q ∈ laterNeighbors seed η p ↔ insertionIndex seed q < insertionIndex seed p ∧
       ({p, q} : Finset V) ∈ sparseCarrier seed η := by
+  obtain rfl : ‹DecidableEq V› = sparsityDecidableEq := Subsingleton.elim _ _
   classical
   simp [laterNeighbors]
 
@@ -133,16 +134,19 @@ theorem laterNeighbors_card_le (seed : V) {η : ℝ} (hη : 0 < η) (hη' : η �
 def orientedEdges (seed : V) (η : ℝ) : Finset (V × V) :=
   Finset.univ.biUnion fun p => (laterNeighbors seed η p).image (fun q => (p, q))
 
-@[simp] theorem mem_orientedEdges (seed : V) (η : ℝ) (p q : V) :
+@[simp] theorem mem_orientedEdges [DecidableEq V] (seed : V) (η : ℝ) (p q : V) :
     (p, q) ∈ orientedEdges seed η ↔ insertionIndex seed q < insertionIndex seed p ∧
       ({p, q} : Finset V) ∈ sparseCarrier seed η := by
+  obtain rfl : ‹DecidableEq V› = sparsityDecidableEq := Subsingleton.elim _ _
   classical
   simp [orientedEdges]
 
 /-- Every distinct sparse edge is counted once in one of its two orientations. -/
-theorem pair_mem_carrier_iff_oriented (seed : V) (η : ℝ) {p q : V} (hpq : p ≠ q) :
+theorem pair_mem_carrier_iff_oriented [DecidableEq V] (seed : V) (η : ℝ) {p q : V}
+    (hpq : p ≠ q) :
     ({p, q} : Finset V) ∈ sparseCarrier seed η ↔
       (p, q) ∈ orientedEdges seed η ∨ (q, p) ∈ orientedEdges seed η := by
+  obtain rfl : ‹DecidableEq V› = sparsityDecidableEq := Subsingleton.elim _ _
   classical
   constructor
   · intro hface
@@ -170,9 +174,10 @@ theorem orientedEdges_card_le (seed : V) {η : ℝ} (hη : 0 < η) (hη' : η �
 
 /-- Each face is assigned to its largest greedy insertion index. All other vertices
 are among that vertex's uniformly bounded neighbors. -/
-theorem exists_assigned_vertex (seed : V) (η : ℝ) {σ : Finset V}
+theorem exists_assigned_vertex [DecidableEq V] (seed : V) (η : ℝ) {σ : Finset V}
     (hσ : σ ∈ sparseCarrier seed η) :
     ∃ p ∈ σ, σ.erase p ⊆ laterNeighbors seed η p := by
+  obtain rfl : ‹DecidableEq V› = sparsityDecidableEq := Subsingleton.elim _ _
   classical
   have hne := (sparseCarrier seed η).isRelLowerSet_faces hσ |>.1
   obtain ⟨p, hp, hmax⟩ := σ.exists_max_image (insertionIndex seed) hne
