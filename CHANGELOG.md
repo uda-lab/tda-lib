@@ -699,6 +699,37 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   distances `coordinateInterleavingDistance_orthantB_orthantQ`,
   `coordinateInterleavingDistance_orthantB_le`, `interleavingDistance_orthantQ_le`,
   `interleavingDistance_orthantQ`, `coordinateInterleavingDistance_orthantB`.
+- Orthant sheaves as a localization; comparison with ray sheaves (#1179, part 2):
+  `TDA.Sheaf.StrictBasisLocalization` proves the localization once for a strict basis:
+  `adjunction` (`adjunction_unit`, `adjunction_counit`, `adjunction_homEquiv_apply`,
+  `adjunction_homEquiv_symm_apply`), `BFullyFaithful`, `B_full`, `Q_isLocalization`,
+  `Q_preservesLimits`, `Q_preservesColimits` for `[Category.{0} C] [HasLimits C]`; the kernel of
+  `Q` as the diagrams with vanishing strict maps (`ephemeral`, `ephemeral_iff`,
+  `ephemeral_eq_kernel`, `isZero_B_iff`) for `[HasZeroMorphisms C]`; for `[Abelian C]`,
+  `sheafAbelian`, `ephemeral_isSerreClass`, `ephemeral_isoModSerre`, `isIso_Q_map_iff`,
+  `Q_isLocalization_isoModSerre`, `localizationEquivalence`, `localizationEquivalenceCompIso`;
+  the identity case of a reflexive strict order (`isIso_unit_app_app_of_strict_refl`,
+  `Q_isEquivalence_of_strict_refl`, `ephemeral_iff_isZero_of_strict_refl`); and comparison
+  along `Iso` (`Iso.strict_iff`, `Iso.BIso`, `Iso.BIso_hom_app_app`, `Iso.QIso`,
+  `Iso.ephemeral_iff`) through `sheafPushforwardEquivalence`
+  (`sheafPushforwardEquivalence_functor`, `sheafPushforwardEquivalence_inverse`).
+  `TDA.Sheaf.OrthantLocalization` applies it to the orthants: the kernel of `Q` is the
+  diagrams whose all-strict maps vanish (`ephemeral_orthantBasis_iff`, `isZero_orthantQ_iff`).
+  The ray basis `rayStrictBasis` (`rayStrictBasis_strict_iff`) has `rayStrictBasis_B`,
+  `rayStrictBasis_Q`, `rayStrictBasis_proj`, `rayStrictBasis_unit` and
+  `rayStrictBasis_ephemeral` by definition; for `n = 1`, `orthantOneRayHomeo`,
+  `orthantOneRayIso` (`orthantOneRayIso_hom_apply`) and `orthantOneRayBasisIso` give
+  `orthantOneRayBIso` (`orthantOneRayBIso_hom_app_app`), `orthantOneRayQIso` and
+  `orthantOne_ephemeral_iff` against `rayB`, `rayQ` and `rayEphemeral`. For `n = 0` every pair
+  is all-strict (`strict_orthantBasis_zero`), `Q` is an equivalence
+  (`orthantQ_zero_isEquivalence`) and the ephemeral diagrams are zero
+  (`ephemeral_orthantBasis_zero_iff`); for `0 < n`, `not_strict_orthantBasis_self`. Fixtures in
+  `TDA.Sheaf.OrthantLocalizationExamples` on `Fin 2 → ℝ` (`secondCoord`,
+  `pointModule_map_ne_zero`): `lineModule` on a horizontal line has nonzero maps along the line
+  (`lineModule_map_ne_zero`, `not_isZero_lineModule`) and zero all-strict maps
+  (`lineModule_map_strict`), is ephemeral (`ephemeral_lineModule`) and is killed by `Q`
+  (`isZero_orthantQ_lineModule`); `halfPlaneModule` is not
+  (`not_isZero_orthantQ_halfPlaneModule`).
 
 ## v0.5.0
 

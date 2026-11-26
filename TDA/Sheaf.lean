@@ -16,6 +16,8 @@ import TDA.Sheaf.RayLocalization
 import TDA.Sheaf.StrictBasis
 import TDA.Sheaf.SpaceTranslation
 import TDA.Sheaf.OrthantSheaf
+import TDA.Sheaf.StrictBasisLocalization
+import TDA.Sheaf.OrthantLocalization
 import TDA.Sheaf.RealStratification
 import TDA.Sheaf.LocalSystem
 import TDA.Sheaf.SheafFlasque
