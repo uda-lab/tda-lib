@@ -664,6 +664,81 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `isZero_H_stalk_pushforwardPlus_q`. Fixtures in `TDA.Sheaf.BandStalksExamples`: `constPlus`,
   `germSurjective_constPlus`, `isIso_unit_constPlus`, `kD`, `nonempty_H0_stalk_kD`, `not_isZero_kpt`,
   `not_isZero_H0_stalk_kD`, `isZero_H2_stalk_constSh`.
+- Orthant sheaves on coordinate space at the distance level (#1179, part 1):
+  `TDA.Sheaf.StrictBasis` states the module–sheaf comparison once for a basis of opens indexed
+  by the points of a join-semilattice (`StrictBasis`, `Strict`, `le_of_strict`, `mem_of_le`,
+  `strict_of_strict_of_le`, `strict_of_le_of_strict`, `exists_strict_strict`, `iSup_U`,
+  `isBasis_U`, `principalOpen_le_map_U`, `basisFunctor`, `B`, `B_obj_obj`, `B_obj_map`,
+  `B_map_app`, `Q`, `Q_obj_presheaf_obj`, `Q_map_hom_app`, `proj`, `proj_comp_map`,
+  `map_proj`, `proj_ext`, `map_app_proj`, `diagram`, `diagram_obj`, `cone`, `cone_pt`,
+  `cone_π_app`, `coneIsLimit`, `limitIso`, `limitIso_hom_π`, `limitIso_inv_proj`, `lift`,
+  `lift_proj`, `unit`, `unit_app_app_proj`, `counitIso`, `counitIso_inv_app_hom_app_proj`,
+  `counitIso_hom_app_hom_app_map`, `B_faithful`, and `proj_comp_map_assoc`, `map_proj_assoc`,
+  `map_app_proj_assoc`, `limitIso_hom_π_assoc`, `limitIso_inv_proj_assoc`, `lift_proj_assoc`,
+  `unit_app_app_proj_assoc`, `counitIso_inv_app_hom_app_proj_assoc`,
+  `counitIso_hom_app_hom_app_map_assoc`), for
+  `[Category.{0} C] [HasLimits C]`. `TDA.Sheaf.SpaceTranslation` does the same for sheaf shifts
+  along a family of translations (`SpaceTranslation`, `shift`, `transition`, `compIso`,
+  `shift_obj_presheaf_obj`, `shift_map_hom_app`, `transition_app_hom_app`,
+  `compIso_hom_app_hom_app`, `compIso_hom_naturality`, `compIso_hom_naturality_assoc`,
+  `transition_naturality`, `transition_naturality_assoc`,
+  `transition_add`, `Interleaving`, `Interleaving.ext`, `Interleaving.ext_iff`,
+  `Interleaving.symm`, `Interleaving.refl`, `Interleaving.congr`, `interleavingDistance`,
+  `interleavingDistance_le`, `interleavingDistance_congr`). `TDA.Sheaf.OrthantSheaf` gives
+  `Fin n → ℝ` the orthant topology (`WithOrthant`, `toOrthant`, `ofOrthant`,
+  `toOrthant_ofOrthant`, `ofOrthant_toOrthant`, `IsOrthantOpen`, `orthantTopology`,
+  `orthantSpace`, `isOpen_iff`, `isUpperSet_opens`, `isOpen_ofOrthant_preimage_iff`) with open
+  orthants `orthant` (`mem_orthant`, `orthant_antitone`, `orthant_le`), the common finite
+  diagonal step `exists_diagonal_step`, the cover `exists_orthant_mem`, meets at the
+  coordinatewise maximum `orthant_inf`, `isBasis_orthant` and `eq_generateFrom`; the basis
+  `orthantBasis` (`orthantId`, `orthantId_apply`, `orthantBasis_ι`, `orthantBasis_U`,
+  `strict_orthantBasis_iff`, `strict_translation`) gives `Q`, `B`, projections, unit and
+  `QB ≅ 𝟭` on all-strict coordinates. Shifts by `ε · 1`: `orthantTranslate`,
+  `orthantTranslate_apply`, `map_orthantTranslate_orthant`, `orthantTranslation`,
+  `orthantTranslation_T`, `translate_comp_orthantId`, `pushforward_map_sheafShift_map`,
+  `pushforward_map_sheafTransition`, `pushforward_map_sheafCompIso`,
+  `orthantOfSheafInterleaving`, `orthantShiftComparison`, `orthantShiftComparison_hom_app_app`,
+  `orthantShiftComparison_hom_naturality`, `orthantShiftComparison_transition`,
+  `orthantShiftComparison_compIso`, `orthantShiftComparison_hom_naturality_assoc`,
+  `orthantShiftComparison_transition_assoc`, `orthantShiftComparison_compIso_assoc`,
+  `orthantB_map_doubleShift`. Radius witnesses
+  `orthantToCoordinateInterleaving`, `orthantOfCoordinateInterleaving`, and for `ε > 0` the
+  actual interleaving `orthantUnitInterleaving` of `M` and `BQ(M)` (`orthantUnitInterleavingψ`,
+  `orthantUnitInterleavingψ_app`, `orthantUnitInterleaving_φ`, `orthantUnitInterleaving_ψ`);
+  distances `coordinateInterleavingDistance_orthantB_orthantQ`,
+  `coordinateInterleavingDistance_orthantB_le`, `interleavingDistance_orthantQ_le`,
+  `interleavingDistance_orthantQ`, `coordinateInterleavingDistance_orthantB`.
+- Orthant sheaves as a localization; comparison with ray sheaves (#1179, part 2):
+  `TDA.Sheaf.StrictBasisLocalization` proves the localization once for a strict basis:
+  `adjunction` (`adjunction_unit`, `adjunction_counit`, `adjunction_homEquiv_apply`,
+  `adjunction_homEquiv_symm_apply`), `BFullyFaithful`, `B_full`, `Q_isLocalization`,
+  `Q_preservesLimits`, `Q_preservesColimits` for `[Category.{0} C] [HasLimits C]`; the kernel of
+  `Q` as the diagrams with vanishing strict maps (`ephemeral`, `ephemeral_iff`,
+  `ephemeral_eq_kernel`, `isZero_B_iff`) for `[HasZeroMorphisms C]`; for `[Abelian C]`,
+  `sheafAbelian`, `ephemeral_isSerreClass`, `ephemeral_isoModSerre`, `isIso_Q_map_iff`,
+  `Q_isLocalization_isoModSerre`, `localizationEquivalence`, `localizationEquivalenceCompIso`;
+  the identity case of a reflexive strict order (`isIso_unit_app_app_of_strict_refl`,
+  `Q_isEquivalence_of_strict_refl`, `ephemeral_iff_isZero_of_strict_refl`); and comparison
+  along `Iso` (`Iso.strict_iff`, `Iso.BIso`, `Iso.BIso_hom_app_app`, `Iso.QIso`,
+  `Iso.ephemeral_iff`) through `sheafPushforwardEquivalence`
+  (`sheafPushforwardEquivalence_functor`, `sheafPushforwardEquivalence_inverse`).
+  `TDA.Sheaf.OrthantLocalization` applies it to the orthants: the kernel of `Q` is the
+  diagrams whose all-strict maps vanish (`ephemeral_orthantBasis_iff`, `isZero_orthantQ_iff`).
+  The ray basis `rayStrictBasis` (`rayStrictBasis_strict_iff`) has `rayStrictBasis_B`,
+  `rayStrictBasis_Q`, `rayStrictBasis_proj`, `rayStrictBasis_unit` and
+  `rayStrictBasis_ephemeral` by definition; for `n = 1`, `orthantOneRayHomeo`,
+  `orthantOneRayIso` (`orthantOneRayIso_hom_apply`) and `orthantOneRayBasisIso` give
+  `orthantOneRayBIso` (`orthantOneRayBIso_hom_app_app`), `orthantOneRayQIso` and
+  `orthantOne_ephemeral_iff` against `rayB`, `rayQ` and `rayEphemeral`. For `n = 0` every pair
+  is all-strict (`strict_orthantBasis_zero`), `Q` is an equivalence
+  (`orthantQ_zero_isEquivalence`) and the ephemeral diagrams are zero
+  (`ephemeral_orthantBasis_zero_iff`); for `0 < n`, `not_strict_orthantBasis_self`. Fixtures in
+  `TDA.Sheaf.OrthantLocalizationExamples` on `Fin 2 → ℝ` (`secondCoord`,
+  `pointModule_map_ne_zero`): `lineModule` on a horizontal line has nonzero maps along the line
+  (`lineModule_map_ne_zero`, `not_isZero_lineModule`) and zero all-strict maps
+  (`lineModule_map_strict`), is ephemeral (`ephemeral_lineModule`) and is killed by `Q`
+  (`isZero_orthantQ_lineModule`); `halfPlaneModule` is not
+  (`not_isZero_orthantQ_halfPlaneModule`).
 
 ## v0.5.0
 
