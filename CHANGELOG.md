@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 4 (#1259, #1207): `bottleneck_dgm_eq_realInterleavingDistance`
+  and `nonempty_sublevelInterleaving_iff` now take filters on two finite complexes (statement
+  generalised; calls with one complex are unaffected), and
+  `bottleneck_dgm_le_of_sublevelInterleaving` bounds the bottleneck distance of the diagrams
+  by the parameter of a sublevel interleaving; the downstream regression fixture
+  `InterleavingIsometryClientExamples`.
 - Downstream-use audit, family 3 (#1252, #1207): `RealBarcode.realization_unique` and
   `RealBarcode.diagram_eq_of_realize_iso` (two positive real barcode realizations of one
   module are the same diagram), the real-line counterpart of `barcode_decomposition_unique`;

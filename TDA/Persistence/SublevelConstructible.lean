@@ -12,9 +12,10 @@ the first value the sublevel is empty, and within a cell of that grid the sublev
 change. Over a field the critical fibers are finite-dimensional, and the module diagram on this
 grid is the filter diagram `dgm` by definition, since both are the value-labelled rank barcode
 of the same critical-grade module. The finite-constructible isometry therefore identifies the
-bottleneck distance of two filter diagrams on the same complex with the interleaving distance of
-their sublevel modules. The finite-filter stability bound follows again, from the inclusion
-interleaving of the sublevel modules instead of face-order interpolation.
+bottleneck distance of the diagrams of filters on two finite complexes with the interleaving
+distance of their sublevel modules. For filters on one complex the finite-filter stability
+bound follows again, from the inclusion interleaving of the sublevel modules instead of
+face-order interpolation.
 
 These are library extensions proved from the merged definitions.
 -/
@@ -118,9 +119,12 @@ noncomputable def sublevelModuleRealizationIso (f : FilterFunction K ℝ) :
       (sublevelModule_isConstructible k n f) (sublevelModule_finiteDimensional k n f) ≪≫
     eqToIso (congrArg (RealBarcode.realize (k := k)) (moduleDiagram_sublevelModule k n f))
 
-/-- For two filters on the same finite complex, the bottleneck distance of their diagrams is the
-interleaving distance of their sublevel modules. The critical grids are unrelated. -/
-theorem bottleneck_dgm_eq_realInterleavingDistance (f g : FilterFunction K ℝ) :
+/-- For filters on two finite complexes, the bottleneck distance of their diagrams is the
+interleaving distance of their sublevel modules. The complexes, their vertex types and the
+critical grids are unrelated. -/
+theorem bottleneck_dgm_eq_realInterleavingDistance {W : Type u} [LinearOrder W]
+    {L : PreAbstractSimplicialComplex W} [Fintype (TotalFace L)]
+    (f : FilterFunction K ℝ) (g : FilterFunction L ℝ) :
     bottleneck (dgm k f n) (dgm k g n) =
       realInterleavingDistance (sublevelModule k f n) (sublevelModule k g n) := by
   rw [← moduleDiagram_sublevelModule k n f, ← moduleDiagram_sublevelModule k n g]
@@ -128,9 +132,20 @@ theorem bottleneck_dgm_eq_realInterleavingDistance (f g : FilterFunction K ℝ) 
     (sublevelModule_isConstructible k n g) (sublevelModule_finiteDimensional k n f)
     (sublevelModule_finiteDimensional k n g)
 
+/-- An interleaving of the sublevel modules of filters on two finite complexes bounds the
+bottleneck distance of their diagrams. -/
+theorem bottleneck_dgm_le_of_sublevelInterleaving {W : Type u} [LinearOrder W]
+    {L : PreAbstractSimplicialComplex W} [Fintype (TotalFace L)]
+    (f : FilterFunction K ℝ) (g : FilterFunction L ℝ) {ε : ℝ≥0}
+    (i : RealInterleaving ε (sublevelModule k f n) (sublevelModule k g n)) :
+    bottleneck (dgm k f n) (dgm k g n) ≤ (ε : ℝ≥0∞) :=
+  (bottleneck_dgm_eq_realInterleavingDistance k n f g).trans_le i.distance_le
+
 /-- At every finite parameter, sublevel interleavings and cost-bounded occurrence matchings of
-the filter diagrams exist together. -/
-theorem nonempty_sublevelInterleaving_iff (f g : FilterFunction K ℝ) (ε : ℝ≥0) :
+the filter diagrams exist together, for filters on two finite complexes. -/
+theorem nonempty_sublevelInterleaving_iff {W : Type u} [LinearOrder W]
+    {L : PreAbstractSimplicialComplex W} [Fintype (TotalFace L)]
+    (f : FilterFunction K ℝ) (g : FilterFunction L ℝ) (ε : ℝ≥0) :
     Nonempty (RealInterleaving ε (sublevelModule k f n) (sublevelModule k g n)) ↔
       ∃ A : OccurrenceMatching (dgm k f n).finiteOccurrences (dgm k g n).finiteOccurrences
           (dgm k f n).essentialOccurrences (dgm k g n).essentialOccurrences,

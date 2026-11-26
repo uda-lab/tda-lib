@@ -3365,16 +3365,20 @@ bottleneck statement in degree 0. See [the proofs, fixtures and scope](math/cech
 finite complex is finite-constructible on the critical values of the filter, over every ring,
 `sublevelModule_isConstructible`. Over a field its critical fibers are finite-dimensional, and
 `moduleDiagram_sublevelModule` identifies its module diagram on that grid with `dgm k f n` by
-definition; `sublevelModuleRealizationIso` realizes the module from the diagram. For two
-filters on the same complex, `bottleneck_dgm_eq_realInterleavingDistance` equates the
-bottleneck distance of their diagrams with the interleaving distance of their sublevel
-modules, for unrelated critical grids, and `nonempty_sublevelInterleaving_iff` is the
-witness equivalence at every finite parameter. `bottleneck_dgm_le_faceSupDifference_algebraic`
+definition; `sublevelModuleRealizationIso` realizes the module from the diagram. For
+filters on two finite complexes, with unrelated vertex types and critical grids,
+`bottleneck_dgm_eq_realInterleavingDistance` equates the bottleneck distance of their
+diagrams with the interleaving distance of their sublevel modules,
+`bottleneck_dgm_le_of_sublevelInterleaving` bounds it by the parameter of an interleaving,
+and `nonempty_sublevelInterleaving_iff` is the witness equivalence at every finite
+parameter. On one complex, `bottleneck_dgm_le_faceSupDifference_algebraic`
 rederives finite-filter stability from the inclusion interleaving, independently of the
-face-order proof, and essential multiplicities agree. The scaling bridge in
+face-order proof, and essential multiplicities agree. `InterleavingIsometryClientExamples` is
+a downstream regression fixture that opens no scope and declares no instance; it replays the
+bound, its converse and threshold forms for finite-constructible modules, the two-complex
+bound and the triangle inequality for diagrams (#1259). The scaling bridge in
 `TDA.Persistence.SublevelScaling` adds the corresponding module and diagram identities.
-The sublevel-constructibility results make no log-scale or cross-complex comparisons; the scaling
-bridge's log-scale statement is `logModule_scale_shiftIso` for `1 ≤ c`, and
+The scaling bridge's log-scale statement is `logModule_scale_shiftIso` for `1 ≤ c`, and
 `TDA.Persistence.LogScaleScaling` adds the `logDgm` translation formula
 `logDgm_scale` for every `0 < c`, the shift for `c ≤ 1`, and scale invariance of log-scale
 bottleneck and interleaving distances. See [the proofs, fixtures and scope](math/sublevel-constructibility.md).

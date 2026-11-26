@@ -55,18 +55,20 @@ half-open realization of `dgm k f n`.
 
 ## The isometry for filter diagrams
 
-For two filters f and g on the same finite complex, the isometry with grids c = crit f and
-d = crit g gives
+For filters f and g on finite complexes K and L, with unrelated vertex types, the isometry
+with grids c = crit f and d = crit g gives
 
   bottleneck (dgm k f n) (dgm k g n) = interleaving distance of the sublevel modules.
 
-The grids may have different lengths and are otherwise unrelated. No genericity and no
-condition on essential multiplicities is assumed. At every finite parameter ε, an ε-interleaving of the sublevel modules exists exactly when a cost-bounded occurrence matching
-of the two diagrams exists.
+The grids may have different lengths and are otherwise unrelated. At every finite parameter
+ε, an ε-interleaving of the sublevel modules exists exactly when a cost-bounded occurrence
+matching of the two diagrams exists, and an ε-interleaving bounds the bottleneck distance by
+ε.
 
-The inclusion interleaving bounds the interleaving distance by the largest face difference of
-f and g. Through the isometry this is a second proof of finite-filter stability. It is
-independent of the face-order interpolation proof: its dependency closure does not contain
+When f and g are filters on one complex K, the inclusion interleaving bounds the
+interleaving distance by the largest face difference of f and g. Through the isometry this
+is a second proof of finite-filter stability. It is independent of the face-order
+interpolation proof: its dependency closure does not contain
 `bottleneck_dgm_le_faceSupDifference`. Since the bound is finite, the interleaving distance
 is finite, and the two diagrams have the same number of essential classes.
 
@@ -78,20 +80,24 @@ The results use a vertex type `V` with `[LinearOrder V]`, a complex `K` with
 `[Fintype (TDA.Simplicial.TotalFace K)]`, and real-valued filters on `K`. The ring theorem
 `sublevelModule_isConstructible` takes coefficients `R : Type v` with `[Ring R]`, independently
 of the universe of `V`. The field results use `k : Type u` with `[Field k]`, in the same
-universe as `V`, and compare filters on the same `K`.
+universe as `V`. The isometry, the interleaving bound and the witness equivalence take a
+second vertex type `W : Type u` with `[LinearOrder W]` and a finite complex `L` on it; the
+stability bound, finiteness of the distance and equality of essential multiplicities
+compare filters on one `K`.
 
 - `sublevelModule_isConstructible` proves finite constructibility over any ring. Over a field,
   `sublevelModule_finiteDimensional` gives finite-dimensional critical fibers and
   `moduleDiagram_sublevelModule` identifies the sampled module diagram with `dgm`;
   the noncomputable `sublevelModuleRealizationIso` identifies the module with the half-open
   realization of that diagram.
-- For filters on the same complex, `bottleneck_dgm_eq_realInterleavingDistance` equates diagram
-  bottleneck distance with sublevel-module interleaving distance. At each supplied
-  `ε : ℝ≥0`, `nonempty_sublevelInterleaving_iff` equates the existence of an `ε`-interleaving
-  with the existence of an occurrence matching of cost at most `(ε : ℝ≥0∞)`. This
-  finite-parameter equivalence does not assert that a witness attains the distance infimum.
-- `bottleneck_dgm_le_faceSupDifference_algebraic` gives the algebraic finite-filter stability
-  bound. The accompanying [examples](../../TDA/Persistence/SublevelConstructibleExamples.lean)
+- For filters on two finite complexes, `bottleneck_dgm_eq_realInterleavingDistance` equates
+  diagram bottleneck distance with sublevel-module interleaving distance, and
+  `bottleneck_dgm_le_of_sublevelInterleaving` bounds it by the parameter of an interleaving.
+  At each supplied `ε : ℝ≥0`, `nonempty_sublevelInterleaving_iff` equates the existence of
+  an `ε`-interleaving with the existence of an occurrence matching of cost at most
+  `(ε : ℝ≥0∞)`.
+- For filters on one complex, `bottleneck_dgm_le_faceSupDifference_algebraic` gives the
+  algebraic finite-filter stability bound. The accompanying [examples](../../TDA/Persistence/SublevelConstructibleExamples.lean)
   exercise constructibility and diagram identity on two-point and triangle filters, and the
   bound on a one-vertex filter.
 
@@ -104,8 +110,7 @@ universe as `V`, and compare filters on the same `K`.
   essential multiplicities agree.
 - **Filled and hollow triangles.** The certified ℕ-graded triangles are cast to ℝ. The
   filled triangle has degree-0 module diagram {(0,1), (0,1), (0,⊤)} and degree-1 module
-  diagram {(1,2)}. The hollow triangle has degree-1 module diagram {(1,⊤)}. The two filters
-  live on different complexes and are not compared.
+  diagram {(1,2)}. The hollow triangle has degree-1 module diagram {(1,⊤)}.
 - **One vertex.** The critical grid has one value, the module is constructible, and the
   isometry gives the exact interleaving distance |a − b| of two vertex filters at a and b.
   The algebraic stability bound is attained there, as in the face-order proof.
@@ -123,13 +128,11 @@ universe as `V`, and compare filters on the same `K`.
 
 ## Scope
 
-Log-scale modules are treated in degrees n ≥ 1 by the
-[log-scale diagrams](log-scale-diagrams.md), on the logarithms of the positive critical
-values; in degree 0 the log-scale modules have no zero left tail, and log-mapped diagrams are
-not treated. Extended-real indexing, positive scaling of real modules, filters on
-two different complexes, filters valued outside ℝ and infinite complexes are outside this
-note. The definitions of `dgm`, the module diagram, constructibility and the isometry are
-used unchanged.
+This note covers real-valued filters on finite complexes. Log-scale modules are treated in
+degrees n ≥ 1 by the [log-scale diagrams](log-scale-diagrams.md), on the logarithms of the
+positive critical values; in degree 0 the log-scale modules have no zero left tail. The
+definitions of `dgm`, the module diagram, constructibility and the isometry are used
+unchanged.
 
 ## Sources
 
