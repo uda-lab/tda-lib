@@ -636,4 +636,17 @@ noncomputable def basisEquiv (S : Finset ℝ) (k : Type) [Ring k] :
   (basicIncl S).sheafInducedTopologyEquivOfIsCoverDense
     (Opens.grothendieckTopology realLine) (ModuleCat.{0} k)
 
+/-- A sheaf extended from the basis inverts the restriction along an inclusion of basic opens
+when its basis presheaf inverts that inclusion. -/
+theorem isIso_map_basisEquiv (k : Type) [Ring k] {S : Finset ℝ}
+    (P : Sheaf (basicTopology S) (ModuleCat.{0} k))
+    {U V : BasicCat S} (f : U ⟶ V) (h : IsIso (P.obj.map f.op)) :
+    IsIso (((basisEquiv S k).functor.obj P).obj.map (homOfLE f.hom.le).op) :=
+  (NatIso.isIso_map_iff ((sheafToPresheaf _ _).mapIso ((basisEquiv S k).unitIso.app P)) f.op).1 h
+
+/-- With no breakpoints, every nonempty convex open is basic. -/
+theorem isBasicOpen_empty {U : Opens realLine} (hne : (U : Set ℝ).Nonempty)
+    (hc : (U : Set ℝ).OrdConnected) : IsBasicOpen ∅ U :=
+  ⟨hne, hc, by simp⟩
+
 end TDA.Sheaf.RealStratification
