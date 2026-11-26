@@ -212,6 +212,16 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   the empty interval, an empty source, the identity of `ℝ`, and `f t = t²`, where the band
   `(1, 4)` into `(-1, 4)` induces the fold `k ⊕ k ⟶ k`. Degree zero only; not a derived equivalence.
 
+- Closed-band functors on `D⁺(Sh(ℝ; k))` (#1174): `TDA.Sheaf.DerivedPlus` gives the derived
+  inverse and direct images `pullbackPlus` and `pushforwardPlus` of sheaves of modules on
+  `DerivedCategory.Plus`, with derived categories as instance arguments, their invertible
+  composition comparisons and associativity, and the derived unit `derivedUnit`, invertible
+  along homeomorphisms and coherent with composition; `corrRestr` restricts a correspondence
+  transform along a map. `TDA.Sheaf.BandConvolution` defines the closed bands `D a`, their proper
+  projections `p a` and `q a`, `T a := pullbackPlus (p a) ⋙ pushforwardPlus (q a)`, the radius
+  maps `restr : T b ⟶ T a` with `restr_refl` and `restr_trans`, `T0Iso : T 0 ≅ 𝟭` and the
+  augmentation `aug`. Fixtures in `TDA.Sheaf.BandConvolutionExamples`.
+
 ## v0.5.0
 
 Published 2026-11-25. [Release notes](https://github.com/uda-lab/tda-lib/releases/tag/v0.5.0)
