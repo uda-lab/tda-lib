@@ -10,6 +10,15 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 7 (#1268, #1207): the certified Rips reduction and the integer
+  bottleneck search now compose. `IntegerBottleneck.Presentation.ofPoints`,
+  `IntegerBottleneck.diagram_ofPoints_points` and
+  `IntegerBottleneck.bottleneck_eq_of_points_of_twiceDistance` read the search on two lists
+  of integer points as the bottleneck distance of real diagrams with those points;
+  `Reduction.DistanceTable.bottleneck_rips_dgm_eq_of_twiceDistance` and its `⊤` form give the
+  exact bottleneck distance between the F₂ Rips diagrams of two distance tables
+  (`TDA.Persistence.Reduction.RipsInputBottleneck`); computed instances in
+  `Reduction.RipsInputBottleneckExamples`.
 - Downstream-use audit, family 6 (#1266, #1207): Rips sampling confidence bounds on a metric
   space with no `LinearOrder` instance: `Rips.qTameSampleDiagramOrderFree`,
   `Rips.qTameCompactCarrierDiagramOrderFree`, their agreement with every supplied order, and

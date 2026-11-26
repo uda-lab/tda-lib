@@ -9567,3 +9567,13 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RipsConfidenceClientExamples.compact_space_confidence
 #print axioms TDA.Persistence.RipsConfidenceClientExamples.sampleDiagram_orderFree_eq
 #print axioms TDA.Persistence.Rips.measure_bottleneck_qTameSampleDiagramOrderFree_carrier_gt_le
+#print axioms TDA.Persistence.IntegerBottleneck.Presentation.ofPoints_cons_coe
+#print axioms TDA.Persistence.IntegerBottleneck.Presentation.ofPoints_cons_top
+#print axioms TDA.Persistence.IntegerBottleneck.diagram_ofPoints_points
+#print axioms TDA.Persistence.IntegerBottleneck.bottleneck_eq_of_points_of_twiceDistance
+#print axioms TDA.Persistence.IntegerBottleneck.bottleneck_eq_top_of_points_of_twiceDistance
+#print axioms TDA.Persistence.Reduction.DistanceTable.bottleneck_rips_dgm_eq_of_twiceDistance
+#print axioms TDA.Persistence.Reduction.DistanceTable.bottleneck_rips_dgm_eq_top_of_twiceDistance
+#print axioms TDA.Persistence.Reduction.RipsInputBottleneckExamples.single_pair_bottleneck
+#print axioms TDA.Persistence.Reduction.RipsInputBottleneckExamples.pair_pair_bottleneck
+#print axioms TDA.Persistence.Reduction.RipsInputBottleneckExamples.empty_single_bottleneck
