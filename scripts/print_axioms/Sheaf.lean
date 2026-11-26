@@ -1519,3 +1519,8 @@ import TDA
 #print axioms TDA.Sheaf.RealConstructibleExtExamples.nontrivial_ext_one_point_rightCell
 #print axioms TDA.Sheaf.RealConstructibleExtExamples.nontrivial_ext_one_pointSheaf_rightOpen
 #print axioms TDA.Sheaf.RealConstructibleExtExamples.ext_two_sky_rightClosed_eq_zero
+#print axioms TDA.Sheaf.isIso_derivedUnit_Icc
+#print axioms TDA.Sheaf.IntervalFibration.isIso_derivedUnit
+#print axioms TDA.Sheaf.IntervalFibrationExamples.isIso_derivedUnit_Icc_single_three
+#print axioms TDA.Sheaf.IntervalFibrationExamples.isIso_derivedUnit_q_one
+#print axioms TDA.Sheaf.IntervalFibrationExamples.isIso_derivedUnit_q_zero

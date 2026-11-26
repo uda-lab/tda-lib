@@ -873,6 +873,13 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `TDA.Sheaf.RealConstructibleExtExamples` over `ℚ`: `rightCell`, `rightOpen`,
   `nontrivial_ext_one_point_rightCell`, `nontrivial_ext_one_pointSheaf_rightOpen` (a nonzero
   `Ext¹` from the field at `0` to the field on `(0, ∞)`), `ext_two_sky_rightClosed_eq_zero`.
+- The derived unit of an interval fibration with nonempty fibres is an isomorphism (#1175,
+  part 1a). `TDA.Sheaf.IntervalAcyclic`: `isIso_derivedUnit_Icc`, the derived unit
+  `𝟭 ⟶ (toPt [u, v])⁻¹ ⋙ RΓ([u, v]; -)` of `D⁺(Sh pt)` is an isomorphism for `u ≤ v`.
+  `TDA.Sheaf.IntervalFibration`: `IntervalFibration.isIso_derivedUnit`, the derived unit
+  `𝟭 ⟶ π⁻¹ ⋙ Rπ_*` of an interval fibration with `lo y ≤ hi y` at every `y` is an isomorphism.
+  Fixtures in `TDA.Sheaf.IntervalFibrationExamples`: `isIso_derivedUnit_Icc_single_three`,
+  `isIso_derivedUnit_q_one`, `isIso_derivedUnit_q_zero`.
 
 ## v0.5.0
 
