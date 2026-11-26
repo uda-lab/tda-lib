@@ -333,6 +333,26 @@ theorem measure_bottleneck_qTameSampleDiagramOrderFree_gt_le
     measure_bottleneck_qTameSampleDiagram_gt_le μ k hX hn degree c hr hnet
 
 omit [LinearOrder X] in
+/-- The finite iid confidence bound for ambient draws from a full-measure totally bounded
+carrier, on a metric space with no order. -/
+theorem measure_bottleneck_qTameSampleDiagramOrderFree_carrier_gt_le
+    [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X]
+    (μ : ProbabilityMeasure X) (k : Type v) [Field k]
+    {K : Set X} [Nonempty K] (hK : TotallyBounded (Set.univ : Set K))
+    (hKm : MeasurableSet K) (hfull : (μ : Measure X) K = 1)
+    (hn : 0 < n) (degree : ℕ) {C : Type*} [Fintype C] [Nonempty C]
+    (c : C → K) {r : ℝ} (hr : 0 < r)
+    (hnet : ∀ x : K, ∃ j, dist x (c j) < r / 2) :
+    (iidMeasure μ n : Measure (Fin n → X))
+      {t | ENNReal.ofReal (2 * r) < (qTameSampleDiagramOrderFree k t degree).bottleneck
+        (qTameLocallyFiniteDiagramOrderFree K k hK degree)} ≤
+      (Fintype.card C : ℝ≥0∞) *
+        (1 - finiteCoverMass μ (fun j => ball (c j : X) (r / 2))) ^ n := by
+  letI : LinearOrder X := IsWellOrder.linearOrder WellOrderingRel
+  simpa only [qTameSampleDiagramOrderFree_eq, qTameLocallyFiniteDiagramOrderFree_eq] using
+    measure_bottleneck_qTameSampleDiagram_carrier_gt_le μ k hK hKm hfull hn degree c hr hnet
+
+omit [LinearOrder X] in
 /-- The finite iid confidence bound for a compactly supported Borel probability on a second
 countable metric space with no order. -/
 theorem measure_bottleneck_qTameSampleDiagramOrderFree_support_gt_le

@@ -9566,3 +9566,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.RipsConfidenceClientExamples.euclidean_support_event_measurable
 #print axioms TDA.Persistence.RipsConfidenceClientExamples.compact_space_confidence
 #print axioms TDA.Persistence.RipsConfidenceClientExamples.sampleDiagram_orderFree_eq
+#print axioms TDA.Persistence.Rips.measure_bottleneck_qTameSampleDiagramOrderFree_carrier_gt_le

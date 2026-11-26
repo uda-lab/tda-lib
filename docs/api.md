@@ -3256,7 +3256,8 @@ The actual distance event is measurable by two-Lipschitz stability and the
 extended pseudometric on `LocallyFiniteDecoratedDiagram`.
 `qTameSampleDiagramOrderFree` and `qTameCompactCarrierDiagramOrderFree` are the same
 diagrams on a metric space with no `LinearOrder` instance, such as a Euclidean space;
-`measure_bottleneck_qTameSampleDiagramOrderFree_gt_le` and
+`measure_bottleneck_qTameSampleDiagramOrderFree_gt_le`,
+`measure_bottleneck_qTameSampleDiagramOrderFree_carrier_gt_le` and
 `measure_bottleneck_qTameSampleDiagramOrderFree_support_gt_le` are the confidence bounds
 for them, and `RipsConfidenceClientExamples` is a downstream regression fixture (#1266).
 `Probability.SamplingCoverage` supplies exact avoidance probabilities, the

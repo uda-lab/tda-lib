@@ -74,7 +74,8 @@ Import `TDA.Persistence.RipsSamplingConfidence`; the declarations below are in
 structure and second-countable topology on the metric input type. The statements
 named below take an auxiliary `LinearOrder` on that type, with any relation to the
 metric. On a type with no order, such as a Euclidean space, use
-`measure_bottleneck_qTameSampleDiagramOrderFree_gt_le` and
+`measure_bottleneck_qTameSampleDiagramOrderFree_gt_le`,
+`measure_bottleneck_qTameSampleDiagramOrderFree_carrier_gt_le` and
 `measure_bottleneck_qTameSampleDiagramOrderFree_support_gt_le`: they state the same
 bounds for `qTameSampleDiagramOrderFree` and `qTameCompactCarrierDiagramOrderFree`,
 which equal the ordered diagrams for every supplied order
