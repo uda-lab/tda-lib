@@ -120,7 +120,7 @@ theorem repeated_projective :
   simpa only [he] using (projective_iff_hasProjectiveDimensionLE_zero _).2
     (generatedSupport_hasProjectiveDimensionLE (k := ℚ) (fun _ : Fin 1 => (1 : ℕ)))
 
-private instance : SmallCategory (Bool × Bool) := Preorder.smallCategory _
+private local instance : SmallCategory (Bool × Bool) := Preorder.smallCategory _
 
 /-- The two incomparable atoms of the Boolean square. -/
 abbrev twoIncomparableFamily : Fin 2 → Bool × Bool := ![(true, false), (false, true)]

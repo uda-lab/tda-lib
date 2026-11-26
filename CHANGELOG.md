@@ -10,6 +10,17 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 13 (#1288, #1207): global instances on mathlib types. After
+  `import TDA`, `Fintype (Fin 3 → Bool)` is mathlib's `Pi.instFintype`, `Category (Bool × Bool)` is
+  mathlib's product category, and `Fin 4`, `Option (Fin 3)` and membership in the top complex of
+  `Fin 2` carry no metric, order or decidability instance from the library. The `MetricSpace`,
+  `LinearOrder`, `PseudoMetricSpace`, `SmallCategory`, `Decidable`, `Fintype`, `OrderBot` and
+  `OrderTop` instances of `FiniteLatticeComplementCardinality`, `H1Examples`,
+  `CriticalValuesExamples`, `RipsQTameInfiniteMetricStabilityExamples`,
+  `CechFinitePBottleneckAllDegreesExamples`, `FiniteInjectiveRankDimensionExamples` and
+  `GeneratedUpsetResolutionExamples` are local to their files. The modules
+  `Filtration.GlobalInstanceClientExamples` and `Persistence.GlobalInstanceClientExamples` hold the
+  client checks.
 - Downstream-use audit, family 12 (#1286, #1207): statements with arbitrary decidable equality in
   Simplicial, Mapper, Filtration and Persistence. `map_le_iff`, `VertexMap.map_le_iff`,
   `mapperOneSkeleton_adj_iff`, `mem_mapper_iff_supported_singleton_or_adjacent_pair`, the two

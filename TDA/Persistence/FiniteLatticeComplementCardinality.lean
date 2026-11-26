@@ -107,15 +107,15 @@ end CallerBottom
 variable {ι : Type} [Fintype ι] {T : ι → Type}
   [∀ i, LinearOrder (T i)] [∀ i, Finite (T i)] [∀ i, Nonempty (T i)]
 
-private noncomputable instance (i : ι) : Fintype (T i) := Fintype.ofFinite (T i)
+private noncomputable local instance (i : ι) : Fintype (T i) := Fintype.ofFinite (T i)
 
-private instance (i : ι) : OrderBot (T i) := by
+private local instance (i : ι) : OrderBot (T i) := by
   exact Fintype.toOrderBot (T i)
 
-private instance (i : ι) : OrderTop (T i) := by
+private local instance (i : ι) : OrderTop (T i) := by
   exact Fintype.toOrderTop (T i)
 
-private noncomputable instance piFintype : Fintype (∀ i, T i) := by
+private noncomputable local instance piFintype : Fintype (∀ i, T i) := by
   classical
   letI : ∀ i, Fintype (T i) := fun i => Fintype.ofFinite (T i)
   exact Pi.instFintype

@@ -215,7 +215,7 @@ private theorem empty_costs {X : Type w} [PseudoMetricSpace X]
   rw [heq]
   exact bottleneck_self _
 
-private instance emptyAmbient : PseudoMetricSpace Empty :=
+private local instance emptyAmbient : PseudoMetricSpace Empty :=
   PseudoMetricSpace.induced (Empty.elim : Empty → ℝ) inferInstance
 
 private theorem empty_ambient_diagram (n : ℕ) :

@@ -55,7 +55,7 @@ private theorem cycleDist_le_two (i j : Fin 4) : cycleDist i j ≤ 2 := by
   unfold cycleDist
   split_ifs <;> norm_num
 
-private instance : MetricSpace (Fin 4) where
+private local instance : MetricSpace (Fin 4) where
   dist := cycleDist
   dist_self := by intro i; simp [cycleDist]
   dist_comm := cycleDist_comm

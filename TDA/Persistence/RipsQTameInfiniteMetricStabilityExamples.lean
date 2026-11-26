@@ -83,11 +83,11 @@ private theorem reciprocalTarget_compactSpace : CompactSpace ReciprocalTarget :=
   @MetricSpace.induced _ ℝ (reciprocalSampleMap N)
     (reciprocalSampleMap_injective N) inferInstance
 
-private instance reciprocalSampleLinearOrder (N : ℕ) :
+private local instance reciprocalSampleLinearOrder (N : ℕ) :
     LinearOrder (Option (Fin (N + 1))) :=
   LinearOrder.lift' (reciprocalSampleMap N) (reciprocalSampleMap_injective N)
 
-private instance reciprocalSampleMetricSpace (N : ℕ) :
+private local instance reciprocalSampleMetricSpace (N : ℕ) :
     MetricSpace (Option (Fin (N + 1))) := reciprocalSampleMetric N
 
 private instance reciprocalTarget_nonempty : Nonempty ReciprocalTarget :=
