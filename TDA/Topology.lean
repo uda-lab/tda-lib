@@ -24,3 +24,5 @@ import TDA.Topology.ConvexNerveInclusion
 import TDA.Topology.SmallChains
 import TDA.Topology.SingularMayerVietoris
 import TDA.Topology.QuasiIsoOfIterate
+import TDA.Topology.AffineChains
+import TDA.Topology.SubdivisionDiameter

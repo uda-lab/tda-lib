@@ -12,3 +12,4 @@ import TDA.Topology.SubdivisionMeshExamples
 import TDA.Topology.ConvexNerveInclusionExamples
 import TDA.Topology.LastVertexClientExamples
 import TDA.Topology.SingularMayerVietorisExamples
+import TDA.Topology.AffineChainsExamples

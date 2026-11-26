@@ -347,6 +347,21 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `openIoo S p q`), the lifting of locally liftable global sections on `[u, v]` along an exact
   complex with germ-surjective first term (`exists_section_lift_Icc`) and exactness of global
   sections on `[u, v]` (`sections_exact_Icc`). Fixtures in `TDA.Sheaf.IntervalSectionsExamples`.
+- Affine chains and the subdivision diameter bound (#1190, part S2): `TDA.Topology.AffineChains`
+  makes the vertex tuples `Fin (n + 1) → X` a simplicial set `affineSSet X`, so its chain
+  complex has Mathlib's alternating face differential. The cone `coneMap R b n` puts the apex
+  `b` at vertex `0`; `coneMap_d` proves `∂(b · c) = c - b · ∂c` in positive degree and
+  `coneMap_zero_d` proves `∂(b · c) = c - ε(c) · b` in degree zero, for coefficients `R` in any
+  preadditive category with coproducts. For a convex `K` in `StdSimplex ℝ (Fin (m + 1))`,
+  `realize hK σ` is the affine realization (its cone is `AffineMap.cone`, `coe_realize_cons`),
+  and `toSingular hK Y e` and `toSingularChains hK Y e R` send affine simplices and chains to
+  singular ones through `e : C(K, Y)` (a monomorphism for injective `e`). In
+  `TDA.Topology.SubdivisionDiameter`, `IsSubdivisionSimplex hK σ τ` describes the simplices of
+  `sd(σ) = b_σ · sd(∂σ)` and `IsIteratedSubdivisionSimplex` their `N`-fold iterates; measured
+  through any linear map of the weights into a real normed space, a subdivision simplex lies in
+  `σ` and has diameter at most `n / (n + 1)` times that of `σ`, and `(n / (n + 1)) ^ N` after
+  `N` steps. Fixtures in `TDA.Topology.AffineChainsExamples`: the cone boundary on a segment
+  over any ring and the factor `2 / 3` on the standard `2`-simplex.
 
 ## v0.5.0
 
