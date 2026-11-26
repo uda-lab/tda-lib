@@ -4870,6 +4870,56 @@ See [nerves of nested convex families](math/convex-nerve-inclusion.md).
 The source register records these Topology modules as library derivations attributed to no
 source; see its [declaration mappings](math/references.md#existing-declaration-and-proof-mappings).
 
+### Affine chains and the subdivision diameter bound
+
+`TDA.Topology.AffineChains` (imported by `TDA.Topology`, namespace
+`TDA.Topology.AffineChains`) prepares the singular subdivision of #1190. For any type `X`,
+`affineSSet X` is the simplicial set whose `n`-simplices are the vertex tuples
+`Fin (n + 1) → X` (`affineSSet.mk`, `affineSSet.vertices`, `affineSSet.equiv`); a simplicial
+operator acts by precomposition, so the `i`-th face deletes vertex `i` (`affineSSet.δ_mk`), and
+the chain complex `(affineSSet X).chainComplex R` uses Mathlib's alternating face differential
+`SSet.ιChainComplex_d` with no sign convention of its own. The coefficients `R` lie in any
+preadditive category `C` with coproducts, for example `ModuleCat.of k k` over a ring `k`.
+`cone b σ = Fin.cons b σ` puts the apex at vertex `0`, and `coneMap R b n` is the cone on
+`n`-chains (`ιChainComplex_coneMap`). `coneMap_d` states
+`coneMap R b (n + 1) ≫ d (n + 2) (n + 1) = 𝟙 - d (n + 1) n ≫ coneMap R b n`, that is
+`∂(b · c) = c - b · ∂c` in positive degree, with the simplex form `ιChainComplex_coneMap_d`;
+`coneMap_zero_d` states `∂(b · c) = c - ε(c) · b` in degree zero, where `augmentation R S`
+sends every vertex generator of a simplicial set `S` to `𝟙 R`. `affineSSet.map f` is the map
+induced by `f : X → Y`, and `coneMap_comp_chainComplexMap` is its compatibility with cones.
+
+For `K : Set (StdSimplex ℝ (Fin (m + 1)))` with `hK : IsConvexSet ℝ K`,
+`realize hK σ : C(StdSimplex ℝ (Fin (n + 1)), K)` is the affine map sending vertex `i` to `σ i`
+(`coe_realize_apply`, `realize_single`, `realize_injective`); faces realize by
+`StdSimplex.map` (`realize_comp`), the realized cone is Mathlib's `AffineMap.cone`
+(`coe_realize_cons`), and an affine map of ambient simplices carrying `K` into `K'` commutes with
+realization (`coe_realize_mapsTo`). For `Y : TopCat.{u}` and `e : C(K, Y)`, `toSingular hK Y e`
+is the map of simplicial sets to `TopCat.toSSet.obj Y` sending `σ` to `e ∘ realize hK σ`,
+natural in `Y` (`toSingular_comp`) and a monomorphism for injective `e` (`mono_toSingular`);
+`toSingularChains hK Y e R` is the induced chain map into the singular chains of `Y`.
+
+`TDA.Topology.SubdivisionDiameter` (same namespace) defines the barycentre
+`simplexBarycenter hK σ`, the image of `StdSimplex.barycenter` under `realize hK σ`, and the
+inductive predicate `IsSubdivisionSimplex hK σ τ` for the simplices of the recursive
+barycentric subdivision `sd(σ) = b_σ · sd(∂σ)`: a vertex is its own subdivision, and
+`cone (simplexBarycenter hK σ) τ` is a simplex of `sd(σ)` when `τ` is one of `sd(σ ∘ i.succAbove)`.
+`IsIteratedSubdivisionSimplex hK N σ τ` composes `N` steps. Distances are measured through
+`position L x = L x.weights` for any linear map `L : (Fin (m + 1) →₀ ℝ) →ₗ[ℝ] E` into a real
+normed space `E`; every affine map from the simplex to `E` is of this form.
+`diam_range_position_realize` identifies the diameter of a realized simplex with that of its
+vertices, and `dist_position_simplexBarycenter_le` bounds the distance from the barycentre of an
+`n`-simplex to any of its points by `n / (n + 1)` times its diameter. Every subdivision simplex
+lies in `σ` (`IsSubdivisionSimplex.range_realize_subset`) and has realized diameter at most
+`n / (n + 1)` times that of `σ` (`IsSubdivisionSimplex.diam_range_realize_le`, vertex form
+`IsSubdivisionSimplex.diam_le`); after `N` steps the factor is `(n / (n + 1)) ^ N`
+(`IsIteratedSubdivisionSimplex.diam_range_realize_le`). Both predicates are preserved by affine
+maps carrying `K` into `K'` (`mapsTo`). The subdivision chain map, its homotopy and the
+Lebesgue-number step on singular chains are not part of these modules.
+`TDA.Topology.AffineChainsExamples` (imported by `TDA.Topology.Examples`) proves
+`∂(b · [p, q]) = [p, q] - [b, q] + [b, p]` over any ring (`cone_boundary_segment`) and the factor
+`2 / 3` for a subdivision simplex of the standard `2`-simplex in any norm
+(`diam_subdivisionTriangle_le`, `diam_iterated_triangle_le`).
+
 ### Finite-tree realizations and quotient comparison
 
 For a leaf `ℓ` of `G : SimpleGraph V` with neighbour `m`, `leafHomotopyEquiv` is a homotopy
