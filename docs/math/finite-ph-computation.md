@@ -342,6 +342,15 @@ natural numbers for each of the at most `2 ^ N - 1` records. The cost of the
 existing reduction is not bounded; it is at least quadratic in the number of
 faces, and only measurements are recorded.
 
+The records of one degree of two tables, with `N` and `M` labels, are the inputs
+of the [integer bottleneck search](integer-bottleneck.md):
+`DistanceTable.recordPresentation` presents a record list, and
+`DistanceTable.bottleneck_rips_dgm_eq_of_twiceDistance` reads a finite doubled
+value `q` of `IntegerBottleneck.twiceDistance` on the two presentations as
+bottleneck distance `q / 2` between the F₂ Rips diagrams of the two table metrics
+in that degree; `bottleneck_rips_dgm_eq_top_of_twiceDistance` reads the value `⊤`
+as infinite distance. Import `TDA.Persistence.Reduction.RipsInputBottleneck`.
+
 For a permutation `σ` of the labels and tables with
 `E.dist i j = D.dist (σ i) (σ j)`, `valid_of_relabel` transfers validity and
 `outputDiagram_ripsInput_of_relabel` states that the two executed lists have

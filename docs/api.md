@@ -3205,6 +3205,15 @@ preserved; essential-count mismatch gives infinity. The exhaustive search is
 connected to the existing real diagram bottleneck by `run_correct` and
 `solve_cost_eq`. See [integer bottleneck computation](math/integer-bottleneck.md)
 for costs, witness extraction and the exhaustive search bound.
+`IntegerBottleneck.Presentation.ofPoints` presents a list of integer diagram points, and
+`bottleneck_eq_of_points_of_twiceDistance` reads the search on two such lists as the
+bottleneck distance of any two real diagrams with those points
+(`bottleneck_eq_top_of_points_of_twiceDistance` in the infinite case). For two distance
+tables, `Reduction.DistanceTable.bottleneck_rips_dgm_eq_of_twiceDistance` composes this
+with `ripsRunInDegree_correct`: the search on the two record lists gives the bottleneck
+distance between the F₂ Rips diagrams of the two table metrics.
+`Reduction.RipsInputBottleneckExamples` is a downstream regression fixture that computes
+three such distances by kernel evaluation (#1268).
 
 `TDA.Persistence.DiagramBottleneckTopology` gives `Diagram ℝ` its extended
 bottleneck metric and Borel topology. `TDA.Persistence.RipsSamplingMeasure`

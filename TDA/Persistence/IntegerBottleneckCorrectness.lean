@@ -320,4 +320,92 @@ theorem twiceDistance_consDiagonal (D E : Presentation) (b c : ℤ) :
     twiceDistance D (E.consDiagonal b) = twiceDistance D E :=
   twiceDistance_eq_of_diagram_eq rfl (diagram_consDiagonal E b)
 
+/-! ### Diagrams given by a list of integer points -/
+
+/-- The presentation of a list of integer diagram points: the points with a finite death
+form the finite list, and the births of the points with death `⊤` form the essential list. -/
+def Presentation.ofPoints (l : List (ℤ × WithTop ℤ)) : Presentation where
+  finite := l.filterMap fun q => (q.2 : Option ℤ).map fun d => (q.1, d)
+  essential := l.filterMap fun q => (q.2 : Option ℤ).elim (some q.1) fun _ => none
+
+theorem Presentation.ofPoints_cons_coe (b d : ℤ) (l : List (ℤ × WithTop ℤ)) :
+    Presentation.ofPoints ((b, (d : WithTop ℤ)) :: l) =
+      ⟨(b, d) :: (Presentation.ofPoints l).finite, (Presentation.ofPoints l).essential⟩ :=
+  rfl
+
+theorem Presentation.ofPoints_cons_top (b : ℤ) (l : List (ℤ × WithTop ℤ)) :
+    Presentation.ofPoints ((b, (⊤ : WithTop ℤ)) :: l) =
+      ⟨(Presentation.ofPoints l).finite, b :: (Presentation.ofPoints l).essential⟩ :=
+  rfl
+
+/-- For off-diagonal integer points, the diagram of `Presentation.ofPoints` has exactly
+those points, read in `ℝ`, with their multiplicities. -/
+theorem diagram_ofPoints_points (l : List (ℤ × WithTop ℤ))
+    (h : ∀ q ∈ l, (q.1 : WithTop ℤ) ≠ q.2) :
+    (diagram (Presentation.ofPoints l)).points =
+      (l : Multiset (ℤ × WithTop ℤ)).map
+        fun q => ((q.1 : ℝ), WithTop.map (Int.cast : ℤ → ℝ) q.2) := by
+  simp only [diagram, orderedQ, ofFn_realFinite, ofFn_realEssential]
+  induction l with
+  | nil => rfl
+  | cons q l ih =>
+    obtain ⟨b, d⟩ := q
+    have ih := ih fun q hq => h q (List.mem_cons_of_mem _ hq)
+    induction d using WithTop.recTopCoe with
+    | top =>
+      rw [Presentation.ofPoints_cons_top]
+      simp only [List.map_cons, ← Multiset.cons_coe, Multiset.map_cons, Multiset.add_cons,
+        WithTop.map_top]
+      rw [ih]
+    | coe d =>
+      have hbd : (b : ℝ) ≠ (d : ℝ) := by
+        have hne := h (b, (d : WithTop ℤ)) (List.mem_cons_self ..)
+        intro e
+        exact hne (by rw [Int.cast_injective e])
+      rw [Presentation.ofPoints_cons_coe]
+      simp only [List.map_cons, ← Multiset.cons_coe, Multiset.map_cons, WithTop.map_coe]
+      rw [Multiset.filter_cons_of_pos (p := fun p : ℝ × ℝ => p.1 ≠ p.2) _ hbd,
+        Multiset.map_cons, Multiset.cons_add, ih]
+
+private theorem eq_diagram_ofPoints (D : Diagram ℝ) (l : List (ℤ × WithTop ℤ))
+    (hD : D.points = (l : Multiset (ℤ × WithTop ℤ)).map
+      fun q => ((q.1 : ℝ), WithTop.map (Int.cast : ℤ → ℝ) q.2)) :
+    D = diagram (Presentation.ofPoints l) := by
+  apply Diagram.ext
+  rw [hD, diagram_ofPoints_points]
+  intro q hq heq
+  have hmem : ((q.1 : ℝ), WithTop.map (Int.cast : ℤ → ℝ) q.2) ∈ D.points := by
+    rw [hD]
+    exact Multiset.mem_map_of_mem _ (Multiset.mem_coe.mpr hq)
+  apply D.offDiagonal _ hmem
+  rw [← heq]
+  rfl
+
+/-- Two real diagrams whose points are given by lists of integer points have the bottleneck
+distance computed by the integer search on those lists. -/
+theorem bottleneck_eq_of_points_of_twiceDistance (D E : Diagram ℝ)
+    (l₁ l₂ : List (ℤ × WithTop ℤ))
+    (hD : D.points = (l₁ : Multiset (ℤ × WithTop ℤ)).map
+      fun q => ((q.1 : ℝ), WithTop.map (Int.cast : ℤ → ℝ) q.2))
+    (hE : E.points = (l₂ : Multiset (ℤ × WithTop ℤ)).map
+      fun q => ((q.1 : ℝ), WithTop.map (Int.cast : ℤ → ℝ) q.2))
+    (q : ℕ)
+    (h : twiceDistance (Presentation.ofPoints l₁) (Presentation.ofPoints l₂) = (q : WithTop ℕ)) :
+    bottleneck D E = (q : ℝ≥0∞) / 2 := by
+  rw [eq_diagram_ofPoints D l₁ hD, eq_diagram_ofPoints E l₂ hE]
+  exact bottleneck_eq_of_twiceDistance _ _ q h
+
+/-- The infinite case: the integer search returns `⊤` exactly for an infinite bottleneck
+distance of the two diagrams. -/
+theorem bottleneck_eq_top_of_points_of_twiceDistance (D E : Diagram ℝ)
+    (l₁ l₂ : List (ℤ × WithTop ℤ))
+    (hD : D.points = (l₁ : Multiset (ℤ × WithTop ℤ)).map
+      fun q => ((q.1 : ℝ), WithTop.map (Int.cast : ℤ → ℝ) q.2))
+    (hE : E.points = (l₂ : Multiset (ℤ × WithTop ℤ)).map
+      fun q => ((q.1 : ℝ), WithTop.map (Int.cast : ℤ → ℝ) q.2))
+    (h : twiceDistance (Presentation.ofPoints l₁) (Presentation.ofPoints l₂) = ⊤) :
+    bottleneck D E = ⊤ := by
+  rw [eq_diagram_ofPoints D l₁ hD, eq_diagram_ofPoints E l₂ hE]
+  exact bottleneck_eq_top_of_twiceDistance _ _ h
+
 end TDA.Persistence.IntegerBottleneck
