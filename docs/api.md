@@ -3064,13 +3064,14 @@ and `quotientIncl_injective_of_separated_vertices` restate
 `SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_vertices` and
 `quotientIncl_injective_of_two_vertices_separated` for such a `Q`: the first takes `a < b`,
 `A.simplex = {a, b}`, `¬ Q a` and `Q b`; the second takes `∀ w ∈ u.val, Q w` and
-`∃ w ∈ v.val, ¬ Q w` for the two source vertices `u` and `v`. The existing statements are
-unchanged. `TDA.Simplicial.SimplexAttachmentClientExamples` (imported by
-`TDA.Simplicial.Examples`) is a downstream regression fixture (#1277): it joins the two vertices
-of `Fin 2` by the edge `{0, 1}`, shows `(attach.oldDeletedFace 0).val = {1}` and
-`(attach.oldDeletedFace 1).val = {0}` with no helper lemma, and proves the attaching class
-nonzero over every field with the existing theorem and with the edge form. It opens no scope and
-declares no instance.
+`∃ w ∈ v.val, ¬ Q w` for the two source vertices `u` and `v`.
+`TDA.Simplicial.SimplexAttachmentClientExamples` (imported by `TDA.Simplicial.Examples`) is a
+downstream regression fixture (#1277): it joins the two vertices of `Fin 2` by the edge `{0, 1}`,
+evaluates the two deleted faces with `SimplexAttachment.oldDeletedFace_val_pair_zero` and `_one`
+as `(attach.oldDeletedFace 0).val = {1}` and `(attach.oldDeletedFace 1).val = {0}`, and proves the
+attaching class nonzero over every field with
+`SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_vertices` and with
+`SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_edge`.
 
 `TDA.Filtration.CollapseCertificateFamily` (imported by `TDA.Filtration`) works in namespace
 `TDA.Filtration` with real-indexed filtrations `F G : SimplicialFiltration ℝ V` and rational
