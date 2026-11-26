@@ -22,3 +22,4 @@ import TDA.Sheaf.RightDerivedHomology
 import TDA.Sheaf.IntervalCohomology
 import TDA.Sheaf.FlasqueAcyclic
 import TDA.Sheaf.RealConstructible
+import TDA.Sheaf.IntervalFibre

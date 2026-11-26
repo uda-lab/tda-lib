@@ -55,9 +55,10 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_section_lift_extend`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`; the extension step needs `S` order-connected, the global statements are for compact intervals `[u, v]` (all `u`, `v`). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`; `pt`, `toPt`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ`, `rightDerivedFunctorPlusSingleIso` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_Icc`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for all `u`, `v`; the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.FlasqueAcyclic` | `sections_exact_of_left_exact`, `epi_of_shortExact`, `isFlasque_of_shortExact`, `isFlasque_biprod`, `pushforward_shortExact_of_isFlasque`, `acyclic_pushforward_of_isFlasque`, `quasiIso_pushforward_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` | Sheaves of `k`-modules over a ring `k : Type` on `X : TopCat.{0}`, continuous `f : X ⟶ Y`; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
+| `TDA.Sheaf` / `TDA.Sheaf.IntervalFibre` | `comp_toPt`, `H_iso_of_homeo`, `isIso_derivedUnit_toPt_app_of_homeo`, `isIso_toPt_Icc_self`, `isIso_derivedUnit_toPt_Icc_self`; `BandConvolution.fibre`, `fibreHomeo`, `coe_fibreHomeo_apply`, `fibreIso`, `fibreIso_toPt`, `isZero_H_fibre`, `isIso_derivedUnit_toPt_fibre` | Homeomorphisms `h : X ⟶ Y` in `TopCat.{0}` (`[IsIso h]`), `k : Type` a ring; fibres of the band projection `BandConvolution.q a`. The fibre statements take a derived category structure on `[y - a, y + a]` as an instance argument; the unit statement needs `0 ≤ a`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 
 ### Capped centred height-map pairs
 
@@ -4636,6 +4637,36 @@ is an isomorphism (`isIso_derivedUnit_kpt`), giving `H⁰([0, 1]; constSh kpt) �
 `[1, 1]` (`isIso_derivedUnit_kpt_singleton`). `H²` vanishes for the skyscraper `sky` at `1/2`
 (`isZero_H2_sky`) and for every sheaf on the empty interval `[1, 0]` (`isZero_H2_empty`). The
 stalk of `constSh kpt` at `1/2` is `ℚ` (`stalk_constSh_kpt`).
+
+`TDA.Sheaf.IntervalFibre` transports cohomology along homeomorphisms and applies it to the
+fibres of the band projection `BandConvolution.q a`:
+
+- `rightDerivedFunctorPlusSingleIso F n A` (in `TDA.Sheaf.RightDerivedHomology`): for an exact
+  functor `F`, the right derived functor on `D⁺` sends `A` in degree `n` to `F A` in degree `n`.
+- `comp_toPt h : h ≫ toPt Y = toPt X`.
+- `H_iso_of_homeo h G i : Hⁱ(X; G) ≅ Hⁱ(Y; h_* G)` for a homeomorphism `h : X ⟶ Y`, through
+  `pushforwardPlusCompIso k h (toPt Y)` and `rightDerivedFunctorPlusSingleIso` for the
+  equivalence `h_*`.
+- `isIso_derivedUnit_toPt_app_of_homeo h M`: the derived unit of `toPt X` is invertible at `M`
+  when that of `toPt Y` is (`derivedUnit_comp_app'`).
+- `isIso_toPt_Icc_self u` (an instance): `[u, u]` is homeomorphic to the point; hence
+  `isIso_derivedUnit_toPt_Icc_self`, the derived unit of `toPt` on `[u, u]` is invertible.
+- `BandConvolution.fibre a y` is the fibre `(q a)⁻¹ {y}` as a `TopCat.{0}`, and
+  `fibreHomeo a y : (q a)⁻¹ {y} ≃ₜ [y - a, y + a]` is the first coordinate
+  (`coe_fibreHomeo_apply`); `fibreIso a y` is the isomorphism in `TopCat`, with
+  `fibreIso_toPt`.
+- `isZero_H_fibre`: `Hⁱ((q a)⁻¹ {y}; G) = 0` for `2 ≤ i`, every sheaf `G` and all `a`, `y`.
+- `isIso_derivedUnit_toPt_fibre` (`0 ≤ a`): the derived unit `N ⟶ RΓ((q a)⁻¹ {y}; constSh N)`
+  is an isomorphism for every sheaf `N` of `k`-modules on `pt`.
+
+`TDA.Sheaf.IntervalFibreExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
+instance. `fibreHomeo 1 0` sends `half = (1/2, 0)` to `1/2` (`fibreHomeo_half`), and the fibre of
+`q (-1)` is empty (`isEmpty_fibre_neg`). On the fibre `(q 1)⁻¹ {0} ≅ [-1, 1]` the derived unit at
+`kpt` is an isomorphism (`isIso_derivedUnit_kpt_fibre`), so `H⁰ ≅ kpt` (`H0_constSh_kpt_fibre`);
+the same unit statement holds on the one-point fibre `(q 0)⁻¹ {y}`
+(`isIso_derivedUnit_kpt_fibre_zero`), and on `[2, 2]` the derived unit of `toPt` is invertible
+(`isIso_derivedUnit_Icc_two`). For the skyscraper `skyHalf` at `half`, `H²` vanishes
+(`isZero_H2_skyHalf`) and `H¹` is transported to `[-1, 1]` (`H1_skyHalf_iso`).
 
 ## Flasque acyclicity
 
