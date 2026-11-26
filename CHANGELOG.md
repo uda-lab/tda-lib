@@ -785,6 +785,21 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `whiskerRight_compIsoB_hom`. Fixtures in `TDA.Sheaf.BandAmplitudeExamples`: `kR`,
   `nonempty_pullbackPlus_p_kR_iso`, `not_isZero_H0_T_kR`, `isGE_isLE_T_kR`, `kRb`, `TB_kRb`,
   `not_isZero_H0_TB_kRb`, `restrB_comp_augB_kRb`.
+- Base change on band fibres and pasting of base-change squares (#1225, part D).
+  `TDA.Sheaf.BaseChangePasting`: the underived base change `baseChangeSheaf` of a commutative
+  square (the mate of `pullbackSquareSheaf`; `isIso_pullbackSquareSheaf`, `baseChangeSheaf_app`,
+  `unit_baseChangeSheaf`), its termwise version `baseChangeCochain` with
+  `pullbackSquareCochain` (`pullbackSquareCochain_app_hom_f`, `baseChangeCochain_app`,
+  `baseChangeCochain_app_hom_f`), `pullbackPlusSquare_fac_app` with `pullbackPlusSquare_fac_app_assoc`, the identification
+  `baseChange_app_Q` of `baseChange` on `Q K` with the termwise underived base change, and the
+  pasting formula `baseChange_comp_app` for squares stacked along the inverse images.
+  `TDA.Sheaf.BandBaseChange`, in `BandConvolution`: `baseChangeSheaf_fibreEmb_app`,
+  `baseChangeCochain_fibreEmb_app_hom_f`, `isIso_baseChangeCochain_fibreEmb_app`, proper base
+  change on the fibres of `q a` (`isIso_baseChange_fibreEmb`) and the canonical stalk formula
+  `stalkFormula` with `stalkFormula_hom` and `stalkFormula_hom_app_Q`. Fixtures in
+  `TDA.Sheaf.BandBaseChangeExamples`: `H0StalkIso`, `nonempty_H0_stalk_kD_of_stalkFormula`,
+  `not_isZero_H0_stalk_kD_of_stalkFormula`, `inclSquare`, `fibreSquare`, `pastedSquare`,
+  `baseChange_pastedSquare_app`, `isIso_baseChange_fibreSquare_app`.
 
 ## v0.5.0
 

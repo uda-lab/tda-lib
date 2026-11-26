@@ -19,3 +19,4 @@ import TDA.Sheaf.DerivedStalksExamples
 import TDA.Sheaf.BaseChangeExamples
 import TDA.Sheaf.BandStalksExamples
 import TDA.Sheaf.BandAmplitudeExamples
+import TDA.Sheaf.BandBaseChangeExamples

@@ -65,6 +65,8 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalAcyclic` | `germSurjective_pullback`, `germSurjective_pullback_of_isFlasque`, `germSurjective_of_id_eq_add`, `pushforward_toPt_shortExact_Icc`, `acyclicClass_germSurjective_Icc`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective`, `isZero_H_Icc_pullback_of_isFlasque` | Continuous maps in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`; the interval statements are for `[u, v]`, all `u`, `v`. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandStalks` | `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`; `BandConvolution.ptAt`, `fibreEmb`, `coe_fibreEmb_apply`, `fibreEmb_eq`, `mem_range_fibreEmb`, `fibreEmb_comp_q`, `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`, `exists_unit_eq_fibreEmb`, `stalkComparison`, `stalkComparison_app_top`, `stalkComparison_naturality`, `isIso_stalkComparison`, `stalkIso`, `stalkIso_hom_app`, `stalkSectionsIso`, `nonempty_stalkFormula`, `nonempty_stalkFormula_homology`, `isZero_H_stalk_pushforwardPlus_q` | The band projection `BandConvolution.q a` for all `a y : ℝ`, `k : Type` a ring; the fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]` through `fibreEmb a y`, and stalks at `y` are read through `(ptAt y)⁻¹`. The derived statements take derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Stalks of band projections](#stalks-of-band-projections). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandAmplitude` | `isGE_rightDerivedFunctorPlus_obj`, `nonempty_homology_rightDerivedFunctorPlus_of_exact`, `isLE_rightDerivedFunctorPlus_obj_of_exact`, `isLE_pushforwardPlus_toPt_Icc`, `isGE_isLE_pushforwardPlus_toPt_Icc`, `boundedToPlus`, `PreservesBounded`, `PreservesBounded.id`, `PreservesBounded.comp`, `restrictBounded`, `restrictBounded_comp_boundedToPlus`, `restrictBoundedMap`, `restrictBoundedMap_app`, `whiskerRight_restrictBoundedMap`, `restrictBoundedMap_id`, `restrictBoundedMap_comp`, `restrictBoundedIso`, `restrictBoundedIso_hom`, `restrictBoundedIso_inv`, `restrictBoundedId`, `restrictBoundedComp`, `restrictBoundedCompMap`, `whiskerRight_restrictBoundedCompMap`, `restrictBoundedCompMapIso`; `BandConvolution.isGE_T_obj`, `isLE_T_obj`, `isGE_isLE_T_obj`, `preservesBounded_T`, `TB`, `TB_comp_boundedToPlus`, `restrB`, `whiskerRight_restrB`, `restrB_refl`, `restrB_trans`, `T0IsoB`, `whiskerRight_T0IsoB_hom`, `augB`, `whiskerRight_augB`, `augB_eq`, `augB_zero`, `restrB_comp_augB`, `compIsoB`, `whiskerRight_compIsoB_hom` | Degrees are those of the canonical t-structure (`IsGE`, `IsLE`) on `DerivedCategory.Plus`; `Dᵇ` is `DerivedCategory.Bounded`. The general statements are for abelian categories with derived category structures, the source with enough injectives; the derived functor of an exact functor for `F` preserving finite limits and colimits. The band statements take derived category structures on `ℝ` and every `D a`; the upper bound and the bounded functors also on `pt` and every `[u, v]`. See [Amplitude of the band functors](#amplitude-of-the-band-functors). |
+| `TDA.Sheaf` / `TDA.Sheaf.BaseChangePasting` | `pullbackSquareSheaf`, `isIso_pullbackSquareSheaf`, `baseChangeSheaf`, `baseChangeSheaf_app`, `unit_baseChangeSheaf`, `pullbackSquareCochain`, `pullbackSquareCochain_app_hom_f`, `baseChangeCochain`, `baseChangeCochain_app`, `baseChangeCochain_app_hom_f`, `pullbackPlusSquare_fac_app`, `pullbackPlusSquare_fac_app_assoc`, `baseChange_app_Q`, `baseChange_comp_app` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; commutative squares `w : g' ≫ f = f' ≫ g`, and for pasting a second square `w₂ : h' ≫ f' = f'' ≫ h` stacked along the inverse images; derived categories as instance arguments. See [Underived base change and pasting](#underived-base-change-and-pasting). |
+| `TDA.Sheaf` / `TDA.Sheaf.BandBaseChange` | `BandConvolution.baseChangeSheaf_fibreEmb_app`, `baseChangeCochain_fibreEmb_app_hom_f`, `isIso_baseChangeCochain_fibreEmb_app`, `isIso_baseChange_fibreEmb`, `stalkFormula`, `stalkFormula_hom`, `stalkFormula_hom_app_Q` | The fibre square `fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` of the band projection for all `a y : ℝ`, `k : Type` a ring; derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Base change on band fibres](#base-change-on-band-fibres). |
 
 ### Capped centred height-map pairs
 
@@ -5263,6 +5265,60 @@ instance. `kR` is the constant sheaf `constSh ℚ ℝ kpt` in degree `0`; its in
 (`not_isZero_H0_T_kR`), and `T ℚ 1 kR` lies in degrees `[0, 1]` (`isGE_isLE_T_kR`). As an object
 `kRb` of `Dᵇ`, `TB ℚ 1 kRb` lies over `T ℚ 1 kR` (`TB_kRb`) with nonzero `H⁰`
 (`not_isZero_H0_TB_kRb`), and `restrB_comp_augB_kRb` evaluates `restrB_comp_augB` at `kRb`.
+## Underived base change and pasting
+
+`TDA.Sheaf.BaseChangePasting` relates the derived base-change morphism `baseChange k w` of
+`TDA.Sheaf.BaseChange` to sheaves and composes it, for a commutative square
+`w : g' ≫ f = f' ≫ g` (`f : X ⟶ Y`, `g : Y' ⟶ Y`, `f' : X' ⟶ Y'`, `g' : X' ⟶ X`).
+
+- `pullbackSquareSheaf k w : g⁻¹ ⋙ f'⁻¹ ⟶ f⁻¹ ⋙ g'⁻¹` is the isomorphism of sheaf inverse
+  images (`pullbackCompIso` and `w`; `isIso_pullbackSquareSheaf`), and the **underived base
+  change** `baseChangeSheaf k w : f_* ⋙ g⁻¹ ⟶ g'⁻¹ ⋙ f'_*` is its mate for the sheaf adjunctions,
+  with components `baseChangeSheaf_app`. `unit_baseChangeSheaf`: its adjoint for `g⁻¹ ⊣ g_*` is
+  `f_*` of the unit of `g'`.
+- `pullbackSquareCochain k w` and `baseChangeCochain k w` are the termwise versions on bounded
+  below complexes (the mate for `pullbackPushforwardAdjunctionPlus`); in degree `n` they are
+  `pullbackSquareSheaf` and `baseChangeSheaf` at the `n`-th term
+  (`pullbackSquareCochain_app_hom_f`, `baseChangeCochain_app_hom_f`; components
+  `baseChangeCochain_app`).
+- `pullbackPlusSquare_fac_app`: on `Q M`, `pullbackPlusSquare k w` is `Q` of
+  `pullbackSquareCochain k w` between the derived-functor comparisons of the inverse images
+  (with the generated `pullbackPlusSquare_fac_app_assoc`).
+- `baseChange_app_Q`: for every bounded below complex `K`, `g⁻¹` of the comparison
+  `f_* K ⟶ Rf_* K` followed by `baseChange k w` at `Q K` is the inverse comparison of `g⁻¹`,
+  then `Q` of `baseChangeCochain k w`, then the comparisons of `f'_*` and `g'⁻¹`.
+- `baseChange_comp_app` (pasting): for a second square `w₂ : h' ≫ f' = f'' ≫ h` stacked on `w`
+  along the inverse images and the composite square `(h' ≫ g') ≫ f = f'' ≫ h ≫ g`, the base
+  change of the composite at `M` is `(pullbackPlusCompIso k h g).inv`, then `h⁻¹` of the base
+  change of `w`, then the base change of `w₂` at `g'⁻¹ M`, then `Rf''_*` of
+  `(pullbackPlusCompIso k h' g').hom`.
+
+## Base change on band fibres
+
+`TDA.Sheaf.BandBaseChange` treats the fibre square `fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` of the
+band projection `q a : D a ⟶ ℝ` (`fibreEmb_comp_q`).
+
+- `baseChangeSheaf_fibreEmb_app`: its underived base change at a sheaf `G` is
+  `stalkComparison k a y G`; termwise, `baseChangeCochain_fibreEmb_app_hom_f`, an isomorphism of
+  complexes (`isIso_baseChangeCochain_fibreEmb_app`).
+- `isIso_baseChange_fibreEmb` (instance): proper base change on the fibres of `q a`; the
+  base-change morphism `R(q a)_* ⋙ (ptAt y)⁻¹ ⟶ (fibreEmb a y)⁻¹ ⋙ RΓ([y - a, y + a]; -)` is an
+  isomorphism. The proof takes a bounded below injective model `I`: by `baseChange_app_Q` the
+  morphism at `Q I` is `Q` of the termwise stalk comparisons between the comparison
+  isomorphisms of `(q a)_*` (injective terms) and of `Γ([y - a, y + a]; -)` (the germ-surjective
+  terms `(fibreEmb a y)⁻¹ Iⁿ`).
+- `stalkFormula k a y : R(q a)_* ⋙ (ptAt y)⁻¹ ≅ (fibreEmb a y)⁻¹ ⋙ RΓ([y - a, y + a]; -)`, the
+  canonical stalk formula, with `stalkFormula_hom` (it is `baseChange k (fibreEmb_comp_q a y)`)
+  and `stalkFormula_hom_app_Q` (its value on `Q K`). Its components witness
+  `nonempty_stalkFormula`.
+
+`TDA.Sheaf.BandBaseChangeExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
+instance. `H0StalkIso : H⁰((ptAt 0)⁻¹ R(q 1)_* kD) ≅ kpt` is built from `stalkFormula ℚ 1 0`;
+it re-derives `nonempty_H0_stalk_kD` (`nonempty_H0_stalk_kD_of_stalkFormula`) and the
+nonvanishing (`not_isZero_H0_stalk_kD_of_stalkFormula`). For the band inclusion square
+`inclSquare : incl ≫ q 2 = q 1 ≫ 𝟙`, the fibre square `fibreSquare` of `q 1` at `0` and their
+composite `pastedSquare`, `baseChange_pastedSquare_app` is the pasting formula, and
+`isIso_baseChange_fibreSquare_app` the invertibility on the fibre square.
 
 ## Review and extension boundaries
 
