@@ -587,6 +587,22 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `re_ne_zero_of_mem_overlap`, `overlapPos`, `overlapNeg`, `pointPos`, `pointNeg`,
   `circle_overlap_two_components`, `overlapClassDiff`, `overlapClassDiff_comp_intervalMVInterMap`,
   `overlapClassDiff_ne_zero`, `circle_intervalMVδ_ne_zero`, `circle_intervalMVδ_swap_ne`.
+- Derived base-change morphism (#1225, part B): `TDA.Sheaf.BaseChange` shows that derived
+  functors on `D⁺` stay derived after post-composition
+  (`isRightDerivedFunctor_rightDerivedFunctorPlus_comp`), applies the sheaf adjunction termwise
+  (`pullbackPushforwardAdjunctionPlus`), adds the instance `isLeftDerivedFunctor_pullbackPlus`,
+  the derived counit `derivedCounit` (`derivedCounit_fac_app`, invertible along homeomorphisms:
+  `isIso_derivedCounit`) and the derived adjunction `derivedAdjunction : f⁻¹ ⊣ Rf_*` with unit
+  `derivedUnit`. For a commutative square `w : g' ≫ f = f' ≫ g`, `pullbackPlusSquare` is the
+  isomorphism of inverse images and `baseChange k w : Rf_* ⋙ g⁻¹ ⟶ g'⁻¹ ⋙ Rf'_*` its mate
+  (`baseChange_app`, `derivedUnit_baseChange`, `baseChange_naturality`); it is invertible when `f`
+  and `f'` are homeomorphisms (`isIso_baseChange_of_isIso`). Fixtures in
+  `TDA.Sheaf.BaseChangeExamples` (`isIso_baseChange_id`, `ι_square`, `isIso_baseChange_ι`, with
+  `I01` and `ι`). Supporting lemmas: `pullbackPushforwardAdjunctionPlus_unit`,
+  `pullbackPushforwardAdjunctionPlus_counit_app_hom_f`, `derivedAdjunction_unit`,
+  `derivedAdjunction_counit`, `isIso_pullbackPlusSquare`, `baseChange_eq`, and the reassociated
+  forms `derivedCounit_fac_app_assoc`, `derivedUnit_baseChange_assoc`,
+  `baseChange_naturality_assoc`.
 
 ## v0.5.0
 
