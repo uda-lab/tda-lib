@@ -1,4 +1,5 @@
 import TDA.Sheaf.DerivedPlus
+import TDA.Sheaf.RealLine
 import Mathlib.Topology.MetricSpace.Thickening
 import Mathlib.Topology.Maps.Proper.CompactlyGenerated
 import Mathlib.Topology.Instances.Real.Lemmas
@@ -39,8 +40,8 @@ open CategoryTheory Limits TopologicalSpace
 
 namespace TDA.Sheaf.BandConvolution
 
-/-- The real line as an object of `TopCat`. -/
-abbrev realLine : TopCat.{0} := TopCat.of ℝ
+/-- The real line as an object of `TopCat`; the shared `TDA.Sheaf.realLine`. -/
+abbrev realLine : TopCat.{0} := TDA.Sheaf.realLine
 
 /-- The closed band `{(x, y) | dist x y ≤ a}` in `ℝ × ℝ`. -/
 def band (a : ℝ) : Set (ℝ × ℝ) := {z | dist z.1 z.2 ≤ a}
