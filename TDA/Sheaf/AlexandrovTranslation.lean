@@ -1,4 +1,5 @@
 import TDA.Sheaf.Alexandrov
+import TDA.Sheaf.PresheafRestriction
 import TDA.Persistence.RealInterleavingDistance
 import Mathlib.Topology.Sheaves.Functors
 import Mathlib.Algebra.Category.ModuleCat.Limits
@@ -147,38 +148,15 @@ section Restriction
 
 variable {C : Type u} [Category.{v} C]
 
-/-- Any two restrictions of a presheaf between the same opens agree. -/
-private theorem presheaf_map_eq (P : (Opens (upperSpace ℝ))ᵒᵖ ⥤ C)
-    {U V : (Opens (upperSpace ℝ))ᵒᵖ}
-    (f g : U ⟶ V) : P.map f = P.map g :=
-  congrArg P.map (Quiver.Hom.unop_inj (Subsingleton.elim _ _))
-
-/-- A composite of two restrictions is the restriction between the outer opens. -/
-private theorem presheaf_map_comp_map (P : (Opens (upperSpace ℝ))ᵒᵖ ⥤ C)
-    {U V W : (Opens (upperSpace ℝ))ᵒᵖ} (f : U ⟶ V) (g : V ⟶ W) (h : U ⟶ W) :
-    P.map f ≫ P.map g = P.map h :=
-  (P.map_comp f g).symm.trans (presheaf_map_eq P _ _)
-
-/-- Two composites of two restrictions between the same opens agree. -/
-private theorem presheaf_map_comp_map_eq (P : (Opens (upperSpace ℝ))ᵒᵖ ⥤ C)
-    {U V V' W : (Opens (upperSpace ℝ))ᵒᵖ} (f : U ⟶ V) (g : V ⟶ W) (f' : U ⟶ V')
-    (g' : V' ⟶ W) : P.map f ≫ P.map g = P.map f' ≫ P.map g' :=
-  (presheaf_map_comp_map P f g (f' ≫ g')).trans (P.map_comp f' g')
-
-/-- A composite of two restrictions agrees with a composite of three between the same opens. -/
-private theorem presheaf_map_comp_map_eq_comp (P : (Opens (upperSpace ℝ))ᵒᵖ ⥤ C)
-    {U V V' V'' W : (Opens (upperSpace ℝ))ᵒᵖ} (f : U ⟶ V) (g : V ⟶ W) (f' : U ⟶ V')
-    (g' : V' ⟶ V'') (h' : V'' ⟶ W) : P.map f ≫ P.map g = P.map f' ≫ P.map g' ≫ P.map h' := by
-  rw [presheaf_map_comp_map P f g (f' ≫ g' ≫ h'), P.map_comp, P.map_comp]
-
-/-- The restriction of a presheaf along an equality of opens, as an isomorphism. -/
+/-- The restriction of a presheaf along an equality of opens, as an isomorphism: the shared
+`TDA.Sheaf.restrictIso` on the upper Alexandrov line. -/
 @[simps]
 def restrictIso (P : (Opens (upperSpace ℝ))ᵒᵖ ⥤ C) {U V : Opens (upperSpace ℝ)} (h : U = V) :
     P.obj (op U) ≅ P.obj (op V) where
   hom := P.map (homOfLE h.ge).op
   inv := P.map (homOfLE h.le).op
-  hom_inv_id := by rw [← P.map_comp, ← P.map_id]; exact presheaf_map_eq P _ _
-  inv_hom_id := by rw [← P.map_comp, ← P.map_id]; exact presheaf_map_eq P _ _
+  hom_inv_id := (TDA.Sheaf.restrictIso P h).hom_inv_id
+  inv_hom_id := (TDA.Sheaf.restrictIso P h).inv_hom_id
 
 end Restriction
 
@@ -790,6 +768,56 @@ theorem zeroEquivIso_apply_inv (i : SheafInterleaving 0 F G) :
       (RealShift.zeroIso ((realSections _).obj F)).hom)) = _
   rw [Functor.FullyFaithful.map_preimage, Functor.map_comp, shiftComparison_zeroIso,
     Category.assoc]
+
+end SheafInterleaving
+
+/-- Transport along isomorphisms and back along their inverses is the identity. -/
+private theorem real_congr_congr_symm {M N M' N' : PModule.{u,0,0} R ℝ}
+    (j : RealInterleaving ε M N) (e : M ≅ M') (d : N ≅ N') :
+    (j.congr e d).congr e.symm d.symm = j := by
+  apply RealInterleaving.ext
+  · change e.symm.inv ≫ (e.inv ≫ j.φ ≫ (RealShift.shift ε).map d.hom) ≫
+      (RealShift.shift ε).map d.symm.hom = j.φ
+    simp only [Iso.symm_inv, Iso.symm_hom, Category.assoc, ← Functor.map_comp,
+      Iso.hom_inv_id, CategoryTheory.Functor.map_id, Category.comp_id, Iso.hom_inv_id_assoc]
+  · change d.symm.inv ≫ (d.inv ≫ j.ψ ≫ (RealShift.shift ε).map e.hom) ≫
+      (RealShift.shift ε).map e.symm.hom = j.ψ
+    simp only [Iso.symm_inv, Iso.symm_hom, Category.assoc, ← Functor.map_comp,
+      Iso.hom_inv_id, CategoryTheory.Functor.map_id, Category.comp_id, Iso.hom_inv_id_assoc]
+
+/-- Transport along inverse isomorphisms and back along the isomorphisms is the identity. -/
+private theorem real_congr_symm_congr {M N M' N' : PModule.{u,0,0} R ℝ}
+    (j : RealInterleaving ε M N) (e : M' ≅ M) (d : N' ≅ N) :
+    (j.congr e.symm d.symm).congr e d = j := by
+  apply RealInterleaving.ext
+  · change e.inv ≫ (e.symm.inv ≫ j.φ ≫ (RealShift.shift ε).map d.symm.hom) ≫
+      (RealShift.shift ε).map d.hom = j.φ
+    simp only [Iso.symm_inv, Iso.symm_hom, Category.assoc, ← Functor.map_comp,
+      Iso.inv_hom_id, CategoryTheory.Functor.map_id, Category.comp_id, Iso.inv_hom_id_assoc]
+  · change d.inv ≫ (d.symm.inv ≫ j.ψ ≫ (RealShift.shift ε).map e.symm.hom) ≫
+      (RealShift.shift ε).map e.hom = j.ψ
+    simp only [Iso.symm_inv, Iso.symm_hom, Category.assoc, ← Functor.map_comp,
+      Iso.inv_hom_id, CategoryTheory.Functor.map_id, Category.comp_id, Iso.inv_hom_id_assoc]
+
+namespace SheafInterleaving
+
+/-- For the sheaves attached to real modules `M` and `N`, sheaf `ε`-interleavings are equivalent
+to real `ε`-interleavings of `M` and `N`: `equivRealInterleaving`, followed by transport along
+the unit of `upperSetEquivalence ℝ`. -/
+def equivUpperSet (M N : PModule.{u,0,0} R ℝ) :
+    SheafInterleaving ε ((upperSetEquivalence ℝ (ModuleCat.{0} R)).functor.obj M)
+        ((upperSetEquivalence ℝ (ModuleCat.{0} R)).functor.obj N) ≃
+      RealInterleaving ε M N where
+  toFun i := (equivRealInterleaving i).congr
+    ((upperSetEquivalence ℝ _).unitIso.app M).symm ((upperSetEquivalence ℝ _).unitIso.app N).symm
+  invFun j := equivRealInterleaving.symm
+    (j.congr ((upperSetEquivalence ℝ _).unitIso.app M) ((upperSetEquivalence ℝ _).unitIso.app N))
+  left_inv _ :=
+    (congrArg equivRealInterleaving.symm (real_congr_symm_congr _ _ _)).trans
+      (Equiv.symm_apply_apply _ _)
+  right_inv j :=
+    (congrArg (fun k => RealInterleaving.congr k _ _) (Equiv.apply_symm_apply _ _)).trans
+      (real_congr_congr_symm j _ _)
 
 end SheafInterleaving
 
