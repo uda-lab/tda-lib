@@ -112,7 +112,7 @@ private theorem singleton_case :
       simp
     exact hnot hx
 
-private instance topMem (s : Finset (Fin 2)) :
+private local instance topMem (s : Finset (Fin 2)) :
     Decidable (s ∈ (⊤ : PreAbstractSimplicialComplex (Fin 2))) :=
   decidable_of_iff s.Nonempty Iff.rfl.symm
 

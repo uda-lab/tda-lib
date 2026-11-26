@@ -26,7 +26,7 @@ open scoped ZeroObject
 
 variable {k : Type u} [Field k]
 
-private instance squareBoolSmallCategory : SmallCategory (Bool × Bool) :=
+private local instance squareBoolSmallCategory : SmallCategory (Bool × Bool) :=
   Preorder.smallCategory (Bool × Bool)
 
 private instance zeroFiberSubsingleton {P : Type} [PartialOrder P] (p : P) :

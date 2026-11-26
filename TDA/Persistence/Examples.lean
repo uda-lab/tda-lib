@@ -144,6 +144,7 @@ import TDA.Persistence.InterleavingIsometryClientExamples
 import TDA.Persistence.MatrixSequenceClientExamples
 import TDA.Persistence.RipsConfidenceClientExamples
 import TDA.Persistence.TotalPersistenceLossClientExamples
+import TDA.Persistence.GlobalInstanceClientExamples
 import TDA.Persistence.RipsHausdorffInterleavingExamples
 import TDA.Persistence.FiniteWeightedBoundaryTransportExamples
 
