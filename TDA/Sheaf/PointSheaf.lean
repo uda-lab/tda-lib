@@ -4,7 +4,8 @@ import TDA.Sheaf.StalkPullback
 /-!
 # Sheaves on the point and constant sheaves
 
-Let `k` be a ring. `pt` is the one-point space and `toPt X : X ⟶ pt` the unique map. Derived
+Let `k` be a ring. `pt` is the one-point space, `toPt X : X ⟶ pt` the unique map and
+`ptOf x : pt ⟶ X` the inclusion of a point `x` (`ptOf_apply`). Derived
 global sections of a sheaf on `X` are its derived direct image along `toPt X`, valued in sheaves
 of `k`-modules on `pt`.
 
@@ -27,6 +28,13 @@ abbrev pt : TopCat.{0} := TopCat.of PUnit.{1}
 
 /-- The unique map to the point. -/
 def toPt (X : TopCat.{0}) : X ⟶ pt := TopCat.ofHom (ContinuousMap.const X PUnit.unit)
+
+/-- The point `x` of `X`, as a map from the one-point space. -/
+def ptOf {X : TopCat.{0}} (x : X) : pt ⟶ X := TopCat.ofHom (ContinuousMap.const pt x)
+
+/-- `ptOf x` sends the point to `x`. -/
+@[simp]
+theorem ptOf_apply {X : TopCat.{0}} (x : X) (p : pt) : ptOf x p = x := rfl
 
 /-- An open subset of the point that contains a point is everything. -/
 theorem eq_top_of_mem_pt {U : Opens pt} {p : pt} (h : p ∈ U) : U = ⊤ :=

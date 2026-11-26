@@ -24,11 +24,14 @@ composes it.
   (through `pullbackCompIso` and `w`), and the **underived base change**
   `baseChangeSheaf k w : f_* ⋙ g⁻¹ ⟶ g'⁻¹ ⋙ f'_*` is its mate for the sheaf adjunctions of `f` and
   `f'` (`baseChangeSheaf_app`). Its adjoint for `g⁻¹ ⊣ g_*` is `f_*` of the unit of `g'`
-  (`unit_baseChangeSheaf`).
+  (`unit_baseChangeSheaf`); on global sections it sends the restriction of the unit image of a
+  section `s` of `G` over `f⁻¹ U` in `g⁻¹ f_* G` to the restriction of the unit image of `s` in
+  `g'⁻¹ G` (`baseChangeSheaf_app_hom_app_top`).
 * `pullbackSquareCochain k w` and `baseChangeCochain k w` are the termwise versions on bounded
   below complexes (the mate for `pullbackPushforwardAdjunctionPlus`), degreewise equal to
   `pullbackSquareSheaf` and `baseChangeSheaf` (`pullbackSquareCochain_app_hom_f`,
-  `baseChangeCochain_app_hom_f`).
+  `baseChangeCochain_app_hom_f`); it is invertible at every complex when `baseChangeSheaf k w`
+  is invertible at every sheaf (`isIso_baseChangeCochain_app`).
 * `pullbackPlusSquare_fac_app`: on `Q M`, the derived square `pullbackPlusSquare k w` is `Q` of
   `pullbackSquareCochain k w`, up to the derived-functor comparisons of the inverse images.
 * `baseChange_app_Q`: **on `Q K`, the derived base change is the termwise underived base
@@ -253,6 +256,59 @@ theorem unit_baseChangeSheaf (w : g' ≫ f = f' ≫ g) (G : X.Sheaf (ModuleCat.{
   simp only [Functor.map_comp, Category.assoc]
   rfl
 
+section sections
+
+open TopologicalSpace Opposite
+
+/-- The identification of the direct images along equal maps `a = b` acts on sections by
+restriction. -/
+private lemma pushforward_eqToHom_hom_app {a b : X' ⟶ Y} (e : a = b)
+    (H : X'.Sheaf (ModuleCat.{0} k))
+    (h : (TopCat.Sheaf.pushforward (ModuleCat.{0} k) a).obj H =
+      (TopCat.Sheaf.pushforward (ModuleCat.{0} k) b).obj H) (U : Opens Y)
+    (x : H.presheaf.obj (op ((Opens.map a).obj U))) :
+    (eqToHom h).hom.app (op U) x =
+      H.presheaf.map
+        (homOfLE (le_of_eq (congrArg (fun c => (Opens.map c).obj U) e.symm))).op x := by
+  subst e
+  rw [eqToHom_refl, show homOfLE (le_of_eq (congrArg (fun c => (Opens.map c).obj U) rfl)) =
+    𝟙 ((Opens.map a).obj U) from Subsingleton.elim _ _, op_id, H.presheaf.map_id]
+  rfl
+
+/-- Two successive restrictions of a presheaf of `k`-modules are one restriction, on sections. -/
+private lemma presheaf_map_map_apply' (P : (Opens X')ᵒᵖ ⥤ ModuleCat.{0} k) {U V W : Opens X'}
+    (i : V ⟶ U) (j : W ⟶ V) (l : W ⟶ U) (x : P.obj (op U)) :
+    P.map j.op (P.map i.op x) = P.map l.op x := by
+  rw [← ConcreteCategory.comp_apply, ← P.map_comp]
+  rfl
+
+/-- **The underived base change on sections.** For an open `U` of `Y` with `⊤ ≤ g⁻¹ U` and a
+section `s` of `G` over `f⁻¹ U`, `baseChangeSheaf k w` sends the restriction to `Y'` of the unit
+image of `s` in `g⁻¹ f_* G` to the restriction to `X'` of the unit image of `s` in `g'⁻¹ G`. -/
+theorem baseChangeSheaf_app_hom_app_top (w : g' ≫ f = f' ≫ g) (G : X.Sheaf (ModuleCat.{0} k))
+    {U : Opens Y} (hU : ⊤ ≤ (Opens.map g).obj U)
+    (hU' : ⊤ ≤ (Opens.map g').obj ((Opens.map f).obj U))
+    (s : G.presheaf.obj (op ((Opens.map f).obj U))) :
+    ((baseChangeSheaf k w).app G).hom.app (op ⊤)
+        (((TopCat.Sheaf.pullback (ModuleCat.{0} k) g).obj
+            ((TopCat.Sheaf.pushforward (ModuleCat.{0} k) f).obj G)).presheaf.map (homOfLE hU).op
+          (((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) g).unit.app
+            ((TopCat.Sheaf.pushforward (ModuleCat.{0} k) f).obj G)).hom.app (op U) s)) =
+      ((TopCat.Sheaf.pullback (ModuleCat.{0} k) g').obj G).presheaf.map (homOfLE hU').op
+        (((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) g').unit.app G).hom.app
+          (op ((Opens.map f).obj U)) s) := by
+  let H := (TopCat.Sheaf.pullback (ModuleCat.{0} k) g').obj G
+  have h1 := congrArg (fun φ => φ.hom.app (op U) s) (unit_baseChangeSheaf k w G)
+  have h2 := pushforward_eqToHom_hom_app k w H
+    (congrArg (fun c => (TopCat.Sheaf.pushforward (ModuleCat.{0} k) c).obj H) w) U
+    (((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) g').unit.app G).hom.app
+      (op ((Opens.map f).obj U)) s)
+  refine (NatTrans.naturality_apply ((baseChangeSheaf k w).app G).hom (homOfLE hU).op _).trans ?_
+  exact (congrArg (H.presheaf.map ((Opens.map f').map (homOfLE hU)).op)
+    (h1.trans h2)).trans (presheaf_map_map_apply' k H.presheaf _ _ _ _)
+
+end sections
+
 end underived
 
 section cochain
@@ -315,6 +371,21 @@ lemma baseChangeCochain_app_hom_f (w : g' ≫ f = f' ≫ g)
     Functor.mapHomologicalComplex_map_f, pullbackSquareCochain_app_hom_f,
     pullbackPushforwardAdjunctionPlus_counit_app_hom_f]
   rfl
+
+/-- If the underived base change of `w` is invertible at every sheaf, its termwise version is an
+isomorphism of complexes at every bounded below complex `K`. -/
+theorem isIso_baseChangeCochain_app (w : g' ≫ f = f' ≫ g)
+    (h : ∀ G : X.Sheaf (ModuleCat.{0} k), IsIso ((baseChangeSheaf k w).app G))
+    (K : CochainComplex.Plus (X.Sheaf (ModuleCat.{0} k))) :
+    IsIso ((baseChangeCochain k w).app K) := by
+  have : ∀ n, IsIso (((CochainComplex.Plus.ι _).map ((baseChangeCochain k w).app K)).f n) :=
+    fun n => by
+      change IsIso (((baseChangeCochain k w).app K).hom.f n)
+      rw [baseChangeCochain_app_hom_f]
+      exact h _
+  have : IsIso ((CochainComplex.Plus.ι _).map ((baseChangeCochain k w).app K)) :=
+    HomologicalComplex.Hom.isIso_of_components _
+  exact isIso_of_fully_faithful (CochainComplex.Plus.ι _) _
 
 end cochain
 

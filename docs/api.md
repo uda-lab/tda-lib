@@ -55,7 +55,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleAdjunction` | `starBasic`, `starTauAdjunction`, `extensionAdjunction`, `extensionAdjunction_unit`, `toBasis`, `toBasis_app_hom_app`, `extensionAdjunction_counit_app_eq`, `extensionAdjunction_counit_app`, `equivalence_counitIso_inv_app_hom`, `equivalence_unitIso_inv_app_hom`, `extensionFullyFaithful`, `extension_full`, `extension_faithful`, `preservesFiniteColimits_extension`, `preservesFiniteLimits_extension`, `sections_additive`, `extension_additive`, `starGenerator`, `homExtensionRepresentableEquiv`, `homExtensionRepresentableEquiv_apply`, `homExtensionRepresentableEquiv_comp`, `homExtensionRepresentableEquiv_add`, `homExtensionRepresentableEquiv_zero`, `homExtensionPathTensorEquiv`, `homExtensionPathTensorEquiv_apply`, `homExtensionPathTensorEquiv_comp`, `hasExt_sheaf_realLine`, `hasExt_diagram`, `ext_extension_eq_zero_of_lift`, `ext_extension_representable_eq_zero`, `ext_extension_sumTensor_eq_zero`, `starCocycles`, `starCoboundaries`, `starCohomology`, `homExtensionRepresentableEquiv_symm_comp_d`, `extOfStarCocycle`, `extOfStarCocycle_apply`, `extOfStarCocycle_surjective`, `extOfStarCocycle_eq_zero_iff`, `extStarEquiv`, `extStarEquiv_mk` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field; the adjunction and the universal property hold for every sheaf of `k`-modules on `ℝ`; the `Ext` statements take an instance `HasExt.{0}` and an injective resolution `R`. See [The extension–sections adjunction](#the-extensionsections-adjunction). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_glue_monotone`, `exists_section_lift_extend_right`, `exists_section_lift_extend`, `exists_section_lift_extend_left`, `exists_section_lift_ordConnected`, `sections_exact_ordConnected`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`, order-connected for the lifting statements (open, half-open, closed and unbounded intervals and `ℝ`); germ-surjectivity of the first term on the opens above or below `a'` (extension steps) or avoiding a point `c` (global lifting). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`, `stalkPullbackSheafIso_hom_naturality` (and `stalkPullbackSheafIso_hom_naturality_assoc`), `stalkPullbackSheafNatIso`, `stalkPullbackSheafNatIso_app`; `pt`, `toPt`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`, `stalkPullbackSheafIso_hom_naturality` (and `stalkPullbackSheafIso_hom_naturality_assoc`), `stalkPullbackSheafNatIso`, `stalkPullbackSheafNatIso_app`; `pt`, `toPt`, `ptOf`, `ptOf_apply`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ`, `rightDerivedFunctorPlusSingleIso` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.DerivedStalks` | `isIso_iff_isIso_stalk_homology` | `X : TopCat.{0}`, sheaves of `ModuleCat.{0} k` over a ring `k : Type`, `[HasDerivedCategory (X.Sheaf (ModuleCat k))]`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_ordConnected`, `isZero_H_of_germSurjective`, `isZero_H_constSh_ordConnected`, `isZero_H_Icc`, `isZero_H_Icc_of_germSurjective`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | Order-connected `S ⊆ ℝ` as `TopCat.of S`, `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for every order-connected `S` (all `u`, `v` for `[u, v]`); the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
@@ -64,10 +64,12 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibre` | `comp_toPt`, `H_iso_of_homeo`, `isIso_derivedUnit_toPt_app_of_homeo`, `isIso_toPt_Icc_self`, `isIso_derivedUnit_toPt_Icc_self`; `BandConvolution.fibre`, `fibreHomeo`, `coe_fibreHomeo_apply`, `fibreIso`, `fibreIso_toPt`, `isZero_H_fibre`, `isIso_derivedUnit_toPt_fibre` | Homeomorphisms `h : X ⟶ Y` in `TopCat.{0}` (`[IsIso h]`), `k : Type` a ring; fibres of the band projection `BandConvolution.q a`. The fibre statements take a derived category structure on `[y - a, y + a]` as an instance argument; the unit statement needs `0 ≤ a`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.BaseChange` | `isRightDerivedFunctor_rightDerivedFunctorPlus_comp`, `pullbackPushforwardAdjunctionPlus`, `isLeftDerivedFunctor_pullbackPlus`, `derivedCounit`, `derivedCounit_fac_app`, `derivedAdjunction`, `isIso_derivedCounit`, `pullbackPlusSquare`, `baseChange`, `baseChange_eq`, `baseChange_app`, `derivedUnit_baseChange`, `baseChange_naturality`, `isIso_baseChange_of_isIso` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; a commutative square `w : g' ≫ f = f' ≫ g`; derived categories as instance arguments. See [Derived base change](#derived-base-change). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalAcyclic` | `germSurjective_pullback`, `germSurjective_pullback_of_isFlasque`, `germSurjective_of_id_eq_add`, `pushforward_toPt_shortExact_Icc`, `acyclicClass_germSurjective_Icc`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective`, `isZero_H_Icc_pullback_of_isFlasque` | Continuous maps in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`; the interval statements are for `[u, v]`, all `u`, `v`. See [Flasque acyclicity](#flasque-acyclicity). |
-| `TDA.Sheaf` / `TDA.Sheaf.BandStalks` | `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`; `BandConvolution.ptAt`, `fibreEmb`, `coe_fibreEmb_apply`, `fibreEmb_eq`, `mem_range_fibreEmb`, `fibreEmb_comp_q`, `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`, `exists_unit_eq_fibreEmb`, `stalkComparison`, `stalkComparison_app_top`, `stalkComparison_naturality`, `isIso_stalkComparison`, `stalkIso`, `stalkIso_hom_app`, `stalkSectionsIso`, `nonempty_stalkFormula`, `nonempty_stalkFormula_homology`, `isZero_H_stalk_pushforwardPlus_q` | The band projection `BandConvolution.q a` for all `a y : ℝ`, `k : Type` a ring; the fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]` through `fibreEmb a y`, and stalks at `y` are read through `(ptAt y)⁻¹`. The derived statements take derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Stalks of band projections](#stalks-of-band-projections). |
+| `TDA.Sheaf` / `TDA.Sheaf.BandStalks` | `BandConvolution.ptAt`, `ptAt_eq`, `fibreEmb`, `coe_fibreEmb_apply`, `fibreEmb_eq`, `mem_range_fibreEmb`, `fibreEmb_comp_q`, `fibreCoordinate_q`, `fibreCoordinate_q_t`, `isFibreParam_fibreEmb`, `intervalFibration_q`, `intervalFibration_q_e`, `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`, `exists_unit_eq_fibreEmb`, `stalkComparison`, `baseChangeSheaf_fibreEmb_app`, `stalkComparison_app_top`, `stalkComparison_naturality`, `isIso_stalkComparison`, `stalkIso`, `stalkIso_hom_app`, `stalkSectionsIso`, `nonempty_stalkFormula`, `nonempty_stalkFormula_homology`, `isZero_H_stalk_pushforwardPlus_q` | The band projection `BandConvolution.q a` for all `a y : ℝ`, `k : Type` a ring; the fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]` through `fibreEmb a y`, and stalks at `y` are read through `(ptAt y)⁻¹`. The derived statements take derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Stalks of band projections](#stalks-of-band-projections). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandAmplitude` | `isGE_rightDerivedFunctorPlus_obj`, `nonempty_homology_rightDerivedFunctorPlus_of_exact`, `isLE_rightDerivedFunctorPlus_obj_of_exact`, `isLE_pushforwardPlus_toPt_Icc`, `isGE_isLE_pushforwardPlus_toPt_Icc`, `boundedToPlus`, `PreservesBounded`, `PreservesBounded.id`, `PreservesBounded.comp`, `restrictBounded`, `restrictBounded_comp_boundedToPlus`, `restrictBoundedMap`, `restrictBoundedMap_app`, `whiskerRight_restrictBoundedMap`, `restrictBoundedMap_id`, `restrictBoundedMap_comp`, `restrictBoundedIso`, `restrictBoundedIso_hom`, `restrictBoundedIso_inv`, `restrictBoundedId`, `restrictBoundedComp`, `restrictBoundedCompMap`, `whiskerRight_restrictBoundedCompMap`, `restrictBoundedCompMapIso`; `BandConvolution.isGE_T_obj`, `isLE_T_obj`, `isGE_isLE_T_obj`, `preservesBounded_T`, `TB`, `TB_comp_boundedToPlus`, `restrB`, `whiskerRight_restrB`, `restrB_refl`, `restrB_trans`, `T0IsoB`, `whiskerRight_T0IsoB_hom`, `augB`, `whiskerRight_augB`, `augB_eq`, `augB_zero`, `restrB_comp_augB`, `compIsoB`, `whiskerRight_compIsoB_hom` | Degrees are those of the canonical t-structure (`IsGE`, `IsLE`) on `DerivedCategory.Plus`; `Dᵇ` is `DerivedCategory.Bounded`. The general statements are for abelian categories with derived category structures, the source with enough injectives; the derived functor of an exact functor for `F` preserving finite limits and colimits. The band statements take derived category structures on `ℝ` and every `D a`; the upper bound and the bounded functors also on `pt` and every `[u, v]`. See [Amplitude of the band functors](#amplitude-of-the-band-functors). |
-| `TDA.Sheaf` / `TDA.Sheaf.BaseChangePasting` | `pullbackSquareSheaf`, `isIso_pullbackSquareSheaf`, `baseChangeSheaf`, `baseChangeSheaf_app`, `unit_baseChangeSheaf`, `pullbackSquareCochain`, `pullbackSquareCochain_app_hom_f`, `baseChangeCochain`, `baseChangeCochain_app`, `baseChangeCochain_app_hom_f`, `pullbackPlusSquare_fac_app`, `pullbackPlusSquare_fac_app_assoc`, `baseChange_app_Q`, `baseChange_comp_app` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; commutative squares `w : g' ≫ f = f' ≫ g`, and for pasting a second square `w₂ : h' ≫ f' = f'' ≫ h` stacked along the inverse images; derived categories as instance arguments. See [Underived base change and pasting](#underived-base-change-and-pasting). |
-| `TDA.Sheaf` / `TDA.Sheaf.BandBaseChange` | `BandConvolution.baseChangeSheaf_fibreEmb_app`, `baseChangeCochain_fibreEmb_app_hom_f`, `isIso_baseChangeCochain_fibreEmb_app`, `isIso_baseChange_fibreEmb`, `stalkFormula`, `stalkFormula_hom`, `stalkFormula_hom_app_Q` | The fibre square `fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` of the band projection for all `a y : ℝ`, `k : Type` a ring; derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Base change on band fibres](#base-change-on-band-fibres). |
+| `TDA.Sheaf` / `TDA.Sheaf.BaseChangePasting` | `pullbackSquareSheaf`, `isIso_pullbackSquareSheaf`, `baseChangeSheaf`, `baseChangeSheaf_app`, `unit_baseChangeSheaf`, `baseChangeSheaf_app_hom_app_top`, `pullbackSquareCochain`, `pullbackSquareCochain_app_hom_f`, `baseChangeCochain`, `baseChangeCochain_app`, `baseChangeCochain_app_hom_f`, `isIso_baseChangeCochain_app`, `pullbackPlusSquare_fac_app`, `pullbackPlusSquare_fac_app_assoc`, `baseChange_app_Q`, `baseChange_comp_app` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; commutative squares `w : g' ≫ f = f' ≫ g`, and for pasting a second square `w₂ : h' ≫ f' = f'' ≫ h` stacked along the inverse images; derived categories as instance arguments. See [Underived base change and pasting](#underived-base-change-and-pasting). |
+| `TDA.Sheaf` / `TDA.Sheaf.BandBaseChange` | `BandConvolution.baseChangeCochain_fibreEmb_app_hom_f`, `isIso_baseChangeCochain_fibreEmb_app`, `isIso_baseChange_fibreEmb`, `stalkFormula`, `stalkFormula_hom`, `stalkFormula_hom_app_Q` | The fibre square `fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` of the band projection for all `a y : ℝ`, `k : Type` a ring; derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Base change on band fibres](#base-change-on-band-fibres). |
+| `TDA.Sheaf` / `TDA.Sheaf.PointDetection` | `rightDerivedFunctorPlusCompHomologyIso`, `isIso_iff_forall_isIso_pullbackPlus_pt`, `isIso_baseChange_congr`, `isIso_baseChange_of_fibres` | Exact functors between abelian categories with derived category structures, the source with enough injectives; sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`, points read through `ptOf x : pt ⟶ X`; commutative squares `w : g' ≫ f = f' ≫ g` with a family of squares `e z ≫ f' = toPt (F z) ≫ ptOf z` over the points of `Y'`; derived categories as instance arguments, for the family `[∀ z, HasDerivedCategory ((F z).Sheaf _)]`. See [Interval fibrations and the fibrewise criterion](#interval-fibrations-and-the-fibrewise-criterion). |
+| `TDA.Sheaf` / `TDA.Sheaf.IntervalFibration` | `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`, `exists_preimage_le_of_isClosedMap`; `FibreCoordinate`, `FibreCoordinate.IsFibreParam`, `IsFibreParam.apply_eq`, `IsFibreParam.mem_range_iff`, `IsFibreParam.exists_preimage_le`, `IsFibreParam.exists_unit_eq`, `IsFibreParam.isIso_baseChangeSheaf_app`, `IsFibreParam.isIso_baseChangeCochain_app`, `IsFibreParam.isIso_baseChange`, `IsFibreParam.isZero_H_stalk_pushforwardPlus`; `IntervalFibration`, `IntervalFibration.e_comp`, `t_e`, `mem_range`, `apply_e`, `isIso_baseChangeSheaf_app`, `isIso_baseChange`, `stalkFormula`, `stalkFormula_hom`, `isZero_H_stalk_pushforwardPlus`; `isIso_baseChange_of_isFibreParam` | Continuous `π : X ⟶ Y` in `TopCat.{0}` with a fibre coordinate `t : C(X, ℝ)` (`(π, t)` inducing, `π` closed); fibre parametrisations `ε : [u, v] ⟶ X` for all `u v : ℝ`, empty and one-point intervals included; `k : Type` a ring; derived category structures on `X`, `Y`, `pt` and the fibre interval as instance arguments. See [Interval fibrations and the fibrewise criterion](#interval-fibrations-and-the-fibrewise-criterion). |
 
 ### Capped centred height-map pairs
 
@@ -5236,25 +5238,29 @@ inclusion `ι : [0, 1] ⟶ ℝ` (`isIso_baseChange_ι`).
 through `fibreEmb a y : x ↦ (x, y)`: its image is the fibre (`mem_range_fibreEmb`),
 `fibreEmb_eq` writes it as `(fibreIso a y).inv` followed by the inclusion of the fibre, and
 `fibreEmb_comp_q : fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` holds by `rfl`, where
-`ptAt y : pt ⟶ ℝ` is the point `y`. A stalk at `y` is read as the inverse image along `ptAt y`.
+`ptAt y : pt ⟶ ℝ` is the point `y` (`ptAt_eq : ptAt y = ptOf y`). A stalk at `y` is read as the
+inverse image along `ptAt y`.
 
-Degree-0 tautness of the fibre, for a sheaf `G` of `k`-modules on `D a`:
+The band projection is an interval fibration (`TDA.Sheaf.IntervalFibration`): the first
+projection `p a` is a fibre coordinate of `q a` (`fibreCoordinate_q`, `fibreCoordinate_q_t`),
+`fibreEmb a y` is a fibre parametrisation at `y` (`isFibreParam_fibreEmb`), and
+`intervalFibration_q a` has `lo y = y - a`, `hi y = y + a` and `e = fibreEmb a`
+(`intervalFibration_q_e`). The general results specialise as follows, for a sheaf `G` of
+`k`-modules on `D a`.
 
-- `exists_le_eq_zero_of_pullback_eq_zero` (any continuous `i : K ⟶ X`): a section `s` of `G`
-  over `W` whose image in `i⁻¹ G` vanishes over an open `N ≤ i⁻¹ W` vanishes over an open
-  `O ≤ W` with `N ≤ i⁻¹ O`.
+Degree-0 tautness of the fibre:
+
 - `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`: an open set containing the fibre
   contains a tube `(q a)⁻¹ U` with `y ∈ U`, since `q a` is proper.
 - `exists_unit_eq_fibreEmb`: every section of `(fibreEmb a y)⁻¹ G` over `[y - a, y + a]` is the
   restriction of the unit image of a section of `G` over an open neighbourhood of the fibre.
-- `exists_unit_eq_of_pt` (any `f : pt ⟶ Y`): global sections of `f⁻¹ M` are restrictions of unit
-  images of sections of `M` near the image point.
 
 The stalk of the underived direct image:
 
 - `stalkComparison a y G : (ptAt y)⁻¹ (q a)_* G ⟶ Γ([y - a, y + a]; (fibreEmb a y)⁻¹ G)`, adjoint
-  to `(q a)_*` of the unit, described on sections by `stalkComparison_app_top`, natural in `G`
-  (`stalkComparison_naturality`) and an isomorphism (`isIso_stalkComparison`).
+  to `(q a)_*` of the unit. It is the underived base change of the fibre square
+  (`baseChangeSheaf_fibreEmb_app`), described on sections by `stalkComparison_app_top`, natural
+  in `G` (`stalkComparison_naturality`) and an isomorphism (`isIso_stalkComparison`).
 - `stalkIso a y : (q a)_* ⋙ (ptAt y)⁻¹ ≅ (fibreEmb a y)⁻¹ ⋙ (toPt _)_*`, with components
   `stalkIso_hom_app`; `stalkSectionsIso a y G : ((q a)_* G)_y ≅ Γ([y - a, y + a];
   (fibreEmb a y)⁻¹ G)` as modules.
@@ -5262,10 +5268,9 @@ The stalk of the underived direct image:
 The stalk formula, for `F ∈ D⁺(Sh(D a))`:
 
 - `nonempty_stalkFormula a y F`: `(ptAt y)⁻¹ R(q a)_* F ≅ RΓ([y - a, y + a]; (fibreEmb a y)⁻¹ F)`
-  in `D⁺(Sh pt)`, and `nonempty_stalkFormula_homology a y F i` the same for its `Hⁱ`. The proof
-  takes a bounded below injective model `I` of `F`: `(q a)_* I` computes `R(q a)_* F`, `stalkIso` identifies
-  `(ptAt y)⁻¹ (q a)_* I` with `Γ([y - a, y + a]; (fibreEmb a y)⁻¹ I)` termwise, and the
-  germ-surjective sheaves `(fibreEmb a y)⁻¹ Iⁿ` compute `RΓ([y - a, y + a]; -)`.
+  in `D⁺(Sh pt)`, and `nonempty_stalkFormula_homology a y F i` the same for its `Hⁱ`; the
+  isomorphism is the base change of the fibre square
+  (`FibreCoordinate.IsFibreParam.isIso_baseChange`).
 - `isZero_H_stalk_pushforwardPlus_q`: for a sheaf `G` in degree `0`, `Hⁱ((ptAt y)⁻¹ R(q a)_* G)`
   vanishes for `2 ≤ i`.
 
@@ -5354,12 +5359,15 @@ instance. `kR` is the constant sheaf `constSh ℚ ℝ kpt` in degree `0`; its in
   images (`pullbackCompIso` and `w`; `isIso_pullbackSquareSheaf`), and the **underived base
   change** `baseChangeSheaf k w : f_* ⋙ g⁻¹ ⟶ g'⁻¹ ⋙ f'_*` is its mate for the sheaf adjunctions,
   with components `baseChangeSheaf_app`. `unit_baseChangeSheaf`: its adjoint for `g⁻¹ ⊣ g_*` is
-  `f_*` of the unit of `g'`.
+  `f_*` of the unit of `g'`. `baseChangeSheaf_app_hom_app_top`: on global sections, for an open
+  `U` with `⊤ ≤ g⁻¹ U` and `s` a section of `G` over `f⁻¹ U`, it sends the restriction of the
+  unit image of `s` in `g⁻¹ f_* G` to the restriction of the unit image of `s` in `g'⁻¹ G`.
 - `pullbackSquareCochain k w` and `baseChangeCochain k w` are the termwise versions on bounded
   below complexes (the mate for `pullbackPushforwardAdjunctionPlus`); in degree `n` they are
   `pullbackSquareSheaf` and `baseChangeSheaf` at the `n`-th term
   (`pullbackSquareCochain_app_hom_f`, `baseChangeCochain_app_hom_f`; components
-  `baseChangeCochain_app`).
+  `baseChangeCochain_app`). `isIso_baseChangeCochain_app`: if `baseChangeSheaf k w` is invertible at
+  every sheaf, `baseChangeCochain k w` is invertible at every complex.
 - `pullbackPlusSquare_fac_app`: on `Q M`, `pullbackPlusSquare k w` is `Q` of
   `pullbackSquareCochain k w` between the derived-functor comparisons of the inverse images
   (with the generated `pullbackPlusSquare_fac_app_assoc`).
@@ -5377,15 +5385,13 @@ instance. `kR` is the constant sheaf `constSh ℚ ℝ kpt` in degree `0`; its in
 `TDA.Sheaf.BandBaseChange` treats the fibre square `fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` of the
 band projection `q a : D a ⟶ ℝ` (`fibreEmb_comp_q`).
 
-- `baseChangeSheaf_fibreEmb_app`: its underived base change at a sheaf `G` is
-  `stalkComparison k a y G`; termwise, `baseChangeCochain_fibreEmb_app_hom_f`, an isomorphism of
+- `baseChangeCochain_fibreEmb_app_hom_f`: termwise, its underived base change is the stalk
+  comparison (`baseChangeSheaf_fibreEmb_app` in `TDA.Sheaf.BandStalks`), an isomorphism of
   complexes (`isIso_baseChangeCochain_fibreEmb_app`).
 - `isIso_baseChange_fibreEmb` (instance): proper base change on the fibres of `q a`; the
   base-change morphism `R(q a)_* ⋙ (ptAt y)⁻¹ ⟶ (fibreEmb a y)⁻¹ ⋙ RΓ([y - a, y + a]; -)` is an
-  isomorphism. The proof takes a bounded below injective model `I`: by `baseChange_app_Q` the
-  morphism at `Q I` is `Q` of the termwise stalk comparisons between the comparison
-  isomorphisms of `(q a)_*` (injective terms) and of `Γ([y - a, y + a]; -)` (the germ-surjective
-  terms `(fibreEmb a y)⁻¹ Iⁿ`).
+  isomorphism, the case `ε = fibreEmb a y` of
+  `FibreCoordinate.IsFibreParam.isIso_baseChange` (`isFibreParam_fibreEmb`).
 - `stalkFormula k a y : R(q a)_* ⋙ (ptAt y)⁻¹ ≅ (fibreEmb a y)⁻¹ ⋙ RΓ([y - a, y + a]; -)`, the
   canonical stalk formula, with `stalkFormula_hom` (it is `baseChange k (fibreEmb_comp_q a y)`)
   and `stalkFormula_hom_app_Q` (its value on `Q K`). Its components witness
@@ -5398,6 +5404,81 @@ nonvanishing (`not_isZero_H0_stalk_kD_of_stalkFormula`). For the band inclusion 
 `inclSquare : incl ≫ q 2 = q 1 ≫ 𝟙`, the fibre square `fibreSquare` of `q 1` at `0` and their
 composite `pastedSquare`, `baseChange_pastedSquare_app` is the pasting formula, and
 `isIso_baseChange_fibreSquare_app` the invertibility on the fibre square.
+
+## Interval fibrations and the fibrewise criterion
+
+`TDA.Sheaf.PointDetection` detects isomorphisms at points and gives the fibrewise criterion for
+base change. For a point `x : X`, `ptOf x : pt ⟶ X` is its inclusion (`TDA.Sheaf.PointSheaf`,
+`ptOf_apply`).
+
+- `rightDerivedFunctorPlusCompHomologyIso F i : RF ⋙ Hⁱ ≅ Hⁱ ⋙ F` for an exact functor `F`
+  between abelian categories, the source with enough injectives: natural in `D⁺`, extended from
+  `Q` by the localization property.
+- `isIso_iff_forall_isIso_pullbackPlus_pt φ`: a morphism `φ` of `D⁺(Sh X)` is an isomorphism if and
+  only if `(ptOf x)⁻¹ φ` is an isomorphism for every `x : X`. The homology of `(ptOf x)⁻¹ φ` is
+  `(ptOf x)⁻¹` of the homology of `φ`, whose stalk is the stalk at `x`
+  (`stalkPullbackSheafNatIso`), and `isIso_iff_isIso_stalk_homology` applies.
+- `isIso_baseChange_congr`: two squares with the same vertical maps and equal horizontal maps
+  have invertible base change together.
+- `isIso_baseChange_of_fibres w F e we h₁ h₂`: for a commutative square
+  `w : g' ≫ f = f' ≫ g`, a family of squares `we z : e z ≫ f' = toPt (F z) ≫ ptOf z` over the
+  points `z : Y'` with invertible base change (`h₁`) whose pastings
+  `(e z ≫ g') ≫ f = toPt (F z) ≫ ptOf z ≫ g` with `w` have invertible base change (`h₂`), the
+  base change of `w` is invertible. By `baseChange_comp_app`, `(ptOf z)⁻¹` of the base change
+  of `w` is invertible at every `z`.
+
+`TDA.Sheaf.IntervalFibration` proves proper base change on the fibres of maps whose fibres are
+compact intervals.
+
+- `FibreCoordinate π`: a continuous `t : X → ℝ` with `z ↦ (π z, t z)` inducing, for a closed
+  map `π : X ⟶ Y`. `c.IsFibreParam y ε` for `ε : [u, v] ⟶ X`: the fibre square
+  `ε ≫ π = toPt _ ≫ ptOf y` (`comp_eq`), `c.t (ε x) = x` (`t_apply`) and the fibre `π⁻¹ {y}` in
+  the range of `ε` (`mem_range`; `apply_eq`, `mem_range_iff`). The interval may be empty
+  (`v < u`, an empty fibre) or a point (`u = v`).
+- `IntervalFibration π`: a fibre coordinate with fibre parametrisations
+  `e y : [lo y, hi y] ⟶ X` at every point (`isFibreParam`; `e_comp`, `t_e`, `mem_range`,
+  `apply_e`).
+- Degree-0 tautness: `exists_le_eq_zero_of_pullback_eq_zero` (any continuous `i : K ⟶ X`: a
+  section `s` of `G` over `W` whose image in `i⁻¹ G` vanishes over an open `N ≤ i⁻¹ W` vanishes
+  over an open `O ≤ W` with `N ≤ i⁻¹ O`), `exists_unit_eq_of_pt` (any `f : pt ⟶ Y`: global
+  sections of `f⁻¹ M` are restrictions of unit images of sections of `M` near the image point),
+  `exists_preimage_le_of_isClosedMap` and `IsFibreParam.exists_preimage_le` (tubes `π⁻¹ U` are
+  cofinal around a fibre of a closed map), and `IsFibreParam.exists_unit_eq` (every section of
+  `ε⁻¹ G` over `[u, v]` is the restriction of the unit image of a section of `G` over an open
+  neighbourhood of the fibre).
+- `IsFibreParam.isIso_baseChangeSheaf_app`: the underived base change
+  `(ptOf y)⁻¹ π_* G ⟶ Γ([u, v]; ε⁻¹ G)` of the fibre square is an isomorphism;
+  `IsFibreParam.isIso_baseChangeCochain_app` termwise on complexes.
+- `IsFibreParam.isIso_baseChange`: proper base change on the fibre, the base-change morphism
+  `Rπ_* ⋙ (ptOf y)⁻¹ ⟶ ε⁻¹ ⋙ RΓ([u, v]; -)` is an isomorphism; on a bounded below injective
+  model `I`, `baseChange_app_Q` reduces it to the termwise isomorphism between the comparisons
+  of `π_*` (injective terms) and of `Γ([u, v]; -)` (the germ-surjective terms `ε⁻¹ Iⁿ`).
+  `IsFibreParam.isZero_H_stalk_pushforwardPlus`: for a sheaf in degree `0`, `Hⁱ` of the stalk at
+  `y` of its derived direct image vanishes for `2 ≤ i`.
+- For an interval fibration: `IntervalFibration.isIso_baseChangeSheaf_app` and
+  `IntervalFibration.isIso_baseChange` (instances) at every point, the canonical stalk formula
+  `IntervalFibration.stalkFormula k y : Rπ_* ⋙ (ptOf y)⁻¹ ≅ (e y)⁻¹ ⋙ RΓ([lo y, hi y]; -)` with
+  `stalkFormula_hom`, and `IntervalFibration.isZero_H_stalk_pushforwardPlus`.
+- `isIso_baseChange_of_isFibreParam w c hf' h`: the fibrewise criterion for a square
+  `w : g' ≫ f = f' ≫ g` with `c` a fibre coordinate of `f` and `hf'` an interval fibration
+  structure on `f'`, when every `hf'.e z ≫ g'` is a fibre parametrisation of `f` at `g z` in
+  `c`.
+
+`TDA.Sheaf.IntervalFibrationExamples` works over `ℚ` with `HasDerivedCategory.standard` as a
+local instance. `H0_stalk_const hπ y h` identifies `H⁰` of the stalk at `y` of `Rπ_*` of the
+constant sheaf `constOn X` with `kpt` for any interval fibration with `lo y ≤ hi y`, so it is
+nonzero (`not_isZero_H0_stalk_const`). For the band, `isIso_baseChange_q` and
+`not_isZero_H0_stalk_q` go through `intervalFibration_q 1`. The wedge
+`wedge = {(x, s) | 0 ≤ s ≤ x}` (`isClosed_wedge`, `W`) with projection `wπ` (`isProperMap_wπ`)
+and fibre parametrisations `wedgeEmb y : [0, y] ⟶ W` is an interval fibration
+(`intervalFibration_wπ`) with empty fibres over `y < 0` and the one-point fibre `[0, 0]` over
+`0`; there `H⁰` of the stalk of the constant sheaf is nonzero
+(`not_isZero_H0_stalk_wedge_zero`), and `H²` of every stalk of the derived direct image of a sheaf
+vanishes (`isZero_H2_stalk_wedge`). For the translations `shift` of `ℝ` and `shiftD` of `D 1`,
+the square `shift_square : shiftD ≫ q 1 = q 1 ≫ shift` has invertible base change
+(`isIso_baseChange_shift`) by the fibrewise criterion, with the fibre coordinate
+`shiftCoordinate` (`p 1 - 1`, through the homeomorphism `swapShift`) and the fibre
+parametrisations `isFibreParam_shift`.
 
 ## Review and extension boundaries
 

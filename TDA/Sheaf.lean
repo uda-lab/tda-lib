@@ -38,3 +38,5 @@ import TDA.Sheaf.BandStalks
 import TDA.Sheaf.BandAmplitude
 import TDA.Sheaf.BaseChangePasting
 import TDA.Sheaf.BandBaseChange
+import TDA.Sheaf.PointDetection
+import TDA.Sheaf.IntervalFibration
