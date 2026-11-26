@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Fake executables exercise argv, locking, stop and headroom; no agents are spawned.
 set -euo pipefail
+# The cases below start from an unset thread configuration, whatever the caller exported.
+unset LEAN_NUM_THREADS LEAN_NUM_THREADS_SOURCE LEAN_NUM_THREADS_DETECTED
 SOURCE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 test_dir=$(mktemp -d)
 trap 'rm -rf -- "$test_dir"' EXIT
@@ -16,7 +18,8 @@ cd "$ROOT"
 cat > "$test_dir/bin/lake" <<'FAKE'
 #!/usr/bin/env bash
 printf '%s\0' "$@" > "$ARGV_OUT"
-printf '%s' "${LEAN_NUM_THREADS:-unset}" > "$ARGV_OUT.threads"
+# `-`, not `:-`: an exported empty value must not read as unset.
+printf '%s' "${LEAN_NUM_THREADS-unset}" > "$ARGV_OUT.threads"
 printf '%s' "${LEAN_NUM_THREADS_SOURCE:-unset}" > "$ARGV_OUT.source"
 printf '%s' "${LEAN_NUM_THREADS_DETECTED:-unset}" > "$ARGV_OUT.detected"
 printf '%s' "${LAKE_ARTIFACT_CACHE-unset}" > "$ARGV_OUT.artifact-cache"
@@ -92,9 +95,8 @@ PY
 LAKE_ARTIFACT_CACHE=false LAKE_RESTORE_ARTIFACTS=false "$ROOT/scripts/bootstrap.sh"
 [ "$(cat "$ARGV_OUT.artifact-cache")" = false ]
 [ "$(cat "$ARGV_OUT.restore-artifacts")" = false ]
-if LEAN_NUM_THREADS=0 "$ROOT/scripts/lean.sh" lake build >/dev/null 2>&1; then
-  echo 'invalid thread configuration accepted'; exit 1
-fi
+rc=0; LEAN_NUM_THREADS=0 "$ROOT/scripts/lean.sh" lake build >/dev/null 2>&1 || rc=$?
+[ "$rc" = 64 ] || { echo "invalid thread configuration: expected exit 64, got $rc"; exit 1; }
 # A quota-limited cgroup (ceil(quota/period) below the affinity count) caps the DETECTED value
 # (quota 2, affinity 6 -> 2); detection never sets the thread count, which stays unset.
 LEAN_CGROUP_ROOT="$test_dir/cg/limited" "$ROOT/scripts/lean.sh" lake build

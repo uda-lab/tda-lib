@@ -336,8 +336,8 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `scripts/lean.sh` and the other guarded entry points leave it unset, so Lean uses its own
   default (all hardware threads), as `uda-lab/reeb-ordering` already does. An explicit positive
   value is still kept exactly and an invalid one rejected. Start-up lines and session briefs report
-  `all (lean-default; N detected)` or `N (explicit; N detected)`. Hosted CI (`2`) and the cloud
-  setup script (`1`) keep their explicit values.
+  `all (lean-default; N detected)` or `N (explicit; N detected)`. Hosted CI's `check` job now sets `2`
+  explicitly (it had been running at the fallback `1`); the cloud setup script keeps `1`.
 
 ## v0.5.0
 
