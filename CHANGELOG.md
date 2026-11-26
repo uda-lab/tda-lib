@@ -655,6 +655,50 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `isZero_H_stalk_pushforwardPlus_q`. Fixtures in `TDA.Sheaf.BandStalksExamples`: `constPlus`,
   `germSurjective_constPlus`, `isIso_unit_constPlus`, `kD`, `nonempty_H0_stalk_kD`, `not_isZero_kpt`,
   `not_isZero_H0_stalk_kD`, `isZero_H2_stalk_constSh`.
+- Orthant sheaves on coordinate space at the distance level (#1179, part 1):
+  `TDA.Sheaf.StrictBasis` states the module–sheaf comparison once for a basis of opens indexed
+  by the points of a join-semilattice (`StrictBasis`, `Strict`, `le_of_strict`, `mem_of_le`,
+  `strict_of_strict_of_le`, `strict_of_le_of_strict`, `exists_strict_strict`, `iSup_U`,
+  `isBasis_U`, `principalOpen_le_map_U`, `basisFunctor`, `B`, `B_obj_obj`, `B_obj_map`,
+  `B_map_app`, `Q`, `Q_obj_presheaf_obj`, `Q_map_hom_app`, `proj`, `proj_comp_map`,
+  `map_proj`, `proj_ext`, `map_app_proj`, `diagram`, `diagram_obj`, `cone`, `cone_pt`,
+  `cone_π_app`, `coneIsLimit`, `limitIso`, `limitIso_hom_π`, `limitIso_inv_proj`, `lift`,
+  `lift_proj`, `unit`, `unit_app_app_proj`, `counitIso`, `counitIso_inv_app_hom_app_proj`,
+  `counitIso_hom_app_hom_app_map`, `B_faithful`, and `proj_comp_map_assoc`, `map_proj_assoc`,
+  `map_app_proj_assoc`, `limitIso_hom_π_assoc`, `limitIso_inv_proj_assoc`, `lift_proj_assoc`,
+  `unit_app_app_proj_assoc`, `counitIso_inv_app_hom_app_proj_assoc`,
+  `counitIso_hom_app_hom_app_map_assoc`), for
+  `[Category.{0} C] [HasLimits C]`. `TDA.Sheaf.SpaceTranslation` does the same for sheaf shifts
+  along a family of translations (`SpaceTranslation`, `shift`, `transition`, `compIso`,
+  `shift_obj_presheaf_obj`, `shift_map_hom_app`, `transition_app_hom_app`,
+  `compIso_hom_app_hom_app`, `compIso_hom_naturality`, `compIso_hom_naturality_assoc`,
+  `transition_naturality`, `transition_naturality_assoc`,
+  `transition_add`, `Interleaving`, `Interleaving.ext`, `Interleaving.ext_iff`,
+  `Interleaving.symm`, `Interleaving.refl`, `Interleaving.congr`, `interleavingDistance`,
+  `interleavingDistance_le`, `interleavingDistance_congr`). `TDA.Sheaf.OrthantSheaf` gives
+  `Fin n → ℝ` the orthant topology (`WithOrthant`, `toOrthant`, `ofOrthant`,
+  `toOrthant_ofOrthant`, `ofOrthant_toOrthant`, `IsOrthantOpen`, `orthantTopology`,
+  `orthantSpace`, `isOpen_iff`, `isUpperSet_opens`, `isOpen_ofOrthant_preimage_iff`) with open
+  orthants `orthant` (`mem_orthant`, `orthant_antitone`, `orthant_le`), the common finite
+  diagonal step `exists_diagonal_step`, the cover `exists_orthant_mem`, meets at the
+  coordinatewise maximum `orthant_inf`, `isBasis_orthant` and `eq_generateFrom`; the basis
+  `orthantBasis` (`orthantId`, `orthantId_apply`, `orthantBasis_ι`, `orthantBasis_U`,
+  `strict_orthantBasis_iff`, `strict_translation`) gives `Q`, `B`, projections, unit and
+  `QB ≅ 𝟭` on all-strict coordinates. Shifts by `ε · 1`: `orthantTranslate`,
+  `orthantTranslate_apply`, `map_orthantTranslate_orthant`, `orthantTranslation`,
+  `orthantTranslation_T`, `translate_comp_orthantId`, `pushforward_map_sheafShift_map`,
+  `pushforward_map_sheafTransition`, `pushforward_map_sheafCompIso`,
+  `orthantOfSheafInterleaving`, `orthantShiftComparison`, `orthantShiftComparison_hom_app_app`,
+  `orthantShiftComparison_hom_naturality`, `orthantShiftComparison_transition`,
+  `orthantShiftComparison_compIso`, `orthantShiftComparison_hom_naturality_assoc`,
+  `orthantShiftComparison_transition_assoc`, `orthantShiftComparison_compIso_assoc`,
+  `orthantB_map_doubleShift`. Radius witnesses
+  `orthantToCoordinateInterleaving`, `orthantOfCoordinateInterleaving`, and for `ε > 0` the
+  actual interleaving `orthantUnitInterleaving` of `M` and `BQ(M)` (`orthantUnitInterleavingψ`,
+  `orthantUnitInterleavingψ_app`, `orthantUnitInterleaving_φ`, `orthantUnitInterleaving_ψ`);
+  distances `coordinateInterleavingDistance_orthantB_orthantQ`,
+  `coordinateInterleavingDistance_orthantB_le`, `interleavingDistance_orthantQ_le`,
+  `interleavingDistance_orthantQ`, `coordinateInterleavingDistance_orthantB`.
 
 ## v0.5.0
 
