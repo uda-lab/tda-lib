@@ -23,9 +23,10 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   instance argument. `VertexMap.map_face_image` is the form of the field `VertexMap.map_face`, and
   `OccurrenceMatching.target_le_cost_decidable` and `OccurrenceMatching.cost_le_of_decidable` are
   the forms of `target_le_cost` and `cost_le_of`, for any decidability of the matched-target
-  condition. The downstream regression fixtures
+  condition. The modules
   `VertexMapClientExamples`, `ComponentIndexClientExamples`, `DecidableEqClientExamples` and
-  `OccurrenceMatchingClientExamples`.
+  `OccurrenceMatchingClientExamples` are the downstream regression fixtures that hold the client
+  statements.
 - Downstream-use audit, family 11 (#1281, #1207): nerve relabelling lemmas with arbitrary
   decidable equality. `mem_nerve_relabel_iff`, `interMember_image_subset` and
   `MeasureBifiltration.mem_largeFaceNerve_iff` take the decidable equality of the index type as

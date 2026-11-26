@@ -200,13 +200,6 @@ structure is universe-polymorphic. The two Hall injections from the actual inter
 reverse instantiate this combinator. For this rectangle instantiation, the
 Schröder–Bernstein argument uses auxiliary labels to allow deletion only of
 non-significant occurrences, then discards those labels.
-`OccurrenceMatching.target_le_cost_decidable` and `OccurrenceMatching.cost_le_of_decidable` are the
-forms of `target_le_cost` and `cost_le_of` for any decidability of the condition
-`∃ i, M.finite i = some j`, and `Rips.mem_tupleFilter_iff` takes
-`[DecidableEq (Sample t)]` for the image of a tuple-index face in the metric sample.
-`TDA.Persistence.OccurrenceMatchingClientExamples` (imported by `TDA.Persistence.Examples`) is a
-downstream regression fixture (#1286): it states these results for matchings between `Fin 2` and
-for a decidable equality on the sample, and proves each by direct application.
 The sharpness fixture is the standalone module
 `TDA.Persistence.RectangleSharpExample`, loaded by
 `TDA.Persistence.Examples` and not by the ordinary `TDA.Persistence`
@@ -256,6 +249,14 @@ inverse laws are derived using existing presentation lifting and Mathlib Kan
 uniqueness. Repeated births remain separate generator occurrences, empty
 families and n=0 are allowed, and the reconstructed module may have unbounded
 support.
+
+`OccurrenceMatching.target_le_cost_decidable` and `OccurrenceMatching.cost_le_of_decidable` are the
+forms of `target_le_cost` and `cost_le_of` for any decidability of the condition
+`∃ i, M.finite i = some j`, and `Rips.mem_tupleFilter_iff` takes
+`[DecidableEq (Sample t)]` for the image of a tuple-index face in the metric sample.
+`TDA.Persistence.OccurrenceMatchingClientExamples` (imported by `TDA.Persistence.Examples`) is a
+downstream regression fixture (#1286): it states these results for matchings between `Fin 2` and
+for a decidable equality on the sample, and proves each by direct application.
 
 For a finite coordinate grid, `CoordinateGrid.lan` is Mathlib's actual left
 Kan extension along the grid inclusion. At each real grade with a lower grid
@@ -5897,15 +5898,6 @@ and negative scales. `sparseRipsLogInterleaving` combines that isomorphism
 with the relaxed/Rips inclusions. Reindexing positive radii by `exp` gives an
 interleaving with shift `log((1−2η)⁻¹)` in every degree, including degree zero.
 `sparseRipsLogDistance_le` bounds the corresponding module interleaving distance.
-
-The finite images, erasures and pairs of vertices in the statements on the greedy prefixes, the
-sparse carrier and the deletion maps take a decidable equality on the vertex type as an instance
-argument: `GreedyNet.prefix_succ`, `mem_laterNeighbors`, `mem_orientedEdges`,
-`pair_mem_carrier_iff_oriented`, `exists_assigned_vertex`, `deletionMap_image_later`,
-`image_mem_later_of_noDeletion` and `image_union_mem_relaxedComplex` take `[DecidableEq V]`.
-`TDA.Filtration.SparseRips.DecidableEqClientExamples` (imported by `TDA.Filtration.Examples`) is
-a downstream regression fixture (#1286): it states these results for a finite metric space with
-a decidable equality and proves each by direct application.
 Each relaxed pair, including a weighted self-pair, has a closed, attained first
 entry time (`pairEntry_mem`); `finiteWeight_eq_max_min` writes each finite-deletion weight as
 `max 0 (min ((r−(1−2η)t)/2) (ηr))`, so `continuous_relaxedDistance` makes every relaxed pair
@@ -5922,6 +5914,15 @@ log-scale diagram to the diameter-scale Rips log diagram by
 `log((1−2η)⁻¹)`. The diagram bound uses the proved module interleaving and
 finite-constructible matching. Degree zero retains the module interleaving;
 zero-born classes do not fit the finite positive-log diagram.
+
+The finite images, erasures and pairs of vertices in the statements on the greedy prefixes, the
+sparse carrier and the deletion maps take a decidable equality on the vertex type as an instance
+argument: `GreedyNet.prefix_succ`, `mem_laterNeighbors`, `mem_orientedEdges`,
+`pair_mem_carrier_iff_oriented`, `exists_assigned_vertex`, `deletionMap_image_later`,
+`image_mem_later_of_noDeletion` and `image_union_mem_relaxedComplex` take `[DecidableEq V]`.
+`TDA.Filtration.SparseRips.DecidableEqClientExamples` (imported by `TDA.Filtration.Examples`) is
+a downstream regression fixture (#1286): it states these results for a finite metric space with
+a decidable equality and proves each by direct application.
 
 The homology equivalence `sparseRelaxedHomologyIso`, log-scale APIs
 `sparseRipsLogInterleaving` and `sparseRipsLogDistance_le`, and diagram bound
