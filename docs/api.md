@@ -3504,6 +3504,13 @@ in a general pseudometric ambient.
 `TDA.Persistence.TotalPersistence` and `TDA.Persistence.TotalPersistenceRipsCech` define total
 persistence, finite-bar face-count bounds, and size-dependent Rips and Čech consequences; their
 worked fixtures are in `TDA.Persistence.TotalPersistenceRipsCechExamples`.
+`TDA.Persistence.TotalPersistenceRegularity` gives total persistence on an ordered
+presentation (`totalPersistence_orderedQ`, for a nonzero exponent) and proves that for an even
+positive exponent it is `Cʳ` through every ordered presentation
+(`totalPersistence_crThroughAllRepresentatives`, with `C¹` and `C²` forms). These are the loss
+hypotheses of `sublevelDiagramScalarLoss_c1_neighborhood` and of the second-order calculus;
+`TotalPersistenceLossClientExamples` is a downstream regression fixture for the squared total
+persistence of a `C¹` filter family (#1270).
 `TDA.Simplicial.Cone` proves apex-cone acyclicity, and `TDA.Persistence.EssentialVanishing` proves
 the essential-count identity, vanishing in degree `n ≥ 1` on the full complex, and size-uniform
 consumers; their fixtures are in `TDA.Simplicial.ConeExamples` and

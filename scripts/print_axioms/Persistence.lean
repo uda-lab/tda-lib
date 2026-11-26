@@ -9577,3 +9577,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.Reduction.RipsInputBottleneckExamples.single_pair_bottleneck
 #print axioms TDA.Persistence.Reduction.RipsInputBottleneckExamples.pair_pair_bottleneck
 #print axioms TDA.Persistence.Reduction.RipsInputBottleneckExamples.empty_single_bottleneck
+#print axioms TDA.Persistence.totalPersistence_orderedQ
+#print axioms TDA.Persistence.totalPersistence_crThroughAllRepresentatives
+#print axioms TDA.Persistence.totalPersistence_c1ThroughAllRepresentatives
+#print axioms TDA.Persistence.totalPersistence_c2ThroughAllRepresentatives
+#print axioms TDA.Persistence.TotalPersistenceLossClientExamples.squaredTotalPersistence_c1_near
+#print axioms TDA.Persistence.TotalPersistenceLossClientExamples.squaredTotalPersistence_orderedQ

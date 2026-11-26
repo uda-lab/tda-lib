@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 8 (#1270, #1207): total persistence as a differentiable
+  diagram loss. `TDA.Persistence.TotalPersistenceRegularity` proves `totalPersistence_orderedQ`
+  (the value on an ordered presentation, for a nonzero exponent) and
+  `totalPersistence_crThroughAllRepresentatives` for even positive exponents, with the `C¹`
+  and `C²` forms that the sublevel-diagram loss calculus takes as hypotheses; the downstream
+  regression fixture `TotalPersistenceLossClientExamples`.
 - Downstream-use audit, family 7 (#1268, #1207): the certified Rips reduction and the integer
   bottleneck search now compose. `IntegerBottleneck.Presentation.ofPoints`,
   `IntegerBottleneck.diagram_ofPoints_points` and
