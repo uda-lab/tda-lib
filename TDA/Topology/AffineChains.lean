@@ -285,8 +285,7 @@ theorem mono_toSingular (Y : TopCat.{u}) (e : C(K, Y)) (he : Function.Injective 
 /-- The chain map from affine chains of `K` to singular chains of `Y`. -/
 abbrev toSingularChains (Y : TopCat.{u}) (e : C(K, Y)) {C : Type*} [Category* C]
     [HasCoproducts.{u} C] [Preadditive C] (R : C) :
-    (affineSSet.{u} K).chainComplex R ⟶
-      ((AlgebraicTopology.singularChainComplexFunctor C).obj R).obj Y :=
+    (affineSSet.{u} K).chainComplex R ⟶ (TopCat.toSSet.obj Y).chainComplex R :=
   SSet.chainComplexMap (toSingular hK Y e) R
 
 end
