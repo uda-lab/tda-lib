@@ -471,3 +471,55 @@ import TDA
 #print axioms TDA.Topology.LastVertexClientExamples.common_chain_comparisons
 #print axioms TDA.Topology.LastVertexClientExamples.contiguous_apexMap
 #print axioms TDA.Topology.LastVertexClientExamples.contiguous_apexMap_flags_one
+
+-- Algebraic core of singular Mayer–Vietoris (#1190, part S1): small chains, short exactness,
+-- the connecting map with its sign, flip and naturality, and the iteration quasi-isomorphism
+-- criterion.
+#print axioms TDA.Topology.subsetIncl
+#print axioms TDA.Topology.subsetIncl_apply
+#print axioms TDA.Topology.toSSetObjEquiv_map
+#print axioms TDA.Topology.simplicesIn
+#print axioms TDA.Topology.mem_simplicesIn_iff
+#print axioms TDA.Topology.simplicesIn_mono
+#print axioms TDA.Topology.simplicesIn_inter
+#print axioms TDA.Topology.simplicesIn_univ
+#print axioms TDA.Topology.smallSimplices
+#print axioms TDA.Topology.mem_smallSimplices_iff
+#print axioms TDA.Topology.mono_toSSet_map_subsetIncl
+#print axioms TDA.Topology.toSSetSubsetIso
+#print axioms TDA.Topology.toSSetSubsetIso_hom_ι
+#print axioms TDA.Topology.toSSetSubsetIso_hom_ι_assoc
+#print axioms TDA.Topology.range_toSSet_map_eq_simplicesIn
+#print axioms TDA.Topology.smallChains
+#print axioms TDA.Topology.smallChainsι
+#print axioms TDA.Topology.singularChainsSubsetIso
+#print axioms TDA.Topology.singularChainsSubsetIso_hom_comp_chainComplexMap_ι
+#print axioms TDA.Topology.singularChainsSubsetIso_hom_comp_chainComplexMap_ι_assoc
+#print axioms TDA.Topology.mono_chainComplexMap_homOfLE
+#print axioms TDA.Topology.mono_chainComplexMap_ι
+#print axioms TDA.Topology.mono_smallChainsι
+#print axioms TDA.Topology.isPushout_chainComplex
+#print axioms TDA.Topology.mvShortComplex
+#print axioms TDA.Topology.shortExact_mvShortComplex
+#print axioms TDA.Topology.bicartSq_simplicesIn
+#print axioms TDA.Topology.isPushout_smallChains
+#print axioms TDA.Topology.shortExact_smallChains
+#print axioms TDA.Topology.mvShortComplex_δ_eq
+#print axioms TDA.Topology.mvShortComplex_δ_flip
+#print axioms TDA.Topology.bicartSq_flip
+#print axioms TDA.Topology.shortExact_of_bicartSq
+#print axioms TDA.Topology.bicartδ
+#print axioms TDA.Topology.bicartδ_eq
+#print axioms TDA.Topology.bicartδ_flip
+#print axioms TDA.Topology.bicartδ_naturality
+#print axioms TDA.Topology.quasiIso_of_iterate_mem
+#print axioms TDA.Topology.SingularMayerVietorisExamples.pointSimplex
+#print axioms TDA.Topology.SingularMayerVietorisExamples.segmentSimplex
+#print axioms TDA.Topology.SingularMayerVietorisExamples.pointSimplex_half_mem_inter
+#print axioms TDA.Topology.SingularMayerVietorisExamples.pointSimplex_two_mem_small_not_mem_lower
+#print axioms TDA.Topology.SingularMayerVietorisExamples.segmentSimplex_not_mem_smallSimplices
+#print axioms TDA.Topology.SingularMayerVietorisExamples.lowerRay_union_upperRay
+#print axioms TDA.Topology.SingularMayerVietorisExamples.shortExact_rays
+#print axioms TDA.Topology.SingularMayerVietorisExamples.neg_ne_self_of_ne_zero
+#print axioms TDA.Topology.SingularMayerVietorisExamples.bicartδ_flip_ne
+#print axioms TDA.Topology.SingularMayerVietorisExamples.quasiIso_zero_of_homotopy
