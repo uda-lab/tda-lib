@@ -282,4 +282,85 @@ theorem finiteCoverMass_support_ball_pos [MeasurableSpace X]
   intro j
   exact measure_ball_pos_of_mem_support μ (c j).property (by linarith)
 
+/-! ### Forms without an order on the ambient space -/
+
+omit [LinearOrder X] in
+/-- The canonical q-tame diagram of a finite tuple range, with the auxiliary vertex order
+chosen classically. By `qTameSampleDiagramOrderFree_eq` it is `qTameSampleDiagram` for every
+linear order on the ambient space. -/
+def qTameSampleDiagramOrderFree (k : Type v) [Field k] (t : Fin n → X) (degree : ℕ) :
+    LocallyFiniteDecoratedDiagram :=
+  qTameLocallyFiniteDiagramOrderFree (Sample t) k
+    (Set.finite_univ.totallyBounded : TotallyBounded (Set.univ : Set (Sample t))) degree
+
+/-- The order-free sample diagram equals the sample diagram of any supplied linear order. -/
+theorem qTameSampleDiagramOrderFree_eq (k : Type v) [Field k] (t : Fin n → X) (degree : ℕ) :
+    qTameSampleDiagramOrderFree k t degree = qTameSampleDiagram k t degree :=
+  qTameLocallyFiniteDiagramOrderFree_eq (Sample t) k _ degree
+
+omit [LinearOrder X] in
+/-- The canonical q-tame Rips diagram of a compact carrier, with the auxiliary vertex order
+chosen classically. -/
+def qTameCompactCarrierDiagramOrderFree (k : Type v) [Field k] (K : Set X)
+    (hK : IsCompact K) (degree : ℕ) : LocallyFiniteDecoratedDiagram := by
+  letI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  exact qTameLocallyFiniteDiagramOrderFree K k isCompact_univ.totallyBounded degree
+
+/-- The order-free carrier diagram equals the carrier diagram of any supplied linear order
+on the ambient space. -/
+theorem qTameCompactCarrierDiagramOrderFree_eq (k : Type v) [Field k] (K : Set X)
+    (hK : IsCompact K) (degree : ℕ) :
+    qTameCompactCarrierDiagramOrderFree k K hK degree =
+      qTameCompactCarrierDiagram k K hK degree := by
+  letI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  exact qTameLocallyFiniteDiagramOrderFree_eq K k isCompact_univ.totallyBounded degree
+
+omit [LinearOrder X] in
+/-- The finite iid confidence bound on a totally bounded metric space with no order. -/
+theorem measure_bottleneck_qTameSampleDiagramOrderFree_gt_le
+    [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X] [Nonempty X]
+    (μ : ProbabilityMeasure X) (k : Type v) [Field k]
+    (hX : TotallyBounded (Set.univ : Set X)) (hn : 0 < n) (degree : ℕ)
+    {C : Type*} [Fintype C] [Nonempty C] (c : C → X) {r : ℝ} (hr : 0 < r)
+    (hnet : ∀ x, ∃ j, dist x (c j) < r / 2) :
+    (iidMeasure μ n : Measure (Fin n → X))
+      {t | ENNReal.ofReal (2 * r) < (qTameSampleDiagramOrderFree k t degree).bottleneck
+        (qTameLocallyFiniteDiagramOrderFree X k hX degree)} ≤
+      (Fintype.card C : ℝ≥0∞) *
+        (1 - finiteCoverMass μ (fun j => ball (c j) (r / 2))) ^ n := by
+  letI : LinearOrder X := IsWellOrder.linearOrder WellOrderingRel
+  simpa only [qTameSampleDiagramOrderFree_eq, qTameLocallyFiniteDiagramOrderFree_eq] using
+    measure_bottleneck_qTameSampleDiagram_gt_le μ k hX hn degree c hr hnet
+
+omit [LinearOrder X] in
+/-- The finite iid confidence bound for a compactly supported Borel probability on a second
+countable metric space with no order. -/
+theorem measure_bottleneck_qTameSampleDiagramOrderFree_support_gt_le
+    [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X]
+    (μ : ProbabilityMeasure X) (k : Type v) [Field k]
+    (hK : IsCompact (μ : Measure X).support) (hn : 0 < n) (degree : ℕ)
+    {C : Type*} [Fintype C] [Nonempty C] (c : C → (μ : Measure X).support)
+    {r : ℝ} (hr : 0 < r)
+    (hnet : ∀ x : (μ : Measure X).support, ∃ j, dist x (c j) < r / 2) :
+    (iidMeasure μ n : Measure (Fin n → X))
+      {t | ENNReal.ofReal (2 * r) < (qTameSampleDiagramOrderFree k t degree).bottleneck
+        (qTameCompactCarrierDiagramOrderFree k (μ : Measure X).support hK degree)} ≤
+      (Fintype.card C : ℝ≥0∞) *
+        (1 - finiteCoverMass μ (fun j => ball (c j : X) (r / 2))) ^ n := by
+  letI : LinearOrder X := IsWellOrder.linearOrder WellOrderingRel
+  simpa only [qTameSampleDiagramOrderFree_eq, qTameCompactCarrierDiagramOrderFree_eq] using
+    measure_bottleneck_qTameSampleDiagram_support_gt_le μ k hK hn degree c hr hnet
+
+omit [LinearOrder X] in
+/-- The order-free compact-support confidence event is measurable on ambient tuples. -/
+theorem measurableSet_bottleneck_qTameSampleDiagramOrderFree_support_gt
+    [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X]
+    (μ : ProbabilityMeasure X) (k : Type v) [Field k]
+    (hK : IsCompact (μ : Measure X).support) (hn : 0 < n) (degree : ℕ) (a : ℝ≥0∞) :
+    MeasurableSet {t : Fin n → X | a < (qTameSampleDiagramOrderFree k t degree).bottleneck
+      (qTameCompactCarrierDiagramOrderFree k (μ : Measure X).support hK degree)} := by
+  letI : LinearOrder X := IsWellOrder.linearOrder WellOrderingRel
+  simpa only [qTameSampleDiagramOrderFree_eq, qTameCompactCarrierDiagramOrderFree_eq] using
+    measurableSet_bottleneck_qTameSampleDiagram_support_gt μ k hK hn degree a
+
 end TDA.Persistence.Rips

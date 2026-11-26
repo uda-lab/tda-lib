@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 6 (#1266, #1207): Rips sampling confidence bounds on a metric
+  space with no `LinearOrder` instance: `Rips.qTameSampleDiagramOrderFree`,
+  `Rips.qTameCompactCarrierDiagramOrderFree`, their agreement with every supplied order, and
+  `Rips.measure_bottleneck_qTameSampleDiagramOrderFree_gt_le`,
+  `Rips.measure_bottleneck_qTameSampleDiagramOrderFree_support_gt_le` with measurability of
+  the support event; the downstream regression fixture `RipsConfidenceClientExamples`.
 - Downstream-use audit, family 5 (#1263, #1207): `MatrixSequence.Hom.isoOfInverse` (mutually
   inverse matrix morphisms give a natural isomorphism of the modules) and
   `MatrixSequence.barcode_eq_of_inverse_homs`; the downstream regression fixture
