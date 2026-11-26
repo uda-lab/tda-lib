@@ -4311,6 +4311,58 @@ bound (`isEmpty_interleaving_const`), if `ε < |a - b|`, a small open interval a
 thickening, while the transition on `H₀` of the point is the identity on `k`. Mayer–Vietoris
 compatibility is a separate unit.
 
+### Mayer–Vietoris sequences of interval squares
+
+`TDA.Reeb.IntervalMayerVietoris` (#1190, part E3b, imported by `TDA.Reeb`) specialises the generic
+singular Mayer–Vietoris sequence of `TDA.Topology.SmallChainsQuasiIso` and
+`TDA.Topology.MayerVietorisSequence` to interval preimages.
+
+- Intervals and squares: `intervalAB a b = (-a, b)` (`coe_intervalAB`, `intervalAB_mono`). For
+  `a ≤ a'` and `b ≤ b'`, `coe_intervalAB_inter` gives `I_(a',b) ∩ I_(a,b') = I_(a,b)` and, when
+  `0 < a + b`, `coe_intervalAB_union` gives `I_(a',b) ∪ I_(a,b') = I_(a',b')`; `thicken_intervalAB`
+  is `thicken ε I_(a,b) = I_(a+ε,b+ε)`. An `IntervalMVSquare` has corners `sw`, `left`, `right`,
+  `ne` with `inter_eq : left ∩ right = sw` and `union_eq : left ∪ right = ne` as sets
+  (`sw_le_left`, `sw_le_right`, `left_le_ne`, `right_le_ne`). `IntervalMVSquare.ofEndpoints` is the
+  endpoint square, `IntervalMVSquare.thickenEndpoints` its thickening with corners literally
+  `thicken ε` of the corners (`thickenEndpoints_eq`: it is the endpoint square of the shifted
+  endpoints), and `IntervalMVSquare.Hom` (fields `sw`, `left`, `right`, `ne`) a componentwise
+  inclusion; `hom_ofEndpoints` gives one for independent endpoint increases.
+- The cover: `Q.coverSet f J = {y ∈ f ⁻¹ ne | f y ∈ J}` (`isOpen_coverSet`), whose left and right
+  pieces cover `f ⁻¹ ne` by interiors (`interior_coverSet_union`). `coverSetIso` identifies such a
+  piece with the preimage `f ⁻¹ J`, the identity on points (`coverSetIso_hom_apply_val`), with the
+  instances `leftIso`, `rightIso` and `swIso`.
+- The sequence: `intervalMVδ f Q k n : H_{n+1}(f ⁻¹ ne) ⟶ H_n(f ⁻¹ sw)` is `mayerVietorisδ` of the
+  cover followed by `swIso`; `intervalMVInterMap` is `(inc, -inc)` and `intervalMVSumMap` the sum of
+  the inclusions. Their types are written with `singularHomologyFunctor` applied to
+  `intervalPreimageTopCat f`, definitionally the values of `intervalSingularHomology k n f`. The
+  composites vanish (`intervalMVδ_comp_intervalMVInterMap`,
+  `intervalMVInterMap_comp_intervalMVSumMap`, `intervalMVSumMap_comp_intervalMVδ`), and the
+  sequence is exact at the three places (`intervalMV_exact_inter`, `intervalMV_exact_sum`,
+  `intervalMV_exact_ne`), transported from the generic exactness along the homeomorphisms.
+- Naturality: `intervalPreimageMap h : f ⁻¹ I ⟶ g ⁻¹ J` is the identity on points when
+  `f x ∈ I → g x ∈ J` (`intervalPreimageMap_apply_val`); the maps of `intervalPreimageTopCat` and
+  E2's `perturbationTopHom` are instances (`intervalPreimageTopCat_map_eq`, `perturbationTopHom_eq`).
+  If `f x ∈ Q.left → g x ∈ Q'.left` and `f x ∈ Q.right → g x ∈ Q'.right` (hence for `sw` and `ne`:
+  `mapsTo_sw`, `mapsTo_ne`), the three maps commute with the induced maps
+  (`intervalMVδ_comp_map`, `intervalMVInterMap_comp_map`, `intervalMVSumMap_comp_map`), the first
+  by `mayerVietorisδ_naturality`. In `(a, b)`, for `h : IntervalMVSquare.Hom Q Q'`:
+  `intervalMVδ_naturality`, `intervalMVInterMap_naturality`, `intervalMVSumMap_naturality`, with the
+  maps of `intervalSingularHomology k n f`.
+- Thickening witness: for `|f - g| ≤ ε`, the components of `intervalSingularHomologyPerturbation`
+  at the corners of `ofEndpoints a b a' b'` map the sequence of `f` to the sequence of `g` on
+  `thickenEndpoints a b a' b' ε` (`intervalMVδ_comp_perturbation_app`,
+  `intervalMVInterMap_comp_perturbation_app`, `intervalMVSumMap_comp_perturbation_app`); for the
+  two witnesses of `intervalSingularHomologyInterleaving`: `intervalMVδ_comp_interleaving_φ` and
+  `intervalMVδ_comp_interleaving_ψ` (from `g` to `f`, by `perturbationBound_symm`).
+
+`TDA.Reeb.Examples.IntervalMayerVietoris` (imported by `TDA.Reeb.Examples`): `exampleSquare`, the
+endpoint square of `(1, 1)` and `(2, 3)` with corners `(-1, 1)`, `(-2, 1)`, `(-1, 3)`, `(-2, 3)`
+(`exampleSquare_corners`); exactness of its sequence for the identity of `ℝ` over `ℚ`
+(`exampleSquare_exact`); naturality for the increase of `b` to `2` (`exampleSquare'`,
+`exampleSquare_hom`, `exampleSquare_intervalMVδ_naturality`); and, for `shiftHalf x = x + 1/2`
+(`abs_sub_shiftHalf_le`), the thickened square (`exampleSquare_thickenEndpoints`) and compatibility
+with `φ` (`exampleSquare_intervalMVδ_comp_interleaving_φ`).
+
 ## The algebraic core of singular Mayer–Vietoris
 
 `TDA.Topology.SmallChains`, `TDA.Topology.SingularMayerVietoris` and

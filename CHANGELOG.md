@@ -547,6 +547,27 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `threeQuarterPoint`, `interChain`, `loop_isCycle`, `loop_boundary`) with the sign lemma
   `mayerVietorisδ_loop`; and naturality for `halfMap` (`halfMap_ne_id`, `halfMap_mapsTo_lowerRay`,
   `halfMap_mapsTo_upperRay`, `mayerVietoris_naturality_halfMap`).
+- Mayer–Vietoris sequences of interval squares (#1190, part E3b): `TDA.Reeb.IntervalMayerVietoris`
+  defines `intervalAB` (`coe_intervalAB`, `intervalAB_mono`, `coe_intervalAB_inter`,
+  `coe_intervalAB_union`, `thicken_intervalAB`) and `IntervalMVSquare` (`sw`, `left`, `right`, `ne`,
+  `inter_eq`, `union_eq`; `sw_le_left`, `sw_le_right`, `left_le_ne`, `right_le_ne`, `ofEndpoints`,
+  `thickenEndpoints`, `thickenEndpoints_eq`, `Hom`, `hom_ofEndpoints`, `mapsTo_sw`, `mapsTo_ne`,
+  `coverSet`, `isOpen_coverSet`, `interior_coverSet_union`, `coverSetIso`,
+  `coverSetIso_hom_apply_val`, `leftIso`, `rightIso`, `swIso`). The sequence `intervalMVδ`,
+  `intervalMVInterMap`, `intervalMVSumMap` with vanishing composites
+  (`intervalMVδ_comp_intervalMVInterMap`, `intervalMVInterMap_comp_intervalMVSumMap`,
+  `intervalMVSumMap_comp_intervalMVδ`) and exactness (`intervalMV_exact_inter`,
+  `intervalMV_exact_sum`, `intervalMV_exact_ne`). Naturality along `intervalPreimageMap`
+  (`intervalPreimageMap_apply_val`, `intervalPreimageTopCat_map_eq`, `perturbationTopHom_eq`;
+  `intervalMVδ_comp_map`, `intervalMVInterMap_comp_map`, `intervalMVSumMap_comp_map`), in the square
+  (`intervalMVδ_naturality`, `intervalMVInterMap_naturality`, `intervalMVSumMap_naturality`) and
+  with E2's thickening witness (`intervalMVδ_comp_perturbation_app`,
+  `intervalMVInterMap_comp_perturbation_app`, `intervalMVSumMap_comp_perturbation_app`,
+  `intervalMVδ_comp_interleaving_φ`, `intervalMVδ_comp_interleaving_ψ`). Fixtures in
+  `TDA.Reeb.Examples.IntervalMayerVietoris`: `exampleSquare`, `exampleSquare'`,
+  `exampleSquare_corners`, `exampleSquare_exact`, `exampleSquare_hom`,
+  `exampleSquare_intervalMVδ_naturality`, `shiftHalf`, `abs_sub_shiftHalf_le`,
+  `exampleSquare_thickenEndpoints`, `exampleSquare_intervalMVδ_comp_interleaving_φ`.
 
 ## v0.5.0
 
