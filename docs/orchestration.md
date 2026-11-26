@@ -83,7 +83,15 @@ legitimately blocked. This is an intake guideline, not a repository-local schedu
 
 ## Documentation and milestone interpretation
 
-Public API documentation requires doc-gen4. Blueprint is optional; ellalpha is an
+Public API documentation requires doc-gen4. It is built at release snapshots with
+`scripts/build-docs.sh` in a proven local or self-hosted container, not by a hosted CI
+job (#1203, #852); it is not a mandatory release gate. Provenance (tag and source SHA,
+pins, checksum and size, storage and retention, navigation/search/source-link checks)
+is recorded as in CONTRIBUTING.md. No hosting endpoint or permanent URL is chosen
+unless needed. The agent that merges a PR into `develop` checks the governing Issue's
+acceptance criteria, records the PR and squash commit on the Issue, and closes it when
+complete or lists the unfinished acceptance items in its body (#1195 D-10); this is not
+a CI gate. Blueprint is optional; ellalpha is an
 independent consumer, not a completion condition. The first stable release need not finish
 all Project milestones. Do not invent dates or infer serial execution from milestone order;
 dot establishes dependencies and release scope from actual mathematical decisions.

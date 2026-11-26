@@ -34,6 +34,16 @@ reviewed head. Actual conflicts or source changes require resolution and renewed
 validation and review. Existing merge authority continues to apply; this policy adds no
 parent-approval checkpoint.
 
+The agent that merges a PR into `develop` also closes out the governing Issue, because
+`Closes #N` on a `develop` PR does not close it (the default branch is `main`):
+
+- check the Issue's acceptance criteria against what merged;
+- record the PR and its squash commit on the Issue;
+- close the Issue when it is complete; otherwise put the unfinished acceptance items in
+  the Issue body.
+
+This adds no CI gate and no auto-close mechanism.
+
 ## Preparing and completing a release
 
 During preparation, apply the semantic and API criteria in
@@ -94,6 +104,24 @@ catalog and procedure.
    main fixes, no extra synchronization PR is needed. Tree equality alone is insufficient.
 5. Record the propagation result on the release Issue/PR before closing that work. Remove
    the temporary release branch only after all destinations are accounted for. Keep `develop`.
+
+### API documentation snapshot
+
+There is no hosted API-docs job in CI (#1203). At a release snapshot, optionally build the
+declaration pages with `scripts/build-docs.sh` (revision invalidation and source-link
+binding unchanged) from a clean checkout of the tagged source, in a proven local or
+self-hosted container. This is low-frequency and is not a mandatory release gate; the
+release does not wait for it. A retained snapshot records, on the release Issue (#852):
+
+- tag and source SHA;
+- toolchain and dependency pins (`lean-toolchain`, `lake-manifest.json`, `docbuild`);
+- output checksum and size of the compressed archive;
+- storage location and retention;
+- representative navigation, search and source-link checks.
+
+No hosting endpoint or permanent URL is chosen; one is chosen only if needed, as a
+separate decision. The lightweight Pages site is separate. See
+[API snapshot maintenance](docbuild/README.md).
 
 Release preparation does not itself authorize a main merge, tag or publication outside
 the task's existing authority. Conflict resolution that changes reviewed content requires
