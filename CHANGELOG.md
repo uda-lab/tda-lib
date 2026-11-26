@@ -338,6 +338,15 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   value is still kept exactly and an invalid one rejected. Start-up lines and session briefs report
   `all (lean-default; N detected)` or `N (explicit; N detected)`. Hosted CI's `check` job now sets `2`
   explicitly (it had been running at the fallback `1`); the cloud setup script keeps `1`.
+- Flasque sheaves and section lifting on compact intervals (#1226, parts U1 and U2):
+  `TDA.Sheaf.SheafFlasque` proves that injective sheaves of `k`-modules are flasque
+  (`isFlasque_of_injective`), introduces `GermSurjective` with `germSurjective_of_isFlasque`,
+  `germSurjective_of_injective` and `germSurjective_of_epi`, and gives local preimages along
+  exact complexes (`exists_local_preimage_of_exact`). `TDA.Sheaf.IntervalSections` proves the
+  extension step for order-connected `S ⊆ ℝ` (`exists_section_lift_extend`, on the opens
+  `openIoo S p q`), the lifting of locally liftable global sections on `[u, v]` along an exact
+  complex with germ-surjective first term (`exists_section_lift_Icc`) and exactness of global
+  sections on `[u, v]` (`sections_exact_Icc`). Fixtures in `TDA.Sheaf.IntervalSectionsExamples`.
 
 ## v0.5.0
 

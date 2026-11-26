@@ -7,3 +7,4 @@ import TDA.Sheaf.BandConvolutionExamples
 import TDA.Sheaf.AlternatingHeredityExamples
 import TDA.Sheaf.RaySheafExamples
 import TDA.Sheaf.RealStratificationExamples
+import TDA.Sheaf.IntervalSectionsExamples

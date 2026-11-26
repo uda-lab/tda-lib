@@ -50,6 +50,8 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingDecomposition` | `exists_decomposition`, `multiset_eq_of_iso`, `barcode`, `barcodeIso : M ≅ barcodeDiagram o (barcode M)`, `nonempty_iso_iff_barcode_eq`, `intervalMultiplicity`; `reflectSink` (additive functor), `reflectSinkIntervalSumIso`, `reflectSource`, `reflectSourceUnitIso`; `chainToDiagram` | `o : Fin n → Bool` orients the path on `Fin (n + 1)`; `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field with `[∀ X, FiniteDimensional k (M.obj X)]`. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingHeredity` | `pathTensor`, `pathTensorAdjunction`, `projective_pathTensor`, `representable`, `pathTensorObjEquiv`; `resolution`, `resolutionSplitting`, `resolution_shortExact`, `enoughProjectives_diagram`, `hasProjectiveDimensionLT_two`, `ext_eq_zero` | Same diagrams `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field, with no finiteness assumption; `Ext` in any `HasExt` universe. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealStratification` | `orient`, `paths_hom_subsingleton`; `IsBasicOpen`, `isBasis_basicOpen`, `IsBasicOpen.inf`, `BasicCat`, `basicIncl`, `basicTopology`; `star`, `tau`, `tau_eq_iff`, `exists_star_tau`, `tauFunctor`; `isSheaf_basic_of_isIso_sameStratum`, `isSheaf_tauFunctor_comp`; `basisEquiv` | Breakpoints `p : Fin m → ℝ` strictly increasing; the basis sheaf condition holds for presheaves in any category; `basisEquiv` uses `ModuleCat.{0} k` for `k : Type`. See [Stratifications of the real line](#stratifications-of-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_section_lift_extend`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`; the extension step needs `S` order-connected, the global statements are for compact intervals `[u, v]` (all `u`, `v`). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 
 ### Capped centred height-map pairs
 
@@ -4378,6 +4380,46 @@ every basic open (`constLineSheafSectionsIso`). The point diagram `pointDiagram`
 `pointSegment = {1}`, read through `tauFunctor` is a sheaf (`isSheaf_point`); its extension
 `pointLineSheaf` has sections `pointLineSheafSectionsIso` of dimension one over `(-1, 1)`
 (`finrank_pointLineSheaf_center`) and zero over `(1, 2)` (`finrank_pointLineSheaf_right`).
+
+## Flasque sheaves and section lifting on intervals
+
+`TDA.Sheaf.SheafFlasque` treats sheaves of modules `X.Sheaf (ModuleCat k)` over a ring
+`k : Type` on `X : TopCat.{0}`, with Mathlib's `TopCat.Sheaf.IsFlasque` (all restriction maps
+are epimorphisms).
+
+- `isFlasque_of_injective`: an injective sheaf is flasque. Its underlying presheaf is injective
+  (`presheaf_isFlasque_of_injective` treats presheaves); a section over `U` is classified by a
+  morphism out of the free presheaf `yoneda.obj U ⋙ ModuleCat.free k`, and for `U ≤ V` the
+  induced map of free presheaves is a monomorphism (private helpers modelling Mathlib's
+  `CategoryTheory.Presheaf.freeYoneda`).
+- `GermSurjective k F`: every germ of `F` at `x` is the germ of a section over every open
+  neighbourhood of `x`. It holds for flasque sheaves (`germSurjective_of_isFlasque`), hence for
+  injective ones (`germSurjective_of_injective`), and passes to quotients
+  (`germSurjective_of_epi`).
+- `exists_local_preimage_of_exact`: along an exact complex `X₁ ⟶ X₂ ⟶ X₃`, a section of `X₂`
+  that maps to zero comes from `X₁` near every point.
+
+`TDA.Sheaf.IntervalSections` works on a subspace `S ⊆ ℝ`, as `TopCat.of S`, with the opens
+`openIoo S p q = S ∩ (p, q)` (`mem_openIoo`, `openIoo_le_openIoo`, `exists_openIoo_le`). Let
+`X₁ ⟶ X₂ ⟶ X₃` be exact with `X₁` germ-surjective, and let `s` be a global section of `X₃` that
+lifts to `X₂` near every point.
+
+- `exists_section_lift_extend` (order-connected `S`): for `l < a' < a` with `a' ∈ S` and
+  `b ∈ S`, a lift of `s` over `openIoo S l a` extends to a lift over `openIoo S l t` for some
+  `t > b`, unchanged over `openIoo S l a'`. Open and half-open intervals are not treated; the
+  agreement clause is what a countable gluing of this step needs.
+- `exists_section_lift_Icc`: on `[u, v]`, `s` lifts to a global section of `X₂`, for all `u`
+  and `v` (the empty interval included).
+- `sections_exact_Icc`: for `L₀ ⟶ L₁ ⟶ L₂ ⟶ L₃` on `[u, v]`, exact at `L₁` and `L₂` with `L₀`
+  germ-surjective, global sections are exact at `Γ(L₂)`.
+
+`TDA.Sheaf.IntervalSectionsExamples` works over `ℚ` on `I01 = [0, 1]`: the skyscraper `sky` at
+`mid = 1/2` is flasque and germ-surjective (`sky_isFlasque`, `germSurjective_sky`); an
+injective sheaf `Injective.under F` is flasque (`isFlasque_under`) and the cokernel of
+`Injective.ι F` is germ-surjective (`germSurjective_cokernel_ι`); for the constant sheaf `K`,
+every global section lifts along `sky ⊞ K ⟶ K` (`constant_section_lift` from
+`sections_exact_Icc`, `constant_section_lift_of_local` from `exists_section_lift_Icc`); and the
+lifting statement holds on the empty interval `[1, 0]` (`empty_section_lift`).
 
 ## Review and extension boundaries
 
