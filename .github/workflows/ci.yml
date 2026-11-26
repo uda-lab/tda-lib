@@ -33,6 +33,10 @@ jobs:
     # Draft events create a skipped check without allocating a runner. Marking the PR ready
     # triggers a fresh, real check; develop/main pushes and manual runs remain unchanged.
     if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    # Explicit per-process Lean thread count for the hosted runner (#1240): the wrappers leave an
+    # unset value to Lean's default, and the runner is a small shared host.
+    env:
+      LEAN_NUM_THREADS: '2'
     steps:
       - uses: actions/checkout@v4
         with:

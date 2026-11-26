@@ -332,6 +332,12 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   it by some iterate of `S`. Fixtures in `TDA.Topology.SingularMayerVietorisExamples` cover two
   rays covering `ℝ`, a segment that is not small, the flip sign over `ℚ` and contractible
   complexes.
+- Lean thread default (#1240): an unset or empty `LEAN_NUM_THREADS` is no longer replaced by `1`;
+  `scripts/lean.sh` and the other guarded entry points leave it unset, so Lean uses its own
+  default (all hardware threads), as `uda-lab/reeb-ordering` already does. An explicit positive
+  value is still kept exactly and an invalid one rejected. Start-up lines and session briefs report
+  `all (lean-default; N detected)` or `N (explicit; N detected)`. Hosted CI's `check` job now sets `2`
+  explicitly (it had been running at the fallback `1`); the cloud setup script keeps `1`.
 - Flasque sheaves and section lifting on compact intervals (#1226, parts U1 and U2):
   `TDA.Sheaf.SheafFlasque` proves that injective sheaves of `k`-modules are flasque
   (`isFlasque_of_injective`), introduces `GermSurjective` with `germSurjective_of_isFlasque`,

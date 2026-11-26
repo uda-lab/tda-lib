@@ -376,7 +376,7 @@ elif [ "$force_full" = 0 ]; then
   esac
 fi
 
-echo "[pre-push] transient-artefact and conflict-marker guards on pushed commit $pushed_commit…"
+echo "[pre-push] transient-artefact and conflict-marker guards on pushed commit ${pushed_commit}…"
 bash scripts/check-transient-artifacts.sh "$pushed_commit" \
   || { block "check-transient-artifacts failed for $pushed_commit"; exit 1; }
 bash scripts/check-conflict-markers.sh "$pushed_commit" \
