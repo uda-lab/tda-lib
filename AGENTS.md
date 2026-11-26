@@ -26,16 +26,12 @@ scripts/github-setup.sh # broad labels/settings/ruleset bootstrap; not a targete
 Lake's shared artifact cache defaults to the main checkout's sibling `.cache/<repo>/lake-artifacts`; warm a new worktree with `scripts/bootstrap.sh` then `scripts/check.sh`.
 
 Shared runtime safeguards live in `scripts/agent/`. Honor `/tmp/codex-stop` and
-exclusion for shared build/dependency paths. An unset `LEAN_NUM_THREADS` stays at the
-single-thread default; an explicit positive value is kept exactly. The CPU count actually
-available to the process (affinity, capped by any cgroup CPU quota) is still detected and
-reported for visibility, but is not used to raise the default: each concurrent Lean worker
-maps a large span of oleans, and measurement found no reliable benefit, and a clear cost in
-I/O and memory pressure, from more worker threads than this build is bound by page cache for
-(see #945 for the related cold-build cost). Raise it explicitly only on a host whose own
-measurement supports it, and lower it explicitly after a measured OOM (`exit 137`). This
-per-process setting is
-separate from concurrent build count. Codex commands must use these entry points regardless of hook activation. Codex and Claude have
+exclusion for shared build/dependency paths. An unset `LEAN_NUM_THREADS` is left to Lean's
+own default (all hardware threads); an explicit positive value is kept exactly. The CPU count
+available to the process (affinity, capped by any cgroup CPU quota) is detected and reported
+for visibility only. Set the variable explicitly in the host's untracked environment on a
+CPU-quota-limited or memory-constrained host, and lower it after a measured OOM (`exit 137`).
+This per-process setting is separate from concurrent build count. Codex commands must use these entry points regardless of hook activation. Codex and Claude have
 optional supported Bash adapters; their activation depends on harness support and trust. See `docs/orchestration.md`.
 
 ## Code Conventions

@@ -36,15 +36,13 @@ lean_check_headroom() {
     return 2
   fi
 }
-# Detected CPU availability for an unset/empty LEAN_NUM_THREADS: the CPUs actually available to
-# this process (affinity/cpuset, as `nproc` reports it) capped by a cgroup v2 CPU quota when one
-# is set, at least 1. Never a hard-coded hardware number. This is informational: it tells an
-# operator how many CPUs exist to consider an explicit override, but `lean_resolve_num_threads`
-# does not use it to raise the default thread count by itself — raising concurrent Lean workers
-# past what a host's memory comfortably holds for their mapped oleans does not shorten a build
-# bound by page cache for those mappings. LEAN_NPROC_CMD, LEAN_CGROUP_ROOT and
-# LEAN_CGROUP_SELF_PATH exist only so self-tests can stub detection; no ordinary invocation
-# needs to set any of them.
+# Detected CPU availability: the CPUs actually available to this process (affinity/cpuset, as
+# `nproc` reports it) capped by a cgroup v2 CPU quota when one is set, at least 1. Never a
+# hard-coded hardware number. This is informational: it is reported next to the thread setting
+# so an operator on a quota-limited or memory-constrained host can see when an explicit
+# LEAN_NUM_THREADS is worth setting; `lean_resolve_num_threads` never derives the thread count
+# from it. LEAN_NPROC_CMD, LEAN_CGROUP_ROOT and LEAN_CGROUP_SELF_PATH exist only so self-tests
+# can stub detection; no ordinary invocation needs to set any of them.
 lean_detect_num_threads() {
   local nproc_cmd=${LEAN_NPROC_CMD:-nproc} affinity
   local cg_root=${LEAN_CGROUP_ROOT:-/sys/fs/cgroup} cg_path cg_dir
@@ -84,23 +82,28 @@ lean_detect_num_threads() {
   if [ -n "$quota_threads" ] && [ "$quota_threads" -lt "$detected" ]; then detected=$quota_threads; fi
   printf '%s\n' "$detected"
 }
-# Resolves LEAN_NUM_THREADS, LEAN_NUM_THREADS_SOURCE ("explicit" or "fallback") and
-# LEAN_NUM_THREADS_DETECTED into the caller's shell and exports all three. An explicit positive
-# value is kept exactly as given; an invalid explicit value is rejected (return 64, as before
-# this helper existed). Unset/empty keeps the single-thread default: measurement on this
-# container found no reliable wall-time benefit from more Lean worker threads, and a clear cost
-# (more concurrent olean mappings than its memory comfortably holds) at the full detected count.
-# LEAN_NUM_THREADS_DETECTED still reports what `lean_detect_num_threads` found, so the fallback
-# stays visible and an operator can override it explicitly on a host where more memory makes
-# more workers worthwhile.
+# Resolves LEAN_NUM_THREADS, LEAN_NUM_THREADS_SOURCE ("explicit" or "lean-default") and
+# LEAN_NUM_THREADS_DETECTED into the caller's shell. An explicit positive value is kept exactly
+# as given and exported; an invalid explicit value is rejected (return 64). An unset or empty
+# value is left unset, so Lean applies its own default (all hardware threads), as in
+# uda-lab/reeb-ordering's wrapper. A host that needs fewer threads (a CPU quota, little memory
+# for concurrent olean mappings, a measured OOM `exit 137`) sets the variable explicitly in its
+# own untracked environment; the repository records no host value.
 lean_resolve_num_threads() {
   LEAN_NUM_THREADS_DETECTED=$(lean_detect_num_threads)
   if [ -n "${LEAN_NUM_THREADS:-}" ]; then
     [[ "$LEAN_NUM_THREADS" =~ ^[1-9][0-9]*$ ]] || { echo 'ERROR: LEAN_NUM_THREADS must be positive' >&2; return 64; }
     LEAN_NUM_THREADS_SOURCE=explicit
+    export LEAN_NUM_THREADS
   else
-    LEAN_NUM_THREADS=1
-    LEAN_NUM_THREADS_SOURCE=fallback
+    unset LEAN_NUM_THREADS
+    LEAN_NUM_THREADS_SOURCE=lean-default
   fi
-  export LEAN_NUM_THREADS LEAN_NUM_THREADS_SOURCE LEAN_NUM_THREADS_DETECTED
+  export LEAN_NUM_THREADS_SOURCE LEAN_NUM_THREADS_DETECTED
+}
+# lean_num_threads_summary — one-line description of the resolved setting for start-up lines and
+# briefs, e.g. "3 (explicit; 12 detected)" or "all (lean-default; 12 detected)".
+lean_num_threads_summary() {
+  printf '%s (%s; %s detected)' "${LEAN_NUM_THREADS:-all}" "${LEAN_NUM_THREADS_SOURCE:-unknown}" \
+    "${LEAN_NUM_THREADS_DETECTED:-unknown}"
 }
