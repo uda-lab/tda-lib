@@ -50,7 +50,8 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingDecomposition` | `exists_decomposition`, `multiset_eq_of_iso`, `barcode`, `barcodeIso : M ≅ barcodeDiagram o (barcode M)`, `nonempty_iso_iff_barcode_eq`, `intervalMultiplicity`; `reflectSink` (additive functor), `reflectSinkIntervalSumIso`, `reflectSource`, `reflectSourceUnitIso`; `chainToDiagram` | `o : Fin n → Bool` orients the path on `Fin (n + 1)`; `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field with `[∀ X, FiniteDimensional k (M.obj X)]`. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingHeredity` | `pathTensor`, `pathTensorAdjunction`, `projective_pathTensor`, `representable`, `pathTensorObjEquiv`; `resolution`, `resolutionSplitting`, `resolution_shortExact`, `enoughProjectives_diagram`, `hasProjectiveDimensionLT_two`, `ext_eq_zero` | Same diagrams `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field, with no finiteness assumption; `Ext` in any `HasExt` universe. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealStratification` | `orient`, `paths_hom_subsingleton`; `IsBasicOpen`, `isBasis_basicOpen`, `IsBasicOpen.inf`, `BasicCat`, `basicIncl`, `basicTopology`; `star`, `tau`, `tau_eq_iff`, `exists_star_tau`, `tauFunctor`; `isSheaf_basic_of_isIso_sameStratum`, `isSheaf_tauFunctor_comp`; `basisEquiv` | Breakpoints `p : Fin m → ℝ` strictly increasing; the basis sheaf condition holds for presheaves in any category; `basisEquiv` uses `ModuleCat.{0} k` for `k : Type`. See [Stratifications of the real line](#stratifications-of-the-real-line). |
-| `TDA.Sheaf` / `TDA.Sheaf.LocalSystem` | `IsLocallyConstantOn`, `IsLocallyConstantOn.mono`, `restrict_isIso_of_isLocallyConstantOn`; `transportIso`, `map_comp_transportIso_hom`, `transportIso_hom_eq_map`, `transportIso_trans`; `isIso_germ_of_isIso_map`, `isIso_germ_of_isLocallyConstantOn` | Sheaves of `ModuleCat.{0} k` on `realLine` for a ring `k : Type`; convex means `Set.OrdConnected`. The intended equivalence of `IsLocallyConstantOn` with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). See [Interval-local constancy on the real line](#interval-local-constancy-on-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.LocalSystem` | `IsLocallyConstantOn`, `IsLocallyConstantOn.mono`, `restrict_isIso_of_isLocallyConstantOn`, `isIso_map_of_le_sup`; `transportIso`, `map_comp_transportIso_hom`, `transportIso_hom_eq_map`, `transportIso_trans`; `isIso_germ_of_isIso_map`, `isIso_germ_of_isLocallyConstantOn` | Sheaves of `ModuleCat.{0} k` on `realLine` for a ring `k : Type`; convex means `Set.OrdConnected`. The intended equivalence of `IsLocallyConstantOn` with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). See [Interval-local constancy on the real line](#interval-local-constancy-on-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.RealConstructible` | `IsConstructible`, `isIso_res_sameStratum`, `isConstructible_iff`; `starFunctor`, `sections`, `sections_obj_obj`, `sections_map_gen`; `basisSheaf`, `extension`, `extensionBasicIso`, `extensionStarIso`, `isConstructible_extension`, `finiteDimensional_sections`; `extensionSectionsIso`, `extensionSectionsIso_app_app`, `sectionsExtensionIso`; `Constructible`, `FinDiagram`, `sectionsFin`, `extensionFin`, `equivalence`, `equivalence_functor_obj_obj`, `equivalence_functor_obj_map_gen`, `equivalence_inverse_obj_obj` | Strictly increasing breakpoints `p : Fin m → ℝ`; `k : Type`, a ring for `isIso_res_sameStratum`, a division ring for `IsConstructible`, a field for the diagram side. Local constancy is the interval-local `IsLocallyConstantOn`; its intended equivalence with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). The derived comparison is #1183. See [Constructible sheaves on the real line](#constructible-sheaves-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_section_lift_extend`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`; the extension step needs `S` order-connected, the global statements are for compact intervals `[u, v]` (all `u`, `v`). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`; `pt`, `toPt`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
@@ -4440,7 +4441,9 @@ every basic open (`constLineSheafSectionsIso`). The point diagram `pointDiagram`
   then `F(W) ⟶ F(V)` is an isomorphism for every nonempty convex open `V ⊆ W`. The proof glues
   along the binary sheaf square (`TopCat.Sheaf.isLimitPullbackCone`), propagates along `W` with
   `IsPreconnected.induction₂'`, and concludes with `TopCat.Sheaf.existsUnique_gluing'` and
-  `TopCat.Sheaf.eq_of_locally_eq'`.
+  `TopCat.Sheaf.eq_of_locally_eq'`. The gluing step is public as `isIso_map_of_le_sup`: for
+  opens `A, B ⊆ D ⊆ A ∪ B` in any topological space and any coefficient category, if
+  `F(B) ⟶ F(A ∩ B)` is an isomorphism then so is `F(D) ⟶ F(A)`.
 - `transportIso F hWc hF h₁ h₂ … : F(V₁) ≅ F(V₂)` for nonempty convex `V₁, V₂ ⊆ W` is the
   inverse restriction to `V₁` followed by restriction to `V₂`. `map_comp_transportIso_hom`
   states its compatibility with restriction from `W`, `transportIso_hom_eq_map` that it is
@@ -4461,6 +4464,78 @@ at `3/2` (`finrank_stalk_pointLineSheaf_right`), but not on the whole line
 (`not_isLocallyConstantOn_pointLineSheaf_univ`): the trivialisation would identify its
 one-dimensional sections over `(-1, 3)` (`finrank_pointLineSheaf_wide`) with its zero sections
 over `(1, 2)`.
+
+## Constructible sheaves on the real line
+
+`TDA.Sheaf.RealConstructible` works with sheaves `F : TopCat.Sheaf (ModuleCat.{0} k) realLine`
+for `k : Type`, strictly increasing breakpoints `p : Fin m → ℝ` (`hp : StrictMono p`) and the
+strata, stars and basic opens of `TDA.Sheaf.RealStratification`, with `S = breakpoints p`.
+
+- `IsConstructible S F` for a division ring `k`: `IsLocallyConstantOn F (↑S)ᶜ` and every stalk
+  `F.presheaf.stalk x` is finite-dimensional.
+  **Limitation:** local constancy here is the interval-local `IsLocallyConstantOn` of
+  `TDA.Sheaf.LocalSystem`. It is intended to be equivalent, on `ℝ`, to "locally isomorphic to a
+  constant sheaf", but that equivalence is not yet proved in Lean; the bridge is follow-up
+  #1250.
+- `isIso_res_sameStratum` (a ring `k` suffices): if `F` is locally constant on `(↑S)ᶜ`, then
+  `F(V) ⟶ F(U)` is an isomorphism for basic opens `U ⊆ V` with `U ∩ S = V ∩ S`. Without a
+  breakpoint this is `restrict_isIso_of_isLocallyConstantOn`; with a breakpoint `s` two binary
+  gluings (`isIso_map_of_le_sup`) extend across `s` from `V ∩ (-∞, s)` and `V ∩ (s, ∞)`.
+- `isConstructible_iff`: `IsConstructible S F` holds exactly when `F` inverts these inclusions
+  and `F(U)` is finite-dimensional for every basic open `U`. The stalk at `x` is read on a basic
+  open meeting `S` at most in `x`, through `isIso_germ_of_isIso_map`.
+- The section functor `sections k p : TopCat.Sheaf (ModuleCat.{0} k) realLine ⥤
+  Diagram k (orient m)` for a field `k` is restriction along `starFunctor p`. Pinned equations:
+  `sections_obj_obj`, `(Γ F)(v) = F(star p v)`; `sections_map_gen`, `(Γ F)(gen h)` is the
+  restriction `F(star p v) ⟶ F(star p w)` along `star_le_star_of_arrow`.
+- The extension functor `extension k hp : Diagram k (orient m) ⥤
+  TopCat.Sheaf (ModuleCat.{0} k) realLine` is `basisSheaf k hp` (the diagram composed with
+  `tauFunctor hp`, a sheaf on the basis by `isSheaf_tauFunctor_comp`) followed by the functor of
+  `basisEquiv`. `extensionBasicIso : (Φ M)(U) ≅ M(tau p U)` for basic `U`, and
+  `extensionStarIso : (Φ M)(star p v) ≅ M v`. `isConstructible_extension`: `Φ M` is
+  constructible when every `M.obj X` is finite-dimensional; `finiteDimensional_sections`: `Γ F`
+  has finite-dimensional values when `F` is constructible.
+- The counit `extensionSectionsIso : extension k hp ⋙ sections k p ≅ 𝟭 _` has components
+  `extensionStarIso` (`extensionSectionsIso_app_app`). The unit
+  `sectionsExtensionIso : ObjectProperty.ι _ ≅ ObjectProperty.ι _ ⋙ sections k p ⋙ extension k hp`
+  on constructible sheaves is built from the counit of `basisEquiv` and the restrictions
+  `F(star p (tau p U)) ⟶ F(U)` on basic opens, which are isomorphisms by
+  `isIso_res_sameStratum`.
+- `Constructible k p` and `FinDiagram k m` are the full subcategories of constructible sheaves
+  and of diagrams with finite-dimensional values; `sectionsFin` and `extensionFin` are `Γ` and
+  `Φ` between them, and `equivalence k hp : Constructible k p ≌ FinDiagram k m`
+  (`Equivalence.mk` of the unit and counit above). `equivalence_functor_obj_obj` and
+  `equivalence_inverse_obj_obj` identify its functors with `Γ` and `Φ`, and
+  `equivalence_functor_obj_map_gen` gives the map equation through the equivalence.
+
+The comparison with derived categories is not covered here; it is #1183.
+
+`TDA.Sheaf.RealConstructibleExamples` covers three cases. The one-breakpoint sheaves are built
+with `Φ` from interval diagrams; only the zero-breakpoint constant sheaf and Mathlib's skyscraper
+are sheaves defined independently of `Φ`.
+
+- No breakpoints (`p₀`, `p₀_strictMono`, `breakpoints_p₀`, `star_p₀`): constructible means
+  locally constant on `ℝ` with finite-dimensional stalks (`isConstructible_p₀_iff`), `Γ F` is
+  `F(ℝ)` (`sections_p₀`), and two constructible sheaves with isomorphic global sections are
+  isomorphic (`nonempty_iso_of_iso_top`). The extension `constSheaf₀` of the one-vertex
+  interval is constructible (`isConstructible_constSheaf₀`) with one-dimensional global
+  sections (`finrank_constSheaf₀_top`).
+- One breakpoint `p₁ = 0`, strata `0 ← 1 → 2` (`arrow_one_zero`, `arrow_one_two`): for every
+  interval `J`, `intervalSheaf k J = Φ (interval J)` is constructible
+  (`isConstructible_intervalSheaf`), `Γ (intervalSheaf k J) ≅ interval J`
+  (`sectionsIntervalSheafIso`), its sections over the star of `v` have dimension one exactly on
+  `J` (`finrank_intervalSheaf_star`), and restriction from the star of the point to a cell
+  outside `J` is not invertible (`not_isIso_intervalSheaf_map`). The segments `segLeft = [0, 1]`
+  and `segRight = [1, 2]` give `leftClosed` (the field on `(-∞, 0]`, dimensions `1, 1, 0`,
+  `finrank_leftClosed`) and `rightClosed` (the field on `[0, ∞)`, `finrank_rightClosed`), with
+  one noninvertible restriction each, on opposite sides (`not_isIso_leftClosed_right`,
+  `not_isIso_rightClosed_left`); `pointSheaf` for `[1, 1]` has two
+  (`not_isIso_pointSheaf`).
+- Mathlib's skyscraper `sky k = skyscraperSheaf 0 (ModuleCat.of k k)` has sections `k` over
+  opens containing `0` (`skyObjIso`) and zero sections elsewhere (`isZero_sky_obj`); it is
+  constructible for `{0}` (`isConstructible_sky`), `Γ (sky k) ≅ interval [1, 1]`
+  (`sectionsSkyIso`), and hence it is isomorphic to `pointSheaf` as a constructible sheaf
+  (`skyIsoPointSheaf`).
 
 ## Flasque sheaves and section lifting on intervals
 

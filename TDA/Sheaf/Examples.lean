@@ -11,3 +11,4 @@ import TDA.Sheaf.LocalSystemExamples
 import TDA.Sheaf.IntervalSectionsExamples
 import TDA.Sheaf.IntervalCohomologyExamples
 import TDA.Sheaf.FlasqueAcyclicExamples
+import TDA.Sheaf.RealConstructibleExamples

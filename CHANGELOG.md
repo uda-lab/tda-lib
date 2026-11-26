@@ -455,6 +455,29 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `shortComplex_g_f_apply`, `exists_glue₂`), and `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`
   is public in `TDA.Sheaf.RightDerivedHomology`. Fixtures in
   `TDA.Sheaf.FlasqueAcyclicExamples`.
+- Constructible sheaves on the real line and finite alternating diagrams (#1181, D1):
+  `TDA.Sheaf.RealConstructible` defines `IsConstructible S F` (local constancy on `(↑S)ᶜ` in the
+  interval-local sense `IsLocallyConstantOn`, and finite-dimensional stalks; the intended
+  equivalence with "locally isomorphic to a constant sheaf" is not yet proved in Lean, #1250)
+  and proves `isIso_res_sameStratum` (same-stratum inclusions of basic opens are inverted) and
+  `isConstructible_iff`. The section functor `sections` (via `starFunctor`) satisfies
+  `sections_obj_obj` and `sections_map_gen`; the extension functor `extension` (via
+  `basisSheaf`) has `extensionBasicIso`, `extensionStarIso` and `isConstructible_extension`,
+  and `finiteDimensional_sections` holds. The counit `extensionSectionsIso`
+  (`extensionSectionsIso_app_app`) and the unit `sectionsExtensionIso` give
+  `equivalence : Constructible k p ≌ FinDiagram k m` through `sectionsFin` and `extensionFin`
+  (`equivalence_functor_obj_obj`, `equivalence_functor_obj_map_gen`, `equivalence_inverse_obj_obj`). The binary gluing step
+  `TDA.Sheaf.LocalSystem.isIso_map_of_le_sup` is now public. Fixtures in
+  `TDA.Sheaf.RealConstructibleExamples`: no breakpoints (`p₀`, `p₀_strictMono`,
+  `breakpoints_p₀`, `star_p₀`, `isConstructible_p₀_iff`, `sections_p₀`,
+  `nonempty_iso_of_iso_top`, `constSheaf₀`, `isConstructible_constSheaf₀`,
+  `finrank_constSheaf₀_top`); one breakpoint (`arrow_one_zero`, `arrow_one_two`,
+  `intervalSheaf`, `isConstructible_intervalSheaf`, `sectionsIntervalSheafIso`,
+  `finrank_intervalSheaf_star`, `not_isIso_intervalSheaf_map`, `segLeft`, `segRight`,
+  `leftClosed`, `rightClosed`, `pointSheaf`, `finrank_leftClosed`, `finrank_rightClosed`,
+  `not_isIso_leftClosed_right`, `not_isIso_rightClosed_left`, `not_isIso_pointSheaf`); Mathlib's
+  skyscraper (`sky`, `skyObjIso`, `isZero_sky_obj`, `isConstructible_sky`, `sectionsSkyIso`,
+  `skyIsoPointSheaf`). The derived comparison is out of scope (#1183).
 
 ## v0.5.0
 
