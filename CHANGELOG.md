@@ -482,6 +482,20 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `not_isIso_leftClosed_right`, `not_isIso_rightClosed_left`, `not_isIso_pointSheaf`); Mathlib's
   skyscraper (`sky`, `skyObjIso`, `isZero_sky_obj`, `isConstructible_sky`, `sectionsSkyIso`,
   `skyIsoPointSheaf`). The derived comparison is out of scope (#1183).
+- Interval fibres and transport of interval cohomology (#1226, part U5): `TDA.Sheaf.IntervalFibre`
+  gives `H_iso_of_homeo`, `Hⁱ(X; G) ≅ Hⁱ(Y; h_* G)` along a homeomorphism `h`, from
+  `pushforwardPlusCompIso`, `comp_toPt` and `rightDerivedFunctorPlusSingleIso` (an exact functor's
+  right derived functor on single complexes), with `isIso_derivedUnit_toPt_app_of_homeo` for the
+  derived unit. Singleton intervals are homeomorphic to the point (`isIso_toPt_Icc_self`,
+  `isIso_derivedUnit_toPt_Icc_self`). The fibre `BandConvolution.fibre a y` of the band projection
+  `q a` over `y` is `[y - a, y + a]` (`fibreHomeo`, `coe_fibreHomeo_apply`, `fibreIso`,
+  `fibreIso_toPt`); hence `Hⁱ((q a)⁻¹ {y}; G) = 0` for `2 ≤ i` (`isZero_H_fibre`) and, for
+  `0 ≤ a`, the derived unit of a constant sheaf on a fibre is an isomorphism
+  (`isIso_derivedUnit_toPt_fibre`). Fixtures in `TDA.Sheaf.IntervalFibreExamples`: `half`,
+  `fibreHomeo_half`, `isEmpty_fibre_neg`, constant coefficients on a positive-length and a
+  one-point fibre (`isIso_derivedUnit_kpt_fibre`, `H0_constSh_kpt_fibre`,
+  `isIso_derivedUnit_kpt_fibre_zero`, `isIso_derivedUnit_Icc_two`), and the skyscraper `skyHalf`
+  (`isZero_H2_skyHalf`, `H1_skyHalf_iso`).
 
 ## v0.5.0
 

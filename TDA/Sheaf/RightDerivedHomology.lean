@@ -19,6 +19,8 @@ categories.
 * `singlePlus n X` is `X` placed in degree `n`, as a bounded below complex, and
   `singleFunctorIsoQ n X` identifies its image in `D⁺` with
   `DerivedCategory.Plus.singleFunctor C n` at `X`.
+* `rightDerivedFunctorPlusSingleIso F n A`: an exact functor `F` has right derived functor on
+  `D⁺` sending `A` in degree `n` to `F A` in degree `n`.
 -/
 
 noncomputable section
@@ -105,5 +107,25 @@ def singleFunctorIsoQ (n : ℤ) (X : C) :
     ((DerivedCategory.Plus.QCompιIso C).app (singlePlus n X)).symm)
 
 end single
+
+section exact
+
+variable {C D : Type*} [Category* C] [Category* D] [Abelian C] [Abelian D]
+  [HasDerivedCategory C] [HasDerivedCategory D] [EnoughInjectives C]
+  (F : C ⥤ D) [F.Additive] [PreservesFiniteLimits F] [PreservesFiniteColimits F]
+
+/-- The right derived functor of an exact functor `F` on `D⁺` sends `A` placed in degree `n` to
+`F A` placed in degree `n`. -/
+def rightDerivedFunctorPlusSingleIso (n : ℤ) (A : C) :
+    F.rightDerivedFunctorPlus.obj ((DerivedCategory.Plus.singleFunctor C n).obj A) ≅
+      (DerivedCategory.Plus.singleFunctor D n).obj (F.obj A) :=
+  F.rightDerivedFunctorPlus.mapIso (singleFunctorIsoQ n A) ≪≫
+    (asIso (F.rightDerivedFunctorPlusUnit.app (singlePlus n A))).symm ≪≫
+    DerivedCategory.Plus.Q.mapIso ((CochainComplex.Plus.fullyFaithfulι D).preimageIso
+      (Y := singlePlus n (F.obj A))
+      ((HomologicalComplex.singleMapHomologicalComplex F (ComplexShape.up ℤ) n).app A)) ≪≫
+    (singleFunctorIsoQ n (F.obj A)).symm
+
+end exact
 
 end TDA.Sheaf
