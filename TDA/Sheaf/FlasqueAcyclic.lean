@@ -1,6 +1,5 @@
-import Mathlib.Algebra.Homology.HomotopyCategory.Acyclic
-import Mathlib.Algebra.Homology.ShortComplex.ExactFunctor
 import Mathlib.Order.Zorn
+import TDA.Sheaf.AcyclicClass
 import TDA.Sheaf.PointSheaf
 import TDA.Sheaf.PresheafRestriction
 import TDA.Sheaf.RightDerivedHomology
@@ -23,12 +22,13 @@ sheaves of abelian groups only at the pinned Mathlib. This file proves them for
 * `isFlasque_of_iso`, `isFlasque_of_isZero`, `isFlasque_of_id_eq_add` and the instance
   `isFlasque_biprod`: flasqueness passes along isomorphisms, holds for zero sheaves and for
   retracts of a sum of two flasque sheaves (such as their biproduct).
+* `preservesFiniteLimits_pushforward`: the direct image `f_*` is left exact.
 * `pushforward_shortExact_of_isFlasque`: the direct image `f_*` keeps a short exact sequence
   with flasque kernel short exact.
-* `acyclic_pushforward_of_isFlasque`: `f_*` keeps a bounded below acyclic complex of flasque
-  sheaves acyclic (its cycle sheaves are flasque, by induction from the bottom), and
-  `quasiIso_pushforward_of_isFlasque`: `f_*` keeps a quasi-isomorphism between bounded below
-  complexes of flasque sheaves a quasi-isomorphism (through the mapping cone).
+* `acyclicClass_isFlasque`: flasque sheaves form an acyclic class (`TDA.Sheaf.AcyclicClass`) for
+  `f_*`. Hence `acyclic_pushforward_of_isFlasque`: `f_*` keeps a bounded below acyclic complex of
+  flasque sheaves acyclic, and `quasiIso_pushforward_of_isFlasque`: `f_*` keeps a
+  quasi-isomorphism between bounded below complexes of flasque sheaves a quasi-isomorphism.
 * `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`: for a bounded below complex `K` of
   flasque sheaves, the comparison `f_* K ⟶ Rf_* K` in `D⁺` is an isomorphism, so flasque
   complexes compute `Rf_*`. The case of global sections, `f = toPt X`, is
@@ -225,8 +225,8 @@ section pushforward
 
 variable {Y : TopCat.{0}}
 
-/-- The direct image is left exact (a right adjoint). -/
-private theorem preservesFiniteLimits_pushforward (f : X ⟶ Y) :
+/-- The direct image `f_*` of sheaves of `k`-modules is left exact (a right adjoint). -/
+theorem preservesFiniteLimits_pushforward (f : X ⟶ Y) :
     PreservesFiniteLimits (TopCat.Sheaf.pushforward (ModuleCat.{0} k) f) :=
   have := (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k)
     f).rightAdjoint_preservesLimits.{0, 0}
@@ -251,106 +251,29 @@ theorem pushforward_shortExact_of_isFlasque (f : X ⟶ Y)
 
 end pushforward
 
-section cycles
-
-variable {A : Type*} [Category* A] [Abelian A]
-
-/-- The short complex `Zⁱ ⟶ Cⁱ ⟶ Zʲ` of cycles of a cochain complex, for `i + 1 = j`. -/
-private abbrev cyclesSc (C : CochainComplex A ℤ) (i j : ℤ) : ShortComplex A :=
-  ShortComplex.mk (C.iCycles i) (C.toCycles i j) (by
-    rw [← cancel_mono (C.iCycles j), Category.assoc, C.toCycles_i, C.iCycles_d, zero_comp])
-
-/-- If a cochain complex is exact in degree `j = i + 1`, then `0 ⟶ Zⁱ ⟶ Cⁱ ⟶ Zʲ ⟶ 0` is short
-exact. -/
-private theorem cyclesSc_shortExact (C : CochainComplex A ℤ) {i j l : ℤ} (hij : i + 1 = j)
-    (hjl : j + 1 = l) (hC : C.ExactAt j) : (cyclesSc C i j).ShortExact := by
-  have hT : (ShortComplex.mk (C.iCycles i) (C.d i j) (C.iCycles_d i j)).Exact :=
-    ShortComplex.exact_of_f_is_kernel _
-      (C.cyclesIsKernel i j ((ComplexShape.up ℤ).next_eq' hij))
-  let φ : cyclesSc C i j ⟶ ShortComplex.mk (C.iCycles i) (C.d i j) (C.iCycles_d i j) :=
-    { τ₁ := 𝟙 _
-      τ₂ := 𝟙 _
-      τ₃ := C.iCycles j }
-  have hE : (C.sc' i j l).Exact :=
-    (C.exactAt_iff' i j l ((ComplexShape.up ℤ).prev_eq' hij)
-      ((ComplexShape.up ℤ).next_eq' hjl)).1 hC
-  have := hE.epi_toCycles
-  have heq : C.toCycles i j = (C.sc' i j l).toCycles ≫
-      (C.cyclesIsoSc' i j l ((ComplexShape.up ℤ).prev_eq' hij)
-        ((ComplexShape.up ℤ).next_eq' hjl)).inv := by
-    rw [← C.toCycles_cyclesIsoSc'_hom i j l ((ComplexShape.up ℤ).prev_eq' hij)
-      ((ComplexShape.up ℤ).next_eq' hjl), Category.assoc, Iso.hom_inv_id, Category.comp_id]
-  refine ShortComplex.ShortExact.mk' ((ShortComplex.exact_iff_of_epi_of_isIso_of_mono φ).2 hT)
-    (inferInstanceAs (Mono (C.iCycles i))) ?_
-  change Epi (C.toCycles i j)
-  rw [heq]
-  infer_instance
-
-/-- A morphism of cochain complexes is a quasi-isomorphism exactly when its mapping cone is
-acyclic. -/
-private theorem acyclic_mappingCone_iff {K L : CochainComplex A ℤ} (φ : K ⟶ L) :
-    (CochainComplex.mappingCone φ).Acyclic ↔ QuasiIso φ := by
-  rw [← HomotopyCategory.quotient_obj_mem_subcategoryAcyclic_iff_acyclic]
-  refine ((HomotopyCategory.subcategoryAcyclic A).trW_iff_of_distinguished _
-    (HomotopyCategory.mappingCone_triangleh_distinguished φ)).symm.trans ?_
-  rw [← HomotopyCategory.quasiIso_eq_trW_subcategoryAcyclic]
-  exact (HomotopyCategory.quotient_map_mem_quasiIso_iff φ).trans
-    (HomologicalComplex.mem_quasiIso_iff φ)
-
-end cycles
-
 section acyclic
 
 variable {Y : TopCat.{0}}
 
-/-- In a bounded below acyclic complex of flasque sheaves of `k`-modules, every cycle sheaf is
-flasque. -/
-private theorem isFlasque_cycles (C : CochainComplex (X.Sheaf (ModuleCat.{0} k)) ℤ) (n₀ : ℤ)
-    [C.IsStrictlyGE n₀] [∀ n, TopCat.Sheaf.IsFlasque (C.X n)] (hC : C.Acyclic) (m : ℤ) :
-    TopCat.Sheaf.IsFlasque (C.cycles m) := by
-  have hzero (i : ℤ) (hi : i < n₀) : TopCat.Sheaf.IsFlasque (C.cycles i) :=
-    isFlasque_of_isZero (IsZero.of_mono (C.iCycles i) (C.isZero_of_isStrictlyGE n₀ i hi))
-  refine Int.inductionOn' m (n₀ - 1) (hzero _ (by omega)) (fun i _ hi => ?_)
-    (fun i hi _ => hzero _ (by omega))
-  have := cyclesSc_shortExact C (i := i) (j := i + 1) (l := i + 1 + 1) rfl rfl (hC (i + 1))
-  exact isFlasque_of_shortExact this
+/-- **Flasque sheaves form an acyclic class for direct images.** For a continuous map `f`, flasque
+sheaves of `k`-modules form an acyclic class (`AcyclicClass`) for the direct image `f_*`. -/
+theorem acyclicClass_isFlasque (f : X ⟶ Y) :
+    AcyclicClass (TopCat.Sheaf.pushforward (ModuleCat.{0} k) f)
+      (fun F => TopCat.Sheaf.IsFlasque F) where
+  zero _ h := isFlasque_of_isZero h
+  quot S hS h₁ h₂ := @isFlasque_of_shortExact k _ X S hS h₁ h₂
+  retract p₁ i₁ p₂ i₂ h₁ h₂ h := @isFlasque_of_id_eq_add k _ X _ _ _ h₁ h₂ p₁ i₁ p₂ i₂ h
+  shortExact S hS h₁ := @pushforward_shortExact_of_isFlasque k _ X Y f S hS h₁
+  injective I _ := isFlasque_of_injective k I
 
 /-- **Direct images of acyclic flasque complexes.** For a continuous map `f`, the direct image
 `f_*` keeps a bounded below acyclic complex of flasque sheaves of `k`-modules acyclic. -/
 theorem acyclic_pushforward_of_isFlasque (f : X ⟶ Y)
     (C : CochainComplex (X.Sheaf (ModuleCat.{0} k)) ℤ) (n₀ : ℤ) [C.IsStrictlyGE n₀]
     [∀ n, TopCat.Sheaf.IsFlasque (C.X n)] (hC : C.Acyclic) :
-    (((TopCat.Sheaf.pushforward (ModuleCat.{0} k) f).mapHomologicalComplex _).obj C).Acyclic := by
-  let F := TopCat.Sheaf.pushforward (ModuleCat.{0} k) f
-  intro j
-  obtain ⟨i, rfl⟩ : ∃ i, j = i + 1 := ⟨j - 1, by omega⟩
-  have := isFlasque_cycles C n₀ hC i
-  have hS := pushforward_shortExact_of_isFlasque f
-    (cyclesSc_shortExact C (i := i) (j := i + 1) (l := i + 1 + 1) rfl rfl (hC (i + 1)))
-  rw [HomologicalComplex.exactAt_iff' _ i (i + 1) (i + 1 + 1)
-    ((ComplexShape.up ℤ).prev_eq' rfl) ((ComplexShape.up ℤ).next_eq' rfl)]
-  -- `F` keeps `Zⁱ⁺¹` the kernel of the differential.
-  have key : PreservesFiniteLimits F → ∀ S : ShortComplex (X.Sheaf (ModuleCat.{0} k)),
-      S.Exact ∧ Mono S.f → (S.map F).Exact ∧ Mono (F.map S.f) :=
-    ((Functor.preservesFiniteLimits_tfae F).out 4 2).1
-  have hT := key (preservesFiniteLimits_pushforward f)
-    (ShortComplex.mk (C.iCycles (i + 1)) (C.d (i + 1) (i + 1 + 1)) (C.iCycles_d _ _))
-    ⟨ShortComplex.exact_of_f_is_kernel _
-      (C.cyclesIsKernel _ _ ((ComplexShape.up ℤ).next_eq' rfl)), inferInstance⟩
-  let ψ : ((F.mapHomologicalComplex _).obj C).sc' i (i + 1) (i + 1 + 1) ⟶
-      (ShortComplex.mk (C.iCycles (i + 1)) (C.d (i + 1) (i + 1 + 1))
-        (C.iCycles_d _ _)).map F :=
-    { τ₁ := F.map (C.toCycles i (i + 1))
-      τ₂ := 𝟙 _
-      τ₃ := 𝟙 _
-      comm₁₂ := by
-        simp only [ShortComplex.map_f, HomologicalComplex.shortComplexFunctor'_obj_f,
-          Functor.mapHomologicalComplex_obj_d, Category.comp_id, ← F.map_comp, C.toCycles_i]
-      comm₂₃ := by
-        simp only [ShortComplex.map_g, HomologicalComplex.shortComplexFunctor'_obj_g,
-          Functor.mapHomologicalComplex_obj_d, Category.comp_id, Category.id_comp] }
-  have : Epi ψ.τ₁ := hS.epi_g
-  exact (ShortComplex.exact_iff_of_epi_of_isIso_of_mono ψ).2 hT.1
+    (((TopCat.Sheaf.pushforward (ModuleCat.{0} k) f).mapHomologicalComplex _).obj C).Acyclic :=
+  have := preservesFiniteLimits_pushforward (k := k) f
+  acyclic_map_of_acyclicClass (acyclicClass_isFlasque f) C n₀ (fun _ => inferInstance) hC
 
 /-- **Direct images of quasi-isomorphisms of flasque complexes.** For a continuous map `f`, the
 direct image `f_*` keeps a quasi-isomorphism between bounded below complexes of flasque sheaves
@@ -359,20 +282,10 @@ theorem quasiIso_pushforward_of_isFlasque (f : X ⟶ Y)
     {K L : CochainComplex (X.Sheaf (ModuleCat.{0} k)) ℤ} (φ : K ⟶ L) [QuasiIso φ] (n₀ : ℤ)
     [K.IsStrictlyGE n₀] [L.IsStrictlyGE n₀] [∀ n, TopCat.Sheaf.IsFlasque (K.X n)]
     [∀ n, TopCat.Sheaf.IsFlasque (L.X n)] :
-    QuasiIso (((TopCat.Sheaf.pushforward (ModuleCat.{0} k) f).mapHomologicalComplex _).map φ) := by
-  have : (CochainComplex.mappingCone φ).IsStrictlyGE (n₀ - 1) := by
-    rw [CochainComplex.isStrictlyGE_iff]
-    intro i hi
-    rw [CochainComplex.mappingCone.isZero_X_iff]
-    exact ⟨K.isZero_of_isStrictlyGE n₀ _ (by omega), L.isZero_of_isStrictlyGE n₀ _ (by omega)⟩
-  have (n : ℤ) : TopCat.Sheaf.IsFlasque ((CochainComplex.mappingCone φ).X n) :=
-    isFlasque_of_id_eq_add _ _ _ _ (CochainComplex.mappingCone.id_X φ n (n + 1) rfl)
-  have h := acyclic_pushforward_of_isFlasque f (CochainComplex.mappingCone φ) (n₀ - 1)
-    ((acyclic_mappingCone_iff φ).2 inferInstance)
-  rw [← acyclic_mappingCone_iff]
-  exact fun n => (h n).of_iso
-    (CochainComplex.mappingCone.mapHomologicalComplexIso φ
-      (TopCat.Sheaf.pushforward (ModuleCat.{0} k) f))
+    QuasiIso (((TopCat.Sheaf.pushforward (ModuleCat.{0} k) f).mapHomologicalComplex _).map φ) :=
+  have := preservesFiniteLimits_pushforward (k := k) f
+  quasiIso_map_of_acyclicClass (acyclicClass_isFlasque f) φ n₀ (fun _ => inferInstance)
+    (fun _ => inferInstance)
 
 end acyclic
 
@@ -387,21 +300,10 @@ theorem isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque
     [HasDerivedCategory (Y.Sheaf (ModuleCat.{0} k))] (f : X ⟶ Y)
     (K : CochainComplex.Plus (X.Sheaf (ModuleCat.{0} k)))
     [∀ n, TopCat.Sheaf.IsFlasque (K.obj.X n)] :
-    IsIso ((TopCat.Sheaf.pushforward (ModuleCat.{0} k) f).rightDerivedFunctorPlusUnit.app K) := by
-  obtain ⟨n, hn⟩ := K.property
-  obtain ⟨L, _, j, hj⟩ := CochainComplex.Plus.exists_quasiIso_injective K n
-  let B := (InjectiveObject.ι (X.Sheaf (ModuleCat.{0} k))).mapCochainComplexPlus.obj L
-  have (m : ℤ) : Injective (B.obj.X m) := (L.obj.X m).property
-  have (m : ℤ) : TopCat.Sheaf.IsFlasque (B.obj.X m) := isFlasque_of_injective k _
-  have : B.obj.IsStrictlyGE n := inferInstanceAs (CochainComplex.IsStrictlyGE
-    (((InjectiveObject.ι _).mapHomologicalComplex _).obj L.obj) n)
-  have : QuasiIso j.hom := hj
-  have hFj := quasiIso_pushforward_of_isFlasque f j.hom n
-  have := isIso_Q_map_comp_rightDerivedFunctorPlusUnit
-    (TopCat.Sheaf.pushforward (ModuleCat.{0} k) f) (𝟙 _) j hj (by
-      rw [Category.id_comp]
-      exact hFj)
-  simpa only [CategoryTheory.Functor.map_id, Category.id_comp] using this
+    IsIso ((TopCat.Sheaf.pushforward (ModuleCat.{0} k) f).rightDerivedFunctorPlusUnit.app K) :=
+  have := preservesFiniteLimits_pushforward (k := k) f
+  isIso_rightDerivedFunctorPlusUnit_app_of_acyclicClass (acyclicClass_isFlasque f) K
+    (fun _ => inferInstance)
 
 /-- **Flasque complexes compute derived global sections**: the case `f = toPt X` of
 `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`. -/

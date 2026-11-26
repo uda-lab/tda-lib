@@ -57,10 +57,13 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`, `stalkPullbackSheafIso_hom_naturality` (and `stalkPullbackSheafIso_hom_naturality_assoc`), `stalkPullbackSheafNatIso`, `stalkPullbackSheafNatIso_app`; `pt`, `toPt`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ`, `rightDerivedFunctorPlusSingleIso` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.DerivedStalks` | `isIso_iff_isIso_stalk_homology` | `X : TopCat.{0}`, sheaves of `ModuleCat.{0} k` over a ring `k : Type`, `[HasDerivedCategory (X.Sheaf (ModuleCat k))]`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_Icc`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for all `u`, `v`; the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.FlasqueAcyclic` | `sections_exact_of_left_exact`, `epi_of_shortExact`, `isFlasque_of_shortExact`, `isFlasque_biprod`, `pushforward_shortExact_of_isFlasque`, `acyclic_pushforward_of_isFlasque`, `quasiIso_pushforward_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` | Sheaves of `k`-modules over a ring `k : Type` on `X : TopCat.{0}`, continuous `f : X ⟶ Y`; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
+| `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_Icc`, `isZero_H_Icc_of_germSurjective`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for all `u`, `v`; the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.AcyclicClass` | `AcyclicClass`, `acyclic_map_of_acyclicClass`, `quasiIso_map_of_acyclicClass`, `isIso_rightDerivedFunctorPlusUnit_app_of_acyclicClass` | Additive left exact `F : A ⥤ B` between abelian categories, `A` with enough injectives for the derived statement; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
+| `TDA.Sheaf` / `TDA.Sheaf.FlasqueAcyclic` | `sections_exact_of_left_exact`, `epi_of_shortExact`, `isFlasque_of_shortExact`, `isFlasque_biprod`, `preservesFiniteLimits_pushforward`, `pushforward_shortExact_of_isFlasque`, `acyclicClass_isFlasque`, `acyclic_pushforward_of_isFlasque`, `quasiIso_pushforward_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` | Sheaves of `k`-modules over a ring `k : Type` on `X : TopCat.{0}`, continuous `f : X ⟶ Y`; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibre` | `comp_toPt`, `H_iso_of_homeo`, `isIso_derivedUnit_toPt_app_of_homeo`, `isIso_toPt_Icc_self`, `isIso_derivedUnit_toPt_Icc_self`; `BandConvolution.fibre`, `fibreHomeo`, `coe_fibreHomeo_apply`, `fibreIso`, `fibreIso_toPt`, `isZero_H_fibre`, `isIso_derivedUnit_toPt_fibre` | Homeomorphisms `h : X ⟶ Y` in `TopCat.{0}` (`[IsIso h]`), `k : Type` a ring; fibres of the band projection `BandConvolution.q a`. The fibre statements take a derived category structure on `[y - a, y + a]` as an instance argument; the unit statement needs `0 ≤ a`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.BaseChange` | `isRightDerivedFunctor_rightDerivedFunctorPlus_comp`, `pullbackPushforwardAdjunctionPlus`, `isLeftDerivedFunctor_pullbackPlus`, `derivedCounit`, `derivedCounit_fac_app`, `derivedAdjunction`, `isIso_derivedCounit`, `pullbackPlusSquare`, `baseChange`, `baseChange_eq`, `baseChange_app`, `derivedUnit_baseChange`, `baseChange_naturality`, `isIso_baseChange_of_isIso` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; a commutative square `w : g' ≫ f = f' ≫ g`; derived categories as instance arguments. See [Derived base change](#derived-base-change). |
+| `TDA.Sheaf` / `TDA.Sheaf.IntervalAcyclic` | `germSurjective_pullback`, `germSurjective_pullback_of_isFlasque`, `germSurjective_of_id_eq_add`, `pushforward_toPt_shortExact_Icc`, `acyclicClass_germSurjective_Icc`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective`, `isZero_H_Icc_pullback_of_isFlasque` | Continuous maps in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`; the interval statements are for `[u, v]`, all `u`, `v`. See [Flasque acyclicity](#flasque-acyclicity). |
+| `TDA.Sheaf` / `TDA.Sheaf.BandStalks` | `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`; `BandConvolution.ptAt`, `fibreEmb`, `coe_fibreEmb_apply`, `fibreEmb_eq`, `mem_range_fibreEmb`, `fibreEmb_comp_q`, `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`, `exists_unit_eq_fibreEmb`, `stalkComparison`, `stalkComparison_app_top`, `stalkComparison_naturality`, `isIso_stalkComparison`, `stalkIso`, `stalkIso_hom_app`, `stalkSectionsIso`, `nonempty_stalkFormula`, `nonempty_stalkFormula_homology`, `isZero_H_stalk_pushforwardPlus_q` | The band projection `BandConvolution.q a` for all `a y : ℝ`, `k : Type` a ring; the fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]` through `fibreEmb a y`, and stalks at `y` are read through `(ptAt y)⁻¹`. The derived statements take derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Stalks of band projections](#stalks-of-band-projections). |
 
 ### Capped centred height-map pairs
 
@@ -4875,8 +4878,11 @@ and its corollary are stated for sheaves of abelian groups only.
 - `isFlasque_of_shortExact`: if `X₁` and `X₂` are flasque, so is `X₃`.
 - `isFlasque_of_iso`, `isFlasque_of_isZero`, `isFlasque_of_id_eq_add` (a sheaf with
   `𝟙 = p₁ ≫ i₁ + p₂ ≫ i₂` through flasque sheaves) and the instance `isFlasque_biprod`.
+- `preservesFiniteLimits_pushforward`: the direct image `f_*` is left exact.
 - `pushforward_shortExact_of_isFlasque`: for a continuous `f`, `f_*` keeps a short exact sequence
   with flasque first term short exact.
+- `acyclicClass_isFlasque`: flasque sheaves form an `AcyclicClass` for `f_*`; the next three
+  statements are its instances of the general ones below.
 - `acyclic_pushforward_of_isFlasque`: `f_*` keeps a bounded below acyclic complex of flasque
   sheaves acyclic; `quasiIso_pushforward_of_isFlasque`: `f_*` keeps a quasi-isomorphism between
   bounded below complexes of flasque sheaves a quasi-isomorphism.
@@ -4884,6 +4890,38 @@ and its corollary are stated for sheaves of abelian groups only.
   flasque sheaves (`CochainComplex.Plus`), the comparison `f_* K ⟶ Rf_* K` on `D⁺` is an
   isomorphism; `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` is the case
   `f = toPt X` of global sections.
+
+`TDA.Sheaf.AcyclicClass` states the mechanism for any additive left exact `F : A ⥤ B` between
+abelian categories. `AcyclicClass F P` asks that the class `P` contain zero objects and injective
+objects, be closed under cokernels of short exact sequences and under objects `Z` with
+`𝟙 Z = p₁ ≫ i₁ + p₂ ≫ i₂` through members, and that `F` keep short exact sequences with first term
+in `P` short exact. Then:
+
+- `acyclic_map_of_acyclicClass`: `F` keeps a bounded below acyclic complex of objects of `P`
+  acyclic (its cycle objects lie in `P`);
+- `quasiIso_map_of_acyclicClass`: `F` keeps a quasi-isomorphism between bounded below complexes
+  of objects of `P` a quasi-isomorphism (through the mapping cone);
+- `isIso_rightDerivedFunctorPlusUnit_app_of_acyclicClass`: for a bounded below complex `K` of
+  objects of `P`, the comparison `F K ⟶ RF(K)` on `D⁺` is an isomorphism (`A` with enough
+  injectives).
+
+`TDA.Sheaf.IntervalAcyclic` gives the second instance, germ-surjective sheaves for global sections
+on a compact interval:
+
+- `germSurjective_pullback`: for any continuous `i`, the inverse image `i⁻¹ G` of a
+  germ-surjective sheaf is germ-surjective; `germSurjective_pullback_of_isFlasque` is the case of
+  a flasque (for instance injective) sheaf.
+- `germSurjective_of_id_eq_add`: a sheaf with `𝟙 = p₁ ≫ i₁ + p₂ ≫ i₂` through germ-surjective
+  sheaves is germ-surjective.
+- `pushforward_toPt_shortExact_Icc`: on `[u, v]`, global sections keep a short exact sequence
+  with germ-surjective first term short exact (`exists_section_lift_Icc`).
+- `acyclicClass_germSurjective_Icc u v`: germ-surjective sheaves form an `AcyclicClass` for
+  `(toPt [u, v])_*`; hence `isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective`:
+  bounded below complexes of germ-surjective sheaves compute `RΓ([u, v]; -)`.
+- `isZero_H_Icc_of_germSurjective` (in `TDA.Sheaf.IntervalCohomology`): `Hⁱ([u, v]; G) = 0` for
+  `1 ≤ i` and `G` germ-surjective; with it, `isZero_H_Icc_pullback_of_isFlasque`:
+  `Hⁱ([u, v]; ι⁻¹ I) = 0` for `1 ≤ i`, a flasque sheaf `I` on any space and any continuous
+  `ι : [u, v] ⟶ X`.
 
 `TDA.Sheaf.FlasqueAcyclicExamples` works over `ℚ` on `I01 = [0, 1]` with
 `HasDerivedCategory.standard` as a local instance. For the skyscraper `sky` at `1/2` and its
@@ -4928,6 +4966,53 @@ in `TopCat.{0}`; each derived category is an instance argument
 instance: the base change of the identity square on `ℝ` is an isomorphism
 (`isIso_baseChange_id`), and so is that of the square `ι_square : ι ≫ 𝟙 = 𝟙 ≫ ι` for the
 inclusion `ι : [0, 1] ⟶ ℝ` (`isIso_baseChange_ι`).
+## Stalks of band projections
+
+`TDA.Sheaf.BandStalks` computes the stalks of `R(q a)_*` for the second projection
+`q a : D a ⟶ ℝ` of the closed band. The fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]`
+through `fibreEmb a y : x ↦ (x, y)`: its image is the fibre (`mem_range_fibreEmb`),
+`fibreEmb_eq` writes it as `(fibreIso a y).inv` followed by the inclusion of the fibre, and
+`fibreEmb_comp_q : fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` holds by `rfl`, where
+`ptAt y : pt ⟶ ℝ` is the point `y`. A stalk at `y` is read as the inverse image along `ptAt y`.
+
+Degree-0 tautness of the fibre, for a sheaf `G` of `k`-modules on `D a`:
+
+- `exists_le_eq_zero_of_pullback_eq_zero` (any continuous `i : K ⟶ X`): a section `s` of `G`
+  over `W` whose image in `i⁻¹ G` vanishes over an open `N ≤ i⁻¹ W` vanishes over an open
+  `O ≤ W` with `N ≤ i⁻¹ O`.
+- `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`: an open set containing the fibre
+  contains a tube `(q a)⁻¹ U` with `y ∈ U`, since `q a` is proper.
+- `exists_unit_eq_fibreEmb`: every section of `(fibreEmb a y)⁻¹ G` over `[y - a, y + a]` is the
+  restriction of the unit image of a section of `G` over an open neighbourhood of the fibre.
+- `exists_unit_eq_of_pt` (any `f : pt ⟶ Y`): global sections of `f⁻¹ M` are restrictions of unit
+  images of sections of `M` near the image point.
+
+The stalk of the underived direct image:
+
+- `stalkComparison a y G : (ptAt y)⁻¹ (q a)_* G ⟶ Γ([y - a, y + a]; (fibreEmb a y)⁻¹ G)`, adjoint
+  to `(q a)_*` of the unit, described on sections by `stalkComparison_app_top`, natural in `G`
+  (`stalkComparison_naturality`) and an isomorphism (`isIso_stalkComparison`).
+- `stalkIso a y : (q a)_* ⋙ (ptAt y)⁻¹ ≅ (fibreEmb a y)⁻¹ ⋙ (toPt _)_*`, with components
+  `stalkIso_hom_app`; `stalkSectionsIso a y G : ((q a)_* G)_y ≅ Γ([y - a, y + a];
+  (fibreEmb a y)⁻¹ G)` as modules.
+
+The stalk formula, for `F ∈ D⁺(Sh(D a))`:
+
+- `nonempty_stalkFormula a y F`: `(ptAt y)⁻¹ R(q a)_* F ≅ RΓ([y - a, y + a]; (fibreEmb a y)⁻¹ F)`
+  in `D⁺(Sh pt)`, and `nonempty_stalkFormula_homology a y F i` the same for its `Hⁱ`. The proof
+  takes a bounded below injective model `I` of `F`: `(q a)_* I` computes `R(q a)_* F`, `stalkIso` identifies
+  `(ptAt y)⁻¹ (q a)_* I` with `Γ([y - a, y + a]; (fibreEmb a y)⁻¹ I)` termwise, and the
+  germ-surjective sheaves `(fibreEmb a y)⁻¹ Iⁿ` compute `RΓ([y - a, y + a]; -)`.
+- `isZero_H_stalk_pushforwardPlus_q`: for a sheaf `G` in degree `0`, `Hⁱ((ptAt y)⁻¹ R(q a)_* G)`
+  vanishes for `2 ≤ i`.
+
+`TDA.Sheaf.BandStalksExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
+instance. On `I01 = [0, 1]` the constant sheaf `constSh kpt` in degree `0` (`constPlus`) is a
+complex of germ-surjective sheaves (`germSurjective_constPlus`), so its global sections compute
+`RΓ` (`isIso_unit_constPlus`). On the band `D 1`, for the constant sheaf `kD` in `D⁺`, the stalk
+formula gives `H⁰((ptAt 0)⁻¹ R(q 1)_* kD) ≅ kpt` (`nonempty_H0_stalk_kD`), which is nonzero
+(`not_isZero_kpt`, `not_isZero_H0_stalk_kD`); `H²` of the stalk of `R(q 1)_* (constSh kpt)`
+vanishes (`isZero_H2_stalk_constSh`).
 
 ## Review and extension boundaries
 

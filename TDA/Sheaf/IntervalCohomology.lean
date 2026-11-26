@@ -13,6 +13,7 @@ with coefficients in a sheaf `G` of `k`-modules is read through the derived dire
 `k`-modules on `pt`, of `pushforwardPlus` applied to `G` placed in degree `0`.
 
 * `isZero_H_Icc`: `Hⁱ([u, v]; G) = 0` for `2 ≤ i`, every sheaf `G` and all `u`, `v`.
+* `isZero_H_Icc_of_germSurjective`: `Hⁱ([u, v]; G) = 0` for `1 ≤ i` when `G` is germ-surjective.
 * `isIso_unit_constSh_Icc`: for `u ≤ v`, the adjunction unit `N ⟶ (toPt _)_* constSh N` is an
   isomorphism; this is the underived `H⁰` of a constant sheaf on a connected space.
 * `isZero_H_constSh_Icc`: `Hⁱ([u, v]; constSh N) = 0` for `1 ≤ i`.
@@ -168,6 +169,18 @@ private theorem isZero_H_Icc_aux {u v : ℝ}
   exact exactAt_pushforward_of_quasiIso
     (fun m hm => HomologicalComplex.isZero_single_obj_X _ _ _ _ hm) j.hom hi
     (fun h => germSurjective_of_epi k (HomologicalComplex.singleObjXSelf _ 0 G).inv (hg h))
+
+/-- **Germ-surjective sheaves are acyclic on a compact interval.** For a germ-surjective sheaf `G`
+of `k`-modules on `[u, v]` (for instance a flasque or a constant sheaf),
+`Hⁱ([u, v]; G) = 0` for `1 ≤ i`. -/
+theorem isZero_H_Icc_of_germSurjective {u v : ℝ}
+    [HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat.{0} k))]
+    (G : (TopCat.of (Set.Icc u v)).Sheaf (ModuleCat.{0} k)) (hG : GermSurjective k G) {i : ℤ}
+    (hi : 1 ≤ i) :
+    IsZero ((DerivedCategory.Plus.homologyFunctor _ i).obj
+      ((pushforwardPlus k (toPt (TopCat.of (Set.Icc u v)))).obj
+        ((DerivedCategory.Plus.singleFunctor _ 0).obj G))) :=
+  isZero_H_Icc_aux G hi (fun _ => hG)
 
 /-- **Cohomological dimension of a compact interval.** For every sheaf `G` of `k`-modules on
 `[u, v]`, `Hⁱ([u, v]; G) = 0` for `2 ≤ i`. No `u ≤ v` is needed. -/

@@ -634,6 +634,27 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   (`rayEphemeral_cokernel_alteration`, `isIso_rayQ_map_alteration`), `Q` of the positive
   interval `[0, 1)` is nonzero (`not_isZero_rayQ_setModule_Ico`), and the singleton module is
   ephemeral (`rayEphemeral_pointModule`).
+- Acyclic classes, tautness on band fibres and the stalk formula for band projections (#1225,
+  part C). `TDA.Sheaf.AcyclicClass`: the structure `AcyclicClass F P` for an additive left exact
+  functor and the general statements `acyclic_map_of_acyclicClass`,
+  `quasiIso_map_of_acyclicClass` and `isIso_rightDerivedFunctorPlusUnit_app_of_acyclicClass`;
+  `TDA.Sheaf.FlasqueAcyclic` derives its flasque statements from the instance
+  `acyclicClass_isFlasque`, and `preservesFiniteLimits_pushforward` is public.
+  `isZero_H_Icc_of_germSurjective` in `TDA.Sheaf.IntervalCohomology`. `TDA.Sheaf.IntervalAcyclic`:
+  `germSurjective_pullback`, `germSurjective_pullback_of_isFlasque`,
+  `germSurjective_of_id_eq_add`, `pushforward_toPt_shortExact_Icc`,
+  `acyclicClass_germSurjective_Icc`,
+  `isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective`,
+  `isZero_H_Icc_pullback_of_isFlasque`. `TDA.Sheaf.BandStalks`:
+  `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`, and in `BandConvolution`
+  `ptAt`, `fibreEmb`, `coe_fibreEmb_apply`, `fibreEmb_eq`, `mem_range_fibreEmb`,
+  `fibreEmb_comp_q`, `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`,
+  `exists_unit_eq_fibreEmb`, `stalkComparison`, `stalkComparison_app_top`,
+  `stalkComparison_naturality`, `isIso_stalkComparison`, `stalkIso`, `stalkIso_hom_app`,
+  `stalkSectionsIso`, `nonempty_stalkFormula`, `nonempty_stalkFormula_homology`,
+  `isZero_H_stalk_pushforwardPlus_q`. Fixtures in `TDA.Sheaf.BandStalksExamples`: `constPlus`,
+  `germSurjective_constPlus`, `isIso_unit_constPlus`, `kD`, `nonempty_H0_stalk_kD`, `not_isZero_kpt`,
+  `not_isZero_H0_stalk_kD`, `isZero_H2_stalk_constSh`.
 
 ## v0.5.0
 
