@@ -15,3 +15,7 @@ import TDA.Sheaf.RaySheaf
 import TDA.Sheaf.RealStratification
 import TDA.Sheaf.SheafFlasque
 import TDA.Sheaf.IntervalSections
+import TDA.Sheaf.StalkPullback
+import TDA.Sheaf.PointSheaf
+import TDA.Sheaf.RightDerivedHomology
+import TDA.Sheaf.IntervalCohomology
