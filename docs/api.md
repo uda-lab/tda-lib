@@ -71,6 +71,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.BandBaseChange` | `BandConvolution.baseChangeCochain_fibreEmb_app_hom_f`, `isIso_baseChangeCochain_fibreEmb_app`, `isIso_baseChange_fibreEmb`, `stalkFormula`, `stalkFormula_hom`, `stalkFormula_hom_app_Q` | The fibre square `fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` of the band projection for all `a y : ℝ`, `k : Type` a ring; derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Base change on band fibres](#base-change-on-band-fibres). |
 | `TDA.Sheaf` / `TDA.Sheaf.PointDetection` | `rightDerivedFunctorPlusCompHomologyIso`, `isIso_iff_forall_isIso_pullbackPlus_pt`, `isIso_baseChange_congr`, `isIso_baseChange_of_fibres` | Exact functors between abelian categories with derived category structures, the source with enough injectives; sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`, points read through `ptOf x : pt ⟶ X`; commutative squares `w : g' ≫ f = f' ≫ g` with a family of squares `e z ≫ f' = toPt (F z) ≫ ptOf z` over the points of `Y'`; derived categories as instance arguments, for the family `[∀ z, HasDerivedCategory ((F z).Sheaf _)]`. See [Interval fibrations and the fibrewise criterion](#interval-fibrations-and-the-fibrewise-criterion). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibration` | `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`, `exists_preimage_le_of_isClosedMap`; `FibreCoordinate`, `FibreCoordinate.IsFibreParam`, `IsFibreParam.apply_eq`, `IsFibreParam.mem_range_iff`, `IsFibreParam.exists_preimage_le`, `IsFibreParam.exists_unit_eq`, `IsFibreParam.isIso_baseChangeSheaf_app`, `IsFibreParam.isIso_baseChangeCochain_app`, `IsFibreParam.isIso_baseChange`, `IsFibreParam.isZero_H_stalk_pushforwardPlus`; `IntervalFibration`, `IntervalFibration.e_comp`, `t_e`, `mem_range`, `apply_e`, `isIso_baseChangeSheaf_app`, `isIso_baseChange`, `stalkFormula`, `stalkFormula_hom`, `isZero_H_stalk_pushforwardPlus`; `isIso_baseChange_of_isFibreParam`; `IntervalFibration.isIso_derivedUnit` | Continuous `π : X ⟶ Y` in `TopCat.{0}` with a fibre coordinate `t : C(X, ℝ)` (`(π, t)` inducing, `π` closed); fibre parametrisations `ε : [u, v] ⟶ X` for all `u v : ℝ`, empty and one-point intervals included; the derived unit statement for nonempty fibres `lo y ≤ hi y` at every `y`; `k : Type` a ring; derived category structures on `X`, `Y`, `pt` and the fibre interval as instance arguments. See [Interval fibrations and the fibrewise criterion](#interval-fibrations-and-the-fibrewise-criterion). |
+| `TDA.Sheaf` / `TDA.Sheaf.BandComposition` | `BandConvolution.bandChain`, `mem_bandChain`, `isClosed_bandChain`, `Z`, `dist_le_add_of_mem_bandChain`, `pr₁₂`, `pr₂₃`, `pr₁₃`, `coe_pr₁₂_apply`, `coe_pr₂₃_apply`, `coe_pr₁₃_apply`, `pr₁₂_q`, `pr₁₃_p`, `pr₁₃_q`, `isProperMap_pr₂₃`, `isProperMap_pr₁₃`; `fibreCoordinate_pr₂₃`, `fibreCoordinate_pr₂₃_t`, `fibreEmb₂₃`, `coe_fibreEmb₂₃_apply`, `isFibreParam_fibreEmb₂₃`, `intervalFibration_pr₂₃`, `intervalFibration_pr₂₃_e`, `lo_le_hi_pr₂₃`; `fibreCoordinate_pr₁₃`, `fibreCoordinate_pr₁₃_t`, `fibreEmb₁₃`, `coe_fibreEmb₁₃_apply`, `isFibreParam_fibreEmb₁₃`, `intervalFibration_pr₁₃`, `intervalFibration_pr₁₃_e`, `lo_le_hi_pr₁₃`; `isIso_baseChange_pr₁₂_q`, `isIso_derivedUnit_pr₁₃`, `TCompRestr`, `TCompRestr_eq`, `TCompRestr_app`, `isIso_TCompRestr`, `TComp`, `TComp_hom_app_TCompRestr`, `TComp_inv_app` | `Z a b = {(x, y, z) ∈ ℝ³ | dist x y ≤ a ∧ dist y z ≤ b}` as `TopCat.{0}`, all `a b : ℝ` for the spaces, maps, interval fibrations and the base change; nonempty fibres, the derived unit of `pr₁₃`, `isIso_TCompRestr` and `TComp` for `0 ≤ a`, `0 ≤ b`; `k : Type` a ring; derived category structures on `ℝ`, every `D a`, every `Z a b`, `pt` and every `[u, v]` as instance arguments. See [The composition isomorphism of the band functors](#the-composition-isomorphism-of-the-band-functors). |
 
 ### Capped centred height-map pairs
 
@@ -4724,7 +4725,9 @@ the fixtures use Mathlib's `HasDerivedCategory.standard` as a local instance.
   composition (`derivedUnit_comp_app`, `derivedUnit_comp_app'`).
 - `corrRestr k j p q : p⁻¹ ⋙ Rq_* ⟶ (j ≫ p)⁻¹ ⋙ R(j ≫ q)_*` restricts a correspondence
   transform along `j` (`corrRestr_app`); `corrRestr_id`, `corrRestr_comp` and `isIso_corrRestr`
-  give identity, composition and invertibility along an isomorphism.
+  give identity, composition and invertibility along an isomorphism;
+  `isIso_corrRestr_of_isIso_derivedUnit` gives invertibility along any `j` whose derived unit is
+  invertible.
 
 `TDA.Sheaf.BandConvolution` specializes to the closed bands `D a = {(x, y) | dist x y ≤ a}` with
 projections `p a`, `q a`, both proper (`isProperMap_p`, `isProperMap_q`), closed inclusions
@@ -5544,6 +5547,55 @@ in degree `3` (`isIso_derivedUnit_Icc_single_three`). The band projections `q 1`
 `[y - 1, y + 1]`) and `q 0` (one-point fibres) have invertible derived units
 (`isIso_derivedUnit_q_one`, `isIso_derivedUnit_q_zero`) through
 `IntervalFibration.isIso_derivedUnit`.
+
+## The composition isomorphism of the band functors
+
+`TDA.Sheaf.BandComposition` composes the band functors `T k a` of `TDA.Sheaf.BandConvolution`.
+
+- `bandChain a b = {(x, y, z) | dist x y ≤ a ∧ dist y z ≤ b}` (`mem_bandChain`,
+  `isClosed_bandChain`) and the space `Z a b`, with the projections `pr₁₂ a b : Z a b ⟶ D a`,
+  `pr₂₃ a b : Z a b ⟶ D b` and `pr₁₃ a b : Z a b ⟶ D (a + b)` (`dist_le_add_of_mem_bandChain`,
+  `coe_pr₁₂_apply`, `coe_pr₂₃_apply`, `coe_pr₁₃_apply`). They satisfy, definitionally,
+  `pr₁₂_q : pr₁₂ ≫ q a = pr₂₃ ≫ p b`, `pr₁₃_p : pr₁₃ ≫ p (a + b) = pr₁₂ ≫ p a` and
+  `pr₁₃_q : pr₁₃ ≫ q (a + b) = pr₂₃ ≫ q b`. `pr₂₃` and `pr₁₃` are proper (`isProperMap_pr₂₃`,
+  `isProperMap_pr₁₃`).
+- `intervalFibration_pr₂₃ a b`: `pr₂₃` is an interval fibration for all `a b : ℝ`, with fibre
+  coordinate `x` (`fibreCoordinate_pr₂₃`), fibre `[y - a, y + a]` over `(y, z)` and fibre
+  parametrisation `fibreEmb₂₃ a b (y, z) : x ↦ (x, y, z)` (`isFibreParam_fibreEmb₂₃`); its fibres
+  are nonempty for `0 ≤ a` (`lo_le_hi_pr₂₃`).
+- `intervalFibration_pr₁₃ a b`: `pr₁₃` is an interval fibration for all `a b : ℝ`, with fibre
+  coordinate `y` (`fibreCoordinate_pr₁₃`), fibre `[max (x - a) (z - b), min (x + a) (z + b)]` over
+  `(x, z)` and fibre parametrisation `fibreEmb₁₃ a b (x, z) : y ↦ (x, y, z)`
+  (`isFibreParam_fibreEmb₁₃`); its fibres are nonempty for `0 ≤ a`, `0 ≤ b` (`lo_le_hi_pr₁₃`) and
+  are points where `dist x z = a + b`.
+- `isIso_baseChange_pr₁₂_q` (an instance, all `a b`): the base change
+  `R(q a)_* ⋙ (p b)⁻¹ ⟶ pr₁₂⁻¹ ⋙ R(pr₂₃)_*` of the central square is an isomorphism, by the
+  fibrewise criterion `isIso_baseChange_of_isFibreParam`: `pr₁₂` carries the fibre of `pr₂₃` at
+  `(y, z)` onto the fibre `fibreEmb a y` of `q a`.
+- `isIso_derivedUnit_pr₁₃ k ha hb`: for `0 ≤ a`, `0 ≤ b` the derived unit of `pr₁₃` is an
+  isomorphism (`IntervalFibration.isIso_derivedUnit`).
+- `TCompRestr k a b : T k (a + b) ⟶ (pr₁₂ ≫ p a)⁻¹ ⋙ R(pr₂₃ ≫ q b)_*` is `corrRestr` along `pr₁₃`
+  (`TCompRestr_eq`, components `TCompRestr_app`), its target written through `pr₁₃_p` and
+  `pr₁₃_q`; it is invertible for `0 ≤ a`, `0 ≤ b` (`isIso_TCompRestr`).
+- `TComp k ha hb : T k a ⋙ T k b ≅ T k (a + b)` for `0 ≤ a`, `0 ≤ b`: `R(q b)_*` of the base
+  change of the central square, then `R(pr₂₃)_* ⋙ R(q b)_* ≅ R(pr₂₃ ≫ q b)_*`
+  (`pushforwardPlusCompIso`), then `R(pr₂₃ ≫ q b)_*` of `(p a)⁻¹ ⋙ pr₁₂⁻¹ ≅ (pr₁₂ ≫ p a)⁻¹`
+  (`pullbackPlusCompIso`), then the inverse of `TCompRestr`. `TComp_hom_app_TCompRestr` gives
+  `(TComp k ha hb).hom.app M ≫ (TCompRestr k a b).app M` through these pieces and `TComp_inv_app`
+  gives `(TComp k ha hb).inv.app M`.
+
+`TDA.Sheaf.BandCompositionExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
+instance. Over `vEnd = (0, 2) ∈ D (1 + 1)` the fibre of `pr₁₃ 1 1` is the point `[1, 1]`
+(`lo_pr₁₃_vEnd`, `hi_pr₁₃_vEnd`), over `vMid = (0, 0)` it is `[-1, 1]` (`lo_pr₁₃_vMid`,
+`hi_pr₁₃_vMid`), and at both `H⁰` of the stalk of `R(pr₁₃ 1 1)_*` of the constant sheaf is nonzero
+(`not_isZero_H0_stalk_pr₁₃_vEnd`, `not_isZero_H0_stalk_pr₁₃_vMid`); for `a = b = 0` every fibre of
+`pr₁₃` is a point (`lo_eq_hi_pr₁₃_zero`). The base change of the central square of `Z 1 1`
+(`isIso_baseChange_one_one`) and the derived units of `pr₁₃ 1 1` and `pr₁₃ 0 0`
+(`isIso_derivedUnit_pr₁₃_one_one`, `isIso_derivedUnit_pr₁₃_zero_zero`) are invertible. For
+`0 ≤ a`, `0 ≤ b`, `H0_stalk_TT ha hb y` identifies `H⁰` of the stalk at `y` of
+`T_b (T_a (constOn ℝ))` with `kpt` through `TComp` and the stalk formula of `q (a + b)`, so it is
+nonzero (`not_isZero_H0_stalk_TT`); `not_isZero_H0_stalk_TT_zero` and `H0_stalk_TT_one_one` are the
+cases `a = b = 0` and `a = b = 1`.
 
 ## Review and extension boundaries
 

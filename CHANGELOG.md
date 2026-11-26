@@ -880,6 +880,24 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `𝟭 ⟶ π⁻¹ ⋙ Rπ_*` of an interval fibration with `lo y ≤ hi y` at every `y` is an isomorphism.
   Fixtures in `TDA.Sheaf.IntervalFibrationExamples`: `isIso_derivedUnit_Icc_single_three`,
   `isIso_derivedUnit_q_one`, `isIso_derivedUnit_q_zero`.
+- The composition isomorphism of the band functors (#1175, part 1b). `TDA.Sheaf.DerivedPlus`:
+  `isIso_corrRestr_of_isIso_derivedUnit`. New module `TDA.Sheaf.BandComposition`, in
+  `BandConvolution`: the space `Z a b` (`bandChain`, `mem_bandChain`, `isClosed_bandChain`,
+  `dist_le_add_of_mem_bandChain`) with projections `pr₁₂`, `pr₂₃`, `pr₁₃` (`coe_pr₁₂_apply`,
+  `coe_pr₂₃_apply`, `coe_pr₁₃_apply`, `pr₁₂_q`, `pr₁₃_p`, `pr₁₃_q`, `isProperMap_pr₂₃`,
+  `isProperMap_pr₁₃`); the interval fibrations `intervalFibration_pr₂₃` and
+  `intervalFibration_pr₁₃` (`fibreCoordinate_pr₂₃`, `fibreCoordinate_pr₂₃_t`, `fibreEmb₂₃`,
+  `coe_fibreEmb₂₃_apply`, `isFibreParam_fibreEmb₂₃`, `intervalFibration_pr₂₃_e`, `lo_le_hi_pr₂₃`,
+  `fibreCoordinate_pr₁₃`, `fibreCoordinate_pr₁₃_t`, `fibreEmb₁₃`, `coe_fibreEmb₁₃_apply`,
+  `isFibreParam_fibreEmb₁₃`, `intervalFibration_pr₁₃_e`, `lo_le_hi_pr₁₃`); base change on the
+  central square `isIso_baseChange_pr₁₂_q`; `isIso_derivedUnit_pr₁₃`; the restriction along `pr₁₃`
+  `TCompRestr` with `TCompRestr_eq`, `TCompRestr_app`, `isIso_TCompRestr`; the composition
+  isomorphism `TComp : T k a ⋙ T k b ≅ T k (a + b)` for `0 ≤ a`, `0 ≤ b` with
+  `TComp_hom_app_TCompRestr` and `TComp_inv_app`. Fixtures in `TDA.Sheaf.BandCompositionExamples`:
+  `vEnd`, `vMid`, `lo_pr₁₃_vEnd`, `hi_pr₁₃_vEnd`, `lo_pr₁₃_vMid`, `hi_pr₁₃_vMid`,
+  `lo_eq_hi_pr₁₃_zero`, `not_isZero_H0_stalk_pr₁₃_vEnd`, `not_isZero_H0_stalk_pr₁₃_vMid`,
+  `isIso_baseChange_one_one`, `isIso_derivedUnit_pr₁₃_one_one`, `isIso_derivedUnit_pr₁₃_zero_zero`,
+  `H0_stalk_TT`, `not_isZero_H0_stalk_TT`, `not_isZero_H0_stalk_TT_zero`, `H0_stalk_TT_one_one`.
 
 ## v0.5.0
 
