@@ -1,4 +1,3 @@
-import TDA.Filtration.CriticalValuesExamples
 import TDA.Filtration.SparseRips.H1Examples
 
 /-!
@@ -6,11 +5,10 @@ import TDA.Filtration.SparseRips.H1Examples
 
 Regression fixtures for #1288, family 13 of the downstream-use audit (#1207). A client that
 imports the fixture modules of the filtration area sees the instances of mathlib and of the
-library only; the metric on `Fin 4` and the decidable membership in the top complex on `Fin 2`
-that those fixtures use for their own examples are local to their files.
+library only; the metric on `Fin 4` that those fixtures use for their own examples is local to
+its file.
 
 * `Fin 4` carries no `MetricSpace`, `PseudoMetricSpace` or `Dist` instance.
-* Membership of a face of `Fin 2` in the top complex has no `Decidable` instance.
 -/
 
 namespace TDA.Filtration.GlobalInstanceClientExamples
@@ -25,11 +23,6 @@ example : True := by
 
 example : True := by
   fail_if_success have : Dist (Fin 4) := inferInstance
-  trivial
-
-example (_s : Finset (Fin 2)) : True := by
-  fail_if_success have : Decidable (_s ∈ (⊤ : PreAbstractSimplicialComplex (Fin 2))) :=
-    inferInstance
   trivial
 
 end TDA.Filtration.GlobalInstanceClientExamples

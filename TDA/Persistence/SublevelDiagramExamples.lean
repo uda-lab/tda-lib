@@ -362,7 +362,7 @@ private theorem singleton_diagonal_absent (a : ℝ) :
 
 abbrev edgeK : PreAbstractSimplicialComplex (Fin 2) := ⊤
 
-instance edgeMem (s : Finset (Fin 2)) : Decidable (s ∈ edgeK) := by
+local instance edgeMem (s : Finset (Fin 2)) : Decidable (s ∈ edgeK) := by
   change Decidable s.Nonempty
   infer_instance
 

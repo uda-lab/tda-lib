@@ -16,7 +16,8 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `Fin 2` carry no metric, order or decidability instance from the library. The `MetricSpace`,
   `LinearOrder`, `PseudoMetricSpace`, `SmallCategory`, `Decidable`, `Fintype`, `OrderBot` and
   `OrderTop` instances of `FiniteLatticeComplementCardinality`, `H1Examples`,
-  `CriticalValuesExamples`, `RipsQTameInfiniteMetricStabilityExamples`,
+  `CriticalValuesExamples`, `SublevelDiagramExamples`, `SublevelDiagramTransportExamples`,
+  `RipsQTameInfiniteMetricStabilityExamples`,
   `CechFinitePBottleneckAllDegreesExamples`, `FiniteInjectiveRankDimensionExamples` and
   `GeneratedUpsetResolutionExamples` are local to their files. The modules
   `Filtration.GlobalInstanceClientExamples` and `Persistence.GlobalInstanceClientExamples` hold the

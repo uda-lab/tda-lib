@@ -1,8 +1,11 @@
 import TDA.Persistence.CechFinitePBottleneckAllDegreesExamples
 import TDA.Persistence.FiniteInjectiveRankDimensionExamples
+import TDA.Filtration.CriticalValuesExamples
 import TDA.Persistence.FiniteLatticeComplementCardinality
 import TDA.Persistence.GeneratedUpsetResolutionExamples
 import TDA.Persistence.RipsQTameInfiniteMetricStabilityExamples
+import TDA.Persistence.SublevelDiagramExamples
+import TDA.Persistence.SublevelDiagramTransportExamples
 
 /-!
 # Client view of the instances of the persistence modules
@@ -17,6 +20,7 @@ own statements and examples are local to their files.
   linear orders.
 * `PseudoMetricSpace Empty` is the metric space structure of mathlib.
 * `Category (Bool × Bool)` is the product category of mathlib.
+* Membership of a face of `Fin 2` in the top complex has no `Decidable` instance.
 * `Option (Fin 3)` carries no `LinearOrder`, `MetricSpace` or `PseudoMetricSpace` instance.
 -/
 
@@ -58,6 +62,11 @@ example : True := by
 
 example : True := by
   fail_if_success have : PseudoMetricSpace (Option (Fin 3)) := inferInstance
+  trivial
+
+example (_s : Finset (Fin 2)) : True := by
+  fail_if_success have : Decidable (_s ∈ (⊤ : PreAbstractSimplicialComplex (Fin 2))) :=
+    inferInstance
   trivial
 
 end TDA.Persistence.GlobalInstanceClientExamples

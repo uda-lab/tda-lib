@@ -86,7 +86,7 @@ private theorem f0_empty_domain_phi (n : ℕ) :
 
 private abbrev prepEdgeK : PreAbstractSimplicialComplex (Fin 2) := ⊤
 
-private instance prepEdgeMem (s : Finset (Fin 2)) : Decidable (s ∈ prepEdgeK) := by
+private local instance prepEdgeMem (s : Finset (Fin 2)) : Decidable (s ∈ prepEdgeK) := by
   change Decidable s.Nonempty
   infer_instance
 
