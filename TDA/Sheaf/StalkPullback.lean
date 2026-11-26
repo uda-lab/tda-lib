@@ -19,6 +19,9 @@ sheaves.
 * `germ_stalkPullbackSheafIso_hom` and `stalkPullbackSheafIso_unit`: the isomorphism sends the
   germ at `f x` of a section `n` over `V` to the germ at `x` of the image of `n` under the
   adjunction unit.
+* `stalkPullbackSheafIso_hom_naturality`: the isomorphism is natural in `F`;
+  `stalkPullbackSheafNatIso f x` packages it as a natural isomorphism of functors
+  `Sh Y ⥤ ModuleCat k`.
 -/
 
 noncomputable section
@@ -91,5 +94,45 @@ theorem stalkPullbackSheafIso_unit {X Y : TopCat.{0}} (f : X ⟶ Y)
         (((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) f).unit.app F).hom.app
           (op V) n) :=
   ConcreteCategory.congr_hom (germ_stalkPullbackSheafIso_hom k f F V x hx) n
+
+/-- **Naturality of `stalkPullbackSheafIso`.** For a morphism `φ : F ⟶ G` of sheaves on `Y`, the
+stalk map of `φ` at `f x` corresponds to the stalk map of `f⁻¹ φ` at `x`. -/
+@[reassoc]
+theorem stalkPullbackSheafIso_hom_naturality {X Y : TopCat.{0}} (f : X ⟶ Y)
+    {F G : Y.Sheaf (ModuleCat.{0} k)} (φ : F ⟶ G) (x : X) :
+    (TopCat.Presheaf.stalkFunctor (ModuleCat.{0} k) (f x)).map φ.hom ≫
+        (stalkPullbackSheafIso k f G x).hom =
+      (stalkPullbackSheafIso k f F x).hom ≫
+        (TopCat.Presheaf.stalkFunctor (ModuleCat.{0} k) x).map
+          ((TopCat.Sheaf.pullback (ModuleCat.{0} k) f).map φ).hom := by
+  refine ConcreteCategory.hom_ext _ _ fun g => ?_
+  obtain ⟨V, hV, s, rfl⟩ := TopCat.Presheaf.exists_germ_eq F.presheaf g
+  -- The unit `F ⟶ f_* f⁻¹ F` is natural in `F`; read it on sections over `V`.
+  have h := congrArg (fun ψ => ψ.hom.app (Opposite.op V))
+    ((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) f).unit.naturality φ)
+  refine (congrArg (stalkPullbackSheafIso k f G x).hom
+    (TopCat.Presheaf.stalkFunctor_map_germ_apply V (f x) hV φ.hom s)).trans ?_
+  refine (stalkPullbackSheafIso_unit k f G V x hV _).trans ?_
+  refine Eq.trans ?_ (congrArg _ (stalkPullbackSheafIso_unit k f F V x hV s)).symm
+  refine Eq.trans ?_ (TopCat.Presheaf.stalkFunctor_map_germ_apply ((Opens.map f).obj V) x hV
+    ((TopCat.Sheaf.pullback (ModuleCat.{0} k) f).map φ).hom
+    (((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) f).unit.app F).hom.app
+      (Opposite.op V) s)).symm
+  exact congrArg _ (ConcreteCategory.congr_hom h s)
+
+/-- `stalkPullbackSheafIso` as a natural isomorphism: the stalk at `f x` is naturally isomorphic
+to the stalk at `x` of the sheaf inverse image along `f`. -/
+def stalkPullbackSheafNatIso {X Y : TopCat.{0}} (f : X ⟶ Y) (x : X) :
+    TopCat.Sheaf.forget (ModuleCat.{0} k) Y ⋙ TopCat.Presheaf.stalkFunctor _ (f x) ≅
+      TopCat.Sheaf.pullback (ModuleCat.{0} k) f ⋙ TopCat.Sheaf.forget _ X ⋙
+        TopCat.Presheaf.stalkFunctor _ x :=
+  NatIso.ofComponents (fun F => stalkPullbackSheafIso k f F x)
+    (fun φ => stalkPullbackSheafIso_hom_naturality k f φ x)
+
+/-- The components of `stalkPullbackSheafNatIso` are `stalkPullbackSheafIso`. -/
+@[simp]
+theorem stalkPullbackSheafNatIso_app {X Y : TopCat.{0}} (f : X ⟶ Y) (x : X)
+    (F : Y.Sheaf (ModuleCat.{0} k)) :
+    (stalkPullbackSheafNatIso k f x).app F = stalkPullbackSheafIso k f F x := rfl
 
 end TDA.Sheaf

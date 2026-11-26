@@ -985,3 +985,16 @@ import TDA
 #print axioms TDA.Sheaf.IntervalFibreExamples.skyHalf
 #print axioms TDA.Sheaf.IntervalFibreExamples.isZero_H2_skyHalf
 #print axioms TDA.Sheaf.IntervalFibreExamples.H1_skyHalf_iso
+#print axioms TDA.Sheaf.stalkPullbackSheafIso_hom_naturality
+#print axioms TDA.Sheaf.stalkPullbackSheafIso_hom_naturality_assoc
+#print axioms TDA.Sheaf.stalkPullbackSheafNatIso
+#print axioms TDA.Sheaf.stalkPullbackSheafNatIso_app
+#print axioms TDA.Sheaf.isIso_iff_isIso_stalk_homology
+#print axioms TDA.Sheaf.DerivedStalksExamples.shift
+#print axioms TDA.Sheaf.DerivedStalksExamples.isIso_shift
+#print axioms TDA.Sheaf.DerivedStalksExamples.skyR
+#print axioms TDA.Sheaf.DerivedStalksExamples.skyShift
+#print axioms TDA.Sheaf.DerivedStalksExamples.stalk_skyShift_zero
+#print axioms TDA.Sheaf.DerivedStalksExamples.isZero_stalk_skyShift_five
+#print axioms TDA.Sheaf.DerivedStalksExamples.stalk_skyShift_naturality
+#print axioms TDA.Sheaf.DerivedStalksExamples.isIso_stalk_homology_derivedUnit_shift

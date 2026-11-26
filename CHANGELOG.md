@@ -517,6 +517,17 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   one-point fibre (`isIso_derivedUnit_kpt_fibre`, `H0_constSh_kpt_fibre`,
   `isIso_derivedUnit_kpt_fibre_zero`, `isIso_derivedUnit_Icc_two`), and the skyscraper `skyHalf`
   (`isZero_H2_skyHalf`, `H1_skyHalf_iso`).
+- Derived stalks (#1224): in `TDA.Sheaf.StalkPullback`, `stalkPullbackSheafIso` is natural in the
+  sheaf (`stalkPullbackSheafIso_hom_naturality`, `stalkPullbackSheafIso_hom_naturality_assoc`),
+  packaged as the natural isomorphism `stalkPullbackSheafNatIso` (`stalkPullbackSheafNatIso_app`).
+  `TDA.Sheaf.DerivedStalks` proves `isIso_iff_isIso_stalk_homology`: a morphism of
+  `DerivedCategory.Plus (X.Sheaf (ModuleCat k))` is an isomorphism if and only if every stalk of
+  every homology sheaf map is. Both are stated for `TopCat.{0}`, `ModuleCat.{0} k`, `k : Type`; the
+  `[Category.{u} C]` generality of #1224 is not provided. Fixtures in
+  `TDA.Sheaf.DerivedStalksExamples`: the skyscraper `skyR` on `ℝ` and its inverse image `skyShift`
+  along the translation `shift` (`isIso_shift`), with stalks `stalk_skyShift_zero` and
+  `isZero_stalk_skyShift_five`, `stalk_skyShift_naturality` and
+  `isIso_stalk_homology_derivedUnit_shift`.
 
 ## v0.5.0
 
