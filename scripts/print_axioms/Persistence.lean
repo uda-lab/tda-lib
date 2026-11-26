@@ -9511,3 +9511,16 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.F2GridRep.erosionFailureAt_eq_erosionFailureAtBy
 #print axioms TDA.Persistence.F2GridRep.rankAtWith_rankTable
 #print axioms TDA.Persistence.F2GridRep.erosionFailure?_eq_cached
+#print axioms TDA.Persistence.Cech.exists_lt_dist_of_ofReal_lt_bottleneck_dgm
+#print axioms TDA.Persistence.Cech.lt_hausdorffDist_of_ofReal_lt_bottleneck_dgm
+#print axioms TDA.Persistence.Cech.dgm_eq_of_linearOrder
+#print axioms TDA.Persistence.CechClientExamples.noise_bottleneck_le
+#print axioms TDA.Persistence.CechClientExamples.exists_moved_of_lt_bottleneck
+#print axioms TDA.Persistence.CechClientExamples.diagramErrorEvent_subset
+#print axioms TDA.Persistence.CechClientExamples.measure_diagramErrorEvent_le
+#print axioms TDA.Persistence.CechClientExamples.resample_bottleneck_le
+#print axioms TDA.Persistence.CechClientExamples.lt_hausdorffDist_of_lt_bottleneck
+#print axioms TDA.Persistence.CechClientExamples.finset_bottleneck_le_hausdorffDist
+#print axioms TDA.Persistence.CechClientExamples.finset_dgm_eq_of_linearOrder
+#print axioms TDA.Persistence.CechClientExamples.dgm_comp_rev
+#print axioms TDA.Persistence.CechClientExamples.noise_bottleneck_le_ulift

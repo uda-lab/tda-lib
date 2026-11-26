@@ -44,6 +44,22 @@ theorem bottleneck_dgm_le_of_dist_le (k : Type u) [Field k] (p q : V → X) {ε 
   (bottleneck_dgm_le_displacement k p q n).trans
     (ENNReal.ofReal_le_ofReal ((Cech.displacement_le_iff p q ε).2 ⟨hε, h⟩))
 
+/-- Threshold form of `bottleneck_dgm_le_of_dist_le`, for every real `ε`: a diagram error
+above `ε` exhibits a labelled point that moved by more than `ε`. -/
+theorem exists_lt_dist_of_ofReal_lt_bottleneck_dgm (k : Type u) [Field k] (p q : V → X)
+    {ε : ℝ} (n : ℕ)
+    (h : ENNReal.ofReal ε <
+      bottleneck (dgm k (Cech.filter p) n) (dgm k (Cech.filter q) n)) :
+    ∃ v, ε < dist (p v) (q v) := by
+  by_contra hne
+  have hle : ∀ v, dist (p v) (q v) ≤ ε := fun v => not_lt.mp fun hv => hne ⟨v, hv⟩
+  rcases le_total 0 ε with hε | hε
+  · exact absurd (bottleneck_dgm_le_of_dist_le k p q hε hle n) (not_le.mpr h)
+  · have h0 := bottleneck_dgm_le_of_dist_le k p q le_rfl (fun v => (hle v).trans hε) n
+    rw [ENNReal.ofReal_of_nonpos hε] at h
+    rw [ENNReal.ofReal_zero] at h0
+    exact absurd h0 (not_le.mpr h)
+
 /-- Under distance-compatible label metrics, the Rips diagrams move by at most twice
 the same-label displacement. -/
 theorem bottleneck_rips_dgm_le_two_mul_displacement (k : Type u) [Field k]
