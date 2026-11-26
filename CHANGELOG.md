@@ -257,6 +257,27 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `TDA.Reeb.IntervalSingularHomologyStabilityExamples`: an empty source, parameter `0`, empty
   preimages, and constant maps from a point at heights `a` and `b`, at distance exactly `|a - b|`
   (`interleavingDistance_const`), over a nontrivial ring.
+- Coordinate Alexandrov translations (#1169): on `upperSpace (Fin n → ℝ)` with the product order,
+  for every `n`, `TDA.Sheaf.AlexandrovCoordinateTranslation.sheafShift C ε` is
+  `TopCat.Sheaf.pushforward` along `translate ε : x ↦ x - ε · 1`, whose preimage of `U` is the
+  image of `U` under `CoordinateShift.translation ε` and sends `↑a` to `↑(a + ε · 1)`, proved
+  coordinatewise. `sheafShiftLE`, `sheafTransition`, `sheafZeroIso`, `sheafCompIso` and
+  `sheafCongrIso` are restrictions along preimage opens; `shiftComparison R ε` identifies them
+  under `coordinateSections` with `CoordinateShift.shiftLE`, `transition`, `zeroIso` and
+  `compIso`. `SheafInterleaving.equivCoordinateInterleaving` is an equivalence with
+  `CoordinateInterleaving` witnesses of the principal sections, `SheafInterleaving.equivUpperSet`
+  with witnesses of `M` and `N` for the attached sheaves, and `sheafInterleavingDistance_eq`
+  equates the sheaf distance with `coordinateInterleavingDistance`. The restriction identities
+  `presheaf_map_eq`, `presheaf_map_comp_map`, `presheaf_map_comp_map_eq`,
+  `presheaf_map_comp_map_eq_comp` and `restrictIso` are shared in `TDA.Sheaf.PresheafRestriction`
+  by both translation modules, and `TDA.Sheaf.AlexandrovTranslation.SheafInterleaving.equivUpperSet`
+  identifies line witnesses of attached sheaves with `RealInterleaving ε M N`. Fixtures in
+  `TDA.Sheaf.AlexandrovCoordinateTranslationExamples`: for `n = 0` the shift is the identity and
+  the distance is `0` for isomorphic sheaves or modules and `∞` otherwise; for `n = 1` pushforward
+  along the homeomorphism `upperSpace (Fin 1 → ℝ) ≃ₜ upperSpace ℝ` carries witnesses bijectively,
+  and the square with `CoordinateRealBridge.interleavingEquiv` commutes (`line_square`), with
+  equal distances; for `n = 2` the upper set `{x | s < x₀ ∧ s ≤ x₁}` moves to `s + ε`, and
+  `(ε, c)` with `0 < ε ≤ c` leaves it while the second coordinate stays at `c`.
 
 ## v0.5.0
 
