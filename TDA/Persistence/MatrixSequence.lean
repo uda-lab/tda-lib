@@ -171,6 +171,14 @@ theorem compositeMatrix_comm (F : Hom A B) {i j : Fin N} (h : i ≤ j) :
   apply Matrix.toLin'.injective
   simp only [Matrix.toLin'_mul, toLin_compositeMatrix]
   exact (congrArg (fun f => f.hom) (F.toNatTrans.naturality (homOfLE h))).symm
+
+/-- Mutually inverse matrix morphisms give a natural isomorphism of the modules. -/
+def isoOfInverse (F : Hom A B) (G : Hom B A) (hFG : F.comp G = id A)
+    (hGF : G.comp F = id B) : A.toPModule ≅ B.toPModule where
+  hom := F.toNatTrans
+  inv := G.toNatTrans
+  hom_inv_id := by rw [← toNatTrans_comp, hFG, toNatTrans_id]
+  inv_hom_id := by rw [← toNatTrans_comp, hGF, toNatTrans_id]
 end Hom
 
 /-- Explicit intertwining stage linear equivalences give a natural isomorphism. -/
@@ -347,6 +355,12 @@ theorem barcode_eq_of_linearEquiv (A B : MatrixSequence k N)
       (e j).toLinearMap.comp (A.step i j h).toLin' =
         (B.step i j h).toLin'.comp (e i).toLinearMap) : A.barcode = B.barcode :=
   rankBarcode_eq_of_iso (isoOfLinearEquiv A B e he)
+
+/-- Matrix presentations related by mutually inverse matrix morphisms have the same
+barcode. -/
+theorem barcode_eq_of_inverse_homs (A B : MatrixSequence k N) (F : Hom A B) (G : Hom B A)
+    (hFG : F.comp G = Hom.id A) (hGF : G.comp F = Hom.id B) : A.barcode = B.barcode :=
+  rankBarcode_eq_of_iso (F.isoOfInverse G hFG hGF)
 
 /-- The supplied-basis representation has the original module’s canonical barcode. -/
 theorem barcode_ofBases (M : PModule.{u,0,u} k (Fin N))

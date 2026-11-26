@@ -1515,7 +1515,7 @@ realizations. Positivity excludes endpoint pairs with empty support.
 `RealIntervalDecomposition.exists_interval_decomposition` gives existence for pointwise
 finite-dimensional real modules, and `scalar_crossing_card_eq_of_iso_of_le` proves that
 their crossing multiplicities are isomorphism invariants. `BarcodeUniquenessClientExamples`
-is a downstream regression fixture that opens no scope and declares no instance. It replays
+is a downstream regression fixture. It replays
 existence and uniqueness of the barcode on a finite chain, the classification by ranks,
 uniqueness of a positive real realization, equality of the diagrams of filters with
 isomorphic sublevel modules, and the real interval decomposition.
@@ -1526,8 +1526,11 @@ representations with `PModule`. `MatrixSequence.toPModule` accepts rectangular
 transition matrices with target rows and source columns; its morphisms extend
 adjacent commuting squares to all structure maps. Supplied bases give genuine
 natural coordinate isomorphisms, basis-independent barcodes, and the existing
-finite decomposition. A zero-initial padded sequence can also be extended across
-an explicit real critical grid, retaining its original endpoint values and a
+finite decomposition. Mutually inverse matrix morphisms give a natural isomorphism
+(`MatrixSequence.Hom.isoOfInverse`) and equal barcodes
+(`MatrixSequence.barcode_eq_of_inverse_homs`); `MatrixSequenceClientExamples` is a
+downstream regression fixture (#1263). A zero-initial padded sequence can also be extended
+across an explicit real critical grid, retaining its original endpoint values and a
 constant final cell. The finite-line path and explicit matrix composite data
 execute over concrete coefficient operations, including ℚ and F₂; see
 [chronological finite computation](math/finite-line-computation.md) for the
@@ -1753,8 +1756,7 @@ holds exactly when `0 ≤ ε` and every face value changes by at most `ε`;
 bound from such a pointwise bound, and `exists_lt_abs_sub_of_ofReal_lt_bottleneck_dgm` is its
 threshold form for every real threshold. `realInterleavingDistance_sublevel_le` takes its
 bound in `NNReal` and needs no finiteness; a real bound `ε ≥ 0` enters as `ε.toNNReal`.
-`FilterStabilityClientExamples` is a downstream regression fixture that opens no scope and
-declares no instance. It replays the pointwise diagram bound, its threshold form, the
+`FilterStabilityClientExamples` is a downstream regression fixture. It replays the pointwise diagram bound, its threshold form, the
 interleaving-distance and `p`-transport bounds, and the coordinate interleaving and signed
 hook bounds for multiparameter grades.
 
@@ -3375,7 +3377,7 @@ and `nonempty_sublevelInterleaving_iff` is the witness equivalence at every fini
 parameter. On one complex, `bottleneck_dgm_le_faceSupDifference_algebraic`
 rederives finite-filter stability from the inclusion interleaving, independently of the
 face-order proof, and essential multiplicities agree. `InterleavingIsometryClientExamples` is
-a downstream regression fixture that opens no scope and declares no instance; it replays the
+a downstream regression fixture; it replays the
 bound, its converse and threshold forms for finite-constructible modules, the two-complex
 bound and the triangle inequality for diagrams (#1259). The scaling bridge in
 `TDA.Persistence.SublevelScaling` adds the corresponding module and diagram identities.
@@ -3447,8 +3449,7 @@ the auxiliary label order, as the two-orders case of `Cech.dgm_eq_of_range_eq`.
 `Cech.lt_hausdorffDist_of_ofReal_lt_bottleneck_dgm` are the threshold forms of the same-label
 and Hausdorff bounds, for every real threshold. Labels and the coefficient field share one
 universe; lift the labels with `ULift` for a field in a higher universe.
-`CechClientExamples` is a downstream regression fixture that opens no scope and declares no
-instance. It replays the noise bound, its threshold and event forms with the measure tail
+`CechClientExamples` is a downstream regression fixture. It replays the noise bound, its threshold and event forms with the measure tail
 transfer, the resampling bound, finite subsets of an unordered space, relabelling and the
 `ULift` route.
 
