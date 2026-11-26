@@ -14,3 +14,4 @@ import TDA.Topology.LastVertexClientExamples
 import TDA.Topology.SingularMayerVietorisExamples
 import TDA.Topology.AffineChainsExamples
 import TDA.Topology.SingularSubdivisionExamples
+import TDA.Topology.SmallChainsQuasiIsoExamples
