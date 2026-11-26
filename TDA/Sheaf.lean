@@ -34,3 +34,4 @@ import TDA.Sheaf.BaseChange
 import TDA.Sheaf.AcyclicClass
 import TDA.Sheaf.IntervalAcyclic
 import TDA.Sheaf.BandStalks
+import TDA.Sheaf.BandAmplitude
