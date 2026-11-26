@@ -23,3 +23,4 @@ import TDA.Simplicial.BarycentricHomology
 import TDA.Simplicial.Collapse
 import TDA.Simplicial.CollapseHomology
 import TDA.Simplicial.CollapseCertificate
+import TDA.Simplicial.DeletedFaceValues

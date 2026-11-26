@@ -3047,6 +3047,31 @@ grade 4 only, `mem_cech_four_iff` (the faces of `cech 4` are `triangle`), `mem_a
 (`CollapsesTo (cech 4) (alpha 4)` through the checker). See
 [checking supplied collapse sequences](math/discrete-morse-matchings.md#checking-supplied-collapse-sequences).
 
+`TDA.Simplicial.DeletedFaceValues` (imported by `TDA.Simplicial`) works in namespace
+`TDA.Simplicial` with `[LinearOrder V]` and `K : PreAbstractSimplicialComplex V`.
+`deletedFace_val` gives the underlying finset of `deletedFace K n s i` as
+`s.val.erase (s.val.orderEmbOfFin _ i)`, and `SimplexAttachment.oldDeletedFace_val` gives that
+of `A.oldDeletedFace i` as `A.simplex.erase (A.simplex.orderEmbOfFin A.card_simplex i)`. For
+`a < b`, `orderEmbOfFin_pair_zero` and `orderEmbOfFin_pair_one` evaluate the enumeration of
+`{a, b}` at positions `0` and `1`; `deletedFace_val_pair_zero` and `_one` give the deleted faces
+`{b}` and `{a}` of an edge `s` with `s.val = {a, b}`, and
+`SimplexAttachment.oldDeletedFace_val_pair_zero` and `_one` give the same for an attachment
+`A : SimplexAttachment K L 1` with `A.simplex = {a, b}`.
+`forall_mem_deletedFace_zero_iff_one` states that a vertex predicate `Q` that is constant along
+every edge of `K` satisfies `(∀ v ∈ (deletedFace K 0 σ 0).val, Q v) ↔ ∀ v ∈ (deletedFace K 0 σ 1).val, Q v`
+for every edge `σ`. With it, `SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_edge`
+and `quotientIncl_injective_of_separated_vertices` restate
+`SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_vertices` and
+`quotientIncl_injective_of_two_vertices_separated` for such a `Q`: the first takes `a < b`,
+`A.simplex = {a, b}`, `¬ Q a` and `Q b`; the second takes `∀ w ∈ u.val, Q w` and
+`∃ w ∈ v.val, ¬ Q w` for the two source vertices `u` and `v`. The existing statements are
+unchanged. `TDA.Simplicial.SimplexAttachmentClientExamples` (imported by
+`TDA.Simplicial.Examples`) is a downstream regression fixture (#1277): it joins the two vertices
+of `Fin 2` by the edge `{0, 1}`, shows `(attach.oldDeletedFace 0).val = {1}` and
+`(attach.oldDeletedFace 1).val = {0}` with no helper lemma, and proves the attaching class
+nonzero over every field with the existing theorem and with the edge form. It opens no scope and
+declares no instance.
+
 `TDA.Filtration.CollapseCertificateFamily` (imported by `TDA.Filtration`) works in namespace
 `TDA.Filtration` with real-indexed filtrations `F G : SimplicialFiltration ℝ V` and rational
 grade tables `g : Finset (Finset V × ℚ)`. `HasGradeTable K g` is
