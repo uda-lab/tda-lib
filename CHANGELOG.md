@@ -332,6 +332,15 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   it by some iterate of `S`. Fixtures in `TDA.Topology.SingularMayerVietorisExamples` cover two
   rays covering `ℝ`, a segment that is not small, the flip sign over `ℚ` and contractible
   complexes.
+- Flasque sheaves and section lifting on compact intervals (#1226, parts U1 and U2):
+  `TDA.Sheaf.SheafFlasque` proves that injective sheaves of `k`-modules are flasque
+  (`isFlasque_of_injective`), introduces `GermSurjective` with `germSurjective_of_isFlasque`,
+  `germSurjective_of_injective` and `germSurjective_of_epi`, and gives local preimages along
+  exact complexes (`exists_local_preimage_of_exact`). `TDA.Sheaf.IntervalSections` proves the
+  extension step for order-connected `S ⊆ ℝ` (`exists_section_lift_extend`, on the opens
+  `openIoo S p q`), the lifting of locally liftable global sections on `[u, v]` along an exact
+  complex with germ-surjective first term (`exists_section_lift_Icc`) and exactness of global
+  sections on `[u, v]` (`sections_exact_Icc`). Fixtures in `TDA.Sheaf.IntervalSectionsExamples`.
 
 ## v0.5.0
 
