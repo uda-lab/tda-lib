@@ -20,7 +20,7 @@ else
 fi
 printf '%s\n' "$(basename "$ROOT") session brief:" \
   "- memory headroom: $memory; required ${LEAN_GUARD_MIN_AVAIL_MIB:-1536} MiB" \
-  "- Lean threads per process: ${LEAN_NUM_THREADS:-unknown} (${LEAN_NUM_THREADS_SOURCE:-unknown}; ${LEAN_NUM_THREADS_DETECTED:-unknown} detected); concurrent builds need separate resource coordination." \
+  "- Lean threads per process: $(lean_num_threads_summary); concurrent builds need separate resource coordination." \
   "- Lake artifact cache: $cache_status; new worktree: scripts/bootstrap.sh then scripts/check.sh; warm build probe: $warm_status (scripts/lean.sh lake build --no-build TDA)." \
   '- Build exclusion: canonical shared checkout/build/dependency paths, including symlink targets.' \
   '- Lean/Lake: use scripts/lean.sh; check.sh and bootstrap.sh use the same runtime guard.' \

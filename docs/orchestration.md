@@ -218,14 +218,14 @@ Exclusion protects shared files; it is not a host resource scheduler. Coordinate
 builds with the other owners according to CPU, memory/cgroup headroom and expected workloads.
 A free lock or the headroom probe alone does not establish capacity for another build.
 `LEAN_NUM_THREADS` configures each Lean process, separately from the number of concurrent
-builds. An explicit positive value is preserved exactly; an unset value stays at the
-single-thread default. The CPUs detected as available to the process (affinity, capped by any
-cgroup CPU quota) are still reported for visibility, but are not used to raise the default:
-each concurrent Lean worker maps a large span of oleans, so raising thread count past what a
-host's memory comfortably holds for that many mappings does not shorten a build bound by page
-cache for those mappings (#945 measures the related cold-build cost). Raise it explicitly only
-on a host whose own measurement supports it, and lower it explicitly after a further measured
-OOM (`exit 137`); detection never becomes a fixed hardware fact recorded in this repository.
+builds. An explicit positive value is preserved exactly; an unset or empty value is not passed on, so
+Lean applies its own default (all hardware threads), as in uda-lab/reeb-ordering. The CPUs
+detected as available to the process (affinity, capped by any cgroup CPU quota) are reported
+for visibility only and never set the thread count. Lean's default does not read a cgroup CPU
+quota, and each concurrent Lean worker maps a large span of oleans, so a CPU-quota-limited or
+memory-constrained host sets the variable explicitly in its own untracked environment (the
+cloud setup script and hosted CI already do), and lowers it after a measured OOM (`exit 137`);
+no host value is recorded in this repository.
 Cross-account jobs need external coordination; these locks are account-scoped.
 `LEAN_GUARD_MIN_AVAIL_MIB` defaults to 1536 and remains configurable. Unavailable
 platform metrics are reported as unknown, never as measured spare capacity.

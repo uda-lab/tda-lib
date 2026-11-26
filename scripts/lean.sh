@@ -27,7 +27,7 @@ for arg in "$@"; do
 done
 . "$ROOT/scripts/lib/resources.sh"
 lean_resolve_num_threads
-printf 'Lean threads: %s (%s; %s detected)\n' "$LEAN_NUM_THREADS" "$LEAN_NUM_THREADS_SOURCE" "$LEAN_NUM_THREADS_DETECTED" >&2
+printf 'Lean threads: %s\n' "$(lean_num_threads_summary)" >&2
 if [ -e "${CODEX_STOP_FILE:-/tmp/codex-stop}" ]; then echo "ERROR: stopped by ${CODEX_STOP_FILE:-/tmp/codex-stop}" >&2; exit 2; fi
 python3 "$ROOT/scripts/lib/build-resources.py" --check-outputs "$ROOT" "$tool" "$@"
 . "$ROOT/scripts/lib/build-lock.sh"

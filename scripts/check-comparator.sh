@@ -85,7 +85,8 @@ fi
 # dependencies, but not any project-local module: that rule closes transitive bridges through
 # auxiliary source files as well as direct imports.
 solution_module="$(jq -r '.solution_module' "$CONFIG")"
-solution_path="$ROOT/${solution_module//./\/}.lean"
+# `${var//.//}`, not `${var//./\/}`: bash 3.2 (macOS /bin/bash) keeps the backslash in the latter.
+solution_path="$ROOT/${solution_module//.//}.lean"
 [ -f "$solution_path" ] || die "the solution module $solution_module has no corresponding Lean source: $solution_path"
 case "$solution_path/" in
   "$ROOT/TDA/"*) ;;
@@ -284,8 +285,8 @@ command -v lake >/dev/null 2>&1 || die "lake is unavailable; install/use the rep
 
 # Run through the repository's guarded Lean entry point, never a direct `lake` call: on top of
 # the shared build lock, scripts/lean.sh also honours ${CODEX_STOP_FILE:-/tmp/codex-stop},
-# checks memory headroom before starting, and resolves the LEAN_NUM_THREADS default (1 unless
-# explicitly overridden, with the detected CPU count reported for visibility; AGENTS.md
+# checks memory headroom before starting, and resolves LEAN_NUM_THREADS (an explicit value is kept; unset
+# leaves Lean's own default, with the detected CPU count reported for visibility; AGENTS.md
 # "Commands"/"Execution defaults"). Sourcing
 # scripts/lib/build-lock.sh directly, as a standalone invocation of this wrapper previously
 # did, obtained the lock but skipped those other guards, which only the canonical

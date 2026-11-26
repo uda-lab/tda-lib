@@ -64,14 +64,14 @@ root, cache = Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve()
 assert root not in cache.parents and cache != root
 PY
 if "$ROOT/scripts/lean.sh" lake build -M 4000 >/dev/null 2>&1; then echo 'manual limit accepted'; exit 1; fi
-# Unset LEAN_NUM_THREADS, no cgroup quota ("max"): stays at the single-thread fallback, but the
-# detected affinity count (6) is still reported for visibility.
-[ "$(cat "$ARGV_OUT.threads")" = 1 ]
-[ "$(cat "$ARGV_OUT.source")" = fallback ]
+# Unset LEAN_NUM_THREADS, no cgroup quota ("max"): the variable is not passed to Lean, so Lean
+# applies its own default; the detected affinity count (6) is still reported for visibility.
+[ "$(cat "$ARGV_OUT.threads")" = unset ]
+[ "$(cat "$ARGV_OUT.source")" = lean-default ]
 [ "$(cat "$ARGV_OUT.detected")" = 6 ]
 LEAN_NUM_THREADS=3 "$ROOT/scripts/lean.sh" lake build
-# An explicit value is kept exactly, overriding the fallback; detection still runs and is
-# reported, but does not affect the explicit value.
+# An explicit value is kept exactly; detection still runs and is reported, but does not affect
+# the explicit value.
 [ "$(cat "$ARGV_OUT.threads")" = 3 ]
 [ "$(cat "$ARGV_OUT.source")" = explicit ]
 [ "$(cat "$ARGV_OUT.detected")" = 6 ]
@@ -96,23 +96,27 @@ if LEAN_NUM_THREADS=0 "$ROOT/scripts/lean.sh" lake build >/dev/null 2>&1; then
   echo 'invalid thread configuration accepted'; exit 1
 fi
 # A quota-limited cgroup (ceil(quota/period) below the affinity count) caps the DETECTED value
-# (quota 2, affinity 6 -> 2); the thread count used still stays at the fallback of 1.
+# (quota 2, affinity 6 -> 2); detection never sets the thread count, which stays unset.
 LEAN_CGROUP_ROOT="$test_dir/cg/limited" "$ROOT/scripts/lean.sh" lake build
-[ "$(cat "$ARGV_OUT.threads")" = 1 ]
+[ "$(cat "$ARGV_OUT.threads")" = unset ]
 [ "$(cat "$ARGV_OUT.detected")" = 2 ]
 # A cgroup quota above the affinity count never raises detection past the detected affinity:
 # affinity 1, quota 2 -> detected 1.
 STUB_NPROC=1 LEAN_CGROUP_ROOT="$test_dir/cg/limited" "$ROOT/scripts/lean.sh" lake build
-[ "$(cat "$ARGV_OUT.threads")" = 1 ]
+[ "$(cat "$ARGV_OUT.threads")" = unset ]
 [ "$(cat "$ARGV_OUT.detected")" = 1 ]
 # Ancestor shadowing: the process's own (deepest) cgroup has no limit, but a parent's quota is
 # stricter. The minimum across every exposed ancestor must win, not just the first readable
 # level — a looser/unlimited descendant must not hide a stricter ancestor quota. Affinity 8,
-# ancestor quota 2 -> detected 2; the thread count used still stays at the fallback of 1.
+# ancestor quota 2 -> detected 2; the thread count stays unset.
 STUB_NPROC=8 LEAN_CGROUP_ROOT="$test_dir/cg/nested" LEAN_CGROUP_SELF_PATH=/child \
   "$ROOT/scripts/lean.sh" lake build
-[ "$(cat "$ARGV_OUT.threads")" = 1 ]
+[ "$(cat "$ARGV_OUT.threads")" = unset ]
 [ "$(cat "$ARGV_OUT.detected")" = 2 ]
+# An empty value is treated as unset, not passed through and not rejected.
+LEAN_NUM_THREADS= "$ROOT/scripts/lean.sh" lake build
+[ "$(cat "$ARGV_OUT.threads")" = unset ]
+[ "$(cat "$ARGV_OUT.source")" = lean-default ]
 if "$ROOT/scripts/lean.sh" lake --dir /tmp build >/dev/null 2>&1; then
   echo 'project redirection escaped resource exclusion'; exit 1
 fi
