@@ -127,7 +127,8 @@ variable {k n}
 theorem intervalSingularHomologyPerturbation_app {f g : C(X, ℝ)} {ε : ℝ≥0}
     (h : ∀ x, |f x - g x| ≤ ε) (I : OpenInterval) :
     (intervalSingularHomologyPerturbation k n h).app I =
-      (singHom k n).map (perturbationTopHom h I) := rfl
+      ((singularHomologyFunctor (ModuleCat.{u} k) n).obj (ModuleCat.of k k)).map
+        (perturbationTopHom h I) := rfl
 
 /-- **Perturbation stability of interval singular homology.** A uniform bound `ε` on `f − g`
 gives an `ε`-interleaving of `intervalSingularHomology k n f` and
