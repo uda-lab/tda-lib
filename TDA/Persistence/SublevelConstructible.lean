@@ -12,9 +12,10 @@ the first value the sublevel is empty, and within a cell of that grid the sublev
 change. Over a field the critical fibers are finite-dimensional, and the module diagram on this
 grid is the filter diagram `dgm` by definition, since both are the value-labelled rank barcode
 of the same critical-grade module. The finite-constructible isometry therefore identifies the
-bottleneck distance of two filter diagrams on the same complex with the interleaving distance of
-their sublevel modules. The finite-filter stability bound follows again, from the inclusion
-interleaving of the sublevel modules instead of face-order interpolation.
+bottleneck distance of the diagrams of filters on two finite complexes with the interleaving
+distance of their sublevel modules. For filters on one complex the finite-filter stability
+bound follows again, from the inclusion interleaving of the sublevel modules instead of
+face-order interpolation.
 
 These are library extensions proved from the merged definitions.
 -/
