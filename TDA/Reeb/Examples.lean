@@ -29,6 +29,7 @@ import TDA.Reeb.IntervalCosheafExamples
 import TDA.Reeb.IntervalExamples
 import TDA.Reeb.IntervalSingularHomologyExamples
 import TDA.Reeb.IntervalSingularHomologyStabilityExamples
+import TDA.Reeb.IntervalMayerVietorisExamples
 import TDA.Reeb.PerturbationExamples
 import TDA.Reeb.QuotientComparisonExamples
 import TDA.Reeb.QuotientThickeningAbsorptionExamples

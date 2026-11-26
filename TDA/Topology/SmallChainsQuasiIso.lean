@@ -268,7 +268,7 @@ variable {k : Type u} [Ring k] {X : TopCat.{u}} (s t : Set X) (M : ModuleCat.{u}
 
 /-- Under `singularChainsSubsetIso`, the inclusion `simplicesIn A ≤ simplicesIn B` of
 subcomplexes is the map induced by the inclusion `A ⊆ B`. -/
-private theorem singularChainsSubsetIso_inv_comp_map_inclusion {A B : Set X} (hAB : A ⊆ B)
+theorem singularChainsSubsetIso_inv_comp_map_inclusion {A B : Set X} (hAB : A ⊆ B)
     (hle : simplicesIn A ≤ simplicesIn B) :
     (singularChainsSubsetIso A M).inv ≫
         ((singularChainComplexFunctor (ModuleCat.{u} k)).obj M).map
@@ -285,7 +285,7 @@ private theorem singularChainsSubsetIso_inv_comp_map_inclusion {A B : Set X} (hA
 
 /-- Under `singularChainsSubsetIso`, the inclusion of `simplicesIn A` into the small simplices,
 followed by the inclusion of small chains, is the map induced by the inclusion of `A`. -/
-private theorem singularChainsSubsetIso_hom_comp_homOfLE_comp_smallChainsι {A : Set X}
+theorem singularChainsSubsetIso_hom_comp_homOfLE_comp_smallChainsι {A : Set X}
     (hle : simplicesIn A ≤ smallSimplices s t) :
     (singularChainsSubsetIso A M).hom ≫ SSet.chainComplexMap (SSet.Subcomplex.homOfLE hle) M ≫
         smallChainsι s t M =
@@ -297,7 +297,7 @@ private theorem singularChainsSubsetIso_hom_comp_homOfLE_comp_smallChainsι {A :
   exact singularChainsSubsetIso_hom_comp_chainComplexMap_ι A M
 
 /-- The homology of the chains of `simplicesIn A` is the singular homology of `A`. -/
-private def homologySubsetIso (A : Set X) (n : ℕ) :
+def homologySubsetIso (A : Set X) (n : ℕ) :
     ((simplicesIn A : SSet.{u}).chainComplex M).homology n ≅
       ((singularHomologyFunctor (ModuleCat.{u} k) n).obj M).obj (TopCat.of A) :=
   (homologyFunctor _ _ n).mapIso (singularChainsSubsetIso A M).symm
@@ -362,7 +362,7 @@ private theorem inr_homologyBiprodIso_inv (n : ℕ) :
   exact (homologyMap_comp _ _ _).symm
 
 /-- For a cover by interiors, the inclusion of small chains induces an isomorphism on homology. -/
-private def smallChainsHomologyIso (h : interior s ∪ interior t = Set.univ) (n : ℕ) :
+def smallChainsHomologyIso (h : interior s ∪ interior t = Set.univ) (n : ℕ) :
     (smallChains s t M).homology n ≅
       ((singularHomologyFunctor (ModuleCat.{u} k) n).obj M).obj X :=
   @asIso _ _ _ _ (homologyMap (smallChainsι s t M) n)

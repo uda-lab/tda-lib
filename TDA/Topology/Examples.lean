@@ -15,3 +15,4 @@ import TDA.Topology.SingularMayerVietorisExamples
 import TDA.Topology.AffineChainsExamples
 import TDA.Topology.SingularSubdivisionExamples
 import TDA.Topology.SmallChainsQuasiIsoExamples
+import TDA.Topology.MayerVietorisSequenceExamples
