@@ -45,7 +45,6 @@ import TDA.Mapper.RefinementHomologyEssential
 import TDA.Mapper.DomainMap
 import TDA.Mapper.RefinementHomologyDomainMap
 import TDA.Mapper.RefinementHomologyOrderFree
-import TDA.Mapper.CappedMapperClientExamples
 import TDA.Mapper.GraphPLReebScaling
 import TDA.Mapper.GraphPLReebMapPair
 import TDA.Mapper.GraphPLReebMergeFold
