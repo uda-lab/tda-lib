@@ -47,10 +47,12 @@ Columns
   disposition  seed disposition: fixture (`examples` = 1), internal wrapper (`deprecated` or
                `wrapper`), non-theorem (not a theorem, carried for grouping and counting),
                otherwise pending. These are starting values for the audit; they prove no use.
-  ref_other    number of constants of other `TDA` modules, outside `*Examples` modules, whose
-               type or value mentions this declaration (private and generated constants count)
-  ref_same     the same count over the declaring module, the declaration itself excluded
-  ref_examples the same count over `*Examples` modules
+  ref_other    number of constants that mention this declaration in their type, or in their
+               value for a theorem, definition or opaque constant, and live in another `TDA`
+               module that is not an `*Examples` module (private and generated constants
+               count; the declaration itself does not)
+  ref_same     the same count over the declaring module when it is not an `*Examples` module
+  ref_examples the same count over all `*Examples` modules
   doc          first line of the docstring, tabs and newlines removed
 
 `scripts/rename-project.sh` rewrites every `TDA` occurrence in this file.
@@ -202,6 +204,7 @@ private def firstLine (s : String) : String :=
         let info := data.constants[i]!
         let mut used := info.type.getUsedConstantsAsSet
         if let some v := valueOf? info then used := used.union v.getUsedConstantsAsSet
+        if let .opaqueInfo o := info then used := used.union o.value.getUsedConstantsAsSet
         for c in used do
           if c != user then
             if let some r := byName[c]? then
