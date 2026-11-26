@@ -1728,6 +1728,17 @@ field, including pairing changes and closed interpolation endpoints. This is the
 library's finite combinatorial counterpart of the geometric stability theorem; it does
 not supply a comparison with singular homology of general tame functions.
 
+For clients (#1249): `faceSupDifference_le_iff` states that `faceSupDifference f g ≤ ε`
+holds exactly when `0 ≤ ε` and every face value changes by at most `ε`;
+`faceSupDifference_comm` is its symmetry. `bottleneck_dgm_le_of_abs_sub_le` is the diagram
+bound from such a pointwise bound, and `exists_lt_abs_sub_of_ofReal_lt_bottleneck_dgm` is its
+threshold form for every real threshold. `realInterleavingDistance_sublevel_le` takes its
+bound in `NNReal` and needs no finiteness; a real bound `ε ≥ 0` enters as `ε.toNNReal`.
+`FilterStabilityClientExamples` is a downstream regression fixture that opens no scope and
+declares no instance. It replays the pointwise diagram bound, its threshold form, the
+interleaving-distance and `p`-transport bounds, and the coordinate interleaving and signed
+hook bounds for multiparameter grades.
+
 `TDA.Filtration.FilterFunction.map` reparametrizes a filter along an order embedding
 φ : α ↪o β, and `TDA.Persistence.Diagram.map` maps births and finite deaths of a diagram
 along φ while fixing the essential top. Sublevels correspond at every source threshold, and
