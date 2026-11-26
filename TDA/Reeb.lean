@@ -34,6 +34,7 @@ import TDA.Reeb.InterleavingDistance
 import TDA.Reeb.Interval
 import TDA.Reeb.IntervalComponents
 import TDA.Reeb.IntervalCosheaf
+import TDA.Reeb.IntervalSingularHomology
 import TDA.Reeb.Perturbation
 import TDA.Reeb.PerturbationDistance
 import TDA.Reeb.Quotient
