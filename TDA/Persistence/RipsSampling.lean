@@ -23,7 +23,13 @@ variable {X : Type u} {Y : Type v} [MetricSpace X] [MetricSpace Y] {n : ℕ}
 /-- The metric quotient of the tuple pseudometric, realised as its finite range. -/
 abbrev Sample (t : Fin n → X) := Set.range t
 
-instance sampleFintype (t : Fin n → X) : Fintype (Sample t) := Fintype.ofFinite _
+set_option warn.classDefReducibility false in
+/-- A finite range is finite, with the `Fintype` structure chosen by `Fintype.ofFinite`. It is an
+ordinary definition and not an instance; a client obtains it by `letI := sampleFintype t`, and
+`Set.fintypeRange` remains the instance of mathlib. -/
+def sampleFintype (t : Fin n → X) : Fintype (Sample t) := Fintype.ofFinite _
+
+attribute [local instance] sampleFintype
 
 /-- Repeated draws have the same image point in the finite metric sample. -/
 def sampleProjection (t : Fin n → X) (i : Fin n) : Sample t := ⟨t i, i, rfl⟩

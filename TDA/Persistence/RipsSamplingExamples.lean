@@ -10,6 +10,8 @@ noncomputable section
 namespace TDA.Persistence.RipsSamplingExamples
 
 open TDA.Probability TDA.Persistence.Rips
+
+attribute [local instance] TDA.Persistence.Rips.sampleFintype
 open scoped ENNReal NNReal
 
 /-- The two nonnegative masses are allowed to reach zero at either endpoint. -/

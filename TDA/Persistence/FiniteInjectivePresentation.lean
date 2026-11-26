@@ -37,7 +37,14 @@ variable (M : PModule.{u,0,u} k P)
 /-- A separate occurrence for every basis coordinate at every grade. -/
 abbrev Index := Σ p : P, Fin (Module.finrank k (M.obj p))
 
-instance indexFintype : Fintype (Index M) := by unfold Index; infer_instance
+set_option warn.classDefReducibility false in
+/-- The occurrences of a module over a finite poset form a finite type, with the `Fintype`
+structure of the sigma type built from `Fintype.ofFinite P`. It is an ordinary definition and not
+an instance; a client obtains it by `letI := indexFintype M`, and `Sigma.instFintype` remains the
+instance of mathlib under `[Fintype P]`. -/
+def indexFintype : Fintype (Index M) := by unfold Index; infer_instance
+
+attribute [local instance] indexFintype
 
 /-- The principal-downset injective assigned to each occurrence. -/
 abbrev family (t : Index M) : PModule.{u,0,u} k P := PrincipalDownsetInjective.module t.1

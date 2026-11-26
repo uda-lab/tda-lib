@@ -26,10 +26,10 @@ variable {n : ℕ} (G : CoordinateGrid n)
 /-- The finite product of the selected coordinate sets, with coordinatewise order. -/
 abbrev Point := ∀ i : Fin n, {x : ℝ // x ∈ G i}
 
-noncomputable instance pointFintype : Fintype G.Point := by
-  classical
-  unfold Point
-  infer_instance
+/-- The finite product of the selected coordinate sets is finite. This is mathlib's
+`Pi.instFintype` on `∀ i : Fin n, {x : ℝ // x ∈ G i}`, so `Fintype.card` and `Finset.univ` of the
+product compute in client definitions. -/
+instance pointFintype : Fintype G.Point := Pi.instFintype
 
 /-- The actual inclusion of the product grid into real coordinate space. -/
 def embedding : G.Point ↪o (Fin n → ℝ) where

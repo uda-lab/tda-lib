@@ -15,6 +15,8 @@ namespace TDA.Persistence.FiniteInjectivePresentation.Examples
 open CategoryTheory CategoryTheory.Limits
 open scoped Classical ZeroObject
 
+attribute [local instance] TDA.Persistence.FiniteInjectivePresentation.indexFintype
+
 namespace Downset
 
 open PrincipalDownsetInjective

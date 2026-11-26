@@ -24,6 +24,8 @@ open scoped ENNReal NNReal
 
 namespace Rips
 
+attribute [local instance] sampleFintype
+
 /-- Every positive-degree diagram on a carrier with at most one point is empty.
 This uses full-complex vanishing and the face-count bound, not a barcode
 assumption. -/
