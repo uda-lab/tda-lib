@@ -211,6 +211,20 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `ZerothHomotopy.mk` of the included point. Fixtures in `TDA.Reeb.IntervalSingularHomologyExamples`:
   the empty interval, an empty source, the identity of `ℝ`, and `f t = t²`, where the band
   `(1, 4)` into `(-1, 4)` induces the fold `k ⊕ k ⟶ k`. Degree zero only; not a derived equivalence.
+- Real Alexandrov translations (#1168): on `upperSpace ℝ`, `TDA.Sheaf.AlexandrovTranslation.sheafShift C ε`
+  is `TopCat.Sheaf.pushforward` along `translate ε : x ↦ x - ε` (`WithUpperSet.map`), with
+  `(S ε F)(U) = F(U + ε)` (`coe_map_translate`) and `↑t ↦ ↑(t + ε)`. The order maps
+  `sheafShiftLE`, the transition `sheafTransition`, and the natural isomorphisms `sheafZeroIso`,
+  `sheafCompIso` and `sheafCongrIso` are restrictions along preimage opens, with the `RealShift`
+  coherence laws. `shiftComparison R ε : sheafShift ε ⋙ realSections ≅ realSections ⋙ RealShift.shift ε`
+  identifies them with `shiftLE`, `transition`, `zeroIso` and `compIso`. `SheafInterleaving`
+  has the orientation of `RealInterleaving`; `SheafInterleaving.equivRealInterleaving` is an
+  equivalence with real witnesses of the principal sections, `zeroEquivIso` identifies zero
+  witnesses with sheaf isomorphisms, and `sheafInterleavingDistance_eq` equates the
+  extended-infimum sheaf distance with `realInterleavingDistance`. Fixtures in
+  `TDA.Sheaf.AlexandrovTranslationExamples`: the shift on `∅`, the whole line and `(t, ∞)`, and the
+  upper rays `[0, ∞)`, `[r, ∞)` with `0 ≤ r`, interleaved by modules or sheaves exactly when `r ≤ ε`,
+  at sheaf distance `r`.
 
 - Closed-band functors on `D⁺(Sh(ℝ; k))` (#1174): `TDA.Sheaf.DerivedPlus` gives the derived
   inverse and direct images `pullbackPlus` and `pushforwardPlus` of sheaves of modules on
