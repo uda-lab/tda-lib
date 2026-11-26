@@ -316,6 +316,22 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `TDA.Sheaf.RealStratificationExamples`: zero breakpoints, the stars and strata of
   `0 ← 1 → 2`, the constant presheaf, and the point diagram extended to the real line with
   sections of dimension one over `(-1, 1)` and zero over `(1, 2)`.
+- Algebraic core of singular Mayer–Vietoris (#1190, part S1), in `TDA.Topology`: small singular
+  chains of two arbitrary subsets (`TDA.Topology.SmallChains`: `simplicesIn`,
+  `mem_simplicesIn_iff`, `simplicesIn_inter`, `smallSimplices`, `mem_smallSimplices_iff`,
+  `smallChains`, `smallChainsι`, `singularChainsSubsetIso` and, for embeddings,
+  `range_toSSet_map_eq_simplicesIn`); in `TDA.Topology.SingularMayerVietoris`, the pushout of
+  chain complexes of a bicartesian square of subcomplexes (`isPushout_chainComplex`), the reducible
+  short complex `mvShortComplex` with maps `(t, -l)` and the sum, `shortExact_mvShortComplex` and
+  `shortExact_smallChains` in any abelian category with coproducts, the connecting map `bicartδ`
+  with its sign `bicartδ_eq` (the class of `a + b` goes to the class of the chain with image `∂a`
+  in the first piece), `bicartδ_flip` (swapping the pieces negates it) and `bicartδ_naturality`;
+  and in `TDA.Topology.QuasiIsoOfIterate`, `quasiIso_of_iterate_mem`, which proves that a
+  monomorphism of complexes of modules over a ring is a quasi-isomorphism when a homotopic
+  endomorphism `S ≃ 𝟙` and its homotopy preserve the subcomplex and every chain is carried into
+  it by some iterate of `S`. Fixtures in `TDA.Topology.SingularMayerVietorisExamples` cover two
+  rays covering `ℝ`, a segment that is not small, the flip sign over `ℚ` and contractible
+  complexes.
 
 ## v0.5.0
 

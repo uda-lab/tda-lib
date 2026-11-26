@@ -21,3 +21,6 @@ import TDA.Topology.QuotientProduct
 import TDA.Topology.Realization
 import TDA.Topology.SubdivisionMesh
 import TDA.Topology.ConvexNerveInclusion
+import TDA.Topology.SmallChains
+import TDA.Topology.SingularMayerVietoris
+import TDA.Topology.QuasiIsoOfIterate
