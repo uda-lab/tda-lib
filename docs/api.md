@@ -54,6 +54,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructible` | `IsConstructible`, `isIso_res_sameStratum`, `isConstructible_iff`; `starFunctor`, `sections`, `sections_obj_obj`, `sections_map_gen`; `basisSheaf`, `extension`, `extensionBasicIso`, `extensionStarIso`, `isConstructible_extension`, `finiteDimensional_sections`; `extensionSectionsIso`, `extensionSectionsIso_app_app`, `sectionsExtensionIso`; `Constructible`, `FinDiagram`, `sectionsFin`, `extensionFin`, `equivalence`, `equivalence_functor_obj_obj`, `equivalence_functor_obj_map_gen`, `equivalence_inverse_obj_obj` | Strictly increasing breakpoints `p : Fin m → ℝ`; `k : Type`, a ring for `isIso_res_sameStratum`, a division ring for `IsConstructible`, a field for the diagram side. Local constancy is the interval-local `IsLocallyConstantOn`; its intended equivalence with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). The derived comparison is #1183. See [Constructible sheaves on the real line](#constructible-sheaves-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleAdjunction` | `starBasic`, `starTauAdjunction`, `extensionAdjunction`, `extensionAdjunction_unit`, `toBasis`, `toBasis_app_hom_app`, `extensionAdjunction_counit_app_eq`, `extensionAdjunction_counit_app`, `equivalence_counitIso_inv_app_hom`, `equivalence_unitIso_inv_app_hom`, `extensionFullyFaithful`, `extension_full`, `extension_faithful`, `preservesFiniteColimits_extension`, `preservesFiniteLimits_extension`, `sections_additive`, `extension_additive`, `starGenerator`, `homExtensionRepresentableEquiv`, `homExtensionRepresentableEquiv_apply`, `homExtensionRepresentableEquiv_comp`, `homExtensionRepresentableEquiv_add`, `homExtensionRepresentableEquiv_zero`, `homExtensionPathTensorEquiv`, `homExtensionPathTensorEquiv_apply`, `homExtensionPathTensorEquiv_comp`, `hasExt_sheaf_realLine`, `hasExt_diagram`, `ext_extension_eq_zero_of_lift`, `ext_extension_representable_eq_zero`, `ext_extension_sumTensor_eq_zero`, `starCocycles`, `starCoboundaries`, `starCohomology`, `homExtensionRepresentableEquiv_symm_comp_d`, `extOfStarCocycle`, `extOfStarCocycle_apply`, `extOfStarCocycle_surjective`, `extOfStarCocycle_eq_zero_iff`, `extStarEquiv`, `extStarEquiv_mk` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field; the adjunction and the universal property hold for every sheaf of `k`-modules on `ℝ`; the `Ext` statements take an instance `HasExt.{0}` and an injective resolution `R`. See [The extension–sections adjunction](#the-extensionsections-adjunction). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleExt` | `germ_extension_surjective`, `exists_forall_mem_star_breakpoints_eq`, `germ_pullback_extension_star_surjective`, `sections_exact_star`, `ext_representable_extension_eq_zero`, `ext_sumTensor_extension_eq_zero`, `mapExt_bijective_extension`, `extensionExtEquiv`, `extensionExtEquiv_apply`, `ext_extension_eq_zero_of_two_le`, `ext_constructible_eq_zero_of_two_le` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field, all diagrams on `orient m` (no finite-dimensionality); every injective resolution of `Φ N`; `Ext` for instances `HasExt.{0}` of sheaves of `k`-modules on `ℝ` and, where diagram `Ext` occurs in the statement, of diagrams; all degrees. See [The `Ext` comparison on the real line](#the-ext-comparison-on-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.HereditarySplitting` | `biproductInsertIso`, `inl_biproductInsertIso_hom`, `inr_biproductInsertIso_hom`, `biproductIsoOfIsZero` (with `biproductIsoOfIsZero_hom`, `biproductIsoOfIsZero_inv`), `isZero_biproduct_of_isZero`; `isZero_homology_singleFunctor_obj`, `nonempty_iso_singleFunctor_homology`, `isIso_homologyMap_truncLTι`, `isIso_homologyMap_truncGEπ`, `singleFunctor_hom_eq_zero_of_ext`; `exists_iso_biproduct_homology`, `exists_iso_biproduct_homology_of_two_le`; `homologyBiproductSingleIso`, `isZero_homology_biproduct_single`, `nonempty_iso_homology_of_iso_biproduct_single`, `nonempty_iso_of_iso_biproduct_single` | An abelian category `C` with instances `HasDerivedCategory C` and, for the splitting theorems, `HasExt C`; objects of Mathlib's `DerivedCategory C` bounded for its canonical t-structure (`K.IsGE a`, `K.IsLE b`); the direct sum is indexed by `Finset.Icc a b`. See [Hereditary splitting](#hereditary-splitting). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_glue_monotone`, `exists_section_lift_extend_right`, `exists_section_lift_extend`, `exists_section_lift_extend_left`, `exists_section_lift_ordConnected`, `sections_exact_ordConnected`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`, order-connected for the lifting statements (open, half-open, closed and unbounded intervals and `ℝ`); germ-surjectivity of the first term on the opens above or below `a'` (extension steps) or avoiding a point `c` (global lifting). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`, `stalkPullbackSheafIso_hom_naturality` (and `stalkPullbackSheafIso_hom_naturality_assoc`), `stalkPullbackSheafNatIso`, `stalkPullbackSheafNatIso_app`, `pullbackSectionsIso`, `pullbackOpenSectionsIso`; `pt`, `toPt`, `ptOf`, `ptOf_apply`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
@@ -5003,6 +5004,49 @@ to the morphism that is the identity on the slot of the arrow `1 → 2`.
 `nontrivial_ext_one_pointSheaf_rightOpen`: `Ext¹(pointSheaf ℚ, rightOpen)` is nontrivial in
 sheaves on `ℝ` (the comparison). `ext_two_sky_rightClosed_eq_zero`: `Ext²` from Mathlib's
 skyscraper `sky ℚ` at `0` to `rightClosed ℚ` (the field on `[0, ∞)`) vanishes.
+
+## Hereditary splitting
+
+`TDA.Sheaf.HereditarySplitting` works in Mathlib's derived category `DerivedCategory C` of an
+abelian category `C` (`[HasDerivedCategory C]`), with `Hⁱ = homologyFunctor C i` and
+`X[-i] = (singleFunctor C i).obj X`; `K.IsGE a` and `K.IsLE b` say that `Hⁱ K = 0` outside
+`[a, b]`. It does not depend on sheaves.
+
+- `exists_iso_biproduct_homology K a b hK`: if `Ext^{j - i + 1}(Hʲ K, Hⁱ K) = 0` for all
+  `a ≤ i < j ≤ b` (`Ext` for an instance `HasExt C`), then
+  `Nonempty (K ≅ ⨁ fun i : Finset.Icc a b => (Hⁱ K)[-i])`.
+  `exists_iso_biproduct_homology_of_two_le` takes the hypothesis `Ext^n(Hʲ K, Hⁱ K) = 0` for all
+  `i`, `j` and `n ≥ 2`. The proof inducts on the length of `[a, b]` along Mathlib's truncation
+  triangle `τ_{< b} K ⟶ K ⟶ τ_{≥ b} K ⟶ (τ_{< b} K)[1]`; the components of its connecting
+  morphism are morphisms `(Hᵇ K)[-b] ⟶ (Hⁱ K)[-i][1]`, which vanish by
+  `singleFunctor_hom_eq_zero_of_ext` (a morphism `X[-a] ⟶ Y[-b]` vanishes when
+  `Ext^{a - b}(X, Y) = 0`), and Mathlib's `exists_iso_binaryBiproduct_of_distTriang` splits a
+  distinguished triangle with zero connecting morphism.
+- Truncations and cohomology: `isIso_homologyMap_truncLTι` (`Hⁱ (τ_{< n} K) ⟶ Hⁱ K` is an
+  isomorphism for `i < n`), `isIso_homologyMap_truncGEπ` (`Hⁱ K ⟶ Hⁱ (τ_{≥ n} K)` is an
+  isomorphism for `n ≤ i`), `nonempty_iso_singleFunctor_homology` (`K ≅ (Hⁿ K)[-n]` when `K`
+  is concentrated in degree `n`), `isZero_homology_singleFunctor_obj` (`Hⁱ (X[-n]) = 0` for
+  `i ≠ n`).
+- Sums of shifted objects, for a finite set `S` of degrees and objects `X x`:
+  `homologyBiproductSingleIso` (`Hⁱ (⨁_{x ∈ S} (X x)[-x]) ≅ X i` for `i ∈ S`),
+  `isZero_homology_biproduct_single` (zero for `i ∉ S`),
+  `nonempty_iso_homology_of_iso_biproduct_single` (`K ≅ ⨁_{x ∈ S} (X x)[-x]` gives
+  `X i ≅ Hⁱ K`) and `nonempty_iso_of_iso_biproduct_single` (isomorphic sums have isomorphic
+  summands degree by degree).
+- Finite biproducts in a preadditive category: `biproductInsertIso`
+  (`(⨁_{i ∈ S} f i) ⊞ f j ≅ ⨁_{i ∈ insert j S} f i` for `j ∉ S`, with
+  `inl_biproductInsertIso_hom` and `inr_biproductInsertIso_hom`), `biproductIsoOfIsZero` (a
+  biproduct whose summands other than `f j` are zero is `f j`, with `biproductIsoOfIsZero_hom` and
+  `biproductIsoOfIsZero_inv`), `isZero_biproduct_of_isZero`.
+
+`TDA.Sheaf.HereditarySplittingExamples` works over `ℚ` with any instance
+`HasDerivedCategory (ModuleCat.{0} ℚ)`. `ext_rat_eq_zero`: `Ext^n` between `ℚ`-modules vanishes
+for `n ≥ 1`; `exists_iso_biproduct_homology_rat`: every object with cohomology in `[a, b]` is
+`⨁_{i ∈ [a, b]} (Hⁱ K)[-i]`. `twoTerm` is the complex `ℚ ⟶ ℚ` with zero differential in degrees
+`0` and `1`, along the relation `rel_zero_one` (`twoTerm_d`, `twoTerm_isStrictlyGE`, `twoTerm_isStrictlyLE`, `twoTermXIso`); its
+cohomology is `ℚ` in degrees `0` and `1` (`nonempty_homology_twoTerm_iso`,
+`not_isZero_homology_twoTerm`), and `nonempty_iso_twoTerm` gives its image in the derived
+category as `⨁_{i ∈ [0, 1]} ℚ[-i]`.
 
 ## Flasque sheaves and section lifting on intervals
 

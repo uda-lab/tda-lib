@@ -898,6 +898,22 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `lo_eq_hi_pr₁₃_zero`, `not_isZero_H0_stalk_pr₁₃_vEnd`, `not_isZero_H0_stalk_pr₁₃_vMid`,
   `isIso_baseChange_one_one`, `isIso_derivedUnit_pr₁₃_one_one`, `isIso_derivedUnit_pr₁₃_zero_zero`,
   `H0_stalk_TT`, `not_isZero_H0_stalk_TT`, `not_isZero_H0_stalk_TT_zero`, `H0_stalk_TT_one_one`.
+- Hereditary splitting in the bounded derived category (#1183, part U4a). New module
+  `TDA.Sheaf.HereditarySplitting`, for an abelian category `C` with `HasDerivedCategory C`:
+  `exists_iso_biproduct_homology` (a `K` with cohomology in `[a, b]` and
+  `Ext^{j - i + 1}(Hʲ K, Hⁱ K) = 0` for `a ≤ i < j ≤ b` is `⨁_{i ∈ [a, b]} (Hⁱ K)[-i]`),
+  `exists_iso_biproduct_homology_of_two_le` (blanket hypothesis `Ext^{≥ 2} = 0`),
+  `singleFunctor_hom_eq_zero_of_ext`, `isIso_homologyMap_truncLTι`, `isIso_homologyMap_truncGEπ`,
+  `nonempty_iso_singleFunctor_homology`, `isZero_homology_singleFunctor_obj`,
+  `homologyBiproductSingleIso`, `isZero_homology_biproduct_single`,
+  `nonempty_iso_homology_of_iso_biproduct_single`, `nonempty_iso_of_iso_biproduct_single`,
+  `biproductInsertIso`, `inl_biproductInsertIso_hom`, `inr_biproductInsertIso_hom`,
+  `biproductIsoOfIsZero` (`biproductIsoOfIsZero_hom`, `biproductIsoOfIsZero_inv`),
+  `isZero_biproduct_of_isZero`. Fixtures in `TDA.Sheaf.HereditarySplittingExamples` over `ℚ`:
+  `ext_rat_eq_zero`, `exists_iso_biproduct_homology_rat`, `rel_zero_one`, the two-term complex
+  `twoTerm` (`twoTerm_d`, `twoTerm_isStrictlyGE`, `twoTerm_isStrictlyLE`, `twoTermXIso`) with
+  cohomology `ℚ` in degrees `0` and `1` (`nonempty_homology_twoTerm_iso`,
+  `not_isZero_homology_twoTerm`) and its splitting `nonempty_iso_twoTerm`.
 
 ## v0.5.0
 

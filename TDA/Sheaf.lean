@@ -42,3 +42,4 @@ import TDA.Sheaf.BandBaseChange
 import TDA.Sheaf.PointDetection
 import TDA.Sheaf.IntervalFibration
 import TDA.Sheaf.BandComposition
+import TDA.Sheaf.HereditarySplitting
