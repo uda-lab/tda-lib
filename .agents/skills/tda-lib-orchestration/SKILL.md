@@ -94,12 +94,22 @@ conflict resolution or source changes invalidate affected evidence; validate and
 actual final head. Merge ordinary develop topics with
 `gh pr merge <n> --squash --match-head-commit <evaluated head>`.
 
-The docs job runs only on a manual dispatch with `release_check=false`, never on a
-develop or main push or a PR; keep that condition and `scripts/build-docs.sh`'s
-revision invalidation and exact source-link binding. Optional API docs are not an
-extra routine develop merge gate; the exposition-note lane remains opt-in. Restoring
-CI authorizes no credential, permission, protection, repository-setting,
-workflow-trigger, release or publication change.
+There is no hosted full API-docs job (#1203, #852): it never succeeded on the hosted
+runner. API documentation is built with `scripts/build-docs.sh` at release snapshots,
+at low frequency, in a proven local or self-hosted container, with the provenance
+recorded under CONTRIBUTING.md § Preparing and completing a release. It is not a
+mandatory release gate and not a develop merge gate. Keep `scripts/build-docs.sh`'s
+revision invalidation and exact source-link binding; the lightweight Pages site and
+the exposition-note lane (opt-in) are unchanged. Restoring CI authorizes no credential,
+permission, protection, repository-setting, workflow-trigger, release or publication
+change, and choosing no hosting endpoint or permanent URL for the snapshot.
+
+When you merge a PR into `develop`, check the governing Issue's acceptance criteria
+against what merged (#1195 D-10; `Closes #N` on a `develop` PR closes nothing, because
+the default branch is `main`). Record the PR and its squash commit on the Issue. Close
+the Issue when its acceptance criteria are met; otherwise put the unfinished acceptance
+items in the Issue body. This is part of the merge procedure, not a new CI gate or an
+auto-close mechanism.
 
 Source-fidelity completion applies to release-scoped results after a stable promotion. Require source fidelity for claimed results, exclude
 staging holes from stable releases, audit the exact main revision, then tag and describe its

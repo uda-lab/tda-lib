@@ -313,6 +313,24 @@ new Lean theorem or a complete mathematical review of these papers.
 - **Use/classification:** **background**, as prior work. The section “Source ↔ Lean correspondence” of the body of #1118 cites its Theorem 3.9 before describing the route implemented there. #1043 names it as the primary reference for the comparison mechanism, and #1064 cites its §3 for the larger comparison and calls the thickening statement an independent proof route. Which arXiv version was read for these citations, and whether and in what mode any comparison was made, is not recorded (unknown). No theorem, definition, hypothesis or proof of the library is attributed to it. The implemented proof is a library derivation, recorded in the [mapping bullet](#existing-declaration-and-proof-mappings) for `TDA.Persistence.alphaCechIso`.
 - **Rights/evidence:** unresolved; the license of no version was inspected. The entry records bibliographic identification only; no source prose or figures are reproduced or summarized.
 
+<a id="sheaf-roadmap-1170"></a>
+### Sheaf-distance roadmap sources (#1166, #1170) — four exact manifestations; background only
+
+Registered under #1170, parent #1166. The catalogue records below come from #1170 (verified 2026-11-25 JST there); this entry fetched, opened and read no article, abstract page or PDF, and no article text was passed to any service. Titles and full author names are not recorded here (unresolved). The "Topic" is the roadmap topic stated in #1170, not a statement attributed to the source.
+
+| Key | Exact manifestation | Topic for the roadmap | Rights profile | Actual use |
+|---|---|---|---|---|
+| <a id="KS-1705.00955v6"></a>KS-1705.00955v6 | Kashiwara–Schapira, [arXiv:1705.00955v6](https://arxiv.org/abs/1705.00955v6) | Convolution distance and direct-image stability | **AR** | Roadmap background for #1166 |
+| <a id="BP-1902.09933v3"></a>BP-1902.09933v3 | Berkouk–Petit, [arXiv:1902.09933v3](https://arxiv.org/abs/1902.09933v3) | Ephemeral modules and distance comparison | **AR** | Roadmap background for #1166 |
+| <a id="BG-1805.09694v4"></a>BG-1805.09694v4 | Berkouk–Ginot, [arXiv:1805.09694v4](https://arxiv.org/abs/1805.09694v4) | Derived barcode isometry | **AR** | Roadmap background for #1166 |
+| <a id="BGO-1907.09759v1"></a>BGO-1907.09759v1 | Berkouk–Ginot–Oudot, [arXiv:1907.09759v1](https://arxiv.org/abs/1907.09759v1) | Level-set persistence and Mayer–Vietoris systems | **AR** | Roadmap background for #1166 |
+
+- **Rights/evidence:** each of the four versions displays the [nonexclusive distribution grant to arXiv](https://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html), profile **AR**, as recorded in #1170. A separate holder notice and a separately licensed aligned manifestation are not established. The AR conditions apply: the grant alone does not authorize third-party text copying, quotation, article uploads or AI processing, or redistribution.
+- **Actual use:** roadmap background for #1166 only. No mathematical comparison with any of the four has been verified, no theorem, definition, hypothesis or proof of the library is attributed to them, and no source text was processed for this entry. The register contains metadata, links and this summary; no source prose or figures are reproduced.
+- **Version-unidentified excerpts:** the initial roadmap pass met indexed article-body excerpts in search results before this registration. They are not assigned to any of the four versions, because no evidence identifies their version, and they are not used: nothing in the library, the roadmap or #1170 depends on them.
+- **Policy for further use (owner decision of 2026-11-26 on #1170, applied by #1183–#1187 and #1192):** before passing article text to an AI service or basing a proof on a particular version, record support for the intended act and verify that the source actually contains the needed statement or argument, with its exact version and hypotheses. Access, an arXiv distribution grant or a differently scoped CC BY paper is not sufficient evidence. Where no basis is established, the dependent comparison waits for one, and independent mathematical or Mathlib work continues. Any paper-based proof records the exact source and the supported use here first.
+- **Candidate, not verified:** #1170 names Berkouk's CC BY 4.0 Cambridge paper on the sheaf-function correspondence ([doi:10.1017/fms.2023.115](https://doi.org/10.1017/fms.2023.115)) as a candidate for foundational background. It is not a verified replacement for any of the four papers, and its license and alignment with any of them have not been checked for this register.
+
 ## Pinned software sources
 
 Software projects have contributor/file notices rather than inferred academic affiliations;

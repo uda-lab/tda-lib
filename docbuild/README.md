@@ -15,15 +15,24 @@ The normal local paths are `docbuild/.lake/build/doc/` and
 particular machine still has a site. No artifact found in a bounded search means
 **unavailable in the inspected locations**, not nonexistent everywhere.
 
-The existing [CI workflow](../.github/workflows/ci.yml) runs the docs job only
-on a manual dispatch with `release_check=false`, not on main pushes, develop
-pushes or PRs. It requests seven-day retention for `tda-api-docs`. Inspect the actual run's
-artifact ID, creation/expiry timestamps and expired flag, then verify download
-access; a successful job or a familiar artifact name alone is insufficient.
-The uploaded artifact contains only `docbuild/.lake/build/doc/`: the source
-stamp, database, build manifest and cache are **not** included. Preserve run/head
-metadata separately and check the embedded source links. Never reconstruct a
-missing stamp from the current checkout's HEAD or the download filename.
+The [CI workflow](../.github/workflows/ci.yml) no longer has a hosted API-docs job: it
+never succeeded on the hosted runner (#1203). Earlier runs may have uploaded a
+seven-day `tda-api-docs` artifact; inspect any such run's artifact ID, creation/expiry
+timestamps and expired flag, then verify download access. A successful job or a
+familiar artifact name alone is insufficient. That artifact contained only
+`docbuild/.lake/build/doc/`: the source stamp, database, build manifest and cache
+were **not** included. Check the embedded source links. Never reconstruct a missing
+stamp from the current checkout's HEAD or the download filename.
+
+Current policy (#1203, #852): build at release snapshots, at low frequency, in a
+proven local or self-hosted container (for example 4 CPUs and 16 GB with
+`LEAN_NUM_THREADS=2`, about 81 min and 925 MB of output at `686335c`, recorded on
+[#1201](https://github.com/uda-lab/tda-lib/pull/1201#issuecomment-7159766215)).
+This is not a mandatory release gate. Retain a compressed snapshot tied to the tag and
+source SHA, and record on the release Issue: tag and source SHA; toolchain and
+dependency pins; output checksum and size; storage location and retention; and
+representative navigation, search and source-link checks. Choose no hosting endpoint
+or permanent URL unless needed; the lightweight Pages site stays separate.
 
 PR [#767](https://github.com/uda-lab/tda-lib/pull/767) is historical evidence of
 generation and validation at its evaluated head, not evidence that its files are

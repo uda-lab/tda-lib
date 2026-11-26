@@ -278,6 +278,15 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   and the square with `CoordinateRealBridge.interleavingEquiv` commutes (`line_square`), with
   equal distances; for `n = 2` the upper set `{x | s < x₀ ∧ s ≤ x₁}` moves to `s + ε`, and
   `(ε, c)` with `0 < ε ≤ c` leaves it while the second coordinate stays at `c`.
+- Release-snapshot API docs (#1203, #852): the hosted `docs` job is removed from
+  `.github/workflows/ci.yml`; it never succeeded on the hosted runner. API pages are built with
+  `scripts/build-docs.sh` at release snapshots in a proven local or self-hosted container, with
+  recorded provenance (tag and source SHA, pins, checksum and size, storage and retention,
+  navigation, search and source-link checks); this is not a mandatory release gate, and no
+  hosting endpoint is chosen. The `check` job, the Pages site and the `release_check` input are
+  unchanged. `CONTRIBUTING.md` and the orchestration skill add the merge-time Issue closure
+  procedure (#1195 D-10), and `docs/math/references.md` registers four sheaf-roadmap arXiv
+  versions as background with the source policy of #1170.
 
 ## v0.5.0
 

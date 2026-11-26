@@ -129,28 +129,6 @@ class DocumentationCacheTests(unittest.TestCase):
         refs.write_text("[]")
         self.assertNotEqual(original, self.run_helper("key"))
 
-    def test_workflow_discards_silent_partial_restore(self):
-        # actions/cache can swallow extraction errors, return no matched key and
-        # leave step outcome=success. Guard the workflow wiring for this case.
-        workflow = (SOURCE / ".github/workflows/ci.yml").read_text()
-        cleanup = workflow.split("      - name: Discard incomplete documentation cache restore\n", 1)[1]
-        cleanup = cleanup.split("\n      - name:", 1)[0]
-        condition, body = cleanup.split("        run: |\n", 1)
-        self.assertIn("steps.docs-cache.outputs.cache-matched-key == ''", condition)
-        command = "\n".join(line[10:] for line in body.splitlines())
-        paths = [".lake/build", "docbuild/.lake"] + [
-            f".lake/packages/{pkg}/.lake/build"
-            for pkg in ("doc-gen4", "leansqlite", "UnicodeBasic", "BibtexQuery", "MD4Lean", "Cli")
-        ]
-        for name in paths + [".lake/packages/mathlib/.lake/build"]:
-            path = self.root / name
-            path.mkdir(parents=True, exist_ok=True)
-            (path / "partial").touch()
-        subprocess.run(["bash", "-euc", command], cwd=self.root, check=True)
-        for name in paths:
-            self.assertFalse((self.root / name).exists(), name)
-        self.assertTrue((self.root / ".lake/packages/mathlib/.lake/build/partial").is_file())
-
 
 if __name__ == "__main__":
     unittest.main()
