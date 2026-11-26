@@ -9524,3 +9524,14 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.CechClientExamples.finset_dgm_eq_of_linearOrder
 #print axioms TDA.Persistence.CechClientExamples.dgm_comp_rev
 #print axioms TDA.Persistence.CechClientExamples.noise_bottleneck_le_ulift
+#print axioms TDA.Persistence.faceSupDifference_le_iff
+#print axioms TDA.Persistence.faceSupDifference_comm
+#print axioms TDA.Persistence.bottleneck_dgm_le_of_abs_sub_le
+#print axioms TDA.Persistence.exists_lt_abs_sub_of_ofReal_lt_bottleneck_dgm
+#print axioms TDA.Persistence.FilterStabilityClientExamples.filter_bottleneck_le
+#print axioms TDA.Persistence.FilterStabilityClientExamples.exists_face_of_lt_bottleneck
+#print axioms TDA.Persistence.FilterStabilityClientExamples.faceSupDifference_le_of_abs_sub_le
+#print axioms TDA.Persistence.FilterStabilityClientExamples.sublevel_interleavingDistance_le
+#print axioms TDA.Persistence.FilterStabilityClientExamples.filter_pTransport_le
+#print axioms TDA.Persistence.FilterStabilityClientExamples.graded_coordinateInterleavingDistance_le
+#print axioms TDA.Persistence.FilterStabilityClientExamples.graded_signedHook_le

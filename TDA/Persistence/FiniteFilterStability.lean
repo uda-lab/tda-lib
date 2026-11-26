@@ -85,6 +85,25 @@ theorem faceSupDifference_of_isEmpty (f g : FilterFunction K ℝ)
   classical
   simp [faceSupDifference]
 
+omit [LinearOrder V] in
+/-- The maximal face-value difference is at most `ε` exactly when `ε` is nonnegative and
+bounds the difference on every face. -/
+theorem faceSupDifference_le_iff (f g : FilterFunction K ℝ) (ε : ℝ) :
+    faceSupDifference f g ≤ ε ↔ 0 ≤ ε ∧ ∀ σ, |f.value σ - g.value σ| ≤ ε := by
+  classical
+  unfold faceSupDifference
+  rw [Finset.fold_max_le]
+  simp
+
+/-- The maximal face-value difference is symmetric. -/
+theorem faceSupDifference_comm (f g : FilterFunction K ℝ) :
+    faceSupDifference f g = faceSupDifference g f :=
+  le_antisymm
+    ((faceSupDifference_le_iff f g _).2 ⟨faceSupDifference_nonneg g f, fun σ =>
+      (abs_sub_comm _ _).trans_le (abs_face_difference_le g f σ)⟩)
+    ((faceSupDifference_le_iff g f _).2 ⟨faceSupDifference_nonneg f g, fun σ =>
+      (abs_sub_comm _ _).trans_le (abs_face_difference_le f g σ)⟩)
+
 private def faceLine (f g : FilterFunction K ℝ) (σ : TotalFace K) (t : ℝ) : ℝ :=
   (1 - t) * f.value σ + t * g.value σ
 
@@ -490,6 +509,29 @@ theorem bottleneck_dgm_le_faceSupDifference (k : Type u) [Field k]
   have h := crossing_telescope k f g n (a := 0) (b := 1)
     (by norm_num) (by norm_num) (by norm_num)
   simpa [intervalFilter, filterInterpolate_zero, filterInterpolate_one] using h
+
+/-- Face values within `ε ≥ 0` of each other give sublevel diagrams within `ε`. -/
+theorem bottleneck_dgm_le_of_abs_sub_le (k : Type u) [Field k]
+    (f g : FilterFunction K ℝ) {ε : ℝ} (hε : 0 ≤ ε)
+    (h : ∀ σ, |f.value σ - g.value σ| ≤ ε) (n : ℕ) :
+    bottleneck (dgm k f n) (dgm k g n) ≤ ENNReal.ofReal ε :=
+  (bottleneck_dgm_le_faceSupDifference k f g n).trans
+    (ENNReal.ofReal_le_ofReal ((faceSupDifference_le_iff f g ε).2 ⟨hε, h⟩))
+
+/-- Threshold form of `bottleneck_dgm_le_of_abs_sub_le`, for every real `ε`: a diagram error
+above `ε` exhibits a face whose value changed by more than `ε`. -/
+theorem exists_lt_abs_sub_of_ofReal_lt_bottleneck_dgm (k : Type u) [Field k]
+    (f g : FilterFunction K ℝ) {ε : ℝ} (n : ℕ)
+    (h : ENNReal.ofReal ε < bottleneck (dgm k f n) (dgm k g n)) :
+    ∃ σ, ε < |f.value σ - g.value σ| := by
+  by_contra hne
+  have hle : ∀ σ, |f.value σ - g.value σ| ≤ ε := fun σ => not_lt.mp fun hσ => hne ⟨σ, hσ⟩
+  rcases le_total 0 ε with hε | hε
+  · exact absurd (bottleneck_dgm_le_of_abs_sub_le k f g hε hle n) (not_le.mpr h)
+  · have h0 := bottleneck_dgm_le_of_abs_sub_le k f g le_rfl (fun σ => (hle σ).trans hε) n
+    rw [ENNReal.ofReal_of_nonpos hε] at h
+    rw [ENNReal.ofReal_zero] at h0
+    exact absurd h0 (not_le.mpr h)
 
 theorem dgm_empty_faces (k : Type u) [Field k]
     (f : FilterFunction K ℝ) (n : ℕ) [IsEmpty (TotalFace K)] :

@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 2 (#1249, #1207): for filter functions on a finite complex,
+  `faceSupDifference_le_iff` (the maximal face-value difference is bounded exactly by a
+  nonnegative pointwise bound), `faceSupDifference_comm`, the pointwise diagram bound
+  `bottleneck_dgm_le_of_abs_sub_le` and its threshold form
+  `exists_lt_abs_sub_of_ofReal_lt_bottleneck_dgm`; the downstream regression fixture
+  `FilterStabilityClientExamples`. Existing statements are unchanged.
 - Claude cloud setup snapshot: `scripts/claude-cloud-setup.sh` also copies the companion skills
   `github-driven-workflow`, `github-loop-engineering` and `lean-formalization-discipline` from
   `t-uda/skills` at a pinned commit into `~/.claude/skills`, so that `scripts/preflight.sh` finds
