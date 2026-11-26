@@ -800,6 +800,26 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `TDA.Sheaf.BandBaseChangeExamples`: `H0StalkIso`, `nonempty_H0_stalk_kD_of_stalkFormula`,
   `not_isZero_H0_stalk_kD_of_stalkFormula`, `inclSquare`, `fibreSquare`, `pastedSquare`,
   `baseChange_pastedSquare_app`, `isIso_baseChange_fibreSquare_app`.
+- The extension–sections adjunction on all sheaves of the real line and `Ext` out of star
+  sheaves (#1183, part U1). `TDA.Sheaf.RealConstructibleAdjunction`: `starBasic`,
+  `starTauAdjunction`, `extensionAdjunction` (`Φ ⊣ Γ` for every sheaf of `k`-modules on `ℝ`),
+  `extensionAdjunction_unit`, `toBasis`, `toBasis_app_hom_app`,
+  `extensionAdjunction_counit_app_eq`, `extensionAdjunction_counit_app`,
+  `equivalence_counitIso_inv_app_hom`, `equivalence_unitIso_inv_app_hom` (D1's `equivalence` is
+  the restriction of the adjunction), `extensionFullyFaithful`, `extension_full`,
+  `extension_faithful`, `preservesFiniteColimits_extension`, `preservesFiniteLimits_extension`,
+  `sections_additive`, `extension_additive`; the universal property of `Φ P_v` on the open star,
+  `starGenerator`, `homExtensionRepresentableEquiv` (`_apply`, `_comp`, `_add`, `_zero`) and
+  `homExtensionPathTensorEquiv` (`_apply`, `_comp`); `hasExt_sheaf_realLine`, `hasExt_diagram`;
+  `ext_extension_eq_zero_of_lift`, `ext_extension_representable_eq_zero`,
+  `ext_extension_sumTensor_eq_zero` (D2's sums `⊕_j P_(σ j) ⊗ V_j`); and
+  `Ext^{q+1}(Φ P_v, Y)` as the cohomology of the sections of an injective resolution over the
+  star, `starCocycles`, `starCoboundaries`, `starCohomology`,
+  `homExtensionRepresentableEquiv_symm_comp_d`, `extOfStarCocycle` (`_apply`, `_surjective`,
+  `_eq_zero_iff`), `extStarEquiv`, `extStarEquiv_mk`. `TDA.Sheaf.RealConstructible.toBasis` is
+  public. Fixtures in `TDA.Sheaf.RealConstructibleAdjunctionExamples`: `skyOne`, `skyOneObjIso`,
+  `isZero_skyOne_obj`, `not_isConstructible_skyOne`, `nontrivial_hom_extension_skyOne`,
+  `subsingleton_hom_extension_skyOne`.
 
 ## v0.5.0
 

@@ -33,8 +33,9 @@ Fix strictly increasing breakpoints `p : Fin m → ℝ` (`hp : StrictMono p`) wi
   full subcategories of constructible sheaves and of diagrams with finite-dimensional values.
 
 Finite-dimensionality uses a division ring; the diagram side, `Diagram k o`, uses a field. The
-coefficients live in `k : Type`, matching `realLine : TopCat.{0}`. The comparison with derived
-categories is not part of this file (#1183).
+coefficients live in `k : Type`, matching `realLine : TopCat.{0}`. The adjunction `Φ ⊣ Γ` on all
+sheaves, of which `equivalence k hp` is the restriction, is in
+`TDA.Sheaf.RealConstructibleAdjunction`.
 -/
 
 set_option autoImplicit false
@@ -334,7 +335,7 @@ theorem extensionSectionsIso_app_app (hp : StrictMono p) (M : Diagram k (orient 
 
 /-- Restriction from the star of the stratum to a basic open, as a morphism of sheaves on the
 basis from `Ψ (Γ F)` to the restriction of `F`. -/
-private noncomputable def toBasis (hp : StrictMono p) :
+noncomputable def toBasis (hp : StrictMono p) :
     sections k p ⋙ basisSheaf k hp ⟶
       ((basisEquiv (breakpoints p) k).inverse : TopCat.Sheaf (ModuleCat.{0} k) realLine ⥤ _) where
   app F := ObjectProperty.homMk
