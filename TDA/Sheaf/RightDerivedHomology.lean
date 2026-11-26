@@ -13,6 +13,9 @@ categories.
 * `homologyRightDerivedIsoOfQuasiIso F j i`: the same through a quasi-isomorphism `j : K₀ ⟶ K`
   to a bounded below complex of injective objects, `Hⁱ(RF(K₀)) ≅ Hⁱ(F K)`. Such a `j` exists for
   every bounded below `K₀` (Mathlib's `CochainComplex.Plus.exists_quasiIso_injective`).
+* `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`: through such a `j : A ⟶ B`, a morphism
+  `u : X ⟶ F A` followed by the comparison `F A ⟶ RF(A)` is invertible in `D⁺` when
+  `u ≫ F j` is a quasi-isomorphism.
 * `singlePlus n X` is `X` placed in degree `n`, as a bounded below complex, and
   `singleFunctorIsoQ n X` identifies its image in `D⁺` with
   `DerivedCategory.Plus.singleFunctor C n` at `X`.
@@ -54,6 +57,33 @@ def homologyRightDerivedIsoOfQuasiIso (F : C ⥤ D) [F.Additive] {K₀ K : Cocha
   (DerivedCategory.Plus.homologyFunctor D i).mapIso
       (F.rightDerivedFunctorPlus.mapIso (asIso (DerivedCategory.Plus.Q.map j))) ≪≫
     homologyRightDerivedIsoOfInjective F K i
+
+/-- Let `j : A ⟶ B` be a quasi-isomorphism to a bounded below complex of injective objects. A
+morphism `u : X ⟶ F A` followed by the derived-functor comparison of `F` at `A` is invertible
+in `D⁺` when `u ≫ F j` is a quasi-isomorphism. -/
+theorem isIso_Q_map_comp_rightDerivedFunctorPlusUnit (F : C ⥤ D) [F.Additive]
+    {X : CochainComplex.Plus D} {A B : CochainComplex.Plus C}
+    (u : X ⟶ F.mapCochainComplexPlus.obj A) (j : A ⟶ B)
+    (hj : CochainComplex.Plus.quasiIso C j) [∀ n, Injective (B.obj.X n)]
+    (hψ : CochainComplex.Plus.quasiIso D (u ≫ F.mapCochainComplexPlus.map j)) :
+    IsIso (DerivedCategory.Plus.Q.map u ≫ F.rightDerivedFunctorPlusUnit.app A) := by
+  have : IsIso (DerivedCategory.Plus.Q.map j) :=
+    Localization.inverts _ (CochainComplex.Plus.quasiIso _) j hj
+  have : IsIso (DerivedCategory.Plus.Q.map (u ≫ F.mapCochainComplexPlus.map j)) :=
+    Localization.inverts _ (CochainComplex.Plus.quasiIso _) _ hψ
+  have := isIso_rightDerivedFunctorPlusUnit_app_of_injective F B
+  have nat : DerivedCategory.Plus.Q.map (F.mapCochainComplexPlus.map j) ≫
+      F.rightDerivedFunctorPlusUnit.app B =
+      F.rightDerivedFunctorPlusUnit.app A ≫
+        F.rightDerivedFunctorPlus.map (DerivedCategory.Plus.Q.map j) :=
+    F.rightDerivedFunctorPlusUnit.naturality j
+  have eq : DerivedCategory.Plus.Q.map u ≫ F.rightDerivedFunctorPlusUnit.app A =
+      (DerivedCategory.Plus.Q.map (u ≫ F.mapCochainComplexPlus.map j) ≫
+        F.rightDerivedFunctorPlusUnit.app B) ≫
+          inv (F.rightDerivedFunctorPlus.map (DerivedCategory.Plus.Q.map j)) := by
+    rw [IsIso.eq_comp_inv, Functor.map_comp, Category.assoc, Category.assoc, nat]
+  rw [eq]
+  infer_instance
 
 end readOff
 

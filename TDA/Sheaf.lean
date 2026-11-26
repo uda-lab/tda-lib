@@ -20,3 +20,4 @@ import TDA.Sheaf.StalkPullback
 import TDA.Sheaf.PointSheaf
 import TDA.Sheaf.RightDerivedHomology
 import TDA.Sheaf.IntervalCohomology
+import TDA.Sheaf.FlasqueAcyclic

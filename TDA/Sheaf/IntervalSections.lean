@@ -77,59 +77,6 @@ end Opens
 
 variable {k}
 
-section Restriction
-
-variable {X : TopCat.{0}}
-
-/-- Two successive restrictions are one restriction. -/
-private theorem map_map_apply (F : X.Presheaf (ModuleCat.{0} k)) {U V W : Opens X}
-    (h₁ : W ≤ V) (h₂ : V ≤ U) (x : F.obj (op U)) :
-    F.map (homOfLE h₁).op (F.map (homOfLE h₂).op x) = F.map (homOfLE (h₁.trans h₂)).op x := by
-  rw [← ConcreteCategory.comp_apply, ← F.map_comp]
-  rfl
-
-/-- The composite of the two maps of a complex of sheaves vanishes on sections. -/
-private theorem g_f_apply (Sc : ShortComplex (X.Sheaf (ModuleCat.{0} k))) (U : Opens X)
-    (c : Sc.X₁.presheaf.obj (op U)) : Sc.g.hom.app _ (Sc.f.hom.app _ c) = 0 := by
-  have h : Sc.f.hom.app (op U) ≫ Sc.g.hom.app (op U) = 0 := by
-    have := congrArg (fun φ : Sc.X₁ ⟶ Sc.X₃ => φ.hom.app (op U)) Sc.zero
-    exact this
-  rw [← ConcreteCategory.comp_apply, h]
-  rfl
-
-/-- Naturality of a morphism of sheaves with respect to restriction, on sections. -/
-private theorem hom_map_apply {F G : X.Sheaf (ModuleCat.{0} k)} (φ : F ⟶ G) {U V : Opens X}
-    (h : V ≤ U) (x : F.presheaf.obj (op U)) :
-    φ.hom.app (op V) (F.presheaf.map (homOfLE h).op x) =
-      G.presheaf.map (homOfLE h).op (φ.hom.app (op U) x) :=
-  NatTrans.naturality_apply φ.hom (homOfLE h).op x
-
-/-- Two sections over `U₁` and `U₂` that agree on `U₁ ⊓ U₂` glue over `U₁ ⊔ U₂`. -/
-private theorem exists_glue₂ (F : X.Sheaf (ModuleCat.{0} k)) {U₁ U₂ : Opens X}
-    (σ₁ : F.presheaf.obj (op U₁)) (σ₂ : F.presheaf.obj (op U₂))
-    (h : F.presheaf.map (homOfLE (inf_le_left : U₁ ⊓ U₂ ≤ U₁)).op σ₁ =
-      F.presheaf.map (homOfLE (inf_le_right : U₁ ⊓ U₂ ≤ U₂)).op σ₂) :
-    ∃ σ : F.presheaf.obj (op (U₁ ⊔ U₂)),
-      F.presheaf.map (homOfLE (le_sup_left : U₁ ≤ U₁ ⊔ U₂)).op σ = σ₁ ∧
-      F.presheaf.map (homOfLE (le_sup_right : U₂ ≤ U₁ ⊔ U₂)).op σ = σ₂ := by
-  let U : Fin 2 → Opens X := ![U₁, U₂]
-  let sf : (i : Fin 2) → F.presheaf.obj (op (U i))
-    | 0 => σ₁
-    | 1 => σ₂
-  have h' : F.presheaf.map (homOfLE (inf_le_left : U₂ ⊓ U₁ ≤ U₂)).op σ₂ =
-      F.presheaf.map (homOfLE (inf_le_right : U₂ ⊓ U₁ ≤ U₁)).op σ₁ := by
-    have := congrArg (F.presheaf.map (homOfLE (le_of_eq (inf_comm U₂ U₁))).op) h
-    rw [map_map_apply, map_map_apply] at this
-    exact this.symm
-  obtain ⟨σ, hσ, -⟩ := TopCat.Sheaf.existsUnique_gluing' F U (U₁ ⊔ U₂)
-    (fun i => homOfLE (by fin_cases i; exacts [le_sup_left, le_sup_right]))
-    (sup_le (le_iSup U 0) (le_iSup U 1)) sf (by
-      simp only [TopCat.Presheaf.IsCompatible, Fin.forall_fin_two]
-      exact ⟨⟨rfl, h⟩, h', rfl⟩)
-  exact ⟨σ, hσ 0, hσ 1⟩
-
-end Restriction
-
 variable (k) in
 /-- **The extension step.** Let `S ⊆ ℝ` be order-connected, `X₁ ⟶ X₂ ⟶ X₃` an exact complex of
 sheaves of `k`-modules on `S` with `X₁` germ-surjective, and `s` a global section of `X₃` that
@@ -149,9 +96,9 @@ theorem exists_section_lift_extend {S : Set ℝ} (hS : S.OrdConnected)
       Sc.g.hom.app _ g = Sc.X₃.presheaf.map (homOfLE le_top).op s ∧
       Sc.X₂.presheaf.map (homOfLE (openIoo_le_openIoo le_rfl (ha'a.le.trans hat))).op g =
         Sc.X₂.presheaf.map (homOfLE (openIoo_le_openIoo le_rfl ha'a.le)).op g₀ := by
-  have mm := map_map_apply (k := k) (X := TopCat.of S)
-  have nat := @hom_map_apply k _ (TopCat.of S)
-  have gf := @g_f_apply k _ (TopCat.of S)
+  have mm := presheaf_map_map_apply (k := k) (X := TopCat.of S)
+  have nat := @sheafHom_naturality_apply k _ (TopCat.of S)
+  have gf := @shortComplex_g_f_apply k _ (TopCat.of S)
   rcases lt_or_ge b a with hba | hab
   · exact ⟨a, hba, le_rfl, g₀, hg₀, rfl⟩
   -- `A` is the set of right ends `t ≥ a` reachable by a lift extending `g₀`.
@@ -274,8 +221,8 @@ theorem exists_section_lift_Icc {u v : ℝ}
       (t : Sc.X₂.presheaf.obj (op W)),
       Sc.g.hom.app _ t = Sc.X₃.presheaf.map (homOfLE le_top).op s) :
     ∃ t : Sc.X₂.presheaf.obj (op ⊤), Sc.g.hom.app _ t = s := by
-  have mm := map_map_apply (k := k) (X := TopCat.of (Set.Icc u v))
-  have nat := @hom_map_apply k _ (TopCat.of (Set.Icc u v))
+  have mm := presheaf_map_map_apply (k := k) (X := TopCat.of (Set.Icc u v))
+  have nat := @sheafHom_naturality_apply k _ (TopCat.of (Set.Icc u v))
   rcases lt_or_ge v u with hvu | huv
   · -- The empty interval: there are no points, so every section vanishes.
     refine ⟨0, ?_⟩
