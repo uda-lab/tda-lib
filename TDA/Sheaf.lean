@@ -26,3 +26,6 @@ import TDA.Sheaf.RealConstructible
 import TDA.Sheaf.IntervalFibre
 import TDA.Sheaf.DerivedStalks
 import TDA.Sheaf.BaseChange
+import TDA.Sheaf.AcyclicClass
+import TDA.Sheaf.IntervalAcyclic
+import TDA.Sheaf.BandStalks

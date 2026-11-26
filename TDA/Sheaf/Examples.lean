@@ -16,3 +16,4 @@ import TDA.Sheaf.RealConstructibleExamples
 import TDA.Sheaf.IntervalFibreExamples
 import TDA.Sheaf.DerivedStalksExamples
 import TDA.Sheaf.BaseChangeExamples
+import TDA.Sheaf.BandStalksExamples
