@@ -10,6 +10,16 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 10 (#1277, #1207): deleted faces of an attached simplex on
+  explicit vertices. `TDA.Simplicial.DeletedFaceValues` proves `deletedFace_val` and
+  `SimplexAttachment.oldDeletedFace_val` (the underlying finsets), the edge case `{a, b}` with
+  `a < b` (`orderEmbOfFin_pair_zero`, `orderEmbOfFin_pair_one`, `deletedFace_val_pair_zero`,
+  `deletedFace_val_pair_one`, `SimplexAttachment.oldDeletedFace_val_pair_zero`,
+  `SimplexAttachment.oldDeletedFace_val_pair_one`) and forms of the two separated-vertices
+  theorems for a vertex predicate constant along edges
+  (`SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_edge`,
+  `quotientIncl_injective_of_separated_vertices`); the downstream regression fixture
+  `SimplexAttachmentClientExamples`.
 - Downstream-use audit, family 9 (#1272, #1207): capped centred Mapper diagrams without
   supplied component orders. `TDA.Mapper.RefinementHomologyOrderFree` proves
   `stepMapperDiagram_eq_of_homeomorph` and `cappedCentredDiagram_eq_of_homeomorph` (equal
