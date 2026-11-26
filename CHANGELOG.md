@@ -406,6 +406,19 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `u ≤ v`, that the underived and derived units at `N` are isomorphisms
   (`isIso_unit_constSh_Icc`, `isIso_derivedUnit_toPt_Icc`). Fixtures in
   `TDA.Sheaf.IntervalCohomologyExamples`.
+- Small chains compute singular homology (#1190, part S4): in `TDA.Topology.SmallChainsQuasiIso`,
+  `quasiIso_smallChainsι s t M h` proves that small chains include quasi-isomorphically into all
+  singular chains when `interior s ∪ interior t = Set.univ`, for coefficients in any module over a
+  ring. The steps are a Lebesgue number for an open cover of the model simplex
+  (`exists_isIteratedSubdivisionSimplex_subset`), the transfer to singular simplices
+  (`exists_iterate_singularSubdivision_ιChainComplex_mem_range`) and finite support of chains
+  (`iSup_range_ιChainComplex`, `exists_iterate_singularSubdivision_mem_range_smallChainsι`). The
+  Mayer–Vietoris long exact sequence on `singularHomologyFunctor`: the connecting map
+  `mayerVietorisδ`, the maps `mayerVietorisInterMap` (`(inc, -inc)`) and `mayerVietorisSumMap`, the
+  vanishing composites and exactness at the three spots (`mayerVietoris_exact_inter`,
+  `mayerVietoris_exact_sum`, `mayerVietoris_exact_space`). Fixtures in
+  `TDA.Topology.SmallChainsQuasiIsoExamples`: the two open rays of `ℝ`, the eventually small
+  subdivisions of a non-small segment and a Lebesgue step on the `1`-simplex.
 
 ## v0.5.0
 

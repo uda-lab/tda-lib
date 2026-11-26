@@ -652,3 +652,30 @@ import TDA
 #print axioms TDA.Topology.SingularSubdivisionExamples.singularSubdivision_segment
 #print axioms TDA.Topology.SingularSubdivisionExamples.singularSubdivision_segment_d
 #print axioms TDA.Topology.SingularSubdivisionExamples.singularSubdivision_segment_naturality
+
+-- Small chains of a cover are quasi-isomorphic to singular chains, and the Mayer–Vietoris long
+-- exact sequence (#1190, part S4).
+#print axioms TDA.Topology.exists_isIteratedSubdivisionSimplex_subset
+#print axioms TDA.Topology.iSup_range_ιChainComplex
+#print axioms TDA.Topology.exists_iterate_singularSubdivision_ιChainComplex_mem_range
+#print axioms TDA.Topology.exists_iterate_singularSubdivision_mem_range_smallChainsι
+#print axioms TDA.Topology.quasiIso_smallChainsι
+#print axioms TDA.Topology.mayerVietorisδ
+#print axioms TDA.Topology.mayerVietorisInterMap
+#print axioms TDA.Topology.mayerVietorisSumMap
+#print axioms TDA.Topology.mayerVietorisδ_comp_mayerVietorisInterMap
+#print axioms TDA.Topology.mayerVietorisδ_comp_mayerVietorisInterMap_assoc
+#print axioms TDA.Topology.mayerVietorisInterMap_comp_mayerVietorisSumMap
+#print axioms TDA.Topology.mayerVietorisInterMap_comp_mayerVietorisSumMap_assoc
+#print axioms TDA.Topology.mayerVietorisSumMap_comp_mayerVietorisδ
+#print axioms TDA.Topology.mayerVietorisSumMap_comp_mayerVietorisδ_assoc
+#print axioms TDA.Topology.mayerVietoris_exact_inter
+#print axioms TDA.Topology.mayerVietoris_exact_sum
+#print axioms TDA.Topology.mayerVietoris_exact_space
+#print axioms TDA.Topology.SmallChainsQuasiIsoExamples.interior_lowerRay_union_interior_upperRay
+#print axioms TDA.Topology.SmallChainsQuasiIsoExamples.quasiIso_smallChainsι_rays
+#print axioms TDA.Topology.SmallChainsQuasiIsoExamples.segmentSimplex_not_small_and_eventually_small
+#print axioms TDA.Topology.SmallChainsQuasiIsoExamples.mayerVietoris_exact_rays
+#print axioms TDA.Topology.SmallChainsQuasiIsoExamples.lowerPart
+#print axioms TDA.Topology.SmallChainsQuasiIsoExamples.upperPart
+#print axioms TDA.Topology.SmallChainsQuasiIsoExamples.exists_isIteratedSubdivisionSimplex_one_subset

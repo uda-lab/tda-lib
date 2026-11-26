@@ -28,3 +28,4 @@ import TDA.Topology.AffineChains
 import TDA.Topology.SubdivisionDiameter
 import TDA.Topology.AffineSubdivision
 import TDA.Topology.SingularSubdivision
+import TDA.Topology.SmallChainsQuasiIso
