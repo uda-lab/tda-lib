@@ -1,12 +1,11 @@
 import TDA.Filtration.SparseRips.H1Examples
 
 /-!
-# Client view of the instances of the filtration fixtures
+# Client view of the metric fixture of the sparse Rips examples
 
-Regression fixtures for #1288, family 13 of the downstream-use audit (#1207). A client that
-imports the fixture modules of the filtration area sees the instances of mathlib and of the
-library only; the metric on `Fin 4` that those fixtures use for their own examples is local to
-its file.
+Regression fixture for #1288, family 13 of the downstream-use audit (#1207). A client that
+imports `TDA.Filtration.SparseRips.H1Examples` sees the instances of mathlib and of the library
+only; the metric on `Fin 4` that the module uses for its own examples is local to its file.
 
 * `Fin 4` carries no `MetricSpace`, `PseudoMetricSpace` or `Dist` instance.
 -/
