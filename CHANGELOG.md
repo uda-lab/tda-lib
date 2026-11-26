@@ -287,6 +287,19 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   unchanged. `CONTRIBUTING.md` and the orchestration skill add the merge-time Issue closure
   procedure (#1195 D-10), and `docs/math/references.md` registers four sheaf-roadmap arXiv
   versions as background with the source policy of #1170.
+- Real Alexandrov and upper ray sheaves (#1177): `TDA.Sheaf.RaySheaf` puts the ray topology on
+  `raySpace := TopCat.of (WithUpper ℝ)` (basis `ray t = (t, ∞)`, open sets the ordinary open
+  upper sets by `isOpen_ofUpper_preimage_iff`). `rayQ` is the Alexandrov sheaf pushed forward
+  along the continuous identity `rayId`, and `rayB` reads `F(ray t)`. `rayLimitIso` identifies
+  `BQ(M)(t)` with `lim_{s > t} M(s)` with projections `rayProj`; `rayUnit` is the unit and
+  `rayCounitIso : rayB ⋙ rayQ ≅ 𝟭` uses the ray cover of each open. `rayShift`, `rayTransition`
+  and `rayCompIso` match `sheafShift` and `RealShift.shift` at the same radius
+  (`rayShiftComparison`); `RaySheafInterleaving` witnesses transport along `B` and `Q`.
+  For `ε > 0`, `unitInterleaving` is an `ε`-interleaving of `M` and `BQ(M)`, and
+  `raySheafInterleavingDistance_rayQ` and `realInterleavingDistance_rayB` equate extended
+  distances; `isZero_rayQ_iff` characterises `Q M = 0` by vanishing strict maps. Fixtures in
+  `TDA.Sheaf.RaySheafExamples`: the empty open, a singleton module at distance zero from
+  `BQ` without a radius-zero witness, and the constant module.
 
 ## v0.5.0
 

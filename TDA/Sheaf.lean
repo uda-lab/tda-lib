@@ -10,3 +10,4 @@ import TDA.Sheaf.AlternatingDecomposition
 import TDA.Sheaf.DerivedPlus
 import TDA.Sheaf.BandConvolution
 import TDA.Sheaf.AlternatingHeredity
+import TDA.Sheaf.RaySheaf
