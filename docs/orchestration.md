@@ -138,8 +138,8 @@ any gate; it builds the tag in a temporary worktree from the shared Lake cache) 
 declarations whose elaborated type changed since the last tag, or that disappeared, and says
 whether the changelog "Unreleased" section names them. It always exits 0 after a comparison.
 `scripts/lean.sh lake env lean scripts/public_theorem_inventory.lean` (manual, outside every
-gate) prints a TSV of all public declarations with theorem, pinned, `*Examples`, alias and
-first-pass family columns for the downstream-use audit (#1207).
+gate) prints a TSV of all public declarations with theorem, pinned, `*Examples`, alias,
+first-pass family and reference-count columns for the downstream-use audit (#1207).
 There is no automated check of review on the final head: review authority and the SHA-bound
 merge procedure are unchanged (owner decision of 2026-11-24 on #1154).
 
