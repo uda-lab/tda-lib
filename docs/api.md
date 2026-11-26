@@ -4004,6 +4004,51 @@ preimage and induces the fold `k ⊕ k ⟶ k` (`fold`). This is a degree-zero co
 higher homology and is not a derived equivalence; see
 [interval singular homology](math/reeb-interval-singular-homology.md).
 
+## Closed-band functors on `D⁺(Sh(ℝ; k))`
+
+`TDA.Sheaf.DerivedPlus` works with sheaves of modules `X.Sheaf (ModuleCat k)` over a ring `k`
+on `X : TopCat` and their bounded below derived categories `DerivedCategory.Plus`. Each
+derived category structure is an instance argument `[HasDerivedCategory (X.Sheaf (ModuleCat k))]`;
+the fixtures use Mathlib's `HasDerivedCategory.standard` as a local instance.
+
+- `pullbackPlus k f` is the right derived functor of the exact inverse image `f⁻¹`
+  (`pullback_preservesFiniteLimits`, `pullback_additive`); its comparison maps are invertible
+  (`isIso_rightDerivedFunctorPlusUnit_of_exact`, `isIso_rightDerivedFunctorPlusUnith_of_exact`).
+  `pushforwardPlus k f` is the derived direct image `Rf_*`.
+- `pushforwardPlusComp k f g : R(f ≫ g)_* ⟶ Rf_* ⋙ Rg_*` is invertible
+  (`isIso_pushforwardPlusComp`, `pushforwardPlusCompIso`), and `pullbackPlusCompIso k f g :
+  g⁻¹ ⋙ f⁻¹ ≅ (f ≫ g)⁻¹` comes from the underived `pullbackCompIso`. Both are associative
+  (`pushforwardPlusComp_assoc_app`, `pullbackPlusCompHom_assoc_app`,
+  `pullbackPlusCompIso_hom_assoc_app`; underived `pullbackCompIso_assoc`), with
+  characterizations on `Q K` (`pushforwardPlusComp_fac_app`, `pullbackPlusCompHom_fac_app`,
+  `pullbackPlusCompIso_hom_fac_app`).
+- `derivedUnit k f : 𝟭 ⟶ pullbackPlus k f ⋙ pushforwardPlus k f` is the termwise sheaf
+  adjunction unit followed by the comparisons (`derivedUnit_app_Q`). It is invertible along a
+  homeomorphism (`isIso_derivedUnit`, via `pushforwardEquivalence`) and coherent with
+  composition (`derivedUnit_comp_app`, `derivedUnit_comp_app'`).
+- `corrRestr k j p q : p⁻¹ ⋙ Rq_* ⟶ (j ≫ p)⁻¹ ⋙ R(j ≫ q)_*` restricts a correspondence
+  transform along `j` (`corrRestr_app`); `corrRestr_id`, `corrRestr_comp` and `isIso_corrRestr`
+  give identity, composition and invertibility along an isomorphism.
+
+`TDA.Sheaf.BandConvolution` specializes to the closed bands `D a = {(x, y) | dist x y ≤ a}` with
+projections `p a`, `q a`, both proper (`isProperMap_p`, `isProperMap_q`), closed inclusions
+`incl h` for `h : a ≤ b` (`isClosedEmbedding_incl`, `incl_p`, `incl_q`) and the shear
+homeomorphism `shear a : band a ≃ₜ Set.Icc (-a) a × ℝ` (`shear_snd`, `shear_add`). The derived
+categories of the real line and of every band are instance arguments.
+
+- `T k a := pullbackPlus k (p a) ⋙ pushforwardPlus k (q a)`, the functor `F ↦ R(q_a)_* p_a⁻¹ F`.
+- `restr k h : T k b ⟶ T k a` is `corrRestr` along `incl h` (`restr_app`), with
+  `restr_refl : restr k (le_refl a) = 𝟙 _` and
+  `restr_trans : restr k hbc ≫ restr k hab = restr k (hab.trans hbc)`.
+- `T0Iso k : T k 0 ≅ 𝟭 _` uses `p_zero_eq_q_zero` and the homeomorphism `q 0` (`isIso_q_zero`,
+  inverse `diagonalZero`); `T0Iso_inv` identifies its inverse with the derived unit of `q 0`.
+- `aug k h : T k a ⟶ 𝟭 _` for `h : 0 ≤ a` is `restr k h ≫ (T0Iso k).hom`, with `aug_zero` and
+  `restr_comp_aug`.
+
+`TDA.Sheaf.BandConvolutionExamples` checks `a = 0` (`T0Iso`, `aug_zero`) and `a = b`
+(`restr_refl`) over `ℚ` and `ZMod 2`, the chain `0 ≤ 1 ≤ 2` for `restr_trans` and
+`restr_comp_aug`, and that `q 1` identifies `(0, 0)` with `(1, 0)`, so it is not an isomorphism.
+
 ## Review and extension boundaries
 
 The selected PH claims and their proof-critical bridges received the source-based review

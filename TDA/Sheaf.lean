@@ -4,3 +4,5 @@ import TDA.Sheaf.AlternatingDiagram
 import TDA.Sheaf.AlternatingReflection
 import TDA.Sheaf.AlternatingSourceReflection
 import TDA.Sheaf.AlternatingDecomposition
+import TDA.Sheaf.DerivedPlus
+import TDA.Sheaf.BandConvolution
