@@ -1504,6 +1504,20 @@ the ranks of all structure maps, including composites. The canonical object is
 the interval multiset; the chosen summands and isomorphism are not canonical. See
 [finite interval decomposition](math/finite-interval-decomposition.md).
 
+For clients (#1252): `RealBarcode.realization_unique` is the real-line counterpart of
+`barcode_decomposition_unique`: two positive diagrams whose realizations are isomorphic to
+one module are equal, and `RealBarcode.diagram_eq_of_realize_iso` is the case of two
+realizations. Positivity excludes endpoint pairs with empty support.
+`barcode_decomposition_unique` asks for finite-dimensional fibers of the decomposed module.
+`RealIntervalDecomposition.exists_interval_decomposition` gives existence for pointwise
+finite-dimensional real modules; for them the library proves that crossing multiplicities
+are isomorphism invariants (`scalar_crossing_card_eq_of_iso_of_le`), not a uniqueness
+statement for the family of supports. `BarcodeUniquenessClientExamples` is a downstream
+regression fixture that opens no scope and declares no instance. It replays existence and
+uniqueness of the barcode on a finite chain, the classification by ranks, uniqueness of a
+positive real realization, equality of the diagrams of filters with isomorphic sublevel
+modules, and the real interval decomposition.
+
 `FiniteLine.moduleOfAdjacent` constructs finite persistence from adjacent linear
 maps, and its path-category equivalence identifies equioriented finite-line
 representations with `PModule`. `MatrixSequence.toPModule` accepts rectangular

@@ -9535,3 +9535,12 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.FilterStabilityClientExamples.filter_pTransport_le
 #print axioms TDA.Persistence.FilterStabilityClientExamples.graded_coordinateInterleavingDistance_le
 #print axioms TDA.Persistence.FilterStabilityClientExamples.graded_signedHook_le
+#print axioms TDA.Persistence.RealBarcode.diagram_eq_of_realize_iso
+#print axioms TDA.Persistence.RealBarcode.realization_unique
+#print axioms TDA.Persistence.BarcodeUniquenessClientExamples.existsUnique_barcode
+#print axioms TDA.Persistence.BarcodeUniquenessClientExamples.barcode_eq_of_iso
+#print axioms TDA.Persistence.BarcodeUniquenessClientExamples.nonempty_iso_of_ranks
+#print axioms TDA.Persistence.BarcodeUniquenessClientExamples.real_barcode_unique
+#print axioms TDA.Persistence.BarcodeUniquenessClientExamples.dgm_eq_of_sublevelModule_iso
+#print axioms TDA.Persistence.BarcodeUniquenessClientExamples.moduleDiagram_eq_of_realization
+#print axioms TDA.Persistence.BarcodeUniquenessClientExamples.exists_real_interval_decomposition

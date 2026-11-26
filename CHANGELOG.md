@@ -10,6 +10,11 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 3 (#1252, #1207): `RealBarcode.realization_unique` and
+  `RealBarcode.diagram_eq_of_realize_iso` (two positive real barcode realizations of one
+  module are the same diagram), the real-line counterpart of `barcode_decomposition_unique`;
+  the downstream regression fixture `BarcodeUniquenessClientExamples`. Existing statements
+  are unchanged.
 - Downstream-use audit, family 2 (#1249, #1207): for filter functions on a finite complex,
   `faceSupDifference_le_iff` (the maximal face-value difference is bounded exactly by a
   nonnegative pointwise bound), `faceSupDifference_comm`, the pointwise diagram bound

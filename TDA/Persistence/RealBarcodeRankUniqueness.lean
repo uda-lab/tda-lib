@@ -88,4 +88,17 @@ theorem diagram_eq_of_rank_eq (D E : Diagram ℝ) (hD : D.IsPositive) (hE : E.Is
   intro s t hst
   simpa only [rank_realize] using h s t hst
 
+/-- Positive real barcode diagrams with naturally isomorphic realizations are equal,
+including multiplicities and essential right endpoints. -/
+theorem diagram_eq_of_realize_iso (D E : Diagram ℝ) (hD : D.IsPositive) (hE : E.IsPositive)
+    (e : realize (k := k) D ≅ realize (k := k) E) : D = E :=
+  diagram_eq_of_rank_eq D E hD hE fun _ _ hst => rankOfStructureMap_iso hst e
+
+/-- Any two positive barcode realizations of one real persistence module have the same
+diagram. This is uniqueness of the endpoint multiset, not of the isomorphisms. -/
+theorem realization_unique {M : PModule.{u,0,u} k ℝ} (D E : Diagram ℝ)
+    (hD : D.IsPositive) (hE : E.IsPositive)
+    (e : M ≅ realize (k := k) D) (f : M ≅ realize (k := k) E) : D = E :=
+  diagram_eq_of_realize_iso D E hD hE (e.symm ≪≫ f)
+
 end TDA.Persistence.RealBarcode
