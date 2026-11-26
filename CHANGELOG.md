@@ -834,6 +834,28 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `TDA.Sheaf.IntervalSectionsExamples`: `skyAt`, `KS`, `germSurjective_skyAt`,
   `section_lift_of_local`, `section_lift_of_exact`, `midIoo`, `zeroIci`, `section_lift_Ioo`,
   `section_lift_Ici`, `section_lift_exact_Ioo`, `section_lift_exact_Ici`.
+- Base change on the fibres of interval fibrations and the fibrewise criterion (#1225, part E).
+  `TDA.Sheaf.PointSheaf`: `ptOf`, `ptOf_apply`. `TDA.Sheaf.BaseChangePasting`:
+  `baseChangeSheaf_app_hom_app_top`, `isIso_baseChangeCochain_app`. `TDA.Sheaf.PointDetection`:
+  `rightDerivedFunctorPlusCompHomologyIso`, detection of isomorphisms of `D⁺(Sh X)` at points
+  `isIso_iff_forall_isIso_pullbackPlus_pt`, `isIso_baseChange_congr` and the fibrewise criterion
+  `isIso_baseChange_of_fibres`. `TDA.Sheaf.IntervalFibration`: `exists_preimage_le_of_isClosedMap`,
+  `FibreCoordinate`, `FibreCoordinate.IsFibreParam` with `apply_eq`, `mem_range_iff`,
+  `exists_preimage_le`, `exists_unit_eq`, `isIso_baseChangeSheaf_app`,
+  `isIso_baseChangeCochain_app`, proper base change on a fibre `isIso_baseChange` and
+  `isZero_H_stalk_pushforwardPlus`; `IntervalFibration` with `e_comp`, `t_e`, `mem_range`,
+  `apply_e`, `isIso_baseChangeSheaf_app`, `isIso_baseChange`, `stalkFormula`, `stalkFormula_hom`,
+  `isZero_H_stalk_pushforwardPlus`; `isIso_baseChange_of_isFibreParam`. The module also holds
+  `exists_le_eq_zero_of_pullback_eq_zero` and `exists_unit_eq_of_pt`, with unchanged names and
+  statements. `TDA.Sheaf.BandStalks`, in `BandConvolution`: `ptAt_eq`, `fibreCoordinate_q`,
+  `fibreCoordinate_q_t`, `isFibreParam_fibreEmb`, `intervalFibration_q`, `intervalFibration_q_e`;
+  it also holds `baseChangeSheaf_fibreEmb_app`, with unchanged name and statement, and the band
+  statements of parts C and D are proved from the interval-fibration results. Fixtures in
+  `TDA.Sheaf.IntervalFibrationExamples`: `constOn`, `H0_stalk_const`, `not_isZero_H0_stalk_const`,
+  `isIso_baseChange_q`, `not_isZero_H0_stalk_q`, `wedge`, `isClosed_wedge`, `W`, `wπ`,
+  `isProperMap_wπ`, `wedgeEmb`, `intervalFibration_wπ`, `not_isZero_H0_stalk_wedge_zero`,
+  `isZero_H2_stalk_wedge`, `shift`, `shiftD`, `shift_square`, `swapShift`, `shiftCoordinate`,
+  `isFibreParam_shift`, `isIso_baseChange_shift`.
 
 ## v0.5.0
 
