@@ -137,6 +137,7 @@ import TDA.Persistence.RipsQTameExamples
 import TDA.Persistence.RipsQTameDiagramExamples
 import TDA.Persistence.RipsQTameInfiniteMetricStabilityExamples
 import TDA.Persistence.RipsGHClientExamples
+import TDA.Persistence.CechClientExamples
 import TDA.Persistence.RipsHausdorffInterleavingExamples
 import TDA.Persistence.FiniteWeightedBoundaryTransportExamples
 

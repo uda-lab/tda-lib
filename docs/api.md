@@ -3407,6 +3407,17 @@ gives an α+β bound for two finite samples of any common target; the target nee
 diagram. Same-range configurations have equal full diagrams. The real Hausdorff bound
 requires nonempty configurations. See [ambient Čech Hausdorff stability](math/cech-hausdorff-stability.md).
 
+For clients (#1245): `Cech.dgm_eq_of_linearOrder` states that the diagram does not depend on
+the auxiliary label order, as the two-orders case of `Cech.dgm_eq_of_range_eq`.
+`Cech.exists_lt_dist_of_ofReal_lt_bottleneck_dgm` and
+`Cech.lt_hausdorffDist_of_ofReal_lt_bottleneck_dgm` are the threshold forms of the same-label
+and Hausdorff bounds, for every real threshold. Labels and the coefficient field share one
+universe; lift the labels with `ULift` for a field in a higher universe.
+`CechClientExamples` is a downstream regression fixture that opens no scope and declares no
+instance. It replays the noise bound, its threshold and event forms with the measure tail
+transfer, the resampling bound, finite subsets of an unordered space, relabelling and the
+`ULift` route.
+
 `TDA.Filtration.CechWitness` compares Čech complexes over a witness space W mapped into X
 by f. An isometry can only add faces and lower values; a 1-Lipschitz g : X → W fixing the
 labelled points reverses both, so with both maps the complexes and values agree. The

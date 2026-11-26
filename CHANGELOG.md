@@ -362,6 +362,11 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `σ` and has diameter at most `n / (n + 1)` times that of `σ`, and `(n / (n + 1)) ^ N` after
   `N` steps. Fixtures in `TDA.Topology.AffineChainsExamples`: the cone boundary on a segment
   over any ring and the factor `2 / 3` on the standard `2`-simplex.
+- Downstream-use audit, family 1 (#1245, #1207): for finite Čech diagrams,
+  `Cech.dgm_eq_of_linearOrder` (independence of the label order) and the threshold forms
+  `Cech.exists_lt_dist_of_ofReal_lt_bottleneck_dgm` and
+  `Cech.lt_hausdorffDist_of_ofReal_lt_bottleneck_dgm`; the downstream regression fixture
+  `CechClientExamples`. Existing statements are unchanged.
 - Singular barycentric subdivision (#1190, part S3): `TDA.Topology.AffineSubdivision` defines the
   subdivision chain map `affineSubdivision hK R` on affine chains of a convex subset of a standard
   simplex (`sd(σ) = b_σ · sd(∂σ)`, identity in degree `0`) and its homotopy to the identity

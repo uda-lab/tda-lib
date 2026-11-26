@@ -76,6 +76,15 @@ theorem bottleneck_dgm_le_hausdorffDist [Nonempty V] [Nonempty W] (n : ℕ) :
       p q hCT hIT h k n
     _ = _ := ENNReal.coe_nnreal_eq ε
 
+/-- Threshold form of `bottleneck_dgm_le_hausdorffDist`, for every real `ε`: a diagram error
+above `ε` forces a Hausdorff distance above `ε`. -/
+theorem lt_hausdorffDist_of_ofReal_lt_bottleneck_dgm [Nonempty V] [Nonempty W] {ε : ℝ} (n : ℕ)
+    (h : ENNReal.ofReal ε <
+      bottleneck (dgm k (Cech.filter p) n) (dgm k (Cech.filter q) n)) :
+    ε < hausdorffDist (range p) (range q) :=
+  (ENNReal.ofReal_lt_ofReal_iff'.mp
+    (h.trans_le (bottleneck_dgm_le_hausdorffDist k p q n))).1
+
 /-- Extended Hausdorff sampling bounds retain the distinction between infinity and zero. -/
 theorem bottleneck_dgm_le_hausdorffEDist [Nonempty V] [Nonempty W] (n : ℕ) :
     bottleneck (dgm k (Cech.filter p) n) (dgm k (Cech.filter q) n) ≤
@@ -124,6 +133,13 @@ theorem dgm_eq_of_range_eq (h : range p = range q) (n : ℕ) :
   simpa only [ENNReal.coe_zero] using hb
 
 end Ordered
+
+/-- The Čech diagram of a finite configuration does not depend on the auxiliary linear
+order of its labels: `dgm_eq_of_range_eq` for two orders on one label type. -/
+theorem dgm_eq_of_linearOrder {Z : Type w} [MetricSpace Z] {V : Type u} [Fintype V]
+    (o₁ o₂ : LinearOrder V) (k : Type u) [Field k] (p : V → Z) (n : ℕ) :
+    (letI := o₁; dgm k (Cech.filter p) n) = (letI := o₂; dgm k (Cech.filter p) n) :=
+  @dgm_eq_of_range_eq Z _ V V o₁ o₂ _ _ k _ p p rfl n
 
 end
 end TDA.Persistence.Cech
