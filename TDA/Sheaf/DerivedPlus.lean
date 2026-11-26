@@ -52,7 +52,8 @@ Correspondences. For maps `p : X ⟶ Z` and `q : X ⟶ W`, the functor
 `j : X' ⟶ X` restricts it to `(j ≫ p, j ≫ q)`: `corrRestr k j p q` is the derived unit of `j`
 followed by the composition isomorphisms. It is the identity for `j = 𝟙` (`corrRestr_id`),
 composes along `i ≫ j` (`corrRestr_comp`) and is invertible when `j` is
-(`isIso_corrRestr`).
+(`isIso_corrRestr`), or more generally when the derived unit of `j` is
+(`isIso_corrRestr_of_isIso_derivedUnit`).
 
 Only `D⁺` is treated: at the pinned Mathlib, right derived functors exist on the bounded
 below derived category.
@@ -845,6 +846,15 @@ variable {X' X Z W : TopCat.{u}}
 /-- `corrRestr` along an isomorphism is invertible. -/
 instance isIso_corrRestr (j : X' ⟶ X) [IsIso j] (p : X ⟶ Z) (q : X ⟶ W) :
     IsIso (corrRestr k j p q) := by
+  rw [NatTrans.isIso_iff_isIso_app]
+  intro M
+  rw [corrRestr_app]
+  infer_instance
+
+/-- `corrRestr` along a map whose derived unit is invertible is invertible: its components are
+`Rq_*` of the derived unit of `j` followed by composition isomorphisms. -/
+theorem isIso_corrRestr_of_isIso_derivedUnit (j : X' ⟶ X) [IsIso (derivedUnit k j)] (p : X ⟶ Z)
+    (q : X ⟶ W) : IsIso (corrRestr k j p q) := by
   rw [NatTrans.isIso_iff_isIso_app]
   intro M
   rw [corrRestr_app]

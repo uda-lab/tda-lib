@@ -26,6 +26,11 @@ instance in this file only. `kpt` is the sheaf on the point with value `ℚ`
   invertible base change `R(q 1)_* ⋙ shift⁻¹ ≅ shiftD⁻¹ ⋙ R(q 1)_*` (`isIso_baseChange_shift`):
   `fibreEmb 1 z ≫ shiftD` parametrises the fibre of `q 1` at `z + 1` in the coordinate
   `p 1 - 1` (`isFibreParam_shift`), and `isIso_baseChange_of_isFibreParam` applies.
+* **Derived units.** On `[0, 1]` the derived unit is invertible at `kpt` placed in degree `3`
+  (`isIso_derivedUnit_Icc_single_three`, through `isIso_derivedUnit_Icc`). The band projection
+  `q 1`, with fibres `[y - 1, y + 1]`, has invertible derived unit `𝟭 ⟶ (q 1)⁻¹ ⋙ R(q 1)_*`
+  (`isIso_derivedUnit_q_one`), and so has `q 0`, whose fibres are points
+  (`isIso_derivedUnit_q_zero`), through `IntervalFibration.isIso_derivedUnit`.
 -/
 
 noncomputable section
@@ -209,5 +214,31 @@ theorem isIso_baseChange_shift : IsIso (baseChange ℚ shift_square) :=
     isFibreParam_shift
 
 end shift
+
+section derivedUnit
+
+/-- On `[0, 1]`, the derived unit is invertible at `kpt` placed in degree `3`: it is invertible on
+all of `D⁺(Sh pt)`. -/
+theorem isIso_derivedUnit_Icc_single_three :
+    IsIso ((derivedUnit ℚ (toPt (TopCat.of (Set.Icc (0 : ℝ) 1)))).app
+      ((DerivedCategory.Plus.singleFunctor _ 3).obj kpt)) :=
+  have := isIso_derivedUnit_Icc (k := ℚ) (zero_le_one' ℝ)
+  inferInstance
+
+/-- **The band projection `q 1` has invertible derived unit**: `R(q 1)_* (q 1)⁻¹ N ≅ N` for
+`N ∈ D⁺(Sh ℝ)`, since its fibres `[y - 1, y + 1]` are nonempty. -/
+theorem isIso_derivedUnit_q_one : IsIso (derivedUnit ℚ (q 1)) :=
+  (intervalFibration_q 1).isIso_derivedUnit ℚ fun y => by
+    change y - 1 ≤ y + 1
+    linarith
+
+/-- The band projection `q 0`, whose fibres `[y - 0, y + 0]` are points, has invertible derived
+unit, through the interval fibration `intervalFibration_q 0`. -/
+theorem isIso_derivedUnit_q_zero : IsIso (derivedUnit ℚ (q 0)) :=
+  (intervalFibration_q 0).isIso_derivedUnit ℚ fun y => by
+    change y - 0 ≤ y + 0
+    simp
+
+end derivedUnit
 
 end TDA.Sheaf.IntervalFibrationExamples

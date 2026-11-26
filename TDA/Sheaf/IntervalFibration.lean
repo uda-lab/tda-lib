@@ -49,6 +49,10 @@ The stalk and the base change:
 * `isIso_baseChange_of_isFibreParam`: the fibrewise criterion (`isIso_baseChange_of_fibres`)
   for a square `w : g' ≫ f = f' ≫ g` with `f'` an interval fibration whose fibre parametrisations
   `e z`, followed by `g'`, parametrise the fibres of `f` at `g z` in a fibre coordinate of `f`.
+* `IntervalFibration.isIso_derivedUnit`: for an interval fibration with nonempty fibres, the
+  derived unit `𝟭 ⟶ π⁻¹ ⋙ Rπ_*` is an isomorphism. At each point, `derivedUnit_baseChange` relates
+  it to the derived unit of the fibre interval (`isIso_derivedUnit_Icc`) through the invertible
+  base change of the fibre square; detection at points concludes.
 
 Derived categories are instance arguments for exactly the spaces each statement mentions.
 -/
@@ -605,5 +609,33 @@ theorem isIso_baseChange_of_isFibreParam (w : g' ≫ f = f' ≫ g) (c : FibreCoo
       (isIso_baseChange_congr k (h z).comp_eq wz rfl rfl).1 ((h z).isIso_baseChange k))
 
 end fibrewise
+
+namespace IntervalFibration
+
+variable (k) {X Y : TopCat.{0}} {π : X ⟶ Y}
+  [HasDerivedCategory (X.Sheaf (ModuleCat.{0} k))] [HasDerivedCategory (Y.Sheaf (ModuleCat.{0} k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat.{0} k))]
+
+/-- **The derived unit of an interval fibration with nonempty fibres is an isomorphism.** If every
+fibre interval `[lo y, hi y]` of the interval fibration `π : X ⟶ Y` is nonempty, the derived unit
+`𝟭 ⟶ π⁻¹ ⋙ Rπ_*` of `D⁺(Sh Y)` is an isomorphism, that is `Rπ_* π⁻¹ N ≅ N` naturally in `N`. At a
+point `y`, `(ptOf y)⁻¹` of the unit followed by the invertible base change of the fibre square is
+the derived unit of the nonempty interval `[lo y, hi y]` (`derivedUnit_baseChange`,
+`isIso_derivedUnit_Icc`), and detection at points concludes. -/
+theorem isIso_derivedUnit (hπ : IntervalFibration π)
+    [∀ y, HasDerivedCategory ((TopCat.of (Set.Icc (hπ.lo y) (hπ.hi y))).Sheaf (ModuleCat.{0} k))]
+    (h : ∀ y, hπ.lo y ≤ hπ.hi y) : IsIso (derivedUnit k π) := by
+  rw [NatTrans.isIso_iff_isIso_app]
+  intro N
+  rw [isIso_iff_forall_isIso_pullbackPlus_pt]
+  intro y
+  have := isIso_derivedUnit_Icc (k := k) (h y)
+  have h₁ : IsIso ((pullbackPlus k (ptOf y)).map ((derivedUnit k π).app N) ≫
+      (baseChange k (hπ.e_comp y)).app ((pullbackPlus k π).obj N)) := by
+    rw [derivedUnit_baseChange]
+    infer_instance
+  exact IsIso.of_isIso_comp_right _ ((baseChange k (hπ.e_comp y)).app ((pullbackPlus k π).obj N))
+
+end IntervalFibration
 
 end TDA.Sheaf

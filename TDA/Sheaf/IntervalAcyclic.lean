@@ -24,6 +24,10 @@ Let `k` be a ring.
   (`isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective`).
 * `isZero_H_Icc_pullback_of_isFlasque`: `Hⁱ([u, v]; ι⁻¹ I) = 0` for `1 ≤ i`, a flasque sheaf
   `I` on any space and any continuous `ι` from `[u, v]`.
+* `isIso_derivedUnit_Icc`: for `u ≤ v`, the derived unit `𝟭 ⟶ (toPt [u, v])⁻¹ ⋙ RΓ([u, v]; -)`
+  of `D⁺(Sh pt)` is an isomorphism. On a complex `K` the unit is termwise the isomorphism
+  `Kⁿ ⟶ Γ([u, v]; constSh Kⁿ)` (`isIso_unit_constSh_Icc`), and the constant terms are
+  germ-surjective, so they compute `RΓ([u, v]; -)`.
 -/
 
 noncomputable section
@@ -164,6 +168,34 @@ theorem isZero_H_Icc_pullback_of_isFlasque {X : TopCat.{0}}
         ((DerivedCategory.Plus.singleFunctor _ 0).obj
           ((TopCat.Sheaf.pullback (ModuleCat.{0} k) ι).obj I)))) :=
   isZero_H_Icc_of_germSurjective _ (germSurjective_pullback_of_isFlasque ι I) hi
+
+/-- **The derived unit of a nonempty compact interval is an isomorphism.** For `u ≤ v`, the
+derived unit `𝟭 ⟶ (toPt [u, v])⁻¹ ⋙ RΓ([u, v]; -)` of `D⁺(Sh pt)` is an isomorphism: every
+`M ∈ D⁺(Sh pt)` is `RΓ([u, v]; -)` of the constant complex `(toPt [u, v])⁻¹ M`. On a complex `K`,
+the unit `K ⟶ Γ([u, v]; constSh K)` is a termwise isomorphism (`isIso_unit_constSh_Icc`), and the
+constant terms are germ-surjective, so they compute `RΓ([u, v]; -)`. -/
+theorem isIso_derivedUnit_Icc
+    [HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat.{0} k))]
+    [HasDerivedCategory (pt.Sheaf (ModuleCat.{0} k))] (huv : u ≤ v) :
+    IsIso (derivedUnit k (toPt (TopCat.of (Set.Icc u v)))) := by
+  let f := toPt (TopCat.of (Set.Icc u v))
+  have := Localization.essSurj (DerivedCategory.Plus.Q (C := pt.Sheaf (ModuleCat.{0} k)))
+    (CochainComplex.Plus.quasiIso _)
+  have : IsIso (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) f).unit :=
+    have := fun N => isIso_unit_constSh_Icc (k := k) huv N
+    NatIso.isIso_of_isIso_app _
+  have : IsIso (unitCochain k f) := by
+    unfold unitCochain
+    infer_instance
+  rw [NatTrans.isIso_iff_isIso_app]
+  intro M
+  rw [← NatTrans.isIso_app_iff_of_iso _ (DerivedCategory.Plus.Q.objObjPreimageIso M),
+    derivedUnit_app_Q]
+  have := isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective
+    ((TopCat.Sheaf.pullback (ModuleCat.{0} k) f).mapCochainComplexPlus.obj
+      (DerivedCategory.Plus.Q.objPreimage M))
+    (fun n => germSurjective_constSh _ ((DerivedCategory.Plus.Q.objPreimage M).obj.X n))
+  infer_instance
 
 end Icc
 
