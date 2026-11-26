@@ -13,6 +13,7 @@ import TDA.Sheaf.BandConvolution
 import TDA.Sheaf.AlternatingHeredity
 import TDA.Sheaf.RaySheaf
 import TDA.Sheaf.RealStratification
+import TDA.Sheaf.LocalSystem
 import TDA.Sheaf.SheafFlasque
 import TDA.Sheaf.IntervalSections
 import TDA.Sheaf.StalkPullback

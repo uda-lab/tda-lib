@@ -419,6 +419,20 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `mayerVietoris_exact_sum`, `mayerVietoris_exact_space`). Fixtures in
   `TDA.Topology.SmallChainsQuasiIsoExamples`: the two open rays of `ℝ`, the eventually small
   subdivisions of a non-small segment and a Lebesgue step on the `1`-simplex.
+- Interval-local constancy on the real line (#1181, part L1): `TDA.Sheaf.LocalSystem` defines
+  `IsLocallyConstantOn F U` for sheaves of `k`-modules on `realLine` (restriction between nested
+  nonempty convex opens near each point is an isomorphism), with `IsLocallyConstantOn.mono`. Its
+  intended equivalence with "locally isomorphic to a constant sheaf" is not yet proved in Lean
+  (follow-up #1250). `restrict_isIso_of_isLocallyConstantOn`: on a convex open `W` where `F` is
+  locally constant, `F(W) ⟶ F(V)` is an isomorphism for every nonempty convex open `V ⊆ W`.
+  Corollaries: the transport isomorphism `transportIso` (`map_comp_transportIso_hom`,
+  `transportIso_hom_eq_map`, `transportIso_trans`), germ isomorphisms `isIso_germ_of_isIso_map`
+  and `isIso_germ_of_isLocallyConstantOn`. In `TDA.Sheaf.RealStratification`:
+  `isIso_map_basisEquiv` and `isBasicOpen_empty`. Fixtures in `TDA.Sheaf.LocalSystemExamples`: the constant sheaf is locally constant on `ℝ`
+  (`isLocallyConstantOn_constLineSheaf`, `isIso_constLineSheaf_map_ioo`,
+  `finrank_stalk_constLineSheaf`); the point sheaf is locally constant on `(0, ∞)`
+  (`isLocallyConstantOn_pointLineSheaf_Ioi`, `finrank_stalk_pointLineSheaf_right`) but not on `ℝ`
+  (`finrank_pointLineSheaf_wide`, `not_isLocallyConstantOn_pointLineSheaf_univ`).
 
 ## v0.5.0
 
