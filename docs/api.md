@@ -4079,6 +4079,45 @@ preimage and induces the fold `k ⊕ k ⟶ k` (`fold`). This is a degree-zero co
 higher homology and is not a derived equivalence; see
 [interval singular homology](math/reeb-interval-singular-homology.md).
 
+### Perturbation stability of interval singular homology
+
+`TDA.Reeb.IntervalSingularHomologyStability` (#1173): for `f g : C(X, ℝ)` and
+`h : ∀ x, |f x - g x| ≤ ε`, in every degree `n` and over every ring `k`,
+`intervalSingularHomologyInterleaving h : Interleaving ε (intervalSingularHomology k n f)
+(intervalSingularHomology k n g)` is built by `Interleaving.ofApp` from
+`intervalSingularHomologyPerturbation`, singular homology applied to
+`perturbationInclusion h I` (as `perturbationTopHom h I`) and to the inclusions of the swapped bound
+`perturbationBound_symm h`. The two triangles are functoriality, because the composed inclusions are
+the same subtype inclusions as `thickenUnit` (`intervalPreimageTopCat_hom_ext`). The category-polymorphic
+`smoothing`, `Interleaving` and `interleavingDistance` are reused. No compactness, tameness or
+finiteness assumption is made.
+
+- Laws: `intervalSingularHomologyInterleaving_self` (`f = g` is `Interleaving.refl`),
+  `_symm`, `_mono` and `_trans`, as for `perturbationInterleaving`; `_φ`, `_ψ` and
+  `nonempty_interleaving_intervalSingularHomology` are the projections and existence form.
+- Distances: `interleavingDistance_intervalSingularHomology_le` is the radius inequality
+  `d(H_n f, H_n g) ≤ ε`; `interleavingDistance_intervalSingularHomology_le_edist` is the extended
+  supremum bound `d(H_n f, H_n g) ≤ edist (UniformFun.ofFun f) (UniformFun.ofFun g)` with the
+  extended distance of mathlib's uniform structure, `⊤` allowed.
+- Degree zero: `linearizedPerturbationInterleaving k h` is the existing path-component witness
+  `perturbationInterleaving h` post-composed with `sigmaConst.obj (ModuleCat.of k k)`
+  (`Interleaving.postcomp`). `intervalSingularHomologyPerturbation_zero` shows that the degree-zero
+  witness equals the linearized one conjugated by `intervalSingularHomologyIso₀`, from the naturality
+  `singularHomology₀Iso_hom_naturality` of the isomorphism for the inclusion
+  (`intervalSingularHomologyPerturbation_app_comp_iso₀`), and `intervalSingularHomologyInterleaving_zero`
+  states it for the interleaving, transported by `Interleaving.isoRight` and `symm`.
+  `intervalClass_comp_intervalSingularHomologyPerturbation_app` sends the class of a point to the
+  class of the same point.
+
+`TDA.Reeb.IntervalSingularHomologyStabilityExamples` covers an empty source (every parameter, distance
+`0`), parameter `0` (an isomorphism of interval functors, and `f = g` is the identity witness), empty
+preimages (`isZero_obj_of_preimage_empty`), and constant maps from a point at heights `a` and `b` over
+a nontrivial ring: the distance is exactly `|a - b|` (`interleavingDistance_const`). For the lower
+bound (`isEmpty_interleaving_const`), if `ε < |a - b|`, a small open interval around `a` has an
+`ε`-thickening omitting `b`; the first composite then factors through the zero value at that
+thickening, while the transition on `H₀` of the point is the identity on `k`. Mayer–Vietoris
+compatibility is a separate unit.
+
 ## Closed-band functors on `D⁺(Sh(ℝ; k))`
 
 `TDA.Sheaf.DerivedPlus` works with sheaves of modules `X.Sheaf (ModuleCat k)` over a ring `k`

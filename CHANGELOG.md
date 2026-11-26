@@ -245,6 +245,18 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   (`resolution_shortExact`). Hence `enoughProjectives_diagram`, `hasProjectiveDimensionLT_two`
   and `ext_eq_zero` for `Ext^m` with `2 ≤ m`. Fixtures in
   `TDA.Sheaf.AlternatingHeredityExamples` resolve `[0, 2]` on the fork and use `Ext² = 0`.
+- Perturbation stability of interval singular homology (#1173):
+  `TDA.Reeb.intervalSingularHomologyInterleaving` gives, for `f g : C(X, ℝ)` with
+  `∀ x, |f x - g x| ≤ ε`, an `ε`-interleaving of `intervalSingularHomology k n f` and
+  `intervalSingularHomology k n g` in every degree and over every ring, built with `Interleaving.ofApp`
+  from singular homology applied to `perturbationInclusion` and its swapped-bound reverse, with
+  `_self`, `_symm`, `_mono` and `_trans` laws. `interleavingDistance_intervalSingularHomology_le` and
+  `_le_edist` give the radius and extended supremum bounds. In degree zero the witness is the existing
+  path-component witness, linearized (`linearizedPerturbationInterleaving`) and conjugated by
+  `intervalSingularHomologyIso₀` (`intervalSingularHomologyPerturbation_zero`). Fixtures in
+  `TDA.Reeb.IntervalSingularHomologyStabilityExamples`: an empty source, parameter `0`, empty
+  preimages, and constant maps from a point at heights `a` and `b`, at distance exactly `|a - b|`
+  (`interleavingDistance_const`), over a nontrivial ring.
 
 ## v0.5.0
 
