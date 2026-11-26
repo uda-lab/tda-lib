@@ -50,6 +50,31 @@ image of its `0`-simplex (`intervalClass`). For `i : I ⟶ J`:
   `class x ≫ H₀(i) ≫ iso.hom.app J` and `class x ≫ iso.hom.app I ≫ (linearized).map i` equal the
   injection indexed by `ZerothHomotopy.mk (incl x)`, the second by `intervalComponents_map_mk`.
 
+## Perturbation stability
+
+For `f g : C(X, ℝ)` with `∀ x, |f x - g x| ≤ ε`, every `f ⁻¹ I` lies in `g ⁻¹ T_ε I`, and the
+inclusion is continuous (`perturbationInclusion`). Singular homology applied to it gives
+`intervalSingularHomologyPerturbation k n h : H_n(f ⁻¹ I) ⟶ H_n(g ⁻¹ T_ε I)`, natural in `I`. The
+reverse maps are those of the swapped bound. Both composites are induced by the subtype inclusion
+`f ⁻¹ I ⊆ f ⁻¹ T_ε T_ε I`, which is the image of `thickenUnit`, so functoriality (and extensionality
+of continuous maps on points) gives the two triangles, and `Interleaving.ofApp` the
+`ε`-interleaving `intervalSingularHomologyInterleaving`. This holds in every degree, for every ring
+and every space. The pointwise bound gives `d(H_n f, H_n g) ≤ ε`, and for arbitrary `f g` the
+bound `d(H_n f, H_n g) ≤ ‖f − g‖∞ ∈ [0, ∞]`.
+
+In degree zero the maps agree with the existing path-component witness. For one inclusion `j`,
+`singularHomology₀Iso_hom_naturality` says `H₀(j) ≫ iso = iso ≫ linearized (componentMap j)`; at
+`j = perturbationTopHom h I` this is `intervalSingularHomologyPerturbation_app_comp_iso₀`, and
+`intervalSingularHomologyPerturbation_zero` conjugates the witness by `intervalSingularHomologyIso₀`
+at `f` and `g`.
+
+Sharpness on a point: for the constant maps from a point at heights `a` and `b` (a nontrivial ring
+`k`), the distance is exactly `|a − b|`. If `ε < |a − b|`, choose an open interval `I` around `a`
+whose `ε`-thickening omits `b`. The value of `g` on the thickening is zero, so the first composite
+`H₀(f ⁻¹ I) ⟶ H₀(g ⁻¹ T_ε I) ⟶ H₀(f ⁻¹ T_ε T_ε I)` is zero, while the transition on `H₀` of the point
+is an isomorphism, compatible with the augmentation to `k`. A zero isomorphism on a nonzero value is
+impossible.
+
 ## Boundary
 
 This is the degree-zero comparison only. The isomorphism forgets all higher homology and is not
@@ -70,3 +95,7 @@ value on both sides (`isZero_intervalSingularHomology₀_obj_bot`,
   (`signEquiv`). The preimage of `(-1, 4)` is `(-2, 2)`, connected. `fold` shows that the inclusion
   induces, up to isomorphisms `H₀(f ⁻¹ (1,4)) ≅ ∐_{Bool} k₀` and `H₀(f ⁻¹ (-1,4)) ≅ k₀`, the
   codiagonal `Sigma.desc (fun _ => 𝟙 k₀)`, the fold `k ⊕ k ⟶ k`.
+
+`TDA.Reeb.IntervalSingularHomologyStabilityExamples`: an empty source, parameter `0`, empty preimages
+(`isZero_obj_of_preimage_empty`) and the constant maps from a point
+(`interleavingDistance_const`, `isEmpty_interleaving_const`, `not_nonempty_iso_const`).
