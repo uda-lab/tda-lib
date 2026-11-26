@@ -13,14 +13,13 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
 - Downstream-use audit, family 3 (#1252, #1207): `RealBarcode.realization_unique` and
   `RealBarcode.diagram_eq_of_realize_iso` (two positive real barcode realizations of one
   module are the same diagram), the real-line counterpart of `barcode_decomposition_unique`;
-  the downstream regression fixture `BarcodeUniquenessClientExamples`. Existing statements
-  are unchanged.
+  the downstream regression fixture `BarcodeUniquenessClientExamples`.
 - Downstream-use audit, family 2 (#1249, #1207): for filter functions on a finite complex,
   `faceSupDifference_le_iff` (the maximal face-value difference is bounded exactly by a
   nonnegative pointwise bound), `faceSupDifference_comm`, the pointwise diagram bound
   `bottleneck_dgm_le_of_abs_sub_le` and its threshold form
   `exists_lt_abs_sub_of_ofReal_lt_bottleneck_dgm`; the downstream regression fixture
-  `FilterStabilityClientExamples`. Existing statements are unchanged.
+  `FilterStabilityClientExamples`.
 - Claude cloud setup snapshot: `scripts/claude-cloud-setup.sh` also copies the companion skills
   `github-driven-workflow`, `github-loop-engineering` and `lean-formalization-discipline` from
   `t-uda/skills` at a pinned commit into `~/.claude/skills`, so that `scripts/preflight.sh` finds
@@ -377,7 +376,7 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `Cech.dgm_eq_of_linearOrder` (independence of the label order) and the threshold forms
   `Cech.exists_lt_dist_of_ofReal_lt_bottleneck_dgm` and
   `Cech.lt_hausdorffDist_of_ofReal_lt_bottleneck_dgm`; the downstream regression fixture
-  `CechClientExamples`. Existing statements are unchanged.
+  `CechClientExamples`.
 - Singular barycentric subdivision (#1190, part S3): `TDA.Topology.AffineSubdivision` defines the
   subdivision chain map `affineSubdivision hK R` on affine chains of a convex subset of a standard
   simplex (`sd(σ) = b_σ · sd(∂σ)`, identity in degree `0`) and its homotopy to the identity

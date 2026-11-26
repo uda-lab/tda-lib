@@ -1513,9 +1513,9 @@ realizations. Positivity excludes endpoint pairs with empty support.
 finite-dimensional real modules, and `scalar_crossing_card_eq_of_iso_of_le` proves that
 their crossing multiplicities are isomorphism invariants. `BarcodeUniquenessClientExamples`
 is a downstream regression fixture that opens no scope and declares no instance. It replays
-existence and uniqueness of the barcode on a finite chain, the classification by ranks, uniqueness of a
-positive real realization, equality of the diagrams of filters with isomorphic sublevel
-modules, and the real interval decomposition.
+existence and uniqueness of the barcode on a finite chain, the classification by ranks,
+uniqueness of a positive real realization, equality of the diagrams of filters with
+isomorphic sublevel modules, and the real interval decomposition.
 
 `FiniteLine.moduleOfAdjacent` constructs finite persistence from adjacent linear
 maps, and its path-category equivalence identifies equioriented finite-line
