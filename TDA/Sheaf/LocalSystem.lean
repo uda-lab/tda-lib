@@ -58,9 +58,9 @@ private theorem map_comp_map (F : X.Presheaf C) {U V W : Opens X} (h₁ : V ≤ 
   rw [← F.map_comp]
   rfl
 
-/-- If `D ⊆ A ∪ B` and `F(B) ⟶ F(A ∩ B)` is an isomorphism, so is `F(D) ⟶ F(A)`, where
-`A, B ⊆ D`. This is the binary gluing square of `F`. -/
-private theorem isIso_map_of_le_sup (F : X.Sheaf C) {A B D : Opens X} (hA : A ≤ D) (hB : B ≤ D)
+/-- **The binary gluing square.** For opens `A, B ⊆ D` with `D ⊆ A ∪ B`, if the restriction
+`F(B) ⟶ F(A ∩ B)` is an isomorphism, so is the restriction `F(D) ⟶ F(A)`. -/
+theorem isIso_map_of_le_sup (F : X.Sheaf C) {A B D : Opens X} (hA : A ≤ D) (hB : B ≤ D)
     (hD : D ≤ A ⊔ B) (h : IsIso (F.presheaf.map (homOfLE (inf_le_right : A ⊓ B ≤ B)).op)) :
     IsIso (F.presheaf.map (homOfLE hA).op) := by
   obtain rfl : D = A ⊔ B := le_antisymm hD (sup_le hA hB)
