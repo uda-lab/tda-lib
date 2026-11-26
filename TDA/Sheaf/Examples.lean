@@ -5,3 +5,4 @@ import TDA.Sheaf.AlexandrovCoordinateTranslationExamples
 import TDA.Sheaf.AlternatingDiagramExamples
 import TDA.Sheaf.BandConvolutionExamples
 import TDA.Sheaf.AlternatingHeredityExamples
+import TDA.Sheaf.RaySheafExamples
