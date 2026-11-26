@@ -367,6 +367,24 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `Cech.exists_lt_dist_of_ofReal_lt_bottleneck_dgm` and
   `Cech.lt_hausdorffDist_of_ofReal_lt_bottleneck_dgm`; the downstream regression fixture
   `CechClientExamples`. Existing statements are unchanged.
+- Singular barycentric subdivision (#1190, part S3): `TDA.Topology.AffineSubdivision` defines the
+  subdivision chain map `affineSubdivision hK R` on affine chains of a convex subset of a standard
+  simplex (`sd(σ) = b_σ · sd(∂σ)`, identity in degree `0`) and its homotopy to the identity
+  `affineSubdivisionHomotopy hK R` (`T(σ) = b_σ · (sd(σ) - σ - T(∂σ))`), both natural in affine
+  maps, with `d_comp_augmentation` and the generic `chainHomotopyOfSucc`; the subdivision of `σ`
+  is an integer combination of `IsSubdivisionSimplex` simplices
+  (`ιChainComplex_affineSubdivision_mem_closure`, `comp_affineSubdivision_mem_closure`).
+  `TDA.Topology.SingularSubdivision` defines `singularSubdivision R X`, sending a singular simplex
+  `σ` to `σ_*` of the subdivision of the model simplex `idSimplex n`, natural in `X`
+  (`singularSubdivision_naturality`, `singularSubdivisionNatTrans`) and compatible with `e_*` for
+  every continuous `e` from a convex set (`toSingularChains_comp_singularSubdivision`), and the
+  natural homotopy `singularSubdivisionHomotopy R X` to the identity. Both preserve the small
+  chains of two subsets (`exists_singularSubdivision_f_lift`,
+  `singularSubdivision_f_apply_mem_range_smallChainsι`,
+  `singularSubdivisionHomotopy_hom_apply_mem_range_smallChainsι`). `toSingularChains` now targets
+  `(TopCat.toSSet.obj Y).chainComplex R`. Fixtures in
+  `TDA.Topology.SingularSubdivisionExamples`: the two signed half-segments of a singular segment,
+  its boundary and a naturality instance.
 
 ## v0.5.0
 

@@ -26,3 +26,5 @@ import TDA.Topology.SingularMayerVietoris
 import TDA.Topology.QuasiIsoOfIterate
 import TDA.Topology.AffineChains
 import TDA.Topology.SubdivisionDiameter
+import TDA.Topology.AffineSubdivision
+import TDA.Topology.SingularSubdivision
