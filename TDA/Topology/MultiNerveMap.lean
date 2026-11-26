@@ -33,8 +33,9 @@ variable {X : Type u} {I : Type v} {J : Type w} {K : Type z}
 
 local instance multiNerveMapDecidableEq (α : Type*) : DecidableEq α := Classical.decEq α
 
-/-- A finite intersection is contained in the intersection over the selected image indices. -/
-theorem interMember_image_subset {U : CoverFamily X I} {V : CoverFamily X J}
+/-- A finite intersection is contained in the intersection over the selected image indices, for
+any decidable equality on the target index type. -/
+theorem interMember_image_subset [DecidableEq J] {U : CoverFamily X I} {V : CoverFamily X J}
     (R : Refinement U V) (σ : Finset I) :
     interMember U σ ⊆ interMember V (σ.image R.selector) := by
   intro x hx
@@ -139,6 +140,44 @@ projected nerve face under `nerveMap R`. -/
 theorem projection_multiNerveMap (R : Refinement U V) (a : MultiNerveCell U) :
     (projection V (multiNerveMap R a)).1 = (projection U a).1.image (nerveMap R) :=
   rfl
+
+/-! ### Statements with an arbitrary decidable equality on the target index type
+
+`multiNerveMap` and `refinementFaceMap` are defined with a classical decidable equality on `J`.
+The statements below hold for any `[DecidableEq J]`: they rewrite the classical finite images
+of the statements above to the images taken with the supplied instance. -/
+
+section decidableEq
+
+variable [DecidableEq J] {U : CoverFamily X I} {V : CoverFamily X J}
+
+/-- The support of the image cell is the image of the support, for any decidable equality on
+the target index type. -/
+theorem support_multiNerveMap_eq_image (R : Refinement U V) (a : MultiNerveCell U) :
+    (multiNerveMap R a).support = a.support.image R.selector := by
+  obtain rfl : ‹DecidableEq J› = multiNerveMapDecidableEq J := Subsingleton.elim _ _
+  exact support_multiNerveMap R a
+
+/-- Refinement maps of multinerves send the face over `τ` to the face over
+`τ.image R.selector`, for any decidable equality on the target index type. -/
+theorem multiNerveMap_face_image (R : Refinement U V) (a : MultiNerveCell U) (τ : Finset I)
+    (hτ : τ.Nonempty) (hτa : τ ⊆ a.support) :
+    multiNerveMap R (a.face τ hτ hτa) =
+      (multiNerveMap R a).face (τ.image R.selector) (hτ.image _)
+        (by
+          rw [support_multiNerveMap_eq_image]
+          exact Finset.image_subset_image hτa) := by
+  obtain rfl : ‹DecidableEq J› = multiNerveMapDecidableEq J := Subsingleton.elim _ _
+  exact multiNerveMap_face R a τ hτ hτa
+
+/-- Projecting the image cell gives the image of the projected nerve face under `nerveMap R`,
+for any decidable equality on the target index type. -/
+theorem projection_multiNerveMap_eq_image (R : Refinement U V) (a : MultiNerveCell U) :
+    (projection V (multiNerveMap R a)).1 = (projection U a).1.image (nerveMap R) := by
+  obtain rfl : ‹DecidableEq J› = multiNerveMapDecidableEq J := Subsingleton.elim _ _
+  exact projection_multiNerveMap R a
+
+end decidableEq
 
 end multiNerveMap
 

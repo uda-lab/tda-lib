@@ -143,7 +143,7 @@ theorem stage_uniform_eq_iUnion_largeFaceCover (p : V → X) (a : Index) :
 omit [MeasurableSpace X] [OpensMeasurableSpace X] [Nonempty V] in
 /-- An intersection of large-face cover members is nonempty precisely when
 the union of their labels is a Čech simplex. -/
-theorem mem_largeFaceNerve_iff (p : V → X) (a : Index) (S : Finset (Finset V)) :
+theorem mem_largeFaceNerve_iff [DecidableEq V] (p : V → X) (a : Index) (S : Finset (Finset V)) :
     S ∈ TDA.Topology.nerve (largeFaceCover p a) ↔
       S.Nonempty ∧ (∀ s ∈ S, s ∈ openCech p (radius a) ∧
         mass a ≤ (s.card : ℝ) / Fintype.card V) ∧
