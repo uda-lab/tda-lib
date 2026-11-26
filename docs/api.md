@@ -54,8 +54,9 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructible` | `IsConstructible`, `isIso_res_sameStratum`, `isConstructible_iff`; `starFunctor`, `sections`, `sections_obj_obj`, `sections_map_gen`; `basisSheaf`, `extension`, `extensionBasicIso`, `extensionStarIso`, `isConstructible_extension`, `finiteDimensional_sections`; `extensionSectionsIso`, `extensionSectionsIso_app_app`, `sectionsExtensionIso`; `Constructible`, `FinDiagram`, `sectionsFin`, `extensionFin`, `equivalence`, `equivalence_functor_obj_obj`, `equivalence_functor_obj_map_gen`, `equivalence_inverse_obj_obj` | Strictly increasing breakpoints `p : Fin m → ℝ`; `k : Type`, a ring for `isIso_res_sameStratum`, a division ring for `IsConstructible`, a field for the diagram side. Local constancy is the interval-local `IsLocallyConstantOn`; its intended equivalence with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). The derived comparison is #1183. See [Constructible sheaves on the real line](#constructible-sheaves-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_section_lift_extend`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`; the extension step needs `S` order-connected, the global statements are for compact intervals `[u, v]` (all `u`, `v`). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`; `pt`, `toPt`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`, `stalkPullbackSheafIso_hom_naturality` (and `stalkPullbackSheafIso_hom_naturality_assoc`), `stalkPullbackSheafNatIso`, `stalkPullbackSheafNatIso_app`; `pt`, `toPt`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ`, `rightDerivedFunctorPlusSingleIso` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.DerivedStalks` | `isIso_iff_isIso_stalk_homology` | `X : TopCat.{0}`, sheaves of `ModuleCat.{0} k` over a ring `k : Type`, `[HasDerivedCategory (X.Sheaf (ModuleCat k))]`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_Icc`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for all `u`, `v`; the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.FlasqueAcyclic` | `sections_exact_of_left_exact`, `epi_of_shortExact`, `isFlasque_of_shortExact`, `isFlasque_biprod`, `pushforward_shortExact_of_isFlasque`, `acyclic_pushforward_of_isFlasque`, `quasiIso_pushforward_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` | Sheaves of `k`-modules over a ring `k : Type` on `X : TopCat.{0}`, continuous `f : X ⟶ Y`; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibre` | `comp_toPt`, `H_iso_of_homeo`, `isIso_derivedUnit_toPt_app_of_homeo`, `isIso_toPt_Icc_self`, `isIso_derivedUnit_toPt_Icc_self`; `BandConvolution.fibre`, `fibreHomeo`, `coe_fibreHomeo_apply`, `fibreIso`, `fibreIso_toPt`, `isZero_H_fibre`, `isIso_derivedUnit_toPt_fibre` | Homeomorphisms `h : X ⟶ Y` in `TopCat.{0}` (`[IsIso h]`), `k : Type` a ring; fibres of the band projection `BandConvolution.q a`. The fibre statements take a derived category structure on `[y - a, y + a]` as an instance argument; the unit statement needs `0 ≤ a`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
@@ -4620,6 +4621,25 @@ categories are instance arguments.
   `f x` of a section over `V` goes to the germ at `x` of its image under the adjunction unit
   `F ⟶ f_* f⁻¹ F`. `pullbackPushforwardAdjunction_unit_app_hom` describes that unit through the
   presheaf adjunction and sheafification.
+- `stalkPullbackSheafIso_hom_naturality` (with `_assoc`): for `φ : F ⟶ G`, the stalk map of `φ`
+  at `f x` corresponds to the stalk map of `f⁻¹ φ` at `x`. `stalkPullbackSheafNatIso k f x` is
+  the natural isomorphism `Sheaf.forget ⋙ stalkFunctor (f x) ≅ f⁻¹ ⋙ Sheaf.forget ⋙
+  stalkFunctor x` of functors `Sh Y ⥤ ModuleCat k`, with components `stalkPullbackSheafNatIso_app`.
+
+`TDA.Sheaf.DerivedStalks`: `isIso_iff_isIso_stalk_homology φ`, for a morphism `φ` of
+`DerivedCategory.Plus (X.Sheaf (ModuleCat k))`: `φ` is an isomorphism if and only if, for every
+`i : ℤ` and `x : X`, the stalk at `x` of the homology sheaf map `Hⁱ(φ)` is an isomorphism. It
+combines `DerivedCategory.Plus.isIso_iff` with `TopCat.Presheaf.isIso_iff_stalkFunctor_map_iso`.
+It is stated for `X : TopCat.{0}`, `ModuleCat.{0} k` and `k : Type`, as in the rest of this
+area.
+
+`TDA.Sheaf.DerivedStalksExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
+instance. `shift` is the translation `x ↦ x + 1` of `realLine`, a homeomorphism (`isIso_shift`);
+`skyR` is the skyscraper at `1` with value `ℚ` and `skyShift` its inverse image along `shift`.
+The stalk of `skyShift` at `0` is `ℚ` (`stalk_skyShift_zero`) and at `5` is zero
+(`isZero_stalk_skyShift_five`); `stalk_skyShift_naturality` is naturality at `2 • 𝟙 skyR`; and
+the stalk maps of the homology sheaf maps of the derived unit of `shift` at `skyR` are
+isomorphisms (`isIso_stalk_homology_derivedUnit_shift`).
 
 `TDA.Sheaf.PointSheaf`:
 
