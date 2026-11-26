@@ -4364,6 +4364,35 @@ endpoint square of `(1, 1)` and `(2, 3)` with corners `(-1, 1)`, `(-2, 1)`, `(-1
 (`abs_sub_shiftHalf_le`), the thickened square (`exampleSquare_thickenEndpoints`) and compatibility
 with `φ` (`exampleSquare_intervalMVδ_comp_interleaving_φ`).
 
+Paths and functionals on `H₀` (#1190, part E3c): `TDA.Reeb.SingularHomologyZero` (imported by
+`TDA.Reeb`) complements the point classes `singularHomology₀Class X R x` of
+`TDA.Reeb.IntervalSingularHomology`, for any space `X` and coefficients `R` in a preadditive
+category with coproducts and homology. `singularHomology₀Class_eq_of_path` states that the two
+endpoints of a path have the same class. A locally constant `g : X → (R ⟶ T)` induces the
+functional `singularHomology₀Desc X R g hg : H₀(X; R) ⟶ T` (through `TopCat.singularHomology₀Iso`,
+`g` on the summand of each path component), with value `g x` on the class of `x`
+(`singularHomology₀Class_comp_singularHomology₀Desc`,
+`singularHomology₀Class_comp_singularHomology₀Desc_assoc`).
+
+Exchanging the pieces (#1190, part E3c): `IntervalMVSquare.swap` (reducible) exchanges `left` and
+`right` and keeps `sw` and `ne` (`swap_corners`), so both connecting maps have the same source and
+target, and
+`intervalMVδ_swap` states `intervalMVδ f Q.swap k n = -intervalMVδ f Q k n` (from
+`mayerVietorisδ_flip`).
+
+`TDA.Reeb.Examples.CircleMayerVietoris` (#1190, part E3c, imported by `TDA.Reeb.Examples`) is the
+circle test, on Mathlib's `Circle` with `circleHeight = Im` (`circleHeight_apply`) over `ℚ`.
+`circleSquare = ofEndpoints (1/2) (1/2) 2 2` has corners `(-1/2, 1/2)`, `(-2, 1/2)`, `(-1/2, 2)`,
+`(-2, 2)` (`circleSquare_corners`), and `f ⁻¹ ne` is the whole circle (`circleHeight_mem_ne`).
+On the overlap `Overlap = f ⁻¹ sw`: `re_ne_zero_of_mem_overlap`, and
+`circle_overlap_two_components` states that `overlapPos = {Re > 0}` and `overlapNeg = {Re < 0}`
+are open, disjoint, cover the overlap, are nonempty (`pointPos = 1`, `pointNeg = -1`) and are
+preconnected. The class `overlapClassDiff = [1] - [-1]` is killed by `intervalMVInterMap`
+(`overlapClassDiff_comp_intervalMVInterMap`) and is nonzero (`overlapClassDiff_ne_zero`, by the
+functional of the indicator of `{Re > 0}`); by exactness, `circle_intervalMVδ_ne_zero` states that
+the connecting map `H₁(S¹; ℚ) ⟶ H₀(overlap; ℚ)` is nonzero, and `circle_intervalMVδ_swap_ne` that
+the connecting map of the swapped square differs from it.
+
 ## The algebraic core of singular Mayer–Vietoris
 
 `TDA.Topology.SmallChains`, `TDA.Topology.SingularMayerVietoris` and
