@@ -10,6 +10,10 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 5 (#1263, #1207): `MatrixSequence.Hom.isoOfInverse` (mutually
+  inverse matrix morphisms give a natural isomorphism of the modules) and
+  `MatrixSequence.barcode_eq_of_inverse_homs`; the downstream regression fixture
+  `MatrixSequenceClientExamples`.
 - Downstream-use audit, family 4 (#1259, #1207): `bottleneck_dgm_eq_realInterleavingDistance`
   and `nonempty_sublevelInterleaving_iff` now take filters on two finite complexes (statement
   generalised; calls with one complex are unaffected), and

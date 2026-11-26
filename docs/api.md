@@ -1526,7 +1526,10 @@ representations with `PModule`. `MatrixSequence.toPModule` accepts rectangular
 transition matrices with target rows and source columns; its morphisms extend
 adjacent commuting squares to all structure maps. Supplied bases give genuine
 natural coordinate isomorphisms, basis-independent barcodes, and the existing
-finite decomposition. A zero-initial padded sequence can also be extended across
+finite decomposition. Mutually inverse matrix morphisms give a natural isomorphism
+(`MatrixSequence.Hom.isoOfInverse`) and equal barcodes
+(`MatrixSequence.barcode_eq_of_inverse_homs`); `MatrixSequenceClientExamples` is a
+downstream regression fixture that opens no scope and declares no instance (#1263). A zero-initial padded sequence can also be extended across
 an explicit real critical grid, retaining its original endpoint values and a
 constant final cell. The finite-line path and explicit matrix composite data
 execute over concrete coefficient operations, including ℚ and F₂; see
