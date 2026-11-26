@@ -2,3 +2,4 @@
 import TDA.Sheaf.AlexandrovExamples
 import TDA.Sheaf.AlternatingDiagramExamples
 import TDA.Sheaf.BandConvolutionExamples
+import TDA.Sheaf.AlternatingHeredityExamples

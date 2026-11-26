@@ -221,6 +221,16 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   projections `p a` and `q a`, `T a := pullbackPlus (p a) ⋙ pushforwardPlus (q a)`, the radius
   maps `restr : T b ⟶ T a` with `restr_refl` and `restr_trans`, `T0Iso : T 0 ≅ 𝟭` and the
   augmentation `aug`. Fixtures in `TDA.Sheaf.BandConvolutionExamples`.
+- Heredity of finite alternating diagrams in `TDA.Sheaf.AlternatingHeredity` (#1182):
+  `pathTensor k o i` (Mathlib's `evaluationLeftAdjoint`) gives `P_i ⊗ V`, identified with
+  `(vtx o i ⟶ t) →₀ V` at `t` by `pathTensorObjEquiv`; `representable k o i` is
+  `P_i = k[paths i → −]` with `representableHomEquiv`. `pathTensorAdjunction` is the evaluation
+  Hom adjunction and `projective_pathTensor` makes every `P_i ⊗ V` projective. `resolution M`
+  is the standard resolution `⊕_(a : i → j) P_j ⊗ M_i ⟶ ⊕_i P_i ⊗ M_i ⟶ M` with the signs
+  `u ↦ u - M(a) u`; it splits at every vertex (`resolutionSplitting`) and is short exact
+  (`resolution_shortExact`). Hence `enoughProjectives_diagram`, `hasProjectiveDimensionLT_two`
+  and `ext_eq_zero` for `Ext^m` with `2 ≤ m`. Fixtures in
+  `TDA.Sheaf.AlternatingHeredityExamples` resolve `[0, 2]` on the fork and use `Ext² = 0`.
 
 ## v0.5.0
 
