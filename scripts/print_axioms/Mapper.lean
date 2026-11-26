@@ -1559,3 +1559,10 @@ import TDA
 #print axioms TDA.Mapper.CappedMapperClientExamples.fin_four_bottleneck_le
 #print axioms TDA.Mapper.CappedMapperClientExamples.fin_four_uniformGrid_bottleneck_le
 #print axioms TDA.Mapper.CappedMapperClientExamples.fin_four_bottleneck_le_of_orders
+#print axioms TDA.Mapper.ComponentIndexClientExamples.adj_iff
+#print axioms TDA.Mapper.ComponentIndexClientExamples.mem_mapper_iff
+#print axioms TDA.Mapper.ComponentIndexClientExamples.mem_mapper_iff_incidenceMapper_image
+#print axioms TDA.Mapper.ComponentIndexClientExamples.mem_incidenceMapper_iff_mapper_image_symm
+#print axioms TDA.Mapper.ComponentIndexClientExamples.fin_three_interMember_subset_preimage
+#print axioms TDA.Mapper.ComponentIndexClientExamples.support_image
+#print axioms TDA.Mapper.ComponentIndexClientExamples.projection_image

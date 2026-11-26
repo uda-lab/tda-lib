@@ -423,3 +423,7 @@ import TDA
 #print axioms TDA.Simplicial.SimplexAttachmentClientExamples.oldDeletedFace_one
 #print axioms TDA.Simplicial.SimplexAttachmentClientExamples.attachingHomologyClass_ne_zero
 #print axioms TDA.Simplicial.SimplexAttachmentClientExamples.attachingHomologyClass_ne_zero_of_vertices
+#print axioms TDA.Simplicial.VertexMap.map_face_image
+#print axioms TDA.Simplicial.VertexMapClientExamples.fin_three_map_face
+#print axioms TDA.Simplicial.VertexMapClientExamples.fin_three_map_le_iff
+#print axioms TDA.Simplicial.VertexMapClientExamples.fin_three_vertexMap_map_le_iff

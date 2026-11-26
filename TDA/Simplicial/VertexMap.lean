@@ -94,13 +94,10 @@ theorem VertexMap.comp_assoc {K : PreAbstractSimplicialComplex I}
   intro i
   rfl
 
-/-- The pointwise face condition is equivalent to image-complex containment.
-
-The local classical equality decision is used only by the finite-image
-operation in the pinned mathlib definition of `PreAbstractSimplicialComplex.map`.
--/
+/-- The pointwise face condition is equivalent to image-complex containment, for any decidable
+equality on the target vertex type. -/
 theorem map_le_iff {K : PreAbstractSimplicialComplex I}
-    {L : PreAbstractSimplicialComplex J} (r : I → J) :
+    {L : PreAbstractSimplicialComplex J} [DecidableEq J] (r : I → J) :
     PreAbstractSimplicialComplex.map K r ≤ L ↔ ∀ s ∈ K, s.image r ∈ L := by
   constructor
   · intro h s hs
@@ -112,11 +109,19 @@ theorem map_le_iff {K : PreAbstractSimplicialComplex I}
     obtain ⟨t, ht, rfl⟩ := hs
     exact h t ht
 
-/-- A vertex map's field is exactly the image-complex containment condition. -/
+/-- A vertex map's field is exactly the image-complex containment condition, for any decidable
+equality on the target vertex type. -/
 theorem VertexMap.map_le_iff {K : PreAbstractSimplicialComplex I}
-    {L : PreAbstractSimplicialComplex J} (f : VertexMap K L) :
+    {L : PreAbstractSimplicialComplex J} [DecidableEq J] (f : VertexMap K L) :
     PreAbstractSimplicialComplex.map K f ≤ L ↔ ∀ s ∈ K, s.image f ∈ L := by
   exact TDA.Simplicial.map_le_iff f
+
+/-- The face condition of a vertex map, for any decidable equality on the target vertex type. -/
+theorem VertexMap.map_face_image {K : PreAbstractSimplicialComplex I}
+    {L : PreAbstractSimplicialComplex J} [DecidableEq J] (f : VertexMap K L) (s : Finset I)
+    (hs : s ∈ K) : s.image f.toFun ∈ L := by
+  obtain rfl : ‹DecidableEq J› = Classical.decEq J := Subsingleton.elim _ _
+  exact f.map_face s hs
 
 end
 end TDA.Simplicial

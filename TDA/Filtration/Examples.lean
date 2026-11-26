@@ -35,3 +35,4 @@ import TDA.Filtration.FilterFunctionMapExamples
 
 import TDA.Filtration.SparseRips.Examples
 import TDA.Filtration.SparseRips.H1Examples
+import TDA.Filtration.SparseRips.DecidableEqClientExamples

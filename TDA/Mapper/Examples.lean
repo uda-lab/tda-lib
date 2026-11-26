@@ -42,3 +42,4 @@ import TDA.Mapper.MapperReebConstructibleExamples
 import TDA.Mapper.GraphPLIncidenceExamples
 import TDA.Mapper.GraphPLIncidenceReebDataExamples
 import TDA.Mapper.CappedMapperClientExamples
+import TDA.Mapper.ComponentIndexClientExamples

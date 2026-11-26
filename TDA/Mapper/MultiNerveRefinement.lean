@@ -45,8 +45,8 @@ section preimage
 variable (f : C(X, Y)) (U : I → Set Y) (s : Finset (ComponentIndex f U))
 
 /-- An intersection of component members lies in the inverse image of the intersection of the
-target members with the labels of `s`. -/
-theorem componentCover_interMember_subset_preimage :
+target members with the labels of `s`, for any decidable equality on the labels. -/
+theorem componentCover_interMember_subset_preimage [DecidableEq I] :
     interMember (componentCover f U) s ⊆ f ⁻¹' ⋂ i ∈ s.image Sigma.fst, U i := by
   intro x hx
   rw [Set.mem_preimage, Set.mem_iInter₂]
@@ -108,9 +108,9 @@ section multiNerveMapperMap
 variable (f : C(X, Y))
 
 @[simp] theorem support_multiNerveMapperMap {U : I → Set Y} {V : J → Set Y}
-    (R : Refinement U V) (c : multiNerveMapper f U) :
+    [DecidableEq (ComponentIndex f V)] (R : Refinement U V) (c : multiNerveMapper f U) :
     (multiNerveMapperMap f R c).support = c.support.image (componentRefinement f R).selector :=
-  rfl
+  support_multiNerveMap_eq_image (componentRefinement f R) c
 
 /-- MultiNerve Mapper maps are monotone for the face order. -/
 theorem multiNerveMapperMap_monotone {U : I → Set Y} {V : J → Set Y} (R : Refinement U V) :
@@ -134,12 +134,12 @@ theorem multiNerveMapperMap_comp {K : Type*} {U : I → Set Y} {V : J → Set Y}
   exact multiNerveMap_comp _ _
 
 /-- The square with ordinary Mapper: projecting the image cell gives the image of the projected
-Mapper face under `mapperMap f R`. -/
+Mapper face under `mapperMap f R`, for any decidable equality on the target component indices. -/
 theorem multiNerveMapper_projection_multiNerveMapperMap {U : I → Set Y} {V : J → Set Y}
-    (R : Refinement U V) (c : multiNerveMapper f U) :
+    [DecidableEq (ComponentIndex f V)] (R : Refinement U V) (c : multiNerveMapper f U) :
     (multiNerveMapper_projection f V (multiNerveMapperMap f R c)).1 =
       (multiNerveMapper_projection f U c).1.image (mapperMap f R) :=
-  projection_multiNerveMap (componentRefinement f R) c
+  projection_multiNerveMap_eq_image (componentRefinement f R) c
 
 /-- MultiNerve Mapper maps send vertex cells to vertex cells along `mapperMap f R`. -/
 theorem multiNerveMapperMap_vertexCell {U : I → Set Y} {V : J → Set Y} (R : Refinement U V)

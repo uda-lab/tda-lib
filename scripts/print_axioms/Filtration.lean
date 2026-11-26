@@ -1203,3 +1203,11 @@ import TDA
 #print axioms TDA.Filtration.RationalAlpha.SignedBoundary.orderedEdgeCuts_of_check
 #print axioms TDA.Filtration.RationalAlpha.DirectedEdgeIncidence.chain_eq_of_directed_counts
 #print axioms TDA.Filtration.RationalAlpha.SubdividedBoundaryExamples.check_rejects_bad_cuts
+#print axioms TDA.Filtration.SparseRips.DecidableEqClientExamples.prefix_succ
+#print axioms TDA.Filtration.SparseRips.DecidableEqClientExamples.mem_laterNeighbors
+#print axioms TDA.Filtration.SparseRips.DecidableEqClientExamples.mem_orientedEdges
+#print axioms TDA.Filtration.SparseRips.DecidableEqClientExamples.pair_mem_carrier_iff_oriented
+#print axioms TDA.Filtration.SparseRips.DecidableEqClientExamples.exists_assigned_vertex
+#print axioms TDA.Filtration.SparseRips.DecidableEqClientExamples.deletionMap_image_later
+#print axioms TDA.Filtration.SparseRips.DecidableEqClientExamples.image_mem_later_of_noDeletion
+#print axioms TDA.Filtration.SparseRips.DecidableEqClientExamples.image_union_mem_relaxedComplex

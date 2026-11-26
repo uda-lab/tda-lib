@@ -115,6 +115,29 @@ theorem cost_le_of (M : OccurrenceMatching F₁ F₂ E₁ E₂)
   · apply max_le_iff.mpr
     exact ⟨Finset.sup_le (fun j _ => ht j), Finset.sup_le (fun k _ => he k)⟩
 
+/-- An unmatched target costs at most the matching cost, for any decidability of the condition
+that the target is matched. -/
+theorem target_le_cost_decidable (M : OccurrenceMatching F₁ F₂ E₁ E₂)
+    (x : F₁ → ℝ × ℝ) (y : F₂ → ℝ × ℝ)
+    (b : E₁ → ℝ) (c : E₂ → ℝ) (j : F₂) [Decidable (∃ i, M.finite i = some j)] :
+    (if ∃ i, M.finite i = some j then 0 else diagonalCost (y j)) ≤
+      M.cost x y b c := by
+  convert target_le_cost M x y b c j
+
+/-- The matching cost is at most `r` once every matched, unmatched and essential cost is, for
+any decidability of the condition that a target is matched. -/
+theorem cost_le_of_decidable (M : OccurrenceMatching F₁ F₂ E₁ E₂)
+    (x : F₁ → ℝ × ℝ) (y : F₂ → ℝ × ℝ)
+    (b : E₁ → ℝ) (c : E₂ → ℝ) (r : ℝ≥0∞)
+    [∀ j, Decidable (∃ i, M.finite i = some j)]
+    (hs : ∀ i, (match M.finite i with
+      | some j => finitePairCost (x i) (y j)
+      | none => diagonalCost (x i)) ≤ r)
+    (ht : ∀ j, (if ∃ i, M.finite i = some j then 0 else diagonalCost (y j)) ≤ r)
+    (he : ∀ k, essentialPairCost (b k) (c (M.essential k)) ≤ r) :
+    M.cost x y b c ≤ r :=
+  cost_le_of M x y b c r hs (fun j => by convert ht j) he
+
 /-- Reverse a partial injection by taking the unique predecessor of each selected target. -/
 noncomputable def reverse (M : OccurrenceMatching F₁ F₂ E₁ E₂) :
     OccurrenceMatching F₂ F₁ E₂ E₁ where

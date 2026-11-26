@@ -35,8 +35,10 @@ theorem relaxedDistance_left_le {η r : ℝ} {time : V → Option ℝ} {x q y : 
   dsimp [relaxedDistance]
   linarith
 
-/-- A face together with all of its projected vertices is still a relaxed face. -/
-theorem image_union_mem_relaxedComplex {η r : ℝ} (time : V → Option ℝ) (f : V → V)
+/-- A face together with all of its projected vertices is still a relaxed face, for any decidable
+equality on the vertices. -/
+theorem image_union_mem_relaxedComplex [DecidableEq V] {η r : ℝ} (time : V → Option ℝ)
+    (f : V → V)
     (hf : ∀ x, dist x (f x) ≤ weight η (time x) r - weight η (time (f x)) r)
     {σ : Finset V} (hσ : σ ∈ relaxedComplex η time r) :
     σ.image f ∪ σ ∈ relaxedComplex η time r := by

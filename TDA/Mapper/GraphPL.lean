@@ -62,12 +62,15 @@ theorem incidenceComponentCover_covers (G : SimpleGraph V) (h : V → ℝ)
   refine ⟨componentIndexEquiv G h U a, ?_⟩
   simpa [incidenceComponentCover] using ha
 
-/-- The incidence relabelling preserves and reflects every finite Mapper face. -/
+/-- The incidence relabelling preserves and reflects every finite Mapper face, for any decidable
+equality on the incidence component indices. -/
 theorem mem_mapper_iff_incidenceMapper_image (G : SimpleGraph V) (h : V → ℝ)
-    (U : I → OpenInterval)
+    (U : I → OpenInterval) [DecidableEq (IncidenceComponentIndex G h U)]
     (s : Finset (ComponentIndex (plHeight G h) (fun i => (U i : Set ℝ)))) :
     s ∈ mapper (plHeight G h) (fun i => (U i : Set ℝ)) ↔
       s.image (componentIndexEquiv G h U) ∈ incidenceMapper G h U := by
+  obtain rfl : ‹DecidableEq (IncidenceComponentIndex G h U)› = Classical.decEq _ :=
+    Subsingleton.elim _ _
   constructor
   · intro hs
     obtain ⟨hsn, x, hx⟩ := (mem_mapper_iff _ _ s).1 hs
@@ -85,12 +88,17 @@ theorem mem_mapper_iff_incidenceMapper_image (G : SimpleGraph V) (h : V → ℝ)
       (Finset.mem_image.mpr ⟨a, ha, rfl⟩)
     simpa [incidenceComponentCover] using hmem
 
-/-- Conversely, inverse relabelling preserves and reflects every incidence-labelled face. -/
+/-- Conversely, inverse relabelling preserves and reflects every incidence-labelled face, for any
+decidable equality on the component indices. -/
 theorem mem_incidenceMapper_iff_mapper_image_symm (G : SimpleGraph V) (h : V → ℝ)
-    (U : I → OpenInterval) (s : Finset (IncidenceComponentIndex G h U)) :
+    (U : I → OpenInterval)
+    [DecidableEq (ComponentIndex (plHeight G h) (fun i => (U i : Set ℝ)))]
+    (s : Finset (IncidenceComponentIndex G h U)) :
     s ∈ incidenceMapper G h U ↔
       s.image (componentIndexEquiv G h U).symm ∈
         mapper (plHeight G h) (fun i => (U i : Set ℝ)) := by
+  obtain rfl : ‹DecidableEq (ComponentIndex (plHeight G h) (fun i => (U i : Set ℝ)))› =
+    Classical.decEq _ := Subsingleton.elim _ _
   constructor
   · intro hs
     obtain ⟨hsn, x, hx⟩ := (mem_nerve_iff _ _).1 hs

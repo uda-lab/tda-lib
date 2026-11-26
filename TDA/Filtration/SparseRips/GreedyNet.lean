@@ -87,8 +87,10 @@ def greedyPrefix (seed : V) : ℕ → Finset V
 
 @[simp] theorem prefix_zero (seed : V) : greedyPrefix seed 0 = {seed} := rfl
 
-@[simp] theorem prefix_succ (seed : V) (n : ℕ) :
-    greedyPrefix seed (n + 1) = insert (next seed (greedyPrefix seed n)) (greedyPrefix seed n) := rfl
+@[simp] theorem prefix_succ [DecidableEq V] (seed : V) (n : ℕ) :
+    greedyPrefix seed (n + 1) = insert (next seed (greedyPrefix seed n)) (greedyPrefix seed n) := by
+  obtain rfl : ‹DecidableEq V› = greedyNetDecidableEq := Subsingleton.elim _ _
+  rfl
 
 theorem prefix_step (seed : V) (n : ℕ) : greedyPrefix seed n ⊆ greedyPrefix seed (n + 1) := by
   classical

@@ -52,9 +52,7 @@ def tupleFilter (t : Fin n → X) :
       exact TDA.Filtration.Rips.diameter_mono _
         (Finset.image_mono (tupleProjection t) h) }
 
-/-- A tuple-index face exists exactly when its projected face exists in the
-ordinary Rips filtration on the finite metric sample. -/
-theorem mem_tupleFilter_iff (t : Fin n → X) (r : ℝ)
+private theorem mem_tupleFilter_iff_classical (t : Fin n → X) (r : ℝ)
     (σ : Finset (TupleVertex t)) :
     σ ∈ (tupleFilter t).sublevel r ↔
       σ.Nonempty ∧ σ.image (tupleProjection t) ∈
@@ -74,6 +72,15 @@ theorem mem_tupleFilter_iff (t : Fin n → X) (r : ℝ)
     exact ⟨hs, ⟨Finset.image_nonempty.mpr hs, hr⟩⟩
   · rintro ⟨hs, ⟨_, hr⟩⟩
     exact ⟨hs, hr⟩
+
+/-- A tuple-index face exists exactly when its projected face exists in the
+ordinary Rips filtration on the finite metric sample, for any decidable equality on the sample. -/
+theorem mem_tupleFilter_iff (t : Fin n → X) [DecidableEq (Sample t)] (r : ℝ)
+    (σ : Finset (TupleVertex t)) :
+    σ ∈ (tupleFilter t).sublevel r ↔
+      σ.Nonempty ∧ σ.image (tupleProjection t) ∈
+        (TDA.Filtration.Rips.filter (inferInstance : MetricSpace (Sample t))).sublevel r := by
+  convert mem_tupleFilter_iff_classical t r σ
 
 private def quotientRelation (t : Fin n → X) : SetRel (TupleVertex t) (Sample t) :=
   Function.graph (tupleProjection t)

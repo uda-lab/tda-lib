@@ -250,6 +250,14 @@ uniqueness. Repeated births remain separate generator occurrences, empty
 families and n=0 are allowed, and the reconstructed module may have unbounded
 support.
 
+`OccurrenceMatching.target_le_cost_decidable` and `OccurrenceMatching.cost_le_of_decidable` are the
+forms of `target_le_cost` and `cost_le_of` for any decidability of the condition
+`∃ i, M.finite i = some j`, and `Rips.mem_tupleFilter_iff` takes
+`[DecidableEq (Sample t)]` for the image of a tuple-index face in the metric sample.
+`TDA.Persistence.OccurrenceMatchingClientExamples` (imported by `TDA.Persistence.Examples`) is a
+downstream regression fixture (#1286): it states these results for matchings between `Fin 2` and
+for a decidable equality on the sample, and proves each by direct application.
+
 For a finite coordinate grid, `CoordinateGrid.lan` is Mathlib's actual left
 Kan extension along the grid inclusion. At each real grade with a lower grid
 point, `floor` selects the greatest such point and `appIso` identifies the
@@ -3077,6 +3085,15 @@ attaching class nonzero over every field with
 `SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_vertices` and with
 `SimplexAttachment.attachingHomologyClass_ne_zero_of_separated_edge`.
 
+The face condition of a vertex map and the image-complex criterion take a decidable equality on
+the target vertex type. `TDA.Simplicial.map_le_iff` and `TDA.Simplicial.VertexMap.map_le_iff`
+(`PreAbstractSimplicialComplex.map K r ≤ L ↔ ∀ s ∈ K, s.image r ∈ L`) take `[DecidableEq J]` as an
+instance argument. The field `VertexMap.map_face` states its image with a classical decidable
+equality; `VertexMap.map_face_image` is its form for any `[DecidableEq J]`.
+`TDA.Simplicial.VertexMapClientExamples` (imported by `TDA.Simplicial.Examples`) is a downstream
+regression fixture (#1286): it states these results for complexes on `Fin 3` with the decidable
+equality of `Fin 3` and proves each by direct application.
+
 `TDA.Filtration.CollapseCertificateFamily` (imported by `TDA.Filtration`) works in namespace
 `TDA.Filtration` with real-indexed filtrations `F G : SimplicialFiltration ℝ V` and rational
 grade tables `g : Finset (Finset V × ℚ)`. `HasGradeTable K g` is
@@ -3855,6 +3872,19 @@ with `categoricalMapperAssembly`, and `categoricalMapperCocone_map` characterize
 inclusion-induced interval maps. Finite bounded interval families with finite pullback
 component sets give a constructible cosheaf; `categoricalMapperReconstruction` applies the
 existing finite real-graph reconstruction equivalence.
+
+Finite images and pairs of component indices in the ordinary and multinerve Mapper statements
+take a decidable equality on the index type as an instance argument:
+`mapperOneSkeleton_adj_iff`, `mem_mapper_iff_supported_singleton_or_adjacent_pair`
+(`[DecidableEq (ComponentIndex f U)]`), `GraphPL.mem_mapper_iff_incidenceMapper_image`
+(`[DecidableEq (GraphPL.IncidenceComponentIndex G h U)]`),
+`GraphPL.mem_incidenceMapper_iff_mapper_image_symm` and
+`support_multiNerveMapperMap`, `multiNerveMapper_projection_multiNerveMapperMap`
+(`[DecidableEq (ComponentIndex f V)]` for the target family `V`), and
+`componentCover_interMember_subset_preimage` (`[DecidableEq I]` for the label type `I`).
+`TDA.Mapper.ComponentIndexClientExamples` (imported by `TDA.Mapper.Examples`) is a downstream
+regression fixture (#1286): the client holds a decidable equality on the component indices and
+proves each of these statements by direct application.
 
 For a finite graph-PL input covered on its attained height range,
 `geometricInterleavingDistance_mapperReeb_le_retained` bounds the geometric interleaving
@@ -6035,6 +6065,15 @@ log-scale diagram to the diameter-scale Rips log diagram by
 `log((1−2η)⁻¹)`. The diagram bound uses the proved module interleaving and
 finite-constructible matching. Degree zero retains the module interleaving;
 zero-born classes do not fit the finite positive-log diagram.
+
+The finite images, erasures and pairs of vertices in the statements on the greedy prefixes, the
+sparse carrier and the deletion maps take a decidable equality on the vertex type as an instance
+argument: `GreedyNet.prefix_succ`, `mem_laterNeighbors`, `mem_orientedEdges`,
+`pair_mem_carrier_iff_oriented`, `exists_assigned_vertex`, `deletionMap_image_later`,
+`image_mem_later_of_noDeletion` and `image_union_mem_relaxedComplex` take `[DecidableEq V]`.
+`TDA.Filtration.SparseRips.DecidableEqClientExamples` (imported by `TDA.Filtration.Examples`) is
+a downstream regression fixture (#1286): it states these results for a finite metric space with
+a decidable equality and proves each by direct application.
 
 The homology equivalence `sparseRelaxedHomologyIso`, log-scale APIs
 `sparseRipsLogInterleaving` and `sparseRipsLogDistance_le`, and diagram bound

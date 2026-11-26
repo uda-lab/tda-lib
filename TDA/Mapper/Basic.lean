@@ -111,23 +111,26 @@ def mapperOneSkeleton (f : C(X, Y)) (U : I → Set Y) :
     exact h.1 rfl
 
 /-- Adjacency in the Mapper one-skeleton is exactly distinctness together with
-membership of the underlying two-vertex face. -/
+membership of the underlying two-vertex face, for any decidable equality on the component
+indices. -/
 theorem mapperOneSkeleton_adj_iff (f : C(X, Y)) (U : I → Set Y)
-    (a b : MapperVertex f U) :
+    [DecidableEq (ComponentIndex f U)] (a b : MapperVertex f U) :
     (mapperOneSkeleton f U).Adj a b ↔
-      a ≠ b ∧ ({a.1, b.1} : Finset (ComponentIndex f U)) ∈ mapper f U :=
-  Iff.rfl
+      a ≠ b ∧ ({a.1, b.1} : Finset (ComponentIndex f U)) ∈ mapper f U := by
+  obtain rfl : ‹DecidableEq (ComponentIndex f U)› = Classical.decEq _ := Subsingleton.elim _ _
+  exact Iff.rfl
 
 /-- Under multiplicity at most two, every Mapper face is exactly a supported
 singleton or the underlying pair of two adjacent supported vertices. -/
 theorem mem_mapper_iff_supported_singleton_or_adjacent_pair
-    (f : C(X, Y)) (U : I → Set Y)
+    (f : C(X, Y)) (U : I → Set Y) [DecidableEq (ComponentIndex f U)]
     (hmult : CoverMultiplicityAtMost f U 2)
     (s : Finset (ComponentIndex f U)) :
     s ∈ mapper f U ↔
       (∃ a : MapperVertex f U, s = {a.1}) ∨
         ∃ a b : MapperVertex f U,
           (mapperOneSkeleton f U).Adj a b ∧ s = {a.1, b.1} := by
+  obtain rfl : ‹DecidableEq (ComponentIndex f U)› = Classical.decEq _ := Subsingleton.elim _ _
   constructor
   · intro hs
     have hcard := mapper_face_card_le_of_multiplicity f U hmult hs
