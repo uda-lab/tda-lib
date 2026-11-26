@@ -47,6 +47,12 @@ Columns
   disposition  seed disposition: fixture (`examples` = 1), internal wrapper (`deprecated` or
                `wrapper`), non-theorem (not a theorem, carried for grouping and counting),
                otherwise pending. These are starting values for the audit; they prove no use.
+  ref_other    number of constants that mention this declaration in their type, or in their
+               value for a theorem, definition or opaque constant, and live in another `TDA`
+               module that is not an `*Examples` module (private and generated constants
+               count; the declaration itself does not)
+  ref_same     the same count over the declaring module when it is not an `*Examples` module
+  ref_examples the same count over all `*Examples` modules
   doc          first line of the docstring, tabs and newlines removed
 
 `scripts/rename-project.sh` rewrites every `TDA` occurrence in this file.
@@ -185,7 +191,28 @@ private def firstLine (s : String) : String :=
       | some tr => groupOf fuel tr
       | none => (stem r.modName).toString
     | _, _ => (stem r.modName).toString
-  IO.println "name\tmodule\tarea\tkind\tis_theorem\tpinned\texamples\talias\talias_target\tgroup\tdisposition\tdoc"
+  -- Reference counts over every constant of the `TDA` modules.
+  let mut refOther : Std.HashMap Name Nat := {}
+  let mut refSame : Std.HashMap Name Nat := {}
+  let mut refExamples : Std.HashMap Name Nat := {}
+  for modIdx in [0:env.header.moduleData.size] do
+    let userMod := env.header.moduleNames[modIdx]!
+    if (`TDA).isPrefixOf userMod then
+      let data := env.header.moduleData[modIdx]!
+      for i in [0:data.constNames.size] do
+        let user := data.constNames[i]!
+        let info := data.constants[i]!
+        let mut used := info.type.getUsedConstantsAsSet
+        if let some v := valueOf? info then used := used.union v.getUsedConstantsAsSet
+        if let .opaqueInfo o := info then used := used.union o.value.getUsedConstantsAsSet
+        for c in used do
+          if c != user then
+            if let some r := byName[c]? then
+              if endsWithExamples userMod then
+                refExamples := refExamples.insert c (refExamples.getD c 0 + 1)
+              else if r.modName == userMod then refSame := refSame.insert c (refSame.getD c 0 + 1)
+              else refOther := refOther.insert c (refOther.getD c 0 + 1)
+  IO.println "name\tmodule\tarea\tkind\tis_theorem\tpinned\texamples\talias\talias_target\tgroup\tdisposition\tref_other\tref_same\tref_examples\tdoc"
   let b2s (b : Bool) : String := if b then "1" else "0"
   for r in sorted do
     let (a, tgt) := aliasOf r
@@ -201,4 +228,4 @@ private def firstLine (s : String) : String :=
       else if a == "deprecated" || a == "wrapper" then "internal wrapper"
       else "pending"
     let cell (s : String) : String := (s.replace "\t" " ").replace "\n" " "
-    IO.println s!"{r.name}\t{r.modName}\t{area}\t{r.kind}\t{b2s r.isThm}\t{b2s r.pinned}\t{b2s ex}\t{a}\t{(tgt.map (·.toString)).getD ""}\t{groupOf 64 r}\t{disp}\t{cell r.doc}"
+    IO.println s!"{r.name}\t{r.modName}\t{area}\t{r.kind}\t{b2s r.isThm}\t{b2s r.pinned}\t{b2s ex}\t{a}\t{(tgt.map (·.toString)).getD ""}\t{groupOf 64 r}\t{disp}\t{refOther.getD r.name 0}\t{refSame.getD r.name 0}\t{refExamples.getD r.name 0}\t{cell r.doc}"
