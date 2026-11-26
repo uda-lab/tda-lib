@@ -433,6 +433,22 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `finrank_stalk_constLineSheaf`); the point sheaf is locally constant on `(0, ∞)`
   (`isLocallyConstantOn_pointLineSheaf_Ioi`, `finrank_stalk_pointLineSheaf_right`) but not on `ℝ`
   (`finrank_pointLineSheaf_wide`, `not_isLocallyConstantOn_pointLineSheaf_univ`).
+- Flasque acyclicity for sheaves of modules (#1225, part A): `TDA.Sheaf.FlasqueAcyclic` proves,
+  for sheaves of `k`-modules, that a short exact sequence with flasque kernel is surjective on
+  sections over every open (`epi_of_shortExact`, Mathlib's Zorn argument; with
+  `sections_exact_of_left_exact`), that the quotient of a flasque sheaf by a flasque
+  subsheaf is flasque (`isFlasque_of_shortExact`), that `f_*` keeps such sequences short exact
+  (`pushforward_shortExact_of_isFlasque`), bounded below acyclic flasque complexes acyclic
+  (`acyclic_pushforward_of_isFlasque`) and quasi-isomorphisms of bounded below flasque complexes
+  quasi-isomorphisms (`quasiIso_pushforward_of_isFlasque`), and that the comparison
+  `f_* K ⟶ Rf_* K` on `D⁺` is an isomorphism for every bounded below complex of flasque sheaves
+  (`isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, and
+  `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` for global sections); flasqueness is closed under isomorphisms, zero objects and biproducts. The
+  section-gluing helpers of `TDA.Sheaf.IntervalSections` are now public in
+  `TDA.Sheaf.SheafFlasque` (`presheaf_map_map_apply`, `sheafHom_naturality_apply`,
+  `shortComplex_g_f_apply`, `exists_glue₂`), and `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`
+  is public in `TDA.Sheaf.RightDerivedHomology`. Fixtures in
+  `TDA.Sheaf.FlasqueAcyclicExamples`.
 
 ## v0.5.0
 

@@ -51,11 +51,12 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingHeredity` | `pathTensor`, `pathTensorAdjunction`, `projective_pathTensor`, `representable`, `pathTensorObjEquiv`; `resolution`, `resolutionSplitting`, `resolution_shortExact`, `enoughProjectives_diagram`, `hasProjectiveDimensionLT_two`, `ext_eq_zero` | Same diagrams `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field, with no finiteness assumption; `Ext` in any `HasExt` universe. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealStratification` | `orient`, `paths_hom_subsingleton`; `IsBasicOpen`, `isBasis_basicOpen`, `IsBasicOpen.inf`, `BasicCat`, `basicIncl`, `basicTopology`; `star`, `tau`, `tau_eq_iff`, `exists_star_tau`, `tauFunctor`; `isSheaf_basic_of_isIso_sameStratum`, `isSheaf_tauFunctor_comp`; `basisEquiv` | Breakpoints `p : Fin m → ℝ` strictly increasing; the basis sheaf condition holds for presheaves in any category; `basisEquiv` uses `ModuleCat.{0} k` for `k : Type`. See [Stratifications of the real line](#stratifications-of-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.LocalSystem` | `IsLocallyConstantOn`, `IsLocallyConstantOn.mono`, `restrict_isIso_of_isLocallyConstantOn`; `transportIso`, `map_comp_transportIso_hom`, `transportIso_hom_eq_map`, `transportIso_trans`; `isIso_germ_of_isIso_map`, `isIso_germ_of_isLocallyConstantOn` | Sheaves of `ModuleCat.{0} k` on `realLine` for a ring `k : Type`; convex means `Set.OrdConnected`. The intended equivalence of `IsLocallyConstantOn` with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). See [Interval-local constancy on the real line](#interval-local-constancy-on-the-real-line). |
-| `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_section_lift_extend`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`; the extension step needs `S` order-connected, the global statements are for compact intervals `[u, v]` (all `u`, `v`). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`; `pt`, `toPt`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `singlePlus`, `singleFunctorIsoQ` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_Icc`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for all `u`, `v`; the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.FlasqueAcyclic` | `sections_exact_of_left_exact`, `epi_of_shortExact`, `isFlasque_of_shortExact`, `isFlasque_biprod`, `pushforward_shortExact_of_isFlasque`, `acyclic_pushforward_of_isFlasque`, `quasiIso_pushforward_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` | Sheaves of `k`-modules over a ring `k : Type` on `X : TopCat.{0}`, continuous `f : X ⟶ Y`; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
 
 ### Capped centred height-map pairs
 
@@ -4474,6 +4475,9 @@ are epimorphisms).
   (`germSurjective_of_epi`).
 - `exists_local_preimage_of_exact`: along an exact complex `X₁ ⟶ X₂ ⟶ X₃`, a section of `X₂`
   that maps to zero comes from `X₁` near every point.
+- Restriction identities on sections: `presheaf_map_map_apply`, `sheafHom_naturality_apply`,
+  `shortComplex_g_f_apply`, and `exists_glue₂`, which glues two sections that agree on the
+  intersection of their opens.
 
 `TDA.Sheaf.IntervalSections` works on a subspace `S ⊆ ℝ`, as `TopCat.of S`, with the opens
 `openIoo S p q = S ∩ (p, q)` (`mem_openIoo`, `openIoo_le_openIoo`, `exists_openIoo_le`). Let
@@ -4527,6 +4531,9 @@ categories are instance arguments.
 - `homologyRightDerivedIsoOfInjective F K i : Hⁱ(RF(K)) ≅ Hⁱ(F K)` for a bounded below complex
   `K` of injective objects, and `homologyRightDerivedIsoOfQuasiIso F j i` through a
   quasi-isomorphism `j : K₀ ⟶ K` to such a complex.
+- `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`: for a quasi-isomorphism `j : A ⟶ B` to a
+  bounded below complex of injective objects, `Q u` followed by the comparison
+  `F A ⟶ RF(A)` is invertible when `u ≫ F j` is a quasi-isomorphism.
 - `singlePlus n X`, the object `X` in degree `n` as a bounded below complex, and
   `singleFunctorIsoQ n X` comparing it with `DerivedCategory.Plus.singleFunctor _ n`.
 
@@ -4550,6 +4557,38 @@ is an isomorphism (`isIso_derivedUnit_kpt`), giving `H⁰([0, 1]; constSh kpt) �
 `[1, 1]` (`isIso_derivedUnit_kpt_singleton`). `H²` vanishes for the skyscraper `sky` at `1/2`
 (`isZero_H2_sky`) and for every sheaf on the empty interval `[1, 0]` (`isZero_H2_empty`). The
 stalk of `constSh kpt` at `1/2` is `ℚ` (`stalk_constSh_kpt`).
+
+## Flasque acyclicity
+
+`TDA.Sheaf.FlasqueAcyclic` treats sheaves of modules `X.Sheaf (ModuleCat k)` over a ring
+`k : Type` on `X : TopCat.{0}`. At the pinned Mathlib, `TopCat.Sheaf.IsFlasque.epi_of_shortExact`
+and its corollary are stated for sheaves of abelian groups only.
+
+- `sections_exact_of_left_exact`: along an exact complex `X₁ ⟶ X₂ ⟶ X₃` with `X₁ ⟶ X₂` a
+  monomorphism, a section of `X₂` over `U` that maps to zero comes from `X₁` over `U`.
+- `epi_of_shortExact`: for a short exact sequence `0 ⟶ X₁ ⟶ X₂ ⟶ X₃ ⟶ 0` with `X₁` flasque,
+  `X₂(U) ⟶ X₃(U)` is an epimorphism (surjective) for every open `U` (Mathlib's Zorn argument).
+- `isFlasque_of_shortExact`: if `X₁` and `X₂` are flasque, so is `X₃`.
+- `isFlasque_of_iso`, `isFlasque_of_isZero`, `isFlasque_of_id_eq_add` (a sheaf with
+  `𝟙 = p₁ ≫ i₁ + p₂ ≫ i₂` through flasque sheaves) and the instance `isFlasque_biprod`.
+- `pushforward_shortExact_of_isFlasque`: for a continuous `f`, `f_*` keeps a short exact sequence
+  with flasque first term short exact.
+- `acyclic_pushforward_of_isFlasque`: `f_*` keeps a bounded below acyclic complex of flasque
+  sheaves acyclic; `quasiIso_pushforward_of_isFlasque`: `f_*` keeps a quasi-isomorphism between
+  bounded below complexes of flasque sheaves a quasi-isomorphism.
+- `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`: for a bounded below complex `K` of
+  flasque sheaves (`CochainComplex.Plus`), the comparison `f_* K ⟶ Rf_* K` on `D⁺` is an
+  isomorphism; `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` is the case
+  `f = toPt X` of global sections.
+
+`TDA.Sheaf.FlasqueAcyclicExamples` works over `ℚ` on `I01 = [0, 1]` with
+`HasDerivedCategory.standard` as a local instance. For the skyscraper `sky` at `1/2` and its
+embedding into `Injective.under sky`, the cokernel sequence `embSc` is short exact
+(`embSc_shortExact`); sections surject onto the cokernel over every open
+(`surjective_cokernel_π`), the cokernel is flasque (`isFlasque_cokernel`) and global sections
+keep `embSc` short exact (`shortExact_pushforward_embSc`). For `skyPlus = singlePlus 0 sky`, the
+comparison is an isomorphism along the inclusion `ι : [0, 1] ⟶ ℝ` (`isIso_unit_skyPlus_ι`) and
+for global sections (`isIso_unit_skyPlus_toPt`).
 
 ## Review and extension boundaries
 

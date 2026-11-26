@@ -10,3 +10,4 @@ import TDA.Sheaf.RealStratificationExamples
 import TDA.Sheaf.LocalSystemExamples
 import TDA.Sheaf.IntervalSectionsExamples
 import TDA.Sheaf.IntervalCohomologyExamples
+import TDA.Sheaf.FlasqueAcyclicExamples

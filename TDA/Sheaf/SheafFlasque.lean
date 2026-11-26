@@ -26,9 +26,13 @@ flasque sheaves of `k`-modules that the cohomology of compact intervals uses.
   (`germSurjective_of_epi`).
 * `exists_local_preimage_of_exact`: for an exact complex `X₁ ⟶ X₂ ⟶ X₃` of sheaves, a section
   of `X₂` killed by `X₂ ⟶ X₃` comes from `X₁` on a neighbourhood of each point.
+* Restriction identities on sections (`presheaf_map_map_apply`, `sheafHom_naturality_apply`,
+  `shortComplex_g_f_apply`) and `exists_glue₂`, gluing two sections that agree on the
+  intersection of their opens.
 
 The epimorphism criterion `TopCat.Sheaf.IsFlasque.epi_of_shortExact` and its corollaries are
-stated for abelian groups only at the pinned Mathlib; they are not needed here.
+stated for abelian groups only at the pinned Mathlib; `TDA.Sheaf.FlasqueAcyclic` proves them for
+sheaves of modules.
 -/
 
 noncomputable section
@@ -170,5 +174,62 @@ theorem exists_local_preimage_of_exact (S : ShortComplex (X.Sheaf (ModuleCat.{0}
   refine ⟨W, hxW, leOfHom iU, S.X₁.presheaf.map iW₀.op t₀, ?_⟩
   rw [← ConcreteCategory.comp_apply, S.f.hom.naturality, ConcreteCategory.comp_apply]
   exact he
+
+section Restriction
+
+variable {k}
+
+/-- Two successive restrictions of a presheaf of `k`-modules are one restriction, on
+sections. -/
+theorem presheaf_map_map_apply (F : X.Presheaf (ModuleCat.{0} k)) {U V W : Opens X}
+    (h₁ : W ≤ V) (h₂ : V ≤ U) (x : F.obj (op U)) :
+    F.map (homOfLE h₁).op (F.map (homOfLE h₂).op x) = F.map (homOfLE (h₁.trans h₂)).op x := by
+  rw [← ConcreteCategory.comp_apply, ← F.map_comp]
+  rfl
+
+/-- The composite of the two maps of a complex of sheaves of `k`-modules vanishes on
+sections. -/
+theorem shortComplex_g_f_apply (Sc : ShortComplex (X.Sheaf (ModuleCat.{0} k))) (U : Opens X)
+    (c : Sc.X₁.presheaf.obj (op U)) : Sc.g.hom.app _ (Sc.f.hom.app _ c) = 0 := by
+  have h : Sc.f.hom.app (op U) ≫ Sc.g.hom.app (op U) = 0 := by
+    have := congrArg (fun φ : Sc.X₁ ⟶ Sc.X₃ => φ.hom.app (op U)) Sc.zero
+    exact this
+  rw [← ConcreteCategory.comp_apply, h]
+  rfl
+
+/-- Naturality of a morphism of sheaves of `k`-modules with respect to restriction, on
+sections. -/
+theorem sheafHom_naturality_apply {F G : X.Sheaf (ModuleCat.{0} k)} (φ : F ⟶ G)
+    {U V : Opens X} (h : V ≤ U) (x : F.presheaf.obj (op U)) :
+    φ.hom.app (op V) (F.presheaf.map (homOfLE h).op x) =
+      G.presheaf.map (homOfLE h).op (φ.hom.app (op U) x) :=
+  NatTrans.naturality_apply φ.hom (homOfLE h).op x
+
+/-- **Gluing over two opens.** Two sections of a sheaf of `k`-modules over `U₁` and `U₂` that
+agree on `U₁ ⊓ U₂` glue to a section over `U₁ ⊔ U₂`. -/
+theorem exists_glue₂ (F : X.Sheaf (ModuleCat.{0} k)) {U₁ U₂ : Opens X}
+    (σ₁ : F.presheaf.obj (op U₁)) (σ₂ : F.presheaf.obj (op U₂))
+    (h : F.presheaf.map (homOfLE (inf_le_left : U₁ ⊓ U₂ ≤ U₁)).op σ₁ =
+      F.presheaf.map (homOfLE (inf_le_right : U₁ ⊓ U₂ ≤ U₂)).op σ₂) :
+    ∃ σ : F.presheaf.obj (op (U₁ ⊔ U₂)),
+      F.presheaf.map (homOfLE (le_sup_left : U₁ ≤ U₁ ⊔ U₂)).op σ = σ₁ ∧
+      F.presheaf.map (homOfLE (le_sup_right : U₂ ≤ U₁ ⊔ U₂)).op σ = σ₂ := by
+  let U : Fin 2 → Opens X := ![U₁, U₂]
+  let sf : (i : Fin 2) → F.presheaf.obj (op (U i))
+    | 0 => σ₁
+    | 1 => σ₂
+  have h' : F.presheaf.map (homOfLE (inf_le_left : U₂ ⊓ U₁ ≤ U₂)).op σ₂ =
+      F.presheaf.map (homOfLE (inf_le_right : U₂ ⊓ U₁ ≤ U₁)).op σ₁ := by
+    have := congrArg (F.presheaf.map (homOfLE (le_of_eq (inf_comm U₂ U₁))).op) h
+    rw [presheaf_map_map_apply, presheaf_map_map_apply] at this
+    exact this.symm
+  obtain ⟨σ, hσ, -⟩ := TopCat.Sheaf.existsUnique_gluing' F U (U₁ ⊔ U₂)
+    (fun i => homOfLE (by fin_cases i; exacts [le_sup_left, le_sup_right]))
+    (sup_le (le_iSup U 0) (le_iSup U 1)) sf (by
+      simp only [TopCat.Presheaf.IsCompatible, Fin.forall_fin_two]
+      exact ⟨⟨rfl, h⟩, h', rfl⟩)
+  exact ⟨σ, hσ 0, hσ 1⟩
+
+end Restriction
 
 end TDA.Sheaf
