@@ -528,6 +528,25 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   along the translation `shift` (`isIso_shift`), with stalks `stalk_skyShift_zero` and
   `isZero_stalk_skyShift_five`, `stalk_skyShift_naturality` and
   `isIso_stalk_homology_derivedUnit_shift`.
+- Mayer–Vietoris connecting map: sign and naturality (#1190, part E3a): in
+  `TDA.Topology.MayerVietorisSequence`, `mayerVietorisδ_eq_bicartδ` and
+  `homologyMap_smallChainsι_comp_mayerVietorisδ` characterise `mayerVietorisδ` through `bicartδ`
+  (`isIso_homologyMap_smallChainsι`; `homologySubsetIso`, `smallChainsHomologyIso`,
+  `singularChainsSubsetIso_inv_comp_map_inclusion` and
+  `singularChainsSubsetIso_hom_comp_homOfLE_comp_smallChainsι` of
+  `TDA.Topology.SmallChainsQuasiIso` are now public). The sign lemma `mayerVietorisδ_liftCycles`
+  (`δ[a + b] = [x]` when `x` maps to `∂a`) and `mayerVietorisδ_flip`. Naturality for a continuous
+  map of covers: `mayerVietorisδ_naturality`, `mayerVietorisInterMap_naturality` and
+  `mayerVietorisSumMap_naturality`, with the restriction `subsetRestrict` (`subsetRestrict_apply_val`,
+  `subsetRestrict_comp_subsetIncl`, `inclusion_comp_subsetRestrict`) and the instances
+  `mono_ofHom_inclusion` and `mono_singularChainComplexFunctor_map`. `singularHomologyIso` and
+  `singularHomologyFunctor_obj_map` identify singular homology with the homology of singular
+  chains by `rfl`. Fixtures in `TDA.Topology.MayerVietorisSequenceExamples`: `pathChain`,
+  `pointChain`, `pathChain_d`, `pathChain_map`, `pathChain_map_d`, `pointChain_map`; the loop
+  `lowerPath` + `upperPath` (`upperPath_half`, `lowerChain`, `upperChain`, `quarterPoint`,
+  `threeQuarterPoint`, `interChain`, `loop_isCycle`, `loop_boundary`) with the sign lemma
+  `mayerVietorisδ_loop`; and naturality for `halfMap` (`halfMap_ne_id`, `halfMap_mapsTo_lowerRay`,
+  `halfMap_mapsTo_upperRay`, `mayerVietoris_naturality_halfMap`).
 
 ## v0.5.0
 
