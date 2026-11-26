@@ -64,6 +64,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.BaseChange` | `isRightDerivedFunctor_rightDerivedFunctorPlus_comp`, `pullbackPushforwardAdjunctionPlus`, `isLeftDerivedFunctor_pullbackPlus`, `derivedCounit`, `derivedCounit_fac_app`, `derivedAdjunction`, `isIso_derivedCounit`, `pullbackPlusSquare`, `baseChange`, `baseChange_eq`, `baseChange_app`, `derivedUnit_baseChange`, `baseChange_naturality`, `isIso_baseChange_of_isIso` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; a commutative square `w : g' ≫ f = f' ≫ g`; derived categories as instance arguments. See [Derived base change](#derived-base-change). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalAcyclic` | `germSurjective_pullback`, `germSurjective_pullback_of_isFlasque`, `germSurjective_of_id_eq_add`, `pushforward_toPt_shortExact_Icc`, `acyclicClass_germSurjective_Icc`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective`, `isZero_H_Icc_pullback_of_isFlasque` | Continuous maps in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`; the interval statements are for `[u, v]`, all `u`, `v`. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandStalks` | `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`; `BandConvolution.ptAt`, `fibreEmb`, `coe_fibreEmb_apply`, `fibreEmb_eq`, `mem_range_fibreEmb`, `fibreEmb_comp_q`, `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`, `exists_unit_eq_fibreEmb`, `stalkComparison`, `stalkComparison_app_top`, `stalkComparison_naturality`, `isIso_stalkComparison`, `stalkIso`, `stalkIso_hom_app`, `stalkSectionsIso`, `nonempty_stalkFormula`, `nonempty_stalkFormula_homology`, `isZero_H_stalk_pushforwardPlus_q` | The band projection `BandConvolution.q a` for all `a y : ℝ`, `k : Type` a ring; the fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]` through `fibreEmb a y`, and stalks at `y` are read through `(ptAt y)⁻¹`. The derived statements take derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Stalks of band projections](#stalks-of-band-projections). |
+| `TDA.Sheaf` / `TDA.Sheaf.BandAmplitude` | `isGE_rightDerivedFunctorPlus_obj`, `nonempty_homology_rightDerivedFunctorPlus_of_exact`, `isLE_rightDerivedFunctorPlus_obj_of_exact`, `isLE_pushforwardPlus_toPt_Icc`, `isGE_isLE_pushforwardPlus_toPt_Icc`, `boundedToPlus`, `PreservesBounded`, `PreservesBounded.id`, `PreservesBounded.comp`, `restrictBounded`, `restrictBounded_comp_boundedToPlus`, `restrictBoundedMap`, `restrictBoundedMap_app`, `whiskerRight_restrictBoundedMap`, `restrictBoundedMap_id`, `restrictBoundedMap_comp`, `restrictBoundedIso`, `restrictBoundedIso_hom`, `restrictBoundedIso_inv`, `restrictBoundedId`, `restrictBoundedComp`, `restrictBoundedCompMap`, `whiskerRight_restrictBoundedCompMap`, `restrictBoundedCompMapIso`; `BandConvolution.isGE_T_obj`, `isLE_T_obj`, `isGE_isLE_T_obj`, `preservesBounded_T`, `TB`, `TB_comp_boundedToPlus`, `restrB`, `whiskerRight_restrB`, `restrB_refl`, `restrB_trans`, `T0IsoB`, `whiskerRight_T0IsoB_hom`, `augB`, `whiskerRight_augB`, `augB_eq`, `augB_zero`, `restrB_comp_augB`, `compIsoB`, `whiskerRight_compIsoB_hom` | Degrees are those of the canonical t-structure (`IsGE`, `IsLE`) on `DerivedCategory.Plus`; `Dᵇ` is `DerivedCategory.Bounded`. The general statements are for abelian categories with derived category structures, the source with enough injectives; the derived functor of an exact functor for `F` preserving finite limits and colimits. The band statements take derived category structures on `ℝ` and every `D a`; the upper bound and the bounded functors also on `pt` and every `[u, v]`. See [Amplitude of the band functors](#amplitude-of-the-band-functors). |
 
 ### Capped centred height-map pairs
 
@@ -5164,6 +5165,74 @@ complex of germ-surjective sheaves (`germSurjective_constPlus`), so its global s
 formula gives `H⁰((ptAt 0)⁻¹ R(q 1)_* kD) ≅ kpt` (`nonempty_H0_stalk_kD`), which is nonzero
 (`not_isZero_kpt`, `not_isZero_H0_stalk_kD`); `H²` of the stalk of `R(q 1)_* (constSh kpt)`
 vanishes (`isZero_H2_stalk_constSh`).
+
+## Amplitude of the band functors
+
+`TDA.Sheaf.BandAmplitude` shows that the band functors `T k a = R(q a)_* (p a)⁻¹` have
+cohomological amplitude `[0, 1]` and restricts them to the bounded derived category. An object
+`K` of `D⁺` lies in degrees `[m, n]` when `K.IsGE m` and `K.IsLE n` for the canonical
+t-structure.
+
+Right derived functors on `D⁺`:
+
+- `isGE_rightDerivedFunctorPlus_obj F K n`: for an additive `F`, `RF(K)` is `IsGE n` when `K`
+  is.
+- `nonempty_homology_rightDerivedFunctorPlus_of_exact F K i`: for an exact `F`,
+  `Hⁱ(RF(K)) ≅ F(Hⁱ K)`; `isLE_rightDerivedFunctorPlus_obj_of_exact F K n`: `RF(K)` is
+  `IsLE n` when `K` is.
+
+Compact intervals, with `RΓ([u, v]; -) = pushforwardPlus k (toPt _)`:
+
+- `isLE_pushforwardPlus_toPt_Icc G n`: if `G ∈ D⁺(Sh [u, v])` is `IsLE n`, then `RΓ([u, v]; G)`
+  is `IsLE (n + 1)`, for every bounded below complex of sheaves. On a bounded below injective
+  model `I` of `G`, exact above `n`, global sections are exact in each degree `i ≥ n + 2`
+  (`sections_exact_Icc` with the injective `I^{i-2}`).
+- `isGE_isLE_pushforwardPlus_toPt_Icc G m n`: degrees `[m, n]` go to `[m, n + 1]`.
+
+The band functors, for every `a : ℝ` and every `K ∈ D⁺(Sh(ℝ; k))`:
+
+- `isGE_T_obj k a K m`: `K` in degrees `≥ m` gives `T k a K` in degrees `≥ m`.
+- `isLE_T_obj k a K n`: `K` in degrees `≤ n` gives `T k a K` in degrees `≤ n + 1`. The stalk at
+  `y` of `Hⁱ(T k a K)` is read through `(ptAt y)⁻¹` and computed by the stalk formula as
+  `Hⁱ([y - a, y + a]; (fibreEmb a y)⁻¹ (p a)⁻¹ K)`.
+- `isGE_isLE_T_obj k a K m n`: degrees `[m, n]` go to `[m, n + 1]`.
+
+The bounded derived category. `boundedToPlus C : Dᵇ(C) ⥤ D⁺(C)` is the inclusion, and
+`PreservesBounded Φ` says that `Φ : D⁺(C) ⥤ D⁺(D)` sends objects `IsLE n` for some `n` to
+objects `IsLE n'` for some `n'` (`PreservesBounded.id`, `PreservesBounded.comp`).
+
+- `restrictBounded Φ hΦ : Dᵇ(C) ⥤ Dᵇ(D)`, with
+  `restrictBounded Φ hΦ ⋙ boundedToPlus D = boundedToPlus C ⋙ Φ`
+  (`restrictBounded_comp_boundedToPlus`, by `rfl`).
+- `restrictBoundedMap τ` restricts `τ : Φ ⟶ Ψ`, with components `restrictBoundedMap_app`,
+  `restrictBoundedMap_id`, `restrictBoundedMap_comp` and
+  `whiskerRight_restrictBoundedMap : whiskerRight (restrictBoundedMap τ) (boundedToPlus D) =
+  whiskerLeft (boundedToPlus C) τ`; `restrictBoundedIso e` restricts `e : Φ ≅ Ψ`
+  (`restrictBoundedIso_hom`, `restrictBoundedIso_inv`).
+- `restrictBoundedId` and `restrictBoundedComp` identify the restrictions of `𝟭` and of
+  `Φ ⋙ Ψ` with `𝟭` and the composite of the restrictions.
+- `restrictBoundedCompMap h₁ h₂ hΨ τ` restricts a transformation `τ : Φ₁ ⋙ Φ₂ ⟶ Ψ` between
+  composites to `restrictBounded Φ₁ h₁ ⋙ restrictBounded Φ₂ h₂ ⟶ restrictBounded Ψ hΨ`, with
+  `whiskerRight_restrictBoundedCompMap`; `restrictBoundedCompMapIso` restricts an isomorphism.
+
+For the band functors (instance arguments on `ℝ`, every `D a`, `pt` and every `[u, v]`):
+
+- `preservesBounded_T k a`, `TB k a = restrictBounded (T k a) _` and
+  `TB_comp_boundedToPlus : TB k a ⋙ boundedToPlus _ = boundedToPlus _ ⋙ T k a`.
+- The radius maps `restrB k h : TB k b ⟶ TB k a` (`whiskerRight_restrB`, `restrB_refl`,
+  `restrB_trans`).
+- The unit `T0IsoB k : TB k 0 ≅ 𝟭` (`whiskerRight_T0IsoB_hom`) and the augmentation
+  `augB k h : TB k a ⟶ 𝟭` (`whiskerRight_augB`, `augB_eq : augB k h = restrB k h ≫ (T0IsoB k).hom`,
+  `augB_zero`, `restrB_comp_augB`).
+- `compIsoB k μ : TB k a ⋙ TB k b ≅ TB k c` for an isomorphism `μ : T k a ⋙ T k b ≅ T k c`, with
+  `whiskerRight_compIsoB_hom`.
+
+`TDA.Sheaf.BandAmplitudeExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
+instance. `kR` is the constant sheaf `constSh ℚ ℝ kpt` in degree `0`; its inverse image along
+`p 1` is `kD` (`nonempty_pullbackPlus_p_kR_iso`), so `H⁰(T ℚ 1 kR)` is nonzero
+(`not_isZero_H0_T_kR`), and `T ℚ 1 kR` lies in degrees `[0, 1]` (`isGE_isLE_T_kR`). As an object
+`kRb` of `Dᵇ`, `TB ℚ 1 kRb` lies over `T ℚ 1 kR` (`TB_kRb`) with nonzero `H⁰`
+(`not_isZero_H0_TB_kRb`), and `restrB_comp_augB_kRb` evaluates `restrB_comp_augB` at `kRb`.
 
 ## Review and extension boundaries
 

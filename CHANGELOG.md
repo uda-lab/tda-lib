@@ -739,6 +739,22 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   (`lineModule_map_strict`), is ephemeral (`ephemeral_lineModule`) and is killed by `Q`
   (`isZero_orthantQ_lineModule`); `halfPlaneModule` is not
   (`not_isZero_orthantQ_halfPlaneModule`).
+- The band functors have amplitude `[0, 1]` and restrict to the bounded derived category
+  (#1227). `TDA.Sheaf.BandAmplitude`: `isGE_rightDerivedFunctorPlus_obj`,
+  `nonempty_homology_rightDerivedFunctorPlus_of_exact`, `isLE_rightDerivedFunctorPlus_obj_of_exact`,
+  `isLE_pushforwardPlus_toPt_Icc`, `isGE_isLE_pushforwardPlus_toPt_Icc`, `boundedToPlus`,
+  `PreservesBounded`, `PreservesBounded.id`, `PreservesBounded.comp`, `restrictBounded`,
+  `restrictBounded_comp_boundedToPlus`, `restrictBoundedMap`, `restrictBoundedMap_app`,
+  `whiskerRight_restrictBoundedMap`, `restrictBoundedMap_id`, `restrictBoundedMap_comp`,
+  `restrictBoundedIso`, `restrictBoundedIso_hom`, `restrictBoundedIso_inv`, `restrictBoundedId`,
+  `restrictBoundedComp`, `restrictBoundedCompMap`, `whiskerRight_restrictBoundedCompMap`,
+  `restrictBoundedCompMapIso`, and in `BandConvolution` `isGE_T_obj`, `isLE_T_obj`,
+  `isGE_isLE_T_obj`, `preservesBounded_T`, `TB`, `TB_comp_boundedToPlus`, `restrB`,
+  `whiskerRight_restrB`, `restrB_refl`, `restrB_trans`, `T0IsoB`, `whiskerRight_T0IsoB_hom`, `augB`,
+  `whiskerRight_augB`, `augB_eq`, `augB_zero`, `restrB_comp_augB`, `compIsoB`,
+  `whiskerRight_compIsoB_hom`. Fixtures in `TDA.Sheaf.BandAmplitudeExamples`: `kR`,
+  `nonempty_pullbackPlus_p_kR_iso`, `not_isZero_H0_T_kR`, `isGE_isLE_T_kR`, `kRb`, `TB_kRb`,
+  `not_isZero_H0_TB_kRb`, `restrB_comp_augB_kRb`.
 
 ## v0.5.0
 
