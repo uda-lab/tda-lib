@@ -55,8 +55,8 @@ half-open realization of `dgm k f n`.
 
 ## The isometry for filter diagrams
 
-For two filters f and g on the same finite complex, the isometry with grids c = crit f and
-d = crit g gives
+For filters f and g on finite complexes K and L, with unrelated vertex types, the isometry
+with grids c = crit f and d = crit g gives
 
   bottleneck (dgm k f n) (dgm k g n) = interleaving distance of the sublevel modules.
 
@@ -85,8 +85,10 @@ universe as `V`, and compare filters on the same `K`.
   `moduleDiagram_sublevelModule` identifies the sampled module diagram with `dgm`;
   the noncomputable `sublevelModuleRealizationIso` identifies the module with the half-open
   realization of that diagram.
-- For filters on the same complex, `bottleneck_dgm_eq_realInterleavingDistance` equates diagram
-  bottleneck distance with sublevel-module interleaving distance. At each supplied
+- For filters on two finite complexes, `bottleneck_dgm_eq_realInterleavingDistance` equates
+  diagram bottleneck distance with sublevel-module interleaving distance, and
+  `bottleneck_dgm_le_of_sublevelInterleaving` bounds it by the parameter of an interleaving.
+  At each supplied
   `ε : ℝ≥0`, `nonempty_sublevelInterleaving_iff` equates the existence of an `ε`-interleaving
   with the existence of an occurrence matching of cost at most `(ε : ℝ≥0∞)`. This
   finite-parameter equivalence does not assert that a witness attains the distance infimum.
@@ -126,9 +128,8 @@ universe as `V`, and compare filters on the same `K`.
 Log-scale modules are treated in degrees n ≥ 1 by the
 [log-scale diagrams](log-scale-diagrams.md), on the logarithms of the positive critical
 values; in degree 0 the log-scale modules have no zero left tail, and log-mapped diagrams are
-not treated. Extended-real indexing, positive scaling of real modules, filters on
-two different complexes, filters valued outside ℝ and infinite complexes are outside this
-note. The definitions of `dgm`, the module diagram, constructibility and the isometry are
+not treated. Extended-real indexing, positive scaling of real modules, filters valued
+outside ℝ and infinite complexes are outside this note. The definitions of `dgm`, the module diagram, constructibility and the isometry are
 used unchanged.
 
 ## Sources
