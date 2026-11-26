@@ -29,6 +29,7 @@ import TDA.Sheaf.IntervalCohomology
 import TDA.Sheaf.FlasqueAcyclic
 import TDA.Sheaf.RealConstructible
 import TDA.Sheaf.RealConstructibleAdjunction
+import TDA.Sheaf.RealConstructibleExt
 import TDA.Sheaf.IntervalFibre
 import TDA.Sheaf.DerivedStalks
 import TDA.Sheaf.BaseChange

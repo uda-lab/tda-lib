@@ -6,11 +6,14 @@ import TDA.Sheaf.IntervalCohomology
 
 Let `k` be a ring.
 
+* `germ_pullback_surjective`: if the germs of `G` at `i x` are germs of sections over an open
+  `W ⊇ i(V)`, the germs of `i⁻¹ G` at `x` are germs of sections over `V`. A germ of `i⁻¹ G` at
+  `x` is a germ of `G` at `i x` (`stalkPullbackSheafIso`), hence the germ of a section of `G`
+  over `W`, whose image under the adjunction unit is a section of `i⁻¹ G` over `i⁻¹ W`.
 * `germSurjective_pullback`: the inverse image `i⁻¹ G` of a germ-surjective sheaf `G` along any
-  continuous map `i` is germ-surjective. A germ of `i⁻¹ G` at `x` is a germ of `G` at `i x`
-  (`stalkPullbackSheafIso`), hence the germ of a global section of `G`, whose image under the
-  adjunction unit is a global section of `i⁻¹ G`. In particular inverse images of flasque (for
-  instance injective) sheaves are germ-surjective (`germSurjective_pullback_of_isFlasque`).
+  continuous map `i` is germ-surjective (the case `W = X`). In particular inverse images of
+  flasque (for instance injective) sheaves are germ-surjective
+  (`germSurjective_pullback_of_isFlasque`).
 * `germSurjective_of_id_eq_add`: a sheaf `Z` with `𝟙 Z = p₁ ≫ i₁ + p₂ ≫ i₂` for maps through
   germ-surjective sheaves is germ-surjective.
 * `pushforward_toPt_shortExact_Icc`: on `[u, v]`, global sections keep a short exact sequence
@@ -32,23 +35,35 @@ variable {k : Type} [Ring k]
 
 section germ
 
+/-- **Germs of an inverse image from germs downstairs.** Let `i : K ⟶ X` be continuous, `G` a
+sheaf of `k`-modules on `X`, `V` an open of `K` containing `x`, and `W` an open of `X` with
+`i(V) ⊆ W`. If every germ of `G` at `i x` is the germ of a section over `W`, then every germ of
+`i⁻¹ G` at `x` is the germ of a section over `V`: a germ of `i⁻¹ G` at `x` is a germ of `G` at
+`i x` (`stalkPullbackSheafIso`), and the adjunction unit carries a section over `W` to a section
+of `i⁻¹ G` over `i⁻¹ W ⊇ V`. -/
+theorem germ_pullback_surjective {K X : TopCat.{0}} (i : K ⟶ X) (G : X.Sheaf (ModuleCat.{0} k))
+    {V : Opens K} {x : K} (hx : x ∈ V) {W : Opens X} (hVW : V ≤ (Opens.map i).obj W)
+    (hW : Function.Surjective (G.presheaf.germ W (i x) (hVW hx))) :
+    Function.Surjective
+      (((TopCat.Sheaf.pullback (ModuleCat.{0} k) i).obj G).presheaf.germ V x hx) := by
+  intro g
+  obtain ⟨g₀, rfl⟩ : ∃ g₀, (stalkPullbackSheafIso k i G x).hom g₀ = g :=
+    ⟨(stalkPullbackSheafIso k i G x).inv g, by
+      rw [← ConcreteCategory.comp_apply, Iso.inv_hom_id, ConcreteCategory.id_apply]⟩
+  obtain ⟨t, rfl⟩ := hW g₀
+  refine ⟨((TopCat.Sheaf.pullback (ModuleCat.{0} k) i).obj G).presheaf.map (homOfLE hVW).op
+    (((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) i).unit.app G).hom.app
+      (op W) t), ?_⟩
+  rw [stalkPullbackSheafIso_unit k i G W x (hVW hx) t]
+  exact TopCat.Presheaf.germ_res_apply _ (homOfLE hVW) x hx _
+
 /-- **Inverse images of germ-surjective sheaves are germ-surjective.** For any continuous
 `i : K ⟶ X` and a germ-surjective sheaf `G` of `k`-modules on `X`, the inverse image `i⁻¹ G` is
 germ-surjective. -/
 theorem germSurjective_pullback {K X : TopCat.{0}} (i : K ⟶ X) {G : X.Sheaf (ModuleCat.{0} k)}
     (hG : GermSurjective k G) :
-    GermSurjective k ((TopCat.Sheaf.pullback (ModuleCat.{0} k) i).obj G) := by
-  intro V x hx g
-  obtain ⟨g₀, rfl⟩ : ∃ g₀, (stalkPullbackSheafIso k i G x).hom g₀ = g :=
-    ⟨(stalkPullbackSheafIso k i G x).inv g, by
-      rw [← ConcreteCategory.comp_apply, Iso.inv_hom_id, ConcreteCategory.id_apply]⟩
-  obtain ⟨t, rfl⟩ := hG ⊤ (i x) trivial g₀
-  have hV : V ≤ (Opens.map i).obj ⊤ := fun _ _ => trivial
-  refine ⟨((TopCat.Sheaf.pullback (ModuleCat.{0} k) i).obj G).presheaf.map (homOfLE hV).op
-    (((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{0} k) i).unit.app G).hom.app
-      (op ⊤) t), ?_⟩
-  rw [stalkPullbackSheafIso_unit k i G ⊤ x trivial t]
-  exact TopCat.Presheaf.germ_res_apply _ (homOfLE hV) x hx _
+    GermSurjective k ((TopCat.Sheaf.pullback (ModuleCat.{0} k) i).obj G) :=
+  fun _ x hx => germ_pullback_surjective i G hx (W := ⊤) (fun _ _ => trivial) (hG ⊤ (i x) trivial)
 
 /-- **Inverse images of flasque sheaves are germ-surjective.** For any continuous `i : K ⟶ X` and
 a flasque sheaf `I` of `k`-modules on `X`, the inverse image `i⁻¹ I` is germ-surjective. -/

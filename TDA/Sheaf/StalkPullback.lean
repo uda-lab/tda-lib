@@ -4,7 +4,7 @@ import Mathlib.Topology.Sheaves.Functors
 import Mathlib.Topology.Sheaves.Sheafify
 
 /-!
-# Stalks of the inverse image of a sheaf of modules
+# Stalks and sections of the inverse image of a sheaf of modules
 
 Let `k` be a ring and `f : X ⟶ Y` a continuous map in `TopCat`. The sheaf inverse image
 `f⁻¹ = TopCat.Sheaf.pullback (ModuleCat k) f` is left adjoint to the direct image `f_*`
@@ -22,6 +22,10 @@ sheaves.
 * `stalkPullbackSheafIso_hom_naturality`: the isomorphism is natural in `F`;
   `stalkPullbackSheafNatIso f x` packages it as a natural isomorphism of functors
   `Sh Y ⥤ ModuleCat k`.
+* `pullbackSectionsIso hf V`: for an open embedding `f`, sections of `f⁻¹ F` over an open `V`
+  are the sections of `F` over the open image `f(V)`, naturally in `F` (Mathlib's
+  `IsOpenEmbedding.sheafPullbackIso`). `pullbackOpenSectionsIso U` is the case of the inclusion
+  of an open `U` and `V` the whole of `U`: `Γ(U, ι⁻¹ F) ≅ F(U)`.
 -/
 
 noncomputable section
@@ -134,5 +138,29 @@ def stalkPullbackSheafNatIso {X Y : TopCat.{0}} (f : X ⟶ Y) (x : X) :
 theorem stalkPullbackSheafNatIso_app {X Y : TopCat.{0}} (f : X ⟶ Y) (x : X)
     (F : Y.Sheaf (ModuleCat.{0} k)) :
     (stalkPullbackSheafNatIso k f x).app F = stalkPullbackSheafIso k f F x := rfl
+
+/-- **Sections of the inverse image along an open embedding.** For an open embedding
+`f : X ⟶ Y` and an open `V` of `X`, the sections of `f⁻¹ F` over `V` are the sections of `F`
+over the open image `f(V)`, naturally in the sheaf `F` of `k`-modules on `Y`. -/
+def pullbackSectionsIso {X Y : TopCat.{0}} {f : X ⟶ Y} (hf : Topology.IsOpenEmbedding f)
+    (V : Opens X) :
+    TopCat.Sheaf.pullback (ModuleCat.{0} k) f ⋙ sheafToPresheaf _ _ ⋙
+        (evaluation _ _).obj (op V) ≅
+      sheafToPresheaf _ _ ⋙ (evaluation _ _).obj (op (hf.functor.obj V)) :=
+  Functor.isoWhiskerRight (hf.sheafPullbackIso (ModuleCat.{0} k))
+      (sheafToPresheaf _ _ ⋙ (evaluation _ _).obj (op V)) ≪≫
+    NatIso.ofComponents (fun _ => Iso.refl _)
+      (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm)
+
+/-- **Sections of the restriction to an open.** For an open `U` of `X` with inclusion `ι`, the
+global sections of `ι⁻¹ F` are the sections of `F` over `U`, naturally in the sheaf `F` of
+`k`-modules on `X`. -/
+def pullbackOpenSectionsIso {X : TopCat.{0}} (U : Opens X) :
+    TopCat.Sheaf.pullback (ModuleCat.{0} k) U.inclusion' ⋙ sheafToPresheaf _ _ ⋙
+        (evaluation _ _).obj (op ⊤) ≅
+      sheafToPresheaf _ _ ⋙ (evaluation _ _).obj (op U) :=
+  pullbackSectionsIso k U.isOpenEmbedding ⊤ ≪≫
+    Functor.isoWhiskerLeft (sheafToPresheaf _ _)
+      ((evaluation _ _).mapIso (eqToIso (congrArg op (Opens.isOpenEmbedding_obj_top U))))
 
 end TDA.Sheaf
