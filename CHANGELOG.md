@@ -522,8 +522,8 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   packaged as the natural isomorphism `stalkPullbackSheafNatIso` (`stalkPullbackSheafNatIso_app`).
   `TDA.Sheaf.DerivedStalks` proves `isIso_iff_isIso_stalk_homology`: a morphism of
   `DerivedCategory.Plus (X.Sheaf (ModuleCat k))` is an isomorphism if and only if every stalk of
-  every homology sheaf map is. Both are stated for `TopCat.{0}`, `ModuleCat.{0} k`, `k : Type`; the
-  `[Category.{u} C]` generality of #1224 is not provided. Fixtures in
+  every homology sheaf map is. Both are stated for `TopCat.{0}`, `ModuleCat.{0} k`, `k : Type`.
+  Fixtures in
   `TDA.Sheaf.DerivedStalksExamples`: the skyscraper `skyR` on `ℝ` and its inverse image `skyShift`
   along the translation `shift` (`isIso_shift`), with stalks `stalk_skyShift_zero` and
   `isZero_stalk_skyShift_five`, `stalk_skyShift_naturality` and
