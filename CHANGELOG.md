@@ -944,6 +944,27 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `gradedBarcode_pointSheaf_one`, `twoDegreeBarcode`, `twoDegree`,
   `hasConstructibleCohomology_twoDegree`, `gradedBarcode_twoDegree_zero`,
   `gradedBarcode_twoDegree_one`, `gradedBarcode_twoDegree_of_ne`.
+- Interval sets of the strata path and stalks of interval sheaves on the real line (#1183, part
+  U5a). `TDA.Sheaf.RealConstructible`: `isIso_germ_of_isConstructible`. New module
+  `TDA.Sheaf.RealIntervalSets`: strata `stratum` (`mem_stratum`, `stratum_subset_star`,
+  `stratum_of_even`, `stratum_odd`, `stratum_nonempty`, `lt_of_mem_stratum`,
+  `eq_of_mem_stratum`, `exists_mem_stratum`, `eq_of_mem_star_inter_breakpoints`); interval sets
+  `intervalSet` (`mem_intervalSet`, `stratum_subset_intervalSet`, `mem_intervalSet_iff_alive`),
+  order-connected (`ordConnected_intervalSet`) and locally closed
+  (`isLocallyClosed_intervalSet`), with the explicit forms `intervalSet_eq_univ`,
+  `intervalSet_eq_stratum`, `intervalSet_eq_singleton`, `intervalSet_eq_Icc`,
+  `intervalSet_eq_Ico`, `intervalSet_eq_Ioc`, `intervalSet_eq_Ioo`, `intervalSet_eq_Iio`,
+  `intervalSet_eq_Iic`, `intervalSet_eq_Ioi`, `intervalSet_eq_Ici`; `isIso_interval_map_gen`;
+  stalks `isIso_germ_star_of_mem_stratum`, `nonempty_stalk_extension_iso`, and for the interval
+  sheaf `Φ (interval J)`, with stalk `k` exactly on `intervalSet p J`,
+  `nonempty_stalk_extension_interval_iso`, `isZero_stalk_extension_interval`,
+  `finrank_stalk_extension_interval`, `isIso_extension_interval_map`. Fixtures in
+  `TDA.Sheaf.RealIntervalSetsExamples` over `ℚ`: `leftCell`, `wholeLine`,
+  `intervalSet_pointSegment` (the singleton `{0}`), `intervalSet_leftCell`,
+  `intervalSet_rightCell`, `intervalSet_segLeft`, `intervalSet_segRight`, `intervalSet_wholeLine`,
+  `intervalSet_p₀` (the unbounded cases), `leftOpen`, `wholeLineSheaf`, `finrank_stalk_pointSheaf`,
+  `finrank_stalk_leftOpen`, `finrank_stalk_rightClosed`, `finrank_stalk_wholeLineSheaf`,
+  `finrank_stalk_constSheaf₀`, `isIso_rightClosed_right`.
 
 ## v0.5.0
 

@@ -217,6 +217,15 @@ theorem isConstructible_of_iso {S : Finset ℝ} {F G : TopCat.Sheaf (ModuleCat.{
     rw [← hn]; infer_instance
   exact IsIso.of_isIso_comp_left (e'.app (op V)).hom _
 
+/-- **Stalks of a constructible sheaf.** For a sheaf constructible for `S`, the germ at `x` of
+sections over a basic open `T ∋ x` that meets `S` at most in `x` is an isomorphism
+`F(T) ≅ F_x`. -/
+theorem isIso_germ_of_isConstructible {S : Finset ℝ}
+    {F : TopCat.Sheaf (ModuleCat.{0} k) realLine} (hF : IsConstructible S F)
+    {T : Opens realLine} (hT : IsBasicOpen S T) {x : ℝ} (hxT : x ∈ T)
+    (hx : ∀ y ∈ (T : Set ℝ) ∩ S, y = x) : IsIso (F.presheaf.germ T x hxT) :=
+  isIso_germ_of_sameStratum F.presheaf (isConstructible_iff.1 hF).1 hT hxT hx
+
 end Constructible
 
 /-! ### Sections over the stars -/
