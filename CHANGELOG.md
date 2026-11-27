@@ -10,8 +10,8 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
-- Downstream-use audit, family 18 (#1255, #1207): uniqueness of interval decompositions of real
-  persistence modules with arbitrary index types. `SupportInterval` has `exists_smul_id` and
+- Uniqueness of interval decompositions of real persistence modules with arbitrary index types
+  (#1255). `SupportInterval` has `exists_smul_id` and
   `endRingEquiv` (every endomorphism of an interval module over a linear order is a scalar, and
   `End ≃+* k` for a nonempty support) and `comp_eq_zero_of_ne` (a composite
   `module S ⟶ module T ⟶ module S'` vanishes for `S ≠ T`, `S' = S`).
@@ -25,7 +25,8 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   for an isomorphism of two sums and for two decompositions of one module. The module
   `Persistence.IntervalDecompositionUniquenessClientExamples` states them for closed, open and
   half-open unit intervals and for a client decomposition of a pointwise finite-dimensional
-  module against `RealIntervalDecomposition.exists_interval_decomposition`.
+  module, matched with `RealIntervalDecomposition.exists_interval_decomposition` and shown to have
+  finite activity.
 - Downstream-use audit, family 17 (#1308, #1207): the pivot barcode of the simplicial adapter with
   the vertex order chosen internally. `Persistence.Reduction.SimplicialAdapterOrderFree` has
   `facePrefixBarcode_congr_linearOrder` and `facePivotBarcode_congr_linearOrder` (the barcodes

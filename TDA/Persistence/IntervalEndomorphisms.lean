@@ -9,14 +9,16 @@ multiplication by one scalar of the coefficient field (`exists_smul_id`), becaus
 the support are comparable and naturality carries the coefficient from one to the other. For a
 nonempty support this is a ring isomorphism `End (module S hS) ≃+* k` (`endRingEquiv`).
 
-A composite `module S ⟶ module T ⟶ module S` vanishes when `S ≠ T` (`comp_eq_zero_of_ne`):
-the scalar of the composite is zero at a point of `S` outside `T`, and when `S ⊂ T` the
-reverse composite `module T ⟶ module S ⟶ module T` is a scalar vanishing at a point of
-`T ∖ S`, so its square, which contains the square of the first scalar, is zero.
+A composite `module S ⟶ module T ⟶ module S` vanishes when `S ≠ T` (`comp_eq_zero_of_ne`).
+The composite is a scalar `c`. If a point of `S` lies outside `T`, the composite factors through
+the zero fibre there, so `c = 0`. Otherwise `S ⊂ T`; the reverse composite
+`h ≫ g : module T ⟶ module T` is a scalar that vanishes at a point of `T ∖ S`, so `h ≫ g = 0`,
+and the forward composite `g ≫ h` satisfies `(g ≫ h) ≫ (g ≫ h) = g ≫ (h ≫ g) ≫ h = 0`, so
+`c² = 0` at a point of `S` and `c = 0`.
 
-These are Lemma 2.1 and Lemma 3.1 of Gan and Upegui Keagy, arXiv:2507.01303v1,
-for a linearly ordered index type. Isomorphic interval modules have equal supports
-(`SupportInterval.support_eq_of_iso`).
+The two statements are Lemma 2.1 and Lemma 3.1 of W. L. Gan and N. Upegui Keagy, *On interval
+decomposition of persistence modules*, arXiv:2507.01303 v1, for a linearly ordered index type.
+Isomorphic interval modules have equal supports (`SupportInterval.support_eq_of_iso`).
 -/
 
 set_option autoImplicit false

@@ -12,16 +12,20 @@ index types are matched by a bijection that preserves supports (`exists_equiv_su
 and two decompositions of one module are matched in the same way
 (`exists_equiv_support_of_iso_of_iso`). No pointwise finite-dimensionality is assumed.
 
-The argument is the external form of Lemma 3.3 and Theorem 3.4 of Gan and Upegui Keagy,
-arXiv:2507.01303v1. At a point `x ∈ S`, the block of coordinates with support `S` in the fibre of
-the first sum maps linearly into the block of the second sum (include, apply `e`, project to the
-coordinates with support `S`). The map is injective: a vector in its kernel is carried by `e` to
-coordinates with supports different from `S`, and its image under `e.inv` is a sum of composites
-`module S ⟶ module T ⟶ module S` with `T ≠ S`, which vanish by `comp_eq_zero_of_ne`. Each
-fibre at `x` is one-dimensional, so the dimension of the block is the cardinality of its index
-type, and the cardinality of one fibre of supports is at most that of the other. The
-statement for a totally ordered index set is Theorem 3.4 of Botnan and Lesnick,
-arXiv:2203.14289v2, in the form for a pointwise finite-dimensional module.
+The argument is the external form of Lemma 3.3 and Theorem 3.4 of W. L. Gan and
+N. Upegui Keagy, *On interval decomposition of persistence modules*, arXiv:2507.01303 v1. At a
+point `x ∈ S`, the block of coordinates with support `S` in the fibre of the first sum maps
+linearly into the block of the second sum (include, apply `e`, project to the coordinates with
+support `S`). The map is injective: a vector in its kernel is carried by `e` to coordinates with
+supports different from `S`, and its image under `e.inv` is a sum of composites
+`module S ⟶ module T ⟶ module S` with `T ≠ S`, which vanish by `comp_eq_zero_of_ne` (Lemma 3.1).
+Each fibre at `x` is one-dimensional, so the dimension of a block is the cardinality of its index
+type, and the cardinality of one fibre of supports is at most that of the other.
+
+The uniqueness part of Theorem 3.4 of M. B. Botnan and M. Lesnick, *An Introduction to
+Multiparameter Persistence*, arXiv:2203.14289 v2 (a pointwise finite-dimensional module over a
+totally ordered set has a unique multiset of intervals) corresponds to
+`exists_equiv_support_of_iso_of_iso`, here for `ℝ` and arbitrary index types.
 
 `blockMap` and `blockMap_injective` give the injection for two families of real persistence
 modules and two predicates on their index types, under a vanishing condition on composites

@@ -6,22 +6,20 @@ set_option autoImplicit false
 /-!
 # Client statements of the uniqueness of interval decompositions
 
-Regression fixtures for #1255, family 18 of the downstream-use audit (#1207). Each statement is
-written as a downstream client writes it.
+Each statement is written as a downstream client writes it. The inputs fall in two groups.
 
-Inputs used: the coefficient field `ℚ`; the index type `Fin 3` for the first two statements and
-an arbitrary `Type` for the third; supports that are the closed, open and half-open unit
-intervals `Set.Icc 0 1`, `Set.Ioo 0 1` and `Set.Ico 0 1` of `ℝ`, listed in two different orders;
-an isomorphism between the two algebraic sums, supplied by the client; for the third statement a
-pointwise finite-dimensional module and a decomposition into nonempty interval modules supplied
-by the client. No finiteness of the decompositions is assumed.
-
-* A bijection of `Fin 3` that preserves the listed supports, and the value of that bijection at
-  the closed interval.
-* The number of summands with a given support agrees in the two lists.
-* A client decomposition of a pointwise finite-dimensional module is matched with the
-  decomposition of `RealIntervalDecomposition.exists_interval_decomposition`, and has finite
-  activity at every parameter.
+* Three statements over the index type `Fin 3`, with the coefficient field `ℚ` and the supports
+  `Set.Icc 0 1`, `Set.Ioo 0 1` and `Set.Ico 0 1` of `ℝ` (closed, open and half-open at the right
+  end) listed in two orders, `supports₁` and `supports₂`, and an isomorphism of the two algebraic
+  sums supplied by the client. They state the bijection of `Fin 3` that preserves supports, its
+  value at the position of the closed interval, and the equality of the numbers of summands with
+  support `Set.Icc 0 1` (the multiplicity of the closed interval).
+* Two statements over an arbitrary index type `J : Type`, with the field `ℚ`, a pointwise
+  finite-dimensional module `M`, and a decomposition of `M` into nonempty interval modules
+  supplied by the client. They match the client decomposition with the one returned by
+  `RealIntervalDecomposition.exists_interval_decomposition` and derive finite activity of the
+  client decomposition from that of the returned one. No finiteness of the client index type or
+  of the client decomposition is assumed.
 -/
 
 namespace TDA.Persistence.IntervalDecompositionUniquenessClientExamples
@@ -105,18 +103,35 @@ theorem mk_closed_unit_interval
   mk_support_fiber_eq_of_iso _ _ supports₁_nonempty _ _ supports₂_nonempty e _
 
 /-- A decomposition of a pointwise finite-dimensional real persistence module into nonempty
-interval modules is matched, by a bijection of the index types preserving the supports, with the
-decomposition chosen by `exists_interval_decomposition`. -/
+interval modules, supplied by a client, is matched by a bijection of the index types that
+preserves supports with the decomposition returned by `exists_interval_decomposition`, whose
+data are returned with the bijection. -/
 theorem client_decomposition_matches_chosen (M : PModule.{0,0,0} ℚ ℝ)
     [∀ t, FiniteDimensional ℚ (M.obj t)] {J : Type} (I : J → Set ℝ)
     (hI : ∀ j, (I j).OrdConnected) (hne : ∀ j, (I j).Nonempty)
     (e : M ≅ familyModule (fun j => SupportInterval.module (k := ℚ) (I j) (hI j))) :
-    ∃ (J' : Type) (I' : J' → Set ℝ) (_ : ∀ j, (I' j).OrdConnected) (σ : J ≃ J'),
-      (∀ j, I' (σ j) = I j) ∧ ∀ t, {j | t ∈ I j}.Finite := by
+    ∃ (J' : Type) (I' : J' → Set ℝ) (hI' : ∀ j, (I' j).OrdConnected),
+      (∀ j, (I' j).Nonempty) ∧
+      Nonempty (M ≅ familyModule (fun j => SupportInterval.module (k := ℚ) (I' j) (hI' j))) ∧
+      (∀ t, {j | t ∈ I' j}.Finite) ∧ ∃ σ : J ≃ J', ∀ j, I' (σ j) = I j := by
+  obtain ⟨J', I', hI', hne', he', hfin'⟩ :=
+    RealIntervalDecomposition.exists_interval_decomposition M
+  obtain ⟨e'⟩ := he'
+  exact ⟨J', I', hI', hne', ⟨e'⟩, hfin',
+    exists_equiv_support_of_iso_of_iso I hI hne I' hI' hne' e e'⟩
+
+/-- A client decomposition of a pointwise finite-dimensional real persistence module into
+nonempty interval modules has finitely many summands active at each parameter: the finite
+activity of the decomposition of `exists_interval_decomposition` is transported along the
+bijection of the index types. -/
+theorem client_decomposition_finite_activity (M : PModule.{0,0,0} ℚ ℝ)
+    [∀ t, FiniteDimensional ℚ (M.obj t)] {J : Type} (I : J → Set ℝ)
+    (hI : ∀ j, (I j).OrdConnected) (hne : ∀ j, (I j).Nonempty)
+    (e : M ≅ familyModule (fun j => SupportInterval.module (k := ℚ) (I j) (hI j))) (t : ℝ) :
+    {j | t ∈ I j}.Finite := by
   obtain ⟨J', I', hI', hne', ⟨e'⟩, hfin'⟩ :=
     RealIntervalDecomposition.exists_interval_decomposition M
   obtain ⟨σ, hσ⟩ := exists_equiv_support_of_iso_of_iso I hI hne I' hI' hne' e e'
-  refine ⟨J', I', hI', σ, hσ, fun t => ?_⟩
   refine ((hfin' t).image σ.symm).subset ?_
   intro j hj
   refine ⟨σ j, ?_, σ.symm_apply_apply j⟩

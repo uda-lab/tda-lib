@@ -1552,7 +1552,7 @@ existence and uniqueness of the barcode on a finite chain, the classification by
 uniqueness of a positive real realization, equality of the diagrams of filters with
 isomorphic sublevel modules, and the real interval decomposition.
 
-Uniqueness of interval decompositions (#1255): over a linearly ordered index type,
+Over a linearly ordered index type,
 `SupportInterval.exists_smul_id` states that every endomorphism of
 `SupportInterval.module S hS` is a scalar multiple of the identity, and
 `SupportInterval.endRingEquiv` is the ring equivalence `End (module S hS) ≃+* k` for a nonempty
@@ -1567,13 +1567,15 @@ half-open ends are counted separately. `AlgebraicFamily.exists_equiv_support_of_
 bijection `σ : J ≃ J'` with `I' (σ j) = I j`, and `exists_equiv_support_of_iso_of_iso` gives the
 same for two decompositions of one module. Pointwise finite-dimensionality is not assumed;
 `blockMap_injective` is the injection of the block of summands with a given support behind the
-cardinality statement. These follow Gan and Upegui Keagy, arXiv:2507.01303v1 (Lemma 2.1,
-Lemma 3.1, Lemma 3.3, Theorem 3.4), and state Botnan and Lesnick, arXiv:2203.14289v2
-(Theorem 3.4), for modules over `ℝ`.
+cardinality statement. These follow W. L. Gan and N. Upegui Keagy, *On interval decomposition of
+persistence modules*, arXiv:2507.01303 v1 (Lemma 2.1, Lemma 3.1, Lemma 3.3, Theorem 3.4). The
+uniqueness part of Theorem 3.4 of M. B. Botnan and M. Lesnick, *An Introduction to Multiparameter
+Persistence*, arXiv:2203.14289 v2 corresponds to the bijection theorems, here for `ℝ`.
 `IntervalDecompositionUniquenessClientExamples` is a downstream regression fixture. Its inputs are
 the field `ℚ`, the closed, open and half-open unit intervals listed in two orders with a
 supplied isomorphism of the algebraic sums, and a pointwise finite-dimensional module with a
-supplied decomposition, which is matched with the one of `exists_interval_decomposition`.
+supplied decomposition, which is matched with the one of `exists_interval_decomposition` and
+shown to have finite activity.
 
 `FiniteLine.moduleOfAdjacent` constructs finite persistence from adjacent linear
 maps, and its path-category equivalence identifies equioriented finite-line
