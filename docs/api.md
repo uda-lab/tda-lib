@@ -6184,6 +6184,18 @@ it with the corresponding convolution stalk using the interval-fibration stalk f
   `isZero_homology_T_single` gives vanishing outside degrees zero and one for
   convolution of any sheaf placed in degree zero.
 
+- `nonempty_iso_H1T_interval` identifies the degree-one sheaf with the interval sheaf of
+  any supplied realization of `outSet1 ε I`. `exists_intervalSheaf_H1T` gives the
+  realization and isomorphism on the sorted shifted breakpoints for a nonempty output.
+  On the one-breakpoint basis, the endpoint cokernel restricts by isomorphisms between opens
+  that meet the closed output interval. The representative-point lemma
+  `exists_mem_inter_subset` chooses a point of a basic open that equals every breakpoint
+  in the open.
+- `isConstructible_H1T_interval` gives degree-one constructibility on `bandBreakpoints p ε`.
+  `hasConstructibleCohomology_T_interval` gives constructibility in every degree on the
+  sorted shifted breakpoints. `hasConstructibleCohomology_T` applies to every sheaf
+  constructible for `breakpoints p` placed in degree zero, by finite interval decomposition.
+
 ## Sheaf statements as a client writes them
 
 `TDA.Sheaf.ClientExamples` (namespace `TDA.Sheaf.ClientExamples`) states results of `TDA.Sheaf` as a

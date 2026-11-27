@@ -10,6 +10,14 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Degree-one band convolution of real interval sheaves. `nonempty_iso_H1T_interval`
+  identifies the sheaf with the interval sheaf of any realization of `outSet1`.
+  `exists_intervalSheaf_H1T` gives the isomorphism on the shifted breakpoints for a
+  nonempty output. `isConstructible_H1T_interval` gives degree-one constructibility
+  and `hasConstructibleCohomology_T_interval` gives constructibility in every degree.
+  `hasConstructibleCohomology_T` applies to any constructible sheaf placed in degree zero.
+  `exists_mem_inter_subset` gives a point of a basic open equal to every breakpoint
+  in that open.
 - Cohomology of band fibres with interval coefficients. The convolution stalk formula
   gives the degree-zero fibre values through `outSet0`. Degree one vanishes away from
   `outSet1` by germ lifting on opens avoiding an excluded endpoint. On `outSet1`,

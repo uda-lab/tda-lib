@@ -138,7 +138,7 @@ def IsConstructible (S : Finset ℝ) (F : TopCat.Sheaf (ModuleCat.{0} k) realLin
   IsLocallyConstantOn F (↑S)ᶜ ∧ ∀ x : ℝ, FiniteDimensional k (F.presheaf.stalk x)
 
 /-- A basic open contains a point `x` such that it meets `S` at most in `x`. -/
-private theorem exists_mem_inter_subset {S : Finset ℝ} {T : Opens realLine}
+theorem exists_mem_inter_subset {S : Finset ℝ} {T : Opens realLine}
     (hT : IsBasicOpen S T) : ∃ x ∈ T, ∀ y ∈ (T : Set ℝ) ∩ S, y = x := by
   by_cases hs : ((T : Set ℝ) ∩ S).Nonempty
   · obtain ⟨s, hs⟩ := hs

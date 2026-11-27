@@ -6,6 +6,8 @@ import TDA.Sheaf.RealIntervalSectionsExamples
 
 The open unit interval is tested below, at and above the threshold. The coefficient module
 at the threshold is nonzero. A closed-point input exercises the empty degree-one output.
+At radius one the convolution of the open unit interval has the interval sheaf of the
+closed unit interval in degree one.
 -/
 
 open CategoryTheory CategoryTheory.Limits DerivedCategory TDA.Sheaf
@@ -13,7 +15,7 @@ open CategoryTheory CategoryTheory.Limits DerivedCategory TDA.Sheaf
   TDA.Sheaf.RealIntervalSectionsExamples TDA.Sheaf.RealIntervalSetsExamples
   TDA.Sheaf.RealStratification TDA.Sheaf.RealConstructibleExamples
   TDA.Sheaf.RealStratificationExamples
-open TDA.Sheaf.ClientExamples (q2 q2_strictMono)
+open TDA.Sheaf.ClientExamples (q2 q2_strictMono Jc)
 
 attribute [local instance] HasDerivedCategory.standard
 
@@ -56,3 +58,17 @@ example : Nonempty (((Plus.singleFunctor _ 0 ⋙ T ℚ 1 ⋙ Plus.homologyFuncto
   apply nonempty_iso_stalk_H1T_interval q2_strictMono Joo zero_le_one
   rw [intervalSet_q2_Joo, outSet1_Ioo zero_le_one zero_lt_one]
   exact ⟨by norm_num, by norm_num⟩
+
+example : Nonempty (((Plus.singleFunctor _ 0 ⋙ T ℚ 1 ⋙
+    Plus.homologyFunctor _ 1).obj OpenUnit) ≅
+      (extension ℚ q2_strictMono).obj (interval (orient 2) Jc)) := by
+  apply nonempty_iso_H1T_interval q2_strictMono Joo zero_le_one q2_strictMono Jc
+  rw [intervalSet_eq_Icc q2_strictMono (i := 0) (j := 1) rfl rfl, intervalSet_q2_Joo,
+    outSet1_Ioo zero_le_one zero_lt_one]
+  change Set.Icc (0 : ℝ) 1 = Set.Icc (1 - 1) (0 + 1)
+  norm_num
+
+example : HasConstructibleCohomology ℚ (sortedBreakpoints (bandBreakpoints q2 1))
+    (Plus.ι.obj ((T ℚ 1).obj ((Plus.singleFunctor _ 0).obj OpenUnit))) :=
+  hasConstructibleCohomology_T q2_strictMono zero_le_one
+    (isConstructible_extension ℚ q2_strictMono fun _ => inferInstance)
