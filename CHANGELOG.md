@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Endpoint formulas compute the deletion cost of each graded interval sheaf, the
+  pair costs in distinct degrees, and the costs of bounded closed pairs and
+  opposite half-open pairs in a common degree. A bounded half-open interval can be
+  deleted at half its length. `IntervalEndpoints.pairCost` and
+  `GradedMatching.cost_le_iff_of_pairCost`
+  express matching cost bounds using the numeric entries.
 - Real direct images of a fixed bounded-below coefficient complex satisfy extended
   sup stability. `directImageGraph`, `directImageComparison`, and
   `directImageComparison_adjoint` give the graph restriction and its adjoint.

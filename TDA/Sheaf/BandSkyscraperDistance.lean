@@ -129,7 +129,8 @@ private def singleH0Iso : Single[k] ⋙ H₀[k] ≅ 𝟭 Sh[k] :=
 omit [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
   [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
   [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
-private theorem H0_map_bijective_of_iso_single {X Y : D⁺[k]} {F G : Sh[k]}
+/-- Degree-zero homology is bijective on morphisms between objects in degree zero. -/
+theorem H0_map_bijective_of_iso_single {X Y : D⁺[k]} {F G : Sh[k]}
     (e : X ≅ Single[k].obj F) (i : Y ≅ Single[k].obj G) :
     Function.Bijective (H₀[k].map : (X ⟶ Y) → _) := by
   let L := H₀[k]

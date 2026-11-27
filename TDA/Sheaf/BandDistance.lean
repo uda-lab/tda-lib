@@ -202,6 +202,127 @@ def toConvolution (F : D⁺[k]) (hε : 0 ≤ ε) : Witness k hε F ((T k ε).obj
     erw [Category.comp_id]
     exact convolution_witness_inv_hom F hε
 
+private def convolveMap {r : ℝ} (hr : 0 ≤ r) (f : (T k ε).obj F ⟶ G) :
+    (T k ε).obj ((T k r).obj F) ⟶ (T k r).obj G :=
+  (TComp k hr hε).hom.app F ≫ bandCompose hε hr (add_comm ε r) f (𝟙 _)
+
+private theorem convolveMap_comp_id {r : ℝ} (hr : 0 ≤ r) (f : (T k ε).obj F ⟶ G) :
+    bandCompose hr hε rfl (𝟙 ((T k r).obj F)) (convolveMap (hε := hε) hr f) =
+      bandCompose hε hr (add_comm ε r) f (𝟙 _) := by
+  let A := (T k ε).obj ((T k r).obj F)
+  let e : A ≅ (T k (r + ε)).obj F := (TComp k hr hε).app F
+  let u := bandCompose hε hr (add_comm ε r) f (𝟙 ((T k r).obj G))
+  simp only [bandCompose, TCompOfEq_rfl, convolveMap]
+  rw [(T k ε).map_id]
+  change e.inv ≫ 𝟙 A ≫ e.hom ≫ u = u
+  exact (congrArg (e.inv ≫ ·) (Category.id_comp (e.hom ≫ u))).trans
+    (Iso.inv_hom_id_assoc e u)
+
+private theorem convolveMap_equation {r : ℝ} (hr : 0 ≤ r) (w : Witness k hε F G) :
+    bandCompose hε hε rfl (convolveMap (hε := hε) hr w.hom)
+      (convolveMap (hε := hε) hr w.inv) =
+      (aug k (add_nonneg hε hε)).app ((T k r).obj F) := by
+  let iF := 𝟙 ((T k r).obj F)
+  let iG := 𝟙 ((T k r).obj G)
+  let f := convolveMap (hε := hε) hr w.hom
+  let g := convolveMap (hε := hε) hr w.inv
+  let h₂ := add_nonneg hε hε
+  let e : r + ε + ε = r + (ε + ε) := add_assoc _ _ _
+  let e' : ε + (r + ε) = r + (ε + ε) := by ring
+  let e'' : ε + ε + r = r + (ε + ε) := add_comm _ _
+  have h : bandCompose hr h₂ rfl iF (bandCompose hε hε rfl f g) =
+      bandCompose hr h₂ rfl iF ((aug k h₂).app ((T k r).obj F)) := by
+    calc
+      _ = bandCompose (add_nonneg hr hε) hε e (bandCompose hr hε rfl iF f) g :=
+        (bandCompose_assoc hr hε hε rfl rfl e iF f g).symm
+      _ = bandCompose (add_nonneg hr hε) hε e
+          (bandCompose hε hr (add_comm ε r) w.hom iG) g := by
+            exact congrArg (fun u => bandCompose (add_nonneg hr hε) hε e u g)
+              (convolveMap_comp_id (hε := hε) hr w.hom)
+      _ = bandCompose hε (add_nonneg hr hε) e' w.hom (bandCompose hr hε rfl iG g) :=
+        bandCompose_assoc hε hr hε (add_comm ε r) rfl e w.hom iG g
+      _ = bandCompose hε (add_nonneg hr hε) e' w.hom
+          (bandCompose hε hr (add_comm ε r) w.inv iF) := by
+            exact congrArg (bandCompose hε (add_nonneg hr hε) e' w.hom)
+              (convolveMap_comp_id (hε := hε) hr w.inv)
+      _ = bandCompose h₂ hr e'' (bandCompose hε hε rfl w.hom w.inv) iF :=
+        (bandCompose_assoc hε hε hr rfl (add_comm ε r) e'' w.hom w.inv iF).symm
+      _ = _ := by
+        have hw : bandCompose hε hε rfl w.hom w.inv = (aug k h₂).app F := by
+          simpa only [bandCompose, TCompOfEq_rfl] using w.hom_inv
+        rw [hw, bandCompose_aug_left h₂ hr e'' iF, bandCompose_aug_right hr h₂ rfl iF]
+  let A := (T k (ε + ε)).obj ((T k r).obj F)
+  let e₀ : A ≅ (T k (r + (ε + ε))).obj F := (TComp k hr h₂).app F
+  let u : A ⟶ (T k r).obj F :=
+    (TComp k hε hε).inv.app ((T k r).obj F) ≫ (T k ε).map f ≫ g
+  let v := (aug k h₂).app ((T k r).obj F)
+  simp only [bandCompose, TCompOfEq_rfl] at h ⊢
+  change e₀.inv ≫ (T k (ε + ε)).map iF ≫ u = e₀.inv ≫ (T k (ε + ε)).map iF ≫ v at h
+  rw [show (T k (ε + ε)).map iF = 𝟙 A from (T k (ε + ε)).map_id _] at h
+  have he (a : A ⟶ (T k r).obj F) : e₀.inv ≫ 𝟙 A ≫ a = e₀.inv ≫ a :=
+    congrArg (e₀.inv ≫ ·) (Category.id_comp a)
+  exact (cancel_epi e₀.inv).mp ((he u).symm.trans (h.trans (he v)))
+
+/-- Convolving both objects by the same nonnegative radius preserves a witness radius. -/
+def convolve {r : ℝ} (w : Witness k hε F G) (hr : 0 ≤ r) :
+    Witness k hε ((T k r).obj F) ((T k r).obj G) where
+  hom := convolveMap (hε := hε) hr w.hom
+  inv := convolveMap (hε := hε) hr w.inv
+  hom_inv := by simpa only [bandCompose, TCompOfEq_rfl] using convolveMap_equation hr w
+  inv_hom := by
+    simpa only [bandCompose, TCompOfEq_rfl, Witness.symm] using convolveMap_equation hr w.symm
+
+private theorem commute_witness_equation {C : Type*} [Category C] (U S : C ⥤ C)
+    (e : S ⋙ U ≅ U ⋙ S) (η : U ⟶ 𝟭 C)
+    (comm : ∀ X, η.app (S.obj X) = e.hom.app X ≫ S.map (η.app X))
+    {X Y : C} (f : U.obj X ⟶ Y) (g : U.obj Y ⟶ X)
+    (h : U.map f ≫ g = η.app (U.obj X) ≫ η.app X) :
+    U.map (e.hom.app X ≫ S.map f) ≫ e.hom.app Y ≫ S.map g =
+      η.app (U.obj (S.obj X)) ≫ η.app (S.obj X) := by
+  have nat : U.map (S.map f) ≫ e.hom.app Y = e.hom.app (U.obj X) ≫ S.map (U.map f) :=
+    e.hom.naturality f
+  rw [U.map_comp]
+  simp only [Category.assoc]
+  have hn : U.map (e.hom.app X) ≫ η.app (S.obj (U.obj X)) =
+      η.app (U.obj (S.obj X)) ≫ e.hom.app X := η.naturality (e.hom.app X)
+  rw [reassoc_of% nat, ← S.map_comp, h, S.map_comp, ← reassoc_of% comm (U.obj X),
+    reassoc_of% hn, ← comm X]
+
+private theorem shift_equation (w : Witness k hε F G) (d : ℤ) :
+    (TComp k hε hε).inv.app ((shiftFunctor D⁺[k] d).obj F) ≫
+      (T k ε).map (((T k ε).commShiftIso d).hom.app F ≫
+        (shiftFunctor D⁺[k] d).map w.hom) ≫
+      (((T k ε).commShiftIso d).hom.app G ≫ (shiftFunctor D⁺[k] d).map w.inv) =
+    (aug k (add_nonneg hε hε)).app ((shiftFunctor D⁺[k] d).obj F) := by
+  let U := T k ε
+  let S := shiftFunctor D⁺[k] d
+  let e := U.commShiftIso d
+  let η := aug k hε
+  let μ := TComp k hε hε
+  have unit (X : D⁺[k]) :
+      μ.hom.app X ≫ (aug k (add_nonneg hε hε)).app X = η.app (U.obj X) ≫ η.app X := by
+    have h := (NatTrans.congr_app (hcomp_aug_TComp_hom k hε hε) X).symm
+    simp only [NatTrans.comp_app, NatTrans.hcomp_app, Functor.leftUnitor_hom_app,
+      Functor.id_map] at h
+    exact h.trans (Category.comp_id _)
+  have h : U.map w.hom ≫ w.inv = η.app (U.obj F) ≫ η.app F := by
+    rw [← unit F, ← w.hom_inv, Iso.hom_inv_id_app_assoc]
+  have comm (X : D⁺[k]) : η.app (S.obj X) = e.hom.app X ≫ S.map (η.app X) := by
+    have ht := η.shift_app_comm d X
+    rw [Functor.commShiftIso_id_hom_app] at ht
+    exact (ht.trans (Category.comp_id _)).symm
+  apply (cancel_epi (μ.hom.app (S.obj F))).mp
+  rw [Iso.hom_inv_id_app_assoc, unit (S.obj F)]
+  exact commute_witness_equation U S e η comm w.hom w.inv h
+
+/-- An integer cohomological shift of both objects preserves a witness radius. -/
+def shift (w : Witness k hε F G) (d : ℤ) :
+    Witness k hε ((shiftFunctor D⁺[k] d).obj F) ((shiftFunctor D⁺[k] d).obj G) where
+  hom := ((T k ε).commShiftIso d).hom.app F ≫ (shiftFunctor D⁺[k] d).map w.hom
+  inv := ((T k ε).commShiftIso d).hom.app G ≫ (shiftFunctor D⁺[k] d).map w.inv
+  hom_inv := shift_equation w d
+  inv_hom := shift_equation w.symm d
+
 /-- Enlarge a witness by precomposing both maps with the radius restriction. -/
 def mono (w : Witness k hε F G) (h : ε ≤ δ) : Witness k hδ F G := by
   have eqn {X Y : D⁺[k]} (f : (T k ε).obj X ⟶ Y) (g : (T k ε).obj Y ⟶ X)
