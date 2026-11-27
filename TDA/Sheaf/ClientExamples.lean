@@ -21,6 +21,8 @@ in the sections that use them.
   and `isZero_orthantQ_iff` apply to a functor and to a `PModule` on `Fin 2 → ℝ`
   (`ephemeral_orthantBasis_iff_two`, `isZero_orthantQ_iff_two`); without the scope the maps are
   written through `TDA.Persistence.structureMap` (`isZero_orthantQ_iff_structureMap`).
+* **Universes.** `StrictBasis` and `SpaceTranslation` on a space in `TopCat.{1}`, as
+  `example`s.
 * **Strata and stalks for the breakpoints `q2 = ![0, 1]`.** `rw [stratum_odd_of_val …]` at the
   literal vertex `3` (`stratum_q2_three`). `finrank_stalk_extension_interval` with the
   decidability instance `decidableMemJc`, which decides membership in `intervalSet q2 Jc = [0, 1]`
@@ -106,6 +108,23 @@ theorem isZero_orthantQ_iff_structureMap (M : TDA.Persistence.PModule ℚ (Fin 2
   TDA.Sheaf.OrthantSheaf.isZero_orthantQ_iff M
 
 end OrthantStructureMap
+
+/-! ### Universes of strict bases and space translations -/
+
+section Universes
+
+/- A strict basis on a join-semilattice in `Type 1` and its sheaf functor `Q`, with values in a
+category with morphisms in `Type 1`. -/
+noncomputable example (P : Type 1) [SemilatticeSup P] (X : TopCat.{1}) (S : StrictBasis P X)
+    (C : Type 2) [Category.{1} C] [HasLimits C] : (P ⥤ C) ⥤ X.Sheaf C :=
+  S.Q C
+
+/- A space translation of a space in `TopCat.{1}` and its sheaf shift. -/
+noncomputable example (X : TopCat.{1}) (τ : SpaceTranslation X) (C : Type 2) [Category.{1} C] :
+    X.Sheaf C ⥤ X.Sheaf C :=
+  τ.shift C 1
+
+end Universes
 
 /-! ### Strata and stalks on the real line -/
 

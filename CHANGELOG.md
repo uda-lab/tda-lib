@@ -1078,6 +1078,10 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `barcode_sections_barcodeSheaf_Jc_Jco`, `isConstructible_Jc`, `gradedBarcode_singleFunctor_Jc`,
   `ext_representable_extension_Jc`, `isIso_baseChange_id_realLine`, `realLine_eq`,
   `isGE_isLE_T_one`, `TCompOneOne`.
+- Universe-polymorphic strict bases and space translations (#1306, #1207). `StrictBasis P X` takes
+  `P : Type v` and `X : TopCat.{v}`, with values in `C : Type u` and `[Category.{v} C]`, in
+  `TDA.Sheaf.StrictBasis` and `TDA.Sheaf.StrictBasisLocalization`; `SpaceTranslation X` takes
+  `X : TopCat.{w}`. The ray and orthant statements are the case of universe `0`.
 
 ## v0.5.0
 

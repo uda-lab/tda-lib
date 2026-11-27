@@ -9,9 +9,9 @@ import Mathlib.Topology.Sheaves.Limits
 /-!
 # Sheaves on a strict basis as a localization
 
-This module continues `TDA.Sheaf.StrictBasis` for `S : StrictBasis P X`, with
-`S.Q C : (P ⥤ C) ⥤ X.Sheaf C` and `S.B C : X.Sheaf C ⥤ (P ⥤ C)`. The value category is
-`C : Type u` with `[Category.{0} C] [HasLimits C]`; the ephemeral diagrams use
+This module continues `TDA.Sheaf.StrictBasis` for `S : StrictBasis P X` (`P : Type v`,
+`X : TopCat.{v}`), with `S.Q C : (P ⥤ C) ⥤ X.Sheaf C` and `S.B C : X.Sheaf C ⥤ (P ⥤ C)`. The
+value category is `C : Type u` with `[Category.{v} C] [HasLimits C]`; the ephemeral diagrams use
 `[HasZeroMorphisms C]`, and the Serre localization uses `[Abelian C]`.
 
 * `S.adjunction C : S.Q C ⊣ S.B C` has unit `S.unit C` and counit `(S.counitIso C).hom`
@@ -99,13 +99,13 @@ namespace StrictBasis
 
 noncomputable section
 
-variable {P : Type} [SemilatticeSup P] {X : TopCat.{0}} (S : StrictBasis P X)
+variable {P : Type v} [SemilatticeSup P] {X : TopCat.{v}} (S : StrictBasis P X)
 
 /-! ## The adjunction `Q ⊣ B` -/
 
 section Adjunction
 
-variable (C : Type u) [Category.{0} C] [HasLimits C]
+variable (C : Type u) [Category.{v} C] [HasLimits C]
 
 /-- The right triangle at `F`: `η_{B F}` followed by `B(ε_F)` is the identity. -/
 private theorem unit_app_B_comp (F : X.Sheaf C) :
@@ -208,7 +208,7 @@ end Adjunction
 
 section Ephemeral
 
-variable (C : Type u) [Category.{0} C]
+variable (C : Type u) [Category.{v} C]
 
 /-- The ephemeral diagrams: every map `M(s ≤ t)` with `t` strictly above `s` is zero. -/
 def ephemeral [HasZeroMorphisms C] : ObjectProperty (P ⥤ C) :=
@@ -248,7 +248,7 @@ end Ephemeral
 
 section Serre
 
-variable (C : Type u) [Category.{0} C] [Abelian C] [HasLimits C]
+variable (C : Type u) [Category.{v} C] [Abelian C] [HasLimits C]
 
 /-- The category of sheaves on `X` is abelian, transported along `Q ⊣ B` with `QB ≅ 𝟭`
 (`abelianOfAdjunction`). -/
@@ -305,7 +305,7 @@ end Serre
 
 section Identity
 
-variable {C : Type u} [Category.{0} C]
+variable {C : Type u} [Category.{v} C]
 
 /-- When `t` is strictly above itself, the unit at `t` is an isomorphism, with inverse the
 projection to `M(t)`. -/
@@ -345,7 +345,7 @@ end Identity
 
 /-- An isomorphism of strict bases: an order isomorphism of the index sets and an isomorphism
 of the spaces, compatible with the maps `ι` and the basic opens. -/
-structure Iso {P' : Type} [SemilatticeSup P'] {X' : TopCat.{0}} (S' : StrictBasis P' X') where
+structure Iso {P' : Type v} [SemilatticeSup P'] {X' : TopCat.{v}} (S' : StrictBasis P' X') where
   /-- The order isomorphism of the index sets. -/
   orderIso : P ≃o P'
   /-- The isomorphism of the spaces. -/
@@ -358,7 +358,7 @@ structure Iso {P' : Type} [SemilatticeSup P'] {X' : TopCat.{0}} (S' : StrictBasi
 
 namespace Iso
 
-variable {S} {P' : Type} [SemilatticeSup P'] {X' : TopCat.{0}} {S' : StrictBasis P' X'}
+variable {S} {P' : Type v} [SemilatticeSup P'] {X' : TopCat.{v}} {S' : StrictBasis P' X'}
   (e : S.Iso S')
 
 /-- An isomorphism of strict bases preserves the strict order. -/
@@ -368,7 +368,7 @@ theorem strict_iff {s t : P} : S'.Strict (e.orderIso s) (e.orderIso t) ↔ S.Str
   rw [← e.hom_ι, ← e.map_U s]
   rfl
 
-variable (C : Type u) [Category.{0} C]
+variable (C : Type u) [Category.{v} C]
 
 /-- `B` commutes with the comparison: `B F` is `B'` of the pushforward of `F`, reindexed along
 the order isomorphism. -/
@@ -413,8 +413,8 @@ end Iso
 variable {S} in
 /-- A diagram on `P'` is ephemeral for `S'` exactly when its reindexing along the order
 isomorphism is ephemeral for `S`. -/
-theorem Iso.ephemeral_iff {P' : Type} [SemilatticeSup P'] {X' : TopCat.{0}}
-    {S' : StrictBasis P' X'} (e : S.Iso S') {C : Type u} [Category.{0} C] [HasZeroMorphisms C]
+theorem Iso.ephemeral_iff {P' : Type v} [SemilatticeSup P'] {X' : TopCat.{v}}
+    {S' : StrictBasis P' X'} (e : S.Iso S') {C : Type u} [Category.{v} C] [HasZeroMorphisms C]
     (M : P' ⥤ C) :
     S.ephemeral C (e.orderIso.monotone.functor ⋙ M) ↔ S'.ephemeral C M := by
   constructor

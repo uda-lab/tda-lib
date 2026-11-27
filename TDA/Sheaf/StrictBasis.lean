@@ -6,7 +6,7 @@ import Mathlib.Topology.Sheaves.SheafCondition.PairwiseIntersections
 /-!
 # Sheaves on a basis of opens indexed by points
 
-Let `P` be a join-semilattice, `X : TopCat.{0}`, and let `S : StrictBasis P X` consist of a
+Let `P : Type v` be a join-semilattice, `X : TopCat.{v}`, and let `S : StrictBasis P X` consist of a
 continuous map `S.ι : upperSpace P ⟶ X` from the upper Alexandrov space of `P` and opens
 `S.U p` of `X`, with `t ≤ s` whenever `ι s ∈ U t` (`S.Strict t s`, read "`t` is strictly below
 `s`"), such that `U` is antitone, `U p ≤ V` for every open `V ∋ ι p`, every point of an open `V`
@@ -30,12 +30,13 @@ interpolates. The open rays of `TDA.Sheaf.RaySheaf` and the open orthants of
   (`counitIso_inv_app_hom_app_proj`, `counitIso_hom_app_hom_app_map`); hence `S.B C` is
   faithful.
 
-The value category is `C : Type u` with `[Category.{0} C]`, and `[HasLimits C]` for `Q`.
+The value category is `C : Type u` with `[Category.{v} C]`, and `[HasLimits C]` for `Q`; the ray
+and orthant bases are the case `v = 0`.
 -/
 
 set_option autoImplicit false
 
-universe u
+universe u v
 
 open CategoryTheory Limits Opposite TopologicalSpace Topology TopCat
 
@@ -46,7 +47,7 @@ open TDA.Sheaf.Alexandrov
 /-- A basis of opens `U p` of a space `X` indexed by the points of a join-semilattice `P`,
 together with the continuous map `ι` from the upper Alexandrov space of `P`. The relation
 `ι s ∈ U t` is the strict order `StrictBasis.Strict t s`. -/
-structure StrictBasis (P : Type) [SemilatticeSup P] (X : TopCat.{0}) where
+structure StrictBasis (P : Type v) [SemilatticeSup P] (X : TopCat.{v}) where
   /-- The continuous map from the upper Alexandrov space of `P`. -/
   ι : upperSpace P ⟶ X
   /-- The basic open at a point of `P`. -/
@@ -69,7 +70,7 @@ namespace StrictBasis
 
 noncomputable section
 
-variable {P : Type} [SemilatticeSup P] {X : TopCat.{0}} (S : StrictBasis P X)
+variable {P : Type v} [SemilatticeSup P] {X : TopCat.{v}} (S : StrictBasis P X)
 
 /-! ## The strict order and the basis -/
 
@@ -130,7 +131,7 @@ theorem principalOpen_le_map_U {t s : P} (h : S.Strict t s) :
 
 section Functors
 
-variable (C : Type u) [Category.{0} C]
+variable (C : Type u) [Category.{v} C]
 
 /-- The basic opens as a functor `P ⥤ (Opens X)ᵒᵖ`. -/
 def basisFunctor : P ⥤ (Opens X)ᵒᵖ where
@@ -367,7 +368,7 @@ end Functors
 
 section Counit
 
-variable {C : Type u} [Category.{0} C] [HasLimits C]
+variable {C : Type u} [Category.{v} C] [HasLimits C]
 
 /-- The cone of restrictions `F(V) ⟶ F(U p)` over the basic opens at the points `p` of `V`. -/
 private def restrictionCone (F : X.Sheaf C) (V : Opens X) :

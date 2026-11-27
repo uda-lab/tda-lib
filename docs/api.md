@@ -4325,12 +4325,13 @@ positive interval `[0, 1)` is nonzero. `rayEphemeral_pointModule`: the singleton
 
 `TDA.Sheaf.StrictBasis` states the comparison of persistence modules with sheaves once, for a
 basis of opens indexed by points. `S : StrictBasis P X` (namespace `TDA.Sheaf`), for a
-join-semilattice `P : Type` and `X : TopCat.{0}`, consists of a continuous map
+join-semilattice `P : Type v` and `X : TopCat.{v}` in one universe `v`, consists of a continuous map
 `ι : upperSpace P ⟶ X` and opens `U p`, antitone in `p`, such that `ι s ∈ U t` gives `t ≤ s`
 (`S.Strict t s`, with `le_of_strict`, `strict_of_strict_of_le`, `strict_of_le_of_strict`,
 `exists_strict_strict`), `U p ≤ V` whenever `ι p ∈ V` (`mem_of_le`), every point of an open
 `V` lies in some `U p` with `ι p ∈ V`, `U s ⊓ U t ≤ U (s ⊔ t)`, and `Strict` interpolates. The
-value category is `C : Type u` with `[Category.{0} C]`, and `[HasLimits C]` for `Q`.
+value category is `C : Type u` with `[Category.{v} C]`, and `[HasLimits C]` for `Q`; the ray
+and orthant bases are the case `v = 0`.
 
 - `iSup_U` covers each open by the basic opens at its points (the empty open by the empty
   family), and `isBasis_U` makes them a basis; `principalOpen_le_map_U`.
@@ -4353,7 +4354,8 @@ value category is `C : Type u` with `[Category.{0} C]`, and `[HasLimits C]` for 
 
 `TDA.Sheaf.SpaceTranslation` does the same for shifts. `τ : SpaceTranslation X` is a family of
 continuous maps `T ε : X ⟶ X`, `ε : ℝ≥0`, with `T ε⁻¹(V) ≤ V` and
-`T δ⁻¹(T ε⁻¹(V)) = T (ε + δ)⁻¹(V)`, for `X : TopCat.{0}` and `C : Type u` with `[Category.{v} C]`.
+`T δ⁻¹(T ε⁻¹(V)) = T (ε + δ)⁻¹(V)`, for `X : TopCat.{w}` and `C : Type u` with
+`[Category.{v} C]`.
 `τ.shift C ε` is pushforward along `T ε`, `τ.transition C ε` restricts along `T ε⁻¹(V) ≤ V`, and
 `τ.compIso C ε δ : τ.shift C δ ⋙ τ.shift C ε ≅ τ.shift C (ε + δ)` (`shift_obj_presheaf_obj`,
 `shift_map_hom_app`, `transition_app_hom_app`, `compIso_hom_app_hom_app`, `compIso_hom_naturality`,
@@ -4414,7 +4416,8 @@ a `PModule` on `Fin n → ℝ` are written through `TDA.Persistence.structureMap
 ### Strict-basis and orthant sheaves as a localization
 
 `TDA.Sheaf.StrictBasisLocalization` continues `TDA.Sheaf.StrictBasis` for
-`S : StrictBasis P X` and `C : Type u` with `[Category.{0} C] [HasLimits C]`.
+`S : StrictBasis P X` (`P : Type v`, `X : TopCat.{v}`) and `C : Type u` with
+`[Category.{v} C] [HasLimits C]`.
 
 - `S.adjunction C : S.Q C ⊣ S.B C` with unit `S.unit C` and counit `(S.counitIso C).hom`
   (`adjunction_unit`, `adjunction_counit`, `adjunction_homEquiv_apply`,
@@ -5952,6 +5955,7 @@ theorems `hasExt_sheaf_realLine` and `hasExt_diagram`, each installed with
 - Diagrams on `Fin 2 → ℝ`: under `open scoped TDA.Persistence`, `ephemeral_orthantBasis_iff_two` (a
   functor) and `isZero_orthantQ_iff_two` (a `PModule`); without the scope,
   `isZero_orthantQ_iff_structureMap` writes the maps through `TDA.Persistence.structureMap`.
+- Two `example`s apply `StrictBasis.Q` and `SpaceTranslation.shift` on a space in `TopCat.{1}`.
 - The breakpoints `q2 = ![0, 1]` and the intervals `Jc` (`[0, 1]`, `intervalSet_q2_Jc`) and `Jco`
   (`[0, 1)`): `stratum_q2_three : stratum q2 3 = {1}` by `rw [stratum_odd_of_val …]`.
   `decidableMemJc` decides membership in `intervalSet q2 Jc` through `decidable_of_iff`; with it,
