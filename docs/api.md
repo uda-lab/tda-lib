@@ -1774,6 +1774,24 @@ isomorphism. The original boundary differential is distinct from its reduced mat
 See [sublevel diagrams](math/finite-sublevel-diagram.md) and
 [reduction](math/persistence-reduction.md).
 
+`TDA.Persistence.Reduction.facePivotBarcode` and `facePrefixModule` take a linear order on the
+vertex type (the face boundary matrix has the signs of the ordered chain complex), for a field in
+the universe of the vertex type and a `CompatibleOrder`, which does not refer to a vertex order.
+`facePrefixBarcode_congr_linearOrder` and `facePivotBarcode_congr_linearOrder` (module
+`TDA.Persistence.Reduction.SimplicialAdapterOrderFree`) state that the prefix barcode and the
+pivot barcode agree for two linear orders on the vertex type, given as explicit arguments.
+`facePrefixModuleOrderFree` and `facePivotBarcodeOrderFree` use the order chosen internally
+(`IsWellOrder.linearOrder WellOrderingRel`) for an arbitrary vertex type; the fibres of the
+module are `simplicialHomologyOrderFree` of the prefix complexes
+(`facePrefixModuleOrderFree_obj`), `facePivotBarcodeOrderFree_eq_facePivotBarcode` identifies the
+barcode with `facePivotBarcode` for every supplied order, and
+`nonempty_facePrefixModuleOrderFreeIsoPivotBarcodeOrderFree` and
+`nonempty_facePrefixModuleOrderFreeIsoPivotBarcode` restate
+`nonempty_facePrefixHomologyIsoPivotBarcode` for the order-free module with the order-free
+barcode and with the barcode of every supplied order.
+`TDA.Persistence.SimplicialAdapterOrderFreeClientExamples` states them for finite subsets of the
+Euclidean plane over `ZMod 2`.
+
 `bottleneck_dgm_le_faceSupDifference` proves finite-complex real-filter stability over a
 field, including pairing changes and closed interpolation endpoints. This is the
 library's finite combinatorial counterpart of the geometric stability theorem; it does

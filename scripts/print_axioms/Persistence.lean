@@ -9606,3 +9606,15 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.DiagramBoundsOrderFreeClientExamples.plane_field_type_one_rips_le
 #print axioms TDA.Persistence.DiagramBoundsOrderFreeClientExamples.labels_type_one_cech_le
 #print axioms TDA.Persistence.DiagramBoundsOrderFreeClientExamples.plane_cech_diagram_eq_dgm
+#print axioms TDA.Persistence.Reduction.facePrefixBarcode_congr_linearOrder
+#print axioms TDA.Persistence.Reduction.facePivotBarcode_congr_linearOrder
+#print axioms TDA.Persistence.Reduction.facePrefixModuleOrderFree
+#print axioms TDA.Persistence.Reduction.facePrefixModuleOrderFree_obj
+#print axioms TDA.Persistence.Reduction.facePivotBarcodeOrderFree
+#print axioms TDA.Persistence.Reduction.facePivotBarcodeOrderFree_eq_facePivotBarcode
+#print axioms TDA.Persistence.Reduction.nonempty_facePrefixModuleOrderFreeIsoPivotBarcodeOrderFree
+#print axioms TDA.Persistence.Reduction.nonempty_facePrefixModuleOrderFreeIsoPivotBarcode
+#print axioms TDA.Persistence.SimplicialAdapterOrderFreeClientExamples.plane_prefix_iso_pivot
+#print axioms TDA.Persistence.SimplicialAdapterOrderFreeClientExamples.plane_prefix_obj
+#print axioms TDA.Persistence.SimplicialAdapterOrderFreeClientExamples.plane_pivot_eq
+#print axioms TDA.Persistence.SimplicialAdapterOrderFreeClientExamples.plane_pivot_congr
