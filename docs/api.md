@@ -6513,6 +6513,28 @@ for a skyscraper in any degree. An occurrence with infinite deletion cost must h
 partner in any finite-cost matching by `GradedMatching.exists_partner_of_cost_lt_top`
 or `GradedMatching.exists_source_of_cost_lt_top`.
 
+`IntervalEndpoints` describes nonempty real intervals by their finite endpoints and
+boundary types. A singleton uses the closed-interval constructor with equal endpoints.
+`IntervalEndpoints.distance_zero_eq` identifies `deletionCost` with the distance to zero in
+any degree. A bounded half-open interval costs half its length, and its deletion witness
+exists at the half-length radius. Bounded open and closed intervals, rays and the
+whole line have infinite deletion cost.
+
+`distance_interval_Icc_Icc` gives the maximum absolute endpoint difference for two
+bounded closed intervals in the same degree. `distance_interval_Ico_Ioc` gives the larger
+deletion cost for opposite half-open types in a common degree.
+`distance_interval_Ioo_Icc_succ` gives
+`max (b - c) (e - a)` for `(a, b)` in degree `d` and `[c, e]` in degree `d + 1`.
+For a nonclosed or unbounded upper interval that cost is infinite.
+When the lower interval has no degree-one output or the degree gap is at least two,
+`distance_interval_of_degree_lt` gives the maximum of the two deletion costs.
+
+`IntervalEndpoints.pairCost` gives entries for distinct degrees, bounded closed pairs in
+a common degree, and opposite half-open types in a common degree. Each entry computes the
+sheaf distance by `IntervalEndpoints.distance_eq_of_pairCost`. Use
+`GradedMatching.cost_le_iff_of_pairCost` to rewrite matching cost bounds when the
+matched pairs have numeric entries.
+
 ## Review and extension boundaries
 
 The selected PH claims and their proof-critical bridges received the source-based review

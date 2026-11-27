@@ -65,5 +65,6 @@ import TDA.Sheaf.BandDistanceBiproduct
 import TDA.Sheaf.BandGradedMatching
 import TDA.Sheaf.BandGradedBarcode
 import TDA.Sheaf.BandMatchingIntervalCosts
+import TDA.Sheaf.BandIntervalCostTable
 import TDA.Sheaf.BandDirectImageStability
 import TDA.Sheaf.BandDirectImageApplications
