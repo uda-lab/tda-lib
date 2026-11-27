@@ -51,12 +51,12 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingHeredity` | `pathTensor`, `pathTensorAdjunction`, `projective_pathTensor`, `representable`, `pathTensorObjEquiv`; `resolution`, `resolutionSplitting`, `resolution_shortExact`, `enoughProjectives_diagram`, `hasProjectiveDimensionLT_two`, `ext_eq_zero` | Same diagrams `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field, with no finiteness assumption; `Ext` in any `HasExt` universe. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealStratification` | `orient`, `paths_hom_subsingleton`; `IsBasicOpen`, `isBasis_basicOpen`, `IsBasicOpen.inf`, `IsBasicOpen.anti`, `BasicCat`, `basicIncl`, `basicTopology`; `star`, `tau`, `tau_eq_iff`, `exists_star_tau`, `tauFunctor`; `isSheaf_basic_of_isIso_sameStratum`, `isSheaf_tauFunctor_comp`; `basisEquiv` | Breakpoints `p : Fin m → ℝ` strictly increasing; the basis sheaf condition holds for presheaves in any category; `basisEquiv` uses `ModuleCat.{0} k` for `k : Type`. See [Stratifications of the real line](#stratifications-of-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.LocalSystem` | `IsLocallyConstantOn`, `IsLocallyConstantOn.mono`, `restrict_isIso_of_isLocallyConstantOn`, `isIso_map_of_le_sup`; `transportIso`, `map_comp_transportIso_hom`, `transportIso_hom_eq_map`, `transportIso_trans`; `isIso_germ_of_isIso_map`, `isIso_germ_of_isLocallyConstantOn` | Sheaves of `ModuleCat.{0} k` on `realLine` for a ring `k : Type`; convex means `Set.OrdConnected`. The intended equivalence of `IsLocallyConstantOn` with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). See [Interval-local constancy on the real line](#interval-local-constancy-on-the-real-line). |
-| `TDA.Sheaf` / `TDA.Sheaf.RealConstructible` | `IsConstructible`, `isIso_res_sameStratum`, `isConstructible_iff`, `isConstructible_of_iso`, `IsConstructible.mono`, `isIso_germ_of_isConstructible`; `starFunctor`, `sections`, `sections_obj_obj`, `sections_map_gen`; `basisSheaf`, `extension`, `extensionBasicIso`, `extensionStarIso`, `isConstructible_extension`, `finiteDimensional_sections`; `extensionSectionsIso`, `extensionSectionsIso_app_app`, `sectionsExtensionIso`; `Constructible`, `FinDiagram`, `sectionsFin`, `extensionFin`, `equivalence`, `equivalence_functor_obj_obj`, `equivalence_functor_obj_map_gen`, `equivalence_inverse_obj_obj` | Strictly increasing breakpoints `p : Fin m → ℝ`; `k : Type`, a ring for `isIso_res_sameStratum`, a division ring for `IsConstructible`, a field for the diagram side. Local constancy is the interval-local `IsLocallyConstantOn`; its intended equivalence with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). The derived comparison is #1183. See [Constructible sheaves on the real line](#constructible-sheaves-on-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.RealConstructible` | `IsConstructible`, `isIso_res_sameStratum`, `isConstructible_iff`, `isConstructible_of_iso`, `IsConstructible.mono`, `isIso_germ_of_isConstructible`; `starFunctor`, `sections`, `sections_obj_obj`, `sections_map_gen`; `basisSheaf`, `extension`, `extensionBasicIso`, `extensionStarIso`, `isConstructible_extension`, `finiteDimensional_sections`, the instance `finiteDimensional_sections_extension`; `extensionSectionsIso`, `extensionSectionsIso_app_app`, `sectionsExtensionIso`; `Constructible`, `FinDiagram`, `sectionsFin`, `extensionFin`, `equivalence`, `equivalence_functor_obj_obj`, `equivalence_functor_obj_map_gen`, `equivalence_inverse_obj_obj` | Strictly increasing breakpoints `p : Fin m → ℝ`; `k : Type`, a ring for `isIso_res_sameStratum`, a division ring for `IsConstructible`, a field for the diagram side. Local constancy is the interval-local `IsLocallyConstantOn`; its intended equivalence with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). The derived comparison is #1183. See [Constructible sheaves on the real line](#constructible-sheaves-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleAdjunction` | `starBasic`, `starTauAdjunction`, `extensionAdjunction`, `extensionAdjunction_unit`, `toBasis`, `toBasis_app_hom_app`, `extensionAdjunction_counit_app_eq`, `extensionAdjunction_counit_app`, `equivalence_counitIso_inv_app_hom`, `equivalence_unitIso_inv_app_hom`, `extensionFullyFaithful`, `extension_full`, `extension_faithful`, `preservesFiniteColimits_extension`, `preservesFiniteLimits_extension`, `sections_additive`, `extension_additive`, `starGenerator`, `homExtensionRepresentableEquiv`, `homExtensionRepresentableEquiv_apply`, `homExtensionRepresentableEquiv_comp`, `homExtensionRepresentableEquiv_add`, `homExtensionRepresentableEquiv_zero`, `homExtensionPathTensorEquiv`, `homExtensionPathTensorEquiv_apply`, `homExtensionPathTensorEquiv_comp`, `hasExt_sheaf_realLine`, `hasExt_diagram`, `ext_extension_eq_zero_of_lift`, `ext_extension_representable_eq_zero`, `ext_extension_sumTensor_eq_zero`, `starCocycles`, `starCoboundaries`, `starCohomology`, `homExtensionRepresentableEquiv_symm_comp_d`, `extOfStarCocycle`, `extOfStarCocycle_apply`, `extOfStarCocycle_surjective`, `extOfStarCocycle_eq_zero_iff`, `extStarEquiv`, `extStarEquiv_mk` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field; the adjunction and the universal property hold for every sheaf of `k`-modules on `ℝ`; the `Ext` statements take an instance `HasExt.{0}` and an injective resolution `R`. See [The extension–sections adjunction](#the-extensionsections-adjunction). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleExt` | `germ_extension_surjective`, `exists_forall_mem_star_breakpoints_eq`, `germ_pullback_extension_star_surjective`, `sections_exact_star`, `ext_representable_extension_eq_zero`, `ext_sumTensor_extension_eq_zero`, `mapExt_bijective_extension`, `extensionExtEquiv`, `extensionExtEquiv_apply`, `ext_extension_eq_zero_of_two_le`, `ext_constructible_eq_zero_of_two_le` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field, all diagrams on `orient m` (no finite-dimensionality); every injective resolution of `Φ N`; `Ext` for instances `HasExt.{0}` of sheaves of `k`-modules on `ℝ` and, where diagram `Ext` occurs in the statement, of diagrams; all degrees. See [The `Ext` comparison on the real line](#the-ext-comparison-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.HereditarySplitting` | `biproductInsertIso`, `inl_biproductInsertIso_hom`, `inr_biproductInsertIso_hom`, `biproductIsoOfIsZero` (with `biproductIsoOfIsZero_hom`, `biproductIsoOfIsZero_inv`), `isZero_biproduct_of_isZero`; `isZero_homology_singleFunctor_obj`, `nonempty_iso_singleFunctor_homology`, `isIso_homologyMap_truncLTι`, `isIso_homologyMap_truncGEπ`, `singleFunctor_hom_eq_zero_of_ext`; `exists_iso_biproduct_homology`, `exists_iso_biproduct_homology_of_two_le`; `homologyBiproductSingleIso`, `isZero_homology_biproduct_single`, `nonempty_iso_homology_of_iso_biproduct_single`, `nonempty_iso_of_iso_biproduct_single` | An abelian category `C` with instances `HasDerivedCategory C` and, for the splitting theorems, `HasExt C`; objects of Mathlib's `DerivedCategory C` bounded for its canonical t-structure (`K.IsGE a`, `K.IsLE b`); the direct sum is indexed by `Finset.Icc a b`. See [Hereditary splitting](#hereditary-splitting). |
-| `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleDerived` | `intervalSheafSum`, `intervalSheafSum_nil`, `intervalSheafSum_cons`, `extensionIntervalSumIso`, `barcodeSheaf`, `extensionBarcodeDiagramIso`, `isConstructible_barcodeSheaf`, `barcode_sections_barcodeSheaf`, `barcode_sections_extension_interval`; `HasConstructibleCohomology`, `HasConstructibleCohomology.of_iso`, `HasConstructibleCohomology.mono`, `hasConstructibleCohomology_singleFunctor`, `hasConstructibleCohomology_biproduct`, `hasConstructibleCohomology_of_isConstructible`, `exists_iso_biproduct_homology_of_constructible`; `gradedBarcode`, `gradedBarcode_eq_of_iso_barcodeDiagram`, `gradedBarcode_eq_of_iso`, `gradedBarcode_eq_zero_of_isZero`, `gradedBarcode_eq_zero_of_lt`, `gradedBarcode_eq_zero_of_gt`, `gradedBarcode_singleFunctor`, `nonempty_homology_iso_barcodeSheaf`, `exists_iso_biproduct_barcodeSheaf`, `gradedBarcode_eq_of_iso_biproduct`, `gradedBarcode_eq_zero_of_iso_biproduct`, `gradedBarcode_biproduct` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field; objects of Mathlib's `DerivedCategory (TopCat.Sheaf (ModuleCat.{0} k) realLine)` for an instance `HasDerivedCategory`, bounded for its canonical t-structure (`K.IsGE a`, `K.IsLE b`) where stated, with every cohomology sheaf constructible for the breakpoints of `p` (one breakpoint set for all degrees; `hasConstructibleCohomology_of_isConstructible` collects per-degree breakpoint sets into one). See [Graded barcodes on the real line](#graded-barcodes-on-the-real-line). |
-| `TDA.Sheaf` / `TDA.Sheaf.RealIntervalSets` | `stratum`, `mem_stratum`, `stratum_subset_star`, `stratum_of_even`, `stratum_odd`, `stratum_nonempty`, `lt_of_mem_stratum`, `eq_of_mem_stratum`, `exists_mem_stratum`, `eq_of_mem_star_inter_breakpoints`; `intervalSet`, `mem_intervalSet`, `stratum_subset_intervalSet`, `mem_intervalSet_iff_alive`, `ordConnected_intervalSet`, `isLocallyClosed_intervalSet`, `intervalSet_eq_univ`, `intervalSet_eq_stratum`, `intervalSet_eq_singleton`, `intervalSet_eq_Icc`, `intervalSet_eq_Ico`, `intervalSet_eq_Ioc`, `intervalSet_eq_Ioo`, `intervalSet_eq_Iio`, `intervalSet_eq_Iic`, `intervalSet_eq_Ioi`, `intervalSet_eq_Ici`; `isIso_interval_map_gen`; `isIso_germ_star_of_mem_stratum`, `nonempty_stalk_extension_iso`, `nonempty_stalk_extension_interval_iso`, `isZero_stalk_extension_interval`, `finrank_stalk_extension_interval`, `isIso_extension_interval_map` | Strictly increasing breakpoints `p : Fin m → ℝ` (the order lemma, disjointness, `mem_intervalSet_iff_alive` and `intervalSet_eq_stratum` hold for every `p`); `k : Type`, a division ring for `isIso_germ_star_of_mem_stratum`, a field for the interval sheaves `Φ (interval J)`; stalks are Mathlib's `TopCat.Presheaf.stalk`. See [Interval sets and stalks on the real line](#interval-sets-and-stalks-on-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleDerived` | `intervalSheafSum`, `intervalSheafSum_nil`, `intervalSheafSum_cons`, `extensionIntervalSumIso`, `barcodeSheaf`, `extensionBarcodeDiagramIso`, `isConstructible_barcodeSheaf`, the instance `finiteDimensional_sections_barcodeSheaf`, `barcode_sections_barcodeSheaf`, `barcode_sections_extension_interval`; `HasConstructibleCohomology`, `HasConstructibleCohomology.of_iso`, `HasConstructibleCohomology.mono`, `hasConstructibleCohomology_singleFunctor`, `hasConstructibleCohomology_biproduct`, `hasConstructibleCohomology_of_isConstructible`, `exists_iso_biproduct_homology_of_constructible`; `gradedBarcode`, `gradedBarcode_eq_of_iso_barcodeDiagram`, `gradedBarcode_eq_of_iso`, `gradedBarcode_eq_zero_of_isZero`, `gradedBarcode_eq_zero_of_lt`, `gradedBarcode_eq_zero_of_gt`, `gradedBarcode_singleFunctor`, `nonempty_homology_iso_barcodeSheaf`, `exists_iso_biproduct_barcodeSheaf`, `gradedBarcode_eq_of_iso_biproduct`, `gradedBarcode_eq_zero_of_iso_biproduct`, `gradedBarcode_biproduct` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field; objects of Mathlib's `DerivedCategory (TopCat.Sheaf (ModuleCat.{0} k) realLine)` for an instance `HasDerivedCategory`, bounded for its canonical t-structure (`K.IsGE a`, `K.IsLE b`) where stated, with every cohomology sheaf constructible for the breakpoints of `p` (one breakpoint set for all degrees; `hasConstructibleCohomology_of_isConstructible` collects per-degree breakpoint sets into one). See [Graded barcodes on the real line](#graded-barcodes-on-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.RealIntervalSets` | `stratum`, `mem_stratum`, `stratum_subset_star`, `stratum_of_even`, `stratum_odd`, `stratum_odd_of_val`, `stratum_nonempty`, `lt_of_mem_stratum`, `eq_of_mem_stratum`, `exists_mem_stratum`, `eq_of_mem_star_inter_breakpoints`; `intervalSet`, `mem_intervalSet`, `stratum_subset_intervalSet`, `mem_intervalSet_iff_alive`, `ordConnected_intervalSet`, `isLocallyClosed_intervalSet`, `intervalSet_eq_univ`, `intervalSet_eq_stratum`, `intervalSet_eq_singleton`, `intervalSet_eq_Icc`, `intervalSet_eq_Ico`, `intervalSet_eq_Ioc`, `intervalSet_eq_Ioo`, `intervalSet_eq_Iio`, `intervalSet_eq_Iic`, `intervalSet_eq_Ioi`, `intervalSet_eq_Ici`; `isIso_interval_map_gen`; `isIso_germ_star_of_mem_stratum`, `nonempty_stalk_extension_iso`, `nonempty_stalk_extension_interval_iso`, `isZero_stalk_extension_interval`, `finrank_stalk_extension_interval_of_mem`, `finrank_stalk_extension_interval_of_notMem`, `finrank_stalk_extension_interval`, `isIso_extension_interval_map` | Strictly increasing breakpoints `p : Fin m → ℝ` (the order lemma, disjointness, `mem_intervalSet_iff_alive` and `intervalSet_eq_stratum` hold for every `p`); `k : Type`, a division ring for `isIso_germ_star_of_mem_stratum`, a field for the interval sheaves `Φ (interval J)`; stalks are Mathlib's `TopCat.Presheaf.stalk`; `finrank_stalk_extension_interval` takes an instance `[Decidable (x ∈ intervalSet p J)]`. See [Interval sets and stalks on the real line](#interval-sets-and-stalks-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleRefinement` | `refinementVertex`, `stratum_subset_stratum_refinementVertex`, `refinementVertex_eq_of_mem`, `refinementVertex_mono`, `refinementVertex_surjective`, `refineInterval`, `alive_refineInterval`, `intervalSet_refineInterval`, `sortedBreakpoints`, `strictMono_sortedBreakpoints`, `breakpoints_sortedBreakpoints`; `sectionsExtensionIntervalIso`, `sectionsIntervalSheafSumIso`, `barcode_sections_eq_map_refineInterval`, `barcode_sections_map_intervalSet_refine`, `gradedBarcode_eq_map_refineInterval`, `gradedBarcode_map_intervalSet_refine`; `gradedBarcodeSets`, `gradedBarcodeSets_refine`, `gradedBarcodeSets_eq_of_iso`, `gradedBarcodeSets_eq`, `hasConstructibleCohomology_sortedBreakpoints` | Strictly increasing breakpoints `p : Fin m → ℝ` and `q : Fin m' → ℝ` with `breakpoints p ⊆ breakpoints q` for the refinement statements; `k : Type` a field; sheaves constructible for the breakpoints of `p`; graded statements for an instance `HasDerivedCategory` and constructible cohomology for both breakpoint families (any proofs). See [Refinement of the breakpoints on the real line](#refinement-of-the-breakpoints-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_glue_monotone`, `exists_section_lift_extend_right`, `exists_section_lift_extend`, `exists_section_lift_extend_left`, `exists_section_lift_ordConnected`, `sections_exact_ordConnected`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`, order-connected for the lifting statements (open, half-open, closed and unbounded intervals and `ℝ`); germ-surjectivity of the first term on the opens above or below `a'` (extension steps) or avoiding a point `c` (global lifting). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
@@ -67,7 +67,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.AcyclicClass` | `AcyclicClass`, `acyclic_map_of_acyclicClass`, `quasiIso_map_of_acyclicClass`, `isIso_rightDerivedFunctorPlusUnit_app_of_acyclicClass` | Additive left exact `F : A ⥤ B` between abelian categories, `A` with enough injectives for the derived statement; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.FlasqueAcyclic` | `sections_exact_of_left_exact`, `epi_of_shortExact`, `isFlasque_of_shortExact`, `isFlasque_biprod`, `preservesFiniteLimits_pushforward`, `pushforward_shortExact_of_isFlasque`, `acyclicClass_isFlasque`, `acyclic_pushforward_of_isFlasque`, `quasiIso_pushforward_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_of_isFlasque`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_of_isFlasque` | Sheaves of `k`-modules over a ring `k : Type` on `X : TopCat.{0}`, continuous `f : X ⟶ Y`; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibre` | `comp_toPt`, `H_iso_of_homeo`, `isIso_derivedUnit_toPt_app_of_homeo`, `isIso_toPt_Icc_self`, `isIso_derivedUnit_toPt_Icc_self`; `BandConvolution.fibre`, `fibreHomeo`, `coe_fibreHomeo_apply`, `fibreIso`, `fibreIso_toPt`, `isZero_H_fibre`, `isIso_derivedUnit_toPt_fibre` | Homeomorphisms `h : X ⟶ Y` in `TopCat.{0}` (`[IsIso h]`), `k : Type` a ring; fibres of the band projection `BandConvolution.q a`. The fibre statements take a derived category structure on `[y - a, y + a]` as an instance argument; the unit statement needs `0 ≤ a`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.BaseChange` | `isRightDerivedFunctor_rightDerivedFunctorPlus_comp`, `pullbackPushforwardAdjunctionPlus`, `isLeftDerivedFunctor_pullbackPlus`, `derivedCounit`, `derivedCounit_fac_app`, `derivedAdjunction`, `isIso_derivedCounit`, `pullbackPlusSquare`, `baseChange`, `baseChange_eq`, `baseChange_app`, `derivedUnit_baseChange`, `baseChange_naturality`, `isIso_baseChange_of_isIso` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; a commutative square `w : g' ≫ f = f' ≫ g`; derived categories as instance arguments. See [Derived base change](#derived-base-change). |
+| `TDA.Sheaf` / `TDA.Sheaf.BaseChange` | `isRightDerivedFunctor_rightDerivedFunctorPlus_comp`, `pullbackPushforwardAdjunctionPlus`, `isLeftDerivedFunctor_pullbackPlus`, `derivedCounit`, `derivedCounit_fac_app`, `derivedAdjunction`, `isIso_derivedCounit`, `pullbackPlusSquare`, `baseChange`, `baseChange_eq`, `baseChange_app`, `derivedUnit_baseChange`, `baseChange_naturality`, `isIso_baseChange_of_isIso` (an instance) | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; a commutative square `w : g' ≫ f = f' ≫ g`; derived categories as instance arguments. See [Derived base change](#derived-base-change). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalAcyclic` | `germ_pullback_surjective`, `germSurjective_pullback`, `germSurjective_pullback_of_isFlasque`, `germSurjective_of_id_eq_add`, `pushforward_toPt_shortExact_Icc`, `acyclicClass_germSurjective_Icc`, `isIso_rightDerivedFunctorPlusUnit_app_toPt_Icc_of_germSurjective`, `isZero_H_Icc_pullback_of_isFlasque`, `isIso_derivedUnit_Icc` | Continuous maps in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`; the interval statements are for `[u, v]`, all `u`, `v`, and the derived unit statement for `u ≤ v`. See [Flasque acyclicity](#flasque-acyclicity). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandStalks` | `BandConvolution.ptAt`, `ptAt_eq`, `fibreEmb`, `coe_fibreEmb_apply`, `fibreEmb_eq`, `mem_range_fibreEmb`, `fibreEmb_comp_q`, `fibreCoordinate_q`, `fibreCoordinate_q_t`, `isFibreParam_fibreEmb`, `intervalFibration_q`, `intervalFibration_q_e`, `exists_preimage_q_le`, `exists_preimage_q_le_of_fibreEmb`, `exists_unit_eq_fibreEmb`, `stalkComparison`, `baseChangeSheaf_fibreEmb_app`, `stalkComparison_app_top`, `stalkComparison_naturality`, `isIso_stalkComparison`, `stalkIso`, `stalkIso_hom_app`, `stalkSectionsIso`, `nonempty_stalkFormula`, `nonempty_stalkFormula_homology`, `isZero_H_stalk_pushforwardPlus_q` | The band projection `BandConvolution.q a` for all `a y : ℝ`, `k : Type` a ring; the fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]` through `fibreEmb a y`, and stalks at `y` are read through `(ptAt y)⁻¹`. The derived statements take derived category structures on `D a`, `ℝ`, `pt` and `[y - a, y + a]` as instance arguments. See [Stalks of band projections](#stalks-of-band-projections). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandAmplitude` | `isGE_rightDerivedFunctorPlus_obj`, `nonempty_homology_rightDerivedFunctorPlus_of_exact`, `isLE_rightDerivedFunctorPlus_obj_of_exact`, `isLE_pushforwardPlus_toPt_Icc`, `isGE_isLE_pushforwardPlus_toPt_Icc`, `boundedToPlus`, `PreservesBounded`, `PreservesBounded.id`, `PreservesBounded.comp`, `restrictBounded`, `restrictBounded_comp_boundedToPlus`, `restrictBoundedMap`, `restrictBoundedMap_app`, `whiskerRight_restrictBoundedMap`, `restrictBoundedMap_id`, `restrictBoundedMap_comp`, `restrictBoundedIso`, `restrictBoundedIso_hom`, `restrictBoundedIso_inv`, `restrictBoundedId`, `restrictBoundedComp`, `restrictBoundedCompMap`, `whiskerRight_restrictBoundedCompMap`, `restrictBoundedCompMapIso`; `BandConvolution.isGE_T_obj`, `isLE_T_obj`, `isGE_isLE_T_obj`, `preservesBounded_T`, `TB`, `TB_comp_boundedToPlus`, `restrB`, `whiskerRight_restrB`, `restrB_refl`, `restrB_trans`, `T0IsoB`, `whiskerRight_T0IsoB_hom`, `augB`, `whiskerRight_augB`, `augB_eq`, `augB_zero`, `restrB_comp_augB`, `compIsoB`, `whiskerRight_compIsoB_hom` | Degrees are those of the canonical t-structure (`IsGE`, `IsLE`) on `DerivedCategory.Plus`; `Dᵇ` is `DerivedCategory.Bounded`. The general statements are for abelian categories with derived category structures, the source with enough injectives; the derived functor of an exact functor for `F` preserving finite limits and colimits. The band statements take derived category structures on `ℝ` and every `D a`; the upper bound and the bounded functors also on `pt` and every `[u, v]`. See [Amplitude of the band functors](#amplitude-of-the-band-functors). |
@@ -78,6 +78,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.BandComposition` | `BandConvolution.bandChain`, `mem_bandChain`, `isClosed_bandChain`, `Z`, `dist_le_add_of_mem_bandChain`, `pr₁₂`, `pr₂₃`, `pr₁₃`, `coe_pr₁₂_apply`, `coe_pr₂₃_apply`, `coe_pr₁₃_apply`, `pr₁₂_q`, `pr₁₃_p`, `pr₁₃_q`, `isProperMap_pr₂₃`, `isProperMap_pr₁₃`; `fibreCoordinate_pr₂₃`, `fibreCoordinate_pr₂₃_t`, `fibreEmb₂₃`, `coe_fibreEmb₂₃_apply`, `isFibreParam_fibreEmb₂₃`, `intervalFibration_pr₂₃`, `intervalFibration_pr₂₃_e`, `lo_le_hi_pr₂₃`; `fibreCoordinate_pr₁₃`, `fibreCoordinate_pr₁₃_t`, `fibreEmb₁₃`, `coe_fibreEmb₁₃_apply`, `isFibreParam_fibreEmb₁₃`, `intervalFibration_pr₁₃`, `intervalFibration_pr₁₃_e`, `lo_le_hi_pr₁₃`; `isIso_baseChange_pr₁₂_q`, `isIso_derivedUnit_pr₁₃`, `TCompRestr`, `TCompRestr_eq`, `TCompRestr_app`, `isIso_TCompRestr`, `TComp`, `TComp_hom_app_TCompRestr`, `TComp_inv_app` | `Z a b = {(x, y, z) ∈ ℝ³ | dist x y ≤ a ∧ dist y z ≤ b}` as `TopCat.{0}`, all `a b : ℝ` for the spaces, maps, interval fibrations and the base change; nonempty fibres, the derived unit of `pr₁₃`, `isIso_TCompRestr` and `TComp` for `0 ≤ a`, `0 ≤ b`; `k : Type` a ring; derived category structures on `ℝ`, every `D a`, every `Z a b`, `pt` and every `[u, v]` as instance arguments. See [The composition isomorphism of the band functors](#the-composition-isomorphism-of-the-band-functors). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandCompositionLaws` | `BandConvolution.inclZ`, `pr₁₃Of`, `pr₁₃Of_zero_add`, `pr₁₃Of_add_zero`, `TCompCounit`, `TCompCounit_eq`, `TComp_hom_app_TCompRestr_eq`, `TComp_hom_app_TCompRestr_eq_assoc`, `restr_TCompRestr`, `whiskerRight_restr_TComp_hom`, `whiskerLeft_restr_TComp_hom`, `hcomp_restr_TComp_hom`, `eqToHom_TCompRestr`, `T0Iso_eq_corrUnitIso`, `T0Iso_inv_TCompCounit`, `eqToHom_TCompRestr_zero_add`, `TCompOfEq`, `TCompOfEq_rfl`, `TCompOfEq_hom`; `TCompB`, `whiskerRight_TCompB_hom`, `whiskerRight_restrB_TCompB_hom`, `whiskerLeft_restrB_TCompB_hom`, `hcomp_restrB_TCompB_hom` | `0 ≤ a`, `0 ≤ b` for the composition isomorphism, `a ≤ a'`, `b ≤ b'` for the radius maps, `a + b = c` for `pr₁₃Of` and `TCompOfEq`; `k : Type` a ring; derived category structures on `ℝ`, every `D a`, every `Z a b`, `pt` and every `[u, v]` as instance arguments. See [Laws of the composition isomorphism](#laws-of-the-composition-isomorphism). |
 | `TDA.Sheaf` / `TDA.Sheaf.BaseChangeRestriction` | `derivedCounit_comp_app`, `derivedUnit_comp_app_counit`, `derivedUnit_comp_app_pullbackPlusCompIso_inv`, `corrRestr_counit`, `corrRestr_app_comp_map`, `pullbackPlusCompIso_transport`, `eqToHom_comp_transport`, `pullbackPlusCompIso_hom_app_eqToHom`, `pullbackPlusCompIso_inv_app_eqToHom`, `corrRestr_eq_of_eq`, `corrUnitIso`, `pullbackPlus_map_corrUnitIso_inv_app_counit`, `pullbackPlus_map_corrUnitIso_inv_app_transport` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; `corrUnitIso` for maps `u = v` whose derived unit `𝟭 ⟶ v⁻¹ ⋙ Rv_*` is invertible; derived categories as instance arguments. See [Units, counits and restrictions of correspondences](#units-counits-and-restrictions-of-correspondences). |
+| `TDA.Sheaf` / `TDA.Sheaf.ClientExamples` | `isOpen_of_isOpen_generateFrom_orthant`, `isOpen_generateFrom_orthant`, `inferInstance_eq_generateFrom`; `ephemeral_orthantBasis_iff_two`, `isZero_orthantQ_iff_two`, `isZero_orthantQ_iff_structureMap`; `q2`, `q2_strictMono`, `Jc`, `Jco`, `stratum_q2_three`, `intervalSet_q2_Jc`, `half_mem_intervalSet_q2_Jc`, `two_notMem_intervalSet_q2_Jc`, `finrank_stalk_Jc_half_of_mem`, `finrank_stalk_Jc_two_of_notMem`, `decidableMemJc`, `finrank_stalk_Jc_half`, `finrank_stalk_Jc_two`, `finrank_stalk_extension_interval_isTrue`, `finrank_stalk_extension_interval_classical`, `barcode_sections_extension_Jc`, `barcode_sections_barcodeSheaf_Jc_Jco`, `isConstructible_Jc`, `gradedBarcode_singleFunctor_Jc`, `ext_representable_extension_Jc`; `isIso_baseChange_id_realLine`, `realLine_eq`, `isGE_isLE_T_one`, `TCompOneOne` | Fixtures written as a client writes them: public declarations and library instances, decidability supplied explicitly; the only local instances are `HasDerivedCategory.standard`, `hasExt_sheaf_realLine` and `hasExt_diagram`. See [Sheaf statements as a client writes them](#sheaf-statements-as-a-client-writes-them). |
 
 ### Capped centred height-map pairs
 
@@ -4166,15 +4167,18 @@ obstruction `rays_isEmpty` at `t = 0` and the comparison witness `rayInterleavin
 arrows are nonzero), likewise a sheaf witness (`raySheaves_nonempty_iff`,
 `raySheafInterleaving_φ_ne_zero`), and the sheaf distance is `r` (`raySheaves_distance`).
 
-`TDA.Sheaf.AlexandrovCoordinateTranslation` translates sheaves on
-`X := upperSpace (Fin n → ℝ)`, the product order with its upper Alexandrov topology, for every
-`n` including `n = 0`. For `ε : ℝ≥0`, `translate ε : X ⟶ X` is `x ↦ x - ε · 1`, that is
-`(translate ε x)_i = x_i - ε`, `WithUpperSet.map` of the monotone `downTranslation ε`. Its
-preimage of an open `U` is the image of `U` under `CoordinateShift.translation ε`
-(`coe_map_translate`, `mem_map_translate`), and `↑a` pulls back to
-`↑(CoordinateShift.translation ε a)` (`map_translate_principalOpen`); inclusions and equalities
-of preimages are proved coordinatewise (`map_translate_antitone`, `map_translate_le`,
-`map_translate_zero`, `map_translate_comp`).
+`TDA.Sheaf.AlexandrovCoordinateTranslation` translates sheaves on `X := upperSpace (Fin n → ℝ)`, the
+product order with its upper Alexandrov topology, for every `n` including `n = 0`. For `ε : ℝ≥0`,
+`translate ε : X ⟶ X` is `x ↦ x - ε · 1`, that is `(translate ε x)_i = x_i - ε`, `WithUpperSet.map`
+of the monotone `downTranslation ε`. Its preimage of an open `U` is the image of `U` under
+`CoordinateShift.translation ε` (`coe_map_translate`, `mem_map_translate`), and `↑a` pulls back to
+`↑(CoordinateShift.translation ε a)` (`map_translate_principalOpen`); inclusions and equalities of
+preimages are proved coordinatewise (`map_translate_antitone`, `map_translate_le`,
+`map_translate_zero`, `map_translate_comp`). Diagrams on `Fin n → ℝ` use the coordinatewise preorder
+category `TDA.Persistence.realCoordinatePreorderCategory`, selected by
+`open scoped TDA.Persistence`; outside that scope `Category (Fin n → ℝ)` is Mathlib's product
+category `CategoryTheory.pi`, and the maps of a `PModule` on `Fin n → ℝ` are written through
+`TDA.Persistence.structureMap`.
 
 - `sheafShift C ε := TopCat.Sheaf.pushforward C (translate ε)`, with
   `(S ε F)(U) = F(U + ε · 1)` (`sheafShift_obj_presheaf_obj`,
@@ -4321,12 +4325,13 @@ positive interval `[0, 1)` is nonzero. `rayEphemeral_pointModule`: the singleton
 
 `TDA.Sheaf.StrictBasis` states the comparison of persistence modules with sheaves once, for a
 basis of opens indexed by points. `S : StrictBasis P X` (namespace `TDA.Sheaf`), for a
-join-semilattice `P : Type` and `X : TopCat.{0}`, consists of a continuous map
+join-semilattice `P : Type v` and `X : TopCat.{v}` in one universe `v`, consists of a continuous map
 `ι : upperSpace P ⟶ X` and opens `U p`, antitone in `p`, such that `ι s ∈ U t` gives `t ≤ s`
 (`S.Strict t s`, with `le_of_strict`, `strict_of_strict_of_le`, `strict_of_le_of_strict`,
 `exists_strict_strict`), `U p ≤ V` whenever `ι p ∈ V` (`mem_of_le`), every point of an open
 `V` lies in some `U p` with `ι p ∈ V`, `U s ⊓ U t ≤ U (s ⊔ t)`, and `Strict` interpolates. The
-value category is `C : Type u` with `[Category.{0} C]`, and `[HasLimits C]` for `Q`.
+value category is `C : Type u` with `[Category.{v} C]`, and `[HasLimits C]` for `Q`; the ray
+and orthant bases are the case `v = 0`.
 
 - `iSup_U` covers each open by the basic opens at its points (the empty open by the empty
   family), and `isBasis_U` makes them a basis; `principalOpen_le_map_U`.
@@ -4349,19 +4354,22 @@ value category is `C : Type u` with `[Category.{0} C]`, and `[HasLimits C]` for 
 
 `TDA.Sheaf.SpaceTranslation` does the same for shifts. `τ : SpaceTranslation X` is a family of
 continuous maps `T ε : X ⟶ X`, `ε : ℝ≥0`, with `T ε⁻¹(V) ≤ V` and
-`T δ⁻¹(T ε⁻¹(V)) = T (ε + δ)⁻¹(V)`, for `C : Type u` with `[Category.{v} C]`.
+`T δ⁻¹(T ε⁻¹(V)) = T (ε + δ)⁻¹(V)`, for `X : TopCat.{w}` and `C : Type u` with
+`[Category.{v} C]`.
 `τ.shift C ε` is pushforward along `T ε`, `τ.transition C ε` restricts along `T ε⁻¹(V) ≤ V`, and
 `τ.compIso C ε δ : τ.shift C δ ⋙ τ.shift C ε ≅ τ.shift C (ε + δ)` (`shift_obj_presheaf_obj`,
-`shift_map_hom_app`, `transition_app_hom_app`, `compIso_hom_app_hom_app`,
-`compIso_hom_naturality`, `transition_naturality`, `transition_add`, and
-`compIso_hom_naturality_assoc`, `transition_naturality_assoc`).
-`τ.Interleaving ε F G` has the orientation of `CoordinateInterleaving`
-(`Interleaving.ext`, `Interleaving.ext_iff`, `Interleaving.symm`, `Interleaving.refl`,
-`Interleaving.congr`); `τ.interleavingDistance` is the extended infimum of radii
-(`interleavingDistance_le`, `interleavingDistance_congr`).
+`shift_map_hom_app`, `transition_app_hom_app`, `compIso_hom_app_hom_app`, `compIso_hom_naturality`,
+`transition_naturality`, `transition_add`, and `compIso_hom_naturality_assoc`,
+`transition_naturality_assoc`). `τ.Interleaving ε F G` has the orientation of
+`CoordinateInterleaving` (`Interleaving.ext`, `Interleaving.ext_iff`, `Interleaving.symm`,
+`Interleaving.refl`, `Interleaving.congr`); `τ.interleavingDistance` is the extended infimum of
+radii (`interleavingDistance_le`, `interleavingDistance_congr`).
 
-`TDA.Sheaf.OrthantSheaf` (namespace `TDA.Sheaf.OrthantSheaf`) applies both to `Fin n → ℝ`, for
-every `n : ℕ`.
+`TDA.Sheaf.OrthantSheaf` (namespace `TDA.Sheaf.OrthantSheaf`) applies both to `Fin n → ℝ`, for every
+`n : ℕ`. Diagrams on `Fin n → ℝ` use the coordinatewise preorder category
+`TDA.Persistence.realCoordinatePreorderCategory`, selected by `open scoped TDA.Persistence`; outside
+that scope `Category (Fin n → ℝ)` is Mathlib's product category `CategoryTheory.pi`, and the maps of
+a `PModule` on `Fin n → ℝ` are written through `TDA.Persistence.structureMap`.
 
 - `WithOrthant n` is the type synonym of `Fin n → ℝ` (`WithOrthant.toOrthant`,
   `WithOrthant.ofOrthant`, `toOrthant_ofOrthant`, `ofOrthant_toOrthant`) with the instance
@@ -4369,12 +4377,12 @@ every `n : ℕ`.
   `s` has `s - δ · 1` inside for some `δ > 0` (`isOpen_iff`, `isUpperSet_opens`).
   `orthantSpace n := TopCat.of (WithOrthant n)`. `isOpen_ofOrthant_preimage_iff`: the open sets
   are exactly the upper sets of `Fin n → ℝ` that are open for the product topology.
-- `orthant x = {s | ∀ i, x i < s i}` (`mem_orthant`, `orthant_antitone`). The common finite
-  diagonal step `exists_diagonal_step` gives `δ > 0` with `x i < s i - δ` for all `i` when
-  `x i < s i` for all `i`; `exists_orthant_mem` covers a point `x` of an open by the orthant at
-  `x - δ · 1`; `orthant_le`; `orthant_inf : orthant x ⊓ orthant y = orthant (x ⊔ y)` (the
-  coordinatewise maximum); `isBasis_orthant`; `eq_generateFrom`: the topology is generated by
-  the orthants.
+- `orthant x = {s | ∀ i, x i < s i}` (`mem_orthant`, `orthant_antitone`). The common finite diagonal
+  step `exists_diagonal_step` gives `δ > 0` with `x i < s i - δ` for all `i` when `x i < s i` for
+  all `i`; `exists_orthant_mem` covers a point `x` of an open by the orthant at `x - δ · 1`;
+  `orthant_le`; `orthant_inf : orthant x ⊓ orthant y = orthant (x ⊔ y)` (the coordinatewise
+  maximum); `isBasis_orthant`; `eq_generateFrom : orthantTopology n = generateFrom …`: the topology
+  is generated by the orthants, and `rw [eq_generateFrom]` rewrites the topology of `WithOrthant n`.
 - `orthantId : upperSpace (Fin n → ℝ) ⟶ orthantSpace n` (`orthantId_apply`) and
   `orthantBasis n : StrictBasis (Fin n → ℝ) (orthantSpace n)` (`orthantBasis_ι`,
   `orthantBasis_U`); `strict_orthantBasis_iff : (orthantBasis n).Strict x y ↔ ∀ i, x i < y i`,
@@ -4408,7 +4416,8 @@ every `n : ℕ`.
 ### Strict-basis and orthant sheaves as a localization
 
 `TDA.Sheaf.StrictBasisLocalization` continues `TDA.Sheaf.StrictBasis` for
-`S : StrictBasis P X` and `C : Type u` with `[Category.{0} C] [HasLimits C]`.
+`S : StrictBasis P X` (`P : Type v`, `X : TopCat.{v}`) and `C : Type u` with
+`[Category.{v} C] [HasLimits C]`.
 
 - `S.adjunction C : S.Q C ⊣ S.B C` with unit `S.unit C` and counit `(S.counitIso C).hom`
   (`adjunction_unit`, `adjunction_counit`, `adjunction_homEquiv_apply`,
@@ -4745,10 +4754,12 @@ subcomplex to a complex with a homotopy `0 ≃ 𝟙`.
 
 ## Closed-band functors on `D⁺(Sh(ℝ; k))`
 
-`TDA.Sheaf.DerivedPlus` works with sheaves of modules `X.Sheaf (ModuleCat k)` over a ring `k`
-on `X : TopCat` and their bounded below derived categories `DerivedCategory.Plus`. Each
-derived category structure is an instance argument `[HasDerivedCategory (X.Sheaf (ModuleCat k))]`;
-the fixtures use Mathlib's `HasDerivedCategory.standard` as a local instance.
+`TDA.Sheaf.DerivedPlus` works with sheaves of modules `X.Sheaf (ModuleCat k)` over a ring `k` on
+`X : TopCat` and their bounded below derived categories `DerivedCategory.Plus`. Its sheaf statements
+use one universe `u`: `k : Type u`, values in `ModuleCat.{u} k` and spaces in `TopCat.{u}`; the band
+modules below use `u = 0`. Each derived category structure is an instance argument
+`[HasDerivedCategory (X.Sheaf (ModuleCat k))]`; the fixtures use Mathlib's
+`HasDerivedCategory.standard` as a local instance.
 
 - `pullbackPlus k f` is the right derived functor of the exact inverse image `f⁻¹`
   (`pullback_preservesFiniteLimits`, `pullback_additive`); its comparison maps are invertible
@@ -4772,10 +4783,11 @@ the fixtures use Mathlib's `HasDerivedCategory.standard` as a local instance.
   invertible.
 
 `TDA.Sheaf.BandConvolution` specializes to the closed bands `D a = {(x, y) | dist x y ≤ a}` with
-projections `p a`, `q a`, both proper (`isProperMap_p`, `isProperMap_q`), closed inclusions
-`incl h` for `h : a ≤ b` (`isClosedEmbedding_incl`, `incl_p`, `incl_q`) and the shear
-homeomorphism `shear a : band a ≃ₜ Set.Icc (-a) a × ℝ` (`shear_snd`, `shear_add`). The derived
-categories of the real line and of every band are instance arguments.
+projections `p a`, `q a`, both proper (`isProperMap_p`, `isProperMap_q`), closed inclusions `incl h`
+for `h : a ≤ b` (`isClosedEmbedding_incl`, `incl_p`, `incl_q`) and the shear homeomorphism
+`shear a : band a ≃ₜ Set.Icc (-a) a × ℝ` (`shear_snd`, `shear_add`). The derived categories of the
+real line and of every band are instance arguments. The ring is `k : Type`, sheaves take values in
+`ModuleCat.{0} k`, and all spaces are in `TopCat.{0}`. The real line is `TDA.Sheaf.realLine`.
 
 - `T k a := pullbackPlus k (p a) ⋙ pushforwardPlus k (q a)`, the functor `F ↦ R(q_a)_* p_a⁻¹ F`.
 - `restr k h : T k b ⟶ T k a` is `corrRestr` along `incl h` (`restr_app`), with
@@ -4904,13 +4916,16 @@ strata, stars and basic opens of `TDA.Sheaf.RealStratification`, with `S = break
   Diagram k (orient m)` for a field `k` is restriction along `starFunctor p`. Pinned equations:
   `sections_obj_obj`, `(Γ F)(v) = F(star p v)`; `sections_map_gen`, `(Γ F)(gen h)` is the
   restriction `F(star p v) ⟶ F(star p w)` along `star_le_star_of_arrow`.
-- The extension functor `extension k hp : Diagram k (orient m) ⥤
-  TopCat.Sheaf (ModuleCat.{0} k) realLine` is `basisSheaf k hp` (the diagram composed with
-  `tauFunctor hp`, a sheaf on the basis by `isSheaf_tauFunctor_comp`) followed by the functor of
-  `basisEquiv`. `extensionBasicIso : (Φ M)(U) ≅ M(tau p U)` for basic `U`, and
-  `extensionStarIso : (Φ M)(star p v) ≅ M v`. `isConstructible_extension`: `Φ M` is
-  constructible when every `M.obj X` is finite-dimensional; `finiteDimensional_sections`: `Γ F`
-  has finite-dimensional values when `F` is constructible.
+- The extension functor
+  `extension k hp : Diagram k (orient m) ⥤ TopCat.Sheaf (ModuleCat.{0} k) realLine` is
+  `basisSheaf k hp` (the diagram composed with `tauFunctor hp`, a sheaf on the basis by
+  `isSheaf_tauFunctor_comp`) followed by the functor of `basisEquiv`.
+  `extensionBasicIso : (Φ M)(U) ≅ M(tau p U)` for basic `U`, and
+  `extensionStarIso : (Φ M)(star p v) ≅ M v`. `isConstructible_extension`: `Φ M` is constructible
+  when every `M.obj X` is finite-dimensional; `finiteDimensional_sections`: `Γ F` has
+  finite-dimensional values when `F` is constructible. The instance
+  `finiteDimensional_sections_extension` gives this for `Γ (Φ M)` when `M` has finite-dimensional
+  values, so `barcode (Γ (Φ M))` elaborates directly.
 - The counit `extensionSectionsIso : extension k hp ⋙ sections k p ≅ 𝟭 _` has components
   `extensionStarIso` (`extensionSectionsIso_app_app`). The unit
   `sectionsExtensionIso : ObjectProperty.ι _ ≅ ObjectProperty.ι _ ⋙ sections k p ⋙ extension k hp`
@@ -4986,8 +5001,9 @@ are sheaves defined independently of `Φ`.
   (Φ (P_v ⊗ V) ⟶ F) ≃ (V ⟶ F(star p v))` (`homExtensionPathTensorEquiv_apply`,
   `homExtensionPathTensorEquiv_comp`). Here `P_v = representable k (orient m) v` and
   `P_v ⊗ V = (pathTensor k (orient m) v).obj V` are D2's projectives.
-- `hasExt_sheaf_realLine` and `hasExt_diagram`: `HasExt.{0}` for sheaves of `k`-modules on `ℝ`
-  and for `Diagram k o`, the instances `Abelian.Ext` takes.
+- `hasExt_sheaf_realLine` and `hasExt_diagram`: `HasExt.{0}` for sheaves of `k`-modules on `ℝ` and
+  for `Diagram k o`. Both are theorems; a client installs them for `Abelian.Ext` with
+  `attribute [local instance] hasExt_sheaf_realLine hasExt_diagram` or with `haveI`.
 - For an injective resolution `R` of a sheaf `Y`: `ext_extension_eq_zero_of_lift`,
   `Ext^{q+1}(Φ M, Y) = 0` when every `M ⟶ Γ(R^{q+1})` killed by `Γ(d)` factors through
   `Γ(d) : Γ(R^q) ⟶ Γ(R^{q+1})`; `ext_extension_representable_eq_zero` (for `P_v`) and
@@ -5111,14 +5127,16 @@ sheaf and `F[-i] = (singleFunctor _ i).obj F`.
   `hasConstructibleCohomology_biproduct`: a finite sum of barcode sheaves in distinct degrees.
 - `exists_iso_biproduct_homology_of_constructible`: such a `K` with `K.IsGE a`, `K.IsLE b` is
   `⨁_{i ∈ [a, b]} (Hⁱ K)[-i]` (`exists_iso_biproduct_homology_of_two_le` with
-  `ext_constructible_eq_zero_of_two_le`, for the instance `hasExt_sheaf_realLine`).
+  `ext_constructible_eq_zero_of_two_le`, with `hasExt_sheaf_realLine` installed in the proof).
 - Interval sheaves of a barcode: `intervalSheafSum k hp xs` is the iterated biproduct
   `⊞_{J ∈ xs} Φ (interval J)` of a list of intervals (`intervalSheafSum_nil`,
   `intervalSheafSum_cons`), `extensionIntervalSumIso : Φ (intervalSum xs) ≅ intervalSheafSum xs`;
   `barcodeSheaf k hp B = intervalSheafSum k hp B.toList` for a multiset `B`, with
   `extensionBarcodeDiagramIso : Φ (barcodeDiagram B) ≅ barcodeSheaf B`,
-  `isConstructible_barcodeSheaf`, `barcode_sections_barcodeSheaf` (`barcode (Γ (barcodeSheaf B))
-  = B`) and `barcode_sections_extension_interval` (`barcode (Γ (Φ (interval J))) = {J}`).
+  `isConstructible_barcodeSheaf`, the instance `finiteDimensional_sections_barcodeSheaf`
+  (finite-dimensional values of `Γ (barcodeSheaf B)`), `barcode_sections_barcodeSheaf`
+  (`barcode (Γ (barcodeSheaf B)) = B`) and `barcode_sections_extension_interval`
+  (`barcode (Γ (Φ (interval J))) = {J}`).
 - `gradedBarcode k hp K hK i`: D2's `barcode` of the diagram `Γ (Hⁱ K)`, a multiset of
   `FiniteInterval (2 * m + 1)`. `gradedBarcode_eq_of_iso_barcodeDiagram` (any decomposition of
   `Γ (Hⁱ K)` gives it), `gradedBarcode_eq_of_iso` (isomorphic objects have equal graded barcodes
@@ -5151,12 +5169,14 @@ its graded barcode is `{segLeft}` in degree `0` (`gradedBarcode_twoDegree_zero`)
 (`hp : StrictMono p`), the strata path `orient m` with vertices `Fin (2 * m + 1)` and, for the
 sheaf statements, a field `k : Type` and `Φ = extension k hp`.
 
-- `stratum p v`: the points of `star p v` that equal `p_i` whenever `v = 2i+1`. It is the open
-  cell `star p v` for an even vertex (`stratum_of_even`) and the breakpoint `{p_i}` for the vertex
-  `2i+1` (`stratum_odd`). Strata are nonempty (`stratum_nonempty`), ordered like their vertices
-  (`lt_of_mem_stratum`: a point of the stratum `v` lies below every point of the stratum `u` when
-  `v < u`), pairwise disjoint (`eq_of_mem_stratum`) and cover `ℝ` (`exists_mem_stratum`); the star
-  of the stratum of `x` meets the breakpoints at most in `x` (`eq_of_mem_star_inter_breakpoints`).
+- `stratum p v`: the points of `star p v` that equal `p_i` whenever `v = 2i+1`. It is the open cell
+  `star p v` for an even vertex (`stratum_of_even`) and the breakpoint `{p_i}` for the vertex `2i+1`
+  (`stratum_odd`, and `stratum_odd_of_val` for any vertex `v` with `v.val = 2 * i.val + 1`, which
+  rewrites at a literal vertex). Strata are nonempty (`stratum_nonempty`), ordered like their
+  vertices (`lt_of_mem_stratum`: a point of the stratum `v` lies below every point of the stratum
+  `u` when `v < u`), pairwise disjoint (`eq_of_mem_stratum`) and cover `ℝ` (`exists_mem_stratum`);
+  the star of the stratum of `x` meets the breakpoints at most in `x`
+  (`eq_of_mem_star_inter_breakpoints`).
 - `intervalSet p J`: the union of the strata of the vertices of an interval `J` of the strata
   path (`mem_intervalSet`, `stratum_subset_intervalSet`). A point of the stratum `v` lies in
   `intervalSet p J` exactly when `J.alive v` (`mem_intervalSet_iff_alive`). Every interval set is
@@ -5172,14 +5192,17 @@ sheaf statements, a field `k : Type` and `Φ = extension k hp`.
   `isIso_germ_of_isConstructible`); hence `(Φ M)_x ≅ M v` for a diagram `M` with
   finite-dimensional values (`nonempty_stalk_extension_iso`).
 - `Φ (interval J)` is the interval sheaf of `J`, with stalk `k` exactly on `intervalSet p J`:
-  `nonempty_stalk_extension_interval_iso` (`(Φ (interval J))_x ≅ k` for
-  `x ∈ intervalSet p J`), `isZero_stalk_extension_interval` (the stalk is zero for
-  `x ∉ intervalSet p J`) and `finrank_stalk_extension_interval` (dimension `1` on the interval
-  set and `0` off it). `isIso_extension_interval_map`: for an arrow `h : v → w` of `orient m` with
-  `v` and `w` in `J`, the restriction `(Φ (interval J))(star p v) ⟶ (Φ (interval J))(star p w)` is
-  an isomorphism; read through the germ isomorphisms it is the cospecialisation map from the stalk
-  at the breakpoint to the stalk at a point of the adjacent cell. On the diagram side,
-  `isIso_interval_map_gen` says that an arrow inside `J` acts invertibly on `interval J`.
+  `nonempty_stalk_extension_interval_iso` (`(Φ (interval J))_x ≅ k` for `x ∈ intervalSet p J`),
+  `isZero_stalk_extension_interval` (the stalk is zero for `x ∉ intervalSet p J`);
+  `finrank_stalk_extension_interval_of_mem` and `finrank_stalk_extension_interval_of_notMem`
+  (dimension `1` on the interval set and `0` off it, from a membership hypothesis), and
+  `finrank_stalk_extension_interval`, both cases as `if x ∈ intervalSet p J then 1 else 0` for an
+  instance `[Decidable (x ∈ intervalSet p J)]`. `isIso_extension_interval_map`: for an arrow
+  `h : v → w` of `orient m` with `v` and `w` in `J`, the restriction
+  `(Φ (interval J))(star p v) ⟶ (Φ (interval J))(star p w)` is an isomorphism; read through the germ
+  isomorphisms it is the cospecialisation map from the stalk at the breakpoint to the stalk at a
+  point of the adjacent cell. On the diagram side, `isIso_interval_map_gen` says that an arrow
+  inside `J` acts invertibly on `interval J`.
 
 `TDA.Sheaf.RealIntervalSetsExamples` uses one breakpoint `p₁ = 0` over `ℚ`, with the intervals
 `leftCell = [0, 0]`, `pointSegment = [1, 1]`, `rightCell = [2, 2]`, `segLeft = [0, 1]`,
@@ -5267,9 +5290,9 @@ are epimorphisms).
   intersection of their opens.
 
 `TDA.Sheaf.IntervalSections` works on a subspace `S ⊆ ℝ`, as `TopCat.of S`, with the opens
-`openIoo S p q = S ∩ (p, q)` (`mem_openIoo`, `openIoo_le_openIoo`, `exists_openIoo_le`). Let
-`X₁ ⟶ X₂ ⟶ X₃` be exact and let `s` be a global section of `X₃` that lifts to `X₂` near every
-point.
+`openIoo S p q = S ∩ (p, q)` (`mem_openIoo`, `openIoo_le_openIoo`, `exists_openIoo_le`). The ring is
+`k : Type`, sheaves take values in `ModuleCat.{0} k`, and all spaces are in `TopCat.{0}`. Let
+`X₁ ⟶ X₂ ⟶ X₃` be exact and let `s` be a global section of `X₃` that lifts to `X₂` near every point.
 
 - `exists_glue_monotone` (any `X : TopCat.{0}`): compatible sections over an increasing sequence
   of opens glue to a section over their union.
@@ -5520,11 +5543,12 @@ in `TopCat.{0}`; each derived category is an instance argument
 - For `w : g' ≫ f = f' ≫ g` (`f : X ⟶ Y`, `g : Y' ⟶ Y`, `f' : X' ⟶ Y'`, `g' : X' ⟶ X`),
   `pullbackPlusSquare k w : g⁻¹ ⋙ f'⁻¹ ⟶ f⁻¹ ⋙ g'⁻¹` is the isomorphism of inverse images
   (`pullbackPlusCompIso` and `w`), and `baseChange k w : Rf_* ⋙ g⁻¹ ⟶ g'⁻¹ ⋙ Rf'_*` (that is,
-  `g⁻¹ ∘ Rf_* ⟶ Rf'_* ∘ g'⁻¹`) is its mate (`mateEquiv`) for the derived adjunctions of `f` and
-  `f'` (`baseChange_eq`; `isIso_pullbackPlusSquare`). `baseChange_app` gives its components (unit of `f'`, `pullbackPlusSquare`, counit of
-  `f`), `derivedUnit_baseChange` the mate characterisation, `baseChange_naturality` its
-  naturality, and `isIso_baseChange_of_isIso` its invertibility when `f` and `f'` are
-  homeomorphisms. The `@[reassoc]` forms `derivedCounit_fac_app_assoc`,
+  `g⁻¹ ∘ Rf_* ⟶ Rf'_* ∘ g'⁻¹`) is its mate (`mateEquiv`) for the derived adjunctions of `f` and `f'`
+  (`baseChange_eq`; `isIso_pullbackPlusSquare`). `baseChange_app` gives its components (unit of
+  `f'`, `pullbackPlusSquare`, counit of `f`), `derivedUnit_baseChange` the mate characterisation,
+  `baseChange_naturality` its naturality, and `isIso_baseChange_of_isIso` its invertibility when `f`
+  and `f'` are homeomorphisms; it is an instance, so `inferInstance` proves
+  `IsIso (baseChange k w)`. The `@[reassoc]` forms `derivedCounit_fac_app_assoc`,
   `derivedUnit_baseChange_assoc` and `baseChange_naturality_assoc` are generated.
 
 `TDA.Sheaf.BaseChangeExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
@@ -5533,13 +5557,14 @@ instance: the base change of the identity square on `ℝ` is an isomorphism
 inclusion `ι : [0, 1] ⟶ ℝ` (`isIso_baseChange_ι`).
 ## Stalks of band projections
 
-`TDA.Sheaf.BandStalks` computes the stalks of `R(q a)_*` for the second projection
-`q a : D a ⟶ ℝ` of the closed band. The fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]`
-through `fibreEmb a y : x ↦ (x, y)`: its image is the fibre (`mem_range_fibreEmb`),
-`fibreEmb_eq` writes it as `(fibreIso a y).inv` followed by the inclusion of the fibre, and
-`fibreEmb_comp_q : fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` holds by `rfl`, where
-`ptAt y : pt ⟶ ℝ` is the point `y` (`ptAt_eq : ptAt y = ptOf y`). A stalk at `y` is read as the
-inverse image along `ptAt y`.
+`TDA.Sheaf.BandStalks` computes the stalks of `R(q a)_*` for the second projection `q a : D a ⟶ ℝ`
+of the closed band. The fibre `(q a)⁻¹ {y}` is parametrised by `[y - a, y + a]` through
+`fibreEmb a y : x ↦ (x, y)`: its image is the fibre (`mem_range_fibreEmb`), `fibreEmb_eq` writes it
+as `(fibreIso a y).inv` followed by the inclusion of the fibre, and
+`fibreEmb_comp_q : fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` holds by `rfl`, where `ptAt y : pt ⟶ ℝ` is
+the point `y` (`ptAt_eq : ptAt y = ptOf y`). A stalk at `y` is read as the inverse image along
+`ptAt y`. The ring is `k : Type`, sheaves take values in `ModuleCat.{0} k`, and all spaces are in
+`TopCat.{0}`.
 
 The band projection is an interval fibration (`TDA.Sheaf.IntervalFibration`): the first
 projection `p a` is a fibre coordinate of `q a` (`fibreCoordinate_q`, `fibreCoordinate_q_t`),
@@ -5584,10 +5609,11 @@ vanishes (`isZero_H2_stalk_constSh`).
 
 ## Amplitude of the band functors
 
-`TDA.Sheaf.BandAmplitude` shows that the band functors `T k a = R(q a)_* (p a)⁻¹` have
-cohomological amplitude `[0, 1]` and restricts them to the bounded derived category. An object
-`K` of `D⁺` lies in degrees `[m, n]` when `K.IsGE m` and `K.IsLE n` for the canonical
-t-structure.
+`TDA.Sheaf.BandAmplitude` shows that the band functors `T k a = R(q a)_* (p a)⁻¹` have cohomological
+amplitude `[0, 1]` and restricts them to the bounded derived category. An object `K` of `D⁺` lies in
+degrees `[m, n]` when `K.IsGE m` and `K.IsLE n` for the canonical t-structure. The general
+statements are for abelian categories; in the band statements the ring is `k : Type`, sheaves take
+values in `ModuleCat.{0} k`, and all spaces are in `TopCat.{0}`.
 
 Right derived functors on `D⁺`:
 
@@ -5683,7 +5709,8 @@ instance. `kR` is the constant sheaf `constSh ℚ ℝ kpt` in degree `0`; its in
 ## Base change on band fibres
 
 `TDA.Sheaf.BandBaseChange` treats the fibre square `fibreEmb a y ≫ q a = toPt _ ≫ ptAt y` of the
-band projection `q a : D a ⟶ ℝ` (`fibreEmb_comp_q`).
+band projection `q a : D a ⟶ ℝ` (`fibreEmb_comp_q`). The ring is `k : Type`, sheaves take values in
+`ModuleCat.{0} k`, and all spaces are in `TopCat.{0}`.
 
 - `baseChangeCochain_fibreEmb_app_hom_f`: termwise, its underived base change is the stalk
   comparison (`baseChangeSheaf_fibreEmb_app` in `TDA.Sheaf.BandStalks`), an isomorphism of
@@ -5728,7 +5755,8 @@ base change. For a point `x : X`, `ptOf x : pt ⟶ X` is its inclusion (`TDA.She
   of `w` is invertible at every `z`.
 
 `TDA.Sheaf.IntervalFibration` proves proper base change on the fibres of maps whose fibres are
-compact intervals.
+compact intervals. The ring is `k : Type`, sheaves take values in `ModuleCat.{0} k`, and all spaces
+are in `TopCat.{0}`.
 
 - `FibreCoordinate π`: a continuous `t : X → ℝ` with `z ↦ (π z, t z)` inducing, for a closed
   map `π : X ⟶ Y`. `c.IsFibreParam y ε` for `ε : [u, v] ⟶ X`: the fibre square
@@ -5791,7 +5819,8 @@ in degree `3` (`isIso_derivedUnit_Icc_single_three`). The band projections `q 1`
 
 ## The composition isomorphism of the band functors
 
-`TDA.Sheaf.BandComposition` composes the band functors `T k a` of `TDA.Sheaf.BandConvolution`.
+`TDA.Sheaf.BandComposition` composes the band functors `T k a` of `TDA.Sheaf.BandConvolution`. The
+ring is `k : Type`, sheaves take values in `ModuleCat.{0} k`, and all spaces are in `TopCat.{0}`.
 
 - `bandChain a b = {(x, y, z) | dist x y ≤ a ∧ dist y z ≤ b}` (`mem_bandChain`,
   `isClosed_bandChain`) and the space `Z a b`, with the projections `pr₁₂ a b : Z a b ⟶ D a`,
@@ -5869,7 +5898,8 @@ The coherences are proved for abstract adjunctions and instantiated.
 ## Laws of the composition isomorphism
 
 `TDA.Sheaf.BandCompositionLaws` relates `TComp k ha hb : T k a ⋙ T k b ≅ T k (a + b)` of
-`TDA.Sheaf.BandComposition` to the radius maps `restr`.
+`TDA.Sheaf.BandComposition` to the radius maps `restr`. The ring is `k : Type`, sheaves take values
+in `ModuleCat.{0} k`, and all spaces are in `TopCat.{0}`.
 
 - `TComp_hom_app_TCompRestr_eq` (with `_assoc`): `TComp` followed by `TCompRestr` is the restriction
   `corrRestr` along `pr₂₃ a b` at `T_a M`, followed by `R(pr₂₃ ≫ q b)_*` of the transported counit
@@ -5911,6 +5941,45 @@ stalk of `T_1 (T_2 (constOn ℝ))` and of `T_1 (T_1 (constOn ℝ))` is nonzero
 (`not_isZero_H0_stalk_TT_two_one`, `not_isZero_H0_stalk_TT_one_one`). On `Dᵇ`, `TCompB_one_one` is
 the bounded composition isomorphism at `(1, 1)` and `whiskerRight_restrB_TCompB_one` the radius law
 for `(1, 1) ≤ (2, 1)`.
+
+## Sheaf statements as a client writes them
+
+`TDA.Sheaf.ClientExamples` (namespace `TDA.Sheaf.ClientExamples`) states results of `TDA.Sheaf` as a
+client of the library writes them: through public declarations and library instances, with
+decidability supplied explicitly where a statement needs it. Its only local instances are Mathlib's `HasDerivedCategory.standard` and the
+theorems `hasExt_sheaf_realLine` and `hasExt_diagram`, each installed with
+`attribute [local instance]` in the section that uses it.
+
+- Orthant topology: `rw [eq_generateFrom]` rewrites the topology of `WithOrthant 2` in a goal
+  (`isOpen_of_isOpen_generateFrom_orthant`) and in a hypothesis (`isOpen_generateFrom_orthant`);
+  `inferInstance_eq_generateFrom` is `eq_generateFrom` with left side `inferInstance`.
+- Diagrams on `Fin 2 → ℝ`: under `open scoped TDA.Persistence`, `ephemeral_orthantBasis_iff_two` (a
+  functor) and `isZero_orthantQ_iff_two` (a `PModule`); without the scope,
+  `isZero_orthantQ_iff_structureMap` writes the maps through `TDA.Persistence.structureMap`.
+- Two `example`s apply `StrictBasis.Q` and `SpaceTranslation.shift` on a space in `TopCat.{1}`.
+- The breakpoints `q2 = ![0, 1]` and the intervals `Jc` (`[0, 1]`, `intervalSet_q2_Jc`) and `Jco`
+  (`[0, 1)`): `stratum_q2_three : stratum q2 3 = {1}` by `rw [stratum_odd_of_val …]`.
+  Stalk dimensions in three styles: with no decidability instance, `rw` with
+  `finrank_stalk_extension_interval_of_mem` gives dimension `1` at `1/2`
+  (`finrank_stalk_Jc_half_of_mem`) and `simp` with `finrank_stalk_extension_interval_of_notMem`
+  dimension `0` at `2` (`finrank_stalk_Jc_two_of_notMem`), from `half_mem_intervalSet_q2_Jc` and
+  `two_notMem_intervalSet_q2_Jc`; `decidableMemJc` decides membership in `intervalSet q2 Jc`
+  through `decidable_of_iff`, and with it `finrank_stalk_extension_interval` gives the same values
+  by `rw` (`finrank_stalk_Jc_half`) and `norm_num` (`finrank_stalk_Jc_two`);
+  `finrank_stalk_extension_interval_isTrue` uses the instance `isTrue hx` of a membership
+  hypothesis, and `finrank_stalk_extension_interval_classical` is the statement with the instance
+  `Classical.propDecidable`.
+- Barcodes: `barcode_sections_extension_Jc` and `barcode_sections_barcodeSheaf_Jc_Jco` state
+  `barcode_sections_extension_interval` and `barcode_sections_barcodeSheaf` with the instances
+  `finiteDimensional_sections_extension` and `finiteDimensional_sections_barcodeSheaf` found by
+  instance search; `gradedBarcode_singleFunctor_Jc` computes the graded barcode `{Jc}` of the
+  interval sheaf of `[0, 1]` in degree `1` (`isConstructible_Jc`).
+- `ext_representable_extension_Jc`: `Ext¹(Φ P_1, Φ (interval Jc)) = 0` with the two `HasExt`
+  theorems installed.
+- With `TDA.Sheaf` and `TDA.Sheaf.BandConvolution` both open: `isIso_baseChange_id_realLine`, the
+  base change of the identity square of `ℝ` is an isomorphism by `inferInstance`; `realLine_eq` and
+  `isGE_isLE_T_one` on `realLine`;
+  `TCompOneOne := TCompOfEq ℚ zero_le_one zero_le_one (by norm_num) : T ℚ 1 ⋙ T ℚ 1 ≅ T ℚ 2`.
 
 ## Review and extension boundaries
 

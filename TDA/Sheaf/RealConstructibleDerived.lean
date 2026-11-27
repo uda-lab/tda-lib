@@ -99,23 +99,24 @@ theorem isConstructible_barcodeSheaf (hp : StrictMono p)
   isConstructible_of_iso (extensionBarcodeDiagramIso k hp B)
     (isConstructible_extension k hp fun _ => inferInstance)
 
+/-- The sections of the sheaf of a barcode over the stars are finite-dimensional, so
+`barcode ((sections k p).obj (barcodeSheaf k hp B))` elaborates without a local instance. -/
+instance finiteDimensional_sections_barcodeSheaf (hp : StrictMono p)
+    (B : Multiset (FiniteInterval (2 * m + 1))) (X : Paths (Vertex (orient m))) :
+    FiniteDimensional k (((sections k p).obj (barcodeSheaf k hp B)).obj X) :=
+  finiteDimensional_sections k hp (isConstructible_barcodeSheaf k hp B) X
+
 /-- **The barcode of the sheaf of a barcode** `B` is `B`: `Γ (barcodeSheaf B) ≅ barcodeDiagram B`
 through D1's counit. -/
 theorem barcode_sections_barcodeSheaf (hp : StrictMono p)
     (B : Multiset (FiniteInterval (2 * m + 1))) :
-    haveI := finiteDimensional_sections k hp (isConstructible_barcodeSheaf k hp B)
     barcode ((sections k p).obj (barcodeSheaf k hp B)) = B :=
-  haveI := finiteDimensional_sections k hp (isConstructible_barcodeSheaf k hp B)
   barcode_eq_of_iso _ ((sections k p).mapIso (extensionBarcodeDiagramIso k hp B).symm ≪≫
     (extensionSectionsIso k hp).app _)
 
 /-- A sheaf with a single interval sheaf: `barcode (Γ (Φ (interval J))) = {J}`. -/
 theorem barcode_sections_extension_interval (hp : StrictMono p) (J : FiniteInterval (2 * m + 1)) :
-    haveI := finiteDimensional_sections k hp
-      (isConstructible_extension k hp (M := interval (orient m) J) fun _ => inferInstance)
     barcode ((sections k p).obj ((extension k hp).obj (interval (orient m) J))) = {J} :=
-  haveI := finiteDimensional_sections k hp
-    (isConstructible_extension k hp (M := interval (orient m) J) fun _ => inferInstance)
   barcode_eq_of_iso_intervalSum _ (xs := [J])
     ((extensionSectionsIso k hp).app (interval (orient m) J) ≪≫ isoBiprodZero (isZero_zero _))
 

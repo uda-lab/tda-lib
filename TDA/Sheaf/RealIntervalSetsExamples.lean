@@ -82,37 +82,38 @@ noncomputable abbrev wholeLineSheaf : TopCat.Sheaf (ModuleCat.{0} ℚ) realLine 
 theorem finrank_stalk_pointSheaf :
     Module.finrank ℚ ((pointSheaf ℚ).presheaf.stalk (0 : ℝ)) = 1 ∧
       Module.finrank ℚ ((pointSheaf ℚ).presheaf.stalk (1 : ℝ)) = 0 := by
-  rw [finrank_stalk_extension_interval, finrank_stalk_extension_interval,
-    intervalSet_pointSegment]
-  norm_num
+  constructor
+  · exact finrank_stalk_extension_interval_of_mem ℚ _ (by simp [intervalSet_pointSegment])
+  · exact finrank_stalk_extension_interval_of_notMem ℚ _ (by simp [intervalSet_pointSegment])
 
 /-- The interval sheaf of `[0, 0]` has a one-dimensional stalk at `-1` and a zero stalk at
 `0`. -/
 theorem finrank_stalk_leftOpen :
     Module.finrank ℚ ((leftOpen).presheaf.stalk (-1 : ℝ)) = 1 ∧
       Module.finrank ℚ ((leftOpen).presheaf.stalk (0 : ℝ)) = 0 := by
-  rw [finrank_stalk_extension_interval, finrank_stalk_extension_interval, intervalSet_leftCell]
-  norm_num
+  constructor
+  · exact finrank_stalk_extension_interval_of_mem ℚ _ (by norm_num [intervalSet_leftCell])
+  · exact finrank_stalk_extension_interval_of_notMem ℚ _ (by simp [intervalSet_leftCell])
 
 /-- The interval sheaf of `[1, 2]` has a one-dimensional stalk at `0` and a zero stalk at
 `-1`. -/
 theorem finrank_stalk_rightClosed :
     Module.finrank ℚ ((rightClosed ℚ).presheaf.stalk (0 : ℝ)) = 1 ∧
       Module.finrank ℚ ((rightClosed ℚ).presheaf.stalk (-1 : ℝ)) = 0 := by
-  rw [finrank_stalk_extension_interval, finrank_stalk_extension_interval, intervalSet_segRight]
-  norm_num
+  constructor
+  · exact finrank_stalk_extension_interval_of_mem ℚ _ (by simp [intervalSet_segRight])
+  · exact finrank_stalk_extension_interval_of_notMem ℚ _ (by norm_num [intervalSet_segRight])
 
 /-- The interval sheaf of the whole path has a one-dimensional stalk at every point. -/
 theorem finrank_stalk_wholeLineSheaf (x : ℝ) :
     Module.finrank ℚ (wholeLineSheaf.presheaf.stalk x) = 1 := by
-  rw [finrank_stalk_extension_interval, intervalSet_wholeLine]
-  simp
+  exact finrank_stalk_extension_interval_of_mem ℚ _ (by simp [intervalSet_wholeLine])
 
 /-- Without breakpoints, the constant sheaf has a one-dimensional stalk at every point. -/
 theorem finrank_stalk_constSheaf₀ (x : ℝ) :
     Module.finrank ℚ ((constSheaf₀ ℚ).presheaf.stalk x) = 1 := by
-  rw [constSheaf₀, finrank_stalk_extension_interval, intervalSet_p₀]
-  simp
+  rw [constSheaf₀]
+  exact finrank_stalk_extension_interval_of_mem ℚ _ (by simp [intervalSet_p₀])
 
 /-! ### Restrictions -/
 

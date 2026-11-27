@@ -5,9 +5,9 @@ import Mathlib.Basic.ENNReal.Basic
 /-!
 # Sheaf shifts and interleavings along a family of translations
 
-A `SpaceTranslation X` is a family of continuous maps `T ε : X ⟶ X`, `ε : ℝ≥0`, whose preimages
-shrink opens (`map_le`: `T ε⁻¹(V) ≤ V`) and compose additively (`map_comp`:
-`T δ⁻¹(T ε⁻¹(V)) = T (ε + δ)⁻¹(V)`). For `τ : SpaceTranslation X` and a category `C`:
+For `X : TopCat.{w}`, a `SpaceTranslation X` is a family of continuous maps `T ε : X ⟶ X`,
+`ε : ℝ≥0`, whose preimages shrink opens (`map_le`: `T ε⁻¹(V) ≤ V`) and compose additively
+(`map_comp`: `T δ⁻¹(T ε⁻¹(V)) = T (ε + δ)⁻¹(V)`). For `τ : SpaceTranslation X` and a category `C`:
 
 * `τ.shift C ε` is pushforward along `T ε`, so `(τ.shift C ε F)(V) = F(T ε⁻¹(V))`;
   `τ.transition C ε : 𝟭 ⟶ τ.shift C ε` is restriction along `T ε⁻¹(V) ≤ V`, and
@@ -24,7 +24,7 @@ instances.
 
 set_option autoImplicit false
 
-universe u v
+universe u v w
 
 open CategoryTheory Opposite TopologicalSpace TopCat
 open scoped NNReal ENNReal
@@ -33,7 +33,7 @@ namespace TDA.Sheaf
 
 /-- A family of translations of a space: continuous maps `T ε : X ⟶ X` for `ε : ℝ≥0` whose
 preimages shrink opens and compose additively. -/
-structure SpaceTranslation (X : TopCat.{0}) where
+structure SpaceTranslation (X : TopCat.{w}) where
   /-- The translation by `ε`. -/
   T : ℝ≥0 → (X ⟶ X)
   /-- The preimage of an open under a translation is contained in it. -/
@@ -46,7 +46,7 @@ namespace SpaceTranslation
 
 noncomputable section
 
-variable {X : TopCat.{0}} (τ : SpaceTranslation X)
+variable {X : TopCat.{w}} (τ : SpaceTranslation X)
 
 /-! ## Shifts and transitions -/
 

@@ -29,3 +29,4 @@ import TDA.Sheaf.RealConstructibleDerivedExamples
 import TDA.Sheaf.RealIntervalSetsExamples
 import TDA.Sheaf.RealConstructibleRefinementExamples
 import TDA.Sheaf.BandCompositionLawsExamples
+import TDA.Sheaf.ClientExamples

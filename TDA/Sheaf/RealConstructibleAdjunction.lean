@@ -32,7 +32,8 @@ Fix strictly increasing breakpoints `p : Fin m → ℝ` (`hp : StrictMono p`) an
   `starGenerator`, natural in `F`), and `Hom(Φ (P_v ⊗ V), F) ≃ Hom_k(V, F(star p v))`
   (`homExtensionPathTensorEquiv`).
 * `HasExt.{0}` holds for sheaves of `k`-modules on `ℝ` (`hasExt_sheaf_realLine`) and for the
-  diagrams (`hasExt_diagram`).
+  diagrams (`hasExt_diagram`). Both are theorems; a client installs them with
+  `attribute [local instance] hasExt_sheaf_realLine hasExt_diagram` or with `haveI`.
 * `Ext` out of `Φ` of projectives through an injective resolution `R` of a sheaf `Y`:
   `ext_extension_eq_zero_of_lift` reduces the vanishing of `Ext^{q+1}(Φ M, Y)` to a lifting
   problem for `Hom(M, Γ R)`; `ext_extension_representable_eq_zero` (for `P_v`) and
