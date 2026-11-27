@@ -2167,3 +2167,11 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.distance_eq_totalPairCost
 #print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.ofInterval
 #print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.support_ofInterval
+#print axioms TDA.Sheaf.isIso_constSh_unitRes
+#print axioms TDA.Sheaf.isIso_restrict_constSh
+#print axioms TDA.Sheaf.pullbackConstantSheafIso
+#print axioms TDA.Sheaf.isIso_restrict_constantSheaf
+#print axioms TDA.Sheaf.isIso_constantSheaf_counit_of_isIso_Γgerm
+#print axioms TDA.Sheaf.constShIsoConstantSheaf
+#print axioms TDA.Sheaf.LocalSystem.isoConstantSheafOfIsLocallyConstantOn
+#print axioms TDA.Sheaf.LocalSystem.isLocallyConstantOn_iff_locally_iso_constantSheaf

@@ -50,8 +50,8 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingDecomposition` | `exists_decomposition`, `multiset_eq_of_iso`, `barcode`, `barcodeIso : M ≅ barcodeDiagram o (barcode M)`, `nonempty_iso_iff_barcode_eq`, `barcode_interval`, `intervalMultiplicity`; `reflectSink` (additive functor), `reflectSinkIntervalSumIso`, `reflectSource`, `reflectSourceUnitIso`; `chainToDiagram` | `o : Fin n → Bool` orients the path on `Fin (n + 1)`; `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field with `[∀ X, FiniteDimensional k (M.obj X)]`. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.AlternatingHeredity` | `pathTensor`, `pathTensorAdjunction`, `projective_pathTensor`, `representable`, `pathTensorObjEquiv`; `resolution`, `resolutionSplitting`, `resolution_shortExact`, `enoughProjectives_diagram`, `hasProjectiveDimensionLT_two`, `ext_eq_zero` | Same diagrams `M : Paths (Vertex o) ⥤ ModuleCat.{u} k` over a field, with no finiteness assumption; `Ext` in any `HasExt` universe. See [Finite alternating diagrams](#finite-alternating-diagrams). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealStratification` | `orient`, `paths_hom_subsingleton`; `IsBasicOpen`, `isBasis_basicOpen`, `IsBasicOpen.inf`, `IsBasicOpen.anti`, `BasicCat`, `basicIncl`, `basicTopology`; `star`, `tau`, `tau_eq_iff`, `exists_star_tau`, `tauFunctor`; `isSheaf_basic_of_isIso_sameStratum`, `isSheaf_tauFunctor_comp`; `basisEquiv` | Breakpoints `p : Fin m → ℝ` strictly increasing; the basis sheaf condition holds for presheaves in any category; `basisEquiv` uses `ModuleCat.{0} k` for `k : Type`. See [Stratifications of the real line](#stratifications-of-the-real-line). |
-| `TDA.Sheaf` / `TDA.Sheaf.LocalSystem` | `IsLocallyConstantOn`, `IsLocallyConstantOn.mono`, `restrict_isIso_of_isLocallyConstantOn`, `isIso_map_of_le_sup`; `transportIso`, `map_comp_transportIso_hom`, `transportIso_hom_eq_map`, `transportIso_trans`; `isIso_germ_of_isIso_map`, `isIso_germ_of_isLocallyConstantOn` | Sheaves of `ModuleCat.{0} k` on `realLine` for a ring `k : Type`; convex means `Set.OrdConnected`. The intended equivalence of `IsLocallyConstantOn` with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). See [Interval-local constancy on the real line](#interval-local-constancy-on-the-real-line). |
-| `TDA.Sheaf` / `TDA.Sheaf.RealConstructible` | `IsConstructible`, `isIso_res_sameStratum`, `isConstructible_iff`, `isConstructible_of_iso`, `IsConstructible.mono`, `isIso_germ_of_isConstructible`; `starFunctor`, `sections`, `sections_obj_obj`, `sections_map_gen`; `basisSheaf`, `extension`, `extensionBasicIso`, `extensionStarIso`, `isConstructible_extension`, `finiteDimensional_sections`, the instance `finiteDimensional_sections_extension`; `extensionSectionsIso`, `extensionSectionsIso_app_app`, `sectionsExtensionIso`; `Constructible`, `FinDiagram`, `sectionsFin`, `extensionFin`, `equivalence`, `equivalence_functor_obj_obj`, `equivalence_functor_obj_map_gen`, `equivalence_inverse_obj_obj` | Strictly increasing breakpoints `p : Fin m → ℝ`; `k : Type`, a ring for `isIso_res_sameStratum`, a division ring for `IsConstructible`, a field for the diagram side. Local constancy is the interval-local `IsLocallyConstantOn`; its intended equivalence with "locally isomorphic to a constant sheaf" is not proved in Lean (#1250). The derived comparison is #1183. See [Constructible sheaves on the real line](#constructible-sheaves-on-the-real-line). |
+| `TDA.Sheaf.LocalSystem` | `IsLocallyConstantOn` | [Local constancy][local-constancy] |
+| `TDA.Sheaf.RealConstructible` | `IsConstructible` | [Constructibility][constructibility] |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleAdjunction` | `starBasic`, `starTauAdjunction`, `extensionAdjunction`, `extensionAdjunction_unit`, `toBasis`, `toBasis_app_hom_app`, `extensionAdjunction_counit_app_eq`, `extensionAdjunction_counit_app`, `equivalence_counitIso_inv_app_hom`, `equivalence_unitIso_inv_app_hom`, `extensionFullyFaithful`, `extension_full`, `extension_faithful`, `preservesFiniteColimits_extension`, `preservesFiniteLimits_extension`, `sections_additive`, `extension_additive`, `starGenerator`, `homExtensionRepresentableEquiv`, `homExtensionRepresentableEquiv_apply`, `homExtensionRepresentableEquiv_comp`, `homExtensionRepresentableEquiv_add`, `homExtensionRepresentableEquiv_zero`, `homExtensionPathTensorEquiv`, `homExtensionPathTensorEquiv_apply`, `homExtensionPathTensorEquiv_comp`, `hasExt_sheaf_realLine`, `hasExt_diagram`, `ext_extension_eq_zero_of_lift`, `ext_extension_representable_eq_zero`, `ext_extension_sumTensor_eq_zero`, `starCocycles`, `starCoboundaries`, `starCohomology`, `homExtensionRepresentableEquiv_symm_comp_d`, `extOfStarCocycle`, `extOfStarCocycle_apply`, `extOfStarCocycle_surjective`, `extOfStarCocycle_eq_zero_iff`, `extStarEquiv`, `extStarEquiv_mk` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field; the adjunction and the universal property hold for every sheaf of `k`-modules on `ℝ`; the `Ext` statements take an instance `HasExt.{0}` and an injective resolution `R`. See [The extension–sections adjunction](#the-extensionsections-adjunction). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleExt` | `germ_extension_surjective`, `exists_forall_mem_star_breakpoints_eq`, `germ_pullback_extension_star_surjective`, `sections_exact_star`, `ext_representable_extension_eq_zero`, `ext_sumTensor_extension_eq_zero`, `mapExt_bijective_extension`, `extensionExtEquiv`, `extensionExtEquiv_apply`, `ext_extension_eq_zero_of_two_le`, `ext_constructible_eq_zero_of_two_le` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field, all diagrams on `orient m` (no finite-dimensionality); every injective resolution of `Φ N`; `Ext` for instances `HasExt.{0}` of sheaves of `k`-modules on `ℝ` and, where diagram `Ext` occurs in the statement, of diagrams; all degrees. See [The `Ext` comparison on the real line](#the-ext-comparison-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.HereditarySplitting` | `biproductInsertIso`, `inl_biproductInsertIso_hom`, `inr_biproductInsertIso_hom`, `biproductIsoOfIsZero` (with `biproductIsoOfIsZero_hom`, `biproductIsoOfIsZero_inv`), `isZero_biproduct_of_isZero`; `isZero_homology_singleFunctor_obj`, `nonempty_iso_singleFunctor_homology`, `isIso_homologyMap_truncLTι`, `isIso_homologyMap_truncGEπ`, `singleFunctor_hom_eq_zero_of_ext`; `exists_iso_biproduct_homology`, `exists_iso_biproduct_homology_of_two_le`; `homologyBiproductSingleIso`, `isZero_homology_biproduct_single`, `nonempty_iso_homology_of_iso_biproduct_single`, `nonempty_iso_of_iso_biproduct_single` | An abelian category `C` with instances `HasDerivedCategory C` and, for the splitting theorems, `HasExt C`; objects of Mathlib's `DerivedCategory C` bounded for its canonical t-structure (`K.IsGE a`, `K.IsLE b`); the direct sum is indexed by `Finset.Icc a b`. See [Hereditary splitting](#hereditary-splitting). |
@@ -4881,15 +4881,20 @@ every basic open (`constLineSheafSectionsIso`). The point diagram `pointDiagram`
 
 ## Interval-local constancy on the real line
 
+[local-constancy]: #interval-local-constancy-on-the-real-line
+[constructibility]: #constructible-sheaves-on-the-real-line
+
 `TDA.Sheaf.LocalSystem` treats sheaves `F : TopCat.Sheaf (ModuleCat.{0} k) realLine` for a ring
 `k : Type`. A convex open is an open `V` with `(V : Set ℝ).OrdConnected`.
 
 - `IsLocallyConstantOn F U` for `U : Set ℝ`: every `x ∈ U` has an open `N ⊆ U` containing `x`
   such that `F(W) ⟶ F(V)` is an isomorphism for all nonempty convex opens `V ⊆ W ⊆ N`.
   `IsLocallyConstantOn.mono` passes it to open subsets.
-  **Limitation:** this definition is intended to be equivalent, on `ℝ`, to "locally isomorphic
-  to a constant sheaf", but that equivalence is not yet proved in Lean; the bridge is follow-up
-  #1250. Whether the definition agrees with the one in the source article has not been checked.
+- `isLocallyConstantOn_iff_locally_iso_constantSheaf` gives the equivalent formulation in
+  which each `x ∈ U` has an open neighbourhood `N ⊆ U` on which `F` is isomorphic to a
+  Mathlib `constantSheaf`. Restriction to `N` is pullback along `N.inclusion'`.
+  If `N` is convex and `F` is locally constant on it, `isoConstantSheafOfIsLocallyConstantOn`
+  identifies that restriction with the constant sheaf of value `F(N)`.
 - `restrict_isIso_of_isLocallyConstantOn`: if `F` is locally constant on a convex open `W`,
   then `F(W) ⟶ F(V)` is an isomorphism for every nonempty convex open `V ⊆ W`. The proof glues
   along the binary sheaf square (`TopCat.Sheaf.isLimitPullbackCone`), propagates along `W` with
@@ -4905,6 +4910,24 @@ every basic open (`constLineSheafSectionsIso`). The point diagram `pointDiagram`
   isomorphism for every convex open neighbourhood `V ⊆ T` of `x`, the germ `F(T) ⟶ F_x` is an
   isomorphism. `isIso_germ_of_isLocallyConstantOn` applies it: if `F` is locally constant on a
   convex open `W`, then `F(W) ≅ F_x` for every `x ∈ W`.
+
+`TDA.Sheaf.ConstantSheaf` supplies the comparison with constant sheaves of modules on a
+topological space.
+
+- `isIso_constSh_unitRes` identifies the sections of `constSh k X N` over a nonempty
+  preconnected open with the global sections of `N` on the point.
+- `isIso_restrict_constSh` and `isIso_restrict_constantSheaf` give restriction isomorphisms
+  between nested nonempty preconnected opens.
+- `pullbackConstantSheafIso` identifies the pullback of a Mathlib constant sheaf with
+  the constant sheaf of the same value. `constShIsoConstantSheaf` identifies `constSh k X N`
+  with Mathlib's constant sheaf on the global sections of `N`.
+- `isIso_constantSheaf_counit_of_isIso_Γgerm` identifies a sheaf with the constant sheaf on
+  its global sections when their germ maps to every stalk are isomorphisms.
+
+`TDA.Sheaf.LocalSystemConstantExamples` checks the equivalence on the constant sheaf with
+value `ℚ` and on the closed left ray sheaf restricted to the punctured line. The ray sheaf
+has stalks of dimensions one and zero on the two components, so it is locally constant there
+and admits no global constant-sheaf isomorphism there.
 
 `TDA.Sheaf.RealStratification.isIso_map_basisEquiv` reads restriction isomorphisms of a sheaf
 extended by `basisEquiv` off its basis presheaf, and `RealStratification.isBasicOpen_empty` says
@@ -4926,10 +4949,9 @@ strata, stars and basic opens of `TDA.Sheaf.RealStratification`, with `S = break
 
 - `IsConstructible S F` for a division ring `k`: `IsLocallyConstantOn F (↑S)ᶜ` and every stalk
   `F.presheaf.stalk x` is finite-dimensional.
-  **Limitation:** local constancy here is the interval-local `IsLocallyConstantOn` of
-  `TDA.Sheaf.LocalSystem`. It is intended to be equivalent, on `ℝ`, to "locally isomorphic to a
-  constant sheaf", but that equivalence is not yet proved in Lean; the bridge is follow-up
-  #1250.
+  By `isLocallyConstantOn_iff_locally_iso_constantSheaf`, local constancy on `(↑S)ᶜ` amounts to
+  having an open neighbourhood of each point in `(↑S)ᶜ` where the restriction is isomorphic
+  to a constant sheaf.
 - `isIso_res_sameStratum` (a ring `k` suffices): if `F` is locally constant on `(↑S)ᶜ`, then
   `F(V) ⟶ F(U)` is an isomorphism for basic opens `U ⊆ V` with `U ∩ S = V ∩ S`. Without a
   breakpoint this is `restrict_isIso_of_isLocallyConstantOn`; with a breakpoint `s` two binary

@@ -10,9 +10,9 @@ Fix strictly increasing breakpoints `p : Fin m → ℝ` (`hp : StrictMono p`) wi
 
 * `IsConstructible S F` for a sheaf `F` of `k`-modules on `realLine`: `F` is locally constant on
   the complement of `S`, in the interval-local sense `IsLocallyConstantOn` of
-  `TDA.Sheaf.LocalSystem`, and every stalk of `F` is finite-dimensional. That local constancy is
-  intended to be equivalent, on `ℝ`, to "locally isomorphic to a constant sheaf"; this
-  equivalence is **not yet proved in Lean** (follow-up #1250).
+  `TDA.Sheaf.LocalSystem`, and every stalk of `F` is finite-dimensional.
+  `isLocallyConstantOn_iff_locally_iso_constantSheaf` identifies local constancy with local
+  isomorphism to a constant sheaf.
 * `isIso_res_sameStratum`: if `F` is locally constant on the complement of `S`, then `F` inverts
   every inclusion `U ⊆ V` of basic opens with `U ∩ S = V ∩ S`. On a cell this is the
   trivialisation of `TDA.Sheaf.LocalSystem`; at a breakpoint `s` it glues the two sides
@@ -62,9 +62,7 @@ private theorem exists_lt_gt_mem {U : Opens realLine} {s : ℝ} (hs : s ∈ U) :
 
 /-- **Same-stratum inclusions.** If `F` is locally constant on the complement of `S`, then the
 restriction `F(V) ⟶ F(U)` is an isomorphism for every inclusion `U ⊆ V` of basic opens that
-contain the same points of `S`. Local constancy is the interval-local
-`IsLocallyConstantOn`, not yet proved in Lean to be equivalent to "locally isomorphic to a
-constant sheaf" (#1250). -/
+contain the same points of `S`. -/
 theorem isIso_res_sameStratum {S : Finset ℝ} {F : TopCat.Sheaf (ModuleCat.{0} k) realLine}
     (hF : IsLocallyConstantOn F (↑S)ᶜ) {U V : Opens realLine} (hU : IsBasicOpen S U)
     (hV : IsBasicOpen S V) (hUV : U ≤ V) (hS : (U : Set ℝ) ∩ S = (V : Set ℝ) ∩ S) :
@@ -132,8 +130,8 @@ variable {k : Type} [DivisionRing k]
 respect to a finite set `S` when it is locally constant on the complement of `S`, in the
 interval-local sense `IsLocallyConstantOn`, and all its stalks are finite-dimensional.
 
-That local constancy is intended to be equivalent, on `ℝ`, to "locally isomorphic to a constant
-sheaf". This equivalence is **not yet proved in Lean**; the bridge is follow-up #1250. -/
+By `isLocallyConstantOn_iff_locally_iso_constantSheaf`, each point off `S` has a neighbourhood
+off `S` on which the sheaf is isomorphic to a constant sheaf. -/
 def IsConstructible (S : Finset ℝ) (F : TopCat.Sheaf (ModuleCat.{0} k) realLine) : Prop :=
   IsLocallyConstantOn F (↑S)ᶜ ∧ ∀ x : ℝ, FiniteDimensional k (F.presheaf.stalk x)
 
@@ -162,9 +160,7 @@ private theorem isIso_germ_of_sameStratum {S : Finset ℝ}
 
 /-- **Constructibility on the basis.** `F` is constructible exactly when it inverts every
 inclusion of basic opens with the same points of `S` and its sections over every basic open are
-finite-dimensional. Local constancy is the interval-local
-`IsLocallyConstantOn`, not yet proved in Lean to be equivalent to "locally isomorphic to a
-constant sheaf" (#1250). -/
+finite-dimensional. -/
 theorem isConstructible_iff {S : Finset ℝ} {F : TopCat.Sheaf (ModuleCat.{0} k) realLine} :
     IsConstructible S F ↔
       (∀ ⦃U V : Opens realLine⦄ (h : U ≤ V), IsBasicOpen S U → IsBasicOpen S V →
@@ -299,9 +295,7 @@ noncomputable def extensionStarIso (hp : StrictMono p) (M : Diagram k (orient m)
   extensionBasicIso k hp M ⟨star p v, isBasicOpen_star hp v⟩ ≪≫
     M.mapIso (eqToIso (congrArg (vtx (orient m)) (tau_star hp v (isBasicOpen_star hp v))))
 
-/-- `Φ M` is constructible when `M` has finite-dimensional values.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+/-- `Φ M` is constructible when `M` has finite-dimensional values. -/
 theorem isConstructible_extension (hp : StrictMono p) {M : Diagram k (orient m)}
     (hM : ∀ X, FiniteDimensional k (M.obj X)) :
     IsConstructible (breakpoints p) ((extension k hp).obj M) := by
@@ -314,9 +308,7 @@ theorem isConstructible_extension (hp : StrictMono p) {M : Diagram k (orient m)}
       (inferInstance : IsIso (M.map ((tauFunctor hp).map f.op)))
   · exact (extensionBasicIso k hp M ⟨U, hU⟩).toLinearEquiv.symm.finiteDimensional
 
-/-- The sections of a constructible sheaf over the stars are finite-dimensional.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+/-- The sections of a constructible sheaf over the stars are finite-dimensional. -/
 theorem finiteDimensional_sections (hp : StrictMono p)
     {F : TopCat.Sheaf (ModuleCat.{0} k) realLine} (hF : IsConstructible (breakpoints p) F)
     (X : Paths (Vertex (orient m))) : FiniteDimensional k (((sections k p).obj F).obj X) :=
@@ -405,9 +397,7 @@ private theorem isIso_toBasis_app (hp : StrictMono p)
   exact isIso_of_reflects_iso _ (sheafToPresheaf _ _)
 
 /-- Constructible sheaves of `k`-modules on the real line, for the breakpoints of `p`, as a full
-subcategory.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+subcategory. -/
 abbrev Constructible (p : Fin m → ℝ) :=
   ObjectProperty.FullSubcategory (IsConstructible (k := k) (breakpoints p))
 
@@ -418,9 +408,7 @@ abbrev FinDiagram (n : ℕ) :=
 
 /-- **The unit** `F ≅ Φ (Γ F)` for constructible `F`: the counit of `basisEquiv` composed with
 the restrictions `F(star p (tau p U)) ⟶ F(U)` from the stars of the strata, which are
-isomorphisms by `isIso_res_sameStratum`.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+isomorphisms by `isIso_res_sameStratum`. -/
 noncomputable def sectionsExtensionIso (hp : StrictMono p) :
     ObjectProperty.ι _ ≅ ObjectProperty.ι (IsConstructible (k := k) (breakpoints p)) ⋙
       sections k p ⋙ extension k hp :=
@@ -433,16 +421,12 @@ noncomputable def sectionsExtensionIso (hp : StrictMono p) :
     Functor.isoWhiskerRight (asIso (Functor.whiskerLeft (ObjectProperty.ι _) (toBasis k hp))).symm
       (basisEquiv (breakpoints p) k).functor
 
-/-- `Γ` on constructible sheaves, valued in diagrams with finite-dimensional values.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+/-- `Γ` on constructible sheaves, valued in diagrams with finite-dimensional values. -/
 noncomputable def sectionsFin (hp : StrictMono p) : Constructible k p ⥤ FinDiagram k m :=
   ObjectProperty.lift _ (ObjectProperty.ι _ ⋙ sections k p)
     fun F => finiteDimensional_sections k hp F.property
 
-/-- `Φ` on diagrams with finite-dimensional values, valued in constructible sheaves.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+/-- `Φ` on diagrams with finite-dimensional values, valued in constructible sheaves. -/
 noncomputable def extensionFin (hp : StrictMono p) : FinDiagram k m ⥤ Constructible k p :=
   ObjectProperty.lift _ (ObjectProperty.ι _ ⋙ extension k hp)
     fun M => isConstructible_extension k hp M.property
@@ -450,9 +434,7 @@ noncomputable def extensionFin (hp : StrictMono p) : FinDiagram k m ⥤ Construc
 /-- **Constructible sheaves on the real line are finite alternating diagrams.** For strictly
 increasing breakpoints `p`, taking sections over the stars is an equivalence from sheaves of
 `k`-modules on `ℝ` that are constructible for the breakpoints of `p` to diagrams on
-`orient m` with finite-dimensional values. Its inverse is the extension functor `Φ`.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+`orient m` with finite-dimensional values. Its inverse is the extension functor `Φ`. -/
 noncomputable def equivalence (hp : StrictMono p) : Constructible k p ≌ FinDiagram k m :=
   CategoryTheory.Equivalence.mk (sectionsFin k hp) (extensionFin k hp)
     (((ObjectProperty.fullyFaithfulι _).whiskeringRight _).preimageIso

@@ -38,9 +38,6 @@ t-structure (`K.IsGE a`, `K.IsLE b`).
   sum; `hasConstructibleCohomology_biproduct` and `hasConstructibleCohomology_singleFunctor` give
   constructibility of its cohomology and of a constructible sheaf placed in one degree, and
   `gradedBarcode_singleFunctor` computes the graded barcode of the latter.
-
-Constructibility uses the interval-local `IsLocallyConstantOn`; its intended equivalence with
-"locally isomorphic to a constant sheaf" is not yet proved in Lean (#1250).
 -/
 
 open CategoryTheory Limits ZeroObject DerivedCategory TDA.Persistence

@@ -19,6 +19,7 @@ import TDA.Sheaf.OrthantSheaf
 import TDA.Sheaf.StrictBasisLocalization
 import TDA.Sheaf.OrthantLocalization
 import TDA.Sheaf.RealStratification
+import TDA.Sheaf.ConstantSheaf
 import TDA.Sheaf.LocalSystem
 import TDA.Sheaf.SheafFlasque
 import TDA.Sheaf.IntervalSections

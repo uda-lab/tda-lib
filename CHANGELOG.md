@@ -10,6 +10,16 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- `isLocallyConstantOn_iff_locally_iso_constantSheaf` characterizes interval-local constancy
+  on the real line by local isomorphisms to Mathlib's `constantSheaf`. On a convex open `N`,
+  `isoConstantSheafOfIsLocallyConstantOn` identifies a locally constant sheaf restricted to
+  `N` with the constant sheaf on `F(N)`. `pullbackConstantSheafIso` preserves the value under
+  pullback, and `constShIsoConstantSheaf` compares the two models of constant sheaves.
+  `isIso_constSh_unitRes` computes sections over nonempty preconnected opens, and
+  `isIso_restrict_constSh` and `isIso_restrict_constantSheaf` identify their restriction maps
+  as isomorphisms. `isIso_constantSheaf_counit_of_isIso_Γgerm` detects constancy from global
+  germs. Fixtures cover the constant sheaf and the closed left ray sheaf on the punctured line,
+  where its local constant values differ across the two components.
 - `IntervalEndpoints.totalPairCost` and `IntervalEndpoints.distance_eq_totalPairCost` compute
   the band distance for graded interval sheaves from endpoint and degree data.
   `IntervalEndpoints.ofInterval` supplies endpoint data for finite strata intervals, and
@@ -715,9 +725,8 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   subdivisions of a non-small segment and a Lebesgue step on the `1`-simplex.
 - Interval-local constancy on the real line (#1181, part L1): `TDA.Sheaf.LocalSystem` defines
   `IsLocallyConstantOn F U` for sheaves of `k`-modules on `realLine` (restriction between nested
-  nonempty convex opens near each point is an isomorphism), with `IsLocallyConstantOn.mono`. Its
-  intended equivalence with "locally isomorphic to a constant sheaf" is not yet proved in Lean
-  (follow-up #1250). `restrict_isIso_of_isLocallyConstantOn`: on a convex open `W` where `F` is
+  nonempty convex opens near each point is an isomorphism), with `IsLocallyConstantOn.mono`.
+  `restrict_isIso_of_isLocallyConstantOn`: on a convex open `W` where `F` is
   locally constant, `F(W) ⟶ F(V)` is an isomorphism for every nonempty convex open `V ⊆ W`.
   Corollaries: the transport isomorphism `transportIso` (`map_comp_transportIso_hom`,
   `transportIso_hom_eq_map`, `transportIso_trans`), germ isomorphisms `isIso_germ_of_isIso_map`
@@ -745,8 +754,7 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `TDA.Sheaf.FlasqueAcyclicExamples`.
 - Constructible sheaves on the real line and finite alternating diagrams (#1181, D1):
   `TDA.Sheaf.RealConstructible` defines `IsConstructible S F` (local constancy on `(↑S)ᶜ` in the
-  interval-local sense `IsLocallyConstantOn`, and finite-dimensional stalks; the intended
-  equivalence with "locally isomorphic to a constant sheaf" is not yet proved in Lean, #1250)
+  interval-local sense `IsLocallyConstantOn`, and finite-dimensional stalks)
   and proves `isIso_res_sameStratum` (same-stratum inclusions of basic opens are inverted) and
   `isConstructible_iff`. The section functor `sections` (via `starFunctor`) satisfies
   `sections_obj_obj` and `sections_map_gen`; the extension functor `extension` (via
