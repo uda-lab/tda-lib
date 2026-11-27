@@ -12,6 +12,11 @@ parts of the file define interleavings by maps out of the spaces themselves, ide
 transpose formulation on graph objects, and record the resulting distance identities and stability
 bounds.  These are library statements; only the statement shape of DMP15-v1 Definition 4.36 is
 attributed to that source.  See `docs/math/reeb-geometric-interleaving-equivalence.md`.
+
+The constructible spaces are objects of `Over (TopCat.of ℝ)`, so their carriers are types in
+universe `0`; `TDA/Reeb/ConstructibleTransport.lean` transports constructibility and the
+stability bound `constructibleInterleavingDistance_le_edist` along a homeomorphism from a carrier
+in any universe.
 -/
 
 open Set Topology CategoryTheory

@@ -45,7 +45,8 @@ faithful (`realizationFullyFaithful`), because slice morphisms between realizati
 the height-preserving maps (`overHomEquiv`). An object of the real slice satisfies `IsRGraph` when
 it is isomorphic to `toOver T D` for some `m`, `T : CriticalValues m` and `D`. Graph objects form
 the full subcategory `RGraphCat`; presentations are not its objects. The packaging is in universe
-`0`, the universe of the real slice; the classification itself holds in every universe.
+`0`, the universe of the real slice, so `IsRGraph` and `RGraphCat` have carriers in universe `0`;
+the classification itself holds in every universe.
 
 ## The Reeb quotient
 

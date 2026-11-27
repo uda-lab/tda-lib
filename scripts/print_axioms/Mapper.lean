@@ -1566,3 +1566,9 @@ import TDA
 #print axioms TDA.Mapper.ComponentIndexClientExamples.fin_three_interMember_subset_preimage
 #print axioms TDA.Mapper.ComponentIndexClientExamples.support_image
 #print axioms TDA.Mapper.ComponentIndexClientExamples.projection_image
+#print axioms TDA.Mapper.GraphPL.graphPLReebGraph_le_of_equiv
+#print axioms TDA.Mapper.GraphPL.graphPLReebGraph_le_edist_of_equiv
+#print axioms TDA.Mapper.exists_graphPLMapperReconstruction_error_le_of_equiv
+#print axioms TDA.Mapper.GraphPLTransportClientExamples.ulift_fin_four_le
+#print axioms TDA.Mapper.GraphPLTransportClientExamples.ulift_fin_four_le_edist
+#print axioms TDA.Mapper.GraphPLTransportClientExamples.ulift_fin_four_mapperReconstruction

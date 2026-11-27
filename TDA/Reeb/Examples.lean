@@ -56,3 +56,4 @@ import TDA.Reeb.ThickeningWindowExamples
 import TDA.Reeb.ThickeningPresentationExamples
 import TDA.Reeb.ThickeningConstructibleExamples
 import TDA.Reeb.ThickeningCosheafComparisonExamples
+import TDA.Reeb.ConstructibleTransportClientExamples

@@ -53,6 +53,7 @@ import TDA.Reeb.RGraphWindow
 import TDA.Reeb.Smoothing
 import TDA.Reeb.Stability
 import TDA.Reeb.ConstructibleGeometricInterleaving
+import TDA.Reeb.ConstructibleTransport
 
 import TDA.Reeb.ConstructiblePerturbation
 import TDA.Reeb.GraphPLVertexPerturbation

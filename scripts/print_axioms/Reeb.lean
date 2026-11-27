@@ -3982,3 +3982,10 @@ import TDA
 #print axioms TDA.Reeb.singularHomology₀Desc
 #print axioms TDA.Reeb.singularHomology₀Class_comp_singularHomology₀Desc
 #print axioms TDA.Reeb.singularHomology₀Class_comp_singularHomology₀Desc_assoc
+#print axioms TDA.Reeb.RGraph.overIsoOfHomeomorph
+#print axioms TDA.Reeb.RGraph.isConstructibleSpace_iff_of_homeomorph
+#print axioms TDA.Reeb.RGraph.constructibleInterleavingDistance_eq_of_homeomorph
+#print axioms TDA.Reeb.RGraph.constructibleInterleavingDistance_le_edist_of_homeomorph
+#print axioms TDA.Reeb.ConstructibleTransportClientExamples.isConstructibleSpace_constUp_transport
+#print axioms TDA.Reeb.ConstructibleTransportClientExamples.constructibleInterleavingDistance_constUp_le
+#print axioms TDA.Reeb.ConstructibleTransportClientExamples.constructibleInterleavingDistance_ulift_zero_eq

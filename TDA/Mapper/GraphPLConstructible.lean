@@ -14,7 +14,9 @@ constructible-space structure, (D) the quotient and Reeb-graph identifications, 
 thickening comparisons.  Part (A), the Hausdorff, locally path-connected and compact topology of
 graph realizations, is `TDA.Mapper.GraphPLRealizationTopology`.  These are library results and
 make no external source claim.  The realization and presentation statements are
-universe-polymorphic, while the slice statements use `V : Type`.
+universe-polymorphic, while the slice statements use `V : Type`. For a vertex type `V : Type u`
+the slice statements apply to the transport along an equivalence `V ≃ W` with `W : Type`
+(`TDA/Mapper/GraphPLTransport.lean`).
 -/
 
 namespace TDA.Mapper.GraphPL

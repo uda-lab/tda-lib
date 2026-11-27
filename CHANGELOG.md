@@ -10,6 +10,24 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 15 (#1301, #1207): transport companions for carriers outside
+  universe `0`. `IsRGraph`, `IsConstructibleSpace`, `geometricInterleavingDistance`,
+  `constructibleInterleavingDistance` and the graph-PL Reeb statements live over
+  `Over (TopCat.of ℝ)` with carriers and vertex types in universe `0`. For a carrier `X : Type u`
+  and a homeomorphism `e : X ≃ₜ Z` with `Z : Type`, `RGraph.overIsoOfHomeomorph`,
+  `RGraph.isConstructibleSpace_iff_of_homeomorph` and
+  `RGraph.constructibleInterleavingDistance_eq_of_homeomorph` give the slice isomorphism,
+  invariance of constructibility and invariance of the constructible interleaving distance, and
+  `RGraph.constructibleInterleavingDistance_le_edist_of_homeomorph` the bound by
+  `edist (UniformFun.ofFun f) (UniformFun.ofFun g)` for heights `f g : C(X, ℝ)` whose transports
+  are constructible. For a vertex type `V : Type u` and an equivalence `e : V ≃ W` with
+  `W : Type` finite, `GraphPL.graphPLReebGraph_le_of_equiv`,
+  `GraphPL.graphPLReebGraph_le_edist_of_equiv` and
+  `exists_graphPLMapperReconstruction_error_le_of_equiv` state the vertex-budget bound, the
+  uniform-distance bound and the Mapper reconstruction estimate for `G.comap e.symm` and
+  `h ∘ e.symm`. The modules are `Reeb.ConstructibleTransport` and `Mapper.GraphPLTransport`;
+  `Reeb.ConstructibleTransportClientExamples` (carrier `ULift.{1} Unit`) and
+  `Mapper.GraphPLTransportClientExamples` (vertices `ULift.{1} (Fin 4)`) hold the client checks.
 - Downstream-use audit, family 14 (#1291, #1207): public `Fintype` instances on abbreviations of
   mathlib types. `CoordinateGrid.pointFintype` is mathlib's `Pi.instFintype` on
   `∀ i : Fin n, {x : ℝ // x ∈ G i}`, an instance that computes. `Rips.sampleFintype`
