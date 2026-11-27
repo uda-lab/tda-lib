@@ -6179,6 +6179,26 @@ nonzero `H⁰` stalks of `T_1 (T_0 (constOn ℝ))` and `T_0 (T_1 (constOn ℝ))`
 `(1, 1)` on `constOn ℝ` (`hcomp_aug_TComp_constOn`); and the left unit law at `b = 1` on `Dᵇ`
 (`compIsoB_TCompOfEq_zero_left_one`).
 
+## Associativity and bounded augmentation of band composition
+
+For `0 ≤ a`, `0 ≤ b` and `0 ≤ c`, `BandConvolution.TComp_assoc_hom` in
+`TDA.Sheaf.BandCompositionAssociativity` identifies the two maps from
+`(T k a ⋙ T k b) ⋙ T k c` to `T k (a + b + c)`. Composing the last two bands first uses the
+functor associator and `TCompOfEq k ha (add_nonneg hb hc) (add_assoc a b c).symm`.
+`BandConvolution.TCompB_assoc_hom` gives the same equation for `TB`, `TCompB` and
+`compIsoB k (TCompOfEq …)` on `Dᵇ(Sh(ℝ; k))`.
+
+For `0 ≤ a` and `0 ≤ b`, `BandConvolution.hcomp_augB_TCompB_hom` in
+`TDA.Sheaf.BandCompositionUnit` identifies
+`(augB k ha ◫ augB k hb) ≫ (Functor.leftUnitor (𝟭 _)).hom` with
+`(TCompB k ha hb).hom ≫ augB k (add_nonneg ha hb)`.
+
+`TDA.Sheaf.BandCompositionAssociativityExamples` specializes the two associativity laws
+over `ℚ` to `(1, 2, 3)` (`TComp_assoc_one_two_three`) and `(0, 1, 2)`
+(`TCompB_assoc_zero_one_two`). `not_isZero_H0_stalk_TTT_one_two_three` gives nonzero `H⁰`
+at each stalk of the first law's source on the constant sheaf.
+`hcomp_augB_TCompB_one_one` specializes bounded augmentation to `(1, 1)`.
+
 ## Review and extension boundaries
 
 The selected PH claims and their proof-critical bridges received the source-based review

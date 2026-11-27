@@ -10,6 +10,12 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Associativity of band composition (#1175). `TComp_assoc_hom` and `TCompB_assoc_hom` compare
+  the two compositions of three nonnegative radii on `D⁺` and `Dᵇ`, using the functor associator
+  and `TCompOfEq` for the equality of sums. `hcomp_augB_TCompB_hom` identifies the horizontal
+  composite of the bounded augmentations with the augmentation of the sum through `TCompB`.
+  Rational fixtures are `TComp_assoc_one_two_three`, `not_isZero_H0_stalk_TTT_one_two_three`,
+  `TCompB_assoc_zero_one_two` and `hcomp_augB_TCompB_one_one`.
 - Uniqueness of interval decompositions of real persistence modules with arbitrary index types
   (#1255). `SupportInterval` has `exists_smul_id` and
   `endRingEquiv` (every endomorphism of an interval module over a linear order is a scalar, and

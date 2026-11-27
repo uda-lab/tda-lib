@@ -1918,3 +1918,10 @@ import TDA
 #print axioms TDA.Sheaf.BandCompositionUnitExamples.not_isZero_H0_stalk_TT_one_zero
 #print axioms TDA.Sheaf.BandCompositionUnitExamples.hcomp_aug_TComp_constOn
 #print axioms TDA.Sheaf.BandCompositionUnitExamples.compIsoB_TCompOfEq_zero_left_one
+#print axioms TDA.Sheaf.BandConvolution.TComp_assoc_hom
+#print axioms TDA.Sheaf.BandConvolution.TCompB_assoc_hom
+#print axioms TDA.Sheaf.BandConvolution.hcomp_augB_TCompB_hom
+#print axioms TDA.Sheaf.BandCompositionAssociativityExamples.TComp_assoc_one_two_three
+#print axioms TDA.Sheaf.BandCompositionAssociativityExamples.not_isZero_H0_stalk_TTT_one_two_three
+#print axioms TDA.Sheaf.BandCompositionAssociativityExamples.TCompB_assoc_zero_one_two
+#print axioms TDA.Sheaf.BandCompositionAssociativityExamples.hcomp_augB_TCompB_one_one
