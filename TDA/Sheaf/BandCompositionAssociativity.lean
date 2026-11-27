@@ -24,8 +24,8 @@ variable {X Y W R : TopCat.{0}}
   [HasDerivedCategory (W.Sheaf (ModuleCat.{0} k))]
   [HasDerivedCategory (R.Sheaf (ModuleCat.{0} k))]
 
--- Taking the adjoint of a correspondence restriction followed by a direct image.
-private lemma corrRestr_map_adjoint (j : X ⟶ Y) (p q : Y ⟶ R)
+/-- The adjoint of a correspondence restriction followed by a derived direct image. -/
+lemma corrRestr_map_adjoint (j : X ⟶ Y) (p q : Y ⟶ R)
     (M : DerivedCategory.Plus (R.Sheaf (ModuleCat.{0} k)))
     {N : DerivedCategory.Plus (X.Sheaf (ModuleCat.{0} k))}
     (φ : (pullbackPlus k (j ≫ p)).obj M ⟶ N) :
@@ -169,8 +169,9 @@ private lemma TCompOfEq_transportCounit {a b d : ℝ} (ha : 0 ≤ a) (hb : 0 ≤
     (transportCounit k (pr₁₃ a b) (p (a + b)) (q (a + b))).app M = _
   simpa only [hCounit, transportCounit_app, Functor.comp_obj] using e'
 
--- The same pasting after inverse image to a common space.
-private lemma transportCounit_TCompOfEq {a b d : ℝ} {V : TopCat.{0}}
+/-- After inverse image along a map into the two-band correspondence, the adjoint of
+composition is the composite of the two transported counits. -/
+lemma transportCounit_TCompOfEq {a b d : ℝ} {V : TopCat.{0}}
     [HasDerivedCategory (V.Sheaf (ModuleCat.{0} k))]
     (i : V ⟶ Z a b) (ha : 0 ≤ a) (hb : 0 ≤ b) (e : a + b = d)
     (M : DerivedCategory.Plus (realLine.Sheaf (ModuleCat.{0} k))) :

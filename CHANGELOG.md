@@ -10,6 +10,21 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Real direct images of a fixed bounded-below coefficient complex satisfy extended
+  sup stability. `directImageGraph`, `directImageComparison`, and
+  `directImageComparison_adjoint` give the graph restriction and its adjoint.
+  `corrRestr_map_adjoint` and `transportCounit_TCompOfEq` compute the adjoints of
+  correspondence restriction and band composition. `directImageComparison_comp`
+  composes comparisons at the summed radius, and `directImageWitness` gives the
+  two witness maps. `distance_directImage_le_of_dist_le` and
+  `distance_directImage_le` give the radius and extended sup bounds.
+  `distanceB_directImage_le` gives the bound for bounded representatives.
+  For `realizationHeight` on a finite simplicial realization with
+  `constantCoefficients`, `distance_directImage_realizationHeight_le` and
+  `distanceB_directImage_realizationHeight_le` specialize these bounds.
+  `directImageConstantPointIso` identifies the point image with the skyscraper,
+  and `distance_directImage_constantPoint` shows that the point maps attain the bound.
+
 - Finite graded matching bounds the real-band convolution distance. A common-radius
   witness assembles from pair and deletion witnesses on the finite biproduct.
   The matching cost is the supremum of the paired band distances and the distances
