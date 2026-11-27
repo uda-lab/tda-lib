@@ -6430,6 +6430,40 @@ skyscrapers at `a` and `b` have a witness exactly at radii `ε ≥ |a - b|`.
 `distance_skyscraper` gives their distance as `ENNReal.ofReal |a - b|`, and
 `distance_skyscraper_zero` gives infinite distance to the zero object.
 
+## Stability of real derived direct images
+
+In `TDA.Sheaf.BandConvolution`, let `f g : X ⟶ realLine` be continuous maps from a
+space in universe zero, and let `F` be an object of the bounded-below derived
+category of sheaves of `k`-modules, for a ring `k`. Given `hfg : ∀ x, dist (f x) (g x) ≤ a`,
+`directImageComparison k f g hfg F` sends `T_a (Rf_* F)` to `Rg_* F`.
+It applies the base-change mate on the closed-band pullback of `f`, then restricts
+along the section given by `g`. The map `directImageGraph f g hfg` takes
+`x` to `(f x, g x)` in the band. `directImageComparison_adjoint` describes the
+comparison by the band counit transported along that graph and the counit of `f`.
+
+`corrRestr_map_adjoint` computes the adjoint of a restriction followed by a derived
+direct image. `transportCounit_TCompOfEq` computes the adjoint of band composition
+after pullback to a common source. `directImageComparison_comp` uses it to compose
+displacements by adding their radii. A nonnegative radius and a displacement bound
+give `directImageWitness` with the comparison in each direction.
+`distance_directImage_le_of_dist_le` bounds the distance by `ENNReal.ofReal a`.
+`distance_directImage_le` bounds it by `⨆ x : X, edist (f x) (g x)` in `ℝ≥0∞`.
+`distanceB_directImage_le` gives the same bound for bounded objects whose images
+under `boundedToPlus` are isomorphic to the two direct images.
+
+For a finite labelled simplicial complex `K`, `realizationHeight K h` is the affine
+interpolation of the vertex heights `h` on `TDA.Topology.Realization K`.
+`constantCoefficients k X` puts the constant sheaf of value `k` in degree zero.
+`distance_directImage_realizationHeight_le` gives the literal extended sup bound
+on the realization for two vertex height functions and these coefficients.
+`distanceB_directImage_realizationHeight_le` gives the bounded form given
+isomorphisms from bounded representatives.
+
+For a field, `directImageConstantPointIso` identifies the direct image along
+`ptOf a` of `constantCoefficients k pt` with `skyscraper k a`.
+`distance_directImage_constantPoint` gives equality with the extended supremum
+for any two point maps, which is `ENNReal.ofReal |a - b|` for heights `a` and `b`.
+
 ## Finite graded matching for band convolution
 
 In `TDA.Sheaf.BandConvolution`, `Witness.biproduct` assembles a finite family of witnesses at one

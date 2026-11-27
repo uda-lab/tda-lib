@@ -41,3 +41,4 @@ import TDA.Sheaf.BandCompositionUnitExamples
 import TDA.Sheaf.BandCompositionAssociativityExamples
 import TDA.Sheaf.BandDistanceExamples
 import TDA.Sheaf.BandGradedMatchingExamples
+import TDA.Sheaf.BandDirectImageStabilityExamples
