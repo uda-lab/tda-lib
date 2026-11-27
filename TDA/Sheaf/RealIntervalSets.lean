@@ -28,12 +28,14 @@ Fix strictly increasing breakpoints `p : Fin m → ℝ` (`hp : StrictMono p`) an
 * For an interval `J`, `Φ (interval J)` is the interval sheaf of `J`, with stalk `k` exactly on
   `intervalSet p J`: its stalk at `x` is isomorphic to `k` for `x ∈ intervalSet p J`
   (`nonempty_stalk_extension_interval_iso`) and zero otherwise
-  (`isZero_stalk_extension_interval`), and `finrank_stalk_extension_interval` states both as a
-  dimension, `if x ∈ intervalSet p J then 1 else 0` for an instance
+  (`isZero_stalk_extension_interval`); as dimensions, `1` on the interval set
+  (`finrank_stalk_extension_interval_of_mem`) and `0` off it
+  (`finrank_stalk_extension_interval_of_notMem`), and `finrank_stalk_extension_interval` states
+  both as `if x ∈ intervalSet p J then 1 else 0` for an instance
   `[Decidable (x ∈ intervalSet p J)]`. The restriction from the star of a point to an adjacent
   cell, both in `J`, is an isomorphism (`isIso_extension_interval_map`, from
-  `isIso_interval_map_gen` on the diagram side); through the germ isomorphisms it is the cospecialisation map between the stalks at the
-  breakpoint and at a point of the cell.
+  `isIso_interval_map_gen` on the diagram side); through the germ isomorphisms it is the
+  cospecialisation map between the stalks at the breakpoint and at a point of the cell.
 -/
 
 open CategoryTheory Limits TopologicalSpace Opposite TDA.Persistence
@@ -443,21 +445,35 @@ theorem isZero_stalk_extension_interval (hp : StrictMono p) {J : FiniteInterval 
     ⟨fun a b => Subtype.ext ((fiber_val_eq_zero hv a).trans (fiber_val_eq_zero hv b).symm)⟩
   exact (ModuleCat.isZero_of_subsingleton _).of_iso e
 
+/-- **The stalk dimension of an interval sheaf on the interval set.** The stalk of the interval
+sheaf `Φ (interval J)` at a point of `intervalSet p J` has dimension one. -/
+theorem finrank_stalk_extension_interval_of_mem (hp : StrictMono p)
+    {J : FiniteInterval (2 * m + 1)} {x : ℝ} (hx : x ∈ intervalSet p J) :
+    Module.finrank k (((extension k hp).obj (interval (orient m) J)).presheaf.stalk x) = 1 := by
+  obtain ⟨e⟩ := nonempty_stalk_extension_interval_iso k hp hx
+  rw [e.toLinearEquiv.finrank_eq]
+  exact Module.finrank_self k
+
+/-- **The stalk dimension of an interval sheaf off the interval set.** The stalk of the interval
+sheaf `Φ (interval J)` at a point outside `intervalSet p J` has dimension zero. -/
+theorem finrank_stalk_extension_interval_of_notMem (hp : StrictMono p)
+    {J : FiniteInterval (2 * m + 1)} {x : ℝ} (hx : x ∉ intervalSet p J) :
+    Module.finrank k (((extension k hp).obj (interval (orient m) J)).presheaf.stalk x) = 0 := by
+  have := ModuleCat.isZero_iff_subsingleton.1 (isZero_stalk_extension_interval k hp hx)
+  exact Module.finrank_zero_of_subsingleton
+
 /-- **The stalk dimension of an interval sheaf.** The stalk of the interval sheaf
 `Φ (interval J)` at `x` has dimension one when `x ∈ intervalSet p J` and zero otherwise. The
 decidability of `x ∈ intervalSet p J` is an instance argument: any instance gives the same
-value of the `if`. -/
+value of the `if`. `finrank_stalk_extension_interval_of_mem` and
+`finrank_stalk_extension_interval_of_notMem` state the two cases without an instance. -/
 theorem finrank_stalk_extension_interval (hp : StrictMono p) (J : FiniteInterval (2 * m + 1))
     (x : ℝ) [Decidable (x ∈ intervalSet p J)] :
     Module.finrank k (((extension k hp).obj (interval (orient m) J)).presheaf.stalk x) =
       if x ∈ intervalSet p J then 1 else 0 := by
-  obtain ⟨v, hxv⟩ := exists_mem_stratum hp x
-  obtain ⟨e⟩ := nonempty_stalk_extension_iso k hp (M := interval (orient m) J)
-    (fun _ => inferInstance) hxv
-  rw [e.toLinearEquiv.finrank_eq, finrank_interval_obj]
-  by_cases hv : J.alive v
-  · simp [hv, (mem_intervalSet_iff_alive hxv).2 hv]
-  · simpa [hv] using fun h => hv ((mem_intervalSet_iff_alive hxv).1 h)
+  split_ifs with hx
+  · exact finrank_stalk_extension_interval_of_mem k hp hx
+  · exact finrank_stalk_extension_interval_of_notMem k hp hx
 
 /-- **Restrictions of interval sheaves inside the interval.** For an arrow from the point `v` to
 an adjacent cell `w`, both in `J`, the restriction of the interval sheaf `Φ (interval J)` from

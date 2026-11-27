@@ -1795,7 +1795,6 @@ import TDA
 #print axioms TDA.Sheaf.ClientExamples.decidableMemJc
 #print axioms TDA.Sheaf.ClientExamples.finrank_stalk_Jc_half
 #print axioms TDA.Sheaf.ClientExamples.finrank_stalk_Jc_two
-#print axioms TDA.Sheaf.ClientExamples.finrank_stalk_extension_interval_of_mem
 #print axioms TDA.Sheaf.ClientExamples.finrank_stalk_extension_interval_classical
 #print axioms TDA.Sheaf.ClientExamples.barcode_sections_extension_Jc
 #print axioms TDA.Sheaf.ClientExamples.barcode_sections_barcodeSheaf_Jc_Jco
@@ -1806,3 +1805,10 @@ import TDA
 #print axioms TDA.Sheaf.ClientExamples.realLine_eq
 #print axioms TDA.Sheaf.ClientExamples.isGE_isLE_T_one
 #print axioms TDA.Sheaf.ClientExamples.TCompOneOne
+#print axioms TDA.Sheaf.RealConstructible.finrank_stalk_extension_interval_of_mem
+#print axioms TDA.Sheaf.RealConstructible.finrank_stalk_extension_interval_of_notMem
+#print axioms TDA.Sheaf.ClientExamples.half_mem_intervalSet_q2_Jc
+#print axioms TDA.Sheaf.ClientExamples.two_notMem_intervalSet_q2_Jc
+#print axioms TDA.Sheaf.ClientExamples.finrank_stalk_Jc_half_of_mem
+#print axioms TDA.Sheaf.ClientExamples.finrank_stalk_Jc_two_of_notMem
+#print axioms TDA.Sheaf.ClientExamples.finrank_stalk_extension_interval_isTrue

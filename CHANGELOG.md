@@ -1058,7 +1058,10 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   Restated: `OrthantSheaf.eq_generateFrom : orthantTopology n = generateFrom …`, so
   `rw [eq_generateFrom]` rewrites the topology of `WithOrthant n`;
   `RealConstructible.finrank_stalk_extension_interval` takes an instance argument
-  `[Decidable (x ∈ intervalSet p J)]`. New: `RealStratification.stratum_odd_of_val`, the stratum of
+  `[Decidable (x ∈ intervalSet p J)]`. New:
+  `RealConstructible.finrank_stalk_extension_interval_of_mem` and
+  `finrank_stalk_extension_interval_of_notMem`, the stalk dimensions `1` and `0` of an interval
+  sheaf from a membership hypothesis; `RealStratification.stratum_odd_of_val`, the stratum of
   a vertex `v` with `v.val = 2 * i.val + 1`; the instances
   `RealConstructible.finiteDimensional_sections_extension` and
   `finiteDimensional_sections_barcodeSheaf`, with which `barcode_sections_extension_interval` and
@@ -1072,8 +1075,10 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   module `TDA.Sheaf.ClientExamples`: `isOpen_of_isOpen_generateFrom_orthant`,
   `isOpen_generateFrom_orthant`, `inferInstance_eq_generateFrom`, `ephemeral_orthantBasis_iff_two`,
   `isZero_orthantQ_iff_two`, `isZero_orthantQ_iff_structureMap`, `q2`, `q2_strictMono`, `Jc`,
-  `Jco`, `stratum_q2_three`, `intervalSet_q2_Jc`, `decidableMemJc`, `finrank_stalk_Jc_half`,
-  `finrank_stalk_Jc_two`, `finrank_stalk_extension_interval_of_mem`,
+  `Jco`, `stratum_q2_three`, `intervalSet_q2_Jc`, `half_mem_intervalSet_q2_Jc`,
+  `two_notMem_intervalSet_q2_Jc`, `finrank_stalk_Jc_half_of_mem`, `finrank_stalk_Jc_two_of_notMem`,
+  `decidableMemJc`, `finrank_stalk_Jc_half`, `finrank_stalk_Jc_two`,
+  `finrank_stalk_extension_interval_isTrue`,
   `finrank_stalk_extension_interval_classical`, `barcode_sections_extension_Jc`,
   `barcode_sections_barcodeSheaf_Jc_Jco`, `isConstructible_Jc`, `gradedBarcode_singleFunctor_Jc`,
   `ext_representable_extension_Jc`, `isIso_baseChange_id_realLine`, `realLine_eq`,

@@ -24,12 +24,16 @@ in the sections that use them.
 * **Universes.** `StrictBasis` and `SpaceTranslation` on a space in `TopCat.{1}`, as
   `example`s.
 * **Strata and stalks for the breakpoints `q2 = ![0, 1]`.** `rw [stratum_odd_of_val …]` at the
-  literal vertex `3` (`stratum_q2_three`). `finrank_stalk_extension_interval` with the
-  decidability instance `decidableMemJc`, which decides membership in `intervalSet q2 Jc = [0, 1]`
-  through `decidable_of_iff`: dimension `1` at `1/2` (`finrank_stalk_Jc_half`) and `0` at `2`
-  (`finrank_stalk_Jc_two`); an instance decided by a hypothesis
-  (`finrank_stalk_extension_interval_of_mem`), and the form with `Classical.propDecidable`
-  (`finrank_stalk_extension_interval_classical`).
+  literal vertex `3` (`stratum_q2_three`). Stalk dimensions of the interval sheaf of `[0, 1]` in
+  three styles: (i) with no decidability instance, `rw` with
+  `finrank_stalk_extension_interval_of_mem` at `1/2` (`finrank_stalk_Jc_half_of_mem`) and `simp`
+  with `finrank_stalk_extension_interval_of_notMem` at `2` (`finrank_stalk_Jc_two_of_notMem`),
+  from `half_mem_intervalSet_q2_Jc` and `two_notMem_intervalSet_q2_Jc`; (ii) the `if` statement
+  `finrank_stalk_extension_interval` with the user-supplied instance `decidableMemJc`, which
+  decides membership in `intervalSet q2 Jc = [0, 1]` through `decidable_of_iff`
+  (`finrank_stalk_Jc_half`, `finrank_stalk_Jc_two`), and with the instance `isTrue hx` of a
+  membership hypothesis (`finrank_stalk_extension_interval_isTrue`); (iii) the form with
+  `Classical.propDecidable` (`finrank_stalk_extension_interval_classical`).
 * **Barcodes of sections.** `barcode_sections_extension_interval` and
   `barcode_sections_barcodeSheaf` stated without a local instance
   (`barcode_sections_extension_Jc`, `barcode_sections_barcodeSheaf_Jc_Jco`), and the graded
@@ -157,21 +161,42 @@ theorem intervalSet_q2_Jc : intervalSet q2 Jc = Set.Icc 0 1 := by
   rw [intervalSet_eq_Icc q2_strictMono (i := 0) (j := 1) rfl rfl]
   simp [q2]
 
+/-- `1/2` lies in the interval set `[0, 1]` of `Jc`. -/
+theorem half_mem_intervalSet_q2_Jc : (1 / 2 : ℝ) ∈ intervalSet q2 Jc := by
+  rw [intervalSet_q2_Jc]
+  norm_num
+
+/-- `2` lies outside the interval set `[0, 1]` of `Jc`. -/
+theorem two_notMem_intervalSet_q2_Jc : (2 : ℝ) ∉ intervalSet q2 Jc := by
+  rw [intervalSet_q2_Jc]
+  norm_num
+
+/-- Without any decidability instance, `rw [finrank_stalk_extension_interval_of_mem _ _ hx]` gives
+dimension `1` at `1/2`. -/
+theorem finrank_stalk_Jc_half_of_mem :
+    Module.finrank ℚ (((extension ℚ q2_strictMono).obj (interval (orient 2) Jc)).presheaf.stalk
+      (1 / 2 : ℝ)) = 1 := by
+  rw [finrank_stalk_extension_interval_of_mem _ _ half_mem_intervalSet_q2_Jc]
+
+/-- Without any decidability instance, `simp [finrank_stalk_extension_interval_of_notMem _ _ hx]`
+gives dimension `0` at `2`. -/
+theorem finrank_stalk_Jc_two_of_notMem :
+    Module.finrank ℚ (((extension ℚ q2_strictMono).obj (interval (orient 2) Jc)).presheaf.stalk
+      (2 : ℝ)) = 0 := by
+  simp [finrank_stalk_extension_interval_of_notMem _ _ two_notMem_intervalSet_q2_Jc]
+
 /-- Membership in `intervalSet q2 Jc`, decided as membership in `[0, 1]`. -/
 noncomputable def decidableMemJc (x : ℝ) : Decidable (x ∈ intervalSet q2 Jc) :=
   decidable_of_iff (0 ≤ x ∧ x ≤ 1) (by rw [intervalSet_q2_Jc, Set.mem_Icc])
 
 /-- With the instance `decidableMemJc`, `finrank_stalk_extension_interval` and `rw` give
-dimension `1` at `1/2`, after `rw`. -/
+dimension `1` at `1/2`. -/
 theorem finrank_stalk_Jc_half :
     Module.finrank ℚ (((extension ℚ q2_strictMono).obj (interval (orient 2) Jc)).presheaf.stalk
       (1 / 2 : ℝ)) = 1 := by
   let _ := decidableMemJc (1 / 2)
-  have h : (1 / 2 : ℝ) ∈ intervalSet q2 Jc := by
-    rw [intervalSet_q2_Jc]
-    norm_num
   rw [finrank_stalk_extension_interval, ite_eq_left_iff]
-  exact fun h' => absurd h h'
+  exact fun h => absurd half_mem_intervalSet_q2_Jc h
 
 /-- With the instance `decidableMemJc`, `finrank_stalk_extension_interval` and `simp` give
 dimension `0` at `2`. -/
@@ -181,8 +206,9 @@ theorem finrank_stalk_Jc_two :
   let _ := decidableMemJc 2
   norm_num [finrank_stalk_extension_interval, intervalSet_q2_Jc]
 
-/-- A decidability instance from a membership hypothesis: the stalk has dimension `1`. -/
-theorem finrank_stalk_extension_interval_of_mem {m : ℕ} {p : Fin m → ℝ} (hp : StrictMono p)
+/-- `finrank_stalk_extension_interval` with the decidability instance `isTrue hx` of a
+membership hypothesis: the stalk has dimension `1`. -/
+theorem finrank_stalk_extension_interval_isTrue {m : ℕ} {p : Fin m → ℝ} (hp : StrictMono p)
     (J : TDA.Persistence.FiniteInterval (2 * m + 1)) {x : ℝ} (hx : x ∈ intervalSet p J) :
     Module.finrank ℚ (((extension ℚ hp).obj (interval (orient m) J)).presheaf.stalk x) = 1 := by
   let _ : Decidable (x ∈ intervalSet p J) := isTrue hx
