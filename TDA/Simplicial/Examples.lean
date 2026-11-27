@@ -13,3 +13,4 @@ import TDA.Simplicial.ContiguityHomotopyExamples
 import TDA.Simplicial.CollapseCertificateExamples
 import TDA.Simplicial.SimplexAttachmentClientExamples
 import TDA.Simplicial.VertexMapClientExamples
+import TDA.Simplicial.HomologyOrderFreeClientExamples

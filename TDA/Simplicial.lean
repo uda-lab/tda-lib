@@ -24,3 +24,4 @@ import TDA.Simplicial.Collapse
 import TDA.Simplicial.CollapseHomology
 import TDA.Simplicial.CollapseCertificate
 import TDA.Simplicial.DeletedFaceValues
+import TDA.Simplicial.HomologyOrderFree
