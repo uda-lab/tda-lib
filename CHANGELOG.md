@@ -1054,6 +1054,30 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `not_isZero_H0_stalk_TT_two_one`, `not_isZero_H0_stalk_TT_one_one`,
   `whiskerLeft_restr_TComp_constOn`, `hcomp_restr_TComp_constOn`, `TCompB_one_one`,
   `whiskerRight_restrB_TCompB_one`.
+- Statement forms, instances and documentation from the client-test audit (#1306, #1207).
+  Restated: `OrthantSheaf.eq_generateFrom : orthantTopology n = generateFrom …`, so
+  `rw [eq_generateFrom]` rewrites the topology of `WithOrthant n`;
+  `RealConstructible.finrank_stalk_extension_interval` takes an instance argument
+  `[Decidable (x ∈ intervalSet p J)]`. New: `RealStratification.stratum_odd_of_val`, the stratum of
+  a vertex `v` with `v.val = 2 * i.val + 1`; the instances
+  `RealConstructible.finiteDimensional_sections_extension` and
+  `finiteDimensional_sections_barcodeSheaf`, with which `barcode_sections_extension_interval` and
+  `barcode_sections_barcodeSheaf` are stated without a local instance; `isIso_baseChange_of_isIso`
+  is an instance. The band modules state their results on `TDA.Sheaf.realLine`, the one
+  declaration named `realLine` with `TDA.Sheaf` and `TDA.Sheaf.BandConvolution` open.
+  `docs/api.md` and the module docstrings state the `open scoped TDA.Persistence` convention for
+  diagrams on `Fin n → ℝ`, the universes of the space-translation, derived, band,
+  interval-fibration and interval-section statements, and that `hasExt_sheaf_realLine` and
+  `hasExt_diagram` are theorems installed with `attribute [local instance]`. Fixtures in the new
+  module `TDA.Sheaf.ClientExamples`: `isOpen_of_isOpen_generateFrom_orthant`,
+  `isOpen_generateFrom_orthant`, `inferInstance_eq_generateFrom`, `ephemeral_orthantBasis_iff_two`,
+  `isZero_orthantQ_iff_two`, `isZero_orthantQ_iff_structureMap`, `q2`, `q2_strictMono`, `Jc`,
+  `Jco`, `stratum_q2_three`, `intervalSet_q2_Jc`, `decidableMemJc`, `finrank_stalk_Jc_half`,
+  `finrank_stalk_Jc_two`, `finrank_stalk_extension_interval_of_mem`,
+  `finrank_stalk_extension_interval_classical`, `barcode_sections_extension_Jc`,
+  `barcode_sections_barcodeSheaf_Jc_Jco`, `isConstructible_Jc`, `gradedBarcode_singleFunctor_Jc`,
+  `ext_representable_extension_Jc`, `isIso_baseChange_id_realLine`, `realLine_eq`,
+  `isGE_isLE_T_one`, `TCompOneOne`.
 
 ## v0.5.0
 

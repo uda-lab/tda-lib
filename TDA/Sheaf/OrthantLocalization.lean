@@ -33,6 +33,11 @@ and `[Abelian C]` for the Serre localization.
 
 `TDA.Sheaf.OrthantLocalizationExamples` checks a diagram on a horizontal line of the plane that
 `Q` kills and a half-plane diagram that it does not.
+
+Diagrams on `Fin n → ℝ` use the coordinatewise preorder category
+`TDA.Persistence.realCoordinatePreorderCategory`, selected by `open scoped TDA.Persistence`;
+outside that scope `Category (Fin n → ℝ)` is Mathlib's product category `CategoryTheory.pi`, and
+the maps of a `PModule` on `Fin n → ℝ` are written through `TDA.Persistence.structureMap`.
 -/
 
 set_option autoImplicit false

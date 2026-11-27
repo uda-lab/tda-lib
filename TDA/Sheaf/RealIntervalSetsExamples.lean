@@ -82,6 +82,7 @@ noncomputable abbrev wholeLineSheaf : TopCat.Sheaf (ModuleCat.{0} ℚ) realLine 
 theorem finrank_stalk_pointSheaf :
     Module.finrank ℚ ((pointSheaf ℚ).presheaf.stalk (0 : ℝ)) = 1 ∧
       Module.finrank ℚ ((pointSheaf ℚ).presheaf.stalk (1 : ℝ)) = 0 := by
+  classical
   rw [finrank_stalk_extension_interval, finrank_stalk_extension_interval,
     intervalSet_pointSegment]
   norm_num
@@ -91,6 +92,7 @@ theorem finrank_stalk_pointSheaf :
 theorem finrank_stalk_leftOpen :
     Module.finrank ℚ ((leftOpen).presheaf.stalk (-1 : ℝ)) = 1 ∧
       Module.finrank ℚ ((leftOpen).presheaf.stalk (0 : ℝ)) = 0 := by
+  classical
   rw [finrank_stalk_extension_interval, finrank_stalk_extension_interval, intervalSet_leftCell]
   norm_num
 
@@ -99,18 +101,21 @@ theorem finrank_stalk_leftOpen :
 theorem finrank_stalk_rightClosed :
     Module.finrank ℚ ((rightClosed ℚ).presheaf.stalk (0 : ℝ)) = 1 ∧
       Module.finrank ℚ ((rightClosed ℚ).presheaf.stalk (-1 : ℝ)) = 0 := by
+  classical
   rw [finrank_stalk_extension_interval, finrank_stalk_extension_interval, intervalSet_segRight]
   norm_num
 
 /-- The interval sheaf of the whole path has a one-dimensional stalk at every point. -/
 theorem finrank_stalk_wholeLineSheaf (x : ℝ) :
     Module.finrank ℚ (wholeLineSheaf.presheaf.stalk x) = 1 := by
+  classical
   rw [finrank_stalk_extension_interval, intervalSet_wholeLine]
   simp
 
 /-- Without breakpoints, the constant sheaf has a one-dimensional stalk at every point. -/
 theorem finrank_stalk_constSheaf₀ (x : ℝ) :
     Module.finrank ℚ ((constSheaf₀ ℚ).presheaf.stalk x) = 1 := by
+  classical
   rw [constSheaf₀, finrank_stalk_extension_interval, intervalSet_p₀]
   simp
 

@@ -322,6 +322,14 @@ theorem finiteDimensional_sections (hp : StrictMono p)
     (X : Paths (Vertex (orient m))) : FiniteDimensional k (((sections k p).obj F).obj X) :=
   (isConstructible_iff.1 hF).2 _ (isBasicOpen_star hp X)
 
+/-- The sections of `Φ M` over the stars are finite-dimensional when `M` has finite-dimensional
+values, so `barcode ((sections k p).obj ((extension k hp).obj M))` elaborates without a local
+instance. -/
+instance finiteDimensional_sections_extension (hp : StrictMono p) (M : Diagram k (orient m))
+    [∀ X, FiniteDimensional k (M.obj X)] (X : Paths (Vertex (orient m))) :
+    FiniteDimensional k (((sections k p).obj ((extension k hp).obj M)).obj X) :=
+  finiteDimensional_sections k hp (isConstructible_extension k hp inferInstance) X
+
 private theorem extensionStarIso_hom (hp : StrictMono p) (M : Diagram k (orient m))
     (v : Fin (2 * m + 1)) :
     (extensionStarIso k hp M v).hom =

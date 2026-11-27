@@ -41,7 +41,7 @@ them to an adjunction and constructs the base-change morphism of a commutative s
   `f` and `f'`. Its components are the unit of `f'`, `pullbackPlusSquare` and the counit of `f`
   (`baseChange_app`); it is characterised by `derivedUnit_baseChange`, is natural
   (`baseChange_naturality`) and is invertible when `f` and `f'` are homeomorphisms
-  (`isIso_baseChange_of_isIso`), in particular for the identity square.
+  (`isIso_baseChange_of_isIso`, an instance), in particular for the identity square.
 
 Derived categories are instance arguments `[HasDerivedCategory (X.Sheaf (ModuleCat k))]`, one for
 each space a statement mentions, as in `TDA.Sheaf.DerivedPlus`.
@@ -297,13 +297,17 @@ lemma baseChange_naturality (w : g' ≫ f = f' ≫ g)
   (baseChange k w).naturality φ
 
 /-- **Base change along homeomorphic direct images.** If `f` and `f'` are homeomorphisms, the
-base-change morphism of any commutative square `w : g' ≫ f = f' ≫ g` is an isomorphism. -/
+base-change morphism of any commutative square `w : g' ≫ f = f' ≫ g` is an isomorphism. This
+theorem is an instance, so `inferInstance` proves `IsIso (baseChange k w)` from `[IsIso f]` and
+`[IsIso f']`. -/
 theorem isIso_baseChange_of_isIso (w : g' ≫ f = f' ≫ g) [IsIso f] [IsIso f'] :
     IsIso (baseChange k w) := by
   rw [NatTrans.isIso_iff_isIso_app]
   intro M
   rw [baseChange_app]
   infer_instance
+
+attribute [instance] isIso_baseChange_of_isIso
 
 end square
 

@@ -10,7 +10,8 @@ Fix strictly increasing breakpoints `p : Fin m → ℝ` (`hp : StrictMono p`) an
 
 * `stratum p v`: the points of the star of `v` that equal `p_i` whenever `v = 2i+1`. For an even
   vertex this is the open cell `star p v` (`stratum_of_even`), for the vertex `2i+1` it is the
-  breakpoint `{p_i}` (`stratum_odd`). The strata are nonempty (`stratum_nonempty`), ordered
+  breakpoint `{p_i}` (`stratum_odd`; `stratum_odd_of_val` for a vertex `v` with
+  `v.val = 2 * i.val + 1`). The strata are nonempty (`stratum_nonempty`), ordered
   like their vertices (`lt_of_mem_stratum`) and partition `ℝ` (`exists_mem_stratum`,
   `eq_of_mem_stratum`).
 * `intervalSet p J`: the union of the strata of the vertices of an interval `J` of the strata
@@ -28,9 +29,10 @@ Fix strictly increasing breakpoints `p : Fin m → ℝ` (`hp : StrictMono p`) an
   `intervalSet p J`: its stalk at `x` is isomorphic to `k` for `x ∈ intervalSet p J`
   (`nonempty_stalk_extension_interval_iso`) and zero otherwise
   (`isZero_stalk_extension_interval`), and `finrank_stalk_extension_interval` states both as a
-  dimension. The restriction from the star of a point to an adjacent cell, both in `J`, is an
-  isomorphism (`isIso_extension_interval_map`, from `isIso_interval_map_gen` on the diagram
-  side); through the germ isomorphisms it is the cospecialisation map between the stalks at the
+  dimension, `if x ∈ intervalSet p J then 1 else 0` for an instance
+  `[Decidable (x ∈ intervalSet p J)]`. The restriction from the star of a point to an adjacent
+  cell, both in `J`, is an isomorphism (`isIso_extension_interval_map`, from
+  `isIso_interval_map_gen` on the diagram side); through the germ isomorphisms it is the cospecialisation map between the stalks at the
   breakpoint and at a point of the cell.
 -/
 
@@ -73,6 +75,14 @@ theorem stratum_odd (hp : StrictMono p) (i : Fin m) :
     refine ⟨apply_mem_star hp i, fun j hj => ?_⟩
     change 2 * i.val + 1 = 2 * j.val + 1 at hj
     rw [show j = i from Fin.ext (by omega)]
+
+/-- The stratum of a vertex `v` with `v = 2i+1` is the breakpoint `p_i`. The vertex is free, so
+`rw [stratum_odd_of_val hp i rfl]` rewrites the stratum at a literal vertex. -/
+theorem stratum_odd_of_val (hp : StrictMono p) (i : Fin m) {v : Fin (2 * m + 1)}
+    (hv : v.val = 2 * i.val + 1) : stratum p v = {p i} := by
+  have h : v = ⟨2 * i.val + 1, by omega⟩ := Fin.ext hv
+  rw [h]
+  exact stratum_odd hp i
 
 /-- Every stratum is nonempty. -/
 theorem stratum_nonempty (hp : StrictMono p) (v : Fin (2 * m + 1)) : (stratum p v).Nonempty := by
@@ -433,11 +443,12 @@ theorem isZero_stalk_extension_interval (hp : StrictMono p) {J : FiniteInterval 
     ⟨fun a b => Subtype.ext ((fiber_val_eq_zero hv a).trans (fiber_val_eq_zero hv b).symm)⟩
   exact (ModuleCat.isZero_of_subsingleton _).of_iso e
 
-open Classical in
 /-- **The stalk dimension of an interval sheaf.** The stalk of the interval sheaf
-`Φ (interval J)` at `x` has dimension one when `x ∈ intervalSet p J` and zero otherwise. -/
+`Φ (interval J)` at `x` has dimension one when `x ∈ intervalSet p J` and zero otherwise. The
+decidability of `x ∈ intervalSet p J` is an instance argument: any instance gives the same
+value of the `if`. -/
 theorem finrank_stalk_extension_interval (hp : StrictMono p) (J : FiniteInterval (2 * m + 1))
-    (x : ℝ) :
+    (x : ℝ) [Decidable (x ∈ intervalSet p J)] :
     Module.finrank k (((extension k hp).obj (interval (orient m) J)).presheaf.stalk x) =
       if x ∈ intervalSet p J then 1 else 0 := by
   obtain ⟨v, hxv⟩ := exists_mem_stratum hp x
