@@ -200,6 +200,23 @@ theorem isConstructible_iff {S : Finset ℝ} {F : TopCat.Sheaf (ModuleCat.{0} k)
       have := hfin T hT
       exact (asIso (F.presheaf.germ T x hxT)).toLinearEquiv.finiteDimensional
 
+/-- **Constructibility is invariant under isomorphism**: a sheaf isomorphic to a sheaf that is
+constructible for `S` is constructible for `S`. -/
+theorem isConstructible_of_iso {S : Finset ℝ} {F G : TopCat.Sheaf (ModuleCat.{0} k) realLine}
+    (e : F ≅ G) (hF : IsConstructible S F) : IsConstructible S G := by
+  obtain ⟨h₁, h₂⟩ := isConstructible_iff.1 hF
+  let e' := (sheafToPresheaf _ _).mapIso e
+  refine isConstructible_iff.2 ⟨fun U V h hU hV hS => ?_, fun U hU => ?_⟩
+  swap
+  · have : FiniteDimensional k (((sheafToPresheaf _ _).obj F).obj (op U)) := h₂ U hU
+    exact (e'.app (op U)).toLinearEquiv.finiteDimensional
+  have := h₁ h hU hV hS
+  have hn : F.presheaf.map (homOfLE h).op ≫ (e'.app (op U)).hom =
+      (e'.app (op V)).hom ≫ G.presheaf.map (homOfLE h).op := e'.hom.naturality _
+  have : IsIso ((e'.app (op V)).hom ≫ G.presheaf.map (homOfLE h).op) := by
+    rw [← hn]; infer_instance
+  exact IsIso.of_isIso_comp_left (e'.app (op V)).hom _
+
 end Constructible
 
 /-! ### Sections over the stars -/

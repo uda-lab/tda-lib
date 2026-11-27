@@ -914,6 +914,25 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `twoTerm` (`twoTerm_d`, `twoTerm_isStrictlyGE`, `twoTerm_isStrictlyLE`, `twoTermXIso`) with
   cohomology `ℚ` in degrees `0` and `1` (`nonempty_homology_twoTerm_iso`,
   `not_isZero_homology_twoTerm`) and its splitting `nonempty_iso_twoTerm`.
+- Splitting and graded barcodes of bounded complexes with constructible cohomology on the real
+  line (#1183, part U4b). `TDA.Sheaf.RealConstructible`: `isConstructible_of_iso`.
+  `TDA.Sheaf.AlternatingDecomposition`: `barcode_interval`. New module
+  `TDA.Sheaf.RealConstructibleDerived`: `HasConstructibleCohomology`,
+  `HasConstructibleCohomology.of_iso`, `hasConstructibleCohomology_singleFunctor`,
+  `hasConstructibleCohomology_biproduct`, `exists_iso_biproduct_homology_of_constructible`
+  (`K ≅ ⨁_{i ∈ [a, b]} (Hⁱ K)[-i]`); `intervalSheafSum` (`intervalSheafSum_nil`,
+  `intervalSheafSum_cons`), `extensionIntervalSumIso`, `barcodeSheaf`,
+  `extensionBarcodeDiagramIso`, `isConstructible_barcodeSheaf`, `barcode_sections_barcodeSheaf`,
+  `barcode_sections_extension_interval`; `gradedBarcode`, `gradedBarcode_eq_of_iso_barcodeDiagram`,
+  `gradedBarcode_eq_of_iso`, `gradedBarcode_eq_zero_of_isZero`, `gradedBarcode_eq_zero_of_lt`,
+  `gradedBarcode_eq_zero_of_gt`, `gradedBarcode_singleFunctor`,
+  `nonempty_homology_iso_barcodeSheaf`, `exists_iso_biproduct_barcodeSheaf` (the decomposition
+  `K ≅ ⨁_i ⨁_{J ∈ gradedBarcode K i} (Φ (interval J))[-i]`), `gradedBarcode_eq_of_iso_biproduct`
+  and `gradedBarcode_eq_zero_of_iso_biproduct` (uniqueness), `gradedBarcode_biproduct`. Fixtures in
+  `TDA.Sheaf.RealConstructibleDerivedExamples` over `ℚ` with one breakpoint:
+  `gradedBarcode_pointSheaf_one`, `twoDegreeBarcode`, `twoDegree`,
+  `hasConstructibleCohomology_twoDegree`, `gradedBarcode_twoDegree_zero`,
+  `gradedBarcode_twoDegree_one`, `gradedBarcode_twoDegree_of_ne`.
 
 ## v0.5.0
 

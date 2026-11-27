@@ -43,3 +43,4 @@ import TDA.Sheaf.PointDetection
 import TDA.Sheaf.IntervalFibration
 import TDA.Sheaf.BandComposition
 import TDA.Sheaf.HereditarySplitting
+import TDA.Sheaf.RealConstructibleDerived

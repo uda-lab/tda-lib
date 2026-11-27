@@ -521,6 +521,11 @@ theorem barcode_barcodeDiagram (o : Fin n → Bool) (B : Multiset (FiniteInterva
     barcode (barcodeDiagram (k := k) o B) = B :=
   barcode_eq_of_iso _ (Iso.refl _)
 
+/-- The barcode of an interval diagram is that interval. -/
+theorem barcode_interval (o : Fin n → Bool) (J : FiniteInterval (n + 1)) :
+    barcode (interval (k := k) o J) = {J} :=
+  barcode_eq_of_iso_intervalSum _ (isoBiprodZero (isZero_zero _))
+
 /-- Isomorphic diagrams have equal barcodes. -/
 theorem barcode_eq_of_iso' {o : Fin n → Bool} {M N : Diagram k o}
     [∀ X, FiniteDimensional k (M.obj X)] [∀ X, FiniteDimensional k (N.obj X)] (e : M ≅ N) :
