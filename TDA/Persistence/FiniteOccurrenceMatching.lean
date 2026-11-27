@@ -1,4 +1,5 @@
 import TDA.Persistence.DiagramBottleneck
+import Mathlib.Combinatorics.Hall.Basic
 import Mathlib.SetTheory.Cardinal.SchroederBernstein
 
 /-!
@@ -127,5 +128,49 @@ theorem exists_two_sided {α β : Type} [Fintype α] [Fintype β]
     cases a with
     | inl a => exact ⟨a, (hs a b).mpr ha⟩
     | inr m => exact False.elim (hh hb)
+
+/-- The vertices related to at least one member of a selected finite set. -/
+noncomputable def neighbors {α β : Type} [Fintype β] (r : α → β → Prop) (S : Finset α) :
+    Finset β :=
+  Finset.univ.filter fun b => ∃ a ∈ S, r a b
+
+/-- Membership in the finite set of neighbours. -/
+@[simp]
+theorem mem_neighbors {α β : Type} [Fintype β] {r : α → β → Prop} {S : Finset α} {b : β} :
+    b ∈ neighbors r S ↔ ∃ a ∈ S, r a b := by
+  simp [neighbors]
+
+private theorem hall_on_finset {α β : Type} [Fintype β]
+    (L : Finset α) (r : α → β → Prop)
+    (h : ∀ S : Finset α, S ⊆ L →
+      S.card ≤ (neighbors r S).card) :
+    ∃ f : L → β, Injective f ∧ ∀ a, r a.val (f a) := by
+  classical
+  apply (Fintype.all_card_le_filter_rel_iff_exists_injective
+    (fun (a : L) b => r a.val b)).mp
+  intro S
+  let e : L ↪ α := ⟨Subtype.val, Subtype.val_injective⟩
+  have hsub : S.map e ⊆ L := by
+    intro a ha
+    obtain ⟨a, _, rfl⟩ := Finset.mem_map.1 ha
+    exact a.property
+  simpa only [neighbors, Finset.card_map, Finset.mem_map, exists_exists_and_eq_and, e,
+    Function.Embedding.coeFn_mk] using h (S.map e) hsub
+
+/-- The Hall inequalities on subsets of `L` and `M` give one partial matching
+along `r` covering both selected sets. Neighbours can be anywhere on the opposite side. -/
+theorem exists_two_sided_of_hall {α β : Type} [Fintype α] [Fintype β]
+    (r : α → β → Prop) (L : Finset α) (M : Finset β)
+    (hL : ∀ S : Finset α, S ⊆ L →
+      S.card ≤ (neighbors r S).card)
+    (hM : ∀ S : Finset β, S ⊆ M →
+      S.card ≤ (neighbors (fun b a => r a b) S).card) :
+    ∃ σ : OccurrenceMatching α β PEmpty.{1} PEmpty.{1},
+      (∀ a b, σ.finite a = some b → r a b) ∧
+      (∀ a ∈ L, ∃ b, σ.finite a = some b) ∧
+      (∀ b ∈ M, ∃ a, σ.finite a = some b) := by
+  obtain ⟨f, hf, hfr⟩ := hall_on_finset L r hL
+  obtain ⟨g, hg, hgr⟩ := hall_on_finset M (fun b a => r a b) hM
+  exact exists_two_sided (· ∈ L) (· ∈ M) r f hf hfr g hg hgr
 
 end TDA.Persistence.FiniteOccurrenceMatching

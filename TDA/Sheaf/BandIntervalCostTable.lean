@@ -1,5 +1,8 @@
 import TDA.Sheaf.BandMatchingIntervalCosts
 import TDA.Sheaf.BandDirectImageStability
+import TDA.Sheaf.RealIntervalHom
+import Mathlib.CategoryTheory.Linear.FunctorCategory
+import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 
 /-!
 # Numeric band costs for graded interval sheaves
@@ -30,6 +33,9 @@ local notation "Sh" => realLine.Sheaf (ModuleCat k)
 local notation "D⁺" => DerivedCategory.Plus Sh
 local notation "Single" => Plus.singleFunctor Sh
 local notation "ISh[" hp "," J "]" => Functor.obj (extension k hp) (interval _ J)
+private abbrev presheaves := (TopologicalSpace.Opens realLine)ᵒᵖ ⥤ ModuleCat.{0} k
+
+local notation "Psh" => presheaves k
 
 variable {m n : ℕ} {p : Fin m → ℝ} {q : Fin n → ℝ}
 
@@ -1047,6 +1053,230 @@ private theorem hom_eq_zero_of_cut_conflict (hp : StrictMono p) (hq : StrictMono
       change _ ↔ F.upper.mem (-x) ∧ F.lower.mem (- -x)
       rw [neg_neg, and_comm]
 
+/-- The supports meet, and both endpoint cuts allow a map from `E` to `F`.
+At either end, finite open status precedes unbounded status, which precedes
+finite closed status. For equal finite left statuses, the source endpoint is
+at most the target endpoint for closed cuts and at least it for open cuts.
+The right cut uses the reflected endpoints. -/
+def IntervalEndpoints.homAllowed (E F : IntervalEndpoints) : Prop :=
+  (E.support ∩ F.support).Nonempty ∧ E.lower.allows F.lower ∧ E.upper.allows F.upper
+
+omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+/-- Every morphism between interval sheaves vanishes if the supports or cuts forbid it. -/
+theorem IntervalEndpoints.hom_eq_zero_of_not_homAllowed
+    (hp : StrictMono p) (hq : StrictMono q)
+    {J : FiniteInterval (2 * m + 1)} {K : FiniteInterval (2 * n + 1)} (E F : IntervalEndpoints)
+    (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    (h : ¬ E.homAllowed F) (f : ISh[hp,J] ⟶ ISh[hq,K]) : f = 0 := by
+  by_cases hcuts : E.lower.allows F.lower ∧ E.upper.allows F.upper
+  · apply hom_extension_eq_zero_of_stalk k hp hq f
+    intro x hx hy
+    exact (h ⟨⟨x, hJ ▸ hx, hK ▸ hy⟩, hcuts⟩).elim
+  · rw [not_and_or] at hcuts
+    exact hom_eq_zero_of_cut_conflict k hp hq E F hJ hK hcuts f
+
+private theorem LowerCut.allows_arrow_left (L R M S : LowerCut)
+    (hl : L.allows M) (hr : R.allows S) {U : Set ℝ} {x : ℝ}
+    (hside : U ⊆ Set.Iio x) (hxU : x ∈ closure U)
+    (hx : L.mem x ∧ R.mem (-x)) (hU : ∀ y ∈ U, M.mem y ∧ S.mem (-y)) :
+    (M.mem x ∧ S.mem (-x)) ∧ ∃ y ∈ U, L.mem y ∧ R.mem (-y) := by
+  obtain ⟨y, -, hy⟩ := mem_closure_iff.mp hxU Set.univ isOpen_univ (Set.mem_univ x)
+  refine ⟨⟨M.mono (hside hy).le (hU y hy).1, ?_⟩, ?_⟩
+  · have hclosed : S.closedAt (-x) :=
+      closure_minimal (fun z hz => S.mem_closedAt (hU z hz).2)
+        (S.isClosed.preimage continuous_neg) hxU
+    cases S with
+    | closed | unbounded => exact hclosed
+    | open' b =>
+      cases R <;> simp only [LowerCut.allows, LowerCut.mem] at hr hx ⊢
+      exact hr.trans_lt hx.2
+  · suffices ∃ z ∈ U, L.mem z by
+      obtain ⟨z, hz, hL⟩ := this
+      exact ⟨z, hz, hL, R.mono (neg_le_neg (hside hz).le) hx.2⟩
+    cases L with
+    | closed a =>
+      cases M <;> simp only [LowerCut.allows] at hl
+      exact ⟨y, hy, hl.trans (hU y hy).1⟩
+    | unbounded => exact ⟨y, hy, trivial⟩
+    | open' a =>
+      obtain ⟨z, hz, hUz⟩ := mem_closure_iff.mp hxU (Set.Ioi a) isOpen_Ioi hx.1
+      exact ⟨z, hUz, hz⟩
+
+private theorem mem_closure_stratum_of_arrow {v w : Fin (2 * m + 1)}
+    (hp : StrictMono p) (h : Arrow (orient m) v w) {x : ℝ} (hx : x ∈ stratum p v) :
+    x ∈ closure (stratum p w) := by
+  obtain ⟨hv, hw⟩ := arrow_orient_iff.mp h
+  let i : Fin m := ⟨v.val / 2, by have := v.isLt; omega⟩
+  have hvx : stratum p v = {p i} := stratum_odd_of_val hp i (by dsimp [i]; omega)
+  let side := if w < v then Set.Iio x else Set.Ioi x
+  have hside : x ∈ closure side := by
+    dsimp [side]
+    split_ifs
+    · exact (closure_Iio x).symm ▸ Set.mem_Iic.mpr le_rfl
+    · exact (closure_Ioi x).symm ▸ Set.mem_Ici.mpr le_rfl
+  apply mem_closure_iff.mpr
+  intro U hU hxU
+  obtain ⟨y, hy, hys⟩ := mem_closure_iff.mp hside (U ∩ (star p v : Set ℝ))
+    (hU.inter (star p v).isOpen) ⟨hxU, stratum_subset_star v hx⟩
+  refine ⟨y, hy.1, ?_⟩
+  obtain ⟨u, hu⟩ := exists_mem_stratum hp y
+  rcases eq_or_arrow_of_mem_star_of_mem_stratum hy.2 hu with rfl | ha
+  · have he : y = x := by
+      rw [hvx] at hu hx
+      exact (Set.mem_singleton_iff.1 hu).trans (Set.mem_singleton_iff.1 hx).symm
+    subst y
+    dsimp [side] at hys
+    split_ifs at hys <;> exact (lt_irrefl x hys).elim
+  · have hu' := (arrow_orient_iff.mp ha).2
+    suffices u = w by simpa only [this] using hu
+    dsimp [side] at hys
+    split_ifs at hys with hlt
+    · have hlt' : u < v := by
+        rcases lt_trichotomy u v with h' | he | h'
+        · exact h'
+        · exact (ha.ne he.symm).elim
+        · exact ((lt_of_mem_stratum hx hu h').not_gt hys).elim
+      exact Fin.ext (by simp only [Fin.lt_def] at hlt hlt'; omega)
+    · have hlt' : v < u := by
+        rcases lt_trichotomy v u with h' | he | h'
+        · exact h'
+        · exact (ha.ne he).elim
+        · exact ((lt_of_mem_stratum hu hx h').not_gt hys).elim
+      have hvw : v ≤ w := le_of_not_gt hlt
+      exact Fin.ext (by simp only [Fin.le_def, Fin.lt_def] at hvw hlt'; omega)
+
+private theorem IntervalEndpoints.allows_arrow (E F : IntervalEndpoints)
+    (hl : E.lower.allows F.lower) (hr : E.upper.allows F.upper)
+    (hp : StrictMono p) {J K : FiniteInterval (2 * m + 1)}
+    (hJ : intervalSet p J = E.support) (hK : intervalSet p K = F.support)
+    {v w : Fin (2 * m + 1)} (h : Arrow (orient m) v w) (hv : J.alive v) (hw : K.alive w) :
+    J.alive w ↔ K.alive v := by
+  obtain ⟨x, hx⟩ := stratum_nonempty hp v
+  have hcl := mem_closure_stratum_of_arrow hp h hx
+  have hmem : x ∈ E.support := hJ ▸ stratum_subset_intervalSet hv hx
+  have hcell : stratum p w ⊆ F.support := hK ▸ stratum_subset_intervalSet hw
+  suffices h' : x ∈ F.support ∧ (stratum p w ∩ E.support).Nonempty by
+    obtain ⟨y, hy, hyE⟩ := h'.2
+    exact iff_of_true ((mem_intervalSet_iff_alive hy).1 (hJ.symm ▸ hyE))
+      ((mem_intervalSet_iff_alive hx).1 (hK.symm ▸ h'.1))
+  rcases lt_or_gt_of_ne h.ne with hlt | hlt
+  · let U := (fun y : ℝ => -y) '' stratum p w
+    have hU : -x ∈ closure U :=
+      image_closure_subset_closure_image continuous_neg (Set.mem_image_of_mem _ hcl)
+    have hside : U ⊆ Set.Iio (-x) := by
+      rintro _ ⟨y, hy, rfl⟩
+      exact neg_lt_neg (lt_of_mem_stratum hx hy hlt)
+    obtain ⟨hx', z, ⟨y, hy, rfl⟩, hz⟩ :=
+      LowerCut.allows_arrow_left E.upper E.lower F.upper F.lower hr hl hside hU
+        (by simpa only [neg_neg, and_comm] using (E.mem_support_iff x).mp hmem)
+        (by
+          rintro _ ⟨y, hy, rfl⟩
+          simpa only [neg_neg, and_comm] using (F.mem_support_iff y).mp (hcell hy))
+    exact ⟨(F.mem_support_iff x).mpr (by simpa only [neg_neg, and_comm] using hx'),
+      y, hy, (E.mem_support_iff y).mpr (by simpa only [neg_neg, and_comm] using hz)⟩
+  · have hside : stratum p w ⊆ Set.Iio x := fun _ hy => lt_of_mem_stratum hy hx hlt
+    obtain ⟨hx', y, hy, hy'⟩ :=
+      LowerCut.allows_arrow_left E.lower E.upper F.lower F.upper hl hr hside hcl
+        ((E.mem_support_iff x).mp hmem) (fun _ hy => (F.mem_support_iff _).mp (hcell hy))
+    exact ⟨(F.mem_support_iff x).mpr hx', y, hy, (E.mem_support_iff y).mpr hy'⟩
+
+omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+/-- For allowed endpoint data, evaluation at any point of the overlap is a bijection
+onto the maps of the two rank-one stalks. Both interval diagrams are compared on
+the sorted union of the breakpoint sets. -/
+theorem IntervalEndpoints.bijective_stalkMap_of_homAllowed
+    (hp : StrictMono p) (hq : StrictMono q)
+    {J : FiniteInterval (2 * m + 1)} {K : FiniteInterval (2 * n + 1)} (E F : IntervalEndpoints)
+    (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    (h : E.homAllowed F) {x : ℝ} (hx : x ∈ E.support ∩ F.support) :
+    Function.Bijective (fun f : ISh[hp,J] ⟶ ISh[hq,K] =>
+      (TopCat.Presheaf.stalkFunctor (ModuleCat k) (X := realLine) x).map f.hom) := by
+  let B := breakpoints p ∪ breakpoints q
+  let s := sortedBreakpoints B
+  let hs := strictMono_sortedBreakpoints B
+  have hps : breakpoints p ⊆ breakpoints s := by
+    rw [breakpoints_sortedBreakpoints]
+    exact Finset.subset_union_left
+  have hqs : breakpoints q ⊆ breakpoints s := by
+    rw [breakpoints_sortedBreakpoints]
+    exact Finset.subset_union_right
+  let J' := refineInterval hp hs hps J
+  let K' := refineInterval hq hs hqs K
+  have hJ' : intervalSet s J' = E.support := (intervalSet_refineInterval hp hs hps J).trans hJ
+  have hK' : intervalSet s K' = F.support := (intervalSet_refineInterval hq hs hqs K).trans hK
+  let eJ := refineIntervalIso k hp hs hps J
+  let eK := refineIntervalIso k hq hs hqs K
+  obtain ⟨v, hv⟩ := exists_mem_stratum hs x
+  have heval := bijective_stalkMap_interval_of_arrows k hs hv
+    ((mem_intervalSet_iff_alive hv).1 (hJ'.symm ▸ hx.1))
+    ((mem_intervalSet_iff_alive hv).1 (hK'.symm ▸ hx.2))
+    (by
+      intro u w hArrow hu hw
+      exact E.allows_arrow F h.2.1 h.2.2 hs hJ' hK' hArrow hu hw)
+  let st := TopCat.Sheaf.forget (ModuleCat k) realLine ⋙
+    TopCat.Presheaf.stalkFunctor (ModuleCat k) (X := realLine) x
+  let e := (st.mapIso eJ).homCongr (st.mapIso eK)
+  change Function.Bijective (fun f : ISh[hp,J] ⟶ ISh[hq,K] => st.map f)
+  refine (e.bijective.of_comp_iff' _).mp ?_
+  have hn (f : ISh[hp,J] ⟶ ISh[hq,K]) :
+      e (st.map f) = st.map (eJ.homCongr eK f) := by
+    simp [e, Iso.homCongr_apply, Functor.map_comp]
+  have hc : (⇑e ∘ (fun f : ISh[hp,J] ⟶ ISh[hq,K] => st.map f)) =
+      ((fun f : ISh[hs,J'] ⟶ ISh[hs,K'] => st.map f) ∘ ⇑(eJ.homCongr eK)) :=
+    funext hn
+  rw [hc]
+  exact heval.comp (eJ.homCongr eK).bijective
+
+omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+/-- For allowed endpoint data, the space of sheaf morphisms has dimension one. -/
+theorem IntervalEndpoints.finrank_hom_of_homAllowed
+    (hp : StrictMono p) (hq : StrictMono q)
+    {J : FiniteInterval (2 * m + 1)} {K : FiniteInterval (2 * n + 1)} (E F : IntervalEndpoints)
+    (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    (h : E.homAllowed F) :
+    let A : Psh := ISh[hp,J].presheaf
+    let B : Psh := ISh[hq,K].presheaf
+    Module.finrank k (A ⟶ B) = 1 := by
+  intro A' B'
+  obtain ⟨x, hx⟩ := h.1
+  let A := ISh[hp,J]
+  let B := ISh[hq,K]
+  let st := TopCat.Presheaf.stalkFunctor (ModuleCat k) (X := realLine) x
+  let forget := TopCat.Sheaf.forget (ModuleCat k) realLine
+  have hbij : Function.Bijective (fun g : A' ⟶ B' => st.map g) := by
+    apply (Function.Bijective.of_comp_iff _ (g := fun g : A ⟶ B => forget.map g)
+      ⟨forget.map_injective, forget.map_surjective⟩).mp
+    exact E.bijective_stalkMap_of_homAllowed k hp hq F hJ hK h hx
+  let f : (A' ⟶ B') →ₗ[k] (A.presheaf.stalk x ⟶ B.presheaf.stalk x) :=
+    { toFun := fun g => st.map g
+      map_add' := fun _ _ => st.map_add
+      map_smul' := by
+        intro c g
+        apply TopCat.Presheaf.stalk_hom_ext A.presheaf
+        intro U hxU
+        change A.presheaf.germ U x hxU ≫ st.map (c • g) =
+          A.presheaf.germ U x hxU ≫ (c • st.map g)
+        erw [TopCat.Presheaf.stalkFunctor_map_germ, Linear.comp_smul,
+          TopCat.Presheaf.stalkFunctor_map_germ]
+        change (c • g.app (Opposite.op U)) ≫ B.presheaf.germ U x hxU =
+          c • (g.app (Opposite.op U) ≫ B.presheaf.germ U x hxU)
+        erw [Linear.smul_comp] }
+  let e := LinearEquiv.ofBijective f hbij
+  obtain ⟨a⟩ := nonempty_stalk_extension_interval_iso k hp (hJ.symm ▸ hx.1)
+  obtain ⟨b⟩ := nonempty_stalk_extension_interval_iso k hq (hK.symm ▸ hx.2)
+  let e' := e.trans ((Linear.homCongr k a b).trans (ModuleCat.homLinearEquiv (S := k)))
+  exact e'.finrank_eq.trans (by rw [Module.finrank_linearMap_self, Module.finrank_self])
+
+
 private theorem distance_le_sup_deletions {X Y : D⁺} :
     distance X Y ≤ distance X 0 ⊔ distance Y 0 := by
   apply ENNReal.le_of_forall_pos_le_add
@@ -1499,6 +1729,286 @@ private theorem LowerCut.sameType_of_allows (L L' M M' : LowerCut)
 /-- Whether both intervals have the same open, closed or unbounded status at each endpoint. -/
 def IntervalEndpoints.sameType (E F : IntervalEndpoints) : Bool :=
   E.lower.sameType F.lower && E.upper.sameType F.upper
+
+private theorem LowerCut.sameType_of_chain {L M N : LowerCut}
+    (h : L.sameType N = true) (hl : L.allows M) (hr : M.allows N) :
+    L.sameType M = true := by
+  cases L <;> cases M <;> cases N <;> simp_all [LowerCut.sameType, LowerCut.allows]
+
+omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+/-- A two-step morphism between interval sheaves of the same endpoint type vanishes
+if the intermediate sheaf has a different endpoint type. -/
+theorem IntervalEndpoints.hom_comp_eq_zero_of_different_type
+    {l : ℕ} {s : Fin l → ℝ} (hp : StrictMono p) (hq : StrictMono q) (hs : StrictMono s)
+    {J : FiniteInterval (2 * m + 1)} {K : FiniteInterval (2 * n + 1)}
+    {L : FiniteInterval (2 * l + 1)} (E F G : IntervalEndpoints)
+    (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    (hL : intervalSet s L = G.support) (hEG : E.sameType G = true)
+    (hEF : E.sameType F = false) (f : ISh[hp,J] ⟶ ISh[hq,K])
+    (g : ISh[hq,K] ⟶ ISh[hs,L]) : f ≫ g = 0 := by
+  by_cases hf : E.homAllowed F
+  · by_cases hg : F.homAllowed G
+    · rw [IntervalEndpoints.sameType, Bool.and_eq_true] at hEG
+      have hleft := LowerCut.sameType_of_chain hEG.1 hf.2.1 hg.2.1
+      have hright := LowerCut.sameType_of_chain hEG.2 hf.2.2 hg.2.2
+      have ht : E.sameType F = true := by
+        simp only [IntervalEndpoints.sameType, Bool.and_eq_true, hleft, hright, and_self]
+      rw [hEF] at ht
+      contradiction
+    · rw [F.hom_eq_zero_of_not_homAllowed k hq hs G hK hL hg g, comp_zero]
+  · rw [E.hom_eq_zero_of_not_homAllowed k hp hq F hJ hK hf f, zero_comp]
+
+private def LowerCut.coordinate : LowerCut → ℝ
+  | .closed a => a
+  | .open' a => -a
+  | .unbounded => 0
+
+/-- The signed endpoint coordinates for a matching block. A ray uses its
+finite coordinate followed by zero, and the line uses two zero coordinates. -/
+def IntervalEndpoints.coordinates (E : IntervalEndpoints) : ℝ × ℝ :=
+  match E with
+  | .ioc .. | .iic _ | .iio _ => (E.upper.coordinate, E.lower.coordinate)
+  | _ => (E.lower.coordinate, E.upper.coordinate)
+
+private def LowerCut.convolved (L : LowerCut) (r : ℝ) : LowerCut :=
+  match L with
+  | .closed a => .closed (a - r)
+  | .open' a => .open' (a + r)
+  | .unbounded => .unbounded
+
+private theorem IntervalEndpoints.cuts_convolved (E : IntervalEndpoints) {r : ℝ} (hr : 0 ≤ r)
+    (hE : E.hasDegreeOneOutput = false) :
+    (E.convolved r hr).lower = E.lower.convolved r ∧
+      (E.convolved r hr).upper = E.upper.convolved r := by
+  cases E <;>
+    simp_all [IntervalEndpoints.convolved, IntervalEndpoints.lower, IntervalEndpoints.upper,
+      IntervalEndpoints.hasDegreeOneOutput, LowerCut.convolved] <;> ring
+
+private theorem LowerCut.coordinate_le_add_of_convolved_allows {L M : LowerCut} {r : ℝ}
+    (hr : 0 ≤ r) (ht : L.sameType M = true) (h : (L.convolved r).allows M) :
+    L.coordinate ≤ M.coordinate + r := by
+  cases L <;> cases M <;> simp_all [LowerCut.convolved, LowerCut.sameType,
+    LowerCut.allows, LowerCut.coordinate]
+  linarith
+
+omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))] in
+/-- A nonzero radius-`r` morphism between same-type intervals in a common degree
+bounds each signed source coordinate by the corresponding target coordinate plus `r`.
+The source type must retain its degree under convolution. -/
+theorem IntervalEndpoints.coordinates_le_add_of_nonzero_band_hom
+    (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    (E F : IntervalEndpoints) (hJ : intervalSet p J = E.support)
+    (hK : intervalSet q K = F.support) (hE : E.hasDegreeOneOutput = false)
+    (hEF : E.sameType F = true) {r : ℝ} (hr : 0 ≤ r)
+    {f : (T k r).obj ((GradedInterval.mk J d).obj k hp) ⟶
+      (GradedInterval.mk K d).obj k hq} (hf : f ≠ 0) :
+    E.coordinates.1 ≤ F.coordinates.1 + r ∧ E.coordinates.2 ≤ F.coordinates.2 + r := by
+  obtain ⟨L, hL, ⟨e⟩⟩ := exists_iso_convolved_endpoints k hp J d hr E hE hJ
+  let hs := strictMono_sortedBreakpoints (bandBreakpoints p r)
+  have hallows : (E.convolved r hr).homAllowed F := by
+    by_contra hn
+    apply hf
+    exact hom_eq_zero_of_interval_hom_eq_zero k hs hq e (Iso.refl _)
+      (fun g => (E.convolved r hr).hom_eq_zero_of_not_homAllowed k hs hq F hL hK hn g) f
+  obtain ⟨hl, hu⟩ := E.cuts_convolved hr hE
+  have ht : E.lower.sameType F.lower = true ∧ E.upper.sameType F.upper = true := by
+    simpa only [IntervalEndpoints.sameType, Bool.and_eq_true] using hEF
+  have h₁ := LowerCut.coordinate_le_add_of_convolved_allows hr ht.1 (hl ▸ hallows.2.1)
+  have h₂ := LowerCut.coordinate_le_add_of_convolved_allows hr ht.2 (hu ▸ hallows.2.2)
+  cases E <;> cases F <;>
+    simp only [IntervalEndpoints.sameType, IntervalEndpoints.lower, IntervalEndpoints.upper,
+      LowerCut.sameType, Bool.false_and, Bool.and_false, Bool.true_and, Bool.false_eq_true] at hEF
+  all_goals first | exact ⟨h₁, h₂⟩ | exact ⟨h₂, h₁⟩
+
+private def LowerCut.openWindow : LowerCut → Set ℝ
+  | .open' a => Set.Ioi a
+  | _ => Set.univ
+
+private theorem LowerCut.isOpen_openWindow (L : LowerCut) : IsOpen L.openWindow := by
+  cases L <;> first | exact isOpen_univ | exact isOpen_Ioi
+
+private theorem LowerCut.ordConnected_openWindow (L : LowerCut) :
+    L.openWindow.OrdConnected := by
+  cases L <;> first | exact Set.ordConnected_univ | exact Set.ordConnected_Ioi
+
+private theorem LowerCut.mem_openWindow (L : LowerCut) {x : ℝ} (hx : L.mem x) :
+    x ∈ L.openWindow := by
+  cases L <;> first | exact Set.mem_univ _ | exact hx
+
+private theorem LowerCut.mem_of_closedAt_of_mem_window (L : LowerCut) {x : ℝ}
+    (hx : L.closedAt x) (hwin : x ∈ L.openWindow) : L.mem x := by
+  cases L <;> assumption
+
+private theorem LowerCut.mem_openWindow_of_dist_le (L : LowerCut) {x z r : ℝ}
+    (h : dist z x ≤ r) (hx : x ∈ (L.convolved r).openWindow) : z ∈ L.openWindow := by
+  cases L with
+  | closed | unbounded => exact Set.mem_univ _
+  | open' a =>
+    change a + r < x at hx
+    change a < z
+    rw [Real.dist_eq, abs_le] at h
+    linarith [h.1]
+
+private def IntervalEndpoints.openWindow (E : IntervalEndpoints) :
+    TopologicalSpace.Opens realLine :=
+  ⟨E.lower.openWindow ∩ (fun z : ℝ => -z) ⁻¹' E.upper.openWindow,
+    E.lower.isOpen_openWindow.inter (E.upper.isOpen_openWindow.preimage continuous_neg)⟩
+
+private theorem IntervalEndpoints.mem_openWindow (E : IntervalEndpoints) {x : ℝ}
+    (hx : x ∈ E.support) : x ∈ E.openWindow :=
+  ⟨E.lower.mem_openWindow ((E.mem_support_iff x).mp hx).1,
+    E.upper.mem_openWindow ((E.mem_support_iff x).mp hx).2⟩
+
+private theorem IntervalEndpoints.ordConnected_openWindow (E : IntervalEndpoints) :
+    (E.openWindow : Set ℝ).OrdConnected :=
+  E.lower.ordConnected_openWindow.inter
+    (E.upper.ordConnected_openWindow.preimage_anti fun _ _ h => neg_le_neg h)
+
+private theorem IntervalEndpoints.closure_inter_openWindow_subset (E : IntervalEndpoints)
+    {U : TopologicalSpace.Opens realLine} (hU : U ≤ E.openWindow) :
+    closure E.support ∩ (U : Set ℝ) ⊆ E.support := by
+  rintro x ⟨hx, hxU⟩
+  have hl : E.lower.closedAt x :=
+    closure_minimal (fun z hz => E.lower.mem_closedAt ((E.mem_support_iff z).mp hz).1)
+      E.lower.isClosed hx
+  have hr : E.upper.closedAt (-x) :=
+    closure_minimal (fun z hz => E.upper.mem_closedAt ((E.mem_support_iff z).mp hz).2)
+      (E.upper.isClosed.preimage continuous_neg) hx
+  exact (E.mem_support_iff x).mpr ⟨E.lower.mem_of_closedAt_of_mem_window hl (hU hxU).1,
+    E.upper.mem_of_closedAt_of_mem_window hr (hU hxU).2⟩
+
+private theorem IntervalEndpoints.bandOpen_openWindow_le (E : IntervalEndpoints)
+    {r : ℝ} (hr : 0 ≤ r) (hE : E.hasDegreeOneOutput = false)
+    {U : TopologicalSpace.Opens realLine} (hU : U ≤ (E.convolved r hr).openWindow) :
+    bandOpen r U ≤ E.openWindow := by
+  intro z hz
+  obtain ⟨x, hx, hd⟩ := mem_bandOpen.mp hz
+  obtain ⟨hl, hu⟩ := E.cuts_convolved hr hE
+  refine ⟨E.lower.mem_openWindow_of_dist_le hd (hl ▸ (hU hx).1),
+    E.upper.mem_openWindow_of_dist_le ?_ (hu ▸ (hU hx).2)⟩
+  simpa only [Real.dist_eq, neg_sub_neg, abs_sub_comm] using hd
+
+omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))] in
+private theorem IntervalEndpoints.isIso_band_germ (hp : StrictMono p)
+    (J : FiniteInterval (2 * m + 1)) (d : ℤ) (E : IntervalEndpoints)
+    (hJ : intervalSet p J = E.support) (hE : E.hasDegreeOneOutput = false)
+    {r : ℝ} (hr : 0 ≤ r) {U : TopologicalSpace.Opens realLine}
+    (hU : (U : Set ℝ).OrdConnected) (hwin : U ≤ (E.convolved r hr).openWindow)
+    {x : ℝ} (hxU : x ∈ U) (hx : x ∈ (E.convolved r hr).support) :
+    IsIso (((Plus.homologyFunctor Sh d).obj
+      ((T k r).obj ((Single d).obj ISh[hp,J]))).presheaf.germ U x hxU) := by
+  obtain ⟨L, hL, ⟨e⟩⟩ := exists_iso_convolved_endpoints k hp J d hr E hE hJ
+  let hs := strictMono_sortedBreakpoints (bandBreakpoints p r)
+  let φ := (Plus.homologyFunctor Sh d).mapIso e ≪≫
+    (singleFunctorCompHomologyFunctorIsoPlus Sh d).app ISh[hs,L]
+  let ev := TopCat.Sheaf.forget (ModuleCat k) realLine ⋙
+    (evaluation _ _).obj (Opposite.op U)
+  let st := TopCat.Presheaf.stalkFunctor (ModuleCat k) (X := realLine) x
+  have hG := isIso_germ_extension_interval k hs L hU
+    (by rw [hL]; exact (E.convolved r hr).closure_inter_openWindow_subset hwin)
+    hxU (hL.symm ▸ hx)
+  have hn := TopCat.Presheaf.stalkFunctor_map_germ U x hxU φ.hom.hom
+  let g := (((Plus.homologyFunctor Sh d).obj
+    ((T k r).obj ((Single d).obj ISh[hp,J]))).presheaf.germ U x hxU)
+  let stSh := TopCat.Sheaf.forget (ModuleCat k) realLine ⋙ st
+  have hc : IsIso (g ≫ stSh.map φ.hom) := by
+    change IsIso (g ≫ st.map φ.hom.hom)
+    erw [hn]
+    change IsIso (ev.map φ.hom ≫ ISh[hs,L].presheaf.germ U x hxU)
+    exact IsIso.comp_isIso' (ev.mapIso φ).isIso_hom hG
+  have hst : IsIso (stSh.map φ.hom) := (stSh.mapIso φ).isIso_hom
+  exact @IsIso.of_isIso_comp_right _ _ _ _ _ g (stSh.map φ.hom) hst hc
+
+omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))] in
+/-- A single order-connected open reads both convolution stalks at `x` and both
+original stalks at `y` when these points lie in the respective interval overlaps
+and their distance is bounded by the radius. All four germs are isomorphisms. -/
+theorem IntervalEndpoints.exists_band_coefficient_window
+    (hp : StrictMono p) (hq : StrictMono q) (J : FiniteInterval (2 * m + 1))
+    (K : FiniteInterval (2 * n + 1)) (d : ℤ) (E F : IntervalEndpoints)
+    (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    (hE : E.hasDegreeOneOutput = false) (hF : F.hasDegreeOneOutput = false)
+    {r : ℝ} (hr : 0 ≤ r) {x y : ℝ} (hx : x ∈ outSet0 r E.support ∩ outSet0 r F.support)
+    (hy : y ∈ E.support ∩ F.support) (hxy : dist y x ≤ r) :
+    ∃ (U : TopologicalSpace.Opens realLine), (U : Set ℝ).OrdConnected ∧
+      ∃ (hxU : x ∈ U) (hyU : y ∈ bandOpen r U),
+        IsIso (((Plus.homologyFunctor Sh d).obj
+          ((T k r).obj ((Single d).obj ISh[hp,J]))).presheaf.germ U x hxU) ∧
+        IsIso (((Plus.homologyFunctor Sh d).obj
+          ((T k r).obj ((Single d).obj ISh[hq,K]))).presheaf.germ U x hxU) ∧
+        IsIso (ISh[hp,J].presheaf.germ (bandOpen r U) y hyU) ∧
+        IsIso (ISh[hq,K].presheaf.germ (bandOpen r U) y hyU) := by
+  rw [E.outSet0_eq_convolved hr hE, F.outSet0_eq_convolved hr hF] at hx
+  let U := (E.convolved r hr).openWindow ⊓ (F.convolved r hr).openWindow
+  have hU : (U : Set ℝ).OrdConnected :=
+    (E.convolved r hr).ordConnected_openWindow.inter (F.convolved r hr).ordConnected_openWindow
+  have hxU : x ∈ U := ⟨(E.convolved r hr).mem_openWindow hx.1,
+    (F.convolved r hr).mem_openWindow hx.2⟩
+  have hyU : y ∈ bandOpen r U := mem_bandOpen.mpr ⟨x, hxU, hxy⟩
+  refine ⟨U, hU, hxU, hyU, E.isIso_band_germ k hp J d hJ hE hr hU inf_le_left hxU hx.1,
+    F.isIso_band_germ k hq K d hK hF hr hU inf_le_right hxU hx.2, ?_, ?_⟩
+  · apply isIso_germ_extension_interval k hp J (ordConnected_bandOpen r hU) _ hyU (hJ.symm ▸ hy.1)
+    rw [hJ]
+    exact E.closure_inter_openWindow_subset (E.bandOpen_openWindow_le hr hE inf_le_left)
+  · apply isIso_germ_extension_interval k hq K (ordConnected_bandOpen r hU) _ hyU (hK.symm ▸ hy.2)
+    rw [hK]
+    exact F.closure_inter_openWindow_subset (F.bandOpen_openWindow_le hr hF inf_le_right)
+
+/-- The source point used to read a coefficient on a translating interval. The
+left-translating types use `x + r`, and the right-translating types use `x - r`. -/
+def IntervalEndpoints.coefficientPoint (E : IntervalEndpoints) (r x : ℝ) : ℝ :=
+  match E with
+  | .ico .. | .iio _ => x + r
+  | .ioc .. | .ioi _ => x - r
+  | _ => x
+
+private theorem IntervalEndpoints.coefficientPoint_eq_of_sameType {E F : IntervalEndpoints}
+    (h : E.sameType F = true) (r x : ℝ) : E.coefficientPoint r x = F.coefficientPoint r x := by
+  cases E <;> cases F <;> simp_all only [IntervalEndpoints.sameType, IntervalEndpoints.lower,
+    IntervalEndpoints.upper, LowerCut.sameType, Bool.false_and, Bool.and_false, Bool.true_and,
+    Bool.false_eq_true, IntervalEndpoints.coefficientPoint]
+
+private theorem IntervalEndpoints.coefficientPoint_mem (E : IntervalEndpoints)
+    {r x : ℝ} (hr : 0 ≤ r) (hE : E.hasDegreeOneOutput = false)
+    (hopen : ¬ IsClosed E.support) (hx : x ∈ outSet0 r E.support) :
+    E.coefficientPoint r x ∈ E.support := by
+  rw [E.outSet0_eq_convolved hr hE] at hx
+  cases E with
+  | icc => exact (hopen isClosed_Icc).elim
+  | ici => exact (hopen isClosed_Ici).elim
+  | iic => exact (hopen isClosed_Iic).elim
+  | univ => exact (hopen isClosed_univ).elim
+  | ioo => cases hE
+  | ico | ioc => constructor <;>
+      simp only [IntervalEndpoints.convolved, IntervalEndpoints.coefficientPoint,
+        IntervalEndpoints.support, Set.mem_Ico, Set.mem_Ioc] at hx ⊢ <;>
+      obtain ⟨hl, hu⟩ := hx <;> linarith
+  | ioi | iio =>
+    simp only [IntervalEndpoints.convolved, IntervalEndpoints.coefficientPoint,
+      IntervalEndpoints.support, Set.mem_Ioi, Set.mem_Iio] at hx ⊢
+    linarith
+
+/-- On two translating intervals of the same type, a common convolution point
+reads the original stalks at the same translated point within the radius. -/
+theorem IntervalEndpoints.coefficientPoint_mem_inter (E F : IntervalEndpoints)
+    {r x : ℝ} (hr : 0 ≤ r) (hE : E.hasDegreeOneOutput = false)
+    (hF : F.hasDegreeOneOutput = false) (hEopen : ¬ IsClosed E.support)
+    (hFopen : ¬ IsClosed F.support) (hEF : E.sameType F = true)
+    (hx : x ∈ outSet0 r E.support ∩ outSet0 r F.support) :
+    E.coefficientPoint r x ∈ E.support ∩ F.support ∧ dist (E.coefficientPoint r x) x ≤ r := by
+  refine ⟨⟨E.coefficientPoint_mem hr hE hEopen hx.1, ?_⟩, ?_⟩
+  · rw [E.coefficientPoint_eq_of_sameType (F := F) hEF]
+    exact F.coefficientPoint_mem hr hF hFopen hx.2
+  · rw [Real.dist_eq]
+    cases E <;> simp only [IntervalEndpoints.coefficientPoint] <;>
+      first
+      | simpa using hr
+      | rw [show x + r - x = r by ring, abs_of_nonneg hr]
+      | rw [show x - r - x = -r by ring, abs_neg, abs_of_nonneg hr]
 
 private theorem distance_interval_Ioo_nonopen (hp : StrictMono p) (hq : StrictMono q)
     (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)

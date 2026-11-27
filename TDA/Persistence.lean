@@ -16,6 +16,7 @@ import TDA.Persistence.PersistenceMeasureBox
 import TDA.Persistence.PersistenceMeasureEssentialBox
 import TDA.Persistence.PersistenceMeasureMatching
 import TDA.Persistence.FiniteOccurrenceMatching
+import TDA.Persistence.FiniteMatchingRank
 import TDA.Persistence.DecoratedRectangleBox
 import TDA.Persistence.PersistenceMeasureBoxContent
 import TDA.Persistence.PersistenceMeasureContent

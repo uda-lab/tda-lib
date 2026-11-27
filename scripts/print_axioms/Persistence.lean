@@ -9656,3 +9656,9 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.IntervalDecompositionUniquenessClientExamples.mk_closed_unit_interval
 #print axioms TDA.Persistence.IntervalDecompositionUniquenessClientExamples.client_decomposition_matches_chosen
 #print axioms TDA.Persistence.IntervalDecompositionUniquenessClientExamples.client_decomposition_finite_activity
+#print axioms TDA.Persistence.FiniteOccurrenceMatching.neighbors
+#print axioms TDA.Persistence.FiniteOccurrenceMatching.mem_neighbors
+#print axioms TDA.Persistence.FiniteOccurrenceMatching.exists_two_sided_of_hall
+#print axioms TDA.Persistence.FiniteMatchingRank.card_le_of_restricted_triangular_product
+#print axioms TDA.Persistence.FiniteMatchingRank.lt_of_abs_sub_gt
+#print axioms TDA.Persistence.FiniteMatchingRank.sum_lt_of_sup_abs_sub_gt

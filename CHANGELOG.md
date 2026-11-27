@@ -10,6 +10,26 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- `FiniteOccurrenceMatching.neighbors` and `mem_neighbors` describe neighbours of finite
+  selections. `exists_two_sided_of_hall` covers both selections in one partial matching under
+  their Hall inequalities. `FiniteMatchingRank.card_le_of_restricted_triangular_product`
+  bounds the number of labels by the number of retained intermediate indices.
+  `lt_of_abs_sub_gt` and `sum_lt_of_sup_abs_sub_gt` give the strict score increase in one
+  and two coordinates.
+- `IntervalEndpoints.homAllowed` tests overlap and endpoint compatibility.
+  `hom_eq_zero_of_not_homAllowed` gives vanishing, and `bijective_stalkMap_of_homAllowed`
+  evaluates allowed morphisms on any common stalk via `bijective_stalkMap_interval_of_arrows`.
+  `finrank_hom_of_homAllowed` gives dimension one. `hom_comp_eq_zero_of_different_type` gives
+  vanishing through a different endpoint type. The signed `IntervalEndpoints.coordinates`
+  satisfy the componentwise radius bounds in `coordinates_le_add_of_nonzero_band_hom`.
+  `bandCohomologySectionsIso`, `bandCohomologySectionsIso_app_zero` and
+  `bandCohomologyGlobalSectionsIso` identify section maps in a common degree.
+  `bandCohomologyStalkIso` and `bandCohomologyStalkIso_hom_naturality` give the stalk
+  comparison when the section-to-stalk germs are isomorphisms.
+  `bandCohomologyStalkIso_hom_eq_of_le` compares these identifications under restriction.
+  `IntervalEndpoints.coefficientPoint` and `coefficientPoint_mem_inter` specify the original
+  stalk for translating supports. `exists_band_coefficient_window` supplies a comparison
+  open for both sheaves.
 - `isLocallyConstantOn_iff_locally_iso_constantSheaf` characterizes interval-local constancy
   on the real line by local isomorphisms to Mathlib's `constantSheaf`. On a convex open `N`,
   `isoConstantSheafOfIsLocallyConstantOn` identifies a locally constant sheaf restricted to
