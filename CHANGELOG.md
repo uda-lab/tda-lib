@@ -965,6 +965,27 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `intervalSet_p₀` (the unbounded cases), `leftOpen`, `wholeLineSheaf`, `finrank_stalk_pointSheaf`,
   `finrank_stalk_leftOpen`, `finrank_stalk_rightClosed`, `finrank_stalk_wholeLineSheaf`,
   `finrank_stalk_constSheaf₀`, `isIso_rightClosed_right`.
+- Graded barcodes on the real line are invariant under refinement of the breakpoints (#1183,
+  part U5b). `TDA.Sheaf.RealStratification`: `IsBasicOpen.anti`. `TDA.Sheaf.RealConstructible`:
+  `IsConstructible.mono`. `TDA.Sheaf.RealConstructibleDerived`:
+  `HasConstructibleCohomology.mono`, `hasConstructibleCohomology_of_isConstructible`. New module
+  `TDA.Sheaf.RealConstructibleRefinement`: `refinementVertex`
+  (`stratum_subset_stratum_refinementVertex`, `refinementVertex_eq_of_mem`,
+  `refinementVertex_mono`, `refinementVertex_surjective`), `refineInterval`
+  (`alive_refineInterval`, `intervalSet_refineInterval`), `sortedBreakpoints`
+  (`strictMono_sortedBreakpoints`, `breakpoints_sortedBreakpoints`);
+  `sectionsExtensionIntervalIso` (`Γ_q (Φ_p (interval J)) ≅ interval (refineInterval J)`),
+  `sectionsIntervalSheafSumIso`; refinement invariance `barcode_sections_eq_map_refineInterval`,
+  `barcode_sections_map_intervalSet_refine`, `gradedBarcode_eq_map_refineInterval`,
+  `gradedBarcode_map_intervalSet_refine`; `gradedBarcodeSets` (`gradedBarcodeSets_refine`,
+  `gradedBarcodeSets_eq_of_iso`, `gradedBarcodeSets_eq`); per-degree breakpoints
+  `hasConstructibleCohomology_sortedBreakpoints`. Fixtures in
+  `TDA.Sheaf.RealConstructibleRefinementExamples` over `ℚ`, a refinement bisecting a constant cell:
+  `breakpoints_p₀_subset_p₁`, `barcode_sections_p₀_constSheaf₀`,
+  `map_intervalSet_barcode_sections_p₀_constSheaf₀`, `refineInterval_p₀_p₁`,
+  `barcode_sections_p₁_constSheaf₀`, `map_intervalSet_barcode_sections_p₁_constSheaf₀`,
+  `hasConstructibleCohomology_constSheaf₀`, `gradedBarcode_p₁_constSheaf₀`,
+  `gradedBarcodeSets_p₁_constSheaf₀`.
 
 ## v0.5.0
 

@@ -45,3 +45,4 @@ import TDA.Sheaf.BandComposition
 import TDA.Sheaf.HereditarySplitting
 import TDA.Sheaf.RealConstructibleDerived
 import TDA.Sheaf.RealIntervalSets
+import TDA.Sheaf.RealConstructibleRefinement

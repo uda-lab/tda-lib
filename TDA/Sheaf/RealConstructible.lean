@@ -18,7 +18,9 @@ Fix strictly increasing breakpoints `p : Fin m → ℝ` (`hp : StrictMono p`) wi
   trivialisation of `TDA.Sheaf.LocalSystem`; at a breakpoint `s` it glues the two sides
   `V ∩ (-∞, s)` and `V ∩ (s, ∞)` along binary sheaf squares (`isIso_map_of_le_sup`).
 * `isConstructible_iff`: `F` is constructible exactly when it inverts these inclusions and its
-  sections over every basic open are finite-dimensional.
+  sections over every basic open are finite-dimensional. Constructibility is monotone in `S`
+  (`IsConstructible.mono`), and for a constructible sheaf the germ at `x` of sections over a
+  basic open meeting `S` at most in `x` is an isomorphism (`isIso_germ_of_isConstructible`).
 * `sections k p : TopCat.Sheaf (ModuleCat.{0} k) realLine ⥤ Diagram k o` (`Γ`) takes sections
   over the stars: `(Γ F)(v) = F(star p v)` (`sections_obj_obj`), and the arrow from a point to
   an adjacent cell is restriction from the star of the point to the cell (`sections_map_gen`).
@@ -216,6 +218,14 @@ theorem isConstructible_of_iso {S : Finset ℝ} {F G : TopCat.Sheaf (ModuleCat.{
   have : IsIso ((e'.app (op V)).hom ≫ G.presheaf.map (homOfLE h).op) := by
     rw [← hn]; infer_instance
   exact IsIso.of_isIso_comp_left (e'.app (op V)).hom _
+
+/-- **Constructibility is monotone in the breakpoints**: a sheaf constructible for `S` is
+constructible for every finite `S' ⊇ S`. -/
+theorem IsConstructible.mono {S S' : Finset ℝ} (h : S ⊆ S')
+    {F : TopCat.Sheaf (ModuleCat.{0} k) realLine} (hF : IsConstructible S F) :
+    IsConstructible S' F :=
+  ⟨hF.1.mono S'.finite_toSet.isClosed.isOpen_compl
+    (Set.compl_subset_compl.2 (Finset.coe_subset.2 h)), hF.2⟩
 
 /-- **Stalks of a constructible sheaf.** For a sheaf constructible for `S`, the germ at `x` of
 sections over a basic open `T ∋ x` that meets `S` at most in `x` is an isomorphism
