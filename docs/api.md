@@ -1552,6 +1552,29 @@ existence and uniqueness of the barcode on a finite chain, the classification by
 uniqueness of a positive real realization, equality of the diagrams of filters with
 isomorphic sublevel modules, and the real interval decomposition.
 
+Uniqueness of interval decompositions (#1255): over a linearly ordered index type,
+`SupportInterval.exists_smul_id` states that every endomorphism of
+`SupportInterval.module S hS` is a scalar multiple of the identity, and
+`SupportInterval.endRingEquiv` is the ring equivalence `End (module S hS) ≃+* k` for a nonempty
+support. `SupportInterval.comp_eq_zero_of_ne` states that a composite
+`module S ⟶ module T ⟶ module S'` vanishes when `S ≠ T` and `S' = S`.
+`AlgebraicFamily.projection F j : familyModule F ⟶ F j` reads the coordinate at `j`, with
+`inclusion_comp_projection_self` and `inclusion_comp_projection_ne`. For an isomorphism between
+two algebraic sums of nonempty interval modules, with arbitrary index types,
+`AlgebraicFamily.mk_support_fiber_eq_of_iso` states that `Cardinal.mk {j // I j = S}` equals
+`Cardinal.mk {j' // I' j' = S}` for every `S : Set ℝ`, so supports with closed, open and
+half-open ends are counted separately. `AlgebraicFamily.exists_equiv_support_of_iso` gives a
+bijection `σ : J ≃ J'` with `I' (σ j) = I j`, and `exists_equiv_support_of_iso_of_iso` gives the
+same for two decompositions of one module. Pointwise finite-dimensionality is not assumed;
+`blockMap_injective` is the injection of the block of summands with a given support behind the
+cardinality statement. These follow Gan and Upegui Keagy, arXiv:2507.01303v1 (Lemma 2.1,
+Lemma 3.1, Lemma 3.3, Theorem 3.4), and state Botnan and Lesnick, arXiv:2203.14289v2
+(Theorem 3.4), for modules over `ℝ`.
+`IntervalDecompositionUniquenessClientExamples` is a downstream regression fixture. Its inputs are
+the field `ℚ`, the closed, open and half-open unit intervals listed in two orders with a
+supplied isomorphism of the algebraic sums, and a pointwise finite-dimensional module with a
+supplied decomposition, which is matched with the one of `exists_interval_decomposition`.
+
 `FiniteLine.moduleOfAdjacent` constructs finite persistence from adjacent linear
 maps, and its path-category equivalence identifies equioriented finite-line
 representations with `PModule`. `MatrixSequence.toPModule` accepts rectangular

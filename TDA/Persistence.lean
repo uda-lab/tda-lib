@@ -306,6 +306,9 @@ import TDA.Persistence.AlgebraicFamilyIso
 import TDA.Persistence.FiniteObservation
 import TDA.Persistence.IntervalCompatibility
 import TDA.Persistence.RealIntervalDecomposition
+import TDA.Persistence.AlgebraicFamilyProjection
+import TDA.Persistence.IntervalEndomorphisms
+import TDA.Persistence.IntervalDecompositionUniqueness
 import TDA.Persistence.RealIntervalObservation
 import TDA.Persistence.RealIntervalObservationExamples
 
