@@ -23,6 +23,12 @@ open RealStratification RealConstructible AlternatingDiagram
 def outSet0 (ε : ℝ) (I : Set ℝ) : Set ℝ :=
   {y | (I ∩ Set.Icc (y - ε) (y + ε)).Nonempty ∧ IsClosed (I ∩ Set.Icc (y - ε) (y + ε))}
 
+/-- The degree-zero output at radius zero is the input set. -/
+@[simp]
+theorem outSet0_zero (I : Set ℝ) : outSet0 0 I = I := by
+  ext y
+  by_cases hy : y ∈ I <;> simp [outSet0, hy]
+
 private def windowHits (ε : ℝ) (I : Set ℝ) : Set ℝ :=
   {y | ∃ x ∈ I, x ∈ Set.Icc (y - ε) (y + ε)}
 

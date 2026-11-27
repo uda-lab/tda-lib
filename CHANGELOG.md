@@ -10,6 +10,22 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Derived convolution of real interval sheaves. `gradedBarcodeSets_T_interval` gives
+  one bar in the degree of the nonempty output set, with exclusivity given by
+  `outSet0_eq_empty_of_outSet1_nonempty`. `gradedBarcodeSets_T_decomposition` adds
+  the outputs for a finite interval decomposition with multiplicities.
+  `nonempty_iso_T_interval_zero`, `nonempty_iso_T_interval_one`, and `exists_intervalSheaf_T`
+  identify the shifted interval sheaf in the bounded-below derived category.
+  `isZero_T_interval` gives the zero object for two empty outputs. The endpoint formulas
+  are `exists_intervalSheaf_T_Icc`, `exists_intervalSheaf_T_Ico`, `exists_intervalSheaf_T_Ioc`,
+  `exists_intervalSheaf_T_Ioo_below`, `exists_intervalSheaf_T_Ioo_threshold`,
+  `exists_intervalSheaf_T_Ioo_above`, `exists_intervalSheaf_T_Ici`, `exists_intervalSheaf_T_Ioi`,
+  `exists_intervalSheaf_T_Iic`, `exists_intervalSheaf_T_Iio`, `exists_intervalSheaf_T_univ`,
+  and `exists_intervalSheaf_T_singleton`. `H0Aug_interval_ne_zero_iff` tests whether
+  `H0Aug` is nonzero by intersecting the degree-zero output with the input interval.
+  `H0TSectionsIso_hom_aug` and `H0TSectionsIso_hom_aug_assoc` express `H0Aug`
+  on order-connected opens by restriction from the thickened open to the open.
+  `outSet0_zero` identifies the radius-zero output with the input set.
 - Degree-zero radius maps for real band convolution. Under `H0TSectionsIso`,
   `H0Restr` acts over an order-connected open by restriction from the larger thickening
   to the smaller one (`H0TSectionsIso_hom_restr`, `H0TSectionsIso_hom_restr_assoc`).

@@ -6167,6 +6167,14 @@ radius map is nonzero exactly when `outSet0 ε I ∩ outSet0 δ I` is nonempty.
 `TDA.Sheaf.BandIntervalMapsExamples` checks a radius map for a singleton and a radius map
 between disjoint nonempty half-open outputs.
 
+`H0Aug k h F` is the degree-zero augmentation from convolution of `F[0]` to `F`.
+On an order-connected open `U`, `H0TSectionsIso_hom_aug` identifies it with
+restriction from `F(bandOpen ε U)` to `F(U)`. The form
+`H0TSectionsIso_hom_aug_assoc` composes this equation with a map out of `F(U)`.
+For an interval sheaf, `H0Aug_interval_ne_zero_iff` tests nonvanishing by the
+intersection `outSet0 ε I ∩ I`. The zero-radius formula `outSet0_zero` holds for
+every subset of the real line.
+
 For additive left exact functors `F` and `G` between abelian categories, the lemma
 `TDA.Sheaf.homologyZeroRightDerivedSingleIso_inv_naturality` identifies the map
 `H⁰(Rτ(X[0]))` with `τ.app X` for `τ : F ⟶ G`.
@@ -6215,6 +6223,44 @@ it with the corresponding convolution stalk using the interval-fibration stalk f
   `hasConstructibleCohomology_T_interval` gives constructibility in every degree on the
   sorted shifted breakpoints. `hasConstructibleCohomology_T` applies to every sheaf
   constructible for `breakpoints p` placed in degree zero, by finite interval decomposition.
+
+## Derived convolution of real interval sheaves
+
+`TDA.Sheaf.BandIntervalConvolution` computes convolution of the interval sheaf of
+`I = intervalSet p J` placed in degree zero, over a field and at radius `ε ≥ 0`.
+`gradedBarcodeSets_T_interval` gives the singleton multiset `{outSet0 ε I}` in degree
+zero when that set is nonempty, the singleton multiset `{outSet1 ε I}` in degree one
+when that set is nonempty, and the empty multiset in the other degrees.
+`outSet0_eq_empty_of_outSet1_nonempty` gives the dichotomy for order-connected sets.
+`gradedBarcodeSets_T_decomposition` adds these multisets degreewise for any given
+finite interval decomposition of a constructible sheaf, retaining multiplicities.
+
+`nonempty_iso_T_interval_zero` and `nonempty_iso_T_interval_one` identify the derived
+object with the sheaf of any supplied realization of the respective output set,
+placed in its output degree. `exists_intervalSheaf_T` supplies a realization on the
+sorted shifted breakpoints when an output set is nonempty, and `isZero_T_interval`
+gives the zero object if both output sets are empty.
+
+The endpoint corollaries give an interval on the sorted shifted breakpoints, its
+support, and an isomorphism in `D⁺` with the interval sheaf placed in the given degree.
+
+| Declaration | Input | Output support | Degree |
+|---|---|---|---|
+| `exists_intervalSheaf_T_Icc` | `[a,b]` | `[a − ε,b + ε]` | 0 |
+| `exists_intervalSheaf_T_Ico` | `[a,b)` | `[a − ε,b − ε)` | 0 |
+| `exists_intervalSheaf_T_Ioc` | `(a,b]` | `(a + ε,b + ε]` | 0 |
+| `exists_intervalSheaf_T_Ioo_below` | `(a,b)`, `2ε < b − a` | `(a + ε,b − ε)` | 0 |
+| `exists_intervalSheaf_T_Ioo_threshold` | `(a,b)`, `2ε = b − a` | `{(a + b)/2}` | 1 |
+| `exists_intervalSheaf_T_Ioo_above` | `(a,b)`, `b − a < 2ε` | `[b − ε,a + ε]` | 1 |
+| `exists_intervalSheaf_T_Ici` | `[a,∞)` | `[a − ε,∞)` | 0 |
+| `exists_intervalSheaf_T_Ioi` | `(a,∞)` | `(a + ε,∞)` | 0 |
+| `exists_intervalSheaf_T_Iic` | `(−∞,b]` | `(−∞,b + ε]` | 0 |
+| `exists_intervalSheaf_T_Iio` | `(−∞,b)` | `(−∞,b − ε)` | 0 |
+| `exists_intervalSheaf_T_univ` | `ℝ` | `ℝ` | 0 |
+| `exists_intervalSheaf_T_singleton` | `{a}` | `[a − ε,a + ε]` | 0 |
+
+`TDA.Sheaf.BandIntervalConvolutionExamples` checks the three open-interval regimes,
+a closed and a half-open interval, and a nonzero and a zero degree-zero augmentation.
 
 ## Sheaf statements as a client writes them
 
