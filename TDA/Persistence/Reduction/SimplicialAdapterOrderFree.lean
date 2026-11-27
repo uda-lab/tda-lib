@@ -1,5 +1,6 @@
 import TDA.Persistence.Reduction.SimplicialAdapterBarcode
 import TDA.Simplicial.HomologyOrderFree
+import TDA.Persistence.SublevelDiagramVertexMap
 
 set_option autoImplicit false
 
@@ -40,20 +41,6 @@ variable {V : Type u} {α : Type w} [LinearOrder α] {K : PreAbstractSimplicialC
   [Fintype (TotalFace K)] {f : FilterFunction K α} (k : Type u) [Field k]
   (o₁ o₂ : LinearOrder V)
 
-omit [LinearOrder α] in
-private theorem finrank_range_eq_of_square {A B C D : Type u}
-    [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
-    [AddCommGroup C] [Module k C] [AddCommGroup D] [Module k D]
-    (S : A ≃ₗ[k] B) (T : C ≃ₗ[k] D) (F : A →ₗ[k] C) (G : B →ₗ[k] D)
-    (h : T.toLinearMap.comp F = G.comp S.toLinearMap) :
-    Module.finrank k (LinearMap.range F) = Module.finrank k (LinearMap.range G) := by
-  have h1 : LinearMap.range (T.toLinearMap.comp F) = (LinearMap.range F).map T.toLinearMap :=
-    LinearMap.range_comp _ _
-  have h2 : LinearMap.range (G.comp S.toLinearMap) = LinearMap.range G :=
-    LinearMap.range_comp_of_range_eq_top _ S.range
-  rw [← h2, ← h, h1]
-  exact (T.finrank_map_eq (LinearMap.range F)).symm
-
 /-- The canonical barcode of prefix homology is the same for two linear orders on the vertex
 type: the comparison isomorphisms of the homology of the prefix complexes commute with the
 inclusions, so the structure maps have equal ranks. -/
@@ -70,12 +57,10 @@ theorem facePrefixBarcode_congr_linearOrder (e : CompatibleOrder f) (n : ℕ) :
   have hsub := e.prefixComplex_mono (show s.val ≤ t.val from hst)
   have hnat := @simplicialHomologyMap_comp_iso_of_linearOrder V o₁ o₂
     (e.prefixComplex s.val) k _ n V o₁ o₂ (e.prefixComplex t.val) (inclusionVertexMap hsub)
-  refine finrank_range_eq_of_square k
-    (simplicialHomologyIso_of_linearOrder o₁ o₂ (e.prefixComplex s.val) k n).toLinearEquiv
-    (simplicialHomologyIso_of_linearOrder o₁ o₂ (e.prefixComplex t.val) k n).toLinearEquiv
-    _ _ ?_
   rw [@simplicialHomologyMap_inclusion V o₁, @simplicialHomologyMap_inclusion V o₂] at hnat
-  exact LinearMap.ext fun x => congrArg (fun g => g.hom x) hnat
+  exact finrank_range_eq_of_iso_square _ _
+    (simplicialHomologyIso_of_linearOrder o₁ o₂ (e.prefixComplex s.val) k n)
+    (simplicialHomologyIso_of_linearOrder o₁ o₂ (e.prefixComplex t.val) k n) hnat
 
 /-- The pivot barcode of the simplicial adapter is the same for two linear orders on the vertex
 type, for one compatible order `e` of the faces.  A client states the two barcodes with the
