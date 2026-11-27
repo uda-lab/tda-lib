@@ -25,7 +25,8 @@ along `h : a + b = c`. This file proves that `T0Iso k : T k 0 ≅ 𝟭` is a two
     (TComp k ha hb).hom ≫ aug k (add_nonneg ha hb)`.
 * **Bounded derived category.** `compIsoB_TCompOfEq_zero_left_hom` and
   `compIsoB_TCompOfEq_zero_right_hom`: the unit laws for the restrictions `compIsoB k (TCompOfEq …)`
-  to `Dᵇ(Sh(ℝ; k))`, with `T0IsoB`.
+  to `Dᵇ(Sh(ℝ; k))`, with `T0IsoB`. `hcomp_augB_TCompB_hom` is the augmentation law
+  with `augB` and `TCompB`.
 
 All statements are equations of natural transformations; the component computations are the
 general lemmas on transported counits of `TDA.Sheaf.BaseChangeRestriction`. Derived categories are
@@ -77,6 +78,13 @@ private lemma hcomp_self_leftUnitor_abs {C : Type*} [Category* C] {F : C ⥤ C} 
       Functor.whiskerRight α F ≫ (Functor.leftUnitor F).hom ≫ α := by
   ext X
   simp [α.naturality]
+
+private lemma hcomp_leftUnitor {C : Type*} [Category* C] {F G : C ⥤ C}
+    (α : F ⟶ 𝟭 C) (β : G ⟶ 𝟭 C) :
+    (α ◫ β) ≫ (Functor.leftUnitor (𝟭 C)).hom =
+      Functor.whiskerLeft F β ≫ (Functor.rightUnitor F).hom ≫ α := by
+  ext X
+  simp
 
 /-- On `Z a 0`, where `y = z`, `pr₁₂ a 0 ≫ q a = pr₂₃ a 0 ≫ q 0`. -/
 lemma pr₁₂_q_add_zero (a : ℝ) : pr₁₂ a 0 ≫ q a = pr₂₃ a 0 ≫ q 0 :=
@@ -251,6 +259,20 @@ theorem compIsoB_TCompOfEq_zero_right_hom {a : ℝ} (ha : 0 ≤ a) :
   exact congrArg₂ (· ≫ ·)
     (whiskerLeft_restrictBounded_whiskerLeft (T k a) (preservesBounded_T k a) (T0Iso k).hom).symm
     rfl
+
+/-- The horizontal composite of the bounded augmentations agrees with the augmentation
+of the sum through the bounded composition isomorphism. -/
+theorem hcomp_augB_TCompB_hom {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    (augB k ha ◫ augB k hb) ≫ (Functor.leftUnitor (𝟭 _)).hom =
+      (TCompB k ha hb).hom ≫ augB k (add_nonneg ha hb) := by
+  rw [hcomp_leftUnitor (augB k ha) (augB k hb)]
+  apply eq_of_whiskerRight_boundedToPlus
+  simp only [Functor.whiskerRight_comp, whiskerRight_TCompB_hom, whiskerRight_whiskerLeft_abs,
+    whiskerRight_augB]
+  have e := congrArg (Functor.whiskerLeft (boundedToPlus _)) (hcomp_aug_TComp_hom k ha hb)
+  simp only [hcomp_leftUnitor (aug k ha) (aug k hb), Functor.whiskerLeft_comp] at e
+  have h := whiskerLeft_restrictBounded_whiskerLeft (T k a) (preservesBounded_T k a) (aug k hb)
+  exact (congrArg₂ (· ≫ ·) h rfl).trans e
 
 end bounded
 
