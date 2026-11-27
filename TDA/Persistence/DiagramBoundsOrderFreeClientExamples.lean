@@ -6,8 +6,10 @@ set_option autoImplicit false
 # Client statements of the order-free diagram bounds
 
 Regression fixtures for #1300, family 16 of the downstream-use audit (#1207). Each statement is
-written as a downstream client writes it: the statements are applied on `↥S` with the instances found for a subtype of a `Finset`, and
-the vertex order is chosen internally.
+written as a downstream client writes it. The inputs are a finite subset `S` of the Euclidean
+plane as vertex type `↥S` with the instances found for a subtype of a `Finset`, a `Finset ℝ`,
+labels in `Type 1`, a field in `Type 1`, and one supplied linear order on `↥S`; the order-free
+statements choose the vertex order internally.
 
 * The total-persistence bounds of the Rips and Čech diagrams of a finite subset of the plane
   over `ZMod 2`.

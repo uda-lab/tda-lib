@@ -74,8 +74,9 @@ section OrderFree
 variable {V : Type u} (K : PreAbstractSimplicialComplex V) (R : Type v) [Ring R] (n : ℕ)
 
 /-- Simplicial homology with the vertex order chosen classically (the well-ordering
-`WellOrderingRel`).  It is defined for an arbitrary vertex type; `simplicialHomologyOrderFreeIso` identifies it
-with `simplicialHomology` for every supplied linear order. -/
+`WellOrderingRel`).  It is defined for an arbitrary vertex type;
+`simplicialHomologyOrderFreeIso` identifies it with `simplicialHomology` for every supplied
+linear order. -/
 def simplicialHomologyOrderFree : ModuleCat.{max u v} R :=
   letI : LinearOrder V := IsWellOrder.linearOrder WellOrderingRel
   simplicialHomology K R n

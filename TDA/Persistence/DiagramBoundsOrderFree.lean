@@ -112,8 +112,8 @@ section Cech
 variable {X : Type w} [PseudoMetricSpace X]
 
 /-- The Čech diagram of a finite labelled configuration in a pseudometric space, for labels in
-any universe and any coefficient field, with the vertex order chosen internally: the existing diagram `dgm` of the
-configuration enumerated by `Fintype.equivFin`, with labels `ULift.{v} (Fin (Fintype.card V))`
+any universe and any coefficient field, with the vertex order chosen internally: the existing
+diagram `dgm` of the configuration enumerated by `Fintype.equivFin`, with labels `ULift.{v} (Fin (Fintype.card V))`
 in the universe of the coefficient field.  `Cech.diagram_eq_dgm` identifies it with `dgm` for
 every supplied linear order. -/
 def Cech.diagram (k : Type v) [Field k] {V : Type u} [Fintype V] (p : V → X) (n : ℕ) :
@@ -129,8 +129,8 @@ private theorem radiusAt_comp_equiv {V W : Type*} [DecidableEq V] (e : W ≃ V) 
   rw [Finset.fold_image (fun a _ b _ h => e.injective h)]
   rfl
 
-private theorem mem_sublevel_comp_equiv {V W : Type*} [DecidableEq V] (e : W ≃ V) (p : V → X) (r : ℝ)
-    (s : Finset W) :
+private theorem mem_sublevel_comp_equiv {V W : Type*} [DecidableEq V] (e : W ≃ V) (p : V → X)
+    (r : ℝ) (s : Finset W) :
     s ∈ (TDA.Filtration.Cech.filter (p ∘ e)).sublevel r ↔
       s.image e ∈ (TDA.Filtration.Cech.filter p).sublevel r := by
   rw [FilterFunction.mem_sublevel_iff, FilterFunction.mem_sublevel_iff]
@@ -195,8 +195,8 @@ section Alpha
 variable {E : Type w} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /-- The radius α diagram of a finite labelled configuration in a finite-dimensional real inner
-product space, for labels in any universe and any coefficient field, with the vertex order chosen internally: the
-diagram `alphaRadiusDiagram` of the configuration enumerated by `Fintype.equivFin`.
+product space, for labels in any universe and any coefficient field, with the vertex order chosen internally:
+the diagram `alphaRadiusDiagram` of the configuration enumerated by `Fintype.equivFin`.
 `alphaRadiusDiagramOrderFree_eq_alphaRadiusDiagram` identifies it with `alphaRadiusDiagram` for
 every supplied linear order. -/
 def alphaRadiusDiagramOrderFree (k : Type v) [Field k] {V : Type u} [Fintype V] (p : V → E)
