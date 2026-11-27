@@ -2013,3 +2013,11 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.H0Aug_interval_ne_zero_iff
 #print axioms TDA.Sheaf.BandConvolution.H0TSectionsIso_hom_aug
 #print axioms TDA.Sheaf.BandConvolution.H0TSectionsIso_hom_aug_assoc
+#print axioms TDA.Sheaf.derivedUnit_commShift
+#print axioms TDA.Sheaf.corrRestr_commShift
+#print axioms TDA.Sheaf.BandConvolution.restr_commShift
+#print axioms TDA.Sheaf.BandConvolution.aug_commShift
+#print axioms TDA.Sheaf.RealConstructible.hom_extension_interval_eq_zero_of_not_subset
+#print axioms TDA.Sheaf.BandConvolution.aug_interval_Ioo_threshold_ne_zero
+#print axioms TDA.Sheaf.BandConvolution.homologyFunctor_map_aug_interval_Ioo_threshold
+#print axioms TDA.Sheaf.BandConvolution.exists_ext_one_aug_interval_Ioo_threshold

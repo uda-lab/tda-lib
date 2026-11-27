@@ -10,6 +10,15 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Threshold augmentation for the open interval `(a, b)` at `2 * ε = b - a`.
+  `aug_interval_Ioo_threshold_ne_zero` proves nonvanishing in `D⁺`, and
+  `homologyFunctor_map_aug_interval_Ioo_threshold` gives zero on cohomology sheaves.
+  `exists_ext_one_aug_interval_Ioo_threshold` identifies the map with a nonzero
+  `Ext¹` class from the midpoint sheaf to the open interval sheaf.
+  `hom_extension_interval_eq_zero_of_not_subset` gives Hom vanishing for closed
+  interval sheaves when the target interval is not contained in the source.
+  `derivedUnit_commShift`, `corrRestr_commShift`, `restr_commShift`, and
+  `aug_commShift` give commutation with integer shifts.
 - Derived convolution of real interval sheaves. `gradedBarcodeSets_T_interval` gives
   one bar in the degree of the nonempty output set, with exclusivity given by
   `outSet0_eq_empty_of_outSet1_nonempty`. `gradedBarcodeSets_T_decomposition` adds

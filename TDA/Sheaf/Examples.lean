@@ -36,5 +36,6 @@ import TDA.Sheaf.BandIntervalDegreeZeroExamples
 import TDA.Sheaf.BandIntervalMapsExamples
 import TDA.Sheaf.BandIntervalDegreeOneExamples
 import TDA.Sheaf.BandIntervalConvolutionExamples
+import TDA.Sheaf.BandIntervalAugmentationExamples
 import TDA.Sheaf.BandCompositionUnitExamples
 import TDA.Sheaf.BandCompositionAssociativityExamples

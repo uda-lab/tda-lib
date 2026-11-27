@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Homology.DerivedCategory.SingleTriangle
 import TDA.Sheaf.BandIntervalFibreCohomology
+import TDA.Sheaf.BandIntervalMaps
 
 /-!
 # Degree-one convolution of real interval sheaves
@@ -310,32 +311,41 @@ variable [HasDerivedCategory (realLine.Sheaf (ModuleCat k))]
 local notation "H[" k "," ε "," i "]" =>
   (Plus.singleFunctor _ 0 ⋙ T k ε ⋙ Plus.homologyFunctor _ i)
 
+private def singleTrianglePlus {C : Type*} [Category C] [Abelian C] [HasDerivedCategory C]
+    {S : ShortComplex C} (hS : S.ShortExact) : Triangle (Plus C) :=
+  Triangle.mk ((Plus.singleFunctor C 0).map S.f) ((Plus.singleFunctor C 0).map S.g)
+    (Plus.ι.preimage (hS.singleδ ≫
+      ((Plus.ι (C := C)).commShiftIso (1 : ℤ)).inv.app ((Plus.singleFunctor C 0).obj S.X₁)))
+
+private theorem singleTrianglePlus_distinguished
+    {C : Type*} [Category C] [Abelian C] [HasDerivedCategory C]
+    {S : ShortComplex C} (hS : S.ShortExact) : singleTrianglePlus hS ∈ distTriang _ := by
+  change Plus.ι.mapTriangle.obj (singleTrianglePlus hS) ∈ distTriang _
+  convert hS.singleTriangle_distinguished using 1
+  let A := (Plus.singleFunctor C 0).obj S.X₁
+  let e := (Plus.ι (C := C)).commShiftIso (1 : ℤ)
+  let δ : (Plus.singleFunctor C 0).obj S.X₃ ⟶ A⟦(1 : ℤ)⟧ :=
+    Plus.ι.preimage (hS.singleδ ≫ e.inv.app A)
+  have hδ : Plus.ι.map δ ≫ e.hom.app A = hS.singleδ := by
+    change Plus.ι.map (Plus.ι.preimage _) ≫ _ = _
+    rw [Functor.map_preimage]
+    let d : Plus.ι.obj ((Plus.singleFunctor C 0).obj S.X₃) ⟶
+        (shiftFunctor _ (1 : ℤ)).obj (Plus.ι.obj A) := hS.singleδ
+    exact (Category.assoc d (e.app A).inv (e.app A).hom).trans
+      (congrArg (d ≫ ·) (e.app A).inv_hom_id |>.trans (Category.comp_id d))
+  change Triangle.mk ((singleFunctor C 0).map S.f) ((singleFunctor C 0).map S.g)
+    (Plus.ι.map δ ≫ e.hom.app A) = _
+  exact congrArg (fun d => Triangle.mk ((singleFunctor C 0).map S.f)
+    ((singleFunctor C 0).map S.g) d) hδ
+
 private theorem exists_H1T_isCokernel (ε : ℝ)
     {S : ShortComplex (realLine.Sheaf (ModuleCat k))} (hS : S.ShortExact)
     (hzero : IsZero ((H[k,ε,1]).obj S.X₂)) :
     ∃ δ : (H[k,ε,0]).obj S.X₃ ⟶ (H[k,ε,1]).obj S.X₁,
       ∃ h : (H[k,ε,0]).map S.g ≫ δ = 0, Nonempty (IsColimit (CokernelCofork.ofπ δ h)) := by
   let C := realLine.Sheaf (ModuleCat k)
-  let A := (Plus.singleFunctor C 0).obj S.X₁
-  let e := (Plus.ι (C := C)).commShiftIso (1 : ℤ)
-  let δ : (Plus.singleFunctor C 0).obj S.X₃ ⟶ A⟦(1 : ℤ)⟧ :=
-    Plus.ι.preimage (hS.singleδ ≫ e.inv.app A)
-  let triangle : Triangle (Plus C) :=
-    Triangle.mk ((Plus.singleFunctor _ 0).map S.f) ((Plus.singleFunctor _ 0).map S.g) δ
-  have htriangle : triangle ∈ distTriang _ := by
-    change Plus.ι.mapTriangle.obj triangle ∈ distTriang _
-    have hδ : Plus.ι.map δ ≫ e.hom.app A = hS.singleδ := by
-      change Plus.ι.map (Plus.ι.preimage _) ≫ _ = _
-      rw [Functor.map_preimage]
-      let d : Plus.ι.obj ((Plus.singleFunctor C 0).obj S.X₃) ⟶
-          (shiftFunctor _ (1 : ℤ)).obj (Plus.ι.obj A) := hS.singleδ
-      exact (Category.assoc d (e.app A).inv (e.app A).hom).trans
-        (congrArg (d ≫ ·) (e.app A).inv_hom_id |>.trans (Category.comp_id d))
-    convert hS.singleTriangle_distinguished using 1
-    change Triangle.mk ((singleFunctor C 0).map S.f) ((singleFunctor C 0).map S.g)
-      (Plus.ι.map δ ≫ e.hom.app A) = _
-    exact congrArg (fun d => Triangle.mk ((singleFunctor C 0).map S.f)
-      ((singleFunctor C 0).map S.g) d) hδ
+  let triangle := singleTrianglePlus hS
+  have htriangle := singleTrianglePlus_distinguished hS
   let Q := (T k ε).mapTriangle.obj triangle
   have hQ := (T k ε).map_distinguished _ htriangle
   let H := Plus.homologyFunctor C 0
@@ -889,5 +899,141 @@ theorem nonempty_iso_fibreCohomology_one_interval (hp : StrictMono p)
   exact ⟨ey.symm ≪≫ e⟩
 
 end Triangle
+
+section ThresholdAugmentation
+
+variable [HasDerivedCategory (realLine.Sheaf (ModuleCat k))]
+  [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+
+private theorem endpoint_aug_comp_ne_zero
+    (hp : StrictMono p) {i j : Fin m} (hij : i < j)
+    {ε : ℝ} (hε : 0 ≤ ε) (h : 2 * ε = p j - p i) :
+    let S := (endpointSequence (k := k) hij).map (extension k hp)
+    let hS := (endpointSequence_shortExact (k := k) hij).map_of_exact (extension k hp)
+    (aug k hε).app ((Plus.singleFunctor _ 0).obj S.X₃) ≫
+      (singleTrianglePlus hS).mor₃ ≠ 0 := by
+  let C := realLine.Sheaf (ModuleCat k)
+  let E := extension k hp
+  let A := closedSegment hij
+  let L := endpoint i
+  let P := Plus.singleFunctor C 0
+  let H₀ := Plus.homologyFunctor C 0
+  let S := (endpointSequence (k := k) hij).map E
+  let hS := (endpointSequence_shortExact (k := k) hij).map_of_exact E
+  let tr := singleTrianglePlus hS
+  let Bₗ := interval (k := k) (orient m) L
+  let Bᵣ := interval (k := k) (orient m) (endpoint j)
+  let F := E.obj Bₗ
+  let inl : Bₗ ⟶ Bₗ ⊞ Bᵣ := biprod.inl
+  let fst : Bₗ ⊞ Bᵣ ⟶ Bₗ := biprod.fst
+  let ι : F ⟶ S.X₃ := E.map inl
+  let π : S.X₃ ⟶ F := E.map fst
+  let θ := aug k hε
+  have hL : intervalSet p L = {p i} := intervalSet_eq_singleton hp rfl rfl
+  have hA : intervalSet p A = Set.Icc (p i) (p j) := intervalSet_eq_Icc hp rfl rfl
+  have hout : outSet0 ε (intervalSet p L) = Set.Icc (p i - ε) (p i + ε) := by
+    rw [hL, outSet0_singleton hε]
+  have hne : H0Aug k hε F ≠ 0 := (H0Aug_interval_ne_zero_iff hε hp L).2 (by
+    rw [hout, hL]
+    exact ⟨p i, ⟨by linarith, by linarith⟩, rfl⟩)
+  change θ.app (P.obj S.X₃) ≫ tr.mor₃ ≠ 0
+  intro hz
+  -- A zero composite would lift the left endpoint augmentation to the closed interval.
+  have hz' : (θ.app (P.obj F) ≫ P.map ι) ≫ tr.mor₃ = 0 := by
+    have hn : (T k ε).map (P.map ι) ≫ θ.app (P.obj S.X₃) = θ.app (P.obj F) ≫ P.map ι :=
+      θ.naturality (P.map ι)
+    exact (congrArg (· ≫ tr.mor₃) hn.symm).trans
+      ((Category.assoc _ _ _).trans (hz ▸ comp_zero))
+  obtain ⟨u, hu⟩ := tr.coyoneda_exact₃ (singleTrianglePlus_distinguished hS) _ hz'
+  let e₀ : H₀.obj tr.obj₂ ≅ S.X₂ :=
+    (singleFunctorCompHomologyFunctorIsoPlus C 0).app S.X₂
+  let f : H₀.obj ((T k ε).obj (P.obj F)) ⟶ S.X₂ := H₀.map u ≫ e₀.hom
+  obtain ⟨K, hK, ⟨eK⟩⟩ := exists_intervalSheaf_H0T (k := k) hp L hε (by
+    rw [hout]
+    exact Set.nonempty_Icc.mpr (by linarith))
+  let hq := strictMono_sortedBreakpoints (bandBreakpoints p ε)
+  -- The right endpoint of the closed interval lies outside the convolved left endpoint.
+  have hvan : eK.inv ≫ f = 0 :=
+    hom_extension_interval_eq_zero_of_not_subset hq hp
+      (by rw [hK, hout]; exact isClosed_Icc)
+      (by rw [hA]; exact isClosed_Icc)
+      (by
+        rw [hA, hK, hout]
+        intro hsub
+        have hb := hsub (show p j ∈ Set.Icc (p i) (p j) from ⟨(hp hij).le, le_rfl⟩)
+        linarith [hb.2, hp hij]) _
+  have hf' : f = 0 := (cancel_epi eK.inv).mp (hvan.trans comp_zero.symm)
+  have hf : H₀.map u = 0 := (cancel_mono e₀.hom).mp (hf'.trans zero_comp.symm)
+  have hiπ : ι ≫ π = 𝟙 F :=
+    (E.map_comp inl fst).symm.trans
+      ((congrArg E.map (biprod.inl_fst : inl ≫ fst = 𝟙 Bₗ)).trans (E.map_id Bₗ))
+  have hpaste : θ.app (P.obj F) = u ≫ tr.mor₂ ≫ P.map π := by
+    have hh := congrArg (· ≫ P.map π) hu
+    calc
+      θ.app (P.obj F) = (θ.app (P.obj F) ≫ P.map ι) ≫ P.map π := by
+        rw [Category.assoc, ← P.map_comp, hiπ, P.map_id]
+        exact (Category.comp_id _).symm
+      _ = _ := hh.trans (Category.assoc _ _ _)
+  apply hne
+  have hm : H₀.map (θ.app (P.obj F)) = 0 :=
+    (congrArg H₀.map hpaste).trans (by rw [H₀.map_comp, hf, zero_comp])
+  exact (congrArg (· ≫ (singleFunctorCompHomologyFunctorIsoPlus C 0).hom.app F) hm).trans
+    zero_comp
+
+private theorem app_ne_zero_of_comp_shift {C : Type*} [Category C] [Preadditive C]
+    [HasShift C ℤ] [∀ n : ℤ, (shiftFunctor C n).Additive]
+    {T : C ⥤ C} [T.CommShift ℤ] (θ : T ⟶ 𝟭 C) [θ.CommShift ℤ]
+    {M N : C} (δ : N ⟶ M⟦(1 : ℤ)⟧) (h : θ.app N ≫ δ ≠ 0) : θ.app M ≠ 0 := by
+  intro hz
+  have hs := θ.app_shift (1 : ℤ) M
+  simp only [hz, Functor.map_zero, zero_comp, comp_zero] at hs
+  have hn : T.map δ ≫ θ.app (M⟦(1 : ℤ)⟧) = θ.app N ≫ δ := θ.naturality δ
+  exact h (hn.symm.trans (hs ▸ comp_zero))
+
+/-- At half the length of a bounded open interval, the augmentation is nonzero in `D⁺`. -/
+theorem aug_interval_Ioo_threshold_ne_zero (hp : StrictMono p)
+    (J : FiniteInterval (2 * m + 1)) {a b ε : ℝ} (hε : 0 ≤ ε)
+    (hab : a < b) (h : 2 * ε = b - a) (hJ : intervalSet p J = Set.Ioo a b) :
+    (aug k hε).app ((Plus.singleFunctor _ 0).obj ((extension k hp).obj (interval _ J))) ≠ 0 := by
+  have hout : (outSet1 ε (intervalSet p J)).Nonempty := by
+    rw [hJ, outSet1_Ioo_threshold hε hab h]
+    exact Set.singleton_nonempty _
+  obtain ⟨i, j, hij, hends⟩ := exists_open_endpoints hp J hout
+  have he := hends.symm.trans hJ
+  have ha : p i = a := by
+    simpa only [csInf_Ioo (hp hij), csInf_Ioo hab] using congrArg sInf he
+  have hb : p j = b := by
+    simpa only [csSup_Ioo (hp hij), csSup_Ioo hab] using congrArg sSup he
+  have hJ' : J = openSegment hij := by
+    apply eq_of_alive_iff
+    intro v
+    obtain ⟨x, hx⟩ := stratum_nonempty hp v
+    rw [← mem_intervalSet_iff_alive hx, ← mem_intervalSet_iff_alive hx, hends,
+      intervalSet_eq_Ioo hp (J := openSegment hij) rfl rfl]
+  subst J
+  let hS := (endpointSequence_shortExact (k := k) hij).map_of_exact (extension k hp)
+  let tr := singleTrianglePlus hS
+  have hcomp : (aug k hε).app tr.obj₃ ≫ tr.mor₃ ≠ 0 :=
+    endpoint_aug_comp_ne_zero (k := k) hp hij hε (by rw [ha, hb]; exact h)
+  have hθ := aug_commShift k hε
+  exact app_ne_zero_of_comp_shift (aug k hε) tr.mor₃ hcomp
+
+/-- Every cohomology sheaf map of the threshold augmentation is zero. -/
+theorem homologyFunctor_map_aug_interval_Ioo_threshold (hp : StrictMono p)
+    (J : FiniteInterval (2 * m + 1)) {a b ε : ℝ} (hε : 0 ≤ ε)
+    (hab : a < b) (h : 2 * ε = b - a) (hJ : intervalSet p J = Set.Ioo a b) (i : ℤ) :
+    (Plus.homologyFunctor _ i).map
+      ((aug k hε).app ((Plus.singleFunctor _ 0).obj ((extension k hp).obj (interval _ J)))) =
+      0 := by
+  let F := (extension k hp).obj (interval _ J)
+  let X := (Plus.singleFunctor (realLine.Sheaf (ModuleCat k)) 0).obj F
+  rcases lt_trichotomy i 0 with hi | rfl | hi
+  · exact (Plus.isZero_homology_of_isGE X 0 i hi).eq_of_tgt _ _
+  · have he : outSet0 ε (intervalSet p J) = ∅ := by
+      rw [hJ, outSet0_Ioo hε hab, Set.Ioo_eq_empty_of_le (by linarith)]
+    exact (isZero_H0T_interval hp J hε he).eq_of_src _ _
+  · exact (Plus.isZero_homology_of_isLE X 0 i hi).eq_of_tgt _ _
+
+end ThresholdAugmentation
 
 end TDA.Sheaf.BandConvolution
