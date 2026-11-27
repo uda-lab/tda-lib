@@ -10,6 +10,13 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Cohomology of band fibres with interval coefficients. The convolution stalk formula
+  gives the degree-zero fibre values through `outSet0`. Degree one vanishes away from
+  `outSet1` by germ lifting on opens avoiding an excluded endpoint. On `outSet1`,
+  the cokernel of the endpoint restriction gives a one-dimensional stalk and fibre
+  cohomology. A bounded open interval has degree-one output set `[b - ε, a + ε]`,
+  the singleton midpoint at equality, and the empty set below the threshold.
+  Convolution of a sheaf in degree zero has cohomology in degrees zero and one.
 - Recognition and degree-zero band convolution of real interval sheaves.
   `nonempty_iso_interval_of_finrank` recognizes interval diagrams by their vertex dimensions and
   internal arrow isomorphisms. `exists_intervalSet_of_strata` represents a nonempty order-connected
