@@ -480,3 +480,4 @@ import TDA.Persistence.Morse.ReducerDiagram
 import TDA.Persistence.Morse.MorseDiagram
 import TDA.Persistence.AlphaCech
 import TDA.Persistence.AlphaRadiusStability
+import TDA.Persistence.DiagramBoundsOrderFree

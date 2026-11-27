@@ -10,6 +10,22 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 16 (#1300, #1207): simplicial homology and diagram bounds with the
+  vertex order chosen internally. `Simplicial.HomologyOrderFree` has `simplicialHomologyOrderFree` (the
+  order chosen classically), `simplicialHomologyOrderFreeIso` (the isomorphism to
+  `simplicialHomology` for every supplied order), `simplicialHomologyIso_of_linearOrder` (homology
+  for two orders on the vertices), `simplicialHomologyMapOrderFree` with its naturality against the
+  comparison isomorphisms, and `finrank_simplicialHomologyOrderFree_eq` and
+  `finrank_simplicialHomologyOrderFree_top_zero`. `Persistence.DiagramBoundsOrderFree` has
+  `Rips.totalPersistence_diagram_le`, `Cech.diagram` (labels and field in independent universes,
+  pseudometric ambient space) with `Cech.diagram_eq_dgm`,
+  `Cech.totalPersistence_diagram_le_diameter`,
+  `Cech.bottleneck_rips_cech_diagram_le_half_diameter_real`, `alphaRadiusDiagramOrderFree` with
+  `alphaRadiusDiagramOrderFree_eq_alphaRadiusDiagram` and
+  `bottleneck_alphaRadiusDiagramOrderFree_le_displacement`. The modules
+  `Simplicial.HomologyOrderFreeClientExamples` and
+  `Persistence.DiagramBoundsOrderFreeClientExamples` state the companions for finite subsets of the
+  plane and for labels and field in different universes.
 - Downstream-use audit, family 15 (#1301, #1207): transport companions for carriers outside
   universe `0`. `IsRGraph`, `IsConstructibleSpace`, `geometricInterleavingDistance`,
   `constructibleInterleavingDistance` and the graph-PL Reeb statements live over

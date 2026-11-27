@@ -427,3 +427,17 @@ import TDA
 #print axioms TDA.Simplicial.VertexMapClientExamples.fin_three_map_face
 #print axioms TDA.Simplicial.VertexMapClientExamples.fin_three_map_le_iff
 #print axioms TDA.Simplicial.VertexMapClientExamples.fin_three_vertexMap_map_le_iff
+#print axioms TDA.Simplicial.simplicialHomologyIso_of_linearOrder
+#print axioms TDA.Simplicial.simplicialHomologyMap_comp_iso_of_linearOrder
+#print axioms TDA.Simplicial.simplicialHomologyOrderFree
+#print axioms TDA.Simplicial.simplicialHomologyOrderFreeIso
+#print axioms TDA.Simplicial.simplicialHomologyMapOrderFree
+#print axioms TDA.Simplicial.simplicialHomologyMapOrderFree_iso_naturality
+#print axioms TDA.Simplicial.finrank_simplicialHomologyOrderFree_eq
+#print axioms TDA.Simplicial.finrank_simplicialHomologyOrderFree_top_zero
+#print axioms TDA.Simplicial.HomologyOrderFreeClientExamples.plane_finrank_top_zero
+#print axioms TDA.Simplicial.HomologyOrderFreeClientExamples.plane_homologyOrderFree_nonempty_iso
+#print axioms TDA.Simplicial.HomologyOrderFreeClientExamples.plane_homology_nonempty_iso_of_orders
+#print axioms TDA.Simplicial.HomologyOrderFreeClientExamples.plane_homologyMapOrderFree_naturality
+#print axioms TDA.Simplicial.HomologyOrderFreeClientExamples.universes_finrank_top_zero
+#print axioms TDA.Simplicial.HomologyOrderFreeClientExamples.universes_homologyMapOrderFree_naturality
