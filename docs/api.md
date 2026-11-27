@@ -6153,6 +6153,26 @@ The open bounded output is empty when `b - a ≤ 2ε`.
 a nonzero stalk at the right endpoint of the output of the singleton at `0`, and
 vanishing of the open unit interval output at radius `1/2`.
 
+### Degree-zero radius maps
+
+`TDA.Sheaf.BandIntervalMaps` provides `H0Restr k h F`, the degree-zero map induced by
+`restr k h` at `F[0]`. For a sheaf of `k`-modules and an order-connected open `U`,
+`H0TSectionsIso_hom_restr` identifies the radius map with restriction from
+`F(bandOpen ε U)` to `F(bandOpen δ U)` for `0 ≤ δ ≤ ε`.
+The form `H0TSectionsIso_hom_restr_assoc` composes the equation with a map out of its target.
+
+For the interval sheaf `(extension k hp).obj (interval (orient m) J)` over a field,
+write `I = intervalSet p J`. The theorem `H0Restr_interval_ne_zero_iff` says that the
+radius map is nonzero exactly when `outSet0 ε I ∩ outSet0 δ I` is nonempty.
+`TDA.Sheaf.BandIntervalMapsExamples` checks a radius map for a singleton and a radius map
+between disjoint nonempty half-open outputs.
+
+For additive left exact functors `F` and `G` between abelian categories, the lemma
+`TDA.Sheaf.homologyZeroRightDerivedSingleIso_inv_naturality` identifies the map
+`H⁰(Rτ(X[0]))` with `τ.app X` for `τ : F ⟶ G`.
+`homologyZeroRightDerivedSingleIso_inv_naturality_assoc` composes the comparison square
+with a map out of `H⁰(RG(X[0]))`.
+
 ## Cohomology of band fibres with interval coefficients
 
 Let `k` be a field, `ε ≥ 0`, and `I = intervalSet p J` for a strictly increasing

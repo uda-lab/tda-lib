@@ -1983,3 +1983,9 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.isConstructible_H1T_interval
 #print axioms TDA.Sheaf.BandConvolution.hasConstructibleCohomology_T_interval
 #print axioms TDA.Sheaf.BandConvolution.hasConstructibleCohomology_T
+#print axioms TDA.Sheaf.homologyZeroRightDerivedSingleIso_inv_naturality
+#print axioms TDA.Sheaf.homologyZeroRightDerivedSingleIso_inv_naturality_assoc
+#print axioms TDA.Sheaf.BandConvolution.H0Restr
+#print axioms TDA.Sheaf.BandConvolution.H0TSectionsIso_hom_restr
+#print axioms TDA.Sheaf.BandConvolution.H0TSectionsIso_hom_restr_assoc
+#print axioms TDA.Sheaf.BandConvolution.H0Restr_interval_ne_zero_iff

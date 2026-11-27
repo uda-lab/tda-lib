@@ -52,6 +52,7 @@ import TDA.Sheaf.BandThickening
 import TDA.Sheaf.RealIntervalSections
 import TDA.Sheaf.RealIntervalRecognition
 import TDA.Sheaf.BandIntervalDegreeZero
+import TDA.Sheaf.BandIntervalMaps
 import TDA.Sheaf.BandIntervalFibreCohomology
 import TDA.Sheaf.BandIntervalDegreeOne
 import TDA.Sheaf.BandCompositionUnit
