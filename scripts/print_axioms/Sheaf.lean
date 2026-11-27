@@ -1765,3 +1765,16 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.TCompOfEq
 #print axioms TDA.Sheaf.BandConvolution.TCompOfEq_rfl
 #print axioms TDA.Sheaf.BandConvolution.TCompOfEq_hom
+#print axioms TDA.Sheaf.BandConvolution.TCompB
+#print axioms TDA.Sheaf.BandConvolution.whiskerRight_TCompB_hom
+#print axioms TDA.Sheaf.BandConvolution.whiskerRight_restrB_TCompB_hom
+#print axioms TDA.Sheaf.BandConvolution.whiskerLeft_restrB_TCompB_hom
+#print axioms TDA.Sheaf.BandConvolution.hcomp_restrB_TCompB_hom
+#print axioms TDA.Sheaf.BandCompositionLawsExamples.one_le_two_real
+#print axioms TDA.Sheaf.BandCompositionLawsExamples.whiskerRight_restr_TComp_constOn
+#print axioms TDA.Sheaf.BandCompositionLawsExamples.not_isZero_H0_stalk_TT_two_one
+#print axioms TDA.Sheaf.BandCompositionLawsExamples.not_isZero_H0_stalk_TT_one_one
+#print axioms TDA.Sheaf.BandCompositionLawsExamples.whiskerLeft_restr_TComp_constOn
+#print axioms TDA.Sheaf.BandCompositionLawsExamples.hcomp_restr_TComp_constOn
+#print axioms TDA.Sheaf.BandCompositionLawsExamples.TCompB_one_one
+#print axioms TDA.Sheaf.BandCompositionLawsExamples.whiskerRight_restrB_TCompB_one

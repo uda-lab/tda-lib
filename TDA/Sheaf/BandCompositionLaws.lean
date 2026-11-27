@@ -1,3 +1,4 @@
+import TDA.Sheaf.BandAmplitude
 import TDA.Sheaf.BandComposition
 import TDA.Sheaf.BaseChangeRestriction
 
@@ -30,6 +31,9 @@ with the radius maps `restr` and records it on the bounded derived category.
   `T0Iso_inv_TCompCounit` (the inverse of `T0Iso` against the transported counit is the
   identification along `p 0 = q 0`) and `eqToHom_TCompRestr_zero_add` (`TCompRestr k 0 b` is the
   restriction along `pr₂₃ 0 b`, since `x = y` on `Z 0 b`).
+* **Bounded derived category.** `TCompB k ha hb : TB k a ⋙ TB k b ≅ TB k (a + b)` is
+  `compIsoB k (TComp k ha hb)`, with `whiskerRight_TCompB_hom` and the three radius laws on `Dᵇ`:
+  `whiskerRight_restrB_TCompB_hom`, `whiskerLeft_restrB_TCompB_hom`, `hcomp_restrB_TCompB_hom`.
 
 Derived categories are instance arguments: on the real line, on every band `D a`, on every
 `Z a b`, on the point and on every compact interval `[u, v]`.
@@ -368,5 +372,85 @@ lemma TCompOfEq_rfl {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
 lemma TCompOfEq_hom {a b c : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a + b = c) :
     (TCompOfEq k ha hb h).hom = (TComp k ha hb).hom ≫ eqToHom (congrArg (T k) h) :=
   rfl
+
+section bounded
+
+/-- **The composition isomorphism on the bounded derived category**
+`TB k a ⋙ TB k b ≅ TB k (a + b)` for `0 ≤ a`, `0 ≤ b`: the restriction of `TComp` to
+`Dᵇ(Sh(ℝ; k))` (`compIsoB`). -/
+abbrev TCompB {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) : TB k a ⋙ TB k b ≅ TB k (a + b) :=
+  compIsoB k (TComp k ha hb)
+
+/-- `TCompB` whiskered by the inclusion `Dᵇ ⥤ D⁺` is `TComp` whiskered by the inclusion. -/
+theorem whiskerRight_TCompB_hom {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    Functor.whiskerRight (TCompB k ha hb).hom (boundedToPlus _) =
+      Functor.whiskerLeft (boundedToPlus _) (TComp k ha hb).hom :=
+  whiskerRight_compIsoB_hom k (TComp k ha hb)
+
+omit [HasDerivedCategory (pt.Sheaf (ModuleCat.{0} k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat.{0} k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat.{0} k))]
+  [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat.{0} k))] in
+/-- A transformation between functors into `Dᵇ` is determined by its whiskering with the inclusion
+`Dᵇ ⥤ D⁺`. -/
+private lemma eq_of_whiskerRight_boundedToPlus {C' : Type*} [Category* C']
+    {F G : C' ⥤ DerivedCategory.Bounded (realLine.Sheaf (ModuleCat.{0} k))} {α β : F ⟶ G}
+    (h : Functor.whiskerRight α (boundedToPlus _) = Functor.whiskerRight β (boundedToPlus _)) :
+    α = β := by
+  ext K : 3
+  exact congrArg (fun f => f.hom) (congr_app h K)
+
+omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat.{0} k))] in
+/-- `T_b`-whiskering of the bounded radius map, whiskered by `Dᵇ ⥤ D⁺`. -/
+private lemma whiskerRight_whiskerRight_restrB {a a' : ℝ} (h : a ≤ a') (b : ℝ) :
+    Functor.whiskerRight (Functor.whiskerRight (restrB k h) (TB k b)) (boundedToPlus _) =
+      Functor.whiskerLeft (boundedToPlus _) (Functor.whiskerRight (restr k h) (T k b)) :=
+  rfl
+
+omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat.{0} k))] in
+/-- `TB_a`-whiskering of the bounded radius map, whiskered by `Dᵇ ⥤ D⁺`. -/
+private lemma whiskerRight_whiskerLeft_restrB (a : ℝ) {b b' : ℝ} (h : b ≤ b') :
+    Functor.whiskerRight (Functor.whiskerLeft (TB k a) (restrB k h)) (boundedToPlus _) =
+      Functor.whiskerLeft (boundedToPlus _) (Functor.whiskerLeft (T k a) (restr k h)) :=
+  rfl
+
+/-- **The bounded composition isomorphism is natural in the first radius** (the restriction of
+`whiskerRight_restr_TComp_hom` to `Dᵇ`). -/
+theorem whiskerRight_restrB_TCompB_hom {a a' b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a ≤ a') :
+    Functor.whiskerRight (restrB k h) (TB k b) ≫ (TCompB k ha hb).hom =
+      (TCompB k (ha.trans h) hb).hom ≫ restrB k (add_le_add h (le_refl b)) := by
+  apply eq_of_whiskerRight_boundedToPlus
+  rw [Functor.whiskerRight_comp, Functor.whiskerRight_comp, whiskerRight_TCompB_hom,
+    whiskerRight_TCompB_hom, whiskerRight_whiskerRight_restrB, whiskerRight_restrB]
+  exact ((Functor.whiskerLeft_comp _ _ _).symm.trans (congrArg
+    (Functor.whiskerLeft (boundedToPlus _)) (whiskerRight_restr_TComp_hom k ha hb h))).trans
+    (Functor.whiskerLeft_comp _ _ _)
+
+/-- **The bounded composition isomorphism is natural in the second radius** (the restriction of
+`whiskerLeft_restr_TComp_hom` to `Dᵇ`). -/
+theorem whiskerLeft_restrB_TCompB_hom {a b b' : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : b ≤ b') :
+    Functor.whiskerLeft (TB k a) (restrB k h) ≫ (TCompB k ha hb).hom =
+      (TCompB k ha (hb.trans h)).hom ≫ restrB k (add_le_add (le_refl a) h) := by
+  apply eq_of_whiskerRight_boundedToPlus
+  rw [Functor.whiskerRight_comp, Functor.whiskerRight_comp, whiskerRight_TCompB_hom,
+    whiskerRight_TCompB_hom, whiskerRight_whiskerLeft_restrB, whiskerRight_restrB]
+  exact ((Functor.whiskerLeft_comp _ _ _).symm.trans (congrArg
+    (Functor.whiskerLeft (boundedToPlus _)) (whiskerLeft_restr_TComp_hom k ha hb h))).trans
+    (Functor.whiskerLeft_comp _ _ _)
+
+/-- **The bounded composition isomorphism is natural in both radii** (the restriction of
+`hcomp_restr_TComp_hom` to `Dᵇ`). -/
+theorem hcomp_restrB_TCompB_hom {a a' b b' : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h₁ : a ≤ a')
+    (h₂ : b ≤ b') :
+    (restrB k h₁ ◫ restrB k h₂) ≫ (TCompB k ha hb).hom =
+      (TCompB k (ha.trans h₁) (hb.trans h₂)).hom ≫ restrB k (add_le_add h₁ h₂) := by
+  have e : restrB k h₁ ◫ restrB k h₂ =
+      Functor.whiskerLeft (TB k a') (restrB k h₂) ≫ Functor.whiskerRight (restrB k h₁) (TB k b) := by
+    ext K
+    rfl
+  rw [e, Category.assoc, whiskerRight_restrB_TCompB_hom, ← Category.assoc,
+    whiskerLeft_restrB_TCompB_hom, Category.assoc, restrB_trans]
+
+end bounded
 
 end TDA.Sheaf.BandConvolution

@@ -1019,6 +1019,14 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `pr₁₃Of`, `pr₁₃Of_zero_add`, `pr₁₃Of_add_zero`, `eqToHom_TCompRestr`, `TCompOfEq`,
   `TCompOfEq_rfl`, `TCompOfEq_hom`; at `a = 0`, `T0Iso_eq_corrUnitIso`, `T0Iso_inv_TCompCounit`,
   `eqToHom_TCompRestr_zero_add`.
+- The composition isomorphism of the band functors on the bounded derived category (#1175, #1227,
+  part 2b). `TDA.Sheaf.BandCompositionLaws`: `TCompB : TB k a ⋙ TB k b ≅ TB k (a + b)` with
+  `whiskerRight_TCompB_hom`, and the radius laws on `Dᵇ` `whiskerRight_restrB_TCompB_hom`,
+  `whiskerLeft_restrB_TCompB_hom`, `hcomp_restrB_TCompB_hom`. Fixtures in the new module
+  `TDA.Sheaf.BandCompositionLawsExamples`: `one_le_two_real`, `whiskerRight_restr_TComp_constOn`,
+  `not_isZero_H0_stalk_TT_two_one`, `not_isZero_H0_stalk_TT_one_one`,
+  `whiskerLeft_restr_TComp_constOn`, `hcomp_restr_TComp_constOn`, `TCompB_one_one`,
+  `whiskerRight_restrB_TCompB_one`.
 
 ## v0.5.0
 
