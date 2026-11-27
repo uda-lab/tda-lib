@@ -10,6 +10,17 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Downstream-use audit, family 17 (#1308, #1207): the pivot barcode of the simplicial adapter with
+  the vertex order chosen internally. `Persistence.Reduction.SimplicialAdapterOrderFree` has
+  `facePrefixBarcode_congr_linearOrder` and `facePivotBarcode_congr_linearOrder` (the barcodes
+  agree for two linear orders on the vertex type, given as explicit arguments),
+  `facePrefixModuleOrderFree` with `facePrefixModuleOrderFree_obj`, `facePivotBarcodeOrderFree` with
+  `facePivotBarcodeOrderFree_eq_facePivotBarcode`, and
+  `nonempty_facePrefixModuleOrderFreeIsoPivotBarcodeOrderFree` and
+  `nonempty_facePrefixModuleOrderFreeIsoPivotBarcode` (the isomorphism of
+  `nonempty_facePrefixHomologyIsoPivotBarcode` for the order-free module). The module
+  `Persistence.SimplicialAdapterOrderFreeClientExamples` states them for finite subsets of the
+  plane over `ZMod 2`.
 - Downstream-use audit, family 16 (#1300, #1207): simplicial homology and diagram bounds with the
   vertex order chosen internally. `Simplicial.HomologyOrderFree` has `simplicialHomologyOrderFree` (the
   order chosen classically), `simplicialHomologyOrderFreeIso` (the isomorphism to

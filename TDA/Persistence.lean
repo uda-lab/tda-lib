@@ -151,6 +151,7 @@ import TDA.Persistence.Reduction.PivotBarcode
 import TDA.Persistence.Reduction.SimplicialAdapter
 import TDA.Persistence.Reduction.SimplicialAdapterNaturality
 import TDA.Persistence.Reduction.SimplicialAdapterBarcode
+import TDA.Persistence.Reduction.SimplicialAdapterOrderFree
 import TDA.Persistence.Reduction.SimplicialAdapterTemplate
 import TDA.Persistence.Simplicial
 import TDA.Persistence.SublevelDiagram
