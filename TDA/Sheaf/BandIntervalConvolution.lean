@@ -1,3 +1,4 @@
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
 import TDA.Sheaf.BandIntervalDegreeOne
 import TDA.Sheaf.RealConstructibleRefinement
 
@@ -292,6 +293,42 @@ theorem exists_intervalSheaf_T_Ioo_threshold {a b : ℝ} (hab : a < b) (h : 2 * 
         Nonempty (Conv[ε,ISh[k,hp,J]] ≅ (Plus.singleFunctor _ 1).obj ISh[k,hpε,K]) :=
   exists_intervalSheaf_T_one hp J hε (hJ ▸ outSet1_Ioo_threshold hε hab h)
     (Set.singleton_nonempty _)
+
+/-- At the open-interval threshold the shifted augmentation represents a nonzero
+`Ext¹` class from the midpoint sheaf to the open interval sheaf. -/
+theorem exists_ext_one_aug_interval_Ioo_threshold
+    [HasExt.{0} (realLine.Sheaf (ModuleCat k))]
+    {a b : ℝ} (hab : a < b) (h : 2 * ε = b - a) (hJ : intervalSet p J = Set.Ioo a b) :
+    ∃ K : FiniteInterval (2 * (bandBreakpoints p ε).card + 1),
+      intervalSet pε K = {(a + b) / 2} ∧
+      ∃ e : Conv[ε,ISh[k,hp,J]] ≅ (Plus.singleFunctor _ 1).obj ISh[k,hpε,K],
+        ∃ ξ : Abelian.Ext ISh[k,hpε,K] ISh[k,hp,J] 1,
+          ξ ≠ 0 ∧ ξ.hom =
+            ((singleFunctors _).shiftIso 1 0 1 (add_zero 1)).inv.app ISh[k,hpε,K] ≫
+              (shiftFunctor _ (1 : ℤ)).map (Plus.ι.map
+                (e.inv ≫ (aug k hε).app ((Plus.singleFunctor _ 0).obj ISh[k,hp,J]))) := by
+  obtain ⟨K, hK, ⟨e⟩⟩ := exists_intervalSheaf_T_Ioo_threshold (k := k) hp J hε hab h hJ
+  let C := realLine.Sheaf (ModuleCat k)
+  let F := ISh[k,hp,J]
+  let G := ISh[k,hpε,K]
+  let e₁ := ((singleFunctors C).shiftIso 1 0 1 (add_zero 1)).app G
+  let u := (aug k hε).app ((Plus.singleFunctor C 0).obj F)
+  let v : (singleFunctor C 0).obj G ⟶ ((singleFunctor C 0).obj F)⟦(1 : ℤ)⟧ :=
+    e₁.inv ≫ (shiftFunctor _ (1 : ℤ)).map (Plus.ι.map (e.inv ≫ u))
+  refine ⟨K, hK, e, (Abelian.Ext.homEquiv (n := 1)).symm v, ?_, Equiv.apply_symm_apply _ _⟩
+  intro hz
+  have hv : v = 0 := by
+    have he := congrArg (Abelian.Ext.homEquiv (n := 1)) hz
+    rw [Equiv.apply_symm_apply] at he
+    exact he.trans (Abelian.Ext.zero_hom G F 1)
+  have hs : (shiftFunctor _ (1 : ℤ)).map (Plus.ι.map (e.inv ≫ u)) = 0 :=
+    (Preadditive.IsIso.comp_left_eq_zero e₁.inv _).mp hv
+  have hi : Plus.ι.map (e.inv ≫ u) = 0 :=
+    (shiftFunctor _ (1 : ℤ)).map_injective
+      (hs.trans ((shiftFunctor _ (1 : ℤ)).map_zero _ _).symm)
+  have hu : e.inv ≫ u = 0 := Plus.ι.map_injective (hi.trans (Plus.ι.map_zero _ _).symm)
+  exact aug_interval_Ioo_threshold_ne_zero (k := k) hp J hε hab h hJ
+    ((Preadditive.IsIso.comp_left_eq_zero _ _).mp hu)
 
 /-- Above the open-interval threshold, convolution gives a closed interval in degree one. -/
 theorem exists_intervalSheaf_T_Ioo_above {a b : ℝ} (hab : a < b) (h : b - a < 2 * ε)

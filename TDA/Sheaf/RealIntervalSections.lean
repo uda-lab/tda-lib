@@ -1,5 +1,6 @@
 import TDA.Sheaf.RealIntervalSets
 import Mathlib.Topology.LocallyConstant.Basic
+import Mathlib.Topology.Sheaves.Abelian
 
 /-!
 # Sections of interval sheaves over order-connected opens of the real line
@@ -376,5 +377,58 @@ theorem isIso_map_extension_interval (hp : StrictMono p) (J : FiniteInterval (2 
     exact hgU
   exact IsIso.of_isIso_comp_right _
     (((extension k hp).obj (interval (orient m) J)).presheaf.germ V x hx)
+
+variable {k} {n : ℕ} {q : Fin n → ℝ}
+
+/-- A morphism between closed interval sheaves vanishes if the target interval has a
+point outside the source interval. -/
+theorem hom_extension_interval_eq_zero_of_not_subset
+    (hp : StrictMono p) (hq : StrictMono q)
+    {J : FiniteInterval (2 * m + 1)} {K : FiniteInterval (2 * n + 1)}
+    (hJ : IsClosed (intervalSet p J)) (hK : IsClosed (intervalSet q K))
+    (h : ¬ intervalSet q K ⊆ intervalSet p J)
+    (f : (extension k hp).obj (interval _ J) ⟶ (extension k hq).obj (interval _ K)) :
+    f = 0 := by
+  let F := (extension k hp).obj (interval _ J)
+  let G := (extension k hq).obj (interval _ K)
+  let f' : F.presheaf ⟶ G.presheaf := f.hom
+  let U : Opens realLine := ⊤
+  have hm (x : ℝ) : x ∈ U := trivial
+  let st (x : ℝ) := TopCat.Presheaf.stalkFunctor (X := realLine) (ModuleCat k) x
+  have topGerm {r : ℕ} {s : Fin r → ℝ} (hs : StrictMono s) (L : FiniteInterval (2 * r + 1))
+      (hL : IsClosed (intervalSet s L)) {x : ℝ} (hx : x ∈ intervalSet s L) :
+      IsIso (((extension k hs).obj (interval _ L)).presheaf.germ U x (hm x)) :=
+    isIso_germ_extension_interval k hs L (U := U) Set.ordConnected_univ
+      (by rw [hL.closure_eq]; exact Set.inter_subset_left) (hm x) hx
+  obtain ⟨b, hbK, hbJ⟩ := Set.not_subset.mp h
+  have htop : f'.app (op U) = 0 := by
+    have := topGerm hq K hK hbK
+    apply (cancel_mono (G.presheaf.germ U b (hm b))).mp
+    rw [zero_comp, ← TopCat.Presheaf.stalkFunctor_map_germ U b (hm b) f']
+    have hz : F.presheaf.germ U b (hm b) = 0 :=
+      (isZero_stalk_extension_interval k hp hbJ).eq_of_tgt _ _
+    rw [hz]
+    exact zero_comp
+  have hst (x : ℝ) : (st x).map f' = 0 := by
+    by_cases hx : x ∈ intervalSet p J
+    · have := topGerm hp J hJ hx
+      apply (cancel_epi (F.presheaf.germ U x (hm x))).mp
+      have hcomp : f'.app (op U) ≫ G.presheaf.germ U x (hm x) =
+          F.presheaf.germ U x (hm x) ≫ (0 : F.presheaf.stalk x ⟶ G.presheaf.stalk x) := by
+        rw [htop, zero_comp, comp_zero]
+      exact (TopCat.Presheaf.stalkFunctor_map_germ U x (hm x) f').trans hcomp
+    · exact (isZero_stalk_extension_interval k hp hx).eq_of_src _ _
+  apply Sheaf.hom_ext
+  apply NatTrans.ext
+  funext V
+  change f'.app V = 0
+  ext s : 2
+  change f'.app V s = (0 : G.presheaf.obj V)
+  refine TopCat.Presheaf.section_ext G V.unop _ _ fun x hx => ?_
+  rw [← TopCat.Presheaf.stalkFunctor_map_germ_apply V.unop x hx f', hst x]
+  change (0 : F.presheaf.stalk x ⟶ G.presheaf.stalk x) (F.presheaf.germ V.unop x hx s) =
+    G.presheaf.germ V.unop x hx 0
+  rw [map_zero]
+  rfl
 
 end TDA.Sheaf.RealConstructible

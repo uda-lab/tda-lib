@@ -6262,6 +6262,33 @@ support, and an isomorphism in `D⁺` with the interval sheaf placed in the give
 `TDA.Sheaf.BandIntervalConvolutionExamples` checks the three open-interval regimes,
 a closed and a half-open interval, and a nonzero and a zero degree-zero augmentation.
 
+### The threshold augmentation
+
+For `a < b` and `2 * ε = b - a` with `ε ≥ 0`, let `F` be the interval sheaf of
+`(a, b)`. In `TDA.Sheaf.BandIntervalDegreeOne`, `aug_interval_Ioo_threshold_ne_zero`
+proves that the augmentation from `T_ε (F[0])` to `F[0]` is nonzero in `D⁺`.
+`homologyFunctor_map_aug_interval_Ioo_threshold` proves that it induces the zero map
+on cohomology sheaves in every degree.
+
+In `TDA.Sheaf.BandIntervalConvolution`, `exists_ext_one_aug_interval_Ioo_threshold`
+gives the midpoint interval on the sorted shifted breakpoints, the isomorphism
+from `T_ε (F[0])` to its sheaf in degree one, and a nonzero `Ext¹` class from
+that sheaf to `F`. Under `Ext.homEquiv` the class is the augmentation transported
+by this isomorphism and shifted by one. The class uses `HasExt.{0}` for sheaves
+on the real line, supplied by `hasExt_sheaf_realLine`.
+
+- `hom_extension_interval_eq_zero_of_not_subset` in `TDA.Sheaf.RealIntervalSections`
+  gives Hom vanishing between closed interval sheaves whenever the target
+  interval is not contained in the source interval.
+- `derivedUnit_commShift` and `corrRestr_commShift` in `TDA.Sheaf.DerivedPlus`
+  give commutation with integer shifts for the derived inverse/direct image unit
+  and for restriction of a derived correspondence.
+- `restr_commShift` and `aug_commShift` in `TDA.Sheaf.BandConvolution` give the
+  corresponding instances for the band radius maps and the augmentation.
+
+`TDA.Sheaf.BandIntervalAugmentationExamples` checks the augmentation and its
+`Ext¹` class for `(0, 2)` at radius one over `ℚ`, and the zero cohomology sheaf maps.
+
 ## Sheaf statements as a client writes them
 
 `TDA.Sheaf.ClientExamples` (namespace `TDA.Sheaf.ClientExamples`) states results of `TDA.Sheaf` as a

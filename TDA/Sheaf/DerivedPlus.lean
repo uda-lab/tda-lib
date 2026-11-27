@@ -180,11 +180,44 @@ instance isIso_mapCochainComplexPlus {C D : Type*} [Category* C] [Category* D]
   ⟨NatTrans.mapCochainComplexPlus (inv τ), by
     rw [← NatTrans.mapCochainComplexPlus_comp]; simp, by
     rw [← NatTrans.mapCochainComplexPlus_comp]; simp⟩
+private lemma commShift_rightDerivedDesc
+    {C D H : Type*} [Category C] [Category D] [Category H]
+    [HasShift C ℤ] [HasShift D ℤ] [HasShift H ℤ]
+    {L : C ⥤ D} [L.CommShift ℤ] (W : MorphismProperty C) [L.IsLocalization W]
+    [W.IsCompatibleWithShift ℤ] {F : C ⥤ H} [F.CommShift ℤ]
+    {R G : D ⥤ H} [R.CommShift ℤ] [G.CommShift ℤ]
+    (α : F ⟶ L ⋙ R) [α.CommShift ℤ] [R.IsRightDerivedFunctor α W]
+    (β : F ⟶ L ⋙ G) [β.CommShift ℤ] (τ : R ⟶ G)
+    (h : α ≫ Functor.whiskerLeft L τ = β) : τ.CommShift ℤ :=
+  NatTrans.CommShift.of_isRightDerivedFunctor α β (𝟙 F) W (by simpa only [Category.id_comp])
 
-
-
-
-
+private local instance mapCochainComplexPlusCompIso_commShift {C D E : Type*}
+    [Category C] [Category D] [Category E] [Preadditive C] [Preadditive D] [Preadditive E]
+    {F : C ⥤ D} {G : D ⥤ E} {H : C ⥤ E} [F.Additive] [G.Additive] [H.Additive]
+    (e : F ⋙ G ≅ H) : (mapCochainComplexPlusCompIso e).hom.CommShift ℤ := by
+  let FC := F.mapCochainComplexPlus
+  let GC := G.mapCochainComplexPlus
+  let FM := F.mapHomologicalComplex (ComplexShape.up ℤ)
+  let GM := G.mapHomologicalComplex (ComplexShape.up ℤ)
+  let ιC := CochainComplex.Plus.ι C
+  let ιD := CochainComplex.Plus.ι D
+  let ιE := CochainComplex.Plus.ι E
+  refine NatTrans.CommShift.of_comp_faithful ιE ?_
+  have he : Functor.whiskerRight (mapCochainComplexPlusCompIso e).hom ιE =
+      (FC.associator GC ιE).hom ≫
+      Functor.whiskerLeft FC G.mapCochainComplexPlusCompι.hom ≫
+      (FC.associator ιD GM).inv ≫
+      Functor.whiskerRight F.mapCochainComplexPlusCompι.hom GM ≫
+      (ιC.associator FM GM).hom ≫
+      Functor.whiskerLeft ιC (Functor.mapHomologicalComplexCompIso e (.up ℤ)).hom ≫
+      H.mapCochainComplexPlusCompι.inv := by
+    apply NatTrans.ext
+    funext K
+    ext i
+    simp [FC, GC, FM, GM, ιC, ιD, ιE]
+  rw [he]
+  dsimp only [FC, GC, FM, GM, ιC, ιD, ιE]
+  infer_instance
 section ops
 variable {X Y Z W : TopCat.{u}}
   [HasDerivedCategory (X.Sheaf (ModuleCat.{u} k))]
@@ -327,6 +360,30 @@ private def derivedUnitAux (f : X ⟶ Y) :
     (pushforwardPlus k f) ≫
   (Functor.associator _ _ _).hom
 
+omit [HasDerivedCategory (X.Sheaf (ModuleCat.{u} k))]
+  [HasDerivedCategory (Y.Sheaf (ModuleCat.{u} k))] in
+private local instance unitCochain_commShift (f : X ⟶ Y) : (unitCochain k f).CommShift ℤ := by
+  let C := Y.Sheaf (ModuleCat.{u} k)
+  let P := TopCat.Sheaf.pullback (ModuleCat.{u} k) f
+  let R := TopCat.Sheaf.pushforward (ModuleCat.{u} k) f
+  let ι := CochainComplex.Plus.ι C
+  let c := ComplexShape.up ℤ
+  let unit := (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat.{u} k) f).unit
+  let e := mapCochainComplexPlusCompIso (Iso.refl (P ⋙ R))
+  refine NatTrans.CommShift.of_comp_faithful ι ?_
+  have he : Functor.whiskerRight (unitCochain k f) ι =
+      (ι.leftUnitor).hom ≫ (ι.rightUnitor).inv ≫
+      Functor.whiskerLeft ι (Functor.mapHomologicalComplexIdIso C c).inv ≫
+      Functor.whiskerLeft ι (unit.mapHomologicalComplex c) ≫
+      (P ⋙ R).mapCochainComplexPlusCompι.inv ≫ Functor.whiskerRight e.inv ι := by
+    apply NatTrans.ext
+    funext K
+    ext n
+    simp [ι, P, R, c, unit, e]
+  rw [he]
+  dsimp only [ι, P, R, c, unit, e]
+  infer_instance
+
 /-- The derived unit `𝟭 ⟶ f⁻¹ ⋙ Rf_*` on `D⁺(Sh Y)`, by the universal property of `𝟭` as the
 right derived functor of `Q`; its value on `Q K` is `derivedUnit_app_Q`. -/
 def derivedUnit (f : X ⟶ Y) : 𝟭 _ ⟶ pullbackPlus k f ⋙ pushforwardPlus k f :=
@@ -345,6 +402,27 @@ lemma derivedUnit_app_Q (f : X ⟶ Y) (K : CochainComplex.Plus (Y.Sheaf (ModuleC
     (CochainComplex.Plus.quasiIso _) _ (derivedUnitAux k f) K
   unfold derivedUnit
   simpa [derivedUnitAux] using this
+
+/-- The derived inverse/direct image unit commutes with every integer shift. -/
+instance derivedUnit_commShift (f : X ⟶ Y) : (derivedUnit k f).CommShift ℤ := by
+  have h : (derivedUnitAux k f).CommShift ℤ := by
+    unfold derivedUnitAux
+    infer_instance
+  unfold derivedUnit
+  exact commShift_rightDerivedDesc (CochainComplex.Plus.quasiIso _) _ _ _
+    (Functor.rightDerived_fac _ _ _ _ _)
+
+private theorem pushforwardPlusComp_commShift (f : X ⟶ Y) (g : Y ⟶ Z) :
+    (pushforwardPlusComp k f g).CommShift ℤ := by
+  unfold pushforwardPlusComp
+  exact commShift_rightDerivedDesc (CochainComplex.Plus.quasiIso _) _ _ _
+    (Functor.comp_whiskerLeft_natTransOfIsRightDerivedFunctorComp ..)
+
+private theorem pullbackPlusCompHom_commShift (f : X ⟶ Y) (g : Y ⟶ Z) :
+    (pullbackPlusCompHom k f g).CommShift ℤ := by
+  unfold pullbackPlusCompHom
+  exact commShift_rightDerivedDesc (CochainComplex.Plus.quasiIso _) _ _ _
+    (Functor.comp_whiskerLeft_natTransOfIsRightDerivedFunctorComp ..)
 
 /-- Characterization of `pushforwardPlusComp` on `Q K`. -/
 @[reassoc (attr := simp)]
@@ -749,6 +827,19 @@ def corrRestr (j : X' ⟶ X) (p : X ⟶ Z) (q : X ⟶ W) :
         Functor.whiskerLeft (pullbackPlus k j) (pushforwardPlusCompIso k j q).inv) ≫
     (Functor.associator _ _ _).inv ≫
     Functor.whiskerRight (pullbackPlusCompIso k j p).hom (pushforwardPlus k (j ≫ q))
+
+/-- Restriction of a derived correspondence commutes with every integer shift. -/
+instance corrRestr_commShift (j : X' ⟶ X) (p : X ⟶ Z) (q : X ⟶ W) :
+    (corrRestr k j p q).CommShift ℤ := by
+  have hPush : (pushforwardPlusCompIso k j q).hom.CommShift ℤ := by
+    rw [pushforwardPlusCompIso_hom]
+    exact pushforwardPlusComp_commShift k j q
+  have hPull : (pullbackPlusCompIso k j p).symm.hom.CommShift ℤ :=
+    pullbackPlusCompHom_commShift k j p
+  have hPullInv : (pullbackPlusCompIso k j p).hom.CommShift ℤ :=
+    NatTrans.CommShift.of_iso_inv (pullbackPlusCompIso k j p).symm ℤ
+  unfold corrRestr
+  infer_instance
 
 /-- The components of `corrRestr`. -/
 lemma corrRestr_app (j : X' ⟶ X) (p : X ⟶ Z) (q : X ⟶ W)

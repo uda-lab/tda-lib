@@ -244,4 +244,28 @@ lemma restr_comp_aug {a b : ℝ} (hab : a ≤ b) (ha : 0 ≤ a) :
     restr k hab ≫ aug k ha = aug k (ha.trans hab) := by
   rw [aug, ← Category.assoc, restr_trans, aug]
 
+/-- Radius restrictions commute with every integer shift. -/
+instance restr_commShift {a b : ℝ} (h : a ≤ b) : (restr k h).CommShift ℤ := by
+  change (corrRestr k (incl h) (p b) (q b)).CommShift ℤ
+  infer_instance
+
+private theorem pullbackPlus_eqToHom_commShift {f g : D 0 ⟶ realLine} (h : f = g) :
+    (eqToHom (congrArg (pullbackPlus k) h)).CommShift ℤ := by
+  subst g
+  rw [eqToHom_refl]
+  infer_instance
+
+private theorem T0Iso_inv_commShift : (T0Iso k).inv.CommShift ℤ := by
+  have := pullbackPlus_eqToHom_commShift k p_zero_eq_q_zero.symm
+  rw [T0Iso_inv]
+  infer_instance
+
+/-- The band augmentation commutes with every integer shift. -/
+instance aug_commShift {a : ℝ} (h : 0 ≤ a) : (aug k h).CommShift ℤ := by
+  have hInv : (T0Iso k).symm.hom.CommShift ℤ := T0Iso_inv_commShift k
+  have : (T0Iso k).hom.CommShift ℤ :=
+    NatTrans.CommShift.of_iso_inv (T0Iso k).symm ℤ
+  unfold aug
+  infer_instance
+
 end TDA.Sheaf.BandConvolution
