@@ -10,9 +10,9 @@ noncomputable section
 namespace TDA.Persistence.RipsSamplingExamples
 
 open TDA.Probability TDA.Persistence.Rips
+open scoped ENNReal NNReal
 
 attribute [local instance] TDA.Persistence.Rips.sampleFintype
-open scoped ENNReal NNReal
 
 /-- The two nonnegative masses are allowed to reach zero at either endpoint. -/
 def twoPointWeights (ε : ℝ≥0) (hε : ε ≤ 1) : PMF Bool :=

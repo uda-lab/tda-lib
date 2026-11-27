@@ -17,8 +17,10 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   (`Fintype (Σ p : P, Fin (finrank k (M.obj p)))` for `[Finite P]`) are ordinary definitions; a
   client obtains them by `letI := sampleFintype t` or `letI := indexFintype M`. After
   `import TDA`, `Fintype (Set.range t)` under `[DecidableEq X]` is `Set.fintypeRange` and
-  `Fintype (Σ p : P, Fin (finrank k (M.obj p)))` under `[Fintype P]` is `Sigma.instFintype`. The
-  module `Persistence.GlobalInstanceClientExamples` holds the client checks.
+  `Fintype (Σ p : P, Fin (finrank k (M.obj p)))` under `[Fintype P]` is `Sigma.instFintype`.
+  `Rips.sampleDiagram_eq_diagram` identifies `sampleDiagram k t d` with the Rips diagram of
+  `Set.range t` for every `Fintype` structure on it. The module
+  `Persistence.GlobalInstanceClientExamples` holds the client checks.
 - Downstream-use audit, family 13 (#1288, #1207): data-carrying instances declared on types
   without a library constant. The `MetricSpace`, `LinearOrder`, `PseudoMetricSpace`,
   `SmallCategory`, `Decidable`, `Fintype`, `OrderBot` and `OrderTop` instances of

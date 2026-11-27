@@ -101,6 +101,11 @@ example {X : Type} {n : ℕ} (_t : Fin n → X) : True := by
   fail_if_success have : Fintype (Set.range _t) := inferInstance
   trivial
 
+example {X : Type} [MetricSpace X] [DecidableEq X] (k : Type) [Field k] {n : ℕ} (t : Fin n → X)
+    (d : ℕ) :
+    Rips.sampleDiagram k t d = Rips.diagram k (Set.range t) d :=
+  Rips.sampleDiagram_eq_diagram k t d
+
 example {k : Type} [Field k] {P : Type} [PartialOrder P] [Fintype P] (M : PModule k P) :
     (inferInstance : Fintype (Σ p : P, Fin (Module.finrank k (M.obj p)))) =
       Sigma.instFintype := rfl

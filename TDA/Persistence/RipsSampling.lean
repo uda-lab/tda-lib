@@ -23,11 +23,10 @@ variable {X : Type u} {Y : Type v} [MetricSpace X] [MetricSpace Y] {n : ℕ}
 /-- The metric quotient of the tuple pseudometric, realised as its finite range. -/
 abbrev Sample (t : Fin n → X) := Set.range t
 
-set_option warn.classDefReducibility false in
-/-- A finite range is finite, with the `Fintype` structure chosen by `Fintype.ofFinite`. It is an
-ordinary definition and not an instance; a client obtains it by `letI := sampleFintype t`, and
-`Set.fintypeRange` remains the instance of mathlib. -/
-def sampleFintype (t : Fin n → X) : Fintype (Sample t) := Fintype.ofFinite _
+/-- A `Fintype` structure on the finite range of a tuple, chosen by `Fintype.ofFinite`. It is an
+ordinary definition and not an instance; a client obtains it by `letI := sampleFintype t`. For
+`[DecidableEq X]` the instance of `Fintype (Set.range t)` is mathlib's `Set.fintypeRange`. -/
+@[instance_reducible] def sampleFintype (t : Fin n → X) : Fintype (Sample t) := Fintype.ofFinite _
 
 attribute [local instance] sampleFintype
 
@@ -50,6 +49,16 @@ theorem sampleProjection_eq_iff (t : Fin n → X) (i j : Fin n) :
 /-- The full diagram of the finite sample, with arbitrary repeated draws allowed. -/
 def sampleDiagram (k : Type w) [Field k] (t : Fin n → X) (degree : ℕ) : Diagram ℝ :=
   diagram k (Sample t) degree
+
+/-- For every `Fintype` structure on the finite range of a tuple, the full diagram of the sample is
+the Rips diagram of the range with that structure, for example mathlib's `Set.fintypeRange t`
+under `[DecidableEq X]`. -/
+theorem sampleDiagram_eq_diagram (k : Type w) [Field k] (t : Fin n → X)
+    [inst : Fintype (Sample t)] (degree : ℕ) :
+    sampleDiagram k t degree = @diagram k _ (Sample t) inst _ degree := by
+  unfold sampleDiagram
+  congr
+  exact Subsingleton.elim _ _
 
 /-- An isometric embedding of metric spaces preserves the full Rips diagram of
 every finite tuple range, including tuples with repeated values. -/
