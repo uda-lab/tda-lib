@@ -10,6 +10,30 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Extended band convolution distance on the real line. `Witness.symm`, `Witness.mono`,
+  and `Witness.trans` exchange, enlarge, and compose band witnesses.
+  `Witness.iso`, `Witness.ofIso`, and `Witness.nonempty_zero_iff` give the zero-radius
+  isomorphism criterion. `distance` takes the extended infimum of witness radii.
+  `Witness.distance_le`, `le_distance_iff`, and `distance_lt_iff` relate bounds to
+  witnesses. `distance_eq_top_iff`, `Witness.distance_eq_zero`, and
+  `distance_eq_zero_iff` describe infinite and zero distances.
+  `distance_self`, `distance_comm`, `distance_triangle`, and `distance_congr` give
+  the diagonal, symmetry, triangle, and isomorphism laws. `WitnessB.toPlus`,
+  `WitnessB.ofPlus`, and `nonempty_witnessB_iff` compare bounded witnesses with witnesses
+  in the bounded-below category. `distanceB`, `distanceB_eq_iInf`, and
+  `WitnessB.distance_le` give the bounded distance and its witness bound.
+  `WitnessB.symm`, `WitnessB.mono`, `WitnessB.trans`, and `WitnessB.nonempty_zero_iff`
+  give the bounded witness laws. `distanceB_self`, `distanceB_comm`,
+  `distanceB_triangle`, and `distanceB_congr` give the bounded distance laws.
+  For `skyscraperSheaf` in degree zero (`skyscraper`), `exists_iso_T_skyscraper`
+  identifies the closed-band interval. `skyscraperStalkIso` and `skyscraperBandStalkIso`
+  identify the supported stalks, and `stalk_map_H0Aug_skyscraper` gives the augmentation
+  at the support point. `stalk_map_H0Restr_skyscraper` identifies the radius restriction
+  on the common band. `aug_skyscraper_ne_zero` and `hom_T_skyscraper_eq_zero`
+  give nonvanishing of the augmentation and Hom vanishing beyond the band.
+  `nonempty_witness_skyscraper_iff` detects witnesses by absolute separation.
+  `distance_skyscraper` gives this separation as the distance, and
+  `distance_skyscraper_zero` gives infinite distance to zero.
 - Threshold augmentation for the open interval `(a, b)` at `2 * ε = b - a`.
   `aug_interval_Ioo_threshold_ne_zero` proves nonvanishing in `D⁺`, and
   `homologyFunctor_map_aug_interval_Ioo_threshold` gives zero on cohomology sheaves.

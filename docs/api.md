@@ -6388,6 +6388,48 @@ over `ℚ` to `(1, 2, 3)` (`TComp_assoc_one_two_three`) and `(0, 1, 2)`
 at each stalk of the first law's source on the constant sheaf.
 `hcomp_augB_TCompB_one_one` specializes bounded augmentation to `(1, 1)`.
 
+## Extended band convolution distance
+
+In `TDA.Sheaf.BandConvolution`, a `Witness k hε F G` for `hε : 0 ≤ ε` consists of
+`f : (T k ε).obj F ⟶ G` and `g : (T k ε).obj G ⟶ F` in `D⁺(Sh(ℝ; k))`. The
+first equation is `(TComp k hε hε).inv.app F ≫ (T k ε).map f ≫ g =
+(aug k (add_nonneg hε hε)).app F`. The second exchanges the objects and the maps.
+`Witness.symm` exchanges the objects, `Witness.mono` precomposes with `restr` to
+enlarge the radius, and `Witness.trans` composes witnesses at the sum of their radii.
+At radius zero, `Witness.iso`, `Witness.ofIso`, and `Witness.nonempty_zero_iff`
+identify the witness condition with isomorphism.
+
+`distance F G` is the infimum in `ℝ≥0∞` of all finite witness radii.
+`Witness.distance_le` bounds it by an explicit witness radius.
+`le_distance_iff` tests lower bounds, `distance_lt_iff` extracts witnesses below
+strict upper bounds, and `distance_eq_top_iff` characterizes infinite distance.
+`Witness.distance_eq_zero` gives zero distance from a radius-zero witness.
+`distance_self`, `distance_comm`, `distance_triangle`, and `distance_congr` give
+the diagonal, symmetry, triangle, and isomorphism laws.
+`distance_eq_zero_iff` characterizes zero distance by witnesses at every positive radius.
+
+`WitnessB` is the bounded witness with `TB`, `TCompB`, and `augB`.
+`WitnessB.toPlus`, `WitnessB.ofPlus`, and `nonempty_witnessB_iff` compare it to
+the witness in `D⁺` along `boundedToPlus`. `distanceB` computes the distance there,
+`distanceB_eq_iInf` gives the infimum over bounded witnesses, and
+`WitnessB.distance_le` bounds that infimum by a bounded witness radius.
+`WitnessB.symm`, `WitnessB.mono`, `WitnessB.trans`, and `WitnessB.nonempty_zero_iff`
+give the bounded witness laws. `distanceB_self`, `distanceB_comm`,
+`distanceB_triangle`, and `distanceB_congr` give the bounded distance laws.
+
+For a field `k`, `skyscraperSheaf k a` has value `k` at `a`, and `skyscraper k a`
+places it in degree zero. `exists_iso_T_skyscraper` identifies its convolution
+with the degree-zero interval sheaf of `[a - ε, a + ε]`.
+`skyscraperStalkIso` and `skyscraperBandStalkIso` identify the supported stalks
+with the coefficient module. `stalk_map_H0Aug_skyscraper` gives the identity at
+the support point under these identifications. `stalk_map_H0Restr_skyscraper` gives the
+identity on a stalk belonging to both closed bands. `aug_skyscraper_ne_zero` gives
+nonvanishing in the derived category. `hom_T_skyscraper_eq_zero` gives Hom vanishing
+to a point beyond the closed band. By `nonempty_witness_skyscraper_iff`, the
+skyscrapers at `a` and `b` have a witness exactly at radii `ε ≥ |a - b|`.
+`distance_skyscraper` gives their distance as `ENNReal.ofReal |a - b|`, and
+`distance_skyscraper_zero` gives infinite distance to the zero object.
+
 ## Review and extension boundaries
 
 The selected PH claims and their proof-critical bridges received the source-based review
