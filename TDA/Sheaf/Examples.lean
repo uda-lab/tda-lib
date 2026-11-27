@@ -32,3 +32,4 @@ import TDA.Sheaf.BandCompositionLawsExamples
 import TDA.Sheaf.ClientExamples
 import TDA.Sheaf.BandThickeningExamples
 import TDA.Sheaf.RealIntervalSectionsExamples
+import TDA.Sheaf.BandCompositionUnitExamples

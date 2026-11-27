@@ -25,6 +25,14 @@ restriction `p⁻¹ ⋙ Rq_* ⟶ (j ≫ p)⁻¹ ⋙ R(j ≫ q)_*` of `TDA.Sheaf.
   the isomorphism `u⁻¹ ⋙ Rv_* ≅ 𝟭`; `pullbackPlus_map_corrUnitIso_inv_app_counit` and
   `pullbackPlus_map_corrUnitIso_inv_app_transport` compute its inverse against the counit of `v`
   and against its transport.
+* **Transported counits.** `transportCounit k π u v : (u⁻¹ ⋙ Rv_*) ⋙ (π ≫ v)⁻¹ ⟶ (π ≫ u)⁻¹` is
+  the transport along `π` of the counit of `v`, as a natural transformation
+  (`transportCounit_app`). Against equal legs: `whiskerRight_corrUnitIso_inv_transportCounit`
+  (it inverts `corrUnitIso`) and `corrUnitIso_inv_corrRestr` (the inverse of `corrUnitIso`
+  followed by a restriction is a derived unit); `whiskerLeft_derivedUnit_transportCounit` (the
+  unit of a composite against the transported counit is a restriction) and
+  `corrUnitIso_corrRestr_transportCounit` (a restriction through equal legs), all as equations
+  of natural transformations.
 
 The coherence proofs are carried out for abstract adjunctions (private lemmas) and instantiated.
 Derived categories are instance arguments, one for each space a statement mentions.
@@ -386,5 +394,128 @@ lemma pullbackPlus_map_corrUnitIso_inv_app_transport (π : Z' ⟶ X) {u v : X �
     (pullbackPlusCompIso_inv_app_eqToHom k π h.symm M)
 
 end unitIso
+
+section transportCounit
+
+variable {X Y Y' Z' W : TopCat.{0}}
+  [HasDerivedCategory (X.Sheaf (ModuleCat.{0} k))]
+  [HasDerivedCategory (Y.Sheaf (ModuleCat.{0} k))]
+  [HasDerivedCategory (Y'.Sheaf (ModuleCat.{0} k))]
+  [HasDerivedCategory (Z'.Sheaf (ModuleCat.{0} k))]
+  [HasDerivedCategory (W.Sheaf (ModuleCat.{0} k))]
+
+/-- **The transported counit as a natural transformation.** For `π : Z' ⟶ X` and a correspondence
+`(u, v)` out of `X`, `(π ≫ v)⁻¹ (Rv_* u⁻¹ M) ≅ π⁻¹ v⁻¹ Rv_* u⁻¹ M ⟶ π⁻¹ u⁻¹ M ≅ (π ≫ u)⁻¹ M`:
+`(π ≫ v)⁻¹ ≅ π⁻¹ v⁻¹`, then `π⁻¹` of the counit of `v` at `u⁻¹ M`, then `π⁻¹ u⁻¹ ≅ (π ≫ u)⁻¹`
+(`transportCounit_app`). -/
+def transportCounit (π : Z' ⟶ X) (u : X ⟶ Y') (v : X ⟶ Y) :
+    (pullbackPlus k u ⋙ pushforwardPlus k v) ⋙ pullbackPlus k (π ≫ v) ⟶ pullbackPlus k (π ≫ u) :=
+  Functor.whiskerLeft (pullbackPlus k u ⋙ pushforwardPlus k v) (pullbackPlusCompIso k π v).inv ≫
+    (Functor.associator _ _ _).hom ≫
+    Functor.whiskerLeft (pullbackPlus k u)
+      ((Functor.associator _ _ _).inv ≫
+        Functor.whiskerRight (derivedCounit k v) (pullbackPlus k π) ≫
+        (Functor.leftUnitor _).hom) ≫
+    (pullbackPlusCompIso k π u).hom
+
+omit [HasDerivedCategory (W.Sheaf (ModuleCat.{0} k))] in
+/-- The components of `transportCounit`. -/
+lemma transportCounit_app (π : Z' ⟶ X) (u : X ⟶ Y') (v : X ⟶ Y)
+    (M : DerivedCategory.Plus (Y'.Sheaf (ModuleCat.{0} k))) :
+    (transportCounit k π u v).app M =
+      (pullbackPlusCompIso k π v).inv.app ((pullbackPlus k u ⋙ pushforwardPlus k v).obj M) ≫
+        (pullbackPlus k π).map ((derivedCounit k v).app ((pullbackPlus k u).obj M)) ≫
+        (pullbackPlusCompIso k π u).hom.app M := by
+  simp [transportCounit]
+
+omit [HasDerivedCategory (Y'.Sheaf (ModuleCat.{0} k))]
+  [HasDerivedCategory (W.Sheaf (ModuleCat.{0} k))] in
+/-- **Equal legs against the transported counit.** For `u = v` with invertible derived unit of `v`,
+`(π ≫ v)⁻¹` of the inverse of `corrUnitIso k h`, followed by `transportCounit k π u v`, is the
+identification `(π ≫ v)⁻¹ = (π ≫ u)⁻¹`; a statement about natural transformations. -/
+lemma whiskerRight_corrUnitIso_inv_transportCounit (π : Z' ⟶ X) {u v : X ⟶ Y} (h : u = v)
+    [IsIso (derivedUnit k v)] :
+    Functor.whiskerRight (corrUnitIso k h).inv (pullbackPlus k (π ≫ v)) ≫
+        transportCounit k π u v =
+      (Functor.leftUnitor _).hom ≫ eqToHom (congrArg (fun r => pullbackPlus k (π ≫ r)) h.symm) := by
+  subst h
+  refine NatTrans.ext (funext fun M => ?_)
+  have := pullbackPlus_map_corrUnitIso_inv_app_transport k π (rfl : u = u) M
+  simp only [NatTrans.comp_app, Functor.whiskerRight_app, transportCounit_app,
+    Functor.leftUnitor_hom_app, eqToHom_refl, NatTrans.id_app] at this ⊢
+  exact this.trans (Category.id_comp _).symm
+
+omit [HasDerivedCategory (X.Sheaf (ModuleCat.{0} k))]
+  [HasDerivedCategory (Y'.Sheaf (ModuleCat.{0} k))] in
+/-- **Equal legs against a restriction.** For `u = v : W ⟶ Y` with invertible derived unit of `v`
+and `σ : Z' ⟶ W`, the inverse of `corrUnitIso k h` followed by the restriction along `σ` is the
+derived unit of `σ ≫ v` followed by the identification `(σ ≫ v)⁻¹ = (σ ≫ u)⁻¹`. -/
+lemma corrUnitIso_inv_corrRestr (σ : Z' ⟶ W) {u v : W ⟶ Y} (h : u = v)
+    [IsIso (derivedUnit k v)] :
+    (corrUnitIso k h).inv ≫ corrRestr k σ u v =
+      derivedUnit k (σ ≫ v) ≫ Functor.whiskerRight
+        (eqToHom (congrArg (fun r => pullbackPlus k (σ ≫ r)) h.symm))
+        (pushforwardPlus k (σ ≫ v)) := by
+  subst h
+  refine NatTrans.ext (funext fun M => ?_)
+  have n := (pushforwardPlusCompIso k σ u).inv.naturality ((pullbackPlusCompIso k σ u).hom.app M)
+  simp only [Functor.comp_map] at n
+  simp only [corrUnitIso, NatTrans.comp_app, Iso.trans_inv, Iso.symm_inv, asIso_hom,
+    Functor.isoWhiskerRight_inv, eqToIso_refl, Iso.refl_inv, Functor.whiskerRight_id',
+    Category.comp_id, eqToHom_refl, corrRestr_app, derivedUnit_comp_app', n]
+  rfl
+
+omit [HasDerivedCategory (W.Sheaf (ModuleCat.{0} k))] in
+/-- **The unit of a composite against the transported counit.** For `π : Z' ⟶ X`, a
+correspondence `(u, v)` out of `X` and `c = π ≫ v`, the derived unit of `c` at `Rv_* u⁻¹ M`,
+followed by `Rc_*` of the transported counit, is the restriction `corrRestr k π u v` along `π`,
+up to the identifications `c⁻¹ = (π ≫ v)⁻¹` and `R(π ≫ v)_* = Rc_*`. -/
+lemma whiskerLeft_derivedUnit_transportCounit (π : Z' ⟶ X) (u : X ⟶ Y') (v : X ⟶ Y)
+    {c : Z' ⟶ Y} (hc : π ≫ v = c) :
+    Functor.whiskerLeft (pullbackPlus k u ⋙ pushforwardPlus k v) (derivedUnit k c) ≫
+        (Functor.associator _ _ _).inv ≫
+        Functor.whiskerRight (Functor.whiskerLeft (pullbackPlus k u ⋙ pushforwardPlus k v)
+          (eqToHom (congrArg (pullbackPlus k) hc.symm)) ≫ transportCounit k π u v)
+          (pushforwardPlus k c) =
+      (Functor.rightUnitor _).hom ≫ corrRestr k π u v ≫
+        Functor.whiskerLeft (pullbackPlus k (π ≫ u))
+          (eqToHom (congrArg (pushforwardPlus k) hc)) := by
+  subst hc
+  refine NatTrans.ext (funext fun M => ?_)
+  have t := derivedUnit_comp_app_counit k π v ((pullbackPlus k u).obj M)
+  simp only [Functor.map_comp] at t
+  simp only [NatTrans.comp_app, Functor.whiskerLeft_app, Functor.whiskerRight_app,
+    Functor.associator_inv_app, Functor.rightUnitor_hom_app, eqToHom_refl,
+    Functor.whiskerLeft_id', Category.id_comp, Category.comp_id,
+    transportCounit_app, corrRestr_app, Functor.map_comp, Functor.comp_obj]
+  rw [reassoc_of% t]
+  exact (Category.id_comp _).symm
+
+/-- **A restriction through equal legs.** Let `π : Z' ⟶ X` with a correspondence `(u, v)` out of
+`X`, and `σ : Z' ⟶ W` with equal legs `u₀ = v₀ : W ⟶ Y` and invertible derived unit of `v₀`, such
+that `σ ≫ u₀ = π ≫ v` and `π ≫ v = σ ≫ v₀`. Whiskered by `u⁻¹ ⋙ Rv_*`, the inverse of
+`corrUnitIso k h₀` and the restriction along `σ`, followed by `R(σ ≫ v₀)_*` of a transformation
+`γ` equal to the transported counit, is the restriction along `π` followed by a transformation `ε`
+equal to the identification `R(π ≫ v)_* = R(σ ≫ v₀)_*`. -/
+lemma corrUnitIso_corrRestr_transportCounit (π : Z' ⟶ X) (u : X ⟶ Y') (v : X ⟶ Y)
+    (σ : Z' ⟶ W) {u₀ v₀ : W ⟶ Y} (h₀ : u₀ = v₀) [IsIso (derivedUnit k v₀)]
+    (w : σ ≫ u₀ = π ≫ v) (hc : π ≫ v = σ ≫ v₀)
+    (γ : (pullbackPlus k u ⋙ pushforwardPlus k v) ⋙ pullbackPlus k (σ ≫ u₀) ⟶
+      pullbackPlus k (π ≫ u))
+    (hγ : γ = Functor.whiskerLeft _ (eqToHom (congrArg (pullbackPlus k) w)) ≫
+      transportCounit k π u v)
+    (ε : pullbackPlus k (π ≫ u) ⋙ pushforwardPlus k (π ≫ v) ⟶
+      pullbackPlus k (π ≫ u) ⋙ pushforwardPlus k (σ ≫ v₀))
+    (hε : ε = Functor.whiskerLeft _ (eqToHom (congrArg (pushforwardPlus k) hc))) :
+    Functor.whiskerLeft (pullbackPlus k u ⋙ pushforwardPlus k v) (corrUnitIso k h₀).inv ≫
+        Functor.whiskerLeft (pullbackPlus k u ⋙ pushforwardPlus k v) (corrRestr k σ u₀ v₀) ≫
+        (Functor.associator _ _ _).inv ≫ Functor.whiskerRight γ (pushforwardPlus k (σ ≫ v₀)) =
+      (Functor.rightUnitor _).hom ≫ corrRestr k π u v ≫ ε := by
+  subst h₀ hγ hε
+  rw [← Category.assoc, ← Functor.whiskerLeft_comp, corrUnitIso_inv_corrRestr]
+  simp only [eqToHom_refl, Functor.whiskerRight_id', Category.comp_id]
+  exact whiskerLeft_derivedUnit_transportCounit k π u v hc
+
+end transportCounit
 
 end TDA.Sheaf

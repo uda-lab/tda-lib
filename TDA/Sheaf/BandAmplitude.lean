@@ -31,7 +31,8 @@ The band functors `T k a = R(q a)_* (p a)⁻¹`:
 The bounded derived category. `boundedToPlus C : Dᵇ(C) ⥤ D⁺(C)` is the inclusion. A functor
 `Φ : D⁺(C) ⥤ D⁺(D)` with `PreservesBounded Φ` restricts to `restrictBounded Φ hΦ : Dᵇ(C) ⥤ Dᵇ(D)`,
 with `restrictBounded Φ hΦ ⋙ boundedToPlus D = boundedToPlus C ⋙ Φ`
-(`restrictBounded_comp_boundedToPlus`). Natural transformations restrict by `restrictBoundedMap`
+(`restrictBounded_comp_boundedToPlus`; for whiskerings `whiskerRight_whiskerRight_restrictBounded`,
+`whiskerLeft_restrictBounded_whiskerLeft`). Natural transformations restrict by `restrictBoundedMap`
 (`restrictBoundedMap_id`, `restrictBoundedMap_comp`, `whiskerRight_restrictBoundedMap`) and
 isomorphisms by `restrictBoundedIso`; `restrictBoundedId` and `restrictBoundedComp` compare the
 restrictions of `𝟭` and of a composite. A transformation `τ : Φ₁ ⋙ Φ₂ ⟶ Ψ` between composites
@@ -265,6 +266,24 @@ def restrictBounded (Φ : DerivedCategory.Plus C ⥤ DerivedCategory.Plus D)
 theorem restrictBounded_comp_boundedToPlus (Φ : DerivedCategory.Plus C ⥤ DerivedCategory.Plus D)
     (hΦ : PreservesBounded Φ) :
     restrictBounded Φ hΦ ⋙ boundedToPlus D = boundedToPlus C ⋙ Φ :=
+  rfl
+
+/-- Whiskering `α` by the restriction of `Φ` and then by the inclusion into `D⁺` is whiskering `α`
+by the inclusion and then by `Φ`. -/
+theorem whiskerRight_whiskerRight_restrictBounded {C' : Type*} [Category* C']
+    {F G : C' ⥤ DerivedCategory.Bounded C} (α : F ⟶ G)
+    (Φ : DerivedCategory.Plus C ⥤ DerivedCategory.Plus D) (hΦ : PreservesBounded Φ) :
+    Functor.whiskerRight (Functor.whiskerRight α (restrictBounded Φ hΦ)) (boundedToPlus D) =
+      Functor.whiskerRight (Functor.whiskerRight α (boundedToPlus C)) Φ :=
+  rfl
+
+/-- Whiskering on the left by the restriction of `Φ` and then by the inclusion into `D⁺` is
+whiskering on the left by the inclusion and then by `Φ`. -/
+theorem whiskerLeft_restrictBounded_whiskerLeft {E' : Type*} [Category* E']
+    (Φ : DerivedCategory.Plus C ⥤ DerivedCategory.Plus D) (hΦ : PreservesBounded Φ)
+    {F G : DerivedCategory.Plus D ⥤ E'} (α : F ⟶ G) :
+    Functor.whiskerLeft (restrictBounded Φ hΦ) (Functor.whiskerLeft (boundedToPlus D) α) =
+      Functor.whiskerLeft (boundedToPlus C) (Functor.whiskerLeft Φ α) :=
   rfl
 
 variable {Φ Ψ Χ : DerivedCategory.Plus C ⥤ DerivedCategory.Plus D} {hΦ : PreservesBounded Φ}
