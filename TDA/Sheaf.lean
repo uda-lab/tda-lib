@@ -55,5 +55,6 @@ import TDA.Sheaf.BandIntervalDegreeZero
 import TDA.Sheaf.BandIntervalMaps
 import TDA.Sheaf.BandIntervalFibreCohomology
 import TDA.Sheaf.BandIntervalDegreeOne
+import TDA.Sheaf.BandIntervalConvolution
 import TDA.Sheaf.BandCompositionUnit
 import TDA.Sheaf.BandCompositionAssociativity

@@ -5,7 +5,8 @@ import TDA.Sheaf.BandIntervalDegreeZero
 
 The radius map induces `H0Restr`. On an order-connected open, `H0TSectionsIso_hom_restr`
 identifies it with restriction of sections along the inclusion of thickened opens. For
-interval sheaves, the intersection of the two degree-zero output intervals detects nonvanishing.
+interval sheaves, intersection of the degree-zero output intervals detects nonvanishing.
+For the augmentation `H0Aug`, the second interval is the input interval.
 -/
 
 noncomputable section
@@ -240,6 +241,111 @@ private theorem corrSingleComparison_restr (j : X' ⟶ X) (p : X ⟶ Z) (q : X �
   exact singleComparison_naturality (corrSheaf k j p q) (corrRestr k j p q) F _ _
     (corrComparison_restr k j p q (singlePlus 0 F))
 
+private def derivedIdentityComparison (C : Type*) [Category* C] [Abelian C]
+    [HasDerivedCategory C] [EnoughInjectives C] : (𝟭 C).rightDerivedFunctorPlus ⟶ 𝟭 (Plus C) :=
+  (𝟭 C).rightDerivedFunctorPlus.rightDerivedDesc (𝟭 C).rightDerivedFunctorPlusUnit
+    (CochainComplex.Plus.quasiIso C) _ (Functor.rightUnitor Plus.Q).inv
+
+private theorem derivedIdentityComparison_fac {C : Type*} [Category* C] [Abelian C]
+    [HasDerivedCategory C] [EnoughInjectives C] (K : CochainComplex.Plus C) :
+    (𝟭 C).rightDerivedFunctorPlusUnit.app K ≫
+      (derivedIdentityComparison C).app (Plus.Q.obj K) = 𝟙 (Plus.Q.obj K) :=
+  Functor.rightDerived_fac_app _ _ (CochainComplex.Plus.quasiIso C) _ _ K
+
+private theorem derivedIdentityComparison_single {C : Type*} [Category* C] [Abelian C]
+    [HasDerivedCategory C] [EnoughInjectives C] (A : C) :
+    ((singleRightDerivedFunctorPlusComparison (𝟭 C) 0).app A) ≫
+      (derivedIdentityComparison C).app ((Plus.singleFunctor C 0).obj A) = 𝟙 _ := by
+  have hi : (singlePlusFunctorCompIso (𝟭 C) 0).inv.app A = 𝟙 _ := by
+    apply (CochainComplex.Plus.ι C).map_injective
+    rw [singleCompInv_map, CategoryTheory.Functor.map_id]
+    exact HomologicalComplex.singleMapHomologicalComplex_id_inv_app (ComplexShape.up ℤ) 0 A
+  let e := (singleFunctorIsoCompQPlus C 0).app A
+  let ρ := derivedIdentityComparison C
+  let K := singlePlus 0 A
+  have hm : Plus.Q.map ((singlePlusFunctorCompIso (𝟭 C) 0).inv.app A) =
+      𝟙 (Plus.Q.obj K) := (congrArg Plus.Q.map hi).trans ((Plus.Q (C := C)).map_id K)
+  rw [singleRightDerivedFunctorPlusComparison_app, hm]
+  change (e.hom ≫ 𝟙 (Plus.Q.obj K) ≫ (η (𝟭 C)).app K ≫
+    (𝟭 C).rightDerivedFunctorPlus.map e.inv) ≫ ρ.app _ = 𝟙 _
+  have hn : (𝟭 C).rightDerivedFunctorPlus.map e.inv ≫ ρ.app _ =
+      ρ.app (Plus.Q.obj K) ≫ e.inv := ρ.naturality e.inv
+  calc
+    _ = e.hom ≫ (η (𝟭 C)).app K ≫ ρ.app (Plus.Q.obj K) ≫ e.inv := by
+      simp only [Category.assoc, hn]
+      exact congrArg (e.hom ≫ ·) (Category.id_comp _)
+    _ = _ := by
+      rw [reassoc_of% (derivedIdentityComparison_fac K)]
+      exact (congrArg (e.hom ≫ ·) (Category.id_comp e.inv)).trans e.hom_inv_id
+
+omit [HasDerivedCategory (Sh k X')] in
+private def corrDerivedComparison (p : X ⟶ Z) (q : X ⟶ W) :
+    (P p ⋙ Qf q).rightDerivedFunctorPlus ⟶ pullbackPlus k p ⋙ pushforwardPlus k q :=
+  Functor.natTransOfIsRightDerivedFunctorComp
+    (mapCochainComplexPlusCompIso (Iso.refl (P p ⋙ Qf q)))
+    Plus.Q Plus.Q Plus.Q (CochainComplex.Plus.quasiIso _)
+    (η (P p)) (η (Qf q)) (η (P p ⋙ Qf q))
+
+omit [HasDerivedCategory (Sh k X')] in
+private theorem corrDerivedComparison_fac (p : X ⟶ Z) (q : X ⟶ W)
+    (K : CochainComplex.Plus (Sh k Z)) :
+    (η (P p ⋙ Qf q)).app K ≫ (corrDerivedComparison k p q).app (Plus.Q.obj K) =
+      corrComparison k p q K := by
+  have hf := Functor.comp_natTransOfIsRightDerivedFunctorComp_app
+    (mapCochainComplexPlusCompIso (Iso.refl (P p ⋙ Qf q)))
+    Plus.Q Plus.Q Plus.Q (CochainComplex.Plus.quasiIso _)
+    (η (P p)) (η (Qf q)) (η (P p ⋙ Qf q)) K
+  have he : (mapCochainComplexPlusCompIso (Iso.refl (P p ⋙ Qf q))).inv.app K = 𝟙 _ := rfl
+  have hm : Plus.Q.map ((mapCochainComplexPlusCompIso (Iso.refl (P p ⋙ Qf q))).inv.app K) =
+      𝟙 _ := by
+    rw [he]
+    exact (Plus.Q (C := Sh k W)).map_id _
+  rw [hm, Category.id_comp] at hf
+  exact hf
+
+omit [HasDerivedCategory (Sh k X')] in
+private theorem corrDerivedComparison_single (p : X ⟶ Z) (q : X ⟶ W) (F : Sh k Z) :
+    (singleRightDerivedFunctorPlusComparison (P p ⋙ Qf q) 0).app F ≫
+      (corrDerivedComparison k p q).app ((Plus.singleFunctor _ 0).obj F) =
+        corrSingleComparison k p q F := by
+  rw [singleRightDerivedFunctorPlusComparison_app, corrSingleComparison_fac]
+  simp only [Category.assoc, NatTrans.naturality,
+    reassoc_of% (corrDerivedComparison_fac k p q (singlePlus 0 F))]
+
+omit [HasDerivedCategory (Sh k X')] [HasDerivedCategory (Sh k W)] in
+private theorem derivedUnit_rightDerived (f : X ⟶ Z) :
+    derivedIdentityComparison (Sh k Z) ≫ derivedUnit k f =
+      ((TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat k) f).unit).rightDerivedFunctorPlus ≫
+        corrDerivedComparison k f f := by
+  let u := (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat k) f).unit
+  apply Functor.rightDerived_ext _ ((𝟭 (Sh k Z)).rightDerivedFunctorPlusUnit)
+    (CochainComplex.Plus.quasiIso _) _ _ _
+  apply NatTrans.ext
+  funext K
+  change _ ≫ (derivedIdentityComparison _).app _ ≫ (derivedUnit k f).app _ =
+    _ ≫ u.rightDerivedFunctorPlus.app _ ≫ (corrDerivedComparison k f f).app _
+  calc
+    _ = (derivedUnit k f).app (Plus.Q.obj K) := by
+      rw [← Category.assoc, derivedIdentityComparison_fac]
+      exact Category.id_comp _
+    _ = _ := by
+      rw [← Category.assoc, u.rightDerivedFunctorPlus_fac_app, Category.assoc,
+        corrDerivedComparison_fac, derivedUnit_app_Q]
+      rfl
+
+private theorem homologyZero_comparison_comp
+    {C D : Type*} [Category* C] [Category* D] [Abelian C] [Abelian D]
+    [HasDerivedCategory C] [HasDerivedCategory D] [EnoughInjectives C]
+    (G : C ⥤ D) [G.Additive] [PreservesFiniteLimits G] (A : C) {Y : Plus D}
+    (f : G.rightDerivedFunctorPlus.obj ((Plus.singleFunctor C 0).obj A) ⟶ Y)
+    (g : (Plus.singleFunctor D 0).obj (G.obj A) ⟶ Y)
+    (h : (singleRightDerivedFunctorPlusComparison G 0).app A ≫ f = g) :
+    (homologyZeroRightDerivedSingleIso G).inv.app A ≫ (Plus.homologyFunctor D 0).map f =
+      (singleFunctorCompHomologyFunctorIsoPlus D 0).inv.app (G.obj A) ≫
+        (Plus.homologyFunctor D 0).map g := by
+  rw [homologyZeroRightDerivedSingleIso_inv, toHomologyZeroRightDerivedSingle_app,
+    Category.assoc, ← Functor.map_comp, h]
+
 omit [HasDerivedCategory (Sh k X)] [HasDerivedCategory (Sh k X')]
   [HasDerivedCategory (Sh k Z)] [HasDerivedCategory (Sh k W)] in
 private theorem corrSheaf_unitRes (j : X' ⟶ X) (p : X ⟶ Z) (q : X ⟶ W)
@@ -295,6 +401,76 @@ theorem _root_.TDA.Sheaf.homologyZeroRightDerivedSingleIso_inv_naturality
   exact singleHomology_naturality _ _ _ _ h
 
 
+omit [HasDerivedCategory (Sh k X')] [HasDerivedCategory (Sh k W)] in
+private theorem derivedUnit_homology (q : X ⟶ Z) (F : Sh k Z) :
+    (singleFunctorCompHomologyFunctorIsoPlus (Sh k Z) 0).inv.app F ≫
+      (Plus.homologyFunctor _ 0).map ((derivedUnit k q).app ((Plus.singleFunctor _ 0).obj F)) =
+    (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat k) q).unit.app F ≫
+      ((singleFunctorCompHomologyFunctorIsoPlus (Sh k Z) 0).inv.app ((P q ⋙ Qf q).obj F) ≫
+        (Plus.homologyFunctor _ 0).map (corrSingleComparison k q q F)) := by
+  let S := Plus.singleFunctor (Sh k Z) 0
+  let H := Plus.homologyFunctor (Sh k Z) 0
+  let c := corrDerivedComparison k q q
+  let e := derivedIdentityComparison (Sh k Z)
+  let u := (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat k) q).unit
+  let v := (derivedUnit k q).app (S.obj F)
+  let z := (singleFunctorCompHomologyFunctorIsoPlus (Sh k Z) 0).inv
+  let α := (homologyZeroRightDerivedSingleIso (𝟭 (Sh k Z))).inv.app F
+  let β := (homologyZeroRightDerivedSingleIso (P q ⋙ Qf q)).inv.app F
+  have he : α ≫ H.map (e.app (S.obj F)) = z.app F := by
+    have h := homologyZero_comparison_comp (𝟭 (Sh k Z)) F (e.app (S.obj F)) (𝟙 _)
+      (derivedIdentityComparison_single F)
+    rw [CategoryTheory.Functor.map_id] at h
+    exact h.trans (Category.comp_id _)
+  have hc : β ≫ H.map (c.app (S.obj F)) =
+      z.app ((P q ⋙ Qf q).obj F) ≫ H.map (corrSingleComparison k q q F) :=
+    homologyZero_comparison_comp (P q ⋙ Qf q) F (c.app (S.obj F))
+      (corrSingleComparison k q q F) (corrDerivedComparison_single k q q F)
+  have hu : e.app (S.obj F) ≫ v =
+      u.rightDerivedFunctorPlus.app (S.obj F) ≫ c.app (S.obj F) :=
+    congrArg (fun t => t.app (S.obj F)) (derivedUnit_rightDerived k q)
+  change z.app F ≫ H.map v = u.app F ≫ _
+  calc
+    _ = (α ≫ H.map (e.app (S.obj F))) ≫ H.map v := congrArg (· ≫ H.map v) he.symm
+    _ = α ≫ H.map (u.rightDerivedFunctorPlus.app (S.obj F) ≫ c.app (S.obj F)) := by
+      rw [Category.assoc, ← H.map_comp, hu]
+    _ = (α ≫ H.map (u.rightDerivedFunctorPlus.app (S.obj F))) ≫ H.map (c.app (S.obj F)) := by
+      rw [H.map_comp, Category.assoc]
+    _ = u.app F ≫ (β ≫ H.map (c.app (S.obj F))) := by
+      rw [homologyZeroRightDerivedSingleIso_inv_naturality u F, Category.assoc]
+    _ = _ := congrArg (u.app F ≫ ·) hc
+
+omit [HasDerivedCategory (Sh k X)] [HasDerivedCategory (Sh k X')]
+  [HasDerivedCategory (Sh k Z)] [HasDerivedCategory (Sh k W)] in
+private def transportedUnit {p q : X ⟶ Z} (h : q = p) : 𝟭 _ ⟶ P p ⋙ Qf q :=
+  (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat k) q).unit ≫
+    Functor.whiskerRight (eqToHom (congrArg P h)) (Qf q)
+
+omit [HasDerivedCategory (Sh k X')] [HasDerivedCategory (Sh k W)] in
+private def transportedDerivedUnit {p q : X ⟶ Z} (h : q = p) :
+    𝟭 _ ⟶ pullbackPlus k p ⋙ pushforwardPlus k q :=
+  derivedUnit k q ≫
+    Functor.whiskerRight (eqToHom (congrArg (pullbackPlus k) h)) (pushforwardPlus k q)
+
+omit [HasDerivedCategory (Sh k X')] [HasDerivedCategory (Sh k W)] in
+private theorem transportedDerivedUnit_homology {p q : X ⟶ Z} (h : q = p) (F : Sh k Z) :
+    (singleFunctorCompHomologyFunctorIsoPlus (Sh k Z) 0).inv.app F ≫
+      (Plus.homologyFunctor _ 0).map
+        ((transportedDerivedUnit k h).app ((Plus.singleFunctor _ 0).obj F)) =
+    (transportedUnit k h).app F ≫
+      ((singleFunctorCompHomologyFunctorIsoPlus (Sh k Z) 0).inv.app ((P p ⋙ Qf q).obj F) ≫
+        (Plus.homologyFunctor _ 0).map (corrSingleComparison k p q F)) := by
+  subst p
+  have hρ : transportedDerivedUnit k (rfl : q = q) = derivedUnit k q := by
+    rw [transportedDerivedUnit, eqToHom_refl, Functor.whiskerRight_id']
+    exact Category.comp_id _
+  have hu : transportedUnit k (rfl : q = q) =
+      (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat k) q).unit := by
+    rw [transportedUnit, eqToHom_refl, Functor.whiskerRight_id']
+    exact Category.comp_id _
+  rw [hρ, hu]
+  exact derivedUnit_homology k q F
+
 end Comparison
 
 section Maps
@@ -311,6 +487,23 @@ local notation "Qf" => TopCat.Sheaf.pushforward (ModuleCat k)
 def H0Restr {δ ε : ℝ} (h : δ ≤ ε) (F : realLine.Sheaf (ModuleCat k)) :
     (H₀).obj ((T k ε).obj ((S₀).obj F)) ⟶ (H₀).obj ((T k δ).obj ((S₀).obj F)) :=
   (H₀).map ((restr k h).app ((S₀).obj F))
+
+/-- The degree-zero augmentation to a sheaf, using the single-complex identification. -/
+def H0Aug {ε : ℝ} (h : 0 ≤ ε) (F : realLine.Sheaf (ModuleCat k)) :
+    (H₀).obj ((T k ε).obj ((S₀).obj F)) ⟶ F :=
+  (H₀).map ((aug k h).app ((S₀).obj F)) ≫
+    (singleFunctorCompHomologyFunctorIsoPlus _ 0).hom.app F
+
+private theorem H0Aug_ne_zero_iff {ε : ℝ} (h : 0 ≤ ε) (F : Sh k realLine) :
+    H0Aug k h F ≠ 0 ↔ H0Restr k h F ≠ 0 := by
+  let e := ((H₀).mapIso ((T0Iso k).app ((S₀).obj F))) ≪≫
+    (singleFunctorCompHomologyFunctorIsoPlus _ 0).app F
+  have he : H0Aug k h F = H0Restr k h F ≫ e.hom := by
+    unfold H0Aug H0Restr
+    rw [aug, NatTrans.comp_app, Functor.map_comp, Category.assoc]
+    rfl
+  rw [he]
+  exact not_congr (comp_eq_zero_iff_of_mono e.hom)
 
 private theorem H0TIso_inv_app_eq (ε : ℝ) (F : Sh k realLine) :
     (H0TIso k ε).inv.app F =
@@ -376,6 +569,112 @@ theorem H0TSectionsIso_hom_restr {δ ε : ℝ} (_hδ : 0 ≤ δ) (h : δ ≤ ε)
   exact iso_hom_square (H0TSectionsIso k ε F U hU) (H0TSectionsIso k δ F U hU)
     ((H0Restr k h F).hom.app (op U)) (F.presheaf.map (homOfLE (bandOpen_mono h U)).op)
     (H0TSectionsIso_inv_restr k h F U hU)
+
+private def thickeningZeroUnit (F : Sh k realLine) : F ⟶ (thickening k 0).obj F :=
+  (transportedUnit k p_zero_eq_q_zero.symm).app F
+
+private theorem H0TIso_inv_app_of_eq {ε : ℝ} (h : q ε = p ε) (F : Sh k realLine) :
+    (singleFunctorCompHomologyFunctorIsoPlus (Sh k realLine) 0).inv.app F ≫
+      (H₀).map ((transportedDerivedUnit k h).app ((S₀).obj F)) =
+        (transportedUnit k h).app F ≫ (H0TIso k ε).inv.app F := by
+  rw [H0TIso_inv_app_eq]
+  exact transportedDerivedUnit_homology k h F
+
+private theorem H0TIso_inv_app_zero (F : Sh k realLine) :
+    (singleFunctorCompHomologyFunctorIsoPlus (Sh k realLine) 0).inv.app F ≫
+      (H₀).map ((T0Iso k).inv.app ((S₀).obj F)) =
+        thickeningZeroUnit k F ≫ (H0TIso k 0).inv.app F := by
+  have he : (T0Iso k).inv = transportedDerivedUnit k p_zero_eq_q_zero.symm := T0Iso_inv k
+  rw [he]
+  exact H0TIso_inv_app_of_eq k p_zero_eq_q_zero.symm F
+
+private theorem H0TSectionsIso_inv_aug_zero (F : Sh k realLine) (U : Opens realLine)
+    (hU : (U : Set ℝ).OrdConnected) :
+    (H0TSectionsIso k 0 F U hU).inv ≫ (H0Aug k (le_refl (0 : ℝ)) F).hom.app (op U) =
+      F.presheaf.map (homOfLE (le_bandOpen (le_refl (0 : ℝ)) U)).op := by
+  let ev : realLine.Sheaf (ModuleCat k) ⥤ ModuleCat k :=
+    sheafToPresheaf (Opens.grothendieckTopology realLine) (ModuleCat k) ⋙
+      (evaluation _ _).obj (op U)
+  have hW : (Opens.map (q 0)).obj U ≤ (Opens.map (p 0)).obj U := by
+    rw [p_zero_eq_q_zero]
+  have hunit : pullbackUnitRes k (p 0) F hW = ev.map (thickeningZeroUnit k F) := by
+    have h' : ∀ (p₀ : D 0 ⟶ realLine) (he : q 0 = p₀)
+      (hW' : (Opens.map (q 0)).obj U ≤ (Opens.map p₀).obj U),
+        pullbackUnitRes k p₀ F hW' =
+          ev.map ((transportedUnit k he).app F) := by
+      intro p₀ he hW'
+      subst p₀
+      have hu : transportedUnit k (rfl : q 0 = q 0) =
+          (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat k) (q 0)).unit := by
+        rw [transportedUnit, eqToHom_refl, Functor.whiskerRight_id']
+        exact Category.comp_id _
+      rw [hu]
+      let G := (P (q 0)).obj F
+      let V := (Opens.map (q 0)).obj U
+      let u := (TopCat.Sheaf.pullbackPushforwardAdjunction (ModuleCat k) (q 0)).unit.app F
+      change u.hom.app (op U) ≫ G.presheaf.map ((homOfLE hW' : V ⟶ V).op) =
+        u.hom.app (op U)
+      have hid : (homOfLE hW' : V ⟶ V).op = 𝟙 (op V) := Subsingleton.elim _ _
+      have hmap := (congrArg G.presheaf.map hid).trans (G.presheaf.map_id (op V))
+      exact (congrArg (u.hom.app (op U) ≫ ·) hmap).trans (Category.comp_id _)
+    exact h' (p 0) p_zero_eq_q_zero.symm hW
+  have hres := pullbackUnitRes_map k (p 0) F (tube_le_bandOpen 0 U) hW le_rfl
+    (le_bandOpen (le_refl (0 : ℝ)) U)
+  simp only [homOfLE_refl, op_id, CategoryTheory.Functor.map_id, Category.comp_id] at hres
+  have hr : pullbackUnitRes k (p 0) F (tube_le_bandOpen 0 U) =
+      F.presheaf.map (homOfLE (le_bandOpen (le_refl (0 : ℝ)) U)).op ≫
+        ev.map (thickeningZeroUnit k F) := hres.trans (congrArg (_ ≫ ·) hunit)
+  have he : thickeningZeroUnit k F ≫ (H0TIso k 0).inv.app F ≫
+      H0Aug k (le_refl (0 : ℝ)) F = 𝟙 F := by
+    let E := (H₀).mapIso ((T0Iso k).app ((S₀).obj F)) ≪≫
+      (singleFunctorCompHomologyFunctorIsoPlus _ 0).app F
+    have hinv : thickeningZeroUnit k F ≫ (H0TIso k 0).inv.app F = E.inv :=
+      (H0TIso_inv_app_zero k F).symm
+    have hhom : H0Aug k (le_refl (0 : ℝ)) F = E.hom := by
+      rw [H0Aug, aug_zero]
+      rfl
+    calc
+      _ = E.inv ≫ E.hom := by rw [← Category.assoc, hinv, hhom]
+      _ = _ := E.inv_hom_id
+  change (thickeningSectionsIso k 0 F U hU).inv ≫
+    ev.map ((H0TIso k 0).inv.app F) ≫ ev.map (H0Aug k (le_refl (0 : ℝ)) F) = _
+  rw [thickeningSectionsIso_inv]
+  calc
+    _ = (F.presheaf.map (homOfLE (le_bandOpen (le_refl (0 : ℝ)) U)).op ≫
+        ev.map (thickeningZeroUnit k F)) ≫
+        ev.map ((H0TIso k 0).inv.app F) ≫ ev.map (H0Aug k le_rfl F) :=
+      congrArg (· ≫ _) hr
+    _ = _ := by
+      simp only [Category.assoc, ← ev.map_comp, he, ev.map_id]
+      exact Category.comp_id _
+
+/-- Under the section isomorphism, augmentation restricts from the thickened open to the open. -/
+@[reassoc]
+theorem H0TSectionsIso_hom_aug {ε : ℝ} (hε : 0 ≤ ε)
+    (F : realLine.Sheaf (ModuleCat k)) (U : Opens realLine) (hU : (U : Set ℝ).OrdConnected) :
+    (H0Aug k hε F).hom.app (op U) =
+      (H0TSectionsIso k ε F U hU).hom ≫ F.presheaf.map (homOfLE (le_bandOpen hε U)).op := by
+  have haug : H0Restr k hε F ≫ H0Aug k (le_refl (0 : ℝ)) F = H0Aug k hε F := by
+    let e := (singleFunctorCompHomologyFunctorIsoPlus (Sh k realLine) 0).hom.app F
+    let t := (T0Iso k).hom.app ((S₀).obj F)
+    let r := (restr k hε).app ((S₀).obj F)
+    calc
+      _ = (H₀).map r ≫ (H₀).map t ≫ e := by rw [H0Aug, aug_zero]; rfl
+      _ = (H₀).map (r ≫ t) ≫ e := (Functor.map_comp_assoc _ _ _ _).symm
+      _ = H0Aug k hε F := rfl
+  let ev : realLine.Sheaf (ModuleCat k) ⥤ ModuleCat k :=
+    sheafToPresheaf (Opens.grothendieckTopology realLine) (ModuleCat k) ⋙
+      (evaluation _ _).obj (op U)
+  have he : (H0Restr k hε F).hom.app (op U) ≫
+      (H0Aug k (le_refl (0 : ℝ)) F).hom.app (op U) = (H0Aug k hε F).hom.app (op U) :=
+    ((ev.map_comp _ _).symm.trans (congrArg ev.map haug))
+  let E := H0TSectionsIso k ε F U hU
+  apply (cancel_epi E.inv).mp
+  rw [Iso.inv_hom_id_assoc, ← he, ← Category.assoc]
+  rw [H0TSectionsIso_inv_restr k hε F U hU, Category.assoc,
+    H0TSectionsIso_inv_aug_zero k F U hU]
+  rw [← F.presheaf.map_comp]
+  congr 1
 
 end Maps
 
@@ -494,6 +793,14 @@ theorem H0Restr_interval_ne_zero_iff {δ ε : ℝ} (hδ : 0 ≤ δ) (h : δ ≤ 
     rw [H0TSectionsIso_hom_restr k hδ h]
     exact IsIso.comp_isIso' (Iso.isIso_hom _) hr
   exact IsIso.of_isIso_comp_right _ (H0TSectionsIso k δ (ISh[k,hp,J]) U hU).hom
+
+/-- The degree-zero augmentation of an interval sheaf is nonzero exactly when the
+degree-zero output intersects the input interval. -/
+theorem H0Aug_interval_ne_zero_iff {ε : ℝ} (hε : 0 ≤ ε)
+    (hp : StrictMono p) (J : FiniteInterval (2 * m + 1)) :
+    H0Aug k hε (ISh[k,hp,J]) ≠ 0 ↔
+      (outSet0 ε (intervalSet p J) ∩ intervalSet p J).Nonempty := by
+  rw [H0Aug_ne_zero_iff, H0Restr_interval_ne_zero_iff le_rfl hε hp J, outSet0_zero]
 
 end IntervalCriteria
 

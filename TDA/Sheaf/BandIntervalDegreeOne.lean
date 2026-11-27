@@ -38,6 +38,14 @@ private theorem exists_eq_Ioo_of_mem_outSet1 {I : Set ℝ} (hI : I.OrdConnected)
   rw [hcl, interior_Icc] at hoe
   exact ⟨sInf I, sSup I, Set.nonempty_Ioo.mp (hoe.symm ▸ hne), hoe.symm⟩
 
+/-- A nonempty degree-one output forces the degree-zero output of an interval to be empty. -/
+theorem outSet0_eq_empty_of_outSet1_nonempty {ε : ℝ} (hε : 0 ≤ ε) {I : Set ℝ}
+    (hI : I.OrdConnected) (h₁ : (outSet1 ε I).Nonempty) : outSet0 ε I = ∅ := by
+  obtain ⟨y, hy⟩ := h₁
+  obtain ⟨a, b, hab, rfl⟩ := exists_eq_Ioo_of_mem_outSet1 hI hy
+  rw [outSet1_Ioo hε hab] at hy
+  rw [outSet0_Ioo hε hab, Set.Ioo_eq_empty_of_le (show b - ε ≤ a + ε from hy.1.trans hy.2)]
+
 private theorem mem_breakpoints_of_excluded_endpoint (hp : StrictMono p)
     (J : FiniteInterval (2 * m + 1)) {a : ℝ}
     (ha : a ∈ closure (intervalSet p J) \ intervalSet p J) :
