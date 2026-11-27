@@ -10,8 +10,8 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
-- Downstream-use audit, family 16 (#1300, #1207): simplicial homology and diagram bounds without a
-  supplied vertex order. `Simplicial.HomologyOrderFree` has `simplicialHomologyOrderFree` (the
+- Downstream-use audit, family 16 (#1300, #1207): simplicial homology and diagram bounds with the
+  vertex order chosen internally. `Simplicial.HomologyOrderFree` has `simplicialHomologyOrderFree` (the
   order chosen classically), `simplicialHomologyOrderFreeIso` (the isomorphism to
   `simplicialHomology` for every supplied order), `simplicialHomologyIso_of_linearOrder` (homology
   for two orders on the vertices), `simplicialHomologyMapOrderFree` with its naturality against the

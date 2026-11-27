@@ -4,7 +4,7 @@ import TDA.Simplicial.Cone
 set_option autoImplicit false
 
 /-!
-# Simplicial homology without a supplied vertex order
+# Simplicial homology with the vertex order chosen internally
 
 `simplicialHomology` takes a linear order on the vertex type: the signed boundary enumerates
 the vertices of a face increasingly.  The homology modules do not depend on the order.  For two
@@ -14,7 +14,7 @@ and they are natural in the complex and the vertex map
 (`simplicialHomologyMap_comp_iso_of_linearOrder`).
 
 `simplicialHomologyOrderFree` is the homology for the order chosen classically (the
-well-ordering `WellOrderingRel`).  It takes no order instance, and
+well-ordering `WellOrderingRel`).  It is defined for an arbitrary vertex type, and
 `simplicialHomologyOrderFreeIso` identifies it with `simplicialHomology` for every supplied
 order.  `simplicialHomologyMapOrderFree` is the induced map of a vertex map between vertex types
 in one universe; `simplicialHomologyMapOrderFree_iso_naturality` states its naturality against
@@ -74,7 +74,7 @@ section OrderFree
 variable {V : Type u} (K : PreAbstractSimplicialComplex V) (R : Type v) [Ring R] (n : ℕ)
 
 /-- Simplicial homology with the vertex order chosen classically (the well-ordering
-`WellOrderingRel`).  It takes no order instance; `simplicialHomologyOrderFreeIso` identifies it
+`WellOrderingRel`).  It is defined for an arbitrary vertex type; `simplicialHomologyOrderFreeIso` identifies it
 with `simplicialHomology` for every supplied linear order. -/
 def simplicialHomologyOrderFree : ModuleCat.{max u v} R :=
   letI : LinearOrder V := IsWellOrder.linearOrder WellOrderingRel

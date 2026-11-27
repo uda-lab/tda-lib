@@ -7,7 +7,7 @@ import TDA.Persistence.SublevelDiagramVertexMap
 set_option autoImplicit false
 
 /-!
-# Diagram bounds without a supplied vertex order
+# Diagram bounds with the vertex order chosen internally
 
 The statements about `dgm` of the Rips and Čech filters take the vertex labels and the
 coefficient field in one universe and a linear order on the labels.  The diagrams do not depend
@@ -94,7 +94,7 @@ private theorem ripsDiagram_eq (k : Type v) [Field k] (X : Type u) [Fintype X] [
         (inferInstance : MetricSpace X))) n := rfl
 
 /-- The total-persistence bound of `Rips.totalPersistence_dgm_le` for the order-free Rips
-diagram: finite metric space, coefficient field in any universe, no vertex order. -/
+diagram: finite metric space, coefficient field in any universe, vertex order chosen internally. -/
 theorem Rips.totalPersistence_diagram_le (p : ℕ) :
     (Rips.diagram k X n).totalPersistence p ≤
       (Nat.choose (Fintype.card X) (n + 2) : ℝ) *
@@ -112,7 +112,7 @@ section Cech
 variable {X : Type w} [PseudoMetricSpace X]
 
 /-- The Čech diagram of a finite labelled configuration in a pseudometric space, for labels in
-any universe and any coefficient field, with no vertex order: the existing diagram `dgm` of the
+any universe and any coefficient field, with the vertex order chosen internally: the existing diagram `dgm` of the
 configuration enumerated by `Fintype.equivFin`, with labels `ULift.{v} (Fin (Fintype.card V))`
 in the universe of the coefficient field.  `Cech.diagram_eq_dgm` identifies it with `dgm` for
 every supplied linear order. -/
@@ -195,7 +195,7 @@ section Alpha
 variable {E : Type w} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /-- The radius α diagram of a finite labelled configuration in a finite-dimensional real inner
-product space, for labels in any universe and any coefficient field, with no vertex order: the
+product space, for labels in any universe and any coefficient field, with the vertex order chosen internally: the
 diagram `alphaRadiusDiagram` of the configuration enumerated by `Fintype.equivFin`.
 `alphaRadiusDiagramOrderFree_eq_alphaRadiusDiagram` identifies it with `alphaRadiusDiagram` for
 every supplied linear order. -/

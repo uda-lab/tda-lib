@@ -9,8 +9,8 @@ set_option autoImplicit false
 # Client statements of order-free simplicial homology
 
 Regression fixtures for #1300, family 16 of the downstream-use audit (#1207). Each statement is
-written as a downstream client writes it: the file opens no scope and declares no instance, and
-the vertex type of a finite subset of the plane carries no linear order.
+written as a downstream client writes it: the statements are applied on `↥S` with the instances found for a subtype of a `Finset`, and
+the vertex order is chosen internally.
 
 * The degree-zero homology of the full complex on a finite nonempty subset of the plane has
   dimension one over `ZMod 2`.
