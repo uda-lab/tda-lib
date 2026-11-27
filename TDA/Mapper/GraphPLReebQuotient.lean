@@ -21,7 +21,8 @@ interleaving distance of interval-component precosheaves.
 The general statements use `[Finite V]` and a covering list
 `CoversVertexHeights S h`; the realization and homeomorphism are universe-polymorphic, while the
 statements over `Over (TopCat.of ℝ)`, the coherence with the graph-PL cosheaf, and the final
-corollaries use `V : Type` because the corresponding categorical APIs live in universe `0`.
+corollaries use `V : Type` because the corresponding categorical APIs live in universe `0`;
+`TDA/Mapper/GraphPLTransport.lean` transports them along `V ≃ W` from a vertex type `V : Type u`.
 The route is direct: first construct the height-preserving map, descend it through
 `RGraph.quotientLift`, and use compactness of the quotient together with Hausdorffness of the
 finite realization.  The graph-PL statements here are library results and make no external source
