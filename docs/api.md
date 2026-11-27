@@ -6515,25 +6515,35 @@ or `GradedMatching.exists_source_of_cost_lt_top`.
 
 `IntervalEndpoints` describes nonempty real intervals by their finite endpoints and
 boundary types. A singleton uses the closed-interval constructor with equal endpoints.
+`IntervalEndpoints.ofInterval` obtains endpoint data from a finite strata interval, with
+`IntervalEndpoints.support_ofInterval` identifying its support.
 `IntervalEndpoints.distance_zero_eq` identifies `deletionCost` with the distance to zero in
 any degree. A bounded half-open interval costs half its length, and its deletion witness
 exists at the half-length radius. Bounded open and closed intervals, rays and the
 whole line have infinite deletion cost.
 
 `distance_interval_Icc_Icc` gives the maximum absolute endpoint difference for two
-bounded closed intervals in the same degree. `distance_interval_Ico_Ioc` gives the larger
-deletion cost for opposite half-open types in a common degree.
+bounded closed intervals in the same degree, and `distance_interval_Ioo_Ioo` gives the same
+formula for bounded open intervals. For two bounded intervals of the same half-open type,
+`distance_interval_Ico_Ico` and `distance_interval_Ioc_Ioc` give the minimum of this formula
+and the larger deletion cost. For rays of the same type, `distance_interval_Ici_Ici`,
+`distance_interval_Iic_Iic`, `distance_interval_Ioi_Ioi` and `distance_interval_Iio_Iio` give
+the absolute endpoint difference. The whole-line pair has cost zero by
+`distance_interval_univ_univ`. For different endpoint types in a common degree,
+`distance_interval_of_different_endpoint_types` gives the larger deletion cost, using
+`IntervalEndpoints.sameType` to compare endpoint types. This includes the opposite half-open
+formula of `distance_interval_Ico_Ioc`.
 `distance_interval_Ioo_Icc_succ` gives
 `max (b - c) (e - a)` for `(a, b)` in degree `d` and `[c, e]` in degree `d + 1`.
 For a nonclosed or unbounded upper interval that cost is infinite.
 When the lower interval has no degree-one output or the degree gap is at least two,
 `distance_interval_of_degree_lt` gives the maximum of the two deletion costs.
 
-`IntervalEndpoints.pairCost` gives entries for distinct degrees, bounded closed pairs in
-a common degree, and opposite half-open types in a common degree. Each entry computes the
-sheaf distance by `IntervalEndpoints.distance_eq_of_pairCost`. Use
-`GradedMatching.cost_le_iff_of_pairCost` to rewrite matching cost bounds when the
-matched pairs have numeric entries.
+`IntervalEndpoints.totalPairCost` gives the numeric cost for all endpoint types and degree
+pairs. `IntervalEndpoints.distance_eq_totalPairCost` identifies it with the sheaf distance.
+`IntervalEndpoints.pairCost` wraps the cost in `some`, with correctness given by
+`IntervalEndpoints.distance_eq_of_pairCost`. Use `GradedMatching.cost_le_iff_of_pairCost`
+to rewrite matching cost bounds in terms of these pair entries and the deletion costs.
 
 ## Review and extension boundaries
 

@@ -10,12 +10,23 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
-- Endpoint formulas compute the deletion cost of each graded interval sheaf, the
-  pair costs in distinct degrees, and the costs of bounded closed pairs and
-  opposite half-open pairs in a common degree. A bounded half-open interval can be
-  deleted at half its length. `IntervalEndpoints.pairCost` and
-  `GradedMatching.cost_le_iff_of_pairCost`
-  express matching cost bounds using the numeric entries.
+- `IntervalEndpoints.totalPairCost` and `IntervalEndpoints.distance_eq_totalPairCost` compute
+  the band distance for graded interval sheaves from endpoint and degree data.
+  `IntervalEndpoints.ofInterval` supplies endpoint data for finite strata intervals, and
+  `IntervalEndpoints.support_ofInterval` gives their support.
+  `IntervalEndpoints.pairCost` wraps the numeric cost in `some` for use with
+  `GradedMatching.cost_le_iff_of_pairCost`. In a common degree, `distance_interval_Icc_Icc`
+  and `distance_interval_Ioo_Ioo` give the maximum absolute endpoint difference.
+  `distance_interval_Ico_Ico` and `distance_interval_Ioc_Ioc` give the minimum of this
+  endpoint cost and the cost of deleting both intervals. `distance_interval_Ici_Ici`,
+  `distance_interval_Iic_Iic`, `distance_interval_Ioi_Ioi` and `distance_interval_Iio_Iio`
+  give the absolute endpoint difference for rays of the same type.
+  `distance_interval_univ_univ` gives cost zero for the whole-line pair.
+  `IntervalEndpoints.sameType` compares endpoint types, and
+  `distance_interval_of_different_endpoint_types` gives the larger deletion cost for
+  different types in a common degree. A bounded half-open interval can be deleted at
+  half its length. The distinct-degree costs include bounded open to closed matches
+  in adjacent degrees.
 - Real direct images of a fixed bounded-below coefficient complex satisfy extended
   sup stability. `directImageGraph`, `directImageComparison`, and
   `directImageComparison_adjoint` give the graph restriction and its adjoint.

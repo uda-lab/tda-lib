@@ -3,9 +3,9 @@ import TDA.Sheaf.BandIntervalCostTable
 /-!
 # Numeric interval costs over the rationals
 
-The half-open interval from zero to two is deletable at radius one. The open
-interval with these endpoints has infinite deletion cost and matches the closed
-interval from zero to two in the next degree at radius two.
+The examples cover half-open direct and deletion costs and their tie, bounded
+open and closed pairs in common and adjacent degrees, and pairs involving rays
+and the whole line.
 -/
 
 noncomputable section
@@ -109,3 +109,171 @@ example : distance ((GradedInterval.mk Ico 0).obj ℚ mono_breaks)
     ends_lt ends_lt support_Ico support_Ioc
   norm_num at h
   simpa only [sup_idem] using h
+
+private def movedBreaks (a b : ℝ) : Fin 2 → ℝ := ![a, b]
+
+private theorem mono_movedBreaks {a b : ℝ} (h : a < b) : StrictMono (movedBreaks a b) := by
+  refine Fin.strictMono_iff_lt_succ.2 fun i => ?_
+  fin_cases i
+  simpa [movedBreaks] using h
+
+private theorem moved_Ico {a b : ℝ} (h : a < b) :
+    intervalSet (movedBreaks a b) Ico = Set.Ico a b := by
+  rw [intervalSet_eq_Ico (mono_movedBreaks h) (i := 0) (j := 1) rfl rfl]
+  simp [movedBreaks]
+
+private theorem moved_Ioc {a b : ℝ} (h : a < b) :
+    intervalSet (movedBreaks a b) Ioc = Set.Ioc a b := by
+  rw [intervalSet_eq_Ioc (mono_movedBreaks h) (i := 0) (j := 1) rfl rfl]
+  simp [movedBreaks]
+
+private theorem moved_Ioo {a b : ℝ} (h : a < b) :
+    intervalSet (movedBreaks a b) Ioo = Set.Ioo a b := by
+  rw [intervalSet_eq_Ioo (mono_movedBreaks h) (i := 0) (j := 1) rfl rfl]
+  simp [movedBreaks]
+
+example : distance ((GradedInterval.mk Ico 0).obj ℚ mono_breaks)
+    ((GradedInterval.mk Ico 0).obj ℚ (mono_movedBreaks (show (0 : ℝ) < 3 by norm_num))) =
+      1 := by
+  have h : (0 : ℝ) < 3 := by norm_num
+  rw [distance_interval_Ico_Ico ℚ mono_breaks (mono_movedBreaks h) Ico Ico 0
+    ends_lt h support_Ico (moved_Ico h)]
+  norm_num [min_def]
+
+example : distance ((GradedInterval.mk Ioc 0).obj ℚ mono_breaks)
+    ((GradedInterval.mk Ioc 0).obj ℚ (mono_movedBreaks (show (4 : ℝ) < 6 by norm_num))) =
+      1 := by
+  have h : (4 : ℝ) < 6 := by norm_num
+  rw [distance_interval_Ioc_Ioc ℚ mono_breaks (mono_movedBreaks h) Ioc Ioc 0
+    ends_lt h support_Ioc (moved_Ioc h)]
+  norm_num [min_def]
+
+example : distance ((GradedInterval.mk Ico 0).obj ℚ mono_breaks)
+    ((GradedInterval.mk Ico 0).obj ℚ (mono_movedBreaks (show (1 : ℝ) < 3 by norm_num))) =
+      1 := by
+  have h : (1 : ℝ) < 3 := by norm_num
+  rw [distance_interval_Ico_Ico ℚ mono_breaks (mono_movedBreaks h) Ico Ico 0
+    ends_lt h support_Ico (moved_Ico h)]
+  norm_num
+
+example : distance ((GradedInterval.mk Ioo 1).obj ℚ mono_breaks)
+    ((GradedInterval.mk Ioo 1).obj ℚ (mono_movedBreaks (show (4 : ℝ) < 6 by norm_num))) =
+      4 := by
+  have h : (4 : ℝ) < 6 := by norm_num
+  rw [distance_interval_Ioo_Ioo ℚ mono_breaks (mono_movedBreaks h) Ioo Ioo 1
+    ends_lt h support_Ioo (moved_Ioo h)]
+  norm_num
+
+example : distance ((GradedInterval.mk Ioo 2).obj ℚ mono_breaks)
+    ((GradedInterval.mk Icc 2).obj ℚ mono_breaks) = ⊤ :=
+  distance_interval_of_different_endpoint_types ℚ mono_breaks mono_breaks Ioo Icc 2
+    (.ioo 0 2 ends_lt) (.icc 0 2 ends_lt.le) support_Ioo support_Icc rfl
+
+private def Ici : FiniteInterval 5 := ⟨1, 5, by decide, by decide⟩
+private def Ioi : FiniteInterval 5 := ⟨2, 5, by decide, by decide⟩
+
+private theorem support_Ici : intervalSet breaks Ici = Set.Ici 0 := by
+  rw [intervalSet_eq_Ici mono_breaks (i := 0) rfl rfl]
+  simp [breaks]
+
+private theorem support_Ioi : intervalSet breaks Ioi = Set.Ioi 0 := by
+  rw [intervalSet_eq_Ioi mono_breaks (i := 0) rfl rfl]
+  simp [breaks]
+
+example : distance ((GradedInterval.mk Ici 2).obj ℚ mono_breaks)
+    ((GradedInterval.mk Ioi 2).obj ℚ mono_breaks) = ⊤ :=
+  distance_interval_of_different_endpoint_types ℚ mono_breaks mono_breaks Ici Ioi 2
+    (.ici 0) (.ioi 0) support_Ici support_Ioi rfl
+
+example :
+    distance ((GradedInterval.mk Ici 2).obj ℚ mono_breaks)
+      ((GradedInterval.mk Ico 2).obj ℚ mono_breaks) = ⊤ :=
+  distance_interval_of_different_endpoint_types ℚ mono_breaks mono_breaks Ici Ico 2
+    (.ici 0) (.ico 0 2 ends_lt) support_Ici support_Ico rfl
+
+example : (IntervalEndpoints.iio 0).totalPairCost (.iio 3) 2 2 = 3 := by
+  change ENNReal.ofReal |(0 : ℝ) - 3| = 3
+  norm_num
+
+private def IciTwo : FiniteInterval 5 := ⟨3, 5, by decide, by decide⟩
+
+private theorem support_IciTwo : intervalSet breaks IciTwo = Set.Ici 2 := by
+  rw [intervalSet_eq_Ici mono_breaks (i := 1) rfl rfl]
+  simp [breaks]
+
+example : distance ((GradedInterval.mk Ici 3).obj ℚ mono_breaks)
+    ((GradedInterval.mk IciTwo 3).obj ℚ mono_breaks) = 2 := by
+  rw [distance_interval_Ici_Ici ℚ mono_breaks mono_breaks Ici IciTwo 3 support_Ici support_IciTwo]
+  norm_num
+
+private def whole : FiniteInterval 5 := ⟨0, 5, by decide, by decide⟩
+private theorem support_whole : intervalSet breaks whole = Set.univ :=
+  intervalSet_eq_univ mono_breaks rfl rfl
+
+example : distance ((GradedInterval.mk whole 3).obj ℚ mono_breaks)
+    ((GradedInterval.mk IciTwo 3).obj ℚ mono_breaks) = ⊤ :=
+  distance_interval_of_different_endpoint_types ℚ mono_breaks mono_breaks whole IciTwo 3
+    .univ (.ici 2) support_whole support_IciTwo rfl
+
+example : distance ((GradedInterval.mk whole 3).obj ℚ mono_breaks)
+    ((GradedInterval.mk whole 3).obj ℚ (mono_movedBreaks (show (1 : ℝ) < 3 by norm_num))) = 0 := by
+  let hq : StrictMono (movedBreaks 1 3) := mono_movedBreaks (by norm_num)
+  have hs : intervalSet (movedBreaks 1 3) whole = Set.univ := intervalSet_eq_univ hq rfl rfl
+  exact distance_interval_univ_univ ℚ mono_breaks hq whole whole 3 support_whole hs
+
+example : distance ((GradedInterval.mk Icc 0).obj ℚ mono_breaks)
+    ((GradedInterval.mk Ioc 0).obj ℚ mono_breaks) = ⊤ :=
+  distance_interval_of_different_endpoint_types ℚ mono_breaks mono_breaks Icc Ioc 0
+    (.icc 0 2 ends_lt.le) (.ioc 0 2 ends_lt) support_Icc support_Ioc rfl
+
+example : distance ((GradedInterval.mk Ioo 0).obj ℚ mono_breaks)
+    ((GradedInterval.mk Ico 0).obj ℚ mono_breaks) = ⊤ :=
+  distance_interval_of_different_endpoint_types ℚ mono_breaks mono_breaks Ioo Ico 0
+    (.ioo 0 2 ends_lt) (.ico 0 2 ends_lt) support_Ioo support_Ico rfl
+
+example :
+    distance ((GradedInterval.mk Ioo 2).obj ℚ mono_breaks)
+      ((GradedInterval.mk Icc 3).obj ℚ mono_breaks) =
+    (IntervalEndpoints.ofInterval mono_breaks Ioo).totalPairCost
+      (IntervalEndpoints.ofInterval mono_breaks Icc) 2 3 :=
+  IntervalEndpoints.distance_eq_totalPairCost ℚ mono_breaks mono_breaks
+    ⟨Ioo, 2⟩ ⟨Icc, 3⟩ _ _ (IntervalEndpoints.support_ofInterval _ _)
+    (IntervalEndpoints.support_ofInterval _ _)
+
+private def rightOpenTwo : FiniteInterval 5 := ⟨4, 5, by decide, by decide⟩
+
+private theorem support_rightOpenTwo : intervalSet breaks rightOpenTwo = Set.Ioi 2 := by
+  rw [intervalSet_eq_Ioi mono_breaks (i := 1) rfl rfl]
+  simp [breaks]
+
+example : distance ((GradedInterval.mk Ioi (-1)).obj ℚ mono_breaks)
+    ((GradedInterval.mk rightOpenTwo (-1)).obj ℚ mono_breaks) = 2 := by
+  rw [distance_interval_Ioi_Ioi ℚ mono_breaks mono_breaks Ioi rightOpenTwo (-1)
+    support_Ioi support_rightOpenTwo]
+  norm_num
+
+private def leftClosed (i : Fin 2) : FiniteInterval 5 :=
+  ⟨0, 2 * i.val + 2, by omega, by have := i.isLt; omega⟩
+
+private theorem support_leftClosed (i : Fin 2) :
+    intervalSet breaks (leftClosed i) = Set.Iic (breaks i) :=
+  intervalSet_eq_Iic mono_breaks (j := i) rfl rfl
+
+example : distance ((GradedInterval.mk (leftClosed 0) 1).obj ℚ mono_breaks)
+    ((GradedInterval.mk (leftClosed 1) 1).obj ℚ mono_breaks) = 2 := by
+  rw [distance_interval_Iic_Iic ℚ mono_breaks mono_breaks _ _ 1
+    (support_leftClosed 0) (support_leftClosed 1)]
+  norm_num [breaks]
+
+private def leftOpen (i : Fin 2) : FiniteInterval 5 :=
+  ⟨0, 2 * i.val + 1, by omega, by have := i.isLt; omega⟩
+
+private theorem support_leftOpen (i : Fin 2) :
+    intervalSet breaks (leftOpen i) = Set.Iio (breaks i) :=
+  intervalSet_eq_Iio mono_breaks (j := i) rfl rfl
+
+example : distance ((GradedInterval.mk (leftOpen 0) 1).obj ℚ mono_breaks)
+    ((GradedInterval.mk (leftOpen 1) 1).obj ℚ mono_breaks) = 2 := by
+  rw [distance_interval_Iio_Iio ℚ mono_breaks mono_breaks _ _ 1
+    (support_leftOpen 0) (support_leftOpen 1)]
+  norm_num [breaks]
