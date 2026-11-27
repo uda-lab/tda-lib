@@ -649,3 +649,31 @@ stability. See [local matching from finite box counts](persistence-measure-match
 - **Sources:** Bapat et al., *Computing the Matching Distance of 2-Parameter Persistence Modules from Critical Values*, [arXiv:2210.12868v3](https://arxiv.org/html/2210.12868v3), Lemma 4.2 and Theorems 3.1/4.4; Kerber–Lesnick–Oudot, *Exact Computation of the Matching Distance on 2-Parameter Persistence Modules*, [arXiv:1812.09085v2](https://arxiv.org/html/1812.09085v2), §4.
 - **Use/classification:** Context for the independently derived [finite affine endpoint-cost arrangement](affine-switch-arrangement.md). The library proves both signed factors, finite cuts and sign-cell cost-order invariance. The regression addresses only the fixed-push single-pencil claim; neither source's main matching-distance theorem is claimed formalized or refuted.
 - **Rights/evidence:** **U**; versioned primary HTML used for mathematical reading. No source prose, figures or code are reproduced.
+
+<a id="GUK25-v1"></a>
+### GUK25-v1 — uniqueness of interval decompositions over a poset
+
+- **Identity/version:** W. L. Gan; N. Upegui Keagy. *On interval decomposition of persistence
+  modules*. [arXiv:2507.01303v1](https://arxiv.org/abs/2507.01303v1).
+- **Use/classification:** Lemma 2.1 (an endomorphism of an interval module is a scalar), Lemma 3.1
+  (a composite `M(I) → M(J) → M(I)` with `I ≠ J` vanishes), Lemma 3.3 and Theorem 3.4 (the number of
+  summands isomorphic to `M(I)` agrees in two interval decompositions, for arbitrary index sets).
+  `IntervalEndomorphisms` and `IntervalDecompositionUniqueness` formalize these for modules over `ℝ`
+  as `SupportInterval.exists_smul_id`, `SupportInterval.comp_eq_zero_of_ne` and
+  `AlgebraicFamily.mk_support_fiber_eq_of_iso`, with external algebraic sums in place of internal
+  decompositions. **Specialization** to the index set `ℝ`.
+- **Rights/evidence:** profile **CC4**, CC BY 4.0 on the arXiv abstract page of v1. No figures or
+  code are reproduced.
+
+<a id="BL23-v2"></a>
+### BL23-v2 — structure theorem over a totally ordered set
+
+- **Identity/version:** Magnus Bakke Botnan; Michael Lesnick. *An introduction to multiparameter
+  persistence*. [arXiv:2203.14289v2](https://arxiv.org/abs/2203.14289v2), 2023-03-13.
+- **Use/classification:** Theorem 3.4 (a pointwise finite-dimensional module over a totally
+  ordered set has a unique multiset of intervals with `M ≅ ⨁ k_I`).
+  `AlgebraicFamily.exists_equiv_support_of_iso_of_iso` states the uniqueness for two interval
+  decompositions of a module over `ℝ`, with arbitrary index types and without pointwise
+  finite-dimensionality; existence for pointwise finite-dimensional modules is
+  `RealIntervalDecomposition.exists_interval_decomposition`. **Specialization** to `ℝ`.
+- **Rights/evidence:** profile **CC4**, CC BY 4.0 on the arXiv abstract page of v2.

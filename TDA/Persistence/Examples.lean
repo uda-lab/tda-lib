@@ -264,3 +264,4 @@ import TDA.Persistence.AlphaRadiusStabilityExamples
 import TDA.Persistence.OccurrenceMatchingClientExamples
 import TDA.Persistence.DiagramBoundsOrderFreeClientExamples
 import TDA.Persistence.SimplicialAdapterOrderFreeClientExamples
+import TDA.Persistence.IntervalDecompositionUniquenessClientExamples
