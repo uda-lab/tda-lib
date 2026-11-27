@@ -10,6 +10,15 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Finite graded matching bounds the real-band convolution distance. A common-radius
+  witness assembles from pair and deletion witnesses on the finite biproduct.
+  The matching cost is the supremum of the paired band distances and the distances
+  to zero for unmatched copies. Its minimum bounds the distance between the bounded
+  constructible complexes reconstructed from their graded barcode occurrences.
+  The open interval in degree zero and its midpoint skyscraper in degree one have
+  distance equal to half the interval length. Skyscrapers in every cohomological degree have
+  infinite deletion cost.
+
 - Extended band convolution distance on the real line. `Witness.symm`, `Witness.mono`,
   and `Witness.trans` exchange, enlarge, and compose band witnesses.
   `Witness.iso`, `Witness.ofIso`, and `Witness.nonempty_zero_iff` give the zero-radius

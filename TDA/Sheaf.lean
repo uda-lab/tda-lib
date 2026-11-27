@@ -61,3 +61,7 @@ import TDA.Sheaf.BandCompositionAssociativity
 import TDA.Sheaf.BandDistance
 import TDA.Sheaf.BoundedBandDistance
 import TDA.Sheaf.BandSkyscraperDistance
+import TDA.Sheaf.BandDistanceBiproduct
+import TDA.Sheaf.BandGradedMatching
+import TDA.Sheaf.BandGradedBarcode
+import TDA.Sheaf.BandMatchingIntervalCosts

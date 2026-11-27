@@ -55,6 +55,27 @@ private theorem isIso_sky_res {a : ℝ} {U V : Opens realLine}
     exact (skySectionsIso k (h ha)).isIso_hom
   exact IsIso.of_isIso_comp_right _ (skySectionsIso k ha).hom
 
+/-- An interval sheaf with singleton support is the skyscraper sheaf at that point. -/
+theorem nonempty_iso_skyscraperSheaf_interval {m : ℕ} {p : Fin m → ℝ}
+    (hp : StrictMono p) (J : FiniteInterval (2 * m + 1)) {a : ℝ}
+    (hJ : intervalSet p J = {a}) :
+    Nonempty (skyscraperSheaf k a ≅ (extension k hp).obj (interval (orient m) J)) := by
+  have hm (U : Opens realLine) : MeetsClosed (intervalSet p J) U ↔ a ∈ U := by
+    rw [hJ]
+    exact ⟨fun h => by simpa using h.2,
+      fun h => ⟨by rw [closure_singleton]; exact Set.inter_subset_left,
+        ⟨a, h, Set.mem_singleton _⟩⟩⟩
+  refine nonempty_iso_extension_interval_of_sections hp (skyscraperSheaf k a) J ?_ ?_ ?_
+  · intro U _ h
+    exact ⟨skySectionsIso k ((hm U).1 h)⟩
+  · intro U _ h
+    have ha := mt (hm U).2 h
+    change IsZero ((skyscraperPresheaf a (ModuleCat.of k k)).obj (op U))
+    rw [skyscraperPresheaf_obj, ite_eq_right ha]
+    exact (isZero_zero _).of_iso HasZeroObject.zeroIsoTerminal.symm
+  · intro U V h _ _ hu _
+    exact isIso_sky_res k h ((hm U).1 hu)
+
 private theorem nonempty_iso_sky_interval (a : ℝ) :
     ∃ (J : FiniteInterval 3),
       intervalSet (fun _ : Fin 1 => a) J = {a} ∧
@@ -65,21 +86,7 @@ private theorem nonempty_iso_sky_interval (a : ℝ) :
   have hp : StrictMono p := Subsingleton.strictMono p
   let J : FiniteInterval (2 * 1 + 1) := ⟨1, 2, by decide, by decide⟩
   have hJ : intervalSet p J = {a} := intervalSet_eq_singleton hp (i := 0) rfl rfl
-  have hm (U : Opens realLine) : MeetsClosed (intervalSet p J) U ↔ a ∈ U := by
-    rw [hJ]
-    exact ⟨fun h => by simpa using h.2,
-      fun h => ⟨by rw [closure_singleton]; exact Set.inter_subset_left,
-        ⟨a, h, Set.mem_singleton _⟩⟩⟩
-  refine ⟨J, hJ, nonempty_iso_extension_interval_of_sections hp (skyscraperSheaf k a) J ?_ ?_ ?_⟩
-  · intro U _ h
-    exact ⟨skySectionsIso k ((hm U).1 h)⟩
-  · intro U _ h
-    have ha := mt (hm U).2 h
-    change IsZero ((skyscraperPresheaf a (ModuleCat.of k k)).obj (op U))
-    rw [skyscraperPresheaf_obj, ite_eq_right ha]
-    exact (isZero_zero _).of_iso HasZeroObject.zeroIsoTerminal.symm
-  · intro U V h _ _ hu _
-    exact isIso_sky_res k h ((hm U).1 hu)
+  exact ⟨J, hJ, nonempty_iso_skyscraperSheaf_interval k hp J hJ⟩
 
 private theorem skyHom_eq_of_fromStalk_eq {F : Sh[k]} {b : ℝ}
     {f g : F ⟶ skyscraperSheaf k b}

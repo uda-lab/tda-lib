@@ -122,7 +122,85 @@ private theorem bandCompose_aug_left {a b c : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
   erw [reassoc_of% h, reassoc_of% hr]
 
 
+private theorem bandCompose_aug_right {a b c : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (e : a + b = c)
+    (f : (T k a).obj F ⟶ G) :
+    bandCompose ha hb e f ((aug k hb).app G) =
+      (restr k (show a ≤ c by linarith)).app F ≫ f := by
+  subst c
+  have h := NatTrans.congr_app
+    (whiskerLeft_restr_TComp_hom k ha (le_refl (0 : ℝ)) hb) F
+  simp only [NatTrans.comp_app, Functor.whiskerLeft_app, Functor.comp_obj] at h
+  have hzero := NatTrans.congr_app (TCompOfEq_zero_right_hom k ha) F
+  simp only [NatTrans.comp_app, Functor.whiskerLeft_app, Functor.rightUnitor_hom_app] at hzero
+  have hunit := hzero.trans (Category.comp_id _)
+  have hr := NatTrans.congr_app
+    (restr_eqToHom k (add_le_add (le_refl a) hb) (add_zero a)) F
+  simp only [NatTrans.comp_app] at hr
+  have hf : (T k b).map f ≫ (aug k hb).app G = (aug k hb).app ((T k a).obj F) ≫ f :=
+    (aug k hb).naturality f
+  apply (cancel_epi ((TComp k ha hb).hom.app F)).mp
+  simp only [bandCompose, TCompOfEq_rfl, Iso.hom_inv_id_app_assoc, hf]
+  rw [aug, NatTrans.comp_app, ← hunit, TCompOfEq_hom, NatTrans.comp_app]
+  simp only [Category.assoc]
+  erw [reassoc_of% h, reassoc_of% hr]
+
+private theorem convolution_witness_inv_hom (F : D⁺[k]) (hε : 0 ≤ ε) :
+    (TComp k hε hε).inv.app ((T k ε).obj F) ≫
+      (T k ε).map ((TComp k hε hε).hom.app F ≫ (aug k (add_nonneg hε hε)).app F) =
+        (aug k (add_nonneg hε hε)).app ((T k ε).obj F) := by
+  let h₂ := add_nonneg hε hε
+  let μ := TComp k hε hε
+  let L := TComp k h₂ hε
+  let R := TCompOfEq k hε h₂ (add_assoc ε ε ε).symm
+  let Y := (T k ε).obj F
+  have hr : ε ≤ ε + ε + ε := (le_add_of_nonneg_right hε).trans (le_add_of_nonneg_right hε)
+  have hl : L.inv.app F ≫ (T k ε).map ((aug k h₂).app F) = (restr k hr).app F := by
+    have hh := bandCompose_aug_left (F := F) h₂ hε rfl (𝟙 Y)
+    simp only [bandCompose, TCompOfEq_rfl] at hh
+    erw [Category.comp_id, Category.comp_id] at hh
+    exact hh
+  have hright : R.inv.app F ≫ (aug k h₂).app Y = (restr k hr).app F := by
+    have hh := bandCompose_aug_right (F := F) hε h₂ (add_assoc ε ε ε).symm (𝟙 Y)
+    simp only [bandCompose] at hh
+    erw [(T k (ε + ε)).map_id Y, Category.id_comp, Category.comp_id] at hh
+    exact hh
+  have h := NatTrans.congr_app (TComp_assoc_hom k hε hε hε) F
+  simp only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.whiskerLeft_app,
+    Functor.associator_hom_app, Category.id_comp, Functor.comp_obj] at h
+  have ha : R.inv.app F ≫ μ.inv.app Y ≫ (T k ε).map (μ.hom.app F) = L.inv.app F := by
+    let e := (T k ε).mapIso (μ.app F) ≪≫ L.app F
+    apply (cancel_epi e.hom).mp
+    change ((T k ε).map (μ.hom.app F) ≫ L.hom.app F) ≫ _ =
+      ((T k ε).map (μ.hom.app F) ≫ L.hom.app F) ≫ _
+    have he : (T k ε).map (μ.hom.app F) ≫ L.hom.app F = μ.hom.app Y ≫ R.hom.app F := h
+    conv_lhs => rw [he]
+    simp only [Category.assoc, Iso.hom_inv_id_app_assoc]
+    erw [L.hom_inv_id_app F, Category.comp_id]
+  apply (cancel_epi (R.inv.app F)).mp
+  rw [(T k ε).map_comp]
+  let u := μ.inv.app Y
+  let v := (T k ε).map (μ.hom.app F)
+  let w := (T k ε).map ((aug k h₂).app F)
+  let r := R.inv.app F
+  change r ≫ u ≫ v ≫ w = _
+  calc
+    r ≫ u ≫ v ≫ w = r ≫ (u ≫ v) ≫ w :=
+      congrArg (r ≫ ·) (Category.assoc u v w).symm
+    _ = (r ≫ u ≫ v) ≫ w := (Category.assoc r (u ≫ v) w).symm
+    _ = L.inv.app F ≫ w := congrArg (· ≫ w) ha
+    _ = _ := hl.trans hright.symm
+
 namespace Witness
+
+/-- An object and its convolution at a nonnegative radius admit a witness at that radius. -/
+def toConvolution (F : D⁺[k]) (hε : 0 ≤ ε) : Witness k hε F ((T k ε).obj F) where
+  hom := 𝟙 _
+  inv := (TComp k hε hε).hom.app F ≫ (aug k (add_nonneg hε hε)).app F
+  hom_inv := by
+    erw [(T k ε).map_id, Category.id_comp, (TComp k hε hε).inv_hom_id_app_assoc F]
+  inv_hom := by
+    erw [Category.comp_id]
+    exact convolution_witness_inv_hom F hε
 
 /-- Enlarge a witness by precomposing both maps with the radius restriction. -/
 def mono (w : Witness k hε F G) (h : ε ≤ δ) : Witness k hδ F G := by
