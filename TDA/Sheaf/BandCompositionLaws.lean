@@ -393,7 +393,7 @@ omit [HasDerivedCategory (pt.Sheaf (ModuleCat.{0} k))]
   [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat.{0} k))] in
 /-- A transformation between functors into `Dᵇ` is determined by its whiskering with the inclusion
 `Dᵇ ⥤ D⁺`. -/
-private lemma eq_of_whiskerRight_boundedToPlus {C' : Type*} [Category* C']
+theorem eq_of_whiskerRight_boundedToPlus {C' : Type*} [Category* C']
     {F G : C' ⥤ DerivedCategory.Bounded (realLine.Sheaf (ModuleCat.{0} k))} {α β : F ⟶ G}
     (h : Functor.whiskerRight α (boundedToPlus _) = Functor.whiskerRight β (boundedToPlus _)) :
     α = β := by

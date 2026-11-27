@@ -1138,6 +1138,21 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `bandOpen_one_ioo_two_three`, `finrank_thickening_pointSheaf_ioo_two_three`,
   `finrank_thickening_Joo_ioo_quarter`, `bandOpen_eighth_ioo_quarter`,
   `finrank_thickening_eighth_Joo_ioo_quarter`, `finrank_thickening_wholeLineSheaf_ioo`.
+- Unit laws of the composition isomorphism of the band functors (#1175, part 3a).
+  `TDA.Sheaf.BaseChangeRestriction`: `transportCounit`, `transportCounit_app`,
+  `whiskerRight_corrUnitIso_inv_transportCounit`, `corrUnitIso_inv_corrRestr`,
+  `whiskerLeft_derivedUnit_transportCounit`, `corrUnitIso_corrRestr_transportCounit`.
+  `TDA.Sheaf.BandAmplitude`: `whiskerRight_whiskerRight_restrictBounded`,
+  `whiskerLeft_restrictBounded_whiskerLeft`. `TDA.Sheaf.BandCompositionLaws`:
+  `eq_of_whiskerRight_boundedToPlus` is public. New module `TDA.Sheaf.BandCompositionUnit`:
+  `pr₁₂_q_add_zero`, `TCompCounitNT`, `TCompCounitNT_app`, `TCompCounitNT_eq`,
+  `whiskerRight_T0Iso_inv_TCompCounitNT`, `TComp_hom_TCompRestr`,
+  `whiskerRight_T0Iso_inv_TComp_hom`, `TCompOfEq_zero_left_hom`, `whiskerLeft_T0Iso_inv_TComp_hom`,
+  `TCompOfEq_zero_right_hom`, `restr_eqToHom`, `hcomp_aug_TComp_hom`,
+  `compIsoB_TCompOfEq_zero_left_hom`, `compIsoB_TCompOfEq_zero_right_hom`. Fixtures in the new
+  module `TDA.Sheaf.BandCompositionUnitExamples`: `TCompOfEq_zero_left_one`,
+  `TCompOfEq_zero_right_one`, `not_isZero_H0_stalk_TT_zero_one`, `not_isZero_H0_stalk_TT_one_zero`,
+  `hcomp_aug_TComp_constOn`, `compIsoB_TCompOfEq_zero_left_one`.
 
 ## v0.5.0
 
