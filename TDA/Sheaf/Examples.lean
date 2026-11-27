@@ -30,3 +30,5 @@ import TDA.Sheaf.RealIntervalSetsExamples
 import TDA.Sheaf.RealConstructibleRefinementExamples
 import TDA.Sheaf.BandCompositionLawsExamples
 import TDA.Sheaf.ClientExamples
+import TDA.Sheaf.BandThickeningExamples
+import TDA.Sheaf.RealIntervalSectionsExamples

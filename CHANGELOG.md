@@ -1087,6 +1087,57 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `P : Type v` and `X : TopCat.{v}`, with values in `C : Type u` and `[Category.{v} C]`, in
   `TDA.Sheaf.StrictBasis` and `TDA.Sheaf.StrictBasisLocalization`; `SpaceTranslation X` takes
   `X : TopCat.{w}`. The ray and orthant statements are the case of universe `0`.
+- The thickening formula for the degree-zero part of the band functors (#1184, part U1). In
+  `TDA.Sheaf.StalkPullback`: `pullbackUnitRes`, the adjunction unit of `f⁻¹ ⊣ f_*` on sections
+  over `B` followed by restriction to an open `W ≤ f⁻¹ B`, with `germ_pullbackUnitRes`,
+  `pullbackUnitRes_naturality`, `pullbackUnitRes_naturality_assoc`, `pullbackUnitRes_map`,
+  `pullbackUnitRes_map_assoc`; `injective_pullbackUnitRes` when `f` maps `W` onto `B`;
+  `surjective_pullbackUnitRes`, `bijective_pullbackUnitRes` and `isIso_pullbackUnitRes` when
+  moreover `f` sends opens inside `W` to opens and has preconnected fibres `W ∩ f⁻¹ {y}`. In
+  `TDA.Sheaf.RightDerivedHomology`: `singlePlusFunctor`, `singleFunctorIsoCompQPlus`,
+  `singlePlusFunctorCompIso`, `singleRightDerivedFunctorPlusComparison`,
+  `singleRightDerivedFunctorPlusComparison_app`, the instance
+  `isIso_singleRightDerivedFunctorPlusComparison` for an exact functor,
+  `singleRightDerivedFunctorPlusIso`; `quasiIsoAt_zero_map_of_preservesFiniteLimits`,
+  `isIso_homologyFunctor_map_rightDerivedFunctorPlusUnit_app`,
+  `singleFunctorCompHomologyFunctorIsoPlus`, `toHomologyZeroRightDerivedSingle`,
+  `toHomologyZeroRightDerivedSingle_app`, the instance `isIso_toHomologyZeroRightDerivedSingle`,
+  and `homologyZeroRightDerivedSingleIso : H⁰(RF(X[0])) ≅ F X` for a left exact `F`, with
+  `homologyZeroRightDerivedSingleIso_inv`. In the new module `TDA.Sheaf.BandThickening`:
+  `BandConvolution.bandOpen`, `mem_bandOpen`, `bandOpen_zero`, `le_bandOpen`, `bandOpen_mono`,
+  `bandOpen_mono_right`, `ordConnected_bandOpen`, `coe_bandOpen_Ioo`, `tube_le_bandOpen`,
+  `exists_mem_tube`, `isOpenMap_p`, `isPreconnected_tube_fibre`, `thickening`,
+  `thickeningSectionsIso : (thickening k ε F)(U) ≅ F(bandOpen ε U)` for order-connected `U`,
+  `thickeningSectionsIso_inv`, `thickeningSectionsIso_inv_naturality`,
+  `thickeningSectionsIso_inv_naturality_assoc`, `thickeningSectionsIso_hom_naturality`,
+  `thickeningSectionsIso_hom_naturality_assoc`, `thickeningSectionsNatIso`,
+  `thickeningSectionsNatIso_app`, `thickeningSectionsIso_inv_map`,
+  `thickeningSectionsIso_inv_map_assoc`, `thickeningSectionsIso_hom_map`,
+  `thickeningSectionsIso_hom_map_assoc`, `H0TIso : H⁰ ∘ T k ε ∘ (-)[0] ≅ thickening k ε`
+  and `H0TIso_inv_app`, and `H0TSectionsIso : H⁰(T k ε (F[0]))(U) ≅ F(bandOpen ε U)`. Fixtures
+  in the new module `TDA.Sheaf.BandThickeningExamples`:
+  `ordConnected_ioo`, `bandOpen_one_ioo`, `bandOpen_zero_ioo`, `bandOpen_one_ioo_quarter`,
+  `thickeningSectionsIoo`, `H0TSectionsIoo`, `ioo_quarter_le`, `thickeningSectionsIoo_map`,
+  `thickeningSectionsIoo_naturality`.
+- Sections of interval sheaves over convex opens of the real line (#1184, part U2). In the new
+  module `TDA.Sheaf.RealIntervalSections`:
+  `RealStratification.eq_or_arrow_of_mem_star_of_mem_stratum`;
+  `RealConstructible.isIso_germ_star_extension_interval`, `injective_germ_extension_interval`,
+  `surjective_germ_extension_interval`, `isIso_germ_extension_interval` (case (a): the germ
+  `Φ(J)(U) ⟶ Φ(J)_x` is an isomorphism for order-connected `U` with `closure I ∩ U ⊆ I` and
+  `x ∈ U ∩ I`), `isZero_sections_extension_interval_of_inter_eq_empty`,
+  `isZero_sections_extension_interval_of_mem_closure`, `isZero_sections_extension_interval`
+  (case (b)), `finrank_sections_extension_interval_eq_one`,
+  `finrank_sections_extension_interval_eq_zero` and `isIso_map_extension_interval`. Fixtures in
+  the new module `TDA.Sheaf.RealIntervalSectionsExamples`: `Joo`, `intervalSet_q2_Jco`,
+  `intervalSet_q2_Joo`, `mem_ioo`, `finrank_pointSheaf_ioo_neg_one_one`,
+  `finrank_pointSheaf_ioo_one_two`, `sheafJco`, `closure_Jco_inter_subset`,
+  `finrank_Jco_ioo_neg_one_one`, `finrank_Jco_ioo_neg_one_two`, `isIso_Jco_restrict`, `sheafJoo`,
+  `closure_Joo_inter_subset`, `finrank_Joo_ioo_quarter`, `zero_mem_closure_Joo`,
+  `finrank_Joo_ioo_neg_one_half`, `not_isIso_Joo_restrict`, `finrank_thickening_pointSheaf_ioo`,
+  `bandOpen_one_ioo_two_three`, `finrank_thickening_pointSheaf_ioo_two_three`,
+  `finrank_thickening_Joo_ioo_quarter`, `bandOpen_eighth_ioo_quarter`,
+  `finrank_thickening_eighth_Joo_ioo_quarter`, `finrank_thickening_wholeLineSheaf_ioo`.
 
 ## v0.5.0
 
