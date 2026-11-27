@@ -21,7 +21,8 @@ vertex `2i+1` is the point `p_i`.
   ordered by specialisation.
 * For a finite set `S ⊆ ℝ`, `IsBasicOpen S U` says that `U` is a nonempty order-connected open
   set meeting `S` in at most one point. These opens form a basis (`isBasis_basicOpen`) that is
-  closed under nonempty intersections (`IsBasicOpen.inf`). `BasicCat S` is the full
+  closed under nonempty intersections (`IsBasicOpen.inf`); a basic open for `S'` is basic for
+  every `S ⊆ S'` (`IsBasicOpen.anti`). `BasicCat S` is the full
   subcategory of `Opens realLine` on them, and `basicTopology S` is the Grothendieck topology
   that the inclusion `basicIncl S` induces from the topology of `realLine`.
 * `star p v` is the cell `2j` itself, or the open star `(p_{i-1}, p_{i+1})` of the point
@@ -161,6 +162,11 @@ theorem IsBasicOpen.inf {S : Finset ℝ} {U V : Opens realLine} (hU : IsBasicOpe
     exact hU.2.1.inter hV.2.1
   · rw [Opens.coe_inf]
     exact hU.2.2.anti (Set.inter_subset_inter_left _ Set.inter_subset_left)
+
+/-- A basic open for a finite set `S'` is basic for every subset `S ⊆ S'`. -/
+theorem IsBasicOpen.anti {S S' : Finset ℝ} (h : S ⊆ S') {U : Opens realLine}
+    (hU : IsBasicOpen S' U) : IsBasicOpen S U :=
+  ⟨hU.1, hU.2.1, hU.2.2.anti (Set.inter_subset_inter_right _ (Finset.coe_subset.2 h))⟩
 
 /-- The basic opens, as a type. -/
 abbrev Basic (S : Finset ℝ) := {U : Opens realLine // IsBasicOpen S U}

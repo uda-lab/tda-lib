@@ -14,7 +14,10 @@ t-structure (`K.IsGE a`, `K.IsLE b`).
 
 * `HasConstructibleCohomology k p K`: every cohomology sheaf `Hⁱ K` is constructible for the
   breakpoints of `p` (D1's `IsConstructible`); it is invariant under isomorphism
-  (`HasConstructibleCohomology.of_iso`).
+  (`HasConstructibleCohomology.of_iso`) and monotone in the breakpoints
+  (`HasConstructibleCohomology.mono`). `hasConstructibleCohomology_of_isConstructible`: cohomology
+  sheaves constructible for their own breakpoint sets, finitely many nonzero, give constructible
+  cohomology for any `p` whose breakpoints contain all of these sets.
 * `exists_iso_biproduct_homology_of_constructible`: such a `K` with cohomology in `[a, b]` is
   `⨁_{i ∈ [a, b]} (Hⁱ K)[-i]`. This is `exists_iso_biproduct_homology_of_two_le` with the
   vanishing `Ext^{≥ 2}` between constructible sheaves (`ext_constructible_eq_zero_of_two_le`).
@@ -142,6 +145,14 @@ theorem HasConstructibleCohomology.of_iso
     (hK : HasConstructibleCohomology k p K) : HasConstructibleCohomology k p L :=
   fun i => isConstructible_of_iso ((homologyFunctor _ i).mapIso e) (hK i)
 
+/-- **Constructible cohomology is monotone in the breakpoints**: if the breakpoints of `p` are
+among those of `q`, cohomology constructible for `p` is constructible for `q`. -/
+theorem HasConstructibleCohomology.mono {m' : ℕ} {q : Fin m' → ℝ}
+    (hpq : breakpoints p ⊆ breakpoints q)
+    {K : DerivedCategory (TopCat.Sheaf (ModuleCat.{0} k) realLine)}
+    (hK : HasConstructibleCohomology k p K) : HasConstructibleCohomology k q K :=
+  fun i => (hK i).mono hpq
+
 variable (k)
 
 /-- A constructible sheaf placed in one degree has constructible cohomology. -/
@@ -164,6 +175,19 @@ theorem hasConstructibleCohomology_biproduct (hp : StrictMono p) (S : Finset ℤ
       (isConstructible_barcodeSheaf k hp (B i))
   · exact isConstructible_of_isZero k hp
       (isZero_homology_biproduct_single S (fun x => barcodeSheaf k hp (B x)) hi)
+
+/-- **Breakpoints per degree.** If the cohomology of `K` vanishes outside a finite set `T` of
+degrees and every `Hⁱ K` with `i ∈ T` is constructible for its own finite set `S i`, contained in
+the breakpoints of `p`, then `K` has constructible cohomology for the breakpoints of `p`. -/
+theorem hasConstructibleCohomology_of_isConstructible (hp : StrictMono p)
+    {K : DerivedCategory (TopCat.Sheaf (ModuleCat.{0} k) realLine)} (T : Finset ℤ)
+    (S : ℤ → Finset ℝ) (hS : ∀ i ∈ T, S i ⊆ breakpoints p)
+    (hK : ∀ i ∈ T, IsConstructible (S i) ((homologyFunctor _ i).obj K))
+    (hz : ∀ i ∉ T, IsZero ((homologyFunctor _ i).obj K)) : HasConstructibleCohomology k p K :=
+  fun i => by
+    by_cases hi : i ∈ T
+    · exact (hK i hi).mono (hS i hi)
+    · exact isConstructible_of_isZero k hp (hz i hi)
 
 /-- **Splitting.** An object of the derived category of sheaves of `k`-modules on `ℝ` with
 cohomology in `[a, b]`, all constructible for the breakpoints of `p`, is the direct sum

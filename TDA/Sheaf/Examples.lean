@@ -26,3 +26,5 @@ import TDA.Sheaf.IntervalFibrationExamples
 import TDA.Sheaf.BandCompositionExamples
 import TDA.Sheaf.HereditarySplittingExamples
 import TDA.Sheaf.RealConstructibleDerivedExamples
+import TDA.Sheaf.RealIntervalSetsExamples
+import TDA.Sheaf.RealConstructibleRefinementExamples
