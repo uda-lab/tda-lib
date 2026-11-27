@@ -2,12 +2,12 @@ import Mathlib.Algebra.Homology.DerivedCategory.SingleTriangle
 import TDA.Sheaf.BandIntervalFibreCohomology
 
 /-!
-# Degree-one convolution stalks of real interval sheaves
+# Degree-one convolution of real interval sheaves
 
 For a bounded open interval, the long exact sequence identifies degree-one convolution with
 the cokernel of degree-zero convolution of the restriction from the closed interval to the
 pair of endpoint sheaves. On the overlap of the two convolved endpoint supports, the
-cokernel has a one-dimensional stalk.
+cokernel is the interval sheaf of the closed overlap.
 -/
 
 noncomputable section
@@ -528,6 +528,345 @@ theorem nonempty_iso_stalk_H1T_interval (hp : StrictMono p) (J : FiniteInterval 
   let eQ : (↑(st.obj (H₀.obj (S.map E).X₃)) ⧸ f.hom.range) ≃ₗ[k] k :=
     LinearEquiv.ofFinrankEq _ _ (by simpa using hq)
   exact ⟨ec ≪≫ eq ≪≫ eQ.toModuleIso⟩
+
+omit [HasDerivedCategory (realLine.Sheaf (ModuleCat k))]
+  [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+private theorem isConstructible_biprod {n : ℕ} {q : Fin n → ℝ} (hq : StrictMono q)
+    {A B : realLine.Sheaf (ModuleCat k)} (hA : IsConstructible (breakpoints q) A)
+    (hB : IsConstructible (breakpoints q) B) : IsConstructible (breakpoints q) (A ⊞ B) := by
+  let E := extension k hq
+  let a := (sections k q).obj A
+  let b := (sections k q).obj B
+  let eA : A ≅ E.obj a := (sectionsExtensionIso k hq).app ⟨A, hA⟩
+  let eB : B ≅ E.obj b := (sectionsExtensionIso k hq).app ⟨B, hB⟩
+  have := preservesBinaryBiproducts_of_preservesBiproducts E
+  refine isConstructible_of_iso ((E.mapBiprod a b).trans (biprod.mapIso eA.symm eB.symm))
+    (isConstructible_extension k hq fun v => ?_)
+  let ev := (evaluation _ (ModuleCat k)).obj v
+  have := preservesBinaryBiproducts_of_preservesBiproducts ev
+  have : FiniteDimensional k (ev.obj a) := finiteDimensional_sections k hq hA v
+  have : FiniteDimensional k (ev.obj b) := finiteDimensional_sections k hq hB v
+  have : FiniteDimensional k ((ev.obj a) × (ev.obj b)) := inferInstance
+  exact ((ev.mapBiprod a b) ≪≫ ModuleCat.biprodIsoProd _ _).toLinearEquiv.symm.finiteDimensional
+
+omit [HasDerivedCategory (realLine.Sheaf (ModuleCat k))]
+  [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+private theorem isConstructible_cokernel {n : ℕ} {q : Fin n → ℝ} (hq : StrictMono q)
+    {A B : realLine.Sheaf (ModuleCat k)} (f : A ⟶ B)
+    (hA : IsConstructible (breakpoints q) A) (hB : IsConstructible (breakpoints q) B) :
+    IsConstructible (breakpoints q) (cokernel f) := by
+  let E := extension k hq
+  let Γ := sections k q
+  let eA : A ≅ E.obj (Γ.obj A) := (sectionsExtensionIso k hq).app ⟨A, hA⟩
+  let eB : B ≅ E.obj (Γ.obj B) := (sectionsExtensionIso k hq).app ⟨B, hB⟩
+  let g := Γ.map f
+  have hn : f ≫ eB.hom = eA.hom ≫ E.map g :=
+    (sectionsExtensionIso k hq).hom.naturality
+      (show (⟨A, hA⟩ : Constructible k q) ⟶ ⟨B, hB⟩ from ObjectProperty.homMk f)
+  refine isConstructible_of_iso
+    ((PreservesCokernel.iso E g).trans (cokernel.mapIso f (E.map g) eA eB hn).symm)
+    (isConstructible_extension k hq fun v => ?_)
+  let ev := (evaluation _ (ModuleCat k)).obj v
+  have : FiniteDimensional k (ev.obj (Γ.obj B)) := finiteDimensional_sections k hq hB v
+  exact ((PreservesCokernel.iso ev g) ≪≫
+    ModuleCat.cokernelIsoRangeQuotient (ev.map g)).toLinearEquiv.symm.finiteDimensional
+
+omit [HasDerivedCategory (realLine.Sheaf (ModuleCat k))]
+  [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+private theorem isIso_section_restriction_biprod {A B : realLine.Sheaf (ModuleCat k)}
+    {V U : Opens realLine} (h : V ≤ U)
+    [IsIso (A.presheaf.map (homOfLE h).op)] [IsIso (B.presheaf.map (homOfLE h).op)] :
+    IsIso ((A ⊞ B : realLine.Sheaf (ModuleCat k)).presheaf.map (homOfLE h).op) := by
+  let ev (W : Opens realLine) : realLine.Sheaf (ModuleCat k) ⥤ ModuleCat k :=
+    sheafToPresheaf (Opens.grothendieckTopology realLine) (ModuleCat k) ⋙
+      (evaluation _ _).obj (op W)
+  let e (W : Opens realLine) : (ev W).obj (A ⊞ B) ≅ (ev W).obj A ⊞ (ev W).obj B := by
+    have : (ev W).Additive := ⟨fun {_ _} _ _ => rfl⟩
+    letI := preservesBinaryBiproducts_of_preservesBiproducts (ev W)
+    exact (ev W).mapBiprod A B
+  have he : (A ⊞ B : realLine.Sheaf (ModuleCat k)).presheaf.map (homOfLE h).op ≫ (e V).hom =
+      (e U).hom ≫ biprod.map (A.presheaf.map (homOfLE h).op) (B.presheaf.map (homOfLE h).op) := by
+    apply biprod.hom_ext
+    · simp only [e, Functor.mapBiprod_hom, Category.assoc, biprod.lift_fst]
+      erw [biprod.map_fst, biprod.lift_fst_assoc]
+      let π : A ⊞ B ⟶ A := biprod.fst
+      change (A ⊞ B : realLine.Sheaf (ModuleCat k)).presheaf.map (homOfLE h).op ≫
+        π.hom.app (op V) = π.hom.app (op U) ≫ A.presheaf.map (homOfLE h).op
+      exact π.hom.naturality (homOfLE h).op
+    · simp only [e, Functor.mapBiprod_hom, Category.assoc, biprod.lift_snd]
+      erw [biprod.map_snd, biprod.lift_snd_assoc]
+      let π : A ⊞ B ⟶ B := biprod.snd
+      change (A ⊞ B : realLine.Sheaf (ModuleCat k)).presheaf.map (homOfLE h).op ≫
+        π.hom.app (op V) = π.hom.app (op U) ≫ B.presheaf.map (homOfLE h).op
+      exact π.hom.naturality (homOfLE h).op
+  have hi : IsIso ((A ⊞ B : realLine.Sheaf (ModuleCat k)).presheaf.map
+      (homOfLE h).op ≫ (e V).hom) := by
+    rw [he]
+    exact IsIso.comp_isIso' (e U).isIso_hom ((biprod.mapIso
+      (asIso (A.presheaf.map (homOfLE h).op)) (asIso (B.presheaf.map (homOfLE h).op))).isIso_hom)
+  exact IsIso.of_isIso_comp_right _ (e V).hom
+
+omit [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+private theorem isIso_H0T_restriction_of_mem (hp : StrictMono p)
+    (J : FiniteInterval (2 * m + 1)) {ε : ℝ} (hε : 0 ≤ ε)
+    (hc : IsClosed (intervalSet p J)) {V U : Opens realLine}
+    (h : V ≤ U) (hV : (V : Set ℝ).OrdConnected) (hU : (U : Set ℝ).OrdConnected)
+    {x : ℝ} (hx : x ∈ (V : Set ℝ) ∩ outSet0 ε (intervalSet p J)) :
+    IsIso (((H[k,ε,0]).obj ((extension k hp).obj (interval _ J))).presheaf.map
+      (homOfLE h).op) := by
+  let F := (extension k hp).obj (interval _ J)
+  obtain ⟨z, hzI, hz⟩ := hx.2.1
+  have hzV : z ∈ bandOpen ε V := by
+    refine ⟨x, hx.1, ?_⟩
+    rw [Real.dist_eq, abs_le]
+    exact ⟨by linarith [hz.1], by linarith [hz.2]⟩
+  have hclosed {W : Opens realLine} : closure (intervalSet p J) ∩ W ⊆ intervalSet p J :=
+    fun _ hz => hc.closure_eq ▸ hz.1
+  have := isIso_map_extension_interval k hp J (bandOpen_mono_right ε h)
+    (ordConnected_bandOpen ε hV) (ordConnected_bandOpen ε hU) hclosed hclosed hzV hzI
+  have hi : IsIso (((H[k,ε,0]).obj F).presheaf.map (homOfLE h).op ≫
+      (H0TSectionsIso k ε F V hV).hom) := by
+    rw [H0TSectionsIso_hom_map hε F h hV hU]
+    infer_instance
+  exact IsIso.of_isIso_comp_right _ (H0TSectionsIso k ε F V hV).hom
+
+private theorem nonempty_iso_H1T_interval_shifted (hp : StrictMono p)
+    (J : FiniteInterval (2 * m + 1)) {ε : ℝ} (hε : 0 ≤ ε)
+    (hne : (outSet1 ε (intervalSet p J)).Nonempty)
+    (K : FiniteInterval (2 * (bandBreakpoints p ε).card + 1))
+    (hK : intervalSet (sortedBreakpoints (bandBreakpoints p ε)) K =
+      outSet1 ε (intervalSet p J)) :
+    Nonempty ((H[k,ε,1]).obj ((extension k hp).obj (interval _ J)) ≅
+      (extension k (strictMono_sortedBreakpoints _)).obj (interval _ K)) := by
+  obtain ⟨i, j, hij, hJ⟩ := exists_open_endpoints hp J hne
+  have hJ' : J = openSegment hij := by
+    apply eq_of_alive_iff
+    intro v
+    obtain ⟨x, hx⟩ := stratum_nonempty hp v
+    rw [← mem_intervalSet_iff_alive hx, ← mem_intervalSet_iff_alive hx, hJ,
+      intervalSet_eq_Ioo hp (J := openSegment hij) rfl rfl]
+  subst J
+  let q := sortedBreakpoints (bandBreakpoints p ε)
+  let hq : StrictMono q := strictMono_sortedBreakpoints _
+  let E := extension k hp
+  let H₀ := H[k,ε,0]
+  let H₁ := H[k,ε,1]
+  let S := endpointSequence (k := k) hij
+  let F := H₁.obj (S.map E).X₁
+  let B := H₀.obj (S.map E).X₃
+  let L := H₀.obj (E.obj (interval _ (endpoint i)))
+  let R := H₀.obj (E.obj (interval _ (endpoint j)))
+  have ha : intervalSet p (closedSegment hij) = Set.Icc (p i) (p j) :=
+    intervalSet_eq_Icc hp rfl rfl
+  have hl : intervalSet p (endpoint i) = {p i} := intervalSet_eq_singleton hp rfl rfl
+  have hr : intervalSet p (endpoint j) = {p j} := intervalSet_eq_singleton hp rfl rfl
+  have hclosed : IsClosed (intervalSet q K) := by
+    rw [hK, hJ, outSet1_Ioo hε (hp hij)]
+    exact isClosed_Icc
+  have hSES : (S.map E).ShortExact := (endpointSequence_shortExact (k := k) hij).map_of_exact E
+  obtain ⟨δ, hδ, ⟨hc⟩⟩ := exists_H1T_isCokernel ε hSES (by
+    apply isZero_H1T_interval hp (closedSegment hij) hε
+    rw [ha, outSet1_Icc hε (hp hij).le])
+  have := preservesBinaryBiproducts_of_preservesBiproducts E
+  have := preservesBinaryBiproducts_of_preservesBiproducts H₀
+  let e : B ≅ L ⊞ R := H₀.mapIso (E.mapBiprod _ _) ≪≫ H₀.mapBiprod _ _
+  have con (I : FiniteInterval (2 * m + 1)) :
+      IsConstructible (breakpoints q) (H₀.obj (E.obj (interval _ I))) := by
+    rw [breakpoints_sortedBreakpoints]
+    exact isConstructible_H0T_interval hp I hε
+  have hB : IsConstructible (breakpoints q) B :=
+    isConstructible_of_iso e.symm (isConstructible_biprod hq (con _) (con _))
+  have hF : IsConstructible (breakpoints q) F :=
+    isConstructible_of_iso ((cokernelIsCokernel _).coconePointUniqueUpToIso hc)
+      (isConstructible_cokernel hq _ (con _) hB)
+  have hG := isConstructible_extension k hq (M := interval _ K) (fun _ => inferInstance)
+  have hrel {U : Opens realLine} : closure (intervalSet q K) ∩ U ⊆ intervalSet q K :=
+    fun _ hx => hclosed.closure_eq ▸ hx.1
+  -- The representing germ reads the quotient on each basic open.
+  have sectionsAt {U : Opens realLine} (hU : IsBasicOpen (breakpoints q) U) :
+      ∃ (x : ℝ) (hx : x ∈ U), IsIso (F.presheaf.germ U x hx) ∧
+        (MeetsClosed (intervalSet q K) U ↔ x ∈ intervalSet q K) ∧ Epi (δ.hom.app (op U)) := by
+    obtain ⟨x, hx, hxs⟩ := exists_mem_inter_subset hU
+    have hg := isIso_germ_of_isConstructible hF hU hx hxs
+    refine ⟨x, hx, hg, ⟨fun hm => ?_, fun h => ⟨hrel, ⟨x, hx, h⟩⟩⟩, ?_⟩
+    · by_contra hn
+      obtain ⟨y, hy, hyK⟩ := hm.2
+      let G := (extension k hq).obj (interval _ K)
+      have := isIso_germ_of_isConstructible hG hU hx hxs
+      have := isIso_germ_extension_interval k hq K hU.2.1 hrel hy hyK
+      have hz' := (isZero_stalk_extension_interval k hq hn).of_iso
+        ((asIso (G.presheaf.germ U y hy)).symm ≪≫ asIso (G.presheaf.germ U x hx))
+      obtain ⟨ey⟩ := nonempty_stalk_extension_interval_iso k hq hyK
+      exact zero_ne_one ((ModuleCat.isZero_iff_subsingleton.1 (hz'.of_iso ey.symm)).elim
+        (0 : k) (1 : k))
+    · let st := TopCat.Sheaf.forget (ModuleCat k) realLine ⋙
+        TopCat.Presheaf.stalkFunctor (X := realLine) (ModuleCat k) x
+      have hepi : Epi δ := ⟨fun _ _ he => Cofork.IsColimit.hom_ext hc he⟩
+      have hst : Epi (st.map δ) := st.map_epi δ
+      have hBg : IsIso (B.presheaf.germ U x hx) :=
+        isIso_germ_of_isConstructible hB hU hx hxs
+      apply (epi_comp_iff_of_isIso _ (F.presheaf.germ U x hx)).mp
+      rw [← TopCat.Presheaf.stalkFunctor_map_germ U x hx δ.hom]
+      change Epi (B.presheaf.germ U x hx ≫ st.map δ)
+      exact epi_comp' (IsIso.epi_of_iso _) hst
+  refine nonempty_iso_extension_interval_of_sections hq F K ?_ ?_ ?_
+  · intro U hU h
+    obtain ⟨x, hx, hg, hmem, _⟩ := sectionsAt hU
+    obtain ⟨ex⟩ := nonempty_iso_stalk_H1T_interval (k := k) hp _ hε (hK ▸ hmem.mp h)
+    exact ⟨asIso (F.presheaf.germ U x hx) ≪≫ ex⟩
+  · intro U hU h
+    obtain ⟨x, hx, hg, hmem, _⟩ := sectionsAt hU
+    have hz : IsZero (F.presheaf.stalk x) :=
+      isZero_stalk_H1T_interval hp _ hε (fun hx => h (hmem.mpr (hK.symm ▸ hx)))
+    exact hz.of_iso (asIso (F.presheaf.germ U x hx))
+  · intro V U h hV hU hv hu
+    obtain ⟨x, hx, hxK⟩ := hv.2
+    have hwin : x ∈ Set.Icc (p j - ε) (p i + ε) := by
+      rw [show intervalSet q K = _ from hK, hJ, outSet1_Ioo hε (hp hij)] at hxK
+      exact hxK
+    have hL : x ∈ outSet0 ε (intervalSet p (endpoint i)) := by
+      rw [hl, outSet0_singleton hε]
+      exact ⟨by linarith [hwin.1, hp hij], hwin.2⟩
+    have hR : x ∈ outSet0 ε (intervalSet p (endpoint j)) := by
+      rw [hr, outSet0_singleton hε]
+      exact ⟨hwin.1, by linarith [hwin.2, hp hij]⟩
+    have := isIso_H0T_restriction_of_mem (k := k) hp (endpoint i) hε (hl.symm ▸ isClosed_singleton)
+      h hV.2.1 hU.2.1 ⟨hx, hL⟩
+    have := isIso_H0T_restriction_of_mem (k := k) hp (endpoint j) hε (hr.symm ▸ isClosed_singleton)
+      h hV.2.1 hU.2.1 ⟨hx, hR⟩
+    -- Restriction on the endpoint pair induces a surjection on its one-dimensional quotient.
+    have hi := isIso_section_restriction_biprod (A := L) (B := R) h
+    let f := F.presheaf.map (homOfLE h).op
+    have hiB : IsIso (B.presheaf.map (homOfLE h).op) := by
+      let ev (W : Opens realLine) := TopCat.Sheaf.forget (ModuleCat k) realLine ⋙
+        (evaluation _ _).obj (op W)
+      let eU := (ev U).mapIso e
+      let eV := (ev V).mapIso e
+      have he : IsIso (B.presheaf.map (homOfLE h).op ≫ eV.hom) := by
+        change IsIso (B.presheaf.map (homOfLE h).op ≫ e.hom.hom.app (op V))
+        rw [e.hom.hom.naturality]
+        exact IsIso.comp_isIso' eU.isIso_hom hi
+      exact @IsIso.of_isIso_comp_right (ModuleCat k) _ _ _ _ _ eV.hom eV.isIso_hom he
+    obtain ⟨xU, hxU, hgU, hmemU, _⟩ := sectionsAt hU
+    obtain ⟨xV, hxV, hgV, hmemV, hδV⟩ := sectionsAt hV
+    have hn := δ.hom.naturality (homOfLE h).op
+    have : Epi (δ.hom.app (op U) ≫ f) := hn ▸
+      epi_comp' (IsIso.epi_of_iso (B.presheaf.map (homOfLE h).op)) hδV
+    have hf : Epi f := epi_of_epi (δ.hom.app (op U)) f
+    obtain ⟨eU⟩ := nonempty_iso_stalk_H1T_interval (k := k) hp _ hε (hK ▸ hmemU.mp hu)
+    obtain ⟨eV⟩ := nonempty_iso_stalk_H1T_interval (k := k) hp _ hε (hK ▸ hmemV.mp hv)
+    let eu := asIso (F.presheaf.germ U xU hxU) ≪≫ eU
+    let ev := asIso (F.presheaf.germ V xV hxV) ≪≫ eV
+    have := eu.toLinearEquiv.symm.finiteDimensional
+    have := ev.toLinearEquiv.symm.finiteDimensional
+    have hs := (ModuleCat.epi_iff_surjective f).mp hf
+    exact (ConcreteCategory.isIso_iff_bijective f).2
+      ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank
+        (eu.toLinearEquiv.finrank_eq.trans ev.toLinearEquiv.finrank_eq.symm)).2 hs, hs⟩
+
+/-- A nonempty degree-one output yields an interval sheaf on the shifted stratification. -/
+theorem exists_intervalSheaf_H1T (hp : StrictMono p) (J : FiniteInterval (2 * m + 1))
+    {ε : ℝ} (hε : 0 ≤ ε) (hne : (outSet1 ε (intervalSet p J)).Nonempty) :
+    ∃ K : FiniteInterval (2 * (bandBreakpoints p ε).card + 1),
+      intervalSet (sortedBreakpoints (bandBreakpoints p ε)) K = outSet1 ε (intervalSet p J) ∧
+        Nonempty ((H[k,ε,1]).obj ((extension k hp).obj (interval _ J)) ≅
+          (extension k (strictMono_sortedBreakpoints _)).obj (interval _ K)) := by
+  obtain ⟨K, hK⟩ := exists_intervalSet_outSet1 hp J hε hne
+  exact ⟨K, hK, nonempty_iso_H1T_interval_shifted hp J hε hne K hK⟩
+
+/-- Degree-one convolution is isomorphic to the interval sheaf of any realization of its
+output set. -/
+theorem nonempty_iso_H1T_interval (hp : StrictMono p) (J : FiniteInterval (2 * m + 1))
+    {ε : ℝ} (hε : 0 ≤ ε) {n : ℕ} {q : Fin n → ℝ} (hq : StrictMono q)
+    (K : FiniteInterval (2 * n + 1)) (hK : intervalSet q K = outSet1 ε (intervalSet p J)) :
+    Nonempty ((H[k,ε,1]).obj ((extension k hp).obj (interval _ J)) ≅
+      (extension k hq).obj (interval _ K)) := by
+  have hn : (outSet1 ε (intervalSet p J)).Nonempty := by
+    rw [← hK]
+    let v : Fin (2 * n + 1) := ⟨K.birth, K.birth_lt_death.trans_le K.death_le_size⟩
+    obtain ⟨x, hx⟩ := stratum_nonempty hq v
+    exact ⟨x, (mem_intervalSet_iff_alive hx).2 ⟨le_rfl, K.birth_lt_death⟩⟩
+  obtain ⟨L, hL, ⟨e⟩⟩ := exists_intervalSheaf_H1T (k := k) hp J hε hn
+  let r := sortedBreakpoints (bandBreakpoints p ε)
+  let h := strictMono_sortedBreakpoints (bandBreakpoints p ε)
+  have heq : intervalSet r L = intervalSet q K := hL.trans hK.symm
+  let G := (extension k h).obj (interval _ L)
+  have good {U : Opens realLine} :
+      MeetsClosed (intervalSet q K) U ↔ MeetsClosed (intervalSet r L) U := by rw [heq]
+  obtain ⟨e'⟩ := nonempty_iso_extension_interval_of_sections hq G K
+    (fun U hU hs => by
+      obtain ⟨x, hx, hxI⟩ := (good.mp hs).2
+      have := isIso_germ_extension_interval k h L hU.2.1 (good.mp hs).1 hx hxI
+      exact ⟨asIso (G.presheaf.germ U x hx) ≪≫
+        (nonempty_stalk_extension_interval_iso k h hxI).some⟩)
+    (fun U hU hs => isZero_sections_extension_interval k h L hU.2.1 (mt good.mpr hs))
+    (fun {_ _} _ hV hU hv hu => by
+      obtain ⟨x, hx, hxI⟩ := (good.mp hv).2
+      exact isIso_map_extension_interval k h L _ hV.2.1 hU.2.1
+        (good.mp hv).1 (good.mp hu).1 hx hxI)
+  exact ⟨e ≪≫ e'⟩
+
+/-- Degree-one convolution of an interval sheaf is constructible for the shifted breakpoints. -/
+theorem isConstructible_H1T_interval (hp : StrictMono p) (J : FiniteInterval (2 * m + 1))
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    IsConstructible (bandBreakpoints p ε) ((H[k,ε,1]).obj
+      ((extension k hp).obj (interval _ J))) := by
+  rw [← breakpoints_sortedBreakpoints (bandBreakpoints p ε)]
+  rcases (outSet1 ε (intervalSet p J)).eq_empty_or_nonempty with he | hn
+  · exact isConstructible_of_isZero k (strictMono_sortedBreakpoints _)
+      (isZero_H1T_interval hp J hε he)
+  · obtain ⟨_, _, ⟨e⟩⟩ := exists_intervalSheaf_H1T (k := k) hp J hε hn
+    exact isConstructible_of_iso e.symm
+      (isConstructible_extension k (strictMono_sortedBreakpoints _) fun _ => inferInstance)
+
+/-- Convolution of an interval sheaf has constructible cohomology for the shifted breakpoints. -/
+theorem hasConstructibleCohomology_T_interval (hp : StrictMono p)
+    (J : FiniteInterval (2 * m + 1)) {ε : ℝ} (hε : 0 ≤ ε) :
+    HasConstructibleCohomology k (sortedBreakpoints (bandBreakpoints p ε))
+      (Plus.ι.obj ((T k ε).obj ((Plus.singleFunctor _ 0).obj
+        ((extension k hp).obj (interval _ J))))) := by
+  intro d
+  rcases eq_or_ne d 0 with rfl | h₀
+  · rw [breakpoints_sortedBreakpoints]
+    exact isConstructible_H0T_interval hp J hε
+  rcases eq_or_ne d 1 with rfl | h₁
+  · rw [breakpoints_sortedBreakpoints]
+    exact isConstructible_H1T_interval hp J hε
+  exact isConstructible_of_isZero k (strictMono_sortedBreakpoints _)
+    (isZero_homology_T_single ε hε _ d (by omega))
+
+/-- Convolution of a constructible sheaf placed in degree zero has constructible cohomology
+for the shifted breakpoints. -/
+theorem hasConstructibleCohomology_T (hp : StrictMono p) {ε : ℝ} (hε : 0 ≤ ε)
+    {F : realLine.Sheaf (ModuleCat k)} (hF : IsConstructible (breakpoints p) F) :
+    HasConstructibleCohomology k (sortedBreakpoints (bandBreakpoints p ε))
+      (Plus.ι.obj ((T k ε).obj ((Plus.singleFunctor _ 0).obj F))) := by
+  let M := (sections k p).obj F
+  have (v : Paths (Vertex (orient m))) := finiteDimensional_sections k hp hF v
+  obtain ⟨xs, ⟨e⟩⟩ := exists_decomposition (orient m) M
+  let eF : F ≅ intervalSheafSum k hp xs :=
+    (sectionsExtensionIso k hp).app ⟨F, hF⟩ ≪≫
+      (extension k hp).mapIso e ≪≫ extensionIntervalSumIso k hp xs
+  intro d
+  let G := H[k,ε,d]
+  have := preservesBinaryBiproducts_of_preservesBiproducts G
+  refine isConstructible_of_iso (G.mapIso eF).symm ?_
+  clear eF e
+  induction xs with
+  | nil =>
+    exact isConstructible_of_isZero k (strictMono_sortedBreakpoints _)
+      (G.map_isZero (isZero_zero _))
+  | cons J xs ih =>
+    exact isConstructible_of_iso (G.mapBiprod _ _).symm
+      (isConstructible_biprod (strictMono_sortedBreakpoints _)
+        (hasConstructibleCohomology_T_interval hp J hε d) ih)
 
 /-- Degree-one fibre cohomology has coefficient module `k` at every centre in the
 degree-one output set. -/

@@ -1977,3 +1977,9 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.exists_intervalSet_outSet1
 #print axioms TDA.Sheaf.BandConvolution.nonempty_iso_stalk_H1T_interval
 #print axioms TDA.Sheaf.BandConvolution.nonempty_iso_fibreCohomology_one_interval
+#print axioms TDA.Sheaf.RealConstructible.exists_mem_inter_subset
+#print axioms TDA.Sheaf.BandConvolution.exists_intervalSheaf_H1T
+#print axioms TDA.Sheaf.BandConvolution.nonempty_iso_H1T_interval
+#print axioms TDA.Sheaf.BandConvolution.isConstructible_H1T_interval
+#print axioms TDA.Sheaf.BandConvolution.hasConstructibleCohomology_T_interval
+#print axioms TDA.Sheaf.BandConvolution.hasConstructibleCohomology_T
