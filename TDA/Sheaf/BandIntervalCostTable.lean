@@ -1,12 +1,13 @@
 import TDA.Sheaf.BandMatchingIntervalCosts
+import TDA.Sheaf.BandDirectImageStability
 
 /-!
 # Numeric band costs for graded interval sheaves
 
 Deletion costs are determined by the endpoint types. A bounded half-open interval
 has deletion cost equal to half its length. Every other interval has infinite
-deletion cost. The pair table covers distinct degrees, bounded closed intervals
-in a common degree, and opposite half-open types in a common degree.
+deletion cost. The pair table computes the distance for all endpoint types
+and cohomological degrees.
 -/
 
 noncomputable section
@@ -317,6 +318,169 @@ theorem nonempty_iso_intervalSheaf_of_intervalSet_eq (hp : StrictMono p) (hq : S
   exact ⟨refineIntervalIso k hp hs hps J ≪≫
     (extension k hs).mapIso (eqToIso (congrArg (interval (k := k) (orient B.card)) he)) ≪≫
     (refineIntervalIso k hq hs hqs K).symm⟩
+
+private def intervalMove (a b c e x : ℝ) : ℝ :=
+  if x ≤ a then x - a + c else if b ≤ x then x - b + e
+  else c + (x - a) * ((e - c) / (b - a))
+
+private theorem intervalMove_strictMono {a b c e : ℝ} (hab : a < b) (hce : c < e) :
+    StrictMono (intervalMove a b c e) := by
+  have hs : 0 < (e - c) / (b - a) := div_pos (sub_pos.mpr hce) (sub_pos.mpr hab)
+  have he : (b - a) * ((e - c) / (b - a)) = e - c := by
+    field_simp [sub_ne_zero.mpr hab.ne']
+  intro x y hxy
+  unfold intervalMove
+  split_ifs <;> nlinarith [mul_pos (sub_pos.mpr hxy) hs]
+
+private theorem intervalMove_surjective {a b c e : ℝ} (hab : a < b) (hce : c < e) :
+    Function.Surjective (intervalMove a b c e) := by
+  intro y
+  by_cases hl : y ≤ c
+  · refine ⟨y - c + a, ?_⟩
+    unfold intervalMove
+    rw [ite_eq_left (by linarith)]
+    ring
+  by_cases hr : e ≤ y
+  · refine ⟨y - e + b, ?_⟩
+    unfold intervalMove
+    rw [ite_eq_right (by linarith), ite_eq_left (by linarith)]
+    ring
+  have hs : 0 < (b - a) / (e - c) := div_pos (sub_pos.mpr hab) (sub_pos.mpr hce)
+  have he : (e - c) * ((b - a) / (e - c)) = b - a := by
+    field_simp [sub_ne_zero.mpr hce.ne']
+  refine ⟨a + (y - c) * ((b - a) / (e - c)), ?_⟩
+  unfold intervalMove
+  rw [ite_eq_right (by nlinarith [mul_pos (sub_pos.mpr (lt_of_not_ge hl)) hs]),
+    ite_eq_right (by nlinarith [mul_pos (sub_pos.mpr (lt_of_not_ge hr)) hs])]
+  field_simp [sub_ne_zero.mpr hce.ne', sub_ne_zero.mpr hab.ne']
+  ring
+
+private def intervalMoveIso {a b c e : ℝ} (hab : a < b) (hce : c < e) : ℝ ≃o ℝ :=
+  (intervalMove_strictMono hab hce).orderIsoOfSurjective _ (intervalMove_surjective hab hce)
+
+private theorem intervalMoveIso_le {a b c e : ℝ} (hab : a < b) (hce : c < e) (x : ℝ) :
+    |x - intervalMoveIso hab hce x| ≤ max |a - c| |b - e| := by
+  change |x - intervalMove a b c e x| ≤ _
+  unfold intervalMove
+  split_ifs with h₁ h₂
+  · simpa only [show x - (x - a + c) = a - c by ring] using
+      le_max_left |a - c| |b - e|
+  · simpa only [show x - (x - b + e) = b - e by ring] using
+      le_max_right |a - c| |b - e|
+  let w := (x - a) / (b - a)
+  have hw : 0 ≤ w := div_nonneg (by linarith) (sub_nonneg.mpr hab.le)
+  have hw' : w ≤ 1 := (div_le_one (sub_pos.mpr hab)).2 (by linarith)
+  have hx : x - (c + (x - a) * ((e - c) / (b - a))) =
+      (1 - w) * (a - c) + w * (b - e) := by
+    dsimp [w]
+    field_simp [sub_ne_zero.mpr hab.ne']
+    ring
+  rw [hx]
+  apply (abs_add_le _ _).trans
+  rw [abs_mul, abs_mul, abs_of_nonneg (sub_nonneg.mpr hw'), abs_of_nonneg hw]
+  calc
+    _ ≤ (1 - w) * max |a - c| |b - e| + w * max |a - c| |b - e| :=
+      add_le_add (mul_le_mul_of_nonneg_left (le_max_left _ _) (sub_nonneg.mpr hw'))
+        (mul_le_mul_of_nonneg_left (le_max_right _ _) hw)
+    _ = _ := by ring
+
+private theorem mem_star_orderIso (u : ℝ ≃o ℝ) (v : Fin (2 * m + 1)) (x : ℝ) :
+    u x ∈ star (u ∘ p) v ↔ x ∈ star p v := by
+  change (∀ i : Fin m, (2 * i.val + 1 < v.val → u (p i) < u x) ∧
+    (v.val < 2 * i.val + 1 → u x < u (p i))) ↔
+      ∀ i : Fin m, (2 * i.val + 1 < v.val → p i < x) ∧ (v.val < 2 * i.val + 1 → x < p i)
+  simp only [OrderIso.lt_iff_lt]
+
+private abbrev orderHomeoHom (u : ℝ ≃o ℝ) : realLine ⟶ realLine :=
+  (TopCat.isoOfHomeo u.toHomeomorph).hom
+
+omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc a b)).Sheaf (ModuleCat k))] in
+private def pushforwardIntervalIso (u : ℝ ≃o ℝ) (hp : StrictMono p)
+    (J : FiniteInterval (2 * m + 1)) :
+    (TopCat.Sheaf.pushforward (ModuleCat k) (orderHomeoHom u)).obj ISh[hp,J] ≅
+      ISh[u.strictMono.comp hp,J] := by
+  let f := orderHomeoHom u
+  let F := ISh[hp,J]
+  let G := (TopCat.Sheaf.pushforward (ModuleCat k) f).obj F
+  let q' := u ∘ p
+  let hq' := u.strictMono.comp hp
+  let pre := f.frameHom
+  have hm (V : TopologicalSpace.Opens realLine) (x : ℝ) : x ∈ pre V ↔ u x ∈ V := Iff.rfl
+  have hb (x : ℝ) : x ∈ breakpoints p ↔ u x ∈ breakpoints q' := by
+    simp only [q', mem_breakpoints, Function.comp_apply, EquivLike.apply_eq_iff_eq]
+  have hbasic {V : TopologicalSpace.Opens realLine} (hV : IsBasicOpen (breakpoints q') V) :
+      IsBasicOpen (breakpoints p) (pre V) := by
+    obtain ⟨x, hx⟩ := hV.1
+    exact ⟨⟨u.symm x, (hm _ _).2 (by simpa only [OrderIso.apply_symm_apply])⟩,
+      hV.2.1.preimage_mono u.monotone,
+      fun x hx y hy => u.injective (hV.2.2 ⟨(hm _ _).1 hx.1, (hb _).1 hx.2⟩
+        ⟨(hm _ _).1 hy.1, (hb _).1 hy.2⟩)⟩
+  have hF := (isConstructible_iff (k := k)).1 (isConstructible_extension k hp
+    (M := interval (orient m) J) fun _ => inferInstance)
+  have hG : IsConstructible (breakpoints q') G := by
+    apply (isConstructible_iff (k := k)).2
+    refine ⟨?_, fun V hV => hF.2 _ (hbasic hV)⟩
+    intro U V hUV hU hV h
+    exact hF.1 (OrderHomClass.mono pre hUV) (hbasic hU) (hbasic hV) (by
+      ext x
+      change (x ∈ pre U ∧ x ∈ breakpoints p) ↔ (x ∈ pre V ∧ x ∈ breakpoints p)
+      have he := Set.ext_iff.1 h (u x)
+      change (u x ∈ U ∧ u x ∈ breakpoints q') ↔ (u x ∈ V ∧ u x ∈ breakpoints q') at he
+      simpa only [hm, hb] using he)
+  have hstar (v : Fin (2 * m + 1)) : pre (star q' v) = star p v := by
+    ext x
+    change x ∈ pre (star q' v) ↔ x ∈ star p v
+    exact (hm _ _).trans (mem_star_orderIso u v x)
+  let secIso : (sections k q').obj G ≅ (sections k p).obj F :=
+    isoMk (fun v => F.presheaf.mapIso (eqToIso (congrArg Opposite.op (hstar v))))
+      (fun e => by
+        rw [sections_map_gen, sections_map_gen]
+        change F.presheaf.map (homOfLE (OrderHomClass.mono pre (star_le_star_of_arrow q' e))).op ≫
+          F.presheaf.map _ = F.presheaf.map _ ≫
+            F.presheaf.map (homOfLE (star_le_star_of_arrow p e)).op
+        exact (F.presheaf.map_comp _ _).symm.trans
+          ((congrArg F.presheaf.map (Subsingleton.elim _ _)).trans (F.presheaf.map_comp _ _)))
+  exact (sectionsExtensionIso k hq').app ⟨G, hG⟩ ≪≫ (extension k hq').mapIso
+    (secIso ≪≫ (extensionSectionsIso k hp).app _)
+
+private theorem intervalSet_orderIso (u : ℝ ≃o ℝ) (J : FiniteInterval (2 * m + 1)) :
+    intervalSet (u ∘ p) J = u '' intervalSet p J := by
+  rw [u.image_eq_preimage_symm]
+  ext x
+  obtain ⟨y, rfl⟩ := u.surjective x
+  rw [Set.mem_preimage, u.symm_apply_apply]
+  constructor
+  · intro hy
+    obtain ⟨v, hv, hz⟩ := mem_intervalSet.mp hy
+    exact mem_intervalSet.mpr ⟨v, hv, (mem_star_orderIso u v y).mp hz.1,
+      fun i hi => u.injective (hz.2 i hi)⟩
+  · intro hy
+    obtain ⟨v, hv, hz⟩ := mem_intervalSet.mp hy
+    exact mem_intervalSet.mpr ⟨v, hv, (mem_star_orderIso u v y).mpr hz.1,
+      fun i hi => congrArg u (hz.2 i hi)⟩
+
+private theorem distance_le_of_orderIso (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    (u : ℝ ≃o ℝ) {r : ℝ} (hr : 0 ≤ r) (hu : ∀ x, |x - u x| ≤ r)
+    (h : u '' intervalSet p J = intervalSet q K) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) ≤
+      ENNReal.ofReal r := by
+  let f := orderHomeoHom u
+  have : IsIso f :=
+    (TopCat.isoOfHomeo (X := realLine) (Y := realLine) u.toHomeomorph).isIso_hom
+  obtain ⟨i⟩ := nonempty_iso_intervalSheaf_of_intervalSet_eq k (u.strictMono.comp hp) hq
+    ((intervalSet_orderIso u J).trans h)
+  let ex := rightDerivedFunctorPlusSingleIso
+    (TopCat.Sheaf.pushforward (ModuleCat k) (𝟙 realLine)) d ISh[hp,J]
+  let ey := rightDerivedFunctorPlusSingleIso (TopCat.Sheaf.pushforward (ModuleCat k) f)
+    d ISh[hp,J] ≪≫ (Single d).mapIso (pushforwardIntervalIso k u hp J ≪≫ i)
+  exact ((directImageWitness k hr (𝟙 realLine) f (fun x => by
+      change dist x (u x) ≤ r
+      rw [Real.dist_eq]
+      exact hu x) ((Single d).obj ISh[hp,J])).congr ex ey).distance_le
 
 private def convSingleIso {r : ℝ} {E F : Sh} {j : ℤ}
     (e : (T k r).obj ((Single 0).obj F) ≅ (Single j).obj E) (i : ℤ) :
@@ -679,34 +843,336 @@ theorem distance_zero_eq (hp : StrictMono p) (J : GradedInterval m)
 
 end IntervalEndpoints
 
+/-- A lower endpoint, allowing a set that is unbounded below. -/
+private inductive LowerCut
+  | closed (a : ℝ)
+  | unbounded
+  | open' (a : ℝ)
+
+private def LowerCut.mem : LowerCut → ℝ → Prop
+  | .closed a, x => a ≤ x
+  | .unbounded, _ => True
+  | .open' a, x => a < x
+
+private theorem LowerCut.mono (L : LowerCut) {x y : ℝ} (h : x ≤ y)
+    (hx : L.mem x) : L.mem y := by
+  cases L <;> simp only [LowerCut.mem] at * <;> linarith
+
+private def LowerCut.closedAt : LowerCut → ℝ → Prop
+  | .closed a, x => a ≤ x
+  | .unbounded, _ => True
+  | .open' a, x => a ≤ x
+
+private theorem LowerCut.isClosed (L : LowerCut) : IsClosed {x | L.closedAt x} := by
+  cases L
+  · exact isClosed_Ici
+  · exact isClosed_univ
+  · exact isClosed_Ici
+
+private theorem LowerCut.mem_closedAt (L : LowerCut) {x : ℝ} (hx : L.mem x) :
+    L.closedAt x := by
+  cases L <;> simp only [LowerCut.mem, LowerCut.closedAt] at * <;> first | assumption | exact hx.le
+
+private def LowerCut.allows : LowerCut → LowerCut → Prop
+  | .closed a, .closed b => a ≤ b
+  | .closed _, .unbounded | .closed _, .open' _ | .unbounded, .open' _ => False
+  | .open' a, .open' b => b ≤ a
+  | _, _ => True
+
+private def IntervalEndpoints.lower : IntervalEndpoints → LowerCut
+  | .icc a .. | .ico a .. | .ici a => .closed a
+  | .ioc a .. | .ioo a .. | .ioi a => .open' a
+  | _ => .unbounded
+
+private def IntervalEndpoints.upper : IntervalEndpoints → LowerCut
+  | .icc _ b _ | .ioc _ b _ | .iic b => .closed (-b)
+  | .ico _ b _ | .ioo _ b _ | .iio b => .open' (-b)
+  | _ => .unbounded
+
+private theorem IntervalEndpoints.mem_support_iff (E : IntervalEndpoints) (x : ℝ) :
+    x ∈ E.support ↔ E.lower.mem x ∧ E.upper.mem (-x) := by
+  cases E <;> simp [IntervalEndpoints.support, IntervalEndpoints.lower,
+    IntervalEndpoints.upper, LowerCut.mem]
+
+omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc a b)).Sheaf (ModuleCat k))] in
+/-- On a window where the source is relatively closed, a zero source stalk at a target
+point or an excluded target boundary forces the morphism to vanish at a common point. -/
+private theorem stalk_hom_zero_of_window (hp : StrictMono p) (hq : StrictMono q)
+    {J : FiniteInterval (2 * m + 1)} {K : FiniteInterval (2 * n + 1)}
+    (f : ISh[hp,J] ⟶ ISh[hq,K]) {U : TopologicalSpace.Opens realLine}
+    (hU : (U : Set ℝ).OrdConnected) {x y : ℝ}
+    (hx : x ∈ U) (hxJ : x ∈ intervalSet p J)
+    (hJ : closure (intervalSet p J) ∩ (U : Set ℝ) ⊆ intervalSet p J) (hy : y ∈ U)
+    (hyK : (y ∈ intervalSet q K ∧ y ∉ intervalSet p J) ∨
+      (y ∈ closure (intervalSet q K) ∧ y ∉ intervalSet q K)) :
+    (TopCat.Presheaf.stalkFunctor (ModuleCat k) (X := realLine) x).map f.hom = 0 := by
+  let F : Sh := ISh[hp,J]
+  let G : Sh := ISh[hq,K]
+  let st (z : ℝ) := TopCat.Presheaf.stalkFunctor (X := realLine) (ModuleCat k) z
+  have htop : f.hom.app (Opposite.op U) = 0 := by
+    rcases hyK with ⟨hyK, hyJ⟩ | ⟨hyK, hnyK⟩
+    · let g := G.presheaf.germ U y hy
+      have : Mono g := (ModuleCat.mono_iff_injective g).2
+        (injective_germ_extension_interval k hq K hU hy hyK)
+      have hg : F.presheaf.germ U y hy = 0 :=
+        (isZero_stalk_extension_interval k hp hyJ).eq_of_tgt _ _
+      apply (cancel_mono g).mp
+      rw [zero_comp, ← TopCat.Presheaf.stalkFunctor_map_germ U y hy f.hom]
+      change F.presheaf.germ U y hy ≫ (st y).map f.hom = 0
+      rw [hg]
+      exact zero_comp
+    · exact (isZero_sections_extension_interval_of_mem_closure k hq K hU hy hyK hnyK).eq_of_tgt _ _
+  have := isIso_germ_extension_interval k hp J hU hJ hx hxJ
+  change (st x).map f.hom = 0
+  apply (cancel_epi (F.presheaf.germ U x hx)).mp
+  refine (TopCat.Presheaf.stalkFunctor_map_germ U x hx f.hom).trans ?_
+  rw [htop, zero_comp]
+  exact (comp_zero (f := F.presheaf.germ U x hx)).symm
+
+private theorem LowerCut.mem_of_open_limit (R : LowerCut) {x : ℝ} (h : R.closedAt (-x))
+    (hr : ∀ b, R = .open' b → x < -b) : R.mem (-x) := by
+  cases R with
+  | closed | unbounded => exact h
+  | open' b =>
+    change b < -x
+    linarith [hr b rfl]
+
+private theorem LowerCut.exists_right_limit (R : LowerCut) {x : ℝ} (hx : R.mem (-x)) :
+    ∃ t > x, ∀ b, R = .open' b → t ≤ -b := by
+  cases R with
+  | closed | unbounded => exact ⟨x + 1, by linarith, fun _ h => by cases h⟩
+  | open' b =>
+    change b < -x at hx
+    exact ⟨-b, by linarith, fun _ h => by cases h; exact le_rfl⟩
+
+private theorem LowerCut.exists_left_obstruction (L M : LowerCut) {x : ℝ}
+    (hx : L.mem x) (hy : M.mem x) (h : ¬ L.allows M) :
+    ∃ l y : ℝ, l < y ∧ y ≤ x ∧
+      (∀ z, l < z → L.closedAt z → L.mem z) ∧
+      ((M.mem y ∧ ¬ L.mem y) ∨ ∃ b, M = .open' b ∧ y = b ∧ y < x) := by
+  cases L <;> cases M <;> simp only [LowerCut.allows, LowerCut.mem, LowerCut.closedAt] at *
+  case closed.closed a b =>
+    exact ⟨b - 1, b, by linarith, hy, fun _ _ hz => hz, Or.inl ⟨le_rfl, h⟩⟩
+  case closed.unbounded a =>
+    exact ⟨a - 2, a - 1, by linarith, by linarith, fun _ _ hz => hz,
+      Or.inl ⟨trivial, by linarith⟩⟩
+  case closed.open' a b =>
+    exact ⟨b - 1, b, by linarith, hy.le, fun _ _ hz => hz, Or.inr ⟨b, rfl, rfl, hy⟩⟩
+  case unbounded.open' b =>
+    exact ⟨b - 1, b, by linarith, hy.le, fun _ _ _ => trivial, Or.inr ⟨b, rfl, rfl, hy⟩⟩
+  case open'.open' a b =>
+    exact ⟨a, b, lt_of_not_ge h, hy.le, fun _ hz _ => hz, Or.inr ⟨b, rfl, rfl, hy⟩⟩
+  all_goals exact (h trivial).elim
+
+omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc a b)).Sheaf (ModuleCat k))] in
+private theorem hom_eq_zero_of_lowerCut (hp : StrictMono p) (hq : StrictMono q)
+    {J : FiniteInterval (2 * m + 1)} {K : FiniteInterval (2 * n + 1)}
+    (u : ℝ ≃ₜ ℝ) (hu : Monotone u ∨ Antitone u)
+    (L R M S : LowerCut)
+    (hJ : ∀ x, x ∈ intervalSet p J ↔ L.mem (u x) ∧ R.mem (-u x))
+    (hK : ∀ x, x ∈ intervalSet q K ↔ M.mem (u x) ∧ S.mem (-u x))
+    (h : ¬ L.allows M) (f : ISh[hp,J] ⟶ ISh[hq,K]) : f = 0 := by
+  apply hom_extension_eq_zero_of_stalk k hp hq f
+  intro x hxJ hxK
+  obtain ⟨hxL, hxR⟩ := (hJ x).1 hxJ
+  obtain ⟨hxM, hxS⟩ := (hK x).1 hxK
+  obtain ⟨t, ht, htR⟩ := LowerCut.exists_right_limit R hxR
+  obtain ⟨l, y, hly, hyx, hL, hy⟩ := LowerCut.exists_left_obstruction L M hxL hxM h
+  let U : TopologicalSpace.Opens realLine :=
+    ⟨u ⁻¹' Set.Ioo l t, isOpen_Ioo.preimage u.continuous⟩
+  have hU : (U : Set ℝ).OrdConnected :=
+    hu.elim (Set.ordConnected_Ioo.preimage_mono) (Set.ordConnected_Ioo.preimage_anti)
+  have hyU : u.symm y ∈ U := by
+    change u (u.symm y) ∈ Set.Ioo l t
+    rw [u.apply_symm_apply]
+    exact ⟨hly, hyx.trans_lt ht⟩
+  refine stalk_hom_zero_of_window k hp hq f hU ⟨hly.trans_le hyx, ht⟩ hxJ ?_ hyU ?_
+  · intro z hz
+    have hl : L.closedAt (u z) :=
+      closure_minimal (fun s hs => L.mem_closedAt ((hJ s).mp hs).1)
+        (L.isClosed.preimage u.continuous) hz.1
+    have hr : R.closedAt (-u z) :=
+      closure_minimal (fun s hs => R.mem_closedAt ((hJ s).mp hs).2)
+        (R.isClosed.preimage u.continuous.neg) hz.1
+    exact (hJ z).2
+      ⟨hL _ hz.2.1 hl, R.mem_of_open_limit hr fun b hb => hz.2.2.trans_le (htR b hb)⟩
+  rcases hy with ⟨hyM, hyL⟩ | ⟨b, hb, hyb, hbx⟩
+  · left
+    rw [hK, hJ, u.apply_symm_apply]
+    exact ⟨⟨hyM, S.mono (neg_le_neg hyx) hxS⟩, fun hz => hyL hz.1⟩
+  · right
+    subst y
+    refine ⟨?_, fun hz => ?_⟩
+    · have hs : u ⁻¹' Set.Ioo b (u x) ⊆ intervalSet q K := by
+        intro z hz
+        exact (hK z).2 ⟨by simpa only [hb, LowerCut.mem] using hz.1,
+          S.mono (neg_le_neg hz.2.le) hxS⟩
+      apply closure_mono hs
+      rw [← u.preimage_closure, closure_Ioo hbx.ne]
+      change u (u.symm b) ∈ Set.Icc b (u x)
+      rw [u.apply_symm_apply]
+      exact ⟨le_rfl, hbx.le⟩
+    have hz' := ((hK _).1 hz).1
+    rw [hb, u.apply_symm_apply] at hz'
+    exact lt_irrefl _ hz'
+
+omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc a b)).Sheaf (ModuleCat k))] in
+private theorem hom_eq_zero_of_cut_conflict (hp : StrictMono p) (hq : StrictMono q)
+    {J : FiniteInterval (2 * m + 1)} {K : FiniteInterval (2 * n + 1)} (E F : IntervalEndpoints)
+    (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    (h : ¬ E.lower.allows F.lower ∨ ¬ E.upper.allows F.upper)
+    (f : ISh[hp,J] ⟶ ISh[hq,K]) : f = 0 := by
+  rcases h with h | h
+  · exact hom_eq_zero_of_lowerCut k hp hq (Homeomorph.refl ℝ) (Or.inl monotone_id)
+      E.lower E.upper F.lower F.upper
+      (fun x => hJ ▸ E.mem_support_iff x) (fun x => hK ▸ F.mem_support_iff x) h f
+  · let neg := (ContinuousLinearEquiv.neg ℝ : ℝ ≃L[ℝ] ℝ).toHomeomorph
+    refine hom_eq_zero_of_lowerCut k hp hq neg (Or.inr fun _ _ h' => neg_le_neg h')
+      E.upper E.lower F.upper F.lower ?_ ?_ h f
+    · intro x
+      rw [hJ, E.mem_support_iff]
+      change _ ↔ E.upper.mem (-x) ∧ E.lower.mem (- -x)
+      rw [neg_neg, and_comm]
+    · intro x
+      rw [hK, F.mem_support_iff]
+      change _ ↔ F.upper.mem (-x) ∧ F.lower.mem (- -x)
+      rw [neg_neg, and_comm]
+
+private theorem distance_le_sup_deletions {X Y : D⁺} :
+    distance X Y ≤ distance X 0 ⊔ distance Y 0 := by
+  apply ENNReal.le_of_forall_pos_le_add
+  intro r hr hfin
+  let s := distance X 0 ⊔ distance Y 0
+  let t := s.toNNReal + r
+  have ht : (t : ℝ≥0∞) = s + r := by rw [ENNReal.coe_add, ENNReal.coe_toNNReal hfin.ne]
+  have hs : s < (t : ℝ≥0∞) :=
+    ht.symm ▸ ENNReal.lt_add_right hfin.ne (ENNReal.coe_ne_zero.mpr hr.ne')
+  obtain ⟨u⟩ := nonempty_witness_of_distance_lt
+    ((le_sup_left : distance X 0 ≤ s).trans_lt hs)
+  obtain ⟨v⟩ := nonempty_witness_of_distance_lt
+    ((le_sup_right : distance Y 0 ≤ s).trans_lt hs)
+  have w : Witness k t.coe_nonneg X Y := ⟨0, 0,
+    by simp [nonempty_witness_zero_iff.mp ⟨u⟩],
+    by simp [nonempty_witness_zero_iff.mp ⟨v⟩]⟩
+  simpa only [ENNReal.ofReal_coe_nnreal, ht] using w.distance_le
+
+private def IntervalEndpoints.convolved (E : IntervalEndpoints) (r : ℝ) (hr : 0 ≤ r) :
+    IntervalEndpoints :=
+  match E with
+  | .icc a b h => .icc (a - r) (b + r) (by linarith)
+  | .ico a b h => .ico (a - r) (b - r) (by linarith)
+  | .ioc a b h => .ioc (a + r) (b + r) (by linarith)
+  | .ioo a b h => .ioo a b h
+  | .ici a => .ici (a - r)
+  | .iic b => .iic (b + r)
+  | .ioi a => .ioi (a + r)
+  | .iio b => .iio (b - r)
+  | .univ => .univ
+
+private theorem IntervalEndpoints.outSet0_eq_convolved (E : IntervalEndpoints) {r : ℝ}
+    (hr : 0 ≤ r) (h : E.hasDegreeOneOutput = false) :
+    outSet0 r E.support = (E.convolved r hr).support := by
+  cases E with
+  | icc a b hab => exact outSet0_Icc hr hab
+  | ico a b hab => exact outSet0_Ico hr hab
+  | ioc a b hab => exact outSet0_Ioc hr hab
+  | ioo => cases h
+  | ici a => exact outSet0_Ici hr a
+  | iic b => exact outSet0_Iic hr b
+  | ioi a => exact outSet0_Ioi hr a
+  | iio b => exact outSet0_Iio hr b
+  | univ => exact outSet0_univ hr
+
+private theorem IntervalEndpoints.support_nonempty (E : IntervalEndpoints) :
+    E.support.Nonempty := by
+  cases E <;> first
+    | exact Set.nonempty_Icc.mpr ‹_›
+    | exact Set.nonempty_Ico.mpr ‹_›
+    | exact Set.nonempty_Ioc.mpr ‹_›
+    | exact Set.nonempty_Ioo.mpr ‹_›
+    | exact Set.nonempty_Ici
+    | exact Set.nonempty_Iic
+    | exact Set.nonempty_Ioi
+    | exact Set.nonempty_Iio
+    | exact Set.univ_nonempty
+
+omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))] in
+private theorem exists_iso_convolved_endpoints (hp : StrictMono p)
+    (J : FiniteInterval (2 * m + 1)) (d : ℤ) {r : ℝ} (hr : 0 ≤ r) (E : IntervalEndpoints)
+    (hE : E.hasDegreeOneOutput = false) (hJ : intervalSet p J = E.support) :
+    ∃ L : FiniteInterval (2 * (bandBreakpoints p r).card + 1),
+      intervalSet (sortedBreakpoints (bandBreakpoints p r)) L = (E.convolved r hr).support ∧
+      Nonempty ((T k r).obj ((GradedInterval.mk J d).obj k hp) ≅
+        (GradedInterval.mk L d).obj k (strictMono_sortedBreakpoints (bandBreakpoints p r))) := by
+  have hout : outSet0 r (intervalSet p J) = (E.convolved r hr).support :=
+    hJ ▸ E.outSet0_eq_convolved hr hE
+  obtain ⟨L, hL⟩ := exists_intervalSet_outSet0 hp J hr
+    (hout.symm ▸ (E.convolved r hr).support_nonempty)
+  obtain ⟨i⟩ := nonempty_iso_T_interval_zero (k := k) hp J hr
+    (strictMono_sortedBreakpoints (bandBreakpoints p r)) L hL
+  let hl := strictMono_sortedBreakpoints (bandBreakpoints p r)
+  refine ⟨L, hL.trans hout, ⟨?_⟩⟩
+  change _ ≅ (Single d).obj ISh[hl,L]
+  simpa only [zero_add] using convGradedIso k hp ⟨J, d⟩ i
+
+private theorem Witness.sup_deletions_le_of_hom_zero {X Y : D⁺} {r : ℝ≥0}
+    (w : Witness k r.coe_nonneg X Y) (h : w.hom = 0) :
+    distance X 0 ⊔ distance Y 0 ≤ (r : ℝ≥0∞) := by
+  obtain ⟨u⟩ := (nonempty_witness_zero_iff (hε := r.coe_nonneg)).mpr
+    (w.aug_eq_zero_of_hom_eq_zero k h)
+  obtain ⟨v⟩ := (nonempty_witness_zero_iff (hε := r.coe_nonneg)).mpr
+    (w.aug_target_eq_zero_of_hom_eq_zero k h)
+  exact sup_le (by simpa only [ENNReal.ofReal_coe_nnreal] using u.distance_le)
+    (by simpa only [ENNReal.ofReal_coe_nnreal] using v.distance_le)
+
+private theorem witness_cut_allows (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ) (r : ℝ≥0)
+    (E F : IntervalEndpoints) (hE : E.hasDegreeOneOutput = false)
+    (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    (w : Witness k r.coe_nonneg ((GradedInterval.mk J d).obj k hp)
+      ((GradedInterval.mk K d).obj k hq)) (hw : w.hom ≠ 0) :
+    (E.convolved r r.coe_nonneg).lower.allows F.lower ∧
+      (E.convolved r r.coe_nonneg).upper.allows F.upper := by
+  obtain ⟨L, hL, ⟨i⟩⟩ := exists_iso_convolved_endpoints k hp J d r.coe_nonneg E hE hJ
+  constructor <;> by_contra h <;>
+    exact hw (hom_eq_zero_of_interval_hom_eq_zero k _ hq i (Iso.refl _)
+      (hom_eq_zero_of_cut_conflict k _ hq _ F hL hK (by first | exact Or.inl h | exact Or.inr h))
+      w.hom)
+
+private theorem distance_eq_inf_deletions {X Y : D⁺} {c : ℝ≥0∞}
+    (hdirect : distance X Y ≤ c)
+    (hlower : ∀ (r : ℝ≥0), Nonempty (Witness k r.coe_nonneg X Y) →
+      (r : ℝ≥0∞) < distance X 0 ⊔ distance Y 0 → c ≤ r) :
+    distance X Y = c ⊓ (distance X 0 ⊔ distance Y 0) := by
+  refine le_antisymm (le_inf hdirect (distance_le_sup_deletions k)) ?_
+  apply le_distance_iff.mpr
+  intro r hw
+  rcases lt_or_ge (r : ℝ≥0∞) (distance X 0 ⊔ distance Y 0) with h | h
+  · exact inf_le_left.trans (hlower r hw h)
+  · exact inf_le_right.trans h
+
+private theorem distance_convolved_le {X Y X' Y' : D⁺} {s : ℝ} (hs : 0 ≤ s)
+    (ex : (T k s).obj X ≅ X') (ey : (T k s).obj Y ≅ Y') :
+    distance X' Y' ≤ distance X Y := by
+  apply le_distance_iff.mpr
+  rintro r ⟨w⟩
+  simpa only [ENNReal.ofReal_coe_nnreal] using ((w.convolve hs).congr ex ey).distance_le
+
 private theorem distance_eq_sup_deletions_of_hom_eq_zero {X Y : D⁺}
     (h : ∀ r : ℝ≥0, ∀ f : (T k r).obj X ⟶ Y, f = 0) :
     distance X Y = distance X 0 ⊔ distance Y 0 := by
-  apply le_antisymm
-  · apply ENNReal.le_of_forall_pos_le_add
-    intro r hr hfin
-    let s := distance X 0 ⊔ distance Y 0
-    let t := s.toNNReal + r
-    have ht : (t : ℝ≥0∞) = s + r := by rw [ENNReal.coe_add, ENNReal.coe_toNNReal hfin.ne]
-    have hs : s < (t : ℝ≥0∞) :=
-      ht.symm ▸ ENNReal.lt_add_right hfin.ne (ENNReal.coe_ne_zero.mpr hr.ne')
-    obtain ⟨u⟩ := nonempty_witness_of_distance_lt
-      ((le_sup_left : distance X 0 ≤ s).trans_lt hs)
-    obtain ⟨v⟩ := nonempty_witness_of_distance_lt
-      ((le_sup_right : distance Y 0 ≤ s).trans_lt hs)
-    have w : Witness k t.coe_nonneg X Y := ⟨0, 0,
-      by simp [nonempty_witness_zero_iff.mp ⟨u⟩],
-      by simp [nonempty_witness_zero_iff.mp ⟨v⟩]⟩
-    simpa only [ENNReal.ofReal_coe_nnreal, ht] using w.distance_le
-  · apply le_distance_iff.mpr
-    intro r ⟨w⟩
-    have hz := h r w.hom
-    obtain ⟨u⟩ := (nonempty_witness_zero_iff (hε := r.coe_nonneg)).mpr
-      (w.aug_eq_zero_of_hom_eq_zero k hz)
-    obtain ⟨v⟩ := (nonempty_witness_zero_iff (hε := r.coe_nonneg)).mpr
-      (w.aug_target_eq_zero_of_hom_eq_zero k hz)
-    exact sup_le (by simpa only [ENNReal.ofReal_coe_nnreal] using u.distance_le)
-      (by simpa only [ENNReal.ofReal_coe_nnreal] using v.distance_le)
+  refine le_antisymm (distance_le_sup_deletions k) (le_distance_iff.mpr ?_)
+  rintro r ⟨w⟩
+  exact w.sup_deletions_le_of_hom_zero k (h r w.hom)
 
 omit [HasDerivedCategory Sh] [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
   [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
@@ -800,6 +1266,295 @@ theorem distance_interval_of_degree_lt (hp : StrictMono p) (hq : StrictMono q)
       (isLE_T_interval_of_outSet1_eq_empty k hp J r.coe_nonneg
         (hJ.symm ▸ E.outSet1_eq_empty r.coe_nonneg hout)) hKge
 
+private theorem intervalMoveIso_left {a b c e : ℝ} (hab : a < b) (hce : c < e) :
+    intervalMoveIso hab hce a = c := by
+  change intervalMove a b c e a = c
+  simp [intervalMove]
+
+private theorem intervalMoveIso_right {a b c e : ℝ} (hab : a < b) (hce : c < e) :
+    intervalMoveIso hab hce b = e := by
+  change intervalMove a b c e b = e
+  simp [intervalMove, hab.not_ge]
+
+private theorem witness_both_cut_allows (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ) (r : ℝ≥0)
+    (E F : IntervalEndpoints)
+    (hE : E.hasDegreeOneOutput = false) (hF : F.hasDegreeOneOutput = false)
+    (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    (w : Witness k r.coe_nonneg ((GradedInterval.mk J d).obj k hp)
+      ((GradedInterval.mk K d).obj k hq))
+    (hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
+      distance ((GradedInterval.mk K d).obj k hq) 0) :
+    ((E.convolved r r.coe_nonneg).lower.allows F.lower ∧
+      (E.convolved r r.coe_nonneg).upper.allows F.upper) ∧
+    ((F.convolved r r.coe_nonneg).lower.allows E.lower ∧
+      (F.convolved r r.coe_nonneg).upper.allows E.upper) := by
+  constructor
+  · exact witness_cut_allows k hp hq J K d r E F hE hJ hK w
+      (fun hz => hr.not_ge (w.sup_deletions_le_of_hom_zero k hz))
+  · exact witness_cut_allows k hq hp K J d r F E hF hK hJ w.symm
+      (fun hz => hr.not_ge (by simpa only [sup_comm] using
+        w.symm.sup_deletions_le_of_hom_zero k hz))
+
+
+/-- Two bounded intervals closed on the left have the smaller of the endpoint
+and joint deletion costs in a common degree. -/
+theorem distance_interval_Ico_Ico (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b c e : ℝ} (hab : a < b) (hce : c < e)
+    (hJ : intervalSet p J = Set.Ico a b) (hK : intervalSet q K = Set.Ico c e) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
+      ENNReal.ofReal (max |a - c| |b - e|) ⊓
+        ENNReal.ofReal (max ((b - a) / 2) ((e - c) / 2)) := by
+  have hupper := distance_le_of_orderIso k hp hq J K d (intervalMoveIso hab hce)
+    ((abs_nonneg (a - c)).trans (le_max_left _ _)) (intervalMoveIso_le hab hce)
+    (by rw [hJ, hK, OrderIso.image_Ico, intervalMoveIso_left, intervalMoveIso_right])
+  rw [ENNReal.ofReal_max ((b - a) / 2) ((e - c) / 2),
+    ← distance_interval_Ico_zero k hp ⟨J, d⟩ hab hJ,
+    ← distance_interval_Ico_zero k hq ⟨K, d⟩ hce hK]
+  apply distance_eq_inf_deletions k hupper
+  rintro r ⟨w⟩ hr
+  obtain ⟨⟨h₁, h₂⟩, ⟨h₃, h₄⟩⟩ :=
+    witness_both_cut_allows k hp hq J K d r (.ico a b hab) (.ico c e hce) rfl rfl hJ hK w hr
+  simp only [IntervalEndpoints.convolved, IntervalEndpoints.lower, IntervalEndpoints.upper,
+    LowerCut.allows] at h₁ h₂ h₃ h₄
+  rw [← ENNReal.ofReal_coe_nnreal]
+  exact ENNReal.ofReal_le_ofReal (max_le (abs_le.mpr ⟨by linarith, by linarith⟩)
+    (abs_le.mpr ⟨by linarith, by linarith⟩))
+
+
+/-- Two bounded intervals closed on the right have the smaller of the endpoint
+and joint deletion costs in a common degree. -/
+theorem distance_interval_Ioc_Ioc (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b c e : ℝ} (hab : a < b) (hce : c < e)
+    (hJ : intervalSet p J = Set.Ioc a b) (hK : intervalSet q K = Set.Ioc c e) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
+      ENNReal.ofReal (max |a - c| |b - e|) ⊓
+        ENNReal.ofReal (max ((b - a) / 2) ((e - c) / 2)) := by
+  have hupper := distance_le_of_orderIso k hp hq J K d (intervalMoveIso hab hce)
+    ((abs_nonneg (a - c)).trans (le_max_left _ _)) (intervalMoveIso_le hab hce)
+    (by rw [hJ, hK, OrderIso.image_Ioc, intervalMoveIso_left, intervalMoveIso_right])
+  rw [ENNReal.ofReal_max ((b - a) / 2) ((e - c) / 2),
+    ← distance_interval_Ioc_zero k hp ⟨J, d⟩ hab hJ,
+    ← distance_interval_Ioc_zero k hq ⟨K, d⟩ hce hK]
+  apply distance_eq_inf_deletions k hupper
+  rintro r ⟨w⟩ hr
+  obtain ⟨⟨h₁, h₂⟩, ⟨h₃, h₄⟩⟩ :=
+    witness_both_cut_allows k hp hq J K d r (.ioc a b hab) (.ioc c e hce) rfl rfl hJ hK w hr
+  simp only [IntervalEndpoints.convolved, IntervalEndpoints.lower, IntervalEndpoints.upper,
+    LowerCut.allows] at h₁ h₂ h₃ h₄
+  rw [← ENNReal.ofReal_coe_nnreal]
+  exact ENNReal.ofReal_le_ofReal (max_le (abs_le.mpr ⟨by linarith, by linarith⟩)
+    (abs_le.mpr ⟨by linarith, by linarith⟩))
+
+
+/-- Two bounded open intervals in a common degree have cost equal to the larger
+of the absolute endpoint differences. -/
+theorem distance_interval_Ioo_Ioo (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b c e : ℝ} (hab : a < b) (hce : c < e)
+    (hJ : intervalSet p J = Set.Ioo a b) (hK : intervalSet q K = Set.Ioo c e) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
+      ENNReal.ofReal (max |a - c| |b - e|) := by
+  have hupper := distance_le_of_orderIso k hp hq J K d (intervalMoveIso hab hce)
+    ((abs_nonneg (a - c)).trans (le_max_left _ _)) (intervalMoveIso_le hab hce)
+    (by rw [hJ, hK, OrderIso.image_Ioo, intervalMoveIso_left, intervalMoveIso_right])
+  let s := max (b - a) (e - c)
+  have hs : 0 ≤ s := (sub_nonneg.mpr hab.le).trans (le_max_left _ _)
+  have hsJ : b - a < 2 * s := by linarith [le_max_left (b - a) (e - c)]
+  have hsK : e - c < 2 * s := by linarith [le_max_right (b - a) (e - c)]
+  obtain ⟨L, hL, ⟨i⟩⟩ := exists_intervalSheaf_T_Ioo_above (k := k) hp J hs hab hsJ hJ
+  obtain ⟨M, hM, ⟨j⟩⟩ := exists_intervalSheaf_T_Ioo_above (k := k) hq K hs hce hsK hK
+  let hl := strictMono_sortedBreakpoints (bandBreakpoints p s)
+  let hm := strictMono_sortedBreakpoints (bandBreakpoints q s)
+  have hdist := distance_convolved_le k hs
+    (convGradedIso k hp ⟨J, d⟩ i) (convGradedIso k hq ⟨K, d⟩ j)
+  have hcost := distance_interval_Icc_Icc k hl hm L M (1 + d)
+    (by linarith) (by linarith) hL hM
+  change distance ((GradedInterval.mk L (1 + d)).obj k hl)
+    ((GradedInterval.mk M (1 + d)).obj k hm) ≤ _ at hdist
+  rw [hcost, show b - s - (e - s) = b - e by ring,
+    show a + s - (c + s) = a - c by ring, max_comm] at hdist
+  exact le_antisymm hupper hdist
+
+/-- Two closed right rays in a common degree cost the absolute endpoint difference. -/
+theorem distance_interval_Ici_Ici (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b : ℝ} (hJ : intervalSet p J = Set.Ici a) (hK : intervalSet q K = Set.Ici b) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
+      ENNReal.ofReal |a - b| := by
+  refine le_antisymm ?_ (le_distance_iff.mpr ?_)
+  · refine distance_le_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
+      (abs_nonneg _) (fun x => ?_) ?_
+    · change |x - (x + (b - a))| ≤ _
+      rw [show x - (x + (b - a)) = a - b by ring]
+    · rw [hJ, hK, OrderIso.image_Ici]
+      exact congrArg Set.Ici (show a + (b - a) = b by ring)
+  rintro r ⟨w⟩
+  have hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
+      distance ((GradedInterval.mk K d).obj k hq) 0 := by
+    rw [distance_interval_Ici_zero k hp ⟨J, d⟩ hJ, top_sup_eq]
+    exact ENNReal.coe_lt_top
+  obtain ⟨h₁, h₂⟩ :=
+    witness_both_cut_allows k hp hq J K d r (.ici a) (.ici b) rfl rfl hJ hK w hr
+  simp only [IntervalEndpoints.convolved, IntervalEndpoints.lower, IntervalEndpoints.upper,
+    LowerCut.allows, and_true] at h₁ h₂
+  rw [← ENNReal.ofReal_coe_nnreal]
+  exact ENNReal.ofReal_le_ofReal (abs_le.mpr ⟨by linarith, by linarith⟩)
+
+/-- Two closed left rays in a common degree cost the absolute endpoint difference. -/
+theorem distance_interval_Iic_Iic (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b : ℝ} (hJ : intervalSet p J = Set.Iic a) (hK : intervalSet q K = Set.Iic b) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
+      ENNReal.ofReal |a - b| := by
+  refine le_antisymm ?_ (le_distance_iff.mpr ?_)
+  · refine distance_le_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
+      (abs_nonneg _) (fun x => ?_) ?_
+    · change |x - (x + (b - a))| ≤ _
+      rw [show x - (x + (b - a)) = a - b by ring]
+    · rw [hJ, hK, OrderIso.image_Iic]
+      exact congrArg Set.Iic (show a + (b - a) = b by ring)
+  rintro r ⟨w⟩
+  have hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
+      distance ((GradedInterval.mk K d).obj k hq) 0 := by
+    rw [distance_interval_Iic_zero k hp ⟨J, d⟩ hJ, top_sup_eq]
+    exact ENNReal.coe_lt_top
+  obtain ⟨h₁, h₂⟩ :=
+    witness_both_cut_allows k hp hq J K d r (.iic a) (.iic b) rfl rfl hJ hK w hr
+  simp only [IntervalEndpoints.convolved, IntervalEndpoints.lower, IntervalEndpoints.upper,
+    LowerCut.allows, true_and] at h₁ h₂
+  rw [← ENNReal.ofReal_coe_nnreal]
+  exact ENNReal.ofReal_le_ofReal (abs_le.mpr ⟨by linarith, by linarith⟩)
+
+/-- Two open right rays in a common degree cost the absolute endpoint difference. -/
+theorem distance_interval_Ioi_Ioi (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b : ℝ} (hJ : intervalSet p J = Set.Ioi a) (hK : intervalSet q K = Set.Ioi b) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
+      ENNReal.ofReal |a - b| := by
+  refine le_antisymm ?_ (le_distance_iff.mpr ?_)
+  · refine distance_le_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
+      (abs_nonneg _) (fun x => ?_) ?_
+    · change |x - (x + (b - a))| ≤ _
+      rw [show x - (x + (b - a)) = a - b by ring]
+    · rw [hJ, hK, OrderIso.image_Ioi]
+      exact congrArg Set.Ioi (show a + (b - a) = b by ring)
+  rintro r ⟨w⟩
+  have hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
+      distance ((GradedInterval.mk K d).obj k hq) 0 := by
+    rw [distance_interval_Ioi_zero k hp ⟨J, d⟩ hJ, top_sup_eq]
+    exact ENNReal.coe_lt_top
+  obtain ⟨h₁, h₂⟩ :=
+    witness_both_cut_allows k hp hq J K d r (.ioi a) (.ioi b) rfl rfl hJ hK w hr
+  simp only [IntervalEndpoints.convolved, IntervalEndpoints.lower, IntervalEndpoints.upper,
+    LowerCut.allows, and_true] at h₁ h₂
+  rw [← ENNReal.ofReal_coe_nnreal]
+  exact ENNReal.ofReal_le_ofReal (abs_le.mpr ⟨by linarith, by linarith⟩)
+
+/-- Two open left rays in a common degree cost the absolute endpoint difference. -/
+theorem distance_interval_Iio_Iio (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b : ℝ} (hJ : intervalSet p J = Set.Iio a) (hK : intervalSet q K = Set.Iio b) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
+      ENNReal.ofReal |a - b| := by
+  refine le_antisymm ?_ (le_distance_iff.mpr ?_)
+  · refine distance_le_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
+      (abs_nonneg _) (fun x => ?_) ?_
+    · change |x - (x + (b - a))| ≤ _
+      rw [show x - (x + (b - a)) = a - b by ring]
+    · rw [hJ, hK, OrderIso.image_Iio]
+      exact congrArg Set.Iio (show a + (b - a) = b by ring)
+  rintro r ⟨w⟩
+  have hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
+      distance ((GradedInterval.mk K d).obj k hq) 0 := by
+    rw [distance_interval_Iio_zero k hp ⟨J, d⟩ hJ, top_sup_eq]
+    exact ENNReal.coe_lt_top
+  obtain ⟨h₁, h₂⟩ :=
+    witness_both_cut_allows k hp hq J K d r (.iio a) (.iio b) rfl rfl hJ hK w hr
+  simp only [IntervalEndpoints.convolved, IntervalEndpoints.lower, IntervalEndpoints.upper,
+    LowerCut.allows, true_and] at h₁ h₂
+  rw [← ENNReal.ofReal_coe_nnreal]
+  exact ENNReal.ofReal_le_ofReal (abs_le.mpr ⟨by linarith, by linarith⟩)
+
+/-- Two whole-line interval sheaves in a common degree have distance zero. -/
+theorem distance_interval_univ_univ (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    (hJ : intervalSet p J = Set.univ) (hK : intervalSet q K = Set.univ) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) = 0 := by
+  obtain ⟨i⟩ := nonempty_iso_intervalSheaf_of_intervalSet_eq k hp hq (hJ.trans hK.symm)
+  exact (distance_congr (Iso.refl _) ((Single d).mapIso i).symm).trans (distance_self _)
+
+private def LowerCut.sameType : LowerCut → LowerCut → Bool
+  | .closed _, .closed _ | .unbounded, .unbounded | .open' _, .open' _ => true
+  | _, _ => false
+
+private theorem LowerCut.sameType_of_allows (L L' M M' : LowerCut)
+    (hL : L.sameType L' = true) (hM : M.sameType M' = true)
+    (h : L'.allows M) (h' : M'.allows L) : L.sameType M = true := by
+  cases L <;> cases L' <;> cases M <;> cases M' <;>
+    simp_all only [LowerCut.sameType, LowerCut.allows, Bool.false_eq_true]
+
+/-- Whether both intervals have the same open, closed or unbounded status at each endpoint. -/
+def IntervalEndpoints.sameType (E F : IntervalEndpoints) : Bool :=
+  E.lower.sameType F.lower && E.upper.sameType F.upper
+
+private theorem distance_interval_Ioo_nonopen (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b : ℝ} (hab : a < b) (hJ : intervalSet p J = Set.Ioo a b)
+    (F : IntervalEndpoints) (hF : F.hasDegreeOneOutput = false)
+    (hK : intervalSet q K = F.support) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) = ⊤ := by
+  let s := b - a
+  have hs : 0 ≤ s := sub_nonneg.mpr hab.le
+  obtain ⟨L, hL, ⟨i⟩⟩ := exists_intervalSheaf_T_Ioo_above (k := k) hp J hs hab
+    (by dsimp [s]; linarith) hJ
+  obtain ⟨M, hM, ⟨j⟩⟩ := exists_iso_convolved_endpoints k hq K d hs F hF hK
+  let hl := strictMono_sortedBreakpoints (bandBreakpoints p s)
+  let hm := strictMono_sortedBreakpoints (bandBreakpoints q s)
+  have hdist := distance_convolved_le k hs (convGradedIso k hp ⟨J, d⟩ i) j
+  change distance ((GradedInterval.mk L (1 + d)).obj k hl)
+    ((GradedInterval.mk M d).obj k hm) ≤ _ at hdist
+  have hFo : (F.convolved s hs).hasDegreeOneOutput = false := by cases F <;> exact hF
+  have hcost := distance_interval_of_degree_lt k hm hl ⟨M, d⟩ ⟨L, 1 + d⟩
+    (F.convolved s hs) (.icc (b - s) (a + s) (by dsimp [s]; linarith)) hM hL
+    (by dsimp; omega) (Or.inr hFo)
+  rw [distance_comm, hcost] at hdist
+  exact top_le_iff.mp (by simpa [IntervalEndpoints.deletionCost] using hdist)
+
+/-- In a common degree, intervals of different endpoint types cost the larger deletion cost. -/
+theorem distance_interval_of_different_endpoint_types (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    (E F : IntervalEndpoints) (hJ : intervalSet p J = E.support)
+    (hK : intervalSet q K = F.support) (hEF : E.sameType F = false) :
+    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
+      E.deletionCost ⊔ F.deletionCost := by
+  by_cases hE : E.hasDegreeOneOutput = false
+  · by_cases hF : F.hasDegreeOneOutput = false
+    · rw [← E.distance_zero_eq k hp ⟨J, d⟩ hJ, ← F.distance_zero_eq k hq ⟨K, d⟩ hK]
+      refine le_antisymm (distance_le_sup_deletions k) (le_distance_iff.mpr ?_)
+      rintro r ⟨w⟩
+      by_contra! hr
+      obtain ⟨⟨h₁, h₂⟩, ⟨h₃, h₄⟩⟩ :=
+        witness_both_cut_allows k hp hq J K d r E F hE hF hJ hK w hr
+      have hl (G : IntervalEndpoints) :
+          G.lower.sameType (G.convolved r r.coe_nonneg).lower = true := by cases G <;> rfl
+      have hu (G : IntervalEndpoints) :
+          G.upper.sameType (G.convolved r r.coe_nonneg).upper = true := by cases G <;> rfl
+      simp only [IntervalEndpoints.sameType,
+        LowerCut.sameType_of_allows _ _ _ _ (hl E) (hl F) h₁ h₃,
+        LowerCut.sameType_of_allows _ _ _ _ (hu E) (hu F) h₂ h₄] at hEF
+      cases hEF
+    · cases F <;> try exact (hF rfl).elim
+      rw [distance_comm, distance_interval_Ioo_nonopen k hq hp K J d (by assumption) hK E hE hJ]
+      exact (sup_top_eq _).symm
+  · cases E <;> try exact (hE rfl).elim
+    have hF : F.hasDegreeOneOutput = false := by
+      cases F <;> first | rfl | contradiction
+    rw [distance_interval_Ioo_nonopen k hp hq J K d (by assumption) hJ F hF hK]
+    exact (top_sup_eq _).symm
+
 namespace IntervalEndpoints
 
 private def isBoundedClosed : IntervalEndpoints → Bool
@@ -855,44 +1610,115 @@ private theorem distance_eq_pairCostOfLt (hp : StrictMono p) (hq : StrictMono q)
         rw [hK]
         exact not_boundedClosed_of_isBoundedClosed_eq_false _ rfl
 
-/-- The numeric pair cost for different degrees, bounded closed pairs in a common degree,
-and opposite half-open types in a common degree. -/
+private def pairCostOfEq (E F : IntervalEndpoints) : ℝ≥0∞ :=
+  match E, F with
+  | .icc a b _, .icc c e _ | .ioo a b _, .ioo c e _ => ENNReal.ofReal (max |a - c| |b - e|)
+  | .ico a b _, .ico c e _ | .ioc a b _, .ioc c e _ =>
+    ENNReal.ofReal (max |a - c| |b - e|) ⊓ ENNReal.ofReal (max ((b - a) / 2) ((e - c) / 2))
+  | .ici a, .ici b | .iic a, .iic b | .ioi a, .ioi b | .iio a, .iio b => ENNReal.ofReal |a - b|
+  | .univ, .univ => 0
+  | _, _ => E.deletionCost ⊔ F.deletionCost
+
+private theorem distance_eq_pairCostOfEq (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (i : ℤ)
+    (E F : IntervalEndpoints) (hJ : intervalSet p J = E.support)
+    (hK : intervalSet q K = F.support) :
+    distance ((GradedInterval.mk J i).obj k hp) ((GradedInterval.mk K i).obj k hq) =
+      E.pairCostOfEq F := by
+  by_cases ht : E.sameType F = false
+  · have hcost : E.pairCostOfEq F = E.deletionCost ⊔ F.deletionCost := by
+      cases E <;> cases F <;> first | rfl | contradiction
+    rw [hcost]
+    exact distance_interval_of_different_endpoint_types k hp hq J K i E F hJ hK ht
+  · have ht := Bool.eq_true_of_not_eq_false ht
+    cases E <;> cases F <;>
+      simp only [IntervalEndpoints.sameType, IntervalEndpoints.lower, IntervalEndpoints.upper,
+        LowerCut.sameType, Bool.false_and, Bool.and_false, Bool.true_and,
+        Bool.false_eq_true] at ht <;> first
+      | exact distance_interval_Icc_Icc k hp hq J K i (by assumption) (by assumption) hJ hK
+      | exact distance_interval_Ico_Ico k hp hq J K i (by assumption) (by assumption) hJ hK
+      | exact distance_interval_Ioc_Ioc k hp hq J K i (by assumption) (by assumption) hJ hK
+      | exact distance_interval_Ioo_Ioo k hp hq J K i (by assumption) (by assumption) hJ hK
+      | exact distance_interval_Ici_Ici k hp hq J K i hJ hK
+      | exact distance_interval_Iic_Iic k hp hq J K i hJ hK
+      | exact distance_interval_Ioi_Ioi k hp hq J K i hJ hK
+      | exact distance_interval_Iio_Iio k hp hq J K i hJ hK
+      | exact distance_interval_univ_univ k hp hq J K i hJ hK
+
+private theorem exists_support_eq (hp : StrictMono p) (J : FiniteInterval (2 * m + 1)) :
+    ∃ E : IntervalEndpoints, intervalSet p J = E.support := by
+  have hbd := J.birth_lt_death
+  have hdmax := J.death_le_size
+  have hl : J.birth = 0 ∨ (∃ i : Fin m, J.birth = 2 * i.val + 1) ∨
+      (∃ i : Fin m, J.birth = 2 * i.val + 2) := by
+    rcases Nat.even_or_odd' J.birth with ⟨i, hi | hi⟩
+    · by_cases h : i = 0
+      · exact Or.inl (by omega)
+      · exact Or.inr (Or.inr ⟨⟨i - 1, by omega⟩, by simp; omega⟩)
+    · exact Or.inr (Or.inl ⟨⟨i, by omega⟩, hi⟩)
+  have hr : J.death = 2 * m + 1 ∨ (∃ j : Fin m, J.death = 2 * j.val + 1) ∨
+      (∃ j : Fin m, J.death = 2 * j.val + 2) := by
+    rcases Nat.even_or_odd' J.death with ⟨j, hj | hj⟩
+    · exact Or.inr (Or.inr ⟨⟨j - 1, by omega⟩, by simp; omega⟩)
+    · by_cases h : j = m
+      · exact Or.inl (by omega)
+      · exact Or.inr (Or.inl ⟨⟨j, by omega⟩, hj⟩)
+  rcases hl with hb | ⟨i, hb⟩ | ⟨i, hb⟩ <;> rcases hr with hd | ⟨j, hd⟩ | ⟨j, hd⟩
+  · exact ⟨.univ, intervalSet_eq_univ hp hb hd⟩
+  · exact ⟨.iio (p j), intervalSet_eq_Iio hp hb hd⟩
+  · exact ⟨.iic (p j), intervalSet_eq_Iic hp hb hd⟩
+  · exact ⟨.ici (p i), intervalSet_eq_Ici hp hb hd⟩
+  · exact ⟨.ico (p i) (p j) (hp (Fin.lt_def.mpr (by omega))), intervalSet_eq_Ico hp hb hd⟩
+  · exact ⟨.icc (p i) (p j) (hp.monotone (Fin.le_def.mpr (by omega))),
+      intervalSet_eq_Icc hp hb hd⟩
+  · exact ⟨.ioi (p i), intervalSet_eq_Ioi hp hb hd⟩
+  · exact ⟨.ioo (p i) (p j) (hp (Fin.lt_def.mpr (by omega))), intervalSet_eq_Ioo hp hb hd⟩
+  · exact ⟨.ioc (p i) (p j) (hp (Fin.lt_def.mpr (by omega))), intervalSet_eq_Ioc hp hb hd⟩
+
+/-- Endpoint data for the interval set of a finite strata interval. -/
+def ofInterval (hp : StrictMono p) (J : FiniteInterval (2 * m + 1)) : IntervalEndpoints :=
+  (exists_support_eq hp J).choose
+
+/-- The endpoint data of a strata interval describe its real support. -/
+theorem support_ofInterval (hp : StrictMono p) (J : FiniteInterval (2 * m + 1)) :
+    intervalSet p J = (ofInterval hp J).support :=
+  (exists_support_eq hp J).choose_spec
+
+/-- The band cost of two endpoint data in the specified cohomological degrees. -/
+def totalPairCost (E F : IntervalEndpoints) (i j : ℤ) : ℝ≥0∞ :=
+  if i < j then E.pairCostOfLt F i j
+  else if j < i then F.pairCostOfLt E j i
+  else E.pairCostOfEq F
+
+/-- The numeric band cost in option form. -/
 def pairCost (E F : IntervalEndpoints) (i j : ℤ) : Option ℝ≥0∞ :=
-  if i < j then some (E.pairCostOfLt F i j)
-  else if j < i then some (F.pairCostOfLt E j i)
-  else
-    match E, F with
-    | .icc a b _, .icc c e _ => some (ENNReal.ofReal (max |a - c| |b - e|))
-    | .ico a b _, .ioc c e _ | .ioc a b _, .ico c e _ =>
-      some (ENNReal.ofReal ((b - a) / 2) ⊔ ENNReal.ofReal ((e - c) / 2))
-    | _, _ => none
+  some (E.totalPairCost F i j)
+
+/-- The total numeric pair cost computes the distance of the graded interval sheaves. -/
+theorem distance_eq_totalPairCost (hp : StrictMono p) (hq : StrictMono q)
+    (J : GradedInterval m) (K : GradedInterval n) (E F : IntervalEndpoints)
+    (hJ : intervalSet p J.interval = E.support) (hK : intervalSet q K.interval = F.support) :
+    distance (J.obj k hp) (K.obj k hq) = E.totalPairCost F J.degree K.degree := by
+  unfold totalPairCost
+  split
+  · exact distance_eq_pairCostOfLt k hp hq J K E F hJ hK ‹_›
+  split
+  · rw [distance_comm]
+    exact distance_eq_pairCostOfLt k hq hp K J F E hK hJ ‹_›
+  · have hdeg : J.degree = K.degree := le_antisymm (le_of_not_gt ‹_›) (le_of_not_gt ‹_›)
+    rcases J with ⟨J, i⟩
+    rcases K with ⟨K, j⟩
+    dsimp only at hdeg
+    subst j
+    exact distance_eq_pairCostOfEq k hp hq J K i E F hJ hK
 
 /-- Every returned pair entry is the band distance used by graded matchings. -/
 theorem distance_eq_of_pairCost (hp : StrictMono p) (hq : StrictMono q)
     (J : GradedInterval m) (K : GradedInterval n) (E F : IntervalEndpoints)
     (hJ : intervalSet p J.interval = E.support) (hK : intervalSet q K.interval = F.support)
     {c : ℝ≥0∞} (hc : E.pairCost F J.degree K.degree = some c) :
-    distance (J.obj k hp) (K.obj k hq) = c := by
-  unfold pairCost at hc
-  split at hc
-  · exact (distance_eq_pairCostOfLt k hp hq J K E F hJ hK ‹_›).trans (Option.some.inj hc)
-  split at hc
-  · rw [distance_comm]
-    exact (distance_eq_pairCostOfLt k hq hp K J F E hK hJ ‹_›).trans (Option.some.inj hc)
-  · have hdeg : J.degree = K.degree := le_antisymm (le_of_not_gt ‹_›) (le_of_not_gt ‹_›)
-    rcases J with ⟨J, i⟩
-    rcases K with ⟨K, j⟩
-    dsimp only at hdeg
-    subst j
-    split at hc
-    · exact (distance_interval_Icc_Icc k hp hq J K i (by assumption) (by assumption) hJ hK).trans
-        (Option.some.inj hc)
-    · exact (distance_interval_Ico_Ioc k hp hq J K i (by assumption) (by assumption) hJ hK).trans
-        (Option.some.inj hc)
-    · rw [distance_comm]
-      exact (distance_interval_Ico_Ioc k hq hp K J i (by assumption) (by assumption) hK hJ).trans
-        ((sup_comm _ _).trans (Option.some.inj hc))
-    · contradiction
+    distance (J.obj k hp) (K.obj k hq) = c :=
+  (E.distance_eq_totalPairCost k hp hq J K F hJ hK).trans (Option.some.inj hc)
 
 end IntervalEndpoints
 

@@ -2153,3 +2153,17 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.distance_eq_of_pairCost
 #print axioms TDA.Sheaf.BandConvolution.GradedMatching.cost_le_iff_of_pairCost
 #print axioms TDA.Sheaf.BandConvolution.distance_interval_Ico_Ioc
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_Ico_Ico
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_Ioc_Ioc
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_Ioo_Ioo
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_Ici_Ici
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_Iic_Iic
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_Ioi_Ioi
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_Iio_Iio
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_univ_univ
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.sameType
+#print axioms TDA.Sheaf.BandConvolution.distance_interval_of_different_endpoint_types
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.totalPairCost
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.distance_eq_totalPairCost
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.ofInterval
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.support_ofInterval
