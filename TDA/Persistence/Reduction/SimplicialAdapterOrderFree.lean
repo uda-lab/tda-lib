@@ -8,7 +8,7 @@ set_option autoImplicit false
 
 The face boundary matrix of `facePivotBarcode` carries the signs of the ordered chain complex,
 so its definition takes a linear order on the vertex type.  A `CompatibleOrder` is an
-enumeration of the faces and does not refer to a vertex order.  For two linear orders `o₁`,
+enumeration of the faces, defined for an arbitrary vertex type.  For two linear orders `o₁`,
 `o₂` on the vertex type, the prefix homology modules are related by the comparison
 isomorphisms of `simplicialHomologyIso_of_linearOrder`, which commute with the inclusions of
 the prefix complexes; hence the structure maps have equal ranks and the prefix barcodes agree
@@ -72,12 +72,15 @@ theorem facePrefixBarcode_congr_linearOrder (e : CompatibleOrder f) (n : ℕ) :
     (e.prefixComplex s.val) k _ n V o₁ o₂ (e.prefixComplex t.val) (inclusionVertexMap hsub)
   refine finrank_range_eq_of_square k
     (simplicialHomologyIso_of_linearOrder o₁ o₂ (e.prefixComplex s.val) k n).toLinearEquiv
-    (simplicialHomologyIso_of_linearOrder o₁ o₂ (e.prefixComplex t.val) k n).toLinearEquiv _ _ ?_
+    (simplicialHomologyIso_of_linearOrder o₁ o₂ (e.prefixComplex t.val) k n).toLinearEquiv
+    _ _ ?_
   rw [@simplicialHomologyMap_inclusion V o₁, @simplicialHomologyMap_inclusion V o₂] at hnat
   exact LinearMap.ext fun x => congrArg (fun g => g.hom x) hnat
 
 /-- The pivot barcode of the simplicial adapter is the same for two linear orders on the vertex
-type, for one compatible order `e` of the faces. -/
+type, for one compatible order `e` of the faces.  A client states the two barcodes with the
+orders as explicit arguments, `@facePivotBarcode V o₁ α _ K _ f k _ _ e p` and
+`@facePivotBarcode V o₂ α _ K _ f k _ _ e p`, in a context without an ambient order on `V`. -/
 theorem facePivotBarcode_congr_linearOrder [DecidableEq k] (e : CompatibleOrder f) (p : ℕ) :
     @facePivotBarcode V o₁ α _ K _ f k _ _ e p =
       @facePivotBarcode V o₂ α _ K _ f k _ _ e p := by

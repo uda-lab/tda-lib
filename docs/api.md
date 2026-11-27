@@ -1776,7 +1776,8 @@ See [sublevel diagrams](math/finite-sublevel-diagram.md) and
 
 `TDA.Persistence.Reduction.facePivotBarcode` and `facePrefixModule` take a linear order on the
 vertex type (the face boundary matrix has the signs of the ordered chain complex), for a field in
-the universe of the vertex type and a `CompatibleOrder`, which does not refer to a vertex order.
+the universe of the vertex type and a `CompatibleOrder`, which is defined for an arbitrary
+vertex type.
 `facePrefixBarcode_congr_linearOrder` and `facePivotBarcode_congr_linearOrder` (module
 `TDA.Persistence.Reduction.SimplicialAdapterOrderFree`) state that the prefix barcode and the
 pivot barcode agree for two linear orders on the vertex type, given as explicit arguments.

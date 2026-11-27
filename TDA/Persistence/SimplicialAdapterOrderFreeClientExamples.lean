@@ -10,8 +10,9 @@ set_option autoImplicit false
 Regression fixtures for #1308, family 17 of the downstream-use audit (#1207). Each statement is
 written as a downstream client writes it. The inputs are a finite subset `S` of the Euclidean
 plane as vertex type `↥S` with the instances found for a subtype of a `Finset`, the field
-`ZMod 2`, a compatible order of the faces of the Rips filtration, and, in the last statement,
-one supplied linear order on `↥S`; the order-free statements choose the vertex order internally.
+`ZMod 2`, and a compatible order of the faces of the Rips filtration. The first two statements
+choose the vertex order internally; the third takes one supplied linear order on `↥S` and the
+fourth two supplied linear orders on `↥S` as explicit arguments.
 
 * The isomorphism of the prefix homology module with the interval module of the pivot barcode.
 * The fibres of the prefix homology module as order-free homology of the prefix complexes.
