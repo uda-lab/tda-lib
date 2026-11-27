@@ -10,6 +10,21 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Recognition and degree-zero band convolution of real interval sheaves.
+  `nonempty_iso_interval_of_finrank` recognizes interval diagrams by their vertex dimensions and
+  internal arrow isomorphisms. `exists_intervalSet_of_strata` represents a nonempty order-connected
+  union of strata as an interval set. `nonempty_iso_extension_interval_of_sections` recognizes
+  interval sheaves by sections and restrictions on basic opens tested by `MeetsClosed`.
+  `outSet0` records the centres where the closed band window meets the interval in a nonempty
+  closed set, with endpoint formulas `outSet0_Icc`, `outSet0_Ico`, `outSet0_Ioc`, `outSet0_Ioo`,
+  `outSet0_Ici`, `outSet0_Ioi`, `outSet0_Iic`, `outSet0_Iio`, `outSet0_singleton` and
+  `outSet0_univ`. `meetsClosed_outSet0_iff` connects the output test on an open to the input
+  test on its thickening, and `H0TSectionsIso_hom_map` and `H0TSectionsIso_hom_map_assoc` identify
+  the restrictions. `nonempty_iso_H0T_interval` identifies the degree-zero sheaf for an
+  interval set equal to the output. `exists_intervalSet_outSet0` and `exists_intervalSheaf_H0T`
+  give the interval set and sheaf for a nonempty output on the shifted `bandBreakpoints`;
+  `isZero_H0T_interval` handles the empty output. `isConstructible_H0T_interval` gives
+  constructibility on those breakpoints, using `isConstructible_of_isZero` for the zero case.
 - Associativity of band composition (#1175). `TComp_assoc_hom` and `TCompB_assoc_hom` compare
   the two compositions of three nonnegative radii on `D⁺` and `Dᵇ`, using the functor associator
   and `TCompOfEq` for the equality of sums. `hcomp_augB_TCompB_hom` identifies the horizontal
