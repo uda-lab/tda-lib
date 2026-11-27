@@ -12,6 +12,8 @@ namespace TDA.Persistence.RipsSamplingExamples
 open TDA.Probability TDA.Persistence.Rips
 open scoped ENNReal NNReal
 
+attribute [local instance] TDA.Persistence.Rips.sampleFintype
+
 /-- The two nonnegative masses are allowed to reach zero at either endpoint. -/
 def twoPointWeights (ε : ℝ≥0) (hε : ε ≤ 1) : PMF Bool :=
   PMF.ofFintype (fun b => ((if b then ε else 1 - ε : ℝ≥0) : ℝ≥0∞)) (by

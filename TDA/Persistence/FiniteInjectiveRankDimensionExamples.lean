@@ -22,6 +22,8 @@ open TDA.Persistence.PrincipalDownsetInjective
 open TDA.Persistence.PrincipalDownsetRankResolution
 open TDA.Persistence.PrincipalDownsetRankDimension.Examples
 open TDA.Persistence.FiniteRankProjectiveEndAlgebra
+
+attribute [local instance] TDA.Persistence.FiniteInjectivePresentation.indexFintype
 open scoped ZeroObject
 
 variable {k : Type u} [Field k]

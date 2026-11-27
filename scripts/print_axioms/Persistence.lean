@@ -9588,3 +9588,4 @@ set_option linter.auxLemma false
 #print axioms TDA.Persistence.OccurrenceMatchingClientExamples.fin_two_target_le_cost
 #print axioms TDA.Persistence.OccurrenceMatchingClientExamples.fin_two_cost_le_of
 #print axioms TDA.Persistence.OccurrenceMatchingClientExamples.mem_tupleFilter_iff
+#print axioms TDA.Persistence.Rips.sampleDiagram_eq_diagram
