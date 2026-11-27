@@ -5293,6 +5293,21 @@ are a restriction in case (a) and one from case (b) to case (a). Through the thi
 `bandOpen_eighth_ioo_quarter`) and `finrank_thickening_wholeLineSheaf_ioo` (`1` over every
 `(a, b)`, `a < b`).
 
+## Recognition of interval diagrams and sheaves
+
+In `TDA.Sheaf.RealIntervalRecognition`, `nonempty_iso_interval_of_finrank` recognizes a
+pointwise finite-dimensional diagram on a finite path with arbitrary orientation. Its
+vertex dimensions are one on the proposed bar and zero elsewhere, and each arrow joining
+two vertices of the bar is invertible. `exists_intervalSet_of_strata` represents every
+nonempty order-connected union of strata of strictly increasing real breakpoints as
+`intervalSet p J`.
+
+Write `MeetsClosed I U` when `I ∩ U` is nonempty and relatively closed in the open `U`.
+`nonempty_iso_extension_interval_of_sections` identifies a sheaf with
+`(extension k hp).obj (interval (orient m) J)` if its sections over basic opens are
+isomorphic to `k` where `MeetsClosed (intervalSet p J) U` holds, and zero elsewhere, with
+invertible restrictions between any two such basic opens satisfying the predicate.
+
 ## Refinement of the breakpoints on the real line
 
 `TDA.Sheaf.RealConstructibleRefinement` works with strictly increasing breakpoints
@@ -6099,6 +6114,44 @@ radius `0`, `(0, 1)` is unchanged (`bandOpen_zero_ioo`). `thickeningSectionsIoo 
 `H⁰(T ℚ 1 (F[0]))` over `(0, 1)`, through `H0TSectionsIso`; `thickeningSectionsIoo_map` (restriction to `(1/4, 1/2)`, with
 `ioo_quarter_le`) and `thickeningSectionsIoo_naturality` (naturality in `F`) check the two
 compatibilities.
+
+## Degree-zero band convolution of interval sheaves
+
+`TDA.Sheaf.BandIntervalDegreeZero` works over a field `k` with the derived category
+instances for the line and the band spaces. For radius `0 ≤ ε`, `outSet0 ε I` consists of
+the centres `y` where `I ∩ [y - ε, y + ε]` is nonempty and closed. For a locally closed
+order-connected `I` and an order-connected open `U`, `meetsClosed_outSet0_iff` gives
+`MeetsClosed (outSet0 ε I) U ↔ MeetsClosed I (bandOpen ε U)`.
+`H0TSectionsIso_hom_map` and `H0TSectionsIso_hom_map_assoc` identify restrictions in
+degree zero with restrictions between the thickened opens.
+
+For the interval sheaf of `I = intervalSet p J`, `nonempty_iso_H0T_interval` identifies
+`H⁰(T_ε (Φ(interval J)[0]))` with the interval sheaf of any interval set equal to
+`outSet0 ε I`. `bandBreakpoints p ε` consists of the input breakpoints shifted by `-ε`
+and `+ε`. For nonempty output, `exists_intervalSet_outSet0` gives an interval of that
+sorted stratification, and `exists_intervalSheaf_H0T` gives the corresponding sheaf
+isomorphism. `isZero_H0T_interval` gives the zero sheaf for empty output and
+`isConstructible_H0T_interval` gives constructibility for the shifted breakpoints in
+both cases. The zero-sheaf criterion `isConstructible_of_isZero` applies to every finite
+stratification given by strictly increasing breakpoints.
+
+| Input | Degree-zero output | Lemma |
+| --- | --- | --- |
+| `[a, b]` | `[a - ε, b + ε]` | `outSet0_Icc` |
+| `[a, b)` | `[a - ε, b - ε)` | `outSet0_Ico` |
+| `(a, b]` | `(a + ε, b + ε]` | `outSet0_Ioc` |
+| `(a, b)` | `(a + ε, b - ε)` | `outSet0_Ioo` |
+| `[a, ∞)` | `[a - ε, ∞)` | `outSet0_Ici` |
+| `(a, ∞)` | `(a + ε, ∞)` | `outSet0_Ioi` |
+| `(-∞, b]` | `(-∞, b + ε]` | `outSet0_Iic` |
+| `(-∞, b)` | `(-∞, b - ε)` | `outSet0_Iio` |
+| `{a}` | `[a - ε, a + ε]` | `outSet0_singleton` |
+| `ℝ` | `ℝ` | `outSet0_univ` |
+
+The open bounded output is empty when `b - a ≤ 2ε`.
+`TDA.Sheaf.BandIntervalDegreeZeroExamples` checks the endpoint formulas at radius `1`,
+a nonzero stalk at the right endpoint of the output of the singleton at `0`, and
+vanishing of the open unit interval output at radius `1/2`.
 
 ## Sheaf statements as a client writes them
 

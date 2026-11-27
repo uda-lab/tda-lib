@@ -121,7 +121,7 @@ theorem barcode_sections_extension_interval (hp : StrictMono p) (J : FiniteInter
     ((extensionSectionsIso k hp).app (interval (orient m) J) ≪≫ isoBiprodZero (isZero_zero _))
 
 /-- A zero sheaf is constructible. -/
-private theorem isConstructible_of_isZero (hp : StrictMono p)
+theorem isConstructible_of_isZero (hp : StrictMono p)
     {F : TopCat.Sheaf (ModuleCat.{0} k) realLine} (hF : IsZero F) :
     IsConstructible (breakpoints p) F :=
   isConstructible_of_iso (((extension k hp).map_isZero (isZero_zero _)).iso hF)
