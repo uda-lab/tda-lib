@@ -58,3 +58,6 @@ import TDA.Sheaf.BandIntervalDegreeOne
 import TDA.Sheaf.BandIntervalConvolution
 import TDA.Sheaf.BandCompositionUnit
 import TDA.Sheaf.BandCompositionAssociativity
+import TDA.Sheaf.BandDistance
+import TDA.Sheaf.BoundedBandDistance
+import TDA.Sheaf.BandSkyscraperDistance
