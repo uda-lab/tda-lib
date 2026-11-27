@@ -1004,6 +1004,21 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `barcode_sections_p₁_constSheaf₀`, `map_intervalSet_barcode_sections_p₁_constSheaf₀`,
   `hasConstructibleCohomology_constSheaf₀`, `gradedBarcode_p₁_constSheaf₀`,
   `gradedBarcodeSets_p₁_constSheaf₀`.
+- The composition isomorphism of the band functors is compatible with the radius maps (#1175,
+  part 2a). New module `TDA.Sheaf.BaseChangeRestriction`: `derivedCounit_comp_app`,
+  `derivedUnit_comp_app_counit`, `derivedUnit_comp_app_pullbackPlusCompIso_inv`,
+  `corrRestr_counit`, `corrRestr_app_comp_map`, `pullbackPlusCompIso_transport`,
+  `eqToHom_comp_transport`, `pullbackPlusCompIso_hom_app_eqToHom`,
+  `pullbackPlusCompIso_inv_app_eqToHom`, `corrRestr_eq_of_eq`, the unit isomorphism `corrUnitIso`
+  of a correspondence with equal legs, `pullbackPlus_map_corrUnitIso_inv_app_counit`,
+  `pullbackPlus_map_corrUnitIso_inv_app_transport`. New module `TDA.Sheaf.BandCompositionLaws`, in
+  `BandConvolution`: `inclZ`, the transported counit `TCompCounit` (`TCompCounit_eq`),
+  `TComp_hom_app_TCompRestr_eq`, `TComp_hom_app_TCompRestr_eq_assoc`, `restr_TCompRestr`, the
+  radius laws
+  `whiskerRight_restr_TComp_hom`, `whiskerLeft_restr_TComp_hom`, `hcomp_restr_TComp_hom`;
+  `pr₁₃Of`, `pr₁₃Of_zero_add`, `pr₁₃Of_add_zero`, `eqToHom_TCompRestr`, `TCompOfEq`,
+  `TCompOfEq_rfl`, `TCompOfEq_hom`; at `a = 0`, `T0Iso_eq_corrUnitIso`, `T0Iso_inv_TCompCounit`,
+  `eqToHom_TCompRestr_zero_add`.
 
 ## v0.5.0
 

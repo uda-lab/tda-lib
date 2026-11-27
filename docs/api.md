@@ -76,6 +76,8 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.PointDetection` | `rightDerivedFunctorPlusCompHomologyIso`, `isIso_iff_forall_isIso_pullbackPlus_pt`, `isIso_baseChange_congr`, `isIso_baseChange_of_fibres` | Exact functors between abelian categories with derived category structures, the source with enough injectives; sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`, points read through `ptOf x : pt ⟶ X`; commutative squares `w : g' ≫ f = f' ≫ g` with a family of squares `e z ≫ f' = toPt (F z) ≫ ptOf z` over the points of `Y'`; derived categories as instance arguments, for the family `[∀ z, HasDerivedCategory ((F z).Sheaf _)]`. See [Interval fibrations and the fibrewise criterion](#interval-fibrations-and-the-fibrewise-criterion). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibration` | `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`, `exists_preimage_le_of_isClosedMap`; `FibreCoordinate`, `FibreCoordinate.IsFibreParam`, `IsFibreParam.apply_eq`, `IsFibreParam.mem_range_iff`, `IsFibreParam.exists_preimage_le`, `IsFibreParam.exists_unit_eq`, `IsFibreParam.isIso_baseChangeSheaf_app`, `IsFibreParam.isIso_baseChangeCochain_app`, `IsFibreParam.isIso_baseChange`, `IsFibreParam.isZero_H_stalk_pushforwardPlus`; `IntervalFibration`, `IntervalFibration.e_comp`, `t_e`, `mem_range`, `apply_e`, `isIso_baseChangeSheaf_app`, `isIso_baseChange`, `stalkFormula`, `stalkFormula_hom`, `isZero_H_stalk_pushforwardPlus`; `isIso_baseChange_of_isFibreParam`; `IntervalFibration.isIso_derivedUnit` | Continuous `π : X ⟶ Y` in `TopCat.{0}` with a fibre coordinate `t : C(X, ℝ)` (`(π, t)` inducing, `π` closed); fibre parametrisations `ε : [u, v] ⟶ X` for all `u v : ℝ`, empty and one-point intervals included; the derived unit statement for nonempty fibres `lo y ≤ hi y` at every `y`; `k : Type` a ring; derived category structures on `X`, `Y`, `pt` and the fibre interval as instance arguments. See [Interval fibrations and the fibrewise criterion](#interval-fibrations-and-the-fibrewise-criterion). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandComposition` | `BandConvolution.bandChain`, `mem_bandChain`, `isClosed_bandChain`, `Z`, `dist_le_add_of_mem_bandChain`, `pr₁₂`, `pr₂₃`, `pr₁₃`, `coe_pr₁₂_apply`, `coe_pr₂₃_apply`, `coe_pr₁₃_apply`, `pr₁₂_q`, `pr₁₃_p`, `pr₁₃_q`, `isProperMap_pr₂₃`, `isProperMap_pr₁₃`; `fibreCoordinate_pr₂₃`, `fibreCoordinate_pr₂₃_t`, `fibreEmb₂₃`, `coe_fibreEmb₂₃_apply`, `isFibreParam_fibreEmb₂₃`, `intervalFibration_pr₂₃`, `intervalFibration_pr₂₃_e`, `lo_le_hi_pr₂₃`; `fibreCoordinate_pr₁₃`, `fibreCoordinate_pr₁₃_t`, `fibreEmb₁₃`, `coe_fibreEmb₁₃_apply`, `isFibreParam_fibreEmb₁₃`, `intervalFibration_pr₁₃`, `intervalFibration_pr₁₃_e`, `lo_le_hi_pr₁₃`; `isIso_baseChange_pr₁₂_q`, `isIso_derivedUnit_pr₁₃`, `TCompRestr`, `TCompRestr_eq`, `TCompRestr_app`, `isIso_TCompRestr`, `TComp`, `TComp_hom_app_TCompRestr`, `TComp_inv_app` | `Z a b = {(x, y, z) ∈ ℝ³ | dist x y ≤ a ∧ dist y z ≤ b}` as `TopCat.{0}`, all `a b : ℝ` for the spaces, maps, interval fibrations and the base change; nonempty fibres, the derived unit of `pr₁₃`, `isIso_TCompRestr` and `TComp` for `0 ≤ a`, `0 ≤ b`; `k : Type` a ring; derived category structures on `ℝ`, every `D a`, every `Z a b`, `pt` and every `[u, v]` as instance arguments. See [The composition isomorphism of the band functors](#the-composition-isomorphism-of-the-band-functors). |
+| `TDA.Sheaf` / `TDA.Sheaf.BandCompositionLaws` | `BandConvolution.inclZ`, `pr₁₃Of`, `pr₁₃Of_zero_add`, `pr₁₃Of_add_zero`, `TCompCounit`, `TCompCounit_eq`, `TComp_hom_app_TCompRestr_eq`, `TComp_hom_app_TCompRestr_eq_assoc`, `restr_TCompRestr`, `whiskerRight_restr_TComp_hom`, `whiskerLeft_restr_TComp_hom`, `hcomp_restr_TComp_hom`, `eqToHom_TCompRestr`, `T0Iso_eq_corrUnitIso`, `T0Iso_inv_TCompCounit`, `eqToHom_TCompRestr_zero_add`, `TCompOfEq`, `TCompOfEq_rfl`, `TCompOfEq_hom` | `0 ≤ a`, `0 ≤ b` for the composition isomorphism, `a ≤ a'`, `b ≤ b'` for the radius maps, `a + b = c` for `pr₁₃Of` and `TCompOfEq`; `k : Type` a ring; derived category structures on `ℝ`, every `D a`, every `Z a b`, `pt` and every `[u, v]` as instance arguments. See [Laws of the composition isomorphism](#laws-of-the-composition-isomorphism). |
+| `TDA.Sheaf` / `TDA.Sheaf.BaseChangeRestriction` | `derivedCounit_comp_app`, `derivedUnit_comp_app_counit`, `derivedUnit_comp_app_pullbackPlusCompIso_inv`, `corrRestr_counit`, `corrRestr_app_comp_map`, `pullbackPlusCompIso_transport`, `eqToHom_comp_transport`, `pullbackPlusCompIso_hom_app_eqToHom`, `pullbackPlusCompIso_inv_app_eqToHom`, `corrRestr_eq_of_eq`, `corrUnitIso`, `pullbackPlus_map_corrUnitIso_inv_app_counit`, `pullbackPlus_map_corrUnitIso_inv_app_transport` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; `corrUnitIso` for maps `u = v` whose derived unit `𝟭 ⟶ v⁻¹ ⋙ Rv_*` is invertible; derived categories as instance arguments. See [Units, counits and restrictions of correspondences](#units-counits-and-restrictions-of-correspondences). |
 
 ### Capped centred height-map pairs
 
@@ -5806,6 +5808,66 @@ instance. Over `vEnd = (0, 2) ∈ D (1 + 1)` the fibre of `pr₁₃ 1 1` is the 
 `T_b (T_a (constOn ℝ))` with `kpt` through `TComp` and the stalk formula of `q (a + b)`, so it is
 nonzero (`not_isZero_H0_stalk_TT`); `not_isZero_H0_stalk_TT_zero` and `H0_stalk_TT_one_one` are the
 cases `a = b = 0` and `a = b = 1`.
+
+## Units, counits and restrictions of correspondences
+
+`TDA.Sheaf.BaseChangeRestriction` collects coherences of the derived units and counits
+`derivedUnit`, `derivedCounit` with composites and with the restriction `corrRestr k j p q`.
+
+- `derivedCounit_comp_app`: for `f : X ⟶ Y`, `g : Y ⟶ Z`, `(f ≫ g)⁻¹` of
+  `Rg_* Rf_* ≅ R(f ≫ g)_*` followed by the counit of `f ≫ g` is `(f ≫ g)⁻¹ ≅ f⁻¹ g⁻¹`, then `f⁻¹` of
+  the counit of `g`, then the counit of `f`. `derivedUnit_comp_app_counit` and
+  `derivedUnit_comp_app_pullbackPlusCompIso_inv` describe the unit of a composite against a
+  counit and against `pullbackPlusCompIso`.
+- `corrRestr_counit`: `(j ≫ q)⁻¹` of the restriction along `j`, followed by the counit of `j ≫ q`,
+  is the restriction `j⁻¹` of the counit of `q` (the adjoint of the restriction).
+  `corrRestr_app_comp_map`: the restriction is natural in the inverse-image leg, for morphisms
+  `p⁻¹ Y ⟶ p'⁻¹ M` and `(j ≫ p)⁻¹ Y ⟶ (j ≫ p')⁻¹ M` that agree under `j⁻¹`.
+  `corrRestr_eq_of_eq`: the restrictions along equal maps agree up to the identifications of their
+  targets.
+- The transport of `φ : q⁻¹ N ⟶ p⁻¹ M` along `j` is `(j ≫ q)⁻¹ N ≅ j⁻¹ q⁻¹ N ⟶ j⁻¹ p⁻¹ M ≅
+  (j ≫ p)⁻¹ M`. `pullbackPlusCompIso_transport`: transport along `i ≫ j` is `i⁻¹` of transport
+  along `j`. `eqToHom_comp_transport`, `pullbackPlusCompIso_hom_app_eqToHom` and
+  `pullbackPlusCompIso_inv_app_eqToHom` compare transports and composition isomorphisms along
+  equal maps.
+- `corrUnitIso k h : u⁻¹ ⋙ Rv_* ≅ 𝟭` for `h : u = v` with invertible derived unit of `v`;
+  `pullbackPlus_map_corrUnitIso_inv_app_counit` and `pullbackPlus_map_corrUnitIso_inv_app_transport`
+  compute its inverse against the counit of `v` and against its transport along `π`: both are the
+  identification along `u = v`.
+
+The coherences are proved for abstract adjunctions and instantiated.
+
+## Laws of the composition isomorphism
+
+`TDA.Sheaf.BandCompositionLaws` relates `TComp k ha hb : T k a ⋙ T k b ≅ T k (a + b)` of
+`TDA.Sheaf.BandComposition` to the radius maps `restr`.
+
+- `TComp_hom_app_TCompRestr_eq` (with `_assoc`): `TComp` followed by `TCompRestr` is the restriction
+  `corrRestr` along `pr₂₃ a b` at `T_a M`, followed by `R(pr₂₃ ≫ q b)_*` of the transported counit
+  `TCompCounit k a b M : (pr₂₃ ≫ p b)⁻¹ T_a M ⟶ (pr₁₂ ≫ p a)⁻¹ M`, the counit of `q a` transported
+  along `pr₁₂` (`TCompCounit_eq`).
+- `inclZ ha hb : Z a b ⟶ Z a' b'` for `a ≤ a'`, `b ≤ b'`, and `restr_TCompRestr`: the radius map
+  `T_{a'+b'} ⟶ T_{a+b}` followed by `TCompRestr k a b` is `TCompRestr k a' b'` followed by the
+  restriction along `inclZ`.
+- For `0 ≤ a ≤ a'` and `0 ≤ b ≤ b'`:
+  `whiskerRight_restr_TComp_hom`:
+  `whiskerRight (restr k h) (T k b) ≫ (TComp k ha hb).hom =
+  (TComp k (ha.trans h) hb).hom ≫ restr k (add_le_add h (le_refl b))`;
+  `whiskerLeft_restr_TComp_hom`:
+  `whiskerLeft (T k a) (restr k h) ≫ (TComp k ha hb).hom =
+  (TComp k ha (hb.trans h)).hom ≫ restr k (add_le_add (le_refl a) h)`;
+  `hcomp_restr_TComp_hom`:
+  `(restr k h₁ ◫ restr k h₂) ≫ (TComp k ha hb).hom =
+  (TComp k (ha.trans h₁) (hb.trans h₂)).hom ≫ restr k (add_le_add h₁ h₂)`.
+- `pr₁₃Of h : Z a b ⟶ D c` for `h : a + b = c`, `(x, y, z) ↦ (x, z)`; on `Z 0 b` it is `pr₂₃ 0 b`
+  (`pr₁₃Of_zero_add`) and on `Z a 0` it is `pr₁₂ a 0` (`pr₁₃Of_add_zero`). `eqToHom_TCompRestr`:
+  `T_c = T_{a+b}` followed by `TCompRestr k a b` is the restriction along `pr₁₃Of h`.
+  `TCompOfEq k ha hb h : T k a ⋙ T k b ≅ T k c` is `TComp` followed by `T k (a + b) = T k c`
+  (`TCompOfEq_rfl`, `TCompOfEq_hom`).
+- At `a = 0`: `T0Iso_eq_corrUnitIso`; `T0Iso_inv_TCompCounit`: `(pr₂₃ ≫ p b)⁻¹` of the inverse of
+  `T0Iso` followed by `TCompCounit k 0 b` is the identification along `p 0 = q 0`;
+  `eqToHom_TCompRestr_zero_add`: `T_b = T_{0+b}` followed by `TCompRestr k 0 b` is the restriction
+  along `pr₂₃ 0 b` followed by the identification along `pr₁₃Of_zero_add`.
 
 ## Review and extension boundaries
 
