@@ -10,6 +10,14 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- Degree-zero radius maps for real band convolution. Under `H0TSectionsIso`,
+  `H0Restr` acts over an order-connected open by restriction from the larger thickening
+  to the smaller one (`H0TSectionsIso_hom_restr`, `H0TSectionsIso_hom_restr_assoc`).
+  `H0Restr_interval_ne_zero_iff` tests nonvanishing by intersection of the two output intervals.
+  `homologyZeroRightDerivedSingleIso_inv_naturality` and
+  `homologyZeroRightDerivedSingleIso_inv_naturality_assoc` identify degree zero of a
+  derived natural transformation on single complexes with the underived transformation
+  for additive left exact functors.
 - Degree-one band convolution of real interval sheaves. `nonempty_iso_H1T_interval`
   identifies the sheaf with the interval sheaf of any realization of `outSet1`.
   `exists_intervalSheaf_H1T` gives the isomorphism on the shifted breakpoints for a
