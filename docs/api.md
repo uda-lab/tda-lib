@@ -5298,9 +5298,9 @@ are a restriction in case (a) and one from case (b) to case (a). Through the thi
 In `TDA.Sheaf.RealIntervalRecognition`, `nonempty_iso_interval_of_finrank` recognizes a
 pointwise finite-dimensional diagram on a finite path with arbitrary orientation. Its
 vertex dimensions are one on the proposed bar and zero elsewhere, and each arrow joining
-two vertices of the bar is invertible. `exists_intervalSet_of_strata` represents every
-nonempty order-connected union of strata of strictly increasing real breakpoints as
-`intervalSet p J`.
+two vertices of the bar is invertible. `eq_of_alive_iff` identifies finite intervals
+with the same live vertices. `exists_intervalSet_of_strata` represents every nonempty
+order-connected union of strata of strictly increasing real breakpoints as `intervalSet p J`.
 
 Write `MeetsClosed I U` when `I ∩ U` is nonempty and relatively closed in the open `U`.
 `nonempty_iso_extension_interval_of_sections` identifies a sheaf with
@@ -6152,6 +6152,37 @@ The open bounded output is empty when `b - a ≤ 2ε`.
 `TDA.Sheaf.BandIntervalDegreeZeroExamples` checks the endpoint formulas at radius `1`,
 a nonzero stalk at the right endpoint of the output of the singleton at `0`, and
 vanishing of the open unit interval output at radius `1/2`.
+
+## Cohomology of band fibres with interval coefficients
+
+Let `k` be a field, `ε ≥ 0`, and `I = intervalSet p J` for a strictly increasing
+breakpoint list `p`. The input is the interval sheaf `(extension k hp).obj (interval (orient m) J)`
+in degree zero. `windowInclusion ε y` includes the compact interval `[y - ε, y + ε]`
+into the line. `fibreCohomology k ε y F i` is the degree-`i` cohomology of the
+inverse image of `F` along that inclusion, as a sheaf on the point.
+`nonempty_iso_pullback_homology_T_fibre` and `nonempty_iso_stalk_T_fibre` identify
+it with the corresponding convolution stalk using the interval-fibration stalk formula.
+
+- `nonempty_iso_fibreCohomology_zero_interval` gives the coefficient module `k`
+  for `y ∈ outSet0 ε I`. `isZero_fibreCohomology_zero_interval` gives vanishing
+  for the other centres.
+- `isZero_H_one_of_germSurjective_away` proves degree-one vanishing on an
+  order-connected subset of the real line when germs lift over every open
+  avoiding a fixed point. `isZero_fibreCohomology_one_interval` applies the
+  criterion to the excluded endpoint of the interval in the window.
+- `outSet1 ε I` consists of the centres whose window contains `closure I` when
+  `I` is nonempty and open. For `a < b`, `outSet1_Ioo` gives
+  `[b - ε, a + ε]`, and `outSet1_Ioo_threshold` is the singleton
+  `{(a + b) / 2}` when `2 * ε = b - a`. The endpoint formulas for closed and
+  half-open intervals, rays, singletons and the whole line give the empty set.
+- `exists_intervalSet_outSet1` represents a nonempty output on the sorted
+  shifted breakpoint stratification. `nonempty_iso_stalk_H1T_interval` gives
+  the coefficient module `k` on this set via the degree-zero endpoint restriction.
+  `nonempty_iso_fibreCohomology_one_interval` transfers this value to the fibre.
+- `isZero_stalk_H1T_interval` gives zero stalks outside the output set.
+  `isZero_H1T_interval` gives a zero degree-one sheaf for an empty output.
+  `isZero_homology_T_single` gives vanishing outside degrees zero and one for
+  convolution of any sheaf placed in degree zero.
 
 ## Sheaf statements as a client writes them
 

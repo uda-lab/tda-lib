@@ -14,6 +14,8 @@ point: `Hⁱ(S; G)` is the `i`-th homology, a sheaf of `k`-modules on `pt`, of `
 applied to `G` placed in degree `0`.
 
 * `isZero_H_ordConnected`: `Hⁱ(S; G) = 0` for `2 ≤ i` and every sheaf `G`.
+* `isZero_H_one_of_germSurjective_away`: `H¹(S; G) = 0` if germs lift on opens avoiding
+  a distinguished point of the real line.
 * `isZero_H_of_germSurjective`: `Hⁱ(S; G) = 0` for `1 ≤ i` when `G` is germ-surjective.
 * `isZero_H_constSh_ordConnected`: `Hⁱ(S; constSh N) = 0` for `1 ≤ i`.
 * On the compact interval `[u, v]`: `isZero_H_Icc`, `isZero_H_Icc_of_germSurjective` and
@@ -101,30 +103,34 @@ private theorem quasiIsoAt_zero_map {C D : Type*} [Category* C] [Category* D] [A
   have : Mono (j.f 0) := hq.2
   exact ⟨hq.1.map_of_mono_of_preservesKernel F hq.2 inferInstance, F.map_mono _⟩
 
-/-- On an order-connected `S ⊆ ℝ`, a complex `J` exact at `n`, together with a germ-surjective
-`L₀ ⟶ Jᵐ` making `L₀ ⟶ Jᵐ ⟶ Jⁿ` exact, has exact global sections at `n`. -/
-private theorem exactAt_pushforward_toPt {S : Set ℝ} (hS : S.OrdConnected)
+/-- On an order-connected `S ⊆ ℝ`, a complex `J` exact at `n` has exact global sections at
+`n` if `L₀ ⟶ Jᵐ ⟶ Jⁿ` is exact and germs of `L₀` lift on opens avoiding `c`. -/
+private theorem exactAt_pushforward_toPt {S : Set ℝ} (hS : S.OrdConnected) (c : ℝ)
     (J : CochainComplex ((TopCat.of S).Sheaf (ModuleCat.{0} k)) ℤ) {m n p : ℤ}
     (hmn : m + 1 = n) (hnp : n + 1 = p)
     {L₀ : (TopCat.of S).Sheaf (ModuleCat.{0} k)} (d₀ : L₀ ⟶ J.X m)
     (w : d₀ ≫ J.d m n = 0) (h₀ : (ShortComplex.mk d₀ (J.d m n) w).Exact)
-    (hL₀ : GermSurjective k L₀) (hJ : J.ExactAt n) :
+    (hL₀ : ∀ (V : Opens (TopCat.of S)), (∀ y ∈ V, (y : ℝ) ≠ c) →
+      ∀ (x : TopCat.of S) (hx : x ∈ V), Function.Surjective (L₀.presheaf.germ V x hx))
+    (hJ : J.ExactAt n) :
     (((TopCat.Sheaf.pushforward (ModuleCat.{0} k)
       (toPt (TopCat.of S))).mapHomologicalComplex _).obj J).ExactAt n := by
   rw [HomologicalComplex.exactAt_iff' _ m n p ((ComplexShape.up ℤ).prev_eq' hmn)
     ((ComplexShape.up ℤ).next_eq' hnp)] at hJ ⊢
   apply exact_of_sections_top
   intro s hs
-  exact sections_exact_ordConnected k hS 0 d₀ (J.d m n) (J.d n p) w (J.d_comp_d _ _ _) h₀ hJ
-    (fun V _ => hL₀ V) s hs
+  exact sections_exact_ordConnected k hS c d₀ (J.d m n) (J.d n p) w (J.d_comp_d _ _ _) h₀ hJ
+    hL₀ s hs
 
 /-- Global sections on an order-connected `S ⊆ ℝ` of an injective resolution `j : A ⟶ J` of a
 complex `A` concentrated in degree `0` are exact in degree `n ≥ 1`, provided `A⁰` is
-germ-surjective when `n = 1`. -/
-private theorem exactAt_pushforward_of_quasiIso {S : Set ℝ} (hS : S.OrdConnected)
+germ-surjective on opens avoiding `c` when `n = 1`. -/
+private theorem exactAt_pushforward_of_quasiIso {S : Set ℝ} (hS : S.OrdConnected) (c : ℝ)
     {A J : CochainComplex ((TopCat.of S).Sheaf (ModuleCat.{0} k)) ℤ}
     (hA : ∀ m, m ≠ 0 → IsZero (A.X m)) [J.IsStrictlyGE 0] [∀ m, Injective (J.X m)]
-    (j : A ⟶ J) [QuasiIso j] {n : ℤ} (hn : 1 ≤ n) (hg : n = 1 → GermSurjective k (A.X 0)) :
+    (j : A ⟶ J) [QuasiIso j] {n : ℤ} (hn : 1 ≤ n)
+    (hg : n = 1 → ∀ (V : Opens (TopCat.of S)), (∀ y ∈ V, (y : ℝ) ≠ c) →
+      ∀ (x : TopCat.of S) (hx : x ∈ V), Function.Surjective ((A.X 0).presheaf.germ V x hx)) :
     (((TopCat.Sheaf.pushforward (ModuleCat.{0} k)
       (toPt (TopCat.of S))).mapHomologicalComplex _).obj J).ExactAt n := by
   have hJ (m : ℤ) (hm : m ≠ 0) : J.ExactAt m :=
@@ -136,25 +142,26 @@ private theorem exactAt_pushforward_of_quasiIso {S : Set ℝ} (hS : S.OrdConnect
       inferInstance
     rw [ShortComplex.quasiIso_iff_of_zeros _ ((hA (-1) (by norm_num)).eq_of_src _ _)
       ((hA 1 one_ne_zero).eq_of_tgt _ _) ((J.isZero_of_isStrictlyGE 0 (-1)).eq_of_src _ _)] at hq
-    exact exactAt_pushforward_toPt hS J (by norm_num) rfl (j.f 0)
+    exact exactAt_pushforward_toPt hS c J (by norm_num) rfl (j.f 0)
       (by rw [j.comm, (hA 1 one_ne_zero).eq_of_tgt (A.d 0 1) 0, zero_comp]) hq.1 (hg rfl)
       (hJ 1 one_ne_zero)
   · have h₀ := (HomologicalComplex.exactAt_iff' J (n - 2) (n - 1) n
       ((ComplexShape.up ℤ).prev_eq' (show n - 2 + 1 = n - 1 by omega))
       ((ComplexShape.up ℤ).next_eq' (show n - 1 + 1 = n by omega))).1 (hJ (n - 1) (by omega))
-    exact exactAt_pushforward_toPt hS J (m := n - 1) (by omega) rfl (J.d (n - 2) (n - 1))
-      (J.d_comp_d _ _ _) h₀ (germSurjective_of_injective k _) (hJ n (by omega))
+    exact exactAt_pushforward_toPt hS c J (m := n - 1) (by omega) rfl (J.d (n - 2) (n - 1))
+      (J.d_comp_d _ _ _) h₀ (fun V _ => germSurjective_of_injective k _ V) (hJ n (by omega))
 
 section derived
 
 variable [HasDerivedCategory (pt.Sheaf (ModuleCat.{0} k))]
 
-/-- `Hⁱ(S; G) = 0` for `1 ≤ i` on an order-connected `S ⊆ ℝ`, provided `G` is germ-surjective
-when `i = 1`. -/
-private theorem isZero_H_aux {S : Set ℝ} (hS : S.OrdConnected)
+/-- `Hⁱ(S; G) = 0` for `1 ≤ i` on an order-connected `S ⊆ ℝ`, provided germs of `G` lift
+on opens avoiding `c` when `i = 1`. -/
+private theorem isZero_H_aux {S : Set ℝ} (hS : S.OrdConnected) (c : ℝ)
     [HasDerivedCategory ((TopCat.of S).Sheaf (ModuleCat.{0} k))]
     (G : (TopCat.of S).Sheaf (ModuleCat.{0} k)) {i : ℤ} (hi : 1 ≤ i)
-    (hg : i = 1 → GermSurjective k G) :
+    (hg : i = 1 → ∀ (V : Opens (TopCat.of S)), (∀ y ∈ V, (y : ℝ) ≠ c) →
+      ∀ (x : TopCat.of S) (hx : x ∈ V), Function.Surjective (G.presheaf.germ V x hx)) :
     IsZero ((DerivedCategory.Plus.homologyFunctor _ i).obj
       ((pushforwardPlus k (toPt (TopCat.of S))).obj
         ((DerivedCategory.Plus.singleFunctor _ 0).obj G))) := by
@@ -170,9 +177,28 @@ private theorem isZero_H_aux {S : Set ℝ} (hS : S.OrdConnected)
     ((pushforwardPlus k _).mapIso (singleFunctorIsoQ 0 G)) ≪≫
       homologyRightDerivedIsoOfQuasiIso _ j hj i)
   refine HomologicalComplex.ExactAt.isZero_homology ?_
-  exact exactAt_pushforward_of_quasiIso hS
-    (fun m hm => HomologicalComplex.isZero_single_obj_X _ _ _ _ hm) j.hom hi
-    (fun h => germSurjective_of_epi k (HomologicalComplex.singleObjXSelf _ 0 G).inv (hg h))
+  refine exactAt_pushforward_of_quasiIso hS c
+    (fun m hm => HomologicalComplex.isZero_single_obj_X _ _ _ _ hm) j.hom hi ?_
+  intro h V hV x hx g
+  let e := HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 G
+  let stalk := TopCat.Sheaf.forget (ModuleCat k) (TopCat.of S) ⋙
+    TopCat.Presheaf.stalkFunctor (ModuleCat k) x
+  obtain ⟨s, hs⟩ := hg h V hV x hx ((stalk.mapIso e).hom g)
+  refine ⟨e.inv.hom.app (op V) s, ?_⟩
+  rw [← TopCat.Presheaf.stalkFunctor_map_germ_apply, hs]
+  exact Iso.hom_inv_id_apply (stalk.mapIso e) g
+
+/-- On an order-connected subset of the real line, `H¹(S; G)` vanishes if every germ on
+an open avoiding the distinguished point `c` lifts to a section over that open. -/
+theorem isZero_H_one_of_germSurjective_away {S : Set ℝ} (hS : S.OrdConnected) (c : ℝ)
+    [HasDerivedCategory ((TopCat.of S).Sheaf (ModuleCat.{0} k))]
+    (G : (TopCat.of S).Sheaf (ModuleCat.{0} k))
+    (hG : ∀ (V : Opens (TopCat.of S)), (∀ y ∈ V, (y : ℝ) ≠ c) →
+      ∀ (x : TopCat.of S) (hx : x ∈ V), Function.Surjective (G.presheaf.germ V x hx)) :
+    IsZero ((DerivedCategory.Plus.homologyFunctor _ 1).obj
+      ((pushforwardPlus k (toPt (TopCat.of S))).obj
+        ((DerivedCategory.Plus.singleFunctor _ 0).obj G))) :=
+  isZero_H_aux hS c G le_rfl (fun _ => hG)
 
 /-- **Germ-surjective sheaves are acyclic on an order-connected subset of the real line.** For an
 order-connected `S ⊆ ℝ` (an open, half-open, closed or unbounded interval, or `ℝ`) and a
@@ -185,7 +211,7 @@ theorem isZero_H_of_germSurjective {S : Set ℝ} (hS : S.OrdConnected)
     IsZero ((DerivedCategory.Plus.homologyFunctor _ i).obj
       ((pushforwardPlus k (toPt (TopCat.of S))).obj
         ((DerivedCategory.Plus.singleFunctor _ 0).obj G))) :=
-  isZero_H_aux hS G hi (fun _ => hG)
+  isZero_H_aux hS 0 G hi (fun _ V _ => hG V)
 
 /-- **Cohomological dimension of an order-connected subset of the real line.** For an
 order-connected `S ⊆ ℝ` and every sheaf `G` of `k`-modules on `S`, `Hⁱ(S; G) = 0` for
@@ -196,7 +222,7 @@ theorem isZero_H_ordConnected {S : Set ℝ} (hS : S.OrdConnected)
     IsZero ((DerivedCategory.Plus.homologyFunctor _ i).obj
       ((pushforwardPlus k (toPt (TopCat.of S))).obj
         ((DerivedCategory.Plus.singleFunctor _ 0).obj G))) :=
-  isZero_H_aux hS G (by omega) (fun h => absurd h (by omega))
+  isZero_H_aux hS 0 G (by omega) (fun h => absurd h (by omega))
 
 /-- **Constant coefficients on an order-connected subset of the real line.**
 `Hⁱ(S; constSh N) = 0` for `1 ≤ i` and every order-connected `S ⊆ ℝ`. -/
@@ -206,7 +232,7 @@ theorem isZero_H_constSh_ordConnected {S : Set ℝ} (hS : S.OrdConnected)
     IsZero ((DerivedCategory.Plus.homologyFunctor _ i).obj
       ((pushforwardPlus k (toPt (TopCat.of S))).obj
         ((DerivedCategory.Plus.singleFunctor _ 0).obj (constSh k (TopCat.of S) N)))) :=
-  isZero_H_aux hS _ hi (fun _ => germSurjective_constSh _ N)
+  isZero_H_aux hS 0 _ hi (fun _ V _ => germSurjective_constSh _ N V)
 
 /-- **Germ-surjective sheaves are acyclic on a compact interval.** For a germ-surjective sheaf `G`
 of `k`-modules on `[u, v]` (for instance a flasque or a constant sheaf),
@@ -299,9 +325,9 @@ theorem isIso_derivedUnit_toPt_Icc {u v : ℝ}
     · exact quasiIsoAt_zero_map F j.hom (hA (-1) (by norm_num)) (hA 1 one_ne_zero)
         (B.obj.isZero_of_isStrictlyGE 0 (-1))
     · rw [quasiIsoAt_iff_exactAt _ n (hFA n hn.ne')]
-      exact exactAt_pushforward_of_quasiIso Set.ordConnected_Icc hA j.hom (by omega) (fun _ =>
+      exact exactAt_pushforward_of_quasiIso Set.ordConnected_Icc 0 hA j.hom (by omega) (fun _ V _ =>
         germSurjective_of_epi k ((TopCat.Sheaf.pullback (ModuleCat.{0} k) f).map
-          (HomologicalComplex.singleObjXSelf _ 0 N).inv) (germSurjective_constSh _ N))
+          (HomologicalComplex.singleObjXSelf _ 0 N).inv) (germSurjective_constSh _ N) V)
   -- The composite `K₀ ⟶ f_* f⁻¹ K₀ ⟶ f_* B` is a quasi-isomorphism.
   have hψ := (CochainComplex.Plus.quasiIso _).comp_mem _ _ hu hFj
   exact isIso_Q_map_comp_rightDerivedFunctorPlusUnit F ((unitCochain k f).app K₀) j hj hψ

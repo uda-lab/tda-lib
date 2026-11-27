@@ -13,7 +13,8 @@ open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite TDA.Persiste
 
 namespace TDA.Sheaf.AlternatingDiagram
 
-private theorem eq_of_alive_iff {n : ℕ} {J K : FiniteInterval (n + 1)}
+/-- Two finite intervals with the same live vertices coincide. -/
+theorem eq_of_alive_iff {n : ℕ} {J K : FiniteInterval (n + 1)}
     (h : ∀ j : Fin (n + 1), J.alive j ↔ K.alive j) : J = K := by
   have j : J.birth < n + 1 := J.birth_lt_death.trans_le J.death_le_size
   have k : K.birth < n + 1 := K.birth_lt_death.trans_le K.death_le_size
