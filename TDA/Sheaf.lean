@@ -49,3 +49,4 @@ import TDA.Sheaf.RealConstructibleRefinement
 import TDA.Sheaf.BaseChangeRestriction
 import TDA.Sheaf.BandCompositionLaws
 import TDA.Sheaf.BandThickening
+import TDA.Sheaf.RealIntervalSections

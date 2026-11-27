@@ -57,6 +57,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.HereditarySplitting` | `biproductInsertIso`, `inl_biproductInsertIso_hom`, `inr_biproductInsertIso_hom`, `biproductIsoOfIsZero` (with `biproductIsoOfIsZero_hom`, `biproductIsoOfIsZero_inv`), `isZero_biproduct_of_isZero`; `isZero_homology_singleFunctor_obj`, `nonempty_iso_singleFunctor_homology`, `isIso_homologyMap_truncLTι`, `isIso_homologyMap_truncGEπ`, `singleFunctor_hom_eq_zero_of_ext`; `exists_iso_biproduct_homology`, `exists_iso_biproduct_homology_of_two_le`; `homologyBiproductSingleIso`, `isZero_homology_biproduct_single`, `nonempty_iso_homology_of_iso_biproduct_single`, `nonempty_iso_of_iso_biproduct_single` | An abelian category `C` with instances `HasDerivedCategory C` and, for the splitting theorems, `HasExt C`; objects of Mathlib's `DerivedCategory C` bounded for its canonical t-structure (`K.IsGE a`, `K.IsLE b`); the direct sum is indexed by `Finset.Icc a b`. See [Hereditary splitting](#hereditary-splitting). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleDerived` | `intervalSheafSum`, `intervalSheafSum_nil`, `intervalSheafSum_cons`, `extensionIntervalSumIso`, `barcodeSheaf`, `extensionBarcodeDiagramIso`, `isConstructible_barcodeSheaf`, the instance `finiteDimensional_sections_barcodeSheaf`, `barcode_sections_barcodeSheaf`, `barcode_sections_extension_interval`; `HasConstructibleCohomology`, `HasConstructibleCohomology.of_iso`, `HasConstructibleCohomology.mono`, `hasConstructibleCohomology_singleFunctor`, `hasConstructibleCohomology_biproduct`, `hasConstructibleCohomology_of_isConstructible`, `exists_iso_biproduct_homology_of_constructible`; `gradedBarcode`, `gradedBarcode_eq_of_iso_barcodeDiagram`, `gradedBarcode_eq_of_iso`, `gradedBarcode_eq_zero_of_isZero`, `gradedBarcode_eq_zero_of_lt`, `gradedBarcode_eq_zero_of_gt`, `gradedBarcode_singleFunctor`, `nonempty_homology_iso_barcodeSheaf`, `exists_iso_biproduct_barcodeSheaf`, `gradedBarcode_eq_of_iso_biproduct`, `gradedBarcode_eq_zero_of_iso_biproduct`, `gradedBarcode_biproduct` | Strictly increasing breakpoints `p : Fin m → ℝ`, `k : Type` a field; objects of Mathlib's `DerivedCategory (TopCat.Sheaf (ModuleCat.{0} k) realLine)` for an instance `HasDerivedCategory`, bounded for its canonical t-structure (`K.IsGE a`, `K.IsLE b`) where stated, with every cohomology sheaf constructible for the breakpoints of `p` (one breakpoint set for all degrees; `hasConstructibleCohomology_of_isConstructible` collects per-degree breakpoint sets into one). See [Graded barcodes on the real line](#graded-barcodes-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealIntervalSets` | `stratum`, `mem_stratum`, `stratum_subset_star`, `stratum_of_even`, `stratum_odd`, `stratum_odd_of_val`, `stratum_nonempty`, `lt_of_mem_stratum`, `eq_of_mem_stratum`, `exists_mem_stratum`, `eq_of_mem_star_inter_breakpoints`; `intervalSet`, `mem_intervalSet`, `stratum_subset_intervalSet`, `mem_intervalSet_iff_alive`, `ordConnected_intervalSet`, `isLocallyClosed_intervalSet`, `intervalSet_eq_univ`, `intervalSet_eq_stratum`, `intervalSet_eq_singleton`, `intervalSet_eq_Icc`, `intervalSet_eq_Ico`, `intervalSet_eq_Ioc`, `intervalSet_eq_Ioo`, `intervalSet_eq_Iio`, `intervalSet_eq_Iic`, `intervalSet_eq_Ioi`, `intervalSet_eq_Ici`; `isIso_interval_map_gen`; `isIso_germ_star_of_mem_stratum`, `nonempty_stalk_extension_iso`, `nonempty_stalk_extension_interval_iso`, `isZero_stalk_extension_interval`, `finrank_stalk_extension_interval_of_mem`, `finrank_stalk_extension_interval_of_notMem`, `finrank_stalk_extension_interval`, `isIso_extension_interval_map` | Strictly increasing breakpoints `p : Fin m → ℝ` (the order lemma, disjointness, `mem_intervalSet_iff_alive` and `intervalSet_eq_stratum` hold for every `p`); `k : Type`, a division ring for `isIso_germ_star_of_mem_stratum`, a field for the interval sheaves `Φ (interval J)`; stalks are Mathlib's `TopCat.Presheaf.stalk`; `finrank_stalk_extension_interval` takes an instance `[Decidable (x ∈ intervalSet p J)]`. See [Interval sets and stalks on the real line](#interval-sets-and-stalks-on-the-real-line). |
+| `TDA.Sheaf` / `TDA.Sheaf.RealIntervalSections` | `eq_or_arrow_of_mem_star_of_mem_stratum`; `isIso_germ_star_extension_interval`, `injective_germ_extension_interval`, `surjective_germ_extension_interval`, `isIso_germ_extension_interval`, `isZero_sections_extension_interval_of_inter_eq_empty`, `isZero_sections_extension_interval_of_mem_closure`, `isZero_sections_extension_interval`, `finrank_sections_extension_interval_eq_one`, `finrank_sections_extension_interval_eq_zero`, `isIso_map_extension_interval` | Strictly increasing breakpoints `p : Fin m → ℝ` (`eq_or_arrow_of_mem_star_of_mem_stratum` for every `p`), a field `k : Type`, the interval sheaf `Φ (interval J) = (extension k hp).obj (interval (orient m) J)` with `I = intervalSet p J`, sheaves in `ModuleCat.{0} k` on `realLine : TopCat.{0}`; opens `U` with `(U : Set ℝ).OrdConnected`, and any open `U` for surjectivity and for `U ∩ I = ∅`; case (a) is `closure I ∩ U ⊆ I` with `U ∩ I` nonempty, case (b) its negation. See [Sections of interval sheaves over order-connected opens](#sections-of-interval-sheaves-over-order-connected-opens). |
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleRefinement` | `refinementVertex`, `stratum_subset_stratum_refinementVertex`, `refinementVertex_eq_of_mem`, `refinementVertex_mono`, `refinementVertex_surjective`, `refineInterval`, `alive_refineInterval`, `intervalSet_refineInterval`, `sortedBreakpoints`, `strictMono_sortedBreakpoints`, `breakpoints_sortedBreakpoints`; `sectionsExtensionIntervalIso`, `sectionsIntervalSheafSumIso`, `barcode_sections_eq_map_refineInterval`, `barcode_sections_map_intervalSet_refine`, `gradedBarcode_eq_map_refineInterval`, `gradedBarcode_map_intervalSet_refine`; `gradedBarcodeSets`, `gradedBarcodeSets_refine`, `gradedBarcodeSets_eq_of_iso`, `gradedBarcodeSets_eq`, `hasConstructibleCohomology_sortedBreakpoints` | Strictly increasing breakpoints `p : Fin m → ℝ` and `q : Fin m' → ℝ` with `breakpoints p ⊆ breakpoints q` for the refinement statements; `k : Type` a field; sheaves constructible for the breakpoints of `p`; graded statements for an instance `HasDerivedCategory` and constructible cohomology for both breakpoint families (any proofs). See [Refinement of the breakpoints on the real line](#refinement-of-the-breakpoints-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_glue_monotone`, `exists_section_lift_extend_right`, `exists_section_lift_extend`, `exists_section_lift_extend_left`, `exists_section_lift_ordConnected`, `sections_exact_ordConnected`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`, order-connected for the lifting statements (open, half-open, closed and unbounded intervals and `ℝ`); germ-surjectivity of the first term on the opens above or below `a'` (extension steps) or avoiding a point `c` (global lifting). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
@@ -5218,6 +5219,53 @@ sheaf `leftOpen` of `[0, 0]` (`1` at `-1`, `0` at `0`), `finrank_stalk_rightClos
 `finrank_stalk_constSheaf₀` (`1` everywhere). `isIso_rightClosed_right`: for the interval sheaf
 of `[1, 2]`, the restriction from `ℝ` to `(0, ∞)` is an isomorphism, while the restriction to
 `(-∞, 0)` is not (`not_isIso_rightClosed_left`).
+
+## Sections of interval sheaves over order-connected opens
+
+`TDA.Sheaf.RealIntervalSections` computes the sections of an interval sheaf
+`Φ (interval J) = (extension k hp).obj (interval (orient m) J)` over an order-connected open `U` of
+the real line, for strictly increasing breakpoints `p : Fin m → ℝ`, a field `k : Type`, sheaves in
+`ModuleCat.{0} k` and `I = intervalSet p J`.
+
+- `eq_or_arrow_of_mem_star_of_mem_stratum`: a point of `star p v` in the stratum `u` has `u = v`
+  or an arrow `v ⟶ u` of `orient m`.
+- `isIso_germ_star_extension_interval`: for `J.alive v`, the germ
+  `Φ(J)(star p v) ⟶ Φ(J)_z` is an isomorphism at every `z ∈ star p v ∩ I`.
+- `injective_germ_extension_interval`: for order-connected `U` and `x ∈ U ∩ I`, the germ
+  `Φ(J)(U) ⟶ Φ(J)_x` is injective; the points of the preconnected `U ∩ I` where a section has
+  zero germ form an open and closed subset, and germs off `I` vanish.
+- `surjective_germ_extension_interval`: if `closure I ∩ U ⊆ I` (`I ∩ U` relatively closed in the
+  open `U`), the germ at `x ∈ U ∩ I` is surjective: the images of `1 ∈ k` over the stars of the
+  vertices of `J` and `0` on `U \ closure I` glue to a section with nonzero germ at `x`.
+- **Case (a)**, `closure I ∩ U ⊆ I`: `isIso_germ_extension_interval` (the germ at every
+  `x ∈ U ∩ I` is an isomorphism), `finrank_sections_extension_interval_eq_one`
+  (`finrank k (Φ(J)(U)) = 1` when moreover `(U ∩ I).Nonempty`), and
+  `isIso_map_extension_interval` (restriction `Φ(J)(U) ⟶ Φ(J)(V)` is an isomorphism for
+  order-connected `V ≤ U` in case (a) with a common point `x ∈ V ∩ I`).
+- **Case (b)**, `¬ (closure I ∩ U ⊆ I ∧ (U ∩ I).Nonempty)`: `isZero_sections_extension_interval`
+  and `finrank_sections_extension_interval_eq_zero` (`Φ(J)(U) = 0`). Its two halves are
+  `isZero_sections_extension_interval_of_inter_eq_empty` (`U ∩ I = ∅`, any open `U`) and
+  `isZero_sections_extension_interval_of_mem_closure` (a point `y ∈ U ∩ closure I` with
+  `y ∉ I`).
+
+Cases (a) and (b) are complementary for every order-connected open, and the two dimension lemmas
+take them as hypotheses.
+
+`TDA.Sheaf.RealIntervalSectionsExamples` works over `ℚ` with the opens
+`RealStratificationExamples.ioo a b = (a, b)` (`mem_ioo`), the point sheaf `pointSheaf ℚ`
+(interval set `{0}`), and, for the breakpoints `q2 = (0, 1)`, the interval sheaves `sheafJco` of
+`Jco` (`intervalSet_q2_Jco : [0, 1)`) and `sheafJoo` of `Joo` (`intervalSet_q2_Joo : (0, 1)`).
+Dimension `1`: `finrank_pointSheaf_ioo_neg_one_one`, `finrank_Jco_ioo_neg_one_one` (with
+`closure_Jco_inter_subset`), `finrank_Joo_ioo_quarter` (with `closure_Joo_inter_subset`).
+Dimension `0`: `finrank_pointSheaf_ioo_one_two` (the open misses `0`), `finrank_Jco_ioo_neg_one_two`
+(the open contains the boundary point `1`), `finrank_Joo_ioo_neg_one_half` (the open contains the
+boundary point `0`, `zero_mem_closure_Joo`). `isIso_Jco_restrict` and `not_isIso_Joo_restrict`
+are a restriction in case (a) and one from case (b) to case (a). Through the thickening formula:
+`finrank_thickening_pointSheaf_ioo` (`1`), `finrank_thickening_pointSheaf_ioo_two_three` (`0`, with
+`bandOpen_one_ioo_two_three`), `finrank_thickening_Joo_ioo_quarter` (`0` at radius `1`),
+`finrank_thickening_eighth_Joo_ioo_quarter` (`1` at radius `1/8`, with
+`bandOpen_eighth_ioo_quarter`) and `finrank_thickening_wholeLineSheaf_ioo` (`1` over every
+`(a, b)`, `a < b`).
 
 ## Refinement of the breakpoints on the real line
 

@@ -1119,6 +1119,25 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `ordConnected_ioo`, `bandOpen_one_ioo`, `bandOpen_zero_ioo`, `bandOpen_one_ioo_quarter`,
   `thickeningSectionsIoo`, `H0TSectionsIoo`, `ioo_quarter_le`, `thickeningSectionsIoo_map`,
   `thickeningSectionsIoo_naturality`.
+- Sections of interval sheaves over convex opens of the real line (#1184, part U2). In the new
+  module `TDA.Sheaf.RealIntervalSections`:
+  `RealStratification.eq_or_arrow_of_mem_star_of_mem_stratum`;
+  `RealConstructible.isIso_germ_star_extension_interval`, `injective_germ_extension_interval`,
+  `surjective_germ_extension_interval`, `isIso_germ_extension_interval` (case (a): the germ
+  `Φ(J)(U) ⟶ Φ(J)_x` is an isomorphism for order-connected `U` with `closure I ∩ U ⊆ I` and
+  `x ∈ U ∩ I`), `isZero_sections_extension_interval_of_inter_eq_empty`,
+  `isZero_sections_extension_interval_of_mem_closure`, `isZero_sections_extension_interval`
+  (case (b)), `finrank_sections_extension_interval_eq_one`,
+  `finrank_sections_extension_interval_eq_zero` and `isIso_map_extension_interval`. Fixtures in
+  the new module `TDA.Sheaf.RealIntervalSectionsExamples`: `Joo`, `intervalSet_q2_Jco`,
+  `intervalSet_q2_Joo`, `mem_ioo`, `finrank_pointSheaf_ioo_neg_one_one`,
+  `finrank_pointSheaf_ioo_one_two`, `sheafJco`, `closure_Jco_inter_subset`,
+  `finrank_Jco_ioo_neg_one_one`, `finrank_Jco_ioo_neg_one_two`, `isIso_Jco_restrict`, `sheafJoo`,
+  `closure_Joo_inter_subset`, `finrank_Joo_ioo_quarter`, `zero_mem_closure_Joo`,
+  `finrank_Joo_ioo_neg_one_half`, `not_isIso_Joo_restrict`, `finrank_thickening_pointSheaf_ioo`,
+  `bandOpen_one_ioo_two_three`, `finrank_thickening_pointSheaf_ioo_two_three`,
+  `finrank_thickening_Joo_ioo_quarter`, `bandOpen_eighth_ioo_quarter`,
+  `finrank_thickening_eighth_Joo_ioo_quarter`, `finrank_thickening_wholeLineSheaf_ioo`.
 
 ## v0.5.0
 
