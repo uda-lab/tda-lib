@@ -6430,6 +6430,55 @@ skyscrapers at `a` and `b` have a witness exactly at radii `ε ≥ |a - b|`.
 `distance_skyscraper` gives their distance as `ENNReal.ofReal |a - b|`, and
 `distance_skyscraper_zero` gives infinite distance to the zero object.
 
+## Finite graded matching for band convolution
+
+In `TDA.Sheaf.BandConvolution`, `Witness.biproduct` assembles a finite family of witnesses at one
+radius. The band functor preserves the biproduct, and the projections identify each witness
+equation with the corresponding summand equation. `Witness.biprod` is the binary form and
+`Witness.congr` transports a witness along isomorphisms at its radius.
+`Witness.toConvolution` gives a witness from an object to its convolution at the given radius.
+`nonempty_witness_zero_iff` tests deletion by the vanishing of the augmentation at twice that
+radius. `nonempty_witness_of_distance_lt` gives a witness at a real nonnegative radius strictly
+above the distance. `distance_biproduct_le` and `distance_biprod_le` bound the distance of the
+sums by the supremum of the summand distances. `distance_biproduct_reindex` transports the bound
+along equivalences of labels. `boundedToPlus` is additive.
+`WitnessB.biproduct`, `WitnessB.biprod`, `distanceB_biproduct_le`, `distanceB_biprod_le`,
+`distanceB_biproduct_reindex`, and `nonempty_witnessB_zero_iff` give the bounded forms.
+
+A `GradedInterval` records an interval of the strata path and its cohomological degree.
+Its `obj` and `objB` are the corresponding single complexes in the bounded-below and bounded
+categories. `gradedBarcodeOccurrence` indexes copies by their positions in the list of each
+degree's barcode multiset. `gradedBarcodeOccurrence_sets` identifies their supports with
+`gradedBarcodeSets`. For a constructible complex with cohomology in `[a, b]`,
+`nonempty_iso_biproduct_gradedBarcode` identifies it with the biproduct of these occurrences.
+
+A `GradedMatching` is an option-valued partial injection on occurrence labels.
+`GradedMatching.empty` leaves all labels unmatched, and `GradedMatching.ofEquiv` pairs every
+label along an equivalence. `GradedMatching.cost` takes the supremum of the paired band
+distances and the distances to zero for unmatched objects on both sides. Use
+`GradedMatching.cost_le_iff`
+to test a cost bound on exactly those pairs and deletions.
+`GradedMatching.nonempty_witness_biproduct` assembles their witnesses at a common radius.
+`GradedMatching.distance_biproduct_le_cost` bounds the distance of the sums by the cost of
+one matching. `matchingDistance` is the least cost, attained by `exists_matching_cost_eq`
+and bounded by each matching cost through `matchingDistance_le_cost`.
+`distance_le_matchingDistance` and `distanceB_le_matchingDistance` apply the least cost bound
+to objects isomorphic to the occurrence sums. `distanceB_le_gradedBarcodeMatchingDistance`
+applies the bound to the graded barcodes of two bounded constructible complexes on their
+chosen finite stratifications.
+
+The costs use the actual cohomological degrees and interval supports through the band distance.
+For an open interval `(a, b)` in degree zero, `nonempty_iso_T_interval_Ioo_shifted_skyscraper`
+identifies its convolution at radius `(b - a) / 2` with the midpoint skyscraper in degree one.
+`nonempty_witness_interval_Ioo_shifted_skyscraper_iff` gives a witness to that object exactly
+from radius `(b - a) / 2` onward.
+`distance_interval_Ioo_shifted_skyscraper` gives that pair cost.
+`nonempty_iso_skyscraperSheaf_interval` identifies a singleton interval sheaf with its
+skyscraper sheaf. `distance_singleFunctor_skyscraper_zero` gives infinite deletion cost
+for a skyscraper in any degree. An occurrence with infinite deletion cost must have a
+partner in any finite-cost matching by `GradedMatching.exists_partner_of_cost_lt_top`
+or `GradedMatching.exists_source_of_cost_lt_top`.
+
 ## Review and extension boundaries
 
 The selected PH claims and their proof-critical bridges received the source-based review

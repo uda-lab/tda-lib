@@ -40,3 +40,4 @@ import TDA.Sheaf.BandIntervalAugmentationExamples
 import TDA.Sheaf.BandCompositionUnitExamples
 import TDA.Sheaf.BandCompositionAssociativityExamples
 import TDA.Sheaf.BandDistanceExamples
+import TDA.Sheaf.BandGradedMatchingExamples
