@@ -60,8 +60,8 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.RealConstructibleRefinement` | `refinementVertex`, `stratum_subset_stratum_refinementVertex`, `refinementVertex_eq_of_mem`, `refinementVertex_mono`, `refinementVertex_surjective`, `refineInterval`, `alive_refineInterval`, `intervalSet_refineInterval`, `sortedBreakpoints`, `strictMono_sortedBreakpoints`, `breakpoints_sortedBreakpoints`; `sectionsExtensionIntervalIso`, `sectionsIntervalSheafSumIso`, `barcode_sections_eq_map_refineInterval`, `barcode_sections_map_intervalSet_refine`, `gradedBarcode_eq_map_refineInterval`, `gradedBarcode_map_intervalSet_refine`; `gradedBarcodeSets`, `gradedBarcodeSets_refine`, `gradedBarcodeSets_eq_of_iso`, `gradedBarcodeSets_eq`, `hasConstructibleCohomology_sortedBreakpoints` | Strictly increasing breakpoints `p : Fin m → ℝ` and `q : Fin m' → ℝ` with `breakpoints p ⊆ breakpoints q` for the refinement statements; `k : Type` a field; sheaves constructible for the breakpoints of `p`; graded statements for an instance `HasDerivedCategory` and constructible cohomology for both breakpoint families (any proofs). See [Refinement of the breakpoints on the real line](#refinement-of-the-breakpoints-on-the-real-line). |
 | `TDA.Sheaf` / `TDA.Sheaf.SheafFlasque` | `isFlasque_of_injective`, `GermSurjective`, `germSurjective_of_isFlasque`, `germSurjective_of_injective`, `germSurjective_of_epi`, `exists_local_preimage_of_exact`, `exists_glue₂` | Sheaves `X.Sheaf (ModuleCat k)` over a ring `k : Type` on `X : TopCat.{0}`. See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalSections` | `openIoo`, `exists_glue_monotone`, `exists_section_lift_extend_right`, `exists_section_lift_extend`, `exists_section_lift_extend_left`, `exists_section_lift_ordConnected`, `sections_exact_ordConnected`, `exists_section_lift_Icc`, `sections_exact_Icc` | Subspaces `S ⊆ ℝ`, order-connected for the lifting statements (open, half-open, closed and unbounded intervals and `ℝ`); germ-surjectivity of the first term on the opens above or below `a'` (extension steps) or avoiding a point `c` (global lifting). See [Flasque sheaves and section lifting on intervals](#flasque-sheaves-and-section-lifting-on-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`, `stalkPullbackSheafIso_hom_naturality` (and `stalkPullbackSheafIso_hom_naturality_assoc`), `stalkPullbackSheafNatIso`, `stalkPullbackSheafNatIso_app`, `pullbackSectionsIso`, `pullbackOpenSectionsIso`; `pt`, `toPt`, `ptOf`, `ptOf_apply`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
-| `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ`, `rightDerivedFunctorPlusSingleIso` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
+| `TDA.Sheaf` / `TDA.Sheaf.StalkPullback`, `TDA.Sheaf.PointSheaf` | `stalkPullbackSheafIso`, `stalkPullbackSheafIso_unit`, `germ_stalkPullbackSheafIso_hom` (and `germ_stalkPullbackSheafIso_hom_assoc`), `pullbackPushforwardAdjunction_unit_app_hom`, `stalkPullbackSheafIso_hom_naturality` (and `stalkPullbackSheafIso_hom_naturality_assoc`), `stalkPullbackSheafNatIso`, `stalkPullbackSheafNatIso_app`, `pullbackSectionsIso`, `pullbackOpenSectionsIso`, `pullbackUnitRes`, `germ_pullbackUnitRes`, `injective_pullbackUnitRes`, `surjective_pullbackUnitRes`, `bijective_pullbackUnitRes`, `isIso_pullbackUnitRes`, `pullbackUnitRes_naturality` (and `pullbackUnitRes_naturality_assoc`), `pullbackUnitRes_map` (and `pullbackUnitRes_map_assoc`); `pt`, `toPt`, `ptOf`, `ptOf_apply`, `eq_top_of_mem_pt`, `germ_top_bijective`, `exact_of_sections_top`, `isIso_of_bijective_app_top`, `constSh`, `germSurjective_constSh` | Continuous maps `f : X ⟶ Y` in `TopCat.{0}`, sheaves of `k`-modules over a ring `k : Type`; `pullbackUnitRes` for opens `W ≤ f⁻¹ B`, injective when `f` maps `W` onto `B`, bijective when moreover `f` sends opens inside `W` to opens and the fibres `W ∩ f⁻¹ {y}` are preconnected. See [Cohomology of compact intervals](#cohomology-of-compact-intervals) and [The thickening formula for the band functors](#the-thickening-formula-for-the-band-functors). |
+| `TDA.Sheaf` / `TDA.Sheaf.RightDerivedHomology` | `homologyRightDerivedIsoOfInjective`, `homologyRightDerivedIsoOfQuasiIso`, `isIso_Q_map_comp_rightDerivedFunctorPlusUnit`, `singlePlus`, `singleFunctorIsoQ`, `rightDerivedFunctorPlusSingleIso`, `singlePlusFunctor`, `singleFunctorIsoCompQPlus`, `singlePlusFunctorCompIso`, `singleRightDerivedFunctorPlusComparison`, `singleRightDerivedFunctorPlusComparison_app`, `isIso_singleRightDerivedFunctorPlusComparison`, `singleRightDerivedFunctorPlusIso`, `quasiIsoAt_zero_map_of_preservesFiniteLimits`, `isIso_homologyFunctor_map_rightDerivedFunctorPlusUnit_app`, `singleFunctorCompHomologyFunctorIsoPlus`, `toHomologyZeroRightDerivedSingle`, `toHomologyZeroRightDerivedSingle_app`, `isIso_toHomologyZeroRightDerivedSingle`, `homologyZeroRightDerivedSingleIso`, `homologyZeroRightDerivedSingleIso_inv` | Additive `F : C ⥤ D` between abelian categories, `C` with enough injectives; derived categories as instance arguments. `singleRightDerivedFunctorPlusIso` for an exact `F` (finite limits and colimits preserved); `homologyZeroRightDerivedSingleIso` and the degree-`0` statements for a left exact `F` (`PreservesFiniteLimits F`). The categories are in any universes. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.DerivedStalks` | `isIso_iff_isIso_stalk_homology` | `X : TopCat.{0}`, sheaves of `ModuleCat.{0} k` over a ring `k : Type`, `[HasDerivedCategory (X.Sheaf (ModuleCat k))]`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalCohomology` | `isZero_H_ordConnected`, `isZero_H_of_germSurjective`, `isZero_H_constSh_ordConnected`, `isZero_H_Icc`, `isZero_H_Icc_of_germSurjective`, `isIso_unit_constSh_Icc`, `isZero_H_constSh_Icc`, `isIso_derivedUnit_toPt_Icc` | Order-connected `S ⊆ ℝ` as `TopCat.of S`, `[u, v]` as `TopCat.of (Set.Icc u v)`, `k : Type` a ring; `Hⁱ` is homology of `pushforwardPlus k (toPt _)`. Vanishing holds for every order-connected `S` (all `u`, `v` for `[u, v]`); the unit statements need `u ≤ v`. See [Cohomology of compact intervals](#cohomology-of-compact-intervals). |
 | `TDA.Sheaf` / `TDA.Sheaf.AcyclicClass` | `AcyclicClass`, `acyclic_map_of_acyclicClass`, `quasiIso_map_of_acyclicClass`, `isIso_rightDerivedFunctorPlusUnit_app_of_acyclicClass` | Additive left exact `F : A ⥤ B` between abelian categories, `A` with enough injectives for the derived statement; derived categories as instance arguments. See [Flasque acyclicity](#flasque-acyclicity). |
@@ -77,6 +77,7 @@ Namespaces containing `Examples` are for demonstrations, not the main consumer A
 | `TDA.Sheaf` / `TDA.Sheaf.IntervalFibration` | `exists_le_eq_zero_of_pullback_eq_zero`, `exists_unit_eq_of_pt`, `exists_preimage_le_of_isClosedMap`; `FibreCoordinate`, `FibreCoordinate.IsFibreParam`, `IsFibreParam.apply_eq`, `IsFibreParam.mem_range_iff`, `IsFibreParam.exists_preimage_le`, `IsFibreParam.exists_unit_eq`, `IsFibreParam.isIso_baseChangeSheaf_app`, `IsFibreParam.isIso_baseChangeCochain_app`, `IsFibreParam.isIso_baseChange`, `IsFibreParam.isZero_H_stalk_pushforwardPlus`; `IntervalFibration`, `IntervalFibration.e_comp`, `t_e`, `mem_range`, `apply_e`, `isIso_baseChangeSheaf_app`, `isIso_baseChange`, `stalkFormula`, `stalkFormula_hom`, `isZero_H_stalk_pushforwardPlus`; `isIso_baseChange_of_isFibreParam`; `IntervalFibration.isIso_derivedUnit` | Continuous `π : X ⟶ Y` in `TopCat.{0}` with a fibre coordinate `t : C(X, ℝ)` (`(π, t)` inducing, `π` closed); fibre parametrisations `ε : [u, v] ⟶ X` for all `u v : ℝ`, empty and one-point intervals included; the derived unit statement for nonempty fibres `lo y ≤ hi y` at every `y`; `k : Type` a ring; derived category structures on `X`, `Y`, `pt` and the fibre interval as instance arguments. See [Interval fibrations and the fibrewise criterion](#interval-fibrations-and-the-fibrewise-criterion). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandComposition` | `BandConvolution.bandChain`, `mem_bandChain`, `isClosed_bandChain`, `Z`, `dist_le_add_of_mem_bandChain`, `pr₁₂`, `pr₂₃`, `pr₁₃`, `coe_pr₁₂_apply`, `coe_pr₂₃_apply`, `coe_pr₁₃_apply`, `pr₁₂_q`, `pr₁₃_p`, `pr₁₃_q`, `isProperMap_pr₂₃`, `isProperMap_pr₁₃`; `fibreCoordinate_pr₂₃`, `fibreCoordinate_pr₂₃_t`, `fibreEmb₂₃`, `coe_fibreEmb₂₃_apply`, `isFibreParam_fibreEmb₂₃`, `intervalFibration_pr₂₃`, `intervalFibration_pr₂₃_e`, `lo_le_hi_pr₂₃`; `fibreCoordinate_pr₁₃`, `fibreCoordinate_pr₁₃_t`, `fibreEmb₁₃`, `coe_fibreEmb₁₃_apply`, `isFibreParam_fibreEmb₁₃`, `intervalFibration_pr₁₃`, `intervalFibration_pr₁₃_e`, `lo_le_hi_pr₁₃`; `isIso_baseChange_pr₁₂_q`, `isIso_derivedUnit_pr₁₃`, `TCompRestr`, `TCompRestr_eq`, `TCompRestr_app`, `isIso_TCompRestr`, `TComp`, `TComp_hom_app_TCompRestr`, `TComp_inv_app` | `Z a b = {(x, y, z) ∈ ℝ³ | dist x y ≤ a ∧ dist y z ≤ b}` as `TopCat.{0}`, all `a b : ℝ` for the spaces, maps, interval fibrations and the base change; nonempty fibres, the derived unit of `pr₁₃`, `isIso_TCompRestr` and `TComp` for `0 ≤ a`, `0 ≤ b`; `k : Type` a ring; derived category structures on `ℝ`, every `D a`, every `Z a b`, `pt` and every `[u, v]` as instance arguments. See [The composition isomorphism of the band functors](#the-composition-isomorphism-of-the-band-functors). |
 | `TDA.Sheaf` / `TDA.Sheaf.BandCompositionLaws` | `BandConvolution.inclZ`, `pr₁₃Of`, `pr₁₃Of_zero_add`, `pr₁₃Of_add_zero`, `TCompCounit`, `TCompCounit_eq`, `TComp_hom_app_TCompRestr_eq`, `TComp_hom_app_TCompRestr_eq_assoc`, `restr_TCompRestr`, `whiskerRight_restr_TComp_hom`, `whiskerLeft_restr_TComp_hom`, `hcomp_restr_TComp_hom`, `eqToHom_TCompRestr`, `T0Iso_eq_corrUnitIso`, `T0Iso_inv_TCompCounit`, `eqToHom_TCompRestr_zero_add`, `TCompOfEq`, `TCompOfEq_rfl`, `TCompOfEq_hom`; `TCompB`, `whiskerRight_TCompB_hom`, `whiskerRight_restrB_TCompB_hom`, `whiskerLeft_restrB_TCompB_hom`, `hcomp_restrB_TCompB_hom` | `0 ≤ a`, `0 ≤ b` for the composition isomorphism, `a ≤ a'`, `b ≤ b'` for the radius maps, `a + b = c` for `pr₁₃Of` and `TCompOfEq`; `k : Type` a ring; derived category structures on `ℝ`, every `D a`, every `Z a b`, `pt` and every `[u, v]` as instance arguments. See [Laws of the composition isomorphism](#laws-of-the-composition-isomorphism). |
+| `TDA.Sheaf` / `TDA.Sheaf.BandThickening` | `BandConvolution.bandOpen`, `mem_bandOpen`, `bandOpen_zero`, `le_bandOpen`, `bandOpen_mono`, `bandOpen_mono_right`, `ordConnected_bandOpen`, `coe_bandOpen_Ioo`, `tube_le_bandOpen`, `exists_mem_tube`, `isOpenMap_p`, `isPreconnected_tube_fibre`, `thickening`, `thickeningSectionsIso`, `thickeningSectionsIso_inv`, `thickeningSectionsIso_inv_naturality` (and `thickeningSectionsIso_inv_naturality_assoc`), `thickeningSectionsIso_hom_naturality` (and `thickeningSectionsIso_hom_naturality_assoc`), `thickeningSectionsNatIso`, `thickeningSectionsNatIso_app`, `thickeningSectionsIso_inv_map` (and `thickeningSectionsIso_inv_map_assoc`), `thickeningSectionsIso_hom_map` (and `thickeningSectionsIso_hom_map_assoc`), `H0TIso`, `H0TIso_inv_app`, `H0TSectionsIso` | `k : Type` a ring, sheaves in `ModuleCat.{0} k` on `TDA.Sheaf.realLine : TopCat.{0}`; every `ε : ℝ` for the thickening and its sections, an order-connected open `U` (`(U : Set ℝ).OrdConnected`) for the formula, `0 ≤ ε` for `le_bandOpen` and `coe_bandOpen_Ioo`; `H0TIso` and `H0TSectionsIso` take derived category structures on `ℝ` and every `D a` as instance arguments. See [The thickening formula for the band functors](#the-thickening-formula-for-the-band-functors). |
 | `TDA.Sheaf` / `TDA.Sheaf.BaseChangeRestriction` | `derivedCounit_comp_app`, `derivedUnit_comp_app_counit`, `derivedUnit_comp_app_pullbackPlusCompIso_inv`, `corrRestr_counit`, `corrRestr_app_comp_map`, `pullbackPlusCompIso_transport`, `eqToHom_comp_transport`, `pullbackPlusCompIso_hom_app_eqToHom`, `pullbackPlusCompIso_inv_app_eqToHom`, `corrRestr_eq_of_eq`, `corrUnitIso`, `pullbackPlus_map_corrUnitIso_inv_app_counit`, `pullbackPlus_map_corrUnitIso_inv_app_transport` | Sheaves of `k`-modules over a ring `k : Type` on spaces in `TopCat.{0}`; `corrUnitIso` for maps `u = v` whose derived unit `𝟭 ⟶ v⁻¹ ⋙ Rv_*` is invertible; derived categories as instance arguments. See [Units, counits and restrictions of correspondences](#units-counits-and-restrictions-of-correspondences). |
 | `TDA.Sheaf` / `TDA.Sheaf.ClientExamples` | `isOpen_of_isOpen_generateFrom_orthant`, `isOpen_generateFrom_orthant`, `inferInstance_eq_generateFrom`; `ephemeral_orthantBasis_iff_two`, `isZero_orthantQ_iff_two`, `isZero_orthantQ_iff_structureMap`; `q2`, `q2_strictMono`, `Jc`, `Jco`, `stratum_q2_three`, `intervalSet_q2_Jc`, `half_mem_intervalSet_q2_Jc`, `two_notMem_intervalSet_q2_Jc`, `finrank_stalk_Jc_half_of_mem`, `finrank_stalk_Jc_two_of_notMem`, `decidableMemJc`, `finrank_stalk_Jc_half`, `finrank_stalk_Jc_two`, `finrank_stalk_extension_interval_isTrue`, `finrank_stalk_extension_interval_classical`, `barcode_sections_extension_Jc`, `barcode_sections_barcodeSheaf_Jc_Jco`, `isConstructible_Jc`, `gradedBarcode_singleFunctor_Jc`, `ext_representable_extension_Jc`; `isIso_baseChange_id_realLine`, `realLine_eq`, `isGE_isLE_T_one`, `TCompOneOne` | Fixtures written as a client writes them: public declarations and library instances, decidability supplied explicitly; the only local instances are `HasDerivedCategory.standard`, `hasExt_sheaf_realLine` and `hasExt_diagram`. See [Sheaf statements as a client writes them](#sheaf-statements-as-a-client-writes-them). |
 
@@ -5353,6 +5354,17 @@ categories are instance arguments.
   `IsOpenEmbedding.sheafPullbackIso`, the inverse image along an open embedding as precomposition
   with the image of opens). `pullbackOpenSectionsIso k U` is the inclusion `U.inclusion'` of an
   open `U` with `V` the whole of `U`: `Γ(ι⁻¹ F) ≅ F(U)`.
+- `pullbackUnitRes k f G hWB : G(B) ⟶ (f⁻¹ G)(W)`, for opens `W` of `X` and `B` of `Y` with
+  `hWB : W ≤ f⁻¹ B`: the adjunction unit on sections over `B` followed by restriction to `W`. Its
+  germ at `x ∈ W` is the germ at `f x` read through `stalkPullbackSheafIso`
+  (`germ_pullbackUnitRes`); it is natural in `G` (`pullbackUnitRes_naturality`) and compatible
+  with restriction to `W' ≤ W`, `B' ≤ B` with `W' ≤ f⁻¹ B'` (`pullbackUnitRes_map`). If every
+  point of `B` is `f x` for some `x ∈ W`, it is injective (`injective_pullbackUnitRes`). If
+  moreover `f '' O` is open for every open `O ≤ W` and every fibre `W ∩ f⁻¹ {y}`, `y ∈ B`, is
+  preconnected, it is surjective (`surjective_pullbackUnitRes`): local representatives of a
+  section of `f⁻¹ G` have locally constant germs along each fibre, so they agree on the overlaps
+  of their open images and glue over `B`. Hence `bijective_pullbackUnitRes` and
+  `isIso_pullbackUnitRes`.
 
 `TDA.Sheaf.DerivedStalks`: `isIso_iff_isIso_stalk_homology φ`, for a morphism `φ` of
 `DerivedCategory.Plus (X.Sheaf (ModuleCat k))`: `φ` is an isomorphism if and only if, for every
@@ -5387,6 +5399,24 @@ isomorphisms (`isIso_stalk_homology_derivedUnit_shift`).
   `F A ⟶ RF(A)` is invertible when `u ≫ F j` is a quasi-isomorphism.
 - `singlePlus n X`, the object `X` in degree `n` as a bounded below complex, and
   `singleFunctorIsoQ n X` comparing it with `DerivedCategory.Plus.singleFunctor _ n`.
+- Natural in `X`: `singlePlusFunctor C n : C ⥤ CochainComplex.Plus C` (value `singlePlus n X`),
+  `singleFunctorIsoCompQPlus C n : DerivedCategory.Plus.singleFunctor C n ≅
+  singlePlusFunctor C n ⋙ Q`, and `singlePlusFunctorCompIso F n` commuting `singlePlusFunctor` with
+  `F` applied termwise. `singleRightDerivedFunctorPlusComparison F n :
+  F ⋙ singleFunctor D n ⟶ singleFunctor C n ⋙ RF` is the comparison `F.rightDerivedFunctorPlusUnit`
+  at the single complexes (`singleRightDerivedFunctorPlusComparison_app`); for an exact `F` it is
+  invertible (`isIso_singleRightDerivedFunctorPlusComparison`), and
+  `singleRightDerivedFunctorPlusIso F n` is the natural form of `rightDerivedFunctorPlusSingleIso`.
+- **Degree `0` of a left exact functor.** For `F` additive with `PreservesFiniteLimits F`,
+  `homologyZeroRightDerivedSingleIso F : singleFunctor C 0 ⋙ RF ⋙ homologyFunctor D 0 ≅ F`, that is
+  `H⁰(RF(X[0])) ≅ F X` naturally in `X`. Its inverse (`homologyZeroRightDerivedSingleIso_inv`) is
+  `toHomologyZeroRightDerivedSingle F`, whose component at `X` is
+  `F X ≅ H⁰((F X)[0])` (`singleFunctorCompHomologyFunctorIsoPlus`) followed by `H⁰` of the
+  comparison (`toHomologyZeroRightDerivedSingle_app`); it is invertible
+  (`isIso_toHomologyZeroRightDerivedSingle`) because `F` keeps a quasi-isomorphism in degree `0`
+  between complexes concentrated in degrees `≥ 0` a quasi-isomorphism in degree `0`
+  (`quasiIsoAt_zero_map_of_preservesFiniteLimits`), applied to an injective resolution
+  `X[0] ⟶ I` (`isIso_homologyFunctor_map_rightDerivedFunctorPlusUnit_app`).
 
 `TDA.Sheaf.IntervalCohomology`, on an order-connected `S ⊆ ℝ` as `TopCat.of S`:
 
@@ -5941,6 +5971,48 @@ stalk of `T_1 (T_2 (constOn ℝ))` and of `T_1 (T_1 (constOn ℝ))` is nonzero
 (`not_isZero_H0_stalk_TT_two_one`, `not_isZero_H0_stalk_TT_one_one`). On `Dᵇ`, `TCompB_one_one` is
 the bounded composition isomorphism at `(1, 1)` and `whiskerRight_restrB_TCompB_one` the radius law
 for `(1, 1) ≤ (2, 1)`.
+
+## The thickening formula for the band functors
+
+`TDA.Sheaf.BandThickening` computes the degree-`0` part of the band functors
+`T k ε = R(q ε)_* (p ε)⁻¹` on a sheaf placed in degree `0`. The ring is `k : Type`, sheaves take
+values in `ModuleCat.{0} k`, and the real line is `TDA.Sheaf.realLine : TopCat.{0}`.
+
+- `thickening k ε := (p ε)⁻¹ ⋙ (q ε)_*`, the underived functor on sheaves on `ℝ`, and
+  `H0TIso k ε : singleFunctor _ 0 ⋙ T k ε ⋙ homologyFunctor _ 0 ≅ thickening k ε`: `H⁰(T_ε (F[0]))`
+  is `(q ε)_* (p ε)⁻¹ F`, naturally in `F`. It combines `singleRightDerivedFunctorPlusIso` for the
+  exact `(p ε)⁻¹` with `homologyZeroRightDerivedSingleIso` for the left exact `(q ε)_*`;
+  `H0TIso_inv_app` writes its inverse at `F` through the two comparisons. With the thickening
+  formula below, `H0TSectionsIso k ε F U hU : H⁰(T_ε (F[0]))(U) ≅ F(bandOpen ε U)` for an
+  order-connected open `U`.
+- `bandOpen ε U = {x | ∃ y ∈ U, dist x y ≤ ε}`, the closed `ε`-thickening of an open `U`, as an
+  open (`mem_bandOpen`). `bandOpen 0 U = U` (`bandOpen_zero`); `U ≤ bandOpen ε U` for `0 ≤ ε`
+  (`le_bandOpen`); monotone in `ε` (`bandOpen_mono`) and in `U` (`bandOpen_mono_right`);
+  order-connected for order-connected `U` (`ordConnected_bandOpen`); `(a, b)` thickens to
+  `(a - ε, b + ε)` for `0 ≤ ε`, `a < b` (`coe_bandOpen_Ioo`).
+- The band geometry: the tube `(q ε)⁻¹ U` lies over `bandOpen ε U` and maps onto it under `p ε`
+  (`tube_le_bandOpen`, `exists_mem_tube`); `p ε` is an open map (`isOpenMap_p`); on the tube over
+  an order-connected `U` the fibres of `p ε` are preconnected (`isPreconnected_tube_fibre`).
+- **The thickening formula.** `thickeningSectionsIso k ε F U hU : (thickening k ε F)(U) ≅
+  F(bandOpen ε U)` for an order-connected open `U` (`hU : (U : Set ℝ).OrdConnected`) and every
+  `ε : ℝ`. Its inverse is `pullbackUnitRes` for `p ε` over the tube (`thickeningSectionsIso_inv`),
+  invertible by `isIso_pullbackUnitRes`. It is natural in `F`
+  (`thickeningSectionsIso_inv_naturality`, `thickeningSectionsIso_hom_naturality`; packaged as
+  `thickeningSectionsNatIso k ε U hU : thickening k ε ⋙ sheafToPresheaf ⋙ evaluation (op U) ≅
+  sheafToPresheaf ⋙ evaluation (op (bandOpen ε U))`, `thickeningSectionsNatIso_app`) and, for
+  order-connected `V ≤ U`, it turns restriction from `U` to `V` into restriction from
+  `bandOpen ε U` to `bandOpen ε V` (`thickeningSectionsIso_inv_map`,
+  `thickeningSectionsIso_hom_map`). For `ε < 0` both sides are sections over the empty open.
+
+`TDA.Sheaf.BandThickeningExamples` works over `ℚ` with `HasDerivedCategory.standard` as a local
+instance and the opens `RealStratificationExamples.ioo a b = (a, b)` (order-connected by
+`ordConnected_ioo`). At radius `1`, `(0, 1)` thickens to
+`(-1, 2)` (`bandOpen_one_ioo`) and `(1/4, 1/2)` to `(-3/4, 3/2)` (`bandOpen_one_ioo_quarter`); at
+radius `0`, `(0, 1)` is unchanged (`bandOpen_zero_ioo`). `thickeningSectionsIoo F` is the formula
+`(thickening ℚ 1 F)((0, 1)) ≅ F((-1, 2))` and `H0TSectionsIoo F` the same for the sections of
+`H⁰(T ℚ 1 (F[0]))` over `(0, 1)`, through `H0TSectionsIso`; `thickeningSectionsIoo_map` (restriction to `(1/4, 1/2)`, with
+`ioo_quarter_le`) and `thickeningSectionsIoo_naturality` (naturality in `F`) check the two
+compatibilities.
 
 ## Sheaf statements as a client writes them
 

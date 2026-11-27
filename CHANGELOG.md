@@ -1087,6 +1087,38 @@ Changes on `develop` after v0.5.0; the next release version is undecided.
   `P : Type v` and `X : TopCat.{v}`, with values in `C : Type u` and `[Category.{v} C]`, in
   `TDA.Sheaf.StrictBasis` and `TDA.Sheaf.StrictBasisLocalization`; `SpaceTranslation X` takes
   `X : TopCat.{w}`. The ray and orthant statements are the case of universe `0`.
+- The thickening formula for the degree-zero part of the band functors (#1184, part U1). In
+  `TDA.Sheaf.StalkPullback`: `pullbackUnitRes`, the adjunction unit of `f⁻¹ ⊣ f_*` on sections
+  over `B` followed by restriction to an open `W ≤ f⁻¹ B`, with `germ_pullbackUnitRes`,
+  `pullbackUnitRes_naturality`, `pullbackUnitRes_naturality_assoc`, `pullbackUnitRes_map`,
+  `pullbackUnitRes_map_assoc`; `injective_pullbackUnitRes` when `f` maps `W` onto `B`;
+  `surjective_pullbackUnitRes`, `bijective_pullbackUnitRes` and `isIso_pullbackUnitRes` when
+  moreover `f` sends opens inside `W` to opens and has preconnected fibres `W ∩ f⁻¹ {y}`. In
+  `TDA.Sheaf.RightDerivedHomology`: `singlePlusFunctor`, `singleFunctorIsoCompQPlus`,
+  `singlePlusFunctorCompIso`, `singleRightDerivedFunctorPlusComparison`,
+  `singleRightDerivedFunctorPlusComparison_app`, the instance
+  `isIso_singleRightDerivedFunctorPlusComparison` for an exact functor,
+  `singleRightDerivedFunctorPlusIso`; `quasiIsoAt_zero_map_of_preservesFiniteLimits`,
+  `isIso_homologyFunctor_map_rightDerivedFunctorPlusUnit_app`,
+  `singleFunctorCompHomologyFunctorIsoPlus`, `toHomologyZeroRightDerivedSingle`,
+  `toHomologyZeroRightDerivedSingle_app`, the instance `isIso_toHomologyZeroRightDerivedSingle`,
+  and `homologyZeroRightDerivedSingleIso : H⁰(RF(X[0])) ≅ F X` for a left exact `F`, with
+  `homologyZeroRightDerivedSingleIso_inv`. In the new module `TDA.Sheaf.BandThickening`:
+  `BandConvolution.bandOpen`, `mem_bandOpen`, `bandOpen_zero`, `le_bandOpen`, `bandOpen_mono`,
+  `bandOpen_mono_right`, `ordConnected_bandOpen`, `coe_bandOpen_Ioo`, `tube_le_bandOpen`,
+  `exists_mem_tube`, `isOpenMap_p`, `isPreconnected_tube_fibre`, `thickening`,
+  `thickeningSectionsIso : (thickening k ε F)(U) ≅ F(bandOpen ε U)` for order-connected `U`,
+  `thickeningSectionsIso_inv`, `thickeningSectionsIso_inv_naturality`,
+  `thickeningSectionsIso_inv_naturality_assoc`, `thickeningSectionsIso_hom_naturality`,
+  `thickeningSectionsIso_hom_naturality_assoc`, `thickeningSectionsNatIso`,
+  `thickeningSectionsNatIso_app`, `thickeningSectionsIso_inv_map`,
+  `thickeningSectionsIso_inv_map_assoc`, `thickeningSectionsIso_hom_map`,
+  `thickeningSectionsIso_hom_map_assoc`, `H0TIso : H⁰ ∘ T k ε ∘ (-)[0] ≅ thickening k ε`
+  and `H0TIso_inv_app`, and `H0TSectionsIso : H⁰(T k ε (F[0]))(U) ≅ F(bandOpen ε U)`. Fixtures
+  in the new module `TDA.Sheaf.BandThickeningExamples`:
+  `ordConnected_ioo`, `bandOpen_one_ioo`, `bandOpen_zero_ioo`, `bandOpen_one_ioo_quarter`,
+  `thickeningSectionsIoo`, `H0TSectionsIoo`, `ioo_quarter_le`, `thickeningSectionsIoo_map`,
+  `thickeningSectionsIoo_naturality`.
 
 ## v0.5.0
 
