@@ -17,10 +17,6 @@ import Mathlib.Topology.Sheaves.Skyscraper
 * Mathlib's skyscraper sheaf `skyscraperSheaf 0 k` is constructible for the breakpoint `0`, its
   sections over the stars form the interval `[1, 1]` (`sectionsSkyIso`), and it is therefore
   isomorphic to the extension of that interval (`skyIsoPointSheaf`).
-
-Constructibility uses the interval-local `IsLocallyConstantOn` of `TDA.Sheaf.LocalSystem`; its
-intended equivalence with "locally isomorphic to a constant sheaf" is not yet proved in Lean
-(#1250).
 -/
 
 namespace TDA.Sheaf.RealConstructibleExamples
@@ -53,9 +49,7 @@ theorem star_p₀ (v : Fin (2 * 0 + 1)) : star p₀ v = ⊤ :=
   top_unique fun _ _ i => i.elim0
 
 /-- Without breakpoints, constructible means locally constant on `ℝ` with finite-dimensional
-stalks.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+stalks. -/
 theorem isConstructible_p₀_iff {F : TopCat.Sheaf (ModuleCat.{0} k) realLine} :
     IsConstructible (breakpoints p₀) F ↔
       IsLocallyConstantOn F Set.univ ∧ ∀ x : ℝ, FiniteDimensional k (F.presheaf.stalk x) := by
@@ -66,9 +60,7 @@ theorem sections_p₀ (F : TopCat.Sheaf (ModuleCat.{0} k) realLine) :
     ((sections k p₀).obj F).obj (vtx (orient 0) 0) = F.presheaf.obj (op ⊤) := by
   rw [sections_obj_obj, star_p₀]
 
-/-- Without breakpoints, constructible sheaves with isomorphic global sections are isomorphic.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+/-- Without breakpoints, constructible sheaves with isomorphic global sections are isomorphic. -/
 theorem nonempty_iso_of_iso_top (F G : Constructible k p₀)
     (e : F.obj.presheaf.obj (op ⊤) ≅ G.obj.presheaf.obj (op ⊤)) : Nonempty (F ≅ G) := by
   have hF : ∀ X : Paths (Vertex (orient 0)),
@@ -218,9 +210,7 @@ theorem isZero_sky_obj {U : Opens realLine} (h : (0 : ℝ) ∉ U) :
 
 open Classical in
 /-- The skyscraper is constructible for the breakpoint `0`: its sections vanish on opens
-missing `0`, its stalk at `0` is the field and its other stalks vanish.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+missing `0`, its stalk at `0` is the field and its other stalks vanish. -/
 theorem isConstructible_sky : IsConstructible (breakpoints p₁) (sky k) := by
   rw [IsConstructible, breakpoints_p₁, Finset.coe_singleton]
   refine ⟨fun x hx => ⟨⟨({0} : Set ℝ)ᶜ, isOpen_compl_singleton⟩, hx, subset_rfl,
@@ -261,9 +251,7 @@ noncomputable def sectionsSkyIso : (sections k p₁).obj (sky k) ≅ pointDiagra
     change ¬(1 ≤ (j : Fin 3).val ∧ (j : Fin 3).val < 2)
     omega
 
-/-- The skyscraper is the extension of the interval `[1, 1]`, as constructible sheaves.
-Local constancy is the interval-local `IsLocallyConstantOn`, not yet proved in Lean to be
-equivalent to "locally isomorphic to a constant sheaf" (#1250). -/
+/-- The skyscraper is the extension of the interval `[1, 1]`, as constructible sheaves. -/
 noncomputable def skyIsoPointSheaf :
     (⟨sky k, isConstructible_sky k⟩ : Constructible k p₁) ≅
       ⟨pointSheaf k, isConstructible_intervalSheaf k pointSegment⟩ :=

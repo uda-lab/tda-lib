@@ -1,3 +1,4 @@
+import TDA.Sheaf.ConstantSheaf
 import TDA.Sheaf.RealLine
 import Mathlib.Topology.Sheaves.SheafCondition.PairwiseIntersections
 import Mathlib.Topology.Sheaves.SheafCondition.UniqueGluing
@@ -14,11 +15,12 @@ Let `k` be a ring and `F` a sheaf of `k`-modules on `realLine`. A *convex* open 
 of `ℝ` that is order-connected (`Set.OrdConnected`): an open interval, possibly unbounded.
 
 * `IsLocallyConstantOn F U`: every point of `U` has an open neighbourhood `N ⊆ U` such that
-  restriction between nested, nonempty, convex opens inside `N` is an isomorphism. This is the
-  definition of local constancy used for constructible sheaves on the real line (#1181). It is
-  intended to be equivalent, on `ℝ`, to "locally isomorphic to a constant sheaf"; that
-  equivalence is not proved in Lean (follow-up #1250). `IsLocallyConstantOn.mono` restricts it
-  to a smaller open set.
+  restriction between nested, nonempty, convex opens inside `N` is an isomorphism.
+  `IsLocallyConstantOn.mono` passes this property to open subsets.
+* `isLocallyConstantOn_iff_locally_iso_constantSheaf` characterizes interval-local constancy by
+  local isomorphisms to Mathlib's `constantSheaf`, using pullback along the neighbourhood
+  inclusions. On a convex open `N` where `F` is locally constant,
+  `isoConstantSheafOfIsLocallyConstantOn` gives the isomorphism with value `F(N)`.
 * `restrict_isIso_of_isLocallyConstantOn` (trivialisation on an interval): if `F` is locally
   constant on a convex open `W`, then restriction `F(W) ⟶ F(V)` to every nonempty convex open
   `V ⊆ W` is an isomorphism.
@@ -97,8 +99,9 @@ constant on `U ⊆ ℝ` when every `x ∈ U` has an open neighbourhood `N ⊆ U`
 nonempty convex (order-connected) opens `V ⊆ W ⊆ N`, the restriction `F(W) ⟶ F(V)` is an
 isomorphism.
 
-This definition is intended to be equivalent, on `ℝ`, to "locally isomorphic to a constant
-sheaf". That equivalence is **not yet proved in Lean**; the bridge is follow-up #1250. -/
+By `isLocallyConstantOn_iff_locally_iso_constantSheaf`, this is equivalent to requiring every
+point of `U` to have an open neighbourhood in `U` on which `F` is isomorphic to a constant
+sheaf. -/
 def IsLocallyConstantOn (F : TopCat.Sheaf (ModuleCat.{0} k) realLine) (U : Set ℝ) : Prop :=
   ∀ x ∈ U, ∃ N : Opens realLine, x ∈ N ∧ (N : Set ℝ) ⊆ U ∧
     ∀ ⦃V W : Opens realLine⦄ (hVW : V ≤ W), (V : Set ℝ).Nonempty → (V : Set ℝ).OrdConnected →
@@ -395,5 +398,109 @@ theorem isIso_germ_of_isLocallyConstantOn (F : TopCat.Sheaf (ModuleCat.{0} k) re
     {x : ℝ} (hx : x ∈ W) : IsIso (F.presheaf.germ W x hx) :=
   isIso_germ_of_isIso_map F.presheaf hx fun _ hVW hxV hVc =>
     restrict_isIso_of_isLocallyConstantOn F hVW ⟨x, hxV⟩ hVc hWc hF
+
+/-! ### Comparison with constant sheaves -/
+
+private theorem isIso_openInclusionUnitRes
+    (F : realLine.Sheaf (ModuleCat.{0} k)) (N : Opens realLine)
+    {V : Opens ((Opens.toTopCat realLine).obj N)} {W : Opens realLine}
+    (hVW : V ≤ (Opens.map N.inclusion').obj W)
+    (hsurj : ∀ y ∈ W, ∃ x ∈ V, N.inclusion' x = y) :
+    IsIso (pullbackUnitRes k N.inclusion' F hVW) :=
+  isIso_pullbackUnitRes k N.inclusion' F hVW hsurj
+    (fun O _ => N.isOpenEmbedding.isOpenMap O O.isOpen)
+    (fun _ _ => Set.Subsingleton.isPreconnected fun _ hx _ hy =>
+      N.isOpenEmbedding.injective (hx.2.trans hy.2.symm))
+
+/-- On a convex open `N` where `F` is interval-locally constant, its restriction is the
+constant sheaf with value `F(N)`. The isomorphism comes from the constant sheaf counit. -/
+noncomputable def isoConstantSheafOfIsLocallyConstantOn
+    (F : realLine.Sheaf (ModuleCat.{0} k)) {N : Opens realLine}
+    (hN : (N : Set ℝ).OrdConnected) (hF : IsLocallyConstantOn F N) :
+    (TopCat.Sheaf.pullback (ModuleCat.{0} k) N.inclusion').obj F ≅
+      (constantSheaf (Opens.grothendieckTopology ((Opens.toTopCat realLine).obj N))
+        (ModuleCat.{0} k)).obj (F.presheaf.obj (op N)) := by
+  let G := (TopCat.Sheaf.pullback (ModuleCat.{0} k) N.inclusion').obj F
+  let ε :=
+    (constantSheafAdj (Opens.grothendieckTopology ((Opens.toTopCat realLine).obj N))
+      (ModuleCat.{0} k) isTerminalTop).counit.app G
+  have hε : IsIso ε := isIso_constantSheaf_counit_of_isIso_Γgerm k G fun x => by
+    let h : (⊤ : Opens ((Opens.toTopCat realLine).obj N)) ≤ (Opens.map N.inclusion').obj N :=
+      fun y _ => y.property
+    have hunit := isIso_openInclusionUnitRes F N h fun y hy => ⟨⟨y, hy⟩, trivial, rfl⟩
+    have hgerm : IsIso (F.presheaf.germ N x.val x.property) :=
+      isIso_germ_of_isLocallyConstantOn F hN hF x.property
+    have he : pullbackUnitRes k N.inclusion' F h ≫ G.presheaf.Γgerm x =
+        F.presheaf.germ N x.val x.property ≫ (stalkPullbackSheafIso k N.inclusion' F x).hom := by
+      ext s
+      exact germ_pullbackUnitRes k N.inclusion' F h s x trivial
+    have hcomp : IsIso (pullbackUnitRes k N.inclusion' F h ≫ G.presheaf.Γgerm x) := by
+      rw [he]
+      exact IsIso.comp_isIso' hgerm (stalkPullbackSheafIso k N.inclusion' F x).isIso_hom
+    exact IsIso.of_isIso_comp_left (pullbackUnitRes k N.inclusion' F h) _
+  exact (asIso ε).symm ≪≫
+    (constantSheaf _ _).mapIso ((pullbackOpenSectionsIso k N).app F)
+
+private theorem isIso_restrict_of_isoConstantSheaf
+    (F : realLine.Sheaf (ModuleCat.{0} k)) {N : Opens realLine}
+    {M : ModuleCat.{0} k}
+    (e : (TopCat.Sheaf.pullback (ModuleCat.{0} k) N.inclusion').obj F ≅
+      (constantSheaf (Opens.grothendieckTopology ((Opens.toTopCat realLine).obj N))
+        (ModuleCat.{0} k)).obj M)
+    {V W : Opens realLine} (hVW : V ≤ W) (hWN : W ≤ N)
+    (hne : (V : Set ℝ).Nonempty) (hV : (V : Set ℝ).OrdConnected)
+    (hW : (W : Set ℝ).OrdConnected) :
+    IsIso (F.presheaf.map (homOfLE hVW).op) := by
+  let f := N.inclusion'
+  let G := (TopCat.Sheaf.pullback (ModuleCat.{0} k) f).obj F
+  let V' := (Opens.map f).obj V
+  let W' := (Opens.map f).obj W
+  have hpre {O : Opens realLine} (hON : O ≤ N) (hc : _root_.IsPreconnected (O : Set ℝ)) :
+      _root_.IsPreconnected ((Opens.map f).obj O : Set ((Opens.toTopCat realLine).obj N)) :=
+    hc.preimage_of_isOpenMap N.isOpenEmbedding.injective N.isOpenEmbedding.isOpenMap
+      (by
+        change (O : Set ℝ) ⊆ Set.range N.inclusion'
+        rw [Opens.set_range_inclusion']
+        exact hON)
+  let i : V' ≤ W' := (Opens.map f).monotone hVW
+  have hne' : (V' : Set ((Opens.toTopCat realLine).obj N)).Nonempty := by
+    obtain ⟨x, hx⟩ := hne
+    exact ⟨⟨x, hWN (hVW hx)⟩, hx⟩
+  have hG : IsIso (G.presheaf.map (homOfLE i).op) :=
+    (NatIso.isIso_map_iff ((TopCat.Sheaf.forget (ModuleCat.{0} k) _).mapIso e) _).mpr
+      (isIso_restrict_constantSheaf k M i hne' (hpre (hVW.trans hWN) hV.isPreconnected)
+        (hpre hWN hW.isPreconnected))
+  have hV' := isIso_openInclusionUnitRes F N (W := V) le_rfl
+    fun y hy => ⟨⟨y, hWN (hVW hy)⟩, hy, rfl⟩
+  have hW' := isIso_openInclusionUnitRes F N (W := W) le_rfl
+    fun y hy => ⟨⟨y, hWN hy⟩, hy, rfl⟩
+  have hcomp : IsIso (F.presheaf.map (homOfLE hVW).op ≫
+      pullbackUnitRes k f F (W := V') (B := V) le_rfl) := by
+    rw [← pullbackUnitRes_map k f F (W := W') (W' := V') le_rfl le_rfl i hVW]
+    infer_instance
+  exact IsIso.of_isIso_comp_right _ (pullbackUnitRes k f F (W := V') (B := V) le_rfl)
+
+/-- Interval-local constancy is equivalent to having a neighbourhood of each point on which
+the sheaf is isomorphic to a constant sheaf. Restriction to an open is pullback along its
+inclusion. -/
+theorem isLocallyConstantOn_iff_locally_iso_constantSheaf
+    (F : realLine.Sheaf (ModuleCat.{0} k)) (U : Set ℝ) :
+    IsLocallyConstantOn F U ↔
+      ∀ x ∈ U, ∃ N : Opens realLine, x ∈ N ∧ (N : Set ℝ) ⊆ U ∧
+        ∃ M : ModuleCat.{0} k,
+          Nonempty ((TopCat.Sheaf.pullback (ModuleCat.{0} k) N.inclusion').obj F ≅
+            (constantSheaf (Opens.grothendieckTopology ((Opens.toTopCat realLine).obj N))
+              (ModuleCat.{0} k)).obj M) := by
+  constructor
+  · intro hF x hx
+    obtain ⟨N, hxN, hNU, _⟩ := hF x hx
+    obtain ⟨ε, hε, hBN⟩ := exists_ballOpen_le hxN
+    exact ⟨ballOpen x ε, mem_ballOpen_self hε, fun _ hy => hNU (hBN hy), _,
+      ⟨isoConstantSheafOfIsLocallyConstantOn F (ordConnected_ballOpen x ε)
+        (hF.mono (ballOpen x ε).isOpen fun _ hy => hNU (hBN hy))⟩⟩
+  · intro h x hx
+    obtain ⟨N, hxN, hNU, M, ⟨e⟩⟩ := h x hx
+    exact ⟨N, hxN, hNU, fun _ _ hVW hne hV hW hWN =>
+      isIso_restrict_of_isoConstantSheaf F e hVW hWN hne hV hW⟩
 
 end TDA.Sheaf.LocalSystem
