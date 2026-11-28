@@ -71,5 +71,6 @@ import TDA.Sheaf.BandMatchingIntervalCosts
 import TDA.Sheaf.BandIntervalCostTable
 import TDA.Sheaf.BandMatchingNormalization
 import TDA.Sheaf.BandMatchingProjection
+import TDA.Sheaf.BandMatchingLowerBound
 import TDA.Sheaf.BandDirectImageStability
 import TDA.Sheaf.BandDirectImageApplications

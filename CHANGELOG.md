@@ -10,6 +10,17 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- `Witness.card_le_neighbors_of_stable` gives the Hall bound for required occurrences
+  in the coordinate graph. `Witness.exists_gradedMatching_cost_le` gives a matching
+  from a finite witness at its own radius. `matchingDistance_le_distance_biproduct`,
+  `distance_biproduct_eq_matchingDistance`, `distance_eq_matchingDistance_of_iso` and
+  `distanceB_eq_gradedBarcodeMatchingDistance` identify band distance with the least
+  graded matching cost for interval sums and bounded constructible objects.
+  `IntervalEndpoints.support_nonempty`, `openWindow`, `mem_openWindow`,
+  `ordConnected_openWindow`, `closure_inter_openWindow_subset` and `bandOpen_openWindow_le`
+  describe the interval windows. `bandCohomologySectionsIso_hom_map` commutes with
+  restriction. `IntervalEndpoints.convolved_add`, `convolved_openWindow_le_of_homAllowed`
+  and `outer_overlap_of_score_le` give the endpoint bounds for a two-step product.
 - `Witness.biproductHom` gives the component of a finite biproduct witness.
   `Witness.sum_homology_biproductHom_in_block` projects its two-step equation to
   intermediate labels of the outer labels' cohomological degree and endpoint type.

@@ -1,4 +1,4 @@
-import TDA.Sheaf.BandMatchingProjection
+import TDA.Sheaf.BandMatchingLowerBound
 import TDA.Sheaf.RealIntervalSectionsExamples
 
 /-!
@@ -8,8 +8,10 @@ The open interval `(0, 2)` in degree zero and the point `1` in degree one have
 an edge of cost one. The point has a source partner in every finite-cost matching.
 Common convolution places both occurrences in the same degree. The half-open pair
 `[0, 2)`, `[4, 6)` is affordable by joint deletion at radius one.
-For repeated closed intervals in degree zero, only the intermediates of that
-degree and endpoint type occur in the projected equation.
+The finite isometry gives both distances in these examples. Two copies of
+`[0, 2]` against one copy in the same degree admit no witness at a finite
+radius. The projected equations retain the intermediates of the common
+degree and endpoint type.
 -/
 
 noncomputable section
@@ -192,6 +194,14 @@ private def closedInterval : FiniteInterval 5 := ⟨1, 4, by decide, by decide�
 
 private def halfOpenInterval : FiniteInterval 5 := ⟨1, 3, by decide, by decide⟩
 
+private theorem support_closedInterval : intervalSet breaks closedInterval = Set.Icc 0 2 := by
+  rw [intervalSet_eq_Icc strictMono_breaks (i := 0) (j := 1) rfl rfl]
+  simp [breaks]
+
+private theorem support_halfOpenInterval : intervalSet breaks halfOpenInterval = Set.Ico 0 2 := by
+  rw [intervalSet_eq_Ico strictMono_breaks (i := 0) (j := 1) rfl rfl]
+  simp [breaks]
+
 private def mixedGraded : Fin 4 → GradedInterval 2 :=
   ![⟨closedInterval, 0⟩, ⟨closedInterval, 0⟩, ⟨closedInterval, 1⟩, ⟨halfOpenInterval, 0⟩]
 
@@ -201,14 +211,8 @@ private def mixedEndpoints : Fin 4 → IntervalEndpoints :=
 
 private theorem mixedSupport (i : Fin 4) :
     intervalSet breaks (mixedGraded i).interval = (mixedEndpoints i).support := by
-  have hcc : intervalSet breaks closedInterval = Set.Icc 0 2 := by
-    rw [intervalSet_eq_Icc strictMono_breaks (i := 0) (j := 1) rfl rfl]
-    simp [breaks]
-  have hco : intervalSet breaks halfOpenInterval = Set.Ico 0 2 := by
-    rw [intervalSet_eq_Ico strictMono_breaks (i := 0) (j := 1) rfl rfl]
-    simp [breaks]
   fin_cases i <;>
-    first | exact hcc | exact hco
+    first | exact support_closedInterval | exact support_halfOpenInterval
 
 private theorem mixedStable (i : Fin 4) : (mixedEndpoints i).hasDegreeOneOutput = false := by
   fin_cases i <;> rfl
@@ -262,3 +266,113 @@ example {ε : ℝ} (hε : 0 ≤ ε) (w : Witness k hε (⨁ mixedObj) (⨁ mixed
     ENNReal.ofReal_lt_top
 
 end Projection
+
+example :
+    distance (⨁ fun _ : Unit => openObj) (⨁ fun _ : Unit => pointObj) = 1 ∧
+      matchingDistance (fun _ : Unit => openObj) (fun _ : Unit => pointObj) = 1 := by
+  have h := distance_biproduct_eq_matchingDistance
+    (k := ℚ) (pi := fun _ : Unit => breaks) (qj := fun _ : Unit => pointBreak)
+    (X := fun _ => ⟨Joo, 0⟩) (Y := fun _ => ⟨pointInterval, 1⟩)
+    (fun _ => strictMono_breaks) (fun _ => strictMono_pointBreak)
+  have hd := (distance_congr (biproductUniqueIso (fun _ : Unit => openObj))
+    (biproductUniqueIso (fun _ : Unit => pointObj))).trans pair_distance
+  exact ⟨hd, h.symm.trans hd⟩
+
+private def closedObj :=
+  (GradedInterval.mk closedInterval 0).obj ℚ strictMono_breaks
+
+private abbrev repeatedClosed := fun _ : Fin 2 => closedObj
+private abbrev singleClosed := fun _ : Unit => closedObj
+
+private theorem repeated_has_unmatched (M : GradedMatching (Fin 2) Unit) :
+    ∃ i, M.finite i = none := by
+  cases h₀ : M.finite (0 : Fin 2) with
+  | none => exact ⟨0, h₀⟩
+  | some j₀ =>
+    cases h₁ : M.finite (1 : Fin 2) with
+    | none => exact ⟨1, h₁⟩
+    | some j₁ =>
+      have hj : j₀ = j₁ := Subsingleton.elim _ _
+      exact ((by decide : (0 : Fin 2) ≠ 1) (M.finite_injective 0 1 j₀ h₀ (hj.symm ▸ h₁))).elim
+
+private theorem repeated_cost_eq_top (M : GradedMatching (Fin 2) Unit) :
+    M.cost repeatedClosed singleClosed = ⊤ := by
+  obtain ⟨i, hi⟩ := repeated_has_unmatched M
+  have hdel : distance closedObj 0 = ⊤ :=
+    distance_interval_Icc_zero ℚ strictMono_breaks ⟨closedInterval, 0⟩
+      (show (0 : ℝ) ≤ 2 by norm_num) support_closedInterval
+  have hc : distance closedObj 0 ≤ M.cost repeatedClosed singleClosed :=
+    ((M.cost_le_iff (X := repeatedClosed) (Y := singleClosed)).mp le_rfl).2.1 i hi
+  rw [hdel] at hc
+  exact top_unique hc
+
+private theorem repeated_distance_eq_top :
+    distance (⨁ repeatedClosed) (⨁ singleClosed) = ⊤ := by
+  have h := distance_biproduct_eq_matchingDistance
+    (k := ℚ) (pi := fun _ : Fin 2 => breaks) (qj := fun _ : Unit => breaks)
+    (X := fun _ => ⟨closedInterval, 0⟩) (Y := fun _ => ⟨closedInterval, 0⟩)
+    (fun _ => strictMono_breaks) (fun _ => strictMono_breaks)
+  have hm : matchingDistance repeatedClosed singleClosed = ⊤ :=
+    top_unique (le_iInf fun M => (repeated_cost_eq_top M).ge)
+  exact h.trans hm
+
+example {r : ℝ} (hr : 0 ≤ r) :
+    ¬ Nonempty (Witness ℚ hr (⨁ repeatedClosed) (⨁ singleClosed)) := by
+  rintro ⟨w⟩
+  have h := w.distance_le
+  rw [repeated_distance_eq_top] at h
+  exact ENNReal.ofReal_lt_top.not_ge h
+
+private def rightBreaks : Fin 2 → ℝ := ![4, 6]
+
+private theorem strictMono_rightBreaks : StrictMono rightBreaks := by
+  refine Fin.strictMono_iff_lt_succ.2 fun i => ?_
+  fin_cases i
+  norm_num [rightBreaks]
+
+private def halfOpenObj :=
+  (GradedInterval.mk halfOpenInterval 0).obj ℚ strictMono_breaks
+
+private def rightHalfOpenObj :=
+  (GradedInterval.mk halfOpenInterval 0).obj ℚ strictMono_rightBreaks
+
+example :
+    distance (⨁ fun _ : Unit => halfOpenObj) (⨁ fun _ : Unit => rightHalfOpenObj) = 1 ∧
+      matchingDistance (fun _ : Unit => halfOpenObj) (fun _ : Unit => rightHalfOpenObj) = 1 ∧
+      (GradedMatching.empty : GradedMatching Unit Unit).cost
+        (fun _ => halfOpenObj) (fun _ => rightHalfOpenObj) = 1 := by
+  have h₀ := support_halfOpenInterval
+  have h₁ : intervalSet rightBreaks halfOpenInterval = Set.Ico 4 6 := by
+    rw [intervalSet_eq_Ico strictMono_rightBreaks (i := 0) (j := 1) rfl rfl]
+    simp [rightBreaks]
+  have hpair : distance halfOpenObj rightHalfOpenObj = 1 := by
+    have h := distance_interval_Ico_Ico ℚ strictMono_breaks strictMono_rightBreaks
+      halfOpenInterval halfOpenInterval 0 (by norm_num) (by norm_num) h₀ h₁
+    norm_num [min_def] at h
+    exact h
+  have hdel₀ : distance halfOpenObj 0 = 1 := by
+    have h := distance_interval_Ico_zero ℚ strictMono_breaks
+      ⟨halfOpenInterval, 0⟩ (by norm_num) h₀
+    norm_num at h
+    exact h
+  have hdel₁ : distance rightHalfOpenObj 0 = 1 := by
+    have h := distance_interval_Ico_zero ℚ strictMono_rightBreaks
+      ⟨halfOpenInterval, 0⟩ (by norm_num) h₁
+    norm_num at h
+    exact h
+  have h := distance_biproduct_eq_matchingDistance
+    (k := ℚ) (pi := fun _ : Unit => breaks) (qj := fun _ : Unit => rightBreaks)
+    (X := fun _ => ⟨halfOpenInterval, 0⟩) (Y := fun _ => ⟨halfOpenInterval, 0⟩)
+    (fun _ => strictMono_breaks) (fun _ => strictMono_rightBreaks)
+  have hd := (distance_congr (biproductUniqueIso (fun _ : Unit => halfOpenObj))
+    (biproductUniqueIso (fun _ : Unit => rightHalfOpenObj))).trans hpair
+  let M : GradedMatching Unit Unit := GradedMatching.empty
+  let A (_ : Unit) := halfOpenObj
+  let B (_ : Unit) := rightHalfOpenObj
+  refine ⟨hd, h.symm.trans hd, le_antisymm ?_ ?_⟩
+  · apply (M.cost_le_iff (X := A) (Y := B)).mpr
+    refine ⟨?_, fun _ _ => hdel₀.le, fun _ _ => hdel₁.le⟩
+    intro i j hij
+    cases hij
+  · rw [← hdel₀]
+    exact ((M.cost_le_iff (X := A) (Y := B)).mp le_rfl).2.1 () rfl
