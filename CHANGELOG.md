@@ -10,6 +10,14 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- `IntervalEndpoints.nonempty_witness_iff_totalPairCost_le` and
+  `IntervalEndpoints.nonempty_witness_zero_iff_deletionCost_le` characterize witness radii
+  by the endpoint costs. `nonempty_witness_biproduct_iff_distance_le`,
+  `nonempty_witness_of_iso_biproduct_iff_distance_le` and
+  `nonempty_witnessB_iff_distanceB_le` give the radius criterion for finite graded interval
+  sums, objects presented as such sums, and bounded objects with constructible cohomology.
+  `nonempty_witness_biproduct_at_distance`, `nonempty_witness_of_iso_biproduct_at_distance`
+  and `nonempty_witnessB_at_distanceB` realize each finite distance by a witness.
 - `Witness.card_le_neighbors_of_stable` gives the Hall bound for required occurrences
   in the coordinate graph. `Witness.exists_gradedMatching_cost_le` gives a matching
   from a finite witness at its own radius. `matchingDistance_le_distance_biproduct`,

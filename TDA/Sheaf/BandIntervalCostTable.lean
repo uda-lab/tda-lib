@@ -468,12 +468,12 @@ private theorem intervalSet_orderIso (u : ℝ ≃o ℝ) (J : FiniteInterval (2 *
     exact mem_intervalSet.mpr ⟨v, hv, (mem_star_orderIso u v y).mpr hz.1,
       fun i hi => congrArg u (hz.2 i hi)⟩
 
-private theorem distance_le_of_orderIso (hp : StrictMono p) (hq : StrictMono q)
+private theorem nonempty_witness_of_orderIso (hp : StrictMono p) (hq : StrictMono q)
     (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
     (u : ℝ ≃o ℝ) {r : ℝ} (hr : 0 ≤ r) (hu : ∀ x, |x - u x| ≤ r)
     (h : u '' intervalSet p J = intervalSet q K) :
-    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) ≤
-      ENNReal.ofReal r := by
+    Nonempty (Witness k hr ((GradedInterval.mk J d).obj k hp)
+      ((GradedInterval.mk K d).obj k hq)) := by
   let f := orderHomeoHom u
   have : IsIso f :=
     (TopCat.isoOfHomeo (X := realLine) (Y := realLine) u.toHomeomorph).isIso_hom
@@ -483,10 +483,33 @@ private theorem distance_le_of_orderIso (hp : StrictMono p) (hq : StrictMono q)
     (TopCat.Sheaf.pushforward (ModuleCat k) (𝟙 realLine)) d ISh[hp,J]
   let ey := rightDerivedFunctorPlusSingleIso (TopCat.Sheaf.pushforward (ModuleCat k) f)
     d ISh[hp,J] ≪≫ (Single d).mapIso (pushforwardIntervalIso k u hp J ≪≫ i)
-  exact ((directImageWitness k hr (𝟙 realLine) f (fun x => by
+  exact ⟨(directImageWitness k hr (𝟙 realLine) f (fun x => by
       change dist x (u x) ≤ r
       rw [Real.dist_eq]
-      exact hu x) ((Single d).obj ISh[hp,J])).congr ex ey).distance_le
+      exact hu x) ((Single d).obj ISh[hp,J])).congr ex ey⟩
+
+private theorem nonempty_witness_of_intervalMove (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b c e : ℝ} (hab : a < b) (hce : c < e) {r : ℝ} (hr : 0 ≤ r)
+    (hcost : max |a - c| |b - e| ≤ r)
+    (h : intervalMoveIso hab hce '' intervalSet p J = intervalSet q K) :
+    Nonempty (Witness k hr ((GradedInterval.mk J d).obj k hp)
+      ((GradedInterval.mk K d).obj k hq)) := by
+  obtain ⟨w⟩ := nonempty_witness_of_orderIso k hp hq J K d (intervalMoveIso hab hce)
+    ((abs_nonneg (a - c)).trans (le_max_left _ _)) (intervalMoveIso_le hab hce) h
+  exact ⟨w.mono hcost⟩
+
+private theorem nonempty_witness_of_translate (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b r : ℝ} (hr : 0 ≤ r) (hcost : |a - b| ≤ r)
+    (h : (OrderIso.addRight (b - a)) '' intervalSet p J = intervalSet q K) :
+    Nonempty (Witness k hr ((GradedInterval.mk J d).obj k hp)
+      ((GradedInterval.mk K d).obj k hq)) := by
+  obtain ⟨w⟩ := nonempty_witness_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
+    (abs_nonneg (a - b)) (fun x => by
+      change |x - (x + (b - a))| ≤ |a - b|
+      rw [show x - (x + (b - a)) = a - b by ring]) h
+  exact ⟨w.mono hcost⟩
 
 private def convSingleIso {r : ℝ} {E F : Sh} {j : ℤ}
     (e : (T k r).obj ((Single 0).obj F) ≅ (Single j).obj E) (i : ℤ) :
@@ -609,12 +632,13 @@ private theorem closed_witness_subset (hp : StrictMono p) (hq : StrictMono q)
   exact no_witness_zero_of_distance_top k (distance_interval_Icc_zero k hp ⟨J, d⟩ hab hJ) hr
     (nonempty_witness_zero_iff.mpr (w.aug_eq_zero_of_hom_eq_zero k f0))
 
-private theorem distance_le_Icc (hp : StrictMono p) (hq : StrictMono q)
+private theorem nonempty_witness_Icc_Icc (hp : StrictMono p) (hq : StrictMono q)
     (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
     {a b c e : ℝ} (hab : a ≤ b) (hce : c ≤ e)
-    (hJ : intervalSet p J = Set.Icc a b) (hK : intervalSet q K = Set.Icc c e) :
-    distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) ≤
-      ENNReal.ofReal (|(a + b) / 2 - (c + e) / 2| + |(b - a) / 2 - (e - c) / 2|) := by
+    (hJ : intervalSet p J = Set.Icc a b) (hK : intervalSet q K = Set.Icc c e)
+    {r₀ : ℝ} (hr₀ : 0 ≤ r₀) (hcost : max |a - c| |b - e| ≤ r₀) :
+    Nonempty (Witness k hr₀ ((GradedInterval.mk J d).obj k hp)
+      ((GradedInterval.mk K d).obj k hq)) := by
   let x := (a + b) / 2
   let y := (c + e) / 2
   let r := (b - a) / 2
@@ -651,9 +675,14 @@ private theorem distance_le_Icc (hp : StrictMono p) (hq : StrictMono q)
   obtain ⟨h, ⟨v⟩⟩ := pair
   let sx := (shiftFunctor D⁺ (-d)).mapIso ex ≪≫ shiftSingleIso k ISh[hp,J] 0 d
   let sy := (shiftFunctor D⁺ (-d)).mapIso ey ≪≫ shiftSingleIso k ISh[hq,K] 0 d
-  change distance ((Single d).obj ISh[hp,J]) ((Single d).obj ISh[hq,K]) ≤ _
-  exact ((v.shift (-d)).congr
-    (by simpa only [zero_add] using sx) (by simpa only [zero_add] using sy)).distance_le
+  have hsum : |x - y| + |r - s| = max |a - c| |b - e| := by
+    dsimp [x, y, r, s]
+    simp only [abs_eq_max_neg, max_def]
+    split_ifs <;> linarith
+  change Nonempty (Witness k hr₀ ((Single d).obj ISh[hp,J]) ((Single d).obj ISh[hq,K]))
+  exact ⟨((v.shift (-d)).congr
+    (by simpa only [zero_add] using sx) (by simpa only [zero_add] using sy)).mono
+    (hsum.le.trans hcost)⟩
 
 /-- In a common degree, the cost of two closed bounded intervals is the larger
 of the two absolute endpoint differences. Degenerate closed intervals are singletons. -/
@@ -664,12 +693,9 @@ theorem distance_interval_Icc_Icc (hp : StrictMono p) (hq : StrictMono q)
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
       ENNReal.ofReal (max |a - c| |b - e|) := by
   refine le_antisymm ?_ (le_distance_iff.mpr fun r ⟨w⟩ => ?_)
-  · have halg : |(a + b) / 2 - (c + e) / 2| + |(b - a) / 2 - (e - c) / 2| =
-        max |a - c| |b - e| := by
-      simp only [abs_eq_max_neg, max_def]
-      split_ifs <;> linarith
-    rw [← halg]
-    exact distance_le_Icc k hp hq J K d hab hce hJ hK
+  · obtain ⟨w⟩ := nonempty_witness_Icc_Icc k hp hq J K d hab hce hJ hK
+      ((abs_nonneg _).trans (le_max_left _ _)) le_rfl
+    exact w.distance_le
   · have ⟨h₁, h₂⟩ := (Set.Icc_subset_Icc_iff hce).mp
       (closed_witness_subset k hp hq J K d hab r.coe_nonneg hJ hK w)
     have ⟨h₃, h₄⟩ := (Set.Icc_subset_Icc_iff hab).mp
@@ -715,6 +741,37 @@ private theorem closed_subset_of_nonzero_hom_T_Ioo_succ (hp : StrictMono p) (hq 
   rw [← htL] at hn
   exact hnonzero (hom_extension_interval_eq_zero_of_not_subset hl hq hclosed hK hn)
 
+private theorem nonempty_witness_Ioo_Icc_succ (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (d : ℤ)
+    {a b c e : ℝ} (hab : a < b) (hce : c ≤ e)
+    (hJ : intervalSet p J = Set.Ioo a b) (hK : intervalSet q K = Set.Icc c e)
+    {r : ℝ} (hr : 0 ≤ r) (hcost : max (b - c) (e - a) ≤ r) :
+    Nonempty (Witness k hr ((GradedInterval.mk J d).obj k hp)
+      ((GradedInterval.mk K (d + 1)).obj k hq)) := by
+  let X := (GradedInterval.mk J d).obj k hp
+  let t := (b - a) / 2
+  let x := (a + b) / 2
+  have ht : 0 ≤ t := by dsimp [t]; linarith
+  obtain ⟨e₀⟩ := nonempty_iso_T_interval_Ioo_shifted_skyscraper k hp J ht hab
+    (by dsimp [t]; ring) hJ
+  let v := (Witness.toConvolution X ht).congr (Iso.refl _)
+    (convGradedIso k hp ⟨J, d⟩ e₀ ≪≫
+      (eqToIso (congrArg (fun i => Single i) (add_comm 1 d))).app (skyscraperSheaf k x))
+  let L : FiniteInterval 3 := ⟨1, 2, by decide, by decide⟩
+  have hL : intervalSet (fun _ : Fin 1 => x) L = {x} :=
+    intervalSet_eq_singleton (Subsingleton.strictMono _) (i := 0) rfl rfl
+  let hmono : StrictMono (fun _ : Fin 1 => x) := Subsingleton.strictMono _
+  obtain ⟨i⟩ := nonempty_iso_skyscraperSheaf_interval k hmono L hL
+  let X' := (GradedInterval.mk L (d + 1)).obj k hmono
+  have ix : (Single (d + 1)).obj (skyscraperSheaf k x) ≅ X' := (Single (d + 1)).mapIso i
+  obtain ⟨w⟩ := nonempty_witness_Icc_Icc k hmono hq L K (d + 1) le_rfl hce
+    (hL.trans (Set.Icc_self x).symm) hK ((abs_nonneg _).trans (le_max_left _ _)) le_rfl
+  have hsum : t + max |x - c| |x - e| = max (b - c) (e - a) := by
+    dsimp [t, x]
+    simp only [abs_eq_max_neg, max_def]
+    split_ifs <;> linarith
+  exact ⟨((v.congr (Iso.refl _) ix).trans w).mono (hsum.le.trans hcost)⟩
+
 /-- In consecutive degrees, the cost of a bounded open interval and a bounded closed interval
 is the least radius whose degree-one output contains the closed interval. -/
 theorem distance_interval_Ioo_Icc_succ (hp : StrictMono p) (hq : StrictMono q)
@@ -723,33 +780,14 @@ theorem distance_interval_Ioo_Icc_succ (hp : StrictMono p) (hq : StrictMono q)
     (hJ : intervalSet p J = Set.Ioo a b) (hK : intervalSet q K = Set.Icc c e) :
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K (d + 1)).obj k hq) =
       ENNReal.ofReal (max (b - c) (e - a)) := by
-  let X := (GradedInterval.mk J d).obj k hp
-  let Y := (GradedInterval.mk K (d + 1)).obj k hq
-  let t := (b - a) / 2
-  let x := (a + b) / 2
-  have ht : 0 ≤ t := by dsimp [t]; linarith
-  obtain ⟨e₀⟩ := nonempty_iso_T_interval_Ioo_shifted_skyscraper k hp J ht hab
-    (by dsimp [t]; ring) hJ
-  let v := (Witness.toConvolution X ht).congr (Iso.refl _)
-    (convGradedIso k hp ⟨J, d⟩ e₀ ≪≫ eqToIso (congrArg
-      (fun i => (Single i).obj (skyscraperSheaf k x)) (add_comm 1 d)))
-  let L : FiniteInterval 3 := ⟨1, 2, by decide, by decide⟩
-  have hL : intervalSet (fun _ : Fin 1 => x) L = {x} :=
-    intervalSet_eq_singleton (Subsingleton.strictMono _) (i := 0) rfl rfl
-  let hmono : StrictMono (fun _ : Fin 1 => x) := Subsingleton.strictMono _
-  obtain ⟨i⟩ := nonempty_iso_skyscraperSheaf_interval k hmono L hL
-  let X' := (GradedInterval.mk L (d + 1)).obj k hmono
-  have ix : (Single (d + 1)).obj (skyscraperSheaf k x) ≅ X' := (Single (d + 1)).mapIso i
-  have hv := (v.congr (Iso.refl _) ix).distance_le
   refine le_antisymm ?_ (le_distance_iff.mpr fun r ⟨w⟩ => ?_)
-  · have hc := distance_interval_Icc_Icc k hmono hq L K
-      (d + 1) le_rfl hce (hL.trans (Set.Icc_self x).symm) hK
-    have hsum : t + max |x - c| |x - e| = max (b - c) (e - a) := by
-      dsimp [t, x]
-      simp only [abs_eq_max_neg, max_def]
-      split_ifs <;> linarith
-    rw [← hsum, ENNReal.ofReal_add ht (le_trans (abs_nonneg _) (le_max_left _ _))]
-    exact (distance_triangle X X' Y).trans (add_le_add hv hc.le)
+  · have hr : 0 ≤ max (b - c) (e - a) := by
+      by_contra! h
+      have h₁ := (le_max_left (b - c) (e - a)).trans_lt h
+      have h₂ := (le_max_right (b - c) (e - a)).trans_lt h
+      linarith
+    obtain ⟨w⟩ := nonempty_witness_Ioo_Icc_succ k hp hq J K d hab hce hJ hK hr le_rfl
+    exact w.distance_le
   · have htop := distance_interval_Icc_zero k hq ⟨K, d + 1⟩ hce hK
     have hnonzero : w.hom ≠ 0 := fun hz =>
       no_witness_zero_of_distance_top k htop r.coe_nonneg
@@ -846,6 +884,18 @@ theorem distance_zero_eq (hp : StrictMono p) (J : GradedInterval m)
   | ioi a => exact distance_interval_Ioi_zero k hp J hJ
   | iio b => exact distance_interval_Iio_zero k hp J hJ
   | univ => exact distance_interval_univ_zero k hp J hJ
+
+/-- A radius admits deletion of a graded interval exactly when it bounds the deletion cost. -/
+theorem nonempty_witness_zero_iff_deletionCost_le (hp : StrictMono p) (J : GradedInterval m)
+    (E : IntervalEndpoints) (hJ : intervalSet p J.interval = E.support) {r : ℝ} (hr : 0 ≤ r) :
+    Nonempty (Witness k hr (J.obj k hp) 0) ↔ E.deletionCost ≤ ENNReal.ofReal r := by
+  refine ⟨fun ⟨w⟩ => (E.distance_zero_eq k hp J hJ).symm ▸ w.distance_le, ?_⟩
+  intro h
+  cases E <;> try exact (ENNReal.ofReal_lt_top.not_ge h).elim
+  · exact (nonempty_witness_interval_Ico_zero_iff k hp J (by assumption) hJ hr).mpr
+      ((ENNReal.ofReal_le_ofReal_iff hr).mp h)
+  · exact (nonempty_witness_interval_Ioc_zero_iff k hp J (by assumption) hJ hr).mpr
+      ((ENNReal.ofReal_le_ofReal_iff hr).mp h)
 
 end IntervalEndpoints
 
@@ -1277,6 +1327,12 @@ theorem IntervalEndpoints.finrank_hom_of_homAllowed
   exact e'.finrank_eq.trans (by rw [Module.finrank_linearMap_self, Module.finrank_self])
 
 
+private theorem nonempty_witness_of_deletions {X Y : D⁺} {r : ℝ} {hr : 0 ≤ r}
+    (hX : Nonempty (Witness k hr X 0)) (hY : Nonempty (Witness k hr Y 0)) :
+    Nonempty (Witness k hr X Y) :=
+  ⟨⟨0, 0, by simp [nonempty_witness_zero_iff.mp hX],
+    by simp [nonempty_witness_zero_iff.mp hY]⟩⟩
+
 private theorem distance_le_sup_deletions {X Y : D⁺} :
     distance X Y ≤ distance X 0 ⊔ distance Y 0 := by
   apply ENNReal.le_of_forall_pos_le_add
@@ -1286,13 +1342,9 @@ private theorem distance_le_sup_deletions {X Y : D⁺} :
   have ht : (t : ℝ≥0∞) = s + r := by rw [ENNReal.coe_add, ENNReal.coe_toNNReal hfin.ne]
   have hs : s < (t : ℝ≥0∞) :=
     ht.symm ▸ ENNReal.lt_add_right hfin.ne (ENNReal.coe_ne_zero.mpr hr.ne')
-  obtain ⟨u⟩ := nonempty_witness_of_distance_lt
-    ((le_sup_left : distance X 0 ≤ s).trans_lt hs)
-  obtain ⟨v⟩ := nonempty_witness_of_distance_lt
-    ((le_sup_right : distance Y 0 ≤ s).trans_lt hs)
-  have w : Witness k t.coe_nonneg X Y := ⟨0, 0,
-    by simp [nonempty_witness_zero_iff.mp ⟨u⟩],
-    by simp [nonempty_witness_zero_iff.mp ⟨v⟩]⟩
+  obtain ⟨w⟩ := nonempty_witness_of_deletions k
+    (nonempty_witness_of_distance_lt ((le_sup_left : distance X 0 ≤ s).trans_lt hs))
+    (nonempty_witness_of_distance_lt ((le_sup_right : distance Y 0 ≤ s).trans_lt hs))
   simpa only [ENNReal.ofReal_coe_nnreal, ht] using w.distance_le
 
 /-- Expand closed endpoints and translate open endpoints by the band radius
@@ -1541,9 +1593,10 @@ theorem distance_interval_Ico_Ico (hp : StrictMono p) (hq : StrictMono q)
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
       ENNReal.ofReal (max |a - c| |b - e|) ⊓
         ENNReal.ofReal (max ((b - a) / 2) ((e - c) / 2)) := by
-  have hupper := distance_le_of_orderIso k hp hq J K d (intervalMoveIso hab hce)
-    ((abs_nonneg (a - c)).trans (le_max_left _ _)) (intervalMoveIso_le hab hce)
+  obtain ⟨w⟩ := nonempty_witness_of_intervalMove k hp hq J K d hab hce
+    ((abs_nonneg (a - c)).trans (le_max_left _ _)) le_rfl
     (by rw [hJ, hK, OrderIso.image_Ico, intervalMoveIso_left, intervalMoveIso_right])
+  have hupper := w.distance_le
   rw [ENNReal.ofReal_max ((b - a) / 2) ((e - c) / 2),
     ← distance_interval_Ico_zero k hp ⟨J, d⟩ hab hJ,
     ← distance_interval_Ico_zero k hq ⟨K, d⟩ hce hK]
@@ -1567,9 +1620,10 @@ theorem distance_interval_Ioc_Ioc (hp : StrictMono p) (hq : StrictMono q)
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
       ENNReal.ofReal (max |a - c| |b - e|) ⊓
         ENNReal.ofReal (max ((b - a) / 2) ((e - c) / 2)) := by
-  have hupper := distance_le_of_orderIso k hp hq J K d (intervalMoveIso hab hce)
-    ((abs_nonneg (a - c)).trans (le_max_left _ _)) (intervalMoveIso_le hab hce)
+  obtain ⟨w⟩ := nonempty_witness_of_intervalMove k hp hq J K d hab hce
+    ((abs_nonneg (a - c)).trans (le_max_left _ _)) le_rfl
     (by rw [hJ, hK, OrderIso.image_Ioc, intervalMoveIso_left, intervalMoveIso_right])
+  have hupper := w.distance_le
   rw [ENNReal.ofReal_max ((b - a) / 2) ((e - c) / 2),
     ← distance_interval_Ioc_zero k hp ⟨J, d⟩ hab hJ,
     ← distance_interval_Ioc_zero k hq ⟨K, d⟩ hce hK]
@@ -1592,9 +1646,10 @@ theorem distance_interval_Ioo_Ioo (hp : StrictMono p) (hq : StrictMono q)
     (hJ : intervalSet p J = Set.Ioo a b) (hK : intervalSet q K = Set.Ioo c e) :
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
       ENNReal.ofReal (max |a - c| |b - e|) := by
-  have hupper := distance_le_of_orderIso k hp hq J K d (intervalMoveIso hab hce)
-    ((abs_nonneg (a - c)).trans (le_max_left _ _)) (intervalMoveIso_le hab hce)
+  obtain ⟨w⟩ := nonempty_witness_of_intervalMove k hp hq J K d hab hce
+    ((abs_nonneg (a - c)).trans (le_max_left _ _)) le_rfl
     (by rw [hJ, hK, OrderIso.image_Ioo, intervalMoveIso_left, intervalMoveIso_right])
+  have hupper := w.distance_le
   let s := max (b - a) (e - c)
   have hs : 0 ≤ s := (sub_nonneg.mpr hab.le).trans (le_max_left _ _)
   have hsJ : b - a < 2 * s := by linarith [le_max_left (b - a) (e - c)]
@@ -1620,12 +1675,11 @@ theorem distance_interval_Ici_Ici (hp : StrictMono p) (hq : StrictMono q)
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
       ENNReal.ofReal |a - b| := by
   refine le_antisymm ?_ (le_distance_iff.mpr ?_)
-  · refine distance_le_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
-      (abs_nonneg _) (fun x => ?_) ?_
-    · change |x - (x + (b - a))| ≤ _
-      rw [show x - (x + (b - a)) = a - b by ring]
-    · rw [hJ, hK, OrderIso.image_Ici]
-      exact congrArg Set.Ici (show a + (b - a) = b by ring)
+  · obtain ⟨w⟩ := nonempty_witness_of_translate k hp hq J K d (abs_nonneg (a - b)) le_rfl
+      (by
+        rw [hJ, hK, OrderIso.image_Ici]
+        exact congrArg Set.Ici (show a + (b - a) = b by ring))
+    exact w.distance_le
   rintro r ⟨w⟩
   have hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
       distance ((GradedInterval.mk K d).obj k hq) 0 := by
@@ -1645,12 +1699,11 @@ theorem distance_interval_Iic_Iic (hp : StrictMono p) (hq : StrictMono q)
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
       ENNReal.ofReal |a - b| := by
   refine le_antisymm ?_ (le_distance_iff.mpr ?_)
-  · refine distance_le_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
-      (abs_nonneg _) (fun x => ?_) ?_
-    · change |x - (x + (b - a))| ≤ _
-      rw [show x - (x + (b - a)) = a - b by ring]
-    · rw [hJ, hK, OrderIso.image_Iic]
-      exact congrArg Set.Iic (show a + (b - a) = b by ring)
+  · obtain ⟨w⟩ := nonempty_witness_of_translate k hp hq J K d (abs_nonneg (a - b)) le_rfl
+      (by
+        rw [hJ, hK, OrderIso.image_Iic]
+        exact congrArg Set.Iic (show a + (b - a) = b by ring))
+    exact w.distance_le
   rintro r ⟨w⟩
   have hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
       distance ((GradedInterval.mk K d).obj k hq) 0 := by
@@ -1670,12 +1723,11 @@ theorem distance_interval_Ioi_Ioi (hp : StrictMono p) (hq : StrictMono q)
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
       ENNReal.ofReal |a - b| := by
   refine le_antisymm ?_ (le_distance_iff.mpr ?_)
-  · refine distance_le_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
-      (abs_nonneg _) (fun x => ?_) ?_
-    · change |x - (x + (b - a))| ≤ _
-      rw [show x - (x + (b - a)) = a - b by ring]
-    · rw [hJ, hK, OrderIso.image_Ioi]
-      exact congrArg Set.Ioi (show a + (b - a) = b by ring)
+  · obtain ⟨w⟩ := nonempty_witness_of_translate k hp hq J K d (abs_nonneg (a - b)) le_rfl
+      (by
+        rw [hJ, hK, OrderIso.image_Ioi]
+        exact congrArg Set.Ioi (show a + (b - a) = b by ring))
+    exact w.distance_le
   rintro r ⟨w⟩
   have hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
       distance ((GradedInterval.mk K d).obj k hq) 0 := by
@@ -1695,12 +1747,11 @@ theorem distance_interval_Iio_Iio (hp : StrictMono p) (hq : StrictMono q)
     distance ((GradedInterval.mk J d).obj k hp) ((GradedInterval.mk K d).obj k hq) =
       ENNReal.ofReal |a - b| := by
   refine le_antisymm ?_ (le_distance_iff.mpr ?_)
-  · refine distance_le_of_orderIso k hp hq J K d (OrderIso.addRight (b - a))
-      (abs_nonneg _) (fun x => ?_) ?_
-    · change |x - (x + (b - a))| ≤ _
-      rw [show x - (x + (b - a)) = a - b by ring]
-    · rw [hJ, hK, OrderIso.image_Iio]
-      exact congrArg Set.Iio (show a + (b - a) = b by ring)
+  · obtain ⟨w⟩ := nonempty_witness_of_translate k hp hq J K d (abs_nonneg (a - b)) le_rfl
+      (by
+        rw [hJ, hK, OrderIso.image_Iio]
+        exact congrArg Set.Iio (show a + (b - a) = b by ring))
+    exact w.distance_le
   rintro r ⟨w⟩
   have hr : (r : ℝ≥0∞) < distance ((GradedInterval.mk J d).obj k hp) 0 ⊔
       distance ((GradedInterval.mk K d).obj k hq) 0 := by
@@ -2242,6 +2293,101 @@ private theorem distance_eq_pairCostOfEq (hp : StrictMono p) (hq : StrictMono q)
       | exact distance_interval_Iio_Iio k hp hq J K i hJ hK
       | exact distance_interval_univ_univ k hp hq J K i hJ hK
 
+private theorem nonempty_witness_of_jointDeletion (hp : StrictMono p) (hq : StrictMono q)
+    (J : GradedInterval m) (K : GradedInterval n) (E F : IntervalEndpoints)
+    (hJ : intervalSet p J.interval = E.support) (hK : intervalSet q K.interval = F.support)
+    {r : ℝ} (hr : 0 ≤ r) (h : E.deletionCost ⊔ F.deletionCost ≤ ENNReal.ofReal r) :
+    Nonempty (Witness k hr (J.obj k hp) (K.obj k hq)) :=
+  nonempty_witness_of_deletions k
+    ((E.nonempty_witness_zero_iff_deletionCost_le k hp J hJ hr).mpr (le_sup_left.trans h))
+    ((F.nonempty_witness_zero_iff_deletionCost_le k hq K hK hr).mpr (le_sup_right.trans h))
+
+private theorem nonempty_witness_of_pairCostOfLt (hp : StrictMono p) (hq : StrictMono q)
+    (J : GradedInterval m) (K : GradedInterval n) (E F : IntervalEndpoints)
+    (hJ : intervalSet p J.interval = E.support) (hK : intervalSet q K.interval = F.support)
+    {r : ℝ} (hr : 0 ≤ r) (hd : J.degree < K.degree)
+    (hcost : E.pairCostOfLt F J.degree K.degree ≤ ENNReal.ofReal r) :
+    Nonempty (Witness k hr (J.obj k hp) (K.obj k hq)) := by
+  unfold pairCostOfLt at hcost
+  split at hcost
+  · exact nonempty_witness_of_jointDeletion k hp hq J K E F hJ hK hr hcost
+  · rename_i h
+    have hdeg : K.degree = J.degree + 1 := by
+      have hh : ¬ J.degree + 1 < K.degree := fun hg => h (Or.inl hg)
+      omega
+    have hout : E.hasDegreeOneOutput ≠ false := fun he => h (Or.inr he)
+    rcases J with ⟨J, i⟩
+    rcases K with ⟨K, j⟩
+    dsimp only at hdeg
+    subst j
+    cases E <;> try exact (hout rfl).elim
+    cases F <;> try exact (ENNReal.ofReal_lt_top.not_ge hcost).elim
+    exact nonempty_witness_Ioo_Icc_succ k hp hq J K i (by assumption) (by assumption) hJ hK hr
+      ((ENNReal.ofReal_le_ofReal_iff hr).mp hcost)
+
+private theorem nonempty_witness_of_pairCostOfEq (hp : StrictMono p) (hq : StrictMono q)
+    (J : FiniteInterval (2 * m + 1)) (K : FiniteInterval (2 * n + 1)) (i : ℤ)
+    (E F : IntervalEndpoints) (hJ : intervalSet p J = E.support) (hK : intervalSet q K = F.support)
+    {r : ℝ} (hr : 0 ≤ r) (hcost : E.pairCostOfEq F ≤ ENNReal.ofReal r) :
+    Nonempty (Witness k hr ((GradedInterval.mk J i).obj k hp)
+      ((GradedInterval.mk K i).obj k hq)) := by
+  by_cases hdel : E.deletionCost ⊔ F.deletionCost ≤ ENNReal.ofReal r
+  · exact nonempty_witness_of_jointDeletion k hp hq ⟨J, i⟩ ⟨K, i⟩ E F hJ hK hr hdel
+  have htype : E.sameType F = true := by
+    by_contra! htype
+    have h : E.pairCostOfEq F = E.deletionCost ⊔ F.deletionCost := by
+      cases E <;> cases F <;> first | rfl | contradiction
+    exact hdel (h ▸ hcost)
+  cases E <;> cases F <;>
+    simp only [IntervalEndpoints.sameType, IntervalEndpoints.lower, IntervalEndpoints.upper,
+      LowerCut.sameType, Bool.false_and, Bool.and_false, Bool.true_and,
+      Bool.false_eq_true] at htype
+  · exact nonempty_witness_Icc_Icc k hp hq J K i (by assumption) (by assumption) hJ hK hr
+      ((ENNReal.ofReal_le_ofReal_iff hr).mp hcost)
+  · rename_i a b hab c e hce
+    have hdirect : ENNReal.ofReal (max |a - c| |b - e|) ≤ ENNReal.ofReal r := by
+      simp only [pairCostOfEq, inf_le_iff] at hcost
+      exact hcost.resolve_right (by simpa [deletionCost, ENNReal.ofReal_max] using hdel)
+    exact nonempty_witness_of_intervalMove k hp hq J K i hab hce hr
+      ((ENNReal.ofReal_le_ofReal_iff hr).mp hdirect)
+      (by simp only [hJ, hK, support, OrderIso.image_Ico,
+        intervalMoveIso_left, intervalMoveIso_right])
+  · rename_i a b hab c e hce
+    have hdirect : ENNReal.ofReal (max |a - c| |b - e|) ≤ ENNReal.ofReal r := by
+      simp only [pairCostOfEq, inf_le_iff] at hcost
+      exact hcost.resolve_right (by simpa [deletionCost, ENNReal.ofReal_max] using hdel)
+    exact nonempty_witness_of_intervalMove k hp hq J K i hab hce hr
+      ((ENNReal.ofReal_le_ofReal_iff hr).mp hdirect)
+      (by simp only [hJ, hK, support, OrderIso.image_Ioc,
+        intervalMoveIso_left, intervalMoveIso_right])
+  · rename_i a b hab c e hce
+    exact nonempty_witness_of_intervalMove k hp hq J K i hab hce hr
+      ((ENNReal.ofReal_le_ofReal_iff hr).mp hcost)
+      (by simp only [hJ, hK, support, OrderIso.image_Ioo,
+        intervalMoveIso_left, intervalMoveIso_right])
+  · rename_i a b
+    exact nonempty_witness_of_translate k hp hq J K i hr ((ENNReal.ofReal_le_ofReal_iff hr).mp hcost)
+      (by
+        simp only [hJ, hK, support, OrderIso.image_Ici]
+        exact congrArg Set.Ici (show a + (b - a) = b by ring))
+  · rename_i a b
+    exact nonempty_witness_of_translate k hp hq J K i hr ((ENNReal.ofReal_le_ofReal_iff hr).mp hcost)
+      (by
+        simp only [hJ, hK, support, OrderIso.image_Iic]
+        exact congrArg Set.Iic (show a + (b - a) = b by ring))
+  · rename_i a b
+    exact nonempty_witness_of_translate k hp hq J K i hr ((ENNReal.ofReal_le_ofReal_iff hr).mp hcost)
+      (by
+        simp only [hJ, hK, support, OrderIso.image_Ioi]
+        exact congrArg Set.Ioi (show a + (b - a) = b by ring))
+  · rename_i a b
+    exact nonempty_witness_of_translate k hp hq J K i hr ((ENNReal.ofReal_le_ofReal_iff hr).mp hcost)
+      (by
+        simp only [hJ, hK, support, OrderIso.image_Iio]
+        exact congrArg Set.Iio (show a + (b - a) = b by ring))
+  · obtain ⟨e⟩ := nonempty_iso_intervalSheaf_of_intervalSet_eq k hp hq (hJ.trans hK.symm)
+    exact ⟨(Witness.ofIso ((Single i).mapIso e)).mono hr⟩
+
 private theorem exists_support_eq (hp : StrictMono p) (J : FiniteInterval (2 * m + 1)) :
     ∃ E : IntervalEndpoints, intervalSet p J = E.support := by
   have hbd := J.birth_lt_death
@@ -2308,6 +2454,29 @@ theorem distance_eq_totalPairCost (hp : StrictMono p) (hq : StrictMono q)
     dsimp only at hdeg
     subst j
     exact distance_eq_pairCostOfEq k hp hq J K i E F hJ hK
+
+/-- A radius admits a witness between graded interval sheaves exactly when it bounds their
+total pair cost. -/
+theorem nonempty_witness_iff_totalPairCost_le (hp : StrictMono p) (hq : StrictMono q)
+    (J : GradedInterval m) (K : GradedInterval n) (E F : IntervalEndpoints)
+    (hJ : intervalSet p J.interval = E.support) (hK : intervalSet q K.interval = F.support)
+    {r : ℝ} (hr : 0 ≤ r) :
+    Nonempty (Witness k hr (J.obj k hp) (K.obj k hq)) ↔
+      E.totalPairCost F J.degree K.degree ≤ ENNReal.ofReal r := by
+  refine ⟨fun ⟨w⟩ => (E.distance_eq_totalPairCost k hp hq J K F hJ hK).symm ▸ w.distance_le, ?_⟩
+  intro hcost
+  unfold totalPairCost at hcost
+  split at hcost
+  · exact nonempty_witness_of_pairCostOfLt k hp hq J K E F hJ hK hr ‹_› hcost
+  split at hcost
+  · obtain ⟨w⟩ := nonempty_witness_of_pairCostOfLt k hq hp K J F E hK hJ hr ‹_› hcost
+    exact ⟨w.symm⟩
+  · have hdeg : J.degree = K.degree := le_antisymm (le_of_not_gt ‹_›) (le_of_not_gt ‹_›)
+    rcases J with ⟨J, i⟩
+    rcases K with ⟨K, j⟩
+    dsimp only at hdeg
+    subst j
+    exact nonempty_witness_of_pairCostOfEq k hp hq J K i E F hJ hK hr hcost
 
 /-- Every returned pair entry is the band distance used by graded matchings. -/
 theorem distance_eq_of_pairCost (hp : StrictMono p) (hq : StrictMono q)
