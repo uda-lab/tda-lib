@@ -126,7 +126,9 @@ theorem bandCohomologyStalkIso_hom_naturality (r : ℝ) (d : ℤ) {F G : Sh} (f 
   exact (Category.assoc _ _ _).symm.trans
     ((congrArg (· ≫ tG) hn).trans (Category.assoc _ _ _))
 
-private theorem bandCohomologySectionsIso_hom_map {r : ℝ} (hr : 0 ≤ r) (d : ℤ) (F : Sh)
+/-- The natural section comparison commutes with restriction to smaller
+order-connected opens. -/
+theorem bandCohomologySectionsIso_hom_map {r : ℝ} (hr : 0 ≤ r) (d : ℤ) (F : Sh)
     {V U : Opens realLine} (h : V ≤ U) (hV : (V : Set ℝ).OrdConnected)
     (hU : (U : Set ℝ).OrdConnected) :
     ((Coh[r,d]).obj F).presheaf.map (homOfLE h).op ≫

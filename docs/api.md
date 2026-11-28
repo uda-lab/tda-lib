@@ -6626,6 +6626,40 @@ augmentation precomposed with the band-composition isomorphism.
 `homology_band_augmentation_ne_zero_of_lt_deletionCost` makes the diagonal of the
 projected equation nonzero when the deletion cost exceeds the radius.
 
+## Finite graded matching isometry
+
+`Witness.card_le_neighbors_of_stable` gives the Hall inequality for subsets of
+occurrences whose deletion cost exceeds the radius. An edge requires equal degrees,
+equal endpoint types and signed coordinate differences bounded by the radius.
+The same inequality for the opposite graph follows by exchanging the witness maps.
+
+`Witness.exists_gradedMatching_cost_le` assigns a partial matching of cost at
+most the radius to a witness between finite graded interval sums. Common
+convolution identifies the graph for the two half-open blocks, the ray and line
+blocks, and the central block containing bounded closed intervals and the
+degree-shifted bounded open intervals. Both Hall inequalities give a single
+matching covering the required occurrences on both sides.
+
+`matchingDistance_le_distance_biproduct` takes the infimum over witness radii.
+`distance_biproduct_eq_matchingDistance` identifies the distance of the two
+biproducts with the least matching cost.
+`distance_eq_matchingDistance_of_iso` transports the formula along presentations
+as interval sums. `distanceB_eq_gradedBarcodeMatchingDistance` gives the formula
+for bounded objects with constructible cohomology using their graded barcode occurrences.
+
+`IntervalEndpoints.openWindow` removes the exterior and endpoint on each open side.
+The support is nonempty by `IntervalEndpoints.support_nonempty` and lies in this
+order-connected open by `IntervalEndpoints.mem_openWindow` and
+`IntervalEndpoints.ordConnected_openWindow`.
+`IntervalEndpoints.closure_inter_openWindow_subset` gives relative closedness on every
+subopen. `IntervalEndpoints.bandOpen_openWindow_le` keeps a thickened subopen inside
+the original window, and `bandCohomologySectionsIso_hom_map` compares the restrictions.
+`IntervalEndpoints.convolved_add` composes the endpoint formulas.
+`IntervalEndpoints.convolved_openWindow_le_of_homAllowed` preserves window containment
+under a common convolution of a source and target with permitted cuts.
+`IntervalEndpoints.outer_overlap_of_score_le` gives an overlap for the outer supports
+from the requiredness, score and two-step coordinate bounds.
+
 ## Morphisms of real interval sheaves
 
 `IntervalEndpoints.homAllowed` tests support intersection and both endpoint cuts. At either

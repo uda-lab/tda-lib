@@ -1324,7 +1324,8 @@ private theorem IntervalEndpoints.outSet0_eq_convolved (E : IntervalEndpoints) {
   | iio b => exact outSet0_Iio hr b
   | univ => exact outSet0_univ hr
 
-private theorem IntervalEndpoints.support_nonempty (E : IntervalEndpoints) :
+/-- Every endpoint type represents a nonempty support. -/
+theorem IntervalEndpoints.support_nonempty (E : IntervalEndpoints) :
     E.support.Nonempty := by
   cases E <;> first
     | exact Set.nonempty_Icc.mpr ‹_›
@@ -1867,22 +1868,27 @@ private theorem LowerCut.mem_openWindow_of_dist_le (L : LowerCut) {x z r : ℝ}
     rw [Real.dist_eq, abs_le] at h
     linarith [h.1]
 
-private def IntervalEndpoints.openWindow (E : IntervalEndpoints) :
+/-- The open set obtained by removing the omitted endpoint and the exterior on
+each open side of an interval. Closed and unbounded sides impose no restriction. -/
+def IntervalEndpoints.openWindow (E : IntervalEndpoints) :
     TopologicalSpace.Opens realLine :=
   ⟨E.lower.openWindow ∩ (fun z : ℝ => -z) ⁻¹' E.upper.openWindow,
     E.lower.isOpen_openWindow.inter (E.upper.isOpen_openWindow.preimage continuous_neg)⟩
 
-private theorem IntervalEndpoints.mem_openWindow (E : IntervalEndpoints) {x : ℝ}
+/-- Every supported point lies in the interval’s open window. -/
+theorem IntervalEndpoints.mem_openWindow (E : IntervalEndpoints) {x : ℝ}
     (hx : x ∈ E.support) : x ∈ E.openWindow :=
   ⟨E.lower.mem_openWindow ((E.mem_support_iff x).mp hx).1,
     E.upper.mem_openWindow ((E.mem_support_iff x).mp hx).2⟩
 
-private theorem IntervalEndpoints.ordConnected_openWindow (E : IntervalEndpoints) :
+/-- The interval window is order-connected. -/
+theorem IntervalEndpoints.ordConnected_openWindow (E : IntervalEndpoints) :
     (E.openWindow : Set ℝ).OrdConnected :=
   E.lower.ordConnected_openWindow.inter
     (E.upper.ordConnected_openWindow.preimage_anti fun _ _ h => neg_le_neg h)
 
-private theorem IntervalEndpoints.closure_inter_openWindow_subset (E : IntervalEndpoints)
+/-- The support is relatively closed on any subopen of its window. -/
+theorem IntervalEndpoints.closure_inter_openWindow_subset (E : IntervalEndpoints)
     {U : TopologicalSpace.Opens realLine} (hU : U ≤ E.openWindow) :
     closure E.support ∩ (U : Set ℝ) ⊆ E.support := by
   rintro x ⟨hx, hxU⟩
@@ -1895,7 +1901,8 @@ private theorem IntervalEndpoints.closure_inter_openWindow_subset (E : IntervalE
   exact (E.mem_support_iff x).mpr ⟨E.lower.mem_of_closedAt_of_mem_window hl (hU hxU).1,
     E.upper.mem_of_closedAt_of_mem_window hr (hU hxU).2⟩
 
-private theorem IntervalEndpoints.bandOpen_openWindow_le (E : IntervalEndpoints)
+/-- Thickening a subopen of the convolved window stays in the original window. -/
+theorem IntervalEndpoints.bandOpen_openWindow_le (E : IntervalEndpoints)
     {r : ℝ} (hr : 0 ≤ r) (hE : E.hasDegreeOneOutput = false)
     {U : TopologicalSpace.Opens realLine} (hU : U ≤ (E.convolved r hr).openWindow) :
     bandOpen r U ≤ E.openWindow := by
@@ -1905,6 +1912,72 @@ private theorem IntervalEndpoints.bandOpen_openWindow_le (E : IntervalEndpoints)
   refine ⟨E.lower.mem_openWindow_of_dist_le hd (hl ▸ (hU hx).1),
     E.upper.mem_openWindow_of_dist_le ?_ (hu ▸ (hU hx).2)⟩
   simpa only [Real.dist_eq, neg_sub_neg, abs_sub_comm] using hd
+
+/-- Applying the endpoint transformation at two radii equals applying it at their sum. -/
+theorem IntervalEndpoints.convolved_add (E : IntervalEndpoints) {r s : ℝ}
+    (hr : 0 ≤ r) (hs : 0 ≤ s) :
+    (E.convolved r hr).convolved s hs = E.convolved (r + s) (add_nonneg hr hs) := by
+  cases E <;> simp only [IntervalEndpoints.convolved, sub_sub, add_assoc]
+
+private theorem LowerCut.convolved_openWindow_subset_of_allows (L M : LowerCut)
+    (h : L.allows M) (r : ℝ) : (L.convolved r).openWindow ⊆ (M.convolved r).openWindow := by
+  cases L <;> cases M <;> simp_all [LowerCut.allows, LowerCut.convolved, LowerCut.openWindow]
+
+/-- Window containment for a permitted map between stable supports persists after
+convolving both supports by the same radius. -/
+theorem IntervalEndpoints.convolved_openWindow_le_of_homAllowed (E F : IntervalEndpoints)
+    (h : E.homAllowed F) (hE : E.hasDegreeOneOutput = false) (hF : F.hasDegreeOneOutput = false)
+    {r : ℝ} (hr : 0 ≤ r) : (E.convolved r hr).openWindow ≤ (F.convolved r hr).openWindow := by
+  obtain ⟨hEl, hEu⟩ := E.cuts_convolved hr hE
+  obtain ⟨hFl, hFu⟩ := F.cuts_convolved hr hF
+  intro x hx
+  exact ⟨hFl ▸ E.lower.convolved_openWindow_subset_of_allows F.lower h.2.1 r (hEl ▸ hx.1),
+    hFu ▸ E.upper.convolved_openWindow_subset_of_allows F.upper h.2.2 r (hEu ▸ hx.2)⟩
+
+/-- At the two-step coordinate bound, required occurrences of the same stable type
+have overlapping outer supports when the row coordinate sum is at most the column sum. -/
+theorem IntervalEndpoints.outer_overlap_of_score_le (E G : IntervalEndpoints) {r : ℝ}
+    (hr : 0 ≤ r) (hE : E.hasDegreeOneOutput = false) (ht : E.sameType G = true)
+    (hreq : ENNReal.ofReal r < E.deletionCost) (hreqG : ENNReal.ofReal r < G.deletionCost)
+    (hscore : G.coordinates.1 + G.coordinates.2 ≤ E.coordinates.1 + E.coordinates.2)
+    (h₁ : E.coordinates.1 ≤ G.coordinates.1 + (r + r))
+    (h₂ : E.coordinates.2 ≤ G.coordinates.2 + (r + r)) :
+    ((E.convolved (r + r) (add_nonneg hr hr)).support ∩ G.support).Nonempty := by
+  cases E <;> cases G <;>
+    simp only [IntervalEndpoints.sameType, IntervalEndpoints.lower, IntervalEndpoints.upper,
+      LowerCut.sameType, Bool.false_and, Bool.and_false, Bool.true_and, Bool.false_eq_true] at ht
+  case ioo.ioo => cases hE
+  all_goals
+    simp only [IntervalEndpoints.coordinates, IntervalEndpoints.lower, IntervalEndpoints.upper,
+      LowerCut.coordinate, IntervalEndpoints.convolved, IntervalEndpoints.support] at hscore h₁ h₂ ⊢
+  case icc.icc a b hab c e hce =>
+    exact ⟨c, ⟨⟨by linarith, by linarith⟩, le_rfl, hce⟩⟩
+  case ico.ico a b hab c e hce =>
+    have hlen : r < (b - a) / 2 :=
+      (ENNReal.ofReal_lt_ofReal_iff_of_nonneg hr).mp hreq
+    have hlenG : r < (e - c) / 2 :=
+      (ENNReal.ofReal_lt_ofReal_iff_of_nonneg hr).mp hreqG
+    have hcb : c < b - (r + r) := by linarith
+    exact ⟨c, ⟨⟨by linarith, hcb⟩, le_rfl, hce⟩⟩
+  case ioc.ioc a b hab c e hce =>
+    have hlen : r < (b - a) / 2 :=
+      (ENNReal.ofReal_lt_ofReal_iff_of_nonneg hr).mp hreq
+    have hlenG : r < (e - c) / 2 :=
+      (ENNReal.ofReal_lt_ofReal_iff_of_nonneg hr).mp hreqG
+    have hea : a + (r + r) < e := by linarith
+    exact ⟨e, ⟨⟨hea, by linarith⟩, hce, le_rfl⟩⟩
+  case ici.ici a c =>
+    exact ⟨c, ⟨show a - (r + r) ≤ c by linarith, Set.mem_Ici.mpr le_rfl⟩⟩
+  case iic.iic b e =>
+    exact ⟨e, ⟨show e ≤ b + (r + r) by linarith, Set.mem_Iic.mpr le_rfl⟩⟩
+  case ioi.ioi a c =>
+    exact ⟨a + (r + r) + 1, ⟨show a + (r + r) < a + (r + r) + 1 by linarith,
+      show c < a + (r + r) + 1 by linarith⟩⟩
+  case iio.iio b e =>
+    exact ⟨b - (r + r) - 1, ⟨show b - (r + r) - 1 < b - (r + r) by linarith,
+      show b - (r + r) - 1 < e by linarith⟩⟩
+  case univ.univ =>
+    exact ⟨0, ⟨trivial, trivial⟩⟩
 
 omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))] in
 private theorem IntervalEndpoints.isIso_band_germ (hp : StrictMono p)
