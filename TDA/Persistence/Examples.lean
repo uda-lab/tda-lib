@@ -2,6 +2,7 @@
 import TDA.Persistence.WeightedBoundaryTransportExamples
 import TDA.Persistence.AffineSwitchExamples
 import TDA.Persistence.RectangleHallExamples
+import TDA.Persistence.FiniteOccurrenceMatchingExamples
 import TDA.Persistence.RectangleMatchingExamples
 import TDA.Persistence.RectangleMatchingDistanceExamples
 import TDA.Persistence.RectangleBarcodeBridgeExamples

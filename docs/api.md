@@ -218,6 +218,20 @@ structure is universe-polymorphic. The two Hall injections from the actual inter
 reverse instantiate this combinator. For this rectangle instantiation, the
 Schröder–Bernstein argument uses auxiliary labels to allow deletion only of
 non-significant occurrences, then discards those labels.
+`FiniteOccurrenceMatching.neighbors` counts the possible partners of a finite selection
+on the whole opposite side. Its membership test is `FiniteOccurrenceMatching.mem_neighbors`.
+`FiniteOccurrenceMatching.exists_two_sided_of_hall` covers two specified selections by
+one partial matching whenever each subset on either selected side has at least as many
+neighbours as members.
+
+`FiniteMatchingRank.card_le_of_restricted_triangular_product` bounds the number of labels by
+the number of kept intermediate indices. Off-diagonal product entries must vanish whenever
+the row score is at most the column score, diagonal entries must be nonzero, and contributions
+through discarded indices must strictly increase the score. Equal-score blocks are diagonal.
+`FiniteMatchingRank.lt_of_abs_sub_gt` and `FiniteMatchingRank.sum_lt_of_sup_abs_sub_gt` give
+the strict score increase from the directed coordinate inequalities and a violation of the
+absolute-distance bound on both steps in one or two coordinates.
+
 The sharpness fixture is the standalone module
 `TDA.Persistence.RectangleSharpExample`, loaded by
 `TDA.Persistence.Examples` and not by the ordinary `TDA.Persistence`
@@ -6566,6 +6580,41 @@ pairs. `IntervalEndpoints.distance_eq_totalPairCost` identifies it with the shea
 `IntervalEndpoints.pairCost` wraps the cost in `some`, with correctness given by
 `IntervalEndpoints.distance_eq_of_pairCost`. Use `GradedMatching.cost_le_iff_of_pairCost`
 to rewrite matching cost bounds in terms of these pair entries and the deletion costs.
+
+## Morphisms of real interval sheaves
+
+`IntervalEndpoints.homAllowed` tests support intersection and both endpoint cuts. At either
+end, status increases from finite open through unbounded to finite closed. For equal finite
+left statuses, a closed source endpoint is at most the target endpoint, and an open source
+endpoint is at least the target endpoint. The right condition reflects these tests.
+`IntervalEndpoints.hom_eq_zero_of_not_homAllowed` gives vanishing when the test fails.
+When it holds, `IntervalEndpoints.bijective_stalkMap_of_homAllowed` evaluates the morphism
+on the two rank-one stalks at any common point, and
+`IntervalEndpoints.finrank_hom_of_homAllowed` gives dimension one. The proof applies
+`RealConstructible.bijective_stalkMap_interval_of_arrows` to both diagrams on the sorted union
+of their breakpoints. A two-step morphism whose outer interval sheaves have the same
+endpoint type vanishes through a different type by
+`IntervalEndpoints.hom_comp_eq_zero_of_different_type`.
+
+`IntervalEndpoints.coordinates` sends `[a,b]` to `(a,-b)`, `[a,b)` to `(a,b)`, and
+`(a,b]` to `(-b,-a)`. The four rays use the respective finite coordinate and zero for the
+unbounded end. The line uses `(0,0)`. In a common cohomological degree a nonzero band
+morphism of radius `r` between intervals of the same stable type gives the bounds
+on both coordinates in `IntervalEndpoints.coordinates_le_add_of_nonzero_band_hom`.
+
+`bandCohomologySectionsIso` identifies sections of same-degree convolution cohomology over
+an order-connected open with the original sections over its thickening. Its degree-zero
+component is `H0TSectionsIso` by `bandCohomologySectionsIso_app_zero`.
+`bandCohomologyGlobalSectionsIso` compares global sections at nonnegative radius.
+When both germ maps are isomorphisms, `bandCohomologyStalkIso` transports the section
+identification to stalks. `bandCohomologyStalkIso_hom_naturality` compares the stalk
+maps of a morphism in the transported bases.
+`bandCohomologyStalkIso_hom_eq_of_le` makes that comparison compatible with restriction.
+For translating supports, `IntervalEndpoints.coefficientPoint` reads the source stalk at
+`x + r` for `[a,b)` and `(-∞,b)`, and at `x - r` for `(a,b]` and `(a,∞)`.
+`IntervalEndpoints.coefficientPoint_mem_inter` places that point in both original supports.
+`IntervalEndpoints.exists_band_coefficient_window` supplies an order-connected open
+on which the two original germs and two convolved germs are isomorphisms.
 
 ## Review and extension boundaries
 
