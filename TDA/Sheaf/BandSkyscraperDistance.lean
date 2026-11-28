@@ -129,28 +129,30 @@ private def singleH0Iso : Single[k] ⋙ H₀[k] ≅ 𝟭 Sh[k] :=
 omit [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
   [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
   [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
-/-- Degree-zero homology is bijective on morphisms between objects in degree zero. -/
-theorem H0_map_bijective_of_iso_single {X Y : D⁺[k]} {F G : Sh[k]}
-    (e : X ≅ Single[k].obj F) (i : Y ≅ Single[k].obj G) :
-    Function.Bijective (H₀[k].map : (X ⟶ Y) → _) := by
-  let L := H₀[k]
-  have h (f : X ⟶ Y) : ∃ u : F ⟶ G, f = e.hom ≫ Single[k].map u ≫ i.inv := by
-    obtain ⟨u, hu⟩ := (DerivedCategory.singleFunctor (Sh[k]) 0).map_surjective
+/-- Degree-`d` cohomology is bijective on morphisms between sheaves placed in degree `d`. -/
+theorem homology_map_bijective_of_iso_single {d : ℤ} {X Y : D⁺[k]} {F G : Sh[k]}
+    (e : X ≅ (Plus.singleFunctor (Sh[k]) d).obj F) (i : Y ≅ (Plus.singleFunctor (Sh[k]) d).obj G) :
+    Function.Bijective ((Plus.homologyFunctor (Sh[k]) d).map : (X ⟶ Y) → _) := by
+  let S := Plus.singleFunctor (Sh[k]) d
+  let L := Plus.homologyFunctor (Sh[k]) d
+  let eH := singleFunctorCompHomologyFunctorIsoPlus (Sh[k]) d
+  have h (f : X ⟶ Y) : ∃ u : F ⟶ G, f = e.hom ≫ S.map u ≫ i.inv := by
+    obtain ⟨u, hu⟩ := (DerivedCategory.singleFunctor (Sh[k]) d).map_surjective
       (Plus.ι.map (e.inv ≫ f ≫ i.hom))
     refine ⟨u, ?_⟩
-    have h' : Single[k].map u = e.inv ≫ f ≫ i.hom := Plus.ι.map_injective hu
+    have h' : S.map u = e.inv ≫ f ≫ i.hom := Plus.ι.map_injective hu
     rw [h']
     simp only [Category.assoc, Iso.hom_inv_id_assoc, Iso.hom_inv_id, Category.comp_id]
   have hmap (u : F ⟶ G) :
-      L.map (e.hom ≫ Single[k].map u ≫ i.inv) =
-        L.map e.hom ≫ (singleH0Iso k).hom.app F ≫ u ≫
-          (singleH0Iso k).inv.app G ≫ L.map i.inv := by
-    have hn : L.map (Single[k].map u) ≫ (singleH0Iso k).hom.app G =
-        (singleH0Iso k).hom.app F ≫ u := (singleH0Iso k).hom.naturality u
+      L.map (e.hom ≫ S.map u ≫ i.inv) =
+        L.map e.hom ≫ eH.hom.app F ≫ u ≫
+          eH.inv.app G ≫ L.map i.inv := by
+    have hn : L.map (S.map u) ≫ eH.hom.app G =
+        eH.hom.app F ≫ u := eH.hom.naturality u
     rw [L.map_comp, L.map_comp]
-    have he : L.map (Single[k].map u) =
-        (singleH0Iso k).hom.app F ≫ u ≫ (singleH0Iso k).inv.app G := by
-      apply (cancel_mono ((singleH0Iso k).hom.app G)).mp
+    have he : L.map (S.map u) =
+        eH.hom.app F ≫ u ≫ eH.inv.app G := by
+      apply (cancel_mono (eH.hom.app G)).mp
       simp only [Category.assoc, Iso.inv_hom_id_app]
       erw [Category.comp_id]
       exact hn
@@ -164,14 +166,23 @@ theorem H0_map_bijective_of_iso_single {X Y : D⁺[k]} {F G : Sh[k]}
     have huv : u = v := by simpa only [cancel_epi, ← Category.assoc, cancel_mono] using he
     rw [huv]
   · intro f
-    let u := (singleH0Iso k).inv.app F ≫ L.map e.inv ≫ f ≫
-      L.map i.hom ≫ (singleH0Iso k).hom.app G
-    refine ⟨e.hom ≫ Single[k].map u ≫ i.inv, ?_⟩
+    let u := eH.inv.app F ≫ L.map e.inv ≫ f ≫
+      L.map i.hom ≫ eH.hom.app G
+    refine ⟨e.hom ≫ S.map u ≫ i.inv, ?_⟩
     rw [hmap]
     simp only [u, Category.assoc, Iso.hom_inv_id_app_assoc, ← L.map_comp_assoc,
       Iso.hom_inv_id, L.map_id, Category.id_comp]
     have hi : L.map i.hom ≫ L.map i.inv = 𝟙 (L.obj Y) := (L.mapIso i).hom_inv_id
     rw [hi, Category.comp_id]
+
+omit [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))] in
+/-- Degree-zero homology is bijective on morphisms between objects in degree zero. -/
+theorem H0_map_bijective_of_iso_single {X Y : D⁺[k]} {F G : Sh[k]}
+    (e : X ≅ Single[k].obj F) (i : Y ≅ Single[k].obj G) :
+    Function.Bijective (H₀[k].map : (X ⟶ Y) → _) :=
+  homology_map_bijective_of_iso_single k e i
 
 private theorem H0_map_bijective_to_skyscraper {a b ε : ℝ} (hε : 0 ≤ ε) :
     Function.Bijective (H₀[k].map :

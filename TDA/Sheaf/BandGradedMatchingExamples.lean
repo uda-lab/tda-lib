@@ -1,13 +1,15 @@
-import TDA.Sheaf.BandMatchingNormalization
+import TDA.Sheaf.BandMatchingProjection
 import TDA.Sheaf.RealIntervalSectionsExamples
 
 /-!
-# Graded matching over the rationals
+# Graded matching and projected witness equations
 
 The open interval `(0, 2)` in degree zero and the point `1` in degree one have
 an edge of cost one. The point has a source partner in every finite-cost matching.
 Common convolution places both occurrences in the same degree. The half-open pair
 `[0, 2)`, `[4, 6)` is affordable by joint deletion at radius one.
+For repeated closed intervals in degree zero, only the intermediates of that
+degree and endpoint type occur in the projected equation.
 -/
 
 noncomputable section
@@ -16,7 +18,7 @@ open CategoryTheory CategoryTheory.Limits DerivedCategory TDA.Persistence TDA.Sh
 open TDA.Sheaf.AlternatingDiagram TDA.Sheaf.BandConvolution TDA.Sheaf.RealConstructible
 open TDA.Sheaf.RealStratification
 open TDA.Sheaf.RealIntervalSectionsExamples (Joo)
-open scoped ENNReal ZeroObject
+open scoped BigOperators ENNReal ZeroObject
 
 attribute [local instance] HasDerivedCategory.standard
 
@@ -176,3 +178,87 @@ example : halfOpenLeft.totalPairCost halfOpenRight 0 0 ≤ 1 ∧
     have hclose := (le_max_left _ _).trans h.2.2
     change |(0 - 2 : ℝ) - (4 - 2)| ≤ 1 at hclose
     norm_num at hclose
+
+section Projection
+
+variable {k : Type} [Field k]
+  [HasDerivedCategory (realLine.Sheaf (ModuleCat k))]
+  [∀ a : ℝ, HasDerivedCategory ((D a).Sheaf (ModuleCat k))]
+  [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))]
+  [HasDerivedCategory (pt.Sheaf (ModuleCat k))]
+  [∀ u v : ℝ, HasDerivedCategory ((TopCat.of (Set.Icc u v)).Sheaf (ModuleCat k))]
+
+private def closedInterval : FiniteInterval 5 := ⟨1, 4, by decide, by decide⟩
+
+private def halfOpenInterval : FiniteInterval 5 := ⟨1, 3, by decide, by decide⟩
+
+private def mixedGraded : Fin 4 → GradedInterval 2 :=
+  ![⟨closedInterval, 0⟩, ⟨closedInterval, 0⟩, ⟨closedInterval, 1⟩, ⟨halfOpenInterval, 0⟩]
+
+private def mixedEndpoints : Fin 4 → IntervalEndpoints :=
+  let E := IntervalEndpoints.icc 0 2 (by norm_num)
+  ![E, E, E, halfOpenLeft]
+
+private theorem mixedSupport (i : Fin 4) :
+    intervalSet breaks (mixedGraded i).interval = (mixedEndpoints i).support := by
+  have hcc : intervalSet breaks closedInterval = Set.Icc 0 2 := by
+    rw [intervalSet_eq_Icc strictMono_breaks (i := 0) (j := 1) rfl rfl]
+    simp [breaks]
+  have hco : intervalSet breaks halfOpenInterval = Set.Ico 0 2 := by
+    rw [intervalSet_eq_Ico strictMono_breaks (i := 0) (j := 1) rfl rfl]
+    simp [breaks]
+  fin_cases i <;>
+    first | exact hcc | exact hco
+
+private theorem mixedStable (i : Fin 4) : (mixedEndpoints i).hasDegreeOneOutput = false := by
+  fin_cases i <;> rfl
+
+local notation "mixedObj" =>
+  (fun i : Fin 4 => GradedInterval.obj k strictMono_breaks (mixedGraded i))
+
+private def mixedBlock : Finset (Fin 4) := {0, 1}
+
+private theorem mixedBlock_eq :
+    Finset.univ.filter (fun j : Fin 4 =>
+      (mixedGraded j).degree = (mixedGraded 0).degree ∧
+        (mixedEndpoints 0).sameType (mixedEndpoints j) = true) =
+      mixedBlock := by
+  decide
+
+local notation "H₀" =>
+  Plus.homologyFunctor (realLine.Sheaf (ModuleCat k)) (GradedInterval.degree (mixedGraded 0))
+
+/-- With identical interval supports on distinct outer labels, the projected
+equation has zero off the occurrence diagonal. The mixed family admits a witness
+at each nonnegative radius by enlarging the identity witness. -/
+example {ε : ℝ} (hε : 0 ≤ ε) (w : Witness k hε (⨁ mixedObj) (⨁ mixedObj)) :
+    (∑ j ∈ mixedBlock,
+      (H₀).map ((T k ε).map (w.biproductHom mixedObj mixedObj 0 j) ≫
+        w.symm.biproductHom mixedObj mixedObj j 1)) = 0 := by
+  have h := w.sum_homology_biproductHom_in_block (k := k)
+    (X := mixedGraded) (Y := mixedGraded) (pi := fun _ => breaks) (qj := fun _ => breaks)
+    (fun _ => strictMono_breaks) (fun _ => strictMono_breaks) hε
+    mixedEndpoints mixedEndpoints mixedSupport mixedSupport mixedStable mixedStable 0 1 rfl rfl
+  simpa only [mixedBlock_eq, biproduct.ι_π_ne _ (by decide : (0 : Fin 4) ≠ 1),
+    comp_zero, Functor.map_zero] using h
+
+/-- The same projection has nonzero diagonal for the required closed occurrence. -/
+example {ε : ℝ} (hε : 0 ≤ ε) (w : Witness k hε (⨁ mixedObj) (⨁ mixedObj)) :
+    (∑ j ∈ mixedBlock,
+      (H₀).map ((T k ε).map (w.biproductHom mixedObj mixedObj 0 j) ≫
+        w.symm.biproductHom mixedObj mixedObj j 0)) ≠ 0 := by
+  have h := w.sum_homology_biproductHom_in_block (k := k)
+    (X := mixedGraded) (Y := mixedGraded) (pi := fun _ => breaks) (qj := fun _ => breaks)
+    (fun _ => strictMono_breaks) (fun _ => strictMono_breaks) hε
+    mixedEndpoints mixedEndpoints mixedSupport mixedSupport mixedStable mixedStable 0 0 rfl rfl
+  rw [mixedBlock_eq, biproduct.ι_π_self] at h
+  rw [h]
+  let A := mixedObj 0
+  let η : (T k (ε + ε)).obj A ⟶ A := (aug k (add_nonneg hε hε)).app A
+  change (H₀).map ((TComp k hε hε).hom.app A ≫ η ≫ 𝟙 A) ≠ 0
+  rw [Category.comp_id η]
+  exact homology_band_augmentation_ne_zero_of_lt_deletionCost (k := k)
+    strictMono_breaks (mixedGraded 0) (mixedEndpoints 0) (mixedSupport 0) (mixedStable 0) hε
+    ENNReal.ofReal_lt_top
+
+end Projection

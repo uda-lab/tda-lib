@@ -10,6 +10,14 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- `Witness.biproductHom` gives the component of a finite biproduct witness.
+  `Witness.sum_homology_biproductHom_in_block` projects its two-step equation to
+  intermediate labels of the outer labels' cohomological degree and endpoint type.
+  `homology_band_augmentation_ne_zero_of_lt_deletionCost` gives a nonzero diagonal
+  for an occurrence whose deletion cost exceeds the radius. The supporting interfaces
+  are `homology_map_bijective_of_iso_single`, `IntervalEndpoints.convolved`,
+  `exists_iso_convolved_endpoints`, `IntervalEndpoints.sameType_convolved_left`,
+  `IntervalEndpoints.sameType_convolved_right` and `IntervalEndpoints.normalized_deletionCost`.
 - `exists_normalizing_radius` gives a common radius beyond the bounded-open thresholds.
   `IntervalEndpoints.normalizationThreshold`, `normalized` and `effectiveDegree` describe
   the resulting support and degree. The type preserves degree under further convolution by

@@ -1295,7 +1295,9 @@ private theorem distance_le_sup_deletions {X Y : D⁺} :
     by simp [nonempty_witness_zero_iff.mp ⟨v⟩]⟩
   simpa only [ENNReal.ofReal_coe_nnreal, ht] using w.distance_le
 
-private def IntervalEndpoints.convolved (E : IntervalEndpoints) (r : ℝ) (hr : 0 ≤ r) :
+/-- Expand closed endpoints and translate open endpoints by the band radius
+for intervals that retain their degree. Fix bounded open intervals. -/
+def IntervalEndpoints.convolved (E : IntervalEndpoints) (r : ℝ) (hr : 0 ≤ r) :
     IntervalEndpoints :=
   match E with
   | .icc a b h => .icc (a - r) (b + r) (by linarith)
@@ -1336,7 +1338,9 @@ private theorem IntervalEndpoints.support_nonempty (E : IntervalEndpoints) :
     | exact Set.univ_nonempty
 
 omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))] in
-private theorem exists_iso_convolved_endpoints (hp : StrictMono p)
+/-- For a type that retains its degree, convolution realizes the convolved
+endpoints as a graded interval in the same degree. -/
+theorem exists_iso_convolved_endpoints (hp : StrictMono p)
     (J : FiniteInterval (2 * m + 1)) (d : ℤ) {r : ℝ} (hr : 0 ≤ r) (E : IntervalEndpoints)
     (hE : E.hasDegreeOneOutput = false) (hJ : intervalSet p J = E.support) :
     ∃ L : FiniteInterval (2 * (bandBreakpoints p r).card + 1),
@@ -1729,6 +1733,16 @@ private theorem LowerCut.sameType_of_allows (L L' M M' : LowerCut)
 /-- Whether both intervals have the same open, closed or unbounded status at each endpoint. -/
 def IntervalEndpoints.sameType (E F : IntervalEndpoints) : Bool :=
   E.lower.sameType F.lower && E.upper.sameType F.upper
+
+/-- The endpoint transformation `convolved` preserves the source endpoint statuses. -/
+theorem IntervalEndpoints.sameType_convolved_left (E F : IntervalEndpoints) {r : ℝ}
+    (hr : 0 ≤ r) : (E.convolved r hr).sameType F = E.sameType F := by
+  cases E <;> cases F <;> rfl
+
+/-- The endpoint transformation `convolved` preserves the target endpoint statuses. -/
+theorem IntervalEndpoints.sameType_convolved_right (E F : IntervalEndpoints) {r : ℝ}
+    (hr : 0 ≤ r) : E.sameType (F.convolved r hr) = E.sameType F := by
+  cases E <;> cases F <;> rfl
 
 private theorem LowerCut.sameType_of_chain {L M N : LowerCut}
     (h : L.sameType N = true) (hl : L.allows M) (hr : M.allows N) :
@@ -2255,6 +2269,12 @@ theorem normalized_hasDegreeOneOutput (E : IntervalEndpoints) {s : ℝ} (hs : 0 
     (hE : E.normalizationThreshold < 2 * s) :
     (E.normalized hs hE).hasDegreeOneOutput = false := by
   cases E <;> rfl
+
+/-- Common convolution preserves the deletion cost of each endpoint type. -/
+theorem normalized_deletionCost (E : IntervalEndpoints) {s : ℝ} (hs : 0 ≤ s)
+    (hE : E.normalizationThreshold < 2 * s) :
+    (E.normalized hs hE).deletionCost = E.deletionCost := by
+  cases E <;> simp [normalized, convolved, deletionCost, sub_sub_sub_cancel_right]
 
 omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))] in
 /-- Convolution above the bounded-open threshold realizes the normalized support
