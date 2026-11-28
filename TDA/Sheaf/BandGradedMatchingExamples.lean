@@ -1,11 +1,13 @@
-import TDA.Sheaf.BandMatchingIntervalCosts
+import TDA.Sheaf.BandMatchingNormalization
 import TDA.Sheaf.RealIntervalSectionsExamples
 
 /-!
 # Graded matching over the rationals
 
 The open interval `(0, 2)` in degree zero and the point `1` in degree one have
-an edge of cost one. The point cannot be left unmatched in a finite-cost matching.
+an edge of cost one. The point has a source partner in every finite-cost matching.
+Common convolution places both occurrences in the same degree. The half-open pair
+`[0, 2)`, `[4, 6)` is affordable by joint deletion at radius one.
 -/
 
 noncomputable section
@@ -76,7 +78,8 @@ example :
     distance (⨁ fun _ : Unit => openObj) (⨁ fun _ : Unit => pointObj) ≤ 1 :=
   pair_cost ▸ pair.distance_biproduct_le_cost
 
-example : Nonempty (Witness ℚ (zero_le_one : (0 : ℝ) ≤ 1)
+private theorem nonempty_midpoint_biproduct_witness :
+    Nonempty (Witness ℚ (zero_le_one : (0 : ℝ) ≤ 1)
     (⨁ fun _ : Unit => openObj) (⨁ fun _ : Unit => pointObj)) := by
   apply pair.nonempty_witness_biproduct
   · intro _ _ _
@@ -103,3 +106,73 @@ example {I : Type} (F : I → DerivedCategory.Plus (realLine.Sheaf (ModuleCat �
   apply M.exists_source_of_cost_lt_top () _ h
   rw [← distance_congr pointObjIso (Iso.refl _)]
   exact distance_singleFunctor_skyscraper_zero ℚ 1 1
+
+private def openEndpoints : IntervalEndpoints := .ioo 0 2 (by norm_num)
+
+private def pointEndpoints : IntervalEndpoints := .icc 1 1 le_rfl
+
+private theorem normalization_radius_nonneg : (0 : ℝ) ≤ 2 := by norm_num
+
+private theorem open_threshold : openEndpoints.normalizationThreshold < 2 * 2 := by
+  norm_num [openEndpoints, IntervalEndpoints.normalizationThreshold]
+
+private theorem point_threshold : pointEndpoints.normalizationThreshold < 2 * 2 := by
+  norm_num [pointEndpoints, IntervalEndpoints.normalizationThreshold]
+
+example : openEndpoints.totalPairCost pointEndpoints 0 1 ≤ 1 := by
+  rw [← ENNReal.ofReal_one]
+  apply (openEndpoints.totalPairCost_le_iff_normalizedEdge_or_deletable pointEndpoints 0 1
+    normalization_radius_nonneg open_threshold point_threshold zero_le_one).2
+  left
+  change (0 + 1 : ℤ) = 1 ∧ true = true ∧
+    max |(2 - 2 : ℝ) - (1 - 2)| |-(0 + 2 : ℝ) - -(1 + 2)| ≤ 1
+  norm_num
+
+example : ¬ openEndpoints.normalizedEdge pointEndpoints 0 0 normalization_radius_nonneg
+    open_threshold point_threshold 1 := by
+  intro h
+  have hdegree : (0 + 1 : ℤ) = 0 := h.1
+  omega
+
+example :
+    ∃ (X' : Unit → GradedInterval (bandBreakpoints breaks 2).card)
+      (Y' : Unit → GradedInterval (bandBreakpoints pointBreak 2).card),
+      (X' ()).degree = 1 ∧ (Y' ()).degree = 1 ∧
+      Nonempty (Witness ℚ (zero_le_one : (0 : ℝ) ≤ 1)
+        (⨁ fun i => (X' i).obj ℚ (strictMono_sortedBreakpoints (bandBreakpoints breaks 2)))
+        (⨁ fun j => (Y' j).obj ℚ
+          (strictMono_sortedBreakpoints (bandBreakpoints pointBreak 2)))) := by
+  obtain ⟨w⟩ := nonempty_midpoint_biproduct_witness
+  obtain ⟨X', Y', hx, hy, W⟩ := w.exists_normalized_biproduct
+    (p := fun _ : Unit => breaks) (q := fun _ : Unit => pointBreak)
+    (fun _ => strictMono_breaks) (fun _ => strictMono_pointBreak)
+    (X := fun _ => ⟨Joo, 0⟩) (Y := fun _ => ⟨pointInterval, 1⟩)
+    (fun _ => openEndpoints) (fun _ => pointEndpoints)
+    (fun _ => open_interval) (fun _ => by
+      simpa [pointEndpoints, IntervalEndpoints.support] using point_support)
+    normalization_radius_nonneg (fun _ => open_threshold) (fun _ => point_threshold)
+  exact ⟨X', Y', (hx ()).2.1, (hy ()).2.1, W⟩
+
+private def halfOpenLeft : IntervalEndpoints := .ico 0 2 (by norm_num)
+
+private def halfOpenRight : IntervalEndpoints := .ico 4 6 (by norm_num)
+
+private theorem halfOpenLeft_threshold : halfOpenLeft.normalizationThreshold < 2 * 2 := by
+  norm_num [halfOpenLeft, IntervalEndpoints.normalizationThreshold]
+
+private theorem halfOpenRight_threshold : halfOpenRight.normalizationThreshold < 2 * 2 := by
+  norm_num [halfOpenRight, IntervalEndpoints.normalizationThreshold]
+
+example : halfOpenLeft.totalPairCost halfOpenRight 0 0 ≤ 1 ∧
+    ¬ halfOpenLeft.normalizedEdge halfOpenRight 0 0 normalization_radius_nonneg
+      halfOpenLeft_threshold halfOpenRight_threshold 1 := by
+  constructor
+  · rw [← ENNReal.ofReal_one]
+    apply (halfOpenLeft.totalPairCost_le_iff_normalizedEdge_or_deletable halfOpenRight 0 0
+      normalization_radius_nonneg halfOpenLeft_threshold halfOpenRight_threshold zero_le_one).2
+    right
+    norm_num [halfOpenLeft, halfOpenRight, IntervalEndpoints.deletionCost]
+  · intro h
+    have hclose := (le_max_left _ _).trans h.2.2
+    change |(0 - 2 : ℝ) - (4 - 2)| ≤ 1 at hclose
+    norm_num at hclose

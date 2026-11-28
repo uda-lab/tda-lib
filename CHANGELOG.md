@@ -10,6 +10,15 @@ cross-version compatibility promise.
 
 Changes on `develop` after v0.5.0; the next release version is undecided.
 
+- `exists_normalizing_radius` gives a common radius beyond the bounded-open thresholds.
+  `IntervalEndpoints.normalizationThreshold`, `normalized` and `effectiveDegree` describe
+  the resulting support and degree. The type preserves degree under further convolution by
+  `normalized_hasDegreeOneOutput`. `exists_iso_normalized` and
+  `Witness.exists_normalized_biproduct` realize these supports and degrees on the convolved
+  breakpoint families, with the witness radius preserved. `IntervalEndpoints.normalizedEdge`
+  compares the effective degrees, endpoint types and signed coordinates.
+  `totalPairCost_le_iff_normalizedEdge_or_deletable` characterizes affordable pairs by these
+  edges and joint deletion.
 - `FiniteOccurrenceMatching.neighbors` and `mem_neighbors` describe neighbours of finite
   selections. `exists_two_sided_of_hall` covers both selections in one partial matching under
   their Hall inequalities. `FiniteMatchingRank.card_le_of_restricted_triangular_product`
