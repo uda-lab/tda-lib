@@ -1,4 +1,4 @@
-import TDA.Sheaf.BandMatchingLowerBound
+import TDA.Sheaf.BandDistanceAttainment
 import TDA.Sheaf.RealIntervalSectionsExamples
 
 /-!
@@ -114,6 +114,19 @@ example {I : Type} (F : I → DerivedCategory.Plus (realLine.Sheaf (ModuleCat �
 private def openEndpoints : IntervalEndpoints := .ioo 0 2 (by norm_num)
 
 private def pointEndpoints : IntervalEndpoints := .icc 1 1 le_rfl
+
+/-- The adjacent-degree pair admits a witness at its exact table cost of one. -/
+example : openEndpoints.totalPairCost pointEndpoints 0 1 = 1 ∧
+    Nonempty (Witness ℚ (zero_le_one : (0 : ℝ) ≤ 1) openObj pointObj) := by
+  have hs : intervalSet pointBreak pointInterval = pointEndpoints.support := by
+    simpa [pointEndpoints, IntervalEndpoints.support] using point_support
+  have he := openEndpoints.distance_eq_totalPairCost ℚ strictMono_breaks strictMono_pointBreak
+    ⟨Joo, 0⟩ ⟨pointInterval, 1⟩ pointEndpoints open_interval hs
+  have hc : openEndpoints.totalPairCost pointEndpoints 0 1 = 1 := he.symm.trans pair_distance
+  refine ⟨hc, (openEndpoints.nonempty_witness_iff_totalPairCost_le ℚ
+    strictMono_breaks strictMono_pointBreak ⟨Joo, 0⟩ ⟨pointInterval, 1⟩ pointEndpoints
+    open_interval hs zero_le_one).mpr ?_⟩
+  rw [hc, ENNReal.ofReal_one]
 
 private theorem normalization_radius_nonneg : (0 : ℝ) ≤ 2 := by norm_num
 
@@ -336,10 +349,10 @@ private def halfOpenObj :=
 private def rightHalfOpenObj :=
   (GradedInterval.mk halfOpenInterval 0).obj ℚ strictMono_rightBreaks
 
-example :
-    distance (⨁ fun _ : Unit => halfOpenObj) (⨁ fun _ : Unit => rightHalfOpenObj) = 1 ∧
-      matchingDistance (fun _ : Unit => halfOpenObj) (fun _ : Unit => rightHalfOpenObj) = 1 ∧
-      (GradedMatching.empty : GradedMatching Unit Unit).cost
+private theorem joint_deletion_cost :
+    distance (⨁ fun _ : Fin 2 => halfOpenObj) (⨁ fun _ : Fin 2 => rightHalfOpenObj) = 1 ∧
+      matchingDistance (fun _ : Fin 2 => halfOpenObj) (fun _ : Fin 2 => rightHalfOpenObj) = 1 ∧
+      (GradedMatching.empty : GradedMatching (Fin 2) (Fin 2)).cost
         (fun _ => halfOpenObj) (fun _ => rightHalfOpenObj) = 1 := by
   have h₀ := support_halfOpenInterval
   have h₁ : intervalSet rightBreaks halfOpenInterval = Set.Ico 4 6 := by
@@ -361,18 +374,40 @@ example :
     norm_num at h
     exact h
   have h := distance_biproduct_eq_matchingDistance
-    (k := ℚ) (pi := fun _ : Unit => breaks) (qj := fun _ : Unit => rightBreaks)
+    (k := ℚ) (pi := fun _ : Fin 2 => breaks) (qj := fun _ : Fin 2 => rightBreaks)
     (X := fun _ => ⟨halfOpenInterval, 0⟩) (Y := fun _ => ⟨halfOpenInterval, 0⟩)
     (fun _ => strictMono_breaks) (fun _ => strictMono_rightBreaks)
-  have hd := (distance_congr (biproductUniqueIso (fun _ : Unit => halfOpenObj))
-    (biproductUniqueIso (fun _ : Unit => rightHalfOpenObj))).trans hpair
-  let M : GradedMatching Unit Unit := GradedMatching.empty
-  let A (_ : Unit) := halfOpenObj
-  let B (_ : Unit) := rightHalfOpenObj
-  refine ⟨hd, h.symm.trans hd, le_antisymm ?_ ?_⟩
-  · apply (M.cost_le_iff (X := A) (Y := B)).mpr
-    refine ⟨?_, fun _ _ => hdel₀.le, fun _ _ => hdel₁.le⟩
-    intro i j hij
-    cases hij
-  · rw [← hdel₀]
-    exact ((M.cost_le_iff (X := A) (Y := B)).mp le_rfl).2.1 () rfl
+  let A (_ : Fin 2) := halfOpenObj
+  let B (_ : Fin 2) := rightHalfOpenObj
+  let M : GradedMatching (Fin 2) (Fin 2) := GradedMatching.empty
+  have hcost (N : GradedMatching (Fin 2) (Fin 2)) : 1 ≤ N.cost A B := by
+    obtain ⟨hp, hl, _⟩ := (N.cost_le_iff (X := A) (Y := B)).mp le_rfl
+    cases hpartner : N.finite 0 with
+    | none => simpa only [A, hdel₀] using hl 0 hpartner
+    | some j => simpa only [A, B, hpair] using hp 0 j hpartner
+  have hempty : M.cost A B = 1 := by
+    refine le_antisymm ((M.cost_le_iff (X := A) (Y := B)).mpr ⟨?_, ?_, ?_⟩) (hcost M)
+    · intro i j hij
+      cases hij
+    · exact fun _ _ => hdel₀.le
+    · exact fun _ _ => hdel₁.le
+  have hm : matchingDistance A B = 1 :=
+    le_antisymm ((matchingDistance_le_cost M).trans hempty.le) (le_iInf hcost)
+  exact ⟨h.trans hm, hm, hempty⟩
+
+/-- The disjoint half-open occurrence sums realize their joint deletion cost. -/
+example : Nonempty (Witness ℚ (zero_le_one : (0 : ℝ) ≤ 1)
+    (⨁ fun _ : Fin 2 => halfOpenObj) (⨁ fun _ : Fin 2 => rightHalfOpenObj)) := by
+  have hfin : distance (⨁ fun _ : Fin 2 => halfOpenObj)
+      (⨁ fun _ : Fin 2 => rightHalfOpenObj) < ⊤ := by
+    rw [joint_deletion_cost.1]
+    exact ENNReal.one_lt_top
+  have hw := nonempty_witness_biproduct_at_distance
+    (k := ℚ) (pi := fun _ : Fin 2 => breaks) (qj := fun _ : Fin 2 => rightBreaks)
+    (X := fun _ => ⟨halfOpenInterval, 0⟩) (Y := fun _ => ⟨halfOpenInterval, 0⟩)
+    (fun _ => strictMono_breaks) (fun _ => strictMono_rightBreaks) hfin
+  have hradius : (distance (⨁ fun _ : Fin 2 => halfOpenObj)
+      (⨁ fun _ : Fin 2 => rightHalfOpenObj)).toReal = 1 := by
+    rw [joint_deletion_cost.1, ENNReal.toReal_one]
+  obtain ⟨w⟩ := hw
+  exact ⟨w.mono hradius.le⟩

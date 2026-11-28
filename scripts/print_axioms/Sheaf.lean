@@ -2226,3 +2226,11 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.distance_biproduct_eq_matchingDistance
 #print axioms TDA.Sheaf.BandConvolution.distance_eq_matchingDistance_of_iso
 #print axioms TDA.Sheaf.BandConvolution.distanceB_eq_gradedBarcodeMatchingDistance
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.nonempty_witness_zero_iff_deletionCost_le
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.nonempty_witness_iff_totalPairCost_le
+#print axioms TDA.Sheaf.BandConvolution.nonempty_witness_biproduct_iff_distance_le
+#print axioms TDA.Sheaf.BandConvolution.nonempty_witness_biproduct_at_distance
+#print axioms TDA.Sheaf.BandConvolution.nonempty_witness_of_iso_biproduct_iff_distance_le
+#print axioms TDA.Sheaf.BandConvolution.nonempty_witness_of_iso_biproduct_at_distance
+#print axioms TDA.Sheaf.BandConvolution.nonempty_witnessB_iff_distanceB_le
+#print axioms TDA.Sheaf.BandConvolution.nonempty_witnessB_at_distanceB

@@ -6660,6 +6660,25 @@ under a common convolution of a source and target with permitted cuts.
 `IntervalEndpoints.outer_overlap_of_score_le` gives an overlap for the outer supports
 from the requiredness, score and two-step coordinate bounds.
 
+## Attainment of the band distance
+
+For graded interval sheaves, `IntervalEndpoints.nonempty_witness_iff_totalPairCost_le`
+characterizes the real radii admitting a witness by the pair cost. The deletion criterion
+`IntervalEndpoints.nonempty_witness_zero_iff_deletionCost_le` uses the endpoint deletion cost.
+Both criteria include equality with the cost.
+
+For finite graded interval sums, `nonempty_witness_biproduct_iff_distance_le` characterizes
+witness existence at radius `r ≥ 0` by the bound `distance ≤ ENNReal.ofReal r`. A minimizing
+matching supplies the component witnesses, including the deletions of unmatched summands.
+`nonempty_witness_biproduct_at_distance` uses the real value of the finite distance as
+the witness radius. `nonempty_witness_of_iso_biproduct_iff_distance_le` and
+`nonempty_witness_of_iso_biproduct_at_distance` apply the two statements along isomorphisms
+to such sums.
+
+For bounded objects with constructible cohomology, `nonempty_witnessB_iff_distanceB_le`
+characterizes radius bounds and `nonempty_witnessB_at_distanceB` realizes the finite
+distance. These statements use the decompositions given by the graded barcodes.
+
 ## Morphisms of real interval sheaves
 
 `IntervalEndpoints.homAllowed` tests support intersection and both endpoint cuts. At either
