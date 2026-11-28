@@ -2201,3 +2201,12 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.totalPairCost_le_iff_normalizedEdge_or_deletable
 #print axioms TDA.Sheaf.BandConvolution.exists_normalizing_radius
 #print axioms TDA.Sheaf.BandConvolution.Witness.exists_normalized_biproduct
+#print axioms TDA.Sheaf.BandConvolution.homology_map_bijective_of_iso_single
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.convolved
+#print axioms TDA.Sheaf.BandConvolution.exists_iso_convolved_endpoints
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.sameType_convolved_left
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.sameType_convolved_right
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.normalized_deletionCost
+#print axioms TDA.Sheaf.BandConvolution.Witness.biproductHom
+#print axioms TDA.Sheaf.BandConvolution.Witness.sum_homology_biproductHom_in_block
+#print axioms TDA.Sheaf.BandConvolution.homology_band_augmentation_ne_zero_of_lt_deletionCost

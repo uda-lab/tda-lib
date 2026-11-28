@@ -6604,6 +6604,28 @@ In particular,
 an occurrence whose deletion cost exceeds the radius has the same neighbors under the
 normalized edge relation and the original cost test.
 
+## Projected equations of graded interval witnesses
+
+`IntervalEndpoints.convolved` gives the endpoint formulas for stable types.
+`exists_iso_convolved_endpoints` realizes those endpoints in the original degree.
+`IntervalEndpoints.sameType_convolved_left` and `sameType_convolved_right` preserve the
+endpoint-type comparison under this operation on either side.
+`IntervalEndpoints.normalized_deletionCost` identifies the deletion costs before and after
+common convolution above the bounded-open threshold.
+
+`Witness.biproductHom` extracts the map from a convolved source summand to a target
+summand. Apply it to `Witness.symm` for the reverse component.
+`Witness.sum_homology_biproductHom_in_block` evaluates the sum of two-step components in
+the degree of the outer labels when their endpoint types and degrees agree. The sum
+ranges over intermediate labels of that degree and endpoint type. On distinct outer labels
+it is zero by `biproduct.ι_π_ne`. On equal outer labels it is the cohomology of the
+augmentation precomposed with the band-composition isomorphism.
+
+`homology_map_bijective_of_iso_single` identifies maps between sheaves placed in degree
+`d` with the maps on their degree-`d` cohomology. For a stable interval,
+`homology_band_augmentation_ne_zero_of_lt_deletionCost` makes the diagonal of the
+projected equation nonzero when the deletion cost exceeds the radius.
+
 ## Morphisms of real interval sheaves
 
 `IntervalEndpoints.homAllowed` tests support intersection and both endpoint cuts. At either
