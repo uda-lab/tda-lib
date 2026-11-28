@@ -6581,6 +6581,29 @@ pairs. `IntervalEndpoints.distance_eq_totalPairCost` identifies it with the shea
 `IntervalEndpoints.distance_eq_of_pairCost`. Use `GradedMatching.cost_le_iff_of_pairCost`
 to rewrite matching cost bounds in terms of these pair entries and the deletion costs.
 
+## Common convolution of graded interval occurrences
+
+`IntervalEndpoints.normalizationThreshold` is the length of a bounded open interval and
+zero for the remaining types. `exists_normalizing_radius` gives one positive radius `s`
+with twice that radius above both finite families' thresholds. `IntervalEndpoints.normalized`
+sends a bounded open interval `(a,b)` to `[b-s,a+s]` and `effectiveDegree` raises its
+degree by one. The other supports follow their degree-zero convolution formulas and
+keep their degrees. `IntervalEndpoints.normalized_hasDegreeOneOutput` says every resulting
+type preserves degree under further convolution.
+
+`IntervalEndpoints.exists_iso_normalized` realizes the normalized support and effective
+degree on the convolved breakpoint family. `Witness.exists_normalized_biproduct` uses these
+isomorphisms summand by summand and gives a witness at the original radius between the
+normalized biproducts.
+
+`IntervalEndpoints.normalizedEdge` compares effective degrees, endpoint types and both
+signed coordinates. `IntervalEndpoints.totalPairCost_le_iff_normalizedEdge_or_deletable`
+says that the original pair cost is at most the radius exactly when the normalized
+occurrences form an edge or both occurrences are individually deletable at that radius.
+In particular,
+an occurrence whose deletion cost exceeds the radius has the same neighbors under the
+normalized edge relation and the original cost test.
+
 ## Morphisms of real interval sheaves
 
 `IntervalEndpoints.homAllowed` tests support intersection and both endpoint cuts. At either

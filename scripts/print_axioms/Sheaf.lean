@@ -2192,3 +2192,12 @@ import TDA
 #print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.coefficientPoint
 #print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.coefficientPoint_mem_inter
 #print axioms TDA.Sheaf.BandConvolution.bandCohomologyStalkIso_hom_eq_of_le
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.normalizationThreshold
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.normalized
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.effectiveDegree
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.normalized_hasDegreeOneOutput
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.exists_iso_normalized
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.normalizedEdge
+#print axioms TDA.Sheaf.BandConvolution.IntervalEndpoints.totalPairCost_le_iff_normalizedEdge_or_deletable
+#print axioms TDA.Sheaf.BandConvolution.exists_normalizing_radius
+#print axioms TDA.Sheaf.BandConvolution.Witness.exists_normalized_biproduct

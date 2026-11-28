@@ -2230,6 +2230,155 @@ theorem distance_eq_of_pairCost (hp : StrictMono p) (hq : StrictMono q)
     distance (J.obj k hp) (K.obj k hq) = c :=
   (E.distance_eq_totalPairCost k hp hq J K F hJ hK).trans (Option.some.inj hc)
 
+/-- Twice the strict radius threshold for moving a bounded open interval to degree one.
+For the types that preserve degree the value is zero. -/
+def normalizationThreshold : IntervalEndpoints → ℝ
+  | .ioo a b _ => b - a
+  | _ => 0
+
+/-- The endpoint data after convolution above the bounded-open threshold. -/
+def normalized (E : IntervalEndpoints) {s : ℝ} (hs : 0 ≤ s)
+    (hE : E.normalizationThreshold < 2 * s) : IntervalEndpoints :=
+  match E with
+  | .ioo a b _ => .icc (b - s) (a + s) (by
+      change b - a < 2 * s at hE
+      linarith)
+  | _ => E.convolved s hs
+
+/-- The cohomological degree after convolution above the bounded-open threshold. -/
+def effectiveDegree (E : IntervalEndpoints) (d : ℤ) : ℤ :=
+  if E.hasDegreeOneOutput then d + 1 else d
+
+/-- Above the bounded-open threshold, every interval has an output type that
+preserves degree under further convolution. -/
+theorem normalized_hasDegreeOneOutput (E : IntervalEndpoints) {s : ℝ} (hs : 0 ≤ s)
+    (hE : E.normalizationThreshold < 2 * s) :
+    (E.normalized hs hE).hasDegreeOneOutput = false := by
+  cases E <;> rfl
+
+omit [∀ a b : ℝ, HasDerivedCategory ((Z a b).Sheaf (ModuleCat k))] in
+/-- Convolution above the bounded-open threshold realizes the normalized support
+in the effective degree on the convolved breakpoint family. -/
+theorem exists_iso_normalized (hp : StrictMono p) (J : GradedInterval m)
+    (E : IntervalEndpoints) (hJ : intervalSet p J.interval = E.support)
+    {s : ℝ} (hs : 0 ≤ s) (hE : E.normalizationThreshold < 2 * s) :
+    ∃ L : FiniteInterval (2 * (bandBreakpoints p s).card + 1),
+      intervalSet (sortedBreakpoints (bandBreakpoints p s)) L = (E.normalized hs hE).support ∧
+      Nonempty ((T k s).obj (J.obj k hp) ≅
+        (GradedInterval.mk L (E.effectiveDegree J.degree)).obj k
+          (strictMono_sortedBreakpoints (bandBreakpoints p s))) := by
+  cases E with
+  | ioo a b hab =>
+    obtain ⟨L, hL, ⟨e⟩⟩ :=
+      exists_intervalSheaf_T_Ioo_above (k := k) hp J.interval hs hab hE hJ
+    refine ⟨L, hL, ⟨?_⟩⟩
+    change _ ≅ (Single (J.degree + 1)).obj
+      ISh[strictMono_sortedBreakpoints (bandBreakpoints p s),L]
+    rw [add_comm J.degree 1]
+    exact convGradedIso k hp J e
+  | _ =>
+    all_goals exact exists_iso_convolved_endpoints k hp J.interval J.degree hs _ rfl hJ
+
+/-- An edge in the normalized graph joins occurrences of the same effective degree
+and endpoint type with both signed coordinate differences bounded by the radius. -/
+def normalizedEdge (E F : IntervalEndpoints) (i j : ℤ) {s : ℝ} (hs : 0 ≤ s)
+    (hE : E.normalizationThreshold < 2 * s) (hF : F.normalizationThreshold < 2 * s)
+    (r : ℝ) : Prop :=
+  let P := E.normalized hs hE
+  let Q := F.normalized hs hF
+  E.effectiveDegree i = F.effectiveDegree j ∧ P.sameType Q = true ∧
+    max |P.coordinates.1 - Q.coordinates.1| |P.coordinates.2 - Q.coordinates.2| ≤ r
+
+private theorem abs_max_eq_max_of_add_nonneg {a b : ℝ} (h : 0 ≤ a + b) :
+    max |a| |b| = max a b := by
+  rcases le_total a b with hab | hba
+  · rw [max_eq_right hab, abs_of_nonneg (by linarith : 0 ≤ b)]
+    exact max_eq_right (abs_le.mpr ⟨by linarith, hab⟩)
+  · rw [max_eq_left hba, abs_of_nonneg (by linarith : 0 ≤ a)]
+    exact max_eq_left (abs_le.mpr ⟨by linarith, hba⟩)
+
+private theorem normalizedEdge_symm (E F : IntervalEndpoints) (i j : ℤ) {s : ℝ}
+    (hs : 0 ≤ s) (hE : E.normalizationThreshold < 2 * s)
+    (hF : F.normalizationThreshold < 2 * s) (r : ℝ) :
+    E.normalizedEdge F i j hs hE hF r ↔ F.normalizedEdge E j i hs hF hE r := by
+  have hcut (L M : LowerCut) : L.sameType M = M.sameType L := by
+    cases L <;> cases M <;> rfl
+  let P := E.normalized hs hE
+  let Q := F.normalized hs hF
+  have htype : P.sameType Q = Q.sameType P := by
+    simp only [sameType, hcut P.lower Q.lower, hcut P.upper Q.upper]
+  dsimp only [normalizedEdge]
+  rw [eq_comm (a := E.effectiveDegree i), htype,
+    abs_sub_comm P.coordinates.1 Q.coordinates.1, abs_sub_comm P.coordinates.2 Q.coordinates.2]
+
+private theorem normalizedEdge_iff_cost_of_eq (E F : IntervalEndpoints) (i : ℤ) {s r : ℝ}
+    (hs : 0 ≤ s) (hE : E.normalizationThreshold < 2 * s)
+    (hF : F.normalizationThreshold < 2 * s) (hr : 0 ≤ r) :
+    E.pairCostOfEq F ≤ ENNReal.ofReal r ↔
+      E.normalizedEdge F i i hs hE hF r ∨
+        (E.deletionCost ≤ ENNReal.ofReal r ∧ F.deletionCost ≤ ENNReal.ofReal r) := by
+  cases E <;> cases F <;>
+    simp [pairCostOfEq, normalizedEdge, effectiveDegree, hasDegreeOneOutput, normalized,
+      convolved, sameType, lower, upper, LowerCut.sameType, coordinates, LowerCut.coordinate,
+      deletionCost, hr, ENNReal.ofReal_le_ofReal_iff hr, or_comm, sub_sub_sub_cancel_right,
+      neg_add_eq_sub, abs_sub_comm, and_comm]
+
+private theorem normalizedEdge_iff_cost_of_lt (E F : IntervalEndpoints) {i j : ℤ} (hij : i < j)
+    {s r : ℝ} (hs : 0 ≤ s) (hE : E.normalizationThreshold < 2 * s)
+    (hF : F.normalizationThreshold < 2 * s) (hr : 0 ≤ r) :
+    E.pairCostOfLt F i j ≤ ENNReal.ofReal r ↔
+      E.normalizedEdge F i j hs hE hF r ∨
+        (E.deletionCost ≤ ENNReal.ofReal r ∧ F.deletionCost ≤ ENNReal.ofReal r) := by
+  unfold pairCostOfLt
+  split
+  · rename_i h
+    have hd : E.effectiveDegree i ≠ F.effectiveDegree j := by
+      rcases h with hgap | hstable
+      · unfold effectiveDegree
+        split <;> split <;> omega
+      · simp only [effectiveDegree, hstable, Bool.false_eq_true, ite_false]
+        split <;> omega
+    simp [normalizedEdge, hd, sup_le_iff]
+  · rename_i h
+    have hdeg : j = i + 1 := by
+      have := fun hgap : i + 1 < j => h (Or.inl hgap)
+      omega
+    have ht := Bool.eq_true_of_not_eq_false (fun he => h (Or.inr he))
+    subst j
+    cases E <;> try contradiction
+    case ioo a b hab =>
+      cases F with
+      | icc c e hce =>
+        change ENNReal.ofReal (max (b - c) (e - a)) ≤ ENNReal.ofReal r ↔
+          ((i + 1 = i + 1 ∧ true = true ∧
+            max |b - s - (c - s)| |-(a + s) - -(e + s)| ≤ r) ∨
+            (⊤ ≤ ENNReal.ofReal r ∧ ⊤ ≤ ENNReal.ofReal r))
+        rw [ENNReal.ofReal_le_ofReal_iff hr]
+        simp only [sub_sub_sub_cancel_right, neg_sub_neg, add_sub_add_right_eq_sub, true_and,
+          top_le_iff, ENNReal.ofReal_ne_top, false_and, or_false]
+        rw [abs_max_eq_max_of_add_nonneg (by linarith : 0 ≤ (b - c) + (e - a))]
+      | _ =>
+        all_goals simp [normalizedEdge, effectiveDegree, hasDegreeOneOutput, normalized,
+          convolved, sameType, lower, upper, LowerCut.sameType, deletionCost]
+
+/-- A pair is affordable exactly when it is a normalized graph edge or both
+occurrences are individually deletable at the given radius. -/
+theorem totalPairCost_le_iff_normalizedEdge_or_deletable
+    (E F : IntervalEndpoints) (i j : ℤ) {s r : ℝ} (hs : 0 ≤ s)
+    (hE : E.normalizationThreshold < 2 * s) (hF : F.normalizationThreshold < 2 * s)
+    (hr : 0 ≤ r) :
+    E.totalPairCost F i j ≤ ENNReal.ofReal r ↔
+      E.normalizedEdge F i j hs hE hF r ∨
+        (E.deletionCost ≤ ENNReal.ofReal r ∧ F.deletionCost ≤ ENNReal.ofReal r) := by
+  rcases lt_trichotomy i j with hij | rfl | hji
+  · rw [totalPairCost, ite_eq_left hij]
+    exact normalizedEdge_iff_cost_of_lt E F hij hs hE hF hr
+  · simpa only [totalPairCost, lt_irrefl, ite_false] using
+      normalizedEdge_iff_cost_of_eq E F i hs hE hF hr
+  · rw [totalPairCost, ite_eq_right hji.not_gt, ite_eq_left hji,
+      normalizedEdge_symm E F i j hs hE hF, and_comm (a := E.deletionCost ≤ ENNReal.ofReal r)]
+    exact normalizedEdge_iff_cost_of_lt F E hji hs hF hE hr
+
 end IntervalEndpoints
 
 /-- Rewrite a matching cost bound by numeric pair and deletion entries for its occurrences. -/
